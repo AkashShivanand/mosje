@@ -99,6 +99,14 @@ const sd = new StyleDictionary({
       buildPath: "dist/",
       files: [{ destination: "figma.tokens.json", format: "json/nested-values" }],
     },
+    // Emit the generated CSS straight into @mosje/design-system so its existing consumers
+    // (e.g. dosje's `@import "@mosje/design-system/tokens.css"`) get real CSS with no extra
+    // package resolution. This file is GENERATED — do not hand-edit it.
+    designSystemCss: {
+      transforms: TRANSFORMS,
+      buildPath: "../design-system/",
+      files: [{ destination: "tokens.css", format: "css/legacy-ds" }],
+    },
   },
 });
 

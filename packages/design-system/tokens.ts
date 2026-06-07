@@ -1,5 +1,7 @@
-/* GENERATED from tokens.json by build-tokens.mjs — DO NOT EDIT. Run `npm run build:tokens`. */
-/** Typed mirror of tokens.json — single source of truth for non-CSS consumers. */
+/* Canonical token source is now @mosje/tokens (DTCG → Style Dictionary), which generates
+   tokens.css. This typed mirror is retained for the stable named-export API
+   (colors/radius/typography/…) used by existing consumers, and is reconciled with the
+   generated @mosje/tokens/ts shape in Plan 2 (atom migration). Keep values in sync. */
 export const colors = {
   primary: "#0373df",
   primaryTonal: "#c6dcf9",
