@@ -1,0 +1,201 @@
+/* ============================================================================
+   MoSJE / UX4G — Button atom
+   Semantic CSS classes only; all colours reference design tokens (--ds-*).
+   Combine: .ds-btn  +  .ds-btn--<variant>  +  .ds-btn--<appearance>  +  .ds-btn--<size>
+   Variants: primary | success | danger
+   Appearances: filled | outlined | text | tonal
+   Sizes: sm | md | lg
+   ============================================================================ */
+
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--ds-font-sans, inherit);
+  font-weight: 500;
+  line-height: 1;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-md, 8px);
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  user-select: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+
+.ds-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+/* Visible, accessible focus ring (keyboard) */
+.ds-btn:focus-visible {
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   Per-variant token mapping (drives every appearance via local custom props)
+   -------------------------------------------------------------------------- */
+.ds-btn--primary {
+  --_color: var(--ds-primary);
+  --_tonal-bg: var(--ds-primary-tonal);
+  --_tonal-fg: var(--ds-primary-dark);
+  --_dark: var(--ds-primary-dark);
+  --_ring: var(--ds-primary-ring);
+}
+
+.ds-btn--success {
+  --_color: var(--ds-success);
+  --_tonal-bg: var(--ds-success-tonal);
+  --_tonal-fg: #1b5e20; /* darkened success for tonal label contrast */
+  --_dark: #1b5e20;
+  --_ring: rgba(46, 125, 50, 0.4);
+}
+
+.ds-btn--danger {
+  --_color: var(--ds-danger);
+  --_tonal-bg: #fadbd8;
+  --_tonal-fg: #a11d12;
+  --_dark: #a11d12;
+  --_ring: rgba(236, 80, 66, 0.4);
+}
+
+/* Route the focus ring to the active variant's colour */
+.ds-btn--success:focus-visible,
+.ds-btn--danger:focus-visible {
+  box-shadow: 0 0 0 3px var(--_ring);
+}
+
+/* --------------------------------------------------------------------------
+   Sizes
+   -------------------------------------------------------------------------- */
+.ds-btn--sm {
+  height: 32px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+.ds-btn--md {
+  height: 40px;
+  padding: 0 24px;
+  font-size: 16px;
+}
+
+.ds-btn--lg {
+  height: 48px;
+  padding: 0 28px;
+  font-size: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   Appearance: filled
+   -------------------------------------------------------------------------- */
+.ds-btn--filled {
+  background-color: var(--_color);
+  color: var(--ds-on-primary, #fff);
+  border-color: var(--_color);
+}
+
+.ds-btn--filled:hover {
+  filter: brightness(0.95);
+}
+
+.ds-btn--filled:active {
+  filter: brightness(0.9);
+}
+
+/* --------------------------------------------------------------------------
+   Appearance: outlined
+   -------------------------------------------------------------------------- */
+.ds-btn--outlined {
+  background-color: transparent;
+  color: var(--_color);
+  border-color: var(--_color);
+}
+
+.ds-btn--outlined:hover {
+  background-color: color-mix(in srgb, var(--_color) 8%, transparent);
+}
+
+.ds-btn--outlined:active {
+  background-color: color-mix(in srgb, var(--_color) 14%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+   Appearance: text
+   -------------------------------------------------------------------------- */
+.ds-btn--text {
+  background-color: transparent;
+  color: var(--_color);
+  border-color: transparent;
+}
+
+.ds-btn--text:hover {
+  background-color: color-mix(in srgb, var(--_color) 8%, transparent);
+}
+
+.ds-btn--text:active {
+  background-color: color-mix(in srgb, var(--_color) 14%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+   Appearance: tonal
+   -------------------------------------------------------------------------- */
+.ds-btn--tonal {
+  background-color: var(--_tonal-bg);
+  color: var(--_tonal-fg);
+  border-color: var(--_tonal-bg);
+}
+
+.ds-btn--tonal:hover {
+  filter: brightness(0.96);
+}
+
+.ds-btn--tonal:active {
+  filter: brightness(0.92);
+}
+
+/* --------------------------------------------------------------------------
+   Disabled (overrides every appearance; no hover/active effects)
+   -------------------------------------------------------------------------- */
+.ds-btn:disabled,
+.ds-btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: none;
+  box-shadow: none;
+}
+
+/* Neutralise interactive feedback while disabled */
+.ds-btn--filled:disabled:hover,
+.ds-btn--filled[aria-disabled="true"]:hover,
+.ds-btn--filled:disabled:active,
+.ds-btn--filled[aria-disabled="true"]:active,
+.ds-btn--tonal:disabled:hover,
+.ds-btn--tonal[aria-disabled="true"]:hover,
+.ds-btn--tonal:disabled:active,
+.ds-btn--tonal[aria-disabled="true"]:active {
+  filter: none;
+}
+
+.ds-btn--outlined:disabled:hover,
+.ds-btn--outlined[aria-disabled="true"]:hover,
+.ds-btn--outlined:disabled:active,
+.ds-btn--outlined[aria-disabled="true"]:active,
+.ds-btn--text:disabled:hover,
+.ds-btn--text[aria-disabled="true"]:hover,
+.ds-btn--text:disabled:active,
+.ds-btn--text[aria-disabled="true"]:active {
+  background-color: transparent;
+}

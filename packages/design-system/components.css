@@ -1,0 +1,12 @@
+/* All MoSJE design-system component styles. Import once in an app that consumes the
+   components (Next apps also get these automatically via each component's own CSS import,
+   but this barrel is handy for Tailwind v3 portals / non-bundled consumers).
+   Requires tokens.css to be loaded for the --ds-* variables. */
+@import "./components/button.css";
+@import "./components/card.css";
+@import "./components/badge.css";
+@import "./components/chip.css";
+@import "./components/controls.css";
+@import "./components/search.css";
+@import "./components/feedback.css";
+@import "./components/a11y.css";

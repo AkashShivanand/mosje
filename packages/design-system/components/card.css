@@ -1,0 +1,98 @@
+/* ============================================================================
+   MoSJE / UX4G — Card atom
+   Semantic CSS classes only; all colours reference design tokens (--ds-*).
+   Combine: .ds-card  +  .ds-card--<variant>  +  .ds-card--<orientation>
+   Variants: outlined | elevated
+   Orientations: vertical | horizontal
+   Sub-parts: .ds-card__header / __body / __footer / __title / __subtitle
+   ============================================================================ */
+
+.ds-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--ds-surface, #fff);
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-md, 8px);
+  color: var(--ds-ink-strong, #1f2428);
+  font-family: var(--ds-font-sans, inherit);
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Variants
+   -------------------------------------------------------------------------- */
+.ds-card--outlined {
+  border-color: var(--ds-border, #f1f3f5);
+  box-shadow: none;
+}
+
+.ds-card--elevated {
+  border-color: transparent;
+  box-shadow: var(--ds-shadow-lg);
+}
+
+/* --------------------------------------------------------------------------
+   Orientation
+   -------------------------------------------------------------------------- */
+.ds-card--vertical {
+  flex-direction: column;
+}
+
+/* Horizontal: media (img/figure/first child) sits beside the content. */
+.ds-card--horizontal {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+/* --------------------------------------------------------------------------
+   Sub-sections
+   -------------------------------------------------------------------------- */
+.ds-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+}
+
+.ds-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  flex: 1 1 auto;
+}
+
+.ds-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+}
+
+/* Collapse doubled padding when sections stack directly. */
+.ds-card__header + .ds-card__body {
+  padding-top: 0;
+}
+
+.ds-card__body + .ds-card__footer {
+  padding-top: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Typography sub-parts
+   -------------------------------------------------------------------------- */
+.ds-card__title {
+  margin: 0;
+  font-size: var(--ds-text-headline, 20px);
+  line-height: var(--ds-leading-headline, 24px);
+  font-weight: 600;
+  color: var(--ds-ink-strong, #1f2428);
+}
+
+.ds-card__subtitle {
+  margin: 0;
+  font-size: var(--ds-text-body-2, 14px);
+  line-height: var(--ds-leading-body-2, 20px);
+  font-weight: 400;
+  color: var(--ds-ink-muted, #343a40);
+}

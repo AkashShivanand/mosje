@@ -1,0 +1,262 @@
+/* ============================================================================
+   MoSJE / UX4G — Form-control atoms (Checkbox · Radio · Toggle)
+   Semantic CSS classes only; all colours reference design tokens (--ds-*).
+   Each control = a visually-hidden real <input> + a styled visual element,
+   so native keyboard/screen-reader behaviour is preserved.
+   ============================================================================ */
+
+/* Shared: visually-hidden but still focusable / hit-testable native input. */
+.ds-checkbox__input,
+.ds-radio__input,
+.ds-toggle__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* ============================================================================
+   Checkbox
+   ============================================================================ */
+.ds-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ds-font-sans, inherit);
+}
+
+.ds-checkbox__control {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+}
+
+.ds-checkbox__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-xs, 4px);
+  background-color: var(--ds-surface, #fff);
+  color: var(--ds-on-primary, #fff);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.ds-checkbox__mark {
+  width: 14px;
+  height: 14px;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+/* Checked OR indeterminate (aria-checked="mixed") = primary fill + visible mark */
+.ds-checkbox__input:checked ~ .ds-checkbox__box,
+.ds-checkbox__input[aria-checked="mixed"] ~ .ds-checkbox__box {
+  background-color: var(--ds-primary);
+  border-color: var(--ds-primary);
+}
+
+.ds-checkbox__input:checked ~ .ds-checkbox__box .ds-checkbox__mark,
+.ds-checkbox__input[aria-checked="mixed"] ~ .ds-checkbox__box .ds-checkbox__mark {
+  opacity: 1;
+}
+
+.ds-checkbox__input:hover:not(:disabled) ~ .ds-checkbox__box {
+  border-color: var(--ds-primary);
+}
+
+.ds-checkbox__input:focus-visible ~ .ds-checkbox__box {
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  outline: none;
+}
+
+.ds-checkbox__label {
+  font-size: var(--ds-text-body-2, 14px);
+  line-height: var(--ds-leading-body-2, 20px);
+  color: var(--ds-ink, #212121);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ds-checkbox--disabled,
+.ds-checkbox--disabled .ds-checkbox__input,
+.ds-checkbox--disabled .ds-checkbox__label {
+  cursor: not-allowed;
+}
+
+.ds-checkbox--disabled .ds-checkbox__box,
+.ds-checkbox--disabled .ds-checkbox__label {
+  opacity: 0.5;
+}
+
+/* ============================================================================
+   Radio
+   ============================================================================ */
+.ds-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ds-font-sans, inherit);
+}
+
+.ds-radio__control {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+}
+
+.ds-radio__circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-pill, 100px);
+  background-color: var(--ds-surface, #fff);
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.ds-radio__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--ds-radius-pill, 100px);
+  background-color: var(--ds-primary);
+  transform: scale(0);
+  transition: transform 0.12s ease;
+}
+
+.ds-radio__input:checked ~ .ds-radio__circle {
+  border-color: var(--ds-primary);
+}
+
+.ds-radio__input:checked ~ .ds-radio__circle .ds-radio__dot {
+  transform: scale(1);
+}
+
+.ds-radio__input:hover:not(:disabled) ~ .ds-radio__circle {
+  border-color: var(--ds-primary);
+}
+
+.ds-radio__input:focus-visible ~ .ds-radio__circle {
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  outline: none;
+}
+
+.ds-radio__label {
+  font-size: var(--ds-text-body-2, 14px);
+  line-height: var(--ds-leading-body-2, 20px);
+  color: var(--ds-ink, #212121);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ds-radio--disabled,
+.ds-radio--disabled .ds-radio__input,
+.ds-radio--disabled .ds-radio__label {
+  cursor: not-allowed;
+}
+
+.ds-radio--disabled .ds-radio__circle,
+.ds-radio--disabled .ds-radio__label {
+  opacity: 0.5;
+}
+
+/* ============================================================================
+   Toggle (switch)
+   ============================================================================ */
+.ds-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ds-font-sans, inherit);
+  /* Per-size local vars (default: 52×32 track, 24 knob) */
+  --_track-w: 52px;
+  --_track-h: 32px;
+  --_knob: 24px;
+  --_pad: 4px;
+}
+
+.ds-toggle--small {
+  --_track-w: 39px;
+  --_track-h: 24px;
+  --_knob: 18px;
+  --_pad: 3px;
+}
+
+.ds-toggle__control {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: var(--_track-w);
+  height: var(--_track-h);
+}
+
+.ds-toggle__track {
+  display: inline-flex;
+  align-items: center;
+  width: var(--_track-w);
+  height: var(--_track-h);
+  padding: var(--_pad);
+  border-radius: var(--ds-radius-pill, 100px);
+  background-color: var(--ds-border-strong);
+  transition: background-color 0.15s ease;
+}
+
+.ds-toggle__knob {
+  width: var(--_knob);
+  height: var(--_knob);
+  border-radius: var(--ds-radius-pill, 100px);
+  background-color: var(--ds-surface, #fff);
+  box-shadow: 0 1px 2px rgba(33, 33, 33, 0.25);
+  transform: translateX(0);
+  transition: transform 0.18s ease;
+}
+
+.ds-toggle__input:checked ~ .ds-toggle__track {
+  background-color: var(--ds-primary);
+}
+
+.ds-toggle__input:checked ~ .ds-toggle__track .ds-toggle__knob {
+  /* slide = track width − knob − padding on both sides */
+  transform: translateX(calc(var(--_track-w) - var(--_knob) - (var(--_pad) * 2)));
+}
+
+.ds-toggle__input:focus-visible ~ .ds-toggle__track {
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  outline: none;
+}
+
+.ds-toggle__label {
+  font-size: var(--ds-text-body-2, 14px);
+  line-height: var(--ds-leading-body-2, 20px);
+  color: var(--ds-ink, #212121);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ds-toggle--disabled,
+.ds-toggle--disabled .ds-toggle__input,
+.ds-toggle--disabled .ds-toggle__label {
+  cursor: not-allowed;
+}
+
+.ds-toggle--disabled .ds-toggle__track,
+.ds-toggle--disabled .ds-toggle__label {
+  opacity: 0.5;
+}

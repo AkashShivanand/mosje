@@ -1,0 +1,125 @@
+/* ============================================================================
+   MoSJE / UX4G — Search atom
+   Semantic CSS classes only; all colours reference design tokens (--ds-*).
+   Combine: .ds-search  +  .ds-search--<size>   (md ≈ 44px · lg ≈ 56px)
+   ============================================================================ */
+
+.ds-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: var(--_h, 44px);
+  padding: 0 14px;
+  font-family: var(--ds-font-sans, inherit);
+  background-color: var(--ds-surface, #fff);
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-md, 8px);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ds-search--md {
+  --_h: 44px;
+}
+
+.ds-search--lg {
+  --_h: 56px;
+  padding: 0 16px;
+}
+
+/* Focus ring lives on the wrapper, driven by the inner input's focus. */
+.ds-search:focus-within {
+  border-color: var(--ds-primary);
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+.ds-search__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  color: var(--ds-ink-muted, #343a40);
+}
+
+.ds-search__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ds-search__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ds-ink, #212121);
+  font-family: inherit;
+  font-size: var(--ds-text-body-1, 16px);
+  line-height: var(--ds-leading-body-1, 24px);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ds-search__input::placeholder {
+  color: var(--ds-ink-muted, #343a40);
+  opacity: 1;
+}
+
+/* Hide the native WebKit search clear/decoration — we render our own. */
+.ds-search__input::-webkit-search-decoration,
+.ds-search__input::-webkit-search-cancel-button,
+.ds-search__input::-webkit-search-results-button,
+.ds-search__input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ds-search__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ds-radius-pill, 100px);
+  background: transparent;
+  color: var(--ds-ink-muted, #343a40);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.ds-search__clear svg {
+  width: 16px;
+  height: 16px;
+}
+
+.ds-search__clear:hover {
+  background-color: var(--ds-surface-muted, #f8f9fa);
+  color: var(--ds-ink, #212121);
+}
+
+.ds-search__clear:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+/* Disabled */
+.ds-search--disabled {
+  background-color: var(--ds-surface-muted, #f8f9fa);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ds-search--disabled .ds-search__input {
+  cursor: not-allowed;
+}

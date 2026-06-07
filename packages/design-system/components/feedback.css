@@ -1,0 +1,293 @@
+/* ============================================================================
+   MoSJE / UX4G — Feedback atoms (shared stylesheet)
+   Covers: Alert · Loader · EmptyState · Avatar
+   Semantic CSS classes only; all colours reference design tokens (--ds-*).
+   ============================================================================ */
+
+/* Visually-hidden utility (used by Loader label) */
+.ds-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================================================
+   Alert / Toast
+   Combine: .ds-alert + .ds-alert--<status>
+   Statuses: success | warning | info | error
+   ============================================================================ */
+.ds-alert {
+  --_color: var(--ds-primary);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background-color: var(--ds-surface, #fff);
+  border: 1px solid var(--ds-border, #f1f3f5);
+  border-left: 4px solid var(--_color);
+  border-radius: var(--ds-radius-md, 8px);
+  box-shadow: var(--ds-shadow-lg);
+  font-family: var(--ds-font-sans, inherit);
+  color: var(--ds-ink-strong, #1f2428);
+}
+
+/* Status → colour mapping (info→primary, success→success, warning→warning, error→danger) */
+.ds-alert--info {
+  --_color: var(--ds-primary, #0373df);
+  background-color: color-mix(in srgb, var(--ds-primary) 6%, var(--ds-surface, #fff));
+}
+.ds-alert--success {
+  --_color: var(--ds-success, #2e7d32);
+  background-color: color-mix(in srgb, var(--ds-success) 7%, var(--ds-surface, #fff));
+}
+.ds-alert--warning {
+  --_color: var(--ds-warning, #ffd323);
+  background-color: color-mix(in srgb, var(--ds-warning) 14%, var(--ds-surface, #fff));
+}
+.ds-alert--error {
+  --_color: var(--ds-danger, #ec5042);
+  background-color: color-mix(in srgb, var(--ds-danger) 6%, var(--ds-surface, #fff));
+}
+
+.ds-alert__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  color: var(--_color);
+  /* warning amber needs ink, not the pale yellow itself, for the glyph */
+}
+.ds-alert--warning .ds-alert__icon {
+  color: var(--ds-gov-yellow, #ffd323);
+}
+
+.ds-alert__content {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ds-alert__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ds-alert__title {
+  margin: 0;
+  font-size: var(--ds-text-body-2, 14px);
+  line-height: var(--ds-leading-body-2, 20px);
+  font-weight: 600;
+  color: var(--ds-ink-strong, #1f2428);
+}
+
+.ds-alert__timestamp {
+  flex: 0 0 auto;
+  font-size: var(--ds-text-body-3, 12px);
+  line-height: var(--ds-leading-body-3, 16px);
+  color: var(--ds-ink-muted, #343a40);
+}
+
+.ds-alert__body {
+  font-size: var(--ds-text-body-2, 14px);
+  line-height: var(--ds-leading-body-2, 20px);
+  color: var(--ds-ink-muted, #343a40);
+}
+
+.ds-alert__action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.ds-alert__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--ds-radius-sm, 6px);
+  color: var(--ds-ink-muted, #343a40);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.ds-alert__close:hover {
+  background-color: color-mix(in srgb, var(--ds-ink) 8%, transparent);
+  color: var(--ds-ink, #212121);
+}
+.ds-alert__close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+/* ============================================================================
+   Loader / Spinner
+   Combine: .ds-loader + .ds-loader--<size> + .ds-loader--<variant>
+   Sizes: sm | md | lg   Variants: primary | secondary
+   ============================================================================ */
+.ds-loader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  --_loader-size: 32px;
+  --_loader-color: var(--ds-primary, #0373df);
+}
+
+.ds-loader--sm {
+  --_loader-size: 20px;
+}
+.ds-loader--md {
+  --_loader-size: 32px;
+}
+.ds-loader--lg {
+  --_loader-size: 48px;
+}
+
+.ds-loader--primary {
+  --_loader-color: var(--ds-primary, #0373df);
+}
+.ds-loader--secondary {
+  --_loader-color: var(--ds-ink-muted, #343a40);
+}
+
+.ds-loader__spinner {
+  display: block;
+  width: var(--_loader-size);
+  height: var(--_loader-size);
+  border-radius: var(--ds-radius-pill, 100px);
+  border: 3px solid color-mix(in srgb, var(--_loader-color) 22%, transparent);
+  border-top-color: var(--_loader-color);
+  animation: ds-spin 0.7s linear infinite;
+}
+
+.ds-loader__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes ds-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-loader__spinner {
+    animation-duration: 1.6s;
+  }
+}
+
+/* ============================================================================
+   EmptyState
+   ============================================================================ */
+.ds-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  padding: 40px 24px;
+  font-family: var(--ds-font-sans, inherit);
+}
+
+.ds-empty__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-ink-muted, #343a40);
+  margin-bottom: 8px;
+}
+
+.ds-empty__title {
+  margin: 0;
+  font-size: var(--ds-text-headline, 20px);
+  line-height: var(--ds-leading-headline, 24px);
+  font-weight: 600;
+  color: var(--ds-ink-strong, #1f2428);
+}
+
+.ds-empty__description {
+  margin: 0;
+  max-width: 42ch;
+  font-size: var(--ds-text-body-2, 14px);
+  line-height: var(--ds-leading-body-2, 20px);
+  color: var(--ds-ink-muted, #343a40);
+}
+
+.ds-empty__action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* ============================================================================
+   Avatar
+   Combine: .ds-avatar + .ds-avatar--<shape>
+   Shapes: circular | rounded   (size set inline via width/height)
+   ============================================================================ */
+.ds-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background-color: var(--ds-surface-muted, #f8f9fa);
+  color: var(--ds-ink-strong, #1f2428);
+  font-family: var(--ds-font-sans, inherit);
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
+}
+
+.ds-avatar--circular {
+  border-radius: var(--ds-radius-pill, 100px);
+}
+.ds-avatar--rounded {
+  border-radius: var(--ds-radius-md, 8px);
+}
+
+.ds-avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ds-avatar__initials {
+  font-size: 40%;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.ds-avatar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--ds-ink-muted, #343a40);
+}

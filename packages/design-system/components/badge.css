@@ -1,0 +1,66 @@
+/* ============================================================================
+   MoSJE / UX4G — Badge atom
+   Semantic CSS classes only; all colours reference design tokens (--ds-*).
+   Combine: .ds-badge  +  .ds-badge--<status>  +  .ds-badge--<size>
+   Status: primary | success | danger | neutral
+   Sizes: sm | lg
+   Pill shaped (radius-pill); tonal background of the status colour.
+   ============================================================================ */
+
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--ds-font-sans, inherit);
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: var(--ds-radius-pill, 100px);
+  background-color: var(--_bg);
+  color: var(--_fg);
+}
+
+/* --------------------------------------------------------------------------
+   Status → tonal bg + readable text
+   -------------------------------------------------------------------------- */
+.ds-badge--primary {
+  --_bg: var(--ds-primary-tonal, #c6dcf9);
+  --_fg: var(--ds-primary-dark, #014b92);
+}
+
+.ds-badge--success {
+  --_bg: var(--ds-success-tonal, #c8e6c9);
+  --_fg: #1b5e20;
+}
+
+.ds-badge--danger {
+  --_bg: #fadbd8;
+  --_fg: #a11d12;
+}
+
+.ds-badge--warning {
+  --_bg: var(--ds-gov-yellow, #ffd323);
+  --_fg: var(--ds-ink, #212121);
+}
+
+.ds-badge--neutral {
+  --_bg: var(--ds-surface-muted, #f8f9fa);
+  --_fg: var(--ds-ink, #212121);
+}
+
+/* --------------------------------------------------------------------------
+   Sizes
+   -------------------------------------------------------------------------- */
+.ds-badge--sm {
+  min-height: 18px;
+  padding: 2px 8px;
+  font-size: var(--ds-text-label-3, 11px);
+  line-height: var(--ds-leading-label-3, 16px);
+}
+
+.ds-badge--lg {
+  min-height: 24px;
+  padding: 4px 12px;
+  font-size: var(--ds-text-body-3, 12px);
+  line-height: var(--ds-leading-body-3, 16px);
+}

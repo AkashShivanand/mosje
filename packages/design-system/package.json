@@ -1,0 +1,31 @@
+{
+  "name": "@mosje/design-system",
+  "version": "0.3.0",
+  "description": "Shared MoSJE design tokens + components, aligned to the UX4G Figma design system. tokens.json is the single source of truth; run build:tokens to regenerate.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:tokens": "node build-tokens.mjs",
+    "check:drift": "node check-drift.mjs"
+  },
+  "exports": {
+    ".": "./index.ts",
+    "./tokens": "./tokens.ts",
+    "./tokens.css": "./tokens.css",
+    "./components.css": "./components.css",
+    "./cn": "./cn.ts"
+  },
+  "files": [
+    "index.ts",
+    "tokens.ts",
+    "tokens.css",
+    "tokens.json",
+    "components.css",
+    "cn.ts",
+    "components",
+    "build-tokens.mjs",
+    "check-drift.mjs",
+    "figma-token-map.json",
+    "README.md"
+  ]
+}
