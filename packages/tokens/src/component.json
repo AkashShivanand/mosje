@@ -1,0 +1,18 @@
+{
+  "$description": "Tier 3 — component tokens. Resolve to semantic tokens only.",
+  "button": {
+    "$type": "color",
+    "primary": {
+      "bg":   {"$value":"{color.action.primary.default}"},
+      "bgHover": {"$value":"{color.action.primary.hover}"},
+      "text": {"$value":"{color.text.onPrimary}"}
+    },
+    "radius": {"$type":"dimension","$value":"{radius.md}"}
+  },
+  "card": {
+    "$type": "color",
+    "bg":     {"$value":"{color.bg.surface}"},
+    "border": {"$value":"{color.border.subtle}"},
+    "radius": {"$type":"dimension","$value":"{radius.md}"}
+  }
+}

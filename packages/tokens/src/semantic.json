@@ -1,0 +1,56 @@
+{
+  "$description": "Tier 2 — semantic/alias tokens. The PUBLIC contract apps consume.",
+  "color": {
+    "$type": "color",
+    "action": {
+      "primary": {
+        "default": {"$value":"{color.blue.500}"},
+        "hover":   {"$value":"{color.blue.700}"},
+        "tonal":   {"$value":"{color.blue.50}"}
+      }
+    },
+    "text": {
+      "default": {"$value":"{color.neutral.800}", "$extensions":{"mosje":{"themes":{"dark":"{color.neutral.0}","hc":"#000000"}}}},
+      "muted":   {"$value":"{color.neutral.700}"},
+      "strong":  {"$value":"{color.neutral.900}"},
+      "onPrimary": {"$value":"{color.neutral.0}"}
+    },
+    "bg": {
+      "surface": {"$value":"{color.neutral.0}",  "$extensions":{"mosje":{"themes":{"dark":"{color.neutral.900}","hc":"#ffffff"}}}},
+      "muted":   {"$value":"{color.neutral.50}", "$extensions":{"mosje":{"themes":{"dark":"#15191c","hc":"#ffffff"}}}},
+      "alt":     {"$value":"{color.neutral.75}"}
+    },
+    "border": {
+      "subtle": {"$value":"{color.neutral.100}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}},
+      "strong": {"$value":"{color.neutral.200}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}}
+    },
+    "focus": { "ring": {"$value":"rgba(3, 115, 223, 0.48)"} },
+    "status": {
+      "success": {"$value":"{color.green.500}"},
+      "warning": {"$value":"{color.yellow.500}"},
+      "danger":  {"$value":"{color.red.500}"},
+      "info":    {"$value":"{color.blue.500}"}
+    },
+    "brand": {
+      "saffron":     {"$value":"{color.saffron.500}"},
+      "saffronLight":{"$value":"{color.saffron.50}"},
+      "saffronDark": {"$value":"{color.saffron.700}"},
+      "navy":        {"$value":"{color.navy.700}"},
+      "yellow":      {"$value":"{color.yellow.500}"}
+    }
+  },
+  "type": {
+    "$description": "Named type roles → primitive size/leading/weight.",
+    "display":  {"size":{"$type":"dimension","$value":"{font.size.900}"},"leading":{"$type":"dimension","$value":"{font.lineHeight.900}"},"weight":{"$type":"fontWeight","$value":"{font.weight.medium}"}},
+    "title1":   {"size":{"$type":"dimension","$value":"{font.size.600}"},"leading":{"$type":"dimension","$value":"{font.lineHeight.400}"},"weight":{"$type":"fontWeight","$value":"{font.weight.medium}"}},
+    "headline": {"size":{"$type":"dimension","$value":"{font.size.500}"},"leading":{"$type":"dimension","$value":"{font.lineHeight.300}"},"weight":{"$type":"fontWeight","$value":"{font.weight.semibold}"}},
+    "body1":    {"size":{"$type":"dimension","$value":"{font.size.400}"},"leading":{"$type":"dimension","$value":"{font.lineHeight.300}"},"weight":{"$type":"fontWeight","$value":"{font.weight.regular}"}},
+    "body2":    {"size":{"$type":"dimension","$value":"{font.size.300}"},"leading":{"$type":"dimension","$value":"{font.lineHeight.200}"},"weight":{"$type":"fontWeight","$value":"{font.weight.regular}"}}
+  },
+  "density": {
+    "$description": "Density token set: control height per density mode.",
+    "control": {
+      "height": {"$type":"dimension","$value":"40px","$extensions":{"mosje":{"themes":{"compact":"32px"}}}}
+    }
+  }
+}
