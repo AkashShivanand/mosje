@@ -1,0 +1,6 @@
+/* Intentionally violates token rules — used to prove the token-lint gate works.
+   This file is NOT real app code; it is a negative test fixture. */
+.bad {
+  color: #ff0000;
+  background: var(--sa-color-blue-500);
+}

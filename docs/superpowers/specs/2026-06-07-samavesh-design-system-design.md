@@ -148,15 +148,14 @@ Two domains of ownership, one truth:
 - **Figma owns** visual/token *values* (via **Tokens Studio** ⇄ DTCG JSON) and component *visuals*.
 - **Code owns** component *behavior/API* (via **Code Connect**, mapping each Figma component to its coded counterpart).
 - **Flow:** pull value changes **from** Figma (`get_variable_defs` / Tokens Studio export) → DTCG → Style Dictionary → code; push code-side structure & new tokens **back to** Figma (`figma-generate-library` / `use_figma`) + maintain Code Connect so neither drifts.
-- `/sync-figma` is the reconciliation ritual against file **`T3bkN5gNKfaNeY6dpT6FwF`** (MoSJE – UX4G DS).
+- `/sync-figma` is the reconciliation ritual against the **canonical SAMAVESH file** (see §8.1).
 
-### 8.1 Figma library update strategy (decided)
-- **One canonical library, updated in place.** No parallel "v2" file — a second library would fork the source of truth, force every consuming file to re-link, and double the Code Connect + Tokens Studio surface.
-- **No branching available** → work on a **duplicate as a scratch/staging copy**, then **land changes back into the original file** (`T3bkN5gNKfaNeY6dpT6FwF`) with **component & variable keys preserved**.
-- **Modify in place, never delete-and-recreate** (deletion breaks instances; modification + rename are key-stable and safe).
-- **Additive-first + deprecate, not delete:** add new variants/tokens alongside old; mark superseded ones **Deprecated** (lifecycle §7) with a deprecation window before removal.
-- **Publish in reviewed batches** with a changelog in publish notes; consumers accept updates per-component on their own schedule (Figma publishing is non-destructive by default — nothing auto-breaks).
-- **Rename the file** "MoSJE – UX4G DS" → **"SAMAVESH Design System"** (link-safe; consumers reference by file key, not name).
+### 8.1 Figma library source of truth (decided 2026-06-07)
+- **Canonical file:** **`qyzTEy8dlb3ssYctlkMX5o`** — "SAMAVESH Design System" (https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System). This is the owner's **duplicate** of the original UX4G DS, designated as the single source of truth for the **code** design system.
+- **Original left untouched:** `T3bkN5gNKfaNeY6dpT6FwF` (MoSJE – UX4G DS) is **frozen as-is** — not edited, not synced. It remains the legacy reference for any files still linked to it.
+- **Bidirectional sync** runs between code ⇄ `qyzTEy8dlb3ssYctlkMX5o`: pull token/value + visual changes **from** Figma (Tokens Studio ⇄ DTCG, `get_variable_defs`), push code-side structure & new tokens **back to** Figma (`figma-generate-library` / `use_figma`), Code Connect mapping each component both ways.
+- **Eventual scope:** this file will also hold the **portal DS components** (the functional/transactional component set), making it the one library behind both the website and the 20 portals.
+- **Working discipline:** modify in place (keys stable), additive-first, deprecate-not-delete (lifecycle §7), publish in reviewed batches; Figma publishing is non-destructive so consumers accept updates on their own schedule.
 
 ---
 
