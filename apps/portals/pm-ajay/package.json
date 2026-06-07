@@ -1,0 +1,26 @@
+{
+  "name": "pm-ajay",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PM-AJAY MIS Dashboard — MoSJE functional portal",
+  "scripts": {
+    "dev": "next dev -p 4124",
+    "build": "next build",
+    "start": "next start -p 4124",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^15.5.19",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^8",
+    "eslint-config-next": "^15.5.19",
+    "typescript": "^5"
+  }
+}
