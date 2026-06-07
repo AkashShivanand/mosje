@@ -33,8 +33,8 @@
   "font": {
     "family": {
       "$type": "fontFamily",
-      "latin": {"$value":["Noto Sans","ui-sans-serif","system-ui","sans-serif"]},
-      "devanagari": {"$value":["Noto Sans Devanagari","Noto Sans","ui-sans-serif","sans-serif"]}
+      "latin": {"$value":"\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"},
+      "devanagari": {"$value":"\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"}
     },
     "weight": {
       "$type": "fontWeight",

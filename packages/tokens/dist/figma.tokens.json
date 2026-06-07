@@ -1,0 +1,173 @@
+{
+  "color": {
+    "blue": {
+      "50": "#c6dcf9",
+      "500": "#0373df",
+      "700": "#014b92"
+    },
+    "green": {
+      "50": "#c8e6c9",
+      "500": "#2e7d32"
+    },
+    "red": {
+      "500": "#ec5042"
+    },
+    "yellow": {
+      "500": "#ffd323"
+    },
+    "saffron": {
+      "50": "#ffedd5",
+      "500": "#f97316",
+      "700": "#7c3503"
+    },
+    "navy": {
+      "700": "#003366"
+    },
+    "neutral": {
+      "0": "#ffffff",
+      "50": "#f8f9fa",
+      "75": "#f4f3f9",
+      "100": "#f1f3f5",
+      "200": "#e2e6ea",
+      "700": "#343a40",
+      "800": "#212121",
+      "900": "#1f2428"
+    },
+    "action": {
+      "primary": {
+        "default": "#0373df",
+        "hover": "#014b92",
+        "tonal": "#c6dcf9"
+      }
+    },
+    "text": {
+      "default": "#212121",
+      "muted": "#343a40",
+      "strong": "#1f2428",
+      "onPrimary": "#ffffff"
+    },
+    "bg": {
+      "surface": "#ffffff",
+      "muted": "#f8f9fa",
+      "alt": "#f4f3f9"
+    },
+    "border": {
+      "subtle": "#f1f3f5",
+      "strong": "#e2e6ea"
+    },
+    "focus": {
+      "ring": "rgba(3, 115, 223, 0.48)"
+    },
+    "status": {
+      "success": "#2e7d32",
+      "warning": "#ffd323",
+      "danger": "#ec5042",
+      "info": "#0373df"
+    },
+    "brand": {
+      "saffron": "#f97316",
+      "saffronLight": "#ffedd5",
+      "saffronDark": "#7c3503",
+      "navy": "#003366",
+      "yellow": "#ffd323"
+    }
+  },
+  "space": {
+    "0": "0px",
+    "1": "4px",
+    "2": "8px",
+    "3": "12px",
+    "4": "16px",
+    "5": "20px",
+    "6": "24px",
+    "8": "32px",
+    "10": "40px",
+    "12": "48px",
+    "14": "56px"
+  },
+  "radius": {
+    "xxs": "2px",
+    "xs": "4px",
+    "sm": "6px",
+    "md": "8px",
+    "pill": "100px"
+  },
+  "font": {
+    "family": {
+      "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
+      "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"
+    },
+    "weight": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600
+    },
+    "size": {
+      "100": "11px",
+      "200": "12px",
+      "300": "14px",
+      "400": "16px",
+      "500": "20px",
+      "600": "22px",
+      "900": "48px"
+    },
+    "lineHeight": {
+      "100": "16px",
+      "200": "20px",
+      "300": "24px",
+      "400": "28px",
+      "900": "56px",
+      "devanagari": "1.7"
+    }
+  },
+  "shadow": {
+    "xs": "0 2px 3px 1px rgba(33, 33, 33, 0.12)",
+    "lg": "0 12px 16px -4px rgba(33, 33, 33, 0.08), 0 4px 6px -2px rgba(33, 33, 33, 0.03)",
+    "xl": "0 24px 48px -12px rgba(33, 33, 33, 0.18)"
+  },
+  "type": {
+    "display": {
+      "size": "48px",
+      "leading": "56px",
+      "weight": 500
+    },
+    "title1": {
+      "size": "22px",
+      "leading": "28px",
+      "weight": 500
+    },
+    "headline": {
+      "size": "20px",
+      "leading": "24px",
+      "weight": 600
+    },
+    "body1": {
+      "size": "16px",
+      "leading": "24px",
+      "weight": 400
+    },
+    "body2": {
+      "size": "14px",
+      "leading": "20px",
+      "weight": 400
+    }
+  },
+  "density": {
+    "control": {
+      "height": "40px"
+    }
+  },
+  "button": {
+    "primary": {
+      "bg": "#0373df",
+      "bgHover": "#014b92",
+      "text": "#ffffff"
+    },
+    "radius": "8px"
+  },
+  "card": {
+    "bg": "#ffffff",
+    "border": "#f1f3f5",
+    "radius": "8px"
+  }
+}
