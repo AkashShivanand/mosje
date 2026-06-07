@@ -6,26 +6,29 @@ The canonical map of the MoSJE digital estate and what's built vs. planned. Targ
 
 | Part | Folder | What | Target | Status |
 |------|--------|------|--------|--------|
-| **Website** | `dosje/` | One unified informational site consolidating 13 legacy sites | 13 content domains → 1 site | Homepage **built** ✅ |
-| **Portals** | `portals/` | Functional, authenticated workflow apps | 20 portals · 33+ orgs/schemes | pm-ajay dashboard built ✅ · smile-admin **pending recovery** ⏳ |
+| **Website** | `apps/dosje/` | One unified informational site consolidating 13 legacy sites | 13 content domains → 1 site | Homepage **built** ✅ |
+| **Portals** | `apps/portals/` | Functional, authenticated workflow apps | 20 portals · 33+ orgs/schemes | pm-ajay dashboard built ✅ · smile-admin **recovered + consolidated** ✅ |
 
 ## Layout
 
 ```
-MoSJE/
-├── dosje/                  # the website (Next 16 · Tailwind v4 · shadcn · Noto Sans)
-├── portals/                # functional portals (Next 15 · Tailwind v3 · Radix)
+mosje/                      # single git repo
+├── apps/
+│   ├── dosje/              # the website (Next 16 · Tailwind v4 · shadcn · Noto Sans)
+│   ├── portals/            # functional portals (Next 15 · Tailwind v3 · Radix)
+│   └── docs/               # SAMAVESH Storybook / DS documentation portal (Plan 3)
 ├── packages/
-│   ├── design-system/      # shared, Figma-synced tokens + components (phase 2)
-│   └── config/             # shared tailwind/eslint/tsconfig presets
-├── docs/                   # BRDs, DBIM audit, research, architecture
-├── Assets/  Documents/  Incoming/
+│   ├── tokens/             # @mosje/tokens — DTCG → Style Dictionary (live, Phase 2)
+│   ├── design-system/      # @mosje/design-system — shared components (13 atoms)
+│   └── config/             # @mosje/config — shared tailwind/eslint/tsconfig presets
+├── docs/                   # specs, plans, research, compliance, source-brd/
+├── Assets/  Designs/(ignored)  Incoming/(ignored)  _backups/(ignored)
 └── .claude/                # workspace config (this setup)
 ```
 
 ---
 
-## Part 1 — The unified website (`dosje/`): 13 content domains
+## Part 1 — The unified website (`apps/dosje/`): 13 content domains
 
 The single site folds in the department + its commissions/bodies. **Built:** the DoSJE homepage (14 components). Remaining domains are added as pages/sections via the `clone-website` skill.
 
@@ -46,7 +49,7 @@ The single site folds in the department + its commissions/bodies. **Built:** the
 
 ---
 
-## Part 2 — The portals (`portals/`): 20 apps over 33+ orgs/schemes
+## Part 2 — The portals (`apps/portals/`): 20 apps over 33+ orgs/schemes
 
 Functional workflow apps. Seeded from the orgs/schemes surfaced on the live site; exact portal boundaries to be confirmed with the owner.
 

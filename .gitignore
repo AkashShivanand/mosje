@@ -1,9 +1,8 @@
 # Dependencies
 node_modules/
 
-# Independent app repos — each has its own git history, versioned separately
-/dosje/
-/portals/
+# Local git-history backups of absorbed sub-repos (dosje, smile-admin)
+/_backups/
 
 # Raw source material — never commit (21 GB of drops)
 /Incoming/
@@ -11,9 +10,9 @@ node_modules/
 # Large binary design exports — keep in Figma / Git LFS, not here
 /Designs/
 
-# Build outputs & caches
-.next/
-out/
+# Build outputs & caches (apps now live under apps/ and are tracked)
+**/.next/
+**/out/
 *.tsbuildinfo
 .turbo/
 

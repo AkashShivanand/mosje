@@ -4,19 +4,19 @@
     {
       "name": "dosje",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "dosje", "run", "dev"],
+      "runtimeArgs": ["--prefix", "apps/dosje", "run", "dev"],
       "port": 3000
     },
     {
       "name": "smile-admin",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "portals/smile-admin", "run", "dev"],
+      "runtimeArgs": ["--prefix", "apps/portals/smile-admin", "run", "dev"],
       "port": 4123
     },
     {
       "name": "pm-ajay",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "portals/pm-ajay", "run", "dev"],
+      "runtimeArgs": ["--prefix", "apps/portals/pm-ajay", "run", "dev"],
       "port": 4124
     }
   ]

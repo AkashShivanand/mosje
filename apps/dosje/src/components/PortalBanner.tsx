@@ -1,0 +1,30 @@
+import Image from "next/image";
+
+export function PortalBanner() {
+  return (
+    <section className="bg-white">
+      <div className="mx-auto max-w-[1280px] px-4 py-8">
+        <a
+          href="/samavesh-citizen-portals"
+          className="block overflow-hidden rounded-xl"
+          aria-label="Explore the SAMAVESH citizen portal"
+        >
+          <Image
+            src="/images/portal-banner-images.png"
+            alt="SAMAVESH citizen portal banner"
+            width={1280}
+            height={320}
+            className="hidden h-auto w-full rounded-xl object-cover md:block"
+          />
+          <Image
+            src="/images/Samavesh-Banner-Mobile.png"
+            alt="SAMAVESH citizen portal banner"
+            width={640}
+            height={800}
+            className="h-auto w-full rounded-xl object-cover md:hidden"
+          />
+        </a>
+      </div>
+    </section>
+  );
+}
