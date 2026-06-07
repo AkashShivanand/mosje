@@ -4,20 +4,27 @@ Workspace for the **Ministry / Department of Social Justice & Empowerment (DoSJE
 
 ## What's in this repo
 
-This repo versions the **shared design-system program + workspace config**. The individual apps (`dosje/`, `portals/*`) are **independent git repos** and are intentionally git-ignored here.
+One repo for the whole MoSJE estate: the apps **and** the shared design-system program.
 
 ```
+apps/
+├── dosje/           the unified website (Next 16 · Tailwind v4)
+├── portals/         functional portals — pm-ajay, smile-admin (Next 15 · Tailwind v3)
+└── docs/            SAMAVESH Storybook / DS documentation portal  [Plan 3]
 packages/
 ├── tokens/          @mosje/tokens         — DTCG token source → Style Dictionary → CSS/TS/Tailwind/Figma
-├── design-system/   @mosje/design-system  — shared React components
-├── config/          @mosje/config         — Tailwind / eslint / tsconfig presets
-└── docs/            @mosje/docs           — Storybook (the living system)  [planned]
+├── design-system/   @mosje/design-system  — shared React components (consumes generated tokens)
+└── config/          @mosje/config         — Tailwind / eslint / tsconfig presets
 docs/
 ├── superpowers/specs/   — design specs (start here: SAMAVESH program design)
 ├── superpowers/plans/   — implementation plans
-└── research/            — Figma↔code reconciliation, DS benchmarking
+├── research/            — Figma↔code reconciliation, DS benchmarking
+└── source-brd/          — source BRDs / audits (PDFs)
 .claude/                 — workspace agents, commands, rules, hooks, skills
 ```
+
+> Formerly two independent app repos (dosje, smile-admin) were consolidated here; their
+> original histories are preserved in gitignored `_backups/`.
 
 ## Key documents
 
