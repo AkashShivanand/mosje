@@ -30,6 +30,14 @@ jobs:
       - name: Build tokens
         run: npm run build -w @mosje/tokens
 
+      - name: Drift gate — committed token artifacts must match a fresh build
+        run: |
+          git diff --exit-code -- \
+            packages/tokens/dist \
+            packages/design-system/tokens.css \
+            packages/config/tailwind-preset.cjs \
+          || (echo "::error::Generated token artifacts are stale. Run 'npm run build -w @mosje/tokens' and commit the result." && exit 1)
+
       - name: Tokens contract test (legacy --ds-* + figma export)
         run: npm test -w @mosje/tokens
 

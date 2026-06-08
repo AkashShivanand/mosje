@@ -10,6 +10,16 @@ export const LEGACY_DS_ALIASES = {
   "--ds-primary-tonal": "--sa-color-action-primary-tonal",
   "--ds-primary-dark": "--sa-color-action-primary-hover",
   "--ds-primary-ring": "--sa-color-focus-ring",
+  "--ds-primary-50": "--sa-color-primaryScale-50",
+  "--ds-primary-100": "--sa-color-primaryScale-100",
+  "--ds-primary-200": "--sa-color-primaryScale-200",
+  "--ds-primary-300": "--sa-color-primaryScale-300",
+  "--ds-primary-400": "--sa-color-primaryScale-400",
+  "--ds-primary-500": "--sa-color-primaryScale-500",
+  "--ds-primary-600": "--sa-color-primaryScale-600",
+  "--ds-primary-700": "--sa-color-primaryScale-700",
+  "--ds-primary-800": "--sa-color-primaryScale-800",
+  "--ds-primary-900": "--sa-color-primaryScale-900",
   "--ds-success": "--sa-color-status-success",
   "--ds-success-tonal": "--sa-color-green-50",
   "--ds-danger": "--sa-color-status-danger",
@@ -70,20 +80,35 @@ export const legacyDsCss = {
       ([oldName, newVar]) => `  ${oldName}: var(${newVar});`
     );
 
-    // Theme + density overrides, derived from $extensions.mosje.themes.
+    // Resolve a {ref} string to a var(--sa-*) chain; pass literals through.
+    const resolveRef = (v) =>
+      typeof v === "string" && v.startsWith("{")
+        ? `var(--sa-${v.slice(1, -1).split(".").join("-")})`
+        : v;
+
+    // Appearance/density overrides, derived from $extensions.mosje.themes.
     const themeMap = { dark: [], hc: [], compact: [] };
+    // Brand color-mode overrides, derived from $extensions.mosje.colorModes.
+    // Keyed dynamically so adding a new mode in the tokens needs no build change.
+    const colorModeMap = {};
     for (const t of dictionary.allTokens) {
-      const themes = t.original?.$extensions?.mosje?.themes;
-      if (!themes) continue;
-      for (const [theme, v] of Object.entries(themes)) {
-        const resolved =
-          typeof v === "string" && v.startsWith("{")
-            ? `var(--sa-${v.slice(1, -1).split(".").join("-")})`
-            : v;
-        if (themeMap[theme]) themeMap[theme].push(`  --sa-${t.path.join("-")}: ${resolved};`);
+      const ext = t.original?.$extensions?.mosje;
+      if (ext?.themes) {
+        for (const [theme, v] of Object.entries(ext.themes)) {
+          if (themeMap[theme]) themeMap[theme].push(`  --sa-${t.path.join("-")}: ${resolveRef(v)};`);
+        }
+      }
+      if (ext?.colorModes) {
+        for (const [mode, v] of Object.entries(ext.colorModes)) {
+          (colorModeMap[mode] ??= []).push(`  --sa-${t.path.join("-")}: ${resolveRef(v)};`);
+        }
       }
     }
+    const colorModeBlocks = Object.entries(colorModeMap)
+      .map(([mode, decls]) => `[data-color-mode="${mode}"] {\n${decls.join("\n")}\n}`)
+      .join("\n\n");
     const themeBlocks = [
+      colorModeBlocks,
       themeMap.dark.length ? `[data-theme="dark"] {\n${themeMap.dark.join("\n")}\n}` : "",
       themeMap.hc.length ? `[data-theme="hc"] {\n${themeMap.hc.join("\n")}\n}` : "",
       themeMap.compact.length ? `[data-density="compact"] {\n${themeMap.compact.join("\n")}\n}` : "",

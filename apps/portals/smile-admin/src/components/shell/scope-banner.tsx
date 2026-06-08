@@ -11,12 +11,12 @@ export function ScopeBanner() {
     account.role === "district_nodal_officer"
       ? `${account.stateName} / ${account.districtName}`
       : account.role === "state_nodal_officer"
-      ? account.stateName
+      ? account.stateName ?? "All India"
       : "All India";
 
   // Hide the access-level descriptor when it duplicates the scope text
   // (e.g. super_admin: both say "All India").
-  const accessLevel = ROLE_SCOPES[account.role];
+  const accessLevel = ROLE_SCOPES[account.role] ?? "";
   const showAccessLevel = accessLevel.toLowerCase() !== scopeText.toLowerCase();
 
   return (

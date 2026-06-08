@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown, Accessibility, Languages } from "lucide-react";
-import { Button, Badge, Search } from "@mosje/design-system";
+import { Button, Badge, Search, ColorModeSwitcher } from "@mosje/design-system";
 import type { NavItem } from "@/types";
 
 const NAV: NavItem[] = [
@@ -99,6 +99,7 @@ export function Header() {
           </a>
           <div className="flex items-center gap-5">
             <a href="#content" className="hover:underline">Skip to Main Content</a>
+            <ColorModeSwitcher compact hideLabel label="Colour mode" />
             <button aria-label="Accessibility options" className="grid h-7 w-7 place-items-center rounded-full hover:bg-white/15">
               <Accessibility className="h-[18px] w-[18px]" />
             </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { ExternalLink, Globe, Minus, Plus, Contrast, Accessibility } from "lucide-react";
+import { ColorModeSwitcher } from "@mosje/design-system";
 import { useApp } from "@/store/app-context";
 import { cn } from "@/lib/utils";
 
@@ -70,6 +71,7 @@ export function AccessBar() {
           <Btn aria-label="Accessibility preferences" className="hidden sm:inline-flex">
             <Accessibility className="h-3.5 w-3.5" />
           </Btn>
+          <ColorModeSwitcher compact hideLabel label="Colour mode" />
           <button className="inline-flex items-center gap-xs rounded-xs px-1 py-1 text-label-3 hover:bg-white/10 sm:px-sm">
             <Globe className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">English</span>

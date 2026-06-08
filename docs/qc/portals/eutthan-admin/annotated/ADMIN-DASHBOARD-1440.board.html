@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QC Annotation Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --blocker:#DC2626; --major:#EA580C; --minor:#CA8A04; --nit:#6B7280;
+    --board:#0B1220; --panel:#0F1A2E; --label:#E5E7EB; --muted:#94A3B8;
+    --guide:#22D3EE; --line:#1E2A44;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--board);font-family:"Noto Sans",system-ui,sans-serif;color:var(--label)}
+  .board{width:1600px;margin:0 auto;padding:28px 28px 22px}
+  /* header */
+  .head{display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:18px}
+  .head .title{font-size:16px;font-weight:700;letter-spacing:.01em}
+  .head .title .sep{color:var(--muted);font-weight:500;margin:0 8px}
+  .head .ref{font-size:13px;font-weight:600;color:var(--muted);
+    border:1px solid var(--line);border-radius:6px;padding:5px 10px}
+  /* panels */
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .panel .plabel{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;
+    color:var(--label);padding:10px 12px;border-bottom:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center}
+  .panel .plabel .tag{font-size:11px;font-weight:500;color:var(--muted);text-transform:none;letter-spacing:0}
+  .canvas{position:relative;line-height:0}
+  .canvas img{width:100%;display:block}
+  /* markers */
+  .pin{position:absolute;width:28px;height:28px;border-radius:999px;transform:translate(-50%,-50%);
+    display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;
+    border:2px solid rgba(255,255,255,.9);box-shadow:0 2px 6px rgba(0,0,0,.45);z-index:3}
+  .pin.blocker{background:var(--blocker)} .pin.major{background:var(--major)}
+  .pin.minor{background:var(--minor)} .pin.nit{background:var(--nit)}
+  /* legend */
+  .legend{margin-top:18px;border-top:1px solid var(--line);padding-top:14px;
+    display:grid;grid-template-columns:repeat(2,1fr);gap:8px 24px}
+  .litem{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.45}
+  .badge{flex:none;width:22px;height:22px;border-radius:999px;color:#fff;font-weight:700;font-size:12px;
+    display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.85)}
+  .badge.blocker{background:var(--blocker)} .badge.major{background:var(--major)}
+  .badge.minor{background:var(--minor)} .badge.nit{background:var(--nit)}
+  .litem .cat{font-weight:600;color:#fff;margin-right:6px}
+  .litem .id{color:var(--muted);font-weight:500}
+  .foot{margin-top:14px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+  <div class="board" id="board"></div>
+<script>
+/* ───────────────────────────────────────────────────────────────────────────
+   BOARD config — injected per finding board, then page is screenshotted to PNG.
+   panel: "live" | "figma".  x/y are PERCENT of that panel image (0–100).
+   severity: "blocker" | "major" | "minor" | "nit".
+─────────────────────────────────────────────────────────────────────────── */
+const BOARD = {
+  "portal": "eUtthan Admin",
+  "screen": "Admin / Dashboard",
+  "viewport": "1440px",
+  "refRange": "UTH-ADMIN-DASH-001–003",
+  "figmaSrc": "file:///Users/akashk/Documents/Projects/MoSJE/docs/qc/portals/eutthan-admin/captures/figma/ADMIN-DASHBOARD-4226-39685.png",
+  "liveSrc": "file:///Users/akashk/Documents/Projects/MoSJE/docs/qc/portals/eutthan-admin/captures/live/ADMIN-DASHBOARD-1440.png",
+  "date": "2026-06-08",
+  "callouts": [
+    {
+      "n": 1,
+      "severity": "minor",
+      "category": "Color & Token",
+      "panel": "live",
+      "x": 30.6,
+      "y": 22.0,
+      "id": "UTH-ADMIN-DASH-001",
+      "label": "Stat value colour <b>#1E3A5F</b> is not a DS token (nearest Primary/Source #003366). Map big numbers to a token."
+    },
+    {
+      "n": 2,
+      "severity": "minor",
+      "category": "Color & Token",
+      "panel": "live",
+      "x": 22.0,
+      "y": 16.4,
+      "id": "UTH-ADMIN-DASH-002",
+      "label": "Stat-card border <b>#BFD7EA</b> off-token (nearest Primary/100 #c8dbf0); radius <b>12px</b> vs DS radius 8. Tokenise border + confirm DS Card radius."
+    },
+    {
+      "n": 3,
+      "severity": "minor",
+      "category": "Content & Iconography",
+      "panel": "live",
+      "x": 20.7,
+      "y": 8.6,
+      "id": "UTH-ADMIN-DASH-003",
+      "label": "Brand title reads <b>“Ministry of Social Justice & Empowerment”</b>; Figma frame says <b>“Department…”</b>. Live appears correct — reconcile the design (design-bug)."
+    }
+  ]
+};
+
+function el(tag, cls, html){const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e;}
+function panel(side, label, src, tag, callouts){
+  const p=el("div","panel");
+  const l=el("div","plabel"); l.append(el("span",null,label)); if(tag)l.append(el("span","tag",tag)); p.append(l);
+  const c=el("div","canvas");
+  const img=el("img"); img.src=src; c.append(img);
+  callouts.filter(o=>o.panel===side).forEach(o=>{
+    const pin=el("div","pin "+o.severity, o.n); pin.style.left=o.x+"%"; pin.style.top=o.y+"%"; c.append(pin);
+  });
+  p.append(c); return p;
+}
+const b=BOARD, root=document.getElementById("board");
+const head=el("div","head");
+head.append(el("div","title",
+  `${b.portal}<span class="sep">·</span>${b.screen}<span class="sep">·</span>${b.viewport}`));
+head.append(el("div","ref", b.refRange));
+root.append(head);
+const panels=el("div","panels");
+panels.append(panel("figma","Figma — design intent", b.figmaSrc, "design truth", b.callouts));
+panels.append(panel("live","Live — as built", b.liveSrc, b.viewport, b.callouts));
+root.append(panels);
+const legend=el("div","legend");
+b.callouts.forEach(o=>{
+  const it=el("div","litem");
+  it.append(el("div","badge "+o.severity, o.n));
+  const t=el("div",null,`<span class="cat">${o.category}</span><span class="id">${o.id}</span><br>${o.label}`);
+  it.append(t); legend.append(it);
+});
+root.append(legend);
+const foot=el("div","foot");
+foot.append(el("span",null,"MoSJE Design QC"));
+foot.append(el("span",null, b.date));
+root.append(foot);
+</script>
+</body>
+</html>

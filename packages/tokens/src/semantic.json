@@ -4,10 +4,23 @@
     "$type": "color",
     "action": {
       "primary": {
-        "default": {"$value":"{color.blue.500}"},
-        "hover":   {"$value":"{color.blue.700}"},
-        "tonal":   {"$value":"{color.blue.50}"}
+        "default": {"$value":"{color.primaryRamp.light.500}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.500}"}}}},
+        "hover":   {"$value":"{color.primaryRamp.light.700}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.700}"}}}},
+        "tonal":   {"$value":"{color.primaryRamp.light.100}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.100}"}}}}
       }
+    },
+    "primaryScale": {
+      "$description": "Full mode-aware primary ramp (50–900). Consume via --ds-primary-50…900. Each step follows the active color mode.",
+      "50":  {"$value":"{color.primaryRamp.light.50}",  "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.50}"}}}},
+      "100": {"$value":"{color.primaryRamp.light.100}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.100}"}}}},
+      "200": {"$value":"{color.primaryRamp.light.200}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.200}"}}}},
+      "300": {"$value":"{color.primaryRamp.light.300}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.300}"}}}},
+      "400": {"$value":"{color.primaryRamp.light.400}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.400}"}}}},
+      "500": {"$value":"{color.primaryRamp.light.500}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.500}"}}}},
+      "600": {"$value":"{color.primaryRamp.light.600}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.600}"}}}},
+      "700": {"$value":"{color.primaryRamp.light.700}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.700}"}}}},
+      "800": {"$value":"{color.primaryRamp.light.800}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.800}"}}}},
+      "900": {"$value":"{color.primaryRamp.light.900}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.900}"}}}}
     },
     "text": {
       "default": {"$value":"{color.neutral.800}", "$extensions":{"mosje":{"themes":{"dark":"{color.neutral.0}","hc":"#000000"}}}},
@@ -24,7 +37,7 @@
       "subtle": {"$value":"{color.neutral.100}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}},
       "strong": {"$value":"{color.neutral.200}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}}
     },
-    "focus": { "ring": {"$value":"rgba(3, 115, 223, 0.48)"} },
+    "focus": { "ring": {"$value":"rgba(3, 115, 223, 0.48)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(0, 51, 102, 0.48)"}}}} },
     "status": {
       "success": {"$value":"{color.green.500}"},
       "successStrong": {"$value":"{color.green.700}"},

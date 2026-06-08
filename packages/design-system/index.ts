@@ -3,6 +3,31 @@ export * from "./tokens";
 export { default as tokens } from "./tokens";
 export { cn } from "./cn";
 
+// Color-mode (brand axis) — core helpers + React provider/switcher.
+export {
+  COLOR_MODES,
+  DEFAULT_COLOR_MODE,
+  COLOR_MODE_COOKIE,
+  COLOR_MODE_ATTR,
+  isColorMode,
+  normalizeColorMode,
+  colorModeFromCookieHeader,
+  readColorModeCookie,
+  applyColorMode,
+  colorModeInitScript,
+  type ColorMode,
+  type ColorModeId,
+} from "./color-mode";
+export {
+  ColorModeProvider,
+  useColorMode,
+  type ColorModeProviderProps,
+} from "./components/color-mode-provider";
+export {
+  ColorModeSwitcher,
+  type ColorModeSwitcherProps,
+} from "./components/color-mode-switcher";
+
 // Components (atoms aligned to the UX4G Figma DS)
 export { Button } from "./components/button";
 export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle } from "./components/card";

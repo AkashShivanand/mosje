@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "@/store/app-context";
+import { ColorModeProvider } from "@mosje/design-system";
+import { colorModeInitScript } from "@mosje/design-system/color-mode";
+
+// smile-admin's GoI navy maps to the "blue-dark" color mode.
+const DEFAULT_MODE = "blue-dark";
 
 const noto = Noto_Sans({
   subsets: ["latin", "devanagari"],
@@ -29,9 +34,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={noto.variable}>
+    <html lang="en" className={noto.variable} data-color-mode={DEFAULT_MODE}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{ __html: colorModeInitScript(DEFAULT_MODE) }}
+        />
+      </head>
       <body>
-        <AppProvider>{children}</AppProvider>
+        <ColorModeProvider initialMode={DEFAULT_MODE}>
+          <AppProvider>{children}</AppProvider>
+        </ColorModeProvider>
       </body>
     </html>
   );
