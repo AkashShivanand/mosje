@@ -32,5 +32,5 @@ Everything else for the sync is already done: the **code design system is the si
 5. Validate in Figma Dev Mode (the component shows our code snippet).
 
 ## Interim sync (no Code Connect)
-- Tokens: `packages/design-system/tokens.css` is canonical; reconcile against Figma variables in `figma-code-reconciliation.md` when the DS changes.
-- Components: keep `figma-ux4g-ds.md` (the extracted spec) updated; changes flow Figma → code manually via `/sync-figma`.
+- **Tokens** are synced via `@mosje/tokens` (DTCG → Style Dictionary). Source of truth: `packages/tokens/src/*.json`; `npm run build -w @mosje/tokens` regenerates `tokens.css`/`tokens.ts`/Tailwind presets + the Figma DTCG export (`packages/tokens/dist/figma.tokens.json`). Run `/sync-figma` to pull Figma variable changes into the DTCG source, or import `figma.tokens.json` into Figma (Tokens Studio) to push code → Figma. `npm test -w @mosje/tokens` asserts the `--ds-*` contract.
+- **Components**: keep `figma-ux4g-ds.md` (the extracted spec) updated; changes flow Figma → code manually until Code Connect is enabled (the node map above makes that wiring quick).
