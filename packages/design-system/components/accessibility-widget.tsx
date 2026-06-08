@@ -243,6 +243,7 @@ export const AccessibilityWidget = ({ className }: AccessibilityWidgetProps) => 
     const list = Array.from(focusables).filter((el) => !el.hasAttribute("disabled"));
     const first = list[0];
     const last = list[list.length - 1];
+    if (!first || !last) return;
     const active = document.activeElement;
     if (event.shiftKey && active === first) {
       event.preventDefault();
