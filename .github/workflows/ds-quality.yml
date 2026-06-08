@@ -1,0 +1,43 @@
+name: Design System Quality
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/**"
+      - ".stylelintrc.tokens.json"
+      - ".github/workflows/ds-quality.yml"
+  pull_request:
+    paths:
+      - "packages/**"
+      - ".stylelintrc.tokens.json"
+      - ".github/workflows/ds-quality.yml"
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install (workspace)
+        run: npm install
+
+      - name: Build tokens
+        run: npm run build -w @mosje/tokens
+
+      - name: Tokens contract test (legacy --ds-* + figma export)
+        run: npm test -w @mosje/tokens
+
+      - name: Typecheck design-system
+        run: npm run typecheck -w @mosje/design-system
+
+      - name: Token-lint — tier-1 primitive ban (all component CSS)
+        run: npx stylelint --config .stylelintrc.tier1.json "packages/design-system/components/*.css"
+
+      - name: Token-lint — strict no-raw-hex (clean/migrated files)
+        run: npx stylelint --config .stylelintrc.tokens.json packages/design-system/components/forms.css
