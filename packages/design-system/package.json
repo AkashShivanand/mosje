@@ -1,7 +1,7 @@
 {
   "name": "@mosje/design-system",
-  "version": "0.3.0",
-  "description": "Shared MoSJE UI components (13 atoms), aligned to the UX4G Figma DS. Token-driven — consumes the generated --ds-*/--sa-* contract from @mosje/tokens (do not edit tokens.css here; edit packages/tokens/src/*.json).",
+  "version": "0.4.0",
+  "description": "Shared MoSJE UI components (13 atoms + form layer: Input/Textarea/Select/FormField), aligned to the UX4G Figma DS. Token-driven — consumes the generated --ds-/--sa- contract from @mosje/tokens (do not edit tokens.css here; edit packages/tokens/src/*.json).",
   "private": true,
   "type": "module",
   "exports": {

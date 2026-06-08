@@ -1,0 +1,139 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — Form atoms (Input · Textarea · Select · FormField)
+   Semantic CSS classes only; every value references a design token (--ds- and --sa- vars).
+   No raw hex (token-lint clean). Native elements → built-in keyboard/SR a11y.
+   Min control height 44px (WCAG 2.2 target size); compact density via [data-density].
+   ============================================================================ */
+
+.ds-input,
+.ds-textarea,
+.ds-select__el {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-body-1);
+  line-height: var(--ds-leading-body-1);
+  color: var(--ds-ink);
+  background-color: var(--ds-surface);
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-md);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ds-textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.ds-input::placeholder,
+.ds-textarea::placeholder {
+  color: var(--ds-ink-muted);
+  opacity: 0.7;
+}
+
+.ds-input:hover:not(:disabled),
+.ds-textarea:hover:not(:disabled),
+.ds-select__el:hover:not(:disabled) {
+  border-color: var(--ds-primary);
+}
+
+.ds-input:focus-visible,
+.ds-textarea:focus-visible,
+.ds-select__el:focus-visible {
+  border-color: var(--ds-primary);
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  outline: none;
+}
+
+.ds-input:disabled,
+.ds-textarea:disabled,
+.ds-select__el:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  background-color: var(--ds-surface-muted);
+}
+
+/* Error state (driven by aria-invalid="true") */
+.ds-input[aria-invalid="true"],
+.ds-textarea[aria-invalid="true"],
+.ds-select__el[aria-invalid="true"] {
+  border-color: var(--ds-danger);
+}
+
+.ds-input[aria-invalid="true"]:focus-visible,
+.ds-textarea[aria-invalid="true"]:focus-visible,
+.ds-select__el[aria-invalid="true"]:focus-visible {
+  box-shadow: 0 0 0 3px var(--ds-danger);
+}
+
+/* ---- Select: native element + custom chevron ---- */
+.ds-select {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.ds-select__el {
+  padding-right: 40px;
+}
+
+.ds-select__chevron {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  color: var(--ds-ink-muted);
+  pointer-events: none;
+}
+
+/* ---- FormField wrapper: label + control + hint + error ---- */
+.ds-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--ds-font-sans);
+}
+
+.ds-field__label {
+  font-size: var(--ds-text-body-2);
+  line-height: var(--ds-leading-body-2);
+  font-weight: 500;
+  color: var(--ds-ink);
+}
+
+.ds-field__required {
+  margin-left: 2px;
+  color: var(--ds-danger);
+}
+
+.ds-field__hint {
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink-muted);
+}
+
+.ds-field__error {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-danger);
+}
+
+/* Compact density reduces control height to 40px */
+[data-density="compact"] .ds-input,
+[data-density="compact"] .ds-textarea,
+[data-density="compact"] .ds-select__el {
+  min-height: 40px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
