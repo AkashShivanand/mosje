@@ -32,3 +32,7 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# graphify knowledge-graph output (per-project, do not commit)
+graphify-out/
+.graphify_*
