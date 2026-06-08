@@ -10,7 +10,7 @@ One repo for the whole MoSJE estate: the apps **and** the shared design-system p
 apps/
 ├── dosje/           the unified website (Next 16 · Tailwind v4)
 ├── portals/         functional portals — pm-ajay, smile-admin (Next 15 · Tailwind v3)
-└── docs/            SAMAVESH Storybook / DS documentation portal  [Plan 3]
+└── docs/            SAMAVESH Storybook / DS documentation portal (`npm --prefix apps/docs run dev`)
 packages/
 ├── tokens/          @mosje/tokens         — DTCG token source → Style Dictionary → CSS/TS/Tailwind/Figma
 ├── design-system/   @mosje/design-system  — shared React components (consumes generated tokens)
