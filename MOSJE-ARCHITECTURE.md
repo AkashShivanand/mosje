@@ -19,7 +19,7 @@ mosje/                      # single git repo
 │   └── docs/               # SAMAVESH Storybook / DS documentation portal (Plan 3)
 ├── packages/
 │   ├── tokens/             # @mosje/tokens — DTCG → Style Dictionary (live, Phase 2)
-│   ├── design-system/      # @mosje/design-system — shared components (13 atoms)
+│   ├── design-system/      # @mosje/design-system — shared components (17 atoms) + color-mode theming
 │   └── config/             # @mosje/config — shared tailwind/eslint/tsconfig presets
 ├── docs/                   # specs, plans, research, compliance, source-brd/
 ├── Assets/  Designs/(ignored)  Incoming/(ignored)  _backups/(ignored)

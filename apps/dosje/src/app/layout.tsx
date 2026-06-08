@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
-import { AccessibilityWidget } from "@mosje/design-system";
+import { AccessibilityWidget, ColorModeProvider } from "@mosje/design-system";
+import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import "./globals.css";
 
 // dosje.gov.in uses Noto Sans throughout (DBIM-compliant gov typeface)
@@ -28,9 +29,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-US" className={`${notoSans.variable} h-full antialiased`}>
+      <head>
+        {/* No-flash: set data-color-mode from the cookie before first paint.
+            Keeps every route statically generable (no cookies() in this layout). */}
+        <script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />
+      </head>
       <body className="min-h-full flex flex-col font-sans">
-        {children}
-        <AccessibilityWidget />
+        <ColorModeProvider>
+          {children}
+          <AccessibilityWidget />
+        </ColorModeProvider>
       </body>
     </html>
   );

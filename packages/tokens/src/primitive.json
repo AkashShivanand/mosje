@@ -8,6 +8,21 @@
     "yellow": { "500": {"$value":"#ffd323"} },
     "saffron":{ "50": {"$value":"#ffedd5"}, "500": {"$value":"#f97316"}, "700": {"$value":"#7c3503"} },
     "navy":   { "700": {"$value":"#003366"} },
+    "primaryRamp": {
+      "$description": "Primary brand ramps, one per color mode. 'light' is the default (data-color-mode unset). Add a new sub-key (e.g. 'green') to introduce another mode.",
+      "light": {
+        "50":  {"$value":"#e8f2fd"}, "100": {"$value":"#c6dcf9"}, "200": {"$value":"#94bff5"},
+        "300": {"$value":"#5fa0ef"}, "400": {"$value":"#2d84e8"}, "500": {"$value":"#0373df"},
+        "600": {"$value":"#025fb8"}, "700": {"$value":"#014b92"}, "800": {"$value":"#01376b"},
+        "900": {"$value":"#002448"}
+      },
+      "dark": {
+        "50":  {"$value":"#e5eff9"}, "100": {"$value":"#c8dbf0"}, "200": {"$value":"#9cbfe3"},
+        "300": {"$value":"#6da1d5"}, "400": {"$value":"#3f83c6"}, "500": {"$value":"#003366"},
+        "600": {"$value":"#002b55"}, "700": {"$value":"#002244"}, "800": {"$value":"#001933"},
+        "900": {"$value":"#001122"}
+      }
+    },
     "neutral":{
       "0":   {"$value":"#ffffff"},
       "50":  {"$value":"#f8f9fa"},

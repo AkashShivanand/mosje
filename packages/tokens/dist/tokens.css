@@ -14,6 +14,26 @@
   --sa-color-saffron-500: #f97316;
   --sa-color-saffron-700: #7c3503;
   --sa-color-navy-700: #003366;
+  --sa-color-primaryRamp-light-50: #e8f2fd;
+  --sa-color-primaryRamp-light-100: #c6dcf9;
+  --sa-color-primaryRamp-light-200: #94bff5;
+  --sa-color-primaryRamp-light-300: #5fa0ef;
+  --sa-color-primaryRamp-light-400: #2d84e8;
+  --sa-color-primaryRamp-light-500: #0373df;
+  --sa-color-primaryRamp-light-600: #025fb8;
+  --sa-color-primaryRamp-light-700: #014b92;
+  --sa-color-primaryRamp-light-800: #01376b;
+  --sa-color-primaryRamp-light-900: #002448;
+  --sa-color-primaryRamp-dark-50: #e5eff9;
+  --sa-color-primaryRamp-dark-100: #c8dbf0;
+  --sa-color-primaryRamp-dark-200: #9cbfe3;
+  --sa-color-primaryRamp-dark-300: #6da1d5;
+  --sa-color-primaryRamp-dark-400: #3f83c6;
+  --sa-color-primaryRamp-dark-500: #003366;
+  --sa-color-primaryRamp-dark-600: #002b55;
+  --sa-color-primaryRamp-dark-700: #002244;
+  --sa-color-primaryRamp-dark-800: #001933;
+  --sa-color-primaryRamp-dark-900: #001122;
   --sa-color-neutral-0: #ffffff;
   --sa-color-neutral-50: #f8f9fa;
   --sa-color-neutral-75: #f4f3f9;
@@ -25,6 +45,16 @@
   --sa-color-action-primary-default: #0373df;
   --sa-color-action-primary-hover: #014b92;
   --sa-color-action-primary-tonal: #c6dcf9;
+  --sa-color-primaryScale-50: #e8f2fd;
+  --sa-color-primaryScale-100: #c6dcf9;
+  --sa-color-primaryScale-200: #94bff5;
+  --sa-color-primaryScale-300: #5fa0ef;
+  --sa-color-primaryScale-400: #2d84e8;
+  --sa-color-primaryScale-500: #0373df;
+  --sa-color-primaryScale-600: #025fb8;
+  --sa-color-primaryScale-700: #014b92;
+  --sa-color-primaryScale-800: #01376b;
+  --sa-color-primaryScale-900: #002448;
   --sa-color-text-default: #212121;
   --sa-color-text-muted: #343a40;
   --sa-color-text-strong: #1f2428;
@@ -123,6 +153,16 @@
   --ds-primary-tonal: var(--sa-color-action-primary-tonal);
   --ds-primary-dark: var(--sa-color-action-primary-hover);
   --ds-primary-ring: var(--sa-color-focus-ring);
+  --ds-primary-50: var(--sa-color-primaryScale-50);
+  --ds-primary-100: var(--sa-color-primaryScale-100);
+  --ds-primary-200: var(--sa-color-primaryScale-200);
+  --ds-primary-300: var(--sa-color-primaryScale-300);
+  --ds-primary-400: var(--sa-color-primaryScale-400);
+  --ds-primary-500: var(--sa-color-primaryScale-500);
+  --ds-primary-600: var(--sa-color-primaryScale-600);
+  --ds-primary-700: var(--sa-color-primaryScale-700);
+  --ds-primary-800: var(--sa-color-primaryScale-800);
+  --ds-primary-900: var(--sa-color-primaryScale-900);
   --ds-success: var(--sa-color-status-success);
   --ds-success-tonal: var(--sa-color-green-50);
   --ds-danger: var(--sa-color-status-danger);
@@ -169,6 +209,23 @@
   --ds-shadow-xs: var(--sa-shadow-xs);
   --ds-shadow-lg: var(--sa-shadow-lg);
   --ds-shadow-xl: var(--sa-shadow-xl);
+}
+
+[data-color-mode="blue-dark"] {
+  --sa-color-action-primary-default: var(--sa-color-primaryRamp-dark-500);
+  --sa-color-action-primary-hover: var(--sa-color-primaryRamp-dark-700);
+  --sa-color-action-primary-tonal: var(--sa-color-primaryRamp-dark-100);
+  --sa-color-primaryScale-50: var(--sa-color-primaryRamp-dark-50);
+  --sa-color-primaryScale-100: var(--sa-color-primaryRamp-dark-100);
+  --sa-color-primaryScale-200: var(--sa-color-primaryRamp-dark-200);
+  --sa-color-primaryScale-300: var(--sa-color-primaryRamp-dark-300);
+  --sa-color-primaryScale-400: var(--sa-color-primaryRamp-dark-400);
+  --sa-color-primaryScale-500: var(--sa-color-primaryRamp-dark-500);
+  --sa-color-primaryScale-600: var(--sa-color-primaryRamp-dark-600);
+  --sa-color-primaryScale-700: var(--sa-color-primaryRamp-dark-700);
+  --sa-color-primaryScale-800: var(--sa-color-primaryRamp-dark-800);
+  --sa-color-primaryScale-900: var(--sa-color-primaryRamp-dark-900);
+  --sa-color-focus-ring: rgba(0, 51, 102, 0.48);
 }
 
 [data-theme="dark"] {

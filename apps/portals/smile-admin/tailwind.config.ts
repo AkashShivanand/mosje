@@ -27,19 +27,21 @@ export default {
         ],
       },
       colors: {
-        // Brand — official GoI navy preserved
+        // Brand — now mode-aware via the shared @mosje/tokens contract.
+        // smile-admin defaults to the "blue-dark" color mode (data-color-mode),
+        // so the GoI navy is preserved while the brand can switch estate-wide.
         primary: {
-          50: "#eef4fb",
-          100: "#d6e3f1",
-          200: "#a9c4e0",
-          300: "#7ba4cf",
-          400: "#3d6c9c",
-          500: "#003366",
-          600: "#002b55",
-          700: "#002244",
-          800: "#001933",
-          900: "#001022",
-          DEFAULT: "#003366",
+          50: "var(--ds-primary-50)",
+          100: "var(--ds-primary-100)",
+          200: "var(--ds-primary-200)",
+          300: "var(--ds-primary-300)",
+          400: "var(--ds-primary-400)",
+          500: "var(--ds-primary-500)",
+          600: "var(--ds-primary-600)",
+          700: "var(--ds-primary-700)",
+          800: "var(--ds-primary-800)",
+          900: "var(--ds-primary-900)",
+          DEFAULT: "var(--ds-primary)",
         },
         // Brand accent — saffron, used sparingly
         accent: {
