@@ -58,16 +58,16 @@
 .ds-btn--success {
   --_color: var(--ds-success);
   --_tonal-bg: var(--ds-success-tonal);
-  --_tonal-fg: #1b5e20; /* darkened success for tonal label contrast */
-  --_dark: #1b5e20;
+  --_tonal-fg: var(--sa-color-status-successStrong); /* darkened success for tonal label contrast */
+  --_dark: var(--sa-color-status-successStrong);
   --_ring: rgba(46, 125, 50, 0.4);
 }
 
 .ds-btn--danger {
   --_color: var(--ds-danger);
-  --_tonal-bg: #fadbd8;
-  --_tonal-fg: #a11d12;
-  --_dark: #a11d12;
+  --_tonal-bg: var(--sa-color-status-dangerTonal);
+  --_tonal-fg: var(--sa-color-status-dangerStrong);
+  --_dark: var(--sa-color-status-dangerStrong);
   --_ring: rgba(236, 80, 66, 0.4);
 }
 
@@ -103,7 +103,7 @@
    -------------------------------------------------------------------------- */
 .ds-btn--filled {
   background-color: var(--_color);
-  color: var(--ds-on-primary, #fff);
+  color: var(--ds-on-primary);
   border-color: var(--_color);
 }
 

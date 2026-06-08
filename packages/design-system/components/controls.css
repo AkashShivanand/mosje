@@ -46,8 +46,8 @@
   height: 18px;
   border: 1.5px solid var(--ds-border-strong);
   border-radius: var(--ds-radius-xs, 4px);
-  background-color: var(--ds-surface, #fff);
-  color: var(--ds-on-primary, #fff);
+  background-color: var(--ds-surface);
+  color: var(--ds-on-primary);
   transition:
     background-color 0.15s ease,
     border-color 0.15s ease;
@@ -84,7 +84,7 @@
 .ds-checkbox__label {
   font-size: var(--ds-text-body-2, 14px);
   line-height: var(--ds-leading-body-2, 20px);
-  color: var(--ds-ink, #212121);
+  color: var(--ds-ink);
   cursor: pointer;
   user-select: none;
 }
@@ -126,7 +126,7 @@
   height: 18px;
   border: 1.5px solid var(--ds-border-strong);
   border-radius: var(--ds-radius-pill, 100px);
-  background-color: var(--ds-surface, #fff);
+  background-color: var(--ds-surface);
   transition:
     border-color 0.15s ease,
     background-color 0.15s ease;
@@ -161,7 +161,7 @@
 .ds-radio__label {
   font-size: var(--ds-text-body-2, 14px);
   line-height: var(--ds-leading-body-2, 20px);
-  color: var(--ds-ink, #212121);
+  color: var(--ds-ink);
   cursor: pointer;
   user-select: none;
 }
@@ -222,7 +222,7 @@
   width: var(--_knob);
   height: var(--_knob);
   border-radius: var(--ds-radius-pill, 100px);
-  background-color: var(--ds-surface, #fff);
+  background-color: var(--ds-surface);
   box-shadow: 0 1px 2px rgba(33, 33, 33, 0.25);
   transform: translateX(0);
   transition: transform 0.18s ease;
@@ -245,7 +245,7 @@
 .ds-toggle__label {
   font-size: var(--ds-text-body-2, 14px);
   line-height: var(--ds-leading-body-2, 20px);
-  color: var(--ds-ink, #212121);
+  color: var(--ds-ink);
   cursor: pointer;
   user-select: none;
 }

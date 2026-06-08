@@ -10,10 +10,10 @@
 .ds-card {
   display: flex;
   flex-direction: column;
-  background-color: var(--ds-surface, #fff);
+  background-color: var(--ds-surface);
   border: 1px solid transparent;
   border-radius: var(--ds-radius-md, 8px);
-  color: var(--ds-ink-strong, #1f2428);
+  color: var(--ds-ink-strong);
   font-family: var(--ds-font-sans, inherit);
   overflow: hidden;
 }
@@ -22,7 +22,7 @@
    Variants
    -------------------------------------------------------------------------- */
 .ds-card--outlined {
-  border-color: var(--ds-border, #f1f3f5);
+  border-color: var(--ds-border);
   box-shadow: none;
 }
 
@@ -86,7 +86,7 @@
   font-size: var(--ds-text-headline, 20px);
   line-height: var(--ds-leading-headline, 24px);
   font-weight: 600;
-  color: var(--ds-ink-strong, #1f2428);
+  color: var(--ds-ink-strong);
 }
 
 .ds-card__subtitle {
@@ -94,5 +94,5 @@
   font-size: var(--ds-text-body-2, 14px);
   line-height: var(--ds-leading-body-2, 20px);
   font-weight: 400;
-  color: var(--ds-ink-muted, #343a40);
+  color: var(--ds-ink-muted);
 }

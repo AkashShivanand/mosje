@@ -24,28 +24,28 @@
    Status → tonal bg + readable text
    -------------------------------------------------------------------------- */
 .ds-badge--primary {
-  --_bg: var(--ds-primary-tonal, #c6dcf9);
-  --_fg: var(--ds-primary-dark, #014b92);
+  --_bg: var(--ds-primary-tonal);
+  --_fg: var(--ds-primary-dark);
 }
 
 .ds-badge--success {
-  --_bg: var(--ds-success-tonal, #c8e6c9);
-  --_fg: #1b5e20;
+  --_bg: var(--ds-success-tonal);
+  --_fg: var(--sa-color-status-successStrong);
 }
 
 .ds-badge--danger {
-  --_bg: #fadbd8;
-  --_fg: #a11d12;
+  --_bg: var(--sa-color-status-dangerTonal);
+  --_fg: var(--sa-color-status-dangerStrong);
 }
 
 .ds-badge--warning {
-  --_bg: var(--ds-gov-yellow, #ffd323);
-  --_fg: var(--ds-ink, #212121);
+  --_bg: var(--ds-gov-yellow);
+  --_fg: var(--ds-ink);
 }
 
 .ds-badge--neutral {
-  --_bg: var(--ds-surface-muted, #f8f9fa);
-  --_fg: var(--ds-ink, #212121);
+  --_bg: var(--ds-surface-muted);
+  --_fg: var(--ds-ink);
 }
 
 /* --------------------------------------------------------------------------

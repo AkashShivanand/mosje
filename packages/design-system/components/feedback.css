@@ -28,31 +28,31 @@
   align-items: flex-start;
   gap: 12px;
   padding: 12px;
-  background-color: var(--ds-surface, #fff);
-  border: 1px solid var(--ds-border, #f1f3f5);
+  background-color: var(--ds-surface);
+  border: 1px solid var(--ds-border);
   border-left: 4px solid var(--_color);
   border-radius: var(--ds-radius-md, 8px);
   box-shadow: var(--ds-shadow-lg);
   font-family: var(--ds-font-sans, inherit);
-  color: var(--ds-ink-strong, #1f2428);
+  color: var(--ds-ink-strong);
 }
 
 /* Status → colour mapping (info→primary, success→success, warning→warning, error→danger) */
 .ds-alert--info {
-  --_color: var(--ds-primary, #0373df);
-  background-color: color-mix(in srgb, var(--ds-primary) 6%, var(--ds-surface, #fff));
+  --_color: var(--ds-primary);
+  background-color: color-mix(in srgb, var(--ds-primary) 6%, var(--ds-surface));
 }
 .ds-alert--success {
-  --_color: var(--ds-success, #2e7d32);
-  background-color: color-mix(in srgb, var(--ds-success) 7%, var(--ds-surface, #fff));
+  --_color: var(--ds-success);
+  background-color: color-mix(in srgb, var(--ds-success) 7%, var(--ds-surface));
 }
 .ds-alert--warning {
-  --_color: var(--ds-warning, #ffd323);
-  background-color: color-mix(in srgb, var(--ds-warning) 14%, var(--ds-surface, #fff));
+  --_color: var(--ds-warning);
+  background-color: color-mix(in srgb, var(--ds-warning) 14%, var(--ds-surface));
 }
 .ds-alert--error {
-  --_color: var(--ds-danger, #ec5042);
-  background-color: color-mix(in srgb, var(--ds-danger) 6%, var(--ds-surface, #fff));
+  --_color: var(--ds-danger);
+  background-color: color-mix(in srgb, var(--ds-danger) 6%, var(--ds-surface));
 }
 
 .ds-alert__icon {
@@ -62,7 +62,7 @@
   /* warning amber needs ink, not the pale yellow itself, for the glyph */
 }
 .ds-alert--warning .ds-alert__icon {
-  color: var(--ds-gov-yellow, #ffd323);
+  color: var(--ds-gov-yellow);
 }
 
 .ds-alert__content {
@@ -85,20 +85,20 @@
   font-size: var(--ds-text-body-2, 14px);
   line-height: var(--ds-leading-body-2, 20px);
   font-weight: 600;
-  color: var(--ds-ink-strong, #1f2428);
+  color: var(--ds-ink-strong);
 }
 
 .ds-alert__timestamp {
   flex: 0 0 auto;
   font-size: var(--ds-text-body-3, 12px);
   line-height: var(--ds-leading-body-3, 16px);
-  color: var(--ds-ink-muted, #343a40);
+  color: var(--ds-ink-muted);
 }
 
 .ds-alert__body {
   font-size: var(--ds-text-body-2, 14px);
   line-height: var(--ds-leading-body-2, 20px);
-  color: var(--ds-ink-muted, #343a40);
+  color: var(--ds-ink-muted);
 }
 
 .ds-alert__action {
@@ -119,7 +119,7 @@
   background: transparent;
   border: none;
   border-radius: var(--ds-radius-sm, 6px);
-  color: var(--ds-ink-muted, #343a40);
+  color: var(--ds-ink-muted);
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
@@ -127,7 +127,7 @@
 }
 .ds-alert__close:hover {
   background-color: color-mix(in srgb, var(--ds-ink) 8%, transparent);
-  color: var(--ds-ink, #212121);
+  color: var(--ds-ink);
 }
 .ds-alert__close:focus-visible {
   outline: none;
@@ -144,7 +144,7 @@
   align-items: center;
   justify-content: center;
   --_loader-size: 32px;
-  --_loader-color: var(--ds-primary, #0373df);
+  --_loader-color: var(--ds-primary);
 }
 
 .ds-loader--sm {
@@ -158,10 +158,10 @@
 }
 
 .ds-loader--primary {
-  --_loader-color: var(--ds-primary, #0373df);
+  --_loader-color: var(--ds-primary);
 }
 .ds-loader--secondary {
-  --_loader-color: var(--ds-ink-muted, #343a40);
+  --_loader-color: var(--ds-ink-muted);
 }
 
 .ds-loader__spinner {
@@ -216,7 +216,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--ds-ink-muted, #343a40);
+  color: var(--ds-ink-muted);
   margin-bottom: 8px;
 }
 
@@ -225,7 +225,7 @@
   font-size: var(--ds-text-headline, 20px);
   line-height: var(--ds-leading-headline, 24px);
   font-weight: 600;
-  color: var(--ds-ink-strong, #1f2428);
+  color: var(--ds-ink-strong);
 }
 
 .ds-empty__description {
@@ -233,7 +233,7 @@
   max-width: 42ch;
   font-size: var(--ds-text-body-2, 14px);
   line-height: var(--ds-leading-body-2, 20px);
-  color: var(--ds-ink-muted, #343a40);
+  color: var(--ds-ink-muted);
 }
 
 .ds-empty__action {
@@ -255,8 +255,8 @@
   justify-content: center;
   flex: 0 0 auto;
   overflow: hidden;
-  background-color: var(--ds-surface-muted, #f8f9fa);
-  color: var(--ds-ink-strong, #1f2428);
+  background-color: var(--ds-surface-muted);
+  color: var(--ds-ink-strong);
   font-family: var(--ds-font-sans, inherit);
   font-weight: 600;
   line-height: 1;
@@ -289,5 +289,5 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: var(--ds-ink-muted, #343a40);
+  color: var(--ds-ink-muted);
 }

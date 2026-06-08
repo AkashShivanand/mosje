@@ -1,8 +1,0 @@
-{
-  "comment": "Architectural gate applied to ALL component CSS: forbids referencing Tier-1 primitive tokens (apps/components must use semantic tokens). Stricter no-raw-hex lives in .stylelintrc.tokens.json and is applied to migrated/clean files (e.g. forms.css). Legacy hex fallbacks are tracked for migration.",
-  "rules": {
-    "declaration-property-value-disallowed-list": {
-      "/.*/": ["/--sa-color-(blue|green|red|yellow|saffron|navy|neutral)-/"]
-    }
-  }
-}

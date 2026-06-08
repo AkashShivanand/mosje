@@ -5,6 +5,13 @@ versioning is [semver](https://semver.org) per package.
 
 ## [Unreleased]
 
+### Changed
+- **All component CSS is now strict-token-lint clean** — removed ~106 raw hex values (82 var()
+  fallbacks dropped; 24 genuine values tokenized). New tokens: `status.successStrong`,
+  `status.dangerStrong`, `status.dangerTonal`, and an `a11y.{hc,dark}` palette group for the
+  accessibility widget. CI now lints **all** component CSS with the strict config; the relaxed
+  `.stylelintrc.tier1.json` was removed.
+
 ### Added
 - **`@mosje/docs`** — Storybook documentation portal (`apps/docs`) with a11y addon and
   light/dark/high-contrast + density toolbar toggles; foundations + component stories.

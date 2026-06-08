@@ -27,9 +27,29 @@
     "focus": { "ring": {"$value":"rgba(3, 115, 223, 0.48)"} },
     "status": {
       "success": {"$value":"{color.green.500}"},
+      "successStrong": {"$value":"{color.green.700}"},
       "warning": {"$value":"{color.yellow.500}"},
       "danger":  {"$value":"{color.red.500}"},
+      "dangerStrong": {"$value":"{color.red.700}"},
+      "dangerTonal": {"$value":"{color.red.50}"},
       "info":    {"$value":"{color.blue.500}"}
+    },
+    "a11y": {
+      "$description": "Accessibility-widget self-contained palettes (its own HC + dark toggles).",
+      "hc": {
+        "fg":    {"$value":"#000000"},
+        "bg":    {"$value":"#ffffff"},
+        "link":  {"$value":"#00006b"},
+        "focus": {"$value":"#ffe600"}
+      },
+      "dark": {
+        "bg":           {"$value":"#0f1115"},
+        "ink":          {"$value":"#f3f4f6"},
+        "inkMuted":     {"$value":"#c2c7d0"},
+        "surface":      {"$value":"#1b1f27"},
+        "surfaceMuted": {"$value":"#242a35"},
+        "border":       {"$value":"#343b48"}
+      }
     },
     "brand": {
       "saffron":     {"$value":"{color.saffron.500}"},

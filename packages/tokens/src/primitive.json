@@ -3,8 +3,8 @@
   "color": {
     "$type": "color",
     "blue":   { "50": {"$value":"#c6dcf9"}, "500": {"$value":"#0373df"}, "700": {"$value":"#014b92"} },
-    "green":  { "50": {"$value":"#c8e6c9"}, "500": {"$value":"#2e7d32"} },
-    "red":    { "500": {"$value":"#ec5042"} },
+    "green":  { "50": {"$value":"#c8e6c9"}, "500": {"$value":"#2e7d32"}, "700": {"$value":"#1b5e20"} },
+    "red":    { "50": {"$value":"#fadbd8"}, "500": {"$value":"#ec5042"}, "700": {"$value":"#a11d12"} },
     "yellow": { "500": {"$value":"#ffd323"} },
     "saffron":{ "50": {"$value":"#ffedd5"}, "500": {"$value":"#f97316"}, "700": {"$value":"#7c3503"} },
     "navy":   { "700": {"$value":"#003366"} },
