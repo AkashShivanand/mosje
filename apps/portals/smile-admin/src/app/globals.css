@@ -1,5 +1,8 @@
-/* Shared MoSJE token contract (--ds-/--sa- + [data-color-mode] blocks). SSOT. */
-@import "@mosje/design-system/tokens.css";
+/* Shared MoSJE token contract (--ds-/--sa- + [data-color-mode] blocks). SSOT.
+   Path is relative rather than a bare package specifier because Turbopack's CSS
+   resolver doesn't follow symlinks to files outside the project root. The symlink
+   at ../../node_modules/@mosje/design-system resolves to packages/design-system. */
+@import "../../node_modules/@mosje/design-system/tokens.css";
 
 @tailwind base;
 @tailwind components;

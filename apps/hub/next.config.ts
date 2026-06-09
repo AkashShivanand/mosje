@@ -8,6 +8,10 @@ const ZONE_SMILE_ADMIN   = process.env.ZONE_SMILE_ADMIN_URL   ?? "http://localho
 const ZONE_EUTTHAN_ADMIN = process.env.ZONE_EUTTHAN_ADMIN_URL ?? "http://localhost:4125";
 
 const nextConfig: NextConfig = {
+  // Required for Multi-Zones: prevents the hub from stripping trailing slashes
+  // from child-zone paths (e.g. /website/ → /website), which would create a
+  // redirect loop with any child app that has trailingSlash: true.
+  skipTrailingSlashRedirect: true,
   transpilePackages: ["@mosje/design-system"],
   turbopack: {
     // Monorepo root is two levels up from apps/hub
@@ -15,9 +19,11 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
-      // dosje website zone
-      { source: "/website",        destination: `${ZONE_WEBSITE}/website` },
-      { source: "/website/:path*", destination: `${ZONE_WEBSITE}/website/:path*` },
+      // dosje website zone — explicit /website/ rule guards against any future
+      // trailingSlash reintroduction; skipTrailingSlashRedirect above handles it too.
+      { source: "/website",         destination: `${ZONE_WEBSITE}/website` },
+      { source: "/website/",        destination: `${ZONE_WEBSITE}/website/` },
+      { source: "/website/:path*",  destination: `${ZONE_WEBSITE}/website/:path*` },
       // portals
       { source: "/portals/pm-ajay",              destination: `${ZONE_PM_AJAY}/portals/pm-ajay` },
       { source: "/portals/pm-ajay/:path*",       destination: `${ZONE_PM_AJAY}/portals/pm-ajay/:path*` },
