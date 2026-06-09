@@ -15,4 +15,6 @@
   --color-surface:        var(--ds-surface);
   --color-surface-muted:  var(--ds-surface-muted);
   --color-border:         var(--ds-border);
+  --color-success:        var(--ds-success);
+  --color-success-tonal:  var(--ds-success-tonal);
 }

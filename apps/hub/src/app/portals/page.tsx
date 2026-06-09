@@ -51,7 +51,7 @@ export default function PortalsPage() {
               >
                 <div className="mb-1 flex items-start justify-between gap-2">
                   <h3 className="text-base font-semibold text-ink">{portal.name}</h3>
-                  <span className="shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
+                  <span className="shrink-0 rounded-full bg-success-tonal px-2 py-0.5 text-xs font-semibold text-success">
                     Live
                   </span>
                 </div>
