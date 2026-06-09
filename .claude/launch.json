@@ -2,40 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "hub",
+      "name": "dev (all apps)",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/hub", "run", "dev"],
+      "runtimeArgs": ["run", "dev"],
       "port": 3000
-    },
-    {
-      "name": "dosje",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/dosje", "run", "dev"],
-      "port": 3001
-    },
-    {
-      "name": "docs",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/docs", "run", "dev"],
-      "port": 6006
-    },
-    {
-      "name": "smile-admin",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/smile-admin", "run", "dev"],
-      "port": 4123
-    },
-    {
-      "name": "pm-ajay",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/pm-ajay", "run", "dev"],
-      "port": 4124
-    },
-    {
-      "name": "eutthan-admin",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/eutthan-admin", "run", "dev"],
-      "port": 4125
     }
   ]
 }
