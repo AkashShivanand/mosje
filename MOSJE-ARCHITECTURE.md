@@ -28,6 +28,23 @@ mosje/                      # single git repo
 
 ---
 
+## Single-origin layout (active)
+
+All apps are accessible from **`localhost:3000`** (hub) in development, and from a single production origin in production. The hub at `apps/hub` holds the routing rewrites.
+
+| App | Dev port | Mount path |
+|-----|----------|------------|
+| hub | **3000** | `/` (root) |
+| dosje (website) | 3001 | `/website` |
+| docs (Storybook) | 6006 | `/design-system` |
+| portals/smile-admin | 4123 | `/portals/smile-admin` |
+| portals/pm-ajay | 4124 | `/portals/pm-ajay` |
+| portals/eutthan-admin | 4125 | `/portals/eutthan-admin` |
+
+**Adding a new portal:** add `basePath: "/portals/<slug>"` to its `next.config.ts`, add a rewrite rule to `apps/hub/next.config.ts`, and add an entry to `apps/hub/src/data/portals.ts`.
+
+---
+
 ## Part 1 — The unified website (`apps/dosje/`): 13 content domains
 
 The single site folds in the department + its commissions/bodies. **Built:** the DoSJE homepage (14 components). Remaining domains are added as pages/sections via the `clone-website` skill.
