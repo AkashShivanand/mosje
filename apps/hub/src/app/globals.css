@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@mosje/design-system/tokens.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-noto-sans), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+
+  /* Map DS semantic tokens to Tailwind utility names */
+  --color-ink:            var(--ds-ink);
+  --color-ink-muted:      var(--ds-ink-muted);
+  --color-gov-blue:       var(--ds-primary);
+  --color-gov-blue-tonal: var(--ds-primary-tonal);
+  --color-surface:        var(--ds-surface);
+  --color-surface-muted:  var(--ds-surface-muted);
+  --color-border:         var(--ds-border);
+}
