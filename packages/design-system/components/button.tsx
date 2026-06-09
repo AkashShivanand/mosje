@@ -87,3 +87,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
   },
 );
+
+/**
+ * Returns the CSS class string for a button variant without rendering the button.
+ * Use when you need a `next/link` or other element styled as a DS button:
+ *   <Link href="/path" className={buttonClasses("primary", "filled", "md")}>Label</Link>
+ */
+export function buttonClasses(
+  variant: ButtonVariant = "primary",
+  appearance: ButtonAppearance = "filled",
+  size: ButtonSize = "md",
+  className?: string,
+): string {
+  return cn("ds-btn", `ds-btn--${variant}`, `ds-btn--${appearance}`, `ds-btn--${size}`, className);
+}

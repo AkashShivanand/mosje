@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Button } from "@mosje/design-system";
+import { buttonClasses } from "@mosje/design-system";
 
 interface Minister {
   img: string;
@@ -57,15 +58,13 @@ export function AboutUs() {
               and economic development, ensuring their inclusion despite
               challenges like the lack of updated demographic data.
             </p>
-            <Button
+            <Link
               href="/about-us/"
-              appearance="outlined"
-              size="sm"
-              iconRight={<ArrowRight className="h-4 w-4" />}
-              className="mt-6"
+              className={buttonClasses("primary", "outlined", "sm", "mt-6")}
             >
               Read More
-            </Button>
+              <span className="ds-btn__icon" aria-hidden="true"><ArrowRight className="h-4 w-4" /></span>
+            </Link>
           </div>
 
           <div className="flex flex-col gap-6">

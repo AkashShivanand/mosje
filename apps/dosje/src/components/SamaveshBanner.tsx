@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Button } from "@mosje/design-system";
+import { buttonClasses } from "@mosje/design-system";
 
 export function SamaveshBanner() {
   return (
@@ -23,16 +24,13 @@ export function SamaveshBanner() {
             Harmony
           </span>
         </div>
-        <Button
+        <Link
           href="/samavesh-citizen-portals"
-          variant="success"
-          appearance="filled"
-          size="sm"
-          iconRight={<ArrowRight className="h-4 w-4" />}
-          className="ml-auto"
+          className={buttonClasses("success", "filled", "sm", "ml-auto")}
         >
           Explore
-        </Button>
+          <span className="ds-btn__icon" aria-hidden="true"><ArrowRight className="h-4 w-4" /></span>
+        </Link>
       </div>
     </section>
   );

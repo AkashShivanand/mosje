@@ -29,7 +29,8 @@ export {
 } from "./components/color-mode-switcher";
 
 // Components (atoms aligned to the UX4G Figma DS)
-export { Button } from "./components/button";
+export { Button, buttonClasses } from "./components/button";
+export type { ButtonVariant, ButtonAppearance, ButtonSize } from "./components/button";
 export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle } from "./components/card";
 export { Badge } from "./components/badge";
 export { Chip } from "./components/chip";

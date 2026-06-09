@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 import path from "node:path";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  basePath: "/website",
   output: "standalone",
   // Match the original dosje.gov.in URL convention (every path ends with a slash).
   trailingSlash: true,

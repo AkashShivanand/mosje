@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown, Accessibility, Languages } from "lucide-react";
-import { Button, Badge, Search, ColorModeSwitcher } from "@mosje/design-system";
+import { Badge, Search, ColorModeSwitcher, buttonClasses } from "@mosje/design-system";
 import type { NavItem } from "@/types";
 
 const NAV: NavItem[] = [
@@ -138,9 +138,9 @@ export function Header() {
 
           <div className="flex items-center gap-4">
             <Image src="/images/digital-india-logo.svg" alt="Digital India — Power To Empower" width={92} height={44} className="hidden h-11 w-auto md:block" />
-            <Button href="/admin" variant="primary" size="sm" className="whitespace-nowrap">
+            <Link href="/admin" className={buttonClasses("primary", "filled", "sm", "whitespace-nowrap")}>
               Admin Login
-            </Button>
+            </Link>
           </div>
         </div>
       </div>

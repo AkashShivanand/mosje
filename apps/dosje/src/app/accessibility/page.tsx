@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ContentPage } from "@/components/templates/ContentPage";
 
 export const metadata: Metadata = {
@@ -104,7 +105,7 @@ export default function AccessibilityPage() {
       <p>
         We welcome your feedback on the accessibility of this website. If you encounter any accessibility
         barrier, or require any information on this website in an alternative format, please reach us through
-        the details on our <a href="/contact-us">Contact Us</a> page, describing the page concerned and the
+        the details on our <Link href="/contact-us">Contact Us</Link> page, describing the page concerned and the
         difficulty you experienced. We will make every reasonable effort to address the issue and to provide
         the information you need.
       </p>

@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Button, Card } from "@mosje/design-system";
+import { buttonClasses, Card } from "@mosje/design-system";
 
 interface ActivityCard {
   img: string;
@@ -65,37 +66,33 @@ export function ActivityCorner() {
                   {activity.title}
                 </h3>
                 <p className="mt-2 text-[13px] text-ink-muted">{activity.date}</p>
-                <Button
+                <Link
                   href="/events"
-                  appearance="text"
-                  size="sm"
-                  iconRight={<ArrowRight className="h-4 w-4" />}
-                  className="mt-4 self-start"
+                  className={buttonClasses("primary", "text", "sm", "mt-4 self-start")}
                 >
                   Read More
-                </Button>
+                  <span className="ds-btn__icon" aria-hidden="true"><ArrowRight className="h-4 w-4" /></span>
+                </Link>
               </div>
             </Card>
           ))}
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button
+          <Link
             href="/events"
-            appearance="outlined"
-            size="sm"
-            iconRight={<ArrowRight className="h-4 w-4" />}
+            className={buttonClasses("primary", "outlined", "sm")}
           >
             View All Events
-          </Button>
-          <Button
+            <span className="ds-btn__icon" aria-hidden="true"><ArrowRight className="h-4 w-4" /></span>
+          </Link>
+          <Link
             href="/events"
-            appearance="outlined"
-            size="sm"
-            iconRight={<ArrowRight className="h-4 w-4" />}
+            className={buttonClasses("primary", "outlined", "sm")}
           >
             View All Press Releases
-          </Button>
+            <span className="ds-btn__icon" aria-hidden="true"><ArrowRight className="h-4 w-4" /></span>
+          </Link>
         </div>
       </div>
     </section>
