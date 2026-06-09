@@ -1,0 +1,138 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — ZoneSwitcher
+   A universal cross-zone launcher injected into every app (except the hub).
+   Fixed FAB (bottom-left, clear of the bottom-right AccessibilityWidget) that
+   opens a popover of all estate zones. Token-only (no raw hex). Plain <a> links
+   navigate at the hub origin so they work from inside any basePath-ed zone.
+   ============================================================================ */
+
+.ds-zswitch {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 2147483000; /* above app chrome, below nothing app-critical */
+  font-family: var(--ds-font-sans);
+}
+
+.ds-zswitch__fab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px 0 14px;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-pill);
+  background-color: var(--ds-surface);
+  color: var(--ds-ink);
+  font-size: var(--ds-text-body-2);
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--ds-shadow-lg);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ds-zswitch__fab:hover {
+  border-color: var(--ds-primary);
+}
+
+.ds-zswitch__fab:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+.ds-zswitch__fab-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--ds-primary);
+  flex: 0 0 auto;
+}
+
+.ds-zswitch__panel {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 10px);
+  width: 300px;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-surface);
+  box-shadow: var(--ds-shadow-xl);
+}
+
+.ds-zswitch__group-label {
+  padding: 8px 10px 4px;
+  font-size: var(--ds-text-label-3);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ds-ink-muted);
+}
+
+.ds-zswitch__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-ink);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ds-zswitch__item:hover {
+  background-color: var(--ds-surface-muted);
+}
+
+.ds-zswitch__item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+.ds-zswitch__item[aria-current="true"] {
+  background-color: var(--ds-primary-tonal);
+}
+
+.ds-zswitch__dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: var(--ds-radius-pill);
+  background-color: var(--ds-border-strong);
+}
+
+.ds-zswitch__item[aria-current="true"] .ds-zswitch__dot {
+  background-color: var(--ds-primary);
+}
+
+.ds-zswitch__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ds-zswitch__name {
+  font-size: var(--ds-text-body-2);
+  font-weight: 500;
+  line-height: var(--ds-leading-body-2);
+}
+
+.ds-zswitch__desc {
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-zswitch__panel {
+    animation: ds-zswitch-in 0.14s ease;
+  }
+  @keyframes ds-zswitch-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}

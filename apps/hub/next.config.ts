@@ -31,11 +31,21 @@ const nextConfig: NextConfig = {
       { source: "/portals/smile-admin/:path*",   destination: `${ZONE_SMILE_ADMIN}/portals/smile-admin/:path*` },
       { source: "/portals/eutthan-admin",        destination: `${ZONE_EUTTHAN_ADMIN}/portals/eutthan-admin` },
       { source: "/portals/eutthan-admin/:path*", destination: `${ZONE_EUTTHAN_ADMIN}/portals/eutthan-admin/:path*` },
-      // design system — Storybook dev server (note: root-relative Storybook assets
-      // won't resolve through this proxy in dev; open localhost:6006 directly for
-      // full HMR. This rewrite works correctly with a static Storybook export in prod.)
-      { source: "/design-system",        destination: `${ZONE_DS}/` },
-      { source: "/design-system/:path*", destination: `${ZONE_DS}/:path*` },
+      // Storybook — proxied through the hub. Always LINK to "/storybook/" (trailing
+      // slash) so Storybook's relative asset URLs (./sb-manager/…, ./iframe.html)
+      // resolve under /storybook/ and proxy via the :path* rule below. The no-slash
+      // rule covers the normalized root request. (HMR websocket still needs :6006
+      // directly; the full UI loads through the hub.)
+      { source: "/storybook",         destination: `${ZONE_DS}/` },
+      { source: "/storybook/:path*",  destination: `${ZONE_DS}/:path*` },
+    ];
+  },
+  async redirects() {
+    return [
+      // /design-system is reserved for the upcoming Next docs portal; until it ships,
+      // send visitors to Storybook so the route is never blank. (Temporary 307.)
+      { source: "/design-system", destination: "/storybook/", permanent: false },
+      { source: "/design-system/:path*", destination: "/storybook/", permanent: false },
     ];
   },
 };

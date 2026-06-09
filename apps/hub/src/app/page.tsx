@@ -13,7 +13,7 @@ const destinations = [
     title: "Design System",
     description: "SAMAVESH component library, design tokens, and Storybook documentation.",
     icon: BookOpen,
-    href: "/design-system",
+    href: "/storybook/",
     cta: "Open Storybook",
     available: true,
   },
