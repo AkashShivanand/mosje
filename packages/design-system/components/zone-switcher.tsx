@@ -48,8 +48,42 @@ export function AppSwitcher({
   const [query, setQuery] = React.useState("");
   const searchRef = React.useRef<HTMLInputElement>(null);
   const rootRef = React.useRef<HTMLDivElement>(null);
+  const swatchRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
   const panelId = React.useId();
   const { mode, setMode, modes } = useColorMode();
+
+  const focusAndSelectSwatch = (index: number) => {
+    const next = (index + modes.length) % modes.length;
+    const target = modes[next];
+    if (!target) return;
+    setMode(target.id);
+    swatchRefs.current[next]?.focus();
+  };
+
+  const onSwatchKeyDown = (event: React.KeyboardEvent, index: number) => {
+    switch (event.key) {
+      case "ArrowRight":
+      case "ArrowDown":
+        event.preventDefault();
+        focusAndSelectSwatch(index + 1);
+        break;
+      case "ArrowLeft":
+      case "ArrowUp":
+        event.preventDefault();
+        focusAndSelectSwatch(index - 1);
+        break;
+      case "Home":
+        event.preventDefault();
+        focusAndSelectSwatch(0);
+        break;
+      case "End":
+        event.preventDefault();
+        focusAndSelectSwatch(modes.length - 1);
+        break;
+      default:
+        break;
+    }
+  };
 
   // Client-only pathname — avoids SSR mismatch.
   React.useEffect(() => {
@@ -154,20 +188,25 @@ export function AppSwitcher({
               >
                 <div className="ds-appsw__theme-label">Theme</div>
                 <div className="ds-appsw__theme-swatches">
-                  {modes.map((m) => (
+                  {modes.map((m, i) => (
                     <button
                       key={m.id}
+                      ref={(el) => {
+                        swatchRefs.current[i] = el;
+                      }}
                       type="button"
                       role="radio"
                       aria-checked={m.id === mode}
                       aria-label={m.label}
                       title={m.label}
+                      tabIndex={m.id === mode ? 0 : -1}
                       className={cn(
                         "ds-appsw__swatch",
                         m.id === mode && "is-active",
                       )}
                       style={{ background: m.swatch }}
                       onClick={() => setMode(m.id)}
+                      onKeyDown={(e) => onSwatchKeyDown(e, i)}
                     />
                   ))}
                 </div>
@@ -244,6 +283,7 @@ export function AppSwitcher({
                         return (
                           <div
                             key={a.path}
+                            role="listitem"
                             className="ds-appsw__item ds-appsw__item--planned"
                             aria-disabled="true"
                             aria-label={`${a.name} — coming soon`}
@@ -274,6 +314,7 @@ export function AppSwitcher({
                       return (
                         <a
                           key={a.path}
+                          role="listitem"
                           href={a.path}
                           className={cn(
                             "ds-appsw__item",

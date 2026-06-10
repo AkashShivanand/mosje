@@ -191,7 +191,7 @@
 }
 
 .ds-appsw__search-input::placeholder {
-  color: var(--ds-ink-subtle);
+  color: var(--ds-ink-muted);
 }
 
 /* Remove default search clear button */
@@ -202,7 +202,7 @@
 .ds-appsw__search-kbd {
   font-family: var(--ds-font-sans);
   font-size: 10px;
-  color: var(--ds-ink-subtle);
+  color: var(--ds-ink-muted);
   background-color: var(--ds-border);
   border-radius: 4px;
   padding: 1px 5px;
