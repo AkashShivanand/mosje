@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
-import { AccessibilityWidget, ColorModeProvider, ZoneSwitcher } from "@mosje/design-system";
+import { AccessibilityWidget, AppSwitcher, ColorModeProvider } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import "./globals.css";
 
@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-US" className={`${notoSans.variable} h-full antialiased`}>
+    <html lang="en-US" className={`${notoSans.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         {/* No-flash: set data-color-mode from the cookie before first paint.
             Keeps every route statically generable (no cookies() in this layout). */}
@@ -38,7 +38,7 @@ export default function RootLayout({
         <ColorModeProvider>
           {children}
           <AccessibilityWidget />
-          <ZoneSwitcher />
+          <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
         </ColorModeProvider>
       </body>
     </html>

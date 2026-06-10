@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ZoneSwitcher } from "@mosje/design-system";
+import { AppSwitcher } from "@mosje/design-system";
 import { AuthProvider } from "@/store/auth-context";
 import "./globals.css";
 
@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           {children}
         </AuthProvider>
-        <ZoneSwitcher />
+        <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
       </body>
     </html>
   );
