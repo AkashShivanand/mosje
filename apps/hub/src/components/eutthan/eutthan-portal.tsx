@@ -30,12 +30,12 @@ import {
   X,
 } from "lucide-react";
 import {
-  dashboardSummary,
+  adminDashboardSummary as dashboardSummary,
+  adminNavItems as navItems,
+  adminProgressCards as progressCards,
   expenditureLegend,
   formRoutes,
   loginCards,
-  navItems,
-  progressCards,
   tableScreens,
   type TableScreen,
 } from "@/lib/eutthan/portal-data";
