@@ -1,0 +1,226 @@
+{
+  "screen": "Admin / Documents",
+  "slug": "DOCUMENTS",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-42902",
+  "liveUrl": "https://eutthan-admin-uat.mosje.in/document-management",
+  "findings": [
+    {
+      "id": "UTH-DOCUMENTS-001",
+      "element": "Masthead — Department line (line 2)",
+      "axis": "Content & Iconography",
+      "severity": "Major",
+      "figma": "Two masthead lines: line 1 'Ministry of Social Justice & Empowerment' (Noto Sans 14px/500, #1f2937) + line 2 'Department of Social Justice & Empowerment' (Noto Sans 20px/700, #374151)",
+      "live": "Single masthead line: 'Ministry of Social Justice & Empowerment' (Noto Sans 20px/700, rgb(55,65,81)). The 'Department of Social Justice & Empowerment' bold heading line is entirely absent.",
+      "fix": "Add the second masthead line 'Department of Social Justice & Empowerment' (Noto Sans 20px/700, #374151) and downgrade the Ministry line to 14px/500 #1f2937 letter-spacing 0.4px to match Figma."
+    },
+    {
+      "id": "UTH-DOCUMENTS-002",
+      "element": "Masthead — partner/brand logos",
+      "axis": "Content & Iconography",
+      "severity": "Major",
+      "figma": "Masthead right region carries Digital India logo + SAMAVESH logo lockup ('Single Access Mechanism for All Verticals of Empowerment & Social Harmony') before the profile chip.",
+      "live": "No Digital India or SAMAVESH logos rendered; masthead right region jumps straight to the profile chip.",
+      "fix": "Add the Digital India and SAMAVESH logo lockups in the masthead right region per Figma node 4226:42902."
+    },
+    {
+      "id": "UTH-DOCUMENTS-003",
+      "element": "Top gov bar — color & height",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "Top gov bar accent strip 52px tall (token Gov top bar accent #ffd323 recorded; rendered frame shows dark gov band with #ffd323 accent).",
+      "live": "Gov bar background rgb(0,51,102) (#003366), height 38px.",
+      "fix": "Confirm gov-bar height against Figma (52px in spec vs 38px live = 14px short) and apply the #ffd323 accent token where Figma specifies it."
+    },
+    {
+      "id": "UTH-DOCUMENTS-004",
+      "element": "Profile chip — name & role",
+      "axis": "Content & Iconography",
+      "severity": "Minor",
+      "figma": "Profile name 'Vikas S' (Noto Sans 16px/24lh), role 'Admin' (Noto Sans 13px/20lh); avatar initials 'VS'.",
+      "live": "Profile name 'Admin User', role '(Super Admin)' in parentheses; avatar initials 'AU'.",
+      "fix": "Profile identity is account-bound (DATA) but the role format differs: Figma uses plain 'Admin', live wraps role in parentheses '(Super Admin)'. Align role-label format to the Figma pattern (no parentheses)."
+    },
+    {
+      "id": "UTH-DOCUMENTS-005",
+      "element": "Primary action button — 'Add Document'",
+      "axis": "Typography",
+      "severity": "Minor",
+      "figma": "Noto Sans 14px / weight 500 (Medium) / line-height 20px, color #ffffff.",
+      "live": "Noto Sans 14px / weight 600 / line-height 14px, color rgb(255,255,255).",
+      "fix": "Set button label weight 500 (not 600) and line-height 20px to match Figma."
+    },
+    {
+      "id": "UTH-DOCUMENTS-006",
+      "element": "Primary action button — size & padding",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "165 × 40 px; padding pl 24 / pr 16 / py 8; radius 8px; icon 16×16 trailing, gap 8.",
+      "live": "152 × 36 px; padding pl 18 / pr 12 / py 0; radius 8px.",
+      "fix": "Increase button to 165×40 (height +4, width +13); set padding pl 24 / pr 16 / py 8 to match Figma."
+    },
+    {
+      "id": "UTH-DOCUMENTS-007",
+      "element": "Table column header — font size",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "Column header text Noto Sans 16px / 600 (SemiBold) / line-height 24px (Body-1-semibold).",
+      "live": "Column header text Noto Sans 14px / 600 / line-height 21.7px.",
+      "fix": "Set table column header font-size to 16px and line-height to 24px per Figma."
+    },
+    {
+      "id": "UTH-DOCUMENTS-008",
+      "element": "Table column header — text color",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "Column header text color #6b7280 (rendered hint color).",
+      "live": "Column header text color rgb(55,65,81) (#374151).",
+      "fix": "Change column header text color to #6b7280 to match Figma hint-text rendering."
+    },
+    {
+      "id": "UTH-DOCUMENTS-009",
+      "element": "Table column header — background & padding",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "Header cell bg #f9fafb; padding px 24 / py 16; header row 56px tall.",
+      "live": "Header cell effective bg rgb(243,244,246) (#f3f4f6); padding px 16 / py 16; header row 54px tall.",
+      "fix": "Set header background to #f9fafb (not #f3f4f6), horizontal cell padding to 24px (currently 16px), and row height to 56px."
+    },
+    {
+      "id": "UTH-DOCUMENTS-010",
+      "element": "Table data cell — font size & line-height",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "Data cell text Noto Sans 16px / 400 / line-height 24px (Body-1).",
+      "live": "Data cell text Noto Sans 14px / 400 / line-height 21.7px.",
+      "fix": "Set data cell font-size to 16px and line-height to 24px per Figma."
+    },
+    {
+      "id": "UTH-DOCUMENTS-011",
+      "element": "Table data cell — text color",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "Data cell text color #374151 (Text/Dark).",
+      "live": "Data cell text color rgb(75,85,99) (#4b5563 / Neutral-600).",
+      "fix": "Change data cell text color to #374151 to match Figma."
+    },
+    {
+      "id": "UTH-DOCUMENTS-012",
+      "element": "Table data cell — padding & row height",
+      "axis": "Layout & Spacing",
+      "severity": "Major",
+      "figma": "Cell internal padding 24px all sides; data row height 116px.",
+      "live": "Cell padding px 16 / py 20; data row height 69px.",
+      "fix": "Set cell padding to 24px on all sides (horizontal +8, vertical +4) and increase data row height to 116px (delta 47px) per Figma."
+    },
+    {
+      "id": "UTH-DOCUMENTS-013",
+      "element": "Table column bottom border — color",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "Row/header bottom border #f3f4f6 / 1px (Stroke/100).",
+      "live": "Bottom border color rgb(229,231,235) (#e5e7eb / Stroke-200); borderBottomWidth reported 0px on cells.",
+      "fix": "Set cell bottom border to 1px #f3f4f6 (currently #e5e7eb, and ensure 1px width is applied)."
+    },
+    {
+      "id": "UTH-DOCUMENTS-014",
+      "element": "Card container — border radius & border",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "Card is a white container (#ffffff) with shadow-s (0 1 3 1 #2121211A; 0 4 4 0 #2121211F), no top hairline border.",
+      "live": "Card effective bg rgb(255,255,255) with top border 1px rgb(229,231,235); border-radius 12px.",
+      "fix": "Remove the top hairline border on the card and apply Figma shadow-s; keep radius per card token (Figma uses default card radius, not the live 12px top-left-only)."
+    },
+    {
+      "id": "UTH-DOCUMENTS-015",
+      "element": "Sidebar active item — text color",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "Active item 'Manage Documents' text color #003366 (Primary/Source) on bg #e5eff9 (Primary/50).",
+      "live": "Active item text color rgb(55,65,81) (#374151) on bg rgb(229,239,249) (#e5eff9).",
+      "fix": "Set active sidebar item text color to #003366 (Primary/Source); background #e5eff9 is correct."
+    },
+    {
+      "id": "UTH-DOCUMENTS-016",
+      "element": "Sidebar active item — font weight",
+      "axis": "Typography",
+      "severity": "Minor",
+      "figma": "Active item label Noto Sans 14px / weight 400 (regular).",
+      "live": "Active item label weight 700 (bold).",
+      "fix": "Set active sidebar item font-weight to 400 to match Figma (Figma does not bold the active label)."
+    },
+    {
+      "id": "UTH-DOCUMENTS-017",
+      "element": "Sidebar item — border radius",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "Sidebar item pill radius 16px (radius-xl).",
+      "live": "Sidebar item radius 8px.",
+      "fix": "Set sidebar item border-radius to 16px per Figma."
+    },
+    {
+      "id": "UTH-DOCUMENTS-018",
+      "element": "Search field — placeholder color & background",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "Search field placeholder 'Search for ' Noto Sans 14px/400 #6b7280 on bg #f9fafb; field 577 × 40, radius 8, search icon 20×20.",
+      "live": "Search field spans nearly full card header width (~768px wide, not 577px); placeholder 'Search for' rendered very light gray (lower-contrast than #6b7280) on near-white bg.",
+      "fix": "Constrain search field width toward Figma 577px (CardHeader is space-between: search left, filter chip right), and set placeholder color to #6b7280 on #f9fafb fill."
+    },
+    {
+      "id": "UTH-DOCUMENTS-019",
+      "element": "Filter chip (year) — variant & layout",
+      "axis": "Components & States",
+      "severity": "Major",
+      "figma": "Year filter chip '2024-25' (Noto Sans 14px/400 #374151) transparent fill, 1px #e5e7eb border, radius 6, 99 × 36, leading arrow-down icon 18×18, pl 8 / pr 16 / py 8.",
+      "live": "Year filter is a full dropdown showing '2026-2027' with a trailing clear (×) button and a chevron; styled as a bordered select ~140px wide, not the compact 99px chip with a leading caret.",
+      "fix": "Replace the wide clearable select with the Figma compact filter chip (99×36, radius 6, leading arrow-down 18×18, #e5e7eb border). The displayed value '2024-25' vs '2026-2027' is DATA, but the component variant and the trailing × control are defects."
+    },
+    {
+      "id": "UTH-DOCUMENTS-020",
+      "element": "Row action — eye/view icon presence",
+      "axis": "Components & States",
+      "severity": "Minor",
+      "figma": "Action cell contains a single more_vert (kebab) icon button (40×40, glyph 24×24); Edit/Delete live inside the kebab dropdown menu.",
+      "live": "Action cell shows a standalone eye (view) icon button in addition to the kebab more_vert icon.",
+      "fix": "Remove the standalone eye icon from the action cell; keep only the more_vert kebab per Figma (or confirm view action belongs inside the dropdown)."
+    },
+    {
+      "id": "UTH-DOCUMENTS-021",
+      "element": "Pagination — page-size default value",
+      "axis": "Content & Iconography",
+      "severity": "Nit",
+      "figma": "Page-size dropdown default '200'; 'Showing 200 of 1500 items'.",
+      "live": "Page-size dropdown default '10'; 'Showing 10 of 1 items'.",
+      "fix": "Item count and total are DATA (real records vs Figma placeholder), not a defect. Default page-size 10 vs 200 is a product decision; confirm intended default."
+    },
+    {
+      "id": "UTH-DOCUMENTS-022",
+      "element": "Sidebar collapse toggle (hamburger)",
+      "axis": "Components & States",
+      "severity": "Minor",
+      "figma": "Sidebar header shows a collapse/menu toggle control (hamburger with chevron) at top-left of the masthead/sidebar junction.",
+      "live": "No visible sidebar collapse toggle in the masthead/sidebar header.",
+      "fix": "Add the sidebar collapse toggle control present in the Figma masthead-left region."
+    }
+  ],
+  "figmaCorrections": [
+    {
+      "id": "FIG-DOCUMENTS-001",
+      "element": "Text/Hint variable resolution",
+      "issue": "The token table maps 'Text/Hint' to #374151, but the rendered handoff consistently uses #6b7280 for all hint/placeholder text (search placeholder, column-head text, inactive pagination, 'Showing'/'items' labels). The variable definition and its rendered usage disagree.",
+      "recommendation": "Reconcile the 'Text/Hint' variable to a single value (#6b7280 appears to be the intended hint color) so handoff consumers don't have to guess which value is authoritative."
+    },
+    {
+      "id": "FIG-DOCUMENTS-002",
+      "element": "Column header text contrast",
+      "issue": "Column header uses #6b7280 at 16px on #f9fafb. While 16px/600 is large enough to pass AA UI/large-text (3:1), #6b7280 on #f9fafb is borderline for the smaller 13px 'Showing'/'of N items' labels which reuse the same hint color.",
+      "recommendation": "Verify #6b7280 hint text meets WCAG 2.1 AA (4.5:1) at the 13px body-3 sizes; darken toward #4b5563 for the smallest hint labels if it fails."
+    },
+    {
+      "id": "FIG-DOCUMENTS-003",
+      "element": "Masthead body color inconsistency",
+      "issue": "Masthead line 1 is rendered #1f2937 while line 2 uses #374151 (Text/Dark); two near-identical dark grays are used in adjacent masthead lines with no semantic distinction.",
+      "recommendation": "Standardize both masthead lines on a single Text token (#374151) unless the #1f2937 difference is intentional and tokenized."
+    }
+  ]
+}

@@ -10,7 +10,9 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
+import Link from "next/link";
 import { Sparkline } from "./charts";
+import { useAuth } from "@/store/auth-context";
 import {
   STATES,
   FY,
@@ -22,6 +24,8 @@ import {
   type StateRow,
   type ViewId,
 } from "@/lib/data";
+
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "/portals/pm-ajay";
 
 const LOWER_BETTER =
   /Alert|Pending|Blocked|Overdue|Rejected|Returned|Audit|Unspent|Processing|Utilization Time/i;
@@ -293,6 +297,7 @@ export function FilterBar({
 
 /* ---- Sidebar ---- */
 export function Sidebar({ view, setView }: { view: ViewId; setView: (v: ViewId) => void }) {
+  const { account, signOut } = useAuth();
   return (
     <nav className="pm-side" aria-label="Dashboards">
       <div className="pm-side-title" id="pm-nav-h">
@@ -323,14 +328,38 @@ export function Sidebar({ view, setView }: { view: ViewId; setView: (v: ViewId) 
           </li>
         ))}
       </ul>
+
+      {/* Unified Programme Dashboard link */}
+      <div className="pm-side-unified">
+        <Link href={`${BASE}/unified`} className="pm-nav-item unified-link">
+          <span className="material-symbols-rounded ic" aria-hidden="true">dashboard_customize</span>
+          <span className="lab">
+            Unified Dashboard
+            <span className="sub">All 60 indicators</span>
+          </span>
+          <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 14, marginLeft: "auto", opacity: 0.5 }}>
+            open_in_new
+          </span>
+        </Link>
+      </div>
+
       <div className="pm-side-foot">
         <div className="av" aria-hidden="true">
-          SM
+          {account?.avatar ?? "??"}
         </div>
-        <div>
-          <div className="nm">Sachin Malhotra</div>
-          <div className="rl">Joint Secretary · MoSJE</div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div className="nm">{account?.name ?? "—"}</div>
+          <div className="rl">{account?.designation ?? ""}</div>
         </div>
+        <button
+          type="button"
+          className="pm-signout-btn"
+          onClick={signOut}
+          aria-label="Sign out"
+          title="Sign out"
+        >
+          <span className="material-symbols-rounded" aria-hidden="true">logout</span>
+        </button>
       </div>
     </nav>
   );

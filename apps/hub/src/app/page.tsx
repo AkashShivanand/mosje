@@ -30,8 +30,8 @@ const destinations = [
     description: "QC and audit reports for the MoSJE digital estate.",
     icon: FileBarChart,
     href: "/reports",
-    cta: "Coming soon",
-    available: false,
+    cta: "View reports",
+    available: true,
   },
 ] as const;
 

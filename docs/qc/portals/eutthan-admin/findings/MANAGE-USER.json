@@ -1,0 +1,214 @@
+{
+  "screen": "Admin / Manage User",
+  "slug": "MANAGE-USER",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40870",
+  "liveUrl": "https://eutthan-admin-uat.mosje.in/user-management",
+  "findings": [
+    {
+      "id": "UTH-MANAGE-USER-001",
+      "element": "Sidebar active item (User Management) — text color",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "text color #003366 (Primary/Source / text-primary) on active item",
+      "live": "text color rgb(55, 65, 81) = #374151 (Neutral/Text-Dark)",
+      "fix": "Set active sidebar item label color to #003366 (Primary/Source); the active state must read as primary-colored, not neutral dark."
+    },
+    {
+      "id": "UTH-MANAGE-USER-002",
+      "element": "Sidebar active item (User Management) — font weight",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "font-weight 400 (Regular) — active item differs from default only by bg + primary text color, not weight",
+      "live": "font-weight 700 (Bold)",
+      "fix": "Set active sidebar item font-weight to 400 (Regular). Bold is not how Figma differentiates the active state."
+    },
+    {
+      "id": "UTH-MANAGE-USER-003",
+      "element": "Sidebar active item (User Management) — corner radius",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "border-radius 16px (xl)",
+      "live": "border-radius 8px",
+      "fix": "Set active sidebar item background pill radius to 16px (xl) to match the rounded Figma highlight."
+    },
+    {
+      "id": "UTH-MANAGE-USER-004",
+      "element": "Table column header cell — font size",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "font-size 16px, line-height 24px (Body/body-1-semibold)",
+      "live": "font-size 14px, line-height 21.7px",
+      "fix": "Set column header font-size to 16px / line-height 24px."
+    },
+    {
+      "id": "UTH-MANAGE-USER-005",
+      "element": "Table column header cell — text color",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "color #6b7280 (Text/Hint)",
+      "live": "color rgb(55, 65, 81) = #374151",
+      "fix": "Set column header text color to #6b7280 (Text/Hint)."
+    },
+    {
+      "id": "UTH-MANAGE-USER-006",
+      "element": "Table column header cell — background fill",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "background #f9fafb (Neutral/50)",
+      "live": "effective background rgb(243, 244, 246) = #f3f4f6 (Stroke/100)",
+      "fix": "Set header row background to #f9fafb (Neutral/50); current #f3f4f6 is one step too dark (token drift)."
+    },
+    {
+      "id": "UTH-MANAGE-USER-007",
+      "element": "Table column header cell — horizontal padding",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "padding-left 24px / padding-right 24px",
+      "live": "padding-left 16px / padding-right 16px",
+      "fix": "Set header cell horizontal padding to 24px."
+    },
+    {
+      "id": "UTH-MANAGE-USER-008",
+      "element": "Table column header row — height",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "header row height 56px (py 16 + 16px/24 content)",
+      "live": "height 54px",
+      "fix": "Header row height should be 56px; 2px short due to reduced font-size — fixes with size correction (UTH-MANAGE-USER-004)."
+    },
+    {
+      "id": "UTH-MANAGE-USER-009",
+      "element": "Table data cell — font size",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "font-size 16px, line-height 24px (Body/body-1)",
+      "live": "font-size 14px, line-height 21.7px",
+      "fix": "Set data cell font-size to 16px / line-height 24px."
+    },
+    {
+      "id": "UTH-MANAGE-USER-010",
+      "element": "Table data cell — text color",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "color #374151 (Text/Dark)",
+      "live": "color rgb(75, 85, 99) = #4b5563 (Neutral/600)",
+      "fix": "Set data cell text color to #374151 (Text/Dark); current #4b5563 is one step too light (token drift)."
+    },
+    {
+      "id": "UTH-MANAGE-USER-011",
+      "element": "Table data cell — padding",
+      "axis": "Layout & Spacing",
+      "severity": "Major",
+      "figma": "padding 24px all sides",
+      "live": "padding-top/bottom 20px, padding-left/right 16px",
+      "fix": "Set data cell padding to 24px on all sides (vertical off 4px, horizontal off 8px)."
+    },
+    {
+      "id": "UTH-MANAGE-USER-012",
+      "element": "Table data row — height",
+      "axis": "Layout & Spacing",
+      "severity": "Major",
+      "figma": "data row height 116px",
+      "live": "row height 77px",
+      "fix": "Increase data row height to 116px (delta 39px); driven by reduced cell padding (24→20) and font-size (16→14). Rows are far denser than the design."
+    },
+    {
+      "id": "UTH-MANAGE-USER-013",
+      "element": "Add user button — font weight",
+      "axis": "Typography",
+      "severity": "Minor",
+      "figma": "font-weight 500 (Medium), line-height 20px (label-1)",
+      "live": "font-weight 600 (SemiBold), line-height 14px",
+      "fix": "Set Add user button label to font-weight 500 / line-height 20px."
+    },
+    {
+      "id": "UTH-MANAGE-USER-014",
+      "element": "Add user button — padding",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "padding-left 24px / padding-right 16px / padding-top+bottom 8px",
+      "live": "padding-left 18px / padding-right 12px / padding-top+bottom 0px",
+      "fix": "Set button padding to pl 24 / pr 16 / py 8 to match Figma (label-leading add-trailing layout)."
+    },
+    {
+      "id": "UTH-MANAGE-USER-015",
+      "element": "Add user button — size",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "124 × 40 px",
+      "live": "113 × 36 px",
+      "fix": "Button should measure 124×40 (W −11px, H −4px); resolves once padding (UTH-MANAGE-USER-014) is corrected."
+    },
+    {
+      "id": "UTH-MANAGE-USER-016",
+      "element": "Filter controls — component & count",
+      "axis": "Components & States",
+      "severity": "Major",
+      "figma": "three Default Chips with 1px #e5e7eb (Stroke/200) border, radius 6, arrow-down 18px icon: '2024-25', 'All Schemes', 'All Department', group gap 12",
+      "live": "a single native-style select dropdown 'All Years'; the 'All Schemes' and 'All Department' chips are absent",
+      "fix": "Render three filter chips (Financial Year, Schemes, Department) using the Default Chip component (border #e5e7eb, radius 6) instead of one dropdown; add the two missing filters."
+    },
+    {
+      "id": "UTH-MANAGE-USER-017",
+      "element": "Selected/active table row highlight",
+      "axis": "Components & States",
+      "severity": "Minor",
+      "figma": "no row selection / highlight state exists; rows have white bg with #f3f4f6 bottom dividers only (no zebra, no selected fill)",
+      "live": "one row (Sample User) is rendered with a blue-tinted (~#e5eff9) selected/hover fill spanning the full row",
+      "fix": "Remove the persistent blue row-highlight state (or confirm it is an intended hover-only state); Figma defines no selected-row fill for this table."
+    },
+    {
+      "id": "UTH-MANAGE-USER-018",
+      "element": "Card (table container) — width",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "card width 1092px",
+      "live": "card width 1062px",
+      "fix": "Set card width to 1092px (delta 30px); content area is narrower than design."
+    },
+    {
+      "id": "UTH-MANAGE-USER-019",
+      "element": "Top gov bar (Accessibility Bar) — height",
+      "axis": "Layout & Spacing",
+      "severity": "Nit",
+      "figma": "height 40px, background #003366",
+      "live": "height 38px, background rgb(0, 51, 102) = #003366",
+      "fix": "Set top gov bar height to 40px (2px short); background color is correct."
+    },
+    {
+      "id": "UTH-MANAGE-USER-020",
+      "element": "Masthead prominent department line — content",
+      "axis": "Content & Iconography",
+      "severity": "Minor",
+      "figma": "headline-4 line reads 'Department of Social Justice & Empowerment' (20px/700/#374151); 'Ministry of Social Justice & Empowerment' is the secondary 14px/500 line above it",
+      "live": "the 20px/700/#374151 prominent line reads 'Ministry of Social Justice & Empowerment'",
+      "fix": "Confirm masthead hierarchy: the bold 20px line should be the Department line per Figma. Live promotes the Ministry text into the headline slot."
+    }
+  ],
+  "figmaCorrections": [
+    {
+      "id": "FIG-MANAGE-USER-001",
+      "element": "User List content frame (node 4226:40870)",
+      "issue": "The real 'User List' frame is collapsed to width=1 on the canvas, so it produces no clean rendered screenshot; all page-body specs had to be read from variable/metadata extraction rather than a visual.",
+      "recommendation": "Expand frame 4226:40870 to its intended width (1140 container) on the canvas so it renders a clean handoff image and is reviewable visually."
+    },
+    {
+      "id": "FIG-MANAGE-USER-002",
+      "element": "MANAGE USER frame (node 4226:40865) overlay",
+      "issue": "The full-frame screenshot of 4226:40865 renders a stray pasted inner frame 9041:36044 ('ADMIN / MAP SCHEMES / Mapped' — 'Mapped Schemes List') sitting on top of the user-list content, making the frame visually misleading.",
+      "recommendation": "Remove the pasted 'Mapped Schemes' overlay (9041:36044) from the MANAGE USER frame so it reflects only the User List content."
+    },
+    {
+      "id": "FIG-MANAGE-USER-003",
+      "element": "MANAGE USER frame name (node 4226:40865)",
+      "issue": "Frame is named 'ADMIN / MANGAGE USER' — 'MANGAGE' is a typo for 'MANAGE'.",
+      "recommendation": "Rename the frame to 'ADMIN / MANAGE USER'."
+    },
+    {
+      "id": "FIG-MANAGE-USER-004",
+      "element": "Text/Hint token vs rendered hint color",
+      "issue": "The Text/Hint token is defined as #374151 but hint/placeholder text in the design context actually renders #6b7280 — the token value and the applied value disagree.",
+      "recommendation": "Reconcile the Text/Hint token: either set the token to #6b7280 or stop using it for hint text; the current mismatch makes the hint color ambiguous for developers."
+    }
+  ]
+}

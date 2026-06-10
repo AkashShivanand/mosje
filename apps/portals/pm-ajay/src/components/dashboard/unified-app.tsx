@@ -5,8 +5,11 @@
    Faithful port of the Claude Design handoff unified-app.jsx. */
 
 import { useState, useMemo, useRef, useLayoutEffect, type CSSProperties } from "react";
+import Link from "next/link";
 import { Navbar } from "@/components/shell/navbar";
 import { FilterBar, Status, Footer, pillClass, type Filters } from "./ui";
+
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "/portals/pm-ajay";
 import { Donut, Funnel, LineArea, Sparkline, C } from "./charts";
 import {
   FY,
@@ -422,6 +425,10 @@ export function UnifiedDashboard() {
             {/* Toolbar */}
             <div className="ud-toolbar">
               <div className="ud-title">
+                <Link href={`${BASE}/`} className="ud-back-link">
+                  <span className="material-symbols-rounded" aria-hidden="true">arrow_back</span>
+                  MIS Dashboard
+                </Link>
                 <h1>PM-AJAY Programme Dashboard</h1>
                 <p className="sub">
                   Funds, scheme delivery and compliance — at a glance for{" "}
