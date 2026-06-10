@@ -1,0 +1,208 @@
+{
+  "screen": "Admin / Manage Ministry",
+  "slug": "MANAGE-MINISTRY",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40288",
+  "liveUrl": "https://eutthan-admin-uat.mosje.in/ministry-management",
+  "findings": [
+    {
+      "id": "UTH-MANAGE-MINISTRY-001",
+      "element": "Table header cell — font size & weight",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "Noto Sans 16px / SemiBold 600 / line-height 24px, color #6b7280",
+      "live": "Noto Sans 14px / SemiBold 600 / line-height 20px, color rgb(75,85,99) = #4b5563",
+      "fix": "Set column-header type to 16px/600/24px and color #6b7280 (Text/Hint) per Figma col-head spec."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-002",
+      "element": "Table header cell — text color",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "#6b7280 (Text/Hint as emitted)",
+      "live": "rgb(75, 85, 99) = #4b5563 (Neutral/600)",
+      "fix": "Change column-header color from #4b5563 to #6b7280 to match Figma."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-003",
+      "element": "Body cell — default row text color",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "Default (non-selected) body cell text = #374151 (Neutral/Text-Dark), regular",
+      "live": "All body cells render rgb(0,51,102) = #003366 (Primary), incl. non-selected rows",
+      "fix": "Default body rows must use #374151. Only the selected/active row uses #003366. Live applies primary blue to every row."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-004",
+      "element": "Body cell — text weight",
+      "axis": "Typography",
+      "severity": "Minor",
+      "figma": "Noto Sans 16px / Regular 400 / line-height 24px",
+      "live": "Noto Sans 14px / Medium 500 / line-height 20px",
+      "fix": "Set body-cell type to 16px / 400 / 24px; remove Medium 500 weight applied live."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-005",
+      "element": "Body cell — font size",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "16px (Body/body-1)",
+      "live": "14px",
+      "fix": "Increase body-cell font-size from 14px to 16px per Figma body-1."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-006",
+      "element": "Table header — vertical padding",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "py 16px (padding-top 16 / padding-bottom 16)",
+      "live": "padding-top 14px / padding-bottom 14px",
+      "fix": "Increase header cell vertical padding from 14px to 16px (delta 2px each side)."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-007",
+      "element": "Table header cell — row height",
+      "axis": "Layout & Spacing",
+      "severity": "Major",
+      "figma": "56px",
+      "live": "49px",
+      "fix": "Header row height is 7px short; align to 56px (driven by 16px font + 16px py)."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-008",
+      "element": "Body cell — row height",
+      "axis": "Layout & Spacing",
+      "severity": "Blocker",
+      "figma": "116px",
+      "live": "53px",
+      "fix": "Body row height is 63px short of Figma (116 → 53). Rows are far denser than designed; restore 116px cell height."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-009",
+      "element": "Card container — border radius",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "radius 14px (raw)",
+      "live": "border-top-left-radius 8px",
+      "fix": "Set card radius to 14px to match Figma (delta 6px)."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-010",
+      "element": "Card container — border color",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "1px #e2e8f0 (raw)",
+      "live": "1px rgb(229,231,235) = #e5e7eb",
+      "fix": "Change card border from #e5e7eb to #e2e8f0 per Figma card stroke."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-011",
+      "element": "Zebra / selected-row styling",
+      "axis": "Components & States",
+      "severity": "Major",
+      "figma": "Single selected/active row uses #e5eff9 bg + #003366 text; all other rows white bg + #374151 text",
+      "live": "zebra reports r1 #ffffff, r2 #ffffff (no alternating); but all text is #003366 and a hovered/selected row shows #e5eff9 highlight",
+      "fix": "Confirm selection model: only the active row should carry #e5eff9 bg + #003366 text; default rows must be white bg + #374151 text."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-012",
+      "element": "Top gov bar — height",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "40px tall, bg #003366",
+      "live": "38px tall, bg rgb(0,51,102) = #003366",
+      "fix": "Increase gov bar height from 38px to 40px (delta 2px)."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-013",
+      "element": "Masthead — missing department headline line",
+      "axis": "Content & Iconography",
+      "severity": "Major",
+      "figma": "Three-line lockup: 'Government of India' (12px), 'Ministry of Social Justice & Empowerment' (14px), 'Department of Social Justice & Empowerment' (20px Bold, headline-4)",
+      "live": "Masthead shows only 'Government of India' + 'Ministry of Social Justice & Empowerment'; the 20px Bold 'Department of Social Justice & Empowerment' line is absent",
+      "fix": "Add the 'Department of Social Justice & Empowerment' headline-4 (20px/700/#374151) line to the masthead lockup."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-014",
+      "element": "Masthead co-branding — Digital India & SAMAVESH lockups",
+      "axis": "Content & Iconography",
+      "severity": "Major",
+      "figma": "Right masthead shows Digital India logo (102×40) + SAMAVESH co-brand lockup before the profile block",
+      "live": "Digital India and SAMAVESH co-branding lockups are absent from the live masthead",
+      "fix": "Add Digital India logo and SAMAVESH co-branding lockup to the right side of the masthead before the profile."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-015",
+      "element": "Sidebar active item — text color",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "Active 'Manage Ministry' = text #003366 (Text/Primary), weight Regular 400, bg #e5eff9",
+      "live": "Active item color rgb(55,65,81) = #374151, weight 700, bg rgb(229,239,249) = #e5eff9",
+      "fix": "Active sidebar item text must be #003366 (not #374151); weight should be 400 per Figma (live uses 700)."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-016",
+      "element": "Sidebar active item — radius",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "row radius 16px",
+      "live": "8px",
+      "fix": "Set active sidebar item border-radius to 16px (delta 8px)."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-017",
+      "element": "Row action buttons — Edit/Delete styling",
+      "axis": "Components & States",
+      "severity": "Major",
+      "figma": "Edit: #003366 text on #00336614 (8% primary) fill, radius 8, pl20/pr16/py10, edit icon 16×16, 86×40. Delete: #d64539 text, transparent fill, radius 8, 104×40, delete icon 16×16. Group gap 12, floats over active row right 11px",
+      "live": "Edit shows as low-contrast pill near right of active row; Delete shown as #d64539 text — but action group is compressed within the 53px-tall row, not the 40px floating group over a 116px row",
+      "fix": "Once row height is corrected to 116px, ensure Edit (86×40, #00336614 fill, #003366 text) and Delete (104×40, transparent, #d64539) buttons match Figma with gap 12 and 16×16 icons."
+    },
+    {
+      "id": "UTH-MANAGE-MINISTRY-018",
+      "element": "Card body background / container",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "Card bg #ffffff",
+      "live": "card backgroundColor rgba(0,0,0,0) with effective bg rgb(255,255,255)",
+      "fix": "Cosmetic: card resolves to white via effbg; ensure the card element itself carries #ffffff fill rather than relying on an ancestor."
+    }
+  ],
+  "figmaCorrections": [
+    {
+      "id": "FIG-MANAGE-MINISTRY-001",
+      "element": "Text/Hint token",
+      "issue": "Variable Text/Hint is defined as #374151 in get_variable_defs but generated code emits #6b7280 for hint/placeholder/caption usages (search placeholder, col-head, profile role, pagination captions).",
+      "recommendation": "Reconcile the Text/Hint token: either redefine it to #6b7280 (its actual emitted value) or stop binding hint usages to it. The current definition is misleading for live comparison."
+    },
+    {
+      "id": "FIG-MANAGE-MINISTRY-002",
+      "element": "Card border #e2e8f0 and radius 14px",
+      "issue": "Card uses raw hex #e2e8f0 and raw radius 14px — the only non-tokenized stroke/radius on the screen, while the inner table correctly uses Stroke/200 (#e5e7eb) + radius-lg (12).",
+      "recommendation": "Tokenize the card border and radius (e.g. Stroke/200 + radius-lg or radius-xl) so the card and table share the system, removing the raw values."
+    },
+    {
+      "id": "FIG-MANAGE-MINISTRY-003",
+      "element": "Language switcher typography",
+      "issue": "Language switcher ('English') uses Roboto Medium 12 — the only non-Noto-Sans typeface on the screen, violating the DBIM/Noto Sans standard.",
+      "recommendation": "Change the language switcher type to Noto Sans Medium to keep the entire screen on the gov standard typeface."
+    },
+    {
+      "id": "FIG-MANAGE-MINISTRY-004",
+      "element": "Masthead 'Ministry of Social Justice…' line color",
+      "issue": "This line emits #1f2937 despite being bound to the Text/Dark variable (#374151); a hardcoded constant overrides the token.",
+      "recommendation": "Bind the line to the intended token value (#374151) or define a token for #1f2937 so the masthead colors are consistent and tokenized."
+    },
+    {
+      "id": "FIG-MANAGE-MINISTRY-005",
+      "element": "Column-header vertical alignment",
+      "issue": "Header 'Ministry/Department' aligns items-start while the two Grant headers align items-center — inconsistent vertical alignment within the same header row.",
+      "recommendation": "Use a single consistent vertical alignment (items-center) across all three column headers."
+    },
+    {
+      "id": "FIG-MANAGE-MINISTRY-006",
+      "element": "Frame layer name typo",
+      "issue": "Frame layer is named 'ADMIN / MANGAGE MINISTRY' (sic — 'MANGAGE').",
+      "recommendation": "Rename the layer to 'ADMIN / MANAGE MINISTRY' to fix the typo."
+    }
+  ]
+}

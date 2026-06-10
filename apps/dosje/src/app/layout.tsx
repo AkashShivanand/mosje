@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
-import { AccessibilityWidget, ColorModeProvider } from "@mosje/design-system";
+import { AccessibilityWidget, ColorModeProvider, ZoneSwitcher } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import "./globals.css";
 
@@ -38,6 +38,7 @@ export default function RootLayout({
         <ColorModeProvider>
           {children}
           <AccessibilityWidget />
+          <ZoneSwitcher />
         </ColorModeProvider>
       </body>
     </html>

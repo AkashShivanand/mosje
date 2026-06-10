@@ -1,0 +1,163 @@
+{
+  "screen": "Admin / Map Ministry",
+  "slug": "MAP-MINISTRY",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-41073",
+  "liveUrl": "https://eutthan-admin-uat.mosje.in/map-ministry",
+  "findings": [
+    {
+      "id": "UTH-MAP-MINISTRY-001",
+      "element": "Tabs (Ministry / Schemes segmented control)",
+      "axis": "Components & States",
+      "severity": "Blocker",
+      "figma": "Segmented 'tabs/primary' control above the heading: container 203x44, bg Neutral/200 #e5e7eb, 1px #d1d5db border, radius 8, padding 4. ACTIVE tab 'Ministry' = #ffffff text on #003366 fill, radius 4, px20/py8, shadow 0 2 3 1 rgba(33,33,33,0.12). Inactive tab 'Schemes' = #6b7280 text on transparent.",
+      "live": "No tabs rendered at all. Heading 'Mapped Ministry List' sits directly above the search card with no Ministry/Schemes segmented control present in the DOM or capture.",
+      "fix": "Add the tabs/primary segmented control above the page heading with Ministry (active, #003366 fill, #fff text) and Schemes (inactive, transparent, #6b7280 text), container #e5e7eb / 1px #d1d5db / radius 8 / padding 4, per Figma node 4226-41073."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-002",
+      "element": "Action button (Unmap)",
+      "axis": "Color & Token",
+      "severity": "Blocker",
+      "figma": "Ghost/text button 'Unmap', text color #003366 (Text/Primary), transparent fill, no border, trailing link_off icon 16px in #003366. Font Noto Sans 14 / Medium 500 / 20.",
+      "live": "'Unmap' rendered in red (approx rgb(239,68,68) / #ef4444) with a red trailing link icon, transparent fill. Red is the danger color, signalling a destructive style not specified in the design.",
+      "fix": "Recolor the Unmap text button and its trailing icon to #003366 (Text/Primary), not red. Keep transparent fill, no border, Noto Sans 14/500."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-003",
+      "element": "Table body cell — text color",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "Body cell text color #374151 (Text/Dark) for all columns including Ministry Name. Noto Sans 16 / Regular 400 / 24.",
+      "live": "tableCell color = rgb(0, 51, 102) = #003366 (gov-blue). The 'Ministry Name' column renders as blue link-styled text; other cell text also reads #003366.",
+      "fix": "Set table body cell text color to #374151. If Ministry Name is intentionally a link, the design specifies plain #374151 body text — confirm with design before introducing a blue link treatment."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-004",
+      "element": "Table body cell — font weight",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "Body cell font-weight Regular 400.",
+      "live": "tableCell fontWeight = 500 (Medium).",
+      "fix": "Set table body cell font-weight to 400 (Regular)."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-005",
+      "element": "Table body cell — font size",
+      "axis": "Typography",
+      "severity": "Minor",
+      "figma": "Body cell font-size 16px, line-height 24px (Body-1).",
+      "live": "tableCell fontSize = 14px, lineHeight = 20px.",
+      "fix": "Set table body cell font-size to 16px / line-height 24px."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-006",
+      "element": "Table column header — font size",
+      "axis": "Typography",
+      "severity": "Minor",
+      "figma": "Column head font-size 16px, line-height 24px, weight SemiBold 600 (Body-1 semibold).",
+      "live": "tableHeader fontSize = 14px, lineHeight = 20px (weight 600 matches).",
+      "fix": "Set column header font-size to 16px / line-height 24px."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-007",
+      "element": "Table column header — text color",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "Column head text color #6b7280 (rendered hint gray).",
+      "live": "tableHeader color = rgb(75, 85, 99) = #4b5563 (Neutral/600).",
+      "fix": "Set column header text color to #6b7280."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-008",
+      "element": "Table header row — height & vertical padding",
+      "axis": "Layout & Spacing",
+      "severity": "Major",
+      "figma": "Header row height 56px; cell padding px24 / py16.",
+      "live": "tableHeader h = 69px; paddingTop/Bottom = 14px (padding left/right 24 matches).",
+      "fix": "Reduce header row to 56px and set vertical padding to 16px."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-009",
+      "element": "Table body row — height & padding",
+      "axis": "Layout & Spacing",
+      "severity": "Major",
+      "figma": "Body row (cell) height 116px; cell padding 24px all sides.",
+      "live": "rowHeight = 73px; tableCell paddingTop/Bottom = 16px (padding left/right 24 matches).",
+      "fix": "Increase body row height to 116px and set vertical cell padding to 24px to match the Figma row rhythm."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-010",
+      "element": "Sidebar — active item text color & weight",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "ACTIVE item 'Map Ministry/Schemes': text/icon color #003366 (Text/Primary), font-weight Regular 400, bg #e5eff9 (Primary/50), radius 16.",
+      "live": "sidebarActive color = rgb(55, 65, 81) = #374151, fontWeight = 700, bg rgb(229, 239, 249) = #e5eff9 (matches), radius 8px.",
+      "fix": "Set active sidebar item text/icon color to #003366 and weight to 400 (Regular). Background color is correct."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-011",
+      "element": "Sidebar — active item radius",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "Active item corner radius 16 (radius-xl).",
+      "live": "sidebarActive r = 8px.",
+      "fix": "Set active sidebar item border-radius to 16px."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-012",
+      "element": "Card border treatment",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "Card has 1px inset border on all sides (content inset 1,1 -> 1090 inner), rounded card.",
+      "live": "card borderTopWidth = 1px #e5e7eb only (top edge); no full surrounding inset border reported; borderTopLeftRadius 8px.",
+      "fix": "Apply a full 1px #e5e7eb border on all four sides of the card, not just the top edge."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-013",
+      "element": "Top gov bar height",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "Accessibility/gov bar height 40px (1440x40), bg #003366.",
+      "live": "govbar h = 38px, bg rgb(0, 51, 102) = #003366 (color matches).",
+      "fix": "Set gov bar height to 40px (delta 2px). Background color is correct."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-014",
+      "element": "Masthead — partner logos (Digital India / SAMAVESH)",
+      "axis": "Content & Iconography",
+      "severity": "Major",
+      "figma": "Masthead right region shows Digital India logo, SAMAVESH logo (40x40) with title 'SAMAVESH' (Noto Sans 11.429/600) and subtitle 'Single Access Mechanism for All Verticals of Empowerment & Social Harmony', before the profile block.",
+      "live": "Masthead shows only the emblem + ministry text on the left and the profile block on the right. No Digital India logo and no SAMAVESH logo/title/subtitle are rendered.",
+      "fix": "Add the Digital India and SAMAVESH logo lockups to the masthead between the ministry titles and the profile, per Figma."
+    },
+    {
+      "id": "UTH-MAP-MINISTRY-015",
+      "element": "Pagination — page-number range / total pages",
+      "axis": "Components & States",
+      "severity": "Minor",
+      "figma": "Pagination shows 1 (active) 2 3 4 5 6 ... 150 with prev/next arrows; active page 1 has #003366 1px border, radius 8, white fill.",
+      "live": "Pagination shows 1 (active, blue 1px border) 2 3 4 with next arrow; no ellipsis/last-page (because only 37 items / 10 per page). Active-page border treatment matches.",
+      "fix": "Page count difference (4 vs 150) is driven by live data volume (37 vs 1500 items) and the items-per-page value, so it is DATA, not a defect. Verify the ellipsis + last-page jump renders when total pages exceed the visible window."
+    }
+  ],
+  "figmaCorrections": [
+    {
+      "id": "FIG-MAP-MINISTRY-001",
+      "element": "Text/Hint token vs rendered value",
+      "issue": "The 'Text/Hint' variable resolves to #374151 in the variable table, but the handoff renders all hint/placeholder/column-head/secondary text as #6b7280. The token value and its rendered usage disagree.",
+      "recommendation": "Reconcile the Text/Hint token to the intended rendered value (#6b7280) or rename the variable so the value matches its usage, to avoid token drift in implementation."
+    },
+    {
+      "id": "FIG-MAP-MINISTRY-002",
+      "element": "'Type' column value 'Mapped' as plain text",
+      "issue": "The 'Type' column status value 'Mapped' is plain Body-1 text (#374151, 16/400) with no chip/badge. Status values usually read better as a styled pill for scannability; plain text is easy to confuse with adjacent data columns.",
+      "recommendation": "Consider a low-emphasis status chip (subtle fill + label) for the Type column so mapped/unmapped state is visually distinct from plain data cells."
+    },
+    {
+      "id": "FIG-MAP-MINISTRY-003",
+      "element": "Unmap action affordance",
+      "issue": "The 'Unmap' control is a #003366 text button with a link_off icon. Unmap is a destructive/reversing action, but the design gives it the same primary-blue color as non-destructive links, providing no visual cue of consequence.",
+      "recommendation": "Consider a distinct treatment (e.g. neutral/secondary or a confirmed danger style) for destructive row actions so users can distinguish reversible-mapping actions from plain navigation links."
+    }
+  ]
+}

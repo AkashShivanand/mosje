@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ContentPage } from "@/components/templates/ContentPage";
 
 export const metadata: Metadata = {
@@ -86,7 +87,7 @@ export default function PrivacyPage() {
       <h2>Contact</h2>
       <p>
         If you have any questions regarding this Privacy Policy or the handling of your information, please
-        contact us through the details provided on the <a href="/contact-us">Contact Us</a> page.
+        contact us through the details provided on the <Link href="/contact-us">Contact Us</Link> page.
       </p>
     </ContentPage>
   );

@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button, Badge } from "@mosje/design-system";
+import Link from "next/link";
+import { Badge, buttonClasses } from "@mosje/design-system";
 import type { UpdateItem } from "@/types";
 
 const UPDATES: UpdateItem[] = [
@@ -39,12 +40,12 @@ export function LatestUpdates() {
         </div>
 
         {/* Cycling item */}
-        <a href={item.href} className="flex min-w-0 flex-1 items-center gap-3 text-[15px] hover:underline">
+        <Link href={item.href} className="flex min-w-0 flex-1 items-center gap-3 text-[15px] hover:underline">
           <Badge status="primary" size="sm" className="shrink-0 uppercase">
             {item.category}
           </Badge>
           <span className="truncate">{item.title}</span>
-        </a>
+        </Link>
 
         {/* Controls */}
         <div className="flex shrink-0 items-center gap-2">
@@ -54,9 +55,9 @@ export function LatestUpdates() {
           <button onClick={() => go(index + 1)} aria-label="Next update" className="grid h-8 w-8 place-items-center rounded-full hover:bg-white/15">
             <ChevronRight className="h-5 w-5" />
           </button>
-          <Button href="/notices" variant="primary" appearance="outlined" size="sm" className="ml-1 whitespace-nowrap">
+          <Link href="/notices" className={buttonClasses("primary", "outlined", "sm", "ml-1 whitespace-nowrap")}>
             View All Updates
-          </Button>
+          </Link>
         </div>
       </div>
     </section>

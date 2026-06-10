@@ -1,0 +1,217 @@
+{
+  "screen": "Admin / Manage Outcome",
+  "slug": "MANAGE-OUTCOME",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40657",
+  "liveUrl": "https://eutthan-admin-uat.mosje.in/manage-outcome",
+  "findings": [
+    {
+      "id": "UTH-MANAGE-OUTCOME-001",
+      "element": "Table column header — text color",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "color #6b7280 (Text/Hint rendered)",
+      "live": "color rgb(55, 65, 81) = #374151",
+      "fix": "Set column-header text color to #6b7280 (Text/Hint) per Figma; currently rendering the body Text/Dark #374151."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-002",
+      "element": "Table column header — font size",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "16px (body-1), line-height 24",
+      "live": "14px, line-height 21.7px",
+      "fix": "Increase header font-size from 14px to 16px and line-height from 21.7px to 24px (body-1 token)."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-003",
+      "element": "Table column header — background",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "#f9fafb (Neutral/50)",
+      "live": "effective bg rgb(243, 244, 246) = #f3f4f6 (Stroke/100)",
+      "fix": "Set header background to #f9fafb (Neutral/50); currently #f3f4f6."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-004",
+      "element": "Table column header — horizontal padding",
+      "axis": "Layout & Spacing",
+      "severity": "Major",
+      "figma": "px 24 / py 16",
+      "live": "paddingLeft 16px / paddingRight 16px / py 16px",
+      "fix": "Increase header left/right padding from 16px to 24px (delta 8px each side)."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-005",
+      "element": "Table body cell — font weight",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "Regular 400",
+      "live": "fontWeight 600",
+      "fix": "Set body-cell text to Regular 400; live renders SemiBold 600 making every data row look bold."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-006",
+      "element": "Table body cell — font size",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "16px (body-1), line-height 24",
+      "live": "14px, line-height 21.7px",
+      "fix": "Increase body-cell font-size from 14px to 16px and line-height from 21.7px to 24px (body-1 token)."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-007",
+      "element": "Table body cell — text color",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "#374151 (Text/Dark)",
+      "live": "rgb(0, 0, 0) = #000000",
+      "fix": "Set body-cell text color to #374151 (Text/Dark); live uses pure black #000000 (token drift / off-brand)."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-008",
+      "element": "Table body cell — vertical padding",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "24 all sides",
+      "live": "paddingTop 20px / paddingBottom 20px",
+      "fix": "Increase cell vertical padding from 20px to 24px (delta 4px each side)."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-009",
+      "element": "Table body cell — horizontal padding",
+      "axis": "Layout & Spacing",
+      "severity": "Major",
+      "figma": "24 all sides",
+      "live": "paddingLeft 16px / paddingRight 16px",
+      "fix": "Increase cell horizontal padding from 16px to 24px (delta 8px each side)."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-010",
+      "element": "Table body row height",
+      "axis": "Layout & Spacing",
+      "severity": "Major",
+      "figma": "116px",
+      "live": "62px",
+      "fix": "Row height is 62px vs Figma 116px (delta 54px). Driven by smaller padding (20px vs 24px) and the missing two-line wrap allowance; restore 24px padding and 116px target row height."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-011",
+      "element": "Add Outcome button — font weight",
+      "axis": "Typography",
+      "severity": "Minor",
+      "figma": "Medium 500",
+      "live": "fontWeight 600",
+      "fix": "Set button label weight to Medium 500; live renders SemiBold 600."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-012",
+      "element": "Add Outcome button — line height",
+      "axis": "Typography",
+      "severity": "Minor",
+      "figma": "line-height 20",
+      "live": "lineHeight 14px",
+      "fix": "Set button label line-height to 20px (label-1); live uses 14px."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-013",
+      "element": "Add Outcome button — padding & size",
+      "axis": "Layout & Spacing",
+      "severity": "Major",
+      "figma": "pl 24 / pr 16 / py 8, size 157 × 40",
+      "live": "paddingLeft 18px / paddingRight 12px / py 0px, size 144 × 36",
+      "fix": "Set padding to pl 24 / pr 16 / py 8; button measures 144×36 vs Figma 157×40 (W delta 13px, H delta 4px). Restore py 8 instead of 0."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-014",
+      "element": "Card (table wrapper) — corner radius",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "radius 14px",
+      "live": "borderTopLeftRadius 12px",
+      "fix": "Set card corner radius to 14px; live uses 12px (delta 2px)."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-015",
+      "element": "Card (table wrapper) — border color",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "#e2e8f0 / 1px",
+      "live": "borderTopColor rgb(229, 231, 235) = #e5e7eb / 1px",
+      "fix": "Set card border color to #e2e8f0; live uses #e5e7eb (token drift)."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-016",
+      "element": "Sidebar active item (Manage Outcome) — label color",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "#003366 (Text/Primary)",
+      "live": "rgb(55, 65, 81) = #374151",
+      "fix": "Active sidebar label must be #003366 (Primary/Source); live keeps the default #374151, so the active item loses its primary-color emphasis."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-017",
+      "element": "Sidebar active item (Manage Outcome) — font weight",
+      "axis": "Typography",
+      "severity": "Minor",
+      "figma": "Regular 400",
+      "live": "fontWeight 700",
+      "fix": "Set active sidebar label weight to Regular 400; live renders Bold 700."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-018",
+      "element": "Sidebar active item (Manage Outcome) — corner radius",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "radius 16px (radius-xl)",
+      "live": "8px",
+      "fix": "Set active item / sidebar row radius to 16px; live uses 8px (delta 8px)."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-019",
+      "element": "Filter chips row",
+      "axis": "Components & States",
+      "severity": "Major",
+      "figma": "3 filter chips: \"2024-25\", \"All Schemes\", \"All Department\" (bordered chips, Stroke/200 1px, radius 6, leading arrow-down 18×18)",
+      "live": "1 control only: a \"2026-2027\" select dropdown (chevron, radius 8); the \"All Schemes\" and \"All Department\" filters are absent",
+      "fix": "Add the missing \"All Schemes\" and \"All Department\" filter chips and render all three as the Figma bordered-chip variant (Stroke/200 1px, radius 6) rather than a single select."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-020",
+      "element": "Govbar height",
+      "axis": "Layout & Spacing",
+      "severity": "Nit",
+      "figma": "~40px",
+      "live": "38px",
+      "fix": "Govbar height 38px vs ~40px (delta ~2px); align to navbar spec."
+    },
+    {
+      "id": "UTH-MANAGE-OUTCOME-021",
+      "element": "Pagination — default items-per-page",
+      "axis": "Components & States",
+      "severity": "Minor",
+      "figma": "items dropdown default \"200\"",
+      "live": "items dropdown default \"10\"",
+      "fix": "Set default page-size to 200 to match Figma's pagination/large default (live defaults to 10). Note item counts (1500 vs 0) are DATA, not a defect."
+    }
+  ],
+  "figmaCorrections": [
+    {
+      "id": "FIG-MANAGE-OUTCOME-001",
+      "element": "Frame name",
+      "issue": "Figma frame is named \"ADMIN / MANGAGE OUTCOME\" — \"MANGAGE\" is a typo for \"MANAGE\".",
+      "recommendation": "Rename the frame to \"ADMIN / MANAGE OUTCOME\"."
+    },
+    {
+      "id": "FIG-MANAGE-OUTCOME-002",
+      "element": "Column-header text token vs rendered color",
+      "issue": "Header text is bound to the Text/Hint variable (#374151) but Figma's generated code renders it as literal #6b7280, so the variable and the rendered value disagree. This ambiguity makes 'source of truth' unclear for devs (see UTH-MANAGE-OUTCOME-001).",
+      "recommendation": "Reconcile the Text/Hint token: either bind header text to a variable that resolves to #6b7280 or re-point Text/Hint, so token and rendered color match exactly."
+    },
+    {
+      "id": "FIG-MANAGE-OUTCOME-003",
+      "element": "Table body cell text color token",
+      "issue": "Cell text is documented as both Text/Dark token (#374151) and is the same variable used elsewhere as Text/Hint, overloading one variable name for two roles.",
+      "recommendation": "Split into distinct Text/Dark and Text/Hint variables with unambiguous hex so cell, header, and hint colors are independently controllable."
+    }
+  ]
+}

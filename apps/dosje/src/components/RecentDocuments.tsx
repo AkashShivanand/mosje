@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
-import { Button, Card } from "@mosje/design-system";
+import { buttonClasses, Card } from "@mosje/design-system";
 
 interface DocumentItem {
   title: string;
@@ -72,27 +73,23 @@ export function RecentDocuments() {
                     </p>
                     <p className="mt-1 text-[13px] text-ink-muted">{doc.date}</p>
                   </div>
-                  <Button
+                  <Link
                     href="/annual-reports"
-                    appearance="text"
-                    size="sm"
-                    className="mt-0.5 flex-shrink-0"
+                    className={buttonClasses("primary", "text", "sm", "mt-0.5 flex-shrink-0")}
                   >
                     View Online
-                  </Button>
+                  </Link>
                 </li>
               ))}
             </ul>
 
-            <Button
+            <Link
               href="/annual-reports"
-              appearance="text"
-              size="sm"
-              iconRight={<ArrowRight className="h-4 w-4" />}
-              className="mt-6"
+              className={buttonClasses("primary", "text", "sm", "mt-6")}
             >
               View All Documents
-            </Button>
+              <span className="ds-btn__icon" aria-hidden="true"><ArrowRight className="h-4 w-4" /></span>
+            </Link>
           </div>
 
           {/* PART B — Explore User Personas */}
@@ -122,15 +119,15 @@ export function RecentDocuments() {
                     <span className="text-[17px] font-medium text-ink">
                       {persona.label}
                     </span>
-                    <Button
+                    <Link
                       href={persona.href}
-                      appearance="text"
-                      size="sm"
+                      className={buttonClasses("primary", "text", "sm")}
                       aria-label={`Explore services for ${persona.label}`}
-                      iconRight={
+                    >
+                      <span className="ds-btn__icon" aria-hidden="true">
                         <ArrowRight className="h-5 w-5 text-gov-blue transition-transform group-hover:translate-x-1" />
-                      }
-                    />
+                      </span>
+                    </Link>
                   </div>
                 </Card>
               ))}

@@ -5,6 +5,17 @@ versioning is [semver](https://semver.org) per package.
 
 ## [Unreleased]
 
+### Added
+- **`ZoneSwitcher`** (`@mosje/design-system` 0.5.0) — a universal cross-zone launcher
+  injected into every app (not the hub). Floating FAB → popover of all estate zones
+  (Hub, Website, Portals, Storybook), accessible, token-only, hub-origin links that work
+  from inside any basePath-ed zone.
+
+### Fixed
+- **Hub routing for Storybook** — `/storybook/` now loads through the hub (Storybook's
+  relative assets proxy correctly); `/design-system` redirects there until the docs portal
+  ships. Removed the self-redirect loop caused by Next path normalization.
+
 ### Changed
 - **All component CSS is now strict-token-lint clean** — removed ~106 raw hex values (82 var()
   fallbacks dropped; 24 genuine values tokenized). New tokens: `status.successStrong`,

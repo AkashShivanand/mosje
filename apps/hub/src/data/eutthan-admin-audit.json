@@ -1,0 +1,1282 @@
+{
+  "portal": "eUtthan Admin",
+  "generated": "2026-06-10",
+  "screens": [
+    {
+      "slug": "GLOBAL",
+      "name": "Global \u2014 Common Elements",
+      "note": "Issues present on every screen. Fix applies to all pages.",
+      "figmaImg": "captures/figma/ADMIN-DASHBOARD-4226-39685.png",
+      "liveImg": "captures/live/DASHBOARD-1440.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "UTH-GLOBAL-001",
+          "element": "Accessibility bar",
+          "section": "header-band",
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            165
+          ],
+          "axis": "Layout & Spacing",
+          "severity": "Minor",
+          "figma": "Height 40px, bg #003366",
+          "live": "Height 38px, bg #003366 (color correct)",
+          "fix": "Increase accessibility bar height from 38px to 40px.",
+          "livePin": {
+            "x": 50.0,
+            "y": 11.5
+          },
+          "figmaPin": {
+            "x": 50.0,
+            "y": 11.5
+          }
+        },
+        {
+          "num": 2,
+          "id": "UTH-GLOBAL-002",
+          "element": "Masthead \u2014 Ministry/Department text",
+          "section": "header-band",
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            165
+          ],
+          "axis": "Content & Iconography",
+          "severity": "Major",
+          "figma": "Two lines: 'Ministry of SJE' (14px/500/#1f2937) + 'Department of SJE' (20px/700/#374151)",
+          "live": "Single line 'Ministry of SJE' at 20px/700/#374151 \u2014 'Department of SJE' line absent",
+          "fix": "Add 'Department of Social Justice & Empowerment' (20px/700/#374151) as the dominant masthead headline; downgrade Ministry line to 14px/500/#1f2937.",
+          "livePin": {
+            "x": 20.8,
+            "y": 43.6
+          },
+          "figmaPin": {
+            "x": 20.8,
+            "y": 43.6
+          }
+        },
+        {
+          "num": 3,
+          "id": "UTH-GLOBAL-003",
+          "element": "Masthead \u2014 Digital India + SAMAVESH co-branding",
+          "section": "header-band",
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            165
+          ],
+          "axis": "Content & Iconography",
+          "severity": "Major",
+          "figma": "Center region: Digital India logo (102\u00d740) + SAMAVESH lockup (40\u00d740 logo, title 11.4px/600/#1f2937, subtitle 7px/400/#374151, cobranding gap 24)",
+          "live": "No co-branding present; header center region is empty",
+          "fix": "Add Digital India logo and SAMAVESH lockup to the header centre. See Figma node 4226-39685 for exact placement.",
+          "livePin": {
+            "x": 70.1,
+            "y": 43.6
+          },
+          "figmaPin": {
+            "x": 70.1,
+            "y": 43.6
+          }
+        },
+        {
+          "num": 4,
+          "id": "UTH-GLOBAL-004",
+          "element": "Sidebar \u2014 active nav item",
+          "section": "sidebar",
+          "sectionBox": [
+            0,
+            80,
+            820,
+            700
+          ],
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Active item: text #003366 (Text/Primary) \u00b7 weight 400 Regular \u00b7 border-radius 16px \u00b7 bg #e5eff9 (Primary/50)",
+          "live": "Active item: text #374151 \u00b7 weight 700 Bold \u00b7 radius 8px \u00b7 bg #e5eff9 (bg correct; three properties deviate)",
+          "fix": "Active sidebar item: text-color \u2192 #003366 \u00b7 font-weight \u2192 400 \u00b7 border-radius \u2192 16px.",
+          "livePin": {
+            "x": 17.6,
+            "y": 13.1
+          },
+          "figmaPin": {
+            "x": 17.6,
+            "y": 13.1
+          }
+        },
+        {
+          "num": 5,
+          "id": "UTH-GLOBAL-005",
+          "element": "Top app bar \u2014 profile role label",
+          "section": "profile",
+          "sectionBox": [
+            600,
+            0,
+            1440,
+            175
+          ],
+          "axis": "Content & Iconography",
+          "severity": "Minor",
+          "figma": "Role label shown as plain 'Admin' (13px/#6b7280, no punctuation)",
+          "live": "Role label shown as '(Super Admin)' \u2014 wrapped in parentheses",
+          "fix": "Remove parentheses from the role label; display as plain text per Figma.",
+          "livePin": {
+            "x": 79.8,
+            "y": 41.1
+          },
+          "figmaPin": {
+            "x": 79.8,
+            "y": 41.1
+          }
+        }
+      ]
+    },
+    {
+      "slug": "DASHBOARD",
+      "name": "Admin / Dashboard",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-39685",
+      "liveUrl": "https://eutthan-admin-uat.mosje.in/dashboard?fy=2026-2027",
+      "figmaImg": "captures/figma/ADMIN-DASHBOARD-4226-39685.png",
+      "liveImg": "captures/live/DASHBOARD-1440.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "UTH-DASH-001",
+          "element": "Page heading 'Dashboard'",
+          "section": "heading",
+          "sectionBox": [
+            295,
+            120,
+            1440,
+            210
+          ],
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Noto Sans 28px / 500 / line-height 36 / letter-spacing -0.28 / color #374151",
+          "live": "30px / 600 / color #1E3A5F (size +2, weight +1 step, wrong color)",
+          "fix": "Set page heading: 28px / 500 / #374151 / letter-spacing -0.28. Currently 30px/600/#1E3A5F.",
+          "livePin": {
+            "x": 13.5,
+            "y": 50.0
+          },
+          "figmaPin": {
+            "x": 13.5,
+            "y": 50.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "UTH-DASH-002",
+          "element": "Summary KPI cards \u2014 stat value colors",
+          "section": "stat-cards",
+          "sectionBox": [
+            295,
+            210,
+            1440,
+            720
+          ],
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "4-up KPI row: only 'Schemes as per 10A' value uses Primary #003366; other three ('Total Ministry', 'Mapped Schemes', 'Pending Schemes') use dark #374151. Inner 7-card grid: all values use #374151.",
+          "live": "All KPI values and all inner stat values render in blue ~#1E3A5F \u2014 the two-tone hierarchy (dark vs primary) is lost.",
+          "fix": "KPI cards 1/3/4 + all inner stat grid values \u2192 #374151 dark. Only the 'Schemes as per 10A' KPI card value \u2192 #003366 primary.",
+          "livePin": {
+            "x": 31.0,
+            "y": 9.8
+          },
+          "figmaPin": {
+            "x": 9.2,
+            "y": 8.8
+          }
+        }
+      ]
+    },
+    {
+      "slug": "FINANCIAL-YEAR",
+      "name": "Admin / Financial Year",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40009",
+      "liveUrl": "https://eutthan-admin-uat.mosje.in/admin/financial-year-management",
+      "figmaImg": "captures/figma/FINANCIAL-YEAR-4226-40009.png",
+      "liveImg": "captures/live/FINANCIAL-YEAR-1440.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "UTH-FY-001",
+          "element": "Table column header",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "16px / 600 / color #6b7280 / bg #f9fafb / py 16px / row h 56px",
+          "live": "14px / 600 / color #4b5563 / bg transparent / py 14px / row h 49px",
+          "fix": "Table column header: font-size 16px \u00b7 color #6b7280 \u00b7 bg #f9fafb \u00b7 vertical padding 16px (row height \u2192 56px).",
+          "livePin": {
+            "x": 38.0,
+            "y": 4.7
+          },
+          "figmaPin": {
+            "x": 38.0,
+            "y": 4.7
+          }
+        },
+        {
+          "num": 2,
+          "id": "UTH-FY-002",
+          "element": "Table body cell",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "16px / 400 Regular / color #003366 / row h 76px / padding 24px all sides",
+          "live": "14px / 400 Regular / color #374151 (non-highlighted) / row h 58px / padding py 16 px 24",
+          "fix": "Body cell: font-size 16px \u00b7 color #003366 \u00b7 vertical padding 24px (row height \u2192 76px).",
+          "livePin": {
+            "x": 38.0,
+            "y": 12.6
+          },
+          "figmaPin": {
+            "x": 38.0,
+            "y": 10.1
+          }
+        },
+        {
+          "num": 3,
+          "id": "UTH-FY-003",
+          "element": "Second column \u2014 Status vs Current Financial Year",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Components & States",
+          "severity": "Blocker",
+          "figma": "Column 2 header = 'Status'; cells render Active/Inactive badge (Active: #27682a fill / #ffffff text / radius 12px / px12 py4 / h28; Inactive: outlined)",
+          "live": "Column 2 header = 'Current Financial Year'; cells render a checkbox (checked for current FY) \u2014 no Status badge present",
+          "fix": "Replace the 'Current Financial Year' checkbox column with the Figma 'Status' column showing Active/Inactive badge components per spec, OR escalate column-schema change to design.",
+          "livePin": {
+            "x": 61.6,
+            "y": 12.6
+          },
+          "figmaPin": {
+            "x": 61.6,
+            "y": 11.1
+          }
+        },
+        {
+          "num": 4,
+          "id": "UTH-FY-004",
+          "element": "Row action controls",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "Single 'Edit' text button per row \u2014 14px/500 #003366 / transparent bg / radius 8 / pl20 pr16 py10 / trailing edit icon 16\u00d716 / 86\u00d740",
+          "live": "Two row actions: 'Edit' (text + pencil icon, #003366) + red Delete/trash icon button (#dc2626) \u2014 Delete not in Figma",
+          "fix": "Remove the Delete/trash action to match Figma (Edit-only per row), OR escalate to design for an updated frame that specifies Delete placement and style.",
+          "livePin": {
+            "x": 95.6,
+            "y": 12.6
+          },
+          "figmaPin": {
+            "x": 95.6,
+            "y": 10.1
+          }
+        },
+        {
+          "num": 5,
+          "id": "UTH-FY-005",
+          "element": "Active row background",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Highlighted/selected row bg #e5eff9 (Primary/50)",
+          "live": "Highlighted row bg #eaf2fb (visually close but not the token)",
+          "fix": "Bind highlighted row background to Primary/50 #e5eff9 (currently #eaf2fb \u2014 token drift).",
+          "livePin": {
+            "x": 38.0,
+            "y": 20.0
+          },
+          "figmaPin": {
+            "x": 38.0,
+            "y": 17.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "MANAGE-MINISTRY",
+      "name": "Admin / Manage Ministry",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40288",
+      "liveUrl": "https://eutthan-admin-uat.mosje.in/ministry-management",
+      "figmaImg": "captures/figma/MANAGE-MINISTRY-4226-40288.png",
+      "liveImg": "captures/live/MANAGE-MINISTRY-1440.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "UTH-MINISTRY-001",
+          "element": "Table body row height",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Layout & Spacing",
+          "severity": "Blocker",
+          "figma": "Body row height 116px (cell padding 24px all sides)",
+          "live": "Body row height 53px (cell padding py 16 / px 24)",
+          "fix": "Increase cell vertical padding from 16px to 24px; target row height 116px (currently 53px \u2014 delta 63px).",
+          "livePin": {
+            "x": 38.0,
+            "y": 11.1
+          },
+          "figmaPin": {
+            "x": 38.0,
+            "y": 10.1
+          }
+        },
+        {
+          "num": 2,
+          "id": "UTH-MINISTRY-002",
+          "element": "Table column header",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "16px / 600 / color #6b7280 / bg #f9fafb / py 16px / row h 56px",
+          "live": "14px / 600 / color #4b5563 / bg transparent / py 14px / row h 49px",
+          "fix": "Column header: font-size 16px \u00b7 color #6b7280 \u00b7 bg #f9fafb \u00b7 py 16px (row h \u2192 56px).",
+          "livePin": {
+            "x": 38.0,
+            "y": 4.7
+          },
+          "figmaPin": {
+            "x": 38.0,
+            "y": 4.7
+          }
+        },
+        {
+          "num": 3,
+          "id": "UTH-MINISTRY-003",
+          "element": "Table body cell \u2014 text color & font",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Default (non-selected) body cell: color #374151 (Text/Dark) / 16px / 400. Selected row: #003366 on #e5eff9 bg.",
+          "live": "All body cells render in #003366 regardless of row selection \u2014 default rows should be #374151 dark",
+          "fix": "Default (non-selected) body rows: text color \u2192 #374151 \u00b7 font-size \u2192 16px. Only the selected row uses #003366 on #e5eff9 bg.",
+          "livePin": {
+            "x": 26.6,
+            "y": 11.1
+          },
+          "figmaPin": {
+            "x": 26.6,
+            "y": 10.1
+          }
+        },
+        {
+          "num": 4,
+          "id": "UTH-MINISTRY-004",
+          "element": "Row action buttons",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "Edit (86\u00d740 / #00336614 fill / #003366 text / radius 8 / pl20 pr16 py10 / edit icon 16\u00d716) + Delete (104\u00d740 / transparent / #d64539 text / delete icon 16\u00d716); group gap 12; floats over active row right 11px",
+          "live": "Edit + Delete buttons present but compressed into 53px-tall row (Figma expects 116px row); buttons can't render at specified size inside the shortened row",
+          "fix": "Fix row height (UTH-MINISTRY-001) first; then verify Edit (86\u00d740) + Delete (104\u00d740) match Figma sizing, padding, and icon specs.",
+          "livePin": {
+            "x": 95.6,
+            "y": 11.1
+          },
+          "figmaPin": {
+            "x": 95.6,
+            "y": 10.1
+          }
+        },
+        {
+          "num": 5,
+          "id": "UTH-MINISTRY-005",
+          "element": "Card container",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "radius 14px / border 1px #e2e8f0",
+          "live": "radius 14px (matches) / border 1px #e5e7eb (token drift: #e5e7eb vs #e2e8f0)",
+          "fix": "Card border color \u2192 #e2e8f0. Radius already correct at 14px.",
+          "livePin": {
+            "x": 2.2,
+            "y": 0.7
+          },
+          "figmaPin": {
+            "x": 2.2,
+            "y": 0.7
+          }
+        }
+      ]
+    },
+    {
+      "slug": "MANAGE-SCHEME",
+      "name": "Admin / Manage Scheme",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40449",
+      "liveUrl": "https://eutthan-admin-uat.mosje.in/scheme-management",
+      "figmaImg": "captures/figma/MANAGE-SCHEME-4226-40449.png",
+      "liveImg": "captures/live/MANAGE-SCHEME-1440.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "UTH-SCHEME-001",
+          "element": "Table column header",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "16px / 600 / color #6b7280 / bg #f9fafb / px 24 / py 16 / row h 56px",
+          "live": "14px / 600 / color #374151 / bg #f3f4f6 / px 16 / py 16 / row h varies",
+          "fix": "Column header: font-size 16px \u00b7 color #6b7280 \u00b7 bg #f9fafb \u00b7 horizontal padding 24px.",
+          "livePin": {
+            "x": 38.0,
+            "y": 4.7
+          },
+          "figmaPin": {
+            "x": 38.0,
+            "y": 4.7
+          }
+        },
+        {
+          "num": 2,
+          "id": "UTH-SCHEME-002",
+          "element": "Table body cell \u2014 font, color & row height",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "16px / 400 / color #374151 / row h 116px / padding 24px all sides",
+          "live": "14px / 400 / color #4b5563 / row h 84px / padding py 20 px 16",
+          "fix": "Body cell: font-size 16px \u00b7 color #374151 \u00b7 padding 24px all sides (row h \u2192 116px).",
+          "livePin": {
+            "x": 38.0,
+            "y": 11.1
+          },
+          "figmaPin": {
+            "x": 38.0,
+            "y": 10.1
+          }
+        },
+        {
+          "num": 3,
+          "id": "UTH-SCHEME-003",
+          "element": "Add Scheme button",
+          "section": "toolbar",
+          "sectionBox": [
+            295,
+            120,
+            1440,
+            285
+          ],
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Label 14px / 500 / lh 20 \u00b7 padding pl24 pr16 py8 \u00b7 size 147\u00d740 \u00b7 trailing + icon 16\u00d716 (separate element, gap 8)",
+          "live": "Label 14px / 600 / lh 14 \u00b7 padding pl18 pr12 py0 \u00b7 size 137\u00d736 \u00b7 '+' glyph appended to label string (not an icon element)",
+          "fix": "Button label: weight 500 \u00b7 lh 20px. Padding: pl 24 / pr 16 / py 8. Size: 147\u00d740. Replace '+' text with a proper icon element (16\u00d716, gap 8).",
+          "livePin": {
+            "x": 94.8,
+            "y": 45.5
+          },
+          "figmaPin": {
+            "x": 94.8,
+            "y": 45.5
+          }
+        },
+        {
+          "num": 4,
+          "id": "UTH-SCHEME-004",
+          "element": "Table row dividers & card border",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Row bottom border #f3f4f6 / 1px (Stroke/100) \u00b7 card border #e2e8f0 / 1px \u00b7 card radius 14px",
+          "live": "Row border #e5e7eb \u00b7 card border #e5e7eb / card radius 12px",
+          "fix": "Row dividers \u2192 #f3f4f6 \u00b7 card border \u2192 #e2e8f0 \u00b7 card radius \u2192 14px.",
+          "livePin": {
+            "x": 38.0,
+            "y": 20.0
+          },
+          "figmaPin": {
+            "x": 38.0,
+            "y": 17.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "MANAGE-OUTCOME",
+      "name": "Admin / Manage Outcome",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40657",
+      "liveUrl": "https://eutthan-admin-uat.mosje.in/manage-outcome",
+      "figmaImg": "captures/figma/MANAGE-OUTCOME-4226-40657.png",
+      "liveImg": "captures/live/MANAGE-OUTCOME-1440.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "UTH-OUTCOME-001",
+          "element": "Table column header",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "16px / 600 / color #6b7280 / bg #f9fafb / px 24 / py 16",
+          "live": "14px / 600 / color #374151 / bg #f3f4f6 / px 16 / py 16",
+          "fix": "Column header: font-size 16px \u00b7 color #6b7280 \u00b7 bg #f9fafb \u00b7 horizontal padding 24px.",
+          "livePin": {
+            "x": 33.6,
+            "y": 4.7
+          },
+          "figmaPin": {
+            "x": 33.6,
+            "y": 4.7
+          }
+        },
+        {
+          "num": 2,
+          "id": "UTH-OUTCOME-002",
+          "element": "Table body cell \u2014 font, weight, color & row height",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "16px / 400 Regular / color #374151 / row h 116px / padding 24px all sides",
+          "live": "14px / 600 SemiBold / color #000000 / row h 62px / padding py 20 px 16",
+          "fix": "Body cell: font-size 16px \u00b7 weight 400 \u00b7 color #374151 \u00b7 padding 24px all sides (row h \u2192 116px).",
+          "livePin": {
+            "x": 33.6,
+            "y": 11.1
+          },
+          "figmaPin": {
+            "x": 33.6,
+            "y": 10.1
+          }
+        },
+        {
+          "num": 3,
+          "id": "UTH-OUTCOME-003",
+          "element": "Filter chips \u2014 Financial Year / All Schemes / All Department",
+          "section": "toolbar",
+          "sectionBox": [
+            295,
+            120,
+            1440,
+            285
+          ],
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "3 filter chips: '2024-25' / 'All Schemes' / 'All Department' \u2014 Default Chip component (Stroke/200 1px border / radius 6 / leading arrow-down 18\u00d718 / pl8 pr16 py8)",
+          "live": "Single dropdown '2026-2027' only \u2014 'All Schemes' and 'All Department' chips absent",
+          "fix": "Render three filter chips (Financial Year, Schemes, Department) using the Default Chip variant (border #e5e7eb, radius 6); add the two missing controls.",
+          "livePin": {
+            "x": 20.5,
+            "y": 45.5
+          },
+          "figmaPin": {
+            "x": 20.5,
+            "y": 45.5
+          }
+        },
+        {
+          "num": 4,
+          "id": "UTH-OUTCOME-004",
+          "element": "Add Outcome button",
+          "section": "toolbar",
+          "sectionBox": [
+            295,
+            120,
+            1440,
+            285
+          ],
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "14px / 500 / lh 20 \u00b7 pl 24 / pr 16 / py 8 \u00b7 size 157\u00d740",
+          "live": "14px / 600 / lh 14 \u00b7 pl 18 / pr 12 / py 0 \u00b7 size 144\u00d736",
+          "fix": "Button: weight 500 \u00b7 lh 20px \u00b7 padding pl 24 / pr 16 / py 8 \u00b7 size 157\u00d740.",
+          "livePin": {
+            "x": 94.8,
+            "y": 45.5
+          },
+          "figmaPin": {
+            "x": 94.8,
+            "y": 45.5
+          }
+        },
+        {
+          "num": 5,
+          "id": "UTH-OUTCOME-005",
+          "element": "Card container",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "radius 14px / border 1px #e2e8f0",
+          "live": "radius 12px / border 1px #e5e7eb",
+          "fix": "Card: radius \u2192 14px \u00b7 border \u2192 #e2e8f0.",
+          "livePin": {
+            "x": 2.2,
+            "y": 0.7
+          },
+          "figmaPin": {
+            "x": 2.2,
+            "y": 0.7
+          }
+        }
+      ]
+    },
+    {
+      "slug": "DOCUMENTS",
+      "name": "Admin / Documents",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-42902",
+      "liveUrl": "https://eutthan-admin-uat.mosje.in/document-management",
+      "figmaImg": "captures/figma/DOCUMENTS-4226-42902.png",
+      "liveImg": "captures/live/DOCUMENTS-1440.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "UTH-DOCS-001",
+          "element": "Table column header",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "16px / 600 / color #6b7280 / bg #f9fafb / px 24 / py 16 / row h 56px",
+          "live": "14px / 600 / color #374151 / bg #f3f4f6 / px 16 / py 16 / row h 54px",
+          "fix": "Column header: font-size 16px \u00b7 color #6b7280 \u00b7 bg #f9fafb \u00b7 horizontal padding 24px.",
+          "livePin": {
+            "x": 33.6,
+            "y": 4.7
+          },
+          "figmaPin": {
+            "x": 33.6,
+            "y": 4.7
+          }
+        },
+        {
+          "num": 2,
+          "id": "UTH-DOCS-002",
+          "element": "Table body cell \u2014 font, color & row height",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "16px / 400 / color #374151 / row h 116px / padding 24px all sides",
+          "live": "14px / 400 / color #4b5563 / row h 69px / padding py 20 px 16",
+          "fix": "Body cell: font-size 16px \u00b7 color #374151 \u00b7 padding 24px all sides (row h \u2192 116px).",
+          "livePin": {
+            "x": 33.6,
+            "y": 11.1
+          },
+          "figmaPin": {
+            "x": 33.6,
+            "y": 10.1
+          }
+        },
+        {
+          "num": 3,
+          "id": "UTH-DOCS-003",
+          "element": "Year filter \u2014 component variant",
+          "section": "toolbar",
+          "sectionBox": [
+            295,
+            120,
+            1440,
+            285
+          ],
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "Compact filter chip: 99\u00d736 / radius 6 / 1px #e5e7eb border / leading arrow-down icon 18\u00d718 / pl8 pr16 py8",
+          "live": "Wide clearable select (~140px) with trailing \u00d7-clear button and chevron \u2014 component variant and trailing \u00d7 control differ from Figma",
+          "fix": "Replace wide select with the Figma compact filter chip (99\u00d736, radius 6, leading arrow-down). Remove the trailing \u00d7 clear button.",
+          "livePin": {
+            "x": 9.2,
+            "y": 45.5
+          },
+          "figmaPin": {
+            "x": 9.2,
+            "y": 45.5
+          }
+        },
+        {
+          "num": 4,
+          "id": "UTH-DOCS-004",
+          "element": "Add Document button",
+          "section": "toolbar",
+          "sectionBox": [
+            295,
+            120,
+            1440,
+            285
+          ],
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "14px / 500 / lh 20 \u00b7 pl 24 / pr 16 / py 8 \u00b7 size 165\u00d740 \u00b7 trailing icon 16\u00d716 / gap 8 \u00b7 radius 8",
+          "live": "14px / 600 / lh 14 \u00b7 pl 18 / pr 12 / py 0 \u00b7 size 152\u00d736",
+          "fix": "Button: weight 500 \u00b7 lh 20 \u00b7 padding pl 24 / pr 16 / py 8 \u00b7 size 165\u00d740.",
+          "livePin": {
+            "x": 94.8,
+            "y": 45.5
+          },
+          "figmaPin": {
+            "x": 94.8,
+            "y": 45.5
+          }
+        },
+        {
+          "num": 5,
+          "id": "UTH-DOCS-005",
+          "element": "Row action \u2014 extra eye/view icon",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "Action cell: single more_vert (kebab) icon button 40\u00d740; Edit/Delete inside dropdown menu",
+          "live": "Action cell has a standalone eye (view) icon button in addition to the kebab \u2014 extra control not in design",
+          "fix": "Remove standalone eye icon; keep only the kebab more_vert per Figma (or confirm view action belongs inside the dropdown).",
+          "livePin": {
+            "x": 95.6,
+            "y": 11.1
+          },
+          "figmaPin": {
+            "x": 95.6,
+            "y": 10.1
+          }
+        },
+        {
+          "num": 6,
+          "id": "UTH-DOCS-006",
+          "element": "Card \u2014 shadow vs border",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Card: shadow-s (0 1 3 1 rgba(33,33,33,0.1); 0 4 4 0 rgba(33,33,33,0.12)) \u00b7 no top hairline border",
+          "live": "Card: 1px top border #e5e7eb \u00b7 no shadow \u00b7 radius 12px",
+          "fix": "Replace top hairline border with shadow-s as specified in Figma. Verify full border-radius is applied (not top-left-only).",
+          "livePin": {
+            "x": 2.2,
+            "y": 0.7
+          },
+          "figmaPin": {
+            "x": 2.2,
+            "y": 0.7
+          }
+        },
+        {
+          "num": 7,
+          "id": "UTH-DOCS-007",
+          "element": "Sidebar collapse toggle",
+          "section": "header-band",
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            165
+          ],
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "Hamburger/collapse toggle present at the masthead-sidebar junction (top-left of the header)",
+          "live": "No sidebar collapse toggle visible in the header",
+          "fix": "Add the sidebar collapse/hamburger toggle control to the header left per Figma.",
+          "livePin": {
+            "x": 4.5,
+            "y": 43.6
+          },
+          "figmaPin": {
+            "x": 4.5,
+            "y": 43.6
+          }
+        }
+      ]
+    },
+    {
+      "slug": "MAP-MINISTRY",
+      "name": "Admin / Map Ministry",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-41073",
+      "liveUrl": "https://eutthan-admin-uat.mosje.in/map-ministry",
+      "figmaImg": "captures/figma/MAP-MINISTRY-4226-41073.png",
+      "liveImg": "captures/live/MAP-MINISTRY-1440.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "UTH-MAP-001",
+          "element": "Ministry / Schemes segmented tabs",
+          "section": "toolbar",
+          "sectionBox": [
+            295,
+            120,
+            1440,
+            285
+          ],
+          "axis": "Components & States",
+          "severity": "Blocker",
+          "figma": "tabs/primary segmented control (203\u00d744): Active 'Ministry' = #ffffff on #003366 fill / radius 4 / px20 py8 / shadow. Inactive 'Schemes' = #6b7280 on transparent. Container: bg #e5e7eb / border 1px #d1d5db / radius 8 / padding 4",
+          "live": "No tabs rendered \u2014 heading 'Mapped Ministry List' sits directly above the table with no segmented control",
+          "fix": "Add the Ministry/Schemes tabs/primary segmented control above the heading per Figma node 4226-41073.",
+          "livePin": {
+            "x": 17.0,
+            "y": 45.5
+          },
+          "figmaPin": {
+            "x": 17.0,
+            "y": 45.5
+          }
+        },
+        {
+          "num": 2,
+          "id": "UTH-MAP-002",
+          "element": "Table column header",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "16px / 600 / color #6b7280 / px 24 / py 16 / row h 56px",
+          "live": "14px / 600 / color #4b5563 / px 24 (matches) / py 14 / row h 69px",
+          "fix": "Column header: font-size 16px \u00b7 color #6b7280 \u00b7 py 16px (row h \u2192 56px). Note: live row height is 69px which is taller than Figma 56px \u2014 reduce py to 16px.",
+          "livePin": {
+            "x": 33.6,
+            "y": 4.7
+          },
+          "figmaPin": {
+            "x": 33.6,
+            "y": 4.7
+          }
+        },
+        {
+          "num": 3,
+          "id": "UTH-MAP-003",
+          "element": "Table body cell \u2014 color, weight, font & row height",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "16px / 400 Regular / color #374151 / row h 116px / padding 24px all sides",
+          "live": "14px / 500 Medium / color #003366 / row h 73px / py 16 px 24",
+          "fix": "Body cell: font-size 16px \u00b7 weight 400 \u00b7 color #374151 \u00b7 padding 24px all sides (row h \u2192 116px). The Ministry Name blue treatment is not in the design.",
+          "livePin": {
+            "x": 26.6,
+            "y": 11.1
+          },
+          "figmaPin": {
+            "x": 26.6,
+            "y": 10.1
+          }
+        },
+        {
+          "num": 4,
+          "id": "UTH-MAP-004",
+          "element": "'Unmap' row action \u2014 color",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Ghost text button 'Unmap': text + icon color #003366 (Text/Primary) / transparent fill / Noto Sans 14/500",
+          "live": "'Unmap' text and trailing icon render in red ~#ef4444 (danger color) \u2014 not specified in design",
+          "fix": "Recolor Unmap button text and icon to #003366 primary; remove the red/danger treatment.",
+          "livePin": {
+            "x": 95.6,
+            "y": 11.1
+          },
+          "figmaPin": {
+            "x": 95.6,
+            "y": 10.1
+          }
+        },
+        {
+          "num": 5,
+          "id": "UTH-MAP-005",
+          "element": "Card \u2014 border treatment",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Card with 1px inset border on all four sides (content container)",
+          "live": "Only top border 1px #e5e7eb applied; no border on left/right/bottom edges; radius 8px (top-left only)",
+          "fix": "Apply full 1px #e5e7eb border on all four sides; ensure border-radius applies uniformly.",
+          "livePin": {
+            "x": 2.2,
+            "y": 0.7
+          },
+          "figmaPin": {
+            "x": 2.2,
+            "y": 0.7
+          }
+        }
+      ]
+    },
+    {
+      "slug": "MANAGE-USER",
+      "name": "Admin / Manage User",
+      "note": "Figma frame 4226-40870 is collapsed (1px wide in Figma file). Findings derived from extracted spec; no side-by-side visual comparison available until the frame is fixed in Figma.",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40870",
+      "liveUrl": "https://eutthan-admin-uat.mosje.in/user-management",
+      "figmaImg": null,
+      "liveImg": "captures/live/MANAGE-USER-1440.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "UTH-USER-001",
+          "element": "Table column header",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "16px / 600 / color #6b7280 / bg #f9fafb / px 24 / py 16 / row h 56px",
+          "live": "14px / 600 / color #374151 / bg #f3f4f6 / px 16 / py 16 / row h 54px",
+          "fix": "Column header: font-size 16px \u00b7 color #6b7280 \u00b7 bg #f9fafb \u00b7 horizontal padding 24px.",
+          "livePin": {
+            "x": 33.6,
+            "y": 17.0
+          },
+          "figmaPin": {
+            "x": 33.6,
+            "y": 17.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "UTH-USER-002",
+          "element": "Table body cell \u2014 font, color & row height",
+          "section": "table",
+          "sectionBox": [
+            295,
+            215,
+            1440,
+            890
+          ],
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "16px / 400 / color #374151 / row h 116px / padding 24px all sides",
+          "live": "14px / 400 / color #4b5563 / row h 77px / padding py 20 px 16",
+          "fix": "Body cell: font-size 16px \u00b7 color #374151 \u00b7 padding 24px all sides (row h \u2192 116px).",
+          "livePin": {
+            "x": 33.6,
+            "y": 25.4
+          },
+          "figmaPin": {
+            "x": 33.6,
+            "y": 25.4
+          }
+        },
+        {
+          "num": 3,
+          "id": "UTH-USER-003",
+          "element": "Filter controls \u2014 Financial Year / All Schemes / All Department",
+          "section": "toolbar",
+          "sectionBox": [
+            295,
+            120,
+            1440,
+            285
+          ],
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "3 Default Chips: '2024-25' / 'All Schemes' / 'All Department' (1px #e5e7eb border / radius 6 / arrow-down 18\u00d718 / gap 12)",
+          "live": "Single native select 'All Years' only \u2014 'All Schemes' and 'All Department' chips absent",
+          "fix": "Render three filter chips using the Default Chip component (border #e5e7eb, radius 6); add the two missing filter controls.",
+          "livePin": {
+            "x": 20.5,
+            "y": 45.5
+          },
+          "figmaPin": {
+            "x": 20.5,
+            "y": 45.5
+          }
+        },
+        {
+          "num": 4,
+          "id": "UTH-USER-004",
+          "element": "Add User button",
+          "section": "toolbar",
+          "sectionBox": [
+            295,
+            120,
+            1440,
+            285
+          ],
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "14px / 500 / lh 20 \u00b7 pl 24 / pr 16 / py 8",
+          "live": "14px / 600 / lh 14 \u00b7 pl 18 / pr 12 / py 0",
+          "fix": "Button: weight 500 \u00b7 lh 20 \u00b7 padding pl 24 / pr 16 / py 8.",
+          "livePin": {
+            "x": 94.8,
+            "y": 45.5
+          },
+          "figmaPin": {
+            "x": 94.8,
+            "y": 45.5
+          }
+        }
+      ]
+    },
+    {
+      "slug": "LOGIN",
+      "name": "Login / Authentication",
+      "figmaImg": "captures/figma/LOGIN-9018-36746.png",
+      "liveImg": "captures/live/LOGIN-1440.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9018-36746",
+      "liveUrl": "https://eutthan-admin-uat.mosje.in/login",
+      "note": null,
+      "findings": [
+        {
+          "num": 1,
+          "id": "UTH-LOGIN-001",
+          "element": "Page layout \u2014 split-panel",
+          "section": "full-page",
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            900
+          ],
+          "axis": "Layout & Spacing",
+          "severity": "Major",
+          "figma": "Govbar row + masthead at top; left ~60% dark navy (#003366) with SAMAVESH logo + 'Justice. Equality. Dignity.' tagline; right ~40% white with 'Log in to your account' form + footer 'SIGNING INTO E-Utthaan' band",
+          "live": "No govbar row; masthead proportions differ; left ~44% with logo area; right ~56% form on white; 'Sign In' footer bar absent",
+          "fix": "Add govbar row at top. Adjust left panel to ~60% width, right to ~40%. Add 'SIGNING INTO' portal indicator footer band matching Figma node 9018:36746.",
+          "livePin": {
+            "x": 50.0,
+            "y": 50.0
+          },
+          "figmaPin": {
+            "x": 50.0,
+            "y": 50.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "UTH-LOGIN-002",
+          "element": "Form \u2014 Mobile number input",
+          "section": "form",
+          "sectionBox": [
+            640,
+            0,
+            1440,
+            900
+          ],
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "DS Input: border #003366 on focus, label above, 48px height, placeholder text-sm",
+          "live": "Input height 46px, border #e5e7eb, no visible focus ring on default state, label absent",
+          "fix": "Add floating label or above-field label. Set focus ring to outline: 2px solid #003366. Height 48px.",
+          "livePin": {
+            "x": 62.5,
+            "y": 52.6
+          },
+          "figmaPin": {
+            "x": 62.5,
+            "y": 52.6
+          }
+        },
+        {
+          "num": 3,
+          "id": "UTH-LOGIN-003",
+          "element": "Form \u2014 Password input visibility toggle",
+          "section": "form",
+          "sectionBox": [
+            640,
+            0,
+            1440,
+            900
+          ],
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "DS: eye icon inside field, 24\u00d724px, color #6b7280, toggles visibility",
+          "live": "Visibility toggle present but icon is smaller (~16px), positioned at right edge with insufficient touch target (< 44px)",
+          "fix": "Ensure eye icon is 24px, touch target \u2265 44\u00d744px, color matches DS neutral icon.",
+          "livePin": {
+            "x": 86.2,
+            "y": 59.4
+          },
+          "figmaPin": {
+            "x": 86.2,
+            "y": 59.4
+          }
+        },
+        {
+          "num": 4,
+          "id": "UTH-LOGIN-004",
+          "element": "Govbar \u2014 missing on login page",
+          "section": "full-page",
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            900
+          ],
+          "axis": "Components & States",
+          "severity": "Blocker",
+          "figma": "GIGW 3.0 \u00a73.1: Gov bar with India flag, 'Government of India', accessibility controls mandatory on every page",
+          "live": "No govbar on login page \u2014 page starts directly with logo split panel",
+          "fix": "Add standard govbar component at top of login page matching every other screen.",
+          "livePin": {
+            "x": 50.0,
+            "y": 2.2
+          },
+          "figmaPin": {
+            "x": 50.0,
+            "y": 2.2
+          }
+        },
+        {
+          "num": 5,
+          "id": "UTH-LOGIN-005",
+          "element": "CTA \u2014 Login button",
+          "section": "form",
+          "sectionBox": [
+            640,
+            0,
+            1440,
+            900
+          ],
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "DS Primary Button: bg #003366, text white, 48px h, radius 8px, full-width in form context",
+          "live": "Button bg appears correct (#003366), height 41px (vs 48px), radius appears ~6px",
+          "fix": "Set button height to 48px, border-radius to 8px to match DS Button-primary spec.",
+          "livePin": {
+            "x": 62.5,
+            "y": 69.6
+          },
+          "figmaPin": {
+            "x": 62.5,
+            "y": 69.6
+          }
+        }
+      ]
+    }
+  ]
+}

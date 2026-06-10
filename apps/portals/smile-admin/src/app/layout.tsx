@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "@/store/app-context";
-import { ColorModeProvider } from "@mosje/design-system";
+import { ColorModeProvider, ZoneSwitcher } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 
 // smile-admin's GoI navy maps to the "blue-dark" color mode.
@@ -43,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ColorModeProvider initialMode={DEFAULT_MODE}>
           <AppProvider>{children}</AppProvider>
+          <ZoneSwitcher />
         </ColorModeProvider>
       </body>
     </html>

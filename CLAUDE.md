@@ -47,7 +47,9 @@ Apps are **independent** (own git, own deps) — this is a "monorepo-ready" layo
 
 Run inside the app folder (or via `npm --prefix <app>`):
 - `npm run dev` · `npm run build` · `npm run lint` · `npm run typecheck`
-- `apps/dosje`: dev on **:3000** (`npm --prefix apps/dosje run dev`). Dev servers are defined in `.claude/launch.json` (use `preview_start`, not raw `next dev`).
+- `npm run dev` — boot ALL apps behind `localhost:3000` (hub gate + website + portals + Storybook). Individual apps: `npm run dev:website`, `npm run dev:smile`, `npm run dev:pm-ajay`, `npm run dev:eutthan`, `npm run dev:docs`, `npm run dev:hub`.
+- `apps/hub`: root entry point at **:3000** (`npm run dev:hub`). Dev servers are defined in `.claude/launch.json`.
+- `apps/dosje`: standalone at **:3001** (`npm run dev:website`), proxied at `/website` through the hub.
 - Design tokens: `npm run build -w @mosje/tokens` (regenerate) · `npm test -w @mosje/tokens` (contract).
 
 ## Conventions (apply everywhere unless a rule file overrides)
@@ -79,3 +81,4 @@ Run inside the app folder (or via `npm --prefix <app>`):
 - `apps/dosje/` homepage is **built and committed** (14 components, faithful clone of dosje.gov.in).
 - `packages/` design system is **live (Phase 2)**: `@mosje/tokens` (DTCG → Style Dictionary) generates the token contract; `@mosje/design-system` has 17 atoms + form layer, plus the **`data-color-mode` brand-axis theming** (ColorModeProvider/Switcher; modes: `blue-light` default, `blue-dark`, extensible). See `docs/superpowers/specs/` + `plans/`.
 - `apps/portals/smile-admin` is **recovered and consolidated** into this repo (was a separate `smile-admin-portal` repo, now archived). `apps/portals/pm-ajay` MIS dashboard is built. The guard hook blocks `rm -rf` so the original loss never recurs.
+- **Single-origin layout is live.** `apps/hub` is the root zone at **:3000**. All child apps mount via `basePath` — dosje at `/website`, portals at `/portals/<slug>`. Run `npm run dev` from the repo root to bring everything up. Add new portals by setting `basePath` + a hub rewrite + a `portals.ts` entry.

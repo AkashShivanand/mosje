@@ -1,0 +1,199 @@
+{
+  "screen": "Admin / Manage Scheme",
+  "slug": "MANAGE-SCHEME",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40449",
+  "liveUrl": "https://eutthan-admin-uat.mosje.in/scheme-management",
+  "findings": [
+    {
+      "id": "UTH-MANAGE-SCHEME-001",
+      "element": "Data table — column header text size",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "Noto Sans 16px / 600 / line-height 24px (body-1-semibold), color #6b7280",
+      "live": "Noto Sans 14px / 600 / line-height 21.7px, color rgb(55,65,81) = #374151",
+      "fix": "Set column-header font-size to 16px and line-height to 24px (body-1-semibold) per Figma; correct header color to #6b7280."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-002",
+      "element": "Data table — column header text color",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "color #6b7280 (rendered hint)",
+      "live": "color rgb(55,65,81) = #374151",
+      "fix": "Change column-header text color from #374151 to #6b7280 to match Figma hint rendering."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-003",
+      "element": "Data table — body cell text size",
+      "axis": "Typography",
+      "severity": "Major",
+      "figma": "Noto Sans 16px / 400 / line-height 24px (body-1)",
+      "live": "Noto Sans 14px / 400 / line-height 21.7px",
+      "fix": "Set body-cell font-size to 16px and line-height to 24px per Figma body-1."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-004",
+      "element": "Data table — body cell text color",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "color #374151 (Text/Dark)",
+      "live": "color rgb(75,85,99) = #4b5563 (Neutral/600)",
+      "fix": "Change body-cell text color from #4b5563 to #374151 to match Figma Text/Dark token."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-005",
+      "element": "Data table — body row height",
+      "axis": "Layout & Spacing",
+      "severity": "Major",
+      "figma": "row height 116px (cell padding 24px all sides)",
+      "live": "row height 84px (cell padding-top/bottom 20px, padding-left/right 16px)",
+      "fix": "Increase row height to 116px; set cell padding to 24px on all sides per Figma."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-006",
+      "element": "Data table — column header padding",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "padding 16px (y) / 24px (x)",
+      "live": "padding 16px (y) / 16px (x)",
+      "fix": "Set column-header horizontal padding to 24px per Figma (currently 16px)."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-007",
+      "element": "Add Scheme button — font weight & line-height",
+      "axis": "Typography",
+      "severity": "Minor",
+      "figma": "Noto Sans 14px / 500 / line-height 20px",
+      "live": "Noto Sans 14px / 600 / line-height 14px",
+      "fix": "Set Add Scheme label to font-weight 500 and line-height 20px per Figma (currently 600 / 14px)."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-008",
+      "element": "Add Scheme button — padding & size",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "padding 8px (y) / pl 24px pr 16px; size 147 × 40px",
+      "live": "padding 0px (y) / pl 18px pr 12px; size 137 × 36px",
+      "fix": "Set vertical padding 8px, padding-left 24px, padding-right 16px; target size 147 × 40px per Figma."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-009",
+      "element": "Add Scheme button — icon placement",
+      "axis": "Content & Iconography",
+      "severity": "Minor",
+      "figma": "label 'Add Scheme' with trailing + add icon 16×16 (icon as separate element after gap 8)",
+      "live": "label rendered as 'Add Scheme+' (plus appended directly to text, no icon gap)",
+      "fix": "Render the add icon as a 16×16 trailing icon element with 8px gap, not a '+' glyph appended to the label string."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-010",
+      "element": "Sidebar active item — text color & weight",
+      "axis": "Color & Token",
+      "severity": "Major",
+      "figma": "color #003366 (Text/Primary), font-weight 400",
+      "live": "color rgb(55,65,81) = #374151, font-weight 700",
+      "fix": "Active sidebar item text should be #003366 at weight 400 per Figma; live uses #374151 at weight 700."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-011",
+      "element": "Sidebar active item — background radius",
+      "axis": "Layout & Spacing",
+      "severity": "Minor",
+      "figma": "active item background fill #e5eff9, radius 16px",
+      "live": "background rgb(229,239,249) = #e5eff9, radius 8px",
+      "fix": "Set active sidebar item radius to 16px per Figma (live uses 8px); background color matches."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-012",
+      "element": "Top government accessibility bar — height",
+      "axis": "Layout & Spacing",
+      "severity": "Nit",
+      "figma": "height 40px (padding 4px / 24px)",
+      "live": "height 38px",
+      "fix": "Set gov bar height to 40px per Figma (off by 2px)."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-013",
+      "element": "Card (table wrapper) — border color & radius",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "border #e2e8f0 1px, radius 14px",
+      "live": "border rgb(229,231,235) = #e5e7eb 1px, radius 12px",
+      "fix": "Set card border to #e2e8f0 and radius to 14px per Figma (live uses #e5e7eb / 12px). Note: Figma's #e2e8f0 is off-token (see figmaCorrections)."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-014",
+      "element": "Table cell / header — bottom divider color",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "row bottom border #f3f4f6 (Stroke/100) 1px",
+      "live": "borderBottomColor rgb(229,231,235) = #e5e7eb, borderBottomWidth 0px (divider rendered via other means)",
+      "fix": "Use #f3f4f6 1px bottom dividers between rows per Figma; live divider color resolves to #e5e7eb."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-015",
+      "element": "Column header — background fill",
+      "axis": "Color & Token",
+      "severity": "Minor",
+      "figma": "header row background #f9fafb (Neutral/50)",
+      "live": "effective background rgb(243,244,246) = #f3f4f6",
+      "fix": "Set column-header background to #f9fafb per Figma (live renders #f3f4f6)."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-016",
+      "element": "Pagination — items-per-page default value",
+      "axis": "Content & Iconography",
+      "severity": "Minor",
+      "figma": "items-per-page dropdown shows '200'",
+      "live": "items-per-page dropdown shows '10'",
+      "fix": "Default page size differs (200 vs 10). Confirm intended default; Figma specifies 200. Treat row count itself as DATA, but the configured default-page-size control value is a build choice — align to 200 unless product specifies otherwise."
+    },
+    {
+      "id": "UTH-MANAGE-SCHEME-017",
+      "element": "Masthead — department line presence",
+      "axis": "Content & Iconography",
+      "severity": "Minor",
+      "figma": "two lines: 'Ministry of Social Justice & Empowerment' (14/500) above 'Department of Social Justice & Empowerment' (20/700 headline-4)",
+      "live": "single masthead line 'Ministry of Social Justice & Empowerment' rendered at 20px / 700",
+      "fix": "Render both the Ministry line (14/500) and the Department line (20/700) per Figma masthead; live shows only one line styled at the department scale."
+    }
+  ],
+  "figmaCorrections": [
+    {
+      "id": "FIG-MANAGE-SCHEME-001",
+      "element": "Card (table wrapper) border color",
+      "issue": "Card border uses raw hex #e2e8f0, which is not one of the Stroke/* tokens (#f3f4f6 / #e5e7eb / #f9fafb).",
+      "recommendation": "Replace #e2e8f0 with the nearest Stroke token (#e5e7eb, Stroke/200) so the card border is token-bound."
+    },
+    {
+      "id": "FIG-MANAGE-SCHEME-002",
+      "element": "Text/Hint token definition",
+      "issue": "The Text/Hint variable resolves to #374151 in get_variable_defs, but every hint/muted string (search placeholder, column headers, profile role, pagination meta, inactive pages) renders as #6b7280.",
+      "recommendation": "Fix the Text/Hint token to resolve to #6b7280 so the variable matches the rendered hint color across the screen."
+    },
+    {
+      "id": "FIG-MANAGE-SCHEME-003",
+      "element": "Action column frozen shadow",
+      "issue": "The frozen action column uses ad-hoc drop-shadow values (0 6 4 rgba(33,33,33,0.2), 0 2 4 rgba(33,33,33,0.04)) that differ from the Shadows/shadow-md token.",
+      "recommendation": "Either bind the frozen column shadow to Shadows/shadow-md or add a dedicated shadow token so the value is not hardcoded."
+    },
+    {
+      "id": "FIG-MANAGE-SCHEME-004",
+      "element": "Frame name typo",
+      "issue": "The Figma frame is named 'ADMIN / MANGAGE SCHEME' (misspelled 'MANGAGE').",
+      "recommendation": "Rename the frame to 'ADMIN / MANAGE SCHEME'."
+    },
+    {
+      "id": "FIG-MANAGE-SCHEME-005",
+      "element": "Search field placeholder text",
+      "issue": "Search placeholder is 'Search for ' with a trailing space and a truncated/incomplete label.",
+      "recommendation": "Provide a complete placeholder (e.g. 'Search for scheme name') and remove the trailing space."
+    },
+    {
+      "id": "FIG-MANAGE-SCHEME-006",
+      "element": "Table inner auto-layout gap",
+      "issue": "Table inner layout has gap-[323px] as an auto-layout artifact between the scroll table and the frozen action column, which is not a real content gap.",
+      "recommendation": "Clean up the auto-layout so the frozen action column is positioned without a spurious 323px gap that handoff consumers may misread."
+    }
+  ]
+}

@@ -2,21 +2,17 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "dosje",
+      "name": "dev (all apps)",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/dosje", "run", "dev"],
-      "port": 3000
-    },
-    {
-      "name": "smile-admin",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/smile-admin", "run", "dev"],
-      "port": 4123
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000,
+      "autoPort": false
     },
     {
       "name": "pm-ajay",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/pm-ajay", "run", "dev"],
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "/Users/akashk/Documents/Projects/MoSJE/apps/portals/pm-ajay",
       "port": 4124
     }
   ]

@@ -6,6 +6,17 @@
 
 ---
 
+## 0. Methodology — Figma is the source of truth (v2)
+
+- The **Figma handoff frame is the source of truth.** The report flags every place the **live build deviates from its Figma frame.**
+- **Cite the exact Figma value** and the exact live value — e.g. *"Figma `#003366` 20px/600, padding 24 → Live `#1E3A5F` 20px/700, padding 16"*. **Never** "nearest token" or "close to".
+- **Tokens** (`design-truth-tokens.md`) are *reference only*; the binding comparison is **live vs the Figma frame**.
+- **Propose** values only where **no Figma design exists** (no-design screens).
+- Any issue with the **Figma design itself** (typo, inconsistency, a11y) goes in the **separate Figma-Corrections list**, never the dev report.
+- **Brutal coverage:** every element, every state, every viewport — nothing skipped.
+
+---
+
 ## 1. Diff axes (the 6 things we check on every screen)
 
 Every screen is compared against its Figma frame across these six axes. Each finding is tagged
