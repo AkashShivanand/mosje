@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import { ColorModeProvider } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
+import { ConditionalAppSwitcher } from "@/components/conditional-app-switcher";
 import "./globals.css";
 
 const notoSans = Noto_Sans({
@@ -24,7 +25,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />
       </head>
       <body className="min-h-full font-sans bg-surface-muted text-ink">
-        <ColorModeProvider>{children}</ColorModeProvider>
+        <ColorModeProvider>
+          {children}
+          <ConditionalAppSwitcher />
+        </ColorModeProvider>
       </body>
     </html>
   );
