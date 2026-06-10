@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { AppSwitcher } from "@mosje/design-system";
+import { AppSwitcher, ColorModeProvider } from "@mosje/design-system";
+import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import { AuthProvider } from "@/store/auth-context";
 import "./globals.css";
 
@@ -11,8 +12,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />
         {/* Preconnect for Google Fonts to reduce latency */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -31,10 +33,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
-        <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
+        <ColorModeProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+          <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
+        </ColorModeProvider>
       </body>
     </html>
   );
