@@ -51,5 +51,5 @@ export { Loader } from "./components/loader";
 export { EmptyState } from "./components/empty-state";
 export { Avatar } from "./components/avatar";
 export { AccessibilityWidget } from "./components/accessibility-widget";
-export { ZoneSwitcher, DEFAULT_ZONES } from "./components/zone-switcher";
-export type { Zone, ZoneSwitcherProps } from "./components/zone-switcher";
+export { AppSwitcher, DEFAULT_APPS, ZoneSwitcher, DEFAULT_ZONES } from "./components/zone-switcher";
+export type { AppEntry, AppSwitcherProps, Zone, ZoneSwitcherProps } from "./components/zone-switcher";

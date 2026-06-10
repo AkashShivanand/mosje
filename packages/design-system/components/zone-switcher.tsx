@@ -10,6 +10,10 @@ import {
   filterApps,
   matchActivePath,
 } from "./app-switcher-utils";
+
+// Re-export for convenience
+export type { AppEntry };
+export { DEFAULT_APPS };
 import "./zone-switcher.css";
 
 export interface AppSwitcherProps {
