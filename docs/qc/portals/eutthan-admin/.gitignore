@@ -18,3 +18,4 @@ node_modules/
 package-lock.json
 # Auth sessions (cookies) — never commit
 .qc/
+findings_batch*.json
