@@ -146,7 +146,7 @@ Examples:
 | Admin / Manage Financial Year | `4226:40009` | Financial Year List table: Financial Year column, Current Financial Year checkbox column, Action column (edit/delete icons). Search bar. "+ Add Financial Year" primary CTA. |
 | Admin / Manage Financial Year / Success State | `4226:40148` | Same as above with "Financial Year Added Successfully" green toast notification at bottom-right. Auto-dismisses after 3s. |
 | Admin / Add Financial Year | `4226:43777` | Form: "Add Financial Year". Two fields: Financial Year (text input, e.g. 2025-2026) + Current Financial Year (dropdown: Yes/No). Back + Add buttons. |
-| Admin / Edit Financial Year | `4226:44550` | Form: "Edit Financial Year". Same two fields pre-filled. Back + Save buttons. Role shown as "Nodal Officer" in header. |
+| Admin / Edit Financial Year | `4226:44550` | Form: "Edit Financial Year". Same two fields pre-filled. Back + Save buttons. Role shown as "Admin" in header. |
 | Admin / Manage Ministry | `4226:40288` | Ministry list table: Ministry Name, Grant No. 10A, Grant No. PFMS, Financial Year. Search + filter. "+ Add Ministry" CTA. Paginated (10 per page). |
 | Admin / Add Ministry | `4226:43881` | Form: "Add Ministry/Department". Fields: Financial Year (dropdown), Ministry/Department for Previous ID (dropdown), Ministry/Department Name (text), Grant No. 10A (text), Grant No. PFMS (text). Reset + Back + Add buttons. |
 | Admin / Manage Scheme | `4226:40449` | Scheme list table: Scheme Code, Scheme Name, Sub Scheme, Allocation, DAPSC, Percent, Revised Estimates. Filterable. "+ Add Scheme" CTA. |
@@ -175,8 +175,8 @@ Examples:
 | Ministry / Dashboard | `4226:37114` | Overview for Ministry role. Stats: schemes count (8), achieving (0), missing (8), no data (4). Financial year progress table with totals: Approved Outlay ₹230.74, Expenditure ₹249.98, BE ₹248.5990. Utilisation %: -1.3821. Pie chart of top 5 schemes by expenditure. |
 | Ministry / Physical Progress Data | `4226:38368` | Physical Progress Data table: Scheme, Ministry/Department, Financial Year, Units, Options buttons. Filters: All Ministries / All Financial Years. "+ Import/Add Data" CTA. Paginated. |
 | Ministry / Physical Progress Data / Add | `4226:39568` | Form: "Add Physical Progress". Fields: Unattributed Social Development Fund name, Linked Central Scheme, Scheme (dropdown), Ministry/Affairs (dropdown), FY (dropdown), Sanction Target, Revised Target, Compliance Type (dropdown), No. of Beneficiaries, Remarks. Back + Save. |
-| Ministry / Physical Progress Data / Import With Excel — Step 1 | `9238:60478` | "Import Achievement Data" modal. Step 1: file drop zone. Title "Import with Excel". Subtitle "Upload your Excel file and import all achievements data." Empty dropzone with spreadsheet icon. "PDF Only · Max 5MB". "Do not have a template? Click to Download Template" link. |
-| Ministry / Physical Progress Data / Import With Excel — Step 2 | `9239:65630` | Same modal. Step 2: file selected. Shows "Data 2025-26.csv · 1.8 Mb" with Change + Delete icons. "PDF Only · Max 5MB". Primary "Import" button now enabled. |
+| Ministry / Physical Progress Data / Import With Excel — Step 1 | `9238:60478` | "Import Achievement Data" modal. Step 1: file drop zone. Title "Import with Excel". Subtitle "Upload your Excel file and import all achievements data." Empty dropzone with spreadsheet icon. "CSV/Excel · Max 5MB". "Do not have a template? Click to Download Template" link. |
+| Ministry / Physical Progress Data / Import With Excel — Step 2 | `9239:65630` | Same modal. Step 2: file selected. Shows "Data 2025-26.csv · 1.8 Mb" with Change + Delete icons. "CSV/Excel · Max 5MB". Primary "Import" button now enabled. |
 | Ministry / Manage Scheme | `4226:37360` | Scheme List for Ministry user. Table: Scheme Name, Ministry/Department, Financial Year, Options. Filters: All Financial Years / All Statuses. "+ Add Scheme" CTA. Paginated. |
 | Ministry / Manage Scheme / Add Scheme | `4226:38254` | Form: "Add Scheme". Fields: Financial Year (dropdown), Scheme Name (text), Scheme Code (text), Sub Scheme Name, Sub Scheme Code, Total Allocation (Cr), DAPSC Allocation (Cr), Allocation Percent (%), Revised Estimates (Cr), Scheme Code PFMS. Reset + Back + Add. Note: Ministry role has different field layout vs Admin role (no Ministry/Department dropdown — pre-scoped to Ministry). |
 | Ministry / Manage Outcome | `4226:38577` | Scheme wise Outcome List. Table: Scheme, Ministry/Department, Financial Year, Outcome. Filters available. "+ Add Outcome" CTA. |
@@ -490,7 +490,7 @@ The Admin dashboard shows a cross-ministry performance summary for the current f
 
 **Figma node:** `4226:44550`
 
-Identical form to Add, pre-filled with existing values. Role shown as "Nodal Officer" (not Admin) — verify if this is intentional role context or a design inconsistency.
+Identical form to Add, pre-filled with existing values. Role shown as "Admin" in header.
 
 **Actions:** Back · Save
 
@@ -748,14 +748,14 @@ Modal overlay on Physical Progress Data page.
 │        │  and import all data.   │            │
 │        └─────────────────────────┘            │
 │                                                │
-│  PDF Only · Max 5MB                            │
+│  CSV/Excel · Max 5MB                           │
 │                                                │
 │  Do not have a template?                       │
 │  Click to Download Template                    │
 └────────────────────────────────────────────────┘
 ```
 
-**Note:** Despite the label "PDF Only", this accepts CSV/Excel files — verify with backend team whether the label is a design error.
+**Note:** Label updated from "PDF Only" to "CSV/Excel · Max 5MB" — correctly reflects accepted file formats.
 
 ---
 
@@ -771,7 +771,7 @@ Same modal, file selected state:
 │                                                │
 │  [📄] Data 2025-26.csv · 1.8 Mb  [Change] [🗑] │
 │                                                │
-│  PDF Only · Max 5MB                            │
+│  CSV/Excel · Max 5MB                           │
 │                                                │
 │              [    Import    ]                  │
 └────────────────────────────────────────────────┘
@@ -981,12 +981,12 @@ The portal is designed for **desktop-first** usage. The login screens have mobil
 
 The following issues were identified during the June 2026 design audit. Prioritised for resolution before dev handoff closure.
 
-### Critical
+### Critical — ✅ All Resolved (June 2026)
 
-| # | Issue | Location | Impact |
+| # | Issue | Location | Status |
 |---|-------|----------|--------|
-| C1 | "PDF Only · Max 5MB" label on Import Excel modal is inaccurate — file shown is a CSV | `Import With Excel — Step 1 & 2` | Misleads users; contradicts actual accepted formats |
-| C2 | Edit Financial Year frame shows "Nodal Officer" role in header (should be Admin) | `Admin / Edit Financial Year` | Role inconsistency — verify if this is intentional or design error |
+| C1 | ~~"PDF Only · Max 5MB" label on Import Excel modal is inaccurate — file shown is a CSV~~ | `Import With Excel — Step 1 & 2` | ✅ Fixed — label updated to "CSV/Excel · Max 5MB" |
+| C2 | ~~Edit Financial Year frame shows "Nodal Officer" role in header (should be Admin)~~ | `Admin / Edit Financial Year` | ✅ Fixed — header now correctly shows "Admin" role |
 
 ### Important
 
