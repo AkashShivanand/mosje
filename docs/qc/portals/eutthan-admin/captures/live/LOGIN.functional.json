@@ -1,0 +1,10 @@
+{
+  "username_required": false,
+  "password_required": false,
+  "username_type": "text",
+  "password_toggle_present": true,
+  "autocomplete_user": "username",
+  "autocomplete_pass": null,
+  "url_changed_on_empty_submit": false,
+  "validation_messages": []
+}

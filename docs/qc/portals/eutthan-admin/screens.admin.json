@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "DASHBOARD",
+    "name": "Admin / Dashboard",
+    "url": "https://eutthan-admin-uat.mosje.in/dashboard?fy=2026-2027"
+  },
+  {
+    "slug": "FINANCIAL-YEAR",
+    "name": "Admin / Financial Year",
+    "url": "https://eutthan-admin-uat.mosje.in/admin/financial-year-management"
+  },
+  {
+    "slug": "MANAGE-MINISTRY",
+    "name": "Admin / Manage Ministry",
+    "url": "https://eutthan-admin-uat.mosje.in/ministry-management"
+  },
+  {
+    "slug": "MANAGE-SCHEME",
+    "name": "Admin / Manage Scheme",
+    "url": "https://eutthan-admin-uat.mosje.in/scheme-management"
+  },
+  {
+    "slug": "MANAGE-OUTCOME",
+    "name": "Admin / Manage Outcome",
+    "url": "https://eutthan-admin-uat.mosje.in/manage-outcome"
+  },
+  {
+    "slug": "DOCUMENTS",
+    "name": "Admin / Documents",
+    "url": "https://eutthan-admin-uat.mosje.in/document-management"
+  },
+  {
+    "slug": "MAP-MINISTRY",
+    "name": "Admin / Map Ministry",
+    "url": "https://eutthan-admin-uat.mosje.in/map-ministry"
+  },
+  {
+    "slug": "MANAGE-USER",
+    "name": "Admin / Manage User",
+    "url": "https://eutthan-admin-uat.mosje.in/user-management"
+  }
+]

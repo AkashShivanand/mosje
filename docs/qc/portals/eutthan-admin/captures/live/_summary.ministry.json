@@ -1,0 +1,46 @@
+{
+  "MIN-DASHBOARD": {
+    "func": {
+      "anchors": 9,
+      "broken_links": 0,
+      "inputs": 0,
+      "inputs_unlabeled": 0,
+      "buttons": 10,
+      "forms": 0,
+      "h1": 1
+    }
+  },
+  "MIN-MINISTRY-PHYSICAL-PROGRESS-DATA": {
+    "func": {
+      "anchors": 5,
+      "broken_links": 0,
+      "inputs": 2,
+      "inputs_unlabeled": 2,
+      "buttons": 16,
+      "forms": 0,
+      "h1": 1
+    }
+  },
+  "MIN-SCHEME-MANAGEMENT": {
+    "func": {
+      "anchors": 4,
+      "broken_links": 0,
+      "inputs": 2,
+      "inputs_unlabeled": 2,
+      "buttons": 15,
+      "forms": 0,
+      "h1": 1
+    }
+  },
+  "MIN-MANAGE-OUTCOME": {
+    "func": {
+      "anchors": 4,
+      "broken_links": 0,
+      "inputs": 2,
+      "inputs_unlabeled": 2,
+      "buttons": 14,
+      "forms": 0,
+      "h1": 1
+    }
+  }
+}
