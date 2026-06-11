@@ -9,12 +9,11 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "concurrently --kill-others-on-fail --prefix-colors \"blue,cyan,yellow,green,magenta,white\" -n \"hub,dosje,smile,pm-ajay,eutthan,docs\" \"npm --prefix apps/hub run dev\" \"npm --prefix apps/dosje run dev\" \"npm --prefix apps/portals/smile-admin run dev\" \"npm --prefix apps/portals/pm-ajay run dev\" \"npm --prefix apps/portals/eutthan-admin run dev\" \"npm --prefix apps/docs run dev\"",
+    "dev": "concurrently --kill-others-on-fail --prefix-colors \"blue,cyan,yellow,green,white\" -n \"hub,dosje,smile,pm-ajay,docs\" \"npm --prefix apps/hub run dev\" \"npm --prefix apps/dosje run dev\" \"npm --prefix apps/portals/smile-admin run dev\" \"npm --prefix apps/portals/pm-ajay run dev\" \"npm --prefix apps/docs run dev\"",
     "dev:hub": "npm --prefix apps/hub run dev",
     "dev:website": "npm --prefix apps/dosje run dev",
     "dev:smile": "npm --prefix apps/portals/smile-admin run dev",
     "dev:pm-ajay": "npm --prefix apps/portals/pm-ajay run dev",
-    "dev:eutthan": "npm --prefix apps/portals/eutthan-admin run dev",
     "dev:docs": "npm --prefix apps/docs run dev"
   },
   "devDependencies": {
