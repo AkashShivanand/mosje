@@ -124,18 +124,6 @@ const SUGGESTIONS: Suggestion[] = [
     figmaRef: "DS Library → Components → Badge",
   },
   {
-    id: "DS-ADMIN-010",
-    category: "No-Design Screens",
-    severity: "Critical",
-    title: "Design the Login screen",
-    context: "The Login screen exists in the live portal but has no Figma design. UTH-LOGIN-004 flags a GIGW compliance Blocker (missing govbar).",
-    current: "Undesigned screen — no Figma frame for the login flow.",
-    proposed: "Govbar (GIGW mandatory) · MoSJE masthead · Noto Sans form · DS input + primary button · error states.",
-    rationale: "Login is the first impression. The missing govbar is a GIGW compliance violation; undesigned screens cannot be QC'd.",
-    action: "Create Figma frame for Login in the MoSJE Portal Handoff file. Include govbar, masthead, form, and all states.",
-    figmaRef: "MoSJE Portal Handoff → New frame: Login",
-  },
-  {
     id: "DS-ADMIN-011",
     category: "No-Design Screens",
     severity: "High",

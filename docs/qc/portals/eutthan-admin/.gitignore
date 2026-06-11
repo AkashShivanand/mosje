@@ -1,0 +1,21 @@
+# Throwaway Figma-builder + analysis intermediates (regenerated each run)
+_af_*
+_al_*
+_fig_*
+_hashes.json
+_figma_payload.json
+_verify/
+_systemic.json
+_token-conformance.json
+# Recovery / rejected snapshots
+audit-master.prior.json
+audit-master.rejected-rebuild.json
+# Render intermediates
+report-sections.json
+report-generated.html
+# Node deps for the PDF renderer
+node_modules/
+package-lock.json
+# Auth sessions (cookies) — never commit
+.qc/
+findings_batch*.json

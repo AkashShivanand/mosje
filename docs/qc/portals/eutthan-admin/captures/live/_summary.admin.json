@@ -1,0 +1,106 @@
+{
+  "DASHBOARD": {
+    "func": {
+      "anchors": 17,
+      "broken_links": 0,
+      "fake_clickable": 1,
+      "inputs": 0,
+      "inputs_unlabeled": 0,
+      "buttons": 10,
+      "forms": 0,
+      "h1": 1
+    },
+    "axe": 0
+  },
+  "FINANCIAL-YEAR": {
+    "func": {
+      "anchors": 10,
+      "broken_links": 0,
+      "fake_clickable": 1,
+      "inputs": 11,
+      "inputs_unlabeled": 11,
+      "buttons": 34,
+      "forms": 0,
+      "h1": 2
+    },
+    "axe": 0
+  },
+  "MANAGE-MINISTRY": {
+    "func": {
+      "anchors": 10,
+      "broken_links": 0,
+      "fake_clickable": 16,
+      "inputs": 4,
+      "inputs_unlabeled": 4,
+      "buttons": 38,
+      "forms": 0,
+      "h1": 1
+    },
+    "axe": 0
+  },
+  "MANAGE-SCHEME": {
+    "func": {
+      "anchors": 10,
+      "broken_links": 0,
+      "fake_clickable": 50,
+      "inputs": 3,
+      "inputs_unlabeled": 3,
+      "buttons": 31,
+      "forms": 0,
+      "h1": 1
+    },
+    "axe": 0
+  },
+  "MANAGE-OUTCOME": {
+    "func": {
+      "anchors": 10,
+      "broken_links": 0,
+      "fake_clickable": 11,
+      "inputs": 2,
+      "inputs_unlabeled": 2,
+      "buttons": 14,
+      "forms": 0,
+      "h1": 1
+    },
+    "axe": 0
+  },
+  "DOCUMENTS": {
+    "func": {
+      "anchors": 10,
+      "broken_links": 0,
+      "fake_clickable": 12,
+      "inputs": 2,
+      "inputs_unlabeled": 2,
+      "buttons": 17,
+      "forms": 0,
+      "h1": 1
+    },
+    "axe": 0
+  },
+  "MAP-MINISTRY": {
+    "func": {
+      "anchors": 10,
+      "broken_links": 0,
+      "fake_clickable": 15,
+      "inputs": 3,
+      "inputs_unlabeled": 3,
+      "buttons": 28,
+      "forms": 0,
+      "h1": 1
+    },
+    "axe": 0
+  },
+  "MANAGE-USER": {
+    "func": {
+      "anchors": 10,
+      "broken_links": 0,
+      "fake_clickable": 1,
+      "inputs": 1,
+      "inputs_unlabeled": 1,
+      "buttons": 40,
+      "forms": 0,
+      "h1": 1
+    },
+    "axe": 0
+  }
+}
