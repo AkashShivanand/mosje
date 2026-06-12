@@ -19,6 +19,7 @@
   position: sticky;
   top: 0;
   height: 100vh;
+  overflow-x: hidden;
   overflow-y: auto;
   border-right: 1px solid var(--ds-border);
   background-color: var(--ds-surface-muted);
@@ -103,11 +104,16 @@
 }
 
 .docs-nav__badge {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
   margin-left: auto;
   font-size: 9px;
   font-weight: 700;
-  padding: 1px 5px;
+  line-height: 1;
+  padding: 2px 5px;
   border-radius: var(--ds-radius-pill);
+  white-space: nowrap;
 }
 .docs-nav__badge--Stable  { background: var(--ds-success); color: #fff; }
 .docs-nav__badge--Beta    { background: var(--ds-warning); color: var(--ds-ink); }
