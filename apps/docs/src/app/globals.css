@@ -1,0 +1,75 @@
+/* Import design system tokens — all --ds-* and --sa-* CSS custom properties */
+@import "../../node_modules/@mosje/design-system/tokens.css";
+
+/* Base reset */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-body-1);
+  line-height: var(--ds-leading-body-1);
+  color: var(--ds-ink);
+  background-color: var(--ds-surface);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+body { min-height: 100vh; }
+
+/* Typography defaults */
+h1 { font-size: var(--ds-text-display);   line-height: 1.15; font-weight: 500; }
+h2 { font-size: var(--ds-text-title-1);   line-height: 1.3;  font-weight: 600; }
+h3 { font-size: var(--ds-text-headline);  line-height: 1.4;  font-weight: 600; }
+h4 { font-size: var(--ds-text-body-1);    line-height: 1.5;  font-weight: 600; }
+
+p { line-height: var(--ds-leading-body-1); }
+
+a { color: var(--ds-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:focus-visible {
+  outline: 3px solid var(--ds-primary-ring);
+  outline-offset: 2px;
+  border-radius: var(--ds-radius-xs);
+}
+
+/* Prose content (used in page bodies) */
+.ds-prose p + p { margin-top: var(--ds-space-4); }
+.ds-prose ul, .ds-prose ol { padding-left: var(--ds-space-6); margin-top: var(--ds-space-3); }
+.ds-prose li + li { margin-top: var(--ds-space-2); }
+
+/* Code */
+code:not([class]) {
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  font-size: 0.875em;
+  background-color: var(--ds-surface-muted);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-xs);
+  padding: 1px 5px;
+  color: var(--ds-ink);
+}
+
+/* Skip to content */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--ds-space-4);
+  z-index: 9999;
+  padding: var(--ds-space-2) var(--ds-space-4);
+  background: var(--ds-primary);
+  color: #fff;
+  border-radius: var(--ds-radius-sm);
+  font-weight: 600;
+  transition: top 0.1s;
+}
+.skip-link:focus { top: var(--ds-space-4); }
+
+/* Welcome page — feature card links */
+.docs-welcome-card {
+  display: block;
+  padding: var(--ds-space-5);
+  border-radius: var(--ds-radius-md);
+  border: 1px solid var(--ds-border);
+  text-decoration: none;
+  transition: border-color 0.15s;
+}
+.docs-welcome-card:hover { border-color: var(--ds-primary); }

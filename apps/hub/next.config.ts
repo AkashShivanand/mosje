@@ -5,6 +5,7 @@ const ZONE_WEBSITE     = process.env.ZONE_WEBSITE_URL     ?? "http://localhost:3
 const ZONE_DS          = process.env.ZONE_DS_URL          ?? "http://localhost:6006";
 const ZONE_PM_AJAY     = process.env.ZONE_PM_AJAY_URL     ?? "http://localhost:4124";
 const ZONE_SMILE_ADMIN = process.env.ZONE_SMILE_ADMIN_URL ?? "http://localhost:4123";
+const ZONE_DOCS        = process.env.ZONE_DOCS_URL        ?? "http://localhost:3002";
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -37,15 +38,14 @@ const nextConfig: NextConfig = {
       // directly; the full UI loads through the hub.)
       { source: "/storybook",         destination: `${ZONE_DS}/` },
       { source: "/storybook/:path*",  destination: `${ZONE_DS}/:path*` },
+      // SAMAVESH docs portal — design-system documentation
+      { source: "/design-system",         destination: `${ZONE_DOCS}/design-system` },
+      { source: "/design-system/",        destination: `${ZONE_DOCS}/design-system/` },
+      { source: "/design-system/:path*",  destination: `${ZONE_DOCS}/design-system/:path*` },
     ];
   },
   async redirects() {
-    return [
-      // /design-system is reserved for the upcoming Next docs portal; until it ships,
-      // send visitors to Storybook so the route is never blank. (Temporary 307.)
-      { source: "/design-system", destination: "/storybook/", permanent: false },
-      { source: "/design-system/:path*", destination: "/storybook/", permanent: false },
-    ];
+    return [];
   },
   async headers() {
     return [
