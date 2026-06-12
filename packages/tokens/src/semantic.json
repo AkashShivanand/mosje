@@ -45,6 +45,7 @@
       "success": {"$value":"{color.green.500}"},
       "successStrong": {"$value":"{color.green.700}"},
       "warning": {"$value":"{color.yellow.500}"},
+      "warningTonal": {"$value":"{color.saffron.50}"},
       "danger":  {"$value":"{color.red.500}"},
       "dangerStrong": {"$value":"{color.red.700}"},
       "dangerTonal": {"$value":"{color.red.50}"},

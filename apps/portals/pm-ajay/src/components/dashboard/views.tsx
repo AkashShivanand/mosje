@@ -147,8 +147,7 @@ function AlertRow({
   desc: string;
   when: string;
 }) {
-  // TODO(tokens): add --ds-danger-tonal token; --ds-warning-tonal already exists
-  const bg = tone === "red" ? "#FDECEA" : "var(--ds-warning-tonal)",
+  const bg = tone === "red" ? "var(--ds-danger-tonal)" : "var(--ds-warning-tonal)",
     fg = tone === "red" ? "var(--ds-danger)" : "var(--ds-warning)";
   return (
     <div style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: 13, border: "1px solid var(--pm-line)", borderRadius: 10 }}>

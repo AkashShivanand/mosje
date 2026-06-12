@@ -73,6 +73,7 @@
   --sa-color-status-success: #2e7d32;
   --sa-color-status-successStrong: #1b5e20;
   --sa-color-status-warning: #ffd323;
+  --sa-color-status-warningTonal: #ffedd5;
   --sa-color-status-danger: #ec5042;
   --sa-color-status-dangerStrong: #a11d12;
   --sa-color-status-dangerTonal: #fad2cf;
@@ -171,7 +172,9 @@
   --ds-success: var(--sa-color-status-success);
   --ds-success-tonal: var(--sa-color-green-50);
   --ds-danger: var(--sa-color-status-danger);
+  --ds-danger-tonal: var(--sa-color-status-dangerTonal);
   --ds-warning: var(--sa-color-status-warning);
+  --ds-warning-tonal: var(--sa-color-status-warningTonal);
   --ds-info: var(--sa-color-status-info);
   --ds-ink: var(--sa-color-text-default);
   --ds-ink-strong: var(--sa-color-text-strong);
