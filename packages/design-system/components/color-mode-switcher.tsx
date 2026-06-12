@@ -25,7 +25,7 @@ export function ColorModeSwitcher({
   label = "Colour mode",
   hideLabel = false,
   compact = false,
-}: ColorModeSwitcherProps) {
+}: ColorModeSwitcherProps): React.JSX.Element {
   const { mode, setMode, modes } = useColorMode();
   const btnRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
 

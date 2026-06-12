@@ -77,6 +77,11 @@ export function applyColorMode(mode: string): void {
  * `<script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />` so the
  * correct `data-color-mode` is set before first paint even without SSR. Safe to
  * combine with SSR (idempotent).
+ *
+ * @security `dangerouslySetInnerHTML` is safe here: the returned string is a
+ * compile-time constant. The only runtime input is the cookie value read by the
+ * script itself inside the browser — no user-supplied data is interpolated
+ * server-side, so XSS injection via this function is not possible.
  */
 export function colorModeInitScript(defaultMode: string = DEFAULT_COLOR_MODE): string {
   const fallback = normalizeColorMode(defaultMode);

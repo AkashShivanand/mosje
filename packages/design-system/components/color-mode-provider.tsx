@@ -30,7 +30,7 @@ export interface ColorModeProviderProps {
 export function ColorModeProvider({
   initialMode,
   children,
-}: ColorModeProviderProps) {
+}: ColorModeProviderProps): React.JSX.Element {
   const [mode, setModeState] = React.useState<string>(() =>
     normalizeColorMode(initialMode ?? DEFAULT_COLOR_MODE),
   );

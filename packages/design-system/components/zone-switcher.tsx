@@ -46,7 +46,7 @@ export function AppSwitcher({
   devMode = false,
   label = "Apps",
   className,
-}: AppSwitcherProps) {
+}: AppSwitcherProps): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
   const [pathname, setPathname] = React.useState<string | null>(null);
   const [query, setQuery] = React.useState("");

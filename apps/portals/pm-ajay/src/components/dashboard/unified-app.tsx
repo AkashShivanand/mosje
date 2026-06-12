@@ -273,8 +273,8 @@ const GROUPS: { n: string; id: ViewId; title: string }[] = [
 const CROSSG: ViewId[] = ["financial", "governance", "executive"];
 
 const DEFAULTS: Filters = { fy: FY[0], state: "All India", district: "All Districts", scheme: SCHEMES[0], period: PERIODS[0] };
-const ACCENT = "#1558b0";
-const ACCENT_BG = "#E8F0FE";
+const ACCENT = "var(--ds-primary)";
+const ACCENT_BG = "var(--ds-primary-tonal)";
 const SPARK = true;
 
 interface RankRow { name: string; util: number; level: "state" | "district"; }
@@ -311,7 +311,7 @@ export function UnifiedDashboard() {
   const util = region ? region.util : 79.0;
   const funnel = [
     { label: "Allocation", pct: 100, value: INR(9250 * fCross), color: C.navy },
-    { label: "Sanction", pct: 88, value: INR(8142 * fCross), color: "#0a4ea0" },
+    { label: "Sanction", pct: 88, value: INR(8142 * fCross), color: "var(--ds-primary)" },
     { label: "Release", pct: 73, value: INR(6718 * fCross), color: C.blue2 },
     { label: "Utilization", pct: 57, value: INR(5306 * fCross), color: C.green },
   ];
@@ -417,7 +417,7 @@ export function UnifiedDashboard() {
       <div
         className="pm-app"
         ref={appRef}
-        style={{ "--pm-accent": ACCENT, "--pm-accent-bg": ACCENT_BG, "--pm-canvas": "#F4F6F9" } as CSSProperties}
+        style={{ "--pm-accent": ACCENT, "--pm-accent-bg": ACCENT_BG, "--pm-canvas": "var(--ds-surface-muted)" } as CSSProperties}
       >
         <Navbar />
         <div className="ud-content">

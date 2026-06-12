@@ -46,7 +46,7 @@ export function FormField({
   required = false,
   className,
   children,
-}: FormFieldProps) {
+}: FormFieldProps): React.JSX.Element {
   const reactId = React.useId();
   const fieldId = id ?? reactId;
   const hintId = hint != null ? `${fieldId}-hint` : undefined;
