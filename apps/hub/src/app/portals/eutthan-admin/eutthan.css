@@ -1,21 +1,21 @@
 
 :root {
-  --primary: #003366;
+  --primary: var(--ds-gov-navy);
   --primary-800: #001933;
   --primary-100: #c8dbf0;
   --primary-50: #e5eff9;
-  --text: #374151;
-  --text-strong: #1f2937;
-  --text-muted: #6b7280;
-  --surface: #ffffff;
-  --surface-muted: #f9fafb;
+  --text: var(--ds-ink); /* DS ink is #212121; original was #374151 — intentional shift to DS value */
+  --text-strong: var(--ds-ink-strong); /* DS ink-strong is #1f2428; original was #1f2937 */
+  --text-muted: #6b7280; /* TODO: add to DS — --ds-ink-muted is #343a40, too dark; keeping original */
+  --surface: var(--ds-surface);
+  --surface-muted: var(--ds-surface-muted); /* DS surface-muted is #f8f9fa; original was #f9fafb */
   --stroke-50: #f9fafb;
   --stroke-100: #f3f4f6;
-  --stroke-200: #e5e7eb;
+  --stroke-200: var(--ds-border-strong); /* DS border-strong is #e2e6ea; original was #e5e7eb */
   --stroke-300: #d1d5db;
-  --danger: #d64539;
-  --success: #27682a;
-  --gov-yellow: #ffd323;
+  --danger: var(--ds-danger); /* DS danger is #ec5042; original was #d64539 — intentional shift to DS value */
+  --success: var(--ds-success); /* DS success is #2e7d32; original was #27682a */
+  --gov-yellow: var(--ds-gov-yellow);
   --chart-danger: #e4776f;
   --chart-warning: #f6c36d;
   --chart-primary-soft: #9cbfe3;
@@ -42,7 +42,7 @@ body {
   margin: 0;
   color: var(--text);
   background: var(--surface-muted);
-  font-family: "Noto Sans", "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--ds-font-sans, "Noto Sans", system-ui, sans-serif);
 }
 
 a {
@@ -336,9 +336,7 @@ button {
 .panel,
 .chart-panel,
 .data-card,
-.form-card,
-.login-panel,
-.login-feature-grid article {
+.form-card {
   border: 1px solid var(--stroke-200);
   background: var(--surface);
 }
@@ -761,73 +759,109 @@ tr.selected-row td {
   gap: 12px;
 }
 
-.login-screen {
-  min-height: 100dvh;
-  background: var(--surface-muted);
-}
-
-.login-card {
+/* ── Login — two-panel split ──────────────────────────────── */
+.login-split {
   display: grid;
-  width: min(1060px, calc(100% - 32px));
-  gap: 24px;
-  margin: 48px auto;
+  grid-template-columns: 420px minmax(0, 1fr);
+  min-height: 100dvh;
 }
 
-.login-brand {
+.login-left {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
-  text-align: left;
+  background: var(--primary);
+  padding: 48px 40px;
 }
 
-.login-brand h1 {
-  margin: 8px 0 4px;
-  color: var(--text);
-  font-size: 32px;
+.login-left-content {
+  text-align: center;
+  color: white;
 }
 
-.login-brand p,
-.login-panel p,
-.login-feature-grid p {
-  margin: 0;
-  color: var(--text-muted);
+.login-portal-name {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: white;
+  margin-bottom: 12px;
 }
 
-.login-panel {
-  display: grid;
-  width: min(440px, 100%);
-  gap: 18px;
-  justify-self: center;
-  border-radius: var(--radius-lg);
-  padding: 28px;
+.login-ministry-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+  margin-bottom: 12px;
 }
 
-.login-panel h2 {
+.login-tagline {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.login-gov-tag {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 4px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.3px;
+}
+
+.login-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  padding: 48px 40px;
+}
+
+.login-form-inner {
+  width: min(400px, 100%);
+}
+
+.login-form-title {
   margin: 0 0 8px;
-  color: var(--text);
-  font-size: 24px;
+  color: var(--text-strong);
+  font-size: 28px;
+  font-weight: 800;
 }
 
-.wide {
-  width: 100%;
+.login-form-subtitle {
+  margin: 0 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
 }
 
-.login-feature-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+.login-error-box {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(214, 69, 57, 0.08);
+  border: 1px solid rgba(214, 69, 57, 0.25);
+  color: var(--danger);
+  font-size: 14px;
 }
 
-.login-feature-grid article {
-  display: grid;
-  gap: 8px;
-  border-radius: var(--radius-lg);
-  padding: 18px;
-}
+@media (max-width: 768px) {
+  .login-split {
+    grid-template-columns: 1fr;
+  }
 
-.login-feature-grid svg {
-  color: var(--primary);
+  .login-left {
+    padding: 40px 24px;
+    min-height: 260px;
+  }
+
+  .login-right {
+    padding: 40px 24px;
+  }
 }
 
 @media (max-width: 960px) {
@@ -1055,3 +1089,52 @@ tr.selected-row td {
     animation-duration: 0.01ms !important;
   }
 }
+
+/* Demo credentials panel (prototype phase only) */
+.demo-creds-panel {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1.5px dashed var(--stroke-300);
+  border-radius: var(--radius-md);
+  background: var(--stroke-50);
+}
+.demo-creds-header {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+.demo-creds-rows { display: flex; flex-direction: column; gap: 6px; }
+.demo-creds-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--stroke-200);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-size: 13px;
+  color: var(--text);
+  transition: border-color 0.15s, background 0.15s;
+}
+.demo-creds-row:hover { border-color: var(--primary); background: var(--primary-50); }
+.demo-role-tag {
+  font-size: 11px; font-weight: 600;
+  color: #fff; background: var(--primary);
+  padding: 2px 7px; border-radius: 4px; flex-shrink: 0;
+}
+.demo-username { font-family: monospace; font-size: 12px; color: var(--text-strong); flex-shrink: 0; }
+.demo-pin { font-family: monospace; font-size: 12px; color: var(--text-muted); margin-left: auto; }
+/* Accessible skip link for eUtthan authenticated shell */
+.eu-skip-link {
+  position: absolute; top: -100%; left: 0;
+  padding: 8px 16px; background: var(--primary); color: #fff;
+  font-size: 14px; font-weight: 600; z-index: 9999;
+  border-bottom-right-radius: var(--radius-md);
+}
+.eu-skip-link:focus { top: 0; }

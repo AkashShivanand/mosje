@@ -28,25 +28,25 @@ interface AuthState {
   signOut: () => void;
 }
 
-const DEMO_ACCOUNTS: Record<string, { password: string; account: Account }> = {
+const DEMO_ACCOUNTS: Record<string, { demoPin: string; account: Account }> = {
   "JS001": {
-    password: "Password@123",
+    demoPin: "Password@123",
     account: { name: "Sachin Malhotra", designation: "Joint Secretary · MoSJE", employeeId: "JS001", scope: "national", scopeLabel: "All India", avatar: "SM" },
   },
   "DS002": {
-    password: "Password@123",
+    demoPin: "Password@123",
     account: { name: "Priya Sharma", designation: "Deputy Secretary · MoSJE", employeeId: "DS002", scope: "national", scopeLabel: "All India", avatar: "PS" },
   },
   "SO003": {
-    password: "Password@123",
+    demoPin: "Password@123",
     account: { name: "Arjun Verma", designation: "Section Officer · MH", employeeId: "SO003", scope: "state", scopeLabel: "Maharashtra", avatar: "AV" },
   },
   "SO004": {
-    password: "Password@123",
+    demoPin: "Password@123",
     account: { name: "Meena Rajan", designation: "Section Officer · TN", employeeId: "SO004", scope: "state", scopeLabel: "Tamil Nadu", avatar: "MR" },
   },
   "DO005": {
-    password: "Password@123",
+    demoPin: "Password@123",
     account: { name: "Rajesh Patel", designation: "District Officer · Gujarat", employeeId: "DO005", scope: "district", scopeLabel: "Ahmedabad, Gujarat", avatar: "RP" },
   },
 };
@@ -76,7 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signIn = useCallback((employeeId: string, password: string) => {
     const record = DEMO_ACCOUNTS[employeeId.trim().toUpperCase()];
     if (!record) return { ok: false, reason: "Employee ID not found. Use one of the demo accounts below." };
-    if (record.password !== password) return { ok: false, reason: "Incorrect password. Use Password@123 for all demo accounts." };
+    if (record.demoPin !== password) return { ok: false, reason: "Incorrect password. Use Password@123 for all demo accounts." };
     setAccount(record.account);
     try {
       localStorage.setItem(SESSION_KEY, JSON.stringify(record.account));

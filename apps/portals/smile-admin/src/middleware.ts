@@ -1,22 +1,22 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-/* PM-AJAY — route guard.
-   All paths under /portals/pm-ajay/ are protected EXCEPT:
-   - /portals/pm-ajay/login       (sign-in page)
-   - /portals/pm-ajay/forgot-password
+/* SMILE Admin — route guard.
+   All paths under /portals/smile-admin/ are protected EXCEPT:
+   - /portals/smile-admin/login       (sign-in page)
+   - /portals/smile-admin/forgot-password
    - Static assets (_next/static, _next/image, favicon, public images)
 
    We read the session from localStorage, but localStorage is not available
    in middleware (Edge runtime). We use a lightweight cookie instead:
-   set "pmajay_session=1" in the auth-context signIn and clear on signOut.
+   Set "smile_session=1" in the auth-context signIn and clear on signOut.
 
    Because this is a prototype, the cookie is just a presence flag —
    the real account data still comes from localStorage on the client. */
 
-const BASE = "/portals/pm-ajay";
+const BASE = "/portals/smile-admin";
 const PUBLIC_PATHS = [`${BASE}/login`, `${BASE}/forgot-password`];
-const SESSION_COOKIE = "pmajay_session";
+const SESSION_COOKIE = "smile_session";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -34,7 +34,7 @@ export function middleware(request: NextRequest) {
   const session = request.cookies.get(SESSION_COOKIE);
   if (!session) {
     const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = BASE + "/login";
+    loginUrl.pathname = `${BASE}/login`;
     return NextResponse.redirect(loginUrl);
   }
 

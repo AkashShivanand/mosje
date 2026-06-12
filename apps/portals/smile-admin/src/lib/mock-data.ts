@@ -1,3 +1,10 @@
+if (process.env.NODE_ENV === "production") {
+  throw new Error(
+    "[smile-admin] mock-data.ts must not be imported in production. " +
+    "Replace all imports with real API calls before deploying."
+  );
+}
+
 import { STATES } from "./states";
 
 /* ---------- KPI / Programme Overview ---------- */

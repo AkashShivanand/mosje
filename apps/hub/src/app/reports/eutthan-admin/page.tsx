@@ -28,9 +28,9 @@ interface Finding {
 interface Screen {
   slug: string;
   name: string;
-  note?: string;
+  note?: string | null;
   figmaUrl?: string;
-  liveUrl?: string;
+  liveUrl?: string | null;
   findings: Finding[];
 }
 interface Suggestion {

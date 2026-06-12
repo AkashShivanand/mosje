@@ -60,12 +60,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (!found) return { ok: false, reason: "Invalid mobile number or password." };
     setAccount(found);
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ mobile: found.mobile }));
+    // Set session cookie so the Edge middleware can enforce server-side auth.
+    document.cookie = "smile_session=1; path=/portals/smile-admin; SameSite=Lax";
     return { ok: true };
   };
 
   const signOut = () => {
     setAccount(null);
     localStorage.removeItem(STORAGE_KEY);
+    // Expire the session cookie so the middleware redirects unauthenticated requests.
+    document.cookie = "smile_session=; path=/portals/smile-admin; expires=Thu, 01 Jan 1970 00:00:00 GMT";
   };
 
   const value = useMemo<AppState>(

@@ -1,330 +1,726 @@
 "use client";
 
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { clsx } from "clsx";
 import {
-  Accessibility,
-  Check,
   ChevronDown,
-  ChevronLeft,
   ChevronRight,
-  CircleUserRound,
-  Contrast,
-  Edit3,
-  ExternalLink,
-  Eye,
-  FileDown,
-  FileSpreadsheet,
-  FileText,
-  Globe2,
-  LogIn,
-  Menu,
-  MoreVertical,
-  Plus,
-  Printer,
-  RefreshCw,
   Search,
+  Plus,
+  RefreshCw,
+  Download,
+  FileText,
+  Upload,
+  LogOut,
+  Bell,
+  Check,
+  ArrowLeft,
+  Eye,
+  Edit,
   Trash2,
-  X,
+  ToggleRight,
+  Database,
+  LayoutList,
 } from "lucide-react";
 import {
-  adminDashboardSummary as dashboardSummary,
-  adminNavItems as navItems,
-  adminProgressCards as progressCards,
+  type Role,
+  type NavItem,
+  adminNavItems,
+  ministryNavItems,
+  adminDashboardSummary,
+  ministryDashboardSummary,
+  adminProgressCards,
+  ministryProgressCards,
   expenditureLegend,
-  formRoutes,
-  loginCards,
   tableScreens,
-  type TableScreen,
+  formDefs,
 } from "@/lib/eutthan/portal-data";
 
 const BASE = "/portals/eutthan-admin";
-const defaultPath = "/dashboard";
 
-function normalizePath(pathname: string): string {
-  const p = pathname.startsWith(BASE) ? pathname.slice(BASE.length) || "/" : pathname;
-  if (p === "/") return defaultPath;
-  // Only collapse /edit to the parent when there's no dedicated formRoute for it
-  if (p.endsWith("/edit") && !formRoutes[p]) return p.replace("/edit", "");
-  return p;
+// DEMO ONLY — remove before production / replace with NIC SSO
+// TODO(pre-prod): replace with NIC employee SSO; never commit real credentials
+const DEMO_CREDENTIALS = [
+  { role: "admin" as const, label: "Admin", username: "9990000011", demoPin: "admin@2026" },
+  { role: "ministry" as const, label: "Ministry", username: "shivendra123", demoPin: "shivendra123" },
+] as const;
+
+function normalizePath(p: string): string {
+  return p.startsWith(BASE) ? p.slice(BASE.length) || "/" : p;
 }
 
-export function EutthanPortal() {
-  const pathname = usePathname();
-  const activePath = normalizePath(pathname);
+function portalLink(p: string): string {
+  return `${BASE}${p}`;
+}
 
-  if (
-    activePath === "/login" ||
-    activePath === "/otp-login" ||
-    activePath === "/forget-password" ||
-    activePath === "/reset-password"
-  ) {
-    return <LoginScreen mode={activePath} />;
+// ── Login ─────────────────────────────────────────────────────────────────────
+
+function LoginPage({
+  onLogin,
+}: {
+  onLogin: (u: string, p: string) => string | null;
+}) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const err = onLogin(username.trim(), password);
+    if (err) setError(err);
   }
 
-  const screen = tableScreens[activePath];
-  const form = formRoutes[activePath];
-
   return (
-    <div className="app-shell">
-      <TopBar />
-      <Masthead />
-      <div className="workspace">
-        <Sidebar activePath={activePath} />
-        <main id="main-content" className="content" tabIndex={-1}>
-          {activePath === "/dashboard" ? <Dashboard /> : null}
-          {screen ? <TablePage screen={screen} activePath={activePath} /> : null}
-          {form ? <FormPage form={form} /> : null}
-          {!screen && !form && activePath !== "/dashboard" ? <Dashboard /> : null}
-        </main>
+    <div className="login-split">
+      {/* Left — blue panel */}
+      <div className="login-left">
+        <div className="login-left-content">
+          <svg
+            width="72"
+            height="72"
+            viewBox="0 0 72 72"
+            fill="none"
+            aria-hidden="true"
+            style={{ marginBottom: 24 }}
+          >
+            <circle
+              cx="36"
+              cy="36"
+              r="33"
+              stroke="rgba(255,255,255,0.3)"
+              strokeWidth="1.5"
+            />
+            <circle
+              cx="36"
+              cy="36"
+              r="21"
+              stroke="rgba(255,255,255,0.5)"
+              strokeWidth="1.5"
+            />
+            <circle cx="36" cy="22" r="5" fill="rgba(255,255,255,0.75)" />
+            <path d="M36 27L24 48H48L36 27Z" fill="rgba(255,255,255,0.5)" />
+          </svg>
+          <div className="login-portal-name">eUtthan</div>
+          <div className="login-ministry-name">
+            Ministry of Social Justice
+            <br />
+            &amp; Empowerment
+          </div>
+          <div className="login-tagline">
+            DAPSC Allocation &amp; Progress Tracking Portal
+          </div>
+          <div className="login-gov-tag">Government of India</div>
+        </div>
+      </div>
+
+      {/* Right — form */}
+      <div className="login-right">
+        <form className="login-form-inner" onSubmit={submit} noValidate>
+          <h1 className="login-form-title">Log In</h1>
+          <p className="login-form-subtitle">
+            Enter your credentials to access the portal
+          </p>
+
+          {error && (
+            <div className="login-error-box" role="alert">
+              {error}
+            </div>
+          )}
+
+          <div className="field" style={{ marginTop: 24 }}>
+            <label htmlFor="eu-username">Username / ID</label>
+            <input
+              id="eu-username"
+              type="text"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                setError(null);
+              }}
+              placeholder="Enter your username"
+              autoComplete="username"
+              required
+            />
+          </div>
+
+          <div className="field" style={{ marginTop: 16 }}>
+            <label htmlFor="eu-password">Password</label>
+            <input
+              id="eu-password"
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError(null);
+              }}
+              placeholder="Enter your password"
+              autoComplete="current-password"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="primary-button"
+            style={{ marginTop: 28, width: "100%" }}
+          >
+            Log In
+          </button>
+        </form>
+
+        {/* Demo credentials — DEMO ONLY, remove before production */}
+        <div className="demo-creds-panel">
+          <div className="demo-creds-header">Demo Credentials</div>
+          <div className="demo-creds-rows">
+            {DEMO_CREDENTIALS.map((cred) => (
+              <button
+                key={cred.role}
+                type="button"
+                className="demo-creds-row"
+                onClick={() => {
+                  setUsername(cred.username);
+                  setPassword(cred.demoPin);
+                  setError(null);
+                }}
+                aria-label={"Use " + cred.label + " demo account: " + cred.username}
+              >
+                <span className="demo-role-tag">{cred.label}</span>
+                <span className="demo-username">{cred.username}</span>
+                <span className="demo-pin">{cred.demoPin}</span>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-function TopBar() {
+// ── Top Bar ───────────────────────────────────────────────────────────────────
+
+function TopBar({ onLogout }: { onLogout: () => void }) {
   return (
-    <header className="top-bar">
+    <div className="top-bar">
       <div className="top-left">
-        <button className="mobile-menu" aria-label="Open navigation">
-          <Menu size={22} />
-        </button>
-        <span className="flag" aria-hidden="true">
+        <div className="flag">
           <span />
+        </div>
+        <span className="goi-link">Government of India</span>
+        <span className="divider" />
+        <span className="goi-link">
+          Ministry of Social Justice &amp; Empowerment
         </span>
-        <a href="#main-content" className="goi-link">
-          Government of India <ExternalLink size={12} />
-        </a>
       </div>
-      <nav className="top-actions" aria-label="Accessibility and language controls">
-        <a href="#main-content">Skip to Main Content</a>
-        <span className="divider" />
-        <button>A<sup>-</sup></button>
-        <button>A</button>
-        <button>A<sup>+</sup></button>
-        <span className="divider" />
-        <button aria-label="Toggle contrast">
-          <Contrast size={16} />
+      <div className="top-actions">
+        <button type="button" aria-label="Notifications">
+          <Bell size={15} />
         </button>
-        <span className="divider" />
-        <button aria-label="Accessibility options">
-          <Accessibility size={16} />
+        <button
+          type="button"
+          onClick={onLogout}
+          aria-label="Logout"
+          style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
+        >
+          <LogOut size={15} />
+          <span>Logout</span>
         </button>
-        <span className="divider" />
-        <button className="language">
-          <Globe2 size={16} /> English <ChevronDown size={14} />
-        </button>
-      </nav>
-    </header>
+      </div>
+    </div>
   );
 }
 
-function Masthead() {
+// ── Masthead ──────────────────────────────────────────────────────────────────
+
+function Masthead({ name, roleLabel }: { name: string; roleLabel: string }) {
   return (
-    <section className="masthead" aria-label="Portal masthead">
+    <div className="masthead">
       <div className="brand-block">
-        <Image src="/images/emblem.svg" alt="Government of India emblem" width={52} height={74} priority />
+        <svg
+          width="60"
+          height="60"
+          viewBox="0 0 60 60"
+          fill="none"
+          aria-hidden="true"
+          style={{ flexShrink: 0 }}
+        >
+          <circle cx="30" cy="30" r="28" fill="#f3f4f6" stroke="#e5e7eb" />
+          <circle cx="30" cy="18" r="5" fill="var(--primary)" />
+          <path
+            d="M30 23L18 45H42L30 23Z"
+            fill="var(--primary)"
+            opacity="0.65"
+          />
+        </svg>
         <div>
           <div className="brand-meta">
+            <span>eUtthan Portal</span>
             <span className="beta">BETA</span>
-            <span>Government of India</span>
           </div>
-          <h1>Ministry of Social Justice &amp; Empowerment</h1>
+          <h1>DAPSC Allocation &amp; Progress Tracker</h1>
         </div>
       </div>
       <div className="profile">
-        <span className="avatar">AU</span>
-        <span>
-          <strong>Admin User</strong>
-          <small>(Super Admin)</small>
-        </span>
+        <div>
+          <strong>{name}</strong>
+          <small>{roleLabel}</small>
+        </div>
+        <div className="avatar">{name.charAt(0).toUpperCase()}</div>
       </div>
-    </section>
-  );
-}
-
-function Sidebar({ activePath }: { activePath: string }) {
-  return (
-    <aside className="sidebar" aria-label="Portal navigation">
-      {navItems.map((item) => {
-        const Icon = item.icon;
-        const isActive =
-          activePath === item.href ||
-          item.children?.some((child) => child.href === activePath) ||
-          (item.href !== "/dashboard" && activePath.startsWith(item.href));
-        return (
-          <div key={item.href}>
-            <Link href={BASE + item.href} className={clsx("nav-item", isActive && "active")}>
-              <Icon size={22} />
-              <span>{item.label}</span>
-              {item.children ? <ChevronRight className="nav-caret" size={18} /> : null}
-            </Link>
-            {item.children && isActive ? (
-              <div className="subnav">
-                {item.children.map((child) => (
-                  <Link
-                    key={child.href}
-                    href={BASE + child.href}
-                    className={clsx(activePath === child.href && "active")}
-                  >
-                    {child.label}
-                  </Link>
-                ))}
-              </div>
-            ) : null}
-          </div>
-        );
-      })}
-    </aside>
-  );
-}
-
-function Dashboard() {
-  return (
-    <div className="page-stack">
-      <h2 className="page-title">Dashboard</h2>
-      <section className="summary-grid" aria-label="Dashboard summary">
-        {dashboardSummary.map((metric, index) => (
-          <article className="summary-card" key={metric.label}>
-            <span>{metric.label}</span>
-            <strong className={index === 1 ? "primary-value" : undefined}>{metric.value}</strong>
-          </article>
-        ))}
-      </section>
-
-      <section className="panel">
-        <div className="panel-head">
-          <h3>Progress Report of Financial Year 2026-2027</h3>
-          <button className="select-button">
-            2026-2027 <ChevronDown size={16} />
-          </button>
-        </div>
-        <div className="progress-grid">
-          {progressCards.map((metric) => (
-            <article className="stat-card" key={metric.label}>
-              <span>{metric.label}</span>
-              <strong>{metric.value}</strong>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="chart-panel">
-        <h3>Top 6 Ministries / Department Expenditure 2026-2027</h3>
-        <div className="chart-row">
-          <div className="donut" aria-label="Donut chart showing top ministry expenditure" />
-          <ul className="legend">
-            {expenditureLegend.map(([label, color]) => (
-              <li key={label}>
-                <span style={{ background: color }} />
-                {label}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
     </div>
   );
 }
 
-function TablePage({ screen, activePath }: { screen: TableScreen; activePath: string }) {
-  const isMapTabs = screen.variant === "map-tabs";
-  const isExpenditure = screen.variant === "expenditure";
-  const isReport = activePath.startsWith("/reports/");
-  const isMinistriesDashboard = activePath === "/ministries-dashboard";
-  const isRefresh = screen.addLabel === "Trigger Refresh" || isMinistriesDashboard;
-  const isExportAction = isReport || screen.addLabel?.startsWith("Download") || screen.addLabel?.startsWith("Export");
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+
+function Sidebar({ navItems, path }: { navItems: NavItem[]; path: string }) {
+  const [reportsOpen, setReportsOpen] = useState(() =>
+    path.startsWith("/reports")
+  );
+
+  return (
+    <nav className="sidebar" aria-label="Main navigation">
+      {navItems.map((item) => {
+        if (item.children) {
+          const anyActive = item.children.some((c) => c.href === path);
+          const open = reportsOpen || anyActive;
+          return (
+            <div key={item.href}>
+              <button
+                type="button"
+                className={`nav-item${anyActive ? " active" : ""}`}
+                style={{
+                  width: "100%",
+                  border: 0,
+                  background: "transparent",
+                  textAlign: "left",
+                  cursor: "pointer",
+                }}
+                onClick={() => setReportsOpen((o) => !o)}
+                aria-expanded={open}
+              >
+                <item.icon size={20} aria-hidden="true" />
+                <span>{item.label}</span>
+                {open ? (
+                  <ChevronDown size={16} className="nav-caret" aria-hidden="true" />
+                ) : (
+                  <ChevronRight size={16} className="nav-caret" aria-hidden="true" />
+                )}
+              </button>
+              {open && (
+                <div className="subnav">
+                  {item.children.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={portalLink(child.href)}
+                      className={path === child.href ? "active" : ""}
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        }
+
+        const isMapItem = item.href === "/map-ministry";
+        const isActive = isMapItem
+          ? path === "/map-ministry" || path === "/map-schema"
+          : path === item.href || path.startsWith(item.href + "/");
+
+        return (
+          <Link
+            key={item.href}
+            href={portalLink(item.href)}
+            className={`nav-item${isActive ? " active" : ""}`}
+          >
+            <item.icon size={20} aria-hidden="true" />
+            <span>{item.label}</span>
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
+
+// ── Admin Dashboard ───────────────────────────────────────────────────────────
+
+function AdminDashboard() {
+  return (
+    <div className="page-stack">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <h2 className="page-title">Dashboard</h2>
+        <span style={{ fontSize: 14, color: "var(--text-muted)" }}>
+          Active FY: <strong>2025-2026</strong>
+        </span>
+      </div>
+
+      <div className="summary-grid">
+        {adminDashboardSummary.map((m) => (
+          <div key={m.label} className="summary-card">
+            <span>{m.label}</span>
+            <strong>{m.value}</strong>
+          </div>
+        ))}
+      </div>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "minmax(0,1fr) min-content",
+          gap: 24,
+          alignItems: "start",
+        }}
+      >
+        <div className="panel">
+          <div className="panel-head">
+            <h3>Progress Overview</h3>
+            <span style={{ fontSize: 13, color: "var(--text-muted)" }}>
+              As on 10 Jun 2026
+            </span>
+          </div>
+          <div className="progress-grid">
+            {adminProgressCards.map((c) => (
+              <div key={c.label} className="stat-card">
+                <span>{c.label}</span>
+                <strong style={{ fontSize: 22 }}>{c.value}</strong>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="chart-panel">
+          <h3>Expenditure Breakdown</h3>
+          <div className="chart-row">
+            <div className="donut" aria-hidden="true" />
+            <ul className="legend">
+              {expenditureLegend.map(([label, color]) => (
+                <li key={label}>
+                  <span
+                    style={{
+                      display: "block",
+                      width: 14,
+                      height: 14,
+                      borderRadius: 2,
+                      background: color as string,
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span>{label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Ministry Dashboard ────────────────────────────────────────────────────────
+
+function MinistryDashboard() {
+  return (
+    <div className="page-stack">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <h2 className="page-title">Dashboard</h2>
+        <span style={{ fontSize: 14, color: "var(--text-muted)" }}>
+          Active FY: <strong>2025-2026</strong>
+        </span>
+      </div>
+
+      <div className="summary-grid">
+        {ministryDashboardSummary.map((m) => (
+          <div key={m.label} className="summary-card">
+            <span>{m.label}</span>
+            <strong>{m.value}</strong>
+          </div>
+        ))}
+      </div>
+
+      <div className="panel">
+        <div className="panel-head">
+          <h3>Progress Overview</h3>
+          <span style={{ fontSize: 13, color: "var(--text-muted)" }}>
+            As on 10 Jun 2026
+          </span>
+        </div>
+        <div className="progress-grid">
+          {ministryProgressCards.map((c) => (
+            <div key={c.label} className="stat-card">
+              <span>{c.label}</span>
+              <strong style={{ fontSize: 22 }}>{c.value}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Cell Renderer ─────────────────────────────────────────────────────────────
+
+function CellContent({
+  col,
+  val,
+  basePath,
+}: {
+  col: string;
+  val: string;
+  basePath: string;
+}) {
+  if (col === "Current Financial Year") {
+    return val === "checked" ? (
+      <span className="checkbox checked" aria-label="Current year">
+        <Check size={10} />
+      </span>
+    ) : (
+      <span className="checkbox" aria-label="Not current year" />
+    );
+  }
+
+  if (val === "menu") {
+    return (
+      <div className="row-actions">
+        <button
+          type="button"
+          className="text-action"
+          style={{ background: "rgba(0,51,102,0.08)" }}
+          aria-label="More options"
+        >
+          •••
+        </button>
+      </div>
+    );
+  }
+
+  if (val === "role-actions") {
+    return (
+      <div className="row-actions">
+        <button
+          type="button"
+          className="text-action"
+          style={{ background: "rgba(39,104,42,0.1)" }}
+          aria-label="Toggle role"
+        >
+          <ToggleRight size={18} style={{ color: "var(--success)" }} />
+        </button>
+        <button
+          type="button"
+          className="text-action"
+          style={{
+            background: "rgba(0,51,102,0.08)",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 5,
+          }}
+          aria-label="Edit role"
+        >
+          <Edit size={14} /> Edit
+        </button>
+        <button
+          type="button"
+          className="text-action danger-action"
+          style={{ display: "inline-flex", alignItems: "center", gap: 5 }}
+          aria-label="Delete role"
+        >
+          <Trash2 size={14} /> Delete
+        </button>
+      </div>
+    );
+  }
+
+  if (val === "Unmap") {
+    return (
+      <button
+        type="button"
+        className="text-action text-action--danger"
+        style={{ background: "rgba(214,69,57,0.08)" }}
+      >
+        Unmap
+      </button>
+    );
+  }
+
+  if (val === "View") {
+    return (
+      <button
+        type="button"
+        className="text-action"
+        style={{
+          background: "rgba(0,51,102,0.08)",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+        }}
+      >
+        <Eye size={14} /> View
+      </button>
+    );
+  }
+
+  if (val === "Edit Delete") {
+    return (
+      <div className="row-actions">
+        <Link
+          href={portalLink(`${basePath}/edit`)}
+          className="text-action"
+          style={{
+            background: "rgba(0,51,102,0.08)",
+            minHeight: 36,
+            padding: "6px 12px",
+            borderRadius: 8,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+          }}
+        >
+          <Edit size={14} /> Edit
+        </Link>
+        <button
+          type="button"
+          className="text-action danger-action"
+          style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
+        >
+          <Trash2 size={14} /> Delete
+        </button>
+      </div>
+    );
+  }
+
+  if (val === "Edit") {
+    return (
+      <div className="row-actions">
+        <Link
+          href={portalLink(`${basePath}/edit`)}
+          className="text-action"
+          style={{
+            background: "rgba(0,51,102,0.08)",
+            minHeight: 36,
+            padding: "6px 12px",
+            borderRadius: 8,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+          }}
+        >
+          <Edit size={14} /> Edit
+        </Link>
+      </div>
+    );
+  }
+
+  if (col === "Status" && (val === "success" || val === "failed")) {
+    return (
+      <span className={`badge ${val === "success" ? "success" : "danger"}`}>
+        {val}
+      </span>
+    );
+  }
+
+  if (col === "Type" && val === "Mapped") {
+    return <span className="badge success">{val}</span>;
+  }
+
+  return <>{val || "—"}</>;
+}
+
+// ── Shared Pagination ─────────────────────────────────────────────────────────
+
+function Pagination({ total }: { total: number }) {
+  return (
+    <div className="pagination">
+      <div className="page-size">
+        <span>Rows per page:</span>
+        <button type="button">
+          10 <ChevronDown size={12} />
+        </button>
+      </div>
+      <div className="pages">
+        <button type="button">&lsaquo;</button>
+        <button type="button" className="current">
+          1
+        </button>
+        {total > 10 && <button type="button">2</button>}
+        {total > 20 && <button type="button">3</button>}
+        <button type="button">&rsaquo;</button>
+      </div>
+      <span style={{ fontSize: 13, color: "var(--text-muted)" }}>
+        {total} total
+      </span>
+    </div>
+  );
+}
+
+// ── Map Page ──────────────────────────────────────────────────────────────────
+
+function MapPage({ path }: { path: string }) {
+  const isSchemas = path === "/map-schema";
+  const screen = tableScreens[path] ?? tableScreens["/map-ministry"]!;
 
   return (
     <div className="page-stack">
-      <div className="table-title-row">
-        <h2 className="page-title">{screen.title}</h2>
-        <div className="table-actions">
-          {/* Export buttons for report screens */}
-          {isExportAction ? (
-            <div className="export-buttons">
-              <button className="icon-button" aria-label="Export CSV">
-                <FileSpreadsheet size={16} /> CSV
-              </button>
-              <button className="icon-button" aria-label="Export Excel">
-                <FileSpreadsheet size={16} /> Excel
-              </button>
-              <button className="icon-button" aria-label="Export PDF">
-                <FileText size={16} /> PDF
-              </button>
-              <button className="icon-button" aria-label="Print">
-                <Printer size={16} /> Print
-              </button>
-            </div>
-          ) : null}
-          {/* Trigger Refresh for expenditure screens */}
-          {isRefresh ? (
-            <button className="secondary-button">
-              <RefreshCw size={16} /> Trigger Refresh
-            </button>
-          ) : null}
-          {/* Add / Map button (non-report, non-refresh) */}
-          {screen.addLabel && !isExportAction && !isRefresh ? (
-            <Link className="primary-button" href={`${BASE}${activePath}/add`}>
-              <Plus size={16} />
-              {screen.addLabel}
-            </Link>
-          ) : null}
-        </div>
+      <h2 className="page-title">Map Ministry/Schemes</h2>
+
+      <div className="map-tabs">
+        <Link
+          href={portalLink("/map-ministry")}
+          className={`map-tab${!isSchemas ? " active" : ""}`}
+        >
+          Ministry
+        </Link>
+        <Link
+          href={portalLink("/map-schema")}
+          className={`map-tab${isSchemas ? " active" : ""}`}
+        >
+          Schemes
+        </Link>
       </div>
 
-      {/* Map tabs (map-ministry / map-schema) */}
-      {isMapTabs ? (
-        <div className="map-tabs" role="tablist">
-          <Link
-            href={`${BASE}/map-ministry`}
-            role="tab"
-            aria-selected={activePath === "/map-ministry"}
-            className={clsx("map-tab", activePath === "/map-ministry" && "active")}
-          >
-            Map Ministry
-          </Link>
-          <Link
-            href={`${BASE}/map-schema`}
-            role="tab"
-            aria-selected={activePath === "/map-schema"}
-            className={clsx("map-tab", activePath === "/map-schema" && "active")}
-          >
-            Map Schema
-          </Link>
-        </div>
-      ) : null}
-
-      <section className="data-card">
+      <div className="data-card">
         <div className="toolbar">
-          <label className="search-field">
-            <Search size={18} />
-            <input aria-label="Search" placeholder={screen.searchPlaceholder} />
-          </label>
-          {screen.filters?.map((filter) => (
-            <button className="filter-button" key={filter}>
-              {filter}
-              {filter.includes("2026") ? <X size={16} /> : <ChevronDown size={16} />}
+          <div className="search-field">
+            <Search size={16} aria-hidden="true" />
+            <input placeholder={screen.searchPlaceholder} />
+          </div>
+          {screen.filters?.map((f) => (
+            <button key={f} type="button" className="filter-button">
+              {f} <ChevronDown size={14} />
             </button>
           ))}
         </div>
-        <div className={clsx("table-wrap", isExpenditure && "table-wrap--wide")}>
+        <div className="table-wrap table-wrap--wide">
           <table>
             <thead>
               <tr>
-                {screen.columns.map((column, index) => (
-                  <th key={`${column}-${index}`}>{column}</th>
+                {screen.columns.map((c) => (
+                  <th key={c}>{c}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {screen.rows.map((row, rowIndex) => (
-                <tr key={`row-${rowIndex}`} className={rowIndex === 0 || rowIndex === 4 ? "selected-row" : undefined}>
-                  {row.map((cell, cellIndex) => (
-                    <td key={`cell-${rowIndex}-${cellIndex}`}>
-                      <CellValue value={cell} activePath={activePath} />
+              {screen.rows.map((row, i) => (
+                <tr key={i}>
+                  {row.map((cell, j) => (
+                    <td key={j}>
+                      <CellContent
+                        col={screen.columns[j] ?? ""}
+                        val={cell}
+                        basePath={path}
+                      />
                     </td>
                   ))}
                 </tr>
@@ -332,269 +728,675 @@ function TablePage({ screen, activePath }: { screen: TableScreen; activePath: st
             </tbody>
           </table>
         </div>
-        <Pagination totalItems={screen.totalItems} />
-      </section>
-
-      {/* Statement 10A: Transfer Entry sub-section */}
-      {activePath === "/reports/statement-10a" ? <TransferEntrySection /> : null}
-    </div>
-  );
-}
-
-function TransferEntrySection() {
-  return (
-    <section className="data-card" aria-label="Transfer Entry Details">
-      <div className="panel-head">
-        <h3>Transfer Entry Details</h3>
-        <div className="export-buttons">
-          <button className="icon-button" aria-label="Export CSV">
-            <FileSpreadsheet size={16} /> CSV
-          </button>
-          <button className="icon-button" aria-label="Export Excel">
-            <FileSpreadsheet size={16} /> Excel
-          </button>
-          <button className="icon-button" aria-label="Export PDF">
-            <FileText size={16} /> PDF
-          </button>
-        </div>
-      </div>
-      <div className="table-wrap table-wrap--wide">
-        <table>
-          <thead>
-            <tr>
-              <th>S.No</th>
-              <th>Ministry/Department</th>
-              <th>Scheme Name</th>
-              <th>Grant No.</th>
-              <th>Transfer Entry (Cr.)</th>
-              <th>Entry Date</th>
-              <th>Remarks</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Dept of Agriculture and Farmers Welfare</td>
-              <td>Crop Insurance Scheme</td>
-              <td>001</td>
-              <td>0.00</td>
-              <td>08 Jun 2026</td>
-              <td>—</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Ministry of New and Renewable Energy</td>
-              <td>PM Surya Ghar Muft Bijli Yojana</td>
-              <td>079</td>
-              <td>0.00</td>
-              <td>08 Jun 2026</td>
-              <td>—</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-  );
-}
-
-function CellValue({ value, activePath }: { value: string; activePath: string }) {
-  if (value === "checked") {
-    return (
-      <span className="checkbox checked" aria-label="Current financial year">
-        <Check size={14} />
-      </span>
-    );
-  }
-  if (value === "menu") return <MoreVertical size={20} aria-label="More actions" />;
-  if (value === "Active" || value === "Success") return <span className="badge success">{value}</span>;
-  if (value === "Inactive" || value === "Failed") return <span className="badge danger">{value}</span>;
-  if (value === "Pending") return <span className="badge warning">{value}</span>;
-  if (value === "Yes") return <span className="badge success">{value}</span>;
-  if (value === "No") return <span className="badge neutral">{value}</span>;
-  if (value === "Unmap") {
-    return (
-      <button className="text-action text-action--danger">
-        Unmap <X size={14} />
-      </button>
-    );
-  }
-  if (value.includes("Edit Delete")) {
-    return (
-      <span className="row-actions">
-        <Link href={`${BASE}${activePath}/edit`} className="text-action">
-          Edit <Edit3 size={14} />
-        </Link>
-        <button className="text-action text-action--danger">
-          Delete <Trash2 size={14} />
-        </button>
-      </span>
-    );
-  }
-  if (value === "Edit") {
-    return (
-      <Link href={`${BASE}${activePath}/edit`} className="text-action">
-        Edit <Edit3 size={14} />
-      </Link>
-    );
-  }
-  if (value === "View") {
-    return (
-      <button className="text-action">
-        View <Eye size={14} />
-      </button>
-    );
-  }
-  if (value === "Map") {
-    return (
-      <button className="text-action">
-        Map <Edit3 size={14} />
-      </button>
-    );
-  }
-  if (value === "Retry") {
-    return (
-      <button className="text-action">
-        Retry <RefreshCw size={14} />
-      </button>
-    );
-  }
-  if (value === "Download") {
-    return (
-      <button className="text-action">
-        Download <FileDown size={14} />
-      </button>
-    );
-  }
-  return <>{value}</>;
-}
-
-function Pagination({ totalItems }: { totalItems: number }) {
-  const pages =
-    totalItems > 100
-      ? ["1", "2", "3", "4", "5", "6", "...", String(Math.ceil(totalItems / 10))]
-      : ["1"];
-  return (
-    <div className="pagination">
-      <div className="pages">
-        <button aria-label="Previous page" disabled>
-          <ChevronLeft size={16} />
-        </button>
-        {pages.map((page, index) => (
-          <button key={`${page}-${index}`} className={index === 0 ? "current" : undefined}>
-            {page}
-          </button>
-        ))}
-        <button aria-label="Next page">
-          <ChevronRight size={16} />
-        </button>
-      </div>
-      <div className="page-size">
-        <span>Showing</span>
-        <button>
-          10 <ChevronDown size={16} />
-        </button>
-        <span>of {totalItems} items</span>
+        <Pagination total={screen.totalItems} />
       </div>
     </div>
   );
 }
 
-function FormPage({
-  form,
-}: {
-  form: { title: string; subtitle: string; icon: React.ComponentType<{ size?: number }> };
-}) {
-  const Icon = form.icon;
-  const isEdit = form.title.toLowerCase().includes("edit");
+// ── Statement 10A ─────────────────────────────────────────────────────────────
+
+function Statement10APage() {
+  const screen = tableScreens["/reports/statement-10a"]!;
+  const [loaded, setLoaded] = useState(false);
+
   return (
     <div className="page-stack">
-      <h2 className="page-title">{form.title}</h2>
-      <section className="form-card">
-        <div className="form-intro">
-          <span>
-            <Icon size={24} />
-          </span>
-          <div>
-            <h3>{form.title}</h3>
-            <p>{form.subtitle}</p>
+      <div className="table-title-row">
+        <div>
+          <h2 className="page-title">{screen.title}</h2>
+          {screen.subtitle && (
+            <p
+              style={{
+                margin: "4px 0 0",
+                color: "var(--text-muted)",
+                fontSize: 14,
+              }}
+            >
+              {screen.subtitle}
+            </p>
+          )}
+        </div>
+        <div className="export-buttons">
+          <button type="button" className="icon-button">
+            <Download size={14} /> Export CSV
+          </button>
+          <button type="button" className="icon-button">
+            <FileText size={14} /> Export PDF
+          </button>
+        </div>
+      </div>
+
+      <div className="panel" style={{ padding: "16px 24px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            gap: 12,
+            flexWrap: "wrap",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <label
+              style={{
+                fontSize: 12,
+                fontWeight: 700,
+                color: "var(--text-muted)",
+              }}
+            >
+              Financial Year
+            </label>
+            <button type="button" className="filter-button">
+              2025-2026 <ChevronDown size={14} />
+            </button>
           </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <label
+              style={{
+                fontSize: 12,
+                fontWeight: 700,
+                color: "var(--text-muted)",
+              }}
+            >
+              Ministry/Department
+            </label>
+            <button type="button" className="filter-button">
+              -- All Ministries -- <ChevronDown size={14} />
+            </button>
+          </div>
+          <button
+            type="button"
+            className="primary-button"
+            onClick={() => setLoaded(true)}
+          >
+            View
+          </button>
         </div>
-        <div className="form-grid">
-          <Field label="Name / Title" placeholder={isEdit ? "Existing record" : "Enter details"} />
-          <Field label="Financial Year" placeholder={isEdit ? "2026-2027" : "2026-2027"} />
-          <Field label="Ministry / Department" placeholder={isEdit ? "Pre-filled ministry" : "Select ministry"} />
-          <Field label="Status" placeholder={isEdit ? "Active" : "Active"} />
+      </div>
+
+      {loaded ? (
+        <div className="data-card">
+          <div className="table-wrap table-wrap--wide">
+            <table>
+              <thead>
+                <tr>
+                  {screen.columns.map((c) => (
+                    <th key={c}>{c}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {screen.rows.map((row, i) => (
+                  <tr key={i}>
+                    {row.map((cell, j) => (
+                      <td key={j}>{cell}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Pagination total={screen.totalItems} />
         </div>
-        <label className="textarea-field">
-          Remarks
-          <textarea placeholder="Add remarks for audit trail" />
-        </label>
-        <div className="form-actions">
-          <button className="secondary-button">Cancel</button>
-          <button className="primary-button">{isEdit ? "Update" : "Save"}</button>
+      ) : (
+        <div
+          className="panel"
+          style={{
+            padding: 48,
+            textAlign: "center",
+            color: "var(--text-muted)",
+          }}
+        >
+          <LayoutList
+            size={40}
+            style={{
+              opacity: 0.35,
+              display: "block",
+              margin: "0 auto 16px",
+            }}
+          />
+          <p style={{ margin: 0 }}>
+            Select a Financial Year and click <strong>View</strong> to load
+            data.
+          </p>
         </div>
-      </section>
+      )}
     </div>
   );
 }
 
-function Field({ label, placeholder }: { label: string; placeholder: string }) {
+// ── Financial Summary ─────────────────────────────────────────────────────────
+
+function FinancialSummaryPage() {
+  const screen = tableScreens["/reports/financial-summary"]!;
+
   return (
-    <label className="field">
-      {label}
-      <input placeholder={placeholder} />
-    </label>
+    <div className="page-stack">
+      <div className="table-title-row">
+        <h2 className="page-title">{screen.title}</h2>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            flexWrap: "wrap",
+          }}
+        >
+          <button type="button" className="filter-button">
+            {screen.filters?.[0]} <ChevronDown size={14} />
+          </button>
+          <div className="export-buttons">
+            <button type="button" className="icon-button">
+              <Download size={14} /> Export CSV
+            </button>
+            <button type="button" className="icon-button">
+              <FileText size={14} /> Export PDF
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="data-card">
+        <div className="toolbar">
+          <div className="search-field">
+            <Search size={16} aria-hidden="true" />
+            <input placeholder="Search for ministry..." />
+          </div>
+        </div>
+        <div className="table-wrap table-wrap--wide">
+          <table>
+            <thead>
+              <tr>
+                {screen.columns.map((c) => (
+                  <th key={c}>{c}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {screen.rows.map((row, i) => (
+                <tr key={i}>
+                  {row.map((cell, j) => (
+                    <td key={j}>{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <Pagination total={screen.totalItems} />
+      </div>
+    </div>
   );
 }
 
-function LoginScreen({ mode }: { mode: string }) {
-  const title =
-    mode === "/forget-password"
-      ? "Forgot password"
-      : mode === "/reset-password"
-      ? "Reset password"
-      : mode === "/otp-login"
-      ? "OTP login"
-      : "Admin login";
+// ── PFMS Ingestion Logs ───────────────────────────────────────────────────────
+
+function PfmsLogsPage() {
+  const screen = tableScreens["/pfms-logs"]!;
+
   return (
-    <div className="login-screen">
-      <TopBar />
-      <main className="login-card">
-        <div className="login-brand">
-          <Image src="/images/emblem.svg" alt="Government of India emblem" width={58} height={82} />
-          <div>
-            <span className="beta">BETA</span>
-            <h1>E-Utthan Portal</h1>
-            <p>Ministry of Social Justice &amp; Empowerment</p>
-          </div>
+    <div className="page-stack">
+      <div className="table-title-row">
+        <h2 className="page-title">{screen.title}</h2>
+        <div style={{ display: "flex", gap: 10 }}>
+          <button type="button" className="secondary-button">
+            <RefreshCw size={14} /> Refresh
+          </button>
+          <button type="button" className="primary-button">
+            <Database size={14} /> Trigger PFMS Refresh
+          </button>
         </div>
-        <section className="login-panel">
-          <div>
-            <h2>{title}</h2>
-            <p>Sign in to manage E-Utthan schemes, ministry mapping, PFMS logs and reports.</p>
-          </div>
-          <label className="field">
-            User ID
-            <input placeholder="Enter user ID" />
-          </label>
-          <label className="field">
-            Password / OTP
-            <input placeholder="Enter secure credential" type="password" />
-          </label>
-          <Link className="primary-button wide" href={BASE + "/dashboard"}>
-            <LogIn size={16} /> Continue
+      </div>
+      <div className="data-card">
+        <div className="toolbar" style={{ flexWrap: "wrap" }}>
+          {screen.filters?.map((f) => (
+            <button key={f} type="button" className="filter-button">
+              {f} <ChevronDown size={14} />
+            </button>
+          ))}
+          <input
+            type="date"
+            className="filter-button"
+            style={{ padding: "8px 12px" }}
+            aria-label="From date"
+          />
+          <input
+            type="date"
+            className="filter-button"
+            style={{ padding: "8px 12px" }}
+            aria-label="To date"
+          />
+        </div>
+        <div className="table-wrap table-wrap--wide">
+          <table style={{ minWidth: 1500 }}>
+            <thead>
+              <tr>
+                {screen.columns.map((c) => (
+                  <th key={c} style={{ whiteSpace: "nowrap" }}>
+                    {c}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {screen.rows.map((row, i) => (
+                <tr key={i}>
+                  {row.map((cell, j) => (
+                    <td
+                      key={j}
+                      style={{
+                        whiteSpace:
+                          j === 0 || j === 1 || j === 9 || j === 10
+                            ? "nowrap"
+                            : undefined,
+                      }}
+                    >
+                      <CellContent
+                        col={screen.columns[j] ?? ""}
+                        val={cell}
+                        basePath="/pfms-logs"
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <Pagination total={screen.totalItems} />
+      </div>
+    </div>
+  );
+}
+
+// ── Physical Progress ─────────────────────────────────────────────────────────
+
+function PhysicalProgressPage() {
+  const screen = tableScreens["/ministry/physical-progress-data"]!;
+
+  return (
+    <div className="page-stack">
+      <div className="table-title-row">
+        <h2 className="page-title">{screen.title}</h2>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            flexWrap: "wrap",
+          }}
+        >
+          <button type="button" className="icon-button">
+            <Download size={14} /> Download Sample Template
+          </button>
+          <button type="button" className="icon-button">
+            <Upload size={14} /> Import Achievements Data
+          </button>
+          <Link
+            href={portalLink("/ministry/physical-progress-data/add")}
+            className="primary-button"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              textDecoration: "none",
+            }}
+          >
+            <Plus size={16} /> Add Progress +
           </Link>
-        </section>
-        <div className="login-feature-grid">
-          {loginCards.map(([heading, copy]) => (
-            <article key={heading}>
-              <CircleUserRound size={18} />
-              <strong>{heading}</strong>
-              <p>{copy}</p>
-            </article>
+        </div>
+      </div>
+      <div className="data-card">
+        <div className="toolbar" style={{ flexWrap: "wrap" }}>
+          <div className="search-field">
+            <Search size={16} aria-hidden="true" />
+            <input placeholder={screen.searchPlaceholder} />
+          </div>
+          {screen.filters?.map((f) => (
+            <button key={f} type="button" className="filter-button">
+              {f} <ChevronDown size={14} />
+            </button>
           ))}
         </div>
-      </main>
+        <div className="table-wrap table-wrap--wide">
+          <table>
+            <thead>
+              <tr>
+                {screen.columns.map((c) => (
+                  <th key={c}>{c}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td
+                  colSpan={screen.columns.length}
+                  style={{
+                    textAlign: "center",
+                    color: "var(--text-muted)",
+                    padding: 48,
+                  }}
+                >
+                  No records found.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <Pagination total={0} />
+      </div>
+    </div>
+  );
+}
+
+// ── Generic Table Page ────────────────────────────────────────────────────────
+
+function TablePage({ path }: { path: string }) {
+  const screen = tableScreens[path];
+  if (!screen) {
+    return (
+      <div className="page-stack">
+        <h2 className="page-title">Page Not Found</h2>
+        <p style={{ color: "var(--text-muted)" }}>
+          No screen configured for <code>{path}</code>.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="page-stack">
+      <div className="table-title-row">
+        <h2 className="page-title">{screen.title}</h2>
+        {screen.addLabel && screen.addLabel !== "Export" && (
+          <Link
+            href={portalLink(`${path}/add`)}
+            className="primary-button"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              textDecoration: "none",
+            }}
+          >
+            <Plus size={16} /> {screen.addLabel}
+          </Link>
+        )}
+      </div>
+      <div className="data-card">
+        <div className="toolbar" style={{ flexWrap: "wrap" }}>
+          <div className="search-field">
+            <Search size={16} aria-hidden="true" />
+            <input placeholder={screen.searchPlaceholder} />
+          </div>
+          {screen.filters?.map((f) => (
+            <button key={f} type="button" className="filter-button">
+              {f} <ChevronDown size={14} />
+            </button>
+          ))}
+        </div>
+        <div className="table-wrap table-wrap--wide">
+          <table>
+            <thead>
+              <tr>
+                {screen.columns.map((c) => (
+                  <th key={c}>{c}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {screen.rows.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={screen.columns.length}
+                    style={{
+                      textAlign: "center",
+                      color: "var(--text-muted)",
+                      padding: 48,
+                    }}
+                  >
+                    No records found.
+                  </td>
+                </tr>
+              ) : (
+                screen.rows.map((row, i) => (
+                  <tr key={i}>
+                    {row.map((cell, j) => (
+                      <td key={j}>
+                        <CellContent
+                          col={screen.columns[j] ?? ""}
+                          val={cell}
+                          basePath={path}
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        <Pagination total={screen.totalItems} />
+      </div>
+    </div>
+  );
+}
+
+// ── Form Page ─────────────────────────────────────────────────────────────────
+
+function FormPage({ path }: { path: string }) {
+  const form = formDefs[path];
+  const backPath = path.replace(/\/(add|edit)$/, "");
+
+  if (!form) {
+    return (
+      <div className="page-stack">
+        <Link
+          href={portalLink(backPath)}
+          className="text-action"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            background: "rgba(0,51,102,0.08)",
+            padding: "8px 14px",
+            borderRadius: 8,
+            marginBottom: 12,
+          }}
+        >
+          <ArrowLeft size={15} /> Back
+        </Link>
+        <p style={{ color: "var(--text-muted)" }}>
+          Form not configured for: {path}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="page-stack">
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        <Link
+          href={portalLink(backPath)}
+          className="text-action"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            background: "rgba(0,51,102,0.08)",
+            minHeight: 36,
+            padding: "6px 14px",
+            borderRadius: 8,
+          }}
+        >
+          <ArrowLeft size={15} /> Back
+        </Link>
+        <h2 className="page-title">{form.title}</h2>
+      </div>
+
+      <div className="form-card">
+        <div className="form-grid">
+          {form.fields.map((field) => (
+            <div
+              key={field.label}
+              className={field.type === "textarea" ? "textarea-field" : "field"}
+              style={field.fullWidth ? { gridColumn: "1 / -1" } : undefined}
+            >
+              <label>{field.label}</label>
+              {field.type === "select" ? (
+                <select
+                  style={{
+                    minHeight: 42,
+                    border: "1px solid var(--stroke-200)",
+                    borderRadius: 8,
+                    padding: "10px 12px",
+                    color: "var(--text)",
+                    background: "white",
+                    font: "inherit",
+                  }}
+                >
+                  <option value="">{field.placeholder}</option>
+                  {field.options?.map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
+                  ))}
+                </select>
+              ) : field.type === "textarea" ? (
+                <textarea placeholder={field.placeholder} />
+              ) : field.type === "readonly" ? (
+                <input
+                  type="text"
+                  value={field.placeholder ?? ""}
+                  readOnly
+                  style={{
+                    background: "var(--surface-muted)",
+                    cursor: "default",
+                  }}
+                  onChange={() => {}}
+                />
+              ) : field.type === "file" ? (
+                <input type="file" accept=".pdf" />
+              ) : (
+                <input
+                  type={field.type}
+                  placeholder={field.placeholder}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="form-actions">
+          <Link href={portalLink(backPath)} className="secondary-button">
+            Cancel
+          </Link>
+          <button type="submit" className="primary-button">
+            {form.submitLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Main Portal Component ─────────────────────────────────────────────────────
+
+export default function EutthanPortal() {
+  const pathname = usePathname();
+  const path = normalizePath(pathname);
+
+  const [role, setRole] = useState<Role | null>(null);
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("eutthan_role");
+    const valid: readonly string[] = DEMO_CREDENTIALS.map((c) => c.role);
+    const role: Role | null = valid.includes(stored ?? "") ? (stored as Role) : null;
+    setRole(role);
+    setHydrated(true);
+  }, []);
+
+  function handleLogin(username: string, password: string): string | null {
+    for (const cred of DEMO_CREDENTIALS) {
+      if (username === cred.username && password === cred.demoPin) {
+        localStorage.setItem("eutthan_role", cred.role);
+        setRole(cred.role);
+        return null;
+      }
+    }
+    return "Invalid username or password. Please try again.";
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("eutthan_role");
+    setRole(null);
+  }
+
+  if (!hydrated) return null;
+  if (!role) return <LoginPage onLogin={handleLogin} />;
+
+  const navItems = role === "admin" ? adminNavItems : ministryNavItems;
+  const userName = role === "admin" ? "Admin User" : "Shivendra";
+  const roleLabel = role === "admin" ? "Super Admin" : "Ministry";
+
+  function renderContent() {
+    if (path === "/" || path === "/dashboard") {
+      return role === "admin" ? <AdminDashboard /> : <MinistryDashboard />;
+    }
+    if (path === "/map-ministry" || path === "/map-schema") {
+      return <MapPage path={path} />;
+    }
+    if (path === "/reports/statement-10a") {
+      return <Statement10APage />;
+    }
+    if (path === "/reports/financial-summary") {
+      return <FinancialSummaryPage />;
+    }
+    if (path === "/pfms-logs") {
+      return <PfmsLogsPage />;
+    }
+    if (path === "/ministry/physical-progress-data") {
+      return <PhysicalProgressPage />;
+    }
+    if (path.endsWith("/add") || path.endsWith("/edit")) {
+      return <FormPage path={path} />;
+    }
+    if (tableScreens[path]) {
+      return <TablePage path={path} />;
+    }
+    return (
+      <div className="page-stack">
+        <h2 className="page-title">Page Not Found</h2>
+        <p style={{ color: "var(--text-muted)" }}>
+          The path <code>{path}</code> could not be found.
+        </p>
+        <Link
+          href={portalLink("/dashboard")}
+          className="primary-button"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            textDecoration: "none",
+            width: "fit-content",
+          }}
+        >
+          <ArrowLeft size={16} /> Back to Dashboard
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="app-shell">
+      <a href="#eu-main-content" className="eu-skip-link">Skip to main content</a>
+      <TopBar onLogout={handleLogout} />
+      <Masthead name={userName} roleLabel={roleLabel} />
+      <div className="workspace">
+        <Sidebar navItems={navItems} path={path} />
+        <main id="eu-main-content" className="content" tabIndex={-1}>
+          {renderContent()}
+        </main>
+      </div>
     </div>
   );
 }

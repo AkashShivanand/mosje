@@ -14,7 +14,17 @@
     "dev:website": "npm --prefix apps/dosje run dev",
     "dev:smile": "npm --prefix apps/portals/smile-admin run dev",
     "dev:pm-ajay": "npm --prefix apps/portals/pm-ajay run dev",
-    "dev:docs": "npm --prefix apps/docs run dev"
+    "dev:docs": "npm --prefix apps/docs run dev",
+    "check": "npm run check:hub && npm run check:dosje && npm run check:smile && npm run check:pm-ajay",
+    "check:hub": "npm --prefix apps/hub run typecheck",
+    "check:dosje": "npm --prefix apps/dosje run typecheck",
+    "check:smile": "npm --prefix apps/portals/smile-admin run typecheck",
+    "check:pm-ajay": "npm --prefix apps/portals/pm-ajay run typecheck",
+    "lint": "npm run lint:hub && npm run lint:dosje && npm run lint:smile && npm run lint:pm-ajay",
+    "lint:hub": "npm --prefix apps/hub run lint",
+    "lint:dosje": "npm --prefix apps/dosje run lint",
+    "lint:smile": "npm --prefix apps/portals/smile-admin run lint",
+    "lint:pm-ajay": "npm --prefix apps/portals/pm-ajay run lint"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

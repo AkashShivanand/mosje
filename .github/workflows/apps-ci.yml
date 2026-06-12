@@ -1,0 +1,68 @@
+name: Apps CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  hub:
+    name: hub lint + typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: "apps/hub/package-lock.json"
+      - run: npm --prefix apps/hub ci
+      - run: npm --prefix apps/hub run lint
+        continue-on-error: true
+      - run: npm --prefix apps/hub run typecheck
+
+  dosje:
+    name: dosje lint + typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: "apps/dosje/package-lock.json"
+      - run: npm --prefix apps/dosje ci
+      - run: npm --prefix apps/dosje run lint
+        continue-on-error: true
+      - run: npm --prefix apps/dosje run typecheck
+
+  smile-admin:
+    name: smile-admin lint + typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: "apps/portals/smile-admin/package-lock.json"
+      - run: npm --prefix apps/portals/smile-admin ci
+      - run: npm --prefix apps/portals/smile-admin run lint
+        continue-on-error: true
+      - run: npm --prefix apps/portals/smile-admin run typecheck
+
+  pm-ajay:
+    name: pm-ajay lint + typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: "apps/portals/pm-ajay/package-lock.json"
+      - run: npm --prefix apps/portals/pm-ajay ci
+      - run: npm --prefix apps/portals/pm-ajay run lint
+        continue-on-error: true
+      - run: npm --prefix apps/portals/pm-ajay run typecheck

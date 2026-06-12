@@ -38,6 +38,14 @@ const destinations = [
 export default function GatePage() {
   return (
     <div className="flex min-h-screen flex-col">
+      {/* Skip link */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-2 focus:top-2 focus:rounded focus:bg-gov-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+      >
+        Skip to main content
+      </a>
+
       {/* Gov utility bar */}
       <header className="border-b border-border bg-surface py-4">
         <div className="mx-auto flex max-w-[1280px] items-center gap-3 px-6">
@@ -47,22 +55,24 @@ export default function GatePage() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="mx-auto w-full max-w-[1280px] px-6 pb-4 pt-16">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-gov-blue">
-          Government of India
-        </p>
-        <h1 className="mb-3 text-4xl font-bold tracking-tight text-ink">
-          Ministry of Social Justice &amp; Empowerment
-        </h1>
-        <p className="max-w-xl text-ink-muted">
-          Select a destination to access the website, design system, workflow
-          portals, or audit reports.
-        </p>
-      </section>
+      {/* Hero + Destination cards */}
+      <main id="main-content" className="mx-auto w-full max-w-[1280px] flex-1 px-6 pb-16">
+        {/* Hero */}
+        <div className="pb-4 pt-16">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-gov-blue">
+            Government of India
+          </p>
+          <h1 className="mb-3 text-4xl font-bold tracking-tight text-ink">
+            Ministry of Social Justice &amp; Empowerment
+          </h1>
+          <p className="max-w-xl text-ink-muted">
+            Select a destination to access the website, design system, workflow
+            portals, or audit reports.
+          </p>
+        </div>
 
-      {/* Destination cards */}
-      <main id="main-content" className="mx-auto w-full max-w-[1280px] flex-1 px-6 pb-16 pt-8">
+        {/* Destination cards */}
+        <div className="pt-8">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {destinations.map(({ title, description, icon: Icon, href, cta, available }) =>
             available ? (
@@ -96,6 +106,7 @@ export default function GatePage() {
               </div>
             )
           )}
+        </div>
         </div>
       </main>
 
