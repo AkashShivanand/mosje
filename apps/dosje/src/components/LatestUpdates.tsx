@@ -29,6 +29,7 @@ export function LatestUpdates() {
   }, [count]);
 
   const item = UPDATES[index];
+  if (!item) return null;
 
   return (
     <section className="bg-gov-blue text-white">

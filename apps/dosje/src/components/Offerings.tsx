@@ -147,7 +147,7 @@ function OfferingCard({
 export function Offerings() {
   const [activeTab, setActiveTab] = useState<TabKey>("schemes");
 
-  const current = tabs.find((tab) => tab.key === activeTab) ?? tabs[0];
+  const current = tabs.find((tab) => tab.key === activeTab) ?? tabs[0]!;
 
   return (
     <section className="bg-white">

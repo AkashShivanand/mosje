@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=22"
   },
-  "description": "PM-AJAY MIS Dashboard — MoSJE functional portal",
+  "description": "PM-AJAY MIS Dashboard — MoSJE functional portal. No Tailwind dependency: all styling uses hand-rolled CSS vars from the DS token contract (charts use inline SVG). If Tailwind utilities are added, install tailwindcss@^3 explicitly.",
   "scripts": {
     "dev": "next dev -p 4124",
     "build": "next build",

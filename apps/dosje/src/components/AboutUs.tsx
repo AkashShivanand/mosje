@@ -68,6 +68,7 @@ export function AboutUs() {
           </div>
 
           <div className="flex flex-col gap-6">
+            {ministers[0] && (
             <div className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md sm:flex sm:items-center sm:gap-5">
               <Image
                 src={ministers[0].img}
@@ -85,6 +86,7 @@ export function AboutUs() {
                 </p>
               </div>
             </div>
+            )}
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {ministers.slice(1).map((minister) => (
