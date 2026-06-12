@@ -14,16 +14,22 @@ export function MapPage({ path }: { path: string }) {
     <div className="page-stack">
       <h2 className="page-title">Map Ministry/Schemes</h2>
 
-      <div className="map-tabs">
+      <div className="map-tabs" role="tablist" aria-label="Map view">
         <Link
           href={portalLink("/map-ministry")}
           className={`map-tab${!isSchemas ? " active" : ""}`}
+          role="tab"
+          aria-selected={!isSchemas}
+          aria-current={!isSchemas ? "page" : undefined}
         >
           Ministry
         </Link>
         <Link
           href={portalLink("/map-schema")}
           className={`map-tab${isSchemas ? " active" : ""}`}
+          role="tab"
+          aria-selected={isSchemas}
+          aria-current={isSchemas ? "page" : undefined}
         >
           Schemes
         </Link>

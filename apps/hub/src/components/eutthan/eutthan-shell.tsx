@@ -15,11 +15,11 @@ export function TopBar({ onLogout }: { onLogout: () => void }) {
   return (
     <div className="top-bar">
       <div className="top-left">
-        <div className="flag">
+        <div className="flag" aria-hidden="true">
           <span />
         </div>
         <span className="goi-link">Government of India</span>
-        <span className="divider" />
+        <span className="divider" aria-hidden="true" />
         <span className="goi-link">
           Ministry of Social Justice &amp; Empowerment
         </span>
@@ -75,7 +75,7 @@ export function Masthead({ name, roleLabel }: { name: string; roleLabel: string 
           <strong>{name}</strong>
           <small>{roleLabel}</small>
         </div>
-        <div className="avatar">{name.charAt(0).toUpperCase()}</div>
+        <div className="avatar" aria-hidden="true">{name.charAt(0).toUpperCase()}</div>
       </div>
     </div>
   );
