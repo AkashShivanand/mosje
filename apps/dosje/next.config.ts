@@ -6,9 +6,7 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
-  // output: "standalone" is production-only; omit in dev so the dev server
-  // works normally through the hub proxy. Re-enable for Docker/production builds.
-  // output: "standalone",
+  output: "standalone",
   // trailingSlash was removed because it causes a redirect loop in the Multi-Zones
   // proxy setup: dosje would redirect /website → /website/ which the hub would then
   // strip back → infinite 308. Default Next.js behaviour (no trailing slash) is fine.

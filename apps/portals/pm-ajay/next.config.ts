@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   basePath: "/portals/pm-ajay",
+  output: "standalone",
   reactStrictMode: true,
   // Expose basePath to client components via env var (avoids hardcoding)
   env: {

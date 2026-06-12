@@ -7,6 +7,7 @@ const ZONE_PM_AJAY     = process.env.ZONE_PM_AJAY_URL     ?? "http://localhost:4
 const ZONE_SMILE_ADMIN = process.env.ZONE_SMILE_ADMIN_URL ?? "http://localhost:4123";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   // Required for Multi-Zones: prevents the hub from stripping trailing slashes
   // from child-zone paths (e.g. /website/ → /website), which would create a
   // redirect loop with any child app that has trailingSlash: true.

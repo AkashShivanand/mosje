@@ -45,8 +45,13 @@ export function Statement10APage() {
             flexWrap: "wrap",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            <label
+          <div
+            role="group"
+            aria-labelledby="s10a-fy-label"
+            style={{ display: "flex", flexDirection: "column", gap: 6 }}
+          >
+            <span
+              id="s10a-fy-label"
               style={{
                 fontSize: 12,
                 fontWeight: 700,
@@ -54,13 +59,18 @@ export function Statement10APage() {
               }}
             >
               Financial Year
-            </label>
-            <button type="button" className="filter-button">
+            </span>
+            <button type="button" className="filter-button" aria-labelledby="s10a-fy-label">
               2025-2026 <ChevronDown size={14} />
             </button>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            <label
+          <div
+            role="group"
+            aria-labelledby="s10a-ministry-label"
+            style={{ display: "flex", flexDirection: "column", gap: 6 }}
+          >
+            <span
+              id="s10a-ministry-label"
               style={{
                 fontSize: 12,
                 fontWeight: 700,
@@ -68,8 +78,8 @@ export function Statement10APage() {
               }}
             >
               Ministry/Department
-            </label>
-            <button type="button" className="filter-button">
+            </span>
+            <button type="button" className="filter-button" aria-labelledby="s10a-ministry-label">
               -- All Ministries -- <ChevronDown size={14} />
             </button>
           </div>

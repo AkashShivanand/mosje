@@ -12,7 +12,11 @@ import type { NextRequest } from "next/server";
    Set "smile_session=1" in the auth-context signIn and clear on signOut.
 
    Because this is a prototype, the cookie is just a presence flag —
-   the real account data still comes from localStorage on the client. */
+   the real account data still comes from localStorage on the client.
+
+   SEC-004: The session cookie is NOT HttpOnly because it is set from client-side
+   JS (document.cookie). Before production, migrate to a server-set HttpOnly cookie
+   via an /api/auth route so JS cannot read or forge the session token. */
 
 const BASE = "/portals/smile-admin";
 const PUBLIC_PATHS = [`${BASE}/login`, `${BASE}/forgot-password`];

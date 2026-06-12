@@ -98,7 +98,12 @@ export function Header() {
             <Image src="/images/open_in_new_icon.svg" alt="" width={12} height={12} className="h-3 w-3 brightness-0 invert" />
           </a>
           <div className="flex items-center gap-5">
-            <a href="#content" className="hover:underline">Skip to Main Content</a>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-gov-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:outline-none"
+            >
+              Skip to Main Content
+            </a>
             <ColorModeSwitcher compact hideLabel label="Colour mode" />
             <button aria-label="Accessibility options" className="grid h-7 w-7 place-items-center rounded-full hover:bg-white/15">
               <Accessibility className="h-[18px] w-[18px]" />
@@ -167,13 +172,18 @@ export function Header() {
                   }`}
                   onClick={(e) => { if (hasChildren) { e.preventDefault(); setOpen(isOpen ? null : item.label); } }}
                   aria-expanded={hasChildren ? isOpen : undefined}
+                  aria-haspopup={hasChildren ? true : undefined}
+                  aria-controls={hasChildren ? `nav-drop-${item.label.toLowerCase().replace(/\s+/g, "-")}` : undefined}
                 >
                   {item.label}
                   {hasChildren && <ChevronDown className="h-4 w-4 opacity-70" />}
                 </Link>
                 {hasChildren && isOpen && (
                   <div className="absolute left-0 right-0 top-full z-50 lg:left-auto lg:right-auto lg:min-w-[280px]">
-                    <ul className="mt-px rounded-b-lg border border-gray-100 bg-white py-2 shadow-lg">
+                    <ul
+                      id={`nav-drop-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+                      className="mt-px rounded-b-lg border border-gray-100 bg-white py-2 shadow-lg"
+                    >
                       {item.children!.map((c) => (
                         <li key={c.label}>
                           <Link

@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main id="content" className="flex-1">
+      <main id="main-content" className="flex-1">
         <SamaveshBanner />
         <HeroCarousel />
         <LatestUpdates />
