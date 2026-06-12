@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { portals } from "@/data/portals";
+import { DEFAULT_APPS } from "@mosje/design-system/components/app-switcher-utils";
 
 export const metadata: Metadata = {
   title: "Portals — MoSJE Digital Estate",
@@ -10,8 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default function PortalsPage() {
-  const built = portals.filter((p) => p.status === "built");
-  const planned = portals.filter((p) => p.status === "planned");
+  const portalApps = DEFAULT_APPS.filter((a) => a.group === "Portals");
+  const live = portalApps.filter((a) => (a.status ?? "live") === "live");
+  const planned = portalApps.filter((a) => a.status === "planned");
 
   return (
     <div className="min-h-screen bg-surface-muted">
@@ -37,15 +38,15 @@ export default function PortalsPage() {
           organisations under MoSJE.
         </p>
 
-        {/* Built portals */}
-        <section aria-labelledby="built-heading" className="mb-12">
-          <h2 id="built-heading" className="mb-5 text-xl font-semibold text-ink">
+        {/* Live portals */}
+        <section aria-labelledby="live-heading" className="mb-12">
+          <h2 id="live-heading" className="mb-5 text-xl font-semibold text-ink">
             Available now
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {built.map((portal) => (
+            {live.map((portal) => (
               <a
-                key={portal.slug}
+                key={portal.path}
                 href={portal.path}
                 className="group flex flex-col rounded-xl border border-border bg-surface p-6 transition hover:border-gov-blue hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-gov-blue"
               >
@@ -55,8 +56,12 @@ export default function PortalsPage() {
                     Live
                   </span>
                 </div>
-                <p className="mb-2 text-xs text-ink-muted">{portal.org}</p>
-                <p className="mb-5 flex-1 text-sm text-ink-muted">{portal.description}</p>
+                {portal.org && (
+                  <p className="mb-2 text-xs text-ink-muted">{portal.org}</p>
+                )}
+                {portal.desc && (
+                  <p className="mb-5 flex-1 text-sm text-ink-muted">{portal.desc}</p>
+                )}
                 <span className="flex items-center gap-1.5 text-sm font-semibold text-gov-blue transition-all group-hover:gap-2.5">
                   Open portal
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -75,7 +80,7 @@ export default function PortalsPage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {planned.map((portal) => (
                 <div
-                  key={portal.slug}
+                  key={portal.path}
                   className="flex flex-col rounded-xl border border-border bg-surface p-6 opacity-60"
                   aria-label={`${portal.name} — Planned`}
                 >
@@ -85,8 +90,12 @@ export default function PortalsPage() {
                       Planned
                     </span>
                   </div>
-                  <p className="mb-2 text-xs text-ink-muted">{portal.org}</p>
-                  <p className="flex-1 text-sm text-ink-muted">{portal.description}</p>
+                  {portal.org && (
+                    <p className="mb-2 text-xs text-ink-muted">{portal.org}</p>
+                  )}
+                  {portal.desc && (
+                    <p className="flex-1 text-sm text-ink-muted">{portal.desc}</p>
+                  )}
                 </div>
               ))}
             </div>
