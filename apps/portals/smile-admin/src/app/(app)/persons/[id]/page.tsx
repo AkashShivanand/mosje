@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import { ArrowLeft, Calendar, Fingerprint, Phone, ShieldCheck, Users2 } from "lucide-react";
+import { ArrowLeft, Calendar, ScanLine, Phone, ShieldCheck, Users2 } from "lucide-react";
 import { Badge, statusTone } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -47,7 +47,7 @@ export default function PersonDetail() {
               { label: "Age",       value: `${person.age} years`, icon: Calendar },
               { label: "Gender",    value: person.gender,         icon: Users2 },
               { label: "Type",      value: person.type,           icon: ShieldCheck },
-              { label: "Aadhaar",   value: person.aadhaar,        icon: Fingerprint },
+              { label: "Aadhaar",   value: person.aadhaar,        icon: ScanLine },
               { label: "State",     value: person.state,          icon: Phone },
               { label: "District",  value: person.district,       icon: Phone },
             ].map((f) => (

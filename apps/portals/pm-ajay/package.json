@@ -8,7 +8,10 @@
     "build": "next build",
     "start": "next start -p 4124",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@mosje/design-system": "file:../../../packages/design-system",
@@ -22,6 +25,7 @@
     "@types/react-dom": "^19",
     "eslint": "^8",
     "eslint-config-next": "^15.5.19",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.8"
   }
 }
