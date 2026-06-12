@@ -36,3 +36,6 @@ Thumbs.db
 # graphify knowledge-graph output (per-project, do not commit)
 graphify-out/
 .graphify_*
+.qc/
+docs/qc/portals/eutthan-admin/.qc/
+docs/qc/portals/eutthan-admin/_archive/
