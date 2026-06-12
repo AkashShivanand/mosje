@@ -3,6 +3,7 @@ import * as React from "react";
 import { SidebarNav } from "./sidebar-nav";
 import { DocsHeader } from "./docs-header";
 import { OnThisPage } from "./on-this-page";
+import { CmdSearch } from "@/components/search/cmd-search";
 import "./docs-layout.css";
 
 interface DocsLayoutProps {
@@ -33,12 +34,7 @@ export function DocsLayout({ children, breadcrumb }: DocsLayoutProps): React.JSX
           <OnThisPage />
         </main>
       </div>
-      {searchOpen && (
-        <React.Suspense fallback={null}>
-          {/* CmdSearch lazy-imported to keep initial bundle small */}
-          <div onClick={() => setSearchOpen(false)} />
-        </React.Suspense>
-      )}
+      {searchOpen && <CmdSearch onClose={() => setSearchOpen(false)} />}
     </>
   );
 }
