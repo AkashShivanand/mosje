@@ -1,0 +1,771 @@
+[
+  {
+    "id": "TS-001",
+    "severity": "blocker",
+    "file": "apps/hub/src/app/reports/eutthan-admin/page.tsx",
+    "line": 49,
+    "description": "Hard build error TS2352: the JSON data file has 'note: null' on most screens but the Screen interface declares 'note?: string' (i.e. string|undefined). The 'as' cast is rejected by tsc because null is not assignable to string|undefined, so 'tsc --noEmit' exits non-zero. The hub app cannot be type-checked cleanly.",
+    "fix": "Either widen the Screen interface to 'note?: string | null' to match the actual JSON shape, or change the JSON data so all null values are omitted (which makes them 'undefined'). The interface change is safer: change line 31 from 'note?: string;' to 'note?: string | null;'.",
+    "dimension": "TypeScript & Build Health"
+  },
+  {
+    "id": "SEC-001",
+    "severity": "blocker",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 1286,
+    "description": "Hardcoded plaintext credentials ('9990000011'/'admin@2026' and 'shivendra123'/'shivendra123') are embedded directly in the handleLogin function body \u2014 not in a clearly-labelled DEMO_ACCOUNTS constant. These are indistinguishable from real credentials to a code reviewer or future developer, are committed to git history, and if the portal is ever wired to a real backend the same pattern will be reused.",
+    "fix": "Extract to a DEMO_ACCOUNTS constant with an explicit comment identical to pm-ajay's pattern. More importantly: before any production deployment this entire function must be replaced with a server-side NIC/SSO authentication call. Add a // TODO(pre-prod): replace with NIC SSO comment at minimum.",
+    "dimension": "Security & Auth"
+  },
+  {
+    "id": "SEC-002",
+    "severity": "blocker",
+    "file": "apps/portals/smile-admin/src/app/(app)/layout.tsx",
+    "line": 20,
+    "description": "smile-admin has no server-side auth middleware whatsoever. Auth protection is entirely client-side: a useEffect in layout.tsx checks localStorage hydration and calls router.replace('/login'). Any request to a protected route (e.g. /smile-admin/users, /smile-admin/cases) with JavaScript disabled, via curl, or through a service worker returns the full page HTML. There is also no middleware.ts in the smile-admin app to guard the Edge runtime layer.",
+    "fix": "Add a middleware.ts to apps/portals/smile-admin/ following the pm-ajay pattern \u2014 set a server-readable cookie on signIn, check it in middleware, redirect unauthenticated requests server-side. The client-side useEffect redirect can remain as a secondary guard but cannot be the only one.",
+    "dimension": "Security & Auth"
+  },
+  {
+    "id": "A11Y-001",
+    "severity": "blocker",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 1213,
+    "description": "FormPage: every <label> in the dynamically-rendered form is not associated with its control. No htmlFor on the label, no id on the corresponding <input>, <select>, or <textarea>. Screen readers cannot announce which label belongs to which field. Affects all add/edit forms throughout the portal (ministry data, progress, schemes, users).",
+    "fix": "Generate a stable id per field (e.g. using the field.label slug or an index), set htmlFor on the label to that id, and set id on the control. The design-system FormField component already implements this pattern correctly \u2014 migrate FormPage to use it.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-002",
+    "severity": "blocker",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 666,
+    "description": "All search <input> elements inside .search-field containers (MapPage line 666, FinancialSummaryPage line 871, PhysicalProgressPage line 1021, TablePage line 1098) have no label \u2014 no <label>, no aria-label, no aria-labelledby. An unlabelled input fails WCAG 1.3.1 (Info and Relationships) and 4.1.2 (Name, Role, Value).",
+    "fix": "Add aria-label matching the placeholder text to each search input, e.g. aria-label={screen.searchPlaceholder}. Alternatively wrap in a visually-hidden <label>.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-003",
+    "severity": "blocker",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 679,
+    "description": "All <th> elements across every table in the portal (MapPage, Statement10A, FinancialSummary, PfmsLogs, PhysicalProgress, TablePage) lack a scope attribute. Without scope=\"col\" (or scope=\"row\"), screen readers cannot associate data cells with their headers \u2014 a direct WCAG 1.3.1 failure and a GIGW mandated requirement for data tables.",
+    "fix": "Add scope=\"col\" to every column header: <th key={c} scope=\"col\">{c}</th>. If any tables have row headers in the first column, add scope=\"row\" on those td/th cells.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-004",
+    "severity": "blocker",
+    "file": "apps/hub/src/app/page.tsx",
+    "line": 42,
+    "description": "The hub gate page (/) has no skip-to-main-content link. The hub is the root entry point for all traffic at :3000. Without a skip link, keyboard and screen-reader users must tab through the header on every page load. GIGW requires a skip link as the first focusable element. The dosje website (Header.tsx line 101) and both portals (pm-ajay, smile-admin) have skip links; hub does not.",
+    "fix": "Add a visually-hidden-until-focused skip link as the very first child of the body/layout: <a href=\"#main-content\" className=\"sr-only focus:not-sr-only ...\">Skip to Main Content</a>. The main element already has id=\"main-content\" (line 65).",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-005",
+    "severity": "blocker",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 113,
+    "description": "LoginPage heading hierarchy is broken: the first and only heading on the login screen is <h2 class=\"login-form-title\">Log In</h2> (line 113). There is no h1 on this view. The authenticated shell correctly has an h1 (line 229: DAPSC Allocation & Progress Tracker), but on the login screen the page lacks a level-1 heading \u2014 a WCAG 1.3.1 and GIGW failure.",
+    "fix": "Change <h2 class=\"login-form-title\"> to <h1> and update the CSS class, or add a visually-hidden h1 (e.g. eUtthan \u2014 Log In) before the form.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "DS-001",
+    "severity": "blocker",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/hub/src/app/portals/eutthan-admin/eutthan.css",
+    "line": 2,
+    "description": "eutthan.css defines its own custom-property namespace (--primary, --primary-800, --primary-100, --primary-50, --text, --text-strong, --text-muted, --surface, --surface-muted, --stroke-*, --danger, --success, --gov-yellow) with 28 hardcoded hex values and zero references to --ds-* or --sa-* tokens. It does not import @mosje/design-system/tokens.css. This completely bypasses the shared design token contract, making the portal immune to estate-wide theming (data-color-mode), branding updates, and accessibility overrides (high-contrast mode). The hub's global layout.tsx does apply colorModeInitScript, but the attribute change has no effect on eutthan because none of its CSS reads the canonical DS variables.",
+    "fix": "Add `@import \"@mosje/design-system/tokens.css\";` at the top of eutthan.css. Replace all private --primary-* / --text* / --surface* / --stroke-* / --danger / --success / --gov-yellow custom properties with their --ds-* equivalents (--ds-primary, --ds-primary-800 \u2192 --ds-primary-dark, --ds-ink, --ds-ink-muted, --ds-surface, --ds-surface-muted, --ds-border, --ds-border-strong, --ds-danger, --ds-success, --ds-gov-yellow). Remove the duplicate :root block. Verify the eutthan portal still renders correctly after the swap.",
+    "dimension": "Design System Consistency"
+  },
+  {
+    "id": "PERF-001",
+    "severity": "blocker",
+    "file": "apps/portals/pm-ajay/src/app/layout.tsx",
+    "line": 24,
+    "description": "pm-ajay layout loads Noto Sans and Material Symbols Rounded via two render-blocking <link rel=\"stylesheet\"> tags pointing to fonts.googleapis.com. These stylesheets block first paint on every page in the portal. The other three apps (hub, dosje, smile-admin) correctly use next/font/google which self-hosts and injects only the needed font faces as non-blocking preloads. Material Symbols is additionally not available via next/font, meaning it will always require a network round-trip unless self-hosted.",
+    "fix": "Replace the Noto Sans link tag with next/font/google Noto_Sans (matching smile-admin's layout.tsx pattern). For Material Symbols, either self-host the variable font file in public/fonts/ and load it via a @font-face rule in globals.css, or replace icon usage with lucide-react icons to eliminate the dependency entirely.",
+    "dimension": "Performance & Bundle"
+  },
+  {
+    "id": "PERF-002",
+    "severity": "blocker",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 1,
+    "description": "eutthan-portal.tsx is 1,371 lines with \"use client\" at line 1, so the entire module \u2014 login page, top bar, masthead, sidebar, dashboard, tables, forms, map schema, and all inline render logic \u2014 ships as a single client JavaScript chunk. There is no next/dynamic() call anywhere in the apps/ tree. This creates an unnecessarily large initial JS payload even when the user is on the login screen. The route page at apps/hub/src/app/portals/eutthan-admin/[[...slug]]/page.tsx also declares \"use client\" making the route boundary itself a client component.",
+    "fix": "Split eutthan-portal.tsx into focused sub-components: LoginPage, Dashboard, TableScreen, FormScreen, MapView, etc. Load heavy screens (dashboard charts, table views, form pages) with next/dynamic({ ssr: false, loading: () => <Skeleton /> }). Keep only the top-level router/auth state in the root client component. Remove the redundant \"use client\" from the [[...slug]]/page.tsx route \u2014 the imported EutthanPortal already propagates client context.",
+    "dimension": "Performance & Bundle"
+  },
+  {
+    "id": "QA-001",
+    "severity": "blocker",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 1,
+    "description": "1371-line monolith conflates 9 distinct responsibilities in a single file: (1) shell/layout (lines 169-314: TopBar, Masthead, Sidebar), (2) auth state + login UI (lines 42-167, 1272-1305), (3) AdminDashboard (lines 318-394), (4) MinistryDashboard (lines 398-441), (5) MapPage (lines 639-704), (6) Statement10APage (lines 708-835), (7) FinancialSummaryPage (lines 839-898), (8) PfmsLogsPage (lines 902-978), (9) PhysicalProgressPage (lines 982-1058), plus GenericTablePage, FormPage, CellContent, Pagination (lines 443-635, 1060-1268), and the root orchestrator EutthanPortal (lines 1272-1371). Proposed split: eutthan-shell.tsx (~145 lines), eutthan-login.tsx (~120 lines), eutthan-dashboard-admin.tsx (~75 lines), eutthan-dashboard-ministry.tsx (~45 lines), eutthan-map-page.tsx (~65 lines), eutthan-statement10a.tsx (~130 lines), eutthan-financial-summary.tsx (~60 lines), eutthan-pfms-logs.tsx (~80 lines), eutthan-physical-progress.tsx (~80 lines), eutthan-table-page.tsx (~90 lines), eutthan-form-page.tsx (~115 lines), eutthan-shared.tsx (CellContent + Pagination, ~195 lines), eutthan-portal.tsx (root orchestrator only, ~100 lines).",
+    "fix": "Split into the 13 files listed. Move shared helpers (CellContent, Pagination, np, lk) to eutthan-shared.tsx. Each named screen becomes its own file consuming portal-data.ts types. The root EutthanPortal file imports all screens and owns only the hydration/auth gate and the renderContent switch.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "QA-003",
+    "severity": "blocker",
+    "file": "apps/portals/pm-ajay/src/middleware.ts",
+    "line": 25,
+    "description": "A debug response header x-mw-pathname is appended to EVERY response \u2014 both authenticated and unauthenticated, including redirects (line 43). This leaks internal routing metadata to end users and any intermediary (CDN, proxy, logging infra) in production. The comment on line 24 explicitly marks it as 'DEBUG'.",
+    "fix": "Delete the three lines that set this header (lines 25-26, 43). Remove the debugRes variable; return NextResponse.next() inline for the allow path and keep the redirect logic for the auth-check path. No functional change to the gate logic is required.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "QA-006",
+    "severity": "blocker",
+    "file": "apps/portals/smile-admin/src/lib/mock-data.ts",
+    "line": 1,
+    "description": "mock-data.ts exports 518 lines of hard-coded fixture data (beneficiaries, shelter homes, agencies, audit logs, scheme data, etc.) with no NODE_ENV guard. It is imported unconditionally by 22 production files across all active pages of the smile-admin portal (dashboard, persons, surveys, fund-monitoring, roles, users, audit-log, shelter-homes, etc.). This means fabricated government data ships to production builds, consumes bundle bytes, and misrepresents live data to any user of the deployed app.",
+    "fix": "Short-term: add an export guard at the top (if (process.env.NODE_ENV === 'production') throw new Error('mock-data imported in production')). Long-term: replace with real API calls behind a service layer; delete mock-data.ts when the API layer covers all 22 import sites.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "QA-007",
+    "severity": "blocker",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 1285,
+    "description": "Plaintext demo credentials are hardcoded directly in the component: username '9990000011' / password 'admin@2026' and username 'shivendra123' / password 'shivendra123' (lines 1286-1293). Even for a prototype, committing credentials to source is a code-review red flag \u2014 they appear in git history permanently and can end up in build artifacts. The handleLogin function also calls setRole inside an event handler in a way that causes the ESLint react-hooks/set-state-in-effect error on line 1281.",
+    "fix": "Move demo credentials to a constants file guarded by NODE_ENV !== 'production', or (for the prototype phase) accept them via environment variables at build time. Separately fix the setState-in-effect lint error: initialise role lazily using useState(() => { const v = localStorage.getItem('eutthan_role'); return v as Role | null; }) and remove the useEffect that calls setRole.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "QA-012",
+    "severity": "blocker",
+    "file": "apps/hub/src/lib/eutthan/portal-data.ts",
+    "line": 4,
+    "description": "Three Lucide icons are imported but never used: BriefcaseBusiness (line 4), Building2 (line 5), GitMerge (line 9). These generate ESLint warnings (no-unused-vars) confirmed by running npx eslint on the hub src. Additionally, the hub's npm run lint script fails with 'Invalid project directory provided, no such directory: .../apps/hub/lint' \u2014 the Next 16 CLI has removed the standalone lint sub-command, so CI lint for the hub is currently broken.",
+    "fix": "Remove the three unused icon imports from portal-data.ts. Fix the lint command: Next 16 exposes linting via the build pipeline or a direct ESLint invocation. Update the 'lint' script in apps/hub/package.json to: \"lint\": \"eslint src --ext .ts,.tsx\" and add eslint as a dev dependency, or pin to an approach compatible with Next 16.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "QA-013",
+    "severity": "blocker",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 1279,
+    "description": "The hydration useEffect calls setRole(stored) and setHydrated(true) synchronously inside the effect body. ESLint reports this as a react-hooks/set-state-in-effect error (confirmed by linting). While this works at runtime, it triggers a second render on mount and the lint rule flags it as a cascading-render anti-pattern.",
+    "fix": "Use lazy state initialisation: const [role, setRole] = useState<Role | null>(null); const [hydrated, setHydrated] = useState(false); Then in the effect, only setRole if the value differs from null (or remove the effect entirely if localStorage is read via an initialiser function). Alternatively: useState(() => { if (typeof window === 'undefined') return null; return localStorage.getItem('eutthan_role') as Role | null; }) and remove the useEffect entirely.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "QA-015",
+    "severity": "blocker",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 1,
+    "description": "Zero test files exist anywhere in the codebase (confirmed by find across all apps and packages). The minimum test targets required for this government estate are: (1) apps/hub/src/lib/eutthan/portal-data.ts \u2014 type shape and non-empty rows for each tableScreen key; (2) packages/design-system/components/app-switcher-utils.ts \u2014 deriveAbbr(), filterApps(), matchActivePath() unit tests; (3) apps/portals/pm-ajay/src/store/auth-context.tsx \u2014 signIn accept/reject, cookie set/clear, session restore from localStorage; (4) apps/portals/pm-ajay/src/middleware.ts \u2014 redirect on missing cookie, passthrough on present cookie, static asset bypass; (5) eutthan-portal login flow \u2014 valid admin login, valid ministry login, invalid credentials error; (6) eutthan-portal navigation \u2014 np() / lk() path normalisation; (7) apps/portals/smile-admin/src/lib/mock-data.ts \u2014 data shape contract (all exported arrays non-empty, ProgrammeKpi fields are numbers); (8) apps/hub/src/data/portals.ts \u2014 all 'built' portals have valid path strings; (9) CellContent rendering \u2014 each sentinel value ('menu', 'role-actions', 'Unmap', 'View', 'Edit Delete', 'Edit', 'checked') renders expected markup; (10) Pagination \u2014 renders correct number of page buttons for totals 0, 10, 11, 21.",
+    "fix": "Add Vitest (or Jest) as a dev dependency at the monorepo root. Create __tests__/ directories under packages/design-system, apps/hub/src/lib/eutthan, apps/portals/pm-ajay/src, and apps/portals/smile-admin/src/lib. Write the 10 test targets listed above as the baseline. Add a 'test' script to each app's package.json and add test execution to CI.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "INFRA-001",
+    "severity": "blocker",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/.github/workflows/",
+    "line": 1,
+    "description": "No CI workflow exists for any of the four application packages (hub, dosje, smile-admin, pm-ajay). The only workflow (ds-quality.yml) is scoped exclusively to packages/** path changes. Any push to an app \u2014 including production code \u2014 bypasses all automated type-checking, linting, and build verification. For a government site with WCAG/GIGW legal obligations this is a blocker.",
+    "fix": "Add a .github/workflows/apps-ci.yml that runs on push/PR for apps/** path changes. It should execute: npm --prefix apps/hub run typecheck && npm --prefix apps/hub run lint, npm --prefix apps/dosje run check, npm --prefix apps/portals/smile-admin run typecheck && npm --prefix apps/portals/smile-admin run lint, and npm --prefix apps/portals/pm-ajay run typecheck && npm --prefix apps/portals/pm-ajay run lint. Pin Node to 22 for apps that lack an engines override (hub, smile-admin, pm-ajay).",
+    "dimension": "Infrastructure & DevEx"
+  },
+  {
+    "id": "INFRA-002",
+    "severity": "blocker",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/package.json",
+    "description": "No pre-commit hooks (husky/lint-staged or equivalent git hooks). Neither .husky/ nor any lint-staged configuration exists anywhere in the repo. Developers can commit code that fails TypeScript strict mode or ESLint without any automated gate \u2014 a significant risk given this is a government WCAG/GIGW-regulated estate.",
+    "fix": "Add husky + lint-staged at the workspace root. Configure lint-staged to run tsc --noEmit and eslint --max-warnings=0 on staged *.ts *.tsx files per app. This is the last line of defence before code reaches CI.",
+    "dimension": "Infrastructure & DevEx"
+  },
+  {
+    "id": "TS-002",
+    "severity": "major",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 1280,
+    "description": "Unsafe type cast: localStorage.getItem('eutthan_role') returns string|null and is cast directly to 'Role | null' without a runtime guard. If localStorage contains a stale or attacker-controlled value (e.g. 'superadmin'), it passes straight into role-conditional rendering as a trusted Role. This is the prototype auth store, but the pattern sets a bad precedent.",
+    "fix": "Replace the cast with a runtime check. After reading the value, assert it is one of the valid Role literals before calling setRole: const raw = localStorage.getItem('eutthan_role'); const stored = (raw === 'admin' || raw === 'ministry') ? raw : null;",
+    "dimension": "TypeScript & Build Health"
+  },
+  {
+    "id": "TS-003",
+    "severity": "major",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 61,
+    "description": "submit() event handler uses 'React.FormEvent' without the generic type argument. The correct type is 'React.FormEvent<HTMLFormElement>'. Without the generic, e.currentTarget is typed as EventTarget rather than HTMLFormElement, which would be an error if the target's properties were ever accessed.",
+    "fix": "Change the parameter type to 'e: React.FormEvent<HTMLFormElement>'.",
+    "dimension": "TypeScript & Build Health"
+  },
+  {
+    "id": "TS-004",
+    "severity": "major",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 381,
+    "description": "'color as string' cast is applied to the second element of each expenditureLegend tuple. The tuple is typed 'as const' so each element is a string literal type \u2014 the cast is technically redundant and masks the actual type. If the data type ever changes this cast will silently accept anything.",
+    "fix": "Remove the cast. The expenditureLegend items are already narrowed to string literal types by 'as const'. Assign the result of the map directly: style={{ background: color }}. TypeScript will infer the string literal type without the cast.",
+    "dimension": "TypeScript & Build Health"
+  },
+  {
+    "id": "TS-005",
+    "severity": "major",
+    "file": "packages/design-system/components/zone-switcher.tsx",
+    "line": 157,
+    "description": "Two non-null assertion operators on Map.get() at lines 155 and 157: 'map.get(a.group)!.push(a)' and 'items: map.get(g)!'. Although the logic guarantees the key exists (it was just inserted via map.set), TypeScript cannot verify this and the assertion suppresses the undefined possibility. If the grouping logic is ever refactored, these assertions become silent runtime crashes.",
+    "fix": "Replace the non-null assertions with null-safe alternatives. For line 155: 'const arr = map.get(a.group); if (arr) arr.push(a);'. For line 157: 'items: map.get(g) ?? []'. This preserves the same runtime behavior while remaining type-safe.",
+    "dimension": "TypeScript & Build Health"
+  },
+  {
+    "id": "SEC-003",
+    "severity": "major",
+    "file": "apps/portals/pm-ajay/src/middleware.ts",
+    "line": 26,
+    "description": "The x-mw-pathname debug header is set on ALL responses \u2014 authenticated, unauthenticated, and redirect responses \u2014 including public-facing traffic. This leaks internal routing structure (e.g. /portals/pm-ajay/dashboard, /portals/pm-ajay/reports/financial-summary) in response headers visible to any client, proxy log, or CDN.",
+    "fix": "Remove the debugRes variable and both debugRes.headers.set('x-mw-pathname', pathname) calls entirely before production deployment. If debugging is genuinely needed, gate it behind process.env.NODE_ENV === 'development'.",
+    "dimension": "Security & Auth"
+  },
+  {
+    "id": "SEC-004",
+    "severity": "major",
+    "file": "apps/portals/pm-ajay/src/store/auth-context.tsx",
+    "line": 84,
+    "description": "The pmajay_session cookie is set via document.cookie from client-side JavaScript: `pmajay_session=1; path=/portals/pm-ajay; SameSite=Lax`. It is missing HttpOnly (making it readable and deletable by any XSS payload) and Secure (allowing transmission over HTTP). SameSite=Lax is weaker than SameSite=Strict for an admin portal. The cookie value of '1' provides no entropy \u2014 an attacker can forge it trivially.",
+    "fix": "Cookies that gate middleware auth must be set server-side (e.g. via a Next.js API route or Server Action that calls cookies().set(..., { httpOnly: true, secure: true, sameSite: 'strict', path: '/portals/pm-ajay' })). The middleware cookie check is meaningless as a security control if the cookie can be set by any client-side script.",
+    "dimension": "Security & Auth"
+  },
+  {
+    "id": "SEC-005",
+    "severity": "major",
+    "file": "apps/portals/pm-ajay/src/store/auth-context.tsx",
+    "line": 64,
+    "description": "Account data (name, designation, employeeId, scope, scopeLabel) is persisted to localStorage under key 'pmajay.session.v1'. localStorage is accessible to any JavaScript running on the same origin, including injected scripts (XSS). On restoration (line 64-73), the stored account is trusted for role/scope without re-validating against the server. This means an XSS attacker can elevate scope from 'district' to 'national' by writing to localStorage.",
+    "fix": "For the prototype phase, document this known limitation clearly. For production: session state must come from a server-signed JWT or server-side session store, not localStorage. Role/scope must be authoritative from the server, not client-stored.",
+    "dimension": "Security & Auth"
+  },
+  {
+    "id": "SEC-006",
+    "severity": "major",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 1280,
+    "description": "eutthan-portal stores the role ('admin' or 'ministry') in localStorage under key 'eutthan_role' and reads it back on mount (line 1280) casting it directly to the Role type without validation: `localStorage.getItem('eutthan_role') as Role | null`. Any user or XSS payload can write `localStorage.setItem('eutthan_role', 'admin')` in the browser console to gain admin role without credentials.",
+    "fix": "At minimum, validate the stored value against the Role union type before accepting it. Longer term, role must be tied to a server-side session, not a client-writable localStorage key.",
+    "dimension": "Security & Auth"
+  },
+  {
+    "id": "SEC-007",
+    "severity": "major",
+    "file": "apps/hub/src/app/layout.tsx",
+    "line": 1,
+    "description": "No HTTP security headers are configured in any next.config file across the estate (apps/hub, apps/dosje, apps/portals/pm-ajay, apps/portals/smile-admin). The find command returned no next.config.* files at all. Missing headers: X-Frame-Options or frame-ancestors CSP directive (clickjacking), Content-Security-Policy (XSS), Strict-Transport-Security (HSTS, required for gov sites), X-Content-Type-Options: nosniff, Referrer-Policy, Permissions-Policy.",
+    "fix": "Add a next.config.ts to each app (or the hub root) with a headers() async function returning the security header set. For a Government of India estate, HSTS with includeSubDomains and a long max-age, a strict CSP, and X-Frame-Options: DENY are non-negotiable GIGW requirements.",
+    "dimension": "Security & Auth"
+  },
+  {
+    "id": "SEC-008",
+    "severity": "major",
+    "file": "apps/portals/smile-admin/src/app/layout.tsx",
+    "line": 1,
+    "description": "npm audit reports a CRITICAL severity CVE in the smile-admin Next.js dependency chain. The full audit lists: GHSA-7m27-7ghc-44w9 (DoS via Server Actions), GHSA-9qr9-h5gf-34mp (RCE in React flight protocol), GHSA-f82v-jwr5-mffw (Authorization Bypass in Next.js Middleware), GHSA-ggv3-7p47-pfv8 (HTTP request smuggling in rewrites), among others. The hub app has 1 high and 1 moderate CVE (Next.js DoS + PostCSS XSS). pm-ajay has 2 moderate CVEs.",
+    "fix": "Run `npm audit fix` in each app. For smile-admin the critical CVEs require updating Next.js to the patched version \u2014 check the advisory for the minimum safe version and update package.json accordingly. The Authorization Bypass CVE (GHSA-f82v-jwr5-mffw) is especially relevant since smile-admin has no middleware at all.",
+    "dimension": "Security & Auth"
+  },
+  {
+    "id": "A11Y-006",
+    "severity": "major",
+    "file": "packages/design-system/components/zone-switcher.tsx",
+    "line": 164,
+    "description": "AppSwitcher panel (role=\"dialog\") has no Tab-key focus trap. Escape closes it (line 105) and initial focus is moved to the search input on open (implicitly via the search autofocus pattern), but pressing Tab can move focus outside the dialog into the page behind it. The AccessibilityWidget correctly implements a full focus trap (onPanelKeyDown, Tab/Shift+Tab handling at lines 232-255); AppSwitcher does not. This was flagged in a previous audit and remains unfixed.",
+    "fix": "Add an onKeyDown handler to the panel div that implements the same Tab/Shift+Tab boundary logic as AccessibilityWidget.onPanelKeyDown: get all focusable elements, intercept Tab on the last and Shift+Tab on the first, and redirect focus to the opposite end.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-007",
+    "severity": "major",
+    "file": "packages/design-system/components/zone-switcher.tsx",
+    "line": 259,
+    "description": "ARIA role validity violation: the AppSwitcher body has role=\"list\" (line 259), but its direct children are <div role=\"group\"> elements (line 272), not role=\"listitem\" elements. The ARIA spec requires that children of a list role be listitems. The role=\"group\" divs containing the actual role=\"listitem\" anchors/divs are invalid direct children of the list, breaking the accessibility tree for screen readers.",
+    "fix": "Remove role=\"list\" from the body container. Use a plain <div> or <ul> for the outer wrapper, and nest the groups as sections/divs. The actual items (role=\"listitem\" anchors and divs) can remain. Alternatively, restructure so each group is a <ul> whose children are the listitem <li>/<a> elements directly.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-008",
+    "severity": "major",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 612,
+    "description": "The Pagination component has no accessible landmark or labels. The previous/next buttons render \u2039 and \u203a as HTML entities with no aria-label, so screen readers announce them as single punctuation characters. The page number buttons have no aria-label (e.g. \"Page 1\") and no aria-current=\"page\" on the current page. The \"Rows per page\" button is not a <select> and announces no current value to assistive technology.",
+    "fix": "Wrap Pagination in a <nav aria-label=\"Pagination\">. Add aria-label=\"Previous page\" and aria-label=\"Next page\" to the nav buttons. Add aria-label=\"Page N\" and aria-current=\"page\" to the current page button. Replace the rows-per-page button with a <select> with a visible <label> or aria-label.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-009",
+    "severity": "major",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 747,
+    "description": "Statement10APage filter labels (Financial Year, Ministry/Department at lines 749 and 763) use <label> elements that are not associated with any control \u2014 they label a <button type=\"button\"> acting as a dropdown trigger, but labels cannot be associated with buttons via htmlFor. The labels are purely decorative text with no programmatic link to the control, so screen readers skip them.",
+    "fix": "Replace the orphaned <label> with a <span id=\"fy-label\"> and add aria-labelledby=\"fy-label\" to the dropdown button. Alternatively use aria-label directly on each filter button: aria-label=\"Financial Year, currently 2025-2026\".",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-010",
+    "severity": "major",
+    "file": "apps/hub/src/app/page.tsx",
+    "line": 51,
+    "description": "Hub gate page: the hero section containing the page h1 (\"Ministry of Social Justice & Empowerment\") sits outside the <main> landmark (main starts at line 65, hero section is lines 51-62). Content before the main landmark \u2014 including the primary page heading \u2014 is not inside any landmark region except the implicit document, failing WCAG 1.3.6 (Identify Purpose) and GIGW landmark guidance.",
+    "fix": "Move the hero section inside the <main id=\"main-content\"> element, or wrap both the hero and the card grid inside a single <main> that starts before the hero.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-011",
+    "severity": "major",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 1365,
+    "description": "The eutthan portal has no skip-to-main-content link. The authenticated shell renders TopBar > Masthead > Sidebar > main, meaning keyboard users must tab through the top bar links (Government of India, Ministry name, Notifications, Logout) and then through all sidebar navigation items on every route change. The <main> element has tabIndex={-1} (correct for programmatic focus) but no skip link sends focus there.",
+    "fix": "Add a visually-hidden skip link as the first child of .app-shell: <a href=\"#eutthan-main\" className=\"sr-only focus:not-sr-only\">Skip to Main Content</a> and add id=\"eutthan-main\" to the <main> element.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-012",
+    "severity": "major",
+    "file": "apps/dosje/src/components/Header.tsx",
+    "line": 169,
+    "description": "The mega-nav dropdown trigger links have aria-expanded (line 169) but no aria-controls pointing to the dropdown panel id, and no aria-haspopup. The expanded dropdown is conditionally rendered as a sibling but screen readers cannot navigate from the trigger to the expanded menu via aria-controls. WCAG 4.1.2 requires programmatic relationship between disclosure trigger and panel.",
+    "fix": "Add a stable id to each dropdown panel div (e.g. id={`nav-panel-${item.label.replace(/\\s/g,'-')}`}), and add aria-controls={panelId} and aria-haspopup=\"true\" to the trigger link.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-013",
+    "severity": "major",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 515,
+    "description": "The Unmap action button (line 515) and the View action button (line 529) in CellContent have no aria-label. Both render text-only inside a <button> (\"Unmap\", \"View\") but without context of which row they act on, screen readers announce them identically for every row in the table \u2014 a WCAG 2.4.6 (Headings and Labels) and 4.1.2 failure for data tables with repeated actions.",
+    "fix": "Add a row-context aria-label to each action button, e.g. aria-label={`Unmap ${rowIdentifier}`} and aria-label={`View ${rowIdentifier}`}. The row identifier should be passed down from the calling table component.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "DS-002",
+    "severity": "major",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/packages/design-system/tokens.css",
+    "line": 151,
+    "description": "--ds-warning-tonal is referenced by zone-switcher.css (line 348: `background-color: var(--ds-warning-tonal, #fef3c7)`) but is never defined in the --ds-* legacy contract section of tokens.css. Only --ds-warning is defined (line 169, pointing to --sa-color-status-warning = #ffd323). The fallback value #fef3c7 (a cool amber tint) is therefore the only value ever applied for the 'soon' badge background in the AppSwitcher. This is inconsistent with the defined warning color (#ffd323, gov-yellow) and the DS colour system. By contrast, --ds-success-tonal IS defined (line 167).",
+    "fix": "In the `/* ---- legacy --ds-* contract ---- */` block of packages/design-system/tokens.css, add `--ds-warning-tonal: var(--sa-color-saffron-50);` (which resolves to #ffedd5, a warm amber tint consistent with the saffron brand palette). Regenerate with `npm run build -w @mosje/tokens` and verify the 'soon' badge in the AppSwitcher renders with a coherent warning colour. Alternatively, add a dedicated --sa-color-status-warningTonal to the DTCG JSON source first, rebuild, then map --ds-warning-tonal to it.",
+    "dimension": "Design System Consistency"
+  },
+  {
+    "id": "DS-003",
+    "severity": "major",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/portals/smile-admin/src/components/ui",
+    "description": "smile-admin contains 10 local component files that duplicate atoms already exported from @mosje/design-system: button.tsx, card.tsx, badge.tsx, input.tsx, select.tsx, checkbox.tsx, avatar.tsx, alert.tsx, empty-state.tsx, and tabs.tsx. The design system already exports Button, Card, Badge, Input, Select, Checkbox, Avatar, Alert, and EmptyState. These local copies will diverge from the canonical DS over time, accumulate independent styling decisions, and require double maintenance for any token or accessibility fix. The remaining files (sheet.tsx, skeleton.tsx, label.tsx, tooltip.tsx, switch.tsx, table.tsx, section.tsx, live-region.tsx) are not yet in the DS and are acceptable as local atoms.",
+    "fix": "For each of the 10 duplicated atoms, replace the local import with an import from `@mosje/design-system`. Start with Button and Badge (highest usage risk). Verify that smile-admin's Tailwind v3 CSS class expectations still work after the swap \u2014 the DS components use --ds-* CSS vars which the tailwind.config.ts already maps for the primary palette. For tabs.tsx specifically, check if the DS exports a Tabs component; if not, keep it local but ensure it uses --ds-* tokens internally.",
+    "dimension": "Design System Consistency"
+  },
+  {
+    "id": "DS-004",
+    "severity": "major",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/portals/pm-ajay/src/components/dashboard/charts.tsx",
+    "line": 9,
+    "description": "pm-ajay's charts.tsx defines a local CHART_COLORS object with 9 hardcoded hex values (navy #003366, blue2 #3f83c6, green #198754, amber #BB772B, red #EC5042, track #E5E7EB, grid #EEF1F5, ink #1F2937, muted #5B6573). ui.tsx has 3 more inline hardcoded conditionals (#198754, #BB772B, #EC5042). dashboard-app.tsx and unified-app.tsx each define ACCENT = '#1558b0' and ACCENT_BG = '#E8F0FE' as module-level constants. views.tsx has 4 more inline hex literals. In total pm-ajay's TSX files contain 20+ hardcoded hex values. These all have exact equivalents in --sa-color-* and --ds-* tokens.",
+    "fix": "Create a `src/tokens.ts` file in pm-ajay that reads CSS custom property values at runtime via `getComputedStyle(document.documentElement).getPropertyValue('--ds-primary')` (or re-export from @mosje/design-system/tokens). Map: navy \u2192 --ds-gov-navy / --ds-primary (blue-dark mode), blue2 \u2192 --ds-primary-400, green \u2192 --ds-success, amber \u2192 --ds-warning, red \u2192 --ds-danger, track \u2192 --ds-border-strong, ink \u2192 --ds-ink, muted \u2192 --ds-ink-muted. Replace hardcoded constants in charts.tsx, ui.tsx, dashboard-app.tsx, unified-app.tsx, and views.tsx with references to this tokens module.",
+    "dimension": "Design System Consistency"
+  },
+  {
+    "id": "DS-005",
+    "severity": "major",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/portals/smile-admin/tailwind.config.ts",
+    "line": 47,
+    "description": "smile-admin's tailwind.config.ts maps the primary colour palette correctly to --ds-primary-* CSS variables. However, the accent, secondary, info, success, warning, danger, and neutral colour groups (lines 47-133) all use hardcoded hex values (57 total hardcoded hex literals in the file). These values are not cross-referenced to the --ds-* or --sa-* token contract. If the DS token values change (e.g., the danger red shifts from #ec5042 to another value), the Tailwind utility classes generated from smile-admin's config will remain stale and inconsistent with DS atoms imported from @mosje/design-system.",
+    "fix": "Replace the hardcoded hex values in the accent/secondary/info/success/warning/danger/neutral blocks with CSS variable references matching the DS token contract. Example: `danger: { DEFAULT: 'var(--ds-danger)', 500: 'var(--ds-danger)', 50: 'var(--sa-color-red-50)' }`. For scales not directly in --ds-*, use the --sa-color-* primitives. This aligns the Tailwind utility layer with the same underlying values the DS components use.",
+    "dimension": "Design System Consistency"
+  },
+  {
+    "id": "PERF-003",
+    "severity": "major",
+    "file": "apps/portals/smile-admin/src/lib/mock-data.ts",
+    "line": 1,
+    "description": "mock-data.ts (518 lines) is imported directly in 13+ production route pages under apps/portals/smile-admin/src/app/(app)/ including surveyor-mapped, survey-locations, beggary-schemes, fund-monitoring, roles, audit-log, permissions, and immediate-review. This file ships to the browser as part of the JS bundle for every authenticated route. In production these pages should fetch from a real API; bundling the mock dataset wastes bandwidth and increases parse time.",
+    "fix": "Gate mock data behind a conditional: export constants only when process.env.NODE_ENV !== 'production', or move mock data to a dedicated dev fixture folder (e.g. src/lib/__fixtures__/). In production builds, replace imports with API fetch calls (even stub fetch returning empty arrays unblocks the build cleanly). At minimum, mark the module with a build-time check so tree-shaking can eliminate it.",
+    "dimension": "Performance & Bundle"
+  },
+  {
+    "id": "PERF-004",
+    "severity": "major",
+    "file": "apps/portals/smile-admin/src/components/dashboard/charts.tsx",
+    "line": 3,
+    "description": "recharts is imported via a named barrel import from 'recharts' pulling in Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis \u2014 15 named exports. recharts is a large library (~250 KB minified, ~80 KB gzipped) and its barrel entry point impedes tree-shaking in webpack. Additionally, both d3-geo and topojson-client are also dependencies in the same package \u2014 the combined client-side chart/geo bundle is significant.",
+    "fix": "Import only the specific subpath modules needed, e.g. import { AreaChart } from 'recharts/es/chart/AreaChart'. Audit whether all 15 recharts components are actually used across the dashboard pages, and remove unused ones. Consider replacing simple donut/bar charts (which are already custom SVG primitives in pm-ajay/charts.tsx) with the same zero-dependency SVG approach to drop the recharts dependency entirely.",
+    "dimension": "Performance & Bundle"
+  },
+  {
+    "id": "PERF-005",
+    "severity": "major",
+    "file": "apps/dosje/next.config.ts",
+    "line": 8,
+    "description": "output: 'standalone' is commented out in dosje/next.config.ts and absent from hub/next.config.ts, smile-admin/next.config.ts, and pm-ajay/next.config.ts. Without standalone output, containerized deployments (Docker, Kubernetes) must copy the entire node_modules tree (~hundreds of MB) rather than using Next.js's minimal production bundle. For a Government of India estate, containerized deployment is the expected production target.",
+    "fix": "Uncomment output: 'standalone' in dosje/next.config.ts for production builds (the comment already explains the dev-proxy concern). Add output: 'standalone' to hub, smile-admin, and pm-ajay next.config.ts files. Use a build-time env flag (NEXT_BUILD_STANDALONE=true) to toggle it so local dev proxying continues to work.",
+    "dimension": "Performance & Bundle"
+  },
+  {
+    "id": "PERF-006",
+    "severity": "major",
+    "file": "apps/hub/next.config.ts",
+    "line": 1,
+    "description": "No HTTP response headers are configured in any of the four next.config files. There are no Cache-Control headers for static assets, no X-Frame-Options, no Content-Security-Policy, no Strict-Transport-Security, and no X-Content-Type-Options. For a government estate, GIGW mandates security headers; absent caching headers also mean CDN/browser caches cannot cache static JS/CSS/image assets, worsening repeat-visit performance.",
+    "fix": "Add an async headers() function to each next.config.ts. At minimum: Cache-Control: public, max-age=31536000, immutable for /_next/static/:path*, X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, and a Content-Security-Policy covering script-src and img-src for the google fonts domains currently used by pm-ajay.",
+    "dimension": "Performance & Bundle"
+  },
+  {
+    "id": "PERF-007",
+    "severity": "major",
+    "file": "apps/hub/public/reports/",
+    "line": 0,
+    "description": "32 MB of QC report screenshot PNGs (44 files, ranging from 582 KB to 1.9 MB each) are committed to apps/hub/public/reports/eutthan-admin/figures/ and served as static assets by the hub Next.js app in production. These are design-audit artefacts not needed at runtime. They bloat the Docker image and the CDN origin by 32 MB.",
+    "fix": "Move QC report figures out of public/ into docs/ (which is gitignored or a separate repo concern) and serve them from a document management system or a separate static hosting path (e.g. GitHub Releases or an S3 bucket). Add apps/hub/public/reports/ to .gitignore to prevent re-accumulation.",
+    "dimension": "Performance & Bundle"
+  },
+  {
+    "id": "QA-002",
+    "severity": "major",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 42,
+    "description": "Helper functions np() and lk() have cryptic single-letter names. np() normalizes a Next.js pathname by stripping the /portals/eutthan-admin base prefix; lk() constructs a full portal link from a relative path. These names are opaque to any reader who did not write them.",
+    "fix": "Rename np to normalizePath and lk to portalLink throughout the file (and in any file created during the QA-001 split). Update all ~20 call sites.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "QA-004",
+    "severity": "major",
+    "file": "apps/hub/src/lib/eutthan/portal-data.ts",
+    "line": 530,
+    "description": "Two exported symbols \u2014 formRoutes (line 530, a Record with 14 route metadata entries) and loginCards (line 549, an array of 4 feature strings) \u2014 are defined and exported but have zero import sites anywhere in the hub app or packages directory. They are dead code.",
+    "fix": "Delete the formRoutes export (lines 530-545) and loginCards export (lines 547-554). If loginCards was intended for a future login panel, leave a TODO comment instead of a live export. Run tsc --noEmit to confirm no remaining references.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "QA-005",
+    "severity": "major",
+    "file": "apps/hub/src/app/portals/eutthan-admin",
+    "description": "The hub has three active route segments (root /, /portals/eutthan-admin/[[...slug]], /reports/eutthan-admin) with no error.tsx, no loading.tsx, and no not-found.tsx in any of them. Without these files: unhandled render errors produce a white screen or a raw Next.js error overlay in production; slow data fetches have no suspense boundary; and navigating to an unmapped path shows no user-facing feedback.",
+    "fix": "Create error.tsx (with 'use client', an Error boundary fallback, and a Back button) in apps/hub/src/app/, apps/hub/src/app/portals/eutthan-admin/, and apps/hub/src/app/reports/eutthan-admin/. Create loading.tsx (a skeleton or spinner) and not-found.tsx (404 message + home link) at the same levels.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "QA-008",
+    "severity": "major",
+    "file": "apps/portals/pm-ajay/src/store/auth-context.tsx",
+    "line": 31,
+    "description": "DEMO_ACCOUNTS is a plain object in source code whose values have a field literally named password containing cleartext strings ('Password@123' for every account). Even though these are client-only prototype credentials, naming a field 'password' with cleartext values creates a pattern that security scanners, code reviewers, and future maintainers will (correctly) flag. The signIn error message on line 79 also leaks the credential value in plain text ('Use Password@123 for all demo accounts.').",
+    "fix": "Rename the field to demoPin or testSecret to reduce scanner false positives. Remove the credential value from the user-facing error message; replace with a generic 'incorrect credentials' message. For a pre-production portal, move DEMO_ACCOUNTS to an environment variable or a separate file excluded from the production bundle.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "QA-009",
+    "severity": "major",
+    "file": "apps/hub/src/data/portals.ts",
+    "line": 1,
+    "description": "Two parallel portal registries exist: apps/hub/src/data/portals.ts (PortalEntry[], 8 portals, fields: slug/name/org/description/status/path) and packages/design-system/components/app-switcher-utils.ts DEFAULT_APPS (AppEntry[], 10 entries, fields: name/abbr/path/desc/org/group/status). They overlap on 7 portals but use different field names (status: 'built'/'planned' vs 'live'/'planned') and include different data. The design-system file's own comment on line 76 acknowledges it 'mirrors apps/hub/src/data/portals.ts' \u2014 but they are already diverging (hub omits DoSJE website and Dev entries; design-system omits slug and description). Any new portal must be added to both files manually.",
+    "fix": "Establish one canonical source. The design-system DEFAULT_APPS is the better candidate as it is consumed by the AppSwitcher component shared across all apps. Delete apps/hub/src/data/portals.ts and update any hub consumers to import from '@mosje/design-system'. Map the PortalEntry 'built' status to AppEntry 'live' in a one-time migration.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "QA-010",
+    "severity": "major",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 685,
+    "description": "Array index is used as the React key throughout all table-rendering loops: key={i} for rows (lines 685, 799, 885, 951, 1131) and key={j} for cells (lines 687, 801, 887, 954, 1133). Index keys cause incorrect reconciliation when rows are reordered, filtered, or deleted.",
+    "fix": "Use a stable unique value as the key. For table rows sourced from portal-data.ts, use the first cell value (row[0]) combined with the row index as a fallback: key={`${row[0]}-${i}`}. For table cells, key={`${col}-${j}`} using the column header name.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "QA-014",
+    "severity": "major",
+    "file": "apps/hub/src/app/reports/eutthan-admin/page.tsx",
+    "line": 340,
+    "description": "An <img> element is used in the eutthan-admin reports page. Next.js reports this as a @next/next/no-img-element warning (confirmed by ESLint run). Using <img> bypasses Next.js image optimisation (lazy loading, format negotiation, size hints), which directly degrades LCP and bandwidth for a government portal.",
+    "fix": "Replace <img> with next/image <Image> component. Provide explicit width and height props or use fill layout with a positioned container.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "INFRA-003",
+    "severity": "major",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/dosje/package.json",
+    "line": 8,
+    "description": "Node engines constraint mismatch across the monorepo. The workspace root (package.json) declares engines.node >=22, apps/hub has no engines field, apps/portals/* have no engines field, but apps/dosje declares engines.node >=24. The active runtime is v22.22.3, which satisfies the root and portals but would be rejected by dosje's own constraint if npm/yarn engines enforcement were enabled. This will silently break in environments with strict engines checking (e.g., npm install --engine-strict).",
+    "fix": "Align all engines fields. If Node 22 LTS is the team baseline (matching the root declaration and the CI workflow's node-version: 22), set engines.node >=22 in apps/dosje/package.json and add identical engines fields to apps/hub, apps/portals/smile-admin, and apps/portals/pm-ajay. Add an .nvmrc at the repo root to pin the version for local development.",
+    "dimension": "Infrastructure & DevEx"
+  },
+  {
+    "id": "INFRA-004",
+    "severity": "major",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/portals/smile-admin/package.json",
+    "line": 47,
+    "description": "Tailwind CSS major version divergence: hub and dosje use tailwindcss@^4, smile-admin uses tailwindcss@^3.4.1, pm-ajay has no tailwindcss dependency at all. Tailwind v4 has a fundamentally different config API (CSS-first config, new @theme directive, no tailwind.config.js needed) that is fully incompatible with v3. Shared token patterns that work in v4 may not apply in v3 portals, creating silent style drift.",
+    "fix": "Document the version split as intentional in CLAUDE.md (since portals use a different stack per the architecture table). Add a comment in each app's tailwind.config explaining which token approach to use. Long-term plan: migrate smile-admin to Tailwind v4 when its Next.js version is also upgraded, so the full stack is consistent.",
+    "dimension": "Infrastructure & DevEx"
+  },
+  {
+    "id": "INFRA-005",
+    "severity": "major",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/portals/smile-admin/package.json",
+    "line": 1,
+    "description": "Next.js major version divergence: hub and dosje use next@16.2.1, pm-ajay uses next@^15.5.19, smile-admin uses next@15.0.3 (pinned, not ^). Having three version tracks (16.x for hub/website, 15.5.x for pm-ajay, 15.0.3 for smile-admin) means security patches may be applied unevenly and breaking change behaviour differs between apps sharing the same monorepo.",
+    "fix": "Align portals to a single Next.js 15.x track (latest 15.x stable). Hub and dosje can remain on 16.x if that is intentional. Change smile-admin from pinned 15.0.3 to ^15.5.19 so it tracks the same version as pm-ajay and receives patch updates. Document the hub/dosje vs portals version split in MOSJE-ARCHITECTURE.md.",
+    "dimension": "Infrastructure & DevEx"
+  },
+  {
+    "id": "INFRA-006",
+    "severity": "major",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/portals/smile-admin/package.json",
+    "line": 34,
+    "description": "lucide-react major version divergence: hub and dosje depend on ^1.6.0 (installed as 1.17.0), smile-admin depends on ^0.460.0 (installed as 0.460.0). These are different icon sets \u2014 v1.x added icons not present in v0.x and introduced breaking API changes. A component shared from @mosje/design-system that imports a lucide-react icon available only in v1.x will fail to render in smile-admin.",
+    "fix": "Upgrade smile-admin to lucide-react ^1.6.0 (same as hub/dosje). If the portals target Next.js 15 for compatibility reasons, lucide-react versioning is independent and can be upgraded separately. Note: pm-ajay has no lucide-react dependency \u2014 verify it is not using inline SVGs that duplicate icons already available in the package.",
+    "dimension": "Infrastructure & DevEx"
+  },
+  {
+    "id": "INFRA-007",
+    "severity": "major",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/portals/pm-ajay/package.json",
+    "line": 23,
+    "description": "ESLint major version divergence: hub and dosje use eslint@^9 with eslint-config-next@16.x/15.x (which uses the new flat-config format). smile-admin and pm-ajay use eslint@^8 (legacy .eslintrc config format). ESLint 9 dropped support for .eslintrc files by default; shared ESLint config cannot be used across both versions without a compatibility shim. This means lint rules \u2014 including WCAG-related rules \u2014 may behave differently or be silently ignored.",
+    "fix": "Upgrade smile-admin and pm-ajay to eslint@^9 and their corresponding eslint-config-next versions. Update their ESLint config files from .eslintrc format to the flat-config (eslint.config.mjs) format. This should be done in the same pass as any Next.js version alignment work.",
+    "dimension": "Infrastructure & DevEx"
+  },
+  {
+    "id": "INFRA-008",
+    "severity": "major",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/package.json",
+    "description": "No unified check/CI script at the workspace root. Only apps/dosje/package.json has a 'check' script (lint + typecheck + build). hub, smile-admin, and pm-ajay have no 'check' script. The root package.json has only 'dev' scripts \u2014 no 'build', 'lint', 'typecheck', or 'check'. There is no single command a developer or CI job can run to verify the entire monorepo.",
+    "fix": "Add a root-level 'check' script to package.json using npm --prefix for each app: \"check\": \"npm run check --prefix apps/dosje && npm run lint --prefix apps/hub && npm run typecheck --prefix apps/hub && ...\". Also add 'check' scripts to hub, smile-admin, and pm-ajay mirroring dosje's pattern.",
+    "dimension": "Infrastructure & DevEx"
+  },
+  {
+    "id": "TS-006",
+    "severity": "minor",
+    "file": "packages/design-system/components/color-mode-provider.tsx",
+    "line": 30,
+    "description": "ColorModeProvider is an exported function component but has no explicit JSX return type annotation. Same applies to FormField (form-field.tsx line 41) and ColorModeSwitcher (color-mode-switcher.tsx line 23). With strict mode enabled, TypeScript infers the return type, but explicit annotations are required by the project convention for all exported functions in packages/design-system.",
+    "fix": "Add explicit return types: 'export function ColorModeProvider(...): React.JSX.Element', 'export function FormField(...): React.JSX.Element', 'export function ColorModeSwitcher(...): React.JSX.Element'. This matches the pattern already used by useColorMode() on line 63.",
+    "dimension": "TypeScript & Build Health"
+  },
+  {
+    "id": "TS-007",
+    "severity": "minor",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 1244,
+    "description": "A controlled readonly input at line 1236 uses 'onChange={() => {}}' \u2014 a no-op handler \u2014 to suppress the React controlled/uncontrolled warning. This is a common pattern but it bypasses React's event system and is a lint violation (react/jsx-no-useless-fragment equivalent). It also means the value is never updated from user input, which is correct for readonly but should be expressed via the readOnly attribute alone.",
+    "fix": "Remove the onChange prop entirely and rely solely on the 'readOnly' attribute. React does not warn about missing onChange on inputs with readOnly set.",
+    "dimension": "TypeScript & Build Health"
+  },
+  {
+    "id": "SEC-009",
+    "severity": "minor",
+    "file": "apps/hub/src/app/layout.tsx",
+    "line": 25,
+    "description": "dangerouslySetInnerHTML is used in all four layout.tsx files to inject the colorModeInitScript. This is safe in the current implementation: colorModeInitScript() in packages/design-system/color-mode.ts line 81-84 takes only a defaultMode string that is validated through normalizeColorMode() against a fixed allowlist (COLOR_MODES). No user-controlled input reaches the script string. However, the pattern creates a maintenance risk: future callers passing dynamic user data to colorModeInitScript() would introduce XSS without any linter warning.",
+    "fix": "No immediate action required. Consider adding a JSDoc comment to colorModeInitScript clarifying that defaultMode must only ever be a compile-time constant, never a user-supplied value, to guard against future misuse.",
+    "dimension": "Security & Auth"
+  },
+  {
+    "id": "A11Y-014",
+    "severity": "minor",
+    "file": "apps/dosje/src/app/page.tsx",
+    "line": 20,
+    "description": "The dosje homepage main element uses id=\"content\" (line 20) but the skip link in Header.tsx targets href=\"#content\" (line 101) \u2014 these match, so the skip link works. However GIGW convention and the rest of the estate (hub uses id=\"main-content\", smile-admin uses id=\"main-content\") prefer a consistent id. This is a consistency nit, not a breakage, but worth standardising.",
+    "fix": "Rename id=\"content\" to id=\"main-content\" in apps/dosje/src/app/page.tsx and update the Header.tsx skip link href to \"#main-content\".",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-015",
+    "severity": "minor",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 371,
+    "description": "The Expenditure Breakdown donut chart (line 371) is marked aria-hidden=\"true\" with no alternative text representation for screen readers. The accompanying legend (ul.legend with colour swatches and labels) provides some data, but there is no sr-only summary of the chart's key figures (e.g. total amounts per category) for users who cannot see the chart.",
+    "fix": "Add a <caption> or sr-only <p> immediately before or after the .chart-panel with a textual summary of the expenditure breakdown data (e.g. \"Expenditure breakdown: Central funds 45%, State share 32%, Unspent 23%\"). The legend alone is insufficient because it omits values.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-016",
+    "severity": "minor",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 170,
+    "description": "TopBar: the flag element (div.flag > span) has no accessible name or aria-hidden. It is decorative, but an un-named span inside a div can cause screen readers to announce an empty or unnamed element depending on browser/AT combination. Similarly the divider span (line 179) is not aria-hidden.",
+    "fix": "Add aria-hidden=\"true\" to div.flag and to the .divider span to ensure they are fully hidden from the accessibility tree.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-017",
+    "severity": "minor",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 236,
+    "description": "The user avatar in Masthead (line 236) is a div.avatar rendering the first letter of the user's name. It has no role or aria-label, so screen readers may announce just the letter without context. The profile block also uses <strong> and <small> without semantic labels for the user name and role.",
+    "fix": "Add aria-label={`${name}, ${roleLabel}`} to div.avatar (or role=\"img\" with aria-label). Mark the avatar aria-hidden=\"true\" if the adjacent text already announces the name and role \u2014 which it does via <strong>{name}</strong> and <small>{roleLabel}</small>, so aria-hidden=\"true\" on the avatar div is the correct fix.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-018",
+    "severity": "minor",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 647,
+    "description": "The Ministry/Schemes tab strip in MapPage (line 647) uses plain <Link> elements styled as tabs (class map-tab) but without role=\"tablist\", role=\"tab\", or aria-selected. These are navigation links (which is correct for page-level tab navigation), but they have no aria-current=\"page\" on the active tab to signal the current selection to screen readers.",
+    "fix": "Since these are true navigation links (each changes the URL), use aria-current={isActive ? \"page\" : undefined} on the active Link rather than tab ARIA roles. Add a wrapping <nav aria-label=\"Map view\"> around the tab strip.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-019",
+    "severity": "minor",
+    "file": "apps/dosje/src/components/Header.tsx",
+    "line": 101,
+    "description": "The dosje skip link (\"Skip to Main Content\") has no sr-only + focus:not-sr-only pattern \u2014 it renders as visible inline text in the government utility bar at all times (no CSS to hide it visually until focused). This is functional but visually incorrect; on the live dosje.gov.in the skip link is hidden until focused. It also renders inside the top-bar div rather than as the first element in <header>.",
+    "fix": "Add className=\"sr-only focus:not-sr-only\" (or equivalent) to the skip link anchor and ensure it is the very first focusable element on the page, before other top-bar content.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "A11Y-020",
+    "severity": "minor",
+    "file": "apps/hub/src/app/portals/eutthan-admin/[[...slug]]/page.tsx",
+    "line": 1,
+    "description": "The eutthan portal route page has no HTML lang override for mixed-script content. The hub root layout sets lang=\"en-IN\" (correct). However, portal pages that render Hindi or other Indic-script text within the portal (scheme names, ministry names) should mark those text spans with lang=\"hi\" (or appropriate BCP-47 code) so screen readers switch to the correct voice/pronunciation engine. This is a GIGW requirement for bilingual government portals.",
+    "fix": "Wrap any Hindi or Devanagari-script text nodes in <span lang=\"hi\">...</span>. If the portal is currently English-only this finding is low-risk, but the schema/data layer should be audited for Hindi content.",
+    "dimension": "Accessibility \u2014 WCAG 2.1 AA + GIGW"
+  },
+  {
+    "id": "DS-006",
+    "severity": "minor",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/hub/src/app/portals/eutthan-admin/eutthan.css",
+    "line": 45,
+    "description": "eutthan.css declares `font-family: \"Noto Sans\", \"Poppins\", system-ui, ...` in the body rule. Poppins is not the mandated typeface for Government of India properties \u2014 DBIM/GIGW standard is Noto Sans exclusively. Poppins would load from the browser cache only if it happens to be available; it is not an appropriate fallback for a gov portal. The design system token --ds-font-sans (= --sa-font-family-latin) already encodes the correct fallback chain.",
+    "fix": "After adopting --ds-* tokens per DS-001, replace the body font-family rule with `font-family: var(--ds-font-sans);`. If eutthan needs to remain a standalone CSS file temporarily, replace `\"Poppins\"` with `ui-sans-serif` in the fallback chain.",
+    "dimension": "Design System Consistency"
+  },
+  {
+    "id": "DS-007",
+    "severity": "minor",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/portals/pm-ajay/src/app/layout.tsx",
+    "line": 25,
+    "description": "pm-ajay loads Noto Sans via a plain Google Fonts link tag restricted to Latin weights only (no Devanagari subset). The font stack in globals.css includes `--font-sans: \"Noto Sans\", \"Roboto\"` and the token --sa-font-family-devanagari is defined in the DS, but no Devanagari subset is loaded at the app level. All other live portals (smile-admin, dosje) either use next/font with the devanagari subset or load it via Google Fonts. Given that MoSJE content includes Hindi text (scheme names, beneficiary data), this will cause font substitution for Devanagari script characters.",
+    "fix": "In pm-ajay layout.tsx, change the Google Fonts URL to include the Devanagari subset: add `family=Noto+Sans+Devanagari:wght@400;500;600;700` to the stylesheet href, or migrate to `next/font/google` with `subsets: ['latin', 'devanagari']` as smile-admin does. Also remove the Roboto import from globals.css line 8 \u2014 Roboto is not the mandated typeface and is not used in the DS font stack.",
+    "dimension": "Design System Consistency"
+  },
+  {
+    "id": "DS-008",
+    "severity": "minor",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/packages/design-system/components/app-switcher-utils.ts",
+    "line": 96,
+    "description": "DEFAULT_APPS lists portals in a different order than hub/src/data/portals.ts. DEFAULT_APPS order (for live portals): PM-AJAY \u2192 E-Utthan Admin \u2192 SMILE Beggary. hub/portals.ts order: pm-ajay \u2192 smile-admin \u2192 eutthan-admin. The two registries are described as mirrors in the DEFAULT_APPS comment ('mirrors apps/hub/src/data/portals.ts') but the ordering has drifted. Additionally, DEFAULT_APPS includes entries for DoSJE Website, Storybook, and Design System with no counterparts in portals.ts (acceptable by design), and uses a different field schema (desc vs description). If any code iterates either list to generate navigation menus or portal listings, the order inconsistency will produce different UX in the AppSwitcher panel vs the hub portals page.",
+    "fix": "Align the live-portal ordering in DEFAULT_APPS to match portals.ts: PM-AJAY, SMILE Beggary, E-Utthan Admin. Consider whether the two registries should be merged or one should derive from the other \u2014 a shared source of truth (e.g., portals.ts importing AppEntry type from the DS and re-exporting) would eliminate drift. Add a CI lint check or a contract test that asserts both registries contain the same portal slugs in the same order.",
+    "dimension": "Design System Consistency"
+  },
+  {
+    "id": "DS-009",
+    "severity": "minor",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/packages/design-system/components/zone-switcher.css",
+    "line": 343,
+    "description": "The .ds-appsw__badge--live and .ds-appsw__badge--soon rules use var() with hardcoded fallbacks: `var(--ds-success-tonal, #dcfce7)`, `var(--ds-success, #15803d)`, `var(--ds-warning-tonal, #fef3c7)`, `var(--ds-warning, #92400e)`. The --ds-success and --ds-success-tonal tokens are properly defined. The --ds-warning-tonal token is missing (DS-002). The --ds-warning token resolves to #ffd323 (gov-yellow), but the fallback used here is #92400e (a dark amber-brown) \u2014 a significant visual discrepancy if the token ever fails to resolve. The success fallback color #dcfce7 also does not match --ds-success-tonal (#c8e6c9 = green-50). These fallbacks should match actual token values.",
+    "fix": "Once DS-002 is fixed (--ds-warning-tonal added to tokens.css), remove the hardcoded fallbacks from these rules or update them to match the resolved token values exactly. For --ds-success-tonal the fallback should be #c8e6c9 (matching --sa-color-green-50), not #dcfce7. For --ds-warning the fallback should be #ffd323, not #92400e. Alternatively, if tokens are guaranteed to load before this CSS applies (which they are via the @import chain), remove the fallbacks entirely.",
+    "dimension": "Design System Consistency"
+  },
+  {
+    "id": "PERF-008",
+    "severity": "minor",
+    "file": "apps/dosje/src/components/Header.tsx",
+    "line": 117,
+    "description": "The National Emblem SVG logo in the site Header (National-Emblem-logo.svg, rendered via next/image) is missing the priority prop. This image is in the header, above the fold on every page load of the dosje website. Without priority, Next.js will lazy-load it, causing a visible layout shift or delayed logo render on first paint. The same component also loads digital-india-logo.svg without priority.",
+    "fix": "Add priority to both Image components in Header.tsx for the National Emblem and Digital India logo: <Image src=\"/images/National-Emblem-logo.svg\" priority ... /> and <Image src=\"/images/digital-india-logo.svg\" priority ... />. These are always above-the-fold and should be preloaded.",
+    "dimension": "Performance & Bundle"
+  },
+  {
+    "id": "PERF-009",
+    "severity": "minor",
+    "file": "apps/dosje/public/images/",
+    "line": 0,
+    "description": "Hero carousel banner images (Banner-6.png through Banner-10.png, 234\u2013316 KB each) are stored as PNG with no WebP or AVIF alternatives in public/images/. Next.js image optimisation will convert them at runtime via the built-in image API, but only for formats specified in next.config's images.formats array. No images.formats config is present in dosje/next.config.ts, so Next.js defaults to WebP for supporting browsers but not AVIF. Explicit configuration would also allow pre-generation at build time.",
+    "fix": "Add images: { formats: ['image/avif', 'image/webp'] } to dosje/next.config.ts to enable AVIF delivery (typically 50% smaller than WebP). Also add images: { minimumCacheTTL: 2592000 } (30 days) so optimised images are cached aggressively at the CDN layer.",
+    "dimension": "Performance & Bundle"
+  },
+  {
+    "id": "PERF-010",
+    "severity": "minor",
+    "file": "apps/dosje/src/components/HeroCarousel.tsx",
+    "line": 9,
+    "description": "Banner-6.png through Banner-10.png have non-descriptive alt text ('Banner 6', 'Banner 7', etc.). While this is primarily an accessibility issue (flagged separately in A11Y dimension), the carousel also renders all 5 images in the DOM simultaneously, using CSS opacity toggling. This means all 5 images \u2014 even with lazy loading for slides 1\u20134 \u2014 are present in the DOM and the browser may still eagerly decode non-visible images depending on the rendering engine.",
+    "fix": "Conditionally render only the active slide (plus one prefetched next/prev), or use loading='lazy' explicitly on non-active slides combined with aria-hidden. The current approach of rendering all slides with opacity:0 avoids layout shift but may cause unnecessary image decode work. Alternatively, keep the current DOM approach but ensure non-priority images have sizes='0px' when hidden so the browser skips decode until visible.",
+    "dimension": "Performance & Bundle"
+  },
+  {
+    "id": "QA-011",
+    "severity": "minor",
+    "file": "apps/hub/src/components/eutthan/eutthan-portal.tsx",
+    "line": 216,
+    "description": "Multiple hardcoded hex colors (#f3f4f6, #e5e7eb) and rgba() tints (rgba(0,51,102,0.08), rgba(39,104,42,0.1), rgba(214,69,57,0.08)) appear in inline styles throughout the component. These bypass the --ds-* / eutthan CSS custom property system, prevent theming, and will silently diverge from the design token values if tokens are updated.",
+    "fix": "Replace #f3f4f6 with var(--surface-muted), #e5e7eb with var(--stroke-200), rgba(0,51,102,0.08) with var(--gov-blue-tonal), rgba(39,104,42,0.1) with var(--success-tonal), rgba(214,69,57,0.08) with var(--danger-tonal). Add the missing tokens to eutthan.css if they do not already exist.",
+    "dimension": "Code Quality & Architecture"
+  },
+  {
+    "id": "INFRA-009",
+    "severity": "minor",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/portals/smile-admin/package.json",
+    "line": 2,
+    "description": "The smile-admin package is named \"smile-beggary\". This is a Government of India portal for the SMILE scheme (Support for Marginalised Individuals for Livelihood and Enterprise), which includes beneficiaries engaged in begging. The package name appears to be derived from the scheme's sub-component but is inappropriate for a government digital estate \u2014 it could surface in build logs, npm audit output, error messages, and any public-facing infrastructure tooling.",
+    "fix": "Rename the package to \"@mosje/portal-smile-admin\" or \"smile-admin\" in apps/portals/smile-admin/package.json, consistent with the directory name and the naming convention used by other apps in the estate.",
+    "dimension": "Infrastructure & DevEx"
+  },
+  {
+    "id": "INFRA-010",
+    "severity": "minor",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/packages/design-system/package.json",
+    "line": 3,
+    "description": "The @mosje/design-system package (currently at v0.5.0) has no CHANGELOG.md. Any consumer app (hub, dosje, smile-admin, pm-ajay) linking the package via file: reference cannot know what changed between builds. Without a CHANGELOG it is impossible to do safe design-system upgrades, identify breaking changes, or audit what features were added for any given release \u2014 a compliance concern given government accessibility obligations.",
+    "fix": "Create packages/design-system/CHANGELOG.md. Retroactively document the major milestones (17 atoms, form layer, ColorModeProvider, AppSwitcher). Going forward, follow Keep a Changelog format and bump the version in package.json for any breaking or additive changes. Consider using conventional commits + a changelog generator.",
+    "dimension": "Infrastructure & DevEx"
+  },
+  {
+    "id": "INFRA-011",
+    "severity": "minor",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/portals/sm-admin/package.json",
+    "description": "@types/node version divergence: hub and dosje use @types/node@^24, smile-admin and pm-ajay use @types/node@^20. This mismatch means Node.js type definitions may differ between apps \u2014 types for newer Node APIs (e.g., fs.promises, stream, crypto) added between v20 and v24 will be unavailable in portals, potentially causing typecheck false-negatives.",
+    "fix": "Standardise all apps to @types/node@^22 (matching the >=22 Node engine baseline in the root package.json). This is preferable to @types/node@^24 since the active runtime is v22.x.",
+    "dimension": "Infrastructure & DevEx"
+  },
+  {
+    "id": "TS-008",
+    "severity": "nit",
+    "file": "apps/hub/tsconfig.json",
+    "line": 1,
+    "description": "No tsconfig across the estate enables 'noUncheckedIndexedAccess'. All array and Record index accesses (e.g. screen.columns[j], screen.rows[i], DEMO_ACCOUNTS[employeeId]) return T rather than T|undefined, making out-of-bounds and missing-key accesses invisible to TypeScript. The portal-data.ts file relies heavily on index access patterns (tableScreens[path], formDefs[path]) that would benefit from this check.",
+    "fix": "Add '\"noUncheckedIndexedAccess\": true' to all tsconfig.json compilerOptions. Existing code already guards most accesses with null-coalescing (e.g. screen.columns[j] ?? '') so the migration cost is low. Start with packages/design-system as the highest-trust package.",
+    "dimension": "TypeScript & Build Health"
+  },
+  {
+    "id": "SEC-010",
+    "severity": "nit",
+    "file": "apps/portals/pm-ajay/src/store/auth-context.tsx",
+    "line": 31,
+    "description": "DEMO_ACCOUNTS uses 'Password@123' for all five accounts and signIn() error messages (line 79) disclose the exact password to unauthenticated users: 'Use Password@123 for all demo accounts.' While this is a prototype, the error message leaks credentials in a user-visible string that could persist into a staging or production deployment.",
+    "fix": "Remove the password hint from the error message. Acceptable prototype message: 'Incorrect password.' The DEMO_ACCOUNTS structure is acceptable for a prototype but must be removed entirely before any non-development deployment.",
+    "dimension": "Security & Auth"
+  },
+  {
+    "id": "DS-010",
+    "severity": "nit",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/dosje/src/app/globals.css",
+    "line": 203,
+    "description": "dosje/globals.css ends with `.gov-prose hr { border-color: #e5e7eb; ... }` \u2014 a hardcoded hex value for the prose HR colour. All other gov-prose rules correctly use CSS vars (--ink, --gov-blue, --gov-blue-dark, --ink-muted), but this single rule embeds a raw neutral-200 hex instead of the DS token equivalent (--ds-border-strong = --sa-color-border-strong = #e2e6ea, which is close but not identical).",
+    "fix": "Replace `border-color: #e5e7eb` with `border-color: var(--ds-border-strong)` to keep prose rules fully token-driven.",
+    "dimension": "Design System Consistency"
+  },
+  {
+    "id": "PERF-011",
+    "severity": "nit",
+    "file": "apps/portals/pm-ajay/src/components/dashboard/charts.tsx",
+    "line": 8,
+    "description": "pm-ajay charts.tsx defines a C constant object with hardcoded hex colors including #003366 (navy), #198754 (green), #BB772B (amber), #EC5042 (red) instead of CSS custom properties (--ds-* tokens). This is a pre-existing token violation (noted in prior observation Jun 8 2026). From a performance perspective, hardcoded colors also prevent CSS variable-based theming, meaning dark/light mode changes require a full JS re-render rather than a single CSS variable update.",
+    "fix": "Replace hardcoded hex values in the C constant with CSS custom properties, e.g. navy: 'var(--ds-gov-blue)', green: 'var(--ds-success)', etc. This aligns with the design token mandate and enables CSS-layer theming without JS re-renders.",
+    "dimension": "Performance & Bundle"
+  },
+  {
+    "id": "INFRA-012",
+    "severity": "nit",
+    "file": "/Users/akashk/Documents/Projects/MoSJE/apps/portals/pm-ajay/package.json",
+    "line": 12,
+    "description": "pm-ajay has no tailwindcss or postcss devDependency but the app is a Next.js portal in the monorepo. If it uses any Tailwind classes (even via the design-system tokens), the lack of an explicit tailwindcss devDependency means the version is resolved implicitly from node_modules hoisting \u2014 making the effective Tailwind version unpredictable and un-lockable.",
+    "fix": "If pm-ajay does not use Tailwind utility classes directly (only importing from @mosje/design-system), add a comment in package.json confirming this is intentional. If it does use Tailwind, explicitly add tailwindcss as a devDependency at the agreed version (^4 to align with hub/dosje).",
+    "dimension": "Infrastructure & DevEx"
+  }
+]
