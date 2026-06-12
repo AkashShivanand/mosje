@@ -19,7 +19,7 @@ export default function ShelterOccupantsPage() {
     const rows = BENEFICIARIES.filter(
       (b) => b.status === "SHELTER_ASSIGNED" || b.status === "REHABILITATED",
     ).map((b, i) => {
-      const home = SHELTER_HOMES[i % SHELTER_HOMES.length];
+      const home = SHELTER_HOMES[i % SHELTER_HOMES.length]!;
       const surveyLocation = b.district ? `${b.district} Field` : "—";
       return {
         sno: i + 1,

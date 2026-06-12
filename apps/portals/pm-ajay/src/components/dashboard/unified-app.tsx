@@ -272,7 +272,7 @@ const GROUPS: { n: string; id: ViewId; title: string }[] = [
 ];
 const CROSSG: ViewId[] = ["financial", "governance", "executive"];
 
-const DEFAULTS: Filters = { fy: FY[0], state: "All India", district: "All Districts", scheme: SCHEMES[0], period: PERIODS[0] };
+const DEFAULTS: Filters = { fy: FY[0]!, state: "All India", district: "All Districts", scheme: SCHEMES[0]!, period: PERIODS[0]! };
 const ACCENT = "var(--ds-primary)";
 const ACCENT_BG = "var(--ds-primary-tonal)";
 const SPARK = true;
@@ -304,7 +304,7 @@ export function UnifiedDashboard() {
 
   const ribbon = useMemo(() => {
     const ex = KPIS.executive.map((kp) => scaleKpi(kp, fCross, region));
-    return [ex[0], ex[2], ex[4], ex[5], ex[9]];
+    return [ex[0]!, ex[2]!, ex[4]!, ex[5]!, ex[9]!];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
@@ -337,7 +337,7 @@ export function UnifiedDashboard() {
   const kpisForGroup = (id: ViewId) => KPIS[id].map((kp) => scaleKpi(kp, CROSSG.includes(id) ? fCross : base, region));
 
   const scopeChips: { k: string; v: string; clear: () => void }[] = [];
-  if (filters.fy !== FY[0]) scopeChips.push({ k: "FY", v: filters.fy, clear: () => set("fy", FY[0]) });
+  if (filters.fy !== FY[0]) scopeChips.push({ k: "FY", v: filters.fy, clear: () => set("fy", FY[0]!) });
   if (scope) scopeChips.push({ k: "State", v: scope.name, clear: () => set("state", "All India") });
   if (district) scopeChips.push({ k: "District", v: district.name, clear: () => set("district", "All Districts") });
   if (schemeSel) scopeChips.push({ k: "Scheme", v: filters.scheme, clear: () => set("scheme", "All Schemes") });

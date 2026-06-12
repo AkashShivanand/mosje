@@ -57,11 +57,11 @@ export default function ComposePage() {
             </div>
             <div className="space-y-sm">
               <Label>Channels</Label>
-              {[
+              {([
                 ["sms",   "SMS"],
                 ["email", "Email"],
                 ["app",   "In-app push"],
-              ].map(([k, label]) => (
+              ] as [string, string][]).map(([k, label]) => (
                 <label key={k} className="flex items-center gap-sm text-body-3">
                   <Checkbox
                     checked={form.channels[k as "sms" | "email" | "app"]}

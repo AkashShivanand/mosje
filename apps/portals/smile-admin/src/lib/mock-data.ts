@@ -170,14 +170,14 @@ function rand(seed: number) {
 
 export const BENEFICIARIES: Beneficiary[] = Array.from({ length: 96 }).map((_, i) => {
   const stateOptions = [14, 7, 11, 33, 12, 23, 21, 24, 13];
-  const sId = stateOptions[Math.floor(rand(i + 1) * stateOptions.length)];
+  const sId = stateOptions[Math.floor(rand(i + 1) * stateOptions.length)]!;
   const districts = DISTRICT_LOOKUP[sId] ?? [[sId * 100 + 1, "District 1"]];
-  const [dId, dName] = districts[Math.floor(rand(i + 2) * districts.length)];
+  const [dId, dName] = districts[Math.floor(rand(i + 2) * districts.length)]!;
   const state = STATES.find((s) => s.id === sId)?.name ?? "—";
   const age = 18 + Math.floor(rand(i + 3) * 60);
   const genderRoll = rand(i + 4);
   const gender: Beneficiary["gender"] = genderRoll < 0.55 ? "Male" : genderRoll < 0.9 ? "Female" : "Transgender";
-  const status = STATUSES[Math.floor(rand(i + 5) * STATUSES.length)];
+  const status = STATUSES[Math.floor(rand(i + 5) * STATUSES.length)]!;
   const type = age >= 60 ? "Senior" : age < 18 ? "Minor" : "Adult";
   return {
     id: `seed-${sId}${i.toString().padStart(2, "0")}`,
@@ -478,7 +478,7 @@ export interface AuditEntry {
 
 export const AUDIT_LOG: AuditEntry[] = Array.from({ length: 24 }, (_, i) => ({
   id: `aud-${1000 + i}`,
-  actor: ["Test Super Admin", "Test Central Admin", "Test State Nodal Officer", "Test NO Mumbai", "Test NO Pune"][i % 5],
+  actor: ["Test Super Admin", "Test Central Admin", "Test State Nodal Officer", "Test NO Mumbai", "Test NO Pune"][i % 5]!,
   action: [
     "Updated role permissions",
     "Created sanction order",
@@ -488,8 +488,8 @@ export const AUDIT_LOG: AuditEntry[] = Array.from({ length: 24 }, (_, i) => ({
     "Acknowledged shelter audit",
     "Broadcasted notification",
     "Logged in",
-  ][i % 8],
-  target: ["roles/state-no", "sanction/2026-05-04", "ia/Mumbai-RF", "person/seed-14-21", "release/2026-Q1", "audit/sh-001", "notif/n-001", "auth/login"][i % 8],
+  ][i % 8]!,
+  target: ["roles/state-no", "sanction/2026-05-04", "ia/Mumbai-RF", "person/seed-14-21", "release/2026-Q1", "audit/sh-001", "notif/n-001", "auth/login"][i % 8]!,
   timestamp: `2026-05-${(14 - (i % 14)).toString().padStart(2, "0")} ${(18 - (i % 12)).toString().padStart(2, "0")}:${(60 - (i * 7) % 60).toString().padStart(2, "0")}`,
   ip: `10.${(i % 20) + 1}.${(i * 11) % 250}.${(i * 7) % 250}`,
   result: i % 11 === 0 ? "Failure" : "Success",

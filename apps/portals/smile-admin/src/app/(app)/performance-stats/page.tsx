@@ -116,7 +116,7 @@ export default function PerformanceStatsPage() {
               </THead>
               <tbody>
                 {topStates.map((s, i) => {
-                  const max = topStates[0].count;
+                  const max = topStates[0]?.count ?? 1;
                   const pct = Math.round((s.count / max) * 100);
                   return (
                     <TR key={s.state}>

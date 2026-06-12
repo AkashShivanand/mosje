@@ -88,11 +88,11 @@ const SPARK = false;
 const DENSITY = "comfortable";
 
 const DEFAULTS: Filters = {
-  fy: FY[0],
+  fy: FY[0]!,
   state: "All India",
   district: "All Districts",
-  scheme: SCHEMES[0],
-  period: PERIODS[0],
+  scheme: SCHEMES[0]!,
+  period: PERIODS[0]!,
 };
 
 function fmtLike(orig: string, num: number): string {

@@ -67,7 +67,7 @@ export default function PersonsPage() {
       if (status !== "All statuses" && b.status !== status) return false;
       if (gender !== "All genders" && b.gender !== gender) return false;
       if (age !== "All ages") {
-        const [lo, hi] =
+        const [lo = 0, hi = 200] =
           age === "60+" ? [60, 200] : age.split("–").map((n) => parseInt(n, 10));
         if (b.age < lo || b.age > hi) return false;
       }

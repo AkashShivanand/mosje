@@ -85,9 +85,9 @@ export function Sparkline({
     .map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1))
     .join(" ");
   const area =
-    `M${pts[0][0].toFixed(1)} ${h} ` +
+    `M${(pts[0]?.[0] ?? 0).toFixed(1)} ${h} ` +
     pts.map((p) => "L" + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ") +
-    ` L${pts[pts.length - 1][0].toFixed(1)} ${h} Z`;
+    ` L${(pts.at(-1)?.[0] ?? 0).toFixed(1)} ${h} Z`;
   return (
     <svg
       width={w}
@@ -373,7 +373,7 @@ export function VBars({
                       style={{
                         position: "relative",
                         width: single ? 22 : 11,
-                        height: Math.max(2, (s.data[i] / max) * (height - 20)) + "px",
+                        height: Math.max(2, ((s.data[i] ?? 0) / max) * (height - 20)) + "px",
                         background: s.color,
                         borderRadius: "3px 3px 0 0",
                         transition: "height .6s ease",

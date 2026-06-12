@@ -153,7 +153,7 @@ export function Select({
     setOpen(true);
   };
   const choose = (i: number) => {
-    onChange(options[i]);
+    onChange(options[i] ?? "");
     setOpen(false);
     ref.current?.querySelector<HTMLButtonElement>(".pm-select-btn")?.focus();
   };

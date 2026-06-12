@@ -202,8 +202,8 @@ function drillProps(scope: StateRow | null, filters: Filters, onDrill: (r: Level
 
 /* ============ EXECUTIVE ============ */
 function Executive({ kpis, sp, scope, filters, onDrill }: ViewProps) {
-  const hero = [kpis[0], kpis[4], kpis[5], kpis[9]];
-  const rest = [1, 2, 3, 6, 7, 8].map((i) => kpis[i]);
+  const hero = [kpis[0]!, kpis[4]!, kpis[5]!, kpis[9]!];
+  const rest = [1, 2, 3, 6, 7, 8].map((i) => kpis[i]!);
   const dp = drillProps(scope, filters, onDrill);
   const rows = levelRows(scope, filters);
   return (
