@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { DEFAULT_APPS } from "@mosje/design-system/components/app-switcher-utils";
+import { DEFAULT_APPS } from "@mosje/design-system";
 
 export const metadata: Metadata = {
   title: "Portals — MoSJE Digital Estate",

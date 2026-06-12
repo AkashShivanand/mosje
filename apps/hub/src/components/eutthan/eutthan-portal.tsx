@@ -48,10 +48,9 @@ export default function EutthanPortal() {
   // SEC-005: localStorage is not XSS-safe. Replace with an HttpOnly cookie
   // session (via the /api/auth route) before production launch.
   useLayoutEffect(() => {
-    const stored = localStorage.getItem("eutthan_role");
-    const valid: readonly string[] = DEMO_CREDENTIALS.map((c) => c.role);
+    const raw = localStorage.getItem("eutthan_role");
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setRole(valid.includes(stored ?? "") ? (stored as Role) : null);
+    setRole(raw === "admin" || raw === "ministry" ? raw : null);
      
     setHydrated(true);
   }, []);

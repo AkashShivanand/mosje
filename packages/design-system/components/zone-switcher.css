@@ -340,13 +340,13 @@
 }
 
 .ds-appsw__badge--live {
-  background-color: var(--ds-success-tonal, #dcfce7);
-  color: var(--ds-success, #15803d);
+  background-color: var(--ds-success-tonal, #c8e6c9);
+  color: var(--ds-success, #2e7d32);
 }
 
 .ds-appsw__badge--soon {
-  background-color: var(--ds-warning-tonal, #fef3c7);
-  color: var(--ds-warning, #92400e);
+  background-color: var(--ds-warning-tonal, #ffedd5);
+  color: var(--ds-saffron-dark, #7c3503);
 }
 
 /* "In development" note shown below planned items in search */

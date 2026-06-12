@@ -60,6 +60,11 @@ export function AdminDashboard() {
 
         <div className="chart-panel">
           <h3>Expenditure Breakdown</h3>
+          <p className="sr-only">
+            Expenditure breakdown by department: Food and Public Distribution,
+            Rural Development, Fertilisers, School Education and Literacy,
+            Agriculture and Farmers Welfare, and Health and Family Welfare.
+          </p>
           <div className="chart-row">
             <div className="donut" aria-hidden="true" />
             <ul className="legend">
@@ -71,7 +76,7 @@ export function AdminDashboard() {
                       width: 14,
                       height: 14,
                       borderRadius: 2,
-                      background: color as string,
+                      background: color,
                       flexShrink: 0,
                     }}
                   />

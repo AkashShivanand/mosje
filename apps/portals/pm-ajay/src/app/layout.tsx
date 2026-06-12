@@ -7,7 +7,7 @@ import "./globals.css";
 
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext", "devanagari"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
 });

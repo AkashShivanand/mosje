@@ -14,7 +14,10 @@
   --stroke-200: var(--ds-border-strong); /* DS border-strong is #e2e6ea; original was #e5e7eb */
   --stroke-300: #d1d5db;
   --danger: var(--ds-danger); /* DS danger is #ec5042; original was #d64539 — intentional shift to DS value */
+  --danger-tonal: rgba(236, 80, 66, 0.08);
   --success: var(--ds-success); /* DS success is #2e7d32; original was #27682a */
+  --success-tonal: rgba(46, 125, 50, 0.1);
+  --primary-tonal: rgba(0, 51, 102, 0.08);
   --gov-yellow: var(--ds-gov-yellow);
   --chart-danger: #e4776f;
   --chart-warning: #f6c36d;
@@ -54,6 +57,18 @@ button,
 input,
 textarea {
   font: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 button,

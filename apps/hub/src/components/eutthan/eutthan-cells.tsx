@@ -15,10 +15,12 @@ export function CellContent({
   col,
   val,
   basePath,
+  rowLabel = "",
 }: {
   col: string;
   val: string;
   basePath: string;
+  rowLabel?: string;
 }) {
   if (col === "Current Financial Year") {
     return val === "checked" ? (
@@ -36,7 +38,7 @@ export function CellContent({
         <button
           type="button"
           className="text-action"
-          style={{ background: "rgba(0,51,102,0.08)" }}
+          style={{ background: "var(--primary-tonal)" }}
           aria-label="More options"
         >
           •••
@@ -51,7 +53,7 @@ export function CellContent({
         <button
           type="button"
           className="text-action"
-          style={{ background: "rgba(39,104,42,0.1)" }}
+          style={{ background: "var(--success-tonal)" }}
           aria-label="Toggle role"
         >
           <ToggleRight size={18} style={{ color: "var(--success)" }} />
@@ -60,7 +62,7 @@ export function CellContent({
           type="button"
           className="text-action"
           style={{
-            background: "rgba(0,51,102,0.08)",
+            background: "var(--primary-tonal)",
             display: "inline-flex",
             alignItems: "center",
             gap: 5,
@@ -86,8 +88,8 @@ export function CellContent({
       <button
         type="button"
         className="text-action text-action--danger"
-        style={{ background: "rgba(214,69,57,0.08)" }}
-        aria-label="Unmap this entry"
+        style={{ background: "var(--danger-tonal)" }}
+        aria-label={rowLabel ? `Unmap ${rowLabel}` : "Unmap this entry"}
       >
         Unmap
       </button>
@@ -100,12 +102,12 @@ export function CellContent({
         type="button"
         className="text-action"
         style={{
-          background: "rgba(0,51,102,0.08)",
+          background: "var(--primary-tonal)",
           display: "inline-flex",
           alignItems: "center",
           gap: 6,
         }}
-        aria-label="View details"
+        aria-label={rowLabel ? `View details for ${rowLabel}` : "View details"}
       >
         <Eye size={14} /> View
       </button>
@@ -119,7 +121,7 @@ export function CellContent({
           href={portalLink(`${basePath}/edit`)}
           className="text-action"
           style={{
-            background: "rgba(0,51,102,0.08)",
+            background: "var(--primary-tonal)",
             minHeight: 36,
             padding: "6px 12px",
             borderRadius: 8,
@@ -150,7 +152,7 @@ export function CellContent({
           href={portalLink(`${basePath}/edit`)}
           className="text-action"
           style={{
-            background: "rgba(0,51,102,0.08)",
+            background: "var(--primary-tonal)",
             minHeight: 36,
             padding: "6px 12px",
             borderRadius: 8,

@@ -82,6 +82,7 @@ export function TablePage({ path }: { path: string }) {
                           col={screen.columns[j] ?? ""}
                           val={cell}
                           basePath={path}
+                          rowLabel={row[0] ?? ""}
                         />
                       </td>
                     ))}
