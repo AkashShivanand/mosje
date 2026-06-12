@@ -109,6 +109,7 @@ export const tokens = {
       "success": "#2e7d32",
       "successStrong": "#1b5e20",
       "warning": "#ffd323",
+      "warningTonal": "#ffedd5",
       "danger": "#ec5042",
       "dangerStrong": "#a11d12",
       "dangerTonal": "#fad2cf",

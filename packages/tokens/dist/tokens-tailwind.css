@@ -73,6 +73,7 @@
   --color-status-success: var(--sa-color-status-success);
   --color-status-successStrong: var(--sa-color-status-successStrong);
   --color-status-warning: var(--sa-color-status-warning);
+  --color-status-warningTonal: var(--sa-color-status-warningTonal);
   --color-status-danger: var(--sa-color-status-danger);
   --color-status-dangerStrong: var(--sa-color-status-dangerStrong);
   --color-status-dangerTonal: var(--sa-color-status-dangerTonal);
