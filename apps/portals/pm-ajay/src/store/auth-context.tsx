@@ -51,6 +51,12 @@ const DEMO_ACCOUNTS: Record<string, { demoPin: string; account: Account }> = {
   },
 };
 
+// SEC-006: localStorage is not XSS-safe. Before production, replace this entire
+// session mechanism with a server-set HttpOnly cookie via /api/auth so that JS
+// cannot read or forge the session token. The cookie set below (pmajay_session)
+// is NOT HttpOnly — it exists only so the middleware can do a cheap redirect
+// check; real authorisation must happen server-side (e.g. Next.js middleware
+// reading the HttpOnly cookie with `cookies()` from 'next/headers').
 const SESSION_KEY = "pmajay.session.v1";
 
 const AuthContext = createContext<AuthState | null>(null);
