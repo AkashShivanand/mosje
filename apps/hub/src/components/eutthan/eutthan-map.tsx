@@ -1,0 +1,74 @@
+"use client";
+
+import { Search, ChevronDown } from "lucide-react";
+import Link from "next/link";
+import { portalLink } from "./eutthan-shared";
+import { tableScreens } from "@/lib/eutthan/portal-data";
+import { CellContent, Pagination } from "./eutthan-cells";
+
+export function MapPage({ path }: { path: string }) {
+  const isSchemas = path === "/map-schema";
+  const screen = tableScreens[path] ?? tableScreens["/map-ministry"]!;
+
+  return (
+    <div className="page-stack">
+      <h2 className="page-title">Map Ministry/Schemes</h2>
+
+      <div className="map-tabs">
+        <Link
+          href={portalLink("/map-ministry")}
+          className={`map-tab${!isSchemas ? " active" : ""}`}
+        >
+          Ministry
+        </Link>
+        <Link
+          href={portalLink("/map-schema")}
+          className={`map-tab${isSchemas ? " active" : ""}`}
+        >
+          Schemes
+        </Link>
+      </div>
+
+      <div className="data-card">
+        <div className="toolbar">
+          <div className="search-field">
+            <Search size={16} aria-hidden="true" />
+            <input placeholder={screen.searchPlaceholder} aria-label="Search records" />
+          </div>
+          {screen.filters?.map((f) => (
+            <button key={f} type="button" className="filter-button">
+              {f} <ChevronDown size={14} />
+            </button>
+          ))}
+        </div>
+        <div className="table-wrap table-wrap--wide">
+          <table>
+            <thead>
+              <tr>
+                {screen.columns.map((c) => (
+                  <th key={c} scope="col">{c}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {screen.rows.map((row, i) => (
+                <tr key={i}>
+                  {row.map((cell, j) => (
+                    <td key={j}>
+                      <CellContent
+                        col={screen.columns[j] ?? ""}
+                        val={cell}
+                        basePath={path}
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <Pagination total={screen.totalItems} />
+      </div>
+    </div>
+  );
+}
