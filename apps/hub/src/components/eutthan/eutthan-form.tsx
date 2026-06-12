@@ -57,15 +57,18 @@ export function FormPage({ path }: { path: string }) {
 
       <div className="form-card">
         <div className="form-grid">
-          {form.fields.map((field) => (
+          {form.fields.map((field) => {
+            const fieldId = `eu-field-${field.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+            return (
             <div
               key={field.label}
               className={field.type === "textarea" ? "textarea-field" : "field"}
               style={field.fullWidth ? { gridColumn: "1 / -1" } : undefined}
             >
-              <label>{field.label}</label>
+              <label htmlFor={fieldId}>{field.label}</label>
               {field.type === "select" ? (
                 <select
+                  id={fieldId}
                   style={{
                     minHeight: 42,
                     border: "1px solid var(--stroke-200)",
@@ -84,9 +87,10 @@ export function FormPage({ path }: { path: string }) {
                   ))}
                 </select>
               ) : field.type === "textarea" ? (
-                <textarea placeholder={field.placeholder} />
+                <textarea id={fieldId} placeholder={field.placeholder} />
               ) : field.type === "readonly" ? (
                 <input
+                  id={fieldId}
                   type="text"
                   defaultValue={field.placeholder ?? ""}
                   readOnly
@@ -96,15 +100,17 @@ export function FormPage({ path }: { path: string }) {
                   }}
                 />
               ) : field.type === "file" ? (
-                <input type="file" accept=".pdf" />
+                <input id={fieldId} type="file" accept=".pdf" />
               ) : (
                 <input
+                  id={fieldId}
                   type={field.type}
                   placeholder={field.placeholder}
                 />
               )}
             </div>
-          ))}
+            );
+          })}
         </div>
         <div className="form-actions">
           <Link href={portalLink(backPath)} className="secondary-button">

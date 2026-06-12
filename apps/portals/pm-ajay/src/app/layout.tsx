@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Noto_Sans } from "next/font/google";
 import { AppSwitcher, ColorModeProvider } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
@@ -23,12 +24,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={notoSans.variable}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />
-        {/* Material Symbols Rounded — icon font */}
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap"
-          rel="stylesheet"
-        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body>
         <ColorModeProvider>
@@ -37,6 +34,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </AuthProvider>
           <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
         </ColorModeProvider>
+        {/* Material Symbols Rounded — loaded after interaction so it never blocks first paint (PERF-001) */}
+        <Script
+          id="material-symbols"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap';document.head.appendChild(l);`,
+          }}
+        />
       </body>
     </html>
   );
