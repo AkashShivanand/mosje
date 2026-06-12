@@ -2,6 +2,9 @@
   "name": "pm-ajay",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "description": "PM-AJAY MIS Dashboard — MoSJE functional portal",
   "scripts": {
     "dev": "next dev -p 4124",
