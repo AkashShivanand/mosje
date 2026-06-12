@@ -3,6 +3,9 @@ import path from "node:path";
 
 const nextConfig: NextConfig = {
   basePath: "/website",
+  images: {
+    formats: ["image/avif", "image/webp"],
+  },
   // output: "standalone" is production-only; omit in dev so the dev server
   // works normally through the hub proxy. Re-enable for Docker/production builds.
   // output: "standalone",

@@ -549,6 +549,7 @@ function CellContent({
         type="button"
         className="text-action text-action--danger"
         style={{ background: "rgba(214,69,57,0.08)" }}
+        aria-label="Unmap this entry"
       >
         Unmap
       </button>
@@ -566,6 +567,7 @@ function CellContent({
           alignItems: "center",
           gap: 6,
         }}
+        aria-label="View details"
       >
         <Eye size={14} /> View
       </button>
@@ -587,6 +589,7 @@ function CellContent({
             alignItems: "center",
             gap: 6,
           }}
+          aria-label="Edit this entry"
         >
           <Edit size={14} /> Edit
         </Link>
@@ -594,6 +597,7 @@ function CellContent({
           type="button"
           className="text-action danger-action"
           style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
+          aria-label="Delete this entry"
         >
           <Trash2 size={14} /> Delete
         </button>
@@ -616,6 +620,7 @@ function CellContent({
             alignItems: "center",
             gap: 6,
           }}
+          aria-label="Edit this entry"
         >
           <Edit size={14} /> Edit
         </Link>
@@ -642,7 +647,7 @@ function CellContent({
 
 function Pagination({ total }: { total: number }) {
   return (
-    <div className="pagination">
+    <nav aria-label="Pagination" className="pagination">
       <div className="page-size">
         <span>Rows per page:</span>
         <button type="button">
@@ -650,18 +655,18 @@ function Pagination({ total }: { total: number }) {
         </button>
       </div>
       <div className="pages">
-        <button type="button">&lsaquo;</button>
-        <button type="button" className="current">
+        <button type="button" aria-label="Previous page" disabled>&lsaquo;</button>
+        <button type="button" className="current" aria-current="page">
           1
         </button>
         {total > 10 && <button type="button">2</button>}
         {total > 20 && <button type="button">3</button>}
-        <button type="button">&rsaquo;</button>
+        <button type="button" aria-label="Next page">&rsaquo;</button>
       </div>
       <span style={{ fontSize: 13, color: "var(--text-muted)" }}>
         {total} total
       </span>
-    </div>
+    </nav>
   );
 }
 
@@ -694,7 +699,7 @@ function MapPage({ path }: { path: string }) {
         <div className="toolbar">
           <div className="search-field">
             <Search size={16} aria-hidden="true" />
-            <input placeholder={screen.searchPlaceholder} />
+            <input placeholder={screen.searchPlaceholder} aria-label="Search records" />
           </div>
           {screen.filters?.map((f) => (
             <button key={f} type="button" className="filter-button">
@@ -707,7 +712,7 @@ function MapPage({ path }: { path: string }) {
             <thead>
               <tr>
                 {screen.columns.map((c) => (
-                  <th key={c}>{c}</th>
+                  <th key={c} scope="col">{c}</th>
                 ))}
               </tr>
             </thead>
@@ -821,7 +826,7 @@ function Statement10APage() {
               <thead>
                 <tr>
                   {screen.columns.map((c) => (
-                    <th key={c}>{c}</th>
+                    <th key={c} scope="col">{c}</th>
                   ))}
                 </tr>
               </thead>
@@ -899,7 +904,7 @@ function FinancialSummaryPage() {
         <div className="toolbar">
           <div className="search-field">
             <Search size={16} aria-hidden="true" />
-            <input placeholder="Search for ministry..." />
+            <input placeholder="Search for ministry..." aria-label="Search for ministry" />
           </div>
         </div>
         <div className="table-wrap table-wrap--wide">
@@ -907,7 +912,7 @@ function FinancialSummaryPage() {
             <thead>
               <tr>
                 {screen.columns.map((c) => (
-                  <th key={c}>{c}</th>
+                  <th key={c} scope="col">{c}</th>
                 ))}
               </tr>
             </thead>
@@ -971,7 +976,7 @@ function PfmsLogsPage() {
             <thead>
               <tr>
                 {screen.columns.map((c) => (
-                  <th key={c} style={{ whiteSpace: "nowrap" }}>
+                  <th key={c} scope="col" style={{ whiteSpace: "nowrap" }}>
                     {c}
                   </th>
                 ))}
@@ -1049,7 +1054,7 @@ function PhysicalProgressPage() {
         <div className="toolbar" style={{ flexWrap: "wrap" }}>
           <div className="search-field">
             <Search size={16} aria-hidden="true" />
-            <input placeholder={screen.searchPlaceholder} />
+            <input placeholder={screen.searchPlaceholder} aria-label="Search records" />
           </div>
           {screen.filters?.map((f) => (
             <button key={f} type="button" className="filter-button">
@@ -1062,7 +1067,7 @@ function PhysicalProgressPage() {
             <thead>
               <tr>
                 {screen.columns.map((c) => (
-                  <th key={c}>{c}</th>
+                  <th key={c} scope="col">{c}</th>
                 ))}
               </tr>
             </thead>
@@ -1126,7 +1131,7 @@ function TablePage({ path }: { path: string }) {
         <div className="toolbar" style={{ flexWrap: "wrap" }}>
           <div className="search-field">
             <Search size={16} aria-hidden="true" />
-            <input placeholder={screen.searchPlaceholder} />
+            <input placeholder={screen.searchPlaceholder} aria-label="Search records" />
           </div>
           {screen.filters?.map((f) => (
             <button key={f} type="button" className="filter-button">
@@ -1139,7 +1144,7 @@ function TablePage({ path }: { path: string }) {
             <thead>
               <tr>
                 {screen.columns.map((c) => (
-                  <th key={c}>{c}</th>
+                  <th key={c} scope="col">{c}</th>
                 ))}
               </tr>
             </thead>
@@ -1266,13 +1271,12 @@ function FormPage({ path }: { path: string }) {
               ) : field.type === "readonly" ? (
                 <input
                   type="text"
-                  value={field.placeholder ?? ""}
+                  defaultValue={field.placeholder ?? ""}
                   readOnly
                   style={{
                     background: "var(--surface-muted)",
                     cursor: "default",
                   }}
-                  onChange={() => {}}
                 />
               ) : field.type === "file" ? (
                 <input type="file" accept=".pdf" />

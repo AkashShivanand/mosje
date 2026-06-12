@@ -167,6 +167,7 @@
   --ds-success-tonal: var(--sa-color-green-50);
   --ds-danger: var(--sa-color-status-danger);
   --ds-warning: var(--sa-color-status-warning);
+  --ds-warning-tonal: #fff3cd;
   --ds-info: var(--sa-color-status-info);
   --ds-ink: var(--sa-color-text-default);
   --ds-ink-strong: var(--sa-color-text-strong);

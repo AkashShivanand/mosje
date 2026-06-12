@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useMemo } from "react";
 import {
   ArrowLeft, Download, ExternalLink, Search, X,
@@ -336,18 +337,29 @@ function ScreenGroup({ screen, findings }: { screen: Screen; findings: Finding[]
           )}
 
           {/* Annotation board — full width, inline above findings */}
-          <div className="mb-5 overflow-hidden rounded-xl border border-border/60 shadow-md">
-            <img
-              src={boardUrl(section)}
-              alt={`${screen.name} — ${section} annotation board`}
-              loading="lazy"
-              className="block w-full"
-              onError={(e) => {
-                // Hide broken image gracefully
-                const el = e.currentTarget.parentElement;
-                if (el) el.style.display = "none";
-              }}
-            />
+          <div
+            className="mb-5 overflow-hidden rounded-xl border border-border/60 shadow-md"
+            ref={(el) => {
+              // onError is not available on next/image; hide the wrapper if the
+              // underlying <img> fires an error (delegation via capture).
+              if (!el) return;
+              const handler = (e: Event) => {
+                const t = e.target as HTMLImageElement;
+                if (t.tagName === "IMG") el.style.display = "none";
+              };
+              el.addEventListener("error", handler, true);
+            }}
+          >
+            <div className="relative w-full aspect-video">
+              <Image
+                src={boardUrl(section)}
+                alt={`${screen.name} — ${section} annotation board`}
+                fill
+                className="object-contain"
+                loading="lazy"
+                unoptimized
+              />
+            </div>
           </div>
 
           {/* Findings — numbered to match board pins */}

@@ -525,30 +525,3 @@ export const formDefs: Record<string, FormDef> = {
   },
 };
 
-// ── Form routes (UI metadata for FormPage) ────────────────────────────────────
-
-export const formRoutes: Record<string, { title: string; subtitle: string; icon: LucideIcon }> = {
-  "/admin/financial-year-management/add":  { title: "Add Financial Year",    subtitle: "Register a new financial year",               icon: CalendarDays },
-  "/admin/financial-year-management/edit": { title: "Edit Financial Year",   subtitle: "Update financial year details",                icon: CalendarDays },
-  "/ministry-management/add":              { title: "Add Ministry",          subtitle: "Register a new ministry or department",        icon: Landmark },
-  "/ministry-management/edit":             { title: "Edit Ministry",         subtitle: "Update ministry or department details",        icon: Landmark },
-  "/scheme-management/add":               { title: "Add Scheme",            subtitle: "Register a new scheme under the ministry",    icon: ListChecks },
-  "/scheme-management/edit":              { title: "Edit Scheme",           subtitle: "Update scheme details",                       icon: ListChecks },
-  "/manage-outcome/add":                  { title: "Add Outcome",           subtitle: "Define a new measurable outcome",             icon: Target },
-  "/manage-outcome/edit":                 { title: "Edit Outcome",          subtitle: "Update outcome details",                      icon: Target },
-  "/document-management/add":             { title: "Add Document",          subtitle: "Upload a new document",                       icon: FileText },
-  "/document-management/edit":            { title: "Edit Document",         subtitle: "Update document metadata",                    icon: FileText },
-  "/user-management/add":                 { title: "Add User",              subtitle: "Create a new portal user account",            icon: Users },
-  "/user-management/edit":                { title: "Edit User",             subtitle: "Update user account details",                 icon: Users },
-  "/ministry/physical-progress-data/add":  { title: "Add Progress Data",    subtitle: "Record physical progress for a scheme",       icon: TrendingUp },
-  "/ministry/physical-progress-data/edit": { title: "Edit Progress Data",   subtitle: "Update physical progress record",             icon: TrendingUp },
-};
-
-// ── Login screen feature cards ────────────────────────────────────────────────
-
-export const loginCards: [string, string][] = [
-  ["Secure Access",      "Role-based access control for admin and ministry users."],
-  ["Scheme Management",  "Manage financial years, ministries, and scheme data."],
-  ["PFMS Integration",   "Real-time fund flow tracking via PFMS portal."],
-  ["Audit Trail",        "Complete activity log for accountability and compliance."],
-];

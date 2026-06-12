@@ -52,6 +52,8 @@ export function AppSwitcher({
   const [query, setQuery] = React.useState("");
   const searchRef = React.useRef<HTMLInputElement>(null);
   const rootRef = React.useRef<HTMLDivElement>(null);
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
   const swatchRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
   const panelId = React.useId();
   const { mode, setMode, modes } = useColorMode();
@@ -94,16 +96,21 @@ export function AppSwitcher({
     setPathname(window.location.pathname);
   }, []);
 
+  const closePanel = React.useCallback(() => {
+    setOpen(false);
+    triggerRef.current?.focus();
+  }, []);
+
   // Close on outside click + Escape; / focuses search while open.
   React.useEffect(() => {
     if (!open) return;
     const onDown = (e: MouseEvent) => {
       if (rootRef.current && !rootRef.current.contains(e.target as Node))
-        setOpen(false);
+        closePanel();
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setOpen(false);
+        closePanel();
       } else if (e.key === "/" && document.activeElement !== searchRef.current) {
         e.preventDefault();
         searchRef.current?.focus();
@@ -115,12 +122,49 @@ export function AppSwitcher({
       document.removeEventListener("mousedown", onDown);
       document.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+  }, [open, closePanel]);
 
   // Clear search whenever the panel is closed.
   React.useEffect(() => {
     if (!open) setQuery("");
   }, [open]);
+
+  // Move focus into the search input when the panel opens.
+  React.useEffect(() => {
+    if (open) {
+      const id = window.requestAnimationFrame(() => {
+        searchRef.current?.focus();
+      });
+      return () => window.cancelAnimationFrame(id);
+    }
+    return undefined;
+  }, [open]);
+
+  // Tab focus trap inside the dialog panel.
+  const onPanelKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Escape") {
+      event.stopPropagation();
+      closePanel();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusables = panelRef.current?.querySelectorAll<HTMLElement>(
+      "button:not([disabled]), [href], input, [tabindex='0']",
+    );
+    if (!focusables || focusables.length === 0) return;
+    const list = Array.from(focusables);
+    const first = list[0];
+    const last = list[list.length - 1];
+    if (!first || !last) return;
+    const active = document.activeElement;
+    if (event.shiftKey && active === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && active === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
 
   const activeNormPath = React.useMemo(
     () => matchActivePath(apps, pathname ?? ""),
@@ -152,9 +196,13 @@ export function AppSwitcher({
         map.set(a.group, []);
         order.push(a.group);
       }
-      map.get(a.group)!.push(a);
+      map.get(a.group)?.push(a);
     }
-    return order.map((g) => ({ group: g, items: map.get(g)! }));
+    return order.flatMap((g) => {
+      const items = map.get(g);
+      if (!items) return [];
+      return [{ group: g, items }];
+    });
   }, [visibleApps]);
 
   const noResults = query.trim().length > 0 && visibleApps.length === 0;
@@ -163,11 +211,13 @@ export function AppSwitcher({
     <div ref={rootRef} className={cn("ds-appsw", className)}>
       {open && (
         <div
+          ref={panelRef}
           className="ds-appsw__panel"
           id={panelId}
           role="dialog"
           aria-label="App switcher"
           aria-modal="false"
+          onKeyDown={onPanelKeyDown}
         >
           {/* ── Header ── */}
           <div className="ds-appsw__header">
@@ -256,8 +306,6 @@ export function AppSwitcher({
           <div
             className="ds-appsw__body"
             id={`${panelId}-list`}
-            role="list"
-            aria-label="App and portal list"
           >
             {noResults ? (
               <div className="ds-appsw__empty">
@@ -269,7 +317,7 @@ export function AppSwitcher({
                   query.trim().length > 0 &&
                   items.some((a) => a.status === "planned");
                 return (
-                  <div key={group} role="group" aria-label={group}>
+                  <div key={group} role="list" aria-label={group}>
                     <div className="ds-appsw__group-label">
                       {group}
                       {group === "Dev" && (
@@ -362,6 +410,7 @@ export function AppSwitcher({
       )}
 
       <button
+        ref={triggerRef}
         type="button"
         className="ds-appsw__fab"
         aria-haspopup="dialog"

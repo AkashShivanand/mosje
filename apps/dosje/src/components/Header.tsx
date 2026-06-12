@@ -114,7 +114,7 @@ export function Header() {
       <div className="border-b border-gray-100">
         <div className="mx-auto flex max-w-[1280px] items-center gap-6 px-4 py-3">
           <Link href="/" className="flex items-center gap-3">
-            <Image src="/images/National-Emblem-logo.svg" alt="National Emblem of India" width={48} height={62} className="h-[62px] w-auto" />
+            <Image src="/images/National-Emblem-logo.svg" alt="National Emblem of India" width={48} height={62} className="h-[62px] w-auto" priority />
             <span className="flex flex-col leading-tight">
               <span className="flex items-center gap-2">
                 <span className="text-[12px] text-ink-muted">Government of India</span>
@@ -137,7 +137,7 @@ export function Header() {
           </form>
 
           <div className="flex items-center gap-4">
-            <Image src="/images/digital-india-logo.svg" alt="Digital India — Power To Empower" width={92} height={44} className="hidden h-11 w-auto md:block" />
+            <Image src="/images/digital-india-logo.svg" alt="Digital India — Power To Empower" width={92} height={44} className="hidden h-11 w-auto md:block" priority />
             <Link href="/admin" className={buttonClasses("primary", "filled", "sm", "whitespace-nowrap")}>
               Admin Login
             </Link>
