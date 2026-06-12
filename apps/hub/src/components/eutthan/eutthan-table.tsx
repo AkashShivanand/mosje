@@ -75,9 +75,9 @@ export function TablePage({ path }: { path: string }) {
                 </tr>
               ) : (
                 screen.rows.map((row, i) => (
-                  <tr key={i}>
+                  <tr key={`${row[0] ?? ""}-${i}`}>
                     {row.map((cell, j) => (
-                      <td key={j}>
+                      <td key={`${screen.columns[j] ?? j}`}>
                         <CellContent
                           col={screen.columns[j] ?? ""}
                           val={cell}

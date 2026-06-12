@@ -9,6 +9,7 @@
     "start": "next start -p 4124",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"

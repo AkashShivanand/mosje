@@ -53,10 +53,10 @@ export function PfmsLogsPage() {
             </thead>
             <tbody>
               {screen.rows.map((row, i) => (
-                <tr key={i}>
+                <tr key={`${row[0] ?? ""}-${i}`}>
                   {row.map((cell, j) => (
                     <td
-                      key={j}
+                      key={`${screen.columns[j] ?? j}`}
                       style={{
                         whiteSpace:
                           j === 0 || j === 1 || j === 9 || j === 10

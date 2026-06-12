@@ -106,9 +106,9 @@ export function Statement10APage() {
               </thead>
               <tbody>
                 {screen.rows.map((row, i) => (
-                  <tr key={i}>
+                  <tr key={`${row[0] ?? ""}-${i}`}>
                     {row.map((cell, j) => (
-                      <td key={j}>{cell}</td>
+                      <td key={`${screen.columns[j] ?? j}`}>{cell}</td>
                     ))}
                   </tr>
                 ))}
