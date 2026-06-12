@@ -6,7 +6,7 @@
   --sa-color-green-50: #c8e6c9;
   --sa-color-green-500: #2e7d32;
   --sa-color-green-700: #1b5e20;
-  --sa-color-red-50: #fadbd8;
+  --sa-color-red-50: #fad2cf;
   --sa-color-red-500: #ec5042;
   --sa-color-red-700: #a11d12;
   --sa-color-yellow-500: #ffd323;
@@ -39,6 +39,8 @@
   --sa-color-neutral-75: #f4f3f9;
   --sa-color-neutral-100: #f1f3f5;
   --sa-color-neutral-200: #e2e6ea;
+  --sa-color-neutral-400: #9aa3af;
+  --sa-color-neutral-500: #6c757d;
   --sa-color-neutral-700: #343a40;
   --sa-color-neutral-800: #212121;
   --sa-color-neutral-900: #1f2428;
@@ -58,19 +60,22 @@
   --sa-color-text-default: #212121;
   --sa-color-text-muted: #343a40;
   --sa-color-text-strong: #1f2428;
+  --sa-color-text-disabled: rgba(31, 36, 40, 0.48);
   --sa-color-text-onPrimary: #ffffff;
   --sa-color-bg-surface: #ffffff;
   --sa-color-bg-muted: #f8f9fa;
   --sa-color-bg-alt: #f4f3f9;
   --sa-color-border-subtle: #f1f3f5;
   --sa-color-border-strong: #e2e6ea;
+  --sa-color-border-control: #9aa3af;
+  --sa-color-border-controlHover: #6c757d;
   --sa-color-focus-ring: rgba(3, 115, 223, 0.48);
   --sa-color-status-success: #2e7d32;
   --sa-color-status-successStrong: #1b5e20;
   --sa-color-status-warning: #ffd323;
   --sa-color-status-danger: #ec5042;
   --sa-color-status-dangerStrong: #a11d12;
-  --sa-color-status-dangerTonal: #fadbd8;
+  --sa-color-status-dangerTonal: #fad2cf;
   --sa-color-status-info: #0373df;
   --sa-color-a11y-hc-fg: #000000;
   --sa-color-a11y-hc-bg: #ffffff;
@@ -167,7 +172,6 @@
   --ds-success-tonal: var(--sa-color-green-50);
   --ds-danger: var(--sa-color-status-danger);
   --ds-warning: var(--sa-color-status-warning);
-  --ds-warning-tonal: #fff3cd;
   --ds-info: var(--sa-color-status-info);
   --ds-ink: var(--sa-color-text-default);
   --ds-ink-strong: var(--sa-color-text-strong);
@@ -241,6 +245,8 @@
   --sa-color-bg-muted: #ffffff;
   --sa-color-border-subtle: #000000;
   --sa-color-border-strong: #000000;
+  --sa-color-border-control: #000000;
+  --sa-color-border-controlHover: #000000;
 }
 
 [data-density="compact"] {

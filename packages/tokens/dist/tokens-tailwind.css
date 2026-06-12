@@ -39,6 +39,8 @@
   --color-neutral-75: var(--sa-color-neutral-75);
   --color-neutral-100: var(--sa-color-neutral-100);
   --color-neutral-200: var(--sa-color-neutral-200);
+  --color-neutral-400: var(--sa-color-neutral-400);
+  --color-neutral-500: var(--sa-color-neutral-500);
   --color-neutral-700: var(--sa-color-neutral-700);
   --color-neutral-800: var(--sa-color-neutral-800);
   --color-neutral-900: var(--sa-color-neutral-900);
@@ -58,12 +60,15 @@
   --color-text-default: var(--sa-color-text-default);
   --color-text-muted: var(--sa-color-text-muted);
   --color-text-strong: var(--sa-color-text-strong);
+  --color-text-disabled: var(--sa-color-text-disabled);
   --color-text-onPrimary: var(--sa-color-text-onPrimary);
   --color-bg-surface: var(--sa-color-bg-surface);
   --color-bg-muted: var(--sa-color-bg-muted);
   --color-bg-alt: var(--sa-color-bg-alt);
   --color-border-subtle: var(--sa-color-border-subtle);
   --color-border-strong: var(--sa-color-border-strong);
+  --color-border-control: var(--sa-color-border-control);
+  --color-border-controlHover: var(--sa-color-border-controlHover);
   --color-focus-ring: var(--sa-color-focus-ring);
   --color-status-success: var(--sa-color-status-success);
   --color-status-successStrong: var(--sa-color-status-successStrong);

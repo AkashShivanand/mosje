@@ -12,7 +12,7 @@ export const tokens = {
       "700": "#1b5e20"
     },
     "red": {
-      "50": "#fadbd8",
+      "50": "#fad2cf",
       "500": "#ec5042",
       "700": "#a11d12"
     },
@@ -59,6 +59,8 @@ export const tokens = {
       "75": "#f4f3f9",
       "100": "#f1f3f5",
       "200": "#e2e6ea",
+      "400": "#9aa3af",
+      "500": "#6c757d",
       "700": "#343a40",
       "800": "#212121",
       "900": "#1f2428"
@@ -86,6 +88,7 @@ export const tokens = {
       "default": "#212121",
       "muted": "#343a40",
       "strong": "#1f2428",
+      "disabled": "rgba(31, 36, 40, 0.48)",
       "onPrimary": "#ffffff"
     },
     "bg": {
@@ -95,7 +98,9 @@ export const tokens = {
     },
     "border": {
       "subtle": "#f1f3f5",
-      "strong": "#e2e6ea"
+      "strong": "#e2e6ea",
+      "control": "#9aa3af",
+      "controlHover": "#6c757d"
     },
     "focus": {
       "ring": "rgba(3, 115, 223, 0.48)"
@@ -106,7 +111,7 @@ export const tokens = {
       "warning": "#ffd323",
       "danger": "#ec5042",
       "dangerStrong": "#a11d12",
-      "dangerTonal": "#fadbd8",
+      "dangerTonal": "#fad2cf",
       "info": "#0373df"
     },
     "a11y": {

@@ -1,5 +1,15 @@
 # MoSJE — Project Brain
 
+## Task Summary Rule (MANDATORY — applies to every task in every conversation)
+
+After completing **any task** — no matter how small — always end your response with a short, plain-English summary using this format:
+
+**What I did:** One or two sentences explaining what was changed or built.
+**What's working:** What the user can now do or see.
+**What's next / Recommendations:** Any follow-up steps, things still pending, or things the user should know.
+
+Write it in simple, non-technical language. Avoid jargon. Imagine you are explaining to someone who didn't watch you work. This section always appears last in every response.
+
 > Loaded every session. The single source of truth for how we work in this workspace.
 > Scoped, path-specific rules live in `.claude/rules/`; the full structure map lives in `MOSJE-ARCHITECTURE.md`.
 
@@ -41,7 +51,11 @@ Apps are **independent** (own git, own deps) — this is a "monorepo-ready" layo
 | App | Framework | Styling | Notes |
 |-----|-----------|---------|-------|
 | `apps/dosje/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Noto Sans, gov brand tokens in `src/app/globals.css`. **Next 16 has breaking changes — see `apps/dosje/AGENTS.md`.** |
-| `apps/portals/*` | Next.js 15 · React 19 | Tailwind **v3** + Radix/shadcn | First portal (smile-admin) used port 4123. |
+| `apps/hub/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Root zone at :3000; mounts all child apps. |
+| `apps/portals/smile-admin/` | Next.js 15 · React 19 | Tailwind **v3** + Radix/shadcn | ESLint v8 (`.eslintrc` format). Plan migration to Tailwind v4 + ESLint v9 in same sprint as Next.js version alignment. |
+| `apps/portals/pm-ajay/` | Next.js 15 · React 19 | **No Tailwind** (intentional) | MIS dashboard uses hand-rolled SVG charts and `--ds-*` CSS custom properties directly. No `tailwindcss` dep by design — adding one would require configuring PostCSS and aligning to v3/v4. ESLint v8. |
+
+**Tailwind version split (INFRA-004):** hub and dosje use Tailwind **v4** (CSS-first `@theme` config, incompatible API). smile-admin uses Tailwind **v3** (`tailwind.config.ts`). pm-ajay uses no Tailwind. Shared `@mosje/tokens` emits both a v4 `@theme` block and a v3 `tailwind-preset.cjs` so either consumer can pick up the token contract. **Do not introduce Tailwind v4 patterns into smile-admin without a migration plan.**
 
 ## Commands
 

@@ -26,6 +26,7 @@
       "default": {"$value":"{color.neutral.800}", "$extensions":{"mosje":{"themes":{"dark":"{color.neutral.0}","hc":"#000000"}}}},
       "muted":   {"$value":"{color.neutral.700}"},
       "strong":  {"$value":"{color.neutral.900}"},
+      "disabled": {"$value":"rgba(31, 36, 40, 0.48)"},
       "onPrimary": {"$value":"{color.neutral.0}"}
     },
     "bg": {
@@ -35,7 +36,9 @@
     },
     "border": {
       "subtle": {"$value":"{color.neutral.100}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}},
-      "strong": {"$value":"{color.neutral.200}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}}
+      "strong": {"$value":"{color.neutral.200}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}},
+      "control": {"$value":"{color.neutral.400}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}},
+      "controlHover": {"$value":"{color.neutral.500}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}}
     },
     "focus": { "ring": {"$value":"rgba(3, 115, 223, 0.48)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(0, 51, 102, 0.48)"}}}} },
     "status": {

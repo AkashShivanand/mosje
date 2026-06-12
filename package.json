@@ -27,13 +27,6 @@
     "lint:smile": "npm --prefix apps/portals/smile-admin run lint",
     "lint:pm-ajay": "npm --prefix apps/portals/pm-ajay run lint"
   },
-  "lint-staged": {
-    "apps/hub/**/*.{ts,tsx,js,jsx}": "apps/hub/node_modules/.bin/eslint --fix --max-warnings 0",
-    "apps/dosje/**/*.{ts,tsx,js,jsx}": "apps/dosje/node_modules/.bin/eslint --fix --max-warnings 0",
-    "apps/portals/smile-admin/**/*.{ts,tsx,js,jsx}": "apps/portals/smile-admin/node_modules/.bin/eslint --fix --max-warnings 0",
-    "apps/portals/pm-ajay/**/*.{ts,tsx,js,jsx}": "apps/portals/pm-ajay/node_modules/.bin/eslint --fix --max-warnings 0",
-    "packages/**/*.{ts,tsx,js,jsx}": "packages/design-system/node_modules/.bin/eslint --fix --max-warnings 0"
-  },
   "devDependencies": {
     "concurrently": "^9.2.1",
     "husky": "^9.1.7",

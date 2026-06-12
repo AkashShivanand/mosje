@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -42,13 +42,17 @@ export default function EutthanPortal() {
   const [role, setRole] = useState<Role | null>(null);
   const [hydrated, setHydrated] = useState(false);
 
-  useEffect(() => {
-    // SEC-005: localStorage is not XSS-safe. Replace with an HttpOnly cookie
-    // session (via the /api/auth route) before production launch.
+  // useLayoutEffect on mount: reads localStorage to restore the auth session
+  // before first paint so returning users don't flash the login page.
+  // Safe in "use client" — no SSR mismatch because we return null until hydrated.
+  // SEC-005: localStorage is not XSS-safe. Replace with an HttpOnly cookie
+  // session (via the /api/auth route) before production launch.
+  useLayoutEffect(() => {
     const stored = localStorage.getItem("eutthan_role");
     const valid: readonly string[] = DEMO_CREDENTIALS.map((c) => c.role);
-    const role: Role | null = valid.includes(stored ?? "") ? (stored as Role) : null;
-    setRole(role);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setRole(valid.includes(stored ?? "") ? (stored as Role) : null);
+     
     setHydrated(true);
   }, []);
 

@@ -82,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signIn = useCallback((employeeId: string, password: string) => {
     const record = DEMO_ACCOUNTS[employeeId.trim().toUpperCase()];
     if (!record) return { ok: false, reason: "Employee ID not found. Use one of the demo accounts below." };
-    if (record.demoPin !== password) return { ok: false, reason: "Incorrect password. Use Password@123 for all demo accounts." };
+    if (record.demoPin !== password) return { ok: false, reason: "Incorrect credentials." };
     setAccount(record.account);
     try {
       localStorage.setItem(SESSION_KEY, JSON.stringify(record.account));
