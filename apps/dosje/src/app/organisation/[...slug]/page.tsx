@@ -5,16 +5,17 @@ import { ContentPage } from "@/components/templates/ContentPage";
 import { getOrganisations, getOrganisation } from "@/lib/content";
 
 export function generateStaticParams() {
-  return getOrganisations().map((o) => ({ slug: o.slug }));
+  return getOrganisations().map((o) => ({ slug: o.slug.split("/") }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string[] }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const org = getOrganisation(slug);
+  const key = slug.join("/");
+  const org = getOrganisation(key);
   if (!org) return { title: "Organisation — DoSJE" };
   const firstText = org.sections.find((s) => s.html)?.html.replace(/<[^>]+>/g, "").slice(0, 160);
   return { title: `${org.title} — DoSJE`, description: firstText };
@@ -23,10 +24,11 @@ export async function generateMetadata({
 export default async function OrganisationDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string[] }>;
 }) {
   const { slug } = await params;
-  const org = getOrganisation(slug);
+  const key = slug.join("/");
+  const org = getOrganisation(key);
   if (!org) notFound();
 
   return (
