@@ -8,10 +8,9 @@ import "./docs-layout.css";
 
 interface DocsLayoutProps {
   children: React.ReactNode;
-  breadcrumb?: string[];
 }
 
-export function DocsLayout({ children, breadcrumb }: DocsLayoutProps): React.JSX.Element {
+export function DocsLayout({ children }: DocsLayoutProps): React.JSX.Element {
   const [searchOpen, setSearchOpen] = React.useState(false);
 
   return (
@@ -28,7 +27,7 @@ export function DocsLayout({ children, breadcrumb }: DocsLayoutProps): React.JSX
           </a>
           <SidebarNav />
         </aside>
-        <DocsHeader onSearchOpen={() => setSearchOpen(true)} breadcrumb={breadcrumb} />
+        <DocsHeader onSearchOpen={() => setSearchOpen(true)} />
         <main id="main-content" className="docs-main">
           <div className="docs-content">{children}</div>
           <OnThisPage />

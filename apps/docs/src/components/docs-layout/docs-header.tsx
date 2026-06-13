@@ -1,12 +1,37 @@
 "use client";
 import * as React from "react";
+import { NAV } from "@/lib/nav";
 
 interface DocsHeaderProps {
   onSearchOpen: () => void;
-  breadcrumb?: string[];
 }
 
-export function DocsHeader({ onSearchOpen, breadcrumb = [] }: DocsHeaderProps): React.JSX.Element {
+function useBreadcrumb(): [string, string] | null {
+  const [crumb, setCrumb] = React.useState<[string, string] | null>(null);
+
+  React.useEffect(() => {
+    const p = window.location.pathname.replace(/\/$/, "");
+    if (p === "/design-system") {
+      setCrumb(null);
+      return;
+    }
+    for (const group of NAV) {
+      for (const item of group.items) {
+        const hrefBase = item.href.split("#")[0];
+        if (hrefBase !== "/design-system" && (p === hrefBase || p.startsWith(hrefBase + "/"))) {
+          setCrumb([group.title, item.label]);
+          return;
+        }
+      }
+    }
+  }, []);
+
+  return crumb;
+}
+
+export function DocsHeader({ onSearchOpen }: DocsHeaderProps): React.JSX.Element {
+  const breadcrumb = useBreadcrumb();
+
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -20,19 +45,19 @@ export function DocsHeader({ onSearchOpen, breadcrumb = [] }: DocsHeaderProps): 
 
   return (
     <header className="docs-header" role="banner">
-      <div className="docs-header__breadcrumb" aria-label="Breadcrumb">
-        <a href="/design-system" style={{ color: "var(--ds-ink-muted)", textDecoration: "none" }}>
+      <nav className="docs-header__breadcrumb" aria-label="Breadcrumb">
+        <a href="/design-system" className="docs-header__breadcrumb-home">
           SAMAVESH
         </a>
-        {breadcrumb.map((crumb, i) => (
-          <React.Fragment key={i}>
+        {breadcrumb && (
+          <>
             <span className="docs-header__breadcrumb-sep" aria-hidden="true">/</span>
-            <span style={{ color: i === breadcrumb.length - 1 ? "var(--ds-ink)" : "inherit" }}>
-              {crumb}
-            </span>
-          </React.Fragment>
-        ))}
-      </div>
+            <span className="docs-header__breadcrumb-section">{breadcrumb[0]}</span>
+            <span className="docs-header__breadcrumb-sep" aria-hidden="true">/</span>
+            <span className="docs-header__breadcrumb-page">{breadcrumb[1]}</span>
+          </>
+        )}
+      </nav>
       <button
         className="docs-header__search-btn"
         onClick={onSearchOpen}
@@ -46,14 +71,6 @@ export function DocsHeader({ onSearchOpen, breadcrumb = [] }: DocsHeaderProps): 
         Search docs…
         <kbd className="docs-header__search-kbd">⌘K</kbd>
       </button>
-      <a
-        href="/storybook/"
-        style={{ fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)" }}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Storybook ↗
-      </a>
     </header>
   );
 }

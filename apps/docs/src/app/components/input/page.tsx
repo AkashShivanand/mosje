@@ -222,7 +222,7 @@ export default function InputPage(): React.JSX.Element {
         <h2 id="select">Select</h2>
         <p>
           A dropdown built on the native <code>&lt;select&gt;</code> element, so it keeps full keyboard and
-          screen-reader behaviour and the platform's native option list on mobile. A custom chevron is layered on
+          screen-reader behaviour and the platform&apos;s native option list on mobile. A custom chevron is layered on
           top for visual consistency. Pass an <code>options</code> array for convenience, or render your own{" "}
           <code>&lt;option&gt;</code> children. Use <code>placeholder</code> to render a disabled first option.
         </p>

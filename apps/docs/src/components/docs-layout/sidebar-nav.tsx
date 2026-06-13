@@ -15,20 +15,27 @@ export function SidebarNav(): React.JSX.Element {
         <div key={group.title} className="docs-nav__group">
           <div className="docs-nav__group-title">{group.title}</div>
           {group.items.map((item) => {
-            const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+            const hrefBase = item.href.split("#")[0];
+            // Root-level page: exact match only — avoids every path matching "/design-system"
+            const isActive =
+              hrefBase === "/design-system"
+                ? pathname === "/design-system" || pathname === "/design-system/"
+                : pathname === hrefBase || pathname.startsWith(hrefBase + "/");
             return (
               <a
-                key={item.href}
+                key={item.label}
                 href={item.href}
                 className={`docs-nav__item${isActive ? " is-active" : ""}`}
                 aria-current={isActive ? "page" : undefined}
               >
-                {item.label}
                 {item.badge && (
-                  <span className={`docs-nav__badge docs-nav__badge--${item.badge}`}>
-                    {item.badge}
-                  </span>
+                  <span
+                    className={`docs-nav__dot docs-nav__dot--${item.badge}`}
+                    title={item.badge}
+                    aria-hidden="true"
+                  />
                 )}
+                {item.label}
               </a>
             );
           })}
