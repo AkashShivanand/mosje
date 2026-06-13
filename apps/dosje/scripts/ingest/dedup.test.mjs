@@ -20,3 +20,14 @@ test("dedupeRecords drops a -2 sibling only when content is identical", () => {
   assert.equal(skipped[0].slug, "a-2");
   assert.match(skipped[0].reason, /duplicate/i);
 });
+
+test("file-style records: same title+sourceUrl deduped, different sourceUrl kept", () => {
+  const recs = [
+    { slug: "a", title: "Notice", sourceUrl: "https://x/a" },
+    { slug: "a-2", title: "Notice", sourceUrl: "https://x/a" },
+    { slug: "b", title: "Notice", sourceUrl: "https://x/b" },
+  ];
+  const { kept, skipped } = dedupeRecords(recs);
+  assert.deepEqual(kept.map((r) => r.slug).sort(), ["a", "b"]);
+  assert.equal(skipped.length, 1);
+});

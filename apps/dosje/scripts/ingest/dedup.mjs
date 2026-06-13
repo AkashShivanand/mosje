@@ -11,7 +11,11 @@ function dedupKey(slug) {
 }
 
 function contentHash(rec) {
-  const norm = rec.sections.map((s) => `${s.heading ?? ""}::${s.html}`).join("|").replace(/\s+/g, " ").trim();
+  // Section records hash their prose; file records (no `sections`) hash their
+  // identifying fields so distinct listing rows never collapse together.
+  const norm = Array.isArray(rec.sections)
+    ? rec.sections.map((s) => `${s.heading ?? ""}::${s.html}`).join("|").replace(/\s+/g, " ").trim()
+    : `${rec.title ?? ""}::${rec.fileUrl ?? rec.sourceUrl ?? ""}`.replace(/\s+/g, " ").trim();
   return createHash("sha1").update(norm).digest("hex");
 }
 

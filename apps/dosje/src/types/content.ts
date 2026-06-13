@@ -13,3 +13,12 @@ export interface SectionRecord {
   category?: string;
   targetGroup?: string[];
 }
+
+export interface FileRecord {
+  slug: string;
+  title: string;
+  sourceUrl: string;
+  date?: string;
+  category?: string;
+  fileUrl?: string;
+}

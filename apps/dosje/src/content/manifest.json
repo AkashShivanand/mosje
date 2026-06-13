@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13T14:22:11.461Z",
+  "generatedAt": "2026-06-13T14:58:20.323Z",
   "collections": [
     {
       "name": "organisation",
@@ -25,6 +25,20 @@
       "name": "schemes",
       "sitemapCount": 141,
       "kept": 141,
+      "skipped": 0,
+      "skippedDetail": []
+    },
+    {
+      "name": "tenders",
+      "sitemapCount": 305,
+      "kept": 305,
+      "skipped": 0,
+      "skippedDetail": []
+    },
+    {
+      "name": "vacancies",
+      "sitemapCount": 137,
+      "kept": 137,
       "skipped": 0,
       "skippedDetail": []
     }
