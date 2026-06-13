@@ -52,9 +52,9 @@ a:focus-visible {
 }
 
 /* Prose content (used in page bodies) */
-.ds-prose p + p { margin-top: var(--ds-space-4); }
-.ds-prose ul, .ds-prose ol { padding-left: var(--ds-space-6); margin-top: var(--ds-space-3); }
-.ds-prose li + li { margin-top: var(--ds-space-2); }
+.ds-prose p + p { margin-top: var(--ds-spacing-lg); }
+.ds-prose ul, .ds-prose ol { padding-left: var(--ds-spacing-2xl); margin-top: var(--ds-spacing-md); }
+.ds-prose li + li { margin-top: var(--ds-spacing-sm); }
 
 /* Code */
 code:not([class]) {
@@ -71,21 +71,21 @@ code:not([class]) {
 .skip-link {
   position: absolute;
   top: -100%;
-  left: var(--ds-space-4);
+  left: var(--ds-spacing-lg);
   z-index: 9999;
-  padding: var(--ds-space-2) var(--ds-space-4);
+  padding: var(--ds-spacing-sm) var(--ds-spacing-lg);
   background: var(--ds-primary);
   color: var(--ds-on-primary);
   border-radius: var(--ds-radius-sm);
   font-weight: 600;
   transition: top 0.1s;
 }
-.skip-link:focus { top: var(--ds-space-4); }
+.skip-link:focus { top: var(--ds-spacing-lg); }
 
 /* Welcome page — feature card links */
 .docs-welcome-card {
   display: block;
-  padding: var(--ds-space-5);
+  padding: var(--ds-spacing-xl);
   border-radius: var(--ds-radius-md);
   border: 1px solid var(--ds-border);
   text-decoration: none;
@@ -100,13 +100,13 @@ code:not([class]) {
 .home-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--ds-space-4);
-  margin-bottom: var(--ds-space-12);
+  gap: var(--ds-spacing-lg);
+  margin-bottom: var(--ds-spacing-5xl);
 }
 .home-cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--ds-space-4);
+  gap: var(--ds-spacing-lg);
 }
 @media (max-width: 900px) {
   .home-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -118,7 +118,7 @@ code:not([class]) {
 
 /* Stat tile — quieter than a filled card; number leads, label supports */
 .home-stat {
-  padding: var(--ds-space-4) var(--ds-space-5);
+  padding: var(--ds-spacing-lg) var(--ds-spacing-xl);
   border-radius: var(--ds-radius-md);
   border: 1px solid var(--ds-border);
   background: var(--ds-surface);
@@ -132,5 +132,5 @@ code:not([class]) {
 .home-stat__label {
   font-size: var(--ds-text-body-3);
   color: var(--ds-ink-muted);
-  margin-top: var(--ds-space-1);
+  margin-top: var(--ds-spacing-xs);
 }

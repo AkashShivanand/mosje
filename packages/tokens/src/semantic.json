@@ -37,7 +37,8 @@
     "bg": {
       "surface": {"$value":"{color.neutral.0}",  "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.surface}","hc":"#ffffff"}}}},
       "muted":   {"$value":"{color.neutral.50}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.bg}","hc":"#ffffff"}}}},
-      "alt":     {"$value":"{color.neutral.75}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.surfaceMuted}"}}}}
+      "alt":     {"$value":"{color.neutral.75}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.surfaceMuted}"}}}},
+      "navbar":  {"$value":"rgba(255, 255, 255, 0.8)", "$extensions":{"mosje":{"themes":{"dark":"rgba(27, 31, 39, 0.8)"}}}}
     },
     "border": {
       "subtle": {"$value":"{color.neutral.100}", "$extensions":{"mosje":{"themes":{"dark":"#262b33","hc":"#000000"}}}},
@@ -55,7 +56,9 @@
       "danger":  {"$value":"{color.red.500}", "$extensions":{"mosje":{"themes":{"dark":"#ff6b5e"}}}},
       "dangerStrong": {"$value":"{color.red.700}", "$extensions":{"mosje":{"themes":{"dark":"#ff8a80"}}}},
       "dangerTonal": {"$value":"{color.red.50}", "$extensions":{"mosje":{"themes":{"dark":"rgba(255, 107, 94, 0.16)"}}}},
-      "info":    {"$value":"{color.blue.500}", "$extensions":{"mosje":{"themes":{"dark":"#5fa0ef"}}}}
+      "info":    {"$value":"{color.blue.500}", "$extensions":{"mosje":{"themes":{"dark":"#5fa0ef"}}}},
+      "infoStrong": {"$value":"{color.info.600}", "$extensions":{"mosje":{"themes":{"dark":"{color.info.300}"}}}},
+      "infoTonal":  {"$value":"{color.info.100}", "$extensions":{"mosje":{"themes":{"dark":"rgba(66, 133, 244, 0.16)"}}}}
     },
     "overlay": {
       "scrim": {"$value":"rgba(33, 33, 33, 0.5)", "$extensions":{"mosje":{"themes":{"dark":"rgba(0, 0, 0, 0.6)"}}}}

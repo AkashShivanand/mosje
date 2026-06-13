@@ -26,7 +26,7 @@ export function TokenTable({ tokens }: { tokens: TokenRow[] }): React.JSX.Elemen
                 {t.isColor && (
                   <span
                     className="token-table__preview"
-                    style={{ backgroundColor: t.value, display: "inline-block", marginRight: "var(--ds-space-2)", verticalAlign: "middle" }}
+                    style={{ backgroundColor: t.value, display: "inline-block", marginRight: "var(--ds-spacing-sm)", verticalAlign: "middle" }}
                     aria-hidden="true"
                   />
                 )}

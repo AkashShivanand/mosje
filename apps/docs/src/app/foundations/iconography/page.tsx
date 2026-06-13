@@ -150,14 +150,14 @@ export default function IconographyPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Iconography</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-space-3)" }}>
+      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
         Icons help people scan and recognise actions quickly. SAMAVESH keeps the
         set small, consistent and always paired with a label.
       </p>
 
-      <section aria-labelledby="system" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="system" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="system">The icon system</h2>
-        <ul style={{ marginTop: "var(--ds-space-4)" }}>
+        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <li>
             <strong>lucide-react</strong> is the source for the vast majority of
             UI icons — one consistent 24×24 stroke style across every site and
@@ -176,14 +176,14 @@ export default function IconographyPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="grid" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="grid" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="grid">Most-used icons</h2>
         <div
           style={{
-            marginTop: "var(--ds-space-6)",
+            marginTop: "var(--ds-spacing-2xl)",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-            gap: "var(--ds-space-3)",
+            gap: "var(--ds-spacing-md)",
           }}
         >
           {names.map((name) => (
@@ -193,8 +193,8 @@ export default function IconographyPage(): React.JSX.Element {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: "var(--ds-space-2)",
-                padding: "var(--ds-space-4)",
+                gap: "var(--ds-spacing-sm)",
+                padding: "var(--ds-spacing-lg)",
                 background: "var(--ds-surface-muted)",
                 borderRadius: "var(--ds-radius-md)",
                 color: "var(--ds-ink)",
@@ -207,9 +207,9 @@ export default function IconographyPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="usage" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="usage" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="usage">Usage rules</h2>
-        <ul style={{ marginTop: "var(--ds-space-4)" }}>
+        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <li>
             Decorative icons next to visible text must carry{" "}
             <code>aria-hidden=&quot;true&quot;</code> so screen readers
@@ -228,14 +228,14 @@ export default function IconographyPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="size" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="size" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="size">Size guidance</h2>
         <div
           style={{
-            marginTop: "var(--ds-space-6)",
+            marginTop: "var(--ds-spacing-2xl)",
             display: "flex",
             flexWrap: "wrap",
-            gap: "var(--ds-space-8)",
+            gap: "var(--ds-spacing-3xl)",
             alignItems: "flex-end",
             color: "var(--ds-ink)",
           }}
@@ -245,7 +245,7 @@ export default function IconographyPage(): React.JSX.Element {
             { size: 20, label: "20px — list items and menu rows" },
             { size: 24, label: "24px — standalone controls" },
           ].map(({ size, label }) => (
-            <div key={size} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--ds-space-2)" }}>
+            <div key={size} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--ds-spacing-sm)" }}>
               <Icon name="Search" size={size} />
               <span style={{ fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)", textAlign: "center", maxWidth: "120px" }}>
                 {label}

@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "../cn";
 import "./search.css";
 
-export type SearchSize = "md" | "lg";
+export type SearchSize = "sm" | "md" | "lg";
 
 export interface SearchProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size" | "onChange"> {
@@ -12,7 +12,7 @@ export interface SearchProps
   value: string;
   /** Change handler — receives the native input event. */
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  /** Control size. md ≈ 44px, lg ≈ 56px. @default "md" */
+  /** Control size. sm ≈ 40px (Portal), md ≈ 44px, lg ≈ 56px. @default "md" */
   size?: SearchSize;
   /**
    * When provided, a clear (×) button is shown while `value` is non-empty.

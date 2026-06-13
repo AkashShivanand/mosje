@@ -19,7 +19,7 @@ export function TypeSpecimen({ role, size, weight, leading, sample, sampleHi }: 
         {sample}
       </div>
       {sampleHi && (
-        <div style={{ fontSize: size, fontWeight: weight, lineHeight: "1.7", marginTop: "var(--ds-space-2)", fontFamily: "\"Noto Sans Devanagari\", var(--ds-font-sans)" }}>
+        <div style={{ fontSize: size, fontWeight: weight, lineHeight: "1.7", marginTop: "var(--ds-spacing-sm)", fontFamily: "\"Noto Sans Devanagari\", var(--ds-font-sans)" }}>
           {sampleHi}
         </div>
       )}

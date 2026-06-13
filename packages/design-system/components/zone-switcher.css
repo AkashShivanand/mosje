@@ -21,7 +21,7 @@
   height: 44px;
   padding: 0 16px 0 14px;
   border: 1.5px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-pill);
+  border-radius: var(--ds-radius-full);
   background-color: var(--ds-surface);
   color: var(--ds-ink);
   font-family: var(--ds-font-sans);
@@ -130,7 +130,7 @@
 .ds-appsw__swatch {
   width: 18px;
   height: 18px;
-  border-radius: var(--ds-radius-pill);
+  border-radius: var(--ds-radius-full);
   border: 2px solid transparent;
   cursor: pointer;
   padding: 0;

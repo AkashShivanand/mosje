@@ -125,7 +125,7 @@
   width: 18px;
   height: 18px;
   border: 1.5px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-pill, 100px);
+  border-radius: var(--ds-radius-full, 100px);
   background-color: var(--ds-surface);
   transition:
     border-color 0.15s ease,
@@ -135,7 +135,7 @@
 .ds-radio__dot {
   width: 8px;
   height: 8px;
-  border-radius: var(--ds-radius-pill, 100px);
+  border-radius: var(--ds-radius-full, 100px);
   background-color: var(--ds-primary);
   transform: scale(0);
   transition: transform 0.12s ease;
@@ -213,7 +213,7 @@
   width: var(--_track-w);
   height: var(--_track-h);
   padding: var(--_pad);
-  border-radius: var(--ds-radius-pill, 100px);
+  border-radius: var(--ds-radius-full, 100px);
   background-color: var(--ds-border-strong);
   transition: background-color 0.15s ease;
 }
@@ -221,7 +221,7 @@
 .ds-toggle__knob {
   width: var(--_knob);
   height: var(--_knob);
-  border-radius: var(--ds-radius-pill, 100px);
+  border-radius: var(--ds-radius-full, 100px);
   background-color: var(--ds-surface);
   box-shadow: 0 1px 2px rgba(33, 33, 33, 0.25);
   transform: translateX(0);
@@ -259,4 +259,63 @@
 .ds-toggle--disabled .ds-toggle__track,
 .ds-toggle--disabled .ds-toggle__label {
   opacity: 0.5;
+}
+
+/* ============================================================================
+   Radio Card variant (Portal DS) — a full selectable card around the radio.
+   Combine: .ds-radio-card  [+ --selected] [+ --disabled]
+   ============================================================================ */
+.ds-radio-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-spacing-md, 12px);
+  padding: var(--ds-spacing-lg, 16px);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-lg, 12px);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ds-radio-card:hover {
+  border-color: var(--ds-primary);
+  background: var(--ds-surface-muted);
+}
+
+.ds-radio-card--selected,
+.ds-radio-card--selected:hover {
+  border-color: var(--ds-primary);
+  background: var(--ds-primary-tonal);
+}
+
+.ds-radio-card:focus-within {
+  border-color: var(--ds-primary);
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+.ds-radio-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ds-radio-card__title {
+  font-size: var(--ds-text-label-1, 14px);
+  line-height: var(--ds-leading-label-1, 20px);
+  font-weight: 500;
+  color: var(--ds-ink);
+}
+
+.ds-radio-card__desc {
+  font-size: var(--ds-text-body-2, 14px);
+  line-height: var(--ds-leading-body-2, 20px);
+  color: var(--ds-ink-muted);
+}
+
+.ds-radio-card--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

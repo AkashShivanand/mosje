@@ -74,8 +74,8 @@ export default function GovernancePage(): React.JSX.Element {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "var(--ds-space-3)",
-            marginTop: "var(--ds-space-4)",
+            gap: "var(--ds-spacing-md)",
+            marginTop: "var(--ds-spacing-lg)",
           }}
         >
           {LIFECYCLE.map((item) => (
@@ -84,9 +84,9 @@ export default function GovernancePage(): React.JSX.Element {
               style={{
                 display: "grid",
                 gridTemplateColumns: "minmax(120px, 160px) 1fr",
-                gap: "var(--ds-space-4)",
+                gap: "var(--ds-spacing-lg)",
                 alignItems: "start",
-                padding: "var(--ds-space-4)",
+                padding: "var(--ds-spacing-lg)",
                 border: "1px solid var(--ds-border)",
                 borderRadius: "var(--ds-radius-md)",
                 background: "var(--ds-surface)",
@@ -110,7 +110,7 @@ export default function GovernancePage(): React.JSX.Element {
                   style={{
                     fontSize: "var(--ds-text-body-2)",
                     color: "var(--ds-ink-muted)",
-                    margin: "var(--ds-space-2) 0 0",
+                    margin: "var(--ds-spacing-sm) 0 0",
                   }}
                 >
                   <strong>Safe to use?</strong> {item.safeToUse}

@@ -105,7 +105,7 @@
   color: inherit;
   background: transparent;
   border: none;
-  border-radius: var(--ds-radius-pill, 100px);
+  border-radius: var(--ds-radius-full, 100px);
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;

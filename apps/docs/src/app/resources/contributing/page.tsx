@@ -38,12 +38,12 @@ const CHECKLIST: { label: string; detail: string }[] = [
 const codeBlockStyle: React.CSSProperties = {
   background: "#1e2130",
   borderRadius: "var(--ds-radius-md)",
-  padding: "var(--ds-space-5)",
+  padding: "var(--ds-spacing-xl)",
   fontFamily: "ui-monospace, monospace",
   fontSize: 13,
   color: "#e2e8f0",
   lineHeight: 1.7,
-  marginTop: "var(--ds-space-4)",
+  marginTop: "var(--ds-spacing-lg)",
   overflowX: "auto",
 };
 
@@ -132,14 +132,14 @@ export default function ContributingPage(): React.JSX.Element {
             <span style={{ color: "#7dd3fc" }}>npm</span> run build -w
             @mosje/tokens
           </div>
-          <div style={{ marginTop: "var(--ds-space-4)", color: "#8892a4" }}>
+          <div style={{ marginTop: "var(--ds-spacing-lg)", color: "#8892a4" }}>
             # Confirm the token contract still holds
           </div>
           <div>
             <span style={{ color: "#7dd3fc" }}>npm</span> test -w @mosje/tokens
           </div>
         </div>
-        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--ds-space-4)" }}>
+        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <ol start={3}>
             <li>
               <strong>Check the contract test passes.</strong> The 50-token
@@ -177,7 +177,7 @@ export default function ContributingPage(): React.JSX.Element {
             <span style={{ color: "#7dd3fc" }}>npm</span> run dev
           </div>
         </div>
-        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--ds-space-4)" }}>
+        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <p>
             Need just one app? Use the targeted scripts:{" "}
             <code>npm run dev:website</code>, <code>npm run dev:smile</code>,{" "}
@@ -208,11 +208,11 @@ export default function ContributingPage(): React.JSX.Element {
         <ul
           style={{
             listStyle: "none",
-            margin: "var(--ds-space-4) 0 0",
+            margin: "var(--ds-spacing-lg) 0 0",
             padding: 0,
             display: "flex",
             flexDirection: "column",
-            gap: "var(--ds-space-3)",
+            gap: "var(--ds-spacing-md)",
           }}
         >
           {CHECKLIST.map((item) => (
@@ -220,9 +220,9 @@ export default function ContributingPage(): React.JSX.Element {
               key={item.label}
               style={{
                 display: "flex",
-                gap: "var(--ds-space-3)",
+                gap: "var(--ds-spacing-md)",
                 alignItems: "flex-start",
-                padding: "var(--ds-space-4)",
+                padding: "var(--ds-spacing-lg)",
                 border: "1px solid var(--ds-border)",
                 borderRadius: "var(--ds-radius-md)",
                 background: "var(--ds-surface)",

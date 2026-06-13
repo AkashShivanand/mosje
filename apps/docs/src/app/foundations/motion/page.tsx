@@ -40,28 +40,28 @@ export default function MotionPage(): React.JSX.Element {
       <style>{MOTION_CSS}</style>
 
       <h1>Motion</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-space-3)" }}>
+      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
         Motion in SAMAVESH is quick, quiet and purposeful. It guides attention
         and softens change — it never shows off. On government services, motion
         must also step aside the moment a user asks it to.
       </p>
 
-      <section aria-labelledby="duration" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="duration" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="duration">Duration scale</h2>
-        <p style={{ marginTop: "var(--ds-space-4)" }}>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
           Three durations cover almost everything. Faster is better — long
           animations make an interface feel sluggish.
         </p>
-        <ul style={{ marginTop: "var(--ds-space-4)" }}>
+        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <li><strong>Fast — 150ms:</strong> hovers, small state changes, button presses.</li>
           <li><strong>Base — 250ms:</strong> the default for most enter / exit transitions.</li>
           <li><strong>Slow — 400ms:</strong> larger surfaces such as drawers and full-screen panels.</li>
         </ul>
       </section>
 
-      <section aria-labelledby="easing" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="easing" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="easing">Easing</h2>
-        <p style={{ marginTop: "var(--ds-space-4)" }}>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
           Use <strong>ease-out</strong> for things entering the screen — they
           arrive quickly then settle, which feels responsive. Use{" "}
           <strong>ease-in</strong> for things leaving — they accelerate away,
@@ -69,9 +69,9 @@ export default function MotionPage(): React.JSX.Element {
         </p>
       </section>
 
-      <section aria-labelledby="demo" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="demo" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="demo">Live demo</h2>
-        <p style={{ marginTop: "var(--ds-space-4)" }}>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
           Hover or focus the panel to see all three durations run side by side.
         </p>
         <div
@@ -80,13 +80,13 @@ export default function MotionPage(): React.JSX.Element {
           role="img"
           aria-label="Three boxes animating across the panel at fast, base and slow durations on hover or focus"
           style={{
-            marginTop: "var(--ds-space-6)",
+            marginTop: "var(--ds-spacing-2xl)",
             background: "var(--ds-surface-muted)",
             borderRadius: "var(--ds-radius-md)",
-            padding: "var(--ds-space-8)",
+            padding: "var(--ds-spacing-3xl)",
             display: "flex",
             flexDirection: "column",
-            gap: "var(--ds-space-6)",
+            gap: "var(--ds-spacing-2xl)",
             outlineOffset: "2px",
           }}
         >
@@ -96,7 +96,7 @@ export default function MotionPage(): React.JSX.Element {
             ["slow", "Slow · 400ms"],
           ] as const).map(([key, label]) => (
             <div key={key}>
-              <div style={{ fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)", marginBottom: "var(--ds-space-2)" }}>
+              <div style={{ fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)", marginBottom: "var(--ds-spacing-sm)" }}>
                 {label}
               </div>
               <div className={`motion-demo__box motion-demo__box--${key}`} />
@@ -105,9 +105,9 @@ export default function MotionPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="reduced" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="reduced" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="reduced">Reduced motion</h2>
-        <p style={{ marginTop: "var(--ds-space-4)" }}>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
           When a user has turned on{" "}
           <strong>&ldquo;Reduce motion&rdquo;</strong> in their operating
           system, every motion token resolves to <code>0ms</code>. Transitions
@@ -117,9 +117,9 @@ export default function MotionPage(): React.JSX.Element {
         </p>
       </section>
 
-      <section aria-labelledby="tokens" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="tokens" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="tokens">Tokens</h2>
-        <div style={{ marginTop: "var(--ds-space-4)" }}>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <TokenTable
             tokens={[
               { token: "--ds-duration-fast", value: "150ms", description: "Hovers, presses, small state changes" },
@@ -132,9 +132,9 @@ export default function MotionPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="guidance" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="guidance" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="guidance">Guidance</h2>
-        <div style={{ marginTop: "var(--ds-space-4)" }}>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <Callout type="warning" title="Motion is decoration, never information">
             Never animate content that is essential to understanding. Animation
             should only carry decorative or transitional meaning — if a user
