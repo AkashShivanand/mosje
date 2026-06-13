@@ -1,6 +1,8 @@
-import type { SectionRecord } from "@/types/content";
+import type { SectionRecord, FileRecord } from "@/types/content";
 import organisationData from "@/content/organisation.json";
 import schemesData from "@/content/schemes.json";
+import tendersData from "@/content/tenders.json";
+import vacanciesData from "@/content/vacancies.json";
 
 /**
  * App basePath — must stay in sync with `basePath` in next.config.ts.
@@ -33,4 +35,16 @@ export function getSchemes(): SectionRecord[] {
 
 export function getScheme(slug: string): SectionRecord | undefined {
   return schemes.find((s) => s.slug === slug);
+}
+
+const tenders = tendersData as FileRecord[];
+
+export function getTenders(): FileRecord[] {
+  return tenders;
+}
+
+const vacancies = vacanciesData as FileRecord[];
+
+export function getVacancies(): FileRecord[] {
+  return vacancies;
 }
