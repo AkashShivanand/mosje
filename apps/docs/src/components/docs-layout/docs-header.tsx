@@ -5,6 +5,10 @@ import { applyTheme, readThemeCookie, type Theme } from "@/lib/theme";
 
 interface DocsHeaderProps {
   onSearchOpen: () => void;
+  /** Mobile nav drawer open state (for the hamburger control). */
+  navOpen?: boolean;
+  /** Toggle the mobile nav drawer. */
+  onMenuToggle?: () => void;
 }
 
 function useBreadcrumb(): [string, string] | null {
@@ -30,7 +34,7 @@ function useBreadcrumb(): [string, string] | null {
   return crumb;
 }
 
-export function DocsHeader({ onSearchOpen }: DocsHeaderProps): React.JSX.Element {
+export function DocsHeader({ onSearchOpen, navOpen, onMenuToggle }: DocsHeaderProps): React.JSX.Element {
   const breadcrumb = useBreadcrumb();
   const [theme, setTheme] = React.useState<Theme>("light");
   const isDark = theme === "dark";
@@ -62,6 +66,24 @@ export function DocsHeader({ onSearchOpen }: DocsHeaderProps): React.JSX.Element
 
   return (
     <header className="docs-header" role="banner">
+      <button
+        className="docs-header__menu"
+        onClick={onMenuToggle}
+        aria-label={navOpen ? "Close navigation menu" : "Open navigation menu"}
+        aria-expanded={navOpen ?? false}
+        aria-controls="docs-sidebar"
+        type="button"
+      >
+        {navOpen ? (
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+        ) : (
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+        )}
+      </button>
       <nav className="docs-header__breadcrumb" aria-label="Breadcrumb">
         <a href="/design-system" className="docs-header__breadcrumb-home">
           SAMAVESH
@@ -104,7 +126,7 @@ export function DocsHeader({ onSearchOpen }: DocsHeaderProps): React.JSX.Element
           <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.5" />
           <path d="m11 11 2.5 2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
-        Search docs…
+        <span className="docs-header__search-label">Search docs…</span>
         <kbd className="docs-header__search-kbd">⌘K</kbd>
       </button>
     </header>

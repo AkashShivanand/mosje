@@ -72,12 +72,14 @@
   --color-focus-ring: var(--sa-color-focus-ring);
   --color-status-success: var(--sa-color-status-success);
   --color-status-successStrong: var(--sa-color-status-successStrong);
+  --color-status-successTonal: var(--sa-color-status-successTonal);
   --color-status-warning: var(--sa-color-status-warning);
   --color-status-warningTonal: var(--sa-color-status-warningTonal);
   --color-status-danger: var(--sa-color-status-danger);
   --color-status-dangerStrong: var(--sa-color-status-dangerStrong);
   --color-status-dangerTonal: var(--sa-color-status-dangerTonal);
   --color-status-info: var(--sa-color-status-info);
+  --color-overlay-scrim: var(--sa-color-overlay-scrim);
   --color-a11y-hc-fg: var(--sa-color-a11y-hc-fg);
   --color-a11y-hc-bg: var(--sa-color-a11y-hc-bg);
   --color-a11y-hc-link: var(--sa-color-a11y-hc-link);

@@ -108,12 +108,16 @@ export const tokens = {
     "status": {
       "success": "#2e7d32",
       "successStrong": "#1b5e20",
+      "successTonal": "#c8e6c9",
       "warning": "#ffd323",
       "warningTonal": "#ffedd5",
       "danger": "#ec5042",
       "dangerStrong": "#a11d12",
       "dangerTonal": "#fad2cf",
       "info": "#0373df"
+    },
+    "overlay": {
+      "scrim": "rgba(33, 33, 33, 0.5)"
     },
     "a11y": {
       "hc": {
@@ -162,7 +166,8 @@ export const tokens = {
   "font": {
     "family": {
       "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
-      "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"
+      "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
+      "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
     },
     "weight": {
       "regular": 400,
@@ -191,6 +196,18 @@ export const tokens = {
     "xs": "0 2px 3px 1px rgba(33, 33, 33, 0.12)",
     "lg": "0 12px 16px -4px rgba(33, 33, 33, 0.08), 0 4px 6px -2px rgba(33, 33, 33, 0.03)",
     "xl": "0 24px 48px -12px rgba(33, 33, 33, 0.18)"
+  },
+  "motion": {
+    "duration": {
+      "fast": "150ms",
+      "base": "250ms",
+      "slow": "400ms"
+    },
+    "easing": {
+      "out": "cubic-bezier(0, 0, 0.2, 1)",
+      "in": "cubic-bezier(0.4, 0, 1, 1)",
+      "inOut": "cubic-bezier(0.4, 0, 0.2, 1)"
+    }
   },
   "type": {
     "display": {

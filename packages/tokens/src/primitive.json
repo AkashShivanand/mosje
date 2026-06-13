@@ -51,7 +51,8 @@
     "family": {
       "$type": "fontFamily",
       "latin": {"$value":"\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"},
-      "devanagari": {"$value":"\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"}
+      "devanagari": {"$value":"\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"},
+      "mono": {"$value":"ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"}
     },
     "weight": {
       "$type": "fontWeight",
@@ -73,5 +74,16 @@
     "xs": {"$value":"0 2px 3px 1px rgba(33, 33, 33, 0.12)"},
     "lg": {"$value":"0 12px 16px -4px rgba(33, 33, 33, 0.08), 0 4px 6px -2px rgba(33, 33, 33, 0.03)"},
     "xl": {"$value":"0 24px 48px -12px rgba(33, 33, 33, 0.18)"}
+  },
+  "motion": {
+    "$description": "Duration + easing primitives for transitions and animations.",
+    "duration": {
+      "fast": {"$value":"150ms"}, "base": {"$value":"250ms"}, "slow": {"$value":"400ms"}
+    },
+    "easing": {
+      "out": {"$value":"cubic-bezier(0, 0, 0.2, 1)"},
+      "in":  {"$value":"cubic-bezier(0.4, 0, 1, 1)"},
+      "inOut": {"$value":"cubic-bezier(0.4, 0, 0.2, 1)"}
+    }
   }
 }

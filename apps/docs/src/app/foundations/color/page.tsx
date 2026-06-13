@@ -124,7 +124,7 @@ export default function ColorPage(): React.JSX.Element {
             },
             {
               name: "Navy",
-              token: "--ds-navy",
+              token: "--ds-gov-navy",
               hex: "#003366",
               contrastWith: "white",
             },
@@ -290,7 +290,7 @@ export default function ColorPage(): React.JSX.Element {
               isColor: true,
             },
             {
-              token: "--ds-navy",
+              token: "--ds-gov-navy",
               value: "#003366",
               description: "Deep brand navy — headers, emphasis bands",
               isColor: true,

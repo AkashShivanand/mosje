@@ -35,7 +35,7 @@ const h2Style: React.CSSProperties = {
 };
 
 const h3Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-title)",
+  fontSize: "var(--ds-text-title-1)",
   fontWeight: 600,
   color: "var(--ds-ink)",
   marginTop: "var(--ds-space-6)",
@@ -140,7 +140,7 @@ export default function ButtonPage(): React.JSX.Element {
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
-        padding: "var(--ds-space-8) var(--ds-space-6) var(--ds-space-16)",
+        padding: "var(--ds-space-8) var(--ds-space-6) var(--ds-space-14)",
       }}
     >
       {/* ---------------- Header ---------------- */}
@@ -885,7 +885,7 @@ function UseCard({
         style={{
           margin: 0,
           marginBottom: "var(--ds-space-3)",
-          fontSize: "var(--ds-text-title)",
+          fontSize: "var(--ds-text-title-1)",
           fontWeight: 600,
           color: "var(--ds-ink)",
         }}

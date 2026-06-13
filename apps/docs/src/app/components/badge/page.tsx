@@ -108,9 +108,9 @@ export default function BadgePage(): React.JSX.Element {
               label: "Use status badges to surface system states such as Approved, Pending, or Rejected.",
               preview: (
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px 10px", borderRadius: 999, background: "#dcfce7", color: "#166534", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Approved</span>
-                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px 10px", borderRadius: 999, background: "#fef9c3", color: "#854d0e", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Pending</span>
-                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px 10px", borderRadius: 999, background: "#fee2e2", color: "#991b1b", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Rejected</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px var(--ds-space-3)", borderRadius: "var(--ds-radius-pill)", background: "var(--ds-success-tonal)", color: "var(--ds-success)", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Approved</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px var(--ds-space-3)", borderRadius: "var(--ds-radius-pill)", background: "var(--ds-warning-tonal)", color: "var(--ds-ink)", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Pending</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px var(--ds-space-3)", borderRadius: "var(--ds-radius-pill)", background: "var(--ds-danger-tonal)", color: "var(--ds-danger)", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Rejected</span>
                 </div>
               ),
             },

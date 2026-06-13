@@ -187,7 +187,7 @@ export default function TypographyPage() {
             <div
               style={{
                 padding: "var(--ds-space-3) var(--ds-space-4)",
-                background: "#fff1f0",
+                background: "var(--ds-danger-tonal)",
                 color: "var(--ds-danger)",
                 fontSize: "var(--ds-text-body-2)",
                 fontWeight: 700,
@@ -224,7 +224,7 @@ export default function TypographyPage() {
             <div
               style={{
                 padding: "var(--ds-space-3) var(--ds-space-4)",
-                background: "#f0fdf4",
+                background: "var(--ds-success-tonal)",
                 color: "var(--ds-success)",
                 fontSize: "var(--ds-text-body-2)",
                 fontWeight: 700,
@@ -287,7 +287,7 @@ export default function TypographyPage() {
           tokens={[
             { token: "--ds-text-display", value: "48px", description: "Display — hero headings, landing banners." },
             { token: "--ds-text-title-1", value: "22px", description: "Title 1 — page titles, primary section headings." },
-            { token: "--ds-text-title-2", value: "18px", description: "Title 2 — secondary section headings." },
+            { token: "--ds-text-title-2", value: "16px", description: "Title 2 — secondary section headings." },
             { token: "--ds-text-headline", value: "20px", description: "Headline — card titles, dashboard panel headers." },
             { token: "--ds-text-body-1", value: "16px", description: "Body 1 — default reading size for paragraphs." },
             { token: "--ds-text-body-2", value: "14px", description: "Body 2 — secondary info, helper text, table cells." },
