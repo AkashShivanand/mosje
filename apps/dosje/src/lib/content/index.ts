@@ -3,6 +3,7 @@ import organisationData from "@/content/organisation.json";
 import schemesData from "@/content/schemes.json";
 import tendersData from "@/content/tenders.json";
 import vacanciesData from "@/content/vacancies.json";
+import documentsData from "@/content/documents.json";
 import manifest from "@/content/manifest.json";
 
 /**
@@ -55,4 +56,14 @@ const vacancies = vacanciesData as FileRecord[];
 
 export function getVacancies(): FileRecord[] {
   return vacancies;
+}
+
+const documents = documentsData as FileRecord[];
+
+export function getDocuments(): FileRecord[] {
+  return documents;
+}
+
+export function getDocumentsByType(category: string): FileRecord[] {
+  return documents.filter((d) => d.category === category);
 }

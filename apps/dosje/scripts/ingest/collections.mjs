@@ -34,4 +34,21 @@ export const COLLECTIONS = [
     taxonomies: { category: "vacancy-category" },
     fields: ["id", "slug", "title", "link", "date", "content", "vacancy-category"],
   },
+  {
+    name: "documents",
+    restBase: "documents",
+    sitemapType: "documents",
+    kind: "file",
+    partial: true, // intentional subset: only the 10 types with listing pages
+    query: "documents-type=28,29,30,31,32,138,141,145,158,217",
+    taxonomies: { category: "documents-type" },
+    // A record can carry several documents-type terms; prefer the wanted one as its
+    // category so records that ALSO have a non-listed type aren't mis-bucketed.
+    preferCategories: [
+      "Annual Reports", "Acts & Rules", "Circulars & Notifications",
+      "Forms & Templates", "Publications", "Notice", "MOU", "POLICY",
+      "Resources", "Advices",
+    ],
+    fields: ["id", "slug", "title", "link", "date", "content", "documents-type"],
+  },
 ];

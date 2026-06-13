@@ -10,6 +10,13 @@ export const documentColumns: DataTableColumn[] = [
   { key: "action", label: "Action", align: "center", type: "link", hrefKey: "href", linkLabel: "View" },
 ];
 
+/** T2 — shared document-listing columns (Title, Published, Action) for the 10 document pages. */
+export const documentListColumns: DataTableColumn[] = [
+  { key: "title", label: "Title", sortable: true, align: "left", className: "min-w-[360px] font-medium text-ink" },
+  { key: "date", label: "Published", sortable: true, align: "center", className: "min-w-[120px]" },
+  { key: "action", label: "Action", align: "center", type: "link", hrefKey: "href", linkLabel: "View" },
+];
+
 /** T2 — simpler listing (Title, Date, Action) for notices/circulars/policies. */
 export const noticeColumns: DataTableColumn[] = [
   { key: "title", label: "Title", sortable: true, align: "left", className: "min-w-[320px] font-medium text-ink" },

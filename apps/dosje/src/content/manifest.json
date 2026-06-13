@@ -1,6 +1,13 @@
 {
-  "generatedAt": "2026-06-13T14:58:20.323Z",
+  "generatedAt": "2026-06-13T16:01:15.089Z",
   "collections": [
+    {
+      "name": "documents",
+      "sitemapCount": 1624,
+      "kept": 1624,
+      "skipped": 0,
+      "skippedDetail": []
+    },
     {
       "name": "organisation",
       "sitemapCount": 178,

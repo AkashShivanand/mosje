@@ -1,7 +1,14 @@
-// Decode the small set of HTML entities WordPress emits in titles/term names.
+// Decode the HTML entities WordPress emits in titles/term names — numeric
+// (decimal + hex) plus the common named ones.
 export function decodeEntities(s) {
   return s
-    .replace(/&amp;/g, "&").replace(/&#038;/g, "&").replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#8217;/g, "’")
-    .replace(/&#8216;/g, "‘").replace(/&nbsp;/g, " ").trim();
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(parseInt(n, 10)))
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .trim();
 }

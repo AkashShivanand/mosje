@@ -23,7 +23,14 @@ export function transformFileRecord(raw, ctx = {}) {
   };
   if (raw.date) rec.date = String(raw.date).slice(0, 10);
   const tax = ctx.taxonomyNames ?? {};
-  if (tax.category?.length) rec.category = tax.category[0];
+  if (tax.category?.length) {
+    // When a preferred set is given (collections that fetch a subset of a multi-term
+    // taxonomy), pick the first category that is in that set so a record carrying both a
+    // wanted and an unwanted term lands in the right bucket. Else keep first term.
+    const prefer = ctx.preferCategories;
+    rec.category =
+      (prefer && tax.category.find((c) => prefer.includes(c))) || tax.category[0];
+  }
   if (fileUrl) rec.fileUrl = fileUrl;
   return rec;
 }

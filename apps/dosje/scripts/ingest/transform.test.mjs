@@ -44,3 +44,14 @@ test("transformFileRecord omits fileUrl when no document link present", () => {
   assert.equal(rec.fileUrl, undefined);
   assert.equal(rec.category, undefined);
 });
+
+test("transformFileRecord prefers a wanted category over an unwanted first term", () => {
+  const raw = { slug: "d", link: "https://x/d", date: "2026-01-01", title: { rendered: "Doc" }, content: { rendered: "" } };
+  const rec = transformFileRecord(raw, { taxonomyNames: { category: ["Central List of OBCs", "Annual Reports"] }, preferCategories: ["Annual Reports", "Notice"] });
+  assert.equal(rec.category, "Annual Reports");
+});
+test("transformFileRecord falls back to first category when none preferred match", () => {
+  const raw = { slug: "d", link: "https://x/d", date: "2026-01-01", title: { rendered: "Doc" }, content: { rendered: "" } };
+  const rec = transformFileRecord(raw, { taxonomyNames: { category: ["Tour Reports"] }, preferCategories: ["Annual Reports"] });
+  assert.equal(rec.category, "Tour Reports");
+});
