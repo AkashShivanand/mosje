@@ -13,7 +13,11 @@
     "start": "next start -p 3001",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "check": "npm run lint && npm run typecheck && npm run build"
+    "check": "npm run lint && npm run typecheck && npm run build",
+    "ingest": "node scripts/ingest/index.mjs",
+    "ingest:verify": "node scripts/ingest/index.mjs --verify-only",
+    "ingest:assets": "node scripts/ingest/index.mjs --assets-only",
+    "test:ingest": "node --test \"scripts/ingest/**/*.test.mjs\""
   },
   "dependencies": {
     "@mosje/design-system": "file:../../packages/design-system",
@@ -33,7 +37,10 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
+    "node-html-parser": "^7.1.0",
+    "sanitize-html": "^2.17.5",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "zod": "^4.4.3"
   }
 }
