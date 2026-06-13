@@ -47,7 +47,7 @@
 }
 .pg-toggle.is-active {
   background: var(--ds-primary);
-  color: #fff;
+  color: var(--ds-on-primary);
 }
 .pg-toggle:not(:last-child) { border-right: 1px solid var(--ds-border-strong); }
 

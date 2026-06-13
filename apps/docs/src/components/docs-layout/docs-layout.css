@@ -41,11 +41,11 @@
   height: 28px;
   border-radius: var(--ds-radius-sm);
   background-color: var(--ds-primary);
-  color: #fff;
+  color: var(--ds-on-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: var(--ds-text-body-3);
   font-weight: 800;
   flex-shrink: 0;
 }
@@ -232,9 +232,9 @@
 
 .docs-header__search-kbd {
   margin-left: auto;
-  font-size: 10px;
+  font-size: var(--ds-text-label-3);
   background: var(--ds-border);
-  border-radius: 3px;
+  border-radius: var(--ds-radius-xxs);
   padding: 1px 4px;
 }
 

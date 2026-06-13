@@ -40,7 +40,7 @@ code { overflow-wrap: anywhere; }
 
 p { line-height: var(--ds-leading-body-1); }
 
-a { color: var(--ds-primary); text-decoration: none; }
+a { color: var(--ds-link); text-decoration: none; }
 a:hover { text-decoration: underline; }
 a:focus-visible {
   outline: 3px solid var(--ds-primary-ring);
@@ -72,7 +72,7 @@ code:not([class]) {
   z-index: 9999;
   padding: var(--ds-space-2) var(--ds-space-4);
   background: var(--ds-primary);
-  color: #fff;
+  color: var(--ds-on-primary);
   border-radius: var(--ds-radius-sm);
   font-weight: 600;
   transition: top 0.1s;

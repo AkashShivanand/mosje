@@ -47,6 +47,7 @@
   --sa-color-action-primary-default: #0373df;
   --sa-color-action-primary-hover: #014b92;
   --sa-color-action-primary-tonal: #c6dcf9;
+  --sa-color-action-link: #0373df;
   --sa-color-primaryScale-50: #e8f2fd;
   --sa-color-primaryScale-100: #c6dcf9;
   --sa-color-primaryScale-200: #94bff5;
@@ -168,6 +169,7 @@
   --ds-primary-tonal: var(--sa-color-action-primary-tonal);
   --ds-primary-dark: var(--sa-color-action-primary-hover);
   --ds-primary-hover: var(--sa-color-action-primary-hover);
+  --ds-link: var(--sa-color-action-link);
   --ds-primary-ring: var(--sa-color-focus-ring);
   --ds-primary-50: var(--sa-color-primaryScale-50);
   --ds-primary-100: var(--sa-color-primaryScale-100);
@@ -242,6 +244,7 @@
   --sa-color-action-primary-default: var(--sa-color-primaryRamp-dark-500);
   --sa-color-action-primary-hover: var(--sa-color-primaryRamp-dark-700);
   --sa-color-action-primary-tonal: var(--sa-color-primaryRamp-dark-100);
+  --sa-color-action-link: var(--sa-color-primaryRamp-dark-500);
   --sa-color-primaryScale-50: var(--sa-color-primaryRamp-dark-50);
   --sa-color-primaryScale-100: var(--sa-color-primaryRamp-dark-100);
   --sa-color-primaryScale-200: var(--sa-color-primaryRamp-dark-200);
@@ -259,6 +262,7 @@
   --sa-color-action-primary-default: #0373df;
   --sa-color-action-primary-hover: #014b92;
   --sa-color-action-primary-tonal: #c6dcf9;
+  --sa-color-action-link: #0373df;
   --sa-color-text-default: #212121;
   --sa-color-text-muted: #343a40;
   --sa-color-text-strong: #1f2428;
@@ -286,6 +290,7 @@
   --ds-primary-tonal: var(--sa-color-action-primary-tonal);
   --ds-primary-dark: var(--sa-color-action-primary-hover);
   --ds-primary-hover: var(--sa-color-action-primary-hover);
+  --ds-link: var(--sa-color-action-link);
   --ds-primary-ring: var(--sa-color-focus-ring);
   --ds-primary-50: var(--sa-color-primaryScale-50);
   --ds-primary-100: var(--sa-color-primaryScale-100);
@@ -360,6 +365,7 @@
   --sa-color-action-primary-default: var(--sa-color-primaryRamp-light-400);
   --sa-color-action-primary-hover: var(--sa-color-primaryRamp-light-300);
   --sa-color-action-primary-tonal: rgba(45, 132, 232, 0.18);
+  --sa-color-action-link: var(--sa-color-primaryRamp-light-300);
   --sa-color-text-default: var(--sa-color-a11y-dark-ink);
   --sa-color-text-muted: var(--sa-color-a11y-dark-inkMuted);
   --sa-color-text-strong: var(--sa-color-neutral-0);
@@ -387,6 +393,7 @@
   --ds-primary-tonal: var(--sa-color-action-primary-tonal);
   --ds-primary-dark: var(--sa-color-action-primary-hover);
   --ds-primary-hover: var(--sa-color-action-primary-hover);
+  --ds-link: var(--sa-color-action-link);
   --ds-primary-ring: var(--sa-color-focus-ring);
   --ds-primary-50: var(--sa-color-primaryScale-50);
   --ds-primary-100: var(--sa-color-primaryScale-100);
@@ -471,6 +478,7 @@
   --ds-primary-tonal: var(--sa-color-action-primary-tonal);
   --ds-primary-dark: var(--sa-color-action-primary-hover);
   --ds-primary-hover: var(--sa-color-action-primary-hover);
+  --ds-link: var(--sa-color-action-link);
   --ds-primary-ring: var(--sa-color-focus-ring);
   --ds-primary-50: var(--sa-color-primaryScale-50);
   --ds-primary-100: var(--sa-color-primaryScale-100);

@@ -7,6 +7,11 @@
         "default": {"$value":"{color.primaryRamp.light.500}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.500}"},"themes":{"dark":"{color.primaryRamp.light.400}"}}}},
         "hover":   {"$value":"{color.primaryRamp.light.700}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.700}"},"themes":{"dark":"{color.primaryRamp.light.300}"}}}},
         "tonal":   {"$value":"{color.primaryRamp.light.100}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.100}"},"themes":{"dark":"rgba(45, 132, 232, 0.18)"}}}}
+      },
+      "link": {
+        "$description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast.",
+        "$value":"{color.primaryRamp.light.500}",
+        "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.500}"},"themes":{"dark":"{color.primaryRamp.light.300}"}}}
       }
     },
     "primaryScale": {

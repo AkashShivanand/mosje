@@ -70,7 +70,8 @@ export const tokens = {
         "default": "#0373df",
         "hover": "#014b92",
         "tonal": "#c6dcf9"
-      }
+      },
+      "link": "#0373df"
     },
     "primaryScale": {
       "50": "#e8f2fd",

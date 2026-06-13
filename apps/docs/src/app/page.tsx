@@ -109,7 +109,7 @@ export default function WelcomePage(): React.JSX.Element {
 
       {/* ── For each audience ── */}
       <section style={{ marginTop: "var(--ds-space-12)" }} id="for-designers">
-        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-space-4)", scrollMarginTop: "80px" }}>
+        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-space-4)", scrollMarginTop: "calc(56px + var(--ds-space-6))" }}>
           For Designers
         </h2>
         <p style={{ color: "var(--ds-ink-muted)", marginBottom: "var(--ds-space-5)", lineHeight: "var(--ds-leading-body-1)" }}>
@@ -135,7 +135,7 @@ export default function WelcomePage(): React.JSX.Element {
       </section>
 
       <section style={{ marginTop: "var(--ds-space-12)" }} id="for-developers">
-        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-space-4)", scrollMarginTop: "80px" }}>
+        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-space-4)", scrollMarginTop: "calc(56px + var(--ds-space-6))" }}>
           For Developers
         </h2>
         <p style={{ color: "var(--ds-ink-muted)", marginBottom: "var(--ds-space-5)", lineHeight: "var(--ds-leading-body-1)" }}>
@@ -164,7 +164,7 @@ export default function WelcomePage(): React.JSX.Element {
       </section>
 
       <section style={{ marginTop: "var(--ds-space-12)" }}>
-        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-space-5)", scrollMarginTop: "80px" }}>
+        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-space-5)", scrollMarginTop: "calc(56px + var(--ds-space-6))" }}>
           What&apos;s available
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "var(--ds-space-3)" }}>

@@ -114,7 +114,7 @@ export default function ChangelogPage(): React.JSX.Element {
             <article
               key={release.version}
               id={release.version.replace(/\./g, "-")}
-              style={{ scrollMarginTop: "80px" }}
+              style={{ scrollMarginTop: "calc(56px + var(--ds-space-6))" }}
             >
               {/* Release heading */}
               <div

@@ -47,6 +47,7 @@
   --color-action-primary-default: var(--sa-color-action-primary-default);
   --color-action-primary-hover: var(--sa-color-action-primary-hover);
   --color-action-primary-tonal: var(--sa-color-action-primary-tonal);
+  --color-action-link: var(--sa-color-action-link);
   --color-primaryScale-50: var(--sa-color-primaryScale-50);
   --color-primaryScale-100: var(--sa-color-primaryScale-100);
   --color-primaryScale-200: var(--sa-color-primaryScale-200);

@@ -10,6 +10,7 @@ export const LEGACY_DS_ALIASES = {
   "--ds-primary-tonal": "--sa-color-action-primary-tonal",
   "--ds-primary-dark": "--sa-color-action-primary-hover",
   "--ds-primary-hover": "--sa-color-action-primary-hover",
+  "--ds-link": "--sa-color-action-link",
   "--ds-primary-ring": "--sa-color-focus-ring",
   "--ds-primary-50": "--sa-color-primaryScale-50",
   "--ds-primary-100": "--sa-color-primaryScale-100",
