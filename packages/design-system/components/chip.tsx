@@ -16,6 +16,8 @@ export interface ChipProps
   onDismiss?: () => void;
   /** Accessible label for the dismiss button. @default "Remove" */
   dismissLabel?: string;
+  /** Renders a trailing chevron marking the chip as a dropdown trigger (Portal DS). */
+  trailingDropdown?: boolean;
   /** Disables interaction and dims the chip. */
   disabled?: boolean;
 }
@@ -36,6 +38,7 @@ export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
     leadingIcon,
     onDismiss,
     dismissLabel = "Remove",
+    trailingDropdown = false,
     disabled = false,
     className,
     children,
@@ -98,6 +101,23 @@ export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
         </span>
       )}
       <span className="ds-chip__label">{children}</span>
+      {trailingDropdown && (
+        <span className="ds-chip__icon ds-chip__chevron" aria-hidden="true">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            focusable="false"
+          >
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </span>
+      )}
       {onDismiss != null && (
         <button
           type="button"

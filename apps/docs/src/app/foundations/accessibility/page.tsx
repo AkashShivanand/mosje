@@ -12,21 +12,21 @@ export default function AccessibilityPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Accessibility</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-space-3)" }}>
+      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
         Accessibility is not a feature — it&apos;s the foundation. These are
         government services that every citizen must be able to use, regardless of
         ability, device or connection.
       </p>
 
-      <section aria-labelledby="standard" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="standard" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="standard">WCAG 2.2 AA + GIGW</h2>
-        <p style={{ marginTop: "var(--ds-space-4)" }}>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <strong>WCAG 2.2</strong> (Web Content Accessibility Guidelines) is the
           international standard for accessible digital content. Each guideline
           has three conformance levels — A, AA and AAA. SAMAVESH targets{" "}
           <strong>AA</strong>, the level expected of public services worldwide.
         </p>
-        <p style={{ marginTop: "var(--ds-space-4)" }}>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <strong>GIGW</strong> (Guidelines for Indian Government Websites and
           Apps) builds on WCAG and is the national standard for government
           digital properties in India. Meeting WCAG 2.2 AA and GIGW is{" "}
@@ -36,12 +36,12 @@ export default function AccessibilityPage(): React.JSX.Element {
         </p>
       </section>
 
-      <section aria-labelledby="pour" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="pour" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="pour">The four POUR principles</h2>
-        <p style={{ marginTop: "var(--ds-space-4)" }}>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
           WCAG is built on four ideas. In plain English:
         </p>
-        <ul style={{ marginTop: "var(--ds-space-4)" }}>
+        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <li>
             <strong>Perceivable</strong> — people must be able to sense the
             content. Provide text alternatives for images, captions for media,
@@ -65,9 +65,9 @@ export default function AccessibilityPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="designers" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="designers" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="designers">Checklist for designers</h2>
-        <ul style={{ marginTop: "var(--ds-space-4)" }}>
+        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <li>
             <strong>Contrast ratios:</strong> at least 4.5:1 for normal text and
             3:1 for large text and meaningful icons.
@@ -87,9 +87,9 @@ export default function AccessibilityPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="developers" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="developers" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="developers">Checklist for developers</h2>
-        <ul style={{ marginTop: "var(--ds-space-4)" }}>
+        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <li>
             <strong>Semantic HTML:</strong> use the right element — buttons,
             headings, lists, landmarks — before reaching for ARIA.
@@ -110,12 +110,12 @@ export default function AccessibilityPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="baseline" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="baseline" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="baseline">Baseline requirements</h2>
-        <p style={{ marginTop: "var(--ds-space-4)" }}>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
           Every SAMAVESH page must meet these as a minimum:
         </p>
-        <div style={{ marginTop: "var(--ds-space-4)" }}>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <A11yChecklist
             items={[
               {
@@ -158,9 +158,9 @@ export default function AccessibilityPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="testing" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="testing" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="testing">How to test</h2>
-        <ul style={{ marginTop: "var(--ds-space-4)" }}>
+        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <li>
             <strong>axe DevTools</strong> — a free browser extension that flags
             common issues automatically. A great first pass, but it cannot catch
@@ -179,9 +179,9 @@ export default function AccessibilityPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="built-in" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="built-in" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="built-in">Built-in by default</h2>
-        <div style={{ marginTop: "var(--ds-space-4)" }}>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <Callout type="info" title="Components ship accessible">
             SAMAVESH components ship with accessibility built in — semantic
             markup, focus management, accessible names and contrast are already

@@ -104,28 +104,28 @@ export default function ChangelogPage(): React.JSX.Element {
 
         <div
           style={{
-            marginTop: "var(--ds-space-6)",
+            marginTop: "var(--ds-spacing-2xl)",
             display: "flex",
             flexDirection: "column",
-            gap: "var(--ds-space-8)",
+            gap: "var(--ds-spacing-3xl)",
           }}
         >
           {RELEASES.map((release) => (
             <article
               key={release.version}
               id={release.version.replace(/\./g, "-")}
-              style={{ scrollMarginTop: "calc(56px + var(--ds-space-6))" }}
+              style={{ scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}
             >
               {/* Release heading */}
               <div
                 style={{
                   display: "flex",
                   alignItems: "baseline",
-                  gap: "var(--ds-space-3)",
+                  gap: "var(--ds-spacing-md)",
                   flexWrap: "wrap",
-                  paddingBottom: "var(--ds-space-3)",
+                  paddingBottom: "var(--ds-spacing-md)",
                   borderBottom: "1px solid var(--ds-border)",
-                  marginBottom: "var(--ds-space-4)",
+                  marginBottom: "var(--ds-spacing-lg)",
                 }}
               >
                 <h2
@@ -152,7 +152,7 @@ export default function ChangelogPage(): React.JSX.Element {
                       fontWeight: 600,
                       color: "#fff",
                       background: "var(--ds-primary)",
-                      padding: "2px var(--ds-space-2)",
+                      padding: "2px var(--ds-spacing-sm)",
                       borderRadius: "var(--ds-radius-sm)",
                     }}
                   >
@@ -169,7 +169,7 @@ export default function ChangelogPage(): React.JSX.Element {
                   padding: 0,
                   display: "flex",
                   flexDirection: "column",
-                  gap: "var(--ds-space-3)",
+                  gap: "var(--ds-spacing-md)",
                 }}
               >
                 {release.changes.map((change, i) => (
@@ -177,7 +177,7 @@ export default function ChangelogPage(): React.JSX.Element {
                     key={i}
                     style={{
                       display: "flex",
-                      gap: "var(--ds-space-3)",
+                      gap: "var(--ds-spacing-md)",
                       alignItems: "flex-start",
                     }}
                   >
@@ -190,7 +190,7 @@ export default function ChangelogPage(): React.JSX.Element {
                         fontWeight: 700,
                         color: "#fff",
                         background: KIND_COLOR[change.kind],
-                        padding: "2px var(--ds-space-2)",
+                        padding: "2px var(--ds-spacing-sm)",
                         borderRadius: "var(--ds-radius-sm)",
                       }}
                     >

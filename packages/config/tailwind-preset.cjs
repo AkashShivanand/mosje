@@ -26,10 +26,18 @@ module.exports = {
         "border-strong": "var(--ds-border-strong)"
       },
       "borderRadius": {
+        "none": "var(--ds-radius-none)",
+        "xxs": "var(--ds-radius-xxs)",
         "xs": "var(--ds-radius-xs)",
         "sm": "var(--ds-radius-sm)",
         "md": "var(--ds-radius-md)",
-        "pill": "var(--ds-radius-pill)"
+        "lg": "var(--ds-radius-lg)",
+        "xl": "var(--ds-radius-xl)",
+        "2xl": "var(--ds-radius-2xl)",
+        "3xl": "var(--ds-radius-3xl)",
+        "4xl": "var(--ds-radius-4xl)",
+        "5xl": "var(--ds-radius-5xl)",
+        "full": "var(--ds-radius-full)"
       },
       "fontFamily": {
         "sans": [

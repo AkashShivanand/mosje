@@ -13,8 +13,8 @@ export default function WelcomePage(): React.JSX.Element {
   return (
     <>
       {/* ── Hero ── */}
-      <div style={{ marginBottom: "var(--ds-space-12)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-space-4)", marginBottom: "var(--ds-space-5)" }}>
+      <div style={{ marginBottom: "var(--ds-spacing-5xl)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-spacing-lg)", marginBottom: "var(--ds-spacing-xl)" }}>
           <div
             style={{
               width: 56, height: 56, borderRadius: "var(--ds-radius-md)",
@@ -34,19 +34,19 @@ export default function WelcomePage(): React.JSX.Element {
           </div>
         </div>
 
-        <p style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 400, color: "var(--ds-ink)", maxWidth: "60ch", lineHeight: 1.5, marginBottom: "var(--ds-space-5)" }}>
+        <p style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 400, color: "var(--ds-ink)", maxWidth: "60ch", lineHeight: 1.5, marginBottom: "var(--ds-spacing-xl)" }}>
           The shared visual and interaction language for the <strong>Ministry of Social Justice &amp; Empowerment</strong> digital estate.
         </p>
         <p style={{ fontSize: "var(--ds-text-body-1)", color: "var(--ds-ink-muted)", maxWidth: "64ch", lineHeight: "var(--ds-leading-body-1)" }}>
           SAMAVESH (समावेश, &ldquo;inclusion / bringing together&rdquo;) ensures every citizen-facing website and portal — from the main DoSJE site to PM-AJAY, SMILE, and 20+ scheme portals — looks, feels, and works consistently. One system, one standard, serving every team.
         </p>
 
-        <div style={{ display: "flex", gap: "var(--ds-space-3)", marginTop: "var(--ds-space-6)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--ds-spacing-md)", marginTop: "var(--ds-spacing-2xl)", flexWrap: "wrap" }}>
           <a
             href="/design-system/foundations/color"
             style={{
-              display: "inline-flex", alignItems: "center", gap: "var(--ds-space-2)",
-              padding: "10px var(--ds-space-5)", borderRadius: "var(--ds-radius-sm)",
+              display: "inline-flex", alignItems: "center", gap: "var(--ds-spacing-sm)",
+              padding: "10px var(--ds-spacing-xl)", borderRadius: "var(--ds-radius-sm)",
               background: "var(--ds-primary)", color: "#fff",
               fontWeight: 600, fontSize: "var(--ds-text-body-2)", textDecoration: "none",
             }}
@@ -56,8 +56,8 @@ export default function WelcomePage(): React.JSX.Element {
           <a
             href="/design-system/components/button"
             style={{
-              display: "inline-flex", alignItems: "center", gap: "var(--ds-space-2)",
-              padding: "10px var(--ds-space-5)", borderRadius: "var(--ds-radius-sm)",
+              display: "inline-flex", alignItems: "center", gap: "var(--ds-spacing-sm)",
+              padding: "10px var(--ds-spacing-xl)", borderRadius: "var(--ds-radius-sm)",
               border: "1.5px solid var(--ds-border-strong)", color: "var(--ds-ink)",
               fontWeight: 600, fontSize: "var(--ds-text-body-2)", textDecoration: "none",
             }}
@@ -68,8 +68,8 @@ export default function WelcomePage(): React.JSX.Element {
             href="https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System"
             target="_blank" rel="noopener noreferrer"
             style={{
-              display: "inline-flex", alignItems: "center", gap: "var(--ds-space-2)",
-              padding: "10px var(--ds-space-5)", borderRadius: "var(--ds-radius-sm)",
+              display: "inline-flex", alignItems: "center", gap: "var(--ds-spacing-sm)",
+              padding: "10px var(--ds-spacing-xl)", borderRadius: "var(--ds-radius-sm)",
               border: "1.5px solid var(--ds-border-strong)", color: "var(--ds-ink)",
               fontWeight: 600, fontSize: "var(--ds-text-body-2)", textDecoration: "none",
             }}
@@ -101,11 +101,11 @@ export default function WelcomePage(): React.JSX.Element {
       </Callout>
 
       {/* ── For each audience ── */}
-      <section style={{ marginTop: "var(--ds-space-12)" }} id="for-designers">
-        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-space-4)", scrollMarginTop: "calc(56px + var(--ds-space-6))" }}>
+      <section style={{ marginTop: "var(--ds-spacing-5xl)" }} id="for-designers">
+        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-spacing-lg)", scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}>
           For Designers
         </h2>
-        <p style={{ color: "var(--ds-ink-muted)", marginBottom: "var(--ds-space-5)", lineHeight: "var(--ds-leading-body-1)" }}>
+        <p style={{ color: "var(--ds-ink-muted)", marginBottom: "var(--ds-spacing-xl)", lineHeight: "var(--ds-leading-body-1)" }}>
           SAMAVESH gives you a complete Figma library — colors, typography, spacing, components — all in sync with the code. When a token changes in the system, your designs update automatically.
         </p>
         <div className="home-cards">
@@ -120,28 +120,28 @@ export default function WelcomePage(): React.JSX.Element {
               href={card.href}
               className="docs-welcome-card"
             >
-              <div style={{ fontWeight: 600, color: "var(--ds-ink)", marginBottom: "var(--ds-space-2)" }}>{card.title}</div>
+              <div style={{ fontWeight: 600, color: "var(--ds-ink)", marginBottom: "var(--ds-spacing-sm)" }}>{card.title}</div>
               <div style={{ fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)" }}>{card.desc}</div>
             </a>
           ))}
         </div>
       </section>
 
-      <section style={{ marginTop: "var(--ds-space-12)" }} id="for-developers">
-        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-space-4)", scrollMarginTop: "calc(56px + var(--ds-space-6))" }}>
+      <section style={{ marginTop: "var(--ds-spacing-5xl)" }} id="for-developers">
+        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-spacing-lg)", scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}>
           For Developers
         </h2>
-        <p style={{ color: "var(--ds-ink-muted)", marginBottom: "var(--ds-space-5)", lineHeight: "var(--ds-leading-body-1)" }}>
+        <p style={{ color: "var(--ds-ink-muted)", marginBottom: "var(--ds-spacing-xl)", lineHeight: "var(--ds-leading-body-1)" }}>
           Import the package, import the tokens, use the components. Design system decisions are pre-made — focus on building features, not reimplementing buttons.
         </p>
-        <div style={{ background: "#1e2130", borderRadius: "var(--ds-radius-md)", padding: "var(--ds-space-5)", fontFamily: "ui-monospace, monospace", fontSize: 13, color: "#e2e8f0", lineHeight: 1.7 }}>
-          <div style={{ color: "#8892a4", marginBottom: "var(--ds-space-3)" }}># Install</div>
+        <div style={{ background: "#1e2130", borderRadius: "var(--ds-radius-md)", padding: "var(--ds-spacing-xl)", fontFamily: "ui-monospace, monospace", fontSize: 13, color: "#e2e8f0", lineHeight: 1.7 }}>
+          <div style={{ color: "#8892a4", marginBottom: "var(--ds-spacing-md)" }}># Install</div>
           <div><span style={{ color: "#7dd3fc" }}>npm</span> install @mosje/design-system</div>
-          <div style={{ marginTop: "var(--ds-space-4)", color: "#8892a4" }}># Use in your app</div>
+          <div style={{ marginTop: "var(--ds-spacing-lg)", color: "#8892a4" }}># Use in your app</div>
           <div><span style={{ color: "#c084fc" }}>import</span> {`{ Button, Card, FormField }`} <span style={{ color: "#c084fc" }}>from</span> <span style={{ color: "#86efac" }}>&apos;@mosje/design-system&apos;</span>;</div>
           <div><span style={{ color: "#c084fc" }}>import</span> <span style={{ color: "#86efac" }}>&apos;@mosje/design-system/tokens.css&apos;</span>;</div>
         </div>
-        <div className="home-cards" style={{ marginTop: "var(--ds-space-5)" }}>
+        <div className="home-cards" style={{ marginTop: "var(--ds-spacing-xl)" }}>
           {[
             { title: "No hardcoded values", desc: "All styling via --ds-* CSS custom properties. Change the theme, nothing breaks." },
             { title: "Accessibility included", desc: "ARIA labels, focus management, and keyboard navigation are in the components." },
@@ -149,18 +149,18 @@ export default function WelcomePage(): React.JSX.Element {
             { title: "Works without Tailwind", desc: "Design system tokens are plain CSS variables — no framework dependency." },
           ].map((item) => (
             <div key={item.title} style={{ fontSize: "var(--ds-text-body-2)" }}>
-              <div style={{ fontWeight: 600, color: "var(--ds-ink)", marginBottom: "var(--ds-space-1)" }}>✓ {item.title}</div>
+              <div style={{ fontWeight: 600, color: "var(--ds-ink)", marginBottom: "var(--ds-spacing-xs)" }}>✓ {item.title}</div>
               <div style={{ color: "var(--ds-ink-muted)" }}>{item.desc}</div>
             </div>
           ))}
         </div>
       </section>
 
-      <section style={{ marginTop: "var(--ds-space-12)" }}>
-        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-space-5)", scrollMarginTop: "calc(56px + var(--ds-space-6))" }}>
+      <section style={{ marginTop: "var(--ds-spacing-5xl)" }}>
+        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-spacing-xl)", scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}>
           What&apos;s available
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "var(--ds-space-3)" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "var(--ds-spacing-md)" }}>
           {[
             { name: "Button", status: "Stable" as const, href: "/design-system/components/button" },
             { name: "Card", status: "Stable" as const, href: "/design-system/components/card" },
@@ -176,7 +176,7 @@ export default function WelcomePage(): React.JSX.Element {
               href={item.href}
               style={{
                 display: "flex", alignItems: "center", justifyContent: "space-between",
-                padding: "var(--ds-space-3) var(--ds-space-4)",
+                padding: "var(--ds-spacing-md) var(--ds-spacing-lg)",
                 borderRadius: "var(--ds-radius-sm)", border: "1px solid var(--ds-border)",
                 fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink)", textDecoration: "none",
                 transition: "border-color 0.1s",

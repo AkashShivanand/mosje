@@ -20,6 +20,11 @@
     box-shadow 0.15s ease;
 }
 
+.ds-search--sm {
+  --_h: 40px;
+  padding: 0 12px;
+}
+
 .ds-search--md {
   --_h: 44px;
 }
@@ -89,7 +94,7 @@
   margin: 0;
   padding: 0;
   border: 0;
-  border-radius: var(--ds-radius-pill, 100px);
+  border-radius: var(--ds-radius-full, 100px);
   background: transparent;
   color: var(--ds-ink-muted);
   cursor: pointer;

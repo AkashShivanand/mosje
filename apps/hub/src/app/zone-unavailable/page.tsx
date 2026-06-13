@@ -21,7 +21,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "var(--ds-space-6, 24px)",
+        padding: "var(--ds-spacing-2xl, 24px)",
         background: "var(--ds-surface-muted, #f8f9fa)",
       }}
     >
@@ -32,7 +32,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           background: "var(--ds-surface, #fff)",
           border: "1px solid var(--ds-border, #e2e6ea)",
           borderRadius: "var(--ds-radius-md, 8px)",
-          padding: "var(--ds-space-8, 32px)",
+          padding: "var(--ds-spacing-3xl, 32px)",
           boxShadow: "var(--ds-shadow-lg, 0 12px 16px -4px rgba(33,33,33,0.08))",
         }}
       >
@@ -48,7 +48,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             alignItems: "center",
             justifyContent: "center",
             fontSize: 24,
-            marginBottom: "var(--ds-space-5, 20px)",
+            marginBottom: "var(--ds-spacing-xl, 20px)",
           }}
         >
           ⚠
@@ -59,7 +59,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             fontSize: "var(--ds-text-title-1, 22px)",
             fontWeight: 600,
             color: "var(--ds-ink, #212121)",
-            marginBottom: "var(--ds-space-2, 8px)",
+            marginBottom: "var(--ds-spacing-sm, 8px)",
           }}
         >
           {zone}{" "}isn&apos;t running
@@ -70,7 +70,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             fontSize: "var(--ds-text-body-1, 16px)",
             color: "var(--ds-ink-muted, #343a40)",
             lineHeight: 1.6,
-            marginBottom: "var(--ds-space-5, 20px)",
+            marginBottom: "var(--ds-spacing-xl, 20px)",
           }}
         >
           The hub couldn&apos;t reach this app{from ? <> at <code>{from}</code></> : null}. It&apos;s served by
@@ -82,8 +82,8 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             background: "var(--ds-surface-muted, #f8f9fa)",
             border: "1px solid var(--ds-border, #e2e6ea)",
             borderRadius: "var(--ds-radius-sm, 6px)",
-            padding: "var(--ds-space-4, 16px)",
-            marginBottom: "var(--ds-space-5, 20px)",
+            padding: "var(--ds-spacing-lg, 16px)",
+            marginBottom: "var(--ds-spacing-xl, 20px)",
           }}
         >
           <div
@@ -93,7 +93,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               textTransform: "uppercase",
               letterSpacing: "0.06em",
               color: "var(--ds-ink-muted, #343a40)",
-              marginBottom: "var(--ds-space-2, 8px)",
+              marginBottom: "var(--ds-spacing-sm, 8px)",
             }}
           >
             Start everything (recommended)
@@ -104,7 +104,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               fontFamily: "var(--ds-font-mono, ui-monospace, monospace)",
               fontSize: "var(--ds-text-body-2, 14px)",
               color: "var(--ds-ink, #212121)",
-              marginBottom: "var(--ds-space-4, 16px)",
+              marginBottom: "var(--ds-spacing-lg, 16px)",
             }}
           >
             npm run dev
@@ -116,7 +116,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               textTransform: "uppercase",
               letterSpacing: "0.06em",
               color: "var(--ds-ink-muted, #343a40)",
-              marginBottom: "var(--ds-space-2, 8px)",
+              marginBottom: "var(--ds-spacing-sm, 8px)",
             }}
           >
             …or just this app
@@ -133,13 +133,13 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           </code>
         </div>
 
-        <div style={{ display: "flex", gap: "var(--ds-space-3, 12px)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--ds-spacing-md, 12px)", flexWrap: "wrap" }}>
           <a
             href={from ?? "/"}
             style={{
               display: "inline-flex",
               alignItems: "center",
-              padding: "10px var(--ds-space-5, 20px)",
+              padding: "10px var(--ds-spacing-xl, 20px)",
               borderRadius: "var(--ds-radius-sm, 6px)",
               background: "var(--ds-primary, #0373df)",
               color: "var(--ds-on-primary, #fff)",
@@ -155,7 +155,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             style={{
               display: "inline-flex",
               alignItems: "center",
-              padding: "10px var(--ds-space-5, 20px)",
+              padding: "10px var(--ds-spacing-xl, 20px)",
               borderRadius: "var(--ds-radius-sm, 6px)",
               border: "1px solid var(--ds-border-strong, #9aa3af)",
               color: "var(--ds-ink, #212121)",

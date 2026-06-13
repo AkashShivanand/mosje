@@ -3,7 +3,7 @@
 .ds-color-switch {
   display: inline-flex;
   align-items: center;
-  gap: var(--ds-space-2, 8px);
+  gap: var(--ds-spacing-sm, 8px);
   font-family: var(--ds-font-sans);
 }
 
@@ -21,7 +21,7 @@
   padding: 4px;
   background: var(--ds-surface-muted);
   border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-pill, 100px);
+  border-radius: var(--ds-radius-full, 100px);
 }
 
 .ds-color-switch__btn {
@@ -31,7 +31,7 @@
   margin: 0;
   padding: 6px 12px;
   border: 1px solid transparent;
-  border-radius: var(--ds-radius-pill, 100px);
+  border-radius: var(--ds-radius-full, 100px);
   background: transparent;
   color: var(--ds-ink-muted);
   font: inherit;

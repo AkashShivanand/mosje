@@ -12,11 +12,12 @@ const SECURITY_HEADERS = [
 const nextConfig: NextConfig = {
   basePath: "/website",
   images: {
-    formats: ["image/avif", "image/webp"],
-    remotePatterns: [
-      { protocol: "https", hostname: "durwo6bhtjtqt.cloudfront.net" },
-      { protocol: "https", hostname: "www.dosje.gov.in" },
-    ],
+    // Custom loader injects the basePath onto image URLs. Required because, under
+    // basePath + Multi-Zones, next/image otherwise emits basePath-less URLs that
+    // 404 (SVGs) / 400 (optimizer can't resolve /images/* without /website). See
+    // ./image-loader.ts. A custom loader serves files directly (no optimizer).
+    loader: "custom",
+    loaderFile: "./image-loader.ts",
   },
   output: "standalone",
   // trailingSlash was removed because it causes a redirect loop in the Multi-Zones

@@ -14,6 +14,16 @@
   --color-saffron-500: var(--sa-color-saffron-500);
   --color-saffron-700: var(--sa-color-saffron-700);
   --color-navy-700: var(--sa-color-navy-700);
+  --color-info-50: var(--sa-color-info-50);
+  --color-info-100: var(--sa-color-info-100);
+  --color-info-200: var(--sa-color-info-200);
+  --color-info-300: var(--sa-color-info-300);
+  --color-info-400: var(--sa-color-info-400);
+  --color-info-500: var(--sa-color-info-500);
+  --color-info-600: var(--sa-color-info-600);
+  --color-info-700: var(--sa-color-info-700);
+  --color-info-800: var(--sa-color-info-800);
+  --color-info-900: var(--sa-color-info-900);
   --color-primaryRamp-light-50: var(--sa-color-primaryRamp-light-50);
   --color-primaryRamp-light-100: var(--sa-color-primaryRamp-light-100);
   --color-primaryRamp-light-200: var(--sa-color-primaryRamp-light-200);
@@ -66,6 +76,7 @@
   --color-bg-surface: var(--sa-color-bg-surface);
   --color-bg-muted: var(--sa-color-bg-muted);
   --color-bg-alt: var(--sa-color-bg-alt);
+  --color-bg-navbar: var(--sa-color-bg-navbar);
   --color-border-subtle: var(--sa-color-border-subtle);
   --color-border-strong: var(--sa-color-border-strong);
   --color-border-control: var(--sa-color-border-control);
@@ -80,6 +91,8 @@
   --color-status-dangerStrong: var(--sa-color-status-dangerStrong);
   --color-status-dangerTonal: var(--sa-color-status-dangerTonal);
   --color-status-info: var(--sa-color-status-info);
+  --color-status-infoStrong: var(--sa-color-status-infoStrong);
+  --color-status-infoTonal: var(--sa-color-status-infoTonal);
   --color-overlay-scrim: var(--sa-color-overlay-scrim);
   --color-a11y-hc-fg: var(--sa-color-a11y-hc-fg);
   --color-a11y-hc-bg: var(--sa-color-a11y-hc-bg);

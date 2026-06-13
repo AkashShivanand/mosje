@@ -9,31 +9,31 @@ export const metadata: Metadata = {
 };
 
 const SCALE: { token: string; px: number }[] = [
-  { token: "--ds-space-1", px: 4 },
-  { token: "--ds-space-2", px: 8 },
-  { token: "--ds-space-3", px: 12 },
-  { token: "--ds-space-4", px: 16 },
-  { token: "--ds-space-5", px: 20 },
-  { token: "--ds-space-6", px: 24 },
-  { token: "--ds-space-8", px: 32 },
-  { token: "--ds-space-10", px: 40 },
-  { token: "--ds-space-12", px: 48 },
-  { token: "--ds-space-14", px: 56 },
+  { token: "--ds-spacing-xs", px: 4 },
+  { token: "--ds-spacing-sm", px: 8 },
+  { token: "--ds-spacing-md", px: 12 },
+  { token: "--ds-spacing-lg", px: 16 },
+  { token: "--ds-spacing-xl", px: 20 },
+  { token: "--ds-spacing-2xl", px: 24 },
+  { token: "--ds-spacing-3xl", px: 32 },
+  { token: "--ds-spacing-4xl", px: 40 },
+  { token: "--ds-spacing-5xl", px: 48 },
+  { token: "--ds-spacing-6xl", px: 56 },
 ];
 
 export default function SpacingPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Spacing</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-space-3)" }}>
+      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
         A consistent spacing rhythm is what makes an interface feel calm and
         trustworthy. SAMAVESH uses one shared scale so every gap, pad and margin
         lines up across 13 websites and 20 portals.
       </p>
 
-      <section aria-labelledby="how-it-works" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="how-it-works" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="how-it-works">How spacing works</h2>
-        <p style={{ marginTop: "var(--ds-space-4)" }}>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
           Spacing in SAMAVESH follows an 8px base grid. Almost every value is a
           multiple of 8 (8, 16, 24, 32, 40, 48, 56), with a single 4px half-step
           for the tightest gaps inside dense controls. Working in these fixed
@@ -44,15 +44,15 @@ export default function SpacingPage(): React.JSX.Element {
         </p>
       </section>
 
-      <section aria-labelledby="scale" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="scale" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="scale">The scale</h2>
-        <p style={{ marginTop: "var(--ds-space-4)" }}>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
           Each bar below is rendered at its real pixel height, so the steps are
           shown literally to scale.
         </p>
-        <div style={{ marginTop: "var(--ds-space-6)", display: "flex", flexDirection: "column", gap: "var(--ds-space-3)" }}>
+        <div style={{ marginTop: "var(--ds-spacing-2xl)", display: "flex", flexDirection: "column", gap: "var(--ds-spacing-md)" }}>
           {SCALE.map(({ token, px }) => (
-            <div key={token} style={{ display: "flex", alignItems: "center", gap: "var(--ds-space-4)" }}>
+            <div key={token} style={{ display: "flex", alignItems: "center", gap: "var(--ds-spacing-lg)" }}>
               <div style={{ width: "140px", flexShrink: 0 }}>
                 <code className="token-table__name">{token}</code>
               </div>
@@ -83,9 +83,9 @@ export default function SpacingPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="tokens" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="tokens" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="tokens">Tokens</h2>
-        <div style={{ marginTop: "var(--ds-space-4)" }}>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <TokenTable
             tokens={SCALE.map(({ token, px }) => ({
               token,
@@ -101,9 +101,9 @@ export default function SpacingPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="guidance" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="guidance" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="guidance">Do &amp; Don&apos;t</h2>
-        <div style={{ marginTop: "var(--ds-space-4)" }}>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <DoDont
             cards={[
               {
@@ -111,10 +111,10 @@ export default function SpacingPage(): React.JSX.Element {
                 label:
                   "Use spacing tokens for every gap, padding and margin so layouts stay on the 8px grid.",
                 preview: (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "var(--ds-space-4)", padding: "var(--ds-space-4)" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "var(--ds-spacing-lg)", padding: "var(--ds-spacing-lg)" }}>
                     <div style={{ height: "16px", background: "var(--ds-primary-tonal)", borderRadius: "var(--ds-radius-xs)" }} />
                     <div style={{ height: "16px", background: "var(--ds-primary-tonal)", borderRadius: "var(--ds-radius-xs)" }} />
-                    <code style={{ fontSize: "var(--ds-text-body-2)" }}>gap: var(--ds-space-4)</code>
+                    <code style={{ fontSize: "var(--ds-text-body-2)" }}>gap: var(--ds-spacing-lg)</code>
                   </div>
                 ),
               },

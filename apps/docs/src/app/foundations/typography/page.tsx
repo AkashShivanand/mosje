@@ -37,11 +37,11 @@ export default function TypographyPage() {
             and tone — but each one is drawn specifically for the script it
             serves.
           </p>
-          <p style={{ marginTop: "var(--ds-space-4)" }}>
+          <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
             It is tempting to think we could simply take the Latin font and
             shrink or stretch it for Hindi. We don&rsquo;t, and here is why:
           </p>
-          <ul style={{ marginTop: "var(--ds-space-3)" }}>
+          <ul style={{ marginTop: "var(--ds-spacing-md)" }}>
             <li>
               <strong>Different visual weight.</strong> Devanagari letterforms
               are denser and carry more ink per character than Latin letters. A
@@ -61,7 +61,7 @@ export default function TypographyPage() {
               room between them than the equivalent English would. (See section 3.)
             </li>
           </ul>
-          <p style={{ marginTop: "var(--ds-space-4)" }}>
+          <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
             Using a purpose-built font for each script means हिन्दी never looks
             like a squeezed afterthought — it gets the same care and legibility
             as English.
@@ -161,7 +161,7 @@ export default function TypographyPage() {
             too tight and the headline strokes of one line start to crowd the vowel
             marks of the next, which makes the text feel cramped and slows reading.
           </p>
-          <p style={{ marginTop: "var(--ds-space-4)" }}>
+          <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
             SAMAVESH targets a line height of about <strong>1.7</strong> for body
             Devanagari, versus the ~1.5 that works fine for Latin. The two columns
             below use the <em>same</em> font size — only the line height changes.
@@ -172,8 +172,8 @@ export default function TypographyPage() {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: "var(--ds-space-5)",
-            marginTop: "var(--ds-space-5)",
+            gap: "var(--ds-spacing-xl)",
+            marginTop: "var(--ds-spacing-xl)",
           }}
         >
           {/* Bad — 1.5 */}
@@ -186,7 +186,7 @@ export default function TypographyPage() {
           >
             <div
               style={{
-                padding: "var(--ds-space-3) var(--ds-space-4)",
+                padding: "var(--ds-spacing-md) var(--ds-spacing-lg)",
                 background: "var(--ds-danger-tonal)",
                 color: "var(--ds-danger)",
                 fontSize: "var(--ds-text-body-2)",
@@ -199,7 +199,7 @@ export default function TypographyPage() {
             <p
               lang="hi"
               style={{
-                padding: "var(--ds-space-5)",
+                padding: "var(--ds-spacing-xl)",
                 margin: 0,
                 fontFamily: "var(--sa-font-family-devanagari)",
                 fontSize: "16px",
@@ -223,7 +223,7 @@ export default function TypographyPage() {
           >
             <div
               style={{
-                padding: "var(--ds-space-3) var(--ds-space-4)",
+                padding: "var(--ds-spacing-md) var(--ds-spacing-lg)",
                 background: "var(--ds-success-tonal)",
                 color: "var(--ds-success)",
                 fontSize: "var(--ds-text-body-2)",
@@ -236,7 +236,7 @@ export default function TypographyPage() {
             <p
               lang="hi"
               style={{
-                padding: "var(--ds-space-5)",
+                padding: "var(--ds-spacing-xl)",
                 margin: 0,
                 fontFamily: "var(--sa-font-family-devanagari)",
                 fontSize: "16px",
@@ -276,9 +276,9 @@ export default function TypographyPage() {
           style={{
             fontSize: "var(--ds-text-headline)",
             fontWeight: 600,
-            marginTop: "var(--ds-space-6)",
-            marginBottom: "var(--ds-space-2)",
-            scrollMarginTop: "calc(56px + var(--ds-space-6))",
+            marginTop: "var(--ds-spacing-2xl)",
+            marginBottom: "var(--ds-spacing-sm)",
+            scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))",
           }}
         >
           Font sizes — <code>--ds-text-*</code>
@@ -302,9 +302,9 @@ export default function TypographyPage() {
           style={{
             fontSize: "var(--ds-text-headline)",
             fontWeight: 600,
-            marginTop: "var(--ds-space-6)",
-            marginBottom: "var(--ds-space-2)",
-            scrollMarginTop: "calc(56px + var(--ds-space-6))",
+            marginTop: "var(--ds-spacing-2xl)",
+            marginBottom: "var(--ds-spacing-sm)",
+            scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))",
           }}
         >
           Line heights — <code>--ds-leading-*</code>
@@ -328,9 +328,9 @@ export default function TypographyPage() {
           style={{
             fontSize: "var(--ds-text-headline)",
             fontWeight: 600,
-            marginTop: "var(--ds-space-6)",
-            marginBottom: "var(--ds-space-2)",
-            scrollMarginTop: "calc(56px + var(--ds-space-6))",
+            marginTop: "var(--ds-spacing-2xl)",
+            marginBottom: "var(--ds-spacing-sm)",
+            scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))",
           }}
         >
           Font families
@@ -367,8 +367,8 @@ export default function TypographyPage() {
 
         <pre
           style={{
-            marginTop: "var(--ds-space-5)",
-            padding: "var(--ds-space-5)",
+            marginTop: "var(--ds-spacing-xl)",
+            padding: "var(--ds-spacing-xl)",
             background: "var(--ds-surface-muted)",
             border: "1px solid var(--ds-border)",
             borderRadius: "var(--ds-radius-md)",
@@ -410,7 +410,7 @@ export default function RootLayout({
 }`}</code>
         </pre>
 
-        <div className="docs-section__body" style={{ marginTop: "var(--ds-space-5)" }}>
+        <div className="docs-section__body" style={{ marginTop: "var(--ds-spacing-xl)" }}>
           <p>
             Then point the design tokens at the loaded variables in your global
             CSS so every component picks them up automatically:
@@ -419,8 +419,8 @@ export default function RootLayout({
 
         <pre
           style={{
-            marginTop: "var(--ds-space-3)",
-            padding: "var(--ds-space-5)",
+            marginTop: "var(--ds-spacing-md)",
+            padding: "var(--ds-spacing-xl)",
             background: "var(--ds-surface-muted)",
             border: "1px solid var(--ds-border)",
             borderRadius: "var(--ds-radius-md)",
@@ -438,13 +438,13 @@ export default function RootLayout({
 }`}</code>
         </pre>
 
-        <div className="docs-section__body" style={{ marginTop: "var(--ds-space-5)" }}>
+        <div className="docs-section__body" style={{ marginTop: "var(--ds-spacing-xl)" }}>
           <p>
             <strong>System-font fallback chain.</strong> Each family ends in a
             generic fallback so text still renders sensibly before (or if) the web
             fonts fail to load:
           </p>
-          <ul style={{ marginTop: "var(--ds-space-3)" }}>
+          <ul style={{ marginTop: "var(--ds-spacing-md)" }}>
             <li>
               <strong>Latin:</strong> <code>&quot;Noto Sans&quot;</code> →{" "}
               <code>ui-sans-serif</code> → <code>system-ui</code> →{" "}

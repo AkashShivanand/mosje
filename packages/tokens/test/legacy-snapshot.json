@@ -26,7 +26,7 @@
   "--ds-radius-xs": "4px",
   "--ds-radius-sm": "6px",
   "--ds-radius-md": "8px",
-  "--ds-radius-pill": "100px",
+  "--ds-radius-full": "999px",
   "--ds-font-sans": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
   "--ds-text-display": "48px",
   "--ds-leading-display": "56px",

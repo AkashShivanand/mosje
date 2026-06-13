@@ -443,7 +443,7 @@ export default function ColorPage(): React.JSX.Element {
                     style={{
                       background: "var(--ds-primary)",
                       color: "#fff",
-                      padding: "var(--ds-space-2) var(--ds-space-4)",
+                      padding: "var(--ds-spacing-sm) var(--ds-spacing-lg)",
                       borderRadius: "var(--ds-radius-sm)",
                       fontWeight: 600,
                       fontSize: "var(--ds-text-body-2)",
@@ -471,7 +471,7 @@ export default function ColorPage(): React.JSX.Element {
                     style={{
                       background: "#0373DF",
                       color: "#fff",
-                      padding: "var(--ds-space-2) var(--ds-space-4)",
+                      padding: "var(--ds-spacing-sm) var(--ds-spacing-lg)",
                       borderRadius: "var(--ds-radius-sm)",
                       fontWeight: 600,
                       fontSize: "var(--ds-text-body-2)",
@@ -493,7 +493,7 @@ export default function ColorPage(): React.JSX.Element {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    gap: "var(--ds-space-2)",
+                    gap: "var(--ds-spacing-sm)",
                     height: "100%",
                     color: "var(--ds-danger)",
                     fontWeight: 600,
@@ -524,7 +524,7 @@ export default function ColorPage(): React.JSX.Element {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    gap: "var(--ds-space-3)",
+                    gap: "var(--ds-spacing-md)",
                     height: "100%",
                   }}
                 >

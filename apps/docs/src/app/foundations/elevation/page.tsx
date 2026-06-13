@@ -30,23 +30,23 @@ export default function ElevationPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Elevation</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-space-3)" }}>
+      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
         Elevation tells people what sits on top of what. SAMAVESH uses three
         shadow levels to express depth — the higher the surface, the softer and
         larger its shadow.
       </p>
 
-      <section aria-labelledby="levels" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="levels" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="levels">The three levels</h2>
         <div
           style={{
-            marginTop: "var(--ds-space-6)",
+            marginTop: "var(--ds-spacing-2xl)",
             background: "var(--ds-surface-muted)",
             borderRadius: "var(--ds-radius-md)",
-            padding: "var(--ds-space-12) var(--ds-space-8)",
+            padding: "var(--ds-spacing-5xl) var(--ds-spacing-3xl)",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-            gap: "var(--ds-space-8)",
+            gap: "var(--ds-spacing-3xl)",
           }}
         >
           {LEVELS.map(({ token, label }) => (
@@ -56,12 +56,12 @@ export default function ElevationPage(): React.JSX.Element {
                 background: "var(--ds-surface)",
                 boxShadow: `var(${token})`,
                 borderRadius: "var(--ds-radius-md)",
-                padding: "var(--ds-space-6)",
+                padding: "var(--ds-spacing-2xl)",
                 textAlign: "center",
               }}
             >
               <div style={{ fontWeight: 600, color: "var(--ds-ink)" }}>{label}</div>
-              <code style={{ fontSize: "var(--ds-text-body-2)", display: "inline-block", marginTop: "var(--ds-space-2)" }}>
+              <code style={{ fontSize: "var(--ds-text-body-2)", display: "inline-block", marginTop: "var(--ds-spacing-sm)" }}>
                 {token}
               </code>
             </div>
@@ -69,9 +69,9 @@ export default function ElevationPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="when" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="when" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="when">When to use each</h2>
-        <ul style={{ marginTop: "var(--ds-space-4)" }}>
+        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
           {LEVELS.map(({ token, use }) => (
             <li key={token}>
               <code className="token-table__name">{token}</code> — {use}
@@ -80,9 +80,9 @@ export default function ElevationPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="tokens" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="tokens" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="tokens">Tokens</h2>
-        <div style={{ marginTop: "var(--ds-space-4)" }}>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <TokenTable
             tokens={[
               {
@@ -105,9 +105,9 @@ export default function ElevationPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="guidance" style={{ marginTop: "var(--ds-space-10)" }}>
+      <section aria-labelledby="guidance" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="guidance">Guidance</h2>
-        <div style={{ marginTop: "var(--ds-space-4)" }}>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <Callout type="warning" title="Shadows are for surfaces, not text">
             Don&apos;t apply a drop-shadow to text to fake emphasis — it hurts
             legibility and fails contrast checks. Use elevation only on

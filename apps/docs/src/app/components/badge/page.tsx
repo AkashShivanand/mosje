@@ -10,27 +10,27 @@ export const metadata: Metadata = {
     "Badge is a small label indicating status, count, or category — a tonal pill in semantic colours (success, warning, danger, info) with two sizes.",
 };
 
-const sectionStyle: React.CSSProperties = { marginBottom: "var(--ds-space-12)" };
+const sectionStyle: React.CSSProperties = { marginBottom: "var(--ds-spacing-5xl)" };
 const h2Style: React.CSSProperties = {
   fontSize: "var(--ds-text-title-1)",
   fontWeight: 600,
-  marginBottom: "var(--ds-space-4)",
-  scrollMarginTop: "var(--ds-space-12)",
+  marginBottom: "var(--ds-spacing-lg)",
+  scrollMarginTop: "var(--ds-spacing-5xl)",
 };
 const leadStyle: React.CSSProperties = {
   fontSize: "var(--ds-text-body-1)",
   color: "var(--ds-ink-muted)",
   lineHeight: "var(--ds-leading-body-1)",
   maxWidth: "64ch",
-  marginBottom: "var(--ds-space-4)",
+  marginBottom: "var(--ds-spacing-lg)",
 };
 
 export default function BadgePage(): React.JSX.Element {
   return (
     <>
       {/* ── Header ── */}
-      <div style={{ marginBottom: "var(--ds-space-8)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-space-3)", marginBottom: "var(--ds-space-3)" }}>
+      <div style={{ marginBottom: "var(--ds-spacing-3xl)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-spacing-md)", marginBottom: "var(--ds-spacing-md)" }}>
           <h1 style={{ fontSize: "var(--ds-text-display)", fontWeight: 500, lineHeight: 1.1 }}>Badge</h1>
           <StatusBadge status="Stable" />
         </div>
@@ -108,9 +108,9 @@ export default function BadgePage(): React.JSX.Element {
               label: "Use status badges to surface system states such as Approved, Pending, or Rejected.",
               preview: (
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px var(--ds-space-3)", borderRadius: "var(--ds-radius-pill)", background: "var(--ds-success-tonal)", color: "var(--ds-success)", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Approved</span>
-                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px var(--ds-space-3)", borderRadius: "var(--ds-radius-pill)", background: "var(--ds-warning-tonal)", color: "var(--ds-ink)", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Pending</span>
-                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px var(--ds-space-3)", borderRadius: "var(--ds-radius-pill)", background: "var(--ds-danger-tonal)", color: "var(--ds-danger)", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Rejected</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px var(--ds-spacing-md)", borderRadius: "var(--ds-radius-full)", background: "var(--ds-success-tonal)", color: "var(--ds-success)", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Approved</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px var(--ds-spacing-md)", borderRadius: "var(--ds-radius-full)", background: "var(--ds-warning-tonal)", color: "var(--ds-ink)", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Pending</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px var(--ds-spacing-md)", borderRadius: "var(--ds-radius-full)", background: "var(--ds-danger-tonal)", color: "var(--ds-danger)", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Rejected</span>
                 </div>
               ),
             },
@@ -136,7 +136,7 @@ export default function BadgePage(): React.JSX.Element {
           (&ldquo;Approved&rdquo;, not just a coloured dot). When a badge conveys status through
           colour with little or no text, add an <code>aria-label</code> describing the state.
         </Callout>
-        <div style={{ marginTop: "var(--ds-space-5)" }}>
+        <div style={{ marginTop: "var(--ds-spacing-xl)" }}>
           <A11yChecklist
             items={[
               { criterion: "Meaning is not colour-only", level: "A", description: "WCAG 1.4.1 — colour must never be the sole way status is conveyed. Pair colour with a clear text label." },

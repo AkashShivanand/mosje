@@ -47,7 +47,7 @@
   height: 56px;
   padding: 0;
   border: none;
-  border-radius: var(--ds-radius-pill, 100px);
+  border-radius: var(--ds-radius-full, 100px);
   background: var(--ds-a11y-primary);
   color: var(--ds-a11y-on-primary);
   box-shadow: var(--ds-a11y-shadow);

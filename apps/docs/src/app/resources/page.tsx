@@ -90,8 +90,8 @@ export default function ResourcesPage(): React.JSX.Element {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-            gap: "var(--ds-space-4)",
-            marginTop: "var(--ds-space-4)",
+            gap: "var(--ds-spacing-lg)",
+            marginTop: "var(--ds-spacing-lg)",
           }}
         >
           {QUICK_LINKS.map((link) => (
@@ -103,7 +103,7 @@ export default function ResourcesPage(): React.JSX.Element {
                 : {})}
               style={{
                 display: "block",
-                padding: "var(--ds-space-5)",
+                padding: "var(--ds-spacing-xl)",
                 borderRadius: "var(--ds-radius-md)",
                 border: "1px solid var(--ds-border)",
                 background: "var(--ds-surface)",
@@ -115,8 +115,8 @@ export default function ResourcesPage(): React.JSX.Element {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "var(--ds-space-3)",
-                  marginBottom: "var(--ds-space-2)",
+                  gap: "var(--ds-spacing-md)",
+                  marginBottom: "var(--ds-spacing-sm)",
                 }}
               >
                 <span
