@@ -9,4 +9,12 @@ export const COLLECTIONS = [
     taxonomies: {},              // { fieldKey: "taxonomy-rest-base" }
     fields: ["id", "slug", "title", "link", "content", "featured_media"],
   },
+  {
+    name: "schemes",
+    restBase: "schemes-and-services",
+    sitemapType: "schemes-and-services",
+    basePath: "schemes-and-services",
+    taxonomies: { category: "scheme-category", targetGroup: "target-group" },
+    fields: ["id", "slug", "title", "link", "content", "scheme-category", "target-group"],
+  },
 ];
