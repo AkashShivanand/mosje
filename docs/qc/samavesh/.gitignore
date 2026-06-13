@@ -1,0 +1,8 @@
+node_modules/
+report-generated.html
+report-sections.json
+.sec_*.html
+captures/figma/board_full.png
+captures/figma/_*.png
+captures/figma/z_*.png
+captures/figma/fig_*zoom*.png

@@ -1,0 +1,93 @@
+{
+  "portal": "SAMAVESH Login",
+  "generated": "2026-06-12",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9364-82537",
+  "method": "Screenshot-based spec comparison. Design read from Figma node 9364:82537; build supplied as a screenshot. Items marked verify await pixel sampling of the build capture.",
+  "deferred": [
+    { "id": "SAM-LOGIN-001", "title": "Email + captcha + OTP instead of Digilocker / mobile+password multi-method form", "reason": "Email-OTP is the approved method. Figma frame to be updated; design samples delivered separately." },
+    { "id": "SAM-LOGIN-002", "title": "Hero uses a flat navy gradient instead of the designed contextual photograph", "reason": "Parked for a later pass." }
+  ],
+  "screens": [
+    {
+      "slug": "login",
+      "name": "Login",
+      "figmaNode": "9364:82537",
+      "figmaImg": "captures/figma/login.png",
+      "liveImg": "captures/live/login.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9364-82537",
+      "note": "Build panels render once captures/live/login.png is saved. 2 findings deferred by decision — SAM-LOGIN-001 (email-OTP is the approved login; Figma to be updated) and SAM-LOGIN-002 (hero photograph, parked).",
+      "findings": [
+        {
+          "id": "SAM-LOGIN-004", "num": 1, "severity": "Minor",
+          "section": "Top bar & masthead", "element": "Accessibility toolbar icon",
+          "axis": "Content & Iconography",
+          "figma": "Contrast toggle followed by a dedicated accessibility (person) icon.",
+          "live": "Contrast toggle followed by an info (ⓘ) icon.",
+          "fix": "Use the accessibility-options icon per design, or confirm the info icon is intended.",
+          "sectionBox": [0, 195, 1440, 360],
+          "figmaPin": { "x": 94, "y": 22 }
+        },
+        {
+          "id": "SAM-LOGIN-003", "num": 2, "severity": "Minor",
+          "section": "Top bar & masthead", "element": "Masthead partner logos",
+          "axis": "Content & Iconography",
+          "figma": "Two partner logos on the right: Digital India + SAMAVESH.",
+          "live": "Three logos: गरिमा गृह (Garima Greh) + Digital India + SAMAVESH.",
+          "fix": "Likely intentional (contextual to the signed-in portal). Confirm; if so, add the Garima Greh logo to the design frame for parity.",
+          "sectionBox": [0, 195, 1440, 360],
+          "figmaPin": { "x": 86, "y": 64 }
+        },
+        {
+          "id": "SAM-LOGIN-005", "num": 3, "severity": "Minor",
+          "section": "Right login panel", "element": "Login panel balance",
+          "axis": "Layout & Spacing",
+          "figma": "The form block (tabs → CTA → fields → button → links) fills the right panel.",
+          "live": "The shorter email-OTP form is top-aligned, leaving a large empty area below 'Send OTP'.",
+          "fix": "Vertically centre the form block within the right panel so it reads as balanced.",
+          "sectionBox": [820, 345, 1440, 1170],
+          "figmaPin": { "x": 58, "y": 67 }
+        },
+        {
+          "id": "SAM-LOGIN-006", "num": 4, "severity": "Minor",
+          "section": "Right login panel", "element": "Heading size (verify)",
+          "axis": "Typography",
+          "figma": "'Log in to your account' ≈ 20px Medium, dark navy (Title-1 / Headline-4 token).",
+          "live": "Heading reads noticeably larger and heavier.",
+          "fix": "Match the heading to the design token (≈20px Medium). Confirm exact size from the build capture.",
+          "sectionBox": [820, 345, 1440, 1170],
+          "figmaPin": { "x": 26, "y": 15 }
+        },
+        {
+          "id": "SAM-LOGIN-007", "num": 5, "severity": "Minor",
+          "section": "Right login panel", "element": "Required-field asterisks",
+          "axis": "Content & Iconography",
+          "figma": "Field labels carry no required marker ('Mobile Number', 'Password').",
+          "live": "Field labels carry a red required asterisk ('Registered email ID *', 'Security Check *').",
+          "fix": "Pick one convention across the system; add required markers to the design pattern or drop them in the build.",
+          "sectionBox": [820, 345, 1440, 1170],
+          "figmaPin": { "x": 26, "y": 33 }
+        },
+        {
+          "id": "SAM-LOGIN-008", "num": 6, "severity": "Major",
+          "section": "Right login panel", "element": "Primary blue token (verify)",
+          "axis": "Color & Token",
+          "figma": "Primary/Source navy #003366 for the primary button and the top utility bar.",
+          "live": "'Send OTP' button and the top utility bar appear to use a lighter / more saturated blue.",
+          "fix": "Confirm both bind to Primary/Source #003366. Demote to Minor (or drop) if the on-screen blue matches once sampled.",
+          "sectionBox": [820, 345, 1440, 1170],
+          "figmaPin": { "x": 58, "y": 64 }
+        },
+        {
+          "id": "SAM-LOGIN-009", "num": 7, "severity": "Minor",
+          "section": "Right login panel", "element": "Input border & radius (verify)",
+          "axis": "Components & States",
+          "figma": "Inputs: 1px border ≈ Stroke/300 #d1d5db, radius-sm 6.",
+          "live": "Inputs appear lighter-bordered and more rounded.",
+          "fix": "Confirm input border colour, radius and height against the design tokens from the build capture.",
+          "sectionBox": [820, 345, 1440, 1170],
+          "figmaPin": { "x": 58, "y": 38 }
+        }
+      ]
+    }
+  ]
+}
