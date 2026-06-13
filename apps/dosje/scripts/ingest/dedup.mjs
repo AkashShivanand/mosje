@@ -21,7 +21,10 @@ export function dedupeRecords(records) {
   const seenCanonical = new Map(); // dedupKey -> hash of kept record
   const kept = [];
   const skipped = [];
-  for (const rec of records) {
+  // Process in slug-ascending order so the canonical (shorter, suffix-free) slug
+  // is first-seen regardless of arbitrary REST order.
+  const ordered = [...records].sort((a, b) => a.slug.localeCompare(b.slug, "en"));
+  for (const rec of ordered) {
     const canon = dedupKey(rec.slug);
     const hash = contentHash(rec);
     const priorHash = seenCanonical.get(canon);

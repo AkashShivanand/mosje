@@ -7,7 +7,7 @@ export function sanitize(html) {
       "br", "blockquote", "table", "thead", "tbody", "tr", "th", "td", "img", "span",
     ],
     allowedAttributes: {
-      a: ["href", "title"],
+      a: ["href", "title", "rel", "target"],
       img: ["src", "alt"],
       td: ["colspan", "rowspan"],
       th: ["colspan", "rowspan"],

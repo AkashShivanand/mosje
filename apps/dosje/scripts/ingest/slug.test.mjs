@@ -19,3 +19,7 @@ test("nested path → multi-segment slug", () => {
 test("returns null when base segment absent", () => {
   assert.equal(deriveCollectionSlug("https://www.dosje.gov.in/something-else/x/", "organisation"), null);
 });
+
+test("base as last segment returns empty string", () => {
+  assert.equal(deriveCollectionSlug("https://www.dosje.gov.in/organisation/", "organisation"), "");
+});

@@ -26,7 +26,7 @@ async function ingestCollection(def) {
   // per nested page); otherwise fall back to the leaf slug.
   const allowed = new Set(
     def.basePath
-      ? sitemapUrls.map((u) => deriveCollectionSlug(u, def.basePath)).filter((s) => s != null)
+      ? sitemapUrls.map((u) => deriveCollectionSlug(u, def.basePath)).filter((s) => s != null && s !== "")
       : sitemapUrls.map((u) => canonicalizeSlug(slugFromUrl(u)))
   );
 
@@ -57,7 +57,7 @@ async function ingestCollection(def) {
 
   collectionFileSchema.parse(kept); // throws on malformed → fails build
 
-  if (!ASSETS_ONLY) {
+  if (!ASSETS_ONLY && !VERIFY_ONLY) {
     await mkdir(CONTENT_DIR, { recursive: true });
     await writeFile(`${CONTENT_DIR}/${def.name}.json`, JSON.stringify(kept, null, 2) + "\n");
   }
@@ -74,7 +74,7 @@ async function main() {
   );
   console.log(formatReport(reports));
 
-  if (!ASSETS_ONLY) {
+  if (!ASSETS_ONLY && !VERIFY_ONLY) {
     const manifest = {
       generatedAt: new Date().toISOString(),
       collections: results.map((r) => ({

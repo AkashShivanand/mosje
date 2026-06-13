@@ -43,7 +43,7 @@ export async function fetchJson(url, { retries = 3, delayMs = 400, fetchImpl = f
 export async function fetchText(url, opts = {}) {
   const { fetchImpl = fetch } = opts;
   const res = await fetchImpl(url, { headers: { "User-Agent": "mosje-ingest/1.0" } });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+  if (!res.ok) { const e = new Error(`HTTP ${res.status} for ${url}`); e.status = res.status; throw e; }
   return res.text();
 }
 
@@ -66,8 +66,9 @@ export async function fetchSitemapUrls(type, { maxFiles = 5, ...opts } = {}) {
     try {
       const xml = await fetchText(`${BASE}/wp-sitemap-posts-${type}-${i}.xml`, opts);
       urls.push(...parseSitemapLocs(xml));
-    } catch {
-      break; // 404 → no more files
+    } catch (err) {
+      if (err && (err.status === 404 || err.status === 410)) break; // end of files
+      throw err; // transient failure must not silently truncate the URL set
     }
   }
   return urls;
