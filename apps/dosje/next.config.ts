@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
   basePath: "/website",
   images: {
     formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      { protocol: "https", hostname: "durwo6bhtjtqt.cloudfront.net" },
+      { protocol: "https", hostname: "www.dosje.gov.in" },
+    ],
   },
   output: "standalone",
   // trailingSlash was removed because it causes a redirect loop in the Multi-Zones
