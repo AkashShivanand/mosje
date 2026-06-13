@@ -31,7 +31,7 @@ const SECTIONS: SitemapSection[] = [
     links: [
       { label: "NCSC", href: "/organisation/national-commission-for-scheduled-castes" },
       { label: "NCBC", href: "/organisation/national-commission-for-backward-classes-ncbc" },
-      { label: "NSFDC", href: "/organisation/nsfdc" },
+      { label: "NSFDC", href: "/organisation/national-scheduled-castes-finance-and-development-corporation" },
       { label: "Dr. Ambedkar Foundation", href: "/organisation/dr-ambedkar-foundation" },
     ],
   },

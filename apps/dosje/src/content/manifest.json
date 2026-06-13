@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-06-13T13:20:54.808Z",
+  "collections": [
+    {
+      "name": "organisation",
+      "sitemapCount": 178,
+      "kept": 175,
+      "skipped": 3,
+      "skippedDetail": [
+        {
+          "slug": "national-commission-for-backward-classes-ncbc/gazette-notifications-2",
+          "reason": "duplicate of national-commission-for-backward-classes-ncbc/gazette-notifications"
+        },
+        {
+          "slug": "national-commission-for-backward-classes-ncbc/tour-reports-2",
+          "reason": "duplicate of national-commission-for-backward-classes-ncbc/tour-reports"
+        },
+        {
+          "slug": "national-commission-for-safai-karamcharis/total-no-of-deaths-compensation-2",
+          "reason": "duplicate of national-commission-for-safai-karamcharis/total-no-of-deaths-compensation"
+        }
+      ]
+    }
+  ]
+}

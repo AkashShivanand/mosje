@@ -1,0 +1,1249 @@
+# DoSJE Live-Data Ingestion — Implementation Plan (Phase 0)
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Build a reusable ingestion pipeline that scrapes real content from dosje.gov.in's WordPress REST API into committed JSON, and prove it end-to-end on the 16 Associated Organisations (listing + detail pages rendering live content, with a sync-verify report).
+
+**Architecture:** A config-driven pipeline (`scripts/ingest/`) loops over a **collection registry**. For each collection it pulls paginated records from `/wp-json/wp/v2/<restBase>`, extracts content from the Elementor HTML in `content.rendered` into a list of `{heading, html}` sections (the live site stores no structured meta/acf — everything is in the HTML), resolves taxonomy IDs to names, sanitizes the HTML, deduplicates redundant pages, downloads images (hybrid; PDFs stay hotlinked), and writes `src/content/<name>.json` + `src/content/manifest.json`. App pages read via typed loaders in `src/lib/content/`. Zod validates at ingest time (scripts only — not shipped to the client).
+
+**Tech Stack:** Node 22 (ESM `.mjs` scripts), `node:test`/`node:assert` (no test-runner dep), `node-html-parser` (HTML extraction), `sanitize-html` (allowlist sanitizer), `zod` (ingest-time validation). App: Next.js 16, React 19, TypeScript strict. All three new packages are **devDependencies** — they run during ingest, never in the browser bundle.
+
+**Spec:** `docs/superpowers/specs/2026-06-13-dosje-live-data-ingestion-design.md`
+
+**Key data-source facts (verified 2026-06-13):**
+- REST is exposed for all CPTs. Org rest_base = `organisation`, schemes = `schemes-and-services`, plus `events`, `documents`, `official`, `tender`, `vacancies`, `gallery`, `cpio`, `suo-moto-disclosure`, `updates`.
+- Records expose `id, slug, title, content, featured_media, meta, acf` + taxonomy arrays. **`meta`/`acf` are empty** — real content is HTML in `content.rendered` (Elementor markup: carousels, heading widgets, text-editor widgets).
+- Pagination: `?per_page=100&page=N`; total pages in the `X-WP-TotalPages` response header.
+- Taxonomies resolvable via `/wp-json/wp/v2/<taxonomy>?include=<ids>` (e.g. `scheme-category`).
+- Canonical per-collection counts come from `wp-sitemap-posts-<type>-N.xml`.
+
+**Working directory for all paths below:** `apps/dosje/`
+
+---
+
+## File Structure
+
+**Pipeline (new, `scripts/ingest/`):**
+- `wp-client.mjs` — REST fetch with retry/rate-limit + pagination; sitemap fetch/parse. Pure helpers exported for tests.
+- `html-extract.mjs` — `extractSections(html)` → `[{heading, html}]`; strips Elementor chrome.
+- `sanitize.mjs` — `sanitizeHtml(html)` allowlist wrapper.
+- `taxonomy.mjs` — resolve taxonomy IDs → names, cached.
+- `transform.mjs` — `transformRecord(raw, ctx)` → typed record.
+- `dedup.mjs` — `canonicalizeSlug`, `dedupeRecords`.
+- `assets.mjs` — extract image URLs from sections, download to `public/content/<col>/`, rewrite refs.
+- `verify.mjs` — compare ingested counts vs sitemap counts → report object.
+- `collections.mjs` — the registry (Phase 0: `organisation`).
+- `index.mjs` — orchestrator CLI.
+- `*.test.mjs` — co-located `node:test` unit tests.
+
+**App (new/modified):**
+- `src/types/content.ts` — TS interfaces (create).
+- `scripts/ingest/schema.mjs` — Zod schemas mirroring the TS types (create).
+- `src/lib/content/index.ts` — typed loaders (create).
+- `src/content/organisation.json`, `src/content/manifest.json` — generated data (create, committed).
+- `src/app/organisation/[slug]/page.tsx` — rewire to loader (modify).
+- `src/app/directory/page.tsx` or a new `organisations` listing — render full org list (modify/confirm).
+- `next.config.ts` — `images.remotePatterns` for the live CDN fallback (modify).
+- `package.json` — devDeps + scripts (modify).
+- `.gitignore` — ignore `public/content/` (modify).
+
+---
+
+## Task 1: Project scaffolding — deps, scripts, dirs, gitignore
+
+**Files:**
+- Modify: `apps/dosje/package.json`
+- Modify: `apps/dosje/.gitignore`
+- Create: `apps/dosje/scripts/ingest/.keep`, `apps/dosje/src/content/.keep`
+
+- [ ] **Step 1: Install dev dependencies**
+
+Run (from `apps/dosje/`):
+```bash
+npm i -D zod node-html-parser sanitize-html
+```
+Expected: three packages added under `devDependencies`.
+
+- [ ] **Step 2: Add npm scripts**
+
+In `package.json`, add to `"scripts"`:
+```json
+"ingest": "node scripts/ingest/index.mjs",
+"ingest:verify": "node scripts/ingest/index.mjs --verify-only",
+"ingest:assets": "node scripts/ingest/index.mjs --assets-only",
+"test:ingest": "node --test scripts/ingest/"
+```
+
+- [ ] **Step 3: Create dirs and gitignore images**
+
+Run:
+```bash
+mkdir -p scripts/ingest src/content && touch scripts/ingest/.keep src/content/.keep
+```
+Append to `.gitignore`:
+```
+# Ingested binary assets (regenerated by `npm run ingest:assets`)
+public/content/
+```
+
+- [ ] **Step 4: Verify test wiring**
+
+Create a throwaway `scripts/ingest/smoke.test.mjs`:
+```js
+import { test } from "node:test";
+import assert from "node:assert/strict";
+test("test runner works", () => assert.equal(1 + 1, 2));
+```
+Run: `npm run test:ingest`
+Expected: `# pass 1`.
+
+- [ ] **Step 5: Remove smoke test and commit**
+
+```bash
+rm scripts/ingest/smoke.test.mjs
+git add package.json package-lock.json .gitignore scripts/ingest/.keep src/content/.keep
+git commit -m "chore(dosje): scaffold ingestion pipeline (deps, scripts, dirs)"
+```
+
+---
+
+## Task 2: WP client — pagination + sitemap helpers
+
+**Files:**
+- Create: `apps/dosje/scripts/ingest/wp-client.mjs`
+- Test: `apps/dosje/scripts/ingest/wp-client.test.mjs`
+
+- [ ] **Step 1: Write failing tests for the pure helpers**
+
+`scripts/ingest/wp-client.test.mjs`:
+```js
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { buildRestUrl, parseSitemapLocs, totalPagesFromHeaders } from "./wp-client.mjs";
+
+test("buildRestUrl composes base, fields, paging", () => {
+  const u = buildRestUrl("organisation", { page: 2, perPage: 100, fields: ["id", "slug"] });
+  assert.equal(
+    u,
+    "https://www.dosje.gov.in/wp-json/wp/v2/organisation?per_page=100&page=2&_fields=id%2Cslug"
+  );
+});
+
+test("parseSitemapLocs extracts <loc> urls", () => {
+  const xml = `<urlset><url><loc>https://x/a/</loc></url><url><loc>https://x/b/</loc></url></urlset>`;
+  assert.deepEqual(parseSitemapLocs(xml), ["https://x/a/", "https://x/b/"]);
+});
+
+test("totalPagesFromHeaders reads X-WP-TotalPages, defaults to 1", () => {
+  assert.equal(totalPagesFromHeaders(new Headers({ "x-wp-totalpages": "6" })), 6);
+  assert.equal(totalPagesFromHeaders(new Headers({})), 1);
+});
+```
+
+- [ ] **Step 2: Run tests, verify they fail**
+
+Run: `npm run test:ingest`
+Expected: FAIL — `Cannot find module './wp-client.mjs'`.
+
+- [ ] **Step 3: Implement `wp-client.mjs`**
+
+```js
+// WordPress REST + sitemap client for dosje.gov.in.
+const BASE = "https://www.dosje.gov.in";
+const REST = `${BASE}/wp-json/wp/v2`;
+
+export function buildRestUrl(restBase, { page = 1, perPage = 100, fields } = {}) {
+  const params = new URLSearchParams();
+  params.set("per_page", String(perPage));
+  params.set("page", String(page));
+  if (fields?.length) params.set("_fields", fields.join(","));
+  return `${REST}/${restBase}?${params.toString()}`;
+}
+
+export function parseSitemapLocs(xml) {
+  return [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1].trim());
+}
+
+export function totalPagesFromHeaders(headers) {
+  const v = headers.get("x-wp-totalpages");
+  const n = v ? Number(v) : 1;
+  return Number.isFinite(n) && n > 0 ? n : 1;
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Fetch JSON with retry + polite delay. `fetchImpl` is injectable for tests.
+export async function fetchJson(url, { retries = 3, delayMs = 400, fetchImpl = fetch } = {}) {
+  let lastErr;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const res = await fetchImpl(url, { headers: { "User-Agent": "mosje-ingest/1.0" } });
+      if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+      const body = await res.json();
+      await sleep(delayMs);
+      return { body, headers: res.headers };
+    } catch (err) {
+      lastErr = err;
+      await sleep(delayMs * (attempt + 1) * 2);
+    }
+  }
+  throw lastErr;
+}
+
+export async function fetchText(url, opts = {}) {
+  const { fetchImpl = fetch } = opts;
+  const res = await fetchImpl(url, { headers: { "User-Agent": "mosje-ingest/1.0" } });
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+  return res.text();
+}
+
+// Pull ALL records for a CPT across pages.
+export async function fetchAllRecords(restBase, { fields, ...opts } = {}) {
+  const first = await fetchJson(buildRestUrl(restBase, { page: 1, fields }), opts);
+  const pages = totalPagesFromHeaders(first.headers);
+  const all = [...first.body];
+  for (let page = 2; page <= pages; page++) {
+    const next = await fetchJson(buildRestUrl(restBase, { page, fields }), opts);
+    all.push(...next.body);
+  }
+  return all;
+}
+
+// Canonical URL set for a collection, from its sitemap (handles multi-file via index probing).
+export async function fetchSitemapUrls(type, { maxFiles = 5, ...opts } = {}) {
+  const urls = [];
+  for (let i = 1; i <= maxFiles; i++) {
+    try {
+      const xml = await fetchText(`${BASE}/wp-sitemap-posts-${type}-${i}.xml`, opts);
+      urls.push(...parseSitemapLocs(xml));
+    } catch {
+      break; // 404 → no more files
+    }
+  }
+  return urls;
+}
+```
+
+- [ ] **Step 4: Run tests, verify pass**
+
+Run: `npm run test:ingest`
+Expected: PASS (3 tests).
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/ingest/wp-client.mjs scripts/ingest/wp-client.test.mjs
+git commit -m "feat(dosje): WP REST + sitemap client for ingestion"
+```
+
+---
+
+## Task 3: HTML section extractor (the core)
+
+Extracts meaningful content from Elementor markup: drops carousels/nav/widgets chrome, walks heading (`h1`–`h3`) → following content into `{heading, html}` sections.
+
+**Files:**
+- Create: `apps/dosje/scripts/ingest/html-extract.mjs`
+- Test: `apps/dosje/scripts/ingest/html-extract.test.mjs`
+
+- [ ] **Step 1: Write failing tests**
+
+`scripts/ingest/html-extract.test.mjs`:
+```js
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { extractSections, collectImageUrls } from "./html-extract.mjs";
+
+const SAMPLE = `
+<div class="elementor-widget-image"><div class="swiper"><img src="https://cdn/x.jpg"/></div>
+  <div class="elementor-swiper-button">next</div></div>
+<h2 class="elementor-heading-title">About</h2>
+<div class="elementor-widget-text-editor"><p>First para.</p><p>Second para.</p></div>
+<h2>Functions</h2>
+<ul><li>One</li><li>Two</li></ul>
+`;
+
+test("extractSections splits by headings, keeps prose, drops swiper chrome", () => {
+  const out = extractSections(SAMPLE);
+  assert.equal(out.length, 2);
+  assert.equal(out[0].heading, "About");
+  assert.match(out[0].html, /First para\./);
+  assert.match(out[0].html, /Second para\./);
+  assert.ok(!/swiper-button/.test(out[0].html));
+  assert.equal(out[1].heading, "Functions");
+  assert.match(out[1].html, /<li>One<\/li>/);
+});
+
+test("content before the first heading becomes a lead section with null heading", () => {
+  const out = extractSections(`<p>Intro.</p><h2>Body</h2><p>More.</p>`);
+  assert.equal(out[0].heading, null);
+  assert.match(out[0].html, /Intro\./);
+});
+
+test("collectImageUrls returns absolute image srcs, ignoring data-uris", () => {
+  const urls = collectImageUrls(`<img src="https://cdn/a.png"><img src="data:image/x">`);
+  assert.deepEqual(urls, ["https://cdn/a.png"]);
+});
+```
+
+- [ ] **Step 2: Run, verify fail**
+
+Run: `npm run test:ingest`
+Expected: FAIL — module not found.
+
+- [ ] **Step 3: Implement `html-extract.mjs`**
+
+```js
+import { parse } from "node-html-parser";
+
+// Elementor/structure noise to remove before extraction.
+const DROP_SELECTORS = [
+  ".elementor-swiper-button", ".swiper-pagination", ".swiper-button-next",
+  ".swiper-button-prev", "script", "style", "noscript", "nav",
+  ".elementor-widget-google_maps", "iframe",
+];
+const HEADING_TAGS = new Set(["h1", "h2", "h3"]);
+
+function cleanRoot(html) {
+  const root = parse(html, { blockTextElements: { script: false, style: false } });
+  for (const sel of DROP_SELECTORS) root.querySelectorAll(sel).forEach((n) => n.remove());
+  return root;
+}
+
+// Returns [{ heading: string|null, html: string }], skipping empty sections.
+export function extractSections(html) {
+  const root = cleanRoot(html);
+  // Flatten to the meaningful leaf-ish nodes in document order.
+  const nodes = root.querySelectorAll("h1,h2,h3,p,ul,ol,table,blockquote");
+  const sections = [];
+  let current = { heading: null, parts: [] };
+  const flush = () => {
+    const inner = current.parts.join("").trim();
+    if (current.heading || inner) sections.push({ heading: current.heading, html: inner });
+  };
+  for (const node of nodes) {
+    if (HEADING_TAGS.has(node.tagName?.toLowerCase())) {
+      flush();
+      current = { heading: node.text.trim().replace(/\s+/g, " "), parts: [] };
+    } else {
+      const t = node.outerHTML.trim();
+      if (t) current.parts.push(t);
+    }
+  }
+  flush();
+  return sections.filter((s) => s.heading || s.html);
+}
+
+export function collectImageUrls(html) {
+  const root = parse(html);
+  return root
+    .querySelectorAll("img")
+    .map((n) => n.getAttribute("src"))
+    .filter((src) => src && /^https?:\/\//.test(src));
+}
+```
+
+- [ ] **Step 4: Run, verify pass**
+
+Run: `npm run test:ingest`
+Expected: PASS (all html-extract tests).
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/ingest/html-extract.mjs scripts/ingest/html-extract.test.mjs
+git commit -m "feat(dosje): Elementor HTML section extractor"
+```
+
+---
+
+## Task 4: Sanitizer
+
+**Files:**
+- Create: `apps/dosje/scripts/ingest/sanitize.mjs`
+- Test: `apps/dosje/scripts/ingest/sanitize.test.mjs`
+
+- [ ] **Step 1: Write failing tests**
+
+`scripts/ingest/sanitize.test.mjs`:
+```js
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { sanitize } from "./sanitize.mjs";
+
+test("strips scripts and on* handlers, keeps allowed tags/attrs", () => {
+  const dirty = `<p onclick="x()">Hi <a href="https://a" target="_blank">link</a></p><script>bad()</script>`;
+  const out = sanitize(dirty);
+  assert.match(out, /<p>Hi <a href="https:\/\/a"/);
+  assert.ok(!/onclick/.test(out));
+  assert.ok(!/script/.test(out));
+});
+
+test("keeps img src/alt and table markup", () => {
+  const out = sanitize(`<img src="https://a.png" alt="x" onerror="y"><table><tr><td>c</td></tr></table>`);
+  assert.match(out, /<img[^>]*src="https:\/\/a\.png"/);
+  assert.ok(!/onerror/.test(out));
+  assert.match(out, /<td>c<\/td>/);
+});
+```
+
+- [ ] **Step 2: Run, verify fail**
+
+Run: `npm run test:ingest` → FAIL (module not found).
+
+- [ ] **Step 3: Implement `sanitize.mjs`**
+
+```js
+import sanitizeHtml from "sanitize-html";
+
+export function sanitize(html) {
+  return sanitizeHtml(html, {
+    allowedTags: [
+      "h2", "h3", "h4", "p", "a", "ul", "ol", "li", "strong", "em", "b", "i",
+      "br", "blockquote", "table", "thead", "tbody", "tr", "th", "td", "img", "span",
+    ],
+    allowedAttributes: {
+      a: ["href", "title"],
+      img: ["src", "alt"],
+      td: ["colspan", "rowspan"],
+      th: ["colspan", "rowspan"],
+    },
+    allowedSchemes: ["https", "http", "mailto"],
+    transformTags: {
+      a: (tagName, attribs) => ({
+        tagName: "a",
+        attribs: { ...attribs, ...(attribs.href?.startsWith("http") ? { rel: "noreferrer", target: "_blank" } : {}) },
+      }),
+    },
+  });
+}
+```
+
+- [ ] **Step 4: Run, verify pass**
+
+Run: `npm run test:ingest` → PASS.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/ingest/sanitize.mjs scripts/ingest/sanitize.test.mjs
+git commit -m "feat(dosje): HTML allowlist sanitizer for ingested content"
+```
+
+---
+
+## Task 5: Taxonomy resolver
+
+**Files:**
+- Create: `apps/dosje/scripts/ingest/taxonomy.mjs`
+- Test: `apps/dosje/scripts/ingest/taxonomy.test.mjs`
+
+- [ ] **Step 1: Write failing test (pure mapping, injected fetch)**
+
+`scripts/ingest/taxonomy.test.mjs`:
+```js
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { resolveTermNames } from "./taxonomy.mjs";
+
+test("resolveTermNames maps ids to names via injected fetcher", async () => {
+  const fakeFetch = async () => ({
+    ok: true,
+    headers: new Headers(),
+    json: async () => [{ id: 168, name: "Education" }, { id: 9, name: "Health" }],
+  });
+  const names = await resolveTermNames("scheme-category", [168, 9], { fetchImpl: fakeFetch });
+  assert.deepEqual(names, ["Education", "Health"]);
+});
+
+test("empty id list returns empty array without fetching", async () => {
+  const names = await resolveTermNames("scheme-category", [], {
+    fetchImpl: () => { throw new Error("should not fetch"); },
+  });
+  assert.deepEqual(names, []);
+});
+```
+
+- [ ] **Step 2: Run, verify fail** → `npm run test:ingest` FAIL (module not found).
+
+- [ ] **Step 3: Implement `taxonomy.mjs`**
+
+```js
+import { fetchJson } from "./wp-client.mjs";
+
+const BASE = "https://www.dosje.gov.in/wp-json/wp/v2";
+
+export async function resolveTermNames(taxonomy, ids, opts = {}) {
+  if (!ids || ids.length === 0) return [];
+  const url = `${BASE}/${taxonomy}?include=${ids.join(",")}&per_page=100&_fields=id,name`;
+  const { body } = await fetchJson(url, opts);
+  const byId = new Map(body.map((t) => [t.id, t.name]));
+  return ids.map((id) => byId.get(id)).filter(Boolean);
+}
+```
+
+- [ ] **Step 4: Run, verify pass** → PASS.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/ingest/taxonomy.mjs scripts/ingest/taxonomy.test.mjs
+git commit -m "feat(dosje): taxonomy id→name resolver"
+```
+
+---
+
+## Task 6: Record transform
+
+**Files:**
+- Create: `apps/dosje/scripts/ingest/transform.mjs`
+- Test: `apps/dosje/scripts/ingest/transform.test.mjs`
+
+- [ ] **Step 1: Write failing test**
+
+`scripts/ingest/transform.test.mjs`:
+```js
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { transformRecord } from "./transform.mjs";
+
+const RAW = {
+  id: 5, slug: "ncsk", link: "https://www.dosje.gov.in/organisation/ncsk/",
+  title: { rendered: "National Commission for Safai Karamcharis" },
+  content: { rendered: `<h2>About</h2><div class="elementor-widget-text-editor"><p>Body <a href="https://ncsk.nic.in">site</a>.</p></div>` },
+};
+
+test("transformRecord produces slug,title,sourceUrl,sections,website", () => {
+  const rec = transformRecord(RAW, { taxonomyNames: {} });
+  assert.equal(rec.slug, "ncsk");
+  assert.equal(rec.title, "National Commission for Safai Karamcharis");
+  assert.equal(rec.sourceUrl, "https://www.dosje.gov.in/organisation/ncsk/");
+  assert.equal(rec.sections[0].heading, "About");
+  assert.match(rec.sections[0].html, /Body <a href="https:\/\/ncsk\.nic\.in"/);
+  assert.equal(rec.website, "https://ncsk.nic.in"); // first external .nic.in/.gov.in link
+});
+
+test("decodes HTML entities in title", () => {
+  const rec = transformRecord({ ...RAW, title: { rendered: "A &amp; B" } }, { taxonomyNames: {} });
+  assert.equal(rec.title, "A & B");
+});
+```
+
+- [ ] **Step 2: Run, verify fail** → FAIL (module not found).
+
+- [ ] **Step 3: Implement `transform.mjs`**
+
+```js
+import { extractSections } from "./html-extract.mjs";
+import { sanitize } from "./sanitize.mjs";
+
+function decodeEntities(s) {
+  return s
+    .replace(/&amp;/g, "&").replace(/&#038;/g, "&").replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#8217;/g, "’")
+    .replace(/&#8216;/g, "‘").replace(/&nbsp;/g, " ").trim();
+}
+
+function firstGovLink(sections) {
+  for (const s of sections) {
+    const m = s.html.match(/href="(https?:\/\/[^"]*(?:\.nic\.in|\.gov\.in)[^"]*)"/);
+    if (m) return m[1];
+  }
+  return undefined;
+}
+
+// ctx: { taxonomyNames: { [taxonomy]: string[] }, type }
+export function transformRecord(raw, ctx = {}) {
+  const rawSections = extractSections(raw.content?.rendered ?? "");
+  const sections = rawSections
+    .map((s) => ({ heading: s.heading ? decodeEntities(s.heading) : null, html: sanitize(s.html) }))
+    .filter((s) => s.heading || s.html);
+  const rec = {
+    slug: raw.slug,
+    title: decodeEntities(raw.title?.rendered ?? ""),
+    sourceUrl: raw.link,
+    sections,
+  };
+  const tax = ctx.taxonomyNames ?? {};
+  if (tax.category?.length) rec.category = tax.category[0];
+  if (tax.targetGroup?.length) rec.targetGroup = tax.targetGroup;
+  const website = firstGovLink(sections);
+  if (website) rec.website = website;
+  return rec;
+}
+```
+
+- [ ] **Step 4: Run, verify pass** → PASS.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/ingest/transform.mjs scripts/ingest/transform.test.mjs
+git commit -m "feat(dosje): record transform (sections + website + taxonomy)"
+```
+
+---
+
+## Task 7: Dedup (skip redundant, keep all unique)
+
+**Files:**
+- Create: `apps/dosje/scripts/ingest/dedup.mjs`
+- Test: `apps/dosje/scripts/ingest/dedup.test.mjs`
+
+- [ ] **Step 1: Write failing tests**
+
+`scripts/ingest/dedup.test.mjs`:
+```js
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { canonicalizeSlug, dedupeRecords } from "./dedup.mjs";
+
+test("canonicalizeSlug strips home-page prefix and trailing -copy", () => {
+  assert.equal(canonicalizeSlug("home-page/terms-conditions"), "terms-conditions");
+  assert.equal(canonicalizeSlug("ncsc-summit-copy"), "ncsc-summit");
+  assert.equal(canonicalizeSlug("plain-slug"), "plain-slug");
+});
+
+test("dedupeRecords drops a -2 sibling only when content is identical", () => {
+  const recs = [
+    { slug: "a", title: "A", sections: [{ heading: "x", html: "<p>same</p>" }] },
+    { slug: "a-2", title: "A", sections: [{ heading: "x", html: "<p>same</p>" }] },
+    { slug: "b-2", title: "B", sections: [{ heading: "y", html: "<p>different</p>" }] },
+  ];
+  const { kept, skipped } = dedupeRecords(recs);
+  assert.deepEqual(kept.map((r) => r.slug), ["a", "b-2"]);
+  assert.equal(skipped.length, 1);
+  assert.equal(skipped[0].slug, "a-2");
+  assert.match(skipped[0].reason, /duplicate/i);
+});
+```
+
+- [ ] **Step 2: Run, verify fail** → FAIL (module not found).
+
+- [ ] **Step 3: Implement `dedup.mjs`**
+
+```js
+import { createHash } from "node:crypto";
+
+export function canonicalizeSlug(slug) {
+  return slug.replace(/^home-page\//, "").replace(/-copy$/, "");
+}
+
+function contentHash(rec) {
+  const norm = rec.sections.map((s) => `${s.heading ?? ""}::${s.html}`).join("|").replace(/\s+/g, " ").trim();
+  return createHash("sha1").update(norm).digest("hex");
+}
+
+// Keep first occurrence per (canonical-slug + content-hash). A "-2"/"-copy"
+// sibling with identical content is skipped; different content is kept (unique).
+export function dedupeRecords(records) {
+  const seenCanonical = new Map(); // canonicalSlug -> hash of kept record
+  const kept = [];
+  const skipped = [];
+  for (const rec of records) {
+    const canon = canonicalizeSlug(rec.slug);
+    const hash = contentHash(rec);
+    const priorHash = seenCanonical.get(canon);
+    if (priorHash && priorHash === hash) {
+      skipped.push({ slug: rec.slug, reason: `duplicate of ${canon}` });
+      continue;
+    }
+    if (!seenCanonical.has(canon)) seenCanonical.set(canon, hash);
+    kept.push(rec);
+  }
+  return { kept, skipped };
+}
+```
+
+- [ ] **Step 4: Run, verify pass** → PASS.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/ingest/dedup.mjs scripts/ingest/dedup.test.mjs
+git commit -m "feat(dosje): dedup redundant pages, keep unique"
+```
+
+---
+
+## Task 8: Assets (hybrid image download + rewrite)
+
+**Files:**
+- Create: `apps/dosje/scripts/ingest/assets.mjs`
+- Test: `apps/dosje/scripts/ingest/assets.test.mjs`
+
+- [ ] **Step 1: Write failing tests for the pure pieces**
+
+`scripts/ingest/assets.test.mjs`:
+```js
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { localAssetPath, rewriteImageRefs } from "./assets.mjs";
+
+test("localAssetPath maps a remote url to a stable public path", () => {
+  assert.equal(
+    localAssetPath("organisation", "https://cdn/wp-content/uploads/2025/11/Logo-NSKFDC.png"),
+    "/content/organisation/Logo-NSKFDC.png"
+  );
+});
+
+test("rewriteImageRefs replaces only mapped urls", () => {
+  const map = new Map([["https://cdn/a.png", "/content/x/a.png"]]);
+  const html = `<img src="https://cdn/a.png"><img src="https://cdn/b.png">`;
+  assert.equal(
+    rewriteImageRefs(html, map),
+    `<img src="/content/x/a.png"><img src="https://cdn/b.png">`
+  );
+});
+```
+
+- [ ] **Step 2: Run, verify fail** → FAIL (module not found).
+
+- [ ] **Step 3: Implement `assets.mjs`**
+
+```js
+import { mkdir, writeFile } from "node:fs/promises";
+import { join, basename } from "node:path";
+import { collectImageUrls } from "./html-extract.mjs";
+import { fetchText } from "./wp-client.mjs";
+
+const PUBLIC_DIR = new URL("../../public", import.meta.url).pathname;
+
+export function localAssetPath(collection, url) {
+  const name = basename(new URL(url).pathname);
+  return `/content/${collection}/${name}`;
+}
+
+export function rewriteImageRefs(html, urlMap) {
+  let out = html;
+  for (const [remote, local] of urlMap) out = out.split(`"${remote}"`).join(`"${local}"`);
+  return out;
+}
+
+async function downloadBinary(url, destPath, fetchImpl = fetch) {
+  const res = await fetchImpl(url, { headers: { "User-Agent": "mosje-ingest/1.0" } });
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+  const buf = Buffer.from(await res.arrayBuffer());
+  await mkdir(join(destPath, ".."), { recursive: true });
+  await writeFile(destPath, buf);
+}
+
+// Downloads every image referenced in a collection's records into
+// public/content/<collection>/ and rewrites the section HTML in place.
+export async function processCollectionAssets(collection, records, { fetchImpl = fetch } = {}) {
+  const urlMap = new Map();
+  for (const rec of records) {
+    for (const s of rec.sections) {
+      for (const url of collectImageUrls(s.html)) {
+        if (urlMap.has(url)) continue;
+        const local = localAssetPath(collection, url);
+        try {
+          await downloadBinary(url, join(PUBLIC_DIR, local.replace(/^\//, "")), fetchImpl);
+          urlMap.set(url, local);
+        } catch (err) {
+          console.warn(`  ! asset failed (${url}): ${err.message} — leaving hotlink`);
+        }
+      }
+    }
+  }
+  for (const rec of records) {
+    rec.sections = rec.sections.map((s) => ({ ...s, html: rewriteImageRefs(s.html, urlMap) }));
+    if (rec.featuredImageUrl && urlMap.has(rec.featuredImageUrl)) {
+      rec.featuredImage = urlMap.get(rec.featuredImageUrl);
+    }
+  }
+  return { records, downloaded: urlMap.size };
+}
+```
+(Note: `fetchText` imported to keep the module's network surface in one place; it is used by future collections that fetch featured-media URLs.)
+
+- [ ] **Step 4: Run, verify pass** → PASS.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/ingest/assets.mjs scripts/ingest/assets.test.mjs
+git commit -m "feat(dosje): hybrid image asset download + ref rewrite"
+```
+
+---
+
+## Task 9: Verify (counts vs sitemap)
+
+**Files:**
+- Create: `apps/dosje/scripts/ingest/verify.mjs`
+- Test: `apps/dosje/scripts/ingest/verify.test.mjs`
+
+- [ ] **Step 1: Write failing test**
+
+`scripts/ingest/verify.test.mjs`:
+```js
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { buildReport } from "./verify.mjs";
+
+test("buildReport flags shortfall after accounting for skipped dupes", () => {
+  const r = buildReport({ collection: "organisation", sitemapCount: 16, kept: 16, skipped: 0 });
+  assert.equal(r.ok, true);
+  const r2 = buildReport({ collection: "schemes", sitemapCount: 141, kept: 120, skipped: 5 });
+  assert.equal(r2.ok, false);
+  assert.equal(r2.missing, 16); // 141 - (120 + 5)
+});
+```
+
+- [ ] **Step 2: Run, verify fail** → FAIL (module not found).
+
+- [ ] **Step 3: Implement `verify.mjs`**
+
+```js
+export function buildReport({ collection, sitemapCount, kept, skipped }) {
+  const accounted = kept + skipped;
+  const missing = Math.max(0, sitemapCount - accounted);
+  return {
+    collection,
+    sitemapCount,
+    kept,
+    skipped,
+    missing,
+    ok: missing === 0,
+  };
+}
+
+export function formatReport(reports) {
+  const lines = ["", "Sync verification report", "========================"];
+  for (const r of reports) {
+    const status = r.ok ? "OK " : "GAP";
+    lines.push(`[${status}] ${r.collection}: live ${r.sitemapCount}, kept ${r.kept}, skipped ${r.skipped}, missing ${r.missing}`);
+  }
+  return lines.join("\n");
+}
+```
+
+- [ ] **Step 4: Run, verify pass** → PASS.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/ingest/verify.mjs scripts/ingest/verify.test.mjs
+git commit -m "feat(dosje): sync verification report"
+```
+
+---
+
+## Task 10: Zod schema + collection registry
+
+**Files:**
+- Create: `apps/dosje/scripts/ingest/schema.mjs`
+- Create: `apps/dosje/scripts/ingest/collections.mjs`
+- Test: `apps/dosje/scripts/ingest/schema.test.mjs`
+
+- [ ] **Step 1: Write failing test for the schema**
+
+`scripts/ingest/schema.test.mjs`:
+```js
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { sectionRecordSchema } from "./schema.mjs";
+
+test("valid record passes", () => {
+  const rec = { slug: "x", title: "X", sourceUrl: "https://a", sections: [{ heading: "H", html: "<p>y</p>" }] };
+  assert.doesNotThrow(() => sectionRecordSchema.parse(rec));
+});
+
+test("missing slug fails", () => {
+  assert.throws(() => sectionRecordSchema.parse({ title: "X", sourceUrl: "https://a", sections: [] }));
+});
+```
+
+- [ ] **Step 2: Run, verify fail** → FAIL (module not found).
+
+- [ ] **Step 3: Implement `schema.mjs`**
+
+```js
+import { z } from "zod";
+
+export const sectionSchema = z.object({
+  heading: z.string().nullable(),
+  html: z.string(),
+});
+
+export const sectionRecordSchema = z.object({
+  slug: z.string().min(1),
+  title: z.string().min(1),
+  sourceUrl: z.string().url(),
+  sections: z.array(sectionSchema),
+  featuredImage: z.string().optional(),
+  website: z.string().optional(),
+  category: z.string().optional(),
+  targetGroup: z.array(z.string()).optional(),
+});
+
+export const collectionFileSchema = z.array(sectionRecordSchema);
+```
+
+- [ ] **Step 4: Run, verify pass** → PASS.
+
+- [ ] **Step 5: Implement `collections.mjs` (registry — organisation only for Phase 0)**
+
+```js
+// Registry of collections to ingest. Phase 0 ships `organisation`.
+// Later phases add entries here; the pipeline is otherwise generic.
+export const COLLECTIONS = [
+  {
+    name: "organisation",        // output file: src/content/organisation.json
+    restBase: "organisation",    // /wp-json/wp/v2/organisation
+    sitemapType: "organisation", // wp-sitemap-posts-organisation-N.xml
+    taxonomies: {},              // { fieldKey: "taxonomy-rest-base" }
+    fields: ["id", "slug", "title", "link", "content", "featured_media"],
+  },
+];
+```
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add scripts/ingest/schema.mjs scripts/ingest/schema.test.mjs scripts/ingest/collections.mjs
+git commit -m "feat(dosje): zod schema + collection registry"
+```
+
+---
+
+## Task 11: Orchestrator CLI
+
+Wires everything: for each registry entry → fetch records, resolve taxonomies, transform, dedup, validate (zod), download assets, write JSON, build sitemap-based report, write manifest.
+
+**Files:**
+- Create: `apps/dosje/scripts/ingest/index.mjs`
+
+- [ ] **Step 1: Implement `index.mjs`**
+
+```js
+import { writeFile, mkdir } from "node:fs/promises";
+import { fetchAllRecords, fetchSitemapUrls } from "./wp-client.mjs";
+import { resolveTermNames } from "./taxonomy.mjs";
+import { transformRecord } from "./transform.mjs";
+import { dedupeRecords } from "./dedup.mjs";
+import { processCollectionAssets } from "./assets.mjs";
+import { buildReport, formatReport } from "./verify.mjs";
+import { collectionFileSchema } from "./schema.mjs";
+import { COLLECTIONS } from "./collections.mjs";
+
+const CONTENT_DIR = new URL("../../src/content", import.meta.url).pathname;
+const argv = new Set(process.argv.slice(2));
+const ASSETS_ONLY = argv.has("--assets-only");
+const VERIFY_ONLY = argv.has("--verify-only");
+
+async function ingestCollection(def) {
+  console.log(`\n→ ${def.name}`);
+  const raw = await fetchAllRecords(def.restBase, { fields: def.fields });
+  console.log(`  fetched ${raw.length} raw records`);
+
+  const records = [];
+  for (const r of raw) {
+    const taxonomyNames = {};
+    for (const [key, taxBase] of Object.entries(def.taxonomies ?? {})) {
+      taxonomyNames[key] = await resolveTermNames(taxBase, r[taxBase] ?? []);
+    }
+    records.push(transformRecord(r, { taxonomyNames, type: def.name }));
+  }
+
+  const { kept, skipped } = dedupeRecords(records);
+  console.log(`  kept ${kept.length}, skipped ${skipped.length} duplicates`);
+
+  if (!VERIFY_ONLY) {
+    await processCollectionAssets(def.name, kept);
+  }
+
+  collectionFileSchema.parse(kept); // throws on malformed → fails build
+
+  if (!ASSETS_ONLY) {
+    await mkdir(CONTENT_DIR, { recursive: true });
+    await writeFile(`${CONTENT_DIR}/${def.name}.json`, JSON.stringify(kept, null, 2) + "\n");
+  }
+
+  const sitemapUrls = await fetchSitemapUrls(def.sitemapType);
+  return { def, kept, skipped, sitemapCount: sitemapUrls.length };
+}
+
+async function main() {
+  const results = [];
+  for (const def of COLLECTIONS) results.push(await ingestCollection(def));
+
+  const reports = results.map((r) =>
+    buildReport({ collection: r.def.name, sitemapCount: r.sitemapCount, kept: r.kept.length, skipped: r.skipped.length })
+  );
+  console.log(formatReport(reports));
+
+  if (!ASSETS_ONLY) {
+    const manifest = {
+      generatedAt: new Date().toISOString(),
+      collections: results.map((r) => ({
+        name: r.def.name,
+        sitemapCount: r.sitemapCount,
+        kept: r.kept.length,
+        skipped: r.skipped.length,
+        skippedDetail: r.skipped,
+      })),
+    };
+    await writeFile(`${CONTENT_DIR}/manifest.json`, JSON.stringify(manifest, null, 2) + "\n");
+  }
+
+  const failed = reports.filter((r) => !r.ok);
+  if (failed.length) {
+    console.error(`\n✖ ${failed.length} collection(s) have gaps. See report above.`);
+    process.exitCode = 1;
+  } else {
+    console.log("\n✓ all collections fully synced");
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+- [ ] **Step 2: Dry-run against live for organisation**
+
+Run: `npm run ingest`
+Expected: fetches organisation records, prints `kept N, skipped M`, writes `src/content/organisation.json` + `manifest.json`, prints a report. (The org CPT may include non-org noise; the report `missing`/`skipped` numbers reveal it — that's expected feedback, fix in Step 3 if needed.)
+
+- [ ] **Step 3: If the org set is noisy, constrain by sitemap**
+
+If `kept` ≠ 16, add a sitemap-slug allowlist to `ingestCollection`: after `fetchSitemapUrls`, derive the set of canonical slugs from the org sitemap URLs and `kept = kept.filter(r => allowedSlugs.has(canonicalizeSlug(r.slug)))`. Import `canonicalizeSlug` from `./dedup.mjs`. Re-run `npm run ingest` until the report reads `[OK ] organisation: live 16, kept 16`.
+
+- [ ] **Step 4: Commit the pipeline + generated data**
+
+```bash
+git add scripts/ingest/index.mjs src/content/organisation.json src/content/manifest.json
+git commit -m "feat(dosje): ingestion orchestrator + organisation dataset"
+```
+
+---
+
+## Task 12: Content types + typed loaders
+
+**Files:**
+- Create: `apps/dosje/src/types/content.ts`
+- Create: `apps/dosje/src/lib/content/index.ts`
+
+- [ ] **Step 1: Create `src/types/content.ts`**
+
+```ts
+export interface ContentSection {
+  heading: string | null;
+  html: string;
+}
+
+export interface SectionRecord {
+  slug: string;
+  title: string;
+  sourceUrl: string;
+  sections: ContentSection[];
+  featuredImage?: string;
+  website?: string;
+  category?: string;
+  targetGroup?: string[];
+}
+```
+
+- [ ] **Step 2: Create `src/lib/content/index.ts`**
+
+```ts
+import type { SectionRecord } from "@/types/content";
+import organisationData from "@/content/organisation.json";
+
+const organisations = organisationData as SectionRecord[];
+
+export function getOrganisations(): SectionRecord[] {
+  return organisations;
+}
+
+export function getOrganisation(slug: string): SectionRecord | undefined {
+  return organisations.find((o) => o.slug === slug);
+}
+```
+
+- [ ] **Step 3: Confirm `@/content` resolves**
+
+Check `tsconfig.json` `paths` includes `"@/*": ["./src/*"]`. `src/content/*.json` is under `src`, so `@/content/organisation.json` resolves. Ensure `resolveJsonModule` is `true` in `tsconfig.json` (Next.js default — confirm; add if missing).
+
+Run: `npm run typecheck`
+Expected: PASS (no errors).
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/types/content.ts src/lib/content/index.ts tsconfig.json
+git commit -m "feat(dosje): content types + organisation loaders"
+```
+
+---
+
+## Task 13: Rewire organisation detail page to the loader
+
+**Files:**
+- Modify: `apps/dosje/src/app/organisation/[slug]/page.tsx`
+
+- [ ] **Step 1: Replace the inline `ORGS` object and rendering**
+
+Rewrite `src/app/organisation/[slug]/page.tsx` to:
+```tsx
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import { ContentPage } from "@/components/templates/ContentPage";
+import { getOrganisations, getOrganisation } from "@/lib/content";
+
+export function generateStaticParams() {
+  return getOrganisations().map((o) => ({ slug: o.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const org = getOrganisation(slug);
+  if (!org) return { title: "Organisation — DoSJE" };
+  const firstText = org.sections.find((s) => s.html)?.html.replace(/<[^>]+>/g, "").slice(0, 160);
+  return { title: `${org.title} — DoSJE`, description: firstText };
+}
+
+export default async function OrganisationDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const org = getOrganisation(slug);
+  if (!org) notFound();
+
+  return (
+    <ContentPage
+      title={org.title}
+      breadcrumb={[{ label: "Associated Organisations" }, { label: org.title }]}
+      lastUpdated="Synced from dosje.gov.in"
+      sidebar={
+        org.website || org.featuredImage ? (
+          <div className="rounded-xl border border-gray-200 bg-surface-muted p-5 text-[14px]">
+            {org.featuredImage && (
+              <Image src={org.featuredImage} alt={`${org.title} logo`} width={160} height={80} className="mb-4 h-auto w-auto" />
+            )}
+            {org.website && (
+              <a href={org.website} target="_blank" rel="noreferrer" className="text-gov-blue hover:underline">
+                {org.website.replace(/^https?:\/\//, "")}
+              </a>
+            )}
+          </div>
+        ) : undefined
+      }
+    >
+      {org.sections.map((s, i) => (
+        <section key={i}>
+          {s.heading && <h2>{s.heading}</h2>}
+          <div dangerouslySetInnerHTML={{ __html: s.html }} />
+        </section>
+      ))}
+    </ContentPage>
+  );
+}
+```
+(`dangerouslySetInnerHTML` is safe here: the HTML was allowlist-sanitized at ingest time.)
+
+- [ ] **Step 2: Typecheck + lint**
+
+Run: `npm run typecheck && npm run lint`
+Expected: PASS. (If lint flags `dangerouslySetInnerHTML`, add a scoped `// eslint-disable-next-line react/no-danger` with a comment that content is sanitized at ingest.)
+
+- [ ] **Step 3: Build to confirm static params generate for all 16**
+
+Run: `npm run build`
+Expected: build succeeds; output shows 16 `/organisation/[slug]` pages prerendered.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/app/organisation/[slug]/page.tsx
+git commit -m "feat(dosje): render organisation pages from ingested data"
+```
+
+---
+
+## Task 14: Organisation listing + image remote-pattern fallback
+
+**Files:**
+- Modify: `apps/dosje/next.config.ts`
+- Modify: `apps/dosje/src/app/directory/page.tsx` (or the org listing that exists)
+
+- [ ] **Step 1: Add CDN remotePatterns (so un-downloaded images still render)**
+
+In `next.config.ts`, add under the config object:
+```ts
+images: {
+  remotePatterns: [
+    { protocol: "https", hostname: "durwo6bhtjtqt.cloudfront.net" },
+    { protocol: "https", hostname: "www.dosje.gov.in" },
+  ],
+},
+```
+(Merge with any existing `images` config — do not overwrite.)
+
+- [ ] **Step 2: Wire a listing of all organisations**
+
+Read `src/app/directory/page.tsx`. If it lists organisations from a hand-coded array, replace that array with `getOrganisations()` and map to the existing list/card markup, linking each to `/organisation/{slug}`. If no org listing page exists, render the list on `src/app/mosje-directory/page.tsx` using the existing `ListingPage` template with columns `[{key:"title",header:"Organisation"}]` and rows from `getOrganisations()` (link cell to the detail route).
+
+- [ ] **Step 3: Typecheck, lint, build**
+
+Run: `npm run check`
+Expected: PASS.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add next.config.ts src/app/directory/page.tsx
+git commit -m "feat(dosje): organisation listing from ingested data + CDN image fallback"
+```
+
+---
+
+## Task 15: End-to-end verification
+
+**Files:** none (verification only)
+
+- [ ] **Step 1: Full pipeline run**
+
+Run: `npm run ingest`
+Expected: `[OK ] organisation: live 16, kept 16, skipped 0, missing 0` and `✓ all collections fully synced`.
+
+- [ ] **Step 2: Unit suite green**
+
+Run: `npm run test:ingest`
+Expected: all tests pass.
+
+- [ ] **Step 3: Build + manual spot check**
+
+Run: `npm run dev:website` from the repo root (or `npm run dev` in `apps/dosje`). Visit `/organisation/national-commission-for-safai-karamcharis` and confirm real multi-section content renders (not the old stub), and the listing shows all 16.
+
+- [ ] **Step 4: Final commit if anything changed**
+
+```bash
+git add -A && git commit -m "chore(dosje): phase-0 ingestion verified (16 organisations synced)" || echo "nothing to commit"
+```
+
+---
+
+## Self-Review Notes (author)
+
+- **Spec coverage (Phase 0):** REST scrape ✓ (T2), Elementor HTML→sections ✓ (T3), sanitize ✓ (T4), taxonomy resolve ✓ (T5), transform ✓ (T6), dedup/skip-redundant-keep-unique ✓ (T7), hybrid assets + gitignore ✓ (T1/T8), verify report + manifest ✓ (T9/T11), typed loaders + zod build gate ✓ (T10/T12), pages from data ✓ (T13/T14). Phases 1–3 are out of this plan by design (see below).
+- **Type consistency:** `SectionRecord`/`ContentSection` (TS) mirror `sectionRecordSchema`/`sectionSchema` (zod) and the object shape returned by `transformRecord`. Loader names `getOrganisations`/`getOrganisation` used identically in T12/T13/T14.
+- **No placeholders:** every code step contains complete code; every run step states the command and expected result.
+
+## Follow-on plans (Phases 1–3) — design notes, NOT tasks
+
+Each later collection is **one registry entry in `collections.mjs`** plus a page wiring; the pipeline core is unchanged. Generate a dedicated plan per phase from these notes:
+
+- **Phase 1 — Schemes (141):** registry `{ name:"schemes", restBase:"schemes-and-services", sitemapType:"schemes-and-services", taxonomies:{ category:"scheme-category", targetGroup:"target-group" } }`. Rewire `schemes-services/[slug]/page.tsx` (render `sections`, sidebar from `category`/`targetGroup`) and the `schemes-services` listing (DataTable: Scheme | Category | Target group). **Officials/Who's-Who (550):** likely listing-shaped (name/designation/office) — inspect `official` REST fields first; may need a `personRecord` schema variant + `whos-who`/`mosje-directory` DataTable wiring.
+- **Phase 2 — Documents (~1,076), Tenders (400), Vacancies (155):** these are file-link + date rows, not prose — add a `fileRecord` schema (`{slug,title,sourceUrl,fileUrl,date,category}`), extract the first PDF link from content (kept hotlinked per Hybrid), wire to `ListingPage` DataTables. **Events (102):** prose + date/venue → extend `SectionRecord` with optional `date`/`venue`; rewire `events/[slug]` + `events` listing. **Gallery (488):** image records → `galleryRecord` + a grid page.
+- **Phase 3 — Missing unique static pages (~12):** ingest from `pages` REST by slug into `src/content/pages/<slug>.json`, render via `ContentPage`; add routes for `list-of-scheduled-castes`, `handbook-on-social-welfare-statistics`, `supreme-court-judgement`, `lok-sabha-question-answer`, `newsletter`, `cpio`, `detailed-demand-for-grant`, `grants-suspended-list-blacklisted-ngos`, `list-of-de-blacklisted-ngos`, `special-mention-matters-raised-under-377`, `minutes-of-screening-committees`. Feed homepage `LatestUpdates`/`RecentDocuments` from the `updates`/`documents` datasets.
