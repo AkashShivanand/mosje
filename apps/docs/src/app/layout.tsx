@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { ColorModeProvider } from "@mosje/design-system";
+import { ColorModeProvider, colorModeInitScript } from "@mosje/design-system";
 import { AppSwitcher } from "@mosje/design-system";
 import { DocsLayout } from "@/components/docs-layout/docs-layout";
+import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,6 +14,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* No-flash: set the correct appearance + brand axis before first paint. */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
+        <script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />
+      </head>
       <body>
         <ColorModeProvider initialMode="blue-light">
           <DocsLayout>{children}</DocsLayout>

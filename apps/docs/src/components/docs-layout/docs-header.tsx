@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { NAV } from "@/lib/nav";
-import { useColorMode } from "@mosje/design-system";
+import { applyTheme, readThemeCookie, type Theme } from "@/lib/theme";
 
 interface DocsHeaderProps {
   onSearchOpen: () => void;
@@ -32,8 +32,22 @@ function useBreadcrumb(): [string, string] | null {
 
 export function DocsHeader({ onSearchOpen }: DocsHeaderProps): React.JSX.Element {
   const breadcrumb = useBreadcrumb();
-  const { mode, setMode } = useColorMode();
-  const isDark = mode === "blue-dark";
+  const [theme, setTheme] = React.useState<Theme>("light");
+  const isDark = theme === "dark";
+
+  // Reconcile with the cookie after mount (the no-flash script already set the
+  // attribute pre-paint; this syncs React state to it).
+  React.useEffect(() => {
+    setTheme(readThemeCookie());
+  }, []);
+
+  const toggleTheme = React.useCallback(() => {
+    setTheme((prev) => {
+      const next: Theme = prev === "dark" ? "light" : "dark";
+      applyTheme(next);
+      return next;
+    });
+  }, []);
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -63,8 +77,9 @@ export function DocsHeader({ onSearchOpen }: DocsHeaderProps): React.JSX.Element
       </nav>
       <button
         className="docs-header__theme-toggle"
-        onClick={() => setMode(isDark ? "blue-light" : "blue-dark")}
+        onClick={toggleTheme}
         aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        aria-pressed={isDark}
         title={isDark ? "Light mode" : "Dark mode"}
         type="button"
       >

@@ -87,7 +87,10 @@ export const legacyDsCss = {
         : v;
 
     // Appearance/density overrides, derived from $extensions.mosje.themes.
-    const themeMap = { dark: [], hc: [], compact: [] };
+    // `light` re-asserts each themed token's base value so light is explicitly
+    // addressable — a nested [data-theme="light"] island can reset an inherited
+    // dark theme (e.g. the docs playground previewing light inside a dark page).
+    const themeMap = { light: [], dark: [], hc: [], compact: [] };
     // Brand color-mode overrides, derived from $extensions.mosje.colorModes.
     // Keyed dynamically so adding a new mode in the tokens needs no build change.
     const colorModeMap = {};
@@ -96,6 +99,10 @@ export const legacyDsCss = {
       if (ext?.themes) {
         for (const [theme, v] of Object.entries(ext.themes)) {
           if (themeMap[theme]) themeMap[theme].push(`  --sa-${t.path.join("-")}: ${resolveRef(v)};`);
+        }
+        // Mirror the base value into the light reset for any appearance override.
+        if (ext.themes.dark || ext.themes.hc) {
+          themeMap.light.push(`  --sa-${t.path.join("-")}: ${val(t)};`);
         }
       }
       if (ext?.colorModes) {
@@ -107,10 +114,18 @@ export const legacyDsCss = {
     const colorModeBlocks = Object.entries(colorModeMap)
       .map(([mode, decls]) => `[data-color-mode="${mode}"] {\n${decls.join("\n")}\n}`)
       .join("\n\n");
+    // The legacy --ds-* aliases are declared at :root and therefore resolve
+    // *there*, inheriting as computed values. For a nested [data-theme] island
+    // (e.g. the docs playground) to actually re-theme --ds-*-based components,
+    // each appearance block must RE-DECLARE the aliases so they re-resolve
+    // against that island's --sa-* values. (Page-level theming on <html> works
+    // either way; this is what makes nested theme islands work.)
+    const legacyReassert = `\n\n  /* re-resolve --ds-* aliases for nested theme islands */\n${legacy.join("\n")}`;
     const themeBlocks = [
       colorModeBlocks,
-      themeMap.dark.length ? `[data-theme="dark"] {\n${themeMap.dark.join("\n")}\n}` : "",
-      themeMap.hc.length ? `[data-theme="hc"] {\n${themeMap.hc.join("\n")}\n}` : "",
+      themeMap.light.length ? `[data-theme="light"] {\n${themeMap.light.join("\n")}${legacyReassert}\n}` : "",
+      themeMap.dark.length ? `[data-theme="dark"] {\n${themeMap.dark.join("\n")}${legacyReassert}\n}` : "",
+      themeMap.hc.length ? `[data-theme="hc"] {\n${themeMap.hc.join("\n")}${legacyReassert}\n}` : "",
       themeMap.compact.length ? `[data-density="compact"] {\n${themeMap.compact.join("\n")}\n}` : "",
     ]
       .filter(Boolean)

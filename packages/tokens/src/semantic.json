@@ -4,9 +4,9 @@
     "$type": "color",
     "action": {
       "primary": {
-        "default": {"$value":"{color.primaryRamp.light.500}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.500}"}}}},
-        "hover":   {"$value":"{color.primaryRamp.light.700}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.700}"}}}},
-        "tonal":   {"$value":"{color.primaryRamp.light.100}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.100}"}}}}
+        "default": {"$value":"{color.primaryRamp.light.500}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.500}"},"themes":{"dark":"{color.primaryRamp.light.400}"}}}},
+        "hover":   {"$value":"{color.primaryRamp.light.700}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.700}"},"themes":{"dark":"{color.primaryRamp.light.300}"}}}},
+        "tonal":   {"$value":"{color.primaryRamp.light.100}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.100}"},"themes":{"dark":"rgba(45, 132, 232, 0.18)"}}}}
       }
     },
     "primaryScale": {
@@ -23,33 +23,33 @@
       "900": {"$value":"{color.primaryRamp.light.900}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.900}"}}}}
     },
     "text": {
-      "default": {"$value":"{color.neutral.800}", "$extensions":{"mosje":{"themes":{"dark":"{color.neutral.0}","hc":"#000000"}}}},
-      "muted":   {"$value":"{color.neutral.700}"},
-      "strong":  {"$value":"{color.neutral.900}"},
-      "disabled": {"$value":"rgba(31, 36, 40, 0.48)"},
+      "default": {"$value":"{color.neutral.800}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.ink}","hc":"#000000"}}}},
+      "muted":   {"$value":"{color.neutral.700}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.inkMuted}"}}}},
+      "strong":  {"$value":"{color.neutral.900}", "$extensions":{"mosje":{"themes":{"dark":"{color.neutral.0}"}}}},
+      "disabled": {"$value":"rgba(31, 36, 40, 0.48)", "$extensions":{"mosje":{"themes":{"dark":"rgba(243, 244, 246, 0.40)"}}}},
       "onPrimary": {"$value":"{color.neutral.0}"}
     },
     "bg": {
-      "surface": {"$value":"{color.neutral.0}",  "$extensions":{"mosje":{"themes":{"dark":"{color.neutral.900}","hc":"#ffffff"}}}},
-      "muted":   {"$value":"{color.neutral.50}", "$extensions":{"mosje":{"themes":{"dark":"#15191c","hc":"#ffffff"}}}},
-      "alt":     {"$value":"{color.neutral.75}"}
+      "surface": {"$value":"{color.neutral.0}",  "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.surface}","hc":"#ffffff"}}}},
+      "muted":   {"$value":"{color.neutral.50}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.bg}","hc":"#ffffff"}}}},
+      "alt":     {"$value":"{color.neutral.75}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.surfaceMuted}"}}}}
     },
     "border": {
-      "subtle": {"$value":"{color.neutral.100}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}},
-      "strong": {"$value":"{color.neutral.200}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}},
-      "control": {"$value":"{color.neutral.400}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}},
-      "controlHover": {"$value":"{color.neutral.500}", "$extensions":{"mosje":{"themes":{"hc":"#000000"}}}}
+      "subtle": {"$value":"{color.neutral.100}", "$extensions":{"mosje":{"themes":{"dark":"#262b33","hc":"#000000"}}}},
+      "strong": {"$value":"{color.neutral.200}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.border}","hc":"#000000"}}}},
+      "control": {"$value":"{color.neutral.400}", "$extensions":{"mosje":{"themes":{"dark":"#4a5263","hc":"#000000"}}}},
+      "controlHover": {"$value":"{color.neutral.500}", "$extensions":{"mosje":{"themes":{"dark":"#5b6577","hc":"#000000"}}}}
     },
-    "focus": { "ring": {"$value":"rgba(3, 115, 223, 0.48)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(0, 51, 102, 0.48)"}}}} },
+    "focus": { "ring": {"$value":"rgba(3, 115, 223, 0.48)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(0, 51, 102, 0.48)"},"themes":{"dark":"rgba(125, 180, 245, 0.55)"}}}} },
     "status": {
-      "success": {"$value":"{color.green.500}"},
-      "successStrong": {"$value":"{color.green.700}"},
+      "success": {"$value":"{color.green.500}", "$extensions":{"mosje":{"themes":{"dark":"#66bb6a"}}}},
+      "successStrong": {"$value":"{color.green.700}", "$extensions":{"mosje":{"themes":{"dark":"#81c784"}}}},
       "warning": {"$value":"{color.yellow.500}"},
-      "warningTonal": {"$value":"{color.saffron.50}"},
-      "danger":  {"$value":"{color.red.500}"},
-      "dangerStrong": {"$value":"{color.red.700}"},
-      "dangerTonal": {"$value":"{color.red.50}"},
-      "info":    {"$value":"{color.blue.500}"}
+      "warningTonal": {"$value":"{color.saffron.50}", "$extensions":{"mosje":{"themes":{"dark":"rgba(255, 211, 35, 0.16)"}}}},
+      "danger":  {"$value":"{color.red.500}", "$extensions":{"mosje":{"themes":{"dark":"#ff6b5e"}}}},
+      "dangerStrong": {"$value":"{color.red.700}", "$extensions":{"mosje":{"themes":{"dark":"#ff8a80"}}}},
+      "dangerTonal": {"$value":"{color.red.50}", "$extensions":{"mosje":{"themes":{"dark":"rgba(255, 107, 94, 0.16)"}}}},
+      "info":    {"$value":"{color.blue.500}", "$extensions":{"mosje":{"themes":{"dark":"#5fa0ef"}}}}
     },
     "a11y": {
       "$description": "Accessibility-widget self-contained palettes (its own HC + dark toggles).",

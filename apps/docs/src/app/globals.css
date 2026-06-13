@@ -4,6 +4,18 @@
 /* Base reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ── Appearance theme (light is :root default; dark via [data-theme]) ── */
+:root, [data-theme="light"] { color-scheme: light; }
+[data-theme="dark"] {
+  color-scheme: dark;
+  /* --ds-success-tonal resolves to a pale-green primitive that can't be themed
+     via the token source; soften it here so dark callouts read correctly. */
+  --ds-success-tonal: rgba(102, 187, 106, 0.16);
+}
+/* Reset success-tonal back to the light primitive for explicit light islands
+   (e.g. the playground previewing light inside a dark page). */
+[data-theme="light"] { --ds-success-tonal: var(--sa-color-green-50); }
+
 html {
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body-1);
@@ -12,6 +24,11 @@ html {
   background-color: var(--ds-surface);
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
+}
+
+/* Smooth, restrained theme cross-fade (skipped for reduced-motion users). */
+@media (prefers-reduced-motion: no-preference) {
+  html, body { transition: background-color 0.2s ease, color 0.2s ease; }
 }
 
 body { min-height: 100vh; }

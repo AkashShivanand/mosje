@@ -43,7 +43,9 @@ export function Playground({ code: initialCode, controls = [], buildCode }: Play
     });
   };
 
-  const dataTheme = theme === "hc" ? "hc" : theme === "dark" ? "dark" : undefined;
+  // Always set an explicit appearance so the canvas previews the chosen theme
+  // independently of the page theme (light must be addressable to reset dark).
+  const dataTheme = theme === "hc" ? "hc" : theme === "dark" ? "dark" : "light";
   const dataDensity = density === "compact" ? "compact" : undefined;
 
   return (
