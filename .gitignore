@@ -36,6 +36,8 @@ Thumbs.db
 # graphify knowledge-graph output (per-project, do not commit)
 graphify-out/
 .graphify_*
+# superpowers plugin scratch/brainstorm cache (tool working dir, not project code)
+.superpowers/
 .qc/
 docs/qc/portals/eutthan-admin/.qc/
 docs/qc/portals/eutthan-admin/_archive/
