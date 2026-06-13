@@ -10,7 +10,7 @@
   },
   "scripts": {
     "prepare": "husky",
-    "dev": "concurrently --restart-tries 3 --restart-after 1500 --prefix-colors \"blue,cyan,yellow,green,magenta,white\" -n \"hub,dosje,smile,pm-ajay,docs,storybook\" \"npm --prefix apps/hub run dev\" \"npm --prefix apps/dosje run dev\" \"npm --prefix apps/portals/smile-admin run dev\" \"npm --prefix apps/portals/pm-ajay run dev\" \"npm --prefix apps/docs run dev\" \"npm --prefix apps/storybook run dev\"",
+    "dev": "concurrently --restart-tries -1 --restart-after 2000 --prefix-colors \"blue,cyan,yellow,green,magenta,white\" -n \"hub,dosje,smile,pm-ajay,docs,storybook\" \"npm --prefix apps/hub run dev\" \"npm --prefix apps/dosje run dev\" \"npm --prefix apps/portals/smile-admin run dev\" \"npm --prefix apps/portals/pm-ajay run dev\" \"npm --prefix apps/docs run dev\" \"npm --prefix apps/storybook run dev\"",
     "dev:hub": "npm --prefix apps/hub run dev",
     "dev:website": "npm --prefix apps/dosje run dev",
     "dev:smile": "npm --prefix apps/portals/smile-admin run dev",
