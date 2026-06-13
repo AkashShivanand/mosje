@@ -15,6 +15,7 @@ export const COLLECTIONS = [
     sitemapType: "schemes-and-services",
     basePath: "schemes-and-services",
     taxonomies: { category: "scheme-category", targetGroup: "target-group" },
+    // "scheme-category"/"target-group" are WP REST field names returning term-ID arrays (resolved to names via the `taxonomies` map).
     fields: ["id", "slug", "title", "link", "content", "scheme-category", "target-group"],
   },
 ];
