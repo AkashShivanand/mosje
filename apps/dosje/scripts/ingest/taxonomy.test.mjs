@@ -28,3 +28,9 @@ test("caches results so identical lookups do not refetch", async () => {
   assert.deepEqual(b, ["Cached"]);
   assert.equal(calls, 1);
 });
+
+test("decodes HTML entities in resolved term names", async () => {
+  const fakeFetch = async () => ({ ok: true, headers: new Headers(), json: async () => [{ id: 5, name: "Notices &amp; Tenders" }] });
+  const names = await resolveTermNames("decode-tax", [5], { fetchImpl: fakeFetch });
+  assert.deepEqual(names, ["Notices & Tenders"]);
+});

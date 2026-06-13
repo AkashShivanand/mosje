@@ -24,7 +24,7 @@ export const fileRecordSchema = z.object({
   sourceUrl: z.string().url(),
   date: z.string().optional(),
   category: z.string().optional(),
-  fileUrl: z.string().optional(),
+  fileUrl: z.string().url().optional(),
 });
 
 export const fileCollectionFileSchema = z.array(fileRecordSchema);
