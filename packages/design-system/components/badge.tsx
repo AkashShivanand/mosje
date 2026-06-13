@@ -2,14 +2,28 @@ import * as React from "react";
 import { cn } from "../cn";
 import "./badge.css";
 
-export type BadgeStatus = "primary" | "success" | "danger" | "warning" | "neutral";
+export type BadgeStatus =
+  | "primary"
+  | "info"
+  | "success"
+  | "danger"
+  | "warning"
+  | "neutral";
 export type BadgeSize = "sm" | "lg";
+/** Fill strength (Portal DS emphasis). subtle = tonal bg, solid = filled source bg. */
+export type BadgeEmphasis = "subtle" | "solid";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  /** Semantic colour role. Drives the tonal background + text. @default "neutral" */
+  /** Semantic colour role. Drives the background + text. @default "neutral" */
   status?: BadgeStatus;
   /** Pill size. @default "sm" */
   size?: BadgeSize;
+  /** Fill strength. @default "subtle" */
+  emphasis?: BadgeEmphasis;
+  /** Show a leading status dot (Portal DS Dot badge). */
+  dot?: boolean;
+  /** Animate the leading dot. Implies `dot`. */
+  pulse?: boolean;
 }
 
 /**
@@ -21,9 +35,19 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
  */
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   function Badge(
-    { status = "neutral", size = "sm", className, children, ...rest },
+    {
+      status = "neutral",
+      size = "sm",
+      emphasis = "subtle",
+      dot = false,
+      pulse = false,
+      className,
+      children,
+      ...rest
+    },
     ref,
   ) {
+    const showDot = dot || pulse;
     return (
       <span
         ref={ref}
@@ -31,10 +55,17 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           "ds-badge",
           `ds-badge--${status}`,
           `ds-badge--${size}`,
+          `ds-badge--${emphasis}`,
           className,
         )}
         {...rest}
       >
+        {showDot && (
+          <span
+            className={cn("ds-badge__dot", pulse && "ds-badge__dot--pulse")}
+            aria-hidden="true"
+          />
+        )}
         {children}
       </span>
     );

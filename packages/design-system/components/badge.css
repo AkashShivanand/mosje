@@ -28,6 +28,11 @@
   --_fg: var(--ds-primary-dark);
 }
 
+.ds-badge--info {
+  --_bg: var(--sa-color-status-infoTonal);
+  --_fg: var(--sa-color-status-infoStrong);
+}
+
 .ds-badge--success {
   --_bg: var(--ds-success-tonal);
   --_fg: var(--sa-color-status-successStrong);
@@ -63,4 +68,71 @@
   padding: 4px 12px;
   font-size: var(--ds-text-body-3, 12px);
   line-height: var(--ds-leading-body-3, 16px);
+}
+
+/* --------------------------------------------------------------------------
+   Emphasis: solid (filled source colour) — overrides the tonal default.
+   Two-class specificity beats the single-class subtle rules above.
+   -------------------------------------------------------------------------- */
+.ds-badge--solid.ds-badge--primary {
+  --_bg: var(--ds-primary);
+  --_fg: #ffffff;
+}
+.ds-badge--solid.ds-badge--info {
+  --_bg: var(--sa-color-status-infoStrong);
+  --_fg: #ffffff;
+}
+.ds-badge--solid.ds-badge--success {
+  --_bg: var(--ds-success);
+  --_fg: #ffffff;
+}
+.ds-badge--solid.ds-badge--danger {
+  --_bg: var(--ds-danger);
+  --_fg: #ffffff;
+}
+.ds-badge--solid.ds-badge--warning {
+  --_bg: var(--ds-warning);
+  --_fg: var(--ds-ink);
+}
+.ds-badge--solid.ds-badge--neutral {
+  --_bg: var(--ds-ink);
+  --_fg: var(--ds-surface);
+}
+
+/* --------------------------------------------------------------------------
+   Leading status dot (Portal DS Dot badge) + optional pulse
+   -------------------------------------------------------------------------- */
+.ds-badge__dot {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--ds-radius-full, 999px);
+  background-color: currentColor;
+}
+
+.ds-badge--lg .ds-badge__dot {
+  width: 8px;
+  height: 8px;
+}
+
+.ds-badge__dot--pulse {
+  animation: ds-badge-pulse 1.6s ease-out infinite;
+}
+
+@keyframes ds-badge-pulse {
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+  }
+  70% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-badge__dot--pulse {
+    animation: none;
+  }
 }
