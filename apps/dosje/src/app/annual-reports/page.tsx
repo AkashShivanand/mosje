@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ListingPage } from "@/components/templates/ListingPage";
-import type { DataTableColumn } from "@/components/ui/data-table";
+import { documentListColumns } from "@/data/columns";
 import { getDocumentsByType, getContentSyncedDate } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -8,12 +8,6 @@ export const metadata: Metadata = {
   description:
     "Annual reports of the Department of Social Justice & Empowerment and the National Commission for Safai Karamcharis.",
 };
-
-const columns: DataTableColumn[] = [
-  { key: "title", label: "Title", sortable: true, align: "left", className: "min-w-[360px] font-medium text-ink" },
-  { key: "date", label: "Published", sortable: true, align: "center", className: "min-w-[120px]" },
-  { key: "action", label: "Action", align: "center", type: "link", hrefKey: "href", linkLabel: "View" },
-];
 
 const rows = getDocumentsByType("Annual Reports").map((d) => ({
   title: d.title,
@@ -28,7 +22,7 @@ export default function Page() {
       breadcrumb={[{ label: "Documents" }, { label: "Annual Reports" }]}
       lastUpdated={getContentSyncedDate()}
       description="Annual reports published by the Department of Social Justice & Empowerment and the National Commission for Safai Karamcharis."
-      columns={columns}
+      columns={documentListColumns}
       rows={rows}
       searchKeys={["title"]}
       searchPlaceholder="Search annual reports…"
