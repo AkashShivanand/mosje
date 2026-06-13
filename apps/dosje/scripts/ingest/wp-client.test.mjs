@@ -10,6 +10,12 @@ test("buildRestUrl composes base, fields, paging", () => {
   );
 });
 
+test("buildRestUrl appends extra query", () => {
+  const u = buildRestUrl("documents", { page: 1, perPage: 100, fields: ["id"], query: "documents-type=28,29" });
+  assert.match(u, /[?&]documents-type=28%2C29|[?&]documents-type=28,29/);
+  assert.match(u, /per_page=100/);
+});
+
 test("parseSitemapLocs extracts <loc> urls", () => {
   const xml = `<urlset><url><loc>https://x/a/</loc></url><url><loc>https://x/b/</loc></url></urlset>`;
   assert.deepEqual(parseSitemapLocs(xml), ["https://x/a/", "https://x/b/"]);

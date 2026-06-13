@@ -23,7 +23,11 @@ function slugFromUrl(url) {
 
 async function ingestCollection(def) {
   console.log(`\n→ ${def.name}`);
-  const sitemapUrls = await fetchSitemapUrls(def.sitemapType);
+  // Partial collections are an intentional, type-filtered subset fetched via a REST
+  // taxonomy filter. We do NOT consult the sitemap for them: the documents sitemap is
+  // incomplete/huge and would wrongly drop the records we deliberately selected.
+  const partial = def.partial === true;
+  const sitemapUrls = partial ? [] : await fetchSitemapUrls(def.sitemapType);
   // When basePath is set, identity is the full path under the base segment (unique
   // per nested page); otherwise fall back to the leaf slug.
   const allowed = new Set(
@@ -32,21 +36,25 @@ async function ingestCollection(def) {
       : sitemapUrls.map((u) => canonicalizeSlug(slugFromUrl(u)))
   );
 
-  const raw = await fetchAllRecords(def.restBase, { fields: def.fields });
-  console.log(`  fetched ${raw.length} raw records; sitemap lists ${allowed.size}`);
+  const raw = await fetchAllRecords(def.restBase, { fields: def.fields, query: def.query });
+  if (partial) {
+    console.log(`  fetched ${raw.length} raw records (intentional type-filtered subset; sitemap skipped)`);
+  } else {
+    console.log(`  fetched ${raw.length} raw records; sitemap lists ${allowed.size}`);
+  }
 
   const records = [];
   for (const r of raw) {
     const identity = def.basePath
       ? deriveCollectionSlug(r.link, def.basePath)
       : canonicalizeSlug(r.slug);
-    if (allowed.size && !allowed.has(identity)) continue; // restrict to canonical URL set
+    if (!partial && allowed.size && !allowed.has(identity)) continue; // restrict to canonical URL set
     const taxonomyNames = {};
     for (const [key, taxBase] of Object.entries(def.taxonomies ?? {})) {
       taxonomyNames[key] = await resolveTermNames(taxBase, r[taxBase] ?? []);
     }
     const transform = def.kind === "file" ? transformFileRecord : transformRecord;
-    const rec = transform(r, { taxonomyNames, type: def.name });
+    const rec = transform(r, { taxonomyNames, type: def.name, preferCategories: def.preferCategories });
     if (def.basePath) rec.slug = deriveCollectionSlug(r.link, def.basePath); // unique path-based slug
     records.push(rec);
   }
@@ -67,7 +75,10 @@ async function ingestCollection(def) {
     await writeFile(`${CONTENT_DIR}/${def.name}.json`, JSON.stringify(kept, null, 2) + "\n");
   }
 
-  return { def, kept, skipped, sitemapCount: sitemapUrls.length };
+  // For partial collections the sitemap is not the source of truth, so report
+  // sitemapCount as everything we accounted for (kept+skipped) → missing=0, ok=true.
+  const sitemapCount = partial ? kept.length + skipped.length : sitemapUrls.length;
+  return { def, kept, skipped, sitemapCount };
 }
 
 async function main() {

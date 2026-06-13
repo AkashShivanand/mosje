@@ -2,12 +2,16 @@
 const BASE = "https://www.dosje.gov.in";
 const REST = `${BASE}/wp-json/wp/v2`;
 
-export function buildRestUrl(restBase, { page = 1, perPage = 100, fields } = {}) {
+export function buildRestUrl(restBase, { page = 1, perPage = 100, fields, query } = {}) {
   const params = new URLSearchParams();
   params.set("per_page", String(perPage));
   params.set("page", String(page));
   if (fields?.length) params.set("_fields", fields.join(","));
-  return `${REST}/${restBase}?${params.toString()}`;
+  let url = `${REST}/${restBase}?${params.toString()}`;
+  // `query` is a raw querystring fragment (e.g. "documents-type=28,29") appended
+  // verbatim so callers can use REST taxonomy filters not modelled above.
+  if (query) url += `&${query}`;
+  return url;
 }
 
 export function parseSitemapLocs(xml) {
@@ -48,12 +52,12 @@ export async function fetchText(url, opts = {}) {
 }
 
 // Pull ALL records for a CPT across pages.
-export async function fetchAllRecords(restBase, { fields, ...opts } = {}) {
-  const first = await fetchJson(buildRestUrl(restBase, { page: 1, fields }), opts);
+export async function fetchAllRecords(restBase, { fields, query, ...opts } = {}) {
+  const first = await fetchJson(buildRestUrl(restBase, { page: 1, fields, query }), opts);
   const pages = totalPagesFromHeaders(first.headers);
   const all = [...first.body];
   for (let page = 2; page <= pages; page++) {
-    const next = await fetchJson(buildRestUrl(restBase, { page, fields }), opts);
+    const next = await fetchJson(buildRestUrl(restBase, { page, fields, query }), opts);
     all.push(...next.body);
   }
   return all;
