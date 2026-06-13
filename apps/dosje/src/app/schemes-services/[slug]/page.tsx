@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContentPage } from "@/components/templates/ContentPage";
-import { getSchemes, getScheme, withAssetBasePath } from "@/lib/content";
+import { getSchemes, getScheme, withAssetBasePath, getContentSyncedDate } from "@/lib/content";
 
 export function generateStaticParams() {
   return getSchemes().map((s) => ({ slug: s.slug }));
@@ -32,7 +32,7 @@ export default async function SchemeDetailPage({
     <ContentPage
       title={scheme.title}
       breadcrumb={[{ label: "Offerings" }, { label: "Schemes & Services" }, { label: scheme.title }]}
-      lastUpdated="Synced from dosje.gov.in"
+      lastUpdated={getContentSyncedDate()}
       sidebar={
         <div className="rounded-xl border border-border bg-surface-muted p-5 text-sm">
           <h2 className="mb-3 text-base font-semibold text-ink">Key Information</h2>

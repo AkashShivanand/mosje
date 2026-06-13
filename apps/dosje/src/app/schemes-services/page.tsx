@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ListingPage } from "@/components/templates/ListingPage";
 import type { DataTableColumn } from "@/components/ui/data-table";
-import { getSchemes } from "@/lib/content";
+import { getSchemes, getContentSyncedDate } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Schemes & Services | DoSJE",
@@ -26,7 +26,7 @@ export default function Page() {
     <ListingPage
       title="Schemes & Services"
       breadcrumb={[{ label: "Offerings" }, { label: "Schemes & Services" }]}
-      lastUpdated="Synced from dosje.gov.in"
+      lastUpdated={getContentSyncedDate()}
       description="Flagship welfare schemes and scholarships delivered by the Department for SC, OBC, EBC and DNT communities."
       columns={columns}
       rows={rows}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ListingPage } from "@/components/templates/ListingPage";
 import type { DataTableColumn } from "@/components/ui/data-table";
-import { getTenders } from "@/lib/content";
+import { getTenders, getContentSyncedDate } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Tenders | DoSJE",
@@ -28,7 +28,7 @@ export default function Page() {
     <ListingPage
       title="Tenders"
       breadcrumb={[{ label: "Offerings" }, { label: "Tenders" }]}
-      lastUpdated="Synced from dosje.gov.in"
+      lastUpdated={getContentSyncedDate()}
       description="Active tenders, procurement notices and requests for proposals issued by the Department."
       columns={columns}
       rows={rows}

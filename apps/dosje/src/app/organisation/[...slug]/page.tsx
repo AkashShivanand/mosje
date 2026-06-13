@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { ContentPage } from "@/components/templates/ContentPage";
-import { getOrganisations, getOrganisation, withAssetBasePath } from "@/lib/content";
+import { getOrganisations, getOrganisation, withAssetBasePath, getContentSyncedDate } from "@/lib/content";
 
 export function generateStaticParams() {
   return getOrganisations().map((o) => ({ slug: o.slug.split("/") }));
@@ -35,7 +35,7 @@ export default async function OrganisationDetailPage({
     <ContentPage
       title={org.title}
       breadcrumb={[{ label: "Associated Organisations" }, { label: org.title }]}
-      lastUpdated="Synced from dosje.gov.in"
+      lastUpdated={getContentSyncedDate()}
       sidebar={
         <div className="rounded-xl border border-border bg-surface-muted p-5 text-sm">
           <h2 className="mb-3 text-base font-semibold text-ink">Key Information</h2>

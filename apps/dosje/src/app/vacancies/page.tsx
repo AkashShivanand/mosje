@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ListingPage } from "@/components/templates/ListingPage";
 import type { DataTableColumn } from "@/components/ui/data-table";
-import { getVacancies } from "@/lib/content";
+import { getVacancies, getContentSyncedDate } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Vacancies | DoSJE",
@@ -28,7 +28,7 @@ export default function Page() {
     <ListingPage
       title="Vacancies"
       breadcrumb={[{ label: "Offerings" }, { label: "Vacancies" }]}
-      lastUpdated="Synced from dosje.gov.in"
+      lastUpdated={getContentSyncedDate()}
       description="Latest recruitment notifications, deputations and vacancy circulars across the Department and its allied bodies."
       columns={columns}
       rows={rows}
