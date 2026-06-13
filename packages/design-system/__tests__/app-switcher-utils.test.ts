@@ -4,7 +4,7 @@ import {
   filterApps,
   matchActivePath,
   type AppEntry,
-} from "../components/app-switcher-utils.js";
+} from "../components/navigation/app-switcher-utils.js";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 

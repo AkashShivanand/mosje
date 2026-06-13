@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../cn";
+import { cn } from "../../utils/cn";
 import "./badge.css";
 
 export type BadgeStatus =

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "../cn";
+import { cn } from "../utils/cn";
 import { useColorMode } from "./color-mode-provider";
 import "./color-mode-switcher.css";
 

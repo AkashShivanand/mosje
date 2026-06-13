@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "../cn";
-import { useColorMode } from "./color-mode-provider";
+import { cn } from "../../utils/cn";
+import { useColorMode } from "../../foundations/color-mode-provider";
 import {
   AppEntry,
   DEFAULT_APPS,

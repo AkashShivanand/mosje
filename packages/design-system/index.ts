@@ -1,9 +1,19 @@
-// Tokens
+// =============================================================================
+// @mosje/design-system — public API barrel.
+// Organised by the functional-category benchmark (Polaris / Material / Carbon):
+//   foundations · utils · components/{actions,forms,feedback,data-display,
+//   navigation,a11y}. Apps import from this barrel; internal paths can move
+//   freely without breaking consumers.
+// =============================================================================
+
+// ---- Tokens (generated) -----------------------------------------------------
 export * from "./tokens";
 export { default as tokens } from "./tokens";
-export { cn } from "./cn";
 
-// Color-mode (brand axis) — core helpers + React provider/switcher.
+// ---- Utils ------------------------------------------------------------------
+export { cn } from "./utils/cn";
+
+// ---- Foundations: color-mode (brand axis) -----------------------------------
 export {
   COLOR_MODES,
   DEFAULT_COLOR_MODE,
@@ -17,46 +27,52 @@ export {
   colorModeInitScript,
   type ColorMode,
   type ColorModeId,
-} from "./color-mode";
+} from "./foundations/color-mode";
 export {
   ColorModeProvider,
   useColorMode,
   type ColorModeProviderProps,
-} from "./components/color-mode-provider";
+} from "./foundations/color-mode-provider";
 export {
   ColorModeSwitcher,
   type ColorModeSwitcherProps,
-} from "./components/color-mode-switcher";
+} from "./foundations/color-mode-switcher";
 
-// Components (atoms aligned to the UX4G Figma DS)
-export { Button, buttonClasses } from "./components/button";
-export type { ButtonVariant, ButtonAppearance, ButtonSize } from "./components/button";
-export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle } from "./components/card";
-export { Badge } from "./components/badge";
-export { Chip } from "./components/chip";
-export { Checkbox } from "./components/checkbox";
-export { Radio } from "./components/radio";
-export { Toggle } from "./components/toggle";
-export { Search } from "./components/search";
-export { Input } from "./components/input";
-export type { InputProps } from "./components/input";
-export { Textarea } from "./components/textarea";
-export type { TextareaProps } from "./components/textarea";
-export { Select } from "./components/select";
-export type { SelectProps, SelectOption } from "./components/select";
-export { FormField } from "./components/form-field";
-export type { FormFieldProps, FormFieldControlProps } from "./components/form-field";
-export { Alert } from "./components/alert";
-export { Loader } from "./components/loader";
-export { EmptyState } from "./components/empty-state";
-export { Avatar } from "./components/avatar";
-export { AccessibilityWidget } from "./components/accessibility-widget";
+// ---- Components: Actions -----------------------------------------------------
+export { Button, buttonClasses } from "./components/actions/button";
+export type { ButtonVariant, ButtonAppearance, ButtonSize } from "./components/actions/button";
+
+// ---- Components: Forms -------------------------------------------------------
+export { Input } from "./components/forms/input";
+export type { InputProps } from "./components/forms/input";
+export { Textarea } from "./components/forms/textarea";
+export type { TextareaProps } from "./components/forms/textarea";
+export { Select } from "./components/forms/select";
+export type { SelectProps, SelectOption } from "./components/forms/select";
+export { FormField } from "./components/forms/form-field";
+export type { FormFieldProps, FormFieldControlProps } from "./components/forms/form-field";
+export { Checkbox } from "./components/forms/checkbox";
+export { Radio } from "./components/forms/radio";
+export { Toggle } from "./components/forms/toggle";
+export { Search } from "./components/forms/search";
+export { Chip } from "./components/forms/chip";
+
+// ---- Components: Feedback ----------------------------------------------------
+export { Alert } from "./components/feedback/alert";
+export { Badge } from "./components/feedback/badge";
+export { Loader } from "./components/feedback/loader";
+export { EmptyState } from "./components/feedback/empty-state";
+
+// ---- Components: Data display ------------------------------------------------
+export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle } from "./components/data-display/card";
+export { Avatar } from "./components/data-display/avatar";
+
+// ---- Components: Navigation --------------------------------------------------
 // The interactive component lives in a "use client" module.
-export { AppSwitcher, ZoneSwitcher } from "./components/zone-switcher";
-export type { AppSwitcherProps, ZoneSwitcherProps } from "./components/zone-switcher";
+export { AppSwitcher, ZoneSwitcher } from "./components/navigation/zone-switcher";
+export type { AppSwitcherProps, ZoneSwitcherProps } from "./components/navigation/zone-switcher";
 // Data, types and helpers come from the plain (server-safe) module so server
-// components can read them directly — re-exporting these through the client
-// module above would turn them into client references on the server.
+// components can read them directly.
 export {
   DEFAULT_APPS,
   DEFAULT_APPS as DEFAULT_ZONES,
@@ -64,8 +80,11 @@ export {
   deriveAbbr,
   filterApps,
   matchActivePath,
-} from "./components/app-switcher-utils";
+} from "./components/navigation/app-switcher-utils";
 export type {
   AppEntry,
   AppEntry as Zone,
-} from "./components/app-switcher-utils";
+} from "./components/navigation/app-switcher-utils";
+
+// ---- Components: Accessibility -----------------------------------------------
+export { AccessibilityWidget } from "./components/a11y/accessibility-widget";

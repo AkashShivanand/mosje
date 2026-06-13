@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "../cn";
+import { cn } from "../../utils/cn";
 import "./forms.css";
 
 /** Wiring passed to the control rendered inside a FormField. */

@@ -2,6 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { StatusBadge } from "@/components/docs-kit/status-badge";
 import { Callout } from "@/components/docs-kit/callout";
+import { HeroShowcase } from "@/components/hero/hero";
 
 export const metadata: Metadata = {
   title: "What is SAMAVESH? — SAMAVESH Design System",
@@ -14,25 +15,9 @@ export default function WelcomePage(): React.JSX.Element {
     <>
       {/* ── Hero ── */}
       <div style={{ marginBottom: "var(--ds-spacing-5xl)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-spacing-lg)", marginBottom: "var(--ds-spacing-xl)" }}>
-          <div
-            style={{
-              width: 56, height: 56, borderRadius: "var(--ds-radius-md)",
-              background: "var(--ds-primary)", color: "#fff",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 22, fontWeight: 800,
-            }}
-            aria-hidden="true"
-          >SA</div>
-          <div>
-            <h1 style={{ fontSize: "var(--ds-text-display)", fontWeight: 500, lineHeight: 1.1 }}>
-              SAMAVESH
-            </h1>
-            <p style={{ fontSize: "var(--ds-text-body-1)", color: "var(--ds-ink-muted)" }}>
-              समावेश · Design System · v0.5
-            </p>
-          </div>
-        </div>
+        {/* Live, animated brand hero — the cover rebuilt in code with real,
+            interactive design-system components instead of a flat image. */}
+        <HeroShowcase />
 
         <p style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 400, color: "var(--ds-ink)", maxWidth: "60ch", lineHeight: 1.5, marginBottom: "var(--ds-spacing-xl)" }}>
           The shared visual and interaction language for the <strong>Ministry of Social Justice &amp; Empowerment</strong> digital estate.

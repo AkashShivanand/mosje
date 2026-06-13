@@ -9,16 +9,16 @@
     "./tokens": "./tokens.ts",
     "./tokens.css": "./tokens.css",
     "./components.css": "./components.css",
-    "./color-mode": "./color-mode.ts",
-    "./cn": "./cn.ts"
+    "./color-mode": "./foundations/color-mode.ts",
+    "./cn": "./utils/cn.ts"
   },
   "files": [
     "index.ts",
     "tokens.ts",
     "tokens.css",
     "components.css",
-    "color-mode.ts",
-    "cn.ts",
+    "foundations",
+    "utils",
     "components",
     "README.md"
   ],
