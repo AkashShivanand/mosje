@@ -7,6 +7,14 @@ import {
   ArrowLeft, Download, ExternalLink, Search, X,
 } from "lucide-react";
 import auditRaw from "@/data/eutthan-admin-audit.json";
+import figureManifest from "@/data/eutthan-admin-figures.json";
+
+// Annotation boards that actually exist on disk (public/reports/eutthan-admin/
+// figures). The audit data generates more (slug-section) combinations than were
+// rendered, so we gate each board on this manifest to avoid 404s for the ones
+// that were never produced. Regenerate after adding/removing figures:
+//   node -e 'const fs=require("fs");fs.writeFileSync("apps/hub/src/data/eutthan-admin-figures.json",JSON.stringify(fs.readdirSync("apps/hub/public/reports/eutthan-admin/figures").filter(f=>f.endsWith(".png")).sort(),null,2)+"\n")'
+const FIGURES = new Set(figureManifest as string[]);
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -336,31 +344,22 @@ function ScreenGroup({ screen, findings }: { screen: Screen; findings: Finding[]
             </p>
           )}
 
-          {/* Annotation board — full width, inline above findings */}
-          <div
-            className="mb-5 overflow-hidden rounded-xl border border-border/60 shadow-md"
-            ref={(el) => {
-              // onError is not available on next/image; hide the wrapper if the
-              // underlying <img> fires an error (delegation via capture).
-              if (!el) return;
-              const handler = (e: Event) => {
-                const t = e.target as HTMLImageElement;
-                if (t.tagName === "IMG") el.style.display = "none";
-              };
-              el.addEventListener("error", handler, true);
-            }}
-          >
-            <div className="relative w-full aspect-video">
-              <Image
-                src={boardUrl(section)}
-                alt={`${screen.name} — ${section} annotation board`}
-                fill
-                className="object-contain"
-                loading="lazy"
-                unoptimized
-              />
+          {/* Annotation board — only rendered when the figure exists on disk
+              (gated by the manifest) so missing boards don't 404. */}
+          {FIGURES.has(`${screen.slug}-${section}.png`) && (
+            <div className="mb-5 overflow-hidden rounded-xl border border-border/60 shadow-md">
+              <div className="relative w-full aspect-video">
+                <Image
+                  src={boardUrl(section)}
+                  alt={`${screen.name} — ${section} annotation board`}
+                  fill
+                  className="object-contain"
+                  loading="lazy"
+                  unoptimized
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Findings — numbered to match board pins */}
           <div className="space-y-3">
