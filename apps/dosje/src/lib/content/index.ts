@@ -2,6 +2,19 @@ import type { SectionRecord } from "@/types/content";
 import organisationData from "@/content/organisation.json";
 import schemesData from "@/content/schemes.json";
 
+/**
+ * App basePath — must stay in sync with `basePath` in next.config.ts.
+ * Ingested content contains raw `<img src="/content/…">` tags. Next.js only
+ * auto-prefixes the basePath for next/image and <Link>, NOT for raw HTML
+ * rendered via dangerouslySetInnerHTML, so we prefix those asset URLs here.
+ */
+const BASE_PATH = "/website";
+
+/** Prefix the app basePath onto ingested `/content/…` asset URLs in raw HTML. */
+export function withAssetBasePath(html: string): string {
+  return html.replaceAll('src="/content/', `src="${BASE_PATH}/content/`);
+}
+
 const organisations = organisationData as SectionRecord[];
 
 export function getOrganisations(): SectionRecord[] {
