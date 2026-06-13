@@ -1,5 +1,8 @@
 /* Import design system tokens — all --ds-* and --sa-* CSS custom properties */
 @import "../../node_modules/@mosje/design-system/tokens.css";
+/* Shared docs-kit component styles — loaded app-wide so Callout, StatusBadge,
+   etc. are styled on every page (not only pages that render a PropsTable). */
+@import "../components/docs-kit/docs-kit.css";
 
 /* Base reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -86,6 +89,48 @@ code:not([class]) {
   border-radius: var(--ds-radius-md);
   border: 1px solid var(--ds-border);
   text-decoration: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, background-color 0.15s;
 }
-.docs-welcome-card:hover { border-color: var(--ds-primary); }
+.docs-welcome-card:hover {
+  border-color: var(--ds-primary);
+  background-color: var(--ds-surface-muted);
+}
+
+/* ── Home layout helpers (even rows, no orphan cards) ── */
+.home-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ds-space-4);
+  margin-bottom: var(--ds-space-12);
+}
+.home-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ds-space-4);
+}
+@media (max-width: 900px) {
+  .home-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .home-stats,
+  .home-cards { grid-template-columns: 1fr; }
+}
+
+/* Stat tile — quieter than a filled card; number leads, label supports */
+.home-stat {
+  padding: var(--ds-space-4) var(--ds-space-5);
+  border-radius: var(--ds-radius-md);
+  border: 1px solid var(--ds-border);
+  background: var(--ds-surface);
+}
+.home-stat__value {
+  font-size: var(--ds-text-headline);
+  font-weight: 700;
+  color: var(--ds-ink);
+  line-height: 1.2;
+}
+.home-stat__label {
+  font-size: var(--ds-text-body-3);
+  color: var(--ds-ink-muted);
+  margin-top: var(--ds-space-1);
+}

@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./docs-kit.css";
+// docs-kit.css is imported app-wide via globals.css.
 
 export interface PropDef {
   name: string;

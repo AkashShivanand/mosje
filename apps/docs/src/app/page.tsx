@@ -80,7 +80,7 @@ export default function WelcomePage(): React.JSX.Element {
       </div>
 
       {/* ── Stat cards ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: "var(--ds-space-4)", marginBottom: "var(--ds-space-12)" }}>
+      <div className="home-stats">
         {[
           { stat: "30+", label: "Components" },
           { stat: "13", label: "Websites" },
@@ -89,16 +89,9 @@ export default function WelcomePage(): React.JSX.Element {
           { stat: "WCAG AA", label: "Accessibility" },
           { stat: "Bilingual", label: "EN + हिन्दी" },
         ].map((card) => (
-          <div
-            key={card.stat}
-            style={{
-              padding: "var(--ds-space-5)", borderRadius: "var(--ds-radius-md)",
-              border: "1px solid var(--ds-border)", background: "var(--ds-surface-muted)",
-              textAlign: "center",
-            }}
-          >
-            <div style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 700, color: "var(--ds-primary)" }}>{card.stat}</div>
-            <div style={{ fontSize: "var(--ds-text-body-3)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-space-1)" }}>{card.label}</div>
+          <div key={card.stat} className="home-stat">
+            <div className="home-stat__value">{card.stat}</div>
+            <div className="home-stat__label">{card.label}</div>
           </div>
         ))}
       </div>
@@ -115,7 +108,7 @@ export default function WelcomePage(): React.JSX.Element {
         <p style={{ color: "var(--ds-ink-muted)", marginBottom: "var(--ds-space-5)", lineHeight: "var(--ds-leading-body-1)" }}>
           SAMAVESH gives you a complete Figma library — colors, typography, spacing, components — all in sync with the code. When a token changes in the system, your designs update automatically.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "var(--ds-space-4)" }}>
+        <div className="home-cards">
           {[
             { title: "Token-based colors", desc: "Every color has a name and purpose. No guessing which blue to use.", href: "/design-system/foundations/color" },
             { title: "Type scale", desc: "Predefined type roles (Display, Headline, Body) for EN and हिन्दी.", href: "/design-system/foundations/typography" },
@@ -148,7 +141,7 @@ export default function WelcomePage(): React.JSX.Element {
           <div><span style={{ color: "#c084fc" }}>import</span> {`{ Button, Card, FormField }`} <span style={{ color: "#c084fc" }}>from</span> <span style={{ color: "#86efac" }}>&apos;@mosje/design-system&apos;</span>;</div>
           <div><span style={{ color: "#c084fc" }}>import</span> <span style={{ color: "#86efac" }}>&apos;@mosje/design-system/tokens.css&apos;</span>;</div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--ds-space-4)", marginTop: "var(--ds-space-5)" }}>
+        <div className="home-cards" style={{ marginTop: "var(--ds-space-5)" }}>
           {[
             { title: "No hardcoded values", desc: "All styling via --ds-* CSS custom properties. Change the theme, nothing breaks." },
             { title: "Accessibility included", desc: "ARIA labels, focus management, and keyboard navigation are in the components." },
