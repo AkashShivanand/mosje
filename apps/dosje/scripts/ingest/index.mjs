@@ -1,12 +1,12 @@
 import { writeFile, mkdir, readFile } from "node:fs/promises";
 import { fetchAllRecords, fetchSitemapUrls } from "./wp-client.mjs";
 import { resolveTermNames } from "./taxonomy.mjs";
-import { transformRecord } from "./transform.mjs";
+import { transformRecord, transformFileRecord } from "./transform.mjs";
 import { dedupeRecords, canonicalizeSlug } from "./dedup.mjs";
 import { deriveCollectionSlug } from "./slug.mjs";
 import { processCollectionAssets } from "./assets.mjs";
 import { buildReport, formatReport } from "./verify.mjs";
-import { collectionFileSchema } from "./schema.mjs";
+import { collectionFileSchema, fileCollectionFileSchema } from "./schema.mjs";
 import { COLLECTIONS } from "./collections.mjs";
 
 const CONTENT_DIR = new URL("../../src/content", import.meta.url).pathname;
@@ -45,7 +45,8 @@ async function ingestCollection(def) {
     for (const [key, taxBase] of Object.entries(def.taxonomies ?? {})) {
       taxonomyNames[key] = await resolveTermNames(taxBase, r[taxBase] ?? []);
     }
-    const rec = transformRecord(r, { taxonomyNames, type: def.name });
+    const transform = def.kind === "file" ? transformFileRecord : transformRecord;
+    const rec = transform(r, { taxonomyNames, type: def.name });
     if (def.basePath) rec.slug = deriveCollectionSlug(r.link, def.basePath); // unique path-based slug
     records.push(rec);
   }
@@ -53,11 +54,13 @@ async function ingestCollection(def) {
   const { kept, skipped } = dedupeRecords(records);
   console.log(`  kept ${kept.length}, skipped ${skipped.length} duplicates`);
 
-  if (!VERIFY_ONLY) {
+  // File collections are listing rows (no `sections`) → no local assets to fetch.
+  if (!VERIFY_ONLY && def.kind !== "file") {
     await processCollectionAssets(def.name, kept);
   }
 
-  collectionFileSchema.parse(kept); // throws on malformed → fails build
+  const schema = def.kind === "file" ? fileCollectionFileSchema : collectionFileSchema;
+  schema.parse(kept); // throws on malformed → fails build
 
   if (!ASSETS_ONLY && !VERIFY_ONLY) {
     await mkdir(CONTENT_DIR, { recursive: true });

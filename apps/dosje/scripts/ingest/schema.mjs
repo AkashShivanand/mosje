@@ -17,3 +17,14 @@ export const sectionRecordSchema = z.object({
 });
 
 export const collectionFileSchema = z.array(sectionRecordSchema);
+
+export const fileRecordSchema = z.object({
+  slug: z.string().min(1),
+  title: z.string().min(1),
+  sourceUrl: z.string().url(),
+  date: z.string().optional(),
+  category: z.string().optional(),
+  fileUrl: z.string().optional(),
+});
+
+export const fileCollectionFileSchema = z.array(fileRecordSchema);

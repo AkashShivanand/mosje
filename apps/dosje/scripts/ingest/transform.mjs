@@ -16,6 +16,24 @@ function firstGovLink(sections) {
   return undefined;
 }
 
+const DOC_EXT = /\.(pdf|docx?|xlsx?|pptx?|zip)(?:[?#]|$)/i;
+
+export function transformFileRecord(raw, ctx = {}) {
+  const html = raw.content?.rendered ?? "";
+  const links = [...html.matchAll(/href="(https?:\/\/[^"]+)"/g)].map((m) => m[1]);
+  const fileUrl = links.find((u) => DOC_EXT.test(u));
+  const rec = {
+    slug: raw.slug,
+    title: decodeEntities(raw.title?.rendered ?? ""),
+    sourceUrl: raw.link,
+  };
+  if (raw.date) rec.date = String(raw.date).slice(0, 10);
+  const tax = ctx.taxonomyNames ?? {};
+  if (tax.category?.length) rec.category = tax.category[0];
+  if (fileUrl) rec.fileUrl = fileUrl;
+  return rec;
+}
+
 export function transformRecord(raw, ctx = {}) {
   const rawSections = extractSections(raw.content?.rendered ?? "");
   const sections = rawSections
