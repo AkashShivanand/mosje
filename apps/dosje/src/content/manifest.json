@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13T13:20:54.808Z",
+  "generatedAt": "2026-06-13T14:22:11.461Z",
   "collections": [
     {
       "name": "organisation",
@@ -20,6 +20,13 @@
           "reason": "duplicate of national-commission-for-safai-karamcharis/total-no-of-deaths-compensation"
         }
       ]
+    },
+    {
+      "name": "schemes",
+      "sitemapCount": 141,
+      "kept": 141,
+      "skipped": 0,
+      "skippedDetail": []
     }
   ]
 }

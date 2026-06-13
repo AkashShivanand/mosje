@@ -18,3 +18,13 @@ test("empty id list returns empty array without fetching", async () => {
   });
   assert.deepEqual(names, []);
 });
+
+test("caches results so identical lookups do not refetch", async () => {
+  let calls = 0;
+  const fakeFetch = async () => { calls++; return { ok: true, headers: new Headers(), json: async () => [{ id: 7, name: "Cached" }] }; };
+  const a = await resolveTermNames("cache-test-tax", [7], { fetchImpl: fakeFetch });
+  const b = await resolveTermNames("cache-test-tax", [7], { fetchImpl: fakeFetch });
+  assert.deepEqual(a, ["Cached"]);
+  assert.deepEqual(b, ["Cached"]);
+  assert.equal(calls, 1);
+});

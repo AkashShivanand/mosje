@@ -8,7 +8,7 @@ export function sanitize(html) {
     ],
     allowedAttributes: {
       a: ["href", "title", "rel", "target"],
-      img: ["src", "alt"],
+      img: ["src", "alt", "width", "height", "class"],
       td: ["colspan", "rowspan"],
       th: ["colspan", "rowspan"],
     },

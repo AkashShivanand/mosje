@@ -37,27 +37,50 @@ export default async function OrganisationDetailPage({
       breadcrumb={[{ label: "Associated Organisations" }, { label: org.title }]}
       lastUpdated="Synced from dosje.gov.in"
       sidebar={
-        org.website || org.featuredImage ? (
-          <div className="rounded-xl border border-gray-200 bg-surface-muted p-5 text-[14px]">
-            {org.featuredImage && (
-              <Image src={org.featuredImage} alt={`${org.title} logo`} width={160} height={80} className="mb-4 h-auto w-auto" />
-            )}
+        <div className="rounded-xl border border-border bg-surface-muted p-5 text-sm">
+          <h2 className="mb-3 text-base font-semibold text-ink">Key Information</h2>
+          {org.featuredImage && (
+            <Image src={org.featuredImage} alt={`${org.title} logo`} width={160} height={80} className="mb-4 h-auto w-auto" />
+          )}
+          <dl className="space-y-3">
             {org.website && (
-              <a href={org.website} target="_blank" rel="noreferrer" className="text-gov-blue hover:underline">
-                {org.website.replace(/^https?:\/\//, "")}
-              </a>
+              <div>
+                <dt className="font-semibold text-ink">Website</dt>
+                <dd>
+                  <a href={org.website} target="_blank" rel="noreferrer" className="text-gov-blue hover:underline">
+                    {org.website.replace(/^https?:\/\//, "")}
+                  </a>
+                </dd>
+              </div>
             )}
-          </div>
-        ) : undefined
+            <div>
+              <dt className="font-semibold text-ink">Source</dt>
+              <dd>
+                <a href={org.sourceUrl} target="_blank" rel="noreferrer" className="text-gov-blue hover:underline">
+                  View on dosje.gov.in
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </div>
       }
     >
-      {org.sections.map((s, i) => (
-        <section key={i}>
-          {s.heading && <h2>{s.heading}</h2>}
-          {/* content is allowlist-sanitized at ingest time, so this is safe */}
-          <div dangerouslySetInnerHTML={{ __html: s.html }} />
-        </section>
-      ))}
+      {org.sections.length === 0 ? (
+        <p className="text-ink-muted">
+          Full details for this organisation are available on the official website.{" "}
+          <a href={org.sourceUrl} target="_blank" rel="noreferrer" className="text-gov-blue underline">
+            View on dosje.gov.in
+          </a>
+        </p>
+      ) : (
+        org.sections.map((s, i) => (
+          <section key={i}>
+            {s.heading && <h2>{s.heading}</h2>}
+            {/* content is allowlist-sanitized at ingest time, so this is safe */}
+            <div dangerouslySetInnerHTML={{ __html: s.html }} />
+          </section>
+        ))
+      )}
     </ContentPage>
   );
 }
