@@ -1,4 +1,4 @@
-import { writeFile, mkdir } from "node:fs/promises";
+import { writeFile, mkdir, readFile } from "node:fs/promises";
 import { fetchAllRecords, fetchSitemapUrls } from "./wp-client.mjs";
 import { resolveTermNames } from "./taxonomy.mjs";
 import { transformRecord } from "./transform.mjs";
@@ -13,6 +13,8 @@ const CONTENT_DIR = new URL("../../src/content", import.meta.url).pathname;
 const argv = new Set(process.argv.slice(2));
 const ASSETS_ONLY = argv.has("--assets-only");
 const VERIFY_ONLY = argv.has("--verify-only");
+const onlyArg = process.argv.slice(2).find((a) => a.startsWith("--only="));
+const ONLY = onlyArg ? new Set(onlyArg.slice("--only=".length).split(",").map((s) => s.trim()).filter(Boolean)) : null;
 
 function slugFromUrl(url) {
   const parts = new URL(url).pathname.split("/").filter(Boolean);
@@ -66,8 +68,11 @@ async function ingestCollection(def) {
 }
 
 async function main() {
+  const toRun = ONLY ? COLLECTIONS.filter((c) => ONLY.has(c.name)) : COLLECTIONS;
+  if (ONLY && toRun.length === 0) { console.error(`No collections match --only=${[...ONLY].join(",")}`); process.exit(1); }
+
   const results = [];
-  for (const def of COLLECTIONS) results.push(await ingestCollection(def));
+  for (const def of toRun) results.push(await ingestCollection(def));
 
   const reports = results.map((r) =>
     buildReport({ collection: r.def.name, sitemapCount: r.sitemapCount, kept: r.kept.length, skipped: r.skipped.length })
@@ -75,16 +80,11 @@ async function main() {
   console.log(formatReport(reports));
 
   if (!ASSETS_ONLY && !VERIFY_ONLY) {
-    const manifest = {
-      generatedAt: new Date().toISOString(),
-      collections: results.map((r) => ({
-        name: r.def.name,
-        sitemapCount: r.sitemapCount,
-        kept: r.kept.length,
-        skipped: r.skipped.length,
-        skippedDetail: r.skipped,
-      })),
-    };
+    let existing = [];
+    try { existing = JSON.parse(await readFile(`${CONTENT_DIR}/manifest.json`, "utf8")).collections ?? []; } catch {}
+    const byName = new Map(existing.map((c) => [c.name, c]));
+    for (const r of results) byName.set(r.def.name, { name: r.def.name, sitemapCount: r.sitemapCount, kept: r.kept.length, skipped: r.skipped.length, skippedDetail: r.skipped });
+    const manifest = { generatedAt: new Date().toISOString(), collections: [...byName.values()].sort((a, b) => a.name.localeCompare(b.name)) };
     await writeFile(`${CONTENT_DIR}/manifest.json`, JSON.stringify(manifest, null, 2) + "\n");
   }
 
