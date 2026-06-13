@@ -48,20 +48,27 @@ const nextConfig: NextConfig = {
     return [];
   },
   async headers() {
+    const securityHeaders = {
+      source: "/(.*)",
+      headers: [
+        { key: "X-Frame-Options", value: "DENY" },
+        { key: "X-Content-Type-Options", value: "nosniff" },
+        { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        {
+          key: "Permissions-Policy",
+          value: "camera=(), microphone=(), geolocation=()",
+        },
+        { key: "X-XSS-Protection", value: "1; mode=block" },
+      ],
+    };
+    // The immutable long-cache header is ONLY safe in production. In dev it makes
+    // the browser cache hashed chunks forever, so CSS/JS edits never refetch and
+    // appear "stale" (Next.js warns about exactly this). Apply it in prod only.
+    if (process.env.NODE_ENV !== "production") {
+      return [securityHeaders];
+    }
     return [
-      {
-        source: "/(.*)",
-        headers: [
-          { key: "X-Frame-Options", value: "DENY" },
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          {
-            key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
-          },
-          { key: "X-XSS-Protection", value: "1; mode=block" },
-        ],
-      },
+      securityHeaders,
       {
         source: "/_next/static/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],

@@ -51,5 +51,21 @@ export { Loader } from "./components/loader";
 export { EmptyState } from "./components/empty-state";
 export { Avatar } from "./components/avatar";
 export { AccessibilityWidget } from "./components/accessibility-widget";
-export { AppSwitcher, DEFAULT_APPS, ZoneSwitcher, DEFAULT_ZONES } from "./components/zone-switcher";
-export type { AppEntry, AppSwitcherProps, Zone, ZoneSwitcherProps } from "./components/zone-switcher";
+// The interactive component lives in a "use client" module.
+export { AppSwitcher, ZoneSwitcher } from "./components/zone-switcher";
+export type { AppSwitcherProps, ZoneSwitcherProps } from "./components/zone-switcher";
+// Data, types and helpers come from the plain (server-safe) module so server
+// components can read them directly — re-exporting these through the client
+// module above would turn them into client references on the server.
+export {
+  DEFAULT_APPS,
+  DEFAULT_APPS as DEFAULT_ZONES,
+  PORTAL_CATEGORIES,
+  deriveAbbr,
+  filterApps,
+  matchActivePath,
+} from "./components/app-switcher-utils";
+export type {
+  AppEntry,
+  AppEntry as Zone,
+} from "./components/app-switcher-utils";

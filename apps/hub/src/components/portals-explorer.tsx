@@ -1,0 +1,234 @@
+"use client";
+
+import * as React from "react";
+import { ArrowRight, Search, X, SlidersHorizontal } from "lucide-react";
+import {
+  DEFAULT_APPS,
+  PORTAL_CATEGORIES,
+  deriveAbbr,
+  filterApps,
+  type AppEntry,
+} from "@mosje/design-system";
+
+type StatusFilter = "all" | "live" | "planned";
+
+const ALL_PORTALS = DEFAULT_APPS.filter((a) => a.group === "Portals");
+
+function PortalCard({ portal }: { portal: AppEntry }) {
+  const abbr = deriveAbbr(portal);
+  const isLive = (portal.status ?? "live") === "live";
+
+  const tile = (
+    <span
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gov-blue-tonal text-sm font-bold text-gov-blue"
+      aria-hidden="true"
+    >
+      {abbr}
+    </span>
+  );
+
+  const body = (
+    <>
+      <div className="flex items-start gap-3">
+        {tile}
+        <div className="min-w-0 flex-1">
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="truncate text-[15px] font-semibold text-ink">
+              {portal.name}
+            </h3>
+            {isLive ? (
+              <span className="shrink-0 rounded-full bg-success-tonal px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-success">
+                Live
+              </span>
+            ) : (
+              <span className="shrink-0 rounded-full bg-surface-muted px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-ink-muted">
+                Planned
+              </span>
+            )}
+          </div>
+          {portal.org && (
+            <p className="mt-0.5 truncate text-xs text-ink-muted">{portal.org}</p>
+          )}
+        </div>
+      </div>
+      {portal.desc && (
+        <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-ink-muted">
+          {portal.desc}
+        </p>
+      )}
+    </>
+  );
+
+  if (isLive) {
+    return (
+      <a
+        href={portal.path}
+        className="group flex flex-col rounded-2xl border border-border bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-gov-blue/40 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+      >
+        {body}
+        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-gov-blue transition-all group-hover:gap-2.5">
+          Open portal
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </span>
+      </a>
+    );
+  }
+
+  return (
+    <div
+      className="flex flex-col rounded-2xl border border-dashed border-border bg-surface/60 p-5 opacity-75"
+      aria-label={`${portal.name} — in development`}
+    >
+      {body}
+      <span className="mt-4 text-sm font-medium text-ink-muted">
+        In development
+      </span>
+    </div>
+  );
+}
+
+export function PortalsExplorer() {
+  const [query, setQuery] = React.useState("");
+  const [status, setStatus] = React.useState<StatusFilter>("all");
+
+  const filtered = React.useMemo(() => {
+    let list = ALL_PORTALS;
+    if (status !== "all") {
+      list = list.filter((a) => (a.status ?? "live") === status);
+    }
+    return filterApps(list, query);
+  }, [query, status]);
+
+  const grouped = React.useMemo(
+    () =>
+      PORTAL_CATEGORIES.map((category) => ({
+        category,
+        items: filtered.filter((a) => a.category === category),
+      })).filter((g) => g.items.length > 0),
+    [filtered],
+  );
+
+  const liveCount = ALL_PORTALS.filter(
+    (a) => (a.status ?? "live") === "live",
+  ).length;
+
+  const filters: { id: StatusFilter; label: string; count: number }[] = [
+    { id: "all", label: "All", count: ALL_PORTALS.length },
+    { id: "live", label: "Available now", count: liveCount },
+    { id: "planned", label: "In development", count: ALL_PORTALS.length - liveCount },
+  ];
+
+  return (
+    <>
+      {/* Toolbar */}
+      <div className="sticky top-[64px] z-30 -mx-6 mb-10 border-b border-border bg-surface/85 px-6 py-3 backdrop-blur supports-[backdrop-filter]:bg-surface/72">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="relative w-full sm:max-w-xs">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted"
+              aria-hidden="true"
+            />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search portals, schemes or organisations…"
+              aria-label="Search portals"
+              className="w-full rounded-lg border border-border bg-surface py-2 pl-9 pr-9 text-sm text-ink placeholder:text-ink-muted focus:border-gov-blue focus:outline-none focus:ring-2 focus:ring-gov-blue/30"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                aria-label="Clear search"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-0.5 text-ink-muted hover:text-ink"
+              >
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
+          </div>
+
+          <div
+            role="group"
+            aria-label="Filter by availability"
+            className="flex items-center gap-1 rounded-lg border border-border bg-surface-muted p-1"
+          >
+            <SlidersHorizontal
+              className="mx-1.5 h-3.5 w-3.5 text-ink-muted"
+              aria-hidden="true"
+            />
+            {filters.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => setStatus(f.id)}
+                aria-pressed={status === f.id}
+                className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
+                  status === f.id
+                    ? "bg-surface text-gov-blue shadow-xs"
+                    : "text-ink-muted hover:text-ink"
+                }`}
+              >
+                {f.label}
+                <span className="ml-1.5 opacity-60">{f.count}</span>
+              </button>
+            ))}
+          </div>
+
+          <p
+            className="text-xs text-ink-muted sm:ml-auto"
+            role="status"
+            aria-live="polite"
+          >
+            {filtered.length} portal{filtered.length !== 1 ? "s" : ""}
+          </p>
+        </div>
+      </div>
+
+      {/* Grouped grid */}
+      {grouped.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-20 text-center">
+          <Search className="mb-3 h-10 w-10 text-ink-muted/40" aria-hidden="true" />
+          <p className="text-sm font-semibold text-ink">No portals match your search</p>
+          <button
+            type="button"
+            onClick={() => {
+              setQuery("");
+              setStatus("all");
+            }}
+            className="mt-3 text-xs font-semibold text-gov-blue hover:underline"
+          >
+            Reset filters
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-12">
+          {grouped.map(({ category, items }) => (
+            <section key={category} aria-labelledby={`cat-${category}`}>
+              <div className="mb-4 flex items-center gap-3">
+                <span
+                  aria-hidden="true"
+                  className="h-4 w-1 rounded-full bg-gov-blue"
+                />
+                <h2
+                  id={`cat-${category}`}
+                  className="text-sm font-bold uppercase tracking-[0.12em] text-ink"
+                >
+                  {category}
+                </h2>
+                <span className="text-xs font-semibold text-ink-muted">
+                  {items.length}
+                </span>
+              </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {items.map((portal) => (
+                  <PortalCard key={portal.path} portal={portal} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}

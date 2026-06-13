@@ -1,118 +1,218 @@
-import { Globe, BookOpen, LayoutDashboard, FileBarChart, ArrowRight } from "lucide-react";
+import {
+  Globe,
+  Blocks,
+  LayoutGrid,
+  FileBarChart,
+  ArrowRight,
+  Building2,
+  ShieldCheck,
+} from "lucide-react";
+import { DEFAULT_APPS } from "@mosje/design-system";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+
+// ── Estate stats, derived from the single-source registry ──────────────────────
+const portals = DEFAULT_APPS.filter((a) => a.group === "Portals");
+const livePortals = portals.filter((a) => (a.status ?? "live") === "live").length;
+const totalPortals = portals.length;
 
 const destinations = [
   {
     title: "Website",
-    description: "Unified informational site for DoSJE and its associated organisations.",
+    description:
+      "The unified informational site for the department and its associated organisations.",
     icon: Globe,
     href: "/website",
     cta: "Visit website",
-    available: true,
-  },
-  {
-    title: "Design System",
-    description: "SAMAVESH component library, design tokens, and Storybook documentation.",
-    icon: BookOpen,
-    href: "/storybook/",
-    cta: "Open Storybook",
-    available: true,
+    meta: "13 sites → 1",
   },
   {
     title: "Portals",
-    description: "Authenticated workflow portals for schemes, scholarships, and organisations.",
-    icon: LayoutDashboard,
+    description:
+      "Authenticated workflow portals for schemes, scholarships, finance corporations and commissions.",
+    icon: LayoutGrid,
     href: "/portals",
-    cta: "Select a portal",
-    available: true,
+    cta: "Browse portals",
+    meta: `${livePortals} live · ${totalPortals - livePortals} planned`,
+  },
+  {
+    title: "Design System",
+    description:
+      "SAMAVESH — foundations, tokens, components and documentation that power every property.",
+    icon: Blocks,
+    href: "/design-system",
+    cta: "Open SAMAVESH",
+    meta: "Tokens · Components",
   },
   {
     title: "Reports",
-    description: "QC and audit reports for the MoSJE digital estate.",
+    description:
+      "Design QC, accessibility and audit reports across the MoSJE digital estate.",
     icon: FileBarChart,
     href: "/reports",
     cta: "View reports",
-    available: true,
+    meta: "QC · A11y · Audit",
   },
+] as const;
+
+const glance = [
+  { icon: Globe, value: "1", label: "Unified website", sub: "consolidating 13 legacy sites" },
+  { icon: LayoutGrid, value: `${totalPortals}`, label: "Workflow portals", sub: `${livePortals} live, rest in development` },
+  { icon: Building2, value: "33+", label: "Organisations & schemes", sub: "across the ministry" },
+  { icon: ShieldCheck, value: "AA", label: "WCAG 2.1 + GIGW", sub: "accessibility & gov standards" },
 ] as const;
 
 export default function GatePage() {
   return (
-    <div className="flex min-h-screen flex-col">
-      {/* Skip link */}
+    <div className="flex min-h-screen flex-col bg-surface-muted">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-2 focus:top-2 focus:rounded focus:bg-gov-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded-lg focus:bg-gov-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-primary"
       >
         Skip to main content
       </a>
 
-      {/* Gov utility bar */}
-      <header className="border-b border-border bg-surface py-4">
-        <div className="mx-auto flex max-w-[1280px] items-center gap-3 px-6">
-          <span className="text-lg font-semibold text-gov-blue">MoSJE</span>
-          <span aria-hidden="true" className="text-border">|</span>
-          <span className="text-sm text-ink-muted">Digital Estate</span>
-        </div>
-      </header>
+      <SiteHeader current="/" />
 
-      {/* Hero + Destination cards */}
-      <main id="main-content" className="mx-auto w-full max-w-[1280px] flex-1 px-6 pb-16">
-        {/* Hero */}
-        <div className="pb-4 pt-16">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-gov-blue">
-            Government of India
-          </p>
-          <h1 className="mb-3 text-4xl font-bold tracking-tight text-ink">
-            Ministry of Social Justice &amp; Empowerment
-          </h1>
-          <p className="max-w-xl text-ink-muted">
-            Select a destination to access the website, design system, workflow
-            portals, or audit reports.
-          </p>
-        </div>
+      <main id="main-content" className="flex-1">
+        {/* ── Hero ─────────────────────────────────────────────────────── */}
+        <section className="relative overflow-hidden border-b border-border bg-surface">
+          {/* Atmospheric background — a single cohesive blue field */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(64rem 36rem at 82% -12%, color-mix(in srgb, var(--ds-primary) 16%, transparent), transparent 70%), radial-gradient(40rem 28rem at 4% 116%, color-mix(in srgb, var(--ds-gov-navy) 10%, transparent), transparent 68%)",
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 opacity-50"
+            style={{
+              backgroundImage:
+                "linear-gradient(var(--ds-border) 1px, transparent 1px), linear-gradient(90deg, var(--ds-border) 1px, transparent 1px)",
+              backgroundSize: "44px 44px",
+              maskImage:
+                "radial-gradient(72rem 42rem at 72% 0%, black, transparent 76%)",
+              WebkitMaskImage:
+                "radial-gradient(72rem 42rem at 72% 0%, black, transparent 76%)",
+            }}
+          />
 
-        {/* Destination cards */}
-        <div className="pt-8">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {destinations.map(({ title, description, icon: Icon, href, cta, available }) =>
-            available ? (
+          <div className="relative mx-auto max-w-[1280px] px-6 py-20 sm:py-24">
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-gov-blue shadow-xs backdrop-blur">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-gov-blue" />
+              Government of India
+            </div>
+
+            <h1 className="mt-6 max-w-3xl text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-[3.5rem]">
+              Ministry of Social Justice{" "}
+              <span className="text-gov-blue">&amp; Empowerment</span>
+            </h1>
+
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink-muted">
+              One front door to the entire digital estate — the unified website,
+              the SAMAVESH design system, every workflow portal, and the reports
+              behind them.
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a
+                href="/portals"
+                className="inline-flex items-center gap-2 rounded-lg bg-gov-blue px-5 py-3 text-sm font-semibold text-on-primary shadow-xs transition-colors hover:bg-gov-blue-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+              >
+                Browse the portals
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+              <a
+                href="/website"
+                className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-border-strong hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+              >
+                Visit the website
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Destination cards ────────────────────────────────────────── */}
+        <section
+          aria-labelledby="destinations-heading"
+          className="mx-auto max-w-[1280px] px-6 py-16"
+        >
+          <div className="mb-8">
+            <h2
+              id="destinations-heading"
+              className="text-2xl font-bold tracking-tight text-ink"
+            >
+              Where do you want to go?
+            </h2>
+            <p className="mt-1 text-sm text-ink-muted">
+              Four destinations across the estate.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            {destinations.map(({ title, description, icon: Icon, href, cta, meta }) => (
               <a
                 key={title}
                 href={href}
-                className="group flex flex-col rounded-xl border border-border bg-surface p-6 transition hover:border-gov-blue hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-gov-blue"
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface p-7 transition-all duration-200 hover:-translate-y-0.5 hover:border-gov-blue/40 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
               >
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-gov-blue-tonal text-gov-blue">
-                  <Icon className="h-5 w-5" aria-hidden="true" />
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-gov-blue transition-transform duration-300 group-hover:scale-x-100"
+                />
+                <div className="mb-5 flex items-center justify-between">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue-tonal text-gov-blue transition-colors group-hover:bg-gov-blue group-hover:text-on-primary">
+                    <Icon className="h-6 w-6" aria-hidden="true" />
+                  </span>
+                  <span className="rounded-full border border-border bg-surface-muted px-2.5 py-1 text-xs font-semibold text-ink-muted">
+                    {meta}
+                  </span>
                 </div>
-                <h2 className="mb-1.5 text-lg font-semibold text-ink">{title}</h2>
-                <p className="mb-6 flex-1 text-sm text-ink-muted">{description}</p>
-                <span className="flex items-center gap-1.5 text-sm font-semibold text-gov-blue transition-all group-hover:gap-2.5">
+                <h3 className="text-xl font-bold tracking-tight text-ink">{title}</h3>
+                <p className="mb-6 mt-2 flex-1 text-sm leading-relaxed text-ink-muted">
+                  {description}
+                </p>
+                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-gov-blue transition-all group-hover:gap-2.5">
                   {cta}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>
               </a>
-            ) : (
-              <div
-                key={title}
-                aria-label={`${title} — ${cta}`}
-                className="flex cursor-not-allowed flex-col rounded-xl border border-border bg-surface-muted p-6 opacity-60"
-              >
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-border text-ink-muted">
-                  <Icon className="h-5 w-5" aria-hidden="true" />
+            ))}
+          </div>
+        </section>
+
+        {/* ── Estate at a glance ───────────────────────────────────────── */}
+        <section
+          aria-labelledby="glance-heading"
+          className="border-y border-border bg-surface"
+        >
+          <div className="mx-auto max-w-[1280px] px-6 py-12">
+            <h2
+              id="glance-heading"
+              className="mb-8 text-xs font-semibold uppercase tracking-[0.16em] text-ink-muted"
+            >
+              The estate at a glance
+            </h2>
+            <dl className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
+              {glance.map(({ icon: Icon, value, label, sub }) => (
+                <div key={label} className="flex flex-col gap-2">
+                  <Icon className="h-5 w-5 text-gov-blue" aria-hidden="true" />
+                  <dd className="text-4xl font-bold tracking-tight text-ink">
+                    {value}
+                  </dd>
+                  <dt className="text-sm font-semibold text-ink">{label}</dt>
+                  <p className="text-xs text-ink-muted">{sub}</p>
                 </div>
-                <h2 className="mb-1.5 text-lg font-semibold text-ink">{title}</h2>
-                <p className="mb-6 flex-1 text-sm text-ink-muted">{description}</p>
-                <span className="text-sm text-ink-muted">{cta}</span>
-              </div>
-            )
-          )}
-        </div>
-        </div>
+              ))}
+            </dl>
+          </div>
+        </section>
       </main>
 
-      <footer className="border-t border-border bg-surface px-6 py-4 text-center text-xs text-ink-muted">
-        Ministry of Social Justice and Empowerment — Government of India
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

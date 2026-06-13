@@ -71,6 +71,8 @@ Run inside the app folder (or via `npm --prefix <app>`):
 - **TypeScript strict, no `any`.** Named exports. PascalCase components, camelCase utils.
 - **Design tokens, never hardcoded values.** Use the brand tokens (`gov-blue #0373DF`, `saffron #F97316`, `gov-yellow #FFD323`, `ink`, `surface-muted`, …). When the design system lands, import from `@mosje/design-system`.
 - **Noto Sans** is the typeface across all gov properties (DBIM standard). Don't introduce other fonts.
+- **No Indian tricolour band/stripe motif** (the saffron-white-green flag bar) anywhere in UI chrome — headers, footers, hero bands, dividers — **unless the user explicitly asks for it.** A single brand-token accent is fine; the flag-stripe decoration is not. (Standing instruction, 2026-06-13.)
+- **Logo & favicon: use the National Emblem** (`National-Emblem-logo.svg` / `National_Emblem_logo_white.svg` for dark) — never an invented/abstract mark.
 - **Accessibility is non-negotiable** — these are government sites. Target **WCAG 2.1 AA + GIGW**: semantic HTML, alt text, keyboard nav, visible focus, AA contrast. Use the `accessibility-auditor` agent before shipping a page.
 - **Real content, real assets** — no lorem/placeholder in production pages.
 - `next/image` for images; `lucide-react` for icons (note: this version dropped the brand social icons — use inline SVGs).

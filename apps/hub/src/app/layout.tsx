@@ -3,6 +3,7 @@ import { Noto_Sans } from "next/font/google";
 import { ColorModeProvider } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import { ConditionalAppSwitcher } from "@/components/conditional-app-switcher";
+import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
 const notoSans = Noto_Sans({
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-IN" className={`${notoSans.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
       </head>
       <body className="min-h-full font-sans bg-surface-muted text-ink">
         <ColorModeProvider>

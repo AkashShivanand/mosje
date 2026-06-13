@@ -2,19 +2,74 @@
 @import "tw-animate-css";
 @import "@mosje/design-system/tokens.css";
 
-@custom-variant dark (&:is(.dark *));
+/* Attribute-based dark variant (matches the element itself AND descendants of
+   [data-theme="dark"]). The appearance axis is driven by data-theme, NOT the OS
+   prefers-color-scheme, so the default Tailwind dark variant must be overridden. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme inline {
   --font-sans: var(--font-noto-sans), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
 
-  /* Map DS semantic tokens to Tailwind utility names */
+  /* ── Text ───────────────────────────────────────────────────────────── */
   --color-ink:            var(--ds-ink);
+  --color-ink-strong:     var(--ds-ink-strong);
   --color-ink-muted:      var(--ds-ink-muted);
+  --color-on-primary:     var(--ds-on-primary);
+
+  /* ── Brand / primary ────────────────────────────────────────────────── */
   --color-gov-blue:       var(--ds-primary);
   --color-gov-blue-tonal: var(--ds-primary-tonal);
+  --color-gov-blue-dark:  var(--ds-primary-dark);
+  --color-primary-50:     var(--ds-primary-50);
+  --color-primary-100:    var(--ds-primary-100);
+  --color-primary-600:    var(--ds-primary-600);
+  --color-primary-700:    var(--ds-primary-700);
+  --color-gov-navy:       var(--ds-gov-navy);
+  --color-gov-yellow:     var(--ds-gov-yellow);
+  --color-saffron:        var(--ds-saffron);
+  --color-saffron-light:  var(--ds-saffron-light);
+  --color-saffron-dark:   var(--ds-saffron-dark);
+
+  /* ── Surfaces & borders ─────────────────────────────────────────────── */
   --color-surface:        var(--ds-surface);
   --color-surface-muted:  var(--ds-surface-muted);
+  --color-surface-alt:    var(--ds-surface-alt);
   --color-border:         var(--ds-border);
+  --color-border-strong:  var(--ds-border-strong);
+
+  /* ── Status ─────────────────────────────────────────────────────────── */
   --color-success:        var(--ds-success);
   --color-success-tonal:  var(--ds-success-tonal);
+  --color-danger:         var(--ds-danger);
+  --color-warning:        var(--ds-warning);
+  --color-info:           var(--ds-info);
+
+  /* ── Radius / shadow tokens ─────────────────────────────────────────── */
+  --radius-sm:  var(--ds-radius-sm);
+  --radius-md:  var(--ds-radius-md);
+  --shadow-xs:  var(--ds-shadow-xs);
+  --shadow-lg:  var(--ds-shadow-lg);
+  --shadow-xl:  var(--ds-shadow-xl);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
+  }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+  ::selection {
+    background-color: var(--ds-primary-tonal);
+    color: var(--ds-ink-strong);
+  }
+}
+
+/* National Emblem is a black monochrome SVG; recolour it to white in dark mode
+   so it stays visible on dark chrome. Unlayered (not in @layer base) and keyed
+   on the data-theme attribute, so it is always emitted and wins the cascade
+   regardless of Tailwind utility ordering. */
+[data-theme="dark"] .estate-emblem {
+  filter: brightness(0) invert(1);
 }
