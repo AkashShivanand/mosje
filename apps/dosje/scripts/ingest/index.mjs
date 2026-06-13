@@ -3,6 +3,7 @@ import { fetchAllRecords, fetchSitemapUrls } from "./wp-client.mjs";
 import { resolveTermNames } from "./taxonomy.mjs";
 import { transformRecord } from "./transform.mjs";
 import { dedupeRecords, canonicalizeSlug } from "./dedup.mjs";
+import { deriveCollectionSlug } from "./slug.mjs";
 import { processCollectionAssets } from "./assets.mjs";
 import { buildReport, formatReport } from "./verify.mjs";
 import { collectionFileSchema } from "./schema.mjs";
@@ -21,19 +22,30 @@ function slugFromUrl(url) {
 async function ingestCollection(def) {
   console.log(`\n→ ${def.name}`);
   const sitemapUrls = await fetchSitemapUrls(def.sitemapType);
-  const allowed = new Set(sitemapUrls.map((u) => canonicalizeSlug(slugFromUrl(u))));
+  // When basePath is set, identity is the full path under the base segment (unique
+  // per nested page); otherwise fall back to the leaf slug.
+  const allowed = new Set(
+    def.basePath
+      ? sitemapUrls.map((u) => deriveCollectionSlug(u, def.basePath)).filter((s) => s != null)
+      : sitemapUrls.map((u) => canonicalizeSlug(slugFromUrl(u)))
+  );
 
   const raw = await fetchAllRecords(def.restBase, { fields: def.fields });
   console.log(`  fetched ${raw.length} raw records; sitemap lists ${allowed.size}`);
 
   const records = [];
   for (const r of raw) {
-    if (allowed.size && !allowed.has(canonicalizeSlug(r.slug))) continue; // restrict to canonical URL set
+    const identity = def.basePath
+      ? deriveCollectionSlug(r.link, def.basePath)
+      : canonicalizeSlug(r.slug);
+    if (allowed.size && !allowed.has(identity)) continue; // restrict to canonical URL set
     const taxonomyNames = {};
     for (const [key, taxBase] of Object.entries(def.taxonomies ?? {})) {
       taxonomyNames[key] = await resolveTermNames(taxBase, r[taxBase] ?? []);
     }
-    records.push(transformRecord(r, { taxonomyNames, type: def.name }));
+    const rec = transformRecord(r, { taxonomyNames, type: def.name });
+    if (def.basePath) rec.slug = deriveCollectionSlug(r.link, def.basePath); // unique path-based slug
+    records.push(rec);
   }
 
   const { kept, skipped } = dedupeRecords(records);

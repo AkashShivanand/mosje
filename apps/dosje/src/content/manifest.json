@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13T12:49:32.343Z",
+  "generatedAt": "2026-06-13T13:03:32.111Z",
   "collections": [
     {
       "name": "organisation",
@@ -8,16 +8,16 @@
       "skipped": 3,
       "skippedDetail": [
         {
-          "slug": "total-no-of-deaths-compensation",
-          "reason": "duplicate of total-no-of-deaths-compensation"
+          "slug": "national-commission-for-safai-karamcharis/total-no-of-deaths-compensation",
+          "reason": "duplicate of national-commission-for-safai-karamcharis/total-no-of-deaths-compensation"
         },
         {
-          "slug": "gazette-notifications",
-          "reason": "duplicate of gazette-notifications"
+          "slug": "national-commission-for-backward-classes-ncbc/gazette-notifications",
+          "reason": "duplicate of national-commission-for-backward-classes-ncbc/gazette-notifications"
         },
         {
-          "slug": "tour-reports",
-          "reason": "duplicate of tour-reports"
+          "slug": "national-commission-for-backward-classes-ncbc/tour-reports",
+          "reason": "duplicate of national-commission-for-backward-classes-ncbc/tour-reports"
         }
       ]
     }
