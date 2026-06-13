@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContentPage } from "@/components/templates/ContentPage";
-import { getSchemes, getScheme } from "@/lib/content";
+import { getSchemes, getScheme, withAssetBasePath } from "@/lib/content";
 
 export function generateStaticParams() {
   return getSchemes().map((s) => ({ slug: s.slug }));
@@ -83,7 +83,7 @@ export default async function SchemeDetailPage({
           <section key={s.heading ?? i}>
             {s.heading && <h2>{s.heading}</h2>}
             {/* content is allowlist-sanitized at ingest time, so this is safe */}
-            <div dangerouslySetInnerHTML={{ __html: s.html }} />
+            <div dangerouslySetInnerHTML={{ __html: withAssetBasePath(s.html) }} />
           </section>
         ))
       )}

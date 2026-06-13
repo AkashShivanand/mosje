@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { ContentPage } from "@/components/templates/ContentPage";
-import { getOrganisations, getOrganisation } from "@/lib/content";
+import { getOrganisations, getOrganisation, withAssetBasePath } from "@/lib/content";
 
 export function generateStaticParams() {
   return getOrganisations().map((o) => ({ slug: o.slug.split("/") }));
@@ -77,7 +77,7 @@ export default async function OrganisationDetailPage({
           <section key={i}>
             {s.heading && <h2>{s.heading}</h2>}
             {/* content is allowlist-sanitized at ingest time, so this is safe */}
-            <div dangerouslySetInnerHTML={{ __html: s.html }} />
+            <div dangerouslySetInnerHTML={{ __html: withAssetBasePath(s.html) }} />
           </section>
         ))
       )}
