@@ -26,22 +26,22 @@ const organisations: Organisation[] = [
   {
     abbr: "DWBDNC",
     name: "Development and Welfare Board for De-notified, Nomadic, and Semi-Nomadic Communities",
-    href: "/organisation/dwbdnc",
+    href: "/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic",
   },
   {
     abbr: "SCW",
     name: "Senior Citizens Welfare",
-    href: "/organisation/senior-citizens-welfare",
+    href: "/organisation/senior-citizens-welfarescw",
   },
   {
     abbr: "PM-AJAY",
     name: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojna",
-    href: "/organisation/pm-ajay",
+    href: "/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay",
   },
   {
     abbr: "SMILE",
     name: "National Portal for Transgender Persons",
-    href: "/organisation/transgender-portal",
+    href: "/organisation/national-portal-for-transgender-persons",
   },
   {
     abbr: "NOS",
@@ -51,22 +51,22 @@ const organisations: Organisation[] = [
   {
     abbr: "NMBA",
     name: "Nasha Mukt Bharat Abhiyaan",
-    href: "/organisation/nmba",
+    href: "/organisation/nasha-mukt-bharat-abhiyaan",
   },
   {
     abbr: "NSFDC",
     name: "National Scheduled Castes Finance and Development Corporation",
-    href: "/organisation/nsfdc",
+    href: "/organisation/national-scheduled-castes-finance-and-development-corporation",
   },
   {
     abbr: "NSKFDC",
     name: "National Safai Karamcharis Finance and Development Corporation",
-    href: "/organisation/nskfdc",
+    href: "/organisation/national-safai-karamcharis-finance-development-corporation",
   },
   {
     abbr: "NBCFDC",
     name: "National Backward Classes Finance and Development Corporation",
-    href: "/organisation/nbcfdc",
+    href: "/organisation/national-backward-classes-financeand-development-corporationnbcfdc",
   },
 ];
 

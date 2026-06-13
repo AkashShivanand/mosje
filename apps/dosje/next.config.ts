@@ -40,6 +40,25 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Legacy hand-coded org slugs → real ingested slugs (safety net for bookmarks).
+  async redirects() {
+    const map = {
+      nsfdc: "national-scheduled-castes-finance-and-development-corporation",
+      nskfdc: "national-safai-karamcharis-finance-development-corporation",
+      nbcfdc: "national-backward-classes-financeand-development-corporationnbcfdc",
+      nisd: "national-institute-of-social-defence",
+      nmba: "nasha-mukt-bharat-abhiyaan",
+      dwbdnc: "development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic",
+      "senior-citizens-welfare": "senior-citizens-welfarescw",
+      "pm-ajay": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay",
+      "transgender-portal": "national-portal-for-transgender-persons",
+    };
+    return Object.entries(map).map(([from, to]) => ({
+      source: `/organisation/${from}`,
+      destination: `/organisation/${to}`,
+      permanent: true,
+    }));
+  },
 };
 
 export default nextConfig;
