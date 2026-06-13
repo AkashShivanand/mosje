@@ -26,7 +26,7 @@ export default function Page() {
     <ListingPage
       title="Schemes & Services"
       breadcrumb={[{ label: "Offerings" }, { label: "Schemes & Services" }]}
-      lastUpdated="06 Jun 2026"
+      lastUpdated="Synced from dosje.gov.in"
       description="Flagship welfare schemes and scholarships delivered by the Department for SC, OBC, EBC and DNT communities."
       columns={columns}
       rows={rows}
