@@ -9,7 +9,9 @@ import Link from "next/link";
 import { Navbar } from "@/components/shell/navbar";
 import { FilterBar, Status, Footer, pillClass, type Filters } from "./ui";
 
-const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "/portals/pm-ajay";
+// basePath is applied automatically by Next.js to <Link>/<Image>/router —
+// keep in-app paths basePath-relative (empty prefix) so it is not doubled.
+const BASE = "";
 import { Donut, Funnel, LineArea, Sparkline, C } from "./charts";
 import {
   FY,

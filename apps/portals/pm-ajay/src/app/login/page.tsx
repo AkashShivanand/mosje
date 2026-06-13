@@ -11,7 +11,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/store/auth-context";
 
-const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "/portals/pm-ajay";
+// Next.js adds the basePath automatically to <Link> and the router, so nav
+// paths stay basePath-RELATIVE (BASE = "") — prepending it doubles the path.
+// next/image does NOT add the basePath, so image src must include it (IMG_BASE).
+const BASE = "";
+const IMG_BASE = "/portals/pm-ajay";
 
 const DEMO_ACCOUNTS = [
   { label: "Joint Secretary", id: "JS001", scope: "All India" },
@@ -67,7 +71,7 @@ export default function LoginPage() {
         <a href="#login-main" className="sr-only focus:not-sr-only">Skip to Main Content</a>
         <div className="gov-bar-inner">
           <span className="gov-bar-flag">
-            <Image src={`${BASE}/images/Indian-Flag.svg`} alt="" width={33} height={22} aria-hidden />
+            <Image src={`${IMG_BASE}/images/Indian-Flag.svg`} alt="" width={33} height={22} aria-hidden />
             Government of India
           </span>
         </div>
@@ -78,7 +82,7 @@ export default function LoginPage() {
         <div className="login-brand-inner">
           <div className="login-brand-left">
             <Image
-              src={`${BASE}/images/National_Emblem_logo_white.svg`}
+              src={`${IMG_BASE}/images/National_Emblem_logo_white.svg`}
               alt="National Emblem of India"
               width={40}
               height={66}
@@ -91,7 +95,7 @@ export default function LoginPage() {
             </div>
           </div>
           <div className="login-brand-logos">
-            <Image src={`${BASE}/images/digital-india-logo.svg`} alt="Digital India" width={100} height={39} />
+            <Image src={`${IMG_BASE}/images/digital-india-logo.svg`} alt="Digital India" width={100} height={39} />
           </div>
         </div>
       </header>

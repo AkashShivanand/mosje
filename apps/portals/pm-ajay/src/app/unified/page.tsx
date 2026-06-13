@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/store/auth-context";
 import { UnifiedDashboard } from "@/components/dashboard/unified-app";
 
-const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "/portals/pm-ajay";
+// basePath ("/portals/pm-ajay") is applied automatically by Next.js to <Link>,
+// <Image> and the router — keep in-app paths basePath-relative (empty prefix).
+// Prepending the basePath manually doubles it (…/pm-ajay/portals/pm-ajay/…).
+const BASE = "";
 
 export default function Page() {
   const router = useRouter();

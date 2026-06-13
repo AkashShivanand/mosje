@@ -25,7 +25,9 @@ import {
   type ViewId,
 } from "@/lib/data";
 
-const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "/portals/pm-ajay";
+// basePath is applied automatically by Next.js to <Link>/<Image>/router —
+// keep in-app paths basePath-relative (empty prefix) so it is not doubled.
+const BASE = "";
 
 const LOWER_BETTER =
   /Alert|Pending|Blocked|Overdue|Rejected|Returned|Audit|Unspent|Processing|Utilization Time/i;

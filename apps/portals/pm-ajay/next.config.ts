@@ -19,6 +19,12 @@ const nextConfig: NextConfig = {
   // Shared SAMAVESH components (ZoneSwitcher) ship as TS/TSX source.
   transpilePackages: ["@mosje/design-system"],
   async headers() {
+    // The immutable long-cache header is only safe in production; in dev it makes
+    // the browser cache hashed chunks forever so edits never refetch (Next warns
+    // about this). Apply it in production only.
+    if (process.env.NODE_ENV !== "production") {
+      return [{ source: "/(.*)", headers: SECURITY_HEADERS }];
+    }
     return [
       { source: "/(.*)", headers: SECURITY_HEADERS },
       {

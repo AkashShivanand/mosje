@@ -15,6 +15,12 @@ const nextConfig: NextConfig = {
   // @mosje/design-system package (symlinked outside this project's root).
   transpilePackages: ["@mosje/design-system"],
   async headers() {
+    // The immutable long-cache header is only safe in production; in dev it makes
+    // the browser cache hashed chunks forever so edits never refetch (Next warns
+    // about this). Apply it in production only.
+    if (process.env.NODE_ENV !== "production") {
+      return [{ source: "/(.*)", headers: SECURITY_HEADERS }];
+    }
     return [
       { source: "/(.*)", headers: SECURITY_HEADERS },
       {

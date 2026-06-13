@@ -14,8 +14,11 @@ import type { NextRequest } from "next/server";
    Because this is a prototype, the cookie is just a presence flag —
    the real account data still comes from localStorage on the client. */
 
-const BASE = "/portals/pm-ajay";
-const PUBLIC_PATHS = [`${BASE}/login`, `${BASE}/forgot-password`];
+// NOTE: with `basePath` set, Next.js strips the basePath before middleware runs
+// (so `pathname` here is e.g. "/login", not "/portals/pm-ajay/login") and re-adds
+// it to any redirect we return. So paths here must be basePath-RELATIVE — never
+// prepend the basePath manually or it doubles (…/portals/pm-ajay/portals/pm-ajay/…).
+const PUBLIC_PATHS = ["/login", "/forgot-password"];
 const SESSION_COOKIE = "pmajay_session";
 
 export function middleware(request: NextRequest) {
@@ -34,7 +37,7 @@ export function middleware(request: NextRequest) {
   const session = request.cookies.get(SESSION_COOKIE);
   if (!session) {
     const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = BASE + "/login";
+    loginUrl.pathname = "/login";
     return NextResponse.redirect(loginUrl);
   }
 
