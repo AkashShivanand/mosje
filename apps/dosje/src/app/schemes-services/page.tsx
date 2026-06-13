@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ListingPage } from "@/components/templates/ListingPage";
 import type { DataTableColumn } from "@/components/ui/data-table";
+import { getSchemes } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Schemes & Services | DoSJE",
@@ -14,14 +15,11 @@ const columns: DataTableColumn[] = [
   { key: "action", label: "Action", align: "center", type: "link", hrefKey: "href", linkLabel: "View" },
 ];
 
-const rows = [
-  { scheme: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojna (PM-AJAY)", target: "Scheduled Castes", href: "#" },
-  { scheme: "PM Young Achievers Scholarship (PM-YASASVI)", target: "OBC, EBC & DNT students", href: "#" },
-  { scheme: "Centrally Sponsored Scheme for implementation of the Protection of Civil Rights Act", target: "Scheduled Castes", href: "#" },
-  { scheme: "Top Class Education in College for OBC, EBC and DNT Students", target: "OBC, EBC & DNT students", href: "#" },
-  { scheme: "Pre-Matric Scholarships Scheme for Scheduled Castes & Others", target: "Scheduled Castes & Others", href: "#" },
-  { scheme: "Post-Matric Scholarship for SC students", target: "Scheduled Castes", href: "#" },
-];
+const rows = getSchemes().map((s) => ({
+  scheme: s.title,
+  target: s.targetGroup && s.targetGroup.length ? s.targetGroup.join(", ") : "—",
+  href: `/schemes-services/${s.slug}`,
+}));
 
 export default function Page() {
   return (
