@@ -26,7 +26,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
       </head>
-      <body className="min-h-full font-sans bg-surface-muted text-ink">
+      {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject
+          attributes onto <body> before React hydrates — benign, React-recommended. */}
+      <body className="min-h-full font-sans bg-surface-muted text-ink" suppressHydrationWarning>
         <ColorModeProvider>
           {children}
           <ConditionalAppSwitcher />

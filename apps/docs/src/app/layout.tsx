@@ -19,7 +19,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
         <script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />
       </head>
-      <body>
+      {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject
+          attributes onto <body> before React hydrates — benign, React-recommended. */}
+      <body suppressHydrationWarning>
         <ColorModeProvider initialMode="blue-light">
           <DocsLayout>{children}</DocsLayout>
           <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
