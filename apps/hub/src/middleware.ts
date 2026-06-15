@@ -26,6 +26,7 @@ const ZONES: Zone[] = [
   { prefix: "/design-system",        url: process.env.ZONE_DOCS_URL        ?? "http://localhost:3002", label: "SAMAVESH Docs",     cmd: "npm run dev:docs" },
   { prefix: "/portals/pm-ajay",      url: process.env.ZONE_PM_AJAY_URL     ?? "http://localhost:4124", label: "PM-AJAY Portal",    cmd: "npm run dev:pm-ajay" },
   { prefix: "/portals/smile-admin",  url: process.env.ZONE_SMILE_ADMIN_URL ?? "http://localhost:4123", label: "SMILE Admin",       cmd: "npm run dev:smile" },
+  { prefix: "/portals/scw",          url: process.env.ZONE_SCW_URL         ?? "http://localhost:4125", label: "SCW Portal",        cmd: "npm run dev:scw" },
 ];
 
 // Per-process reachability cache so we probe each zone at most once per TTL.

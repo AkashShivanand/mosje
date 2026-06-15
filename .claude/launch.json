@@ -42,6 +42,13 @@
       "runtimeArgs": ["--prefix", "apps/portals/smile-admin", "run", "dev"],
       "port": 4123,
       "autoPort": false
+    },
+    {
+      "name": "scw",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "apps/portals/scw", "run", "dev"],
+      "port": 4125,
+      "autoPort": false
     }
   ]
 }

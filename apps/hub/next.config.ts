@@ -5,6 +5,7 @@ const ZONE_WEBSITE     = process.env.ZONE_WEBSITE_URL     ?? "http://localhost:3
 const ZONE_DS          = process.env.ZONE_DS_URL          ?? "http://localhost:6006";
 const ZONE_PM_AJAY     = process.env.ZONE_PM_AJAY_URL     ?? "http://localhost:4124";
 const ZONE_SMILE_ADMIN = process.env.ZONE_SMILE_ADMIN_URL ?? "http://localhost:4123";
+const ZONE_SCW         = process.env.ZONE_SCW_URL         ?? "http://localhost:4125";
 const ZONE_DOCS        = process.env.ZONE_DOCS_URL        ?? "http://localhost:3002";
 
 const nextConfig: NextConfig = {
@@ -30,6 +31,8 @@ const nextConfig: NextConfig = {
       { source: "/portals/pm-ajay/:path*",       destination: `${ZONE_PM_AJAY}/portals/pm-ajay/:path*` },
       { source: "/portals/smile-admin",          destination: `${ZONE_SMILE_ADMIN}/portals/smile-admin` },
       { source: "/portals/smile-admin/:path*",   destination: `${ZONE_SMILE_ADMIN}/portals/smile-admin/:path*` },
+      { source: "/portals/scw",                  destination: `${ZONE_SCW}/portals/scw` },
+      { source: "/portals/scw/:path*",           destination: `${ZONE_SCW}/portals/scw/:path*` },
       // eutthan-admin is a native route inside hub — no rewrite needed
       // Storybook — proxied through the hub. Always LINK to "/storybook/" (trailing
       // slash) so Storybook's relative asset URLs (./sb-manager/…, ./iframe.html)
