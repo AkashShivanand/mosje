@@ -1,0 +1,10 @@
+# Project rule: commits must NOT carry AI co-author / "Generated with" trailers.
+# Strip any Claude/AI attribution lines from the commit message, then trim any
+# trailing blank lines left behind. Applies to every commit (human or assistant).
+msg="$1"
+
+grep -viE '^(Co-authored-by:.*(Claude|Anthropic|noreply@anthropic\.com)|(🤖[[:space:]]*)?Generated with .*Claude Code|Co-authored-by:.*\[bot\])' "$msg" > "$msg.tmp" || true
+mv "$msg.tmp" "$msg"
+
+# Remove trailing blank lines.
+awk 'NF{last=NR} {line[NR]=$0} END{for(i=1;i<=last;i++) print line[i]}' "$msg" > "$msg.tmp" && mv "$msg.tmp" "$msg"

@@ -78,6 +78,7 @@ Run inside the app folder (or via `npm --prefix <app>`):
 - `next/image` for images; `lucide-react` for icons (note: this version dropped the brand social icons — use inline SVGs).
 - Mobile-first responsive; content max-width **1280px**.
 - **AI design contract.** Before building or changing UI, read **`packages/design-system/design.md`** (token vocabulary, theming axes, component inventory, hard rules) — it's the authoritative AI-facing brief. Its companions `packages/design-system/AGENTS.md` and the portal's `/design-system/llms.txt` must stay in sync with tokens/components/Figma — see the rule in `.claude/rules/design-system.md`.
+- **Commit messages: no AI attribution.** Never add `Co-Authored-By: Claude` (or any AI/bot co-author) or a "Generated with Claude Code" trailer to commits. A `.husky/commit-msg` hook strips them as a backstop, but don't write them in the first place.
 
 ## Safety rules (learned the hard way)
 
