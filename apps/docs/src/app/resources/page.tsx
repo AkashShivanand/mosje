@@ -39,6 +39,27 @@ const QUICK_LINKS: QuickLink[] = [
     icon: "⎇",
   },
   {
+    title: "AI design context (design.md)",
+    desc: "The authoritative brief an AI agent reads before building UI — token vocabulary, theming axes, components, and the non-negotiable rules.",
+    href: "https://github.com/AkashShivanand/MoSJE/blob/main/packages/design-system/design.md",
+    external: true,
+    icon: "✦",
+  },
+  {
+    title: "llms.txt",
+    desc: "Machine-readable index of this portal for LLMs, generated from the live navigation so it never drifts.",
+    href: "/design-system/llms.txt",
+    external: true,
+    icon: "≣",
+  },
+  {
+    title: "Design tokens (JSON)",
+    desc: "Every token and resolved value as DTCG JSON — Figma-compatible and ready for tools and agents.",
+    href: "https://github.com/AkashShivanand/MoSJE/blob/main/packages/tokens/dist/figma.tokens.json",
+    external: true,
+    icon: "◇",
+  },
+  {
     title: "Changelog",
     desc: "Every release of the design system, what was added, changed, and fixed.",
     href: "/resources/changelog",
@@ -163,6 +184,62 @@ export default function ResourcesPage(): React.JSX.Element {
             </a>
           ))}
         </div>
+      </section>
+
+      {/* ── For AI & agents ───────────────────────────────────── */}
+      <section className="docs-section">
+        <span className="docs-section__label">For AI &amp; agents</span>
+        <h2 id="for-ai" className="docs-section__heading">
+          Building with an AI agent?
+        </h2>
+        <div className="docs-section__body ds-prose">
+          <p>
+            SAMAVESH is built to be consumed by AI coding agents, not just
+            people. Point your agent at these, in order, before it writes any UI:
+          </p>
+          <ol>
+            <li>
+              <strong>
+                <a
+                  href="https://github.com/AkashShivanand/MoSJE/blob/main/packages/design-system/design.md"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  design.md ↗
+                </a>
+              </strong>{" "}
+              — the design contract: token vocabulary, theming axes, component
+              inventory, and the hard rules (tokens-first, Noto Sans, National
+              Emblem, no tricolour stripe, WCAG 2.1 AA + GIGW).
+            </li>
+            <li>
+              <strong>
+                <a href="/design-system/llms.txt" target="_blank" rel="noopener noreferrer">
+                  llms.txt ↗
+                </a>
+              </strong>{" "}
+              — a machine-readable map of every page in this portal.
+            </li>
+            <li>
+              <strong>
+                <a
+                  href="https://github.com/AkashShivanand/MoSJE/blob/main/packages/tokens/dist/figma.tokens.json"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  figma.tokens.json ↗
+                </a>
+              </strong>{" "}
+              — every token and resolved value, in DTCG format.
+            </li>
+          </ol>
+        </div>
+        <Callout type="tip" title="One rule above all">
+          Build only from the <code>--ds-*</code> tokens and the{" "}
+          <code>@mosje/design-system</code> components. If a value isn&apos;t a
+          token, it&apos;s a token gap — add it to <code>@mosje/tokens</code>,
+          never hardcode it.
+        </Callout>
       </section>
 
       {/* ── Get help ──────────────────────────────────────────── */}

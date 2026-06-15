@@ -22,3 +22,28 @@ This package is the **single source of truth** for the visual language across al
 2. Move tokens here first, then components, refactoring `dosje` to import them; then portals.
 3. Don't break apps mid-extraction — verify each app still builds after each move.
 4. Version the package; changes here ripple to every property, so review with `design-system-guardian`.
+
+## AI design context — keep these THREE in sync (mandatory)
+
+The system is built to be consumed by AI agents. Three artifacts make that work
+and **must stay in lockstep with the tokens, the components, and the Figma
+library** — they are the design system's contract for machines:
+
+- **`packages/design-system/design.md`** — the authoritative AI design context
+  (token vocabulary, theming axes, component inventory, non-negotiable rules).
+  Never hand-copy token *values* into it; it points to the generated SoT.
+- **`packages/design-system/AGENTS.md`** — the agent entrypoint (read-first +
+  edit map + finish checklist).
+- **`apps/docs/src/app/llms.txt/route.ts`** → served at `/design-system/llms.txt`
+  — generated from `apps/docs/src/lib/nav.ts`, so it self-syncs with the portal.
+
+**The rule:** any change to a token, a component, or a Figma sync MUST also:
+1. Update `design.md` (and `AGENTS.md` if the component inventory changed) and
+   bump the `Last reviewed` date in `design.md`.
+2. Update the SAMAVESH portal (`apps/docs`) — the relevant foundation/component
+   page **and** `apps/docs/src/lib/nav.ts` if pages were added/removed (this
+   keeps `llms.txt` correct automatically).
+3. Re-run `npm run build -w @mosje/tokens` && `npm test -w @mosje/tokens`.
+
+This is enforced as a step in `/sync-figma` and in the `design-system-guardian`
+review. Treat docs/tokens/Figma drift as a defect, not a follow-up.

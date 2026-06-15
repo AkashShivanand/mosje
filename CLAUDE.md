@@ -77,6 +77,7 @@ Run inside the app folder (or via `npm --prefix <app>`):
 - **Real content, real assets** — no lorem/placeholder in production pages.
 - `next/image` for images; `lucide-react` for icons (note: this version dropped the brand social icons — use inline SVGs).
 - Mobile-first responsive; content max-width **1280px**.
+- **AI design contract.** Before building or changing UI, read **`packages/design-system/design.md`** (token vocabulary, theming axes, component inventory, hard rules) — it's the authoritative AI-facing brief. Its companions `packages/design-system/AGENTS.md` and the portal's `/design-system/llms.txt` must stay in sync with tokens/components/Figma — see the rule in `.claude/rules/design-system.md`.
 
 ## Safety rules (learned the hard way)
 

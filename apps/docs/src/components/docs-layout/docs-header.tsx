@@ -20,15 +20,25 @@ function useBreadcrumb(): [string, string] | null {
       setCrumb(null);
       return;
     }
+    // Pick the BEST-matching nav item, not the first: prefer a real page item
+    // (no #hash) and the most specific (longest) base path. Avoids anchor items
+    // that share a base path winning — e.g. Patterns "#patterns" shadowing
+    // Resources/Overview on /design-system/resources.
+    let best: { group: string; label: string; len: number; hasHash: boolean } | null = null;
     for (const group of NAV) {
       for (const item of group.items) {
-        const hrefBase = item.href.split("#")[0];
-        if (hrefBase !== "/design-system" && (p === hrefBase || p.startsWith(hrefBase + "/"))) {
-          setCrumb([group.title, item.label]);
-          return;
-        }
+        const hrefBase = (item.href.split("#")[0] ?? item.href).replace(/\/$/, "");
+        if (hrefBase === "/design-system") continue;
+        if (p !== hrefBase && !p.startsWith(hrefBase + "/")) continue;
+        const hasHash = item.href.includes("#");
+        const better =
+          !best ||
+          (best.hasHash && !hasHash) ||
+          (best.hasHash === hasHash && hrefBase.length > best.len);
+        if (better) best = { group: group.title, label: item.label, len: hrefBase.length, hasHash };
       }
     }
+    setCrumb(best ? [best.group, best.label] : null);
   }, []);
 
   return crumb;
