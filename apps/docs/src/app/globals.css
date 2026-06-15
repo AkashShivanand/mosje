@@ -135,43 +135,6 @@ code:not([class]) {
   .docs-welcome-card:hover { transform: translateY(-3px); }
 }
 
-/* ── CTA buttons — refined hover lift + arrow nudge ── */
-.home-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ds-spacing-sm);
-  padding: 11px var(--ds-spacing-xl);
-  border-radius: var(--ds-radius-md);
-  font-weight: 600;
-  font-size: var(--ds-text-body-2);
-  text-decoration: none;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 0.18s, box-shadow 0.2s, border-color 0.18s;
-}
-.home-cta--primary {
-  background: var(--ds-primary);
-  color: var(--ds-on-primary);
-  box-shadow: var(--ds-shadow-xs, 0 1px 2px rgb(2 32 64 / 0.06));
-}
-.home-cta--primary:hover {
-  background: var(--ds-primary-hover, var(--ds-primary-dark));
-  box-shadow: var(--ds-shadow-lg, 0 12px 28px -12px rgb(3 115 223 / 0.45));
-}
-.home-cta--ghost {
-  border: 1px solid var(--ds-border);
-  color: var(--ds-ink);
-  background: var(--ds-surface);
-}
-.home-cta--ghost:hover { border-color: var(--ds-primary); }
-.home-cta:hover { text-decoration: none; }
-.home-cta__arrow { transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
-.home-cta:hover .home-cta__arrow { transform: translateX(3px); }
-@media (prefers-reduced-motion: no-preference) {
-  .home-cta:hover { transform: translateY(-2px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .home-cta:hover .home-cta__arrow { transform: none; }
-}
 
 /* ── Stats — one editorial strip with hairline dividers (not boxed cards) ── */
 .home-stats {

@@ -220,6 +220,18 @@
   filter: invert(1) brightness(1.6);
 }
 
+/* The SAMAVESH seal is a multi-colour medallion with dark (#1F2937) lettering
+   that disappears on dark surfaces. Inverting would ruin its brand colours, so
+   sit it on a small light "coin" plate instead — keeps the artwork intact and
+   legible. The 3px padding makes the plate's total height match the emblem. */
+[data-theme="dark"] .hero-seal {
+  background: #fff;
+  border-radius: 50%;
+  padding: 3px;
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px var(--ds-border);
+}
+
 /* ── Entrance + delight (motion-safe only) ── */
 @keyframes hero-rise {
   from { opacity: 0; transform: translateY(16px); }

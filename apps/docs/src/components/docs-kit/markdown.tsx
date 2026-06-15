@@ -1,6 +1,7 @@
 import * as React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeSlug from "rehype-slug";
 import "./markdown.css";
 
 interface MarkdownProps {
@@ -16,7 +17,9 @@ interface MarkdownProps {
 export function Markdown({ children }: MarkdownProps): React.JSX.Element {
   return (
     <div className="markdown-body">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{children}</ReactMarkdown>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug]}>
+        {children}
+      </ReactMarkdown>
     </div>
   );
 }

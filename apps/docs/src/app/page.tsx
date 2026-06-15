@@ -1,8 +1,10 @@
 import * as React from "react";
 import type { Metadata } from "next";
+import { Button, buttonClasses } from "@mosje/design-system";
 import { StatusBadge } from "@/components/docs-kit/status-badge";
 import { Callout } from "@/components/docs-kit/callout";
 import { HeroShowcase } from "@/components/hero/hero";
+import { FIGMA_FILE_URL } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "What is SAMAVESH? — SAMAVESH Design System",
@@ -27,19 +29,26 @@ export default function WelcomePage(): React.JSX.Element {
         </p>
 
         <div style={{ display: "flex", gap: "var(--ds-spacing-md)", marginTop: "var(--ds-spacing-2xl)", flexWrap: "wrap" }}>
-          <a href="/design-system/foundations/color" className="home-cta home-cta--primary">
-            Explore Foundations <span className="home-cta__arrow" aria-hidden="true">→</span>
-          </a>
-          <a href="/design-system/components/button" className="home-cta home-cta--ghost">
+          <Button
+            href="/design-system/foundations/color"
+            variant="primary"
+            appearance="filled"
+            iconRight={<span aria-hidden="true">→</span>}
+          >
+            Explore Foundations
+          </Button>
+          <Button href="/design-system/components/button" variant="primary" appearance="outlined">
             Browse Components
-          </a>
+          </Button>
+          {/* External link — DS button styling via buttonClasses so it can open
+              in a new tab (the Button component's props are button-only). */}
           <a
-            href="https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System"
+            className={buttonClasses("primary", "outlined", "md")}
+            href={FIGMA_FILE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="home-cta home-cta--ghost"
           >
-            Open in Figma <span className="home-cta__arrow" aria-hidden="true">↗</span>
+            Open in Figma <span aria-hidden="true">↗</span>
           </a>
         </div>
       </div>

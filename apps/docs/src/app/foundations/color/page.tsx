@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buttonClasses } from "@mosje/design-system";
 import {
   ColorSwatchGrid,
   TokenTable,
@@ -6,6 +7,7 @@ import {
   Callout,
   A11yChecklist,
 } from "@/components/docs-kit/index";
+import { figmaUrl } from "@/lib/figma";
 
 export const metadata: Metadata = { title: "Color — Foundations" };
 
@@ -24,12 +26,12 @@ export default function ColorPage(): React.JSX.Element {
           </p>
           <div className="docs-page-header__actions">
             <a
-              className="docs-page-header__link"
-              href="https://www.figma.com/file/SAMAVESH-design-system"
+              className={buttonClasses("primary", "outlined", "md")}
+              href={figmaUrl()}
               target="_blank"
               rel="noreferrer noopener"
             >
-              Open color library in Figma ↗
+              Open color library in Figma <span aria-hidden="true">↗</span>
             </a>
           </div>
         </div>

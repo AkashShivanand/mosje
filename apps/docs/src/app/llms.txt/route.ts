@@ -1,4 +1,5 @@
 import { NAV } from "@/lib/nav";
+import { FIGMA_FILE_URL } from "@/lib/figma";
 
 /**
  * /design-system/llms.txt — an llms.txt index (https://llmstxt.org) of the
@@ -27,7 +28,7 @@ export function GET(): Response {
     "- [Design tokens (DTCG JSON)](/design-system/tokens.json): every token and resolved value, Figma-compatible. Rendered view: /design-system/resources/tokens",
   );
   lines.push(
-    "- [Figma library](https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System): the designer source of truth, kept in sync with the tokens.",
+    `- [Figma library](${FIGMA_FILE_URL}): the designer source of truth, kept in sync with the tokens.`,
   );
   lines.push("");
 

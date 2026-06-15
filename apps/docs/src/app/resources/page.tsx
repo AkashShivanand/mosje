@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import { Callout } from "@/components/docs-kit/index";
+import { FIGMA_FILE_URL } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Resources — SAMAVESH Design System",
@@ -20,7 +21,7 @@ const QUICK_LINKS: QuickLink[] = [
   {
     title: "Figma library",
     desc: "The source-of-truth design library — colors, type, components, all in sync with code.",
-    href: "https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System",
+    href: FIGMA_FILE_URL,
     external: true,
     icon: "◭",
   },

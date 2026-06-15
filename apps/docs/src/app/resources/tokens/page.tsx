@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import fs from "node:fs";
 import path from "node:path";
 import { Callout } from "@/components/docs-kit/index";
+import { figmaUrl } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Design tokens",
@@ -63,11 +64,7 @@ export default function TokensPage(): React.JSX.Element {
           tokens.json
         </a>
         . Designers: it round-trips to the{" "}
-        <a
-          href="https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={figmaUrl()} target="_blank" rel="noopener noreferrer">
           Figma library ↗
         </a>{" "}
         via the DTCG export.
