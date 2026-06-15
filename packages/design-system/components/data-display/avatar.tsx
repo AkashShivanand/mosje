@@ -1,6 +1,6 @@
 import * as React from "react";
-import { cn } from "../cn";
-import "./feedback.css";
+import { cn } from "../../utils/cn";
+import "../feedback/feedback.css";
 
 export type AvatarSize = 24 | 32 | 40 | 48;
 export type AvatarShape = "circular" | "rounded";

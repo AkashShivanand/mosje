@@ -2,6 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { StatusBadge } from "@/components/docs-kit/status-badge";
 import { Callout } from "@/components/docs-kit/callout";
+import { HeroShowcase } from "@/components/hero/hero";
 
 export const metadata: Metadata = {
   title: "What is SAMAVESH? — SAMAVESH Design System",
@@ -14,25 +15,9 @@ export default function WelcomePage(): React.JSX.Element {
     <>
       {/* ── Hero ── */}
       <div style={{ marginBottom: "var(--ds-spacing-5xl)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-spacing-lg)", marginBottom: "var(--ds-spacing-xl)" }}>
-          <div
-            style={{
-              width: 56, height: 56, borderRadius: "var(--ds-radius-md)",
-              background: "var(--ds-primary)", color: "#fff",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 22, fontWeight: 800,
-            }}
-            aria-hidden="true"
-          >SA</div>
-          <div>
-            <h1 style={{ fontSize: "var(--ds-text-display)", fontWeight: 500, lineHeight: 1.1 }}>
-              SAMAVESH
-            </h1>
-            <p style={{ fontSize: "var(--ds-text-body-1)", color: "var(--ds-ink-muted)" }}>
-              समावेश · Design System · v0.5
-            </p>
-          </div>
-        </div>
+        {/* Live, animated brand hero — the cover rebuilt in code with real,
+            interactive design-system components instead of a flat image. */}
+        <HeroShowcase />
 
         <p style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 400, color: "var(--ds-ink)", maxWidth: "60ch", lineHeight: 1.5, marginBottom: "var(--ds-spacing-xl)" }}>
           The shared visual and interaction language for the <strong>Ministry of Social Justice &amp; Empowerment</strong> digital estate.
@@ -42,39 +27,19 @@ export default function WelcomePage(): React.JSX.Element {
         </p>
 
         <div style={{ display: "flex", gap: "var(--ds-spacing-md)", marginTop: "var(--ds-spacing-2xl)", flexWrap: "wrap" }}>
-          <a
-            href="/design-system/foundations/color"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: "var(--ds-spacing-sm)",
-              padding: "10px var(--ds-spacing-xl)", borderRadius: "var(--ds-radius-sm)",
-              background: "var(--ds-primary)", color: "#fff",
-              fontWeight: 600, fontSize: "var(--ds-text-body-2)", textDecoration: "none",
-            }}
-          >
-            Explore Foundations →
+          <a href="/design-system/foundations/color" className="home-cta home-cta--primary">
+            Explore Foundations <span className="home-cta__arrow" aria-hidden="true">→</span>
           </a>
-          <a
-            href="/design-system/components/button"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: "var(--ds-spacing-sm)",
-              padding: "10px var(--ds-spacing-xl)", borderRadius: "var(--ds-radius-sm)",
-              border: "1.5px solid var(--ds-border-strong)", color: "var(--ds-ink)",
-              fontWeight: 600, fontSize: "var(--ds-text-body-2)", textDecoration: "none",
-            }}
-          >
+          <a href="/design-system/components/button" className="home-cta home-cta--ghost">
             Browse Components
           </a>
           <a
             href="https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System"
-            target="_blank" rel="noopener noreferrer"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: "var(--ds-spacing-sm)",
-              padding: "10px var(--ds-spacing-xl)", borderRadius: "var(--ds-radius-sm)",
-              border: "1.5px solid var(--ds-border-strong)", color: "var(--ds-ink)",
-              fontWeight: 600, fontSize: "var(--ds-text-body-2)", textDecoration: "none",
-            }}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="home-cta home-cta--ghost"
           >
-            Open in Figma ↗
+            Open in Figma <span className="home-cta__arrow" aria-hidden="true">↗</span>
           </a>
         </div>
       </div>
@@ -101,7 +66,8 @@ export default function WelcomePage(): React.JSX.Element {
       </Callout>
 
       {/* ── For each audience ── */}
-      <section style={{ marginTop: "var(--ds-spacing-5xl)" }} id="for-designers">
+      <section style={{ marginTop: "var(--ds-spacing-6xl)" }} id="for-designers">
+        <span className="home-kicker">Design</span>
         <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-spacing-lg)", scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}>
           For Designers
         </h2>
@@ -127,7 +93,8 @@ export default function WelcomePage(): React.JSX.Element {
         </div>
       </section>
 
-      <section style={{ marginTop: "var(--ds-spacing-5xl)" }} id="for-developers">
+      <section style={{ marginTop: "var(--ds-spacing-6xl)" }} id="for-developers">
+        <span className="home-kicker">Develop</span>
         <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-spacing-lg)", scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}>
           For Developers
         </h2>
@@ -156,7 +123,8 @@ export default function WelcomePage(): React.JSX.Element {
         </div>
       </section>
 
-      <section style={{ marginTop: "var(--ds-spacing-5xl)" }}>
+      <section style={{ marginTop: "var(--ds-spacing-6xl)" }}>
+        <span className="home-kicker">Library</span>
         <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-spacing-xl)", scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}>
           What&apos;s available
         </h2>

@@ -8,7 +8,7 @@ import {
   normalizeColorMode,
   readColorModeCookie,
   type ColorMode,
-} from "../color-mode";
+} from "./color-mode";
 
 interface ColorModeContextValue {
   /** Active color-mode id. */
