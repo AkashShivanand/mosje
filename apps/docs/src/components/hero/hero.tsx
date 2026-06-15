@@ -172,6 +172,7 @@ export function HeroShowcase(): React.JSX.Element {
           />
         </div>
 
+        <p className="hero-eyebrow">Ministry of Social Justice &amp; Empowerment</p>
         <div className="hero-title">
           <h1 className="hero-wordmark">SAMAVESH</h1>
           <p className="hero-devanagari" lang="hi">समावेश</p>
@@ -180,6 +181,10 @@ export function HeroShowcase(): React.JSX.Element {
       </div>
 
       <div className="hero-panel">
+        <span className="hero-panel__tag" aria-hidden="true">
+          <span className="hero-panel__pulse" />
+          Live components
+        </span>
         {/* Decorative: inert keeps the controls out of tab order + a11y tree. */}
         <div className="hero-wall" aria-hidden="true" inert>
           <Column items={COLUMN_LEFT} direction="up" speed={34} />

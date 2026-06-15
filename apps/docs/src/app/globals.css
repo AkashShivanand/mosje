@@ -82,55 +82,145 @@ code:not([class]) {
 }
 .skip-link:focus { top: var(--ds-spacing-lg); }
 
-/* Welcome page — feature card links */
-.docs-welcome-card {
-  display: block;
-  padding: var(--ds-spacing-xl);
-  border-radius: var(--ds-radius-md);
-  border: 1px solid var(--ds-border);
-  text-decoration: none;
-  transition: border-color 0.15s, background-color 0.15s;
+/* ── Section kicker — small editorial label above an h2 ── */
+.home-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-spacing-sm);
+  font-size: var(--ds-text-label-3, 0.75rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ds-primary);
+  margin-bottom: var(--ds-spacing-md);
 }
-.docs-welcome-card:hover {
-  border-color: var(--ds-primary);
-  background-color: var(--ds-surface-muted);
+.home-kicker::before {
+  content: "";
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ds-primary);
 }
 
-/* ── Home layout helpers (even rows, no orphan cards) ── */
-.home-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--ds-spacing-lg);
-  margin-bottom: var(--ds-spacing-5xl);
+/* ── Feature card link — hairline by default, lifts + reveals an arrow ── */
+.docs-welcome-card {
+  position: relative;
+  display: block;
+  padding: var(--ds-spacing-xl);
+  padding-right: var(--ds-spacing-3xl);
+  border-radius: var(--ds-radius-lg);
+  border: 1px solid var(--ds-border);
+  background: var(--ds-surface);
+  text-decoration: none;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.2s, box-shadow 0.25s;
 }
+.docs-welcome-card:hover {
+  border-color: color-mix(in oklab, var(--ds-primary) 40%, var(--ds-border));
+  box-shadow: var(--ds-shadow-lg, 0 12px 32px -12px rgb(2 32 64 / 0.16));
+  text-decoration: none;
+}
+.docs-welcome-card::after {
+  content: "→";
+  position: absolute;
+  top: var(--ds-spacing-xl);
+  right: var(--ds-spacing-xl);
+  color: var(--ds-primary);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.2s, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.docs-welcome-card:hover::after { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .docs-welcome-card:hover { transform: translateY(-3px); }
+}
+
+/* ── CTA buttons — refined hover lift + arrow nudge ── */
+.home-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-spacing-sm);
+  padding: 11px var(--ds-spacing-xl);
+  border-radius: var(--ds-radius-md);
+  font-weight: 600;
+  font-size: var(--ds-text-body-2);
+  text-decoration: none;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.18s, box-shadow 0.2s, border-color 0.18s;
+}
+.home-cta--primary {
+  background: var(--ds-primary);
+  color: var(--ds-on-primary);
+  box-shadow: var(--ds-shadow-xs, 0 1px 2px rgb(2 32 64 / 0.06));
+}
+.home-cta--primary:hover {
+  background: var(--ds-primary-hover, var(--ds-primary-dark));
+  box-shadow: var(--ds-shadow-lg, 0 12px 28px -12px rgb(3 115 223 / 0.45));
+}
+.home-cta--ghost {
+  border: 1px solid var(--ds-border);
+  color: var(--ds-ink);
+  background: var(--ds-surface);
+}
+.home-cta--ghost:hover { border-color: var(--ds-primary); }
+.home-cta:hover { text-decoration: none; }
+.home-cta__arrow { transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+.home-cta:hover .home-cta__arrow { transform: translateX(3px); }
+@media (prefers-reduced-motion: no-preference) {
+  .home-cta:hover { transform: translateY(-2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-cta:hover .home-cta__arrow { transform: none; }
+}
+
+/* ── Stats — one editorial strip with hairline dividers (not boxed cards) ── */
+.home-stats {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+  overflow: hidden;
+  margin-bottom: var(--ds-spacing-6xl, 56px);
+}
+.home-stat {
+  flex: 1 1 0;
+  min-width: 132px;
+  padding: var(--ds-spacing-xl);
+  border-left: 1px solid var(--ds-border);
+}
+.home-stat:first-child { border-left: 0; }
+/* Align the stats band's right edge with the broken-out hero (reclaims the
+   empty TOC rail) so the two full-width bands line up. */
+@media (min-width: 1025px) {
+  .home-stats { width: calc(100% + 200px + var(--ds-spacing-3xl, 32px)); }
+}
+.home-stat__value {
+  font-size: var(--ds-text-title-1);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ds-ink-strong, var(--ds-ink));
+  font-variant-numeric: tabular-nums;
+}
+.home-stat__label {
+  font-size: var(--ds-text-label-3, 0.75rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-ink-muted);
+  margin-top: var(--ds-spacing-sm);
+}
+
+/* ── Card grids ── */
 .home-cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--ds-spacing-lg);
 }
 @media (max-width: 900px) {
-  .home-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-stat { min-width: 33%; }
 }
 @media (max-width: 560px) {
-  .home-stats,
   .home-cards { grid-template-columns: 1fr; }
-}
-
-/* Stat tile — quieter than a filled card; number leads, label supports */
-.home-stat {
-  padding: var(--ds-spacing-lg) var(--ds-spacing-xl);
-  border-radius: var(--ds-radius-md);
-  border: 1px solid var(--ds-border);
-  background: var(--ds-surface);
-}
-.home-stat__value {
-  font-size: var(--ds-text-headline);
-  font-weight: 700;
-  color: var(--ds-ink);
-  line-height: 1.2;
-}
-.home-stat__label {
-  font-size: var(--ds-text-body-3);
-  color: var(--ds-ink-muted);
-  margin-top: var(--ds-spacing-xs);
+  .home-stat { min-width: 50%; }
 }

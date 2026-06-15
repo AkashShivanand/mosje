@@ -27,39 +27,19 @@ export default function WelcomePage(): React.JSX.Element {
         </p>
 
         <div style={{ display: "flex", gap: "var(--ds-spacing-md)", marginTop: "var(--ds-spacing-2xl)", flexWrap: "wrap" }}>
-          <a
-            href="/design-system/foundations/color"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: "var(--ds-spacing-sm)",
-              padding: "10px var(--ds-spacing-xl)", borderRadius: "var(--ds-radius-sm)",
-              background: "var(--ds-primary)", color: "#fff",
-              fontWeight: 600, fontSize: "var(--ds-text-body-2)", textDecoration: "none",
-            }}
-          >
-            Explore Foundations →
+          <a href="/design-system/foundations/color" className="home-cta home-cta--primary">
+            Explore Foundations <span className="home-cta__arrow" aria-hidden="true">→</span>
           </a>
-          <a
-            href="/design-system/components/button"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: "var(--ds-spacing-sm)",
-              padding: "10px var(--ds-spacing-xl)", borderRadius: "var(--ds-radius-sm)",
-              border: "1.5px solid var(--ds-border-strong)", color: "var(--ds-ink)",
-              fontWeight: 600, fontSize: "var(--ds-text-body-2)", textDecoration: "none",
-            }}
-          >
+          <a href="/design-system/components/button" className="home-cta home-cta--ghost">
             Browse Components
           </a>
           <a
             href="https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System"
-            target="_blank" rel="noopener noreferrer"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: "var(--ds-spacing-sm)",
-              padding: "10px var(--ds-spacing-xl)", borderRadius: "var(--ds-radius-sm)",
-              border: "1.5px solid var(--ds-border-strong)", color: "var(--ds-ink)",
-              fontWeight: 600, fontSize: "var(--ds-text-body-2)", textDecoration: "none",
-            }}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="home-cta home-cta--ghost"
           >
-            Open in Figma ↗
+            Open in Figma <span className="home-cta__arrow" aria-hidden="true">↗</span>
           </a>
         </div>
       </div>
@@ -86,7 +66,8 @@ export default function WelcomePage(): React.JSX.Element {
       </Callout>
 
       {/* ── For each audience ── */}
-      <section style={{ marginTop: "var(--ds-spacing-5xl)" }} id="for-designers">
+      <section style={{ marginTop: "var(--ds-spacing-6xl)" }} id="for-designers">
+        <span className="home-kicker">Design</span>
         <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-spacing-lg)", scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}>
           For Designers
         </h2>
@@ -112,7 +93,8 @@ export default function WelcomePage(): React.JSX.Element {
         </div>
       </section>
 
-      <section style={{ marginTop: "var(--ds-spacing-5xl)" }} id="for-developers">
+      <section style={{ marginTop: "var(--ds-spacing-6xl)" }} id="for-developers">
+        <span className="home-kicker">Develop</span>
         <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-spacing-lg)", scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}>
           For Developers
         </h2>
@@ -141,7 +123,8 @@ export default function WelcomePage(): React.JSX.Element {
         </div>
       </section>
 
-      <section style={{ marginTop: "var(--ds-spacing-5xl)" }}>
+      <section style={{ marginTop: "var(--ds-spacing-6xl)" }}>
+        <span className="home-kicker">Library</span>
         <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-spacing-xl)", scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}>
           What&apos;s available
         </h2>

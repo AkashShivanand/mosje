@@ -1,27 +1,26 @@
 /* ─────────────────────────────────────────────────────────────────────────
    SAMAVESH landing hero — brand lockup + live, infinitely-scrolling component
-   wall. All values are design-system tokens (--ds-*). No hardcoded colours.
+   wall. Editorial gov-tech: confident hierarchy, hairline structure, brand
+   blue, purposeful staggered motion. All colours are design-system tokens.
    ───────────────────────────────────────────────────────────────────────── */
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
   gap: var(--ds-spacing-5xl, 48px);
   align-items: center;
-  margin-bottom: var(--ds-spacing-5xl, 48px);
+  margin-bottom: var(--ds-spacing-6xl, 56px);
 }
 
-/* The docs layout reserves a 200px "on this page" rail that the homepage never
-   fills. Above the rail's breakpoint, stretch the hero across that empty column
-   so it uses the full width instead of leaving a gap to the right. */
+/* The docs layout reserves a 200px "on this page" rail the homepage never
+   fills — stretch the hero across it so the space isn't left blank. */
 @media (min-width: 1025px) {
   .hero {
     width: calc(100% + 200px + var(--ds-spacing-3xl, 32px));
   }
 }
 
-/* ── Brand block — explicit margins create a deliberate vertical rhythm:
-   loose after the lockup, tight inside the title, medium before the subtitle. ── */
+/* ── Brand block ── */
 .hero-brand {
   display: flex;
   flex-direction: column;
@@ -32,31 +31,45 @@
   display: flex;
   align-items: center;
   gap: var(--ds-spacing-lg);
-  margin-bottom: var(--ds-spacing-2xl);
+  margin-bottom: var(--ds-spacing-xl);
 }
 
 .hero-emblem {
-  height: 68px;
+  height: 64px;
   width: auto;
   display: block;
 }
 
 .hero-seal {
-  height: 60px;
+  height: 58px;
   width: auto;
   display: block;
 }
 
-/* The emblem SVG is black line-art; flip it to read on the dark surface. */
-[data-theme="dark"] .hero-emblem {
-  filter: invert(1) brightness(1.6);
+.hero-divider {
+  width: 1px;
+  height: 44px;
+  background: var(--ds-border);
 }
 
-.hero-divider {
-  width: 2px;
-  height: 52px;
-  background: var(--ds-border);
-  border-radius: var(--ds-radius-full, 999px);
+/* Institutional eyebrow — small, tracked, with a leading brand rule. */
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-spacing-sm);
+  font-size: var(--ds-text-label-3, 0.75rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ds-ink-muted);
+  margin-bottom: var(--ds-spacing-md);
+}
+.hero-eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ds-primary);
 }
 
 .hero-title {
@@ -66,10 +79,10 @@
 }
 
 .hero-wordmark {
-  font-size: clamp(2.5rem, 1.2rem + 4.4vw, 4.5rem);
+  font-size: clamp(2.75rem, 1.2rem + 5vw, 5rem);
   font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.015em;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
   color: var(--ds-primary);
   margin: 0;
   max-width: 100%;
@@ -77,36 +90,59 @@
 
 .hero-devanagari {
   font-size: clamp(1.5rem, 0.9rem + 2.4vw, 2.75rem);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.1;
-  color: var(--ds-primary);
+  color: var(--ds-ink);
+  opacity: 0.85;
   margin: 0;
 }
 
 .hero-subtitle {
-  font-size: var(--ds-text-headline, 1.25rem);
+  font-size: var(--ds-text-body-1, 1rem);
+  line-height: var(--ds-leading-body-1, 1.6);
   color: var(--ds-ink-muted);
   margin-top: var(--ds-spacing-lg);
+  max-width: 38ch;
 }
 
 /* ── Component wall panel ── */
 .hero-panel {
   position: relative;
-  height: 348px;
+  height: 392px;
   overflow: hidden;
   padding: var(--ds-spacing-xl);
   border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-lg, 16px);
+  border-radius: var(--ds-radius-xl, 20px);
   background: var(--ds-surface-muted);
-  /* Fade the top & bottom edges so components appear to stream infinitely. */
-  -webkit-mask-image: linear-gradient(
-    180deg,
-    transparent 0,
-    #000 12%,
-    #000 88%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+  background: color-mix(in oklab, var(--ds-primary) 4%, var(--ds-surface));
+  box-shadow: var(--ds-shadow-lg, 0 12px 32px -12px rgb(2 32 64 / 0.18));
+}
+
+/* "Live" cue — crisp, sits above the faded wall. */
+.hero-panel__tag {
+  position: absolute;
+  top: var(--ds-spacing-lg);
+  left: var(--ds-spacing-lg);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-spacing-sm);
+  padding: 5px var(--ds-spacing-md) 5px var(--ds-spacing-sm);
+  font-size: var(--ds-text-label-3, 0.75rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ds-ink);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-full, 999px);
+  box-shadow: var(--ds-shadow-xs, 0 1px 2px rgb(2 32 64 / 0.06));
+}
+.hero-panel__pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ds-primary);
+  box-shadow: 0 0 0 0 color-mix(in oklab, var(--ds-primary) 55%, transparent);
 }
 
 .hero-wall {
@@ -114,6 +150,9 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--ds-spacing-lg);
   height: 100%;
+  /* Fade the top & bottom so the components appear to stream endlessly. */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
 }
 
 .hero-col {
@@ -126,7 +165,6 @@
   animation: hero-scroll-up var(--hero-speed, 34s) linear infinite;
   will-change: transform;
 }
-
 .hero-col--down .hero-col__track {
   animation-name: hero-scroll-down;
 }
@@ -139,13 +177,9 @@
   width: 100%;
   min-width: 0;
 }
-
 .hero-tile > * {
   max-width: 100%;
 }
-
-/* Wide components fill their column so their text wraps instead of clipping;
-   compact controls (buttons, badges, chips) keep their natural width, centered. */
 .hero-wall .ds-card,
 .hero-wall .ds-alert {
   width: 100%;
@@ -158,47 +192,69 @@
   justify-content: center;
   gap: var(--ds-spacing-sm);
 }
-
 .hero-muted {
   font-size: var(--ds-text-body-3, 0.8125rem);
   color: var(--ds-ink-muted);
 }
-
 .hero-card {
   width: 100%;
 }
 
-/* Seamless because every tile carries an equal trailing margin and the set is
-   rendered twice — a -50% shift lands copy 2 exactly where copy 1 began. */
+/* Seamless loop: equal trailing margins + the set rendered twice → −50% lands
+   copy 2 exactly where copy 1 began. */
 @keyframes hero-scroll-up {
   from { transform: translateY(0); }
   to   { transform: translateY(-50%); }
 }
-
 @keyframes hero-scroll-down {
   from { transform: translateY(-50%); }
   to   { transform: translateY(0); }
 }
 
-/* Pause on hover so a visitor can read a component. */
 .hero-panel:hover .hero-col__track {
   animation-play-state: paused;
 }
 
-/* ── Responsive — stack, and let the panel sit below the brand block. ── */
+/* The emblem SVG is black line-art; flip it to read on the dark surface. */
+[data-theme="dark"] .hero-emblem {
+  filter: invert(1) brightness(1.6);
+}
+
+/* ── Entrance + delight (motion-safe only) ── */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hero-pulse {
+  0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--ds-primary) 55%, transparent); }
+  70%  { box-shadow: 0 0 0 7px color-mix(in oklab, var(--ds-primary) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--ds-primary) 0%, transparent); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-brand > *,
+  .hero-panel {
+    animation: hero-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+  .hero-brand > *:nth-child(1) { animation-delay: 0.04s; }
+  .hero-brand > *:nth-child(2) { animation-delay: 0.10s; }
+  .hero-brand > *:nth-child(3) { animation-delay: 0.16s; }
+  .hero-brand > *:nth-child(4) { animation-delay: 0.22s; }
+  .hero-panel { animation-delay: 0.14s; }
+  .hero-panel__pulse { animation: hero-pulse 2.4s ease-out infinite; }
+}
+
+/* ── Responsive ── */
 @media (max-width: 860px) {
   .hero {
     grid-template-columns: 1fr;
     gap: var(--ds-spacing-2xl);
+    margin-bottom: var(--ds-spacing-4xl, 40px);
   }
-  .hero-panel {
-    height: 320px;
-  }
+  .hero-panel { height: 320px; }
 }
 
-/* ── Motion preference — hold the wall still; show one static set. ── */
+/* ── Motion preference — hold the wall still. ── */
 @media (prefers-reduced-motion: reduce) {
-  .hero-col__track {
-    animation: none;
-  }
+  .hero-col__track { animation: none; }
 }
