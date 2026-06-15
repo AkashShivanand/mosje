@@ -60,6 +60,8 @@ export const NAV: NavGroup[] = [
     title: "Resources",
     items: [
       { label: "Overview", href: "/design-system/resources" },
+      { label: "AI design context", href: "/design-system/resources/design-context", badge: "New" },
+      { label: "Design tokens", href: "/design-system/resources/tokens", badge: "New" },
       { label: "Changelog", href: "/design-system/resources/changelog" },
       { label: "Governance", href: "/design-system/resources/governance" },
       { label: "Contributing", href: "/design-system/resources/contributing" },

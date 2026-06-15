@@ -39,24 +39,15 @@ const QUICK_LINKS: QuickLink[] = [
     icon: "⎇",
   },
   {
-    title: "AI design context (design.md)",
-    desc: "The authoritative brief an AI agent reads before building UI — token vocabulary, theming axes, components, and the non-negotiable rules.",
-    href: "https://github.com/AkashShivanand/MoSJE/blob/main/packages/design-system/design.md",
-    external: true,
+    title: "AI design context",
+    desc: "The authoritative brief an AI agent reads before building UI — rendered live from design.md, the source of truth.",
+    href: "/design-system/resources/design-context",
     icon: "✦",
   },
   {
-    title: "llms.txt",
-    desc: "Machine-readable index of this portal for LLMs, generated from the live navigation so it never drifts.",
-    href: "/design-system/llms.txt",
-    external: true,
-    icon: "≣",
-  },
-  {
-    title: "Design tokens (JSON)",
-    desc: "Every token and resolved value as DTCG JSON — Figma-compatible and ready for tools and agents.",
-    href: "https://github.com/AkashShivanand/MoSJE/blob/main/packages/tokens/dist/figma.tokens.json",
-    external: true,
+    title: "Design tokens",
+    desc: "Every token and resolved value with live colour swatches — rendered from the generated DTCG export.",
+    href: "/design-system/resources/tokens",
     icon: "◇",
   },
   {
@@ -200,13 +191,7 @@ export default function ResourcesPage(): React.JSX.Element {
           <ol>
             <li>
               <strong>
-                <a
-                  href="https://github.com/AkashShivanand/MoSJE/blob/main/packages/design-system/design.md"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  design.md ↗
-                </a>
+                <a href="/design-system/resources/design-context">AI design context</a>
               </strong>{" "}
               — the design contract: token vocabulary, theming axes, component
               inventory, and the hard rules (tokens-first, Noto Sans, National
@@ -214,25 +199,22 @@ export default function ResourcesPage(): React.JSX.Element {
             </li>
             <li>
               <strong>
-                <a href="/design-system/llms.txt" target="_blank" rel="noopener noreferrer">
-                  llms.txt ↗
-                </a>
+                <a href="/design-system/resources/tokens">Design tokens</a>
               </strong>{" "}
-              — a machine-readable map of every page in this portal.
-            </li>
-            <li>
-              <strong>
-                <a
-                  href="https://github.com/AkashShivanand/MoSJE/blob/main/packages/tokens/dist/figma.tokens.json"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  figma.tokens.json ↗
-                </a>
-              </strong>{" "}
-              — every token and resolved value, in DTCG format.
+              — every token and resolved value, with live swatches.
             </li>
           </ol>
+          <p>
+            Prefer raw machine endpoints? Point tools at{" "}
+            <a href="/design-system/llms.txt" target="_blank" rel="noopener noreferrer">
+              <code>/llms.txt</code>
+            </a>{" "}
+            (portal index) and{" "}
+            <a href="/design-system/tokens.json" target="_blank" rel="noopener noreferrer">
+              <code>/tokens.json</code>
+            </a>{" "}
+            (DTCG tokens).
+          </p>
         </div>
         <Callout type="tip" title="One rule above all">
           Build only from the <code>--ds-*</code> tokens and the{" "}

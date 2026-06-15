@@ -16,7 +16,9 @@
     "next": "^15.5.19",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-live": "^4.1.7"
+    "react-live": "^4.1.7",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@types/node": "^22",

@@ -18,13 +18,13 @@ export function GET(): Response {
   lines.push(`> ${SUMMARY}`);
   lines.push("");
 
-  // The canonical machine-readable artifacts.
+  // The canonical machine-readable artifacts (served in-portal, no GitHub dep).
   lines.push("## Start here");
   lines.push(
-    "- [Design contract (design.md)](https://github.com/AkashShivanand/MoSJE/blob/main/packages/design-system/design.md): the authoritative AI design context — token vocabulary, theming axes, component inventory, and the non-negotiable rules. Read before building UI.",
+    "- [Design contract (design.md, raw)](/design-system/design.md): the authoritative AI design context — token vocabulary, theming axes, component inventory, and the non-negotiable rules. Read before building UI. Rendered view: /design-system/resources/design-context",
   );
   lines.push(
-    "- [Design tokens (DTCG JSON)](https://github.com/AkashShivanand/MoSJE/blob/main/packages/tokens/dist/figma.tokens.json): every token and resolved value, Figma-compatible.",
+    "- [Design tokens (DTCG JSON)](/design-system/tokens.json): every token and resolved value, Figma-compatible. Rendered view: /design-system/resources/tokens",
   );
   lines.push(
     "- [Figma library](https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System): the designer source of truth, kept in sync with the tokens.",
