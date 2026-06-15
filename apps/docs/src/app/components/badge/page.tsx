@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { BadgePlayground } from "./badge-playground";
 import { Playground } from "@/components/playground";
 import { PropsTable, DoDont, A11yChecklist, Callout, StatusBadge } from "@/components/docs-kit";
+import { buttonClasses } from "@mosje/design-system";
+import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Badge",
@@ -37,6 +39,11 @@ export default function BadgePage(): React.JSX.Element {
         <p style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 400, color: "var(--ds-ink)", maxWidth: "60ch", lineHeight: 1.5 }}>
           A small label that indicates a status, count, or category.
         </p>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+          <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.badges)} target="_blank" rel="noopener noreferrer">
+            View in Figma <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </div>
 
       {/* ── Overview ── */}

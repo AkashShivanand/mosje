@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { CardPlayground } from "./card-playground";
 import { Playground } from "@/components/playground";
 import { PropsTable, DoDont, A11yChecklist, Callout, StatusBadge } from "@/components/docs-kit";
+import { buttonClasses } from "@mosje/design-system";
+import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Card",
@@ -37,6 +39,11 @@ export default function CardPage(): React.JSX.Element {
         <p style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 400, color: "var(--ds-ink)", maxWidth: "60ch", lineHeight: 1.5 }}>
           A surface for grouping related content into a single, scannable unit.
         </p>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+          <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.card)} target="_blank" rel="noopener noreferrer">
+            View in Figma <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </div>
 
       {/* ── Overview ── */}

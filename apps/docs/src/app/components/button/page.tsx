@@ -8,7 +8,8 @@ import {
   StatusBadge,
 } from "@/components/docs-kit/index";
 import { ButtonPlayground } from "./button-playground";
-import { Button } from "@mosje/design-system";
+import { Button, buttonClasses } from "@mosje/design-system";
+import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Button",
@@ -171,6 +172,11 @@ export default function ButtonPage(): React.JSX.Element {
           interactive atom in SAMAVESH and the reference implementation for every
           other component page.
         </p>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+          <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.buttons)} target="_blank" rel="noopener noreferrer">
+            View in Figma <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </header>
 
       {/* ============ 1. PURPOSE ============ */}

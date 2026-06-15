@@ -1,5 +1,7 @@
 import * as React from "react";
 import type { Metadata } from "next";
+import { buttonClasses } from "@mosje/design-system";
+import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Iconography",
@@ -154,6 +156,11 @@ export default function IconographyPage(): React.JSX.Element {
         Icons help people scan and recognise actions quickly. SAMAVESH keeps the
         set small, consistent and always paired with a label.
       </p>
+      <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.logosIcons)} target="_blank" rel="noopener noreferrer">
+          View in Figma <span aria-hidden="true">↗</span>
+        </a>
+      </div>
 
       <section aria-labelledby="system" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="system">The icon system</h2>
