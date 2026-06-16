@@ -1,6 +1,8 @@
 import * as React from "react";
 import type { Metadata } from "next";
+import { buttonClasses } from "@mosje/design-system";
 import { TokenTable, Callout } from "@/components/docs-kit/index";
+import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Elevation",
@@ -35,6 +37,11 @@ export default function ElevationPage(): React.JSX.Element {
         shadow levels to express depth — the higher the surface, the softer and
         larger its shadow.
       </p>
+      <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.elevation)} target="_blank" rel="noopener noreferrer">
+          View in Figma <span aria-hidden="true">↗</span>
+        </a>
+      </div>
 
       <section aria-labelledby="levels" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="levels">The three levels</h2>

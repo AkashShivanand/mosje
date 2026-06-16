@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import * as React from "react";
+import { buttonClasses } from "@mosje/design-system";
 import { PropsTable, Callout, A11yChecklist } from "@/components/docs-kit/index";
 import { Playground } from "@/components/playground/index";
+import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Input & FormField",
@@ -61,6 +63,11 @@ export default function InputPage(): React.JSX.Element {
           <code>Textarea</code>, and <code>Select</code> — paired with the <code>FormField</code> molecule that
           wires labels, hints, and errors together so every field is accessible by default.
         </p>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+          <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.inputs)} target="_blank" rel="noopener noreferrer">
+            View in Figma <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </header>
 
       {/* ---------------------------------------------------------------- */}

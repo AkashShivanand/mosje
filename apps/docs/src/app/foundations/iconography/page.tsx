@@ -157,7 +157,7 @@ export default function IconographyPage(): React.JSX.Element {
         set small, consistent and always paired with a label.
       </p>
       <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
-        <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.logosIcons)} target="_blank" rel="noopener noreferrer">
+        <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.iconography)} target="_blank" rel="noopener noreferrer">
           View in Figma <span aria-hidden="true">↗</span>
         </a>
       </div>

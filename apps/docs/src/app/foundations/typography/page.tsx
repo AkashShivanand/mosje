@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { buttonClasses } from "@mosje/design-system";
 import { TypeSpecimen, TokenTable, DoDont, Callout } from "@/components/docs-kit/index";
+import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Typography",
@@ -20,6 +22,11 @@ export default function TypographyPage() {
             typefaces, a single shared scale, and Indic-aware line heights so
             the same content reads clearly in both scripts.
           </p>
+          <div className="docs-page-header__actions">
+            <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.typography)} target="_blank" rel="noopener noreferrer">
+              Open type styles in Figma <span aria-hidden="true">↗</span>
+            </a>
+          </div>
         </div>
       </header>
 

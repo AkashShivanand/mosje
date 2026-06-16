@@ -1,6 +1,8 @@
 import * as React from "react";
 import type { Metadata } from "next";
+import { buttonClasses } from "@mosje/design-system";
 import { TokenTable, DoDont } from "@/components/docs-kit/index";
+import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Spacing",
@@ -30,6 +32,11 @@ export default function SpacingPage(): React.JSX.Element {
         trustworthy. SAMAVESH uses one shared scale so every gap, pad and margin
         lines up across 13 websites and 20 portals.
       </p>
+      <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.spacing)} target="_blank" rel="noopener noreferrer">
+          View in Figma <span aria-hidden="true">↗</span>
+        </a>
+      </div>
 
       <section aria-labelledby="how-it-works" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="how-it-works">How spacing works</h2>

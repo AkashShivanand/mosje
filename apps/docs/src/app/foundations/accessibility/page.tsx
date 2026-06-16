@@ -1,6 +1,8 @@
 import * as React from "react";
 import type { Metadata } from "next";
+import { buttonClasses } from "@mosje/design-system";
 import { A11yChecklist, Callout } from "@/components/docs-kit/index";
+import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Accessibility",
@@ -17,6 +19,11 @@ export default function AccessibilityPage(): React.JSX.Element {
         government services that every citizen must be able to use, regardless of
         ability, device or connection.
       </p>
+      <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.accessibility)} target="_blank" rel="noopener noreferrer">
+          View in Figma <span aria-hidden="true">↗</span>
+        </a>
+      </div>
 
       <section aria-labelledby="standard" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="standard">WCAG 2.2 AA + GIGW</h2>

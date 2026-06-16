@@ -7,7 +7,7 @@ import {
   Callout,
   A11yChecklist,
 } from "@/components/docs-kit/index";
-import { figmaUrl } from "@/lib/figma";
+import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = { title: "Color — Foundations" };
 
@@ -27,7 +27,7 @@ export default function ColorPage(): React.JSX.Element {
           <div className="docs-page-header__actions">
             <a
               className={buttonClasses("primary", "outlined", "md")}
-              href={figmaUrl()}
+              href={figmaUrl(FIGMA_NODES.color)}
               target="_blank"
               rel="noreferrer noopener"
             >
