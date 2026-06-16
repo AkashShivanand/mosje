@@ -19,6 +19,8 @@ export const FIGMA_NODES = {
   iconography: "2316:246", // "Icons"
   accessibility: "2382:295905", // "Accessibility Bar and Widget"
   logosIcons: "67:12464", // "Logos and Misc Icons"
+  motion: "4162:695", // "Motion" (authored from @mosje/tokens)
+  density: "4170:695", // "Density" (authored from @mosje/tokens)
 
   // ── Components ──
   buttons: "2141:296705",

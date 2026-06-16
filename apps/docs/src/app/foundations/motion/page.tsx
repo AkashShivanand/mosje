@@ -1,6 +1,8 @@
 import * as React from "react";
 import type { Metadata } from "next";
+import { buttonClasses } from "@mosje/design-system";
 import { TokenTable, Callout } from "@/components/docs-kit/index";
+import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Motion",
@@ -45,6 +47,11 @@ export default function MotionPage(): React.JSX.Element {
         and softens change — it never shows off. On government services, motion
         must also step aside the moment a user asks it to.
       </p>
+      <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.motion)} target="_blank" rel="noopener noreferrer">
+          View in Figma <span aria-hidden="true">↗</span>
+        </a>
+      </div>
 
       <section aria-labelledby="duration" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="duration">Duration scale</h2>

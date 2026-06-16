@@ -1,6 +1,8 @@
 import * as React from "react";
 import type { Metadata } from "next";
+import { buttonClasses } from "@mosje/design-system";
 import { TokenTable } from "@/components/docs-kit/index";
+import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = {
   title: "Density",
@@ -70,6 +72,11 @@ export default function DensityPage(): React.JSX.Element {
         <strong>compact</strong> for screens that need to show a lot of data at
         once.
       </p>
+      <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.density)} target="_blank" rel="noopener noreferrer">
+          View in Figma <span aria-hidden="true">↗</span>
+        </a>
+      </div>
 
       <section aria-labelledby="demo" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
         <h2 id="demo">Side by side</h2>
