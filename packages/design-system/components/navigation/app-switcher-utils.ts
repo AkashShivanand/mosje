@@ -221,16 +221,6 @@ export const DEFAULT_APPS: AppEntry[] = [
     status: "live",
   },
   {
-    name: "SMILE Transgender",
-    abbr: "ST",
-    path: "/portals/smile-transgender",
-    desc: "National portal for transgender persons",
-    org: "Ministry of Social Justice & Empowerment",
-    group: "Portals",
-    category: "Social defence & welfare",
-    status: "planned",
-  },
-  {
     name: "Nasha Mukt Bharat Abhiyaan",
     abbr: "NM",
     path: "/portals/nmba",
@@ -239,6 +229,16 @@ export const DEFAULT_APPS: AppEntry[] = [
     group: "Portals",
     category: "Social defence & welfare",
     status: "live",
+  },
+  {
+    name: "SMILE Transgender",
+    abbr: "ST",
+    path: "/portals/smile-transgender",
+    desc: "National portal for transgender persons",
+    org: "Ministry of Social Justice & Empowerment",
+    group: "Portals",
+    category: "Social defence & welfare",
+    status: "planned",
   },
   {
     name: "NISD",
