@@ -238,7 +238,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
     category: "Social defence & welfare",
-    status: "planned",
+    status: "live",
   },
   {
     name: "NISD",
