@@ -9,7 +9,7 @@
   Exact token VALUES are never hand-copied here; they live in the generated
   sources of truth listed under "Source of truth" so this file cannot drift.
 
-  Last reviewed: 2026-06-19 · System version: v0.6
+  Last reviewed: 2026-06-19 · System version: v0.7
 -->
 
 # SAMAVESH Design System — AI Design Context
@@ -122,7 +122,7 @@ fork. Live examples: `/design-system/components/*` and Storybook.
 
 - **Actions** — `Button`
 - **Forms** — `Input`, `Textarea`, `Select`, `FormField` (label/hint/error wiring), `Checkbox`, `Radio`, `Toggle`, `Search`
-- **Data display** — `Card` (+ `CardHeader`, `CardBody`, `CardFooter`, `CardTitle`, `CardSubtitle`), `Badge`, `Chip`, `Avatar`
+- **Data display** — `Card` (+ `CardHeader`, `CardBody`, `CardFooter`, `CardTitle`, `CardSubtitle`), `Badge`, `Chip`, `Avatar`, `MetricCard` (stat tile: label, value, optional icon badge, optional change indicator)`
 - **Feedback** — `Alert`, `Loader`, `EmptyState`
 - **Navigation / chrome** — `AppSwitcher`, `ZoneSwitcher`, `ColorModeSwitcher`
 - **Accessibility** — `AccessibilityWidget`
