@@ -71,11 +71,13 @@ export const tokens = {
       "75": "#f4f3f9",
       "100": "#f1f3f5",
       "200": "#e2e6ea",
+      "300": "#cdd3da",
       "400": "#9aa3af",
       "500": "#6c757d",
+      "600": "#495057",
       "700": "#343a40",
-      "800": "#212121",
-      "900": "#1f2428"
+      "800": "#1f2428",
+      "900": "#0d1014"
     },
     "action": {
       "primary": {
@@ -98,11 +100,12 @@ export const tokens = {
       "900": "#002448"
     },
     "text": {
-      "default": "#212121",
+      "default": "#1f2428",
       "muted": "#343a40",
-      "strong": "#1f2428",
+      "strong": "#0d1014",
       "disabled": "rgba(31, 36, 40, 0.48)",
-      "onPrimary": "#ffffff"
+      "onPrimary": "#ffffff",
+      "info": "#1558b0"
     },
     "bg": {
       "surface": "#ffffff",
@@ -128,12 +131,12 @@ export const tokens = {
       "danger": "#ec5042",
       "dangerStrong": "#a11d12",
       "dangerTonal": "#fad2cf",
-      "info": "#0373df",
-      "infoStrong": "#1558b0",
+      "info": "#1558b0",
+      "infoStrong": "#11408b",
       "infoTonal": "#d2e3fc"
     },
     "overlay": {
-      "scrim": "rgba(33, 33, 33, 0.5)"
+      "scrim": "rgba(31, 36, 40, 0.5)"
     },
     "a11y": {
       "hc": {
@@ -217,12 +220,98 @@ export const tokens = {
       "400": "28px",
       "900": "56px",
       "devanagari": "1.7"
+    },
+    "role": {
+      "display1": {
+        "size": "40px",
+        "lh": "48px"
+      },
+      "display2": {
+        "size": "32px",
+        "lh": "40px"
+      },
+      "display3": {
+        "size": "28px",
+        "lh": "36px"
+      },
+      "display4": {
+        "size": "24px",
+        "lh": "32px"
+      },
+      "display5": {
+        "size": "22px",
+        "lh": "28px"
+      },
+      "display6": {
+        "size": "20px",
+        "lh": "28px"
+      },
+      "headline1": {
+        "size": "24px",
+        "lh": "32px"
+      },
+      "headline2": {
+        "size": "20px",
+        "lh": "28px"
+      },
+      "headline3": {
+        "size": "18px",
+        "lh": "24px"
+      },
+      "headline4": {
+        "size": "16px",
+        "lh": "24px"
+      },
+      "headline5": {
+        "size": "15px",
+        "lh": "20px"
+      },
+      "headline6": {
+        "size": "14px",
+        "lh": "20px"
+      },
+      "title1": {
+        "size": "16px",
+        "lh": "24px"
+      },
+      "title2": {
+        "size": "15px",
+        "lh": "20px"
+      },
+      "title3": {
+        "size": "14px",
+        "lh": "20px"
+      },
+      "body1": {
+        "size": "14px",
+        "lh": "20px"
+      },
+      "body2": {
+        "size": "13px",
+        "lh": "20px"
+      },
+      "body3": {
+        "size": "13px",
+        "lh": "20px"
+      },
+      "label1": {
+        "size": "14px",
+        "lh": "20px"
+      },
+      "label2": {
+        "size": "12px",
+        "lh": "16px"
+      },
+      "label3": {
+        "size": "11px",
+        "lh": "16px"
+      }
     }
   },
   "shadow": {
-    "xs": "0 2px 3px 1px rgba(33, 33, 33, 0.12)",
-    "lg": "0 12px 16px -4px rgba(33, 33, 33, 0.08), 0 4px 6px -2px rgba(33, 33, 33, 0.03)",
-    "xl": "0 24px 48px -12px rgba(33, 33, 33, 0.18)"
+    "xs": "0 2px 3px 1px rgba(31, 36, 40, 0.12)",
+    "lg": "0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03)",
+    "xl": "0 24px 48px -12px rgba(31, 36, 40, 0.18)"
   },
   "motion": {
     "duration": {

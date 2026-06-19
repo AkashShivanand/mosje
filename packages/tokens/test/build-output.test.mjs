@@ -6,16 +6,15 @@ import { execSync } from "node:child_process";
 const root = new URL("..", import.meta.url).pathname;
 const legacy = JSON.parse(readFileSync(root + "test/legacy-snapshot.json", "utf8"));
 
-function resolveVar(css, name) {
-  // Resolve one level of var() indirection against the same :root block.
-  const direct = css.match(new RegExp(`${name}\\s*:\\s*([^;]+);`));
+function resolveVar(css, name, depth = 0) {
+  // Recursively resolve var() chains (--sa-*, --ds-type-*, etc.) up to 5 levels.
+  if (depth > 5) return null;
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const direct = css.match(new RegExp(`${escaped}\\s*:\\s*([^;]+);`));
   if (!direct) return null;
   const v = direct[1].trim();
-  const ref = v.match(/^var\((--sa-[a-zA-Z0-9-]+)\)$/);
-  if (ref) {
-    const m = css.match(new RegExp(`${ref[1]}\\s*:\\s*([^;]+);`));
-    return m ? m[1].trim() : null;
-  }
+  const ref = v.match(/^var\((--[a-zA-Z0-9-]+)\)$/);
+  if (ref) return resolveVar(css, ref[1], depth + 1);
   return v;
 }
 

@@ -9,7 +9,7 @@
   Exact token VALUES are never hand-copied here; they live in the generated
   sources of truth listed under "Source of truth" so this file cannot drift.
 
-  Last reviewed: 2026-06-15 · System version: v0.5
+  Last reviewed: 2026-06-19 · System version: v0.6
 -->
 
 # SAMAVESH Design System — AI Design Context
@@ -76,7 +76,8 @@ resolved values: `packages/design-system/tokens.css`.
 - Border: `--ds-border`, `--ds-border-strong`
 - Brand/action: `--ds-primary`, `--ds-primary-hover` (= `--ds-primary-dark`), `--ds-primary-tonal`, `--ds-primary-ring`
 - Links: `--ds-link` (decoupled from primary so it stays readable on dark)
-- Status: `--ds-success` / `--ds-success-tonal`, `--ds-warning` / `--ds-warning-tonal`, `--ds-danger` / `--ds-danger-tonal`, `--ds-info`
+- Status: `--ds-success` / `--ds-success-tonal`, `--ds-warning` / `--ds-warning-tonal`, `--ds-danger` / `--ds-danger-tonal`, `--ds-info` / `--ds-info-tonal`
+- Info text: `--ds-ink-info` (use instead of `--ds-info` for body text — correct contrast level)
 - Government brand layer: `--ds-saffron` (+ `-light` / `-dark`), `--ds-gov-navy`, `--ds-gov-yellow`
 - Overlay/scrim: `--ds-overlay`
 
@@ -85,7 +86,8 @@ resolved values: `packages/design-system/tokens.css`.
 - Named t-shirt scale: `--ds-spacing-sm,md,lg,xl`
 
 **Radius:** `--ds-radius-xxs,xs,sm,md,pill`
-**Type roles:** `--ds-text-display,title-1,title-2,headline,body-1,body-2,body-3,label-1,label-3` (+ matching `--ds-leading-*`)
+**Type roles — responsive (use these):** `--ds-type-ROLE-size` and `--ds-type-ROLE-lh` where ROLE is one of `display1-6`, `headline1-6`, `title1-3`, `body1-3`, `label1-3`. These are mobile-first and respond via `@media (min-width: 768px/1024px)` breakpoints automatically. Labels are fixed (no responsive override).
+**Type roles — legacy aliases (back-compat):** `--ds-text-display,title-1,title-2,headline,body-1,body-2,body-3,label-1,label-3` (+ matching `--ds-leading-*`) — these now forward to the responsive `--ds-type-*` variables so they are also responsive.
 **Font:** `--ds-font-sans` (Noto Sans), `--ds-font-mono`
 **Elevation:** `--ds-shadow-xs,lg,xl`
 **Motion:** `--ds-duration-fast,base,slow`, `--ds-easing-out,in,in-out`

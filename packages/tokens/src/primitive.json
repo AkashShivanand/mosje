@@ -8,15 +8,15 @@
     "yellow": { "500": {"$value":"#ffd323"} },
     "saffron":{ "50": {"$value":"#ffedd5"}, "500": {"$value":"#f97316"}, "700": {"$value":"#7c3503"} },
     "navy":   { "700": {"$value":"#003366"} },
-    "info":   {
-      "$description": "New in Portal DS — distinct Info hue (Google-blue family). Added; not present in original SAMAVESH.",
-      "50": {"$value":"#e8f0fe"}, "100": {"$value":"#d2e3fc"}, "200": {"$value":"#a8c8fa"},
+    "info": {
+      "$description": "Info hue (distinct from brand primary — Google-blue family, used in Portal DS).",
+      "50":  {"$value":"#e8f0fe"}, "100": {"$value":"#d2e3fc"}, "200": {"$value":"#a8c8fa"},
       "300": {"$value":"#7aaff8"}, "400": {"$value":"#4285f4"}, "500": {"$value":"#1a73e8"},
       "600": {"$value":"#1558b0"}, "700": {"$value":"#11408b"}, "800": {"$value":"#0d2d63"},
       "900": {"$value":"#081e43"}
     },
     "primaryRamp": {
-      "$description": "Primary brand ramps, one per color mode. 'light' is the default (data-color-mode unset). Add a new sub-key (e.g. 'green') to introduce another mode.",
+      "$description": "Mode-aware primary brand ramp. 'light' = default (gov-blue). 'dark' = gov-navy mode.",
       "light": {
         "50":  {"$value":"#e8f2fd"}, "100": {"$value":"#c6dcf9"}, "200": {"$value":"#94bff5"},
         "300": {"$value":"#5fa0ef"}, "400": {"$value":"#2d84e8"}, "500": {"$value":"#0373df"},
@@ -30,21 +30,24 @@
         "900": {"$value":"#001122"}
       }
     },
-    "neutral":{
-      "0":   {"$value":"#ffffff"},
-      "50":  {"$value":"#f8f9fa"},
-      "75":  {"$value":"#f4f3f9"},
-      "100": {"$value":"#f1f3f5"},
-      "200": {"$value":"#e2e6ea"},
-      "400": {"$value":"#9aa3af"},
-      "500": {"$value":"#6c757d"},
-      "700": {"$value":"#343a40"},
-      "800": {"$value":"#212121"},
-      "900": {"$value":"#1f2428"}
+    "neutral": {
+      "$description": "Neutral grey scale — matches UX4G/SAMAVESH Figma Neutral/* variables exactly.",
+      "0":    {"$value":"#ffffff"},
+      "50":   {"$value":"#f8f9fa"},
+      "75":   {"$value":"#f4f3f9"},
+      "100":  {"$value":"#f1f3f5"},
+      "200":  {"$value":"#e2e6ea"},
+      "300":  {"$value":"#cdd3da"},
+      "400":  {"$value":"#9aa3af"},
+      "500":  {"$value":"#6c757d"},
+      "600":  {"$value":"#495057"},
+      "700":  {"$value":"#343a40"},
+      "800":  {"$value":"#1f2428"},
+      "900":  {"$value":"#0d1014"}
     }
   },
   "spacing": {
-    "$description": "T-shirt spacing scale — matches the shared Figma Spacing collection 1:1.",
+    "$description": "T-shirt spacing scale — matches Figma Spacing collection 1:1.",
     "$type": "dimension",
     "none": {"$value":"0px"}, "xxs": {"$value":"2px"}, "xs": {"$value":"4px"},
     "sm": {"$value":"8px"}, "md": {"$value":"12px"}, "lg": {"$value":"16px"},
@@ -53,7 +56,7 @@
     "7xl": {"$value":"64px"}, "8xl": {"$value":"72px"}, "9xl": {"$value":"80px"}
   },
   "radius": {
-    "$description": "T-shirt radius scale — matches the shared Figma Border Radius collection.",
+    "$description": "T-shirt radius scale — matches Figma Border Radius collection.",
     "$type": "dimension",
     "none": {"$value":"0px"}, "xxs": {"$value":"2px"}, "xs": {"$value":"4px"},
     "sm": {"$value":"6px"}, "md": {"$value":"8px"}, "lg": {"$value":"12px"},
@@ -63,15 +66,16 @@
   "font": {
     "family": {
       "$type": "fontFamily",
-      "latin": {"$value":"\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"},
+      "latin":      {"$value":"\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"},
       "devanagari": {"$value":"\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"},
-      "mono": {"$value":"ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"}
+      "mono":       {"$value":"ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"}
     },
     "weight": {
       "$type": "fontWeight",
       "regular": {"$value":400}, "medium": {"$value":500}, "semibold": {"$value":600}
     },
     "size": {
+      "$description": "Legacy flat scale. New code should use font.role.* for the responsive role system.",
       "$type": "dimension",
       "100": {"$value":"11px"}, "200": {"$value":"12px"}, "300": {"$value":"14px"},
       "400": {"$value":"16px"}, "500": {"$value":"20px"}, "600": {"$value":"22px"}, "900": {"$value":"48px"}
@@ -80,13 +84,100 @@
       "$type": "dimension",
       "100": {"$value":"16px"}, "200": {"$value":"20px"}, "300": {"$value":"24px"},
       "400": {"$value":"28px"}, "900": {"$value":"56px"}, "devanagari": {"$value":"1.7"}
+    },
+    "role": {
+      "$description": "Responsive type role scale (mobile-first). The formatter emits --ds-type-ROLE-size and --ds-type-ROLE-lh CSS variables in :root (mobile) with @media overrides for tablet (768px) and desktop (1024px). Values from Portal DS, validated against Website editorial needs.",
+      "display1": {
+        "size": {"$type":"dimension","$value":"40px","$extensions":{"responsive":{"md":"48px","lg":"56px"}}},
+        "lh":   {"$type":"dimension","$value":"48px","$extensions":{"responsive":{"md":"56px","lg":"64px"}}}
+      },
+      "display2": {
+        "size": {"$type":"dimension","$value":"32px","$extensions":{"responsive":{"md":"40px","lg":"48px"}}},
+        "lh":   {"$type":"dimension","$value":"40px","$extensions":{"responsive":{"md":"48px","lg":"56px"}}}
+      },
+      "display3": {
+        "size": {"$type":"dimension","$value":"28px","$extensions":{"responsive":{"md":"32px","lg":"40px"}}},
+        "lh":   {"$type":"dimension","$value":"36px","$extensions":{"responsive":{"md":"40px","lg":"48px"}}}
+      },
+      "display4": {
+        "size": {"$type":"dimension","$value":"24px","$extensions":{"responsive":{"md":"28px","lg":"32px"}}},
+        "lh":   {"$type":"dimension","$value":"32px","$extensions":{"responsive":{"md":"36px","lg":"40px"}}}
+      },
+      "display5": {
+        "size": {"$type":"dimension","$value":"22px","$extensions":{"responsive":{"md":"24px","lg":"28px"}}},
+        "lh":   {"$type":"dimension","$value":"28px","$extensions":{"responsive":{"md":"32px","lg":"36px"}}}
+      },
+      "display6": {
+        "size": {"$type":"dimension","$value":"20px","$extensions":{"responsive":{"md":"22px","lg":"24px"}}},
+        "lh":   {"$type":"dimension","$value":"28px","$extensions":{"responsive":{"md":"28px","lg":"32px"}}}
+      },
+      "headline1": {
+        "size": {"$type":"dimension","$value":"24px","$extensions":{"responsive":{"md":"28px","lg":"32px"}}},
+        "lh":   {"$type":"dimension","$value":"32px","$extensions":{"responsive":{"md":"36px","lg":"40px"}}}
+      },
+      "headline2": {
+        "size": {"$type":"dimension","$value":"20px","$extensions":{"responsive":{"md":"24px","lg":"28px"}}},
+        "lh":   {"$type":"dimension","$value":"28px","$extensions":{"responsive":{"md":"32px","lg":"36px"}}}
+      },
+      "headline3": {
+        "size": {"$type":"dimension","$value":"18px","$extensions":{"responsive":{"md":"20px","lg":"24px"}}},
+        "lh":   {"$type":"dimension","$value":"24px","$extensions":{"responsive":{"md":"28px","lg":"32px"}}}
+      },
+      "headline4": {
+        "size": {"$type":"dimension","$value":"16px","$extensions":{"responsive":{"md":"18px","lg":"20px"}}},
+        "lh":   {"$type":"dimension","$value":"24px","$extensions":{"responsive":{"md":"24px","lg":"28px"}}}
+      },
+      "headline5": {
+        "size": {"$type":"dimension","$value":"15px","$extensions":{"responsive":{"md":"16px","lg":"18px"}}},
+        "lh":   {"$type":"dimension","$value":"20px","$extensions":{"responsive":{"md":"24px","lg":"24px"}}}
+      },
+      "headline6": {
+        "size": {"$type":"dimension","$value":"14px","$extensions":{"responsive":{"md":"15px","lg":"16px"}}},
+        "lh":   {"$type":"dimension","$value":"20px","$extensions":{"responsive":{"md":"20px","lg":"24px"}}}
+      },
+      "title1": {
+        "size": {"$type":"dimension","$value":"16px","$extensions":{"responsive":{"md":"18px","lg":"20px"}}},
+        "lh":   {"$type":"dimension","$value":"24px","$extensions":{"responsive":{"md":"24px","lg":"28px"}}}
+      },
+      "title2": {
+        "size": {"$type":"dimension","$value":"15px","$extensions":{"responsive":{"md":"16px","lg":"18px"}}},
+        "lh":   {"$type":"dimension","$value":"20px","$extensions":{"responsive":{"md":"24px","lg":"24px"}}}
+      },
+      "title3": {
+        "size": {"$type":"dimension","$value":"14px","$extensions":{"responsive":{"md":"15px","lg":"16px"}}},
+        "lh":   {"$type":"dimension","$value":"20px","$extensions":{"responsive":{"md":"20px","lg":"24px"}}}
+      },
+      "body1": {
+        "size": {"$type":"dimension","$value":"14px","$extensions":{"responsive":{"md":"15px","lg":"16px"}}},
+        "lh":   {"$type":"dimension","$value":"20px","$extensions":{"responsive":{"md":"24px","lg":"24px"}}}
+      },
+      "body2": {
+        "size": {"$type":"dimension","$value":"13px","$extensions":{"responsive":{"md":"14px","lg":"14px"}}},
+        "lh":   {"$type":"dimension","$value":"20px","$extensions":{"responsive":{"md":"20px","lg":"20px"}}}
+      },
+      "body3": {
+        "size": {"$type":"dimension","$value":"13px","$extensions":{"responsive":{"md":"14px","lg":"13px"}}},
+        "lh":   {"$type":"dimension","$value":"20px","$extensions":{"responsive":{"md":"20px","lg":"20px"}}}
+      },
+      "label1": {
+        "size": {"$type":"dimension","$value":"14px"},
+        "lh":   {"$type":"dimension","$value":"20px"}
+      },
+      "label2": {
+        "size": {"$type":"dimension","$value":"12px"},
+        "lh":   {"$type":"dimension","$value":"16px"}
+      },
+      "label3": {
+        "size": {"$type":"dimension","$value":"11px"},
+        "lh":   {"$type":"dimension","$value":"16px"}
+      }
     }
   },
   "shadow": {
     "$type": "shadow",
-    "xs": {"$value":"0 2px 3px 1px rgba(33, 33, 33, 0.12)"},
-    "lg": {"$value":"0 12px 16px -4px rgba(33, 33, 33, 0.08), 0 4px 6px -2px rgba(33, 33, 33, 0.03)"},
-    "xl": {"$value":"0 24px 48px -12px rgba(33, 33, 33, 0.18)"}
+    "xs": {"$value":"0 2px 3px 1px rgba(31, 36, 40, 0.12)"},
+    "lg": {"$value":"0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03)"},
+    "xl": {"$value":"0 24px 48px -12px rgba(31, 36, 40, 0.18)"}
   },
   "motion": {
     "$description": "Duration + easing primitives for transitions and animations.",
