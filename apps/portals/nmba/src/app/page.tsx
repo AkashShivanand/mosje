@@ -6,6 +6,7 @@ import { PublicShell } from "@/components/public-shell";
 import { PUBLIC_DASHBOARD_STATS, PROGRAMME_STATS, PUBLIC_ACTIVITIES, FACILITIES } from "@/lib/mock-data";
 import { STATES, STATE_DISTRICTS } from "@/lib/states";
 import { MapPin, ArrowRight } from "lucide-react";
+import { Select, Button, Badge, MetricCard } from "@mosje/design-system";
 
 const BASE = "/portals/nmba";
 
@@ -14,10 +15,10 @@ const FacilityMap = dynamic(
   { ssr: false, loading: () => <div className="h-48 animate-pulse rounded-xl bg-surface-muted" /> }
 );
 
-const CATEGORY_BADGE_COLORS: Record<string, string> = {
-  "Awareness Rally": "bg-blue-50 text-blue-700",
-  "School Programme": "bg-green-50 text-green-700",
-  "Panchayat Sabha": "bg-amber-50 text-amber-700",
+const CATEGORY_BADGE_STATUS: Record<string, "info" | "success" | "warning"> = {
+  "Awareness Rally": "info",
+  "School Programme": "success",
+  "Panchayat Sabha": "warning",
 };
 
 export default function NmbaHome() {
@@ -70,25 +71,23 @@ export default function NmbaHome() {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <select
+            <Select
               aria-label="Filter by state"
               value={state}
               onChange={(e) => { setState(e.target.value); setDistrict(""); }}
-              className="rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
             >
               <option value="">All States</option>
               {STATES.map((s) => <option key={s} value={s}>{s}</option>)}
-            </select>
-            <select
+            </Select>
+            <Select
               aria-label="Filter by district"
               value={district}
               onChange={(e) => setDistrict(e.target.value)}
               disabled={!state}
-              className={"rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15" + (!state ? " opacity-50" : "")}
             >
               <option value="">All Districts</option>
               {districts.map((d) => <option key={d} value={d}>{d}</option>)}
-            </select>
+            </Select>
           </div>
         </div>
 
@@ -97,10 +96,7 @@ export default function NmbaHome() {
           {statRows.map((row, ri) => (
             <div key={ri} className={`grid gap-3 ${ri === 0 ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-1 sm:grid-cols-3"}`}>
               {row.map(({ label, value }) => (
-                <div key={label} className="rounded-xl border border-line bg-white px-5 py-4 shadow-card">
-                  <div className="text-xs text-ink-muted">{label}</div>
-                  <div className="mt-1 text-xl font-bold text-ink">{value}</div>
-                </div>
+                <MetricCard key={label} label={label} value={String(value)} />
               ))}
             </div>
           ))}
@@ -152,9 +148,12 @@ export default function NmbaHome() {
               </div>
               <div className="p-4">
                 {act.category && (
-                  <span className={`mb-2 inline-block rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${CATEGORY_BADGE_COLORS[act.category] ?? "bg-surface-muted text-ink-muted"}`}>
+                  <Badge
+                    status={CATEGORY_BADGE_STATUS[act.category] ?? "neutral"}
+                    className="mb-2"
+                  >
                     {act.category}
-                  </span>
+                  </Badge>
                 )}
                 <h3 className="font-semibold text-sm text-ink leading-snug">{act.title}</h3>
                 <p className="mt-1 text-xs text-ink-muted line-clamp-2">{act.description}</p>
@@ -181,13 +180,9 @@ export default function NmbaHome() {
                 Locate verified Integrated Rehabilitation Centres (IRCA), Outreach Centres (ODIC), and Addiction Treatment Facilities (ATF) in your district.
               </p>
             </div>
-            <a
-              href={`${BASE}/facilities`}
-              className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800"
-            >
+            <Button href={`${BASE}/facilities`} iconRight={<ArrowRight className="h-4 w-4" />}>
               View Facility Map
-              <ArrowRight className="h-4 w-4" />
-            </a>
+            </Button>
           </div>
           <div className="mt-5">
             <FacilityMap facilities={FACILITIES} mini legendCollapsible className="rounded-lg overflow-hidden" />

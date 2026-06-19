@@ -2,6 +2,7 @@
    resolver doesn't follow symlinks to files outside the project root. The symlink
    at ../../node_modules/@mosje/design-system resolves to packages/design-system. */
 @import "../../node_modules/@mosje/design-system/tokens.css";
+@import "../../node_modules/@mosje/design-system/components.css";
 
 @tailwind base;
 @tailwind components;

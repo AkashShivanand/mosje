@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { AdminShell } from "@/components/admin-shell";
-import { StatsCard } from "@/components/stats-card";
 import { DataTable } from "@/components/data-table";
 import { AddEventModal } from "@/components/add-event-modal";
 import {
@@ -21,6 +20,7 @@ import {
   Users,
   MoreHorizontal,
 } from "lucide-react";
+import { Button, Search, MetricCard } from "@mosje/design-system";
 
 const columns = [
   { key: "state" as const, header: "State" },
@@ -53,7 +53,7 @@ export default function AdminDashboard() {
   const columnsWithAction = [
     ...columns,
     {
-      key: "state" as const,
+      key: "actions" as const,
       header: "Action",
       render: () => (
         <button
@@ -71,22 +71,18 @@ export default function AdminDashboard() {
     <AdminShell>
       <div className="mb-6 flex items-center justify-between gap-4">
         <h1 className="text-xl font-bold text-ink">State/UT/District Dashboard</h1>
-        <button
-          onClick={() => setModalOpen(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800"
-        >
-          <Plus className="h-4 w-4" />
+        <Button onClick={() => setModalOpen(true)} iconLeft={<Plus className="h-4 w-4" />}>
           Add Event
-        </button>
+        </Button>
       </div>
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <StatsCard label="Total Pledges" value={DASHBOARD_STATS.totalPledges} icon={<HeartHandshake className="h-5 w-5" />} />
-        <StatsCard label="People Reached" value={DASHBOARD_STATS.peopleReached} icon={<Users className="h-5 w-5" />} />
-        <StatsCard label="Youth Reached" value={DASHBOARD_STATS.youthReached} icon={<TrendingUp className="h-5 w-5" />} />
-        <StatsCard label="Women Reached" value={DASHBOARD_STATS.womenReached} icon={<Users className="h-5 w-5" />} />
-        <StatsCard label="Total Activities" value={DASHBOARD_STATS.totalActivities} icon={<Activity className="h-5 w-5" />} />
-        <StatsCard label="Educational Institutions" value={DASHBOARD_STATS.educationalInstitutions} icon={<GraduationCap className="h-5 w-5" />} />
+        <MetricCard label="Total Pledges" value={DASHBOARD_STATS.totalPledges} icon={<HeartHandshake className="h-5 w-5" />} />
+        <MetricCard label="People Reached" value={DASHBOARD_STATS.peopleReached} icon={<Users className="h-5 w-5" />} />
+        <MetricCard label="Youth Reached" value={DASHBOARD_STATS.youthReached} icon={<TrendingUp className="h-5 w-5" />} />
+        <MetricCard label="Women Reached" value={DASHBOARD_STATS.womenReached} icon={<Users className="h-5 w-5" />} />
+        <MetricCard label="Total Activities" value={DASHBOARD_STATS.totalActivities} icon={<Activity className="h-5 w-5" />} />
+        <MetricCard label="Educational Institutions" value={DASHBOARD_STATS.educationalInstitutions} icon={<GraduationCap className="h-5 w-5" />} />
       </div>
 
       <section aria-labelledby="activity-table-heading">
@@ -97,13 +93,12 @@ export default function AdminDashboard() {
               ({ACTIVITIES_TOTAL.toLocaleString("en-IN")} total)
             </span>
           </h2>
-          <input
-            type="search"
+          <Search
             aria-label="Search activities by state, district, or type"
             placeholder="Search by State, District, Activity…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="ml-auto rounded-lg border border-line px-3 py-1.5 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
+            className="ml-auto"
           />
         </div>
         <DataTable<ActivityRow>

@@ -66,6 +66,8 @@ export { EmptyState } from "./components/feedback/empty-state";
 // ---- Components: Data display ------------------------------------------------
 export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle } from "./components/data-display/card";
 export { Avatar } from "./components/data-display/avatar";
+export { MetricCard } from "./components/data-display/metric-card";
+export type { MetricCardProps, MetricCardSize, MetricCardChange } from "./components/data-display/metric-card";
 
 // ---- Components: Navigation --------------------------------------------------
 // The interactive component lives in a "use client" module.

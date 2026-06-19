@@ -7,11 +7,9 @@ import { ADMIN_USERS, USERS_TOTAL } from "@/lib/mock-data";
 import type { AdminUser } from "@/lib/types";
 import { useToast } from "@/components/toast";
 import { Plus, Pencil, Trash2, X } from "lucide-react";
+import { Button, Input, Select, FormField } from "@mosje/design-system";
 
 const ROLES: AdminUser["role"][] = ["Admin", "State Nodal Officer", "District Nodal Officer"];
-
-const inputCls =
-  "w-full rounded-lg border border-line px-3 py-2 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15";
 
 function AddUserModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { toast } = useToast();
@@ -31,30 +29,36 @@ function AddUserModal({ open, onClose }: { open: boolean; onClose: () => void })
       <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
           <h2 id="add-user-title" className="text-base font-bold text-ink">Add User</h2>
-          <button onClick={onClose} aria-label="Close" className="rounded p-1 text-ink-hint hover:bg-black/5"><X className="h-4 w-4" /></button>
+          <button onClick={onClose} aria-label="Close" className="rounded p-1 text-ink-hint hover:bg-black/5">
+            <X className="h-4 w-4" />
+          </button>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6">
-          <div>
-            <label htmlFor="user-name" className="mb-1 block text-sm font-medium text-ink">Name</label>
-            <input id="user-name" required placeholder="Full name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className={inputCls} />
-          </div>
-          <div>
-            <label htmlFor="user-mobile" className="mb-1 block text-sm font-medium text-ink">Mobile</label>
-            <input id="user-mobile" type="tel" inputMode="numeric" maxLength={10} required placeholder="10-digit mobile" value={form.mobile} onChange={e => setForm(f => ({ ...f, mobile: e.target.value.replace(/\D/g, "") }))} className={inputCls} />
-          </div>
-          <div>
-            <label htmlFor="user-email" className="mb-1 block text-sm font-medium text-ink">Email</label>
-            <input id="user-email" type="email" required placeholder="Email address" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className={inputCls} />
-          </div>
-          <div>
-            <label htmlFor="user-role" className="mb-1 block text-sm font-medium text-ink">Role</label>
-            <select id="user-role" value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value as AdminUser["role"] }))} className={inputCls}>
-              {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
-            </select>
-          </div>
+          <FormField label="Name" id="user-name" required>
+            {(control) => (
+              <Input {...control} required placeholder="Full name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
+            )}
+          </FormField>
+          <FormField label="Mobile" id="user-mobile" required>
+            {(control) => (
+              <Input {...control} type="tel" inputMode="numeric" maxLength={10} required placeholder="10-digit mobile" value={form.mobile} onChange={e => setForm(f => ({ ...f, mobile: e.target.value.replace(/\D/g, "") }))} />
+            )}
+          </FormField>
+          <FormField label="Email" id="user-email" required>
+            {(control) => (
+              <Input {...control} type="email" required placeholder="Email address" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+            )}
+          </FormField>
+          <FormField label="Role" id="user-role" required>
+            {(control) => (
+              <Select {...control} value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value as AdminUser["role"] }))}>
+                {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
+              </Select>
+            )}
+          </FormField>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 rounded-lg border border-line px-4 py-2 text-sm font-medium text-ink hover:bg-surface-muted">Cancel</button>
-            <button type="submit" className="flex-1 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800">Add User</button>
+            <Button type="button" appearance="outlined" onClick={onClose} style={{ flex: 1 }}>Cancel</Button>
+            <Button type="submit" style={{ flex: 1 }}>Add User</Button>
           </div>
         </form>
       </div>
@@ -88,7 +92,7 @@ export default function UserManagementPage() {
   const columnsWithActions = [
     ...columns,
     {
-      key: "name" as const,
+      key: "actions" as const,
       header: "Actions",
       render: () => (
         <div className="flex items-center gap-2">
@@ -110,13 +114,9 @@ export default function UserManagementPage() {
           <h1 className="text-xl font-bold text-ink">User Management</h1>
           <p className="mt-1 text-sm text-ink-muted">{USERS_TOTAL.toLocaleString("en-IN")} registered users</p>
         </div>
-        <button
-          onClick={() => setModalOpen(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800"
-        >
-          <Plus className="h-4 w-4" />
+        <Button onClick={() => setModalOpen(true)} iconLeft={<Plus className="h-4 w-4" />}>
           Add User
-        </button>
+        </Button>
       </div>
 
       <DataTable<AdminUser>

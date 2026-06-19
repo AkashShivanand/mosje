@@ -1,0 +1,83 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — MetricCard
+   Stat display tile: label + large value + optional icon badge.
+   ============================================================================ */
+
+.ds-metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px;
+  background-color: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-sm);
+}
+
+.ds-metric-card__inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ds-metric-card__body {
+  min-width: 0;
+}
+
+.ds-metric-card__label {
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-body-2);
+  line-height: var(--ds-leading-body-2);
+  font-weight: 500;
+  color: var(--ds-ink-muted);
+}
+
+.ds-metric-card__value {
+  margin-top: 4px;
+  font-family: var(--ds-font-sans);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+  color: var(--ds-ink-strong);
+  letter-spacing: -0.01em;
+}
+
+.ds-metric-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-primary-50);
+  color: var(--ds-primary);
+}
+
+/* ── Size variants ── */
+.ds-metric-card--sm .ds-metric-card__value {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.ds-metric-card--sm .ds-metric-card__icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* ── Change indicator ── */
+.ds-metric-card__change {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 6px;
+  font-family: var(--ds-font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.ds-metric-card__change--up   { color: var(--ds-success); }
+.ds-metric-card__change--down { color: var(--ds-danger); }
+.ds-metric-card__change--flat { color: var(--ds-ink-muted); }

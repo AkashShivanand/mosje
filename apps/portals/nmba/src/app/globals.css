@@ -1,3 +1,7 @@
+/* MoSJE design-system tokens (--ds-/--sa-) + component CSS classes */
+@import "../../node_modules/@mosje/design-system/tokens.css";
+@import "../../node_modules/@mosje/design-system/components.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import { AdminShell } from "@/components/admin-shell";
-import { StatsCard } from "@/components/stats-card";
 import { DataTable } from "@/components/data-table";
 import { PLEDGE_REPORTS, PLEDGE_REPORTS_TOTAL } from "@/lib/mock-data";
 import { STATES, STATE_DISTRICTS } from "@/lib/states";
 import type { PledgeReport } from "@/lib/types";
 import { HeartHandshake } from "lucide-react";
+import { Select, Input, MetricCard } from "@mosje/design-system";
 
 const columns = [
   {
@@ -34,9 +34,6 @@ const columns = [
   { key: "pledgeDate" as const, header: "Date" },
 ];
 
-const selectCls =
-  "rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15";
-
 export default function PledgeReportsPage() {
   const [filterState, setFilterState] = React.useState("");
   const [filterDistrict, setFilterDistrict] = React.useState("");
@@ -62,44 +59,40 @@ export default function PledgeReportsPage() {
 
       {/* Stat cards */}
       <div className="mb-6 grid gap-4 sm:grid-cols-2 max-w-md">
-        <StatsCard label="Total Pledges" value="71" icon={<HeartHandshake className="h-5 w-5" />} />
-        <StatsCard label="Pledges Today" value="0" icon={<HeartHandshake className="h-5 w-5" />} />
+        <MetricCard label="Total Pledges" value="71" icon={<HeartHandshake className="h-5 w-5" />} />
+        <MetricCard label="Pledges Today" value="0" icon={<HeartHandshake className="h-5 w-5" />} />
       </div>
 
       {/* Filters */}
       <div className="mb-4 flex flex-wrap gap-3">
-        <select
+        <Select
           aria-label="Filter by state"
           value={filterState}
           onChange={(e) => { setFilterState(e.target.value); setFilterDistrict(""); }}
-          className={selectCls}
         >
           <option value="">All States</option>
           {STATES.map((s) => <option key={s} value={s}>{s}</option>)}
-        </select>
-        <select
+        </Select>
+        <Select
           aria-label="Filter by district"
           value={filterDistrict}
           onChange={(e) => setFilterDistrict(e.target.value)}
           disabled={!filterState}
-          className={selectCls + (!filterState ? " opacity-50" : "")}
         >
           <option value="">All Districts</option>
           {districts.map((d) => <option key={d} value={d}>{d}</option>)}
-        </select>
-        <input
+        </Select>
+        <Input
           type="date"
           aria-label="From date"
           value={dateFrom}
           onChange={(e) => setDateFrom(e.target.value)}
-          className={selectCls}
         />
-        <input
+        <Input
           type="date"
           aria-label="To date"
           value={dateTo}
           onChange={(e) => setDateTo(e.target.value)}
-          className={selectCls}
         />
       </div>
 

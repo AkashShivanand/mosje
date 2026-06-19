@@ -11,6 +11,7 @@
 @import "./components/feedback/feedback.css";
 @import "./components/feedback/badge.css";
 @import "./components/data-display/card.css";
+@import "./components/data-display/metric-card.css";
 @import "./components/a11y/a11y.css";
 @import "./components/navigation/zone-switcher.css";
 @import "./foundations/color-mode-switcher.css";

@@ -4,6 +4,7 @@ import { AdminShell } from "@/components/admin-shell";
 import { FEEDBACK_LIST } from "@/lib/mock-data";
 import { useToast } from "@/components/toast";
 import { MoreHorizontal } from "lucide-react";
+import { Badge, Button } from "@mosje/design-system";
 
 export default function FeedbackPage() {
   const { toast } = useToast();
@@ -35,9 +36,7 @@ export default function FeedbackPage() {
                 <td className="px-4 py-3 text-ink-muted">{fb.sno}</td>
                 <td className="px-4 py-3 font-medium text-ink">{fb.name}</td>
                 <td className="px-4 py-3">
-                  <span className="rounded-full bg-brandwash px-2 py-0.5 text-xs font-semibold text-navy">
-                    {fb.role}
-                  </span>
+                  <Badge status="info">{fb.role}</Badge>
                 </td>
                 <td className="px-4 py-3 text-ink-muted">{fb.mobile}</td>
                 <td className="px-4 py-3 text-ink-muted">{fb.email}</td>
@@ -46,13 +45,14 @@ export default function FeedbackPage() {
                 </td>
                 <td className="px-4 py-3 text-ink-muted whitespace-nowrap">{fb.postedOn}</td>
                 <td className="px-4 py-3">
-                  <button
+                  <Button
+                    appearance="text"
+                    size="sm"
                     onClick={() => toast("Action coming soon.", "info")}
                     aria-label="Row actions"
-                    className="rounded-lg p-1 text-ink-hint hover:bg-black/5"
                   >
                     <MoreHorizontal className="h-4 w-4" />
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))}

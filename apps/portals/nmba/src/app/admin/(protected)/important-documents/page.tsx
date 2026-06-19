@@ -5,9 +5,7 @@ import { AdminShell } from "@/components/admin-shell";
 import { IMPORTANT_DOCUMENTS } from "@/lib/mock-data";
 import { useToast } from "@/components/toast";
 import { Upload, FileText, Eye, EyeOff, Plus, X } from "lucide-react";
-
-const inputCls =
-  "w-full rounded-lg border border-line px-3 py-2 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15";
+import { Button, Input, FormField, Badge } from "@mosje/design-system";
 
 function AddDocumentModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { toast } = useToast();
@@ -30,10 +28,11 @@ function AddDocumentModal({ open, onClose }: { open: boolean; onClose: () => voi
           <button onClick={onClose} aria-label="Close" className="rounded p-1 text-ink-hint hover:bg-black/5"><X className="h-4 w-4" /></button>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6">
-          <div>
-            <label htmlFor="doc-name" className="mb-1 block text-sm font-medium text-ink">Document Name</label>
-            <input id="doc-name" required placeholder="Enter document name" value={name} onChange={e => setName(e.target.value)} className={inputCls} />
-          </div>
+          <FormField label="Document Name" id="doc-name" required>
+            {(control) => (
+              <Input {...control} required placeholder="Enter document name" value={name} onChange={e => setName(e.target.value)} />
+            )}
+          </FormField>
           <div>
             <label htmlFor="doc-file" className="mb-1 block text-sm font-medium text-ink">File Upload</label>
             <input
@@ -45,11 +44,8 @@ function AddDocumentModal({ open, onClose }: { open: boolean; onClose: () => voi
             />
           </div>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 rounded-lg border border-line px-4 py-2 text-sm font-medium text-ink hover:bg-surface-muted">Cancel</button>
-            <button type="submit" className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800">
-              <Upload className="h-4 w-4" />
-              Upload
-            </button>
+            <Button type="button" appearance="outlined" onClick={onClose} style={{ flex: 1 }}>Cancel</Button>
+            <Button type="submit" iconLeft={<Upload className="h-4 w-4" />} style={{ flex: 1 }}>Upload</Button>
           </div>
         </form>
       </div>
@@ -76,13 +72,9 @@ export default function ImportantDocumentsPage() {
           <h1 className="text-xl font-bold text-ink">Important Documents</h1>
           <p className="mt-1 text-sm text-ink-muted">{docs.length} documents</p>
         </div>
-        <button
-          onClick={() => setModalOpen(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800"
-        >
-          <Plus className="h-4 w-4" />
-          Add Document +
-        </button>
+        <Button onClick={() => setModalOpen(true)} iconLeft={<Plus className="h-4 w-4" />}>
+          Add Document
+        </Button>
       </div>
 
       <div className="rounded-xl border border-line bg-white shadow-card overflow-hidden">
@@ -108,22 +100,20 @@ export default function ImportantDocumentsPage() {
                 <td className="px-4 py-3 text-ink-muted">{doc.uploadedOn}</td>
                 <td className="px-4 py-3 text-ink-muted">{doc.uploadedBy}</td>
                 <td className="px-4 py-3">
-                  <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${doc.published ? "bg-approve/10 text-approve" : "bg-ink-hint/10 text-ink-hint"}`}>
+                  <Badge status={doc.published ? "success" : "neutral"}>
                     {doc.published ? "Published" : "Draft"}
-                  </span>
+                  </Badge>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <button
+                  <Button
+                    size="sm"
+                    appearance="outlined"
                     onClick={() => togglePublish(i)}
                     aria-label={doc.published ? "Unpublish document" : "Publish document"}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-xs font-medium text-ink hover:bg-surface-muted"
+                    iconLeft={doc.published ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                   >
-                    {doc.published ? (
-                      <><EyeOff className="h-3.5 w-3.5" /> Unpublish</>
-                    ) : (
-                      <><Eye className="h-3.5 w-3.5" /> Publish</>
-                    )}
-                  </button>
+                    {doc.published ? "Unpublish" : "Publish"}
+                  </Button>
                 </td>
               </tr>
             ))}

@@ -4,6 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/toast";
 import { Eye, EyeOff, LogIn, ChevronDown } from "lucide-react";
+import { Button, Input, FormField, Alert } from "@mosje/design-system";
 
 const BASE = "/portals/nmba";
 
@@ -65,8 +66,6 @@ export default function AdminLoginPage() {
             Nasha Mukt Bharat Abhiyaan
           </p>
         </div>
-
-        {/* SAMAVESH / Digital India badges */}
         <div className="mt-12 flex items-center gap-4 opacity-60">
           <span className="text-xs font-semibold tracking-widest uppercase">SAMAVESH</span>
           <span className="h-4 w-px bg-white/40" />
@@ -77,7 +76,7 @@ export default function AdminLoginPage() {
       {/* Right login panel */}
       <div className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col items-center justify-center bg-surface-muted px-6 py-12">
-          {/* Mobile masthead (hidden on desktop) */}
+          {/* Mobile masthead */}
           <div className="mb-8 flex flex-col items-center gap-3 text-center lg:hidden">
             <img
               src={`${BASE}/brand/national-emblem.svg`}
@@ -104,24 +103,23 @@ export default function AdminLoginPage() {
               </p>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-                <div>
-                  <label htmlFor="mobile" className="mb-1.5 block text-sm font-medium text-ink">
-                    Mobile Number
-                  </label>
-                  <input
-                    id="mobile"
-                    type="tel"
-                    inputMode="numeric"
-                    pattern="[0-9]{10}"
-                    maxLength={10}
-                    required
-                    placeholder="10-digit mobile number"
-                    value={mobile}
-                    onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
-                    className="w-full rounded-lg border border-line px-3 py-2.5 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
-                    aria-describedby={error ? "login-error" : undefined}
-                  />
-                </div>
+                <FormField label="Mobile Number" id="mobile">
+                  {(control) => (
+                    <Input
+                      {...control}
+                      type="tel"
+                      inputMode="numeric"
+                      pattern="[0-9]{10}"
+                      maxLength={10}
+                      required
+                      placeholder="10-digit mobile number"
+                      value={mobile}
+                      onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
+                      aria-describedby={error ? "login-error" : undefined}
+                      invalid={!!error}
+                    />
+                  )}
+                </FormField>
 
                 <div>
                   <div className="mb-1.5 flex items-center justify-between">
@@ -137,14 +135,15 @@ export default function AdminLoginPage() {
                     </button>
                   </div>
                   <div className="relative">
-                    <input
+                    <Input
                       id="password"
                       type={showPw ? "text" : "password"}
                       required
                       placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full rounded-lg border border-line px-3 py-2.5 pr-10 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
+                      invalid={!!error}
+                      style={{ paddingRight: "2.5rem" }}
                     />
                     <button
                       type="button"
@@ -158,23 +157,19 @@ export default function AdminLoginPage() {
                 </div>
 
                 {error && (
-                  <p id="login-error" role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+                  <Alert id="login-error" status="error">
                     {error}
-                  </p>
+                  </Alert>
                 )}
 
-                <button
+                <Button
                   type="submit"
                   disabled={loading}
-                  className="mt-1 inline-flex items-center justify-center gap-2 rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-800 disabled:opacity-60"
+                  iconLeft={loading ? undefined : <LogIn className="h-4 w-4" />}
+                  style={{ marginTop: "4px" }}
                 >
-                  {loading ? "Signing in…" : (
-                    <>
-                      <LogIn className="h-4 w-4" />
-                      Sign In
-                    </>
-                  )}
-                </button>
+                  {loading ? "Signing in…" : "Sign In"}
+                </Button>
               </form>
 
               {/* Demo credentials */}
@@ -220,7 +215,7 @@ export default function AdminLoginPage() {
           </div>
         </div>
 
-        {/* Footer links */}
+        {/* Footer */}
         <footer className="border-t border-line bg-white px-6 py-3">
           <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-ink-hint">
             <button type="button" onClick={footerToast} className="hover:text-navy hover:underline">

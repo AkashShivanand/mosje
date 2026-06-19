@@ -8,6 +8,7 @@ import { STATES } from "@/lib/states";
 import type { NodalOfficer } from "@/lib/types";
 import { useToast } from "@/components/toast";
 import { Download } from "lucide-react";
+import { Button, Select } from "@mosje/design-system";
 
 const columns = [
   { key: "name" as const, header: "Nodal Officer Name" },
@@ -17,9 +18,6 @@ const columns = [
   { key: "stateName" as const, header: "State Name" },
   { key: "districtName" as const, header: "District Name" },
 ];
-
-const selectCls =
-  "rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15";
 
 export default function StateNodalOfficersPage() {
   const { toast } = useToast();
@@ -38,25 +36,21 @@ export default function StateNodalOfficersPage() {
             {SNO_TOTAL} State Nodal Officers registered
           </p>
         </div>
-        <button
-          onClick={() => toast("Export starting…", "info")}
-          className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-ink hover:bg-surface-muted"
-        >
-          <Download className="h-4 w-4" />
+        <Button appearance="outlined" onClick={() => toast("Export starting…", "info")} iconLeft={<Download className="h-4 w-4" />}>
           Export
-        </button>
+        </Button>
       </div>
 
       <div className="mb-4">
-        <select
+        <Select
           aria-label="Filter by state"
           value={filterState}
           onChange={(e) => setFilterState(e.target.value)}
-          className={selectCls}
+          style={{ maxWidth: "240px" }}
         >
           <option value="">All States</option>
           {STATES.map((s) => <option key={s} value={s}>{s}</option>)}
-        </select>
+        </Select>
       </div>
 
       <DataTable<NodalOfficer>

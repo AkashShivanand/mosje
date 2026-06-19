@@ -9,6 +9,7 @@ import { ACTIVITIES, ACTIVITIES_TOTAL, ACTIVITY_TYPES } from "@/lib/mock-data";
 import { STATES, STATE_DISTRICTS } from "@/lib/states";
 import type { ActivityRow } from "@/lib/types";
 import { Plus } from "lucide-react";
+import { Button, Select } from "@mosje/design-system";
 
 const FacilityMap = dynamic(
   () => import("@/components/facility-map").then((m) => m.FacilityMap),
@@ -31,9 +32,6 @@ const columns = [
   { key: "createdBy" as const, header: "Created By" },
   { key: "createdAt" as const, header: "Created At" },
 ];
-
-const selectCls =
-  "rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15";
 
 export default function ActivitiesPage() {
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -59,46 +57,38 @@ export default function ActivitiesPage() {
             Showing {filtered.length} of {ACTIVITIES_TOTAL.toLocaleString("en-IN")} activities
           </p>
         </div>
-        <button
-          onClick={() => setModalOpen(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800"
-          aria-label="Add new activity event"
-        >
-          <Plus className="h-4 w-4" />
+        <Button onClick={() => setModalOpen(true)} iconLeft={<Plus className="h-4 w-4" />} aria-label="Add new activity event">
           Add Event
-        </button>
+        </Button>
       </div>
 
       {/* Filter row */}
       <div className="mb-4 flex flex-wrap gap-3">
-        <select
+        <Select
           aria-label="Filter by state"
           value={filterState}
           onChange={(e) => { setFilterState(e.target.value); setFilterDistrict(""); }}
-          className={selectCls}
         >
           <option value="">All States</option>
           {STATES.map((s) => <option key={s} value={s}>{s}</option>)}
-        </select>
-        <select
+        </Select>
+        <Select
           aria-label="Filter by district"
           value={filterDistrict}
           onChange={(e) => setFilterDistrict(e.target.value)}
           disabled={!filterState}
-          className={selectCls + (!filterState ? " opacity-50" : "")}
         >
           <option value="">All Districts</option>
           {districts.map((d) => <option key={d} value={d}>{d}</option>)}
-        </select>
-        <select
+        </Select>
+        <Select
           aria-label="Filter by activity type"
           value={filterActivity}
           onChange={(e) => setFilterActivity(e.target.value)}
-          className={selectCls}
         >
           <option value="">All Activity Types</option>
           {ACTIVITY_TYPES.map((a) => <option key={a} value={a}>{a}</option>)}
-        </select>
+        </Select>
       </div>
 
       <DataTable<ActivityRow>

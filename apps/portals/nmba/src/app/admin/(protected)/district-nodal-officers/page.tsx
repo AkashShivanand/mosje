@@ -7,6 +7,7 @@ import { DNO_LIST, DNO_TOTAL } from "@/lib/mock-data";
 import type { NodalOfficer } from "@/lib/types";
 import { useToast } from "@/components/toast";
 import { Download } from "lucide-react";
+import { Button } from "@mosje/design-system";
 
 const columns = [
   { key: "name" as const, header: "Name" },
@@ -29,13 +30,9 @@ export default function DistrictNodalOfficersPage() {
             {DNO_TOTAL} District Nodal Officers registered
           </p>
         </div>
-        <button
-          onClick={() => toast("Export starting…", "info")}
-          className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-ink hover:bg-surface-muted"
-        >
-          <Download className="h-4 w-4" />
+        <Button appearance="outlined" onClick={() => toast("Export starting…", "info")} iconLeft={<Download className="h-4 w-4" />}>
           Export
-        </button>
+        </Button>
       </div>
 
       <DataTable<NodalOfficer>
