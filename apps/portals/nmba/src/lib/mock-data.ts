@@ -22,6 +22,65 @@ export const DASHBOARD_STATS: DashboardStats = {
   educationalInstitutions: "10,57,730",
 };
 
+// National aggregate stats shown on the public citizen-facing dashboard
+export const PUBLIC_DASHBOARD_STATS: DashboardStats = {
+  totalPledges: "22,75,906",
+  peopleReached: "25,89,78,572",
+  youthReached: "9,33,63,189",
+  womenReached: "6,36,83,454",
+  totalActivities: "8,16,100",
+  villagesCovered: "3,79,707",
+  educationalInstitutions: "16,09,943",
+};
+
+export const PROGRAMME_STATS = [
+  {
+    label: "Education & Youth",
+    icon: "🎓",
+    items: [
+      { label: "School/College/University Programme", value: "20,503" },
+      { label: "Schools/Colleges/Universities Reached", value: "47,131" },
+      { label: "Visit To Institutions", value: "681" },
+      { label: "Youth Reached Out", value: "77,687" },
+      { label: "Youth Club/Yuva Mandal Programme", value: "5,705" },
+      { label: "Training Conducted", value: "1,461" },
+    ],
+  },
+  {
+    label: "Community Outreach",
+    icon: "🤝",
+    items: [
+      { label: "Awareness Rally/Morcha/Run", value: "9,019" },
+      { label: "Community Awareness Session", value: "58,851" },
+      { label: "Community Programmes", value: "53,541" },
+      { label: "Media Campaign", value: "7,901" },
+      { label: "Theme Based Events Organised", value: "4,448" },
+      { label: "IEC Material Developed", value: "4,116" },
+    ],
+  },
+  {
+    label: "Governance & Local Bodies",
+    icon: "🏛",
+    items: [
+      { label: "District Level Committee Meeting", value: "898" },
+      { label: "Panchayat/Gram Sabha", value: "31,864" },
+      { label: "Villages Covered", value: "39,296" },
+      { label: "State/District Level Event", value: "4,602" },
+    ],
+  },
+  {
+    label: "Targeted Interventions",
+    icon: "🎯",
+    items: [
+      { label: "Women Group/Women SHG/Mahila Mandal Programme", value: "9,515" },
+      { label: "At Risk/Vulnerable People Identified", value: "10,885" },
+      { label: "Women Reached Out", value: "39,088" },
+      { label: "Hotspot Identification", value: "2,974" },
+      { label: "Intelligence Shared On Supply Of Substance", value: "1,840" },
+    ],
+  },
+];
+
 export const ACTIVITIES_TOTAL = 197553;
 
 export const ACTIVITIES: ActivityRow[] = [
@@ -163,9 +222,30 @@ export const FEEDBACK_LIST: FeedbackRow[] = [
 ];
 
 export const PUBLIC_ACTIVITIES: PublicActivity[] = [
-  { title: "Social Justice", description: "NMBA pledge (including e-pledge) in educational institutions, hotspots and public places", department: "Ministry of social justice and empowerment", location: "Ayodhya, Uttar Pradesh", date: "24-04-2026" },
-  { title: "Yoga and Meditation Activities", description: "Yoga and Meditation Activities", department: "N/A", location: "Datia, Madhya Pradesh", date: "10-04-2026" },
-  { title: "Nukkad Natak, Skits and Play", description: "Nukkad Natak, Skits and Play", department: "N/A", location: "Datia, Madhya Pradesh", date: "10-04-2026" },
+  {
+    title: "Alandi Student Awareness Drive",
+    description: "NMBA pledge drive at educational institutions with students committing to a drug-free society.",
+    category: "Awareness Rally",
+    department: "Ministry of Social Justice & Empowerment",
+    location: "Pune, Maharashtra",
+    date: "25 Jan 2026",
+  },
+  {
+    title: "Government School Pledge Campaign",
+    description: "School programme to promote drug awareness and NMBA pledge drive among students.",
+    category: "School Programme",
+    department: "Ministry of Social Justice & Empowerment",
+    location: "Indore, Madhya Pradesh",
+    date: "24 Jan 2026",
+  },
+  {
+    title: "Village Meeting — Drug-Free India",
+    description: "Panchayat-level community meeting to spread awareness about NMBA and local de-addiction resources.",
+    category: "Panchayat Sabha",
+    department: "Ministry of Social Justice & Empowerment",
+    location: "Sikar, Rajasthan",
+    date: "24 Jan 2026",
+  },
 ];
 
 export const FACILITIES: Facility[] = [

@@ -13,6 +13,15 @@ export default function LoginPage() {
   const [roleTab, setRoleTab] = React.useState<RoleTab>("citizen");
   const [citizenType, setCitizenType] = React.useState<CitizenType>("volunteer");
   const [showPassword, setShowPassword] = React.useState(false);
+  const [mobile, setMobile] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const useDemo = (demoMobile: string, tab?: RoleTab, type?: CitizenType) => {
+    setMobile(demoMobile);
+    setPassword("Demo@123");
+    if (tab) setRoleTab(tab);
+    if (type) setCitizenType(type);
+  };
 
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
@@ -121,6 +130,8 @@ export default function LoginPage() {
               <TextInput
                 type="tel"
                 placeholder="Enter your registered mobile number"
+                value={mobile}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMobile(e.target.value)}
               />
             </Field>
 
@@ -130,6 +141,8 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   className="pr-11"
+                  value={password}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 />
                 <button
                   type="button"
@@ -160,6 +173,48 @@ export default function LoginPage() {
               <ArrowRight className="h-4 w-4" />
             </Button>
           </form>
+
+          {/* Demo credentials */}
+          <details className="group mt-4 rounded-lg border border-dashed border-navy/25 bg-surface-muted">
+            <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-2.5 text-xs font-semibold text-navy/60 hover:text-navy">
+              <span>Demo credentials</span>
+              <svg className="h-3.5 w-3.5 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+            </summary>
+            <div className="border-t border-navy/10 px-4 pb-3 pt-2">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="text-ink-hint">
+                    <th className="pb-1.5 text-left font-medium">Role</th>
+                    <th className="pb-1.5 text-left font-medium">Mobile</th>
+                    <th className="pb-1.5 text-left font-medium">Password</th>
+                    <th className="pb-1.5" />
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-line">
+                  {[
+                    { role: "Volunteer (Citizen)", mob: "9800000001", tab: "citizen" as RoleTab, type: "volunteer" as CitizenType },
+                    { role: "SAGE Organisation", mob: "9800000002", tab: "citizen" as RoleTab, type: "sage" as CitizenType },
+                    { role: "Nodal Officer", mob: "9810000001", tab: "officer" as RoleTab, type: undefined },
+                  ].map(({ role, mob, tab, type }) => (
+                    <tr key={mob}>
+                      <td className="py-1.5 font-medium text-ink">{role}</td>
+                      <td className="py-1.5 font-mono text-ink">{mob}</td>
+                      <td className="py-1.5 text-ink-muted">Demo@123</td>
+                      <td className="py-1.5 text-right">
+                        <button
+                          type="button"
+                          onClick={() => useDemo(mob, tab, type)}
+                          className="rounded px-2 py-0.5 text-xs font-semibold text-navy hover:bg-navy/10"
+                        >
+                          Use
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </details>
 
           {/* Divider */}
           <div className="my-6 flex items-center gap-3">

@@ -70,6 +70,7 @@ export type Facility = {
 export type PublicActivity = {
   title: string;
   description: string;
+  category?: string;
   department: string;
   location: string;
   date: string;
@@ -81,5 +82,9 @@ export type DashboardStats = {
   youthReached: string;
   womenReached: string;
   totalActivities: string;
+  villagesCovered?: string;
   educationalInstitutions: string;
 };
+
+export type ProgrammeStat = { label: string; value: string };
+export type ProgrammeCategory = { label: string; icon: string; items: ProgrammeStat[] };

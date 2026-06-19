@@ -22,6 +22,7 @@ const NAV_ITEMS = [
   { label: "Activity Snapshot", href: "/activities", icon: Activity },
   { label: "E-Pledge", href: "/epledge", icon: HandHeart },
   { label: "Facilities", href: "/facilities", icon: MapPin },
+  { label: "Helpline", href: "/helpline", icon: Phone },
 ];
 
 const LANGUAGES = ["English", "हिंदी"];
@@ -90,13 +91,9 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
               className="h-14 w-auto"
             />
             <div className="leading-tight">
-              <div className="mt-0.5 text-[11px] text-ink-muted">Government of India</div>
-              <div className="text-lg font-bold text-ink">
-                Ministry of Social Justice &amp; Empowerment
-              </div>
-              <div className="text-xs font-semibold text-navy">
-                Nasha Mukt Bharat Abhiyaan
-              </div>
+              <div className="text-[10px] text-ink-muted">Government of India</div>
+              <div className="text-[11px] text-ink-muted">Ministry of Social Justice &amp; Empowerment</div>
+              <div className="text-sm font-bold text-ink">Department of Social Justice &amp; Empowerment</div>
             </div>
           </div>
           <div className="flex items-center gap-3">

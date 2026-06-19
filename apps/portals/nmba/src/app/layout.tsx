@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/components/toast";
+import { AppSwitcher, ColorModeProvider } from "@mosje/design-system";
 
 const notoSans = Noto_Sans({
   subsets: ["latin", "devanagari"],
@@ -21,7 +22,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${notoSans.variable} font-sans`}>
-        <ToastProvider>{children}</ToastProvider>
+        <ColorModeProvider>
+          <ToastProvider>{children}</ToastProvider>
+          <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
+        </ColorModeProvider>
       </body>
     </html>
   );
