@@ -21,14 +21,14 @@ import { cn } from "@/lib/utils";
 const BASE = "/portals/nmba";
 
 const ADMIN_NAV = [
-  { label: "Ministries/Line Departments/Spiritual Organisations Dashboard", href: `${BASE}/admin/ministries-dashboard`, icon: Building2 },
-  { label: "State/UT/District Dashboard", href: `${BASE}/admin/dashboard`, icon: LayoutGrid },
-  { label: "User Management", href: `${BASE}/admin/user-management`, icon: Users },
-  { label: "All Pledge Reports", href: `${BASE}/admin/pledge-reports`, icon: FileText },
-  { label: "Important Documents", href: `${BASE}/admin/important-documents`, icon: FileStack },
-  { label: "List of SNO", href: `${BASE}/admin/state-nodal-officers`, icon: Shield },
-  { label: "List of DNO", href: `${BASE}/admin/district-nodal-officers`, icon: ShieldCheck },
-  { label: "Feedback/Grievances", href: `${BASE}/admin/feedback`, icon: MessageSquare },
+  { label: "Ministries/Line Departments/Spiritual Organisations Dashboard", href: "/admin/ministries-dashboard", icon: Building2 },
+  { label: "State/UT/District Dashboard", href: "/admin/dashboard", icon: LayoutGrid },
+  { label: "User Management", href: "/admin/user-management", icon: Users },
+  { label: "All Pledge Reports", href: "/admin/pledge-reports", icon: FileText },
+  { label: "Important Documents", href: "/admin/important-documents", icon: FileStack },
+  { label: "List of SNO", href: "/admin/state-nodal-officers", icon: Shield },
+  { label: "List of DNO", href: "/admin/district-nodal-officers", icon: ShieldCheck },
+  { label: "Feedback/Grievances", href: "/admin/feedback", icon: MessageSquare },
 ];
 
 interface AdminShellProps {
@@ -45,7 +45,7 @@ export function AdminShell({ children, userName = "Rajesh Pilli" }: AdminShellPr
 
   const handleLogout = () => {
     document.cookie = "nmba_admin_session=; max-age=0; path=/";
-    router.push(`${BASE}/admin/login`);
+    router.push("/admin/login");
   };
 
   return (

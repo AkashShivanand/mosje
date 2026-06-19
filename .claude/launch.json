@@ -49,6 +49,13 @@
       "runtimeArgs": ["--prefix", "apps/portals/scw", "run", "dev"],
       "port": 4125,
       "autoPort": false
+    },
+    {
+      "name": "nmba",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "apps/portals/nmba", "run", "dev"],
+      "port": 4126,
+      "autoPort": false
     }
   ]
 }

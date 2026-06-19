@@ -26,7 +26,7 @@ export default function AdminLoginPage() {
       if (mobile.length === 10 && password.length > 0) {
         document.cookie = `nmba_admin_session=mock-session-token; path=/; max-age=${60 * 60 * 8}`;
         toast("Logged in successfully.", "success");
-        router.push(`${BASE}/admin/dashboard`);
+        router.push("/admin/dashboard");
       } else {
         setError("Invalid credentials. Please check your mobile number and password.");
       }

@@ -18,10 +18,10 @@ import { cn } from "@/lib/utils";
 const BASE = "/portals/nmba";
 
 const NAV_ITEMS = [
-  { label: "Dashboard", href: `${BASE}`, icon: LayoutGrid },
-  { label: "Activity Snapshot", href: `${BASE}/activities`, icon: Activity },
-  { label: "E-Pledge", href: `${BASE}/epledge`, icon: HandHeart },
-  { label: "Facilities", href: `${BASE}/facilities`, icon: MapPin },
+  { label: "Dashboard", href: "/", icon: LayoutGrid },
+  { label: "Activity Snapshot", href: "/activities", icon: Activity },
+  { label: "E-Pledge", href: "/epledge", icon: HandHeart },
+  { label: "Facilities", href: "/facilities", icon: MapPin },
 ];
 
 const LANGUAGES = ["English", "हिंदी"];
@@ -34,7 +34,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
   const [fontScale, setFontScale] = React.useState<"small" | "default" | "large">("default");
 
   const isActive = (href: string) =>
-    href === BASE ? pathname === BASE || pathname === `${BASE}/` : pathname.startsWith(href);
+    href === "/" ? pathname === "/" || pathname === "" : pathname.startsWith(href);
 
   return (
     <div
