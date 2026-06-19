@@ -80,6 +80,25 @@ Run inside the app folder (or via `npm --prefix <app>`):
 - **AI design contract.** Before building or changing UI, read **`packages/design-system/design.md`** (token vocabulary, theming axes, component inventory, hard rules) — it's the authoritative AI-facing brief. Its companions `packages/design-system/AGENTS.md` and the portal's `/design-system/llms.txt` must stay in sync with tokens/components/Figma — see the rule in `.claude/rules/design-system.md`.
 - **Commit messages: no AI attribution.** Never add `Co-Authored-By: Claude` (or any AI/bot co-author) or a "Generated with Claude Code" trailer to commits. A `.husky/commit-msg` hook strips them as a backstop, but don't write them in the first place.
 
+## Skill routing
+
+When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
+
+Key routing rules:
+- Product ideas/brainstorming → invoke /office-hours
+- Strategy/scope → invoke /plan-ceo-review
+- Architecture → invoke /plan-eng-review
+- Design system/plan review → invoke /design-consultation or /plan-design-review
+- Full review pipeline → invoke /autoplan
+- Bugs/errors → invoke /investigate
+- QA/testing site behavior → invoke /qa or /qa-only
+- Code review/diff check → invoke /review
+- Visual polish → invoke /design-review
+- Ship/deploy/PR → invoke /ship or /land-and-deploy
+- Save progress → invoke /context-save
+- Resume context → invoke /context-restore
+- Author a backlog-ready spec/issue → invoke /spec
+
 ## Safety rules (learned the hard way)
 
 - **macOS is case-insensitive.** `Portals` and `portals` are the SAME directory. Never `mkdir` a case-variant of an existing dir, and never `rm -rf` a path you just `mv`'d into a case-colliding name. A `.claude/hooks/guard.sh` PreToolUse hook now **blocks `rm -rf` / `rm -r`, force-push, and other destructive commands** — run those manually and deliberately if truly needed.
