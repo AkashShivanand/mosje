@@ -46,9 +46,8 @@ export default function TypographyPage() {
           <p className="docs-page-header__desc">
             Every MoSJE property serves citizens in English and हिन्दी, so type
             is never an afterthought. SAMAVESH uses two carefully paired
-            typefaces, a responsive role scale with 21 named roles, and
-            Indic-aware line heights so the same content reads clearly in
-            both scripts at every screen size.
+            typefaces, a 21-role responsive scale, and Indic-aware line heights
+            so the same content reads clearly in both scripts at every screen size.
           </p>
           <div className="docs-page-header__actions">
             <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.typography)} target="_blank" rel="noopener noreferrer">
@@ -102,7 +101,135 @@ export default function TypographyPage() {
         </Callout>
       </section>
 
-      {/* ── 2. Responsive type system ───────────────────────────────── */}
+      {/* ── 2. The type scale: one system for all contexts ─────────── */}
+      <section className="docs-section" aria-labelledby="one-system">
+        <span className="docs-section__label">System</span>
+        <h2 id="one-system" className="docs-section__heading">
+          The type scale: one system for all contexts
+        </h2>
+        <div className="docs-section__body">
+          <p>
+            SAMAVESH serves two very different contexts from a single type system:
+            the <strong>dosje.gov.in website</strong> (an informational public site,
+            UX4G context) and <strong>20+ workflow portals</strong> (authenticated,
+            transactional applications, Portal DS context). These two contexts
+            historically used different type scales. SAMAVESH unifies them.
+          </p>
+        </div>
+
+        {/* Two scales diagram */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            gap: "var(--ds-spacing-lg)",
+            marginTop: "var(--ds-spacing-xl)",
+          }}
+        >
+          {[
+            {
+              name: "UX4G DS",
+              subtitle: "Government of India standard",
+              desc: "5–7 fixed sizes, desktop-first, designed for informational websites. Defines Display, Headline, Body, Label at fixed pixel values.",
+              color: "var(--ds-surface-muted)",
+              border: "var(--ds-border-strong)",
+            },
+            {
+              name: "Portal DS",
+              subtitle: "21-role responsive system",
+              desc: "Mobile-first, three breakpoints, designed for complex portal UI. Defines display1–6, headline1–6, title1–3, body1–3, label1–3.",
+              color: "var(--ds-primary-tonal)",
+              border: "var(--ds-primary)",
+            },
+            {
+              name: "SAMAVESH",
+              subtitle: "Superset — serves both",
+              desc: "Adopts the Portal DS 21-role responsive structure as the foundation. Every UX4G role maps cleanly onto a SAMAVESH role. The website uses the upper display and headline roles; portals use the full range.",
+              color: "var(--ds-success-tonal)",
+              border: "var(--ds-success)",
+            },
+          ].map(({ name, subtitle, desc, color, border }) => (
+            <div
+              key={name}
+              style={{
+                background: color,
+                border: `1px solid ${border}`,
+                borderRadius: "var(--ds-radius-md)",
+                padding: "var(--ds-spacing-xl)",
+              }}
+            >
+              <p style={{ fontWeight: 700, color: "var(--ds-ink)", margin: 0, fontSize: "var(--ds-text-body-1)" }}>
+                {name}
+              </p>
+              <p style={{ color: "var(--ds-ink-muted)", fontSize: "var(--ds-text-label-1)", margin: "var(--ds-spacing-xs) 0 var(--ds-spacing-md)", fontWeight: 600 }}>
+                {subtitle}
+              </p>
+              <p style={{ color: "var(--ds-ink-muted)", fontSize: "var(--ds-text-body-2)", margin: 0 }}>
+                {desc}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* UX4G mapping table */}
+        <h3
+          style={{
+            fontSize: "var(--ds-text-headline)",
+            fontWeight: 600,
+            marginTop: "var(--ds-spacing-2xl)",
+            marginBottom: "var(--ds-spacing-sm)",
+            scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))",
+          }}
+        >
+          UX4G → SAMAVESH role mapping
+        </h3>
+        <div style={{ overflowX: "auto" }}>
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              fontSize: "var(--ds-text-body-2)",
+            }}
+          >
+            <thead>
+              <tr style={{ borderBottom: "2px solid var(--ds-border-strong)" }}>
+                {["UX4G role", "Maps to SAMAVESH", "Typical use on dosje.gov.in"].map((h) => (
+                  <th key={h} style={{ textAlign: "left", padding: "var(--ds-spacing-sm) var(--ds-spacing-md)", color: "var(--ds-ink-muted)", fontWeight: 600 }}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { ux4g: "Display", samavesh: "display1 / display2", use: "Hero headings, page banners" },
+                { ux4g: "Headline", samavesh: "headline1 / headline2", use: "h1 / h2 on content pages" },
+                { ux4g: "Title", samavesh: "title1 / title2", use: "Section labels, panel headers" },
+                { ux4g: "Body", samavesh: "body1 / body2 / body3", use: "Paragraphs, helper text, captions" },
+                { ux4g: "Label", samavesh: "label1 / label2 / label3", use: "Form labels, UI micro-labels" },
+              ].map(({ ux4g, samavesh, use }) => (
+                <tr key={ux4g} style={{ borderBottom: "1px solid var(--ds-border)" }}>
+                  <td style={{ padding: "var(--ds-spacing-sm) var(--ds-spacing-md)", fontWeight: 600, color: "var(--ds-ink)" }}>{ux4g}</td>
+                  <td style={{ padding: "var(--ds-spacing-sm) var(--ds-spacing-md)", fontFamily: "ui-monospace, monospace", color: "var(--ds-primary)" }}>{samavesh}</td>
+                  <td style={{ padding: "var(--ds-spacing-sm) var(--ds-spacing-md)", color: "var(--ds-ink-muted)" }}>{use}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="docs-section__body" style={{ marginTop: "var(--ds-spacing-xl)" }}>
+          <p>
+            Where UX4G and Portal DS had different pixel values for the same
+            conceptual role, <strong>Portal DS values were adopted</strong> because
+            they are mobile-first, better tested for bilingual / Indic content, and
+            provide more granular control. The website simply uses the upper slice
+            of the same scale.
+          </p>
+        </div>
+      </section>
+
+      {/* ── 3. Responsive type system ───────────────────────────────── */}
       <section className="docs-section" aria-labelledby="responsive-type-system">
         <span className="docs-section__label">System</span>
         <h2 id="responsive-type-system" className="docs-section__heading">
@@ -139,12 +266,6 @@ export default function TypographyPage() {
 --ds-type-headline1-size  /* 24px → 28px → 32px */
 --ds-type-label1-size     /* 14px, fixed — labels do not respond */`}</code>
           </pre>
-          <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
-            The <code>--ds-text-*</code> and <code>--ds-leading-*</code> names
-            from earlier SAMAVESH versions still work — they forward to the
-            responsive variables. For new code, use{" "}
-            <code>--ds-type-ROLE-size/lh</code> directly.
-          </p>
         </div>
 
         <div
@@ -166,7 +287,7 @@ export default function TypographyPage() {
               letterSpacing: "0.08em",
             }}
           >
-            How the system works
+            How breakpoints work
           </p>
           <div
             style={{
@@ -204,7 +325,7 @@ export default function TypographyPage() {
         </Callout>
       </section>
 
-      {/* ── 3. Type scale ───────────────────────────────────────────── */}
+      {/* ── 4. Type scale specimens ──────────────────────────────────── */}
       <section className="docs-section" aria-labelledby="type-scale">
         <span className="docs-section__label">Scale</span>
         <h2 id="type-scale" className="docs-section__heading">
@@ -300,7 +421,105 @@ export default function TypographyPage() {
         />
       </section>
 
-      {/* ── 4. Line height for Indic scripts ────────────────────────── */}
+      {/* ── 5. Two ways to reference any role ──────────────────────── */}
+      <section className="docs-section" aria-labelledby="two-naming-patterns">
+        <span className="docs-section__label">Developer</span>
+        <h2 id="two-naming-patterns" className="docs-section__heading">
+          Two ways to reference any role
+        </h2>
+        <div className="docs-section__body">
+          <p>
+            SAMAVESH exposes each type role through <strong>two naming patterns</strong>.
+            Both are valid, both are responsive, and both are part of the API.
+            Neither is old or deprecated.
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: "var(--ds-spacing-lg)",
+            marginTop: "var(--ds-spacing-xl)",
+          }}
+        >
+          {[
+            {
+              pattern: "--ds-type-ROLE-size",
+              companion: "--ds-type-ROLE-lh",
+              title: "Explicit role names",
+              desc: "The exact 21-role names from the Portal DS system. Most precise — the token name tells you exactly which role you are using. Preferred for new portal and component code.",
+              example: "--ds-type-body1-size\n--ds-type-headline1-lh",
+              color: "var(--ds-primary-tonal)",
+              border: "var(--ds-primary)",
+            },
+            {
+              pattern: "--ds-text-SHORTHAND",
+              companion: "--ds-leading-SHORTHAND",
+              title: "Shorthand names",
+              desc: "Concise aliases that map to the same responsive variables. body-1, headline, display, label-1, etc. Work well for page-level styling (h1, h2, body, etc.) and are easier to read in global CSS.",
+              example: "--ds-text-body-1\n--ds-leading-headline",
+              color: "var(--ds-surface-muted)",
+              border: "var(--ds-border-strong)",
+            },
+          ].map(({ pattern, companion, title, desc, example, color, border }) => (
+            <div
+              key={pattern}
+              style={{
+                background: color,
+                border: `1px solid ${border}`,
+                borderRadius: "var(--ds-radius-md)",
+                padding: "var(--ds-spacing-xl)",
+              }}
+            >
+              <p style={{ fontWeight: 700, color: "var(--ds-ink)", margin: 0, fontSize: "var(--ds-text-body-1)" }}>
+                {title}
+              </p>
+              <code
+                style={{
+                  display: "block",
+                  fontSize: "var(--ds-text-label-1)",
+                  color: "var(--ds-primary)",
+                  margin: "var(--ds-spacing-xs) 0",
+                  fontFamily: "ui-monospace, monospace",
+                  fontWeight: 600,
+                }}
+              >
+                {pattern}
+                <br />
+                {companion}
+              </code>
+              <p style={{ color: "var(--ds-ink-muted)", fontSize: "var(--ds-text-body-2)", margin: "var(--ds-spacing-md) 0" }}>
+                {desc}
+              </p>
+              <pre
+                style={{
+                  margin: 0,
+                  padding: "var(--ds-spacing-md)",
+                  background: "var(--ds-surface)",
+                  borderRadius: "var(--ds-radius-sm)",
+                  fontSize: "12px",
+                  fontFamily: "ui-monospace, monospace",
+                  color: "var(--ds-ink)",
+                  whiteSpace: "pre",
+                }}
+              >
+                {example}
+              </pre>
+            </div>
+          ))}
+        </div>
+
+        <Callout type="tip" title="Which to use">
+          Reach for <code>--ds-type-ROLE-size/lh</code> when writing new
+          component or portal code — the role name is self-documenting. Use{" "}
+          <code>--ds-text-*/--ds-leading-*</code> shorthands for global CSS
+          rules on HTML elements like <code>h1</code>, <code>p</code>, and{" "}
+          <code>small</code> where brevity reads more clearly.
+        </Callout>
+      </section>
+
+      {/* ── 6. Line height for Indic scripts ────────────────────────── */}
       <section className="docs-section" aria-labelledby="indic-line-height">
         <span className="docs-section__label">Indic scripts</span>
         <h2 id="indic-line-height" className="docs-section__heading">
@@ -407,7 +626,7 @@ export default function TypographyPage() {
         </Callout>
       </section>
 
-      {/* ── 5. Token reference ──────────────────────────────────────── */}
+      {/* ── 7. Token reference ──────────────────────────────────────── */}
       <section className="docs-section" aria-labelledby="token-reference">
         <span className="docs-section__label">Developer</span>
         <h2 id="token-reference" className="docs-section__heading">
@@ -417,8 +636,8 @@ export default function TypographyPage() {
           <p>
             All type roles are exposed as CSS custom properties. Use{" "}
             <code>--ds-type-ROLE-size</code> and{" "}
-            <code>--ds-type-ROLE-lh</code> — these are the canonical names and
-            are responsive. Never hardcode a pixel value.
+            <code>--ds-type-ROLE-lh</code> — the canonical responsive names. Never
+            hardcode a pixel value.
           </p>
         </div>
 
@@ -500,9 +719,9 @@ export default function TypographyPage() {
           }))}
         />
 
-        {/* Legacy aliases */}
+        {/* Shorthand names side-by-side with explicit */}
         <h3
-          id="token-reference-legacy"
+          id="token-reference-shorthands"
           style={{
             fontSize: "var(--ds-text-headline)",
             fontWeight: 600,
@@ -511,14 +730,15 @@ export default function TypographyPage() {
             scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))",
           }}
         >
-          Legacy aliases — <code>--ds-text-*</code> / <code>--ds-leading-*</code>
+          Shorthand names — <code>--ds-text-*</code> / <code>--ds-leading-*</code>
         </h3>
-        <div className="docs-section__body">
+        <div className="docs-section__body" style={{ marginBottom: "var(--ds-spacing-lg)" }}>
           <p>
-            These names from prior SAMAVESH versions still work and are now
-            responsive — they forward to the canonical{" "}
-            <code>--ds-type-*</code> variables. Existing code does not need to
-            change. For new code, prefer the explicit role names.
+            The shorthand names below map to the same responsive variables as the
+            explicit role names. Use either pattern — both are part of the API and
+            both are responsive. Shorthand names are concise and read well in
+            global stylesheets; explicit names are more self-documenting in
+            component code.
           </p>
         </div>
         <TokenTable
@@ -564,7 +784,7 @@ export default function TypographyPage() {
         />
       </section>
 
-      {/* ── 6. Loading fonts ────────────────────────────────────────── */}
+      {/* ── 8. Loading fonts ────────────────────────────────────────── */}
       <section className="docs-section" aria-labelledby="loading-fonts">
         <span className="docs-section__label">Developer</span>
         <h2 id="loading-fonts" className="docs-section__heading">
@@ -651,7 +871,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Callout>
       </section>
 
-      {/* ── 7. Do / Don't ───────────────────────────────────────────── */}
+      {/* ── 9. Do / Don't ───────────────────────────────────────────── */}
       <section className="docs-section" aria-labelledby="do-dont">
         <span className="docs-section__label">Guidance</span>
         <h2 id="do-dont" className="docs-section__heading">
@@ -670,7 +890,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {
               type: "do",
               label:
-                "Use the canonical type tokens. Reach for a role (body1, headline1, …) and pair --ds-type-ROLE-size with --ds-type-ROLE-lh so size, line height, and responsiveness travel together.",
+                "Use any canonical type token — both naming patterns work. Pair size with lh so size, line height, and responsiveness travel together.",
               preview: (
                 <code
                   style={{
@@ -682,9 +902,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   }}
                 >
 {`.lead {
+  /* explicit — preferred in components */
   font-size: var(--ds-type-body1-size);
   line-height: var(--ds-type-body1-lh);
-  /* auto-responds: 14→15→16px */
+}
+h1 {
+  /* shorthand — fine for global CSS */
+  font-size: var(--ds-text-headline);
+  line-height: var(--ds-leading-headline);
 }`}
                 </code>
               ),
@@ -692,7 +917,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {
               type: "dont",
               label:
-                "Don't hardcode font-size in px. Raw values break the responsive scale, drift between pages, and almost always pair Hindi with a Latin-tight line height that crowds the script.",
+                "Don't hardcode font-size in px. Raw values break the responsive scale, drift between pages, and almost always pair Hindi with a Latin-tight line height.",
               preview: (
                 <code
                   style={{

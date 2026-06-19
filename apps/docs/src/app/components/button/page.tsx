@@ -653,15 +653,15 @@ export function ApplicationForm() {
           tokens={[
             {
               token: "--ds-primary",
-              value: "#0373DF",
+              value: "#0373df",
               description: "Fill colour for the primary variant.",
               isColor: true,
             },
             {
               token: "--ds-primary-ring",
-              value: "#0373DF",
+              value: "rgba(3,115,223,0.48)",
               description: "3px focus ring colour.",
-              isColor: true,
+              isColor: false,
             },
             {
               token: "--ds-danger",
