@@ -10,31 +10,38 @@
   },
   "scripts": {
     "prepare": "husky",
-    "dev": "concurrently --restart-tries -1 --restart-after 2000 --prefix-colors \"blue,cyan,yellow,green,magenta,white,red\" -n \"hub,dosje,smile,pm-ajay,scw,docs,storybook\" \"npm --prefix apps/hub run dev\" \"npm --prefix apps/dosje run dev\" \"npm --prefix apps/portals/smile-admin run dev\" \"npm --prefix apps/portals/pm-ajay run dev\" \"npm --prefix apps/portals/scw run dev\" \"npm --prefix apps/docs run dev\" \"npm --prefix apps/storybook run dev\"",
+    "dev": "concurrently --restart-tries -1 --restart-after 2000 --prefix-colors \"blue,cyan,yellow,green,magenta,white,red,gray\" -n \"hub,dosje,smile,pm-ajay,scw,nmba,docs,storybook\" \"npm --prefix apps/hub run dev\" \"npm --prefix apps/dosje run dev\" \"npm --prefix apps/portals/smile-admin run dev\" \"npm --prefix apps/portals/pm-ajay run dev\" \"npm --prefix apps/portals/scw run dev\" \"npm --prefix apps/portals/nmba run dev\" \"npm --prefix apps/docs run dev\" \"npm --prefix apps/storybook run dev\"",
     "dev:hub": "npm --prefix apps/hub run dev",
     "dev:website": "npm --prefix apps/dosje run dev",
     "dev:smile": "npm --prefix apps/portals/smile-admin run dev",
     "dev:pm-ajay": "npm --prefix apps/portals/pm-ajay run dev",
     "dev:scw": "npm --prefix apps/portals/scw run dev",
+    "dev:nmba": "npm --prefix apps/portals/nmba run dev",
     "dev:docs": "npm --prefix apps/docs run dev",
     "dev:storybook": "npm --prefix apps/storybook run dev",
-    "check": "npm run check:hub && npm run check:dosje && npm run check:smile && npm run check:pm-ajay && npm run check:scw",
+    "check": "npm run check:hub && npm run check:dosje && npm run check:smile && npm run check:pm-ajay && npm run check:scw && npm run check:nmba",
     "check:hub": "npm --prefix apps/hub run typecheck",
     "check:dosje": "npm --prefix apps/dosje run typecheck",
     "check:smile": "npm --prefix apps/portals/smile-admin run typecheck",
     "check:pm-ajay": "npm --prefix apps/portals/pm-ajay run typecheck",
     "check:scw": "npm --prefix apps/portals/scw run typecheck",
-    "lint": "npm run lint:hub && npm run lint:dosje && npm run lint:smile && npm run lint:pm-ajay && npm run lint:scw",
+    "check:nmba": "npm --prefix apps/portals/nmba run typecheck",
+    "lint": "npm run lint:hub && npm run lint:dosje && npm run lint:smile && npm run lint:pm-ajay && npm run lint:scw && npm run lint:nmba",
     "lint:hub": "npm --prefix apps/hub run lint",
     "lint:dosje": "npm --prefix apps/dosje run lint",
     "lint:smile": "npm --prefix apps/portals/smile-admin run lint",
     "lint:pm-ajay": "npm --prefix apps/portals/pm-ajay run lint",
-    "lint:scw": "npm --prefix apps/portals/scw run lint"
+    "lint:scw": "npm --prefix apps/portals/scw run lint",
+    "lint:nmba": "npm --prefix apps/portals/nmba run lint"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
     "stylelint": "^16.26.1"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1",
+    "puppeteer-core": "^25.1.0"
   }
 }
