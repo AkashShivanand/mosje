@@ -1,0 +1,79 @@
+[
+  {
+    "element": "Senior Citizens Welfare",
+    "kind": "DIFF",
+    "diffs": [
+      "font-size 32px -> 24px"
+    ],
+    "figmaPin": {
+      "x": 53,
+      "y": 20
+    },
+    "livePin": {
+      "x": 45,
+      "y": 24
+    },
+    "figmaBoxRaw": {
+      "x": 356,
+      "y": 190,
+      "w": 810,
+      "h": 40
+    },
+    "liveBoxRaw": {
+      "x": 361,
+      "y": 221,
+      "w": 576,
+      "h": 32
+    }
+  },
+  {
+    "element": "WELFARE BENEFITS",
+    "kind": "MISSING",
+    "figma": {
+      "text": "WELFARE BENEFITS",
+      "x": 324,
+      "y": 366,
+      "w": 150,
+      "h": 24,
+      "fontFamily": "Noto Sans",
+      "fontSize": 16,
+      "fontWeight": 600,
+      "color": "#374151"
+    },
+    "live": null,
+    "figmaBoxRaw": {
+      "x": 324,
+      "y": 366,
+      "w": 150,
+      "h": 24
+    }
+  },
+  {
+    "element": "Need Immediate Help?",
+    "kind": "DIFF",
+    "diffs": [
+      "font-size 16px -> 18px",
+      "colour #d64539 -> rgb(230, 81, 0) (\u039460.4)"
+    ],
+    "figmaPin": {
+      "x": 86,
+      "y": 75
+    },
+    "livePin": {
+      "x": 84,
+      "y": 68
+    },
+    "figmaBoxRaw": {
+      "x": 1092,
+      "y": 758,
+      "w": 300,
+      "h": 24
+    },
+    "liveBoxRaw": {
+      "x": 1062,
+      "y": 661,
+      "w": 293,
+      "h": 28
+    }
+  }
+]

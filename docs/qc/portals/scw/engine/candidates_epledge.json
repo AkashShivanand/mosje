@@ -1,0 +1,29 @@
+[
+  {
+    "element": "Pledge",
+    "kind": "DIFF",
+    "diffs": [
+      "weight 600 -> 700"
+    ],
+    "figmaPin": {
+      "x": 54,
+      "y": 52
+    },
+    "livePin": {
+      "x": 52,
+      "y": 62
+    },
+    "figmaBoxRaw": {
+      "x": 468,
+      "y": 565,
+      "w": 632,
+      "h": 32
+    },
+    "liveBoxRaw": {
+      "x": 473,
+      "y": 606,
+      "w": 557,
+      "h": 31
+    }
+  }
+]

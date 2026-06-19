@@ -1,0 +1,52 @@
+{
+"admin-dashboard":{"frameW":1440,"frameH":1094,"rows":[
+{"text":"Dashboard","x":324,"y":162,"w":945,"h":36,"fontSize":28,"fontWeight":500,"color":"#374151"},
+{"text":"Organization Name","x":348,"y":490,"w":257,"h":20,"fontSize":14,"fontWeight":600,"color":"#6b7280"},
+{"text":"Recent SAGE Applications","x":348,"y":430,"w":576,"h":24,"fontSize":16,"fontWeight":600,"color":"#374151"},
+{"text":"Recent Platform Activity","x":1088,"y":430,"w":308,"h":24,"fontSize":16,"fontWeight":600,"color":"#374151"},
+{"text":"Volunteer Applications","x":348,"y":746,"w":576,"h":24,"fontSize":16,"fontWeight":600,"color":"#374151"}
+]},
+"admin-sage-applications":{"frameW":1440,"frameH":960,"rows":[
+{"text":"SAGE Applications","x":324,"y":158,"w":1092,"h":36,"fontSize":28,"fontWeight":500,"color":"#374151"},
+{"text":"Organization Name","x":348,"y":290,"w":629,"h":20,"fontSize":14,"fontWeight":600,"color":"#6b7280"}
+]},
+"admin-sage-detail":{"frameW":1440,"frameH":1278,"rows":[
+{"text":"COMPANY DETAILS","x":188,"y":290,"w":147,"h":24,"fontSize":16,"fontWeight":600,"color":"#374151"},
+{"text":"Company Name","x":188,"y":330,"w":270,"h":16,"fontSize":12,"fontWeight":500,"color":"#6b7280"},
+{"text":"Date of Incorporation","x":482,"y":330,"w":270,"h":16,"fontSize":12,"fontWeight":500,"color":"#6b7280"},
+{"text":"Type of Company","x":1070,"y":330,"w":270,"h":16,"fontSize":12,"fontWeight":500,"color":"#6b7280"},
+{"text":"ADDRESS & CONTACT","x":188,"y":458,"w":165,"h":24,"fontSize":16,"fontWeight":600,"color":"#374151"},
+{"text":"CORPORATE INFORMATION","x":188,"y":618,"w":213,"h":24,"fontSize":16,"fontWeight":600,"color":"#374151"},
+{"text":"DIPP ID","x":482,"y":710,"w":270,"h":16,"fontSize":12,"fontWeight":500,"color":"#6b7280"},
+{"text":"Startup registered with DIPP","x":188,"y":710,"w":270,"h":16,"fontSize":12,"fontWeight":500,"color":"#6b7280"},
+{"text":"UPLOADED DOCUMENTS","x":188,"y":1098,"w":191,"h":24,"fontSize":16,"fontWeight":600,"color":"#374151"}
+]},
+"admin-events":{"frameW":1440,"frameH":1106,"rows":[
+{"text":"Events","x":324,"y":158,"w":943,"h":40,"fontSize":32,"fontWeight":500,"color":"#374151"},
+{"text":"Events Date & Time","x":796,"y":306,"w":133,"h":20,"fontSize":14,"fontWeight":600,"color":"#6b7280"},
+{"text":"Address","x":982,"y":306,"w":312,"h":20,"fontSize":14,"fontWeight":600,"color":"#6b7280"}
+]},
+"admin-events-add":{"frameW":1440,"frameH":960,"rows":[
+{"text":"Add New Event","x":372,"y":158,"w":1044,"h":32,"fontSize":24,"fontWeight":500,"color":"#374151"}
+]},
+"admin-volunteers":{"frameW":1440,"frameH":960,"rows":[
+{"text":"Volunteers","x":324,"y":162,"w":820,"h":36,"fontSize":28,"fontWeight":500,"color":"#374151"},
+{"text":"Organization Name","x":348,"y":238,"w":629,"h":20,"fontSize":14,"fontWeight":600,"color":"#6b7280"}
+]},
+"admin-ipsrc-homes":{"frameW":1440,"frameH":1110,"rows":[
+{"text":"IPSrC Homes","x":324,"y":162,"w":943,"h":36,"fontSize":28,"fontWeight":500,"color":"#374151"},
+{"text":"Facility Types","x":672,"y":302,"w":147,"h":20,"fontSize":14,"fontWeight":600,"color":"#6b7280"},
+{"text":"Project Type","x":1418,"y":302,"w":84,"h":20,"fontSize":14,"fontWeight":600,"color":"#6b7280"}
+]},
+"user-sage-dashboard":{"frameW":1440,"frameH":960,"rows":[
+{"text":"SAGE Registration","x":324,"y":190,"w":1076,"h":40,"fontSize":32,"fontWeight":500,"color":"#374151"},
+{"text":"SAGE Application","x":348,"y":214,"w":834,"h":28,"fontSize":20,"fontWeight":500,"color":"#374151"},
+{"text":"Evaluation Pending","x":1453,"y":726,"w":111,"h":16,"fontSize":12,"fontWeight":500,"color":"#8c571f"}
+]},
+"user-volunteer-dashboard":{"frameW":1440,"frameH":1218,"rows":[
+{"text":"Senior Citizens Welfare","x":220,"y":190,"w":870,"h":40,"fontSize":32,"fontWeight":500,"color":"#ffffff"},
+{"text":"UPCOMING OPPORTUNITIES NEAR YOU","x":188,"y":366,"w":307,"h":24,"fontSize":16,"fontWeight":600,"color":"#374151"},
+{"text":"Browse Service Directory","x":1036,"y":630,"w":280,"h":24,"fontSize":16,"fontWeight":600,"color":"#374151"},
+{"text":"Need Immediate Help?","x":1036,"y":852,"w":280,"h":24,"fontSize":16,"fontWeight":600,"color":"#d64539"}
+]}
+}

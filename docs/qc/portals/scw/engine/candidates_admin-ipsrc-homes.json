@@ -1,0 +1,51 @@
+[
+  {
+    "element": "IPSrC Homes",
+    "kind": "DIFF",
+    "diffs": [
+      "font-size 28px -> 24px",
+      "weight 500 -> 600"
+    ],
+    "figmaPin": {
+      "x": 55,
+      "y": 16
+    },
+    "livePin": {
+      "x": 27,
+      "y": 17
+    },
+    "figmaBoxRaw": {
+      "x": 324,
+      "y": 162,
+      "w": 943,
+      "h": 36
+    },
+    "liveBoxRaw": {
+      "x": 316,
+      "y": 158,
+      "w": 151,
+      "h": 32
+    }
+  },
+  {
+    "element": "Facility Types",
+    "kind": "MISSING",
+    "figma": {
+      "text": "Facility Types",
+      "x": 672,
+      "y": 302,
+      "w": 147,
+      "h": 20,
+      "fontSize": 14,
+      "fontWeight": 600,
+      "color": "#6b7280"
+    },
+    "live": null,
+    "figmaBoxRaw": {
+      "x": 672,
+      "y": 302,
+      "w": 147,
+      "h": 20
+    }
+  }
+]

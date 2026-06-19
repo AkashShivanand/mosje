@@ -10,7 +10,7 @@ One repo for the whole MoSJE estate: the apps **and** the shared design-system p
 apps/
 ├── dosje/           the unified website (Next 16 · Tailwind v4)
 ├── portals/         functional portals — pm-ajay, smile-admin (Next 15 · Tailwind v3)
-└── docs/            SAMAVESH Storybook / DS documentation portal (`npm --prefix apps/docs run dev`)
+└── docs/            SAMAVESH Storybook / DS documentation portal (`npm run dev:docs`)
 packages/
 ├── tokens/          @mosje/tokens         — DTCG token source → Style Dictionary → CSS/TS/Tailwind/Figma
 ├── design-system/   @mosje/design-system  — shared React components (consumes generated tokens)
@@ -43,6 +43,91 @@ npm test  -w @mosje/tokens       # assert the backward-compatible token contract
 ```
 
 Never hand-edit generated `dist/` artifacts.
+
+## Workspace tooling (`.claude/`)
+
+This repo ships its own Claude Code workspace — a set of **skills, slash commands, subagents, path-scoped rules, a safety hook, and a dev-server map** that encode how we build the MoSJE estate. This section is the **authoritative, self-contained index** of all of it. The per-folder docs (e.g. [`.claude/skills/README.md`](.claude/skills/README.md)) remain the detailed source for each item; this table set is the superset you can read without opening anything else.
+
+```
+.claude/
+├── skills/        project skills (loaded on /<name> or auto-matched on description)
+├── commands/      slash commands (/<name> — scripted, repeatable workflows)
+├── agents/        subagents (specialist reviewers dispatched via the Agent tool)
+├── rules/         path-scoped conventions (auto-applied when editing matching files)
+├── hooks/         guard.sh / guard.mjs — PreToolUse safety net for Bash
+├── settings.json  model, permissions (allow/deny), hook wiring
+└── launch.json    dev-server + port map for every app
+```
+
+### Skills (`.claude/skills/`)
+
+Situational instruction sets Claude loads automatically (matched on their `description`) or on demand via `/<name>`. Full index + authoring guide: [`.claude/skills/README.md`](.claude/skills/README.md).
+
+| Skill | What it does | Invoke |
+|---|---|---|
+| **`gov-compliance`** | Apply or audit Government of India web standards — **DBIM** + **GIGW 3.0** + **UX4G** — for any page/component/portal. *Building* mode gives compliance-by-construction guidance; *Auditing* mode returns a PASS/FAIL/N/A scorecard with `file:line` evidence and a fix list. | `/gov-compliance` or auto on UI work |
+| **`figma-page-organiser`** | Tidy a messy Figma handoff page into the MoSJE house convention — numbered grey portal `SECTION`s, `Role / Screen / State` frame names, sections hugged to content (the way E-Utthan & SCW were done). | `/figma-page-organiser` |
+
+**External skills the project relies on** (not authored here):
+
+- **`clone-website`** (global) — reverse-engineers a legacy page and rebuilds it faithfully; how the website/portal replicas grow. `/clone-website <url>`.
+- **`design-qc`** (global) — **Figma ↔ live audit.** Compares a Figma design's tokens/specs against the live (or built) page's *computed CSS* (not pixel diffing) and audits the functional half too (links, forms, a11y). Produces an `audit-master.json` → QC report PDF + Figma annotation boards. **This is the tool used for the E-Utthan and SAMAVESH-login design QC** (`docs/qc/portals/eutthan-admin/`, `docs/qc/samavesh/`). *Don't confuse it with the project `/qa` command, which is build-vs-live screenshot QA, not Figma-vs-live.*
+- Figma plugin skills — **`figma-use`** (mandatory before any `use_figma` call), **`figma-generate-design`**, **`figma-generate-library`**, **`figma-code-connect`**.
+
+### Commands (`.claude/commands/`)
+
+Scripted, repeatable workflows invoked as `/<name> <args>`.
+
+| Command | What it does | Arguments |
+|---|---|---|
+| **`/a11y`** | Run a WCAG 2.1 AA + GIGW accessibility audit on a page or component (delegates to the `accessibility-auditor` agent). | `<path to page/component>` |
+| **`/review`** | Review the current diff for correctness, security, and design-system consistency using the specialist agents. | `[app dir, e.g. dosje]` |
+| **`/qa`** | Visual QA — diff a built page against its **live original** at desktop and mobile widths (drives Chrome). Clone-fidelity check. *For a Figma-vs-live audit, use the `design-qc` skill above, not this.* | `<live-url> [local-url]` |
+| **`/new-portal`** | Scaffold a new functional portal under `apps/portals/` on the shared MoSJE stack and design language. | `<portal-slug> ["Display Name"]` |
+| **`/sync-figma`** | Sync design tokens between the Figma UX4G DS and `@mosje/tokens` (DTCG → Style Dictionary). | `[figma-file-url]` (defaults to UX4G DS) |
+
+### Agents (`.claude/agents/`)
+
+Specialist subagents (all on `claude-sonnet`, read-only tools: Read/Grep/Glob/Bash) dispatched via the Agent tool — usually by a command above, or directly when you need one perspective.
+
+| Agent | Role |
+|---|---|
+| **`accessibility-auditor`** | Audits pages/components for WCAG 2.1 AA + GIGW. Run **before shipping any public-facing page** — accessibility is a legal/compliance requirement for government sites. |
+| **`code-reviewer`** | Reviews changed code for correctness, security, and MoSJE conventions before it ships. |
+| **`design-system-guardian`** | Enforces design-system consistency — brand tokens over hardcoded values, Noto Sans, shadcn primitives, imports from `@mosje/design-system` over per-app forks. Catches drift. |
+| **`debugger`** | Roots out the cause of a bug, build failure, or unexpected behaviour using systematic, evidence-based debugging. |
+
+### Path-scoped rules (`.claude/rules/`)
+
+Conventions that auto-apply whenever Claude edits a file matching their `paths` glob — so the right standards load without being asked.
+
+| Rule | Applies to | Enforces |
+|---|---|---|
+| **`website.md`** | `dosje/**` | Next.js 16 · React 19 · Tailwind **v4** · shadcn · Noto Sans. Server components by default; brand tokens never literals; `next/image`; WCAG 2.1 AA + GIGW; growth via `clone-website` + `/qa`. |
+| **`portals.md`** | `portals/**` | Next.js 15 · Tailwind **v3** · Radix/shadcn. Own dev port per portal; same brand tokens; **validate all input (Zod), never inline secrets, never log PII**; auth is first-class. |
+| **`design-system.md`** | `packages/**` | Tokens authored as DTCG JSON in `@mosje/tokens` (never edit generated artifacts); one component per definition; Code Connect mappings kept valid; the **three AI-context artifacts** (`design.md`, `AGENTS.md`, `llms.txt`) kept in lockstep with tokens/components/Figma. |
+
+### Safety — the guard hook & permissions
+
+A `PreToolUse(Bash)` hook (`.claude/hooks/guard.sh` → `guard.mjs`) is the workspace's safety net — **born from a real incident where `rm -rf` on a case-folded directory wiped an app.** Exit code `2` blocks the command. It blocks: recursive deletes (`rm -r` / `rm -rf`), `git push --force` (without `--force-with-lease`), `git clean -f`, `git reset --hard`, `find … -delete`, `dd … of=`, redirects to raw disk devices, reads of `.env*` files, and fork bombs. Run any of these manually and deliberately if truly needed.
+
+[`.claude/settings.json`](.claude/settings.json) backs this with an **allow-list** (npm/node/tsc, read-only git + `git add`/`commit`, `gh issue`/`pr`, a few doc domains for WebFetch) and a **deny-list** (reading `.env*`/`*.pem`/`id_rsa*`, plus the destructive git/`rm` commands above). A `.husky/commit-msg` hook strips any AI co-author / "Generated with" trailer as a backstop — **don't write AI attribution into commits in the first place.**
+
+### Dev servers & ports (`.claude/launch.json`)
+
+`npm run dev` from the repo root boots everything behind the hub gate at **:3000**. Individual apps run standalone on fixed ports:
+
+| App | Port | Standalone script |
+|---|---|---|
+| `apps/hub` (root gate) | **3000** | `npm run dev:hub` |
+| `apps/dosje` (website) | **3001** | `npm run dev:website` |
+| `apps/docs` (SAMAVESH docs) | **3002** | `npm run dev:docs` |
+| `apps/storybook` | **6006** | `npm run dev:storybook` |
+| `apps/portals/smile-admin` | **4123** | `npm run dev:smile` |
+| `apps/portals/pm-ajay` | **4124** | `npm run dev:pm-ajay` |
+| `apps/portals/scw` | **4125** | `npm run dev:scw` |
+
+New portals take the next free port in the `412x` range and add an entry here plus a hub rewrite. See [`CLAUDE.md`](CLAUDE.md) for the full command list and [`MOSJE-ARCHITECTURE.md`](MOSJE-ARCHITECTURE.md) for the app registry.
 
 ## Principles
 

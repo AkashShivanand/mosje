@@ -1,0 +1,86 @@
+[
+  {
+    "element": "Free Assisted Living Devices",
+    "kind": "DIFF",
+    "diffs": [
+      "font-size 16px -> 18px",
+      "colour #374151 -> rgb(31, 41, 55) (\u039442.8)"
+    ],
+    "figmaPin": {
+      "x": 53,
+      "y": 20
+    },
+    "livePin": {
+      "x": 59,
+      "y": 26
+    },
+    "figmaBoxRaw": {
+      "x": 212,
+      "y": 182,
+      "w": 1104,
+      "h": 24
+    },
+    "liveBoxRaw": {
+      "x": 341,
+      "y": 251,
+      "w": 1018,
+      "h": 28
+    }
+  },
+  {
+    "element": "Eligibility Criteria",
+    "kind": "DIFF",
+    "diffs": [
+      "font-size 14px -> 12px",
+      "weight 500 -> 600",
+      "colour #374151 -> rgb(107, 114, 128) (\u039485.5)"
+    ],
+    "figmaPin": {
+      "x": 53,
+      "y": 30
+    },
+    "livePin": {
+      "x": 59,
+      "y": 35
+    },
+    "figmaBoxRaw": {
+      "x": 212,
+      "y": 274,
+      "w": 1104,
+      "h": 28
+    },
+    "liveBoxRaw": {
+      "x": 341,
+      "y": 340,
+      "w": 1018,
+      "h": 16
+    }
+  },
+  {
+    "element": "I confirm that I meet the eligibility criteria men",
+    "kind": "DIFF",
+    "diffs": [
+      "font-size 16px -> 14px"
+    ],
+    "figmaPin": {
+      "x": 54,
+      "y": 62
+    },
+    "livePin": {
+      "x": 39,
+      "y": 64
+    },
+    "figmaBoxRaw": {
+      "x": 248,
+      "y": 579,
+      "w": 1068,
+      "h": 24
+    },
+    "liveBoxRaw": {
+      "x": 369,
+      "y": 630,
+      "w": 396,
+      "h": 20
+    }
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "element": "Add New Event",
+    "kind": "DIFF",
+    "diffs": [
+      "weight 500 -> 600",
+      "colour #374151 -> rgb(17, 24, 39) (\u039469.9)"
+    ],
+    "figmaPin": {
+      "x": 62,
+      "y": 18
+    },
+    "livePin": {
+      "x": 30,
+      "y": 16
+    },
+    "figmaBoxRaw": {
+      "x": 372,
+      "y": 158,
+      "w": 1044,
+      "h": 32
+    },
+    "liveBoxRaw": {
+      "x": 350,
+      "y": 148,
+      "w": 177,
+      "h": 32
+    }
+  }
+]

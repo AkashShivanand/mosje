@@ -1,0 +1,3141 @@
+{
+  "portal": "SCW — Senior Citizens Welfare (UAT) · Full Design QC",
+  "idPrefix": "SCW",
+  "generated": "2026-06-18",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4619-49381",
+  "method": "Engine-computed: structured Figma specs vs live-DOM computed CSS, numerically diffed (font-size/weight/colour/width/presence) with pins computed from element bounding boxes; the LLM only ranked, phrased and added the structural/visual findings the text-diff can't see (chrome, icons, dividers, tab-bars, filters, field-casing). Build-only screens (Admin User Management, Volunteer Detail, RVY) are DS-consistent and not listed.",
+  "screens": [
+    {
+      "slug": "GLOBAL",
+      "name": "Cross-cutting — Shared chrome & patterns recurring across SCW screens",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4855-63968",
+      "liveUrl": "https://scw-user-uat.mosje.in/",
+      "figmaImg": "captures/figma/home.png",
+      "liveImg": "captures/live/home.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-GLOBAL-001",
+          "element": "Masthead cobranding logos (Digital India + SAMAVESH)",
+          "section": "masthead",
+          "axis": "Content & Iconography",
+          "severity": "Major",
+          "figma": "The masthead right zone carries the Digital India + SAMAVESH cobranding logos (DBIM).",
+          "live": "The masthead right zone is empty — both cobranding logos are absent across the public site.",
+          "fix": "Add the Digital India + SAMAVESH cobranding logos to the masthead right zone.",
+          "figmaBox": [
+            0,
+            1,
+            1440,
+            276
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            298
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            298
+          ],
+          "figmaPin": {
+            "x": 88,
+            "y": 33.2
+          },
+          "livePin": {
+            "x": 88,
+            "y": 30.2
+          },
+          "liveFullPin": {
+            "x": 88.0,
+            "y": 9.0
+          },
+          "figmaFullPin": {
+            "x": 88.0,
+            "y": 9.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-GLOBAL-002",
+          "element": "Masthead 'Department…' lockup line",
+          "section": "masthead",
+          "axis": "Content & Iconography",
+          "severity": "Major",
+          "figma": "The masthead lockup includes the bold 'Department of Social Justice & Empowerment' line beneath the Ministry line.",
+          "live": "The masthead stops at 'Ministry of Social Justice & Empowerment' — the Department line is absent.",
+          "fix": "Add the bold 'Department…' line beneath the Ministry line in the masthead lockup.",
+          "figmaBox": [
+            0,
+            1,
+            1440,
+            276
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            298
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            298
+          ],
+          "figmaPin": {
+            "x": 20,
+            "y": 36.9
+          },
+          "livePin": {
+            "x": 18,
+            "y": 26.8
+          },
+          "liveFullPin": {
+            "x": 18.0,
+            "y": 8.0
+          },
+          "figmaFullPin": {
+            "x": 20.0,
+            "y": 10.0
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-GLOBAL-003",
+          "element": "Font family not rendering as Noto Sans",
+          "section": "masthead",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "All text is set in Noto Sans (the DBIM standard typeface).",
+          "live": "Many build text elements render in a fallback face — Noto Sans is requested in CSS but isn't actually loading, so headings/body fall back to a system font.",
+          "fix": "Ensure the Noto Sans webfont actually loads on the build (font files + @font-face) so text doesn't fall back to a system face. Recurs site-wide.",
+          "figmaImgO": "captures/figma/sage-landing.png",
+          "liveImgO": "captures/live/sage-landing.png",
+          "figmaBox": [
+            0,
+            1,
+            1440,
+            276
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            298
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            298
+          ],
+          "figmaPin": {
+            "x": 32,
+            "y": 76.0
+          },
+          "livePin": {
+            "x": 45,
+            "y": 79.5
+          },
+          "liveFullPin": {
+            "x": 45.1,
+            "y": 23.7
+          },
+          "figmaFullPin": {
+            "x": 32.4,
+            "y": 20.5
+          }
+        },
+        {
+          "num": 4,
+          "id": "SCW-GLOBAL-004",
+          "element": "Top utility-bar accessibility trigger",
+          "section": "header-band",
+          "axis": "Accessibility",
+          "severity": "Minor",
+          "figma": "The top utility bar carries an accessibility control (text-size + contrast) beside the language selector.",
+          "live": "The top bar shows only Skip-to-Main, a translate glyph and Login.",
+          "fix": "Add the accessibility (text-size / contrast) control to the top utility bar.",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            112
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            110
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            110
+          ],
+          "figmaPin": {
+            "x": 86,
+            "y": 18.3
+          },
+          "livePin": {
+            "x": 86,
+            "y": 18.2
+          },
+          "liveFullPin": {
+            "x": 86.0,
+            "y": 2.0
+          },
+          "figmaFullPin": {
+            "x": 86.0,
+            "y": 2.0
+          }
+        },
+        {
+          "num": 5,
+          "id": "SCW-GLOBAL-005",
+          "element": "Sidebar expand/collapse trigger placement",
+          "section": "sidebar",
+          "axis": "Components & States",
+          "severity": "Blocker",
+          "figma": "The expand/collapse trigger sits in the header, above the sidebar column.",
+          "live": "The collapse arrow (←) sits inside the sidebar column, above the nav items.",
+          "fix": "Move the expand/collapse trigger into the header, above the sidebar.",
+          "figmaBox": [
+            0,
+            73,
+            1440,
+            255
+          ],
+          "liveBox": [
+            0,
+            70,
+            1440,
+            250
+          ],
+          "sectionBox": [
+            0,
+            70,
+            1440,
+            250
+          ],
+          "figmaPin": {
+            "x": 2,
+            "y": 50.1
+          },
+          "livePin": {
+            "x": 2,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 2.0,
+            "y": 16.0
+          },
+          "figmaFullPin": {
+            "x": 2.0,
+            "y": 16.0
+          }
+        },
+        {
+          "num": 6,
+          "id": "SCW-GLOBAL-006",
+          "element": "Primary CTA default (gating) state",
+          "section": "form",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "On gated forms the primary action stays disabled until the confirm checkbox / required fields are valid.",
+          "live": "The primary action renders enabled by default — recurs across SAGE / Volunteer / ALD.",
+          "fix": "Default the primary action to disabled until the required input is valid.",
+          "figmaBox": [
+            0,
+            648,
+            1440,
+            830
+          ],
+          "liveBox": [
+            0,
+            630,
+            1440,
+            810
+          ],
+          "sectionBox": [
+            0,
+            630,
+            1440,
+            810
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 49.8
+          },
+          "livePin": {
+            "x": 50,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 50.0,
+            "y": 72.0
+          },
+          "figmaFullPin": {
+            "x": 50.0,
+            "y": 72.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "HOME",
+      "name": "Citizen / Public Home",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4855-63968",
+      "liveUrl": "https://scw-user-uat.mosje.in/",
+      "figmaImg": "captures/figma/home.png",
+      "liveImg": "captures/live/home.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-HOME-001",
+          "element": "Senior Citizens Welfare",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Design: font-size 32px.",
+          "live": "Build: font-size 24px.",
+          "fix": "Set the “Senior Citizens Welfare” style to font-size 32px — the build currently uses font-size 24px.",
+          "figmaBox": [
+            0,
+            144,
+            1440,
+            828
+          ],
+          "liveBox": [
+            0,
+            176,
+            1440,
+            734
+          ],
+          "sectionBox": [
+            0,
+            176,
+            1440,
+            734
+          ],
+          "figmaPin": {
+            "x": 32,
+            "y": 9.6
+          },
+          "livePin": {
+            "x": 45,
+            "y": 10.9
+          },
+          "liveFullPin": {
+            "x": 45.1,
+            "y": 23.7
+          },
+          "figmaFullPin": {
+            "x": 32.4,
+            "y": 20.5
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-HOME-002",
+          "element": "Need Immediate Help?",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 16px, colour #d64539.",
+          "live": "Build: font-size 18px, colour #e65100.",
+          "fix": "Set the “Need Immediate Help?” style to font-size 16px, colour #d64539 — the build currently uses font-size 18px, colour #e65100.",
+          "figmaBox": [
+            0,
+            144,
+            1440,
+            828
+          ],
+          "liveBox": [
+            0,
+            176,
+            1440,
+            734
+          ],
+          "sectionBox": [
+            0,
+            176,
+            1440,
+            734
+          ],
+          "figmaPin": {
+            "x": 86,
+            "y": 91.5
+          },
+          "livePin": {
+            "x": 84,
+            "y": 89.4
+          },
+          "liveFullPin": {
+            "x": 83.9,
+            "y": 67.5
+          },
+          "figmaFullPin": {
+            "x": 86.2,
+            "y": 75.0
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-HOME-003",
+          "element": "Service-card icon style",
+          "section": "cards",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Service-card icons are outline, single-tone marks.",
+          "live": "Cards use filled, multi-coloured glyph icons (green leaf, blue document).",
+          "fix": "Restyle the service-card icons to the design's outline, single-tone set.",
+          "figmaBox": [
+            0,
+            135,
+            1440,
+            317
+          ],
+          "liveBox": [
+            0,
+            377,
+            1440,
+            491
+          ],
+          "sectionBox": [
+            0,
+            377,
+            1440,
+            491
+          ],
+          "figmaPin": {
+            "x": 13,
+            "y": 49.8
+          },
+          "livePin": {
+            "x": 40,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 40.3,
+            "y": 43.4
+          },
+          "figmaFullPin": {
+            "x": 13.0,
+            "y": 22.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "LOGIN",
+      "name": "Login — User (SAMAVESH)",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9453-255070",
+      "liveUrl": "https://scw-user-uat.mosje.in/login",
+      "figmaImg": "captures/figma/login.png",
+      "liveImg": "captures/live/login.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-LOGIN-001",
+          "element": "Brand logo container shape",
+          "section": "branding",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "The logo sits in a rounded-square container with generous breathing space around it.",
+          "live": "The logo container is a tight circle, cropping the breathing space.",
+          "fix": "Use a rounded-square logo container with the design's internal padding — not a circle.",
+          "figmaBox": [
+            0,
+            241,
+            1440,
+            385
+          ],
+          "liveBox": [
+            0,
+            207,
+            1440,
+            345
+          ],
+          "sectionBox": [
+            0,
+            207,
+            1440,
+            345
+          ],
+          "figmaPin": {
+            "x": 22,
+            "y": 50.3
+          },
+          "livePin": {
+            "x": 20,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 19.5,
+            "y": 27.6
+          },
+          "figmaFullPin": {
+            "x": 22.2,
+            "y": 32.6
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-LOGIN-002",
+          "element": "Role selector — dropdown vs segmented buttons",
+          "section": "form",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "A single 'role' dropdown.",
+          "live": "Two segmented buttons ('Volunteer' / 'SAGE Organisation').",
+          "fix": "Use the design's single role dropdown rather than two segmented buttons.",
+          "figmaBox": [
+            0,
+            408,
+            1440,
+            553
+          ],
+          "liveBox": [
+            0,
+            240,
+            1440,
+            550
+          ],
+          "sectionBox": [
+            0,
+            240,
+            1440,
+            550
+          ],
+          "figmaPin": {
+            "x": 82,
+            "y": 39.9
+          },
+          "livePin": {
+            "x": 76,
+            "y": 29.0
+          },
+          "liveFullPin": {
+            "x": 76.0,
+            "y": 33.0
+          },
+          "figmaFullPin": {
+            "x": 82.0,
+            "y": 48.5
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-LOGIN-003",
+          "element": "Input field & control styling",
+          "section": "form",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "Inputs use the design's field height, border colour, radius and focus state.",
+          "live": "The build's input fields and the primary button differ in height, border and radius from the design.",
+          "fix": "Match the input field height, border colour, radius and focus/disabled states to the design.",
+          "figmaBox": [
+            0,
+            408,
+            1440,
+            553
+          ],
+          "liveBox": [
+            0,
+            240,
+            1440,
+            550
+          ],
+          "sectionBox": [
+            0,
+            240,
+            1440,
+            550
+          ],
+          "figmaPin": {
+            "x": 82,
+            "y": 59.7
+          },
+          "livePin": {
+            "x": 75,
+            "y": 71.0
+          },
+          "liveFullPin": {
+            "x": 75.0,
+            "y": 46.0
+          },
+          "figmaFullPin": {
+            "x": 82.0,
+            "y": 51.5
+          }
+        },
+        {
+          "num": 4,
+          "id": "SCW-LOGIN-004",
+          "element": "SAMAVESH",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Design: font-size 56px.",
+          "live": "Build: font-size 48px.",
+          "fix": "Set the “SAMAVESH” style to font-size 56px — the build currently uses font-size 48px.",
+          "figmaBox": [
+            0,
+            323,
+            1440,
+            940
+          ],
+          "liveBox": [
+            0,
+            292,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            292,
+            1440,
+            1000
+          ],
+          "figmaPin": {
+            "x": 22,
+            "y": 11.7
+          },
+          "livePin": {
+            "x": 20,
+            "y": 9.7
+          },
+          "liveFullPin": {
+            "x": 19.5,
+            "y": 36.1
+          },
+          "figmaFullPin": {
+            "x": 22.2,
+            "y": 41.1
+          }
+        },
+        {
+          "num": 5,
+          "id": "SCW-LOGIN-005",
+          "element": "Justice. Equality. Dignity.",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 28px.",
+          "live": "Build: font-size 30px.",
+          "fix": "Set the “Justice. Equality. Dignity.” style to font-size 28px — the build currently uses font-size 30px.",
+          "figmaBox": [
+            0,
+            323,
+            1440,
+            940
+          ],
+          "liveBox": [
+            0,
+            292,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            292,
+            1440,
+            1000
+          ],
+          "figmaPin": {
+            "x": 16,
+            "y": 33.4
+          },
+          "livePin": {
+            "x": 11,
+            "y": 27.5
+          },
+          "liveFullPin": {
+            "x": 11.0,
+            "y": 48.7
+          },
+          "figmaFullPin": {
+            "x": 15.6,
+            "y": 55.1
+          }
+        },
+        {
+          "num": 6,
+          "id": "SCW-LOGIN-006",
+          "element": "SIGNING INTO",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: weight 500.",
+          "live": "Build: weight 400.",
+          "fix": "Set the “SIGNING INTO” style to weight 500 — the build currently uses weight 400.",
+          "figmaBox": [
+            0,
+            323,
+            1440,
+            940
+          ],
+          "liveBox": [
+            0,
+            292,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            292,
+            1440,
+            1000
+          ],
+          "figmaPin": {
+            "x": 30,
+            "y": 87.0
+          },
+          "livePin": {
+            "x": 14,
+            "y": 90.7
+          },
+          "liveFullPin": {
+            "x": 13.9,
+            "y": 93.4
+          },
+          "figmaFullPin": {
+            "x": 30.1,
+            "y": 89.6
+          }
+        },
+        {
+          "num": 7,
+          "id": "SCW-LOGIN-007",
+          "element": "Senior Citizens Welfare",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: weight 700.",
+          "live": "Build: weight 600.",
+          "fix": "Set the “Senior Citizens Welfare” style to weight 700 — the build currently uses weight 600.",
+          "figmaBox": [
+            0,
+            323,
+            1440,
+            940
+          ],
+          "liveBox": [
+            0,
+            292,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            292,
+            1440,
+            1000
+          ],
+          "figmaPin": {
+            "x": 30,
+            "y": 90.6
+          },
+          "livePin": {
+            "x": 14,
+            "y": 93.8
+          },
+          "liveFullPin": {
+            "x": 13.9,
+            "y": 95.6
+          },
+          "figmaFullPin": {
+            "x": 30.1,
+            "y": 91.9
+          }
+        },
+        {
+          "num": 8,
+          "id": "SCW-LOGIN-008",
+          "element": "Change",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 12px, weight 500.",
+          "live": "Build: font-size 14px, weight 400.",
+          "fix": "Set the “Change” style to font-size 12px, weight 500 — the build currently uses font-size 14px, weight 400.",
+          "figmaBox": [
+            0,
+            323,
+            1440,
+            940
+          ],
+          "liveBox": [
+            0,
+            292,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            292,
+            1440,
+            1000
+          ],
+          "figmaPin": {
+            "x": 57,
+            "y": 89.3
+          },
+          "livePin": {
+            "x": 53,
+            "y": 92.7
+          },
+          "liveFullPin": {
+            "x": 52.6,
+            "y": 94.8
+          },
+          "figmaFullPin": {
+            "x": 56.8,
+            "y": 91.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "OUR-SERVICES",
+      "name": "Our Services (Service Directory)",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4819-23664",
+      "liveUrl": "https://scw-user-uat.mosje.in/our-services",
+      "figmaImg": "captures/figma/our-services.png",
+      "liveImg": "captures/live/our-services.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-OUR-SERVICES-001",
+          "element": "Our Services",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 28px, weight 500.",
+          "live": "Build: font-size 32px, weight 600.",
+          "fix": "Set the “Our Services” style to font-size 28px, weight 500 — the build currently uses font-size 32px, weight 600.",
+          "figmaBox": [
+            0,
+            93,
+            1440,
+            1285
+          ],
+          "liveBox": [
+            0,
+            111,
+            1440,
+            952
+          ],
+          "sectionBox": [
+            0,
+            111,
+            1440,
+            952
+          ],
+          "figmaPin": {
+            "x": 29,
+            "y": 7.0
+          },
+          "livePin": {
+            "x": 28,
+            "y": 8.3
+          },
+          "liveFullPin": {
+            "x": 28.2,
+            "y": 18.1
+          },
+          "figmaFullPin": {
+            "x": 29.0,
+            "y": 12.2
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-OUR-SERVICES-002",
+          "element": "Need Immediate Help?",
+          "section": "text",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Design: colour #d64539.",
+          "live": "Build: colour #b91c1c.",
+          "fix": "Set the “Need Immediate Help?” style to colour #d64539 — the build currently uses colour #b91c1c.",
+          "figmaBox": [
+            0,
+            93,
+            1440,
+            1285
+          ],
+          "liveBox": [
+            0,
+            111,
+            1440,
+            952
+          ],
+          "sectionBox": [
+            0,
+            111,
+            1440,
+            952
+          ],
+          "figmaPin": {
+            "x": 86,
+            "y": 93.5
+          },
+          "livePin": {
+            "x": 69,
+            "y": 93.2
+          },
+          "liveFullPin": {
+            "x": 68.5,
+            "y": 89.5
+          },
+          "figmaFullPin": {
+            "x": 86.1,
+            "y": 83.7
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-OUR-SERVICES-003",
+          "element": "Facility-type filter missing from toolbar",
+          "section": "toolbar",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "The toolbar carries a facility-type filter beside search and Near Me.",
+          "live": "The toolbar shows search + Near Me only — the facility-type filter is absent.",
+          "fix": "Add the facility-type filter control to the toolbar.",
+          "figmaBox": [
+            0,
+            194,
+            1440,
+            360
+          ],
+          "liveBox": [
+            0,
+            181,
+            1440,
+            321
+          ],
+          "sectionBox": [
+            0,
+            181,
+            1440,
+            321
+          ],
+          "figmaPin": {
+            "x": 29,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 28,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 28.2,
+            "y": 25.1
+          },
+          "figmaFullPin": {
+            "x": 29.0,
+            "y": 19.2
+          }
+        }
+      ]
+    },
+    {
+      "slug": "SAGE-LANDING",
+      "name": "SAGE Registration — Eligibility Landing",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4819-23118",
+      "liveUrl": "https://scw-user-uat.mosje.in/sage-registration",
+      "figmaImg": "captures/figma/sage-landing.png",
+      "liveImg": "captures/live/sage-landing.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-SAGE-LANDING-001",
+          "element": "SAGE Initiative",
+          "section": "text",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Design: colour #374151.",
+          "live": "Build: colour #003366.",
+          "fix": "Set the “SAGE Initiative” style to colour #374151 — the build currently uses colour #003366.",
+          "figmaBox": [
+            0,
+            138,
+            1440,
+            767
+          ],
+          "liveBox": [
+            0,
+            152,
+            1440,
+            834
+          ],
+          "sectionBox": [
+            0,
+            152,
+            1440,
+            834
+          ],
+          "figmaPin": {
+            "x": 22,
+            "y": 8.9
+          },
+          "livePin": {
+            "x": 32,
+            "y": 8.4
+          },
+          "liveFullPin": {
+            "x": 32.2,
+            "y": 20.9
+          },
+          "figmaFullPin": {
+            "x": 22.4,
+            "y": 20.2
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-SAGE-LANDING-002",
+          "element": "Eligibility Criteria",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 20px, weight 500, colour #374151.",
+          "live": "Build: font-size 16px, weight 600, colour #003366.",
+          "fix": "Set the “Eligibility Criteria” style to font-size 20px, weight 500, colour #374151 — the build currently uses font-size 16px, weight 600, colour #003366.",
+          "figmaBox": [
+            0,
+            138,
+            1440,
+            767
+          ],
+          "liveBox": [
+            0,
+            152,
+            1440,
+            834
+          ],
+          "sectionBox": [
+            0,
+            152,
+            1440,
+            834
+          ],
+          "figmaPin": {
+            "x": 22,
+            "y": 23.8
+          },
+          "livePin": {
+            "x": 34,
+            "y": 26.2
+          },
+          "liveFullPin": {
+            "x": 33.9,
+            "y": 33.1
+          },
+          "figmaFullPin": {
+            "x": 22.4,
+            "y": 30.0
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-SAGE-LANDING-003",
+          "element": "I confirm that my organization meets the SAGE el",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 16px.",
+          "live": "Build: font-size 14px.",
+          "fix": "Set the “I confirm that my organization meets t” style to font-size 16px — the build currently uses font-size 14px.",
+          "figmaBox": [
+            0,
+            138,
+            1440,
+            767
+          ],
+          "liveBox": [
+            0,
+            152,
+            1440,
+            834
+          ],
+          "sectionBox": [
+            0,
+            152,
+            1440,
+            834
+          ],
+          "figmaPin": {
+            "x": 25,
+            "y": 91.1
+          },
+          "livePin": {
+            "x": 45,
+            "y": 91.7
+          },
+          "liveFullPin": {
+            "x": 45.3,
+            "y": 77.8
+          },
+          "figmaFullPin": {
+            "x": 24.9,
+            "y": 74.1
+          }
+        },
+        {
+          "num": 4,
+          "id": "SCW-SAGE-LANDING-004",
+          "element": "Redundant inner card around eligibility",
+          "section": "cards",
+          "axis": "Layout & Spacing",
+          "severity": "Major",
+          "figma": "Eligibility content sits directly in the page panel and spans its width.",
+          "live": "Content is wrapped in an extra bordered inner card that narrows the column.",
+          "fix": "Remove the inner card so the content flows to the panel width — no fixed inner width.",
+          "figmaBox": [
+            0,
+            288,
+            1440,
+            404
+          ],
+          "liveBox": [
+            0,
+            334,
+            1440,
+            448
+          ],
+          "sectionBox": [
+            0,
+            334,
+            1440,
+            448
+          ],
+          "figmaPin": {
+            "x": 22,
+            "y": 49.7
+          },
+          "livePin": {
+            "x": 34,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 33.9,
+            "y": 39.1
+          },
+          "figmaFullPin": {
+            "x": 22.4,
+            "y": 36.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "VOLUNTEER-REG",
+      "name": "Volunteer Registration",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5779-32036",
+      "liveUrl": "https://scw-user-uat.mosje.in/volunteer",
+      "figmaImg": "captures/figma/volunteer-reg.png",
+      "liveImg": "captures/live/volunteer-reg.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-VOLUNTEER-REG-001",
+          "element": "Join as a Volunteer",
+          "section": "text",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Design: colour #374151.",
+          "live": "Build: colour #003366.",
+          "fix": "Set the “Join as a Volunteer” style to colour #374151 — the build currently uses colour #003366.",
+          "figmaBox": [
+            0,
+            131,
+            1440,
+            381
+          ],
+          "liveBox": [
+            0,
+            152,
+            1440,
+            359
+          ],
+          "sectionBox": [
+            0,
+            152,
+            1440,
+            359
+          ],
+          "figmaPin": {
+            "x": 22,
+            "y": 25.2
+          },
+          "livePin": {
+            "x": 32,
+            "y": 27.5
+          },
+          "liveFullPin": {
+            "x": 32.2,
+            "y": 20.9
+          },
+          "figmaFullPin": {
+            "x": 22.4,
+            "y": 17.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-VOLUNTEER-REG-002",
+          "element": "Individual",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 16px, colour #374151.",
+          "live": "Build: font-size 14px, colour #1f2937.",
+          "fix": "Set the “Individual” style to font-size 16px, colour #374151 — the build currently uses font-size 14px, colour #1f2937.",
+          "figmaBox": [
+            0,
+            131,
+            1440,
+            381
+          ],
+          "liveBox": [
+            0,
+            152,
+            1440,
+            359
+          ],
+          "sectionBox": [
+            0,
+            152,
+            1440,
+            359
+          ],
+          "figmaPin": {
+            "x": 20,
+            "y": 74.8
+          },
+          "livePin": {
+            "x": 28,
+            "y": 73.4
+          },
+          "liveFullPin": {
+            "x": 28.4,
+            "y": 30.4
+          },
+          "figmaFullPin": {
+            "x": 19.5,
+            "y": 27.9
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-VOLUNTEER-REG-003",
+          "element": "Select Volunteer Category",
+          "section": "content",
+          "axis": "Content & Iconography",
+          "severity": "Major",
+          "figma": "Design includes 'Select Volunteer Category'.",
+          "live": "Not present in the build.",
+          "fix": "Add 'Select Volunteer Category' per the design.",
+          "figmaBox": [
+            0,
+            223,
+            1440,
+            345
+          ],
+          "liveBox": [
+            0,
+            229,
+            1440,
+            339
+          ],
+          "sectionBox": [
+            0,
+            229,
+            1440,
+            339
+          ],
+          "figmaPin": {
+            "x": 21,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 21,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 20.8,
+            "y": 28.4
+          },
+          "figmaFullPin": {
+            "x": 20.8,
+            "y": 24.9
+          }
+        },
+        {
+          "num": 4,
+          "id": "SCW-VOLUNTEER-REG-004",
+          "element": "Address row order + PIN-code auto-fill",
+          "section": "form",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "Address row order is Pincode → State → District, and entering the PIN code auto-fills State and District.",
+          "live": "Order is State → District → Pincode, and the fields are independent (no PIN-driven auto-fill).",
+          "fix": "Reorder to Pincode → State → District, and auto-populate State & District from the entered PIN code.",
+          "figmaBox": [
+            0,
+            243,
+            1440,
+            858
+          ],
+          "liveBox": [
+            0,
+            239,
+            1440,
+            500
+          ],
+          "sectionBox": [
+            0,
+            239,
+            1440,
+            500
+          ],
+          "figmaPin": {
+            "x": 25,
+            "y": 47.5
+          },
+          "livePin": {
+            "x": 50,
+            "y": 65.5
+          },
+          "liveFullPin": {
+            "x": 50.0,
+            "y": 41.0
+          },
+          "figmaFullPin": {
+            "x": 25.2,
+            "y": 47.0
+          }
+        },
+        {
+          "num": 5,
+          "id": "SCW-VOLUNTEER-REG-005",
+          "element": "Areas-of-Interest checkbox grid flow",
+          "section": "form",
+          "axis": "Layout & Spacing",
+          "severity": "Minor",
+          "figma": "Checkboxes flow column-wise across the grid as designed.",
+          "live": "The checkbox order/flow differs from the design grid.",
+          "fix": "Match the checkbox grid flow (column order) to the design.",
+          "figmaBox": [
+            0,
+            243,
+            1440,
+            858
+          ],
+          "liveBox": [
+            0,
+            239,
+            1440,
+            500
+          ],
+          "sectionBox": [
+            0,
+            239,
+            1440,
+            500
+          ],
+          "figmaPin": {
+            "x": 25,
+            "y": 90.1
+          },
+          "livePin": {
+            "x": 40,
+            "y": 61.7
+          },
+          "liveFullPin": {
+            "x": 40.0,
+            "y": 40.0
+          },
+          "figmaFullPin": {
+            "x": 25.2,
+            "y": 70.0
+          }
+        },
+        {
+          "num": 6,
+          "id": "SCW-VOLUNTEER-REG-006",
+          "element": "Radio-button control styling",
+          "section": "form",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "The Individual/Organisation radios use the design's control size, fill colour and selected-state ring.",
+          "live": "The radio buttons differ in size, fill colour and selected-state styling from the design.",
+          "fix": "Match the radio control size, selected fill colour and ring to the design's radio component.",
+          "figmaBox": [
+            0,
+            243,
+            1440,
+            858
+          ],
+          "liveBox": [
+            0,
+            239,
+            1440,
+            500
+          ],
+          "sectionBox": [
+            0,
+            239,
+            1440,
+            500
+          ],
+          "figmaPin": {
+            "x": 20,
+            "y": 10.3
+          },
+          "livePin": {
+            "x": 28,
+            "y": 21.1
+          },
+          "liveFullPin": {
+            "x": 28.4,
+            "y": 29.4
+          },
+          "figmaFullPin": {
+            "x": 19.5,
+            "y": 26.9
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ALD-SCHEME",
+      "name": "Free Assisted Living Devices — Scheme",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4819-23725",
+      "liveUrl": "https://scw-user-uat.mosje.in/our-services/scheme",
+      "figmaImg": "captures/figma/ald-scheme.png",
+      "liveImg": "captures/live/ald-scheme.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-ALD-SCHEME-001",
+          "element": "Header-area background treatment",
+          "section": "masthead",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "The scheme header band uses the design's background colour/treatment.",
+          "live": "The header-area background differs from the design (wrong fill/tone behind the title block).",
+          "fix": "Match the scheme header band background colour/treatment to the design.",
+          "figmaBox": [
+            0,
+            109,
+            1440,
+            221
+          ],
+          "liveBox": [
+            0,
+            176,
+            1440,
+            294
+          ],
+          "sectionBox": [
+            0,
+            176,
+            1440,
+            294
+          ],
+          "figmaPin": {
+            "x": 22,
+            "y": 50.2
+          },
+          "livePin": {
+            "x": 31,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 31.3,
+            "y": 23.5
+          },
+          "figmaFullPin": {
+            "x": 22.4,
+            "y": 17.2
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-ALD-SCHEME-002",
+          "element": "Redundant back-arrow control",
+          "section": "toolbar",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "No back arrow — Cancel in the action pane serves that purpose.",
+          "live": "A back-arrow (←) is added above the card, duplicating Cancel.",
+          "fix": "Remove the back arrow; Cancel already covers the back action.",
+          "figmaBox": [
+            0,
+            119,
+            1440,
+            231
+          ],
+          "liveBox": [
+            0,
+            186,
+            1440,
+            304
+          ],
+          "sectionBox": [
+            0,
+            186,
+            1440,
+            304
+          ],
+          "figmaPin": {
+            "x": 22,
+            "y": 49.8
+          },
+          "livePin": {
+            "x": 31,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 31.3,
+            "y": 24.5
+          },
+          "figmaFullPin": {
+            "x": 22.4,
+            "y": 18.2
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-ALD-SCHEME-003",
+          "element": "Free Assisted Living Devices",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 16px, colour #374151.",
+          "live": "Build: font-size 18px, colour #1f2937.",
+          "fix": "Set the “Free Assisted Living Devices” style to font-size 16px, colour #374151 — the build currently uses font-size 18px, colour #1f2937.",
+          "figmaBox": [
+            0,
+            138,
+            1440,
+            647
+          ],
+          "liveBox": [
+            0,
+            206,
+            1440,
+            695
+          ],
+          "sectionBox": [
+            0,
+            206,
+            1440,
+            695
+          ],
+          "figmaPin": {
+            "x": 22,
+            "y": 11.0
+          },
+          "livePin": {
+            "x": 31,
+            "y": 12.1
+          },
+          "liveFullPin": {
+            "x": 31.3,
+            "y": 26.5
+          },
+          "figmaFullPin": {
+            "x": 22.4,
+            "y": 20.2
+          }
+        },
+        {
+          "num": 4,
+          "id": "SCW-ALD-SCHEME-004",
+          "element": "Eligibility Criteria",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 14px, weight 500, colour #374151.",
+          "live": "Build: font-size 12px, weight 600, colour #6b7280.",
+          "fix": "Set the “Eligibility Criteria” style to font-size 14px, weight 500, colour #374151 — the build currently uses font-size 12px, weight 600, colour #6b7280.",
+          "figmaBox": [
+            0,
+            138,
+            1440,
+            647
+          ],
+          "liveBox": [
+            0,
+            206,
+            1440,
+            695
+          ],
+          "sectionBox": [
+            0,
+            206,
+            1440,
+            695
+          ],
+          "figmaPin": {
+            "x": 22,
+            "y": 29.5
+          },
+          "livePin": {
+            "x": 31,
+            "y": 29.0
+          },
+          "liveFullPin": {
+            "x": 31.3,
+            "y": 34.8
+          },
+          "figmaFullPin": {
+            "x": 22.4,
+            "y": 30.0
+          }
+        },
+        {
+          "num": 5,
+          "id": "SCW-ALD-SCHEME-005",
+          "element": "I confirm that I meet the eligibility criteria m",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 16px.",
+          "live": "Build: font-size 14px.",
+          "fix": "Set the “I confirm that I meet the eligibility ” style to font-size 16px — the build currently uses font-size 14px.",
+          "figmaBox": [
+            0,
+            138,
+            1440,
+            647
+          ],
+          "liveBox": [
+            0,
+            206,
+            1440,
+            695
+          ],
+          "sectionBox": [
+            0,
+            206,
+            1440,
+            695
+          ],
+          "figmaPin": {
+            "x": 25,
+            "y": 89.0
+          },
+          "livePin": {
+            "x": 39,
+            "y": 88.8
+          },
+          "liveFullPin": {
+            "x": 39.4,
+            "y": 64.0
+          },
+          "figmaFullPin": {
+            "x": 24.9,
+            "y": 61.6
+          }
+        },
+        {
+          "num": 6,
+          "id": "SCW-ALD-SCHEME-006",
+          "element": "Divider placement",
+          "section": "cards",
+          "axis": "Layout & Spacing",
+          "severity": "Major",
+          "figma": "A single full-width hairline sits directly above the 'I confirm' checkbox.",
+          "live": "The divider sits in an unnecessary position, breaking the card rhythm.",
+          "fix": "Keep one full-width hairline above the 'I confirm' checkbox; remove the misplaced divider.",
+          "figmaBox": [
+            0,
+            384,
+            1440,
+            500
+          ],
+          "liveBox": [
+            0,
+            455,
+            1440,
+            561
+          ],
+          "sectionBox": [
+            0,
+            455,
+            1440,
+            561
+          ],
+          "figmaPin": {
+            "x": 22,
+            "y": 49.7
+          },
+          "livePin": {
+            "x": 31,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 31.3,
+            "y": 50.8
+          },
+          "figmaFullPin": {
+            "x": 22.4,
+            "y": 46.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "EPLEDGE",
+      "name": "E-Pledge (Take the Pledge)",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4819-23436",
+      "liveUrl": "https://scw-user-uat.mosje.in/epledge",
+      "figmaImg": "captures/figma/epledge.png",
+      "liveImg": "captures/live/epledge.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-EPLEDGE-001",
+          "element": "Pledge",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: weight 600.",
+          "live": "Build: weight 700.",
+          "fix": "Set the “Pledge” style to weight 600 — the build currently uses weight 700.",
+          "figmaBox": [
+            0,
+            514,
+            1440,
+            648
+          ],
+          "liveBox": [
+            0,
+            561,
+            1440,
+            682
+          ],
+          "sectionBox": [
+            0,
+            561,
+            1440,
+            682
+          ],
+          "figmaPin": {
+            "x": 54,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 52,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 52.2,
+            "y": 62.2
+          },
+          "figmaFullPin": {
+            "x": 54.4,
+            "y": 51.6
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ADMIN-LOGIN",
+      "name": "Login — Admin (SAMAVESH, Officer/Admin)",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9508-52655",
+      "liveUrl": "https://scw-admin-uat.mosje.in/login",
+      "figmaImg": "captures/figma/admin-login.png",
+      "liveImg": "captures/live/admin-login.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-ADMIN-LOGIN-001",
+          "element": "'Forgot Password' placement & lock icon",
+          "section": "form",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "'Forgot Password' is a plain link, right-aligned ABOVE the password field.",
+          "live": "It carries a lock icon and is not right-aligned above the password field as designed.",
+          "fix": "Right-align 'Forgot Password' above the password field and remove the lock icon.",
+          "figmaBox": [
+            0,
+            295,
+            1440,
+            473
+          ],
+          "liveBox": [
+            0,
+            310,
+            1440,
+            490
+          ],
+          "sectionBox": [
+            0,
+            310,
+            1440,
+            490
+          ],
+          "figmaPin": {
+            "x": 80,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 80,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 80.0,
+            "y": 40.0
+          },
+          "figmaFullPin": {
+            "x": 80.0,
+            "y": 40.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-ADMIN-LOGIN-002",
+          "element": "National Emblem in 'Signing into' lockup",
+          "section": "footer",
+          "axis": "Content & Iconography",
+          "severity": "Blocker",
+          "figma": "The bottom-left lockup shows the National Emblem.",
+          "live": "The emblem is a blank white circle — the image is missing/broken.",
+          "fix": "Restore the National Emblem asset in the bottom-left lockup.",
+          "figmaBox": [
+            0,
+            794,
+            1440,
+            960
+          ],
+          "liveBox": [
+            0,
+            860,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            860,
+            1440,
+            1000
+          ],
+          "figmaPin": {
+            "x": 12,
+            "y": 53.7
+          },
+          "livePin": {
+            "x": 4,
+            "y": 64.3
+          },
+          "liveFullPin": {
+            "x": 4.0,
+            "y": 95.0
+          },
+          "figmaFullPin": {
+            "x": 12.0,
+            "y": 92.0
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-ADMIN-LOGIN-003",
+          "element": "'Change' button styling",
+          "section": "footer",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "'Change' follows the design's button token.",
+          "live": "The 'Change' control's styling/placement differs from the design.",
+          "fix": "Align the 'Change' control to the design's button token.",
+          "figmaBox": [
+            0,
+            794,
+            1440,
+            960
+          ],
+          "liveBox": [
+            0,
+            860,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            860,
+            1440,
+            1000
+          ],
+          "figmaPin": {
+            "x": 52,
+            "y": 53.7
+          },
+          "livePin": {
+            "x": 52,
+            "y": 64.3
+          },
+          "liveFullPin": {
+            "x": 52.0,
+            "y": 95.0
+          },
+          "figmaFullPin": {
+            "x": 52.0,
+            "y": 92.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ADMIN-DASHBOARD",
+      "name": "Admin / Dashboard",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5779-23259",
+      "liveUrl": "https://scw-admin-uat.mosje.in/dashboard",
+      "figmaImg": "captures/figma/admin-dashboard.png",
+      "liveImg": "captures/live/admin-dashboard.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-ADMIN-DASHBOARD-001",
+          "element": "Dashboard",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 28px, weight 500, colour #374151.",
+          "live": "Build: font-size 24px, weight 600, colour #111827.",
+          "fix": "Set the “Dashboard” style to font-size 28px, weight 500, colour #374151 — the build currently uses font-size 24px, weight 600, colour #111827.",
+          "figmaBox": [
+            0,
+            113,
+            1440,
+            819
+          ],
+          "liveBox": [
+            0,
+            127,
+            1440,
+            960
+          ],
+          "sectionBox": [
+            0,
+            127,
+            1440,
+            960
+          ],
+          "figmaPin": {
+            "x": 30,
+            "y": 9.5
+          },
+          "livePin": {
+            "x": 27,
+            "y": 7.2
+          },
+          "liveFullPin": {
+            "x": 27.2,
+            "y": 19.5
+          },
+          "figmaFullPin": {
+            "x": 30.1,
+            "y": 16.5
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-ADMIN-DASHBOARD-002",
+          "element": "Recent SAGE Applications",
+          "section": "text",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Design: colour #374151.",
+          "live": "Build: colour #111827.",
+          "fix": "Set the “Recent SAGE Applications” style to colour #374151 — the build currently uses colour #111827.",
+          "figmaBox": [
+            0,
+            113,
+            1440,
+            819
+          ],
+          "liveBox": [
+            0,
+            127,
+            1440,
+            960
+          ],
+          "sectionBox": [
+            0,
+            127,
+            1440,
+            960
+          ],
+          "figmaPin": {
+            "x": 44,
+            "y": 46.6
+          },
+          "livePin": {
+            "x": 31,
+            "y": 34.3
+          },
+          "liveFullPin": {
+            "x": 31.1,
+            "y": 43.0
+          },
+          "figmaFullPin": {
+            "x": 44.2,
+            "y": 40.4
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-ADMIN-DASHBOARD-003",
+          "element": "Recent Platform Activity",
+          "section": "text",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Design: colour #374151.",
+          "live": "Build: colour #111827.",
+          "fix": "Set the “Recent Platform Activity” style to colour #374151 — the build currently uses colour #111827.",
+          "figmaBox": [
+            0,
+            113,
+            1440,
+            819
+          ],
+          "liveBox": [
+            0,
+            127,
+            1440,
+            960
+          ],
+          "sectionBox": [
+            0,
+            127,
+            1440,
+            960
+          ],
+          "figmaPin": {
+            "x": 86,
+            "y": 46.6
+          },
+          "livePin": {
+            "x": 85,
+            "y": 34.3
+          },
+          "liveFullPin": {
+            "x": 85.1,
+            "y": 43.0
+          },
+          "figmaFullPin": {
+            "x": 86.2,
+            "y": 40.4
+          }
+        },
+        {
+          "num": 4,
+          "id": "SCW-ADMIN-DASHBOARD-004",
+          "element": "Volunteer Applications",
+          "section": "text",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Design: colour #374151.",
+          "live": "Build: colour #111827.",
+          "fix": "Set the “Volunteer Applications” style to colour #374151 — the build currently uses colour #111827.",
+          "figmaBox": [
+            0,
+            113,
+            1440,
+            819
+          ],
+          "liveBox": [
+            0,
+            127,
+            1440,
+            960
+          ],
+          "sectionBox": [
+            0,
+            127,
+            1440,
+            960
+          ],
+          "figmaPin": {
+            "x": 44,
+            "y": 91.4
+          },
+          "livePin": {
+            "x": 30,
+            "y": 94.1
+          },
+          "liveFullPin": {
+            "x": 30.4,
+            "y": 94.9
+          },
+          "figmaFullPin": {
+            "x": 44.2,
+            "y": 69.3
+          }
+        },
+        {
+          "num": 5,
+          "id": "SCW-ADMIN-DASHBOARD-005",
+          "element": "Stat-card caption hierarchy",
+          "section": "stat-cards",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Each stat card shows a small, light, muted-grey caption above a large bold number.",
+          "live": "The caption renders darker and heavier, so it competes with the number and flattens the hierarchy.",
+          "fix": "Make the stat-card caption smaller, lighter and muted-grey so the number stays the dominant value.",
+          "figmaBox": [
+            0,
+            234,
+            1440,
+            422
+          ],
+          "liveBox": [
+            0,
+            218,
+            1440,
+            396
+          ],
+          "sectionBox": [
+            0,
+            218,
+            1440,
+            396
+          ],
+          "figmaPin": {
+            "x": 28,
+            "y": 50.1
+          },
+          "livePin": {
+            "x": 28,
+            "y": 50.1
+          },
+          "liveFullPin": {
+            "x": 28.0,
+            "y": 32.0
+          },
+          "figmaFullPin": {
+            "x": 28.0,
+            "y": 30.0
+          }
+        },
+        {
+          "num": 6,
+          "id": "SCW-ADMIN-DASHBOARD-006",
+          "element": "Table-header text-case",
+          "section": "table",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Column headers (e.g. 'Organization Name') use the design's title-case label style.",
+          "live": "The same headers are force-uppercased in the build (text-transform), unlike the design's title case.",
+          "fix": "Match the column-header text-case to the design — drop the uppercase text-transform.",
+          "figmaBox": [
+            0,
+            441,
+            1440,
+            559
+          ],
+          "liveBox": [
+            0,
+            353,
+            1440,
+            531
+          ],
+          "sectionBox": [
+            0,
+            353,
+            1440,
+            531
+          ],
+          "figmaPin": {
+            "x": 33,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 30,
+            "y": 49.8
+          },
+          "liveFullPin": {
+            "x": 30.0,
+            "y": 46.0
+          },
+          "figmaFullPin": {
+            "x": 33.1,
+            "y": 45.7
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ADMIN-SAGE-APPLICATIONS",
+      "name": "Admin / SAGE Applications — List",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5779-23407",
+      "liveUrl": "https://scw-admin-uat.mosje.in/sage-applications",
+      "figmaImg": "captures/figma/admin-sage-applications.png",
+      "liveImg": "captures/live/admin-sage-applications.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-ADMIN-SAGE-APPLICATIONS-001",
+          "element": "SAGE Applications",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 28px, weight 500.",
+          "live": "Build: font-size 24px, weight 600.",
+          "fix": "Set the “SAGE Applications” style to font-size 28px, weight 500 — the build currently uses font-size 24px, weight 600.",
+          "figmaBox": [
+            0,
+            114,
+            1440,
+            238
+          ],
+          "liveBox": [
+            0,
+            112,
+            1440,
+            232
+          ],
+          "sectionBox": [
+            0,
+            112,
+            1440,
+            232
+          ],
+          "figmaPin": {
+            "x": 30,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 29,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 29.2,
+            "y": 17.9
+          },
+          "figmaFullPin": {
+            "x": 30.1,
+            "y": 18.3
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-ADMIN-SAGE-APPLICATIONS-002",
+          "element": "Organization Name",
+          "section": "content",
+          "axis": "Content & Iconography",
+          "severity": "Major",
+          "figma": "Design includes 'Organization Name'.",
+          "live": "Not present in the build.",
+          "fix": "Add 'Organization Name' per the design.",
+          "figmaBox": [
+            0,
+            246,
+            1440,
+            354
+          ],
+          "liveBox": [
+            0,
+            246,
+            1440,
+            354
+          ],
+          "sectionBox": [
+            0,
+            246,
+            1440,
+            354
+          ],
+          "figmaPin": {
+            "x": 46,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 46,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 46.0,
+            "y": 31.2
+          },
+          "figmaFullPin": {
+            "x": 46.0,
+            "y": 31.2
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-ADMIN-SAGE-APPLICATIONS-003",
+          "element": "Tables & filters wrapped in a card (recurs across all list views)",
+          "section": "table",
+          "axis": "Layout & Spacing",
+          "severity": "Major",
+          "figma": "Tables and their toolbars sit directly on the page background.",
+          "live": "The table + toolbar are wrapped in a bordered card the design doesn't use — this recurs across SAGE, Events, Volunteers and IPSrC Homes lists.",
+          "fix": "Drop the card wrapper around tables and toolbars across all admin list views — they sit on the page background.",
+          "figmaBox": [
+            0,
+            343,
+            1440,
+            569
+          ],
+          "liveBox": [
+            0,
+            343,
+            1440,
+            569
+          ],
+          "sectionBox": [
+            0,
+            343,
+            1440,
+            569
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 60.6
+          },
+          "livePin": {
+            "x": 50,
+            "y": 60.6
+          },
+          "liveFullPin": {
+            "x": 50.0,
+            "y": 50.0
+          },
+          "figmaFullPin": {
+            "x": 50.0,
+            "y": 50.0
+          }
+        },
+        {
+          "num": 4,
+          "id": "SCW-ADMIN-SAGE-APPLICATIONS-004",
+          "element": "Status pill styling",
+          "section": "table",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Status pills use the design's bordered/tonal pill style.",
+          "live": "Both status pills render as flat filled pills.",
+          "fix": "Match the status pills to the design's bordered/tonal pill style.",
+          "figmaBox": [
+            0,
+            343,
+            1440,
+            569
+          ],
+          "liveBox": [
+            0,
+            343,
+            1440,
+            569
+          ],
+          "sectionBox": [
+            0,
+            343,
+            1440,
+            569
+          ],
+          "figmaPin": {
+            "x": 55,
+            "y": 39.4
+          },
+          "livePin": {
+            "x": 55,
+            "y": 39.4
+          },
+          "liveFullPin": {
+            "x": 55.0,
+            "y": 45.0
+          },
+          "figmaFullPin": {
+            "x": 55.0,
+            "y": 45.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ADMIN-SAGE-DETAIL",
+      "name": "Admin / SAGE Application — Detail",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5779-23521",
+      "liveUrl": "https://scw-admin-uat.mosje.in/sage-applications/sage00763",
+      "figmaImg": "captures/figma/admin-sage-detail.png",
+      "liveImg": "captures/live/admin-sage-detail.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-ADMIN-SAGE-DETAIL-001",
+          "element": "COMPANY DETAILS",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 16px, colour #374151.",
+          "live": "Build: font-size 14px, colour #6b7280.",
+          "fix": "Set the “COMPANY DETAILS” style to font-size 16px, colour #374151 — the build currently uses font-size 14px, colour #6b7280.",
+          "figmaBox": [
+            0,
+            232,
+            1440,
+            372
+          ],
+          "liveBox": [
+            0,
+            252,
+            1440,
+            369
+          ],
+          "sectionBox": [
+            0,
+            252,
+            1440,
+            369
+          ],
+          "figmaPin": {
+            "x": 18,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 31,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 31.3,
+            "y": 32.3
+          },
+          "figmaFullPin": {
+            "x": 18.2,
+            "y": 23.6
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-ADMIN-SAGE-DETAIL-002",
+          "element": "Field grouping & empty-value handling",
+          "section": "form",
+          "axis": "Layout & Spacing",
+          "severity": "Major",
+          "figma": "Fields are grouped into logical, labelled sections, showing only the relevant populated fields.",
+          "live": "Most fields are dumped flat under one heading, with many empty values shown as '-'.",
+          "fix": "Group fields into logical sections and hide empty fields rather than rendering them as '-'.",
+          "figmaBox": [
+            0,
+            600,
+            1440,
+            805
+          ],
+          "liveBox": [
+            0,
+            439,
+            1440,
+            617
+          ],
+          "sectionBox": [
+            0,
+            439,
+            1440,
+            617
+          ],
+          "figmaPin": {
+            "x": 30,
+            "y": 50.2
+          },
+          "livePin": {
+            "x": 30,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 30.0,
+            "y": 55.0
+          },
+          "figmaFullPin": {
+            "x": 30.0,
+            "y": 55.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ADMIN-EVENTS",
+      "name": "Admin / Events — List",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5779-25198",
+      "liveUrl": "https://scw-admin-uat.mosje.in/events",
+      "figmaImg": "captures/figma/admin-events.png",
+      "liveImg": "captures/live/admin-events.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-ADMIN-EVENTS-001",
+          "element": "Event status tab bar",
+          "section": "tabs",
+          "axis": "Components & States",
+          "severity": "Blocker",
+          "figma": "A tab bar — My / Pending / Approved / Rejected Events — sits above the table.",
+          "live": "No tab bar is present; only a search box + the table.",
+          "fix": "Add the events status tab bar above the table, per the design.",
+          "figmaBox": [
+            0,
+            126,
+            1440,
+            316
+          ],
+          "liveBox": [
+            0,
+            84,
+            1440,
+            262
+          ],
+          "sectionBox": [
+            0,
+            84,
+            1440,
+            262
+          ],
+          "figmaPin": {
+            "x": 35,
+            "y": 50.1
+          },
+          "livePin": {
+            "x": 35,
+            "y": 49.9
+          },
+          "liveFullPin": {
+            "x": 35.0,
+            "y": 18.0
+          },
+          "figmaFullPin": {
+            "x": 35.0,
+            "y": 20.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-ADMIN-EVENTS-002",
+          "element": "Events",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Design: font-size 32px, weight 500.",
+          "live": "Build: font-size 24px, weight 600.",
+          "fix": "Set the “Events” style to font-size 32px, weight 500 — the build currently uses font-size 24px, weight 600.",
+          "figmaBox": [
+            0,
+            108,
+            1440,
+            376
+          ],
+          "liveBox": [
+            0,
+            114,
+            1440,
+            361
+          ],
+          "sectionBox": [
+            0,
+            114,
+            1440,
+            361
+          ],
+          "figmaPin": {
+            "x": 30,
+            "y": 26.1
+          },
+          "livePin": {
+            "x": 25,
+            "y": 24.3
+          },
+          "liveFullPin": {
+            "x": 24.6,
+            "y": 18.1
+          },
+          "figmaFullPin": {
+            "x": 30.1,
+            "y": 16.1
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-ADMIN-EVENTS-003",
+          "element": "Events Date & Time",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: weight 600, colour #6b7280.",
+          "live": "Build: weight 700, colour #003366.",
+          "fix": "Set the “Events Date & Time” style to weight 600, colour #6b7280 — the build currently uses weight 700, colour #003366.",
+          "figmaBox": [
+            0,
+            108,
+            1440,
+            376
+          ],
+          "liveBox": [
+            0,
+            114,
+            1440,
+            361
+          ],
+          "sectionBox": [
+            0,
+            114,
+            1440,
+            361
+          ],
+          "figmaPin": {
+            "x": 60,
+            "y": 77.6
+          },
+          "livePin": {
+            "x": 6,
+            "y": 78.1
+          },
+          "liveFullPin": {
+            "x": 5.8,
+            "y": 32.0
+          },
+          "figmaFullPin": {
+            "x": 59.9,
+            "y": 28.6
+          }
+        },
+        {
+          "num": 4,
+          "id": "SCW-ADMIN-EVENTS-004",
+          "element": "Table element styling",
+          "section": "table",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "The table header row, row dividers, cell padding and status pills follow the design's table style.",
+          "live": "The table header style, row dividers, spacing and pills don't match the design.",
+          "fix": "Align the table header, row dividers, cell padding and status pills to the design's table style.",
+          "figmaBox": [
+            0,
+            281,
+            1440,
+            471
+          ],
+          "liveBox": [
+            0,
+            237,
+            1440,
+            415
+          ],
+          "sectionBox": [
+            0,
+            237,
+            1440,
+            415
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 50,
+            "y": 50.2
+          },
+          "liveFullPin": {
+            "x": 50.0,
+            "y": 34.0
+          },
+          "figmaFullPin": {
+            "x": 50.0,
+            "y": 34.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ADMIN-EVENTS-ADD",
+      "name": "Admin / Events — Add New Event",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5779-24326",
+      "liveUrl": "https://scw-admin-uat.mosje.in/events/add",
+      "figmaImg": "captures/figma/admin-events-add.png",
+      "liveImg": "captures/live/admin-events-add.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-ADMIN-EVENTS-ADD-001",
+          "element": "Add New Event",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: weight 500, colour #374151.",
+          "live": "Build: weight 600, colour #111827.",
+          "fix": "Set the “Add New Event” style to weight 500, colour #374151 — the build currently uses weight 600, colour #111827.",
+          "figmaBox": [
+            0,
+            114,
+            1440,
+            234
+          ],
+          "liveBox": [
+            0,
+            104,
+            1440,
+            224
+          ],
+          "sectionBox": [
+            0,
+            104,
+            1440,
+            224
+          ],
+          "figmaPin": {
+            "x": 33,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 30,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 30.5,
+            "y": 17.1
+          },
+          "figmaFullPin": {
+            "x": 33.5,
+            "y": 18.1
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-ADMIN-EVENTS-ADD-002",
+          "element": "Input field & icon styling",
+          "section": "form",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "Form inputs follow the design's field height, border, radius and leading-icon treatment.",
+          "live": "The input fields and their icons don't match the design's field styling.",
+          "fix": "Match the input field height, border, radius and leading-icon treatment to the design.",
+          "figmaBox": [
+            0,
+            314,
+            1440,
+            492
+          ],
+          "liveBox": [
+            0,
+            314,
+            1440,
+            492
+          ],
+          "sectionBox": [
+            0,
+            314,
+            1440,
+            492
+          ],
+          "figmaPin": {
+            "x": 35,
+            "y": 50.1
+          },
+          "livePin": {
+            "x": 35,
+            "y": 50.1
+          },
+          "liveFullPin": {
+            "x": 35.0,
+            "y": 42.0
+          },
+          "figmaFullPin": {
+            "x": 35.0,
+            "y": 42.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ADMIN-VOLUNTEERS",
+      "name": "Admin / Volunteers — List",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5779-23691",
+      "liveUrl": "https://scw-admin-uat.mosje.in/volunteers",
+      "figmaImg": "captures/figma/admin-volunteers.png",
+      "liveImg": "captures/live/admin-volunteers.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-ADMIN-VOLUNTEERS-001",
+          "element": "Toolbar control styling",
+          "section": "toolbar",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "Search and filter controls use the design's input/dropdown height, border and spacing.",
+          "live": "The toolbar controls' height, border and spacing differ from the design.",
+          "fix": "Match the toolbar search/filter controls to the design's control styling.",
+          "figmaBox": [
+            0,
+            65,
+            1440,
+            243
+          ],
+          "liveBox": [
+            0,
+            65,
+            1440,
+            243
+          ],
+          "sectionBox": [
+            0,
+            65,
+            1440,
+            243
+          ],
+          "figmaPin": {
+            "x": 55,
+            "y": 49.8
+          },
+          "livePin": {
+            "x": 55,
+            "y": 49.8
+          },
+          "liveFullPin": {
+            "x": 55.0,
+            "y": 16.0
+          },
+          "figmaFullPin": {
+            "x": 55.0,
+            "y": 16.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-ADMIN-VOLUNTEERS-002",
+          "element": "Volunteers",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 28px, weight 500.",
+          "live": "Build: font-size 24px, weight 600.",
+          "fix": "Set the “Volunteers” style to font-size 28px, weight 500 — the build currently uses font-size 24px, weight 600.",
+          "figmaBox": [
+            0,
+            118,
+            1440,
+            242
+          ],
+          "liveBox": [
+            0,
+            112,
+            1440,
+            232
+          ],
+          "sectionBox": [
+            0,
+            112,
+            1440,
+            232
+          ],
+          "figmaPin": {
+            "x": 30,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 26,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 26.4,
+            "y": 17.9
+          },
+          "figmaFullPin": {
+            "x": 30.1,
+            "y": 18.8
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-ADMIN-VOLUNTEERS-003",
+          "element": "Table element styling",
+          "section": "table",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "The table header, row dividers and cell padding follow the design.",
+          "live": "The table header style, dividers and spacing differ from the design.",
+          "fix": "Align the table elements to the design's table style.",
+          "figmaBox": [
+            0,
+            218,
+            1440,
+            396
+          ],
+          "liveBox": [
+            0,
+            218,
+            1440,
+            396
+          ],
+          "sectionBox": [
+            0,
+            218,
+            1440,
+            396
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 50.1
+          },
+          "livePin": {
+            "x": 50,
+            "y": 50.1
+          },
+          "liveFullPin": {
+            "x": 50.0,
+            "y": 32.0
+          },
+          "figmaFullPin": {
+            "x": 50.0,
+            "y": 32.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ADMIN-IPSRC-HOMES",
+      "name": "Admin / IPSrC Homes — List",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5779-23806",
+      "liveUrl": "https://scw-admin-uat.mosje.in/sage-homes",
+      "figmaImg": "captures/figma/admin-ipsrc-homes.png",
+      "liveImg": "captures/live/admin-ipsrc-homes.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-ADMIN-IPSRC-HOMES-001",
+          "element": "IPSrC Homes",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "Design: font-size 28px, weight 500.",
+          "live": "Build: font-size 24px, weight 600.",
+          "fix": "Set the “IPSrC Homes” style to font-size 28px, weight 500 — the build currently uses font-size 24px, weight 600.",
+          "figmaBox": [
+            0,
+            112,
+            1440,
+            248
+          ],
+          "liveBox": [
+            0,
+            114,
+            1440,
+            234
+          ],
+          "sectionBox": [
+            0,
+            114,
+            1440,
+            234
+          ],
+          "figmaPin": {
+            "x": 30,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 27,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 27.2,
+            "y": 18.1
+          },
+          "figmaFullPin": {
+            "x": 30.1,
+            "y": 16.2
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-ADMIN-IPSRC-HOMES-002",
+          "element": "Table element styling",
+          "section": "table",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "The table header, row dividers and cell padding follow the design.",
+          "live": "The table header style, dividers and spacing differ from the design.",
+          "fix": "Align the table elements to the design's table style.",
+          "figmaBox": [
+            0,
+            260,
+            1440,
+            450
+          ],
+          "liveBox": [
+            0,
+            218,
+            1440,
+            396
+          ],
+          "sectionBox": [
+            0,
+            218,
+            1440,
+            396
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 50.1
+          },
+          "livePin": {
+            "x": 50,
+            "y": 50.1
+          },
+          "liveFullPin": {
+            "x": 50.0,
+            "y": 32.0
+          },
+          "figmaFullPin": {
+            "x": 50.0,
+            "y": 32.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "USER-VOLUNTEER-DASHBOARD",
+      "name": "Volunteer / Dashboard",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5779-32475",
+      "liveUrl": "https://scw-user-uat.mosje.in/",
+      "figmaImg": "captures/figma/user-volunteer-dashboard.png",
+      "liveImg": "captures/live/user-volunteer-dashboard.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-USER-VOLUNTEER-DASHBOARD-001",
+          "element": "Senior Citizens Welfare",
+          "section": "text",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Design: font-size 32px.",
+          "live": "Build: font-size 24px.",
+          "fix": "Set the “Senior Citizens Welfare” style to font-size 32px — the build currently uses font-size 24px.",
+          "figmaBox": [
+            0,
+            135,
+            1440,
+            285
+          ],
+          "liveBox": [
+            0,
+            177,
+            1440,
+            297
+          ],
+          "sectionBox": [
+            0,
+            177,
+            1440,
+            297
+          ],
+          "figmaPin": {
+            "x": 23,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 45,
+            "y": 50.0
+          },
+          "liveFullPin": {
+            "x": 45.1,
+            "y": 24.7
+          },
+          "figmaFullPin": {
+            "x": 22.9,
+            "y": 17.2
+          }
+        }
+      ]
+    },
+    {
+      "slug": "USER-SAGE-DASHBOARD",
+      "name": "SAGE / Dashboard — My Applications",
+      "note": null,
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5687-18689",
+      "liveUrl": "https://scw-user-uat.mosje.in/",
+      "figmaImg": "captures/figma/user-sage-dashboard.png",
+      "liveImg": "captures/live/user-sage-dashboard.png",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-USER-SAGE-DASHBOARD-001",
+          "element": "Approved application card styling",
+          "section": "card",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "The approved application card uses the design's surface colour, border and status-badge styling.",
+          "live": "The approved card's colour, border and badge styling differ from the design.",
+          "fix": "Match the approved application card's surface colour, border and status badge to the Figma design (the card is read-only — no Withdraw action expected here).",
+          "figmaBox": [
+            0,
+            439,
+            1440,
+            617
+          ],
+          "liveBox": [
+            0,
+            251,
+            1440,
+            363
+          ],
+          "sectionBox": [
+            0,
+            251,
+            1440,
+            363
+          ],
+          "figmaPin": {
+            "x": 30,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 28,
+            "y": 50.2
+          },
+          "liveFullPin": {
+            "x": 28.1,
+            "y": 32.0
+          },
+          "figmaFullPin": {
+            "x": 30.0,
+            "y": 55.0
+          }
+        }
+      ]
+    }
+  ],
+  "deferred": [
+    {
+      "id": "SCW-DEF-001",
+      "title": "SAGE registration wizard (Steps 1–6) — needs a pending-application test account",
+      "reason": "The test account's application is Approved (read-only); 'View Details' routes to the eligibility landing, not the editable wizard. Provide a pending-application SAGE account to audit the wizard."
+    }
+  ]
+}

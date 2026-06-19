@@ -21,6 +21,18 @@ interface PortalReport {
 
 const PORTALS: PortalReport[] = [
   {
+    id: "scw",
+    title: "SCW — Senior Citizens Welfare",
+    subtitle: "Design QC (UAT) — Public · Admin · User",
+    href: "/reports/scw",
+    date: "2026-06-18",
+    screens: 18,
+    findings: { Blocker: 3, Major: 23, Minor: 37 },
+    suggestions: 0,
+    tags: ["scw", "senior-citizens", "uat", "june-2026"],
+    status: "Final",
+  },
+  {
     id: "eutthan-admin",
     title: "eUtthan Admin",
     subtitle: "Design QC + Design Suggestions",

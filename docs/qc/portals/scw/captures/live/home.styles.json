@@ -1,0 +1,54 @@
+{
+  "h1": {
+    "font-family": "\"Noto Sans\"",
+    "font-size": "24px",
+    "font-weight": "500",
+    "line-height": "32px",
+    "letter-spacing": "normal",
+    "color": "rgb(255, 255, 255)",
+    "background-color": "rgba(0, 0, 0, 0)",
+    "border-radius": "0px",
+    "padding": "0px",
+    "box-shadow": "none",
+    "text-transform": "none"
+  },
+  "hero_btn": {
+    "font-family": "\"Noto Sans\"",
+    "font-size": "14px",
+    "font-weight": "400",
+    "line-height": "20px",
+    "letter-spacing": "normal",
+    "color": "rgb(0, 51, 102)",
+    "background-color": "rgb(255, 255, 255)",
+    "border-radius": "6px",
+    "padding": "8px 24px",
+    "box-shadow": "none",
+    "text-transform": "none"
+  },
+  "card_h": {
+    "font-family": "\"Noto Sans\"",
+    "font-size": "16px",
+    "font-weight": "600",
+    "line-height": "24px",
+    "letter-spacing": "normal",
+    "color": "rgb(0, 51, 102)",
+    "background-color": "rgba(0, 0, 0, 0)",
+    "border-radius": "0px",
+    "padding": "0px",
+    "box-shadow": "none",
+    "text-transform": "none"
+  },
+  "helpline_btn": {
+    "font-family": "\"Noto Sans\"",
+    "font-size": "16px",
+    "font-weight": "400",
+    "line-height": "24.8px",
+    "letter-spacing": "normal",
+    "color": "rgb(255, 255, 255)",
+    "background-color": "rgb(230, 81, 0)",
+    "border-radius": "8px",
+    "padding": "12px 24px",
+    "box-shadow": "none",
+    "text-transform": "none"
+  }
+}
