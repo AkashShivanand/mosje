@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/components/toast";
-import { DemoFab } from "@/components/demo-fab";
+import { DemoFab } from "@mosje/design-system";
+
+const NMBA_DEMO_ACCOUNTS = [
+  { role: "Admin", id: "9999999999", password: "Demo@123" },
+];
 import { AppSwitcher, ColorModeProvider } from "@mosje/design-system";
 
 const notoSans = Noto_Sans({
@@ -26,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ColorModeProvider>
           <ToastProvider>{children}</ToastProvider>
           <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
-          <DemoFab devMode={process.env.NODE_ENV === "development"} />
+          <DemoFab accounts={NMBA_DEMO_ACCOUNTS} devMode={process.env.NODE_ENV === "development"} />
         </ColorModeProvider>
       </body>
     </html>

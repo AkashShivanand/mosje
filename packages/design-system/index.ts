@@ -90,3 +90,12 @@ export type {
 
 // ---- Components: Accessibility -----------------------------------------------
 export { AccessibilityWidget } from "./components/a11y/accessibility-widget";
+
+
+// =============================================================================
+// DEMO-ONLY — Review & development tooling (NOT for production builds)
+// Guard every usage: devMode={process.env.NODE_ENV === "development"}
+// These live in packages/design-system/demo/ and are separate from the core DS.
+// =============================================================================
+export { DemoFab } from "./demo";
+export type { DemoAccount, DemoFabProps, DemoFillDetail } from "./demo";
