@@ -38,8 +38,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 | `apps/hub` | ✅ Yes (hidden on `/` via ConditionalAppSwitcher) |
 | `apps/portals/nmba` | ✅ Yes |
 | `apps/portals/scw` | ✅ Yes |
-| `apps/portals/smile-admin` | ❌ Pending |
-| `apps/portals/pm-ajay` | ❌ Pending |
+| `apps/portals/smile-admin` | ✅ Yes |
+| `apps/portals/pm-ajay` | ✅ Yes |
 
 ## Checklist when building a new portal
 

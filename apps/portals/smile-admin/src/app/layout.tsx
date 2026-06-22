@@ -2,7 +2,13 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "@/store/app-context";
-import { AppSwitcher, ColorModeProvider } from "@mosje/design-system";
+import { AppSwitcher, ColorModeProvider, DemoFab } from "@mosje/design-system";
+
+const SMILE_DEMO_ACCOUNTS = [
+  { role: "Super Admin", id: "9000000900", password: "Password@123" },
+  { role: "State Nodal Officer", id: "9000000901", password: "Password@123" },
+  { role: "District Nodal Officer", id: "9000000902", password: "Password@123" },
+];
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 
 // smile-admin's GoI navy maps to the "blue-dark" color mode.
@@ -44,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ColorModeProvider initialMode={DEFAULT_MODE}>
           <AppProvider>{children}</AppProvider>
           <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
+          <DemoFab accounts={SMILE_DEMO_ACCOUNTS} devMode={process.env.NODE_ENV === "development"} />
         </ColorModeProvider>
       </body>
     </html>

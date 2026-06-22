@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import type { DemoFillDetail } from "@mosje/design-system";
 import { Eye, EyeOff, Loader2, Lock, Phone, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,16 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const mobileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { id, password: pw } = (e as CustomEvent<DemoFillDetail>).detail;
+      setMobile(id);
+      setPassword(pw);
+    };
+    window.addEventListener("demo:fill", handler);
+    return () => window.removeEventListener("demo:fill", handler);
+  }, []);
 
   // Autofocus first field on mount (skip on small screens where it pops the keyboard).
   useEffect(() => {

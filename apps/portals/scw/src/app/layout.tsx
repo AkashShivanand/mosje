@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
-import { AppSwitcher, ColorModeProvider } from "@mosje/design-system";
+import { AppSwitcher, ColorModeProvider, DemoFab } from "@mosje/design-system";
+
+const SCW_DEMO_ACCOUNTS = [
+  { role: "Volunteer", id: "9800000001", password: "Demo@123", extra: { tab: "citizen", type: "volunteer" } },
+  { role: "SAGE Organisation", id: "9800000002", password: "Demo@123", extra: { tab: "citizen", type: "sage" } },
+  { role: "Nodal Officer", id: "9810000001", password: "Demo@123", extra: { tab: "officer" } },
+];
 
 const noto = Noto_Sans({
   subsets: ["latin", "devanagari"],
@@ -33,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ColorModeProvider>
           {children}
           <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
+          <DemoFab accounts={SCW_DEMO_ACCOUNTS} devMode={process.env.NODE_ENV === "development"} />
         </ColorModeProvider>
       </body>
     </html>

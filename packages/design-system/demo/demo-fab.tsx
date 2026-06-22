@@ -53,12 +53,16 @@ export interface DemoAccount {
   /** Mobile number, employee ID, or any login identifier shown to the reviewer. */
   id: string;
   password: string;
+  /** Optional portal-specific payload forwarded verbatim in the demo:fill event. */
+  extra?: Record<string, unknown>;
 }
 
 /** Shape of the CustomEvent detail dispatched when "Use" is clicked. */
 export interface DemoFillDetail {
   id: string;
   password: string;
+  /** Forwarded from DemoAccount.extra — cast to a portal-specific type in the listener. */
+  extra?: Record<string, unknown>;
 }
 
 export interface DemoFabProps {
@@ -92,7 +96,7 @@ export function DemoFab({
   const use = (account: DemoAccount) => {
     window.dispatchEvent(
       new CustomEvent<DemoFillDetail>("demo:fill", {
-        detail: { id: account.id, password: account.password },
+        detail: { id: account.id, password: account.password, extra: account.extra },
         bubbles: true,
       }),
     );

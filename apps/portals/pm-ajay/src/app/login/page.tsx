@@ -7,6 +7,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { DemoFillDetail } from "@mosje/design-system";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/store/auth-context";
@@ -34,6 +35,16 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const idRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { id, password: pw } = (e as CustomEvent<DemoFillDetail>).detail;
+      setEmployeeId(id);
+      setPassword(pw);
+    };
+    window.addEventListener("demo:fill", handler);
+    return () => window.removeEventListener("demo:fill", handler);
+  }, []);
 
   // If already signed in, redirect to dashboard
   useEffect(() => {
