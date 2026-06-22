@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/toast";
-import { Eye, EyeOff, LogIn, ChevronDown } from "lucide-react";
+import { Eye, EyeOff, LogIn } from "lucide-react";
 import { Button, Input, FormField, Alert } from "@mosje/design-system";
 
 const BASE = "/portals/nmba";
@@ -172,41 +172,6 @@ export default function AdminLoginPage() {
                 </Button>
               </form>
 
-              {/* Demo credentials */}
-              <details className="group mt-4 rounded-lg border border-dashed border-navy/25 bg-surface-muted">
-                <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-2.5 text-xs font-semibold text-navy/60 hover:text-navy">
-                  <span>Demo credentials</span>
-                  <ChevronDown className="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
-                </summary>
-                <div className="border-t border-navy/10 px-4 pb-3 pt-2">
-                  <table className="w-full text-xs">
-                    <thead>
-                      <tr className="text-ink-hint">
-                        <th className="pb-1.5 text-left font-medium">Role</th>
-                        <th className="pb-1.5 text-left font-medium">Mobile</th>
-                        <th className="pb-1.5 text-left font-medium">Password</th>
-                        <th className="pb-1.5" />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="py-1 font-medium text-ink">Admin</td>
-                        <td className="py-1 font-mono text-ink">9999999999</td>
-                        <td className="py-1 text-ink-muted">any password</td>
-                        <td className="py-1 text-right">
-                          <button
-                            type="button"
-                            onClick={() => { setMobile("9999999999"); setPassword("Demo@123"); }}
-                            className="rounded px-2 py-0.5 text-xs font-semibold text-navy hover:bg-navy/10"
-                          >
-                            Use
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </details>
             </div>
 
             <p className="mt-4 text-center text-xs text-ink-hint">

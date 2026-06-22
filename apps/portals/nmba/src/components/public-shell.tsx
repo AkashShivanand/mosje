@@ -12,7 +12,9 @@ import {
   Globe,
   ChevronDown,
   Phone,
+  LogIn,
 } from "lucide-react";
+import { buttonClasses } from "@mosje/design-system";
 import { cn } from "@/lib/utils";
 
 const BASE = "/portals/nmba";
@@ -134,6 +136,17 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
                 </ul>
               )}
             </div>
+            {/* Admin login */}
+            <Link
+              href="/admin/login"
+              className={buttonClasses("primary", "outlined", "sm")}
+              aria-label="Admin Login"
+            >
+              <span className="ds-btn__icon" aria-hidden="true">
+                <LogIn className="h-4 w-4" />
+              </span>
+              <span className="hidden sm:inline">Admin Login</span>
+            </Link>
             {/* Helpline */}
             <a
               href="tel:14446"
