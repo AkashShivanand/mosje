@@ -3,13 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { DemoFillDetail } from "@mosje/design-system";
+import { DemoFab } from "@mosje/design-system";
 import { Eye, EyeOff, Loader2, Lock, Phone, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useApp } from "@/store/app-context";
+
+const DEMO_ACCOUNTS = [
+  { role: "Super Admin", id: "9000000900", password: "Password@123" },
+  { role: "State Nodal Officer", id: "9000000901", password: "Password@123" },
+  { role: "District Nodal Officer", id: "9000000902", password: "Password@123" },
+];
 
 const QUICK_ACCOUNTS = [
   { label: "Super Admin", mobile: "9000000900", scope: "All India" },
@@ -32,16 +38,6 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const mobileRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const { id, password: pw } = (e as CustomEvent<DemoFillDetail>).detail;
-      setMobile(id);
-      setPassword(pw);
-    };
-    window.addEventListener("demo:fill", handler);
-    return () => window.removeEventListener("demo:fill", handler);
-  }, []);
 
   // Autofocus first field on mount (skip on small screens where it pops the keyboard).
   useEffect(() => {
@@ -256,6 +252,11 @@ export default function LoginPage() {
         <span>GIGW 3.0</span>
         <span>v1.0.0 · Build 2026.05.15b</span>
       </div>
+      <DemoFab
+        accounts={DEMO_ACCOUNTS}
+        devMode={process.env.NODE_ENV === "development"}
+        onFill={(id, pw) => { setMobile(id); setPassword(pw); }}
+      />
     </div>
   );
 }

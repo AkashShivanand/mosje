@@ -1,14 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Noto_Sans } from "next/font/google";
-import { AppSwitcher, ColorModeProvider, DemoFab } from "@mosje/design-system";
-
-const PM_AJAY_DEMO_ACCOUNTS = [
-  { role: "Joint Secretary", id: "JS001", password: "Password@123" },
-  { role: "District Secretary", id: "DS002", password: "Password@123" },
-  { role: "State Officer", id: "SO003", password: "Password@123" },
-  { role: "District Officer", id: "DO005", password: "Password@123" },
-];
+import { AppSwitcher, ColorModeProvider } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import { AuthProvider } from "@/store/auth-context";
 import "./globals.css";
@@ -40,7 +33,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </AuthProvider>
           <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
-          <DemoFab accounts={PM_AJAY_DEMO_ACCOUNTS} devMode={process.env.NODE_ENV === "development"} idLabel="Employee ID" />
         </ColorModeProvider>
         {/* Material Symbols Rounded — loaded after interaction so it never blocks first paint (PERF-001) */}
         <Script

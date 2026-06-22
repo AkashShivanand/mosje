@@ -7,7 +7,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { DemoFillDetail } from "@mosje/design-system";
+import { DemoFab } from "@mosje/design-system";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/store/auth-context";
@@ -17,6 +17,13 @@ import { useAuth } from "@/store/auth-context";
 // next/image does NOT add the basePath, so image src must include it (IMG_BASE).
 const BASE = "";
 const IMG_BASE = "/portals/pm-ajay";
+
+const FAB_ACCOUNTS = [
+  { role: "Joint Secretary", id: "JS001", password: "Password@123" },
+  { role: "District Secretary", id: "DS002", password: "Password@123" },
+  { role: "State Officer", id: "SO003", password: "Password@123" },
+  { role: "District Officer", id: "DO005", password: "Password@123" },
+];
 
 const DEMO_ACCOUNTS = [
   { label: "Joint Secretary", id: "JS001", scope: "All India" },
@@ -35,16 +42,6 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const idRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const { id, password: pw } = (e as CustomEvent<DemoFillDetail>).detail;
-      setEmployeeId(id);
-      setPassword(pw);
-    };
-    window.addEventListener("demo:fill", handler);
-    return () => window.removeEventListener("demo:fill", handler);
-  }, []);
 
   // If already signed in, redirect to dashboard
   useEffect(() => {
@@ -310,6 +307,12 @@ export default function LoginPage() {
           <a href="#">Help</a>
         </span>
       </footer>
+      <DemoFab
+        accounts={FAB_ACCOUNTS}
+        devMode={process.env.NODE_ENV === "development"}
+        idLabel="Employee ID"
+        onFill={(id, pw) => { setEmployeeId(id); setPassword(pw); }}
+      />
     </div>
   );
 }

@@ -75,12 +75,19 @@ export interface DemoFabProps {
   devMode?: boolean;
   /** Column header for the ID column. Defaults to "Mobile / ID". */
   idLabel?: string;
+  /**
+   * Called when the "Use" button is clicked. When provided, replaces the
+   * global `demo:fill` CustomEvent dispatch — useful when DemoFab is
+   * co-located with the login form.
+   */
+  onFill?: (id: string, password: string, extra?: Record<string, unknown>) => void;
 }
 
 export function DemoFab({
   accounts,
   devMode = false,
   idLabel = "Mobile / ID",
+  onFill,
 }: DemoFabProps) {
   const [open, setOpen] = React.useState(false);
   const [copied, setCopied] = React.useState<string | null>(null);
@@ -94,12 +101,16 @@ export function DemoFab({
   };
 
   const use = (account: DemoAccount) => {
-    window.dispatchEvent(
-      new CustomEvent<DemoFillDetail>("demo:fill", {
-        detail: { id: account.id, password: account.password, extra: account.extra },
-        bubbles: true,
-      }),
-    );
+    if (onFill) {
+      onFill(account.id, account.password, account.extra);
+    } else {
+      window.dispatchEvent(
+        new CustomEvent<DemoFillDetail>("demo:fill", {
+          detail: { id: account.id, password: account.password, extra: account.extra },
+          bubbles: true,
+        }),
+      );
+    }
     setOpen(false);
   };
 

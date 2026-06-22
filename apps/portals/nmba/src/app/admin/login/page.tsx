@@ -4,10 +4,13 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/toast";
 import { Eye, EyeOff, LogIn } from "lucide-react";
-import { Button, Input, FormField, Alert } from "@mosje/design-system";
-import type { DemoFillDetail } from "@mosje/design-system";
+import { Button, Input, FormField, Alert, DemoFab } from "@mosje/design-system";
 
 const BASE = "/portals/nmba";
+
+const DEMO_ACCOUNTS = [
+  { role: "Admin", id: "9999999999", password: "Demo@123" },
+];
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -17,16 +20,6 @@ export default function AdminLoginPage() {
   const [showPw, setShowPw] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
-
-  React.useEffect(() => {
-    const handler = (e: Event) => {
-      const { id, password } = (e as CustomEvent<DemoFillDetail>).detail;
-      setMobile(id);
-      setPassword(password);
-    };
-    window.addEventListener("demo:fill", handler);
-    return () => window.removeEventListener("demo:fill", handler);
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -208,6 +201,11 @@ export default function AdminLoginPage() {
           </div>
         </footer>
       </div>
+      <DemoFab
+        accounts={DEMO_ACCOUNTS}
+        devMode={process.env.NODE_ENV === "development"}
+        onFill={(id, pw) => { setMobile(id); setPassword(pw); }}
+      />
     </div>
   );
 }
