@@ -93,6 +93,7 @@ const REQUIRED_FIELDS = [
   "category",
   "contactNumber",
   "governmentId",
+  "governmentIdNumber",
   "provisionalDiagnosis",
 ] as const;
 
@@ -116,6 +117,7 @@ const FIELD_LABELS: Record<string, string> = {
   category: "Category",
   contactNumber: "Contact Number",
   governmentId: "Government ID",
+  governmentIdNumber: "Government ID Number",
   provisionalDiagnosis: "Provisional Diagnosis",
   drug: "At least one drug-use row",
 };
@@ -157,6 +159,7 @@ export default function IrcaRegisterPage() {
     category: "",
     contactNumber: "",
     governmentId: "",
+    governmentIdNumber: "",
     provisionalDiagnosis: "",
     // Clinical detail fields (optional) — now captured, previously discarded.
     ivEver: "",
@@ -329,6 +332,7 @@ export default function IrcaRegisterPage() {
       category: labelOf(CATEGORY, f.category),
       contactNumber: f.contactNumber,
       governmentId: labelOf(GOVERNMENT_ID, f.governmentId),
+      governmentIdNumber: f.governmentIdNumber,
       drugUse: drugRows
         .filter((r) => r.drug)
         .map((r) => ({
@@ -481,6 +485,11 @@ export default function IrcaRegisterPage() {
         <FormField label="Government ID" required error={err("governmentId")}>
           {(c) => (
             <Select {...c} value={f.governmentId} onChange={(e) => set("governmentId")(e.target.value)} placeholder="Select Government ID" options={GOVERNMENT_ID} invalid={errors.has("governmentId")} />
+          )}
+        </FormField>
+        <FormField label="Government ID Number" required error={err("governmentIdNumber")}>
+          {(c) => (
+            <Input {...c} value={f.governmentIdNumber} onChange={(e) => set("governmentIdNumber")(e.target.value)} placeholder="Enter ID number" invalid={errors.has("governmentIdNumber")} />
           )}
         </FormField>
       </FormSection>
@@ -690,6 +699,7 @@ export default function IrcaRegisterPage() {
               <ReviewItem label="Occupation" value={labelOf(OCCUPATION, f.occupation)} />
               <ReviewItem label="Contact Number" value={f.contactNumber} />
               <ReviewItem label="Category" value={labelOf(CATEGORY, f.category)} />
+              <ReviewItem label="Government ID" value={f.governmentId ? `${labelOf(GOVERNMENT_ID, f.governmentId)}: ${f.governmentIdNumber || ""}` : ""} />
             </ReviewSection>
             <ReviewSection title="Substance Use">
               {recordedDrugs.length === 0 ? (

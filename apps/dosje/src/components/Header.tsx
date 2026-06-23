@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { SiteHeader, buttonClasses } from "@mosje/design-system";
-import type { NavItem } from "@/types";
+import { SiteHeader, buttonClasses, type NavItem } from "@mosje/design-system";
 
 // dosje is mounted under basePath "/website"; plain <img> in the shared DS does
 // not auto-prepend it, so public-asset srcs are prefixed explicitly.

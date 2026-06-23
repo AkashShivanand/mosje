@@ -2,7 +2,7 @@
 // Structure cloned from the legacy NMBA treatment-centre portal (inventoried
 // 2026-06-22). All records that use these types are SYNTHETIC — no real PII.
 
-export type TCRole = "IRCA" | "ODIC" | "CPLI" | "DDAC";
+export type TCRole = "IRCA" | "ODIC" | "CPLI" | "DDAC" | "US";
 
 export type RegistrationProgress = "Completed" | "In Progress" | "Pending";
 
@@ -40,10 +40,65 @@ export type Patient = {
   category: string;
   contactNumber: string;
   governmentId: string;
+  governmentIdNumber?: string;
   drugUse: DrugUseRow[];
   provisionalDiagnosis: string;
   /** Optional clinical detail answers (injecting/sexual/ASSIST/treatment/misc), label → value. */
   clinicalDetails?: Record<string, string>;
+
+  // Tab 1: Clinical History
+  withdrawalSymptoms?: string[];
+  psychiatricSymptoms?: string[];
+  chronicProblems?: string[];
+  otherMedicalProblems?: string[];
+  headInjury?: string;
+  previousDrugTreatment?: string;
+  prevTreatmentYear?: string;
+  prevTreatmentDuration?: string;
+  prevTreatmentCenter?: string;
+  treatmentReceivedTypes?: string[];
+  relapseReason?: string;
+
+  // Tab 2: Dosage Log
+  dosageLog?: Array<{
+    date: string;
+    complaints: string;
+    medication: string;
+    changeReason: string;
+    remarks: string;
+  }>;
+
+  // Tab 3: Counselling
+  individualCounselling?: Array<{
+    sessionNo: string;
+    date: string;
+    issues: string;
+  }>;
+  familyCounselling?: Array<{
+    sessionNo: string;
+    date: string;
+    issues: string;
+  }>;
+
+  // Tab 4: Referral & Home Visit
+  referralServices?: string[];
+  referralRemark?: string;
+  homeVisits?: Array<{
+    date: string;
+    purpose: string;
+    outcome: string;
+  }>;
+
+  // Tab 5: Diagnosis & Discharge
+  finalDiagnosis?: string;
+  medicalComorbidity?: string;
+  psychiatricComorbidity?: string;
+  neurologicalCondition?: string;
+  dischargeMotivation?: string;
+  dischargeMedication?: string;
+  dischargeRemark?: string;
+  dischargeDate?: string;
+  followUpDate?: string;
 };
 
 /** ODIC outreach / drop-in-centre beneficiary record. */
@@ -61,6 +116,9 @@ export type Beneficiary = {
   placeOfResidence: string;
   contactNumber: string;
   category: string;
+  governmentId?: string;
+  governmentIdNumber?: string;
+  drugUse?: DrugUseRow[];
   kind: "Outreach" | "Drop-in Centre";
   /** Optional demographics captured at registration (address/education/etc.), label → value. */
   details?: Record<string, string>;

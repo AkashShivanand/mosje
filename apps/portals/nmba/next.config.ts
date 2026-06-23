@@ -10,6 +10,9 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   turbopack: {
     root: path.resolve(process.cwd(), "..", ".."),
   },

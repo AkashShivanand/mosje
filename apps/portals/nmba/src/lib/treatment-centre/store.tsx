@@ -39,9 +39,16 @@ export type TCStore = {
   activities: CentreActivity[];
   saptahEvents: SaptahEvent[];
   addPatient: (patient: Omit<Patient, "id">) => void;
+  updatePatient: (id: string, updates: Partial<Patient>) => void;
   addBeneficiary: (beneficiary: Omit<Beneficiary, "id">) => void;
+  updateBeneficiary: (id: string, updates: Partial<Beneficiary>) => void;
   addPeerEducator: (educator: Omit<PeerEducator, "id">) => void;
+  updatePeerEducator: (id: string, updates: Partial<PeerEducator>) => void;
   removePeerEducator: (id: string) => void;
+  addFollowUp: (followUp: Omit<FollowUp, "id">) => void;
+  addReadmission: (readmission: Omit<Readmission, "id">) => void;
+  addStaff: (staff: Omit<StaffMember, "id">) => void;
+  addSaptahEvent: (event: Omit<SaptahEvent, "id">) => void;
 };
 
 const TCStoreContext = React.createContext<TCStore | null>(null);
@@ -56,12 +63,12 @@ export function TCStoreProvider({ children }: { children: React.ReactNode }) {
   const [patients, setPatients] = React.useState<Patient[]>(SEED_PATIENTS);
   const [beneficiaries, setBeneficiaries] = React.useState<Beneficiary[]>(SEED_BENEFICIARIES);
   const [peerEducators, setPeerEducators] = React.useState<PeerEducator[]>(SEED_PEER_EDUCATORS);
-  const [followUps] = React.useState<FollowUp[]>(SEED_FOLLOW_UPS);
-  const [readmissions] = React.useState<Readmission[]>(SEED_READMISSIONS);
-  const [awareness] = React.useState<AwarenessProgramme[]>(SEED_AWARENESS);
-  const [staff] = React.useState<StaffMember[]>(SEED_STAFF);
-  const [activities] = React.useState<CentreActivity[]>(SEED_ACTIVITIES);
-  const [saptahEvents] = React.useState<SaptahEvent[]>(SEED_SAPTAH_EVENTS);
+  const [followUps, setFollowUps] = React.useState<FollowUp[]>(SEED_FOLLOW_UPS);
+  const [readmissions, setReadmissions] = React.useState<Readmission[]>(SEED_READMISSIONS);
+  const [awareness, setAwareness] = React.useState<AwarenessProgramme[]>(SEED_AWARENESS);
+  const [staff, setStaff] = React.useState<StaffMember[]>(SEED_STAFF);
+  const [activities, setActivities] = React.useState<CentreActivity[]>(SEED_ACTIVITIES);
+  const [saptahEvents, setSaptahEvents] = React.useState<SaptahEvent[]>(SEED_SAPTAH_EVENTS);
 
   const value = React.useMemo<TCStore>(
     () => ({
@@ -76,12 +83,32 @@ export function TCStoreProvider({ children }: { children: React.ReactNode }) {
       saptahEvents,
       addPatient: (patient) =>
         setPatients((prev) => [{ ...patient, id: nextId("p") }, ...prev]),
+      updatePatient: (id, updates) =>
+        setPatients((prev) =>
+          prev.map((p) => (p.id === id ? { ...p, ...updates } : p))
+        ),
       addBeneficiary: (beneficiary) =>
         setBeneficiaries((prev) => [{ ...beneficiary, id: nextId("b") }, ...prev]),
+      updateBeneficiary: (id, updates) =>
+        setBeneficiaries((prev) =>
+          prev.map((b) => (b.id === id ? { ...b, ...updates } : b))
+        ),
       addPeerEducator: (educator) =>
         setPeerEducators((prev) => [{ ...educator, id: nextId("pe") }, ...prev]),
+      updatePeerEducator: (id, updates) =>
+        setPeerEducators((prev) =>
+          prev.map((pe) => (pe.id === id ? { ...pe, ...updates } : pe))
+        ),
       removePeerEducator: (id) =>
         setPeerEducators((prev) => prev.filter((e) => e.id !== id)),
+      addFollowUp: (followUp) =>
+        setFollowUps((prev) => [{ ...followUp, id: nextId("f") }, ...prev]),
+      addReadmission: (readmission) =>
+        setReadmissions((prev) => [{ ...readmission, id: nextId("r") }, ...prev]),
+      addStaff: (stf) =>
+        setStaff((prev) => [{ ...stf, id: nextId("st") }, ...prev]),
+      addSaptahEvent: (event) =>
+        setSaptahEvents((prev) => [{ ...event, id: nextId("s") }, ...prev]),
     }),
     [patients, beneficiaries, peerEducators, followUps, readmissions, awareness, staff, activities, saptahEvents, nextId],
   );
