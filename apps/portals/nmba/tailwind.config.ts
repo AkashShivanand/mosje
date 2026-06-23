@@ -39,8 +39,14 @@ export default {
         },
         await: {
           bg: "#fef3c7",
-          fg: "#b45309",
+          // amber-800 — comfortably clears 4.5:1 on the amber-100 chip background.
+          fg: "#92400e",
           DEFAULT: "#d97706",
+        },
+        danger: {
+          bg: "#fee2e2",
+          fg: "#b91c1c",
+          DEFAULT: "#dc2626",
         },
         saffron: {
           50: "#fff7eb",
@@ -50,7 +56,9 @@ export default {
         },
         ink: "#0f172a",
         "ink-muted": "#475569",
-        "ink-hint": "#94a3b8",
+        // Darkened from #94a3b8 (2.6:1) to slate-500 — clears WCAG 1.4.3 (4.5:1) on white
+        // while staying lighter than ink-muted for hierarchy.
+        "ink-hint": "#64748b",
         line: "#e2e8f0",
         "surface-muted": "#f5f7fb",
       },

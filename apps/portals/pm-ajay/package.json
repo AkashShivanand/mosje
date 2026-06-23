@@ -7,7 +7,7 @@
   },
   "description": "PM-AJAY MIS Dashboard — MoSJE functional portal. No Tailwind dependency: all styling uses hand-rolled CSS vars from the DS token contract (charts use inline SVG). If Tailwind utilities are added, install tailwindcss@^3 explicitly.",
   "scripts": {
-    "dev": "next dev -p 4124",
+    "dev": "next dev --turbopack -p 4124",
     "build": "next build",
     "start": "next start -p 4124",
     "lint": "next lint",
@@ -27,8 +27,8 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^8",
-    "eslint-config-next": "^15.5.19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.1",
     "typescript": "^5",
     "vitest": "^4.1.8"
   }

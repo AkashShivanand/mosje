@@ -1,0 +1,124 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — Stepper
+   Horizontal multi-step progress: done (green ✓) · current (navy) · upcoming.
+   ============================================================================ */
+
+.ds-stepper {
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--ds-font-sans);
+}
+
+.ds-stepper__item {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  min-width: 0;
+}
+
+/* Connector line — sits between this marker and the previous one. */
+.ds-stepper__line {
+  position: absolute;
+  top: 15px; /* vertical centre of the 32px marker */
+  right: 50%;
+  left: -50%;
+  height: 2px;
+  background-color: var(--ds-border);
+}
+
+.ds-stepper__item.is-done .ds-stepper__line,
+.ds-stepper__item.is-current .ds-stepper__line {
+  background-color: var(--ds-success);
+}
+
+/* Marker circle. */
+.ds-stepper__marker {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ds-radius-full);
+  border: 2px solid var(--ds-border);
+  background-color: var(--ds-surface);
+  color: var(--ds-ink-muted);
+  font-size: 13px;
+  font-weight: 700;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.ds-stepper__num {
+  line-height: 1;
+}
+
+.ds-stepper__item.is-done .ds-stepper__marker {
+  background-color: var(--ds-success);
+  border-color: var(--ds-success);
+  color: var(--ds-on-primary, #fff);
+}
+
+.ds-stepper__item.is-current .ds-stepper__marker {
+  background-color: var(--ds-primary);
+  border-color: var(--ds-primary);
+  color: var(--ds-on-primary, #fff);
+  box-shadow: 0 0 0 4px var(--ds-primary-50);
+}
+
+/* Labels. */
+.ds-stepper__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ds-stepper__label {
+  font-size: var(--ds-text-body-3, 13px);
+  font-weight: 600;
+  color: var(--ds-ink-muted);
+  line-height: 1.3;
+}
+
+.ds-stepper__item.is-current .ds-stepper__label {
+  color: var(--ds-primary);
+}
+
+.ds-stepper__item.is-done .ds-stepper__label {
+  color: var(--ds-ink);
+}
+
+.ds-stepper__desc {
+  font-size: 12px;
+  color: var(--ds-ink-muted);
+  line-height: 1.3;
+}
+
+.ds-stepper__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* On narrow screens, hide step descriptions and shrink labels. */
+@media (max-width: 640px) {
+  .ds-stepper__desc {
+    display: none;
+  }
+  .ds-stepper__label {
+    font-size: 11px;
+  }
+}

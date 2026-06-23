@@ -20,6 +20,13 @@ export interface MetricCardProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: MetricCardSize;
 }
 
+/** Screen-reader text so trend direction isn't conveyed by colour/arrow alone (WCAG 1.4.1 / 1.1.1). */
+const CHANGE_LABELS: Record<MetricCardChange, string> = {
+  up: "Increase",
+  down: "Decrease",
+  flat: "No change",
+};
+
 const CHANGE_ARROWS: Record<MetricCardChange, React.ReactNode> = {
   up: (
     <svg viewBox="0 0 16 16" width="12" height="12" fill="none" aria-hidden="true">
@@ -79,6 +86,7 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
         </div>
         {changeLabel != null && (
           <div className={cn("ds-metric-card__change", `ds-metric-card__change--${changeDirection}`)}>
+            <span className="ds-sr-only">{CHANGE_LABELS[changeDirection]}: </span>
             {CHANGE_ARROWS[changeDirection]}
             {changeLabel}
           </div>

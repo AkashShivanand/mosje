@@ -3,6 +3,19 @@
    Stat display tile: label + large value + optional icon badge.
    ============================================================================ */
 
+/* Visually-hidden text exposed to assistive tech (shared a11y helper). */
+.ds-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .ds-metric-card {
   display: flex;
   flex-direction: column;

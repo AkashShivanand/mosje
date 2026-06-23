@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { AccessBar } from "@/components/shell/access-bar";
 import { Header } from "@/components/shell/header";
 import { Sidebar } from "@/components/shell/sidebar";
 import { Footer } from "@/components/shell/footer";
@@ -48,7 +47,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-dvh bg-surface-muted">
-      <AccessBar />
       <Header />
       <div className="mx-auto flex max-w-[1600px] gap-lg px-md md:px-lg">
         <Sidebar />

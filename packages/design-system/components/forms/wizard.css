@@ -1,0 +1,94 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — Wizard + Review
+   Multi-step form shell and review-summary cards.
+   ============================================================================ */
+
+.ds-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ds-wizard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-family: var(--ds-font-sans);
+}
+
+.ds-wizard__stepper {
+  background-color: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg, 12px);
+  padding: 20px;
+}
+
+.ds-wizard__body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  outline: none;
+}
+
+.ds-wizard__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ds-border);
+}
+
+/* Review summary. */
+.ds-review-section {
+  background-color: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg, 12px);
+  padding: 20px;
+}
+
+.ds-review-section__title {
+  margin: 0 0 16px;
+  font-size: var(--ds-text-body-2, 14px);
+  font-weight: 600;
+  color: var(--ds-primary);
+}
+
+.ds-review-section__grid {
+  display: grid;
+  gap: 12px 20px;
+  grid-template-columns: 1fr;
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .ds-review-section__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1280px) {
+  .ds-review-section__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.ds-review-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ds-review-item__label {
+  font-size: var(--ds-text-body-3, 12px);
+  font-weight: 500;
+  color: var(--ds-ink-muted);
+}
+
+.ds-review-item__value {
+  margin: 0;
+  font-size: var(--ds-text-body-2, 14px);
+  color: var(--ds-ink);
+}

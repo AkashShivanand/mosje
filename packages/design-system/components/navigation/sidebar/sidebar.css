@@ -1,0 +1,324 @@
+/* =============================================================================
+   Sidebar Navigation — SAMAVESH Design System
+   Figma: SAMAVESH DS › Side Navigation › sidebar/sidebar-nav (node 4208:740)
+   Mirrors Portal DS › sidebar/type-1 (node 8190:16300)
+
+   Token mapping (Figma → DS):
+     --primary/50      → --ds-primary-50   (active bg; resolves #e8f2fd in light mode)
+     --text/primary    → --ds-primary      (active text)
+     --text/dark       → --ds-ink          (default text)
+     --radius-xl (16px)→ --ds-radius-xl
+     --radius-md  (8px) → --ds-radius-md
+     --spacing-lg(16px)→ --ds-spacing-lg   (px / sidebar padding)
+     --spacing-md(12px)→ --ds-spacing-md   (py / item gap)
+     --spacing-sm (8px)→ --ds-spacing-sm   (subnav py / connector control)
+     --spacing-2xl(24px→ --ds-spacing-2xl  (subnav px — Portal DS: paddingLeft/Right: 24)
+   ============================================================================= */
+
+/* ── Container ─────────────────────────────────────────────────────────────── */
+
+.ds-sidebar {
+  display: flex;
+  flex-direction: column;
+  background: var(--ds-surface);
+  padding: var(--ds-spacing-lg, 16px); /* 16px — Figma: --spacing-lg */
+  position: relative;
+  overflow: hidden;
+  transition: width var(--ds-duration-base) var(--ds-easing-out);
+}
+
+.ds-sidebar.is-expanded  { width: 300px; } /* 268px content + 2×16px padding */
+.ds-sidebar.is-collapsed { width: 88px;  } /* 56px icon row + 2×16px padding — Portal DS spec */
+
+/* ── Navigation ─────────────────────────────────────────────────────────────── */
+
+.ds-sidebar__nav {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-spacing-md, 12px); /* 12px — Figma: --spacing-md between items */
+}
+
+/* ── Group ──────────────────────────────────────────────────────────────────── */
+
+.ds-sidebar__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ds-sidebar__group + .ds-sidebar__group {
+  padding-top: var(--ds-spacing-md, 12px);
+  border-top: 1px solid var(--ds-border);
+}
+
+.ds-sidebar__group-label {
+  font-family: var(--ds-font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ds-ink-muted);
+  padding: 0 var(--ds-spacing-lg, 16px) var(--ds-spacing-sm, 8px);
+}
+
+.ds-sidebar__group-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-spacing-md, 12px); /* 12px */
+}
+
+/* ── Main item ──────────────────────────────────────────────────────────────── */
+
+.ds-sidebar__main-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* The clickable row: used as both <a> (leaf) and <button> (group toggle) */
+.ds-sidebar__main-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: var(--ds-spacing-md, 12px) var(--ds-spacing-lg, 16px); /* 12px 16px — Figma: py-md px-lg */
+  border-radius: var(--ds-radius-xl); /* 16px */
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  color: var(--ds-ink);
+  text-decoration: none;
+  font-family: var(--ds-font-sans);
+  font-size: 14px; /* Figma: font-size/body-2 */
+  line-height: 20px;
+  transition:
+    background var(--ds-duration-fast) var(--ds-easing-out),
+    color var(--ds-duration-fast) var(--ds-easing-out);
+}
+
+.ds-sidebar__main-row:hover:not(.is-active) {
+  background: var(--ds-surface-muted);
+}
+
+.ds-sidebar__main-row:focus-visible {
+  outline: 2px solid var(--ds-primary-ring);
+  outline-offset: 2px;
+}
+
+.ds-sidebar__main-row.is-active {
+  background: var(--ds-primary-50);
+  color: var(--ds-primary);
+}
+
+/* Icon */
+.ds-sidebar__icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+/* Label */
+.ds-sidebar__label {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Badge */
+.ds-sidebar__badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--ds-spacing-xs, 4px);
+  border-radius: var(--ds-radius-pill, 9999px);
+  background: var(--ds-info);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Chevron */
+.ds-sidebar__chevron {
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: transform var(--ds-duration-fast) var(--ds-easing-out);
+}
+
+.ds-sidebar__chevron.is-open {
+  transform: rotate(180deg);
+}
+
+/* ── Sub-navigation (children) ──────────────────────────────────────────────── */
+
+.ds-sidebar__subnav {
+  list-style: none;
+  margin: 0;
+  padding: var(--ds-spacing-sm, 8px) var(--ds-spacing-2xl, 24px);
+  /* 8px top/bottom, 24px left+right — Portal DS: Children paddingLeft:24 paddingRight:24 paddingTop:8 paddingBottom:8 */
+}
+
+/*
+ * Each child item has a connector drawn via ::before (vertical line) and
+ * ::after (curved bottom-left corner). The connector colour matches the
+ * active-bg token so it is always in sync with the brand colour mode.
+ *
+ * Layout: 16px gutter (connector area) | flex-1 label
+ */
+.ds-sidebar__child {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 40px; /* Figma: h-[40px] */
+  padding-left: 16px; /* connector visual width */
+}
+
+/* Vertical line — full height, continues to next sibling */
+.ds-sidebar__child::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--ds-primary-50);
+}
+
+/* Last child: line stops at the corner elbow */
+.ds-sidebar__child:last-child::before {
+  height: calc(50% - 6px);
+}
+
+/* Curved elbow connector — Portal DS: Radius 16×8px at y=12 within 40px child */
+.ds-sidebar__child::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: calc(50% - 8px);
+  width: 16px;
+  height: 8px;
+  border-left: 1px solid var(--ds-primary-50);
+  border-bottom: 1px solid var(--ds-primary-50);
+  border-bottom-left-radius: 6px;
+}
+
+/* Child label / link */
+.ds-sidebar__child-label {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  padding: var(--ds-spacing-sm, 8px) var(--ds-spacing-md, 12px); /* 8px 12px — Figma: py-sm px-md */
+  border-radius: var(--ds-radius-md); /* 8px */
+  font-family: var(--ds-font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ds-ink);
+  opacity: 0.8;
+  text-decoration: none;
+  transition:
+    background var(--ds-duration-fast) var(--ds-easing-out),
+    color var(--ds-duration-fast) var(--ds-easing-out),
+    opacity var(--ds-duration-fast);
+}
+
+.ds-sidebar__child-label:hover:not(.is-active) {
+  background: var(--ds-surface-muted);
+  opacity: 1;
+}
+
+.ds-sidebar__child-label:focus-visible {
+  outline: 2px solid var(--ds-primary-ring);
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+.ds-sidebar__child-label.is-active {
+  background: var(--ds-primary-50);
+  color: var(--ds-primary);
+  opacity: 1;
+}
+
+/* ── Collapsed state ────────────────────────────────────────────────────────── */
+
+.ds-sidebar.is-collapsed .ds-sidebar__main-row {
+  gap: 0;
+  padding: var(--ds-spacing-md, 12px) var(--ds-spacing-lg, 16px);
+  justify-content: center;
+}
+
+.ds-sidebar.is-collapsed .ds-sidebar__label,
+.ds-sidebar.is-collapsed .ds-sidebar__badge,
+.ds-sidebar.is-collapsed .ds-sidebar__chevron,
+.ds-sidebar.is-collapsed .ds-sidebar__subnav,
+.ds-sidebar.is-collapsed .ds-sidebar__group-label {
+  display: none;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────────── */
+
+.ds-sidebar__footer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--ds-border);
+  padding-top: var(--ds-spacing-md, 12px);
+  margin-top: auto;
+}
+
+/* ── Resize / collapse control ──────────────────────────────────────────────── */
+/*
+ * Vertical drag-handle on the right edge (Figma: .control / showControl=true).
+ * Appears on sidebar hover to avoid visual clutter.
+ */
+.ds-sidebar__control {
+  position: absolute;
+  top: 0;
+  right: -8px;
+  bottom: 0;
+  width: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: col-resize;
+  padding: var(--ds-spacing-sm, 8px) 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity var(--ds-duration-fast);
+}
+
+.ds-sidebar:hover .ds-sidebar__control,
+.ds-sidebar__control:focus-visible {
+  opacity: 1;
+}
+
+.ds-sidebar__control:focus-visible {
+  outline: 2px solid var(--ds-primary-ring);
+  outline-offset: 2px;
+}
+
+.ds-sidebar__control-line {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 1px;
+  background: var(--ds-border);
+}
+
+.ds-sidebar__control-handle {
+  flex-shrink: 0;
+  width: 16px;
+  height: 48px;
+  color: var(--ds-ink-muted);
+}

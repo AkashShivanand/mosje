@@ -1,0 +1,138 @@
+// Treatment-Centre (Patient Data Monitoring System) — domain types.
+// Structure cloned from the legacy NMBA treatment-centre portal (inventoried
+// 2026-06-22). All records that use these types are SYNTHETIC — no real PII.
+
+export type TCRole = "IRCA" | "ODIC" | "CPLI" | "DDAC";
+
+export type RegistrationProgress = "Completed" | "In Progress" | "Pending";
+
+/** A single repeatable drug-use row inside the IRCA/ODIC registration form. */
+export type DrugUseRow = {
+  drug: string;
+  ageOfFirstUse: string;
+  reason: string;
+  usedLast3Months: "Yes" | "No" | "";
+  dailyUse: "Yes" | "No" | "";
+  durationMonths: string;
+};
+
+/** IRCA clinical patient record (the richest entity). */
+export type Patient = {
+  id: string;
+  registrationNumber: string;
+  registrationProgress: RegistrationProgress;
+  treatmentCenter: string;
+  name: string;
+  gender: string;
+  age: number;
+  dateOfAdmission: string;
+  currentAddress: string;
+  permanentAddress: string;
+  state: string;
+  district: string;
+  placeOfResidence: string;
+  maritalStatus: string;
+  livingArrangements: string;
+  education: string;
+  occupation: string;
+  employment: string;
+  income: string;
+  category: string;
+  contactNumber: string;
+  governmentId: string;
+  drugUse: DrugUseRow[];
+  provisionalDiagnosis: string;
+  /** Optional clinical detail answers (injecting/sexual/ASSIST/treatment/misc), label → value. */
+  clinicalDetails?: Record<string, string>;
+};
+
+/** ODIC outreach / drop-in-centre beneficiary record. */
+export type Beneficiary = {
+  id: string;
+  registrationNumber: string;
+  registrationProgress: RegistrationProgress;
+  name: string;
+  gender: string;
+  age: number;
+  dateOfRegistration: string;
+  referredBy: string;
+  state: string;
+  district: string;
+  placeOfResidence: string;
+  contactNumber: string;
+  category: string;
+  kind: "Outreach" | "Drop-in Centre";
+  /** Optional demographics captured at registration (address/education/etc.), label → value. */
+  details?: Record<string, string>;
+};
+
+/** CPLI peer-educator record. */
+export type PeerEducator = {
+  id: string;
+  name: string;
+  numberOfVolunteers: number;
+  address: string;
+};
+
+/** Follow-up visit row (IRCA + ODIC). */
+export type FollowUp = {
+  id: string;
+  registrationNumber: string;
+  name: string;
+  followUpDate: string;
+  followUpNumber: number;
+  status: string;
+};
+
+/** Readmission row (IRCA). */
+export type Readmission = {
+  id: string;
+  registrationNumber: string;
+  name: string;
+  readmissionDate: string;
+  reason: string;
+};
+
+/** Awareness-generation programme row (IRCA + ODIC). */
+export type AwarenessProgramme = {
+  id: string;
+  activity: string;
+  date: string;
+  location: string;
+  participants: number;
+};
+
+/** Staff member row (shared). */
+export type StaffMember = {
+  id: string;
+  name: string;
+  designation: string;
+  qualification: string;
+  contactNumber: string;
+};
+
+/** Centre activity row (shared). */
+export type CentreActivity = {
+  id: string;
+  activity: string;
+  date: string;
+  location: string;
+  beneficiaries: number;
+};
+
+/** Nasha Mukt Bharat Saptah 2026 event row (shared). */
+export type SaptahEvent = {
+  id: string;
+  eventName: string;
+  date: string;
+  location: string;
+  participants: number;
+};
+
+/** The authenticated treatment-centre session (stored in a cookie). */
+export type TCSession = {
+  projectId: string;
+  role: TCRole;
+  centerId: number;
+  centerName: string;
+};

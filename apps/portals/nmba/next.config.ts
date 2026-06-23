@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 
 const SECURITY_HEADERS = [
   { key: "X-Frame-Options", value: "DENY" },
@@ -9,8 +10,12 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: path.resolve(process.cwd(), "..", ".."),
+  },
   basePath: "/portals/nmba",
   output: "standalone",
+  outputFileTracingRoot: path.resolve(process.cwd(), "..", "..", ".."),
   transpilePackages: ["@mosje/design-system"],
   async headers() {
     if (process.env.NODE_ENV !== "production") {

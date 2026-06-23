@@ -3,22 +3,26 @@
   "version": "0.0.0",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "apps/*",
+    "apps/portals/*"
   ],
   "engines": {
     "node": ">=22"
   },
   "scripts": {
     "prepare": "husky",
-    "dev": "concurrently --restart-tries -1 --restart-after 2000 --prefix-colors \"blue,cyan,yellow,green,magenta,white,red,gray\" -n \"hub,dosje,smile,pm-ajay,scw,nmba,docs,storybook\" \"npm --prefix apps/hub run dev\" \"npm --prefix apps/dosje run dev\" \"npm --prefix apps/portals/smile-admin run dev\" \"npm --prefix apps/portals/pm-ajay run dev\" \"npm --prefix apps/portals/scw run dev\" \"npm --prefix apps/portals/nmba run dev\" \"npm --prefix apps/docs run dev\" \"npm --prefix apps/storybook run dev\"",
-    "dev:hub": "npm --prefix apps/hub run dev",
-    "dev:website": "npm --prefix apps/dosje run dev",
-    "dev:smile": "npm --prefix apps/portals/smile-admin run dev",
-    "dev:pm-ajay": "npm --prefix apps/portals/pm-ajay run dev",
-    "dev:scw": "npm --prefix apps/portals/scw run dev",
-    "dev:nmba": "npm --prefix apps/portals/nmba run dev",
-    "dev:docs": "npm --prefix apps/docs run dev",
-    "dev:storybook": "npm --prefix apps/storybook run dev",
+    "kill-ports": "bash scripts/kill-dev-ports.sh",
+    "predev": "npm run kill-ports",
+    "dev": "concurrently --restart-tries 3 --restart-after 2000 --prefix-colors \"blue,cyan,yellow,green,magenta,white,red,gray\" -n \"hub,dosje,smile,pm-ajay,scw,nmba,docs,storybook\" \"bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3000'\" \"bash -c 'cd apps/dosje && exec ./node_modules/.bin/next dev --turbopack -p 3001'\" \"bash -c 'cd apps/portals/smile-admin && exec ../../../node_modules/.bin/next dev --turbopack -p 4123'\" \"bash -c 'cd apps/portals/pm-ajay && exec ../../../node_modules/.bin/next dev --turbopack -p 4124'\" \"bash -c 'cd apps/portals/scw && exec ../../../node_modules/.bin/next dev --turbopack -p 4125'\" \"bash -c 'cd apps/portals/nmba && exec ../../../node_modules/.bin/next dev --turbopack -p 4126'\" \"bash -c 'cd apps/docs && exec ../../node_modules/.bin/next dev --turbopack -p 3002'\" \"bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006 --ci'\"",
+    "dev:hub": "bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3000'",
+    "dev:website": "bash -c 'cd apps/dosje && exec ./node_modules/.bin/next dev --turbopack -p 3001'",
+    "dev:smile": "bash -c 'cd apps/portals/smile-admin && exec ../../../node_modules/.bin/next dev --turbopack -p 4123'",
+    "dev:pm-ajay": "bash -c 'cd apps/portals/pm-ajay && exec ../../../node_modules/.bin/next dev --turbopack -p 4124'",
+    "dev:scw": "bash -c 'cd apps/portals/scw && exec ../../../node_modules/.bin/next dev --turbopack -p 4125'",
+    "dev:nmba": "bash -c 'cd apps/portals/nmba && exec ../../../node_modules/.bin/next dev --turbopack -p 4126'",
+    "dev:docs": "bash -c 'cd apps/docs && exec ../../node_modules/.bin/next dev --turbopack -p 3002'",
+    "dev:storybook": "bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006'",
     "check": "npm run check:hub && npm run check:dosje && npm run check:smile && npm run check:pm-ajay && npm run check:scw && npm run check:nmba",
     "check:hub": "npm --prefix apps/hub run typecheck",
     "check:dosje": "npm --prefix apps/dosje run typecheck",

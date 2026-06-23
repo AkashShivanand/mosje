@@ -1,0 +1,901 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — Navbar / Header (header.css)
+   The SAMAVESH Navbar + shared parts. Token-only — no raw hex.
+   - SiteHeader  (.ds-hdr*)     : 3-tier Navbar (Website + Portal variants)
+   - BrandLockup (.ds-hdr-lockup), AccountMenu (.ds-hdr-account / .ds-hdr-acct)
+   ============================================================================ */
+
+/* ── Brand lockup (shared) — UX4G / Portal Navbar spec ─────────────────────
+   Emblem 52×32 · optional blue gradient divider · BETA badge on its own row,
+   then GoI 12px · Ministry 14px · Department 20px bold. */
+.ds-hdr-lockup {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.ds-hdr-lockup__emblem {
+  height: 52px;
+  width: auto;
+  flex: 0 0 auto;
+}
+
+.ds-hdr-lockup.is-compact {
+  align-items: center;
+}
+
+.ds-hdr-lockup.is-compact .ds-hdr-lockup__emblem {
+  height: 44px;
+}
+
+/* Blue radial-gradient divider between emblem and text (portal navbar) */
+.ds-hdr-lockup__divider {
+  align-self: stretch;
+  width: 1px;
+  flex: 0 0 auto;
+  background-image: radial-gradient(
+    closest-side at 50% 50%,
+    var(--ds-primary) 0%,
+    color-mix(in srgb, var(--ds-primary) 50%, transparent) 50%,
+    transparent 100%
+  );
+}
+
+.ds-hdr-lockup__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: center;
+  min-width: 0;
+}
+
+.ds-hdr-lockup__lines.is-hidden-mobile {
+  display: none;
+}
+
+.ds-hdr-lockup__org {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.4px;
+  font-weight: 500;
+  color: var(--ds-ink);
+}
+
+.ds-hdr-lockup__ministry {
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.4px;
+  font-weight: 500;
+  color: var(--ds-ink);
+}
+
+.ds-hdr-lockup__dept {
+  font-size: 20px;
+  line-height: 20px;
+  font-weight: 700;
+  color: var(--ds-ink);
+}
+
+.ds-hdr-lockup.is-compact .ds-hdr-lockup__org,
+.ds-hdr-lockup.is-compact .ds-hdr-lockup__ministry {
+  font-size: 11px;
+}
+
+.ds-hdr-lockup.is-compact .ds-hdr-lockup__dept {
+  font-size: 15px;
+  line-height: 18px;
+}
+
+/* BETA badge — gov-yellow, its own row above the text stack */
+.ds-hdr-badge {
+  align-self: flex-start;
+  font-size: 10px;
+  line-height: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #000;
+  background-color: var(--ds-gov-yellow, #ffd323);
+  border-radius: var(--ds-radius-xxs, 2px);
+  padding: 2px 4px;
+}
+
+@media (min-width: 640px) {
+  .ds-hdr-lockup__lines.is-hidden-mobile {
+    display: flex;
+  }
+}
+
+/* ── SiteHeader root ───────────────────────────────────────────────────── */
+.ds-hdr {
+  position: relative;
+  z-index: 50;
+  width: 100%;
+  background-color: var(--ds-surface);
+  font-family: var(--ds-font-sans);
+}
+
+/* App-shell portals: keep the navbar pinned while content scrolls */
+.ds-hdr.is-sticky {
+  position: sticky;
+  top: 0;
+}
+
+/* Scroll-shrink (Figma "Appbar / on Scroll"): once the page scrolls, the
+   accessibility bar tucks away so the pinned chrome reclaims vertical space.
+   Only the .is-scrolled flag (set when collapseOnScroll is on) triggers it, so
+   static website headers are unaffected. */
+.ds-hdr.is-sticky .ds-hdr-util {
+  overflow: hidden;
+  max-height: 40px;
+  transition: max-height var(--ds-duration-normal, 0.2s) ease;
+}
+
+.ds-hdr.is-sticky.is-scrolled .ds-hdr-util {
+  max-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-hdr.is-sticky .ds-hdr-util {
+    transition: none;
+  }
+}
+
+/* Utility bar */
+.ds-hdr-util {
+  color: var(--ds-on-primary, #fff);
+}
+
+.ds-hdr-util.tone-blue {
+  background-color: var(--ds-primary);
+}
+
+.ds-hdr-util.tone-navy {
+  background-color: var(--ds-gov-navy);
+}
+
+.ds-hdr-util__in {
+  margin: 0 auto;
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 16px;
+  /* UX4G Navbar spec: Noto Sans Medium 14px / 20px, letter-spacing 0.1px */
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+}
+
+.ds-hdr-util__gov {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.ds-hdr-util__gov:hover {
+  text-decoration: underline;
+}
+
+.ds-hdr-util__flag {
+  height: 22px;
+  width: 33px;
+  border-radius: var(--ds-radius-xxs, 2px);
+  object-fit: cover;
+}
+
+.ds-hdr-util__end {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Vertical separator between accessibility-toolbar groups (UX4G: 20px rule) */
+.ds-hdr-util__sep {
+  width: 1px;
+  height: 20px;
+  background-color: var(--ds-on-primary, #fff);
+  opacity: 0.5;
+  flex: 0 0 auto;
+}
+
+.ds-hdr-util__icbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0 6px;
+  border: none;
+  border-radius: var(--ds-radius-full);
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ds-hdr-util__icbtn:hover {
+  background-color: rgb(255 255 255 / 0.15);
+}
+
+.ds-hdr-util__icbtn.has-text {
+  padding: 0 10px;
+}
+
+.ds-hdr-util__icbtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.ds-hdr-util__icbtn:focus-visible {
+  outline: 2px solid var(--ds-on-primary, #fff);
+  outline-offset: 1px;
+}
+
+/* Skip link — visible only on focus */
+.ds-hdr-skip {
+  position: absolute;
+  left: -9999px;
+  color: inherit;
+}
+
+.ds-hdr-skip:focus {
+  position: static;
+  left: auto;
+  text-decoration: underline;
+}
+
+/* External-link glyph in the GoI link */
+.ds-hdr-util__ext {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 auto;
+}
+
+/* Accessibility-bar font-size group (A− / A / A+) */
+.ds-hdr-util__fontsize {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ds-hdr-util__fontsize button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-family: var(--ds-font-sans);
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: var(--ds-radius-xs, 4px);
+}
+
+.ds-hdr-util__fontsize button:nth-child(1) { font-size: 12px; }
+.ds-hdr-util__fontsize button:nth-child(2) { font-size: 14px; }
+.ds-hdr-util__fontsize button:nth-child(3) { font-size: 16px; }
+
+/* Current size — light selection box (reflects the active aria-pressed button) */
+.ds-hdr-util__fontsize button[aria-pressed="true"] {
+  background-color: rgb(255 255 255 / 0.18);
+}
+
+.ds-hdr-util__fontsize button:hover {
+  background-color: rgb(255 255 255 / 0.15);
+}
+
+.ds-hdr-util__fontsize button:focus-visible,
+.ds-hdr-util__gov:focus-visible {
+  outline: 2px solid var(--ds-on-primary, #fff);
+  outline-offset: 1px;
+  border-radius: var(--ds-radius-xs, 4px);
+}
+
+/* Pressed (active) state for the contrast toggle */
+.ds-hdr-util__icbtn[aria-pressed="true"] {
+  background-color: rgb(255 255 255 / 0.22);
+}
+
+/* ── Tier 2: Brand row (UX4G / Portal: white, 12px py, 24px px, gap 24) ── */
+.ds-hdr-brand {
+  background-color: var(--ds-surface);
+}
+
+.ds-hdr-brand__in {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 24px;
+}
+
+/* Portal collapse / menu toggle (far left) */
+.ds-hdr-brand__toggle {
+  display: inline-grid;
+  place-items: center;
+  height: 32px;
+  width: 32px;
+  flex: 0 0 auto;
+  border: none;
+  border-radius: var(--ds-radius-md, 8px);
+  background: transparent;
+  color: var(--ds-ink);
+  cursor: pointer;
+}
+
+.ds-hdr-brand__toggle:hover {
+  background-color: var(--ds-surface-muted);
+}
+
+.ds-hdr-brand__toggle svg {
+  width: 28px;
+  height: 28px;
+}
+
+.ds-hdr-brand__lockup {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Trailing zone */
+.ds-hdr-brand__trailing {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex: 0 0 auto;
+}
+
+/* Search field (button styled as a search box) — 56px, r8, stroke border */
+.ds-hdr-searchfield {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  height: 56px;
+  width: 417px;
+  max-width: 40vw;
+  padding: 0 8px 0 4px;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md, 8px);
+  background-color: var(--ds-surface);
+  cursor: text;
+}
+
+.ds-hdr-searchfield:hover {
+  border-color: var(--ds-border-strong, var(--ds-border));
+}
+
+.ds-hdr-searchfield__icon {
+  display: inline-grid;
+  place-items: center;
+  padding: 8px;
+  color: var(--ds-ink);
+}
+
+.ds-hdr-searchfield__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.ds-hdr-searchfield__placeholder {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  text-align: left;
+  color: var(--ds-ink-muted);
+}
+
+@media (min-width: 900px) {
+  .ds-hdr-searchfield {
+    display: flex;
+  }
+}
+
+/* Cobranding marks (Digital India, SAMAVESH) */
+.ds-hdr-cobrand {
+  width: auto;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 767px) {
+  .ds-hdr-cobrand {
+    display: none;
+  }
+}
+
+/* Account block (portal) — details + 48px avatar; static, or a dropdown trigger */
+.ds-hdr-account {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+/* Interactive variant: the block becomes the dropdown trigger button */
+.ds-hdr-account.is-button {
+  border: none;
+  background: transparent;
+  padding: 2px;
+  border-radius: var(--ds-radius-md, 8px);
+  cursor: pointer;
+}
+
+.ds-hdr-account.is-button:hover {
+  background-color: var(--ds-surface-muted);
+}
+
+.ds-hdr-account.is-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+.ds-hdr-account__caret {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: var(--ds-ink-muted);
+}
+
+.ds-hdr-account__details {
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .ds-hdr-account__details {
+    display: flex;
+  }
+}
+
+.ds-hdr-account__name {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--ds-ink);
+}
+
+.ds-hdr-account__email {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--ds-ink-muted);
+}
+
+.ds-hdr-account__avatar {
+  display: grid;
+  place-items: center;
+  height: 48px;
+  width: 48px;
+  flex: 0 0 auto;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md, 8px);
+  background-color: var(--ds-primary-100, #c6dcf9);
+  color: var(--ds-primary-800, #01376b);
+  font-size: 18px;
+  font-weight: 500;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+/* Mobile drawer toggle */
+.ds-hdr-burger {
+  display: inline-grid;
+  place-items: center;
+  height: 40px;
+  width: 40px;
+  border: none;
+  border-radius: var(--ds-radius-md);
+  background: transparent;
+  color: var(--ds-ink);
+  cursor: pointer;
+}
+
+.ds-hdr-burger:hover {
+  background-color: var(--ds-surface-muted);
+}
+
+.ds-hdr-burger svg {
+  width: 24px;
+  height: 24px;
+}
+
+@media (min-width: 1024px) {
+  .ds-hdr-burger {
+    display: none;
+  }
+}
+
+/* ── Tier 3: Navigation row (UX4G / Portal: bordered, items justify-between) ── */
+.ds-hdr-nav {
+  display: none;
+  border-top: 1px solid var(--ds-border);
+  border-bottom: 1px solid var(--ds-border);
+  background-color: var(--ds-surface);
+}
+
+@media (min-width: 1024px) {
+  .ds-hdr-nav {
+    display: block;
+  }
+}
+
+.ds-hdr-nav__list {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  padding: 0 12px;
+  list-style: none;
+}
+
+.ds-hdr-nav__item {
+  position: relative;
+}
+
+.ds-hdr-nav__link {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  /* UX4G/Portal spec: py 16px px 12px, Noto Sans Medium 14px / 20px, #343a40, 0.1px */
+  padding: 16px 12px;
+  border-radius: var(--ds-radius-xs, 4px);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  font-weight: 500;
+  color: var(--ds-ink);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--ds-duration-fast, 0.12s) ease, background-color var(--ds-duration-fast, 0.12s) ease;
+}
+
+.ds-hdr-nav__link:hover {
+  background-color: var(--ds-surface-muted);
+  color: var(--ds-primary);
+}
+
+/* Visible keyboard focus — WCAG 2.4.7. Applies to every interactive control in
+   the white rows that didn't already have a focus ring. */
+.ds-hdr-nav__link:focus-visible,
+.ds-hdr-nav__drop-link:focus-visible,
+.ds-hdr-searchfield:focus-visible,
+.ds-hdr-brand__toggle:focus-visible,
+.ds-hdr-burger:focus-visible,
+.ds-hdr-iconbtn:focus-visible,
+.ds-hdr-drawer__link:focus-visible,
+.ds-hdr-drawer__sublink:focus-visible {
+  outline: 2px solid var(--ds-primary);
+  outline-offset: -2px;
+  border-radius: var(--ds-radius-xs, 4px);
+}
+
+.ds-hdr-nav__link.is-active {
+  color: var(--ds-primary);
+  font-weight: 600;
+}
+
+.ds-hdr-ic {
+  width: 16px;
+  height: 16px;
+  opacity: 0.7;
+}
+
+.ds-hdr-nav__drop-wrap {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 50;
+  min-width: 280px;
+}
+
+.ds-hdr-nav__drop {
+  margin-top: 1px;
+  padding: 8px 0;
+  list-style: none;
+  border: 1px solid var(--ds-border);
+  border-radius: 0 0 var(--ds-radius-lg) var(--ds-radius-lg);
+  background-color: var(--ds-surface);
+  box-shadow: var(--ds-shadow-lg);
+}
+
+.ds-hdr-nav__drop-link {
+  display: block;
+  padding: 8px 16px;
+  font-size: var(--ds-text-body-3, 0.875rem);
+  color: var(--ds-ink-muted);
+  text-decoration: none;
+}
+
+.ds-hdr-nav__drop-link:hover {
+  background-color: var(--ds-surface-muted);
+  color: var(--ds-primary);
+}
+
+/* Mega-menu — multi-column dropdown for org-heavy nav items
+   (e.g. "Associated Organisations": Commissions / Corporations / Councils). */
+.ds-hdr-nav__drop-wrap.is-mega {
+  left: 0;
+  min-width: 0;
+}
+
+/* Anchor to the right edge for nav items in the trailing half of the row so a
+   wide panel doesn't overflow the viewport. Apps can opt a specific item in by
+   leaving it on the right; the row is justify-between. */
+.ds-hdr-nav__item:nth-last-child(-n + 2) .ds-hdr-nav__drop-wrap.is-mega {
+  left: auto;
+  right: 0;
+}
+
+.ds-hdr-nav__mega {
+  display: flex;
+  gap: 32px;
+  margin-top: 1px;
+  padding: 20px 24px;
+  border: 1px solid var(--ds-border);
+  border-radius: 0 0 var(--ds-radius-lg) var(--ds-radius-lg);
+  background-color: var(--ds-surface);
+  box-shadow: var(--ds-shadow-lg);
+}
+
+.ds-hdr-nav__mega-col {
+  min-width: 200px;
+}
+
+.ds-hdr-nav__mega-head {
+  margin: 0 0 8px;
+  padding: 0 16px;
+  font-size: var(--ds-text-label-3, 0.75rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ds-ink-hint, var(--ds-ink-muted));
+}
+
+.ds-hdr-nav__mega-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Rich mega-menu items (org emblem + abbr + name) — Figma "mega-menu-item" */
+.ds-hdr-nav__mega-list.is-rich {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ds-hdr-nav__mega-col:has(.is-rich) {
+  min-width: 320px;
+}
+
+.ds-hdr-mega-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-spacing-md, 12px);
+  padding: var(--ds-spacing-md, 12px) var(--ds-spacing-xl, 20px) var(--ds-spacing-md, 12px) var(--ds-spacing-md, 12px);
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-lg, 12px);
+  text-decoration: none;
+  transition: background-color var(--ds-duration-fast, 0.12s) ease, border-color var(--ds-duration-fast, 0.12s) ease;
+}
+
+.ds-hdr-mega-item__logo {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  padding: 2px;
+  border-radius: var(--ds-radius-sm, 6px);
+  background-color: var(--ds-surface-muted);
+  overflow: hidden;
+}
+
+.ds-hdr-mega-item__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.ds-hdr-mega-item__copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.ds-hdr-mega-item__abbr {
+  font-size: var(--ds-text-body-2, 1rem);
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--ds-ink);
+}
+
+.ds-hdr-mega-item__name {
+  font-size: var(--ds-text-body-3, 0.875rem);
+  line-height: 1.4;
+  color: var(--ds-ink-muted);
+}
+
+.ds-hdr-mega-item .ds-hdr-ic {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  transform: rotate(-90deg);
+  opacity: 0;
+  color: var(--ds-ink-muted);
+  transition: opacity var(--ds-duration-fast, 0.12s) ease;
+}
+
+.ds-hdr-mega-item:hover,
+.ds-hdr-mega-item:focus-visible {
+  outline: none;
+  background-color: var(--ds-surface);
+  border-color: var(--ds-border);
+  box-shadow: var(--ds-shadow-xs);
+}
+
+.ds-hdr-mega-item:hover .ds-hdr-ic,
+.ds-hdr-mega-item:focus-visible .ds-hdr-ic {
+  opacity: 1;
+}
+
+.ds-hdr-mega-item.is-active {
+  border-color: var(--ds-border);
+  background-color: var(--ds-surface);
+}
+
+.ds-hdr-mega-item:focus-visible {
+  border-color: var(--ds-primary);
+  box-shadow: 0 0 0 1px var(--ds-primary);
+}
+
+/* Mobile drawer */
+.ds-hdr-drawer {
+  border-bottom: 1px solid var(--ds-border);
+  background-color: var(--ds-surface);
+}
+
+@media (min-width: 1024px) {
+  .ds-hdr-drawer {
+    display: none;
+  }
+}
+
+.ds-hdr-drawer__list {
+  margin: 0;
+  padding: 8px 0;
+  list-style: none;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.ds-hdr-drawer__link {
+  display: block;
+  padding: 10px 16px;
+  font-size: var(--ds-text-body-2, 1rem);
+  font-weight: 600;
+  color: var(--ds-ink);
+  text-decoration: none;
+}
+
+.ds-hdr-drawer__link.is-active {
+  color: var(--ds-primary);
+}
+
+.ds-hdr-drawer__sub {
+  margin: 0 0 4px;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-hdr-drawer__sublink {
+  display: block;
+  padding: 7px 16px 7px 28px;
+  font-size: var(--ds-text-body-3, 0.875rem);
+  color: var(--ds-ink-muted);
+  text-decoration: none;
+}
+
+.ds-hdr-drawer__sublink:hover {
+  background-color: var(--ds-surface-muted);
+  color: var(--ds-primary);
+}
+
+/* ── Account dropdown popover (SiteHeader portal account) ──────────────── */
+/* AccountMenu wrapper — the trigger reuses .ds-hdr-account (.is-button); this
+   only provides positioning for the dropdown popover below. */
+.ds-hdr-acct {
+  position: relative;
+}
+
+.ds-hdr-acct__menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 50;
+  min-width: 240px;
+  padding: 4px;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-surface);
+  box-shadow: var(--ds-shadow-xl);
+}
+
+.ds-hdr-acct__menu-head {
+  padding: 8px 12px;
+}
+
+.ds-hdr-acct__menu-name {
+  font-size: var(--ds-text-body-2, 1rem);
+  font-weight: 600;
+  color: var(--ds-ink);
+}
+
+.ds-hdr-acct__menu-role {
+  font-size: var(--ds-text-label-3, 0.75rem);
+  color: var(--ds-ink-muted);
+}
+
+.ds-hdr-acct__menu-sep {
+  height: 1px;
+  margin: 4px 0;
+  background-color: var(--ds-border);
+}
+
+.ds-hdr-acct__menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  font-size: var(--ds-text-body-3, 0.9375rem);
+  color: var(--ds-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.ds-hdr-acct__menu-item:hover,
+.ds-hdr-acct__menu-item:focus-visible {
+  outline: none;
+  background-color: var(--ds-primary-tonal);
+  color: var(--ds-primary);
+}
+
+.ds-hdr-acct__menu-item.is-danger {
+  color: var(--ds-danger);
+}
+
+.ds-hdr-acct__menu-item.is-danger:hover,
+.ds-hdr-acct__menu-item.is-danger:focus-visible {
+  background-color: var(--ds-danger-tonal);
+  color: var(--ds-danger);
+}
+
+.ds-hdr-acct__menu-icon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+}
+
+.ds-hdr-acct__menu-icon svg {
+  width: 16px;
+  height: 16px;
+}

@@ -1,185 +1,170 @@
 <!--
-  SAMAVESH — AI Design Context (design.md)
-  ----------------------------------------
-  This file is the single, authoritative brief an AI agent (or a new engineer)
-  reads BEFORE building or changing any UI on the MoSJE estate. It is written to
-  be machine-readable: stable headings, explicit token names, explicit rules.
+  SAMAVESH — AI Design System Specification (design.md)
+  -----------------------------------------------------
+  This file is the single, authoritative specification for the SAMAVESH Design
+  System under the Ministry/Department of Social Justice & Empowerment (MoSJE),
+  Government of India. It aligns with the UX4G Figma DS and GIGW 3.0 standards.
+  
+  This documentation is structured to match industry-benchmark design systems 
+  (such as Google Material Design 3, IBM Carbon, and Shopify Polaris), providing 
+  clear guidelines for foundations, component states, modern web APIs, and visual Dos & Don'ts.
 
-  Keep it in sync — see ".claude/rules/design-system.md" → "AI design context".
-  Exact token VALUES are never hand-copied here; they live in the generated
-  sources of truth listed under "Source of truth" so this file cannot drift.
-
-  Last reviewed: 2026-06-19 · System version: v0.7
+  Last reviewed: 2026-06-23 · System version: v1.0.0
 -->
 
-# SAMAVESH Design System — AI Design Context
+# SAMAVESH Design System — Specification & AI Design Context
 
-**SAMAVESH** (समावेश, "inclusion / bringing together") is the shared visual and
-interaction language for the **Ministry / Department of Social Justice &
-Empowerment (MoSJE/DoSJE), Government of India** — one system behind 13 websites
-and 20+ portals serving 33+ organisations and schemes.
+**SAMAVESH** (समावेश, "inclusion / bringing together") is the unified visual and interaction language for the **Ministry / Department of Social Justice & Empowerment (MoSJE/DoSJE), Government of India**. It serves as the single source of truth across 13 informational websites and 20+ workflow portals.
 
-If you are an AI agent building UI for any MoSJE app, **read this file first**,
-then build only from the tokens and components below. Do not invent visual
-values.
+Any developer or AI agent building UI for any MoSJE application must read this document first and implement interfaces adhering strictly to the tokens, states, and guidelines specified below.
 
 ---
 
-## 1. Source of truth (never hand-copy values)
+## 1. System Foundations
 
-| What | Authoritative file | Notes |
-|------|--------------------|-------|
-| Token **source** (edit here) | `packages/tokens/src/{primitive,semantic,component}.json` | DTCG JSON, 3 tiers |
-| Token **CSS contract** (consume here) | `packages/design-system/tokens.css` | generated — `--ds-*` / `--sa-*` |
-| Token **TS mirror** | `packages/design-system/tokens.ts` | typed values |
-| **Figma** export (code → Figma) | `packages/tokens/dist/figma.tokens.json` | DTCG, import via Tokens-Studio |
-| Tailwind presets | `packages/config/tailwind-preset.cjs` (v3), `tokens-tailwind.css` (v4) | generated |
-| Components | `packages/design-system/` → `import { … } from "@mosje/design-system"` | one definition each |
-| Live docs | the SAMAVESH portal at `/design-system` (`apps/docs`) | foundations + components |
-| Figma library | https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System | designer SoT |
-
-**Generated files are never hand-edited.** Change tokens in
-`packages/tokens/src/*.json`, then `npm run build -w @mosje/tokens` and
-`npm test -w @mosje/tokens`.
-
----
-
-## 2. How to consume the system
-
-1. **Import components** from the package root — never re-implement them:
-   ```tsx
-   import { Button, Card, FormField, Input } from "@mosje/design-system";
-   import "@mosje/design-system/tokens.css"; // once, app-wide
-   ```
-2. **Style with tokens, never hardcoded values.** Use the `--ds-*` CSS custom
-   properties (below). This works with Tailwind v4, Tailwind v3 (via
-   `@mosje/config`), or no framework at all (the docs portal uses pure
-   `--ds-*`). Example:
-   ```css
-   .thing { background: var(--ds-surface); color: var(--ds-ink);
-            padding: var(--ds-space-4); border-radius: var(--ds-radius-md); }
-   ```
-3. **Never** use raw hex, raw px for spacing/type/radius, or ad-hoc rgba. If a
-   value you need has no token, that is a token gap — add it to
-   `packages/tokens/src/` (see §6), don't hardcode.
-
----
-
-## 3. Token vocabulary (`--ds-*` contract)
-
-Names are stable; values resolve per theme/mode at runtime. Full list +
-resolved values: `packages/design-system/tokens.css`.
-
-**Color — semantic (use these, not the raw ramps):**
-- Text: `--ds-ink`, `--ds-ink-strong`, `--ds-ink-muted`, `--ds-on-primary`
-- Surface: `--ds-surface`, `--ds-surface-muted`, `--ds-surface-alt`
-- Border: `--ds-border`, `--ds-border-strong`
-- Brand/action: `--ds-primary`, `--ds-primary-hover` (= `--ds-primary-dark`), `--ds-primary-tonal`, `--ds-primary-ring`
-- Links: `--ds-link` (decoupled from primary so it stays readable on dark)
-- Status: `--ds-success` / `--ds-success-tonal`, `--ds-warning` / `--ds-warning-tonal`, `--ds-danger` / `--ds-danger-tonal`, `--ds-info` / `--ds-info-tonal`
-- Info text: `--ds-ink-info` (use instead of `--ds-info` for body text — correct contrast level)
-- Government brand layer: `--ds-saffron` (+ `-light` / `-dark`), `--ds-gov-navy`, `--ds-gov-yellow`
-- Overlay/scrim: `--ds-overlay`
-
-**Spacing — two families, both valid:**
-- Numeric step scale: `--ds-space-0,1,2,3,4,5,6,8,10,12,14` (4px base; `4`=16px)
-- Named t-shirt scale: `--ds-spacing-sm,md,lg,xl`
-
-**Radius:** `--ds-radius-xxs,xs,sm,md,pill`
-**Type roles — responsive (use these):** `--ds-type-ROLE-size` and `--ds-type-ROLE-lh` where ROLE is one of `display1-6`, `headline1-6`, `title1-3`, `body1-3`, `label1-3`. These are mobile-first and respond via `@media (min-width: 768px/1024px)` breakpoints automatically. Labels are fixed (no responsive override).
-**Type roles — legacy aliases (back-compat):** `--ds-text-display,title-1,title-2,headline,body-1,body-2,body-3,label-1,label-3` (+ matching `--ds-leading-*`) — these now forward to the responsive `--ds-type-*` variables so they are also responsive.
-**Font:** `--ds-font-sans` (Noto Sans), `--ds-font-mono`
-**Elevation:** `--ds-shadow-xs,lg,xl`
-**Motion:** `--ds-duration-fast,base,slow`, `--ds-easing-out,in,in-out`
-**Density:** `--ds-control-height`
-
----
-
-## 4. Theming — three independent axes
-
-Theming is attribute-driven on the root element; tokens react automatically.
+### A. Color Architecture & Theming Axes
+SAMAVESH operates on three independent theme axes applied via HTML attributes on the root (`<html>`) element. Custom tokens respond automatically at runtime.
 
 | Axis | Attribute | Values | Meaning |
-|------|-----------|--------|---------|
-| Brand / colour mode | `data-color-mode` | `blue-light` (default), `blue-dark` | which primary ramp |
-| Appearance | `data-theme` | (unset = light), `dark`, `hc` | light / dark / high-contrast |
-| Density | `data-density` | (unset = comfortable), `compact` | control height |
+| :--- | :--- | :--- | :--- |
+| **Brand Mode** | `data-color-mode` | `blue-light` (default), `blue-dark` | Selects the primary brand color ramp. |
+| **Appearance** | `data-theme` | `light` (default/unset), `dark`, `hc` | Light theme, dark theme, or high-contrast (a11y). |
+| **Density** | `data-density` | `comfortable` (default/unset), `compact` | Controls padding, heights, and spatial density. |
 
-- The colour-mode axis is managed by `ColorModeProvider` / `useColorMode()` from
-  the package. The appearance + density axes are plain attributes you can set on
-  `<html>`; light is the `:root` default and is also explicitly addressable via
-  `[data-theme="light"]` so nested theme "islands" (e.g. a docs playground
-  previewing dark inside a light page) resolve correctly.
-- To avoid a flash, set the attribute before first paint (see
-  `colorModeInitScript()` and the docs app's `themeInitScript()`).
+> [!TIP]
+> Nested theme "islands" (e.g. a dark-themed preview wrapper inside a light page) must be explicitly scoped using nested `[data-theme="dark"]` elements. To prevent theme flashes on initial render, initialize attributes using the exported `colorModeInitScript()`.
 
----
+### B. Typography
+- **Typography Stack**: Noto Sans (`var(--ds-font-sans)`) is the non-negotiable typeface across all English interfaces. Devanagari/Hindi uses `--sa-font-family-devanagari`.
+- **Line Length Constraints**: To optimize cognitive load, restrict body text and prose containers to a maximum width of `65ch` to `75ch` (`max-w-prose` / `max-w-3xl`).
+- **Responsive Sizing**: Sizing is responsive and mobile-first, using the `--ds-type-ROLE-size` and `--ds-type-ROLE-lh` tokens (where `ROLE` matches `display1-6`, `headline1-6`, `title1-3`, `body1-3`, `label1-3`).
+- **Typography Scale Rules**: Large display heading sizes (`clamp()`) must maintain a letter-spacing floor of `-0.04em` to prevent compressed, overlapping glyphs on mobile screens. Use `text-wrap: balance` on headers `h1-h3` and `text-wrap: pretty` on paragraphs to prevent typographic orphans.
 
-## 5. Component inventory
-
-Import any of these from `@mosje/design-system`. Each has one definition; do not
-fork. Live examples: `/design-system/components/*` and Storybook.
-
-- **Actions** — `Button`
-- **Forms** — `Input`, `Textarea`, `Select`, `FormField` (label/hint/error wiring), `Checkbox`, `Radio`, `Toggle`, `Search`
-- **Data display** — `Card` (+ `CardHeader`, `CardBody`, `CardFooter`, `CardTitle`, `CardSubtitle`), `Badge`, `Chip`, `Avatar`, `MetricCard` (stat tile: label, value, optional icon badge, optional change indicator)`
-- **Feedback** — `Alert`, `Loader`, `EmptyState`
-- **Navigation / chrome** — `AppSwitcher`, `ZoneSwitcher`, `ColorModeSwitcher`
-- **Accessibility** — `AccessibilityWidget`
-- **Colour-mode system** — `ColorModeProvider`, `useColorMode`, `applyColorMode`, `colorModeInitScript`
+### C. Spacing & Elevation
+- **Spacing Scale**: Spacing is locked to a named t-shirt scale. Custom padding and margins must map to:
+  `--ds-spacing-none (0px)`, `--ds-spacing-xxs (2px)`, `--ds-spacing-xs (4px)`, `--ds-spacing-sm (8px)`, `--ds-spacing-md (12px)`, `--ds-spacing-lg (16px)`, `--ds-spacing-xl (20px)`, `--ds-spacing-2xl (24px)`, `--ds-spacing-3xl (32px)`, `--ds-spacing-4xl (40px)`, `--ds-spacing-5xl (48px)`
+- **Responsive Layout Grid**:
+  - **Desktop (>= 1024px)**: 12-column grid, max-width `1280px`, `24px` (`var(--ds-spacing-2xl)`) gutters and margins.
+  - **Mobile (< 1024px)**: 4-column fluid grid, `16px` (`var(--ds-spacing-lg)`) gutters and margins.
 
 ---
 
-## 6. Non-negotiable rules (apply to every screen)
+## 2. Component States & Interactive Behavior
 
-These are project standing instructions — treat as hard constraints.
+Every interactive component (Buttons, Inputs, Cards, Links) must implement standard states to ensure consistent, responsive, and accessible feedback.
 
-1. **Tokens first, always.** No hardcoded hex/px/rgba/shadows. Missing value →
-   add a token in `packages/tokens/src/`, rebuild, then use it.
-2. **Typeface is Noto Sans** (`--ds-font-sans`) across all gov properties.
-   Devanagari uses `--sa-font-family-devanagari`. Don't introduce other fonts.
-3. **Logo & favicon = the National Emblem** (`National-Emblem-logo.svg` /
-   `National_Emblem_logo_white.svg`). Never an invented/abstract mark.
-4. **No Indian tricolour band/stripe motif** (saffron-white-green flag bar) in
-   any chrome — headers, footers, hero bands, dividers — unless the user
-   explicitly asks. A single brand-token accent is fine; the flag stripe is not.
-5. **Accessibility is non-negotiable** — target **WCAG 2.1 AA + GIGW**: semantic
-   HTML, alt text, keyboard nav, visible focus (`--ds-primary-ring`), AA
-   contrast, ≥44px touch targets. Run the `accessibility-auditor` agent before
-   shipping a page.
-6. **The release gate:** every component/pattern must work accessibly, in Hindi
-   and English, on a ₹6,000 Android phone on 3G. If it doesn't, it doesn't ship.
-   → mobile-first, responsive, no horizontal overflow, fluid type.
-7. **Bilingual by default** — EN + हिन्दी; never hardcode English-only layouts
-   that break with Devanagari.
-8. **Real content, real assets** — no lorem/placeholder in production pages.
+```mermaid
+graph TD
+    Normal[Normal State] -->|Hover| Hover[Hover State: transition 150ms]
+    Normal -->|Focus| Focus[Focus State: outline-offset 2px]
+    Normal -->|Active| Active[Active State: visual feedback]
+    Normal -->|Disabled| Disabled[Disabled State: pointer-events none]
+```
 
-### Do / Don't (quick reference for AI)
+### A. State Definitions
+1.  **Normal**: The default idle state of the component using standard semantic tokens.
+2.  **Hover**: Triggered when a pointer moves over the element. Must use a CSS transition of `150ms` (`var(--ds-duration-fast)`) with an exponential ease-out curve (`var(--ds-easing-out)`). Banned: Linear or bouncy/springy transitions.
+3.  **Active**: Triggered during user press/tap. Provides immediate visual sinking or color shifting to confirm the action.
+4.  **Focus**: Triggered via keyboard tab or selection. Must render a high-contrast focus indicator: `2px solid var(--ds-primary-ring)` with a `2px` outline offset. The focus state contrast ratio against its surrounding background must be at least `4.5:1`.
+5.  **Disabled**: Indicated using opacity `0.4` (`var(--ds-opacity-disabled)`) or a flat neutral color. Must append `pointer-events: none`, `tabindex="-1"`, and `aria-disabled="true"` to prevent user interaction.
 
-- ✅ `var(--ds-space-4)` · ❌ `padding: 16px`
-- ✅ `var(--ds-primary)` / `var(--ds-link)` · ❌ `#0373df`
-- ✅ `import { Button } from "@mosje/design-system"` · ❌ a new `<button className="...">`
-- ✅ `data-theme="dark"` + tokens · ❌ a second hardcoded dark palette
-- ✅ National Emblem · ❌ abstract logo · ❌ tricolour stripe
+### B. Keyboard Navigation & Focus Management
+Components must be fully navigable via keyboard, adhering to WCAG 2.1 AA keyboard navigation (2.1.1) and focus order (2.4.3):
+- **Overlays (Modals, Dropdowns, Drawers)**: Must catch the keyboard focus, trapping it inside the container while active. Pressing `Escape` must immediately close the overlay and return focus to the trigger element.
+- **Lists and Navigations**: Tab moves focus linearly between groups. Interactive dropdowns and mega-menus should support Arrow keys for list traversal.
 
 ---
 
-## 7. Workflow & commands
+## 3. Visual Guidelines: Dos & Don'ts
 
-- Regenerate tokens: `npm run build -w @mosje/tokens`
-- Assert contract: `npm test -w @mosje/tokens`
-- Figma ↔ tokens sync: `/sync-figma` (see `.claude/commands/sync-figma.md`)
-- Review UI for drift: `design-system-guardian` agent
-- Audit a page: `accessibility-auditor` agent
-- Run the docs portal: `npm run dev:docs` → `http://localhost:3002/design-system`
+To ensure the visual system remains premium, clean, and consistent, all developers and AI models must follow these component-specific rules.
+
+### A. Buttons & Actions
+| Do | Don't |
+| :--- | :--- |
+| Use predefined semantic roles: `variant="primary \| secondary \| tonal \| danger"`. | Do not create custom button classes or override backgrounds with hardcoded hex/rgba values. |
+| Use full-pill rounded shapes (`var(--ds-radius-pill)`) for action buttons. | Banned: "Ghost" buttons using a `1px` border combined with a soft, wide drop shadow. |
+| Ensure clear label text, using `aria-label` for icon-only button contexts. | Do not use decorative text gradients (`background-clip: text`) on button labels. |
+
+### B. Cards & Containers
+| Do | Don't |
+| :--- | :--- |
+| Group content into clean, structural cards using `var(--ds-radius-md)` (`12px-16px` border-radius). | Banned: Sharp corners (`0px` radius) or excessively rounded corners (`> 20px`) for cards. |
+| Maintain clean separation using solid semantic borders or light background colors. | Banned: Colored accent side-stripes (e.g. `border-left: 4px solid var(--ds-primary)`) on cards. |
+| Keep grids structured with equal height cards using flex or CSS grid. | Do not nest cards within other cards (nested containers). |
+
+### C. Site Header & Navbars
+| Do | Don't |
+| :--- | :--- |
+| Render the canonical three-tiered `SiteHeader` with the functional accessibility toolbar. | Banned: Placing decorative Indian tricolour stripes in the header, footer, or hero section. |
+| Configure `variant="website"` for public portals and `variant="portal"` for authenticated dashboards. | Do not override the official National Emblem with abstract logos or custom marks. |
+| Ensure the mobile drawer flattens the mega-menu structure dynamically. | Do not disable collapse-on-scroll or keyboard navigation properties. |
+
+### D. Forms & Inputs
+| Do | Don't |
+| :--- | :--- |
+| Wrap every input in a `FormField` component containing explicit label, hint, and error nodes. | Do not use placeholder text as a substitute for labels. Placeholders disappear on type and fail accessibility. |
+| Show red error states (`var(--ds-danger)`) only after validation runs or input blur. | Do not render inline inputs without surrounding margin-bottom/padding constraints. |
 
 ---
 
-## 8. Staying in sync (contract)
+## 4. Modern Web Standards & Browser APIs
 
-This file, `AGENTS.md`, and the portal's `llms.txt` are kept in lockstep with the
-tokens, the components, and the Figma library. Whenever you change a token, add or
-change a component, or sync Figma, you **must** update these (see the rule in
-`.claude/rules/design-system.md`). `llms.txt` is generated from the portal nav so
-it self-syncs; this file and `AGENTS.md` are reviewed on every token/component/
-Figma change and the "Last reviewed" date above is bumped.
+SAMAVESH prioritizes native web platform capabilities over large JavaScript libraries to guarantee performance and visual stability.
+
+### A. Native Overlays
+All dropdowns, tooltips, select menus, and modal dialogs must use native browser features:
+- **`dialog` Element**: Use `<dialog>` for modal overlays. This leverages the browser's native stacking context (`::backdrop` pseudo-element), automatically traps keyboard focus, and handles Escape-key dismissals.
+- **`popover` API**: Use the HTML `popover` attribute for lightweight non-modal overlays (tooltips, dropdowns) to prevent stacking z-index clipping inside overflow-hidden parent elements.
+
+### B. Size-Aware Styling (Container Queries)
+Responsive components (such as Cards, Grid panels, and Lists) must use CSS Container Queries (`@container`) rather than viewport Media Queries (`@media`).
+- Card layout structures must adapt to the width of their parent container (`cqw` units) rather than the screen size, enabling components to render correctly whether placed in a full-bleed grid or a narrow sidebar widget.
+
+### C. Parent Styling with `:has()`
+Utilize the CSS `:has()` pseudo-class to style parent containers dynamically based on child states, reducing reactive state management in JavaScript:
+```css
+/* Style form fieldset wrap with a red border only when it contains an invalid input */
+.ds-form-group:has(input:invalid:not(:placeholder-shown)) {
+  border-color: var(--ds-danger);
+}
+```
+
+### D. Performance & Visual Stability
+- **VISUAL STABILITY**: All custom web fonts (Noto Sans) must configure `font-display: swap` and define visually stable font fallbacks to minimize Cumulative Layout Shift (CLS).
+- **Graceful Degradation**: Always provide lightweight fallbacks for modern APIs using feature detection (e.g. `@supports (container-type: inline-size)`).
+
+---
+
+## 5. Token Vocabulary Reference (`--ds-*`)
+
+Custom properties are defined in `@mosje/tokens` and generated into `packages/design-system/tokens.css`.
+
+- **Color Semantics**: 
+  - Text: `--ds-ink` (primary text), `--ds-ink-strong`, `--ds-ink-muted`, `--ds-on-primary` (text on solid brand bg), `--ds-ink-info` (high-contrast text for info boxes).
+  - Backgrounds: `--ds-surface` (base card/page bg), `--ds-surface-muted`, `--ds-surface-alt`.
+  - Brand: `--ds-primary` (GoI Navy/Blue), `--ds-primary-dark`, `--ds-primary-tonal`, `--ds-primary-ring`.
+  - Gov Accents: `--ds-saffron`, `--ds-saffron-dark`, `--ds-saffron-light`, `--ds-gov-navy`, `--ds-gov-yellow`.
+  - Borders: `--ds-border` (light divider), `--ds-border-strong`.
+  - Status: `--ds-success`, `--ds-warning`, `--ds-danger`, `--ds-info` (and corresponding `-tonal` variables).
+- **Radii**: `--ds-radius-xxs (2px)`, `--ds-radius-xs (4px)`, `--ds-radius-sm (8px)`, `--ds-radius-md (12px)`, `--ds-radius-pill (9999px)`.
+- **Shadows**: `--ds-shadow-xs`, `--ds-shadow-lg`, `--ds-shadow-xl`.
+- **Motion Durations**: `--ds-duration-fast (150ms)`, `--ds-duration-base (300ms)`, `--ds-duration-slow (500ms)`.
+
+---
+
+## 6. Workflows & Syncing
+
+- **Token Compilation**:
+  If a token value needs modification, edit `packages/tokens/src/*.json`, then compile:
+  ```bash
+  npm run build -w @mosje/tokens
+  ```
+  Ensure the generated contract is valid:
+  ```bash
+  npm test -w @mosje/tokens
+  ```
+- **Figma Code Connect**:
+  Visual components are synced with the designer Figma library using Code Connect. See `/sync-figma` and `docs/research/figma-code-connect-readiness.md` for sync workflows.
+- **Specification Maintenance**:
+  Whenever a new component is added, or a token contract is updated, this specification must be reviewed and its "Last reviewed" date bumped.

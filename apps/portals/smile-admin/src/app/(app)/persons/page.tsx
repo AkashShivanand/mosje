@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
   CreditCard,
@@ -97,9 +97,12 @@ export default function PersonsPage() {
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 
   // Reset to first page when the filter set changes the result count.
-  useEffect(() => {
+  const filterHash = `${search}-${state}-${status}-${gender}-${age}`;
+  const [prevFilterHash, setPrevFilterHash] = useState(filterHash);
+  if (prevFilterHash !== filterHash) {
+    setPrevFilterHash(filterHash);
     setPage(0);
-  }, [search, state, status, gender, age]);
+  }
 
   const rowsToShow = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
   const rangeStart = filtered.length === 0 ? 0 : page * PAGE_SIZE + 1;

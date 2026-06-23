@@ -12,6 +12,7 @@ node_modules/
 
 # Build outputs & caches (apps now live under apps/ and are tracked)
 **/.next/
+**/.next.stale-*/
 **/out/
 **/storybook-static/
 *.tsbuildinfo

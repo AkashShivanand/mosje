@@ -38,6 +38,12 @@ export {
   type ColorModeSwitcherProps,
 } from "./foundations/color-mode-switcher";
 
+// ---- Components: Icon -------------------------------------------------------
+// Material Symbols Outlined — the official icon system for all MoSJE apps.
+// Load the font once in your app root: import "@mosje/design-system/icons.css"
+export { Icon } from "./components/icon";
+export type { IconProps } from "./components/icon";
+
 // ---- Components: Actions -----------------------------------------------------
 export { Button, buttonClasses } from "./components/actions/button";
 export type { ButtonVariant, ButtonAppearance, ButtonSize } from "./components/actions/button";
@@ -56,20 +62,74 @@ export { Radio } from "./components/forms/radio";
 export { Toggle } from "./components/forms/toggle";
 export { Search } from "./components/forms/search";
 export { Chip } from "./components/forms/chip";
+export { FormSection } from "./components/forms/form-section";
+export type { FormSectionProps } from "./components/forms/form-section";
+export { Wizard, ReviewSection, ReviewItem } from "./components/forms/wizard";
+export type { WizardProps } from "./components/forms/wizard";
 
 // ---- Components: Feedback ----------------------------------------------------
 export { Alert } from "./components/feedback/alert";
 export { Badge } from "./components/feedback/badge";
 export { Loader } from "./components/feedback/loader";
 export { EmptyState } from "./components/feedback/empty-state";
+export { Stepper } from "./components/feedback/stepper";
+export type { StepperProps, StepperStep } from "./components/feedback/stepper";
+export { Modal } from "./components/feedback/modal";
+export type { ModalProps, ModalSize } from "./components/feedback/modal";
+export { ToastProvider, useToast } from "./components/feedback/toast";
+export type { ToastVariant } from "./components/feedback/toast";
 
 // ---- Components: Data display ------------------------------------------------
 export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle } from "./components/data-display/card";
 export { Avatar } from "./components/data-display/avatar";
 export { MetricCard } from "./components/data-display/metric-card";
 export type { MetricCardProps, MetricCardSize, MetricCardChange } from "./components/data-display/metric-card";
+export { DataTable } from "./components/data-display/data-table";
+export type { DataTableProps, DataTableColumn } from "./components/data-display/data-table";
+export { PieChart, BarChart } from "./components/data-display/charts";
+export type { ChartDatum } from "./components/data-display/charts";
 
 // ---- Components: Navigation --------------------------------------------------
+// Navbar — SiteHeader (the SAMAVESH Navbar: Website + Portal variants, 3-tier).
+export {
+  SiteHeader,
+  BrandLockup,
+  AccountMenu,
+  useA11yToolbar,
+  FONT_LEVELS,
+} from "./components/navigation/header";
+
+// Sidebar — portal app-shell left navigation (Figma: sidebar/type-1).
+export { SidebarNav } from "./components/navigation/sidebar";
+export type {
+  SidebarNavProps,
+  SidebarNavGroup,
+  SidebarNavItem,
+  SidebarNavChild,
+} from "./components/navigation/sidebar";
+export type {
+  SiteHeaderProps,
+  BrandLockupProps,
+  AccountMenuProps,
+  A11yToolbar,
+  FontLevel,
+  NavLink,
+  NavItem,
+  NavColumn,
+  NavMegaItem,
+  HeaderVariant,
+  BrandLines,
+  BrandMark,
+  HeaderSearch,
+  UtilityTone,
+  HeaderAccount,
+  AccountMenuItem,
+} from "./components/navigation/header";
+
+// Footer — slim dark-navy app-shell footer (UX4G / NeGD credit + policy links).
+export { Footer } from "./components/navigation/footer";
+export type { FooterProps, FooterLink } from "./components/navigation/footer";
+
 // The interactive component lives in a "use client" module.
 export { AppSwitcher, ZoneSwitcher } from "./components/navigation/zone-switcher";
 export type { AppSwitcherProps, ZoneSwitcherProps } from "./components/navigation/zone-switcher";
@@ -87,6 +147,15 @@ export type {
   AppEntry,
   AppEntry as Zone,
 } from "./components/navigation/app-switcher-utils";
+
+// ---- Components: Auth (login shells & page templates) -----------------------
+// Full-page login layout shared across all MoSJE portals. Only the slot
+// content changes per portal (logo paths, signing-into name, tabs, form).
+export { PortalLoginShell } from "./components/auth/portal-login-shell";
+export type {
+  PortalLoginShellProps,
+  PortalLoginTab,
+} from "./components/auth/portal-login-shell";
 
 // ---- Components: Accessibility -----------------------------------------------
 export { AccessibilityWidget } from "./components/a11y/accessibility-widget";

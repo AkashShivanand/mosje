@@ -32,6 +32,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     try {
       const sess = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
       if (sess?.mobile) {
@@ -46,6 +47,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       }
     } catch {}
     setHydrated(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   useEffect(() => {

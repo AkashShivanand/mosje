@@ -27,7 +27,15 @@ Also in force:
   then `npm run build -w @mosje/tokens` && `npm test -w @mosje/tokens`.
   **Never** edit generated files (`tokens.css`, `tokens.ts`, `dist/*`,
   `packages/config/tailwind-preset.cjs`).
-- **Components** → `packages/design-system/components/<category>/`.
+- **Components** → `packages/design-system/components/<category>/`. The full,
+  authoritative inventory is the barrel `index.ts` — import from there, don't
+  re-implement. Shared primitives now include (beyond the atoms): `DataTable`,
+  `PieChart`/`BarChart`, `MetricCard` (data-display); `Modal`, `Stepper`,
+  `ToastProvider`/`useToast`, `Alert`, `Badge`, `Loader`, `EmptyState`
+  (feedback); `FormSection`, `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`
+  and the input atoms (forms); `SiteHeader`, `SidebarNav`, `Footer`,
+  `AppSwitcher` (navigation); `PortalLoginShell` (auth). Tables, modals, toasts
+  and charts were previously hand-rolled per portal — always reuse these.
 - **Figma sync** → `/sync-figma`.
 
 ## Before you finish

@@ -10,7 +10,7 @@ const ROOT = path.dirname(fileURLToPath(import.meta.url));
 
 function appLint(appDir) {
   const abs = path.join(ROOT, appDir);
-  const bin = `${abs}/node_modules/.bin/eslint`;
+  const bin = path.join(ROOT, "node_modules", ".bin", "eslint");
   return (filenames) => {
     const files = filenames
       .map((f) => path.relative(abs, f))

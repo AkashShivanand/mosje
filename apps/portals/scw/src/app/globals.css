@@ -1,12 +1,11 @@
 /* Shared MoSJE token contract (--ds-/--sa-). Path is relative because the CSS
    resolver doesn't follow symlinks to files outside the project root. The symlink
    at ../../node_modules/@mosje/design-system resolves to packages/design-system. */
-@import "../../node_modules/@mosje/design-system/tokens.css";
-@import "../../node_modules/@mosje/design-system/components.css";
+@import "@mosje/design-system/tokens.css";
+@import "@mosje/design-system/components.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
 
 :root {
   --font-scale: 1;

@@ -1,0 +1,182 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — DataTable
+   Paginated table matching the Figma table treatment: plain white header,
+   brandwash row-hover, outlined current-page chip.
+   ============================================================================ */
+
+.ds-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ds-table {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: var(--ds-font-sans);
+}
+
+.ds-table__scroll {
+  overflow-x: auto;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg, 12px);
+}
+
+.ds-table__table {
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: var(--ds-text-body-3, 14px);
+}
+
+.ds-table__caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Header — white, sentence-case, medium weight (matches Figma, not shouty). */
+.ds-table__head {
+  background-color: var(--ds-surface);
+  border-bottom: 1px solid var(--ds-border);
+}
+
+.ds-table__th {
+  padding: 14px 16px;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--ds-ink-muted);
+}
+
+.ds-table__row {
+  border-top: 1px solid var(--ds-border);
+  transition: background-color 0.12s ease;
+}
+
+/* Brandwash row-hover (light-blue) with navy text — the Figma selected/hover state. */
+.ds-table__row:hover {
+  background-color: var(--ds-primary-50);
+}
+
+.ds-table__row:hover .ds-table__td {
+  color: var(--ds-primary);
+}
+
+.ds-table__td {
+  padding: 14px 16px;
+  color: var(--ds-ink);
+  vertical-align: middle;
+}
+
+.ds-table__empty {
+  padding: 48px 16px;
+  text-align: center;
+  color: var(--ds-ink-muted);
+}
+
+/* Footer / pagination. */
+.ds-table__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ds-table__pagesize {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--ds-text-body-3, 14px);
+  color: var(--ds-ink-muted);
+}
+
+.ds-table__pagesize-btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  border-radius: var(--ds-radius-sm, 6px);
+  padding: 2px 8px;
+  font: inherit;
+  font-weight: 600;
+  background: transparent;
+  color: var(--ds-ink-muted);
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.ds-table__pagesize-btn:hover {
+  background-color: var(--ds-surface-muted);
+}
+
+.ds-table__pagesize-btn.is-active {
+  background-color: var(--ds-primary);
+  color: var(--ds-on-primary, #fff);
+}
+
+.ds-table__pager {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ds-table__page-nav,
+.ds-table__page {
+  appearance: none;
+  cursor: pointer;
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  min-width: 36px;
+  border-radius: var(--ds-radius-sm, 6px);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ds-ink-muted);
+  font-weight: 600;
+  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.ds-table__page-nav:hover:not(:disabled),
+.ds-table__page:hover {
+  background-color: var(--ds-surface-muted);
+}
+
+.ds-table__page-nav:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Outlined current page (Figma), not a filled block. */
+.ds-table__page.is-current {
+  border-color: var(--ds-primary);
+  color: var(--ds-primary);
+  background: var(--ds-surface);
+}
+
+.ds-table__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 4px;
+  color: var(--ds-ink-muted);
+}
+
+.ds-table__page-nav:focus-visible,
+.ds-table__page:focus-visible,
+.ds-table__pagesize-btn:focus-visible {
+  outline: 2px solid var(--ds-primary-ring, var(--ds-primary));
+  outline-offset: 2px;
+}

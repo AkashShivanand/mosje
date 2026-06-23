@@ -7,6 +7,7 @@ import {
   useRef,
   useEffect,
   useMemo,
+  useId,
   type CSSProperties,
   type ReactNode,
 } from "react";
@@ -141,7 +142,8 @@ export function Select({
   const [open, setOpen] = useState(false);
   const [hl, setHl] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const uid = useMemo(() => "sel" + Math.random().toString(36).slice(2, 7), []);
+  const reactId = useId();
+  const uid = "sel" + reactId.replace(/:/g, "");
   useEffect(() => {
     if (!open) return;
     const h = (e: MouseEvent) => {

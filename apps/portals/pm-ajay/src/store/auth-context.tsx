@@ -71,6 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (stored) {
         const parsed = JSON.parse(stored) as Account;
         if (parsed?.employeeId && DEMO_ACCOUNTS[parsed.employeeId]) {
+          // eslint-disable-next-line react-hooks/set-state-in-effect
           setAccount(parsed);
         }
       }

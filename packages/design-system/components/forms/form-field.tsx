@@ -8,6 +8,7 @@ import "./forms.css";
 export interface FormFieldControlProps {
   id: string;
   invalid: boolean;
+  required?: boolean;
   "aria-describedby"?: string;
 }
 
@@ -73,6 +74,7 @@ export function FormField({
       {children({
         id: fieldId,
         invalid: error != null,
+        required: required || undefined,
         "aria-describedby": describedBy,
       })}
 

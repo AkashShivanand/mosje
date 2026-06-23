@@ -45,6 +45,16 @@ export const NAV: NavGroup[] = [
       { label: "Textarea", href: "/design-system/components/input#textarea", badge: "Stable" },
       { label: "Checkbox", href: "/design-system/components/input#checkbox", badge: "Alpha" },
       { label: "Alert", href: "/design-system/components/badge#alert", badge: "Beta" },
+    ],
+  },
+  {
+    title: "Navigation",
+    items: [
+      { label: "Navbar (Header)", href: "/design-system/components/header", badge: "Beta" },
+      { label: "Navbar · Website", href: "/design-system/components/header#site-header", badge: "Beta" },
+      { label: "Navbar · Portal", href: "/design-system/components/header#portal", badge: "Beta" },
+      { label: "Navbar · Mega-menu", href: "/design-system/components/header#menus", badge: "Beta" },
+      { label: "Sidebar Nav", href: "/design-system/components/sidebar", badge: "Beta" },
       { label: "App Switcher", href: "/design-system/components/badge#appswitcher", badge: "Beta" },
     ],
   },

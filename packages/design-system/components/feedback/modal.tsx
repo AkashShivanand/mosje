@@ -1,0 +1,111 @@
+"use client";
+
+import * as React from "react";
+import { cn } from "../../utils/cn";
+import "./modal.css";
+
+export type ModalSize = "sm" | "md" | "lg";
+
+export interface ModalProps {
+  /** Whether the dialog is open. */
+  open: boolean;
+  /** Called on Escape, backdrop click, or the close button. */
+  onClose: () => void;
+  /** Accessible title (rendered as the dialog heading and wired to aria-labelledby). */
+  title: React.ReactNode;
+  /** Body content. */
+  children: React.ReactNode;
+  /** Optional footer (action buttons). */
+  footer?: React.ReactNode;
+  /** Max-width preset. @default "md" */
+  size?: ModalSize;
+  /** Hide the default close (×) button. @default false */
+  hideClose?: boolean;
+  className?: string;
+}
+
+const IcClose = () => (
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+    <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+/**
+ * MoSJE / SAMAVESH Modal — the shared accessible dialog.
+ *
+ * Bakes in everything every portal was re-implementing by hand: a backdrop,
+ * `role="dialog"` + `aria-modal` + `aria-labelledby` on the panel, a focus
+ * trap, Escape-to-close, and focus restoration to the opener. Token-driven CSS.
+ */
+export function Modal({
+  open,
+  onClose,
+  title,
+  children,
+  footer,
+  size = "md",
+  hideClose = false,
+  className,
+}: ModalProps) {
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  const titleId = React.useId();
+
+  React.useEffect(() => {
+    if (!open) return;
+    const opener = document.activeElement as HTMLElement | null;
+    const panel = panelRef.current;
+    panel?.querySelector<HTMLElement>(FOCUSABLE)?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !panel) return;
+      const f = panel.querySelectorAll<HTMLElement>(FOCUSABLE);
+      if (f.length === 0) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      opener?.focus?.();
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div className="ds-modal__backdrop" onMouseDown={onClose}>
+      <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className={cn("ds-modal", `ds-modal--${size}`, className)}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
+        <div className="ds-modal__header">
+          <h2 id={titleId} className="ds-modal__title">{title}</h2>
+          {!hideClose && (
+            <button type="button" className="ds-modal__close" aria-label="Close dialog" onClick={onClose}>
+              <IcClose />
+            </button>
+          )}
+        </div>
+        <div className="ds-modal__body">{children}</div>
+        {footer && <div className="ds-modal__footer">{footer}</div>}
+      </div>
+    </div>
+  );
+}

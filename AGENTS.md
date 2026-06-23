@@ -34,14 +34,14 @@ mosje/                      # single git repo (was mosje-estate; apps now consol
 
 This is now a **single git repo** (`mosje`). The former independent app repos (dosje had local-only history; smile-admin pushed to `smile-admin-portal`) are absorbed; their full histories are preserved in gitignored `_backups/` and the archived GitHub repo.
 
-Apps are **independent** (own git, own deps) — this is a "monorepo-ready" layout, not yet an npm workspace. See `MOSJE-ARCHITECTURE.md` for the full app registry.
+Apps are **independent** (own git, own deps) — this is a "monorepo-ready" layout, now configured as an npm workspace. See `MOSJE-ARCHITECTURE.md` for the full app registry.
 
 ## Per-app stack
 
 | App | Framework | Styling | Notes |
 |-----|-----------|---------|-------|
-| `apps/dosje/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Noto Sans, gov brand tokens in `src/app/globals.css`. **Next 16 has breaking changes — see `apps/dosje/AGENTS.md`.** |
-| `apps/portals/*` | Next.js 15 · React 19 | Tailwind **v3** + Radix/shadcn | First portal (smile-admin) used port 4123. |
+| `apps/dosje/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Noto Sans, gov brand tokens in `src/app/globals.css`. Next 16 has breaking changes. Dev server runs with Turbopack. |
+| `apps/portals/*` | Next.js 15 · React 19 | Tailwind **v4** + Radix/shadcn | Uses Style Dictionary tokens CSS contract. Dev server runs with Turbopack. |
 
 ## Commands
 
@@ -53,6 +53,8 @@ Run inside the app folder (or via `npm --prefix <app>`):
 ## Conventions (apply everywhere unless a rule file overrides)
 
 - **TypeScript strict, no `any`.** Named exports. PascalCase components, camelCase utils.
+- **Styling with Tailwind v4:** Always use Tailwind v4 across all apps, packages, and portals. No legacy Tailwind version should be introduced or downgraded. When creating new modules or cloning existing apps, convert them to Tailwind v4 CSS-first config using `@import "tailwindcss";` and `@config` (or CSS `@theme` rules) instead of creating `tailwind.config.js` files.
+- **Turbopack for Dev:** Local development dev servers run with Turbopack (`next dev --turbopack`). Always configure `turbopack: { root: path.resolve(process.cwd(), "..", "..") }` in `next.config.ts` for all Next.js projects to ensure cross-package module resolution works in dev.
 - **Design tokens, never hardcoded values.** Use the brand tokens (`gov-blue #0373DF`, `saffron #F97316`, `gov-yellow #FFD323`, `ink`, `surface-muted`, …). When the design system lands, import from `@mosje/design-system`.
 - **Noto Sans** is the typeface across all gov properties (DBIM standard). Don't introduce other fonts.
 - **Accessibility is non-negotiable** — these are government sites. Target **WCAG 2.1 AA + GIGW**: semantic HTML, alt text, keyboard nav, visible focus, AA contrast. Use the `accessibility-auditor` agent before shipping a page.

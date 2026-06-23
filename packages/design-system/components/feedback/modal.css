@@ -1,0 +1,80 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — Modal / Dialog
+   Accessible dialog: backdrop, focus-trap, Escape, focus restore.
+   ============================================================================ */
+
+.ds-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--ds-overlay, rgba(0, 0, 0, 0.4));
+}
+
+.ds-modal {
+  width: 100%;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background-color: var(--ds-surface);
+  border-radius: var(--ds-radius-lg, 16px);
+  box-shadow: var(--ds-shadow-xl, 0 20px 40px rgba(0, 0, 0, 0.18));
+  font-family: var(--ds-font-sans);
+}
+
+.ds-modal--sm { max-width: 24rem; }
+.ds-modal--md { max-width: 28rem; }
+.ds-modal--lg { max-width: 40rem; }
+
+.ds-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 24px 0;
+}
+
+.ds-modal__title {
+  margin: 0;
+  font-size: var(--ds-text-title-2, 18px);
+  font-weight: 700;
+  color: var(--ds-ink);
+}
+
+.ds-modal__close {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ds-radius-sm, 6px);
+  background: transparent;
+  color: var(--ds-ink-muted);
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.ds-modal__close:hover {
+  background-color: var(--ds-surface-muted);
+  color: var(--ds-ink);
+}
+
+.ds-modal__close:focus-visible {
+  outline: 2px solid var(--ds-primary-ring, var(--ds-primary));
+  outline-offset: 2px;
+}
+
+.ds-modal__body {
+  padding: 16px 24px 24px;
+}
+
+.ds-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 24px 24px;
+}

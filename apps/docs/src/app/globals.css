@@ -1,5 +1,5 @@
 /* Import design system tokens — all --ds-* and --sa-* CSS custom properties */
-@import "../../node_modules/@mosje/design-system/tokens.css";
+@import "@mosje/design-system/tokens.css";
 /* Shared docs-kit component styles — loaded app-wide so Callout, StatusBadge,
    etc. are styled on every page (not only pages that render a PropsTable). */
 @import "../components/docs-kit/docs-kit.css";

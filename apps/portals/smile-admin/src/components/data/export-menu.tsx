@@ -25,21 +25,21 @@ export function ExportMenu<Row>({
   formats = ["csv", "pdf"],
   size = "sm",
 }: ExportMenuProps<Row>) {
-  const live = useLiveRegion();
+  const { ref: liveRef, announce } = useLiveRegion();
 
   const onCSV = () => {
     exportToCSV({ filename, columns, rows });
-    live.announce(`Downloaded ${rows.length} ${rows.length === 1 ? "record" : "records"} as CSV.`);
+    announce(`Downloaded ${rows.length} ${rows.length === 1 ? "record" : "records"} as CSV.`);
   };
 
   const onPDF = () => {
     exportToPDF({ title, subtitle, columns, rows });
-    live.announce(`Prepared PDF print view with ${rows.length} ${rows.length === 1 ? "record" : "records"}.`);
+    announce(`Prepared PDF print view with ${rows.length} ${rows.length === 1 ? "record" : "records"}.`);
   };
 
   return (
     <div className="flex items-center gap-xs">
-      <LiveRegion ref={live.ref} />
+      <LiveRegion ref={liveRef} />
       {formats.includes("csv") ? (
         <Button
           variant="outline"

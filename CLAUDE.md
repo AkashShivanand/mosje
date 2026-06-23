@@ -75,9 +75,15 @@ Run inside the app folder (or via `npm --prefix <app>`):
 - **Logo & favicon: use the National Emblem** (`National-Emblem-logo.svg` / `National_Emblem_logo_white.svg` for dark) — never an invented/abstract mark.
 - **Accessibility is non-negotiable** — these are government sites. Target **WCAG 2.1 AA + GIGW**: semantic HTML, alt text, keyboard nav, visible focus, AA contrast. Use the `accessibility-auditor` agent before shipping a page.
 - **Real content, real assets** — no lorem/placeholder in production pages.
-- `next/image` for images; `lucide-react` for icons (note: this version dropped the brand social icons — use inline SVGs).
+- `next/image` for images; **`<Icon>`** from `@mosje/design-system` for icons — **use Material Symbols Rounded** (the official SAMAVESH icon system). Standard spec: weight 300, size 24, stroke variant. Load the font once per app: `import "@mosje/design-system/icons.css"` in the root layout. For brand/social logos (National Emblem, etc.) use inline SVGs.
 - Mobile-first responsive; content max-width **1280px**.
 - **AI design contract.** Before building or changing UI, read **`packages/design-system/design.md`** (token vocabulary, theming axes, component inventory, hard rules) — it's the authoritative AI-facing brief. Its companions `packages/design-system/AGENTS.md` and the portal's `/design-system/llms.txt` must stay in sync with tokens/components/Figma — see the rule in `.claude/rules/design-system.md`.
+- **Design-system-first (MANDATORY for every screen and component, no exceptions).** Before writing a single line of UI code for any screen, run a DS audit:
+  1. List every UI element the screen needs (button, input, tab switcher, layout shell, chart, etc.).
+  2. Check `packages/design-system/index.ts` + `design.md` — if it exists there, import it; never re-implement it per-app.
+  3. If a needed component is missing from the DS: **add it to `packages/design-system/` first**, export it from the barrel, then import it. Never build one-off UI that belongs in the shared DS.
+  4. Document the audit inline as a short comment block at the top of your plan: `DS Audit: Button ✅ existing · Input ✅ existing · PortalLoginShell ➕ adding to DS`.
+  5. Page-level layout templates (login shell, dashboard shell, list shell) belong in the DS and must be reused across all portals — only the slot content (logo, portal name, tabs, form fields) changes per portal.
 - **Commit messages: no AI attribution.** Never add `Co-Authored-By: Claude` (or any AI/bot co-author) or a "Generated with Claude Code" trailer to commits. A `.husky/commit-msg` hook strips them as a backstop, but don't write them in the first place.
 
 ## Skill routing
