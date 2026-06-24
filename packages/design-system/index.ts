@@ -64,8 +64,12 @@ export { Search } from "./components/forms/search";
 export { Chip } from "./components/forms/chip";
 export { FormSection } from "./components/forms/form-section";
 export type { FormSectionProps } from "./components/forms/form-section";
+export { FormCard } from "./components/forms/form-card";
+export type { FormCardProps } from "./components/forms/form-card";
 export { Wizard, ReviewSection, ReviewItem } from "./components/forms/wizard";
 export type { WizardProps } from "./components/forms/wizard";
+export { MediaUpload } from "./components/forms/media-upload";
+export type { MediaUploadProps } from "./components/forms/media-upload";
 
 // ---- Components: Feedback ----------------------------------------------------
 export { Alert } from "./components/feedback/alert";
@@ -74,6 +78,8 @@ export { Loader } from "./components/feedback/loader";
 export { EmptyState } from "./components/feedback/empty-state";
 export { Stepper } from "./components/feedback/stepper";
 export type { StepperProps, StepperStep } from "./components/feedback/stepper";
+export { Tabs, TabPanel } from "./components/navigation/tabs";
+export type { TabsProps, TabDef } from "./components/navigation/tabs";
 export { Modal } from "./components/feedback/modal";
 export type { ModalProps, ModalSize } from "./components/feedback/modal";
 export { ToastProvider, useToast } from "./components/feedback/toast";

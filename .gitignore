@@ -46,3 +46,4 @@ docs/qc/portals/eutthan-admin/_archive/
 # Design-audit QC report figures — large PNGs (~32 MB), not needed at runtime (PERF-007)
 # Already committed files remain in history; new additions to this dir are blocked.
 apps/hub/public/reports/eutthan-admin/figures/
+.gstack/

@@ -27,6 +27,7 @@ const DEMO_ACCOUNTS = [
   { role: "ODIC", id: "ODIC001", password: DEMO_OTP },
   { role: "CPLI", id: "CPLI001", password: DEMO_OTP },
   { role: "DDAC", id: "DDAC001", password: DEMO_OTP },
+  { role: "US", id: "US001", password: DEMO_OTP },
 ];
 
 const TABS = [

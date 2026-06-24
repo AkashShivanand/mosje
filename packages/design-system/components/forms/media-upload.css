@@ -1,0 +1,182 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — MediaUpload (file/image upload with preview)
+   Semantic ds-* classes; every value references a design token (--ds- / --sa-).
+   Dark-mode safe (tokens auto-adapt). Drop-zone min target ≥ 44px (WCAG 2.2).
+   ============================================================================ */
+
+.ds-media-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--ds-font-sans);
+}
+
+/* Visually-hidden native input — triggered programmatically; kept out of tab
+   order (the dropzone/Replace button is the operable, labelable control). */
+.ds-media-upload__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Empty state: drop zone ---- */
+.ds-media-upload__dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 132px;
+  padding: 24px 16px;
+  text-align: center;
+  background-color: var(--ds-surface);
+  border: 2px dashed var(--ds-border-strong);
+  border-radius: var(--ds-radius-lg);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ds-media-upload__dropzone:hover:not(:disabled) {
+  border-color: var(--ds-primary);
+}
+
+.ds-media-upload__dropzone:focus-visible {
+  outline: none;
+  border-color: var(--ds-primary);
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+.ds-media-upload__dropzone.is-dragover {
+  border-color: var(--ds-primary);
+  background-color: var(--ds-primary-tonal);
+}
+
+.ds-media-upload__dropzone[aria-invalid="true"] {
+  border-color: var(--ds-danger);
+}
+
+.ds-media-upload__dropzone:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.ds-media-upload__icon {
+  display: inline-flex;
+  color: var(--ds-ink-muted);
+}
+
+.ds-media-upload__prompt {
+  font-size: var(--ds-text-body-2);
+  line-height: var(--ds-leading-body-2);
+  font-weight: 500;
+  color: var(--ds-ink);
+}
+
+.ds-media-upload__hint {
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink-muted);
+}
+
+/* ---- Filled state: preview ---- */
+.ds-media-upload__preview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background-color: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+}
+
+.ds-media-upload__thumb {
+  width: 80px;
+  height: 80px;
+  flex: none;
+  object-fit: cover;
+  background-color: var(--ds-surface-muted);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+}
+
+.ds-media-upload__thumb--file {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-ink-muted);
+}
+
+.ds-media-upload__meta {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.ds-media-upload__name {
+  font-size: var(--ds-text-body-2);
+  line-height: var(--ds-leading-body-2);
+  font-weight: 500;
+  color: var(--ds-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-media-upload__sub {
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink-muted);
+}
+
+.ds-media-upload__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.ds-media-upload__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 32px;
+  padding: 4px 6px;
+  background: none;
+  border: 0;
+  border-radius: var(--ds-radius-md);
+  font-family: inherit;
+  font-size: var(--ds-text-body-3);
+  font-weight: 600;
+  color: var(--ds-primary-dark);
+  cursor: pointer;
+}
+
+.ds-media-upload__action:hover {
+  text-decoration: underline;
+}
+
+.ds-media-upload__action:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+.ds-media-upload__action--danger {
+  color: var(--sa-color-status-dangerStrong, #a11d12);
+}
+
+.ds-media-upload__error {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--sa-color-status-dangerStrong, #a11d12);
+}

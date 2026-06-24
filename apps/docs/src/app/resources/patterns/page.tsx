@@ -344,7 +344,7 @@ export default function PatternsPage(): React.JSX.Element {
           <li>Charts row: <code>2fr 1fr</code> on desktop — never split charts equally (the bar chart needs more width).</li>
           <li><code>SiteHeader</code> must be <code>sticky</code> on portal variant. <code>collapseOnScroll</code> is opt-in.</li>
           <li>When <code>collapseOnScroll</code> is on, sidebar <code>top</code> offset must use <code>var(--ds-header-h)</code>, not a hardcoded pixel value.</li>
-          <li>Always provide <code>id="main-content"</code> on <code>&lt;main&gt;</code> for the SiteHeader skip link.</li>
+          <li>Always provide <code>id=&quot;main-content&quot;</code> on <code>&lt;main&gt;</code> for the SiteHeader skip link.</li>
         </ul>
 
         <DoDont
@@ -734,9 +734,9 @@ export default function PatternsPage(): React.JSX.Element {
         <h3 style={h3Style}>Rules</h3>
         <ul style={{ ...proseStyle, paddingLeft: "var(--ds-spacing-2xl)" }}>
           <li>Always include: icon + heading + 1-sentence description + primary CTA.</li>
-          <li>Use <code>variant="no-results"</code> for search/filter empty states with a clear-filters action.</li>
-          <li>Use <code>variant="no-data"</code> for completely empty data containers with a create/add action.</li>
-          <li>The heading must be constructive: <em>"Add your first application"</em> — not passive: <em>"No applications found"</em>.</li>
+          <li>Use <code>variant=&quot;no-results&quot;</code> for search/filter empty states with a clear-filters action.</li>
+          <li>Use <code>variant=&quot;no-data&quot;</code> for completely empty data containers with a create/add action.</li>
+          <li>The heading must be constructive: <em>&quot;Add your first application&quot;</em> — not passive: <em>&quot;No applications found&quot;</em>.</li>
           <li>Never use red or warning colours for empty states — empty is not an error.</li>
           <li>A loading spinner is not an empty state — show <code>&lt;Loader&gt;</code> while data is fetching.</li>
         </ul>

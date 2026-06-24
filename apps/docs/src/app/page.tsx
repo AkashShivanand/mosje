@@ -1,8 +1,7 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import { Button, buttonClasses } from "@mosje/design-system";
-import { StatusBadge } from "@/components/docs-kit/status-badge";
-import { Callout } from "@/components/docs-kit/callout";
+import { StatusBadge, Callout, TerminalCode } from "@/components/docs-kit";
 import { HeroShowcase } from "@/components/hero/hero";
 import { FIGMA_FILE_URL } from "@/lib/figma";
 
@@ -110,13 +109,16 @@ export default function WelcomePage(): React.JSX.Element {
         <p style={{ color: "var(--ds-ink-muted)", marginBottom: "var(--ds-spacing-xl)", lineHeight: "var(--ds-leading-body-1)" }}>
           Import the package, import the tokens, use the components. Design system decisions are pre-made — focus on building features, not reimplementing buttons.
         </p>
-        <div style={{ background: "#1e2130", borderRadius: "var(--ds-radius-md)", padding: "var(--ds-spacing-xl)", fontFamily: "ui-monospace, monospace", fontSize: 13, color: "#e2e8f0", lineHeight: 1.7 }}>
+        <TerminalCode
+          title="Terminal"
+          codeText={`npm install @mosje/design-system\n\nimport { Button, Card, FormField } from '@mosje/design-system';\nimport '@mosje/design-system/tokens.css';`}
+        >
           <div style={{ color: "#8892a4", marginBottom: "var(--ds-spacing-md)" }}># Install</div>
           <div><span style={{ color: "#7dd3fc" }}>npm</span> install @mosje/design-system</div>
           <div style={{ marginTop: "var(--ds-spacing-lg)", color: "#8892a4" }}># Use in your app</div>
           <div><span style={{ color: "#c084fc" }}>import</span> {`{ Button, Card, FormField }`} <span style={{ color: "#c084fc" }}>from</span> <span style={{ color: "#86efac" }}>&apos;@mosje/design-system&apos;</span>;</div>
           <div><span style={{ color: "#c084fc" }}>import</span> <span style={{ color: "#86efac" }}>&apos;@mosje/design-system/tokens.css&apos;</span>;</div>
-        </div>
+        </TerminalCode>
         <div className="home-cards" style={{ marginTop: "var(--ds-spacing-xl)" }}>
           {[
             { title: "No hardcoded values", desc: "All styling via --ds-* CSS custom properties. Change the theme, nothing breaks." },

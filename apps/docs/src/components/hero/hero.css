@@ -5,11 +5,39 @@
    ───────────────────────────────────────────────────────────────────────── */
 
 .hero {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
   gap: var(--ds-spacing-5xl, 48px);
   align-items: center;
   margin-bottom: var(--ds-spacing-6xl, 56px);
+}
+
+.hero-glow {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.14;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+.hero-glow--blue {
+  background: var(--ds-primary);
+  top: -80px;
+  left: -120px;
+}
+.hero-glow--saffron {
+  background: var(--ds-saffron);
+  bottom: -60px;
+  right: -40px;
+}
+
+[data-theme="dark"] .hero-glow {
+  opacity: 0.24;
+  filter: blur(140px);
 }
 
 /* The docs layout reserves a 200px "on this page" rail the homepage never
@@ -80,10 +108,14 @@
 
 .hero-wordmark {
   font-size: clamp(2.75rem, 1.2rem + 5vw, 5rem);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 0.92;
   letter-spacing: -0.02em;
-  color: var(--ds-primary);
+  color: transparent;
+  background: linear-gradient(135deg, var(--ds-primary) 0%, #4f46e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0;
   max-width: 100%;
 }
@@ -111,11 +143,22 @@
   height: 392px;
   overflow: hidden;
   padding: var(--ds-spacing-xl);
-  border: 1px solid var(--ds-border);
+  border: 1px solid color-mix(in oklab, var(--ds-primary) 12%, var(--ds-border));
   border-radius: var(--ds-radius-xl, 20px);
-  background: var(--ds-surface-muted);
-  background: color-mix(in oklab, var(--ds-primary) 4%, var(--ds-surface));
-  box-shadow: var(--ds-shadow-lg, 0 12px 32px -12px rgb(2 32 64 / 0.18));
+  background: color-mix(in oklab, var(--ds-primary) 2%, rgba(255, 255, 255, 0.45));
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 
+    var(--ds-shadow-lg, 0 12px 32px -12px rgb(2 32 64 / 0.18)),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .hero-panel {
+  background: color-mix(in oklab, var(--ds-primary) 4%, rgba(31, 36, 40, 0.55));
+  border: 1px solid color-mix(in oklab, var(--ds-primary) 20%, rgba(255, 255, 255, 0.12));
+  box-shadow: 
+    var(--ds-shadow-lg, 0 12px 32px -12px rgb(0 0 0 / 0.5)),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
 }
 
 /* "Live" cue — crisp, sits above the faded wall. */

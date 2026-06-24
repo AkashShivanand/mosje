@@ -140,44 +140,92 @@ export const YES_NO: SelectOption[] = [
   { label: "No", value: "No" },
 ];
 
-export const ASSIST_SCORE: SelectOption[] = [
-  { label: "Low Risk (0-3)", value: "low" },
-  { label: "Moderate Risk (4-26)", value: "moderate" },
-  { label: "High Risk (27+)", value: "high" },
+/** Yes / No / No Response — used by IV-use, needle-sharing and apprehension questions. */
+export const YES_NO_NR: SelectOption[] = [
+  { label: "Yes", value: "Yes" },
+  { label: "No", value: "No" },
+  { label: "No Response", value: "No Response" },
+];
+
+/** ASSIST score band for alcohol use (AUDIT-style). */
+export const ASSIST_SCORE_ALCOHOL: SelectOption[] = [
+  { label: "0-7", value: "0-7" },
+  { label: "8-15", value: "8-15" },
+  { label: "16-19", value: "16-19" },
+  { label: "20", value: "20" },
+];
+
+/** ASSIST score band for other drugs (DAST-style). */
+export const ASSIST_SCORE_OTHER: SelectOption[] = [
+  { label: "0", value: "0" },
+  { label: "1-5", value: "1-5" },
+  { label: "6-10", value: "6-10" },
+  { label: "11-15", value: "11-15" },
+  { label: "16-20", value: "16-20" },
 ];
 
 export const SEXUAL_PRACTICES: SelectOption[] = [
-  { label: "Heterosexual", value: "1" },
-  { label: "Homosexual", value: "2" },
-  { label: "Bisexual", value: "3" },
-  { label: "Not Applicable", value: "4" },
+  { label: "Multiple partners including casual partners", value: "1" },
+  { label: "Multiple partners including CSWs", value: "2" },
+  { label: "Single partner", value: "3" },
+  { label: "No partner", value: "4" },
 ];
 
-export const PREVIOUS_TREATMENT: SelectOption[] = [
-  { label: "None", value: "0" },
-  { label: "Outpatient", value: "1" },
-  { label: "Inpatient/Hospitalisation", value: "2" },
-  { label: "Detoxification", value: "3" },
-  { label: "Counselling Only", value: "4" },
+/** HCV / HBV serology test result. */
+export const TEST_RESULT: SelectOption[] = [
+  { label: "Positive", value: "Positive" },
+  { label: "Negative", value: "Negative" },
+  { label: "Don't Know", value: "Don't Know" },
 ];
 
-export const SOURCE_OF_REFERRAL: SelectOption[] = [
-  { label: "Self", value: "1" },
-  { label: "Family/Friends", value: "2" },
-  { label: "Hospital/Health Centre", value: "3" },
-  { label: "NGO/Outreach", value: "4" },
-  { label: "Helpline", value: "5" },
-  { label: "Court/Legal", value: "6" },
+/** "If yes, treatment taken from" — conditional on previous-treatment = Yes. */
+export const TREATMENT_TAKEN: SelectOption[] = [
+  { label: "State Govt De-addiction Facility", value: "1" },
+  { label: "Central Govt De-addiction Facility", value: "2" },
+  { label: "DoSJE supported GIA", value: "3" },
+  { label: "Private De-addiction Facility", value: "4" },
+];
+
+/** Source(s) of money for drug use — multi-select on the live form. */
+export const MONEY_SOURCE_OPTIONS: SelectOption[] = [
+  { label: "Legal earning", value: "1" },
+  { label: "Borrowing from friends", value: "2" },
+  { label: "Borrowing from relatives", value: "3" },
+  { label: "Illegal means", value: "4" },
+];
+
+/** Stages-of-change model used for "Patient's Motivation at admission". */
+export const MOTIVATION_STAGES: SelectOption[] = [
+  { label: "Pre-Contemplation", value: "1" },
+  { label: "Contemplation", value: "2" },
+  { label: "Preparation", value: "3" },
+  { label: "Action", value: "4" },
+  { label: "Maintenance", value: "5" },
+  { label: "Lapse", value: "6" },
 ];
 
 export const PROVISIONAL_DIAGNOSIS: SelectOption[] = [
-  { label: "6C40 — Disorders due to use of alcohol", value: "6C40" },
-  { label: "6C41 — Disorders due to use of cannabis", value: "6C41" },
-  { label: "6C43 — Disorders due to use of opioids", value: "6C43" },
-  { label: "6C44 — Disorders due to use of sedatives, hypnotics or anxiolytics", value: "6C44" },
-  { label: "6C45 — Disorders due to use of cocaine", value: "6C45" },
-  { label: "6C46 — Disorders due to use of stimulants", value: "6C46" },
-  { label: "6C4A — Disorders due to use of nicotine", value: "6C4A" },
+  { label: "Disorders due to use of alcohol", value: "1" },
+  { label: "Disorders due to use of cannabis", value: "2" },
+  { label: "Disorders due to use of synthetic cannabinoids", value: "3" },
+  { label: "Disorders due to use of opioids", value: "4" },
+  { label: "Disorders due to use of sedatives, hypnotics or anxiolytics", value: "5" },
+  { label: "Disorders due to use of cocaine", value: "6" },
+  {
+    label: "Disorders due to use of stimulants including amphetamines, methamphetamine or methcathinone",
+    value: "7",
+  },
+  { label: "Disorders due to use of synthetic cathinones", value: "8" },
+  { label: "Disorders due to use of caffeine", value: "9" },
+  { label: "Disorders due to use of hallucinogens", value: "10" },
+  { label: "Disorders due to use of nicotine", value: "11" },
+  { label: "Disorders due to use of volatile inhalants", value: "12" },
+  { label: "Disorders due to use of MDMA or related drugs, including MDA", value: "13" },
+  { label: "Disorders due to use of dissociative drugs including ketamine and PCP", value: "14" },
+  {
+    label: "Disorders due to use of other specified psychoactive substances including medications",
+    value: "15",
+  },
 ];
 
 /** State / UT list with the live site's numeric codes. */

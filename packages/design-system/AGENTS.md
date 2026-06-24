@@ -32,10 +32,10 @@ Also in force:
   re-implement. Shared primitives now include (beyond the atoms): `DataTable`,
   `PieChart`/`BarChart`, `MetricCard` (data-display); `Modal`, `Stepper`,
   `ToastProvider`/`useToast`, `Alert`, `Badge`, `Loader`, `EmptyState`
-  (feedback); `FormSection`, `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`
-  and the input atoms (forms); `SiteHeader`, `SidebarNav`, `Footer`,
-  `AppSwitcher` (navigation); `PortalLoginShell` (auth). Tables, modals, toasts
-  and charts were previously hand-rolled per portal — always reuse these.
+  (feedback); `FormSection`, `FormCard`, `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`,
+  `MediaUpload` (file/image upload) and the input atoms (forms); `SiteHeader`, `SidebarNav`, `Footer`,
+  `AppSwitcher`, `Tabs`/`TabPanel` (navigation); `PortalLoginShell` (auth). Tables, modals, toasts,
+  tabs and charts were previously hand-rolled per portal — always reuse these.
 - **Figma sync** → `/sync-figma`.
 
 ## Before you finish

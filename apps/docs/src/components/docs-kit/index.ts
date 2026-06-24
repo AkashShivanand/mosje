@@ -6,3 +6,4 @@ export * from './color-swatch';
 export * from './type-specimen';
 export * from './status-badge';
 export * from './a11y-checklist';
+export * from './terminal-code';

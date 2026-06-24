@@ -111,9 +111,18 @@ export function Wizard({
 }
 
 /** A labelled read-only field for wizard Review steps. */
-export function ReviewItem({ label, value }: { label: string; value?: string }) {
+export function ReviewItem({
+  label,
+  value,
+  wide = false,
+}: {
+  label: string;
+  value?: string;
+  /** Span the full row of the ReviewSection grid — for multi-attribute records. */
+  wide?: boolean;
+}) {
   return (
-    <div className="ds-review-item">
+    <div className={cn("ds-review-item", wide && "ds-review-item--wide")}>
       <dt className="ds-review-item__label">{label}</dt>
       <dd className="ds-review-item__value">{value?.trim() ? value : "—"}</dd>
     </div>

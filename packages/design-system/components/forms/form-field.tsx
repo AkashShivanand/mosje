@@ -65,18 +65,19 @@ export function FormField({
         )}
       </label>
 
-      {hint != null && (
-        <p id={hintId} className="ds-field__hint">
-          {hint}
-        </p>
-      )}
-
       {children({
         id: fieldId,
         invalid: error != null,
         required: required || undefined,
         "aria-describedby": describedBy,
       })}
+
+      {/* Helper text sits BELOW the control so inputs align across grid rows. */}
+      {hint != null && (
+        <p id={hintId} className="ds-field__hint">
+          {hint}
+        </p>
+      )}
 
       {error != null && (
         <p id={errorId} className="ds-field__error" role="alert">

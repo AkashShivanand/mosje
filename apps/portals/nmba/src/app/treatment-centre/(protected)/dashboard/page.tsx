@@ -73,14 +73,35 @@ export default function TreatmentCentreDashboard() {
 
   // Analytical report draws from patients (IRCA/DDAC) or beneficiaries (ODIC).
   const pieData: ChartDatum[] = React.useMemo(() => {
-    if (session.role === "ODIC") {
-      if (filter === "gender") return tally(store.beneficiaries.map((b) => b.gender));
-      if (filter === "residence") return tally(store.beneficiaries.map((b) => b.placeOfResidence));
-      return tally(store.beneficiaries.map((b) => b.registrationProgress));
+    const isUs = session.role === "US";
+    const isOdic = session.role === "ODIC";
+
+    if (filter === "gender") {
+      const pGenders = isUs || !isOdic ? store.patients.map((p) => p.gender) : [];
+      const bGenders = isUs || isOdic ? store.beneficiaries.map((b) => b.gender) : [];
+      return tally([...pGenders, ...bGenders]);
     }
-    if (filter === "gender") return tally(store.patients.map((p) => p.gender));
-    if (filter === "residence") return tally(store.patients.map((p) => p.placeOfResidence));
-    return tally(store.patients.map((p) => p.registrationProgress));
+    if (filter === "residence") {
+      const pRes = isUs || !isOdic ? store.patients.map((p) => p.placeOfResidence) : [];
+      const bRes = isUs || isOdic ? store.beneficiaries.map((b) => b.placeOfResidence) : [];
+      return tally([...pRes, ...bRes]);
+    }
+    if (filter === "treatment") {
+      const pTreatment = isUs || !isOdic ? store.patients.map((p) => {
+        const val = p.previousDrugTreatment || p.clinicalDetails?.["Previous treatment"] || "No";
+        return val === "Yes" ? "Previously Treated" : "First-time Treatment";
+      }) : [];
+      const bTreatment = isUs || isOdic ? store.beneficiaries.map((b) => {
+        const val = b.details?.["Previous treatment"] || b.details?.["Previous Treatment"] || "No";
+        return val === "Yes" ? "Previously Treated" : "First-time Treatment";
+      }) : [];
+      return tally([...pTreatment, ...bTreatment]);
+    }
+
+    // Default fallback
+    const pProg = isUs || !isOdic ? store.patients.map((p) => p.registrationProgress) : [];
+    const bProg = isUs || isOdic ? store.beneficiaries.map((b) => b.registrationProgress) : [];
+    return tally([...pProg, ...bProg]);
   }, [session.role, filter, store.patients, store.beneficiaries]);
 
   const drugData: ChartDatum[] = React.useMemo(() => {

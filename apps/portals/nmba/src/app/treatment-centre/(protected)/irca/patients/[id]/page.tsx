@@ -14,6 +14,9 @@ import {
   Radio,
   Alert,
   Chip,
+  Tabs,
+  TabPanel,
+  type TabDef,
   type SelectOption,
 } from "@mosje/design-system";
 import { useToast } from "@/components/toast";
@@ -23,23 +26,30 @@ import type { Patient } from "@/lib/treatment-centre/types";
 import {
   YES_NO,
   PROVISIONAL_DIAGNOSIS,
+  MOTIVATION_STAGES,
 } from "@/lib/treatment-centre/master-data";
 
-// Options
-const WITHDRAWAL_SYMPTOMS = ["Tremors", "Insomnia", "Nausea", "Aches and Pains", "Hallucinations", "Delirium", "Nil"];
-const PSYCHIATRIC_SYMPTOMS = ["Depression", "Suicidal Ideations and Attempts", "Confusion", "Aggressive Outbursts", "Hallucinations", "Nil"];
-const CHRONIC_PROBLEMS = ["Diabetes", "Liver Disorders", "Respiratory Problems (Pulmonary TB)", "Cardiac Problems", "Infections", "Nil"];
-const OTHER_MEDICAL_PROBLEMS = ["Haematemesis", "Jaundice", "Abscesses", "Bleeding Piles", "Skin Problems", "Nil"];
+// Options — captured verbatim from the legacy clinical-record tabs (2026-06-23).
+const WITHDRAWAL_SYMPTOMS = ["Tremors", "Insomnia", "Nausea", "Aches and Pains", "Hallucinations", "Delirium", "Restlessness", "Seizures", "Nil"];
+const PSYCHIATRIC_SYMPTOMS = ["Depression", "Suicidal Ideations and Attempts", "Confusion", "Aggressive Outbursts", "Hallucinations", "Paranoia", "Nil"];
+const CHRONIC_PROBLEMS = ["Diabetes", "Liver Disorders", "Respiratory Problems (Pulmonary TB/Chronic Bronchitis/Bronchial Asthama)", "Cardiac Problems", "Infections", "Nil"];
+const OTHER_MEDICAL_PROBLEMS = ["Haematemesis", "Jaundice", "Abscesses", "Bleeding Piles", "Skin Problems", "Any Other", "Nil"];
 const TREATMENT_RECEIVED_TYPES = ["Pharmacological", "Psychosocial", "Family Intervention", "Vocational Training", "Mindfulness"];
 const RELAPSE_REASONS: SelectOption[] = [
-  { label: "Peer Pressure", value: "peer-pressure" },
-  { label: "Craving", value: "craving" },
-  { label: "Stress / Family Conflict", value: "stress" },
-  { label: "Easy Availability of Drugs", value: "availability" },
-  { label: "Boredom / Idle Time", value: "boredom" },
-  { label: "Other", value: "other" },
+  { label: "Peer Pressure", value: "Peer Pressure" },
+  { label: "Withdrawal Symptoms", value: "Withdrawal Symptoms" },
+  { label: "Interpersonal Problems", value: "Interpersonal Problems" },
+  { label: "Exposure to Triggers", value: "Exposure to Triggers" },
+  { label: "Stress", value: "Stress" },
+  { label: "Lack of Social Support", value: "Lack of Social Support" },
+  { label: "Low self-efficacy", value: "Low self-efficacy" },
+  { label: "Positive life events", value: "Positive life events" },
+  { label: "Negative life events", value: "Negative life events" },
+  { label: "Others-specify", value: "Others-specify" },
+  { label: "Nil", value: "Nil" },
 ];
 const REFERRAL_SERVICES = [
+  "ICTC",
   "NACO – One Stop Centre",
   "Vocational Training Centre",
   "Tertiary Hospital for Medical Care",
@@ -47,31 +57,33 @@ const REFERRAL_SERVICES = [
   "Alcoholic Anonymous",
   "Others Specify",
 ];
-const DISCHARGE_MOTIVATION: SelectOption[] = [
-  { label: "Low", value: "low" },
-  { label: "Moderate", value: "moderate" },
-  { label: "High", value: "high" },
-];
+/** Year-of-last-treatment dropdown — current year down to 2001 (matches live). */
+const TREATMENT_YEARS: SelectOption[] = Array.from({ length: new Date().getFullYear() - 2000 }, (_, i) => {
+  const y = String(new Date().getFullYear() - i);
+  return { label: y, value: y };
+});
 
-const TABS = [
-  "Previous History",
-  "Medication Dosage",
-  "Counselling Sessions",
-  "Referral & Home Visits",
-  "Diagnosis & Discharge",
+const TAB_DEFS: TabDef[] = [
+  { id: "history", label: "Previous History" },
+  { id: "dosage", label: "Medication Dosage" },
+  { id: "counselling", label: "Counselling Sessions" },
+  { id: "referral", label: "Referral & Home Visits" },
+  { id: "discharge", label: "Diagnosis & Discharge" },
 ];
 
 function MultiSelectChips({
   options,
   selectedValues,
   onChange,
+  ariaLabel,
 }: {
   options: string[];
   selectedValues: string[];
   onChange: (vals: string[]) => void;
+  ariaLabel: string;
 }) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div role="group" aria-label={ariaLabel} className="flex flex-wrap gap-2">
       {options.map((opt) => {
         const isSelected = selectedValues.includes(opt);
         return (
@@ -110,6 +122,10 @@ export default function ClinicalWizardPage() {
 
   // Core wizard states
   const [activeTab, setActiveTab] = React.useState(0);
+  const tabsId = React.useId();
+  // Inline (non-toast) validation for the discharge step.
+  const [dischargeErrors, setDischargeErrors] = React.useState<Set<string>>(new Set());
+  const dischargeErrorRef = React.useRef<HTMLDivElement>(null);
 
   // Tab 1 States
   const [withdrawalSymptoms, setWithdrawalSymptoms] = React.useState<string[]>(patient?.withdrawalSymptoms || []);
@@ -123,6 +139,7 @@ export default function ClinicalWizardPage() {
   const [prevTreatmentCenter, setPrevTreatmentCenter] = React.useState(patient?.prevTreatmentCenter || "");
   const [treatmentReceivedTypes, setTreatmentReceivedTypes] = React.useState<string[]>(patient?.treatmentReceivedTypes || []);
   const [relapseReason, setRelapseReason] = React.useState(patient?.relapseReason || "");
+  const [relapseReasonOther, setRelapseReasonOther] = React.useState(patient?.relapseReasonOther || "");
 
   // Tab 2 States
   const [dosageLog, setDosageLog] = React.useState<
@@ -133,12 +150,16 @@ export default function ClinicalWizardPage() {
   const [individualCounselling, setIndividualCounselling] = React.useState<
     Array<{ sessionNo: string; date: string; issues: string }>
   >(patient?.individualCounselling || [{ sessionNo: "1", date: "", issues: "" }]);
+  const [groupCounselling, setGroupCounselling] = React.useState<
+    Array<{ sessionNo: string; date: string; issues: string }>
+  >(patient?.groupCounselling || [{ sessionNo: "1", date: "", issues: "" }]);
   const [familyCounselling, setFamilyCounselling] = React.useState<
     Array<{ sessionNo: string; date: string; issues: string }>
   >(patient?.familyCounselling || [{ sessionNo: "1", date: "", issues: "" }]);
 
   // Tab 4 States
   const [referralServices, setReferralServices] = React.useState<string[]>(patient?.referralServices || []);
+  const [referralOtherSpecify, setReferralOtherSpecify] = React.useState(patient?.referralOtherSpecify || "");
   const [referralRemark, setReferralRemark] = React.useState(patient?.referralRemark || "");
   const [homeVisits, setHomeVisits] = React.useState<
     Array<{ date: string; purpose: string; outcome: string }>
@@ -154,6 +175,11 @@ export default function ClinicalWizardPage() {
   const [dischargeRemark, setDischargeRemark] = React.useState(patient?.dischargeRemark || "");
   const [dischargeDate, setDischargeDate] = React.useState(patient?.dischargeDate || "");
   const [followUpDate, setFollowUpDate] = React.useState(patient?.followUpDate || "");
+
+  // Move focus to the discharge error summary when validation fails (after DOM commit).
+  React.useEffect(() => {
+    if (dischargeErrors.size > 0) dischargeErrorRef.current?.focus();
+  }, [dischargeErrors]);
 
   if (!patient) {
     return (
@@ -186,6 +212,7 @@ export default function ClinicalWizardPage() {
           prevTreatmentCenter,
           treatmentReceivedTypes,
           relapseReason,
+          relapseReasonOther: relapseReason === "Others-specify" ? relapseReasonOther : "",
           registrationProgress: patient.registrationProgress === "Pending" ? "In Progress" : patient.registrationProgress,
         };
       case 1:
@@ -196,12 +223,14 @@ export default function ClinicalWizardPage() {
       case 2:
         return {
           individualCounselling: individualCounselling.filter((c) => c.date || c.issues),
+          groupCounselling: groupCounselling.filter((c) => c.date || c.issues),
           familyCounselling: familyCounselling.filter((c) => c.date || c.issues),
           registrationProgress: patient.registrationProgress === "Pending" ? "In Progress" : patient.registrationProgress,
         };
       case 3:
         return {
           referralServices,
+          referralOtherSpecify: referralServices.includes("Others Specify") ? referralOtherSpecify : "",
           referralRemark,
           homeVisits: homeVisits.filter((h) => h.date || h.purpose),
           registrationProgress: patient.registrationProgress === "Pending" ? "In Progress" : patient.registrationProgress,
@@ -230,23 +259,23 @@ export default function ClinicalWizardPage() {
     toast("Progress saved successfully.", "success");
 
     if (next) {
-      setActiveTab((t) => Math.min(t + 1, TABS.length - 1));
+      setActiveTab((t) => Math.min(t + 1, TAB_DEFS.length - 1));
     }
   };
 
   const handleSubmitDischarge = (e: React.FormEvent) => {
     e.preventDefault();
     const payload = getTabPayload();
-    
-    // Ensure final diagnosis and discharge date are entered before complete
-    if (!finalDiagnosis) {
-      toast("Final Diagnosis is required.", "error");
+
+    // Inline validation tied to each field (no transient toast — WCAG 3.3.1).
+    const missing = new Set<string>();
+    if (!finalDiagnosis) missing.add("finalDiagnosis");
+    if (!dischargeDate) missing.add("dischargeDate");
+    if (missing.size > 0) {
+      setDischargeErrors(missing);
       return;
     }
-    if (!dischargeDate) {
-      toast("Discharge Date is required.", "error");
-      return;
-    }
+    setDischargeErrors(new Set());
 
     store.updatePatient(patient.id, {
       ...payload,
@@ -280,6 +309,19 @@ export default function ClinicalWizardPage() {
   };
   const updateIndividualRow = (idx: number, patch: Partial<typeof individualCounselling[0]>) => {
     setIndividualCounselling((prev) => prev.map((item, i) => (i === idx ? { ...item, ...patch } : item)));
+  };
+
+  const addGroupRow = () => {
+    setGroupCounselling((prev) => [
+      ...prev,
+      { sessionNo: String(prev.length + 1), date: "", issues: "" },
+    ]);
+  };
+  const removeGroupRow = (idx: number) => {
+    setGroupCounselling((prev) => prev.filter((_, i) => i !== idx).map((item, i) => ({ ...item, sessionNo: String(i + 1) })));
+  };
+  const updateGroupRow = (idx: number, patch: Partial<typeof groupCounselling[0]>) => {
+    setGroupCounselling((prev) => prev.map((item, i) => (i === idx ? { ...item, ...patch } : item)));
   };
 
   const addFamilyRow = () => {
@@ -339,29 +381,20 @@ export default function ClinicalWizardPage() {
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex border-b border-line overflow-x-auto bg-white rounded-lg p-1 border">
-        {TABS.map((t, idx) => (
-          <button
-            key={t}
-            type="button"
-            onClick={() => {
-              // Auto-save previous tab before moving
-              handleSaveTab(false);
-              setActiveTab(idx);
-            }}
-            className={`flex-1 min-w-[150px] text-center px-4 py-2.5 text-xs font-semibold rounded-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy ${
-              activeTab === idx
-                ? "bg-navy text-white shadow-sm"
-                : "text-ink-muted hover:text-ink hover:bg-black/5"
-            }`}
-          >
-            {t}
-          </button>
-        ))}
-      </div>
+      {/* Tabs — WAI-ARIA Tabs pattern (roving tabindex, arrow/Home/End keys). */}
+      <Tabs
+        tabs={TAB_DEFS}
+        active={activeTab}
+        ariaLabel="Clinical record sections"
+        idBase={tabsId}
+        onChange={(idx) => {
+          handleSaveTab(false); // auto-save current tab before moving
+          setActiveTab(idx);
+        }}
+      />
 
       {/* Form content */}
+      <TabPanel idBase={tabsId} tabId={TAB_DEFS[activeTab]!.id}>
       <div className="bg-white rounded-xl border border-line p-6 min-h-[400px]">
         {activeTab === 0 && (
           <div className="flex flex-col gap-6">
@@ -372,6 +405,7 @@ export default function ClinicalWizardPage() {
                     options={WITHDRAWAL_SYMPTOMS}
                     selectedValues={withdrawalSymptoms}
                     onChange={setWithdrawalSymptoms}
+                    ariaLabel="Withdrawal Symptoms in the Past"
                   />
                 )}
               </FormField>
@@ -382,6 +416,7 @@ export default function ClinicalWizardPage() {
                     options={PSYCHIATRIC_SYMPTOMS}
                     selectedValues={psychiatricSymptoms}
                     onChange={setPsychiatricSymptoms}
+                    ariaLabel="Past Psychiatric Symptoms"
                   />
                 )}
               </FormField>
@@ -392,6 +427,7 @@ export default function ClinicalWizardPage() {
                     options={CHRONIC_PROBLEMS}
                     selectedValues={chronicProblems}
                     onChange={setChronicProblems}
+                    ariaLabel="History of Chronic Health Problems"
                   />
                 )}
               </FormField>
@@ -402,6 +438,7 @@ export default function ClinicalWizardPage() {
                     options={OTHER_MEDICAL_PROBLEMS}
                     selectedValues={otherMedicalProblems}
                     onChange={setOtherMedicalProblems}
+                    ariaLabel="History of Other Medical Problems"
                   />
                 )}
               </FormField>
@@ -437,14 +474,12 @@ export default function ClinicalWizardPage() {
               <FormSection title="Previous Treatment Details" columns={3}>
                 <FormField label="Year of Last Treatment">
                   {(c) => (
-                    <Input
+                    <Select
                       {...c}
-                      type="number"
-                      min={1990}
-                      max={new Date().getFullYear()}
                       value={prevTreatmentYear}
                       onChange={(e) => setPrevTreatmentYear(e.target.value)}
-                      placeholder="YYYY"
+                      placeholder="Select Year"
+                      options={TREATMENT_YEARS}
                     />
                   )}
                 </FormField>
@@ -480,11 +515,12 @@ export default function ClinicalWizardPage() {
                     options={TREATMENT_RECEIVED_TYPES}
                     selectedValues={treatmentReceivedTypes}
                     onChange={setTreatmentReceivedTypes}
+                    ariaLabel="Types of Treatment Received in Past"
                   />
                 )}
               </FormField>
 
-              <div className="max-w-md">
+              <div className="grid gap-4 md:grid-cols-2">
                 <FormField label="Reason for Current Relapse">
                   {(c) => (
                     <Select
@@ -496,6 +532,18 @@ export default function ClinicalWizardPage() {
                     />
                   )}
                 </FormField>
+                {relapseReason === "Others-specify" && (
+                  <FormField label="Reason for Current Relapse (specify)">
+                    {(c) => (
+                      <Input
+                        {...c}
+                        value={relapseReasonOther}
+                        onChange={(e) => setRelapseReasonOther(e.target.value)}
+                        placeholder="Specify the relapse reason"
+                      />
+                    )}
+                  </FormField>
+                )}
               </div>
             </FormSection>
           </div>
@@ -504,14 +552,14 @@ export default function ClinicalWizardPage() {
         {activeTab === 1 && (
           <div className="flex flex-col gap-6">
             <div>
-              <h2 className="text-base font-semibold text-navy">Medication &amp; Dosage Log</h2>
+              <h2 id="dosage-log-heading" className="text-base font-semibold text-navy">Medication &amp; Dosage Log</h2>
               <p className="text-xs text-ink-muted mt-1">
                 Record medication changes and complaints during the treatment period. Medication dates must be after registration date.
               </p>
             </div>
 
             <div className="overflow-x-auto border border-line rounded-lg">
-              <table className="min-w-full text-sm">
+              <table className="min-w-full text-sm" aria-labelledby="dosage-log-heading">
                 <thead>
                   <tr className="bg-brandwash text-left text-xs font-semibold uppercase tracking-wide text-navy">
                     <th scope="col" className="px-4 py-3">Date *</th>
@@ -571,7 +619,7 @@ export default function ClinicalWizardPage() {
                           type="button"
                           onClick={() => removeDosageRow(idx)}
                           aria-label={`Remove dosage row ${idx + 1}`}
-                          className="inline-flex h-9 w-9 items-center justify-center rounded text-danger-fg hover:bg-black/5"
+                          className="inline-flex h-11 w-11 items-center justify-center rounded text-danger-fg hover:bg-black/5"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -600,12 +648,12 @@ export default function ClinicalWizardPage() {
             {/* Individual Counselling */}
             <div className="flex flex-col gap-4">
               <div>
-                <h2 className="text-base font-semibold text-navy">Individual Counselling Sessions</h2>
+                <h2 id="individual-counselling-heading" className="text-base font-semibold text-navy">Individual Counselling Sessions</h2>
                 <p className="text-xs text-ink-muted mt-1">Log session dates and core issues dealt with.</p>
               </div>
 
               <div className="overflow-x-auto border border-line rounded-lg">
-                <table className="min-w-full text-sm">
+                <table className="min-w-full text-sm" aria-labelledby="individual-counselling-heading">
                   <thead>
                     <tr className="bg-brandwash text-left text-xs font-semibold uppercase tracking-wide text-navy">
                       <th scope="col" className="px-4 py-3 w-28">Session No.</th>
@@ -641,7 +689,7 @@ export default function ClinicalWizardPage() {
                             type="button"
                             onClick={() => removeIndividualRow(idx)}
                             aria-label={`Remove session ${row.sessionNo}`}
-                            className="inline-flex h-9 w-9 items-center justify-center rounded text-danger-fg hover:bg-black/5"
+                            className="inline-flex h-11 w-11 items-center justify-center rounded text-danger-fg hover:bg-black/5"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -663,15 +711,81 @@ export default function ClinicalWizardPage() {
               </div>
             </div>
 
+            {/* Group Therapy */}
+            <div className="flex flex-col gap-4">
+              <div>
+                <h2 id="group-counselling-heading" className="text-base font-semibold text-navy">Group Therapy Sessions</h2>
+                <p className="text-xs text-ink-muted mt-1">Log group therapy session dates and issues dealt with.</p>
+              </div>
+
+              <div className="overflow-x-auto border border-line rounded-lg">
+                <table className="min-w-full text-sm" aria-labelledby="group-counselling-heading">
+                  <thead>
+                    <tr className="bg-brandwash text-left text-xs font-semibold uppercase tracking-wide text-navy">
+                      <th scope="col" className="px-4 py-3 w-28">Session No.</th>
+                      <th scope="col" className="px-4 py-3 w-48">Date</th>
+                      <th scope="col" className="px-4 py-3">Issues Dealt With</th>
+                      <th scope="col" className="px-4 py-3 w-16"><span className="sr-only">Actions</span></th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-line">
+                    {groupCounselling.map((row, idx) => (
+                      <tr key={idx} className="align-top hover:bg-black/[0.01]">
+                        <td className="px-4 py-3 font-semibold text-navy vertical-align-middle">
+                          {row.sessionNo}
+                        </td>
+                        <td className="px-3 py-2">
+                          <Input
+                            aria-label={`Group Session date row ${idx + 1}`}
+                            type="date"
+                            value={row.date}
+                            onChange={(e) => updateGroupRow(idx, { date: e.target.value })}
+                          />
+                        </td>
+                        <td className="px-3 py-2">
+                          <Input
+                            aria-label={`Group Session issues row ${idx + 1}`}
+                            value={row.issues}
+                            onChange={(e) => updateGroupRow(idx, { issues: e.target.value })}
+                            placeholder="Peer sharing, coping skills, etc."
+                          />
+                        </td>
+                        <td className="px-3 py-2 text-center">
+                          <button
+                            type="button"
+                            onClick={() => removeGroupRow(idx)}
+                            aria-label={`Remove group session ${row.sessionNo}`}
+                            className="inline-flex h-11 w-11 items-center justify-center rounded text-danger-fg hover:bg-black/5"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <Button
+                  type="button"
+                  appearance="outlined"
+                  iconLeft={<Plus className="h-4 w-4" />}
+                  onClick={addGroupRow}
+                >
+                  Add Session
+                </Button>
+              </div>
+            </div>
+
             {/* Family Counselling */}
             <div className="flex flex-col gap-4">
               <div>
-                <h2 className="text-base font-semibold text-navy">Family Intervention &amp; Counselling Sessions</h2>
+                <h2 id="family-counselling-heading" className="text-base font-semibold text-navy">Family Intervention &amp; Counselling Sessions</h2>
                 <p className="text-xs text-ink-muted mt-1">Log family engagement sessions.</p>
               </div>
 
               <div className="overflow-x-auto border border-line rounded-lg">
-                <table className="min-w-full text-sm">
+                <table className="min-w-full text-sm" aria-labelledby="family-counselling-heading">
                   <thead>
                     <tr className="bg-brandwash text-left text-xs font-semibold uppercase tracking-wide text-navy">
                       <th scope="col" className="px-4 py-3 w-28">Session No.</th>
@@ -707,7 +821,7 @@ export default function ClinicalWizardPage() {
                             type="button"
                             onClick={() => removeFamilyRow(idx)}
                             aria-label={`Remove session ${row.sessionNo}`}
-                            className="inline-flex h-9 w-9 items-center justify-center rounded text-danger-fg hover:bg-black/5"
+                            className="inline-flex h-11 w-11 items-center justify-center rounded text-danger-fg hover:bg-black/5"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -740,9 +854,25 @@ export default function ClinicalWizardPage() {
                     options={REFERRAL_SERVICES}
                     selectedValues={referralServices}
                     onChange={setReferralServices}
+                    ariaLabel="Referrals Given to Other Services"
                   />
                 )}
               </FormField>
+
+              {referralServices.includes("Others Specify") && (
+                <div className="max-w-xl">
+                  <FormField label="Referral Service (specify)">
+                    {(c) => (
+                      <Input
+                        {...c}
+                        value={referralOtherSpecify}
+                        onChange={(e) => setReferralOtherSpecify(e.target.value)}
+                        placeholder="Specify the other referral service"
+                      />
+                    )}
+                  </FormField>
+                </div>
+              )}
 
               <div className="max-w-xl">
                 <FormField label="Referral Remarks">
@@ -761,12 +891,12 @@ export default function ClinicalWizardPage() {
 
             <div className="flex flex-col gap-4">
               <div>
-                <h2 className="text-base font-semibold text-navy">Details of Home Visits</h2>
+                <h2 id="home-visits-heading" className="text-base font-semibold text-navy">Details of Home Visits</h2>
                 <p className="text-xs text-ink-muted mt-1">Log home visits conducted by staff.</p>
               </div>
 
               <div className="overflow-x-auto border border-line rounded-lg">
-                <table className="min-w-full text-sm">
+                <table className="min-w-full text-sm" aria-labelledby="home-visits-heading">
                   <thead>
                     <tr className="bg-brandwash text-left text-xs font-semibold uppercase tracking-wide text-navy">
                       <th scope="col" className="px-4 py-3 w-48">Date of Home Visit</th>
@@ -807,7 +937,7 @@ export default function ClinicalWizardPage() {
                             type="button"
                             onClick={() => removeHomeVisitRow(idx)}
                             aria-label={`Remove home visit row ${idx + 1}`}
-                            className="inline-flex h-9 w-9 items-center justify-center rounded text-danger-fg hover:bg-black/5"
+                            className="inline-flex h-11 w-11 items-center justify-center rounded text-danger-fg hover:bg-black/5"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -832,17 +962,39 @@ export default function ClinicalWizardPage() {
         )}
 
         {activeTab === 4 && (
-          <form onSubmit={handleSubmitDischarge} className="flex flex-col gap-6">
+          <form onSubmit={handleSubmitDischarge} className="flex flex-col gap-6" noValidate>
+            {dischargeErrors.size > 0 && (
+              <div ref={dischargeErrorRef} tabIndex={-1} className="focus-visible:outline-none">
+                <Alert status="error">
+                  Please complete {dischargeErrors.size} required field{dischargeErrors.size > 1 ? "s" : ""}:{" "}
+                  {[...dischargeErrors]
+                    .map((k) => (k === "finalDiagnosis" ? "Final Diagnosis" : "Discharge Date"))
+                    .join(", ")}
+                  .
+                </Alert>
+              </div>
+            )}
             <FormSection title="Final Medical &amp; Psychiatric Diagnosis" columns={2}>
-              <FormField label="Final Diagnosis (ICD-11)" required>
+              <FormField
+                label="Final Diagnosis (ICD-11)"
+                required
+                error={dischargeErrors.has("finalDiagnosis") ? "Final Diagnosis is required." : undefined}
+              >
                 {(c) => (
                   <Select
                     {...c}
                     value={finalDiagnosis}
-                    onChange={(e) => setFinalDiagnosis(e.target.value)}
+                    onChange={(e) => {
+                      setFinalDiagnosis(e.target.value);
+                      setDischargeErrors((prev) => {
+                        const n = new Set(prev);
+                        n.delete("finalDiagnosis");
+                        return n;
+                      });
+                    }}
                     placeholder="Select Diagnosis"
                     options={PROVISIONAL_DIAGNOSIS}
-                    required
+                    invalid={dischargeErrors.has("finalDiagnosis")}
                   />
                 )}
               </FormField>
@@ -888,31 +1040,42 @@ export default function ClinicalWizardPage() {
                     {...c}
                     value={dischargeMotivation}
                     onChange={(e) => setDischargeMotivation(e.target.value)}
-                    placeholder="Select Motivation Level"
-                    options={DISCHARGE_MOTIVATION}
+                    placeholder="Select Patient's Motivation"
+                    options={MOTIVATION_STAGES}
                   />
                 )}
               </FormField>
 
-              <FormField label="Discharge Date" required>
+              <FormField
+                label="Discharge Date"
+                required
+                error={dischargeErrors.has("dischargeDate") ? "Discharge Date is required." : undefined}
+              >
                 {(c) => (
                   <Input
                     {...c}
                     type="date"
                     min={patient.dateOfAdmission}
                     value={dischargeDate}
-                    onChange={(e) => setDischargeDate(e.target.value)}
-                    required
+                    onChange={(e) => {
+                      setDischargeDate(e.target.value);
+                      setDischargeErrors((prev) => {
+                        const n = new Set(prev);
+                        n.delete("dischargeDate");
+                        return n;
+                      });
+                    }}
+                    invalid={dischargeErrors.has("dischargeDate")}
                   />
                 )}
               </FormField>
 
-              <FormField label="Scheduled Follow-Up Date">
+              <FormField label="Date of Follow-Up" hint="Must be on or before today">
                 {(c) => (
                   <Input
                     {...c}
                     type="date"
-                    min={dischargeDate || patient.dateOfAdmission}
+                    max={new Date().toISOString().slice(0, 10)}
                     value={followUpDate}
                     onChange={(e) => setFollowUpDate(e.target.value)}
                   />
@@ -958,6 +1121,7 @@ export default function ClinicalWizardPage() {
           </form>
         )}
       </div>
+      </TabPanel>
 
       {/* Navigation Buttons */}
       <div className="flex justify-between border-t border-line pt-4 bg-white p-4 rounded-xl border">
@@ -974,7 +1138,7 @@ export default function ClinicalWizardPage() {
           Previous Tab
         </Button>
 
-        {activeTab < TABS.length - 1 ? (
+        {activeTab < TAB_DEFS.length - 1 ? (
           <Button
             type="button"
             iconRight={<ChevronRight className="h-4 w-4" />}

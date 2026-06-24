@@ -2,12 +2,16 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { Plus, Trash2 } from "lucide-react";
 import {
   Input,
   Textarea,
   Select,
   FormField,
   Checkbox,
+  Button,
+  Radio,
+  Alert,
   type SelectOption,
   type StepperStep,
 } from "@mosje/design-system";
@@ -15,7 +19,7 @@ import { useToast } from "@/components/toast";
 import { useTCStore } from "@/lib/treatment-centre/store";
 import { FormSection } from "@/components/treatment-centre/tc-form";
 import { Wizard, ReviewItem, ReviewSection } from "@/components/treatment-centre/tc-wizard";
-import type { Beneficiary } from "@/lib/treatment-centre/types";
+import type { Beneficiary, DrugUseRow } from "@/lib/treatment-centre/types";
 import {
   GENDERS,
   STATES,
@@ -29,6 +33,9 @@ import {
   CATEGORY,
   GOVERNMENT_ID,
   REFERRED_BY,
+  DRUGS,
+  INITIATION_REASONS,
+  YES_NO,
   districtsForState,
 } from "@/lib/treatment-centre/master-data";
 
@@ -39,6 +46,7 @@ function labelOf(options: SelectOption[], value: string): string {
 const STEPS: StepperStep[] = [
   { label: "Registration", description: "Identity" },
   { label: "Demographics", description: "Address & background" },
+  { label: "Substance Use", description: "Drug details" },
   { label: "Review", description: "Confirm & submit" },
 ];
 
@@ -46,6 +54,7 @@ const STEPS: StepperStep[] = [
 const STEP_REQUIRED: Record<number, readonly string[]> = {
   0: ["dateOfRegistration", "referredBy", "name", "age", "gender", "contactNumber", "category"],
   1: ["state", "district", "placeOfResidence"],
+  2: [],
 };
 
 /** Human labels for the error summary. */
@@ -60,6 +69,9 @@ const FIELD_LABELS: Record<string, string> = {
   state: "State",
   district: "District",
   placeOfResidence: "Place of Residence",
+  governmentId: "Government ID",
+  governmentIdNumber: "Government ID Number",
+  drug: "At least one drug-use row",
 };
 
 const todayIso = () => new Date().toISOString().slice(0, 10);
@@ -95,17 +107,35 @@ export function OdicBeneficiaryForm({
     category: "",
     livingArrangements: "",
     governmentId: "",
+    governmentIdNumber: "",
   });
   const [sameAddress, setSameAddress] = React.useState(false);
+  
+  const emptyDrugRow: DrugUseRow = {
+    drug: "",
+    ageOfFirstUse: "",
+    reason: "",
+    usedLast3Months: "",
+    dailyUse: "",
+    durationMonths: "",
+  };
+  const keyRef = React.useRef(0);
+  const [drugRows, setDrugRows] = React.useState<Array<DrugUseRow & { _key: string }>>([
+    { ...emptyDrugRow, _key: "row-0" },
+  ]);
+
   const [step, setStep] = React.useState(0);
   const [errors, setErrors] = React.useState<Set<string>>(new Set());
   const [submitError, setSubmitError] = React.useState("");
   const errorSummaryRef = React.useRef<HTMLDivElement>(null);
   const submittingRef = React.useRef(false);
+  const drugSectionId = React.useId();
 
   // Warn before leaving with unsaved data (browser refresh/close/external nav).
   React.useEffect(() => {
-    const dirty = !submittingRef.current && Object.values(f).some(Boolean);
+    const dirty =
+      !submittingRef.current &&
+      (Object.values(f).some(Boolean) || drugRows.some((r) => r.drug));
     if (!dirty) return;
     const handler = (e: BeforeUnloadEvent) => {
       e.preventDefault();
@@ -113,9 +143,25 @@ export function OdicBeneficiaryForm({
     };
     window.addEventListener("beforeunload", handler);
     return () => window.removeEventListener("beforeunload", handler);
-  }, [f]);
+  }, [f, drugRows]);
 
   const set = (key: string) => (value: string) => setF((prev) => ({ ...prev, [key]: value }));
+
+  const updateDrugRow = (i: number, patch: Partial<DrugUseRow>) =>
+    setDrugRows((prev) => prev.map((row, idx) => (idx === i ? { ...row, ...patch } : row)));
+
+  const addDrugRow = () => {
+    keyRef.current += 1;
+    setDrugRows((prev) => [...prev, { ...emptyDrugRow, _key: `row-${keyRef.current}` }]);
+  };
+
+  const removeDrugRow = (i: number) => {
+    setDrugRows((prev) => {
+      const filtered = prev.filter((_, idx) => idx !== i);
+      return filtered.length === 0 ? [{ ...emptyDrugRow, _key: `row-${keyRef.current}` }] : filtered;
+    });
+  };
+
   const districtOptions = f.state ? districtsForState(f.state) : [];
   const err = (key: string): string | undefined => {
     if (!errors.has(key)) return undefined;
@@ -137,9 +183,15 @@ export function OdicBeneficiaryForm({
         }
         if (f.dateOfRegistration && f.dateOfRegistration > todayIso()) missing.add("dateOfRegistration");
       }
+      if (s === 1) {
+        if (f.governmentId && !f.governmentIdNumber) missing.add("governmentIdNumber");
+      }
+      if (s === 2) {
+        if (!drugRows.some((r) => r.drug)) missing.add("drug");
+      }
       return missing;
     },
-    [f],
+    [f, drugRows],
   );
 
   const flagStep = (missing: Set<string>, targetStep: number) => {
@@ -173,7 +225,7 @@ export function OdicBeneficiaryForm({
 
   const submit = () => {
     if (submittingRef.current) return; // guard against double-submit
-    for (const s of [0, 1]) {
+    for (const s of [0, 1, 2]) {
       const missing = missingForStep(s);
       if (missing.size > 0) {
         flagStep(missing, s);
@@ -194,7 +246,6 @@ export function OdicBeneficiaryForm({
       ["Income", labelOf(INCOME, f.income)],
       ["Marital status", labelOf(MARITAL_STATUS, f.maritalStatus)],
       ["Living arrangements", labelOf(LIVING_ARRANGEMENTS, f.livingArrangements)],
-      ["Government ID", labelOf(GOVERNMENT_ID, f.governmentId)],
     ];
     const details = Object.fromEntries(detailPairs.filter(([, v]) => v && v.trim()));
 
@@ -212,6 +263,18 @@ export function OdicBeneficiaryForm({
       contactNumber: f.contactNumber,
       category: labelOf(CATEGORY, f.category),
       kind,
+      governmentId: f.governmentId ? labelOf(GOVERNMENT_ID, f.governmentId) : undefined,
+      governmentIdNumber: f.governmentIdNumber || undefined,
+      drugUse: drugRows
+        .filter((r) => r.drug)
+        .map((r) => ({
+          drug: labelOf(DRUGS, r.drug),
+          ageOfFirstUse: r.ageOfFirstUse,
+          reason: labelOf(INITIATION_REASONS, r.reason),
+          usedLast3Months: r.usedLast3Months,
+          dailyUse: r.dailyUse,
+          durationMonths: r.durationMonths,
+        })),
       details: Object.keys(details).length ? details : undefined,
     };
     store.addBeneficiary(beneficiary);
@@ -330,13 +393,102 @@ export function OdicBeneficiaryForm({
             <FormField label="Living Arrangements">
               {(c) => <Select {...c} value={f.livingArrangements} onChange={(e) => set("livingArrangements")(e.target.value)} placeholder="Select Living Arrangement" options={LIVING_ARRANGEMENTS} />}
             </FormField>
-            <FormField label="Government ID">
-              {(c) => <Select {...c} value={f.governmentId} onChange={(e) => set("governmentId")(e.target.value)} placeholder="Select Government ID" options={GOVERNMENT_ID} />}
+            <FormField label="Government ID" error={err("governmentId")}>
+              {(c) => <Select {...c} value={f.governmentId} onChange={(e) => set("governmentId")(e.target.value)} placeholder="Select Government ID" options={GOVERNMENT_ID} invalid={errors.has("governmentId")} />}
             </FormField>
+            {f.governmentId && (
+              <FormField label="Government ID Number" required error={err("governmentIdNumber")}>
+                {(c) => <Input {...c} value={f.governmentIdNumber} onChange={(e) => set("governmentIdNumber")(e.target.value)} placeholder="Enter ID number" invalid={errors.has("governmentIdNumber")} />}
+              </FormField>
+            )}
           </FormSection>
         )}
 
         {step === 2 && (
+          <section aria-labelledby={drugSectionId} className="rounded-xl border border-line bg-white p-5">
+            <div className="mb-5 border-b border-line pb-3">
+              <h2 id={drugSectionId} className="text-base font-semibold text-navy">Drug Use Details</h2>
+            </div>
+            {errors.has("drug") && (
+              <div className="mb-3">
+                <Alert id="drug-error" status="error">Add at least one drug-use row (select a drug).</Alert>
+              </div>
+            )}
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm">
+                <thead>
+                  <tr className="text-left text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                    <th scope="col" className="px-2 py-2">Drug *</th>
+                    <th scope="col" className="px-2 py-2">Age of First Use</th>
+                    <th scope="col" className="px-2 py-2">Reason for Initiation/Use</th>
+                    <th scope="col" className="px-2 py-2">Use in Last 3 Months</th>
+                    <th scope="col" className="px-2 py-2">Daily/Near Daily Use</th>
+                    <th scope="col" className="px-2 py-2">Duration (months)</th>
+                    <th scope="col" className="px-2 py-2"><span className="sr-only">Actions</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {drugRows.map((row, i) => (
+                    <tr key={row._key} className="align-top">
+                      <td className="px-2 py-2 min-w-[180px]">
+                        <Select
+                          aria-label={`Drug for row ${i + 1}`}
+                          value={row.drug}
+                          onChange={(e) => updateDrugRow(i, { drug: e.target.value })}
+                          placeholder="Select Drug"
+                          options={DRUGS}
+                          invalid={errors.has("drug") && !row.drug}
+                          aria-describedby={errors.has("drug") && !row.drug ? "drug-error" : undefined}
+                        />
+                      </td>
+                      <td className="px-2 py-2 w-28">
+                        <Input aria-label={`Age of first use for row ${i + 1}`} type="number" min={0} value={row.ageOfFirstUse} onChange={(e) => updateDrugRow(i, { ageOfFirstUse: e.target.value })} placeholder="Age" />
+                      </td>
+                      <td className="px-2 py-2 min-w-[180px]">
+                        <Select aria-label={`Reason for initiation for row ${i + 1}`} value={row.reason} onChange={(e) => updateDrugRow(i, { reason: e.target.value })} placeholder="Select Reason" options={INITIATION_REASONS} />
+                      </td>
+                      <td className="px-2 py-2">
+                        <fieldset className="m-0 border-0 p-0">
+                          <legend className="sr-only">{`Use in Last 3 Months — row ${i + 1}`}</legend>
+                          <div className="flex gap-3">
+                            {YES_NO.map((o) => (
+                              <Radio key={o.value} name={`used3m-${row._key}`} value={o.value} checked={row.usedLast3Months === o.value} onChange={() => updateDrugRow(i, { usedLast3Months: o.value as "Yes" | "No" })} label={o.label} />
+                            ))}
+                          </div>
+                        </fieldset>
+                      </td>
+                      <td className="px-2 py-2">
+                        <fieldset className="m-0 border-0 p-0">
+                          <legend className="sr-only">{`Daily Use — row ${i + 1}`}</legend>
+                          <div className="flex gap-3">
+                            {YES_NO.map((o) => (
+                              <Radio key={o.value} name={`daily-${row._key}`} value={o.value} checked={row.dailyUse === o.value} onChange={() => updateDrugRow(i, { dailyUse: o.value as "Yes" | "No" })} label={o.label} />
+                            ))}
+                          </div>
+                        </fieldset>
+                      </td>
+                      <td className="px-2 py-2 w-28">
+                        <Input aria-label={`Duration in months for row ${i + 1}`} type="number" min={0} value={row.durationMonths} onChange={(e) => updateDrugRow(i, { durationMonths: e.target.value })} placeholder="Months" />
+                      </td>
+                      <td className="px-2 py-2 text-right">
+                        <Button appearance="text" type="button" onClick={() => removeDrugRow(i)} aria-label={`Delete row ${i + 1}`} className="text-red-600 hover:text-red-800">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-4">
+              <Button appearance="outlined" type="button" onClick={addDrugRow} className="inline-flex items-center gap-2">
+                <Plus className="h-4 w-4" /> Add Substance
+              </Button>
+            </div>
+          </section>
+        )}
+
+        {step === 3 && (
           <div className="flex flex-col gap-5">
             <p className="text-sm text-ink-muted">
               Review the details below, then submit the registration. Use{" "}
@@ -362,6 +514,25 @@ export function OdicBeneficiaryForm({
               <ReviewItem label="Marital Status" value={labelOf(MARITAL_STATUS, f.maritalStatus)} />
               <ReviewItem label="Living Arrangements" value={labelOf(LIVING_ARRANGEMENTS, f.livingArrangements)} />
               <ReviewItem label="Government ID" value={labelOf(GOVERNMENT_ID, f.governmentId)} />
+              {f.governmentIdNumber && <ReviewItem label="Government ID Number" value={f.governmentIdNumber} />}
+            </ReviewSection>
+            <ReviewSection title="Substance Use Details">
+              {drugRows.filter((r) => r.drug).length === 0 ? (
+                <p className="text-sm text-ink-muted col-span-2">No drugs recorded</p>
+              ) : (
+                drugRows.filter((r) => r.drug).map((r, i) => (
+                  <div key={i} className="col-span-2 border-b border-line pb-2 last:border-0 last:pb-0">
+                    <p className="font-semibold text-sm text-navy">{labelOf(DRUGS, r.drug)}</p>
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mt-1 text-xs">
+                      <div><span className="text-ink-muted">Age of first use:</span> {r.ageOfFirstUse || "N/A"}</div>
+                      <div><span className="text-ink-muted">Reason:</span> {labelOf(INITIATION_REASONS, r.reason) || "N/A"}</div>
+                      <div><span className="text-ink-muted">Used last 3 months:</span> {r.usedLast3Months || "N/A"}</div>
+                      <div><span className="text-ink-muted">Daily use:</span> {r.dailyUse || "N/A"}</div>
+                      <div><span className="text-ink-muted">Duration:</span> {r.durationMonths ? `${r.durationMonths} months` : "N/A"}</div>
+                    </div>
+                  </div>
+                ))
+              )}
             </ReviewSection>
           </div>
         )}

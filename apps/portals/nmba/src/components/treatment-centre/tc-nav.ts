@@ -108,5 +108,31 @@ export function navForRole(role: TCRole): NavNode[] {
         },
         ...sharedItems(),
       ];
+    case "US":
+      return [
+        DASHBOARD_LEAF,
+        {
+          kind: "group",
+          label: "Reports",
+          icon: ListChecks,
+          children: [
+            { kind: "leaf", label: "Activity Report Date Wise", href: `${TC}/us/reports/activities`, icon: Activity },
+            { kind: "leaf", label: "Treatment Centre Report Date Wise", href: `${TC}/us/reports/centres`, icon: ListChecks },
+            { kind: "leaf", label: "State Report Date Wise", href: `${TC}/us/reports/states`, icon: CalendarDays },
+            { kind: "leaf", label: "Analytical Report", href: `${TC}/us/reports/analytics`, icon: Activity },
+          ],
+        },
+        {
+          kind: "group",
+          label: "Masters Management",
+          icon: Users,
+          children: [
+            { kind: "leaf", label: "Drugs Master", href: `${TC}/us/masters/drugs`, icon: Activity },
+            { kind: "leaf", label: "Categories Master", href: `${TC}/us/masters/categories`, icon: Users },
+            { kind: "leaf", label: "Education Master", href: `${TC}/us/masters/education`, icon: ListChecks },
+          ],
+        },
+        { kind: "leaf", label: "Nasha Mukt Bharat Saptah 2026", href: `${TC}/saptah`, icon: CalendarDays },
+      ];
   }
 }

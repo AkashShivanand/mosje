@@ -4,7 +4,8 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown, History, LogOut } from "lucide-react";
-import { SiteHeader, Footer } from "@mosje/design-system";
+import { SiteHeader, Footer, AppSwitcher } from "@mosje/design-system";
+import { useToast } from "@/components/toast";
 import { cn } from "@/lib/utils";
 import { useTCSession } from "@/lib/treatment-centre/session-context";
 import { TC_SESSION_COOKIE } from "@/lib/treatment-centre/roles";
@@ -113,6 +114,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
   const router = useRouter();
   const pathname = usePathname();
   const isActive = useIsActive();
+  const { toast } = useToast();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
   const [signedInAt, setSignedInAt] = React.useState("");
@@ -221,6 +223,10 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
             </span>
           ) : undefined
         }
+        language={{
+          label: "English",
+          onClick: () => toast("i18n: Language switch (22 scheduled languages supported) - Demo.", "info"),
+        }}
         account={{ name: session.centerName, role: `${session.role} · (TC)` }}
         accountMenu={[
           {
@@ -268,6 +274,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
       </div>
 
       <Footer />
+      <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
     </div>
   );
 }

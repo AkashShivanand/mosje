@@ -151,6 +151,8 @@ function Column({
 export function HeroShowcase(): React.JSX.Element {
   return (
     <section className="hero" aria-label="SAMAVESH Design System">
+      <div className="hero-glow hero-glow--blue" aria-hidden="true" />
+      <div className="hero-glow hero-glow--saffron" aria-hidden="true" />
       <div className="hero-brand">
         <div className="hero-lockup">
           {/* eslint-disable-next-line @next/next/no-img-element */}

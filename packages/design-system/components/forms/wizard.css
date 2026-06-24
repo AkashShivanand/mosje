@@ -81,6 +81,11 @@
   gap: 2px;
 }
 
+/* Span the full grid row — for multi-attribute records (e.g. a drug entry). */
+.ds-review-item--wide {
+  grid-column: 1 / -1;
+}
+
 .ds-review-item__label {
   font-size: var(--ds-text-body-3, 12px);
   font-weight: 500;

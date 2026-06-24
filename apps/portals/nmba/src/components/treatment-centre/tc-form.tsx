@@ -3,9 +3,9 @@
 import { Badge } from "@mosje/design-system";
 import type { RegistrationProgress } from "@/lib/treatment-centre/types";
 
-// FormSection now lives in the design system (one definition, all portals).
+// FormSection / FormCard live in the design system (one definition, all portals).
 // Re-exported so `@/components/treatment-centre/tc-form` imports stay stable.
-export { FormSection } from "@mosje/design-system";
+export { FormSection, FormCard } from "@mosje/design-system";
 
 const PROGRESS_STATUS = {
   Completed: "success",

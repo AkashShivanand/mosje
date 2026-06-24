@@ -1,0 +1,67 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — Tabs
+   WAI-ARIA tablist: navy active pill on a muted track. Token-driven.
+   ============================================================================ */
+
+.ds-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 4px;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-xl);
+  background-color: var(--ds-surface-muted);
+  font-family: var(--ds-font-sans);
+}
+
+.ds-tabs__tab {
+  flex: 1 1 0;
+  min-width: 140px;
+  white-space: nowrap;
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--ds-radius-lg);
+  background: transparent;
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.ds-tabs__tab:hover:not(.is-selected) {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--ds-ink);
+}
+
+.ds-tabs__tab.is-selected {
+  background-color: var(--ds-gov-navy);
+  color: var(--ds-on-primary, #fff);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.ds-tabs__tab:focus-visible {
+  outline: none;
+  /* ring offset over the muted track, then the focus ring */
+  box-shadow: 0 0 0 2px var(--ds-surface-muted), 0 0 0 4px var(--ds-primary);
+}
+
+.ds-tabpanel:focus-visible {
+  outline: none;
+}
+
+/* Visually-hidden live region (self-contained so the announcer never shows). */
+.ds-tabs ~ .ds-sr-only,
+.ds-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -16,6 +16,8 @@ import {
   LogOut,
   ChevronDown,
 } from "lucide-react";
+import { SiteHeader, AppSwitcher } from "@mosje/design-system";
+import { useToast } from "@/components/toast";
 import { cn } from "@/lib/utils";
 
 const BASE = "/portals/nmba";
@@ -48,81 +50,40 @@ export function AdminShell({ children, userName = "Rajesh Pilli" }: AdminShellPr
     router.push("/admin/login");
   };
 
+  const { toast } = useToast();
+
   return (
     <div className="min-h-screen bg-surface-muted">
-      {/* Gov top bar */}
-      <div className="bg-navy-950 text-white">
-        <div className="flex h-9 items-center justify-between px-4 text-xs">
-          <a className="flex items-center gap-1.5 font-medium" href="https://india.gov.in" target="_blank" rel="noreferrer">
-            <span aria-hidden>🇮🇳</span>
-            <span>Government of India</span>
-          </a>
-          <div className="flex items-center gap-2">
-            <button className="flex items-center gap-1 rounded px-1 hover:bg-white/10" aria-label="Language English">
-              <span>English</span>
-              <ChevronDown className="h-3 w-3" />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Masthead */}
-      <header className="border-b border-line bg-white">
-        <div className="flex items-center justify-between gap-4 px-4 py-3">
-          <div className="flex items-center gap-3">
-            <img
-              src={`${BASE}/brand/national-emblem.svg`}
-              alt="National Emblem of India"
-              className="h-14 w-auto"
-            />
-            <div className="leading-tight">
-              <span className="inline-block rounded bg-amber-300/80 px-1.5 py-0.5 text-[10px] font-bold text-amber-900">
-                BETA
-              </span>
-              <div className="mt-0.5 text-[11px] text-ink-muted">Government of India</div>
-              <div className="text-lg font-bold text-ink">
-                Ministry of Social Justice &amp; Empowerment
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-5">
-            <img
-              src={`${BASE}/brand/digital-india.svg`}
-              alt="Digital India"
-              className="hidden h-9 w-auto md:block"
-            />
-            <div className="hidden items-center gap-2 lg:flex">
-              <img
-                src={`${BASE}/brand/samavesh-logo.svg`}
-                alt="SAMAVESH"
-                className="h-10 w-10"
-              />
-              <div className="max-w-[200px] leading-tight">
-                <div className="text-sm font-bold text-ink">SAMAVESH</div>
-                <div className="text-[10px] text-ink-muted">
-                  Single Access Mechanism for All Verticals of Empowerment &amp; Social Harmony
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-navy text-sm font-bold text-white">
-                {userName.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()}
-              </div>
-              <div className="hidden flex-col leading-tight lg:flex">
-                <span className="text-sm font-semibold text-ink">{userName}</span>
-                <span className="text-xs text-ink-muted">(Admin)</span>
-              </div>
-              <button
-                onClick={handleLogout}
-                aria-label="Logout"
-                className="ml-2 rounded-lg p-1.5 text-ink-hint hover:bg-black/5 hover:text-ink"
-              >
-                <LogOut className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <SiteHeader
+        variant="portal"
+        sticky
+        beta
+        tone="navy"
+        emblemSrc={`${BASE}/brand/national-emblem.svg`}
+        brandLines={{
+          org: "Government of India",
+          ministry: "Ministry of Social Justice & Empowerment",
+          department: "Patient Data Monitoring System",
+        }}
+        brandDivider
+        cobranding={[
+          { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", height: 34 },
+          { src: `${BASE}/brand/samavesh-logo.svg`, alt: "SAMAVESH", height: 40 },
+        ]}
+        language={{
+          label: "English",
+          onClick: () => toast("i18n: Language switch (22 scheduled languages supported) - Demo.", "info"),
+        }}
+        account={{ name: userName, role: "Admin" }}
+        accountMenu={[
+          {
+            label: "Sign out",
+            danger: true,
+            icon: <LogOut className="h-4 w-4" />,
+            onSelect: handleLogout,
+          },
+        ]}
+      />
 
       <div className="flex">
         {/* Sidebar */}
@@ -172,6 +133,7 @@ export function AdminShell({ children, userName = "Rajesh Pilli" }: AdminShellPr
           {children}
         </main>
       </div>
+      <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
     </div>
   );
 }

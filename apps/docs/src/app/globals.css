@@ -112,13 +112,24 @@ code:not([class]) {
   border: 1px solid var(--ds-border);
   background: var(--ds-surface);
   text-decoration: none;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.2s, box-shadow 0.25s;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease, box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s ease;
 }
 .docs-welcome-card:hover {
-  border-color: color-mix(in oklab, var(--ds-primary) 40%, var(--ds-border));
-  box-shadow: var(--ds-shadow-lg, 0 12px 32px -12px rgb(2 32 64 / 0.16));
+  border-color: color-mix(in oklab, var(--ds-primary) 50%, transparent);
+  box-shadow: 
+    0 20px 40px -15px color-mix(in oklab, var(--ds-primary) 12%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--ds-primary) 20%, transparent);
+  background-color: color-mix(in oklab, var(--ds-primary) 1.5%, var(--ds-surface));
   text-decoration: none;
+}
+[data-theme="dark"] .docs-welcome-card:hover {
+  border-color: color-mix(in oklab, var(--ds-primary) 60%, transparent);
+  box-shadow: 
+    0 20px 40px -15px rgba(0, 0, 0, 0.5),
+    0 0 0 1px color-mix(in oklab, var(--ds-primary) 30%, transparent);
+  background-color: color-mix(in oklab, var(--ds-primary) 3%, var(--ds-surface));
 }
 .docs-welcome-card::after {
   content: "→";
@@ -145,14 +156,27 @@ code:not([class]) {
   background: var(--ds-surface);
   overflow: hidden;
   margin-bottom: var(--ds-spacing-6xl, 56px);
+  box-shadow: var(--ds-shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.05));
+  transition: box-shadow 0.3s ease;
+}
+.home-stats:hover {
+  box-shadow: var(--ds-shadow-md, 0 8px 24px -8px rgba(2 32 64 / 0.1));
 }
 .home-stat {
   flex: 1 1 0;
   min-width: 132px;
   padding: var(--ds-spacing-xl);
   border-left: 1px solid var(--ds-border);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: default;
 }
 .home-stat:first-child { border-left: 0; }
+.home-stat:hover {
+  background-color: color-mix(in oklab, var(--ds-primary) 1.5%, var(--ds-surface));
+}
+[data-theme="dark"] .home-stat:hover {
+  background-color: color-mix(in oklab, var(--ds-primary) 3%, var(--ds-surface));
+}
 /* Align the stats band's right edge with the broken-out hero (reclaims the
    empty TOC rail) so the two full-width bands line up. */
 @media (min-width: 1025px) {
@@ -165,6 +189,11 @@ code:not([class]) {
   letter-spacing: -0.02em;
   color: var(--ds-ink-strong, var(--ds-ink));
   font-variant-numeric: tabular-nums;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.home-stat:hover .home-stat__value {
+  color: var(--ds-primary);
+  transform: translateY(-2px);
 }
 .home-stat__label {
   font-size: var(--ds-text-label-3, 0.75rem);

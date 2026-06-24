@@ -17,6 +17,20 @@
   border-bottom: 1px solid var(--ds-border);
 }
 
+/* FormCard header row: title (+ optional required marker) and optional actions. */
+.ds-form-section__head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ds-form-section__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .ds-form-section__title {
   margin: 0;
   font-size: var(--ds-text-title-2, 16px);

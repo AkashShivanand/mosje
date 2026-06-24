@@ -5,6 +5,7 @@
    Organised by functional category to mirror the components/ folder structure. */
 @import "./components/actions/button.css";
 @import "./components/forms/forms.css";
+@import "./components/forms/media-upload.css";
 @import "./components/forms/controls.css";
 @import "./components/forms/search.css";
 @import "./components/forms/chip.css";

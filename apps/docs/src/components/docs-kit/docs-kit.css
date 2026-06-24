@@ -136,3 +136,78 @@
 .a11y-checklist__icon { color: var(--ds-success); flex-shrink: 0; margin-top: 1px; }
 .a11y-checklist__criterion { font-weight: 600; color: var(--ds-ink); }
 .a11y-checklist__desc { color: var(--ds-ink-muted); margin-top: 2px; font-size: var(--ds-text-body-3); }
+
+/* ── Terminal Code ── */
+.terminal-code {
+  background: #12141c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ds-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--ds-shadow-lg), 0 20px 30px -15px rgba(0, 0, 0, 0.4);
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+}
+
+.terminal-code__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: var(--ds-spacing-md) var(--ds-spacing-xl);
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.terminal-code__controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.terminal-code__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.terminal-code__dot--red    { background: #ff5f56; }
+.terminal-code__dot--yellow { background: #ffbd2e; }
+.terminal-code__dot--green  { background: #27c93f; }
+
+.terminal-code__title {
+  font-size: var(--ds-text-label-3);
+  color: rgba(255, 255, 255, 0.4);
+  margin-left: var(--ds-spacing-md);
+  font-weight: 500;
+}
+
+.terminal-code__copy {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--ds-radius-sm);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 4px 10px;
+  font-size: var(--ds-text-label-3);
+  font-family: var(--ds-font-sans);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-spacing-xs);
+  transition: all 0.2s ease;
+}
+
+.terminal-code__copy:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.terminal-code__copy:active {
+  transform: scale(0.96);
+}
+
+.terminal-code__body {
+  padding: var(--ds-spacing-xl);
+  font-size: 13px;
+  color: #e2e8f0;
+  line-height: 1.7;
+  overflow-x: auto;
+}

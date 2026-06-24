@@ -41,6 +41,7 @@ export type Patient = {
   contactNumber: string;
   governmentId: string;
   governmentIdNumber?: string;
+  photoUrl?: string;
   drugUse: DrugUseRow[];
   provisionalDiagnosis: string;
   /** Optional clinical detail answers (injecting/sexual/ASSIST/treatment/misc), label → value. */
@@ -58,6 +59,7 @@ export type Patient = {
   prevTreatmentCenter?: string;
   treatmentReceivedTypes?: string[];
   relapseReason?: string;
+  relapseReasonOther?: string;
 
   // Tab 2: Dosage Log
   dosageLog?: Array<{
@@ -74,6 +76,11 @@ export type Patient = {
     date: string;
     issues: string;
   }>;
+  groupCounselling?: Array<{
+    sessionNo: string;
+    date: string;
+    issues: string;
+  }>;
   familyCounselling?: Array<{
     sessionNo: string;
     date: string;
@@ -82,6 +89,7 @@ export type Patient = {
 
   // Tab 4: Referral & Home Visit
   referralServices?: string[];
+  referralOtherSpecify?: string;
   referralRemark?: string;
   homeVisits?: Array<{
     date: string;
@@ -185,6 +193,14 @@ export type SaptahEvent = {
   date: string;
   location: string;
   participants: number;
+  coordinatingDept?: string;
+  maleParticipants?: number;
+  femaleParticipants?: number;
+  educationalInstitutions?: string;
+  completionStatus?: string;
+  mediaUrl?: string;
+  latitude?: string;
+  longitude?: string;
 };
 
 /** The authenticated treatment-centre session (stored in a cookie). */

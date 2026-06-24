@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-06-23 · System version: v1.1.0
+  Last reviewed: 2026-06-24 · System version: v1.1.1
 -->
 
 # SAMAVESH Design System — Specification & AI Design Context
@@ -417,6 +417,7 @@ All components are exported from `@mosje/design-system`. Import from the package
 **Rules**:
 - Every `<Input>`, `<Select>`, `<Textarea>`, `<Checkbox>`, `<Radio>`, `<Toggle>` **must** be wrapped in `<FormField>`.
 - FormField auto-generates `htmlFor` / `aria-describedby` linkage. Do not bypass it.
+- Layout order is **label → control → hint → error** (hint renders as helper text *below* the control so inputs stay aligned across grid rows). All four remain linked via `aria-describedby`.
 - Error prop only activates after validation runs — never on initial render.
 
 #### Input
@@ -442,9 +443,18 @@ All components are exported from `@mosje/design-system`. Import from the package
 **Purpose**: Compact filter badge. Used for multi-select filter groups.  
 **Rule**: Use `<Chip>` for tag-style multi-selects, not for navigation or status display.
 
+#### MediaUpload
+**Purpose**: Image/file upload with drag-and-drop, preview, replace/remove, and client-side type + size validation. Reads to a data-URL (no network).  
+**Props**: `value`, `fileName`, `onChange(dataUrl, fileName)`, `onClear`, `accept` (default `"image/*"`), `maxSizeMb` (default 5), `invalid`, `disabled`.  
+**Rule**: Wrap in `<FormField>` and spread its control props (`id`, `invalid`, `aria-describedby`) onto `<MediaUpload>`. Do not hand-roll `<input type="file">` in apps — use this so previews, validation, and a11y stay consistent.
+
 #### FormSection
 **Purpose**: Groups related fields under a sub-heading with optional description.  
 **Rule**: Use one `<FormSection>` per logical group of fields within a larger form (e.g. "Personal Details", "Address").
+
+#### FormCard
+**Purpose**: A titled surface card with the **same header styling as `<FormSection>`** but a custom (non-grid) body — for sections whose content isn't a simple field grid (repeatable cards, tables, mixed content).  
+**Rule**: Never hand-roll a `<section>` with its own heading classes for a custom-layout group — use `<FormCard title=… description=… required? headingId?>` so every section header across the estate stays visually identical. Pass `headingId` when a child needs `aria-labelledby` (e.g. a data table).
 
 #### Wizard
 **Purpose**: Multi-step form experience with a progress `<Stepper>`.  
@@ -480,6 +490,13 @@ All components are exported from `@mosje/design-system`. Import from the package
 #### Stepper
 **Purpose**: Displays progress through a multi-step form or process.  
 **Rule**: Used with `<Wizard>`. Steps must show completed, current, and upcoming states.
+
+#### Tabs / TabPanel
+**Purpose**: Accessible tabbed navigation for **non-linear** sections the user revisits in any order (vs `<Wizard>`, which is a linear stepper).  
+**Rules**:
+- Implements the WAI-ARIA Tabs pattern (`role=tablist/tab/tabpanel`, `aria-selected`, `aria-controls`, roving `tabindex`, Arrow/Home/End keys) with a polite live-region announce.
+- Pair each active tab with a `<TabPanel>` sharing the same `idBase`. Parent owns the active index and renders one panel at a time.
+- Never hand-roll tab `<button>`s — reuse this so the keyboard/SR contract holds estate-wide.
 
 #### EmptyState
 **Purpose**: Fills empty data containers with context + a call-to-action.  
