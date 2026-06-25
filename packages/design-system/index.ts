@@ -92,8 +92,65 @@ export { MetricCard } from "./components/data-display/metric-card";
 export type { MetricCardProps, MetricCardSize, MetricCardChange } from "./components/data-display/metric-card";
 export { DataTable } from "./components/data-display/data-table";
 export type { DataTableProps, DataTableColumn } from "./components/data-display/data-table";
-export { PieChart, BarChart } from "./components/data-display/charts";
-export type { ChartDatum } from "./components/data-display/charts";
+// Data visualisation — dependency-free, token-driven, theme-aware SVG charts
+export {
+  PieChart,
+  BarChart,
+  LineChart,
+  AreaChart,
+  DonutChart,
+  Gauge,
+  Sparkline,
+  Progress,
+  FunnelChart,
+  ScatterChart,
+  Heatmap,
+  ComboChart,
+  IndiaMap,
+  Legend,
+  useChartTooltip,
+  ChartTooltip,
+  categoricalColor,
+  sequentialColor,
+  divergingColor,
+  formatIndian,
+  formatCompact,
+  formatPercent,
+} from "./components/data-display/charts";
+export type {
+  ChartDatum,
+  ChartSeries,
+  ChartMultiSeries,
+  ChartTable,
+  BarChartProps,
+  LineChartProps,
+  AreaChartProps,
+  DonutChartProps,
+  GaugeProps,
+  SparklineProps,
+  ProgressProps,
+  FunnelChartProps,
+  FunnelStage,
+  ScatterChartProps,
+  ScatterSeries,
+  ScatterPoint,
+  HeatmapProps,
+  ComboChartProps,
+  IndiaMapProps,
+  IndiaMapDatum,
+  LegendItem,
+  ValueFormat,
+} from "./components/data-display/charts";
+
+// ---- Components: Dashboard composition ---------------------------------------
+export { ChartCard } from "./components/dashboard/chart-card";
+export type { ChartCardProps } from "./components/dashboard/chart-card";
+export { DashboardGrid } from "./components/dashboard/dashboard-grid";
+export type { DashboardGridProps } from "./components/dashboard/dashboard-grid";
+export { KpiRow } from "./components/dashboard/kpi-row";
+export type { KpiRowProps } from "./components/dashboard/kpi-row";
+export { FilterBar, SegmentedControl } from "./components/dashboard/filter-bar";
+export type { FilterBarProps, SegmentedControlProps, SegmentedOption } from "./components/dashboard/filter-bar";
 
 // ---- Components: Navigation --------------------------------------------------
 // Navbar — SiteHeader (the SAMAVESH Navbar: Website + Portal variants, 3-tier).

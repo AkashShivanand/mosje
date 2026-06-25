@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-06-24 · System version: v1.1.1
+  Last reviewed: 2026-06-25 · System version: v1.2.0 (data-visualisation layer)
 -->
 
 # SAMAVESH Design System — Specification & AI Design Context
@@ -357,6 +357,13 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 - `--ds-danger`, `--ds-danger-strong`, `--ds-danger-tonal`
 - `--ds-info`, `--ds-info-tonal`
 
+**Data-visualisation (charts):** theme-aware, used by the chart layer (§7).
+- `--ds-chart-cat-1` … `--ds-chart-cat-12` — categorical series (mutually distinguishable)
+- `--ds-chart-seq-50` … `--ds-chart-seq-900` — sequential single-hue ramp (choropleth, heatmap)
+- `--ds-chart-div-neg-strong/neg/neg-soft/mid/pos-soft/pos/pos-strong` — diverging (signed data)
+- `--ds-chart-trend-up/down/flat` — KPI trend
+- `--ds-chart-grid`, `--ds-chart-axis`, `--ds-chart-tooltip-bg`, `--ds-chart-tooltip-ink`, `--ds-chart-region-empty`, `--ds-chart-region-stroke` — structural
+
 ### Shape Tokens
 
 | Token | Value | Usage |
@@ -476,7 +483,7 @@ All components are exported from `@mosje/design-system`. Import from the package
 #### Modal
 **Purpose**: Blocking overlay for confirmations, destructive prompts, and detail views.  
 **Props**: `open`, `onClose`, `title`, `size` (`sm` | `md` | `lg`)  
-**Rules**: Uses native `<dialog>`. `Escape` key closes. Do not use for full-page workflows.
+**Rules**: `Escape` key closes; focus is trapped while open and restored to the trigger on close; background page scroll is locked while open. Do not use for full-page workflows.
 
 #### Toast / useToast
 **Purpose**: Transient notification system.  
@@ -517,9 +524,10 @@ All components are exported from `@mosje/design-system`. Import from the package
 
 #### MetricCard
 **Purpose**: KPI tile for portal dashboards.  
-**Props**: `label`, `value`, `change`, `size`  
+**Props**: `label`, `value`, `icon`, `changeLabel`, `changeValue`, `changeDirection`, `size`  
 **Rules**:
 - Maximum 4 MetricCards per row on desktop (2-col tablet, 1-col mobile).
+- `changeValue` (e.g. `"12%"`) renders the delta as a tinted success/danger pill with `changeLabel` (e.g. `"vs last month"`) as a muted suffix — the SAMAVESH KPI treatment. Omit `changeValue` for the legacy inline-text change.
 - Use `Intl.NumberFormat` for all numeric values — never hardcode `₹ 1,00,000`.
 - Maximum 2 decimal places.
 
@@ -528,9 +536,53 @@ All components are exported from `@mosje/design-system`. Import from the package
 **Props**: `columns: DataTableColumn[]`, `data`, `pagination`  
 **Rules**: Always supply a `caption` prop or `aria-label`. Right-align numeric columns. Support keyboard sort via column header buttons.
 
-#### PieChart / BarChart
-**Purpose**: Data visualisations using token-driven palette.  
-**Rule**: Always provide a `data-table` fallback accessible to screen readers. Pie charts: max 6 slices — group remaining into "Other".
+---
+
+### Data Visualization
+
+A dependency-free (no recharts/d3/visx), token-driven, theme-aware SVG chart
+layer. Every chart re-themes automatically under `data-color-mode` /
+`data-theme` / `data-density`, renders `role="img"` + `<title>`/`<desc>`, and
+ships a visually-hidden `<table>` data equivalent. Interactive marks (bars,
+points, slices, map regions) are keyboard-focusable with tooltips on hover +
+focus. Colours come from the chart token group (see §6: `--ds-chart-cat-1..12`
+categorical, `--ds-chart-seq-50..900` sequential, `--ds-chart-div-*` diverging,
+`--ds-chart-trend-*`, plus `--ds-chart-grid/axis/tooltip-*/region-*`).
+
+**Shared data shapes**: `ChartDatum = { label, value, color? }` (single series);
+`ChartMultiSeries = { labels: string[], series: { name, data[], color?, fill? }[] }`
+(multi-series). Every chart takes a required `title` (its accessible name) and an
+optional `valueFormat` (defaults to `en-IN` grouping).
+
+| Component | Purpose | Key props |
+|-----------|---------|-----------|
+| `PieChart` | Categorical share | `data: ChartDatum[]`, `title` |
+| `DonutChart` | Donut **or** progress ring (+target) | `data` **or** `value`/`max`, `title`, `center`, `centerSub` |
+| `BarChart` | Vertical/horizontal, single/grouped/stacked | `data` **or** `labels`+`series`, `orientation`, `variant`, `yLabel` |
+| `LineChart` / `AreaChart` | Multi-series trend (area = filled) | `labels`, `series`, `area`, `yLabel` |
+| `Sparkline` | Compact inline trend (decorative) | `data: number[]`, `color`, `label` |
+| `Gauge` | Semicircular gauge | `value`, `max`, `title`, `unit` |
+| `Progress` | Accessible linear progress bar | `value`, `max`, `label` |
+| `FunnelChart` | Conversion funnel | `stages: { label, value, color? }[]`, `title` |
+| `ScatterChart` | XY scatter (multi-series) | `series: { name, points }[]`, `xLabel`, `yLabel` |
+| `Heatmap` | Matrix (sequential/diverging) | `xLabels`, `yLabels`, `matrix`, `scale` |
+| `ComboChart` | Bars (left axis) + lines (right axis) | `labels`, `bars`, `lines`, `leftLabel`, `rightLabel` |
+| `IndiaMap` | State choropleth (pre-baked geo paths) | `data: { state, value }[]`, `title`, `highlightState` |
+
+**Composition primitives** (dashboard layout): `ChartCard` (titled widget
+container with actions slot + loading/empty states + grid `span`), `DashboardGrid`
+(responsive 12-col grid; full-width on mobile), `KpiRow` (a row of `MetricCard`
+tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
+`SegmentedControl` (filter row + period toggle).
+
+**Rules**:
+- Always pass a `title` — it is the chart's accessible name and SR-table caption.
+- Never encode meaning by colour alone: the SR table + per-mark `aria-label` +
+  tooltip carry values. `IndiaMap` announces each region's value on focus.
+- Pie/donut: prefer ≤ 6 slices; group the remainder into "Other".
+- `IndiaMap` geometry is generated — see `components/data-display/charts/geo/README.md`.
+- Charts are CSS-var driven (no Tailwind), so they work in every app including
+  pm-ajay (no Tailwind) and the v3/v4 portals.
 
 ---
 

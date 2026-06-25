@@ -87,6 +87,55 @@
       "saffronDark": {"$value":"{color.saffron.700}"},
       "navy":        {"$value":"{color.navy.700}"},
       "yellow":      {"$value":"{color.yellow.500}"}
+    },
+    "chart": {
+      "$description": "Data-visualisation roles. Theme-aware: dark/hc overrides keep series legible on dark surfaces. cat 1–12 are mutually-distinguishable categorical series (brand-led); seq 50–900 is a single-hue ramp for choropleth + heatmap; div is red→neutral→green for signed data; trend/grid/axis/tooltip/region are structural.",
+      "cat": {
+        "1":  {"$value":"#0373df", "$extensions":{"mosje":{"themes":{"dark":"#5fa0ef"}}}},
+        "2":  {"$value":"#f97316", "$extensions":{"mosje":{"themes":{"dark":"#fb923c"}}}},
+        "3":  {"$value":"#2e7d32", "$extensions":{"mosje":{"themes":{"dark":"#66bb6a"}}}},
+        "4":  {"$value":"#7e22ce", "$extensions":{"mosje":{"themes":{"dark":"#c084fc"}}}},
+        "5":  {"$value":"#0e7490", "$extensions":{"mosje":{"themes":{"dark":"#22d3ee"}}}},
+        "6":  {"$value":"#b45309", "$extensions":{"mosje":{"themes":{"dark":"#fbbf24"}}}},
+        "7":  {"$value":"#be185d", "$extensions":{"mosje":{"themes":{"dark":"#f472b6"}}}},
+        "8":  {"$value":"#1558b0", "$extensions":{"mosje":{"themes":{"dark":"#7aaff8"}}}},
+        "9":  {"$value":"#4d7c0f", "$extensions":{"mosje":{"themes":{"dark":"#a3e635"}}}},
+        "10": {"$value":"#9f1239", "$extensions":{"mosje":{"themes":{"dark":"#fb7185"}}}},
+        "11": {"$value":"#0f766e", "$extensions":{"mosje":{"themes":{"dark":"#5eead4"}}}},
+        "12": {"$value":"#475569", "$extensions":{"mosje":{"themes":{"dark":"#94a3b8"}}}}
+      },
+      "seq": {
+        "50":  {"$value":"#e8f2fd", "$extensions":{"mosje":{"themes":{"dark":"#0d1f33"}}}},
+        "100": {"$value":"#c6dcf9", "$extensions":{"mosje":{"themes":{"dark":"#122a45"}}}},
+        "200": {"$value":"#94bff5", "$extensions":{"mosje":{"themes":{"dark":"#16395c"}}}},
+        "300": {"$value":"#5fa0ef", "$extensions":{"mosje":{"themes":{"dark":"#1c4a78"}}}},
+        "400": {"$value":"#2d84e8", "$extensions":{"mosje":{"themes":{"dark":"#235e96"}}}},
+        "500": {"$value":"#0373df", "$extensions":{"mosje":{"themes":{"dark":"#2d84e8"}}}},
+        "600": {"$value":"#025fb8", "$extensions":{"mosje":{"themes":{"dark":"#4f9bee"}}}},
+        "700": {"$value":"#014b92", "$extensions":{"mosje":{"themes":{"dark":"#7ab3f3"}}}},
+        "800": {"$value":"#01376b", "$extensions":{"mosje":{"themes":{"dark":"#a6cdf7"}}}},
+        "900": {"$value":"#002448", "$extensions":{"mosje":{"themes":{"dark":"#d2e6fb"}}}}
+      },
+      "div": {
+        "negStrong": {"$value":"#a11d12", "$extensions":{"mosje":{"themes":{"dark":"#ff8a80"}}}},
+        "neg":       {"$value":"#ec5042", "$extensions":{"mosje":{"themes":{"dark":"#ff6b5e"}}}},
+        "negSoft":   {"$value":"#fad2cf", "$extensions":{"mosje":{"themes":{"dark":"#5a2420"}}}},
+        "mid":       {"$value":"#e2e6ea", "$extensions":{"mosje":{"themes":{"dark":"#343b48"}}}},
+        "posSoft":   {"$value":"#c8e6c9", "$extensions":{"mosje":{"themes":{"dark":"#1e3a24"}}}},
+        "pos":       {"$value":"#2e7d32", "$extensions":{"mosje":{"themes":{"dark":"#66bb6a"}}}},
+        "posStrong": {"$value":"#1b5e20", "$extensions":{"mosje":{"themes":{"dark":"#81c784"}}}}
+      },
+      "trend": {
+        "up":   {"$value":"{color.green.500}",   "$extensions":{"mosje":{"themes":{"dark":"#66bb6a"}}}},
+        "down": {"$value":"{color.red.500}",     "$extensions":{"mosje":{"themes":{"dark":"#ff6b5e"}}}},
+        "flat": {"$value":"{color.neutral.500}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.inkMuted}"}}}}
+      },
+      "grid":         {"$value":"{color.neutral.100}", "$extensions":{"mosje":{"themes":{"dark":"#262b33","hc":"#000000"}}}},
+      "axis":         {"$value":"{color.neutral.500}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.inkMuted}","hc":"#000000"}}}},
+      "tooltipBg":    {"$value":"{color.neutral.800}", "$extensions":{"mosje":{"themes":{"dark":"#2b313b","hc":"#000000"}}}},
+      "tooltipInk":   {"$value":"{color.neutral.0}",   "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.ink}","hc":"#ffffff"}}}},
+      "regionEmpty":  {"$value":"{color.neutral.100}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.surfaceMuted}","hc":"#ffffff"}}}},
+      "regionStroke": {"$value":"{color.neutral.0}",   "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.bg}","hc":"#000000"}}}}
     }
   },
   "type": {

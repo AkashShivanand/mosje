@@ -9,6 +9,12 @@ consumes it. (Human contributors: see `README.md` and `CHANGELOG.md`.)
 changing any UI — it defines the token vocabulary, theming axes, component
 inventory, and the non-negotiable rules. Do not invent visual values.
 
+**[`INFORMATION-ARCHITECTURE.md`](./INFORMATION-ARCHITECTURE.md) is the structural
+contract.** It defines the taxonomy (where a new token/component/page belongs), the
+**Universal Core vs Brand Layer** split that makes the system white-labellable, and
+the rule that the docs nav + `llms.txt` are *generated* from one registry. Any brand
+swap happens via a **brand pack** (`brands/<id>/`) — never by forking a component.
+
 Also in force:
 - `.claude/rules/design-system.md` — path-scoped rules for this package.
 - Root `CLAUDE.md` — estate-wide conventions and standing instructions.
@@ -30,12 +36,20 @@ Also in force:
 - **Components** → `packages/design-system/components/<category>/`. The full,
   authoritative inventory is the barrel `index.ts` — import from there, don't
   re-implement. Shared primitives now include (beyond the atoms): `DataTable`,
-  `PieChart`/`BarChart`, `MetricCard` (data-display); `Modal`, `Stepper`,
+  `MetricCard` (data-display); the **data-visualisation layer**
+  (`PieChart`, `DonutChart`, `BarChart`, `LineChart`, `AreaChart`, `Sparkline`,
+  `Gauge`, `Progress`, `FunnelChart`, `ScatterChart`, `Heatmap`, `ComboChart`,
+  `IndiaMap`) — dependency-free, token-driven, theme-aware, accessible SVG, with
+  `ChartCard`/`DashboardGrid`/`KpiRow`/`FilterBar`/`SegmentedControl` for
+  dashboard composition (`components/data-display/charts/` + `components/dashboard/`);
+  `Modal`, `Stepper`,
   `ToastProvider`/`useToast`, `Alert`, `Badge`, `Loader`, `EmptyState`
   (feedback); `FormSection`, `FormCard`, `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`,
   `MediaUpload` (file/image upload) and the input atoms (forms); `SiteHeader`, `SidebarNav`, `Footer`,
   `AppSwitcher`, `Tabs`/`TabPanel` (navigation); `PortalLoginShell` (auth). Tables, modals, toasts,
-  tabs and charts were previously hand-rolled per portal — always reuse these.
+  tabs, charts and dashboards were previously hand-rolled per portal — always reuse these.
+  Chart geometry for `IndiaMap` is generated — see
+  `components/data-display/charts/geo/README.md`; never hand-edit `*.paths.ts`.
 - **Figma sync** → `/sync-figma`.
 
 ## Before you finish
