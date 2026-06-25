@@ -103,8 +103,13 @@ StyleDictionary.registerFormat({
 // and must pass through verbatim to match the legacy contract. No size/rem — px is preserved.
 const TRANSFORMS = ["attribute/cti", "name/kebab", "color/css"];
 
+// White-label: the active brand pack supplies the brand-identity primitives
+// (color.primaryRamp / saffron / navy / yellow). Default brand is MoSJE.
+// Build another brand with: BRAND=<id> npm run build. See brands/README.md.
+const BRAND = process.env.BRAND || "mosje";
+
 const sd = new StyleDictionary({
-  source: ["src/primitive.json", "src/semantic.json", "src/component.json"],
+  source: [`brands/${BRAND}/brand.json`, "src/primitive.json", "src/semantic.json", "src/component.json"],
   platforms: {
     css: {
       transforms: TRANSFORMS,
@@ -149,4 +154,4 @@ const sd = new StyleDictionary({
 
 await sd.hasInitialized;
 await sd.buildAllPlatforms();
-console.log("✓ @mosje/tokens built");
+console.log(`✓ @mosje/tokens built (brand: ${BRAND})`);
