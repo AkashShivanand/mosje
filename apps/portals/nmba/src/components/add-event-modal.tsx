@@ -20,9 +20,12 @@ export function AddEventModal({ open, onClose }: AddEventModalProps) {
 
   const districts = state ? (STATE_DISTRICTS[state] ?? []) : [];
 
-  React.useEffect(() => {
+  // Reset the form when the modal closes — render-time sync on `open`.
+  const [wasOpen, setWasOpen] = React.useState(open);
+  if (open !== wasOpen) {
+    setWasOpen(open);
     if (!open) { setState(""); setDistrict(""); }
-  }, [open]);
+  }
 
   if (!open) return null;
 

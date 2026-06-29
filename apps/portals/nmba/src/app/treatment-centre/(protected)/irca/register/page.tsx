@@ -269,6 +269,8 @@ export default function IrcaRegisterPage() {
         (draft.f && Object.values(draft.f).some(Boolean)) ||
         (draft.drugRows && draft.drugRows.some((r) => r.drug));
       if (!hasData) return;
+      // One-time restore of a saved draft on mount (sync from external storage).
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (draft.f) setF({ ...INITIAL_FIELDS, ...draft.f });
       if (draft.drugRows?.length) setDrugRows(draft.drugRows);
       if (draft.sameAddress) setSameAddress(true);
@@ -362,7 +364,7 @@ export default function IrcaRegisterPage() {
       }
       return missing;
     },
-    [f, drugRows, photo, moneySource],
+    [f, drugRows, moneySource],
   );
 
   const remainingThisStep = React.useMemo(() => missingForStep(step).size, [missingForStep, step]);
@@ -486,6 +488,8 @@ export default function IrcaRegisterPage() {
     const clinicalDetails = Object.fromEntries(clinicalPairs.filter(([, v]) => v && v.trim()));
 
     const patient: Omit<Patient, "id"> = {
+      // Unique demo registration number generated at submit time (event handler).
+      // eslint-disable-next-line react-hooks/purity
       registrationNumber: `DM${Date.now().toString().slice(-8)}${crypto.randomUUID().slice(0, 4)}`,
       registrationProgress: "Pending",
       treatmentCenter: session.centerName,

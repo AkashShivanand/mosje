@@ -103,6 +103,9 @@ export default function TreatmentCentreDashboard() {
   const [today, setToday] = React.useState("");
 
   React.useEffect(() => {
+    // Resolve "today" on the client only — computing it during SSR would risk a
+    // server/client hydration mismatch when their dates/time-zones differ.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setToday(new Date().toISOString().slice(0, 10));
   }, []);
 

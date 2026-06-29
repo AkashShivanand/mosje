@@ -79,10 +79,14 @@ function NavGroupItem({
   const active = subtreeHasActive(group, isActive);
   const [open, setOpen] = React.useState(active);
   const contentId = React.useId();
-  // Re-sync expansion when the active route changes (e.g. browser back/forward).
-  React.useEffect(() => {
+  // Re-open when the active route moves into this group (e.g. browser back/forward).
+  // Render-time sync on the `active` prop — React's recommended pattern, which
+  // also avoids a set-state-in-effect.
+  const [wasActive, setWasActive] = React.useState(active);
+  if (active !== wasActive) {
+    setWasActive(active);
     if (active) setOpen(true);
-  }, [active]);
+  }
   return (
     <li>
       <button
@@ -131,9 +135,13 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
   }, []);
 
   // Close the mobile drawer on navigation so it never lingers over the new page.
-  React.useEffect(() => {
+  // Reset during render on route change (React's recommended pattern) rather than
+  // in an effect — avoids an extra commit and the set-state-in-effect lint rule.
+  const [lastPath, setLastPath] = React.useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
     setMobileOpen(false);
-  }, [pathname]);
+  }
 
   // Focus trap + Escape for the open mobile drawer (WCAG 2.1.2 / 2.4.3).
   React.useEffect(() => {

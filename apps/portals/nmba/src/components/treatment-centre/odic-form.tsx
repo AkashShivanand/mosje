@@ -400,6 +400,8 @@ export function OdicBeneficiaryForm({
     const details = Object.fromEntries(detailPairs.filter(([, v]) => v && v.trim()));
 
     const beneficiary: Omit<Beneficiary, "id"> = {
+      // Unique demo registration number generated at submit time (event handler).
+      // eslint-disable-next-line react-hooks/purity
       registrationNumber: `OD${Date.now().toString().slice(-8)}${crypto.randomUUID().slice(0, 4)}`,
       registrationProgress: "Pending",
       name: f.name,

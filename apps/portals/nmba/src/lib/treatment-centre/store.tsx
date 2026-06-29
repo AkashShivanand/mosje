@@ -68,7 +68,8 @@ export function TCStoreProvider({ children }: { children: React.ReactNode }) {
   const [readmissions, setReadmissions] = React.useState<Readmission[]>(SEED_READMISSIONS);
   const [awareness, setAwareness] = React.useState<AwarenessProgramme[]>(SEED_AWARENESS);
   const [staff, setStaff] = React.useState<StaffMember[]>(SEED_STAFF);
-  const [activities, setActivities] = React.useState<CentreActivity[]>(SEED_ACTIVITIES);
+  // Activities are seed-only (no in-session mutation) — no setter needed.
+  const [activities] = React.useState<CentreActivity[]>(SEED_ACTIVITIES);
   const [saptahEvents, setSaptahEvents] = React.useState<SaptahEvent[]>(SEED_SAPTAH_EVENTS);
 
   const value = React.useMemo<TCStore>(

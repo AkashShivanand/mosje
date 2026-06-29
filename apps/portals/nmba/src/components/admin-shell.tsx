@@ -14,7 +14,6 @@ import {
   MessageSquare,
   ChevronsLeft,
   LogOut,
-  ChevronDown,
 } from "lucide-react";
 import { SiteHeader, AppSwitcher } from "@mosje/design-system";
 import { useToast } from "@/components/toast";
