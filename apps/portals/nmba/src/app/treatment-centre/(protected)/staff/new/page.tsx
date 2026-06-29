@@ -2,14 +2,19 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import {
-  Button,
-  Input,
-  FormField,
-} from "@mosje/design-system";
+import { Button, Input, Select, FormField } from "@mosje/design-system";
 import { useToast } from "@/components/toast";
 import { useTCStore } from "@/lib/treatment-centre/store";
 import { FormSection } from "@/components/treatment-centre/tc-form";
+import type { StaffDesignation } from "@/lib/treatment-centre/types";
+
+const DESIGNATION_OPTIONS: { label: string; value: StaffDesignation }[] = [
+  { label: "PROJECT COORDINATOR CUM VOCATIONAL COUNSELLOR", value: "PROJECT COORDINATOR CUM VOCATIONAL COUNSELLOR" },
+  { label: "DOCTOR",                                         value: "DOCTOR" },
+  { label: "COUNSELLOR / SOCIAL WORKER / PSYCHOLOGIST",      value: "COUNSELLOR / SOCIAL WORKER / PSYCHOLOGIST" },
+  { label: "NURSE",                                           value: "NURSE" },
+  { label: "PROFESSIONAL PERSON EDUCATOR",                   value: "PROFESSIONAL PERSON EDUCATOR" },
+];
 
 export default function NewStaffPage() {
   const router = useRouter();
@@ -17,10 +22,10 @@ export default function NewStaffPage() {
   const store = useTCStore();
 
   const [f, setF] = React.useState({
+    designation: "" as StaffDesignation | "",
     name: "",
-    designation: "",
-    qualification: "",
-    contactNumber: "",
+    mobile: "",
+    education: "",
   });
 
   const [errors, setErrors] = React.useState<Set<string>>(new Set());
@@ -29,11 +34,11 @@ export default function NewStaffPage() {
     e.preventDefault();
 
     const missing = new Set<string>();
-    if (!f.name) missing.add("name");
     if (!f.designation) missing.add("designation");
-    if (!f.qualification) missing.add("qualification");
-    if (!f.contactNumber) missing.add("contactNumber");
-    if (f.contactNumber && f.contactNumber.length !== 10) missing.add("contactNumberFormat");
+    if (!f.name.trim()) missing.add("name");
+    if (!f.mobile) missing.add("mobile");
+    if (f.mobile && !/^\d{10}$/.test(f.mobile)) missing.add("mobileFormat");
+    if (!f.education.trim()) missing.add("education");
 
     if (missing.size > 0) {
       setErrors(missing);
@@ -41,81 +46,82 @@ export default function NewStaffPage() {
     }
 
     store.addStaff({
-      name: f.name,
-      designation: f.designation,
-      qualification: f.qualification,
-      contactNumber: f.contactNumber,
+      designation: f.designation as StaffDesignation,
+      name: f.name.trim(),
+      mobile: f.mobile,
+      education: f.education.trim(),
     });
 
-    toast("Staff member registered successfully.", "success");
+    toast("Staff member added successfully.", "success");
     router.push("/treatment-centre/staff");
   };
 
   const err = (key: string): string | undefined => {
+    if (key === "mobile" && errors.has("mobileFormat")) return "Enter a valid 10-digit mobile number.";
     if (errors.has(key)) return "This field is required.";
-    if (key === "contactNumber" && errors.has("contactNumberFormat")) {
-      return "Enter a valid 10-digit mobile number.";
-    }
     return undefined;
   };
 
   return (
     <div className="flex flex-col gap-6 max-w-2xl mx-auto py-4">
       <div>
-        <h1 className="text-xl font-bold text-ink">Register New Staff Member</h1>
+        <h1 className="text-xl font-bold text-ink">Add Staff</h1>
         <p className="mt-1 text-sm text-ink-muted">
-          Add details of a new staff member employed at the centre.
+          Add a staff member employed at this treatment centre.
         </p>
       </div>
 
       <form onSubmit={handleSave} className="flex flex-col gap-6">
-        <FormSection title="Staff Member Details" columns={1}>
-          <FormField label="Full Name" required error={err("name")}>
-            {(c) => (
-              <Input
-                {...c}
-                value={f.name}
-                onChange={(e) => setF({ ...f, name: e.target.value })}
-                placeholder="Full name of staff member"
-                invalid={errors.has("name")}
-              />
-            )}
-          </FormField>
-
+        <FormSection title="Staff Details" columns={1}>
           <FormField label="Designation" required error={err("designation")}>
             {(c) => (
-              <Input
+              <Select
                 {...c}
                 value={f.designation}
-                onChange={(e) => setF({ ...f, designation: e.target.value })}
-                placeholder="e.g. Counsellor, Doctor, Ward Boy"
+                onChange={(e) => setF({ ...f, designation: e.target.value as StaffDesignation })}
+                options={[
+                  { label: "Select Designation", value: "" },
+                  ...DESIGNATION_OPTIONS,
+                ]}
                 invalid={errors.has("designation")}
               />
             )}
           </FormField>
 
-          <FormField label="Qualification" required error={err("qualification")}>
+          <FormField label="Name" required error={err("name")}>
             {(c) => (
               <Input
                 {...c}
-                value={f.qualification}
-                onChange={(e) => setF({ ...f, qualification: e.target.value })}
-                placeholder="e.g. MBBS, MA Psychology, High School"
-                invalid={errors.has("qualification")}
+                value={f.name}
+                onChange={(e) => setF({ ...f, name: e.target.value })}
+                placeholder="Name"
+                invalid={errors.has("name")}
               />
             )}
           </FormField>
 
-          <FormField label="Contact Number" required error={err("contactNumber")}>
+          <FormField label="Mobile" required error={err("mobile")}>
             {(c) => (
               <Input
                 {...c}
                 type="tel"
                 maxLength={10}
-                value={f.contactNumber}
-                onChange={(e) => setF({ ...f, contactNumber: e.target.value.replace(/\D/g, "") })}
+                value={f.mobile}
+                onChange={(e) => setF({ ...f, mobile: e.target.value.replace(/\D/g, "") })}
                 placeholder="10-digit mobile number"
-                invalid={errors.has("contactNumber") || errors.has("contactNumberFormat")}
+                invalid={errors.has("mobile") || errors.has("mobileFormat")}
+              />
+            )}
+          </FormField>
+
+          <FormField label="Education" required error={err("education")}>
+            {(c) => (
+              <Input
+                {...c}
+                value={f.education}
+                onChange={(e) => setF({ ...f, education: e.target.value })}
+                placeholder="e.g. MBBS, M.A. Psychology, B.Sc. Nursing"
+                invalid={errors.has("education")}
               />
             )}
           </FormField>
@@ -127,10 +133,10 @@ export default function NewStaffPage() {
             appearance="outlined"
             onClick={() => router.push("/treatment-centre/staff")}
           >
-            Cancel
+            Reset
           </Button>
           <Button type="submit" variant="primary">
-            Add Staff Member
+            Save
           </Button>
         </div>
       </form>

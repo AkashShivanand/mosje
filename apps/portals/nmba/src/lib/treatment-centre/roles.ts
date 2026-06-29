@@ -12,7 +12,9 @@ export const ROLE_CENTERS: Record<TCRole, { centerId: number; centerName: string
   ODIC: { centerId: 653, centerName: "ODIC Outreach & Drop-in Centre (Demo)" },
   CPLI: { centerId: 656, centerName: "CPLI Community Centre (Demo)" },
   DDAC: { centerId: 651, centerName: "District De-Addiction Centre (Demo)" },
-  US: { centerId: 100, centerName: "MoSJE Under Secretary Office" },
+  // Real backend centre id for "Under Secretary MoSJE (ADMIN)" on the live portal
+  // (captured 2026-06-29 via login USDP1). Was 100 (a guess) before.
+  US: { centerId: 655, centerName: "Under Secretary, MoSJE (DOSJE)" },
 };
 
 export const TC_ROLES: TCRole[] = ["IRCA", "ODIC", "CPLI", "DDAC", "US"];
@@ -65,12 +67,17 @@ export type DashboardMetric =
   | "odicBeneficiaries"
   | "peerVolunteers"
   | "readmissions"
-  | "followUps";
+  | "followUps"
+  | "todayPatients"
+  | "todayBeneficiaries"
+  | "todayReadmissions"
+  | "todayFollowUps";
 
 export type DashboardCard = { label: string; metric: DashboardMetric; icon: string };
 
 /** Dashboard stat-card sets per role, matching the audited live dashboards. */
 export const DASHBOARD_CARDS: Record<TCRole, DashboardCard[]> = {
+  // Matches the SAMAVESH Figma IRCA dashboard (4 KPIs, one row).
   IRCA: [
     { label: "Total Patients", metric: "patients", icon: "folder" },
     { label: "Total IRCA Patients", metric: "ircaPatients", icon: "clipboard" },
@@ -79,25 +86,39 @@ export const DASHBOARD_CARDS: Record<TCRole, DashboardCard[]> = {
   ],
   ODIC: [
     { label: "Total Beneficiaries", metric: "beneficiaries", icon: "folder" },
+    { label: "Today's Beneficiaries", metric: "todayBeneficiaries", icon: "folder" },
     { label: "Total ODIC Beneficiaries", metric: "odicBeneficiaries", icon: "clipboard" },
+    { label: "Today's ODIC Beneficiaries", metric: "todayBeneficiaries", icon: "clipboard" },
     { label: "Total Re-Admissions", metric: "readmissions", icon: "users" },
+    { label: "Today's Re-Admissions", metric: "todayReadmissions", icon: "users" },
     { label: "Total Follow-ups", metric: "followUps", icon: "smartphone" },
+    { label: "Today's Follow-ups", metric: "todayFollowUps", icon: "smartphone" },
   ],
   CPLI: [
     { label: "Total Peer Volunteers Trained", metric: "peerVolunteers", icon: "clipboard" },
   ],
   DDAC: [
     { label: "Total Beneficiaries", metric: "beneficiaries", icon: "folder" },
+    { label: "Today's Beneficiaries", metric: "todayBeneficiaries", icon: "folder" },
     { label: "Total IRCA Patients", metric: "ircaPatients", icon: "clipboard" },
+    { label: "Today's Patients", metric: "todayPatients", icon: "clipboard" },
     { label: "Total ODIC Beneficiaries", metric: "odicBeneficiaries", icon: "clipboard" },
     { label: "Total Peer Volunteers Trained", metric: "peerVolunteers", icon: "clipboard" },
     { label: "Total Re-Admissions", metric: "readmissions", icon: "users" },
+    { label: "Today's Re-Admissions", metric: "todayReadmissions", icon: "users" },
     { label: "Total Follow-ups", metric: "followUps", icon: "smartphone" },
+    { label: "Today's Follow-ups", metric: "todayFollowUps", icon: "smartphone" },
   ],
+  // Matches the live Under-Secretary dashboard (8 KPIs, captured 2026-06-29).
+  // In-Patient Registration mirrors Registration on the live site (same counts).
   US: [
     { label: "Total Registration", metric: "patients", icon: "folder" },
-    { label: "Total In-Patient", metric: "ircaPatients", icon: "clipboard" },
-    { label: "Total Re-Admissions", metric: "readmissions", icon: "users" },
-    { label: "Total Follow-ups", metric: "followUps", icon: "smartphone" },
+    { label: "Today's Registration", metric: "todayPatients", icon: "folder" },
+    { label: "Total In-Patient Registration", metric: "patients", icon: "clipboard" },
+    { label: "Today's In-Patient Registration", metric: "todayPatients", icon: "clipboard" },
+    { label: "Total Re-Admission", metric: "readmissions", icon: "users" },
+    { label: "Today's Re-Admission", metric: "todayReadmissions", icon: "users" },
+    { label: "Total Follow Up Cases", metric: "followUps", icon: "smartphone" },
+    { label: "Today's Follow Up Cases", metric: "todayFollowUps", icon: "smartphone" },
   ],
 };

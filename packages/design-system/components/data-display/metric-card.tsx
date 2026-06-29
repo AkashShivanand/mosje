@@ -14,6 +14,13 @@ export interface MetricCardProps extends React.HTMLAttributes<HTMLDivElement> {
   icon?: React.ReactNode;
   /** Optional change direction arrow + label (e.g. "+12% vs last month"). */
   changeLabel?: string;
+  /**
+   * Optional delta shown in a tinted pill before `changeLabel` (e.g. "12%").
+   * When set with a non-flat direction, the arrow + this value render as a
+   * success/danger pill and `changeLabel` becomes a muted suffix — matching the
+   * SAMAVESH KPI card. Omit for the legacy inline-text treatment.
+   */
+  changeValue?: string;
   /** Visual direction of the change. @default "flat" */
   changeDirection?: MetricCardChange;
   /** Control density. @default "md" */
@@ -59,6 +66,7 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
       value,
       icon,
       changeLabel,
+      changeValue,
       changeDirection = "flat",
       size = "md",
       className,
@@ -84,12 +92,23 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
             </div>
           )}
         </div>
-        {changeLabel != null && (
-          <div className={cn("ds-metric-card__change", `ds-metric-card__change--${changeDirection}`)}>
-            <span className="ds-sr-only">{CHANGE_LABELS[changeDirection]}: </span>
-            {CHANGE_ARROWS[changeDirection]}
-            {changeLabel}
+        {changeValue != null && changeDirection !== "flat" ? (
+          <div className="ds-metric-card__change">
+            <span className={cn("ds-metric-card__pill", `ds-metric-card__pill--${changeDirection}`)}>
+              <span className="ds-sr-only">{CHANGE_LABELS[changeDirection]}: </span>
+              {CHANGE_ARROWS[changeDirection]}
+              {changeValue}
+            </span>
+            {changeLabel != null && <span className="ds-metric-card__suffix">{changeLabel}</span>}
           </div>
+        ) : (
+          changeLabel != null && (
+            <div className={cn("ds-metric-card__change", `ds-metric-card__change--${changeDirection}`)}>
+              <span className="ds-sr-only">{CHANGE_LABELS[changeDirection]}: </span>
+              {CHANGE_ARROWS[changeDirection]}
+              {changeLabel}
+            </div>
+          )
         )}
       </div>
     );

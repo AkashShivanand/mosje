@@ -1,0 +1,24 @@
+{
+  "$description": "TEMPLATE brand pack. Copy this folder to brands/<your-body>/ and replace the values with your government body's identity, then build with BRAND=<your-body> npm run build. Keep every token PATH; change only values. Values must pass the AA contrast gate (test/brand-contrast.test.mjs) — keep primaryRamp.*.500 dark enough that white text on it stays ≥4.5:1. This example is an emerald + amber palette so a re-skin is visually obvious.",
+  "color": {
+    "$type": "color",
+    "yellow": { "500": {"$value":"#f5c518"} },
+    "saffron":{ "50": {"$value":"#fdf3d6"}, "500": {"$value":"#b45309"}, "700": {"$value":"#7c3503"} },
+    "navy":   { "700": {"$value":"#07502c"} },
+    "primaryRamp": {
+      "$description": "Example mode-aware primary ramp (emerald). 'light' = default, 'dark' = deep-green mode.",
+      "light": {
+        "50":  {"$value":"#e6f4ea"}, "100": {"$value":"#c2e6cd"}, "200": {"$value":"#94d3a8"},
+        "300": {"$value":"#5cbb80"}, "400": {"$value":"#2fa463"}, "500": {"$value":"#0b6f3d"},
+        "600": {"$value":"#095e34"}, "700": {"$value":"#07502c"}, "800": {"$value":"#053d22"},
+        "900": {"$value":"#022616"}
+      },
+      "dark": {
+        "50":  {"$value":"#e3f1ea"}, "100": {"$value":"#bfe0cd"}, "200": {"$value":"#8fc7a8"},
+        "300": {"$value":"#5fae84"}, "400": {"$value":"#339966"}, "500": {"$value":"#07502c"},
+        "600": {"$value":"#064526"}, "700": {"$value":"#053a20"}, "800": {"$value":"#042f1a"},
+        "900": {"$value":"#022616"}
+      }
+    }
+  }
+}

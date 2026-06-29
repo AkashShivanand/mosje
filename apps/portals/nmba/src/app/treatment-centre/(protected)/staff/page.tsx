@@ -5,35 +5,39 @@ import { useTCStore } from "@/lib/treatment-centre/store";
 import { TCListPage } from "@/components/treatment-centre/tc-list";
 import type { ColumnDef } from "@/components/data-table";
 import type { StaffMember } from "@/lib/treatment-centre/types";
-
-import { Button } from "@mosje/design-system";
 import Link from "next/link";
 
-type Row = StaffMember & { sno: number };
+type Row = StaffMember & { sno: number; type: string };
 
 const columns: ColumnDef<Row>[] = [
-  { key: "sno", header: "S.No" },
+  { key: "sno", header: "#" },
+  { key: "type", header: "Type" },
+  { key: "designation", header: "Role" },
   { key: "name", header: "Name" },
-  { key: "designation", header: "Designation" },
-  { key: "qualification", header: "Qualification" },
-  { key: "contactNumber", header: "Contact Number" },
+  { key: "mobile", header: "Mobile" },
+  { key: "education", header: "Education" },
 ];
 
 export default function StaffListPage() {
   const store = useTCStore();
-  const rows: Row[] = store.staff.map((s, i) => ({ ...s, sno: i + 1 }));
+  const rows: Row[] = store.staff.map((s, i) => ({
+    ...s,
+    sno: i + 1,
+    type: "IRCA",
+  }));
   return (
     <TCListPage
       title="Staff List"
       columns={columns}
       data={rows}
-      searchKeys={["name", "designation", "qualification"]}
+      searchKeys={["name", "designation", "education"]}
       fileName="staff-list"
       action={
-        <Link href="/treatment-centre/staff/new" passHref legacyBehavior>
-          <Button appearance="outlined" className="bg-white text-navy hover:bg-slate-100 font-semibold text-sm">
-            Add Staff Member
-          </Button>
+        <Link
+          href="/treatment-centre/staff/new"
+          className="inline-flex items-center rounded-lg bg-white px-4 py-2 text-sm font-semibold text-navy hover:bg-slate-100"
+        >
+          + Add Staff
         </Link>
       }
     />

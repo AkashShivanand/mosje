@@ -6,7 +6,6 @@ import { TCListPage } from "@/components/treatment-centre/tc-list";
 import type { ColumnDef } from "@/components/data-table";
 import type { FollowUp } from "@/lib/treatment-centre/types";
 
-import { Button } from "@mosje/design-system";
 import Link from "next/link";
 
 type Row = FollowUp & { sno: number };
@@ -30,10 +29,11 @@ export default function IrcaFollowUpsPage() {
       data={rows}
       fileName="irca-follow-ups"
       action={
-        <Link href="/treatment-centre/irca/follow-ups/new" passHref legacyBehavior>
-          <Button appearance="outlined" className="bg-white text-navy hover:bg-slate-100 font-semibold text-sm">
-            Add Follow-Up
-          </Button>
+        <Link
+          href="/treatment-centre/irca/follow-ups/new"
+          className="inline-flex items-center rounded-lg bg-white px-4 py-2 text-sm font-semibold text-navy hover:bg-slate-100"
+        >
+          Add Follow-Up
         </Link>
       }
     />

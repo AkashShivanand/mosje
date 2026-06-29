@@ -1,0 +1,163 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — Dashboard composition primitives
+   Token-driven layout for ChartCard / DashboardGrid / KpiRow / FilterBar.
+   ============================================================================ */
+
+/* ── Grid ────────────────────────────────────────────────────────────────── */
+.ds-dash-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--ds-spacing-2xl, 16px);
+  width: 100%;
+}
+.ds-dash-grid > * {
+  grid-column: span 12;
+  min-width: 0;
+}
+@media (min-width: 768px) {
+  .ds-dash-grid > * {
+    grid-column: span var(--ds-card-span, 12);
+  }
+}
+
+/* ── ChartCard ───────────────────────────────────────────────────────────── */
+.ds-chart-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg, 12px);
+  box-shadow: var(--ds-shadow-xs);
+  overflow: hidden;
+  font-family: var(--ds-font-sans);
+}
+.ds-chart-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ds-spacing-md, 12px);
+  padding: var(--ds-spacing-lg, 16px) var(--ds-spacing-xl, 20px);
+  border-bottom: 1px solid var(--ds-border);
+}
+.ds-chart-card__titles {
+  min-width: 0;
+}
+.ds-chart-card__title {
+  margin: 0;
+  font-size: var(--ds-text-title-2, 16px);
+  font-weight: 600;
+  color: var(--ds-ink);
+}
+.ds-chart-card__subtitle {
+  margin: 2px 0 0;
+  font-size: var(--ds-text-body-3, 13px);
+  color: var(--ds-ink-muted);
+}
+.ds-chart-card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-spacing-sm, 8px);
+  flex-shrink: 0;
+}
+.ds-chart-card__body {
+  padding: var(--ds-spacing-xl, 20px);
+  flex: 1;
+}
+.ds-chart-card__footer {
+  padding: var(--ds-spacing-md, 12px) var(--ds-spacing-xl, 20px);
+  border-top: 1px solid var(--ds-border);
+  font-size: var(--ds-text-body-3, 13px);
+  color: var(--ds-ink-muted);
+}
+.ds-chart-card__skeleton {
+  width: 100%;
+  height: 220px;
+  border-radius: var(--ds-radius-md, 8px);
+  background: linear-gradient(
+    90deg,
+    var(--ds-surface-muted) 25%,
+    var(--ds-border) 37%,
+    var(--ds-surface-muted) 63%
+  );
+  background-size: 400% 100%;
+  animation: ds-card-shimmer 1.4s ease infinite;
+}
+@keyframes ds-card-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-chart-card__skeleton { animation: none; }
+}
+
+/* ── KpiRow ──────────────────────────────────────────────────────────────── */
+.ds-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--ds-spacing-lg, 16px);
+}
+
+/* ── FilterBar ───────────────────────────────────────────────────────────── */
+.ds-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-spacing-md, 12px);
+  padding: var(--ds-spacing-md, 12px) var(--ds-spacing-lg, 16px);
+  background: var(--ds-surface-muted);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md, 8px);
+  font-family: var(--ds-font-sans);
+}
+.ds-filter-bar__title {
+  font-size: var(--ds-text-body-2, 14px);
+  font-weight: 600;
+  color: var(--ds-ink);
+}
+.ds-filter-bar__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-spacing-sm, 8px);
+  margin-left: auto;
+}
+
+/* ── SegmentedControl ────────────────────────────────────────────────────── */
+.ds-segmented {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  background: var(--ds-surface-muted);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md, 8px);
+}
+.ds-segmented__option {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 6px 14px;
+  min-height: 32px;
+  border-radius: var(--ds-radius-sm, 6px);
+  font-family: inherit;
+  font-size: var(--ds-text-body-3, 13px);
+  font-weight: 500;
+  color: var(--ds-ink-muted);
+  cursor: pointer;
+  transition: background var(--ds-duration-fast, 150ms) var(--ds-easing-out, ease),
+    color var(--ds-duration-fast, 150ms) var(--ds-easing-out, ease);
+}
+.ds-segmented__option:hover {
+  color: var(--ds-ink);
+}
+.ds-segmented__option:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+.ds-segmented__option--active {
+  background: var(--ds-surface);
+  color: var(--ds-primary);
+  box-shadow: var(--ds-shadow-xs);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-segmented__option { transition: none; }
+}

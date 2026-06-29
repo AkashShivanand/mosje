@@ -28,7 +28,7 @@ export default function NewFollowUpPage() {
   const store = useTCStore();
 
   const [searchRegNo, setSearchRegNo] = React.useState("");
-  const [patient, setPatient] = React.useState<any>(null);
+  const [patient, setPatient] = React.useState<(typeof store.patients)[number] | null>(null);
   const [searched, setSearched] = React.useState(false);
 
   const [f, setF] = React.useState({

@@ -269,6 +269,8 @@ export default function IrcaRegisterPage() {
         (draft.f && Object.values(draft.f).some(Boolean)) ||
         (draft.drugRows && draft.drugRows.some((r) => r.drug));
       if (!hasData) return;
+      // One-time restore of a saved draft on mount (sync from external storage).
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (draft.f) setF({ ...INITIAL_FIELDS, ...draft.f });
       if (draft.drugRows?.length) setDrugRows(draft.drugRows);
       if (draft.sameAddress) setSameAddress(true);
@@ -362,7 +364,7 @@ export default function IrcaRegisterPage() {
       }
       return missing;
     },
-    [f, drugRows, photo, moneySource],
+    [f, drugRows, moneySource],
   );
 
   const remainingThisStep = React.useMemo(() => missingForStep(step).size, [missingForStep, step]);
@@ -486,6 +488,8 @@ export default function IrcaRegisterPage() {
     const clinicalDetails = Object.fromEntries(clinicalPairs.filter(([, v]) => v && v.trim()));
 
     const patient: Omit<Patient, "id"> = {
+      // Unique demo registration number generated at submit time (event handler).
+      // eslint-disable-next-line react-hooks/purity
       registrationNumber: `DM${Date.now().toString().slice(-8)}${crypto.randomUUID().slice(0, 4)}`,
       registrationProgress: "Pending",
       treatmentCenter: session.centerName,
@@ -630,7 +634,7 @@ export default function IrcaRegisterPage() {
               />
             </FormCard>
 
-            <FormSection title="Details of the Patient">
+            <FormSection title="Details of the Patient" columns={2}>
               <FormField label="Date of Admission" required error={err("dateOfAdmission")}>
                 {(c) => (
                   <Input {...c} type="date" max={todayIso()} value={f.dateOfAdmission} onChange={(e) => set("dateOfAdmission")(e.target.value)} invalid={errors.has("dateOfAdmission")} />
@@ -693,7 +697,7 @@ export default function IrcaRegisterPage() {
 
         {/* ---- Step 2: Socio-economic & ID ---- */}
         {step === 1 && (
-          <FormSection title="Socio-economic Background & Identity">
+          <FormSection title="Socio-economic Background & Identity" columns={2}>
             <FormField label="Marital Status" required error={err("maritalStatus")}>
               {(c) => <Select {...c} value={f.maritalStatus} onChange={(e) => set("maritalStatus")(e.target.value)} placeholder="Select Marital Status" options={MARITAL_STATUS} invalid={errors.has("maritalStatus")} />}
             </FormField>
@@ -897,7 +901,7 @@ export default function IrcaRegisterPage() {
               </FormField>
             </FormSection>
 
-            <FormSection title="Treatment Details">
+            <FormSection title="Treatment Details" columns={2}>
               <FormField label="Previous Treatment for Substance use" required error={err("previousTreatment")}>
                 {(c) => <Select {...c} value={f.previousTreatment} onChange={(e) => { set("previousTreatment")(e.target.value); if (e.target.value !== "Yes") set("treatmentTaken")(""); }} placeholder="Select Previous Treatment" options={YES_NO} invalid={errors.has("previousTreatment")} />}
               </FormField>

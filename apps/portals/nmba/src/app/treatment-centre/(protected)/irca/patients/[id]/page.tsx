@@ -10,8 +10,6 @@ import {
   Textarea,
   Select,
   FormField,
-  Checkbox,
-  Radio,
   Alert,
   Chip,
   Tabs,
@@ -107,6 +105,72 @@ function MultiSelectChips({
           </Chip>
         );
       })}
+    </div>
+  );
+}
+
+/** A repeatable list of counselling-session cards (Session no. · Date · Issues). */
+function SessionCardList({
+  title,
+  description,
+  rows,
+  onAdd,
+  onRemove,
+  onUpdate,
+  issuesPlaceholder,
+}: {
+  title: string;
+  description: string;
+  rows: Array<{ sessionNo: string; date: string; issues: string }>;
+  onAdd: () => void;
+  onRemove: (idx: number) => void;
+  onUpdate: (idx: number, patch: { date?: string; issues?: string }) => void;
+  issuesPlaceholder: string;
+}) {
+  const headingId = React.useId();
+  return (
+    <div className="flex flex-col gap-4">
+      <div>
+        <h2 id={headingId} className="text-base font-semibold text-navy">{title}</h2>
+        <p className="mt-1 text-xs text-ink-muted">{description}</p>
+      </div>
+      <ol className="flex flex-col gap-3" aria-labelledby={headingId}>
+        {rows.map((row, idx) => (
+          <li key={idx} className="rounded-xl border border-line bg-surface-muted/50 p-4">
+            <div className="mb-3 flex items-center justify-between gap-2">
+              <span className="inline-flex items-center gap-2 text-sm font-semibold text-navy">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-xs font-bold text-navy" aria-hidden="true">
+                  {row.sessionNo}
+                </span>
+                Session {row.sessionNo}
+              </span>
+              {rows.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => onRemove(idx)}
+                  aria-label={`Remove session ${row.sessionNo}`}
+                  className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
+                >
+                  <Trash2 className="h-3.5 w-3.5" aria-hidden /> Remove
+                </button>
+              )}
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <FormField label="Date">
+                {(c) => <Input {...c} type="date" value={row.date} onChange={(e) => onUpdate(idx, { date: e.target.value })} />}
+              </FormField>
+              <FormField label="Issues Dealt With" className="sm:col-span-2">
+                {(c) => <Textarea {...c} rows={2} value={row.issues} onChange={(e) => onUpdate(idx, { issues: e.target.value })} placeholder={issuesPlaceholder} />}
+              </FormField>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <div>
+        <Button type="button" appearance="outlined" iconLeft={<Plus className="h-4 w-4" />} onClick={onAdd}>
+          Add session
+        </Button>
+      </div>
     </div>
   );
 }
@@ -554,81 +618,65 @@ export default function ClinicalWizardPage() {
             <div>
               <h2 id="dosage-log-heading" className="text-base font-semibold text-navy">Medication &amp; Dosage Log</h2>
               <p className="text-xs text-ink-muted mt-1">
-                Record medication changes and complaints during the treatment period. Medication dates must be after registration date.
+                Record medication changes during the treatment period — each entry gets its own card. Dates must be on or after the registration date.
               </p>
             </div>
 
-            <div className="overflow-x-auto border border-line rounded-lg">
-              <table className="min-w-full text-sm" aria-labelledby="dosage-log-heading">
-                <thead>
-                  <tr className="bg-brandwash text-left text-xs font-semibold uppercase tracking-wide text-navy">
-                    <th scope="col" className="px-4 py-3">Date *</th>
-                    <th scope="col" className="px-4 py-3">Complaints</th>
-                    <th scope="col" className="px-4 py-3">Medication</th>
-                    <th scope="col" className="px-4 py-3">Reason for Change</th>
-                    <th scope="col" className="px-4 py-3">Physician Remarks</th>
-                    <th scope="col" className="px-4 py-3 w-16"><span className="sr-only">Actions</span></th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-line">
-                  {dosageLog.map((row, idx) => (
-                    <tr key={idx} className="align-top hover:bg-black/[0.01]">
-                      <td className="px-3 py-2 min-w-[150px]">
-                        <Input
-                          aria-label={`Medication date row ${idx + 1}`}
-                          type="date"
-                          min={patient.dateOfAdmission}
-                          value={row.date}
-                          onChange={(e) => updateDosageRow(idx, { date: e.target.value })}
-                        />
-                      </td>
-                      <td className="px-3 py-2">
-                        <Input
-                          aria-label={`Complaints row ${idx + 1}`}
-                          value={row.complaints}
-                          onChange={(e) => updateDosageRow(idx, { complaints: e.target.value })}
-                          placeholder="Symptoms/complaints"
-                        />
-                      </td>
-                      <td className="px-3 py-2">
-                        <Input
-                          aria-label={`Medication row ${idx + 1}`}
-                          value={row.medication}
-                          onChange={(e) => updateDosageRow(idx, { medication: e.target.value })}
-                          placeholder="Medicine name &amp; dosage"
-                        />
-                      </td>
-                      <td className="px-3 py-2">
-                        <Input
-                          aria-label={`Reason for changing row ${idx + 1}`}
-                          value={row.changeReason}
-                          onChange={(e) => updateDosageRow(idx, { changeReason: e.target.value })}
-                          placeholder="Why changed (if any)"
-                        />
-                      </td>
-                      <td className="px-3 py-2">
-                        <Input
-                          aria-label={`Physician remarks row ${idx + 1}`}
-                          value={row.remarks}
-                          onChange={(e) => updateDosageRow(idx, { remarks: e.target.value })}
-                          placeholder="Doctor comments"
-                        />
-                      </td>
-                      <td className="px-3 py-2 text-center">
-                        <button
-                          type="button"
-                          onClick={() => removeDosageRow(idx)}
-                          aria-label={`Remove dosage row ${idx + 1}`}
-                          className="inline-flex h-11 w-11 items-center justify-center rounded text-danger-fg hover:bg-black/5"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <ol className="flex flex-col gap-4" aria-labelledby="dosage-log-heading">
+              {dosageLog.map((row, idx) => (
+                <li key={idx} className="rounded-xl border border-line bg-surface-muted/50 p-4 sm:p-5">
+                  {/* Card header: entry number + remove */}
+                  <div className="mb-4 flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center gap-2 text-sm font-semibold text-navy">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-xs font-bold text-navy" aria-hidden="true">
+                        {idx + 1}
+                      </span>
+                      Entry {idx + 1}
+                    </span>
+                    {dosageLog.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeDosageRow(idx)}
+                        aria-label={`Remove entry ${idx + 1}`}
+                        className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" aria-hidden /> Remove
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Responsive field grid: 1 → 2 columns */}
+                  <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
+                    <FormField label="Date" required>
+                      {(c) => (
+                        <Input {...c} type="date" min={patient.dateOfAdmission} value={row.date} onChange={(e) => updateDosageRow(idx, { date: e.target.value })} />
+                      )}
+                    </FormField>
+                    <div className="hidden sm:block" />
+                    <FormField label="Complaints">
+                      {(c) => (
+                        <Textarea {...c} rows={2} value={row.complaints} onChange={(e) => updateDosageRow(idx, { complaints: e.target.value })} placeholder="Symptoms / complaints" />
+                      )}
+                    </FormField>
+                    <FormField label="Medication">
+                      {(c) => (
+                        <Textarea {...c} rows={2} value={row.medication} onChange={(e) => updateDosageRow(idx, { medication: e.target.value })} placeholder="Medicine name & dosage" />
+                      )}
+                    </FormField>
+                    <FormField label="Reason for Change">
+                      {(c) => (
+                        <Textarea {...c} rows={2} value={row.changeReason} onChange={(e) => updateDosageRow(idx, { changeReason: e.target.value })} placeholder="Why changed (if any)" />
+                      )}
+                    </FormField>
+                    <FormField label="Physician Remarks">
+                      {(c) => (
+                        <Textarea {...c} rows={2} value={row.remarks} onChange={(e) => updateDosageRow(idx, { remarks: e.target.value })} placeholder="Doctor comments" />
+                      )}
+                    </FormField>
+                  </div>
+                </li>
+              ))}
+            </ol>
 
             <div>
               <Button
@@ -637,7 +685,7 @@ export default function ClinicalWizardPage() {
                 iconLeft={<Plus className="h-4 w-4" />}
                 onClick={addDosageRow}
               >
-                Add Row
+                Add another entry
               </Button>
             </div>
           </div>
@@ -645,203 +693,35 @@ export default function ClinicalWizardPage() {
 
         {activeTab === 2 && (
           <div className="flex flex-col gap-8">
-            {/* Individual Counselling */}
-            <div className="flex flex-col gap-4">
-              <div>
-                <h2 id="individual-counselling-heading" className="text-base font-semibold text-navy">Individual Counselling Sessions</h2>
-                <p className="text-xs text-ink-muted mt-1">Log session dates and core issues dealt with.</p>
-              </div>
+            <SessionCardList
+              title="Individual Counselling Sessions"
+              description="Log session dates and core issues dealt with."
+              rows={individualCounselling}
+              onAdd={addIndividualRow}
+              onRemove={removeIndividualRow}
+              onUpdate={updateIndividualRow}
+              issuesPlaceholder="Cognitive reframing, relapse prevention planning, etc."
+            />
 
-              <div className="overflow-x-auto border border-line rounded-lg">
-                <table className="min-w-full text-sm" aria-labelledby="individual-counselling-heading">
-                  <thead>
-                    <tr className="bg-brandwash text-left text-xs font-semibold uppercase tracking-wide text-navy">
-                      <th scope="col" className="px-4 py-3 w-28">Session No.</th>
-                      <th scope="col" className="px-4 py-3 w-48">Date</th>
-                      <th scope="col" className="px-4 py-3">Issues Dealt With</th>
-                      <th scope="col" className="px-4 py-3 w-16"><span className="sr-only">Actions</span></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-line">
-                    {individualCounselling.map((row, idx) => (
-                      <tr key={idx} className="align-top hover:bg-black/[0.01]">
-                        <td className="px-4 py-3 font-semibold text-navy vertical-align-middle">
-                          {row.sessionNo}
-                        </td>
-                        <td className="px-3 py-2">
-                          <Input
-                            aria-label={`Individual Session date row ${idx + 1}`}
-                            type="date"
-                            value={row.date}
-                            onChange={(e) => updateIndividualRow(idx, { date: e.target.value })}
-                          />
-                        </td>
-                        <td className="px-3 py-2">
-                          <Input
-                            aria-label={`Individual Session issues row ${idx + 1}`}
-                            value={row.issues}
-                            onChange={(e) => updateIndividualRow(idx, { issues: e.target.value })}
-                            placeholder="Cognitive reframing, relapse prevention planning, etc."
-                          />
-                        </td>
-                        <td className="px-3 py-2 text-center">
-                          <button
-                            type="button"
-                            onClick={() => removeIndividualRow(idx)}
-                            aria-label={`Remove session ${row.sessionNo}`}
-                            className="inline-flex h-11 w-11 items-center justify-center rounded text-danger-fg hover:bg-black/5"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div>
-                <Button
-                  type="button"
-                  appearance="outlined"
-                  iconLeft={<Plus className="h-4 w-4" />}
-                  onClick={addIndividualRow}
-                >
-                  Add Session
-                </Button>
-              </div>
-            </div>
+            <SessionCardList
+              title="Group Therapy Sessions"
+              description="Log group therapy session dates and issues dealt with."
+              rows={groupCounselling}
+              onAdd={addGroupRow}
+              onRemove={removeGroupRow}
+              onUpdate={updateGroupRow}
+              issuesPlaceholder="Peer sharing, coping skills, etc."
+            />
 
-            {/* Group Therapy */}
-            <div className="flex flex-col gap-4">
-              <div>
-                <h2 id="group-counselling-heading" className="text-base font-semibold text-navy">Group Therapy Sessions</h2>
-                <p className="text-xs text-ink-muted mt-1">Log group therapy session dates and issues dealt with.</p>
-              </div>
-
-              <div className="overflow-x-auto border border-line rounded-lg">
-                <table className="min-w-full text-sm" aria-labelledby="group-counselling-heading">
-                  <thead>
-                    <tr className="bg-brandwash text-left text-xs font-semibold uppercase tracking-wide text-navy">
-                      <th scope="col" className="px-4 py-3 w-28">Session No.</th>
-                      <th scope="col" className="px-4 py-3 w-48">Date</th>
-                      <th scope="col" className="px-4 py-3">Issues Dealt With</th>
-                      <th scope="col" className="px-4 py-3 w-16"><span className="sr-only">Actions</span></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-line">
-                    {groupCounselling.map((row, idx) => (
-                      <tr key={idx} className="align-top hover:bg-black/[0.01]">
-                        <td className="px-4 py-3 font-semibold text-navy vertical-align-middle">
-                          {row.sessionNo}
-                        </td>
-                        <td className="px-3 py-2">
-                          <Input
-                            aria-label={`Group Session date row ${idx + 1}`}
-                            type="date"
-                            value={row.date}
-                            onChange={(e) => updateGroupRow(idx, { date: e.target.value })}
-                          />
-                        </td>
-                        <td className="px-3 py-2">
-                          <Input
-                            aria-label={`Group Session issues row ${idx + 1}`}
-                            value={row.issues}
-                            onChange={(e) => updateGroupRow(idx, { issues: e.target.value })}
-                            placeholder="Peer sharing, coping skills, etc."
-                          />
-                        </td>
-                        <td className="px-3 py-2 text-center">
-                          <button
-                            type="button"
-                            onClick={() => removeGroupRow(idx)}
-                            aria-label={`Remove group session ${row.sessionNo}`}
-                            className="inline-flex h-11 w-11 items-center justify-center rounded text-danger-fg hover:bg-black/5"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div>
-                <Button
-                  type="button"
-                  appearance="outlined"
-                  iconLeft={<Plus className="h-4 w-4" />}
-                  onClick={addGroupRow}
-                >
-                  Add Session
-                </Button>
-              </div>
-            </div>
-
-            {/* Family Counselling */}
-            <div className="flex flex-col gap-4">
-              <div>
-                <h2 id="family-counselling-heading" className="text-base font-semibold text-navy">Family Intervention &amp; Counselling Sessions</h2>
-                <p className="text-xs text-ink-muted mt-1">Log family engagement sessions.</p>
-              </div>
-
-              <div className="overflow-x-auto border border-line rounded-lg">
-                <table className="min-w-full text-sm" aria-labelledby="family-counselling-heading">
-                  <thead>
-                    <tr className="bg-brandwash text-left text-xs font-semibold uppercase tracking-wide text-navy">
-                      <th scope="col" className="px-4 py-3 w-28">Session No.</th>
-                      <th scope="col" className="px-4 py-3 w-48">Date</th>
-                      <th scope="col" className="px-4 py-3">Issues Dealt With</th>
-                      <th scope="col" className="px-4 py-3 w-16"><span className="sr-only">Actions</span></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-line">
-                    {familyCounselling.map((row, idx) => (
-                      <tr key={idx} className="align-top hover:bg-black/[0.01]">
-                        <td className="px-4 py-3 font-semibold text-navy vertical-align-middle">
-                          {row.sessionNo}
-                        </td>
-                        <td className="px-3 py-2">
-                          <Input
-                            aria-label={`Family Session date row ${idx + 1}`}
-                            type="date"
-                            value={row.date}
-                            onChange={(e) => updateFamilyRow(idx, { date: e.target.value })}
-                          />
-                        </td>
-                        <td className="px-3 py-2">
-                          <Input
-                            aria-label={`Family Session issues row ${idx + 1}`}
-                            value={row.issues}
-                            onChange={(e) => updateFamilyRow(idx, { issues: e.target.value })}
-                            placeholder="Codependency education, communication skills, family dynamics, etc."
-                          />
-                        </td>
-                        <td className="px-3 py-2 text-center">
-                          <button
-                            type="button"
-                            onClick={() => removeFamilyRow(idx)}
-                            aria-label={`Remove session ${row.sessionNo}`}
-                            className="inline-flex h-11 w-11 items-center justify-center rounded text-danger-fg hover:bg-black/5"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div>
-                <Button
-                  type="button"
-                  appearance="outlined"
-                  iconLeft={<Plus className="h-4 w-4" />}
-                  onClick={addFamilyRow}
-                >
-                  Add Session
-                </Button>
-              </div>
-            </div>
+            <SessionCardList
+              title="Family Intervention & Counselling Sessions"
+              description="Log family engagement sessions."
+              rows={familyCounselling}
+              onAdd={addFamilyRow}
+              onRemove={removeFamilyRow}
+              onUpdate={updateFamilyRow}
+              issuesPlaceholder="Codependency education, communication skills, family dynamics, etc."
+            />
           </div>
         )}
 
@@ -895,58 +775,42 @@ export default function ClinicalWizardPage() {
                 <p className="text-xs text-ink-muted mt-1">Log home visits conducted by staff.</p>
               </div>
 
-              <div className="overflow-x-auto border border-line rounded-lg">
-                <table className="min-w-full text-sm" aria-labelledby="home-visits-heading">
-                  <thead>
-                    <tr className="bg-brandwash text-left text-xs font-semibold uppercase tracking-wide text-navy">
-                      <th scope="col" className="px-4 py-3 w-48">Date of Home Visit</th>
-                      <th scope="col" className="px-4 py-3">Purpose</th>
-                      <th scope="col" className="px-4 py-3">Outcome</th>
-                      <th scope="col" className="px-4 py-3 w-16"><span className="sr-only">Actions</span></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-line">
-                    {homeVisits.map((row, idx) => (
-                      <tr key={idx} className="align-top hover:bg-black/[0.01]">
-                        <td className="px-3 py-2">
-                          <Input
-                            aria-label={`Home visit date row ${idx + 1}`}
-                            type="date"
-                            value={row.date}
-                            onChange={(e) => updateHomeVisitRow(idx, { date: e.target.value })}
-                          />
-                        </td>
-                        <td className="px-3 py-2">
-                          <Input
-                            aria-label={`Home visit purpose row ${idx + 1}`}
-                            value={row.purpose}
-                            onChange={(e) => updateHomeVisitRow(idx, { purpose: e.target.value })}
-                            placeholder="Reason for visit"
-                          />
-                        </td>
-                        <td className="px-3 py-2">
-                          <Input
-                            aria-label={`Home visit outcome row ${idx + 1}`}
-                            value={row.outcome}
-                            onChange={(e) => updateHomeVisitRow(idx, { outcome: e.target.value })}
-                            placeholder="Family feedback/observation"
-                          />
-                        </td>
-                        <td className="px-3 py-2 text-center">
-                          <button
-                            type="button"
-                            onClick={() => removeHomeVisitRow(idx)}
-                            aria-label={`Remove home visit row ${idx + 1}`}
-                            className="inline-flex h-11 w-11 items-center justify-center rounded text-danger-fg hover:bg-black/5"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <ol className="flex flex-col gap-3" aria-labelledby="home-visits-heading">
+                {homeVisits.map((row, idx) => (
+                  <li key={idx} className="rounded-xl border border-line bg-surface-muted/50 p-4">
+                    <div className="mb-3 flex items-center justify-between gap-2">
+                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-navy">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-xs font-bold text-navy" aria-hidden="true">
+                          {idx + 1}
+                        </span>
+                        Visit {idx + 1}
+                      </span>
+                      {homeVisits.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeHomeVisitRow(idx)}
+                          aria-label={`Remove visit ${idx + 1}`}
+                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" aria-hidden /> Remove
+                        </button>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <FormField label="Date of Home Visit">
+                        {(c) => <Input {...c} type="date" value={row.date} onChange={(e) => updateHomeVisitRow(idx, { date: e.target.value })} />}
+                      </FormField>
+                      <div className="hidden sm:block" />
+                      <FormField label="Purpose">
+                        {(c) => <Textarea {...c} rows={2} value={row.purpose} onChange={(e) => updateHomeVisitRow(idx, { purpose: e.target.value })} placeholder="Reason for visit" />}
+                      </FormField>
+                      <FormField label="Outcome">
+                        {(c) => <Textarea {...c} rows={2} value={row.outcome} onChange={(e) => updateHomeVisitRow(idx, { outcome: e.target.value })} placeholder="Family feedback / observation" />}
+                      </FormField>
+                    </div>
+                  </li>
+                ))}
+              </ol>
               <div>
                 <Button
                   type="button"

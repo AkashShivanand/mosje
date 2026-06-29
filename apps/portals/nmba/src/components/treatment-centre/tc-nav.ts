@@ -14,6 +14,18 @@ import {
   CalendarDays,
   Images,
   Activity,
+  Pill,
+  Tag,
+  GraduationCap,
+  Briefcase,
+  Wallet,
+  Heart,
+  Stethoscope,
+  MapPin,
+  FileText,
+  Bell,
+  UserCog,
+  Share2,
   type LucideIcon,
 } from "lucide-react";
 import type { TCRole } from "@/lib/treatment-centre/types";
@@ -123,15 +135,30 @@ export function navForRole(role: TCRole): NavNode[] {
           ],
         },
         {
+          // 13 masters, mirroring the live Under-Secretary "Masters Management"
+          // menu order (captured 2026-06-29 via login USDP1), plus the NMBA
+          // activity-category master that powers the Activity List filter.
           kind: "group",
           label: "Masters Management",
-          icon: Users,
+          icon: UserCog,
           children: [
-            { kind: "leaf", label: "Drugs Master", href: `${TC}/us/masters/drugs`, icon: Activity },
-            { kind: "leaf", label: "Categories Master", href: `${TC}/us/masters/categories`, icon: Users },
-            { kind: "leaf", label: "Education Master", href: `${TC}/us/masters/education`, icon: ListChecks },
+            { kind: "leaf", label: "Content Management", href: `${TC}/us/masters/content`, icon: FileText },
+            { kind: "leaf", label: "What's New", href: `${TC}/us/masters/whats-new`, icon: Bell },
+            { kind: "leaf", label: "Category Master", href: `${TC}/us/masters/categories`, icon: Tag },
+            { kind: "leaf", label: "Drugs Master", href: `${TC}/us/masters/drugs`, icon: Pill },
+            { kind: "leaf", label: "Education Master", href: `${TC}/us/masters/education`, icon: GraduationCap },
+            { kind: "leaf", label: "Employment Master", href: `${TC}/us/masters/employment`, icon: Briefcase },
+            { kind: "leaf", label: "Income Master", href: `${TC}/us/masters/income`, icon: Wallet },
+            { kind: "leaf", label: "Marital Status Master", href: `${TC}/us/masters/marital-status`, icon: Heart },
+            { kind: "leaf", label: "Occupation Master", href: `${TC}/us/masters/occupation`, icon: Briefcase },
+            { kind: "leaf", label: "Referral Master", href: `${TC}/us/masters/referral`, icon: Share2 },
+            { kind: "leaf", label: "Cause of Substance Use Master", href: `${TC}/us/masters/substance-cause`, icon: Stethoscope },
+            { kind: "leaf", label: "Gender Master", href: `${TC}/us/masters/gender`, icon: Users },
+            { kind: "leaf", label: "Place of Residence Master", href: `${TC}/us/masters/place-of-residence`, icon: MapPin },
+            { kind: "leaf", label: "Activity Category Master", href: `${TC}/us/masters/activity-categories`, icon: Activity },
           ],
         },
+        { kind: "leaf", label: "Activity List", href: `${TC}/activities`, icon: Activity },
         { kind: "leaf", label: "Nasha Mukt Bharat Saptah 2026", href: `${TC}/saptah`, icon: CalendarDays },
       ];
   }

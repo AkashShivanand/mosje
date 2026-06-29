@@ -132,12 +132,27 @@ export type Beneficiary = {
   details?: Record<string, string>;
 };
 
+/** A peer volunteer working under a CPLI peer educator. */
+export type Volunteer = {
+  name: string;
+  phone: string;
+  status: "Active" | "Inactive";
+  joinedOn: string;
+};
+
 /** CPLI peer-educator record. */
 export type PeerEducator = {
   id: string;
   name: string;
   numberOfVolunteers: number;
   address: string;
+  /**
+   * Roster of volunteers. Optional: seeded educators omit it and a stable
+   * roster is derived from `numberOfVolunteers`; once volunteers are uploaded
+   * for an educator this holds the real (persisted) list so the upload and the
+   * "View Volunteers" screen stay in sync within the session.
+   */
+  volunteers?: Volunteer[];
 };
 
 /** Follow-up visit row (IRCA + ODIC). */
@@ -148,6 +163,12 @@ export type FollowUp = {
   followUpDate: string;
   followUpNumber: number;
   status: string;
+  /** ODIC follow-up clinical fields (captured on the Follow-up ODIC form). */
+  interventionTypes?: string[];
+  medicalDetails?: string;
+  psychosocial?: string;
+  referralMadeTo?: string;
+  nextFollowUpDate?: string;
 };
 
 /** Readmission row (IRCA). */
@@ -162,42 +183,62 @@ export type Readmission = {
 /** Awareness-generation programme row (IRCA + ODIC). */
 export type AwarenessProgramme = {
   id: string;
-  activity: string;
-  date: string;
-  location: string;
-  participants: number;
+  hotspot: string;
+  awarenessDate: string;
+  venueName: string;
+  peopleAttended: number;
+  /** Photo(s) of the awareness generation programme (data URL + file name). */
+  photoUrl?: string;
+  photoName?: string;
 };
+
+/** Allowed designation values for staff — matches the live portal's select options. */
+export type StaffDesignation =
+  | "PROJECT COORDINATOR CUM VOCATIONAL COUNSELLOR"
+  | "DOCTOR"
+  | "COUNSELLOR / SOCIAL WORKER / PSYCHOLOGIST"
+  | "NURSE"
+  | "PROFESSIONAL PERSON EDUCATOR";
 
 /** Staff member row (shared). */
 export type StaffMember = {
   id: string;
+  designation: StaffDesignation;
   name: string;
-  designation: string;
-  qualification: string;
-  contactNumber: string;
+  mobile: string;
+  education: string;
 };
 
 /** Centre activity row (shared). */
 export type CentreActivity = {
   id: string;
   activity: string;
+  /** NMBA activity category (from the activity-category master). */
+  category?: string;
   date: string;
   location: string;
   beneficiaries: number;
 };
 
-/** Nasha Mukt Bharat Saptah 2026 event row (shared). */
+/** Allowed event values for Saptah/Activity form. */
+export type SaptahEventType =
+  | "International Day Against Drug Abuse and Illicit Trafficking"
+  | "Nasha Mukt Bharat Saptah 2026";
+
+/** Nasha Mukt Bharat Saptah 2026 / awareness activity row (shared). */
 export type SaptahEvent = {
   id: string;
-  eventName: string;
+  /** Which campaign this activity belongs to. */
+  event: SaptahEventType;
+  /** Specific activity type from the dropdown (34 options). */
+  activity: string;
   date: string;
-  location: string;
-  participants: number;
-  coordinatingDept?: string;
-  maleParticipants?: number;
-  femaleParticipants?: number;
-  educationalInstitutions?: string;
-  completionStatus?: string;
+  coordinatingDept: string;
+  totalParticipants: number;
+  maleParticipants: number;
+  femaleParticipants: number;
+  numEducationalInstitutions: number;
+  isCompleted: "Completed" | "Not Completed";
   mediaUrl?: string;
   latitude?: string;
   longitude?: string;

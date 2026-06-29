@@ -31,11 +31,15 @@
   gap: 8px;
 }
 
+/* Section header = SAMAVESH Figma "sub-divider" treatment: uppercase, muted,
+   letter-spaced, sitting above a hairline rule (the head's bottom border). */
 .ds-form-section__title {
   margin: 0;
-  font-size: var(--ds-text-title-2, 16px);
+  font-size: var(--ds-text-label-2, 12px);
   font-weight: 600;
-  color: var(--ds-primary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-ink-muted);
 }
 
 .ds-form-section__desc {

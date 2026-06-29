@@ -58,6 +58,11 @@ export function Modal({
     const panel = panelRef.current;
     panel?.querySelector<HTMLElement>(FOCUSABLE)?.focus();
 
+    // Lock background scroll while the dialog is open so pointer/switch users
+    // can't interact with the page behind the modal (WCAG 2.4.3, GIGW).
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose();
@@ -79,6 +84,7 @@ export function Modal({
     document.addEventListener("keydown", onKey);
     return () => {
       document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
       opener?.focus?.();
     };
   }, [open, onClose]);

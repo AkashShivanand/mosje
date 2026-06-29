@@ -43,8 +43,92 @@ export const SEED_PATIENTS: Patient[] = [
     governmentId: "Aadhaar Card",
     drugUse: [
       { drug: "Alcohol", ageOfFirstUse: "18", reason: "Peer Pressure", usedLast3Months: "Yes", dailyUse: "Yes", durationMonths: "60" },
+      { drug: "Opioids", ageOfFirstUse: "22", reason: "Curiosity", usedLast3Months: "Yes", dailyUse: "No", durationMonths: "30" },
     ],
     provisionalDiagnosis: "6C40 — Disorders due to use of alcohol",
+    clinicalDetails: {
+      "IV drug use (ever)": "Yes",
+      "IV drug use (last 3 months)": "No",
+      "Shared needles (ever)": "No",
+      "Sexual practices": "Single partner",
+      "HCV test history": "Yes",
+      "HCV result": "Negative",
+      "HBV test history": "Yes",
+      "HBV result": "Negative",
+      "ASSIST score (alcohol)": "27+ (High risk)",
+      "ASSIST score (other drugs)": "4-26 (Moderate risk)",
+      "Previous treatment": "Yes",
+      "Treatment taken from": "State Govt De-addiction Facility",
+      "Source of referral": "Family",
+      "Ever hospitalised": "No",
+      "Avg. daily expenditure (₹)": "500",
+      "Source of money": "Legal earning, Borrowing from friends",
+      "Ever apprehended": "Yes",
+      "Apprehended — for selling (ever)": "Yes",
+      "Apprehended — for selling (last month)": "No",
+      "Apprehended — for possession (ever)": "Yes",
+      "Apprehended — for possession (last month)": "No",
+      "Apprehended — unruly behaviour (ever)": "No",
+      "Apprehended — unruly behaviour (last month)": "No",
+      "Apprehended — other crime (ever)": "No",
+      "Apprehended — other crime (last month)": "No",
+      "Family history of substance use": "Yes",
+      "Days since last use": "3",
+      "Motivation at admission": "Contemplation",
+    },
+    withdrawalSymptoms: ["Tremors", "Insomnia", "Nausea"],
+    psychiatricSymptoms: ["Depression"],
+    chronicProblems: ["Liver Disorders"],
+    otherMedicalProblems: ["Jaundice"],
+    headInjury: "No",
+    previousDrugTreatment: "Yes",
+    prevTreatmentYear: "2024",
+    prevTreatmentDuration: "21",
+    prevTreatmentCenter: "State Govt De-addiction Facility, New Delhi",
+    treatmentReceivedTypes: ["Pharmacological", "Psychosocial"],
+    relapseReason: "Peer pressure / social situations",
+    dosageLog: [
+      {
+        date: "2026-05-13",
+        complaints: "Anxiety, insomnia, craving",
+        medication: "Tab Buprenorphine 2mg, Tab Clonidine 0.1mg",
+        changeReason: "Induction phase",
+        remarks: "Tolerating medication well, vitals stable",
+      },
+      {
+        date: "2026-05-20",
+        complaints: "Mild craving, improved sleep",
+        medication: "Tab Buprenorphine 4mg",
+        changeReason: "Dose stabilisation after induction",
+        remarks: "Good response, no withdrawal noted",
+      },
+    ],
+    individualCounselling: [
+      { sessionNo: "1", date: "2026-05-14", issues: "Motivation enhancement, relapse prevention planning" },
+      { sessionNo: "2", date: "2026-05-21", issues: "Cognitive reframing, trigger identification" },
+    ],
+    groupCounselling: [
+      { sessionNo: "1", date: "2026-05-15", issues: "Peer sharing, coping skills" },
+      { sessionNo: "2", date: "2026-05-22", issues: "Building a sober support network" },
+    ],
+    familyCounselling: [
+      { sessionNo: "1", date: "2026-05-16", issues: "Family psychoeducation, support system" },
+    ],
+    referralServices: ["ICTC", "Narcotics Anonymous"],
+    referralRemark: "Referred for HIV testing and peer support group",
+    homeVisits: [
+      { date: "2026-05-25", purpose: "Assess home environment and family support", outcome: "Supportive family, advised continued follow-up" },
+      { date: "2026-06-08", purpose: "Review abstinence and medication adherence", outcome: "Abstinent, adhering to schedule" },
+    ],
+    finalDiagnosis: "6C40 — Disorders due to use of alcohol",
+    medicalComorbidity: "Hypertension",
+    psychiatricComorbidity: "Mild depression",
+    neurologicalCondition: "None",
+    dischargeMotivation: "Action",
+    dischargeMedication: "Tab Buprenorphine 2mg once daily and Tab Naltrexone 50mg",
+    dischargeRemark: "Patient stable and advised to continue follow-up and counselling",
+    dischargeDate: "2026-06-12",
+    followUpDate: "2026-06-26",
   },
   {
     id: "p2",
@@ -853,33 +937,28 @@ export const SEED_READMISSIONS: Readmission[] = [
 // =============================================================================
 
 export const SEED_AWARENESS: AwarenessProgramme[] = [
-  { id: "a1",  activity: "Community awareness session",               date: "2026-05-15", location: "Sector 4 Community Hall",          participants: 45  },
-  { id: "a2",  activity: "School outreach lecture",                   date: "2026-05-28", location: "Govt. Sr. Sec. School",            participants: 120 },
-  { id: "a3",  activity: "Street play on drug awareness",             date: "2026-04-22", location: "Main Market, Laxmi Nagar",         participants: 200 },
-  { id: "a4",  activity: "Nukkad Natak — anti-addiction drama",       date: "2026-05-01", location: "Block D, Jahangirpuri",            participants: 180 },
-  { id: "a5",  activity: "Workshop for college students",             date: "2026-05-06", location: "Demo Degree College, Rohini",      participants: 95  },
-  { id: "a6",  activity: "Awareness camp at Anganwadi centre",        date: "2026-05-18", location: "Anganwadi No. 14, Shahdara",       participants: 55  },
-  { id: "a7",  activity: "Village awareness meeting",                 date: "2026-06-02", location: "Gram Panchayat Hall, Varanasi",    participants: 80  },
-  { id: "a8",  activity: "Awareness drive at railway station",        date: "2026-06-07", location: "Lucknow Railway Station",          participants: 300 },
-  { id: "a9",  activity: "Police station awareness programme",        date: "2026-06-11", location: "Local Police Station, Amritsar",   participants: 40  },
-  { id: "a10", activity: "Auto-rickshaw & taxi driver awareness",     date: "2026-06-16", location: "Transport Nagar, Delhi",           participants: 70  },
+  { id: "a1",  hotspot: "Sector 4 Community Hall area",      awarenessDate: "2026-05-15", venueName: "Sector 4 Community Hall",          peopleAttended: 45  },
+  { id: "a2",  hotspot: "Govt. School campus vicinity",       awarenessDate: "2026-05-28", venueName: "Govt. Sr. Sec. School",            peopleAttended: 120 },
+  { id: "a3",  hotspot: "Main Market, Laxmi Nagar",          awarenessDate: "2026-04-22", venueName: "Main Market, Laxmi Nagar",         peopleAttended: 200 },
+  { id: "a4",  hotspot: "Block D, Jahangirpuri",             awarenessDate: "2026-05-01", venueName: "Block D, Jahangirpuri",            peopleAttended: 180 },
+  { id: "a5",  hotspot: "Demo Degree College campus",        awarenessDate: "2026-05-06", venueName: "Demo Degree College, Rohini",      peopleAttended: 95  },
+  { id: "a6",  hotspot: "Anganwadi No. 14, Shahdara",        awarenessDate: "2026-05-18", venueName: "Anganwadi No. 14, Shahdara",       peopleAttended: 55  },
+  { id: "a7",  hotspot: "Gram Panchayat area, Varanasi",     awarenessDate: "2026-06-02", venueName: "Gram Panchayat Hall, Varanasi",    peopleAttended: 80  },
+  { id: "a8",  hotspot: "Lucknow Railway Station area",      awarenessDate: "2026-06-07", venueName: "Lucknow Railway Station",          peopleAttended: 300 },
+  { id: "a9",  hotspot: "Local Police Station, Amritsar",    awarenessDate: "2026-06-11", venueName: "Local Police Station, Amritsar",   peopleAttended: 40  },
+  { id: "a10", hotspot: "Transport Nagar, Delhi",            awarenessDate: "2026-06-16", venueName: "Transport Nagar, Delhi",           peopleAttended: 70  },
 ];
 
 // =============================================================================
-// Staff — 10 members (shared across all roles)
+// Staff — 5 members, one per designation (shared across all roles)
 // =============================================================================
 
 export const SEED_STAFF: StaffMember[] = [
-  { id: "s1",  name: "Dr. Neha Demo",           designation: "Project Director",             qualification: "MD (Psychiatry)",          contactNumber: "9000000201" },
-  { id: "s2",  name: "Sanjay Sample",            designation: "Counsellor",                   qualification: "M.A. (Psychology)",        contactNumber: "9000000202" },
-  { id: "s3",  name: "Kavita Trial",             designation: "Social Worker",                qualification: "MSW",                      contactNumber: "9000000203" },
-  { id: "s4",  name: "Dr. Ramesh Placeholder",  designation: "Medical Officer",              qualification: "MBBS, DPM",               contactNumber: "9000000204" },
-  { id: "s5",  name: "Sunita Dummy",             designation: "Staff Nurse",                  qualification: "B.Sc. Nursing",            contactNumber: "9000000205" },
-  { id: "s6",  name: "Mohan Fake",               designation: "Outreach Worker",              qualification: "B.A. (Social Work)",       contactNumber: "9000000206" },
-  { id: "s7",  name: "Lata Example",             designation: "Data Entry Operator",          qualification: "B.Com, DCA",              contactNumber: "9000000207" },
-  { id: "s8",  name: "Dinesh Testcase",          designation: "Programme Coordinator",        qualification: "M.A. (Sociology)",         contactNumber: "9000000208" },
-  { id: "s9",  name: "Anjali Sample",            designation: "Lab Technician",               qualification: "D.M.L.T.",                contactNumber: "9000000209" },
-  { id: "s10", name: "Pramod Demo",              designation: "Peon / Support Staff",         qualification: "12th Pass",                contactNumber: "9000000210" },
+  { id: "s1", designation: "PROJECT COORDINATOR CUM VOCATIONAL COUNSELLOR", name: "Dinesh Testcase",    mobile: "9000000201", education: "M.A. Sociology" },
+  { id: "s2", designation: "DOCTOR",                                         name: "Dr. Ramesh Demo",    mobile: "9000000202", education: "MBBS, DPM" },
+  { id: "s3", designation: "COUNSELLOR / SOCIAL WORKER / PSYCHOLOGIST",      name: "Kavita Trial",       mobile: "9000000203", education: "MSW, M.A. Psychology" },
+  { id: "s4", designation: "NURSE",                                           name: "Sunita Dummy",       mobile: "9000000204", education: "B.Sc. Nursing" },
+  { id: "s5", designation: "PROFESSIONAL PERSON EDUCATOR",                   name: "Mohan Placeholder",  mobile: "9000000205", education: "B.A. Social Work" },
 ];
 
 // =============================================================================
@@ -887,31 +966,31 @@ export const SEED_STAFF: StaffMember[] = [
 // =============================================================================
 
 export const SEED_ACTIVITIES: CentreActivity[] = [
-  { id: "ac1",  activity: "De-addiction camp",                      date: "2026-05-20", location: "Block A",                   beneficiaries: 60 },
-  { id: "ac2",  activity: "Family counselling drive",               date: "2026-06-03", location: "Centre premises",           beneficiaries: 28 },
-  { id: "ac3",  activity: "Yoga & wellness session",                date: "2026-05-05", location: "Open ground, Centre",       beneficiaries: 35 },
-  { id: "ac4",  activity: "Vocational skill training — candles",    date: "2026-04-28", location: "Vocational Training Room",  beneficiaries: 22 },
-  { id: "ac5",  activity: "Group therapy session",                  date: "2026-05-12", location: "Counselling Hall",          beneficiaries: 18 },
-  { id: "ac6",  activity: "Peer support group meeting",             date: "2026-05-26", location: "Community Room",            beneficiaries: 15 },
-  { id: "ac7",  activity: "Recreational outing — nature walk",      date: "2026-06-08", location: "City Park, Sector 7",       beneficiaries: 30 },
-  { id: "ac8",  activity: "Legal aid awareness session",            date: "2026-06-13", location: "Multi-purpose Hall",        beneficiaries: 25 },
-  { id: "ac9",  activity: "Nutrition & health checkup camp",        date: "2026-06-17", location: "Medical Room",              beneficiaries: 40 },
-  { id: "ac10", activity: "Art therapy workshop",                   date: "2026-06-19", location: "Activity Room",             beneficiaries: 20 },
+  { id: "ac1",  activity: "De-addiction camp",                      category: "Health Related Activities/Camps",                                                  date: "2026-05-20", location: "Block A",                   beneficiaries: 60 },
+  { id: "ac2",  activity: "Family counselling drive",               category: "Formation of support groups and initiating counselling networks",                  date: "2026-06-03", location: "Centre premises",           beneficiaries: 28 },
+  { id: "ac3",  activity: "Yoga & wellness session",                category: "Yoga and Meditation Activities",                                                   date: "2026-05-05", location: "Open ground, Centre",       beneficiaries: 35 },
+  { id: "ac4",  activity: "Vocational skill training — candles",    category: "Training and awareness generation activities with children, adolescents, youth and Nasha Mukti Mitr", date: "2026-04-28", location: "Vocational Training Room",  beneficiaries: 22 },
+  { id: "ac5",  activity: "Group therapy session",                  category: "Formation of support groups and initiating counselling networks",                  date: "2026-05-12", location: "Counselling Hall",          beneficiaries: 18 },
+  { id: "ac6",  activity: "Peer support group meeting",             category: "Formation of Clubs (for substance use prevention) in educational institutions and communities", date: "2026-05-26", location: "Community Room",            beneficiaries: 15 },
+  { id: "ac7",  activity: "Recreational outing — nature walk",      category: "Sports and physical activities",                                                   date: "2026-06-08", location: "City Park, Sector 7",       beneficiaries: 30 },
+  { id: "ac8",  activity: "Legal aid awareness session",            category: "Seminars, Webinars or Workshops for awareness generation",                         date: "2026-06-13", location: "Multi-purpose Hall",        beneficiaries: 25 },
+  { id: "ac9",  activity: "Nutrition & health checkup camp",        category: "Health Related Activities/Camps",                                                  date: "2026-06-17", location: "Medical Room",              beneficiaries: 40 },
+  { id: "ac10", activity: "Art therapy workshop",                   category: "Wall Paintings/Graffiti and art competitions",                                     date: "2026-06-19", location: "Activity Room",             beneficiaries: 20 },
 ];
 
 // =============================================================================
-// Nasha Mukt Bharat Saptah 2026 Events — 10 records
+// Nasha Mukt Bharat Saptah 2026 / Activity Events — 10 records
 // =============================================================================
 
 export const SEED_SAPTAH_EVENTS: SaptahEvent[] = [
-  { id: "se1",  eventName: "Nasha Mukt Bharat Saptah — Awareness Rally",           date: "2026-06-26", location: "District HQ",                  participants: 350 },
-  { id: "se2",  eventName: "Nasha Mukt Bharat Saptah — Pledge Drive",              date: "2026-06-27", location: "Town Hall",                     participants: 210 },
-  { id: "se3",  eventName: "Nasha Mukt Bharat Saptah — School Visit",              date: "2026-06-26", location: "Govt. School, Sector 8",        participants: 180 },
-  { id: "se4",  eventName: "Nasha Mukt Bharat Saptah — Street Play",               date: "2026-06-28", location: "Main Market Square",            participants: 250 },
-  { id: "se5",  eventName: "Nasha Mukt Bharat Saptah — Candle March",              date: "2026-06-29", location: "Gandhi Chowk",                  participants: 400 },
-  { id: "se6",  eventName: "Nasha Mukt Bharat Saptah — College Seminar",           date: "2026-06-27", location: "Demo Degree College Auditorium", participants: 320 },
-  { id: "se7",  eventName: "Nasha Mukt Bharat Saptah — Village Campaign",          date: "2026-06-30", location: "Gram Panchayat, Model Village",  participants: 150 },
-  { id: "se8",  eventName: "Nasha Mukt Bharat Saptah — Sports Meet",               date: "2026-07-01", location: "Sports Complex",                participants: 200 },
-  { id: "se9",  eventName: "Nasha Mukt Bharat Saptah — Religious Leaders Meet",    date: "2026-07-01", location: "Community Centre",              participants: 90  },
-  { id: "se10", eventName: "Nasha Mukt Bharat Saptah — Closing Ceremony",          date: "2026-07-02", location: "District Assembly Hall",        participants: 500 },
+  { id: "se1",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Flash mobs, drives and Rallies",                                                        date: "2026-06-26", coordinatingDept: "District Social Welfare Dept",    totalParticipants: 350, maleParticipants: 210, femaleParticipants: 140, numEducationalInstitutions: 3,  isCompleted: "Completed" },
+  { id: "se2",  event: "Nasha Mukt Bharat Saptah 2026", activity: "NMBA pledge (including e-pledge) in educational institutions, hotspots and public places", date: "2026-06-27", coordinatingDept: "Town Municipality",                totalParticipants: 210, maleParticipants: 120, femaleParticipants: 90,  numEducationalInstitutions: 2,  isCompleted: "Completed" },
+  { id: "se3",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Seminars, Webinars or Workshops for awareness generation",                                date: "2026-06-26", coordinatingDept: "Education Dept",                   totalParticipants: 180, maleParticipants: 90,  femaleParticipants: 90,  numEducationalInstitutions: 4,  isCompleted: "Completed" },
+  { id: "se4",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Nukkad Natak, Skits and Play",                                                             date: "2026-06-28", coordinatingDept: "Youth Affairs Department",         totalParticipants: 250, maleParticipants: 150, femaleParticipants: 100, numEducationalInstitutions: 0,  isCompleted: "Completed" },
+  { id: "se5",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Flash mobs, drives and Rallies",                                                            date: "2026-06-29", coordinatingDept: "District Administration",          totalParticipants: 400, maleParticipants: 220, femaleParticipants: 180, numEducationalInstitutions: 5,  isCompleted: "Completed" },
+  { id: "se6",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Focus Group Discussions with various stakeholders in high risk areas (online and offline)", date: "2026-06-27", coordinatingDept: "Higher Education Dept",           totalParticipants: 320, maleParticipants: 200, femaleParticipants: 120, numEducationalInstitutions: 6,  isCompleted: "Completed" },
+  { id: "se7",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Networking with the self-help groups/local leaders/ nongovernmental organizations to reach out to high-risk groups in the neighborhood", date: "2026-06-30", coordinatingDept: "Panchayati Raj Dept", totalParticipants: 150, maleParticipants: 100, femaleParticipants: 50,  numEducationalInstitutions: 1,  isCompleted: "Completed" },
+  { id: "se8",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Sports and physical activities",                                                             date: "2026-07-01", coordinatingDept: "Sports Authority",                 totalParticipants: 200, maleParticipants: 130, femaleParticipants: 70,  numEducationalInstitutions: 2,  isCompleted: "Completed" },
+  { id: "se9",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Formation of support groups and initiating counselling networks to address the issues related to substance use", date: "2026-07-01", coordinatingDept: "Religious Affairs", totalParticipants: 90, maleParticipants: 60, femaleParticipants: 30, numEducationalInstitutions: 0, isCompleted: "Completed" },
+  { id: "se10", event: "Nasha Mukt Bharat Saptah 2026", activity: "Involvement and convergence with various government departments",                            date: "2026-07-02", coordinatingDept: "District Collectorate",           totalParticipants: 500, maleParticipants: 280, femaleParticipants: 220, numEducationalInstitutions: 8,  isCompleted: "Completed" },
 ];

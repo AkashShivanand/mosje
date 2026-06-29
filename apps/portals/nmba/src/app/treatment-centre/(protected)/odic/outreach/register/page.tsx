@@ -1,7 +1,7 @@
 "use client";
 
-import { OdicBeneficiaryForm } from "@/components/treatment-centre/odic-form";
+import { OutreachPatientForm } from "@/components/treatment-centre/outreach-patient-form";
 
 export default function OdicOutreachRegisterPage() {
-  return <OdicBeneficiaryForm kind="Outreach" redirectTo="/treatment-centre/odic/outreach" />;
+  return <OutreachPatientForm redirectTo="/treatment-centre/odic/outreach" />;
 }

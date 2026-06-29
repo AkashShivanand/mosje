@@ -94,3 +94,23 @@
 .ds-metric-card__change--up   { color: var(--ds-success); }
 .ds-metric-card__change--down { color: var(--ds-danger); }
 .ds-metric-card__change--flat { color: var(--ds-ink-muted); }
+
+/* ── Tinted delta pill + muted suffix (SAMAVESH KPI card) ── */
+.ds-metric-card__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  border-radius: var(--ds-radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+}
+.ds-metric-card__pill--up   { background-color: var(--ds-success-tonal); color: var(--ds-success); }
+.ds-metric-card__pill--down { background-color: var(--ds-danger-tonal);  color: var(--ds-danger); }
+.ds-metric-card__suffix {
+  margin-left: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ds-ink-muted);
+}

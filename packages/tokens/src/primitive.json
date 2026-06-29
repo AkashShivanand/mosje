@@ -1,34 +1,16 @@
 {
-  "$description": "Tier 1 — primitive/reference tokens. PRIVATE: never reference directly in app code.",
+  "$description": "Tier 1 — core (brand-agnostic) primitive tokens. PRIVATE: never reference directly in app code. Brand-IDENTITY primitives (color.primaryRamp, color.saffron, color.navy, color.yellow) live in the active brand pack (packages/tokens/brands/<id>/brand.json) so the system can be white-labelled — see brands/README.md.",
   "color": {
     "$type": "color",
     "blue":   { "50": {"$value":"#c6dcf9"}, "500": {"$value":"#0373df"}, "700": {"$value":"#014b92"} },
     "green":  { "50": {"$value":"#c8e6c9"}, "500": {"$value":"#2e7d32"}, "700": {"$value":"#1b5e20"} },
     "red":    { "50": {"$value":"#fad2cf"}, "500": {"$value":"#ec5042"}, "700": {"$value":"#a11d12"} },
-    "yellow": { "500": {"$value":"#ffd323"} },
-    "saffron":{ "50": {"$value":"#ffedd5"}, "500": {"$value":"#f97316"}, "700": {"$value":"#7c3503"} },
-    "navy":   { "700": {"$value":"#003366"} },
     "info": {
       "$description": "Info hue (distinct from brand primary — Google-blue family, used in Portal DS).",
       "50":  {"$value":"#e8f0fe"}, "100": {"$value":"#d2e3fc"}, "200": {"$value":"#a8c8fa"},
       "300": {"$value":"#7aaff8"}, "400": {"$value":"#4285f4"}, "500": {"$value":"#1a73e8"},
       "600": {"$value":"#1558b0"}, "700": {"$value":"#11408b"}, "800": {"$value":"#0d2d63"},
       "900": {"$value":"#081e43"}
-    },
-    "primaryRamp": {
-      "$description": "Mode-aware primary brand ramp. 'light' = default (gov-blue). 'dark' = gov-navy mode.",
-      "light": {
-        "50":  {"$value":"#e8f2fd"}, "100": {"$value":"#c6dcf9"}, "200": {"$value":"#94bff5"},
-        "300": {"$value":"#5fa0ef"}, "400": {"$value":"#2d84e8"}, "500": {"$value":"#0373df"},
-        "600": {"$value":"#025fb8"}, "700": {"$value":"#014b92"}, "800": {"$value":"#01376b"},
-        "900": {"$value":"#002448"}
-      },
-      "dark": {
-        "50":  {"$value":"#e5eff9"}, "100": {"$value":"#c8dbf0"}, "200": {"$value":"#9cbfe3"},
-        "300": {"$value":"#6da1d5"}, "400": {"$value":"#3f83c6"}, "500": {"$value":"#003366"},
-        "600": {"$value":"#002b55"}, "700": {"$value":"#002244"}, "800": {"$value":"#001933"},
-        "900": {"$value":"#001122"}
-      }
     },
     "neutral": {
       "$description": "Neutral grey scale — matches UX4G/SAMAVESH Figma Neutral/* variables exactly.",

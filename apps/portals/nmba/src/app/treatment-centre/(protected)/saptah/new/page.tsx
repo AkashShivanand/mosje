@@ -2,24 +2,52 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import {
-  Button,
-  Input,
-  Textarea,
-  Select,
-  FormField,
-  Checkbox,
-  Alert,
-  MediaUpload,
-} from "@mosje/design-system";
+import { Button, Input, Select, FormField, Alert, MediaUpload } from "@mosje/design-system";
 import { useToast } from "@/components/toast";
 import { useTCStore } from "@/lib/treatment-centre/store";
 import { FormSection } from "@/components/treatment-centre/tc-form";
+import type { SaptahEventType } from "@/lib/treatment-centre/types";
 
-const COMPLETION_STATUS = [
-  { label: "Completed", value: "Completed" },
-  { label: "In Progress", value: "In Progress" },
-  { label: "Scheduled", value: "Scheduled" },
+const EVENT_OPTIONS: { label: string; value: SaptahEventType }[] = [
+  { label: "International Day Against Drug Abuse and Illicit Trafficking", value: "International Day Against Drug Abuse and Illicit Trafficking" },
+  { label: "Nasha Mukt Bharat Saptah 2026",                               value: "Nasha Mukt Bharat Saptah 2026" },
+];
+
+const ACTIVITY_OPTIONS = [
+  "Slogan Writing Competition",
+  "Rangoli Making Competition",
+  "Drawing competition",
+  "Marathon/ Walkathon/Cyclothon",
+  "Training and awareness generation activities with children, adolescents, youth and Nasha Mukti Mitr",
+  "Sports and physical activities",
+  "Seminars, Webinars or Workshops for awareness generation",
+  "Nukkad Natak, Skits and Play",
+  "Flash mobs, drives and Rallies",
+  "NMBA pledge (including e-pledge) in educational institutions, hotspots and public places",
+  "Community mapping of nearby areas and identifying hotspots for qualitative analysis",
+  "Wall Paintings/Graffiti and art competitions",
+  "Video-making or short film making",
+  "Activities with/NSS/NCC/ NYK volunteers and spiritual organizations",
+  "Yoga and Meditation Activities",
+  "Documentaries/Film Screenings on substance use and discussions",
+  "Awareness generation through NMBA vehicles",
+  "Sensitizing the general public about the different schemes and programs of the Ministry with regards to existing deaddiction facilities in the state and districts along with awareness generation in high risk areas",
+  "Distribution of IEC Material available on the NMBA website",
+  "Organising Inter/Intra University Debate/ Essay/ Painting/ Drawing Competitions (online/offline,any)",
+  "Formation of Clubs (for substance use prevention) in educational institutions, communities, in collaboration with service organizations (Rotaract, Lion, etc.)",
+  "Identifying influential alumnis from the colleges to advertise the Abhiyaan",
+  "Focus Group Discussions with various stakeholders in high risk areas (online and offline)",
+  "Social Media Campaigns",
+  "Identification and involvement of local brand ambassadors, social media influencers, etc",
+  "Surveys and preparatory studies",
+  "Celebration of international/national days of importance (for ex: celebrating World Aids Day and spreading awareness about AIDS and how Injecting drug users increase the chances of getting AIDS)",
+  "Using regional channels, newspapers, radio's and other media outlets,available to discuss the Nasha Mukt Bharat Abhiyaan",
+  "Formation of support groups and initiating counselling networks to address the issues related to substance use",
+  "A sub-campaign to increase awareness about the ban of licit/ illicit substances near college areas with the help of police/competent authority",
+  "Involvement and convergence with various government departments",
+  "Networking with the self-help groups/local leaders/ nongovernmental organizations to reach out to high-risk groups in the neighborhood",
+  "Activities in vulnerable areas including border and tribal regions",
+  "Health Related Activities/Camps",
 ];
 
 export default function NewSaptahEventPage() {
@@ -28,32 +56,33 @@ export default function NewSaptahEventPage() {
   const store = useTCStore();
 
   const [f, setF] = React.useState({
-    eventName: "",
-    date: "2026-06-26",
-    location: "",
+    event: "" as SaptahEventType | "",
+    activity: "",
+    date: "",
     coordinatingDept: "",
-    maleParticipants: "0",
-    femaleParticipants: "0",
-    educationalInstitutions: "",
-    completionStatus: "Completed",
+    totalParticipants: "",
+    maleParticipants: "",
+    femaleParticipants: "",
+    numEducationalInstitutions: "",
+    isCompleted: "" as "Completed" | "Not Completed" | "",
     mediaFile: "",
   });
 
   const [coords, setCoords] = React.useState<{ lat: string; lng: string } | null>(null);
   const [gettingLocation, setGettingLocation] = React.useState(false);
-  const [timeGateActive, setTimeGateActive] = React.useState(true);
   const [errors, setErrors] = React.useState<Set<string>>(new Set());
   const [mediaPreview, setMediaPreview] = React.useState("");
 
-  // Date parsing to check if it lies between June 26 and July 2, 2026
+  // Saptah window: June 26 – July 2, 2026
   const isWithinSaptahWindow = (dateStr: string) => {
+    if (!dateStr) return false;
     const d = new Date(dateStr);
-    const start = new Date("2026-06-26");
-    const end = new Date("2026-07-02");
-    return d >= start && d <= end;
+    return d >= new Date("2026-06-26") && d <= new Date("2026-07-02");
   };
 
-  const isTimeGated = timeGateActive && !isWithinSaptahWindow(f.date);
+  // Only block submission for Saptah events outside the window
+  const isSaptahEvent = f.event === "Nasha Mukt Bharat Saptah 2026";
+  const isTimeGated = isSaptahEvent && !!f.date && !isWithinSaptahWindow(f.date);
 
   const getDeviceLocation = () => {
     setGettingLocation(true);
@@ -67,91 +96,101 @@ export default function NewSaptahEventPage() {
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     if (isTimeGated) {
-      toast("Cannot record activity outside the Nasha Mukt Bharat Saptah time window.", "error");
+      toast("Cannot record Nasha Mukt Bharat Saptah activity outside June 26 – July 2, 2026.", "error");
       return;
     }
 
     const missing = new Set<string>();
-    if (!f.eventName) missing.add("eventName");
+    if (!f.event) missing.add("event");
+    if (!f.activity) missing.add("activity");
     if (!f.date) missing.add("date");
-    if (!f.location) missing.add("location");
-    if (!f.coordinatingDept) missing.add("coordinatingDept");
-    if (!coords) missing.add("geotag");
+    if (!f.coordinatingDept.trim()) missing.add("coordinatingDept");
+    if (!f.totalParticipants) missing.add("totalParticipants");
+    if (!f.maleParticipants) missing.add("maleParticipants");
+    if (!f.femaleParticipants) missing.add("femaleParticipants");
+    if (!f.numEducationalInstitutions) missing.add("numEducationalInstitutions");
+    if (!f.isCompleted) missing.add("isCompleted");
 
     if (missing.size > 0) {
       setErrors(missing);
-      toast("Please complete all required fields and capture geotag.", "error");
+      toast("Please complete all required fields.", "error");
       return;
     }
 
-    const maleNum = Number(f.maleParticipants) || 0;
-    const femaleNum = Number(f.femaleParticipants) || 0;
-    const total = maleNum + femaleNum;
-
-    if (!coords) return;
-
     store.addSaptahEvent({
-      eventName: f.eventName,
+      event: f.event as SaptahEventType,
+      activity: f.activity,
       date: f.date,
-      location: f.location,
-      participants: total,
-      coordinatingDept: f.coordinatingDept,
-      maleParticipants: maleNum,
-      femaleParticipants: femaleNum,
-      educationalInstitutions: f.educationalInstitutions,
-      completionStatus: f.completionStatus,
+      coordinatingDept: f.coordinatingDept.trim(),
+      totalParticipants: Number(f.totalParticipants) || 0,
+      maleParticipants: Number(f.maleParticipants) || 0,
+      femaleParticipants: Number(f.femaleParticipants) || 0,
+      numEducationalInstitutions: Number(f.numEducationalInstitutions) || 0,
+      isCompleted: f.isCompleted as "Completed" | "Not Completed",
       mediaUrl: f.mediaFile ? `/uploads/${f.mediaFile}` : undefined,
-      latitude: coords.lat,
-      longitude: coords.lng,
+      latitude: coords?.lat,
+      longitude: coords?.lng,
     });
 
-    toast("Saptah activity registered successfully.", "success");
+    toast("Activity registered successfully.", "success");
     router.push("/treatment-centre/saptah");
   };
 
+  const err = (key: string): string | undefined =>
+    errors.has(key) ? "This field is required." : undefined;
+
   return (
     <div className="flex flex-col gap-6 max-w-4xl mx-auto py-4">
-      <div className="flex flex-wrap justify-between items-center gap-4">
-        <div>
-          <h1 className="text-xl font-bold text-ink">New Saptah Activity Form</h1>
-          <p className="mt-1 text-sm text-ink-muted">
-            Record Nasha Mukt Bharat Saptah awareness event details.
-          </p>
-        </div>
-        <div className="flex items-center gap-2 rounded-lg bg-surface-muted border border-line px-3 py-2 text-sm">
-          <Checkbox
-            id="time-gate-toggle"
-            checked={timeGateActive}
-            onChange={(e) => setTimeGateActive(e.target.checked)}
-            label="Enforce Nasha Mukt Saptah Window (June 26 - July 2)"
-          />
-        </div>
+      <div>
+        <h1 className="text-xl font-bold text-ink">Add New Activity</h1>
+        <p className="mt-1 text-sm text-ink-muted">
+          Record activity details for Nasha Mukt Bharat Saptah 2026 or related campaigns.
+        </p>
       </div>
 
       {isTimeGated && (
         <Alert status="error">
-          <strong>Registration Disabled:</strong> Nasha Mukt Bharat Saptah event entries are restricted to the week of June 26th to July 2nd, 2026. Toggle the sandbox time-gate config in the top-right corner to bypass this rule for testing.
+          <strong>Date outside window:</strong> Nasha Mukt Bharat Saptah entries are restricted to June 26 – July 2, 2026.
         </Alert>
       )}
 
       <form onSubmit={handleSave} className="flex flex-col gap-6">
-        <FormSection title="Event Details" columns={2}>
+        <FormSection title="Details of Activity" columns={2}>
           <div className="col-span-2">
-            <FormField label="Event Name" required error={errors.has("eventName") ? "Required" : undefined}>
+            <FormField label="Event" required error={err("event")}>
               {(c) => (
-                <Input
+                <Select
                   {...c}
-                  value={f.eventName}
-                  onChange={(e) => setF({ ...f, eventName: e.target.value })}
-                  placeholder="e.g. Street Play on Anti-Drug Abuse Awareness"
-                  invalid={errors.has("eventName")}
-                  disabled={isTimeGated}
+                  value={f.event}
+                  onChange={(e) => setF({ ...f, event: e.target.value as SaptahEventType | "" })}
+                  options={[
+                    { label: "Select Event", value: "" },
+                    ...EVENT_OPTIONS,
+                  ]}
+                  invalid={errors.has("event")}
                 />
               )}
             </FormField>
           </div>
 
-          <FormField label="Event Date" required error={errors.has("date") ? "Required" : undefined}>
+          <div className="col-span-2">
+            <FormField label="Activity" required error={err("activity")}>
+              {(c) => (
+                <Select
+                  {...c}
+                  value={f.activity}
+                  onChange={(e) => setF({ ...f, activity: e.target.value })}
+                  options={[
+                    { label: "Select Activity", value: "" },
+                    ...ACTIVITY_OPTIONS.map((a) => ({ label: a, value: a })),
+                  ]}
+                  invalid={errors.has("activity")}
+                />
+              )}
+            </FormField>
+          </div>
+
+          <FormField label="Date of Activity" required error={err("date")}>
             {(c) => (
               <Input
                 {...c}
@@ -159,66 +198,37 @@ export default function NewSaptahEventPage() {
                 value={f.date}
                 onChange={(e) => setF({ ...f, date: e.target.value })}
                 invalid={errors.has("date")}
-                disabled={isTimeGated}
               />
             )}
           </FormField>
 
-          <FormField label="Coordinating Department" required error={errors.has("coordinatingDept") ? "Required" : undefined}>
+          <FormField label="Coordinating Department's Name" required error={err("coordinatingDept")}>
             {(c) => (
               <Input
                 {...c}
                 value={f.coordinatingDept}
                 onChange={(e) => setF({ ...f, coordinatingDept: e.target.value })}
-                placeholder="e.g. Social Welfare Department"
+                placeholder="Please fill Coordinating Department's Name"
                 invalid={errors.has("coordinatingDept")}
-                disabled={isTimeGated}
               />
             )}
           </FormField>
 
-          <div className="col-span-2">
-            <FormField label="Venue Location" required error={errors.has("location") ? "Required" : undefined}>
-              {(c) => (
-                <Textarea
-                  {...c}
-                  rows={2}
-                  value={f.location}
-                  onChange={(e) => setF({ ...f, location: e.target.value })}
-                  placeholder="Address or venue name"
-                  invalid={errors.has("location")}
-                  disabled={isTimeGated}
-                />
-              )}
-            </FormField>
-          </div>
-        </FormSection>
+          <FormField label="Total No. of People Participating" required error={err("totalParticipants")}>
+            {(c) => (
+              <Input
+                {...c}
+                type="number"
+                min={0}
+                value={f.totalParticipants}
+                onChange={(e) => setF({ ...f, totalParticipants: e.target.value })}
+                placeholder="Please fill Total No. of People Participating"
+                invalid={errors.has("totalParticipants")}
+              />
+            )}
+          </FormField>
 
-        <FormSection title="Geotagging & Location Capture" columns={1}>
-          <div className="flex flex-wrap items-center gap-4 border border-line rounded-lg p-4 bg-surface-muted">
-            <div className="flex-1 min-w-[200px]">
-              <span className="block text-xs font-semibold uppercase tracking-wide text-ink-muted">Coordinates</span>
-              <span className="text-sm font-mono text-navy">
-                {coords ? `Latitude: ${coords.lat}°, Longitude: ${coords.lng}°` : "Not Captured"}
-              </span>
-            </div>
-            <Button
-              type="button"
-              appearance="outlined"
-              onClick={getDeviceLocation}
-              disabled={gettingLocation || isTimeGated}
-              className="text-sm"
-            >
-              {gettingLocation ? "Capturing..." : "Get Device Location"}
-            </Button>
-          </div>
-          {errors.has("geotag") && (
-            <p className="text-xs text-red-600 font-semibold mt-1">Please capture the device location coordinates before saving.</p>
-          )}
-        </FormSection>
-
-        <FormSection title="Participants & Target Group" columns={3}>
-          <FormField label="Male Participants">
+          <FormField label="No. of Males/Boys" required error={err("maleParticipants")}>
             {(c) => (
               <Input
                 {...c}
@@ -226,12 +236,13 @@ export default function NewSaptahEventPage() {
                 min={0}
                 value={f.maleParticipants}
                 onChange={(e) => setF({ ...f, maleParticipants: e.target.value })}
-                disabled={isTimeGated}
+                placeholder="Please fill No. of Males/Boys"
+                invalid={errors.has("maleParticipants")}
               />
             )}
           </FormField>
 
-          <FormField label="Female Participants">
+          <FormField label="No. of Females/Girls" required error={err("femaleParticipants")}>
             {(c) => (
               <Input
                 {...c}
@@ -239,54 +250,32 @@ export default function NewSaptahEventPage() {
                 min={0}
                 value={f.femaleParticipants}
                 onChange={(e) => setF({ ...f, femaleParticipants: e.target.value })}
-                disabled={isTimeGated}
+                placeholder="Please fill No. of Females/Girls"
+                invalid={errors.has("femaleParticipants")}
               />
             )}
           </FormField>
 
-          <div className="text-sm flex flex-col justify-end pb-3">
-            <span className="block font-semibold text-ink-muted">Total Participants</span>
-            <span className="text-navy font-bold text-lg">
-              {(Number(f.maleParticipants) || 0) + (Number(f.femaleParticipants) || 0)}
-            </span>
-          </div>
-
-          <div className="col-span-3">
-            <FormField label="Educational Institutions Involved">
-              {(c) => (
-                <Textarea
-                  {...c}
-                  rows={2}
-                  value={f.educationalInstitutions}
-                  onChange={(e) => setF({ ...f, educationalInstitutions: e.target.value })}
-                  placeholder="Names of schools/colleges participating, comma-separated"
-                  disabled={isTimeGated}
-                />
-              )}
-            </FormField>
-          </div>
-        </FormSection>
-
-        <FormSection title="Status & Media" columns={2}>
-          <FormField label="Completion Status">
+          <FormField label="No. of Educational Institutions" required error={err("numEducationalInstitutions")}>
             {(c) => (
-              <Select
+              <Input
                 {...c}
-                value={f.completionStatus}
-                onChange={(e) => setF({ ...f, completionStatus: e.target.value })}
-                options={COMPLETION_STATUS}
-                disabled={isTimeGated}
+                type="number"
+                min={0}
+                value={f.numEducationalInstitutions}
+                onChange={(e) => setF({ ...f, numEducationalInstitutions: e.target.value })}
+                placeholder="Please fill No. of Educational Institutions"
+                invalid={errors.has("numEducationalInstitutions")}
               />
             )}
           </FormField>
 
-          <FormField label="Media Upload (Image)">
+          <FormField label="Upload Images/Videos">
             {(c) => (
               <MediaUpload
                 {...c}
                 value={mediaPreview || undefined}
                 fileName={f.mediaFile || undefined}
-                disabled={isTimeGated}
                 onChange={(dataUrl, name) => {
                   setMediaPreview(dataUrl);
                   setF((prev) => ({ ...prev, mediaFile: name }));
@@ -298,6 +287,42 @@ export default function NewSaptahEventPage() {
               />
             )}
           </FormField>
+
+          <FormField label="Is Completed" required error={err("isCompleted")}>
+            {(c) => (
+              <Select
+                {...c}
+                value={f.isCompleted}
+                onChange={(e) => setF({ ...f, isCompleted: e.target.value as "Completed" | "Not Completed" | "" })}
+                options={[
+                  { label: "Select Status", value: "" },
+                  { label: "Completed",     value: "Completed" },
+                  { label: "Not Completed", value: "Not Completed" },
+                ]}
+                invalid={errors.has("isCompleted")}
+              />
+            )}
+          </FormField>
+        </FormSection>
+
+        <FormSection title="Current Location" columns={1}>
+          <div className="flex flex-wrap items-center gap-4 rounded-lg border border-line bg-surface-muted p-4">
+            <div className="flex-1 min-w-[200px]">
+              <span className="block text-xs font-semibold uppercase tracking-wide text-ink-muted">Coordinates</span>
+              <span className="text-sm font-mono text-navy">
+                {coords ? `Latitude: ${coords.lat}°, Longitude: ${coords.lng}°` : "Not Captured"}
+              </span>
+            </div>
+            <Button
+              type="button"
+              appearance="outlined"
+              onClick={getDeviceLocation}
+              disabled={gettingLocation}
+              className="text-sm"
+            >
+              {gettingLocation ? "Capturing..." : "Current Location"}
+            </Button>
+          </div>
         </FormSection>
 
         <div className="flex justify-end gap-3">
@@ -309,7 +334,7 @@ export default function NewSaptahEventPage() {
             Cancel
           </Button>
           <Button type="submit" variant="primary" disabled={isTimeGated}>
-            Register Activity
+            Submit
           </Button>
         </div>
       </form>

@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronDown, History, LogOut } from "lucide-react";
+import { ChevronDown, LogOut } from "lucide-react";
 import { SiteHeader, Footer, AppSwitcher } from "@mosje/design-system";
 import { useToast } from "@/components/toast";
 import { cn } from "@/lib/utils";
@@ -79,10 +79,14 @@ function NavGroupItem({
   const active = subtreeHasActive(group, isActive);
   const [open, setOpen] = React.useState(active);
   const contentId = React.useId();
-  // Re-sync expansion when the active route changes (e.g. browser back/forward).
-  React.useEffect(() => {
+  // Re-open when the active route moves into this group (e.g. browser back/forward).
+  // Render-time sync on the `active` prop — React's recommended pattern, which
+  // also avoids a set-state-in-effect.
+  const [wasActive, setWasActive] = React.useState(active);
+  if (active !== wasActive) {
+    setWasActive(active);
     if (active) setOpen(true);
-  }, [active]);
+  }
   return (
     <li>
       <button
@@ -117,22 +121,8 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
   const { toast } = useToast();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
-  const [signedInAt, setSignedInAt] = React.useState("");
   const sidebarRef = React.useRef<HTMLElement>(null);
   const nav = React.useMemo(() => navForRole(session.role), [session.role]);
-
-  // Honest, client-rendered session timestamp (avoids a fabricated/hydration-mismatched value).
-  React.useEffect(() => {
-    setSignedInAt(
-      new Date().toLocaleString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    );
-  }, []);
 
   // Track the mobile breakpoint so the drawer's modal semantics + focus trap only
   // apply when the sidebar is actually an overlay (below lg it is; at lg it's static).
@@ -145,9 +135,13 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
   }, []);
 
   // Close the mobile drawer on navigation so it never lingers over the new page.
-  React.useEffect(() => {
+  // Reset during render on route change (React's recommended pattern) rather than
+  // in an effect — avoids an extra commit and the set-state-in-effect lint rule.
+  const [lastPath, setLastPath] = React.useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
     setMobileOpen(false);
-  }, [pathname]);
+  }
 
   // Focus trap + Escape for the open mobile drawer (WCAG 2.1.2 / 2.4.3).
   React.useEffect(() => {
@@ -215,14 +209,6 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
         onToggleNav={() => setMobileOpen((o) => !o)}
         navExpanded={mobileOpen}
         navControlsId="tc-sidebar"
-        actions={
-          signedInAt ? (
-            <span className="hidden items-center gap-1.5 text-xs text-ink-muted md:flex">
-              <History className="h-3.5 w-3.5" aria-hidden />
-              Signed in : {signedInAt}
-            </span>
-          ) : undefined
-        }
         language={{
           label: "English",
           onClick: () => toast("i18n: Language switch (22 scheduled languages supported) - Demo.", "info"),
