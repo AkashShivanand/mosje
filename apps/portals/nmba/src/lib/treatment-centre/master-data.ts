@@ -171,6 +171,30 @@ export const SEXUAL_PRACTICES: SelectOption[] = [
   { label: "No partner", value: "4" },
 ];
 
+/** Referral destinations for the Outreach Patient form — "Referred to" field. */
+export const REFERRAL_DESTINATIONS: SelectOption[] = [
+  { label: "Drop-in Centre", value: "1" },
+  { label: "IRCA/DDAC/ATF", value: "2" },
+  { label: "NACO-One stop Centre", value: "3" },
+  { label: "Other-specify", value: "4" },
+  { label: "No Referral Made", value: "5" },
+];
+
+/**
+ * "Referral Made To" destinations — used by the ODIC Client/Beneficiary
+ * Registration and the Follow-up ODIC forms (richer set than REFERRAL_DESTINATIONS).
+ */
+export const INTERVENTION_REFERRAL: SelectOption[] = [
+  { label: "IRCA/DDAC/ATF", value: "1" },
+  { label: "Integrated Testing and Counselling Centre", value: "2" },
+  { label: "NACO-One Stop Centre", value: "3" },
+  { label: "Vocational Training Centre", value: "4" },
+  { label: "Tertiary Hospitals for Medical Care", value: "5" },
+  { label: "Narcotics Anonymous/Alcoholics Anonymous", value: "6" },
+  { label: "Others-specify", value: "7" },
+  { label: "No Referral Made", value: "8" },
+];
+
 /** HCV / HBV serology test result. */
 export const TEST_RESULT: SelectOption[] = [
   { label: "Positive", value: "Positive" },

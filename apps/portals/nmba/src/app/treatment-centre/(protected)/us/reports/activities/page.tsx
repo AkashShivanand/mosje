@@ -31,20 +31,20 @@ export default function USActivityReportPage() {
 
   const saptahRows: ActivityRow[] = store.saptahEvents.map((s) => ({
     sno: 0,
-    type: "Saptah Event",
-    name: s.eventName,
+    type: "Saptah / Campaign Activity",
+    name: s.activity,
     date: s.date,
-    location: s.location,
-    participants: s.participants,
+    location: s.coordinatingDept,
+    participants: s.totalParticipants,
   }));
 
   const awarenessRows: ActivityRow[] = store.awareness.map((a) => ({
     sno: 0,
-    type: "Awareness Campaign",
-    name: a.activity,
-    date: a.date,
-    location: a.location,
-    participants: a.participants,
+    type: "Awareness Programme",
+    name: a.hotspot,
+    date: a.awarenessDate,
+    location: a.venueName,
+    participants: a.peopleAttended,
   }));
 
   const combined = [...saptahRows, ...awarenessRows]

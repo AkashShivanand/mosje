@@ -47,6 +47,7 @@ export type TCStore = {
   removePeerEducator: (id: string) => void;
   addFollowUp: (followUp: Omit<FollowUp, "id">) => void;
   addReadmission: (readmission: Omit<Readmission, "id">) => void;
+  addAwareness: (programme: Omit<AwarenessProgramme, "id">) => void;
   addStaff: (staff: Omit<StaffMember, "id">) => void;
   addSaptahEvent: (event: Omit<SaptahEvent, "id">) => void;
 };
@@ -105,6 +106,8 @@ export function TCStoreProvider({ children }: { children: React.ReactNode }) {
         setFollowUps((prev) => [{ ...followUp, id: nextId("f") }, ...prev]),
       addReadmission: (readmission) =>
         setReadmissions((prev) => [{ ...readmission, id: nextId("r") }, ...prev]),
+      addAwareness: (programme) =>
+        setAwareness((prev) => [...prev, { ...programme, id: nextId("aw") }]),
       addStaff: (stf) =>
         setStaff((prev) => [{ ...stf, id: nextId("st") }, ...prev]),
       addSaptahEvent: (event) =>

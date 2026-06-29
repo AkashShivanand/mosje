@@ -630,7 +630,7 @@ export default function IrcaRegisterPage() {
               />
             </FormCard>
 
-            <FormSection title="Details of the Patient">
+            <FormSection title="Details of the Patient" columns={2}>
               <FormField label="Date of Admission" required error={err("dateOfAdmission")}>
                 {(c) => (
                   <Input {...c} type="date" max={todayIso()} value={f.dateOfAdmission} onChange={(e) => set("dateOfAdmission")(e.target.value)} invalid={errors.has("dateOfAdmission")} />
@@ -693,7 +693,7 @@ export default function IrcaRegisterPage() {
 
         {/* ---- Step 2: Socio-economic & ID ---- */}
         {step === 1 && (
-          <FormSection title="Socio-economic Background & Identity">
+          <FormSection title="Socio-economic Background & Identity" columns={2}>
             <FormField label="Marital Status" required error={err("maritalStatus")}>
               {(c) => <Select {...c} value={f.maritalStatus} onChange={(e) => set("maritalStatus")(e.target.value)} placeholder="Select Marital Status" options={MARITAL_STATUS} invalid={errors.has("maritalStatus")} />}
             </FormField>
@@ -897,7 +897,7 @@ export default function IrcaRegisterPage() {
               </FormField>
             </FormSection>
 
-            <FormSection title="Treatment Details">
+            <FormSection title="Treatment Details" columns={2}>
               <FormField label="Previous Treatment for Substance use" required error={err("previousTreatment")}>
                 {(c) => <Select {...c} value={f.previousTreatment} onChange={(e) => { set("previousTreatment")(e.target.value); if (e.target.value !== "Yes") set("treatmentTaken")(""); }} placeholder="Select Previous Treatment" options={YES_NO} invalid={errors.has("previousTreatment")} />}
               </FormField>

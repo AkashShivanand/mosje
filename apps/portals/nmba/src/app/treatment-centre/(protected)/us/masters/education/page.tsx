@@ -6,6 +6,7 @@ import { Button, Input, FormField, Modal } from "@mosje/design-system";
 import { useToast } from "@/components/toast";
 import { EDUCATION as INITIAL_EDUCATION } from "@/lib/treatment-centre/master-data";
 import { TCListPage } from "@/components/treatment-centre/tc-list";
+import { IconAction, RowActions } from "@/components/treatment-centre/row-actions";
 import type { ColumnDef } from "@/components/data-table";
 
 type MasterItem = {
@@ -74,22 +75,10 @@ export default function USEducationMasterPage() {
       key: "actions",
       header: "Action",
       render: (r) => (
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => handleOpenEdit(r)}
-            className="inline-flex items-center gap-1 rounded bg-await-bg px-2 py-1 text-xs font-semibold text-await-fg hover:opacity-90"
-          >
-            <Pencil className="h-3.5 w-3.5" aria-hidden /> Edit
-          </button>
-          <button
-            type="button"
-            onClick={() => handleDelete(r)}
-            className="inline-flex items-center gap-1 rounded bg-danger-bg px-2 py-1 text-xs font-semibold text-danger-fg hover:opacity-90"
-          >
-            <Trash2 className="h-3.5 w-3.5" aria-hidden /> Delete
-          </button>
-        </div>
+        <RowActions>
+          <IconAction icon={Pencil} tone="warning" label={`Edit ${r.label}`} onClick={() => handleOpenEdit(r)} />
+          <IconAction icon={Trash2} tone="danger" label={`Delete ${r.label}`} onClick={() => handleDelete(r)} />
+        </RowActions>
       ),
     },
   ];
@@ -105,10 +94,11 @@ export default function USEducationMasterPage() {
         action={
           <button
             type="button"
+            aria-haspopup="dialog"
             onClick={handleOpenAdd}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-semibold text-navy hover:bg-white/90"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-semibold text-navy transition hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
           >
-            <Plus className="h-4 w-4" /> Add New Qualification
+            <Plus className="h-4 w-4" aria-hidden /> Add New Qualification
           </button>
         }
       />

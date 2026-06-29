@@ -49,6 +49,8 @@ interface TCListPageProps<T extends Record<string, unknown>> {
   /** Optional action button rendered on the right of the title bar. */
   action?: React.ReactNode;
   fileName?: string;
+  /** Message shown when the table has no rows. */
+  emptyLabel?: React.ReactNode;
 }
 
 export function TCListPage<T extends Record<string, unknown>>({
@@ -58,6 +60,7 @@ export function TCListPage<T extends Record<string, unknown>>({
   searchKeys,
   action,
   fileName = "treatment-centre-export",
+  emptyLabel,
 }: TCListPageProps<T>) {
   const { toast } = useToast();
   const [query, setQuery] = React.useState("");
@@ -138,7 +141,13 @@ export function TCListPage<T extends Record<string, unknown>>({
         </div>
       </div>
 
-      <DataTable columns={columns} data={filtered} total={filtered.length} caption={title} />
+      <DataTable
+        columns={columns}
+        data={filtered}
+        total={filtered.length}
+        caption={title}
+        emptyLabel={query.trim() ? `No results for “${query}”.` : emptyLabel}
+      />
     </div>
   );
 }
