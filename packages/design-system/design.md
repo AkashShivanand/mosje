@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-06-30 · System version: v1.3.0 (Lightbox + MediaGalleryInput)
+  Last reviewed: 2026-07-01 · System version: v1.4.0 (Button inverse/inverseOutlined + Media Gallery Manager pattern)
 -->
 
 # SAMAVESH Design System — Specification & AI Design Context
@@ -400,14 +400,15 @@ All components are exported from `@mosje/design-system`. Import from the package
 
 #### Button
 **Purpose**: The primary call-to-action trigger — submits forms, confirms dialogs, runs commands.  
-**Variants**: `primary`, `secondary`, `tonal`, `danger`  
+**Variants**: `primary` (default), `success`, `danger`  
+**Appearances**: `filled` (default), `outlined`, `text`, `tonal`, `inverse`, `inverseOutlined`  
 **Sizes**: `sm`, `md` (default), `lg`  
-**Props**: `variant`, `appearance` (`filled` | `outlined`), `size`, `iconLeft`, `iconRight`, `disabled`, `href` (renders as `<a>`)  
+**Props**: `variant`, `appearance`, `size`, `iconLeft`, `iconRight`, `disabled`, `href` (renders as `<a>`)  
 **Rules**:
-- One `primary` button per visual section maximum.
-- Use `secondary` for cancel/back actions alongside a primary.
+- One filled/`primary` button per visual section maximum.
+- Use `appearance="outlined"` for the secondary action alongside a primary (e.g. Cancel next to Save).
 - Icon-only buttons: **always** provide `aria-label`.
-- Use `appearance="outlined"` for secondary calls-to-action (e.g. "Open in Figma").
+- **On a solid brand-colour surface** (a navy/coloured page header, hero band, banner) use `appearance="inverse"` (solid white, variant-tinted text — for the emphasized action) and `appearance="inverseOutlined"` (transparent, white border/text — for the secondary/toggle action). **Never** hand-roll `className` overrides like `bg-white text-navy` to fake this — that was a repeated anti-pattern across ~50 files before these appearances existed; use the variant instead.
 
 #### Icon
 **Purpose**: Material Symbols Outlined — the official icon system.  
@@ -708,6 +709,57 @@ These are the approved page-level scaffolds. Do not deviate from these layouts w
 - Each step: 3–6 FormFields. Never exceed 8 visible fields per step.
 - Final step is always `<ReviewSection>` — show all entered values before submit.
 - Show `<Stepper>` at the top of the wizard to communicate progress.
+
+### Media Gallery Manager (Portal — photos/videos, documents, any record-with-attachments list)
+
+The canonical pattern for any screen that manages a collection of uploaded media or
+files (centre photo galleries, activity/event documentation, evidence attachments).
+Built once for the NMBA "Center Photos" screen; adopt this composition rather than
+inventing a page-local variant.
+
+```tsx
+<header /* brand-colour band */>
+  <h1>{title}</h1>
+  <Button appearance={selectMode ? "inverse" : "inverseOutlined"}>Select</Button>
+  {!selectMode && <Button appearance="inverse"><Plus /> Upload</Button>}
+</header>
+
+{demoOrDataLossRisk && (
+  <Alert status="warning" dismissible onDismiss={...}>
+    Explain exactly what is/isn't persisted — never let storage semantics be a surprise.
+  </Alert>
+)}
+
+<StatStrip /> {/* optional — only if the counts aren't already visible via filter chips */}
+
+<Toolbar>
+  <Search />
+  <Select /* sort */ />
+  <ViewToggle /* grid | list */ />
+  <Chip /* one per category, with live counts, "All" first */ />
+</Toolbar>
+
+{selectMode && <StickySelectionBar>{/* select-all, bulk download, bulk delete */}</StickySelectionBar>}
+
+{items.length === 0
+  ? <EmptyState ... />
+  : view === "grid"
+    ? <div class="grid">{items.map(i => <GalleryCard key={i.id} .../>)}</div>
+    : <div class="list">{items.map(i => <GalleryRow key={i.id} .../>)}</div>}
+
+<UploadSheet />   {/* SideSheet: MediaGalleryInput + category/date/caption metadata */}
+<EditSheet />     {/* SideSheet: per-item metadata edit */}
+<Lightbox />      {/* full-screen viewer, opened from any card/row */}
+<Modal />         {/* delete confirm — single or bulk */}
+```
+
+**Rules**:
+- Header actions use `Button` `inverse`/`inverseOutlined` appearances (never a hand-rolled `className` override) — see Button rules above.
+- While `selectMode` is active, hide actions that don't apply mid-selection (e.g. Upload) rather than leaving them alongside the sticky selection bar — two competing action rows fight for the same attention.
+- If storage is not yet durable (in-session demo data, no backend), disclose it with a dismissible `Alert` near the top of the page — don't let a refresh silently discard a user's work with no warning.
+- Category/tag `Badge` colours are taxonomy, not severity — never map a neutral category to `danger`/`warning`; reserve those for actual error/warning states elsewhere on the same screen.
+- Every icon-only status indicator (e.g. a "featured/pinned" star) needs a screen-reader-visible label, not just a `title` tooltip.
+- Grid and list views must share the same action set (view/edit/delete/download) and the same selection/lightbox state — the view toggle changes density, not capability.
 
 ### Informational Page (Website)
 

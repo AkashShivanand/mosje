@@ -340,10 +340,16 @@ export default function ButtonPage(): React.JSX.Element {
         <Callout type="info" title="How variants map to the component API">
           The shared <code>Button</code> exposes a <code>variant</code> axis
           (primary · success · danger) and an <code>appearance</code> axis (filled
-          · outlined · text · tonal). The intents above map onto that API:{" "}
+          · outlined · text · tonal · inverse · inverseOutlined). The intents above
+          map onto that API:{" "}
           <strong>secondary</strong> = <code>appearance=&quot;outlined&quot;</code>,{" "}
           <strong>ghost</strong> = <code>appearance=&quot;text&quot;</code>. The
-          playground below emits the exact code.
+          playground below emits the exact code for a button on a white/light
+          surface — for a button placed directly on a solid brand-colour surface
+          (a navy header, hero band), use{" "}
+          <code>appearance=&quot;inverse&quot;</code> (emphasized) or{" "}
+          <code>appearance=&quot;inverseOutlined&quot;</code> (secondary) instead
+          of overriding <code>className</code>.
         </Callout>
         <div style={{ marginTop: "var(--ds-spacing-2xl)" }}>
           <ButtonPlayground />
@@ -567,10 +573,10 @@ import "@mosje/design-system/tokens.css";`}</CodeBlock>
             },
             {
               name: "appearance",
-              type: '"filled" | "outlined" | "text" | "tonal"',
+              type: '"filled" | "outlined" | "text" | "tonal" | "inverse" | "inverseOutlined"',
               default: '"filled"',
               description:
-                "Visual weight. outlined = secondary, text = ghost (tertiary).",
+                "Visual weight. outlined = secondary, text = ghost (tertiary). inverse/inverseOutlined are for a button placed directly on a solid brand-colour surface (e.g. a navy header) — use instead of overriding className.",
             },
             {
               name: "size",
