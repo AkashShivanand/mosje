@@ -982,15 +982,100 @@ export const SEED_ACTIVITIES: CentreActivity[] = [
 // Nasha Mukt Bharat Saptah 2026 / Activity Events — 10 records
 // =============================================================================
 
+// Representative event imagery for the demo galleries. SYNTHETIC — these are
+// public stock photographs, not real centre photos; they only exist so the
+// gallery / lightbox views render with real media during the demo.
+const IMG = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1280&q=70`;
+const SAMPLE_VIDEO = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4";
+const POSTER_CROWD = IMG("photo-1492684223066-81342ee5ff30");
+
 export const SEED_SAPTAH_EVENTS: SaptahEvent[] = [
-  { id: "se1",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Flash mobs, drives and Rallies",                                                        date: "2026-06-26", coordinatingDept: "District Social Welfare Dept",    totalParticipants: 350, maleParticipants: 210, femaleParticipants: 140, numEducationalInstitutions: 3,  isCompleted: "Completed" },
-  { id: "se2",  event: "Nasha Mukt Bharat Saptah 2026", activity: "NMBA pledge (including e-pledge) in educational institutions, hotspots and public places", date: "2026-06-27", coordinatingDept: "Town Municipality",                totalParticipants: 210, maleParticipants: 120, femaleParticipants: 90,  numEducationalInstitutions: 2,  isCompleted: "Completed" },
-  { id: "se3",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Seminars, Webinars or Workshops for awareness generation",                                date: "2026-06-26", coordinatingDept: "Education Dept",                   totalParticipants: 180, maleParticipants: 90,  femaleParticipants: 90,  numEducationalInstitutions: 4,  isCompleted: "Completed" },
-  { id: "se4",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Nukkad Natak, Skits and Play",                                                             date: "2026-06-28", coordinatingDept: "Youth Affairs Department",         totalParticipants: 250, maleParticipants: 150, femaleParticipants: 100, numEducationalInstitutions: 0,  isCompleted: "Completed" },
-  { id: "se5",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Flash mobs, drives and Rallies",                                                            date: "2026-06-29", coordinatingDept: "District Administration",          totalParticipants: 400, maleParticipants: 220, femaleParticipants: 180, numEducationalInstitutions: 5,  isCompleted: "Completed" },
-  { id: "se6",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Focus Group Discussions with various stakeholders in high risk areas (online and offline)", date: "2026-06-27", coordinatingDept: "Higher Education Dept",           totalParticipants: 320, maleParticipants: 200, femaleParticipants: 120, numEducationalInstitutions: 6,  isCompleted: "Completed" },
-  { id: "se7",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Networking with the self-help groups/local leaders/ nongovernmental organizations to reach out to high-risk groups in the neighborhood", date: "2026-06-30", coordinatingDept: "Panchayati Raj Dept", totalParticipants: 150, maleParticipants: 100, femaleParticipants: 50,  numEducationalInstitutions: 1,  isCompleted: "Completed" },
-  { id: "se8",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Sports and physical activities",                                                             date: "2026-07-01", coordinatingDept: "Sports Authority",                 totalParticipants: 200, maleParticipants: 130, femaleParticipants: 70,  numEducationalInstitutions: 2,  isCompleted: "Completed" },
-  { id: "se9",  event: "Nasha Mukt Bharat Saptah 2026", activity: "Formation of support groups and initiating counselling networks to address the issues related to substance use", date: "2026-07-01", coordinatingDept: "Religious Affairs", totalParticipants: 90, maleParticipants: 60, femaleParticipants: 30, numEducationalInstitutions: 0, isCompleted: "Completed" },
-  { id: "se10", event: "Nasha Mukt Bharat Saptah 2026", activity: "Involvement and convergence with various government departments",                            date: "2026-07-02", coordinatingDept: "District Collectorate",           totalParticipants: 500, maleParticipants: 280, femaleParticipants: 220, numEducationalInstitutions: 8,  isCompleted: "Completed" },
+  {
+    id: "se1", event: "Nasha Mukt Bharat Saptah 2026", activity: "Flash mobs, drives and Rallies",
+    date: "2026-06-26", coordinatingDept: "District Social Welfare Dept",
+    totalParticipants: 350, maleParticipants: 210, femaleParticipants: 140, numEducationalInstitutions: 3,
+    isCompleted: "Completed", createdAt: "2026-06-26",
+    media: [
+      { url: IMG("photo-1492684223066-81342ee5ff30"), type: "image", name: "Flash mob — main square" },
+      { url: IMG("photo-1511578314322-379afb476865"), type: "image", name: "Volunteers gathering" },
+      { url: IMG("photo-1488521787991-ed7bbaae773c"), type: "image", name: "Youth participation drive" },
+      { url: SAMPLE_VIDEO, type: "video", name: "Rally highlights clip", poster: POSTER_CROWD },
+    ],
+  },
+  {
+    id: "se2", event: "Nasha Mukt Bharat Saptah 2026", activity: "NMBA pledge (including e-pledge) in educational institutions, hotspots and public places",
+    date: "2026-06-27", coordinatingDept: "Town Municipality",
+    totalParticipants: 210, maleParticipants: 120, femaleParticipants: 90, numEducationalInstitutions: 2,
+    isCompleted: "Completed", createdAt: "2026-06-27",
+  },
+  {
+    id: "se3", event: "Nasha Mukt Bharat Saptah 2026", activity: "Seminars, Webinars or Workshops for awareness generation",
+    date: "2026-06-26", coordinatingDept: "Education Dept",
+    totalParticipants: 180, maleParticipants: 90, femaleParticipants: 90, numEducationalInstitutions: 4,
+    isCompleted: "Completed", createdAt: "2026-06-26",
+    media: [
+      { url: IMG("photo-1540575467063-178a50c2df87"), type: "image", name: "Awareness seminar — keynote" },
+      { url: IMG("photo-1475721027785-f74eccf877e2"), type: "image", name: "Audience Q&A" },
+    ],
+  },
+  {
+    id: "se4", event: "Nasha Mukt Bharat Saptah 2026", activity: "Nukkad Natak, Skits and Play",
+    date: "2026-06-28", coordinatingDept: "Youth Affairs Department",
+    totalParticipants: 250, maleParticipants: 150, femaleParticipants: 100, numEducationalInstitutions: 0,
+    isCompleted: "Completed", createdAt: "2026-06-28",
+  },
+  {
+    id: "se5", event: "Nasha Mukt Bharat Saptah 2026", activity: "Flash mobs, drives and Rallies",
+    date: "2026-06-29", coordinatingDept: "District Administration",
+    totalParticipants: 400, maleParticipants: 220, femaleParticipants: 180, numEducationalInstitutions: 5,
+    isCompleted: "Completed", createdAt: "2026-06-29",
+    media: [
+      { url: IMG("photo-1492684223066-81342ee5ff30"), type: "image", name: "Awareness rally — banner" },
+      { url: IMG("photo-1511578314322-379afb476865"), type: "image", name: "Community march" },
+      { url: IMG("photo-1530549387789-4c1017266635"), type: "image", name: "Pledge gathering" },
+      { url: IMG("photo-1488521787991-ed7bbaae773c"), type: "image", name: "Student volunteers" },
+    ],
+  },
+  {
+    id: "se6", event: "Nasha Mukt Bharat Saptah 2026", activity: "Focus Group Discussions with various stakeholders in high risk areas (online and offline)",
+    date: "2026-06-27", coordinatingDept: "Higher Education Dept",
+    totalParticipants: 320, maleParticipants: 200, femaleParticipants: 120, numEducationalInstitutions: 6,
+    isCompleted: "Completed", createdAt: "2026-06-27",
+  },
+  {
+    id: "se7", event: "Nasha Mukt Bharat Saptah 2026", activity: "Networking with the self-help groups/local leaders/ nongovernmental organizations to reach out to high-risk groups in the neighborhood",
+    date: "2026-06-30", coordinatingDept: "Panchayati Raj Dept",
+    totalParticipants: 150, maleParticipants: 100, femaleParticipants: 50, numEducationalInstitutions: 1,
+    isCompleted: "Completed", createdAt: "2026-06-30",
+    media: [
+      { url: IMG("photo-1543269865-cbf427effbad"), type: "image", name: "Stakeholder networking meet" },
+    ],
+  },
+  {
+    id: "se8", event: "Nasha Mukt Bharat Saptah 2026", activity: "Sports and physical activities",
+    date: "2026-07-01", coordinatingDept: "Sports Authority",
+    totalParticipants: 200, maleParticipants: 130, femaleParticipants: 70, numEducationalInstitutions: 2,
+    isCompleted: "Completed", createdAt: "2026-07-01",
+    media: [
+      { url: IMG("photo-1517649763962-0c623066013b"), type: "image", name: "Marathon for a drug-free India" },
+      { url: IMG("photo-1551836022-d5d88e9218df"), type: "image", name: "Team sports day" },
+      { url: SAMPLE_VIDEO, type: "video", name: "Sports day recap", poster: IMG("photo-1517649763962-0c623066013b") },
+    ],
+  },
+  {
+    id: "se9", event: "Nasha Mukt Bharat Saptah 2026", activity: "Formation of support groups and initiating counselling networks to address the issues related to substance use",
+    date: "2026-07-01", coordinatingDept: "Religious Affairs",
+    totalParticipants: 90, maleParticipants: 60, femaleParticipants: 30, numEducationalInstitutions: 0,
+    isCompleted: "Completed", createdAt: "2026-07-01",
+  },
+  {
+    id: "se10", event: "Nasha Mukt Bharat Saptah 2026", activity: "Involvement and convergence with various government departments",
+    date: "2026-07-02", coordinatingDept: "District Collectorate",
+    totalParticipants: 500, maleParticipants: 280, femaleParticipants: 220, numEducationalInstitutions: 8,
+    isCompleted: "Completed", createdAt: "2026-07-02",
+    media: [
+      { url: SAMPLE_VIDEO, type: "video", name: "Inter-departmental convergence meet", poster: POSTER_CROWD },
+      { url: IMG("photo-1540575467063-178a50c2df87"), type: "image", name: "Joint review session" },
+    ],
+  },
 ];

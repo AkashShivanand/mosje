@@ -1,0 +1,214 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — Lightbox
+   Full-screen gallery viewer for mixed images + videos. The overlay itself is
+   intentionally dark (a media stage, not page chrome); UI affordances use tokens.
+   ============================================================================ */
+
+.ds-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "bar    bar    bar"
+    "prev   stage  next"
+    "footer footer footer";
+  font-family: var(--ds-font-sans);
+  animation: ds-lightbox-fade 0.18s ease-out;
+}
+
+@keyframes ds-lightbox-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.ds-lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(8, 11, 20, 0.92);
+  backdrop-filter: blur(2px);
+}
+
+/* ---- Top bar: counter + close ---- */
+.ds-lightbox__bar {
+  grid-area: bar;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 16px 20px;
+}
+
+.ds-lightbox__counter {
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.ds-lightbox__counter-sep {
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0 2px;
+}
+
+.ds-lightbox__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.ds-lightbox__close:hover { background: rgba(255, 255, 255, 0.22); }
+.ds-lightbox__close:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ---- Slidenav arrows ---- */
+.ds-lightbox__nav {
+  z-index: 2;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.ds-lightbox__nav--prev { grid-area: prev; }
+.ds-lightbox__nav--next { grid-area: next; }
+
+.ds-lightbox__nav:hover { background: rgba(255, 255, 255, 0.22); }
+.ds-lightbox__nav:active { transform: scale(0.94); }
+.ds-lightbox__nav:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ---- Stage ---- */
+.ds-lightbox__stage {
+  grid-area: stage;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  padding: 4px;
+  outline: none;
+}
+
+.ds-lightbox__media {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--ds-radius-md, 8px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  animation: ds-lightbox-pop 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+@keyframes ds-lightbox-pop {
+  from { opacity: 0; transform: scale(0.985); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ---- Footer: caption + thumbnails ---- */
+.ds-lightbox__footer {
+  grid-area: footer;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px 20px;
+}
+
+.ds-lightbox__caption {
+  margin: 0;
+  max-width: min(72ch, 90vw);
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.ds-lightbox__thumbs {
+  display: flex;
+  gap: 8px;
+  max-width: 100%;
+  padding: 4px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.ds-lightbox__thumb {
+  position: relative;
+  flex: none;
+  width: 56px;
+  height: 42px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--ds-radius-sm, 6px);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.ds-lightbox__thumb:hover { opacity: 0.85; }
+.ds-lightbox__thumb.is-active {
+  opacity: 1;
+  border-color: #fff;
+}
+.ds-lightbox__thumb:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.ds-lightbox__thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ds-lightbox__thumb-badge {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 640px) {
+  .ds-lightbox__nav { width: 40px; height: 40px; margin: 0 4px; }
+  .ds-lightbox__thumb { width: 48px; height: 36px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-lightbox,
+  .ds-lightbox__media { animation: none; }
+}

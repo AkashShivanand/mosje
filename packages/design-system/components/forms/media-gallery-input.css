@@ -1,0 +1,246 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — MediaGalleryInput (multi image/video upload)
+   Thumbnail grid + add tile. Token-driven; dark-mode safe.
+   ============================================================================ */
+
+.ds-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--ds-font-sans);
+}
+
+.ds-gallery__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Empty state: full-width drop-zone (unified with MediaUpload) ---- */
+.ds-gallery__dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 132px;
+  padding: 24px 16px;
+  text-align: center;
+  background-color: var(--ds-surface);
+  border: 2px dashed var(--ds-border-strong);
+  border-radius: var(--ds-radius-lg);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ds-gallery__dropzone:hover:not(:disabled) {
+  border-color: var(--ds-primary);
+}
+
+.ds-gallery__dropzone:focus-visible {
+  outline: none;
+  border-color: var(--ds-primary);
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+.ds-gallery__dropzone.is-dragover {
+  border-color: var(--ds-primary);
+  background-color: var(--ds-primary-tonal);
+}
+
+.ds-gallery__dropzone[aria-invalid="true"] {
+  border-color: var(--ds-danger);
+}
+
+.ds-gallery__dropzone:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.ds-gallery__dropzone-icon {
+  display: inline-flex;
+  color: var(--ds-ink-muted);
+}
+
+.ds-gallery__dropzone-prompt {
+  font-size: var(--ds-text-body-2, 14px);
+  line-height: var(--ds-leading-body-2, 1.4);
+  font-weight: 500;
+  color: var(--ds-ink);
+}
+
+.ds-gallery__dropzone-hint {
+  font-size: var(--ds-text-body-3, 12px);
+  line-height: var(--ds-leading-body-3, 1.4);
+  color: var(--ds-ink-muted);
+}
+
+/* ---- Filled state: thumbnail grid ---- */
+.ds-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px;
+}
+
+/* ---- Existing item ---- */
+.ds-gallery__item {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--ds-radius-md, 8px);
+  overflow: hidden;
+  background-color: var(--ds-surface-muted);
+  border: 1px solid var(--ds-border);
+}
+
+.ds-gallery__thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Video with no captured poster — neutral fill + film glyph. */
+.ds-gallery__thumb--video {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-ink-muted);
+  background-color: var(--ds-surface-muted);
+}
+
+.ds-gallery__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: rgba(8, 11, 20, 0.55);
+  color: #fff;
+  pointer-events: none;
+}
+
+.ds-gallery__remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(8, 11, 20, 0.6);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.ds-gallery__remove:hover { background: var(--ds-danger, #c0271a); }
+.ds-gallery__remove:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 1px;
+}
+
+.ds-gallery__name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 8px 6px 4px;
+  font-size: 10px;
+  line-height: 1.3;
+  color: #fff;
+  background: linear-gradient(to top, rgba(8, 11, 20, 0.78), transparent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Add tile ---- */
+.ds-gallery__add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  aspect-ratio: 4 / 3;
+  padding: 8px;
+  background-color: var(--ds-surface);
+  border: 2px dashed var(--ds-border-strong);
+  border-radius: var(--ds-radius-md, 8px);
+  color: var(--ds-ink-muted);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.ds-gallery__add:hover:not(:disabled) {
+  border-color: var(--ds-primary);
+  color: var(--ds-primary);
+}
+
+.ds-gallery__add.is-dragover {
+  border-color: var(--ds-primary);
+  background-color: var(--ds-primary-tonal);
+  color: var(--ds-primary);
+}
+
+.ds-gallery__add:focus-visible {
+  outline: none;
+  border-color: var(--ds-primary);
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+.ds-gallery__add:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.ds-gallery__add-label {
+  font-size: var(--ds-text-body-3, 12px);
+  font-weight: 600;
+}
+
+/* ---- Footer row ---- */
+.ds-gallery__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ds-gallery__hint {
+  font-size: var(--ds-text-body-3, 12px);
+  color: var(--ds-ink-muted);
+}
+
+.ds-gallery__count {
+  font-size: var(--ds-text-body-3, 12px);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-ink-muted);
+}
+
+.ds-gallery__error {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--ds-text-body-3, 12px);
+  color: var(--sa-color-status-dangerStrong, #a11d12);
+}

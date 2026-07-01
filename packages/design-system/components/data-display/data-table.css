@@ -174,6 +174,27 @@
   color: var(--ds-ink-muted);
 }
 
+/* ── Sticky right column (e.g. Action) ─────────────────────────────────────── */
+.ds-table__th.is-sticky-right,
+.ds-table__td.is-sticky-right {
+  position: sticky;
+  right: 0;
+  z-index: 1;
+  background-color: var(--ds-surface);
+  /* Soft left shadow signals the column is pinned */
+  box-shadow: -3px 0 8px -3px rgba(0, 0, 0, 0.10);
+}
+
+.ds-table__head .ds-table__th.is-sticky-right {
+  background-color: var(--ds-surface);
+  z-index: 2;
+}
+
+/* Keep the brandwash hover on sticky cells */
+.ds-table__row:hover .ds-table__td.is-sticky-right {
+  background-color: var(--ds-primary-50);
+}
+
 .ds-table__page-nav:focus-visible,
 .ds-table__page:focus-visible,
 .ds-table__pagesize-btn:focus-visible {

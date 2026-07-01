@@ -1,0 +1,95 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — SideSheet / Drawer
+   Right-anchored panel for multi-field forms, file-upload flows, and any
+   task where the user benefits from seeing the list context behind the form.
+   ============================================================================ */
+
+.ds-sheet__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: var(--ds-overlay, rgba(0, 0, 0, 0.4));
+}
+
+.ds-sheet {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--ds-surface);
+  box-shadow: -4px 0 32px rgba(0, 0, 0, 0.16);
+  z-index: 51;
+  font-family: var(--ds-font-sans);
+  animation: ds-sheet-in 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes ds-sheet-in {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+.ds-sheet--sm { width: min(400px, 100vw); }
+.ds-sheet--md { width: min(480px, 100vw); }
+.ds-sheet--lg { width: min(560px, 100vw); }
+
+.ds-sheet__header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--ds-line);
+}
+
+.ds-sheet__title {
+  margin: 0;
+  font-size: var(--ds-text-title-2, 18px);
+  font-weight: 700;
+  color: var(--ds-ink);
+  line-height: 1.3;
+}
+
+.ds-sheet__close {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--ds-radius-sm, 6px);
+  background: transparent;
+  color: var(--ds-ink-muted);
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.ds-sheet__close:hover {
+  background-color: var(--ds-surface-muted);
+  color: var(--ds-ink);
+}
+
+.ds-sheet__close:focus-visible {
+  outline: 2px solid var(--ds-primary-ring, var(--ds-primary));
+  outline-offset: 2px;
+}
+
+.ds-sheet__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.ds-sheet__footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--ds-line);
+  background-color: var(--ds-surface);
+}

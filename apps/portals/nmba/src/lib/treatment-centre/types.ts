@@ -135,9 +135,23 @@ export type Beneficiary = {
 /** A peer volunteer working under a CPLI peer educator. */
 export type Volunteer = {
   name: string;
+  age: number;
   phone: string;
   status: "Active" | "Inactive";
   joinedOn: string;
+};
+
+/** CPLI training session attended by a peer educator's volunteer group. */
+export type TrainingRecord = {
+  id: string;
+  /** ISO date string (YYYY-MM-DD). */
+  date: string;
+  numberOfVolunteers: number;
+  location: string;
+  detailsAndOutcomes: string;
+  remarks?: string;
+  /** Data-URLs of uploaded training photos (1 required by the form). */
+  photoUrls?: string[];
 };
 
 /** CPLI peer-educator record. */
@@ -150,9 +164,15 @@ export type PeerEducator = {
    * Roster of volunteers. Optional: seeded educators omit it and a stable
    * roster is derived from `numberOfVolunteers`; once volunteers are uploaded
    * for an educator this holds the real (persisted) list so the upload and the
-   * "View Volunteers" screen stay in sync within the session.
+   * "View Volunteers" screen stays in sync within the session.
    */
   volunteers?: Volunteer[];
+  /**
+   * Training records. Optional: seeded educators omit it and a stable list is
+   * derived from the educator id; once records are added/edited this holds the
+   * live list so the training sub-page stays in sync within the session.
+   */
+  trainings?: TrainingRecord[];
 };
 
 /** Follow-up visit row (IRCA + ODIC). */
@@ -225,6 +245,17 @@ export type SaptahEventType =
   | "International Day Against Drug Abuse and Illicit Trafficking"
   | "Nasha Mukt Bharat Saptah 2026";
 
+/** A single image or video attached to a Saptah activity. */
+export type SaptahMedia = {
+  /** Path/URL (seed data) or data-URL (in-session uploads). */
+  url: string;
+  type: "image" | "video";
+  /** Caption / original file name. */
+  name?: string;
+  /** Poster frame for videos. */
+  poster?: string;
+};
+
 /** Nasha Mukt Bharat Saptah 2026 / awareness activity row (shared). */
 export type SaptahEvent = {
   id: string;
@@ -239,9 +270,11 @@ export type SaptahEvent = {
   femaleParticipants: number;
   numEducationalInstitutions: number;
   isCompleted: "Completed" | "Not Completed";
-  mediaUrl?: string;
+  /** Attached images/videos — an activity can have several. */
+  media?: SaptahMedia[];
   latitude?: string;
   longitude?: string;
+  createdAt?: string;
 };
 
 /** The authenticated treatment-centre session (stored in a cookie). */

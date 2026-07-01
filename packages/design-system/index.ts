@@ -70,6 +70,8 @@ export { Wizard, ReviewSection, ReviewItem } from "./components/forms/wizard";
 export type { WizardProps } from "./components/forms/wizard";
 export { MediaUpload } from "./components/forms/media-upload";
 export type { MediaUploadProps } from "./components/forms/media-upload";
+export { MediaGalleryInput } from "./components/forms/media-gallery-input";
+export type { MediaGalleryInputProps, GalleryMediaItem, GalleryMediaType } from "./components/forms/media-gallery-input";
 
 // ---- Components: Feedback ----------------------------------------------------
 export { Alert } from "./components/feedback/alert";
@@ -82,6 +84,10 @@ export { Tabs, TabPanel } from "./components/navigation/tabs";
 export type { TabsProps, TabDef } from "./components/navigation/tabs";
 export { Modal } from "./components/feedback/modal";
 export type { ModalProps, ModalSize } from "./components/feedback/modal";
+export { SideSheet } from "./components/feedback/side-sheet";
+export type { SideSheetProps, SideSheetSize } from "./components/feedback/side-sheet";
+export { Lightbox } from "./components/feedback/lightbox";
+export type { LightboxProps, LightboxItem, LightboxMediaType } from "./components/feedback/lightbox";
 export { ToastProvider, useToast } from "./components/feedback/toast";
 export type { ToastVariant } from "./components/feedback/toast";
 
