@@ -42,10 +42,10 @@ Also in force:
   `IndiaMap`) — dependency-free, token-driven, theme-aware, accessible SVG, with
   `ChartCard`/`DashboardGrid`/`KpiRow`/`FilterBar`/`SegmentedControl` for
   dashboard composition (`components/data-display/charts/` + `components/dashboard/`);
-  `Modal`, `Stepper`,
+  `Modal`, `SideSheet` (right-anchored drawer), `Lightbox` (mixed image/video gallery viewer), `Stepper`,
   `ToastProvider`/`useToast`, `Alert`, `Badge`, `Loader`, `EmptyState`
   (feedback); `FormSection`, `FormCard`, `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`,
-  `MediaUpload` (file/image upload) and the input atoms (forms); `SiteHeader`, `SidebarNav`, `Footer`,
+  `MediaUpload` (single file/image upload), `MediaGalleryInput` (multi image/video upload) and the input atoms (forms); `SiteHeader`, `SidebarNav`, `Footer`,
   `AppSwitcher`, `Tabs`/`TabPanel` (navigation); `PortalLoginShell` (auth). Tables, modals, toasts,
   tabs, charts and dashboards were previously hand-rolled per portal — always reuse these.
   Chart geometry for `IndiaMap` is generated — see

@@ -99,55 +99,63 @@ export function TCListPage<T extends Record<string, unknown>>({
 
   return (
     <div className="flex flex-col gap-4">
+
+      {/* Navy title bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-navy px-5 py-3.5 text-white">
         <h1 className="text-lg font-bold">{title}</h1>
         {action}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleCopy}
-            aria-label={`Copy ${title} table to clipboard`}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-semibold text-ink-muted hover:bg-surface-muted"
-          >
-            <Copy className="h-3.5 w-3.5" aria-hidden /> Copy
-          </button>
-          <button
-            type="button"
-            onClick={() => handleDownload("xls")}
-            aria-label={`Export ${title} as an Excel spreadsheet`}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-semibold text-ink-muted hover:bg-surface-muted"
-          >
-            <FileSpreadsheet className="h-3.5 w-3.5" aria-hidden /> Excel
-          </button>
-          <button
-            type="button"
-            onClick={() => handleDownload("csv")}
-            aria-label={`Export ${title} as CSV`}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-semibold text-ink-muted hover:bg-surface-muted"
-          >
-            <FileText className="h-3.5 w-3.5" aria-hidden /> CSV
-          </button>
-        </div>
-        <div className="w-full max-w-xs">
-          <Search
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search…"
-            aria-label={`Search ${title}`}
-          />
-        </div>
-      </div>
+      {/* Table card — white card with shadow, matching the training-page pattern */}
+      <div className="overflow-hidden rounded-xl bg-white shadow-md">
 
-      <DataTable
-        columns={columns}
-        data={filtered}
-        total={filtered.length}
-        caption={title}
-        emptyLabel={query.trim() ? `No results for “${query}”.` : emptyLabel}
-      />
+        {/* Toolbar: search left · export right */}
+        <div className="flex flex-wrap items-center gap-3 border-b border-line px-4 py-3">
+          <div className="flex-1 min-w-0 max-w-xs">
+            <Search
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search..."
+              aria-label={`Search ${title}`}
+            />
+          </div>
+          <div className="ml-auto flex items-center gap-1">
+            <button
+              type="button"
+              onClick={handleCopy}
+              aria-label={`Copy ${title} table to clipboard`}
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
+            >
+              <Copy className="h-3.5 w-3.5" aria-hidden /> Copy
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDownload("xls")}
+              aria-label={`Export ${title} as an Excel spreadsheet`}
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
+            >
+              <FileSpreadsheet className="h-3.5 w-3.5" aria-hidden /> Excel
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDownload("csv")}
+              aria-label={`Export ${title} as CSV`}
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
+            >
+              <FileText className="h-3.5 w-3.5" aria-hidden /> CSV
+            </button>
+          </div>
+        </div>
+
+        <DataTable
+          columns={columns}
+          data={filtered}
+          total={filtered.length}
+          caption={title}
+          emptyLabel={query.trim() ? `No results for "${query}".` : emptyLabel}
+        />
+
+      </div>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 // educator always renders the same volunteers and training history across
 // re-opens of the "View" dialogs within a session.
 
-import type { PeerEducator, Volunteer } from "./types";
+import type { PeerEducator, Volunteer, TrainingRecord } from "./types";
 
 /** Tiny deterministic string hash → unsigned int (FNV-1a style). */
 function hash(seed: string): number {
@@ -48,6 +48,7 @@ function volunteerFor(educatorId: string, i: number): Volunteer {
   const last = LAST_NAMES[(seed >>> 5) % LAST_NAMES.length];
   return {
     name: `${first} ${last}`,
+    age: 18 + (seed % 25), // 18–42 years
     phone: phoneFor(seed),
     // ~1 in 6 volunteers shown as Inactive for a believable mix.
     status: seed % 6 === 0 ? "Inactive" : "Active",
@@ -67,27 +68,74 @@ export function rosterFor(educator: PeerEducator): Volunteer[] {
   );
 }
 
-export type TrainingRecord = {
-  date: string;
-  topic: string;
-  duration: string;
-  trainer: string;
-};
+// ---------------------------------------------------------------------------
+// Training helpers — fields match the live NMBA portal
+// (Date · No. of volunteers attended · Location · Details & Outcomes · Remarks)
+// ---------------------------------------------------------------------------
 
-const TRAINING_TOPICS = [
-  { topic: "Substance Use Identification & Counselling", duration: "1 Day", trainer: "Dr. A. K. Sen" },
-  { topic: "Community Outreach & Nasha Mukt Campaigning", duration: "2 Days", trainer: "Ministry Resource Team" },
-  { topic: "Overdose Response & Naloxone Awareness", duration: "1 Day", trainer: "District Health Officer" },
-  { topic: "Peer Support & Relapse Prevention", duration: "3 Days", trainer: "State Nodal Trainer" },
-  { topic: "Record-keeping & Beneficiary Follow-up", duration: "1 Day", trainer: "NMBA Field Coordinator" },
+const TRAINING_LOCATIONS = [
+  "Community Health Centre, Vasant Kunj",
+  "NMBA Regional Office, New Delhi",
+  "District Hospital, Rohini",
+  "Primary Health Centre, Laxmi Nagar",
+  "NGO Training Hall, Janakpuri",
+  "Block Resource Centre, Dwarka",
+  "Civil Hospital, Sadar Bazar",
 ];
 
-/** A stable per-educator training history (2–3 sessions). */
+const TRAINING_DETAILS = [
+  "Session on substance use identification and early intervention counselling techniques for field-level peer educators.",
+  "Hands-on community outreach mapping and Nasha Mukt Bharat campaign coordination workshop.",
+  "Overdose response protocols and naloxone administration awareness programme for CPLI volunteers.",
+  "Peer support group facilitation techniques and relapse prevention strategies training.",
+  "Record-keeping systems, data entry procedures, and beneficiary follow-up best practices.",
+  "Refresher training on CPLI data collection tools and beneficiary registration process.",
+];
+
+const TRAINING_REMARKS = [
+  "Refresher session. All attendees cleared the assessment.",
+  "Field visit component included. Transport arranged by district office.",
+  "Ministry resource team facilitated. Resource materials distributed.",
+  "Practical demonstration by district health officer.",
+  "Follow-up quiz conducted. 92% participants scored above passing threshold.",
+  "Certificates of participation issued to all attendees.",
+];
+
+const PHOTO_COLORS = ["#0373df", "#1a6b3c", "#c45a1a", "#5e3ea1", "#00796b", "#7a2e2e"];
+
+/** Deterministic SVG data-URL standing in for an uploaded training photo. */
+function syntheticPhoto(seed: number): string {
+  const c = PHOTO_COLORS[seed % PHOTO_COLORS.length];
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='80' height='60'><rect width='80' height='60' fill='${c}'/><rect x='14' y='12' width='52' height='36' rx='3' fill='white' fill-opacity='0.15'/><circle cx='40' cy='29' r='10' fill='white' fill-opacity='0.35'/><circle cx='40' cy='29' r='5' fill='white' fill-opacity='0.55'/></svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+/** 1–3 deterministic synthetic photo data-URLs for a training record. */
+function syntheticPhotos(seed: number): string[] {
+  const count = 1 + (seed % 3); // 1, 2, or 3 photos
+  return Array.from({ length: count }, (_, i) => syntheticPhoto(seed + i * 7));
+}
+
+/**
+ * Resolve the training history for an educator. If records have been added/
+ * edited this session they are used as-is; otherwise a stable synthetic list
+ * of 2–3 sessions is generated from the educator id.
+ */
 export function trainingFor(educator: PeerEducator): TrainingRecord[] {
+  if (educator.trainings && educator.trainings.length > 0) return educator.trainings;
+
   const seed = hash(educator.id);
   const count = 2 + (seed % 2); // 2 or 3 sessions
   return Array.from({ length: count }, (_, i) => {
-    const t = TRAINING_TOPICS[(seed + i * 3) % TRAINING_TOPICS.length];
-    return { ...t, date: joinedFor(hash(`${educator.id}~t${i}`)) };
+    const s = hash(`${educator.id}~t${i}`);
+    return {
+      id: `${educator.id}-tr${i}`,
+      date: joinedFor(s),
+      numberOfVolunteers: 5 + (s % 20), // 5–24 attendees
+      location: TRAINING_LOCATIONS[s % TRAINING_LOCATIONS.length],
+      detailsAndOutcomes: TRAINING_DETAILS[s % TRAINING_DETAILS.length],
+      remarks: s % 4 !== 2 ? TRAINING_REMARKS[s % TRAINING_REMARKS.length] : undefined,
+      photoUrls: syntheticPhotos(s),
+    };
   }).sort((a, b) => a.date.localeCompare(b.date));
 }

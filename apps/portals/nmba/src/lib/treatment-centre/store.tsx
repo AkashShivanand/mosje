@@ -50,6 +50,8 @@ export type TCStore = {
   addAwareness: (programme: Omit<AwarenessProgramme, "id">) => void;
   addStaff: (staff: Omit<StaffMember, "id">) => void;
   addSaptahEvent: (event: Omit<SaptahEvent, "id">) => void;
+  updateSaptahEvent: (id: string, updates: Partial<SaptahEvent>) => void;
+  removeSaptahEvent: (id: string) => void;
 };
 
 const TCStoreContext = React.createContext<TCStore | null>(null);
@@ -112,7 +114,11 @@ export function TCStoreProvider({ children }: { children: React.ReactNode }) {
       addStaff: (stf) =>
         setStaff((prev) => [{ ...stf, id: nextId("st") }, ...prev]),
       addSaptahEvent: (event) =>
-        setSaptahEvents((prev) => [{ ...event, id: nextId("s") }, ...prev]),
+        setSaptahEvents((prev) => [{ ...event, id: nextId("s"), createdAt: new Date().toISOString().slice(0, 10) }, ...prev]),
+      updateSaptahEvent: (id, updates) =>
+        setSaptahEvents((prev) => prev.map((e) => (e.id === id ? { ...e, ...updates } : e))),
+      removeSaptahEvent: (id) =>
+        setSaptahEvents((prev) => prev.filter((e) => e.id !== id)),
     }),
     [patients, beneficiaries, peerEducators, followUps, readmissions, awareness, staff, activities, saptahEvents, nextId],
   );
