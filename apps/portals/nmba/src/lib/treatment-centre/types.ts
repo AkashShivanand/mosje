@@ -277,6 +277,35 @@ export type SaptahEvent = {
   createdAt?: string;
 };
 
+/** Album/category a centre photo belongs to. */
+export type CenterPhotoCategory =
+  | "Infrastructure"
+  | "Counselling & Therapy"
+  | "Awareness & Events"
+  | "Wellness & Recreation"
+  | "Staff & Team"
+  | "Community Outreach";
+
+/** A single photo or video in the Centre's media gallery. */
+export type CenterPhoto = {
+  id: string;
+  /** Path/URL (seed data) or data-URL (in-session uploads). */
+  url: string;
+  type: "image" | "video";
+  /** Poster frame for videos. */
+  poster?: string;
+  /** Human-readable caption / title. */
+  caption: string;
+  /** Album this item is grouped under. */
+  category: CenterPhotoCategory;
+  /** ISO date (yyyy-mm-dd) the photo was taken / uploaded. */
+  date: string;
+  /** Role or name of the uploader. */
+  uploadedBy?: string;
+  /** Pinned as a highlight / cover image. */
+  featured?: boolean;
+};
+
 /** The authenticated treatment-centre session (stored in a cookie). */
 export type TCSession = {
   projectId: string;

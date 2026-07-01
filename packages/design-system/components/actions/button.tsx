@@ -3,7 +3,12 @@ import { cn } from "../../utils/cn";
 import "./button.css";
 
 export type ButtonVariant = "primary" | "success" | "danger";
-export type ButtonAppearance = "filled" | "outlined" | "text" | "tonal";
+/**
+ * `inverse`/`inverseOutlined` are for placing a button directly on a solid
+ * brand-colour surface (e.g. a navy page header) — the only two patterns
+ * every portal was otherwise hand-rolling via a `className` override.
+ */
+export type ButtonAppearance = "filled" | "outlined" | "text" | "tonal" | "inverse" | "inverseOutlined";
 export type ButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps

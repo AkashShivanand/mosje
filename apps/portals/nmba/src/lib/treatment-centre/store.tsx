@@ -15,6 +15,7 @@ import type {
   StaffMember,
   CentreActivity,
   SaptahEvent,
+  CenterPhoto,
 } from "./types";
 import {
   SEED_PATIENTS,
@@ -26,6 +27,7 @@ import {
   SEED_STAFF,
   SEED_ACTIVITIES,
   SEED_SAPTAH_EVENTS,
+  SEED_CENTER_PHOTOS,
 } from "./mock-data";
 
 export type TCStore = {
@@ -52,6 +54,10 @@ export type TCStore = {
   addSaptahEvent: (event: Omit<SaptahEvent, "id">) => void;
   updateSaptahEvent: (id: string, updates: Partial<SaptahEvent>) => void;
   removeSaptahEvent: (id: string) => void;
+  centerPhotos: CenterPhoto[];
+  addCenterPhotos: (photos: Omit<CenterPhoto, "id">[]) => void;
+  updateCenterPhoto: (id: string, updates: Partial<CenterPhoto>) => void;
+  removeCenterPhotos: (ids: string[]) => void;
 };
 
 const TCStoreContext = React.createContext<TCStore | null>(null);
@@ -73,6 +79,7 @@ export function TCStoreProvider({ children }: { children: React.ReactNode }) {
   // Activities are seed-only (no in-session mutation) — no setter needed.
   const [activities] = React.useState<CentreActivity[]>(SEED_ACTIVITIES);
   const [saptahEvents, setSaptahEvents] = React.useState<SaptahEvent[]>(SEED_SAPTAH_EVENTS);
+  const [centerPhotos, setCenterPhotos] = React.useState<CenterPhoto[]>(SEED_CENTER_PHOTOS);
 
   const value = React.useMemo<TCStore>(
     () => ({
@@ -85,6 +92,7 @@ export function TCStoreProvider({ children }: { children: React.ReactNode }) {
       staff,
       activities,
       saptahEvents,
+      centerPhotos,
       addPatient: (patient) =>
         setPatients((prev) => [{ ...patient, id: nextId("p") }, ...prev]),
       updatePatient: (id, updates) =>
@@ -119,8 +127,17 @@ export function TCStoreProvider({ children }: { children: React.ReactNode }) {
         setSaptahEvents((prev) => prev.map((e) => (e.id === id ? { ...e, ...updates } : e))),
       removeSaptahEvent: (id) =>
         setSaptahEvents((prev) => prev.filter((e) => e.id !== id)),
+      addCenterPhotos: (photos) =>
+        setCenterPhotos((prev) => [
+          ...photos.map((p) => ({ ...p, id: nextId("cp") })),
+          ...prev,
+        ]),
+      updateCenterPhoto: (id, updates) =>
+        setCenterPhotos((prev) => prev.map((p) => (p.id === id ? { ...p, ...updates } : p))),
+      removeCenterPhotos: (ids) =>
+        setCenterPhotos((prev) => prev.filter((p) => !ids.includes(p.id))),
     }),
-    [patients, beneficiaries, peerEducators, followUps, readmissions, awareness, staff, activities, saptahEvents, nextId],
+    [patients, beneficiaries, peerEducators, followUps, readmissions, awareness, staff, activities, saptahEvents, centerPhotos, nextId],
   );
 
   return <TCStoreContext.Provider value={value}>{children}</TCStoreContext.Provider>;

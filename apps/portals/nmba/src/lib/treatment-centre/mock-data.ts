@@ -11,6 +11,7 @@ import type {
   StaffMember,
   CentreActivity,
   SaptahEvent,
+  CenterPhoto,
 } from "./types";
 
 // =============================================================================
@@ -1077,5 +1078,103 @@ export const SEED_SAPTAH_EVENTS: SaptahEvent[] = [
       { url: SAMPLE_VIDEO, type: "video", name: "Inter-departmental convergence meet", poster: POSTER_CROWD },
       { url: IMG("photo-1540575467063-178a50c2df87"), type: "image", name: "Joint review session" },
     ],
+  },
+];
+
+// =============================================================================
+// Centre Photo Gallery — synthetic media library grouped into albums
+// =============================================================================
+
+export const SEED_CENTER_PHOTOS: CenterPhoto[] = [
+  // ---- Infrastructure ----
+  {
+    id: "cp1", url: IMG("photo-1497366216548-37526070297c"), type: "image",
+    caption: "Main reception & entrance", category: "Infrastructure",
+    date: "2026-06-02", uploadedBy: "Centre Admin", featured: true,
+  },
+  {
+    id: "cp2", url: IMG("photo-1497366811353-6870744d04b2"), type: "image",
+    caption: "Counselling room", category: "Infrastructure", date: "2026-06-02",
+    uploadedBy: "Centre Admin",
+  },
+  {
+    id: "cp3", url: IMG("photo-1519494026892-80bbd2d6fd0d"), type: "image",
+    caption: "In-patient dormitory wing", category: "Infrastructure", date: "2026-06-03",
+    uploadedBy: "Centre Admin",
+  },
+  // ---- Counselling & Therapy ----
+  {
+    id: "cp4", url: IMG("photo-1573497019940-1c28c88b4f3e"), type: "image",
+    caption: "One-on-one counselling session", category: "Counselling & Therapy",
+    date: "2026-06-08", uploadedBy: "Dr. Meera Nair", featured: true,
+  },
+  {
+    id: "cp5", url: IMG("photo-1543269865-cbf427effbad"), type: "image",
+    caption: "Group therapy circle", category: "Counselling & Therapy", date: "2026-06-09",
+    uploadedBy: "Dr. Meera Nair",
+  },
+  {
+    id: "cp6", url: SAMPLE_VIDEO, type: "video", poster: IMG("photo-1573497019940-1c28c88b4f3e"),
+    caption: "Family counselling — walkthrough", category: "Counselling & Therapy",
+    date: "2026-06-10", uploadedBy: "Dr. Meera Nair",
+  },
+  // ---- Awareness & Events ----
+  {
+    id: "cp7", url: IMG("photo-1492684223066-81342ee5ff30"), type: "image",
+    caption: "Nasha Mukt Bharat awareness rally", category: "Awareness & Events",
+    date: "2026-06-26", uploadedBy: "Outreach Team", featured: true,
+  },
+  {
+    id: "cp8", url: IMG("photo-1511578314322-379afb476865"), type: "image",
+    caption: "Community pledge gathering", category: "Awareness & Events", date: "2026-06-26",
+    uploadedBy: "Outreach Team",
+  },
+  {
+    id: "cp9", url: IMG("photo-1540575467063-178a50c2df87"), type: "image",
+    caption: "Awareness seminar — keynote", category: "Awareness & Events", date: "2026-06-27",
+    uploadedBy: "Outreach Team",
+  },
+  {
+    id: "cp10", url: SAMPLE_VIDEO, type: "video", poster: POSTER_CROWD,
+    caption: "Street play (Nukkad Natak) highlights", category: "Awareness & Events",
+    date: "2026-06-28", uploadedBy: "Outreach Team",
+  },
+  // ---- Wellness & Recreation ----
+  {
+    id: "cp11", url: IMG("photo-1518611012118-696072aa579a"), type: "image",
+    caption: "Morning yoga & meditation", category: "Wellness & Recreation",
+    date: "2026-06-15", uploadedBy: "Wellness Coach",
+  },
+  {
+    id: "cp12", url: IMG("photo-1517649763962-0c623066013b"), type: "image",
+    caption: "Marathon for a drug-free India", category: "Wellness & Recreation",
+    date: "2026-06-20", uploadedBy: "Wellness Coach",
+  },
+  {
+    id: "cp13", url: IMG("photo-1551836022-d5d88e9218df"), type: "image",
+    caption: "Recreation & indoor games", category: "Wellness & Recreation", date: "2026-06-21",
+    uploadedBy: "Wellness Coach",
+  },
+  // ---- Staff & Team ----
+  {
+    id: "cp14", url: IMG("photo-1522071820081-009f0129c71c"), type: "image",
+    caption: "Centre staff & volunteer team", category: "Staff & Team", date: "2026-06-05",
+    uploadedBy: "Centre Admin", featured: true,
+  },
+  {
+    id: "cp15", url: IMG("photo-1600880292203-757bb62b4baf"), type: "image",
+    caption: "Peer-educator training workshop", category: "Staff & Team", date: "2026-06-12",
+    uploadedBy: "Centre Admin",
+  },
+  // ---- Community Outreach ----
+  {
+    id: "cp16", url: IMG("photo-1488521787991-ed7bbaae773c"), type: "image",
+    caption: "School outreach programme", category: "Community Outreach", date: "2026-06-18",
+    uploadedBy: "Outreach Team",
+  },
+  {
+    id: "cp17", url: IMG("photo-1530549387789-4c1017266635"), type: "image",
+    caption: "Village door-to-door drive", category: "Community Outreach", date: "2026-06-19",
+    uploadedBy: "Outreach Team",
   },
 ];

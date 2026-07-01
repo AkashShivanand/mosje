@@ -75,6 +75,8 @@
 .ds-modal__footer {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  /* Wider than the default 8px control gap — confirm/destructive actions sit
+     here, and a mis-tap between Cancel/Delete is costlier than elsewhere. */
+  gap: 12px;
   padding: 0 24px 24px;
 }

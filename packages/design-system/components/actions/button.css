@@ -168,6 +168,54 @@
 }
 
 /* --------------------------------------------------------------------------
+   Appearance: inverse / inverseOutlined
+   For a button placed directly on a solid brand-colour surface (e.g. a navy
+   page header) — replaces the className overrides every portal was hand-rolling.
+   -------------------------------------------------------------------------- */
+.ds-btn--inverse {
+  background-color: #fff;
+  color: var(--_color);
+  border-color: #fff;
+}
+
+.ds-btn--inverse:hover {
+  background-color: color-mix(in srgb, var(--_color) 8%, white);
+  border-color: color-mix(in srgb, var(--_color) 8%, white);
+}
+
+.ds-btn--inverse:active {
+  background-color: color-mix(in srgb, var(--_color) 14%, white);
+  border-color: color-mix(in srgb, var(--_color) 14%, white);
+}
+
+.ds-btn--inverseOutlined {
+  background-color: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.ds-btn--inverseOutlined:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.ds-btn--inverseOutlined:active {
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+.ds-btn--inverse:focus-visible,
+.ds-btn--inverseOutlined:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55);
+}
+
+.ds-btn--inverseOutlined:disabled:hover,
+.ds-btn--inverseOutlined[aria-disabled="true"]:hover,
+.ds-btn--inverseOutlined:disabled:active,
+.ds-btn--inverseOutlined[aria-disabled="true"]:active {
+  background-color: transparent;
+}
+
+/* --------------------------------------------------------------------------
    Disabled (overrides every appearance; no hover/active effects)
    -------------------------------------------------------------------------- */
 .ds-btn:disabled,
