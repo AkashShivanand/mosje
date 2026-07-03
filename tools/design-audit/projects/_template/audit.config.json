@@ -1,0 +1,35 @@
+{
+  "project": "REPLACE_slug",
+  "portal": "REPLACE Human Name (env)",
+  "idPrefix": "XXX",
+  "figma": {
+    "fileKey": "REPLACE_figma_file_key",
+    "rootNode": "0:0",
+    "framesFile": "inputs/figma-frames.json",
+    "tokensFile": "inputs/tokens.json",
+    "urlTemplate": "https://www.figma.com/design/REPLACE_figma_file_key/Name?node-id={node}"
+  },
+  "capture": { "width": 1440, "dpr": 2, "waitMs": 1800 },
+  "live": {
+    "auth": {
+      "type": "form",
+      "loginPath": "/login",
+      "userField": "input[name='username']",
+      "passField": "input[name='password']",
+      "submit": "button[type='submit']",
+      "loginMarker": "/login"
+    },
+    "roles": [
+      { "name": "public", "base": "https://REPLACE.example.com", "auth": "none" },
+      { "name": "admin",  "base": "https://REPLACE.example.com", "user": "admin@example.com" }
+    ],
+    "skipRoutes": ["/login", "/logout", "/terms-and-conditions", "/privacy-policy"]
+  },
+  "baseline": {
+    "mode": "tokens",
+    "_modes": "tokens (strict, vs inputs/tokens.json) | derived (from Figma variables) | internal (no DS — flag outliers)",
+    "source": "inputs/tokens.json"
+  },
+  "manifest": "screen-manifest.yaml",
+  "notes": "Passwords live in secrets.json (gitignored), keyed by role name. Never commit them."
+}
