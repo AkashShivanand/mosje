@@ -190,12 +190,20 @@ elsewhere it is static. `line-height`/`paragraph-spacing` use the same clamp for
 
 ## 9. Sequenced rollout
 
-1. **Approve this spec** (esp. §3 Website mobile floors + §4 display LH tightening).
-2. **Code first** — implement in `@mosje/tokens` behind the new `data-surface` axis; verify build + contract tests.
-   Reversible, no external asset touched.
-3. **Wire consumers** — `data-surface="portal"` on portal shells; smoke-test website + one portal.
-4. **Figma** — restructure the SAMAVESH `Typography` collection to match the shipped code; re-publish.
-5. **Reconcile** Portal DS + UX4G DS files to point at / match SAMAVESH (they're the same system; UX4G ≡ SAMAVESH today).
+1. [x] **Approve spec** — decisions locked (surfaces, clamp 360→1280, 6 Figma modes, values).
+2. [x] **Code** — `@mosje/tokens` `font.role.*` restructured to two-surface `{min,max}`; emitter rewritten to emit
+   `clamp()` (Website in `:root`, Portal under `[data-surface="portal"]`); build green, all 5 contract tests pass;
+   `design.md` updated + `Last reviewed` bumped to v1.6.0.
+3. [x] **Wire consumers** — `data-surface="portal"` set on nmba / pm-ajay / scw / smile-admin `<html>` roots
+   (website + hub stay default Website surface).
+4. [ ] **QA** — visual smoke-test website + one portal at desktop/tablet/mobile widths (fluid scaling + correct surface).
+5. [ ] **Docs portal** — update `apps/docs` typography foundation page + `nav.ts` (keeps `llms.txt` in sync).
+6. [x] **Figma** — SAMAVESH `Typography` collection restructured **in-place** (Pro plan: no branching):
+   6 `Surface × Breakpoint` modes; family/weight renamed semantic + `font-weight/bold` added; 21 `font-size`,
+   21 `line-height`, 10 `letter-spacing`, 21 `paragraph-spacing` role variables created with all 6 mode values;
+   21 text styles rebound (size/lh/letter-spacing/paragraph-spacing); raw `Font Size/0–14` hidden. Validated
+   via multi-mode read-back. **Manual follow-ups:** (a) re-publish the library (UI action — not scriptable);
+   (b) optional `Website/…` + `Portal/…` text-style folders for Styles-panel users; (c) reconcile Portal DS + UX4G DS files.
 
 ## 10. Open items for sign-off
 - [x] **Website mobile scale** (§3/§6) — defined per best practice (display ceiling 40px, body held 16px).
@@ -204,6 +212,11 @@ elsewhere it is static. `line-height`/`paragraph-spacing` use the same clamp for
 - [x] **Designer-friendly / mobile type in Figma** (§11) — resolved via 6 combined Surface×Breakpoint modes.
 - [x] **`clamp()` bounds confirmed:** `Wmin = 360px`, `Wmax = 1280px`.
 - [x] **Figma structure confirmed:** 6 combined `Surface × Breakpoint` modes (single Typography collection).
+- [x] **Post-audit hardening (done):** hyphenated all code role names to Portal-DS style (`--ds-type-display-1-*`,
+   was `display1`); added `-para` (paragraph-spacing, 21) + `-tracking` (letter-spacing, 10 incl. grouped
+   heading/title/body/label) fluid props so code ↔ SAMAVESH Figma are at **full token parity**. Aliases kept for
+   back-compat; snapshot unchanged (resolved values identical); docs page + design.md updated. Property suffixes stay
+   in the code's abbreviated style (`-size/-lh/-para/-tracking`) matching the existing `-lh`.
 - [ ] Retire raw `Font Size/0…14` entirely, or keep as hidden primitive ladder. *(Default: keep as hidden primitives during migration, drop from public API.)*
 - [ ] Tablet values: auto-interpolate (round midpoint) or hand-tune per role. *(Default: auto-interpolate, round to nearest even px.)*
 

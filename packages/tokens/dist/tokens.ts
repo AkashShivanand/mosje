@@ -444,7 +444,8 @@ export const tokens = {
     "weight": {
       "regular": 400,
       "medium": 500,
-      "semibold": 600
+      "semibold": 600,
+      "bold": 700
     },
     "size": {
       "100": "11px",
@@ -464,90 +465,123 @@ export const tokens = {
       "devanagari": "1.7"
     },
     "role": {
-      "display1": {
+      "display-1": {
         "size": "80px",
-        "lh": "88px"
+        "lh": "88px",
+        "para": "32px"
       },
-      "display2": {
+      "display-2": {
         "size": "72px",
-        "lh": "80px"
+        "lh": "80px",
+        "para": "32px"
       },
-      "display3": {
+      "display-3": {
         "size": "64px",
-        "lh": "72px"
+        "lh": "72px",
+        "para": "24px"
       },
-      "display4": {
+      "display-4": {
         "size": "56px",
-        "lh": "64px"
+        "lh": "64px",
+        "para": "24px"
       },
-      "display5": {
+      "display-5": {
         "size": "48px",
-        "lh": "56px"
+        "lh": "56px",
+        "para": "20px"
       },
-      "display6": {
+      "display-6": {
         "size": "40px",
-        "lh": "48px"
+        "lh": "48px",
+        "para": "20px"
       },
-      "headline1": {
+      "headline-1": {
         "size": "40px",
-        "lh": "48px"
+        "lh": "48px",
+        "para": "24px"
       },
-      "headline2": {
+      "headline-2": {
         "size": "32px",
-        "lh": "40px"
+        "lh": "40px",
+        "para": "24px"
       },
-      "headline3": {
+      "headline-3": {
         "size": "28px",
-        "lh": "32px"
+        "lh": "32px",
+        "para": "20px"
       },
-      "headline4": {
+      "headline-4": {
         "size": "24px",
-        "lh": "28px"
+        "lh": "28px",
+        "para": "20px"
       },
-      "headline5": {
+      "headline-5": {
         "size": "20px",
-        "lh": "24px"
+        "lh": "24px",
+        "para": "16px"
       },
-      "headline6": {
+      "headline-6": {
         "size": "16px",
-        "lh": "20px"
+        "lh": "20px",
+        "para": "16px"
       },
-      "title1": {
+      "title-1": {
         "size": "22px",
-        "lh": "28px"
+        "lh": "28px",
+        "para": "20px"
       },
-      "title2": {
+      "title-2": {
         "size": "16px",
-        "lh": "24px"
+        "lh": "24px",
+        "para": "16px"
       },
-      "title3": {
+      "title-3": {
         "size": "14px",
-        "lh": "20px"
+        "lh": "20px",
+        "para": "16px"
       },
-      "body1": {
+      "body-1": {
         "size": "16px",
-        "lh": "24px"
+        "lh": "24px",
+        "para": "16px"
       },
-      "body2": {
+      "body-2": {
         "size": "14px",
-        "lh": "20px"
+        "lh": "20px",
+        "para": "12px"
       },
-      "body3": {
+      "body-3": {
         "size": "12px",
-        "lh": "16px"
+        "lh": "16px",
+        "para": "12px"
       },
-      "label1": {
+      "label-1": {
         "size": "14px",
-        "lh": "20px"
+        "lh": "20px",
+        "para": "12px"
       },
-      "label2": {
+      "label-2": {
         "size": "12px",
-        "lh": "16px"
+        "lh": "16px",
+        "para": "8px"
       },
-      "label3": {
+      "label-3": {
         "size": "11px",
-        "lh": "16px"
+        "lh": "16px",
+        "para": "8px"
       }
+    },
+    "tracking": {
+      "display-1": "0px",
+      "display-2": "0px",
+      "display-3": "0px",
+      "display-4": "0px",
+      "display-5": "0px",
+      "display-6": "0px",
+      "heading": "0px",
+      "title": "0px",
+      "body": "0px",
+      "label": "0px"
     }
   },
   "shadow": {

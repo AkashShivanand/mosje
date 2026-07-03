@@ -2,9 +2,10 @@
 // The legacy block maps each old name to the new token it now derives from, so values
 // stay identical while the source of truth becomes the DTCG tokens.
 //
-// Responsive type: font.role.* tokens in primitive.json carry $extensions.responsive
-// with md (768px) and lg (1024px) breakpoint overrides. The formatter emits these as
-// --ds-type-{role}-{size|lh} variables in :root (mobile-first) with @media overrides.
+// Two-surface fluid type: font.role.* tokens carry $extensions.mosje.type.{website,portal}
+// with {min,max} bounds. The formatter emits --ds-type-{role}-{size|lh} as clamp(min@360px,
+// fluid, max@1280px) — the Website scale in :root (default) and the Portal scale under
+// [data-surface="portal"]. No @media breakpoints.
 
 export const LEGACY_DS_ALIASES = {
   "--ds-primary":       "--sa-color-action-primary-default",
@@ -190,63 +191,63 @@ export const LEGACY_DS_ALIASES = {
   "--ds-chart-region-empty":  "--sa-color-chart-regionEmpty",
   "--ds-chart-region-stroke": "--sa-color-chart-regionStroke",
 
-  // ── Type scale: now backed by responsive --ds-type-* variables ──────────────
-  // These preserve all existing --ds-text-* / --ds-leading-* callsites while
-  // making them responsive. --ds-type-* is defined below in :root (mobile base)
-  // and overridden in the @media blocks.
-  "--ds-text-display":   "--ds-type-display1-size",
-  "--ds-leading-display":"--ds-type-display1-lh",
-  "--ds-text-headline":  "--ds-type-headline1-size",
-  "--ds-leading-headline":"--ds-type-headline1-lh",
-  "--ds-text-title-1":   "--ds-type-headline2-size",
-  "--ds-leading-title-1":"--ds-type-headline2-lh",
-  "--ds-text-title-2":   "--ds-type-title1-size",
-  "--ds-leading-title-2":"--ds-type-title1-lh",
-  "--ds-text-body-1":    "--ds-type-body1-size",
-  "--ds-leading-body-1": "--ds-type-body1-lh",
-  "--ds-text-body-2":    "--ds-type-body2-size",
-  "--ds-leading-body-2": "--ds-type-body2-lh",
-  "--ds-text-body-3":    "--ds-type-body3-size",
-  "--ds-leading-body-3": "--ds-type-body3-lh",
-  "--ds-text-label-1":   "--ds-type-label1-size",
-  "--ds-leading-label-1":"--ds-type-label1-lh",
-  "--ds-text-label-3":   "--ds-type-label3-size",
-  "--ds-leading-label-3":"--ds-type-label3-lh",
+  // ── Type scale: backed by fluid --ds-type-* clamp() variables ───────────────
+  // These preserve all existing --ds-text-* / --ds-leading-* callsites. --ds-type-*
+  // is defined in :root as the Website surface and overridden under
+  // [data-surface="portal"]; both are fluid clamp() (no @media).
+  "--ds-text-display":   "--ds-type-display-1-size",
+  "--ds-leading-display":"--ds-type-display-1-lh",
+  "--ds-text-headline":  "--ds-type-headline-1-size",
+  "--ds-leading-headline":"--ds-type-headline-1-lh",
+  "--ds-text-title-1":   "--ds-type-headline-2-size",
+  "--ds-leading-title-1":"--ds-type-headline-2-lh",
+  "--ds-text-title-2":   "--ds-type-title-1-size",
+  "--ds-leading-title-2":"--ds-type-title-1-lh",
+  "--ds-text-body-1":    "--ds-type-body-1-size",
+  "--ds-leading-body-1": "--ds-type-body-1-lh",
+  "--ds-text-body-2":    "--ds-type-body-2-size",
+  "--ds-leading-body-2": "--ds-type-body-2-lh",
+  "--ds-text-body-3":    "--ds-type-body-3-size",
+  "--ds-leading-body-3": "--ds-type-body-3-lh",
+  "--ds-text-label-1":   "--ds-type-label-1-size",
+  "--ds-leading-label-1":"--ds-type-label-1-lh",
+  "--ds-text-label-3":   "--ds-type-label-3-size",
+  "--ds-leading-label-3":"--ds-type-label-3-lh",
 
   // Full responsive role set (new canonical names for all 21 roles)
-  "--ds-text-display1":   "--ds-type-display1-size",
-  "--ds-text-display2":   "--ds-type-display2-size",
-  "--ds-text-display3":   "--ds-type-display3-size",
-  "--ds-text-display4":   "--ds-type-display4-size",
-  "--ds-text-display5":   "--ds-type-display5-size",
-  "--ds-text-display6":   "--ds-type-display6-size",
-  "--ds-text-headline1":  "--ds-type-headline1-size",
-  "--ds-text-headline2":  "--ds-type-headline2-size",
-  "--ds-text-headline3":  "--ds-type-headline3-size",
-  "--ds-text-headline4":  "--ds-type-headline4-size",
-  "--ds-text-headline5":  "--ds-type-headline5-size",
-  "--ds-text-headline6":  "--ds-type-headline6-size",
-  "--ds-text-title1":     "--ds-type-title1-size",
-  "--ds-text-title2":     "--ds-type-title2-size",
-  "--ds-text-title3":     "--ds-type-title3-size",
-  "--ds-text-body1":      "--ds-type-body1-size",
-  "--ds-text-body2":      "--ds-type-body2-size",
-  "--ds-text-body3":      "--ds-type-body3-size",
-  "--ds-text-label1":     "--ds-type-label1-size",
-  "--ds-text-label2":     "--ds-type-label2-size",
-  "--ds-text-label3":     "--ds-type-label3-size",
-  "--ds-leading-display1":  "--ds-type-display1-lh",
-  "--ds-leading-display2":  "--ds-type-display2-lh",
-  "--ds-leading-display3":  "--ds-type-display3-lh",
-  "--ds-leading-headline1": "--ds-type-headline1-lh",
-  "--ds-leading-headline2": "--ds-type-headline2-lh",
-  "--ds-leading-headline3": "--ds-type-headline3-lh",
-  "--ds-leading-title1":    "--ds-type-title1-lh",
-  "--ds-leading-title2":    "--ds-type-title2-lh",
-  "--ds-leading-body1":     "--ds-type-body1-lh",
-  "--ds-leading-body2":     "--ds-type-body2-lh",
-  "--ds-leading-label1":    "--ds-type-label1-lh",
-  "--ds-leading-label2":    "--ds-type-label2-lh",
+  "--ds-text-display1":   "--ds-type-display-1-size",
+  "--ds-text-display2":   "--ds-type-display-2-size",
+  "--ds-text-display3":   "--ds-type-display-3-size",
+  "--ds-text-display4":   "--ds-type-display-4-size",
+  "--ds-text-display5":   "--ds-type-display-5-size",
+  "--ds-text-display6":   "--ds-type-display-6-size",
+  "--ds-text-headline1":  "--ds-type-headline-1-size",
+  "--ds-text-headline2":  "--ds-type-headline-2-size",
+  "--ds-text-headline3":  "--ds-type-headline-3-size",
+  "--ds-text-headline4":  "--ds-type-headline-4-size",
+  "--ds-text-headline5":  "--ds-type-headline-5-size",
+  "--ds-text-headline6":  "--ds-type-headline-6-size",
+  "--ds-text-title1":     "--ds-type-title-1-size",
+  "--ds-text-title2":     "--ds-type-title-2-size",
+  "--ds-text-title3":     "--ds-type-title-3-size",
+  "--ds-text-body1":      "--ds-type-body-1-size",
+  "--ds-text-body2":      "--ds-type-body-2-size",
+  "--ds-text-body3":      "--ds-type-body-3-size",
+  "--ds-text-label1":     "--ds-type-label-1-size",
+  "--ds-text-label2":     "--ds-type-label-2-size",
+  "--ds-text-label3":     "--ds-type-label-3-size",
+  "--ds-leading-display1":  "--ds-type-display-1-lh",
+  "--ds-leading-display2":  "--ds-type-display-2-lh",
+  "--ds-leading-display3":  "--ds-type-display-3-lh",
+  "--ds-leading-headline1": "--ds-type-headline-1-lh",
+  "--ds-leading-headline2": "--ds-type-headline-2-lh",
+  "--ds-leading-headline3": "--ds-type-headline-3-lh",
+  "--ds-leading-title1":    "--ds-type-title-1-lh",
+  "--ds-leading-title2":    "--ds-type-title-2-lh",
+  "--ds-leading-body1":     "--ds-type-body-1-lh",
+  "--ds-leading-body2":     "--ds-type-body-2-lh",
+  "--ds-leading-label1":    "--ds-type-label-1-lh",
+  "--ds-leading-label2":    "--ds-type-label-2-lh",
 };
 
 const val = (t) => (t.$value !== undefined ? t.$value : t.value);
@@ -266,7 +267,10 @@ function clampExpr(minPx, maxPx) {
   const r = (n) => Math.round(n * 1000) / 1000;
   const lo = Math.min(min, max);
   const hi = Math.max(min, max);
-  return `clamp(${lo}px, calc(${r(yInt)}px + ${r(slopeVw)}vw), ${hi}px)`;
+  const s = r(slopeVw);
+  // Avoid "+ -Nvw" (valid but fragile) — emit "- Nvw" for negative slopes.
+  const vwTerm = s < 0 ? `- ${Math.abs(s)}vw` : `+ ${s}vw`;
+  return `clamp(${lo}px, calc(${r(yInt)}px ${vwTerm}), ${hi}px)`;
 }
 
 /**
@@ -274,8 +278,9 @@ function clampExpr(minPx, maxPx) {
  * Website scale → :root (default surface); Portal scale → [data-surface="portal"].
  */
 function buildResponsiveType(dictionary) {
+  // font.role.<role>.{size|lh|para}  and  font.tracking.<key>  (letter-spacing)
   const roleTokens = dictionary.allTokens.filter(
-    (t) => t.path[0] === "font" && t.path[1] === "role"
+    (t) => t.path[0] === "font" && (t.path[1] === "role" || t.path[1] === "tracking")
   );
   if (!roleTokens.length) return { website: [], portal: [] };
 
@@ -283,8 +288,11 @@ function buildResponsiveType(dictionary) {
   const portal = [];
 
   for (const t of roleTokens) {
-    const [, , role, prop] = t.path; // font.role.display1.size
-    const cssVar = `--ds-type-${role}-${prop}`;
+    // role: --ds-type-<role>-<size|lh|para>  ·  tracking: --ds-type-<key>-tracking
+    const cssVar =
+      t.path[1] === "role"
+        ? `--ds-type-${t.path[2]}-${t.path[3]}`
+        : `--ds-type-${t.path[2]}-tracking`;
     const ty = t.original?.$extensions?.mosje?.type;
     const webExpr = ty?.website ? clampExpr(ty.website.min, ty.website.max) : val(t);
     const portalExpr = ty?.portal ? clampExpr(ty.portal.min, ty.portal.max) : webExpr;
@@ -300,7 +308,7 @@ export const legacyDsCss = {
   format: ({ dictionary }) => {
     // Exclude font.role.* from the --sa-* emission; they feed --ds-type-* instead.
     const regularTokens = dictionary.allTokens.filter(
-      (t) => !(t.path[0] === "font" && t.path[1] === "role")
+      (t) => !(t.path[0] === "font" && (t.path[1] === "role" || t.path[1] === "tracking"))
     );
     const lines = regularTokens.map(
       (t) => `  --sa-${t.path.join("-")}: ${val(t)};`

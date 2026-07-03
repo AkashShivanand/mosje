@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-07-02 · System version: v1.5.0 (Figma→code colour sync: full 50–900 ramps for secondary/neutral/success/danger/warning/info, mode-aware Blue-Light/Blue-Dark secondary+neutral, alpha/transparent tiers; danger-strong synced to Figma #B8382F)
+  Last reviewed: 2026-07-03 · System version: v1.6.1 (Typography: hyphenated Portal-DS role names — display-1…label-3; added -para (paragraph-spacing) + -tracking (letter-spacing) fluid props so code ↔ SAMAVESH Figma are at full parity. v1.6.0: two-surface fluid type via data-surface=website|portal, 21 role tokens as clamp(min@360px, fluid, max@1280px). v1.5.0: Figma→code colour sync, mode-aware Blue-Light/Blue-Dark, danger-strong #B8382F)
 -->
 
 # SAMAVESH Design System — Specification & AI Design Context
@@ -60,6 +60,9 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 | **Colour Mode** | `data-color-mode` | `blue-light` (default), `blue-dark` | Two peer brand colour modes (1:1 with the SAMAVESH Figma `Blue - Light` / `Blue - Dark` variable modes). Selects the whole mode-aware palette: **primary** (blue↔navy), **secondary** (saffron↔green), **neutral** greys (warm↔cool), and the primary/secondary/neutral **transparent** tiers. |
 | **Appearance** | `data-theme` | `light` (default/unset), `dark`, `hc` | Light theme, dark theme, or high-contrast (a11y). |
 | **Density** | `data-density` | `comfortable` (default/unset), `compact` | Controls padding, heights, and spatial density. |
+| **Surface** | `data-surface` | `website` (default/unset), `portal` | Selects the **typography scale**. `website` = the expressive editorial ramp (display-1 ≈ 80px); `portal` = the dense functional ramp (display-1 ≈ 56px). Same role token names in both; only the `--ds-type-*` values differ. Set `data-surface="portal"` on portal `<html>` roots; the website/hub stay default. Maps 1:1 to the SAMAVESH Figma `Website` / `Portal` type modes. |
+
+> **Surface is a type axis only.** `data-surface` swaps the fluid type scale (`--ds-type-*`), nothing else — colour still comes from `data-color-mode`/`data-theme`. All type is fluid `clamp()` between a 360px-viewport min and a 1280px max, so the two surfaces each scale smoothly; there are no type media-query breakpoints.
 
 > **Colour Mode ≠ Appearance.** `data-color-mode` (blue-light/blue-dark) and `data-theme` (light/dark/hc) are **independent axes**. `blue-dark` is NOT a dark UI theme — it keeps light surfaces and simply swaps the brand palette to navy/green/cool-grey (matching Figma's `Blue - Dark` mode). The actual dark/high-contrast surfaces live on `data-theme`. The two compose: e.g. `data-color-mode="blue-dark" data-theme="dark"` is the navy palette on dark a11y surfaces.
 
@@ -99,23 +102,33 @@ Use semantic tokens — never reference primitive `--sa-color-*` values directly
 
 - **Typeface**: Noto Sans (`var(--ds-font-sans)`) — non-negotiable across all English interfaces. Devanagari/Hindi uses `--sa-font-family-devanagari`.
 - **Line Length**: Body text and prose containers max-width `65ch`–`75ch` (`max-w-prose`). Never wider.
-- **Fluid Headings**: Display sizes use `clamp()` — letter-spacing floor `-0.04em` to prevent glyph compression.
+- **Fluid type**: Every role is `clamp(min, fluid, max)` — `min` at a 360px viewport, `max` at 1280px. No type media queries. Two surfaces (`data-surface`) supply different min/max: **Website** (expressive) vs **Portal** (dense).
 - **Text Wrapping**: Use `text-wrap: balance` on `h1`–`h3`; `text-wrap: pretty` on paragraphs to eliminate orphans.
 
 ### E. Type Scale Reference
 
-| Role | Tailwind token | Approx size | Line height | Weight | When to use |
-|------|---------------|-------------|-------------|--------|-------------|
-| Display | `--ds-text-display` | `clamp(2rem, 5vw, 3rem)` | 1.1 | 500 | Hero headings only |
-| Title 1 | `--ds-text-title-1` | `1.5rem` | 1.25 | 600 | Section headings, page titles |
-| Title 2 | `--ds-text-title-2` | `1.25rem` | 1.3 | 600 | Sub-section headings |
-| Headline | `--ds-text-headline` | `1.125rem` | 1.4 | 600 | Card titles, component headings |
-| Body 1 | `--ds-text-body-1` | `1rem` | 1.6 | 400 | Standard body text |
-| Body 2 | `--ds-text-body-2` | `0.875rem` | 1.5 | 400 | Secondary text, table cells |
-| Body 3 | `--ds-text-body-3` | `0.8125rem` | 1.4 | 400 | Captions, metadata |
-| Label 1 | `--ds-text-label-1` | `0.875rem` | 1.4 | 600 | Input labels, button text |
-| Label 2 | `--ds-text-label-2` | `0.8125rem` | 1.3 | 600 | Badge text, tags |
-| Label 3 | `--ds-text-label-3` | `0.75rem` | 1.2 | 700 | Table headers, caps labels |
+**21 responsive roles** with **hyphenated Portal-DS names** (`display-1…6`, `headline-1…6`, `title-1…3`,
+`body-1…3`, `label-1…3`), each exposed with four fluid properties:
+`--ds-type-<role>-size`, `-lh` (line-height), `-para` (paragraph-spacing), `-tracking` (letter-spacing),
+plus friendly aliases `--ds-text-<role>` / `--ds-leading-<role>`. Letter-spacing is also grouped for non-display
+tiers: `--ds-type-{heading,title,body,label}-tracking`. Values differ by **surface** — the table shows desktop
+(`max`) size; both surfaces scale fluidly to their 360px `min`. Full min/max tables live in
+`packages/tokens/src/primitive.json` (`font.role.*` + `font.tracking.*`) and
+`docs/specs/samavesh-typography-unification-spec.md`. Names match the SAMAVESH Figma library 1:1.
+
+| Role (sample) | Canonical token | Website max | Portal max | Weight | When to use |
+|------|---------------|:-----------:|:----------:|--------|-------------|
+| Display 1 | `--ds-type-display-1-size` | 80px | 56px | 500 | Hero headings only |
+| Headline 1 | `--ds-type-headline-1-size` | 40px | 32px | 600 | Major section headings |
+| Title 1 | `--ds-type-title-1-size` | 22px | 20px | 500 | Section headings, page titles |
+| Body 1 | `--ds-type-body-1-size` | 16px | 16px | 400 | Standard body text |
+| Body 2 | `--ds-type-body-2-size` | 14px | 14px | 400 | Secondary text, table cells |
+| Label 1 | `--ds-type-label-1-size` | 14px | 14px | 500 | Input labels, button text |
+| Label 3 | `--ds-type-label-3-size` | 11px | 11px | 500 | Table headers, caps labels |
+
+> **Surface selection:** the website & hub render the Website scale (default); portals set `data-surface="portal"`
+> on `<html>` to get the Portal scale. Legacy aliases (`--ds-text-display`, `--ds-text-title-1`, …) still resolve and
+> inherit the active surface automatically.
 
 ### F. Bilingual (English + Hindi) Usage
 

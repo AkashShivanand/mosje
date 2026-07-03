@@ -30,9 +30,9 @@ html {
 
 body { min-height: 100vh; overflow-x: hidden; }
 
-/* Typography defaults — display heading scales fluidly so it never overflows
-   small viewports (max = the --ds-text-display token; min ≈ 32px). */
-h1 { font-size: clamp(2rem, 1.1rem + 4vw, var(--ds-text-display)); line-height: 1.15; font-weight: 500; }
+/* Typography defaults — --ds-text-display is now itself a fluid clamp() token
+   (scales 360px→1280px per surface), so reference it directly — no outer clamp. */
+h1 { font-size: var(--ds-text-display); line-height: 1.15; font-weight: 500; }
 h2 { font-size: var(--ds-text-title-1);   line-height: 1.3;  font-weight: 600; }
 h3 { font-size: var(--ds-text-headline);  line-height: 1.4;  font-weight: 600; }
 h4 { font-size: var(--ds-text-body-1);    line-height: 1.5;  font-weight: 600; }

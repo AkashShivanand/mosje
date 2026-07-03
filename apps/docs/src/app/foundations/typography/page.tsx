@@ -10,30 +10,30 @@ export const metadata: Metadata = {
 };
 
 const RESPONSIVE_ROLES = [
-  { role: "display1",  mobile: "40px", tablet: "48px", desktop: "56px", lhM: "48px", lhT: "56px", lhD: "64px", usage: "Hero headings, landing banners." },
-  { role: "display2",  mobile: "32px", tablet: "40px", desktop: "48px", lhM: "40px", lhT: "48px", lhD: "56px", usage: "Section heroes, large promotional heads." },
-  { role: "display3",  mobile: "28px", tablet: "32px", desktop: "40px", lhM: "36px", lhT: "40px", lhD: "48px", usage: "Feature titles on editorial pages." },
-  { role: "display4",  mobile: "24px", tablet: "28px", desktop: "32px", lhM: "32px", lhT: "36px", lhD: "40px", usage: "Large content headings." },
-  { role: "display5",  mobile: "22px", tablet: "24px", desktop: "28px", lhM: "28px", lhT: "32px", lhD: "36px", usage: "Prominent page-level labels." },
-  { role: "display6",  mobile: "20px", tablet: "22px", desktop: "24px", lhM: "28px", lhT: "28px", lhD: "32px", usage: "Medium display, portal section titles." },
-  { role: "headline1", mobile: "24px", tablet: "28px", desktop: "32px", lhM: "32px", lhT: "36px", lhD: "40px", usage: "Primary page headings (h1 on content pages)." },
-  { role: "headline2", mobile: "20px", tablet: "24px", desktop: "28px", lhM: "28px", lhT: "32px", lhD: "36px", usage: "Section headings (h2)." },
-  { role: "headline3", mobile: "18px", tablet: "20px", desktop: "24px", lhM: "24px", lhT: "28px", lhD: "32px", usage: "Sub-section headings (h3), card titles." },
-  { role: "headline4", mobile: "16px", tablet: "18px", desktop: "20px", lhM: "24px", lhT: "24px", lhD: "28px", usage: "Minor headings (h4), panel titles." },
-  { role: "headline5", mobile: "15px", tablet: "16px", desktop: "18px", lhM: "20px", lhT: "24px", lhD: "24px", usage: "Small headings (h5), widget titles." },
-  { role: "headline6", mobile: "14px", tablet: "15px", desktop: "16px", lhM: "20px", lhT: "20px", lhD: "24px", usage: "Fine headings (h6), tightly nested sections." },
-  { role: "title1",    mobile: "16px", tablet: "18px", desktop: "20px", lhM: "24px", lhT: "24px", lhD: "28px", usage: "Dashboard panel headers, nav section labels." },
-  { role: "title2",    mobile: "15px", tablet: "16px", desktop: "18px", lhM: "20px", lhT: "24px", lhD: "24px", usage: "List headers, compact section titles." },
-  { role: "title3",    mobile: "14px", tablet: "15px", desktop: "16px", lhM: "20px", lhT: "20px", lhD: "24px", usage: "Sidebar titles, tertiary section labels." },
-  { role: "body1",     mobile: "14px", tablet: "15px", desktop: "16px", lhM: "20px", lhT: "24px", lhD: "24px", usage: "Default body copy for paragraphs." },
-  { role: "body2",     mobile: "13px", tablet: "14px", desktop: "14px", lhM: "20px", lhT: "20px", lhD: "20px", usage: "Secondary info, helper text, table cells." },
-  { role: "body3",     mobile: "13px", tablet: "14px", desktop: "13px", lhM: "20px", lhT: "20px", lhD: "20px", usage: "Captions, timestamps, fine print." },
+  { role: "display-1",  mobile: "40px", tablet: "48px", desktop: "56px", lhM: "48px", lhT: "56px", lhD: "64px", usage: "Hero headings, landing banners." },
+  { role: "display-2",  mobile: "32px", tablet: "40px", desktop: "48px", lhM: "40px", lhT: "48px", lhD: "56px", usage: "Section heroes, large promotional heads." },
+  { role: "display-3",  mobile: "28px", tablet: "32px", desktop: "40px", lhM: "36px", lhT: "40px", lhD: "48px", usage: "Feature titles on editorial pages." },
+  { role: "display-4",  mobile: "24px", tablet: "28px", desktop: "32px", lhM: "32px", lhT: "36px", lhD: "40px", usage: "Large content headings." },
+  { role: "display-5",  mobile: "22px", tablet: "24px", desktop: "28px", lhM: "28px", lhT: "32px", lhD: "36px", usage: "Prominent page-level labels." },
+  { role: "display-6",  mobile: "20px", tablet: "22px", desktop: "24px", lhM: "28px", lhT: "28px", lhD: "32px", usage: "Medium display, portal section titles." },
+  { role: "headline-1", mobile: "24px", tablet: "28px", desktop: "32px", lhM: "32px", lhT: "36px", lhD: "40px", usage: "Primary page headings (h1 on content pages)." },
+  { role: "headline-2", mobile: "20px", tablet: "24px", desktop: "28px", lhM: "28px", lhT: "32px", lhD: "36px", usage: "Section headings (h2)." },
+  { role: "headline-3", mobile: "18px", tablet: "20px", desktop: "24px", lhM: "24px", lhT: "28px", lhD: "32px", usage: "Sub-section headings (h3), card titles." },
+  { role: "headline-4", mobile: "16px", tablet: "18px", desktop: "20px", lhM: "24px", lhT: "24px", lhD: "28px", usage: "Minor headings (h4), panel titles." },
+  { role: "headline-5", mobile: "15px", tablet: "16px", desktop: "18px", lhM: "20px", lhT: "24px", lhD: "24px", usage: "Small headings (h5), widget titles." },
+  { role: "headline-6", mobile: "14px", tablet: "15px", desktop: "16px", lhM: "20px", lhT: "20px", lhD: "24px", usage: "Fine headings (h6), tightly nested sections." },
+  { role: "title-1",    mobile: "16px", tablet: "18px", desktop: "20px", lhM: "24px", lhT: "24px", lhD: "28px", usage: "Dashboard panel headers, nav section labels." },
+  { role: "title-2",    mobile: "15px", tablet: "16px", desktop: "18px", lhM: "20px", lhT: "24px", lhD: "24px", usage: "List headers, compact section titles." },
+  { role: "title-3",    mobile: "14px", tablet: "15px", desktop: "16px", lhM: "20px", lhT: "20px", lhD: "24px", usage: "Sidebar titles, tertiary section labels." },
+  { role: "body-1",     mobile: "14px", tablet: "15px", desktop: "16px", lhM: "20px", lhT: "24px", lhD: "24px", usage: "Default body copy for paragraphs." },
+  { role: "body-2",     mobile: "13px", tablet: "14px", desktop: "14px", lhM: "20px", lhT: "20px", lhD: "20px", usage: "Secondary info, helper text, table cells." },
+  { role: "body-3",     mobile: "12px", tablet: "13px", desktop: "13px", lhM: "20px", lhT: "20px", lhD: "20px", usage: "Captions, timestamps, fine print." },
 ];
 
 const FIXED_ROLES = [
-  { role: "label1", size: "14px", lh: "20px", usage: "Form labels, larger UI labels." },
-  { role: "label2", size: "12px", lh: "16px", usage: "Compact labels, tag text." },
-  { role: "label3", size: "11px", lh: "16px", usage: "Uppercase UI micro-labels (weight 700)." },
+  { role: "label-1", size: "14px", lh: "20px", usage: "Form labels, larger UI labels." },
+  { role: "label-2", size: "12px", lh: "16px", usage: "Compact labels, tag text." },
+  { role: "label-3", size: "11px", lh: "16px", usage: "Uppercase UI micro-labels (weight 700)." },
 ];
 
 export default function TypographyPage() {
@@ -143,8 +143,8 @@ export default function TypographyPage() {
             },
             {
               name: "SAMAVESH",
-              subtitle: "Superset — serves both",
-              desc: "Adopts the Portal DS 21-role responsive structure as the foundation. Every UX4G role maps cleanly onto a SAMAVESH role. The website uses the upper display and headline roles; portals use the full range.",
+              subtitle: "One system, two surfaces",
+              desc: "Keeps the 21-role names but carries two value sets as a Surface axis (data-surface): Website (the expressive UX4G ramp, display-1 = 80px) and Portal (the dense Portal DS ramp, display-1 = 56px). Same tokens, different scale per surface — set once on <html>.",
               color: "var(--ds-success-tonal)",
               border: "var(--ds-success)",
             },
@@ -220,11 +220,14 @@ export default function TypographyPage() {
 
         <div className="docs-section__body" style={{ marginTop: "var(--ds-spacing-xl)" }}>
           <p>
-            Where UX4G and Portal DS had different pixel values for the same
-            conceptual role, <strong>Portal DS values were adopted</strong> because
-            they are mobile-first, better tested for bilingual / Indic content, and
-            provide more granular control. The website simply uses the upper slice
-            of the same scale.
+            Rather than force one compromise scale, SAMAVESH keeps <strong>both</strong>{" "}
+            as a <strong>Surface axis</strong>. The website (and hub) render the{" "}
+            <strong>Website</strong> surface — the larger, editorial UX4G ramp — by
+            default. Portals opt into the <strong>Portal</strong> surface by setting{" "}
+            <code>data-surface=&quot;portal&quot;</code> on their <code>&lt;html&gt;</code>,
+            switching the same role tokens to the denser, function-first values.
+            Colour, spacing, and everything else are unaffected — <code>data-surface</code>{" "}
+            swaps <em>only</em> the type scale.
           </p>
         </div>
       </section>
@@ -237,11 +240,12 @@ export default function TypographyPage() {
         </h2>
         <div className="docs-section__body">
           <p>
-            The SAMAVESH type scale is <strong>mobile-first and responsive</strong>.
-            Every role ships three values — mobile base, tablet (768 px), and
-            desktop (1024 px) — that are automatically applied via{" "}
-            <code>@media</code> overrides. You reference a single CSS variable;
-            the browser picks the right size for the viewport.
+            The SAMAVESH type scale is <strong>fluid</strong>. Every role is a{" "}
+            <code>clamp()</code> that scales smoothly between a{" "}
+            <strong>minimum at a 360&nbsp;px viewport</strong> and a{" "}
+            <strong>maximum at 1280&nbsp;px</strong> — no <code>@media</code>{" "}
+            breakpoints, no size &ldquo;snap&rdquo;. You reference a single CSS
+            variable; the browser interpolates the exact size for the viewport.
           </p>
           <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
             The canonical token pattern is:
@@ -258,13 +262,13 @@ export default function TypographyPage() {
               lineHeight: 1.6,
             }}
           >
-            <code style={{ fontFamily: "ui-monospace, monospace" }}>{`--ds-type-ROLE-size   /* font-size, responds to breakpoints */
---ds-type-ROLE-lh     /* line-height, responds to breakpoints */
+            <code style={{ fontFamily: "ui-monospace, monospace" }}>{`--ds-type-ROLE-size   /* font-size — fluid clamp(min@360px, →, max@1280px) */
+--ds-type-ROLE-lh     /* line-height — fluid, paired to the size */
 
-/* Examples */
---ds-type-body1-size  /* 14px mobile → 15px tablet → 16px desktop */
---ds-type-headline1-size  /* 24px → 28px → 32px */
---ds-type-label1-size     /* 14px, fixed — labels do not respond */`}</code>
+/* Examples (Website surface / default) */
+--ds-type-body-1-size      /* 16px, steady across the range */
+--ds-type-headline-1-size  /* clamp(28px → 40px) */
+--ds-type-display-1-size   /* clamp(40px → 80px) */`}</code>
           </pre>
         </div>
 
@@ -287,7 +291,7 @@ export default function TypographyPage() {
               letterSpacing: "0.08em",
             }}
           >
-            How breakpoints work
+            How the fluid scale works
           </p>
           <div
             style={{
@@ -297,9 +301,9 @@ export default function TypographyPage() {
             }}
           >
             {[
-              { label: "Mobile", bp: "< 768 px", note: "$value in primitive.json" },
-              { label: "Tablet", bp: "≥ 768 px", note: "$extensions.responsive.md" },
-              { label: "Desktop", bp: "≥ 1024 px", note: "$extensions.responsive.lg" },
+              { label: "Min", bp: "@ 360 px", note: "mosje.type.<surface>.min" },
+              { label: "Fluid", bp: "360 – 1280 px", note: "clamp() interpolates" },
+              { label: "Max", bp: "@ 1280 px", note: "mosje.type.<surface>.max" },
             ].map(({ label, bp, note }) => (
               <div
                 key={label}
@@ -341,7 +345,7 @@ export default function TypographyPage() {
         </div>
 
         <TypeSpecimen
-          role="display1"
+          role="display-1"
           size="56px"
           weight="500"
           leading="64px"
@@ -350,7 +354,7 @@ export default function TypographyPage() {
           sampleHi="डिजिटल भारत, समावेशी भारत"
         />
         <TypeSpecimen
-          role="headline1"
+          role="headline-1"
           size="32px"
           weight="600"
           leading="40px"
@@ -359,7 +363,7 @@ export default function TypographyPage() {
           sampleHi="सामाजिक न्याय और अधिकारिता मंत्रालय"
         />
         <TypeSpecimen
-          role="headline2"
+          role="headline-2"
           size="28px"
           weight="600"
           leading="36px"
@@ -368,7 +372,7 @@ export default function TypographyPage() {
           sampleHi="पीएम-अजय योजना डैशबोर्ड"
         />
         <TypeSpecimen
-          role="title1"
+          role="title-1"
           size="20px"
           weight="600"
           leading="28px"
@@ -377,7 +381,7 @@ export default function TypographyPage() {
           sampleHi="अनुभाग शीर्षक और पैनल शीर्षक"
         />
         <TypeSpecimen
-          role="body1"
+          role="body-1"
           size="16px"
           weight="400"
           leading="24px"
@@ -386,7 +390,7 @@ export default function TypographyPage() {
           sampleHi="सभी आवश्यक दस्तावेज़ों के साथ अपना आवेदन जमा करें।"
         />
         <TypeSpecimen
-          role="body2"
+          role="body-2"
           size="14px"
           weight="400"
           leading="20px"
@@ -395,7 +399,7 @@ export default function TypographyPage() {
           sampleHi="द्वितीयक जानकारी, सहायक पाठ और तालिका सामग्री।"
         />
         <TypeSpecimen
-          role="body3"
+          role="body-3"
           size="13px"
           weight="400"
           leading="20px"
@@ -404,7 +408,7 @@ export default function TypographyPage() {
           sampleHi="कैप्शन, समय-चिह्न और फ़ील्ड लेबल।"
         />
         <TypeSpecimen
-          role="label1"
+          role="label-1"
           size="14px"
           weight="600"
           leading="20px"
@@ -412,7 +416,7 @@ export default function TypographyPage() {
           sampleHi="फ़ॉर्म लेबल · सभी स्क्रीन पर स्थिर"
         />
         <TypeSpecimen
-          role="label3"
+          role="label-3"
           size="11px"
           weight="700"
           leading="16px"
@@ -449,7 +453,7 @@ export default function TypographyPage() {
               companion: "--ds-type-ROLE-lh",
               title: "Explicit role names",
               desc: "The exact 21-role names from the Portal DS system. Most precise — the token name tells you exactly which role you are using. Preferred for new portal and component code.",
-              example: "--ds-type-body1-size\n--ds-type-headline1-lh",
+              example: "--ds-type-body-1-size\n--ds-type-headline-1-lh",
               color: "var(--ds-primary-tonal)",
               border: "var(--ds-primary)",
             },
@@ -661,8 +665,13 @@ export default function TypographyPage() {
             marginBottom: "var(--ds-spacing-lg)",
           }}
         >
-          Mobile-first values. The CSS custom property auto-responds at 768 px
-          (tablet) and 1024 px (desktop) via <code>@media</code> overrides.
+          Values below are the <strong>Portal surface</strong>. Each token is a
+          fluid <code>clamp()</code>: the <em>Mobile</em> column is the min (@360&nbsp;px),
+          the <em>Desktop</em> column is the max (@1280&nbsp;px), and any width
+          between interpolates smoothly (the <em>Tablet</em> column is an
+          illustrative mid-point, not a hard breakpoint). The{" "}
+          <strong>Website surface</strong> uses the same token names with a larger
+          display / headline ramp — see <code>font.role.*</code> in the tokens source.
         </p>
         <div style={{ overflowX: "auto" }}>
           <table
@@ -743,15 +752,15 @@ export default function TypographyPage() {
         </div>
         <TokenTable
           tokens={[
-            { token: "--ds-text-display / --ds-leading-display", value: "→ display1", description: "Maps to --ds-type-display1-size/lh (40 → 48 → 56px)." },
-            { token: "--ds-text-headline / --ds-leading-headline", value: "→ headline1", description: "Maps to --ds-type-headline1-size/lh (24 → 28 → 32px)." },
-            { token: "--ds-text-title-1 / --ds-leading-title-1", value: "→ headline2", description: "Maps to --ds-type-headline2-size/lh (20 → 24 → 28px)." },
-            { token: "--ds-text-title-2 / --ds-leading-title-2", value: "→ title1", description: "Maps to --ds-type-title1-size/lh (16 → 18 → 20px)." },
-            { token: "--ds-text-body-1 / --ds-leading-body-1", value: "→ body1", description: "Maps to --ds-type-body1-size/lh (14 → 15 → 16px)." },
-            { token: "--ds-text-body-2 / --ds-leading-body-2", value: "→ body2", description: "Maps to --ds-type-body2-size/lh (13 → 14 → 14px)." },
-            { token: "--ds-text-body-3 / --ds-leading-body-3", value: "→ body3", description: "Maps to --ds-type-body3-size/lh (13 → 14 → 13px)." },
-            { token: "--ds-text-label-1 / --ds-leading-label-1", value: "→ label1", description: "Maps to --ds-type-label1-size/lh (14px, fixed)." },
-            { token: "--ds-text-label-3 / --ds-leading-label-3", value: "→ label3", description: "Maps to --ds-type-label3-size/lh (11px, fixed)." },
+            { token: "--ds-text-display / --ds-leading-display", value: "→ display1", description: "Maps to --ds-type-display-1-size/lh (40 → 48 → 56px)." },
+            { token: "--ds-text-headline / --ds-leading-headline", value: "→ headline1", description: "Maps to --ds-type-headline-1-size/lh (24 → 28 → 32px)." },
+            { token: "--ds-text-title-1 / --ds-leading-title-1", value: "→ headline2", description: "Maps to --ds-type-headline-2-size/lh (20 → 24 → 28px)." },
+            { token: "--ds-text-title-2 / --ds-leading-title-2", value: "→ title1", description: "Maps to --ds-type-title-1-size/lh (16 → 18 → 20px)." },
+            { token: "--ds-text-body-1 / --ds-leading-body-1", value: "→ body1", description: "Maps to --ds-type-body-1-size/lh (14 → 15 → 16px)." },
+            { token: "--ds-text-body-2 / --ds-leading-body-2", value: "→ body2", description: "Maps to --ds-type-body-2-size/lh (13 → 14 → 14px)." },
+            { token: "--ds-text-body-3 / --ds-leading-body-3", value: "→ body3", description: "Maps to --ds-type-body-3-size/lh (13 → 14 → 13px)." },
+            { token: "--ds-text-label-1 / --ds-leading-label-1", value: "→ label1", description: "Maps to --ds-type-label-1-size/lh (14px, fixed)." },
+            { token: "--ds-text-label-3 / --ds-leading-label-3", value: "→ label3", description: "Maps to --ds-type-label-3-size/lh (11px, fixed)." },
           ]}
         />
 
@@ -903,8 +912,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 >
 {`.lead {
   /* explicit — preferred in components */
-  font-size: var(--ds-type-body1-size);
-  line-height: var(--ds-type-body1-lh);
+  font-size: var(--ds-type-body-1-size);
+  line-height: var(--ds-type-body-1-lh);
 }
 h1 {
   /* shorthand — fine for global CSS */
