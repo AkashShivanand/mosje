@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "SHO-DISTRICT-OFFICER-DASHBOARD",
+    "route": "/district-officer/dashboard",
+    "rows": 92,
+    "pageH": 1000
+  },
+  {
+    "slug": "SHO-DISTRICT-OFFICER-CASES",
+    "route": "/district-officer/cases",
+    "rows": 97,
+    "pageH": 1000
+  },
+  {
+    "slug": "SHO-DISTRICT-OFFICER-CLARIFICATIONS",
+    "route": "/district-officer/clarifications",
+    "rows": 38,
+    "pageH": 1000
+  },
+  {
+    "slug": "SHO-DISTRICT-OFFICER-INVESTIGATION",
+    "route": "/district-officer/investigation",
+    "rows": 61,
+    "pageH": 1000
+  },
+  {
+    "slug": "SHO-DISTRICT-OFFICER-REPORTS",
+    "route": "/district-officer/reports",
+    "rows": 66,
+    "pageH": 1000
+  },
+  {
+    "slug": "SHO-DISTRICT-OFFICER-SLA",
+    "route": "/district-officer/sla",
+    "rows": 91,
+    "pageH": 1000
+  },
+  {
+    "slug": "SHO-DISTRICT-OFFICER-NOTIFICATIONS",
+    "route": "/district-officer/notifications",
+    "rows": 39,
+    "pageH": 1000
+  }
+]

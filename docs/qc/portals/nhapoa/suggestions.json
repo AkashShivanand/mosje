@@ -1,0 +1,86 @@
+{
+  "portal": "NHAPOA \u2014 National Helpline Against Atrocities (UAT)",
+  "generated": "2026-07-03",
+  "items": [
+    {
+      "id": "NHA-SG-A1",
+      "group": "A",
+      "type": "Decide",
+      "title": "Corner-radius token for compact/table controls",
+      "observed": "Primary/secondary buttons use the 8px radius token; table row-action and pagination buttons render at 6px.",
+      "recommendation": "Decide whether compact controls should follow the 8px token or a dedicated documented small-control radius, then apply consistently across the estate."
+    },
+    {
+      "id": "NHA-SG-A2",
+      "group": "A",
+      "type": "Decide",
+      "title": "Single input-stroke token for inputs and selects",
+      "observed": "Text inputs use a #d1d5db border while filter selects use a lighter #e5e7eb border.",
+      "recommendation": "Define one input-stroke token and bind both text inputs and selects to it."
+    },
+    {
+      "id": "NHA-SG-B1",
+      "group": "B",
+      "type": "Design",
+      "title": "Add the extra State dashboard sections to the frame",
+      "observed": "The live State Authority dashboard renders 'Case Status Breakdown' and 'Stale Cases' sections below the designed content; they follow the shared card/chart language.",
+      "recommendation": "Fold these two sections into the State dashboard Figma frame so the composition is specified."
+    },
+    {
+      "id": "NHA-SG-B2",
+      "group": "B",
+      "type": "Design",
+      "title": "Add the extra System-Admin filter + nav to the frame",
+      "observed": "The live grievance-monitoring screen adds an 'All Cases' filter, a 'Reset' button and a 'Grievance Categories' sidebar item, not present in the design frame; all conform to the visual language.",
+      "recommendation": "Add these controls to the System-Administrator frames so the toolbar and sidebar are fully specified."
+    },
+    {
+      "id": "NHA-SG-B3",
+      "group": "B",
+      "type": "Design",
+      "title": "Specify the profile menu (avatar dropdown)",
+      "observed": "The build's masthead avatar opens a profile dropdown (with a chevron); the design shows only the avatar.",
+      "recommendation": "Decide the profile-menu pattern and add it to the design (avatar-as-trigger, chevron optional) so design and build match."
+    },
+    {
+      "id": "NHA-SG-B4",
+      "group": "B",
+      "type": "Design",
+      "title": "Document the citizen floating chatbot/emblem widget",
+      "observed": "The citizen pages show a second floating widget (an emblem/chatbot bubble) besides the accessibility launcher; it is not in the design.",
+      "recommendation": "Add the chatbot widget to the design (placement, size, states) or remove it if unintended; keep it from overlapping page content."
+    },
+    {
+      "id": "NHA-SG-B5",
+      "group": "B",
+      "type": "Design",
+      "title": "Fix frame-name corruption in the handoff file",
+      "observed": "Several frames are mis-parented/mis-named \u2014 e.g. a 'District-Officer/Notifications' frame sits inside the State Authority section, and 'Central-Authority/Fund-Allocation' is reused for both Reports and Notifications.",
+      "recommendation": "Rename/re-parent the affected frames to their correct role/screen so the handoff maps cleanly to the build routes."
+    },
+    {
+      "id": "NHA-SG-C1",
+      "group": "C",
+      "type": "Propose",
+      "title": "Design the System-Admin analytics screens",
+      "observed": "Officer Performance, Grievance Analytics and Geographic View exist in the build but have no Figma frames.",
+      "recommendation": "Produce frames for these; the build versions reuse the shared shell/cards/charts and are a reasonable starting point."
+    },
+    {
+      "id": "NHA-SG-C2",
+      "group": "C",
+      "type": "Propose",
+      "title": "Design the Central Authority screens",
+      "observed": "Central Authority Dashboard, State Comparison and Scheme Performance are built but undesigned.",
+      "recommendation": "Produce frames; the build conforms to the visual language and can seed the design."
+    },
+    {
+      "id": "NHA-SG-C3",
+      "group": "C",
+      "type": "Propose",
+      "title": "Design the Finance Fund-Utilisation report",
+      "observed": "The Finance 'Fund Utilisation Report' screen is built but has no Figma frame.",
+      "recommendation": "Produce a frame consistent with the other Finance screens."
+    }
+  ]
+}

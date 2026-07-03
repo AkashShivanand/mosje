@@ -1,0 +1,14 @@
+[
+  {
+    "slug": "CENTRAL-LOGIN",
+    "route": "/login",
+    "rows": 31,
+    "pageH": 1000
+  },
+  {
+    "slug": "CENTRAL-FORGOT-PASSWORD",
+    "route": "/forgot-password",
+    "rows": 27,
+    "pageH": 1000
+  }
+]

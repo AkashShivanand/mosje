@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "CITIZEN-HOME",
+    "route": "/",
+    "rows": 59,
+    "pageH": 1000
+  },
+  {
+    "slug": "CITIZEN-REGISTER-GRIEVANCE",
+    "route": "/register-grievance",
+    "rows": 64,
+    "pageH": 1119
+  },
+  {
+    "slug": "CITIZEN-REGISTER-RESCUE",
+    "route": "/register-rescue",
+    "rows": 84,
+    "pageH": 1267
+  },
+  {
+    "slug": "CITIZEN-TRACK-STATUS",
+    "route": "/track-status",
+    "rows": 41,
+    "pageH": 1000
+  },
+  {
+    "slug": "CITIZEN-HELP-FAQS",
+    "route": "/help-faqs",
+    "rows": 77,
+    "pageH": 1402
+  }
+]

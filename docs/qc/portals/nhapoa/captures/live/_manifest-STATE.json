@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "STATE-STATE-AUTHORITY-DASHBOARD",
+    "route": "/state-authority/dashboard",
+    "rows": 100,
+    "pageH": 1297
+  },
+  {
+    "slug": "STATE-STATE-AUTHORITY-ALL-CASES",
+    "route": "/state-authority/all-cases",
+    "rows": 63,
+    "pageH": 1000
+  },
+  {
+    "slug": "STATE-STATE-AUTHORITY-PENDING-APPROVALS",
+    "route": "/state-authority/pending-approvals",
+    "rows": 70,
+    "pageH": 1000
+  },
+  {
+    "slug": "STATE-STATE-AUTHORITY-APPROVED-CASES",
+    "route": "/state-authority/approved-cases",
+    "rows": 129,
+    "pageH": 1193
+  },
+  {
+    "slug": "STATE-STATE-AUTHORITY-SENT-BACK",
+    "route": "/state-authority/sent-back",
+    "rows": 47,
+    "pageH": 1000
+  },
+  {
+    "slug": "STATE-STATE-AUTHORITY-REPORTS",
+    "route": "/state-authority/reports",
+    "rows": 93,
+    "pageH": 1566
+  },
+  {
+    "slug": "STATE-STATE-AUTHORITY-SLA",
+    "route": "/state-authority/sla",
+    "rows": 54,
+    "pageH": 1000
+  },
+  {
+    "slug": "STATE-STATE-AUTHORITY-NOTIFICATIONS",
+    "route": "/state-authority/notifications",
+    "rows": 41,
+    "pageH": 1000
+  }
+]

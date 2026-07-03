@@ -1,0 +1,9 @@
+.qc/
+node_modules/
+__pycache__/
+*.pyc
+report-sections.json
+captures/_v_*.png
+captures/_verify_*.png
+captures/**/*@2x.png
+captures/**/*-sm.png

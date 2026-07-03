@@ -1,0 +1,376 @@
+{
+  "portal": "NHAPOA \u2014 National Helpline Against Atrocities (UAT)",
+  "idPrefix": "NHA",
+  "generated": "2026-07-03",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5093-18512",
+  "method": "Screenshot + computed-CSS spec comparison, design-only (content/data/build-extras excluded from findings). 6 roles incl. SHO, ~40 screens; build-extras routed to the Design Suggestions doc.",
+  "deferred": [
+    {
+      "id": "NHA-DEF-001",
+      "title": "Citizen Grievance Registration steps 02\u201305 + OTP states",
+      "reason": "Gated behind mobile-OTP verification that cannot be completed headless. Step 01 (Details) captured; deeper steps deferred."
+    },
+    {
+      "id": "NHA-DEF-002",
+      "title": "Track-Status result views (with-ID / with-Mobile)",
+      "reason": "Require a valid registered grievance reference to render results. Landing form captured; result states deferred."
+    },
+    {
+      "id": "NHA-DEF-003",
+      "title": "Case-Detail tabs + modals/toasts/drawers",
+      "reason": "Documents / Investigation / Clarification / Audit-Log tabs open on a per-case route (/cases/:id). Now reachable via SHO's seeded cases \u2014 schedule a focused capture pass to audit them."
+    }
+  ],
+  "screens": [
+    {
+      "slug": "GLOBAL-SHELL",
+      "name": "Global \u2014 Application Shell (gov-bar & masthead, all roles)",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5986-53726",
+      "liveUrl": "https://nhapoa-admin-uat.mosje.in/district-officer/dashboard",
+      "figmaImg": "captures/figma/DO-DASHBOARD.png",
+      "liveImg": "captures/live/DO-DISTRICT-OFFICER-DASHBOARD.png",
+      "note": "These recur on every screen of every role \u2014 the shared gov-bar and masthead, audited once.",
+      "findings": [
+        {
+          "num": 1,
+          "id": "NHA-SHELL-001",
+          "element": "Accessibility controls & UX4G widget trigger",
+          "section": "header-band",
+          "axis": "Accessibility",
+          "severity": "Major",
+          "figma": "Gov-bar carries the full GIGW accessibility cluster inline \u2014 text-size A\u2212/A/A+, contrast toggle, an accessibility icon, and a language selector \u2014 and the accessibility icon is the trigger for the UX4G Accessibility Widget.",
+          "live": "Build shows only a reduced '\u0905/A' glyph in the gov-bar and instead launches the UX4G Accessibility Widget from a separate floating button over the page content.",
+          "fix": "Surface the full accessibility controls in the gov-bar and include the accessibility icon; trigger the UX4G Accessibility Widget FROM that gov-bar icon rather than from a floating button.",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            175
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            180
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            180
+          ],
+          "figmaPin": {
+            "x": 72,
+            "y": 11.0
+          },
+          "livePin": {
+            "x": 95,
+            "y": 11.1
+          }
+        },
+        {
+          "num": 2,
+          "id": "NHA-SHELL-002",
+          "element": "Digital India logo is rendered as text, not the official mark",
+          "section": "header-band",
+          "axis": "Content & Iconography",
+          "severity": "Minor",
+          "figma": "Masthead uses the official Digital India logo lockup (correct brand wordmark + swoosh).",
+          "live": "Build reproduces the 'Digital India' wordmark as styled HTML text (a serif approximation), so the lockup does not render as the official logo.",
+          "fix": "Use the official Digital India logo asset (SVG) for the wordmark so it renders correctly, instead of approximating it with a text font.",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            175
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            180
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            180
+          ],
+          "figmaPin": {
+            "x": 66,
+            "y": 49.4
+          },
+          "livePin": {
+            "x": 62,
+            "y": 50.0
+          }
+        },
+        {
+          "num": 3,
+          "id": "NHA-SHELL-003",
+          "element": "Redundant dropdown chevron on the profile avatar",
+          "section": "header-band",
+          "axis": "Components & States",
+          "severity": "Nit",
+          "figma": "Design profile block is the avatar + name/role, with no separate dropdown chevron.",
+          "live": "Build adds a downward chevron beside the avatar. A profile avatar is a conventional, self-evident click target, so the chevron is redundant affordance.",
+          "fix": "Drop the chevron to match the design (the avatar itself opens the menu), or if a chevron is wanted for affordance, add it to the design so both stay in sync.",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            175
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            180
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            180
+          ],
+          "figmaPin": {
+            "x": 96,
+            "y": 49.4
+          },
+          "livePin": {
+            "x": 97,
+            "y": 50.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "GLOBAL-TABLE",
+      "name": "Global \u2014 Lists & Tables (row controls)",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5986-53857",
+      "liveUrl": "https://nhapoa-admin-uat.mosje.in/district-officer/cases",
+      "figmaImg": "captures/figma/DO-CASES.png",
+      "liveImg": "captures/live/SHO-DISTRICT-OFFICER-CASES.png",
+      "note": "Row styling (SLA pills, Status pills, ID links, header surface) conforms to the design \u2014 verified on a seeded (SHO / Dhule) table. Only the control radius differs.",
+      "findings": [
+        {
+          "num": 1,
+          "id": "NHA-TABLE-001",
+          "element": "Row-action & pagination buttons use a 6px radius, not the 8px token",
+          "section": "table",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "Corner-radius token is 8px; primary and secondary buttons (Export, Sign In, Send OTP, Start Investigation) correctly render at 8px.",
+          "live": "Table row-action buttons (View, Edit, Deactivate, Reassign) and the pagination Prev/Next controls render at 6px instead \u2014 an inconsistent radius on the same button family.",
+          "fix": "Set the row-action and pagination buttons to the 8px radius token (or, if a smaller radius is intended for compact controls, define a documented small-control radius token and apply it consistently).",
+          "figmaBox": [
+            0,
+            350,
+            1440,
+            546
+          ],
+          "liveBox": [
+            0,
+            310,
+            1440,
+            490
+          ],
+          "sectionBox": [
+            0,
+            310,
+            1440,
+            490
+          ],
+          "figmaPin": {
+            "x": 91,
+            "y": 49.8
+          },
+          "livePin": {
+            "x": 93,
+            "y": 50.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "GLOBAL-FILTERS",
+      "name": "Global \u2014 Filters & Inputs",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5986-59480",
+      "liveUrl": "https://nhapoa-admin-uat.mosje.in/system-administrator/grievance-monitoring",
+      "figmaImg": "captures/figma/SYS-GRIEVANCE-MONITORING.png",
+      "liveImg": "captures/live/SYS-ADMIN-GRIEVANCES.png",
+      "note": null,
+      "findings": [
+        {
+          "num": 1,
+          "id": "NHA-FILTER-001",
+          "element": "Inputs and selects use two different border tokens",
+          "section": "toolbar",
+          "axis": "Color & Token",
+          "severity": "Nit",
+          "figma": "Design inputs and selects share one neutral stroke token.",
+          "live": "Build renders text inputs (search, username, mobile) with a #d1d5db border but the filter selects with a lighter #e5e7eb border \u2014 two tokens for the same control family.",
+          "fix": "Bind text inputs and filter selects to the single input-stroke token so all field borders match.",
+          "figmaBox": [
+            0,
+            151,
+            1440,
+            365
+          ],
+          "liveBox": [
+            0,
+            170,
+            1440,
+            420
+          ],
+          "sectionBox": [
+            0,
+            170,
+            1440,
+            420
+          ],
+          "figmaPin": {
+            "x": 37,
+            "y": 44.8
+          },
+          "livePin": {
+            "x": 37,
+            "y": 36.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "NHA-FILTER-002",
+          "element": "Filter toolbar wraps to a second row",
+          "section": "toolbar",
+          "axis": "Layout & Spacing",
+          "severity": "Nit",
+          "figma": "Design filter toolbar sits on a single row alongside the search field.",
+          "live": "Build's search field is wide, pushing the filter selects onto a second row.",
+          "fix": "Reduce the search field width so the filter selects fit on the same row as the search, keeping the toolbar to one line.",
+          "figmaBox": [
+            0,
+            151,
+            1440,
+            365
+          ],
+          "liveBox": [
+            0,
+            170,
+            1440,
+            420
+          ],
+          "sectionBox": [
+            0,
+            170,
+            1440,
+            420
+          ],
+          "figmaPin": {
+            "x": 37,
+            "y": 55.3
+          },
+          "livePin": {
+            "x": 40,
+            "y": 64.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "CITIZEN-HOME",
+      "name": "Citizen \u2014 Home / Dashboard",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5986-51876",
+      "liveUrl": "https://nhapoa-user-uat.mosje.in/",
+      "figmaImg": "captures/figma/CITIZEN-HOME.png",
+      "liveImg": "captures/live/CITIZEN-HOME.png",
+      "note": null,
+      "findings": [
+        {
+          "num": 1,
+          "id": "NHA-CITHOME-001",
+          "element": "'Admin Login' entry point is absent from the citizen masthead",
+          "section": "header-band",
+          "axis": "Components & States",
+          "severity": "Nit",
+          "figma": "Design masthead (top-right) carries an 'Admin Login' button.",
+          "live": "Build citizen home has no Admin Login entry; officers reach the portal via a separate URL.",
+          "fix": "Good-to-have: add the Admin Login button to the citizen masthead per design, or confirm it intentionally lives only on the officer subdomain.",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            175
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            180
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            180
+          ],
+          "figmaPin": {
+            "x": 93,
+            "y": 49.4
+          },
+          "livePin": {
+            "x": 93,
+            "y": 50.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "NHA-CITHOME-002",
+          "element": "Register Rescue card uses a different icon than the design",
+          "section": "content",
+          "axis": "Content & Iconography",
+          "severity": "Minor",
+          "figma": "Design 'Register Rescue' action card uses a person-in-distress / rescue figure icon (navy).",
+          "live": "Build's 'Register Rescue' card uses a plus / medical-cross icon instead. Card frame, text and layout otherwise match the design.",
+          "fix": "Use the person-in-distress figure icon from the design for the Register Rescue card so the iconography matches.",
+          "figmaBox": [
+            0,
+            237,
+            1440,
+            415
+          ],
+          "liveBox": [
+            0,
+            250,
+            1440,
+            430
+          ],
+          "sectionBox": [
+            0,
+            250,
+            1440,
+            430
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 50.2
+          },
+          "livePin": {
+            "x": 50,
+            "y": 50.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "COVERAGE",
+      "name": "Role Coverage \u2014 audited against the visual language",
+      "figmaImg": null,
+      "liveImg": null,
+      "figmaUrl": null,
+      "liveUrl": null,
+      "findings": [],
+      "note": "All six roles captured and audited against the design's visual language. Citizen (public) \u2014 fully designed, audited. District Officer, State Authority, Finance Officer, System Administrator, Central Authority and SHO (Station House Officer) \u2014 dashboards, lists, forms and empty/populated states conform to the shared shell, card, table and chart language; the Global findings above apply across all of them. SHO (westdeopur_ps1, Dhule) is a District-Officer-role account with seeded cases and was used to verify row-level table styling. Build-side additions that are not yet in the Figma design (extra sections, filters, nav items, the profile menu, the citizen chatbot widget) are listed in the separate Design Suggestions document \u2014 they conform to the visual language and are for the design team to fold into the frames, not build defects."
+    }
+  ]
+}
