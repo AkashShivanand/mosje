@@ -1,5 +1,10 @@
 # design-audit — a project-agnostic design-vs-build QC engine
 
+> **📖 Just want to run an audit?** Read **[USER-GUIDE.md](USER-GUIDE.md)** — plain English, no setup,
+> no files to create. You describe the audit in a sentence; the assistant does the rest.
+> **🧭 Maintaining or extending it?** Read **[HOW-IT-WORKS.md](HOW-IT-WORKS.md)** for the model.
+> This README is the engine reference (config schema + manual commands).
+
 One reusable engine. One config file per project. Works on **any** project — with a design
 system, with only Figma, or with neither.
 
