@@ -1,0 +1,13 @@
+# per-project runtime artifacts — never commit secrets or heavy captures
+projects/*/secrets.json
+projects/*/captures/
+projects/*/out/
+projects/*/inputs/*.png
+node_modules/
+__pycache__/
+*.pyc
+.qc/
+report-sections.json
+
+# engine PDF deps are installed locally, never committed (may be a symlink)
+engine/node_modules

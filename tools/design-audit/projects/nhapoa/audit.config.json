@@ -1,0 +1,40 @@
+{
+  "project": "nhapoa",
+  "portal": "NHAPOA — National Helpline Against Atrocities (UAT)",
+  "idPrefix": "NHA",
+  "figma": {
+    "fileKey": "gH2vQ62cfg4677YKWuOpLc",
+    "rootNode": "5093:18512",
+    "framesFile": "inputs/figma-frames.json",
+    "tokensFile": "inputs/figma-tokens.json",
+    "urlTemplate": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id={node}"
+  },
+  "capture": { "width": 1440, "dpr": 2, "waitMs": 1800 },
+  "live": {
+    "auth": {
+      "type": "form",
+      "loginPath": "/login",
+      "userField": "input[name='user_name']",
+      "passField": "input[name='password']",
+      "submit": "button[type='submit']",
+      "loginMarker": "/login"
+    },
+    "roles": [
+      { "name": "citizen",          "base": "https://nhapoa-user-uat.mosje.in",  "auth": "none" },
+      { "name": "district-officer", "base": "https://nhapoa-admin-uat.mosje.in", "user": "ba.districtofficer" },
+      { "name": "state-authority",  "base": "https://nhapoa-admin-uat.mosje.in", "user": "ba.stateauthority" },
+      { "name": "finance-officer",  "base": "https://nhapoa-admin-uat.mosje.in", "user": "ba.financeofficer" },
+      { "name": "central-authority","base": "https://nhapoa-admin-uat.mosje.in", "user": "ba.centralauthority" },
+      { "name": "system-admin",     "base": "https://nhapoa-admin-uat.mosje.in", "user": "nhapoa_sysadmin" },
+      { "name": "sho",              "base": "https://nhapoa-admin-uat.mosje.in", "user": "westdeopur_ps1" }
+    ],
+    "skipRoutes": ["/login", "/logout", "/terms-and-conditions", "/privacy-policy"]
+  },
+  "baseline": {
+    "mode": "tokens",
+    "_modes": "tokens | derived | internal — see README. 'tokens' diffs every element against inputs/tokens.json.",
+    "source": "inputs/tokens.json"
+  },
+  "manifest": "screen-manifest.yaml",
+  "notes": "Passwords are NOT stored here. Put them in projects/nhapoa/secrets.json (gitignored), keyed by role name. UAT shared test password for most roles is documented in the project brain."
+}
