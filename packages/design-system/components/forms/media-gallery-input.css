@@ -242,5 +242,5 @@
   align-items: center;
   gap: 4px;
   font-size: var(--ds-text-body-3, 12px);
-  color: var(--sa-color-status-dangerStrong, #a11d12);
+  color: var(--sa-color-status-dangerStrong, #b8382f);
 }

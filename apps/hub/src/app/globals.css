@@ -33,7 +33,6 @@
   /* ── Surfaces & borders ─────────────────────────────────────────────── */
   --color-surface:        var(--ds-surface);
   --color-surface-muted:  var(--ds-surface-muted);
-  --color-surface-alt:    var(--ds-surface-alt);
   --color-border:         var(--ds-border);
   --color-border-strong:  var(--ds-border-strong);
 

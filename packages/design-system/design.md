@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-07-01 · System version: v1.4.0 (Button inverse/inverseOutlined + Media Gallery Manager pattern)
+  Last reviewed: 2026-07-02 · System version: v1.5.0 (Figma→code colour sync: full 50–900 ramps for secondary/neutral/success/danger/warning/info, mode-aware Blue-Light/Blue-Dark secondary+neutral, alpha/transparent tiers; danger-strong synced to Figma #B8382F)
 -->
 
 # SAMAVESH Design System — Specification & AI Design Context
@@ -57,9 +57,11 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 
 | Axis | Attribute | Values | Meaning |
 | :--- | :--- | :--- | :--- |
-| **Brand Mode** | `data-color-mode` | `blue-light` (default), `blue-dark` | Selects the primary brand color ramp. |
+| **Colour Mode** | `data-color-mode` | `blue-light` (default), `blue-dark` | Two peer brand colour modes (1:1 with the SAMAVESH Figma `Blue - Light` / `Blue - Dark` variable modes). Selects the whole mode-aware palette: **primary** (blue↔navy), **secondary** (saffron↔green), **neutral** greys (warm↔cool), and the primary/secondary/neutral **transparent** tiers. |
 | **Appearance** | `data-theme` | `light` (default/unset), `dark`, `hc` | Light theme, dark theme, or high-contrast (a11y). |
 | **Density** | `data-density` | `comfortable` (default/unset), `compact` | Controls padding, heights, and spatial density. |
+
+> **Colour Mode ≠ Appearance.** `data-color-mode` (blue-light/blue-dark) and `data-theme` (light/dark/hc) are **independent axes**. `blue-dark` is NOT a dark UI theme — it keeps light surfaces and simply swaps the brand palette to navy/green/cool-grey (matching Figma's `Blue - Dark` mode). The actual dark/high-contrast surfaces live on `data-theme`. The two compose: e.g. `data-color-mode="blue-dark" data-theme="dark"` is the navy palette on dark a11y surfaces.
 
 > **Tip:** Nested theme "islands" (e.g. a dark-themed preview wrapper inside a light page) must be explicitly scoped using nested `[data-theme="dark"]` elements. To prevent theme flashes on initial render, initialize attributes using the exported `colorModeInitScript()`.
 
@@ -87,11 +89,11 @@ Use semantic tokens — never reference primitive `--sa-color-*` values directly
 | `--ds-ink` (`#1F2428`) | `--ds-surface` (`#fff`) | **17.5:1** | ✅ Pass | All body text |
 | `--ds-ink-muted` (`#6C757D`) | `--ds-surface` (`#fff`) | **4.6:1** | ✅ Pass | Hint text, captions (≥14px only) |
 | `--ds-ink-muted` (`#6C757D`) | `--ds-surface-muted` (`#F8F9FA`) | **4.1:1** | ⚠️ Borderline | Avoid for body text; use `--ds-ink` instead |
-| `--ds-danger` (`#EC5042`) | `--ds-surface` (`#fff`) | **3.8:1** | ❌ Fail (text) | Use `--ds-danger-strong` (#A11D12) for error text on white |
+| `--ds-danger` (`#EC5042`) | `--ds-surface` (`#fff`) | **3.8:1** | ❌ Fail (text) | Use `--ds-danger-strong` (#B8382F, 5.8:1) for error text on white |
 | `--ds-gov-yellow` (`#FFD323`) | `--ds-surface` (`#fff`) | **1.4:1** | ❌ Fail | Never use as text colour |
 | `--ds-primary` (`#0373DF`) | `--ds-surface` (`#fff`) | **4.7:1** | ✅ Pass | Link text (≥16px) |
 
-> **Critical rule:** `--ds-danger` on white fails WCAG AA for text. Always use `var(--ds-danger-strong)` (`#A11D12`) when displaying red error messages on white/surface backgrounds.
+> **Critical rule:** `--ds-danger` on white fails WCAG AA for text. Always use `var(--ds-danger-strong)` (`#B8382F`, 5.8:1) when displaying red error messages on white/surface backgrounds. (Synced to Figma `Danger/700`; the old `#A11D12` is retained only as the `--ds-chart-div-neg-strong` data-viz literal.)
 
 ### D. Typography
 
@@ -229,7 +231,7 @@ graph TD
 | Do | Don't |
 | :--- | :--- |
 | Use `<DataTable>` with proper `column` definitions for sortable, paginated government data. | Do not use `<div>` grids for tabular data. Always use semantic `<table>` with `scope` attributes. |
-| Zebra-stripe alternate rows using `--ds-surface-alt` for dense tables (> 15 rows). | Do not apply row background colours semantically (green = good, red = bad) without a text label — colour alone fails WCAG 1.4.1. |
+| Zebra-stripe alternate rows using `--ds-surface-muted` for dense tables (> 15 rows). | Do not apply row background colours semantically (green = good, red = bad) without a text label — colour alone fails WCAG 1.4.1. |
 | Use sticky headers (`position: sticky`) for scrollable tall tables. | Do not render tables without a visible `<caption>` or an `aria-label` on the `<table>` element. |
 | Right-align numeric columns and align the header text to match. | Do not mix left- and right-aligned text in the same column. |
 | Always add a sort indicator icon when a column is sortable. | Do not rely on row order alone to communicate data ranking. |
@@ -333,7 +335,6 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 **Backgrounds:**
 - `--ds-surface` — Base page/card background
 - `--ds-surface-muted` — Subtle background for inputs, code blocks
-- `--ds-surface-alt` — Table zebra rows, hover states
 
 **Brand:**
 - `--ds-primary` — Main brand blue (GoI Navy/Blue)
@@ -356,6 +357,17 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 - `--ds-warning`, `--ds-warning-tonal`
 - `--ds-danger`, `--ds-danger-strong`, `--ds-danger-tonal`
 - `--ds-info`, `--ds-info-tonal`
+
+**Full colour ramps (50–900, synced 1:1 with SAMAVESH Figma `<Family>/*`).** Each ramp is a semantic scale — use these for tints/shades beyond the single-shade status/brand tokens above:
+- `--ds-primary-50` … `--ds-primary-900` — primary (mode-aware: blue in Blue-Light, navy in Blue-Dark)
+- `--ds-secondary-50` … `--ds-secondary-900` — secondary (**mode-aware: saffron in Blue-Light, green in Blue-Dark**; maps to Figma `Secondary/*`)
+- `--ds-neutral-0` … `--ds-neutral-1100` — neutral greys (**mode-aware: warm grey in Blue-Light, cooler Tailwind grey in Blue-Dark**; maps to Figma `Neutral/*`)
+- `--ds-success-50` … `--ds-success-900` — mode-invariant (Figma `Success/*`)
+- `--ds-danger-50` … `--ds-danger-900` — mode-invariant (Figma `Danger/*`)
+- `--ds-warning-50` … `--ds-warning-900` — mode-invariant (Figma `Warning/*`)
+- `--ds-info-50` … `--ds-info-900` — mode-invariant (Figma `Info/*`)
+
+**Alpha / transparent overlays (8/16/24/32/40/48%, Figma `<Family> Transparent/*`).** Consumed via `--sa-color-transparent-<family>-<step>` (canonical `--sa-*` name; no `--ds-*` alias). `primary`, `secondary`, `neutral` are mode-aware (Blue-Dark uses navy/green/cool-grey bases); `success`, `danger`, `warning`, `white` are mode-invariant. Example: `--sa-color-transparent-neutral-8`, `--sa-color-transparent-white-24`.
 
 **Data-visualisation (charts):** theme-aware, used by the chart layer (§7).
 - `--ds-chart-cat-1` … `--ds-chart-cat-12` — categorical series (mutually distinguishable)
@@ -411,10 +423,16 @@ All components are exported from `@mosje/design-system`. Import from the package
 - **On a solid brand-colour surface** (a navy/coloured page header, hero band, banner) use `appearance="inverse"` (solid white, variant-tinted text — for the emphasized action) and `appearance="inverseOutlined"` (transparent, white border/text — for the secondary/toggle action). **Never** hand-roll `className` overrides like `bg-white text-navy` to fake this — that was a repeated anti-pattern across ~50 files before these appearances existed; use the variant instead.
 
 #### Icon
-**Purpose**: Material Symbols Outlined — the official icon system.  
-**Setup**: Load `import "@mosje/design-system/icons.css"` once in the app root.  
-**Usage**: `<Icon name="home" size={24} />`  
-**Rules**: Never use inline SVG for icons that exist in the Material Symbols set. Brand/social icons (not in Material Symbols) must use inline SVGs.
+**Purpose**: **Material Symbols Rounded** — the official SAMAVESH icon system.  
+**Rendering (intended approach)**: icons render as an **icon font (text glyph)** via ligatures — i.e. the glyph is a text character in the `Material Symbols Rounded` family, **not** an inline `<svg>` and not a per-icon component. This is the house standard used everywhere applicable (e.g. the navbar mega-menu chevron).  
+**Standard config**: family `Material Symbols Rounded`, **weight 300** (Figma style "Light"), size `24`, optical fill `0`. Colour via `currentColor`/`--ds-*` token — never a hardcoded hex.  
+**Setup**: Load `import "@mosje/design-system/icons.css"` once in the app root (this loads the Material Symbols Rounded font + the variation settings). The font MUST be present wherever the UI renders — a missing font makes the glyph fall back to its literal ligature text (e.g. "chevron_right").  
+**Usage**: `<Icon name="home" size={24} />` (wraps the font glyph; always `aria-hidden` for decorative icons, `aria-label` on icon-only buttons).  
+**Rules**:
+- Use the Material Symbols Rounded **font glyph** for any icon in the Material set — never inline SVG for those.
+- Brand/social marks (National Emblem, Digital India, etc.) that are **not** in Material Symbols use inline SVG.
+- **Org/scheme logos** (NCSC, NMBA, SMILE, PM-AJAY, …) come from the shared **`org-logo`** component (Figma: `org-logo` set, instance-swap; code: `<OrgLogo org="…" />` when built) — a single source of truth. Never paste an org logo as a raster image; instance the component so a logo fix in one place updates every consumer.
+- **Hover-revealed icons (house pattern):** keep the glyph **always visible at low opacity (~0.4)** and raise it to `1` on hover/focus — *not* `opacity: 0`. Persistent-faint keeps the affordance discoverable, avoids a blank reserved gap, and causes **no layout shift**. Mark the glyph `aria-hidden`; respect `prefers-reduced-motion` on the fade.
 
 ---
 
@@ -621,7 +639,7 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 **Purpose**: Slim dark-navy app-shell footer with NeGD/DoSJE credit + policy links.  
 **Rule**: Always include: copyright, Accessibility Statement link, Privacy Policy link, Terms of Use link.
 
-#### AppSwitcher / ZoneSwitcher
+#### AppSwitcher
 **Purpose**: Portal-to-portal navigation overlay. Shows all MoSJE portals the user has access to.  
 **Rule**: Render `<AppSwitcher devMode={process.env.NODE_ENV === "development"} />` — gate dev-only access via the `devMode` prop.
 
@@ -637,9 +655,38 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 
 ### Accessibility
 
-#### AccessibilityWidget
-**Purpose**: Standalone floating accessibility controls (text size + contrast) for non-`<SiteHeader>` pages.  
-**Rule**: On any page that doesn't render `<SiteHeader accessibilityToolbar>`, render `<AccessibilityWidget>` instead to maintain GIGW compliance.
+#### UX4GAccessibilityWidget — the single, canonical accessibility mechanism
+**Purpose**: The **official Government of India (MeitY / UX4G) Accessibility Widget** — a floating control providing high-contrast, text sizing, spacing, link highlighting, dark mode and more. This is the **ONE** accessibility/HC mechanism for the entire estate; every portal and site routes through it. Compliant with **WCAG, GIGW and IS 17802**.
+
+**Rule**: Render `<UX4GAccessibilityWidget />` once near the end of every app's root layout (like `AppSwitcher`). Do **not** build per-app contrast toggles, and do **not** hand-embed the CDN script — use the shared component.
+
+```tsx
+import { UX4GAccessibilityWidget } from "@mosje/design-system";
+<UX4GAccessibilityWidget />   // injects https://cdn.ux4g.gov.in/.../accessibility-widget.js, idempotently
+```
+
+**DOM note:** the widget applies the class **`.dark-mode`** to `<html>` for its dark theme. This is **distinct** from the design system's own `data-theme` / `data-color-mode` token theming — keep the two concerns separate (see the consolidation spec).
+
+**Brand skin, official functionality:** the CDN widget's look is reskinned to the SAMAVESH
+brand via `ux4g-accessibility-widget.css`, which overrides the widget's own
+`--color-dark-blue-1` theme variable to `--sa-color-action-primary-default` (`#0373df`) — the
+colour the Figma "AccessibilityWidget / FAB" component is specced in. No functionality is
+reimplemented; this only points the widget's existing theme hook at our brand colour.
+
+**Fixed:** the CDN script wires most of its controls to `DOMContentLoaded`, which has already
+fired by the time a React effect injects the script — `UX4GAccessibilityWidget` now replays a
+synthetic `DOMContentLoaded` once the script loads so those controls actually work (see the
+consolidation spec §7 for the full root-cause writeup).
+
+**Retired (see `docs/specs/samavesh-accessibility-consolidation.md`):**
+- `useA11yToolbar()` + `data-theme="hc"` — deleted from `SiteHeader`; the header no longer duplicates the widget.
+- `apps/portals/smile-admin` local `data-highcontrast`/`data-fontscale` + non-token CSS — deleted.
+- Rendered-but-unwired contrast buttons and the standalone `AccessibilityFab` in SCW `gov-chrome.tsx` — deleted.
+
+**Removed:**
+- `AccessibilityWidget` — the bespoke React reimplementation. Deleted (it had zero consumers
+  once every app migrated). Its Figma twin ("AccessibilityWidget / FAB") still documents the
+  visual spec the brand skin above matches — that lives in Figma, not in code.
 
 ---
 

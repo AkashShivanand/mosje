@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ColorModeProvider, colorModeInitScript } from "@mosje/design-system";
-import { AppSwitcher } from "@mosje/design-system";
+import { AppSwitcher, UX4GAccessibilityWidget } from "@mosje/design-system";
 import { DocsLayout } from "@/components/docs-layout/docs-layout";
 import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
@@ -24,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body suppressHydrationWarning>
         <ColorModeProvider initialMode="blue-light">
           <DocsLayout>{children}</DocsLayout>
+          <UX4GAccessibilityWidget />
           <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
         </ColorModeProvider>
       </body>

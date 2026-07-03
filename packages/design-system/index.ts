@@ -164,8 +164,6 @@ export {
   SiteHeader,
   BrandLockup,
   AccountMenu,
-  useA11yToolbar,
-  FONT_LEVELS,
 } from "./components/navigation/header";
 
 // Sidebar — portal app-shell left navigation (Figma: sidebar/type-1).
@@ -180,8 +178,6 @@ export type {
   SiteHeaderProps,
   BrandLockupProps,
   AccountMenuProps,
-  A11yToolbar,
-  FontLevel,
   NavLink,
   NavItem,
   NavColumn,
@@ -200,22 +196,18 @@ export { Footer } from "./components/navigation/footer";
 export type { FooterProps, FooterLink } from "./components/navigation/footer";
 
 // The interactive component lives in a "use client" module.
-export { AppSwitcher, ZoneSwitcher } from "./components/navigation/zone-switcher";
-export type { AppSwitcherProps, ZoneSwitcherProps } from "./components/navigation/zone-switcher";
+export { AppSwitcher } from "./components/navigation/zone-switcher";
+export type { AppSwitcherProps } from "./components/navigation/zone-switcher";
 // Data, types and helpers come from the plain (server-safe) module so server
 // components can read them directly.
 export {
   DEFAULT_APPS,
-  DEFAULT_APPS as DEFAULT_ZONES,
   PORTAL_CATEGORIES,
   deriveAbbr,
   filterApps,
   matchActivePath,
 } from "./components/navigation/app-switcher-utils";
-export type {
-  AppEntry,
-  AppEntry as Zone,
-} from "./components/navigation/app-switcher-utils";
+export type { AppEntry } from "./components/navigation/app-switcher-utils";
 
 // ---- Components: Auth (login shells & page templates) -----------------------
 // Full-page login layout shared across all MoSJE portals. Only the slot
@@ -227,7 +219,13 @@ export type {
 } from "./components/auth/portal-login-shell";
 
 // ---- Components: Accessibility -----------------------------------------------
-export { AccessibilityWidget } from "./components/a11y/accessibility-widget";
+// CANONICAL: the official Government of India (MeitY / UX4G) accessibility widget.
+// Use this across the estate — WCAG + GIGW + IS 17802 compliant.
+export {
+  UX4GAccessibilityWidget,
+  UX4G_A11Y_WIDGET_SRC,
+} from "./components/a11y/ux4g-accessibility-widget";
+export type { UX4GAccessibilityWidgetProps } from "./components/a11y/ux4g-accessibility-widget";
 
 
 // =============================================================================

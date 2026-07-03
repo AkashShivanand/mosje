@@ -21,7 +21,6 @@ module.exports = {
         "ink-muted": "var(--ds-ink-muted)",
         "surface": "var(--ds-surface)",
         "surface-muted": "var(--ds-surface-muted)",
-        "surface-alt": "var(--ds-surface-alt)",
         "border-ds": "var(--ds-border)",
         "border-strong": "var(--ds-border-strong)"
       },

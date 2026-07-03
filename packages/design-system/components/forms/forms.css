@@ -111,8 +111,8 @@
 
 .ds-field__required {
   margin-left: 2px;
-  /* dangerStrong (#a11d12) clears 4.5:1 on white; --ds-danger (#ec5042) is only 3.6:1. */
-  color: var(--sa-color-status-dangerStrong, #a11d12);
+  /* dangerStrong (#b8382f, Figma Danger/700) clears 4.5:1 on white (5.8:1); --ds-danger (#ec5042) is only 3.6:1. */
+  color: var(--sa-color-status-dangerStrong, #b8382f);
 }
 
 .ds-field__hint {
@@ -128,7 +128,7 @@
   font-size: var(--ds-text-body-3);
   line-height: var(--ds-leading-body-3);
   /* Error TEXT must clear 4.5:1 (WCAG 1.4.3); --ds-danger only meets the 3:1 UI-border bar. */
-  color: var(--sa-color-status-dangerStrong, #a11d12);
+  color: var(--sa-color-status-dangerStrong, #b8382f);
 }
 
 /* Compact density reduces control height to 40px */

@@ -643,7 +643,7 @@ export default function PatternsPage(): React.JSX.Element {
         <ul style={{ ...proseStyle, paddingLeft: "var(--ds-spacing-2xl)" }}>
           <li>Always provide a <code>caption</code> prop or <code>aria-label</code> on the table.</li>
           <li>Numeric columns must be <strong>right-aligned</strong> — header alignment must match column alignment.</li>
-          <li>Zebra-stripe dense tables (&gt;15 rows) using <code>--ds-surface-alt</code>.</li>
+          <li>Zebra-stripe dense tables (&gt;15 rows) using <code>--ds-surface-muted</code>.</li>
           <li>Status cells must use <code>&lt;Badge&gt;</code> with both colour <em>and</em> text — never colour alone.</li>
           <li>Export (CSV/PDF) is always a secondary action — never a primary button.</li>
           <li>Sort indicators must be visible keyboard-operable column header buttons.</li>

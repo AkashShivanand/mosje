@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import { GovTopBar, GovMasthead, Ux4gFooter, AccessibilityFab } from "./gov-chrome";
+import { GovTopBar, GovMasthead, Ux4gFooter } from "./gov-chrome";
 import { Sidebar, USER_NAV } from "./sidebar";
 import { UserMenu, type AccountUser } from "./user-menu";
 
@@ -37,7 +37,6 @@ export function UserShell({
         </main>
       </div>
       <Ux4gFooter />
-      <AccessibilityFab />
     </div>
   );
 }

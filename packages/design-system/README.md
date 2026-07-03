@@ -12,7 +12,9 @@ This package does **not** own tokens. The single source of truth is **`@mosje/to
 
 ## Components
 
-13 token-driven atoms (semantic CSS + `--ds-*`, portable across Tailwind majors): `Button`, `Card` (+ sub-parts), `Badge`, `Chip`, `Checkbox`, `Radio`, `Toggle`, `Search`, `Alert`, `Loader`, `EmptyState`, `Avatar`, `AccessibilityWidget`. Import from the root:
+12 token-driven atoms (semantic CSS + `--ds-*`, portable across Tailwind majors): `Button`, `Card` (+ sub-parts), `Badge`, `Chip`, `Checkbox`, `Radio`, `Toggle`, `Search`, `Alert`, `Loader`, `EmptyState`, `Avatar`. Import from the root:
+
+The full component inventory (navigation, forms, dashboard/charts, `UX4GAccessibilityWidget`, etc.) is much larger than this atom list — see [`design.md`](./design.md) for the authoritative, kept-in-sync inventory.
 
 ```tsx
 import { Button, Card, Badge } from "@mosje/design-system";

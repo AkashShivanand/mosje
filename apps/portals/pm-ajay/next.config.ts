@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_BASE_PATH: "/portals/pm-ajay",
   },
-  // Shared SAMAVESH components (ZoneSwitcher) ship as TS/TSX source.
+  // Shared SAMAVESH components (AppSwitcher) ship as TS/TSX source.
   transpilePackages: ["@mosje/design-system"],
   async headers() {
     // The immutable long-cache header is only safe in production; in dev it makes

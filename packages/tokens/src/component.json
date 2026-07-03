@@ -14,5 +14,11 @@
     "bg":     {"$value":"{color.bg.surface}"},
     "border": {"$value":"{color.border.subtle}"},
     "radius": {"$type":"dimension","$value":"{radius.md}"}
+  },
+  "badge": {
+    "$type": "color",
+    "beta": {
+      "bg": {"$value":"{color.brand.yellow}", "$description":"BETA badge background — ad-hoc accent (#ffd323), NOT a brand or status colour. Correctly-named entry point for the beta-badge colour; --ds-gov-yellow is the deprecated legacy alias."}
+    }
   }
 }

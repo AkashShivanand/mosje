@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "@/store/app-context";
-import { AppSwitcher, ColorModeProvider } from "@mosje/design-system";
+import { AppSwitcher, ColorModeProvider, UX4GAccessibilityWidget } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 
 // smile-admin's GoI navy maps to the "blue-dark" color mode.
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={noto.variable} data-color-mode={DEFAULT_MODE}>
+    <html lang="en" className={noto.variable} data-color-mode={DEFAULT_MODE} data-surface="portal">
       <head>
         <script
           dangerouslySetInnerHTML={{ __html: colorModeInitScript(DEFAULT_MODE) }}
@@ -43,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ColorModeProvider initialMode={DEFAULT_MODE}>
           <AppProvider>{children}</AppProvider>
+          <UX4GAccessibilityWidget />
           <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
         </ColorModeProvider>
       </body>

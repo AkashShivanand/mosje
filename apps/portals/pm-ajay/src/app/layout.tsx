@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Noto_Sans } from "next/font/google";
-import { AppSwitcher, ColorModeProvider } from "@mosje/design-system";
+import { AppSwitcher, ColorModeProvider, UX4GAccessibilityWidget } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import { AuthProvider } from "@/store/auth-context";
 import "./globals.css";
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={notoSans.variable}>
+    <html lang="en" suppressHydrationWarning className={notoSans.variable} data-surface="portal">
       <head>
         <script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -32,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AuthProvider>
             {children}
           </AuthProvider>
+          <UX4GAccessibilityWidget />
           <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
         </ColorModeProvider>
         {/* Material Symbols Rounded — loaded after interaction so it never blocks first paint (PERF-001) */}

@@ -1,0 +1,24 @@
+/**
+ * Brand skin for the official UX4G accessibility widget (CDN script + CSS).
+ *
+ * The widget exposes exactly one theme hook: the `--color-dark-blue-1` custom
+ * property (its accent colour), consumed by the trigger FAB, the panel header,
+ * the scrollbar thumb and every "active" control state. Overriding it here
+ * points the entire widget at the SAMAVESH brand primary instead of the
+ * widget's default violet — matching the "AccessibilityWidget / FAB" spec in
+ * the SAMAVESH Design System Figma file — without touching the widget's own
+ * markup, JS, or functionality.
+ */
+/* !important is required here: the widget's own stylesheet is injected into
+   <head> late (by its script, after our page's stylesheets), so its `:root`
+   rule for the same custom property otherwise wins on source order despite
+   identical specificity. */
+:root {
+  --color-dark-blue-1: var(--sa-color-action-primary-default, #0373df) !important;
+}
+
+/* The trigger button's expanded label is the one place the widget hardcodes a
+   non-Noto font; the panel itself already uses Noto Sans. */
+.uw-widget-custom-trigger span {
+  font-family: "Noto Sans", sans-serif !important;
+}

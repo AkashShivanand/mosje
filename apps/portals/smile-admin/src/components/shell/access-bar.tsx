@@ -1,23 +1,9 @@
 "use client";
 
-import { ExternalLink, Globe, Minus, Plus, Contrast, Accessibility } from "lucide-react";
+import { ExternalLink, Globe } from "lucide-react";
 import { ColorModeSwitcher } from "@mosje/design-system";
-import { useApp } from "@/store/app-context";
-import { cn } from "@/lib/utils";
-
-const Btn = ({ active, ...rest }: { active?: boolean } & React.ButtonHTMLAttributes<HTMLButtonElement>) => (
-  <button
-    {...rest}
-    className={cn(
-      "inline-flex h-7 w-7 items-center justify-center rounded-xs text-white/90 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
-      active && "bg-white/15 text-white",
-      rest.className,
-    )}
-  />
-);
 
 export function AccessBar() {
-  const { fontScale, setFontScale, highContrast, setHighContrast } = useApp();
   return (
     <div className="bg-primary text-white">
       <div className="mx-auto flex h-8 max-w-[1600px] items-center justify-between gap-sm px-md text-label-3 md:px-lg">
@@ -37,40 +23,8 @@ export function AccessBar() {
         </a>
         <a href="#main-content" className="skip-link">Skip to Main Content</a>
         <div className="flex shrink-0 items-center gap-xs sm:gap-md">
-          <div className="flex items-center gap-xs">
-            <Btn
-              aria-label="Decrease font size"
-              onClick={() => setFontScale("small")}
-              active={fontScale === "small"}
-            >
-              <Minus className="h-3.5 w-3.5" />
-            </Btn>
-            <Btn
-              aria-label="Default font size"
-              onClick={() => setFontScale("default")}
-              active={fontScale === "default"}
-            >
-              <span className="text-label-2 font-bold">A</span>
-            </Btn>
-            <Btn
-              aria-label="Increase font size"
-              onClick={() => setFontScale("large")}
-              active={fontScale === "large"}
-            >
-              <Plus className="h-3.5 w-3.5" />
-            </Btn>
-          </div>
-          <Btn
-            aria-label="Toggle high-contrast theme"
-            onClick={() => setHighContrast(!highContrast)}
-            active={highContrast}
-            aria-pressed={highContrast}
-          >
-            <Contrast className="h-3.5 w-3.5" />
-          </Btn>
-          <Btn aria-label="Accessibility preferences" className="hidden sm:inline-flex">
-            <Accessibility className="h-3.5 w-3.5" />
-          </Btn>
+          {/* Font size, contrast and other a11y controls live in the official
+              UX4GAccessibilityWidget (rendered in the root layout) — not here. */}
           <ColorModeSwitcher compact hideLabel label="Colour mode" />
           <button className="inline-flex items-center gap-xs rounded-xs px-1 py-1 text-label-3 hover:bg-white/10 sm:px-sm">
             <Globe className="h-3.5 w-3.5" />

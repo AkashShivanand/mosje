@@ -1,7 +1,6 @@
 import * as React from "react";
 import Image from "next/image";
-import { ExternalLink, Contrast, Accessibility, Globe, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ExternalLink, Globe, ChevronDown } from "lucide-react";
 
 const BASE = "/portals/scw";
 
@@ -19,28 +18,11 @@ export function GovTopBar({ variant = "admin" }: { variant?: "admin" | "user" })
           <a href="#main" className="hidden sm:inline hover:underline">
             Skip to Main Content
           </a>
-          <span className="hidden h-4 w-px bg-white/25 sm:block" />
-          <div className="flex items-center gap-1.5">
-            <button className="rounded px-1 text-[11px] hover:bg-white/10" aria-label="Decrease text size">
-              A<sup>-</sup>
-            </button>
-            <button className="rounded px-1 hover:bg-white/10" aria-label="Default text size">
-              A
-            </button>
-            <button className="rounded px-1 text-[13px] hover:bg-white/10" aria-label="Increase text size">
-              A<sup>+</sup>
-            </button>
-          </div>
-          <span className="h-4 w-px bg-white/25" />
-          <button className="rounded p-1 hover:bg-white/10" aria-label="Toggle contrast">
-            <Contrast className="h-4 w-4" />
-          </button>
+          {/* Text size, contrast and other a11y controls live in the official
+              UX4GAccessibilityWidget (rendered in the root layout) — not here. */}
           {variant === "admin" ? (
             <>
-              <button className="rounded p-1 hover:bg-white/10" aria-label="Accessibility">
-                <Accessibility className="h-4 w-4" />
-              </button>
-              <span className="h-4 w-px bg-white/25" />
+              <span className="hidden h-4 w-px bg-white/25 sm:block" />
               <button className="flex items-center gap-1 rounded px-1 hover:bg-white/10">
                 <Globe className="h-4 w-4" />
                 <span>English</span>
@@ -133,17 +115,6 @@ export function Ux4gFooter() {
   );
 }
 
-/** Floating accessibility widget (citizen portal, bottom-right). */
-export function AccessibilityFab() {
-  return (
-    <button
-      aria-label="Open Accessibility Settings"
-      className={cn(
-        "fixed bottom-6 right-6 z-40 flex h-12 w-12 items-center justify-center rounded-full text-white shadow-pop",
-        "bg-gradient-to-br from-violet-500 to-violet-600 hover:from-violet-600 hover:to-violet-700"
-      )}
-    >
-      <Accessibility className="h-6 w-6" />
-    </button>
-  );
-}
+// A dedicated floating accessibility button used to live here (bottom-right,
+// citizen portal) but never actually opened anything. The official
+// UX4GAccessibilityWidget (rendered in the root layout) is the real one.

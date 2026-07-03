@@ -164,7 +164,7 @@ shell exist.
 3. Components            (grouped by function — see §6)
    ├─ Actions · Inputs & Forms · Navigation · Feedback & Status
    ├─ Data Display · Layout & Containers
-   └─ Utilities (Icon, ColorModeProvider/Switcher, AccessibilityWidget)
+   └─ Utilities (Icon, ColorModeProvider/Switcher, UX4GAccessibilityWidget)
 
 4. Data Visualization
    ├─ Chart catalogue (13) · Palettes (categorical/sequential/diverging)
@@ -198,11 +198,11 @@ tokens only, so all are brand-blind by construction.
 |-------|---------|-----------|
 | **Actions** | **Button** | IconButton, ButtonGroup, Link, Menu/Dropdown |
 | **Inputs & Forms** | **Input, Textarea, Select, Checkbox, Radio, Toggle, Search, Chip, FormField, FormSection, FormCard, Wizard/ReviewSection, MediaUpload** | DatePicker, Combobox, FileUpload, Slider |
-| **Navigation** | **SiteHeader, SidebarNav, Footer, Tabs/TabPanel, AppSwitcher, ZoneSwitcher** | Breadcrumb, Pagination, Menu |
+| **Navigation** | **SiteHeader, SidebarNav, Footer, Tabs/TabPanel, AppSwitcher** | Breadcrumb, Pagination, Menu |
 | **Feedback & Status** | **Alert, Badge, Toast/useToast, Modal, Loader, EmptyState, Stepper** | Tooltip, Banner, Skeleton |
 | **Data Display** | **Card, Avatar, DataTable, MetricCard** | List, DescriptionList, Tag, Timeline |
 | **Layout & Containers** | **DashboardGrid, ChartCard** | Stack, Grid, Container, Divider, Page |
-| **Utilities** | **Icon, ColorModeProvider/Switcher, AccessibilityWidget** | VisuallyHidden, FocusTrap |
+| **Utilities** | **Icon, ColorModeProvider/Switcher, UX4GAccessibilityWidget** | VisuallyHidden, FocusTrap |
 | **Data Visualization** *(pillar 4)* | **Pie, Donut, Bar, Line, Area, Gauge, Progress, Sparkline, Funnel, Scatter, Heatmap, Combo, IndiaMap** + composition | TreeMap, Waterfall, district map |
 
 ## 7. Brand Layer — the white-label spec

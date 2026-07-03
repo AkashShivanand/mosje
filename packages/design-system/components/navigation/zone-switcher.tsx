@@ -11,9 +11,6 @@ import {
   matchActivePath,
 } from "./app-switcher-utils";
 
-// Re-export for convenience
-export type { AppEntry };
-export { DEFAULT_APPS };
 import "./zone-switcher.css";
 
 export interface AppSwitcherProps {
@@ -437,16 +434,3 @@ export function AppSwitcher({
   );
 }
 
-// ── Backwards-compatibility shims ──────────────────────────────────────────
-
-/** @deprecated Use AppSwitcher instead. */
-export const ZoneSwitcher = AppSwitcher;
-
-/** @deprecated Use AppEntry instead. */
-export type Zone = AppEntry;
-
-/** @deprecated Use AppSwitcherProps instead. */
-export type ZoneSwitcherProps = AppSwitcherProps;
-
-/** @deprecated Use DEFAULT_APPS instead. */
-export const DEFAULT_ZONES = DEFAULT_APPS;

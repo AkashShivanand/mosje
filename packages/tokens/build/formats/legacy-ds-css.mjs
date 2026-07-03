@@ -23,6 +23,70 @@ export const LEGACY_DS_ALIASES = {
   "--ds-primary-700":   "--sa-color-primaryScale-700",
   "--ds-primary-800":   "--sa-color-primaryScale-800",
   "--ds-primary-900":   "--sa-color-primaryScale-900",
+  // ── Full colour ramps synced from SAMAVESH Figma (mode-aware via [data-color-mode]) ──
+  "--ds-secondary-50":  "--sa-color-secondaryScale-50",
+  "--ds-secondary-100": "--sa-color-secondaryScale-100",
+  "--ds-secondary-200": "--sa-color-secondaryScale-200",
+  "--ds-secondary-300": "--sa-color-secondaryScale-300",
+  "--ds-secondary-400": "--sa-color-secondaryScale-400",
+  "--ds-secondary-500": "--sa-color-secondaryScale-500",
+  "--ds-secondary-600": "--sa-color-secondaryScale-600",
+  "--ds-secondary-700": "--sa-color-secondaryScale-700",
+  "--ds-secondary-800": "--sa-color-secondaryScale-800",
+  "--ds-secondary-900": "--sa-color-secondaryScale-900",
+  "--ds-neutral-0":     "--sa-color-neutralScale-0",
+  "--ds-neutral-50":    "--sa-color-neutralScale-50",
+  "--ds-neutral-100":   "--sa-color-neutralScale-100",
+  "--ds-neutral-200":   "--sa-color-neutralScale-200",
+  "--ds-neutral-300":   "--sa-color-neutralScale-300",
+  "--ds-neutral-400":   "--sa-color-neutralScale-400",
+  "--ds-neutral-500":   "--sa-color-neutralScale-500",
+  "--ds-neutral-600":   "--sa-color-neutralScale-600",
+  "--ds-neutral-700":   "--sa-color-neutralScale-700",
+  "--ds-neutral-800":   "--sa-color-neutralScale-800",
+  "--ds-neutral-900":   "--sa-color-neutralScale-900",
+  "--ds-neutral-1000":  "--sa-color-neutralScale-1000",
+  "--ds-neutral-1100":  "--sa-color-neutralScale-1100",
+  "--ds-success-50":    "--sa-color-successScale-50",
+  "--ds-success-100":   "--sa-color-successScale-100",
+  "--ds-success-200":   "--sa-color-successScale-200",
+  "--ds-success-300":   "--sa-color-successScale-300",
+  "--ds-success-400":   "--sa-color-successScale-400",
+  "--ds-success-500":   "--sa-color-successScale-500",
+  "--ds-success-600":   "--sa-color-successScale-600",
+  "--ds-success-700":   "--sa-color-successScale-700",
+  "--ds-success-800":   "--sa-color-successScale-800",
+  "--ds-success-900":   "--sa-color-successScale-900",
+  "--ds-danger-50":     "--sa-color-dangerScale-50",
+  "--ds-danger-100":    "--sa-color-dangerScale-100",
+  "--ds-danger-200":    "--sa-color-dangerScale-200",
+  "--ds-danger-300":    "--sa-color-dangerScale-300",
+  "--ds-danger-400":    "--sa-color-dangerScale-400",
+  "--ds-danger-500":    "--sa-color-dangerScale-500",
+  "--ds-danger-600":    "--sa-color-dangerScale-600",
+  "--ds-danger-700":    "--sa-color-dangerScale-700",
+  "--ds-danger-800":    "--sa-color-dangerScale-800",
+  "--ds-danger-900":    "--sa-color-dangerScale-900",
+  "--ds-warning-50":    "--sa-color-warningScale-50",
+  "--ds-warning-100":   "--sa-color-warningScale-100",
+  "--ds-warning-200":   "--sa-color-warningScale-200",
+  "--ds-warning-300":   "--sa-color-warningScale-300",
+  "--ds-warning-400":   "--sa-color-warningScale-400",
+  "--ds-warning-500":   "--sa-color-warningScale-500",
+  "--ds-warning-600":   "--sa-color-warningScale-600",
+  "--ds-warning-700":   "--sa-color-warningScale-700",
+  "--ds-warning-800":   "--sa-color-warningScale-800",
+  "--ds-warning-900":   "--sa-color-warningScale-900",
+  "--ds-info-50":       "--sa-color-infoScale-50",
+  "--ds-info-100":      "--sa-color-infoScale-100",
+  "--ds-info-200":      "--sa-color-infoScale-200",
+  "--ds-info-300":      "--sa-color-infoScale-300",
+  "--ds-info-400":      "--sa-color-infoScale-400",
+  "--ds-info-500":      "--sa-color-infoScale-500",
+  "--ds-info-600":      "--sa-color-infoScale-600",
+  "--ds-info-700":      "--sa-color-infoScale-700",
+  "--ds-info-800":      "--sa-color-infoScale-800",
+  "--ds-info-900":      "--sa-color-infoScale-900",
   "--ds-success":       "--sa-color-status-success",
   "--ds-success-tonal": "--sa-color-status-successTonal",
   "--ds-danger":        "--sa-color-status-danger",
@@ -39,7 +103,6 @@ export const LEGACY_DS_ALIASES = {
   "--ds-on-primary":    "--sa-color-text-onPrimary",
   "--ds-surface":       "--sa-color-bg-surface",
   "--ds-surface-muted": "--sa-color-bg-muted",
-  "--ds-surface-alt":   "--sa-color-bg-alt",
   "--ds-border":        "--sa-color-border-subtle",
   "--ds-border-strong": "--sa-color-border-strong",
   "--ds-saffron":       "--sa-color-brand-saffron",
@@ -188,30 +251,48 @@ export const LEGACY_DS_ALIASES = {
 
 const val = (t) => (t.$value !== undefined ? t.$value : t.value);
 
-/** Build responsive --ds-type-* blocks from font.role.* tokens. */
+// Fluid type: clamp() between a min (@360px viewport) and max (@1280px), Utopia-style.
+const CLAMP_WMIN = 360;
+const CLAMP_WMAX = 1280;
+/** Return a clamp() string (or a static px value when min === max). */
+function clampExpr(minPx, maxPx) {
+  const min = parseFloat(minPx);
+  const max = parseFloat(maxPx);
+  if (!Number.isFinite(min) || !Number.isFinite(max)) return maxPx ?? minPx;
+  if (min === max) return `${min}px`;
+  const range = CLAMP_WMAX - CLAMP_WMIN;
+  const slopeVw = ((max - min) / range) * 100; // vw coefficient
+  const yInt = min - ((max - min) / range) * CLAMP_WMIN; // px intercept
+  const r = (n) => Math.round(n * 1000) / 1000;
+  const lo = Math.min(min, max);
+  const hi = Math.max(min, max);
+  return `clamp(${lo}px, calc(${r(yInt)}px + ${r(slopeVw)}vw), ${hi}px)`;
+}
+
+/**
+ * Build two-surface responsive --ds-type-* blocks from font.role.* tokens.
+ * Website scale → :root (default surface); Portal scale → [data-surface="portal"].
+ */
 function buildResponsiveType(dictionary) {
   const roleTokens = dictionary.allTokens.filter(
     (t) => t.path[0] === "font" && t.path[1] === "role"
   );
-  if (!roleTokens.length) return { rootLines: [], tablet: [], desktop: [] };
+  if (!roleTokens.length) return { website: [], portal: [] };
 
-  const rootLines = [];
-  const tablet = [];
-  const desktop = [];
+  const website = [];
+  const portal = [];
 
   for (const t of roleTokens) {
     const [, , role, prop] = t.path; // font.role.display1.size
     const cssVar = `--ds-type-${role}-${prop}`;
-    const mobile = val(t);
-    const ext = t.original?.$extensions?.responsive;
-    const md = ext?.md;
-    const lg = ext?.lg;
+    const ty = t.original?.$extensions?.mosje?.type;
+    const webExpr = ty?.website ? clampExpr(ty.website.min, ty.website.max) : val(t);
+    const portalExpr = ty?.portal ? clampExpr(ty.portal.min, ty.portal.max) : webExpr;
 
-    rootLines.push(`  ${cssVar}: ${mobile};`);
-    if (md && md !== mobile) tablet.push(`    ${cssVar}: ${md};`);
-    if (lg && lg !== mobile) desktop.push(`    ${cssVar}: ${lg};`);
+    website.push(`  ${cssVar}: ${webExpr};`);
+    if (portalExpr !== webExpr) portal.push(`  ${cssVar}: ${portalExpr};`);
   }
-  return { rootLines, tablet, desktop };
+  return { website, portal };
 }
 
 export const legacyDsCss = {
@@ -225,8 +306,8 @@ export const legacyDsCss = {
       (t) => `  --sa-${t.path.join("-")}: ${val(t)};`
     );
 
-    // Responsive type variables
-    const { rootLines: typeRootLines, tablet, desktop } = buildResponsiveType(dictionary);
+    // Two-surface responsive type variables (website = default, portal = [data-surface])
+    const { website: typeRootLines, portal: typePortalLines } = buildResponsiveType(dictionary);
 
     const legacy = Object.entries(LEGACY_DS_ALIASES).map(
       ([oldName, newVar]) => `  ${oldName}: var(${newVar});`
@@ -272,20 +353,18 @@ export const legacyDsCss = {
       .filter(Boolean)
       .join("\n\n");
 
-    const responsiveTypeBlocks = [
-      tablet.length  ? `@media (min-width: 768px) {\n  :root {\n${tablet.join("\n")}\n  }\n}` : "",
-      desktop.length ? `@media (min-width: 1024px) {\n  :root {\n${desktop.join("\n")}\n  }\n}` : "",
-    ]
-      .filter(Boolean)
-      .join("\n\n");
+    // Portal surface: override the fluid --ds-type-* scale under [data-surface="portal"].
+    const surfaceBlock = typePortalLines.length
+      ? `[data-surface="portal"] {\n${typePortalLines.join("\n")}\n}`
+      : "";
 
     return (
       `/* GENERATED by @mosje/tokens — do not edit. Edit packages/tokens/src/*.json. */\n` +
       `:root {\n${lines.join("\n")}\n\n` +
-      `  /* ---- responsive type scale (mobile-first: --ds-type-ROLE-size/lh) ---- */\n${typeRootLines.join("\n")}\n\n` +
+      `  /* ---- fluid type scale (Website surface, default): --ds-type-ROLE-size/lh = clamp(...) ---- */\n${typeRootLines.join("\n")}\n\n` +
       `  /* ---- legacy --ds-* contract (back-compat) ---- */\n${legacy.join("\n")}\n}\n\n` +
       `${themeBlocks}\n\n` +
-      `/* ---- responsive type breakpoint overrides ---- */\n${responsiveTypeBlocks}\n`
+      `/* ---- Portal surface type scale override ---- */\n${surfaceBlock}\n`
     );
   },
 };

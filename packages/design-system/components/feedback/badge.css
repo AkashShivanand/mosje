@@ -44,7 +44,7 @@
 }
 
 .ds-badge--warning {
-  --_bg: var(--ds-gov-yellow);
+  --_bg: var(--ds-warning-tonal);
   --_fg: var(--ds-ink);
 }
 

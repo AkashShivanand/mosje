@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import { buttonClasses } from "@mosje/design-system";
-import { A11yChecklist, Callout } from "@/components/docs-kit/index";
+import { A11yChecklist, Callout, TerminalCode, PropsTable } from "@/components/docs-kit/index";
 import { figmaUrl, FIGMA_NODES } from "@/lib/figma";
 
 export const metadata: Metadata = {
@@ -9,6 +9,13 @@ export const metadata: Metadata = {
   description:
     "Accessibility is the foundation of SAMAVESH — WCAG 2.2 AA + GIGW, the POUR principles, and practical checklists for designers and developers.",
 };
+
+const WIDGET_IMPORT_SNIPPET = `import { UX4GAccessibilityWidget } from "@mosje/design-system";
+
+// render once near the end of the root layout, alongside AppSwitcher:
+<UX4GAccessibilityWidget />`;
+
+const WIDGET_EMBED_SNIPPET = `<script src="https://cdn.ux4g.gov.in/accessibility-beta-v1.15/accessibility-widget.js" defer></script>`;
 
 export default function AccessibilityPage(): React.JSX.Element {
   return (
@@ -70,6 +77,102 @@ export default function AccessibilityPage(): React.JSX.Element {
             can interpret the page reliably.
           </li>
         </ul>
+      </section>
+
+      <section aria-labelledby="widget" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+        <h2 id="widget">The Accessibility Widget</h2>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
+          Accessibility settings across the SAMAVESH estate are delivered by the{" "}
+          <strong>official Government of India (MeitY / UX4G) Accessibility
+          Widget</strong> — a control fixed to the viewport that lets any citizen
+          adapt the page to their needs without a separate settings screen. It is
+          the <strong>single, canonical</strong> accessibility and high-contrast
+          mechanism for every portal and site; do not build per-app contrast
+          toggles. It is centrally maintained by MeitY and complies with{" "}
+          <strong>WCAG, GIGW and IS 17802</strong>.
+        </p>
+
+        <h3 id="widget-features" style={{ marginTop: "var(--ds-spacing-2xl)" }}>
+          What it provides
+        </h3>
+        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
+          <li><strong>Contrast &amp; invert</strong> — high-contrast and inverted-colour modes.</li>
+          <li><strong>Dark / light mode</strong> — switch the page between light and dark.</li>
+          <li><strong>Bigger text</strong> — scale text up for readability.</li>
+          <li><strong>Text spacing</strong> — increase letter and word spacing.</li>
+          <li><strong>Line height</strong> — loosen line spacing.</li>
+          <li><strong>Dyslexia-friendly font</strong> — swap to a dyslexia-legible typeface.</li>
+          <li><strong>Highlight links</strong> — make links visually prominent.</li>
+          <li><strong>Hide images</strong> — remove imagery to reduce distraction.</li>
+          <li><strong>Bigger cursor</strong> — enlarge the pointer.</li>
+          <li><strong>Screen reader</strong> — read page content aloud.</li>
+        </ul>
+        <p style={{ marginTop: "var(--ds-spacing-md)", color: "var(--ds-ink-muted)" }}>
+          Preferences persist as the user navigates. The control is keyboard-operable and screen-reader labelled.
+        </p>
+
+        <h3 id="widget-integration" style={{ marginTop: "var(--ds-spacing-2xl)" }}>
+          How to integrate
+        </h3>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
+          In any app in this estate, render the shared wrapper once near the end of
+          the root layout (alongside <code>AppSwitcher</code>). It injects the
+          official widget script idempotently — never hand-embed the script.
+        </p>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+          <TerminalCode title="app/layout.tsx" codeText={WIDGET_IMPORT_SNIPPET}>
+            {WIDGET_IMPORT_SNIPPET}
+          </TerminalCode>
+        </div>
+        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
+          Outside this monorepo (plain HTML, PHP, WordPress, etc.), embed the
+          official script directly before <code>&lt;/body&gt;</code>:
+        </p>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+          <TerminalCode title="html" codeText={WIDGET_EMBED_SNIPPET}>
+            {WIDGET_EMBED_SNIPPET}
+          </TerminalCode>
+        </div>
+        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+          <PropsTable
+            props={[
+              {
+                name: "src",
+                type: "string",
+                default: "UX4G_A11Y_WIDGET_SRC",
+                description:
+                  "Override the widget script URL — e.g. to pin a specific version or self-host the script.",
+              },
+            ]}
+          />
+        </div>
+
+        <h3 id="widget-theming" style={{ marginTop: "var(--ds-spacing-2xl)" }}>
+          Behaviour &amp; theming
+        </h3>
+        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
+          <li>
+            The widget applies the class <code>.dark-mode</code> to{" "}
+            <code>&lt;html&gt;</code> for its own dark theme. This is{" "}
+            <strong>separate</strong> from the design system&apos;s{" "}
+            <code>data-theme</code> / <code>data-color-mode</code> token theming —
+            keep the citizen-facing accessibility control and product/brand
+            theming as distinct concerns.
+          </li>
+          <li>
+            Deployments must allow the UX4G CDN (<code>cdn.ux4g.gov.in</code>) in
+            their Content-Security-Policy.
+          </li>
+        </ul>
+
+        <div style={{ marginTop: "var(--ds-spacing-xl)" }}>
+          <Callout type="warning" title="One mechanism only">
+            The bespoke <code>AccessibilityWidget</code> reimplementation and every
+            per-app font-size/contrast toggle have been removed — everything routes
+            through the official UX4G widget now. Full writeup:{" "}
+            <code>docs/specs/samavesh-accessibility-consolidation.md</code>.
+          </Callout>
+        </div>
       </section>
 
       <section aria-labelledby="designers" style={{ marginTop: "var(--ds-spacing-4xl)" }}>

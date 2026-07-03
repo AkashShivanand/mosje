@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
-import { ColorModeProvider } from "@mosje/design-system";
+import { ColorModeProvider, UX4GAccessibilityWidget } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import { ConditionalAppSwitcher } from "@/components/conditional-app-switcher";
 import { themeInitScript } from "@/lib/theme";
@@ -31,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-full font-sans bg-surface-muted text-ink" suppressHydrationWarning>
         <ColorModeProvider>
           {children}
+          <UX4GAccessibilityWidget />
           <ConditionalAppSwitcher />
         </ColorModeProvider>
       </body>

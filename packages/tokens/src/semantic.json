@@ -27,36 +27,138 @@
       "800": {"$value":"{color.primaryRamp.light.800}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.800}"}}}},
       "900": {"$value":"{color.primaryRamp.light.900}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.900}"}}}}
     },
+    "secondaryScale": {
+      "$description": "Full mode-aware SECONDARY ramp (50–900) = Figma Secondary/*. Blue-Light = saffron, Blue-Dark = green. Consume via --ds-secondary-50…900 / --sa-color-secondaryScale-*.",
+      "50":  {"$value":"{color.secondaryRamp.light.50}",  "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.secondaryRamp.dark.50}"}}}},
+      "100": {"$value":"{color.secondaryRamp.light.100}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.secondaryRamp.dark.100}"}}}},
+      "200": {"$value":"{color.secondaryRamp.light.200}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.secondaryRamp.dark.200}"}}}},
+      "300": {"$value":"{color.secondaryRamp.light.300}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.secondaryRamp.dark.300}"}}}},
+      "400": {"$value":"{color.secondaryRamp.light.400}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.secondaryRamp.dark.400}"}}}},
+      "500": {"$value":"{color.secondaryRamp.light.500}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.secondaryRamp.dark.500}"}}}},
+      "600": {"$value":"{color.secondaryRamp.light.600}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.secondaryRamp.dark.600}"}}}},
+      "700": {"$value":"{color.secondaryRamp.light.700}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.secondaryRamp.dark.700}"}}}},
+      "800": {"$value":"{color.secondaryRamp.light.800}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.secondaryRamp.dark.800}"}}}},
+      "900": {"$value":"{color.secondaryRamp.light.900}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.secondaryRamp.dark.900}"}}}}
+    },
+    "neutralScale": {
+      "$description": "Full mode-aware NEUTRAL ramp (0–1100) = Figma Neutral/*. Blue-Light = warm grey, Blue-Dark = cooler Tailwind grey. Consume via --ds-neutral-0…1100 / --sa-color-neutralScale-*.",
+      "0":    {"$value":"{color.neutral.0}",    "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.0}"}}}},
+      "50":   {"$value":"{color.neutral.50}",   "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.50}"}}}},
+      "100":  {"$value":"{color.neutral.100}",  "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.100}"}}}},
+      "200":  {"$value":"{color.neutral.200}",  "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.200}"}}}},
+      "300":  {"$value":"{color.neutral.300}",  "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.300}"}}}},
+      "400":  {"$value":"{color.neutral.400}",  "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.400}"}}}},
+      "500":  {"$value":"{color.neutral.500}",  "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.500}"}}}},
+      "600":  {"$value":"{color.neutral.600}",  "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.600}"}}}},
+      "700":  {"$value":"{color.neutral.700}",  "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.700}"}}}},
+      "800":  {"$value":"{color.neutral.800}",  "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.800}"}}}},
+      "900":  {"$value":"{color.neutral.900}",  "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.900}"}}}},
+      "1000": {"$value":"{color.neutral.1000}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.1000}"}}}},
+      "1100": {"$value":"{color.neutral.1100}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.1100}"}}}}
+    },
+    "successScale": {
+      "$description": "Full SUCCESS ramp (50–900) = Figma Success/*. Mode-invariant (identical in Blue-Light and Blue-Dark). Consume via --ds-success-50…900.",
+      "50":  {"$value":"{color.green.50}"},  "100": {"$value":"{color.green.100}"}, "200": {"$value":"{color.green.200}"},
+      "300": {"$value":"{color.green.300}"}, "400": {"$value":"{color.green.400}"}, "500": {"$value":"{color.green.500}"},
+      "600": {"$value":"{color.green.600}"}, "700": {"$value":"{color.green.700}"}, "800": {"$value":"{color.green.800}"},
+      "900": {"$value":"{color.green.900}"}
+    },
+    "dangerScale": {
+      "$description": "Full DANGER ramp (50–900) = Figma Danger/*. Mode-invariant. Consume via --ds-danger-50…900.",
+      "50":  {"$value":"{color.red.50}"},  "100": {"$value":"{color.red.100}"}, "200": {"$value":"{color.red.200}"},
+      "300": {"$value":"{color.red.300}"}, "400": {"$value":"{color.red.400}"}, "500": {"$value":"{color.red.500}"},
+      "600": {"$value":"{color.red.600}"}, "700": {"$value":"{color.red.700}"}, "800": {"$value":"{color.red.800}"},
+      "900": {"$value":"{color.red.900}"}
+    },
+    "warningScale": {
+      "$description": "Full WARNING ramp (50–900) = Figma Warning/*. Mode-invariant. Consume via --ds-warning-50…900.",
+      "50":  {"$value":"{color.amber.50}"},  "100": {"$value":"{color.amber.100}"}, "200": {"$value":"{color.amber.200}"},
+      "300": {"$value":"{color.amber.300}"}, "400": {"$value":"{color.amber.400}"}, "500": {"$value":"{color.amber.500}"},
+      "600": {"$value":"{color.amber.600}"}, "700": {"$value":"{color.amber.700}"}, "800": {"$value":"{color.amber.800}"},
+      "900": {"$value":"{color.amber.900}"}
+    },
+    "infoScale": {
+      "$description": "Full INFO ramp (50–900) = Figma Info/*. Mode-invariant. Consume via --ds-info-50…900.",
+      "50":  {"$value":"{color.info.50}"},  "100": {"$value":"{color.info.100}"}, "200": {"$value":"{color.info.200}"},
+      "300": {"$value":"{color.info.300}"}, "400": {"$value":"{color.info.400}"}, "500": {"$value":"{color.info.500}"},
+      "600": {"$value":"{color.info.600}"}, "700": {"$value":"{color.info.700}"}, "800": {"$value":"{color.info.800}"},
+      "900": {"$value":"{color.info.900}"}
+    },
+    "transparent": {
+      "$description": "Alpha overlay tiers (8/16/24/32/40/48%) = Figma '<Family> Transparent/*'. primary/secondary/neutral are mode-aware (Blue-Dark uses navy/green/cool-grey bases); success/danger/warning/white are mode-invariant. Consume via --sa-color-transparent-<family>-<step>.",
+      "primary": {
+        "8":  {"$value":"rgba(3, 115, 223, 0.08)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(0, 51, 102, 0.08)"}}}},
+        "16": {"$value":"rgba(3, 115, 223, 0.16)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(0, 51, 102, 0.16)"}}}},
+        "24": {"$value":"rgba(3, 115, 223, 0.24)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(0, 51, 102, 0.24)"}}}},
+        "32": {"$value":"rgba(3, 115, 223, 0.32)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(0, 51, 102, 0.32)"}}}},
+        "40": {"$value":"rgba(3, 115, 223, 0.40)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(0, 51, 102, 0.40)"}}}},
+        "48": {"$value":"rgba(3, 115, 223, 0.48)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(0, 51, 102, 0.48)"}}}}
+      },
+      "secondary": {
+        "8":  {"$value":"rgba(249, 115, 22, 0.08)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(25, 135, 84, 0.08)"}}}},
+        "16": {"$value":"rgba(249, 115, 22, 0.16)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(25, 135, 84, 0.16)"}}}},
+        "24": {"$value":"rgba(249, 115, 22, 0.24)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(25, 135, 84, 0.24)"}}}},
+        "32": {"$value":"rgba(249, 115, 22, 0.32)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(25, 135, 84, 0.32)"}}}},
+        "40": {"$value":"rgba(249, 115, 22, 0.40)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(25, 135, 84, 0.40)"}}}},
+        "48": {"$value":"rgba(249, 115, 22, 0.48)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(25, 135, 84, 0.48)"}}}}
+      },
+      "neutral": {
+        "8":  {"$value":"rgba(31, 36, 40, 0.08)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(31, 41, 55, 0.08)"}}}},
+        "16": {"$value":"rgba(31, 36, 40, 0.16)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(31, 41, 55, 0.16)"}}}},
+        "24": {"$value":"rgba(31, 36, 40, 0.24)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(31, 41, 55, 0.24)"}}}},
+        "32": {"$value":"rgba(31, 36, 40, 0.32)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(31, 41, 55, 0.32)"}}}},
+        "40": {"$value":"rgba(31, 36, 40, 0.40)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(31, 41, 55, 0.40)"}}}},
+        "48": {"$value":"rgba(31, 36, 40, 0.48)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(31, 41, 55, 0.48)"}}}}
+      },
+      "success": {
+        "8":  {"$value":"rgba(46, 125, 50, 0.08)"}, "16": {"$value":"rgba(46, 125, 50, 0.16)"},
+        "24": {"$value":"rgba(46, 125, 50, 0.24)"}, "32": {"$value":"rgba(46, 125, 50, 0.32)"},
+        "40": {"$value":"rgba(46, 125, 50, 0.40)"}, "48": {"$value":"rgba(46, 125, 50, 0.48)"}
+      },
+      "danger": {
+        "8":  {"$value":"rgba(236, 80, 66, 0.08)"}, "16": {"$value":"rgba(236, 80, 66, 0.16)"},
+        "24": {"$value":"rgba(236, 80, 66, 0.24)"}, "32": {"$value":"rgba(236, 80, 66, 0.32)"},
+        "40": {"$value":"rgba(236, 80, 66, 0.40)"}, "48": {"$value":"rgba(236, 80, 66, 0.48)"}
+      },
+      "warning": {
+        "8":  {"$value":"rgba(187, 119, 43, 0.08)"}, "16": {"$value":"rgba(187, 119, 43, 0.16)"},
+        "24": {"$value":"rgba(187, 119, 43, 0.24)"}, "32": {"$value":"rgba(187, 119, 43, 0.32)"},
+        "40": {"$value":"rgba(187, 119, 43, 0.40)"}, "48": {"$value":"rgba(187, 119, 43, 0.48)"}
+      },
+      "white": {
+        "8":  {"$value":"rgba(255, 255, 255, 0.08)"}, "16": {"$value":"rgba(255, 255, 255, 0.16)"},
+        "24": {"$value":"rgba(255, 255, 255, 0.24)"}, "32": {"$value":"rgba(255, 255, 255, 0.32)"},
+        "40": {"$value":"rgba(255, 255, 255, 0.40)"}, "48": {"$value":"rgba(255, 255, 255, 0.48)"}
+      }
+    },
     "text": {
-      "default": {"$value":"{color.neutral.800}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.ink}","hc":"#000000"}}}},
-      "muted":   {"$value":"{color.neutral.700}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.inkMuted}"}}}},
-      "strong":  {"$value":"{color.neutral.900}", "$extensions":{"mosje":{"themes":{"dark":"{color.neutral.0}"}}}},
-      "disabled":  {"$value":"rgba(31, 36, 40, 0.48)", "$extensions":{"mosje":{"themes":{"dark":"rgba(243, 244, 246, 0.40)"}}}},
+      "default": {"$value":"{color.neutral.800}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.800}"},"themes":{"dark":"{color.a11y.dark.ink}","hc":"#000000"}}}},
+      "muted":   {"$value":"{color.neutral.700}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.700}"},"themes":{"dark":"{color.a11y.dark.inkMuted}"}}}},
+      "strong":  {"$value":"{color.neutral.900}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.900}"},"themes":{"dark":"{color.neutral.0}"}}}},
+      "disabled":  {"$value":"rgba(31, 36, 40, 0.48)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(31, 41, 55, 0.48)"},"themes":{"dark":"rgba(243, 244, 246, 0.40)"}}}},
       "onPrimary": {"$value":"{color.neutral.0}"},
       "info":      {"$value":"{color.info.600}", "$extensions":{"mosje":{"themes":{"dark":"{color.info.400}"}}}}
     },
     "bg": {
-      "surface": {"$value":"{color.neutral.0}",  "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.surface}","hc":"#ffffff"}}}},
-      "muted":   {"$value":"{color.neutral.50}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.bg}","hc":"#ffffff"}}}},
-      "alt":     {"$value":"{color.neutral.75}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.surfaceMuted}"}}}},
-      "navbar":  {"$value":"rgba(255, 255, 255, 0.8)", "$extensions":{"mosje":{"themes":{"dark":"rgba(27, 31, 39, 0.8)"}}}}
+      "surface": {"$value":"{color.neutral.0}",  "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.0}"},"themes":{"dark":"{color.a11y.dark.surface}","hc":"#ffffff"}}}},
+      "muted":   {"$value":"{color.neutral.50}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.50}"},"themes":{"dark":"{color.a11y.dark.bg}","hc":"#ffffff"}}}}
     },
     "border": {
-      "subtle": {"$value":"{color.neutral.100}", "$extensions":{"mosje":{"themes":{"dark":"#262b33","hc":"#000000"}}}},
-      "strong": {"$value":"{color.neutral.200}", "$extensions":{"mosje":{"themes":{"dark":"{color.a11y.dark.border}","hc":"#000000"}}}},
-      "control": {"$value":"{color.neutral.400}", "$extensions":{"mosje":{"themes":{"dark":"#4a5263","hc":"#000000"}}}},
-      "controlHover": {"$value":"{color.neutral.500}", "$extensions":{"mosje":{"themes":{"dark":"#5b6577","hc":"#000000"}}}}
+      "subtle": {"$value":"{color.neutral.100}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.100}"},"themes":{"dark":"#262b33","hc":"#000000"}}}},
+      "strong": {"$value":"{color.neutral.200}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.200}"},"themes":{"dark":"{color.a11y.dark.border}","hc":"#000000"}}}},
+      "control": {"$value":"{color.neutral.400}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.400}"},"themes":{"dark":"#4a5263","hc":"#000000"}}}},
+      "controlHover": {"$value":"{color.neutral.500}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.neutralDark.500}"},"themes":{"dark":"#5b6577","hc":"#000000"}}}}
     },
     "focus": { "ring": {"$value":"rgba(3, 115, 223, 0.48)", "$extensions":{"mosje":{"colorModes":{"blue-dark":"rgba(0, 51, 102, 0.48)"},"themes":{"dark":"rgba(125, 180, 245, 0.55)"}}}} },
     "status": {
       "success": {"$value":"{color.green.500}", "$extensions":{"mosje":{"themes":{"dark":"#66bb6a"}}}},
       "successStrong": {"$value":"{color.green.700}", "$extensions":{"mosje":{"themes":{"dark":"#81c784"}}}},
-      "successTonal": {"$value":"{color.green.50}", "$extensions":{"mosje":{"themes":{"dark":"rgba(102, 187, 106, 0.16)"}}}},
-      "warning": {"$value":"{color.yellow.500}"},
-      "warningTonal": {"$value":"{color.saffron.50}", "$extensions":{"mosje":{"themes":{"dark":"rgba(255, 211, 35, 0.16)"}}}},
+      "successTonal": {"$value":"{color.green.100}", "$extensions":{"mosje":{"themes":{"dark":"rgba(102, 187, 106, 0.16)"}}}},
+      "warning": {"$value":"{color.amber.500}"},
+      "warningTonal": {"$value":"{color.amber.50}", "$extensions":{"mosje":{"themes":{"dark":"rgba(187, 119, 43, 0.16)"}}}},
       "danger":  {"$value":"{color.red.500}", "$extensions":{"mosje":{"themes":{"dark":"#ff6b5e"}}}},
       "dangerStrong": {"$value":"{color.red.700}", "$extensions":{"mosje":{"themes":{"dark":"#ff8a80"}}}},
-      "dangerTonal": {"$value":"{color.red.50}", "$extensions":{"mosje":{"themes":{"dark":"rgba(255, 107, 94, 0.16)"}}}},
+      "dangerTonal": {"$value":"{color.red.100}", "$extensions":{"mosje":{"themes":{"dark":"rgba(255, 107, 94, 0.16)"}}}},
       "info":      {"$value":"{color.info.600}", "$extensions":{"mosje":{"themes":{"dark":"{color.info.400}"}}}},
       "infoStrong":{"$value":"{color.info.700}", "$extensions":{"mosje":{"themes":{"dark":"{color.info.300}"}}}},
       "infoTonal": {"$value":"{color.info.100}", "$extensions":{"mosje":{"themes":{"dark":"rgba(66, 133, 244, 0.16)"}}}}

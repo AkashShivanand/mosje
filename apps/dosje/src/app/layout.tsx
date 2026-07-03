@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
-import { AccessibilityWidget, AppSwitcher, ColorModeProvider } from "@mosje/design-system";
+import { UX4GAccessibilityWidget, AppSwitcher, ColorModeProvider } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import "./globals.css";
 
@@ -37,7 +37,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans">
         <ColorModeProvider>
           {children}
-          <AccessibilityWidget />
+          <UX4GAccessibilityWidget />
           <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
         </ColorModeProvider>
       </body>

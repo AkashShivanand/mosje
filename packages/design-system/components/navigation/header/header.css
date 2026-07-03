@@ -89,7 +89,7 @@
   line-height: 18px;
 }
 
-/* BETA badge — gov-yellow, its own row above the text stack */
+/* BETA badge — dedicated badge/beta component token, its own row above the text stack */
 .ds-hdr-badge {
   align-self: flex-start;
   font-size: 10px;
@@ -98,7 +98,7 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: #000;
-  background-color: var(--ds-gov-yellow, #ffd323);
+  background-color: var(--sa-badge-beta-bg, #ffd323);
   border-radius: var(--ds-radius-xxs, 2px);
   padding: 2px 4px;
 }
@@ -259,48 +259,10 @@
   flex: 0 0 auto;
 }
 
-/* Accessibility-bar font-size group (A− / A / A+) */
-.ds-hdr-util__fontsize {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.ds-hdr-util__fontsize button {
-  border: none;
-  background: transparent;
-  color: inherit;
-  font-family: var(--ds-font-sans);
-  font-weight: 600;
-  line-height: 1;
-  cursor: pointer;
-  padding: 2px 4px;
-  border-radius: var(--ds-radius-xs, 4px);
-}
-
-.ds-hdr-util__fontsize button:nth-child(1) { font-size: 12px; }
-.ds-hdr-util__fontsize button:nth-child(2) { font-size: 14px; }
-.ds-hdr-util__fontsize button:nth-child(3) { font-size: 16px; }
-
-/* Current size — light selection box (reflects the active aria-pressed button) */
-.ds-hdr-util__fontsize button[aria-pressed="true"] {
-  background-color: rgb(255 255 255 / 0.18);
-}
-
-.ds-hdr-util__fontsize button:hover {
-  background-color: rgb(255 255 255 / 0.15);
-}
-
-.ds-hdr-util__fontsize button:focus-visible,
 .ds-hdr-util__gov:focus-visible {
   outline: 2px solid var(--ds-on-primary, #fff);
   outline-offset: 1px;
   border-radius: var(--ds-radius-xs, 4px);
-}
-
-/* Pressed (active) state for the contrast toggle */
-.ds-hdr-util__icbtn[aria-pressed="true"] {
-  background-color: rgb(255 255 255 / 0.22);
 }
 
 /* ── Tier 2: Brand row (UX4G / Portal: white, 12px py, 24px px, gap 24) ── */

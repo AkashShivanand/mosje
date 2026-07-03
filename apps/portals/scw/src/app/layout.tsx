@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
-import { AppSwitcher, ColorModeProvider } from "@mosje/design-system";
+import { AppSwitcher, ColorModeProvider, UX4GAccessibilityWidget } from "@mosje/design-system";
 
 const noto = Noto_Sans({
   subsets: ["latin", "devanagari"],
@@ -28,10 +28,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={noto.variable}>
+    <html lang="en" className={noto.variable} data-surface="portal">
       <body>
         <ColorModeProvider>
           {children}
+          <UX4GAccessibilityWidget />
           <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
         </ColorModeProvider>
       </body>

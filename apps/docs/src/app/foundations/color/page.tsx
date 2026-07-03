@@ -282,12 +282,6 @@ export default function ColorPage(): React.JSX.Element {
               contrastWith: "black",
             },
             {
-              name: "Surface alt",
-              token: "--ds-surface-alt",
-              hex: "#f4f3f9",
-              contrastWith: "black",
-            },
-            {
               name: "Border (subtle)",
               token: "--ds-border",
               hex: "#f1f3f5",
@@ -374,16 +368,16 @@ export default function ColorPage(): React.JSX.Element {
             }}
           >
             {[
-              { stop: "50",  hex: "#eaf3fe" },
+              { stop: "50",  hex: "#e8f2fd" },
               { stop: "100", hex: "#c6dcf9" },
-              { stop: "200", hex: "#9dc3f5" },
-              { stop: "300", hex: "#6fa8f0" },
-              { stop: "400", hex: "#3d8dea" },
+              { stop: "200", hex: "#94bff5" },
+              { stop: "300", hex: "#5fa0ef" },
+              { stop: "400", hex: "#2d84e8" },
               { stop: "500", hex: "#0373df" },
               { stop: "600", hex: "#025fb8" },
               { stop: "700", hex: "#014b92" },
-              { stop: "800", hex: "#01386b" },
-              { stop: "900", hex: "#002447" },
+              { stop: "800", hex: "#01376b" },
+              { stop: "900", hex: "#002448" },
             ].map(({ stop, hex }) => (
               <div
                 key={stop}
@@ -469,13 +463,13 @@ export default function ColorPage(): React.JSX.Element {
             {
               name: "Warning",
               token: "--ds-warning",
-              hex: "#ffd323",
-              contrastWith: "black",
+              hex: "#bb772b",
+              contrastWith: "white",
             },
             {
               name: "Warning tonal",
               token: "--ds-warning-tonal",
-              hex: "#ffedd5",
+              hex: "#fff4e5",
               contrastWith: "black",
             },
             {
@@ -505,10 +499,14 @@ export default function ColorPage(): React.JSX.Element {
           ]}
         />
 
-        <Callout type="warning" title="Warning yellow needs dark text">
-          <strong>Warning</strong> (<code>--ds-warning</code>) is a bright yellow.
-          White text on it fails contrast — always place dark ink (
-          <code>--ds-ink</code>) on warning surfaces.
+        <Callout type="warning" title="Warning is amber, not yellow">
+          <strong>Warning</strong> (<code>--ds-warning</code>, <code>#bb772b</code>)
+          is a dark amber — deliberately distinct from the brand{" "}
+          <code>--ds-gov-yellow</code> (<code>#ffd323</code>), which is a
+          badge/identity accent and never a status colour. Use{" "}
+          <code>--ds-warning-tonal</code> (<code>#fff4e5</code>) as the soft
+          background and <code>--ds-warning</code> (or <code>--ds-ink</code>) for
+          text/icons on it.
         </Callout>
 
         <Callout type="info" title="Why info is not the same as primary">
@@ -667,12 +665,6 @@ export default function ColorPage(): React.JSX.Element {
               isColor: true,
             },
             {
-              token: "--ds-surface-alt",
-              value: "#f4f3f9",
-              description: "Alternate surface with a subtle warm-neutral tint",
-              isColor: true,
-            },
-            {
               token: "--ds-border",
               value: "#f1f3f5",
               description: "Subtle dividing lines — separators, section dividers",
@@ -768,13 +760,13 @@ export default function ColorPage(): React.JSX.Element {
             },
             {
               token: "--ds-warning",
-              value: "#ffd323",
-              description: "Caution — pair with --ds-ink, never white text",
+              value: "#bb772b",
+              description: "Caution — dark amber (not gov-yellow); pair with --ds-warning-tonal background",
               isColor: true,
             },
             {
               token: "--ds-warning-tonal",
-              value: "#ffedd5",
+              value: "#fff4e5",
               description: "Soft background for warning messages",
               isColor: true,
             },
@@ -852,6 +844,47 @@ export default function ColorPage(): React.JSX.Element {
           ]}
         />
 
+        {/* Full ramps & alpha tiers */}
+        <h3
+          style={{
+            fontSize: "var(--ds-text-headline)",
+            fontWeight: 600,
+            marginTop: "var(--ds-spacing-2xl)",
+            marginBottom: "var(--ds-spacing-sm)",
+            scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))",
+          }}
+        >
+          Full colour ramps &amp; alpha tiers
+        </h3>
+        <div className="docs-section__body ds-prose">
+          <p>
+            Every family below is available as a full <strong>50–900 ramp</strong>,
+            synced 1:1 with the SAMAVESH Figma library. Use the single semantic
+            tokens above for normal component work; reach for a specific ramp step
+            only for tints, shades, charts, or illustrations.
+          </p>
+          <ul>
+            <li>
+              <code>--ds-primary-50…900</code> &amp;{" "}
+              <code>--ds-secondary-50…900</code> &amp;{" "}
+              <code>--ds-neutral-0…1100</code> — <strong>colour-mode-aware</strong>:
+              primary blue↔navy, secondary saffron↔green, neutral warm↔cool grey
+              under <code>blue-dark</code>.
+            </li>
+            <li>
+              <code>--ds-success-50…900</code>, <code>--ds-danger-50…900</code>,{" "}
+              <code>--ds-warning-50…900</code>, <code>--ds-info-50…900</code> —
+              mode-invariant (identical in both colour modes).
+            </li>
+            <li>
+              <strong>Alpha / transparent overlays</strong> (8/16/24/32/40/48%):{" "}
+              <code>--sa-color-transparent-&#123;primary,secondary,neutral,success,danger,warning,white&#125;-&#123;step&#125;</code>.
+              primary/secondary/neutral are mode-aware; success/danger/warning/white
+              are mode-invariant.
+            </li>
+          </ul>
+        </div>
+
         <Callout type="tip" title="Using a token in code">
           Wrap the token in <code>var()</code>:{" "}
           <code>color: var(--ds-ink); background: var(--ds-surface);</code>. The
@@ -868,10 +901,16 @@ export default function ColorPage(): React.JSX.Element {
         </h2>
         <div className="docs-section__body ds-prose">
           <p>
-            SAMAVESH supports multiple <strong>color modes</strong> on a single
-            brand axis. Each mode redefines what the same tokens resolve to, so a
-            page written once can render light, dark, or high-contrast without
-            touching its markup.
+            SAMAVESH has <strong>two independent axes</strong>.{" "}
+            <code>data-color-mode</code> (<code>blue-light</code> /{" "}
+            <code>blue-dark</code>) are <strong>two peer brand colour modes</strong>,
+            mapped 1:1 to the SAMAVESH Figma <code>Blue - Light</code> /{" "}
+            <code>Blue - Dark</code> variable modes. <code>blue-dark</code> is{" "}
+            <strong>not</strong> a dark UI theme — it keeps light surfaces and
+            swaps the brand palette: primary blue→navy, secondary saffron→green,
+            and neutral greys warm→cool. The actual dark / high-contrast surfaces
+            live on the separate <code>data-theme</code> axis, and the two
+            compose.
           </p>
         </div>
 
@@ -887,9 +926,9 @@ export default function ColorPage(): React.JSX.Element {
           {[
             {
               axis: "data-color-mode",
-              label: "Brand axis",
+              label: "Brand colour mode",
               modes: ["blue-light (default)", "blue-dark", "+ extensible"],
-              desc: "Sets the brand palette. Toggle in React via ColorModeProvider + ColorModeSwitcher. User preference is remembered.",
+              desc: "Two peer colour modes (= Figma Blue-Light/Blue-Dark). Swaps the whole brand palette: primary blue↔navy, secondary saffron↔green, neutral warm↔cool grey, + the primary/secondary/neutral transparent tiers. Toggle via ColorModeProvider + ColorModeSwitcher.",
               color: "var(--ds-primary-tonal)",
               border: "var(--ds-primary)",
             },
@@ -1170,8 +1209,8 @@ export default function ColorPage(): React.JSX.Element {
                 { token: "--ds-info / --ds-ink-info", value: "#1558b0", ratio: "7.1:1", level: "AAA", note: "" },
                 { token: "--ds-success", value: "#2e7d32", ratio: "7.2:1", level: "AAA", note: "" },
                 { token: "--ds-primary", value: "#0373df", ratio: "4.7:1", level: "AA ✓ (not AAA)", note: "Meets AA for text ≥ 18px or bold ≥ 14px" },
-                { token: "--ds-danger", value: "#ec5042", ratio: "3.5:1", level: "AA (large/UI only)", note: "Not for body text — use for icons, borders, large text only" },
-                { token: "--ds-warning", value: "#ffd323", ratio: "1.5:1", level: "Fails — background only", note: "Always use --ds-ink on warning surfaces" },
+                { token: "--ds-danger", value: "#ec5042", ratio: "3.5:1", level: "AA (large/UI only)", note: "Not for body text — use --ds-danger-strong (#b8382f, 5.8:1) for error text" },
+                { token: "--ds-warning", value: "#bb772b", ratio: "3.3:1", level: "AA (large/UI only)", note: "Dark amber. For text on white use a darker warning step (--ds-warning-700)" },
               ].map(({ token, value, ratio, level, note }) => (
                 <tr key={token} style={{ borderBottom: "1px solid var(--ds-border)" }}>
                   <td

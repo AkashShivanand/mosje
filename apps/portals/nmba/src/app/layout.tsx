@@ -6,6 +6,7 @@ import { ToastProvider } from "@/components/toast";
 import {
   AppSwitcher,
   ColorModeProvider,
+  UX4GAccessibilityWidget,
   COLOR_MODE_COOKIE,
   normalizeColorMode,
 } from "@mosje/design-system";
@@ -44,13 +45,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const mode = stored ? normalizeColorMode(stored) : PORTAL_DEFAULT_MODE;
 
   return (
-    <html lang="en" data-color-mode={mode}>
+    <html lang="en" data-color-mode={mode} data-surface="portal">
       <head>
         <script dangerouslySetInnerHTML={{ __html: colorModeInit }} />
       </head>
       <body className={`${notoSans.variable} font-sans`}>
         <ColorModeProvider initialMode={mode}>
           <ToastProvider>{children}</ToastProvider>
+          <UX4GAccessibilityWidget />
           <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
         </ColorModeProvider>
       </body>

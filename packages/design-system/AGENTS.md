@@ -46,8 +46,15 @@ Also in force:
   `ToastProvider`/`useToast`, `Alert`, `Badge`, `Loader`, `EmptyState`
   (feedback); `FormSection`, `FormCard`, `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`,
   `MediaUpload` (single file/image upload), `MediaGalleryInput` (multi image/video upload) and the input atoms (forms); `SiteHeader`, `SidebarNav`, `Footer`,
-  `AppSwitcher`, `Tabs`/`TabPanel` (navigation); `PortalLoginShell` (auth). Tables, modals, toasts,
-  tabs, charts and dashboards were previously hand-rolled per portal — always reuse these.
+  `AppSwitcher`, `Tabs`/`TabPanel` (navigation); `PortalLoginShell` (auth);
+  `UX4GAccessibilityWidget` (a11y — **CANONICAL**: the official Government of
+  India MeitY/UX4G accessibility widget, the single mechanism for text size,
+  spacing, contrast and dark mode across the estate; render it once near the
+  end of every root layout, like `AppSwitcher`). The bespoke `AccessibilityWidget`
+  reimplementation it replaced has been deleted — Figma's "AccessibilityWidget /
+  FAB" component still documents the widget's visual spec.
+  Tables, modals, toasts, tabs, charts and dashboards were previously
+  hand-rolled per portal — always reuse these.
   Chart geometry for `IndiaMap` is generated — see
   `components/data-display/charts/geo/README.md`; never hand-edit `*.paths.ts`.
 - **Figma sync** → `/sync-figma`.

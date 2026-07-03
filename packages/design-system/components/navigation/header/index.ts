@@ -9,10 +9,6 @@ export { BrandLockup } from "./brand-lockup";
 export type { BrandLockupProps } from "./brand-lockup";
 export { AccountMenu } from "./account-menu";
 export type { AccountMenuProps } from "./account-menu";
-// Functional accessibility-toolbar behaviour (text size + high contrast), reusable
-// anywhere that needs the same controls (e.g. an accessibility widget).
-export { useA11yToolbar, FONT_LEVELS } from "./a11y-controls";
-export type { A11yToolbar, FontLevel } from "./a11y-controls";
 export type {
   NavLink,
   NavItem,

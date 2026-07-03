@@ -221,7 +221,7 @@ export default function HeaderPage(): React.JSX.Element {
           <AnatomyBand
             n={1}
             title="Accessibility bar"
-            desc="GoI link · text-size A−/A/A+ · contrast · accessibility · language"
+            desc="GoI link · accessibility statement · language"
             bg="var(--ds-primary)"
             fg="var(--ds-on-primary, #fff)"
           />
@@ -370,8 +370,7 @@ export default function HeaderPage(): React.JSX.Element {
             { name: "collapseOnScroll", type: "boolean", default: "false", description: "Opt-in: collapse the accessibility bar on scroll (Figma 'Appbar / on Scroll'). Mind sidebar offsets." },
             { name: "tone", type: '"blue" | "navy"', default: '"blue"', description: "Accessibility-bar background. Blue = website, navy = portal chrome." },
             { name: "beta", type: "boolean", default: "false", description: "Show the BETA badge above the text stack." },
-            { name: "accessibilityToolbar", type: "boolean", default: "true", description: "Render the gov accessibility toolbar (font-size · contrast · accessibility)." },
-            { name: "onFontSize / onContrast", type: "(…) => void", description: "Optional observation hooks (e.g. analytics). The controls work without them." },
+            { name: "accessibilityToolbar", type: "boolean", default: "true", description: "Render the accessibility-statement control. Font-size / contrast controls live in the official UX4GAccessibilityWidget instead — see the Accessibility foundation page." },
             { name: "onAccessibility / accessibilityHref", type: "() => void / string", default: '"/accessibility-statement"', description: "Accessibility control: a handler, else a link to the statement page." },
             { name: "language", type: "{ label?, onClick? }", default: '{ label: "English" }', description: "Language selector in the accessibility bar." },
             { name: "govLink", type: "{ href, label, flagSrc? }", description: "Top-left Government-of-India link. Defaults to india.gov.in." },
@@ -445,9 +444,9 @@ export default function HeaderPage(): React.JSX.Element {
           </table>
         </div>
         <Callout type="info" title="Persistence">
-          Text-size and contrast preferences are written to <code>localStorage</code>{" "}
-          and re-applied on load, so a citizen&apos;s choice survives navigation
-          across every SAMAVESH property.
+          Text-size, contrast, and every other accessibility preference are owned by
+          the official <code>UX4GAccessibilityWidget</code> (not the header) and
+          persist across navigation for every SAMAVESH property.
         </Callout>
       </section>
 
@@ -465,10 +464,8 @@ export default function HeaderPage(): React.JSX.Element {
         <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <A11yChecklist
             items={[
-              { criterion: "Working text resize", level: "AA", description: "A−/A/A+ actually resize page content (sets the root font-size, 3 levels, persisted). Works with zero app wiring. (WCAG 1.4.4)" },
-              { criterion: "Working high contrast", level: "AAA", description: "The contrast control toggles the DS high-contrast theme (data-theme=\"hc\") with real token overrides; persisted across navigation. (GIGW)" },
-              { criterion: "Toggle state exposed", level: "AA", description: "Font-size and contrast controls expose aria-pressed so the current size / contrast state is announced. (WCAG 4.1.2)" },
-              { criterion: "Icon controls are labelled", level: "A", description: "Contrast, accessibility, and language icon buttons carry aria-label + a title tooltip so their purpose is never a guessing game. (WCAG 1.1.1)" },
+              { criterion: "Text resize & contrast", level: "AA", description: "Font-size, spacing, and contrast are handled by the official UX4GAccessibilityWidget (one canonical mechanism, everywhere) — the header no longer duplicates them. (WCAG 1.4.4)" },
+              { criterion: "Icon controls are labelled", level: "A", description: "Accessibility-statement and language icon buttons carry aria-label + a title tooltip so their purpose is never a guessing game. (WCAG 1.1.1)" },
               { criterion: "Visible keyboard focus", level: "AA", description: "Every interactive element — nav links, dropdown / mega-menu links, search, toggles — shows a 2px focus ring. (WCAG 2.4.7)" },
               { criterion: "Keyboard-operable menus", level: "AA", description: "Nav dropdowns and mega-menus open on Enter and close on Escape, outside-click, or focus leaving the nav. (WCAG 2.1.1)" },
               { criterion: "Disclosure, not fake dialog", level: "AA", description: "The mobile menu is a labelled <nav> region controlled by an aria-expanded / aria-controls button; Escape closes it and focus moves to the first item. (WCAG 4.1.2)" },
@@ -478,12 +475,13 @@ export default function HeaderPage(): React.JSX.Element {
             ]}
           />
         </div>
-        <Callout type="tip" title="The toolbar can't lie">
-          The text-size and contrast controls call the design system&apos;s built-in
-          behaviour directly. <code>onFontSize</code> / <code>onContrast</code> are
-          optional <em>observation</em> hooks (e.g. analytics) — they never replace
-          the behaviour, so passing <code>{`() => {}`}</code> can&apos;t turn the
-          controls into no-ops.
+        <Callout type="tip" title="One accessibility mechanism, everywhere">
+          Text-size, spacing, contrast and dark mode live in the official{" "}
+          <code>UX4GAccessibilityWidget</code> (from <code>@mosje/design-system</code>),
+          rendered once in the root layout — not in the header. The header used to carry
+          its own font-size / contrast controls; they were retired because they duplicated
+          the widget. See the{" "}
+          <a href="/foundations/accessibility">Accessibility foundation page</a>.
         </Callout>
       </section>
 
@@ -642,8 +640,9 @@ export default function HeaderPage(): React.JSX.Element {
           </li>
           <li>
             <a href="/design-system/foundations/color" style={{ color: "var(--ds-primary)" }}>Color &amp; theming</a>{" "}
-            — the brand axis (<code>data-color-mode</code>) and high-contrast theme
-            the contrast toggle drives.
+            — the brand axis (<code>data-color-mode</code>) and appearance
+            (<code>data-theme</code>), distinct from the accessibility widget&apos;s
+            own contrast/dark mode.
           </li>
         </ul>
       </section>
@@ -654,6 +653,14 @@ export default function HeaderPage(): React.JSX.Element {
           13. Changelog
         </h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--ds-spacing-xl)", lineHeight: 1.9 }}>
+          <li>
+            <strong style={{ color: "var(--ds-ink)" }}>Accessibility consolidation</strong>{" "}
+            — retired the header&apos;s own text-size (A−/A/A+) and contrast controls
+            from the &quot;Accessibility hardening&quot; update below; they duplicated
+            the official <code>UX4GAccessibilityWidget</code>, now the single
+            mechanism everywhere. See{" "}
+            <code>docs/specs/samavesh-accessibility-consolidation.md</code>.
+          </li>
           <li>
             <strong style={{ color: "var(--ds-ink)" }}>Variants &amp; menus</strong>{" "}
             — added an explicit <code>variant</code> prop, multi-column{" "}

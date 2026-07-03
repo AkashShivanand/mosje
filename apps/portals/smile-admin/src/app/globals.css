@@ -26,33 +26,14 @@
   --primary: #003366;
   --primary-hover: #002b55;
   --primary-active: #001933;
-
-  /* GIGW accessibility — font scaling */
-  --font-scale: 1;
 }
 
-[data-fontscale="small"] { --font-scale: 0.92; }
-[data-fontscale="default"] { --font-scale: 1; }
-[data-fontscale="large"] { --font-scale: 1.12; }
-
-[data-highcontrast="true"] {
-  --surface: #000000;
-  --surface-muted: #000000;
-  --surface-elevated: #0a0a0a;
-  --surface-sunken: #000000;
-  --foreground: #ffffff;
-  --foreground-muted: #f3f4f6;
-  --foreground-hint: #e5e7eb;
-  --border: #ffffff;
-  --border-strong: #ffffff;
-  --primary: #ffd400;
-  --primary-hover: #facc15;
-  --primary-active: #eab308;
-  --ring: #ffd400;
-}
+/* Font scaling and high-contrast are handled by the official
+   UX4GAccessibilityWidget (one canonical mechanism, everywhere) — see
+   docs/specs/samavesh-accessibility-consolidation.md. This app no longer
+   ships its own [data-fontscale] / [data-highcontrast] overlay. */
 
 html {
-  font-size: calc(16px * var(--font-scale));
   -webkit-text-size-adjust: 100%;
 }
 

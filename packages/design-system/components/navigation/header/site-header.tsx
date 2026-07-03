@@ -4,7 +4,6 @@ import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { BrandLockup } from "./brand-lockup";
 import { AccountMenu } from "./account-menu";
-import { useA11yToolbar, type FontLevel } from "./a11y-controls";
 import type {
   AccountMenuItem,
   BrandLines,
@@ -36,16 +35,18 @@ export interface SiteHeaderProps {
   skipTo?: string;
   /** Accessibility-bar tone. @default "blue" */
   tone?: UtilityTone;
-  /** Render the gov accessibility toolbar (font-size · contrast · accessibility). @default true */
-  accessibilityToolbar?: boolean;
   /**
-   * Optional observation hook fired when the text size changes (e.g. analytics).
-   * The control works by default — this never replaces the behaviour, so the
-   * toolbar can never become a no-op.
+   * Render the accessibility-statement control in the accessibility bar.
+   * @default true
+   *
+   * Font-size and contrast controls used to live here too (`onFontSize` /
+   * `onContrast`), but they duplicated the official UX4G Accessibility Widget
+   * (`UX4GAccessibilityWidget` from `@mosje/design-system`) — the single,
+   * canonical accessibility mechanism for the estate. Removed per
+   * docs/specs/samavesh-accessibility-consolidation.md; the widget now
+   * covers text size, spacing, contrast and dark mode everywhere.
    */
-  onFontSize?: (level: FontLevel) => void;
-  /** Optional observation hook fired when high-contrast is toggled. */
-  onContrast?: (on: boolean) => void;
+  accessibilityToolbar?: boolean;
   /**
    * Accessibility-options control. When `onAccessibility` is set it renders a
    * button calling it; otherwise it links to `accessibilityHref`.
@@ -111,12 +112,6 @@ const IcExternal = () => (
     <path d="M4 2h6v6M10 2 5 7M8 7v3H2V4h3" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
-const IcContrast = () => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
-    <path d="M12 3v18a9 9 0 0 0 0-18Z" fill="currentColor" />
-  </svg>
-);
 const IcAccessibility = () => (
   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <circle cx="12" cy="4" r="2" fill="currentColor" />
@@ -168,8 +163,6 @@ export function SiteHeader({
   skipTo = "#main-content",
   tone = "blue",
   accessibilityToolbar = true,
-  onFontSize,
-  onContrast,
   onAccessibility,
   accessibilityHref = "/accessibility-statement",
   language = { label: "English" },
@@ -214,10 +207,6 @@ export function SiteHeader({
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [wantsScrollCollapse]);
-
-  // Functional accessibility toolbar (text size + high contrast) — works by default.
-  const a11y = useA11yToolbar();
-  const fontLabels = ["Default text size", "Large text size", "Larger text size"] as const;
 
   // Nav dropdown: close on Escape, outside-click, or focus leaving the nav.
   const navRef = React.useRef<HTMLElement>(null);
@@ -278,38 +267,6 @@ export function SiteHeader({
           <div className="ds-hdr-util__end">
             {accessibilityToolbar && (
               <>
-                <span className="ds-hdr-util__sep" aria-hidden="true" />
-                <div className="ds-hdr-util__fontsize" role="group" aria-label="Text size">
-                  {(["A−", "A", "A+"] as const).map((glyph, i) => (
-                    <button
-                      key={glyph}
-                      type="button"
-                      aria-label={fontLabels[i]}
-                      aria-pressed={a11y.fontLevel === i}
-                      onClick={() => {
-                        a11y.setFont(i as FontLevel);
-                        onFontSize?.(i as FontLevel);
-                      }}
-                    >
-                      {glyph}
-                    </button>
-                  ))}
-                </div>
-                <span className="ds-hdr-util__sep" aria-hidden="true" />
-                <button
-                  type="button"
-                  className="ds-hdr-util__icbtn"
-                  aria-label="High contrast"
-                  title="Toggle high contrast"
-                  aria-pressed={a11y.contrast}
-                  onClick={() => {
-                    const next = !a11y.contrast;
-                    a11y.setContrast(next);
-                    onContrast?.(next);
-                  }}
-                >
-                  <IcContrast />
-                </button>
                 <span className="ds-hdr-util__sep" aria-hidden="true" />
                 {onAccessibility ? (
                   <button type="button" className="ds-hdr-util__icbtn" aria-label="Accessibility statement" title="Accessibility statement" onClick={onAccessibility}>

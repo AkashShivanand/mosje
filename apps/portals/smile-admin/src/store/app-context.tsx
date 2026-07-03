@@ -8,10 +8,6 @@ interface AppState {
   hydrated: boolean;
   signIn: (mobile: string, password: string) => { ok: true } | { ok: false; reason: string };
   signOut: () => void;
-  fontScale: "small" | "default" | "large";
-  setFontScale: (s: "small" | "default" | "large") => void;
-  highContrast: boolean;
-  setHighContrast: (v: boolean) => void;
   sidebarCollapsed: boolean;
   setSidebarCollapsed: (v: boolean) => void;
   mobileNavOpen: boolean;
@@ -25,8 +21,6 @@ const PREF_KEY = "smile.prefs.v1";
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [account, setAccount] = useState<Account | null>(null);
-  const [fontScale, setFontScale] = useState<"small" | "default" | "large">("default");
-  const [highContrast, setHighContrast] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -41,8 +35,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       }
       const prefs = JSON.parse(localStorage.getItem(PREF_KEY) || "null");
       if (prefs) {
-        if (prefs.fontScale) setFontScale(prefs.fontScale);
-        if (typeof prefs.highContrast === "boolean") setHighContrast(prefs.highContrast);
         if (typeof prefs.sidebarCollapsed === "boolean") setSidebarCollapsed(prefs.sidebarCollapsed);
       }
     } catch {}
@@ -52,10 +44,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!hydrated) return;
-    document.documentElement.setAttribute("data-fontscale", fontScale);
-    document.documentElement.setAttribute("data-highcontrast", String(highContrast));
-    localStorage.setItem(PREF_KEY, JSON.stringify({ fontScale, highContrast, sidebarCollapsed }));
-  }, [fontScale, highContrast, sidebarCollapsed, hydrated]);
+    localStorage.setItem(PREF_KEY, JSON.stringify({ sidebarCollapsed }));
+  }, [sidebarCollapsed, hydrated]);
 
   const signIn: AppState["signIn"] = (mobile, password) => {
     const found = ACCOUNTS.find((a) => a.mobile === mobile && a.password === password);
@@ -80,16 +70,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       hydrated,
       signIn,
       signOut,
-      fontScale,
-      setFontScale,
-      highContrast,
-      setHighContrast,
       sidebarCollapsed,
       setSidebarCollapsed,
       mobileNavOpen,
       setMobileNavOpen,
     }),
-    [account, hydrated, fontScale, highContrast, sidebarCollapsed, mobileNavOpen]
+    [account, hydrated, sidebarCollapsed, mobileNavOpen]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
