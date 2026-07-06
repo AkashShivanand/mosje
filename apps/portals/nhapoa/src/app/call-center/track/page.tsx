@@ -1,0 +1,57 @@
+"use client";
+
+import * as React from "react";
+import { FileSearch, CheckCircle2, Clock, AlertCircle } from "lucide-react";
+import { PageHeader, Card, Button, Field, TextInput, StatusPill } from "@/components/ui";
+import { useNhapoa } from "@/lib/store/store";
+import { CASE_STATUS_META, type Case } from "@/lib/store/types";
+
+export default function CallCenterTrackPage() {
+  const { findByRef } = useNhapoa();
+  const [token, setToken] = React.useState("");
+  const [result, setResult] = React.useState<Case | null | "notfound">(null);
+
+  function track() {
+    const c = findByRef(token);
+    setResult(c ?? "notfound");
+  }
+
+  return (
+    <div>
+      <PageHeader title="Track Status" subtitle="Track a grievance by token on behalf of the caller." />
+      <Card className="max-w-xl p-6">
+        <Field label="Grievance token" required>
+          <div className="flex gap-2">
+            <TextInput value={token} onChange={(e) => setToken(e.target.value)} placeholder="e.g. SAMBAL/2026/UP/001001" />
+            <Button type="button" onClick={track} disabled={!token.trim()}><FileSearch className="h-4 w-4" /> Search</Button>
+          </div>
+        </Field>
+      </Card>
+
+      {result === "notfound" && (
+        <Card className="mt-6 flex max-w-xl items-center gap-3 p-6 text-sm"><AlertCircle className="h-5 w-5 text-reject-fg" /><span className="text-ink">No case found for <span className="font-mono font-semibold">{token}</span>.</span></Card>
+      )}
+
+      {result && result !== "notfound" && (
+        <Card className="mt-6 max-w-2xl p-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4">
+            <div><p className="font-mono text-sm font-bold text-navy">{result.refNo}</p><p className="mt-1 text-sm text-ink-muted">{result.category} · {result.district}, {result.state}</p></div>
+            <StatusPill status={result.status} />
+          </div>
+          <ol className="relative ml-2 mt-5 border-l border-line">
+            {result.timeline.map((t, i) => {
+              const last = i === result.timeline.length - 1;
+              return (
+                <li key={i} className="mb-5 ml-6 last:mb-0">
+                  <span className={`absolute -left-2.5 mt-1 grid h-5 w-5 place-items-center rounded-full ${last ? "bg-navy text-white" : "bg-approve text-white"}`}>{last ? <Clock className="h-3 w-3" /> : <CheckCircle2 className="h-3 w-3" />}</span>
+                  <p className="text-sm font-semibold text-ink">{CASE_STATUS_META[t.status].label}</p>
+                  <p className="text-xs text-ink-hint">{new Date(t.at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}{t.byRole ? ` · ${t.byRole}` : ""}</p>
+                </li>
+              );
+            })}
+          </ol>
+        </Card>
+      )}
+    </div>
+  );
+}

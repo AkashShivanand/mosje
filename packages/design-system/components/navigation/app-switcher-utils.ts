@@ -231,6 +231,16 @@ export const DEFAULT_APPS: AppEntry[] = [
     status: "live",
   },
   {
+    name: "SAMBAL",
+    abbr: "SB",
+    path: "/portals/nhapoa",
+    desc: "National Helpline Against Atrocities (formerly NHAA) — grievance redressal, rescue & relief under the PoA Act",
+    org: "Ministry of Social Justice & Empowerment",
+    group: "Portals",
+    category: "Social defence & welfare",
+    status: "live",
+  },
+  {
     name: "SMILE Transgender",
     abbr: "ST",
     path: "/portals/smile-transgender",

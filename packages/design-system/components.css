@@ -15,6 +15,6 @@
 @import "./components/data-display/metric-card.css";
 @import "./components/data-display/charts/charts.css";
 @import "./components/dashboard/dashboard.css";
-@import "./components/a11y/a11y.css";
+@import "./components/a11y/ux4g-accessibility-widget.css";
 @import "./components/navigation/zone-switcher.css";
 @import "./foundations/color-mode-switcher.css";

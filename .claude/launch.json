@@ -56,6 +56,13 @@
       "runtimeArgs": ["--prefix", "apps/portals/nmba", "run", "dev"],
       "port": 4126,
       "autoPort": false
+    },
+    {
+      "name": "nhapoa",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "apps/portals/nhapoa", "run", "dev"],
+      "port": 4127,
+      "autoPort": false
     }
   ]
 }
