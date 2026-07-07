@@ -1,31 +1,192 @@
 [
-  {"node_id": "5986:51876", "name": "Citizen/Dashboard/01-Home", "state": "default"},
-  {"node_id": "5986:51959", "name": "Citizen/Register-Grievance/01-Details", "state": "default"},
-  {"node_id": "5986:53203", "name": "Citizen/Track-Status/01-Details", "state": "default"},
-  {"node_id": "5986:53669", "name": "Citizen/Help-FAQs/01-Details", "state": "default"},
-  {"node_id": "5986:53726", "name": "District-Officer/Dashboard/01-Home", "state": "default"},
-  {"node_id": "5986:53857", "name": "District-Officer/Cases/01-Home", "state": "default"},
-  {"node_id": "5986:55757", "name": "District-Officer/Clarifications/01-Home", "state": "default"},
-  {"node_id": "5986:55831", "name": "District-Officer/Investigation/01-Home", "state": "default"},
-  {"node_id": "5986:55911", "name": "District-Officer/Reports/01-Home", "state": "default"},
-  {"node_id": "5986:56034", "name": "District-Officer/SLA/01-Home", "state": "default"},
-  {"node_id": "5986:56171", "name": "District-Officer/Notifications/01-Home", "state": "default"},
-  {"node_id": "5986:56262", "name": "State-Authority/Dashboard/01-Home", "state": "default"},
-  {"node_id": "5986:56392", "name": "State-Authority/Pending-Approvals/01-Home", "state": "default"},
-  {"node_id": "5986:57102", "name": "State-Authority/Approved-Cases/01-Home", "state": "default"},
-  {"node_id": "5986:57396", "name": "State-Authority/Sent-Back/01-Home", "state": "default"},
-  {"node_id": "5986:57731", "name": "State-Authority/Reports/01-Home", "state": "default"},
-  {"node_id": "5986:57848", "name": "State-Authority/SLA/01-Home", "state": "default"},
-  {"node_id": "5986:57979", "name": "State-Authority/Notifications/01-Home", "state": "default"},
-  {"node_id": "5986:58064", "name": "Finance-Officer/Dashboard/01-Home", "state": "default"},
-  {"node_id": "5986:58179", "name": "Finance-Officer/Queue/01-Home", "state": "default"},
-  {"node_id": "5986:58801", "name": "Finance-Officer/Transactions/01-Home", "state": "default"},
-  {"node_id": "5986:59151", "name": "Finance-Officer/Notifications/01-Home", "state": "default"},
-  {"node_id": "5986:59480", "name": "System-Admin/Grievances/01-Home", "state": "default"},
-  {"node_id": "5986:60711", "name": "System-Admin/Reports/01-Home", "state": "default"},
-  {"node_id": "5986:61146", "name": "System-Admin/Notifications/01-Home", "state": "default"},
-  {"node_id": "5986:61256", "name": "System-Admin/Users/01-Home", "state": "default"},
-  {"node_id": "5986:60823", "name": "System-Admin/Roles/01-Home", "state": "default"},
-  {"node_id": "5986:63083", "name": "Central-Authority/Fund-Allocation/01-Home", "state": "default"},
-  {"node_id": "5986:63178", "name": "Central-Authority/Notifications/01-Home", "state": "default"}
+  {
+    "node_id": "5986:51876",
+    "name": "Citizen/Dashboard/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:51959",
+    "name": "Citizen/Register-Grievance/01-Details",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:53203",
+    "name": "Citizen/Track-Status/01-Details",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:53669",
+    "name": "Citizen/Help-FAQs/01-Details",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:53726",
+    "name": "District-Officer/Dashboard/01-Home",
+    "state": "default",
+    "heading": "Dashboard"
+  },
+  {
+    "node_id": "5986:53857",
+    "name": "District-Officer/Cases/01-Home",
+    "state": "default",
+    "heading": "My Cases"
+  },
+  {
+    "node_id": "5986:55757",
+    "name": "District-Officer/Clarifications/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:55831",
+    "name": "District-Officer/Investigation/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:55911",
+    "name": "District-Officer/Reports/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:56034",
+    "name": "District-Officer/SLA/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:56171",
+    "name": "District-Officer/Notifications/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:56262",
+    "name": "State-Authority/Dashboard/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:56392",
+    "name": "State-Authority/Pending-Approvals/01-Home",
+    "state": "default",
+    "heading": "Pending Approvals"
+  },
+  {
+    "node_id": "5986:57102",
+    "name": "State-Authority/Approved-Cases/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:57396",
+    "name": "State-Authority/Sent-Back/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:57731",
+    "name": "State-Authority/Reports/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:57848",
+    "name": "State-Authority/SLA/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:57979",
+    "name": "State-Authority/Notifications/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:58064",
+    "name": "Finance-Officer/Dashboard/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:58179",
+    "name": "Finance-Officer/Queue/01-Home",
+    "state": "default",
+    "heading": "Approved Cases Queue"
+  },
+  {
+    "node_id": "5986:58801",
+    "name": "Finance-Officer/Transactions/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:59151",
+    "name": "Finance-Officer/Notifications/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:59480",
+    "name": "System-Admin/Grievances/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:60711",
+    "name": "System-Admin/Reports/01-Home",
+    "state": "default",
+    "heading": "Reports & Export"
+  },
+  {
+    "node_id": "5986:61146",
+    "name": "System-Admin/Notifications/01-Home",
+    "state": "default",
+    "heading": "Notifications"
+  },
+  {
+    "node_id": "5986:61256",
+    "name": "System-Admin/Users/01-Home",
+    "state": "default"
+  },
+  {
+    "node_id": "5986:60823",
+    "name": "System-Admin/Roles/01-Home",
+    "state": "default",
+    "heading": "Role Management"
+  },
+  {
+    "node_id": "5986:63083",
+    "name": "Central-Authority/Fund-Allocation/01-Home",
+    "state": "default",
+    "heading": "Reports & Export"
+  },
+  {
+    "node_id": "5986:63178",
+    "name": "Central-Authority/Notifications/01-Home",
+    "state": "default",
+    "heading": "Notifications"
+  },
+  {
+    "node_id": "5986:62832",
+    "name": "Central-Authority/Fund-Allocation/01-Home",
+    "state": "default",
+    "heading": "Fund Allocation Dashboard"
+  },
+  {
+    "node_id": "5986:60012",
+    "name": "System-Admin/Officer-Performance",
+    "state": "default",
+    "heading": "Officer Performance"
+  },
+  {
+    "node_id": "5986:60319",
+    "name": "System-Admin/Grievance-Analytics",
+    "state": "default",
+    "heading": "Grievance Analytics"
+  },
+  {
+    "node_id": "5986:60490",
+    "name": "System-Admin/Geographic-View",
+    "state": "default",
+    "heading": "Geographic View"
+  },
+  {
+    "node_id": "5986:59234",
+    "name": "System-Admin/Dashboard/01-Home",
+    "state": "default",
+    "heading": "System Overview"
+  },
+  {
+    "node_id": "5986:59826",
+    "name": "System-Admin/SLA-Monitor",
+    "state": "default",
+    "heading": "SLA Monitor"
+  }
 ]

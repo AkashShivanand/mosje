@@ -1,15 +1,19 @@
 {
   "project": "nhapoa",
-  "portal": "NHAPOA — National Helpline Against Atrocities (UAT)",
+  "portal": "NHAPOA \u2014 National Helpline Against Atrocities (DEV)",
   "idPrefix": "NHA",
   "figma": {
     "fileKey": "gH2vQ62cfg4677YKWuOpLc",
     "rootNode": "5093:18512",
     "framesFile": "inputs/figma-frames.json",
-    "tokensFile": "inputs/figma-tokens.json",
+    "tokensFile": "inputs/tokens.json",
     "urlTemplate": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id={node}"
   },
-  "capture": { "width": 1440, "dpr": 2, "waitMs": 1800 },
+  "capture": {
+    "width": 1440,
+    "dpr": 2,
+    "waitMs": 1800
+  },
   "live": {
     "auth": {
       "type": "form",
@@ -20,19 +24,57 @@
       "loginMarker": "/login"
     },
     "roles": [
-      { "name": "citizen",          "base": "https://nhapoa-user-uat.mosje.in",  "auth": "none" },
-      { "name": "district-officer", "base": "https://nhapoa-admin-uat.mosje.in", "user": "ba.districtofficer" },
-      { "name": "state-authority",  "base": "https://nhapoa-admin-uat.mosje.in", "user": "ba.stateauthority" },
-      { "name": "finance-officer",  "base": "https://nhapoa-admin-uat.mosje.in", "user": "ba.financeofficer" },
-      { "name": "central-authority","base": "https://nhapoa-admin-uat.mosje.in", "user": "ba.centralauthority" },
-      { "name": "system-admin",     "base": "https://nhapoa-admin-uat.mosje.in", "user": "nhapoa_sysadmin" },
-      { "name": "sho",              "base": "https://nhapoa-admin-uat.mosje.in", "user": "westdeopur_ps1" }
+      {
+        "name": "citizen",
+        "base": "https://nhapoa-user-dev.mosje.in",
+        "auth": "none"
+      },
+      {
+        "name": "district-officer",
+        "base": "https://nhapoa-admin-dev.mosje.in",
+        "user": "ba.districtofficer"
+      },
+      {
+        "name": "state-authority",
+        "base": "https://nhapoa-admin-dev.mosje.in",
+        "user": "ba.stateauthority"
+      },
+      {
+        "name": "finance-officer",
+        "base": "https://nhapoa-admin-dev.mosje.in",
+        "user": "ba.financeofficer"
+      },
+      {
+        "name": "central-authority",
+        "base": "https://nhapoa-admin-dev.mosje.in",
+        "user": "ba.centralauthority"
+      },
+      {
+        "name": "system-admin",
+        "base": "https://nhapoa-admin-dev.mosje.in",
+        "user": "nhapoa_sysadmin"
+      },
+      {
+        "name": "sho",
+        "base": "https://nhapoa-admin-dev.mosje.in",
+        "user": "so_govindnagar_kn"
+      },
+      {
+        "name": "call-center",
+        "base": "https://nhapoa-admin-dev.mosje.in",
+        "user": "ankitSharma"
+      }
     ],
-    "skipRoutes": ["/login", "/logout", "/terms-and-conditions", "/privacy-policy"]
+    "skipRoutes": [
+      "/login",
+      "/logout",
+      "/terms-and-conditions",
+      "/privacy-policy"
+    ]
   },
   "baseline": {
-    "mode": "tokens",
-    "_modes": "tokens | derived | internal — see README. 'tokens' diffs every element against inputs/tokens.json.",
+    "mode": "derived",
+    "_modes": "tokens | derived | internal \u2014 see README. 'derived' diffs every element against inputs/tokens.json, which is exported from the live Figma variables (get_variable_defs).",
     "source": "inputs/tokens.json"
   },
   "manifest": "screen-manifest.yaml",

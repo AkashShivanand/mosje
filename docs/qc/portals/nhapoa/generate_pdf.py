@@ -59,20 +59,24 @@ def board(screen, section, sec_findings):
     idrange = ids[0] if len(ids)==1 else f"{ids[0]} – {ids[-1]}"
     figma_img = sec_findings[0].get("figmaImgO") or screen.get("figmaImg")
     live_img = sec_findings[0].get("liveImgO") or screen.get("liveImg")
-    title = screen["name"]
+    title = sec_findings[0].get("titleO") or screen["name"]
+    subtitle = sec_findings[0].get("subO") or section
+    figu = sec_findings[0].get("figmaUrlO") or screen.get("figmaUrl")
+    livu = sec_findings[0].get("liveUrlO") or screen.get("liveUrl")
     links=""
-    if screen.get("figmaUrl"): links+=f'<a href="{esc(screen["figmaUrl"])}">Figma frame ↗</a>'
-    if screen.get("liveUrl"): links+=f'<a href="{esc(screen["liveUrl"])}">Live page ↗</a>'
+    if figu: links+=f'<a href="{esc(figu)}">Figma frame ↗</a>'
+    if livu: links+=f'<a href="{esc(livu)}">Live page ↗</a>'
+    env = screen.get("env","dev")
     single = not figma_img
     panels = ""
     if not single:
         panels += (f'<div class="pwrap"><div class="plabel design"><b>DESIGN</b> Figma intent</div>'
                    f'{panel(figma_img, fig_box, fig_pins, "figma")}</div>')
     panels += (f'<div class="pwrap"><div class="plabel build"><b>BUILD</b> '
-               f'{"Live build · no Figma comparison" if single else "Live build"}</div>'
+               f'{"Live build · "+env}</div>'
                f'{panel(live_img, live_box, live_pins, "live")}</div>')
     return (f'<div class="board">'
-            f'<div class="bhead"><div class="btitle"><b>{esc(title)}</b> · <span>{esc(section)}</span></div>'
+            f'<div class="bhead"><div class="btitle"><b>{esc(title)}</b> · <span>{esc(subtitle)}</span></div>'
             f'<div class="bbadge">{esc(idrange)}</div></div>'
             f'<div class="panels">{panels}</div>'
             f'<div class="bfoot"><span>{esc(am["portal"])} — Design QC · {esc(am.get("generated",""))}</span>'
@@ -80,12 +84,17 @@ def board(screen, section, sec_findings):
 
 def card(f):
     sev=f["severity"]; col=SEV.get(sev,"#6b7280")
+    scope = f.get("scope")
+    scope_chip = (f'<span class="scopechip">SCOPE: GLOBAL</span>' if scope=="Global" else "")
+    scope_meta = (' &nbsp;·&nbsp; <b style="color:#6d28d9">Global</b> — applies to every screen with this element'
+                  if scope=="Global" else "")
     return (f'<div class="card" style="border-left-color:{col}">'
             f'<div class="chead"><span class="num" style="background:{col}">{esc(f["num"])}</span>'
             f'<span class="ctitle">{esc(f["element"])}</span>'
+            f'{scope_chip}'
             f'<span class="chip" style="background:{col}">{esc(sev)}</span>'
             f'<span class="idb">{esc(f["id"])}</span></div>'
-            f'<div class="meta">{esc(f.get("axis",""))}</div>'
+            f'<div class="meta">{esc(f.get("axis",""))}{scope_meta}</div>'
             f'<div class="specs"><div class="blk"><div class="lbl design">DESIGN — FIGMA INTENT</div>'
             f'<div class="val">{esc(f["figma"])}</div></div>'
             f'<div class="blk"><div class="lbl build">BUILD — LIVE</div>'
@@ -187,6 +196,7 @@ body { font-family:'Noto Sans',system-ui,sans-serif; color:#0f2540; font-size:11
 .num { width:22px; height:22px; border-radius:50%; color:#fff; font-weight:700; font-size:11px; display:flex; align-items:center; justify-content:center; flex:none; }
 .ctitle { font-weight:600; font-size:14px; color:#0f2540; flex:1; }
 .idb { background:#eef2f7; color:#64748b; font-weight:500; font-size:11px; border-radius:12px; padding:3px 11px; }
+.scopechip { background:#ede9fe; color:#6d28d9; font-weight:700; font-size:9.5px; letter-spacing:.5px; border:1px solid #ddd6fe; border-radius:11px; padding:3px 9px; }
 .meta { font-size:11px; font-weight:500; color:#94a3b8; margin:5px 0 9px; } .meta b { font-weight:700; }
 .specs { display:flex; gap:24px; border-top:1px solid #e6eaf0; padding-top:9px; }
 .blk { flex:1; } .lbl { font-size:9.5px; font-weight:700; letter-spacing:.6px; margin-bottom:3px; }

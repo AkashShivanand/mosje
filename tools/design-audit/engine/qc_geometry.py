@@ -81,7 +81,15 @@ def figpath(slug, eng_dir, figma_files=('figma/public.json', 'figma/authed.json'
             pass
     return None
 def anchorbox(path, text, dy, H, eng_dir):
-    hit = rowsmap(path, eng_dir).get(_norm(text))
+    m = rowsmap(path, eng_dir)
+    q = _norm(text)
+    hit = m.get(q)
+    if hit is None and len(q) >= 6:       # forgiving fallback: extraction truncates text to 80 chars,
+        cand = None                       # so a long label's stored key may be a longer/shorter prefix.
+        for k, v in m.items():            # match either direction; keep the largest-font candidate.
+            if k.startswith(q) or q.startswith(k):
+                if cand is None or v[1] > cand[1]: cand = v
+        hit = cand
     if not hit or hit[0].get('w') is None: return None
     bb = dict(hit[0])
     if dy: bb['y'] = bb['y'] + dy * H     # nudge (e.g. an icon sits above its label)

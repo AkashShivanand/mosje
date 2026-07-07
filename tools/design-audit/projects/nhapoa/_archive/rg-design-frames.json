@@ -1,0 +1,34 @@
+{
+  "_note": "Design-node map for the Citizen Grievance-Registration flow, fetched fresh from Figma (file gH2vQ62cfg4677YKWuOpLc). Use these node IDs at final-report time to pull design specs (get_design_context / get_variable_defs) to sit beside the live-build computed CSS. Section 'Grievance Registration' = 5986:51958 under Citizen = 5986:51874.",
+  "fileKey": "gH2vQ62cfg4677YKWuOpLc",
+  "citizen_sections": {
+    "Dashboard": "5986:51875",
+    "Grievance Registration": "5986:51958",
+    "Track Status": "5986:53202",
+    "Help & FAQs": "5986:53668"
+  },
+  "grievance_registration_frames": [
+    { "step": "1", "state": "default",        "node": "5986:51959", "name": "01-Details",                         "buildRow": "rg (step1)" },
+    { "step": "1", "state": "otp-verification","node": "5986:53098", "name": "01-Details -> OTP Verification",     "buildRow": "rg / rg6 (OTP modal)" },
+    { "step": "1", "state": "otp-verified",    "node": "5986:52046", "name": "01-Details -> OTP Verified",         "buildRow": "rg (step1 verified)" },
+    { "step": "2", "state": "informer",        "node": "5986:52133", "name": "02-Informer-Details",                "buildRow": "rg2" },
+    { "step": "2", "state": "ngo",             "node": "5986:52182", "name": "02-NGO-Details",                     "buildRow": "(NGO role variant — not captured)" },
+    { "step": "3", "state": "victim",          "node": "5986:52231", "name": "03-Victim-Details",                  "buildRow": "rg3" },
+    { "step": "4", "state": "default",         "node": "5986:52298", "name": "04-Grievance-Details",               "buildRow": "rg4" },
+    { "step": "4", "state": "nature-dropdown", "node": "5986:52947", "name": "04-Grievance-Details -> Nature of Grievance Dropdown", "buildRow": "(rg4 dropdown state)" },
+    { "step": "4", "state": "no-duplicate",    "node": "5986:52717", "name": "04-Grievance-Details -> No-Duplicate-Detected", "buildRow": "(duplicate-check result)" },
+    { "step": "4", "state": "duplicate",       "node": "5986:52602", "name": "04-Grievance-Details -> Duplicate-Detected", "buildRow": "(duplicate-check result)" },
+    { "step": "4", "state": "duplicate-2",     "node": "5986:52830", "name": "04-Grievance-Details -> Duplicate-Detected", "buildRow": "(duplicate-check result)" },
+    { "step": "5", "state": "review",          "node": "5986:52429", "name": "05-Review-Details",                  "buildRow": "rg5 / rg6 (confirm)" },
+    { "step": "5", "state": "success",         "node": "5986:52526", "name": "05-Success",                         "buildRow": "rg7" }
+  ],
+  "review_row_pairing": {
+    "rg (step1)": "5986:51959",
+    "rg2": "5986:52133",
+    "rg3": "5986:52231",
+    "rg4": "5986:52298",
+    "rg5": "5986:52429",
+    "rg6 (confirm)": "5986:52429",
+    "rg7 (success)": "5986:52526"
+  }
+}

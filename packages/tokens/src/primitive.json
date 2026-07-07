@@ -126,7 +126,7 @@
       },
       "display-5": {
         "size": {"$type":"dimension","$value":"48px","$extensions":{"mosje":{"type":{"website":{"min":"26px","max":"48px"},"portal":{"min":"22px","max":"28px"}}}}},
-        "lh":   {"$type":"dimension","$value":"56px","$extensions":{"mosje":{"type":{"website":{"min":"30px","max":"56px"},"portal":{"min":"28px","max":"36px"}}}}},
+        "lh":   {"$type":"dimension","$value":"56px","$extensions":{"mosje":{"type":{"website":{"min":"28px","max":"56px"},"portal":{"min":"28px","max":"36px"}}}}},
         "para": {"$type":"dimension","$value":"20px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"20px"},"portal":{"min":"16px","max":"20px"}}}}}
       },
       "display-6": {
@@ -136,12 +136,12 @@
       },
       "headline-1": {
         "size": {"$type":"dimension","$value":"40px","$extensions":{"mosje":{"type":{"website":{"min":"28px","max":"40px"},"portal":{"min":"24px","max":"32px"}}}}},
-        "lh":   {"$type":"dimension","$value":"48px","$extensions":{"mosje":{"type":{"website":{"min":"34px","max":"48px"},"portal":{"min":"32px","max":"40px"}}}}},
+        "lh":   {"$type":"dimension","$value":"48px","$extensions":{"mosje":{"type":{"website":{"min":"32px","max":"48px"},"portal":{"min":"32px","max":"40px"}}}}},
         "para": {"$type":"dimension","$value":"24px","$extensions":{"mosje":{"type":{"website":{"min":"20px","max":"24px"},"portal":{"min":"20px","max":"24px"}}}}}
       },
       "headline-2": {
         "size": {"$type":"dimension","$value":"32px","$extensions":{"mosje":{"type":{"website":{"min":"24px","max":"32px"},"portal":{"min":"20px","max":"28px"}}}}},
-        "lh":   {"$type":"dimension","$value":"40px","$extensions":{"mosje":{"type":{"website":{"min":"30px","max":"40px"},"portal":{"min":"28px","max":"36px"}}}}},
+        "lh":   {"$type":"dimension","$value":"40px","$extensions":{"mosje":{"type":{"website":{"min":"28px","max":"40px"},"portal":{"min":"28px","max":"36px"}}}}},
         "para": {"$type":"dimension","$value":"24px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"24px"},"portal":{"min":"16px","max":"24px"}}}}}
       },
       "headline-3": {
@@ -151,7 +151,7 @@
       },
       "headline-4": {
         "size": {"$type":"dimension","$value":"24px","$extensions":{"mosje":{"type":{"website":{"min":"20px","max":"24px"},"portal":{"min":"16px","max":"20px"}}}}},
-        "lh":   {"$type":"dimension","$value":"28px","$extensions":{"mosje":{"type":{"website":{"min":"26px","max":"28px"},"portal":{"min":"24px","max":"28px"}}}}},
+        "lh":   {"$type":"dimension","$value":"28px","$extensions":{"mosje":{"type":{"website":{"min":"24px","max":"28px"},"portal":{"min":"24px","max":"28px"}}}}},
         "para": {"$type":"dimension","$value":"20px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"20px"},"portal":{"min":"16px","max":"20px"}}}}}
       },
       "headline-5": {

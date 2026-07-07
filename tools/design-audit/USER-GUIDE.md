@@ -95,6 +95,24 @@ Only after these is the portal genuinely "certified."
 
 ---
 
+## Review it, correct it, add what was missed
+
+The report isn't one-way. The assistant also builds a **Figma review sheet** — one row per screen with
+the **design**, the **live build**, and an **issues** list side by side. You edit the issues right
+there in plain language, then tell the assistant **"sync from Figma"** and it folds your edits into the
+PDF report and the tracker.
+
+- **Something mapped to the wrong design?** Repoint that row's "Figma frame ↗" link (or just say "these
+  two are swapped"). A built-in **mapping check** compares the design's title to the build's title and
+  flags any wrong pairing automatically — so bad matches don't slip through.
+- **A whole screen or flow was missed?** Add a row in the sheet (design + build + issues) — or just
+  tell the assistant *"add screen X: Figma `<link>`, live `<url>`, issues: …"* — and it's fetched into
+  the report and tracker.
+
+Step-by-step: **[projects/nhapoa/SYNC-GUIDE.md](projects/nhapoa/SYNC-GUIDE.md)**.
+
+---
+
 ## Common questions
 
 **Do I need to install anything?** No. The first run auto-installs the browser and PDF tools (that
@@ -118,7 +136,10 @@ re-checks everything and you compare the new numbers.
 
 ---
 
-## For maintainers
+## Where to go next
 
-The plain-English flow above is powered by a small, config-driven engine. See **`HOW-IT-WORKS.md`**
-for the model and architecture, and **`README.md`** for the engine reference and manual commands.
+- **[AUDIT-A-PORTAL.md](AUDIT-A-PORTAL.md)** — the full end-to-end manual (onboard → capture → gates →
+  review → correct/add → report + tracker → certify). Read this to audit a brand-new portal yourself.
+- **[README.md](README.md)** — the documentation home + engine reference (config, commands).
+- **[HOW-IT-WORKS.md](HOW-IT-WORKS.md)** — the model & architecture (for maintainers).
+- **[projects/nhapoa/README.md](projects/nhapoa/README.md)** — a fully-worked example to copy from.

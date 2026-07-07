@@ -1,9 +1,35 @@
 # design-audit — a project-agnostic design-vs-build QC engine
 
-> **📖 Just want to run an audit?** Read **[USER-GUIDE.md](USER-GUIDE.md)** — plain English, no setup,
-> no files to create. You describe the audit in a sentence; the assistant does the rest.
-> **🧭 Maintaining or extending it?** Read **[HOW-IT-WORKS.md](HOW-IT-WORKS.md)** for the model.
-> This README is the engine reference (config schema + manual commands).
+Audit **any** portal — Figma design vs the live build — and produce a reviewable report + a defect
+tracker, with automatic gates that catch missed screens and wrong design↔build pairings. This README
+is the **home page**: start here, then follow the map.
+
+## 📚 Documentation map (start here)
+
+**Run & operate — in this repo**
+
+| Read this | When |
+|---|---|
+| **[USER-GUIDE.md](USER-GUIDE.md)** | You just want to run an audit (plain English, no setup). **Start here.** |
+| **[AUDIT-A-PORTAL.md](AUDIT-A-PORTAL.md)** | The end-to-end manual: onboard → capture → review → correct/add → report + tracker → certify. |
+| **[HOW-IT-WORKS.md](HOW-IT-WORKS.md)** | The model & architecture — the gates, why it never over-claims. |
+| **[projects/_template/README.md](projects/_template/README.md)** | Onboard a **new** portal (copy the template, fill one config). |
+| **[projects/nhapoa/README.md](projects/nhapoa/README.md)** | The worked example — a fully-audited portal you can copy from. |
+| **[projects/nhapoa/SYNC-GUIDE.md](projects/nhapoa/SYNC-GUIDE.md)** | Correct a wrong mapping / add a screen the reviewer spotted, via the Figma sheet. |
+| *This README* | The engine reference — config schema + manual commands. |
+
+**The agent's playbook — the `/design-qc` skill** (`~/.claude/skills/design-qc/`, drives this engine)
+
+| Read this | Covers |
+|---|---|
+| `SKILL.md` | The full pipeline the agent runs (Phase 0 → capture → gates → report → human track). |
+| `references/learning-loop.md` | **The running principle:** read the ledger, fold every correction back, turn mistakes into gates. |
+| `references/audit-rules.md` | The self-learning ledger — start with the **Canonical playbook** at the top (all lessons distilled), then the dated log. |
+| `references/geometry-and-pins.md` · `figma-extraction.md` · `capture-and-auth.md` · `spec-comparison.md` · `functional-audit.md` · `figma-report.md` · `sync.md` · `rubric.md` | Deep-dives per phase. |
+
+> New here? **[USER-GUIDE.md](USER-GUIDE.md)** to run it · **[AUDIT-A-PORTAL.md](AUDIT-A-PORTAL.md)** for the whole lifecycle · **[HOW-IT-WORKS.md](HOW-IT-WORKS.md)** to understand it.
+
+---
 
 One reusable engine. One config file per project. Works on **any** project — with a design
 system, with only Figma, or with neither.
@@ -46,17 +72,40 @@ tools/design-audit/
     run.py           orchestrator (capture → analyze → report)
     capture.py       keep-alive login per role, scroll-unclip, screenshot@width, extract computed CSS
     analyze.py       coverage ledger + pluggable baseline + per-element conformance + audit-master.json
+    crosscheck.py    design↔build MAPPING gate — rendered-title match catches missed screens + wrong pairings
     report.py        MACHINE-DRAFT / CERTIFIED PDF+HTML with 🤖/👤 stamps, coverage + DS-adoption tiles
     qc_geometry.py   assertion-gated pin/crop geometry (a pin must sit inside its element+crop+image)
     render.js        HTML → PDF (puppeteer, one dynamically-sized page per screen)
   projects/<name>/   per project — the ONLY thing you write
     audit.config.json      figma/live/auth/roles/baseline (no passwords)
     secrets.json           gitignored — passwords keyed by role
-    screen-manifest.yaml   escape hatch: frame → {url, deeplink, seed, trigger}
-    inputs/                figma-frames.json, tokens.json, design PNGs (agent-provided, Phase 0)
+    inputs/                figma-frames.json (with a `heading` per frame!), tokens.json, manual-screens.json
     captures/              live screenshots + extracted rows (generated)
-    out/                   coverage-ledger.json, conformance.json, audit-master.json, report.pdf
+    out/                   coverage-ledger.json, conformance.json, crosscheck.md, failures.md, audit-master.json
 ```
+
+## Five deliverables, three gates
+
+All five come from one `audit-master.json` (full table + who-makes-what in
+**[AUDIT-A-PORTAL.md](AUDIT-A-PORTAL.md)**):
+1. **Machine draft** (`engine/report.py`, run by `run.py`) — the fast, honest `MACHINE-DRAFT` PDF/HTML.
+2. **Curated per-screen PDF** (per-project `build_final_report.py` → the fixed `docs/qc/portals/<p>/generate_pdf.py`).
+3. **Master Excel tracker** (one row per finding + a **Scope** column; lockstep with the PDF).
+4. **Editable Figma review sheet** (3-column DESIGN|BUILD|ISSUES you edit → say "sync from Figma").
+5. **Pinned Figma report** (draggable numbered pins + finding cards, styled to the `findings-screen-ref` component).
+
+Publish to **Google Drive** by uploading each fresh file as a **new version** (the connector can't
+overwrite a fileId in place) — on a re-run, get a row-level changelog vs the live Drive copy so only
+changed rows are updated. Full flow: **[projects/nhapoa/SYNC-GUIDE.md](projects/nhapoa/SYNC-GUIDE.md)**.
+
+**Gates that must be green before you trust a run:**
+1. **Coverage gate** (`coverage-ledger.json`) — every design frame matched to a live capture; `UNMAPPED` = a missed screen → FAIL.
+2. **Mapping gate** (`crosscheck.md`, `engine/crosscheck.py`) — the design frame's **title** must match the live capture's **title**; a build screenshot on the wrong frame (or vice versa) → **MISMAP** → FAIL. Needs a `heading` per frame in `inputs/figma-frames.json`.
+3. **Pin gate** (`failures.md`, `qc_geometry.py`) — every pin sits inside its element ⊂ crop ⊂ image; misses → FAIL. Ship only when empty.
+
+**The learning loop** (a running principle, not optional): read the ledger before, fold every
+correction back after, and **turn any mechanizable mistake into one of the gates above** so it can't
+recur. Full protocol: `~/.claude/skills/design-qc/references/learning-loop.md`.
 
 ## Run
 
