@@ -7,10 +7,17 @@ config-driven engine** at:
 
     tools/design-audit/
 
-The engine does the deterministic half: enumerate → **coverage ledger + hard-fail gate**, keep-alive
-per-role capture + computed-CSS extraction, **per-element DS-conformance** vs a pluggable baseline
-(`tokens|derived|internal`) → **DS-adoption %**, assertion-gated pins, and a **MACHINE-DRAFT** report
-(🤖/👤 stamped; cannot self-certify as WCAG/GIGW).
+The engine does the deterministic half: enumerate → **coverage ledger + hard-fail gate**, a
+**design↔build mapping cross-check** (`engine/crosscheck.py` — catches missed screens + build↔Figma
+mis-pairings by comparing rendered titles), keep-alive per-role capture + computed-CSS extraction,
+**per-element DS-conformance** vs a pluggable baseline (`tokens|derived|internal`) → **DS-adoption %**,
+assertion-gated pins, and a **MACHINE-DRAFT** report (🤖/👤 stamped; cannot self-certify as WCAG/GIGW).
+
+**Running principle — the audit learns every run** (`references/learning-loop.md`): read
+`references/audit-rules.md` before, fold every correction back after, and **turn any mechanizable
+mistake into a gate** (missed screen → coverage ledger; wrong pairing → cross-check; off pin →
+`qc_geometry` assertion). Ship only when `out/failures.md` is empty AND `out/crosscheck.md` is not FAIL.
+Phase 0 must dump a **`heading` per frame** in `inputs/figma-frames.json` (powers the mapping gate).
 
 - One config per portal: `tools/design-audit/projects/<name>/audit.config.json` (NHAPOA exists).
 - Onboard a new portal = copy `projects/_template/` and fill the config (`projects/_template/README.md`).

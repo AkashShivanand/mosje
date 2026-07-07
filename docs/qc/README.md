@@ -4,6 +4,14 @@ A repeatable, portal-agnostic system for auditing **live portals against their F
 producing a developer-ready, visually-annotated discrepancy report plus a unified tracker. Built so
 every portal is reviewed to the **same senior-designer standard**.
 
+> **▶ To actually run an audit, use the config-driven engine + manual, not this page.**
+> Home & docs map: **[`tools/design-audit/README.md`](../../tools/design-audit/README.md)** ·
+> plain-English quick start: **[`USER-GUIDE.md`](../../tools/design-audit/USER-GUIDE.md)** ·
+> full end-to-end manual: **[`AUDIT-A-PORTAL.md`](../../tools/design-audit/AUDIT-A-PORTAL.md)** ·
+> correct/add screens: **[`SYNC-GUIDE.md`](../../tools/design-audit/projects/nhapoa/SYNC-GUIDE.md)**.
+> This page documents the report's fixed visual language + the shared tracker (`rubric.md`,
+> `annotation-system.md`, `MoSJE-Portal-QC-Tracker.xlsx`), which the engine's report follows.
+
 ## How it works (per screen)
 1. **Design truth** — Figma frame screenshot + tokens/specs (`design-truth-tokens.md`).
 2. **Live truth** — authenticated screenshot + computed CSS at matched viewports.

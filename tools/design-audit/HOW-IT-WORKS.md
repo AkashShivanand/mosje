@@ -1,7 +1,8 @@
 # How it works — the model & architecture
 
-For maintainers. The user-facing flow is in `USER-GUIDE.md`; the engine reference is in `README.md`.
-This doc explains *why* it's built this way, so changes don't erode the guarantees.
+For maintainers. Home + all docs: **[README.md](README.md)**. User-facing flow: **[USER-GUIDE.md](USER-GUIDE.md)**.
+Full lifecycle manual: **[AUDIT-A-PORTAL.md](AUDIT-A-PORTAL.md)**. This doc explains *why* it's built
+this way, so changes don't erode the guarantees.
 
 ---
 
@@ -22,6 +23,15 @@ audits miss things.
    Crucially, this runs **every element every run** — it does **not** trust that a component is correct
    just because it's a design-system component. Developers override things; inheritance can't be
    trusted, so we verify instances. That's also why it doubles as a DS-adoption enforcement metric.
+
+3. **Mapping (are the pairings right?) — is each build shot on the *right* frame?**
+   Coverage says a frame was reached and conformance measures the pixels, but neither notices when a
+   build screenshot is paired with the **wrong Figma frame** (or vice versa) — that just yields
+   plausible-but-wrong findings. `crosscheck.py` compares **rendered titles**: the design frame's H1
+   (from `inputs/figma-frames.json` → each frame's `heading`) vs the live capture's H1 vs the screen we
+   *think* we're auditing. Design≠build title → **MISMAP** (gate FAIL); title≠screen → **CHECK**. It
+   reads the rendered title, not the layer name, so it correctly passes mislabeled frames. This closed
+   the "wrong pairing / missed flow" class of mistakes that used to need a human eye.
 
 ## Why it never over-claims (MACHINE-DRAFT vs CERTIFIED)
 
@@ -52,6 +62,16 @@ human content sample. Track **DS-adoption %** as the trust dial — when it drop
 system, don't lengthen the audit. (Today the engine assumes low adoption and verifies every element,
 which is the safe default.)
 
+## The learning loop (why it gets better, not just repeats)
+
+The audit is **self-improving by design**. Before a run the agent reads the ledger
+(`references/audit-rules.md`); after a run it appends every correction as a dated rule **and escalates
+any mechanizable mistake into a gate** — a missed screen becomes a coverage-ledger row, a wrong pairing
+becomes a `crosscheck.py` MISMAP, an off pin becomes a `qc_geometry` assertion. The rule: a correction
+that *can* become an assertion **must**, so the human never catches it twice. This is what keeps the
+audit trustworthy as it scales across portals instead of relearning the same lessons. Full protocol:
+`~/.claude/skills/design-qc/references/learning-loop.md`.
+
 ## Pluggable baseline (works on any project)
 
 The conformance check reads an "allowed values" set from whichever source exists — so the same engine
@@ -77,6 +97,7 @@ capture.py  ── per role: keep-alive login (sessionStorage-safe) → route di
         ▼
 analyze.py  ── coverage ledger (union + gate) · baseline · per-element conformance (DS-adoption %)
         │      · assemble audit-master.json · qc_geometry pins + assertion gate
+        │      · crosscheck.py → design↔build mapping gate (out/crosscheck.md; FAIL on MISMAP)
         ▼
 report.py   ── MACHINE-DRAFT PDF/HTML (🤖/👤 stamps, coverage + DS-adoption tiles) via render.js
 ```
@@ -89,6 +110,7 @@ engine/
   bootstrap.py   plain-request → config + gitignored secrets + AUTO-DETECTED login selectors
   capture.py     keep-alive capture + scroll-unclip + computed-CSS extraction
   analyze.py     coverage ledger + baseline + conformance + audit-master assembly
+  crosscheck.py  design↔build mapping gate (rendered-title match; FAILs on MISMAP)
   report.py      MACHINE-DRAFT/CERTIFIED report; refuses to certify with unsigned 👤 findings
   qc_geometry.py assertion-gated pin/crop geometry
   render.js      HTML → PDF (puppeteer)

@@ -11,6 +11,7 @@ import json, os, re, glob, collections, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import config as C
 import qc_geometry as G
+import crosscheck as XC
 
 def tohex(c):
     c = (c or "").strip()
@@ -33,8 +34,13 @@ def build_ledger(cfg, frames, captured, paths):
     cap_by_key = {}
     for c in captured:
         cap_by_key[norm(c["role"]) + norm(c["route"].split("/")[-1])] = c
-    rows = []; mapped = unmapped = extra = 0
+    rows = []; mapped = unmapped = extra = 0; mismap = 0
     used = set()
+    def _bhead(slug):
+        fp = os.path.join(paths["captures_live"], f"{slug}.json")
+        if not os.path.exists(fp): return ""
+        try: return XC.build_heading(json.load(open(fp)).get("rows", []))
+        except Exception: return ""
     for fr in frames:
         name = fr.get("name", "")
         parts = name.split("/")
@@ -43,12 +49,21 @@ def build_ledger(cfg, frames, captured, paths):
         key = role + screen
         hit = cap_by_key.get(key) or next((c for k, c in cap_by_key.items() if screen and screen in k), None)
         status = "MAPPED" if hit else "UNMAPPED"
+        # design↔build MAPPING sanity: the frame's heading must agree with the paired capture's title,
+        # or the pairing is wrong (a build screenshot on the wrong Figma frame — invisible to spec diffing).
+        verdict = None
+        if hit and fr.get("heading"):
+            dh, bh = fr["heading"], _bhead(hit["slug"])
+            if bh:
+                verdict = "MATCH" if XC._overlap(XC._toks(dh), XC._toks(bh)) >= 0.34 else "MISMAP"
+                if verdict == "MISMAP": mismap += 1
         if hit: mapped += 1; used.add(hit["slug"])
         else: unmapped += 1
         rows.append({"source": "figma", "frame": name, "figma_node": fr.get("node_id"),
+                     "heading": fr.get("heading"),
                      "state": fr.get("state") or ("/" in name and name.split("/")[-1]) or "",
                      "live_capture": hit["slug"] if hit else None, "status": status,
-                     "verdict": None})
+                     "verdict": verdict})
     for c in captured:
         if c["slug"] not in used:
             extra += 1
@@ -56,10 +71,13 @@ def build_ledger(cfg, frames, captured, paths):
                          "live_capture": c["slug"], "route": c["route"],
                          "status": "EXTRA", "verdict": None})
     ledger = {"rows": rows, "stats": {"figma_frames": len(frames), "captured": len(captured),
-              "mapped": mapped, "unmapped": unmapped, "extra_build_only": extra},
-              "gate": "PASS" if unmapped == 0 else "FAIL",
-              "note": "UNMAPPED rows are design frames with no matching live capture = coverage debt. "
-                      "EXTRA rows are build-only screens (route to Design Suggestions, not findings)."}
+              "mapped": mapped, "unmapped": unmapped, "extra_build_only": extra, "mismap": mismap},
+              "gate": "FAIL" if (unmapped or mismap) else "PASS",
+              "note": "UNMAPPED = design frames with no matching live capture (coverage debt / missed screen). "
+                      "EXTRA = build-only screens (route to Design Suggestions, not findings). "
+                      "MISMAP = a mapped pair whose design-frame title disagrees with the captured build title "
+                      "(a build screenshot on the wrong Figma frame) — verify before shipping. "
+                      "Provide a `heading` per frame in inputs/figma-frames.json to enable the MISMAP check."}
     json.dump(ledger, open(os.path.join(paths["out"], "coverage-ledger.json"), "w"), indent=2)
     return ledger
 
