@@ -13,12 +13,23 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/toast";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 import { Button, Input, FormField, Alert, DemoFab, PortalLoginShell } from "@mosje/design-system";
+import { accountFromMobile, DEMO_PORTAL_ACCOUNTS } from "@/lib/committee/masters";
+import { PORTAL_SESSION_COOKIE, encodeSession, roleLabel } from "@/lib/committee/session";
 
 const BASE = "/portals/nmba";
 
-const DEMO_ACCOUNTS = [
-  { role: "Admin", id: "9999999999", password: "Demo@123" },
-];
+const DEMO_ACCOUNTS = DEMO_PORTAL_ACCOUNTS.map((a) => ({
+  role: roleLabel(a.session.role),
+  id: a.id,
+  password: a.password,
+}));
+
+/** Landing route per role after sign-in. */
+const LANDING: Record<string, string> = {
+  ADMIN: "/admin/dashboard",
+  STATE: "/admin/napddr/state",
+  DISTRICT: "/admin/napddr/district",
+};
 
 const TABS = [
   { label: "Admin", href: `${BASE}/admin/login`, active: true },
@@ -41,8 +52,14 @@ export default function AdminLoginPage() {
 
     setTimeout(() => {
       setLoading(false);
-      if (mobile.length === 10 && password.length > 0) {
-        document.cookie = `nmba_admin_session=mock-session-token; path=/; max-age=${60 * 60 * 8}`;
+      const account = accountFromMobile(mobile);
+      if (account && password.length > 0) {
+        document.cookie = `${PORTAL_SESSION_COOKIE}=${encodeSession(account.session)}; path=/; max-age=${60 * 60 * 8}`;
+        toast("Logged in successfully.", "success");
+        router.push(LANDING[account.session.role]);
+      } else if (mobile.length === 10 && password.length > 0) {
+        // Unknown-but-valid-looking number → default Admin (prototype convenience).
+        document.cookie = `${PORTAL_SESSION_COOKIE}=mock-session-token; path=/; max-age=${60 * 60 * 8}`;
         toast("Logged in successfully.", "success");
         router.push("/admin/dashboard");
       } else {

@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown, LogOut } from "lucide-react";
-import { SiteHeader, Footer, AppSwitcher } from "@mosje/design-system";
+import { SiteHeader, Footer } from "@mosje/design-system";
 import { useToast } from "@/components/toast";
 import { cn } from "@/lib/utils";
 import { useTCSession } from "@/lib/treatment-centre/session-context";
@@ -260,7 +260,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
       </div>
 
       <Footer />
-      <AppSwitcher devMode={process.env.NODE_ENV === "development"} />
+      {/* AppSwitcher FAB is rendered once globally in the root layout. */}
     </div>
   );
 }

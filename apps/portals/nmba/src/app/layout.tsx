@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
+import "@mosje/design-system/icons.css";
 import { ToastProvider } from "@/components/toast";
 import {
   AppSwitcher,

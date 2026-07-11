@@ -56,7 +56,9 @@ All portal login pages must render a collapsible `<details>` panel below the sub
 
 | Portal | Role | Mobile / ID | Password |
 |--------|------|-------------|----------|
-| **NMBA** (admin login) | Admin | 9999999999 | Demo@123 (any works) |
+| **NMBA** (portal login) | Admin | 9999999999 | Demo@123 (any works) |
+| **NMBA** (portal login) | State Nodal Officer (Maharashtra) | 9890123456 | Demo@123 (any works) |
+| **NMBA** (portal login) | District Nodal Officer (Maharashtra / Pune) | 9890001234 | Demo@123 (any works) |
 | **SCW** | Volunteer (Citizen) | 9800000001 | Demo@123 |
 | **SCW** | SAGE Organisation | 9800000002 | Demo@123 |
 | **SCW** | Nodal Officer | 9810000001 | Demo@123 |
@@ -67,6 +69,8 @@ All portal login pages must render a collapsible `<details>` panel below the sub
 | **PM-AJAY** | District Secretary | DS002 | Password@123 |
 | **PM-AJAY** | State Officer | SO003 | Password@123 |
 | **PM-AJAY** | District Officer | DO005 | Password@123 |
+
+> **NMBA NAPDDR Three-Tier Committee** is a flow inside the **existing** NMBA portal (no separate login/portal). The single portal login (`/portals/nmba/admin/login`) resolves the role (Admin / State Nodal Officer / District Nodal Officer) from the mobile number and lands each in the sidebar's "NAPDDR Three-Tier Committee" flow, scoped to their state/district. Admin sees all; State officer sees/manages its state (State, District & Block committees); District officer sees/manages its district (District & Block committees). Uses the shared `DemoFab`.
 
 ## Checklist when adding a new login page
 
