@@ -1,0 +1,778 @@
+{
+  "portal": "National Portal for Transgender Persons",
+  "idPrefix": "TG",
+  "generated": "2026-07-10",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=8056-5668",
+  "method": "Design-QC of the TG admin + login screens against the MoSJE Portal Handoff design.",
+  "deferred": [
+    {
+      "id": "TG-DEBT-01",
+      "title": "Garima Greh login (build) — not captured",
+      "reason": "Admin login carries a Garima Greh role tab (design 9379:116062) but no live GG account was provided."
+    },
+    {
+      "id": "TG-DEBT-02",
+      "title": "Login states designed-but-not-built",
+      "reason": "Registration, credential-recovery, OTP-flow and mobile login states exist in Figma only (no build to compare)."
+    }
+  ],
+  "screens": [
+    {
+      "slug": "GLOBAL",
+      "name": "Global · Shared elements (masthead · KPI cards · tables)",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-ADMIN-DASH.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CENTRAL-ADMIN-DASHBOARD.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-38830",
+      "liveUrl": "https://tg-admin-dev.mosje.in/dashboard",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-GLOBAL-001",
+          "element": "Masthead co-branding lockup removed",
+          "section": "global",
+          "scope": "Global",
+          "axis": "Content & Iconography",
+          "severity": "Major",
+          "figma": "The masthead right zone carries the SAMAVESH co-branding lockup — the Digital India logo + the SAMAVESH logo — before the user/avatar block.",
+          "live": "Both logos are omitted portal-wide; only the user name/role/avatar remain on the right. (Present on the login hero, missing on every authenticated inner page.)",
+          "fix": "Restore the Digital India + SAMAVESH co-branding lockup in the masthead right zone per the design, on every screen.",
+          "subO": "Scope: Global — repeats across the portal",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            1126
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1957
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1957
+          ],
+          "figmaPin": {
+            "x": 80,
+            "y": 5
+          },
+          "livePin": {
+            "x": 80,
+            "y": 5
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-GLOBAL-002",
+          "element": "Masthead identity lockup reduced from 3 lines to 2",
+          "section": "global",
+          "scope": "Global",
+          "axis": "Content & Iconography",
+          "severity": "Minor",
+          "figma": "'Government of India / Ministry of Social Justice & Empowerment / Department of Social Justice & Empowerment' (Department line in bold navy).",
+          "live": "Only 'Government of India / Ministry of Social Justice & Empowerment' — the Department line is dropped and the bold weight moves up a line.",
+          "fix": "Render the full 3-line identity lockup with the Department line bold, per the design masthead.",
+          "subO": "Scope: Global — repeats across the portal",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            1126
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1957
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1957
+          ],
+          "figmaPin": {
+            "x": 17,
+            "y": 6
+          },
+          "livePin": {
+            "x": 17,
+            "y": 6
+          }
+        },
+        {
+          "num": 3,
+          "id": "TG-GLOBAL-003",
+          "element": "KPI cards lost their metric icon + trend line",
+          "section": "global",
+          "scope": "Global",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "Each dashboard KPI card shows a leading metric icon and a delta/trend line ('▲ +14.5% vs last month' or a contextual subtitle).",
+          "live": "KPI cards render only a label + number — the icon and trend/subtext are dropped, losing the at-a-glance comparison hierarchy.",
+          "fix": "Restore the KPI card icon and trend/delta subtitle per the design KPI component. Applies to all role dashboards.",
+          "subO": "Scope: Global — repeats across the portal",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            1126
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1957
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1957
+          ],
+          "figmaPin": {
+            "x": 25,
+            "y": 24
+          },
+          "livePin": {
+            "x": 25,
+            "y": 24
+          }
+        },
+        {
+          "num": 4,
+          "id": "TG-GLOBAL-004",
+          "element": "Pagination active-page state differs",
+          "section": "global",
+          "scope": "Global",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "Active page = outlined (white fill, navy border, navy numeral).",
+          "live": "Active page = a navy-filled chip with a white numeral.",
+          "fix": "Match the pagination active-page control to the design's outlined style. Applies to every paginated table.",
+          "subO": "Scope: Global — repeats across the portal",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            1126
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1957
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1957
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 92
+          },
+          "livePin": {
+            "x": 50,
+            "y": 92
+          }
+        },
+        {
+          "num": 5,
+          "id": "TG-GLOBAL-005",
+          "element": "Data-table header fill inconsistent across the build",
+          "section": "global",
+          "scope": "Global",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Table headers use a light neutral-gray fill (≈#f9fafb, Stroke/50).",
+          "live": "Dashboard queue tables use a near-neutral header, but the User/Role/Tenant management tables use a light blue header tint (≈#dbeafe).",
+          "fix": "Standardise all data-table headers to the neutral-gray header token; drop the blue tint on the management tables.",
+          "subO": "Scope: Global — repeats across the portal",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            1126
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1957
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1957
+          ],
+          "figmaPin": {
+            "x": 52,
+            "y": 55
+          },
+          "livePin": {
+            "x": 52,
+            "y": 55
+          }
+        }
+      ],
+      "_role": "Global",
+      "_node": "2494:38830",
+      "_refFrame": true,
+      "note": "Scope: Global — these elements repeat across every admin screen; fix once. The board shows a representative frame (Central Admin — Dashboard) — open it via 'Figma frame ↗'; each marker's number matches its TG-GLOBAL id."
+    },
+    {
+      "slug": "CIT-SIGNIN",
+      "name": "Citizen — Sign In",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-CITIZEN-LOGIN.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-LOGIN.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9379-115794",
+      "liveUrl": "https://tg-user-dev.mosje.in/auth/sign-in",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-CIT-SIGNIN-001",
+          "element": "Role-tab switcher removed",
+          "section": "cit-signin",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "The login card leads with a three-way role switcher — Citizen · Admin · Garima Greh — with Citizen active.",
+          "live": "The citizen build renders no role tabs; the card opens straight into the 'Log In to your account' heading.",
+          "fix": "Restore the Citizen / Admin / Garima Greh role-tab switcher at the top of the login card, per the design frame.",
+          "figmaBox": [
+            0,
+            141,
+            1440,
+            646
+          ],
+          "liveBox": [
+            0,
+            150,
+            1440,
+            670
+          ],
+          "sectionBox": [
+            0,
+            150,
+            1440,
+            670
+          ],
+          "figmaPin": {
+            "x": 80,
+            "y": 17.7
+          },
+          "livePin": {
+            "x": 80,
+            "y": 17.3
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-CIT-SIGNIN-002",
+          "element": "Extra Mobile Number field",
+          "section": "cit-signin",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "The design offers a single Email field under 'or sign in with credentials', then a Send OTP button.",
+          "live": "The build inserts a second 'Mobile Number' field (with its own 'or' divider) below the Email Id field — absent from the design.",
+          "fix": "Align to the design's single-field pattern, or update the design frame if the Mobile Number entry is a deliberate addition.",
+          "figmaBox": [
+            0,
+            141,
+            1440,
+            646
+          ],
+          "liveBox": [
+            0,
+            150,
+            1440,
+            670
+          ],
+          "sectionBox": [
+            0,
+            150,
+            1440,
+            670
+          ],
+          "figmaPin": {
+            "x": 80,
+            "y": 82.3
+          },
+          "livePin": {
+            "x": 80,
+            "y": 82.7
+          }
+        },
+        {
+          "num": 3,
+          "id": "TG-CIT-SIGNIN-003",
+          "element": "Heading casing ('Log In' vs 'Log in')",
+          "section": "cit-signin",
+          "scope": "Screen",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "The heading reads 'Log in to your account' (sentence case).",
+          "live": "The build renders 'Log In to your account' — 'In' is capitalised.",
+          "fix": "Match the design's sentence-case heading: 'Log in to your account'.",
+          "figmaBox": [
+            0,
+            141,
+            1440,
+            646
+          ],
+          "liveBox": [
+            0,
+            150,
+            1440,
+            670
+          ],
+          "sectionBox": [
+            0,
+            150,
+            1440,
+            670
+          ],
+          "figmaPin": {
+            "x": 72,
+            "y": 17.7
+          },
+          "livePin": {
+            "x": 72,
+            "y": 17.3
+          }
+        }
+      ],
+      "_role": "Citizen",
+      "_node": "9379:115794"
+    },
+    {
+      "slug": "ADM-SIGNIN",
+      "name": "Admin — Log In",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-ADMIN-LOGIN.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/ADMIN-LOGIN.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9387-138143",
+      "liveUrl": "https://tg-admin-dev.mosje.in/login",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-ADM-SIGNIN-001",
+          "element": "Extra Mobile Number field",
+          "section": "adm-signin",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "The design offers a single Email field, then a Send OTP button.",
+          "live": "The build adds a second 'Mobile Number' field (with an 'or' divider) below Email — absent from the design.",
+          "fix": "Align to the design's single Email-field pattern, or update the design frame if Mobile Number entry is a deliberate addition.",
+          "figmaBox": [
+            0,
+            189,
+            1440,
+            588
+          ],
+          "liveBox": [
+            0,
+            200,
+            1440,
+            610
+          ],
+          "sectionBox": [
+            0,
+            200,
+            1440,
+            610
+          ],
+          "figmaPin": {
+            "x": 80,
+            "y": 77.7
+          },
+          "livePin": {
+            "x": 80,
+            "y": 78.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-ADM-SIGNIN-002",
+          "element": "Heading casing",
+          "section": "adm-signin",
+          "scope": "Screen",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "The heading reads 'Log in to your account' (sentence case).",
+          "live": "The build renders 'Log In to your account' — 'In' is capitalised.",
+          "fix": "Match the design's sentence-case heading: 'Log in to your account'.",
+          "figmaBox": [
+            0,
+            189,
+            1440,
+            588
+          ],
+          "liveBox": [
+            0,
+            200,
+            1440,
+            610
+          ],
+          "sectionBox": [
+            0,
+            200,
+            1440,
+            610
+          ],
+          "figmaPin": {
+            "x": 72,
+            "y": 22.4
+          },
+          "livePin": {
+            "x": 72,
+            "y": 22.0
+          }
+        }
+      ],
+      "_role": "Admin",
+      "_node": "9387:138143"
+    },
+    {
+      "slug": "CAD",
+      "name": "Central Admin — Dashboard",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-ADMIN-DASH.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CENTRAL-ADMIN-DASHBOARD.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-38830",
+      "liveUrl": "https://tg-admin-dev.mosje.in/dashboard",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-CAD-001",
+          "element": "Global filter bar sits above the KPI cards",
+          "section": "cad",
+          "scope": "Screen",
+          "axis": "Layout & Spacing",
+          "severity": "Nit",
+          "figma": "The design keeps the State / District / Date-range filters inside the Application Queue card.",
+          "live": "The build floats a global filter bar ABOVE the KPI cards; it is a richer analytics dashboard (6 KPIs + State/District charts) vs the design's 4-KPI exception queue.",
+          "fix": "Confirm the analytics layout is intended — the extra KPIs/charts are build-only (audit vs the visual language, don't remove).",
+          "figmaBox": [
+            0,
+            73,
+            1440,
+            794
+          ],
+          "liveBox": [
+            0,
+            160,
+            1440,
+            1346
+          ],
+          "sectionBox": [
+            0,
+            160,
+            1440,
+            1346
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 13.3
+          },
+          "livePin": {
+            "x": 50,
+            "y": 11.3
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-CAD-002",
+          "element": "Confirm analytics chart palette uses TG tokens",
+          "section": "cad",
+          "scope": "Screen",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Charts should use TG tokens — Primary/Source #003366 for bars, Success/Source #2e7d32 for the approval-rate series.",
+          "live": "Chart series may use raw greens/blues rather than the TG token palette.",
+          "fix": "Verify the chart palette against the TG tokens; the charts are a build-only section audited vs the visual language.",
+          "figmaBox": [
+            0,
+            73,
+            1440,
+            794
+          ],
+          "liveBox": [
+            0,
+            160,
+            1440,
+            1346
+          ],
+          "sectionBox": [
+            0,
+            160,
+            1440,
+            1346
+          ],
+          "figmaPin": {
+            "x": 40,
+            "y": 86.7
+          },
+          "livePin": {
+            "x": 40,
+            "y": 88.8
+          }
+        }
+      ],
+      "_role": "Central Admin",
+      "_node": "2494:38830"
+    },
+    {
+      "slug": "DMD",
+      "name": "District Magistrate — Dashboard",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-DM-DASH.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/DISTRICT-MAGISTRATE-DASHBOARD.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-42053",
+      "liveUrl": "https://tg-admin-dev.mosje.in/dashboard",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-DMD-001",
+          "element": "Extra 'Current Stage' column + View action",
+          "section": "dmd",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Nit",
+          "figma": "The design DM queue columns are Applicant ID, Name, District, Due in, Status.",
+          "live": "The build queue adds a 'Current Stage' column and a View action not in the design table.",
+          "fix": "Confirm if intended — the build has an extra column; do not remove without design sign-off.",
+          "figmaBox": [
+            0,
+            483,
+            1440,
+            667
+          ],
+          "liveBox": [
+            0,
+            759,
+            1440,
+            992
+          ],
+          "sectionBox": [
+            0,
+            759,
+            1440,
+            992
+          ],
+          "figmaPin": {
+            "x": 82,
+            "y": 50.2
+          },
+          "livePin": {
+            "x": 82,
+            "y": 50.0
+          }
+        }
+      ],
+      "_role": "District Magistrate",
+      "_node": "2494:42053"
+    },
+    {
+      "slug": "EOD",
+      "name": "Examining Officer (Maker) — Dashboard",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-MAKER-DASH.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/EXAMINING-OFFICER-DASHBOARD.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-41744",
+      "liveUrl": "https://tg-admin-dev.mosje.in/dashboard",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-EOD-001",
+          "element": "'Classification' column dropped",
+          "section": "eod",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "The design Maker queue has a Classification column (Clean / Exception badges) flagging exception applications.",
+          "live": "The build omits the Classification column, so triage exceptions aren't visible in the list.",
+          "fix": "Show the Classification column per the design (low priority — the build shows fewer columns than the design).",
+          "figmaBox": [
+            0,
+            265,
+            1440,
+            767
+          ],
+          "liveBox": [
+            0,
+            356,
+            1440,
+            982
+          ],
+          "sectionBox": [
+            0,
+            356,
+            1440,
+            982
+          ],
+          "figmaPin": {
+            "x": 62,
+            "y": 80.2
+          },
+          "livePin": {
+            "x": 62,
+            "y": 81.4
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-EOD-002",
+          "element": "Queue filters missing",
+          "section": "eod",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "The design queue header carries All Classifications / All Types / All Status filter dropdowns.",
+          "live": "The build has only a search box + a State/District toggle.",
+          "fix": "Surface the relevant queue filters per the design.",
+          "figmaBox": [
+            0,
+            265,
+            1440,
+            767
+          ],
+          "liveBox": [
+            0,
+            356,
+            1440,
+            982
+          ],
+          "sectionBox": [
+            0,
+            356,
+            1440,
+            982
+          ],
+          "figmaPin": {
+            "x": 40,
+            "y": 19.8
+          },
+          "livePin": {
+            "x": 40,
+            "y": 18.6
+          }
+        }
+      ],
+      "_role": "Examining Officer (Maker)",
+      "_node": "2494:41744"
+    },
+    {
+      "slug": "AD",
+      "name": "Admin — Application Detail",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-APP-DETAIL.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CENTRAL-ADMIN-APPLICATION-DETAIL.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-38975",
+      "liveUrl": "https://tg-admin-dev.mosje.in/applications",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-AD-001",
+          "element": "Persistent expanded admin sidebar narrows the content",
+          "section": "ad",
+          "scope": "Screen",
+          "axis": "Layout & Spacing",
+          "severity": "Minor",
+          "figma": "The design detail page is full-width (sidebar collapsed to a hamburger); the examining-officer / DM detail pages have no sidebar (match the design).",
+          "live": "The central-admin detail page keeps the admin sidebar expanded, narrowing the content column.",
+          "fix": "Confirm the central-admin sidebar on detail views is intended; otherwise collapse it to match the design.",
+          "figmaBox": [
+            0,
+            283,
+            1440,
+            918
+          ],
+          "liveBox": [
+            0,
+            241,
+            1440,
+            805
+          ],
+          "sectionBox": [
+            0,
+            241,
+            1440,
+            805
+          ],
+          "figmaPin": {
+            "x": 10,
+            "y": 79.6
+          },
+          "livePin": {
+            "x": 10,
+            "y": 79.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-AD-002",
+          "element": "Detail tab set differs (2 design / 4 build)",
+          "section": "ad",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Nit",
+          "figma": "The design detail has 2 tabs: Applicant Details, Documents.",
+          "live": "The build has 4 tabs — it adds Revised Certificate and ID Card.",
+          "fix": "Build-extra — confirm if intended.",
+          "figmaBox": [
+            0,
+            283,
+            1440,
+            918
+          ],
+          "liveBox": [
+            0,
+            241,
+            1440,
+            805
+          ],
+          "sectionBox": [
+            0,
+            241,
+            1440,
+            805
+          ],
+          "figmaPin": {
+            "x": 45,
+            "y": 20.5
+          },
+          "livePin": {
+            "x": 45,
+            "y": 21.0
+          }
+        }
+      ],
+      "_role": "Admin",
+      "_node": "2494:38975"
+    },
+    {
+      "slug": "PORTAL-PICKER",
+      "name": "All roles — Portal Picker (Change)",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-LOGIN-PORTAL-PICKER.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-LOGIN-CHANGE.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=8103-39372",
+      "liveUrl": "https://tg-user-dev.mosje.in/auth/sign-in",
+      "findings": [],
+      "_role": "All roles",
+      "_node": "8103:39372",
+      "note": "The '⇄ Change' button in the login footer opens this portal chooser. Verified faithful to the design (same 'Choose a portal to login' list + layout)."
+    }
+  ]
+}

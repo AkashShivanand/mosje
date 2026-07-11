@@ -1,0 +1,25 @@
+[dev/district-magistrate] logged in
+  cap DISTRICT-MAGISTRATE-DASHBOARD: 111 rows pageH=1592
+  cap DISTRICT-MAGISTRATE-APPLICATION-DETAIL: 31 rows pageH=1641
+  cap DISTRICT-MAGISTRATE-APPLICATION-DOCUMENTS: 40 rows pageH=1369
+  cap DISTRICT-MAGISTRATE-APPLICATION-DETAIL-ACTIONABLE: 31 rows pageH=1641
+
+=== FLOWS REPORT (dev) ===
+[
+  {
+    "env": "dev",
+    "role": "district-magistrate",
+    "dashboard": true,
+    "detail": true,
+    "documents": true,
+    "actionable": {
+      "url": "https://tg-admin-dev.mosje.in/applications/e120e486-5b10-4120-9fb2-6f39b3fe3f68",
+      "actions": [
+        "Approve",
+        "Request Correction",
+        "Reject"
+      ]
+    },
+    "modals": []
+  }
+]

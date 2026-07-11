@@ -34,21 +34,32 @@ def build_ledger(cfg, frames, captured, paths):
     cap_by_key = {}
     for c in captured:
         cap_by_key[norm(c["role"]) + norm(c["route"].split("/")[-1])] = c
-    rows = []; mapped = unmapped = extra = 0; mismap = 0
-    used = set()
+    rows = []; mapped = unmapped = extra = design_only = 0; mismap = 0
+    used = set(); n_frames = 0
     def _bhead(slug):
         fp = os.path.join(paths["captures_live"], f"{slug}.json")
         if not os.path.exists(fp): return ""
         try: return XC.build_heading(json.load(open(fp)).get("rows", []))
         except Exception: return ""
     for fr in frames:
+        node = fr.get("node_id") or fr.get("node")
+        if not node:                 # skip comment/group markers — an entry with no node is not a frame
+            continue
+        n_frames += 1
         name = fr.get("name", "")
         parts = name.split("/")
         role = norm(parts[0]) if parts else ""
         screen = norm(parts[1]) if len(parts) > 1 else ""
         key = role + screen
-        hit = cap_by_key.get(key) or next((c for k, c in cap_by_key.items() if screen and screen in k), None)
-        status = "MAPPED" if hit else "UNMAPPED"
+        # A frame flagged `_designOnly` declares "no build exists yet" (future/undesigned state, a
+        # modal reference, or acknowledged coverage debt). Never auto-pair it: the name-substring
+        # fallback would otherwise grab an unrelated capture and invent a MISMAP. It is recorded as
+        # DESIGN-ONLY (coverage debt), separate from a true UNMAPPED (a screen we expected but missed).
+        is_design_only = bool(fr.get("_designOnly"))
+        hit = None
+        if not is_design_only:
+            hit = cap_by_key.get(key) or next((c for k, c in cap_by_key.items() if screen and screen in k), None)
+        status = "MAPPED" if hit else ("DESIGN-ONLY" if is_design_only else "UNMAPPED")
         # design↔build MAPPING sanity: the frame's heading must agree with the paired capture's title,
         # or the pairing is wrong (a build screenshot on the wrong Figma frame — invisible to spec diffing).
         verdict = None
@@ -58,8 +69,9 @@ def build_ledger(cfg, frames, captured, paths):
                 verdict = "MATCH" if XC._overlap(XC._toks(dh), XC._toks(bh)) >= 0.34 else "MISMAP"
                 if verdict == "MISMAP": mismap += 1
         if hit: mapped += 1; used.add(hit["slug"])
+        elif is_design_only: design_only += 1
         else: unmapped += 1
-        rows.append({"source": "figma", "frame": name, "figma_node": fr.get("node_id"),
+        rows.append({"source": "figma", "frame": name, "figma_node": node,
                      "heading": fr.get("heading"),
                      "state": fr.get("state") or ("/" in name and name.split("/")[-1]) or "",
                      "live_capture": hit["slug"] if hit else None, "status": status,
@@ -70,10 +82,12 @@ def build_ledger(cfg, frames, captured, paths):
             rows.append({"source": "live", "frame": None, "figma_node": None,
                          "live_capture": c["slug"], "route": c["route"],
                          "status": "EXTRA", "verdict": None})
-    ledger = {"rows": rows, "stats": {"figma_frames": len(frames), "captured": len(captured),
-              "mapped": mapped, "unmapped": unmapped, "extra_build_only": extra, "mismap": mismap},
-              "gate": "FAIL" if (unmapped or mismap) else "PASS",
-              "note": "UNMAPPED = design frames with no matching live capture (coverage debt / missed screen). "
+    ledger = {"rows": rows, "stats": {"figma_frames": n_frames, "captured": len(captured),
+              "mapped": mapped, "unmapped": unmapped, "design_only": design_only,
+              "extra_build_only": extra, "mismap": mismap},
+              "gate": "FAIL" if (unmapped or mismap) else ("WARN" if design_only else "PASS"),
+              "note": "UNMAPPED = a design frame we expected a build for but no capture matched (missed screen) → FAIL. "
+                      "DESIGN-ONLY = a frame flagged _designOnly: designed but not built/captured yet (declared coverage debt) → WARN, documented not paired. "
                       "EXTRA = build-only screens (route to Design Suggestions, not findings). "
                       "MISMAP = a mapped pair whose design-frame title disagrees with the captured build title "
                       "(a build screenshot on the wrong Figma frame) — verify before shipping. "
@@ -172,6 +186,18 @@ def assemble(cfg, ledger, conf, paths, top_n=12):
                     f"Baseline mode: {conf['mode']}. The full deviation table is in out/conformance.json. "
                     f"These are 🤖 machine checks — verify severity with a human before certifying.",
             "findings": findings})
+    # merge human-authored judgment screens (Tier-B fidelity findings) — durable, geometry-pinned
+    # the same way as machine screens. Each finding carries identity (_anchor/_fpct/_lpct), not
+    # final coordinates; finalize() derives the crops + pins and asserts them. Authored screens
+    # render first, the machine GLOBAL-DSCONF screen last.
+    manual = []
+    mfp = os.path.join(paths["project"], "inputs/manual-screens.json")
+    if os.path.exists(mfp):
+        try:
+            md = json.load(open(mfp)); manual = md if isinstance(md, list) else md.get("screens", [])
+        except Exception as e:
+            print(f"manual-screens.json ignored ({e})")
+    screens = manual + screens
     for sc in screens:
         G.finalize(sc, eng_dir=paths["captures"], base_dir=paths["project"])
     G.write_failures(paths["out"])

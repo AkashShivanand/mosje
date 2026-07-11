@@ -3,7 +3,7 @@
 Encodes the honesty model: a STATUS badge (MACHINE-DRAFT vs CERTIFIED), coverage +
 DS-adoption tiles, and a per-finding 🤖 machine / 👤 human stamp. A portal literally
 cannot render CERTIFIED while any finding is still 🤖-only / AWAITING-HUMAN."""
-import json, os, html, subprocess, sys
+import json, os, html, subprocess, sys, struct
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import config as C
 
@@ -63,6 +63,27 @@ def build(project):
                 f'<div class="bbadge">{esc(idr)}</div></div><div class="panels">{panels}</div>'
                 f'<div class="bfoot"><span>{esc(am["portal"])} — {esc(status)} · {esc(am.get("generated",""))}</span><span class="links">{links}</span></div></div>')
 
+    def _imgh(rel):
+        try:
+            with open(os.path.join(PROJ, rel), "rb") as fh:
+                fh.read(16); w, h = struct.unpack(">II", fh.read(8)); return round(h * 1440 / w)
+        except Exception:
+            return 960
+
+    def ref_board(screen):
+        # parity/reference board — DESIGN │ BUILD side by side, no findings/pins. For screens
+        # verified faithful to the design (no fidelity defect to pin) that are still worth showing.
+        fig_img = screen.get("figmaImg"); live_img = screen.get("liveImg")
+        Hf, Hl = _imgh(fig_img), _imgh(live_img)
+        links = ""
+        if screen.get("figmaUrl"): links += f'<a href="{esc(screen["figmaUrl"])}">Figma frame ↗</a>'
+        if screen.get("liveUrl"): links += f'<a href="{esc(screen["liveUrl"])}">Live page ↗</a>'
+        panels = (f'<div class="pwrap"><div class="plabel design"><b>DESIGN</b> Figma intent</div>{panel(fig_img, [0, 0, 1440, Hf], [], "figma")}</div>'
+                  f'<div class="pwrap"><div class="plabel build"><b>BUILD</b> Live build</div>{panel(live_img, [0, 0, 1440, Hl], [], "live")}</div>')
+        return (f'<div class="board"><div class="bhead"><div class="btitle"><b>{esc(screen["name"])}</b> · <span>parity reference</span></div>'
+                f'<div class="bbadge">✓ faithful</div></div><div class="panels">{panels}</div>'
+                f'<div class="bfoot"><span>{esc(am["portal"])} — {esc(status)} · {esc(am.get("generated",""))}</span><span class="links">{links}</span></div></div>')
+
     def card(f):
         col = SEV.get(f["severity"], "#6b7280"); stamp = f.get("check", "🤖 machine")
         return (f'<div class="card" style="border-left-color:{col}">'
@@ -90,6 +111,9 @@ def build(project):
         for sec in order:
             sf = bysec[sec]
             groups += f'<div class="group">{board(s, sec, sf)}<div class="cards">{"".join(card(f) for f in sf)}</div></div>'
+        if not groups and s.get("figmaImg") and s.get("liveImg"):    # findings-free parity/reference screen
+            groups = f'<div class="group">{ref_board(s)}</div>'
+            if not chips: chips = '<span class="hchip" style="background:#047857">✓ faithful</span>'
         screen_sections.append(f'<section class="screen"><div class="shead"><h2>{esc(s["name"])}</h2><div class="hchips">{chips}</div></div>{note}{groups}</section>')
 
     cov = am.get("coverage", {})
@@ -104,7 +128,8 @@ def build(project):
              f'<div class="tile"><div class="tnum">{am.get("ds_adoption_pct","–")}%</div><div class="tlabel">DS-ADOPTION</div></div>'
              f'<div class="tile"><div class="tnum">{cov.get("mapped",0)}/{cov.get("figma_frames",0)}</div><div class="tlabel">FRAMES COVERED</div></div>'
              f'<div class="tile"><div class="tnum" style="color:{"#ffa94d" if cov.get("unmapped",0) else "#fff"}">{cov.get("unmapped",0)}</div><div class="tlabel">UNMAPPED (DEBT)</div></div>'
-             f'<div class="tile"><div class="tnum">{cov.get("extra_build_only",0)}</div><div class="tlabel">BUILD-ONLY</div></div>'
+             + (f'<div class="tile"><div class="tnum" style="color:{"#ffd43b" if cov.get("design_only",0) else "#fff"}">{cov.get("design_only",0)}</div><div class="tlabel">DESIGN-ONLY (DEBT)</div></div>' if cov.get("design_only") else "")
+             + f'<div class="tile"><div class="tnum">{cov.get("extra_build_only",0)}</div><div class="tlabel">BUILD-ONLY</div></div>'
              f'<div class="tile"><div class="tnum">{total}</div><div class="tlabel">FINDINGS</div></div>'
              f'<div class="tile"><div class="tnum">{esc(gate)}</div><div class="tlabel">COVERAGE GATE</div></div></div>'
              f'<div class="chowto">🤖 = machine-verified · 👤 = requires human sign-off. Coverage gate FAILs while any design frame is UNMAPPED. Baseline + full deviation table in out/.</div></section>')

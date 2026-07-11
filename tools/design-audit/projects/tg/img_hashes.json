@@ -1,0 +1,244 @@
+{
+  "D_ADMIN_DASH": {
+    "imageHash": "cffb42fea898aa98269706e1c3ee9d1d85033dd3",
+    "placedOnNodeId": "686:26",
+    "w": 1440,
+    "h": 1126
+  },
+  "D_MAKER_DASH": {
+    "imageHash": "83f3f64f40524726510bce12055e1d1a721f831c",
+    "placedOnNodeId": "686:4846",
+    "w": 1440,
+    "h": 1214
+  },
+  "D_DM_DASH": {
+    "imageHash": "51eeb79007b94c6c814948dc461b338e01d8d830",
+    "placedOnNodeId": "686:4847",
+    "w": 1440,
+    "h": 1046
+  },
+  "D_APP_DETAIL": {
+    "imageHash": "eaa2cf22c35e44e1333fb69604e60599c9213c1e",
+    "placedOnNodeId": "686:4848",
+    "w": 1440,
+    "h": 1877
+  },
+  "D_APP_DOCS": {
+    "imageHash": "b09ee12fb373aa71b3c50ddbbc93f385baa8c5fd",
+    "placedOnNodeId": "686:4849",
+    "w": 1440,
+    "h": 1321
+  },
+  "D_CHECKER_DASH": {
+    "imageHash": "32b10d7be2625ae760d810b2f4aa122a9cc10ab3",
+    "placedOnNodeId": "686:4850",
+    "w": 1440,
+    "h": 1118
+  },
+  "D_APPROVE_MODAL": {
+    "imageHash": "e7b90f7ad396e092ab163266983a23cd0a8f263e",
+    "placedOnNodeId": "686:4851",
+    "w": 1440,
+    "h": 1021
+  },
+  "D_CORRECTION_MODAL": {
+    "imageHash": "17f79768198e4702e8c31ef52fe38fc70a03a742",
+    "placedOnNodeId": "686:4852",
+    "w": 1440,
+    "h": 1021
+  },
+  "B_CENTRAL_ADMIN_DASHBOARD": {
+    "imageHash": "19c12e3778e78e52283dc4332789cd9ae8605e6e",
+    "placedOnNodeId": "686:4853",
+    "w": 1440,
+    "h": 1960
+  },
+  "B_EXAMINING_OFFICER_DASHBOARD": {
+    "imageHash": "d0858e5751c323266f1dd77e01c3009890184083",
+    "placedOnNodeId": "686:4854",
+    "w": 1440,
+    "h": 1552
+  },
+  "B_DISTRICT_MAGISTRATE_DASHBOARD": {
+    "imageHash": "a4370a500030d4eae68f82b86046c7a79c9163a3",
+    "placedOnNodeId": "686:4855",
+    "w": 1440,
+    "h": 1592
+  },
+  "B_CENTRAL_ADMIN_APPLICATION_DETAIL": {
+    "imageHash": "0466bb0959fdcf67dcd45d0a0ad25f5bab865cee",
+    "placedOnNodeId": "686:4856",
+    "w": 1440,
+    "h": 1655
+  },
+  "B_CENTRAL_ADMIN_APPLICATION_DOCUMENTS": {
+    "imageHash": "0876b62902d65567d7eb4286f9ff4d20d1a52099",
+    "placedOnNodeId": "686:4857",
+    "w": 1440,
+    "h": 1573
+  },
+  "B_CENTRAL_ADMIN_USER_MANAGEMENT": {
+    "imageHash": "63c1f9003e3c86e495c4fad53830cf1aed242b4c",
+    "placedOnNodeId": "686:4858",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_CENTRAL_ADMIN_ROLE_MANAGEMENT": {
+    "imageHash": "fe88569e71935cd85cda2b7b0173d36dd1001cef",
+    "placedOnNodeId": "686:4859",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_CENTRAL_ADMIN_PASSWORD_POLICY": {
+    "imageHash": "c1c99cdb89391250b2fd605dc5d26f1199c44a69",
+    "placedOnNodeId": "686:4860",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_CENTRAL_ADMIN_TENANTS": {
+    "imageHash": "06cd7c79ac05a6b6da2ff6b0ce637916c2090588",
+    "placedOnNodeId": "686:4861",
+    "w": 1440,
+    "h": 1000
+  },
+  "C_LOGIN": {
+    "imageHash": "80d6ec9060b43a8eb626272ea2e5bd93d6f7034e",
+    "w": 1440,
+    "h": 1000
+  },
+  "C_DASHBOARD": {
+    "imageHash": "e59a94d39a76e9f7d30665ecb8e44b26e0eb5503",
+    "w": 1440,
+    "h": 1000
+  },
+  "C_CERT_DETAIL": {
+    "imageHash": "ac710f7aa42c9478879d6691eece95b5fc195ba6",
+    "w": 1440,
+    "h": 1242
+  },
+  "C_GRIEVANCES": {
+    "imageHash": "15525ca1c4b24b0344964a0687c108520a234135",
+    "w": 1440,
+    "h": 1000
+  },
+  "C_PREAPP": {
+    "imageHash": "1945901bcbdd0cf071f18a210d16549f2d9d4540",
+    "w": 1440,
+    "h": 1139
+  },
+  "C_APPLY_TYPE": {
+    "imageHash": "9070861151af38f590a147e52c4e03eed5261ce2",
+    "w": 1440,
+    "h": 1000
+  },
+  "C_APPLY_ENTRY": {
+    "imageHash": "8cad7c0a56a67a83178c107662a7fc2955e9f321",
+    "w": 1440,
+    "h": 1000
+  },
+  "C_APPLY_IDENTITY": {
+    "imageHash": "ac6510923d49dd4956ae73bbaf94a5c350de7741",
+    "w": 1440,
+    "h": 1648
+  },
+  "C_APPLY_DOCS": {
+    "imageHash": "f7da308d43c521b2277789d9bb348850a4140f07",
+    "w": 1440,
+    "h": 1439
+  },
+  "C_REGISTER": {
+    "imageHash": "99a7f903bfd6b431419d922626cc07dc2d9aaf32",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_DM_DETAIL_ACTIONABLE": {
+    "imageHash": "fcd0b3fba39db692af939f5d329a7fa5604000f8",
+    "w": 1440,
+    "h": 1641
+  },
+  "B_DM_MODAL_APPROVE": {
+    "imageHash": "f150fe5445191064a2f1e8cd235954d789290137",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_DM_MODAL_CORRECTION": {
+    "imageHash": "42241d3562295277c7320540f2f6c50f4a9d124c",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_DM_MODAL_REJECT": {
+    "imageHash": "b0e50fabb790e8fe4e76dd846b9dd6c59350907d",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_ADMIN_LOGIN": {
+    "imageHash": "b29b063cb2887eb4969358f86d1969d8990d1452",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_ADMIN_LOGIN_TAB_CITIZEN": {
+    "imageHash": "c89b1d67adce1dfa535ae7f70b4be4eac45315e5",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_ADMIN_LOGIN_CHANGE": {
+    "imageHash": "07608852c86a8d0b04614f84a22d7ee51abb6bc8",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_CITIZEN_LOGIN_CHANGE": {
+    "imageHash": "64e23814c3deb40e892c8eb69eb51c34297a7e14",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_CITIZEN_CERT_ID": {
+    "imageHash": "d09d8f890291eea7ace28c2d3fcc6ebd55412351",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_MH_MANUAL_INTRO": {
+    "imageHash": "5d766fbe95e71963fdb8e9222bd8e915429f11c1",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_MH_IDENTITY_BLANK": {
+    "imageHash": "7c8d07fa8895693aab1e2fd4b369ba355a9317ca",
+    "w": 1440,
+    "h": 1648
+  },
+  "B_MH_DOCS_FILLED": {
+    "imageHash": "a3779350f491a145078bd46c6b1548a7abd2c5fd",
+    "w": 1440,
+    "h": 1439
+  },
+  "B_CH_REVIEW": {
+    "imageHash": "ac917a8a1a1126d1978a1bf8515b212679c9cce8",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_CH_CONFIRMATION": {
+    "imageHash": "048f9a587557eb958a1dc9b32b8364c77aeb4acd",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_DM_DETAIL_APPROVED": {
+    "imageHash": "667726990f8e98792f35acaf33a8e24d012ba227",
+    "w": 1440,
+    "h": 1635
+  },
+  "B_CH_DASH_APPROVED": {
+    "imageHash": "210e6be1c60e0724325199a1459fada4f836ecdd",
+    "w": 1440,
+    "h": 1000
+  },
+  "B_CH_CERT_DETAIL": {
+    "imageHash": "b5b09a0c0423b618c3ead30532e9a11ba99f2e17",
+    "w": 1440,
+    "h": 1242
+  },
+  "B_CH_TRACK_APPROVED": {
+    "imageHash": "a8b33b38e2fbc169477c31f5d23ed98682d8d05c",
+    "w": 1440,
+    "h": 1000
+  }
+}

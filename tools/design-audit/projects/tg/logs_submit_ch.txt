@@ -1,0 +1,30 @@
+[CH] login otp 734388 -> https://tg-user-dev.mosje.in/transgender/dashboard
+[CH] at form: https://tg-user-dev.mosje.in/manual-form/identity
+  cap CITIZEN-CH-APPLY-IDENTITY-BLANK: pageH=2026
+  dd 'Select Preference' -> Legal Name (click)
+  dd 'Select Preference' -> Male (click)
+  dd 'Select Qualification' -> Illiterate (click)
+  dd 'Select Category' -> General (click)
+  dd 'Select Income Range' -> Below 1 Lakh (click)
+  dd 'Select State' -> Chandigarh (click)
+  dd 'Select District' -> Chandigarh (click)
+  cap CITIZEN-CH-APPLY-IDENTITY-FILLED: pageH=1648
+[CH] remaining placeholders: []
+[CH] basic-details advance: Save and Continue
+  cap CITIZEN-CH-APPLY-DOCUMENTS: pageH=1501
+  dd 'Select ID Proof Document' -> Aadhaar Card (click)
+  uploaded slot0: dummy-proof.pdf
+  uploaded slot1: dummy-photo.jpg
+  uploaded slot2: dummy-sign.png
+  uploaded slot3: dummy-affidavit.pdf
+  cap CITIZEN-CH-APPLY-DOCUMENTS-FILLED: pageH=1501
+[CH] docs advance click: Save and Review
+[CH] docs still stuck; hint: 'Required Documents\nPlease complete Basic Details'; re-clicking
+[CH] after docs -> https://tg-user-dev.mosje.in/manual-form/documents
+  cap CITIZEN-CH-APPLY-REVIEW: pageH=1000
+[CH] submit enabled after declaration: None
+[CH] SUBMIT click: None
+  cap CITIZEN-CH-APPLY-CONFIRMATION: pageH=1000
+[CH] submitted ref: ''
+[CH] final url https://tg-user-dev.mosje.in/manual-form/review
+[CH] final url https://tg-user-dev.mosje.in/manual-form/review

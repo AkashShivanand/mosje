@@ -36,6 +36,7 @@ const ZONES: Zone[] = [
   { prefix: "/portals/scw",         probeUrl: base(process.env.ZONE_SCW_URL,         "http://localhost:4125") + "/portals/scw",                label: "SCW Portal",     cmd: "npm run dev:scw" },
   { prefix: "/portals/nmba",        probeUrl: base(process.env.ZONE_NMBA_URL,        "http://localhost:4126") + "/portals/nmba/admin/login",   label: "NMBA Portal",    cmd: "npm run dev:nmba" },
   { prefix: "/portals/nhapoa",      probeUrl: base(process.env.ZONE_NHAPOA_URL,      "http://localhost:4127") + "/portals/nhapoa/login",       label: "NHAPOA Portal",  cmd: "npm run dev:nhapoa" },
+  { prefix: "/portals/tg",          probeUrl: base(process.env.ZONE_TG_URL,          "http://localhost:4128") + "/portals/tg",                 label: "TG Portal",      cmd: "npm run dev:tg" },
 ];
 
 const PROBE_TTL_MS     = 5_000;

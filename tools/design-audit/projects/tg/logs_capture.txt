@@ -1,0 +1,16 @@
+== PHASE: capture ==
+[central-admin] logged in -> https://tg-admin-dev.mosje.in/dashboard
+  ok CENTRAL-ADMIN-DASHBOARD: 127 rows pageH=1960
+  ok CENTRAL-ADMIN-USER-MANAGEMENT: 96 rows pageH=1000
+  ok CENTRAL-ADMIN-ROLE-MANAGEMENT: 49 rows pageH=1000
+  ok CENTRAL-ADMIN-PASSWORD-POLICY: 39 rows pageH=1000
+  ok CENTRAL-ADMIN-TENANTS: 33 rows pageH=1000
+[district-magistrate] logged in -> https://tg-admin-dev.mosje.in/dashboard
+  ok DISTRICT-MAGISTRATE-DASHBOARD: 111 rows pageH=1592
+[examining-officer] logged in -> https://tg-admin-dev.mosje.in/dashboard
+  ok EXAMINING-OFFICER-DASHBOARD: 116 rows pageH=1552
+CAPTURED 7 screens
+
+NEXT (human track → CERTIFIED):
+  • confirm 🤖 severities, run the keyboard + screen-reader a11y pass, review Hindi/RTL content,
+    sign brand/GIGW — then flip status to CERTIFIED. Machine draft cannot self-certify.

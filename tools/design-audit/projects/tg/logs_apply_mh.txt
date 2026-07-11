@@ -1,0 +1,22 @@
+[MH] login OTP 301026
+[MH] landed https://tg-user-dev.mosje.in/transgender/dashboard
+  cap CITIZEN-MH-DASHBOARD-PREAPP: 23 rows pageH=1139
+[MH] dashboard: {"url": "https://tg-user-dev.mosje.in/transgender/dashboard", "h": [], "inputs": [], "buttons": ["Government of India", "Skip to Main Content", "QM", "Transgender", "Dashboard", "Certificate/ID", "Grievances", "Start Application", "Terms & Conditions", "Privacy Policy"]}
+[MH] apply entry click: Start Application
+[MH] STEP1 {"url": "https://tg-user-dev.mosje.in/digi-locker", "h": ["How would you like to proceed?"], "inputs": [], "buttons": ["Government of India", "Skip to Main Content", "QM", "Transgender", "Dashboard", "Certificate/ID", "Grievances", "Continue with Selection", "Terms & Conditions", "Privacy Policy"]}
+  cap CITIZEN-MH-APPLY-STEP1: 30 rows pageH=1000
+[MH] selected option: New Transgender Certificate
+[MH] STEP1 advance: Continue with Selection
+[MH] STEP2 {"url": "https://tg-user-dev.mosje.in/details", "h": ["How would you like to enter your details?"], "inputs": [], "buttons": ["Government of India", "Skip to Main Content", "QM", "Transgender", "Dashboard", "Certificate/ID", "Grievances", "Continue", "Terms & Conditions", "Privacy Policy"]}
+  cap CITIZEN-MH-APPLY-STEP2: 30 rows pageH=1000
+[MH] selected manual: Enter details manually
+[MH] STEP2 advance: Continue
+[MH] STEP3 {"url": "https://tg-user-dev.mosje.in/manual-form/entry", "h": ["Proceed with manual application", "How this works", "Enter Details", "Upload Proof"], "inputs": [], "buttons": ["Government of India", "Skip to Main Content", "QM", "Transgender", "Dashboard", "Certificate/ID", "Grievances", "I prefer to try DigiLocker again later", "Continue to Enter Details", "Terms & Conditions", "Privacy Policy"]}
+  cap CITIZEN-MH-APPLY-STEP3: 33 rows pageH=1000
+[MH] STEP3 advance: Continue
+[MH] STEP4 {"url": "https://tg-user-dev.mosje.in/manual-form/identity", "h": ["Basic Identity Details", "SELF-PERCEIVED IDENTITY", "SOCIO-ECONOMIC BACKGROUND", "ADDRESS & CONTACT INFORMATION"], "inputs": [{"t": "input", "type": "text", "name": "", "ph": "Name as per ID Proof"}, {"t": "input", "type": "text", "name": "", "ph": "Enter the name you want to be addressed by"}, {"t": "input", "type": "date", "name": "", "ph": ""}, {"t": "input", "type": "text", "name": "", "ph": "Father, Mother, or Guardian's Name"}, {"t": "input",
+  cap CITIZEN-MH-APPLY-STEP4: 111 rows pageH=2026
+[MH] selected option: None
+[MH] STEP4 advance: None
+[MH] no advance control — stopping
+[MH] final url https://tg-user-dev.mosje.in/manual-form/identity

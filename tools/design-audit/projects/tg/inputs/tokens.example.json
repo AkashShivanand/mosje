@@ -1,0 +1,7 @@
+{
+  "_note": "Rename to tokens.json. Values a conformant element may use. Export from your design system / Figma variables (get_variable_defs). Colors as #hex, sizes/radii as integers, families as the primary font name.",
+  "colors": ["#003366", "#ffffff", "#111827", "#6b7280", "#e5e7eb"],
+  "radii": [0, 8, 12, 16, 9999],
+  "fontSizes": [12, 14, 16, 18, 20, 24, 28],
+  "fontFamilies": ["Noto Sans"]
+}

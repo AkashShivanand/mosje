@@ -1,0 +1,74 @@
+{
+  "citizen-apply-identity-blank": {
+    "dHash": "a626382a2e33ddfce34192a13c3429e2dc3aad55",
+    "dH": 1678,
+    "dNode": "3531-35645"
+  },
+  "citizen-apply-type": {
+    "dHash": "5c54875fbd66b88c315b2e5c4534e1b4380af3be",
+    "dH": 960,
+    "dNode": "3531-37856"
+  },
+  "citizen-apply-manual-intro": {
+    "dHash": "bcfcb075428ea6cbaffeef8344be7fd04d20a3bf",
+    "dH": 960,
+    "dNode": "3531-35737"
+  },
+  "citizen-apply-identity": {
+    "dHash": "9150aad393316fc6a6ccc064a1bcc6d475eb72ee",
+    "dH": 1450,
+    "dNode": "3531-35553"
+  },
+  "citizen-apply-documents": {
+    "dHash": "dd87c65d61a653dfb65517c8bfaf06b9583c2ac2",
+    "dH": 1410,
+    "dNode": "3531-35505"
+  },
+  "citizen-apply-documents-filled": {
+    "dHash": "7ae07c98db72b9324d23e65adc1088277fbc61a8",
+    "dH": 1282,
+    "dNode": "3531-35457"
+  },
+  "citizen-apply-review": {
+    "dHash": "d0a758995f0389f0beb604f0d316c39eb518f6d2",
+    "dH": 1579,
+    "dNode": "3531-35334"
+  },
+  "citizen-apply-confirmation": {
+    "dHash": "d3b0db6fb4fdcf9a997b0997b7237358f21b4071",
+    "dH": 1107,
+    "dNode": "3531-35271"
+  },
+  "citizen-apply-preapp": {
+    "dHash": "bf818cba0411585ded7fdedb7c6f2bc8cb90c451",
+    "dH": 960,
+    "dNode": "3531-36958"
+  },
+  "citizen-dashboard-approved": {
+    "dH": 960,
+    "dNode": "3531-36919",
+    "_desc": "Certificate Active steady-state dashboard (Issued 12 Jan 2026 · Valid Lifetime, View Details, Welfare Benefits).",
+    "_note": "Node corrected per user to 3531-36919 (was 3531-36938). dHash to be recomputed on next citizen design capture."
+  },
+  "citizen-dashboard-just-approved": {
+    "dH": 960,
+    "dNode": "3531-36938",
+    "_desc": "Immediate post-approval recognition banner ('You are officially recognized', Download Certificate / Download ID Card).",
+    "_note": "Distinct approved state; previously mislabeled as citizen-dashboard-approved."
+  },
+  "citizen-certificate-id": {
+    "dHash": "4c248c9572a23ec2c72a5aafe17fb78d3c1e6403",
+    "dH": 960,
+    "dNode": "3531-36841"
+  },
+  "citizen-certificate-detail": {
+    "dHash": "b9f892f6f871f516faeab2178a39cacab4a6ceef",
+    "dH": 1250,
+    "dNode": "3531-36666"
+  },
+  "citizen-approved-track": {
+    "dHash": "94b20a07815d882a4c16f9ee56b63997f23e43bd",
+    "dH": 1243,
+    "dNode": "3531-36747"
+  }
+}

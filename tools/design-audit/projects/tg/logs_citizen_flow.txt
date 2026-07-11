@@ -1,0 +1,6 @@
+login -> https://tg-user-dev.mosje.in/transgender/dashboard (otp 147183)
+  cap CITIZEN-DASHBOARD: 30 rows pageH=1000 url=https://tg-user-dev.mosje.in/transgender/dashboard
+  cap CITIZEN-CERTIFICATE-DETAIL: 34 rows pageH=1242 url=https://tg-user-dev.mosje.in/transgender/dashboard
+  cap CITIZEN-CERTIFICATE-ID: 30 rows pageH=1000 url=https://tg-user-dev.mosje.in/transgender/dashboard
+  cap CITIZEN-GRIEVANCES: 34 rows pageH=1000 url=https://tg-user-dev.mosje.in/transgender/grievances
+DONE. nav hrefs seen: []

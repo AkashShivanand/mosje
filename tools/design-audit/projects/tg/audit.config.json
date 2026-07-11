@@ -1,0 +1,47 @@
+{
+  "project": "tg",
+  "portal": "National Portal for Transgender Persons (dev)",
+  "idPrefix": "TG",
+  "figma": {
+    "fileKey": "gH2vQ62cfg4677YKWuOpLc",
+    "rootNode": "13:401",
+    "framesFile": "inputs/figma-frames.json",
+    "tokensFile": "inputs/tokens.json",
+    "urlTemplate": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id={node}"
+  },
+  "capture": {
+    "width": 1440,
+    "dpr": 2,
+    "waitMs": 1800
+  },
+  "live": {
+    "auth": {
+      "type": "email-otp",
+      "loginPath": "/login",
+      "roleTab": "Admin",
+      "userField": "#email",
+      "sendOtpButton": "Send OTP",
+      "otpInput": "input[maxlength='1'][inputmode='numeric']",
+      "verifyButton": "Verify OTP",
+      "loginMarker": "/login"
+    },
+    "roles": [
+      { "name": "central-admin", "base": "https://tg-admin-dev.mosje.in" },
+      { "name": "district-magistrate", "base": "https://tg-admin-dev.mosje.in" },
+      { "name": "examining-officer", "base": "https://tg-admin-dev.mosje.in" }
+    ],
+    "skipRoutes": [
+      "/login",
+      "/logout",
+      "/terms-and-conditions",
+      "/privacy-policy"
+    ]
+  },
+  "baseline": {
+    "mode": "derived",
+    "_modes": "tokens | derived | internal. 'derived' diffs every element against inputs/tokens.json, exported from live Figma variables (get_variable_defs). Falls back to 'internal' if TG has no token variables.",
+    "source": "inputs/tokens.json"
+  },
+  "manifest": "screen-manifest.yaml",
+  "notes": "Admin portal uses email->OTP login (dev OTP 123456) under the 'Admin' role tab. Emails + OTP are NOT stored here; they live in projects/tg/secrets.json (gitignored), keyed by role, plus a shared _otp. User/citizen portal (tg-user-dev.mosje.in) is DigiLocker/Aadhaar-oriented with no working email-OTP citizen login yet -> coverage debt, not audited."
+}

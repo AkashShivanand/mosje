@@ -1,0 +1,6 @@
+  cap DISTRICT-MAGISTRATE-APPLICATION-DETAIL-APPROVED: pageH=1635
+citizen landed https://tg-user-dev.mosje.in/transgender/dashboard
+  cap CITIZEN-CH-DASHBOARD-APPROVED: pageH=1000
+  cap CITIZEN-CH-CERTIFICATE-DETAIL: pageH=1242
+  cap CITIZEN-CH-TRACK-APPROVED: pageH=1000
+done
