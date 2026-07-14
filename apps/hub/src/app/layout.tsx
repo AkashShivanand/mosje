@@ -5,6 +5,9 @@ import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import { ConditionalAppSwitcher } from "@/components/conditional-app-switcher";
 import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
+// Material Symbols Rounded — the SAMAVESH icon system. Loaded ONCE here because
+// the hub is now the single app hosting every natively-mounted portal.
+import "@mosje/design-system/icons.css";
 
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
