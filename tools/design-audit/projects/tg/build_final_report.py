@@ -99,6 +99,52 @@ PARITY = [
   "route": CIT + "/auth/sign-in",
   "note": "The '⇄ Change' button in the login footer opens this portal chooser. Verified faithful to the design (same 'Choose a portal to login' list + layout)."}]
 
+# ---- coverage boards: every remaining captured screen, shown DESIGN │ BUILD. Portal-wide Global
+#      findings apply; screen-specific pins are added as the per-screen review deepens. ----
+# (slug, role, name, node, figrel, liverel, route)
+COVERAGE = [
+ ("CIT-PREAPP", "Citizen", "Apply · Pre-application", "3531:36958", "captures/figma/dframe-citizen-apply-preapp.png", "captures/live/CITIZEN-MH-DASHBOARD-PREAPP.png", CIT + "/dashboard"),
+ ("CIT-APPLY-IDENTITY", "Citizen", "Apply · Step 1 · Identity", "3531:35553", "captures/figma/dframe-citizen-apply-identity.png", "captures/live/CITIZEN-CH-APPLY-IDENTITY-FILLED.png", CIT + "/apply"),
+ ("CIT-APPLY-DOCS", "Citizen", "Apply · Step 2 · Documents", "3531:35457", "captures/figma/dframe-citizen-apply-documents-filled.png", "captures/live/CITIZEN-CH-APPLY-DOCUMENTS-FILLED.png", CIT + "/apply"),
+ ("CIT-APPLY-REVIEW", "Citizen", "Apply · Step 3 · Review", "3531:35334", "captures/figma/dframe-citizen-apply-review.png", "captures/live/CITIZEN-CH-APPLY-REVIEW.png", CIT + "/apply"),
+ ("CIT-APPLY-CONFIRM", "Citizen", "Apply · Confirmation", "3531:35271", "captures/figma/dframe-citizen-apply-confirmation.png", "captures/live/CITIZEN-CH-APPLY-CONFIRMATION.png", CIT + "/apply"),
+ ("CIT-DASH", "Citizen", "Dashboard · Certificate Active", "3531:36919", "captures/figma/dframe-citizen-dashboard-approved.png", "captures/live/CITIZEN-DASHBOARD.png", CIT + "/dashboard"),
+ ("CIT-CERT-DETAIL", "Citizen", "Certificate · Detail", "3531:36666", "captures/figma/dframe-citizen-certificate-detail.png", "captures/live/CITIZEN-CERTIFICATE-DETAIL.png", CIT + "/certificate"),
+ ("CIT-CERT-ID", "Citizen", "Certificate · ID Card", "3531:36841", "captures/figma/dframe-citizen-certificate-id.png", "captures/live/CITIZEN-CERTIFICATE-ID.png", CIT + "/certificate"),
+ ("CIT-TRACK", "Citizen", "Track Status", "3531:36747", "captures/figma/dframe-citizen-approved-track.png", "captures/live/CITIZEN-CH-TRACK-APPROVED.png", CIT + "/track-status"),
+ ("EO-DETAIL", "Examining Officer (Maker)", "Application Detail", "2494:38975", "captures/figma/design-APP-DETAIL.png", "captures/live/EXAMINING-OFFICER-APPLICATION-DETAIL.png", ADM + "/applications"),
+ ("EO-DOCS", "Examining Officer (Maker)", "Application Documents", "2494:39123", "captures/figma/design-APP-DETAIL-DOCS.png", "captures/live/EXAMINING-OFFICER-APPLICATION-DOCUMENTS.png", ADM + "/applications"),
+ ("DM-DETAIL", "District Magistrate", "Application Detail · Actionable", "2494:38975", "captures/figma/design-APP-DETAIL.png", "captures/live/DISTRICT-MAGISTRATE-APPLICATION-DETAIL-ACTIONABLE.png", ADM + "/applications"),
+ ("DM-DOCS", "District Magistrate", "Application Documents", "2494:39123", "captures/figma/design-APP-DETAIL-DOCS.png", "captures/live/DISTRICT-MAGISTRATE-APPLICATION-DOCUMENTS.png", ADM + "/applications"),
+ ("DM-MODAL-APPROVE", "District Magistrate", "Approve modal", "2494:39988", "captures/figma/design-APPROVE-MODAL.png", "captures/live/DISTRICT-MAGISTRATE-MODAL-APPROVE.png", ADM + "/applications"),
+ ("DM-MODAL-CORRECTION", "District Magistrate", "Request-Correction modal", "2494:39801", "captures/figma/design-CORRECTION-MODAL.png", "captures/live/DISTRICT-MAGISTRATE-MODAL-CORRECTION.png", ADM + "/applications"),
+ ("CA-DOCS", "Central Admin", "Application Documents", "2494:39123", "captures/figma/design-APP-DETAIL-DOCS.png", "captures/live/CENTRAL-ADMIN-APPLICATION-DOCUMENTS.png", ADM + "/applications"),
+]
+# build-only screens — no design frame in the audited section
+# (slug, role, name, liverel, route)
+BUILDONLY = [
+ ("DM-MODAL-REJECT", "District Magistrate", "Reject modal (build-extra)", "captures/live/DISTRICT-MAGISTRATE-MODAL-REJECT.png", ADM + "/applications"),
+ ("CA-USERS", "Central Admin", "User Management", "captures/live/CENTRAL-ADMIN-USER-MANAGEMENT.png", ADM + "/users"),
+ ("CA-ROLES", "Central Admin", "Role Management", "captures/live/CENTRAL-ADMIN-ROLE-MANAGEMENT.png", ADM + "/roles"),
+ ("CA-TENANTS", "Central Admin", "Tenants", "captures/live/CENTRAL-ADMIN-TENANTS.png", ADM + "/tenants"),
+ ("CA-PWPOLICY", "Central Admin", "Password Policy", "captures/live/CENTRAL-ADMIN-PASSWORD-POLICY.png", ADM + "/password-policy"),
+ ("CIT-GRIEVANCES", "Citizen", "Grievances", "captures/live/CITIZEN-GRIEVANCES.png", CIT + "/grievances"),
+]
+COVNOTE = ("Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination "
+           "— see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design.")
+BONOTE = ("No design frame in the audited section — audited against the design-system visual language; the "
+          "portal-wide Global findings apply.")
+def cov_screen(t):
+    slug, role, name, node, figrel, liverel, route = t
+    return {"slug": slug, "name": role + " — " + name, "env": "dev", "figmaImg": ap(figrel), "liveImg": ap(liverel),
+            "figmaUrl": furl(node), "liveUrl": route, "findings": [], "_role": role, "_node": node,
+            "_refbadge": "coverage", "_refsub": "design │ build", "_refchip": "#1558B0", "note": COVNOTE}
+def bo_screen(t):
+    slug, role, name, liverel, route = t
+    return {"slug": slug, "name": role + " — " + name, "env": "dev", "figmaImg": None, "liveImg": ap(liverel),
+            "figmaUrl": None, "liveUrl": route, "findings": [], "_role": role,
+            "_refbadge": "build-only", "_refsub": "live build", "_refchip": "#6b7280", "note": BONOTE}
+
 # ---- GLOBAL findings (Scope: Global) — representative frame = Central Admin dashboard ----
 GREF = ("2494:38830", "captures/figma/design-ADMIN-DASH.png", "captures/live/CENTRAL-ADMIN-DASHBOARD.png",
         ADM + "/dashboard", "Central Admin — Dashboard")
@@ -173,10 +219,23 @@ for sc in admin_scr + login_scr:
     G.finalize(sc, eng_dir=CAP, base_dir=PROJ)
 G.write_failures(OUT)
 
-# report order: GLOBAL · Login · Admin roles · parity
+# report order: GLOBAL · Login · Citizen journey · Admin roles (each: pinned dash/detail + coverage) · build-only · parity
 glob = [global_screen()]
 parity_scr = [parity_screen(s) for s in PARITY]
-screens = glob + login_scr + admin_scr + parity_scr
+cov = [cov_screen(t) for t in COVERAGE]
+bo = [bo_screen(t) for t in BUILDONLY]
+def by_role(lst, *names): return [s for s in lst if s["_role"] in names]
+def by_slug(lst, *slugs): return [s for s in lst if s["slug"] in slugs]
+
+citizen_journey = by_role(cov, "Citizen")                                   # apply → dashboard → certificate → track
+eo = by_role(admin_scr, "Examining Officer (Maker)") + by_role(cov, "Examining Officer (Maker)")
+dm = by_role(admin_scr, "District Magistrate") + by_role(cov, "District Magistrate")
+ca = by_role(admin_scr, "Central Admin", "Admin") + by_role(cov, "Central Admin")
+buildonly_admin = by_slug(bo, "DM-MODAL-REJECT", "CA-USERS", "CA-ROLES", "CA-TENANTS", "CA-PWPOLICY")
+buildonly_cit = by_slug(bo, "CIT-GRIEVANCES")
+
+screens = (glob + login_scr + citizen_journey + buildonly_cit
+           + eo + dm + ca + buildonly_admin + parity_scr)
 
 master = {"portal": "National Portal for Transgender Persons", "idPrefix": "TG",
           "generated": "2026-07-10",

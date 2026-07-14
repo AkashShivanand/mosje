@@ -444,144 +444,163 @@
       "_node": "9387:138143"
     },
     {
-      "slug": "CAD",
-      "name": "Central Admin — Dashboard",
+      "slug": "CIT-PREAPP",
+      "name": "Citizen — Apply · Pre-application",
       "env": "dev",
-      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-ADMIN-DASH.png",
-      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CENTRAL-ADMIN-DASHBOARD.png",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-38830",
-      "liveUrl": "https://tg-admin-dev.mosje.in/dashboard",
-      "findings": [
-        {
-          "num": 1,
-          "id": "TG-CAD-001",
-          "element": "Global filter bar sits above the KPI cards",
-          "section": "cad",
-          "scope": "Screen",
-          "axis": "Layout & Spacing",
-          "severity": "Nit",
-          "figma": "The design keeps the State / District / Date-range filters inside the Application Queue card.",
-          "live": "The build floats a global filter bar ABOVE the KPI cards; it is a richer analytics dashboard (6 KPIs + State/District charts) vs the design's 4-KPI exception queue.",
-          "fix": "Confirm the analytics layout is intended — the extra KPIs/charts are build-only (audit vs the visual language, don't remove).",
-          "figmaBox": [
-            0,
-            73,
-            1440,
-            794
-          ],
-          "liveBox": [
-            0,
-            160,
-            1440,
-            1346
-          ],
-          "sectionBox": [
-            0,
-            160,
-            1440,
-            1346
-          ],
-          "figmaPin": {
-            "x": 50,
-            "y": 13.3
-          },
-          "livePin": {
-            "x": 50,
-            "y": 11.3
-          }
-        },
-        {
-          "num": 2,
-          "id": "TG-CAD-002",
-          "element": "Confirm analytics chart palette uses TG tokens",
-          "section": "cad",
-          "scope": "Screen",
-          "axis": "Color & Token",
-          "severity": "Minor",
-          "figma": "Charts should use TG tokens — Primary/Source #003366 for bars, Success/Source #2e7d32 for the approval-rate series.",
-          "live": "Chart series may use raw greens/blues rather than the TG token palette.",
-          "fix": "Verify the chart palette against the TG tokens; the charts are a build-only section audited vs the visual language.",
-          "figmaBox": [
-            0,
-            73,
-            1440,
-            794
-          ],
-          "liveBox": [
-            0,
-            160,
-            1440,
-            1346
-          ],
-          "sectionBox": [
-            0,
-            160,
-            1440,
-            1346
-          ],
-          "figmaPin": {
-            "x": 40,
-            "y": 86.7
-          },
-          "livePin": {
-            "x": 40,
-            "y": 88.8
-          }
-        }
-      ],
-      "_role": "Central Admin",
-      "_node": "2494:38830"
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/dframe-citizen-apply-preapp.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-MH-DASHBOARD-PREAPP.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-36958",
+      "liveUrl": "https://tg-user-dev.mosje.in/dashboard",
+      "findings": [],
+      "_role": "Citizen",
+      "_node": "3531:36958",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
     },
     {
-      "slug": "DMD",
-      "name": "District Magistrate — Dashboard",
+      "slug": "CIT-APPLY-IDENTITY",
+      "name": "Citizen — Apply · Step 1 · Identity",
       "env": "dev",
-      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-DM-DASH.png",
-      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/DISTRICT-MAGISTRATE-DASHBOARD.png",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-42053",
-      "liveUrl": "https://tg-admin-dev.mosje.in/dashboard",
-      "findings": [
-        {
-          "num": 1,
-          "id": "TG-DMD-001",
-          "element": "Extra 'Current Stage' column + View action",
-          "section": "dmd",
-          "scope": "Screen",
-          "axis": "Components & States",
-          "severity": "Nit",
-          "figma": "The design DM queue columns are Applicant ID, Name, District, Due in, Status.",
-          "live": "The build queue adds a 'Current Stage' column and a View action not in the design table.",
-          "fix": "Confirm if intended — the build has an extra column; do not remove without design sign-off.",
-          "figmaBox": [
-            0,
-            483,
-            1440,
-            667
-          ],
-          "liveBox": [
-            0,
-            759,
-            1440,
-            992
-          ],
-          "sectionBox": [
-            0,
-            759,
-            1440,
-            992
-          ],
-          "figmaPin": {
-            "x": 82,
-            "y": 50.2
-          },
-          "livePin": {
-            "x": 82,
-            "y": 50.0
-          }
-        }
-      ],
-      "_role": "District Magistrate",
-      "_node": "2494:42053"
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/dframe-citizen-apply-identity.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-CH-APPLY-IDENTITY-FILLED.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-35553",
+      "liveUrl": "https://tg-user-dev.mosje.in/apply",
+      "findings": [],
+      "_role": "Citizen",
+      "_node": "3531:35553",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "CIT-APPLY-DOCS",
+      "name": "Citizen — Apply · Step 2 · Documents",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/dframe-citizen-apply-documents-filled.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-CH-APPLY-DOCUMENTS-FILLED.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-35457",
+      "liveUrl": "https://tg-user-dev.mosje.in/apply",
+      "findings": [],
+      "_role": "Citizen",
+      "_node": "3531:35457",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "CIT-APPLY-REVIEW",
+      "name": "Citizen — Apply · Step 3 · Review",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/dframe-citizen-apply-review.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-CH-APPLY-REVIEW.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-35334",
+      "liveUrl": "https://tg-user-dev.mosje.in/apply",
+      "findings": [],
+      "_role": "Citizen",
+      "_node": "3531:35334",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "CIT-APPLY-CONFIRM",
+      "name": "Citizen — Apply · Confirmation",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/dframe-citizen-apply-confirmation.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-CH-APPLY-CONFIRMATION.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-35271",
+      "liveUrl": "https://tg-user-dev.mosje.in/apply",
+      "findings": [],
+      "_role": "Citizen",
+      "_node": "3531:35271",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "CIT-DASH",
+      "name": "Citizen — Dashboard · Certificate Active",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/dframe-citizen-dashboard-approved.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-DASHBOARD.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-36919",
+      "liveUrl": "https://tg-user-dev.mosje.in/dashboard",
+      "findings": [],
+      "_role": "Citizen",
+      "_node": "3531:36919",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "CIT-CERT-DETAIL",
+      "name": "Citizen — Certificate · Detail",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/dframe-citizen-certificate-detail.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-CERTIFICATE-DETAIL.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-36666",
+      "liveUrl": "https://tg-user-dev.mosje.in/certificate",
+      "findings": [],
+      "_role": "Citizen",
+      "_node": "3531:36666",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "CIT-CERT-ID",
+      "name": "Citizen — Certificate · ID Card",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/dframe-citizen-certificate-id.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-CERTIFICATE-ID.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-36841",
+      "liveUrl": "https://tg-user-dev.mosje.in/certificate",
+      "findings": [],
+      "_role": "Citizen",
+      "_node": "3531:36841",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "CIT-TRACK",
+      "name": "Citizen — Track Status",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/dframe-citizen-approved-track.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-CH-TRACK-APPROVED.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-36747",
+      "liveUrl": "https://tg-user-dev.mosje.in/track-status",
+      "findings": [],
+      "_role": "Citizen",
+      "_node": "3531:36747",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "CIT-GRIEVANCES",
+      "name": "Citizen — Grievances",
+      "env": "dev",
+      "figmaImg": null,
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-GRIEVANCES.png",
+      "figmaUrl": null,
+      "liveUrl": "https://tg-user-dev.mosje.in/grievances",
+      "findings": [],
+      "_role": "Citizen",
+      "_refbadge": "build-only",
+      "_refsub": "live build",
+      "_refchip": "#6b7280",
+      "note": "No design frame in the audited section — audited against the design-system visual language; the portal-wide Global findings apply."
     },
     {
       "slug": "EOD",
@@ -673,6 +692,242 @@
       "_node": "2494:41744"
     },
     {
+      "slug": "EO-DETAIL",
+      "name": "Examining Officer (Maker) — Application Detail",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-APP-DETAIL.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/EXAMINING-OFFICER-APPLICATION-DETAIL.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-38975",
+      "liveUrl": "https://tg-admin-dev.mosje.in/applications",
+      "findings": [],
+      "_role": "Examining Officer (Maker)",
+      "_node": "2494:38975",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "EO-DOCS",
+      "name": "Examining Officer (Maker) — Application Documents",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-APP-DETAIL-DOCS.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/EXAMINING-OFFICER-APPLICATION-DOCUMENTS.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-39123",
+      "liveUrl": "https://tg-admin-dev.mosje.in/applications",
+      "findings": [],
+      "_role": "Examining Officer (Maker)",
+      "_node": "2494:39123",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "DMD",
+      "name": "District Magistrate — Dashboard",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-DM-DASH.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/DISTRICT-MAGISTRATE-DASHBOARD.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-42053",
+      "liveUrl": "https://tg-admin-dev.mosje.in/dashboard",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-DMD-001",
+          "element": "Extra 'Current Stage' column + View action",
+          "section": "dmd",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Nit",
+          "figma": "The design DM queue columns are Applicant ID, Name, District, Due in, Status.",
+          "live": "The build queue adds a 'Current Stage' column and a View action not in the design table.",
+          "fix": "Confirm if intended — the build has an extra column; do not remove without design sign-off.",
+          "figmaBox": [
+            0,
+            483,
+            1440,
+            667
+          ],
+          "liveBox": [
+            0,
+            759,
+            1440,
+            992
+          ],
+          "sectionBox": [
+            0,
+            759,
+            1440,
+            992
+          ],
+          "figmaPin": {
+            "x": 82,
+            "y": 50.2
+          },
+          "livePin": {
+            "x": 82,
+            "y": 50.0
+          }
+        }
+      ],
+      "_role": "District Magistrate",
+      "_node": "2494:42053"
+    },
+    {
+      "slug": "DM-DETAIL",
+      "name": "District Magistrate — Application Detail · Actionable",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-APP-DETAIL.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/DISTRICT-MAGISTRATE-APPLICATION-DETAIL-ACTIONABLE.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-38975",
+      "liveUrl": "https://tg-admin-dev.mosje.in/applications",
+      "findings": [],
+      "_role": "District Magistrate",
+      "_node": "2494:38975",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "DM-DOCS",
+      "name": "District Magistrate — Application Documents",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-APP-DETAIL-DOCS.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/DISTRICT-MAGISTRATE-APPLICATION-DOCUMENTS.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-39123",
+      "liveUrl": "https://tg-admin-dev.mosje.in/applications",
+      "findings": [],
+      "_role": "District Magistrate",
+      "_node": "2494:39123",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "DM-MODAL-APPROVE",
+      "name": "District Magistrate — Approve modal",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-APPROVE-MODAL.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/DISTRICT-MAGISTRATE-MODAL-APPROVE.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-39988",
+      "liveUrl": "https://tg-admin-dev.mosje.in/applications",
+      "findings": [],
+      "_role": "District Magistrate",
+      "_node": "2494:39988",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "DM-MODAL-CORRECTION",
+      "name": "District Magistrate — Request-Correction modal",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-CORRECTION-MODAL.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/DISTRICT-MAGISTRATE-MODAL-CORRECTION.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-39801",
+      "liveUrl": "https://tg-admin-dev.mosje.in/applications",
+      "findings": [],
+      "_role": "District Magistrate",
+      "_node": "2494:39801",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "CAD",
+      "name": "Central Admin — Dashboard",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-ADMIN-DASH.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CENTRAL-ADMIN-DASHBOARD.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-38830",
+      "liveUrl": "https://tg-admin-dev.mosje.in/dashboard",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-CAD-001",
+          "element": "Global filter bar sits above the KPI cards",
+          "section": "cad",
+          "scope": "Screen",
+          "axis": "Layout & Spacing",
+          "severity": "Nit",
+          "figma": "The design keeps the State / District / Date-range filters inside the Application Queue card.",
+          "live": "The build floats a global filter bar ABOVE the KPI cards; it is a richer analytics dashboard (6 KPIs + State/District charts) vs the design's 4-KPI exception queue.",
+          "fix": "Confirm the analytics layout is intended — the extra KPIs/charts are build-only (audit vs the visual language, don't remove).",
+          "figmaBox": [
+            0,
+            73,
+            1440,
+            794
+          ],
+          "liveBox": [
+            0,
+            160,
+            1440,
+            1346
+          ],
+          "sectionBox": [
+            0,
+            160,
+            1440,
+            1346
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 13.3
+          },
+          "livePin": {
+            "x": 50,
+            "y": 11.3
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-CAD-002",
+          "element": "Confirm analytics chart palette uses TG tokens",
+          "section": "cad",
+          "scope": "Screen",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Charts should use TG tokens — Primary/Source #003366 for bars, Success/Source #2e7d32 for the approval-rate series.",
+          "live": "Chart series may use raw greens/blues rather than the TG token palette.",
+          "fix": "Verify the chart palette against the TG tokens; the charts are a build-only section audited vs the visual language.",
+          "figmaBox": [
+            0,
+            73,
+            1440,
+            794
+          ],
+          "liveBox": [
+            0,
+            160,
+            1440,
+            1346
+          ],
+          "sectionBox": [
+            0,
+            160,
+            1440,
+            1346
+          ],
+          "figmaPin": {
+            "x": 40,
+            "y": 86.7
+          },
+          "livePin": {
+            "x": 40,
+            "y": 88.8
+          }
+        }
+      ],
+      "_role": "Central Admin",
+      "_node": "2494:38830"
+    },
+    {
       "slug": "AD",
       "name": "Admin — Application Detail",
       "env": "dev",
@@ -760,6 +1015,97 @@
       ],
       "_role": "Admin",
       "_node": "2494:38975"
+    },
+    {
+      "slug": "CA-DOCS",
+      "name": "Central Admin — Application Documents",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-APP-DETAIL-DOCS.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CENTRAL-ADMIN-APPLICATION-DOCUMENTS.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-39123",
+      "liveUrl": "https://tg-admin-dev.mosje.in/applications",
+      "findings": [],
+      "_role": "Central Admin",
+      "_node": "2494:39123",
+      "_refbadge": "coverage",
+      "_refsub": "design │ build",
+      "_refchip": "#1558B0",
+      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "DM-MODAL-REJECT",
+      "name": "District Magistrate — Reject modal (build-extra)",
+      "env": "dev",
+      "figmaImg": null,
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/DISTRICT-MAGISTRATE-MODAL-REJECT.png",
+      "figmaUrl": null,
+      "liveUrl": "https://tg-admin-dev.mosje.in/applications",
+      "findings": [],
+      "_role": "District Magistrate",
+      "_refbadge": "build-only",
+      "_refsub": "live build",
+      "_refchip": "#6b7280",
+      "note": "No design frame in the audited section — audited against the design-system visual language; the portal-wide Global findings apply."
+    },
+    {
+      "slug": "CA-USERS",
+      "name": "Central Admin — User Management",
+      "env": "dev",
+      "figmaImg": null,
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CENTRAL-ADMIN-USER-MANAGEMENT.png",
+      "figmaUrl": null,
+      "liveUrl": "https://tg-admin-dev.mosje.in/users",
+      "findings": [],
+      "_role": "Central Admin",
+      "_refbadge": "build-only",
+      "_refsub": "live build",
+      "_refchip": "#6b7280",
+      "note": "No design frame in the audited section — audited against the design-system visual language; the portal-wide Global findings apply."
+    },
+    {
+      "slug": "CA-ROLES",
+      "name": "Central Admin — Role Management",
+      "env": "dev",
+      "figmaImg": null,
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CENTRAL-ADMIN-ROLE-MANAGEMENT.png",
+      "figmaUrl": null,
+      "liveUrl": "https://tg-admin-dev.mosje.in/roles",
+      "findings": [],
+      "_role": "Central Admin",
+      "_refbadge": "build-only",
+      "_refsub": "live build",
+      "_refchip": "#6b7280",
+      "note": "No design frame in the audited section — audited against the design-system visual language; the portal-wide Global findings apply."
+    },
+    {
+      "slug": "CA-TENANTS",
+      "name": "Central Admin — Tenants",
+      "env": "dev",
+      "figmaImg": null,
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CENTRAL-ADMIN-TENANTS.png",
+      "figmaUrl": null,
+      "liveUrl": "https://tg-admin-dev.mosje.in/tenants",
+      "findings": [],
+      "_role": "Central Admin",
+      "_refbadge": "build-only",
+      "_refsub": "live build",
+      "_refchip": "#6b7280",
+      "note": "No design frame in the audited section — audited against the design-system visual language; the portal-wide Global findings apply."
+    },
+    {
+      "slug": "CA-PWPOLICY",
+      "name": "Central Admin — Password Policy",
+      "env": "dev",
+      "figmaImg": null,
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CENTRAL-ADMIN-PASSWORD-POLICY.png",
+      "figmaUrl": null,
+      "liveUrl": "https://tg-admin-dev.mosje.in/password-policy",
+      "findings": [],
+      "_role": "Central Admin",
+      "_refbadge": "build-only",
+      "_refsub": "live build",
+      "_refchip": "#6b7280",
+      "note": "No design frame in the audited section — audited against the design-system visual language; the portal-wide Global findings apply."
     },
     {
       "slug": "PORTAL-PICKER",
