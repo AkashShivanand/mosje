@@ -34,7 +34,7 @@ const ZONES: Zone[] = [
   { prefix: "/portals/pm-ajay",     probeUrl: base(process.env.ZONE_PM_AJAY_URL,     "http://localhost:4124") + "/portals/pm-ajay",            label: "PM-AJAY Portal", cmd: "npm run dev:pm-ajay" },
   { prefix: "/portals/smile-admin", probeUrl: base(process.env.ZONE_SMILE_ADMIN_URL, "http://localhost:4123") + "/portals/smile-admin/login",  label: "SMILE Admin",    cmd: "npm run dev:smile" },
   // scw migrated to a native hub route (apps/hub/src/app/portals/scw) — no zone to proxy.
-  { prefix: "/portals/nmba",        probeUrl: base(process.env.ZONE_NMBA_URL,        "http://localhost:4126") + "/portals/nmba/admin/login",   label: "NMBA Portal",    cmd: "npm run dev:nmba" },
+  // nmba migrated to a native hub route (apps/hub/src/app/portals/nmba) — no zone to proxy.
   { prefix: "/portals/nhapoa",      probeUrl: base(process.env.ZONE_NHAPOA_URL,      "http://localhost:4127") + "/portals/nhapoa/login",       label: "NHAPOA Portal",  cmd: "npm run dev:nhapoa" },
   { prefix: "/portals/tg",          probeUrl: base(process.env.ZONE_TG_URL,          "http://localhost:4128") + "/portals/tg",                 label: "TG Portal",      cmd: "npm run dev:tg" },
 ];

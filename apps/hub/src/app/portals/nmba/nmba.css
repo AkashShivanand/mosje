@@ -1,0 +1,29 @@
+:root {
+  --font-scale: 1;
+}
+
+/* GIGW accessibility — font scaling */
+[data-fontscale="small"]   { --font-scale: 0.92; }
+[data-fontscale="default"] { --font-scale: 1; }
+[data-fontscale="large"]   { --font-scale: 1.12; }
+
+html {
+  font-size: calc(16px * var(--font-scale));
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: "Noto Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* thin scrollbars inside scroll panels */
+.nmba-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+.nmba-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.nmba-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+.nmba-scroll::-webkit-scrollbar-track { background: transparent; }

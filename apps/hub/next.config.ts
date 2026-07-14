@@ -5,7 +5,6 @@ const ZONE_WEBSITE     = process.env.ZONE_WEBSITE_URL     ?? "http://localhost:3
 const ZONE_DS          = process.env.ZONE_DS_URL          ?? "http://localhost:6006";
 const ZONE_PM_AJAY     = process.env.ZONE_PM_AJAY_URL     ?? "http://localhost:4124";
 const ZONE_SMILE_ADMIN = process.env.ZONE_SMILE_ADMIN_URL ?? "http://localhost:4123";
-const ZONE_NMBA        = process.env.ZONE_NMBA_URL        ?? "http://localhost:4126";
 const ZONE_NHAPOA      = process.env.ZONE_NHAPOA_URL      ?? "http://localhost:4127";
 const ZONE_TG          = process.env.ZONE_TG_URL          ?? "http://localhost:4128";
 const ZONE_DOCS        = process.env.ZONE_DOCS_URL        ?? "http://localhost:3002";
@@ -33,13 +32,11 @@ const nextConfig: NextConfig = {
       { source: "/portals/pm-ajay/:path*",       destination: `${ZONE_PM_AJAY}/portals/pm-ajay/:path*` },
       { source: "/portals/smile-admin",          destination: `${ZONE_SMILE_ADMIN}/portals/smile-admin` },
       { source: "/portals/smile-admin/:path*",   destination: `${ZONE_SMILE_ADMIN}/portals/smile-admin/:path*` },
-      { source: "/portals/nmba",                 destination: `${ZONE_NMBA}/portals/nmba` },
-      { source: "/portals/nmba/:path*",          destination: `${ZONE_NMBA}/portals/nmba/:path*` },
       { source: "/portals/nhapoa",               destination: `${ZONE_NHAPOA}/portals/nhapoa` },
       { source: "/portals/nhapoa/:path*",        destination: `${ZONE_NHAPOA}/portals/nhapoa/:path*` },
       { source: "/portals/tg",                   destination: `${ZONE_TG}/portals/tg` },
       { source: "/portals/tg/:path*",            destination: `${ZONE_TG}/portals/tg/:path*` },
-      // eutthan-admin and scw are native routes inside hub — no rewrite needed
+      // eutthan-admin, scw, and nmba are native routes inside hub — no rewrite needed
       // Storybook — proxied through the hub. Always LINK to "/storybook/" (trailing
       // slash) so Storybook's relative asset URLs (./sb-manager/…, ./iframe.html)
       // resolve under /storybook/ and proxy via the :path* rule below. The no-slash
