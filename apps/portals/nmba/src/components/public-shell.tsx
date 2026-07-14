@@ -13,6 +13,7 @@ import {
   ChevronDown,
   Phone,
   LogIn,
+  UserPlus,
 } from "lucide-react";
 import { buttonClasses } from "@mosje/design-system";
 import { cn } from "@/lib/utils";
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutGrid },
   { label: "Activity Snapshot", href: "/activities", icon: Activity },
   { label: "E-Pledge", href: "/epledge", icon: HandHeart },
+  { label: "Nasha Mukti Mitr", href: "/register-mitr", icon: UserPlus },
   { label: "Facilities", href: "/facilities", icon: MapPin },
   { label: "Helpline", href: "/helpline", icon: Phone },
 ];
