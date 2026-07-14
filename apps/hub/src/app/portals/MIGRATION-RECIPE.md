@@ -59,8 +59,13 @@ cd apps/hub
 find src/app/portals/<slug> src/components/<slug> src/lib/<slug> \
   -type f \( -name '*.ts' -o -name '*.tsx' \) 2>/dev/null \
   | xargs grep -noE "[\`\"']/[a-zA-Z][^\`\"'()]*" 2>/dev/null \
-  | grep -vE "/portals/<slug>" | sort -u
+  | grep -vE "[\`\"']/portals/<slug>" | sort -u
 ```
+NOTE the exclusion is `[\`\"']/portals/<slug>` (quote-preceded), NOT a bare
+`/portals/<slug>`: files that live UNDER `src/app/portals/<slug>/` carry that
+substring in their own PATH in grep's `file:line:` prefix, so a bare exclusion
+silently drops EVERY app-dir hit (this bit tg). Requiring the leading quote means
+only already-prefixed matched URLs are excluded, never file paths.
 Also catch a bare root nav entry `href: "/"` (the char-class `[a-zA-Z]` above skips it) —
 if the portal's nav has a "home"/dashboard entry pointing at `/`, prefix it to `/portals/<slug>`.
 The three forms to prefix (all found in scw):
