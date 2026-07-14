@@ -23,19 +23,19 @@ export interface NavItem {
 }
 
 export const ADMIN_NAV: NavItem[] = [
-  { label: "Dashboard", href: "/admin/dashboard", icon: LayoutGrid },
-  { label: "User Management", href: "/admin/user-management", icon: User },
-  { label: "SAGE Applications", href: "/admin/sage-applications", icon: FileText },
-  { label: "Events", href: "/admin/events", icon: Calendar },
-  { label: "Volunteer", href: "/admin/volunteers", icon: Users },
-  { label: "IPSrC Homes", href: "/admin/sage-homes", icon: Building2 },
-  { label: "RVY Assisted Devices", href: "/admin/assisted-devices", icon: Accessibility },
+  { label: "Dashboard", href: "/portals/scw/admin/dashboard", icon: LayoutGrid },
+  { label: "User Management", href: "/portals/scw/admin/user-management", icon: User },
+  { label: "SAGE Applications", href: "/portals/scw/admin/sage-applications", icon: FileText },
+  { label: "Events", href: "/portals/scw/admin/events", icon: Calendar },
+  { label: "Volunteer", href: "/portals/scw/admin/volunteers", icon: Users },
+  { label: "IPSrC Homes", href: "/portals/scw/admin/sage-homes", icon: Building2 },
+  { label: "RVY Assisted Devices", href: "/portals/scw/admin/assisted-devices", icon: Accessibility },
 ];
 
 export const USER_NAV: NavItem[] = [
-  { label: "Dashboard", href: "/", icon: LayoutGrid },
-  { label: "E-Pledge", href: "/epledge", icon: HeartHandshake },
-  { label: "Our Services", href: "/our-services", icon: LifeBuoy },
+  { label: "Dashboard", href: "/portals/scw", icon: LayoutGrid },
+  { label: "E-Pledge", href: "/portals/scw/epledge", icon: HeartHandshake },
+  { label: "Our Services", href: "/portals/scw/our-services", icon: LifeBuoy },
 ];
 
 /** Portal-local Sidebar — wraps DS SidebarNav with SCW-specific nav arrays. */

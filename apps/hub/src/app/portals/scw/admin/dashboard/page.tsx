@@ -22,7 +22,7 @@ function ActionLink({ status, id }: { status: string; id: string }) {
   const approved = status === "Approved";
   return (
     <Link
-      href={`/admin/sage-applications/${id}`}
+      href={`/portals/scw/admin/sage-applications/${id}`}
       className="text-sm font-medium text-navy hover:underline"
     >
       {approved ? "View Details" : "Review"}
@@ -123,7 +123,7 @@ export default function AdminDashboard() {
                 <td className="px-6 py-4 text-ink-muted">{v.date}</td>
                 <td className="px-6 py-4"><StatusPill status={v.status} /></td>
                 <td className="px-6 py-4">
-                  <Link href={`/admin/volunteers/${v.id}`} className="text-sm font-medium text-navy hover:underline">
+                  <Link href={`/portals/scw/admin/volunteers/${v.id}`} className="text-sm font-medium text-navy hover:underline">
                     {v.status === "Approved" ? "View Details" : "Review"}
                   </Link>
                 </td>

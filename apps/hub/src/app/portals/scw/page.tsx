@@ -40,7 +40,7 @@ const CITIZEN_SERVICES: ServiceCard[] = [
     description:
       "Find Old Age Homes, healthcare facilities and geriatric caregivers available in your state and district.",
     actionLabel: "Search Facilities",
-    href: "/our-services",
+    href: "/portals/scw/our-services",
   },
 ];
 
@@ -52,7 +52,7 @@ const PARTNER_SERVICES: ServiceCard[] = [
     description:
       "Offer your time to assist senior citizens in your community — daily errands, digital literacy, or companionship.",
     actionLabel: "Register Profile",
-    href: "/volunteer",
+    href: "/portals/scw/volunteer",
   },
   {
     icon: "science",
@@ -60,7 +60,7 @@ const PARTNER_SERVICES: ServiceCard[] = [
     description:
       "Organisations and innovators can register for the Seniorcare Ageing Growth Engine (SAGE) to submit products and apply for funding.",
     actionLabel: "Apply as Organisation",
-    href: "/sage-registration",
+    href: "/portals/scw/sage-registration",
   },
   {
     icon: "health_and_safety",

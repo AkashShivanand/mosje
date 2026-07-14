@@ -46,7 +46,7 @@ export default function VolunteersPage() {
             </td>
             <td className="px-6 py-4">
               <Link
-                href={`/admin/volunteers/${v.id}`}
+                href={`/portals/scw/admin/volunteers/${v.id}`}
                 className="text-sm font-medium text-navy hover:underline"
               >
                 {v.status === "Approved" ? "View Details" : "Review"}
