@@ -12,6 +12,7 @@ import { LocatorGallery } from "@/components/nmba/options/LocatorGallery";
 import { PledgeSplit, PledgeToggle, PledgeBanner } from "@/components/nmba/options/PledgeOptions";
 import { RegisterSplitHero, RegisterPoints, RegisterMiniForm } from "@/components/nmba/options/RegisterOptions";
 import { CombinedTwinCards, CombinedUnifiedPanel, CombinedPledgeForward } from "@/components/nmba/options/CombinedOptions";
+import { AestheticWatermark, AestheticEdgeVine, AestheticGreenBand, AestheticSeal } from "@/components/nmba/options/AestheticOptions";
 
 interface Variant {
   label: string;
@@ -37,6 +38,13 @@ const COMBINED: Variant[] = [
   { label: "Twin cards", note: "Two equal cards under one shared header", render: () => <CombinedTwinCards /> },
   { label: "Unified panel", note: "One container · shared header · two halves", render: () => <CombinedUnifiedPanel /> },
   { label: "Pledge-forward", note: "Prominent pledge band + volunteer strip", render: () => <CombinedPledgeForward /> },
+];
+
+const AESTHETICS: Variant[] = [
+  { label: "Subtle leaf watermark", note: "Faint logo leaf-vine behind the content", render: () => <AestheticWatermark /> },
+  { label: "Leaf-vine edge accent", note: "Leaf rail down the left edge", render: () => <AestheticEdgeVine /> },
+  { label: "Green brand band", note: "Logo's deep-green + cream palette", render: () => <AestheticGreenBand /> },
+  { label: "Pledge seal + leaf ring", note: "Circular crest badge in the corner", render: () => <AestheticSeal /> },
 ];
 
 const LOCATORS: Variant[] = [
@@ -123,9 +131,10 @@ export default function NmbaOptionsPage() {
       </div>
       <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-4 py-10">
         <Section title="1 · Take the pledge + Nasha Mukti Mitr (combined)" variants={COMBINED} />
-        <Section title="2 · De-addiction centre locator" variants={LOCATORS} />
-        <Section title="3 · Take the pledge (on its own)" variants={PLEDGES} />
-        <Section title="4 · Become a Nasha Mukti Mitr (on its own)" variants={REGISTERS} />
+        <Section title="2 · Combined block — leaf-motif aesthetics" variants={AESTHETICS} />
+        <Section title="3 · De-addiction centre locator" variants={LOCATORS} />
+        <Section title="4 · Take the pledge (on its own)" variants={PLEDGES} />
+        <Section title="5 · Become a Nasha Mukti Mitr (on its own)" variants={REGISTERS} />
       </div>
     </main>
   );
