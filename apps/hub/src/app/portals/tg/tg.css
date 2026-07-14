@@ -1,0 +1,35 @@
+:root {
+  --font-scale: 1;
+
+  /* TG / SAMAVESH surface tokens */
+  --surface: #ffffff;
+  --surface-muted: #f5f7fb;
+  --border: #e2e8f0;
+  --foreground: #0f172a;
+}
+
+/* GIGW accessibility — font scaling hooks (top-bar A- / A / A+) */
+[data-fontscale="small"] { --font-scale: 0.92; }
+[data-fontscale="default"] { --font-scale: 1; }
+[data-fontscale="large"] { --font-scale: 1.12; }
+
+[data-highcontrast="true"] {
+  --surface: #000000;
+  --surface-muted: #000000;
+  --foreground: #ffffff;
+  --border: #ffffff;
+}
+
+html {
+  font-size: calc(16px * var(--font-scale));
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--surface-muted);
+  font-family: "Noto Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}

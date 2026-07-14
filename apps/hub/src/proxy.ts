@@ -36,7 +36,7 @@ const ZONES: Zone[] = [
   // scw migrated to a native hub route (apps/hub/src/app/portals/scw) — no zone to proxy.
   // nmba migrated to a native hub route (apps/hub/src/app/portals/nmba) — no zone to proxy.
   { prefix: "/portals/nhapoa",      probeUrl: base(process.env.ZONE_NHAPOA_URL,      "http://localhost:4127") + "/portals/nhapoa/login",       label: "NHAPOA Portal",  cmd: "npm run dev:nhapoa" },
-  { prefix: "/portals/tg",          probeUrl: base(process.env.ZONE_TG_URL,          "http://localhost:4128") + "/portals/tg",                 label: "TG Portal",      cmd: "npm run dev:tg" },
+  // tg migrated to a native hub route (apps/hub/src/app/portals/tg) — no zone to proxy.
 ];
 
 const PROBE_TTL_MS     = 5_000;

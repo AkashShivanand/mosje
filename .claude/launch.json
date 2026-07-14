@@ -49,13 +49,6 @@
       "runtimeArgs": ["--prefix", "apps/portals/nhapoa", "run", "dev"],
       "port": 4127,
       "autoPort": false
-    },
-    {
-      "name": "tg",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/tg", "run", "dev"],
-      "port": 4128,
-      "autoPort": false
     }
   ]
 }
