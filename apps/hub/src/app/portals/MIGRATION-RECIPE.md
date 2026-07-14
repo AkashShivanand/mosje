@@ -44,19 +44,30 @@ portal already namespaced — grep and correct:
 grep -rn "/<slug>/<slug>/" src && echo "FIX DOUBLED PATHS" || echo OK
 ```
 
-## 3b. Prefix basePath-relative internal links (LEARNED — scw had 21)
+## 3b. Prefix basePath-relative internal links (LEARNED — scw had 25+ across 3 forms)
 The portal ran under `basePath: /portals/<slug>`, which auto-prefixed bare
-absolute links. Native in the hub there is NO basePath, so a bare `href="/login"`
-now points at the hub root, not the portal. Find and fix every internal link /
-redirect that starts with `/` but NOT with `/portals/<slug>`:
+absolute links. Native in the hub there is NO basePath, so a bare `/login` now
+points at the hub root, not the portal. Internal route strings appear in THREE
+forms — the naive `href="/…"` grep MISSES two of them (this exact gap 404'd the
+scw sidebar + admin row-actions on the first pass), so use the broad candidate
+grep below and inspect EVERY hit:
 ```bash
 cd apps/hub
-grep -rnE '(href|push|replace|redirect)\(?["'"'"']/(?!portals/<slug>)' \
-  src/app/portals/<slug> src/components/<slug> src/lib/<slug> 2>/dev/null
+# Every quoted string that starts with "/" + a letter, not already under /portals/<slug>,
+# excluding protocol-relative (//) — covers all three forms at once:
+grep -rnoE "[\`\"']/[a-zA-Z][^\`\"'()]*" \
+  src/app/portals/<slug> src/components/<slug> src/lib/<slug> 2>/dev/null \
+  | grep -vE "/portals/<slug>" | sort -u
 ```
-Prefix each hit with `/portals/<slug>` (e.g. `href="/login"` → `href="/portals/<slug>/login"`).
-Leave external URLs, anchors (`#…`), and asset paths already under `/portals/<slug>/…` alone.
-The controller's browser verify is the backstop, but fix what this grep finds first.
+The three forms to prefix (all found in scw):
+1. **String attr:** `href="/login"` → `href="/portals/<slug>/login"`
+2. **Object literal** (nav arrays, service tiles): `{ href: "/epledge" }` → `{ href: "/portals/<slug>/epledge" }`
+3. **Template literal** (row actions): `` href={`/admin/x/${id}`} `` → `` href={`/portals/<slug>/admin/x/${id}`} ``
+Also check `router.push(...)`, `.replace(...)`, `redirect(...)`, and `<Link to=...>`.
+LEAVE alone: external URLs, anchors (`#…`), `/api/…` calls, and asset paths already
+under `/portals/<slug>/…`. Active-nav highlighting compares `usePathname()` (which
+returns `/portals/<slug>/…`) against these hrefs, so unprefixed hrefs also silently
+break active states — another reason to catch all three forms.
 
 ## 4. Demote the root layout → nested layout
 The moved `apps/hub/src/app/portals/<slug>/layout.tsx` currently renders
