@@ -1,76 +1,79 @@
-import { ArrowRight, Users, RefreshCw } from "lucide-react";
-import { buttonClasses } from "@mosje/design-system";
+import { ArrowRight } from "lucide-react";
 import { PLEDGE_STATS } from "@/content/deaddiction-centres";
 
 // Two front-page pledge channels. Each links to the NMBA portal's e-Pledge with a
 // distinct channel so the (later) backend can route/segment the submissions.
 // Plain <a> — cross-app link that must bypass this site's `/website` basePath.
-const CHANNELS = [
+const PATHS = [
   {
     key: "non-user",
     href: "/portals/nmba/epledge?channel=non-user",
-    icon: Users,
-    title: "I am a Non-User",
-    blurb:
-      "Pledge to stay drug-free and help spread awareness in your family, school, and community.",
-    stat: PLEDGE_STATS.ePledges,
-    statLabel: "e-pledges taken so far",
+    label: "I'm a non-user",
+    blurb: "Stay drug-free and help spread awareness where you live, study and work.",
+    count: PLEDGE_STATS.ePledges,
+    countLabel: "pledges",
   },
   {
     key: "recovered",
     href: "/portals/nmba/epledge?channel=recovered",
-    icon: RefreshCw,
-    title: "I am a Recovered User",
-    blurb:
-      "Pledge to stay on your recovery journey and inspire others to seek help and rebuild their lives.",
-    stat: PLEDGE_STATS.recoveredPledges,
-    statLabel: "recovered users pledged",
+    label: "I'm a recovered user",
+    blurb: "Stay on your recovery journey and inspire others to seek help.",
+    count: PLEDGE_STATS.recoveredPledges,
+    countLabel: "pledges",
   },
 ] as const;
 
 export function DualPledge() {
-  return (
-    <div>
-      <h3 className="text-[22px] font-semibold leading-tight text-gov-blue-dark">
-        Take the Pledge
-      </h3>
-      <p className="mt-1 text-[15px] text-ink-muted">
-        Choose the pledge that applies to you.
-      </p>
+  const total = (
+    PLEDGE_STATS.ePledgesRaw + PLEDGE_STATS.recoveredPledgesRaw
+  ).toLocaleString("en-IN");
 
-      <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
-        {CHANNELS.map((c) => {
-          const Icon = c.icon;
-          return (
-            <a
-              key={c.key}
-              href={c.href}
-              className="group flex h-full flex-col rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition hover:border-gov-blue/40 hover:shadow-md"
-            >
-              <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-md bg-gov-blue/10 text-gov-blue">
-                <Icon className="h-5 w-5" />
-              </span>
-              <span className="mt-4 text-[18px] font-medium text-ink">{c.title}</span>
-              <span className="mt-2 flex-1 text-[15px] leading-relaxed text-ink-muted">
-                {c.blurb}
-              </span>
-              <span className="mt-4 border-t border-gray-100 pt-3 text-[13px] text-ink-muted">
-                <span className="font-semibold text-gov-blue-dark">{c.stat}</span>{" "}
-                {c.statLabel}
-              </span>
-              <span
-                className={buttonClasses("primary", "text", "sm", "mt-3 self-start")}
-                aria-hidden="true"
-              >
-                Take the pledge
-                <span className="ds-btn__icon">
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </span>
-              </span>
-            </a>
-          );
-        })}
+  return (
+    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-gray-100 px-6 py-5 sm:px-8">
+        <h3 className="text-[20px] font-semibold text-ink">Take the pledge</h3>
+        <p className="text-[14px] text-ink-muted">
+          <span className="font-semibold text-gov-blue-dark">{total}</span> Indians have
+          already pledged
+        </p>
       </div>
+
+      <ul className="divide-y divide-gray-100">
+        {PATHS.map((p) => (
+          <li key={p.key}>
+            <a
+              href={p.href}
+              className="group flex items-center gap-5 px-6 py-6 transition-colors hover:bg-gov-blue/[0.04] sm:gap-8 sm:px-8"
+            >
+              {/* momentum number — the hook */}
+              <div className="w-[104px] shrink-0 sm:w-[132px]">
+                <div className="text-[26px] font-bold leading-none tracking-tight text-gov-blue-dark sm:text-[30px]">
+                  {p.count}
+                </div>
+                <div className="mt-1 text-[12px] uppercase tracking-wide text-ink-muted">
+                  {p.countLabel}
+                </div>
+              </div>
+
+              <div className="h-12 w-px shrink-0 bg-gray-200" aria-hidden />
+
+              <div className="min-w-0 flex-1">
+                <div className="text-[17px] font-semibold text-ink">{p.label}</div>
+                <p className="mt-1 text-[14px] leading-relaxed text-ink-muted">{p.blurb}</p>
+              </div>
+
+              <span className="ml-auto hidden shrink-0 items-center gap-1.5 text-[14px] font-semibold text-gov-blue sm:inline-flex">
+                Pledge
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </span>
+              <ArrowRight
+                className="ml-auto h-5 w-5 shrink-0 text-gov-blue transition-transform group-hover:translate-x-1 sm:hidden"
+                aria-hidden
+              />
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
