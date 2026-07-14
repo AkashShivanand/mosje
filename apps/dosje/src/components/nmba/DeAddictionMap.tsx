@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import dynamic from "next/dynamic";
-import { MapPin, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 import { Select } from "@mosje/design-system";
 import { cn } from "@/lib/utils";
 import {
@@ -21,7 +21,7 @@ const CentreMapCanvas = dynamic(
     ssr: false,
     loading: () => (
       <div
-        className="h-[420px] w-full animate-pulse bg-surface-muted md:h-[520px]"
+        className="h-[440px] w-full animate-pulse bg-surface-muted md:h-[540px]"
         aria-hidden
       />
     ),
@@ -56,32 +56,10 @@ export function DeAddictionMap() {
 
   return (
     <div>
-      {/* National footprint — stat band */}
-      <div className="overflow-hidden rounded-xl bg-gradient-to-r from-gov-blue-dark to-gov-blue">
-        <dl className="grid grid-cols-2 divide-x divide-y divide-white/15 sm:grid-cols-3 lg:grid-cols-6 lg:divide-y-0">
-          <div className="px-4 py-5 text-center">
-            <dd className="text-[28px] font-bold leading-none text-white">{TOTAL_CENTRES}</dd>
-            <dt className="mt-2 text-[12px] font-medium uppercase tracking-wide text-white/80">
-              Total Centres
-            </dt>
-          </div>
-          {CENTRE_TYPE_ORDER.map((t) => (
-            <div key={t} className="px-4 py-5 text-center">
-              <dd className="text-[28px] font-bold leading-none text-white">
-                {CENTRE_TYPE_META[t].count}
-              </dd>
-              <dt className="mt-2 text-[12px] font-medium uppercase tracking-wide text-white/80">
-                {t}
-              </dt>
-            </div>
-          ))}
-        </dl>
-      </div>
-
-      {/* Filters */}
-      <div className="mt-6 rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+      {/* Control bar — filters + a legend that doubles as the type counts */}
+      <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
         <div className="grid gap-4 sm:grid-cols-2">
-          <label>
+          <label className="block">
             <span className="mb-1.5 block text-[13px] font-medium text-ink">State</span>
             <Select
               value={state}
@@ -99,7 +77,7 @@ export function DeAddictionMap() {
               ))}
             </Select>
           </label>
-          <label>
+          <label className="block">
             <span className="mb-1.5 block text-[13px] font-medium text-ink">District</span>
             <Select
               value={district}
@@ -117,20 +95,22 @@ export function DeAddictionMap() {
           </label>
         </div>
 
-        {/* Centre-type pill filter */}
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           <button
             type="button"
             onClick={() => setType("")}
             aria-pressed={type === ""}
             className={cn(
-              "rounded-full px-4 py-1.5 text-[14px] font-medium transition-colors",
+              "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors",
               type === ""
-                ? "bg-gov-blue text-white shadow-sm"
+                ? "bg-gov-blue text-white"
                 : "bg-surface-muted text-ink-muted hover:bg-gov-blue/10 hover:text-gov-blue-dark",
             )}
           >
-            All types
+            All centres
+            <span className={cn(type === "" ? "text-white/70" : "text-ink")}>
+              {TOTAL_CENTRES}
+            </span>
           </button>
           {CENTRE_TYPE_ORDER.map((t) => {
             const active = type === t;
@@ -140,19 +120,23 @@ export function DeAddictionMap() {
                 type="button"
                 onClick={() => setType(active ? "" : t)}
                 aria-pressed={active}
+                title={CENTRE_TYPE_META[t].label}
                 className={cn(
-                  "flex items-center gap-2 rounded-full px-4 py-1.5 text-[14px] font-medium transition-colors",
+                  "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors",
                   active
-                    ? "bg-gov-blue text-white shadow-sm"
+                    ? "bg-gov-blue text-white"
                     : "bg-surface-muted text-ink-muted hover:bg-gov-blue/10 hover:text-gov-blue-dark",
                 )}
               >
                 <span
-                  className="h-2.5 w-2.5 rounded-full"
+                  className="h-2 w-2 rounded-full"
                   style={{ background: CENTRE_TYPE_META[t].color }}
                   aria-hidden
                 />
                 {t}
+                <span className={cn(active ? "text-white/70" : "text-ink")}>
+                  {CENTRE_TYPE_META[t].count}
+                </span>
               </button>
             );
           })}
@@ -160,37 +144,36 @@ export function DeAddictionMap() {
       </div>
 
       {/* Map + results */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_360px]">
+      <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_340px]">
         <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
           <CentreMapCanvas centres={filtered} />
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
-            <p className="mb-3 text-[13px] font-medium text-ink-muted">
-              {filtered.length} centre{filtered.length === 1 ? "" : "s"} shown
+          <div className="flex-1 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+            <p className="text-[13px] font-medium text-ink-muted">
+              Showing {filtered.length} of {DEADDICTION_CENTRES.length} listed centres
             </p>
             {filtered.length === 0 ? (
-              <p className="py-4 text-center text-[14px] text-ink-muted">
-                No listed centres for this selection yet. Try a wider filter or call the
+              <p className="py-6 text-center text-[14px] text-ink-muted">
+                No listed centres for this selection yet. Try a wider filter, or call the
                 helpline below.
               </p>
             ) : (
-              <ul className="max-h-[320px] space-y-3 overflow-y-auto pr-1">
+              <ul className="mt-3 max-h-[360px] space-y-4 overflow-y-auto pr-1">
                 {filtered.map((c, i) => (
-                  <li key={`${c.name}-${i}`} className="flex items-start gap-3">
-                    <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md bg-gov-blue/10">
-                      <MapPin
-                        className="h-4 w-4"
-                        style={{ color: CENTRE_TYPE_META[c.type].color }}
-                        aria-hidden
-                      />
-                    </span>
+                  <li
+                    key={`${c.name}-${i}`}
+                    className="flex items-start gap-3 border-l-2 pl-3"
+                    style={{ borderColor: CENTRE_TYPE_META[c.type].color }}
+                  >
                     <span className="min-w-0">
                       <span className="block text-[14px] font-medium leading-snug text-ink">
                         {c.name}
                       </span>
-                      <span className="block text-[13px] text-ink-muted">{c.address}</span>
+                      <span className="mt-0.5 block text-[13px] text-ink-muted">
+                        {c.address}
+                      </span>
                     </span>
                   </li>
                 ))}
@@ -198,21 +181,19 @@ export function DeAddictionMap() {
             )}
           </div>
 
-          {/* Helpline */}
-          <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-            <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-md bg-gov-blue/10 text-gov-blue">
-              <Phone className="h-5 w-5" />
+          {/* Helpline — quiet, single line */}
+          <a
+            href={`tel:${HELPLINE}`}
+            className="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm transition-colors hover:border-gov-blue/40"
+          >
+            <Phone className="h-5 w-5 shrink-0 text-gov-blue" aria-hidden />
+            <span className="text-[14px] text-ink-muted">
+              24×7 Drug De-addiction Helpline
             </span>
-            <div className="min-w-0">
-              <p className="text-[13px] text-ink-muted">Drug De-addiction Helpline</p>
-              <a
-                href={`tel:${HELPLINE}`}
-                className="text-[20px] font-bold leading-tight text-gov-blue-dark hover:underline"
-              >
-                {HELPLINE}
-              </a>
-            </div>
-          </div>
+            <span className="ml-auto text-[18px] font-bold tracking-tight text-gov-blue-dark">
+              {HELPLINE}
+            </span>
+          </a>
         </div>
       </div>
     </div>

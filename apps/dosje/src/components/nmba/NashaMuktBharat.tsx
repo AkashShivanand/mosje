@@ -1,3 +1,4 @@
+import { TOTAL_CENTRES } from "@/content/deaddiction-centres";
 import { DeAddictionMap } from "./DeAddictionMap";
 import { DualPledge } from "./DualPledge";
 import { NashaMuktiMitr } from "./NashaMuktiMitr";
@@ -19,10 +20,14 @@ function SectionHeading({ title, subtitle }: { title: string; subtitle: string }
       <h2 className="text-[32px] font-semibold leading-tight text-gov-blue-dark">
         {title}
       </h2>
-      <p className="mx-auto mt-3 max-w-3xl text-[16px] text-ink-muted">{subtitle}</p>
+      <p className="mx-auto mt-3 max-w-3xl text-[16px] leading-relaxed text-ink-muted">
+        {subtitle}
+      </p>
     </div>
   );
 }
+
+const MAP_SUBTITLE = `${TOTAL_CENTRES} Nasha Mukti Kendras across India. No login required — filter by state, district or centre type.`;
 
 export function NashaMuktBharat({ variant = "full" }: NashaMuktBharatProps) {
   if (variant === "band") {
@@ -32,13 +37,11 @@ export function NashaMuktBharat({ variant = "full" }: NashaMuktBharatProps) {
           <div id="nmba-band-heading">
             <SectionHeading
               title="Nasha Mukt Bharat Abhiyaan"
-              subtitle="Join the national movement for a drug-free India — take the pledge or volunteer as a Nasha Mukti Mitr."
+              subtitle="A national movement towards a drug-free India — take the pledge or volunteer as a Nasha Mukti Mitr."
             />
           </div>
-          <div className="mt-10">
+          <div className="mx-auto mt-10 max-w-4xl space-y-5">
             <DualPledge />
-          </div>
-          <div className="mt-6">
             <NashaMuktiMitr />
           </div>
         </div>
@@ -53,7 +56,7 @@ export function NashaMuktBharat({ variant = "full" }: NashaMuktBharatProps) {
           <div id="nmba-map-heading">
             <SectionHeading
               title="Find a De-addiction Centre near you"
-              subtitle="Locate Nasha Mukti Kendras (De-addiction Centres) across India. No login required — search by state and district."
+              subtitle={MAP_SUBTITLE}
             />
           </div>
           <div className="mt-10">
@@ -71,27 +74,25 @@ export function NashaMuktBharat({ variant = "full" }: NashaMuktBharatProps) {
         <div id="nmba-heading">
           <SectionHeading
             title="Nasha Mukt Bharat Abhiyaan"
-            subtitle="A national movement towards a drug-free India. Take the pledge, volunteer as a Nasha Mukti Mitr, or find a De-addiction Centre near you."
+            subtitle="A national movement towards a drug-free India. Take the pledge, volunteer as a Nasha Mukti Mitr, or locate a De-addiction Centre near you."
           />
         </div>
 
-        <div className="mt-10">
+        <div className="mx-auto mt-10 max-w-4xl space-y-5">
           <DualPledge />
-        </div>
-        <div className="mt-6">
           <NashaMuktiMitr />
         </div>
 
-        <div className="mt-14 border-t border-gray-200 pt-12">
-          <h3 className="text-[24px] font-semibold leading-tight text-gov-blue-dark">
-            Find a De-addiction Centre near you
-          </h3>
-          <p className="mt-2 text-[15px] text-ink-muted">
-            Locate Nasha Mukti Kendras across India — no login required.
-          </p>
-          <div className="mt-8">
-            <DeAddictionMap />
+        <div className="mt-16 border-t border-gray-200 pt-14">
+          <div className="mb-8 text-center">
+            <h3 className="text-[24px] font-semibold leading-tight text-gov-blue-dark">
+              Find a De-addiction Centre near you
+            </h3>
+            <p className="mx-auto mt-2 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
+              {MAP_SUBTITLE}
+            </p>
           </div>
+          <DeAddictionMap />
         </div>
       </div>
     </section>
