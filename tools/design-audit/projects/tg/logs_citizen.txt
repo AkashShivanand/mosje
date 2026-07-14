@@ -1,0 +1,6 @@
+  cap CITIZEN-LOGIN: 39 rows pageH=1000
+SEND_OTP done. OTP-step diag: boxes=6 buttons=['Skip to Main Content', '⇄\nChange', 'Continue with Digilocker\n\nSecured Government Login', 'Change email', 'Verify OTP', 'Resend OTP']
+OTP from fresh Mailinator email: 267068
+LOGGED IN -> https://tg-user-dev.mosje.in/transgender/dashboard  capturing…
+  cap CITIZEN-TRANSGENDER-DASHBOARD: 30 rows pageH=1000
+DONE — captured 1 citizen screens: ['CITIZEN-TRANSGENDER-DASHBOARD']

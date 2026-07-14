@@ -9,6 +9,7 @@
     "./tokens": "./tokens.ts",
     "./tokens.css": "./tokens.css",
     "./components.css": "./components.css",
+    "./icons.css": "./icons.css",
     "./color-mode": "./foundations/color-mode.ts",
     "./cn": "./utils/cn.ts"
   },
@@ -17,6 +18,7 @@
     "tokens.ts",
     "tokens.css",
     "components.css",
+    "icons.css",
     "foundations",
     "utils",
     "components",

@@ -1,0 +1,14 @@
+{
+  "reportFileKey": "LHVPBAQasYOqOK1ZYCiZFG",
+  "tgPageId": "686:25",
+  "reviewRootId": "687:25",
+  "reviewRootNodeUrl": "https://www.figma.com/design/LHVPBAQasYOqOK1ZYCiZFG/?node-id=687-25",
+  "designFileKey": "gH2vQ62cfg4677YKWuOpLc",
+  "rowOrder": [
+    "central-admin-dashboard", "examining-officer-dashboard", "district-magistrate-dashboard",
+    "application-detail", "application-documents", "checker-dashboard",
+    "approve-modal", "correction-modal",
+    "user-management", "role-management", "password-policy", "tenants"
+  ],
+  "note": "Review sheet built. Image hashes for reuse in the pinned report are in img_hashes.json (no re-upload needed). Sync: read each 'row · <slug>' ISSUES text via get_metadata on reviewRootId, diff vs FINDINGS.md / sync_data.py."
+}

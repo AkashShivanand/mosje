@@ -70,13 +70,63 @@ def normalize(png, width):
     subprocess.run(["sips", "--resampleWidth", str(width), png, "--out", png],
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
+def _click_button(pg, label, exact=True):
+    """Click a button by visible text, tolerant of role/CSS variance."""
+    try:
+        pg.get_by_role("button", name=label, exact=exact).first.click()
+        return True
+    except Exception:
+        pass
+    try:
+        pg.click(f"button:has-text(\"{label}\")")
+        return True
+    except Exception:
+        return False
+
 def login(pg, base, auth, user, pw):
+    """Username/password form login."""
     pg.goto(base + auth.get("loginPath", "/login"), wait_until="domcontentloaded", timeout=60000)
     pg.wait_for_timeout(2500)
     pg.fill(auth["userField"], user)
     pg.fill(auth["passField"], pw)
     (pg.query_selector(auth.get("submit", "button[type=submit]")) or pg.query_selector("button")).click()
     pg.wait_for_timeout(4500)
+
+def login_email_otp(pg, base, auth, user, otp):
+    """Email -> Send OTP -> N-digit OTP -> Verify. Optional role tab clicked first.
+    Handles both split single-digit boxes and a single OTP field. Dev OTP is a fixed
+    constant; never brute-forces or requests beyond the configured value."""
+    pg.goto(base + auth.get("loginPath", "/login"), wait_until="domcontentloaded", timeout=60000)
+    pg.wait_for_timeout(3000)
+    tab = auth.get("roleTab")
+    if tab:
+        _click_button(pg, tab, exact=True)
+        pg.wait_for_timeout(800)
+    pg.fill(auth["userField"], user)
+    _click_button(pg, auth.get("sendOtpButton", "Send OTP"), exact=False)
+    pg.wait_for_timeout(4000)
+    boxes = pg.query_selector_all(auth.get("otpInput", "input[maxlength='1'][inputmode='numeric']"))
+    if len(boxes) >= len(otp):
+        for i, ch in enumerate(otp):
+            boxes[i].fill(ch)
+    elif boxes:
+        boxes[0].fill(otp)
+    pg.wait_for_timeout(700)
+    _click_button(pg, auth.get("verifyButton", "Verify OTP"), exact=False)
+    pg.wait_for_timeout(5000)
+
+def do_login(pg, role, auth):
+    """Dispatch to the right login flow by auth.type. Returns False if creds are missing."""
+    if auth.get("type") == "email-otp":
+        otp = role.get("otp") or auth.get("otp")
+        if not (role.get("user") and otp):
+            return False
+        login_email_otp(pg, role["base"], auth, role["user"], otp)
+        return True
+    if not role.get("pass"):
+        return False
+    login(pg, role["base"], auth, role["user"], role["pass"])
+    return True
 
 def discover_routes(pg, cfg):
     hrefs = pg.evaluate("""()=>{const s=new Set();document.querySelectorAll('nav a[href],aside a[href],[class*=sidebar] a[href],[class*=menu] a[href],a[href]').forEach(a=>{const h=a.getAttribute('href');if(h&&h.startsWith('/')&&!h.startsWith('//'))s.add(h.split('?')[0].split('#')[0])});return [...s]}""")
@@ -130,9 +180,8 @@ def run(project, only_role=None):
                                 device_scale_factor=cfg["capture"].get("dpr", 2))
             pg = ctx.new_page()
             if role.get("auth") != "none":
-                if not role.get("pass"):
-                    print(f"[{role['name']}] SKIP — no password (add to secrets.json)", flush=True); ctx.close(); continue
-                login(pg, role["base"], auth, role["user"], role["pass"])
+                if not do_login(pg, role, auth):
+                    print(f"[{role['name']}] SKIP — missing credentials (add user/pass/otp to secrets.json)", flush=True); ctx.close(); continue
                 if auth.get("loginMarker", "/login") in pg.url:
                     print(f"[{role['name']}] LOGIN FAILED -> {pg.url} (rate-limit? retry alone)", flush=True); ctx.close(); continue
                 try: ctx.storage_state(path=os.path.join(paths["auth"], f"{role['name']}.json"))

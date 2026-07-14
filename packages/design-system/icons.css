@@ -20,17 +20,33 @@
  *   GRAD   -50..200    Visual weight tweak without layout shift
  *   opsz   20..48      Optical size — should match icon px size (default 24)
  *
- * ── Self-hosting (government networks, offline kiosks) ────────────────────────
- * Download the woff2 from fonts.google.com/icons and replace @import with:
- *   @font-face {
- *     font-family: "Material Symbols Rounded";
- *     font-style: normal;
- *     font-weight: 100 700;
- *     font-display: block;
- *     src: url("/fonts/MaterialSymbolsRounded.woff2") format("woff2");
- *   }
+ * ── Why an inline @font-face (not @import) ────────────────────────────────────
+ * We declare @font-face directly instead of `@import`-ing Google's css2 helper.
+ * When this file is imported as a CSS module (the documented contract above),
+ * Next.js + Turbopack SILENTLY DROP a leading external `@import` (it must be
+ * hoisted above all other rules once CSS modules are concatenated, and it isn't),
+ * so the class loads but the font never downloads and glyphs render as their raw
+ * ligature text ("arrow_forward"). A plain `@font-face` rule has no such hoisting
+ * constraint, so it survives bundling and loads reliably estate-wide. The src is
+ * pinned to the immutable, versioned gstatic woff2 (one variable font, all axes,
+ * weights 100–700) — the exact asset Google's css2 endpoint serves.
+ *
+ * ── Self-hosting (government networks, offline kiosks, GDPR/no-CDN policies) ───
+ * To remove the third-party (fonts.gstatic.com) dependency, download that woff2
+ * (fonts.google.com/icons or the pinned URL below, ~5.3 MB) into the consuming
+ * app's /public and swap the src for a same-origin path, e.g.
+ *   src: url("/fonts/MaterialSymbolsRounded.woff2") format("woff2");
+ * Keep font-weight/font-display identical. The DS default stays on the CDN so
+ * no multi-MB binary lives in the repo.
  */
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
+@font-face {
+  font-family: "Material Symbols Rounded";
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: block;
+  src: url("https://fonts.gstatic.com/s/materialsymbolsrounded/v358/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190FjzaqkNCeE.woff2")
+    format("woff2");
+}
 
 .material-symbols-rounded {
   font-family: "Material Symbols Rounded", sans-serif;

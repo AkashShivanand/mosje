@@ -1,0 +1,38 @@
+  cap CITIZEN-REGISTER: 42 rows pageH=1000
+registering tgaudit.ch01@mailinator.com mobile 9819275794
+state picked: Chandigarh
+district picked: Chandigarh
+after Continue: {"url": "https://tg-user-dev.mosje.in/auth/sign-in", "h": ["SAMAVESH", "Justice. Equality. Dignity.", "Log In to your account"], "inputs": [{"t": "input", "type": "email", "name": "email", "ph": "Enter Email Id"}, {"t": "input", "type": "tel", "name": "mobile_number", "ph": "Enter Mobile Number"}], "buttons": ["Government of India", "Skip to Main Content", "\u21c4 Change", "Send OTP", "Terms of Us
+LANDED: https://tg-user-dev.mosje.in/auth/sign-in
+  cap CITIZEN-NEW-DASHBOARD: 40 rows pageH=1000
+dashboard dump: {
+  "url": "https://tg-user-dev.mosje.in/auth/sign-in",
+  "h": [
+    "SAMAVESH",
+    "Justice. Equality. Dignity.",
+    "Log In to your account"
+  ],
+  "inputs": [
+    {
+      "t": "input",
+      "type": "email",
+      "name": "email",
+      "ph": "Enter Email Id"
+    },
+    {
+      "t": "input",
+      "type": "tel",
+      "name": "mobile_number",
+      "ph": "Enter Mobile Number"
+    }
+  ],
+  "buttons": [
+    "Government of India",
+    "Skip to Main Content",
+    "\u21c4 Change",
+    "Send OTP",
+    "Terms of Use",
+    "Privacy Policy",
+    "Create Account"
+  ]
+}

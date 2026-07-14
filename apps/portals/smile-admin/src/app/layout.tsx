@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
+import "@mosje/design-system/icons.css";
 import { AppProvider } from "@/store/app-context";
 import { AppSwitcher, ColorModeProvider, UX4GAccessibilityWidget } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";

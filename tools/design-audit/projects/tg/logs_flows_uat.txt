@@ -1,0 +1,43 @@
+[uat/central-admin] logged in
+  cap CENTRAL-ADMIN-DASHBOARD: 126 rows pageH=1960
+  cap CENTRAL-ADMIN-APPLICATION-DETAIL: 39 rows pageH=1635
+  cap CENTRAL-ADMIN-APPLICATION-DOCUMENTS: 48 rows pageH=1363
+[uat/examining-officer] logged in
+  cap EXAMINING-OFFICER-DASHBOARD: 116 rows pageH=1574
+  cap EXAMINING-OFFICER-APPLICATION-DETAIL: 32 rows pageH=1635
+  cap EXAMINING-OFFICER-APPLICATION-DOCUMENTS: 41 rows pageH=1363
+[uat/district-magistrate] logged in
+  cap DISTRICT-MAGISTRATE-DASHBOARD: 111 rows pageH=1592
+  cap DISTRICT-MAGISTRATE-APPLICATION-DETAIL: 30 rows pageH=1615
+  cap DISTRICT-MAGISTRATE-APPLICATION-DOCUMENTS: 45 rows pageH=1553
+
+=== FLOWS REPORT (uat) ===
+[
+  {
+    "env": "uat",
+    "role": "central-admin",
+    "dashboard": true,
+    "detail": true,
+    "documents": true,
+    "actionable": null,
+    "modals": []
+  },
+  {
+    "env": "uat",
+    "role": "examining-officer",
+    "dashboard": true,
+    "detail": true,
+    "documents": true,
+    "actionable": null,
+    "modals": []
+  },
+  {
+    "env": "uat",
+    "role": "district-magistrate",
+    "dashboard": true,
+    "detail": true,
+    "documents": true,
+    "actionable": null,
+    "modals": []
+  }
+]

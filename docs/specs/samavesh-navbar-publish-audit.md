@@ -166,6 +166,32 @@ Finding: the navbar bound to **duplicate external-library copies** of tokens/sty
 - **Structure:** 0 detached instances after all edits; instance-swaps and focus rings intact. ✓
 - **Minor (token hygiene):** 33 unbound text fills remain (BETA badge ×7, avatar initials, a few inside swapped components) — cosmetic tokenisation nit, not a blocker.
 
+### ⑦ Deep external-dependency audit — 100% LOCAL (ship gate PASSED)
+Audited the whole node at **every depth** (`skipInvisibleInstanceChildren = false`):
+- **Remote variables: 0 · remote styles: 0 · remote components: 0.** (Was 69 / 5 / 15 at the navbar level, plus deeper refs inside shared components.)
+- **Sources fixed** so the fix holds for all consumers, not just navbar overrides:
+  - `AccessibilityBar` — 3 Roboto "English" labels → Noto Sans (it had no remote tokens).
+  - `Search` — remote `gov.in/sys/light/on-surface-variant` paint style + remote `Icon button`/`more_vert` components removed by swapping the trailing options button to local (the visible trailing icons are the local **AI Icon** + **mic**; the off-canvas gov.in options button is hidden).
+  - Trailing pieces: remote `search` icon → local `search`; `Primary/50` / `Neutral/50` on the accessibility text-size toggles → local; the **navbar/logo radial-gradient Divider** (stops bound to remote `Primary/Source`) → local `Primary/Source` across all 3 device variants.
+- **Fonts:** Noto Sans + Material Symbols Rounded only (deep).
+
+### ⑧ Variant / state completeness — COMPLETE
+| Component | Axes | Variants |
+|---|---|---|
+| `navbar/sitebar` | Device × State | Desktop {Default, on Scroll} · Tablet {Default, on Scroll} · Mobile {Default, on Scroll, Drawer Open} |
+| `navbar/appbar` | Device × State | Desktop/Tablet/Mobile × {Default, on Scroll} |
+| `navbar/mega-menu` | Device | Desktop / Tablet / Mobile |
+| `mega-menu-item` | State + Org-logo swap | Default / Hovered / Focused × 16 orgs |
+| `nav-item` | Type × State × Active | 12 (Default/Dropdown × Default/Hover/Focus × current T/F) |
+| `nav-dropdown` | Device | Desktop / Tablet / Mobile |
+| `dropdown-item` | State | Default / Hovered / Focused |
+| `navbar/logo` | Device | Desktop / Tablet / Mobile |
+
+Every interactive part carries Default/Hover/Focus; nav-item adds the active/current state; headers carry on-scroll (condensed, accessibility bar retained) and the mobile drawer. Disabled is intentionally omitted for nav items (documented).
+
+### ✅ SHIP VERDICT
+The `Navbar` is **ready to ship** on structure, tokens, states, a11y, and standards. Remaining are **human-only publish steps** (plugin can't do them): verify on one consumer → **Publish library** → flip Hero badge `BETA → Ready`. Optional content follow-up: fill the 5 emblem-placeholder `org-logo` variants (NCSK, DAF, JRF, DWBDNC, SCW) with real artwork.
+
 ### ⑤ Icon standard — documented
 Updated `packages/design-system/design.md` §Icon to the **text-glyph** standard (Material Symbols Rounded, weight 300, size 24, token colour), the hover-reveal no-layout-shift pattern, and org-logo reuse. (Was incorrectly "Material Symbols Outlined".)
 

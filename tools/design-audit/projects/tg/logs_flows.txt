@@ -1,0 +1,34 @@
+[central-admin] logged in
+  cap CENTRAL-ADMIN-APPLICATION-DETAIL: 41 rows pageH=1655
+  cap CENTRAL-ADMIN-APPLICATION-DOCUMENTS: 56 rows pageH=1573
+[examining-officer] logged in
+  cap EXAMINING-OFFICER-APPLICATION-DETAIL: 32 rows pageH=1655
+  cap EXAMINING-OFFICER-APPLICATION-DOCUMENTS: 47 rows pageH=1573
+[district-magistrate] logged in
+  cap DISTRICT-MAGISTRATE-APPLICATION-DETAIL: 30 rows pageH=1615
+  cap DISTRICT-MAGISTRATE-APPLICATION-DOCUMENTS: 45 rows pageH=1553
+
+=== FLOWS REPORT ===
+[
+  {
+    "role": "central-admin",
+    "detail": true,
+    "documents": true,
+    "actionable": null,
+    "modals": []
+  },
+  {
+    "role": "examining-officer",
+    "detail": true,
+    "documents": true,
+    "actionable": null,
+    "modals": []
+  },
+  {
+    "role": "district-magistrate",
+    "detail": true,
+    "documents": true,
+    "actionable": null,
+    "modals": []
+  }
+]

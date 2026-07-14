@@ -1,0 +1,84 @@
+[
+  {
+    "slug": "CITIZEN-SIGN-IN",
+    "name": "Citizen · Sign In",
+    "figmaImg": "captures/figma/design-CITIZEN-LOGIN.png",
+    "liveImg": "captures/live/CITIZEN-LOGIN.png",
+    "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9379-115794",
+    "liveUrl": "https://tg-user-dev.mosje.in/auth/sign-in",
+    "note": "Design intent = SMILE-Transgender unified login (SMILE-Transgender | Citizen, node 9379:115794). Build = tg-user-dev citizen portal. Findings are dev-fixable fidelity gaps against that design frame.",
+    "findings": [
+      {
+        "num": 1, "id": "TG-CITIZENSIGNIN-001",
+        "element": "Role-tab switcher removed",
+        "section": "sign-in-form", "axis": "Components & States", "severity": "Major",
+        "check": "👤 human",
+        "figma": "The login card leads with a three-way role switcher — Citizen · Admin · Garima Greh — with Citizen active.",
+        "live": "The citizen build renders no role tabs; the card opens straight into the 'Log In to your account' heading.",
+        "fix": "Restore the Citizen / Admin / Garima Greh role-tab switcher at the top of the login card, per the design frame.",
+        "_fpct": [80, 25], "_lpct": [80, 24]
+      },
+      {
+        "num": 2, "id": "TG-CITIZENSIGNIN-002",
+        "element": "Extra Mobile Number field",
+        "section": "sign-in-form", "axis": "Components & States", "severity": "Major",
+        "check": "👤 human",
+        "figma": "Design offers a single Email field under 'or sign in with credentials', then a Send OTP button.",
+        "live": "Build inserts a second 'Mobile Number' field (with its own 'or' divider) below the Email Id field — a field absent from the design.",
+        "fix": "Align to the design's single-field pattern, or update the design frame if the Mobile Number entry is a deliberate addition.",
+        "_fpct": [80, 50], "_lpct": [80, 60]
+      },
+      {
+        "num": 3, "id": "TG-CITIZENSIGNIN-003",
+        "element": "Heading casing",
+        "section": "sign-in-form", "axis": "Typography", "severity": "Minor",
+        "check": "👤 human",
+        "figma": "Heading reads 'Log in to your account' (sentence case).",
+        "live": "Build renders 'Log In to your account' — 'In' is capitalised.",
+        "fix": "Match the design's sentence-case heading: 'Log in to your account'.",
+        "_fpct": [72, 25], "_lpct": [72, 24]
+      }
+    ]
+  },
+  {
+    "slug": "ADMIN-LOGIN",
+    "name": "Admin · Log In",
+    "figmaImg": "captures/figma/design-ADMIN-LOGIN.png",
+    "liveImg": "captures/live/ADMIN-LOGIN.png",
+    "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9387-138143",
+    "liveUrl": "https://tg-admin-dev.mosje.in/login",
+    "note": "Design intent = SMILE-Transgender unified login, Admin tab (node 9387:138143). Build = tg-admin-dev admin portal. Role tabs (Citizen/Admin/Garima Greh) are present in this build, unlike the citizen portal.",
+    "findings": [
+      {
+        "num": 1, "id": "TG-ADMINLOGIN-001",
+        "element": "Extra Mobile Number field",
+        "section": "login-form", "axis": "Components & States", "severity": "Major",
+        "check": "👤 human",
+        "figma": "Design offers a single Email field, then a Send OTP button.",
+        "live": "Build adds a second 'Mobile Number' field (with an 'or' divider) below Email — a field absent from the design.",
+        "fix": "Align to the design's single Email-field pattern, or update the design frame if Mobile Number entry is a deliberate addition.",
+        "_fpct": [80, 45], "_lpct": [80, 53]
+      },
+      {
+        "num": 2, "id": "TG-ADMINLOGIN-002",
+        "element": "Heading casing",
+        "section": "login-form", "axis": "Typography", "severity": "Minor",
+        "check": "👤 human",
+        "figma": "Heading reads 'Log in to your account' (sentence case).",
+        "live": "Build renders 'Log In to your account' — 'In' is capitalised.",
+        "fix": "Match the design's sentence-case heading: 'Log in to your account'.",
+        "_fpct": [72, 26], "_lpct": [72, 30]
+      }
+    ]
+  },
+  {
+    "slug": "PORTAL-PICKER",
+    "name": "All roles · Portal Picker (Change)",
+    "figmaImg": "captures/figma/design-LOGIN-PORTAL-PICKER.png",
+    "liveImg": "captures/live/CITIZEN-LOGIN-CHANGE.png",
+    "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=8103-39372",
+    "liveUrl": "https://tg-user-dev.mosje.in/auth/sign-in",
+    "note": "The '⇄ Change' button in the login footer opens this portal chooser. Verified faithful to the design (same 'Choose a portal to login' list + layout) — shown as a parity reference, no fidelity defects.",
+    "findings": []
+  }
+]

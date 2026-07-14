@@ -18,6 +18,8 @@
     "@mosje/tokens": "file:../../../packages/tokens",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.17.0",
     "next": "^15.5.19",
@@ -27,6 +29,7 @@
     "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4",
     "@types/leaflet": "^1.9.14",
     "@types/node": "^22",
     "@types/react": "^19",
@@ -34,8 +37,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
     "postcss": "^8",
-    "typescript": "^5",
     "tailwindcss": "^4",
-    "@tailwindcss/postcss": "^4"
+    "typescript": "^5"
   }
 }

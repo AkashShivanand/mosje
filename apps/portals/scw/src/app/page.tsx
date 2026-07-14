@@ -1,84 +1,113 @@
 import Link from "next/link";
-import {
-  Accessibility,
-  ArrowRight,
-  FileText,
-  HeartHandshake,
-  Phone,
-  Search,
-} from "lucide-react";
+import { Icon } from "@mosje/design-system";
 import { UserShell } from "@/components/user-shell";
-import { Button, Card } from "@/components/ui";
+import { Button, Card, SectionTitle } from "@/components/ui";
 
 type ServiceCard = {
-  icon: typeof HeartHandshake;
+  /** Material Symbols Rounded glyph name (snake_case). */
+  icon: string;
   title: string;
   description: string;
   actionLabel: string;
   href: string;
+  /** Newly launched schemes get a subtle "New" flag. */
+  isNew?: boolean;
 };
 
-const PRIMARY_SERVICES: ServiceCard[] = [
+/* Section 1 — the senior citizen's own tools: their app, their entitlement, their directory. */
+const CITIZEN_SERVICES: ServiceCard[] = [
   {
-    icon: HeartHandshake,
+    icon: "support_agent",
+    title: "JEEVAN",
+    description:
+      "Joint Elderly Empowerment & Virtual Assistance Network — a single-window mobile app giving senior citizens easy access to help, services and support.",
+    actionLabel: "Download the App",
+    href: "#",
+    isNew: true,
+  },
+  {
+    icon: "assist_walker",
+    title: "ARJUN",
+    description:
+      "Apply for free assistive devices under the Rashtriya Vayoshri Yojana (RVY) for eligible senior citizens.",
+    actionLabel: "Apply for Devices",
+    href: "#",
+    isNew: true,
+  },
+  {
+    icon: "apartment",
+    title: "Browse Service Directory",
+    description:
+      "Find Old Age Homes, healthcare facilities and geriatric caregivers available in your state and district.",
+    actionLabel: "Search Facilities",
+    href: "/our-services",
+  },
+];
+
+/* Section 2 — ways to contribute, partner, or run the programme. */
+const PARTNER_SERVICES: ServiceCard[] = [
+  {
+    icon: "volunteer_activism",
     title: "Join as a Volunteer",
     description:
-      "Offer your time to assist senior citizens in your community. Help with daily errands, technology literacy, or provide emotional support.",
+      "Offer your time to assist senior citizens in your community — daily errands, digital literacy, or companionship.",
     actionLabel: "Register Profile",
     href: "/volunteer",
   },
   {
-    icon: FileText,
+    icon: "science",
     title: "SAGE Registration",
     description:
-      "Are you an organization or innovator? Register for the Seniorcare Ageing Growth Engine (SAGE) to submit your products, apply for funding.",
+      "Organisations and innovators can register for the Seniorcare Ageing Growth Engine (SAGE) to submit products and apply for funding.",
     actionLabel: "Apply as Organisation",
     href: "/sage-registration",
   },
-];
-
-const SECONDARY_SERVICES: ServiceCard[] = [
   {
-    icon: Search,
-    title: "Browse Service Directory",
+    icon: "health_and_safety",
+    title: "SHATAYU",
     description:
-      "Find Old Age Homes, Healthcare Facilities and Centers, Caregiver's available in your specific state. View Centre details.",
-    actionLabel: "Search Facilities",
-    href: "/our-services",
-  },
-  {
-    icon: Accessibility,
-    title: "Free Assisted Living Devices",
-    description:
-      "Apply for assisted living devices for eligible senior citizens offering from age-related disabilities.",
-    actionLabel: "View Scheme Details",
+      "Senior Holistic Care Assistance & Training For Your Utility — a national dashboard to track, certify and deploy trained geriatric caregivers.",
+    actionLabel: "View Dashboard",
     href: "#",
+    isNew: true,
   },
 ];
 
-function ServiceTile({ icon: Icon, title, description, actionLabel, href }: ServiceCard) {
+function ServiceTile({ icon, title, description, actionLabel, href, isNew }: ServiceCard) {
   return (
-    <Card className="flex flex-col p-6">
-      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brandwash text-navy">
-        <Icon className="h-6 w-6" />
+    <Link
+      href={href}
+      className="group flex flex-col rounded-2xl border border-line bg-white p-6 shadow-card transition-all hover:-translate-y-0.5 hover:border-navy/20 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-navy/40"
+    >
+      <div className="mb-4 flex items-start justify-between">
+        <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brandwash text-navy">
+          <Icon name={icon} size={24} aria-hidden />
+        </span>
+        {isNew && (
+          <span className="rounded-full bg-saffron-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-saffron-600">
+            New
+          </span>
+        )}
       </div>
       <h3 className="text-lg font-bold text-ink">{title}</h3>
       <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-muted">{description}</p>
-      <Link
-        href={href}
-        className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-navy hover:underline"
-      >
+      <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-navy">
         {actionLabel}
-        <ArrowRight className="h-4 w-4" />
-      </Link>
-    </Card>
+        <Icon
+          name="arrow_forward"
+          size={18}
+          className="transition-transform group-hover:translate-x-0.5"
+          aria-hidden
+        />
+      </span>
+    </Link>
   );
 }
 
 export default function HomePage() {
   return (
     <UserShell>
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Hero band */}
         <div className="scw-hero relative overflow-hidden rounded-2xl p-8 text-white sm:p-10">
           <div
@@ -98,36 +127,49 @@ export default function HomePage() {
               className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-navy shadow-sm transition-colors hover:bg-white/90"
             >
               Take the Pledge
-              <ArrowRight className="h-4 w-4" />
+              <Icon name="arrow_forward" size={18} aria-hidden />
             </Link>
           </div>
         </div>
 
-        {/* Volunteer + SAGE */}
-        <div className="grid gap-6 md:grid-cols-2">
-          {PRIMARY_SERVICES.map((s) => (
-            <ServiceTile key={s.title} {...s} />
-          ))}
-        </div>
+        {/* Emergency helpline — elevated so it is unmissable for a vulnerable audience */}
+        <Card className="flex flex-col items-start gap-4 border-saffron/30 bg-saffron-50 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-4">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-saffron-600 shadow-sm">
+              <Icon name="support" size={24} aria-hidden />
+            </span>
+            <div>
+              <h3 className="text-base font-bold text-ink">Need immediate help?</h3>
+              <p className="mt-1 text-sm text-ink-muted">
+                The National Helpline offers guidance and field intervention, 7 days a week.
+              </p>
+            </div>
+          </div>
+          <Button variant="saffron" className="w-full shrink-0 sm:w-auto">
+            <Icon name="call" size={18} aria-hidden />
+            Call Toll-Free 14567
+          </Button>
+        </Card>
 
-        {/* Directory + Devices + Need Help */}
-        <div className="grid gap-6 md:grid-cols-3">
-          {SECONDARY_SERVICES.map((s) => (
-            <ServiceTile key={s.title} {...s} />
-          ))}
+        {/* Section 1 — Services for Senior Citizens */}
+        <section>
+          <SectionTitle>Services for Senior Citizens</SectionTitle>
+          <div className="grid gap-6 md:grid-cols-3">
+            {CITIZEN_SERVICES.map((s) => (
+              <ServiceTile key={s.title} {...s} />
+            ))}
+          </div>
+        </section>
 
-          <Card className="flex flex-col border-saffron/30 bg-saffron-50 p-6">
-            <h3 className="text-lg font-bold text-ink">Need Immediate Help?</h3>
-            <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-muted">
-              The National Helpline provides guidance and fast intervention! 1492 is your helpline
-              for senior citizens needing immediate assistance.
-            </p>
-            <Button variant="saffron" className="mt-4 w-full">
-              <Phone className="h-4 w-4" />
-              Call toll-free 14567
-            </Button>
-          </Card>
-        </div>
+        {/* Section 2 — Get Involved & Partner */}
+        <section>
+          <SectionTitle>Get Involved &amp; Partner</SectionTitle>
+          <div className="grid gap-6 md:grid-cols-3">
+            {PARTNER_SERVICES.map((s) => (
+              <ServiceTile key={s.title} {...s} />
+            ))}
+          </div>
+        </section>
       </div>
     </UserShell>
   );

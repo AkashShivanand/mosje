@@ -1,0 +1,92 @@
+"use client";
+
+import * as React from "react";
+import Link from "next/link";
+import { Download, IdCard, CheckCircle2, RefreshCw } from "lucide-react";
+import { Card, Button, EmptyState } from "@/components/ui";
+import { useTg } from "@/lib/store/store";
+import { DEMO_CITIZEN } from "@/lib/store/seed";
+
+export default function CertificatePage() {
+  const { state, hydrated } = useTg();
+  if (!hydrated) return null;
+
+  const mine = state.applications.filter((a) => a.applicant.email === DEMO_CITIZEN.email);
+  const cert = mine.find((a) => a.stage === "APPROVED_SIGNED");
+
+  if (!cert) {
+    return (
+      <EmptyState
+        title="No certificate issued yet"
+        hint="Once your application is approved and signed, your certificate and ID card appear here."
+      />
+    );
+  }
+
+  const a = cert.applicant;
+
+  return (
+    <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+      <div className="space-y-6">
+        <Card className="p-6">
+          <div className="flex items-center gap-3">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-approve-bg text-approve-fg">
+              <CheckCircle2 className="h-6 w-6" />
+            </span>
+            <div>
+              <h1 className="text-xl font-bold text-ink">Application Approved</h1>
+              <p className="text-sm text-ink-muted">You are officially recognized.</p>
+            </div>
+          </div>
+          <p className="mt-4 text-sm text-ink-muted">
+            Your Transgender Certificate and Identity Card have been issued by the District Magistrate
+            under the Transgender Persons (Protection of Rights) Act, 2019.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Button><Download className="h-4 w-4" /> Download Certificate</Button>
+            <Button variant="outline"><IdCard className="h-4 w-4" /> Download ID Card</Button>
+          </div>
+        </Card>
+
+        <Card className="p-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-semibold text-ink">Gender Revision Request</h2>
+            <Link href="/citizen/apply" className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy hover:underline">
+              <RefreshCw className="h-4 w-4" /> Request Revised Certificate
+            </Link>
+          </div>
+          <p className="mt-2 text-sm text-ink-muted">
+            Applied for a revised certificate after medical intervention? Start a Revised Certificate
+            application to update your details.
+          </p>
+        </Card>
+      </div>
+
+      {/* Certificate card */}
+      <Card className="h-fit overflow-hidden">
+        <div className="bg-navy px-5 py-4 text-center text-white">
+          <img src="/portals/tg/brand/national-emblem-white.svg" alt="" className="mx-auto h-10 w-auto" />
+          <div className="mt-2 text-xs text-white/80">Government of India</div>
+          <div className="text-sm font-semibold">Ministry of Social Justice &amp; Empowerment</div>
+        </div>
+        <div className="space-y-3 p-5">
+          <div className="flex items-center gap-3">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-navy/10 text-lg font-bold text-navy">
+              {a.chosenName.slice(0, 2).toUpperCase()}
+            </span>
+            <div>
+              <div className="text-lg font-bold text-ink">{a.chosenName}</div>
+              <div className="text-xs text-ink-muted">Transgender Identity Card</div>
+            </div>
+          </div>
+          <dl className="space-y-1.5 text-sm">
+            <div className="flex justify-between"><dt className="text-ink-hint">DOB</dt><dd className="font-medium text-ink">{a.dob}</dd></div>
+            <div className="flex justify-between"><dt className="text-ink-hint">Gender</dt><dd className="font-medium text-ink">{a.genderRequested}</dd></div>
+            <div className="flex justify-between"><dt className="text-ink-hint">Certificate No.</dt><dd className="font-mono font-medium text-ink">{cert.certificateNo}</dd></div>
+            <div className="flex justify-between"><dt className="text-ink-hint">Validity</dt><dd className="font-medium text-approve-fg">Lifetime</dd></div>
+          </dl>
+        </div>
+      </Card>
+    </div>
+  );
+}
