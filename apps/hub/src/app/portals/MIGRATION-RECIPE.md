@@ -54,11 +54,15 @@ grep below and inspect EVERY hit:
 ```bash
 cd apps/hub
 # Every quoted string that starts with "/" + a letter, not already under /portals/<slug>,
-# excluding protocol-relative (//) — covers all three forms at once:
-grep -rnoE "[\`\"']/[a-zA-Z][^\`\"'()]*" \
-  src/app/portals/<slug> src/components/<slug> src/lib/<slug> 2>/dev/null \
+# excluding protocol-relative (//) — covers all three forms at once.
+# Use find|xargs (a multi-dir `grep -r` was observed to silently skip src/app on nmba):
+find src/app/portals/<slug> src/components/<slug> src/lib/<slug> \
+  -type f \( -name '*.ts' -o -name '*.tsx' \) 2>/dev/null \
+  | xargs grep -noE "[\`\"']/[a-zA-Z][^\`\"'()]*" 2>/dev/null \
   | grep -vE "/portals/<slug>" | sort -u
 ```
+Also catch a bare root nav entry `href: "/"` (the char-class `[a-zA-Z]` above skips it) —
+if the portal's nav has a "home"/dashboard entry pointing at `/`, prefix it to `/portals/<slug>`.
 The three forms to prefix (all found in scw):
 1. **String attr:** `href="/login"` → `href="/portals/<slug>/login"`
 2. **Object literal** (nav arrays, service tiles): `{ href: "/epledge" }` → `{ href: "/portals/<slug>/epledge" }`
@@ -136,6 +140,17 @@ Then remove ALL FOUR registrations (missing any one breaks the mount or leaves d
 
 The `DEFAULT_APPS` registry (`packages/design-system/.../app-switcher-utils.ts`) needs NO
 change — native mounts keep the same `/portals/<slug>` path, so the AppSwitcher/explorer entry stays valid.
+
+## 7b. Expect stricter typecheck (LEARNED — nmba surfaced 200 errors)
+The hub's `tsconfig.json` is STRICTER than the portals' were (notably
+`noUncheckedIndexedAccess: true`). Compiling a portal under the hub surfaces
+pre-existing latent type errors (array/index access possibly-undefined). Fix them
+with minimal null-safety guards / type-only widening — NO behavior change. This is
+expected on every portal; budget for it. `npm --prefix apps/hub run typecheck` is
+the gate and must reach exit 0. Also expect the `--max-warnings 0` pre-commit lint
+gate to flag pre-existing unescaped JSX entities and `<img>` usages — fix properly
+(escape entities; move static images to `next/image` or scope a justified disable
+for dynamic `data:`/`blob:` srcs), never `--no-verify`.
 
 ## 8. Verify
 `npm run dev`, open `http://localhost:3000/portals/<slug>`, confirm 200 +
