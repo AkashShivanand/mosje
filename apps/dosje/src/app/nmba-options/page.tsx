@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { MousePointerClick } from "lucide-react";
 import { DeAddictionMap } from "@/components/nmba/DeAddictionMap";
 import { DualPledge } from "@/components/nmba/DualPledge";
 import { NashaMuktiMitr } from "@/components/nmba/NashaMuktiMitr";
@@ -10,12 +11,33 @@ import { LocatorAccordion } from "@/components/nmba/options/LocatorAccordion";
 import { LocatorGallery } from "@/components/nmba/options/LocatorGallery";
 import { PledgeSplit, PledgeToggle, PledgeBanner } from "@/components/nmba/options/PledgeOptions";
 import { RegisterSplitHero, RegisterPoints, RegisterMiniForm } from "@/components/nmba/options/RegisterOptions";
+import { CombinedTwinCards, CombinedUnifiedPanel, CombinedPledgeForward } from "@/components/nmba/options/CombinedOptions";
 
 interface Variant {
   label: string;
   note: string;
   render: () => React.ReactNode;
 }
+
+// Map a link's href to a plain-English destination for the behaviour readout.
+function describeHref(href: string): string {
+  if (href.includes("/epledge")) {
+    if (href.includes("channel=non-user")) return "→ opens the NMBA e-Pledge (Non-user channel)";
+    if (href.includes("channel=recovered")) return "→ opens the NMBA e-Pledge (Recovered-user channel)";
+    return "→ opens the NMBA e-Pledge";
+  }
+  if (href.includes("/register-mitr")) return "→ opens the Nasha Mukti Mitr registration form (NMBA portal)";
+  if (href.includes("/de-addiction-centres")) return "→ opens the full De-addiction Centre locator page";
+  if (href.includes("google.com/maps")) return "→ opens Google Maps directions to the centre";
+  if (href.startsWith("tel:")) return `→ dials the helpline (${href.replace("tel:", "")})`;
+  return `→ ${href}`;
+}
+
+const COMBINED: Variant[] = [
+  { label: "Twin cards", note: "Two equal cards under one shared header", render: () => <CombinedTwinCards /> },
+  { label: "Unified panel", note: "One container · shared header · two halves", render: () => <CombinedUnifiedPanel /> },
+  { label: "Pledge-forward", note: "Prominent pledge band + volunteer strip", render: () => <CombinedPledgeForward /> },
+];
 
 const LOCATORS: Variant[] = [
   { label: "Split-view (current)", note: "Cards left · sticky map right · use-my-location", render: () => <DeAddictionMap /> },
@@ -41,7 +63,18 @@ const REGISTERS: Variant[] = [
 
 function Section({ title, variants }: { title: string; variants: Variant[] }) {
   const [i, setI] = React.useState(0);
+  const [action, setAction] = React.useState<{ text: string; href: string } | null>(null);
   const active = variants[i]!;
+
+  // Intercept link clicks so reviewing stays on this page; report the destination.
+  const onCapture = (e: React.MouseEvent) => {
+    const a = (e.target as HTMLElement).closest("a");
+    if (a && a.getAttribute("href")) {
+      e.preventDefault();
+      setAction({ text: (a.textContent || "").trim().replace(/\s+/g, " "), href: a.getAttribute("href")! });
+    }
+  };
+
   return (
     <section className="border-t border-gray-200 pt-8">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -50,13 +83,27 @@ function Section({ title, variants }: { title: string; variants: Variant[] }) {
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
         {variants.map((v, idx) => (
-          <button key={v.label} type="button" onClick={() => setI(idx)} aria-pressed={i === idx}
+          <button key={v.label} type="button" onClick={() => { setI(idx); setAction(null); }} aria-pressed={i === idx}
             className={`rounded-lg px-3.5 py-1.5 text-[13px] font-semibold transition-colors ${i === idx ? "bg-gov-blue text-white" : "bg-surface-muted text-ink-muted hover:bg-gov-blue/10 hover:text-gov-blue-dark"}`}>
             {v.label}
           </button>
         ))}
       </div>
-      <div className="mt-6">{active.render()}</div>
+
+      {/* Behaviour readout */}
+      <div className="mt-4 flex items-center gap-2 rounded-lg border border-dashed border-gray-300 bg-surface-muted/40 px-3.5 py-2 text-[12px]">
+        <MousePointerClick className="h-3.5 w-3.5 shrink-0 text-gov-blue" aria-hidden />
+        {action ? (
+          <span className="text-ink">
+            Clicked <span className="font-semibold">“{action.text}”</span>{" "}
+            <span className="text-ink-muted">{describeHref(action.href)}</span>
+          </span>
+        ) : (
+          <span className="text-ink-muted">Hover to see states · click any button/link to preview where it goes (navigation is paused here so you can keep reviewing).</span>
+        )}
+      </div>
+
+      <div className="mt-5" onClickCapture={onCapture}>{active.render()}</div>
     </section>
   );
 }
@@ -68,13 +115,17 @@ export default function NmbaOptionsPage() {
         <div className="mx-auto max-w-[1280px] px-4 py-6">
           <p className="text-[12px] font-semibold uppercase tracking-wide text-gov-blue">Design options · internal review</p>
           <h1 className="mt-1 text-[26px] font-semibold text-gov-blue-dark">NMBA widget options</h1>
-          <p className="mt-1 text-[14px] text-ink-muted">Flip between designs for each widget. Nothing here is wired to the live homepage — pick your favourites and I&rsquo;ll set them.</p>
+          <p className="mt-1 max-w-2xl text-[14px] text-ink-muted">
+            Flip between designs for each widget and interact with them — hover for states, click to preview each
+            action&rsquo;s destination. Nothing here is wired to the live homepage; tell me your final picks and I&rsquo;ll set them.
+          </p>
         </div>
       </div>
       <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-4 py-10">
-        <Section title="1 · De-addiction centre locator" variants={LOCATORS} />
-        <Section title="2 · Take the pledge" variants={PLEDGES} />
-        <Section title="3 · Become a Nasha Mukti Mitr" variants={REGISTERS} />
+        <Section title="1 · Take the pledge + Nasha Mukti Mitr (combined)" variants={COMBINED} />
+        <Section title="2 · De-addiction centre locator" variants={LOCATORS} />
+        <Section title="3 · Take the pledge (on its own)" variants={PLEDGES} />
+        <Section title="4 · Become a Nasha Mukti Mitr (on its own)" variants={REGISTERS} />
       </div>
     </main>
   );
