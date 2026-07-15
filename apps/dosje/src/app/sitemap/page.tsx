@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ContentPage } from "@/components/templates/ContentPage";
 
 export const metadata: Metadata = {
@@ -95,7 +96,7 @@ export default function SitemapPage() {
           <ul>
             {section.links.map((link) => (
               <li key={link.href}>
-                <a href={link.href}>{link.label}</a>
+                <Link href={link.href}>{link.label}</Link>
               </li>
             ))}
           </ul>

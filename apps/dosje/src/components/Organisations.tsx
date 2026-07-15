@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Card } from "@mosje/design-system";
 
@@ -88,7 +89,7 @@ export function Organisations() {
         <ul className="mt-10 grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
           {organisations.map((org) => (
             <li key={org.abbr}>
-              <a href={org.href} className="group block h-full">
+              <Link href={org.href} className="group block h-full">
                 <Card className="flex h-full items-start gap-3 p-4">
                   <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md bg-gov-blue px-1 text-center text-[11px] font-bold leading-none text-white">
                     {org.abbr}
@@ -100,7 +101,7 @@ export function Organisations() {
                   </span>
                   <ArrowUpRight className="h-4 w-4 flex-none text-gray-400 transition-colors group-hover:text-gov-blue" />
                 </Card>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
