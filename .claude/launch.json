@@ -42,13 +42,6 @@
       "runtimeArgs": ["--prefix", "apps/portals/smile-admin", "run", "dev"],
       "port": 4123,
       "autoPort": false
-    },
-    {
-      "name": "nhapoa",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/nhapoa", "run", "dev"],
-      "port": 4127,
-      "autoPort": false
     }
   ]
 }
