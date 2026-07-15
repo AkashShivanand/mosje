@@ -133,11 +133,45 @@ CSS-var maps). If the portal defined `@custom-variant`/`@theme`, DELETE it (hub
 owns the theme). For Tailwind-less portals (pm-ajay), keep the full scoped CSS
 as-is minus any tailwind import.
 
-## 6. Merge middleware (only if the portal had one)
-Next allows ONE root middleware. Fold the portal's matcher + logic into
-`apps/hub/src/middleware.ts` guarded by a `pathname.startsWith("/portals/<slug>")`
-branch. Add `/portals/<slug>/:path*` to the hub matcher config. Delete the
-portal's `middleware.ts`.
+## 6. Merge middleware (only if the portal had one) — into `proxy.ts`, NOT `middleware.ts`
+Next 16 renamed the middleware convention to **`proxy.ts`**, and the hub already has
+one at **`apps/hub/src/proxy.ts`** (it exports `async function proxy(req)` + `config.matcher`).
+An app gets exactly ONE — so do NOT create `apps/hub/src/middleware.ts`. Fold the portal's
+logic into `proxy()` as a branch guarded by `pathname.startsWith("/portals/<slug>")`,
+placed BEFORE the ZONES lookup. The existing matcher already covers `/portals/:path*`,
+so no matcher change is needed.
+
+**CRITICAL — paths change from basePath-relative to FULL.** The portal's middleware ran
+under `basePath: /portals/<slug>`, and Next **strips the basePath before middleware runs**
+and re-adds it to redirects. So the original code used basePath-RELATIVE paths
+(`pathname === "/login"`, redirect to `"/login"`). Natively in the hub there is NO basePath,
+so `pathname` arrives FULL (`/portals/<slug>/login`) and redirects are NOT re-prefixed.
+Every path in the ported logic must become full. Porting it verbatim silently breaks the
+guard — every route reads as protected and redirects to the hub root's `/login`.
+
+Correct shape for the cookie-presence guards used by smile-admin / pm-ajay:
+```ts
+const SLUG_PUBLIC = ["/portals/<slug>/login", "/portals/<slug>/forgot-password"];
+const SLUG_SESSION_COOKIE = "<original_cookie_name>";   // keep the name EXACTLY — the
+                                                        // client auth-context sets it
+
+// inside proxy(), before the ZONES lookup:
+if (pathname === "/portals/<slug>" || pathname.startsWith("/portals/<slug>/")) {
+  const isPublic = SLUG_PUBLIC.some((p) => pathname === p || pathname.startsWith(p + "/"));
+  // let public pages and asset-like paths (they contain a ".") through
+  if (isPublic || pathname.includes(".")) return NextResponse.next();
+  if (!req.cookies.get(SLUG_SESSION_COOKIE)) {
+    const loginUrl = req.nextUrl.clone();
+    loginUrl.pathname = "/portals/<slug>/login";
+    return NextResponse.redirect(loginUrl);
+  }
+  return NextResponse.next();
+}
+```
+Keep the `pathname.includes(".")` escape — the portal's `public/` assets now live at
+`/portals/<slug>/…` and DO match the hub matcher, so without it they'd be guarded.
+Then delete the portal's `src/middleware.ts`. Verify BOTH: unauthenticated deep route →
+redirects to `/portals/<slug>/login` (not `/login`), and the login page itself loads.
 
 ## 7. Teardown the zone
 **`git rm -r` is BLOCKED by `.claude/hooks/guard.sh`** (recursive-delete guard). After
