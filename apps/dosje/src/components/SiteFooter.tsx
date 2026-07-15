@@ -109,7 +109,7 @@ export function SiteFooter() {
               <h3 className="font-semibold text-white">{column.heading}</h3>
               <ul className="mt-4 space-y-2.5">
                 {column.links.map((link) => (
-                  <li key={link.href}>
+                  <li key={link.label}>
                     <Link
                       href={link.href}
                       className="text-sm text-white/70 transition-colors hover:text-white"
@@ -163,7 +163,7 @@ export function SiteFooter() {
           <nav aria-label="Footer legal links">
             <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
               {bottomLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="transition-colors hover:text-white"
