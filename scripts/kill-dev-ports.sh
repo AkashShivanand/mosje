@@ -4,7 +4,9 @@
 
 set -euo pipefail
 
-PORTS=(3000 3001 3002 4123 4124 4125 4126 6006)
+# Portal ports 4123-4128 are retired — every portal is now mounted natively
+# inside the hub on :3000 (single origin).
+PORTS=(3000 3001 3002 6006)
 KILLED=0
 
 for port in "${PORTS[@]}"; do

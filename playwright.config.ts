@@ -6,9 +6,9 @@ import { defineConfig, devices } from "@playwright/test";
  * subfolder per app as coverage grows; this config stays app-agnostic and
  * each spec file navigates using its app's own basePath.
  *
- * `webServer` targets the NMBA treatment-centre portal (the only app with
- * E2E coverage today) and reuses an already-running dev server locally so
- * this doesn't fight a server you started yourself via `npm run dev:nmba`.
+ * Every portal is now mounted natively inside the hub (single origin, :3000),
+ * so `webServer` targets the hub and reuses an already-running dev server
+ * locally so this doesn't fight one you started yourself via `npm run dev`.
  */
 export default defineConfig({
   testDir: "./e2e",
@@ -18,7 +18,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
-    baseURL: "http://localhost:4126",
+    baseURL: "http://localhost:3000",
     trace: "on-first-retry",
   },
   projects: [
@@ -28,8 +28,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run dev:nmba",
-    url: "http://localhost:4126/portals/nmba/treatment-centre/login-otp",
+    command: "npm run dev:hub",
+    url: "http://localhost:3000/portals/nmba/treatment-centre/login-otp",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },
