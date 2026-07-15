@@ -35,13 +35,6 @@
       "runtimeArgs": ["--prefix", "apps/portals/pm-ajay", "run", "dev"],
       "port": 4124,
       "autoPort": false
-    },
-    {
-      "name": "smile-admin",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/smile-admin", "run", "dev"],
-      "port": 4123,
-      "autoPort": false
     }
   ]
 }
