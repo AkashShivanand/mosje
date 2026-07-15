@@ -96,6 +96,23 @@ export default function <Slug>Layout({ children }: { children: React.ReactNode }
   return children;
 }
 ```
+**PRESERVE `<html>` attributes as a wrapper div (LEARNED — 3 portals silently lost this).**
+Before deleting the old `<html …>` tag, check it for attributes carrying design
+semantics — most portals set **`data-surface="portal"`**, which applies the DS portal
+type scale (`[data-surface="portal"]` in `tokens.css`). A nested layout cannot set
+`<html>` attributes, so move them onto a wrapper div. The selector is attribute-based
+and CSS custom properties inherit, so the cascade is identical:
+```tsx
+export default function <Slug>Layout({ children }: { children: React.ReactNode }) {
+  return <div data-surface="portal">{children}</div>;  // + any portal providers inside
+}
+```
+Only add it if the ORIGINAL `<html>` had it — verify with
+`git show main:apps/portals/<slug>/src/app/layout.tsx | grep data-surface`
+(scw/nmba/nhapoa/smile-admin/pm-ajay had it; tg did NOT — do not add it where it wasn't).
+Ignore `className={font.variable}` (hub root owns the font) and `lang`/`suppressHydrationWarning`
+(hub root owns those).
+
 Remove these imports from the file: `next/font/google`, `AppSwitcher`,
 `ColorModeProvider`, `UX4GAccessibilityWidget`, and `@mosje/design-system/icons.css`.
 The hub root layout (`apps/hub/src/app/layout.tsx`) already loads the Noto Sans font,

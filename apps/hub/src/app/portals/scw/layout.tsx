@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   ],
 };
 
+// data-surface="portal" applies the DS portal type scale (tokens.css). It sat on
+// <html> when scw was its own zone; a nested layout can't set <html> attributes,
+// so it moves to a wrapper — the selector is attribute-based and the custom
+// properties inherit, so the cascade is identical.
 export default function ScwLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return <div data-surface="portal">{children}</div>;
 }

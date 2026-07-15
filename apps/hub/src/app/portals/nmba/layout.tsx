@@ -9,6 +9,14 @@ export const metadata: Metadata = {
   icons: { icon: "/portals/nmba/brand/national-emblem.svg" },
 };
 
+// data-surface="portal" applies the DS portal type scale (tokens.css). It sat on
+// <html> when nmba was its own zone; a nested layout can't set <html> attributes,
+// so it moves to a wrapper — the selector is attribute-based and the custom
+// properties inherit, so the cascade is identical.
 export default function NmbaLayout({ children }: { children: React.ReactNode }) {
-  return <ToastProvider>{children}</ToastProvider>;
+  return (
+    <div data-surface="portal">
+      <ToastProvider>{children}</ToastProvider>
+    </div>
+  );
 }
