@@ -38,7 +38,7 @@ export function HeroCarousel() {
               alt={slide.alt}
               fill
               priority={i === 0}
-              loading={i === 0 ? "eager" : "lazy"}
+              loading={i <= 1 ? "eager" : "lazy"}
               sizes={i === index ? "100vw" : "0px"}
               className="object-cover"
             />

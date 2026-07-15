@@ -11,8 +11,9 @@ export function SamaveshBanner() {
           src="/images/samavesh.png"
           alt="SAMAVESH"
           width={120}
-          height={48}
+          height={120}
           className="h-12 w-auto"
+          style={{ width: "auto" }}
         />
         <div className="flex items-center gap-4">
           <span className="text-[28px] font-semibold leading-none tracking-[0.5px]">
