@@ -72,6 +72,15 @@ The three forms to prefix (all found in scw):
 1. **String attr:** `href="/login"` → `href="/portals/<slug>/login"`
 2. **Object literal** (nav arrays, service tiles): `{ href: "/epledge" }` → `{ href: "/portals/<slug>/epledge" }`
 3. **Template literal** (row actions): `` href={`/admin/x/${id}`} `` → `` href={`/portals/<slug>/admin/x/${id}`} ``
+4. **Base-constant indirection** (LEARNED — pm-ajay): a portal may build routes from a
+   constant, e.g. `const BASE = "";` then `` href={`${BASE}/dashboard`} ``. This
+   structurally EVADES the grep above (the string starts with a backtick + `${`, not a
+   quote + `/`). Fix at the source — set `const BASE = "/portals/<slug>";` — which
+   corrects every call site at once. Hunt for it explicitly:
+   ```bash
+   grep -rnE 'const (BASE|BASE_PATH|ROOT|PREFIX)\s*=\s*["'"'"'`]' src/app/portals/<slug> src/components/<slug> src/lib/<slug>
+   grep -rn '\${BASE}' src/app/portals/<slug> src/components/<slug> src/lib/<slug>
+   ```
 Also check `router.push(...)`, `.replace(...)`, `redirect(...)`, and `<Link to=...>`.
 LEAVE alone: external URLs, anchors (`#…`), `/api/…` calls, and asset paths already
 under `/portals/<slug>/…`. Active-nav highlighting compares `usePathname()` (which
