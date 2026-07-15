@@ -96,20 +96,25 @@ export default function <Slug>Layout({ children }: { children: React.ReactNode }
   return children;
 }
 ```
-**PRESERVE `<html>` attributes as a wrapper div (LEARNED — 3 portals silently lost this).**
-Before deleting the old `<html …>` tag, check it for attributes carrying design
-semantics — most portals set **`data-surface="portal"`**, which applies the DS portal
-type scale (`[data-surface="portal"]` in `tokens.css`). A nested layout cannot set
-`<html>` attributes, so move them onto a wrapper div. The selector is attribute-based
-and CSS custom properties inherit, so the cascade is identical:
+**PRESERVE design-carrying `<html>` attributes as a wrapper div (LEARNED — 3 portals silently lost this).**
+Before deleting the old `<html …>` tag, inspect EVERY attribute on it for design
+semantics. A nested layout cannot set `<html>` attributes, so move them onto a wrapper
+div: these selectors are attribute-based and CSS custom properties inherit, so the
+cascade is identical. Seen so far:
+- **`data-surface="portal"`** → DS portal type scale (`[data-surface="portal"]` in `tokens.css`)
+- **`data-color-mode="blue-dark"`** → a portal's fixed brand ramp (smile-admin)
+
 ```tsx
 export default function <Slug>Layout({ children }: { children: React.ReactNode }) {
-  return <div data-surface="portal">{children}</div>;  // + any portal providers inside
+  return (
+    <div data-color-mode="blue-dark" data-surface="portal">{children}</div>  // only the attrs it actually had
+  );                                                                          // + any portal providers inside
 }
 ```
-Only add it if the ORIGINAL `<html>` had it — verify with
-`git show main:apps/portals/<slug>/src/app/layout.tsx | grep data-surface`
-(scw/nmba/nhapoa/smile-admin/pm-ajay had it; tg did NOT — do not add it where it wasn't).
+Copy ONLY the attributes the ORIGINAL `<html>` actually had — verify with:
+`git show main:apps/portals/<slug>/src/app/layout.tsx | grep -E 'data-surface|data-color-mode|<html'`
+(scw/nmba/nhapoa/smile-admin/pm-ajay had `data-surface`; tg did NOT — don't add it where it wasn't.
+Only smile-admin had `data-color-mode`.) Verify after with a computed-CSS check in the browser.
 Ignore `className={font.variable}` (hub root owns the font) and `lang`/`suppressHydrationWarning`
 (hub root owns those).
 
@@ -137,9 +142,14 @@ as-is minus any tailwind import.
 Next 16 renamed the middleware convention to **`proxy.ts`**, and the hub already has
 one at **`apps/hub/src/proxy.ts`** (it exports `async function proxy(req)` + `config.matcher`).
 An app gets exactly ONE — so do NOT create `apps/hub/src/middleware.ts`. Fold the portal's
-logic into `proxy()` as a branch guarded by `pathname.startsWith("/portals/<slug>")`,
-placed BEFORE the ZONES lookup. The existing matcher already covers `/portals/:path*`,
-so no matcher change is needed.
+logic into `proxy()` as a branch guarded by `pathname.startsWith("/portals/<slug>")`.
+The existing matcher already covers `/portals/:path*`, so no matcher change is needed.
+
+**CRITICAL — placement: put the guard at the very TOP of `proxy()`, ABOVE the
+`if (process.env.NODE_ENV === "production") return NextResponse.next();` line.** That
+early-return exists only to disable the dev-only zone probe; an auth guard placed after
+it is **silently dead in production**. A route guard is real auth, not a dev convenience —
+it must run in every environment. (Caught during the smile-admin merge.)
 
 **CRITICAL — paths change from basePath-relative to FULL.** The portal's middleware ran
 under `basePath: /portals/<slug>`, and Next **strips the basePath before middleware runs**
