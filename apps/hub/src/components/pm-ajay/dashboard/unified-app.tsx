@@ -6,12 +6,12 @@
 
 import { useState, useMemo, useRef, useLayoutEffect, type CSSProperties } from "react";
 import Link from "next/link";
-import { Navbar } from "@/components/shell/navbar";
+import { Navbar } from "@/components/pm-ajay/shell/navbar";
 import { FilterBar, Status, Footer, pillClass, type Filters } from "./ui";
 
 // basePath is applied automatically by Next.js to <Link>/<Image>/router —
 // keep in-app paths basePath-relative (empty prefix) so it is not doubled.
-const BASE = "";
+const BASE = "/portals/pm-ajay";
 import { Donut, Funnel, LineArea, Sparkline, C } from "./charts";
 import {
   FY,
@@ -31,7 +31,7 @@ import {
   type StateRow,
   type District,
   type ViewId,
-} from "@/lib/data";
+} from "@/lib/pm-ajay/data";
 
 const INR = (n: number) => "₹" + Math.round(n).toLocaleString("en-IN");
 const NUM = (n: number) => Math.round(n).toLocaleString("en-IN");

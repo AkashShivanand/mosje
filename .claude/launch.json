@@ -28,13 +28,6 @@
       "runtimeArgs": ["--prefix", "apps/storybook", "run", "dev"],
       "port": 6006,
       "autoPort": false
-    },
-    {
-      "name": "pm-ajay",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/pm-ajay", "run", "dev"],
-      "port": 4124,
-      "autoPort": false
     }
   ]
 }

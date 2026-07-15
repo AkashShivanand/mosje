@@ -3,7 +3,7 @@
 /* PM-AJAY Dashboard — app shell: routing, filters, drill-down scaling, responsive stage. */
 
 import { useState, useMemo, useRef, useLayoutEffect, Fragment, type CSSProperties } from "react";
-import { Navbar } from "@/components/shell/navbar";
+import { Navbar } from "@/components/pm-ajay/shell/navbar";
 import { Sidebar, FilterBar, Footer, type Filters } from "./ui";
 import { VIEW_COMPONENTS, type LevelRow } from "./views";
 import {
@@ -19,7 +19,7 @@ import {
   type StateRow,
   type District,
   type ViewId,
-} from "@/lib/data";
+} from "@/lib/pm-ajay/data";
 
 const CROSS: ViewId[] = ["executive", "financial", "governance"];
 

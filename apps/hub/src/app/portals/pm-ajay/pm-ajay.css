@@ -2,11 +2,12 @@
    UX4G Design System tokens (MoSJE Portal DS, Figma) + dashboard application styles.
    Faithful port of the Claude Design handoff (colors_and_type.css + app.css). */
 
-/* SAMAVESH token baseline (additive — provides the --ds- and --sa- vars for shared
-   components like ZoneSwitcher; does not override PM-AJAY's own ported tokens). */
-@import "@mosje/design-system/tokens.css";
+/* SAMAVESH token baseline (--ds-/--sa- vars) and Material Symbols Rounded are
+   already loaded once, hub-wide, by apps/hub/src/app/layout.tsx (tokens.css +
+   @mosje/design-system/icons.css) — do not re-import either here.
+   Roboto / Red Hat Mono are PM-AJAY-specific and aren't provided by the hub,
+   so that Google Fonts import stays. */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&family=Red+Hat+Mono:wght@400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap');
 
 /* ─────────────────────────────────────────────────────────────────────────
    UX4G Design System — Colors & Type

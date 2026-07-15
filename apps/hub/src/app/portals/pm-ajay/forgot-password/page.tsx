@@ -6,7 +6,7 @@ import Image from "next/image";
 // Next.js adds the basePath automatically to <Link> and the router, so nav
 // paths stay basePath-RELATIVE (BASE = "") — prepending it doubles the path.
 // next/image does NOT add the basePath, so image src must include it (IMG_BASE).
-const BASE = "";
+const BASE = "/portals/pm-ajay";
 const IMG_BASE = "/portals/pm-ajay";
 
 export default function ForgotPasswordPage() {

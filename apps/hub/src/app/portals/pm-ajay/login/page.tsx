@@ -10,12 +10,12 @@ import { useRouter } from "next/navigation";
 import { DemoFab } from "@mosje/design-system";
 import Image from "next/image";
 import Link from "next/link";
-import { useAuth } from "@/store/auth-context";
+import { useAuth } from "@/store/pm-ajay/auth-context";
 
 // Next.js adds the basePath automatically to <Link> and the router, so nav
 // paths stay basePath-RELATIVE (BASE = "") — prepending it doubles the path.
 // next/image does NOT add the basePath, so image src must include it (IMG_BASE).
-const BASE = "";
+const BASE = "/portals/pm-ajay";
 const IMG_BASE = "/portals/pm-ajay";
 
 const FAB_ACCOUNTS = [

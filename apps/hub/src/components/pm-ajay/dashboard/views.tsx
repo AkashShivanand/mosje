@@ -24,7 +24,7 @@ import {
   type Kpi,
   type StateRow,
   type ViewId,
-} from "@/lib/data";
+} from "@/lib/pm-ajay/data";
 
 const INR = (n: number) => "₹" + Math.round(n).toLocaleString("en-IN");
 const NUM = (n: number) => Math.round(n).toLocaleString("en-IN");

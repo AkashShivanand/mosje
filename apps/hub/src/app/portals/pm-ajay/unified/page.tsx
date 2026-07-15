@@ -2,13 +2,13 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/store/auth-context";
-import { DashboardApp } from "@/components/dashboard/dashboard-app";
+import { useAuth } from "@/store/pm-ajay/auth-context";
+import { UnifiedDashboard } from "@/components/pm-ajay/dashboard/unified-app";
 
 // basePath ("/portals/pm-ajay") is applied automatically by Next.js to <Link>,
 // <Image> and the router — keep in-app paths basePath-relative (empty prefix).
 // Prepending the basePath manually doubles it (…/pm-ajay/portals/pm-ajay/…).
-const BASE = "";
+const BASE = "/portals/pm-ajay";
 
 export default function Page() {
   const router = useRouter();
@@ -26,5 +26,5 @@ export default function Page() {
     );
   }
 
-  return <DashboardApp />;
+  return <UnifiedDashboard />;
 }

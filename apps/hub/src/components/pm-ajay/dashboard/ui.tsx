@@ -13,7 +13,7 @@ import {
 } from "react";
 import Link from "next/link";
 import { Sparkline } from "./charts";
-import { useAuth } from "@/store/auth-context";
+import { useAuth } from "@/store/pm-ajay/auth-context";
 import {
   STATES,
   FY,
@@ -24,11 +24,11 @@ import {
   type Kpi,
   type StateRow,
   type ViewId,
-} from "@/lib/data";
+} from "@/lib/pm-ajay/data";
 
 // basePath is applied automatically by Next.js to <Link>/<Image>/router —
 // keep in-app paths basePath-relative (empty prefix) so it is not doubled.
-const BASE = "";
+const BASE = "/portals/pm-ajay";
 
 const LOWER_BETTER =
   /Alert|Pending|Blocked|Overdue|Rejected|Returned|Audit|Unspent|Processing|Utilization Time/i;

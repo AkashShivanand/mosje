@@ -3,7 +3,6 @@ import path from "node:path";
 
 const ZONE_WEBSITE     = process.env.ZONE_WEBSITE_URL     ?? "http://localhost:3001";
 const ZONE_DS          = process.env.ZONE_DS_URL          ?? "http://localhost:6006";
-const ZONE_PM_AJAY     = process.env.ZONE_PM_AJAY_URL     ?? "http://localhost:4124";
 const ZONE_DOCS        = process.env.ZONE_DOCS_URL        ?? "http://localhost:3002";
 
 const nextConfig: NextConfig = {
@@ -24,11 +23,8 @@ const nextConfig: NextConfig = {
       { source: "/website",         destination: `${ZONE_WEBSITE}/website` },
       { source: "/website/",        destination: `${ZONE_WEBSITE}/website/` },
       { source: "/website/:path*",  destination: `${ZONE_WEBSITE}/website/:path*` },
-      // portals
-      { source: "/portals/pm-ajay",              destination: `${ZONE_PM_AJAY}/portals/pm-ajay` },
-      { source: "/portals/pm-ajay/:path*",       destination: `${ZONE_PM_AJAY}/portals/pm-ajay/:path*` },
-      // eutthan-admin, scw, nmba, tg, nhapoa, and smile-admin are native routes
-      // inside hub — no rewrite needed
+      // eutthan-admin, scw, nmba, tg, nhapoa, smile-admin, and pm-ajay are native
+      // routes inside hub — no rewrite needed
       // Storybook — proxied through the hub. Always LINK to "/storybook/" (trailing
       // slash) so Storybook's relative asset URLs (./sb-manager/…, ./iframe.html)
       // resolve under /storybook/ and proxy via the :path* rule below. The no-slash
