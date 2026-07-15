@@ -1,3 +1,26 @@
+/* ── NMBA Tailwind theme (was apps/portals/nmba/tailwind.config.ts) ────────
+   Values are verbatim from that config. The hub's globals.css declares the
+   utility NAMES; this block binds NMBA's VALUES to its subtree. Only the keys
+   where NMBA differs from the hub-wide default are listed — see globals.css.
+   NMBA takes the hub-wide defaults for ink-hint (#64748b), await-fg (#92400e),
+   navy, brandwash, approve, line, danger-bg/fg and the card/drawer/pop shadows. */
+[data-portal="nmba"] {
+  /* DS-token names NMBA redefines (hub keeps its own value outside this scope). */
+  --portal-ink: #0f172a;
+  --portal-ink-muted: #475569;
+  --portal-saffron: #ec6a1f;
+  --portal-surface-muted: #f5f7fb;
+  /* colors.danger.DEFAULT — the hub's is the DS status red (--ds-danger). */
+  --portal-danger: #dc2626;
+
+  /* CONFLICT — nhapoa/tg darkened theirs to #b8500f; NMBA kept #d35912. */
+  --color-saffron-600: #d35912;
+
+  /* borderRadius.extend — stock Tailwind is 0.75rem / 1rem. */
+  --radius-xl: 0.85rem;
+  --radius-2xl: 1.1rem;
+}
+
 :root {
   --font-scale: 1;
 }

@@ -1,3 +1,31 @@
+/* ── SCW Tailwind theme (was apps/portals/scw/tailwind.config.ts) ──────────
+   Values are verbatim from that config. The hub's globals.css declares the
+   utility NAMES; this block binds SCW's VALUES to its subtree. Only the keys
+   where SCW differs from the hub-wide default are listed — see globals.css. */
+[data-portal="scw"] {
+  /* DS-token names SCW redefines (hub keeps its own value outside this scope). */
+  --portal-ink: #0f172a;
+  --portal-ink-muted: #475569;
+  --portal-saffron: #ec6a1f;
+  --portal-surface-muted: #f5f7fb;
+
+  /* CONFLICT — SCW deviates from nmba/nhapoa/tg. Preserved verbatim, NOT
+     "fixed": #94a3b8 is 2.6:1 on white and fails WCAG 1.4.3, but this port is
+     behaviour-preserving. Raise it as its own a11y change, not here. */
+  --color-ink-hint: #94a3b8;
+  /* CONFLICT — amber-700; nmba/nhapoa/tg darkened theirs to amber-800 #92400e. */
+  --color-await-fg: #b45309;
+  /* CONFLICT — nhapoa/tg darkened theirs to #b8500f for AA on white text. */
+  --color-saffron-600: #d35912;
+  /* CONFLICT — SCW's emerald citizen hero; nhapoa overrides to navy. */
+  --color-herofrom: #4f9d6b;
+  --color-heroto: #2f6b46;
+
+  /* borderRadius.extend — stock Tailwind is 0.75rem / 1rem. */
+  --radius-xl: 0.85rem;
+  --radius-2xl: 1.1rem;
+}
+
 :root {
   --font-scale: 1;
 

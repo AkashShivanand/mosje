@@ -31,9 +31,14 @@ export const metadata: Metadata = {
 // mode; setting the same attribute again on this closer wrapper overrides it for
 // smile-admin's subtree only, preserving its permanent navy identity without
 // affecting the estate-wide toggle elsewhere.
+//
+// data-portal="smile-admin" binds this subtree to smile-admin's Tailwind palette.
+// The hub runs a single Tailwind build, so the utility names are global but the
+// values are per-portal custom properties scoped by this attribute — see
+// smile-admin.css.
 export default function SmileAdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div data-color-mode="blue-dark" data-surface="portal">
+    <div data-portal="smile-admin" data-color-mode="blue-dark" data-surface="portal">
       <AppProvider>{children}</AppProvider>
     </div>
   );

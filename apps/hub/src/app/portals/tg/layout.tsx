@@ -10,10 +10,17 @@ export const metadata: Metadata = {
   applicationName: "TG · Samavesh",
 };
 
+// data-portal="tg" binds this subtree to TG's Tailwind palette. The hub runs a
+// single Tailwind build, so the utility names are global but the values are
+// per-portal custom properties scoped by this attribute — see tg.css.
+// NOTE: no data-surface here — TG's standalone <html> never carried it, and
+// adding it would silently apply the DS portal type scale it never had.
 export default function TgLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ToastProvider>
-      <TgProvider>{children}</TgProvider>
-    </ToastProvider>
+    <div data-portal="tg">
+      <ToastProvider>
+        <TgProvider>{children}</TgProvider>
+      </ToastProvider>
+    </div>
   );
 }

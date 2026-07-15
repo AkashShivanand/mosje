@@ -23,9 +23,13 @@ export const metadata: Metadata = {
 // <html> when nhapoa was its own zone; a nested layout can't set <html> attributes,
 // so it moves to a wrapper — the selector is attribute-based and the custom
 // properties inherit, so the cascade is identical.
+//
+// data-portal="nhapoa" binds this subtree to NHAPOA's Tailwind palette. The hub
+// runs a single Tailwind build, so the utility names are global but the values
+// are per-portal custom properties scoped by this attribute — see nhapoa.css.
 export default function NhapoaLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div data-surface="portal">
+    <div data-portal="nhapoa" data-surface="portal">
       <NhapoaProvider>
         <AnnouncementBanner />
         {children}

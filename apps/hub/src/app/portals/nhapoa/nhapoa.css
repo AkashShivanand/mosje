@@ -1,3 +1,25 @@
+/* ── NHAPOA Tailwind theme (was apps/portals/nhapoa/tailwind.config.ts) ────
+   Values are verbatim from that config. The hub's globals.css declares the
+   utility NAMES; this block binds NHAPOA's VALUES to its subtree. Only the keys
+   where NHAPOA differs from the hub-wide default are listed — see globals.css.
+   NHAPOA takes the hub-wide defaults for ink-hint (#64748b), await-fg (#92400e),
+   saffron-600 (#b8500f), navy, brandwash, approve, reject, line and the shadows. */
+[data-portal="nhapoa"] {
+  /* DS-token names NHAPOA redefines (hub keeps its own value outside this scope). */
+  --portal-ink: #0f172a;
+  --portal-ink-muted: #475569;
+  --portal-saffron: #ec6a1f;
+  --portal-surface-muted: #f5f7fb;
+
+  /* CONFLICT — NHAPOA's citizen hero is the government navy, not scw/tg's emerald. */
+  --color-herofrom: #1c4486;
+  --color-heroto: #0a2452;
+
+  /* borderRadius.extend — stock Tailwind is 0.75rem / 1rem. */
+  --radius-xl: 0.85rem;
+  --radius-2xl: 1.1rem;
+}
+
 :root {
   --font-scale: 1;
 
