@@ -16,13 +16,6 @@
       "autoPort": false
     },
     {
-      "name": "docs",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/docs", "run", "dev"],
-      "port": 3002,
-      "autoPort": false
-    },
-    {
       "name": "storybook",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "apps/storybook", "run", "dev"],

@@ -30,13 +30,13 @@ const base = (env: string | undefined, fallback: string) => env ?? fallback;
 const ZONES: Zone[] = [
   { prefix: "/website",             probeUrl: base(process.env.ZONE_WEBSITE_URL,     "http://localhost:3001") + "/website",                   label: "DoSJE Website",  cmd: "npm run dev:website" },
   { prefix: "/storybook",           probeUrl: base(process.env.ZONE_DS_URL,          "http://localhost:6006"),                                 label: "Storybook",      cmd: "npm run dev:storybook" },
-  { prefix: "/design-system",       probeUrl: base(process.env.ZONE_DOCS_URL,        "http://localhost:3002") + "/design-system",              label: "SAMAVESH Docs",  cmd: "npm run dev:docs" },
   // scw migrated to a native hub route (apps/hub/src/app/portals/scw) — no zone to proxy.
   // nmba migrated to a native hub route (apps/hub/src/app/portals/nmba) — no zone to proxy.
   // tg migrated to a native hub route (apps/hub/src/app/portals/tg) — no zone to proxy.
   // nhapoa migrated to a native hub route (apps/hub/src/app/portals/nhapoa) — no zone to proxy.
   // smile-admin migrated to a native hub route (apps/hub/src/app/portals/smile-admin) — no zone to proxy.
   // pm-ajay migrated to a native hub route (apps/hub/src/app/portals/pm-ajay) — no zone to proxy.
+  // design-system docs migrated to a native hub route (apps/hub/src/app/design-system) — no zone to proxy.
 ];
 
 /*
@@ -194,8 +194,6 @@ export const config = {
     "/website/:path*",
     "/storybook",
     "/storybook/:path*",
-    "/design-system",
-    "/design-system/:path*",
     "/portals/:path*",
   ],
 };

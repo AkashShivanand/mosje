@@ -3,7 +3,6 @@ import path from "node:path";
 
 const ZONE_WEBSITE     = process.env.ZONE_WEBSITE_URL     ?? "http://localhost:3001";
 const ZONE_DS          = process.env.ZONE_DS_URL          ?? "http://localhost:6006";
-const ZONE_DOCS        = process.env.ZONE_DOCS_URL        ?? "http://localhost:3002";
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -11,7 +10,10 @@ const nextConfig: NextConfig = {
   // from child-zone paths (e.g. /website/ → /website), which would create a
   // redirect loop with any child app that has trailingSlash: true.
   skipTrailingSlashRedirect: true,
-  transpilePackages: ["@mosje/design-system"],
+  // react-live powers the SAMAVESH docs portal's live component playground
+  // (native route at /design-system) — must be transpiled here now that docs
+  // is mounted natively instead of running as its own zone.
+  transpilePackages: ["@mosje/design-system", "react-live"],
   turbopack: {
     // Monorepo root is two levels up from apps/hub
     root: path.resolve(process.cwd(), "..", ".."),
@@ -23,8 +25,8 @@ const nextConfig: NextConfig = {
       { source: "/website",         destination: `${ZONE_WEBSITE}/website` },
       { source: "/website/",        destination: `${ZONE_WEBSITE}/website/` },
       { source: "/website/:path*",  destination: `${ZONE_WEBSITE}/website/:path*` },
-      // eutthan-admin, scw, nmba, tg, nhapoa, smile-admin, and pm-ajay are native
-      // routes inside hub — no rewrite needed
+      // eutthan-admin, scw, nmba, tg, nhapoa, smile-admin, pm-ajay, and the
+      // design-system docs portal are native routes inside hub — no rewrite needed
       // Storybook — proxied through the hub. Always LINK to "/storybook/" (trailing
       // slash) so Storybook's relative asset URLs (./sb-manager/…, ./iframe.html)
       // resolve under /storybook/ and proxy via the :path* rule below. The no-slash
@@ -32,10 +34,6 @@ const nextConfig: NextConfig = {
       // directly; the full UI loads through the hub.)
       { source: "/storybook",         destination: `${ZONE_DS}/` },
       { source: "/storybook/:path*",  destination: `${ZONE_DS}/:path*` },
-      // SAMAVESH docs portal — design-system documentation
-      { source: "/design-system",         destination: `${ZONE_DOCS}/design-system` },
-      { source: "/design-system/",        destination: `${ZONE_DOCS}/design-system/` },
-      { source: "/design-system/:path*",  destination: `${ZONE_DOCS}/design-system/:path*` },
     ];
   },
   async redirects() {
