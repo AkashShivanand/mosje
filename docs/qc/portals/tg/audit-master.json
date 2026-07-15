@@ -18,8 +18,8 @@
   ],
   "screens": [
     {
-      "slug": "GLOBAL",
-      "name": "Global · Shared elements (masthead · KPI cards · tables)",
+      "slug": "GLOBAL-DASH",
+      "name": "Global · Government masthead · dashboards · tables",
       "env": "dev",
       "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-ADMIN-DASH.png",
       "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CENTRAL-ADMIN-DASHBOARD.png",
@@ -42,7 +42,7 @@
             0,
             0,
             1440,
-            1126
+            1176
           ],
           "liveBox": [
             0,
@@ -81,7 +81,7 @@
             0,
             0,
             1440,
-            1126
+            1176
           ],
           "liveBox": [
             0,
@@ -120,7 +120,7 @@
             0,
             0,
             1440,
-            1126
+            1176
           ],
           "liveBox": [
             0,
@@ -159,7 +159,7 @@
             0,
             0,
             1440,
-            1126
+            1176
           ],
           "liveBox": [
             0,
@@ -198,7 +198,7 @@
             0,
             0,
             1440,
-            1126
+            1176
           ],
           "liveBox": [
             0,
@@ -225,7 +225,139 @@
       "_role": "Global",
       "_node": "2494:38830",
       "_refFrame": true,
-      "note": "Scope: Global — these elements repeat across every admin screen; fix once. The board shows a representative frame (Central Admin — Dashboard) — open it via 'Figma frame ↗'; each marker's number matches its TG-GLOBAL id."
+      "note": "Scope: Global — these elements repeat across the portal; fix once. The board shows a representative frame (Central Admin — Dashboard) — open it via 'Figma frame ↗'; each marker's number matches its TG-GLOBAL id."
+    },
+    {
+      "slug": "GLOBAL-DOCS",
+      "name": "Global · Application review — validation & documents",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-APP-DETAIL-DOCS.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/EXAMINING-OFFICER-APPLICATION-DOCUMENTS.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-39123",
+      "liveUrl": "https://tg-admin-dev.mosje.in/applications",
+      "findings": [
+        {
+          "num": 6,
+          "id": "TG-GLOBAL-006",
+          "element": "System Validation omits the Duplicate Check row",
+          "section": "global",
+          "scope": "Global",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "System Validation lists three checks — Data Validation, Duplicate Check (with the match + similarity score, e.g. 'Potential match: TG2024-LU-04521 (85% similarity)') and Document Verification.",
+          "live": "The build shows only Data Validation and Document Verification — the Duplicate Check row is absent, so the duplicate-detection signal never reaches the reviewer. Repeats on every role's application review screen.",
+          "fix": "Restore the Duplicate Check row in System Validation with its match reference + similarity status. Applies to every role's application review screen.",
+          "subO": "Scope: Global — repeats across the portal",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            1321
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1573
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1573
+          ],
+          "figmaPin": {
+            "x": 26,
+            "y": 42
+          },
+          "livePin": {
+            "x": 26,
+            "y": 42
+          }
+        },
+        {
+          "num": 7,
+          "id": "TG-GLOBAL-007",
+          "element": "Documents listed by raw upload filename, not semantic label",
+          "section": "global",
+          "scope": "Global",
+          "axis": "Content & Iconography",
+          "severity": "Major",
+          "figma": "Each document is listed by its semantic name — 'Signed Affidavit', 'Aadhaar Card', 'Passport Photo' — with a matching document-type icon.",
+          "live": "The build lists raw upload filenames ('form1 (2).pdf', 'Screenshot 2026-06-24 221031.pdf', 'tgportal-image.jpg') against a generic file glyph, so a reviewer cannot tell which document is which without opening each one. Repeats on every role's Documents tab.",
+          "fix": "Label each document by its semantic type with the matching type icon and keep the filename as secondary text. Applies to every role's Documents tab.",
+          "subO": "Scope: Global — repeats across the portal",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            1321
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1573
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1573
+          ],
+          "figmaPin": {
+            "x": 26,
+            "y": 64
+          },
+          "livePin": {
+            "x": 26,
+            "y": 64
+          }
+        },
+        {
+          "num": 8,
+          "id": "TG-GLOBAL-008",
+          "element": "Exception Flagged banner never rendered",
+          "section": "global",
+          "scope": "Global",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "When the system detects a similar record the screen surfaces an amber 'Exception Flagged: Duplicate' banner above the application, explaining the match.",
+          "live": "The build never renders the exception banner, so flagged applications look identical to clean ones.",
+          "fix": "Render the exception banner when the duplicate/exception check trips, per the design.",
+          "subO": "Scope: Global — repeats across the portal",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            1321
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1573
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1573
+          ],
+          "figmaPin": {
+            "x": 26,
+            "y": 16
+          },
+          "livePin": {
+            "x": 26,
+            "y": 16
+          }
+        }
+      ],
+      "_role": "Global",
+      "_node": "2494:39123",
+      "_refFrame": true,
+      "note": "Scope: Global — these elements repeat across the portal; fix once. The board shows a representative frame (Examining Officer — Application Documents) — open it via 'Figma frame ↗'; each marker's number matches its TG-GLOBAL id."
     },
     {
       "slug": "CIT-SIGNIN",
@@ -461,19 +593,168 @@
     },
     {
       "slug": "CIT-APPLY-IDENTITY",
-      "name": "Citizen — Apply · Step 1 · Identity",
+      "name": "Citizen — Apply · Step 1 · Basic Identity Details",
       "env": "dev",
       "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/dframe-citizen-apply-identity.png",
       "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-CH-APPLY-IDENTITY-FILLED.png",
       "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-35553",
       "liveUrl": "https://tg-user-dev.mosje.in/apply",
-      "findings": [],
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-CIT-APPLY-IDENTITY-001",
+          "element": "Form grid drops from 3 columns to 2",
+          "section": "cit-apply-identity",
+          "scope": "Screen",
+          "axis": "Layout & Spacing",
+          "severity": "Minor",
+          "figma": "Self-Perceived Identity and Permanent Address lay out on a 3-column field grid.",
+          "live": "The build uses a 2-column grid, making the form noticeably taller and pushing the primary action below the fold.",
+          "fix": "Match the design's 3-column field grid on the identity step.",
+          "figmaBox": [
+            0,
+            50,
+            1440,
+            1401
+          ],
+          "liveBox": [
+            0,
+            62,
+            1440,
+            1569
+          ],
+          "sectionBox": [
+            0,
+            62,
+            1440,
+            1569
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 28.9
+          },
+          "livePin": {
+            "x": 50,
+            "y": 28.7
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-CIT-APPLY-IDENTITY-002",
+          "element": "Correspondence-address control changed from a checkbox to Yes/No buttons",
+          "section": "cit-apply-identity",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "A single checkbox reads 'My Current / Correspondence address is the same as my Permanent address.'",
+          "live": "The build asks 'Is your correspondence address the same as your permanent address?' with Yes/No toggle buttons.",
+          "fix": "Use the design's single checkbox for the correspondence-address control.",
+          "figmaBox": [
+            0,
+            50,
+            1440,
+            1401
+          ],
+          "liveBox": [
+            0,
+            62,
+            1440,
+            1569
+          ],
+          "sectionBox": [
+            0,
+            62,
+            1440,
+            1569
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 83.1
+          },
+          "livePin": {
+            "x": 50,
+            "y": 83.4
+          }
+        },
+        {
+          "num": 3,
+          "id": "TG-CIT-APPLY-IDENTITY-003",
+          "element": "Bottom-left action is 'Back'; the design says 'Cancel'",
+          "section": "cit-apply-identity",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "The bottom-left control on the step is 'Cancel'.",
+          "live": "The build renders 'Back' instead.",
+          "fix": "Relabel the bottom-left control to 'Cancel' per the design.",
+          "figmaBox": [
+            0,
+            50,
+            1440,
+            1401
+          ],
+          "liveBox": [
+            0,
+            62,
+            1440,
+            1569
+          ],
+          "sectionBox": [
+            0,
+            62,
+            1440,
+            1569
+          ],
+          "figmaPin": {
+            "x": 25,
+            "y": 91.8
+          },
+          "livePin": {
+            "x": 25,
+            "y": 92.1
+          }
+        },
+        {
+          "num": 4,
+          "id": "TG-CIT-APPLY-IDENTITY-004",
+          "element": "Active step marker is an outlined ring, not a solid disc",
+          "section": "cit-apply-identity",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "The active step is a solid navy disc with a white numeral.",
+          "live": "The build renders the active step as an outlined ring, so it reads like an inactive step.",
+          "fix": "Give the active step the design's solid navy fill + white numeral.",
+          "figmaBox": [
+            0,
+            50,
+            1440,
+            1401
+          ],
+          "liveBox": [
+            0,
+            62,
+            1440,
+            1569
+          ],
+          "sectionBox": [
+            0,
+            62,
+            1440,
+            1569
+          ],
+          "figmaPin": {
+            "x": 18,
+            "y": 8.2
+          },
+          "livePin": {
+            "x": 18,
+            "y": 7.9
+          }
+        }
+      ],
       "_role": "Citizen",
-      "_node": "3531:35553",
-      "_refbadge": "coverage",
-      "_refsub": "design │ build",
-      "_refchip": "#1558B0",
-      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+      "_node": "3531:35553"
     },
     {
       "slug": "CIT-APPLY-DOCS",
@@ -531,29 +812,213 @@
       "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-DASHBOARD.png",
       "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-36919",
       "liveUrl": "https://tg-user-dev.mosje.in/dashboard",
-      "findings": [],
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-CIT-DASH-001",
+          "element": "Welfare Benefits cards wrap to a second row",
+          "section": "cit-dash",
+          "scope": "Screen",
+          "axis": "Layout & Spacing",
+          "severity": "Minor",
+          "figma": "All four benefit cards — Scholarships, Skill Training, Garima Greh, Medical Support — sit in a single 4-up row.",
+          "live": "The build's cards are wider, so only three fit and Medical Support wraps onto a second row.",
+          "fix": "Match the design's 4-up Welfare Benefits grid so the row doesn't wrap.",
+          "figmaBox": [
+            0,
+            151,
+            1440,
+            665
+          ],
+          "liveBox": [
+            0,
+            160,
+            1440,
+            690
+          ],
+          "sectionBox": [
+            0,
+            160,
+            1440,
+            690
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 82.7
+          },
+          "livePin": {
+            "x": 50,
+            "y": 83.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-CIT-DASH-002",
+          "element": "Sidebar nav has no icons and omits 'Scholarships'",
+          "section": "cit-dash",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "The sidebar lists Dashboard / Certificate/ID / Scholarships / Grievances, each with a leading icon.",
+          "live": "The build's sidebar has no per-item icons and drops the Scholarships entry (it shows a 'Transgender' scheme dropdown above the list instead).",
+          "fix": "Restore the per-item sidebar icons and the Scholarships nav entry per the design.",
+          "figmaBox": [
+            0,
+            151,
+            1440,
+            665
+          ],
+          "liveBox": [
+            0,
+            160,
+            1440,
+            690
+          ],
+          "sectionBox": [
+            0,
+            160,
+            1440,
+            690
+          ],
+          "figmaPin": {
+            "x": 8,
+            "y": 17.3
+          },
+          "livePin": {
+            "x": 8,
+            "y": 17.0
+          }
+        }
+      ],
       "_role": "Citizen",
-      "_node": "3531:36919",
-      "_refbadge": "coverage",
-      "_refsub": "design │ build",
-      "_refchip": "#1558B0",
-      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+      "_node": "3531:36919"
     },
     {
       "slug": "CIT-CERT-DETAIL",
-      "name": "Citizen — Certificate · Detail",
+      "name": "Citizen — Certificate & Identity Card",
       "env": "dev",
       "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/dframe-citizen-certificate-detail.png",
       "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-CERTIFICATE-DETAIL.png",
       "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-36666",
       "liveUrl": "https://tg-user-dev.mosje.in/certificate",
-      "findings": [],
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-CIT-CERT-DETAIL-001",
+          "element": "'Other Services' section replaced by the dashboard's Welfare Benefits",
+          "section": "cit-cert-detail",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "The certificate page carries an OTHER SERVICES section with four lifecycle actions — New Transgender Certificate & ID, Revised Certificate (Post-Medical Intervention), Correction or Update Existing Details, and Withdraw a Pending Application.",
+          "live": "The build renders the dashboard's Welfare Benefits cards here instead, so none of the certificate lifecycle actions are reachable from this page.",
+          "fix": "Restore the Other Services section (New certificate · Revised certificate · Correction/Update · Withdraw) on the certificate page per the design.",
+          "figmaBox": [
+            0,
+            25,
+            1440,
+            1013
+          ],
+          "liveBox": [
+            0,
+            23,
+            1440,
+            995
+          ],
+          "sectionBox": [
+            0,
+            23,
+            1440,
+            995
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 89.7
+          },
+          "livePin": {
+            "x": 50,
+            "y": 89.6
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-CIT-CERT-DETAIL-002",
+          "element": "Page title and intro paragraph dropped",
+          "section": "cit-cert-detail",
+          "scope": "Screen",
+          "axis": "Typography",
+          "severity": "Minor",
+          "figma": "The page opens with the title 'Transgender Certificate & Identity Card' and an explanatory paragraph about the certificate.",
+          "live": "The build starts straight at the approval card — no page title or intro copy.",
+          "fix": "Render the page title and intro paragraph per the design.",
+          "figmaBox": [
+            0,
+            25,
+            1440,
+            1013
+          ],
+          "liveBox": [
+            0,
+            23,
+            1440,
+            995
+          ],
+          "sectionBox": [
+            0,
+            23,
+            1440,
+            995
+          ],
+          "figmaPin": {
+            "x": 30,
+            "y": 10.3
+          },
+          "livePin": {
+            "x": 30,
+            "y": 10.4
+          }
+        },
+        {
+          "num": 3,
+          "id": "TG-CIT-CERT-DETAIL-003",
+          "element": "Action button set differs from the design",
+          "section": "cit-cert-detail",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Nit",
+          "figma": "The approval card offers 'Download Certificate' and 'Download ID Card'.",
+          "live": "The build offers 'Download Revised Certificate', 'Download ID Card', 'Gender Revision Request' and 'Collapse'.",
+          "fix": "Confirm the extra actions are intended and align the primary label with the design.",
+          "figmaBox": [
+            0,
+            25,
+            1440,
+            1013
+          ],
+          "liveBox": [
+            0,
+            23,
+            1440,
+            995
+          ],
+          "sectionBox": [
+            0,
+            23,
+            1440,
+            995
+          ],
+          "figmaPin": {
+            "x": 35,
+            "y": 48.7
+          },
+          "livePin": {
+            "x": 35,
+            "y": 48.7
+          }
+        }
+      ],
       "_role": "Citizen",
-      "_node": "3531:36666",
-      "_refbadge": "coverage",
-      "_refsub": "design │ build",
-      "_refchip": "#1558B0",
-      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+      "_node": "3531:36666"
     },
     {
       "slug": "CIT-CERT-ID",
@@ -579,13 +1044,48 @@
       "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/CITIZEN-CH-TRACK-APPROVED.png",
       "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=3531-36747",
       "liveUrl": "https://tg-user-dev.mosje.in/track-status",
-      "findings": [],
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-CIT-TRACK-001",
+          "element": "Track / status page is not built — the route lands on the dashboard",
+          "section": "cit-track",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "A Track page shows the application progress stepper (Submitted → In Scrutiny → Approval → Certificate Generation) with the current step highlighted, plus Withdraw Application, Correction Request and View Full Application actions.",
+          "live": "The build's track route renders the citizen dashboard instead — the progress stepper and its three actions do not exist anywhere in the build.",
+          "fix": "Build the track/status page per the design frame, including the progress stepper and the Withdraw / Correction Request / View Full Application actions.",
+          "figmaBox": [
+            0,
+            377,
+            1440,
+            580
+          ],
+          "liveBox": [
+            0,
+            290,
+            1440,
+            470
+          ],
+          "sectionBox": [
+            0,
+            290,
+            1440,
+            470
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 50.0
+          },
+          "livePin": {
+            "x": 50,
+            "y": 50.0
+          }
+        }
+      ],
       "_role": "Citizen",
-      "_node": "3531:36747",
-      "_refbadge": "coverage",
-      "_refsub": "design │ build",
-      "_refchip": "#1558B0",
-      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+      "_node": "3531:36747"
     },
     {
       "slug": "CIT-GRIEVANCES",
@@ -807,22 +1307,6 @@
       "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
     },
     {
-      "slug": "DM-MODAL-APPROVE",
-      "name": "District Magistrate — Approve modal",
-      "env": "dev",
-      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-APPROVE-MODAL.png",
-      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/DISTRICT-MAGISTRATE-MODAL-APPROVE.png",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-39988",
-      "liveUrl": "https://tg-admin-dev.mosje.in/applications",
-      "findings": [],
-      "_role": "District Magistrate",
-      "_node": "2494:39988",
-      "_refbadge": "coverage",
-      "_refsub": "design │ build",
-      "_refchip": "#1558B0",
-      "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
-    },
-    {
       "slug": "DM-MODAL-CORRECTION",
       "name": "District Magistrate — Request-Correction modal",
       "env": "dev",
@@ -837,6 +1321,133 @@
       "_refsub": "design │ build",
       "_refchip": "#1558B0",
       "note": "Portal-wide Global findings apply to this screen (masthead co-branding, KPI cards, tables, pagination — see the Global section). Design │ build shown for review; open the Figma frame ↗ for the intended design."
+    },
+    {
+      "slug": "DM-MODAL-APPROVE",
+      "name": "District Magistrate — Approve modal",
+      "env": "dev",
+      "figmaImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/figma/design-APPROVE-MODAL.png",
+      "liveImg": "/Users/akashk/Documents/Projects/MoSJE/tools/design-audit/projects/tg/captures/live/DISTRICT-MAGISTRATE-MODAL-APPROVE.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=2494-39988",
+      "liveUrl": "https://tg-admin-dev.mosje.in/applications",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-DM-MODAL-APPROVE-001",
+          "element": "Applicant info box uses a neutral tint, not the design's success tint",
+          "section": "dm-modal-approve",
+          "scope": "Screen",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "The applicant confirm box is green-tinted with a green border, reinforcing the approve action.",
+          "live": "The build renders a neutral grey box, losing the success affordance.",
+          "fix": "Apply the design's success tint + border to the applicant confirm box.",
+          "figmaBox": [
+            0,
+            236,
+            1440,
+            785
+          ],
+          "liveBox": [
+            0,
+            230,
+            1440,
+            770
+          ],
+          "sectionBox": [
+            0,
+            230,
+            1440,
+            770
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 61.2
+          },
+          "livePin": {
+            "x": 50,
+            "y": 61.1
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-DM-MODAL-APPROVE-002",
+          "element": "Applicant photograph not rendered in the confirm modal",
+          "section": "dm-modal-approve",
+          "scope": "Screen",
+          "axis": "Content & Iconography",
+          "severity": "Minor",
+          "figma": "The modal shows the applicant's photograph with a success check, so the approver can verify identity before committing.",
+          "live": "The build renders a generic placeholder avatar instead of the applicant's uploaded photo.",
+          "fix": "Render the applicant's photograph in the approve modal; confirm whether the placeholder is only a test-data artefact.",
+          "figmaBox": [
+            0,
+            236,
+            1440,
+            785
+          ],
+          "liveBox": [
+            0,
+            230,
+            1440,
+            770
+          ],
+          "sectionBox": [
+            0,
+            230,
+            1440,
+            770
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 16.5
+          },
+          "livePin": {
+            "x": 50,
+            "y": 16.7
+          }
+        },
+        {
+          "num": 3,
+          "id": "TG-DM-MODAL-APPROVE-003",
+          "element": "Build adds a 'Remarks (Optional)' field",
+          "section": "dm-modal-approve",
+          "scope": "Screen",
+          "axis": "Components & States",
+          "severity": "Nit",
+          "figma": "The approve modal has no remarks input.",
+          "live": "The build adds a 'Remarks (Optional)' textarea before the actions.",
+          "fix": "Confirm the remarks field is intended; if so, add it to the design frame.",
+          "figmaBox": [
+            0,
+            236,
+            1440,
+            785
+          ],
+          "liveBox": [
+            0,
+            230,
+            1440,
+            770
+          ],
+          "sectionBox": [
+            0,
+            230,
+            1440,
+            770
+          ],
+          "figmaPin": {
+            "x": 50,
+            "y": 83.5
+          },
+          "livePin": {
+            "x": 50,
+            "y": 83.3
+          }
+        }
+      ],
+      "_role": "District Magistrate",
+      "_node": "2494:39988"
     },
     {
       "slug": "CAD",
@@ -860,9 +1471,9 @@
           "fix": "Confirm the analytics layout is intended — the extra KPIs/charts are build-only (audit vs the visual language, don't remove).",
           "figmaBox": [
             0,
-            73,
+            78,
             1440,
-            794
+            827
           ],
           "liveBox": [
             0,
@@ -878,7 +1489,7 @@
           ],
           "figmaPin": {
             "x": 50,
-            "y": 13.3
+            "y": 13.1
           },
           "livePin": {
             "x": 50,
@@ -898,9 +1509,9 @@
           "fix": "Verify the chart palette against the TG tokens; the charts are a build-only section audited vs the visual language.",
           "figmaBox": [
             0,
-            73,
+            78,
             1440,
-            794
+            827
           ],
           "liveBox": [
             0,
@@ -916,7 +1527,7 @@
           ],
           "figmaPin": {
             "x": 40,
-            "y": 86.7
+            "y": 86.9
           },
           "livePin": {
             "x": 40,
