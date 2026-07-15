@@ -121,8 +121,17 @@ export default function <Slug>Layout({ children }: { children: React.ReactNode }
 }
 ```
 Copy ONLY the attributes the ORIGINAL `<html>` actually had — verify with:
-`git show main:apps/portals/<slug>/src/app/layout.tsx | grep -E 'data-surface|data-color-mode|<html'`
-(scw/nmba/nhapoa/smile-admin/pm-ajay had `data-surface`; tg did NOT — don't add it where it wasn't.
+```bash
+# Find the ref that actually LAST HELD the portal's pre-migration layout. Do NOT
+# hardcode `main`: a portal built on this branch never existed on main, so
+# `git show main:…` returns EMPTY and every attribute reads as "absent".
+# That false negative cost tg its type scale for several commits.
+REF=$(git log --format=%H -1 -- apps/portals/<slug>/src/app/layout.tsx)
+git show "$REF:apps/portals/<slug>/src/app/layout.tsx" | grep -E '<html|data-'
+```
+An empty result means "wrong ref", NOT "no attributes" — confirm the file existed at
+that ref (`git cat-file -e "$REF:path"`) before concluding anything.
+(ALL SIX — scw/nmba/tg/nhapoa/smile-admin/pm-ajay — carried `data-surface="portal"`.
 **`data-color-mode="blue-dark"`: BOTH smile-admin AND nmba had it** — an earlier draft of this
 recipe claimed "only smile-admin", and nmba's deep-navy ramp was silently lost as a result. Never
 assert which portals carry an attribute from memory; run the grep for EVERY portal. The tell is a

@@ -13,11 +13,12 @@ export const metadata: Metadata = {
 // data-portal="tg" binds this subtree to TG's Tailwind palette. The hub runs a
 // single Tailwind build, so the utility names are global but the values are
 // per-portal custom properties scoped by this attribute — see tg.css.
-// NOTE: no data-surface here — TG's standalone <html> never carried it, and
-// adding it would silently apply the DS portal type scale it never had.
+//
+// data-surface="portal" applies the DS portal type scale (tokens.css); TG's
+// standalone <html> carried it, same as every other portal.
 export default function TgLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div data-portal="tg">
+    <div data-portal="tg" data-surface="portal">
       <ToastProvider>
         <TgProvider>{children}</TgProvider>
       </ToastProvider>
