@@ -123,7 +123,23 @@ export default function <Slug>Layout({ children }: { children: React.ReactNode }
 Copy ONLY the attributes the ORIGINAL `<html>` actually had — verify with:
 `git show main:apps/portals/<slug>/src/app/layout.tsx | grep -E 'data-surface|data-color-mode|<html'`
 (scw/nmba/nhapoa/smile-admin/pm-ajay had `data-surface`; tg did NOT — don't add it where it wasn't.
-Only smile-admin had `data-color-mode`.) Verify after with a computed-CSS check in the browser.
+**`data-color-mode="blue-dark"`: BOTH smile-admin AND nmba had it** — an earlier draft of this
+recipe claimed "only smile-admin", and nmba's deep-navy ramp was silently lost as a result. Never
+assert which portals carry an attribute from memory; run the grep for EVERY portal. The tell is a
+`PORTAL_DEFAULT_MODE`/`DEFAULT_MODE` const feeding `<html data-color-mode={…}>` plus a cookie-priming
+init script — and if the portal renders no `ColorModeSwitcher` (`grep -rn ColorModeSwitcher`), the
+mode was a fixed brand identity, so hard-code it on the wrapper.)
+Also add **`data-portal="<slug>"`** to the same wrapper — it is what binds the portal's Tailwind
+palette to its subtree (see §5b). Verify after with a computed-CSS check in the browser.
+
+> **KNOWN GAP (as of the 6-portal consolidation):** a nested `data-color-mode` island does **not**
+> actually repaint the DS ramp. `tokens.css` re-resolves the `--ds-*` aliases only inside `:root`
+> and the `[data-theme=*]` blocks, so a `[data-color-mode="blue-dark"]` wrapper flips the
+> `--sa-color-*` primitives but `--ds-primary` stays whatever `<html>` resolved. It worked in the
+> standalone portals because the attribute sat on `<html>` itself. Affects smile-admin and nmba.
+> The fix belongs in `packages/tokens` (emit the `--ds-*` re-resolution inside the
+> `[data-color-mode]` block, exactly as the `[data-theme]` blocks already do) — **not** in a hub
+> workaround. Still set the attribute; it becomes correct the moment the token fix lands.
 Ignore `className={font.variable}` (hub root owns the font) and `lang`/`suppressHydrationWarning`
 (hub root owns those).
 
@@ -143,9 +159,62 @@ Then edit `<slug>.css`: DELETE the top three lines
 `@import "tailwindcss";`, `@import "tw-animate-css";`,
 `@import "@mosje/design-system/tokens.css";` — the hub's `globals.css` already
 imports all three app-wide. Keep only the portal's own rules (component classes,
-CSS-var maps). If the portal defined `@custom-variant`/`@theme`, DELETE it (hub
-owns the theme). For Tailwind-less portals (pm-ajay), keep the full scoped CSS
+CSS-var maps). For Tailwind-less portals (pm-ajay), keep the full scoped CSS
 as-is minus any tailwind import.
+
+**Carry over any `@source` (LEARNED — cost the DS login hero its width).** nmba's globals.css had
+`@source "…/packages/design-system/components";` so DS component classes aren't purged. Deleting it
+silently purged `lg:w-[58%]` from `PortalLoginShell`. The hub now owns one app-wide `@source` in its
+`globals.css` — check the portal for any OTHER `@source` and fold it in:
+```bash
+git show main:apps/portals/<slug>/src/app/globals.css | grep -nE '^@(source|config|custom-variant|theme|import)'
+```
+Anything that grep prints must be consciously re-homed, not dropped.
+
+## 5b. Port the portal's `tailwind.config.ts` BEFORE deleting it — MANDATORY
+**This is the single most expensive thing the first pass got wrong.** Five portals
+(scw, nmba, nhapoa, tg, smile-admin) each had a `@config "../../tailwind.config.ts"` in their
+globals.css loading a config that defined their whole palette. Deleting the configs made ~1,300
+utilities (`text-navy`, `border-line`, `text-ink-hint`, `bg-brandwash`, `shadow-card`, `p-md`, …)
+emit **zero CSS** — colours silently fell back to `currentColor`. **Every page still returned 200**,
+which is exactly why smoke tests missed it. Find the config first:
+```bash
+git show main:apps/portals/<slug>/src/app/globals.css | grep -n '@config'   # does it have one?
+git show main:apps/portals/<slug>/tailwind.config.ts                        # read the whole theme
+```
+Then port it — **global names, per-portal values.** Never "resolve" a conflict by picking a winner;
+the portals' palettes deliberately differ (scw's `ink-hint` is #94a3b8 and fails AA, nmba/nhapoa/tg
+darkened theirs to #64748b — both are correct for their own portal). Preserve, don't improve.
+
+1. **Declare the NAME** in `apps/hub/src/app/globals.css`. Which block matters:
+   - `@theme { --color-x: <literal> }` → emits `.text-x { color: var(--color-x) }`. The var is read
+     at the element, so a `[data-portal]` override wins. **Use this for portal-only names.**
+   - `@theme inline { … }` → the value is INLINED into the utility and `--color-x` overrides do
+     NOTHING. The hub's DS tokens must stay inline (that is what makes `--ds-*`/`data-color-mode`
+     resolve per element). Where a portal redefines a hub/DS name, give it a slot:
+     `--color-ink: var(--portal-ink, var(--ds-ink));` — hub keeps the fallback, portal sets
+     `--portal-ink`.
+2. **Bind the VALUE** in `portals/<slug>/<slug>.css` under `[data-portal="<slug>"] { … }`, and add
+   `data-portal="<slug>"` to the layout wrapper (§4). List only the keys that differ from the
+   global default, and comment every conflict with who else disagrees.
+3. Port the **non-colour** `theme.extend` too: `borderRadius`, `boxShadow`, `fontFamily`, `fontSize`,
+   `spacing`, `keyframes`, `animation`, `transitionTimingFunction` — and `theme.container`
+   (`center`/`padding`/`screens`), which stock v4 does **not** reproduce.
+
+**Three traps, all hit for real:**
+- **`--spacing-*` is radioactive.** Tailwind resolves `--spacing-*` BEFORE `--container-*`, so
+  declaring `--spacing-md: 12px` rewrites `max-w-md` from 28rem to **12px for every app in the
+  build** — at generation time, so no `[data-portal]` scope can undo it. Route a portal's named
+  spacing through a private namespace + explicit `@utility` rules instead (see
+  `--portal-spacing-*` in globals.css); core `p-4`/`max-w-md` then keep stock semantics.
+- **Some stock values are inlined, not var-based.** `--radius-xs/lg/xl/2xl/3xl` and `--font-mono`
+  ARE var-based → scope them directly. `--shadow-md` is inlined → it needs a
+  `var(--portal-shadow-md, <stock verbatim>)` slot to be scopable at all.
+- **Third-party `@theme inline` wins by name.** `tw-animate-css` owns `--animate-in`; smile-admin's
+  config also defined `animation.in`. The only scoped way back is a plain rule
+  (`[data-portal="smile-admin"] .animate-in { animation: … }`), not a custom property.
+
+Only after the port is verified (§8b) delete the config in §7.
 
 ## 6. Merge middleware (only if the portal had one) — into `proxy.ts`, NOT `middleware.ts`
 Next 16 renamed the middleware convention to **`proxy.ts`**, and the hub already has
@@ -230,3 +299,37 @@ for dynamic `data:`/`blob:` srcs), never `--no-verify`.
 ## 8. Verify
 `npm run dev`, open `http://localhost:3000/portals/<slug>`, confirm 200 +
 first paint + no console errors + AppSwitcher FAB present (from hub, bottom-left).
+
+## 8b. Prove the CSS is actually EMITTED — an HTTP 200 proves nothing
+**A page with a dead theme still returns 200 and still "first paints".** That is precisely how the
+first pass shipped ~1,300 zero-CSS utilities. Build, then grep the emitted stylesheet:
+```bash
+npm --prefix apps/hub run build
+find apps/hub/.next/static -name '*.css' -exec cat {} + > /tmp/after.css
+# The output is MINIFIED and selectors are escaped (`.lg\:w-\[58\%\]`) — grep for the
+# declaration, not a pretty-printed rule, or you will get false "MISSING" results.
+grep -c 'text-navy{' /tmp/after.css        # must be >= 1
+grep -c 'lg\\:w-\\\[58\\%\\\]' /tmp/after.css   # DS PortalLoginShell hero — proves @source works
+```
+Check at minimum: one colour (`text-navy`), one border (`border-line`), one shadow
+(`shadow-card`), one radius (`rounded-xl`), and a DS-component class. A utility that is genuinely
+unused in source correctly emits nothing — confirm with a call-site grep before calling it a bug.
+
+**Diff against ground truth.** The old config still builds — render it and compare, rather than
+eyeballing:
+```bash
+git show main:apps/portals/<slug>/tailwind.config.ts > /tmp/<slug>.config.ts
+printf '@import "tailwindcss" source(none);\n@config "/tmp/<slug>.config.ts";\n@source "<portal source dirs>";\n' > /tmp/orig.css
+npx @tailwindcss/cli@4 -i /tmp/orig.css -o /tmp/orig-out.css   # → the exact pre-migration CSS
+```
+
+**Prove the scoping, not just the emission** — in the browser, on the PRODUCTION build
+(`npx next start -p 3100`; a dev server may serve a stale `globals.css` chunk and lie to you):
+```js
+const w = document.querySelector('[data-portal]');
+getComputedStyle(w).getPropertyValue('--color-ink-hint')                 // portal's value
+getComputedStyle(document.documentElement).getPropertyValue('--color-ink-hint')  // global default
+getComputedStyle(document.querySelector('.text-ink-hint')).color         // what actually renders
+```
+Then load the **hub home** (`/`) and confirm `text-ink`, `rounded-xl` and `max-w-md` are UNCHANGED —
+that is the regression the global-name/per-portal-value split exists to prevent.

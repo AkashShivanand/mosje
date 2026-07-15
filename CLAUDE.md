@@ -51,19 +51,36 @@ Apps are **independent** (own git, own deps) — this is a "monorepo-ready" layo
 | App | Framework | Styling | Notes |
 |-----|-----------|---------|-------|
 | `apps/dosje/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Noto Sans, gov brand tokens in `src/app/globals.css`. **Next 16 has breaking changes — see `apps/dosje/AGENTS.md`.** |
-| `apps/hub/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Root zone at :3000; mounts all child apps. |
-| `apps/portals/smile-admin/` | Next.js 15 · React 19 | Tailwind **v3** + Radix/shadcn | ESLint v8 (`.eslintrc` format). Plan migration to Tailwind v4 + ESLint v9 in same sprint as Next.js version alignment. |
-| `apps/portals/pm-ajay/` | Next.js 15 · React 19 | **No Tailwind** (intentional) | MIS dashboard uses hand-rolled SVG charts and `--ds-*` CSS custom properties directly. No `tailwindcss` dep by design — adding one would require configuring PostCSS and aligning to v3/v4. ESLint v8. |
+| `apps/hub/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Root zone at :3000; **hosts every portal natively** at `/portals/<slug>`, and owns the single Tailwind build for all of them. |
 
-**Tailwind version split (INFRA-004):** hub and dosje use Tailwind **v4** (CSS-first `@theme` config, incompatible API). smile-admin uses Tailwind **v3** (`tailwind.config.ts`). pm-ajay uses no Tailwind. Shared `@mosje/tokens` emits both a v4 `@theme` block and a v3 `tailwind-preset.cjs` so either consumer can pick up the token contract. **Do not introduce Tailwind v4 patterns into smile-admin without a migration plan.**
+**Tailwind after the single-origin consolidation:** the portals no longer have their own apps,
+Tailwind installs, or `tailwind.config.ts` files — they are route groups inside `apps/hub`, so
+there is exactly **one** Tailwind **v4** build across the estate. Each portal's old `theme.extend`
+now lives in `apps/hub/src/app/globals.css` as **global utility names**, with the **per-portal
+values** re-bound in `apps/hub/src/app/portals/<slug>/<slug>.css` under `[data-portal="<slug>"]`
+(the portals' palettes genuinely conflict, so the values cannot be merged). Read the contract at
+the top of `apps/hub/src/app/globals.css` before touching a portal colour, radius or shadow.
+pm-ajay remains Tailwind-free by design — its MIS dashboard uses hand-rolled SVG charts and
+`--ds-*` custom properties directly.
 
 ## Commands
 
 Run inside the app folder (or via `npm --prefix <app>`):
 - `npm run dev` · `npm run build` · `npm run lint` · `npm run typecheck`
-- `npm run dev` — boot ALL apps behind `localhost:3000` (hub gate + website + portals + Storybook). Individual apps: `npm run dev:website`, `npm run dev:smile`, `npm run dev:pm-ajay`, `npm run dev:eutthan`, `npm run dev:docs`, `npm run dev:hub`.
-- `apps/hub`: root entry point at **:3000** (`npm run dev:hub`). Dev servers are defined in `.claude/launch.json`.
-- `apps/dosje`: standalone at **:3001** (`npm run dev:website`), proxied at `/website` through the hub.
+- `npm run dev` (repo root) — boots the **four** processes that still exist: hub, dosje, docs, Storybook.
+  **Every portal is a native route inside the hub** — there is no per-portal dev server and no
+  `dev:smile` / `dev:pm-ajay` / `dev:eutthan` / `dev:scw` / `dev:nmba` / `dev:nhapoa` / `dev:tg` script.
+  `npm run dev:hub` alone serves all of them.
+
+| Process | Port | Script | Reached at |
+|---------|------|--------|------------|
+| `apps/hub` — root zone **+ every portal** | **3000** | `npm run dev:hub` | `/` and `/portals/<slug>` |
+| `apps/dosje` — the unified website | 3001 | `npm run dev:website` | `/website` (proxied through the hub) |
+| `apps/docs` — SAMAVESH docs portal | 3002 | `npm run dev:docs` | `/design-system` (proxied) |
+| `apps/storybook` | 6006 | `npm run dev:storybook` | `/storybook` (proxied) |
+
+Dev servers are defined in `.claude/launch.json`. Portals live at `/portals/<slug>` —
+scw, nmba, nhapoa, tg, smile-admin, pm-ajay, eutthan-admin — all served by the hub itself.
 - Design tokens: `npm run build -w @mosje/tokens` (regenerate) · `npm test -w @mosje/tokens` (contract).
 
 ## Conventions (apply everywhere unless a rule file overrides)

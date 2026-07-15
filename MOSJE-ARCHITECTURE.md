@@ -32,16 +32,27 @@ mosje/                      # single git repo
 
 All apps are accessible from **`localhost:3000`** (hub) in development, and from a single production origin in production. The hub at `apps/hub` holds the routing rewrites.
 
-| App | Dev port | Mount path |
-|-----|----------|------------|
-| hub | **3000** | `/` (root) |
-| dosje (website) | 3001 | `/website` |
-| docs (Storybook) | 6006 | `/design-system` |
-| portals/smile-admin | 4123 | `/portals/smile-admin` |
-| portals/pm-ajay | 4124 | `/portals/pm-ajay` |
-| portals/eutthan-admin | 4125 | `/portals/eutthan-admin` |
+Only **three** apps are still separate zones behind the hub proxy. **Every portal is now a native
+route group inside the hub** — no separate app, no `basePath`, no rewrite, no port of its own.
 
-**Adding a new portal:** add `basePath: "/portals/<slug>"` to its `next.config.ts`, add a rewrite rule to `apps/hub/next.config.ts`, and add an entry to `apps/hub/src/data/portals.ts`.
+| App | Dev port | Mount path | How it is served |
+|-----|----------|------------|------------------|
+| hub | **3000** | `/` (root) | — |
+| dosje (website) | 3001 | `/website` | zone rewrite |
+| docs (SAMAVESH docs) | 3002 | `/design-system` | zone rewrite |
+| storybook | 6006 | `/storybook` | zone rewrite |
+| portals/scw | — | `/portals/scw` | **native in hub** |
+| portals/nmba | — | `/portals/nmba` | **native in hub** |
+| portals/nhapoa | — | `/portals/nhapoa` | **native in hub** |
+| portals/tg | — | `/portals/tg` | **native in hub** |
+| portals/smile-admin | — | `/portals/smile-admin` | **native in hub** |
+| portals/pm-ajay | — | `/portals/pm-ajay` | **native in hub** |
+| portals/eutthan-admin | — | `/portals/eutthan-admin` | **native in hub** |
+
+**Adding a new portal:** create the route group at `apps/hub/src/app/portals/<slug>` and register it
+in `DEFAULT_APPS`. Do **not** create a new app or a hub rewrite. The full procedure — including
+porting the portal's Tailwind theme and verifying the emitted CSS — is in
+[`apps/hub/src/app/portals/MIGRATION-RECIPE.md`](apps/hub/src/app/portals/MIGRATION-RECIPE.md).
 
 ---
 

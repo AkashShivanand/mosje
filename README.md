@@ -115,19 +115,24 @@ A `PreToolUse(Bash)` hook (`.claude/hooks/guard.sh` → `guard.mjs`) is the work
 
 ### Dev servers & ports (`.claude/launch.json`)
 
-`npm run dev` from the repo root boots everything behind the hub gate at **:3000**. Individual apps run standalone on fixed ports:
+`npm run dev` from the repo root boots the **four** processes that exist — hub, dosje, docs and
+Storybook — behind the hub gate at **:3000**.
 
-| App | Port | Standalone script |
-|---|---|---|
-| `apps/hub` (root gate) | **3000** | `npm run dev:hub` |
-| `apps/dosje` (website) | **3001** | `npm run dev:website` |
-| `apps/docs` (SAMAVESH docs) | **3002** | `npm run dev:docs` |
-| `apps/storybook` | **6006** | `npm run dev:storybook` |
-| `apps/portals/smile-admin` | **4123** | `npm run dev:smile` |
-| `apps/portals/pm-ajay` | **4124** | `npm run dev:pm-ajay` |
-| `apps/portals/scw` | **4125** | `npm run dev:scw` |
+| App | Port | Standalone script | Reached at |
+|---|---|---|---|
+| `apps/hub` (root gate **+ every portal**) | **3000** | `npm run dev:hub` | `/`, `/portals/<slug>` |
+| `apps/dosje` (website) | **3001** | `npm run dev:website` | `/website` (proxied) |
+| `apps/docs` (SAMAVESH docs) | **3002** | `npm run dev:docs` | `/design-system` (proxied) |
+| `apps/storybook` | **6006** | `npm run dev:storybook` | `/storybook` (proxied) |
 
-New portals take the next free port in the `412x` range and add an entry here plus a hub rewrite. See [`CLAUDE.md`](CLAUDE.md) for the full command list and [`MOSJE-ARCHITECTURE.md`](MOSJE-ARCHITECTURE.md) for the app registry.
+**The portals no longer have their own dev servers or `412x` ports.** Every portal — scw, nmba,
+nhapoa, tg, smile-admin, pm-ajay, eutthan-admin — is a **native route group inside the hub** at
+`apps/hub/src/app/portals/<slug>`, served by `dev:hub` on :3000. The old `dev:smile` /
+`dev:pm-ajay` / `dev:eutthan` scripts are gone.
+
+**Adding a new portal:** create the route group under `apps/hub/src/app/portals/<slug>`, not a new
+app — follow [`apps/hub/src/app/portals/MIGRATION-RECIPE.md`](apps/hub/src/app/portals/MIGRATION-RECIPE.md).
+See [`CLAUDE.md`](CLAUDE.md) for the full command list and [`MOSJE-ARCHITECTURE.md`](MOSJE-ARCHITECTURE.md) for the app registry.
 
 ## Principles
 
