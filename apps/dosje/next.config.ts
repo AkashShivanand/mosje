@@ -33,8 +33,16 @@ const nextConfig: NextConfig = {
   // Transpile the shared design-system package (ships TS/TSX source, not pre-compiled).
   transpilePackages: ["@mosje/design-system"],
   async headers() {
+    const securityHeaders = { source: "/(.*)", headers: SECURITY_HEADERS };
+    // The immutable long-cache header is ONLY safe in production. Turbopack's dev
+    // chunk URLs are stable, so in dev this pins the browser to the first build it
+    // ever fetched: edits never refetch and the stale client hydrates against fresh
+    // server HTML, surfacing as bogus hydration mismatches. Apply it in prod only.
+    if (process.env.NODE_ENV !== "production") {
+      return [securityHeaders];
+    }
     return [
-      { source: "/(.*)", headers: SECURITY_HEADERS },
+      securityHeaders,
       {
         source: "/_next/static/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
