@@ -38,9 +38,9 @@ route group inside the hub** — no separate app, no `basePath`, no rewrite, no 
 | App | Dev port | Mount path | How it is served |
 |-----|----------|------------|------------------|
 | hub | **3000** | `/` (root) | — |
-| dosje (website) | 3001 | `/website` | zone rewrite |
-| docs (SAMAVESH docs) | 3002 | `/design-system` | zone rewrite |
-| storybook | 6006 | `/storybook` | zone rewrite |
+| website (was `apps/dosje`) | — | `/website` | **native in hub** |
+| SAMAVESH docs (was `apps/docs`) | — | `/design-system` | **native in hub** |
+| storybook | 6006 | `/storybook` | zone rewrite (**the only remaining zone** — not a Next app) |
 | portals/scw | — | `/portals/scw` | **native in hub** |
 | portals/nmba | — | `/portals/nmba` | **native in hub** |
 | portals/nhapoa | — | `/portals/nhapoa` | **native in hub** |

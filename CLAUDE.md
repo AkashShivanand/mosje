@@ -67,20 +67,22 @@ pm-ajay remains Tailwind-free by design — its MIS dashboard uses hand-rolled S
 
 Run inside the app folder (or via `npm --prefix <app>`):
 - `npm run dev` · `npm run build` · `npm run lint` · `npm run typecheck`
-- `npm run dev` (repo root) — boots the **four** processes that still exist: hub, dosje, docs, Storybook.
-  **Every portal is a native route inside the hub** — there is no per-portal dev server and no
-  `dev:smile` / `dev:pm-ajay` / `dev:eutthan` / `dev:scw` / `dev:nmba` / `dev:nhapoa` / `dev:tg` script.
-  `npm run dev:hub` alone serves all of them.
+- `npm run dev` (repo root) — boots the **two** processes that still exist: hub and Storybook.
+  **The whole estate is native inside the hub** — every portal, the website AND the docs. There is
+  no per-portal dev server, and no `dev:website` / `dev:docs` / `dev:smile` / `dev:pm-ajay` /
+  `dev:eutthan` / `dev:scw` / `dev:nmba` / `dev:nhapoa` / `dev:tg` script. `npm run dev:hub` alone
+  serves everything except Storybook.
 
 | Process | Port | Script | Reached at |
 |---------|------|--------|------------|
-| `apps/hub` — root zone **+ every portal** | **3000** | `npm run dev:hub` | `/` and `/portals/<slug>` |
-| `apps/dosje` — the unified website | 3001 | `npm run dev:website` | `/website` (proxied through the hub) |
-| `apps/docs` — SAMAVESH docs portal | 3002 | `npm run dev:docs` | `/design-system` (proxied) |
-| `apps/storybook` | 6006 | `npm run dev:storybook` | `/storybook` (proxied) |
+| `apps/hub` — **the entire estate** | **3000** | `npm run dev:hub` | `/`, `/website`, `/design-system`, `/portals/<slug>`, `/reports/<slug>` |
+| `apps/storybook` | 6006 | `npm run dev:storybook` | `/storybook` (proxied — the ONLY remaining zone) |
 
-Dev servers are defined in `.claude/launch.json`. Portals live at `/portals/<slug>` —
-scw, nmba, nhapoa, tg, smile-admin, pm-ajay, eutthan-admin — all served by the hub itself.
+Dev servers are defined in `.claude/launch.json`. Storybook is the one irreducible child process:
+it is not a Next app, so it cannot be mounted natively. Everything else lives under
+`apps/hub/src/app/` — the website at `website/`, the docs at `design-system/`, and the portals at
+`portals/<slug>` (scw, nmba, nhapoa, tg, smile-admin, pm-ajay, eutthan-admin).
+`apps/dosje` and `apps/docs` no longer exist as apps.
 - Design tokens: `npm run build -w @mosje/tokens` (regenerate) · `npm test -w @mosje/tokens` (contract).
 
 ## Conventions (apply everywhere unless a rule file overrides)
