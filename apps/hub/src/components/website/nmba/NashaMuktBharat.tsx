@@ -1,4 +1,3 @@
-import { TOTAL_CENTRES } from "@/content/website/deaddiction-centres";
 import { DeAddictionMap } from "./DeAddictionMap";
 import { DualPledge } from "./DualPledge";
 import { NashaMuktiMitr } from "./NashaMuktiMitr";
@@ -27,7 +26,8 @@ function SectionHeading({ title, subtitle }: { title: string; subtitle: string }
   );
 }
 
-const MAP_SUBTITLE = `${TOTAL_CENTRES} Nasha Mukti Kendras across India. No login required — filter by state, district or centre type.`;
+const MAP_SUBTITLE =
+  "Locate a Nasha Mukti Kendra near you — search by name, state, district or centre type. No login required.";
 
 export function NashaMuktBharat({ variant = "full" }: NashaMuktBharatProps) {
   if (variant === "band") {

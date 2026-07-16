@@ -12,7 +12,7 @@ import { SocialMedia } from "@/components/website/SocialMedia";
 import { LogoStrip } from "@/components/website/LogoStrip";
 import { SiteFooter } from "@/components/website/SiteFooter";
 import { ImportantLinks } from "@/components/website/ImportantLinks";
-import { NashaMuktBharat } from "@/components/website/nmba/NashaMuktBharat";
+import { NmbaHomeCompact } from "@/components/website/nmba/NmbaHomeCompact";
 
 export default function Home() {
   return (
@@ -22,7 +22,7 @@ export default function Home() {
         <SamaveshBanner />
         <HeroCarousel />
         <LatestUpdates />
-        <NashaMuktBharat />
+        <NmbaHomeCompact />
         <AboutUs />
         <Offerings />
         <Organisations />
