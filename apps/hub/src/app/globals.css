@@ -32,6 +32,12 @@
         Custom properties inherit, so utilities inside the subtree resolve to
         that portal's value.
 
+   The DoSJE website (`app/website/`) follows the SAME contract on its own axis:
+   `[data-site="website"]` in `app/website/website.css`. It is not a portal (no
+   `data-surface="portal"` type scale), but it reuses the `--portal-*` slots below
+   where it redefines a name the hub also declares — the slot means "subtree
+   override", not "portals only".
+
    Two declaration styles, and the difference MATTERS:
      • `@theme`        → `.text-navy { color: var(--color-navy) }`. The utility
                         reads the variable at the ELEMENT, so a `[data-portal]`
@@ -91,6 +97,11 @@
   --color-surface-muted:  var(--portal-surface-muted, var(--ds-surface-muted));
   --color-border:         var(--portal-border, var(--ds-border));
   --color-border-strong:  var(--ds-border-strong);
+  /* website-only name. The DoSJE website distinguishes `border-border` (its own
+     shadcn --border, re-bound via the --portal-border slot in website.css) from
+     `border-border-ds`, an explicit escape hatch to the DS border. No other app
+     declares it, so there is no conflict to scope. */
+  --color-border-ds:      var(--ds-border);
 
   /* ── Status ─────────────────────────────────────────────────────────── */
   --color-success:        var(--portal-success, var(--ds-success));

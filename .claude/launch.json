@@ -9,13 +9,6 @@
       "autoPort": false
     },
     {
-      "name": "website",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/dosje", "run", "dev"],
-      "port": 3001,
-      "autoPort": false
-    },
-    {
       "name": "storybook",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "apps/storybook", "run", "dev"],

@@ -1,14 +1,13 @@
 import type { NextConfig } from "next";
 import path from "node:path";
 
-const ZONE_WEBSITE     = process.env.ZONE_WEBSITE_URL     ?? "http://localhost:3001";
 const ZONE_DS          = process.env.ZONE_DS_URL          ?? "http://localhost:6006";
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  // Required for Multi-Zones: prevents the hub from stripping trailing slashes
-  // from child-zone paths (e.g. /website/ → /website), which would create a
-  // redirect loop with any child app that has trailingSlash: true.
+  // Required for the one remaining zone (Storybook): prevents the hub from
+  // stripping the trailing slash off /storybook/, which Storybook's relative
+  // asset URLs depend on.
   skipTrailingSlashRedirect: true,
   // react-live powers the SAMAVESH docs portal's live component playground
   // (native route at /design-system) — must be transpiled here now that docs
@@ -20,13 +19,10 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
-      // dosje website zone — explicit /website/ rule guards against any future
-      // trailingSlash reintroduction; skipTrailingSlashRedirect above handles it too.
-      { source: "/website",         destination: `${ZONE_WEBSITE}/website` },
-      { source: "/website/",        destination: `${ZONE_WEBSITE}/website/` },
-      { source: "/website/:path*",  destination: `${ZONE_WEBSITE}/website/:path*` },
-      // eutthan-admin, scw, nmba, tg, nhapoa, smile-admin, pm-ajay, and the
-      // design-system docs portal are native routes inside hub — no rewrite needed
+      // The DoSJE website, eutthan-admin, scw, nmba, tg, nhapoa, smile-admin,
+      // pm-ajay and the design-system docs portal are all native routes inside
+      // the hub — no rewrite needed. Storybook is the only remaining zone.
+      //
       // Storybook — proxied through the hub. Always LINK to "/storybook/" (trailing
       // slash) so Storybook's relative asset URLs (./sb-manager/…, ./iframe.html)
       // resolve under /storybook/ and proxy via the :path* rule below. The no-slash
@@ -36,8 +32,27 @@ const nextConfig: NextConfig = {
       { source: "/storybook/:path*",  destination: `${ZONE_DS}/:path*` },
     ];
   },
+  // Legacy hand-coded org slugs → real ingested slugs (safety net for bookmarks).
+  // Ported verbatim from apps/dosje/next.config.ts when the website mounted
+  // natively; the only change is the now-explicit /website prefix, which the
+  // app's basePath used to add for us.
   async redirects() {
-    return [];
+    const legacyOrgSlugs = {
+      nsfdc: "national-scheduled-castes-finance-and-development-corporation",
+      nskfdc: "national-safai-karamcharis-finance-development-corporation",
+      nbcfdc: "national-backward-classes-financeand-development-corporationnbcfdc",
+      nisd: "national-institute-of-social-defence",
+      nmba: "nasha-mukt-bharat-abhiyaan",
+      dwbdnc: "development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic",
+      "senior-citizens-welfare": "senior-citizens-welfarescw",
+      "pm-ajay": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay",
+      "transgender-portal": "national-portal-for-transgender-persons",
+    };
+    return Object.entries(legacyOrgSlugs).map(([from, to]) => ({
+      source: `/website/organisation/${from}`,
+      destination: `/website/organisation/${to}`,
+      permanent: true,
+    }));
   },
   async headers() {
     const securityHeaders = {

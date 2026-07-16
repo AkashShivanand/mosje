@@ -16,16 +16,13 @@
     "test:e2e:ui": "playwright test --ui",
     "kill-ports": "bash scripts/kill-dev-ports.sh",
     "predev": "npm run kill-ports",
-    "dev": "concurrently --restart-tries 3 --restart-after 2000 --prefix-colors \"blue,cyan,cyan\" -n \"hub,dosje,storybook\" \"bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3000'\" \"bash -c 'cd apps/dosje && exec ./node_modules/.bin/next dev --turbopack -p 3001'\" \"bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006 --ci'\"",
+    "dev": "concurrently --restart-tries 3 --restart-after 2000 --prefix-colors \"blue,cyan\" -n \"hub,storybook\" \"bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3000'\" \"bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006 --ci'\"",
     "dev:hub": "bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3000'",
-    "dev:website": "bash -c 'cd apps/dosje && exec ./node_modules/.bin/next dev --turbopack -p 3001'",
     "dev:storybook": "bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006'",
-    "check": "npm run check:hub && npm run check:dosje",
+    "check": "npm run check:hub",
     "check:hub": "npm --prefix apps/hub run typecheck",
-    "check:dosje": "npm --prefix apps/dosje run typecheck",
-    "lint": "npm run lint:hub && npm run lint:dosje",
-    "lint:hub": "npm --prefix apps/hub run lint",
-    "lint:dosje": "npm --prefix apps/dosje run lint"
+    "lint": "npm run lint:hub",
+    "lint:hub": "npm --prefix apps/hub run lint"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

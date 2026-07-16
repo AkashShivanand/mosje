@@ -28,8 +28,9 @@ interface Zone {
 const base = (env: string | undefined, fallback: string) => env ?? fallback;
 
 const ZONES: Zone[] = [
-  { prefix: "/website",             probeUrl: base(process.env.ZONE_WEBSITE_URL,     "http://localhost:3001") + "/website",                   label: "DoSJE Website",  cmd: "npm run dev:website" },
   { prefix: "/storybook",           probeUrl: base(process.env.ZONE_DS_URL,          "http://localhost:6006"),                                 label: "Storybook",      cmd: "npm run dev:storybook" },
+  // The DoSJE website migrated to a native hub route (apps/hub/src/app/website) —
+  // no zone to proxy. Storybook is the last remaining child process.
   // scw migrated to a native hub route (apps/hub/src/app/portals/scw) — no zone to proxy.
   // nmba migrated to a native hub route (apps/hub/src/app/portals/nmba) — no zone to proxy.
   // tg migrated to a native hub route (apps/hub/src/app/portals/tg) — no zone to proxy.
@@ -190,8 +191,9 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
 
 export const config = {
   matcher: [
-    "/website",
-    "/website/:path*",
+    // /website is intentionally absent: the DoSJE website is a native route now,
+    // so there is no zone to probe and nothing to guard — running the proxy over
+    // its ~79 routes would be pure overhead.
     "/storybook",
     "/storybook/:path*",
     "/portals/:path*",
