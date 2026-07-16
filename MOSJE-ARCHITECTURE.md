@@ -91,7 +91,7 @@ Functional workflow apps. Seeded from the orgs/schemes surfaced on the live site
 ### Schemes & scholarships
 | Slug | Scheme | Status |
 |------|--------|--------|
-| `pm-ajay` | Pradhan Mantri Anusuchit Jaati Abhyuday Yojna | ✅ **built** — MIS dashboard (6 views · 60 KPIs · port 4124) |
+| `pm-ajay` | Pradhan Mantri Anusuchit Jaati Abhyuday Yojna | ✅ **built** — MIS dashboard (6 views · 60 KPIs) · native at `/portals/pm-ajay` |
 | `nos` | National Overseas Scholarship | planned |
 | `pm-yasasvi` | PM Young Achievers Scholarship (PM-YASASVI) | planned |
 | `pre-matric-sc` | Pre-Matric Scholarship (SC & others) | planned |
@@ -117,7 +117,10 @@ Functional workflow apps. Seeded from the orgs/schemes surfaced on the live site
 ## Cross-cutting
 
 - **Shared design system** (`packages/design-system`) is the linchpin — every site + portal renders from it, kept in Figma sync via Code Connect (`/sync-figma`). Extraction is phase 2.
-- **Per-portal ports** start at 4123 and increment; record each in `.claude/launch.json`.
+- **No per-portal ports.** The estate is single-origin: a new portal is a route group at
+  `apps/hub/src/app/portals/<slug>`, NOT a new app with its own port or `basePath`. Follow
+  `apps/hub/src/app/portals/MIGRATION-RECIPE.md`. Only Storybook (:6006) is still a separate
+  process, because it is not a Next app. The old 4123+ port range is retired.
 - **Standards:** DBIM (brand identity) + GIGW (gov web guidelines) + WCAG 2.1 AA. See `Documents/MoSJE DBIM Audit.pdf` — a future `gov-compliance` skill should encode its findings.
 - **Build loop per property:** `clone-website` (or design from Figma) → `/review` → `/a11y` → `/qa` → ship.
 

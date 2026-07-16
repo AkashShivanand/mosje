@@ -8,9 +8,13 @@ One repo for the whole MoSJE estate: the apps **and** the shared design-system p
 
 ```
 apps/
-├── dosje/           the unified website (Next 16 · Tailwind v4)
-├── portals/         functional portals — pm-ajay, smile-admin (Next 15 · Tailwind v3)
-└── docs/            SAMAVESH Storybook / DS documentation portal (`npm run dev:docs`)
+├── hub/             THE app — single origin :3000, serves the whole estate (Next 16 · Tailwind v4)
+│   └── src/app/
+│       ├── website/          the unified DoSJE website
+│       ├── design-system/    SAMAVESH DS documentation
+│       ├── portals/<slug>/   scw · nmba · nhapoa · tg · smile-admin · pm-ajay · eutthan-admin
+│       └── reports/<slug>/   design-QC / audit reports
+└── storybook/       component workshop (`npm run dev:storybook`) — the only non-hub process
 packages/
 ├── tokens/          @mosje/tokens         — DTCG token source → Style Dictionary → CSS/TS/Tailwind/Figma
 ├── design-system/   @mosje/design-system  — shared React components (consumes generated tokens)
