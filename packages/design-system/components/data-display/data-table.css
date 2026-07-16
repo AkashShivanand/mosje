@@ -123,7 +123,7 @@
 
 .ds-table__pagesize-btn.is-active {
   background-color: var(--ds-primary);
-  color: var(--ds-on-primary, #fff);
+  color: var(--ds-on-primary);
 }
 
 .ds-table__pager {

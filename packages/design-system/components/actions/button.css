@@ -173,9 +173,9 @@
    page header) — replaces the className overrides every portal was hand-rolling.
    -------------------------------------------------------------------------- */
 .ds-btn--inverse {
-  background-color: #fff;
+  background-color: var(--ds-neutral-0);
   color: var(--_color);
-  border-color: #fff;
+  border-color: var(--ds-neutral-0);
 }
 
 .ds-btn--inverse:hover {
@@ -190,7 +190,7 @@
 
 .ds-btn--inverseOutlined {
   background-color: transparent;
-  color: #fff;
+  color: var(--ds-on-primary);
   border-color: rgba(255, 255, 255, 0.4);
 }
 

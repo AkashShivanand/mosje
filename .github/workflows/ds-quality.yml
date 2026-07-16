@@ -45,4 +45,4 @@ jobs:
         run: npm run typecheck -w @mosje/design-system
 
       - name: Token-lint — strict (no raw hex, no tier-1 use) across ALL component CSS
-        run: npx stylelint --config .stylelintrc.tokens.json "packages/design-system/components/*.css"
+        run: npx stylelint --config .stylelintrc.tokens.json "packages/design-system/components/**/*.css"
