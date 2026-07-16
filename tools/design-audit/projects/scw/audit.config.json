@@ -1,0 +1,51 @@
+{
+  "project": "scw",
+  "portal": "SCW — Senior Citizens Welfare (UAT) · Full Design QC",
+  "idPrefix": "SCW",
+  "figma": {
+    "fileKey": "gH2vQ62cfg4677YKWuOpLc",
+    "rootNode": "4619:49381",
+    "framesFile": "inputs/figma-frames.json",
+    "tokensFile": "inputs/tokens.json",
+    "urlTemplate": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id={node}"
+  },
+  "capture": {
+    "width": 1440,
+    "dpr": 2,
+    "waitMs": 1800
+  },
+  "live": {
+    "auth": {
+      "type": "form",
+      "loginPath": "/login",
+      "userField": "input#mobile_number",
+      "passField": "input#password",
+      "submit": "button[type='submit']",
+      "loginMarker": "/login"
+    },
+    "roles": [
+      {
+        "name": "public",
+        "base": "https://scw-user-uat.mosje.in",
+        "auth": "none"
+      },
+      {
+        "name": "admin",
+        "base": "https://scw-admin-uat.mosje.in",
+        "user": "9810000001"
+      }
+    ],
+    "skipRoutes": [
+      "/logout",
+      "/terms-and-conditions",
+      "/privacy-policy"
+    ]
+  },
+  "baseline": {
+    "mode": "tokens",
+    "_modes": "tokens (strict, vs inputs/tokens.json) | derived (from Figma variables) | internal (no DS — flag outliers)",
+    "source": "inputs/tokens.json"
+  },
+  "manifest": "screen-manifest.yaml",
+  "notes": "Passwords are NOT stored here. Put them in projects/scw/secrets.json (gitignored), keyed by role name ('admin'). The 'public' role needs no secret (auth:none). Demo credential for 'admin' (Nodal Officer, per .claude/rules/portal-login-demos.md): mobile 9810000001, password Demo@123 — add it to secrets.json to unlock the 8 admin-uat screens; not committed here."
+}

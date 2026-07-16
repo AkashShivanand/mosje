@@ -1,0 +1,134 @@
+[
+  {
+    "node_id": "4855:63968",
+    "name": "Global/Chrome/default",
+    "heading": "Senior Citizens Welfare",
+    "kind": "chrome",
+    "headingSource": "live-h1 (scw-user-uat.mosje.in/, shared masthead — same node as HOME)",
+    "_label": "KNOWN GAP (engine, not this port): the landing route is '/' — engine/analyze.py's coverage-ledger keys captures by the route's LAST path segment, which is empty for '/', so this frame will show UNMAPPED even though PUBLIC-HOME was captured (it shows as an EXTRA row instead). The same root-path gap already exists in the committed projects/nhapoa port (its 'Citizen/Dashboard/01-Home' frame cross-role-mismaps to DISTRICT-OFFICER-...-DASHBOARD for the identical reason) — out of scope to fix here since the task requires the engine itself untouched."
+  },
+  {
+    "node_id": "4855:63968",
+    "name": "Public/Home/default",
+    "heading": "Senior Citizens Welfare",
+    "kind": "screen",
+    "headingSource": "live-h1 (scw-user-uat.mosje.in/)",
+    "_label": "Same root-path coverage-ledger gap as GLOBAL above — see its _label."
+  },
+  {
+    "node_id": "9453:255070",
+    "name": "Public/Login-User/default",
+    "heading": "SAMAVESH",
+    "kind": "screen",
+    "headingSource": "live-h1 (scw-user-uat.mosje.in/login)"
+  },
+  {
+    "node_id": "4819:23664",
+    "name": "Public/Our-Services/default",
+    "heading": "Our Services",
+    "kind": "screen",
+    "headingSource": "live-h1 (scw-user-uat.mosje.in/our-services)"
+  },
+  {
+    "node_id": "4819:23118",
+    "name": "Public/Sage-Registration/default",
+    "heading": "SAGE Initiative",
+    "kind": "screen",
+    "headingSource": "live-h2 (scw-user-uat.mosje.in/sage-registration — no h1 on page)",
+    "_label": "SAGE Registration — Eligibility Landing (screen segment shortened to 'Sage-Registration' to exact-match the route-crawl's last path segment '/sage-registration' in engine/analyze.py's coverage ledger)"
+  },
+  {
+    "node_id": "5779:32036",
+    "name": "Public/Volunteer/default",
+    "heading": "Join as a Volunteer",
+    "kind": "screen",
+    "headingSource": "live-h2 (scw-user-uat.mosje.in/volunteer — no h1 on page)",
+    "_label": "Volunteer Registration (screen segment shortened to 'Volunteer' to exact-match the route-crawl's last path segment '/volunteer')"
+  },
+  {
+    "node_id": "4819:23725",
+    "name": "Public/Scheme/default",
+    "heading": "Free Assisted Living Devices",
+    "kind": "screen",
+    "headingSource": "live-h1 (scw-user-uat.mosje.in/our-services/scheme)",
+    "_label": "Free Assisted Living Devices — Scheme (screen segment shortened to 'Scheme' to exact-match the route-crawl's last path segment '/our-services/scheme' -> 'scheme')"
+  },
+  {
+    "node_id": "4819:23436",
+    "name": "Public/E-Pledge/default",
+    "heading": "Pledge",
+    "kind": "screen",
+    "headingSource": "live h3.epledge-title (scw-user-uat.mosje.in/epledge — no h1/h2 title on page)",
+    "_label": "KNOWN GAP (engine, not this port): engine/crosscheck.py's build_heading() picks the largest same-size text in the y:120-300px band and the sidebar nav link 'Dashboard' (y=208, fontSize=16) ties with 'E-Pledge' (y=259, fontSize=16) and wins on lower y, before the real h3.epledge-title 'Pledge' (y=606, fontSize=24) is ever reached — so this pairing verdicts MISMAP even though the design heading 'Pledge' is correct (verified live). Confirmed by inspecting captures/live/PUBLIC-EPLEDGE.json rows directly."
+  },
+  {
+    "node_id": "9508:52655",
+    "name": "Admin/Login/default",
+    "heading": "Login to your account",
+    "kind": "screen",
+    "headingSource": "live-h1 (scw-admin-uat.mosje.in/login — reachable without auth)"
+  },
+  {
+    "node_id": "5779:23259",
+    "name": "Admin/Dashboard/default",
+    "heading": "Admin / Dashboard",
+    "kind": "screen",
+    "headingSource": "audit-master.json screens[].name (credential-gated this session — could not render live to verify the literal H1; see report)"
+  },
+  {
+    "node_id": "5779:23407",
+    "name": "Admin/SAGE-Applications/List",
+    "heading": "Admin / SAGE Applications — List",
+    "kind": "screen",
+    "headingSource": "audit-master.json screens[].name (credential-gated this session)"
+  },
+  {
+    "node_id": "5779:23521",
+    "name": "Admin/SAGE-Application/Detail",
+    "heading": "Admin / SAGE Application — Detail",
+    "kind": "screen",
+    "headingSource": "audit-master.json screens[].name (credential-gated this session)"
+  },
+  {
+    "node_id": "5779:25198",
+    "name": "Admin/Events/List",
+    "heading": "Admin / Events — List",
+    "kind": "screen",
+    "headingSource": "audit-master.json screens[].name (credential-gated this session)"
+  },
+  {
+    "node_id": "5779:24326",
+    "name": "Admin/Events/Add",
+    "heading": "Admin / Events — Add New Event",
+    "kind": "screen",
+    "headingSource": "audit-master.json screens[].name (credential-gated this session)"
+  },
+  {
+    "node_id": "5779:23691",
+    "name": "Admin/Volunteers/List",
+    "heading": "Admin / Volunteers — List",
+    "kind": "screen",
+    "headingSource": "audit-master.json screens[].name (credential-gated this session)"
+  },
+  {
+    "node_id": "5779:23806",
+    "name": "Admin/IPSrC-Homes/List",
+    "heading": "Admin / IPSrC Homes — List",
+    "kind": "screen",
+    "headingSource": "audit-master.json screens[].name (credential-gated this session)"
+  },
+  {
+    "node_id": "5779:32475",
+    "name": "Volunteer/Dashboard/default",
+    "heading": "Senior Citizens Welfare",
+    "kind": "screen",
+    "headingSource": "live-h1 fallback (scw-user-uat.mosje.in/ unauthenticated — the role-specific Volunteer dashboard needs a logged-in Volunteer session, not available this session; resolves to the public HOME page)"
+  },
+  {
+    "node_id": "5687:18689",
+    "name": "SAGE-User/Dashboard/default",
+    "heading": "Senior Citizens Welfare",
+    "kind": "screen",
+    "headingSource": "live-h1 fallback (scw-user-uat.mosje.in/ unauthenticated — the role-specific SAGE dashboard needs a logged-in SAGE-org session, not available this session; resolves to the public HOME page)"
+  }
+]
