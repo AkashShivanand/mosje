@@ -30,10 +30,39 @@ def load_frames(paths, cfg):
         except Exception: return []
     return []
 
+# A route's LAST path segment is what distinguishes screens within a role ("/admin/dashboard" →
+# "dashboard"). A landing route is literally "/", which has no last segment — "/".split("/")[-1]
+# is "" — so the key silently collapsed to the bare role and no home frame could key-match its own
+# capture. Two real failures came from exactly that:
+#   · NHAPOA  Citizen/Dashboard/01-Home (route "/") paired with a DISTRICT-OFFICER screenshot via
+#             the old role-blind substring fallback, and still reported MAPPED.
+#   · SCW     Public/Home (route "/") went UNMAPPED while its PUBLIC-HOME capture sat in EXTRA.
+HOME_SEG = "home"
+
+def _screen_seg(route):
+    """The route's last path segment, or HOME_SEG for a root/landing route.
+
+    rstrip("/") also normalises a trailing slash ("/events/" → "events"), which otherwise
+    produced an empty segment and the same collapse.
+    """
+    seg = (route or "").rstrip("/").split("/")[-1]
+    return norm(seg) if seg else HOME_SEG
+
+def _is_home_frame(name):
+    """True if the frame names itself the landing view in ANY segment.
+
+    A landing frame's screen segment rarely equals its route: NHAPOA's citizen home is
+    "Citizen/Dashboard/01-Home" — screen "dashboard", route "/". The home marker is in the
+    state segment, so check every segment, not just the screen.
+    """
+    return any(h in norm(p) for p in (name or "").split("/") for h in ("home", "index", "landing"))
+
 def build_ledger(cfg, frames, captured, paths):
+    # Keyed by (role, screen) TUPLE rather than a concatenated string: concatenation let one role
+    # bleed into another whenever a role name prefixed another (e.g. "state" vs "stateauthority").
     cap_by_key = {}
     for c in captured:
-        cap_by_key[norm(c["role"]) + norm(c["route"].split("/")[-1])] = c
+        cap_by_key[(norm(c["role"]), _screen_seg(c["route"]))] = c
     rows = []; mapped = unmapped = extra = design_only = 0; mismap = 0
     used = set(); n_frames = 0
     def _bhead(slug):
@@ -50,7 +79,7 @@ def build_ledger(cfg, frames, captured, paths):
         parts = name.split("/")
         role = norm(parts[0]) if parts else ""
         screen = norm(parts[1]) if len(parts) > 1 else ""
-        key = role + screen
+        key = (role, screen)
         # A frame flagged `_designOnly` declares "no build exists yet" (future/undesigned state, a
         # modal reference, or acknowledged coverage debt). Never auto-pair it: the name-substring
         # fallback would otherwise grab an unrelated capture and invent a MISMAP. It is recorded as
@@ -58,7 +87,18 @@ def build_ledger(cfg, frames, captured, paths):
         is_design_only = bool(fr.get("_designOnly"))
         hit = None
         if not is_design_only:
-            hit = cap_by_key.get(key) or next((c for k, c in cap_by_key.items() if screen and screen in k), None)
+            hit = cap_by_key.get(key)
+            # Landing frame → this role's ROOT capture. A root route offers no screen segment to
+            # match on, so pair by role alone — but only for a frame that declares itself the home
+            # view, or every unmatched frame in the role would grab the home screenshot.
+            if not hit and _is_home_frame(name):
+                hit = cap_by_key.get((role, HOME_SEG))
+            # Substring fallback — SCOPED TO THE SAME ROLE (r == role). Unscoped, this walked every
+            # key in every role and paired one role's design against another role's screenshot while
+            # still reporting MAPPED: a confident wrong answer, strictly worse than an honest
+            # UNMAPPED, and invisible downstream because spec-diffing trusts the pairing.
+            if not hit and screen:
+                hit = next((c for (r, s), c in cap_by_key.items() if r == role and screen in s), None)
         status = "MAPPED" if hit else ("DESIGN-ONLY" if is_design_only else "UNMAPPED")
         # design↔build MAPPING sanity: the frame's heading must agree with the paired capture's title,
         # or the pairing is wrong (a build screenshot on the wrong Figma frame — invisible to spec diffing).
