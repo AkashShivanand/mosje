@@ -97,8 +97,8 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #000;
-  background-color: var(--sa-badge-beta-bg, #ffd323);
+  color: var(--ds-neutral-1100);
+  background-color: var(--sa-badge-beta-bg);
   border-radius: var(--ds-radius-xxs, 2px);
   padding: 2px 4px;
 }
@@ -146,7 +146,7 @@
 
 /* Utility bar */
 .ds-hdr-util {
-  color: var(--ds-on-primary, #fff);
+  color: var(--ds-on-primary);
 }
 
 .ds-hdr-util.tone-blue {
@@ -201,7 +201,7 @@
 .ds-hdr-util__sep {
   width: 1px;
   height: 20px;
-  background-color: var(--ds-on-primary, #fff);
+  background-color: var(--ds-on-primary);
   opacity: 0.5;
   flex: 0 0 auto;
 }
@@ -235,7 +235,7 @@
 }
 
 .ds-hdr-util__icbtn:focus-visible {
-  outline: 2px solid var(--ds-on-primary, #fff);
+  outline: 2px solid var(--ds-on-primary);
   outline-offset: 1px;
 }
 
@@ -260,7 +260,7 @@
 }
 
 .ds-hdr-util__gov:focus-visible {
-  outline: 2px solid var(--ds-on-primary, #fff);
+  outline: 2px solid var(--ds-on-primary);
   outline-offset: 1px;
   border-radius: var(--ds-radius-xs, 4px);
 }
@@ -444,8 +444,8 @@
   flex: 0 0 auto;
   border: 1px solid var(--ds-border);
   border-radius: var(--ds-radius-md, 8px);
-  background-color: var(--ds-primary-100, #c6dcf9);
-  color: var(--ds-primary-800, #01376b);
+  background-color: var(--ds-primary-100);
+  color: var(--ds-primary-800);
   font-size: 18px;
   font-weight: 500;
   object-fit: cover;

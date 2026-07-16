@@ -169,7 +169,7 @@
 }
 
 .ds-media-upload__action--danger {
-  color: var(--sa-color-status-dangerStrong, #b8382f);
+  color: var(--sa-color-status-dangerStrong);
 }
 
 .ds-media-upload__error {
@@ -178,5 +178,5 @@
   gap: 4px;
   font-size: var(--ds-text-body-3);
   line-height: var(--ds-leading-body-3);
-  color: var(--sa-color-status-dangerStrong, #b8382f);
+  color: var(--sa-color-status-dangerStrong);
 }

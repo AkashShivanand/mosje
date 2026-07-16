@@ -1,0 +1,176 @@
+/* ── DoSJE website theme (was apps/dosje/src/app/globals.css) ──────────────────
+   The website is now a native route group in the hub, so there is exactly ONE
+   Tailwind build for the whole estate. This file therefore carries only the
+   website's OWN rules, scoped to its subtree via `data-site="website"` on the
+   layout wrapper. The hub's globals.css declares the utility NAMES; this file
+   binds the website's VALUES — the same contract the portals use.
+
+   Dropped from the original, deliberately:
+   • `@import "tailwindcss"`, `@import "tw-animate-css"`,
+     `@import "@mosje/design-system/tokens.css"` — the hub's globals.css already
+     loads all three app-wide.
+   • `@import "shadcn/tailwind.css"` — it only ships accordion keyframes, the
+     `data-*` custom variants and `no-scrollbar`. Verified: the website uses NONE
+     of them (no `data-open:`/`data-closed:`/… variant, no `no-scrollbar`, no
+     accordion), so nothing needs re-homing into the hub.
+   • `@custom-variant dark (&:is(.dark *))` — the website has no `dark:` utility
+     and never sets a `.dark` class, so the variant was dead. Only one definition
+     can win globally and the hub's attribute-based
+     `dark (&:where([data-theme="dark"], …))` stands.
+   • the `.dark { … }` block — unreachable for the same reason (nothing applies
+     `.dark`), and as an UNSCOPED global rule it could only ever leak.
+   • the `@theme inline` block — `@theme` only registers utilities in the Tailwind
+     entrypoint, which is now the hub's globals.css. Every name the website
+     actually uses is already declared there (identically, or via a
+     `var(--portal-X, var(--ds-X))` slot that falls back to the DS value outside a
+     portal — which is exactly what the website wants); the only genuinely new
+     name, `--color-border-ds`, was added there. The rest of the block was shadcn
+     boilerplate for utilities the website never uses (bg-card,
+     text-muted-foreground, bg-primary, the chart and sidebar scales, …).
+   ───────────────────────────────────────────────────────────────────────────── */
+
+[data-site="website"] {
+  /* --- MoSJE brand palette — sourced from @mosje/design-system (UX4G DS) --- */
+  --gov-blue: var(--ds-primary);        /* #0373DF primary */
+  --gov-blue-dark: var(--ds-primary-dark);
+  --gov-navy: var(--ds-gov-navy);
+  --saffron: var(--ds-saffron);
+  --saffron-dark: var(--ds-saffron-dark);
+  --saffron-light: var(--ds-saffron-light);
+  --gov-yellow: var(--ds-gov-yellow);
+  --gov-green: var(--ds-success);       /* unified to DS success #2E7D32 */
+  --ink: var(--ds-ink);                 /* #212121 */
+  --ink-muted: var(--ds-ink-muted);     /* #343A40 */
+  --surface-muted: var(--ds-surface-muted);
+
+  /* shadcn's oklch var layer. SCOPED, not `:root` as in the standalone app:
+     smile-admin.css declares --border/--ring/--foreground/--primary/--surface*
+     in a GLOBAL :root, so two unscoped blocks would fight over them and whichever
+     stylesheet loaded last would repaint the other app. Scoping keeps each side
+     resolving its own values. */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.205 0.012 264);   /* ~#1f2937 ink-muted */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.205 0.012 264);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.205 0.012 264);
+  --primary: oklch(0.585 0.176 252);      /* ~#0373df gov blue */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* `border-border` (2 call sites) must resolve to the shadcn --border above, not
+     to the DS border the hub defaults to. The hub declares --color-border as
+     `var(--portal-border, var(--ds-border))` in an `@theme inline` block, so the
+     value is inlined into the utility and re-pointing --color-border here would do
+     nothing — filling the slot is the only scoped way in. Same mechanism
+     smile-admin uses. */
+  --portal-border: var(--border);
+
+  /* borderRadius — the website derives its scale from --radius (10px), which is
+     NOT the stock Tailwind scale the hub otherwise gets. Only the three that
+     actually differ AND are used are re-bound; these are stock var()-based names,
+     so they scope directly (no --portal-* slot needed).
+       lg  stock 8px  → 10px    (24 call sites)
+       xl  stock 12px → 14px    (24 call sites)
+       2xl stock 16px → 18px    (3 call sites)
+     NOT re-bound: `md` (0.8 × 10px = 8px) and `sm` (0.6 × 10px = 6px) already
+     equal the hub's --ds-radius-md/--ds-radius-sm exactly, and 3xl/4xl are
+     unused. */
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+/* Was `* { @apply border-border outline-ring/50 }` (shadcn boilerplate). Two
+   things about this rule are load-bearing:
+
+   1. SCOPED to the subtree — an unscoped `*` border-color rule would override
+      `border` on every portal and the hub home.
+   2. It MUST stay inside `@layer base`. Unlayered CSS beats every `@layer`
+      regardless of specificity, so an unlayered `*` rule here outranks Tailwind's
+      `@layer utilities` and silently paints EVERY `border-*` utility in the site
+      grey — `border-gov-blue` included. (Verified in the browser: it rendered
+      lab(90.952…) instead of #0373DF.) The layer order is established by the
+      hub's globals.css, which Next loads first as the root layout's stylesheet;
+      naming the layer here just appends to it, so utilities still win.
+
+   Tailwind v4 needs `@import "tailwindcss"`/`@reference` in a file to resolve
+   `@apply`, which this file deliberately does not have (no portal CSS does
+   either), so the declarations are inlined as the plain CSS Tailwind would emit. */
+@layer base {
+  /* Was `body { @apply bg-background text-foreground }`. On the wrapper rather
+     than <body>: the hub's own body is `bg-surface-muted text-ink` and an
+     unscoped body rule here would repaint the hub home and every portal. The
+     wrapper is min-h-screen, so it still covers the viewport. */
+  [data-site="website"] {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  [data-site="website"] * {
+    border-color: var(--border);
+    outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
+  }
+}
+
+/* `html { @apply font-sans }` is NOT carried over — the hub's root layout already
+   puts `font-sans` (Noto Sans) on <body>, which the website inherits. */
+
+/* Readable long-form content for inner/content pages (DBIM typography: left-aligned, Noto Sans). */
+.gov-prose {
+  color: var(--ink-muted);
+  font-size: 15px;
+  line-height: 1.7;
+  text-align: left;
+}
+.gov-prose > * + * { margin-top: 1rem; }
+.gov-prose h2 {
+  color: var(--gov-blue-dark);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 2rem;
+}
+.gov-prose h3 {
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 1.5rem;
+}
+.gov-prose h4 {
+  color: var(--gov-blue-dark);
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 1.25rem;
+}
+.gov-prose p { color: var(--ink-muted); }
+.gov-prose a { color: var(--gov-blue); text-decoration: underline; }
+.gov-prose a:hover { color: var(--gov-blue-dark); }
+.gov-prose ul { list-style: disc; padding-left: 1.5rem; }
+.gov-prose ol { list-style: decimal; padding-left: 1.5rem; }
+.gov-prose li { margin-top: 0.375rem; }
+.gov-prose strong { color: var(--ink); font-weight: 600; }
+.gov-prose hr { border-color: var(--ds-border-strong); margin: 1.5rem 0; }

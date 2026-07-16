@@ -6,8 +6,9 @@
  * It drives the generated `[data-theme="dark"]` token block in
  * `@mosje/design-system/tokens.css`.
  *
- * Mirrors apps/docs/src/lib/theme.ts so the estate behaves identically across
- * zones. Persisted in a cookie and applied before first paint via
+ * Mirrors apps/hub/src/lib/design-system/theme.ts (the SAMAVESH docs portal's
+ * own copy, native-mounted at /design-system) so the estate behaves identically
+ * across zones. Persisted in a cookie and applied before first paint via
  * `themeInitScript()` to avoid a flash of the wrong theme.
  */
 

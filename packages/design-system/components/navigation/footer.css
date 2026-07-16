@@ -5,7 +5,7 @@
 
 .ds-footer {
   background-color: var(--ds-gov-navy);
-  color: var(--ds-on-primary, #fff);
+  color: var(--ds-on-primary);
 }
 
 .ds-footer__in {
@@ -23,12 +23,12 @@
   margin: 0;
   font-size: var(--ds-text-body-3, 13px);
   line-height: 1.5;
-  color: color-mix(in srgb, var(--ds-on-primary, #fff) 82%, transparent);
+  color: color-mix(in srgb, var(--ds-on-primary) 82%, transparent);
 }
 
 .ds-footer__copy strong {
   font-weight: 700;
-  color: var(--ds-on-primary, #fff);
+  color: var(--ds-on-primary);
 }
 
 .ds-footer__links {
@@ -50,18 +50,18 @@
   cursor: pointer;
   font: inherit;
   font-size: var(--ds-text-body-3, 13px);
-  color: color-mix(in srgb, var(--ds-on-primary, #fff) 82%, transparent);
+  color: color-mix(in srgb, var(--ds-on-primary) 82%, transparent);
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
 .ds-footer__link:hover {
-  color: var(--ds-on-primary, #fff);
+  color: var(--ds-on-primary);
   text-decoration: underline;
 }
 
 .ds-footer__link:focus-visible {
-  outline: 2px solid var(--ds-on-primary, #fff);
+  outline: 2px solid var(--ds-on-primary);
   outline-offset: 3px;
   border-radius: var(--ds-radius-xs, 2px);
 }

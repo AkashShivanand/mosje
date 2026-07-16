@@ -6,9 +6,13 @@ on:
   pull_request:
     branches: [main]
 
+# The estate is single-origin: apps/hub is one npm workspace that serves the
+# website (/website), the SAMAVESH docs (/design-system) and every portal
+# (/portals/<slug>). There are no per-app lockfiles to `npm ci` against — the
+# root lockfile covers every workspace — so this is one job, not one per app.
 jobs:
   hub:
-    name: hub lint + typecheck
+    name: hub lint + typecheck + build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,53 +20,22 @@ jobs:
         with:
           node-version: "22"
           cache: "npm"
-          cache-dependency-path: "apps/hub/package-lock.json"
-      - run: npm --prefix apps/hub ci
-      - run: npm --prefix apps/hub run lint
-        continue-on-error: true
-      - run: npm --prefix apps/hub run typecheck
+          cache-dependency-path: "package-lock.json"
 
-  dosje:
-    name: dosje lint + typecheck
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: "npm"
-          cache-dependency-path: "apps/dosje/package-lock.json"
-      - run: npm --prefix apps/dosje ci
-      - run: npm --prefix apps/dosje run lint
-        continue-on-error: true
-      - run: npm --prefix apps/dosje run typecheck
+      # `npm ci` at the root installs every workspace from the single lockfile.
+      - run: npm ci
 
-  smile-admin:
-    name: smile-admin lint + typecheck
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: "npm"
-          cache-dependency-path: "apps/portals/smile-admin/package-lock.json"
-      - run: npm --prefix apps/portals/smile-admin ci
-      - run: npm --prefix apps/portals/smile-admin run lint
-        continue-on-error: true
-      - run: npm --prefix apps/portals/smile-admin run typecheck
+      # The design system ships TS/TSX source that the hub transpiles, and the
+      # hub's Tailwind build reads the generated token CSS — so build tokens first.
+      - run: npm run build -w @mosje/tokens
 
-  pm-ajay:
-    name: pm-ajay lint + typecheck
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: "npm"
-          cache-dependency-path: "apps/portals/pm-ajay/package-lock.json"
-      - run: npm --prefix apps/portals/pm-ajay ci
-      - run: npm --prefix apps/portals/pm-ajay run lint
-        continue-on-error: true
-      - run: npm --prefix apps/portals/pm-ajay run typecheck
+      - run: npm run lint
+      - run: npm run check
+
+      # The build is the gate that lint and typecheck cannot be: it is the only
+      # step that proves every dependency actually resolves. The consolidation
+      # moved the portals'/website's code into the hub while their package.json
+      # manifests were deleted, and it kept passing locally purely on stale
+      # hoisted node_modules — a state `npm ci` would never reproduce. A build
+      # here fails loudly on that instead of shipping it.
+      - run: npm --prefix apps/hub run build

@@ -1,48 +1,28 @@
 import type { NextConfig } from "next";
 import path from "node:path";
 
-const ZONE_WEBSITE     = process.env.ZONE_WEBSITE_URL     ?? "http://localhost:3001";
 const ZONE_DS          = process.env.ZONE_DS_URL          ?? "http://localhost:6006";
-const ZONE_PM_AJAY     = process.env.ZONE_PM_AJAY_URL     ?? "http://localhost:4124";
-const ZONE_SMILE_ADMIN = process.env.ZONE_SMILE_ADMIN_URL ?? "http://localhost:4123";
-const ZONE_SCW         = process.env.ZONE_SCW_URL         ?? "http://localhost:4125";
-const ZONE_NMBA        = process.env.ZONE_NMBA_URL        ?? "http://localhost:4126";
-const ZONE_NHAPOA      = process.env.ZONE_NHAPOA_URL      ?? "http://localhost:4127";
-const ZONE_TG          = process.env.ZONE_TG_URL          ?? "http://localhost:4128";
-const ZONE_DOCS        = process.env.ZONE_DOCS_URL        ?? "http://localhost:3002";
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  // Required for Multi-Zones: prevents the hub from stripping trailing slashes
-  // from child-zone paths (e.g. /website/ → /website), which would create a
-  // redirect loop with any child app that has trailingSlash: true.
+  // Required for the one remaining zone (Storybook): prevents the hub from
+  // stripping the trailing slash off /storybook/, which Storybook's relative
+  // asset URLs depend on.
   skipTrailingSlashRedirect: true,
-  transpilePackages: ["@mosje/design-system"],
+  // react-live powers the SAMAVESH docs portal's live component playground
+  // (native route at /design-system) — must be transpiled here now that docs
+  // is mounted natively instead of running as its own zone.
+  transpilePackages: ["@mosje/design-system", "react-live"],
   turbopack: {
     // Monorepo root is two levels up from apps/hub
     root: path.resolve(process.cwd(), "..", ".."),
   },
   async rewrites() {
     return [
-      // dosje website zone — explicit /website/ rule guards against any future
-      // trailingSlash reintroduction; skipTrailingSlashRedirect above handles it too.
-      { source: "/website",         destination: `${ZONE_WEBSITE}/website` },
-      { source: "/website/",        destination: `${ZONE_WEBSITE}/website/` },
-      { source: "/website/:path*",  destination: `${ZONE_WEBSITE}/website/:path*` },
-      // portals
-      { source: "/portals/pm-ajay",              destination: `${ZONE_PM_AJAY}/portals/pm-ajay` },
-      { source: "/portals/pm-ajay/:path*",       destination: `${ZONE_PM_AJAY}/portals/pm-ajay/:path*` },
-      { source: "/portals/smile-admin",          destination: `${ZONE_SMILE_ADMIN}/portals/smile-admin` },
-      { source: "/portals/smile-admin/:path*",   destination: `${ZONE_SMILE_ADMIN}/portals/smile-admin/:path*` },
-      { source: "/portals/scw",                  destination: `${ZONE_SCW}/portals/scw` },
-      { source: "/portals/scw/:path*",           destination: `${ZONE_SCW}/portals/scw/:path*` },
-      { source: "/portals/nmba",                 destination: `${ZONE_NMBA}/portals/nmba` },
-      { source: "/portals/nmba/:path*",          destination: `${ZONE_NMBA}/portals/nmba/:path*` },
-      { source: "/portals/nhapoa",               destination: `${ZONE_NHAPOA}/portals/nhapoa` },
-      { source: "/portals/nhapoa/:path*",        destination: `${ZONE_NHAPOA}/portals/nhapoa/:path*` },
-      { source: "/portals/tg",                   destination: `${ZONE_TG}/portals/tg` },
-      { source: "/portals/tg/:path*",            destination: `${ZONE_TG}/portals/tg/:path*` },
-      // eutthan-admin is a native route inside hub — no rewrite needed
+      // The DoSJE website, eutthan-admin, scw, nmba, tg, nhapoa, smile-admin,
+      // pm-ajay and the design-system docs portal are all native routes inside
+      // the hub — no rewrite needed. Storybook is the only remaining zone.
+      //
       // Storybook — proxied through the hub. Always LINK to "/storybook/" (trailing
       // slash) so Storybook's relative asset URLs (./sb-manager/…, ./iframe.html)
       // resolve under /storybook/ and proxy via the :path* rule below. The no-slash
@@ -50,14 +30,29 @@ const nextConfig: NextConfig = {
       // directly; the full UI loads through the hub.)
       { source: "/storybook",         destination: `${ZONE_DS}/` },
       { source: "/storybook/:path*",  destination: `${ZONE_DS}/:path*` },
-      // SAMAVESH docs portal — design-system documentation
-      { source: "/design-system",         destination: `${ZONE_DOCS}/design-system` },
-      { source: "/design-system/",        destination: `${ZONE_DOCS}/design-system/` },
-      { source: "/design-system/:path*",  destination: `${ZONE_DOCS}/design-system/:path*` },
     ];
   },
+  // Legacy hand-coded org slugs → real ingested slugs (safety net for bookmarks).
+  // Ported verbatim from apps/dosje/next.config.ts when the website mounted
+  // natively; the only change is the now-explicit /website prefix, which the
+  // app's basePath used to add for us.
   async redirects() {
-    return [];
+    const legacyOrgSlugs = {
+      nsfdc: "national-scheduled-castes-finance-and-development-corporation",
+      nskfdc: "national-safai-karamcharis-finance-development-corporation",
+      nbcfdc: "national-backward-classes-financeand-development-corporationnbcfdc",
+      nisd: "national-institute-of-social-defence",
+      nmba: "nasha-mukt-bharat-abhiyaan",
+      dwbdnc: "development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic",
+      "senior-citizens-welfare": "senior-citizens-welfarescw",
+      "pm-ajay": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay",
+      "transgender-portal": "national-portal-for-transgender-persons",
+    };
+    return Object.entries(legacyOrgSlugs).map(([from, to]) => ({
+      source: `/website/organisation/${from}`,
+      destination: `/website/organisation/${to}`,
+      permanent: true,
+    }));
   },
   async headers() {
     const securityHeaders = {

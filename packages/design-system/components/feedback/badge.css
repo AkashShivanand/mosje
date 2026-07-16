@@ -76,19 +76,19 @@
    -------------------------------------------------------------------------- */
 .ds-badge--solid.ds-badge--primary {
   --_bg: var(--ds-primary);
-  --_fg: #ffffff;
+  --_fg: var(--ds-on-primary);
 }
 .ds-badge--solid.ds-badge--info {
   --_bg: var(--sa-color-status-infoStrong);
-  --_fg: #ffffff;
+  --_fg: var(--ds-on-primary);
 }
 .ds-badge--solid.ds-badge--success {
   --_bg: var(--ds-success);
-  --_fg: #ffffff;
+  --_fg: var(--ds-on-primary);
 }
 .ds-badge--solid.ds-badge--danger {
   --_bg: var(--ds-danger);
-  --_fg: #ffffff;
+  --_fg: var(--ds-on-primary);
 }
 .ds-badge--solid.ds-badge--warning {
   --_bg: var(--ds-warning);

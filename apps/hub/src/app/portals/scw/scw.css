@@ -1,0 +1,87 @@
+/* ── SCW Tailwind theme (was apps/portals/scw/tailwind.config.ts) ──────────
+   Values are verbatim from that config. The hub's globals.css declares the
+   utility NAMES; this block binds SCW's VALUES to its subtree. Only the keys
+   where SCW differs from the hub-wide default are listed — see globals.css. */
+[data-portal="scw"] {
+  /* DS-token names SCW redefines (hub keeps its own value outside this scope). */
+  --portal-ink: #0f172a;
+  --portal-ink-muted: #475569;
+  --portal-saffron: #ec6a1f;
+  --portal-surface-muted: #f5f7fb;
+
+  /* CONFLICT — SCW deviates from nmba/nhapoa/tg. Preserved verbatim, NOT
+     "fixed": #94a3b8 is 2.6:1 on white and fails WCAG 1.4.3, but this port is
+     behaviour-preserving. Raise it as its own a11y change, not here. */
+  --color-ink-hint: #94a3b8;
+  /* CONFLICT — amber-700; nmba/nhapoa/tg darkened theirs to amber-800 #92400e. */
+  --color-await-fg: #b45309;
+  /* CONFLICT — nhapoa/tg darkened theirs to #b8500f for AA on white text. */
+  --color-saffron-600: #d35912;
+  /* CONFLICT — SCW's emerald citizen hero; nhapoa overrides to navy. */
+  --color-herofrom: #4f9d6b;
+  --color-heroto: #2f6b46;
+
+  /* borderRadius.extend — stock Tailwind is 0.75rem / 1rem. */
+  --radius-xl: 0.85rem;
+  --radius-2xl: 1.1rem;
+}
+
+:root {
+  --font-scale: 1;
+
+  /* SCW / SAMAVESH brand surface tokens */
+  --scw-navy: #13366b;
+  --scw-navy-deep: #0a2452;
+  --scw-navy-bar: #071a3d;
+  --surface: #ffffff;
+  --surface-muted: #f5f7fb;
+  --border: #e2e8f0;
+  --foreground: #0f172a;
+}
+
+/* GIGW accessibility — font scaling hooks (top-bar A- / A / A+) */
+[data-fontscale="small"] { --font-scale: 0.92; }
+[data-fontscale="default"] { --font-scale: 1; }
+[data-fontscale="large"] { --font-scale: 1.12; }
+
+[data-highcontrast="true"] {
+  --surface: #000000;
+  --surface-muted: #000000;
+  --foreground: #ffffff;
+  --border: #ffffff;
+}
+
+html {
+  font-size: calc(16px * var(--font-scale));
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--surface-muted);
+  font-family: var(--font-noto), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* thin custom scrollbars inside scroll panels */
+.scw-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+.scw-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.scw-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+.scw-scroll::-webkit-scrollbar-track { background: transparent; }
+
+/* SAMAVESH login left-panel hero gradient overlay */
+.scw-login-panel {
+  background:
+    linear-gradient(180deg, rgba(7, 26, 61, 0.92) 0%, rgba(10, 36, 82, 0.92) 100%),
+    var(--scw-navy-deep);
+}
+
+/* citizen-portal hero band */
+.scw-hero {
+  background: linear-gradient(120deg, #4f9d6b 0%, #357a4d 55%, #2f6b46 100%);
+}

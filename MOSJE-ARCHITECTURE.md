@@ -32,16 +32,27 @@ mosje/                      # single git repo
 
 All apps are accessible from **`localhost:3000`** (hub) in development, and from a single production origin in production. The hub at `apps/hub` holds the routing rewrites.
 
-| App | Dev port | Mount path |
-|-----|----------|------------|
-| hub | **3000** | `/` (root) |
-| dosje (website) | 3001 | `/website` |
-| docs (Storybook) | 6006 | `/design-system` |
-| portals/smile-admin | 4123 | `/portals/smile-admin` |
-| portals/pm-ajay | 4124 | `/portals/pm-ajay` |
-| portals/eutthan-admin | 4125 | `/portals/eutthan-admin` |
+Only **three** apps are still separate zones behind the hub proxy. **Every portal is now a native
+route group inside the hub** — no separate app, no `basePath`, no rewrite, no port of its own.
 
-**Adding a new portal:** add `basePath: "/portals/<slug>"` to its `next.config.ts`, add a rewrite rule to `apps/hub/next.config.ts`, and add an entry to `apps/hub/src/data/portals.ts`.
+| App | Dev port | Mount path | How it is served |
+|-----|----------|------------|------------------|
+| hub | **3000** | `/` (root) | — |
+| website (was `apps/dosje`) | — | `/website` | **native in hub** |
+| SAMAVESH docs (was `apps/docs`) | — | `/design-system` | **native in hub** |
+| storybook | 6006 | `/storybook` | zone rewrite (**the only remaining zone** — not a Next app) |
+| portals/scw | — | `/portals/scw` | **native in hub** |
+| portals/nmba | — | `/portals/nmba` | **native in hub** |
+| portals/nhapoa | — | `/portals/nhapoa` | **native in hub** |
+| portals/tg | — | `/portals/tg` | **native in hub** |
+| portals/smile-admin | — | `/portals/smile-admin` | **native in hub** |
+| portals/pm-ajay | — | `/portals/pm-ajay` | **native in hub** |
+| portals/eutthan-admin | — | `/portals/eutthan-admin` | **native in hub** |
+
+**Adding a new portal:** create the route group at `apps/hub/src/app/portals/<slug>` and register it
+in `DEFAULT_APPS`. Do **not** create a new app or a hub rewrite. The full procedure — including
+porting the portal's Tailwind theme and verifying the emitted CSS — is in
+[`apps/hub/src/app/portals/MIGRATION-RECIPE.md`](apps/hub/src/app/portals/MIGRATION-RECIPE.md).
 
 ---
 
@@ -80,7 +91,7 @@ Functional workflow apps. Seeded from the orgs/schemes surfaced on the live site
 ### Schemes & scholarships
 | Slug | Scheme | Status |
 |------|--------|--------|
-| `pm-ajay` | Pradhan Mantri Anusuchit Jaati Abhyuday Yojna | ✅ **built** — MIS dashboard (6 views · 60 KPIs · port 4124) |
+| `pm-ajay` | Pradhan Mantri Anusuchit Jaati Abhyuday Yojna | ✅ **built** — MIS dashboard (6 views · 60 KPIs) · native at `/portals/pm-ajay` |
 | `nos` | National Overseas Scholarship | planned |
 | `pm-yasasvi` | PM Young Achievers Scholarship (PM-YASASVI) | planned |
 | `pre-matric-sc` | Pre-Matric Scholarship (SC & others) | planned |
@@ -106,7 +117,10 @@ Functional workflow apps. Seeded from the orgs/schemes surfaced on the live site
 ## Cross-cutting
 
 - **Shared design system** (`packages/design-system`) is the linchpin — every site + portal renders from it, kept in Figma sync via Code Connect (`/sync-figma`). Extraction is phase 2.
-- **Per-portal ports** start at 4123 and increment; record each in `.claude/launch.json`.
+- **No per-portal ports.** The estate is single-origin: a new portal is a route group at
+  `apps/hub/src/app/portals/<slug>`, NOT a new app with its own port or `basePath`. Follow
+  `apps/hub/src/app/portals/MIGRATION-RECIPE.md`. Only Storybook (:6006) is still a separate
+  process, because it is not a Next app. The old 4123+ port range is retired.
 - **Standards:** DBIM (brand identity) + GIGW (gov web guidelines) + WCAG 2.1 AA. See `Documents/MoSJE DBIM Audit.pdf` — a future `gov-compliance` skill should encode its findings.
 - **Build loop per property:** `clone-website` (or design from Figma) → `/review` → `/a11y` → `/qa` → ship.
 

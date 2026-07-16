@@ -63,13 +63,13 @@
 .ds-stepper__item.is-done .ds-stepper__marker {
   background-color: var(--ds-success);
   border-color: var(--ds-success);
-  color: var(--ds-on-primary, #fff);
+  color: var(--ds-on-primary);
 }
 
 .ds-stepper__item.is-current .ds-stepper__marker {
   background-color: var(--ds-primary);
   border-color: var(--ds-primary);
-  color: var(--ds-on-primary, #fff);
+  color: var(--ds-on-primary);
   box-shadow: 0 0 0 4px var(--ds-primary-50);
 }
 

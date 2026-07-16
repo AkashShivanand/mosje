@@ -9,66 +9,10 @@
       "autoPort": false
     },
     {
-      "name": "website",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/dosje", "run", "dev"],
-      "port": 3001,
-      "autoPort": false
-    },
-    {
-      "name": "docs",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/docs", "run", "dev"],
-      "port": 3002,
-      "autoPort": false
-    },
-    {
       "name": "storybook",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "apps/storybook", "run", "dev"],
       "port": 6006,
-      "autoPort": false
-    },
-    {
-      "name": "pm-ajay",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/pm-ajay", "run", "dev"],
-      "port": 4124,
-      "autoPort": false
-    },
-    {
-      "name": "smile-admin",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/smile-admin", "run", "dev"],
-      "port": 4123,
-      "autoPort": false
-    },
-    {
-      "name": "scw",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/scw", "run", "dev"],
-      "port": 4125,
-      "autoPort": false
-    },
-    {
-      "name": "nmba",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/nmba", "run", "dev"],
-      "port": 4126,
-      "autoPort": false
-    },
-    {
-      "name": "nhapoa",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/nhapoa", "run", "dev"],
-      "port": 4127,
-      "autoPort": false
-    },
-    {
-      "name": "tg",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/portals/tg", "run", "dev"],
-      "port": 4128,
       "autoPort": false
     }
   ]

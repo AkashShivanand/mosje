@@ -2,53 +2,392 @@
 @import "tw-animate-css";
 @import "@mosje/design-system/tokens.css";
 
+/* The DS components live outside this app's source tree, so Tailwind's automatic
+   source detection never sees them and every utility class they use (e.g.
+   PortalLoginShell's `lg:w-[58%]`) would be purged from the hub's build. This
+   @source restores the scan. It was `nmba/globals.css:10` before the native-mount
+   migration; the hub is now the single app rendering every portal, so it belongs
+   here — once, app-wide. Path is relative to THIS file (apps/hub/src/app/). */
+@source "../../../../packages/design-system/components";
+
 /* Attribute-based dark variant (matches the element itself AND descendants of
    [data-theme="dark"]). The appearance axis is driven by data-theme, NOT the OS
    prefers-color-scheme, so the default Tailwind dark variant must be overridden. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
+/* ══════════════════════════════════════════════════════════════════════════
+   PORTAL THEMES — global utility NAMES, per-portal VALUES.
+   ══════════════════════════════════════════════════════════════════════════
+   Each portal used to carry its own `tailwind.config.ts`, loaded by a `@config`
+   in its globals.css. Natively mounted in the hub there is exactly ONE Tailwind
+   build, so those configs are gone and the theme must live here.
+
+   The portals' palettes genuinely CONFLICT (scw's ink-hint #94a3b8 vs
+   nmba/nhapoa/tg's AA-darkened #64748b, scw's green hero vs nhapoa's navy hero,
+   …), so a flat merge would repaint portals. The contract is instead:
+
+     1. The NAME is declared here so Tailwind emits the utility at all.
+     2. The VALUE is overridden per portal in `portals/<slug>/<slug>.css`,
+        scoped to `[data-portal="<slug>"]` on that portal's layout wrapper.
+        Custom properties inherit, so utilities inside the subtree resolve to
+        that portal's value.
+
+   The DoSJE website (`app/website/`) follows the SAME contract on its own axis:
+   `[data-site="website"]` in `app/website/website.css`. It is not a portal (no
+   `data-surface="portal"` type scale), but it reuses the `--portal-*` slots below
+   where it redefines a name the hub also declares — the slot means "subtree
+   override", not "portals only".
+
+   Two declaration styles, and the difference MATTERS:
+     • `@theme`        → `.text-navy { color: var(--color-navy) }`. The utility
+                        reads the variable at the ELEMENT, so a `[data-portal]`
+                        override wins. Use for portal-only names.
+     • `@theme inline` → the value is INLINED into the utility, so overriding
+                        `--color-*` does nothing. The hub's DS tokens must stay
+                        inline (they resolve `--ds-*` at the element, which is
+                        what makes `data-color-mode` switching work at all).
+                        Where a portal redefines a DS-token name, the entry below
+                        gains a `var(--portal-<name>, <hub default>)` slot: the
+                        hub/explorer/eutthan-admin keep the fallback verbatim,
+                        and a portal opts out by setting `--portal-<name>`.
+   ══════════════════════════════════════════════════════════════════════════ */
+
 @theme inline {
   --font-sans: var(--font-noto-sans), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+  /* scw/nhapoa/smile-admin CSS style <body> with `var(--font-noto)` — the name
+     their standalone next/font loader used. The hub root layout exposes Noto
+     Sans as --font-noto-sans, so alias it or those rules fall back to system-ui. */
+  --font-noto: var(--font-noto-sans);
+  --font-heading: var(--font-noto), system-ui, sans-serif;
 
   /* ── Text ───────────────────────────────────────────────────────────── */
-  --color-ink:            var(--ds-ink);
+  /* ink / ink-muted: portals pin slate-900/slate-600; hub keeps the DS ramp. */
+  --color-ink:            var(--portal-ink, var(--ds-ink));
   --color-ink-strong:     var(--ds-ink-strong);
-  --color-ink-muted:      var(--ds-ink-muted);
+  --color-ink-muted:      var(--portal-ink-muted, var(--ds-ink-muted));
   --color-on-primary:     var(--ds-on-primary);
 
   /* ── Brand / primary ────────────────────────────────────────────────── */
   --color-gov-blue:       var(--ds-primary);
   --color-gov-blue-tonal: var(--ds-primary-tonal);
   --color-gov-blue-dark:  var(--ds-primary-dark);
+  /* smile-admin's `primary` scale maps 1:1 onto the DS primary ramp, so it stays
+     inline and mode-reactive — that is precisely what makes smile-admin's
+     data-color-mode="blue-dark" wrapper repaint it to the GoI navy. */
+  --color-primary:        var(--ds-primary);
   --color-primary-50:     var(--ds-primary-50);
   --color-primary-100:    var(--ds-primary-100);
+  --color-primary-200:    var(--ds-primary-200);
+  --color-primary-300:    var(--ds-primary-300);
+  --color-primary-400:    var(--ds-primary-400);
+  --color-primary-500:    var(--ds-primary-500);
   --color-primary-600:    var(--ds-primary-600);
   --color-primary-700:    var(--ds-primary-700);
+  --color-primary-800:    var(--ds-primary-800);
+  --color-primary-900:    var(--ds-primary-900);
   --color-gov-navy:       var(--ds-gov-navy);
   --color-gov-yellow:     var(--ds-gov-yellow);
-  --color-saffron:        var(--ds-saffron);
+  /* saffron: scw/nmba/nhapoa/tg pin #ec6a1f; hub keeps the DS saffron #f97316. */
+  --color-saffron:        var(--portal-saffron, var(--ds-saffron));
   --color-saffron-light:  var(--ds-saffron-light);
   --color-saffron-dark:   var(--ds-saffron-dark);
 
   /* ── Surfaces & borders ─────────────────────────────────────────────── */
-  --color-surface:        var(--ds-surface);
-  --color-surface-muted:  var(--ds-surface-muted);
-  --color-border:         var(--ds-border);
+  --color-surface:        var(--portal-surface, var(--ds-surface));
+  --color-surface-muted:  var(--portal-surface-muted, var(--ds-surface-muted));
+  --color-border:         var(--portal-border, var(--ds-border));
   --color-border-strong:  var(--ds-border-strong);
+  /* website-only name. The DoSJE website distinguishes `border-border` (its own
+     shadcn --border, re-bound via the --portal-border slot in website.css) from
+     `border-border-ds`, an explicit escape hatch to the DS border. No other app
+     declares it, so there is no conflict to scope. */
+  --color-border-ds:      var(--ds-border);
 
   /* ── Status ─────────────────────────────────────────────────────────── */
-  --color-success:        var(--ds-success);
+  --color-success:        var(--portal-success, var(--ds-success));
   --color-success-tonal:  var(--ds-success-tonal);
-  --color-danger:         var(--ds-danger);
-  --color-warning:        var(--ds-warning);
-  --color-info:           var(--ds-info);
+  --color-danger:         var(--portal-danger, var(--ds-danger));
+  --color-warning:        var(--portal-warning, var(--ds-warning));
+  --color-info:           var(--portal-info, var(--ds-info));
 
   /* ── Radius / shadow tokens ─────────────────────────────────────────── */
-  --radius-sm:  var(--ds-radius-sm);
-  --radius-md:  var(--ds-radius-md);
-  --shadow-xs:  var(--ds-shadow-xs);
-  --shadow-lg:  var(--ds-shadow-lg);
-  --shadow-xl:  var(--ds-shadow-xl);
+  /* xs/lg/xl and 2xl/3xl are stock Tailwind vars and already var()-based, so
+     portals scope them directly — only the hub's own DS-bound entries need a slot. */
+  --radius-sm:  var(--portal-radius-sm, var(--ds-radius-sm));
+  --radius-md:  var(--portal-radius-md, var(--ds-radius-md));
+  --shadow-xs:  var(--portal-shadow-xs, var(--ds-shadow-xs));
+  --shadow-lg:  var(--portal-shadow-lg, var(--ds-shadow-lg));
+  --shadow-xl:  var(--portal-shadow-xl, var(--ds-shadow-xl));
+  /* Stock Tailwind inlines --shadow-md into the utility rather than referencing a
+     var, so smile-admin cannot scope it without a slot. Fallback = stock verbatim. */
+  --shadow-md:  var(--portal-shadow-md, 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1));
+}
+
+/* ── Portal-only names ────────────────────────────────────────────────────
+   Not `inline`, so `[data-portal]` overrides win. Values here are the shared
+   default; a portal that differs overrides in its own <slug>.css — see the
+   "CONFLICT" markers for who deviates. */
+@theme {
+  /* SAMAVESH government navy — identical across scw / nmba / nhapoa / tg. */
+  --color-navy-50:  #eef3fb;
+  --color-navy-100: #d7e3f5;
+  --color-navy-200: #aec6ea;
+  --color-navy-300: #7ea3d9;
+  --color-navy-400: #4f7ec3;
+  --color-navy-500: #2b5ca6;
+  --color-navy-600: #1c4486;
+  --color-navy-700: #13366b;
+  --color-navy-800: #0f2c59;
+  --color-navy-900: #0a2452;
+  --color-navy-950: #071a3d;
+  --color-navy:     #13366b;
+
+  /* Sidebar active pill / soft brand wash — identical across the four. */
+  --color-brandwash: #e8f0fb;
+
+  /* Emerald — approved / disbursed status. Identical across the four. */
+  --color-approve-bg: #dcfce7;
+  --color-approve-fg: #15803d;
+  --color-approve:    #16a34a;
+
+  /* Citizen hero band. CONFLICT: scw + tg use the emerald pair below; nhapoa
+     overrides both to its government-navy pair. nmba never defined them. */
+  --color-herofrom: #4f9d6b;
+  --color-heroto:   #2f6b46;
+
+  /* Amber — awaiting evaluation / pending.
+     CONFLICT on `fg`: nmba/nhapoa/tg darkened it to amber-800 for AA on the
+     amber-100 chip; scw kept amber-700 and overrides back to #b45309. */
+  --color-await-bg: #fef3c7;
+  --color-await-fg: #92400e;
+  --color-await:    #d97706;
+
+  /* Red — sent-back / rejected. nhapoa + tg (identical); nmba spells the same
+     ramp `danger-*`, smile-admin uses a numeric `danger-*` scale (both below). */
+  --color-reject-bg: #fee2e2;
+  --color-reject-fg: #b91c1c;
+  --color-reject:    #dc2626;
+
+  /* nmba's bg/fg danger chip (distinct names from smile-admin's numeric scale). */
+  --color-danger-bg: #fee2e2;
+  --color-danger-fg: #b91c1c;
+
+  /* Saffron — helpline / call CTA.
+     CONFLICT on `600`: nhapoa/tg darkened it to #b8500f so white text clears AA;
+     scw/nmba kept #d35912 and override it back. */
+  --color-saffron-50:  #fff7eb;
+  --color-saffron-500: #ec6a1f;
+  --color-saffron-600: #b8500f;
+
+  /* Neutral surfaces.
+     CONFLICT on `ink-hint`: nmba/nhapoa/tg darkened #94a3b8 → slate-500 for AA;
+     scw kept the failing #94a3b8 and overrides it back. Preserved deliberately —
+     this port is behaviour-preserving, not an accessibility fix. */
+  --color-ink-hint: #64748b;
+  --color-line:     #e2e8f0;
+
+  /* ── smile-admin-only names ─────────────────────────────────────────── */
+  /* Brand accent — saffron, used sparingly */
+  --color-accent-50:  #fff7eb;
+  --color-accent-100: #fdebcd;
+  --color-accent-200: #fad59b;
+  --color-accent-500: #ff9933;
+  --color-accent-600: #e07a16;
+  --color-accent:     #ff9933;
+
+  /* Secondary green (govt secondary) */
+  --color-secondary-50:  #ecfdf5;
+  --color-secondary-100: #d1fae5;
+  --color-secondary-400: #34d399;
+  --color-secondary-500: #16a34a;
+  --color-secondary-600: #15803d;
+  --color-secondary:     #16a34a;
+
+  /* Status scales (the DEFAULTs collide with the hub's DS tokens and are scoped
+     to smile-admin via --portal-{info,success,warning,danger} above). */
+  --color-info-50:  #eff6ff;
+  --color-info-100: #dbeafe;
+  --color-info-300: #93c5fd;
+  --color-info-500: #3b82f6;
+  --color-info-600: #1d4ed8;
+
+  --color-success-50:  #ecfdf5;
+  --color-success-100: #d1fae5;
+  --color-success-300: #6ee7b7;
+  --color-success-500: #10b981;
+  --color-success-600: #059669;
+
+  --color-warning-50:  #fffbeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-300: #fcd34d;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+
+  --color-danger-50:  #fef2f2;
+  --color-danger-100: #fee2e2;
+  --color-danger-300: #fca5a5;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+  --color-danger-800: #991b1b;
+
+  /* Neutrals — slate-tinted for modern admin feel. These SHADOW Tailwind's stock
+     `neutral` palette; verified no non-smile-admin code uses `*-neutral-<n>`. */
+  --color-neutral-0:   #ffffff;
+  --color-neutral-50:  #f8fafc;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-300: #cbd5e1;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #64748b;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1e293b;
+  --color-neutral-900: #0f172a;
+  --color-neutral:     #334155;
+
+  /* Stroke aliases (kept for legacy smile-admin components) */
+  --color-stroke-50:  #f8fafc;
+  --color-stroke-100: #f1f5f9;
+  --color-stroke-200: #e2e8f0;
+  --color-stroke-300: #cbd5e1;
+  --color-stroke-400: #94a3b8;
+  --color-stroke-500: #64748b;
+  --color-stroke-600: #475569;
+
+  /* Semantic surface aliases — CSS vars defined in smile-admin.css's :root. */
+  --color-surface-elevated:     var(--surface-elevated);
+  --color-surface-sunken:       var(--surface-sunken);
+  --color-ring:                 var(--ring);
+  --color-foreground:           var(--foreground);
+  --color-foreground-muted:     var(--foreground-muted);
+  --color-foreground-hint:      var(--foreground-hint);
+  --color-foreground-on-primary: #ffffff;
+
+  /* ── smile-admin type scale ─────────────────────────────────────────── */
+  --text-display-1: 44px;
+  --text-display-1--line-height: 52px;
+  --text-display-1--letter-spacing: -0.02em;
+  --text-display-2: 36px;
+  --text-display-2--line-height: 44px;
+  --text-display-2--letter-spacing: -0.02em;
+  --text-display-5: 28px;
+  --text-display-5--line-height: 36px;
+  --text-display-5--letter-spacing: -0.01em;
+
+  --text-headline-1: 32px;
+  --text-headline-1--line-height: 40px;
+  --text-headline-1--letter-spacing: -0.01em;
+  --text-headline-2: 28px;
+  --text-headline-2--line-height: 36px;
+  --text-headline-2--letter-spacing: -0.01em;
+  --text-headline-3: 24px;
+  --text-headline-3--line-height: 32px;
+  --text-headline-3--letter-spacing: -0.005em;
+  --text-headline-4: 20px;
+  --text-headline-4--line-height: 28px;
+  --text-headline-5: 18px;
+  --text-headline-5--line-height: 26px;
+  --text-headline-6: 16px;
+  --text-headline-6--line-height: 24px;
+
+  --text-title-1: 20px;
+  --text-title-1--line-height: 28px;
+  --text-title-2: 18px;
+  --text-title-2--line-height: 24px;
+
+  --text-body-1: 16px;
+  --text-body-1--line-height: 24px;
+  --text-body-2: 14px;
+  --text-body-2--line-height: 20px;
+  --text-body-3: 13px;
+  --text-body-3--line-height: 20px;
+
+  --text-label-1: 14px;
+  --text-label-1--line-height: 20px;
+  --text-label-2: 12px;
+  --text-label-2--line-height: 16px;
+  --text-label-3: 11px;
+  --text-label-3--line-height: 16px;
+
+  --text-num-xl: 32px;
+  --text-num-xl--line-height: 36px;
+  --text-num-xl--letter-spacing: -0.02em;
+  --text-num-lg: 24px;
+  --text-num-lg--line-height: 28px;
+  --text-num-lg--letter-spacing: -0.01em;
+
+  /* ── Radius / shadow names the stock theme lacks ────────────────────── */
+  --radius-xxs: 2px;               /* smile-admin `rounded-xxs` */
+  --shadow-card:   0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.06);
+  --shadow-drawer: -8px 0 24px rgba(15,23,42,0.12);
+  --shadow-pop:    0 8px 28px rgba(15,23,42,0.14);
+  --shadow-s:      0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.06);
+  --shadow-inset:  inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(15,23,42,0.04);
+  --shadow-focus:  0 0 0 4px rgba(0,51,102,0.18);
+  --shadow-glow:   0 1px 0 rgba(255,255,255,0.6) inset, 0 12px 32px -16px rgba(0,51,102,0.25);
+
+  --ease-swift-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── smile-admin's named spacing scale ────────────────────────────────────
+   DELIBERATELY *not* declared as `--spacing-*`. Tailwind resolves `--spacing-*`
+   BEFORE `--container-*`, so declaring `--spacing-md: 12px` silently rewrites
+   `max-w-md` from 28rem to 12px for EVERY app in this build — and it does so at
+   generation time, which no `[data-portal]` scope can undo. (`max-w-md` alone has
+   25 call sites across the hub home, four portals and the DS.) Routing the scale
+   through a private namespace + explicit `@utility` rules gives smile-admin its
+   `p-md`/`gap-sm`/`space-y-lg` while `p-4` and `max-w-md` keep stock semantics.
+   Verified: these names exist nowhere outside smile-admin. */
+@theme {
+  --portal-spacing-xxs: 2px;
+  --portal-spacing-xs:  4px;
+  --portal-spacing-sm:  8px;
+  --portal-spacing-md:  12px;
+  --portal-spacing-lg:  16px;
+  --portal-spacing-xl:  20px;
+  --portal-spacing-2xl: 24px;
+  --portal-spacing-3xl: 32px;
+  --portal-spacing-4xl: 40px;
+  --portal-spacing-5xl: 56px;
+}
+
+@utility p-*  { padding: --value(--portal-spacing-*); }
+@utility px-* { padding-inline: --value(--portal-spacing-*); }
+@utility py-* { padding-block: --value(--portal-spacing-*); }
+@utility pt-* { padding-top: --value(--portal-spacing-*); }
+@utility pr-* { padding-right: --value(--portal-spacing-*); }
+@utility pb-* { padding-bottom: --value(--portal-spacing-*); }
+@utility pl-* { padding-left: --value(--portal-spacing-*); }
+@utility m-*  { margin: --value(--portal-spacing-*); }
+@utility mx-* { margin-inline: --value(--portal-spacing-*); }
+@utility my-* { margin-block: --value(--portal-spacing-*); }
+@utility mt-* { margin-top: --value(--portal-spacing-*); }
+@utility mr-* { margin-right: --value(--portal-spacing-*); }
+@utility mb-* { margin-bottom: --value(--portal-spacing-*); }
+@utility ml-* { margin-left: --value(--portal-spacing-*); }
+@utility gap-* { gap: --value(--portal-spacing-*); }
+@utility gap-x-* { column-gap: --value(--portal-spacing-*); }
+@utility gap-y-* { row-gap: --value(--portal-spacing-*); }
+@utility top-*    { top: --value(--portal-spacing-*); }
+@utility right-*  { right: --value(--portal-spacing-*); }
+@utility bottom-* { bottom: --value(--portal-spacing-*); }
+@utility left-*   { left: --value(--portal-spacing-*); }
+@utility space-y-* {
+  :where(& > :not(:last-child)) { margin-block-start: --value(--portal-spacing-*); }
+}
+@utility space-x-* {
+  :where(& > :not(:last-child)) { margin-inline-start: --value(--portal-spacing-*); }
+}
+
+/* `container` came from `theme.container` (center + 1rem padding, capped at
+   1280px) in every portal config; only tg still uses the class. Stock Tailwind's
+   container has neither the centring nor the padding, so it must be restored. */
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 40rem) { max-width: none; }
+  @media (width >= 1280px) { max-width: 1280px; }
 }
 
 @layer base {

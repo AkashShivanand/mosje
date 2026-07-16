@@ -93,15 +93,18 @@ def ref_board(screen):
     """Parity/reference board — DESIGN │ BUILD side by side, no findings/pins. For screens verified
     faithful to the design (nothing to pin) that are still worth showing in the report."""
     fig_img = screen.get("figmaImg"); live_img = screen.get("liveImg")
-    Hf, Hl = _imgh(fig_img), _imgh(live_img)
+    Hl = _imgh(live_img)
     figu = screen.get("figmaUrl"); livu = screen.get("liveUrl")
     links = ""
     if figu: links += f'<a href="{esc(figu)}">Figma frame ↗</a>'
     if livu: links += f'<a href="{esc(livu)}">Live page ↗</a>'
-    panels = (f'<div class="pwrap"><div class="plabel design"><b>DESIGN</b> Figma intent</div>{panel(fig_img, [0,0,1440,Hf], [], "figma")}</div>'
-              f'<div class="pwrap"><div class="plabel build"><b>BUILD</b> Live build · {esc(screen.get("env","dev"))}</div>{panel(live_img, [0,0,1440,Hl], [], "live")}</div>')
-    return (f'<div class="board"><div class="bhead"><div class="btitle"><b>{esc(screen["name"])}</b> · <span>parity reference</span></div>'
-            f'<div class="bbadge">✓ faithful</div></div><div class="panels">{panels}</div>'
+    panels = ""
+    if fig_img:
+        panels += f'<div class="pwrap"><div class="plabel design"><b>DESIGN</b> Figma intent</div>{panel(fig_img, [0,0,1440,_imgh(fig_img)], [], "figma")}</div>'
+    panels += f'<div class="pwrap"><div class="plabel build"><b>BUILD</b> Live build · {esc(screen.get("env","dev"))}</div>{panel(live_img, [0,0,1440,Hl], [], "live")}</div>'
+    badge = screen.get("_refbadge", "✓ faithful"); sub = screen.get("_refsub", "parity reference")
+    return (f'<div class="board"><div class="bhead"><div class="btitle"><b>{esc(screen["name"])}</b> · <span>{esc(sub)}</span></div>'
+            f'<div class="bbadge">{esc(badge)}</div></div><div class="panels">{panels}</div>'
             f'<div class="bfoot"><span>{esc(am["portal"])} — Design QC · {esc(am.get("generated",""))}</span>'
             f'<span class="links">{links}</span></div></div>')
 
@@ -151,9 +154,9 @@ for s in am["screens"]:
         sf=bysec[sec]
         cards="".join(card(f) for f in sf)
         groups+=f'<div class="group">{board(s, sec, sf)}<div class="cards">{cards}</div></div>'
-    if not groups and s.get("figmaImg") and s.get("liveImg"):   # findings-free parity/reference screen
+    if not groups and (s.get("figmaImg") or s.get("liveImg")):   # findings-free parity/coverage/reference screen
         groups=f'<div class="group">{ref_board(s)}</div>'
-        if not chips: chips='<span class="hchip" style="background:#047857">✓ faithful</span>'
+        if not chips: chips=f'<span class="hchip" style="background:{s.get("_refchip","#047857")}">{esc(s.get("_refbadge","✓ faithful"))}</span>'
     screen_sections.append(f'<section class="screen"><div class="shead"><h2>{esc(s["name"])}</h2>'
                    f'<div class="hchips">{chips}</div></div>{note}{groups}</section>')
 screens_html="".join(screen_sections)

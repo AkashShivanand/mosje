@@ -1,0 +1,54 @@
+/* ── TG Tailwind theme (was apps/portals/tg/tailwind.config.ts) ────────────
+   Values are verbatim from that config. The hub's globals.css declares the
+   utility NAMES; this block binds TG's VALUES to its subtree. Only the keys
+   where TG differs from the hub-wide default are listed — see globals.css.
+   TG takes the hub-wide defaults for ink-hint (#64748b), await-fg (#92400e),
+   saffron-600 (#b8500f), herofrom/heroto (emerald), navy, brandwash, approve,
+   reject, line and the card/drawer/pop shadows. */
+[data-portal="tg"] {
+  /* DS-token names TG redefines (hub keeps its own value outside this scope). */
+  --portal-ink: #0f172a;
+  --portal-ink-muted: #475569;
+  --portal-saffron: #ec6a1f;
+  --portal-surface-muted: #f5f7fb;
+
+  /* borderRadius.extend — stock Tailwind is 0.75rem / 1rem. */
+  --radius-xl: 0.85rem;
+  --radius-2xl: 1.1rem;
+}
+
+:root {
+  --font-scale: 1;
+
+  /* TG / SAMAVESH surface tokens */
+  --surface: #ffffff;
+  --surface-muted: #f5f7fb;
+  --border: #e2e8f0;
+  --foreground: #0f172a;
+}
+
+/* GIGW accessibility — font scaling hooks (top-bar A- / A / A+) */
+[data-fontscale="small"] { --font-scale: 0.92; }
+[data-fontscale="default"] { --font-scale: 1; }
+[data-fontscale="large"] { --font-scale: 1.12; }
+
+[data-highcontrast="true"] {
+  --surface: #000000;
+  --surface-muted: #000000;
+  --foreground: #ffffff;
+  --border: #ffffff;
+}
+
+html {
+  font-size: calc(16px * var(--font-scale));
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--surface-muted);
+  font-family: "Noto Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}

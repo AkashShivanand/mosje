@@ -28,16 +28,78 @@ interface Zone {
 const base = (env: string | undefined, fallback: string) => env ?? fallback;
 
 const ZONES: Zone[] = [
-  { prefix: "/website",             probeUrl: base(process.env.ZONE_WEBSITE_URL,     "http://localhost:3001") + "/website",                   label: "DoSJE Website",  cmd: "npm run dev:website" },
   { prefix: "/storybook",           probeUrl: base(process.env.ZONE_DS_URL,          "http://localhost:6006"),                                 label: "Storybook",      cmd: "npm run dev:storybook" },
-  { prefix: "/design-system",       probeUrl: base(process.env.ZONE_DOCS_URL,        "http://localhost:3002") + "/design-system",              label: "SAMAVESH Docs",  cmd: "npm run dev:docs" },
-  { prefix: "/portals/pm-ajay",     probeUrl: base(process.env.ZONE_PM_AJAY_URL,     "http://localhost:4124") + "/portals/pm-ajay",            label: "PM-AJAY Portal", cmd: "npm run dev:pm-ajay" },
-  { prefix: "/portals/smile-admin", probeUrl: base(process.env.ZONE_SMILE_ADMIN_URL, "http://localhost:4123") + "/portals/smile-admin/login",  label: "SMILE Admin",    cmd: "npm run dev:smile" },
-  { prefix: "/portals/scw",         probeUrl: base(process.env.ZONE_SCW_URL,         "http://localhost:4125") + "/portals/scw",                label: "SCW Portal",     cmd: "npm run dev:scw" },
-  { prefix: "/portals/nmba",        probeUrl: base(process.env.ZONE_NMBA_URL,        "http://localhost:4126") + "/portals/nmba/admin/login",   label: "NMBA Portal",    cmd: "npm run dev:nmba" },
-  { prefix: "/portals/nhapoa",      probeUrl: base(process.env.ZONE_NHAPOA_URL,      "http://localhost:4127") + "/portals/nhapoa/login",       label: "NHAPOA Portal",  cmd: "npm run dev:nhapoa" },
-  { prefix: "/portals/tg",          probeUrl: base(process.env.ZONE_TG_URL,          "http://localhost:4128") + "/portals/tg",                 label: "TG Portal",      cmd: "npm run dev:tg" },
+  // The DoSJE website migrated to a native hub route (apps/hub/src/app/website) —
+  // no zone to proxy. Storybook is the last remaining child process.
+  // scw migrated to a native hub route (apps/hub/src/app/portals/scw) — no zone to proxy.
+  // nmba migrated to a native hub route (apps/hub/src/app/portals/nmba) — no zone to proxy.
+  // tg migrated to a native hub route (apps/hub/src/app/portals/tg) — no zone to proxy.
+  // nhapoa migrated to a native hub route (apps/hub/src/app/portals/nhapoa) — no zone to proxy.
+  // smile-admin migrated to a native hub route (apps/hub/src/app/portals/smile-admin) — no zone to proxy.
+  // pm-ajay migrated to a native hub route (apps/hub/src/app/portals/pm-ajay) — no zone to proxy.
+  // design-system docs migrated to a native hub route (apps/hub/src/app/design-system) — no zone to proxy.
 ];
+
+/*
+ * SMILE Admin — route guard (folded in from the portal's own src/middleware.ts
+ * when it mounted natively; see apps/hub/src/app/portals/MIGRATION-RECIPE.md §6).
+ * All paths under /portals/smile-admin/ are protected EXCEPT:
+ * - /portals/smile-admin/login             (sign-in page)
+ * - /portals/smile-admin/forgot-password   (kept from the original PUBLIC_PATHS
+ *   list even though the actual route is /forget-password — see note below)
+ * - asset-like paths (contain a ".")
+ *
+ * We read the session from localStorage, but localStorage is not available in
+ * middleware (Edge runtime). We use a lightweight cookie instead: set
+ * "smile_session=1" in the auth-context signIn and cleared on signOut.
+ *
+ * Because this is a prototype, the cookie is just a presence flag — the real
+ * account data still comes from localStorage on the client.
+ *
+ * SEC-004: The session cookie is NOT HttpOnly because it is set from client-side
+ * JS (document.cookie). Before production, migrate to a server-set HttpOnly
+ * cookie via an /api/auth route so JS cannot read or forge the session token.
+ *
+ * CRITICAL — paths are FULL, not basePath-relative. The portal's middleware ran
+ * under `basePath: /portals/smile-admin`, which Next strips before middleware
+ * runs (and re-adds to redirects) — so the original guard used bare paths like
+ * "/login". Natively there is no basePath: `pathname` arrives as the full
+ * "/portals/smile-admin/login", and redirects are NOT re-prefixed. Every path
+ * below is written in full form.
+ */
+const SMILE_ADMIN_PUBLIC = ["/portals/smile-admin/login", "/portals/smile-admin/forgot-password"];
+const SMILE_ADMIN_SESSION_COOKIE = "smile_session"; // set by the client auth-context — keep exact name
+
+/*
+ * PM-AJAY — route guard (folded in from the portal's own src/middleware.ts
+ * when it mounted natively; see apps/hub/src/app/portals/MIGRATION-RECIPE.md §6).
+ * All paths under /portals/pm-ajay/ are protected EXCEPT:
+ * - /portals/pm-ajay/login             (sign-in page)
+ * - /portals/pm-ajay/forgot-password   (the route folder really is
+ *   "forgot-password" here — verified via `git show main:...`, unlike
+ *   smile-admin's PUBLIC_PATHS/route-folder mismatch noted above)
+ * - asset-like paths (contain a ".")
+ *
+ * We read the session from localStorage, but localStorage is not available in
+ * middleware (Edge runtime). We use a lightweight cookie instead: set
+ * "pmajay_session=1" in the auth-context signIn and cleared on signOut.
+ *
+ * Because this is a prototype, the cookie is just a presence flag — the real
+ * account data still comes from localStorage on the client.
+ *
+ * SEC-006: The session cookie is NOT HttpOnly because it is set from client-side
+ * JS (document.cookie). Before production, migrate to a server-set HttpOnly
+ * cookie via an /api/auth route so JS cannot read or forge the session token.
+ *
+ * CRITICAL — paths are FULL, not basePath-relative. The portal's middleware ran
+ * under `basePath: /portals/pm-ajay`, which Next strips before middleware
+ * runs (and re-adds to redirects) — so the original guard used bare paths like
+ * "/login". Natively there is no basePath: `pathname` arrives as the full
+ * "/portals/pm-ajay/login", and redirects are NOT re-prefixed. Every path
+ * below is written in full form.
+ */
+const PM_AJAY_PUBLIC = ["/portals/pm-ajay/login", "/portals/pm-ajay/forgot-password"];
+const PM_AJAY_SESSION_COOKIE = "pmajay_session"; // set by the client auth-context — keep exact name
 
 const PROBE_TTL_MS     = 5_000;
 const PROBE_TIMEOUT_MS = 4_000; // generous for Turbopack cold-start on first hit
@@ -71,9 +133,46 @@ async function zoneIsUp(probeUrl: string): Promise<boolean> {
 }
 
 export async function proxy(req: NextRequest): Promise<NextResponse> {
+  const { pathname } = req.nextUrl;
+
+  // SMILE Admin route guard — must run in every environment (it's a real auth
+  // check, not a dev convenience), so it sits before the dev-only production
+  // early-return below.
+  if (pathname === "/portals/smile-admin" || pathname.startsWith("/portals/smile-admin/")) {
+    const isPublic = SMILE_ADMIN_PUBLIC.some(
+      (p) => pathname === p || pathname.startsWith(p + "/"),
+    );
+    // Let public pages and asset-like paths (e.g. the portal's public/ files,
+    // now served at /portals/smile-admin/…) through unguarded.
+    if (isPublic || pathname.includes(".")) return NextResponse.next();
+    if (!req.cookies.get(SMILE_ADMIN_SESSION_COOKIE)) {
+      const loginUrl = req.nextUrl.clone();
+      loginUrl.pathname = "/portals/smile-admin/login";
+      return NextResponse.redirect(loginUrl);
+    }
+    return NextResponse.next();
+  }
+
+  // PM-AJAY route guard — must run in every environment (it's a real auth
+  // check, not a dev convenience), so it sits before the dev-only production
+  // early-return below.
+  if (pathname === "/portals/pm-ajay" || pathname.startsWith("/portals/pm-ajay/")) {
+    const isPublic = PM_AJAY_PUBLIC.some(
+      (p) => pathname === p || pathname.startsWith(p + "/"),
+    );
+    // Let public pages and asset-like paths (e.g. the portal's public/ files,
+    // now served at /portals/pm-ajay/…) through unguarded.
+    if (isPublic || pathname.includes(".")) return NextResponse.next();
+    if (!req.cookies.get(PM_AJAY_SESSION_COOKIE)) {
+      const loginUrl = req.nextUrl.clone();
+      loginUrl.pathname = "/portals/pm-ajay/login";
+      return NextResponse.redirect(loginUrl);
+    }
+    return NextResponse.next();
+  }
+
   if (process.env.NODE_ENV === "production") return NextResponse.next();
 
-  const { pathname } = req.nextUrl;
   const zone = ZONES.find(
     (z) => pathname === z.prefix || pathname.startsWith(z.prefix + "/"),
   );
@@ -92,12 +191,11 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
 
 export const config = {
   matcher: [
-    "/website",
-    "/website/:path*",
+    // /website is intentionally absent: the DoSJE website is a native route now,
+    // so there is no zone to probe and nothing to guard — running the proxy over
+    // its ~79 routes would be pure overhead.
     "/storybook",
     "/storybook/:path*",
-    "/design-system",
-    "/design-system/:path*",
     "/portals/:path*",
   ],
 };

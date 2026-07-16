@@ -346,11 +346,21 @@ export const legacyDsCss = {
       }
     }
 
-    const colorModeBlocks = Object.entries(colorModeMap)
-      .map(([mode, decls]) => `[data-color-mode="${mode}"] {\n${decls.join("\n")}\n}`)
-      .join("\n\n");
-
     const legacyReassert = `\n\n  /* re-resolve --ds-* aliases for nested theme islands */\n${legacy.join("\n")}`;
+
+    // The --ds-* aliases must be re-asserted here for the same reason the
+    // [data-theme="…"] blocks below do it: a custom property substitutes var()
+    // at the element where it is DECLARED. --ds-primary is declared once at
+    // :root, so it resolves against :root's --sa-* and is then inherited as an
+    // already-resolved colour. A nested [data-color-mode="blue-dark"] island
+    // flips the --sa-* primitives for its subtree, but without re-declaring the
+    // aliases the components below keep :root's value. This only ever worked
+    // when data-color-mode sat on <html> (where :root's declarations resolve) —
+    // it broke the moment portals mounted natively and the attribute moved to a
+    // wrapper div.
+    const colorModeBlocks = Object.entries(colorModeMap)
+      .map(([mode, decls]) => `[data-color-mode="${mode}"] {\n${decls.join("\n")}${legacyReassert}\n}`)
+      .join("\n\n");
     const themeBlocks = [
       colorModeBlocks,
       themeMap.light.length  ? `[data-theme="light"] {\n${themeMap.light.join("\n")}${legacyReassert}\n}` : "",
