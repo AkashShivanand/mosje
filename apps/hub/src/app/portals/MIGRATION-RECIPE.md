@@ -141,14 +141,11 @@ mode was a fixed brand identity, so hard-code it on the wrapper.)
 Also add **`data-portal="<slug>"`** to the same wrapper — it is what binds the portal's Tailwind
 palette to its subtree (see §5b). Verify after with a computed-CSS check in the browser.
 
-> **KNOWN GAP (as of the 6-portal consolidation):** a nested `data-color-mode` island does **not**
-> actually repaint the DS ramp. `tokens.css` re-resolves the `--ds-*` aliases only inside `:root`
-> and the `[data-theme=*]` blocks, so a `[data-color-mode="blue-dark"]` wrapper flips the
-> `--sa-color-*` primitives but `--ds-primary` stays whatever `<html>` resolved. It worked in the
-> standalone portals because the attribute sat on `<html>` itself. Affects smile-admin and nmba.
-> The fix belongs in `packages/tokens` (emit the `--ds-*` re-resolution inside the
-> `[data-color-mode]` block, exactly as the `[data-theme]` blocks already do) — **not** in a hub
-> workaround. Still set the attribute; it becomes correct the moment the token fix lands.
+A nested `data-color-mode` island genuinely repaints the DS ramp — the generator emits the
+`--ds-*` alias re-resolution inside every `[data-color-mode="…"]` block (as it always has for
+`[data-theme="…"]`). This was broken during the consolidation and fixed in
+`packages/tokens/build/formats/legacy-ds-css.mjs`; verify with a computed-style check
+(`--ds-primary` should read `#003366` under a `blue-dark` wrapper, `#0373df` at `<html>`).
 Ignore `className={font.variable}` (hub root owns the font) and `lang`/`suppressHydrationWarning`
 (hub root owns those).
 
