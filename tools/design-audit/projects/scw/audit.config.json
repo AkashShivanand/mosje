@@ -42,10 +42,11 @@
     ]
   },
   "baseline": {
-    "mode": "tokens",
+    "mode": "internal",
     "_modes": "tokens (strict, vs inputs/tokens.json) | derived (from Figma variables) | internal (no DS — flag outliers)",
-    "source": "inputs/tokens.json"
+    "source": "inputs/tokens.json",
+    "_why_internal": "MUST stay 'internal' until inputs/tokens.json is a real design-variable export. Its current values were sampled from the LIVE BUILD's computed CSS (the Figma MCP could not resolve SCW's design nodes — see the _note in tokens.json). Running mode 'tokens' against a build-derived baseline is CIRCULAR: it compares the build to itself and reports near-zero deviations by construction — a false green that looks like a passing DS-conformance audit. 'internal' is the honest mode for a build-derived baseline: no design truth asserted, just outliers flagged. Switch to 'tokens' ONLY after re-running Phase 0 with the SCW page open in the Figma desktop app so get_variable_defs returns real variables."
   },
   "manifest": "screen-manifest.yaml",
-  "notes": "Passwords are NOT stored here. Put them in projects/scw/secrets.json (gitignored), keyed by role name ('admin'). The 'public' role needs no secret (auth:none). Demo credential for 'admin' (Nodal Officer, per .claude/rules/portal-login-demos.md): mobile 9810000001, password Demo@123 — add it to secrets.json to unlock the 8 admin-uat screens; not committed here."
+  "notes": "Passwords are NOT stored here and MUST NOT be. Put them in projects/scw/secrets.json (gitignored), keyed by role name ('admin') — see secrets.example.json for the shape. The 'public' role needs no secret (auth:none), which is why the 10 scw-user-uat screens run unattended. The 8 scw-admin-uat screens stay skipped until a human supplies the admin credential. NOTE: the demo credentials in .claude/rules/portal-login-demos.md are for the LOCAL prototype at localhost:3000/portals/scw — they are NOT the credentials for this real UAT host, so do not copy them here."
 }
