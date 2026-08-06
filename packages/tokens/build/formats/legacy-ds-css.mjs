@@ -273,22 +273,41 @@ const val = (t) => (t.$value !== undefined ? t.$value : t.value);
 // Fluid type: clamp() between a min (@360px viewport) and max (@1280px), Utopia-style.
 const CLAMP_WMIN = 360;
 const CLAMP_WMAX = 1280;
-/** Return a clamp() string (or a static px value when min === max). */
+
+// Type is emitted in REM, not px. GIGW 3.0 and WCAG 1.4.4 are satisfied by browser zoom
+// either way, but a reader who raises their browser's DEFAULT FONT SIZE without zooming —
+// common among low-vision and older users, and the exact audience these services carry —
+// gets nothing from a px scale. rem tracks that preference. UX4G 3.0 sizes type in rem for
+// this reason and, until this change, was ahead of SAMAVESH on it.
+//
+// The viewport term stays in vw: that is the fluid half of the scale and is meant to track
+// the screen, not the reader. So the expression is
+//     clamp(minRem, calc(interceptRem + slopeVw), maxRem)
+// which is Utopia's standard form and renders IDENTICALLY to the old px output at the 16px
+// default root size — the conversion is value-preserving, and a test asserts it.
+//
+// Deliberately NOT converted: the hard `font-size: 16px` floor on mobile text-entry controls
+// in components/forms/forms.css. iOS Safari's zoom-on-focus threshold is an absolute 16px,
+// not a preference-relative one, so that literal is correct as px.
+const REM_BASE = 16;
+const round = (n, dp = 4) => Math.round(n * 10 ** dp) / 10 ** dp;
+const rem = (px) => `${round(px / REM_BASE)}rem`;
+
+/** Return a clamp() string (or a static rem value when min === max). */
 function clampExpr(minPx, maxPx) {
   const min = parseFloat(minPx);
   const max = parseFloat(maxPx);
   if (!Number.isFinite(min) || !Number.isFinite(max)) return maxPx ?? minPx;
-  if (min === max) return `${min}px`;
+  if (min === max) return min === 0 ? "0px" : rem(min);
   const range = CLAMP_WMAX - CLAMP_WMIN;
   const slopeVw = ((max - min) / range) * 100; // vw coefficient
-  const yInt = min - ((max - min) / range) * CLAMP_WMIN; // px intercept
-  const r = (n) => Math.round(n * 1000) / 1000;
+  const yInt = min - ((max - min) / range) * CLAMP_WMIN; // intercept, in px before conversion
   const lo = Math.min(min, max);
   const hi = Math.max(min, max);
-  const s = r(slopeVw);
+  const s = round(slopeVw, 3);
   // Avoid "+ -Nvw" (valid but fragile) — emit "- Nvw" for negative slopes.
   const vwTerm = s < 0 ? `- ${Math.abs(s)}vw` : `+ ${s}vw`;
-  return `clamp(${lo}px, calc(${r(yInt)}px ${vwTerm}), ${hi}px)`;
+  return `clamp(${rem(lo)}, calc(${rem(yInt)} ${vwTerm}), ${rem(hi)})`;
 }
 
 /**

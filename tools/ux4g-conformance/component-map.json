@@ -1,100 +1,347 @@
 {
-  "$description": "UX4G Design System 3.0's published component set (59, from ux4g.gov.in/components) mapped to SAMAVESH. `status` is one of: exact (SAMAVESH ships an equivalent), partial (exists but not exported as a shared component, or covered only as a variant), missing (no equivalent). `samavesh` names the export in @mosje/design-system. Keep this file honest — it feeds the coverage figure in the weekly UX4G report.",
+  "$description": "UX4G Design System 3.0's published component set (59, from ux4g.gov.in/components) mapped to SAMAVESH. `status` is one of: exact (SAMAVESH ships an equivalent), partial (exists but not exported as a shared component, or covered only as a variant), missing (no equivalent). `samavesh` names the export in @mosje/design-system. Keep this file honest \u2014 it feeds the coverage figure in the weekly UX4G report.",
   "$reviewed": "2026-08-06",
   "categories": {
     "form": {
       "label": "Form Elements",
       "components": [
-        { "ux4g": "Button", "status": "exact", "samavesh": "Button" },
-        { "ux4g": "Icon Button", "status": "partial", "samavesh": "Button", "note": "Icon-only rendering is a Button prop, not a distinct component." },
-        { "ux4g": "Checkbox", "status": "exact", "samavesh": "Checkbox" },
-        { "ux4g": "Combobox", "status": "missing" },
-        { "ux4g": "Date Picker", "status": "missing" },
-        { "ux4g": "Time Picker", "status": "missing" },
-        { "ux4g": "File Upload", "status": "exact", "samavesh": "MediaUpload" },
-        { "ux4g": "Form Field Group", "status": "exact", "samavesh": "FormSection" },
-        { "ux4g": "Input - Textfield", "status": "exact", "samavesh": "Input" },
-        { "ux4g": "Input - Aadhaar", "status": "missing", "priority": "high", "note": "Every portal needs it; the clearest clause-4 contribution." },
-        { "ux4g": "Input - OTP", "status": "missing", "priority": "high" },
-        { "ux4g": "Input - Pan Card", "status": "missing", "priority": "high" },
-        { "ux4g": "Dropdown Menu", "status": "exact", "samavesh": "Select" },
-        { "ux4g": "Radio Button", "status": "exact", "samavesh": "Radio" },
-        { "ux4g": "Range Slider", "status": "missing" },
-        { "ux4g": "Search", "status": "exact", "samavesh": "Search" },
-        { "ux4g": "Slider", "status": "missing" },
-        { "ux4g": "Toggle", "status": "exact", "samavesh": "Toggle" }
+        {
+          "ux4g": "Button",
+          "status": "exact",
+          "samavesh": "Button"
+        },
+        {
+          "ux4g": "Icon Button",
+          "status": "partial",
+          "samavesh": "Button",
+          "note": "Icon-only rendering is a Button prop, not a distinct component."
+        },
+        {
+          "ux4g": "Checkbox",
+          "status": "exact",
+          "samavesh": "Checkbox"
+        },
+        {
+          "ux4g": "Combobox",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Date Picker",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Time Picker",
+          "status": "missing"
+        },
+        {
+          "ux4g": "File Upload",
+          "status": "exact",
+          "samavesh": "MediaUpload"
+        },
+        {
+          "ux4g": "Form Field Group",
+          "status": "exact",
+          "samavesh": "FormSection"
+        },
+        {
+          "ux4g": "Input - Textfield",
+          "status": "exact",
+          "samavesh": "Input"
+        },
+        {
+          "ux4g": "Input - Aadhaar",
+          "status": "exact",
+          "note": "Verhoeff-checked, masked to last 4 by default (DPDP Act 2023 / UIDAI).",
+          "samavesh": "AadhaarInput"
+        },
+        {
+          "ux4g": "Input - OTP",
+          "status": "exact",
+          "samavesh": "OtpInput",
+          "note": "Six boxes, paste + SMS one-time-code autofill, full keyboard model."
+        },
+        {
+          "ux4g": "Input - Pan Card",
+          "status": "exact",
+          "samavesh": "PanInput",
+          "note": "Shape + holder-type character validation, auto-uppercase."
+        },
+        {
+          "ux4g": "Dropdown Menu",
+          "status": "exact",
+          "samavesh": "Select"
+        },
+        {
+          "ux4g": "Radio Button",
+          "status": "exact",
+          "samavesh": "Radio"
+        },
+        {
+          "ux4g": "Range Slider",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Search",
+          "status": "exact",
+          "samavesh": "Search"
+        },
+        {
+          "ux4g": "Slider",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Toggle",
+          "status": "exact",
+          "samavesh": "Toggle"
+        }
       ]
     },
     "feedback": {
       "label": "Feedback",
       "components": [
-        { "ux4g": "Backdrop", "status": "partial", "samavesh": "Modal", "note": "Internal to Modal/SideSheet; not separately exported." },
-        { "ux4g": "Badge", "status": "exact", "samavesh": "Badge" },
-        { "ux4g": "Context Alert", "status": "exact", "samavesh": "Alert" },
-        { "ux4g": "Draft Status Banner", "status": "missing" },
-        { "ux4g": "Drawer", "status": "exact", "samavesh": "SideSheet" },
-        { "ux4g": "Empty State", "status": "exact", "samavesh": "EmptyState" },
-        { "ux4g": "Feedback", "status": "missing", "note": "Star-rating capture." },
-        { "ux4g": "Modal", "status": "exact", "samavesh": "Modal" },
-        { "ux4g": "Popover", "status": "missing" },
-        { "ux4g": "Progress Indicators", "status": "partial", "samavesh": "charts/progress", "note": "Exists in the charts layer, not as a general feedback component." },
-        { "ux4g": "SLA Progress Indicator", "status": "missing", "priority": "high", "note": "Encodes Right to Service Act timing — take as specified rather than invent." },
-        { "ux4g": "System Alert", "status": "partial", "samavesh": "Alert", "note": "Covered as an Alert variant." },
-        { "ux4g": "Tooltip", "status": "missing" }
+        {
+          "ux4g": "Backdrop",
+          "status": "partial",
+          "samavesh": "Modal",
+          "note": "Internal to Modal/SideSheet; not separately exported."
+        },
+        {
+          "ux4g": "Badge",
+          "status": "exact",
+          "samavesh": "Badge"
+        },
+        {
+          "ux4g": "Context Alert",
+          "status": "exact",
+          "samavesh": "Alert"
+        },
+        {
+          "ux4g": "Draft Status Banner",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Drawer",
+          "status": "exact",
+          "samavesh": "SideSheet"
+        },
+        {
+          "ux4g": "Empty State",
+          "status": "exact",
+          "samavesh": "EmptyState"
+        },
+        {
+          "ux4g": "Feedback",
+          "status": "missing",
+          "note": "Star-rating capture."
+        },
+        {
+          "ux4g": "Modal",
+          "status": "exact",
+          "samavesh": "Modal"
+        },
+        {
+          "ux4g": "Popover",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Progress Indicators",
+          "status": "partial",
+          "samavesh": "charts/progress",
+          "note": "Exists in the charts layer, not as a general feedback component."
+        },
+        {
+          "ux4g": "SLA Progress Indicator",
+          "status": "missing",
+          "priority": "high",
+          "note": "Encodes Right to Service Act timing \u2014 take as specified rather than invent."
+        },
+        {
+          "ux4g": "System Alert",
+          "status": "partial",
+          "samavesh": "Alert",
+          "note": "Covered as an Alert variant."
+        },
+        {
+          "ux4g": "Tooltip",
+          "status": "missing"
+        }
       ]
     },
     "data": {
       "label": "Data Display",
       "components": [
-        { "ux4g": "Accordion", "status": "missing" },
-        { "ux4g": "Avatar", "status": "exact", "samavesh": "Avatar" },
-        { "ux4g": "Card", "status": "exact", "samavesh": "Card" },
-        { "ux4g": "Carousel", "status": "missing" },
-        { "ux4g": "Chip", "status": "exact", "samavesh": "Chip" },
-        { "ux4g": "Chip Group", "status": "partial", "samavesh": "Chip", "note": "Grouping is composed ad hoc, not a component." },
-        { "ux4g": "Divider", "status": "missing" },
-        { "ux4g": "Horizontal Status Pipeline", "status": "exact", "samavesh": "Stepper" },
-        { "ux4g": "Image", "status": "missing", "note": "Apps use next/image directly." },
-        { "ux4g": "Journey Timeline", "status": "exact", "samavesh": "ApprovalTimeline" },
-        { "ux4g": "List", "status": "missing" },
-        { "ux4g": "Result List Row", "status": "missing" },
-        { "ux4g": "Spinner", "status": "exact", "samavesh": "Loader" },
-        { "ux4g": "Tables", "status": "exact", "samavesh": "DataTable" },
-        { "ux4g": "Tag", "status": "exact", "samavesh": "Badge" },
-        { "ux4g": "Time Slot", "status": "missing" },
-        { "ux4g": "Vertical Status Pipeline", "status": "exact", "samavesh": "ApprovalTimeline" }
+        {
+          "ux4g": "Accordion",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Avatar",
+          "status": "exact",
+          "samavesh": "Avatar"
+        },
+        {
+          "ux4g": "Card",
+          "status": "exact",
+          "samavesh": "Card"
+        },
+        {
+          "ux4g": "Carousel",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Chip",
+          "status": "exact",
+          "samavesh": "Chip"
+        },
+        {
+          "ux4g": "Chip Group",
+          "status": "partial",
+          "samavesh": "Chip",
+          "note": "Grouping is composed ad hoc, not a component."
+        },
+        {
+          "ux4g": "Divider",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Horizontal Status Pipeline",
+          "status": "exact",
+          "samavesh": "Stepper"
+        },
+        {
+          "ux4g": "Image",
+          "status": "missing",
+          "note": "Apps use next/image directly."
+        },
+        {
+          "ux4g": "Journey Timeline",
+          "status": "exact",
+          "samavesh": "ApprovalTimeline"
+        },
+        {
+          "ux4g": "List",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Result List Row",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Spinner",
+          "status": "exact",
+          "samavesh": "Loader"
+        },
+        {
+          "ux4g": "Tables",
+          "status": "exact",
+          "samavesh": "DataTable"
+        },
+        {
+          "ux4g": "Tag",
+          "status": "exact",
+          "samavesh": "Badge"
+        },
+        {
+          "ux4g": "Time Slot",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Vertical Status Pipeline",
+          "status": "exact",
+          "samavesh": "ApprovalTimeline"
+        }
       ]
     },
     "nav": {
       "label": "Navigation",
       "components": [
-        { "ux4g": "Breadcrumb", "status": "missing" },
-        { "ux4g": "Footer", "status": "exact", "samavesh": "Footer" },
-        { "ux4g": "Link", "status": "missing" },
-        { "ux4g": "Mega Menu", "status": "missing" },
-        { "ux4g": "Mobile App Header", "status": "partial", "samavesh": "SiteHeader", "note": "SiteHeader is responsive; no distinct mobile component." },
-        { "ux4g": "Navbar", "status": "exact", "samavesh": "SiteHeader" },
-        { "ux4g": "Pagination", "status": "partial", "samavesh": "DataTable", "note": "Implemented inside DataTable; not exported for reuse." },
-        { "ux4g": "Stepper", "status": "exact", "samavesh": "Stepper" },
-        { "ux4g": "Tab", "status": "exact", "samavesh": "Tabs" }
+        {
+          "ux4g": "Breadcrumb",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Footer",
+          "status": "exact",
+          "samavesh": "Footer"
+        },
+        {
+          "ux4g": "Link",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Mega Menu",
+          "status": "missing"
+        },
+        {
+          "ux4g": "Mobile App Header",
+          "status": "partial",
+          "samavesh": "SiteHeader",
+          "note": "SiteHeader is responsive; no distinct mobile component."
+        },
+        {
+          "ux4g": "Navbar",
+          "status": "exact",
+          "samavesh": "SiteHeader"
+        },
+        {
+          "ux4g": "Pagination",
+          "status": "partial",
+          "samavesh": "DataTable",
+          "note": "Implemented inside DataTable; not exported for reuse."
+        },
+        {
+          "ux4g": "Stepper",
+          "status": "exact",
+          "samavesh": "Stepper"
+        },
+        {
+          "ux4g": "Tab",
+          "status": "exact",
+          "samavesh": "Tabs"
+        }
       ]
     },
     "utility": {
       "label": "Others",
       "components": [
-        { "ux4g": "Accessibility Bar", "status": "exact", "samavesh": "Ux4gAccessibilityWidget" },
-        { "ux4g": "Biometric Capture", "status": "missing" }
+        {
+          "ux4g": "Accessibility Bar",
+          "status": "exact",
+          "samavesh": "Ux4gAccessibilityWidget"
+        },
+        {
+          "ux4g": "Biometric Capture",
+          "status": "missing"
+        }
       ]
     }
   },
   "samaveshOnly": {
     "$description": "SAMAVESH components with no UX4G 3.0 equivalent. UX4G covers the citizen applying for a service; these cover the officer reviewing, approving, monitoring and reporting on it. Offered back under clause 4 of the adoption directive.",
     "components": [
-      "AppSwitcher", "ApprovalTimeline", "ChartCard", "DashboardGrid", "DataTable (advanced)",
-      "DeclarationCheckbox", "DemoFab", "FilterBar", "FormCard", "GeoPhotoInput", "KpiRow",
-      "Lightbox", "MediaGalleryInput", "MetricCard", "PortalLoginShell", "ReviewItem",
-      "ReviewSection", "SegmentedControl", "SidebarNav", "ToastProvider", "Wizard",
-      "ZoneSwitcher", "charts/* (13 chart types incl. india-map)"
+      "AppSwitcher",
+      "ApprovalTimeline",
+      "ChartCard",
+      "DashboardGrid",
+      "DataTable (advanced)",
+      "DeclarationCheckbox",
+      "DemoFab",
+      "FilterBar",
+      "FormCard",
+      "GeoPhotoInput",
+      "KpiRow",
+      "Lightbox",
+      "MediaGalleryInput",
+      "MetricCard",
+      "PortalLoginShell",
+      "ReviewItem",
+      "ReviewSection",
+      "SegmentedControl",
+      "SidebarNav",
+      "ToastProvider",
+      "Wizard",
+      "ZoneSwitcher",
+      "charts/* (13 chart types incl. india-map)"
     ]
   }
 }

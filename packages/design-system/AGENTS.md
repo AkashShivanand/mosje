@@ -67,7 +67,10 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
   (feedback); `FormSection`, `FormCard`, `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`,
   `MediaUpload` (single file/image upload), `MediaGalleryInput` (multi image/video upload),
   `GeoPhotoInput` (geo-tagged evidence photos with EXIF/device location + auto-downscaling),
-  `DeclarationCheckbox` (statutory certification panel) and the input atoms (forms);
+  `DeclarationCheckbox` (statutory certification panel), the **identity controls**
+  `AadhaarInput` / `OtpInput` / `PanInput` (UX4G 3.0 parity — Verhoeff-checked and
+  masked-by-default Aadhaar, six-box OTP with paste + SMS autofill, holder-type-validating
+  PAN; **never** hand-roll these as an `<Input>` + regex) and the input atoms (forms);
   `ApprovalTimeline` (multi-tier approval audit trail, data-display); `SiteHeader`, `SidebarNav`, `Footer`,
   `AppSwitcher`, `Tabs`/`TabPanel` (navigation); `PortalLoginShell` (auth);
   `UX4GAccessibilityWidget` (a11y — **CANONICAL**: the official Government of
