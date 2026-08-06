@@ -11,25 +11,34 @@
 
 ## The problem
 
-Some modules were designed by business analysts without the design team involved. Those modules
-were then built. So for that part of the estate there is no design file worth calling a source of
-truth, the screens were never reviewed, and whatever the BAs produced exists in mixed formats or
+Design and build have drifted apart, and for two different reasons.
+
+Where the design team did the work, a Figma source exists but the build may no longer match it.
+Nobody has checked recently, and the differences are invisible until someone looks screen by screen.
+
+Where business analysts designed modules themselves, there is no design source worth trusting at
+all. Those screens were never reviewed, and whatever the BAs produced exists in mixed formats or
 not at all.
 
-The result is that design and build have drifted apart in a way we cannot see module by module.
+## Two parts
 
-## What we are doing about it
+The work splits cleanly along that line, and the two halves run in opposite directions.
 
-Three things at once, in a single pass:
+**Part 1 — match design and build.** A design already exists. Compare it against what is live,
+record where they differ, and decide which one is right. The design usually leads.
 
-1. Work out which modules were done without us.
-2. Bring those modules up to design-team standard, redesigning them properly.
-3. Rebuild them in Figma on UX4G 3.0, so the design file becomes the source of truth.
+**Part 2 — clean up the BA-designed modules.** No design worth trusting exists, so the build is the
+only record of intent. Capture it, judge it, redesign it properly, and rebuild it in Figma. Here the
+build leads, at least to begin with.
 
-The important decision is that this is **not a separate project from the UX4G move**. Every one of
-these modules has to be opened for UX4G regardless. Opening them once and doing both is
-considerably cheaper than doing UX4G now and redesign later, and it avoids asking the build team to
-absorb two rounds of change.
+Knowing which part a screen belongs to is simply a matter of whether a design source exists. That
+single question sorts the estate, and it is the first column on the access inventory.
+
+## Doing it in one pass
+
+This is **not a separate project from the UX4G move**. Every affected screen has to be opened for
+UX4G regardless. Opening it once and doing both is considerably cheaper than doing UX4G now and the
+sync later, and it avoids asking the build team to absorb two rounds of change.
 
 ---
 
@@ -49,6 +58,14 @@ without limit and collides with the transition deadline.
 *Weeks 1 to 2, alongside the UX4G setup work*
 
 We cannot sync what we have not identified, and we do not currently have a reliable list.
+
+**Start with the access inventory** (`Design-Dev-Access-Inventory.xlsx`). Before any of this can
+happen, we need to know where each screen lives, which role can see it, and where its design is.
+The roles and environment URLs are already pre-filled from the audit configurations in the
+repository, so the remaining work is checking each login still works and then listing the screens.
+
+That inventory is what assigns each screen to part 1 or part 2, and both halves of the work read
+from it.
 
 **Build a module register.** Every module across every portal, with one of four labels:
 
