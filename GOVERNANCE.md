@@ -58,6 +58,6 @@ statement (WCAG 2.2 AA + GIGW), the 13-section doc page, and Code Connect mappin
 
 ## Figma sync
 
-Canonical library: **SAMAVESH Design System** (`qyzTEy8dlb3ssYctlkMX5o`). Tokens round-trip via
+Canonical library: **SAMAVESH Design System** (`3FF5l0SMNIwdpZrKkeyPTm`). Tokens round-trip via
 Tokens Studio ⇄ DTCG; components map via Code Connect. Modify in place, additive-first,
 deprecate-not-delete. Publish in reviewed batches.

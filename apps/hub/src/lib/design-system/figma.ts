@@ -4,10 +4,12 @@
  * 72-page list; the read-only get_metadata endpoint truncates it). Single source
  * so links never drift, and component/foundation docs deep-link to their frame.
  *
- * Last synced: 2026-06-16 · file qyzTEy8dlb3ssYctlkMX5o
+ * Last synced: 2026-06-16 · file 3FF5l0SMNIwdpZrKkeyPTm
+ * (file key updated 2026-07-21; the former key qyzTEy8dlb3ssYctlkMX5o resolves to
+ * the same document and is kept only in dated audit/handoff records.)
  */
 export const FIGMA_FILE_URL =
-  "https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System";
+  "https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System";
 
 /** Page/frame node IDs in the SAMAVESH Figma file (docs-relevant subset). */
 export const FIGMA_NODES = {

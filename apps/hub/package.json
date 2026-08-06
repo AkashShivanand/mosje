@@ -15,7 +15,8 @@
     "ingest": "node scripts/ingest/index.mjs",
     "ingest:verify": "node scripts/ingest/index.mjs --verify-only",
     "ingest:assets": "node scripts/ingest/index.mjs --assets-only",
-    "test:ingest": "node --test \"scripts/ingest/**/*.test.mjs\""
+    "test:ingest": "node --test \"scripts/ingest/**/*.test.mjs\"",
+    "test": "node --test \"src/**/*.test.ts\""
   },
   "dependencies": {
     "@mosje/design-system": "file:../../packages/design-system",

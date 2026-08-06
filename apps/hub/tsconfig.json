@@ -11,6 +11,10 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    // Unit tests run on `node --test`, whose type stripping does no extension
+    // resolution, so their relative imports must carry `.ts`. Safe here because
+    // this project is noEmit — Next/Turbopack still resolves app imports itself.
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",

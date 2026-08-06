@@ -22,7 +22,8 @@
     "check": "npm run check:hub",
     "check:hub": "npm --prefix apps/hub run typecheck",
     "lint": "npm run lint:hub",
-    "lint:hub": "npm --prefix apps/hub run lint"
+    "lint:hub": "npm --prefix apps/hub run lint",
+    "test": "npm test -w @mosje/design-system && npm test --prefix apps/hub"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",
@@ -33,6 +34,6 @@
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",
-    "puppeteer-core": "^25.1.0"
+    "puppeteer-core": "^25.3.0"
   }
 }

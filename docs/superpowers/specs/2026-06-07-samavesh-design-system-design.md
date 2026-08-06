@@ -151,9 +151,9 @@ Two domains of ownership, one truth:
 - `/sync-figma` is the reconciliation ritual against the **canonical SAMAVESH file** (see §8.1).
 
 ### 8.1 Figma library source of truth (decided 2026-06-07)
-- **Canonical file:** **`qyzTEy8dlb3ssYctlkMX5o`** — "SAMAVESH Design System" (https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System). This is the owner's **duplicate** of the original UX4G DS, designated as the single source of truth for the **code** design system.
+- **Canonical file:** **`3FF5l0SMNIwdpZrKkeyPTm`** — "SAMAVESH Design System" (https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System). This is the owner's **duplicate** of the original UX4G DS, designated as the single source of truth for the **code** design system. *(File key updated 2026-07-21 — the former key `qyzTEy8dlb3ssYctlkMX5o` resolves to this same document and is retained only in dated audit/handoff records.)*
 - **Original left untouched:** `T3bkN5gNKfaNeY6dpT6FwF` (MoSJE – UX4G DS) is **frozen as-is** — not edited, not synced. It remains the legacy reference for any files still linked to it.
-- **Bidirectional sync** runs between code ⇄ `qyzTEy8dlb3ssYctlkMX5o`: pull token/value + visual changes **from** Figma (Tokens Studio ⇄ DTCG, `get_variable_defs`), push code-side structure & new tokens **back to** Figma (`figma-generate-library` / `use_figma`), Code Connect mapping each component both ways.
+- **Bidirectional sync** runs between code ⇄ `3FF5l0SMNIwdpZrKkeyPTm`: pull token/value + visual changes **from** Figma (Tokens Studio ⇄ DTCG, `get_variable_defs`), push code-side structure & new tokens **back to** Figma (`figma-generate-library` / `use_figma`), Code Connect mapping each component both ways.
 - **Eventual scope:** this file will also hold the **portal DS components** (the functional/transactional component set), making it the one library behind both the website and the 20 portals.
 - **Working discipline:** modify in place (keys stable), additive-first, deprecate-not-delete (lifecycle §7), publish in reviewed batches; Figma publishing is non-destructive so consumers accept updates on their own schedule.
 

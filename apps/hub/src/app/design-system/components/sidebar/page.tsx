@@ -73,7 +73,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
  * ------------------------------------------------------------------ */
 
 const PORTAL_DS_SIDEBAR_URL =
-  "https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System?node-id=4208-740";
+  "https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=4208-740";
 
 export default function SidebarPage(): React.JSX.Element {
   return (

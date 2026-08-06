@@ -107,6 +107,10 @@
   --color-success:        var(--portal-success, var(--ds-success));
   --color-success-tonal:  var(--ds-success-tonal);
   --color-danger:         var(--portal-danger, var(--ds-danger));
+  /* Error TEXT must clear 4.5:1 (WCAG 1.4.3). `--ds-danger` (#ec5042) is only
+     3.6:1 on white, which meets the 3:1 UI-border bar but NOT the text bar, so
+     use this for any red text. Mirrors what the design system's forms.css does. */
+  --color-danger-strong:  var(--sa-color-status-dangerStrong);
   --color-warning:        var(--portal-warning, var(--ds-warning));
   --color-info:           var(--portal-info, var(--ds-info));
 

@@ -2106,7 +2106,7 @@ export default function WelcomePage(): React.JSX.Element {
             Browse Components
           </a>
           <a
-            href="https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System"
+            href="https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System"
             target="_blank" rel="noopener noreferrer"
             style={{
               display: "inline-flex", alignItems: "center", gap: "var(--ds-space-2)",
