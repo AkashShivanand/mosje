@@ -12,7 +12,15 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-06 · System version: v1.8.0 (UX4G 3.0 adopted as the foundation.
+  Last reviewed: 2026-08-06 · System version: v1.9.0 (Type is now sized in REM, not px: a
+  reader who raises their browser's default font size without zooming now gets larger text —
+  a px scale ignored them. Renders identically at the 16px default, proven by test. NEW
+  components: AadhaarInput / OtpInput / PanInput (UX4G 3.0 identity controls) + pure
+  validators in utils/india-id.ts; Aadhaar is Verhoeff-checked and masked to its last four
+  digits by default per DPDP Act 2023 / UIDAI. FIXED: the dark theme shipped a primary button
+  whose white label sat at 3.77:1 — below AA — since the ramp step was chosen for the link
+  role, not the fill; the contrast gate now sweeps every colour mode AND theme, not just
+  :root, and covers the hover state. v1.8.0: UX4G 3.0 adopted as the foundation.
   New: the opt-in `--ux4g-*` parity layer (`@mosje/design-system/ux4g.css`, all 755 UX4G tokens
   resolved onto SAMAVESH — structure at UX4G's exact values, colour role-mapped to the MoSJE
   palette) plus `ux4g-light`/`ux4g-dark` colour modes carrying UX4G's literal palette. Core
@@ -548,6 +556,28 @@ All components are exported from `@mosje/design-system`. Import from the package
 #### Input
 **Purpose**: Single-line text entry.  
 **Props**: `type`, `placeholder`, `disabled`, `error`, `iconLeft`, `iconRight`
+
+#### AadhaarInput / OtpInput / PanInput — the identity controls
+**Purpose**: The three Indian identity fields nearly every service journey asks for. UX4G 3.0
+names all three (`Input - Aadhaar`, `Input - OTP`, `Input - Pan Card`). **Never hand-roll these
+as a plain `<Input>` with a regex** — each carries a checksum or a statutory obligation.
+
+- **`AadhaarInput`** — 12 digits, grouped `XXXX XXXX XXXX`, validated with the **Verhoeff**
+  checksum UIDAI uses (catches every single-digit typo and every adjacent transposition).
+  **Masks to the last four digits by default** once complete and blurred — Aadhaar is sensitive
+  personal data under the **DPDP Act 2023** and UIDAI requires masked display. `onValueChange`
+  emits raw digits only. Use `maskAadhaar()` anywhere else you display one (review steps,
+  tables, print, PDF). Never log it; never put it in a URL.
+- **`OtpInput`** — six boxes (UX4G's spec). Paste-fills all six, supports SMS
+  `one-time-code` autofill, backspace-on-empty steps back, arrow keys navigate, each box is
+  announced as "Digit 3 of 6".
+- **`PanInput`** — `AAAAA9999A`, auto-uppercased, validates the 4th character against the
+  holder-type codes `PCHFATBLJGE`. `panHolderType()` decodes it ("Individual", "Company", …).
+
+**Rule**: pair each with `<FormField>` like any other control. Validation helpers
+(`isValidAadhaar`, `isValidPan`, `maskAadhaar`, `maskPan`, `panHolderType`) are exported from
+the barrel and are pure, so the same rules can run server-side.
+Docs: `/design-system/components/identity-inputs`.
 
 #### Search
 **Purpose**: Search affordance with built-in icon and clear (`×`) button.  
