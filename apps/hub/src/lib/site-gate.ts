@@ -20,6 +20,10 @@
  *    dev and `npm run dev` untouched; only deployed environments set it.
  */
 
+import { hmacToken, safeEqual } from "./hmac.ts";
+
+export { safeEqual };
+
 export const GATE_COOKIE = "mosje-gate";
 
 /** Domain-separation label, so the HMAC can't be reused for another purpose. */
@@ -34,30 +38,12 @@ export function gatePassword(): string | null {
   return password ? password : null;
 }
 
-function base64url(buffer: ArrayBuffer): string {
-  let binary = "";
-  for (const byte of new Uint8Array(buffer)) binary += String.fromCharCode(byte);
-  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-}
-
 /**
  * Derive the cookie token for a password. Not memoised — safe to call with
  * untrusted input, since a wrong guess cannot evict the hot-path cache below.
  */
 export async function deriveToken(password: string): Promise<string> {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(password),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"],
-  );
-  const signature = await crypto.subtle.sign(
-    "HMAC",
-    key,
-    new TextEncoder().encode(GATE_LABEL),
-  );
-  return base64url(signature);
+  return hmacToken(password, GATE_LABEL);
 }
 
 let memo: { password: string; token: string } | null = null;
@@ -71,17 +57,6 @@ export async function gateToken(password: string): Promise<string> {
   const token = await deriveToken(password);
   memo = { password, token };
   return token;
-}
-
-/**
- * Length-independent comparison. Both arguments are always HMAC digests of the
- * same width, so an early length exit leaks nothing about the password.
- */
-export function safeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i += 1) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
 }
 
 /**
