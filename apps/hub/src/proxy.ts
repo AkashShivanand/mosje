@@ -121,6 +121,9 @@ async function gateRedirect(req: NextRequest): Promise<NextResponse | null> {
 
   const { pathname } = req.nextUrl;
   if (pathname === "/gate" || pathname.startsWith("/gate/")) return null;
+  // /admin is deliberately outside the gate: it is the recovery path when the
+  // gate password is lost or a bad value is written. It has its own password.
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) return null;
   if (GATE_PUBLIC_ASSETS.includes(pathname)) return null;
 
   const presented = req.cookies.get(GATE_COOKIE)?.value;

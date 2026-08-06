@@ -4,8 +4,8 @@ import { AppSwitcher } from "@mosje/design-system";
 
 export function ConditionalAppSwitcher() {
   const pathname = usePathname();
-  // Hidden on the hub root (it *is* the portals index) and on the site gate,
-  // where every destination it offers is still locked.
-  if (pathname === "/" || pathname === "/gate") return null;
+  // Hidden on the hub root (it *is* the portals index), on the site gate, and
+  // across the admin surface, where it offers nothing relevant.
+  if (pathname === "/" || pathname === "/gate" || pathname.startsWith("/admin")) return null;
   return <AppSwitcher devMode={process.env.NODE_ENV === "development"} />;
 }
