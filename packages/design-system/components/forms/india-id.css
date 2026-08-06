@@ -1,0 +1,96 @@
+/* SAMAVESH — Indian identity inputs (Aadhaar / PAN / OTP).
+   UX4G 3.0 parity: "Input - Aadhaar", "Input - Pan Card", "Input - OTP".
+   Tokens only — no raw values. Base input styling comes from forms.css; this file adds
+   only what a fixed-shape identity number needs on top. */
+
+/* ---- Aadhaar & PAN: fixed-width character shapes ---------------------------------- */
+
+/* Tabular figures stop the grouped number from reflowing as digits are typed, and the
+   extra tracking makes a 12-digit string checkable against a physical card at a glance. */
+.ds-input--aadhaar,
+.ds-input--pan {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+
+.ds-input--pan {
+  /* A PAN is never lower case; enforce it visually as well as in state so the field never
+     contradicts what the user will see on submission. */
+  text-transform: uppercase;
+}
+
+/* ---- OTP: one box per digit ------------------------------------------------------- */
+
+.ds-otp {
+  display: flex;
+  gap: var(--ds-inline-s);
+  align-items: center;
+}
+
+.ds-otp__box {
+  /* 44px min target on both axes (WCAG 2.2 target size); grows a little on wider screens
+     so the digit is comfortable to read back. */
+  width: clamp(2.75rem, 10vw, 3.25rem);
+  min-height: 44px;
+  padding: var(--ds-padding-2xs);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-title-1);
+  line-height: var(--ds-leading-title-1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-align: center;
+  color: var(--ds-ink);
+  background-color: var(--ds-surface);
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-md);
+  transition:
+    border-color var(--ds-duration-fast) var(--ds-easing-out),
+    box-shadow var(--ds-duration-fast) var(--ds-easing-out);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ds-otp__box:hover:not(:disabled) {
+  border-color: var(--ds-primary);
+}
+
+.ds-otp__box:focus-visible {
+  border-color: var(--ds-primary);
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  outline: none;
+}
+
+.ds-otp__box:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  background-color: var(--ds-surface-muted);
+}
+
+.ds-otp--invalid .ds-otp__box,
+.ds-otp__box[aria-invalid="true"] {
+  border-color: var(--ds-danger);
+}
+
+.ds-otp--invalid .ds-otp__box:focus-visible {
+  box-shadow: 0 0 0 3px var(--ds-danger);
+}
+
+/* Six 44px boxes plus gaps overflow a 320px viewport. Let them shrink rather than push the
+   page sideways — the target stays 44px tall, which is the axis that matters for tapping. */
+@media (max-width: 380px) {
+  .ds-otp {
+    gap: var(--ds-inline-xs);
+  }
+
+  .ds-otp__box {
+    width: 100%;
+    min-width: 0;
+    font-size: var(--ds-text-body-1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-otp__box {
+    transition: none;
+  }
+}

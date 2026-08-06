@@ -47,6 +47,9 @@ export const NAV: NavGroup[] = [
     items: [
       { label: "Input", href: "/design-system/components/input", badge: "Stable" },
       { label: "Form Field", href: "/design-system/components/input#form-field", badge: "Stable" },
+      { label: "Aadhaar Input", href: "/design-system/components/identity-inputs#aadhaar", badge: "New" },
+      { label: "OTP Input", href: "/design-system/components/identity-inputs#otp", badge: "New" },
+      { label: "PAN Input", href: "/design-system/components/identity-inputs#pan", badge: "New" },
       { label: "Select", href: "/design-system/components/input#select", badge: "Stable" },
       { label: "Textarea", href: "/design-system/components/input#textarea", badge: "Stable" },
       { label: "Checkbox & Radio", href: "/design-system/components/input#checkbox", badge: "Stable" },

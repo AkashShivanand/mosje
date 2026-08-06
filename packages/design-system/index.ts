@@ -58,6 +58,27 @@ export type { ButtonVariant, ButtonAppearance, ButtonSize } from "./components/a
 // ---- Components: Forms -------------------------------------------------------
 export { Input } from "./components/forms/input";
 export type { InputProps } from "./components/forms/input";
+export { PasswordInput } from "./components/forms/password-input";
+export type { PasswordInputProps } from "./components/forms/password-input";
+// India-specific identity inputs (UX4G 3.0 parity: Input - Aadhaar / OTP / Pan Card).
+export { AadhaarInput } from "./components/forms/aadhaar-input";
+export type { AadhaarInputProps } from "./components/forms/aadhaar-input";
+export { OtpInput } from "./components/forms/otp-input";
+export type { OtpInputProps } from "./components/forms/otp-input";
+export { PanInput } from "./components/forms/pan-input";
+export type { PanInputProps } from "./components/forms/pan-input";
+export {
+  digitsOnly,
+  formatAadhaar,
+  isValidAadhaar,
+  isValidVerhoeff,
+  maskAadhaar,
+  formatPan,
+  isValidPan,
+  maskPan,
+  panHolderType,
+  PAN_HOLDER_TYPES,
+} from "./utils/india-id";
 export { Textarea } from "./components/forms/textarea";
 export type { TextareaProps } from "./components/forms/textarea";
 export { Select } from "./components/forms/select";
