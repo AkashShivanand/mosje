@@ -52,6 +52,18 @@ export function Modal({
   const panelRef = React.useRef<HTMLDivElement>(null);
   const titleId = React.useId();
 
+  /**
+   * Held in a ref so the focus-trap effect below can depend on `open` alone.
+   * Callers almost always pass an inline arrow (`onClose={() => setOpen(false)}`),
+   * which is a new function identity on every parent render. With `onClose` in
+   * the dependency array the effect tore down and re-ran on every keystroke in
+   * any controlled input inside the dialog: the cleanup refocused the opener
+   * and the re-init refocused the panel's first control, so typing was
+   * impossible and a stray Enter could fire the close button.
+   */
+  const onCloseRef = React.useRef(onClose);
+  onCloseRef.current = onClose;
+
   React.useEffect(() => {
     if (!open) return;
     const opener = document.activeElement as HTMLElement | null;
@@ -65,7 +77,7 @@ export function Modal({
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (e.key !== "Tab" || !panel) return;
@@ -87,7 +99,7 @@ export function Modal({
       document.body.style.overflow = prevOverflow;
       opener?.focus?.();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
 

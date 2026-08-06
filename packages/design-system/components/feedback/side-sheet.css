@@ -1,7 +1,7 @@
 /* ============================================================================
    MoSJE / SAMAVESH — SideSheet / Drawer
-   Right-anchored panel for multi-field forms, file-upload flows, and any
-   task where the user benefits from seeing the list context behind the form.
+   Edge-anchored panel for multi-field forms, file-upload flows, navigation
+   drawers, and any task where the user benefits from seeing the context behind.
    ============================================================================ */
 
 .ds-sheet__backdrop {
@@ -92,4 +92,23 @@
   padding: 16px 24px;
   border-top: 1px solid var(--ds-line);
   background-color: var(--ds-surface);
+}
+
+/* ---- Anchoring ------------------------------------------------------------
+   Right is the default for task panels. Left exists for navigation drawers,
+   where the left edge is the convention users already expect. */
+.ds-sheet--left {
+  right: auto;
+  left: 0;
+  box-shadow: 4px 0 32px rgb(0 0 0 / 16%);
+  animation-name: ds-sheet-in-left;
+}
+
+@keyframes ds-sheet-in-left {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-sheet--left { animation: none; }
 }

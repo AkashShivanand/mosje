@@ -1,0 +1,117 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — ApprovalTimeline (multi-tier approval audit trail)
+   Vertical rail with per-action markers. Token-driven; dark-mode safe.
+   ============================================================================ */
+
+.ds-timeline {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  list-style: none;
+}
+
+.ds-timeline__item {
+  position: relative;
+  padding: 0 0 20px 26px;
+}
+
+/* The rail, drawn behind every item except the last. */
+.ds-timeline__item::before {
+  position: absolute;
+  top: 16px;
+  bottom: 0;
+  left: 6px;
+  width: 2px;
+  content: "";
+  background-color: var(--ds-line);
+}
+
+.ds-timeline__item:last-child {
+  padding-bottom: 0;
+}
+
+.ds-timeline__item:last-child::before {
+  display: none;
+}
+
+.ds-timeline__marker {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  background-color: var(--ds-surface);
+  border: 3px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-full);
+}
+
+.ds-timeline__item.is-submitted .ds-timeline__marker {
+  border-color: var(--ds-primary);
+}
+
+.ds-timeline__item.is-approved .ds-timeline__marker {
+  background-color: var(--ds-success);
+  border-color: var(--ds-success);
+}
+
+.ds-timeline__item.is-returned .ds-timeline__marker {
+  background-color: var(--ds-warning);
+  border-color: var(--ds-warning);
+}
+
+/* `--ds-border-strong` is a hairline against white and reads as an empty circle
+   at this size; use the muted ink so the pending step clears the 3:1 bar for
+   non-text UI. The adjacent label still carries the meaning in text. */
+.ds-timeline__item.is-pending .ds-timeline__marker {
+  border-style: dashed;
+  border-color: var(--ds-ink-muted);
+}
+
+.ds-timeline__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ds-timeline__action {
+  margin: 0;
+  font-size: var(--ds-text-body-2);
+  line-height: var(--ds-leading-body-2);
+  font-weight: 600;
+  color: var(--ds-ink-strong);
+}
+
+.ds-timeline__action--pending {
+  font-weight: 500;
+  color: var(--ds-ink-muted);
+}
+
+.ds-timeline__meta {
+  margin: 0;
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink);
+}
+
+.ds-timeline__sep {
+  color: var(--ds-ink-muted);
+}
+
+.ds-timeline__stamp {
+  margin: 0;
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink-muted);
+}
+
+.ds-timeline__remarks {
+  padding: 8px 10px;
+  margin: 6px 0 0;
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink-strong);
+  background-color: var(--ds-warning-tonal);
+  border-radius: var(--ds-radius-md);
+}

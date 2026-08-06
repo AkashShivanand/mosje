@@ -31,6 +31,20 @@
   resize: vertical;
 }
 
+/* iOS Safari zooms into any focused control whose font-size is under 16px, and
+   the zoom does not reverse: the layout breaks mid-form and the user has to
+   pinch back out to carry on. The fluid type ramp puts `--ds-text-body-1` at
+   ~14px on a phone, so put a hard 16px floor under text-entry controls at
+   phone widths. Desktop density is untouched, and this is a platform
+   constraint rather than a type decision, which is why it is a literal. */
+@media (max-width: 767px) {
+  .ds-input,
+  .ds-textarea,
+  .ds-select__el {
+    font-size: 16px;
+  }
+}
+
 .ds-input::placeholder,
 .ds-textarea::placeholder {
   color: var(--ds-ink-muted);

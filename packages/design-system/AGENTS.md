@@ -45,7 +45,10 @@ Also in force:
   `Modal`, `SideSheet` (right-anchored drawer), `Lightbox` (mixed image/video gallery viewer), `Stepper`,
   `ToastProvider`/`useToast`, `Alert`, `Badge`, `Loader`, `EmptyState`
   (feedback); `FormSection`, `FormCard`, `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`,
-  `MediaUpload` (single file/image upload), `MediaGalleryInput` (multi image/video upload) and the input atoms (forms); `SiteHeader`, `SidebarNav`, `Footer`,
+  `MediaUpload` (single file/image upload), `MediaGalleryInput` (multi image/video upload),
+  `GeoPhotoInput` (geo-tagged evidence photos with EXIF/device location + auto-downscaling),
+  `DeclarationCheckbox` (statutory certification panel) and the input atoms (forms);
+  `ApprovalTimeline` (multi-tier approval audit trail, data-display); `SiteHeader`, `SidebarNav`, `Footer`,
   `AppSwitcher`, `Tabs`/`TabPanel` (navigation); `PortalLoginShell` (auth);
   `UX4GAccessibilityWidget` (a11y — **CANONICAL**: the official Government of
   India MeitY/UX4G accessibility widget, the single mechanism for text size,

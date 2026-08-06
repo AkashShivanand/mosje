@@ -12,6 +12,13 @@ export { default as tokens } from "./tokens";
 
 // ---- Utils ------------------------------------------------------------------
 export { cn } from "./utils/cn";
+export {
+  readExifGps,
+  downscaleImage,
+  readDeviceLocation,
+  formatCoordinates,
+} from "./utils/geo-image";
+export type { ExifGps, DownscaleResult } from "./utils/geo-image";
 
 // ---- Foundations: color-mode (brand axis) -----------------------------------
 export {
@@ -72,6 +79,10 @@ export { MediaUpload } from "./components/forms/media-upload";
 export type { MediaUploadProps } from "./components/forms/media-upload";
 export { MediaGalleryInput } from "./components/forms/media-gallery-input";
 export type { MediaGalleryInputProps, GalleryMediaItem, GalleryMediaType } from "./components/forms/media-gallery-input";
+export { GeoPhotoInput } from "./components/forms/geo-photo-input";
+export type { GeoPhotoInputProps, GeoPhoto, GeoPhotoSource } from "./components/forms/geo-photo-input";
+export { DeclarationCheckbox } from "./components/forms/declaration-checkbox";
+export type { DeclarationCheckboxProps } from "./components/forms/declaration-checkbox";
 
 // ---- Components: Feedback ----------------------------------------------------
 export { Alert } from "./components/feedback/alert";
@@ -98,6 +109,12 @@ export { MetricCard } from "./components/data-display/metric-card";
 export type { MetricCardProps, MetricCardSize, MetricCardChange } from "./components/data-display/metric-card";
 export { DataTable } from "./components/data-display/data-table";
 export type { DataTableProps, DataTableColumn } from "./components/data-display/data-table";
+export { ApprovalTimeline } from "./components/data-display/approval-timeline";
+export type {
+  ApprovalTimelineProps,
+  ApprovalTimelineEvent,
+  ApprovalAction,
+} from "./components/data-display/approval-timeline";
 // Data visualisation — dependency-free, token-driven, theme-aware SVG charts
 export {
   PieChart,

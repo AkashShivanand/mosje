@@ -19,6 +19,14 @@ export interface SideSheetProps {
   footer?: React.ReactNode;
   /** Width preset. @default "md" */
   size?: SideSheetSize;
+  /**
+   * Which edge the panel is anchored to. @default "right"
+   *
+   * Use `"left"` for navigation drawers — a left drawer is the convention
+   * users already expect, and navigation is the one case where breaking it
+   * costs more than it gains.
+   */
+  side?: "left" | "right";
   className?: string;
 }
 
@@ -48,6 +56,7 @@ export function SideSheet({
   children,
   footer,
   size = "md",
+  side = "right",
   className,
 }: SideSheetProps) {
   const panelRef = React.useRef<HTMLDivElement>(null);
@@ -98,7 +107,7 @@ export function SideSheet({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={cn("ds-sheet", `ds-sheet--${size}`, className)}
+        className={cn("ds-sheet", `ds-sheet--${size}`, `ds-sheet--${side}`, className)}
       >
         <div className="ds-sheet__header">
           <h2 id={titleId} className="ds-sheet__title">{title}</h2>
