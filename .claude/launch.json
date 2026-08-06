@@ -13,7 +13,7 @@
       "runtimeExecutable": "bash",
       "runtimeArgs": [
         "-c",
-        "SITE_PASSWORD=local-preview exec npm --prefix apps/hub run start -- -p 3001"
+        "SITE_PASSWORD=local-preview ADMIN_PASSWORD=local-admin exec npm --prefix apps/hub run start -- -p 3001"
       ],
       "port": 3001,
       "autoPort": false
