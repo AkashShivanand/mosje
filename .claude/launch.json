@@ -13,7 +13,7 @@
       "runtimeExecutable": "bash",
       "runtimeArgs": [
         "-c",
-        "SITE_PASSWORD=local-preview ADMIN_PASSWORD=local-admin exec npm --prefix apps/hub run start -- -p 3001"
+        "cd /Users/akashk/Documents/Projects/MoSJE/apps/hub && SITE_PASSWORD=local-preview ADMIN_PASSWORD=local-admin PORT=3001 exec node .next/standalone/apps/hub/server.js"
       ],
       "port": 3001,
       "autoPort": false

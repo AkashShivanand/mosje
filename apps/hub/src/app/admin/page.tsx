@@ -1,9 +1,15 @@
 /**
- * DS Audit: Button ✅ existing · Input ✅ existing · FormField ✅ existing ·
- *           Alert ✅ existing · page layout ➕ app-local.
+ * DS Audit: Button ✅ existing · PasswordInput ✅ existing · FormField ✅
+ *           existing · Alert ✅ existing · page layout ➕ app-local.
+ *
+ * Back-of-house register: a slim utility bar, a labelled settings section, and
+ * no decoration. The two-column split (what the setting is on the left, the
+ * control on the right) is the standard settings shape and scales as more
+ * settings arrive.
  */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Button } from "@mosje/design-system";
 import { requireAdmin } from "@/lib/admin/auth";
 import { changeGatePassword, signOut } from "./actions";
@@ -26,35 +32,82 @@ export default async function AdminPage({
   const { error, saved } = await searchParams;
 
   return (
-    <main className="mx-auto w-full max-w-2xl px-4 py-12">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-ink">Hub settings</h1>
-          <p className="mt-1 text-sm text-ink-muted">
-            Settings for the deployed prototype.
-          </p>
-        </div>
-        <form action={signOut}>
-          <Button type="submit" appearance="outlined" size="sm">
-            Sign out
-          </Button>
-        </form>
-      </div>
+    <div className="min-h-screen bg-surface-muted">
+      <header className="border-b border-border bg-surface">
+        <div className="mx-auto flex h-16 max-w-3xl items-center gap-4 px-6">
+          <div className="flex flex-1 items-center gap-3.5">
+            {/* eslint-disable-next-line @next/next/no-img-element -- /admin sits
+                outside the gate, and next/image's endpoint is not in its allowlist. */}
+            <img
+              src="/images/National-Emblem-logo.svg"
+              alt=""
+              width={22}
+              height={36}
+              className="estate-emblem h-8 w-auto"
+            />
+            <span className="flex flex-col border-l border-border pl-3.5 leading-none">
+              <span className="text-[15px] font-bold tracking-tight text-ink">MoSJE</span>
+              <span className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
+                Hub administration
+              </span>
+            </span>
+          </div>
 
-      <section className="mt-8 rounded-xl border border-line bg-surface p-6 shadow-sm">
-        <h2 className="text-base font-semibold text-ink">Review password</h2>
-        <p className="mt-1 text-sm text-ink-muted">
-          The shared password reviewers enter to reach the prototype. Changing it
-          signs everyone out.
+          <form action={signOut}>
+            <Button type="submit" appearance="outlined" size="sm">
+              Sign out
+            </Button>
+          </form>
+        </div>
+      </header>
+
+      <main className="mx-auto w-full max-w-3xl px-6 py-12">
+        <h1 className="text-2xl font-bold tracking-tight text-ink">Settings</h1>
+        <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+          Changes apply to the deployed prototype at once — there is no separate
+          publish step.
         </p>
 
-        <GatePasswordForm action={changeGatePassword} error={error} saved={saved === "1"} />
-      </section>
+        <section
+          aria-labelledby="review-password-heading"
+          className="mt-10 grid gap-6 border-t border-border pt-10 md:grid-cols-[15rem_1fr]"
+        >
+          <div>
+            <h2
+              id="review-password-heading"
+              className="text-base font-semibold tracking-tight text-ink"
+            >
+              Review password
+            </h2>
+            <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+              The shared password reviewers enter to reach the prototype.
+            </p>
+            <p className="mt-3 text-xs leading-relaxed text-ink-hint">
+              Changing it signs everyone out, including you on other devices.
+            </p>
+          </div>
 
-      <p className="mt-6 text-xs text-ink-hint">
-        If the settings store is unreachable, the gate falls back to the
-        SITE_PASSWORD environment variable, so the estate stays reachable.
-      </p>
-    </main>
+          <div className="rounded-xl border border-border bg-surface p-6 shadow-xs">
+            <GatePasswordForm
+              action={changeGatePassword}
+              error={error}
+              saved={saved === "1"}
+            />
+          </div>
+        </section>
+
+        <p className="mt-12 border-t border-border pt-6 text-xs leading-relaxed text-ink-hint">
+          If the settings store is unreachable the gate falls back to the
+          SITE_PASSWORD environment variable, so the estate stays reachable even
+          when this page cannot save.{" "}
+          <Link
+            href="/"
+            className="font-semibold text-gov-blue underline-offset-2 hover:underline"
+          >
+            Back to the estate
+          </Link>
+        </p>
+      </main>
+    </div>
   );
 }

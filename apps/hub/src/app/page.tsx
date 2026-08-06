@@ -10,6 +10,7 @@ import {
 import { DEFAULT_APPS } from "@mosje/design-system";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { EstateField } from "@/components/estate-field";
 
 // ── Estate stats, derived from the single-source registry ──────────────────────
 const portals = DEFAULT_APPS.filter((a) => a.group === "Portals");
@@ -73,28 +74,8 @@ export default function HomePage() {
       <main id="main-content" className="flex-1">
         {/* ── Hero ─────────────────────────────────────────────────────── */}
         <section className="relative overflow-hidden border-b border-border bg-surface">
-          {/* Atmospheric background — a single cohesive blue field */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(64rem 36rem at 82% -12%, color-mix(in srgb, var(--ds-primary) 16%, transparent), transparent 70%), radial-gradient(40rem 28rem at 4% 116%, color-mix(in srgb, var(--ds-gov-navy) 10%, transparent), transparent 68%)",
-            }}
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 opacity-50"
-            style={{
-              backgroundImage:
-                "linear-gradient(var(--ds-border) 1px, transparent 1px), linear-gradient(90deg, var(--ds-border) 1px, transparent 1px)",
-              backgroundSize: "44px 44px",
-              maskImage:
-                "radial-gradient(72rem 42rem at 72% 0%, black, transparent 76%)",
-              WebkitMaskImage:
-                "radial-gradient(72rem 42rem at 72% 0%, black, transparent 76%)",
-            }}
-          />
+          {/* The estate's signature surface — shared verbatim with the gate. */}
+          <EstateField />
 
           <div className="relative mx-auto max-w-[1280px] px-6 py-20 sm:py-24">
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-gov-blue shadow-xs backdrop-blur">

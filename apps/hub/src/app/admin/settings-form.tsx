@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
-import { Alert, Button, FormField, Input } from "@mosje/design-system";
+import { Alert, Button, FormField, PasswordInput } from "@mosje/design-system";
 
 const MESSAGES: Record<string, string> = {
   short: "Use at least 12 characters.",
@@ -12,7 +12,7 @@ const MESSAGES: Record<string, string> = {
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" size="lg" disabled={pending}>
+    <Button type="submit" disabled={pending}>
       {pending ? "Saving…" : "Change password"}
     </Button>
   );
@@ -26,7 +26,7 @@ export interface GatePasswordFormProps {
 
 export function GatePasswordForm({ action, error, saved }: GatePasswordFormProps) {
   return (
-    <form action={action} className="mt-6 flex flex-col gap-4">
+    <form action={action} className="flex flex-col gap-5">
       {saved ? (
         <Alert status="success" title="Password changed">
           It takes up to a minute to apply everywhere. Everyone signed in with
@@ -42,17 +42,29 @@ export function GatePasswordForm({ action, error, saved }: GatePasswordFormProps
 
       <FormField label="New review password" hint="At least 12 characters." required>
         {(control) => (
-          <Input {...control} name="password" type="password" autoComplete="new-password" required />
+          <PasswordInput
+            {...control}
+            name="password"
+            autoComplete="new-password"
+            required
+          />
         )}
       </FormField>
 
       <FormField label="Confirm new password" required>
         {(control) => (
-          <Input {...control} name="confirm" type="password" autoComplete="new-password" required />
+          <PasswordInput
+            {...control}
+            name="confirm"
+            autoComplete="new-password"
+            required
+          />
         )}
       </FormField>
 
-      <SubmitButton />
+      <div className="flex justify-end pt-1">
+        <SubmitButton />
+      </div>
     </form>
   );
 }

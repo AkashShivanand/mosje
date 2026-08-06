@@ -9,12 +9,12 @@
  */
 
 import { useFormStatus } from "react-dom";
-import { Alert, Button, FormField, Input } from "@mosje/design-system";
+import { Alert, Button, FormField, PasswordInput } from "@mosje/design-system";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" size="lg" disabled={pending}>
+    <Button type="submit" size="lg" disabled={pending} className="w-full">
       {pending ? "Checking…" : "Continue"}
     </Button>
   );
@@ -31,7 +31,7 @@ export interface GateFormProps {
 
 export function GateForm({ action, next, invalid }: GateFormProps) {
   return (
-    <form action={action} className="mt-6 flex flex-col gap-4">
+    <form action={action} className="mt-8 flex flex-col gap-5">
       <input type="hidden" name="next" value={next} />
 
       {invalid ? (
@@ -42,10 +42,9 @@ export function GateForm({ action, next, invalid }: GateFormProps) {
 
       <FormField label="Access password" required>
         {(control) => (
-          <Input
+          <PasswordInput
             {...control}
             name="password"
-            type="password"
             autoComplete="current-password"
             autoFocus
             required

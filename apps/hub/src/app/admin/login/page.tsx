@@ -1,9 +1,11 @@
 /**
- * DS Audit: Button ✅ existing · Input ✅ existing · FormField ✅ existing ·
- *           Alert ✅ existing · page layout ➕ app-local.
+ * DS Audit: Button ✅ existing · PasswordInput ✅ existing (added with the gate)
+ *           · FormField ✅ existing · Alert ✅ existing · page layout ➕ app-local.
  *
- * Layout is app-local for the same reason the gate's is: a deployment
- * administration surface is not a product screen any portal reuses.
+ * Deliberately plainer than /gate. The gate is the threshold and is dressed
+ * accordingly; this is back-of-house and should look like a tool, not a door.
+ * The shared signal between them is type scale and the emblem lockup — no
+ * gradient, no glow here.
  */
 
 import type { Metadata } from "next";
@@ -37,20 +39,36 @@ export default async function AdminLoginPage({
   const { error } = await searchParams;
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="rounded-xl border border-line bg-surface p-8 shadow-sm">
-          <div className="text-center">
-            <h1 className="text-xl font-bold text-ink">Hub administration</h1>
-            <p className="mt-1 text-sm text-ink-muted">
-              Settings for the deployed prototype
-            </p>
-          </div>
+    <main className="flex min-h-screen items-center justify-center bg-surface-muted px-6 py-16">
+      <div className="w-full max-w-[26rem]">
+        <div className="flex items-center gap-3.5">
+          {/* eslint-disable-next-line @next/next/no-img-element -- /admin sits
+              outside the gate, and next/image's endpoint is not in its allowlist. */}
+          <img
+            src="/images/National-Emblem-logo.svg"
+            alt="National Emblem of India"
+            width={24}
+            height={39}
+            className="estate-emblem h-9 w-auto"
+          />
+          <span className="flex flex-col border-l border-border pl-3.5 leading-none">
+            <span className="text-[15px] font-bold tracking-tight text-ink">MoSJE</span>
+            <span className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
+              Hub administration
+            </span>
+          </span>
+        </div>
+
+        <div className="mt-7 rounded-xl border border-border bg-surface p-7 shadow-xs">
+          <h1 className="text-lg font-bold tracking-tight text-ink">Sign in</h1>
+          <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+            Settings for the deployed prototype.
+          </p>
 
           <AdminLoginForm action={submitAdminLogin} invalid={error === "1"} />
         </div>
 
-        <p className="mt-6 text-center text-xs text-ink-hint">
+        <p className="mt-6 text-center text-xs leading-relaxed text-ink-hint">
           This is not the review password. Ask the maintainer if you need access.
         </p>
       </div>

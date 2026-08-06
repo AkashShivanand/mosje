@@ -15,7 +15,9 @@
   Last reviewed: 2026-08-06 · System version: v1.9.0 (Type is now sized in REM, not px: a
   reader who raises their browser's default font size without zooming now gets larger text —
   a px scale ignored them. Renders identically at the 16px default, proven by test. NEW
-  components: AadhaarInput / OtpInput / PanInput (UX4G 3.0 identity controls) + pure
+  components: PasswordInput (reveal toggle — use for every password field in the estate;
+  real type="button" so it cannot submit, action-named label, browser's own reveal
+  suppressed); AadhaarInput / OtpInput / PanInput (UX4G 3.0 identity controls) + pure
   validators in utils/india-id.ts; Aadhaar is Verhoeff-checked and masked to its last four
   digits by default per DPDP Act 2023 / UIDAI. FIXED: the dark theme shipped a primary button
   whose white label sat at 3.77:1 — below AA — since the ramp step was chosen for the link
@@ -556,6 +558,26 @@ All components are exported from `@mosje/design-system`. Import from the package
 #### Input
 **Purpose**: Single-line text entry.  
 **Props**: `type`, `placeholder`, `disabled`, `error`, `iconLeft`, `iconRight`
+
+#### PasswordInput
+**Purpose**: Password entry with a reveal toggle. **Use this for every password field in the
+estate** — typing a credential blind is the largest single cause of failed sign-ins, and each
+portal hand-rolling its own toggle is how the accessible details get dropped.  
+**Props**: everything `Input` takes except `type`, plus `showLabel`, `hideLabel`, `hideToggle`.
+
+The details it exists to guarantee:
+- The toggle is a real `<button type="button">`. A bare `<button>` inside a form defaults to
+  `type="submit"`, so revealing the password would submit the form — the commonest bug in
+  hand-rolled versions.
+- Its accessible name states the **action** ("Show password" / "Hide password"), with
+  `aria-pressed` carrying the state, so a screen-reader user hears what pressing it will do.
+- `mousedown` is prevented, so clicking the toggle does not steal focus from the field and
+  strand the caret.
+- The browser's own reveal control is suppressed (Chromium/Edge `::-ms-reveal`, Safari's
+  autofill button is offset), so the user never sees two competing affordances.
+
+**Rule**: pair with `<FormField>` like any other control, and always pass `autoComplete` —
+`"current-password"` to sign in, `"new-password"` to set one. Password managers key on it.
 
 #### AadhaarInput / OtpInput / PanInput — the identity controls
 **Purpose**: The three Indian identity fields nearly every service journey asks for. UX4G 3.0

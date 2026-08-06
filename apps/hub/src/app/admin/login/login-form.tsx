@@ -4,12 +4,12 @@
 // cross the server→client boundary. The server action arrives as a prop.
 
 import { useFormStatus } from "react-dom";
-import { Alert, Button, FormField, Input } from "@mosje/design-system";
+import { Alert, Button, FormField, PasswordInput } from "@mosje/design-system";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" size="lg" disabled={pending}>
+    <Button type="submit" size="lg" disabled={pending} className="w-full">
       {pending ? "Checking…" : "Sign in"}
     </Button>
   );
@@ -22,7 +22,7 @@ export interface AdminLoginFormProps {
 
 export function AdminLoginForm({ action, invalid }: AdminLoginFormProps) {
   return (
-    <form action={action} className="mt-6 flex flex-col gap-4">
+    <form action={action} className="mt-6 flex flex-col gap-5">
       {invalid ? (
         <Alert status="error" title="Incorrect password">
           That admin password was not recognised.
@@ -31,10 +31,9 @@ export function AdminLoginForm({ action, invalid }: AdminLoginFormProps) {
 
       <FormField label="Admin password" required>
         {(control) => (
-          <Input
+          <PasswordInput
             {...control}
             name="password"
-            type="password"
             autoComplete="current-password"
             autoFocus
             required

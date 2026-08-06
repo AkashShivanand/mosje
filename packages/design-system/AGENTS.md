@@ -70,7 +70,10 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
   `DeclarationCheckbox` (statutory certification panel), the **identity controls**
   `AadhaarInput` / `OtpInput` / `PanInput` (UX4G 3.0 parity — Verhoeff-checked and
   masked-by-default Aadhaar, six-box OTP with paste + SMS autofill, holder-type-validating
-  PAN; **never** hand-roll these as an `<Input>` + regex) and the input atoms (forms);
+  PAN; **never** hand-roll these as an `<Input>` + regex), `PasswordInput` (reveal toggle —
+  use for **every** password field; never `<Input type="password">` plus a hand-rolled eye,
+  which is how the submit-on-toggle bug and the missing accessible name get reintroduced)
+  and the input atoms (forms);
   `ApprovalTimeline` (multi-tier approval audit trail, data-display); `SiteHeader`, `SidebarNav`, `Footer`,
   `AppSwitcher`, `Tabs`/`TabPanel` (navigation); `PortalLoginShell` (auth);
   `UX4GAccessibilityWidget` (a11y — **CANONICAL**: the official Government of
