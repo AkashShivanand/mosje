@@ -30,10 +30,10 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           width: "100%",
           maxWidth: "32rem",
           background: "var(--ds-surface, #fff)",
-          border: "1px solid var(--ds-border, #e2e6ea)",
+          border: "1px solid var(--ds-border, #f1f3f5)",
           borderRadius: "var(--ds-radius-md, 8px)",
           padding: "var(--ds-spacing-3xl, 32px)",
-          boxShadow: "var(--ds-shadow-lg, 0 12px 16px -4px rgba(33,33,33,0.08))",
+          boxShadow: "var(--ds-shadow-lg, 0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03))",
         }}
       >
         <div
@@ -42,8 +42,8 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             width: 44,
             height: 44,
             borderRadius: "var(--ds-radius-sm, 6px)",
-            background: "var(--ds-warning-tonal, #ffedd5)",
-            color: "var(--ds-saffron-dark, #7c3503)",
+            background: "var(--ds-warning-tonal, #fff4e5)",
+            color: "var(--ds-warning, #8c571f)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -58,7 +58,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           style={{
             fontSize: "var(--ds-text-title-1, 22px)",
             fontWeight: 600,
-            color: "var(--ds-ink, #212121)",
+            color: "var(--ds-ink, #1f2428)",
             marginBottom: "var(--ds-spacing-sm, 8px)",
           }}
         >
@@ -80,7 +80,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
         <div
           style={{
             background: "var(--ds-surface-muted, #f8f9fa)",
-            border: "1px solid var(--ds-border, #e2e6ea)",
+            border: "1px solid var(--ds-border, #f1f3f5)",
             borderRadius: "var(--ds-radius-sm, 6px)",
             padding: "var(--ds-spacing-lg, 16px)",
             marginBottom: "var(--ds-spacing-xl, 20px)",
@@ -103,7 +103,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               display: "block",
               fontFamily: "var(--ds-font-mono, ui-monospace, monospace)",
               fontSize: "var(--ds-text-body-2, 14px)",
-              color: "var(--ds-ink, #212121)",
+              color: "var(--ds-ink, #1f2428)",
               marginBottom: "var(--ds-spacing-lg, 16px)",
             }}
           >
@@ -126,7 +126,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               display: "block",
               fontFamily: "var(--ds-font-mono, ui-monospace, monospace)",
               fontSize: "var(--ds-text-body-2, 14px)",
-              color: "var(--ds-ink, #212121)",
+              color: "var(--ds-ink, #1f2428)",
             }}
           >
             {cmd}
@@ -157,8 +157,8 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               alignItems: "center",
               padding: "10px var(--ds-spacing-xl, 20px)",
               borderRadius: "var(--ds-radius-sm, 6px)",
-              border: "1px solid var(--ds-border-strong, #9aa3af)",
-              color: "var(--ds-ink, #212121)",
+              border: "1px solid var(--ds-border-strong, #e2e6ea)",
+              color: "var(--ds-ink, #1f2428)",
               fontWeight: 600,
               fontSize: "var(--ds-text-body-2, 14px)",
               textDecoration: "none",

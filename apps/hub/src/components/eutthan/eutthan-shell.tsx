@@ -54,7 +54,7 @@ export function Masthead({ name, roleLabel }: { name: string; roleLabel: string 
           aria-hidden="true"
           style={{ flexShrink: 0 }}
         >
-          <circle cx="30" cy="30" r="28" fill="#f3f4f6" stroke="#e5e7eb" />
+          <circle cx="30" cy="30" r="28" fill="var(--ds-neutral-100)" stroke="var(--ds-border-strong)" />
           <circle cx="30" cy="18" r="5" fill="var(--primary)" />
           <path
             d="M30 23L18 45H42L30 23Z"

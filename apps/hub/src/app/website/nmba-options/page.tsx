@@ -119,7 +119,7 @@ function Section({ title, variants }: { title: string; variants: Variant[] }) {
 export default function NmbaOptionsPage() {
   return (
     <main className="min-h-screen bg-white">
-      <div className="border-b border-gray-200 bg-[#f9fafb]">
+      <div className="border-b border-border-strong bg-surface-muted">
         <div className="mx-auto max-w-[1280px] px-4 py-6">
           <p className="text-[12px] font-semibold uppercase tracking-wide text-gov-blue">Design options · internal review</p>
           <h1 className="mt-1 text-[26px] font-semibold text-gov-blue-dark">NMBA widget options</h1>

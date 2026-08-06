@@ -46,7 +46,7 @@ export default function CADashboard() {
           <h2 className="text-sm font-bold text-ink">National SLA Compliance</h2>
           <p className="text-xs text-ink-hint">Target: 90%</p>
           <div className="mt-8 flex items-center justify-center">
-            <div className="relative grid h-40 w-40 place-items-center rounded-full" style={{ background: "conic-gradient(#16a34a 0% 99%, #e2e8f0 99% 100%)" }}>
+            <div className="relative grid h-40 w-40 place-items-center rounded-full" style={{ background: "conic-gradient(var(--ds-success) 0% 99%, var(--ds-border-strong) 99% 100%)" }}>
               <div className="grid h-28 w-28 place-items-center rounded-full bg-white">
                 <span className="text-3xl font-bold text-approve-fg">99%</span>
               </div>

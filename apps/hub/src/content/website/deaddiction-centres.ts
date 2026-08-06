@@ -21,12 +21,12 @@ export const CENTRE_TYPE_META: Record<
   CentreType,
   { label: string; short: string; color: string; count: number }
 > = {
-  IRCA: { label: "Integrated Rehabilitation Centre for Addicts", short: "Inpatient counselling & treatment", color: "#0373DF", count: 282 },
-  DDAC: { label: "District De-addiction Centre", short: "One-stop centre \u2014 all services", color: "#7C3AED", count: 91 },
-  ATF: { label: "Addiction Treatment Facility", short: "Medical treatment facility", color: "#DC2626", count: 56 },
-  ODIC: { label: "Outreach & Drop-in Centre", short: "Screening, assessment & counselling", color: "#D97706", count: 33 },
-  SLCA: { label: "State Level Coordinating Agency", short: "State coordination & monitoring", color: "#0D9488", count: 15 },
-  CPLI: { label: "Community Peer Led Intervention", short: "Youth-focused prevention", color: "#16A34A", count: 10 },
+  IRCA: { label: "Integrated Rehabilitation Centre for Addicts", short: "Inpatient counselling & treatment", color: "var(--ds-chart-cat-1)", count: 282 },
+  DDAC: { label: "District De-addiction Centre", short: "One-stop centre \u2014 all services", color: "var(--ds-chart-cat-4)", count: 91 },
+  ATF: { label: "Addiction Treatment Facility", short: "Medical treatment facility", color: "var(--ds-chart-cat-10)", count: 56 },
+  ODIC: { label: "Outreach & Drop-in Centre", short: "Screening, assessment & counselling", color: "var(--ds-chart-cat-6)", count: 33 },
+  SLCA: { label: "State Level Coordinating Agency", short: "State coordination & monitoring", color: "var(--ds-chart-cat-11)", count: 15 },
+  CPLI: { label: "Community Peer Led Intervention", short: "Youth-focused prevention", color: "var(--ds-chart-cat-3)", count: 10 },
 };
 
 export const CENTRE_TYPE_ORDER: CentreType[] = ["IRCA", "DDAC", "ATF", "ODIC", "SLCA", "CPLI"];

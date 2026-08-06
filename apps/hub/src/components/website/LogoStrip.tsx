@@ -111,7 +111,7 @@ const logos: EcosystemLogo[] = [
 
 export function LogoStrip() {
   return (
-    <section className="bg-[#f9fafb]">
+    <section className="bg-surface-muted">
       <div className="mx-auto max-w-[1280px] px-4 py-8">
         <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
           {logos.map((logo) => (

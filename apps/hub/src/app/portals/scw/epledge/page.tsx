@@ -12,8 +12,12 @@ export default function EpledgePage() {
         <div
           className="relative flex min-h-[280px] flex-col justify-center overflow-hidden rounded-2xl p-8 text-white sm:p-12"
           style={{
+            // Was four raw hex/rgba values that near-duplicated the palette
+            // scw.css already defines. Converged on the portal tokens
+            // (--scw-navy-deep / --scw-navy / --color-heroto) so a palette
+            // change lands here too; the overlay alphas come from color-mix.
             backgroundImage:
-              "linear-gradient(110deg, rgba(11,33,71,0.95) 0%, rgba(11,33,71,0.65) 45%, rgba(11,33,71,0.15) 100%), linear-gradient(135deg, #1b3a6b 0%, #2f6b46 100%)",
+              "linear-gradient(110deg, color-mix(in srgb, var(--scw-navy-deep) 95%, transparent) 0%, color-mix(in srgb, var(--scw-navy-deep) 65%, transparent) 45%, color-mix(in srgb, var(--scw-navy-deep) 15%, transparent) 100%), linear-gradient(135deg, var(--scw-navy) 0%, var(--color-heroto) 100%)",
           }}
         >
           <p className="text-xs font-medium uppercase tracking-wide text-white/80 sm:text-sm">

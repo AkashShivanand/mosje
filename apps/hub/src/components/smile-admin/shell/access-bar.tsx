@@ -13,10 +13,9 @@ export function AccessBar() {
           rel="noreferrer"
           className="inline-flex min-w-0 items-center gap-xs whitespace-nowrap hover:underline"
         >
-          <span
-            aria-hidden
-            className="inline-block h-3 w-4 shrink-0 overflow-hidden rounded-[1px] bg-gradient-to-b from-[#ff9933] via-white to-[#138808]"
-          />
+          {/* No tricolour flag swatch: the saffron-white-green motif is barred
+              from UI chrome by project convention, and it was the last raw-hex
+              colour in this bar. The wordmark carries the attribution. */}
           <span className="hidden sm:inline">Government of India</span>
           <span className="sm:hidden">GoI</span>
           <ExternalLink className="h-3 w-3 shrink-0" />

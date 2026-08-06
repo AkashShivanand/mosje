@@ -17,12 +17,14 @@ if (typeof window !== "undefined") {
   });
 }
 
+// Categorical series from the DS chart scale — these are injected into inline
+// styles on DOM nodes (marker divs + legend swatches), so var() resolves.
 const FACILITY_COLORS: Record<FacilityType, string> = {
-  IRCA: "#2563eb",
-  CPLI: "#16a34a",
-  ODIC: "#d97706",
-  DDAC: "#9333ea",
-  ATF: "#dc2626",
+  IRCA: "var(--ds-chart-cat-1)",
+  CPLI: "var(--ds-chart-cat-3)",
+  ODIC: "var(--ds-chart-cat-6)",
+  DDAC: "var(--ds-chart-cat-4)",
+  ATF: "var(--ds-chart-cat-10)",
 };
 
 const FACILITY_LABELS: Record<FacilityType, string> = {
@@ -36,7 +38,7 @@ const FACILITY_LABELS: Record<FacilityType, string> = {
 function makeIcon(color: string) {
   return L.divIcon({
     className: "",
-    html: `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>`,
+    html: `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:2px solid var(--ds-chart-region-stroke);box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>`,
     iconSize: [14, 14],
     iconAnchor: [7, 7],
   });

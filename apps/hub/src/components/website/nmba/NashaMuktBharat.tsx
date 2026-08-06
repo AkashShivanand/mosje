@@ -32,7 +32,7 @@ const MAP_SUBTITLE =
 export function NashaMuktBharat({ variant = "full" }: NashaMuktBharatProps) {
   if (variant === "band") {
     return (
-      <section className="bg-[#f9fafb]" aria-labelledby="nmba-band-heading">
+      <section className="bg-surface-muted" aria-labelledby="nmba-band-heading">
         <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
           <div id="nmba-band-heading">
             <SectionHeading
@@ -69,7 +69,7 @@ export function NashaMuktBharat({ variant = "full" }: NashaMuktBharatProps) {
 
   // full
   return (
-    <section className="bg-[#f9fafb]" aria-labelledby="nmba-heading">
+    <section className="bg-surface-muted" aria-labelledby="nmba-heading">
       <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
         <div id="nmba-heading">
           <SectionHeading

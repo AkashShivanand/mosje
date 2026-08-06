@@ -6,11 +6,25 @@ import { feature } from "topojson-client";
 import type { Feature, FeatureCollection, Geometry } from "geojson";
 import { STATE_DISTRIBUTION } from "@/lib/smile-admin/mock-data";
 
-const COLORS = ["#e7eef6", "#cbdaef", "#9cbfe3", "#6da1d5", "#3b78b9", "#1f5fa3", "#0a4382", "#003366"];
+// Choropleth ramp + region roles come from the DS chart tokens
+// (--ds-chart-seq-* is the single-hue sequential ramp built for exactly this).
+// These are consumed as SVG fill/stroke values, which resolve var() fine.
+const COLORS = [
+  "var(--ds-chart-seq-50)",
+  "var(--ds-chart-seq-100)",
+  "var(--ds-chart-seq-200)",
+  "var(--ds-chart-seq-300)",
+  "var(--ds-chart-seq-400)",
+  "var(--ds-chart-seq-600)",
+  "var(--ds-chart-seq-700)",
+  "var(--ds-chart-seq-800)",
+];
+const NO_DATA = "var(--ds-chart-region-empty)";
+const SELECTED = "var(--ds-chart-cat-2)";
 const BANDS = [0, 100, 500, 1000, 2000, 4000];
 
 function colorFor(n: number) {
-  if (!n) return "#eef0f3";
+  if (!n) return NO_DATA;
   const idx = BANDS.findIndex((b) => n < b);
   return COLORS[idx === -1 ? COLORS.length - 1 : Math.max(0, idx - 1)];
 }
@@ -58,14 +72,14 @@ export function IndiaMap({ highlightState }: { highlightState?: string }) {
             const value = valueByState.get(stName === "Andaman and Nicobar Islands" ? "Andaman & Nicobar Islands" : stName) ?? 0;
             const isHover = hovered === stName;
             const isHL = highlightState && stName.includes(highlightState);
-            const fill = isHL ? "#e87722" : colorFor(value);
+            const fill = isHL ? SELECTED : colorFor(value);
             const d = path(f) ?? "";
             return (
               <path
                 key={stName}
                 d={d}
                 fill={fill}
-                stroke="#ffffff"
+                stroke="var(--ds-chart-region-stroke)"
                 strokeWidth={isHover ? 1.4 : 0.7}
                 onMouseEnter={() => setHovered(stName)}
                 onMouseLeave={() => setHovered(null)}
@@ -84,14 +98,14 @@ export function IndiaMap({ highlightState }: { highlightState?: string }) {
         </div>
         <div className="space-y-0.5">
           {[
-            ["No data", "#eef0f3"],
+            ["No data", NO_DATA],
             ["< 100", COLORS[0]],
             ["100 – 499", COLORS[1]],
             ["500 – 999", COLORS[2]],
             ["1,000 – 1,999", COLORS[3]],
             ["2,000 – 3,999", COLORS[4]],
             ["4,000+", COLORS[7]],
-            ["Selected", "#e87722"],
+            ["Selected", SELECTED],
           ].map(([label, color]) => (
             <div key={label} className="flex items-center gap-xs">
               <span className="inline-block h-2.5 w-3.5 rounded-xxs" style={{ backgroundColor: color as string }} />

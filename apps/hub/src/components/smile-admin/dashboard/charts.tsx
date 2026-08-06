@@ -18,22 +18,25 @@ import {
   YAxis,
 } from "recharts";
 
+// Recharts renders SVG, so these resolve as var() in fill/stroke just like any
+// other CSS colour. Series colours come from the DS chart scale rather than raw
+// Tailwind hex, so a brand re-skin or theme switch carries the charts with it.
 const PALETTE = {
-  brand: "#003366",
-  brandSoft: "#3D6C9C",
-  info: "#3b82f6",
-  success: "#10b981",
-  warning: "#f59e0b",
-  amber: "#e07a16",
-  axis: "#94a3b8",
-  grid: "#eef2f8",
+  brand: "var(--ds-gov-navy)",
+  brandSoft: "var(--ds-chart-seq-600)",
+  info: "var(--ds-chart-cat-1)",
+  success: "var(--ds-chart-trend-up)",
+  warning: "var(--ds-chart-cat-6)",
+  amber: "var(--ds-chart-cat-2)",
+  axis: "var(--ds-chart-axis)",
+  grid: "var(--ds-chart-grid)",
 };
 
 const tickStyle = { fill: PALETTE.axis, fontSize: 11 };
 const tooltipStyle = {
   borderRadius: 8,
-  borderColor: "#e2e8f0",
-  boxShadow: "0 10px 15px -3px rgba(15,23,42,0.08), 0 4px 6px -4px rgba(15,23,42,0.05)",
+  borderColor: "var(--ds-border-strong)",
+  boxShadow: "var(--ds-shadow-lg)",
   fontSize: 12,
 };
 
@@ -53,7 +56,7 @@ export function GenderDonut({
           innerRadius={62}
           outerRadius={92}
           paddingAngle={2}
-          stroke="#ffffff"
+          stroke="var(--ds-chart-region-stroke)"
           strokeWidth={2}
         >
           {data.map((d) => (

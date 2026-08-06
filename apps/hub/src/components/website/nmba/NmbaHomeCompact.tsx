@@ -11,7 +11,7 @@ const pledgedLakh = ((PLEDGE_STATS.ePledgesRaw + PLEDGE_STATS.recoveredPledgesRa
 
 export function NmbaHomeCompact() {
   return (
-    <section className="bg-[#f9fafb]" aria-labelledby="nmba-compact-heading">
+    <section className="bg-surface-muted" aria-labelledby="nmba-compact-heading">
       <div className="mx-auto max-w-[1280px] px-4 py-10 md:py-12">
         <div className="text-center">
           <h2 id="nmba-compact-heading" className="text-[26px] font-semibold leading-tight text-gov-blue-dark">

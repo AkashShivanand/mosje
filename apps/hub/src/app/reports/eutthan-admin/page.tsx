@@ -172,11 +172,14 @@ const SUGGESTIONS: Suggestion[] = [
 
 // ─── Style maps ───────────────────────────────────────────────────────────────
 
+// pinBg is applied as an inline background on the map pins, so it takes DS
+// custom properties directly. The red → saffron → amber → neutral severity ramp
+// is preserved, just sourced from tokens instead of raw Tailwind hex.
 const SEV: Record<Sev, { pill: string; border: string; pinBg: string }> = {
-  Blocker: { pill: "bg-red-100 text-red-700",      border: "border-l-red-500",    pinBg: "#DC2626" },
-  Major:   { pill: "bg-orange-100 text-orange-700", border: "border-l-orange-500", pinBg: "#EA580C" },
-  Minor:   { pill: "bg-amber-100 text-amber-700",   border: "border-l-amber-400",  pinBg: "#CA8A04" },
-  Nit:     { pill: "bg-slate-100 text-slate-600",   border: "border-l-slate-300",  pinBg: "#6B7280" },
+  Blocker: { pill: "bg-red-100 text-red-700",      border: "border-l-red-500",    pinBg: "var(--ds-danger)" },
+  Major:   { pill: "bg-orange-100 text-orange-700", border: "border-l-orange-500", pinBg: "var(--ds-secondary-700)" },
+  Minor:   { pill: "bg-amber-100 text-amber-700",   border: "border-l-amber-400",  pinBg: "var(--ds-warning)" },
+  Nit:     { pill: "bg-slate-100 text-slate-600",   border: "border-l-slate-300",  pinBg: "var(--ds-neutral-500)" },
 };
 
 const SSEV: Record<SugSev, { pill: string; border: string }> = {

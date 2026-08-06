@@ -54,11 +54,11 @@ export function KpiCard({
   const pc = pillClass(kpi);
   const sparkColor =
     kpi.tone === "green"
-      ? "#198754"
+      ? "var(--ds-success)"
       : kpi.tone === "amber"
-      ? "#BB772B"
+      ? "var(--ds-warning)"
       : kpi.tone === "red"
-      ? "#EC5042"
+      ? "var(--ds-danger)"
       : "var(--pm-accent)";
   const prefix = kpi.type === "amount" ? "₹" : "";
   const dirWord = pc === "good" ? "up" : pc === "bad" ? "down" : "steady";

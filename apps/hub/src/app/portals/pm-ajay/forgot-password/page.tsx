@@ -55,18 +55,18 @@ export default function ForgotPasswordPage() {
           </div>
 
           <div style={{ padding: "28px 28px 20px", display: "flex", flexDirection: "column", gap: 16 }}>
-            <div style={{ background: "#f0f7ff", border: "1px solid #bfdbfe", borderRadius: 8, padding: "14px 16px", fontSize: 13, color: "#1558b0", lineHeight: 1.6 }}>
+            <div style={{ background: "var(--ds-info-tonal)", border: "1px solid var(--ds-info-200)", borderRadius: 8, padding: "14px 16px", fontSize: 13, color: "var(--ds-info)", lineHeight: 1.6 }}>
               <strong>NIC Helpdesk:</strong> 1800-111-555 (toll-free, 9am–6pm IST)<br />
               <strong>Email:</strong> helpdesk@nic.in
             </div>
 
-            <p style={{ fontSize: 13, color: "#4a5568", lineHeight: 1.6, margin: 0 }}>
-              For prototype / demo, all test accounts use the password <code style={{ background: "#f0f4f9", padding: "2px 6px", borderRadius: 4, fontFamily: "monospace" }}>Password@123</code>.
+            <p style={{ fontSize: 13, color: "var(--ds-ink-muted)", lineHeight: 1.6, margin: 0 }}>
+              For prototype / demo, all test accounts use the password <code style={{ background: "var(--ds-surface-muted)", padding: "2px 6px", borderRadius: 4, fontFamily: "monospace" }}>Password@123</code>.
             </p>
 
             <Link
               href={`${BASE}/login`}
-              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, height: 44, background: "#003366", color: "#fff", borderRadius: 8, fontWeight: 600, fontSize: 14, textDecoration: "none" }}
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, height: 44, background: "var(--ds-gov-navy)", color: "var(--ds-on-primary)", borderRadius: 8, fontWeight: 600, fontSize: 14, textDecoration: "none" }}
             >
               <span className="material-symbols-rounded" style={{ fontSize: 18 }}>arrow_back</span>
               Back to Sign-In
