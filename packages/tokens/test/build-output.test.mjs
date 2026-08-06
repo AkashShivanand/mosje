@@ -18,18 +18,96 @@ function resolveVar(css, name, depth = 0) {
   return v;
 }
 
+/**
+ * Compare two CSS values by what they RENDER, not by how they are spelt.
+ *
+ * The snapshot exists to catch value drift, and it must keep doing that — but the type
+ * scale moved from px to rem (see the note on `clampExpr` in build/formats/legacy-ds-css.mjs)
+ * and `clamp(2.5rem, …, 5rem)` renders exactly like `clamp(40px, …, 80px)` at the 16px
+ * default root. Comparing strings would have forced a blanket snapshot rewrite, which would
+ * have thrown away the guard along with the units. So: normalise every dimension to px and
+ * compare numerically, with a tolerance for the rounding the rem conversion introduces
+ * (the intercept is rounded at 4dp in rem instead of 3dp in px).
+ *
+ * Anything that is NOT a dimension — colours, easings, shadows, font stacks — still has to
+ * match exactly, character for character.
+ */
+const REM_BASE = 16;
+const DIMENSION = /(-?\d*\.?\d+)(px|rem)\b/g;
+
+function sameRenderedValue(a, b, epsilonPx = 0.02) {
+  const numbersOf = (s) => [...s.matchAll(DIMENSION)].map(([, n, unit]) =>
+    unit === "rem" ? parseFloat(n) * REM_BASE : parseFloat(n)
+  );
+  const skeletonOf = (s) => s.replace(DIMENSION, " ").replace(/\s+/g, " ").trim();
+
+  if (skeletonOf(a) !== skeletonOf(b)) return false;
+  const [na, nb] = [numbersOf(a), numbersOf(b)];
+  if (na.length !== nb.length) return false;
+  return na.every((v, i) => Math.abs(v - nb[i]) <= epsilonPx);
+}
+
 test("build emits every legacy --ds-* var with an identical resolved value", () => {
   execSync("npm run build", { cwd: root });
   const css = readFileSync(root + "dist/tokens.css", "utf8");
   for (const [name, expected] of Object.entries(legacy)) {
     const got = resolveVar(css, name);
     assert.ok(got !== null, `missing ${name}`);
-    assert.equal(
-      got.replace(/\s+/g, " "),
-      expected.replace(/\s+/g, " "),
+    assert.ok(
+      sameRenderedValue(got, expected),
       `value drift for ${name}: got "${got}", expected "${expected}"`
     );
   }
+});
+
+test("the fluid type scale renders identically in rem as it did in px", () => {
+  // Direct check that the px→rem conversion was value-preserving, independent of the
+  // snapshot: every --ds-type-* bound, multiplied back up by the 16px default root, must
+  // land on the px bound authored in primitive.json.
+  const primitives = JSON.parse(readFileSync(root + "src/primitive.json", "utf8"));
+  const css = readFileSync(root + "dist/tokens.css", "utf8");
+  const rootCss = css.slice(0, css.indexOf("\n}"));
+
+  let checked = 0;
+  for (const [role, parts] of Object.entries(primitives.font.role)) {
+    if (role.startsWith("$")) continue;
+    for (const [part, token] of Object.entries(parts)) {
+      const bounds = token.$extensions?.mosje?.type?.website;
+      if (!bounds) continue;
+      const declared = rootCss.match(
+        new RegExp(`--ds-type-${role}-${part}:\\s*([^;]+);`)
+      );
+      assert.ok(declared, `--ds-type-${role}-${part} missing from :root`);
+
+      const nums = [...declared[1].matchAll(DIMENSION)].map(([, n, u]) =>
+        u === "rem" ? parseFloat(n) * REM_BASE : parseFloat(n)
+      );
+      const [min, max] = [parseFloat(bounds.min), parseFloat(bounds.max)];
+      if (min === max) {
+        assert.ok(Math.abs(nums[0] - min) <= 0.02, `${role}.${part} static value drifted`);
+      } else {
+        // clamp(lo, calc(intercept + slope), hi) → first and last dimensions are the bounds
+        assert.ok(Math.abs(nums[0] - min) <= 0.02, `${role}.${part} min drifted: ${nums[0]} vs ${min}`);
+        assert.ok(Math.abs(nums.at(-1) - max) <= 0.02, `${role}.${part} max drifted: ${nums.at(-1)} vs ${max}`);
+      }
+      checked++;
+    }
+  }
+  assert.ok(checked > 50, `expected the full role scale, only checked ${checked}`);
+});
+
+test("type is sized in rem so a raised browser default font size still scales it", () => {
+  // The reason for the conversion. Browser zoom satisfies WCAG 1.4.4 either way; this is
+  // for the reader who raises their DEFAULT FONT SIZE instead — which a px scale ignores.
+  const css = readFileSync(root + "dist/tokens.css", "utf8");
+  const rootCss = css.slice(0, css.indexOf("\n}"));
+  const typeDecls = [...rootCss.matchAll(/--ds-type-[A-Za-z0-9-]+-(?:size|lh):\s*([^;]+);/g)];
+  assert.ok(typeDecls.length > 40, "expected the --ds-type-* scale");
+
+  const pxLeaks = typeDecls
+    .map(([, value]) => value)
+    .filter((v) => /\d+px/.test(v) && !/^0px$/.test(v.trim()));
+  assert.deepEqual(pxLeaks, [], `type tokens still carrying px: ${pxLeaks.slice(0, 5)}`);
 });
 
 test("generated CSS contains no unresolved token references", () => {

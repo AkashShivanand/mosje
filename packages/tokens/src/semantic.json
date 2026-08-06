@@ -4,8 +4,9 @@
     "$type": "color",
     "action": {
       "primary": {
-        "default": {"$value":"{color.primaryRamp.light.500}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.500}"},"themes":{"dark":"{color.primaryRamp.light.400}"}}}},
-        "hover":   {"$value":"{color.primaryRamp.light.700}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.700}"},"themes":{"dark":"{color.primaryRamp.light.300}"}}}},
+        "$description": "Button/CTA fill. MUST stay dark enough to carry white label text at AA in EVERY theme — that is why the dark theme sits on 500 and not on a lighter step, and why hover goes DARKER (600) rather than lighter. Text links use color.action.link instead, which is free to lighten on dark surfaces. Enforced by test/mode-contrast.test.mjs; the dark theme shipped white-on-#2d84e8 at 3.77:1 until 2026-08.",
+        "default": {"$value":"{color.primaryRamp.light.500}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.500}"},"themes":{"dark":"{color.primaryRamp.light.500}"}}}},
+        "hover":   {"$value":"{color.primaryRamp.light.700}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.700}"},"themes":{"dark":"{color.primaryRamp.light.600}"}}}},
         "tonal":   {"$value":"{color.primaryRamp.light.100}", "$extensions":{"mosje":{"colorModes":{"blue-dark":"{color.primaryRamp.dark.100}"},"themes":{"dark":"rgba(45, 132, 232, 0.18)"}}}}
       },
       "link": {
