@@ -1,5 +1,6 @@
 import StyleDictionary from "style-dictionary";
 import { legacyDsCss } from "./formats/legacy-ds-css.mjs";
+import { ux4gParityCss } from "./formats/ux4g-parity-css.mjs";
 
 const val = (t) => (t.$value !== undefined ? t.$value : t.value);
 
@@ -15,6 +16,7 @@ function nest(tokens) {
 }
 
 StyleDictionary.registerFormat(legacyDsCss);
+StyleDictionary.registerFormat(ux4gParityCss);
 
 StyleDictionary.registerFormat({
   name: "ts/nested",
@@ -116,6 +118,7 @@ const sd = new StyleDictionary({
       files: [
         { destination: "tokens.css", format: "css/legacy-ds" },
         { destination: "tokens-tailwind.css", format: "css/tailwind-v4" },
+        { destination: "ux4g.css", format: "css/ux4g-parity" },
       ],
     },
     ts: {
@@ -139,7 +142,10 @@ const sd = new StyleDictionary({
     designSystemCss: {
       transforms: TRANSFORMS,
       buildPath: "../design-system/",
-      files: [{ destination: "tokens.css", format: "css/legacy-ds" }],
+      files: [
+        { destination: "tokens.css", format: "css/legacy-ds" },
+        { destination: "ux4g.css", format: "css/ux4g-parity" },
+      ],
     },
     // Generate the portal Tailwind v3 preset straight into @mosje/config, so portals keep
     // importing "@mosje/config/tailwind-preset" with no extra package resolution.

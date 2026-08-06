@@ -12,7 +12,17 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-07-21 · System version: v1.7.2 (Text-entry controls take a hard 16px floor below 768px: iOS Safari zooms any focused control under 16px and does not zoom back out, and the fluid ramp put body-1 at ~14px on a phone. Desktop density unchanged. v1.7.1: `SideSheet` gains `side="left"` for navigation drawers, so portal shells can collapse a fixed sidebar into a drawer on small screens instead of squeezing the page. `DeclarationCheckbox` attestation row now meets the 44px touch floor. v1.7.0: Adds three components for field reporting with sign-off: `GeoPhotoInput` (EXIF/device geo-tagging + auto-downscale), `DeclarationCheckbox` (statutory certification panel), `ApprovalTimeline` (multi-tier approval audit trail). No token values changed. v1.6.2: Theming: `[data-color-mode="…"]` blocks now re-declare the `--ds-*` aliases, exactly as `[data-theme="…"]` blocks already did, so colour-mode "islands" repaint a nested subtree instead of only flipping `--sa-*` primitives. Fixed in the generator `packages/tokens/build/formats/legacy-ds-css.mjs`; surfaced when portals mounted natively in the hub and `data-color-mode` moved off `<html>` onto a wrapper. No token values changed. v1.6.1: Icon loading: icons.css now declares an inline @font-face (pinned gstatic woff2) instead of an @import, so the documented `import "@mosje/design-system/icons.css"` finally loads the font under Next/Turbopack — no per-app <link> hack. Typography: hyphenated Portal-DS role names — display-1…label-3; added -para (paragraph-spacing) + -tracking (letter-spacing) fluid props so code ↔ SAMAVESH Figma are at full parity. v1.6.0: two-surface fluid type via data-surface=website|portal, 21 role tokens as clamp(min@360px, fluid, max@1280px). v1.5.0: Figma→code colour sync, mode-aware Blue-Light/Blue-Dark, danger-strong #B8382F)
+  Last reviewed: 2026-08-06 · System version: v1.8.0 (UX4G 3.0 adopted as the foundation.
+  New: the opt-in `--ux4g-*` parity layer (`@mosje/design-system/ux4g.css`, all 755 UX4G tokens
+  resolved onto SAMAVESH — structure at UX4G's exact values, colour role-mapped to the MoSJE
+  palette) plus `ux4g-light`/`ux4g-dark` colour modes carrying UX4G's literal palette. Core
+  additions: UX4G's four semantic spacing role families (`--ds-inline/stack/padding/section-*`)
+  — prefer these over the raw t-shirt scale; `--ds-spacing-10xl/11xl`; a 6-level shadow ramp
+  (adds `none`/`sm`/`md`); `--ds-font-display` (Noto Sans Display, 36px+). FIXED: the
+  `[data-surface="portal"]` block did not re-assert the `--ds-text-*`/`--ds-leading-*` aliases,
+  so every natively-mounted portal rendered the WEBSITE type scale (display headings to 80px
+  instead of 56px) — alias re-assertion is now targeted per block, which also cut tokens.css
+  from 92 KB to 60 KB. v1.7.2: Text-entry controls take a hard 16px floor below 768px: iOS Safari zooms any focused control under 16px and does not zoom back out, and the fluid ramp put body-1 at ~14px on a phone. Desktop density unchanged. v1.7.1: `SideSheet` gains `side="left"` for navigation drawers, so portal shells can collapse a fixed sidebar into a drawer on small screens instead of squeezing the page. `DeclarationCheckbox` attestation row now meets the 44px touch floor. v1.7.0: Adds three components for field reporting with sign-off: `GeoPhotoInput` (EXIF/device geo-tagging + auto-downscale), `DeclarationCheckbox` (statutory certification panel), `ApprovalTimeline` (multi-tier approval audit trail). No token values changed. v1.6.2: Theming: `[data-color-mode="…"]` blocks now re-declare the `--ds-*` aliases, exactly as `[data-theme="…"]` blocks already did, so colour-mode "islands" repaint a nested subtree instead of only flipping `--sa-*` primitives. Fixed in the generator `packages/tokens/build/formats/legacy-ds-css.mjs`; surfaced when portals mounted natively in the hub and `data-color-mode` moved off `<html>` onto a wrapper. No token values changed. v1.6.1: Icon loading: icons.css now declares an inline @font-face (pinned gstatic woff2) instead of an @import, so the documented `import "@mosje/design-system/icons.css"` finally loads the font under Next/Turbopack — no per-app <link> hack. Typography: hyphenated Portal-DS role names — display-1…label-3; added -para (paragraph-spacing) + -tracking (letter-spacing) fluid props so code ↔ SAMAVESH Figma are at full parity. v1.6.0: two-surface fluid type via data-surface=website|portal, 21 role tokens as clamp(min@360px, fluid, max@1280px). v1.5.0: Figma→code colour sync, mode-aware Blue-Light/Blue-Dark, danger-strong #B8382F)
 -->
 
 # SAMAVESH Design System — Specification & AI Design Context
@@ -65,6 +75,16 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 > **Surface is a type axis only.** `data-surface` swaps the fluid type scale (`--ds-type-*`), nothing else — colour still comes from `data-color-mode`/`data-theme`. All type is fluid `clamp()` between a 360px-viewport min and a 1280px max, so the two surfaces each scale smoothly; there are no type media-query breakpoints.
 
 > **Colour Mode ≠ Appearance.** `data-color-mode` (blue-light/blue-dark) and `data-theme` (light/dark/hc) are **independent axes**. `blue-dark` is NOT a dark UI theme — it keeps light surfaces and simply swaps the brand palette to navy/green/cool-grey (matching Figma's `Blue - Dark` mode). The actual dark/high-contrast surfaces live on `data-theme`. The two compose: e.g. `data-color-mode="blue-dark" data-theme="dark"` is the navy palette on dark a11y surfaces.
+
+> **Two more colour modes ship opt-in: `ux4g-light` and `ux4g-dark`.** They carry UX4G 3.0's
+> own palette (violet `#6a4eff` / `#4a2bc2`) *literally*, so UX4G conformance can be
+> demonstrated by flipping one attribute instead of argued about. They live in
+> `@mosje/design-system/ux4g.css` (opt-in — the default bundle does not grow) and are
+> exported from `color-mode.ts` as `UX4G_COLOR_MODES`, deliberately **not** merged into
+> `COLOR_MODES`: offering a mode in an app that has not loaded that stylesheet would show a
+> switch that does nothing. Opt in explicitly:
+> `<ColorModeSwitcher modes={[...COLOR_MODES, ...UX4G_COLOR_MODES]} />`.
+> The MoSJE default stays gov-blue, as DBIM requires.
 
 > **Tip:** Nested theme "islands" (e.g. a dark-themed preview wrapper inside a light page) must be explicitly scoped using nested `[data-theme="dark"]` elements. To prevent theme flashes on initial render, initialize attributes using the exported `colorModeInitScript()`.
 
@@ -158,6 +178,29 @@ Spacing is locked to a named t-shirt scale. All padding and margin must map to t
 | `--ds-spacing-4xl` | `40px` | Section spacing |
 | `--ds-spacing-5xl` | `48px` | Major section breaks |
 | `--ds-spacing-6xl` | `64px` | Page-level hero spacing |
+| `--ds-spacing-10xl` | `120px` | UX4G `padding-3xl` parity |
+| `--ds-spacing-11xl` | `360px` | UX4G `padding-4xl` parity |
+
+Every value on this scale except `72px` is a step on the **UX4G 3.0 base ramp**
+(`--ux4g-space-1…16`), so the SAMAVESH scale *is* the UX4G foundation under different names.
+
+#### Semantic spacing roles — reach for these FIRST
+
+Adopted verbatim from UX4G 3.0 (values match `--ux4g-inline/stack/padding/section` 1:1).
+They state **intent**; the t-shirt scale above states only a number. Use the raw scale only
+for one-offs that no role describes.
+
+| Family | Tokens | Use for |
+|--------|--------|---------|
+| `--ds-inline-*` | `none · 2xs(2) · xs(4) · s(8) · m(12) · l(16) · xl(32)` | Horizontal gaps between items **on the same line** |
+| `--ds-stack-*` | `none · 2xs(4) · xs(8) · s(12) · m(16) · l(24) · xl(32)` | Vertical gaps between **stacked** blocks |
+| `--ds-padding-*` | `none · 3xs(2) · 2xs(4) · xs(8) · s(12) · m(16) · l(20) · xl(24) · 2xl(32) · 3xl(120) · 4xl(360)` | **Inner** padding of components and containers |
+| `--ds-section-*` | `none · xs(24) · s(32) · m(48) · l(56) · xl(64) · 2xl(80)` | Gaps between **page sections** |
+
+```css
+/* Prefer */  gap: var(--ds-stack-m);        /* "16px between stacked blocks" */
+/* Over   */  gap: var(--ds-spacing-lg);     /* "16px, for some reason" */
+```
 
 **Responsive Layout Grid:**
 - **Desktop (≥ 1024px)**: 12-column grid, max-width `1280px`, `24px` gutters.
@@ -332,6 +375,40 @@ Utilize the CSS `:has()` pseudo-class to style parent containers dynamically bas
 
 > **Caution:** Only ever reference **semantic tokens** (`--ds-*`) in component and page code. Referencing `--sa-color-*` primitives directly couples your component to the specific brand ramp and will break dark mode and high-contrast themes.
 
+### The UX4G 3.0 parity layer (`--ux4g-*`) — opt-in
+
+UX4G 3.0 is the foundation SAMAVESH is built against. `@mosje/design-system/ux4g.css` exposes
+UX4G's **entire 755-token contract** resolved onto our own tokens, so UX4G-authored markup and
+specs work here unchanged. It is a **separate, opt-in stylesheet**: the default bundle does not
+grow by a byte.
+
+```css
+@import "@mosje/design-system/tokens.css";
+@import "@mosje/design-system/ux4g.css";  /* only where you need --ux4g-* names */
+```
+
+Two mapping rules, applied by kind:
+
+| Kind | Rule | Example |
+|------|------|---------|
+| **Structure** (spacing, radius, type sizes, weights, borders, opacity, blur, z-index) | UX4G's **exact values**. Where SAMAVESH already has a token with that value, the two are *bound* to one number so they cannot drift. | `--ux4g-stack-m` → `var(--sa-spacing-lg)` → `16px` = `--ds-stack-m` |
+| **Colour** | Maps by **role**, not value → the MoSJE palette. DBIM requires a primary group built from the ministry's key colour; UX4G ships Theme Craft precisely to allow it. | `--ux4g-bg-primary-strong` → gov-blue, **not** UX4G violet |
+
+Measured conformance is calculated, never estimated —
+`node tools/ux4g-conformance/measure.mjs` (100% token coverage, 100% structural conformance,
+59.3% component coverage as of 2026-08-06). Full position and rationale:
+`docs/ux4g/UX4G-Code-Readiness-Audit.md`.
+
+> **Do not `npm install ux4g-web-components`.** It is a 7.6 MB stylesheet plus a 286 KB runtime
+> that rewrites the DOM React owns (11 MutationObservers, 42 `innerHTML` writes) — it breaks
+> hydration in Next 16 and would regress every portal. We conform to the specification, not the
+> distribution. Write React components against `--ds-*`; the `--ux4g-*` names exist for interop.
+
+**One divergence, recorded deliberately:** UX4G sizes type in `rem`, SAMAVESH in `px`. The
+`--ux4g-size-*` tokens keep UX4G's rem so browser default-font-size scaling keeps working; they
+are **not** aliased to our px tokens. Moving the SAMAVESH fluid scale to rem is the top open
+follow-up in the audit.
+
 ---
 
 ## 6. Token Vocabulary Reference (`--ds-*`)
@@ -403,9 +480,16 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 
 ### Elevation (Shadow) Tokens
 
+A 6-level ramp — a superset of UX4G 3.0's 5-level `l0…l4`. SAMAVESH tints toward ink
+(`rgba(31,36,40,·)`) rather than UX4G's flat black: on a light government surface a tinted
+shadow reads as depth, a black one reads as dirt.
+
 | Token | Usage |
 |-------|-------|
+| `--ds-shadow-none` | Flat surfaces, resetting an inherited shadow |
 | `--ds-shadow-xs` | Inputs, small cards |
+| `--ds-shadow-sm` | Raised cards, hovered list rows |
+| `--ds-shadow-md` | Popovers, tooltips, sticky headers |
 | `--ds-shadow-lg` | Dropdowns, floating panels |
 | `--ds-shadow-xl` | Modals, drawers |
 

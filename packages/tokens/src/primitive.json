@@ -64,13 +64,14 @@
     }
   },
   "spacing": {
-    "$description": "T-shirt spacing scale — matches Figma Spacing collection 1:1.",
+    "$description": "T-shirt spacing scale — matches Figma Spacing collection 1:1. Every value except 72px (8xl) is a step on the UX4G 3.0 base ramp (--ux4g-space-1…16), so this scale IS the UX4G foundation under different names; the parity layer maps the two by value. 10xl/11xl were added for UX4G padding-3xl/4xl — NEEDS FIGMA SYNC.",
     "$type": "dimension",
     "none": {"$value":"0px"}, "xxs": {"$value":"2px"}, "xs": {"$value":"4px"},
     "sm": {"$value":"8px"}, "md": {"$value":"12px"}, "lg": {"$value":"16px"},
     "xl": {"$value":"20px"}, "2xl": {"$value":"24px"}, "3xl": {"$value":"32px"},
     "4xl": {"$value":"40px"}, "5xl": {"$value":"48px"}, "6xl": {"$value":"56px"},
-    "7xl": {"$value":"64px"}, "8xl": {"$value":"72px"}, "9xl": {"$value":"80px"}
+    "7xl": {"$value":"64px"}, "8xl": {"$value":"72px"}, "9xl": {"$value":"80px"},
+    "10xl": {"$value":"120px"}, "11xl": {"$value":"360px"}
   },
   "radius": {
     "$description": "T-shirt radius scale — matches Figma Border Radius collection.",
@@ -85,6 +86,7 @@
       "$type": "fontFamily",
       "latin":      {"$value":"\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"},
       "devanagari": {"$value":"\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"},
+      "display":    {"$description":"UX4G 3.0 parity: the optical Display cut, for 36px+ headings only (--ux4g-font-family-display). Falls back to Noto Sans, so this token is safe to use before an app opts in to the extra webfont — never load it globally just to satisfy the token.","$value":"\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif"},
       "mono":       {"$value":"ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"}
     },
     "weight": {
@@ -225,8 +227,12 @@
     }
   },
   "shadow": {
+    "$description": "Elevation ramp. none→xl is a 6-level superset of UX4G 3.0's 5-level l0…l4, and keeps the SAMAVESH convention of tinting toward ink (rgba(31,36,40,·)) rather than UX4G's flat black — tinted shadows read as depth instead of dirt on a light gov surface. sm/md fill the gap that previously jumped xs→lg.",
     "$type": "shadow",
+    "none": {"$value":"none"},
     "xs": {"$value":"0 2px 3px 1px rgba(31, 36, 40, 0.12)"},
+    "sm": {"$value":"0 4px 6px -1px rgba(31, 36, 40, 0.10), 0 2px 4px -2px rgba(31, 36, 40, 0.06)"},
+    "md": {"$value":"0 8px 12px -3px rgba(31, 36, 40, 0.09), 0 3px 5px -2px rgba(31, 36, 40, 0.05)"},
     "lg": {"$value":"0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03)"},
     "xl": {"$value":"0 24px 48px -12px rgba(31, 36, 40, 0.18)"}
   },

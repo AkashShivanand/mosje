@@ -28,6 +28,24 @@ export const COLOR_MODES: readonly ColorMode[] = [
   { id: "blue-dark", label: "Blue · Dark", swatch: "#003366" },
 ] as const;
 
+/**
+ * UX4G 3.0's own palette, as two extra peer modes.
+ *
+ * These are NOT in `COLOR_MODES` on purpose: they only render correctly in an app that
+ * also imports `@mosje/design-system/ux4g.css`, which is opt-in. Offering them from the
+ * switcher in an app that has not loaded that stylesheet would show a mode that does
+ * nothing. An app that HAS loaded it opts in explicitly:
+ *
+ *   <ColorModeSwitcher modes={[...COLOR_MODES, ...UX4G_COLOR_MODES]} />
+ *
+ * They exist so UX4G conformance can be demonstrated by flipping one attribute rather
+ * than argued about — the MoSJE default (gov-blue, per DBIM) is unchanged either way.
+ */
+export const UX4G_COLOR_MODES: readonly ColorMode[] = [
+  { id: "ux4g-light", label: "UX4G · Light", swatch: "#6a4eff" },
+  { id: "ux4g-dark", label: "UX4G · Dark", swatch: "#4a2bc2" },
+] as const;
+
 export type ColorModeId = (typeof COLOR_MODES)[number]["id"];
 
 export const DEFAULT_COLOR_MODE: string = COLOR_MODES[0]?.id ?? "blue-light";
@@ -37,7 +55,10 @@ export const COLOR_MODE_ATTR = "data-color-mode";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
 export function isColorMode(value: string | null | undefined): boolean {
-  return !!value && COLOR_MODES.some((m) => m.id === value);
+  return (
+    !!value &&
+    (COLOR_MODES.some((m) => m.id === value) || UX4G_COLOR_MODES.some((m) => m.id === value))
+  );
 }
 
 export function normalizeColorMode(value: string | null | undefined): string {

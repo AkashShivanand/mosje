@@ -317,14 +317,14 @@ export const tokens = {
       "ring": "rgba(3, 115, 223, 0.48)"
     },
     "status": {
-      "success": "#2e7d32",
-      "successStrong": "#1b5e20",
+      "success": "#1b5e20",
+      "successStrong": "#124517",
       "successTonal": "#c8e6c9",
-      "warning": "#bb772b",
+      "warning": "#8c571f",
       "warningTonal": "#fff4e5",
-      "danger": "#ec5042",
-      "dangerStrong": "#b8382f",
-      "dangerTonal": "#fad2cf",
+      "danger": "#b8382f",
+      "dangerStrong": "#992c25",
+      "dangerTonal": "#fdecea",
       "info": "#1558b0",
       "infoStrong": "#11408b",
       "infoTonal": "#d2e3fc"
@@ -419,7 +419,49 @@ export const tokens = {
     "6xl": "56px",
     "7xl": "64px",
     "8xl": "72px",
-    "9xl": "80px"
+    "9xl": "80px",
+    "10xl": "120px",
+    "11xl": "360px",
+    "inline": {
+      "none": "0px",
+      "2xs": "2px",
+      "xs": "4px",
+      "s": "8px",
+      "m": "12px",
+      "l": "16px",
+      "xl": "32px"
+    },
+    "stack": {
+      "none": "0px",
+      "2xs": "4px",
+      "xs": "8px",
+      "s": "12px",
+      "m": "16px",
+      "l": "24px",
+      "xl": "32px"
+    },
+    "padding": {
+      "none": "0px",
+      "3xs": "2px",
+      "2xs": "4px",
+      "xs": "8px",
+      "s": "12px",
+      "m": "16px",
+      "l": "20px",
+      "xl": "24px",
+      "2xl": "32px",
+      "3xl": "120px",
+      "4xl": "360px"
+    },
+    "section": {
+      "none": "0px",
+      "xs": "24px",
+      "s": "32px",
+      "m": "48px",
+      "l": "56px",
+      "xl": "64px",
+      "2xl": "80px"
+    }
   },
   "radius": {
     "none": "0px",
@@ -439,6 +481,7 @@ export const tokens = {
     "family": {
       "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
       "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
+      "display": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
       "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
     },
     "weight": {
@@ -585,7 +628,10 @@ export const tokens = {
     }
   },
   "shadow": {
+    "none": "none",
     "xs": "0 2px 3px 1px rgba(31, 36, 40, 0.12)",
+    "sm": "0 4px 6px -1px rgba(31, 36, 40, 0.10), 0 2px 4px -2px rgba(31, 36, 40, 0.06)",
+    "md": "0 8px 12px -3px rgba(31, 36, 40, 0.09), 0 3px 5px -2px rgba(31, 36, 40, 0.05)",
     "lg": "0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03)",
     "xl": "0 24px 48px -12px rgba(31, 36, 40, 0.18)"
   },

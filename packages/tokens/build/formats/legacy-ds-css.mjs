@@ -7,6 +7,10 @@
 // fluid, max@1280px) — the Website scale in :root (default) and the Portal scale under
 // [data-surface="portal"]. No @media breakpoints.
 
+/** Expand a UX4G semantic-spacing family into --ds-<family>-<step> → --sa-spacing-<family>-<step>. */
+const spacingRole = (family, steps) =>
+  Object.fromEntries(steps.map((s) => [`--ds-${family}-${s}`, `--sa-spacing-${family}-${s}`]));
+
 export const LEGACY_DS_ALIASES = {
   "--ds-primary":       "--sa-color-action-primary-default",
   "--ds-primary-tonal": "--sa-color-action-primary-tonal",
@@ -138,8 +142,19 @@ export const LEGACY_DS_ALIASES = {
   "--ds-radius-4xl":    "--sa-radius-4xl",
   "--ds-radius-5xl":    "--sa-radius-5xl",
   "--ds-radius-full":   "--sa-radius-full",
+  "--ds-spacing-10xl":  "--sa-spacing-10xl",
+  "--ds-spacing-11xl":  "--sa-spacing-11xl",
+
+  // ── UX4G 3.0 semantic spacing roles (adopted verbatim; values match --ux4g-* 1:1) ──
+  // Prefer these over the raw t-shirt scale: they state intent, not just a number.
+  ...spacingRole("inline",  ["none", "2xs", "xs", "s", "m", "l", "xl"]),
+  ...spacingRole("stack",   ["none", "2xs", "xs", "s", "m", "l", "xl"]),
+  ...spacingRole("padding", ["none", "3xs", "2xs", "xs", "s", "m", "l", "xl", "2xl", "3xl", "4xl"]),
+  ...spacingRole("section", ["none", "xs", "s", "m", "l", "xl", "2xl"]),
+
   "--ds-control-height":"--sa-density-control-height",
   "--ds-font-sans":     "--sa-font-family-latin",
+  "--ds-font-display":  "--sa-font-family-display",
   "--ds-font-mono":     "--sa-font-family-mono",
   "--ds-duration-fast": "--sa-motion-duration-fast",
   "--ds-duration-base": "--sa-motion-duration-base",
@@ -147,7 +162,10 @@ export const LEGACY_DS_ALIASES = {
   "--ds-easing-out":    "--sa-motion-easing-out",
   "--ds-easing-in":     "--sa-motion-easing-in",
   "--ds-easing-in-out": "--sa-motion-easing-inOut",
+  "--ds-shadow-none":   "--sa-shadow-none",
   "--ds-shadow-xs":     "--sa-shadow-xs",
+  "--ds-shadow-sm":     "--sa-shadow-sm",
+  "--ds-shadow-md":     "--sa-shadow-md",
   "--ds-shadow-lg":     "--sa-shadow-lg",
   "--ds-shadow-xl":     "--sa-shadow-xl",
 
@@ -317,9 +335,8 @@ export const legacyDsCss = {
     // Two-surface responsive type variables (website = default, portal = [data-surface])
     const { website: typeRootLines, portal: typePortalLines } = buildResponsiveType(dictionary);
 
-    const legacy = Object.entries(LEGACY_DS_ALIASES).map(
-      ([oldName, newVar]) => `  ${oldName}: var(${newVar});`
-    );
+    const legacyPairs = Object.entries(LEGACY_DS_ALIASES);
+    const legacy = legacyPairs.map(([oldName, newVar]) => `  ${oldName}: var(${newVar});`);
 
     // Resolve a {ref} string to a var(--sa-*) chain; pass literals through.
     const resolveRef = (v) =>
@@ -327,53 +344,79 @@ export const legacyDsCss = {
         ? `var(--sa-${v.slice(1, -1).split(".").join("-")})`
         : v;
 
-    const themeMap = { light: [], dark: [], hc: [], compact: [] };
+    // Each block records BOTH its declaration lines and the set of custom-property
+    // names it declares. The name set drives targeted alias re-assertion below.
+    const mkBlock = () => ({ lines: [], vars: new Set() });
+    const push = (block, name, value) => {
+      block.lines.push(`  ${name}: ${value};`);
+      block.vars.add(name);
+    };
+
+    const themeMap = { light: mkBlock(), dark: mkBlock(), hc: mkBlock(), compact: mkBlock() };
     const colorModeMap = {};
     for (const t of dictionary.allTokens) {
       const ext = t.original?.$extensions?.mosje;
+      const name = `--sa-${t.path.join("-")}`;
       if (ext?.themes) {
         for (const [theme, v] of Object.entries(ext.themes)) {
-          if (themeMap[theme]) themeMap[theme].push(`  --sa-${t.path.join("-")}: ${resolveRef(v)};`);
+          if (themeMap[theme]) push(themeMap[theme], name, resolveRef(v));
         }
         if (ext.themes.dark || ext.themes.hc) {
-          themeMap.light.push(`  --sa-${t.path.join("-")}: ${val(t)};`);
+          push(themeMap.light, name, val(t));
         }
       }
       if (ext?.colorModes) {
         for (const [mode, v] of Object.entries(ext.colorModes)) {
-          (colorModeMap[mode] ??= []).push(`  --sa-${t.path.join("-")}: ${resolveRef(v)};`);
+          push((colorModeMap[mode] ??= mkBlock()), name, resolveRef(v));
         }
       }
     }
 
-    const legacyReassert = `\n\n  /* re-resolve --ds-* aliases for nested theme islands */\n${legacy.join("\n")}`;
+    // A custom property substitutes var() at the element where it is DECLARED, then
+    // descendants inherit the ALREADY-RESOLVED value. So `--ds-primary: var(--sa-…)`
+    // declared once at :root resolves against :root's primitives; an island that flips
+    // those primitives for its subtree does NOT change --ds-primary unless the alias is
+    // re-declared inside the island. Every block that redeclares a token therefore has
+    // to re-declare the aliases pointing at it.
+    //
+    // Re-assertion is TARGETED: only aliases whose target this block actually redeclares.
+    // Re-asserting the rest is a provable no-op (the target is inherited unchanged), and
+    // blanket re-assertion was emitting the whole ~290-entry alias table into all four
+    // theme blocks — mostly spacing/radius/shadow/type aliases that no theme can vary.
+    const reassert = (block) => {
+      const lines = legacyPairs
+        .filter(([, target]) => block.vars.has(target))
+        .map(([oldName, target]) => `  ${oldName}: var(${target});`);
+      return lines.length
+        ? `\n\n  /* re-resolve the --ds-* aliases whose source changed in this block */\n${lines.join("\n")}`
+        : "";
+    };
 
-    // The --ds-* aliases must be re-asserted here for the same reason the
-    // [data-theme="…"] blocks below do it: a custom property substitutes var()
-    // at the element where it is DECLARED. --ds-primary is declared once at
-    // :root, so it resolves against :root's --sa-* and is then inherited as an
-    // already-resolved colour. A nested [data-color-mode="blue-dark"] island
-    // flips the --sa-* primitives for its subtree, but without re-declaring the
-    // aliases the components below keep :root's value. This only ever worked
-    // when data-color-mode sat on <html> (where :root's declarations resolve) —
-    // it broke the moment portals mounted natively and the attribute moved to a
-    // wrapper div.
     const colorModeBlocks = Object.entries(colorModeMap)
-      .map(([mode, decls]) => `[data-color-mode="${mode}"] {\n${decls.join("\n")}${legacyReassert}\n}`)
+      .map(([mode, b]) => `[data-color-mode="${mode}"] {\n${b.lines.join("\n")}${reassert(b)}\n}`)
       .join("\n\n");
     const themeBlocks = [
       colorModeBlocks,
-      themeMap.light.length  ? `[data-theme="light"] {\n${themeMap.light.join("\n")}${legacyReassert}\n}` : "",
-      themeMap.dark.length   ? `[data-theme="dark"] {\n${themeMap.dark.join("\n")}${legacyReassert}\n}` : "",
-      themeMap.hc.length     ? `[data-theme="hc"] {\n${themeMap.hc.join("\n")}${legacyReassert}\n}` : "",
-      themeMap.compact.length? `[data-density="compact"] {\n${themeMap.compact.join("\n")}\n}` : "",
+      themeMap.light.lines.length  ? `[data-theme="light"] {\n${themeMap.light.lines.join("\n")}${reassert(themeMap.light)}\n}` : "",
+      themeMap.dark.lines.length   ? `[data-theme="dark"] {\n${themeMap.dark.lines.join("\n")}${reassert(themeMap.dark)}\n}` : "",
+      themeMap.hc.lines.length     ? `[data-theme="hc"] {\n${themeMap.hc.lines.join("\n")}${reassert(themeMap.hc)}\n}` : "",
+      themeMap.compact.lines.length? `[data-density="compact"] {\n${themeMap.compact.lines.join("\n")}${reassert(themeMap.compact)}\n}` : "",
     ]
       .filter(Boolean)
       .join("\n\n");
 
     // Portal surface: override the fluid --ds-type-* scale under [data-surface="portal"].
+    // This block needs the same alias re-assertion as the theme blocks — without it the
+    // --ds-text-*/--ds-leading-* aliases keep the value they resolved to at :root, i.e.
+    // the WEBSITE scale, and every portal that mounts on a wrapper div (all six of them —
+    // data-surface sits on a <div>, not <html>) renders website type. Verified in-browser
+    // before the fix: --ds-type-display-1-size flipped to the portal clamp (max 56px)
+    // while --ds-text-display stayed on the website clamp (max 80px).
+    const surfaceVars = new Set(
+      typePortalLines.map((l) => l.slice(0, l.indexOf(":")).trim())
+    );
     const surfaceBlock = typePortalLines.length
-      ? `[data-surface="portal"] {\n${typePortalLines.join("\n")}\n}`
+      ? `[data-surface="portal"] {\n${typePortalLines.join("\n")}${reassert({ vars: surfaceVars })}\n}`
       : "";
 
     return (

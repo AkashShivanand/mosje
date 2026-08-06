@@ -248,6 +248,35 @@
     "body1":    {"size":{"$type":"dimension","$value":"{font.size.400}"},"leading":{"$type":"dimension","$value":"{font.lineHeight.300}"},"weight":{"$type":"fontWeight","$value":"{font.weight.regular}"}},
     "body2":    {"size":{"$type":"dimension","$value":"{font.size.300}"},"leading":{"$type":"dimension","$value":"{font.lineHeight.200}"},"weight":{"$type":"fontWeight","$value":"{font.weight.regular}"}}
   },
+  "spacing": {
+    "$description": "UX4G 3.0 semantic spacing roles, adopted verbatim (values match --ux4g-inline/stack/padding/section 1:1). Reach for these FIRST — they state intent (a gap on a line vs. between stacked blocks vs. inside a container vs. between page sections) where the raw t-shirt scale states only a number. The t-shirt scale remains for one-off values.",
+    "$type": "dimension",
+    "inline": {
+      "$description": "Horizontal gaps between elements on the same line.",
+      "none": {"$value":"{spacing.none}"}, "2xs": {"$value":"{spacing.xxs}"}, "xs": {"$value":"{spacing.xs}"},
+      "s": {"$value":"{spacing.sm}"}, "m": {"$value":"{spacing.md}"}, "l": {"$value":"{spacing.lg}"},
+      "xl": {"$value":"{spacing.3xl}"}
+    },
+    "stack": {
+      "$description": "Vertical gaps between stacked elements.",
+      "none": {"$value":"{spacing.none}"}, "2xs": {"$value":"{spacing.xs}"}, "xs": {"$value":"{spacing.sm}"},
+      "s": {"$value":"{spacing.md}"}, "m": {"$value":"{spacing.lg}"}, "l": {"$value":"{spacing.2xl}"},
+      "xl": {"$value":"{spacing.3xl}"}
+    },
+    "padding": {
+      "$description": "Inner padding for components and containers.",
+      "none": {"$value":"{spacing.none}"}, "3xs": {"$value":"{spacing.xxs}"}, "2xs": {"$value":"{spacing.xs}"},
+      "xs": {"$value":"{spacing.sm}"}, "s": {"$value":"{spacing.md}"}, "m": {"$value":"{spacing.lg}"},
+      "l": {"$value":"{spacing.xl}"}, "xl": {"$value":"{spacing.2xl}"}, "2xl": {"$value":"{spacing.3xl}"},
+      "3xl": {"$value":"{spacing.10xl}"}, "4xl": {"$value":"{spacing.11xl}"}
+    },
+    "section": {
+      "$description": "Large gaps between page sections.",
+      "none": {"$value":"{spacing.none}"}, "xs": {"$value":"{spacing.2xl}"}, "s": {"$value":"{spacing.3xl}"},
+      "m": {"$value":"{spacing.5xl}"}, "l": {"$value":"{spacing.6xl}"}, "xl": {"$value":"{spacing.7xl}"},
+      "2xl": {"$value":"{spacing.9xl}"}
+    }
+  },
   "density": {
     "$description": "Density token set: control height per density mode.",
     "control": {
