@@ -110,6 +110,22 @@ export { Alert } from "./components/feedback/alert";
 export { Badge } from "./components/feedback/badge";
 export { Loader } from "./components/feedback/loader";
 export { EmptyState } from "./components/feedback/empty-state";
+export { SlaProgressIndicator } from "./components/feedback/sla-progress-indicator";
+export type {
+  SlaProgressIndicatorProps,
+  SlaVariant,
+} from "./components/feedback/sla-progress-indicator";
+export {
+  slaStatus,
+  slaTone,
+  slaSummary,
+  slaValueText,
+  slaConsumed,
+  slaRemaining,
+  slaFractionForRemaining,
+  SLA_DEFAULT_THRESHOLDS,
+} from "./utils/sla";
+export type { SlaStatus, SlaThresholds, SlaInput } from "./utils/sla";
 export { Stepper } from "./components/feedback/stepper";
 export type { StepperProps, StepperStep } from "./components/feedback/stepper";
 export { Tabs, TabPanel } from "./components/navigation/tabs";

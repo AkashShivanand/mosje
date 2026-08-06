@@ -63,6 +63,8 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
   `ChartCard`/`DashboardGrid`/`KpiRow`/`FilterBar`/`SegmentedControl` for
   dashboard composition (`components/data-display/charts/` + `components/dashboard/`);
   `Modal`, `SideSheet` (right-anchored drawer), `Lightbox` (mixed image/video gallery viewer), `Stepper`,
+  `SlaProgressIndicator` (Right to Service Act time-remaining; linear/circular/badge, with a
+  neutral PAUSED state for time the applicant owns — never hand-roll a days-left badge),
   `ToastProvider`/`useToast`, `Alert`, `Badge`, `Loader`, `EmptyState`
   (feedback); `FormSection`, `FormCard`, `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`,
   `MediaUpload` (single file/image upload), `MediaGalleryInput` (multi image/video upload),

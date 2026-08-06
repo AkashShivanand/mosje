@@ -151,9 +151,9 @@
         },
         {
           "ux4g": "SLA Progress Indicator",
-          "status": "missing",
-          "priority": "high",
-          "note": "Encodes Right to Service Act timing \u2014 take as specified rather than invent."
+          "status": "exact",
+          "note": "Three variants (linear/circular/badge). Adds paused and missed states UX4G does not distinguish.",
+          "samavesh": "SlaProgressIndicator"
         },
         {
           "ux4g": "System Alert",

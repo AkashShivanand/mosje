@@ -21,6 +21,7 @@ export const SEARCH_DATA: SearchEntry[] = [
   { title: "Card", section: "Components", href: "/design-system/components/card", keywords: "card container surface elevation clickable", type: "component" },
   { title: "Badge", section: "Components", href: "/design-system/components/badge", keywords: "badge tag status pill label count", type: "component" },
   { title: "Form Field", section: "Components", href: "/design-system/components/input#form-field", keywords: "form field label hint error required validation", type: "component" },
+  { title: "SLA Progress Indicator", section: "Components", href: "/design-system/components/sla-progress", keywords: "sla service level agreement right to service act deadline breach overdue days left timer progress guarantee", type: "component" },
   { title: "Aadhaar Input", section: "Components", href: "/design-system/components/identity-inputs#aadhaar", keywords: "aadhaar uidai identity 12 digit verhoeff checksum mask dpdp masked number", type: "component" },
   { title: "OTP Input", section: "Components", href: "/design-system/components/identity-inputs#otp", keywords: "otp one time password six box code sms autofill paste verification", type: "component" },
   { title: "PAN Input", section: "Components", href: "/design-system/components/identity-inputs#pan", keywords: "pan card income tax identity permanent account number holder type", type: "component" },
