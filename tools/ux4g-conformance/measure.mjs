@@ -1,0 +1,216 @@
+#!/usr/bin/env node
+/**
+ * Compute the UX4G 3.0 conformance figure for SAMAVESH.
+ *
+ * The adoption directive has not yet defined what "using UX4G" means (see
+ * docs/ux4g/UX4G-Clarification-Questionnaire.md). Until it does, this is the most
+ * objective measure we can publish: it is CALCULATED from the token contract and the
+ * component map, not judged, and the method ships alongside the number.
+ *
+ *   node tools/ux4g-conformance/measure.mjs           # print the report
+ *   node tools/ux4g-conformance/measure.mjs --json    # machine-readable
+ *   node tools/ux4g-conformance/measure.mjs --write   # also write docs/ux4g/conformance-report.md
+ *
+ * Requires a built token set: npm run build -w @mosje/tokens
+ */
+
+import { readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve as resolvePath } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+const REPO = resolvePath(HERE, "../..");
+
+const reference = JSON.parse(readFileSync(join(REPO, "packages/tokens/reference/ux4g-3.0.tokens.json"), "utf8"));
+const componentMap = JSON.parse(readFileSync(join(HERE, "component-map.json"), "utf8"));
+const parityCss = readFileSync(join(REPO, "packages/design-system/ux4g.css"), "utf8");
+const tokensCss = readFileSync(join(REPO, "packages/design-system/tokens.css"), "utf8");
+
+/** The top-level `:root { … }` declarations of a generated stylesheet. */
+function rootBlock(source) {
+  const start = source.indexOf(":root {");
+  if (start === -1) throw new Error("no :root block — run the token build first");
+  return source.slice(start, source.indexOf("\n}", start));
+}
+const ROOTS = [rootBlock(parityCss), rootBlock(tokensCss)];
+
+function declarationsIn(block) {
+  return new Map(
+    [...block.matchAll(/^\s*(--[A-Za-z0-9-]+)\s*:\s*([^;]+);/gm)].map((m) => [m[1], m[2].trim()])
+  );
+}
+const parityDecls = declarationsIn(ROOTS[0]);
+const allDecls = new Map([...declarationsIn(ROOTS[1]), ...parityDecls]);
+
+/** `var(--x)` and `var(--x, fallback)` both count as a reference — UX4G uses both forms. */
+const VAR_REF = /^var\(\s*(--[A-Za-z0-9-]+)\s*(?:,\s*([^)]*))?\)$/;
+
+function resolveValue(name, depth = 0) {
+  if (depth > 8) return null;
+  const value = allDecls.get(name);
+  if (value === undefined) return null;
+  const ref = value.match(VAR_REF);
+  if (!ref) return value;
+  const via = resolveValue(ref[1], depth + 1);
+  return via !== null ? via : (ref[2]?.trim() ?? null);
+}
+
+const norm = (v) => String(v ?? "").trim().toLowerCase().replace(/\s+/g, " ").replace(/^0$/, "0px");
+const pct = (n, d) => (d === 0 ? 0 : Math.round((n / d) * 1000) / 10);
+
+// ── 1. Token coverage ────────────────────────────────────────────────────────────
+// Does SAMAVESH express every token in the UX4G contract at all?
+const ux4gNames = Object.keys(reference.tokens);
+const present = ux4gNames.filter((n) => parityDecls.has(n));
+
+// ── 2. Token binding ─────────────────────────────────────────────────────────────
+// Of those, how many are BOUND to a SAMAVESH token rather than carrying a copy of UX4G's
+// literal? Bound tokens share one number with SAMAVESH and cannot drift; literals can.
+//
+// Binding is TRANSITIVE. `--ux4g-bg-primary-strong: var(--ux4g-color-primary-600)` looks
+// unbound one level down, but that primitive is itself `var(--sa-color-primaryScale-600)`,
+// so the token really does resolve to the MoSJE palette. Counting only direct references
+// scored the layer at 16% when the honest figure is far higher.
+function bindsToSamavesh(name, depth = 0, seen = new Set()) {
+  if (depth > 8 || seen.has(name)) return false;
+  seen.add(name);
+  const value = allDecls.get(name);
+  if (value === undefined) return false;
+  const refs = [...String(value).matchAll(/var\(\s*(--[A-Za-z0-9-]+)/g)].map((m) => m[1]);
+  return refs.some((r) => /^--(sa|ds)-/.test(r) || bindsToSamavesh(r, depth + 1, seen));
+}
+const bound = present.filter((n) => bindsToSamavesh(n));
+
+// ── 3. Structural value conformance ──────────────────────────────────────────────
+// For every non-colour token, does SAMAVESH resolve to UX4G's published value? This is
+// the part that can silently regress, so it is the one worth gating a build on.
+//
+// Colour is classified by RESOLVED VALUE, not by token name. Name matching missed the
+// component-scoped colour tokens (--ux4g-accordion-bg, --ux4g-scroll-thumb,
+// --ux4g-control-border-default, …) and reported them as drift when they were in fact
+// doing exactly the right thing: resolving to the MoSJE palette instead of UX4G's.
+const isColorValue = (v) =>
+  v !== null && /^(#[0-9a-f]{3,8}|rgba?\(|hsla?\(|oklch\(|color-mix\(|transparent$|currentcolor$)/i.test(String(v).trim());
+
+/** Resolve a UX4G reference value using UX4G's OWN contract, for comparison. */
+function resolveReference(name, depth = 0) {
+  if (depth > 8) return null;
+  const value = reference.tokens[name];
+  if (value === undefined) return null;
+  const ref = String(value).match(VAR_REF);
+  if (!ref) return value;
+  const via = resolveReference(ref[1], depth + 1);
+  return via !== null ? via : (ref[2]?.trim() ?? null);
+}
+
+const structuralChecked = [];
+const structuralDrift = [];
+const colorRoleMapped = [];
+for (const name of ux4gNames) {
+  const expected = resolveReference(name);
+  const actual = resolveValue(name);
+  if (expected === null || actual === null) continue; // unresolvable both sides — not a claim
+  if (isColorValue(expected) || isColorValue(actual)) {
+    colorRoleMapped.push(name);
+    continue;
+  }
+  structuralChecked.push(name);
+  if (norm(expected) !== norm(actual)) structuralDrift.push({ name, expected, actual });
+}
+
+// ── 4. Component coverage ────────────────────────────────────────────────────────
+const allComponents = Object.values(componentMap.categories).flatMap((c) =>
+  c.components.map((x) => ({ ...x, category: c.label }))
+);
+const byStatus = (s) => allComponents.filter((c) => c.status === s);
+const covered = byStatus("exact").length + byStatus("partial").length;
+
+const report = {
+  generatedAgainst: {
+    ux4gPackage: reference.$source.package,
+    ux4gVersion: reference.$source.version,
+    referenceExtracted: reference.$source.extractedAt,
+  },
+  tokenCoverage: { present: present.length, total: ux4gNames.length, pct: pct(present.length, ux4gNames.length) },
+  tokenBinding: { bound: bound.length, of: present.length, pct: pct(bound.length, present.length) },
+  structuralConformance: {
+    matching: structuralChecked.length - structuralDrift.length,
+    checked: structuralChecked.length,
+    pct: pct(structuralChecked.length - structuralDrift.length, structuralChecked.length),
+    drift: structuralDrift.slice(0, 25),
+  },
+  colorRoleMapped: colorRoleMapped.length,
+  componentCoverage: {
+    exact: byStatus("exact").length,
+    partial: byStatus("partial").length,
+    missing: byStatus("missing").length,
+    total: allComponents.length,
+    pct: pct(covered, allComponents.length),
+    highPriorityMissing: byStatus("missing").filter((c) => c.priority === "high").map((c) => c.ux4g),
+    missingList: byStatus("missing").map((c) => `${c.category}: ${c.ux4g}`),
+  },
+  samaveshOnly: componentMap.samaveshOnly.components.length,
+};
+
+if (process.argv.includes("--json")) {
+  console.log(JSON.stringify(report, null, 2));
+  process.exit(structuralDrift.length ? 1 : 0);
+}
+
+const r = report;
+const lines = [
+  `# UX4G 3.0 conformance — SAMAVESH`,
+  ``,
+  `Measured against \`${r.generatedAgainst.ux4gPackage}@${r.generatedAgainst.ux4gVersion}\` ` +
+    `(reference extracted ${r.generatedAgainst.referenceExtracted}).`,
+  `Calculated by \`tools/ux4g-conformance/measure.mjs\` — no figure here is a judgement.`,
+  ``,
+  `| Measure | Result | What it means |`,
+  `|---|---|---|`,
+  `| **Token coverage** | **${r.tokenCoverage.pct}%** (${r.tokenCoverage.present}/${r.tokenCoverage.total}) | UX4G tokens SAMAVESH expresses at all |`,
+  `| **Token binding** | **${r.tokenBinding.pct}%** (${r.tokenBinding.bound}/${r.tokenBinding.of}) | …of those, how many resolve to a SAMAVESH token rather than a copied literal (bound tokens cannot drift) |`,
+  `| **Structural conformance** | **${r.structuralConformance.pct}%** (${r.structuralConformance.matching}/${r.structuralConformance.checked}) | non-colour tokens resolving to UX4G's exact published value |`,
+  `| **Colour role-mapped** | **${r.colorRoleMapped}** tokens | resolve to the MoSJE palette by role (excluded from the value check by design) |`,
+  `| **Component coverage** | **${r.componentCoverage.pct}%** (${r.componentCoverage.exact} exact + ${r.componentCoverage.partial} partial of ${r.componentCoverage.total}) | UX4G's published component set |`,
+  ``,
+  `Colour is deliberately excluded from structural conformance: it maps by ROLE onto the`,
+  `ministry's key colour (DBIM) via UX4G's own Theme Craft, so a value comparison there`,
+  `would measure the wrong thing. Set \`data-color-mode="ux4g-light"\` to render UX4G's`,
+  `literal palette instead.`,
+  ``,
+  `## Components still missing (${r.componentCoverage.missing})`,
+  ``,
+  ...(r.componentCoverage.highPriorityMissing.length
+    ? [`**Build first:** ${r.componentCoverage.highPriorityMissing.join(", ")}.`, ``]
+    : []),
+  ...r.componentCoverage.missingList.map((m) => `- ${m}`),
+  ``,
+  `## Beyond UX4G`,
+  ``,
+  `${r.samaveshOnly} SAMAVESH components have no UX4G 3.0 equivalent — the officer-facing`,
+  `half of the estate (dashboards, approval chains, field reporting, charts, the India map).`,
+  `These are the clause-4 contribution candidates.`,
+  ``,
+];
+
+if (structuralDrift.length) {
+  lines.push(
+    `## ⚠ Structural drift (${structuralDrift.length})`,
+    ``,
+    `| Token | UX4G | SAMAVESH |`,
+    `|---|---|---|`,
+    ...structuralDrift.map((d) => `| \`${d.name}\` | \`${d.expected}\` | \`${d.actual}\` |`),
+    ``
+  );
+}
+
+const out = lines.join("\n");
+console.log(out);
+
+if (process.argv.includes("--write")) {
+  const dest = join(REPO, "docs/ux4g/conformance-report.md");
+  writeFileSync(dest, out);
+  console.error(`\n✓ written to ${dest.replace(REPO + "/", "")}`);
+}
+
+process.exit(structuralDrift.length ? 1 : 0);
