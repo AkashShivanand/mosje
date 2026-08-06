@@ -29,7 +29,16 @@ export interface StoreDeps {
   now: () => number;
 }
 
-const defaultDeps: StoreDeps = { fetchImpl: fetch, now: Date.now };
+/**
+ * Both members delegate at call time rather than capturing at module load.
+ * Capturing `fetch` here would freeze whatever binding existed when this
+ * module was first imported, which silently ignores any later instrumentation
+ * of the global.
+ */
+const defaultDeps: StoreDeps = {
+  fetchImpl: (...args: Parameters<typeof fetch>) => globalThis.fetch(...args),
+  now: () => Date.now(),
+};
 
 interface CacheEntry {
   value: string | null;

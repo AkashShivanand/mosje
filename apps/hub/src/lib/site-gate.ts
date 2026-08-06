@@ -21,6 +21,7 @@
  */
 
 import { hmacToken, safeEqual } from "./hmac.ts";
+import { SETTING_GATE_TOKEN, readSetting } from "./settings/store.ts";
 
 export { safeEqual };
 
@@ -32,10 +33,25 @@ const GATE_LABEL = "mosje-site-gate.v1";
 /** 30 days — long enough that reviewers aren't re-prompted mid-review. */
 export const GATE_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
 
-/** The configured gate password, or null when the gate is switched off. */
-export function gatePassword(): string | null {
-  const password = process.env.SITE_PASSWORD?.trim();
-  return password ? password : null;
+/**
+ * The token an incoming cookie must match, resolved in priority order:
+ *
+ *   1. `gate_token` from the settings store, changed from /admin
+ *   2. HMAC of `SITE_PASSWORD`, the environment-variable floor
+ *   3. null — the gate is off, which is the local-dev path
+ *
+ * Step 2 is what makes a database outage survivable: production always has
+ * SITE_PASSWORD set, so an unreachable, paused or empty store degrades to a
+ * working gate rather than an open or unreachable site.
+ */
+export async function resolveGateToken(): Promise<string | null> {
+  const stored = await readSetting(SETTING_GATE_TOKEN);
+  if (stored) return stored;
+
+  const envPassword = process.env.SITE_PASSWORD?.trim();
+  if (envPassword) return gateToken(envPassword);
+
+  return null;
 }
 
 /**

@@ -1,6 +1,6 @@
 import { request as httpRequest } from "node:http";
 import { NextResponse, type NextRequest } from "next/server";
-import { GATE_COOKIE, gatePassword, gateToken, safeEqual } from "@/lib/site-gate";
+import { GATE_COOKIE, resolveGateToken, safeEqual } from "@/lib/site-gate";
 
 /**
  * Multi-zone resilience (dev-time safeguard).
@@ -114,17 +114,17 @@ const PM_AJAY_SESSION_COOKIE = "pmajay_session"; // set by the client auth-conte
 const GATE_PUBLIC_ASSETS = ["/images/National-Emblem-logo.svg"];
 
 async function gateRedirect(req: NextRequest): Promise<NextResponse | null> {
-  const password = gatePassword();
-  // Unset SITE_PASSWORD ⇒ gate disabled. This is the local-dev path, and it is
+  const expected = await resolveGateToken();
+  // No configured token ⇒ gate disabled. This is the local-dev path, and it is
   // the first thing checked so the proxy stays cheap on every request.
-  if (!password) return null;
+  if (!expected) return null;
 
   const { pathname } = req.nextUrl;
   if (pathname === "/gate" || pathname.startsWith("/gate/")) return null;
   if (GATE_PUBLIC_ASSETS.includes(pathname)) return null;
 
   const presented = req.cookies.get(GATE_COOKIE)?.value;
-  if (presented && safeEqual(presented, await gateToken(password))) return null;
+  if (presented && safeEqual(presented, expected)) return null;
 
   const url = req.nextUrl.clone();
   url.search = "";

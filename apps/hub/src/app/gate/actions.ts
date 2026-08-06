@@ -13,30 +13,29 @@ import {
   GATE_COOKIE,
   GATE_MAX_AGE_SECONDS,
   deriveToken,
-  gatePassword,
-  gateToken,
+  resolveGateToken,
   safeEqual,
   safeNextPath,
 } from "@/lib/site-gate";
 
 export async function unlock(formData: FormData): Promise<void> {
   const target = safeNextPath(String(formData.get("next") ?? "/"));
-  const password = gatePassword();
+  const expected = await resolveGateToken();
 
   // Gate switched off between render and submit — nothing left to check.
-  if (!password) redirect(target);
+  if (!expected) redirect(target);
 
   const entered = String(formData.get("password") ?? "");
   // Compare digests, not the raw strings, so the comparison is over two values
   // of identical width and leaks nothing about the password's length.
-  const matches = safeEqual(await deriveToken(entered), await gateToken(password));
+  const matches = safeEqual(await deriveToken(entered), expected);
 
   if (!matches) {
     redirect(`/gate?next=${encodeURIComponent(target)}&error=1`);
   }
 
   const store = await cookies();
-  store.set(GATE_COOKIE, await gateToken(password), {
+  store.set(GATE_COOKIE, expected, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
