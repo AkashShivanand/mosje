@@ -1,0 +1,102 @@
+9081:58249|Citizen>Pledge>Download>01-Retrieve-Certificate
+9081:58283|Citizen>Pledge>Download>03-Certificate-Preview
+9081:58337|Citizen>Pledge>Download>02-OTP-Verification
+9081:58375|Citizen>Pledge>New>01-Oath-EN
+9081:58409|Citizen>Pledge>New>02-Enter-Details
+9081:58452|Citizen>Pledge>New>03-OTP-Verification
+9081:58489|Citizen>Pledge>New>04-Certificate-Preview
+9081:58550|Citizen>Pledge>New>01-Oath-HI
+9403:51076|Citizen>Pledge>Certificate>Certificate
+9081:58585|Citizen>Facilities>Map
+9081:58624|Citizen>Helpline>Dashboard
+9081:58966|Citizen>Snapshots>01-Feed
+9081:59018|Citizen>Snapshots>02-Activity-Details
+9081:59117|Citizen>Dashboard>01-Home
+9884:112146|Login>Desktop>Login / Sign In / Desktop
+9884:112417|Login>Desktop>Login / Sign In / Desktop - Officer Tab
+9884:112674|Login>Desktop>Login / Choose Portal / Desktop
+9884:114021|Login>Mobile>Login / Sign In / Mobile
+9884:114164|Login>Mobile>Login / Choose Portal / Mobile
+2306:12270|MV>Submit New Activity>HV or Institutional / Dashboard
+2306:12427|MV>Submit New Activity>HV or Institutional / New Submission
+2306:12461|MV>Submit New Activity>HV or Institutional / New Submission
+2306:12506|MV>Submit New Activity>HV or Institutional / New Submission
+2306:12531|MV>Submit New Activity>HV or Institutional / New Submission
+2306:12598|MV>Submit New Activity>HV or Institutional / New Submission
+2306:12635|MV>View Submitted Event>HV or Institutional / My Submissions
+2306:12756|MV>View Submitted Event>My Submissions / Default
+2306:12877|MV>View Submitted Event>My Submissions / Hover
+2306:13001|MV>View Submitted Event>My Submissions / Scrolled
+2306:13146|MV>View Submitted Event>Submission Details
+2306:13219|DNO>District / Dashboard
+2306:13376|DNO>District Activities
+2306:13466|DNO>District / Important Documents
+2306:13783|DNO>District / Activity Details
+2306:13851|DNO>District / Activity Details / Delete Activity
+2306:13947|DNO>HV or Institutional / Activity Details
+2306:13980|DNO>HV or Institutional / Activity Details
+2306:14025|DNO>HV or Institutional / Activity Details
+2306:14050|DNO>HV or Institutional / Activity Details
+2306:14117|DNO>District / New Submission
+2306:14151|DNO>District / New Submission
+2306:14196|DNO>District / New Submission
+2306:14221|DNO>District / New Submission
+2306:14288|DNO>District / New Submission
+2309:20334|DNO>District / List of DNOs
+2309:20453|DNO>District / List of DNOs / Export
+10955:116113|DNO>NAPDDR>District-Level Committee
+10955:116143|DNO>NAPDDR>District-Level Committee
+10955:116222|DNO>NAPDDR>District-Level Committee -> Register District Committee
+10955:116292|DNO>NAPDDR>Block-Level Committee
+10955:116417|DNO>NAPDDR>Block-Level Committee -> Register Block Committee
+10955:116588|DNO>NAPDDR>State-Level Steering and Monitoring Committee
+10955:116683|DNO>NAPDDR>Committee Reports
+2309:14405|SNO>State / Dashboard
+2309:14562|SNO>State / Activities
+2309:14652|SNO>HV or Institutional / Important Documents
+2309:14720|SNO>HV or Institutional / List of DNOs
+2309:14826|SNO>HV or Institutional / List of DNOs
+10957:116095|SNO>NAPDDR>State-Level Steering and Monitoring Committee
+10957:116125|SNO>NAPDDR>State-Level -> Register State Committee
+10957:116191|SNO>NAPDDR>State-Level -> Register State Committee
+10957:116306|SNO>NAPDDR>State-Level Steering and Monitoring Committee
+10957:116385|SNO>NAPDDR>State-Level Steering and Monitoring Committee
+10957:116480|SNO>NAPDDR>District-Level Committee
+10957:116510|SNO>NAPDDR>District-Level Committee
+10957:116646|SNO>NAPDDR>District-Level -> Register District Committee
+10957:116715|SNO>NAPDDR>State-Level Steering and Monitoring Committee
+10957:116819|SNO>NAPDDR>Block-Level Committee
+10957:116952|SNO>NAPDDR>Block-Level -> Register Block Committee
+10957:117123|SNO>NAPDDR>State-Level Steering and Monitoring Committee
+10957:117218|SNO>NAPDDR>Committee Reports
+2309:14952|SNO>HV or Institutional / List of DNOs / Export
+2309:15082|SNO>State / Activity Details
+2309:15150|SNO>State / Activity Details / Delete Activity
+2309:15246|SNO>HV or Institutional / Activity Details
+2309:15279|SNO>HV or Institutional / Activity Details
+2309:15324|SNO>HV or Institutional / Activity Details
+2309:15349|SNO>HV or Institutional / Activity Details
+2309:15416|SNO>State / New Submission
+2309:15450|SNO>State / New Submission
+2309:15495|SNO>State / New Submission
+2309:15520|SNO>State / New Submission
+2309:15587|SNO>State / New Submission
+2876:22326|Admin>NMBA Activity>State,UT,District Activity
+2876:22456|Admin>NMBA Activity>State,UT,District Activity
+2876:22616|Admin>NMBA Activity>State,UT,District Activity
+2876:22762|Admin>NMBA Activity>QR Management
+2876:22980|Admin>NMBA Activity>QR Management / Add QR
+2876:23009|Admin>NMBA Activity>QR Management
+2876:23203|Admin>NMBA Activity>All Pledge Report
+2876:23387|Admin>NMBA Activity>Bureau Status Report
+2876:23528|Admin>NMBA Activity>All Pledge Report
+2876:23697|Admin>Resources>Important Documents
+2876:23801|Admin>Resources>List of DNOs
+2876:23920|Admin>Resources>List of DNOs
+10957:124872|Admin>NAPDDR>State-Level Steering and Monitoring Committee
+10957:124997|Admin>NAPDDR>State-Level Steering and Monitoring Committee
+10957:125091|Admin>NAPDDR>District-Level Committee
+10957:125224|Admin>NAPDDR>State-Level Steering and Monitoring Committee
+10957:125328|Admin>NAPDDR>Block-Level Committee
+10957:125470|Admin>NAPDDR>State-Level Steering and Monitoring Committee
+10957:125565|Admin>NAPDDR>Committee Reports

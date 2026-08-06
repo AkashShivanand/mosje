@@ -1,0 +1,791 @@
+{
+ "portal": "NMBA \u2014 Nasha Mukt Bharat Abhiyaan (DEV)",
+ "generated": "2026-07-27",
+ "status": "MACHINE-DRAFT",
+ "screens": [
+  {
+   "slug": "GLOBAL-NMB-GLOBAL-001",
+   "name": "Sidebar navigation \u2014 inactive item colour fails AA contrast",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-124872",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/state-committee",
+   "figmaImg": "captures/figma/ADMIN-NAPDDR-STATE-COMMITTEE.png",
+   "liveImg": "captures/live/ADMIN-NAPDDR-STATE-COMMITTEE.png",
+   "note": "Applies to every screen that renders this element. Shown against Admin \u2014 NAPDDR State-Level Committee as a representative frame.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-001",
+     "element": "Sidebar navigation \u2014 inactive item colour fails AA contrast",
+     "section": "full-page",
+     "axis": "Responsive & A11y",
+     "severity": "Blocker",
+     "scope": "Global",
+     "figma": "Inactive nav items are Neutral/Source #1f2937 on white (15.9:1). The active item is Primary/Source #003366.",
+     "live": "Inactive nav items compute to #9ca3af on #ffffff \u2014 a contrast ratio of 2.54:1, below the WCAG 2.1 AA minimum of 4.5:1 for body text. Measured on 488 nav links across every authenticated screen; opacity is 1 and pointer-events are auto, so this is the intended resting style, not a disabled state.",
+     "fix": "Set inactive sidebar links to Neutral/Source #1f2937 (or Neutral/600 #4b5563 at minimum, 7.0:1). Reserve #9ca3af for genuinely disabled items, which must also carry aria-disabled.",
+     "figmaPin": {
+      "x": 7.74,
+      "y": 27.8
+     },
+     "livePin": {
+      "x": 7.74,
+      "y": 27.8
+     }
+    }
+   ]
+  },
+  {
+   "slug": "GLOBAL-NMB-GLOBAL-002",
+   "name": "GIGW masthead accessibility toolset reduced and relocated to a floating widget",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-124872",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/state-committee",
+   "figmaImg": "captures/figma/ADMIN-NAPDDR-STATE-COMMITTEE.png",
+   "liveImg": "captures/live/ADMIN-NAPDDR-STATE-COMMITTEE.png",
+   "note": "Applies to every screen that renders this element. Shown against Admin \u2014 NAPDDR State-Level Committee as a representative frame.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-002",
+     "element": "GIGW masthead accessibility toolset reduced and relocated to a floating widget",
+     "section": "full-page",
+     "axis": "Responsive & A11y",
+     "severity": "Blocker",
+     "scope": "Global",
+     "figma": "The government masthead carries the mandated inline toolset: A\u2212 / A / A+ text sizing, a contrast toggle, an accessibility (person) icon, and a labelled 'English \u25be' language selector with a globe icon.",
+     "live": "The masthead keeps A\u2212 / A / A+ and the contrast toggle but drops the accessibility icon, and the language selector is reduced to an unlabelled glyph. The accessibility options are moved into a floating circular widget pinned bottom-right (#9161ff, radius 70px).",
+     "fix": "Restore the full inline toolset in the masthead per GIGW, and trigger the accessibility panel from the masthead's accessibility icon rather than a floating button. Give the language selector a visible label.",
+     "figmaPin": {
+      "x": 75.35,
+      "y": 1.9
+     },
+     "livePin": {
+      "x": 75.35,
+      "y": 1.9
+     }
+    }
+   ]
+  },
+  {
+   "slug": "ADMIN-PLEDGE-REPORTS",
+   "name": "Admin \u2014 All Pledge Report",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2876-23203",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/pledge-reports",
+   "liveImg": "captures/live/ADMIN-PLEDGE-REPORTS.png",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-PLEDGE-001",
+     "element": "Filter controls built as rectangular selects instead of the designed filter pills",
+     "section": "full-page",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "Filters are pill-shaped buttons with a leading chevron and a rounded 8px radius \u2014 'All District \u25be', 'Uttar Pradesh \u25be' and a 'Date Range' button with a calendar icon.",
+     "live": "Filters render as rectangular native-style select boxes plus a separate date-range input, in a different control family from the design.",
+     "fix": "Rebuild the filter row with the designed pill control (8px radius, chevron affordance, Noto Sans 14px) so filters read as one component family across list screens.",
+     "figmaPin": {
+      "x": 82.12,
+      "y": 1.63
+     },
+     "livePin": {
+      "x": 82.12,
+      "y": 1.63
+     }
+    },
+    {
+     "num": 2,
+     "id": "NMB-PLEDGE-002",
+     "element": "Danger red used for the non-destructive Clear-Filters control",
+     "section": "full-page",
+     "axis": "Color & Token",
+     "severity": "Major",
+     "figma": "No danger-coloured control appears in the filter row; clearing filters is a neutral, low-emphasis action.",
+     "live": "The clear-filters control is rendered in Danger red (#d64539 family, 50 elements across 5 screens), which signals a destructive action to the user.",
+     "fix": "Restyle clear-filters as a neutral tertiary control; reserve Danger/Source for genuinely destructive actions such as delete.",
+     "figmaPin": {
+      "x": 31.39,
+      "y": 35.33
+     },
+     "livePin": {
+      "x": 31.39,
+      "y": 35.33
+     }
+    },
+    {
+     "num": 3,
+     "id": "NMB-PLEDGE-003",
+     "element": "Pagination loses its previous/next affordance",
+     "section": "full-page",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Pagination reads '\u2039 1 2 3 4 5 6 \u2026 150 \u203a' with chevron previous and next controls at each end.",
+     "live": "Pagination renders '1 2 3 \u2026 3,19,399 +' \u2014 the chevrons are replaced by a '+' glyph and there is no previous control.",
+     "fix": "Restore the chevron previous/next controls and the truncated page range per the design.",
+     "figmaPin": {
+      "x": 30.21,
+      "y": 94.44
+     },
+     "livePin": {
+      "x": 30.21,
+      "y": 94.44
+     }
+    }
+   ],
+   "figmaImg": "captures/figma/ADMIN-PLEDGE-REPORTS.png"
+  },
+  {
+   "slug": "ADMIN-NAPDDR-STATE-COMMITTEE",
+   "name": "Admin \u2014 NAPDDR State-Level Committee",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-124872",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/state-committee",
+   "liveImg": "captures/live/ADMIN-NAPDDR-STATE-COMMITTEE.png",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-NAPDDR-001",
+     "element": "Breadcrumb trail not rendered",
+     "section": "full-page",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "A breadcrumb sits above the page title: 'Home \u203a State-Level Steering and Monitoring Committee', with the trailing crumb in Primary/Source.",
+     "live": "No breadcrumb is rendered; the page title is the first element in the content column.",
+     "fix": "Add the breadcrumb above the page title on the committee screens, matching the design's separator and active-crumb colour.",
+     "figmaPin": {
+      "x": 60.0,
+      "y": 16.4
+     },
+     "livePin": {
+      "x": 60.0,
+      "y": 16.4
+     }
+    },
+    {
+     "num": 2,
+     "id": "NMB-NAPDDR-002",
+     "element": "'All States' filter missing beside the search field",
+     "section": "full-page",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "The toolbar row carries the search field plus an 'All States \u25be' filter control aligned right.",
+     "live": "Only the search field is rendered; the filter control is absent, so the list cannot be narrowed by state.",
+     "fix": "Show all the relevant filters \u2014 add the States filter to the toolbar row per the design.",
+     "figmaPin": {
+      "x": 60.0,
+      "y": 25.3
+     },
+     "livePin": {
+      "x": 60.0,
+      "y": 25.3
+     }
+    }
+   ],
+   "figmaImg": "captures/figma/ADMIN-NAPDDR-STATE-COMMITTEE.png"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-DASHBOARD",
+   "name": "State Nodal Officer \u2014 Dashboard",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2309-14405",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/dashboard",
+   "liveImg": "captures/live/STATE-NODAL-OFFICER-DASHBOARD.png",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-SNODASH-001",
+     "element": "'My Submissions' table section not built on the dashboard",
+     "section": "full-page",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "Below the KPI row the dashboard carries a full 'My Submissions' panel \u2014 search field, All Location and All Activity filter pills, a six-column table (Activity, Activity Date, Participants, Male, Female, View) and pagination showing 5 of 1500 items.",
+     "live": "The dashboard ends after the KPI cards; no submissions panel is rendered. The equivalent list exists on a separate route (State/UT/District Dashboard).",
+     "fix": "Add the My Submissions panel to the dashboard per the design, or confirm the decision to move it to State/UT/District Activity and update the design.",
+     "figmaPin": {
+      "x": 80.59,
+      "y": 25.9
+     },
+     "livePin": {
+      "x": 80.59,
+      "y": 25.9
+     }
+    },
+    {
+     "num": 2,
+     "id": "NMB-SNODASH-002",
+     "element": "Primary 'Submit Activity' action absent from the dashboard header",
+     "section": "full-page",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "A navy primary button 'Submit Activity' sits top-right, aligned with the page title.",
+     "live": "No primary action is rendered in the dashboard header; the page title row is empty on the right.",
+     "fix": "Add the primary 'Submit Activity' button to the dashboard header, or confirm the action now lives only on State/UT/District Activity.",
+     "figmaPin": {
+      "x": 60.0,
+      "y": 16.4
+     },
+     "livePin": {
+      "x": 60.0,
+      "y": 16.4
+     }
+    },
+    {
+     "num": 3,
+     "id": "NMB-SNODASH-003",
+     "element": "KPI cards lost their trend indicator",
+     "section": "full-page",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "Each KPI card carries a value and a trend line beneath it \u2014 an up/down arrow with '+14.5% vs last month' in Success or Danger.",
+     "live": "KPI cards render the label, icon and value only; no trend line appears on any card.",
+     "fix": "Restore the trend row on each KPI card using Text/Success #2e7d32 and Text/Error #ec5042 for positive and negative deltas.",
+     "figmaPin": {
+      "x": 58.85,
+      "y": 26.9
+     },
+     "livePin": {
+      "x": 58.85,
+      "y": 26.9
+     }
+    },
+    {
+     "num": 4,
+     "id": "NMB-SNODASH-004",
+     "element": "KPI grid reflows to unequal card widths",
+     "section": "full-page",
+     "axis": "Layout & Spacing",
+     "severity": "Minor",
+     "figma": "Three equal-width KPI cards in a single row, with equal gaps.",
+     "live": "Five cards wrap across two rows (3 + 2) and the cards do not share a common width \u2014 the second card in row one is visibly wider than its neighbours.",
+     "fix": "Lay the KPI row out on a uniform grid so every card shares one column width and the last row aligns to the same tracks.",
+     "figmaPin": {
+      "x": 54.48,
+      "y": 41.7
+     },
+     "livePin": {
+      "x": 54.48,
+      "y": 41.7
+     }
+    }
+   ],
+   "figmaImg": "captures/figma/STATE-NODAL-OFFICER-DASHBOARD.png"
+  },
+  {
+   "slug": "GLOBAL-NMB-GLOBAL-003",
+   "name": "Sidebar navigation icons absent portal-wide",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-124872",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/state-committee",
+   "figmaImg": "captures/figma/ADMIN-NAPDDR-STATE-COMMITTEE.png",
+   "liveImg": "captures/live/ADMIN-NAPDDR-STATE-COMMITTEE.png",
+   "note": "Applies to every screen that renders this element. Shown against Admin \u2014 NAPDDR State-Level Committee as a representative frame.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-003",
+     "element": "Sidebar navigation icons absent portal-wide",
+     "section": "full-page",
+     "axis": "Content & Iconography",
+     "severity": "Major",
+     "scope": "Global",
+     "figma": "Every sidebar item is preceded by a Material Symbols Rounded icon at 24px, weight Light, Primary/Source #003366 (e.g. account_balance on the NAPDDR group).",
+     "live": "No icon is rendered against any sidebar item; items are text-only with a tree-line connector. The extraction finds zero Material Symbols elements anywhere in the build.",
+     "fix": "Render the Material Symbols Rounded icon for each nav item at 24px / weight 300\u2013Light, and load the icon font once in the root layout.",
+     "figmaPin": {
+      "x": 8.54,
+      "y": 35.8
+     },
+     "livePin": {
+      "x": 8.54,
+      "y": 35.8
+     }
+    }
+   ]
+  },
+  {
+   "slug": "GLOBAL-NMB-GLOBAL-004",
+   "name": "Page title (H1) is off the type scale and inconsistent between screens",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2876-23203",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/pledge-reports",
+   "figmaImg": "captures/figma/ADMIN-PLEDGE-REPORTS.png",
+   "liveImg": "captures/live/ADMIN-PLEDGE-REPORTS.png",
+   "note": "Applies to every screen that renders this element. Shown against Admin \u2014 All Pledge Report as a representative frame.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-004",
+     "element": "Page title (H1) is off the type scale and inconsistent between screens",
+     "section": "full-page",
+     "axis": "Typography",
+     "severity": "Major",
+     "scope": "Global",
+     "figma": "One page-title role: Headline/headline-3 \u2014 24px, SemiBold (600), Neutral/Source #1f2937. The NAPDDR screens use Display/display-5 \u2014 28px, Medium.",
+     "live": "Four different treatments across the build: 24px/600/#111827, 24px/700/#374151, 24px/600/#1f2937 and 32px/600/#374151. Neither #111827 nor #374151 is a token in the NMBA palette.",
+     "fix": "Bind every page title to one token \u2014 font-size 24px, weight 600, colour #1f2937 \u2014 and use 28px Medium only where the design specifies Display/display-5.",
+     "figmaPin": {
+      "x": 28.92,
+      "y": 14.97
+     },
+     "livePin": {
+      "x": 28.92,
+      "y": 14.97
+     }
+    }
+   ]
+  },
+  {
+   "slug": "GLOBAL-NMB-GLOBAL-005",
+   "name": "Non-brand typefaces rendering instead of Noto Sans",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2876-23203",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/pledge-reports",
+   "figmaImg": "captures/figma/ADMIN-PLEDGE-REPORTS.png",
+   "liveImg": "captures/live/ADMIN-PLEDGE-REPORTS.png",
+   "note": "Applies to every screen that renders this element. Shown against Admin \u2014 All Pledge Report as a representative frame.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-005",
+     "element": "Non-brand typefaces rendering instead of Noto Sans",
+     "section": "full-page",
+     "axis": "Typography",
+     "severity": "Major",
+     "scope": "Global",
+     "figma": "font-family/body and font-family/heading are both Noto Sans \u2014 the mandated DBIM typeface for all government properties.",
+     "live": "Poppins renders on 63 elements across 23 screens (search fields and filter controls), -apple-system on 25 elements across 9 screens, and Lucida Console on 8 across 3.",
+     "fix": "Remove the Poppins and system-font declarations so every control inherits Noto Sans; confirm the Noto Sans webfont is preloaded so no fallback is ever painted.",
+     "figmaPin": {
+      "x": 31.39,
+      "y": 35.33
+     },
+     "livePin": {
+      "x": 31.39,
+      "y": 35.33
+     }
+    }
+   ]
+  },
+  {
+   "slug": "GLOBAL-NMB-GLOBAL-006",
+   "name": "Government masthead lockup drops its third line and inverts the emphasis",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2876-23203",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/pledge-reports",
+   "figmaImg": "captures/figma/ADMIN-PLEDGE-REPORTS.png",
+   "liveImg": "captures/live/ADMIN-PLEDGE-REPORTS.png",
+   "note": "Applies to every screen that renders this element. Shown against Admin \u2014 All Pledge Report as a representative frame.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-006",
+     "element": "Government masthead lockup drops its third line and inverts the emphasis",
+     "section": "full-page",
+     "axis": "Content & Iconography",
+     "severity": "Major",
+     "scope": "Global",
+     "figma": "A three-line lockup beside the National Emblem: 'Government of India' (12px), 'Ministry of Social Justice & Empowerment' (12px), then 'Department of Social Justice & Empowerment' as the emphasised bold navy line.",
+     "live": "A two-line lockup: 'Government of India' (12px) then 'Ministry of Social Justice & Empowerment' set as the emphasised line at 20px/700/#374151. The Department line is absent and the emblem is rendered noticeably larger.",
+     "fix": "Restore the three-line lockup with the Department name as the emphasised line, and match the emblem size and baseline alignment to the design.",
+     "figmaPin": {
+      "x": 25.03,
+      "y": 9.24
+     },
+     "livePin": {
+      "x": 25.03,
+      "y": 9.24
+     }
+    }
+   ]
+  },
+  {
+   "slug": "GLOBAL-NMB-GLOBAL-007",
+   "name": "Sidebar navigation label size larger than the design",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-124872",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/state-committee",
+   "figmaImg": "captures/figma/ADMIN-NAPDDR-STATE-COMMITTEE.png",
+   "liveImg": "captures/live/ADMIN-NAPDDR-STATE-COMMITTEE.png",
+   "note": "Applies to every screen that renders this element. Shown against Admin \u2014 NAPDDR State-Level Committee as a representative frame.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-007",
+     "element": "Sidebar navigation label size larger than the design",
+     "section": "full-page",
+     "axis": "Typography",
+     "severity": "Minor",
+     "scope": "Global",
+     "figma": "Nav labels are Label/label-1 \u2014 14px, Regular.",
+     "live": "Nav labels compute to 16px, weight 400 (488 elements), and the active item is weight 700 where the design distinguishes the active state by colour alone.",
+     "fix": "Set sidebar labels to 14px Regular; express the active state with Primary/Source #003366 and the selected background, not a weight jump to 700.",
+     "figmaPin": {
+      "x": 6.01,
+      "y": 39.8
+     },
+     "livePin": {
+      "x": 6.01,
+      "y": 39.8
+     }
+    }
+   ]
+  },
+  {
+   "slug": "GLOBAL-NMB-GLOBAL-008",
+   "name": "Corner-radius drift across buttons and controls",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2876-23203",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/pledge-reports",
+   "figmaImg": "captures/figma/ADMIN-PLEDGE-REPORTS.png",
+   "liveImg": "captures/live/ADMIN-PLEDGE-REPORTS.png",
+   "note": "Applies to every screen that renders this element. Shown against Admin \u2014 All Pledge Report as a representative frame.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-008",
+     "element": "Corner-radius drift across buttons and controls",
+     "section": "full-page",
+     "axis": "Layout & Spacing",
+     "severity": "Minor",
+     "scope": "Global",
+     "figma": "button-corner = 8px; the radius ramp is 2 / 4 / 6 / 8 / 12 / 16 / 20 / 24 / 999.",
+     "live": "Alongside the 8px token (1,745 controls) the build also renders radius 12 (924), 0 (839), 10 (47), 6 (11) and 70 (66). Radius 10 alone appears on 310 elements across all 36 screens; 10 and 70 are not on the ramp at all.",
+     "fix": "Bind control radii to the token ramp \u2014 8px for buttons and inputs, 12px for cards \u2014 and replace the 10px and 70px values with radius-md/radius-lg or radius-full.",
+     "figmaPin": {
+      "x": 86.01,
+      "y": 14.97
+     },
+     "livePin": {
+      "x": 86.01,
+      "y": 14.97
+     }
+    }
+   ]
+  },
+  {
+   "slug": "GLOBAL-NMB-GLOBAL-009",
+   "name": "Off-token neutral greys, including pure black",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2876-23203",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/pledge-reports",
+   "figmaImg": "captures/figma/ADMIN-PLEDGE-REPORTS.png",
+   "liveImg": "captures/live/ADMIN-PLEDGE-REPORTS.png",
+   "note": "Applies to every screen that renders this element. Shown against Admin \u2014 All Pledge Report as a representative frame.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-009",
+     "element": "Off-token neutral greys, including pure black",
+     "section": "full-page",
+     "axis": "Color & Token",
+     "severity": "Minor",
+     "scope": "Global",
+     "figma": "The neutral ramp is #f9fafb / #f3f4f6 / #e5e7eb / #d1d5db / #6b7280 / #4b5563 / #374151 / #1f2937. Pure black is not in the palette.",
+     "live": "#000000 renders on 696 elements across all 36 screens and #9ca3af on 635. #212121 appears on 612 (accessibility-bar chrome).",
+     "fix": "Replace #000000 with Neutral/Source #1f2937 and #9ca3af with Neutral/500 #6b7280, and bring the accessibility-bar chrome onto the neutral ramp.",
+     "figmaPin": {
+      "x": 28.44,
+      "y": 22.33
+     },
+     "livePin": {
+      "x": 28.44,
+      "y": 22.33
+     }
+    }
+   ]
+  },
+  {
+   "slug": "GLOBAL-NMB-GLOBAL-010",
+   "name": "Table column headers use two different weights",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-124872",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/state-committee",
+   "figmaImg": "captures/figma/ADMIN-NAPDDR-STATE-COMMITTEE.png",
+   "liveImg": "captures/live/ADMIN-NAPDDR-STATE-COMMITTEE.png",
+   "note": "Applies to every screen that renders this element. Shown against Admin \u2014 NAPDDR State-Level Committee as a representative frame.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-010",
+     "element": "Table column headers use two different weights",
+     "section": "full-page",
+     "axis": "Typography",
+     "severity": "Minor",
+     "scope": "Global",
+     "figma": "Column headers are a single role \u2014 14px Medium, Neutral/500 #6b7280.",
+     "live": "Headers render 14px/600 on 174 cells and 14px/500 on 114, so weight varies between list screens. Colour (#6b7280) and the transparent header background are correct.",
+     "fix": "Set every table column header to 14px weight 500, colour #6b7280.",
+     "figmaPin": {
+      "x": 39.03,
+      "y": 31.2
+     },
+     "livePin": {
+      "x": 39.03,
+      "y": 31.2
+     }
+    }
+   ]
+  },
+  {
+   "slug": "GLOBAL-NMB-GLOBAL-011",
+   "name": "BETA badge set below the smallest step of the type scale",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2876-23203",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/pledge-reports",
+   "figmaImg": "captures/figma/ADMIN-PLEDGE-REPORTS.png",
+   "liveImg": "captures/live/ADMIN-PLEDGE-REPORTS.png",
+   "note": "Applies to every screen that renders this element. Shown against Admin \u2014 All Pledge Report as a representative frame.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-011",
+     "element": "BETA badge set below the smallest step of the type scale",
+     "section": "full-page",
+     "axis": "Typography",
+     "severity": "Nit",
+     "scope": "Global",
+     "figma": "The smallest role is Label/label-3 \u2014 11px.",
+     "live": "The BETA badge renders at 10px on 47 screens.",
+     "fix": "Raise the BETA badge to 11px (Label/label-3).",
+     "figmaPin": {
+      "x": 12.01,
+      "y": 5.13
+     },
+     "livePin": {
+      "x": 12.01,
+      "y": 5.13
+     }
+    }
+   ]
+  },
+  {
+   "slug": "PUBLIC-HOME",
+   "name": "Citizen \u2014 Home / Landing",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-59117",
+   "liveUrl": "https://nmba-user-dev.mosje.in/",
+   "liveImg": "captures/live/PUBLIC-HOME.png",
+   "findings": [],
+   "figmaImg": "captures/figma/PUBLIC-HOME.png",
+   "_refbadge": "design vs build",
+   "_refsub": "public \u00b7 /",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "PUBLIC-ACTIVITIES",
+   "name": "Citizen \u2014 Activity Snapshots",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-58966",
+   "liveUrl": "https://nmba-user-dev.mosje.in/activities",
+   "liveImg": "captures/live/PUBLIC-ACTIVITIES.png",
+   "findings": [],
+   "figmaImg": "captures/figma/PUBLIC-ACTIVITIES.png",
+   "_refbadge": "design vs build",
+   "_refsub": "public \u00b7 /activities",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "PUBLIC-FACILITIES",
+   "name": "Citizen \u2014 Help Centres & Facilities",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-58585",
+   "liveUrl": "https://nmba-user-dev.mosje.in/facilities",
+   "liveImg": "captures/live/PUBLIC-FACILITIES.png",
+   "findings": [],
+   "figmaImg": "captures/figma/PUBLIC-FACILITIES.png",
+   "_refbadge": "design vs build",
+   "_refsub": "public \u00b7 /facilities",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "PUBLIC-EPLEDGE",
+   "name": "Citizen \u2014 e-Pledge (Oath)",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-58375",
+   "liveUrl": "https://nmba-user-dev.mosje.in/epledge",
+   "liveImg": "captures/live/PUBLIC-EPLEDGE.png",
+   "findings": [],
+   "figmaImg": "captures/figma/PUBLIC-EPLEDGE.png",
+   "_refbadge": "design vs build",
+   "_refsub": "public \u00b7 /epledge",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "ADMIN-IMPORTANT-DOCUMENTS",
+   "name": "Admin \u2014 Important Documents",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2876-23697",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/important-documents",
+   "liveImg": "captures/live/ADMIN-IMPORTANT-DOCUMENTS.png",
+   "findings": [],
+   "figmaImg": "captures/figma/ADMIN-IMPORTANT-DOCUMENTS.png",
+   "_refbadge": "design vs build",
+   "_refsub": "admin \u00b7 /important-documents",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "ADMIN-DISTRICT-NODAL-OFFICERS-LIST",
+   "name": "Admin \u2014 List of DNOs",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2876-23801",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/district-nodal-officers-list",
+   "liveImg": "captures/live/ADMIN-DISTRICT-NODAL-OFFICERS-LIST.png",
+   "findings": [],
+   "figmaImg": "captures/figma/ADMIN-DISTRICT-NODAL-OFFICERS-LIST.png",
+   "_refbadge": "design vs build",
+   "_refsub": "admin \u00b7 /district-nodal-officers-list",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "ADMIN-STATE-NODAL-OFFICERS-LIST",
+   "name": "Admin \u2014 List of SNOs",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2876-23920",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/state-nodal-officers-list",
+   "liveImg": "captures/live/ADMIN-STATE-NODAL-OFFICERS-LIST.png",
+   "findings": [],
+   "figmaImg": "captures/figma/ADMIN-STATE-NODAL-OFFICERS-LIST.png",
+   "_refbadge": "design vs build",
+   "_refsub": "admin \u00b7 /state-nodal-officers-list",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "ADMIN-NAPDDR-DISTRICT-COMMITTEE",
+   "name": "Admin \u2014 NAPDDR District-Level Committee",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-125091",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/district-committee",
+   "liveImg": "captures/live/ADMIN-NAPDDR-DISTRICT-COMMITTEE.png",
+   "findings": [],
+   "figmaImg": "captures/figma/ADMIN-NAPDDR-DISTRICT-COMMITTEE.png",
+   "_refbadge": "design vs build",
+   "_refsub": "admin \u00b7 /napddr/district-committee",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "ADMIN-NAPDDR-BLOCK-COMMITTEE",
+   "name": "Admin \u2014 NAPDDR Block-Level Committee",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-125328",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/block-committee",
+   "liveImg": "captures/live/ADMIN-NAPDDR-BLOCK-COMMITTEE.png",
+   "findings": [],
+   "figmaImg": "captures/figma/ADMIN-NAPDDR-BLOCK-COMMITTEE.png",
+   "_refbadge": "design vs build",
+   "_refsub": "admin \u00b7 /napddr/block-committee",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "ADMIN-NAPDDR-COMMITTEE-REPORTS",
+   "name": "Admin \u2014 NAPDDR Committee Reports",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-125565",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/committee-reports",
+   "liveImg": "captures/live/ADMIN-NAPDDR-COMMITTEE-REPORTS.png",
+   "findings": [],
+   "figmaImg": "captures/figma/ADMIN-NAPDDR-COMMITTEE-REPORTS.png",
+   "_refbadge": "design vs build",
+   "_refsub": "admin \u00b7 /napddr/committee-reports",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD",
+   "name": "State Nodal Officer \u2014 State/UT/District Activity",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2309-14562",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/state-district-dashboard",
+   "liveImg": "captures/live/STATE-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD.png",
+   "findings": [],
+   "figmaImg": "captures/figma/STATE-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD.png",
+   "_refbadge": "design vs build",
+   "_refsub": "state-nodal-officer \u00b7 /state-district-dashboard",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-IMPORTANT-DOCUMENTS",
+   "name": "State Nodal Officer \u2014 Important Documents",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2309-14652",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/important-documents",
+   "liveImg": "captures/live/STATE-NODAL-OFFICER-IMPORTANT-DOCUMENTS.png",
+   "findings": [],
+   "figmaImg": "captures/figma/STATE-NODAL-OFFICER-IMPORTANT-DOCUMENTS.png",
+   "_refbadge": "design vs build",
+   "_refsub": "state-nodal-officer \u00b7 /important-documents",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-STATE-NODAL-OFFICERS-LIST",
+   "name": "State Nodal Officer \u2014 List of SNOs",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2309-14720",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/state-nodal-officers-list",
+   "liveImg": "captures/live/STATE-NODAL-OFFICER-STATE-NODAL-OFFICERS-LIST.png",
+   "findings": [],
+   "figmaImg": "captures/figma/STATE-NODAL-OFFICER-STATE-NODAL-OFFICERS-LIST.png",
+   "_refbadge": "design vs build",
+   "_refsub": "state-nodal-officer \u00b7 /state-nodal-officers-list",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-DASHBOARD",
+   "name": "District Nodal Officer \u2014 Dashboard",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2306-13219",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/dashboard",
+   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-DASHBOARD.png",
+   "findings": [],
+   "figmaImg": "captures/figma/DISTRICT-NODAL-OFFICER-DASHBOARD.png",
+   "_refbadge": "design vs build",
+   "_refsub": "district-nodal-officer \u00b7 /dashboard",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD",
+   "name": "District Nodal Officer \u2014 State/UT/District Activity",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2306-13376",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/state-district-dashboard",
+   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD.png",
+   "findings": [],
+   "figmaImg": "captures/figma/DISTRICT-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD.png",
+   "_refbadge": "design vs build",
+   "_refsub": "district-nodal-officer \u00b7 /state-district-dashboard",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-IMPORTANT-DOCUMENTS",
+   "name": "District Nodal Officer \u2014 Important Documents",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2306-13466",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/important-documents",
+   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-IMPORTANT-DOCUMENTS.png",
+   "findings": [],
+   "figmaImg": "captures/figma/DISTRICT-NODAL-OFFICER-IMPORTANT-DOCUMENTS.png",
+   "_refbadge": "design vs build",
+   "_refsub": "district-nodal-officer \u00b7 /important-documents",
+   "_refchip": "#1558b0"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-DISTRICT-NODAL-OFFICERS-LIST",
+   "name": "District Nodal Officer \u2014 List of DNOs",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2309-20334",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/district-nodal-officers-list",
+   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-DISTRICT-NODAL-OFFICERS-LIST.png",
+   "findings": [],
+   "figmaImg": "captures/figma/DISTRICT-NODAL-OFFICER-DISTRICT-NODAL-OFFICERS-LIST.png",
+   "_refbadge": "design vs build",
+   "_refsub": "district-nodal-officer \u00b7 /district-nodal-officers-list",
+   "_refchip": "#1558b0"
+  }
+ ],
+ "deferred": [
+  {
+   "id": "NMB-SCOPE-001",
+   "title": "Patient Data Monitoring System (IRCA / ODIC / CPLI / PDMS-Admin) \u2014 88 design frames",
+   "reason": "Designed module with no corresponding routes on the dev build."
+  },
+  {
+   "id": "NMB-SCOPE-002",
+   "title": "18 August National Pledge Against Drug Abuse Report \u2014 39 design frames",
+   "reason": "Designed reporting flow (Block / District / State / Line Ministries / Spiritual Orgs / HEI / GIA); not built on this environment."
+  },
+  {
+   "id": "NMB-SCOPE-003",
+   "title": "MV / Institutions role \u2014 11 design frames",
+   "reason": "No login was supplied for this role, so the build could not be captured."
+  },
+  {
+   "id": "NMB-SCOPE-004",
+   "title": "e-Pledge OTP + certificate states",
+   "reason": "OTP-gated. Per audit policy a real OTP is never fired on dev; the form was filled with dummy data and captured up to the OTP wall."
+  },
+  {
+   "id": "NMB-SCOPE-005",
+   "title": "Citizen Helpline screen",
+   "reason": "Designed (National De-Addiction Helpline 14446 + call statistics); no /helpline route exists on the build."
+  },
+  {
+   "id": "NMB-SCOPE-006",
+   "title": "Row-level detail views and committee record states",
+   "reason": "The dev database has no seeded committee records ('No committees found'), so row chips, badges and detail drawers cannot be exercised."
+  }
+ ],
+ "suggestions": [
+  "Export Excel / Export PDF actions exist on every admin list screen but appear in no design frame \u2014 confirm the intended placement and style, then add them to the handoff.",
+  "The citizen sidebar ships 'Nasha Mukti Mitr' and 'Feedback / Grievances' where the design shows a 'Helpline' screen; the designed Helpline screen has no route on the build.",
+  "The e-Pledge screen adds 'General Pledge' / 'Recovered Drug User' tabs that the design does not show \u2014 confirm if intended, and add the tab component to the design system if so.",
+  "Admin list screens add State / District / Pledge Date columns beyond the designed column set \u2014 confirm if intended."
+ ]
+}
