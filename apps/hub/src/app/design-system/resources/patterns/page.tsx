@@ -14,6 +14,7 @@ import {
   Stepper,
   MetricCard,
   Avatar,
+  Icon,
 } from "@mosje/design-system";
 import { Callout, DoDont, StatusBadge } from "@/components/design-system/docs-kit/index";
 
@@ -747,7 +748,9 @@ export default function PatternsPage(): React.JSX.Element {
               type: "do",
               preview: (
                 <div style={{ textAlign: "center", padding: "var(--ds-spacing-lg)" }}>
-                  <div style={{ fontSize: "2rem", marginBottom: "var(--ds-spacing-sm)" }}>📋</div>
+                  <div style={{ marginBottom: "var(--ds-spacing-sm)", color: "var(--ds-ink-hint)" }}>
+                    <Icon name="assignment" size={32} aria-hidden="true" />
+                  </div>
                   <div style={{ fontWeight: 700, color: "var(--ds-ink)", marginBottom: "var(--ds-spacing-xs)" }}>No applications yet</div>
                   <div style={{ fontSize: "var(--ds-text-body-3)", color: "var(--ds-ink-muted)", marginBottom: "var(--ds-spacing-md)" }}>Add your first application to get started.</div>
                   <Button variant="primary" appearance="filled" size="sm">Add application</Button>

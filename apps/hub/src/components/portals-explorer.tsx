@@ -47,7 +47,7 @@ function PortalCard({ portal }: { portal: AppEntry }) {
             )}
           </div>
           {portal.org && (
-            <p className="mt-0.5 truncate text-xs text-ink-muted">{portal.org}</p>
+            <p className="mt-0.5 text-xs leading-snug text-ink-muted">{portal.org}</p>
           )}
         </div>
       </div>
@@ -77,12 +77,9 @@ function PortalCard({ portal }: { portal: AppEntry }) {
   return (
     <div
       className="flex flex-col rounded-2xl border border-dashed border-border bg-surface/60 p-5 opacity-75"
-      aria-label={`${portal.name} — in development`}
+      aria-label={`${portal.name} — planned, not yet available`}
     >
       {body}
-      <span className="mt-4 text-sm font-medium text-ink-muted">
-        In development
-      </span>
     </div>
   );
 }
@@ -114,8 +111,8 @@ export function PortalsExplorer() {
 
   const filters: { id: StatusFilter; label: string; count: number }[] = [
     { id: "all", label: "All", count: ALL_PORTALS.length },
-    { id: "live", label: "Available now", count: liveCount },
-    { id: "planned", label: "In development", count: ALL_PORTALS.length - liveCount },
+    { id: "live", label: "Live", count: liveCount },
+    { id: "planned", label: "Planned", count: ALL_PORTALS.length - liveCount },
   ];
 
   return (
@@ -175,8 +172,15 @@ export function PortalsExplorer() {
             ))}
           </div>
 
+          {/* Stays in the DOM so the live region keeps announcing result counts,
+              but is only shown once a filter/query is active — unfiltered it just
+              restated the "All 20" chip beside it. */}
           <p
-            className="text-xs text-ink-muted sm:ml-auto"
+            className={
+              query || status !== "all"
+                ? "text-xs text-ink-muted sm:ml-auto"
+                : "sr-only"
+            }
             role="status"
             aria-live="polite"
           >

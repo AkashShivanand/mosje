@@ -24,7 +24,6 @@ const destinations = [
     icon: Globe,
     href: "/website",
     cta: "Visit website",
-    meta: "13 sites → 1",
   },
   {
     title: "Portals",
@@ -33,7 +32,6 @@ const destinations = [
     icon: LayoutGrid,
     href: "/portals",
     cta: "Browse portals",
-    meta: `${livePortals} live · ${totalPortals - livePortals} planned`,
   },
   {
     title: "Design System",
@@ -42,7 +40,6 @@ const destinations = [
     icon: Blocks,
     href: "/design-system",
     cta: "Open SAMAVESH",
-    meta: "Tokens · Components",
   },
   {
     title: "Reports",
@@ -51,7 +48,6 @@ const destinations = [
     icon: FileBarChart,
     href: "/reports",
     cta: "View reports",
-    meta: "QC · A11y · Audit",
   },
 ] as const;
 
@@ -62,7 +58,7 @@ const glance = [
   { icon: ShieldCheck, value: "AA", label: "WCAG 2.1 + GIGW", sub: "accessibility & gov standards" },
 ] as const;
 
-export default function GatePage() {
+export default function HomePage() {
   return (
     <div className="flex min-h-screen flex-col bg-surface-muted">
       <a
@@ -106,12 +102,15 @@ export default function GatePage() {
               Government of India
             </div>
 
-            <h1 className="mt-6 max-w-3xl text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-[3.5rem]">
+            {/* No max-width clamp: the full title fits the 1280px column on one
+                line at lg. Clamping it to max-w-3xl (768px) forced a wrap that
+                orphaned the "&" at the end of line 1. */}
+            <h1 className="mt-6 text-balance text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-[3.5rem]">
               Ministry of Social Justice{" "}
-              <span className="text-gov-blue">&amp; Empowerment</span>
+              <span className="whitespace-nowrap text-gov-blue">&amp; Empowerment</span>
             </h1>
 
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink-muted">
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">
               One front door to the entire digital estate — the unified website,
               the SAMAVESH design system, every workflow portal, and the reports
               behind them.
@@ -145,30 +144,24 @@ export default function GatePage() {
               id="destinations-heading"
               className="text-2xl font-bold tracking-tight text-ink"
             >
-              Where do you want to go?
+              Explore the estate
             </h2>
-            <p className="mt-1 text-sm text-ink-muted">
-              Four destinations across the estate.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            {destinations.map(({ title, description, icon: Icon, href, cta, meta }) => (
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {destinations.map(({ title, description, icon: Icon, href, cta }) => (
               <a
                 key={title}
                 href={href}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface p-7 transition-all duration-200 hover:-translate-y-0.5 hover:border-gov-blue/40 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-gov-blue/40 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
               >
                 <span
                   aria-hidden="true"
                   className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-gov-blue transition-transform duration-300 group-hover:scale-x-100"
                 />
-                <div className="mb-5 flex items-center justify-between">
+                <div className="mb-5">
                   <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue-tonal text-gov-blue transition-colors group-hover:bg-gov-blue group-hover:text-on-primary">
                     <Icon className="h-6 w-6" aria-hidden="true" />
-                  </span>
-                  <span className="rounded-full border border-border bg-surface-muted px-2.5 py-1 text-xs font-semibold text-ink-muted">
-                    {meta}
                   </span>
                 </div>
                 <h3 className="text-xl font-bold tracking-tight text-ink">{title}</h3>

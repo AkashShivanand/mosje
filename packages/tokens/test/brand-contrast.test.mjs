@@ -49,6 +49,14 @@ const PAIRINGS = [
   { fg: "--ds-ink", bg: "--ds-surface", min: 4.5, label: "body text on surface" },
   { fg: "--ds-ink-muted", bg: "--ds-surface", min: 4.5, label: "muted text on surface" },
   { fg: "--ds-primary", bg: "--ds-surface", min: 3.0, label: "primary as link/UI on surface" },
+  // Status text on its own tonal chip. These are the badge/pill pairings
+  // (`text-success` on `bg-success-tonal`, etc.) used across every portal's
+  // status indicators. All four shipped below AA until 2026-08 — the ramp step
+  // for the foreground was chosen for the solid fill, not for the tonal pairing.
+  { fg: "--ds-success", bg: "--ds-success-tonal", min: 4.5, label: "success badge text on success tonal" },
+  { fg: "--ds-warning", bg: "--ds-warning-tonal", min: 4.5, label: "warning badge text on warning tonal" },
+  { fg: "--ds-danger", bg: "--ds-danger-tonal", min: 4.5, label: "danger badge text on danger tonal" },
+  { fg: "--ds-info", bg: "--ds-info-tonal", min: 4.5, label: "info badge text on info tonal" },
 ];
 
 function assertBrandPasses(brand) {

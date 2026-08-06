@@ -85,7 +85,8 @@ export default function AdminLoginPage() {
           Certificate-of-Identity applications flow through a maker → checker → District Magistrate
           approval chain, with SLA tracking end to end.
         </p>
-        <div className="absolute inset-x-12 bottom-12 border-t border-white/15 pt-6">
+        {/* bottom offset clears the fixed AppSwitcher FAB (bottom-left) */}
+        <div className="absolute inset-x-12 bottom-[var(--ds-appsw-safe-area)] border-t border-white/15 pt-6">
           <p className="text-[11px] font-semibold uppercase tracking-wider text-white/55">Signing Into</p>
           <p className="text-sm font-bold">TG Administration</p>
         </div>

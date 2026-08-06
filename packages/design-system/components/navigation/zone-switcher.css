@@ -13,6 +13,19 @@
   font-family: var(--ds-font-sans);
 }
 
+/* The FAB is fixed, so anything a page paints in the bottom-left corner ends up
+   underneath it (observed: the SAMBAL login's "Signing into…" footer). Pages
+   that place content there reserve its footprint with `.ds-appsw-safe-bottom`
+   (padding) or by reading the custom property directly. 20px offset + 44px FAB
+   + 20px breathing room. */
+:root {
+  --ds-appsw-safe-area: 84px;
+}
+
+.ds-appsw-safe-bottom {
+  padding-bottom: var(--ds-appsw-safe-area);
+}
+
 /* ── FAB trigger ── */
 .ds-appsw__fab {
   display: inline-flex;

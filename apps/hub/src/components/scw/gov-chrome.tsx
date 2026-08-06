@@ -10,7 +10,6 @@ export function GovTopBar({ variant = "admin" }: { variant?: "admin" | "user" })
     <div className="bg-navy-950 text-white">
       <div className="flex h-9 items-center justify-between px-4 text-xs">
         <a className="flex items-center gap-2 font-medium" href="#">
-          <span aria-hidden>🇮🇳</span>
           <span>Government of India</span>
           <ExternalLink className="h-3 w-3 opacity-80" />
         </a>

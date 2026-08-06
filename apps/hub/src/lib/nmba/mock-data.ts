@@ -36,7 +36,7 @@ export const PUBLIC_DASHBOARD_STATS: DashboardStats = {
 export const PROGRAMME_STATS = [
   {
     label: "Education & Youth",
-    icon: "🎓",
+    icon: "school",
     items: [
       { label: "School/College/University Programme", value: "20,503" },
       { label: "Schools/Colleges/Universities Reached", value: "47,131" },
@@ -48,7 +48,7 @@ export const PROGRAMME_STATS = [
   },
   {
     label: "Community Outreach",
-    icon: "🤝",
+    icon: "groups",
     items: [
       { label: "Awareness Rally/Morcha/Run", value: "9,019" },
       { label: "Community Awareness Session", value: "58,851" },
@@ -60,7 +60,7 @@ export const PROGRAMME_STATS = [
   },
   {
     label: "Governance & Local Bodies",
-    icon: "🏛",
+    icon: "account_balance",
     items: [
       { label: "District Level Committee Meeting", value: "898" },
       { label: "Panchayat/Gram Sabha", value: "31,864" },
@@ -70,7 +70,7 @@ export const PROGRAMME_STATS = [
   },
   {
     label: "Targeted Interventions",
-    icon: "🎯",
+    icon: "track_changes",
     items: [
       { label: "Women Group/Women SHG/Mahila Mandal Programme", value: "9,515" },
       { label: "At Risk/Vulnerable People Identified", value: "10,885" },

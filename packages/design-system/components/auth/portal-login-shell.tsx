@@ -89,8 +89,10 @@ export function PortalLoginShell({
         <div
           className="mx-auto flex max-w-screen-2xl items-center justify-between px-4 py-1.5"
         >
+          {/* No flag emoji: 🇮🇳 falls back to the letters "IN" on Windows and
+              several Android builds, so it renders inconsistently on a
+              government property. The wordmark carries the attribution. */}
           <span className="flex items-center gap-1.5 text-xs">
-            <span aria-hidden="true">🇮🇳</span>
             <span className="font-medium">Government of India</span>
           </span>
 

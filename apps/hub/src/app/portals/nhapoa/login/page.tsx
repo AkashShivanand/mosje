@@ -53,8 +53,11 @@ export default function LoginPage() {
     router.push(role.home);
   }
 
+  // flex-1, not min-h-screen: the portal layout is already a full-height flex
+  // column, so claiming a second full viewport here would overflow by the
+  // campaign banner's height.
   return (
-    <div className="flex min-h-screen flex-col md:flex-row">
+    <div className="flex min-h-0 flex-1 flex-col md:flex-row">
       <a href="#login-main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-navy focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white">
         Skip to login form
       </a>
@@ -71,7 +74,8 @@ export default function LoginPage() {
           Grievance redressal and relief disbursement under the Scheduled Castes and Scheduled
           Tribes (Prevention of Atrocities) Act — one accountable workflow from complaint to relief.
         </p>
-        <div className="absolute inset-x-12 bottom-12 border-t border-white/15 pt-6">
+        {/* bottom offset clears the fixed AppSwitcher FAB (bottom-left) */}
+        <div className="absolute inset-x-12 bottom-[var(--ds-appsw-safe-area)] border-t border-white/15 pt-6">
           <p className="text-[11px] font-semibold uppercase tracking-wider text-white/55">Signing Into</p>
           <p className="text-sm font-bold">SAMBAL Administration</p>
         </div>

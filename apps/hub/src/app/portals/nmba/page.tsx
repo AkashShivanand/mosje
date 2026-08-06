@@ -6,7 +6,7 @@ import { PublicShell } from "@/components/nmba/public-shell";
 import { PUBLIC_DASHBOARD_STATS, PROGRAMME_STATS, PUBLIC_ACTIVITIES, FACILITIES } from "@/lib/nmba/mock-data";
 import { STATES, STATE_DISTRICTS } from "@/lib/nmba/states";
 import { MapPin, ArrowRight } from "lucide-react";
-import { Select, Button, Badge, MetricCard } from "@mosje/design-system";
+import { Select, Button, Badge, MetricCard, Icon } from "@mosje/design-system";
 
 const BASE = "/portals/nmba";
 
@@ -112,7 +112,7 @@ export default function NmbaHome() {
           {PROGRAMME_STATS.map((cat) => (
             <div key={cat.label} className="rounded-xl border border-line bg-white p-5 shadow-card">
               <div className="mb-3 flex items-center gap-2">
-                <span className="text-lg">{cat.icon}</span>
+                <Icon name={cat.icon} size={20} className="text-navy" aria-hidden="true" />
                 <h3 className="text-sm font-bold text-ink">{cat.label}</h3>
               </div>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2">
@@ -142,9 +142,11 @@ export default function NmbaHome() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {PUBLIC_ACTIVITIES.map((act, i) => (
             <article key={i} className="rounded-xl border border-line bg-white shadow-card">
-              {/* Photo placeholder */}
-              <div className="h-36 rounded-t-xl bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center">
-                <span className="text-3xl opacity-30">🌿</span>
+              {/* Photo slot — neutral token surface with the estate's Material
+                  Symbols glyph. (Was a 🌿 emoji on a hardcoded green gradient:
+                  emoji are not the SAMAVESH icon system and don't theme.) */}
+              <div className="flex h-36 items-center justify-center rounded-t-xl bg-surface-muted">
+                <Icon name="image" size={32} className="text-ink-hint" aria-hidden="true" />
               </div>
               <div className="p-4">
                 {act.category && (

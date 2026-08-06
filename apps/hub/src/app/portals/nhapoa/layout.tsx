@@ -29,10 +29,18 @@ export const metadata: Metadata = {
 // are per-portal custom properties scoped by this attribute — see nhapoa.css.
 export default function NhapoaLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div data-portal="nhapoa" data-surface="portal">
+    // min-h-screen flex column: the campaign banner is a flow (sticky) element,
+    // so without this every `min-h-screen` page below it overflowed the viewport
+    // by the banner's height — which pushed the login panel's footer down into
+    // the fixed AppSwitcher FAB. `flex-1` lets the page fill exactly what's left.
+    <div
+      data-portal="nhapoa"
+      data-surface="portal"
+      className="flex min-h-screen flex-col"
+    >
       <NhapoaProvider>
         <AnnouncementBanner />
-        {children}
+        <div className="flex flex-1 flex-col">{children}</div>
       </NhapoaProvider>
     </div>
   );

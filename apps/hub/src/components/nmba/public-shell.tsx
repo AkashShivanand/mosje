@@ -51,7 +51,6 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       <div className="bg-navy-950 text-white">
         <div className="flex h-9 items-center justify-between px-4 text-xs">
           <a className="flex items-center gap-1.5 font-medium" href="https://india.gov.in" target="_blank" rel="noreferrer">
-            <span aria-hidden>🇮🇳</span>
             <span>Government of India</span>
           </a>
           <div className="flex items-center gap-3">

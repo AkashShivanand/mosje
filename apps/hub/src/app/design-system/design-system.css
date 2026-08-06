@@ -21,11 +21,12 @@ html {
   color: var(--ds-ink);
   background-color: var(--ds-surface);
   -webkit-font-smoothing: antialiased;
-  scroll-behavior: smooth;
 }
 
-/* Smooth, restrained theme cross-fade (skipped for reduced-motion users). */
+/* Smooth, restrained theme cross-fade + smooth in-page scrolling — both are
+   opt-in on motion preference (WCAG 2.3.3). */
 @media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
   html, body { transition: background-color 0.2s ease, color 0.2s ease; }
 }
 
