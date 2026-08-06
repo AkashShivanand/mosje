@@ -30,6 +30,14 @@ test("hmacToken differs for different secrets", async () => {
   assert.notEqual(a, b);
 });
 
+test("hmacToken accepts an empty secret", async () => {
+  // Reachable: a form can be POSTed without its password field. Keying on the
+  // secret would throw here, because Web Crypto rejects a zero-length key.
+  const empty = await hmacToken("", "label.v1");
+  assert.equal(empty.length, 43);
+  assert.notEqual(empty, await hmacToken("hunter2", "label.v1"));
+});
+
 test("safeEqual matches identical strings and rejects others", () => {
   assert.equal(safeEqual("abc", "abc"), true);
   assert.equal(safeEqual("abc", "abd"), false);

@@ -13,11 +13,20 @@ function base64url(buffer: ArrayBuffer): string {
   return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-/** base64url HMAC-SHA256 of `label` keyed by `secret`. Always 43 characters. */
+/**
+ * base64url HMAC-SHA256 of `secret`, keyed by `label`. Always 43 characters.
+ *
+ * The label is the key and the secret is the message, not the other way round.
+ * Web Crypto rejects a zero-length HMAC key, so keying on the secret would
+ * throw on an empty password — which is reachable, because a form can be POSTed
+ * without its field. Labels are non-empty constants, so this construction
+ * accepts any secret including "". Domain separation is unaffected: a different
+ * label is a different key and therefore a different digest.
+ */
 export async function hmacToken(secret: string, label: string): Promise<string> {
   const key = await crypto.subtle.importKey(
     "raw",
-    new TextEncoder().encode(secret),
+    new TextEncoder().encode(label),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign"],
@@ -25,7 +34,7 @@ export async function hmacToken(secret: string, label: string): Promise<string> 
   const signature = await crypto.subtle.sign(
     "HMAC",
     key,
-    new TextEncoder().encode(label),
+    new TextEncoder().encode(secret),
   );
   return base64url(signature);
 }
