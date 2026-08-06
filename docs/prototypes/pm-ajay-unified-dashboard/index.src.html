@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PM-AJAY · Unified Programme Monitoring (Prototype)</title>
+<meta name="description" content="Design prototype for the PM-AJAY Ministry dashboard — Department of Social Justice &amp; Empowerment. Illustrative data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   SAMAVESH design tokens — real --ds-* values lifted from
+   packages/tokens/dist/tokens.css. No invented colours.
+   Port note: in apps/hub these come from @mosje/design-system/tokens.css.
+   ========================================================================== */
+:root{
+  --ds-primary:#0373DF; --ds-primary-50:#e8f2fd; --ds-primary-100:#c6dcf9;
+  --ds-primary-200:#94bff5; --ds-primary-300:#5fa0ef; --ds-primary-400:#2d84e8;
+  --ds-primary-500:#0373df; --ds-primary-600:#025fb8; --ds-primary-700:#014b92;
+  --ds-primary-800:#01376b; --ds-primary-900:#002448;
+  --ds-secondary-50:#ffedd5; --ds-secondary-100:#fed9b7; --ds-secondary-500:#f97316;
+  --ds-secondary-600:#d45c05; --ds-secondary-700:#a84804;
+  --ds-neutral-0:#ffffff; --ds-neutral-50:#f8f9fa; --ds-neutral-100:#f1f3f5;
+  --ds-neutral-200:#e2e6ea; --ds-neutral-300:#cdd3da; --ds-neutral-400:#9aa3af;
+  --ds-neutral-500:#6c757d; --ds-neutral-600:#495057; --ds-neutral-700:#343a40;
+  --ds-neutral-800:#1f2428; --ds-neutral-900:#0d1014;
+  --ds-success-50:#e8f5e9; --ds-success-100:#c8e6c9; --ds-success-500:#2e7d32;
+  --ds-success-600:#27682a; --ds-success-700:#1b5e20;
+  --ds-warning-50:#fff4e5; --ds-warning-100:#ffe4bf; --ds-warning-500:#bb772b;
+  --ds-warning-600:#a66a26; --ds-warning-700:#8c571f;
+  --ds-danger-50:#fdecea; --ds-danger-100:#fad2cf; --ds-danger-500:#ec5042;
+  --ds-danger-600:#d64539; --ds-danger-700:#b8382f;
+  --ds-info-50:#e8f0fe; --ds-info-500:#1a73e8; --ds-info-600:#1558b0;
+
+  /* type scale (fixed steps from the token file) */
+  --t-headline-4:20px; --t-headline-4-lh:26px;
+  --t-title-1:18px;    --t-title-1-lh:24px;
+  --t-title-2:16px;    --t-title-2-lh:24px;
+  --t-title-3:14px;    --t-title-3-lh:20px;
+  --t-body-2:14px;     --t-body-2-lh:20px;
+  --t-body-3:12px;     --t-body-3-lh:16px;
+  --t-label-2:12px;    --t-label-2-lh:16px;
+  --t-label-3:11px;    --t-label-3-lh:16px;
+
+  --r-sm:6px; --r-md:10px; --r-lg:14px;
+  --ink:var(--ds-neutral-800); --ink-muted:var(--ds-neutral-600);
+  --ink-hint:var(--ds-neutral-500); --line:var(--ds-neutral-200);
+  --surface:var(--ds-neutral-0); --surface-muted:var(--ds-neutral-50);
+  --sidebar-w:248px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--surface-muted); color:var(--ink);
+  font-family:"Noto Sans","Noto Sans Devanagari",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:var(--t-body-2); line-height:var(--t-body-2-lh);
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,p,figure{margin:0}
+button{font:inherit;color:inherit}
+table{border-collapse:collapse;width:100%}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+:focus-visible{outline:3px solid var(--ds-primary);outline-offset:2px;border-radius:3px}
+.skip{position:absolute;left:8px;top:-48px;z-index:60;background:var(--ds-primary);color:#fff;
+  padding:10px 16px;border-radius:0 0 var(--r-sm) var(--r-sm);font-weight:600;transition:top .15s}
+.skip:focus{top:0}
+
+/* ---------- Government chrome ---------- */
+.goi{background:var(--ds-neutral-900);color:var(--ds-neutral-300);font-size:var(--t-label-2);
+  line-height:var(--t-label-2-lh)}
+.goi .in{max-width:1440px;margin:0 auto;padding:7px 24px;display:flex;gap:16px;align-items:center;
+  justify-content:space-between;flex-wrap:wrap}
+.goi strong{color:#fff;font-weight:600}
+.goi .tools{display:flex;gap:14px;align-items:center}
+.goi .tools button{background:none;border:0;color:var(--ds-neutral-300);cursor:pointer;padding:2px 4px}
+.goi .tools button:hover{color:#fff}
+
+.masthead{background:var(--surface);border-bottom:1px solid var(--line)}
+.masthead .in{max-width:1440px;margin:0 auto;padding:14px 24px;display:flex;gap:16px;align-items:center}
+.masthead .emblem{height:52px;width:auto;flex:none}
+.masthead .titles h1{font-size:var(--t-title-1);line-height:var(--t-title-1-lh);font-weight:700;
+  color:var(--ds-primary-900);letter-spacing:-.01em}
+.masthead .titles p{font-size:var(--t-body-3);line-height:var(--t-body-3-lh);color:var(--ink-muted);margin-top:2px}
+.masthead .who{margin-left:auto;display:flex;align-items:center;gap:10px;text-align:right}
+.masthead .who .n{font-size:var(--t-body-3);line-height:1.35;color:var(--ink-muted)}
+.masthead .who .n b{display:block;color:var(--ink);font-size:var(--t-title-3)}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--ds-primary-700);color:#fff;
+  display:grid;place-items:center;font-weight:600;font-size:var(--t-body-3);flex:none}
+
+/* ---------- Prototype banner (finding #4) ---------- */
+.protobar{background:var(--ds-warning-50);border-bottom:1px solid var(--ds-warning-100);
+  color:var(--ds-warning-700)}
+.protobar .in{max-width:1440px;margin:0 auto;padding:10px 24px;display:flex;gap:12px;align-items:flex-start}
+.protobar svg{flex:none;margin-top:1px}
+.protobar p{font-size:var(--t-body-3);line-height:16px}
+.protobar b{color:var(--ds-warning-700)}
+
+/* ---------- Shell ---------- */
+.shell{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:var(--sidebar-w) minmax(0,1fr);
+  align-items:start;gap:0;background:var(--surface-muted)}
+.side{background:var(--surface);border-right:1px solid var(--line);min-height:calc(100vh - 180px);
+  padding:16px 0 28px;position:sticky;top:0}
+.side .grp{padding:14px 16px 4px;font-size:var(--t-label-3);line-height:var(--t-label-3-lh);
+  text-transform:uppercase;letter-spacing:.07em;color:var(--ink-hint);font-weight:700}
+.side a,.side button.nav{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  padding:9px 16px;border:0;background:none;cursor:pointer;font-size:var(--t-body-2);
+  color:var(--ink-muted);text-decoration:none;border-left:3px solid transparent}
+.side button.nav:hover{background:var(--ds-primary-50);color:var(--ds-primary-700)}
+.side button.nav[aria-current="page"]{background:var(--ds-primary-50);color:var(--ds-primary-700);
+  font-weight:600;border-left-color:var(--ds-primary)}
+/* These read as inactive via weight and cursor, NOT via low contrast — they are
+   plain text, not disabled controls, so the WCAG 1.4.3 disabled-control
+   exemption does not cover them. neutral-500 clears AA at 4.69:1. */
+.side .dim{padding:8px 16px;color:var(--ds-neutral-500);font-size:var(--t-body-2);cursor:not-allowed}
+.side .note{margin:8px 16px 0;padding:8px 10px;background:var(--surface-muted);border-radius:var(--r-sm);
+  font-size:var(--t-label-3);line-height:15px;color:var(--ink-hint)}
+
+.main{padding:20px 24px 40px;min-width:0}
+
+/* ---------- Demo controls ---------- */
+.democtl{margin:0 0 16px;background:var(--ds-neutral-900);border-radius:var(--r-md);padding:10px 14px;
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.democtl .lbl{font-size:var(--t-label-3);text-transform:uppercase;letter-spacing:.07em;
+  color:var(--ds-neutral-400);font-weight:700}
+.democtl .seg{display:flex;background:var(--ds-neutral-800);border-radius:var(--r-sm);padding:3px}
+.democtl .seg button{border:0;background:none;color:var(--ds-neutral-300);padding:5px 12px;
+  border-radius:4px;cursor:pointer;font-size:var(--t-body-3);white-space:nowrap}
+.democtl .seg button[aria-pressed="true"]{background:var(--ds-primary);color:#fff;font-weight:600}
+.democtl .hint{font-size:var(--t-label-3);color:var(--ds-neutral-400);margin-left:auto}
+
+/* ---------- Page head ---------- */
+.pagehead{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:16px 18px;margin-bottom:14px}
+.pagehead .eyebrow{font-size:var(--t-label-3);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-hint);font-weight:700}
+.pagehead h2{font-size:var(--t-headline-4);line-height:var(--t-headline-4-lh);font-weight:700;
+  margin-top:4px;letter-spacing:-.01em}
+.pagehead p{font-size:var(--t-body-2);color:var(--ink-muted);margin-top:6px;max-width:76ch}
+
+/* ---------- ScopeBar (R1) ---------- */
+.scopebar{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:12px 16px;margin-bottom:14px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+  position:sticky;top:0;z-index:20;box-shadow:0 1px 0 rgba(13,16,20,.03)}
+.rolebadge{display:inline-flex;align-items:center;gap:6px;background:var(--ds-neutral-900);color:#fff;
+  padding:5px 10px;border-radius:var(--r-sm);font-size:var(--t-label-3);font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.crumbs{display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:var(--t-body-2);min-width:0}
+.crumbs button{border:0;background:none;cursor:pointer;color:var(--ds-primary-700);padding:2px 4px;
+  border-radius:4px;font-weight:500}
+.crumbs button:hover{background:var(--ds-primary-50);text-decoration:underline}
+.crumbs .sep{color:var(--ds-neutral-400)}
+.crumbs .cur{color:var(--ink);font-weight:600;padding:2px 4px}
+.selects{margin-left:auto;display:flex;gap:14px;flex-wrap:wrap}
+.field{display:flex;flex-direction:column;gap:3px;min-width:132px}
+.field label{font-size:var(--t-label-3);letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-hint);font-weight:700}
+.field select{font:inherit;font-size:var(--t-body-2);padding:7px 10px;border:1px solid var(--ds-neutral-300);
+  border-radius:var(--r-sm);background:var(--surface);color:var(--ink);cursor:pointer;max-width:200px}
+.field select:disabled{background:var(--ds-neutral-100);color:var(--ds-neutral-400);cursor:not-allowed}
+.field .qflag{font-size:var(--t-label-3);color:var(--ds-warning-700)}
+
+/* ---------- Tabs ---------- */
+.tabs{display:flex;gap:2px;border-bottom:2px solid var(--line);margin-bottom:16px;flex-wrap:wrap}
+.tabs button{border:0;background:none;cursor:pointer;padding:10px 16px;font-size:var(--t-body-2);
+  color:var(--ink-muted);border-bottom:3px solid transparent;margin-bottom:-2px;border-radius:4px 4px 0 0}
+.tabs button:hover{color:var(--ds-primary-700);background:var(--ds-primary-50)}
+.tabs button[aria-selected="true"]{color:var(--ds-primary-700);font-weight:700;
+  border-bottom-color:var(--ds-primary)}
+
+/* ---------- Cards ---------- */
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:14px;align-items:start}
+.grid.even{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+/* the break-up table carries up to 7 columns — give it the room rather than
+   hiding the Share column behind a horizontal scroll */
+.grid.drill{grid-template-columns:minmax(0,1.85fr) minmax(0,1fr)}
+@media (max-width:1280px){ .grid.drill{grid-template-columns:minmax(0,1fr)} }
+.grid.full{grid-template-columns:minmax(0,1fr)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:16px 18px 14px;margin-bottom:14px}
+.card > header{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+.card .ico{width:28px;height:28px;border-radius:var(--r-sm);display:grid;place-items:center;flex:none;
+  background:var(--ds-primary-50);color:var(--ds-primary-700)}
+.card h3{font-size:var(--t-title-2);line-height:var(--t-title-2-lh);font-weight:700}
+.card .purpose{font-size:var(--t-body-3);line-height:var(--t-body-3-lh);color:var(--ink-hint);margin-top:2px}
+.card .hdr-aside{margin-left:auto}
+
+/* metric row + DrillNumber */
+/* Border-on-cell rather than gap-over-a-coloured-container: Hostel has six
+   statuses and wraps to a second row, and a gap-based grid renders the unused
+   cell as a grey block. */
+.metrics{display:grid;gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line);
+  border-radius:var(--r-sm);overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(112px,1fr))}
+.dnum{background:var(--surface);border:0;border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);padding:10px 12px;text-align:left;cursor:pointer;
+  display:block;width:100%;position:relative;transition:background .12s}
+.dnum:hover{background:var(--ds-primary-50)}
+.dnum .k{display:flex;align-items:flex-start;gap:4px;font-size:var(--t-label-2);line-height:14px;
+  color:var(--ink-hint);font-weight:600;min-height:28px}
+.dnum .v{display:block;font-size:var(--t-title-1);line-height:26px;font-weight:700;margin-top:3px;
+  letter-spacing:-.02em}
+.dnum .s{display:block;font-size:var(--t-label-3);line-height:14px;color:var(--ink-hint);margin-top:2px}
+.dnum .k svg{opacity:.5;flex:none}
+.dnum:hover .k svg{opacity:1;color:var(--ds-primary)}
+.dnum.tone-warn .v{color:var(--ds-warning-700)}
+.dnum.tone-danger .v{color:var(--ds-danger-700)}
+.dnum.tone-good .v{color:var(--ds-success-700)}
+
+/* bars */
+.bars{margin-top:14px;display:grid;gap:9px}
+.bar{display:grid;grid-template-columns:minmax(84px,132px) minmax(0,1fr) auto;gap:10px;align-items:center}
+.bar .bl{font-size:var(--t-body-3);color:var(--ink-muted);line-height:14px}
+.bar .track{height:12px;background:var(--ds-neutral-100);border-radius:99px;overflow:hidden}
+.bar .fill{height:100%;border-radius:99px;transition:width .35s ease}
+.bar .bv{font-size:var(--t-body-3);white-space:nowrap;text-align:right;color:var(--ink)}
+.bar .bv i{font-style:normal;color:var(--ink-hint);margin-left:6px}
+
+/* stacked */
+.stack{display:flex;height:22px;border-radius:var(--r-sm);overflow:hidden;margin-top:12px;
+  background:var(--ds-neutral-100)}
+.stack span{display:grid;place-items:center;color:#fff;font-size:var(--t-label-2);font-weight:700;
+  min-width:0;overflow:hidden}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:9px;font-size:var(--t-body-3);color:var(--ink-muted)}
+.legend i{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:6px}
+
+/* derived read + drill instruction */
+.read{margin-top:12px;padding:9px 12px;border-left:3px solid var(--ds-success-500);
+  background:var(--ds-success-50);border-radius:0 var(--r-sm) var(--r-sm) 0;
+  font-size:var(--t-body-3);line-height:16px;color:var(--ds-neutral-700)}
+.read.warn{border-left-color:var(--ds-warning-500);background:var(--ds-warning-50)}
+.hintline{margin-top:10px;font-size:var(--t-body-3);line-height:16px;color:var(--ink-hint);
+  display:flex;gap:7px;align-items:flex-start}
+.hintline svg{flex:none;margin-top:1px;opacity:.6}
+
+/* action items */
+.actions{display:grid;gap:9px}
+.aitem{width:100%;text-align:left;border:1px solid var(--ds-warning-100);background:var(--ds-warning-50);
+  border-radius:var(--r-sm);padding:11px 13px;cursor:pointer;display:flex;gap:12px;align-items:center}
+.aitem:hover{border-color:var(--ds-warning-500);background:#fff7ec}
+.aitem.sev-high{border-color:var(--ds-danger-100);background:var(--ds-danger-50)}
+.aitem.sev-high:hover{border-color:var(--ds-danger-500)}
+.aitem .txt{min-width:0}
+.aitem .txt{display:block}
+.aitem .t{display:block;font-size:var(--t-title-3);line-height:19px;font-weight:700;color:var(--ds-neutral-800)}
+.aitem .d{display:block;font-size:var(--t-body-3);line-height:15px;color:var(--ink-muted);margin-top:2px}
+.aitem .n span{display:block}
+.aitem .n{margin-left:auto;text-align:right;flex:none}
+.aitem .n b{display:block;font-size:var(--t-title-1);line-height:24px;color:var(--ds-warning-700);
+  letter-spacing:-.02em}
+.aitem.sev-high .n b{color:var(--ds-danger-700)}
+.aitem .n span{font-size:var(--t-label-3);color:var(--ink-hint)}
+
+/* ---------- Drill view ---------- */
+.drillhead{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.btn-back{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--ds-neutral-300);
+  background:var(--surface);border-radius:var(--r-sm);padding:7px 12px;cursor:pointer;
+  font-size:var(--t-body-2);color:var(--ink-muted)}
+.btn-back:hover{border-color:var(--ds-primary);color:var(--ds-primary-700)}
+.chip{background:var(--ds-primary-700);color:#fff;padding:5px 11px;border-radius:99px;
+  font-size:var(--t-body-3);font-weight:600}
+.defbox{background:var(--ds-info-50);border:1px solid var(--ds-primary-100);border-radius:var(--r-md);
+  padding:13px 16px;margin-bottom:14px;display:flex;gap:11px}
+.defbox svg{flex:none;margin-top:2px;color:var(--ds-primary-700)}
+.defbox h4{font-size:var(--t-title-3);font-weight:700;color:var(--ds-primary-900)}
+.defbox p{font-size:var(--t-body-2);line-height:19px;color:var(--ds-neutral-700);margin-top:3px}
+.defbox dl{display:flex;gap:22px;flex-wrap:wrap;margin-top:9px}
+.defbox dt{font-size:var(--t-label-3);text-transform:uppercase;letter-spacing:.06em;
+  color:var(--ink-hint);font-weight:700}
+.defbox dd{margin:1px 0 0;font-size:var(--t-body-3);color:var(--ds-neutral-700)}
+
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-sm)}
+table.data{font-size:var(--t-body-2);min-width:620px}
+table.data caption{text-align:left;padding:11px 14px;font-size:var(--t-body-3);color:var(--ink-hint);
+  border-bottom:1px solid var(--line);background:var(--surface-muted)}
+table.data th,table.data td{padding:9px 14px;text-align:right;border-bottom:1px solid var(--ds-neutral-100)}
+table.data th:first-child,table.data td:first-child{text-align:left}
+table.data thead th{font-size:var(--t-label-2);text-transform:uppercase;letter-spacing:.05em;
+  color:var(--ink-hint);font-weight:700;background:var(--surface);position:sticky;top:0}
+table.data tbody tr.clickable{cursor:pointer}
+table.data tbody tr.clickable:hover{background:var(--ds-primary-50)}
+table.data td.hi{font-weight:700;color:var(--ds-primary-800)}
+table.data tfoot td{font-weight:700;background:var(--surface-muted);border-top:2px solid var(--ds-neutral-300);
+  border-bottom:0}
+table.data .rowname{display:flex;align-items:center;gap:7px;text-align:left}
+table.data button.rowdrill{border:0;background:none;padding:0;cursor:pointer;font-weight:600;
+  color:var(--ds-primary-700);border-radius:4px}
+table.data button.rowdrill:hover{text-decoration:underline}
+table.data .rowname svg{opacity:.35;flex:none}
+table.data tbody tr.clickable:hover .rowname svg{opacity:1;color:var(--ds-primary)}
+
+/* ---------- Executive summary ---------- */
+.exec-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:14px}
+.ekpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:14px 16px}
+.ekpi .k{font-size:var(--t-label-2);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-hint);
+  font-weight:700}
+.ekpi .v{font-size:28px;line-height:34px;font-weight:700;letter-spacing:-.025em;margin-top:5px}
+.ekpi .s{font-size:var(--t-body-3);color:var(--ink-muted);margin-top:3px}
+
+/* ---------- Footer ---------- */
+.foot{border-top:1px solid var(--line);background:var(--surface);margin-top:8px}
+.foot .in{max-width:1440px;margin:0 auto;padding:14px 24px;display:flex;gap:16px;flex-wrap:wrap;
+  justify-content:space-between;font-size:var(--t-body-3);color:var(--ink-hint)}
+
+@media (max-width:1080px){
+  .grid,.grid.even{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:860px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .side{position:static;min-height:0;border-right:0;border-bottom:1px solid var(--line)}
+  .scopebar{position:static}
+  .selects{margin-left:0;width:100%}
+  /* the role switcher's labels are long — let them wrap rather than push the
+     page into a horizontal scroll */
+  .democtl .seg{flex-wrap:wrap;width:100%}
+  .democtl .seg button{white-space:normal;flex:1 1 auto}
+  .democtl .hint{margin-left:0}
+  .field select{max-width:100%;width:100%}
+  .field{flex:1 1 160px}
+}
+@media print{
+  .goi,.side,.democtl,.tabs,.scopebar .selects,.protobar,.foot{display:none!important}
+  body{background:#fff}
+  .card,.ekpi{break-inside:avoid;border-color:#999}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to Main Content</a>
+
+<!-- icon sprite: these become <Icon> Material Symbols Rounded on port to apps/hub -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-info" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.1v4M8 4.9v.9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-chev" viewBox="0 0 16 16"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-back" viewBox="0 0 16 16"><path d="M10 3.5 5.5 8 10 12.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-warn" viewBox="0 0 16 16"><path d="M8 2.2 15 14H1L8 2.2Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6.4v3.2M8 11.4v.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.8 2.6h12.4L9.4 8.3v4.6L6.6 14V8.3L1.8 2.6Z" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/></symbol>
+<symbol id="i-rupee" viewBox="0 0 16 16"><path d="M4.6 2.8h6.8M4.6 5.6h6.8M9.6 2.8c1.6 0 2.6 1.1 2.6 2.6S11.2 8.1 9.6 8.1H4.6L11 13.4" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-chart" viewBox="0 0 16 16"><path d="M2 13.4h12M4.2 11V6.6M7.4 11V3.4M10.6 11V8.2M13 11V5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-grid" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.35"/><rect x="9" y="2" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.35"/><rect x="2" y="9" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.35"/><rect x="9" y="9" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.35"/></symbol>
+<symbol id="i-pin" viewBox="0 0 16 16"><path d="M8 14.5s5-4.4 5-8a5 5 0 1 0-10 0c0 3.6 5 8 5 8Z" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/><circle cx="8" cy="6.4" r="1.9" fill="none" stroke="currentColor" stroke-width="1.35"/></symbol>
+</defs></svg>
+
+<div class="goi"><div class="in">
+  <span><strong>भारत सरकार</strong> · Government of India — Department of Social Justice &amp; Empowerment</span>
+  <span class="tools">
+    <button type="button" data-zoom="-1" aria-label="Decrease text size">A−</button>
+    <button type="button" data-zoom="0" aria-label="Reset text size">A</button>
+    <button type="button" data-zoom="1" aria-label="Increase text size">A+</button>
+    <button type="button" data-contrast aria-pressed="false">High contrast</button>
+    <span aria-hidden="true">|</span><span>English / हिन्दी</span>
+  </span>
+</div></div>
+
+<header class="masthead"><div class="in">
+  <img class="emblem" src="{{EMBLEM}}" alt="National Emblem of India">
+  <div class="titles">
+    <h1>Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY)</h1>
+    <p>Department of Social Justice &amp; Empowerment · Government of India</p>
+  </div>
+  <div class="who">
+    <span class="n"><b>dot-pmagy</b>admin@pmajay.gov.in</span>
+    <span class="avatar" aria-hidden="true">SD</span>
+  </div>
+</div></header>
+
+<div class="protobar"><div class="in">
+  <svg width="16" height="16" aria-hidden="true"><use href="#i-warn"/></svg>
+  <p><b>Design prototype — every figure on this screen is illustrative and is NOT reconciled with
+  production.</b> The live portal reports 47,333 villages covered; this prototype models 15,272
+  eligible villages across a 6-state, 36-district subset. "Covered" and "eligible" may be different
+  measures — that is Question 1 of the outstanding data contract. Structure is real; coverage and
+  values are not.</p>
+</div></div>
+
+<div class="shell">
+  <nav class="side" aria-label="Portal sections">
+    <div class="grp">Monitoring</div>
+    <button type="button" class="nav" data-page="dashboard" aria-current="page">Dashboard</button>
+    <button type="button" class="nav" data-page="exec">Executive Summary</button>
+    <div class="grp">Programme components</div>
+    <button type="button" class="nav" data-page="dashboard" data-tab="gia">Grant-in-Aid (GIA)</button>
+    <button type="button" class="nav" data-page="dashboard" data-tab="hostel">Hostel</button>
+    <button type="button" class="nav" data-page="dashboard" data-tab="adarsh">Adarsh Gram (PMAGY)</button>
+    <div class="grp">Existing modules</div>
+    <div class="dim">Manage GIA Projects</div>
+    <div class="dim">Manage Hostel</div>
+    <div class="dim">AdarshGram</div>
+    <div class="dim">Manage Institute / University</div>
+    <div class="dim">Governance &amp; Compliance</div>
+    <div class="dim">User &amp; Role Management</div>
+    <p class="note">Existing modules are unchanged in this pass. Note what is <em>not</em> here:
+      no State / District / Village entries. Geographic level is a filter in the scope bar, not a
+      navigation item.</p>
+  </nav>
+
+  <main class="main" id="main">
+    <div class="democtl">
+      <span class="lbl">Prototype control</span>
+      <span style="font-size:var(--t-body-3);color:var(--ds-neutral-300)">Signed in as</span>
+      <div class="seg" role="group" aria-label="Demonstration role switcher">
+        <button type="button" data-role="ministry" aria-pressed="true">Ministry / Admin</button>
+        <button type="button" data-role="state" aria-pressed="false">State Officer — Uttar Pradesh</button>
+        <button type="button" data-role="district" aria-pressed="false">District Officer — Lucknow</button>
+      </div>
+      <span class="hint">One build serves all three. The role clamps the scope ceiling — it does not
+        change the screens.</span>
+    </div>
+    <div id="view"></div>
+  </main>
+</div>
+
+<footer class="foot"><div class="in">
+  <span>© 2026 PM-AJAY · Department of Social Justice &amp; Empowerment. Prototype for design review —
+    figures are illustrative.</span>
+  <span>India → State → District drill-down · every number is defined and clickable</span>
+</div></footer>
+
+<script>
+"use strict";
+/* =====================================================================
+   PM-AJAY Unified Programme Monitoring — prototype data + render
+   Design rules enforced in code (see spec §3):
+   R1 one scope per page   R3 pendency is permanent   R4 every number defined
+   R6 parents are SUMS of children — never authored independently
+   ===================================================================== */
+
+/* ---------- geography: real states, real districts, real blocks ---------- */
+const GEO = [
+  { code:"UP", name:"Uttar Pradesh", w:23, districts:[
+    { code:"UP-LKO", name:"Lucknow",      w:19, blocks:["Malihabad","Mall","Kakori","Chinhat","Gosainganj","Bakshi Ka Talab","Mohanlalganj","Sarojini Nagar"] },
+    { code:"UP-AGR", name:"Agra",         w:18, blocks:["Achhnera","Akola","Bah","Barauli Ahir","Bichpuri","Etmadpur","Fatehabad","Jagner","Khandauli","Pinahat","Saiyan","Shamsabad"] },
+    { code:"UP-PRY", name:"Prayagraj",    w:19 },
+    { code:"UP-VNS", name:"Varanasi",     w:15 },
+    { code:"UP-GKP", name:"Gorakhpur",    w:15 },
+    { code:"UP-KNP", name:"Kanpur Nagar", w:14 } ] },
+  { code:"MP", name:"Madhya Pradesh", w:17, districts:[
+    { code:"MP-IND", name:"Indore",   w:18 }, { code:"MP-BPL", name:"Bhopal",  w:16 },
+    { code:"MP-JBP", name:"Jabalpur", w:17 }, { code:"MP-GWL", name:"Gwalior", w:17 },
+    { code:"MP-SGR", name:"Sagar",    w:16 }, { code:"MP-REW", name:"Rewa",    w:16 } ] },
+  { code:"MH", name:"Maharashtra", w:16, districts:[
+    { code:"MH-PUN", name:"Pune",   w:19 }, { code:"MH-NGP", name:"Nagpur",  w:17 },
+    { code:"MH-NSK", name:"Nashik", w:17 }, { code:"MH-CSN", name:"Chhatrapati Sambhajinagar", w:16 },
+    { code:"MH-SOL", name:"Solapur",w:16 }, { code:"MH-AMR", name:"Amravati",w:15 } ] },
+  { code:"WB", name:"West Bengal", w:15, districts:[
+    { code:"WB-MSD", name:"Murshidabad",     w:19 }, { code:"WB-PBN", name:"Purba Bardhaman", w:17 },
+    { code:"WB-NAD", name:"Nadia",           w:17 }, { code:"WB-BNK", name:"Bankura",         w:16 },
+    { code:"WB-PUR", name:"Purulia",         w:16 }, { code:"WB-HGL", name:"Hooghly",         w:15 } ] },
+  { code:"RJ", name:"Rajasthan", w:15, districts:[
+    { code:"RJ-JAI", name:"Jaipur",    w:19 }, { code:"RJ-JDH", name:"Jodhpur",  w:17 },
+    { code:"RJ-ALW", name:"Alwar",     w:17 }, { code:"RJ-BTP", name:"Bharatpur",w:16 },
+    { code:"RJ-NAG", name:"Nagaur",    w:16 }, { code:"RJ-UDR", name:"Udaipur",  w:15 } ] },
+  { code:"BR", name:"Bihar", w:14, districts:[
+    { code:"BR-PAT", name:"Patna",       w:19 }, { code:"BR-GAY", name:"Gaya",      w:17 },
+    { code:"BR-MZF", name:"Muzaffarpur", w:17 }, { code:"BR-BGP", name:"Bhagalpur", w:16 },
+    { code:"BR-PUN", name:"Purnia",      w:16 }, { code:"BR-DBG", name:"Darbhanga", w:15 } ] }
+];
+
+/* Largest-remainder split so a parent total is distributed exactly. */
+function distribute(total, weights){
+  const sum = weights.reduce((a,b)=>a+b,0);
+  const raw = weights.map(w => total*w/sum);
+  const out = raw.map(Math.floor);
+  let rest = total - out.reduce((a,b)=>a+b,0);
+  raw.map((v,i)=>[v-Math.floor(v),i]).sort((a,b)=>b[0]-a[0])
+     .forEach(([,i])=>{ if(rest>0){ out[i]++; rest--; } });
+  return out;
+}
+/* deterministic per-district variation — identical on every load */
+function rng(seed){ let s=(seed*2654435761)>>>0; return ()=>{ s=(s*1664525+1013904223)>>>0; return s/4294967296; }; }
+
+const FY = ["2025-26","2024-25","2023-24","2022-23"];
+const FY_FACTOR = { "2025-26":1, "2024-25":0.92, "2023-24":0.83, "2022-23":0.71 };
+
+/* National control totals — carried over from the reviewed prototype so the
+   ministry sees continuity. GIA and Hostel status totals are the LIVE
+   production figures observed on pmajay.gov.in. */
+const NATIONAL = {
+  adarsh: { eligible:15272, sanction:122300, identified:2850, cost:24238, benCov:63090, benTot:126097 },
+  gia:    { total:8773, pending:4,   returned:0, rejected:0,  legacy:0,   sanction:245000 },
+  hostel: { total:1727, pending:136, returned:0, rejected:78, legacy:618, sanction:118000 }
+};
+const INDICATORS = [
+  { id:"pucca",  label:"Pucca Houses (PMAY-G convergence)",              identified:2850, cost:24238, benCov:63090,  benTot:126097 },
+  { id:"water",  label:"Household Tap Water Connections (JJM convergence)", identified:3420, cost:18960, benCov:81240,  benTot:141880 },
+  { id:"toilet", label:"Functional Toilets (SBM-G convergence)",         identified:2190, cost: 9640, benCov:52410,  benTot: 88300 },
+  { id:"skill",  label:"Skill Development Enrolment (DDU-GKY convergence)", identified:1480, cost:11720, benCov:29870,  benTot: 74500 }
+];
+
+/* ---------- build the tree, bottom-up (R6) ---------- */
+const DISTRICTS = [];
+GEO.forEach(s => s.districts.forEach(d => DISTRICTS.push({ ...d, stateCode:s.code, stateName:s.name })));
+const DW = DISTRICTS.map(d => d.w * (GEO.find(s=>s.code===d.stateCode).w));
+
+function baseDistrictMetrics(){
+  const n = DISTRICTS.length;
+  const elig  = distribute(NATIONAL.adarsh.eligible, DW);
+  const sanA  = distribute(NATIONAL.adarsh.sanction, DW);
+  const sanG  = distribute(NATIONAL.gia.sanction,    DW);
+  const sanH  = distribute(NATIONAL.hostel.sanction, DW);
+  const giaT  = distribute(NATIONAL.gia.total,   DW),  giaP = distribute(NATIONAL.gia.pending,   DW);
+  const giaRj = distribute(NATIONAL.gia.rejected,DW),  giaRt= distribute(NATIONAL.gia.returned,  DW);
+  const hosT  = distribute(NATIONAL.hostel.total,DW),  hosP = distribute(NATIONAL.hostel.pending,DW);
+  const hosRj = distribute(NATIONAL.hostel.rejected,DW),hosRt= distribute(NATIONAL.hostel.returned,DW);
+  const hosL  = distribute(NATIONAL.hostel.legacy,DW);
+  const ind   = {};
+  INDICATORS.forEach(x => ind[x.id] = {
+    identified:distribute(x.identified,DW), cost:distribute(x.cost,DW),
+    benCov:distribute(x.benCov,DW),         benTot:distribute(x.benTot,DW) });
+
+  return DISTRICTS.map((d,i)=>{
+    const r = rng(i+7);
+    const e = elig[i];
+    const vdp  = Math.round(e   * (0.72 + r()*0.20));
+    const dlcc = Math.round(vdp * (0.66 + r()*0.22));
+    const decl = Math.round(dlcc* (0.58 + r()*0.26));
+    const ms   = sanA[i];
+    const rsd  = Math.round(ms  * (0.72 + r()*0.16));
+    const rdg  = Math.round(rsd * (0.72 + r()*0.16));
+    const uc   = Math.round(rdg * (0.72 + r()*0.14));
+    const indM = {};
+    INDICATORS.forEach(x=>{
+      const id = ind[x.id].identified[i];
+      const c  = Math.min(id, Math.round(id * (0.42 + r()*0.16)));
+      const ip = Math.min(id-c, Math.round((id-c) * (0.35 + r()*0.25)));
+      indM[x.id] = { identified:id, completed:c, inProgress:ip, pending:id-c-ip,
+                     cost:ind[x.id].cost[i], benCov:ind[x.id].benCov[i], benTot:ind[x.id].benTot[i] };
+    });
+    const pipe = (T,P,Rt,Rj,L)=>({ total:T, pending:P, returned:Rt, rejected:Rj, legacy:L,
+                                   approved:Math.max(0, T-P-Rt-Rj-L) });
+    const fin = (m)=>{ const a=Math.round(m*(0.74+r()*0.14)), b=Math.round(a*(0.74+r()*0.14)),
+                             c=Math.round(b*(0.74+r()*0.12));
+                       return { sanction:m, relSD:a, relDG:b, uc:c }; };
+    return {
+      code:d.code, name:d.name, level:"district", parent:d.stateCode, blocks:d.blocks||null, w:d.w,
+      adarsh:{ eligible:e, vdp, dlcc, declared:decl, ...fin(ms), ind:indM },
+      gia:   { ...pipe(giaT[i], giaP[i], giaRt[i], giaRj[i], 0), ...fin(sanG[i]) },
+      hostel:{ ...pipe(hosT[i], hosP[i], hosRt[i], hosRj[i], hosL[i]), ...fin(sanH[i]) }
+    };
+  });
+}
+const BASE = baseDistrictMetrics();
+
+/* scale by financial year, then aggregate upward so every total is a real sum */
+function scaleNode(d, f){
+  const S = v => Math.round(v*f);
+  const ind = {}; Object.keys(d.adarsh.ind).forEach(k=>{
+    const m=d.adarsh.ind[k];
+    ind[k]={ identified:S(m.identified), completed:S(m.completed), inProgress:S(m.inProgress),
+             pending:S(m.identified)-S(m.completed)-S(m.inProgress),
+             cost:S(m.cost), benCov:S(m.benCov), benTot:S(m.benTot) }; });
+  const pipe = p => ({ total:S(p.total), pending:S(p.pending), returned:S(p.returned),
+                       rejected:S(p.rejected), legacy:S(p.legacy),
+                       approved:S(p.total)-S(p.pending)-S(p.returned)-S(p.rejected)-S(p.legacy),
+                       sanction:S(p.sanction), relSD:S(p.relSD), relDG:S(p.relDG), uc:S(p.uc) });
+  return { ...d,
+    adarsh:{ eligible:S(d.adarsh.eligible), vdp:S(d.adarsh.vdp), dlcc:S(d.adarsh.dlcc),
+             declared:S(d.adarsh.declared), sanction:S(d.adarsh.sanction), relSD:S(d.adarsh.relSD),
+             relDG:S(d.adarsh.relDG), uc:S(d.adarsh.uc), ind },
+    gia:pipe(d.gia), hostel:pipe(d.hostel) };
+}
+function addInto(t, s){
+  const walk=(a,b)=>{ Object.keys(b).forEach(k=>{
+    if(typeof b[k]==="number") a[k]=(a[k]||0)+b[k];
+    else if(b[k] && typeof b[k]==="object"){ a[k]=a[k]||{}; walk(a[k],b[k]); } }); };
+  walk(t,s); return t;
+}
+function emptyMetrics(){ return { adarsh:{ind:{}}, gia:{}, hostel:{} }; }
+
+function buildTree(fy){
+  const f = FY_FACTOR[fy];
+  const districts = BASE.map(d=>scaleNode(d,f));
+  const byCode = {};
+  const states = GEO.map(s=>{
+    const kids = districts.filter(d=>d.parent===s.code);
+    const agg = emptyMetrics();
+    kids.forEach(k=>addInto(agg,{adarsh:k.adarsh,gia:k.gia,hostel:k.hostel}));
+    const node = { code:s.code, name:s.name, level:"state", parent:"IN", children:kids, ...agg };
+    kids.forEach(k=>{
+      k.children = k.blocks ? blockChildren(k) : null;
+      k.stateName = s.name; byCode[k.code]=k; });
+    byCode[s.code]=node; return node;
+  });
+  const agg = emptyMetrics();
+  states.forEach(s=>addInto(agg,{adarsh:s.adarsh,gia:s.gia,hostel:s.hostel}));
+  const india = { code:"IN", name:"India", level:"national", parent:null, children:states, ...agg };
+  byCode["IN"]=india;
+  return { india, byCode };
+}
+/* blocks exist only where real block names are known — everywhere else the drill
+   honestly stops at district (Question 1 of the data contract). */
+function blockChildren(d){
+  const names=d.blocks, w=names.map((_,i)=>10+((i*7)%9));
+  const parts={};
+  const keysA=["eligible","vdp","dlcc","declared","sanction","relSD","relDG","uc"];
+  keysA.forEach(k=>parts["a_"+k]=distribute(d.adarsh[k],w));
+  const keysP=["total","pending","returned","rejected","legacy","approved","sanction","relSD","relDG","uc"];
+  keysP.forEach(k=>{ parts["g_"+k]=distribute(d.gia[k],w); parts["h_"+k]=distribute(d.hostel[k],w); });
+  const indParts={};
+  Object.keys(d.adarsh.ind).forEach(id=>{ indParts[id]={};
+    ["identified","completed","inProgress","pending","cost","benCov","benTot"]
+      .forEach(k=>indParts[id][k]=distribute(d.adarsh.ind[id][k],w)); });
+  return names.map((n,i)=>{
+    const ind={}; Object.keys(indParts).forEach(id=>{ ind[id]={};
+      Object.keys(indParts[id]).forEach(k=>ind[id][k]=indParts[id][k][i]); });
+    const pick=(p,ks)=>{const o={};ks.forEach(k=>o[k]=parts[p+k][i]);return o;};
+    return { code:d.code+"-B"+i, name:n, level:"block", parent:d.code, children:null,
+      adarsh:{ ...pick("a_",keysA), ind }, gia:pick("g_",keysP), hostel:pick("h_",keysP) };
+  });
+}
+
+/* ---------- formatting ---------- */
+const fN  = n => Math.round(n).toLocaleString("en-IN");
+const fCr = l => "₹" + (l/100).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2}) + " Cr";
+/* Never round up to a flattering 100% (or down to a dismissive 0%) — with 4 of
+   8,773 still pending, "100% approved" is the kind of number a Secretary
+   challenges and the dashboard loses. Only an exact match reads as 100. */
+const pct = (a,b) => {
+  if(!b || b<=0) return 0;
+  if(a>=b) return 100;
+  if(a<=0)  return 0;
+  const p = a/b*100;
+  if(p >= 99.5) return 99;
+  if(p <  0.5)  return 1;
+  return Math.round(p);
+};
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- metric families: definition, denominator, format (R4) ---------- */
+const COMPONENTS = {
+  adarsh:{ label:"Adarsh Gram (PMAGY)", short:"Adarsh Gram" },
+  gia:   { label:"Grant-in-Aid (GIA)",  short:"GIA" },
+  hostel:{ label:"Hostel",              short:"Hostel" }
+};
+const F = {
+  lifecycle:{
+    title:"Village lifecycle",
+    cols:[
+      {k:"eligible",label:"Eligible Villages", def:"Villages meeting the PMAGY eligibility rule — SC population of at least 50% and at least 500 persons.", denom:"This is the denominator for every lifecycle percentage.", fmt:fN},
+      {k:"vdp",     label:"VDP Drafted",      def:"Eligible villages for which a Village Development Plan has been drafted and saved.", denom:"Eligible Villages", fmt:fN},
+      {k:"dlcc",    label:"DLCC-approved VDP",def:"Village Development Plans approved by the District Level Convergence Committee.", denom:"Eligible Villages", fmt:fN},
+      {k:"declared",label:"Declared Adarsh Gram", def:"Villages formally declared as Adarsh Gram after verification of the approved plan.", denom:"Eligible Villages", fmt:fN}
+    ], get:(n)=>n.adarsh },
+  finance:{
+    title:"Financial cascade",
+    cols:[
+      {k:"sanction",label:"Mother Sanction Issued", def:"Total funds sanctioned by the Ministry to the State for this component.", denom:"This is the denominator for the release cascade.", fmt:fCr},
+      {k:"relSD",   label:"Released: State → District", def:"Funds released by the State to district implementing agencies.", denom:"Mother Sanction Issued", fmt:fCr},
+      {k:"relDG",   label:"Released: District → GP",   def:"Funds released by district agencies to Gram Panchayats / implementing units.", denom:"Released: State → District", fmt:fCr},
+      {k:"uc",      label:"UC Submitted by State",     def:"Utilisation Certificates submitted by the State against funds released.", denom:"Released: District → GP", fmt:fCr}
+    ], get:(n,c)=>n[c] },
+  pipelineGia:{
+    title:"Application status",
+    cols:[
+      {k:"total",   label:"Total Projects", def:"All GIA project proposals received for the selected financial year and scope.", denom:"This is the denominator for the processing split.", fmt:fN},
+      {k:"pending", label:"Pending",   def:"Proposals awaiting a decision at any approval stage.", denom:"Total Projects", fmt:fN},
+      {k:"returned",label:"Returned",  def:"Proposals sent back to the submitting authority for correction.", denom:"Total Projects", fmt:fN},
+      {k:"rejected",label:"Rejected",  def:"Proposals rejected after scrutiny.", denom:"Total Projects", fmt:fN},
+      {k:"approved",label:"Approved",  def:"Proposals approved for sanction.", denom:"Total Projects", fmt:fN}
+    ], get:(n)=>n.gia },
+  pipelineHostel:{
+    title:"Application status",
+    cols:[
+      {k:"total",   label:"Total Proposals", def:"All hostel proposals received for the selected financial year and scope.", denom:"This is the denominator for the processing split.", fmt:fN},
+      {k:"pending", label:"Pending",  def:"Proposals awaiting a decision at any approval stage.", denom:"Total Proposals", fmt:fN},
+      {k:"returned",label:"Returned", def:"Proposals sent back to the submitting authority for correction.", denom:"Total Proposals", fmt:fN},
+      {k:"rejected",label:"Rejected", def:"Proposals rejected after scrutiny.", denom:"Total Proposals", fmt:fN},
+      {k:"approved",label:"Approved", def:"Proposals approved and converted into sanctioned projects.", denom:"Total Proposals", fmt:fN},
+      {k:"legacy",  label:"Legacy Proposals", def:"Proposals carried forward from the pre-PM-AJAY hostel scheme and migrated into this portal.", denom:"Total Proposals", fmt:fN}
+    ], get:(n)=>n.hostel },
+  indicator:{
+    title:"Monitorable indicator",
+    cols:[
+      {k:"identified",label:"Projects Identified", def:"Works identified against the selected monitorable indicator in approved village plans.", denom:"This is the denominator for the physical progress split.", fmt:fN},
+      {k:"completed", label:"Completed",  def:"Identified works reported complete and verified.", denom:"Projects Identified", fmt:fN},
+      {k:"inProgress",label:"In Progress", def:"Identified works under execution.", denom:"Projects Identified", fmt:fN},
+      {k:"pending",   label:"Pending",     def:"Identified works not yet started.", denom:"Projects Identified", fmt:fN}
+    ], get:(n,c,ind)=>n.adarsh.ind[ind] }
+};
+function familyFor(comp, kind){
+  if(kind==="pipeline") return comp==="hostel" ? F.pipelineHostel : F.pipelineGia;
+  return F[kind];
+}
+
+/* ---------- application state ---------- */
+const ROLE = {
+  ministry:{ label:"Ministry · National", root:"IN",     maxLevel:"block" },
+  state:   { label:"State · Uttar Pradesh", root:"UP",   maxLevel:"block" },
+  district:{ label:"District · Lucknow",  root:"UP-LKO", maxLevel:"block" }
+};
+const S = { role:"ministry", scope:"IN", fy:"2025-26", tab:"all", page:"dashboard",
+            indicator:"pucca", drill:null };
+let T = buildTree(S.fy);
+
+const node    = () => T.byCode[S.scope];
+const rootOf  = () => T.byCode[ROLE[S.role].root];
+function ancestry(code){
+  const out=[]; let n=T.byCode[code];
+  while(n){ out.unshift(n); n = n.parent ? T.byCode[n.parent] : null; }
+  const rootIdx = out.findIndex(n=>n.code===ROLE[S.role].root);
+  return rootIdx>=0 ? out.slice(rootIdx) : [rootOf()];
+}
+function inScopeOfRole(code){ return ancestry(code).some(n=>n.code===code); }
+
+/* ---------- shared card fragments ---------- */
+function dnum(label, value, sub, opts){
+  const o = opts||{};
+  return `<button type="button" class="dnum ${o.tone?"tone-"+o.tone:""}"
+    data-drill="${o.kind}" data-metric="${o.key}"
+    aria-label="${esc(label)}: ${esc(value)}. Open the break-up.">
+    <span class="k">${esc(label)}<svg width="12" height="12" aria-hidden="true"><use href="#i-info"/></svg></span>
+    <span class="v num">${value}</span>${sub?`<span class="s">${sub}</span>`:""}</button>`;
+}
+function barRow(label, val, share, color){
+  return `<div class="bar"><span class="bl">${esc(label)}</span>
+    <span class="track"><span class="fill" style="width:${Math.max(share,1.5)}%;background:${color}"></span></span>
+    <span class="bv num">${val}<i>${share}%</i></span></div>`;
+}
+function cardHead(icon, title, purpose, aside){
+  return `<header><span class="ico"><svg width="16" height="16" aria-hidden="true"><use href="#i-${icon}"/></svg></span>
+    <div><h3>${esc(title)}</h3><p class="purpose">${esc(purpose)}</p></div>
+    ${aside?`<div class="hdr-aside">${aside}</div>`:""}</header>`;
+}
+function hintline(txt){
+  return `<p class="hintline"><svg width="13" height="13" aria-hidden="true"><use href="#i-info"/></svg>
+    <span>${txt}</span></p>`;
+}
+
+/* ---------- cards ---------- */
+function cardLifecycle(n){
+  const a=n.adarsh, base=a.eligible;
+  const cols=F.lifecycle.cols, tones=["","","","good"];
+  const colors=["var(--ds-primary-300)","var(--ds-primary-400)","var(--ds-primary-600)","var(--ds-success-500)"];
+  return `<section class="card">
+    ${cardHead("funnel","Village Lifecycle","Eligibility → plan → approval → declaration")}
+    <div class="metrics">${cols.map((c,i)=>dnum(c.label, fN(a[c.k]),
+      i===0?"100% base":`${pct(a[c.k],base)}% of eligible`,
+      {kind:"lifecycle",key:c.k,tone:tones[i]})).join("")}</div>
+    <div class="bars">${cols.map((c,i)=>barRow(c.label, fN(a[c.k]), pct(a[c.k],base), colors[i])).join("")}</div>
+    ${hintline(`Showing <b>${esc(n.name)}</b>${n.level==="national"?" — all states in this dataset":""}.
+      Every percentage is of <b>Eligible Villages</b>. Click any number for the
+      ${n.level==="national"?"state":n.level==="state"?"district":"block"}-wise break-up with its definition.`)}
+  </section>`;
+}
+function cardActions(n, comp){
+  let items;
+  if(comp==="adarsh"){
+    const a=n.adarsh, e=a.eligible;
+    items=[
+      { t:"VDP Not Generated", d:"Eligible villages with no Village Development Plan drafted.",
+        v:a.eligible-a.vdp, p:pct(a.eligible-a.vdp,e), metric:"vdp", sev:"high" },
+      { t:"DLCC Approval Pending", d:"Plans drafted but not yet approved by the district committee.",
+        v:a.vdp-a.dlcc, p:pct(a.vdp-a.dlcc,e), metric:"dlcc", sev:"high" },
+      { t:"Approved, Not Declared", d:"Plans approved by DLCC but the village is not yet declared.",
+        v:a.dlcc-a.declared, p:pct(a.dlcc-a.declared,e), metric:"declared", sev:"" }
+    ];
+  } else {
+    const p=n[comp], t=p.total;
+    items=[
+      { t:"Pending Decision", d:"Proposals awaiting a decision at any approval stage.",
+        v:p.pending, p:pct(p.pending,t), metric:"pending", sev:"high", kind:"pipeline" },
+      { t:"Returned for Correction", d:"Sent back to the submitting authority.",
+        v:p.returned, p:pct(p.returned,t), metric:"returned", sev:"", kind:"pipeline" },
+      { t:"Rejected", d:"Rejected after scrutiny — no further action in this cycle.",
+        v:p.rejected, p:pct(p.rejected,t), metric:"rejected", sev:"", kind:"pipeline" }
+    ];
+    if(comp==="hostel") items.push({ t:"Legacy Backlog", d:"Pre-PM-AJAY proposals migrated into this portal.",
+        v:p.legacy, p:pct(p.legacy,t), metric:"legacy", sev:"", kind:"pipeline" });
+  }
+  const f=n[comp==="adarsh"?"adarsh":comp];
+  const ucGap=f.relDG-f.uc;
+  return `<section class="card">
+    ${cardHead("warn","Action Items","What is stuck, and where — computed from the figures on the left")}
+    <div class="actions">
+      ${items.map(i=>`<button type="button" class="aitem ${i.sev==="high"?"sev-high":""}"
+        data-drill="${i.kind||"lifecycle"}" data-metric="${i.metric}">
+        <span class="txt"><span class="t">${esc(i.t)}</span><span class="d">${esc(i.d)}</span></span>
+        <span class="n"><b class="num">${fN(i.v)}</b><span>${i.p}% of ${comp==="adarsh"?"eligible":"total"}</span></span>
+      </button>`).join("")}
+      <button type="button" class="aitem" data-drill="finance" data-metric="uc">
+        <span class="txt"><span class="t">Utilisation Certificates Pending</span>
+        <span class="d">Released to GP but no UC submitted by the State.</span></span>
+        <span class="n"><b class="num">${fCr(ucGap)}</b><span>${pct(ucGap,f.relDG)}% of district release</span></span>
+      </button>
+    </div>
+    ${hintline("Every value here is the gap between two adjacent stages of the cards on the left, computed in the page. It cannot disagree with them.")}
+  </section>`;
+}
+/* On the rollup tab the money must be all three components summed (R6) — showing
+   one component's cascade under an unqualified "Financial Progress" heading is
+   exactly the scope incoherence this redesign exists to remove (R1). */
+function allFinance(n){
+  const o={}; ["sanction","relSD","relDG","uc"].forEach(k=>
+    o[k]= n.adarsh[k] + n.gia[k] + n.hostel[k]); return o;
+}
+const finOf = (n, comp) => comp==="all" ? allFinance(n) : n[comp];
+
+function cardFinance(n, comp){
+  const f=finOf(n,comp), cols=F.finance.cols, base=f.sanction;
+  const colors=["var(--ds-primary-600)","var(--ds-primary-400)","var(--ds-primary-300)","var(--ds-success-500)"];
+  const gap=f.relDG-f.uc;
+  return `<section class="card">
+    ${cardHead("rupee","Financial Progress", comp==="all"
+      ? "Sanction → release cascade → utilisation, all three components summed"
+      : `Sanction → release cascade → utilisation · ${COMPONENTS[comp].short}`)}
+    <div class="metrics">${cols.map(c=>dnum(c.label, fCr(f[c.k]), "", {kind:"finance",key:c.k})).join("")}</div>
+    <div class="bars">${cols.map((c,i)=>barRow(c.label, fCr(f[c.k]), pct(f[c.k],base), colors[i])).join("")}</div>
+    <p class="read warn">UC pending against district-level release: <b>${fCr(gap)}</b> —
+      ${pct(gap,f.relDG)}% of what has reached Gram Panchayat level is still unaccounted for.</p>
+    ${hintline("Each bar is a percentage of <b>Mother Sanction Issued</b>. Click any amount for the financial break-up one level down.")}
+  </section>`;
+}
+function cardIndicator(n){
+  const m=n.adarsh.ind[S.indicator], base=m.identified;
+  const opts=INDICATORS.map(i=>`<option value="${i.id}"${i.id===S.indicator?" selected":""}>${esc(i.label)}</option>`).join("");
+  const seg=[["Completed",m.completed,"var(--ds-success-500)"],["In Progress",m.inProgress,"var(--ds-primary-400)"],
+             ["Pending",m.pending,"var(--ds-warning-500)"]];
+  return `<section class="card">
+    ${cardHead("chart","Monitoring Indicator Progress","Physical progress on the selected monitorable indicator")}
+    <div class="field" style="min-width:0;margin-bottom:12px">
+      <label for="indsel">Monitorable indicator</label>
+      <select id="indsel" data-indicator style="max-width:100%">${opts}</select>
+    </div>
+    <div class="metrics">
+      ${dnum("Projects Identified",fN(m.identified),"100% base",{kind:"indicator",key:"identified"})}
+      ${dnum("Total Cost Identified",fCr(m.cost),"",{kind:"indicator",key:"cost"})}
+      ${dnum("Completed",fN(m.completed),`${pct(m.completed,base)}% of identified`,{kind:"indicator",key:"completed",tone:"good"})}
+      ${dnum("In Progress",fN(m.inProgress),`${pct(m.inProgress,base)}% of identified`,{kind:"indicator",key:"inProgress"})}
+    </div>
+    <div class="stack" role="img" aria-label="Completed ${fN(m.completed)}, in progress ${fN(m.inProgress)}, pending ${fN(m.pending)}">
+      ${seg.map(([l,v,c])=>`<span style="width:${pct(v,base)}%;background:${c}" title="${l}">${pct(v,base)>7?fN(v):""}</span>`).join("")}
+    </div>
+    <div class="legend">${seg.map(([l,v,c])=>`<span><i style="background:${c}"></i>${l} — <b class="num">${fN(v)}</b></span>`).join("")}</div>
+    <p class="read">Beneficiary coverage — <b class="num">${fN(m.benCov)}</b> of <b class="num">${fN(m.benTot)}</b>
+      households reached (${pct(m.benCov,m.benTot)}%).</p>
+    ${hintline("Click <b>Completed</b> for the beneficiary spread one level down.")}
+  </section>`;
+}
+function cardPipeline(n, comp){
+  const p=n[comp], fam=familyFor(comp,"pipeline"), base=p.total;
+  const seg=[["Approved",p.approved,"var(--ds-success-500)"],["Pending",p.pending,"var(--ds-warning-500)"],
+             ["Returned",p.returned,"var(--ds-primary-400)"],["Rejected",p.rejected,"var(--ds-danger-500)"]];
+  if(comp==="hostel") seg.splice(1,0,["Legacy",p.legacy,"var(--ds-primary-600)"]);
+  const tones={pending:"warn",rejected:"danger",approved:"good"};
+  return `<section class="card">
+    ${cardHead("grid",`${COMPONENTS[comp].short} — Application Status`,"Bifurcation of proposals by workflow stage",
+      `<span style="font-size:var(--t-body-3);color:var(--ink-hint)">Approval rate
+       <b style="color:var(--ds-success-700);font-size:var(--t-title-3)">${pct(p.approved,base)}%</b></span>`)}
+    <div class="metrics">${fam.cols.map(c=>dnum(c.label, fN(p[c.k]),
+      c.k==="total"?"100% base":`${pct(p[c.k],base)}% of total`,
+      {kind:"pipeline",key:c.k,tone:tones[c.k]})).join("")}</div>
+    <div class="stack" role="img" aria-label="Processing split">
+      ${seg.map(([l,v,c])=>`<span style="width:${pct(v,base)}%;background:${c}" title="${l}">${pct(v,base)>7?fN(v):""}</span>`).join("")}
+    </div>
+    <div class="legend">${seg.map(([l,v,c])=>`<span><i style="background:${c}"></i>${l} — <b class="num">${fN(v)}</b></span>`).join("")}</div>
+    ${hintline(`Showing <b>${esc(n.name)}</b>. Click any status count for the
+      ${n.level==="national"?"state":n.level==="state"?"district":"block"}-wise bifurcation.`)}
+  </section>`;
+}
+function cardSpread(n, comp){
+  const kids=n.children;
+  const key = comp==="adarsh" ? "declared" : "approved";
+  const label = comp==="adarsh" ? "Declared Adarsh Gram" : "Approved proposals";
+  const kidLabel = n.level==="national"?"states":n.level==="state"?"districts":"blocks";
+  if(!kids || !kids.length){
+    return `<section class="card">
+      ${cardHead("pin","Spread",`Where the work sits within ${n.name}`)}
+      <p class="read warn"><b>Block-level break-up is not available for ${esc(n.name)}.</b>
+      This prototype carries verified block names for Lucknow and Agra only. Availability elsewhere is
+      <b>Question 1 of the data contract</b> — the drill-down stops here rather than inventing a level.</p>
+    </section>`;
+  }
+  const rows=[...kids].map(k=>({ name:k.name, code:k.code,
+      v: comp==="adarsh" ? k.adarsh[key] : k[comp][key] }))
+    .sort((a,b)=>b.v-a.v);
+  const max=rows[0].v||1;
+  return `<section class="card">
+    ${cardHead("pin","Spread",`${label} across ${kidLabel} of ${n.name} — highest first`)}
+    <div class="bars">${rows.slice(0,8).map(r=>
+      `<div class="bar"><span class="bl">${esc(r.name)}</span>
+       <span class="track"><span class="fill" style="width:${Math.max(pct(r.v,max),1.5)}%;background:var(--ds-primary-500)"></span></span>
+       <span class="bv num">${fN(r.v)}</span></div>`).join("")}</div>
+    ${hintline(`This answers <b>“where”</b>. Narrow the scope selector to a ${kidLabel.slice(0,-1)}, or click a number above to reach the same level with full definitions.`)}
+  </section>`;
+}
+
+/* ---------- rollup ---------- */
+function cardRollup(n){
+  const rows=[
+    { c:"adarsh", universe:["Eligible villages", fN(n.adarsh.eligible)],
+      done:["Declared Adarsh Gram", fN(n.adarsh.declared), pct(n.adarsh.declared,n.adarsh.eligible)],
+      stuck:["Not yet declared", fN(n.adarsh.eligible-n.adarsh.declared)] },
+    { c:"gia", universe:["Total projects", fN(n.gia.total)],
+      done:["Approved", fN(n.gia.approved), pct(n.gia.approved,n.gia.total)],
+      stuck:["Pending / returned / rejected", fN(n.gia.pending+n.gia.returned+n.gia.rejected)] },
+    { c:"hostel", universe:["Total proposals", fN(n.hostel.total)],
+      done:["Approved", fN(n.hostel.approved), pct(n.hostel.approved,n.hostel.total)],
+      stuck:["Pending / returned / rejected", fN(n.hostel.pending+n.hostel.returned+n.hostel.rejected)] }
+  ];
+  const sanction=n.adarsh.sanction+n.gia.sanction+n.hostel.sanction;
+  const uc=n.adarsh.uc+n.gia.uc+n.hostel.uc;
+  return `<section class="card">
+    ${cardHead("grid","All Components — Comparison",`Derived from the three component dashboards. Nothing here is authored independently.`)}
+    <div class="tblwrap"><table class="data">
+      <caption>Scope: ${esc(n.name)} · FY ${S.fy} · figures illustrative</caption>
+      <thead><tr><th scope="col">Component</th><th scope="col">Universe</th><th scope="col">Completed / approved</th>
+        <th scope="col">Rate</th><th scope="col">Outstanding</th><th scope="col">Sanctioned</th>
+        <th scope="col">UC submitted</th><th scope="col">Utilisation</th></tr></thead>
+      <tbody>${rows.map(r=>{ const f=n[r.c];
+        return `<tr class="clickable" data-gotab="${r.c}">
+          <td><span class="rowname"><b>${esc(COMPONENTS[r.c].label)}</b>
+            <svg width="13" height="13" aria-hidden="true"><use href="#i-chev"/></svg></span></td>
+          <td class="num">${r.universe[1]}<br><span style="font-size:var(--t-label-3);color:var(--ink-hint)">${esc(r.universe[0])}</span></td>
+          <td class="num hi">${r.done[1]}</td><td class="num">${r.done[2]}%</td>
+          <td class="num" style="color:var(--ds-warning-700)">${r.stuck[1]}</td>
+          <td class="num">${fCr(f.sanction)}</td><td class="num">${fCr(f.uc)}</td>
+          <td class="num">${pct(f.uc,f.sanction)}%</td></tr>`; }).join("")}</tbody>
+      <tfoot><tr><td>All components</td><td>—</td><td>—</td><td>—</td><td>—</td>
+        <td class="num">${fCr(sanction)}</td><td class="num">${fCr(uc)}</td>
+        <td class="num">${pct(uc,sanction)}%</td></tr></tfoot>
+    </table></div>
+    ${hintline("Click a component row to open its own dashboard at the same scope.")}
+  </section>`;
+}
+
+/* ---------- drill view ---------- */
+function drillView(){
+  const { kind, metric } = S.drill;
+  const n = node();
+  const comp = S.tab;
+  const compLabel = comp==="all" ? "All components" : COMPONENTS[comp].label;
+  const fam = familyFor(comp==="all" ? "gia" : comp, kind);
+  const col = fam.cols.find(c=>c.k===metric) ||
+              (kind==="indicator" ? {k:metric,label:"Total Cost Identified",def:"Estimated cost of all works identified against the selected indicator.",denom:"—",fmt:fCr} : fam.cols[0]);
+  const kids = n.children;
+  const childLabel = n.level==="national" ? "State" : n.level==="state" ? "District" : "Block";
+
+  const cellOf = (x, k) =>
+      kind==="indicator" ? x.adarsh.ind[S.indicator][k]
+    : kind==="lifecycle" ? x.adarsh[k]
+    : kind==="finance"   ? finOf(x, comp)[k]
+    :                      x[comp][k];
+  const val = (x) => cellOf(x, metric);
+  const cols = fam.cols;
+  const rowVals = (x) => cols.map(c=>({ k:c.k, v:cellOf(x,c.k), txt:c.fmt(cellOf(x,c.k)) }));
+
+  if(!kids || !kids.length){
+    return `<div class="drillhead">
+        <button type="button" class="btn-back" data-back><svg width="14" height="14" aria-hidden="true"><use href="#i-back"/></svg> Back to dashboard</button>
+        <span class="chip">${esc(col.label)}</span></div>
+      <section class="card"><p class="read warn">
+        <b>${esc(n.name)} is the lowest level available in this prototype.</b>
+        Block-level data is carried for Lucknow and Agra only; below-block data is not modelled at all.
+        How deep each component really goes is <b>Question 1 of the data contract</b>.</p></section>`;
+  }
+
+  const total = kids.reduce((a,k)=>a+val(k),0);
+  const sorted = [...kids].sort((a,b)=>val(b)-val(a));
+  const max = val(sorted[0])||1;
+
+  return `
+  <div class="drillhead">
+    <button type="button" class="btn-back" data-back><svg width="14" height="14" aria-hidden="true"><use href="#i-back"/></svg> Back to dashboard</button>
+    <span class="chip">${esc(col.label)}</span>
+    <span style="font-size:var(--t-body-3);color:var(--ink-hint)">${esc(compLabel)} · ${esc(n.name)} · FY ${S.fy}</span>
+  </div>
+  <div class="defbox">
+    <svg width="18" height="18" aria-hidden="true"><use href="#i-info"/></svg>
+    <div>
+      <h4>What this number means</h4>
+      <p>${esc(col.def)}</p>
+      <dl>
+        <div><dt>Denominator</dt><dd>${esc(col.denom)}</dd></div>
+        <div><dt>Scope</dt><dd>${esc(n.name)} · FY ${S.fy}</dd></div>
+        <div><dt>Break-up level</dt><dd>${childLabel}-wise${n.level!=="district"?" · rows are clickable to go one level deeper":""}</dd></div>
+      </dl>
+    </div>
+  </div>
+  <div class="grid drill">
+    <section class="card" style="margin:0">
+      <div class="tblwrap"><table class="data">
+        <caption>${esc(col.label)} — ${childLabel.toLowerCase()}-wise break-up of ${esc(n.name)}</caption>
+        <thead><tr><th scope="col">${childLabel}</th>
+          ${cols.map(c=>`<th scope="col">${esc(c.label)}</th>`).join("")}
+          <th scope="col">Share</th></tr></thead>
+        <tbody>${sorted.map(k=>{
+          const deeper = k.children && k.children.length;
+          /* The row is clickable for the mouse, but the drill must also be
+             reachable by keyboard — hence a real button inside the name cell.
+             Both carry data-godeep; the click delegation resolves either. */
+          return `<tr class="${deeper?"clickable":""}" ${deeper?`data-godeep="${k.code}"`:""}>
+            <td>${deeper
+              ? `<button type="button" class="rowname rowdrill" data-godeep="${k.code}"
+                   aria-label="Open ${esc(k.name)} — one level deeper">${esc(k.name)}
+                   <svg width="13" height="13" aria-hidden="true"><use href="#i-chev"/></svg></button>`
+              : `<span class="rowname">${esc(k.name)}</span>`}</td>
+            ${rowVals(k).map(r=>`<td class="num ${r.k===metric?"hi":""}">${r.txt}</td>`).join("")}
+            <td class="num">${pct(val(k),total)}%</td></tr>`; }).join("")}</tbody>
+        <tfoot><tr><td>${esc(n.name)} — Total</td>
+          ${cols.map(c=>{ const t=kids.reduce((a,k)=>a+cellOf(k,c.k),0);
+            return `<td class="num">${c.fmt(t)}</td>`; }).join("")}
+          <td class="num">100%</td></tr></tfoot>
+      </table></div>
+    </section>
+    <section class="card" style="margin:0">
+      ${cardHead("chart",`${col.label} by ${childLabel.toLowerCase()}`,"Same column as the highlighted table column")}
+      <div class="bars">${sorted.map(k=>
+        `<div class="bar"><span class="bl">${esc(k.name)}</span>
+          <span class="track"><span class="fill" style="width:${Math.max(pct(val(k),max),1.5)}%;background:var(--ds-secondary-500)"></span></span>
+          <span class="bv num">${col.fmt(val(k))}</span></div>`).join("")}</div>
+      ${hintline("The table footer equals the sum of its rows, and the sum equals the figure you clicked. Totals are never authored separately.")}
+    </section>
+  </div>`;
+}
+
+/* ---------- executive summary ---------- */
+function execView(){
+  const n=node(), a=n.adarsh;
+  const sanction=a.sanction+n.gia.sanction+n.hostel.sanction;
+  const uc=a.uc+n.gia.uc+n.hostel.uc;
+  const states=(rootOf().children||[]).length?rootOf().children:[rootOf()];
+  const top=[...states].sort((x,y)=>y.adarsh.declared-x.adarsh.declared);
+  return `
+  <div class="pagehead">
+    <p class="eyebrow">Ministry / Admin</p>
+    <h2>Executive Summary</h2>
+    <p>One screen for the Secretary — the three components, the money, and the three largest blockages.
+      Printable as-is. Scope: <b>${esc(n.name)}</b> · FY ${S.fy}.</p>
+  </div>
+  <div class="exec-kpis">
+    <div class="ekpi"><p class="k">Villages declared</p><p class="v num">${fN(a.declared)}</p>
+      <p class="s">${pct(a.declared,a.eligible)}% of ${fN(a.eligible)} eligible</p></div>
+    <div class="ekpi"><p class="k">Proposals approved</p><p class="v num">${fN(n.gia.approved+n.hostel.approved)}</p>
+      <p class="s">GIA ${fN(n.gia.approved)} · Hostel ${fN(n.hostel.approved)}</p></div>
+    <div class="ekpi"><p class="k">Sanctioned</p><p class="v num">${fCr(sanction)}</p>
+      <p class="s">across all three components</p></div>
+    <div class="ekpi"><p class="k">Utilisation certified</p><p class="v num">${pct(uc,sanction)}%</p>
+      <p class="s">${fCr(uc)} of ${fCr(sanction)}</p></div>
+  </div>
+  <div class="grid even">
+    <section class="card" style="margin:0">
+      ${cardHead("warn","Three largest blockages","Ranked by volume — each one is a worklist, not a statistic")}
+      <div class="actions">
+        <div class="aitem sev-high" style="cursor:default"><span class="txt">
+          <span class="t">Villages with no VDP drafted</span>
+          <span class="d">No Village Development Plan exists, so nothing downstream can start.</span></span>
+          <span class="n"><b class="num">${fN(a.eligible-a.vdp)}</b><span>${pct(a.eligible-a.vdp,a.eligible)}% of eligible</span></span></div>
+        <div class="aitem sev-high" style="cursor:default"><span class="txt">
+          <span class="t">Plans awaiting DLCC approval</span>
+          <span class="d">Drafted but not cleared by the District Level Convergence Committee.</span></span>
+          <span class="n"><b class="num">${fN(a.vdp-a.dlcc)}</b><span>${pct(a.vdp-a.dlcc,a.eligible)}% of eligible</span></span></div>
+        <div class="aitem" style="cursor:default"><span class="txt">
+          <span class="t">Utilisation Certificates outstanding</span>
+          <span class="d">Funds have reached the ground; the certificate has not come back.</span></span>
+          <span class="n"><b class="num">${fCr(sanction-uc)}</b><span>${100-pct(uc,sanction)}% of sanction</span></span></div>
+      </div>
+    </section>
+    <section class="card" style="margin:0">
+      ${cardHead("chart","States by villages declared","Adarsh Gram — the component with the widest spread")}
+      <div class="bars">${top.map(s=>
+        `<div class="bar"><span class="bl">${esc(s.name)}</span>
+         <span class="track"><span class="fill" style="width:${Math.max(pct(s.adarsh.declared,top[0].adarsh.declared),1.5)}%;background:var(--ds-primary-500)"></span></span>
+         <span class="bv num">${fN(s.adarsh.declared)}<i>${pct(s.adarsh.declared,s.adarsh.eligible)}%</i></span></div>`).join("")}</div>
+      ${hintline("Percentage shown is each state's own declaration rate against its own eligible villages — not its share of the national total.")}
+    </section>
+  </div>`;
+}
+
+/* ---------- scope bar + tabs ---------- */
+function scopeBar(){
+  const chain=ancestry(S.scope);
+  const role=ROLE[S.role];
+  const root=rootOf();
+  const opts=[];
+  const push=(n,depth)=>{ opts.push(`<option value="${n.code}"${n.code===S.scope?" selected":""}>${" ".repeat(depth*3)}${esc(n.name)}</option>`);
+    (n.children||[]).forEach(c=>push(c,depth+1)); };
+  push(root,0);
+  return `<div class="scopebar">
+    <span class="rolebadge">${esc(role.label)}</span>
+    <nav class="crumbs" aria-label="Scope breadcrumb">
+      ${chain.map((n,i)=> i===chain.length-1
+        ? `<span class="cur">${esc(n.name)}</span>`
+        : `<button type="button" data-scope="${n.code}">${esc(n.name)}</button><span class="sep" aria-hidden="true">›</span>`).join("")}
+      ${S.tab!=="all"?`<span class="sep" aria-hidden="true">·</span><span class="cur">${esc(COMPONENTS[S.tab].short)}</span>`:""}
+      <span class="sep" aria-hidden="true">·</span><span class="cur">${S.fy}</span>
+    </nav>
+    <div class="selects">
+      <div class="field"><label for="scopesel">Geography</label>
+        <select id="scopesel" data-scopesel>${opts.join("")}</select></div>
+      <div class="field"><label for="fysel">Financial year</label>
+        <select id="fysel" data-fysel>${FY.map(f=>`<option${f===S.fy?" selected":""}>${f}</option>`).join("")}</select></div>
+      <div class="field"><label for="persel">Period</label>
+        <select id="persel" disabled><option>Annual</option></select>
+        <span class="qflag">Quarterly capture unconfirmed — Q2 of the data contract</span></div>
+    </div>
+  </div>`;
+}
+function tabsBar(){
+  const t=[["all","All components"],["gia","Grant-in-Aid (GIA)"],["hostel","Hostel"],["adarsh","Adarsh Gram (PMAGY)"]];
+  return `<div class="tabs" role="tablist" aria-label="Programme component">
+    ${t.map(([id,l])=>`<button type="button" role="tab" data-tab="${id}"
+      aria-selected="${S.tab===id}">${esc(l)}</button>`).join("")}</div>`;
+}
+
+/* ---------- render ---------- */
+function dashboardView(){
+  const n=node();
+  const head=`<div class="pagehead">
+    <p class="eyebrow">Ministry / Admin</p>
+    <h2>Unified Programme Monitoring</h2>
+    <p>One view across Grant-in-Aid, Hostel and Adarsh Gram. Every number is defined, and drills down
+      to State → District → Block. Geographic level is a filter here, never a menu item.</p></div>`;
+  if(S.tab==="all"){
+    return head+scopeBar()+tabsBar()+cardRollup(n)+
+      `<div class="grid even">${cardFinance(n,"all").replace('class="card"','class="card" style="margin:0"')}
+        ${cardSpread(n,"adarsh").replace('class="card"','class="card" style="margin:0"')}</div>`;
+  }
+  if(S.tab==="adarsh"){
+    return head+scopeBar()+tabsBar()+
+      `<div class="grid">${cardLifecycle(n)}${cardActions(n,"adarsh")}</div>
+       <div class="grid even">${cardIndicator(n)}${cardFinance(n,"adarsh")}</div>
+       <div class="grid full">${cardSpread(n,"adarsh")}</div>`;
+  }
+  const c=S.tab;
+  return head+scopeBar()+tabsBar()+
+    `<div class="grid">${cardPipeline(n,c)}${cardActions(n,c)}</div>
+     <div class="grid even">${cardFinance(n,c)}${cardSpread(n,c)}</div>`;
+}
+function render(){
+  const el=document.getElementById("view");
+  if(S.page==="exec"){ el.innerHTML=scopeBar()+execView(); }
+  else if(S.drill){ el.innerHTML=`<div class="pagehead"><p class="eyebrow">Ministry / Admin</p>
+      <h2>Unified Programme Monitoring</h2></div>`+scopeBar()+tabsBar()+drillView(); }
+  else { el.innerHTML=dashboardView(); }
+  document.querySelectorAll(".side .nav").forEach(b=>{
+    const on = b.dataset.page===S.page && (!b.dataset.tab || b.dataset.tab===S.tab)
+      && (S.page!=="dashboard" || b.dataset.tab || S.tab==="all");
+    if(on) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current");
+  });
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click", e=>{
+  const t=e.target.closest("[data-drill],[data-back],[data-scope],[data-tab],[data-godeep],[data-gotab],[data-page],[data-role],[data-zoom],[data-contrast]");
+  if(!t) return;
+  if(t.dataset.role){ S.role=t.dataset.role; S.scope=ROLE[S.role].root; S.drill=null;
+    document.querySelectorAll("[data-role]").forEach(b=>b.setAttribute("aria-pressed", String(b===t)));
+    render(); return; }
+  if(t.dataset.zoom!==undefined){ const z=+t.dataset.zoom;
+    const cur=parseFloat(document.documentElement.style.fontSize||"16");
+    document.documentElement.style.fontSize = z===0?"16px":Math.min(20,Math.max(13,cur+z))+"px"; return; }
+  if(t.hasAttribute("data-contrast")){ const on=t.getAttribute("aria-pressed")==="true";
+    t.setAttribute("aria-pressed",String(!on));
+    document.body.style.filter = on?"":"contrast(1.18) saturate(1.1)"; return; }
+  if(t.dataset.page){ S.page=t.dataset.page; S.drill=null;
+    if(t.dataset.tab){ S.tab=t.dataset.tab; } else if(t.dataset.page==="dashboard"){ S.tab="all"; }
+    render(); window.scrollTo({top:0,behavior:"smooth"}); return; }
+  if(t.dataset.gotab){ S.tab=t.dataset.gotab; S.drill=null; render(); return; }
+  if(t.dataset.tab){ S.tab=t.dataset.tab; S.drill=null; render(); return; }
+  if(t.dataset.scope){ S.scope=t.dataset.scope; S.drill=null; render(); return; }
+  if(t.dataset.godeep){ S.scope=t.dataset.godeep; render(); return; }
+  if(t.hasAttribute("data-back")){ S.drill=null; render(); return; }
+  if(t.dataset.drill){
+    S.drill={ kind:t.dataset.drill, metric:t.dataset.metric };
+    render(); window.scrollTo({top:0,behavior:"smooth"}); return; }
+});
+document.addEventListener("change", e=>{
+  if(e.target.matches("[data-scopesel]")){ S.scope=e.target.value; S.drill=null; render(); }
+  if(e.target.matches("[data-fysel]")){ S.fy=e.target.value; T=buildTree(S.fy); render(); }
+  if(e.target.matches("[data-indicator]")){ S.indicator=e.target.value; render(); }
+});
+
+render();
+</script>
+</body>
+</html>
