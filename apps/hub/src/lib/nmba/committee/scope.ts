@@ -24,6 +24,15 @@ export function isVisible(record: CommitteeRecord, viewer: PortalSession): boole
       return record.state === viewer.state;
     case "DISTRICT":
       return record.state === viewer.state && record.district === viewer.district;
+    case "BLOCK":
+      return (
+        record.state === viewer.state &&
+        record.district === viewer.district &&
+        record.block === viewer.block
+      );
+    case "ENTITY":
+      // Non-geographic reporters have no committee jurisdiction at all.
+      return false;
   }
 }
 
@@ -39,23 +48,29 @@ export function visibleRecords(
 /** Which committee tiers appear in this role's sidebar. */
 export function tiersForRole(role: PortalSession["role"]): CommitteeTier[] {
   if (role === "DISTRICT") return ["DISTRICT", "BLOCK"];
+  // BLOCK and ENTITY logins exist for Mass Pledge only — NAPDDR stays a
+  // State/District responsibility, so they get no committee tiers.
+  if (role === "BLOCK" || role === "ENTITY") return [];
   // ADMIN and STATE both see all three tiers (Admin read-only, State scoped).
   return ["STATE", "DISTRICT", "BLOCK"];
 }
 
 /** Can this session register a new committee at `tier`? (Admin never adds.) */
 export function canAddAtTier(session: PortalSession, tier: CommitteeTier): boolean {
-  if (session.role === "ADMIN") return false;
   if (session.role === "STATE") return true; // state, district or block within their state
-  // DISTRICT
-  return tier === "DISTRICT" || tier === "BLOCK";
+  if (session.role === "DISTRICT") return tier === "DISTRICT" || tier === "BLOCK";
+  // ADMIN is oversight-only; BLOCK and ENTITY are outside the committee flow.
+  return false;
 }
 
 /** Can this session edit a specific record (e.g. add minutes)? */
 export function canManage(record: CommitteeRecord, session: PortalSession): boolean {
-  if (session.role === "ADMIN") return false;
   if (session.role === "STATE") return record.state === session.state;
-  return record.state === session.state && record.district === session.district;
+  if (session.role === "DISTRICT") {
+    return record.state === session.state && record.district === session.district;
+  }
+  // ADMIN is oversight-only; BLOCK and ENTITY are outside the committee flow.
+  return false;
 }
 
 /**

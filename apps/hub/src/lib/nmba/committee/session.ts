@@ -8,7 +8,9 @@ import type { CommitteeTier, PortalRole, PortalSession } from "./types";
 /** The existing portal session cookie (unchanged name). */
 export const PORTAL_SESSION_COOKIE = "nmba_admin_session";
 
-const ROLES: PortalRole[] = ["ADMIN", "STATE", "DISTRICT"];
+const ROLES: PortalRole[] = ["ADMIN", "STATE", "DISTRICT", "BLOCK", "ENTITY"];
+
+const ENTITY_KINDS = ["LINE_MINISTRY", "SPIRITUAL_ORG", "HEI", "GIA"] as const;
 
 /** Fallback for the legacy opaque cookie value (`mock-session-token`). */
 const LEGACY_ADMIN_SESSION: PortalSession = {
@@ -40,6 +42,22 @@ export function decodeSession(raw: string | undefined): PortalSession | null {
     if (parsed.role === "DISTRICT" && (typeof parsed.state !== "string" || typeof parsed.district !== "string")) {
       return null;
     }
+    if (
+      parsed.role === "BLOCK" &&
+      (typeof parsed.state !== "string" ||
+        typeof parsed.district !== "string" ||
+        typeof parsed.block !== "string")
+    ) {
+      return null;
+    }
+    if (
+      parsed.role === "ENTITY" &&
+      (typeof parsed.entityName !== "string" ||
+        !parsed.entityKind ||
+        !ENTITY_KINDS.includes(parsed.entityKind))
+    ) {
+      return null;
+    }
     return parsed as PortalSession;
   } catch {
     // A non-JSON but present cookie → treat as a legacy admin session.
@@ -68,5 +86,25 @@ export function roleLabel(role: PortalRole): string {
       return "State Nodal Officer";
     case "DISTRICT":
       return "District Nodal Officer";
+    case "BLOCK":
+      return "Block Nodal Officer";
+    case "ENTITY":
+      return "Reporting Organisation";
+  }
+}
+
+/** Scope line for the account chip, e.g. "Haveli, Pune, Maharashtra". */
+export function scopeLabel(session: PortalSession): string {
+  switch (session.role) {
+    case "ADMIN":
+      return "All States & UTs";
+    case "STATE":
+      return session.state ?? "";
+    case "DISTRICT":
+      return [session.district, session.state].filter(Boolean).join(", ");
+    case "BLOCK":
+      return [session.block, session.district, session.state].filter(Boolean).join(", ");
+    case "ENTITY":
+      return session.entityName ?? "";
   }
 }

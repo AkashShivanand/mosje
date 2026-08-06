@@ -48,19 +48,36 @@ export interface CommitteeRecord {
 }
 
 /**
- * Portal roles that already exist in the NMBA portal (see `src/lib/types.ts`).
- * The NAPDDR flow is scoped by these — it does NOT introduce new roles.
+ * Portal roles in the NMBA portal.
  *   ADMIN    → all States/UTs, districts, blocks (view + reports)
  *   STATE    → State Nodal Officer: own state (+ its districts & blocks)
  *   DISTRICT → District Nodal Officer: own district (+ its blocks)
+ *   BLOCK    → Block Nodal Officer: own block only
+ *   ENTITY   → a non-geographic reporter (Line Ministry, Spiritual Organisation,
+ *              Higher Education Institution, GIA); scoped by `entityKind`
+ *
+ * BLOCK and ENTITY were added for Mass Pledge reporting: the requirement puts
+ * blocks at the bottom of the approval chain, and gives four organisation types
+ * their own reporting forms. NAPDDR predates both and is unaffected —
+ * `tiersForRole` and `canAddAtTier` keep them out of the committee flow, which
+ * stays a State/District responsibility.
  */
-export type PortalRole = "ADMIN" | "STATE" | "DISTRICT";
+export type PortalRole = "ADMIN" | "STATE" | "DISTRICT" | "BLOCK" | "ENTITY";
+
+/**
+ * The four non-geographic reporter types. They have no State/District/Block
+ * scope, so they carry their entity identity instead.
+ */
+export type PortalEntityKind = "LINE_MINISTRY" | "SPIRITUAL_ORG" | "HEI" | "GIA";
 
 /** The authenticated portal user, carried on the existing admin session cookie. */
 export interface PortalSession {
   role: PortalRole;
   accountId: string; // login mobile
   displayName: string;
-  state?: string; // STATE, DISTRICT
-  district?: string; // DISTRICT
+  state?: string; // STATE, DISTRICT, BLOCK
+  district?: string; // DISTRICT, BLOCK
+  block?: string; // BLOCK
+  entityKind?: PortalEntityKind; // ENTITY
+  entityName?: string; // ENTITY
 }

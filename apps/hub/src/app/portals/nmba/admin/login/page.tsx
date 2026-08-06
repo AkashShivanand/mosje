@@ -14,21 +14,40 @@ import { useToast } from "@/components/nmba/toast";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 import { Button, Input, FormField, Alert, DemoFab, PortalLoginShell } from "@mosje/design-system";
 import { accountFromMobile, DEMO_PORTAL_ACCOUNTS } from "@/lib/nmba/committee/masters";
-import { PORTAL_SESSION_COOKIE, encodeSession, roleLabel } from "@/lib/nmba/committee/session";
+import {
+  ALL_MASS_PLEDGE_ACCOUNTS,
+  massPledgeAccountFromMobile,
+} from "@/lib/nmba/mass-pledge/masters";
+import { PORTAL_SESSION_COOKIE, encodeSession, roleLabel, scopeLabel } from "@/lib/nmba/committee/session";
 
 const BASE = "/portals/nmba";
 
-const DEMO_ACCOUNTS = DEMO_PORTAL_ACCOUNTS.map((a) => ({
-  role: roleLabel(a.session.role),
-  id: a.id,
-  password: a.password,
-}));
+// Both account sets sign in through this one form. The committee accounts are
+// the pre-existing portal logins; the Mass Pledge set adds the bottom of the
+// approval chain (Block) and the four non-geographic reporters.
+const DEMO_ACCOUNTS = [
+  ...DEMO_PORTAL_ACCOUNTS.map((a) => ({
+    role: roleLabel(a.session.role),
+    id: a.id,
+    password: a.password,
+  })),
+  ...ALL_MASS_PLEDGE_ACCOUNTS.map((a) => ({
+    // Spares are marked, because every other Mass Pledge account already owns a
+    // seeded report and the one-report-per-account rule will refuse a second.
+    role: `${roleLabel(a.session.role)} — ${scopeLabel(a.session)}${a.spare ? " · can file" : ""}`,
+    id: a.id,
+    password: a.password,
+  })),
+];
 
 /** Landing route per role after sign-in. */
 const LANDING: Record<string, string> = {
   ADMIN: `${BASE}/admin/dashboard`,
   STATE: `${BASE}/admin/napddr/state`,
   DISTRICT: `${BASE}/admin/napddr/district`,
+  // Block and organisation logins exist for Mass Pledge only, so they land there.
+  BLOCK: `${BASE}/admin/mass-pledge`,
+  ENTITY: `${BASE}/admin/mass-pledge`,
 };
 
 const TABS = [
@@ -52,7 +71,7 @@ export default function AdminLoginPage() {
 
     setTimeout(() => {
       setLoading(false);
-      const account = accountFromMobile(mobile);
+      const account = accountFromMobile(mobile) ?? massPledgeAccountFromMobile(mobile);
       if (account && password.length > 0) {
         document.cookie = `${PORTAL_SESSION_COOKIE}=${encodeSession(account.session)}; path=/; max-age=${60 * 60 * 8}`;
         toast("Logged in successfully.", "success");

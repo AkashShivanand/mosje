@@ -45,6 +45,10 @@ export function computeCoverage(records: CommitteeRecord[], session: PortalSessi
     ];
   }
 
+  // BLOCK and ENTITY are Mass Pledge logins with no committee jurisdiction, so
+  // there is nothing to report coverage on.
+  if (session.role === "BLOCK" || session.role === "ENTITY") return [];
+
   // DISTRICT — one district committee (1-max) plus free-text blocks with no
   // master list, so there is no meaningful denominator; only a block count.
   return [

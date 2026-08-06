@@ -65,10 +65,40 @@ All portal login pages must render a collapsible `<details>` panel below the sub
 | **SMILE Admin** | Super Admin | 9000000900 | Password@123 |
 | **SMILE Admin** | State Nodal Officer | 9000000901 | Password@123 |
 | **SMILE Admin** | District Nodal Officer | 9000000902 | Password@123 |
+| **NMBA — Mass Pledge** | Block Nodal Officer (Haveli, Pune, Maharashtra) | 9890005678 | Demo@123 |
+| **NMBA — Mass Pledge** | Line Ministry (Ministry of Education) | 9810007001 | Demo@123 |
+| **NMBA — Mass Pledge** | Spiritual Organisation (Brahma Kumaris) | 9810007002 | Demo@123 |
+| **NMBA — Mass Pledge** | Higher Education Institution (Delhi University) | 9810007003 | Demo@123 |
+| **NMBA — Mass Pledge** | GIA (Muktangan Rehabilitation Centre) | 9810007004 | Demo@123 |
+| **NMBA — Mass Pledge** *(spare, can file)* | Block Nodal Officer (Maval, Pune, Maharashtra) | 9890005679 | Demo@123 |
+| **NMBA — Mass Pledge** *(spare, can file)* | District Nodal Officer (Nashik, Maharashtra) | 9890001299 | Demo@123 |
+| **NMBA — Mass Pledge** *(spare, can file)* | Line Ministry (Youth Affairs & Sports) | 9810007011 | Demo@123 |
+| **NMBA — Mass Pledge** *(spare, can file)* | Spiritual Organisation (Ramakrishna Mission) | 9810007012 | Demo@123 |
+| **NMBA — Mass Pledge** *(spare, can file)* | Higher Education Institution (BHU) | 9810007013 | Demo@123 |
+| **NMBA — Mass Pledge** *(spare, can file)* | GIA (Navjeevan Rehabilitation Centre) | 9810007014 | Demo@123 |
 | **PM-AJAY** | Joint Secretary | JS001 | Password@123 |
 | **PM-AJAY** | District Secretary | DS002 | Password@123 |
 | **PM-AJAY** | State Officer | SO003 | Password@123 |
 | **PM-AJAY** | District Officer | DO005 | Password@123 |
+
+> **NMBA Mass Pledge (18 August 2026)** is a flow inside the **existing** NMBA portal (no separate
+> login/portal). The five documented reporting forms share one form component; the reporter's
+> identity and which form they see are resolved from the login. The five accounts above are new;
+> the existing Admin / State / District accounts are unchanged and also reach the flow. Block and
+> organisation logins deliberately see **only** the Mass Pledge section in the sidebar — they have
+> no NAPDDR committee jurisdiction. Admin oversees the rollup and cannot file a report.
+> Note the reporting window: the form is gated to 18–25 August 2026 **in IST**, and a dev-only
+> control on `/portals/nmba/admin/mass-pledge/new` switches between the before / open / closed states.
+>
+> **Why there are "spare" logins.** One report per account per event date (A9) is enforced on the
+> authenticated account, not on the organisation name typed into the form — keying it on the name
+> was exploitable, because an account that could pick a different name produced a different key
+> every time and could file without limit. The consequence is that the seeded accounts above
+> (which already own a submission) correctly refuse a second one, so the reporting form itself
+> could not be demonstrated from them. The spares own no seeded submission and exist purely to
+> demo the form. The Block spare sits in **Pune** deliberately: a report filed from it can be
+> approved by the existing Pune DNO (9890001234) and then by the Maharashtra SNO (9890123456),
+> demonstrating the full three-tier chain live rather than reading it off the seed data.
 
 > **NMBA NAPDDR Three-Tier Committee** is a flow inside the **existing** NMBA portal (no separate login/portal). The single portal login (`/portals/nmba/admin/login`) resolves the role (Admin / State Nodal Officer / District Nodal Officer) from the mobile number and lands each in the sidebar's "NAPDDR Three-Tier Committee" flow, scoped to their state/district. Admin sees all; State officer sees/manages its state (State, District & Block committees); District officer sees/manages its district (District & Block committees). Uses the shared `DemoFab`.
 
