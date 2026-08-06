@@ -9,6 +9,16 @@
       "autoPort": false
     },
     {
+      "name": "hub-gated",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "SITE_PASSWORD=local-preview exec npm --prefix apps/hub run start -- -p 3001"
+      ],
+      "port": 3001,
+      "autoPort": false
+    },
+    {
       "name": "storybook",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "apps/storybook", "run", "dev"],

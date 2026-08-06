@@ -1,5 +1,6 @@
 import { request as httpRequest } from "node:http";
 import { NextResponse, type NextRequest } from "next/server";
+import { GATE_COOKIE, gatePassword, gateToken, safeEqual } from "@/lib/site-gate";
 
 /**
  * Multi-zone resilience (dev-time safeguard).
@@ -101,6 +102,37 @@ const SMILE_ADMIN_SESSION_COOKIE = "smile_session"; // set by the client auth-co
 const PM_AJAY_PUBLIC = ["/portals/pm-ajay/login", "/portals/pm-ajay/forgot-password"];
 const PM_AJAY_SESSION_COOKIE = "pmajay_session"; // set by the client auth-context — keep exact name
 
+/*
+ * Site gate — shared-password wall in front of the entire deployed estate.
+ * See src/lib/site-gate.ts for the rationale and the cookie scheme.
+ *
+ * Assets the gate page itself needs must be reachable *before* unlocking, or
+ * the wall renders unstyled/broken. `/_next/static` and `/_next/image` are
+ * excluded by the matcher below; the emblem lives in public/ and so needs an
+ * explicit pass here.
+ */
+const GATE_PUBLIC_ASSETS = ["/images/National-Emblem-logo.svg"];
+
+async function gateRedirect(req: NextRequest): Promise<NextResponse | null> {
+  const password = gatePassword();
+  // Unset SITE_PASSWORD ⇒ gate disabled. This is the local-dev path, and it is
+  // the first thing checked so the proxy stays cheap on every request.
+  if (!password) return null;
+
+  const { pathname } = req.nextUrl;
+  if (pathname === "/gate" || pathname.startsWith("/gate/")) return null;
+  if (GATE_PUBLIC_ASSETS.includes(pathname)) return null;
+
+  const presented = req.cookies.get(GATE_COOKIE)?.value;
+  if (presented && safeEqual(presented, await gateToken(password))) return null;
+
+  const url = req.nextUrl.clone();
+  url.search = "";
+  url.pathname = "/gate";
+  url.searchParams.set("next", pathname + req.nextUrl.search);
+  return NextResponse.redirect(url);
+}
+
 const PROBE_TTL_MS     = 5_000;
 const PROBE_TIMEOUT_MS = 4_000; // generous for Turbopack cold-start on first hit
 const cache = new Map<string, { up: boolean; at: number }>();
@@ -134,6 +166,11 @@ async function zoneIsUp(probeUrl: string): Promise<boolean> {
 
 export async function proxy(req: NextRequest): Promise<NextResponse> {
   const { pathname } = req.nextUrl;
+
+  // Site gate runs first — nothing behind it should be reachable, including the
+  // portal login pages that the guards below treat as public.
+  const gated = await gateRedirect(req);
+  if (gated) return gated;
 
   // SMILE Admin route guard — must run in every environment (it's a real auth
   // check, not a dev convenience), so it sits before the dev-only production
@@ -191,11 +228,18 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
 
 export const config = {
   matcher: [
-    // /website is intentionally absent: the DoSJE website is a native route now,
-    // so there is no zone to probe and nothing to guard — running the proxy over
-    // its ~79 routes would be pure overhead.
-    "/storybook",
-    "/storybook/:path*",
-    "/portals/:path*",
+    /*
+     * Catch-all, because the site gate has to cover every route — a wall with
+     * holes in it is not a wall. This used to list only /storybook and
+     * /portals/* to keep the proxy off the website's ~79 routes; that overhead
+     * is now the price of the gate, and it is small: when SITE_PASSWORD is
+     * unset (local dev) gateRedirect returns on its first line, and when it is
+     * set the check is a cookie read plus a comparison against a memoised
+     * digest.
+     *
+     * Excluded: Next's own static output and image optimiser, which serve the
+     * gate page's CSS/JS and must load before unlocking, plus the icons.
+     */
+    "/((?!_next/static|_next/image|favicon\\.ico|icon\\.svg|robots\\.txt).*)",
   ],
 };
