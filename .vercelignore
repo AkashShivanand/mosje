@@ -1,0 +1,41 @@
+# Keep the Vercel upload to what actually builds and serves the hub.
+# The hub (apps/hub) is self-contained: it reads only its own src/ and public/.
+
+# Raw source material — 22 GB of drops, never deployed
+/Incoming/
+# Large binary design exports
+/Designs/
+# Git-history backups of absorbed sub-repos
+/_backups/
+
+# Specs, plans, QC reports, audit captures — authoring material, not runtime
+/docs/
+/tools/
+/specs/
+/e2e/
+/Assets/
+
+# Build outputs & caches (regenerated on Vercel)
+node_modules
+**/.next/
+**/out/
+**/storybook-static/
+*.tsbuildinfo
+.turbo/
+
+# Storybook is a separate zone, not part of the hub build
+/apps/storybook/
+
+# Test artifacts
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets*

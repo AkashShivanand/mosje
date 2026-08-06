@@ -52,3 +52,6 @@ docs/qc/portals/eutthan-admin/_archive/
 # Already committed files remain in history; new additions to this dir are blocked.
 apps/hub/public/reports/eutthan-admin/figures/
 .gstack/
+
+.vercel
+.env*

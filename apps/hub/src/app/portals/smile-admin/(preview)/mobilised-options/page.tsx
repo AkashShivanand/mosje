@@ -307,7 +307,9 @@ function VariantF() {
 
 /* ── sibling specs (real cards) for the in-context row ───────────────────── */
 
-const SIBLINGS: KpiSpec[] = [
+// Fixed-length tuple: the in-context row indexes these positionally, and a
+// tuple type keeps that safe under `noUncheckedIndexedAccess`.
+const SIBLINGS: [KpiSpec, KpiSpec, KpiSpec, KpiSpec, KpiSpec] = [
   {
     key: "identified",
     label: "Identified / Surveyed",
