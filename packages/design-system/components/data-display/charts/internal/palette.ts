@@ -1,6 +1,6 @@
 /* ============================================================================
    Token-driven colour resolution for charts. Every colour is a `var(--ds-*)`
-   string so charts re-theme automatically under data-color-mode / data-theme.
+   string so charts re-theme automatically under data-brand / data-theme.
    ============================================================================ */
 
 export const CHART_CATEGORICAL_COUNT = 12;

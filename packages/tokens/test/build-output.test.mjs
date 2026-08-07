@@ -68,9 +68,25 @@ test("the fluid type scale renders identically in rem as it did in px", () => {
   const css = readFileSync(root + "dist/tokens.css", "utf8");
   const rootCss = css.slice(0, css.indexOf("\n}"));
 
+  // font.role is nested family → number → part (font/role/display/1/size) since the paths
+  // were split on the hyphen for RULE 1. The EMITTED name still rejoins them, so flatten
+  // back to `display-1` here to keep asserting against the shipped variable name.
+  const roleEntries = [];
+  for (const [family, byNumber] of Object.entries(primitives.font.role)) {
+    if (family.startsWith("$")) continue;
+    const numbered = Object.values(byNumber).every((v) => v && !("$value" in v));
+    if (numbered) {
+      for (const [number, parts] of Object.entries(byNumber)) {
+        if (number.startsWith("$")) continue;
+        roleEntries.push([`${family}-${number}`, parts]);
+      }
+    } else {
+      roleEntries.push([family, byNumber]);
+    }
+  }
+
   let checked = 0;
-  for (const [role, parts] of Object.entries(primitives.font.role)) {
-    if (role.startsWith("$")) continue;
+  for (const [role, parts] of roleEntries) {
     for (const [part, token] of Object.entries(parts)) {
       const bounds = token.$extensions?.mosje?.type?.website;
       if (!bounds) continue;

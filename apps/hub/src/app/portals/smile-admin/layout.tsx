@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 // attributes, so both move to a wrapper — the selectors are attribute-based and
 // the custom properties inherit, so the cascade is identical.
 //
-// data-color-mode="blue-dark" was smile-admin's own fixed brand ramp (its GoI
+// data-brand="navy" was smile-admin's own fixed brand ramp (its GoI
 // navy identity), set via its own standalone ColorModeProvider initialMode — it
 // was never user-togglable inside smile-admin (no switcher was rendered there).
 // The hub's estate-wide ColorModeProvider now owns the html-level, user-switchable
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 // smile-admin.css.
 export default function SmileAdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div data-portal="smile-admin" data-color-mode="blue-dark" data-surface="portal">
+    <div data-portal="smile-admin" data-brand="navy" data-surface="portal">
       <AppProvider>{children}</AppProvider>
     </div>
   );

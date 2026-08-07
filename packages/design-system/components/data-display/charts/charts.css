@@ -1,7 +1,7 @@
 /* ============================================================================
    MoSJE / SAMAVESH — Data-visualisation layer
    Dependency-free SVG charts. Every colour is a design token; charts re-theme
-   automatically under data-color-mode / data-theme / data-density.
+   automatically under data-brand / data-theme / data-density.
    ============================================================================ */
 
 /* ── Screen-reader-only data tables ──────────────────────────────────────── */

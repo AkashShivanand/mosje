@@ -335,12 +335,12 @@
   --ux4g-ff-display: var(--ux4g-font-family-display);
   --ux4g-font-family-base: "Noto Sans",system-ui,sans-serif;
   --ux4g-font-family-display: "Noto Sans Display","Noto Sans",sans-serif;
-  --ux4g-font-weight-bold: var(--sa-font-weight-bold);
-  --ux4g-font-weight-display-bold: var(--sa-font-weight-bold);
-  --ux4g-font-weight-display-semibold: var(--sa-font-weight-semibold);
-  --ux4g-font-weight-medium: var(--sa-font-weight-medium);
-  --ux4g-font-weight-regular: var(--sa-font-weight-regular);
-  --ux4g-font-weight-semibold: var(--sa-font-weight-semibold);
+  --ux4g-font-weight-bold: var(--sa-ref-font-weight-bold);
+  --ux4g-font-weight-display-bold: var(--sa-ref-font-weight-bold);
+  --ux4g-font-weight-display-semibold: var(--sa-ref-font-weight-semibold);
+  --ux4g-font-weight-medium: var(--sa-ref-font-weight-medium);
+  --ux4g-font-weight-regular: var(--sa-ref-font-weight-regular);
+  --ux4g-font-weight-semibold: var(--sa-ref-font-weight-semibold);
   --ux4g-fs-11: var(--ux4g-size-11);
   --ux4g-fs-12: var(--ux4g-size-12);
   --ux4g-fs-14: var(--ux4g-size-14);
@@ -547,15 +547,15 @@
   --ux4g-position-relative: relative;
   --ux4g-position-static: static;
   --ux4g-position-sticky: sticky;
-  --ux4g-radius-0: var(--sa-radius-none);
-  --ux4g-radius-1: var(--sa-radius-xxs);
-  --ux4g-radius-2: var(--sa-radius-xs);
+  --ux4g-radius-0: var(--sa-ref-radius-none);
+  --ux4g-radius-1: var(--sa-ref-radius-xxs);
+  --ux4g-radius-2: var(--sa-ref-radius-xs);
   --ux4g-radius-2xl: var(--ux4g-radius-6);
-  --ux4g-radius-3: var(--sa-radius-md);
-  --ux4g-radius-4: var(--sa-radius-lg);
-  --ux4g-radius-5: var(--sa-radius-xl);
-  --ux4g-radius-6: var(--sa-radius-3xl);
-  --ux4g-radius-circular: var(--sa-radius-full);
+  --ux4g-radius-3: var(--sa-ref-radius-md);
+  --ux4g-radius-4: var(--sa-ref-radius-lg);
+  --ux4g-radius-5: var(--sa-ref-radius-xl);
+  --ux4g-radius-6: var(--sa-ref-radius-3xl);
+  --ux4g-radius-circular: var(--sa-ref-radius-full);
   --ux4g-radius-full: var(--ux4g-radius-circular);
   --ux4g-radius-lg: var(--ux4g-radius-4);
   --ux4g-radius-md: var(--ux4g-radius-3);
@@ -606,23 +606,23 @@
   --ux4g-size-64: 4rem;
   --ux4g-size-8: 0.5rem;
   --ux4g-size-80: 5rem;
-  --ux4g-space-1: var(--sa-spacing-xxs);
-  --ux4g-space-10: var(--sa-spacing-4xl);
-  --ux4g-space-11: var(--sa-spacing-5xl);
-  --ux4g-space-12: var(--sa-spacing-6xl);
-  --ux4g-space-13: var(--sa-spacing-7xl);
-  --ux4g-space-14: var(--sa-spacing-9xl);
-  --ux4g-space-15: var(--sa-spacing-10xl);
-  --ux4g-space-16: var(--sa-spacing-11xl);
-  --ux4g-space-2: var(--sa-spacing-xs);
+  --ux4g-space-1: var(--sa-ref-spacing-xxs);
+  --ux4g-space-10: var(--sa-ref-spacing-4xl);
+  --ux4g-space-11: var(--sa-ref-spacing-5xl);
+  --ux4g-space-12: var(--sa-ref-spacing-6xl);
+  --ux4g-space-13: var(--sa-ref-spacing-7xl);
+  --ux4g-space-14: var(--sa-ref-spacing-9xl);
+  --ux4g-space-15: var(--sa-ref-spacing-10xl);
+  --ux4g-space-16: var(--sa-ref-spacing-11xl);
+  --ux4g-space-2: var(--sa-ref-spacing-xs);
   --ux4g-space-3: 6px;
-  --ux4g-space-4: var(--sa-spacing-sm);
-  --ux4g-space-5: var(--sa-spacing-md);
-  --ux4g-space-6: var(--sa-spacing-lg);
-  --ux4g-space-7: var(--sa-spacing-xl);
-  --ux4g-space-8: var(--sa-spacing-2xl);
-  --ux4g-space-9: var(--sa-spacing-3xl);
-  --ux4g-space-none: var(--sa-spacing-none);
+  --ux4g-space-4: var(--sa-ref-spacing-sm);
+  --ux4g-space-5: var(--sa-ref-spacing-md);
+  --ux4g-space-6: var(--sa-ref-spacing-lg);
+  --ux4g-space-7: var(--sa-ref-spacing-xl);
+  --ux4g-space-8: var(--sa-ref-spacing-2xl);
+  --ux4g-space-9: var(--sa-ref-spacing-3xl);
+  --ux4g-space-none: var(--sa-ref-spacing-none);
   --ux4g-spacing-3: var(--ux4g-space-3);
   --ux4g-spacing-none: var(--ux4g-space-none);
   --ux4g-stack-2xs: var(--ux4g-space-2);
@@ -782,6 +782,7 @@
 }
 
 /* ---- UX4G's own palette, as two switchable colour modes (nothing default changes) ---- */
+[data-brand="ux4g"],
 [data-color-mode="ux4g-light"] {
   --sa-color-primaryScale-50: #f2efff;
   --sa-color-primaryScale-100: #dcd4ff;
@@ -1006,6 +1007,7 @@
   --ux4g-text-white: var(--ux4g-color-neutral-0);
 }
 
+[data-brand="ux4gdeep"],
 [data-color-mode="ux4g-dark"] {
   --sa-color-primaryScale-100: #c0b3ff;
   --sa-color-primaryScale-200: #a391ff;

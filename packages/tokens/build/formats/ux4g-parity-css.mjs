@@ -1,3 +1,6 @@
+import { tierOfFile, toCssName } from "../grammar.mjs";
+import { makeRetier } from "./retier.mjs";
+import { brandSelector } from "../brand-modes.mjs";
 // Emits the UX4G 3.0 parity layer: the full `--ux4g-*` token surface, resolved onto
 // SAMAVESH's own tokens, plus the `ux4g-light` / `ux4g-dark` colour modes.
 //
@@ -106,7 +109,13 @@ export const ux4gParityCss = {
 
     // ── Index SAMAVESH tokens by name and by (scope, value) ────────────────────────
     const saValue = new Map(); // "--sa-…" → resolved value
-    for (const t of dictionary.allTokens) saValue.set(`--sa-${t.path.join("-")}`, String(val(t)));
+    const retier = makeRetier(dictionary.allTokens, { tierOfFile, toCssName });
+    // Index by BOTH the unmarked and the marked name so existing lookups keep working.
+    for (const t of dictionary.allTokens) {
+      const unmarked = `--sa-${t.path.join("-")}`;
+      saValue.set(unmarked, String(val(t)));
+      saValue.set(retier(unmarked), String(val(t)));
+    }
 
     /** First --sa-* token under `prefix` whose value equals `value` (shortest name wins). */
     const findSa = (prefix, value) => {
@@ -143,7 +152,7 @@ export const ux4gParityCss = {
         const spec = COLOR_RAMPS[family];
         if (spec?.sa) {
           const mapped = spec.steps?.[step] ?? step;
-          const target = `--sa-${spec.sa}-${mapped}`;
+          const target = retier(`--sa-${spec.sa}-${mapped}`);
           if (saValue.has(target)) {
             emit(name, `var(${target})`);
             stats.colorRemapped++;
@@ -195,15 +204,15 @@ export const ux4gParityCss = {
       // SAMAVESH blue-dark mode relates to blue-light (darker brand, still-light surfaces).
       for (const s of STEPS) {
         const lit = rampLiteral("primary", dark ? Math.min(s + 100, 950) : s);
-        if (lit) out.push([`--sa-color-primaryScale-${s}`, lit]);
+        if (lit) out.push([retier(`--sa-color-primaryScale-${s}`), lit]);
       }
       for (const s of STEPS) {
         const lit = rampLiteral("secondary", s);
-        if (lit) out.push([`--sa-color-secondaryScale-${s}`, lit]);
+        if (lit) out.push([retier(`--sa-color-secondaryScale-${s}`), lit]);
       }
       for (const s of [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900]) {
         const lit = rampLiteral("neutral", s);
-        if (lit) out.push([`--sa-color-neutralScale-${s}`, lit]);
+        if (lit) out.push([retier(`--sa-color-neutralScale-${s}`), lit]);
       }
       const p = (s) => rampLiteral("primary", s);
       out.push(
@@ -268,7 +277,7 @@ export const ux4gParityCss = {
         .map((name) => `  ${name}: ${emitted.get(name)};`);
 
       return (
-        `[data-color-mode="${id}"] {\n` +
+        `${brandSelector(id === "ux4g-light" ? "ux4g" : id === "ux4g-dark" ? "ux4gdeep" : id)} {\n` +
         decls.map(([n, v]) => `  ${n}: ${v};`).join("\n") +
         `\n\n  /* re-resolve the --ds-* aliases whose source changed in this block */\n` +
         dsReassert.join("\n") +

@@ -28,7 +28,7 @@ const sectionStyle: React.CSSProperties = {
 };
 
 const h2Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-headline)",
+  fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
   fontWeight: 700,
   color: "var(--ds-ink)",
   marginBottom: "var(--ds-spacing-lg)",
@@ -640,7 +640,7 @@ export default function HeaderPage(): React.JSX.Element {
           </li>
           <li>
             <a href="/design-system/foundations/color" style={{ color: "var(--ds-primary)" }}>Color &amp; theming</a>{" "}
-            — the brand axis (<code>data-color-mode</code>) and appearance
+            — the brand axis (<code>data-brand</code>) and appearance
             (<code>data-theme</code>), distinct from the accessibility widget&apos;s
             own contrast/dark mode.
           </li>
