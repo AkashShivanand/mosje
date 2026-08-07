@@ -19,6 +19,13 @@
       "autoPort": false
     },
     {
+      "name": "hub-3007",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "apps/hub", "run", "dev", "--", "-p", "3007"],
+      "port": 3007,
+      "autoPort": false
+    },
+    {
       "name": "storybook",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "apps/storybook", "run", "dev"],
