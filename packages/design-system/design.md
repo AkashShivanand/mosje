@@ -12,7 +12,9 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-06 · System version: v1.9.0 (Type is now sized in REM, not px: a
+  Last reviewed: 2026-08-06 · System version: v1.10.0 (NEW: SlaProgressIndicator — Right to
+  Service Act time-remaining, three variants, seven states including a neutral PAUSED clock and
+  MISSED as distinct from BREACHED; pure logic in utils/sla.ts. v1.9.0: (Type is now sized in REM, not px: a
   reader who raises their browser's default font size without zooming now gets larger text —
   a px scale ignored them. Renders identically at the 16px default, proven by test. NEW
   components: PasswordInput (reveal toggle — use for every password field in the estate;
@@ -600,6 +602,36 @@ as a plain `<Input>` with a regex** — each carries a checksum or a statutory o
 (`isValidAadhaar`, `isValidPan`, `maskAadhaar`, `maskPan`, `panHolderType`) are exported from
 the barrel and are pure, so the same rules can run server-side.
 Docs: `/design-system/components/identity-inputs`.
+
+#### SlaProgressIndicator (Feedback)
+**Purpose**: Time remaining against a **Right to Service Act** guarantee. Not a decorative
+progress bar — the Act gives a citizen a maximum time and attaches the consequences of missing
+it to a named officer, so this renders a statutory promise.
+
+**Variants**: `linear` (default — case rows, queues) · `circular` (dashboard tiles) ·
+`badge` (table cells).
+
+**States** (derived from the fraction consumed; defaults 0.75 due-soon, 0.9 at-risk):
+`on-track` · `due-soon` · `at-risk` · `breached` · `met` · `missed` · `paused`.
+
+**Rules**:
+- **Always state a concrete number and unit.** A vague "Processing…" is explicitly a UX4G
+  Don't — an unspecific status is what erodes confidence in a guarantee. Every state here
+  names one, including breach ("3 days overdue") and pause.
+- **A paused clock renders neutral and hatched, never escalating.** When the delay sits with
+  the applicant, nothing is being consumed; a reddening bar for time the officer is not
+  accountable for is wrong and corrosive to trust in the number.
+- **Unit-agnostic.** RTS Acts are usually written in *working* days, which needs a state
+  holiday calendar — an application concern. Count them, then pass numbers plus `unit`.
+- Thresholds are **fractions**, not absolute days: "5 days left" means something different
+  against a 7-day allowance than a 90-day one. For an absolute rule use
+  `slaFractionForRemaining(total, remaining)`.
+- Don't use it for generic progress (`Progress`) or step-based workflows (`Stepper`,
+  `ApprovalTimeline`).
+
+Logic lives in `utils/sla.ts` as pure functions (`slaStatus`, `slaSummary`, `slaValueText`, …)
+so escalation jobs, reports and reminder emails share it.
+Docs: `/design-system/components/sla-progress`.
 
 #### Search
 **Purpose**: Search affordance with built-in icon and clear (`×`) button.  

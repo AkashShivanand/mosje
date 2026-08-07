@@ -1,0 +1,227 @@
+/* SAMAVESH — SLA progress indicator. UX4G 3.0 parity: "SLA Progress Indicator".
+   Tokens only. Three variants (linear / circular / badge) x five tones.
+
+   The tone is set once on the root as a pair of local custom properties, so each variant
+   reads --sla-ink / --sla-fill / --sla-soft rather than repeating a colour table per
+   variant. Adding a tone is two lines, not fifteen. */
+
+.ds-sla {
+  --sla-ink: var(--ds-primary);
+  --sla-fill: var(--ds-primary);
+  --sla-soft: var(--ds-primary-tonal);
+}
+
+.ds-sla--success {
+  --sla-ink: var(--ds-success);
+  --sla-fill: var(--ds-success);
+  --sla-soft: var(--ds-success-tonal);
+}
+
+.ds-sla--warning {
+  --sla-ink: var(--ds-warning);
+  --sla-fill: var(--ds-warning);
+  --sla-soft: var(--ds-warning-tonal);
+}
+
+.ds-sla--danger {
+  --sla-ink: var(--ds-danger);
+  --sla-fill: var(--ds-danger);
+  --sla-soft: var(--ds-danger-tonal);
+}
+
+/* A stopped clock carries no urgency — neutral, deliberately. */
+.ds-sla--neutral {
+  --sla-ink: var(--ds-ink-muted);
+  --sla-fill: var(--ds-border-strong);
+  --sla-soft: var(--ds-surface-muted);
+}
+
+/* ---- Linear (default): a case row or a queue ------------------------------------- */
+
+.ds-sla--linear {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-stack-2xs);
+  inline-size: 100%;
+}
+
+.ds-sla__head,
+.ds-sla__foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ds-inline-s);
+}
+
+.ds-sla__label {
+  font-size: var(--ds-text-label-1);
+  line-height: var(--ds-leading-label-1);
+  font-weight: 600;
+  color: var(--ds-ink);
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.ds-sla__summary {
+  font-size: var(--ds-text-body-2);
+  line-height: var(--ds-leading-body-2);
+  font-weight: 600;
+  color: var(--sla-ink);
+  white-space: nowrap;
+}
+
+.ds-sla__track-wrap {
+  block-size: 8px;
+  inline-size: 100%;
+  border-radius: var(--ds-radius-full);
+  background: var(--sla-soft);
+  overflow: hidden;
+}
+
+.ds-sla__bar {
+  display: block;
+  block-size: 100%;
+  border-radius: inherit;
+  background: var(--sla-fill);
+  transition: inline-size var(--ds-duration-base) var(--ds-easing-out);
+}
+
+.ds-sla__foot {
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink-muted);
+}
+
+.ds-sla__action {
+  flex: none;
+}
+
+/* ---- Circular: a dashboard tile --------------------------------------------------- */
+
+.ds-sla--circular {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ds-stack-2xs);
+  text-align: center;
+}
+
+.ds-sla__ring {
+  position: relative;
+  inline-size: 64px;
+  block-size: 64px;
+}
+
+.ds-sla__ring svg {
+  inline-size: 100%;
+  block-size: 100%;
+  /* Start the arc at 12 o'clock rather than 3 — people read a clock, not a maths diagram. */
+  transform: rotate(-90deg);
+}
+
+.ds-sla__track,
+.ds-sla__fill {
+  fill: none;
+  stroke-width: 6;
+}
+
+.ds-sla__track {
+  stroke: var(--sla-soft);
+}
+
+.ds-sla__fill {
+  stroke: var(--sla-fill);
+  stroke-linecap: round;
+  transition: stroke-dashoffset var(--ds-duration-base) var(--ds-easing-out);
+}
+
+.ds-sla__ring-value {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: var(--ds-text-title-2);
+  line-height: 1;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--sla-ink);
+}
+
+.ds-sla--circular .ds-sla__label {
+  font-size: var(--ds-text-body-2);
+}
+
+.ds-sla--circular .ds-sla__summary {
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+}
+
+/* ---- Badge: a table cell, where a bar will not fit -------------------------------- */
+
+.ds-sla--badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-inline-xs);
+  padding: var(--ds-padding-3xs) var(--ds-padding-xs);
+  border: 1px solid var(--sla-soft);
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-surface);
+  max-inline-size: 100%;
+}
+
+/* The dot repeats the tone, but the summary text beside it always names the state, so the
+   colour is reinforcement rather than the message (WCAG 1.4.1). */
+.ds-sla__dot {
+  flex: none;
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: var(--ds-radius-full);
+  background: var(--sla-fill);
+}
+
+.ds-sla--badge .ds-sla__label {
+  font-size: var(--ds-text-label-2);
+  line-height: var(--ds-leading-label-2);
+  font-weight: 500;
+  color: var(--ds-ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ds-sla__divider {
+  flex: none;
+  inline-size: 1px;
+  block-size: 10px;
+  background: var(--ds-border-strong);
+}
+
+.ds-sla--badge .ds-sla__summary {
+  font-size: var(--ds-text-label-2);
+  line-height: var(--ds-leading-label-2);
+}
+
+/* ---- Paused: a stopped clock should look stopped ---------------------------------- */
+
+.ds-sla--paused .ds-sla__bar,
+.ds-sla--paused .ds-sla__fill {
+  /* Hatching reads as "held", so a paused SLA is distinguishable from a grey on-track one
+     without relying on hue alone. */
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0 4px,
+    var(--ds-surface) 4px 8px
+  );
+}
+
+.ds-sla--paused .ds-sla__ring-value {
+  font-size: var(--ds-text-body-2);
+  letter-spacing: -0.1em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-sla__bar,
+  .ds-sla__fill {
+    transition: none;
+  }
+}
