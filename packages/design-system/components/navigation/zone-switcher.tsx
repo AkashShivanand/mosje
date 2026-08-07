@@ -17,9 +17,13 @@ export interface AppSwitcherProps {
   /** Override the default estate registry. */
   apps?: AppEntry[];
   /**
-   * Show the Dev section (Storybook, Design System).
-   * Pass `process.env.NODE_ENV === 'development'` from each app layout.
-   * @default false
+   * @deprecated No longer does anything, and safe to remove from call sites.
+   *
+   * This used to hide a "Dev" section holding the design system and Storybook.
+   * They are now in "Resources" and always shown: the people who most need to
+   * check what a component is meant to do — BAs, QAs, designers — never run a
+   * dev build, so gating those two on NODE_ENV hid them from exactly the wrong
+   * audience. Kept as a no-op so existing callers keep compiling.
    */
   devMode?: boolean;
   /** FAB label text. @default "Apps" */
@@ -178,11 +182,8 @@ export function AppSwitcher({
     [apps, activeNormPath],
   );
 
-  // Filter out Dev section in prod; then apply search query.
-  const visibleApps = React.useMemo(
-    () => filterApps(apps.filter((a) => devMode || a.group !== "Dev"), query),
-    [apps, devMode, query],
-  );
+  // Nothing is hidden by environment any more; see the `devMode` prop note.
+  const visibleApps = React.useMemo(() => filterApps(apps, query), [apps, query]);
 
   // Group visible apps preserving registry order.
   const groups = React.useMemo(() => {
@@ -315,12 +316,7 @@ export function AppSwitcher({
                   items.some((a) => a.status === "planned");
                 return (
                   <div key={group} role="list" aria-label={group}>
-                    <div className="ds-appsw__group-label">
-                      {group}
-                      {group === "Dev" && (
-                        <span className="ds-appsw__dev-chip">dev only</span>
-                      )}
-                    </div>
+                    <div className="ds-appsw__group-label">{group}</div>
                     {items.map((a) => {
                       const abbr = deriveAbbr(a);
                       const normPath =

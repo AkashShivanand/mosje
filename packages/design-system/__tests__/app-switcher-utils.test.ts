@@ -92,7 +92,7 @@ describe("filterApps", () => {
       abbr: "SB",
       path: "/storybook",
       desc: "Component explorer",
-      group: "Dev",
+      group: "Resources",
     }),
     makeApp({
       name: "National Overseas Scholarship",

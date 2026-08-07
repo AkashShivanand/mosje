@@ -14,8 +14,15 @@ export interface AppEntry {
   desc?: string;
   /** Organisation / scheme owner — included in search matching. */
   org?: string;
-  /** Which section this entry appears in. */
-  group: "Website" | "Portals" | "Dev";
+  /**
+   * Which section this entry appears in.
+   *
+   * "Resources" replaced the old "Dev" group: the design system and Storybook
+   * are how BAs, QAs and designers check what a component is meant to do, not
+   * developer tooling, and hiding them outside `devMode` meant the people who
+   * most needed them could never reach them.
+   */
+  group: "Website" | "Portals" | "Resources";
   /**
    * Optional finer sub-grouping within a `group` (e.g. "Finance & development
    * corporations"). The estate gate uses this to section the portal grid; the
@@ -313,21 +320,23 @@ export const DEFAULT_APPS: AppEntry[] = [
     status: "planned",
   },
 
-  // ── Dev (hidden in production) ─────────────────────────────────────────
+  // ── Resources (visible everywhere) ─────────────────────────────────────
   {
     name: "Design System",
     abbr: "DS",
     path: "/design-system",
     desc: "SAMAVESH foundations, components & documentation",
-    group: "Dev",
+    group: "Resources",
     status: "live",
   },
   {
     name: "Storybook",
     abbr: "SB",
+    // Trailing slash is required: Storybook's assets are relative, so
+    // /storybook would resolve them against the parent path and 404.
     path: "/storybook/",
     desc: "Interactive component explorer",
-    group: "Dev",
+    group: "Resources",
     status: "live",
   },
 ];

@@ -3,6 +3,24 @@ import path from "node:path";
 
 const ZONE_DS          = process.env.ZONE_DS_URL          ?? "http://localhost:6006";
 
+/**
+ * Storybook is the one zone that is still a separate process, and it is NOT
+ * part of the Vercel deployment. Proxying to a loopback address from a
+ * deployed function fails with a bare `DNS_HOSTNAME_RESOLVED_PRIVATE` 404,
+ * which is a dead end for anyone who follows the AppSwitcher link.
+ *
+ * So only proxy when there is something real to proxy to: in local dev (where
+ * :6006 may genuinely be running, and the proxy's own probe already falls back
+ * to /zone-unavailable when it is not), or when ZONE_DS_URL points somewhere
+ * public. Otherwise send people to the explanation page instead of a 404.
+ *
+ * Deploy Storybook and set ZONE_DS_URL to its origin and this lights up with
+ * no other change.
+ */
+const IS_DEV = process.env.NODE_ENV !== "production";
+const ZONE_DS_IS_REACHABLE =
+  IS_DEV || /^https?:\/\/(?!localhost|127\.0\.0\.1|\[::1\])/i.test(ZONE_DS);
+
 const nextConfig: NextConfig = {
   output: "standalone",
   // Required for the one remaining zone (Storybook): prevents the hub from
@@ -28,8 +46,23 @@ const nextConfig: NextConfig = {
       // resolve under /storybook/ and proxy via the :path* rule below. The no-slash
       // rule covers the normalized root request. (HMR websocket still needs :6006
       // directly; the full UI loads through the hub.)
-      { source: "/storybook",         destination: `${ZONE_DS}/` },
-      { source: "/storybook/:path*",  destination: `${ZONE_DS}/:path*` },
+      ...(ZONE_DS_IS_REACHABLE
+        ? [
+            { source: "/storybook",        destination: `${ZONE_DS}/` },
+            { source: "/storybook/:path*", destination: `${ZONE_DS}/:path*` },
+          ]
+        : [
+            {
+              source: "/storybook",
+              destination:
+                "/zone-unavailable?zone=Storybook&cmd=npm+run+dev%3Astorybook&from=%2Fstorybook%2F",
+            },
+            {
+              source: "/storybook/:path*",
+              destination:
+                "/zone-unavailable?zone=Storybook&cmd=npm+run+dev%3Astorybook&from=%2Fstorybook%2F",
+            },
+          ]),
     ];
   },
   // Legacy hand-coded org slugs → real ingested slugs (safety net for bookmarks).

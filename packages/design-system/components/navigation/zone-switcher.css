@@ -242,16 +242,6 @@
   color: var(--ds-ink-muted);
 }
 
-.ds-appsw__dev-chip {
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: none;
-  letter-spacing: 0;
-  background-color: var(--ds-primary-tonal);
-  color: var(--ds-primary);
-  border-radius: var(--ds-radius-sm);
-  padding: 1px 5px;
-}
 
 /* ── List items (shared) ── */
 .ds-appsw__item {

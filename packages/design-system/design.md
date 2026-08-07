@@ -12,7 +12,18 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-07 · System version: v1.10.0 (NEW: SlaProgressIndicator — Right to
+  Last reviewed: 2026-08-07 · System version: v1.11.0 (The estate is off lucide-react and off
+  shadcn/Radix entirely. Every icon is Material Symbols Rounded via <Icon> — 668 call sites
+  across 239 files — and SidebarNavItem.icon is now a Material Symbols NAME STRING, not a
+  component, so nav configs stay serialisable. NEW components: Tooltip (WCAG 1.4.13 —
+  dismissible, hoverable, persistent; portalled at z-index 90 so Card/DataTable overflow can't
+  clip it); Skeleton/SkeletonText/SkeletonRow; Label (standalone, for controls outside
+  FormField); LiveRegion + useLiveRegion; SectionTitle. Input gains leftIcon/rightIcon — a bare
+  Input still renders with no wrapper. FIXED: CardTitle painted at 32px because it referenced
+  the Headline-1 alias while its own fallback claimed 20px; it is now bound to the canonical
+  --ds-type-title-1-size. Icon accepts a style prop. NOTE the legacy --ds-text-title-* aliases
+  are still mis-mapped to headline-2 — use the canonical --ds-type-<role>-size tokens.
+  v1.10.0: SlaProgressIndicator — Right to
   Service Act time-remaining, three variants, seven states including a neutral PAUSED clock and
   MISSED as distinct from BREACHED; pure logic in utils/sla.ts. v1.9.0: (Type is now sized in REM, not px: a
   reader who raises their browser's default font size without zooming now gets larger text —
@@ -34,7 +45,7 @@
   `[data-surface="portal"]` block did not re-assert the `--ds-text-*`/`--ds-leading-*` aliases,
   so every natively-mounted portal rendered the WEBSITE type scale (display headings to 80px
   instead of 56px) — alias re-assertion is now targeted per block, which also cut tokens.css
-  from 92 KB to 60 KB. v1.7.2: Text-entry controls take a hard 16px floor below 768px: iOS Safari zooms any focused control under 16px and does not zoom back out, and the fluid ramp put body-1 at ~14px on a phone. Desktop density unchanged. v1.7.1: `SideSheet` gains `side="left"` for navigation drawers, so portal shells can collapse a fixed sidebar into a drawer on small screens instead of squeezing the page. `DeclarationCheckbox` attestation row now meets the 44px touch floor. v1.7.0: Adds three components for field reporting with sign-off: `GeoPhotoInput` (EXIF/device geo-tagging + auto-downscale), `DeclarationCheckbox` (statutory certification panel), `ApprovalTimeline` (multi-tier approval audit trail). No token values changed. v1.6.2: Theming: `[data-color-mode="…"]` blocks now re-declare the `--ds-*` aliases, exactly as `[data-theme="…"]` blocks already did, so colour-mode "islands" repaint a nested subtree instead of only flipping `--sa-*` primitives. Fixed in the generator `packages/tokens/build/formats/legacy-ds-css.mjs`; surfaced when portals mounted natively in the hub and `data-color-mode` moved off `<html>` onto a wrapper. No token values changed. v1.6.1: Icon loading: icons.css now declares an inline @font-face (pinned gstatic woff2) instead of an @import, so the documented `import "@mosje/design-system/icons.css"` finally loads the font under Next/Turbopack — no per-app <link> hack. Typography: hyphenated Portal-DS role names — display-1…label-3; added -para (paragraph-spacing) + -tracking (letter-spacing) fluid props so code ↔ SAMAVESH Figma are at full parity. v1.6.0: two-surface fluid type via data-surface=website|portal, 21 role tokens as clamp(min@360px, fluid, max@1280px). v1.5.0: Figma→code colour sync, mode-aware Blue-Light/Blue-Dark, danger-strong #B8382F)
+  from 92 KB to 60 KB. v1.7.2: Text-entry controls take a hard 16px floor below 768px: iOS Safari zooms any focused control under 16px and does not zoom back out, and the fluid ramp put body-1 at ~14px on a phone. Desktop density unchanged. v1.7.1: `SideSheet` gains `side="left"` for navigation drawers, so portal shells can collapse a fixed sidebar into a drawer on small screens instead of squeezing the page. `DeclarationCheckbox` attestation row now meets the 44px touch floor. v1.7.0: Adds three components for field reporting with sign-off: `GeoPhotoInput` (EXIF/device geo-tagging + auto-downscale), `DeclarationCheckbox` (statutory certification panel), `ApprovalTimeline` (multi-tier approval audit trail). No token values changed. v1.6.2: Theming: `[data-color-mode="…"]` blocks now re-declare the `--ds-*` aliases, exactly as `[data-theme="…"]` blocks already did, so colour-mode "islands" repaint a nested subtree instead of only flipping `--sa-*` primitives. Fixed in the generator `packages/tokens/build/formats/legacy-ds-css.mjs`; surfaced when portals mounted natively in the hub and `data-brand` moved off `<html>` onto a wrapper. No token values changed. v1.6.1: Icon loading: icons.css now declares an inline @font-face (pinned gstatic woff2) instead of an @import, so the documented `import "@mosje/design-system/icons.css"` finally loads the font under Next/Turbopack — no per-app <link> hack. Typography: hyphenated Portal-DS role names — display-1…label-3; added -para (paragraph-spacing) + -tracking (letter-spacing) fluid props so code ↔ SAMAVESH Figma are at full parity. v1.6.0: two-surface fluid type via data-surface=website|portal, 21 role tokens as clamp(min@360px, fluid, max@1280px). v1.5.0: Figma→code colour sync, mode-aware Blue-Light/Blue-Dark, danger-strong #B8382F)
 -->
 
 # SAMAVESH Design System — Specification & AI Design Context
@@ -79,16 +90,16 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 
 | Axis | Attribute | Values | Meaning |
 | :--- | :--- | :--- | :--- |
-| **Colour Mode** | `data-color-mode` | `blue-light` (default), `blue-dark` | Two peer brand colour modes (1:1 with the SAMAVESH Figma `Blue - Light` / `Blue - Dark` variable modes). Selects the whole mode-aware palette: **primary** (blue↔navy), **secondary** (saffron↔green), **neutral** greys (warm↔cool), and the primary/secondary/neutral **transparent** tiers. |
+| **Brand** | `data-brand` | `blue` (default), `navy` | Two peer brand palettes, BOTH on light surfaces — `blue` is gov-blue + saffron + warm grey, `navy` is gov-navy + green + cool grey. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. In Figma they are the brand half of the `2 · Color` collection's `Brand × Theme` modes. Selects the whole mode-aware palette: **primary** (blue↔navy), **secondary** (saffron↔green), **neutral** greys (warm↔cool), and the primary/secondary/neutral **transparent** tiers. |
 | **Appearance** | `data-theme` | `light` (default/unset), `dark`, `hc` | Light theme, dark theme, or high-contrast (a11y). |
 | **Density** | `data-density` | `comfortable` (default/unset), `compact` | Controls padding, heights, and spatial density. |
 | **Surface** | `data-surface` | `website` (default/unset), `portal` | Selects the **typography scale**. `website` = the expressive editorial ramp (display-1 ≈ 80px); `portal` = the dense functional ramp (display-1 ≈ 56px). Same role token names in both; only the `--ds-type-*` values differ. Set `data-surface="portal"` on portal `<html>` roots; the website/hub stay default. Maps 1:1 to the SAMAVESH Figma `Website` / `Portal` type modes. |
 
-> **Surface is a type axis only.** `data-surface` swaps the fluid type scale (`--ds-type-*`), nothing else — colour still comes from `data-color-mode`/`data-theme`. All type is fluid `clamp()` between a 360px-viewport min and a 1280px max, so the two surfaces each scale smoothly; there are no type media-query breakpoints.
+> **Surface is a type axis only.** `data-surface` swaps the fluid type scale (`--ds-type-*`), nothing else — colour still comes from `data-brand`/`data-theme`. All type is fluid `clamp()` between a 360px-viewport min and a 1280px max, so the two surfaces each scale smoothly; there are no type media-query breakpoints.
 
-> **Colour Mode ≠ Appearance.** `data-color-mode` (blue-light/blue-dark) and `data-theme` (light/dark/hc) are **independent axes**. `blue-dark` is NOT a dark UI theme — it keeps light surfaces and simply swaps the brand palette to navy/green/cool-grey (matching Figma's `Blue - Dark` mode). The actual dark/high-contrast surfaces live on `data-theme`. The two compose: e.g. `data-color-mode="blue-dark" data-theme="dark"` is the navy palette on dark a11y surfaces.
+> **Brand ≠ Appearance.** `data-brand` (blue/navy) and `data-theme` (light/dark/hc) are **independent axes**. `navy` is NOT a dark UI theme — it keeps light surfaces and simply swaps the brand palette to navy/green/cool-grey (matching Figma's `Blue - Dark` mode). The actual dark/high-contrast surfaces live on `data-theme`. The two compose: e.g. `data-brand="navy" data-theme="dark"` is the navy palette on dark a11y surfaces.
 
-> **Two more colour modes ship opt-in: `ux4g-light` and `ux4g-dark`.** They carry UX4G 3.0's
+> **Two more colour modes ship opt-in: `ux4g` and `ux4gdeep`.** They carry UX4G 3.0's
 > own palette (violet `#6a4eff` / `#4a2bc2`) *literally*, so UX4G conformance can be
 > demonstrated by flipping one attribute instead of argued about. They live in
 > `@mosje/design-system/ux4g.css` (opt-in — the default bundle does not grow) and are
@@ -100,7 +111,7 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 
 > **Tip:** Nested theme "islands" (e.g. a dark-themed preview wrapper inside a light page) must be explicitly scoped using nested `[data-theme="dark"]` elements. To prevent theme flashes on initial render, initialize attributes using the exported `colorModeInitScript()`.
 
-> **Islands work on BOTH axes — `data-theme` and `data-color-mode`.** You can put either attribute on any element, not just `<html>`, and the subtree re-themes. This works because the generated `tokens.css` re-declares the `--ds-*` aliases inside every `[data-theme="…"]` **and** every `[data-color-mode="…"]` block. That matters: a custom property substitutes `var()` at the element where it is **declared**, so if a block only flipped the `--sa-*` primitives, `--ds-primary` would stay resolved at whatever `:root` computed and the island would not repaint. (`data-color-mode` islands were silently broken until the generator emitted the alias re-resolution in those blocks too — a portal mounting natively moved the attribute off `<html>` and exposed it.) Anything changing this lives in `packages/tokens/build/formats/legacy-ds-css.mjs`, never in the generated CSS.
+> **Islands work on BOTH axes — `data-theme` and `data-brand`.** You can put either attribute on any element, not just `<html>`, and the subtree re-themes. This works because the generated `tokens.css` re-declares the `--ds-*` aliases inside every `[data-theme="…"]` **and** every `[data-brand="…"]` block (each of which also carries the deprecated `[data-color-mode="…"]` selector, so existing markup keeps working). That matters: a custom property substitutes `var()` at the element where it is **declared**, so if a block only flipped the `--sa-*` primitives, `--ds-primary` would stay resolved at whatever `:root` computed and the island would not repaint. (`data-brand` islands were silently broken until the generator emitted the alias re-resolution in those blocks too — a portal mounting natively moved the attribute off `<html>` and exposed it.) Anything changing this lives in `packages/tokens/build/formats/legacy-ds-css.mjs`, never in the generated CSS.
 
 ### B. Colour Usage Contract
 
@@ -137,7 +148,7 @@ Use semantic tokens — never reference primitive `--sa-color-*` values directly
 
 ### D. Typography
 
-- **Typeface**: Noto Sans (`var(--ds-font-sans)`) — non-negotiable across all English interfaces. Devanagari/Hindi uses `--sa-font-family-devanagari`.
+- **Typeface**: Noto Sans (`var(--ds-font-sans)`) — non-negotiable across all English interfaces. Devanagari/Hindi uses `--sa-font-devanagari`.
 - **Line Length**: Body text and prose containers max-width `65ch`–`75ch` (`max-w-prose`). Never wider.
 - **Fluid type**: Every role is `clamp(min, fluid, max)` — `min` at a 360px viewport, `max` at 1280px. No type media queries. Two surfaces (`data-surface`) supply different min/max: **Website** (expressive) vs **Portal** (dense).
 - **Text Wrapping**: Use `text-wrap: balance` on `h1`–`h3`; `text-wrap: pretty` on paragraphs to eliminate orphans.
@@ -167,10 +178,37 @@ tiers: `--ds-type-{heading,title,body,label}-tracking`. Values differ by **surfa
 > on `<html>` to get the Portal scale. Legacy aliases (`--ds-text-display`, `--ds-text-title-1`, …) still resolve and
 > inherit the active surface automatically.
 
+> ### ⚠ The table above names `--ds-type-<role>-*`. It does **not** describe `--ds-text-<role>`.
+>
+> Three families of typography variable exist, and only the first two agree with this table:
+>
+> | Family | Example | Relationship to the table |
+> |---|---|---|
+> | **Canonical roles** | `--ds-type-title-1-size` | ✅ Exactly the table. **Use these.** |
+> | Unhyphenated aliases | `--ds-text-title1` | ✅ 1:1 with the role of the same name |
+> | **Hyphenated legacy aliases** | `--ds-text-title-1` | ❌ **Named for the pre-Portal-DS scale** |
+>
+> The hyphenated family is mapped to whichever role reproduces each alias's
+> *historical rendered value*, so its names deliberately do not line up:
+> `--ds-text-title-1` is the **headline-2** role (24→32px), not Title 1 (20/22px);
+> `--ds-text-title-2` is Title 1. Those values are frozen in
+> `packages/tokens/test/legacy-snapshot.json` and asserted on every build — re-pointing
+> one at its same-named role silently resizes every legacy callsite in the estate.
+>
+> **This has caused four separate bugs**, all the same mistake — reading the alias
+> name instead of its resolved size: `CardTitle` painted at 32–40px; the docs portal's
+> `h2` rendered *smaller* than its `h3`; twelve docs pages set a 40px lead against a
+> 24px line-height; and `zone-unavailable` still carries a `22px` fallback for a token
+> that resolves to 32px.
+>
+> **Rule: in new code reference `--ds-type-<role>-size` / `-lh`.** Reach for a
+> `--ds-text-*` alias only to keep an existing callsite compiling, and check its
+> resolved value first. Guarded by `packages/tokens/test/type-alias-parity.test.mjs`.
+
 ### F. Bilingual (English + Hindi) Usage
 
 - Wrap inline Hindi text: `<span lang="hi">समावेश</span>` — always set the `lang` attribute.
-- Apply Devanagari font: `font-family: var(--sa-font-family-devanagari)` on the `lang="hi"` element.
+- Apply Devanagari font: `font-family: var(--sa-font-devanagari)` on the `lang="hi"` element.
 - **Never use italic on Devanagari** — the script has no italic tradition; slanting degrades legibility.
 - Page `lang` attribute must be `lang="en"` with `lang="hi"` on individual Hindi strings (not the reverse).
 - Hindi text with no explicit size set will inherit from the English scale — this is intentional.
@@ -385,9 +423,17 @@ Utilize the CSS `:has()` pseudo-class to style parent containers dynamically bas
 
 | Tier | Prefix | Examples | Who uses it |
 |------|--------|---------|-------------|
-| **1. Primitives** | `--sa-color-*` | `--sa-color-primaryScale-500: #0373DF` | Only referenced inside `tokens.css` |
-| **2. Semantic** | `--ds-*` | `--ds-primary`, `--ds-danger`, `--ds-ink` | All component and page code |
-| **3. Component** | `--sa-button-*`, `--sa-card-*`, `--sa-badge-*` | `--sa-card-radius`, `--sa-badge-beta-bg` | Advanced per-component overrides only |
+| **1. Reference** | `--sa-ref-*` | `--sa-ref-color-primaryRamp-light-500: #0373DF`, `--sa-ref-spacing-lg` | **Banned in app code.** Referenced only inside `tokens.css`. |
+| **2. System** | `--sa-*` (unmarked) | `--sa-color-status-danger`, `--sa-density-control-height` | All component and page code |
+| **2. System (deprecated)** | `--ds-*` | `--ds-primary`, `--ds-danger`, `--ds-ink` | Still resolves; being migrated onto Tier 2 names |
+| **3. Component** | `--sa-cmp-*` | `--sa-cmp-card-radius`, `--sa-cmp-action-brand-primary-hover-bg` | Advanced per-component overrides only |
+
+> **The tier is in the name.** A token's tier comes from the file it is authored in
+> (`primitive.json` / `brand.json` → `ref`, `component*.json` → `cmp`, everything else → system),
+> and the marker is added when the CSS name is projected. Tier 2 carries **no** marker, so the
+> token you type 90% of the time is the shortest. `ref` and `cmp` are reserved as Tier-2 first
+> segments, which is what keeps the projection reversible for the Figma round-trip. See
+> `packages/tokens/build/grammar.mjs` and the token-architecture spec §4.1, §5.
 
 > **Caution:** Only ever reference **semantic tokens** (`--ds-*`) in component and page code. Referencing `--sa-color-*` primitives directly couples your component to the specific brand ramp and will break dark mode and high-contrast themes.
 
@@ -563,9 +609,24 @@ All components are exported from `@mosje/design-system`. Import from the package
 - Layout order is **label → control → hint → error** (hint renders as helper text *below* the control so inputs stay aligned across grid rows). All four remain linked via `aria-describedby`.
 - Error prop only activates after validation runs — never on initial render.
 
+#### Label
+**Purpose**: A standalone `<label>` for controls that are **not** wrapped in `<FormField>`.  
+**Props**: `required`, `hint`, plus everything `<label>` takes (`htmlFor`, …)  
+**Rule**: Reach for this only when you are hand-wiring `htmlFor` / `aria-describedby` yourself — labelling a checkbox row, a filter control, a toolbar select. For anything inside a form, `<FormField>` is still the answer; it renders its own label and does the wiring. The visual language is identical either way.
+
 #### Input
 **Purpose**: Single-line text entry.  
-**Props**: `type`, `placeholder`, `disabled`, `error`, `iconLeft`, `iconRight`
+**Props**: `type`, `placeholder`, `disabled`, `invalid`, `leftIcon`, `rightIcon`  
+**Rules**:
+- The **error message lives on `<FormField>`**, not here. Input only carries `invalid`, which sets `aria-invalid` and the error border — and FormField passes it for you.
+- `leftIcon` is decorative and `aria-hidden`; the field still needs a real label. `rightIcon` is *not* hidden, because it is usually an interactive control (clear, reveal) that needs its own accessible name.
+- With either icon the input is wrapped in a positioned shell and padded to clear it; a bare Input renders no wrapper at all, so existing layouts are unaffected.
+- For a password reveal use `<PasswordInput>` rather than passing your own `rightIcon`.
+
+> *Corrected 2026-08-07:* this entry previously listed `error`, `iconLeft` and `iconRight`. None
+> of the three existed on the component — `error` belongs to FormField, and the icon props are
+> named `leftIcon` / `rightIcon` (added 2026-08-07, replacing the wrapper every portal was
+> hand-rolling).
 
 #### PasswordInput
 **Purpose**: Password entry with a reveal toggle. **Use this for every password field in the
@@ -729,6 +790,23 @@ Docs: `/design-system/components/sla-progress`.
 **Purpose**: Progress indicator for async operations.  
 **Rule**: Always show Loader (or Skeleton) when data is fetching. Never leave an empty container with no loading signal.
 
+#### Skeleton / SkeletonText / SkeletonRow
+**Purpose**: Shaped placeholder shown while data is fetching.  
+**Props**: `width`, `height`, `circle` · `SkeletonText({ lines })` · `SkeletonRow({ cols })`  
+**Rules**:
+- Use Skeleton (not Loader) when the eventual shape is known — a table row, a card, a paragraph — so the layout does not jump when data lands.
+- Always `aria-hidden`; it is decorative. Put `aria-busy` or a `<LiveRegion>` announcement on the surrounding region instead.
+- The shimmer is suppressed under `prefers-reduced-motion`; the muted surface still reads as "pending".
+
+#### Tooltip
+**Purpose**: A short hint revealed on hover **and** focus.  
+**Props**: `content`, `side` (`top|bottom|left|right`, auto-flips), `sideOffset`, `delay`, `disabled`  
+**Rules**:
+- Meets WCAG 1.4.13: Escape dismisses it without moving focus, the bubble itself is hoverable, and it never times out on its own.
+- The trigger must be a single focusable element that forwards a ref. A hover-only tooltip is unreachable by keyboard and unavailable on touch.
+- Never put essential information here and nowhere else — tooltips do not exist for touch users.
+- Renders through a portal at `z-index: 90`, above Modal (50) and Lightbox (80), so an ancestor's `overflow: hidden` cannot clip it.
+
 #### Stepper
 **Purpose**: Displays progress through a multi-step form or process.  
 **Rule**: Used with `<Wizard>`. Steps must show completed, current, and upcoming states.
@@ -781,7 +859,7 @@ Docs: `/design-system/components/sla-progress`.
 ### Data Visualization
 
 A dependency-free (no recharts/d3/visx), token-driven, theme-aware SVG chart
-layer. Every chart re-themes automatically under `data-color-mode` /
+layer. Every chart re-themes automatically under `data-brand` /
 `data-theme` / `data-density`, renders `role="img"` + `<title>`/`<desc>`, and
 ships a visually-hidden `<table>` data equivalent. Interactive marks (bars,
 points, slices, map regions) are keyboard-focusable with tooltips on hover +
@@ -839,7 +917,17 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 
 #### SidebarNav
 **Purpose**: Portal app-shell left navigation.  
-**Rules**: Groups are collapsible. Active item must be indicated with `active: true`. Never hardcode colours in sidebar item overrides.
+**Rules**:
+- Groups are collapsible. Active item must be indicated with `active: true`. Never hardcode colours in sidebar item overrides.
+- `SidebarNavItem.icon` is a **Material Symbols name string** (`"dashboard"`, `"group"`), not a component. Nav configs therefore stay plain serialisable data and cross the RSC boundary without ceremony.
+
+#### SectionTitle
+**Purpose**: The shared heading row for a content section — eyebrow, heading, count pill, description, right-aligned actions.  
+**Props**: `eyebrow`, `title`, `description`, `count`, `as` (2|3|4), `headingId`, `children` (actions)  
+**Rules**:
+- Never hand-roll a `flex justify-between` with its own heading classes; reuse this so section headers stay identical estate-wide.
+- Pick `as` so the page's heading outline stays sequential; pass `headingId` when a table or list needs `aria-labelledby`.
+- For a **form** section use `<FormSection>` / `<FormCard>` — those own the card chrome and fieldset semantics. This is the plain-content equivalent.
 
 #### Footer
 **Purpose**: Slim dark-navy app-shell footer with NeGD/DoSJE credit + policy links.  
@@ -847,7 +935,10 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 
 #### AppSwitcher
 **Purpose**: Portal-to-portal navigation overlay. Shows all MoSJE portals the user has access to.  
-**Rule**: Render `<AppSwitcher devMode={process.env.NODE_ENV === "development"} />` — gate dev-only access via the `devMode` prop.
+**Groups**: `Website` · `Portals` · `Resources` (the design system and Storybook).  
+**Rule**: Render `<AppSwitcher />`. The `devMode` prop is **deprecated and inert** — remove it from call sites.
+
+`Resources` was the old `Dev` group, hidden unless `devMode` was true. That gated the design system and Storybook on `NODE_ENV`, which hid them from exactly the people who most need to check what a component is meant to do — BAs, QAs and designers, none of whom run a dev build. Nothing in the switcher is environment-gated now.
 
 ---
 
@@ -861,6 +952,15 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 
 ### Accessibility
 
+#### LiveRegion / useLiveRegion
+**Purpose**: Announces a change that produces no focus change — "12 records exported", "Filter applied, 3 results", "Saved".  
+**Props**: `politeness` (`polite` default | `assertive`)  
+**Rules**:
+- Mount **one** per page near the root and drive it with `useLiveRegion()`. Without one, screen-reader users get silence after an async action completes.
+- Keep it `polite`; `assertive` interrupts whatever is being read and is for genuine errors only.
+- The message is written via `textContent` on a ref, so announcing never re-renders the page. Repeating the same message re-announces correctly (it clears first) rather than going silent, which is the default screen-reader behaviour for an unchanged live region.
+- For toast-style feedback use `<ToastProvider>` instead — it announces itself.
+
 #### UX4GAccessibilityWidget — the single, canonical accessibility mechanism
 **Purpose**: The **official Government of India (MeitY / UX4G) Accessibility Widget** — a floating control providing high-contrast, text sizing, spacing, link highlighting, dark mode and more. This is the **ONE** accessibility/HC mechanism for the entire estate; every portal and site routes through it. Compliant with **WCAG, GIGW and IS 17802**.
 
@@ -871,7 +971,7 @@ import { UX4GAccessibilityWidget } from "@mosje/design-system";
 <UX4GAccessibilityWidget />   // injects https://cdn.ux4g.gov.in/.../accessibility-widget.js, idempotently
 ```
 
-**DOM note:** the widget applies the class **`.dark-mode`** to `<html>` for its dark theme. This is **distinct** from the design system's own `data-theme` / `data-color-mode` token theming — keep the two concerns separate (see the consolidation spec).
+**DOM note:** the widget applies the class **`.dark-mode`** to `<html>` for its dark theme. This is **distinct** from the design system's own `data-theme` / `data-brand` token theming — keep the two concerns separate (see the consolidation spec).
 
 **Brand skin, official functionality:** the CDN widget's look is reskinned to the SAMAVESH
 brand via `ux4g-accessibility-widget.css`, which overrides the widget's own
