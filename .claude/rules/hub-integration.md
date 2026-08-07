@@ -46,5 +46,5 @@ The portals explorer (`apps/hub/src/components/portals-explorer.tsx`) reads `DEF
 - [ ] Hub `next.config.ts` rewrite added
 - [ ] Hub `package.json` dev script added (`dev:<slug>`)
 - [ ] `npm run dev` from repo root starts the new portal
-- [ ] Portal appears as a live (clickable "Open portal →") card in the portals explorer at `http://localhost:3000/portals`
+- [ ] Portal appears as a live (clickable "Open portal →") card in the portals explorer at `http://localhost:3007/portals`
 - [ ] Portal appears in the AppSwitcher FAB with a "live" badge

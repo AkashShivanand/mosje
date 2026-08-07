@@ -6,7 +6,7 @@ import { defineConfig, devices } from "@playwright/test";
  * subfolder per app as coverage grows; this config stays app-agnostic and
  * each spec file navigates using its app's own basePath.
  *
- * Every portal is now mounted natively inside the hub (single origin, :3000),
+ * Every portal is now mounted natively inside the hub (single origin, :3007),
  * so `webServer` targets the hub and reuses an already-running dev server
  * locally so this doesn't fight one you started yourself via `npm run dev`.
  */
@@ -18,7 +18,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: "http://localhost:3007",
     trace: "on-first-retry",
   },
   projects: [
@@ -29,7 +29,7 @@ export default defineConfig({
   ],
   webServer: {
     command: "npm run dev:hub",
-    url: "http://localhost:3000/portals/nmba/treatment-centre/login-otp",
+    url: "http://localhost:3007/portals/nmba/treatment-centre/login-otp",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

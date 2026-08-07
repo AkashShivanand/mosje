@@ -30,14 +30,14 @@ mosje/                      # single git repo
 
 ## Single-origin layout (active)
 
-All apps are accessible from **`localhost:3000`** (hub) in development, and from a single production origin in production. The hub at `apps/hub` holds the routing rewrites.
+All apps are accessible from **`localhost:3007`** (hub) in development, and from a single production origin in production. The hub at `apps/hub` holds the routing rewrites.
 
 Only **three** apps are still separate zones behind the hub proxy. **Every portal is now a native
 route group inside the hub** — no separate app, no `basePath`, no rewrite, no port of its own.
 
 | App | Dev port | Mount path | How it is served |
 |-----|----------|------------|------------------|
-| hub | **3000** | `/` (root) | — |
+| hub | **3007** | `/` (root) | — |
 | website (was `apps/dosje`) | — | `/website` | **native in hub** |
 | SAMAVESH docs (was `apps/docs`) | — | `/design-system` | **native in hub** |
 | storybook | 6006 | `/storybook` | zone rewrite (**the only remaining zone** — not a Next app) |

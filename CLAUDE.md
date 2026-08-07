@@ -51,7 +51,7 @@ Apps are **independent** (own git, own deps) — this is a "monorepo-ready" layo
 | App | Framework | Styling | Notes |
 |-----|-----------|---------|-------|
 | `apps/dosje/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Noto Sans, gov brand tokens in `src/app/globals.css`. **Next 16 has breaking changes — see `apps/dosje/AGENTS.md`.** |
-| `apps/hub/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Root zone at :3000; **hosts every portal natively** at `/portals/<slug>`, and owns the single Tailwind build for all of them. |
+| `apps/hub/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Root zone at :3007; **hosts every portal natively** at `/portals/<slug>`, and owns the single Tailwind build for all of them. |
 
 **Tailwind after the single-origin consolidation:** the portals no longer have their own apps,
 Tailwind installs, or `tailwind.config.ts` files — they are route groups inside `apps/hub`, so
@@ -75,7 +75,7 @@ Run inside the app folder (or via `npm --prefix <app>`):
 
 | Process | Port | Script | Reached at |
 |---------|------|--------|------------|
-| `apps/hub` — **the entire estate** | **3000** | `npm run dev:hub` | `/`, `/website`, `/design-system`, `/portals/<slug>`, `/reports/<slug>` |
+| `apps/hub` — **the entire estate** | **3007** | `npm run dev:hub` | `/`, `/website`, `/design-system`, `/portals/<slug>`, `/reports/<slug>` |
 | `apps/storybook` | 6006 | `npm run dev:storybook` | `/storybook` (proxied — the ONLY remaining zone) |
 
 Dev servers are defined in `.claude/launch.json`. Storybook is the one irreducible child process:
@@ -143,7 +143,7 @@ Key routing rules:
 - `apps/dosje/` homepage is **built and committed** (14 components, faithful clone of dosje.gov.in).
 - `packages/` design system is **live (Phase 2)**: `@mosje/tokens` (DTCG → Style Dictionary) generates the token contract; `@mosje/design-system` has 17 atoms + form layer, plus the **`data-color-mode` brand-axis theming** (ColorModeProvider/Switcher; modes: `blue-light` default, `blue-dark`, extensible). See `docs/superpowers/specs/` + `plans/`.
 - `apps/portals/smile-admin` is **recovered and consolidated** into this repo (was a separate `smile-admin-portal` repo, now archived). `apps/portals/pm-ajay` MIS dashboard is built. The guard hook blocks `rm -rf` so the original loss never recurs.
-- **Single-origin layout is live.** `apps/hub` is the root zone at **:3000**. All child apps mount via `basePath` — dosje at `/website`, portals at `/portals/<slug>`. Run `npm run dev` from the repo root to bring everything up. Add new portals by setting `basePath` + a hub rewrite + a `portals.ts` entry.
+- **Single-origin layout is live.** `apps/hub` is the root zone at **:3007**. All child apps mount via `basePath` — dosje at `/website`, portals at `/portals/<slug>`. Run `npm run dev` from the repo root to bring everything up. Add new portals by setting `basePath` + a hub rewrite + a `portals.ts` entry.
 - **The estate is deployed to Vercel** at `mosje-samavesh.vercel.app`, behind a **shared-password site gate** (Vercel's own password protection is a Pro feature; the team is on Hobby). The gate lives in `apps/hub/src/proxy.ts` + `src/lib/site-gate.ts`; the wall itself is `/gate`. It is an access wall for a prototype, **not authentication** — the portal logins inside are unaffected.
   - The expected token resolves **store → env → off**: `gate_token` in the `hub_settings` table of the `mosje-hub` Supabase project, else HMAC of `SITE_PASSWORD`, else the gate is disabled. The env var is the **floor**, so a paused or unreachable database degrades to a working gate rather than an open site. `SITE_PASSWORD` unset ⇒ gate off, which is why local dev is untouched.
   - Only the **HMAC digest** is ever stored, never the plaintext password.

@@ -8,7 +8,7 @@ One repo for the whole MoSJE estate: the apps **and** the shared design-system p
 
 ```
 apps/
-├── hub/             THE app — single origin :3000, serves the whole estate (Next 16 · Tailwind v4)
+├── hub/             THE app — single origin :3007, serves the whole estate (Next 16 · Tailwind v4)
 │   └── src/app/
 │       ├── website/          the unified DoSJE website
 │       ├── design-system/    SAMAVESH DS documentation
@@ -120,17 +120,17 @@ A `PreToolUse(Bash)` hook (`.claude/hooks/guard.sh` → `guard.mjs`) is the work
 ### Dev servers & ports (`.claude/launch.json`)
 
 `npm run dev` from the repo root boots the **four** processes that exist — hub, dosje, docs and
-Storybook — behind the hub gate at **:3000**.
+Storybook — behind the hub gate at **:3007**.
 
 | App | Port | Standalone script | Reached at |
 |---|---|---|---|
-| `apps/hub` (**the entire estate**) | **3000** | `npm run dev:hub` | `/`, `/website`, `/design-system`, `/portals/<slug>`, `/reports/<slug>` |
+| `apps/hub` (**the entire estate**) | **3007** | `npm run dev:hub` | `/`, `/website`, `/design-system`, `/portals/<slug>`, `/reports/<slug>` |
 | `apps/storybook` | **6006** | `npm run dev:storybook` | `/storybook` (proxied — the only remaining zone) |
 
 **The estate is single-origin: one Next app serves everything.** Every portal (scw, nmba, nhapoa,
 tg, smile-admin, pm-ajay, eutthan-admin), the website, and the SAMAVESH docs are **native route
 groups inside the hub** — under `apps/hub/src/app/portals/<slug>`, `apps/hub/src/app/website` and
-`apps/hub/src/app/design-system` respectively — all served by `dev:hub` on :3000. There are no
+`apps/hub/src/app/design-system` respectively — all served by `dev:hub` on :3007. There are no
 `412x` portal ports and no `:3001`/`:3002` zones; `apps/dosje` and `apps/docs` no longer exist as
 apps. The old `dev:website` / `dev:docs` / `dev:smile` / `dev:pm-ajay` / `dev:eutthan` scripts are
 gone. Storybook remains a separate process only because it is not a Next app.

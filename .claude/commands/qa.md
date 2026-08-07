@@ -1,13 +1,13 @@
 ---
 description: Visual QA — diff a built page in the clone against its live original at desktop and mobile widths.
-argument-hint: "<live-url> [local-url, default http://localhost:3000]"
+argument-hint: "<live-url> [local-url, default http://localhost:3007]"
 allowed-tools: Read, Bash, mcp__Claude_in_Chrome__navigate, mcp__Claude_in_Chrome__browser_batch, mcp__Claude_in_Chrome__computer, mcp__Claude_in_Chrome__resize_window, mcp__Claude_in_Chrome__tabs_context_mcp
 ---
 
 Visual-QA the local build against the live original.
 
 - Live original: **$1**
-- Local build: **${2:-http://localhost:3000}** (ensure the dev server is running via `preview_start` / `.claude/launch.json`; start it if needed)
+- Local build: **${2:-http://localhost:3007}** (ensure the dev server is running via `preview_start` / `.claude/launch.json`; start it if needed)
 
 Steps:
 1. Open both URLs in the browser (Chrome MCP). Confirm both load.
