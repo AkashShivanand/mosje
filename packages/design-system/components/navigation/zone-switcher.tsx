@@ -361,6 +361,9 @@ export function AppSwitcher({
                           key={a.path}
                           role="listitem"
                           href={a.path}
+                          {...(a.newTab
+                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            : {})}
                           className={cn(
                             "ds-appsw__item",
                             isActive && "is-active",
@@ -374,7 +377,26 @@ export function AppSwitcher({
                             {abbr}
                           </span>
                           <span className="ds-appsw__item-text">
-                            <span className="ds-appsw__item-name">{a.name}</span>
+                            <span className="ds-appsw__item-name">
+                              {a.name}
+                              {a.newTab && (
+                                <>
+                                  {/* A link that opens a new tab has to say so
+                                      (WCAG 3.2.5) — the glyph for sighted
+                                      users, the text for everyone else. */}
+                                  <span
+                                    className="ds-appsw__item-external"
+                                    aria-hidden="true"
+                                  >
+                                    ↗
+                                  </span>
+                                  <span className="ds-sr-only">
+                                    {" "}
+                                    (opens in a new tab)
+                                  </span>
+                                </>
+                              )}
+                            </span>
                             {a.desc && (
                               <span className="ds-appsw__item-desc">
                                 {a.desc}

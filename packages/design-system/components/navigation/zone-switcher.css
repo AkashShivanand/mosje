@@ -320,6 +320,15 @@
   text-overflow: ellipsis;
 }
 
+/* New-tab affordance. Muted so it annotates the name rather than competing
+   with it — the name is the thing you are scanning for. */
+.ds-appsw__item-external {
+  margin-inline-start: 5px;
+  font-size: 0.85em;
+  font-weight: 500;
+  color: var(--ds-ink-muted);
+}
+
 .ds-appsw__item.is-active .ds-appsw__item-name {
   color: var(--ds-primary);
 }

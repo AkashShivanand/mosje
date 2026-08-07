@@ -24,6 +24,16 @@ export interface AppEntry {
    */
   group: "Website" | "Portals" | "Resources";
   /**
+   * Open in a new tab. Set this for destinations that are NOT part of the hub
+   * shell and therefore offer no way back — Storybook renders its own
+   * full-screen UI with no estate chrome, so navigating to it in the same tab
+   * strands the user with only the back button.
+   *
+   * Consumers must pair this with `rel="noopener noreferrer"` and tell the
+   * user the link opens a new tab (WCAG 3.2.5).
+   */
+  newTab?: boolean;
+  /**
    * Optional finer sub-grouping within a `group` (e.g. "Finance & development
    * corporations"). The estate gate uses this to section the portal grid; the
    * compact AppSwitcher ignores it and groups by `group` only.
@@ -338,5 +348,9 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Interactive component explorer",
     group: "Resources",
     status: "live",
+    // Storybook is its own full-screen UI with no estate chrome and no link
+    // home, so same-tab navigation leaves the browser back button as the only
+    // way out.
+    newTab: true,
   },
 ];

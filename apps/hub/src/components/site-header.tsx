@@ -6,6 +6,9 @@ const NAV = [
   { label: "Portals", href: "/portals" },
   { label: "Design System", href: "/design-system" },
   { label: "Reports", href: "/reports" },
+  // Storybook is its own full-screen UI with no estate chrome and no link
+  // home, so it opens in a new tab rather than stranding the user there.
+  { label: "Storybook", href: "/storybook/", newTab: true },
 ] as const;
 
 /**
@@ -46,12 +49,15 @@ export function SiteHeader({ current }: { current?: string }) {
           aria-label="Primary"
           className="ml-auto hidden items-center gap-0.5 md:flex"
         >
-          {NAV.map(({ label, href }) => {
+          {NAV.map((item) => {
+            const { label, href } = item;
+            const newTab = "newTab" in item && item.newTab;
             const active = current === href;
             return (
               <a
                 key={href}
                 href={href}
+                {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 aria-current={active ? "page" : undefined}
                 className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                   active
@@ -60,6 +66,15 @@ export function SiteHeader({ current }: { current?: string }) {
                 }`}
               >
                 {label}
+                {newTab && (
+                  <>
+                    {/* WCAG 3.2.5 — say that the link opens a new tab. */}
+                    <span aria-hidden="true" className="ml-1 text-[0.85em] opacity-70">
+                      ↗
+                    </span>
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </>
+                )}
               </a>
             );
           })}
