@@ -130,7 +130,7 @@ export default function PersonsPage() {
       />
 
       <div className="grid grid-cols-2 gap-md lg:grid-cols-4">
-        <StatPill label="Loaded" value={counts.total} icon="credit_card" tone="primary" />
+        <StatPill label="Loaded" value={counts.total} icon="group" tone="primary" />
         <StatPill label="Male" value={counts.male} icon="person" tone="info" />
         <StatPill label="Female" value={counts.female} icon="person" tone="danger" />
         <StatPill

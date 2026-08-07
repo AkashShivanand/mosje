@@ -30,7 +30,7 @@ export const NAV: NavGroup[] = [
     items: [
       { label: "Survey Locations", href: "/portals/smile-admin/surveys", icon: "location_on" },
       { label: "Surveyor Mappings", href: "/portals/smile-admin/surveyor-mapped", icon: "map" },
-      { label: "Beggary Schemes", href: "/portals/smile-admin/beggary-schemes", icon: "fact_check" },
+      { label: "Beggary Schemes", href: "/portals/smile-admin/beggary-schemes", icon: "menu_book" },
     ],
   },
   {

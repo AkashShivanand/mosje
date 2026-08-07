@@ -123,7 +123,7 @@ export function navForRole(role: TCRole): NavNode[] {
             { kind: "leaf", label: "Education Master", href: `${TC}/us/masters/education`, icon: "school" },
             { kind: "leaf", label: "Employment Master", href: `${TC}/us/masters/employment`, icon: "work" },
             { kind: "leaf", label: "Income Master", href: `${TC}/us/masters/income`, icon: "account_balance_wallet" },
-            { kind: "leaf", label: "Marital Status Master", href: `${TC}/us/masters/marital-status`, icon: "favorite" },
+            { kind: "leaf", label: "Marital Status Master", href: `${TC}/us/masters/marital-status`, icon: "family_restroom" },
             { kind: "leaf", label: "Occupation Master", href: `${TC}/us/masters/occupation`, icon: "work" },
             { kind: "leaf", label: "Referral Master", href: `${TC}/us/masters/referral`, icon: "share" },
             { kind: "leaf", label: "Cause of Substance Use Master", href: `${TC}/us/masters/substance-cause`, icon: "stethoscope" },

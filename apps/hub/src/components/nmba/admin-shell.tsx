@@ -21,7 +21,7 @@ const ADMIN_NAV: NavItem[] = [
   { label: "State/UT/District Dashboard", href: "/portals/nmba/admin/dashboard", icon: "grid_view" },
   { label: "User Management", href: "/portals/nmba/admin/user-management", icon: "group" },
   { label: "All Pledge Reports", href: "/portals/nmba/admin/pledge-reports", icon: "description" },
-  { label: "Important Documents", href: "/portals/nmba/admin/important-documents", icon: "file_copy" },
+  { label: "Important Documents", href: "/portals/nmba/admin/important-documents", icon: "library_books" },
   { label: "List of SNO", href: "/portals/nmba/admin/state-nodal-officers", icon: "shield" },
   { label: "List of DNO", href: "/portals/nmba/admin/district-nodal-officers", icon: "verified_user" },
   { label: "Feedback/Grievances", href: "/portals/nmba/admin/feedback", icon: "chat" },

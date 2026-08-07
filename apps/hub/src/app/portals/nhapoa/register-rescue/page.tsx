@@ -94,7 +94,7 @@ export default function RegisterRescuePage() {
 
         <div className="mt-8 flex justify-end border-t border-line pt-6">
           <Button type="button" onClick={submit} disabled={!canSubmit}>
-            <Icon name="radio_button_checked" size={16} /> Verify Mobile &amp; Continue
+            <Icon name="verified" size={16} /> Verify Mobile &amp; Continue
           </Button>
         </div>
       </Card>
