@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { Button, Card, FieldGrid, SectionTitle } from "@/components/scw/ui";
 import { VOLUNTEER_DETAIL } from "@/lib/scw/mock-data";
+import { Icon } from "@mosje/design-system";
 
 export default async function VolunteerDetailPage({
   params,
@@ -37,7 +37,7 @@ export default async function VolunteerDetailPage({
             aria-label="Back to Volunteers"
             className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-ink-muted transition-colors hover:bg-black/5"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <Icon name="arrow_back" size={20} />
           </Link>
           <h1 className="text-2xl font-bold text-ink">{v.name}</h1>
         </div>

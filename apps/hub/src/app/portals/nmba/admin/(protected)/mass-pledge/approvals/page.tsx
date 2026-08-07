@@ -2,8 +2,7 @@
 
 // DS Audit: EmptyState ✅ · Badge ✅ — existing DS. Cards are SubmissionCard.
 
-import { ClipboardCheck } from "lucide-react";
-import { Badge, EmptyState } from "@mosje/design-system";
+import { Badge, EmptyState, Icon } from "@mosje/design-system";
 import { AdminShell } from "@/components/nmba/admin-shell";
 import { SubmissionCard } from "@/components/nmba/mass-pledge/submission-card";
 import { usePortalSession } from "@/lib/nmba/committee/session-context";
@@ -38,7 +37,7 @@ export default function MassPledgeApprovalsPage() {
 
       {queue.length === 0 ? (
         <EmptyState
-          icon={<ClipboardCheck className="h-8 w-8" />}
+          icon={<Icon name="assignment_turned_in" size={32} />}
           title="Nothing awaiting your approval"
           description="Reports submitted from within your jurisdiction will appear here for you to approve or return."
         />

@@ -3,8 +3,7 @@
 import { AdminShell } from "@/components/nmba/admin-shell";
 import { FEEDBACK_LIST } from "@/lib/nmba/mock-data";
 import { useToast } from "@/components/nmba/toast";
-import { MoreHorizontal } from "lucide-react";
-import { Badge, Button } from "@mosje/design-system";
+import { Badge, Button, Icon } from "@mosje/design-system";
 
 export default function FeedbackPage() {
   const { toast } = useToast();
@@ -51,7 +50,7 @@ export default function FeedbackPage() {
                     onClick={() => toast("Action coming soon.", "info")}
                     aria-label="Row actions"
                   >
-                    <MoreHorizontal className="h-4 w-4" />
+                    <Icon name="more_horiz" size={16} />
                   </Button>
                 </td>
               </tr>

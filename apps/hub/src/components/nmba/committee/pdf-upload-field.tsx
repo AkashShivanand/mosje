@@ -5,10 +5,10 @@
 // (Committee Notification + Meeting Minutes).
 
 import * as React from "react";
-import { FileText, X } from "lucide-react";
 import { cn } from "@/lib/nmba/utils";
 import { ACCEPTED_UPLOAD_MIME, MAX_UPLOAD_BYTES } from "@/lib/nmba/committee/masters";
 import type { UploadedFile } from "@/lib/nmba/committee/types";
+import { Icon } from "@mosje/design-system";
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -83,7 +83,7 @@ export function PdfUploadField({
         <div className="flex items-center justify-between gap-3 rounded-xl border border-line bg-white px-3.5 py-3">
           <span className="flex min-w-0 items-center gap-3">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brandwash text-navy">
-              <FileText className="h-4 w-4" />
+              <Icon name="description" size={16} />
             </span>
             <span className="min-w-0">
               <span className="block truncate text-sm font-medium text-ink">{value.name}</span>
@@ -110,7 +110,7 @@ export function PdfUploadField({
               aria-label="Remove file"
               className="flex h-8 w-8 items-center justify-center rounded-full text-ink-muted hover:bg-black/5"
             >
-              <X className="h-4 w-4" />
+              <Icon name="close" size={16} />
             </button>
           </span>
         </div>
@@ -145,7 +145,7 @@ export function PdfUploadField({
           )}
         >
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-ink-muted shadow-sm">
-            <FileText className="h-5 w-5" />
+            <Icon name="description" size={20} />
           </span>
           <span className="text-sm font-semibold text-ink">Click or drag PDF to upload</span>
           <span id={`${id}-hint`} className="text-xs text-ink-hint">

@@ -3,29 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  LayoutGrid,
-  Building2,
-  Users,
-  FileText,
-  FileStack,
-  Shield,
-  ShieldCheck,
-  MessageSquare,
-  ChevronsLeft,
-  ChevronDown,
-  Landmark,
-  Building,
-  MapPin,
-  FileBarChart,
-  RotateCcw,
-  LogOut,
-  HeartHandshake,
-  ClipboardCheck,
-  BarChart3,
-  Menu,
-} from "lucide-react";
-import { SideSheet, SiteHeader } from "@mosje/design-system";
+import { Icon, SideSheet, SiteHeader } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { cn } from "@/lib/nmba/utils";
 import { usePortalSession } from "@/lib/nmba/committee/session-context";
@@ -36,25 +14,25 @@ import type { CommitteeTier, PortalRole } from "@/lib/nmba/committee/types";
 
 const BASE = "/portals/nmba";
 
-type NavItem = { label: string; href: string; icon: React.ComponentType<{ className?: string }> };
+type NavItem = { label: string; href: string; icon: string };
 
 const ADMIN_NAV: NavItem[] = [
-  { label: "Ministries/Line Departments/Spiritual Organisations Dashboard", href: "/portals/nmba/admin/ministries-dashboard", icon: Building2 },
-  { label: "State/UT/District Dashboard", href: "/portals/nmba/admin/dashboard", icon: LayoutGrid },
-  { label: "User Management", href: "/portals/nmba/admin/user-management", icon: Users },
-  { label: "All Pledge Reports", href: "/portals/nmba/admin/pledge-reports", icon: FileText },
-  { label: "Important Documents", href: "/portals/nmba/admin/important-documents", icon: FileStack },
-  { label: "List of SNO", href: "/portals/nmba/admin/state-nodal-officers", icon: Shield },
-  { label: "List of DNO", href: "/portals/nmba/admin/district-nodal-officers", icon: ShieldCheck },
-  { label: "Feedback/Grievances", href: "/portals/nmba/admin/feedback", icon: MessageSquare },
+  { label: "Ministries/Line Departments/Spiritual Organisations Dashboard", href: "/portals/nmba/admin/ministries-dashboard", icon: "apartment" },
+  { label: "State/UT/District Dashboard", href: "/portals/nmba/admin/dashboard", icon: "grid_view" },
+  { label: "User Management", href: "/portals/nmba/admin/user-management", icon: "group" },
+  { label: "All Pledge Reports", href: "/portals/nmba/admin/pledge-reports", icon: "description" },
+  { label: "Important Documents", href: "/portals/nmba/admin/important-documents", icon: "file_copy" },
+  { label: "List of SNO", href: "/portals/nmba/admin/state-nodal-officers", icon: "shield" },
+  { label: "List of DNO", href: "/portals/nmba/admin/district-nodal-officers", icon: "verified_user" },
+  { label: "Feedback/Grievances", href: "/portals/nmba/admin/feedback", icon: "chat" },
 ];
 
 const NAPDDR_TIER_ITEMS: Record<CommitteeTier, NavItem> = {
-  STATE: { label: "State-Level Committee", href: "/portals/nmba/admin/napddr/state", icon: Landmark },
-  DISTRICT: { label: "District-Level Committee", href: "/portals/nmba/admin/napddr/district", icon: Building },
-  BLOCK: { label: "Block-Level Committee", href: "/portals/nmba/admin/napddr/block", icon: MapPin },
+  STATE: { label: "State-Level Committee", href: "/portals/nmba/admin/napddr/state", icon: "account_balance" },
+  DISTRICT: { label: "District-Level Committee", href: "/portals/nmba/admin/napddr/district", icon: "business" },
+  BLOCK: { label: "Block-Level Committee", href: "/portals/nmba/admin/napddr/block", icon: "location_on" },
 };
-const NAPDDR_REPORTS: NavItem = { label: "Committee Reports", href: "/portals/nmba/admin/napddr/reports", icon: FileBarChart };
+const NAPDDR_REPORTS: NavItem = { label: "Committee Reports", href: "/portals/nmba/admin/napddr/reports", icon: "assessment" };
 
 const MP = "/portals/nmba/admin/mass-pledge";
 
@@ -68,9 +46,9 @@ const MP = "/portals/nmba/admin/mass-pledge";
  * would be dead for all but one day of the year.
  */
 function massPledgeNavFor(role: PortalRole): NavItem[] {
-  const reports: NavItem = { label: "Mass Pledge", href: MP, icon: HeartHandshake };
-  const approvals: NavItem = { label: "Approvals", href: `${MP}/approvals`, icon: ClipboardCheck };
-  const dashboard: NavItem = { label: "Pledge Dashboard", href: `${MP}/dashboard`, icon: BarChart3 };
+  const reports: NavItem = { label: "Mass Pledge", href: MP, icon: "volunteer_activism" };
+  const approvals: NavItem = { label: "Approvals", href: `${MP}/approvals`, icon: "assignment_turned_in" };
+  const dashboard: NavItem = { label: "Pledge Dashboard", href: `${MP}/dashboard`, icon: "bar_chart" };
 
   switch (role) {
     case "ADMIN":
@@ -132,7 +110,7 @@ export function AdminShell({ children }: AdminShellProps) {
       {/* Admin keeps the full portal nav; State/District officers get the
           NAPDDR flow only (admin-only items are hidden for them). */}
       {isAdmin &&
-        ADMIN_NAV.map(({ label, href, icon: Icon }) => {
+        ADMIN_NAV.map(({ label, href, icon: iconName }) => {
           const active = isActive(href);
           return (
             <Link
@@ -148,7 +126,7 @@ export function AdminShell({ children }: AdminShellProps) {
                   : "text-ink-muted hover:bg-black/5"
               )}
             >
-              <Icon className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
+              <Icon name={iconName} className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
               {!compact && <span className="leading-tight">{label}</span>}
             </Link>
           );
@@ -167,19 +145,17 @@ export function AdminShell({ children }: AdminShellProps) {
               napddrActive ? "font-semibold text-navy" : "text-ink-muted hover:bg-black/5"
             )}
           >
-            <Landmark className={cn("h-5 w-5 shrink-0", napddrActive && "text-navy")} />
+            <Icon name="account_balance" className={cn("h-5 w-5 shrink-0", napddrActive && "text-navy")} />
             {!compact && (
               <>
                 <span className="leading-tight">NAPDDR Three-Tier Committee</span>
-                <ChevronDown
-                  className={cn("ml-auto h-4 w-4 transition-transform", napddrOpen && "rotate-180")}
-                />
+                <Icon name="keyboard_arrow_down" className={cn("ml-auto h-4 w-4 transition-transform", napddrOpen && "rotate-180")} />
               </>
             )}
           </button>
           {napddrOpen && !compact && (
             <div className="ml-3 flex flex-col gap-1 border-l border-line pl-3">
-              {napddrItems.map(({ label, href, icon: Icon }) => {
+              {napddrItems.map(({ label, href, icon: iconName }) => {
                 const active = isActive(href);
                 return (
                   <Link
@@ -192,7 +168,7 @@ export function AdminShell({ children }: AdminShellProps) {
                       active ? "bg-brandwash font-semibold text-navy" : "text-ink-muted hover:bg-black/5"
                     )}
                   >
-                    <Icon className={cn("h-4 w-4 shrink-0", active && "text-navy")} />
+                    <Icon name={iconName} className={cn("h-4 w-4 shrink-0", active && "text-navy")} />
                     <span className="leading-tight">{label}</span>
                   </Link>
                 );
@@ -211,7 +187,7 @@ export function AdminShell({ children }: AdminShellProps) {
               NAPDDR Three-Tier Committee
             </p>
           )}
-          {napddrItems.map(({ label, href, icon: Icon }) => {
+          {napddrItems.map(({ label, href, icon: iconName }) => {
             const active = isActive(href);
             return (
               <Link
@@ -225,7 +201,7 @@ export function AdminShell({ children }: AdminShellProps) {
                   active ? "bg-brandwash font-semibold text-navy" : "text-ink-muted hover:bg-black/5"
                 )}
               >
-                <Icon className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
+                <Icon name={iconName} className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
                 {!compact && <span className="leading-tight">{label}</span>}
               </Link>
             );
@@ -241,7 +217,7 @@ export function AdminShell({ children }: AdminShellProps) {
           Mass Pledge · 18 Aug 2026
         </p>
       )}
-      {massPledgeItems.map(({ label, href, icon: Icon }) => {
+      {massPledgeItems.map(({ label, href, icon: iconName }) => {
         const active = isActive(href);
         return (
           <Link
@@ -255,7 +231,7 @@ export function AdminShell({ children }: AdminShellProps) {
               active ? "bg-brandwash font-semibold text-navy" : "text-ink-muted hover:bg-black/5"
             )}
           >
-            <Icon className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
+            <Icon name={iconName} className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
             {!compact && <span className="leading-tight">{label}</span>}
           </Link>
         );
@@ -289,13 +265,13 @@ export function AdminShell({ children }: AdminShellProps) {
         accountMenu={[
           {
             label: "Reset demo data",
-            icon: <RotateCcw className="h-4 w-4" />,
+            icon: <Icon name="restart_alt" size={16} />,
             onSelect: handleResetDemo,
           },
           {
             label: "Sign out",
             danger: true,
-            icon: <LogOut className="h-4 w-4" />,
+            icon: <Icon name="logout" size={16} />,
             onSelect: handleLogout,
           },
         ]}
@@ -317,7 +293,7 @@ export function AdminShell({ children }: AdminShellProps) {
               aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
               className="flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink-muted hover:bg-black/5"
             >
-              <ChevronsLeft className={cn("h-4 w-4 transition-transform", collapsed && "rotate-180")} />
+              <Icon name="keyboard_double_arrow_left" className={cn("h-4 w-4 transition-transform", collapsed && "rotate-180")} />
             </button>
           </div>
         </aside>
@@ -330,7 +306,7 @@ export function AdminShell({ children }: AdminShellProps) {
             onClick={() => setMobileNavOpen(true)}
             className="mb-5 inline-flex h-11 items-center gap-2 rounded-lg border border-line bg-white px-4 text-sm font-semibold text-ink transition-colors hover:bg-black/5 lg:hidden"
           >
-            <Menu className="h-5 w-5" aria-hidden="true" />
+            <Icon name="menu" size={20} aria-hidden="true" />
             Menu
           </button>
           {children}

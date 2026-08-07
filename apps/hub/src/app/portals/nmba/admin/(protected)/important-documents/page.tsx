@@ -4,8 +4,7 @@ import * as React from "react";
 import { AdminShell } from "@/components/nmba/admin-shell";
 import { IMPORTANT_DOCUMENTS } from "@/lib/nmba/mock-data";
 import { useToast } from "@/components/nmba/toast";
-import { Upload, FileText, Eye, EyeOff, Plus, X } from "lucide-react";
-import { Button, Input, FormField, Badge } from "@mosje/design-system";
+import { Badge, Button, FormField, Icon, Input } from "@mosje/design-system";
 
 function AddDocumentModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { toast } = useToast();
@@ -25,7 +24,7 @@ function AddDocumentModal({ open, onClose }: { open: boolean; onClose: () => voi
       <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
           <h2 id="add-doc-title" className="text-base font-bold text-ink">Add Document</h2>
-          <button onClick={onClose} aria-label="Close" className="rounded p-1 text-ink-hint hover:bg-black/5"><X className="h-4 w-4" /></button>
+          <button onClick={onClose} aria-label="Close" className="rounded p-1 text-ink-hint hover:bg-black/5"><Icon name="close" size={16} /></button>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6">
           <FormField label="Document Name" id="doc-name" required>
@@ -45,7 +44,7 @@ function AddDocumentModal({ open, onClose }: { open: boolean; onClose: () => voi
           </div>
           <div className="flex gap-3 pt-2">
             <Button type="button" appearance="outlined" onClick={onClose} style={{ flex: 1 }}>Cancel</Button>
-            <Button type="submit" iconLeft={<Upload className="h-4 w-4" />} style={{ flex: 1 }}>Upload</Button>
+            <Button type="submit" iconLeft={<Icon name="upload" size={16} />} style={{ flex: 1 }}>Upload</Button>
           </div>
         </form>
       </div>
@@ -72,7 +71,7 @@ export default function ImportantDocumentsPage() {
           <h1 className="text-xl font-bold text-ink">Important Documents</h1>
           <p className="mt-1 text-sm text-ink-muted">{docs.length} documents</p>
         </div>
-        <Button onClick={() => setModalOpen(true)} iconLeft={<Plus className="h-4 w-4" />}>
+        <Button onClick={() => setModalOpen(true)} iconLeft={<Icon name="add" size={16} />}>
           Add Document
         </Button>
       </div>
@@ -93,7 +92,7 @@ export default function ImportantDocumentsPage() {
               <tr key={i} className="hover:bg-surface-muted/50 transition-colors">
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4 shrink-0 text-navy/60" />
+                    <Icon name="description" size={16} className="shrink-0 text-navy/60" />
                     <span className="font-medium text-ink">{doc.name}</span>
                   </div>
                 </td>
@@ -110,7 +109,7 @@ export default function ImportantDocumentsPage() {
                     appearance="outlined"
                     onClick={() => togglePublish(i)}
                     aria-label={doc.published ? "Unpublish document" : "Publish document"}
-                    iconLeft={doc.published ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                    iconLeft={doc.published ? <Icon name="visibility_off" size={14} /> : <Icon name="visibility" size={14} />}
                   >
                     {doc.published ? "Unpublish" : "Publish"}
                   </Button>

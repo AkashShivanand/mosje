@@ -7,17 +7,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Send, ShieldCheck } from "lucide-react";
-import {
-  Alert,
-  Button,
-  DeclarationCheckbox,
-  FormField,
-  FormSection,
-  GeoPhotoInput,
-  Input,
-  type GeoPhoto,
-} from "@mosje/design-system";
+import { Alert, Button, DeclarationCheckbox, FormField, FormSection, GeoPhotoInput, Icon, Input, type GeoPhoto } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { IdentityHeader, type IdentityValue } from "./identity-header";
 import { usePortalSession } from "@/lib/nmba/committee/session-context";
@@ -497,7 +487,7 @@ export function SubmissionForm() {
         {contactVerified ? (
           <div className="flex items-end">
             <p className="flex items-center gap-1.5 pb-2 text-sm font-semibold text-approve">
-              <ShieldCheck className="h-4 w-4" aria-hidden="true" />
+              <Icon name="verified_user" size={16} aria-hidden="true" />
               Mobile number verified
             </p>
           </div>
@@ -560,7 +550,7 @@ export function SubmissionForm() {
         <Button
           type="submit"
           disabled={submitting}
-          iconLeft={<Send className="h-4 w-4" />}
+          iconLeft={<Icon name="send" size={16} />}
         >
           {submitting ? "Submitting…" : "Submit report"}
         </Button>

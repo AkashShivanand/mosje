@@ -8,12 +8,7 @@
 //   MediaStack (table thumbnail cell) → page-local (wired to this page's lightbox state)
 
 import * as React from "react";
-import { Pencil, Trash2, Camera, ZoomIn, Play } from "lucide-react";
-import {
-  Button, Input, Select, FormField, Alert, Modal, SideSheet,
-  MediaGalleryInput, Lightbox,
-  type GalleryMediaItem, type LightboxItem,
-} from "@mosje/design-system";
+import { Alert, Button, FormField, Icon, Input, Lightbox, MediaGalleryInput, Modal, Select, SideSheet, type GalleryMediaItem, type LightboxItem } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
@@ -482,7 +477,7 @@ function MediaBadge({ media, onOpen }: { media?: SaptahMedia[]; onOpen: (index: 
         aria-label="No media uploaded"
         title="No media"
       >
-        <Camera className="h-4 w-4" aria-hidden />
+        <Icon name="photo_camera" size={16} aria-hidden />
       </span>
     );
   }
@@ -521,9 +516,9 @@ function MediaBadge({ media, onOpen }: { media?: SaptahMedia[]; onOpen: (index: 
           aria-hidden
         >
           {isVideo ? (
-            <Play className="h-4 w-4 text-white drop-shadow" fill="currentColor" />
+            <Icon name="play_arrow" size={16} className="text-white drop-shadow" fill />
           ) : (
-            <ZoomIn className="h-4 w-4 text-white opacity-0 drop-shadow transition-opacity duration-150 group-hover:opacity-100" />
+            <Icon name="zoom_in" size={16} className="text-white opacity-0 drop-shadow transition-opacity duration-150 group-hover:opacity-100" />
           )}
         </span>
       </span>
@@ -626,13 +621,13 @@ export default function SaptahPage() {
       render: (row) => (
         <RowActions>
           <IconAction
-            icon={Pencil}
+            icon="edit"
             label={`Edit ${row.activity} activity`}
             tone="warning"
             onClick={() => openEdit(row)}
           />
           <IconAction
-            icon={Trash2}
+            icon="delete"
             label={`Delete ${row.activity} activity`}
             tone="danger"
             onClick={() => setDeleteTarget(row)}

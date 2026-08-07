@@ -3,39 +3,27 @@
 import * as React from "react";
 import { usePathname } from "next/navigation";
 import { SidebarNav } from "@mosje/design-system";
-import {
-  LayoutGrid,
-  User,
-  FileText,
-  Calendar,
-  Users,
-  Building2,
-  Accessibility,
-  HeartHandshake,
-  LifeBuoy,
-  type LucideIcon,
-} from "lucide-react";
 
 export interface NavItem {
   label: string;
   href: string;
-  icon: LucideIcon;
+  icon: string;
 }
 
 export const ADMIN_NAV: NavItem[] = [
-  { label: "Dashboard", href: "/portals/scw/admin/dashboard", icon: LayoutGrid },
-  { label: "User Management", href: "/portals/scw/admin/user-management", icon: User },
-  { label: "SAGE Applications", href: "/portals/scw/admin/sage-applications", icon: FileText },
-  { label: "Events", href: "/portals/scw/admin/events", icon: Calendar },
-  { label: "Volunteer", href: "/portals/scw/admin/volunteers", icon: Users },
-  { label: "IPSrC Homes", href: "/portals/scw/admin/sage-homes", icon: Building2 },
-  { label: "RVY Assisted Devices", href: "/portals/scw/admin/assisted-devices", icon: Accessibility },
+  { label: "Dashboard", href: "/portals/scw/admin/dashboard", icon: "grid_view" },
+  { label: "User Management", href: "/portals/scw/admin/user-management", icon: "person" },
+  { label: "SAGE Applications", href: "/portals/scw/admin/sage-applications", icon: "description" },
+  { label: "Events", href: "/portals/scw/admin/events", icon: "calendar_today" },
+  { label: "Volunteer", href: "/portals/scw/admin/volunteers", icon: "group" },
+  { label: "IPSrC Homes", href: "/portals/scw/admin/sage-homes", icon: "apartment" },
+  { label: "RVY Assisted Devices", href: "/portals/scw/admin/assisted-devices", icon: "accessibility_new" },
 ];
 
 export const USER_NAV: NavItem[] = [
-  { label: "Dashboard", href: "/portals/scw", icon: LayoutGrid },
-  { label: "E-Pledge", href: "/portals/scw/epledge", icon: HeartHandshake },
-  { label: "Our Services", href: "/portals/scw/our-services", icon: LifeBuoy },
+  { label: "Dashboard", href: "/portals/scw", icon: "grid_view" },
+  { label: "E-Pledge", href: "/portals/scw/epledge", icon: "volunteer_activism" },
+  { label: "Our Services", href: "/portals/scw/our-services", icon: "support" },
 ];
 
 /** Portal-local Sidebar — wraps DS SidebarNav with SCW-specific nav arrays. */

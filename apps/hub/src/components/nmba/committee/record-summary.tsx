@@ -2,8 +2,8 @@
 
 // Read-only summary of a committee record's fields + its notification file.
 
-import { FileText, CircleCheck } from "lucide-react";
 import type { CommitteeRecord } from "@/lib/nmba/committee/types";
+import { Icon } from "@mosje/design-system";
 
 function Field({ label, value }: { label: string; value: string }) {
   return (
@@ -33,7 +33,7 @@ export function RecordSummary({ record }: { record: CommitteeRecord }) {
     <div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-success/30 bg-success/5 px-3 py-2">
         <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-success-fg">
-          <CircleCheck className="h-4 w-4" />
+          <Icon name="check_circle" size={16} />
           Registered
         </span>
         <span className="font-mono text-xs text-ink-muted">Ref: {referenceCode(record)}</span>
@@ -60,7 +60,7 @@ export function RecordSummary({ record }: { record: CommitteeRecord }) {
         <Field label="No. of Members" value={String(record.memberCount)} />
       </dl>
       <div className="mt-4 flex items-center gap-2 rounded-lg border border-line bg-surface-muted px-3 py-2.5">
-        <FileText className="h-4 w-4 shrink-0 text-navy" />
+        <Icon name="description" size={16} className="shrink-0 text-navy" />
         <span className="truncate text-sm text-ink">{record.notification.name}</span>
         <span className="ml-auto shrink-0 text-xs text-ink-hint">
           {record.notification.blobUrl ? "Uploaded this session" : "On file · re-upload to view"}

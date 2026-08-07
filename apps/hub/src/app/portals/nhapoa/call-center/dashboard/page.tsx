@@ -1,14 +1,14 @@
 import Link from "next/link";
-import { Phone, FilePlus2, MessageSquare, FolderOpen, Users, FileSearch, HelpCircle, ArrowRight } from "lucide-react";
 import { PageHeader, Card } from "@/components/nhapoa/ui";
+import { Icon } from "@mosje/design-system";
 
 const ACTIONS = [
-  { href: "/portals/nhapoa/call-center/caller", icon: Phone, title: "Look up caller", desc: "Look up or create the caller record from their mobile." },
-  { href: "/portals/nhapoa/call-center/register-grievance", icon: FilePlus2, title: "Start registration", desc: "File a grievance on the caller's behalf." },
-  { href: "/portals/nhapoa/call-center/query", icon: MessageSquare, title: "Log a query", desc: "Record a first-time-resolution (FTR) query." },
-  { href: "/portals/nhapoa/call-center/queries", icon: FolderOpen, title: "View query log", desc: "Search and resolve logged queries." },
-  { href: "/portals/nhapoa/call-center/directory", icon: Users, title: "Search directory", desc: "Find officers state- and district-wise across the country." },
-  { href: "/portals/nhapoa/call-center/track", icon: FileSearch, title: "Track a grievance", desc: "Share the reference and track progress for the caller." },
+  { href: "/portals/nhapoa/call-center/caller", icon: "call", title: "Look up caller", desc: "Look up or create the caller record from their mobile." },
+  { href: "/portals/nhapoa/call-center/register-grievance", icon: "note_add", title: "Start registration", desc: "File a grievance on the caller's behalf." },
+  { href: "/portals/nhapoa/call-center/query", icon: "chat", title: "Log a query", desc: "Record a first-time-resolution (FTR) query." },
+  { href: "/portals/nhapoa/call-center/queries", icon: "folder_open", title: "View query log", desc: "Search and resolve logged queries." },
+  { href: "/portals/nhapoa/call-center/directory", icon: "group", title: "Search directory", desc: "Find officers state- and district-wise across the country." },
+  { href: "/portals/nhapoa/call-center/track", icon: "find_in_page", title: "Track a grievance", desc: "Share the reference and track progress for the caller." },
 ];
 
 const PROCESS = [
@@ -24,19 +24,19 @@ export default function CallCenterDashboard() {
       <PageHeader title="Call-Centre Dashboard" subtitle="Handle caller requests — register grievances, log queries, and search the directory." />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {ACTIONS.map(({ href, icon: Icon, title, desc }) => (
+        {ACTIONS.map(({ href, icon: iconName, title, desc }) => (
           <Link key={href} href={href} className="group flex flex-col rounded-2xl border border-line bg-white p-5 shadow-card transition-colors hover:border-navy/30">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-navy/10 text-navy"><Icon className="h-5 w-5" /></span>
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-navy/10 text-navy"><Icon name={iconName} size={20} /></span>
             <h3 className="mt-3 text-sm font-bold text-ink">{title}</h3>
             <p className="mt-1 flex-1 text-xs text-ink-muted">{desc}</p>
-            <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-navy">Open <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" /></span>
+            <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-navy">Open <Icon name="arrow_forward" size={14} className="transition-transform group-hover:translate-x-0.5" /></span>
           </Link>
         ))}
         <Link href="/portals/nhapoa/call-center/faq" className="group flex flex-col rounded-2xl border border-line bg-white p-5 shadow-card transition-colors hover:border-navy/30">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-navy/10 text-navy"><HelpCircle className="h-5 w-5" /></span>
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-navy/10 text-navy"><Icon name="help" size={20} /></span>
           <h3 className="mt-3 text-sm font-bold text-ink">Open Help & FAQs</h3>
           <p className="mt-1 flex-1 text-xs text-ink-muted">Answer common caller questions.</p>
-          <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-navy">Open <ArrowRight className="h-3.5 w-3.5" /></span>
+          <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-navy">Open <Icon name="arrow_forward" size={14} /></span>
         </Link>
       </div>
 

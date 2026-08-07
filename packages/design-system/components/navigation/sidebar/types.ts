@@ -8,8 +8,16 @@ export interface SidebarNavChild {
 export interface SidebarNavItem {
   label: string;
   href: string;
-  /** Lucide-compatible icon component */
-  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean | "true" | "false" }>;
+  /**
+   * Material Symbols Rounded name, rendered through the DS `<Icon>` —
+   * e.g. `"dashboard"`, `"group"`, `"location_on"`.
+   * Full catalog: https://fonts.google.com/icons
+   *
+   * This used to be a Lucide-compatible component type. It is a name string so
+   * that nav configs stay plain serialisable data and the estate has exactly
+   * one icon system (see the icon rule in CLAUDE.md / design.md).
+   */
+  icon: string;
   /** Badge count / label (e.g. unread notifications) */
   badge?: number | string;
   /** When set, the item becomes a collapsible group with these children */

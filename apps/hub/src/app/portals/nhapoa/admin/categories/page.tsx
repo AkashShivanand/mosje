@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Plus } from "lucide-react";
-import { Modal } from "@mosje/design-system";
+import { Icon, Modal } from "@mosje/design-system";
 import { PageHeader, SearchInput, Button, Field, TextInput, Checkbox } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
@@ -31,7 +30,7 @@ export default function CategoriesPage() {
       <PageHeader
         title="Grievance Categories"
         subtitle="Configure the nature options on the citizen wizard and the SLA window for each category"
-        action={<Button onClick={() => setOpen(true)}><Plus className="h-4 w-4" /> Add Category</Button>}
+        action={<Button onClick={() => setOpen(true)}><Icon name="add" size={16} /> Add Category</Button>}
       />
 
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">

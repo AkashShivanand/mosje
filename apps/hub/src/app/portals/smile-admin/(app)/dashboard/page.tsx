@@ -1,9 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { BarChart3 } from "lucide-react";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/smile-admin/ui/card";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { ScopeBanner } from "@/components/smile-admin/shell/scope-banner";
 import { DateRangeChips } from "@/components/smile-admin/dashboard/date-range-chips";
@@ -17,7 +15,6 @@ import {
   ShelterStateBars,
   TypeBars,
 } from "@/components/smile-admin/dashboard/charts";
-import { SectionTitle } from "@/components/smile-admin/ui/section";
 import { useApp } from "@/store/smile-admin/app-context";
 import {
   AGE_DISTRIBUTION,
@@ -31,6 +28,7 @@ import {
   SURVEY_ACTIVITY,
   SYSTEM_USERS_ALL,
 } from "@/lib/smile-admin/mock-data";
+import { Card, CardBody, CardHeader, CardTitle, Icon, SectionTitle } from "@mosje/design-system";
 
 const TABS = [
   { id: "identified", label: "Identified" },
@@ -182,25 +180,25 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle>Gender</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardBody>
               <GenderDonut data={GENDER_DISTRIBUTION} />
-            </CardContent>
+            </CardBody>
           </Card>
           <Card>
             <CardHeader>
               <CardTitle>Age</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardBody>
               <AgeBars data={AGE_DISTRIBUTION} />
-            </CardContent>
+            </CardBody>
           </Card>
           <Card>
             <CardHeader>
               <CardTitle>Type</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardBody>
               <TypeBars data={BEGGAR_TYPE} />
-            </CardContent>
+            </CardBody>
           </Card>
         </div>
       </div>
@@ -210,7 +208,7 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between gap-md border-b border-stroke-100 p-lg">
           <div className="space-y-xxs">
             <CardTitle>State-wise beneficiary distribution</CardTitle>
-            <p className="text-body-3 text-foreground-muted">
+            <p className="text-body-3 text-ink-muted">
               Heat map across India · click a state to drill down
             </p>
           </div>
@@ -222,7 +220,7 @@ export default function DashboardPage() {
                 className={`rounded-sm px-md py-1 text-body-3 font-semibold transition-colors ${
                   tab === t.id
                     ? "bg-primary text-white shadow-xs"
-                    : "text-foreground-muted hover:bg-neutral-100 hover:text-foreground"
+                    : "text-ink-muted hover:bg-neutral-100 hover:text-ink"
                 }`}
               >
                 {t.label}
@@ -230,13 +228,13 @@ export default function DashboardPage() {
             ))}
           </div>
         </div>
-        <CardContent className="grid grid-cols-1 gap-lg p-lg lg:grid-cols-[1.4fr_1fr]">
+        <CardBody className="grid grid-cols-1 gap-lg p-lg lg:grid-cols-[1.4fr_1fr]">
           <div className="relative overflow-hidden rounded-md border border-stroke-100 bg-gradient-to-br from-primary-50/50 to-primary-50/10 p-md">
             <IndiaMap highlightState={account?.stateName ?? undefined} />
           </div>
           <div className="overflow-hidden rounded-md border border-stroke-200">
             <table className="w-full text-body-3">
-              <thead className="bg-neutral-50/80 text-label-3 uppercase tracking-[0.08em] text-foreground-muted">
+              <thead className="bg-neutral-50/80 text-label-3 uppercase tracking-[0.08em] text-ink-muted">
                 <tr>
                   <th className="px-md py-sm text-left font-semibold">#</th>
                   <th className="px-md py-sm text-left font-semibold">State</th>
@@ -249,11 +247,11 @@ export default function DashboardPage() {
                     key={row.state}
                     className="border-b border-stroke-100 transition-colors last:border-0 hover:bg-primary-50/40"
                   >
-                    <td className="px-md py-sm tabular-nums text-foreground-hint">
+                    <td className="px-md py-sm tabular-nums text-ink-hint">
                       {(i + 1).toString().padStart(2, "0")}
                     </td>
-                    <td className="px-md py-sm font-medium text-foreground">{row.state}</td>
-                    <td className="px-md py-sm text-right font-mono tabular-nums text-foreground">
+                    <td className="px-md py-sm font-medium text-ink">{row.state}</td>
+                    <td className="px-md py-sm text-right font-mono tabular-nums text-ink">
                       {row.count.toLocaleString("en-IN")}
                     </td>
                   </tr>
@@ -261,7 +259,7 @@ export default function DashboardPage() {
               </tbody>
             </table>
           </div>
-        </CardContent>
+        </CardBody>
       </Card>
 
       {/* Activity + Shelter homes */}
@@ -270,26 +268,26 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle>Survey activity</CardTitle>
             <span className="inline-flex items-center gap-xs rounded-full bg-info-50 px-sm py-0.5 text-label-3 font-bold uppercase tracking-[0.06em] text-info-600 ring-1 ring-inset ring-info-100">
-              <BarChart3 className="h-3 w-3" /> Identified
+              <Icon name="bar_chart" size={12} /> Identified
             </span>
           </CardHeader>
-          <CardContent>
+          <CardBody>
             <ActivityLine data={SURVEY_ACTIVITY} series="identified" />
-            <p className="mt-sm text-label-2 text-foreground-muted">
+            <p className="mt-sm text-label-2 text-ink-muted">
               77 surveys logged in window · low daily activity — review surveyor coverage
             </p>
-          </CardContent>
+          </CardBody>
         </Card>
         <Card>
           <CardHeader>
             <CardTitle>Shelter homes</CardTitle>
-            <span className="text-label-2 text-foreground-muted">
+            <span className="text-label-2 text-ink-muted">
               5 homes across 37 locations
             </span>
           </CardHeader>
-          <CardContent>
+          <CardBody>
             <ShelterStateBars data={SHELTER_HOMES_BY_STATE} />
-          </CardContent>
+          </CardBody>
         </Card>
       </div>
     </div>

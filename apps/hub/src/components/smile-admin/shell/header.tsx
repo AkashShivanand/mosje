@@ -1,7 +1,6 @@
 "use client";
 
-import { LogOut, User } from "lucide-react";
-import { SiteHeader } from "@mosje/design-system";
+import { Icon, SiteHeader } from "@mosje/design-system";
 import type { AccountMenuItem } from "@mosje/design-system";
 import { useApp } from "@/store/smile-admin/app-context";
 import { ROLE_LABELS } from "@/lib/smile-admin/roles";
@@ -33,12 +32,12 @@ export function Header() {
   const menu: AccountMenuItem[] = [
     {
       label: "Profile",
-      icon: <User className="h-4 w-4" />,
+      icon: <Icon name="person" size={16} />,
       onSelect: () => router.push("/portals/smile-admin/users/onboard"),
     },
     {
       label: "Sign out",
-      icon: <LogOut className="h-4 w-4" />,
+      icon: <Icon name="logout" size={16} />,
       danger: true,
       onSelect: () => {
         signOut();

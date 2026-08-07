@@ -93,7 +93,7 @@ export function IndiaMap({ highlightState }: { highlightState?: string }) {
         </g>
       </svg>
       <div className="absolute bottom-md right-md rounded-md border border-stroke-200 bg-white/95 p-sm text-label-3 shadow-md backdrop-blur-sm">
-        <div className="mb-xs font-semibold uppercase tracking-[0.08em] text-foreground-muted">
+        <div className="mb-xs font-semibold uppercase tracking-[0.08em] text-ink-muted">
           Beneficiaries
         </div>
         <div className="space-y-0.5">
@@ -109,7 +109,7 @@ export function IndiaMap({ highlightState }: { highlightState?: string }) {
           ].map(([label, color]) => (
             <div key={label} className="flex items-center gap-xs">
               <span className="inline-block h-2.5 w-3.5 rounded-xxs" style={{ backgroundColor: color as string }} />
-              <span className="text-foreground-muted">{label}</span>
+              <span className="text-ink-muted">{label}</span>
             </div>
           ))}
         </div>

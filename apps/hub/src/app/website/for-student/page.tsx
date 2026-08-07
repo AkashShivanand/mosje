@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { GraduationCap, FileText, Bell, HelpCircle } from "lucide-react";
 import { PersonaPage, type PersonaCard } from "@/components/website/templates/PersonaPage";
 
 export const metadata: Metadata = {
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 
 const cards: PersonaCard[] = [
   {
-    icon: GraduationCap,
+    icon: "school",
     title: "Scholarships",
     description:
       "Explore pre-matric, post-matric and merit-based scholarships that fund your education and reduce financial barriers.",
@@ -18,7 +17,7 @@ const cards: PersonaCard[] = [
     href: "/website/schemes-services",
   },
   {
-    icon: FileText,
+    icon: "description",
     title: "Forms & Templates",
     description:
       "Download the application forms, declarations and templates you need to apply for student schemes.",
@@ -26,7 +25,7 @@ const cards: PersonaCard[] = [
     href: "/website/forms-templates",
   },
   {
-    icon: Bell,
+    icon: "notifications",
     title: "Notices",
     description:
       "Stay updated with the latest deadlines, results and announcements relevant to students.",
@@ -34,7 +33,7 @@ const cards: PersonaCard[] = [
     href: "/website/notices",
   },
   {
-    icon: HelpCircle,
+    icon: "help",
     title: "How to Apply",
     description:
       "Follow a simple step-by-step guide on eligibility, documents and the online application process.",

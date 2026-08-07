@@ -3,8 +3,7 @@
 // Read-only scoped list of committee records. Columns that are constant for the
 // viewer (e.g. their own state/district) can be hidden to cut redundant noise.
 
-import { ChevronRight } from "lucide-react";
-import { DataTable, Button, type DataTableColumn } from "@mosje/design-system";
+import { Button, DataTable, Icon, type DataTableColumn } from "@mosje/design-system";
 import { tierLabel } from "@/lib/nmba/committee/session";
 import type { CommitteeRecord } from "@/lib/nmba/committee/types";
 
@@ -63,7 +62,7 @@ export function CommitteeList({
       noExport: true,
       className: "text-right",
       render: (r: Row) => (
-        <Button appearance="text" onClick={() => onOpen(r)} iconRight={<ChevronRight className="h-4 w-4" />}>
+        <Button appearance="text" onClick={() => onOpen(r)} iconRight={<Icon name="keyboard_arrow_right" size={16} />}>
           Open
         </Button>
       ),

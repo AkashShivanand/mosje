@@ -2,12 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {
-  Bell,
-  LogOut,
-  ChevronDown,
-  ChevronRight,
-} from "lucide-react";
+import { Icon } from "@mosje/design-system";
 import { type NavItem } from "@/lib/eutthan/portal-data";
 import { portalLink } from "./eutthan-shared";
 
@@ -26,7 +21,7 @@ export function TopBar({ onLogout }: { onLogout: () => void }) {
       </div>
       <div className="top-actions">
         <button type="button" aria-label="Notifications">
-          <Bell size={15} />
+          <Icon name="notifications" size={15} />
         </button>
         <button
           type="button"
@@ -34,7 +29,7 @@ export function TopBar({ onLogout }: { onLogout: () => void }) {
           aria-label="Logout"
           style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
         >
-          <LogOut size={15} />
+          <Icon name="logout" size={15} />
           <span>Logout</span>
         </button>
       </div>
@@ -106,9 +101,9 @@ export function Sidebar({ navItems, path }: { navItems: NavItem[]; path: string 
                 }}
                 onClick={() => setReportsOpen((o) => !o)}
               >
-                {item.icon && <item.icon size={18} />}
+                {item.icon && <Icon name={item.icon} size={18} />}
                 <span>{item.label}</span>
-                {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                {open ? <Icon name="keyboard_arrow_down" size={14} /> : <Icon name="keyboard_arrow_right" size={14} />}
               </button>
               {open && (
                 <div style={{ paddingLeft: 16 }}>
@@ -135,7 +130,7 @@ export function Sidebar({ navItems, path }: { navItems: NavItem[]; path: string 
             className={`nav-item${item.href === path ? " active" : ""}`}
             aria-current={item.href === path ? "page" : undefined}
           >
-            {item.icon && <item.icon size={18} />}
+            {item.icon && <Icon name={item.icon} size={18} />}
             <span>{item.label}</span>
           </Link>
         );

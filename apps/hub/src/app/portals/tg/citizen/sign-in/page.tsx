@@ -3,8 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ArrowRight } from "lucide-react";
-import { DemoFab, type DemoFillDetail } from "@mosje/design-system";
+import { DemoFab, Icon, type DemoFillDetail } from "@mosje/design-system";
 import { Button, Field, TextInput } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { DEMO_CITIZEN } from "@/lib/tg/store/seed";
@@ -116,7 +115,7 @@ export default function CitizenSignInPage() {
 
             <Button type="submit" className="w-full">
               {otpSent ? "Verify & Sign In" : "Send OTP"}
-              <ArrowRight className="h-4 w-4" />
+              <Icon name="arrow_forward" size={16} />
             </Button>
           </form>
 

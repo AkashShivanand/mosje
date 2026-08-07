@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Download, Eye, Plus } from "lucide-react";
 import { UserShell } from "@/components/scw/user-shell";
 import {
   Button,
@@ -11,6 +10,7 @@ import {
   Stepper,
   TextInput,
 } from "@/components/scw/ui";
+import { Icon } from "@mosje/design-system";
 
 const STEPS = [
   "Company Information",
@@ -77,7 +77,7 @@ function DocumentRow({ label, filename }: { label: string; filename: string }) {
         type="button"
         className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy hover:underline"
       >
-        <Download className="h-4 w-4" />
+        <Icon name="download" size={16} />
         Download
       </button>
     </div>
@@ -174,7 +174,7 @@ function StepProductService() {
               className="inline-flex items-center text-navy hover:text-navy-800"
               aria-label="View product"
             >
-              <Eye className="h-4 w-4" />
+              <Icon name="visibility" size={16} />
             </button>
           </td>
         </tr>
@@ -209,7 +209,7 @@ function StepTeamFounders() {
               className="inline-flex items-center text-navy hover:text-navy-800"
               aria-label="View member"
             >
-              <Eye className="h-4 w-4" />
+              <Icon name="visibility" size={16} />
             </button>
           </td>
         </tr>
@@ -266,7 +266,7 @@ function StepAchievements() {
       <GroupTitle>Award List</GroupTitle>
       <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-line p-10 text-center">
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brandwash text-navy">
-          <Plus className="h-6 w-6" />
+          <Icon name="add" />
         </div>
         <div className="mt-4 text-sm font-semibold text-ink">No Award Added yet</div>
         <div className="mt-1 text-sm text-ink-hint">No awards were added.</div>

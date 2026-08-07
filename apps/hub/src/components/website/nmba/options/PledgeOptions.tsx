@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { ArrowRight, Users, RefreshCw } from "lucide-react";
 import { PLEDGE_STATS } from "@/content/website/deaddiction-centres";
+import { Icon } from "@mosje/design-system";
 
 // Pledge design options. Each links to the NMBA portal e-Pledge via a distinct channel.
 // Plain <a> — cross-app link that bypasses this site's `/website` basePath.
@@ -13,19 +13,19 @@ const combinedTotal = (PLEDGE_STATS.ePledgesRaw + PLEDGE_STATS.recoveredPledgesR
 // P1 — Two bold split cards, side by side.
 export function PledgeSplit() {
   const cards = [
-    { href: NON_USER, icon: Users, title: "I'm a non-user", blurb: "Pledge to stay drug-free and spread awareness.", count: PLEDGE_STATS.ePledges, accent: "#0373DF" },
-    { href: RECOVERED, icon: RefreshCw, title: "I'm a recovered user", blurb: "Pledge to stay on your recovery journey.", count: PLEDGE_STATS.recoveredPledges, accent: "#16A34A" },
+    { href: NON_USER, icon: "group", title: "I'm a non-user", blurb: "Pledge to stay drug-free and spread awareness.", count: PLEDGE_STATS.ePledges, accent: "#0373DF" },
+    { href: RECOVERED, icon: "refresh", title: "I'm a recovered user", blurb: "Pledge to stay on your recovery journey.", count: PLEDGE_STATS.recoveredPledges, accent: "#16A34A" },
   ];
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       {cards.map((c) => {
-        const Icon = c.icon;
+        const iconName = c.icon;
         return (
           <a key={c.href} href={c.href} className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             <span className="h-1.5 w-full" style={{ background: c.accent }} />
             <span className="flex flex-1 flex-col p-6">
               <span className="flex h-11 w-11 items-center justify-center rounded-lg" style={{ background: `${c.accent}1a`, color: c.accent }}>
-                <Icon className="h-5 w-5" />
+                <Icon name={iconName} size={20} />
               </span>
               <span className="mt-4 text-[19px] font-semibold text-ink">{c.title}</span>
               <span className="mt-1 flex-1 text-[14px] text-ink-muted">{c.blurb}</span>
@@ -33,7 +33,7 @@ export function PledgeSplit() {
                 <span className="text-[22px] font-bold" style={{ color: c.accent }}>{c.count}</span> pledged
               </span>
               <span className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-semibold" style={{ color: c.accent }}>
-                Take the pledge <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                Take the pledge <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-1" />
               </span>
             </span>
           </a>
@@ -63,7 +63,7 @@ export function PledgeToggle() {
       <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">{data.blurb}</p>
       <p className="mt-4 text-[13px] text-ink-muted"><span className="font-bold text-gov-blue-dark">{data.count}</span> people have taken this pledge</p>
       <a href={data.href} className="mt-4 inline-flex items-center gap-2 rounded-lg bg-gov-blue px-5 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-gov-blue-dark">
-        Take the pledge <ArrowRight className="h-4 w-4" />
+        Take the pledge <Icon name="arrow_forward" size={16} />
       </a>
     </div>
   );
@@ -82,10 +82,10 @@ export function PledgeBanner() {
         </div>
         <div className="flex shrink-0 flex-wrap gap-2.5">
           <a href={NON_USER} className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-[14px] font-semibold text-gov-blue-dark transition hover:bg-gov-yellow">
-            <Users className="h-4 w-4" /> Non-user
+            <Icon name="group" size={16} /> Non-user
           </a>
           <a href={RECOVERED} className="inline-flex items-center gap-2 rounded-lg border border-white/40 bg-white/10 px-4 py-2.5 text-[14px] font-semibold text-white transition hover:bg-white/20">
-            <RefreshCw className="h-4 w-4" /> Recovered user
+            <Icon name="refresh" size={16} /> Recovered user
           </a>
         </div>
       </div>

@@ -8,22 +8,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, CheckCircle2, MapPin, MapPinOff, Pencil, Undo2 } from "lucide-react";
-import {
-  Alert,
-  ApprovalTimeline,
-  Button,
-  Card,
-  EmptyState,
-  FormField,
-  GeoPhotoInput,
-  Input,
-  Lightbox,
-  Modal,
-  Textarea,
-  formatCoordinates,
-  type GeoPhoto,
-} from "@mosje/design-system";
+import { Alert, ApprovalTimeline, Button, Card, EmptyState, FormField, GeoPhotoInput, Icon, Input, Lightbox, Modal, Textarea, formatCoordinates, type GeoPhoto } from "@mosje/design-system";
 import { AdminShell } from "@/components/nmba/admin-shell";
 import { StatusBadge, VerificationBadge } from "@/components/nmba/mass-pledge/status-badge";
 import { useToast } from "@/components/nmba/toast";
@@ -165,7 +150,7 @@ export default function MassPledgeDetailPage() {
           href={BASE}
           className="inline-flex items-center gap-1.5 text-sm text-ink-muted transition-colors hover:text-navy"
         >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          <Icon name="arrow_back" size={16} aria-hidden="true" />
           All reports
         </Link>
 
@@ -305,14 +290,14 @@ export default function MassPledgeDetailPage() {
                           <span className="flex items-center gap-1 px-2 py-1.5 text-[11px] text-ink-muted">
                             {located ? (
                               <>
-                                <MapPin className="h-3 w-3 shrink-0" aria-hidden="true" />
+                                <Icon name="location_on" size={12} className="shrink-0" aria-hidden="true" />
                                 <span className="truncate">
                                   {formatCoordinates(photo.lat!, photo.lng!)}
                                 </span>
                               </>
                             ) : (
                               <>
-                                <MapPinOff className="h-3 w-3 shrink-0 text-await-fg" aria-hidden="true" />
+                                <Icon name="location_off" size={12} className="shrink-0 text-await-fg" aria-hidden="true" />
                                 <span className="text-await-fg">No location</span>
                               </>
                             )}
@@ -345,7 +330,7 @@ export default function MassPledgeDetailPage() {
                     <span className="inline-flex items-center gap-1.5">
                       {submission.contactNo}
                       {submission.contactVerified && (
-                        <CheckCircle2 className="h-4 w-4 text-approve" aria-label="Verified" />
+                        <Icon name="check_circle" size={16} className="text-approve" aria-label="Verified" />
                       )}
                     </span>
                   }
@@ -366,13 +351,13 @@ export default function MassPledgeDetailPage() {
                   submitting officer with your remarks.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <Button onClick={handleApprove} iconLeft={<CheckCircle2 className="h-4 w-4" />}>
+                  <Button onClick={handleApprove} iconLeft={<Icon name="check_circle" size={16} />}>
                     Approve
                   </Button>
                   <Button
                     appearance="outlined"
                     onClick={() => setReturnOpen(true)}
-                    iconLeft={<Undo2 className="h-4 w-4" />}
+                    iconLeft={<Icon name="undo" size={16} />}
                   >
                     Return with remarks
                   </Button>
@@ -388,7 +373,7 @@ export default function MassPledgeDetailPage() {
                 <p className="text-sm text-ink-muted">
                   This report was returned to you. Correct the figures or photographs and resubmit.
                 </p>
-                <Button onClick={startEditing} iconLeft={<Pencil className="h-4 w-4" />}>
+                <Button onClick={startEditing} iconLeft={<Icon name="edit" size={16} />}>
                   Correct and resubmit
                 </Button>
               </div>

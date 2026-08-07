@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Copy, FileSpreadsheet, FileText } from "lucide-react";
-import { Search } from "@mosje/design-system";
+import { Icon, Search } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { DataTable, type ColumnDef } from "@/components/nmba/data-table";
 
@@ -126,7 +125,7 @@ export function TCListPage<T extends Record<string, unknown>>({
               aria-label={`Copy ${title} table to clipboard`}
               className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
             >
-              <Copy className="h-3.5 w-3.5" aria-hidden /> Copy
+              <Icon name="content_copy" size={14} aria-hidden /> Copy
             </button>
             <button
               type="button"
@@ -134,7 +133,7 @@ export function TCListPage<T extends Record<string, unknown>>({
               aria-label={`Export ${title} as an Excel spreadsheet`}
               className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
             >
-              <FileSpreadsheet className="h-3.5 w-3.5" aria-hidden /> Excel
+              <Icon name="table_chart" size={14} aria-hidden /> Excel
             </button>
             <button
               type="button"
@@ -142,7 +141,7 @@ export function TCListPage<T extends Record<string, unknown>>({
               aria-label={`Export ${title} as CSV`}
               className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
             >
-              <FileText className="h-3.5 w-3.5" aria-hidden /> CSV
+              <Icon name="description" size={14} aria-hidden /> CSV
             </button>
           </div>
         </div>

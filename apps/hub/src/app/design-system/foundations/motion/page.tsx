@@ -42,7 +42,7 @@ export default function MotionPage(): React.JSX.Element {
       <style>{MOTION_CSS}</style>
 
       <h1>Motion</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
+      <p style={{ fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
         Motion in SAMAVESH is quick, quiet and purposeful. It guides attention
         and softens change — it never shows off. On government services, motion
         must also step aside the moment a user asks it to.

@@ -2,15 +2,14 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Building2, Home, Plus, Users } from "lucide-react";
-import { Badge, statusTone } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
+import { statusTone } from "@/lib/smile-admin/status-tone";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/ui/table";
+import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { SHELTER_HOMES } from "@/lib/smile-admin/mock-data";
 import { formatNumber } from "@/lib/smile-admin/utils";
+import { Badge, Button, Icon, buttonClasses } from "@mosje/design-system";
 
 export default function ShelterHomesPage() {
   const [search, setSearch] = useState("");
@@ -30,15 +29,15 @@ export default function ShelterHomesPage() {
         subtitle="Certified rehabilitation shelters across India — track capacity, occupancy, and audit status."
         actions={
           <Button size="sm">
-            <Plus className="h-3.5 w-3.5" /> Add shelter
+            <Icon name="add" size={14} /> Add shelter
           </Button>
         }
       />
       <div className="grid grid-cols-2 gap-md md:grid-cols-4">
-        <StatPill label="Shelters"   value={data.length}     icon={Building2} tone="primary" />
-        <StatPill label="Capacity"   value={totalCapacity}   icon={Home}      tone="info" />
-        <StatPill label="Occupants"  value={totalOccupancy}  icon={Users}     tone="success" />
-        <StatPill label="Audits due" value={data.filter((s) => s.status === "Audit").length} icon={Building2} tone="warning" />
+        <StatPill label="Shelters"   value={data.length}     icon="apartment" tone="primary" />
+        <StatPill label="Capacity"   value={totalCapacity}   icon="home"      tone="info" />
+        <StatPill label="Occupants"  value={totalOccupancy}  icon="group"     tone="success" />
+        <StatPill label="Audits due" value={data.filter((s) => s.status === "Audit").length} icon="apartment" tone="warning" />
       </div>
       <DataToolbar>
         <SearchField placeholder="Search shelter / state / district…" value={search} onChange={setSearch} />
@@ -56,33 +55,33 @@ export default function ShelterHomesPage() {
             >
               <div className="flex items-start justify-between gap-sm">
                 <div className="min-w-0 space-y-0.5">
-                  <div className="truncate text-body-1 font-semibold text-foreground">
+                  <div className="truncate text-body-1 font-semibold text-ink">
                     {s.name}
                   </div>
-                  <div className="font-mono text-label-3 text-foreground-hint">
+                  <div className="font-mono text-label-3 text-ink-hint">
                     {s.id} · {s.state} / {s.district}
                   </div>
                 </div>
-                <Badge tone={statusTone(s.status)} withDot>
+                <Badge status={statusTone(s.status)} dot>
                   {s.status}
                 </Badge>
               </div>
               <div className="grid grid-cols-2 gap-sm border-t border-stroke-100 pt-sm text-label-3">
                 <div className="space-y-0.5">
-                  <div className="text-foreground-hint">Manager</div>
-                  <div className="truncate font-semibold text-foreground">{s.manager}</div>
+                  <div className="text-ink-hint">Manager</div>
+                  <div className="truncate font-semibold text-ink">{s.manager}</div>
                 </div>
                 <div className="space-y-0.5">
-                  <div className="text-foreground-hint">Capacity</div>
-                  <div className="font-mono font-semibold text-foreground">
+                  <div className="text-ink-hint">Capacity</div>
+                  <div className="font-mono font-semibold text-ink">
                     {formatNumber(s.capacity)}
                   </div>
                 </div>
               </div>
               <div>
                 <div className="mb-xs flex items-center justify-between text-label-3">
-                  <span className="text-foreground-hint">Occupancy</span>
-                  <span className="font-mono font-semibold text-foreground">{occPct}%</span>
+                  <span className="text-ink-hint">Occupancy</span>
+                  <span className="font-mono font-semibold text-ink">{occPct}%</span>
                 </div>
                 <div className="relative h-1.5 overflow-hidden rounded-full bg-neutral-100">
                   <div
@@ -91,9 +90,7 @@ export default function ShelterHomesPage() {
                   />
                 </div>
               </div>
-              <Button variant="outline" size="sm" className="w-full" asChild>
-                <Link href="/portals/smile-admin/shelter-homes/beneficiaries">View occupants</Link>
-              </Button>
+              <Link href="/portals/smile-admin/shelter-homes/beneficiaries" className={buttonClasses("primary", "outlined", "sm", "w-full")}>View occupants</Link>
             </div>
           );
         })}
@@ -126,15 +123,15 @@ export default function ShelterHomesPage() {
               return (
                 <TR key={s.id}>
                   <TD>
-                    <div className="font-semibold text-foreground">{s.name}</div>
-                    <div className="font-mono text-label-3 text-foreground-hint">{s.id}</div>
+                    <div className="font-semibold text-ink">{s.name}</div>
+                    <div className="font-mono text-label-3 text-ink-hint">{s.id}</div>
                   </TD>
                   <TD>
                     {s.state}{" "}
-                    <span className="text-foreground-muted">/ {s.district}</span>
+                    <span className="text-ink-muted">/ {s.district}</span>
                   </TD>
                   <TD>{s.manager}</TD>
-                  <TD className="text-foreground-muted">{s.ia}</TD>
+                  <TD className="text-ink-muted">{s.ia}</TD>
                   <TD className="text-right font-mono tabular-nums">
                     {formatNumber(s.capacity)}
                   </TD>
@@ -146,20 +143,18 @@ export default function ShelterHomesPage() {
                           style={{ width: `${occPct}%` }}
                         />
                       </div>
-                      <span className="font-mono text-label-2 tabular-nums text-foreground">
+                      <span className="font-mono text-label-2 tabular-nums text-ink">
                         {occPct}%
                       </span>
                     </div>
                   </TD>
                   <TD>
-                    <Badge tone={statusTone(s.status)} withDot>
+                    <Badge status={statusTone(s.status)} dot>
                       {s.status}
                     </Badge>
                   </TD>
                   <TD className="text-right">
-                    <Button variant="outline" size="xs" asChild>
-                      <Link href="/portals/smile-admin/shelter-homes/beneficiaries">View occupants</Link>
-                    </Button>
+                    <Link href="/portals/smile-admin/shelter-homes/beneficiaries" className={buttonClasses("primary", "outlined", "sm")}>View occupants</Link>
                   </TD>
                 </TR>
               );

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { buttonClasses } from "@mosje/design-system";
+import { Icon, buttonClasses } from "@mosje/design-system";
 
 export function SamaveshBanner() {
   return (
@@ -30,7 +29,7 @@ export function SamaveshBanner() {
           className={buttonClasses("success", "filled", "sm", "ml-auto")}
         >
           Explore
-          <span className="ds-btn__icon" aria-hidden="true"><ArrowRight className="h-4 w-4" /></span>
+          <span className="ds-btn__icon" aria-hidden="true"><Icon name="arrow_forward" size={16} /></span>
         </Link>
       </div>
     </section>

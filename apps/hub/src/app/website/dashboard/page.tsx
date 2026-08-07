@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Banknote, Building2, LayoutGrid, Users } from "lucide-react";
 import { PageLayout } from "@/components/website/layout/PageLayout";
+import { Icon } from "@mosje/design-system";
 
 export const metadata: Metadata = {
   title: "Dashboard — DoSJE",
@@ -10,14 +10,14 @@ export const metadata: Metadata = {
 interface Kpi {
   label: string;
   value: string;
-  icon: typeof Banknote;
+  icon: string;
 }
 
 const KPIS: Kpi[] = [
-  { label: "Cumulative Disbursement", value: "₹67,977 Cr", icon: Banknote },
-  { label: "Beneficiaries Covered", value: "19.82 Cr", icon: Users },
-  { label: "Schemes & Programmes", value: "33+", icon: LayoutGrid },
-  { label: "Associated Organisations", value: "12", icon: Building2 },
+  { label: "Cumulative Disbursement", value: "₹67,977 Cr", icon: "payments" },
+  { label: "Beneficiaries Covered", value: "19.82 Cr", icon: "group" },
+  { label: "Schemes & Programmes", value: "33+", icon: "grid_view" },
+  { label: "Associated Organisations", value: "12", icon: "apartment" },
 ];
 
 interface BarRow {
@@ -53,7 +53,7 @@ export default function DashboardPage() {
         <div className="mx-auto max-w-[1280px] px-4 py-10 md:py-12">
           {/* KPI stat cards */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {KPIS.map(({ label, value, icon: Icon }) => (
+            {KPIS.map(({ label, value, icon: iconName }) => (
               <div
                 key={label}
                 className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
@@ -63,7 +63,7 @@ export default function DashboardPage() {
                     {value}
                   </span>
                   <span className="rounded-lg bg-surface-muted p-2 text-gov-blue">
-                    <Icon className="h-5 w-5" aria-hidden="true" />
+                    <Icon name={iconName} size={20} aria-hidden="true" />
                   </span>
                 </div>
                 <p className="mt-2 text-sm text-ink-muted">{label}</p>

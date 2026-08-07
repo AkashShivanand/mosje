@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import dynamic from "next/dynamic";
-import { Phone, Search, X, Navigation, LocateFixed, Loader2 } from "lucide-react";
-import { Select } from "@mosje/design-system";
+import { Icon, Search, Select } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
 import {
   DEADDICTION_CENTRES,
@@ -109,15 +108,14 @@ export function DeAddictionMap() {
       {/* Toolbar */}
       <div className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm sm:p-4">
         <div className="flex flex-col gap-2.5 lg:flex-row lg:items-center">
-          <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted" aria-hidden />
-            <input
-              type="search"
+          <div className="flex-1">
+            <Search
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onClear={() => setQuery("")}
+              size="sm"
               placeholder="Search centre, area, district or state"
               aria-label="Search de-addiction centres"
-              className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 text-[14px] text-ink outline-none placeholder:text-ink-muted focus:border-gov-blue"
             />
           </div>
           <div className="grid grid-cols-2 gap-2.5 lg:flex">
@@ -158,7 +156,7 @@ export function DeAddictionMap() {
             disabled={locating}
             className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg bg-gov-blue px-4 text-[14px] font-semibold text-white transition-colors hover:bg-gov-blue-dark disabled:opacity-70"
           >
-            {locating ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <LocateFixed className="h-4 w-4" aria-hidden />}
+            {locating ? <Icon name="progress_activity" size={16} className="animate-spin" aria-hidden /> : <Icon name="my_location" size={16} aria-hidden />}
             {locating ? "Locating…" : "Use my location"}
           </button>
         </div>
@@ -220,7 +218,7 @@ export function DeAddictionMap() {
                 }}
                 className="inline-flex items-center gap-1 text-[12px] font-medium text-gov-blue hover:text-gov-blue-dark"
               >
-                <X className="h-3 w-3" /> Reset
+                <Icon name="close" size={12} /> Reset
               </button>
             )}
           </div>
@@ -270,7 +268,7 @@ export function DeAddictionMap() {
                             onClick={(e) => e.stopPropagation()}
                             className="mt-1.5 inline-flex items-center gap-1 text-[12px] font-semibold text-gov-blue hover:text-gov-blue-dark"
                           >
-                            <Navigation className="h-3 w-3" aria-hidden /> Get directions
+                            <Icon name="navigation" size={12} aria-hidden /> Get directions
                           </a>
                         )}
                       </span>
@@ -291,7 +289,7 @@ export function DeAddictionMap() {
             href={`tel:${HELPLINE}`}
             className="flex items-center gap-2.5 border-t border-gray-200 bg-white px-4 py-3 transition-colors hover:bg-surface-muted"
           >
-            <Phone className="h-4 w-4 shrink-0 text-gov-blue" aria-hidden />
+            <Icon name="call" size={16} className="shrink-0 text-gov-blue" aria-hidden />
             <span className="text-[12px] text-ink-muted">24×7 Helpline</span>
             <span className="ml-auto text-[16px] font-bold tracking-tight text-gov-blue-dark">{HELPLINE}</span>
           </a>

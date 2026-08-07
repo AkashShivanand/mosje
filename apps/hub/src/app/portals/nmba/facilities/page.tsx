@@ -6,7 +6,7 @@ import { PublicShell } from "@/components/nmba/public-shell";
 import { FACILITIES } from "@/lib/nmba/mock-data";
 import type { Facility } from "@/lib/nmba/types";
 import { useToast } from "@/components/nmba/toast";
-import { Search, MapPin as MapPinIcon } from "lucide-react";
+import { Icon } from "@mosje/design-system";
 
 const FacilityMap = dynamic(
   () => import("@/components/nmba/facility-map").then((m) => m.FacilityMap),
@@ -46,7 +46,7 @@ export default function FacilitiesPage() {
       {/* Search + Near Me */}
       <div className="mb-4 flex gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-hint" />
+          <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-hint" />
           <input
             type="search"
             aria-label="Search facilities by name, type, or location"
@@ -61,7 +61,7 @@ export default function FacilitiesPage() {
           className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-ink hover:bg-surface-muted"
           aria-label="Find facilities near my location"
         >
-          <MapPinIcon className="h-4 w-4 text-navy" />
+          <Icon name="location_on" size={16} className="text-navy" />
           Near Me
         </button>
       </div>

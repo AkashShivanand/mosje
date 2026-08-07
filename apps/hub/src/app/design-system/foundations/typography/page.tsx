@@ -83,7 +83,7 @@ export default function TypographyPage(): React.JSX.Element {
               <div style={{ padding: "var(--ds-spacing-md) var(--ds-spacing-lg)", background: `var(--ds-${c.color}-tonal)`, color: `var(--ds-${c.color})`, fontSize: "var(--ds-text-body-2)", fontWeight: 700, borderBottom: `1px solid var(--ds-${c.color})` }}>
                 {c.label}
               </div>
-              <p lang="hi" style={{ padding: "var(--ds-spacing-xl)", margin: 0, fontFamily: "var(--sa-font-family-devanagari)", fontSize: "16px", lineHeight: c.lh, color: "var(--ds-ink)" }}>
+              <p lang="hi" style={{ padding: "var(--ds-spacing-xl)", margin: 0, fontFamily: "var(--sa-font-devanagari)", fontSize: "16px", lineHeight: c.lh, color: "var(--ds-ink)" }}>
                 सामाजिक न्याय और अधिकारिता मंत्रालय देश के वंचित और कमज़ोर वर्गों के कल्याण के लिए अनेक योजनाएँ
                 संचालित करता है। आवेदक अपने सभी आवश्यक दस्तावेज़ों के साथ ऑनलाइन आवेदन जमा कर सकते हैं।
               </p>

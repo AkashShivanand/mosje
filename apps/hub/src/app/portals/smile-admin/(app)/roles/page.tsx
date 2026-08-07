@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Edit, Plus, ShieldCheck, Users2 } from "lucide-react";
-import { Badge, statusTone } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
+import { statusTone } from "@/lib/smile-admin/status-tone";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/ui/table";
+import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { ROLES } from "@/lib/smile-admin/mock-data";
+import { Badge, Button, Icon, buttonClasses } from "@mosje/design-system";
 
 export default function RolesPage() {
   const [search, setSearch] = useState("");
@@ -34,16 +33,16 @@ export default function RolesPage() {
         subtitle="Manage who can do what — group permissions into roles and assign roles to users across the SMILE programme."
         actions={
           <div className="flex items-center gap-sm">
-            <Button variant="outline" size="sm" asChild><Link href="/portals/smile-admin/permissions"><ShieldCheck className="h-3.5 w-3.5" /> View permissions</Link></Button>
-            <Button size="sm"><Plus className="h-3.5 w-3.5" /> New role</Button>
+            <Link href="/portals/smile-admin/permissions" className={buttonClasses("primary", "outlined", "sm")}><Icon name="verified_user" size={14} /> View permissions</Link>
+            <Button size="sm"><Icon name="add" size={14} /> New role</Button>
           </div>
         }
       />
 
       <div className="grid grid-cols-2 gap-md md:grid-cols-3">
-        <StatPill label="Active roles"      value={totals.roles}       icon={ShieldCheck} tone="primary" />
-        <StatPill label="Members assigned"  value={totals.members}     icon={Users2}      tone="info" />
-        <StatPill label="Permissions / role" value={totals.permissions} icon={ShieldCheck} tone="success" />
+        <StatPill label="Active roles"      value={totals.roles}       icon="verified_user" tone="primary" />
+        <StatPill label="Members assigned"  value={totals.members}     icon="groups"      tone="info" />
+        <StatPill label="Permissions / role" value={totals.permissions} icon="verified_user" tone="success" />
       </div>
 
       <DataToolbar>
@@ -74,18 +73,16 @@ export default function RolesPage() {
             {roles.map((r) => (
               <TR key={r.id}>
                 <TD>
-                  <div className="font-semibold text-foreground">{r.name}</div>
-                  <div className="text-label-2 text-foreground-muted">{r.id}</div>
+                  <div className="font-semibold text-ink">{r.name}</div>
+                  <div className="text-label-2 text-ink-muted">{r.id}</div>
                 </TD>
-                <TD><Badge tone={r.scope === "Central" ? "primary" : r.scope === "State" ? "info" : r.scope === "District" ? "warning" : "neutral"}>{r.scope}</Badge></TD>
+                <TD><Badge status={r.scope === "Central" ? "primary" : r.scope === "State" ? "info" : r.scope === "District" ? "warning" : "neutral"}>{r.scope}</Badge></TD>
                 <TD className="text-right tabular-nums">{r.members.toLocaleString("en-IN")}</TD>
                 <TD className="text-right tabular-nums">{r.permissions}</TD>
-                <TD><Badge tone={statusTone(r.status)}>{r.status}</Badge></TD>
-                <TD className="text-foreground-muted">{r.updatedAt}</TD>
+                <TD><Badge status={statusTone(r.status)}>{r.status}</Badge></TD>
+                <TD className="text-ink-muted">{r.updatedAt}</TD>
                 <TD className="text-right">
-                  <Button size="sm" variant="outline" asChild>
-                    <Link href={`/portals/smile-admin/roles/${r.id}/edit`}><Edit className="h-3.5 w-3.5" /> Edit</Link>
-                  </Button>
+                  <Link href={`/portals/smile-admin/roles/${r.id}/edit`} className={buttonClasses("primary", "outlined", "sm")}><Icon name="edit" size={14} /> Edit</Link>
                 </TD>
               </TR>
             ))}

@@ -1,10 +1,10 @@
 "use client";
 
-import { Search, ChevronDown, Plus } from "lucide-react";
 import Link from "next/link";
 import { portalLink } from "./eutthan-shared";
 import { tableScreens } from "@/lib/eutthan/portal-data";
 import { CellContent, Pagination } from "./eutthan-cells";
+import { Icon } from "@mosje/design-system";
 
 export function TablePage({ path }: { path: string }) {
   const screen = tableScreens[path];
@@ -34,19 +34,19 @@ export function TablePage({ path }: { path: string }) {
               textDecoration: "none",
             }}
           >
-            <Plus size={16} /> {screen.addLabel}
+            <Icon name="add" size={16} /> {screen.addLabel}
           </Link>
         )}
       </div>
       <div className="data-card">
         <div className="toolbar" style={{ flexWrap: "wrap" }}>
           <div className="search-field">
-            <Search size={16} aria-hidden="true" />
+            <Icon name="search" size={16} aria-hidden="true" />
             <input placeholder={screen.searchPlaceholder} aria-label="Search records" />
           </div>
           {screen.filters?.map((f) => (
             <button key={f} type="button" className="filter-button">
-              {f} <ChevronDown size={14} />
+              {f} <Icon name="keyboard_arrow_down" size={14} />
             </button>
           ))}
         </div>

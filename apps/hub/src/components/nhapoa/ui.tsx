@@ -1,7 +1,7 @@
 import * as React from "react";
-import { ChevronDown, Search } from "lucide-react";
 import { cn } from "@/lib/nhapoa/utils";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
+import { Icon } from "@mosje/design-system";
 
 /* ----------------------------------------------------------------- Buttons */
 export function Button({
@@ -129,7 +129,7 @@ export function SearchInput({
 }) {
   return (
     <div className={cn("relative", className)}>
-      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-hint" />
+      <Icon name="search" size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-hint" />
       <input
         type="text"
         placeholder={placeholder}
@@ -329,7 +329,7 @@ export function Select({
           </option>
         ))}
       </select>
-      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-hint" />
+      <Icon name="keyboard_arrow_down" size={16} className="pointer-events-none absolute right-3 top-1/2  -translate-y-1/2 text-ink-hint" />
     </div>
   );
 }
@@ -382,5 +382,3 @@ export function RadioRow({
   );
 }
 
-/* --------------------------------------------------------- ChevronDown re-export */
-export { ChevronDown };

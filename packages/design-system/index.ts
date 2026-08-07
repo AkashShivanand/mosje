@@ -85,6 +85,8 @@ export { Select } from "./components/forms/select";
 export type { SelectProps, SelectOption } from "./components/forms/select";
 export { FormField } from "./components/forms/form-field";
 export type { FormFieldProps, FormFieldControlProps } from "./components/forms/form-field";
+export { Label } from "./components/forms/label";
+export type { LabelProps } from "./components/forms/label";
 export { Checkbox } from "./components/forms/checkbox";
 export { Radio } from "./components/forms/radio";
 export { Toggle } from "./components/forms/toggle";
@@ -108,7 +110,17 @@ export type { DeclarationCheckboxProps } from "./components/forms/declaration-ch
 // ---- Components: Feedback ----------------------------------------------------
 export { Alert } from "./components/feedback/alert";
 export { Badge } from "./components/feedback/badge";
+export type {
+  BadgeProps,
+  BadgeStatus,
+  BadgeSize,
+  BadgeEmphasis,
+} from "./components/feedback/badge";
 export { Loader } from "./components/feedback/loader";
+export { Skeleton, SkeletonText, SkeletonRow } from "./components/feedback/skeleton";
+export type { SkeletonProps } from "./components/feedback/skeleton";
+export { Tooltip } from "./components/feedback/tooltip";
+export type { TooltipProps, TooltipSide } from "./components/feedback/tooltip";
 export { EmptyState } from "./components/feedback/empty-state";
 export { SlaProgressIndicator } from "./components/feedback/sla-progress-indicator";
 export type {
@@ -266,6 +278,8 @@ export type { AppEntry } from "./components/navigation/app-switcher-utils";
 // ---- Components: Auth (login shells & page templates) -----------------------
 // Full-page login layout shared across all MoSJE portals. Only the slot
 // content changes per portal (logo paths, signing-into name, tabs, form).
+export { SectionTitle } from "./components/layout/section";
+export type { SectionTitleProps } from "./components/layout/section";
 export { PortalLoginShell } from "./components/auth/portal-login-shell";
 export type {
   PortalLoginShellProps,
@@ -280,6 +294,8 @@ export {
   UX4G_A11Y_WIDGET_SRC,
 } from "./components/a11y/ux4g-accessibility-widget";
 export type { UX4GAccessibilityWidgetProps } from "./components/a11y/ux4g-accessibility-widget";
+export { LiveRegion, useLiveRegion } from "./components/a11y/live-region";
+export type { LiveRegionProps, UseLiveRegionResult } from "./components/a11y/live-region";
 
 
 // =============================================================================

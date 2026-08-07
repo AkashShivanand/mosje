@@ -8,11 +8,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import {
-  ChevronRight, Plus, Pencil, Trash2, AlertTriangle,
-  Copy, FileSpreadsheet, FileText, ChevronDown, Check,
-} from "lucide-react";
-import { Button, Input, FormField, Alert, Modal, SideSheet, Search } from "@mosje/design-system";
+import { Alert, Button, FormField, Icon, Input, Modal, Search, SideSheet } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { DataTable, type ColumnDef } from "@/components/nmba/data-table";
@@ -105,9 +101,9 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
           className="inline-flex items-center gap-1.5 px-3 py-[7px] text-sm font-medium text-ink-muted transition-colors duration-150 hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy"
         >
           {copied ? (
-            <Check className="h-3.5 w-3.5 text-green-600" aria-hidden />
+            <Icon name="check" size={14} className="text-green-600" aria-hidden />
           ) : (
-            <Copy className="h-3.5 w-3.5" aria-hidden />
+            <Icon name="content_copy" size={14} aria-hidden />
           )}
           {copied ? "Copied!" : "Copy"}
         </button>
@@ -124,10 +120,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
           aria-label="Export options"
           className="inline-flex items-center px-2 py-[7px] transition-colors duration-150 hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy"
         >
-          <ChevronDown
-            className={`h-3.5 w-3.5 text-ink-muted transition-transform duration-150 ${open ? "rotate-180" : ""}`}
-            aria-hidden
-          />
+          <Icon name="keyboard_arrow_down" size={14} className={`text-ink-muted transition-transform duration-150 ${open ? "rotate-180" : ""}`} aria-hidden />
         </button>
       </div>
 
@@ -143,7 +136,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
             onClick={() => handleDownload("xls")}
             className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm text-ink transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:bg-surface-muted"
           >
-            <FileSpreadsheet className="h-4 w-4 text-ink-muted" aria-hidden /> Export as Excel
+            <Icon name="table_chart" size={16} className="text-ink-muted" aria-hidden /> Export as Excel
           </button>
           <button
             role="menuitem"
@@ -151,7 +144,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
             onClick={() => handleDownload("csv")}
             className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm text-ink transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:bg-surface-muted"
           >
-            <FileText className="h-4 w-4 text-ink-muted" aria-hidden /> Export as CSV
+            <Icon name="description" size={16} className="text-ink-muted" aria-hidden /> Export as CSV
           </button>
         </div>
       )}
@@ -266,7 +259,7 @@ function DeleteConfirmModal({
       footer={
         <>
           <Button type="button" appearance="outlined" onClick={onClose}>Cancel</Button>
-          <Button type="button" variant="danger" iconLeft={<Trash2 className="h-4 w-4" />} onClick={onConfirm}>
+          <Button type="button" variant="danger" iconLeft={<Icon name="delete" size={16} />} onClick={onConfirm}>
             Remove
           </Button>
         </>
@@ -274,7 +267,7 @@ function DeleteConfirmModal({
     >
       <div className="flex gap-3">
         <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-danger-bg text-danger-fg" aria-hidden>
-          <AlertTriangle className="h-5 w-5" />
+          <Icon name="warning" size={20} />
         </span>
         <div className="text-sm text-ink">
           <p>
@@ -351,13 +344,13 @@ export default function VolunteersPage() {
       render: (r) => (
         <RowActions>
           <IconAction
-            icon={Pencil}
+            icon="edit"
             tone="warning"
             label={`Edit ${r.name}`}
             onClick={() => setEditTarget({ volunteer: r, idx: r._idx })}
           />
           <IconAction
-            icon={Trash2}
+            icon="delete"
             tone="danger"
             label={`Remove ${r.name}`}
             onClick={() => setDeleteTarget({ volunteer: r, idx: r._idx })}
@@ -372,7 +365,7 @@ export default function VolunteersPage() {
       <div className="flex flex-col gap-4">
         <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-ink-muted">
           <Link href="/portals/nmba/treatment-centre/dashboard" className="hover:text-navy transition-colors">Home</Link>
-          <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
+          <Icon name="keyboard_arrow_right" size={14} className="shrink-0" aria-hidden />
           <Link href="/portals/nmba/treatment-centre/cpli/peer-educators" className="hover:text-navy transition-colors">Peer Educators</Link>
         </nav>
         <div className="rounded-lg border border-dashed border-line bg-surface-muted p-10 text-center text-sm text-ink-muted">
@@ -391,11 +384,11 @@ export default function VolunteersPage() {
           <Link href="/portals/nmba/treatment-centre/dashboard" className="hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy rounded">
             Home
           </Link>
-          <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
+          <Icon name="keyboard_arrow_right" size={14} className="shrink-0" aria-hidden />
           <Link href="/portals/nmba/treatment-centre/cpli/peer-educators" className="hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy rounded">
             Peer Educators
           </Link>
-          <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
+          <Icon name="keyboard_arrow_right" size={14} className="shrink-0" aria-hidden />
           <span className="max-w-[200px] truncate font-medium text-ink" aria-current="page">{educator.name}</span>
         </nav>
 
@@ -408,7 +401,7 @@ export default function VolunteersPage() {
             </span>
           </div>
           <Button
-            iconLeft={<Plus className="h-4 w-4" />}
+            iconLeft={<Icon name="add" size={16} />}
             onClick={() => setAddOpen(true)}
             aria-haspopup="dialog"
           >

@@ -1,14 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ArrowRight, Search, X, SlidersHorizontal } from "lucide-react";
-import {
-  DEFAULT_APPS,
-  PORTAL_CATEGORIES,
-  deriveAbbr,
-  filterApps,
-  type AppEntry,
-} from "@mosje/design-system";
+import { DEFAULT_APPS, Icon, PORTAL_CATEGORIES, deriveAbbr, filterApps, type AppEntry } from "@mosje/design-system";
 
 type StatusFilter = "all" | "live" | "planned";
 
@@ -68,7 +61,7 @@ function PortalCard({ portal }: { portal: AppEntry }) {
         {body}
         <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-gov-blue transition-all group-hover:gap-2.5">
           Open portal
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          <Icon name="arrow_forward" size={16} aria-hidden="true" />
         </span>
       </a>
     );
@@ -121,10 +114,7 @@ export function PortalsExplorer() {
       <div className="sticky top-[64px] z-30 -mx-6 mb-10 border-b border-border bg-surface/85 px-6 py-3 backdrop-blur supports-[backdrop-filter]:bg-surface/72">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="relative w-full sm:max-w-xs">
-            <Search
-              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted"
-              aria-hidden="true"
-            />
+            <Icon name="search" size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" aria-hidden="true" />
             <input
               type="search"
               value={query}
@@ -140,7 +130,7 @@ export function PortalsExplorer() {
                 aria-label="Clear search"
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-0.5 text-ink-muted hover:text-ink"
               >
-                <X className="h-4 w-4" aria-hidden="true" />
+                <Icon name="close" size={16} aria-hidden="true" />
               </button>
             )}
           </div>
@@ -150,10 +140,7 @@ export function PortalsExplorer() {
             aria-label="Filter by availability"
             className="flex items-center gap-1 rounded-lg border border-border bg-surface-muted p-1"
           >
-            <SlidersHorizontal
-              className="mx-1.5 h-3.5 w-3.5 text-ink-muted"
-              aria-hidden="true"
-            />
+            <Icon name="tune" size={14} className="mx-1.5 text-ink-muted" aria-hidden="true" />
             {filters.map((f) => (
               <button
                 key={f.id}
@@ -192,7 +179,7 @@ export function PortalsExplorer() {
       {/* Grouped grid */}
       {grouped.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-20 text-center">
-          <Search className="mb-3 h-10 w-10 text-ink-muted/40" aria-hidden="true" />
+          <Icon name="search" size={40} className="mb-3 text-ink-muted/40" aria-hidden="true" />
           <p className="text-sm font-semibold text-ink">No portals match your search</p>
           <button
             type="button"

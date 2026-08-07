@@ -2,11 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Plus } from "lucide-react";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { TCListPage } from "@/components/nmba/treatment-centre/tc-list";
 import type { ColumnDef } from "@/components/nmba/data-table";
 import type { Beneficiary } from "@/lib/nmba/treatment-centre/types";
+import { Icon } from "@mosje/design-system";
 
 type Row = Beneficiary & { sno: number; hotspot: string };
 
@@ -32,7 +32,7 @@ export default function OdicOutreachListPage() {
       fileName="odic-outreach"
       action={
         <Link href="/portals/nmba/treatment-centre/odic/outreach/register" className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-semibold text-navy hover:bg-white/90">
-          <Plus className="h-4 w-4" /> New Outreach Beneficiary
+          <Icon name="add" size={16} /> New Outreach Beneficiary
         </Link>
       }
     />

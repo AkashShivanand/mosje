@@ -8,15 +8,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import {
-  ChevronRight, Plus, Pencil, Trash2, AlertTriangle,
-  Copy, FileSpreadsheet, FileText, ChevronDown, Check,
-  Camera, X, ZoomIn,
-} from "lucide-react";
-import {
-  Button, Input, FormField, Alert, Modal, SideSheet, Search,
-  Lightbox, type LightboxItem,
-} from "@mosje/design-system";
+import { Alert, Button, FormField, Icon, Input, Lightbox, Modal, Search, SideSheet, type LightboxItem } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { DataTable, type ColumnDef } from "@/components/nmba/data-table";
@@ -111,9 +103,9 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
           className="inline-flex items-center gap-1.5 px-3 py-[7px] text-sm font-medium text-ink-muted transition-colors duration-150 hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy"
         >
           {copied ? (
-            <Check className="h-3.5 w-3.5 text-green-600" aria-hidden />
+            <Icon name="check" size={14} className="text-green-600" aria-hidden />
           ) : (
-            <Copy className="h-3.5 w-3.5" aria-hidden />
+            <Icon name="content_copy" size={14} aria-hidden />
           )}
           {copied ? "Copied!" : "Copy"}
         </button>
@@ -126,10 +118,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
           aria-label="Export options"
           className="inline-flex items-center px-2 py-[7px] transition-colors duration-150 hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy"
         >
-          <ChevronDown
-            className={`h-3.5 w-3.5 text-ink-muted transition-transform duration-150 ${open ? "rotate-180" : ""}`}
-            aria-hidden
-          />
+          <Icon name="keyboard_arrow_down" size={14} className={`text-ink-muted transition-transform duration-150 ${open ? "rotate-180" : ""}`} aria-hidden />
         </button>
       </div>
 
@@ -145,7 +134,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
             onClick={() => handleDownload("xls")}
             className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm text-ink transition-colors hover:bg-surface-muted focus-visible:bg-surface-muted focus-visible:outline-none"
           >
-            <FileSpreadsheet className="h-4 w-4 text-ink-muted" aria-hidden /> Export as Excel
+            <Icon name="table_chart" size={16} className="text-ink-muted" aria-hidden /> Export as Excel
           </button>
           <button
             role="menuitem"
@@ -153,7 +142,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
             onClick={() => handleDownload("csv")}
             className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm text-ink transition-colors hover:bg-surface-muted focus-visible:bg-surface-muted focus-visible:outline-none"
           >
-            <FileText className="h-4 w-4 text-ink-muted" aria-hidden /> Export as CSV
+            <Icon name="description" size={16} className="text-ink-muted" aria-hidden /> Export as CSV
           </button>
         </div>
       )}
@@ -190,7 +179,7 @@ function PhotoBadge({
         aria-label="No photos uploaded"
         title="No photos"
       >
-        <Camera className="h-4 w-4" aria-hidden />
+        <Icon name="photo_camera" size={16} aria-hidden />
       </span>
     );
   }
@@ -222,7 +211,7 @@ function PhotoBadge({
           className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-150 group-hover:bg-black/30"
           aria-hidden
         >
-          <ZoomIn className="h-4 w-4 text-white opacity-0 drop-shadow transition-opacity duration-150 group-hover:opacity-100" />
+          <Icon name="zoom_in" size={16} className="text-white opacity-0 drop-shadow transition-opacity duration-150 group-hover:opacity-100" />
         </span>
       </span>
 
@@ -296,7 +285,7 @@ function PhotoUploadField({
         }`}
         aria-describedby={error ? errorId : undefined}
       >
-        <Camera className="h-4 w-4" aria-hidden />
+        <Icon name="photo_camera" size={16} aria-hidden />
         {photos.length === 0 ? "Select photos" : "Add more photos"}
       </button>
       <input
@@ -339,7 +328,7 @@ function PhotoUploadField({
                 aria-label={`Remove photo ${i + 1}`}
                 className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition group-hover:opacity-100 hover:bg-black/80 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
-                <X className="h-3.5 w-3.5" aria-hidden />
+                <Icon name="close" size={14} aria-hidden />
               </button>
             </div>
           ))}
@@ -521,7 +510,7 @@ function DeleteConfirmModal({
       footer={
         <>
           <Button type="button" appearance="outlined" onClick={onClose}>Cancel</Button>
-          <Button type="button" variant="danger" iconLeft={<Trash2 className="h-4 w-4" />} onClick={onConfirm}>
+          <Button type="button" variant="danger" iconLeft={<Icon name="delete" size={16} />} onClick={onConfirm}>
             Remove
           </Button>
         </>
@@ -529,7 +518,7 @@ function DeleteConfirmModal({
     >
       <div className="flex gap-3">
         <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-danger-bg text-danger-fg" aria-hidden>
-          <AlertTriangle className="h-5 w-5" />
+          <Icon name="warning" size={20} />
         </span>
         <div className="text-sm text-ink">
           <p>
@@ -657,13 +646,13 @@ export default function TrainingPage() {
       render: (r) => (
         <RowActions>
           <IconAction
-            icon={Pencil}
+            icon="edit"
             tone="warning"
             label={`Edit training on ${fmtDate(r.date)}`}
             onClick={() => setEditTarget({ record: r, idx: r._idx })}
           />
           <IconAction
-            icon={Trash2}
+            icon="delete"
             tone="danger"
             label={`Remove training on ${fmtDate(r.date)}`}
             onClick={() => setDeleteTarget({ record: r, idx: r._idx })}
@@ -678,7 +667,7 @@ export default function TrainingPage() {
       <div className="flex flex-col gap-4">
         <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-ink-muted">
           <Link href="/portals/nmba/treatment-centre/dashboard" className="hover:text-navy transition-colors">Home</Link>
-          <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
+          <Icon name="keyboard_arrow_right" size={14} className="shrink-0" aria-hidden />
           <Link href="/portals/nmba/treatment-centre/cpli/peer-educators" className="hover:text-navy transition-colors">Peer Educators</Link>
         </nav>
         <div className="rounded-xl border border-dashed border-line bg-surface-muted p-12 text-center text-sm text-ink-muted">
@@ -700,14 +689,14 @@ export default function TrainingPage() {
           >
             Home
           </Link>
-          <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
+          <Icon name="keyboard_arrow_right" size={14} className="shrink-0" aria-hidden />
           <Link
             href="/portals/nmba/treatment-centre/cpli/peer-educators"
             className="rounded transition-colors hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy"
           >
             Peer Educators
           </Link>
-          <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
+          <Icon name="keyboard_arrow_right" size={14} className="shrink-0" aria-hidden />
           <span className="max-w-[200px] truncate font-medium text-ink" aria-current="page">
             {educator.name}
           </span>
@@ -730,7 +719,7 @@ export default function TrainingPage() {
             </p>
           </div>
           <Button
-            iconLeft={<Plus className="h-4 w-4" />}
+            iconLeft={<Icon name="add" size={16} />}
             onClick={() => setAddOpen(true)}
             aria-haspopup="dialog"
           >
@@ -766,7 +755,7 @@ export default function TrainingPage() {
                 `No training records match "${query}".`
               ) : (
                 <div className="flex flex-col items-center gap-3 py-6 text-center">
-                  <Camera className="h-8 w-8 text-ink-hint" aria-hidden />
+                  <Icon name="photo_camera" size={32} className="text-ink-hint" aria-hidden />
                   <div>
                     <p className="text-sm font-semibold text-ink">No training records yet</p>
                     <p className="mt-0.5 text-xs text-ink-muted">Add the first session to track peer educator outreach progress.</p>

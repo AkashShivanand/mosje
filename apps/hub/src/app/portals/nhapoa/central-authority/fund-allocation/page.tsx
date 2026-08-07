@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Download, Plus, CheckCircle2 } from "lucide-react";
-import { Modal } from "@mosje/design-system";
+import { Icon, Modal } from "@mosje/design-system";
 import { PageHeader, StatTile, Card, Button, Field, Select, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
@@ -45,7 +44,7 @@ export default function FundAllocationPage() {
       <PageHeader
         title="Fund Allocation Dashboard"
         subtitle="SAMBAL budget allocation and utilization"
-        action={<div className="flex gap-2"><Button variant="outline"><Download className="h-4 w-4" /> Export</Button><Button onClick={() => setOpen(true)}><Plus className="h-4 w-4" /> New Allocation</Button></div>}
+        action={<div className="flex gap-2"><Button variant="outline"><Icon name="download" size={16} /> Export</Button><Button onClick={() => setOpen(true)}><Icon name="add" size={16} /> New Allocation</Button></div>}
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -87,7 +86,7 @@ export default function FundAllocationPage() {
         )}
       >
         {done ? (
-          <div className="py-4 text-center"><CheckCircle2 className="mx-auto h-12 w-12 text-approve" /><p className="mt-3 text-sm text-ink-muted">{fmtINR(Number(amount))} allocated to <span className="font-semibold text-ink">{aState}</span> for {scheme}.</p></div>
+          <div className="py-4 text-center"><Icon name="check_circle" size={48} className="mx-auto text-approve" /><p className="mt-3 text-sm text-ink-muted">{fmtINR(Number(amount))} allocated to <span className="font-semibold text-ink">{aState}</span> for {scheme}.</p></div>
         ) : (
           <div className="space-y-4">
             <Field label="State" required><Select options={STATES} placeholder="Select State" value={aState} onChange={(e) => setAState(e.target.value)} /></Field>

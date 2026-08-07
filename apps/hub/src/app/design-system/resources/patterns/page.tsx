@@ -38,7 +38,7 @@ const h2Style: React.CSSProperties = {
   borderBottom: "1px solid var(--ds-border)",
 };
 const h3Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-headline)",
+  fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
   fontWeight: 600,
   color: "var(--ds-ink)",
   marginTop: "var(--ds-spacing-2xl)",
@@ -418,7 +418,7 @@ export default function PatternsPage(): React.JSX.Element {
             <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-spacing-md)" }}>
               <div style={{ width: 48, height: 48, borderRadius: "50%", background: "rgba(255,255,255,0.2)", flexShrink: 0 }} />
               <div>
-                <div style={{ color: "white", fontWeight: 700, fontSize: "var(--ds-text-headline)" }}>PM-AJAY</div>
+                <div style={{ color: "white", fontWeight: 700, fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)" }}>PM-AJAY</div>
                 <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "var(--ds-text-body-3)" }}>
                   Ministry of Social Justice & Empowerment
                 </div>
@@ -439,7 +439,7 @@ export default function PatternsPage(): React.JSX.Element {
               gap: "var(--ds-spacing-lg)",
             }}
           >
-            <h2 style={{ fontSize: "var(--ds-text-headline)", fontWeight: 700, color: "var(--ds-ink)", margin: 0 }}>
+            <h2 style={{ fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)", fontWeight: 700, color: "var(--ds-ink)", margin: 0 }}>
               Sign in
             </h2>
             {/* Tab pills */}
@@ -544,7 +544,7 @@ export default function PatternsPage(): React.JSX.Element {
             />
           </div>
           <div style={{ padding: "var(--ds-spacing-xl)", display: "flex", flexDirection: "column", gap: "var(--ds-spacing-lg)" }}>
-            <h3 style={{ fontSize: "var(--ds-text-headline)", fontWeight: 700, color: "var(--ds-ink)", margin: 0 }}>
+            <h3 style={{ fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)", fontWeight: 700, color: "var(--ds-ink)", margin: 0 }}>
               Address Details
             </h3>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--ds-spacing-lg)" }}>

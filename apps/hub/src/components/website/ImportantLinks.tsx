@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ExternalLink, Link2 } from "lucide-react";
+import { Icon } from "@mosje/design-system";
 
 interface ImportantLink {
   label: string;
@@ -49,7 +49,7 @@ export function ImportantLinks() {
         onClick={() => setIsOpen(true)}
         className="fixed right-0 top-[42%] z-[1002] flex flex-col items-center gap-2 rounded-l-lg bg-gov-blue px-2 py-4 text-white shadow-md transition-colors hover:bg-gov-blue-dark"
       >
-        <Link2 className="h-5 w-5" aria-hidden="true" />
+        <Icon name="link" size={20} aria-hidden="true" />
         <span
           className="text-[14px] font-semibold tracking-wide"
           style={{ writingMode: "vertical-rl" }}
@@ -105,10 +105,7 @@ export function ImportantLinks() {
                     className="flex items-center justify-between gap-3 px-5 py-3.5 text-[15px] font-medium text-ink transition-colors hover:bg-surface-muted hover:text-gov-blue"
                   >
                     <span>{link.label}</span>
-                    <ExternalLink
-                      className="h-4 w-4 shrink-0 text-gov-blue"
-                      aria-hidden="true"
-                    />
+                    <Icon name="open_in_new" size={16} className="shrink-0 text-gov-blue" aria-hidden="true" />
                   </a>
                 </li>
               ))}

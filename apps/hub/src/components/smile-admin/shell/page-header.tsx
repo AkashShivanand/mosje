@@ -28,11 +28,11 @@ export function PageHeader({
               {eyebrow}
             </div>
           ) : null}
-          <h1 className="text-headline-3 font-bold tracking-tight text-foreground sm:text-headline-2">
+          <h1 className="text-headline-3 font-bold tracking-tight text-ink sm:text-headline-2">
             {title}
           </h1>
           {subtitle ? (
-            <p className="max-w-prose text-body-2 text-foreground-muted">{subtitle}</p>
+            <p className="max-w-prose text-body-2 text-ink-muted">{subtitle}</p>
           ) : null}
         </div>
         {actions ? (

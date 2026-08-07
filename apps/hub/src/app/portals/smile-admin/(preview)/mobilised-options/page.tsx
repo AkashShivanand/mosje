@@ -12,8 +12,8 @@
  * (preview) folder once a variant is chosen and wired into the live dashboard.
  */
 
-import { Baby, Home, Users } from "lucide-react";
 import { KpiCard, KPI_ICONS, type KpiSpec } from "@/components/smile-admin/dashboard/kpi-card";
+import { Icon } from "@mosje/design-system";
 
 const SHELL =
   "group relative isolate flex h-full flex-col justify-between gap-sm overflow-hidden rounded-lg border border-stroke-200 bg-white p-md shadow-xs transition-all duration-200 ease-swift-out hover:-translate-y-px hover:border-stroke-300 hover:shadow-md md:gap-md md:p-lg";
@@ -42,7 +42,7 @@ function Header({ compact = false }: { compact?: boolean }) {
         <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-primary md:tracking-[0.1em]">
           Total Mobilised
         </div>
-        <div className="text-num-lg font-bold leading-none tabular-nums text-foreground md:text-num-xl">
+        <div className="text-num-lg font-bold leading-none tabular-nums text-ink md:text-num-xl">
           {TOTAL}
         </div>
       </div>
@@ -51,7 +51,7 @@ function Header({ compact = false }: { compact?: boolean }) {
           compact ? "h-9 w-9" : "h-9 w-9 md:h-11 md:w-11"
         } shrink-0 place-items-center rounded-md bg-primary-50 ring-1 ring-inset ring-black/5 transition-transform duration-200 group-hover:scale-105`}
       >
-        <Users className="h-[18px] w-[18px] text-primary md:h-[22px] md:w-[22px]" />
+        <Icon name="group" className="h-[18px] w-[18px] text-primary md:h-[22px] md:w-[22px]" />
       </div>
     </div>
   );
@@ -66,16 +66,16 @@ function VariantA() {
       <Header />
       <div className="grid grid-cols-2 gap-xs">
         <div className="rounded-md bg-primary-50/70 p-xs ring-1 ring-inset ring-primary-100">
-          <div className="flex items-center gap-xxs text-label-3 font-medium text-foreground-muted">
-            <Home aria-hidden className="h-3 w-3 text-primary" /> Shelter Home
+          <div className="flex items-center gap-xxs text-label-3 font-medium text-ink-muted">
+            <Icon name="home" size={12} aria-hidden className="text-primary" /> Shelter Home
           </div>
-          <div className="mt-0.5 text-body-1 font-bold tabular-nums text-foreground">{SHELTER}</div>
+          <div className="mt-0.5 text-body-1 font-bold tabular-nums text-ink">{SHELTER}</div>
         </div>
         <div className="rounded-md bg-info-50 p-xs ring-1 ring-inset ring-info-100">
-          <div className="flex items-center gap-xxs text-label-3 font-medium text-foreground-muted">
-            <Baby aria-hidden className="h-3 w-3 text-info-600" /> Child Rehab
+          <div className="flex items-center gap-xxs text-label-3 font-medium text-ink-muted">
+            <Icon name="child_care" size={12} aria-hidden className="text-info-600" /> Child Rehab
           </div>
-          <div className="mt-0.5 text-body-1 font-bold tabular-nums text-foreground">{CHILD}</div>
+          <div className="mt-0.5 text-body-1 font-bold tabular-nums text-ink">{CHILD}</div>
         </div>
       </div>
     </article>
@@ -100,10 +100,10 @@ function BarRow({
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between gap-xs">
-        <div className="flex items-center gap-xxs text-label-2 font-medium text-foreground-muted">
+        <div className="flex items-center gap-xxs text-label-2 font-medium text-ink-muted">
           {icon} {label}
         </div>
-        <div className="text-label-1 font-bold tabular-nums text-foreground">{value}</div>
+        <div className="text-label-1 font-bold tabular-nums text-ink">{value}</div>
       </div>
       <div className="h-1.5 overflow-hidden rounded-full bg-neutral-100">
         <div className={`h-full rounded-full ${fill}`} style={{ width: `${pct}%` }} />
@@ -119,14 +119,14 @@ function VariantB() {
       <Header />
       <div className="space-y-sm">
         <BarRow
-          icon={<Home aria-hidden className="h-3 w-3 text-primary" />}
+          icon={<Icon name="home" size={12} aria-hidden className="text-primary" />}
           label="Shelter Home"
           value={SHELTER}
           pct={SHELTER_PCT}
           fill="bg-primary"
         />
         <BarRow
-          icon={<Baby aria-hidden className="h-3 w-3 text-info-600" />}
+          icon={<Icon name="child_care" size={12} aria-hidden className="text-info-600" />}
           label="Child Rehab"
           value={CHILD}
           pct={CHILD_PCT}
@@ -154,15 +154,15 @@ function VariantC() {
           <div className="h-full bg-info-500" style={{ width: `${CHILD_PCT}%` }} />
         </div>
         <div className="flex items-center justify-between gap-xs text-label-2">
-          <div className="flex items-center gap-xxs text-foreground-muted">
+          <div className="flex items-center gap-xxs text-ink-muted">
             <span aria-hidden className="h-2 w-2 rounded-full bg-primary" />
             Shelter Home
-            <span className="font-bold tabular-nums text-foreground">{SHELTER}</span>
+            <span className="font-bold tabular-nums text-ink">{SHELTER}</span>
           </div>
-          <div className="flex items-center gap-xxs text-foreground-muted">
+          <div className="flex items-center gap-xxs text-ink-muted">
             <span aria-hidden className="h-2 w-2 rounded-full bg-info-500" />
             Child Rehab
-            <span className="font-bold tabular-nums text-foreground">{CHILD}</span>
+            <span className="font-bold tabular-nums text-ink">{CHILD}</span>
           </div>
         </div>
       </div>
@@ -179,16 +179,16 @@ function VariantD() {
       <Header />
       <div className="grid grid-cols-2 divide-x divide-stroke-200 border-t border-stroke-100 pt-sm">
         <div className="flex flex-col items-center gap-0.5 px-xs text-center">
-          <div className="flex items-center gap-xxs text-label-3 font-medium uppercase tracking-[0.06em] text-foreground-muted">
-            <Home aria-hidden className="h-3 w-3 text-primary" /> Shelter
+          <div className="flex items-center gap-xxs text-label-3 font-medium uppercase tracking-[0.06em] text-ink-muted">
+            <Icon name="home" size={12} aria-hidden className="text-primary" /> Shelter
           </div>
-          <div className="text-body-1 font-bold tabular-nums text-foreground">{SHELTER}</div>
+          <div className="text-body-1 font-bold tabular-nums text-ink">{SHELTER}</div>
         </div>
         <div className="flex flex-col items-center gap-0.5 px-xs text-center">
-          <div className="flex items-center gap-xxs text-label-3 font-medium uppercase tracking-[0.06em] text-foreground-muted">
-            <Baby aria-hidden className="h-3 w-3 text-info-600" /> Child Rehab
+          <div className="flex items-center gap-xxs text-label-3 font-medium uppercase tracking-[0.06em] text-ink-muted">
+            <Icon name="child_care" size={12} aria-hidden className="text-info-600" /> Child Rehab
           </div>
-          <div className="text-body-1 font-bold tabular-nums text-foreground">{CHILD}</div>
+          <div className="text-body-1 font-bold tabular-nums text-ink">{CHILD}</div>
         </div>
       </div>
     </article>
@@ -204,11 +204,11 @@ function VariantE() {
       <Header compact />
       <div className="flex flex-wrap items-center gap-xs">
         <span className="inline-flex items-center gap-xxs rounded-full bg-primary-50 px-2 py-0.5 text-label-3 font-semibold text-primary ring-1 ring-inset ring-primary-100">
-          <Home aria-hidden className="h-3 w-3" /> Shelter
+          <Icon name="home" size={12} aria-hidden /> Shelter
           <span className="tabular-nums">{SHELTER}</span>
         </span>
         <span className="inline-flex items-center gap-xxs rounded-full bg-info-50 px-2 py-0.5 text-label-3 font-semibold text-info-600 ring-1 ring-inset ring-info-100">
-          <Baby aria-hidden className="h-3 w-3" /> Child Rehab
+          <Icon name="child_care" size={12} aria-hidden /> Child Rehab
           <span className="tabular-nums">{CHILD}</span>
         </span>
       </div>
@@ -262,12 +262,12 @@ function LegendRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-xs">
-      <div className="flex items-center gap-xxs text-label-2 text-foreground-muted">
+      <div className="flex items-center gap-xxs text-label-2 text-ink-muted">
         <span aria-hidden className={`h-2 w-2 rounded-full ${dot}`} />
         {icon}
         {label}
       </div>
-      <span className="text-label-1 font-bold tabular-nums text-foreground">{value}</span>
+      <span className="text-label-1 font-bold tabular-nums text-ink">{value}</span>
     </div>
   );
 }
@@ -281,7 +281,7 @@ function VariantF() {
           <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-primary md:tracking-[0.1em]">
             Total Mobilised
           </div>
-          <div className="text-num-lg font-bold leading-none tabular-nums text-foreground md:text-num-xl">
+          <div className="text-num-lg font-bold leading-none tabular-nums text-ink md:text-num-xl">
             {TOTAL}
           </div>
         </div>
@@ -290,13 +290,13 @@ function VariantF() {
       <div className="space-y-1 border-t border-stroke-100 pt-sm">
         <LegendRow
           dot="bg-primary"
-          icon={<Home aria-hidden className="h-3 w-3 text-primary" />}
+          icon={<Icon name="home" size={12} aria-hidden className="text-primary" />}
           label="Shelter Home"
           value={SHELTER}
         />
         <LegendRow
           dot="bg-info-500"
-          icon={<Baby aria-hidden className="h-3 w-3 text-info-600" />}
+          icon={<Icon name="child_care" size={12} aria-hidden className="text-info-600" />}
           label="Child Rehab"
           value={CHILD}
         />
@@ -383,14 +383,14 @@ export default function MobilisedOptionsPreview() {
           <div className="text-label-3 font-semibold uppercase tracking-[0.1em] text-primary">
             SMILE · dashboard preview
           </div>
-          <h1 className="text-heading-2 font-bold text-foreground">
+          <h1 className="text-heading-2 font-bold text-ink">
             Mobilised aggregate card — layout options
           </h1>
-          <p className="max-w-2xl text-body-2 text-foreground-muted">
+          <p className="max-w-2xl text-body-2 text-ink-muted">
             Six faithful variants of the restructured card. Total Mobilised{" "}
-            <strong className="text-foreground">10,229</strong> = Shelter Home{" "}
-            <strong className="text-foreground">7,579</strong> + Child Rehabilitation{" "}
-            <strong className="text-foreground">2,650</strong>. Every variant keeps the real
+            <strong className="text-ink">10,229</strong> = Shelter Home{" "}
+            <strong className="text-ink">7,579</strong> + Child Rehabilitation{" "}
+            <strong className="text-ink">2,650</strong>. Every variant keeps the real
             KpiCard shell (accent bar, tokens, one grid cell) so it drops straight into the 6-card
             row. Pick one and it goes live.
           </p>
@@ -401,7 +401,7 @@ export default function MobilisedOptionsPreview() {
           {VARIANTS.map((v) => (
             <div key={v.id} className="space-y-sm">
               <div className="flex items-baseline justify-between gap-xs">
-                <div className="min-w-0 truncate text-body-2 font-semibold text-foreground">
+                <div className="min-w-0 truncate text-body-2 font-semibold text-ink">
                   Option {v.id} · {v.title}
                 </div>
                 <span className="shrink-0 rounded-full bg-primary-50 px-2 py-0.5 text-label-3 font-semibold text-primary">
@@ -415,7 +415,7 @@ export default function MobilisedOptionsPreview() {
 
         {/* In-context: recommended Option A inside the real 6-card + rail grid */}
         <section className="space-y-md">
-          <h2 className="text-heading-3 font-bold text-foreground">
+          <h2 className="text-heading-3 font-bold text-ink">
             In context — Option A in the live 6-card row
           </h2>
           <div className="rounded-lg border border-stroke-200 bg-white p-lg">
@@ -424,7 +424,7 @@ export default function MobilisedOptionsPreview() {
               <VariantA />
               <KpiCard spec={SIBLINGS[1]} />
               <div className="row-span-2 hidden rounded-lg border border-dashed border-stroke-200 bg-neutral-50/60 p-md lg:grid lg:place-items-center">
-                <span className="text-label-2 text-foreground-hint">System Users rail</span>
+                <span className="text-label-2 text-ink-hint">System Users rail</span>
               </div>
               <KpiCard spec={SIBLINGS[2]} />
               <KpiCard spec={SIBLINGS[3]} />

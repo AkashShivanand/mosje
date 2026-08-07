@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { PageHeader, StatTile, Card, StatusPill } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
+import { Icon } from "@mosje/design-system";
 
 export default function SADashboard() {
   const { state } = useNhapoa();
@@ -30,7 +30,7 @@ export default function SADashboard() {
               <h2 className="text-sm font-bold text-ink">Priority Pending</h2>
               <p className="text-xs text-ink-hint">Requires your immediate decision</p>
             </div>
-            <Link href="/portals/nhapoa/state-authority/pending-approvals" className="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:underline">View all <ArrowRight className="h-3.5 w-3.5" /></Link>
+            <Link href="/portals/nhapoa/state-authority/pending-approvals" className="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:underline">View all <Icon name="arrow_forward" size={14} /></Link>
           </div>
           <ul className="mt-4 divide-y divide-line">
             {pending.length === 0 && <li className="py-6 text-center text-sm text-ink-hint">No pending approvals.</li>}

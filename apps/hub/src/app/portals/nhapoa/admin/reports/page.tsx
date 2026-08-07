@@ -1,8 +1,8 @@
 "use client";
 
-import { FileText, Sheet, FileBarChart } from "lucide-react";
 import { PageHeader, Card, StatTile, Button } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
+import { Icon } from "@mosje/design-system";
 
 const REPORTS = [
   { name: "National Grievance Register", desc: "Every grievance with status, SLA and officer" },
@@ -25,12 +25,12 @@ export default function AdminReportsPage() {
         {REPORTS.map((r) => (
           <Card key={r.name} className="flex items-start justify-between gap-4 p-5">
             <div className="flex gap-3">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-navy/10 text-navy"><FileBarChart className="h-5 w-5" /></span>
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-navy/10 text-navy"><Icon name="assessment" size={20} /></span>
               <div><p className="text-sm font-bold text-ink">{r.name}</p><p className="mt-0.5 text-xs text-ink-muted">{r.desc}</p></div>
             </div>
             <div className="flex shrink-0 gap-1.5">
-              <Button variant="outline" className="px-2.5"><FileText className="h-4 w-4" /></Button>
-              <Button variant="outline" className="px-2.5"><Sheet className="h-4 w-4" /></Button>
+              <Button variant="outline" className="px-2.5"><Icon name="description" size={16} /></Button>
+              <Button variant="outline" className="px-2.5"><Icon name="table_chart" size={16} /></Button>
             </div>
           </Card>
         ))}

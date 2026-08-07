@@ -1,10 +1,10 @@
 "use client";
 
-import { Bell, BellOff } from "lucide-react";
 import { PageHeader, Card } from "@/components/nhapoa/ui";
 import { cn } from "@/lib/nhapoa/utils";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import type { RoleId } from "@/lib/nhapoa/store/types";
+import { Icon } from "@mosje/design-system";
 
 /** Shared notifications list for any admin role. Reads role-scoped items from the store. */
 export function NotificationsView({ role }: { role: RoleId }) {
@@ -17,7 +17,7 @@ export function NotificationsView({ role }: { role: RoleId }) {
       <PageHeader title="Notifications" subtitle={`${unread} unread · ${items.length} total`} />
       {items.length === 0 ? (
         <Card className="flex flex-col items-center justify-center px-6 py-20 text-center">
-          <BellOff className="h-10 w-10 text-ink-hint" />
+          <Icon name="notifications_off" size={40} className="text-ink-hint" />
           <p className="mt-4 text-sm font-semibold text-ink">You&apos;re all caught up.</p>
         </Card>
       ) : (
@@ -33,7 +33,7 @@ export function NotificationsView({ role }: { role: RoleId }) {
               )}
             >
               <span className={cn("mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full", n.read ? "bg-slate-100 text-ink-hint" : "bg-navy/10 text-navy")}>
-                <Bell className="h-4 w-4" />
+                <Icon name="notifications" size={16} />
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">

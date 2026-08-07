@@ -1,9 +1,9 @@
 import * as React from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { UserShell } from "@/components/scw/user-shell";
 import { Button, Card, Field, Select, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
+import { Icon } from "@mosje/design-system";
 
 const GENDERS = ["Male", "Female", "Transgender"] as const;
 
@@ -68,7 +68,7 @@ export default function PledgeFormPage() {
             </Link>
             <Button type="submit">
               Send OTP
-              <ArrowRight className="h-4 w-4" />
+              <Icon name="arrow_forward" size={16} />
             </Button>
           </div>
         </form>

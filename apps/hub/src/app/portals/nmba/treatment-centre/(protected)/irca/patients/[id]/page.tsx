@@ -3,20 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, Plus, Trash2, Save, FileText, ChevronRight, ChevronLeft } from "lucide-react";
-import {
-  Button,
-  Input,
-  Textarea,
-  Select,
-  FormField,
-  Alert,
-  Chip,
-  Tabs,
-  TabPanel,
-  type TabDef,
-  type SelectOption,
-} from "@mosje/design-system";
+import { Alert, Button, Chip, FormField, Icon, Input, Select, TabPanel, Tabs, Textarea, type SelectOption, type TabDef } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { FormSection } from "@/components/nmba/treatment-centre/tc-form";
@@ -151,7 +138,7 @@ function SessionCardList({
                   aria-label={`Remove session ${row.sessionNo}`}
                   className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
                 >
-                  <Trash2 className="h-3.5 w-3.5" aria-hidden /> Remove
+                  <Icon name="delete" size={14} aria-hidden /> Remove
                 </button>
               )}
             </div>
@@ -167,7 +154,7 @@ function SessionCardList({
         ))}
       </ol>
       <div>
-        <Button type="button" appearance="outlined" iconLeft={<Plus className="h-4 w-4" />} onClick={onAdd}>
+        <Button type="button" appearance="outlined" iconLeft={<Icon name="add" size={16} />} onClick={onAdd}>
           Add session
         </Button>
       </div>
@@ -254,7 +241,7 @@ export default function ClinicalWizardPage() {
           href="/portals/nmba/treatment-centre/irca/patients"
           className="mt-4 inline-flex items-center text-sm font-semibold text-navy hover:underline"
         >
-          <ArrowLeft className="h-4 w-4 mr-1.5" /> Back to Patient List
+          <Icon name="arrow_back" size={16} className="mr-1.5" /> Back to Patient List
         </Link>
       </div>
     );
@@ -423,7 +410,7 @@ export default function ClinicalWizardPage() {
               className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-white text-ink hover:bg-black/5"
               aria-label="Back to patients list"
             >
-              <ArrowLeft className="h-4 w-4" />
+              <Icon name="arrow_back" size={16} />
             </Link>
             <div>
               <h1 className="text-xl font-bold text-ink">Clinical Case File</h1>
@@ -437,7 +424,7 @@ export default function ClinicalWizardPage() {
           <Button
             type="button"
             appearance="outlined"
-            iconLeft={<Save className="h-4 w-4" />}
+            iconLeft={<Icon name="save" size={16} />}
             onClick={() => handleSaveTab(false)}
           >
             Save Progress
@@ -640,7 +627,7 @@ export default function ClinicalWizardPage() {
                         aria-label={`Remove entry ${idx + 1}`}
                         className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
                       >
-                        <Trash2 className="h-3.5 w-3.5" aria-hidden /> Remove
+                        <Icon name="delete" size={14} aria-hidden /> Remove
                       </button>
                     )}
                   </div>
@@ -682,7 +669,7 @@ export default function ClinicalWizardPage() {
               <Button
                 type="button"
                 appearance="outlined"
-                iconLeft={<Plus className="h-4 w-4" />}
+                iconLeft={<Icon name="add" size={16} />}
                 onClick={addDosageRow}
               >
                 Add another entry
@@ -792,7 +779,7 @@ export default function ClinicalWizardPage() {
                           aria-label={`Remove visit ${idx + 1}`}
                           className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
                         >
-                          <Trash2 className="h-3.5 w-3.5" aria-hidden /> Remove
+                          <Icon name="delete" size={14} aria-hidden /> Remove
                         </button>
                       )}
                     </div>
@@ -815,7 +802,7 @@ export default function ClinicalWizardPage() {
                 <Button
                   type="button"
                   appearance="outlined"
-                  iconLeft={<Plus className="h-4 w-4" />}
+                  iconLeft={<Icon name="add" size={16} />}
                   onClick={addHomeVisitRow}
                 >
                   Add Home Visit
@@ -978,7 +965,7 @@ export default function ClinicalWizardPage() {
             </FormSection>
 
             <div className="flex justify-end border-t border-line pt-4">
-              <Button type="submit" iconLeft={<FileText className="h-4 w-4" />}>
+              <Button type="submit" iconLeft={<Icon name="description" size={16} />}>
                 Complete Clinical Record &amp; Discharge
               </Button>
             </div>
@@ -993,7 +980,7 @@ export default function ClinicalWizardPage() {
           type="button"
           appearance="outlined"
           disabled={activeTab === 0}
-          iconLeft={<ChevronLeft className="h-4 w-4" />}
+          iconLeft={<Icon name="keyboard_arrow_left" size={16} />}
           onClick={() => {
             handleSaveTab(false);
             setActiveTab((t) => Math.max(t - 1, 0));
@@ -1005,7 +992,7 @@ export default function ClinicalWizardPage() {
         {activeTab < TAB_DEFS.length - 1 ? (
           <Button
             type="button"
-            iconRight={<ChevronRight className="h-4 w-4" />}
+            iconRight={<Icon name="keyboard_arrow_right" size={16} />}
             onClick={() => handleSaveTab(true)}
           >
             Save &amp; Next
@@ -1014,7 +1001,7 @@ export default function ClinicalWizardPage() {
           <Button
             type="button"
             appearance="filled"
-            iconLeft={<FileText className="h-4 w-4" />}
+            iconLeft={<Icon name="description" size={16} />}
             onClick={handleSubmitDischarge}
           >
             Discharge Patient

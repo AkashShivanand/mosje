@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Save, CheckCircle2 } from "lucide-react";
 import { PageHeader, Card, Field, TextInput, Checkbox, Button, EmptyState } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import type { PasswordPolicy } from "@/lib/tg/store/types";
+import { Icon } from "@mosje/design-system";
 
 export default function PasswordPolicyPage() {
   const { state, hydrated, updatePasswordPolicy } = useTg();
@@ -62,10 +62,10 @@ function PolicyForm({ initial, onSave }: { initial: PasswordPolicy; onSave: (p: 
           </div>
 
           <div className="flex items-center gap-3 pt-2">
-            <Button type="submit"><Save className="h-4 w-4" /> Update Policy</Button>
+            <Button type="submit"><Icon name="save" size={16} /> Update Policy</Button>
             {saved && (
               <span className="flex items-center gap-1.5 text-sm font-medium text-approve-fg">
-                <CheckCircle2 className="h-4 w-4" /> Policy updated
+                <Icon name="check_circle" size={16} /> Policy updated
               </span>
             )}
           </div>

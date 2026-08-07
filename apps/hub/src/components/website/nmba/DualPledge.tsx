@@ -1,5 +1,5 @@
-import { ArrowRight } from "lucide-react";
 import { PLEDGE_STATS } from "@/content/website/deaddiction-centres";
+import { Icon } from "@mosje/design-system";
 
 // Two front-page pledge channels. Each links to the NMBA portal's e-Pledge with a
 // distinct channel so the (later) backend can route/segment the submissions.
@@ -65,12 +65,9 @@ export function DualPledge() {
 
               <span className="ml-auto hidden shrink-0 items-center gap-1.5 text-[14px] font-semibold text-gov-blue sm:inline-flex">
                 Pledge
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-1" />
               </span>
-              <ArrowRight
-                className="ml-auto h-5 w-5 shrink-0 text-gov-blue transition-transform group-hover:translate-x-1 sm:hidden"
-                aria-hidden
-              />
+              <Icon name="arrow_forward" size={20} className="ml-auto shrink-0 text-gov-blue transition-transform group-hover:translate-x-1 sm:hidden" aria-hidden />
             </a>
           </li>
         ))}

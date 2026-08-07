@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { CheckCircle2, MapPin, CircleDot } from "lucide-react";
 import { CitizenShell } from "@/components/nhapoa/citizen-shell";
 import { Button, Field, TextInput, Textarea, Select, Card } from "@/components/nhapoa/ui";
 import { RESCUE_GENDERS } from "@/lib/nhapoa/citizen-data";
 import { STATES, DISTRICTS } from "@/lib/nhapoa/store/seed";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
+import { Icon } from "@mosje/design-system";
 
 export default function RegisterRescuePage() {
   const { createRescue } = useNhapoa();
@@ -39,7 +39,7 @@ export default function RegisterRescuePage() {
     return (
       <CitizenShell>
         <Card className="mx-auto max-w-xl p-10 text-center">
-          <CheckCircle2 className="mx-auto h-14 w-14 text-approve" />
+          <Icon name="check_circle" size={56} className="mx-auto text-approve" />
           <h1 className="mt-4 text-2xl font-bold text-ink">Rescue request submitted</h1>
           <p className="mt-2 text-sm text-ink-muted">Help is being arranged. Keep your reference ID to follow up.</p>
           <p className="mt-5 rounded-lg bg-surface-muted px-4 py-3 font-mono text-lg font-bold text-navy">{refNo}</p>
@@ -70,7 +70,7 @@ export default function RegisterRescuePage() {
                   {otpSent ? "Verify" : "Send OTP"}
                 </Button>
               ) : (
-                <span className="inline-flex items-center gap-1 rounded-lg bg-approve-bg px-3 text-sm font-semibold text-approve-fg"><CheckCircle2 className="h-4 w-4" /> Verified</span>
+                <span className="inline-flex items-center gap-1 rounded-lg bg-approve-bg px-3 text-sm font-semibold text-approve-fg"><Icon name="check_circle" size={16} /> Verified</span>
               )}
             </div>
             {otpSent && !verified && <p className="mt-2 text-xs text-ink-hint">You&apos;ll receive a 6-digit OTP. Click Verify (demo: auto-verifies).</p>}
@@ -79,7 +79,7 @@ export default function RegisterRescuePage() {
           <div className="sm:col-span-2">
             <div className="mb-2 flex items-center justify-between">
               <p className="text-xs font-bold uppercase tracking-wide text-ink-hint">Location</p>
-              <button type="button" className="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:underline"><MapPin className="h-3.5 w-3.5" /> Use my current location</button>
+              <button type="button" className="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:underline"><Icon name="location_on" size={14} /> Use my current location</button>
             </div>
           </div>
           <Field label="Pincode"><TextInput inputMode="numeric" maxLength={6} value={pincode} onChange={(e) => setPincode(e.target.value.replace(/\D/g, ""))} placeholder="6-digit Pincode" /></Field>
@@ -94,7 +94,7 @@ export default function RegisterRescuePage() {
 
         <div className="mt-8 flex justify-end border-t border-line pt-6">
           <Button type="button" onClick={submit} disabled={!canSubmit}>
-            <CircleDot className="h-4 w-4" /> Verify Mobile &amp; Continue
+            <Icon name="radio_button_checked" size={16} /> Verify Mobile &amp; Continue
           </Button>
         </div>
       </Card>

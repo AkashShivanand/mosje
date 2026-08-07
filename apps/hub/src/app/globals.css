@@ -45,7 +45,7 @@
      • `@theme inline` → the value is INLINED into the utility, so overriding
                         `--color-*` does nothing. The hub's DS tokens must stay
                         inline (they resolve `--ds-*` at the element, which is
-                        what makes `data-color-mode` switching work at all).
+                        what makes `data-brand` switching work at all).
                         Where a portal redefines a DS-token name, the entry below
                         gains a `var(--portal-<name>, <hub default>)` slot: the
                         hub/explorer/eutthan-admin keep the fallback verbatim,
@@ -73,7 +73,7 @@
   --color-gov-blue-dark:  var(--ds-primary-dark);
   /* smile-admin's `primary` scale maps 1:1 onto the DS primary ramp, so it stays
      inline and mode-reactive — that is precisely what makes smile-admin's
-     data-color-mode="blue-dark" wrapper repaint it to the GoI navy. */
+     data-brand="navy" wrapper repaint it to the GoI navy. */
   --color-primary:        var(--ds-primary);
   --color-primary-50:     var(--ds-primary-50);
   --color-primary-100:    var(--ds-primary-100);
@@ -262,10 +262,15 @@
   --color-surface-elevated:     var(--surface-elevated);
   --color-surface-sunken:       var(--surface-sunken);
   --color-ring:                 var(--ring);
-  --color-foreground:           var(--foreground);
-  --color-foreground-muted:     var(--foreground-muted);
-  --color-foreground-hint:      var(--foreground-hint);
-  --color-foreground-on-primary: #ffffff;
+  /* REMOVED — the `foreground` text vocabulary.
+     smile-admin was the estate's only consumer of `text-foreground`,
+     `-muted` and `-hint` (273 call sites), which duplicated the DS's ink names
+     at different values. The utilities are now the ink ones; smile-admin.css
+     re-points --portal-ink / --portal-ink-muted / --color-ink-hint at its
+     --foreground* vars so the rendered colours are unchanged.
+     `--color-foreground-on-primary` went with them: it had no call site at all.
+     The raw --foreground* vars still exist in smile-admin.css and website.css,
+     where plain CSS rules (not utilities) read them. */
 
   /* ── smile-admin type scale ─────────────────────────────────────────── */
   --text-display-1: 44px;

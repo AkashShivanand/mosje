@@ -10,8 +10,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { ShieldCheck, KeyRound } from "lucide-react";
-import { Button, Input, FormField, Alert, DemoFab, PortalLoginShell } from "@mosje/design-system";
+import { Alert, Button, DemoFab, FormField, Icon, Input, PortalLoginShell } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import {
   TC_SESSION_COOKIE,
@@ -117,7 +116,7 @@ export default function TreatmentCentreLoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              iconLeft={loading ? undefined : <ShieldCheck className="h-4 w-4" />}
+              iconLeft={loading ? undefined : <Icon name="verified_user" size={16} />}
             >
               {loading ? "Sending OTP…" : "Send OTP"}
             </Button>
@@ -159,7 +158,7 @@ export default function TreatmentCentreLoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              iconLeft={loading ? undefined : <KeyRound className="h-4 w-4" />}
+              iconLeft={loading ? undefined : <Icon name="key" size={16} />}
             >
               {loading ? "Verifying…" : "Verify & Login"}
             </Button>

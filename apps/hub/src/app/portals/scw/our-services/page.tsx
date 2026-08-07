@@ -1,8 +1,8 @@
-import { MapPin, Navigation } from "lucide-react";
 import { UserShell } from "@/components/scw/user-shell";
 import { Button, Card, PageHeader, SearchInput } from "@/components/scw/ui";
 import { FACILITIES, FACILITY_LEGEND } from "@/lib/scw/mock-data";
 import { cn } from "@/lib/scw/utils";
+import { Icon } from "@mosje/design-system";
 
 export default function OurServicesPage() {
   return (
@@ -20,7 +20,7 @@ export default function OurServicesPage() {
           className="flex-1"
         />
         <Button className="shrink-0">
-          <Navigation className="h-4 w-4" />
+          <Icon name="navigation" size={16} />
           Near Me
         </Button>
       </div>
@@ -82,11 +82,11 @@ export default function OurServicesPage() {
                   </div>
                   <h3 className="mt-3 font-bold text-ink">{facility.name}</h3>
                   <p className="mt-2 flex items-start gap-1.5 text-sm text-ink-muted">
-                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-ink-hint" />
+                    <Icon name="location_on" size={16} className="mt-0.5 shrink-0 text-ink-hint" />
                     <span>{facility.address}</span>
                   </p>
                   <Button className="mt-4 w-full">
-                    <Navigation className="h-4 w-4" />
+                    <Icon name="navigation" size={16} />
                     Get Directions
                   </Button>
                 </Card>

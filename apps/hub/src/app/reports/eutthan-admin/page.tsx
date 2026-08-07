@@ -3,11 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useMemo } from "react";
-import {
-  ArrowLeft, Download, ExternalLink, Search, X,
-} from "lucide-react";
 import auditRaw from "@/data/eutthan-admin-audit.json";
 import figureManifest from "@/data/eutthan-admin-figures.json";
+import { Icon } from "@mosje/design-system";
 
 // Annotation boards that actually exist on disk (public/reports/eutthan-admin/
 // figures). The audit data generates more (slug-section) combinations than were
@@ -321,7 +319,7 @@ function ScreenGroup({ screen, findings }: { screen: Screen; findings: Finding[]
               rel="noopener noreferrer"
               className="flex items-center gap-1 rounded-full bg-blue-50 border border-blue-200 px-2.5 py-0.5 text-[11px] font-medium text-gov-blue hover:bg-blue-100 transition"
             >
-              <ExternalLink className="h-3 w-3" /> Figma
+              <Icon name="open_in_new" size={12} /> Figma
             </a>
           )}
           {screen.liveUrl && (
@@ -331,7 +329,7 @@ function ScreenGroup({ screen, findings }: { screen: Screen; findings: Finding[]
               rel="noopener noreferrer"
               className="flex items-center gap-1 rounded-full bg-surface-muted border border-border px-2.5 py-0.5 text-[11px] font-medium text-ink-muted hover:text-ink transition"
             >
-              <ExternalLink className="h-3 w-3" /> Live
+              <Icon name="open_in_new" size={12} /> Live
             </a>
           )}
         </div>
@@ -478,7 +476,7 @@ export default function EutthanAdminReport() {
             href="/reports"
             className="flex items-center gap-1.5 text-xs text-ink-muted hover:text-ink transition"
           >
-            <ArrowLeft className="h-3.5 w-3.5" /> Reports
+            <Icon name="arrow_back" size={14} /> Reports
           </Link>
           <span className="text-border">/</span>
           <span className="text-xs font-semibold text-ink">eUtthan Admin</span>
@@ -519,7 +517,7 @@ export default function EutthanAdminReport() {
               download
               className="flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs font-semibold text-ink transition hover:bg-surface-muted"
             >
-              <Download className="h-3.5 w-3.5" /> Download PDF
+              <Icon name="download" size={14} /> Download PDF
             </a>
           </div>
         </div>
@@ -532,7 +530,7 @@ export default function EutthanAdminReport() {
           <div className="sticky top-[49px] z-10 border-b border-border bg-white/95 backdrop-blur">
             <div className="mx-auto max-w-[1280px] px-6 py-3 space-y-2">
               <div className="relative w-full max-w-md">
-                <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-muted" />
+                <Icon name="search" size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
                 <input
                   type="search"
                   placeholder="Search findings, elements, axis…"
@@ -545,7 +543,7 @@ export default function EutthanAdminReport() {
                     onClick={() => setQuery("")}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink"
                   >
-                    <X className="h-3 w-3" />
+                    <Icon name="close" size={12} />
                   </button>
                 )}
               </div>
@@ -630,7 +628,7 @@ export default function EutthanAdminReport() {
           <main className="mx-auto max-w-[1280px] px-6 py-8">
             {filteredScreens.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-24 text-center">
-                <Search className="h-10 w-10 text-ink-muted/30 mb-4" />
+                <Icon name="search" size={40} className="text-ink-muted/30 mb-4" />
                 <p className="text-sm font-semibold text-ink">No findings match your filters</p>
                 <p className="text-xs text-ink-muted mt-1">Try adjusting the search or filter criteria.</p>
                 <button

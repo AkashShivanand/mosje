@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Download, ExternalLink } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import auditRaw from "@/data/scw-audit.json";
+import { Icon } from "@mosje/design-system";
 
 export const metadata: Metadata = {
   title: "SCW Design QC — MoSJE Digital Estate",
@@ -94,7 +94,7 @@ export default function ScwReportPage() {
             </nav>
 
             <Link href="/reports" className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-gov-blue hover:underline">
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" /> All reports
+              <Icon name="arrow_back" size={16} aria-hidden="true" /> All reports
             </Link>
 
             <div className="flex flex-wrap items-end justify-between gap-4">
@@ -112,7 +112,7 @@ export default function ScwReportPage() {
                 download
                 className="inline-flex items-center gap-2 rounded-lg bg-gov-blue px-4 py-2.5 text-sm font-semibold text-on-primary transition-colors hover:bg-gov-blue-dark"
               >
-                <Download className="h-4 w-4" aria-hidden="true" /> Download PDF
+                <Icon name="download" size={16} aria-hidden="true" /> Download PDF
               </a>
             </div>
 
@@ -135,12 +135,12 @@ export default function ScwReportPage() {
                 <div className="flex items-center gap-3 text-xs">
                   {screen.figmaUrl && (
                     <a href={screen.figmaUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-semibold text-gov-blue hover:underline">
-                      Figma frame <ExternalLink className="h-3 w-3" aria-hidden="true" />
+                      Figma frame <Icon name="open_in_new" size={12} aria-hidden="true" />
                     </a>
                   )}
                   {screen.liveUrl && (
                     <a href={screen.liveUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-semibold text-gov-blue hover:underline">
-                      Live page <ExternalLink className="h-3 w-3" aria-hidden="true" />
+                      Live page <Icon name="open_in_new" size={12} aria-hidden="true" />
                     </a>
                   )}
                 </div>

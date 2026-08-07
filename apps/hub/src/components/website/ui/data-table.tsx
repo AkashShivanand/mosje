@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Search, ChevronUp, ChevronDown, ChevronsUpDown, ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { Icon, Search } from "@mosje/design-system";
 
 export interface DataTableColumn {
   key: string;
@@ -31,7 +31,7 @@ function Cell({ col, row }: { col: DataTableColumn; row: Record<string, unknown>
         rel="noreferrer"
         className="inline-flex items-center gap-1.5 font-medium text-gov-blue hover:underline"
       >
-        <Download className="h-4 w-4" />
+        <Icon name="download" size={16} />
         {col.linkLabel ?? "View / Download"}
       </a>
     );
@@ -98,17 +98,16 @@ export function DataTable({
     <div>
       {/* Search */}
       <div className="mb-4 flex items-center justify-between gap-4">
-        <label className="relative block w-full max-w-sm">
-          <span className="sr-only">{searchPlaceholder}</span>
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          <input
-            type="search"
+        <div className="w-full max-w-sm">
+          <Search
             value={query}
             onChange={(e) => { setQuery(e.target.value); setPage(1); }}
+            onClear={() => { setQuery(""); setPage(1); }}
+            size="sm"
             placeholder={searchPlaceholder}
-            className="h-10 w-full rounded-lg border border-gray-300 bg-white pl-9 pr-3 text-[14px] outline-none focus:border-gov-blue focus:ring-2 focus:ring-gov-blue/20"
+            aria-label={searchPlaceholder}
           />
-        </label>
+        </div>
         <p className="hidden whitespace-nowrap text-[13px] text-gray-500 sm:block">
           {sorted.length} {sorted.length === 1 ? "record" : "records"}
         </p>
@@ -136,9 +135,9 @@ export function DataTable({
                       >
                         {c.label}
                         {isSorted ? (
-                          sortDir === "asc" ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />
+                          sortDir === "asc" ? <Icon name="keyboard_arrow_up" size={14} /> : <Icon name="keyboard_arrow_down" size={14} />
                         ) : (
-                          <ChevronsUpDown className="h-3.5 w-3.5 opacity-60" />
+                          <Icon name="unfold_more" size={14} className="opacity-60" />
                         )}
                       </button>
                     ) : (
@@ -179,7 +178,7 @@ export function DataTable({
             disabled={current === 1}
             className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 px-3 text-[14px] disabled:opacity-40 enabled:hover:bg-surface-muted"
           >
-            <ChevronLeft className="h-4 w-4" /> Prev
+            <Icon name="keyboard_arrow_left" size={16} /> Prev
           </button>
           <span className="px-2 text-[14px] text-ink-muted" aria-current="page">
             Page {current} of {totalPages}
@@ -189,7 +188,7 @@ export function DataTable({
             disabled={current === totalPages}
             className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 px-3 text-[14px] disabled:opacity-40 enabled:hover:bg-surface-muted"
           >
-            Next <ChevronRight className="h-4 w-4" />
+            Next <Icon name="keyboard_arrow_right" size={16} />
           </button>
         </nav>
       )}

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRight, Home } from "lucide-react";
+import { Icon } from "@mosje/design-system";
 
 export interface Crumb {
   label: string;
@@ -13,7 +13,7 @@ export function Breadcrumb({ items }: { items: Crumb[] }) {
       <ol className="flex flex-wrap items-center gap-1.5 text-[13px] text-ink-muted">
         <li className="flex items-center gap-1.5">
           <Link href="/website" className="flex items-center gap-1 hover:text-gov-blue hover:underline">
-            <Home className="h-3.5 w-3.5" />
+            <Icon name="home" size={14} />
             <span>Home</span>
           </Link>
         </li>
@@ -21,7 +21,7 @@ export function Breadcrumb({ items }: { items: Crumb[] }) {
           const isLast = i === items.length - 1;
           return (
             <li key={`${c.label}-${i}`} className="flex items-center gap-1.5">
-              <ChevronRight className="h-3.5 w-3.5 text-gray-400" aria-hidden="true" />
+              <Icon name="keyboard_arrow_right" size={14} className="text-gray-400" aria-hidden="true" />
               {c.href && !isLast ? (
                 <Link href={c.href} className="hover:text-gov-blue hover:underline">
                   {c.label}

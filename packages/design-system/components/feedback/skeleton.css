@@ -1,0 +1,77 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — Skeleton atom
+   Loading placeholder with a token-driven shimmer.
+   Base surface is --ds-surface-muted per design.md's loading rule.
+   ============================================================================ */
+
+.ds-skeleton {
+  display: block;
+  width: 100%;
+  height: 1rem;
+  border-radius: var(--ds-radius-sm, 4px);
+  background-color: var(--ds-surface-muted);
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    /* The sweep is a translucent white so the shimmer rides on top of whatever
+       --ds-surface-muted resolves to in the active colour mode, instead of
+       hardcoding a second grey that would break in blue-dark. */
+      rgb(255 255 255 / 0.55) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: ds-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+/* On a dark SURFACE a white sweep blows out; darken it instead.
+   This used to also match [data-color-mode$="-dark"], which was wrong: that suffix caught
+   the `blue-dark` and `ux4g-dark` BRANDS, and those render on LIGHT surfaces — the shimmer
+   was being darkened on a white background purely because a brand id ended in "-dark".
+   A textbook consequence of naming a brand axis after an appearance. The brands are now
+   `navy` / `ux4gdeep`, and appearance is `data-theme` alone, which is the only thing that
+   should ever have driven this. */
+[data-theme="dark"] .ds-skeleton {
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.08) 50%,
+    transparent 100%
+  );
+}
+
+.ds-skeleton--circle {
+  border-radius: var(--ds-radius-full, 999px);
+}
+
+@keyframes ds-skeleton-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* WCAG 2.3.3 / design.md motion rule — no shimmer for reduced-motion users.
+   The muted surface alone still communicates "content pending". */
+@media (prefers-reduced-motion: reduce) {
+  .ds-skeleton {
+    animation: none;
+    background-image: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Compositions
+   -------------------------------------------------------------------------- */
+.ds-skeleton-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ds-skeleton-row > td {
+  padding: var(--ds-spacing-md, 12px) var(--ds-spacing-lg, 16px);
+  border-bottom: 1px solid var(--ds-border);
+}

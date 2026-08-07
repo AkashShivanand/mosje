@@ -1,11 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { X } from "lucide-react";
 import { useToast } from "@/components/nmba/toast";
 import { STATES, STATE_DISTRICTS } from "@/lib/nmba/states";
 import { ACTIVITY_TYPES } from "@/lib/nmba/mock-data";
-import { Button, Input, Select, FormField } from "@mosje/design-system";
+import { Button, FormField, Icon, Input, Select } from "@mosje/design-system";
 
 interface AddEventModalProps {
   open: boolean;
@@ -51,7 +50,7 @@ export function AddEventModal({ open, onClose }: AddEventModalProps) {
         <div className="mb-5 flex items-center justify-between">
           <h2 id="modal-title" className="text-lg font-bold text-ink">Add Event</h2>
           <button onClick={onClose} aria-label="Close modal" className="rounded-lg p-1.5 text-ink-hint hover:bg-black/5">
-            <X className="h-5 w-5" />
+            <Icon name="close" size={20} />
           </button>
         </div>
 

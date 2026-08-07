@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { UserPlus } from "lucide-react";
-import { Modal, Badge } from "@mosje/design-system";
+import { Badge, Icon, Modal } from "@mosje/design-system";
 import { PageHeader, SearchInput, Button, Field, TextInput, Select, Table, EmptyState } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { STATES } from "@/lib/tg/states";
@@ -58,7 +57,7 @@ export default function UsersPage() {
     <div>
       <PageHeader
         title="User Management"
-        action={<Button onClick={() => setOpen(true)}><UserPlus className="h-4 w-4" /> Add User</Button>}
+        action={<Button onClick={() => setOpen(true)}><Icon name="person_add" size={16} /> Add User</Button>}
       />
       <div className="mb-4 max-w-md">
         <SearchInput placeholder="Search for Users" value={query} onChange={(e) => setQuery(e.target.value)} />

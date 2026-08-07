@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Download, Wallet, CheckCircle2 } from "lucide-react";
-import { Modal } from "@mosje/design-system";
+import { Icon, Modal } from "@mosje/design-system";
 import { PageHeader, SearchInput, Button, Card, Field, TextInput, Select } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate, fmtINR } from "@/lib/nhapoa/case-helpers";
@@ -42,7 +41,7 @@ export default function DisbursementQueuePage() {
       <PageHeader
         title="Disbursement Queue"
         subtitle={`${queue.length} state-approved case${queue.length === 1 ? "" : "s"} ready for sanction`}
-        action={<Button variant="outline"><Download className="h-4 w-4" /> Export</Button>}
+        action={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>}
       />
 
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
@@ -78,7 +77,7 @@ export default function DisbursementQueuePage() {
                   <td className="px-5 py-4 text-ink-muted">{fmtDate(c.timeline.find((t) => t.status === "APPROVED")?.at ?? c.createdAt)}</td>
                   <td className="px-5 py-4 font-semibold text-ink">{fmtINR(c.reliefAmount)}</td>
                   <td className="px-5 py-4"><span className="inline-flex rounded-full bg-approve-bg px-2.5 py-0.5 text-xs font-semibold text-approve-fg">Ready</span></td>
-                  <td className="px-5 py-4 text-right"><Button onClick={() => openProcess(c)}><Wallet className="h-4 w-4" /> Process</Button></td>
+                  <td className="px-5 py-4 text-right"><Button onClick={() => openProcess(c)}><Icon name="account_balance_wallet" size={16} /> Process</Button></td>
                 </tr>
               ))}
             </tbody>
@@ -97,14 +96,14 @@ export default function DisbursementQueuePage() {
           ) : (
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setProc(null)}>Cancel</Button>
-              <Button onClick={disburse} disabled={!amount || !beneficiary}><CheckCircle2 className="h-4 w-4" /> Confirm Disbursement</Button>
+              <Button onClick={disburse} disabled={!amount || !beneficiary}><Icon name="check_circle" size={16} /> Confirm Disbursement</Button>
             </div>
           )
         }
       >
         {done ? (
           <div className="py-4 text-center">
-            <CheckCircle2 className="mx-auto h-12 w-12 text-approve" />
+            <Icon name="check_circle" size={48} className="mx-auto text-approve" />
             <p className="mt-3 text-sm text-ink-muted">Relief disbursed for <span className="font-mono font-semibold text-ink">{done.ref}</span>. The case is now closed.</p>
             <p className="mt-3 rounded-lg bg-surface-muted px-4 py-2 font-mono text-sm font-bold text-navy">Txn: {done.txn}</p>
           </div>

@@ -2,15 +2,13 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Eye, Layers, MapPin, ShieldAlert, ShieldCheck } from "lucide-react";
-import { Button } from "@/components/smile-admin/ui/button";
-import { Badge } from "@/components/smile-admin/ui/badge";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/ui/table";
+import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { SURVEY_LOCATIONS, type SurveyLocation } from "@/lib/smile-admin/mock-data";
+import { Badge, Icon, buttonClasses } from "@mosje/design-system";
 
 type Row = SurveyLocation & { sno: number };
 
@@ -73,15 +71,15 @@ export default function SurveysPage() {
       />
 
       <div className="grid grid-cols-2 gap-md md:grid-cols-4">
-        <StatPill label="Total Locations" value={stats.total} icon={MapPin} tone="info" />
-        <StatPill label="Assigned to IA" value={stats.assigned} icon={ShieldCheck} tone="success" />
+        <StatPill label="Total Locations" value={stats.total} icon="location_on" tone="info" />
+        <StatPill label="Assigned to IA" value={stats.assigned} icon="verified_user" tone="success" />
         <StatPill
           label="Unassigned"
           value={stats.unassigned}
-          icon={ShieldAlert}
+          icon="gpp_maybe"
           tone="warning"
         />
-        <StatPill label="Location Types" value={stats.types} icon={Layers} tone="primary" />
+        <StatPill label="Location Types" value={stats.types} icon="layers" tone="primary" />
       </div>
 
       <DataToolbar>
@@ -91,9 +89,9 @@ export default function SurveysPage() {
           onChange={setSearch}
           className="flex-1"
         />
-        <div className="ml-auto whitespace-nowrap text-label-2 text-foreground-muted">
-          Showing <span className="font-semibold text-foreground">{rows.length}</span> of{" "}
-          <span className="font-semibold text-foreground">{SURVEY_LOCATIONS.length}</span>
+        <div className="ml-auto whitespace-nowrap text-label-2 text-ink-muted">
+          Showing <span className="font-semibold text-ink">{rows.length}</span> of{" "}
+          <span className="font-semibold text-ink">{SURVEY_LOCATIONS.length}</span>
         </div>
       </DataToolbar>
 
@@ -106,46 +104,44 @@ export default function SurveysPage() {
           >
             <div className="flex items-start justify-between gap-sm">
               <div className="min-w-0 space-y-0.5">
-                <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-foreground-hint">
+                <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-ink-hint">
                   #{s.sno.toString().padStart(2, "0")}
                 </div>
-                <div className="truncate text-body-1 font-semibold text-foreground">
+                <div className="truncate text-body-1 font-semibold text-ink">
                   {s.name}
                 </div>
-                <div className="truncate text-label-2 text-foreground-muted">
+                <div className="truncate text-label-2 text-ink-muted">
                   {s.state} · {s.district}
                 </div>
               </div>
               {s.ia ? (
-                <Badge tone="success" withDot>
+                <Badge status="success" dot>
                   Assigned
                 </Badge>
               ) : (
-                <Badge tone="warning" withDot>
+                <Badge status="warning" dot>
                   Unassigned
                 </Badge>
               )}
             </div>
             <div className="space-y-0.5 border-t border-stroke-100 pt-sm text-label-3">
               <div>
-                <span className="text-foreground-hint">IA: </span>
-                <span className="font-medium text-foreground">{s.ia ?? "Unassigned"}</span>
+                <span className="text-ink-hint">IA: </span>
+                <span className="font-medium text-ink">{s.ia ?? "Unassigned"}</span>
               </div>
               {s.address ? (
                 <div>
-                  <span className="text-foreground-hint">Address: </span>
-                  <span className="text-foreground">{s.address}</span>
+                  <span className="text-ink-hint">Address: </span>
+                  <span className="text-ink">{s.address}</span>
                   {s.pincode ? (
-                    <span className="ml-1 font-mono text-foreground-hint">· {s.pincode}</span>
+                    <span className="ml-1 font-mono text-ink-hint">· {s.pincode}</span>
                   ) : null}
                 </div>
               ) : null}
             </div>
-            <Button variant="outline" size="sm" className="w-full" asChild>
-              <Link href={`/portals/smile-admin/surveys/${s.id}`}>
-                <Eye className="h-3.5 w-3.5" /> View Details
+            <Link href={`/portals/smile-admin/surveys/${s.id}`} className={buttonClasses("primary", "outlined", "sm", "w-full")}>
+                <Icon name="visibility" size={14} /> View Details
               </Link>
-            </Button>
           </li>
         ))}
       </ul>
@@ -168,36 +164,34 @@ export default function SurveysPage() {
           <tbody>
             {rows.length === 0 ? (
               <TR>
-                <TD colSpan={8} className="py-3xl text-center text-foreground-muted">
+                <TD colSpan={8} className="py-3xl text-center text-ink-muted">
                   No survey locations match the current search.
                 </TD>
               </TR>
             ) : (
               rows.map((s) => (
                 <TR key={s.id}>
-                  <TD className="tabular-nums text-foreground-hint">{s.sno}</TD>
-                  <TD className="font-medium text-foreground">{s.name}</TD>
+                  <TD className="tabular-nums text-ink-hint">{s.sno}</TD>
+                  <TD className="font-medium text-ink">{s.name}</TD>
                   <TD>
                     {s.ia ? (
-                      <span className="font-medium text-foreground">{s.ia}</span>
+                      <span className="font-medium text-ink">{s.ia}</span>
                     ) : (
-                      <Badge tone="warning" withDot>
+                      <Badge status="warning" dot>
                         Unassigned
                       </Badge>
                     )}
                   </TD>
                   <TD>{s.state}</TD>
                   <TD>{s.district}</TD>
-                  <TD className="max-w-[280px] truncate text-foreground-muted" title={s.address ?? "—"}>
+                  <TD className="max-w-[280px] truncate text-ink-muted" title={s.address ?? "—"}>
                     {s.address ?? "—"}
                   </TD>
-                  <TD className="font-mono text-foreground-muted">{s.pincode ?? "—"}</TD>
+                  <TD className="font-mono text-ink-muted">{s.pincode ?? "—"}</TD>
                   <TD className="text-right">
-                    <Button variant="secondary" size="xs" asChild>
-                      <Link href={`/portals/smile-admin/surveys/${s.id}`}>
-                        <Eye className="h-3.5 w-3.5" /> View Details
+                    <Link href={`/portals/smile-admin/surveys/${s.id}`} className={buttonClasses("primary", "tonal", "sm")}>
+                        <Icon name="visibility" size={14} /> View Details
                       </Link>
-                    </Button>
                   </TD>
                 </TR>
               ))

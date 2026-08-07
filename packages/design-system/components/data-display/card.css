@@ -81,10 +81,22 @@
 /* --------------------------------------------------------------------------
    Typography sub-parts
    -------------------------------------------------------------------------- */
+/* Title 1 — "section headings, page titles" in the design.md scale (20px on the
+   portal surface). This previously read `--ds-text-headline`, whose own 20px
+   fallback shows the intent, but that alias resolves to the Headline 1 role and
+   painted card titles at 32–40px.
+
+   Use the CANONICAL `--ds-type-<role>-*` tokens here, never the `--ds-text-*`
+   family. The latter is a LEGACY alias set named for the pre-Portal-DS scale
+   whose rendered values it deliberately preserves (frozen in
+   packages/tokens/test/legacy-snapshot.json and enforced by build-output.test.mjs),
+   so its names do NOT line up with design.md's role table — `--ds-text-title-1`
+   is the headline-2 role, not Title 1. That mismatch is by design, not a bug;
+   the trap is reading the alias name instead of its resolved size. */
 .ds-card__title {
   margin: 0;
-  font-size: var(--ds-text-headline, 20px);
-  line-height: var(--ds-leading-headline, 24px);
+  font-size: var(--ds-type-title-1-size, 20px);
+  line-height: var(--ds-type-title-1-lh, 28px);
   font-weight: 600;
   color: var(--ds-ink-strong);
 }

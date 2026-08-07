@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { buttonClasses, Card } from "@mosje/design-system";
+import { Card, Icon, buttonClasses } from "@mosje/design-system";
 
 interface ActivityCard {
   img: string;
@@ -71,7 +70,7 @@ export function ActivityCorner() {
                   className={buttonClasses("primary", "text", "sm", "mt-4 self-start")}
                 >
                   Read More
-                  <span className="ds-btn__icon" aria-hidden="true"><ArrowRight className="h-4 w-4" /></span>
+                  <span className="ds-btn__icon" aria-hidden="true"><Icon name="arrow_forward" size={16} /></span>
                 </Link>
               </div>
             </Card>
@@ -84,14 +83,14 @@ export function ActivityCorner() {
             className={buttonClasses("primary", "outlined", "sm")}
           >
             View All Events
-            <span className="ds-btn__icon" aria-hidden="true"><ArrowRight className="h-4 w-4" /></span>
+            <span className="ds-btn__icon" aria-hidden="true"><Icon name="arrow_forward" size={16} /></span>
           </Link>
           <Link
             href="/website/events"
             className={buttonClasses("primary", "outlined", "sm")}
           >
             View All Press Releases
-            <span className="ds-btn__icon" aria-hidden="true"><ArrowRight className="h-4 w-4" /></span>
+            <span className="ds-btn__icon" aria-hidden="true"><Icon name="arrow_forward" size={16} /></span>
           </Link>
         </div>
       </div>

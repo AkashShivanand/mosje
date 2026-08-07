@@ -1,158 +1,57 @@
 import * as React from "react";
 import type { Metadata } from "next";
-import { buttonClasses } from "@mosje/design-system";
+import { Icon, buttonClasses } from "@mosje/design-system";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
   title: "Iconography",
   description:
-    "The SAMAVESH icon system — lucide-react for UI, inline SVG for brand and social, and government emblems as dedicated SVG files.",
+    "The SAMAVESH icon system — Material Symbols Rounded for UI, inline SVG for brand and social, and government emblems as dedicated SVG files.",
 };
 
-// lucide-style 24×24 stroke paths, rendered inline so this stays a server
-// component. `aria-hidden` is set here because every icon in the grid is
-// paired with a visible label below it.
-const ICON_PATHS: Record<string, React.ReactNode> = {
-  Search: (
-    <>
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </>
-  ),
-  ChevronDown: <path d="m6 9 6 6 6-6" />,
-  X: (
-    <>
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-    </>
-  ),
-  Check: <path d="M20 6 9 17l-5-5" />,
-  AlertCircle: (
-    <>
-      <circle cx="12" cy="12" r="10" />
-      <line x1="12" y1="8" x2="12" y2="12" />
-      <line x1="12" y1="16" x2="12.01" y2="16" />
-    </>
-  ),
-  Info: (
-    <>
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 16v-4" />
-      <path d="M12 8h.01" />
-    </>
-  ),
-  Menu: (
-    <>
-      <line x1="4" y1="6" x2="20" y2="6" />
-      <line x1="4" y1="12" x2="20" y2="12" />
-      <line x1="4" y1="18" x2="20" y2="18" />
-    </>
-  ),
-  ArrowRight: (
-    <>
-      <path d="M5 12h14" />
-      <path d="m12 5 7 7-7 7" />
-    </>
-  ),
-  Download: (
-    <>
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <polyline points="7 10 12 15 17 10" />
-      <line x1="12" y1="15" x2="12" y2="3" />
-    </>
-  ),
-  Upload: (
-    <>
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <polyline points="17 8 12 3 7 8" />
-      <line x1="12" y1="3" x2="12" y2="15" />
-    </>
-  ),
-  User: (
-    <>
-      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </>
-  ),
-  Calendar: (
-    <>
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-      <line x1="16" y1="2" x2="16" y2="6" />
-      <line x1="8" y1="2" x2="8" y2="6" />
-      <line x1="3" y1="10" x2="21" y2="10" />
-    </>
-  ),
-  Phone: (
-    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-  ),
-  Mail: (
-    <>
-      <rect x="2" y="4" width="20" height="16" rx="2" />
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </>
-  ),
-  ExternalLink: (
-    <>
-      <path d="M15 3h6v6" />
-      <path d="M10 14 21 3" />
-      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-    </>
-  ),
-  Eye: (
-    <>
-      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-      <circle cx="12" cy="12" r="3" />
-    </>
-  ),
-  EyeOff: (
-    <>
-      <path d="M9.88 9.88a3 3 0 0 0 4.24 4.24" />
-      <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
-      <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
-      <line x1="2" y1="2" x2="22" y2="22" />
-    </>
-  ),
-  Lock: (
-    <>
-      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-    </>
-  ),
-  Unlock: (
-    <>
-      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-      <path d="M7 11V7a5 5 0 0 1 9.9-1" />
-    </>
-  ),
-  Filter: <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />,
-};
-
-function Icon({ name, size = 24 }: { name: keyof typeof ICON_PATHS | string; size?: number }): React.JSX.Element {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      focusable="false"
-    >
-      {ICON_PATHS[name]}
-    </svg>
-  );
-}
+/**
+ * The icons shown on this page are the real thing — Material Symbols Rounded
+ * rendered through the DS `<Icon>`, not redrawn copies. A documentation page
+ * that hand-draws its own icons drifts from the system it documents.
+ */
+const COMMON_ICONS = [
+  "search",
+  "keyboard_arrow_down",
+  "close",
+  "check",
+  "error",
+  "info",
+  "menu",
+  "arrow_forward",
+  "arrow_back",
+  "download",
+  "upload",
+  "person",
+  "group",
+  "calendar_today",
+  "call",
+  "mail",
+  "open_in_new",
+  "visibility",
+  "visibility_off",
+  "lock",
+  "key",
+  "filter_alt",
+  "edit",
+  "delete",
+  "add",
+  "location_on",
+  "description",
+  "notifications",
+  "settings",
+  "logout",
+];
 
 export default function IconographyPage(): React.JSX.Element {
-  const names = Object.keys(ICON_PATHS);
-
   return (
     <article className="ds-prose">
       <h1>Iconography</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
+      <p style={{ fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
         Icons help people scan and recognise actions quickly. SAMAVESH keeps the
         set small, consistent and always paired with a label.
       </p>
@@ -166,14 +65,17 @@ export default function IconographyPage(): React.JSX.Element {
         <h2 id="system">The icon system</h2>
         <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <li>
-            <strong>lucide-react</strong> is the source for the vast majority of
-            UI icons — one consistent 24×24 stroke style across every site and
-            portal.
+            <strong>Material Symbols Rounded</strong> is the source for every UI
+            icon, rendered through the design system&rsquo;s{" "}
+            <code>&lt;Icon name=&quot;…&quot; /&gt;</code> — one consistent
+            24&times;24 style at weight 300 across every site and portal. Icons
+            are named, not imported: <code>name</code> takes a snake_case
+            ligature such as <code>arrow_forward</code> or{" "}
+            <code>location_on</code>.
           </li>
           <li>
             <strong>Inline SVG</strong> is used for social and brand marks (X,
-            YouTube, Facebook, etc.), because this version of lucide dropped the
-            brand glyphs.
+            YouTube, Facebook, etc.), which have no Material Symbols equivalent.
           </li>
           <li>
             <strong>Government emblems</strong> (the National Emblem, SAMAVESH
@@ -193,7 +95,7 @@ export default function IconographyPage(): React.JSX.Element {
             gap: "var(--ds-spacing-md)",
           }}
         >
-          {names.map((name) => (
+          {COMMON_ICONS.map((name) => (
             <div
               key={name}
               style={{
@@ -207,8 +109,8 @@ export default function IconographyPage(): React.JSX.Element {
                 color: "var(--ds-ink)",
               }}
             >
-              <Icon name={name} size={24} />
-              <span style={{ fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)" }}>{name}</span>
+              <Icon name={name} size={24} aria-hidden />
+              <code style={{ fontSize: "var(--ds-text-body-3)", color: "var(--ds-ink-muted)" }}>{name}</code>
             </div>
           ))}
         </div>
@@ -253,7 +155,7 @@ export default function IconographyPage(): React.JSX.Element {
             { size: 24, label: "24px — standalone controls" },
           ].map(({ size, label }) => (
             <div key={size} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--ds-spacing-sm)" }}>
-              <Icon name="Search" size={size} />
+              <Icon name="search" size={size} aria-hidden />
               <span style={{ fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)", textAlign: "center", maxWidth: "120px" }}>
                 {label}
               </span>

@@ -1,6 +1,6 @@
 import * as React from "react";
 import Image from "next/image";
-import { ExternalLink, Globe, ChevronDown } from "lucide-react";
+import { Icon } from "@mosje/design-system";
 
 const BASE = "/portals/tg";
 
@@ -11,7 +11,7 @@ export function GovTopBar() {
       <div className="flex h-9 items-center justify-between px-4 text-xs">
         <a className="flex items-center gap-2 font-medium" href="#">
           <span>Government of India</span>
-          <ExternalLink className="h-3 w-3 opacity-80" />
+          <Icon name="open_in_new" size={12} className="opacity-80" />
         </a>
         <div className="flex items-center gap-3">
           <a
@@ -24,9 +24,9 @@ export function GovTopBar() {
               (root layout) — not here. */}
           <span className="hidden h-4 w-px bg-white/25 sm:block" />
           <button className="flex items-center gap-1 rounded px-1 hover:bg-white/10">
-            <Globe className="h-4 w-4" />
+            <Icon name="language" size={16} />
             <span>English</span>
-            <ChevronDown className="h-3 w-3" />
+            <Icon name="keyboard_arrow_down" size={12} />
           </button>
         </div>
       </div>

@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Plus, Pencil } from "lucide-react";
-import { Badge, Button, Input, FormField, Modal, Select, Textarea } from "@mosje/design-system";
+import { Badge, Button, FormField, Icon, Input, Modal, Select, Textarea } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { CONTENT_PAGES } from "@/lib/nmba/treatment-centre/masters-extra";
 import { TCListPage } from "@/components/nmba/treatment-centre/tc-list";
@@ -102,7 +101,7 @@ export default function USContentMasterPage() {
       header: "Action",
       render: (r) => (
         <RowActions>
-          <IconAction icon={Pencil} tone="warning" label={`Edit ${r.title}`} onClick={() => handleOpenEdit(r)} />
+          <IconAction icon="edit" tone="warning" label={`Edit ${r.title}`} onClick={() => handleOpenEdit(r)} />
         </RowActions>
       ),
     },
@@ -123,7 +122,7 @@ export default function USContentMasterPage() {
             onClick={handleOpenAdd}
             className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-semibold text-navy transition hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
           >
-            <Plus className="h-4 w-4" aria-hidden /> Add New Content
+            <Icon name="add" size={16} aria-hidden /> Add New Content
           </button>
         }
       />

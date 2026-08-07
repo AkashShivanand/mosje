@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { PageHeader, StatTile, Card } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
+import { Icon } from "@mosje/design-system";
 
 export default function FODashboard() {
   const { state } = useNhapoa();
@@ -29,7 +29,7 @@ export default function FODashboard() {
             <h2 className="text-sm font-bold text-ink">Priority Queue</h2>
             <p className="text-xs text-ink-hint">Earliest-received first</p>
           </div>
-          <Link href="/portals/nhapoa/finance-officer/queue" className="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:underline">View all <ArrowRight className="h-3.5 w-3.5" /></Link>
+          <Link href="/portals/nhapoa/finance-officer/queue" className="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:underline">View all <Icon name="arrow_forward" size={14} /></Link>
         </div>
         <ul className="mt-4 divide-y divide-line">
           {queue.length === 0 && <li className="py-6 text-center text-sm text-ink-hint">No cases in the disbursement queue.</li>}

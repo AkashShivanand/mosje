@@ -21,7 +21,7 @@ export function THead({
       className={cn(
         "[&_th]:sticky [&_th]:top-0 [&_th]:z-10",
         "bg-neutral-50/90 backdrop-blur",
-        "text-label-3 uppercase tracking-[0.08em] text-foreground-muted",
+        "text-label-3 uppercase tracking-[0.08em] text-ink-muted",
         className,
       )}
       {...props}
@@ -63,7 +63,7 @@ export function TD({
   return (
     <td
       className={cn(
-        "border-b border-stroke-100 px-lg py-md align-middle text-foreground",
+        "border-b border-stroke-100 px-lg py-md align-middle text-ink",
         className,
       )}
       {...props}

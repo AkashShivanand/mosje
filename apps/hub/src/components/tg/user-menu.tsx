@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, UserRound } from "lucide-react";
 import { useTg } from "@/lib/tg/store/store";
+import { Icon } from "@mosje/design-system";
 
 /** Compact user chip + logout for the admin shell topbar. */
 export function UserMenu({ name, roleLabel, loginHref }: { name: string; roleLabel: string; loginHref: string }) {
@@ -20,7 +20,7 @@ export function UserMenu({ name, roleLabel, loginHref }: { name: string; roleLab
     <div className="flex items-center gap-3">
       <div className="flex items-center gap-2.5">
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-navy text-xs font-bold text-white">
-          {initials || <UserRound className="h-4 w-4" />}
+          {initials || <Icon name="person" size={16} />}
         </span>
         <div className="hidden leading-tight sm:block">
           <div className="text-sm font-semibold text-ink">{name}</div>
@@ -36,7 +36,7 @@ export function UserMenu({ name, roleLabel, loginHref }: { name: string; roleLab
         }}
         className="flex items-center gap-1.5 rounded-lg border border-line px-3 py-2 text-xs font-semibold text-ink-muted transition-colors hover:bg-black/5"
       >
-        <LogOut className="h-4 w-4" aria-hidden="true" />
+        <Icon name="logout" size={16} aria-hidden="true" />
         <span className="hidden sm:inline">Logout</span>
       </button>
     </div>

@@ -7,8 +7,7 @@ import { SNO_LIST, SNO_TOTAL } from "@/lib/nmba/mock-data";
 import { STATES } from "@/lib/nmba/states";
 import type { NodalOfficer } from "@/lib/nmba/types";
 import { useToast } from "@/components/nmba/toast";
-import { Download } from "lucide-react";
-import { Button, Select } from "@mosje/design-system";
+import { Button, Icon, Select } from "@mosje/design-system";
 
 const columns = [
   { key: "name" as const, header: "Nodal Officer Name" },
@@ -36,7 +35,7 @@ export default function StateNodalOfficersPage() {
             {SNO_TOTAL} State Nodal Officers registered
           </p>
         </div>
-        <Button appearance="outlined" onClick={() => toast("Export starting…", "info")} iconLeft={<Download className="h-4 w-4" />}>
+        <Button appearance="outlined" onClick={() => toast("Export starting…", "info")} iconLeft={<Icon name="download" size={16} />}>
           Export
         </Button>
       </div>

@@ -1,21 +1,11 @@
 import { cn, formatINR, formatNumber } from "@/lib/smile-admin/utils";
-import {
-  ArrowDownRight,
-  ArrowUpRight,
-  CheckCircle2,
-  ClipboardCheck,
-  Home,
-  PiggyBank,
-  Users,
-  Wallet,
-  type LucideIcon,
-} from "lucide-react";
+import { Icon } from "@mosje/design-system";
 
 export interface KpiSpec {
   key: string;
   label: string;
   value: number;
-  icon: LucideIcon;
+  icon: string;
   iconBg: string;
   iconColor: string;
   labelColor: string;
@@ -24,17 +14,18 @@ export interface KpiSpec {
   meta?: string;
 }
 
+/** Material Symbols names for the dashboard KPI tiles. */
 export const KPI_ICONS = {
-  identified: ClipboardCheck,
-  mobilised: Users,
-  shelter: Home,
-  rehab: CheckCircle2,
-  disbursed: Wallet,
-  utilised: PiggyBank,
+  identified: "assignment_turned_in",
+  mobilised: "group",
+  shelter: "home",
+  rehab: "check_circle",
+  disbursed: "account_balance_wallet",
+  utilised: "savings",
 };
 
 export function KpiCard({ spec }: { spec: KpiSpec }) {
-  const Icon = spec.icon;
+  const iconName = spec.icon;
   const value =
     spec.format === "currency" ? formatINR(spec.value, true) : formatNumber(spec.value);
   const trend = spec.delta?.startsWith("-") ? "down" : "up";
@@ -65,7 +56,7 @@ export function KpiCard({ spec }: { spec: KpiSpec }) {
           </div>
           <div
             aria-live="polite"
-            className="text-num-lg font-bold tabular-nums leading-none text-foreground md:text-num-xl"
+            className="text-num-lg font-bold tabular-nums leading-none text-ink md:text-num-xl"
           >
             {value}
           </div>
@@ -76,15 +67,12 @@ export function KpiCard({ spec }: { spec: KpiSpec }) {
             spec.iconBg,
           )}
         >
-          <Icon
-            aria-hidden
-            className={cn("h-[18px] w-[18px] md:h-[22px] md:w-[22px]", spec.iconColor)}
-          />
+          <Icon name={iconName} aria-hidden className={cn("h-[18px] w-[18px] md:h-[22px] md:w-[22px]", spec.iconColor)} />
         </div>
       </div>
 
       <div className="flex items-center justify-between gap-xs text-label-3 md:text-label-2">
-        <div className="hidden truncate text-foreground-hint sm:block">
+        <div className="hidden truncate text-ink-hint sm:block">
           {spec.meta ?? "All-time · all states"}
         </div>
         {spec.delta ? (
@@ -98,9 +86,9 @@ export function KpiCard({ spec }: { spec: KpiSpec }) {
             )}
           >
             {trend === "up" ? (
-              <ArrowUpRight aria-hidden className="h-3 w-3" />
+              <Icon name="arrow_outward" size={12} aria-hidden />
             ) : (
-              <ArrowDownRight aria-hidden className="h-3 w-3" />
+              <Icon name="south_east" size={12} aria-hidden />
             )}
             {spec.delta}
           </div>

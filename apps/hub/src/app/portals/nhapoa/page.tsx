@@ -1,29 +1,29 @@
 import Link from "next/link";
-import { FileText, LifeBuoy, Search, HelpCircle, Phone, ArrowRight, ShieldCheck } from "lucide-react";
 import { GovTopBar, GovMasthead } from "@/components/nhapoa/gov-chrome";
+import { Icon } from "@mosje/design-system";
 
 const CITIZEN_ACTIONS = [
   {
     href: "/portals/nhapoa/register-grievance",
-    icon: FileText,
+    icon: "description",
     title: "Register a Grievance",
     desc: "File a complaint under the PoA Act — FIR, relief, or charge-sheet.",
   },
   {
     href: "/portals/nhapoa/register-rescue",
-    icon: LifeBuoy,
+    icon: "support",
     title: "Register a Rescue",
     desc: "Request urgent protection or rescue assistance.",
   },
   {
     href: "/portals/nhapoa/track-status",
-    icon: Search,
+    icon: "search",
     title: "Track Status",
     desc: "Check the progress of a filed grievance using its reference number.",
   },
   {
     href: "/portals/nhapoa/help-faqs",
-    icon: HelpCircle,
+    icon: "help",
     title: "Help & FAQs",
     desc: "Understand the process, your rights, and common questions.",
   },
@@ -39,7 +39,7 @@ export default function CitizenHome() {
             href="/portals/nhapoa/login"
             className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-navy-800"
           >
-            <ShieldCheck className="h-4 w-4" /> Officer / Admin Login
+            <Icon name="verified_user" size={16} /> Officer / Admin Login
           </Link>
         }
       />
@@ -63,7 +63,7 @@ export default function CitizenHome() {
               href="/portals/nhapoa/register-grievance"
               className="inline-flex items-center gap-2 rounded-lg bg-saffron-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-saffron-600/90"
             >
-              Register a Grievance <ArrowRight className="h-4 w-4" />
+              Register a Grievance <Icon name="arrow_forward" size={16} />
             </Link>
             <Link
               href="/portals/nhapoa/track-status"
@@ -78,7 +78,7 @@ export default function CitizenHome() {
       {/* Helpline strip */}
       <div className="border-b border-line bg-white">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-6 py-4 text-sm">
-          <Phone className="h-5 w-5 text-saffron" />
+          <Icon name="call" size={20} className="text-saffron" />
           <span className="font-semibold text-ink">24×7 Helpline:</span>
           <span className="font-bold text-navy">1800-202-1989</span>
           <span className="text-ink-hint">·</span>
@@ -92,19 +92,19 @@ export default function CitizenHome() {
       <section className="mx-auto max-w-6xl px-6 py-14">
         <h2 className="text-2xl font-bold text-ink">How can we help?</h2>
         <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {CITIZEN_ACTIONS.map(({ href, icon: Icon, title, desc }) => (
+          {CITIZEN_ACTIONS.map(({ href, icon: iconName, title, desc }) => (
             <Link
               key={href}
               href={href}
               className="group flex flex-col rounded-2xl border border-line bg-white p-6 shadow-card transition-colors hover:border-navy/30"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-navy/10 text-navy">
-                <Icon className="h-5 w-5" />
+                <Icon name={iconName} size={20} />
               </span>
               <h3 className="mt-4 text-base font-bold text-ink">{title}</h3>
               <p className="mt-1 flex-1 text-sm text-ink-muted">{desc}</p>
               <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-navy">
-                Continue <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                Continue <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-0.5" />
               </span>
             </Link>
           ))}

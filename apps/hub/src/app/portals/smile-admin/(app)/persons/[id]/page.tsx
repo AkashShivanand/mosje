@@ -2,12 +2,10 @@
 
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import { ArrowLeft, Calendar, ScanLine, Phone, ShieldCheck, Users2 } from "lucide-react";
-import { Badge, statusTone } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/smile-admin/ui/card";
+import { statusTone } from "@/lib/smile-admin/status-tone";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { BENEFICIARIES } from "@/lib/smile-admin/mock-data";
+import { Badge, Button, Card, CardBody, CardHeader, CardTitle, Icon, buttonClasses } from "@mosje/design-system";
 
 const TIMELINE = [
   { stage: "Identified",      date: "2026-03-12", who: "Surveyor · Ravi Menon",   note: "Initial sighting at Dadar Station approach." },
@@ -30,8 +28,8 @@ export default function PersonDetail() {
         subtitle={`Beneficiary ID · ${person.id}`}
         actions={
           <div className="flex items-center gap-sm">
-            <Button variant="outline" size="sm" asChild><Link href="/portals/smile-admin/persons"><ArrowLeft className="h-3.5 w-3.5" /> Back</Link></Button>
-            <Button size="sm" variant="primary">Edit record</Button>
+            <Link href="/portals/smile-admin/persons" className={buttonClasses("primary", "outlined", "sm")}><Icon name="arrow_back" size={14} /> Back</Link>
+            <Button size="sm">Edit record</Button>
           </div>
         }
       />
@@ -40,36 +38,36 @@ export default function PersonDetail() {
         <Card>
           <CardHeader>
             <CardTitle>Profile</CardTitle>
-            <Badge tone={statusTone(person.status)}>{person.status.replace(/_/g, " ")}</Badge>
+            <Badge status={statusTone(person.status)}>{person.status.replace(/_/g, " ")}</Badge>
           </CardHeader>
-          <CardContent className="grid grid-cols-2 gap-lg md:grid-cols-3">
+          <CardBody className="grid grid-cols-2 gap-lg md:grid-cols-3">
             {[
-              { label: "Age",       value: `${person.age} years`, icon: Calendar },
-              { label: "Gender",    value: person.gender,         icon: Users2 },
-              { label: "Type",      value: person.type,           icon: ShieldCheck },
-              { label: "Aadhaar",   value: person.aadhaar,        icon: ScanLine },
-              { label: "State",     value: person.state,          icon: Phone },
-              { label: "District",  value: person.district,       icon: Phone },
+              { label: "Age",       value: `${person.age} years`, icon: "calendar_today" },
+              { label: "Gender",    value: person.gender,         icon: "groups" },
+              { label: "Type",      value: person.type,           icon: "verified_user" },
+              { label: "Aadhaar",   value: person.aadhaar,        icon: "document_scanner" },
+              { label: "State",     value: person.state,          icon: "call" },
+              { label: "District",  value: person.district,       icon: "call" },
             ].map((f) => (
               <div key={f.label} className="space-y-xs">
-                <div className="text-label-2 uppercase tracking-wide text-foreground-muted">{f.label}</div>
-                <div className="flex items-center gap-xs text-body-2 font-semibold text-foreground"><f.icon className="h-3.5 w-3.5 text-foreground-muted" />{f.value}</div>
+                <div className="text-label-2 uppercase tracking-wide text-ink-muted">{f.label}</div>
+                <div className="flex items-center gap-xs text-body-2 font-semibold text-ink"><Icon name={f.icon} size={14} className="text-ink-muted" />{f.value}</div>
               </div>
             ))}
-          </CardContent>
+          </CardBody>
         </Card>
         <Card>
           <CardHeader><CardTitle>Implementing Agency</CardTitle></CardHeader>
-          <CardContent>
-            <div className="text-body-1 font-semibold text-foreground">{person.ia ?? "Not yet assigned"}</div>
-            <p className="mt-xs text-body-3 text-foreground-muted">Field operations partner responsible for the active stage of this beneficiary&apos;s rehabilitation journey.</p>
-          </CardContent>
+          <CardBody>
+            <div className="text-body-1 font-semibold text-ink">{person.ia ?? "Not yet assigned"}</div>
+            <p className="mt-xs text-body-3 text-ink-muted">Field operations partner responsible for the active stage of this beneficiary&apos;s rehabilitation journey.</p>
+          </CardBody>
         </Card>
       </div>
 
       <Card>
         <CardHeader><CardTitle>Rehabilitation Timeline</CardTitle></CardHeader>
-        <CardContent>
+        <CardBody>
           <ol className="relative ml-md border-l border-stroke-200">
             {TIMELINE.map((t, i) => (
               <li key={t.stage} className="mb-lg ml-lg">
@@ -77,15 +75,15 @@ export default function PersonDetail() {
                   <span className="text-label-3 font-bold">{i + 1}</span>
                 </span>
                 <div className="flex flex-wrap items-baseline gap-sm">
-                  <div className="text-body-2 font-semibold text-foreground">{t.stage}</div>
-                  <div className="text-label-2 text-foreground-muted">· {t.date}</div>
+                  <div className="text-body-2 font-semibold text-ink">{t.stage}</div>
+                  <div className="text-label-2 text-ink-muted">· {t.date}</div>
                 </div>
-                <div className="text-label-2 text-foreground-muted">{t.who}</div>
-                <p className="mt-xs text-body-3 text-foreground">{t.note}</p>
+                <div className="text-label-2 text-ink-muted">{t.who}</div>
+                <p className="mt-xs text-body-3 text-ink">{t.note}</p>
               </li>
             ))}
           </ol>
-        </CardContent>
+        </CardBody>
       </Card>
     </div>
   );

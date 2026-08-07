@@ -1,8 +1,8 @@
 "use client";
 
-import { ChevronDown, RefreshCw, Database } from "lucide-react";
 import { tableScreens } from "@/lib/eutthan/portal-data";
 import { CellContent, Pagination } from "./eutthan-cells";
+import { Icon } from "@mosje/design-system";
 
 export function PfmsLogsPage() {
   const screen = tableScreens["/pfms-logs"]!;
@@ -13,10 +13,10 @@ export function PfmsLogsPage() {
         <h2 className="page-title">{screen.title}</h2>
         <div style={{ display: "flex", gap: 10 }}>
           <button type="button" className="secondary-button">
-            <RefreshCw size={14} /> Refresh
+            <Icon name="refresh" size={14} /> Refresh
           </button>
           <button type="button" className="primary-button">
-            <Database size={14} /> Trigger PFMS Refresh
+            <Icon name="database" size={14} /> Trigger PFMS Refresh
           </button>
         </div>
       </div>
@@ -24,7 +24,7 @@ export function PfmsLogsPage() {
         <div className="toolbar" style={{ flexWrap: "wrap" }}>
           {screen.filters?.map((f) => (
             <button key={f} type="button" className="filter-button">
-              {f} <ChevronDown size={14} />
+              {f} <Icon name="keyboard_arrow_down" size={14} />
             </button>
           ))}
           <input

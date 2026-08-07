@@ -2,15 +2,13 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { MapPin, Plus, Users2 } from "lucide-react";
-import { Badge } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/ui/table";
+import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { SURVEY_LOCATIONS } from "@/lib/smile-admin/mock-data";
 import { formatNumber } from "@/lib/smile-admin/utils";
+import { Badge, Icon, buttonClasses } from "@mosje/design-system";
 
 export default function SurveyLocationsPage() {
   const [search, setSearch] = useState("");
@@ -26,12 +24,12 @@ export default function SurveyLocationsPage() {
         breadcrumbs={[{ label: "Field Operations" }, { label: "Survey Locations" }]}
         title="Survey Locations"
         subtitle="Hotspots and outreach points where surveyors actively log beneficiary identifications."
-        actions={<Button size="sm" asChild><Link href="/portals/smile-admin/survey-locations/create"><Plus className="h-3.5 w-3.5" /> Add location</Link></Button>}
+        actions={<Link href="/portals/smile-admin/survey-locations/create" className={buttonClasses("primary", "filled", "sm")}><Icon name="add" size={14} /> Add location</Link>}
       />
       <div className="grid grid-cols-2 gap-md md:grid-cols-3">
-        <StatPill label="Locations"            value={rows.length}       icon={MapPin}  tone="primary" />
-        <StatPill label="Surveyors deployed"   value={totalSurveyors}    icon={Users2}  tone="info" />
-        <StatPill label="Identified at locations" value={totalIdentified} icon={MapPin}  tone="success" />
+        <StatPill label="Locations"            value={rows.length}       icon="location_on"  tone="primary" />
+        <StatPill label="Surveyors deployed"   value={totalSurveyors}    icon="groups"  tone="info" />
+        <StatPill label="Identified at locations" value={totalIdentified} icon="location_on"  tone="success" />
       </div>
       <DataToolbar><SearchField placeholder="Search location / state / pincode…" value={search} onChange={setSearch} /></DataToolbar>
       <div className="overflow-hidden rounded-lg border border-stroke-200 bg-white shadow-xs">
@@ -50,13 +48,13 @@ export default function SurveyLocationsPage() {
           <tbody>
             {rows.map((r) => (
               <TR key={r.id}>
-                <TD className="font-semibold text-foreground">{r.name}</TD>
-                <TD>{r.state} <span className="text-foreground-muted">/ {r.district}</span></TD>
-                <TD className="font-mono text-body-3 text-foreground-muted">{r.pincode}</TD>
-                <TD><Badge tone="info">{r.type}</Badge></TD>
+                <TD className="font-semibold text-ink">{r.name}</TD>
+                <TD>{r.state} <span className="text-ink-muted">/ {r.district}</span></TD>
+                <TD className="font-mono text-body-3 text-ink-muted">{r.pincode}</TD>
+                <TD><Badge status="info">{r.type}</Badge></TD>
                 <TD className="text-right tabular-nums">{r.surveyors}</TD>
                 <TD className="text-right tabular-nums">{formatNumber(r.identified)}</TD>
-                <TD className="text-foreground-muted">{r.lastSurveyed}</TD>
+                <TD className="text-ink-muted">{r.lastSurveyed}</TD>
               </TR>
             ))}
           </tbody>

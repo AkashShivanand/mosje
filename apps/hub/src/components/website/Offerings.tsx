@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
-import { Button, Card } from "@mosje/design-system";
+import { Button, Card, Icon } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
 
 type TabKey = "schemes" | "vacancies" | "tenders";
@@ -135,7 +134,7 @@ function OfferingCard({
         href={item.href}
         appearance="text"
         size="sm"
-        iconRight={<ArrowRight className="h-4 w-4" />}
+        iconRight={<Icon name="arrow_forward" size={16} />}
         className="mt-4 self-start"
       >
         {linkLabel}
@@ -227,7 +226,7 @@ export function Offerings() {
                   href={current.viewAllHref}
                   appearance="outlined"
                   size="sm"
-                  iconRight={<ArrowRight className="h-4 w-4" />}
+                  iconRight={<Icon name="arrow_forward" size={16} />}
                 >
                   {current.viewAllLabel}
                 </Button>

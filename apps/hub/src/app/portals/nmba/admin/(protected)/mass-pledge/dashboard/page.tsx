@@ -4,8 +4,7 @@
 //   MetricCard ✅ · DashboardGrid ✅ · ChartCard ✅ · BarChart ✅ · DataTable ✅
 //   Alert ✅ · Card ✅ · Badge ✅ — all @mosje/design-system.
 
-import { HeartHandshake, Hourglass, Landmark, Users } from "lucide-react";
-import { Alert, BarChart, Card, DashboardGrid, DataTable, MetricCard } from "@mosje/design-system";
+import { Alert, BarChart, Card, DashboardGrid, DataTable, Icon, MetricCard } from "@mosje/design-system";
 import { AdminShell } from "@/components/nmba/admin-shell";
 import { VerificationBadge } from "@/components/nmba/mass-pledge/status-badge";
 import { usePortalSession } from "@/lib/nmba/committee/session-context";
@@ -115,24 +114,24 @@ export default function MassPledgeDashboardPage() {
         <MetricCard
           label="Total participants (approved)"
           value={fmt(nationalTotal)}
-          icon={<Users className="h-5 w-5" />}
+          icon={<Icon name="group" size={20} />}
         />
         <MetricCard
           label="Approved reports"
           value={fmt(approved.length)}
-          icon={<HeartHandshake className="h-5 w-5" />}
+          icon={<Icon name="volunteer_activism" size={20} />}
         />
         {/* `changeLabel` is not used here: it renders a direction prefix
             ("No change:") that reads as nonsense for a static footnote. */}
         <MetricCard
           label={`Awaiting approval · ${fmt(pendingTotal)} participants not yet counted`}
           value={fmt(pending.length)}
-          icon={<Hourglass className="h-5 w-5" />}
+          icon={<Icon name="hourglass_empty" size={20} />}
         />
         <MetricCard
           label="Returned for correction"
           value={fmt(returned.length)}
-          icon={<Landmark className="h-5 w-5" />}
+          icon={<Icon name="account_balance" size={20} />}
         />
       </DashboardGrid>
 

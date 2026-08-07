@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Badge, statusTone } from "@/components/smile-admin/ui/badge";
+import { statusTone } from "@/lib/smile-admin/status-tone";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/ui/table";
+import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { AUDIT_LOG, type AuditEntry } from "@/lib/smile-admin/mock-data";
+import { Badge } from "@mosje/design-system";
 
 export default function AuditPage() {
   const [search, setSearch] = useState("");
@@ -54,22 +55,22 @@ export default function AuditPage() {
           >
             <div className="flex items-start justify-between gap-sm">
               <div className="min-w-0 space-y-0.5">
-                <div className="font-mono text-label-3 text-foreground-hint">
+                <div className="font-mono text-label-3 text-ink-hint">
                   {e.timestamp}
                 </div>
-                <div className="text-body-2 text-foreground">
+                <div className="text-body-2 text-ink">
                   <span className="font-semibold">{e.actor}</span>
-                  <span className="text-foreground-muted"> {e.action}</span>
+                  <span className="text-ink-muted"> {e.action}</span>
                 </div>
-                <div className="break-all font-mono text-label-3 text-foreground-muted">
+                <div className="break-all font-mono text-label-3 text-ink-muted">
                   {e.target}
                 </div>
               </div>
-              <Badge tone={statusTone(e.result)} withDot>
+              <Badge status={statusTone(e.result)} dot>
                 {e.result}
               </Badge>
             </div>
-            <div className="mt-sm border-t border-stroke-100 pt-sm font-mono text-label-3 text-foreground-hint">
+            <div className="mt-sm border-t border-stroke-100 pt-sm font-mono text-label-3 text-ink-hint">
               IP {e.ip}
             </div>
           </li>
@@ -92,13 +93,13 @@ export default function AuditPage() {
           <tbody>
             {entries.map((e) => (
               <TR key={e.id}>
-                <TD className="font-mono text-body-3 text-foreground-muted">{e.timestamp}</TD>
+                <TD className="font-mono text-body-3 text-ink-muted">{e.timestamp}</TD>
                 <TD className="font-semibold">{e.actor}</TD>
                 <TD>{e.action}</TD>
-                <TD className="font-mono text-body-3 text-foreground-muted">{e.target}</TD>
-                <TD className="font-mono text-body-3 text-foreground-hint">{e.ip}</TD>
+                <TD className="font-mono text-body-3 text-ink-muted">{e.target}</TD>
+                <TD className="font-mono text-body-3 text-ink-hint">{e.ip}</TD>
                 <TD>
-                  <Badge tone={statusTone(e.result)} withDot>
+                  <Badge status={statusTone(e.result)} dot>
                     {e.result}
                   </Badge>
                 </TD>

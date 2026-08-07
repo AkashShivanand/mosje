@@ -73,7 +73,7 @@ export function GenderDonut({
         <Legend
           iconType="circle"
           formatter={(value) => (
-            <span className="text-label-2 text-foreground-muted">{value}</span>
+            <span className="text-label-2 text-ink-muted">{value}</span>
           )}
         />
       </PieChart>

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { MoreVertical, Plus } from "lucide-react";
 import {
   Button,
   DataTable,
@@ -8,6 +7,7 @@ import {
   SearchInput,
 } from "@/components/scw/ui";
 import { EVENTS, EVENTS_TOTAL } from "@/lib/scw/mock-data";
+import { Icon } from "@mosje/design-system";
 
 const COLUMNS = [
   { key: "sno", label: "S.No" },
@@ -27,7 +27,7 @@ export default function EventsPage() {
         action={
           <Link href="/portals/scw/admin/events/add">
             <Button variant="primary">
-              <Plus className="h-4 w-4" />
+              <Icon name="add" size={16} />
               Add New
             </Button>
           </Link>
@@ -56,7 +56,7 @@ export default function EventsPage() {
                 aria-label="Event actions"
                 className="rounded-md p-1.5 text-ink-muted hover:bg-black/5"
               >
-                <MoreVertical className="h-4 w-4" />
+                <Icon name="more_vert" size={16} />
               </button>
             </td>
           </tr>

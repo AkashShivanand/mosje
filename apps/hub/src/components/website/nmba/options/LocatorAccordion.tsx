@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Search, ChevronDown, Navigation } from "lucide-react";
 import { CENTRE_TYPE_META, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
 import { CentreMapDynamic, centreKey, filterCentres } from "./locator-shared";
+import { Icon, Search } from "@mosje/design-system";
 
 export function LocatorAccordion() {
   const [query, setQuery] = React.useState("");
@@ -25,11 +25,14 @@ export function LocatorAccordion() {
   return (
     <div>
       <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted" aria-hidden />
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search centre, area, district or state"
-            className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 text-[14px] outline-none focus:border-gov-blue" />
-        </div>
+        <Search
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onClear={() => setQuery("")}
+          size="sm"
+          placeholder="Search centre, area, district or state"
+          aria-label="Search centres"
+        />
         <p className="mt-2 text-[12px] text-ink-muted">{filtered.length} centres across {byState.length} states — expand a state to explore.</p>
       </div>
 
@@ -43,7 +46,7 @@ export function LocatorAccordion() {
                 <span className="text-[15px] font-semibold text-ink">{st}</span>
                 <span className="flex items-center gap-3">
                   <span className="rounded-full bg-surface-muted px-2 py-0.5 text-[12px] font-semibold text-ink-muted">{centres.length}</span>
-                  <ChevronDown className={`h-4 w-4 text-ink-muted transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                  <Icon name="keyboard_arrow_down" size={16} className={`text-ink-muted transition-transform ${isOpen ? "rotate-180" : ""}`} />
                 </span>
               </button>
               {isOpen && (
@@ -61,7 +64,7 @@ export function LocatorAccordion() {
                               <span className="block text-[12px] text-ink-muted">{c.type} · {c.district}</span>
                               {active && (
                                 <a href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}
-                                  className="mt-1 inline-flex items-center gap-1 text-[12px] font-semibold text-gov-blue"><Navigation className="h-3 w-3" /> Directions</a>
+                                  className="mt-1 inline-flex items-center gap-1 text-[12px] font-semibold text-gov-blue"><Icon name="navigation" size={12} /> Directions</a>
                               )}
                             </span>
                           </button>

@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Plus } from "lucide-react";
-import { Modal } from "@mosje/design-system";
+import { Icon, Modal } from "@mosje/design-system";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { TCListPage } from "@/components/nmba/treatment-centre/tc-list";
 import { ProgressBadge } from "@/components/nmba/treatment-centre/tc-form";
@@ -104,7 +103,7 @@ export default function IrcaPatientsPage() {
             href="/portals/nmba/treatment-centre/irca/register"
             className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-semibold text-navy hover:bg-white/90"
           >
-            <Plus className="h-4 w-4" /> New Registration
+            <Icon name="add" size={16} /> New Registration
           </Link>
         }
       />

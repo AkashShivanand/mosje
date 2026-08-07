@@ -2,23 +2,10 @@
 
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import {
-  ArrowLeft,
-  Building2,
-  Calendar,
-  ClipboardCheck,
-  MapPin,
-  Pencil,
-  ShieldAlert,
-  ShieldCheck,
-  Users,
-} from "lucide-react";
-import { Badge } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/smile-admin/ui/card";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { SURVEY_LOCATIONS } from "@/lib/smile-admin/mock-data";
 import { formatNumber } from "@/lib/smile-admin/utils";
+import { Badge, Button, Card, CardBody, CardHeader, CardTitle, Icon, buttonClasses } from "@mosje/design-system";
 
 export default function SurveyLocationDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -38,13 +25,11 @@ export default function SurveyLocationDetailPage() {
         subtitle={`Location ID · ${loc.id}`}
         actions={
           <div className="flex items-center gap-sm">
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/portals/smile-admin/surveys">
-                <ArrowLeft aria-hidden className="h-3.5 w-3.5" /> Back
+            <Link href="/portals/smile-admin/surveys" className={buttonClasses("primary", "outlined", "sm")}>
+                <Icon name="arrow_back" size={14} aria-hidden /> Back
               </Link>
-            </Button>
             <Button size="sm">
-              <Pencil aria-hidden className="h-3.5 w-3.5" /> Edit location
+              <Icon name="edit" size={14} aria-hidden /> Edit location
             </Button>
           </div>
         }
@@ -55,98 +40,98 @@ export default function SurveyLocationDetailPage() {
           <CardHeader>
             <CardTitle>Location summary</CardTitle>
             {loc.ia ? (
-              <Badge tone="success" withDot>
+              <Badge status="success" dot>
                 Assigned
               </Badge>
             ) : (
-              <Badge tone="warning" withDot>
+              <Badge status="warning" dot>
                 Unassigned
               </Badge>
             )}
           </CardHeader>
-          <CardContent>
+          <CardBody>
             <dl className="grid grid-cols-1 gap-md sm:grid-cols-2">
               <Field
-                icon={<MapPin aria-hidden className="h-4 w-4" />}
+                icon={<Icon name="location_on" size={16} aria-hidden />}
                 label="State / District"
                 value={`${loc.state} · ${loc.district}`}
               />
               <Field
-                icon={<Building2 aria-hidden className="h-4 w-4" />}
+                icon={<Icon name="apartment" size={16} aria-hidden />}
                 label="Implementing Agency"
                 value={
                   loc.ia ?? (
                     <span className="inline-flex items-center gap-xs text-warning-600">
-                      <ShieldAlert aria-hidden className="h-3.5 w-3.5" />
+                      <Icon name="gpp_maybe" size={14} aria-hidden />
                       Unassigned
                     </span>
                   )
                 }
               />
               <Field
-                icon={<MapPin aria-hidden className="h-4 w-4" />}
+                icon={<Icon name="location_on" size={16} aria-hidden />}
                 label="Address"
                 value={loc.address ?? "—"}
                 wide
               />
               <Field
-                icon={<MapPin aria-hidden className="h-4 w-4" />}
+                icon={<Icon name="location_on" size={16} aria-hidden />}
                 label="Pincode"
                 value={loc.pincode ?? "—"}
                 mono
               />
               <Field
-                icon={<Calendar aria-hidden className="h-4 w-4" />}
+                icon={<Icon name="calendar_today" size={16} aria-hidden />}
                 label="Last surveyed on"
                 value={loc.lastSurveyed}
                 mono
               />
               <Field
-                icon={<ClipboardCheck aria-hidden className="h-4 w-4" />}
+                icon={<Icon name="assignment_turned_in" size={16} aria-hidden />}
                 label="Location type"
                 value={loc.type}
               />
             </dl>
-          </CardContent>
+          </CardBody>
         </Card>
 
         <Card>
           <CardHeader>
             <CardTitle>Field activity</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardBody>
             <ul className="divide-y divide-stroke-100">
               <li className="flex items-center justify-between py-md">
                 <div className="flex items-center gap-md">
                   <span className="grid h-9 w-9 place-items-center rounded-md bg-info-50 text-info-600 ring-1 ring-inset ring-info-100">
-                    <Users aria-hidden className="h-[18px] w-[18px]" />
+                    <Icon name="group" aria-hidden className="h-[18px] w-[18px]" />
                   </span>
-                  <span className="text-body-2 font-medium text-foreground">
+                  <span className="text-body-2 font-medium text-ink">
                     Surveyors assigned
                   </span>
                 </div>
-                <span className="text-title-2 font-bold tabular-nums text-foreground">
+                <span className="text-title-2 font-bold tabular-nums text-ink">
                   {formatNumber(loc.surveyors)}
                 </span>
               </li>
               <li className="flex items-center justify-between py-md">
                 <div className="flex items-center gap-md">
                   <span className="grid h-9 w-9 place-items-center rounded-md bg-success-50 text-success-600 ring-1 ring-inset ring-success-100">
-                    <ShieldCheck aria-hidden className="h-[18px] w-[18px]" />
+                    <Icon name="verified_user" aria-hidden className="h-[18px] w-[18px]" />
                   </span>
-                  <span className="text-body-2 font-medium text-foreground">
+                  <span className="text-body-2 font-medium text-ink">
                     Identified
                   </span>
                 </div>
-                <span className="text-title-2 font-bold tabular-nums text-foreground">
+                <span className="text-title-2 font-bold tabular-nums text-ink">
                   {formatNumber(loc.identified)}
                 </span>
               </li>
             </ul>
-            <p className="mt-md text-label-2 text-foreground-hint">
+            <p className="mt-md text-label-2 text-ink-hint">
               Activity counts roll up from the surveyors mapped to this location.
             </p>
-          </CardContent>
+          </CardBody>
         </Card>
       </div>
     </div>
@@ -168,13 +153,13 @@ function Field({
 }) {
   return (
     <div className={wide ? "sm:col-span-2" : ""}>
-      <dt className="inline-flex items-center gap-xs text-label-3 font-semibold uppercase tracking-[0.08em] text-foreground-muted">
-        <span className="text-foreground-hint">{icon}</span>
+      <dt className="inline-flex items-center gap-xs text-label-3 font-semibold uppercase tracking-[0.08em] text-ink-muted">
+        <span className="text-ink-hint">{icon}</span>
         {label}
       </dt>
       <dd
         className={
-          "mt-1 text-body-2 text-foreground" + (mono ? " font-mono" : "")
+          "mt-1 text-body-2 text-ink" + (mono ? " font-mono" : "")
         }
       >
         {value}

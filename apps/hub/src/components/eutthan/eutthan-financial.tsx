@@ -1,8 +1,8 @@
 "use client";
 
-import { ChevronDown, Download, FileText, Search } from "lucide-react";
 import { tableScreens } from "@/lib/eutthan/portal-data";
 import { Pagination } from "./eutthan-cells";
+import { Icon } from "@mosje/design-system";
 
 export function FinancialSummaryPage() {
   const screen = tableScreens["/reports/financial-summary"]!;
@@ -20,14 +20,14 @@ export function FinancialSummaryPage() {
           }}
         >
           <button type="button" className="filter-button">
-            {screen.filters?.[0]} <ChevronDown size={14} />
+            {screen.filters?.[0]} <Icon name="keyboard_arrow_down" size={14} />
           </button>
           <div className="export-buttons">
             <button type="button" className="icon-button">
-              <Download size={14} /> Export CSV
+              <Icon name="download" size={14} /> Export CSV
             </button>
             <button type="button" className="icon-button">
-              <FileText size={14} /> Export PDF
+              <Icon name="description" size={14} /> Export PDF
             </button>
           </div>
         </div>
@@ -35,7 +35,7 @@ export function FinancialSummaryPage() {
       <div className="data-card">
         <div className="toolbar">
           <div className="search-field">
-            <Search size={16} aria-hidden="true" />
+            <Icon name="search" size={16} aria-hidden="true" />
             <input placeholder="Search for ministry..." aria-label="Search for ministry" />
           </div>
         </div>

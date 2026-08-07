@@ -11,16 +11,7 @@ import {
 } from "@/lib/nmba/mock-data";
 import type { ActivityRow } from "@/lib/nmba/types";
 import { useToast } from "@/components/nmba/toast";
-import {
-  Activity,
-  GraduationCap,
-  HeartHandshake,
-  Plus,
-  TrendingUp,
-  Users,
-  MoreHorizontal,
-} from "lucide-react";
-import { Button, Search, MetricCard } from "@mosje/design-system";
+import { Button, Icon, MetricCard, Search } from "@mosje/design-system";
 
 const columns = [
   { key: "state" as const, header: "State" },
@@ -61,7 +52,7 @@ export default function AdminDashboard() {
           aria-label="Row actions"
           className="rounded-lg p-1 text-ink-hint hover:bg-black/5"
         >
-          <MoreHorizontal className="h-4 w-4" />
+          <Icon name="more_horiz" size={16} />
         </button>
       ),
     },
@@ -71,18 +62,18 @@ export default function AdminDashboard() {
     <AdminShell>
       <div className="mb-6 flex items-center justify-between gap-4">
         <h1 className="text-xl font-bold text-ink">State/UT/District Dashboard</h1>
-        <Button onClick={() => setModalOpen(true)} iconLeft={<Plus className="h-4 w-4" />}>
+        <Button onClick={() => setModalOpen(true)} iconLeft={<Icon name="add" size={16} />}>
           Add Event
         </Button>
       </div>
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <MetricCard label="Total Pledges" value={DASHBOARD_STATS.totalPledges} icon={<HeartHandshake className="h-5 w-5" />} />
-        <MetricCard label="People Reached" value={DASHBOARD_STATS.peopleReached} icon={<Users className="h-5 w-5" />} />
-        <MetricCard label="Youth Reached" value={DASHBOARD_STATS.youthReached} icon={<TrendingUp className="h-5 w-5" />} />
-        <MetricCard label="Women Reached" value={DASHBOARD_STATS.womenReached} icon={<Users className="h-5 w-5" />} />
-        <MetricCard label="Total Activities" value={DASHBOARD_STATS.totalActivities} icon={<Activity className="h-5 w-5" />} />
-        <MetricCard label="Educational Institutions" value={DASHBOARD_STATS.educationalInstitutions} icon={<GraduationCap className="h-5 w-5" />} />
+        <MetricCard label="Total Pledges" value={DASHBOARD_STATS.totalPledges} icon={<Icon name="volunteer_activism" size={20} />} />
+        <MetricCard label="People Reached" value={DASHBOARD_STATS.peopleReached} icon={<Icon name="group" size={20} />} />
+        <MetricCard label="Youth Reached" value={DASHBOARD_STATS.youthReached} icon={<Icon name="trending_up" size={20} />} />
+        <MetricCard label="Women Reached" value={DASHBOARD_STATS.womenReached} icon={<Icon name="group" size={20} />} />
+        <MetricCard label="Total Activities" value={DASHBOARD_STATS.totalActivities} icon={<Icon name="monitoring" size={20} />} />
+        <MetricCard label="Educational Institutions" value={DASHBOARD_STATS.educationalInstitutions} icon={<Icon name="school" size={20} />} />
       </div>
 
       <section aria-labelledby="activity-table-heading">

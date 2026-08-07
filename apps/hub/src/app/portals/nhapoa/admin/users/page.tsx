@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { UserPlus } from "lucide-react";
-import { Modal } from "@mosje/design-system";
+import { Icon, Modal } from "@mosje/design-system";
 import { PageHeader, SearchInput, Button, Field, TextInput, Select } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { ROLES } from "@/lib/nhapoa/roles";
@@ -31,7 +30,7 @@ export default function UsersPage() {
 
   return (
     <div>
-      <PageHeader title="User Management" subtitle="Create and manage system users" action={<Button onClick={() => setOpen(true)}><UserPlus className="h-4 w-4" /> Create New User</Button>} />
+      <PageHeader title="User Management" subtitle="Create and manage system users" action={<Button onClick={() => setOpen(true)}><Icon name="person_add" size={16} /> Create New User</Button>} />
       <SearchInput placeholder="Search by name, username, role…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
 
       <div className="overflow-x-auto rounded-2xl border border-line bg-white shadow-card">

@@ -1,7 +1,7 @@
 "use client";
 
-import { ArrowRight, HeartHandshake, Users } from "lucide-react";
 import { PLEDGE_STATS } from "@/content/website/deaddiction-centres";
+import { Icon } from "@mosje/design-system";
 
 // Combined "Take the pledge + Become a Nasha Mukti Mitr" layouts for review.
 // Real <a> links; the showcase intercepts clicks to show behaviour without navigating.
@@ -21,19 +21,19 @@ export function CombinedTwinCards() {
       </div>
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-gov-blue/10 text-gov-blue"><HeartHandshake className="h-5 w-5" /></span>
+          <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-gov-blue/10 text-gov-blue"><Icon name="volunteer_activism" size={20} /></span>
           <h4 className="mt-3 text-[17px] font-semibold text-ink">Take the pledge</h4>
           <p className="mt-1 flex-1 text-[13px] text-ink-muted"><span className="font-semibold text-gov-blue-dark">{pledgedLakh} lakh+</span> Indians have pledged. Choose the one that applies to you.</p>
           <div className="mt-4 flex flex-wrap gap-2.5">
-            <a href={NON_USER} className="inline-flex items-center gap-1.5 rounded-lg bg-gov-blue px-4 py-2 text-[14px] font-semibold text-white transition-colors hover:bg-gov-blue-dark">I&rsquo;m a non-user <ArrowRight className="h-4 w-4" /></a>
-            <a href={RECOVERED} className="inline-flex items-center gap-1.5 rounded-lg border border-gov-blue/40 px-4 py-2 text-[14px] font-semibold text-gov-blue transition-colors hover:bg-gov-blue/5">I&rsquo;m a recovered user <ArrowRight className="h-4 w-4" /></a>
+            <a href={NON_USER} className="inline-flex items-center gap-1.5 rounded-lg bg-gov-blue px-4 py-2 text-[14px] font-semibold text-white transition-colors hover:bg-gov-blue-dark">I&rsquo;m a non-user <Icon name="arrow_forward" size={16} /></a>
+            <a href={RECOVERED} className="inline-flex items-center gap-1.5 rounded-lg border border-gov-blue/40 px-4 py-2 text-[14px] font-semibold text-gov-blue transition-colors hover:bg-gov-blue/5">I&rsquo;m a recovered user <Icon name="arrow_forward" size={16} /></a>
           </div>
         </div>
         <div className="flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-gov-blue/10 text-gov-blue"><Users className="h-5 w-5" /></span>
+          <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-gov-blue/10 text-gov-blue"><Icon name="group" size={20} /></span>
           <h4 className="mt-3 text-[17px] font-semibold text-ink">Become a Nasha Mukti Mitr</h4>
           <p className="mt-1 flex-1 text-[13px] text-ink-muted">Volunteer to spread awareness and support drug-demand reduction in your community — no prior experience needed.</p>
-          <div className="mt-4"><a href={MITR} className="inline-flex items-center gap-1.5 rounded-lg bg-gov-blue-dark px-4 py-2 text-[14px] font-semibold text-white transition-opacity hover:opacity-90">Register as a volunteer <ArrowRight className="h-4 w-4" /></a></div>
+          <div className="mt-4"><a href={MITR} className="inline-flex items-center gap-1.5 rounded-lg bg-gov-blue-dark px-4 py-2 text-[14px] font-semibold text-white transition-opacity hover:opacity-90">Register as a volunteer <Icon name="arrow_forward" size={16} /></a></div>
         </div>
       </div>
     </div>
@@ -50,19 +50,19 @@ export function CombinedUnifiedPanel() {
       </div>
       <div className="grid bg-white sm:grid-cols-2">
         <div className="border-b border-gray-100 p-6 sm:border-b-0 sm:border-r">
-          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-gov-blue/10 text-gov-blue"><HeartHandshake className="h-5 w-5" /></span>
+          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-gov-blue/10 text-gov-blue"><Icon name="volunteer_activism" size={20} /></span>
           <h4 className="mt-3 text-[16px] font-semibold text-ink">Take the pledge</h4>
           <p className="mt-1 text-[13px] text-ink-muted">Stand up for a drug-free India.</p>
           <div className="mt-3 flex flex-wrap gap-2">
-            <a href={NON_USER} className="inline-flex items-center gap-1 rounded-lg bg-gov-blue px-3.5 py-1.5 text-[13px] font-semibold text-white hover:bg-gov-blue-dark">Non-user <ArrowRight className="h-3.5 w-3.5" /></a>
-            <a href={RECOVERED} className="inline-flex items-center gap-1 rounded-lg border border-gov-blue/40 px-3.5 py-1.5 text-[13px] font-semibold text-gov-blue hover:bg-gov-blue/5">Recovered <ArrowRight className="h-3.5 w-3.5" /></a>
+            <a href={NON_USER} className="inline-flex items-center gap-1 rounded-lg bg-gov-blue px-3.5 py-1.5 text-[13px] font-semibold text-white hover:bg-gov-blue-dark">Non-user <Icon name="arrow_forward" size={14} /></a>
+            <a href={RECOVERED} className="inline-flex items-center gap-1 rounded-lg border border-gov-blue/40 px-3.5 py-1.5 text-[13px] font-semibold text-gov-blue hover:bg-gov-blue/5">Recovered <Icon name="arrow_forward" size={14} /></a>
           </div>
         </div>
         <div className="p-6">
-          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-gov-blue/10 text-gov-blue"><Users className="h-5 w-5" /></span>
+          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-gov-blue/10 text-gov-blue"><Icon name="group" size={20} /></span>
           <h4 className="mt-3 text-[16px] font-semibold text-ink">Become a Nasha Mukti Mitr</h4>
           <p className="mt-1 text-[13px] text-ink-muted">Volunteer to spread awareness in your community.</p>
-          <div className="mt-3"><a href={MITR} className="inline-flex items-center gap-1 rounded-lg bg-gov-blue-dark px-3.5 py-1.5 text-[13px] font-semibold text-white hover:opacity-90">Register as a volunteer <ArrowRight className="h-3.5 w-3.5" /></a></div>
+          <div className="mt-3"><a href={MITR} className="inline-flex items-center gap-1 rounded-lg bg-gov-blue-dark px-3.5 py-1.5 text-[13px] font-semibold text-white hover:opacity-90">Register as a volunteer <Icon name="arrow_forward" size={14} /></a></div>
         </div>
       </div>
     </div>
@@ -85,10 +85,10 @@ export function CombinedPledgeForward() {
       </div>
       <a href={MITR} className="group flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-5 py-3.5 shadow-sm transition hover:border-gov-blue/40">
         <span className="flex items-center gap-2.5">
-          <Users className="h-5 w-5 text-gov-blue" aria-hidden />
+          <Icon name="group" size={20} className="text-gov-blue" aria-hidden />
           <span className="text-[14px] text-ink-muted">Want to do more? <span className="font-semibold text-ink">Become a Nasha Mukti Mitr</span> and volunteer in your community.</span>
         </span>
-        <span className="inline-flex shrink-0 items-center gap-1.5 text-[14px] font-semibold text-gov-blue">Register <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+        <span className="inline-flex shrink-0 items-center gap-1.5 text-[14px] font-semibold text-gov-blue">Register <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-1" /></span>
       </a>
     </div>
   );

@@ -1,13 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { KeyRound } from "lucide-react";
-import { Badge } from "@/components/smile-admin/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/smile-admin/ui/card";
-import { Checkbox } from "@/components/smile-admin/ui/checkbox";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { PERMISSION_MATRIX } from "@/lib/smile-admin/mock-data";
+import { Badge, Card, CardBody, CardHeader, CardTitle, Checkbox, Icon } from "@mosje/design-system";
 
 export default function PermissionsPage() {
   const [search, setSearch] = useState("");
@@ -35,22 +32,26 @@ export default function PermissionsPage() {
           <Card key={g.group}>
             <CardHeader>
               <CardTitle>{g.group}</CardTitle>
-              <Badge tone="primary">{g.permissions.length}</Badge>
+              <Badge status="primary">{g.permissions.length}</Badge>
             </CardHeader>
-            <CardContent className="space-y-sm">
+            <CardBody className="space-y-sm">
               {g.permissions.map((p) => (
                 <div key={p.key} className="flex items-start gap-md rounded-md border border-stroke-100 p-md">
                   <div className="grid h-8 w-8 shrink-0 place-items-center rounded-sm bg-primary-50 text-primary">
-                    <KeyRound className="h-4 w-4" />
+                    <Icon name="key" size={16} />
                   </div>
                   <div className="flex-1">
-                    <div className="text-body-2 font-semibold text-foreground">{p.label}</div>
-                    <div className="font-mono text-label-3 text-foreground-muted">{p.key}</div>
+                    <div className="text-body-2 font-semibold text-ink">{p.label}</div>
+                    <div className="font-mono text-label-3 text-ink-muted">{p.key}</div>
                   </div>
-                  <Checkbox checked={p.granted} disabled />
+                  {/* Read-only: this page displays which permissions a role
+                      holds, it does not grant them. Editing happens on
+                      /roles/[roleId]/edit, so the box is disabled and the
+                      handler can never fire. */}
+                  <Checkbox checked={p.granted} disabled readOnly onChange={() => {}} />
                 </div>
               ))}
-            </CardContent>
+            </CardBody>
           </Card>
         ))}
       </div>

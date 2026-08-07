@@ -1,7 +1,6 @@
 "use client";
 
-import { ExternalLink, Globe } from "lucide-react";
-import { ColorModeSwitcher } from "@mosje/design-system";
+import { ColorModeSwitcher, Icon } from "@mosje/design-system";
 
 export function AccessBar() {
   return (
@@ -18,7 +17,7 @@ export function AccessBar() {
               colour in this bar. The wordmark carries the attribution. */}
           <span className="hidden sm:inline">Government of India</span>
           <span className="sm:hidden">GoI</span>
-          <ExternalLink className="h-3 w-3 shrink-0" />
+          <Icon name="open_in_new" size={12} className="shrink-0" />
         </a>
         <a href="#main-content" className="skip-link">Skip to Main Content</a>
         <div className="flex shrink-0 items-center gap-xs sm:gap-md">
@@ -26,7 +25,7 @@ export function AccessBar() {
               UX4GAccessibilityWidget (rendered in the root layout) — not here. */}
           <ColorModeSwitcher compact hideLabel label="Colour mode" />
           <button className="inline-flex items-center gap-xs rounded-xs px-1 py-1 text-label-3 hover:bg-white/10 sm:px-sm">
-            <Globe className="h-3.5 w-3.5" />
+            <Icon name="language" size={14} />
             <span className="hidden sm:inline">English</span>
             <span className="sm:hidden">EN</span>
           </button>

@@ -2,11 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { PageHeader, StatTile, Card, StatusPill } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { doQueue, priorityOf } from "@/lib/nhapoa/case-helpers";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
+import { Icon } from "@mosje/design-system";
 
 const BREAKDOWN: CaseStatus[] = ["SUBMITTED", "ASSIGNED", "UNDER_INVESTIGATION", "PENDING_APPROVAL", "SENT_BACK"];
 
@@ -57,7 +57,7 @@ export default function DODashboard() {
               <h2 className="text-sm font-bold text-ink">Priority Actions</h2>
               <p className="text-xs text-ink-hint">Requires your immediate attention</p>
             </div>
-            <Link href="/portals/nhapoa/district-officer/cases" className="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:underline">View all <ArrowRight className="h-3.5 w-3.5" /></Link>
+            <Link href="/portals/nhapoa/district-officer/cases" className="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:underline">View all <Icon name="arrow_forward" size={14} /></Link>
           </div>
           <ul className="mt-4 divide-y divide-line">
             {priority.length === 0 && <li className="py-6 text-center text-sm text-ink-hint">No priority cases right now.</li>}

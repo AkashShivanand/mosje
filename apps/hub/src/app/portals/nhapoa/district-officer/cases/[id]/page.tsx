@@ -3,8 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, CheckCircle2, MessageSquareWarning } from "lucide-react";
-import { Modal } from "@mosje/design-system";
+import { Icon, Modal } from "@mosje/design-system";
 import { Card, StatusPill, Button, Textarea, Field } from "@/components/nhapoa/ui";
 import { SlaPill, PriorityBadge } from "@/components/nhapoa/case-views";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
@@ -32,7 +31,7 @@ export default function CaseDetailPage() {
   if (!c) {
     return (
       <div>
-        <Link href="/portals/nhapoa/district-officer/cases" className="inline-flex items-center gap-1 text-sm font-semibold text-navy hover:underline"><ArrowLeft className="h-4 w-4" /> Back to My Cases</Link>
+        <Link href="/portals/nhapoa/district-officer/cases" className="inline-flex items-center gap-1 text-sm font-semibold text-navy hover:underline"><Icon name="arrow_back" size={16} /> Back to My Cases</Link>
         <Card className="mt-6 p-10 text-center text-sm text-ink-muted">Case not found.</Card>
       </div>
     );
@@ -50,7 +49,7 @@ export default function CaseDetailPage() {
 
   return (
     <div>
-      <Link href="/portals/nhapoa/district-officer/cases" className="inline-flex items-center gap-1 text-sm font-semibold text-navy hover:underline"><ArrowLeft className="h-4 w-4" /> Back to My Cases</Link>
+      <Link href="/portals/nhapoa/district-officer/cases" className="inline-flex items-center gap-1 text-sm font-semibold text-navy hover:underline"><Icon name="arrow_back" size={16} /> Back to My Cases</Link>
 
       {/* Header */}
       <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
@@ -63,7 +62,7 @@ export default function CaseDetailPage() {
           <p className="mt-1 text-sm text-ink-muted">{c.type} · {c.category} · {c.district}, {c.state}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" onClick={() => setClarifyOpen(true)}><MessageSquareWarning className="h-4 w-4" /> Raise Clarification</Button>
+          <Button variant="outline" onClick={() => setClarifyOpen(true)}><Icon name="feedback" size={16} /> Raise Clarification</Button>
           {actions.map((a) => (
             <Button key={a.to} onClick={() => setAction(a)}>{a.label}</Button>
           ))}
@@ -113,7 +112,7 @@ export default function CaseDetailPage() {
             <ol className="relative ml-2 border-l border-line">
               {c.timeline.map((t, i) => (
                 <li key={i} className="mb-5 ml-6 last:mb-0">
-                  <span className="absolute -left-2.5 mt-1 h-5 w-5 rounded-full bg-approve text-white grid place-items-center"><CheckCircle2 className="h-3 w-3" /></span>
+                  <span className="absolute -left-2.5 mt-1 h-5 w-5 rounded-full bg-approve text-white grid place-items-center"><Icon name="check_circle" size={12} /></span>
                   <p className="text-sm font-semibold text-ink">{CASE_STATUS_META[t.status].label}</p>
                   <p className="text-xs text-ink-hint">{new Date(t.at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}{t.byRole ? ` · ${t.byRole}` : ""}</p>
                   {t.note && <p className="mt-1 text-xs text-ink-muted">{t.note}</p>}

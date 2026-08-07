@@ -1,13 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { Bell, PenSquare } from "lucide-react";
-import { Badge, statusTone } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
+import { statusTone } from "@/lib/smile-admin/status-tone";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/ui/table";
+import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { NOTIFICATIONS, type Notification } from "@/lib/smile-admin/mock-data";
+import { Badge, Icon, buttonClasses } from "@mosje/design-system";
 
 export default function NotificationsPage() {
   return (
@@ -33,11 +32,9 @@ export default function NotificationsPage() {
               ]}
               rows={NOTIFICATIONS.map((n, i) => ({ ...n, sno: i + 1 }))}
             />
-            <Button size="sm" asChild>
-              <Link href="/portals/smile-admin/notifications/compose">
-                <PenSquare className="h-3.5 w-3.5" /> Compose
+            <Link href="/portals/smile-admin/notifications/compose" className={buttonClasses("primary", "filled", "sm")}>
+                <Icon name="edit_square" size={14} /> Compose
               </Link>
-            </Button>
           </div>
         }
       />
@@ -50,27 +47,27 @@ export default function NotificationsPage() {
           >
             <div className="flex items-start gap-md">
               <div className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-primary-50 text-primary ring-1 ring-inset ring-primary-100">
-                <Bell className="h-4 w-4" />
+                <Icon name="notifications" size={16} />
               </div>
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-start justify-between gap-sm">
-                  <div className="min-w-0 truncate font-semibold text-foreground">
+                  <div className="min-w-0 truncate font-semibold text-ink">
                     {n.title}
                   </div>
-                  <Badge tone={statusTone(n.status)} withDot>
+                  <Badge status={statusTone(n.status)} dot>
                     {n.status}
                   </Badge>
                 </div>
-                <p className="line-clamp-2 text-label-2 text-foreground-muted">{n.body}</p>
+                <p className="line-clamp-2 text-label-2 text-ink-muted">{n.body}</p>
                 <div className="flex flex-wrap items-center gap-xs pt-1">
                   {n.channel.map((c) => (
-                    <Badge key={c} tone="info">
+                    <Badge key={c} status="info">
                       {c}
                     </Badge>
                   ))}
-                  <span className="ml-auto text-label-3 text-foreground-hint">{n.sentAt}</span>
+                  <span className="ml-auto text-label-3 text-ink-hint">{n.sentAt}</span>
                 </div>
-                <div className="text-label-3 text-foreground-hint">{n.audience}</div>
+                <div className="text-label-3 text-ink-hint">{n.audience}</div>
               </div>
             </div>
           </li>
@@ -95,22 +92,22 @@ export default function NotificationsPage() {
                 <TD>
                   <div className="flex items-start gap-md">
                     <div className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-primary-50 text-primary">
-                      <Bell className="h-4 w-4" />
+                      <Icon name="notifications" size={16} />
                     </div>
                     <div>
-                      <div className="font-semibold text-foreground">{n.title}</div>
-                      <div className="text-label-2 text-foreground-muted">{n.body}</div>
+                      <div className="font-semibold text-ink">{n.title}</div>
+                      <div className="text-label-2 text-ink-muted">{n.body}</div>
                     </div>
                   </div>
                 </TD>
                 <TD>{n.audience}</TD>
                 <TD>
                   <div className="flex flex-wrap gap-xs">
-                    {n.channel.map((c) => <Badge key={c} tone="info">{c}</Badge>)}
+                    {n.channel.map((c) => <Badge key={c} status="info">{c}</Badge>)}
                   </div>
                 </TD>
-                <TD><Badge tone={statusTone(n.status)}>{n.status}</Badge></TD>
-                <TD className="text-foreground-muted">{n.sentAt}</TD>
+                <TD><Badge status={statusTone(n.status)}>{n.status}</Badge></TD>
+                <TD className="text-ink-muted">{n.sentAt}</TD>
               </TR>
             ))}
           </tbody>

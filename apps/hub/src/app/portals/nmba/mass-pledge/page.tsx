@@ -12,8 +12,7 @@
 //   · No participant personal data, no officer contact details, no photo
 //     coordinates. Thumbnails only.
 
-import { ShieldCheck } from "lucide-react";
-import { Alert } from "@mosje/design-system";
+import { Alert, Icon } from "@mosje/design-system";
 import { PublicShell } from "@/components/nmba/public-shell";
 import { useMassPledgeStore } from "@/lib/nmba/mass-pledge/store";
 import { EVENT_DATE_LABEL } from "@/lib/nmba/mass-pledge/masters";
@@ -84,7 +83,7 @@ export default function PublicMassPledgeCounterPage() {
             {statesCovered === 1 ? "y" : "ies"}
           </p>
           <p className="mt-3 inline-flex items-center gap-1.5 text-sm text-ink-muted">
-            <ShieldCheck className="h-4 w-4 text-approve" aria-hidden="true" />
+            <Icon name="verified_user" size={16} className="text-approve" aria-hidden="true" />
             Verified through the State/UT approval chain
           </p>
         </section>

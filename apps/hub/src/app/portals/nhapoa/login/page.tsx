@@ -4,8 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Eye, EyeOff } from "lucide-react";
-import { DemoFab, type DemoFillDetail } from "@mosje/design-system";
+import { DemoFab, Icon, type DemoFillDetail } from "@mosje/design-system";
 import { Button, Field, TextInput } from "@/components/nhapoa/ui";
 import { RenameNotice } from "@/components/nhapoa/rename-notice";
 import { ADMIN_ROLES, roleByUsername } from "@/lib/nhapoa/roles";
@@ -112,7 +111,7 @@ export default function LoginPage() {
                   aria-label={showPassword ? "Hide password" : "Show password"}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-hint hover:text-ink"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? <Icon name="visibility_off" size={20} /> : <Icon name="visibility" size={20} />}
                 </button>
               </div>
             </Field>
@@ -127,7 +126,7 @@ export default function LoginPage() {
 
             <Button type="submit" className="w-full">
               Login
-              <ArrowRight className="h-4 w-4" />
+              <Icon name="arrow_forward" size={16} />
             </Button>
           </form>
 

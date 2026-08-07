@@ -18,7 +18,7 @@ const sectionStyle: React.CSSProperties = {
 };
 
 const h2Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-headline)",
+  fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
   fontWeight: 700,
   color: "var(--ds-ink)",
   marginBottom: "var(--ds-spacing-lg)",

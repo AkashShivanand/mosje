@@ -2,25 +2,17 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import {
-  CreditCard,
-  Eye,
-  SlidersHorizontal,
-  User,
-  UserCircle2,
-} from "lucide-react";
-import { Badge, statusTone } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
+import { statusTone } from "@/lib/smile-admin/status-tone";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { BottomSheet } from "@/components/smile-admin/ui/sheet";
-import { Label } from "@/components/smile-admin/ui/label";
-import { TH, THead, TR, TD, Table } from "@/components/smile-admin/ui/table";
+import { BottomSheet } from "@/components/smile-admin/bottom-sheet";
+import { TH, THead, TR, TD, Table } from "@/components/smile-admin/table";
 import { BENEFICIARIES, type Beneficiary } from "@/lib/smile-admin/mock-data";
 import { STATES } from "@/lib/smile-admin/states";
 import { useApp } from "@/store/smile-admin/app-context";
+import { Badge, Button, Icon, Label, buttonClasses } from "@mosje/design-system";
 
 const STATUSES = [
   "All statuses",
@@ -138,13 +130,13 @@ export default function PersonsPage() {
       />
 
       <div className="grid grid-cols-2 gap-md lg:grid-cols-4">
-        <StatPill label="Loaded" value={counts.total} icon={CreditCard} tone="primary" />
-        <StatPill label="Male" value={counts.male} icon={User} tone="info" />
-        <StatPill label="Female" value={counts.female} icon={User} tone="danger" />
+        <StatPill label="Loaded" value={counts.total} icon="credit_card" tone="primary" />
+        <StatPill label="Male" value={counts.male} icon="person" tone="info" />
+        <StatPill label="Female" value={counts.female} icon="person" tone="danger" />
         <StatPill
           label="Transgender / Other"
           value={counts.trans}
-          icon={UserCircle2}
+          icon="account_circle"
           tone="warning"
         />
       </div>
@@ -158,12 +150,12 @@ export default function PersonsPage() {
         />
         {/* Mobile: Filters button opens sheet */}
         <Button
-          variant="outline"
+          appearance="outlined"
           size="md"
           className="relative md:hidden"
           onClick={() => setFilterSheet(true)}
         >
-          <SlidersHorizontal className="h-4 w-4" />
+          <Icon name="tune" size={16} />
           Filters
           {activeFilterCount > 0 ? (
             <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1 text-label-3 font-bold text-white">
@@ -232,7 +224,7 @@ export default function PersonsPage() {
         footer={
           <div className="flex items-center justify-between gap-sm">
             <Button
-              variant="ghost"
+              appearance="text"
               size="md"
               onClick={() => {
                 setState("All States / UTs");
@@ -313,21 +305,21 @@ export default function PersonsPage() {
       <div className="space-y-sm md:hidden">
         {rowsToShow.length === 0 ? (
           <div className="flex flex-col items-center gap-sm rounded-lg border border-dashed border-stroke-300 bg-white px-lg py-3xl text-center">
-            <div className="grid h-12 w-12 place-items-center rounded-full bg-neutral-100 text-foreground-muted">
-              <Eye aria-hidden className="h-5 w-5" />
+            <div className="grid h-12 w-12 place-items-center rounded-full bg-neutral-100 text-ink-muted">
+              <Icon name="visibility" size={20} aria-hidden />
             </div>
             <div className="space-y-1">
-              <h3 className="text-title-2 font-semibold text-foreground">
+              <h3 className="text-title-2 font-semibold text-ink">
                 No beneficiaries found
               </h3>
-              <p className="text-body-3 text-foreground-muted">
+              <p className="text-body-3 text-ink-muted">
                 {anyFilterActive
                   ? "Try widening your search or clear the filters."
                   : "There are no beneficiaries in this scope yet."}
               </p>
             </div>
             {anyFilterActive ? (
-              <Button variant="outline" size="sm" onClick={clearAllFilters}>
+              <Button appearance="outlined" size="sm" onClick={clearAllFilters}>
                 Clear filters
               </Button>
             ) : null}
@@ -341,36 +333,36 @@ export default function PersonsPage() {
             >
               <div className="flex items-start justify-between gap-sm">
                 <div className="min-w-0 space-y-0.5">
-                  <div className="flex items-center gap-xs text-label-3 text-foreground-hint">
+                  <div className="flex items-center gap-xs text-label-3 text-ink-hint">
                     <span className="tabular-nums">
                       {(idx + 1).toString().padStart(2, "0")}
                     </span>
                     <span aria-hidden>·</span>
                     <span className="font-mono">{b.id}</span>
                   </div>
-                  <div className="truncate text-body-1 font-semibold text-foreground">
+                  <div className="truncate text-body-1 font-semibold text-ink">
                     {b.name}
                   </div>
-                  <div className="truncate text-label-2 text-foreground-muted">
+                  <div className="truncate text-label-2 text-ink-muted">
                     {b.state} · {b.district}
                   </div>
                 </div>
-                <Badge tone={statusTone(b.status)} withDot>
+                <Badge status={statusTone(b.status)} dot>
                   {b.status.replace(/_/g, " ")}
                 </Badge>
               </div>
               <div className="mt-sm grid grid-cols-3 gap-sm border-t border-stroke-100 pt-sm text-label-3">
                 <div>
-                  <div className="text-foreground-hint">Age</div>
-                  <div className="font-semibold tabular-nums text-foreground">{b.age}</div>
+                  <div className="text-ink-hint">Age</div>
+                  <div className="font-semibold tabular-nums text-ink">{b.age}</div>
                 </div>
                 <div>
-                  <div className="text-foreground-hint">Gender</div>
-                  <div className="font-semibold text-foreground">{b.gender}</div>
+                  <div className="text-ink-hint">Gender</div>
+                  <div className="font-semibold text-ink">{b.gender}</div>
                 </div>
                 <div>
-                  <div className="text-foreground-hint">Type</div>
-                  <div className="font-semibold text-foreground">{b.type}</div>
+                  <div className="text-ink-hint">Type</div>
+                  <div className="font-semibold text-ink">{b.type}</div>
                 </div>
               </div>
             </Link>
@@ -401,21 +393,21 @@ export default function PersonsPage() {
               <TR>
                 <TD colSpan={11} className="py-3xl">
                   <div className="mx-auto flex max-w-md flex-col items-center gap-sm text-center">
-                    <div className="grid h-12 w-12 place-items-center rounded-full bg-neutral-100 text-foreground-muted ring-8 ring-neutral-50">
-                      <Eye aria-hidden className="h-5 w-5" />
+                    <div className="grid h-12 w-12 place-items-center rounded-full bg-neutral-100 text-ink-muted ring-8 ring-neutral-50">
+                      <Icon name="visibility" size={20} aria-hidden />
                     </div>
                     <div className="space-y-1">
-                      <h3 className="text-title-2 font-semibold text-foreground">
+                      <h3 className="text-title-2 font-semibold text-ink">
                         No beneficiaries found
                       </h3>
-                      <p className="text-body-3 text-foreground-muted">
+                      <p className="text-body-3 text-ink-muted">
                         {anyFilterActive
                           ? "Try widening the search term or clearing one of the active filters."
                           : "There are no beneficiaries available for this scope yet."}
                       </p>
                     </div>
                     {anyFilterActive ? (
-                      <Button variant="outline" size="sm" onClick={clearAllFilters}>
+                      <Button appearance="outlined" size="sm" onClick={clearAllFilters}>
                         Clear filters
                       </Button>
                     ) : null}
@@ -425,14 +417,14 @@ export default function PersonsPage() {
             ) : (
               rowsToShow.map((b, idx) => (
                 <TR key={b.id}>
-                  <TD className="tabular-nums text-foreground-hint">
+                  <TD className="tabular-nums text-ink-hint">
                     {(idx + 1).toString().padStart(2, "0")}
                   </TD>
-                  <TD className="font-mono text-body-3 text-foreground-muted">{b.id}</TD>
+                  <TD className="font-mono text-body-3 text-ink-muted">{b.id}</TD>
                   <TD>
                     <Link
                       href={`/portals/smile-admin/persons/${b.id}`}
-                      className="font-semibold text-foreground hover:text-primary hover:underline"
+                      className="font-semibold text-ink hover:text-primary hover:underline"
                     >
                       {b.name}
                     </Link>
@@ -440,20 +432,18 @@ export default function PersonsPage() {
                   <TD className="tabular-nums">{b.age}</TD>
                   <TD>{b.gender}</TD>
                   <TD>
-                    <Badge tone={statusTone(b.status)} withDot>
+                    <Badge status={statusTone(b.status)} dot>
                       {b.status.replace(/_/g, " ")}
                     </Badge>
                   </TD>
                   <TD>{b.state}</TD>
                   <TD>{b.district}</TD>
-                  <TD className="text-foreground-muted">{b.ia ?? "—"}</TD>
+                  <TD className="text-ink-muted">{b.ia ?? "—"}</TD>
                   <TD>{b.type}</TD>
                   <TD className="text-right">
-                    <Button variant="outline" size="xs" asChild>
-                      <Link href={`/portals/smile-admin/persons/${b.id}`}>
-                        <Eye className="h-3.5 w-3.5" /> View
+                    <Link href={`/portals/smile-admin/persons/${b.id}`} className={buttonClasses("primary", "outlined", "sm")}>
+                        <Icon name="visibility" size={14} /> View
                       </Link>
-                    </Button>
                   </TD>
                 </TR>
               ))
@@ -462,7 +452,7 @@ export default function PersonsPage() {
         </Table>
         <nav
           aria-label="Pagination"
-          className="flex items-center justify-between border-t border-stroke-100 bg-neutral-50/40 px-lg py-md text-label-2 text-foreground-muted"
+          className="flex items-center justify-between border-t border-stroke-100 bg-neutral-50/40 px-lg py-md text-label-2 text-ink-muted"
         >
           <div>
             {filtered.length === 0 ? (
@@ -470,11 +460,11 @@ export default function PersonsPage() {
             ) : (
               <>
                 Showing{" "}
-                <span className="font-semibold text-foreground">
+                <span className="font-semibold text-ink">
                   {rangeStart.toLocaleString("en-IN")}–{rangeEnd.toLocaleString("en-IN")}
                 </span>{" "}
                 of{" "}
-                <span className="font-semibold text-foreground">
+                <span className="font-semibold text-ink">
                   {filtered.length.toLocaleString("en-IN")}
                 </span>{" "}
                 beneficiaries
@@ -483,7 +473,7 @@ export default function PersonsPage() {
           </div>
           <div className="flex items-center gap-xs">
             <Button
-              variant="outline"
+              appearance="outlined"
               size="sm"
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={page === 0}
@@ -491,12 +481,12 @@ export default function PersonsPage() {
             >
               Previous
             </Button>
-            <span aria-live="polite" className="px-sm font-medium text-foreground">
+            <span aria-live="polite" className="px-sm font-medium text-ink">
               Page <span className="tabular-nums">{page + 1}</span> /{" "}
               <span className="tabular-nums">{totalPages}</span>
             </span>
             <Button
-              variant="outline"
+              appearance="outlined"
               size="sm"
               onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
               disabled={page >= totalPages - 1}
@@ -513,22 +503,22 @@ export default function PersonsPage() {
         aria-label="Pagination"
         className="flex items-center justify-between gap-sm rounded-lg border border-stroke-200 bg-white px-md py-sm shadow-xs md:hidden"
       >
-        <span className="text-label-3 text-foreground-muted">
+        <span className="text-label-3 text-ink-muted">
           {filtered.length === 0 ? (
             "0 records"
           ) : (
             <>
-              <span className="font-semibold text-foreground">
+              <span className="font-semibold text-ink">
                 {rangeStart}–{rangeEnd}
               </span>{" "}
               of{" "}
-              <span className="font-semibold text-foreground">{filtered.length}</span>
+              <span className="font-semibold text-ink">{filtered.length}</span>
             </>
           )}
         </span>
         <div className="flex items-center gap-xs">
           <Button
-            variant="outline"
+            appearance="outlined"
             size="sm"
             onClick={() => setPage((p) => Math.max(0, p - 1))}
             disabled={page === 0}
@@ -537,7 +527,7 @@ export default function PersonsPage() {
             Previous
           </Button>
           <Button
-            variant="outline"
+            appearance="outlined"
             size="sm"
             onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
             disabled={page >= totalPages - 1}

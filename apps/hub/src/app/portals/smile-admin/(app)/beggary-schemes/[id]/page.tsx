@@ -2,14 +2,12 @@
 
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
-import { Badge, statusTone } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/smile-admin/ui/card";
+import { statusTone } from "@/lib/smile-admin/status-tone";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { MonthlyPerf } from "@/components/smile-admin/dashboard/charts";
 import { PERF_MONTHLY, SCHEMES } from "@/lib/smile-admin/mock-data";
 import { formatINR } from "@/lib/smile-admin/utils";
+import { Badge, Card, CardBody, CardHeader, CardTitle, Icon, buttonClasses } from "@mosje/design-system";
 
 export default function SchemeDetail() {
   const { id } = useParams<{ id: string }>();
@@ -25,37 +23,37 @@ export default function SchemeDetail() {
         subtitle={`${scheme.type} · ${scheme.states} states · ${scheme.beneficiaries.toLocaleString("en-IN")} beneficiaries`}
         actions={
           <div className="flex items-center gap-sm">
-            <Button variant="outline" size="sm" asChild><Link href="/portals/smile-admin/beggary-schemes"><ArrowLeft className="h-3.5 w-3.5" /> Back</Link></Button>
-            <Badge tone={statusTone(scheme.status)} size="md">{scheme.status}</Badge>
+            <Link href="/portals/smile-admin/beggary-schemes" className={buttonClasses("primary", "outlined", "sm")}><Icon name="arrow_back" size={14} /> Back</Link>
+            <Badge status={statusTone(scheme.status)} size="lg">{scheme.status}</Badge>
           </div>
         }
       />
       <div className="grid gap-lg md:grid-cols-3">
         <Card>
           <CardHeader><CardTitle>Budget</CardTitle></CardHeader>
-          <CardContent>
-            <div className="text-display-5 font-bold text-foreground">{formatINR(scheme.budget, true)}</div>
-            <div className="text-body-3 text-foreground-muted">Sanctioned for FY 2025–26</div>
-          </CardContent>
+          <CardBody>
+            <div className="text-display-5 font-bold text-ink">{formatINR(scheme.budget, true)}</div>
+            <div className="text-body-3 text-ink-muted">Sanctioned for FY 2025–26</div>
+          </CardBody>
         </Card>
         <Card>
           <CardHeader><CardTitle>Utilised</CardTitle></CardHeader>
-          <CardContent>
-            <div className="text-display-5 font-bold text-foreground">{formatINR(scheme.utilised, true)}</div>
-            <div className="text-body-3 text-foreground-muted">{pct}% of sanctioned budget</div>
-          </CardContent>
+          <CardBody>
+            <div className="text-display-5 font-bold text-ink">{formatINR(scheme.utilised, true)}</div>
+            <div className="text-body-3 text-ink-muted">{pct}% of sanctioned budget</div>
+          </CardBody>
         </Card>
         <Card>
           <CardHeader><CardTitle>Reach</CardTitle></CardHeader>
-          <CardContent>
-            <div className="text-display-5 font-bold text-foreground">{scheme.beneficiaries.toLocaleString("en-IN")}</div>
-            <div className="text-body-3 text-foreground-muted">Across {scheme.states} states / UTs</div>
-          </CardContent>
+          <CardBody>
+            <div className="text-display-5 font-bold text-ink">{scheme.beneficiaries.toLocaleString("en-IN")}</div>
+            <div className="text-body-3 text-ink-muted">Across {scheme.states} states / UTs</div>
+          </CardBody>
         </Card>
       </div>
       <Card>
         <CardHeader><CardTitle>Monthly momentum</CardTitle></CardHeader>
-        <CardContent><MonthlyPerf data={PERF_MONTHLY} /></CardContent>
+        <CardBody><MonthlyPerf data={PERF_MONTHLY} /></CardBody>
       </Card>
     </div>
   );

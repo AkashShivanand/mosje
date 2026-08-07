@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Download } from "lucide-react";
 import { PageHeader, StatTile, Card, Button } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
+import { Icon } from "@mosje/design-system";
 
 export default function SchemePerformancePage() {
   const { state } = useNhapoa();
@@ -23,7 +23,7 @@ export default function SchemePerformancePage() {
 
   return (
     <div>
-      <PageHeader title="Scheme Performance Analytics" subtitle="Beneficiaries, categories and submission roles" action={<Button variant="outline"><Download className="h-4 w-4" /> Export</Button>} />
+      <PageHeader title="Scheme Performance Analytics" subtitle="Beneficiaries, categories and submission roles" action={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="Total Beneficiaries" value={state.cases.length} />

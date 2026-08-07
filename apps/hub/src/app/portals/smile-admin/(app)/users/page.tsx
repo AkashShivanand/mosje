@@ -2,16 +2,15 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { UserPlus, Users2 } from "lucide-react";
-import { Badge, statusTone } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
+import { statusTone } from "@/lib/smile-admin/status-tone";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/ui/table";
+import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { APP_USERS, type AppUser } from "@/lib/smile-admin/mock-data";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
 import { initials } from "@/lib/smile-admin/utils";
+import { Badge, Icon, buttonClasses } from "@mosje/design-system";
 
 export default function UsersPage() {
   const [search, setSearch] = useState("");
@@ -62,18 +61,16 @@ export default function UsersPage() {
               ]}
               rows={users.map((u, i) => ({ ...u, sno: i + 1 }))}
             />
-            <Button size="sm" asChild>
-              <Link href="/portals/smile-admin/users/onboard">
-                <UserPlus className="h-3.5 w-3.5" /> Onboard user
+            <Link href="/portals/smile-admin/users/onboard" className={buttonClasses("primary", "filled", "sm")}>
+                <Icon name="person_add" size={14} /> Onboard user
               </Link>
-            </Button>
           </div>
         }
       />
       <div className="grid grid-cols-2 gap-md md:grid-cols-3">
-        <StatPill label="Loaded users" value={counts.total}   icon={Users2} tone="primary" />
-        <StatPill label="Active"        value={counts.active}  icon={Users2} tone="success" />
-        <StatPill label="Invited"       value={counts.invited} icon={Users2} tone="info" />
+        <StatPill label="Loaded users" value={counts.total}   icon="groups" tone="primary" />
+        <StatPill label="Active"        value={counts.active}  icon="groups" tone="success" />
+        <StatPill label="Invited"       value={counts.invited} icon="groups" tone="info" />
       </div>
 
       <DataToolbar>
@@ -103,21 +100,21 @@ export default function UsersPage() {
               <div className="min-w-0 flex-1 space-y-0.5">
                 <div className="flex items-start justify-between gap-sm">
                   <div className="min-w-0">
-                    <div className="truncate font-semibold text-foreground">{u.name}</div>
-                    <div className="truncate text-label-3 text-foreground-muted">
+                    <div className="truncate font-semibold text-ink">{u.name}</div>
+                    <div className="truncate text-label-3 text-ink-muted">
                       {u.email}
                     </div>
                   </div>
-                  <Badge tone={statusTone(u.status)} withDot>
+                  <Badge status={statusTone(u.status)} dot>
                     {u.status}
                   </Badge>
                 </div>
-                <div className="text-label-3 text-foreground-hint">
+                <div className="text-label-3 text-ink-hint">
                   <span className="font-mono">{u.mobile}</span>
                   <span aria-hidden> · </span>
                   <span>{u.role}</span>
                 </div>
-                <div className="text-label-3 text-foreground-hint">
+                <div className="text-label-3 text-ink-hint">
                   {u.state}
                   {u.district ? ` / ${u.district}` : ""} · Last seen{" "}
                   <span className="font-mono">{u.lastLogin}</span>
@@ -150,22 +147,22 @@ export default function UsersPage() {
                       {initials(u.name)}
                     </div>
                     <div className="min-w-0">
-                      <div className="truncate font-semibold text-foreground">{u.name}</div>
-                      <div className="truncate text-label-2 text-foreground-muted">
+                      <div className="truncate font-semibold text-ink">{u.name}</div>
+                      <div className="truncate text-label-2 text-ink-muted">
                         {u.email}
                       </div>
                     </div>
                   </div>
                 </TD>
-                <TD className="font-mono text-body-3 text-foreground-muted">{u.mobile}</TD>
+                <TD className="font-mono text-body-3 text-ink-muted">{u.mobile}</TD>
                 <TD>{u.role}</TD>
                 <TD>{u.state}{u.district ? ` / ${u.district}` : ""}</TD>
                 <TD>
-                  <Badge tone={statusTone(u.status)} withDot>
+                  <Badge status={statusTone(u.status)} dot>
                     {u.status}
                   </Badge>
                 </TD>
-                <TD className="text-foreground-muted">{u.lastLogin}</TD>
+                <TD className="text-ink-muted">{u.lastLogin}</TD>
               </TR>
             ))}
           </tbody>

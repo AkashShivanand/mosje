@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { LogOut, X } from "lucide-react";
 import { navForRole } from "@/lib/smile-admin/nav";
 import { useApp } from "@/store/smile-admin/app-context";
 import { cn, initials } from "@/lib/smile-admin/utils";
 import { ROLE_LABELS } from "@/lib/smile-admin/roles";
+import { Icon } from "@mosje/design-system";
 
 export function MobileNav() {
   const pathname = usePathname();
@@ -90,7 +90,7 @@ export function MobileNav() {
             onClick={() => setMobileNavOpen(false)}
             className="ml-auto grid h-9 w-9 shrink-0 place-items-center rounded-md text-white/80 hover:bg-white/10"
           >
-            <X className="h-5 w-5" />
+            <Icon name="close" size={20} />
           </button>
         </div>
 
@@ -100,10 +100,10 @@ export function MobileNav() {
             {initials(account.name)}
           </div>
           <div className="min-w-0 leading-tight">
-            <div className="truncate text-body-2 font-semibold text-foreground">
+            <div className="truncate text-body-2 font-semibold text-ink">
               {account.name}
             </div>
-            <div className="truncate text-label-3 text-foreground-muted">
+            <div className="truncate text-label-3 text-ink-muted">
               {ROLE_LABELS[account.role]}
             </div>
           </div>
@@ -114,7 +114,7 @@ export function MobileNav() {
           {groups.map((group, gi) => (
             <div key={gi} className="mb-md">
               {group.label ? (
-                <div className="px-md pb-1 pt-md text-label-3 font-semibold uppercase tracking-[0.12em] text-foreground-hint">
+                <div className="px-md pb-1 pt-md text-label-3 font-semibold uppercase tracking-[0.12em] text-ink-hint">
                   {group.label}
                 </div>
               ) : null}
@@ -123,7 +123,7 @@ export function MobileNav() {
                   const active =
                     pathname === item.href ||
                     (item.href !== "/portals/smile-admin/dashboard" && pathname.startsWith(item.href));
-                  const Icon = item.icon;
+                  const iconName = item.icon;
                   return (
                     <li key={item.href}>
                       <Link
@@ -133,16 +133,10 @@ export function MobileNav() {
                           "relative flex min-h-[44px] items-center gap-md rounded-md px-md py-2 text-body-2 font-medium transition-colors",
                           active
                             ? "bg-primary-50 text-primary"
-                            : "text-foreground-muted hover:bg-neutral-50 hover:text-foreground",
+                            : "text-ink-muted hover:bg-neutral-50 hover:text-ink",
                         )}
                       >
-                        <Icon
-                          aria-hidden
-                          className={cn(
-                            "h-4 w-4 shrink-0",
-                            active ? "text-primary" : "text-foreground-hint",
-                          )}
-                        />
+                        <Icon name={iconName} aria-hidden className={cn( "h-4 w-4 shrink-0", active ? "text-primary" : "text-ink-hint", )} />
                         <span className="flex-1 truncate">{item.label}</span>
                         {item.badge ? (
                           <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-danger px-1 text-label-3 font-bold text-white">
@@ -172,10 +166,10 @@ export function MobileNav() {
             }}
             className="flex w-full items-center gap-md rounded-md px-md py-2 text-body-2 font-semibold text-danger hover:bg-danger-50"
           >
-            <LogOut className="h-4 w-4" />
+            <Icon name="logout" size={16} />
             Sign out
           </button>
-          <div className="mt-sm flex items-center gap-sm px-md text-label-3 text-foreground-hint">
+          <div className="mt-sm flex items-center gap-sm px-md text-label-3 text-ink-hint">
             <span className="live-dot" aria-hidden />
             All systems online · v1.0.0
           </div>

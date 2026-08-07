@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { X } from "lucide-react";
 import { PageLayout } from "@/components/website/layout/PageLayout";
+import { Icon } from "@mosje/design-system";
 
 interface GalleryImage {
   src: string;
@@ -93,7 +93,7 @@ export function GalleryClient() {
               aria-label="Close image viewer"
               className="absolute -top-3 -right-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-ink shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-gov-blue focus-visible:ring-offset-2"
             >
-              <X className="h-5 w-5" aria-hidden="true" />
+              <Icon name="close" size={20} aria-hidden="true" />
             </button>
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-surface-muted">
               <Image

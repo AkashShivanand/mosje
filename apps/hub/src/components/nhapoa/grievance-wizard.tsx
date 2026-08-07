@@ -2,15 +2,16 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowRight, ArrowLeft, CheckCircle2, ShieldCheck, UploadCloud, Eye, UserRound, Users } from "lucide-react";
 import { Button, Field, Fieldset, TextInput, Textarea, Select, RadioRow, Checkbox, Stepper, Card } from "@/components/nhapoa/ui";
 import { GRIEVANCE_TYPES, SUBMISSION_ROLES } from "@/lib/nhapoa/citizen-data";
 import { STATES, DISTRICTS } from "@/lib/nhapoa/store/seed";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import type { CaseType, CaseSource, ComplainantRole } from "@/lib/nhapoa/store/types";
+import { Icon } from "@mosje/design-system";
 
 const STEPS = ["Grievance Registration", "Informer Details", "Victim Details", "Grievance Details", "Review & Submit"];
-const ROLE_ICON = { Informer: Eye, Victim: UserRound, NGO: Users } as const;
+/** Material Symbols name per submission role. */
+const ROLE_ICON = { Informer: "visibility", Victim: "person", NGO: "group" } as const;
 
 interface WizardData {
   type: string;
@@ -93,7 +94,7 @@ export function GrievanceWizard({
   if (refNo) {
     return (
       <Card className="mx-auto max-w-xl p-10 text-center">
-        <CheckCircle2 className="mx-auto h-14 w-14 text-approve" />
+        <Icon name="check_circle" size={56} className="mx-auto text-approve" />
         <h1 className="mt-4 text-2xl font-bold text-ink">Grievance submitted</h1>
         <p className="mt-2 text-sm text-ink-muted">The grievance has been registered. Save the reference ID to track its progress.</p>
         <p className="mt-5 rounded-lg bg-surface-muted px-4 py-3 font-mono text-lg font-bold text-navy">{refNo}</p>
@@ -131,7 +132,7 @@ export function GrievanceWizard({
               <p className="mb-3 text-xs font-bold uppercase tracking-wide text-ink-hint">Registration of Grievance By</p>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 {SUBMISSION_ROLES.map((r) => {
-                  const Icon = ROLE_ICON[r.id as keyof typeof ROLE_ICON];
+                  const iconName = ROLE_ICON[r.id as keyof typeof ROLE_ICON];
                   const active = d.role === r.id;
                   return (
                     <button
@@ -141,7 +142,7 @@ export function GrievanceWizard({
                       onClick={() => set("role", r.id)}
                       className={`rounded-xl border p-4 text-left transition-colors ${active ? "border-navy bg-brandwash" : "border-line hover:border-navy/30"}`}
                     >
-                      <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${active ? "bg-navy text-white" : "bg-navy/10 text-navy"}`}><Icon className="h-5 w-5" /></span>
+                      <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${active ? "bg-navy text-white" : "bg-navy/10 text-navy"}`}><Icon name={iconName} size={20} /></span>
                       <p className="mt-3 text-sm font-bold text-ink">{r.label}</p>
                       <p className="mt-1 text-xs text-ink-muted">{r.desc}</p>
                     </button>
@@ -159,7 +160,7 @@ export function GrievanceWizard({
                       {otpSent ? "Verify" : "Send OTP"}
                     </Button>
                   ) : (
-                    <span className="inline-flex items-center gap-1 rounded-lg bg-approve-bg px-3 text-sm font-semibold text-approve-fg"><CheckCircle2 className="h-4 w-4" /> Verified</span>
+                    <span className="inline-flex items-center gap-1 rounded-lg bg-approve-bg px-3 text-sm font-semibold text-approve-fg"><Icon name="check_circle" size={16} /> Verified</span>
                   )}
                 </div>
               </Field>
@@ -202,7 +203,7 @@ export function GrievanceWizard({
             <div className="sm:col-span-2">
               <p className="mb-1.5 text-sm font-medium text-ink">Supporting Documents</p>
               <button type="button" onClick={() => set("documents", [...d.documents, `evidence-${d.documents.length + 1}.pdf`])} className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-navy/30 bg-white px-4 py-6 text-sm font-semibold text-navy hover:bg-navy/5">
-                <UploadCloud className="h-5 w-5" /> Add a document (max 5 MB · PDF/JPG/PNG)
+                <Icon name="cloud_upload" size={20} /> Add a document (max 5 MB · PDF/JPG/PNG)
               </button>
               {d.documents.map((f) => <p key={f} className="mt-2 rounded bg-surface-muted px-3 py-1.5 text-xs text-ink-muted">{f}</p>)}
             </div>
@@ -216,7 +217,7 @@ export function GrievanceWizard({
               <p className="mt-1 text-sm text-ink-muted">Please review all details carefully. You will not be able to edit after submission.</p>
             </div>
             <div className="flex items-start gap-2 rounded-lg bg-await-bg/60 px-4 py-3 text-sm text-await-fg">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />
+              <Icon name="verified_user" size={16} className="mt-0.5 shrink-0" />
               Once submitted, the details of your grievance cannot be modified. Please verify everything is accurate before proceeding.
             </div>
             <ReviewBlock title="Informer Details" rows={[["Full Name", d.infName], ["Mobile", d.infMobile && `+91 ${d.infMobile}`], ["Location", [d.infDistrict, d.infState].filter(Boolean).join(", ")]]} />
@@ -238,11 +239,11 @@ export function GrievanceWizard({
 
         <div className="mt-8 flex items-center justify-between border-t border-line pt-6">
           <Button type="button" variant="outline" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}>
-            <ArrowLeft className="h-4 w-4" /> Back
+            <Icon name="arrow_back" size={16} /> Back
           </Button>
           {step < 4 ? (
             <Button type="button" onClick={() => canNext() && setStep((s) => s + 1)} disabled={!canNext()}>
-              Save and Continue <ArrowRight className="h-4 w-4" />
+              Save and Continue <Icon name="arrow_forward" size={16} />
             </Button>
           ) : (
             <Button type="button" onClick={submit} disabled={!d.declared}>Submit Grievance</Button>
