@@ -14,7 +14,8 @@ export interface InputProps
  * MoSJE / SAMAVESH Input atom.
  *
  * A native `<input>` styled on the token contract. Pair with `FormField` for an
- * accessible label, hint, and error message. Min height 44px (WCAG 2.2 target size).
+ * accessible label, hint, and error message. Min height 44px — past the 24px
+ * Level AA minimum (SC 2.5.8) and meeting the 44px Level AAA size (SC 2.5.5).
  */
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   function Input({ invalid = false, className, type = "text", ...rest }, ref) {

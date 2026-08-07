@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Callout, StatusBadge } from "@/components/design-system/docs-kit/index";
 
 export const metadata: Metadata = {
-  title: "Governance — SAMAVESH Design System",
+  title: "Governance",
   description:
     "How SAMAVESH is governed — the component lifecycle, the RFC process for proposing components, our semantic versioning policy, and the deprecation window.",
 };

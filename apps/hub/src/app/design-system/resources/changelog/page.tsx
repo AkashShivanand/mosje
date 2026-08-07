@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Callout } from "@/components/design-system/docs-kit/index";
 
 export const metadata: Metadata = {
-  title: "Changelog — SAMAVESH Design System",
+  title: "Changelog",
   description:
     "Every release of the SAMAVESH design system — what was added, changed, and fixed in each version.",
 };
@@ -22,9 +22,55 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.9.0",
+    date: "2026-08-06",
+    current: true,
+    changes: [
+      { kind: "Added", text: "SLA Progress Indicator — Right to Service Act deadline tracking" },
+      { kind: "Added", text: "Identity inputs — Aadhaar, OTP and PAN, with per-format masking and validation" },
+      { kind: "Added", text: "ApprovalTimeline, DeclarationCheckbox and GeoPhotoInput" },
+      { kind: "Added", text: "PasswordInput backing the existing barrel export" },
+      { kind: "Added", text: "UX4G 3.0 parity layer — semantic spacing roles, display font family, shadow ramp" },
+      { kind: "Changed", text: "Status colours moved to the 700 ramp step: success, warning and danger text on their tonal chips now meet WCAG AA (all four pairs previously shipped between 2.6:1 and 3.8:1)" },
+      { kind: "Changed", text: "The brand contrast gate now covers status-on-tonal pairings, so this class of regression fails the build" },
+      { kind: "Changed", text: "Type sizes are expressed in rem so they honour the browser's font-size setting" },
+      { kind: "Fixed", text: "Contrast swept across every colour mode and theme, not just the default" },
+    ],
+  },
+  {
+    version: "v0.8.0",
+    date: "2026-07-16",
+    changes: [
+      { kind: "Added", text: "NHAPOA (SAMBAL) portal built on the shared system — all 8 roles" },
+      { kind: "Changed", text: "Token-lint gate made real: recursive glob, and 48 raw hex values tokenised" },
+      { kind: "Fixed", text: "--ds-* aliases re-resolved inside [data-color-mode] blocks" },
+    ],
+  },
+  {
+    version: "v0.7.0",
+    date: "2026-06-25",
+    changes: [
+      { kind: "Added", text: "White-label brand packs, gated by an automated WCAG contrast test" },
+      { kind: "Added", text: "Data-visualisation layer — categorical, sequential and diverging chart tokens" },
+      { kind: "Added", text: "Lightbox, MediaGalleryInput, FormCard and Tabs" },
+      { kind: "Added", text: "Page patterns documentation" },
+      { kind: "Changed", text: "Upgraded to Tailwind v4 with Turbopack" },
+    ],
+  },
+  {
+    version: "v0.6.0",
+    date: "2026-06-13",
+    changes: [
+      { kind: "Added", text: "Portal component variants — Badge v2, Chip dropdown, Radio Card, Search sm" },
+      { kind: "Added", text: "Info palette, corrected neutrals, responsive type scale" },
+      { kind: "Changed", text: "Portal DS merged into SAMAVESH tokens; t-shirt size scale adopted" },
+      { kind: "Changed", text: "design-system package reorganised by functional category" },
+      { kind: "Fixed", text: "Portal-wide spacing — the --ds-space-* tokens were never defined" },
+    ],
+  },
+  {
     version: "v0.5.0",
     date: "2026-06-12",
-    current: true,
     changes: [
       { kind: "Added", text: "AppSwitcher with searchable panel, color-mode swatches, dev-mode toggle" },
       { kind: "Added", text: "FormField, Input, Textarea, Select with full accessibility wiring" },

@@ -131,7 +131,7 @@ export default function InputPage(): React.JSX.Element {
           A single-line text field built on the native <code>&lt;input&gt;</code> element, styled on the token
           contract. It accepts every native input attribute (<code>type</code>, <code>placeholder</code>,{" "}
           <code>disabled</code>, <code>maxLength</code>, …) and adds a single <code>invalid</code> prop for the
-          error state. Its minimum height is 44px to satisfy the WCAG 2.2 target-size guideline. In practice you
+          error state. Its minimum height is 44px — comfortably past the 24×24px Level AA minimum (SC 2.5.8) and meeting the 44×44px Level AAA size (SC 2.5.5). In practice you
           rarely use <code>Input</code> on its own — wrap it in a <a href="#form-field">FormField</a> so the label
           and accessibility wiring come for free.
         </p>

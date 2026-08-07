@@ -7,7 +7,7 @@ import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 export const metadata: Metadata = {
   title: "Accessibility",
   description:
-    "Accessibility is the foundation of SAMAVESH — WCAG 2.2 AA + GIGW, the POUR principles, and practical checklists for designers and developers.",
+    "The accessibility baseline for SAMAVESH — WCAG 2.1 AA + GIGW, the POUR principles, and practical checklists for designers and developers.",
 };
 
 const WIDGET_IMPORT_SNIPPET = `import { UX4GAccessibilityWidget } from "@mosje/design-system";
@@ -22,9 +22,9 @@ export default function AccessibilityPage(): React.JSX.Element {
     <article className="ds-prose">
       <h1>Accessibility</h1>
       <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
-        Accessibility is not a feature — it&apos;s the foundation. These are
-        government services that every citizen must be able to use, regardless of
-        ability, device or connection.
+        These are government services. Every citizen must be able to use them,
+        whatever their ability, device or connection — so accessibility is a
+        release requirement here, not a later pass.
       </p>
       <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
         <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.accessibility)} target="_blank" rel="noopener noreferrer">
@@ -33,17 +33,20 @@ export default function AccessibilityPage(): React.JSX.Element {
       </div>
 
       <section aria-labelledby="standard" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
-        <h2 id="standard">WCAG 2.2 AA + GIGW</h2>
+        <h2 id="standard">WCAG 2.1 AA + GIGW</h2>
         <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
-          <strong>WCAG 2.2</strong> (Web Content Accessibility Guidelines) is the
+          <strong>WCAG 2.1</strong> (Web Content Accessibility Guidelines) is the
           international standard for accessible digital content. Each guideline
           has three conformance levels — A, AA and AAA. SAMAVESH targets{" "}
           <strong>AA</strong>, the level expected of public services worldwide.
+          Individual criteria introduced in <strong>WCAG 2.2</strong> — target
+          size, for one — are adopted where they are already met; that is not a
+          claim of full 2.2 conformance, which has not been audited.
         </p>
         <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
           <strong>GIGW</strong> (Guidelines for Indian Government Websites and
           Apps) builds on WCAG and is the national standard for government
-          digital properties in India. Meeting WCAG 2.2 AA and GIGW is{" "}
+          digital properties in India. Meeting WCAG 2.1 AA and GIGW is{" "}
           <strong>legally required</strong> for Indian government websites — it
           is not optional, and it is the baseline every MoSJE property must
           clear before it ships.
@@ -183,8 +186,9 @@ export default function AccessibilityPage(): React.JSX.Element {
             3:1 for large text and meaningful icons.
           </li>
           <li>
-            <strong>Touch targets:</strong> interactive elements at least 44×44px
-            so they are easy to tap.
+            <strong>Touch targets:</strong> interactive elements at least
+            24×24px — the Level AA minimum. Form controls and the large button
+            use 44px, which is the stricter Level AAA size.
           </li>
           <li>
             <strong>Focus indicators:</strong> design a visible focus state for
@@ -246,7 +250,8 @@ export default function AccessibilityPage(): React.JSX.Element {
               {
                 criterion: "Target size",
                 level: "AA",
-                description: "Touch targets are at least 44×44px (WCAG 2.2 Target Size).",
+                description:
+                  "Targets are at least 24×24px — SC 2.5.8 Target Size (Minimum). The 44×44px figure often quoted is SC 2.5.5 Target Size (Enhanced), which is Level AAA; form controls meet it, the sm and md buttons do not.",
               },
               {
                 criterion: "Text alternatives",

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Callout } from "@/components/design-system/docs-kit/index";
 
 export const metadata: Metadata = {
-  title: "Roadmap — SAMAVESH Design System",
+  title: "Roadmap",
   description:
     "Where SAMAVESH is heading — what is shipped now (v0.5), what is coming next (v0.6), and the longer-term plan toward v1.0.",
 };

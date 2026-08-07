@@ -256,7 +256,7 @@ export default function ButtonPage(): React.JSX.Element {
             </li>
             <li>
               <strong style={{ color: "var(--ds-ink)" }}>Container</strong> — a
-              real <code>&lt;button&gt;</code> with a 44px minimum height.
+              real <code>&lt;button&gt;</code>, 32 / 40 / 48px tall by size.
             </li>
             <li>
               <strong style={{ color: "var(--ds-ink)" }}>Focus ring</strong> — a
@@ -582,7 +582,8 @@ import "@mosje/design-system/tokens.css";`}</CodeBlock>
               name: "size",
               type: '"sm" | "md" | "lg"',
               default: '"md"',
-              description: "Control size. All sizes keep a ≥44px touch target.",
+              description:
+                "Control size — 32 / 40 / 48px tall. Every size clears the 24×24px Level AA minimum; only lg reaches the 44px Level AAA target.",
             },
             {
               name: "iconLeft",
@@ -739,8 +740,9 @@ export function ApplicationForm() {
             versus generic labels.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>WCAG 2.5.8 (Target Size)</strong>{" "}
-            — a 44×44px minimum touch target is required from WCAG 2.2.
+            <strong style={{ color: "var(--ds-ink)" }}>WCAG 2.5.8 Target Size (Minimum)</strong>{" "}
+            — Level AA requires 24×24px, which every size clears. The 44×44px
+            figure belongs to 2.5.5 Target Size (Enhanced), Level AAA.
           </li>
           <li>
             <strong style={{ color: "var(--ds-ink)" }}>GOI GIGW 3.5</strong> — all

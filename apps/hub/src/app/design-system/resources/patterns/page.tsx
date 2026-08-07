@@ -19,7 +19,7 @@ import {
 import { Callout, DoDont, StatusBadge } from "@/components/design-system/docs-kit/index";
 
 export const metadata: Metadata = {
-  title: "Page Patterns — SAMAVESH Design System",
+  title: "Page Patterns",
   description:
     "Approved page-level scaffolds for MoSJE portals and websites — Dashboard, Portal Login, Form Wizard, Data Tables, and Empty States.",
 };

@@ -111,13 +111,32 @@
   font-weight: 800;
   line-height: 0.92;
   letter-spacing: -0.02em;
-  color: transparent;
-  background: linear-gradient(135deg, var(--ds-primary) 0%, #4f46e5 100%);
+  /* Solid token colour is the base, so the wordmark is legible even if the
+     clipped gradient never paints. #4f46e5 (Tailwind indigo-600) used to be the
+     second stop — an off-palette literal on the design system's own homepage,
+     which is precisely what "tokens first, never hardcode" forbids. */
+  color: var(--ds-primary);
+  background: linear-gradient(
+    135deg,
+    var(--ds-primary) 0%,
+    var(--ds-gov-navy) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0;
   max-width: 100%;
+}
+
+/* Forced-colors (Windows High Contrast) ignores background-image but honours
+   -webkit-text-fill-color, which would render the wordmark invisible. Hand the
+   text back to the system palette. */
+@media (forced-colors: active) {
+  .hero-wordmark {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: CanvasText;
+  }
 }
 
 .hero-devanagari {

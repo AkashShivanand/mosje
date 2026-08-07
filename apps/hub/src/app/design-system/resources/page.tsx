@@ -4,7 +4,7 @@ import { Callout } from "@/components/design-system/docs-kit/index";
 import { FIGMA_FILE_URL } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
-  title: "Resources — SAMAVESH Design System",
+  title: "Resources",
   description:
     "Quick links to the SAMAVESH Figma library, Storybook, GitHub, changelog, governance, contributing guide, and roadmap — plus how to get help.",
 };

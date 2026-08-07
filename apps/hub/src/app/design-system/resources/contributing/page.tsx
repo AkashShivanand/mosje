@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Callout } from "@/components/design-system/docs-kit/index";
 
 export const metadata: Metadata = {
-  title: "Contributing — SAMAVESH Design System",
+  title: "Contributing",
   description:
     "How to contribute to SAMAVESH — propose a new component, add or change a design token, run the system locally, and pass the pull-request checklist.",
 };
