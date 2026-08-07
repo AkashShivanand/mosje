@@ -47,3 +47,20 @@ library** — they are the design system's contract for machines:
 
 This is enforced as a step in `/sync-figma` and in the `design-system-guardian`
 review. Treat docs/tokens/Figma drift as a defect, not a follow-up.
+
+## Changelog freshness (enforced in CI)
+
+The changelog at `apps/hub/src/app/design-system/resources/changelog/page.tsx`
+is hand-maintained and therefore rots quietly — it once sat two months and 40
+commits behind while still badged "Current". `scripts/check-changelog-freshness.mjs`
+fails **Design System Quality** when a notable commit (feat / fix / perf, or
+anything BREAKING) has touched `packages/design-system` or `packages/tokens`
+since the newest entry and has gone unlogged past a 14-day grace window.
+Commits typed `docs` / `chore` / `test` / `style` / `ci` / `build` are ignored.
+
+- Run it locally with `npm run check:changelog`.
+- `CHANGELOG_GRACE_DAYS=<n>` widens the window for a deliberate exception.
+- `CHANGELOG_PATH=<file>` points it at a fixture — that is how the gate itself
+  is exercised, because a check nobody has watched fail cannot be trusted.
+- The CI checkout uses `fetch-depth: 0`; on a shallow clone the gate skips
+  rather than reporting a false red.

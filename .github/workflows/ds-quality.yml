@@ -5,11 +5,15 @@ on:
     branches: [main]
     paths:
       - "packages/**"
+      - "apps/hub/src/app/design-system/resources/changelog/page.tsx"
+      - "scripts/check-changelog-freshness.mjs"
       - ".stylelintrc.tokens.json"
       - ".github/workflows/ds-quality.yml"
   pull_request:
     paths:
       - "packages/**"
+      - "apps/hub/src/app/design-system/resources/changelog/page.tsx"
+      - "scripts/check-changelog-freshness.mjs"
       - ".stylelintrc.tokens.json"
       - ".github/workflows/ds-quality.yml"
 
@@ -18,6 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The changelog-freshness gate needs real history to ask
+          # "what landed since the newest entry?" — depth 1 makes it skip.
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -40,6 +48,9 @@ jobs:
 
       - name: Tokens contract test (legacy --ds-* + figma export)
         run: npm test -w @mosje/tokens
+
+      - name: Changelog freshness — notable DS changes must be logged
+        run: node scripts/check-changelog-freshness.mjs
 
       - name: Typecheck design-system
         run: npm run typecheck -w @mosje/design-system
