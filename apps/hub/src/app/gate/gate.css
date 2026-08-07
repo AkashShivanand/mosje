@@ -1,0 +1,82 @@
+/* ============================================================================
+   Gate — entrance choreography.
+
+   Why animate this at all: the gate is seen ONCE per reviewer (the cookie
+   lasts 30 days). It is the rare, first-run surface where motion earns its
+   keep — not a control someone hits fifty times a day, where any animation
+   would just be latency you added on purpose.
+
+   Why it does something: a full-bleed dark panel snapping into existence is
+   jarring, and the stagger encodes reading order — identity, then what this
+   is, then the field that actually needs you. The sequence is the page
+   explaining itself in the order you should read it.
+
+   Why CSS and not Motion/Framer: this plays during page load, exactly when
+   the main thread is busiest. CSS animations run off the main thread and stay
+   smooth; requestAnimationFrame-driven libraries drop frames under precisely
+   this load. The estate also carries no animation dependency, and a sign-in
+   wall is not the place to add one.
+   ============================================================================ */
+
+.gate {
+  /* Strong ease-out. The built-in curves are too weak to read as deliberate;
+     this one moves immediately, which is what makes an entrance feel
+     responsive rather than slow. */
+  --gate-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --gate-duration: 460ms;
+}
+
+/*
+ * Elements start displaced and transparent, and settle. Never from scale(0) —
+ * nothing in the world appears out of nothing. `both` holds the from-state
+ * through the delay so nothing flashes before its turn.
+ */
+@keyframes gate-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes gate-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.gate-reveal {
+  animation: gate-rise var(--gate-duration) var(--gate-ease) both;
+  animation-delay: var(--gate-delay, 0ms);
+}
+
+/*
+ * The atmospheric field comes up slower and on opacity alone. It is the
+ * backdrop: it should feel like the room lights coming up, not like another
+ * element arriving.
+ */
+.gate-field {
+  animation: gate-fade 900ms ease both;
+}
+
+/*
+ * Reduced motion is fewer and gentler animations, not none. Position changes
+ * are what cause discomfort, so the translate goes and a short fade stays —
+ * it still reads as a sequence without anything moving.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .gate-reveal {
+    animation: gate-fade 200ms ease both;
+    animation-delay: 0ms;
+  }
+
+  .gate-field {
+    animation: gate-fade 200ms ease both;
+  }
+}

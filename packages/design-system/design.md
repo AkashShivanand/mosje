@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-06 · System version: v1.10.0 (NEW: SlaProgressIndicator — Right to
+  Last reviewed: 2026-08-07 · System version: v1.10.0 (NEW: SlaProgressIndicator — Right to
   Service Act time-remaining, three variants, seven states including a neutral PAUSED clock and
   MISSED as distinct from BREACHED; pure logic in utils/sla.ts. v1.9.0: (Type is now sized in REM, not px: a
   reader who raises their browser's default font size without zooming now gets larger text —
@@ -114,7 +114,7 @@ Use semantic tokens — never reference primitive `--sa-color-*` values directly
 | `--ds-ink` | `#1F2428` | `#F4F3F9` | All body/heading text | Interactive elements, backgrounds |
 | `--ds-ink-muted` | `#6C757D` | `#9AA3AF` | Captions, hints, helper text | Primary content (check contrast below 16px) |
 | `--ds-surface` | `#FFFFFF` | `#1F2428` | Page and card backgrounds | Text or icon fills |
-| `--ds-danger` | `#EC5042` | `#EC5042` | Error states, destructive action labels | Decorative elements, borders on white (3.8:1 only) |
+| `--ds-danger` | `#B8382F` | `#B8382F` | Error states, destructive action labels, error text on white | Decorative fills (use `--ds-danger-tonal`) |
 | `--ds-success` | `#2E7D32` | `#4CAF50` | Success states, validation confirmation | Primary brand actions |
 | `--ds-on-primary` | `#FFFFFF` | `#FFFFFF` | Text/icons placed on solid `--ds-primary` backgrounds | Any other background |
 
@@ -126,11 +126,14 @@ Use semantic tokens — never reference primitive `--sa-color-*` values directly
 | `--ds-ink` (`#1F2428`) | `--ds-surface` (`#fff`) | **17.5:1** | ✅ Pass | All body text |
 | `--ds-ink-muted` (`#6C757D`) | `--ds-surface` (`#fff`) | **4.6:1** | ✅ Pass | Hint text, captions (≥14px only) |
 | `--ds-ink-muted` (`#6C757D`) | `--ds-surface-muted` (`#F8F9FA`) | **4.1:1** | ⚠️ Borderline | Avoid for body text; use `--ds-ink` instead |
-| `--ds-danger` (`#EC5042`) | `--ds-surface` (`#fff`) | **3.8:1** | ❌ Fail (text) | Use `--ds-danger-strong` (#B8382F, 5.8:1) for error text on white |
+| `--ds-danger` (`#B8382F`) | `--ds-surface` (`#fff`) | **5.8:1** | ✅ Pass | Error text and icons on white |
+| `--ds-danger-500` (`#EC5042`) | `--ds-surface` (`#fff`) | **3.8:1** | ❌ Fail (text) | Borders and decorative fills only — never error text |
 | `--ds-gov-yellow` (`#FFD323`) | `--ds-surface` (`#fff`) | **1.4:1** | ❌ Fail | Never use as text colour |
 | `--ds-primary` (`#0373DF`) | `--ds-surface` (`#fff`) | **4.7:1** | ✅ Pass | Link text (≥16px) |
 
-> **Critical rule:** `--ds-danger` on white fails WCAG AA for text. Always use `var(--ds-danger-strong)` (`#B8382F`, 5.8:1) when displaying red error messages on white/surface backgrounds. (Synced to Figma `Danger/700`; the old `#A11D12` is retained only as the `--ds-chart-div-neg-strong` data-viz literal.)
+> **Critical rule:** use `var(--ds-danger)` for red error text on white — it resolves to `#B8382F` (Figma `Danger/700`) at **5.8:1**, which passes AA. Do **not** reach into the ramp for `--ds-danger-500` (`#EC5042`, 3.8:1); it is a border/fill value and fails for text.
+>
+> *Corrected 2026-08-07:* this rule previously stated that `--ds-danger` fails AA and directed callers to `--ds-danger-strong`. `--ds-danger` was rebound from `red.500` to `red.700` and now passes; `--ds-danger-strong` has never been an emitted token. Verified against `packages/tokens/dist/tokens.css`. The old `#A11D12` survives only as the `--ds-chart-div-neg-strong` data-viz literal.
 
 ### D. Typography
 
@@ -245,7 +248,8 @@ graph TD
 2. **Hover** — `150ms` CSS transition (`var(--ds-duration-fast)`) with exponential ease-out (`var(--ds-easing-out)`). **Banned:** Linear or bouncy spring transitions.
 3. **Active** — Immediate visual feedback on press: scale `0.97` or slight background darkening. Confirms action register.
 4. **Focus** — `2px solid var(--ds-primary-ring)` with `2px` outline-offset. Contrast ratio against its surrounding background must be ≥ 4.5:1. Never suppress focus outlines.
-5. **Disabled** — Opacity `0.4` (`var(--ds-opacity-disabled)`). Add `pointer-events: none`, `tabindex="-1"`, `aria-disabled="true"`. **Do not use** a neutral flat fill only — combine it with reduced opacity.
+5. **Disabled** — Opacity `0.4`. Add `pointer-events: none`, `tabindex="-1"`, `aria-disabled="true"`. **Do not use** a neutral flat fill only — combine it with reduced opacity.
+   *(There is no `--ds-opacity-disabled` token yet — the value is currently hardcoded at call sites. An `opacity` scale lands in Phase 2 of the token-architecture spec.)*
 6. **Loading/Skeleton** — While data is fetching, render `<Loader />` or a skeleton placeholder using `--ds-surface-muted` with a CSS shimmer animation. Never leave an empty container with no loading signal.
 7. **Error** — Persistent state (unlike Disabled, the user must actively correct it). Show `var(--ds-danger-strong)` border + inline error message below the control. Error text requires `role="alert"` or `aria-describedby` linkage.
 
@@ -265,7 +269,7 @@ graph TD
 | Do | Don't |
 | :--- | :--- |
 | Use predefined semantic roles: `variant="primary | secondary | tonal | danger"`. | Do not create custom button classes or override backgrounds with hardcoded hex/rgba values. |
-| Use full-pill rounded shapes (`var(--ds-radius-pill)`) for action buttons. | Banned: "Ghost" buttons using a `1px` border combined with a soft, wide drop shadow. |
+| Use full-pill rounded shapes (`var(--ds-radius-full)`) for action buttons. | Banned: "Ghost" buttons using a `1px` border combined with a soft, wide drop shadow. |
 | Ensure clear label text; use `aria-label` for icon-only buttons. | Do not use decorative text gradients (`background-clip: text`) on button labels. |
 | Limit to one `primary` button per visual section. | Do not place two `primary` buttons side by side — demote one to `secondary`. |
 
@@ -381,9 +385,9 @@ Utilize the CSS `:has()` pseudo-class to style parent containers dynamically bas
 
 | Tier | Prefix | Examples | Who uses it |
 |------|--------|---------|-------------|
-| **1. Primitives** | `--sa-color-*` | `--sa-color-blue-500: #0373DF` | Only referenced inside `tokens.css` |
+| **1. Primitives** | `--sa-color-*` | `--sa-color-primaryScale-500: #0373DF` | Only referenced inside `tokens.css` |
 | **2. Semantic** | `--ds-*` | `--ds-primary`, `--ds-danger`, `--ds-ink` | All component and page code |
-| **3. Component** | `--ds-btn-*`, `--ds-input-*` | `--ds-btn-radius`, `--ds-input-height` | Advanced per-component overrides only |
+| **3. Component** | `--sa-button-*`, `--sa-card-*`, `--sa-badge-*` | `--sa-card-radius`, `--sa-badge-beta-bg` | Advanced per-component overrides only |
 
 > **Caution:** Only ever reference **semantic tokens** (`--ds-*`) in component and page code. Referencing `--sa-color-*` primitives directly couples your component to the specific brand ramp and will break dark mode and high-contrast themes.
 
@@ -454,7 +458,7 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 **Borders:**
 - `--ds-border` — Default subtle divider
 - `--ds-border-strong` — Prominent dividers, table headers
-- `--ds-border-control` — Input/form control borders
+- `--ds-border-strong` — Input/form control borders, table headers
 
 **Status:**
 - `--ds-success`, `--ds-success-tonal`
@@ -488,7 +492,7 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 | `--ds-radius-xs` | `4px` | Focus rings, code snippets |
 | `--ds-radius-sm` | `8px` | Input fields, small buttons |
 | `--ds-radius-md` | `12px` | Cards, containers |
-| `--ds-radius-pill` | `9999px` | Action buttons, chips |
+| `--ds-radius-full` | `999px` | Action buttons, chips (pill shape) |
 
 ### Elevation (Shadow) Tokens
 
@@ -510,8 +514,8 @@ shadow reads as depth, a black one reads as dirt.
 | Token | Value | Usage |
 |-------|-------|-------|
 | `--ds-duration-fast` | `150ms` | Hover state transitions |
-| `--ds-duration-base` | `300ms` | Panel open/close |
-| `--ds-duration-slow` | `500ms` | Page-level transitions |
+| `--ds-duration-base` | `250ms` | Panel open/close |
+| `--ds-duration-slow` | `400ms` | Page-level transitions |
 
 ---
 
@@ -532,6 +536,8 @@ All components are exported from `@mosje/design-system`. Import from the package
 - Use `appearance="outlined"` for the secondary action alongside a primary (e.g. Cancel next to Save).
 - Icon-only buttons: **always** provide `aria-label`.
 - **On a solid brand-colour surface** (a navy/coloured page header, hero band, banner) use `appearance="inverse"` (solid white, variant-tinted text — for the emphasized action) and `appearance="inverseOutlined"` (transparent, white border/text — for the secondary/toggle action). **Never** hand-roll `className` overrides like `bg-white text-navy` to fake this — that was a repeated anti-pattern across ~50 files before these appearances existed; use the variant instead.
+
+**Press feedback** is built in: every enabled button scales to `0.97` on `:active`, suppressed under `prefers-reduced-motion`. Colour alone tells you the button noticed; the give tells you it is listening. Do not re-add this per app, and do not increase it — 0.97 reads as a press, 0.9 reads as a toy.
 
 #### Icon
 **Purpose**: **Material Symbols Rounded** — the official SAMAVESH icon system.  

@@ -1,7 +1,7 @@
 /**
- * DS Audit: Button ✅ existing · PasswordInput ➕ added to DS this change ·
- *           FormField ✅ existing · Alert ✅ existing · EstateField ➕ app-local
- *           (shared with the hub hero) · page layout ➕ app-local.
+ * DS Audit: Button ✅ existing · PasswordInput ✅ existing · FormField ✅
+ *           existing · Alert ✅ existing · EstateField ➕ app-local (shared
+ *           with the hub hero) · page layout ➕ app-local.
  *
  * The layout is deliberately NOT added to @mosje/design-system: this is a
  * deployment access wall for the hosted prototype, not a product surface any
@@ -11,14 +11,18 @@
  * grid-and-glow field (same component as the hub hero) on a gov-navy panel, so
  * arriving here already looks like arriving at this building. Its counterpart,
  * /admin, is deliberately plain: back-of-house should not look like the door.
+ *
+ * Motion rationale lives in gate.css.
  */
 
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { DEFAULT_APPS } from "@mosje/design-system";
 import { GATE_EMBLEM_SRC, safeNextPath } from "@/lib/site-gate";
 import { EstateField } from "@/components/estate-field";
 import { unlock } from "./actions";
 import { GateForm } from "./gate-form";
+import "./gate.css";
 
 export const metadata: Metadata = {
   title: "Access — MoSJE Digital Estate",
@@ -35,6 +39,21 @@ const BEHIND_THE_DOOR = [
   { value: "33+", label: "Organisations", sub: "across the ministry" },
 ] as const;
 
+/** Reading order, in milliseconds. Short gaps — long ones read as slow. */
+const DELAY = {
+  lockup: 0,
+  pill: 70,
+  heading: 140,
+  blurb: 210,
+  stats: 280,
+  formHeading: 140,
+  form: 250,
+  footnote: 320,
+} as const;
+
+/** The stagger is driven by one custom property, so the CSS stays declarative. */
+const after = (ms: number) => ({ "--gate-delay": `${ms}ms` }) as CSSProperties;
+
 export default async function GatePage({
   searchParams,
 }: {
@@ -44,13 +63,23 @@ export default async function GatePage({
   const target = safeNextPath(next);
 
   return (
-    <main className="grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
+    <main className="gate grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
       {/* ── Threshold panel ─────────────────────────────────────────────── */}
-      <section className="relative isolate overflow-hidden bg-gov-navy px-6 py-10 text-white sm:py-12 lg:px-14 lg:py-16">
-        <EstateField tone="dark" origin="18% 8%" />
+      <section
+        className="relative isolate flex flex-col overflow-hidden bg-gov-navy
+                   px-6 py-10 text-white
+                   sm:px-10 sm:py-14
+                   lg:px-14 lg:py-16"
+      >
+        <div className="gate-field pointer-events-none absolute inset-0">
+          <EstateField tone="dark" origin="18% 8%" />
+        </div>
 
         <div className="relative flex h-full flex-col">
-          <div className="flex items-center gap-4">
+          <div
+            className="gate-reveal flex items-center gap-4"
+            style={after(DELAY.lockup)}
+          >
             {/* eslint-disable-next-line @next/next/no-img-element -- the gate
                 renders before any gated route, and next/image's /_next/image
                 endpoint sits outside the gate's asset allowlist. */}
@@ -75,16 +104,28 @@ export default async function GatePage({
           <div className="mt-10 sm:mt-14 lg:flex lg:flex-1 lg:flex-col lg:justify-center lg:py-10">
             {/* self-start is load-bearing: inside a flex column, `inline-flex`
                 blockifies and would stretch the pill to the full column. */}
-            <p className="inline-flex w-fit self-start items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/85 backdrop-blur">
+            <p
+              className="gate-reveal inline-flex w-fit self-start items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/85 backdrop-blur"
+              style={after(DELAY.pill)}
+            >
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/80" />
               Work in progress
             </p>
 
-            <h1 className="mt-6 text-balance text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl">
+            {/* Fluid down to the smallest phone and up to a wide panel, so the
+                headline never needs a breakpoint to stay on three lines. */}
+            <h1
+              className="gate-reveal mt-6 text-balance font-bold leading-[1.08] tracking-tight
+                         text-[clamp(1.75rem,1.15rem+2.4vw,2.75rem)]"
+              style={after(DELAY.heading)}
+            >
               Ministry of Social Justice &amp; Empowerment
             </h1>
 
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/75">
+            <p
+              className="gate-reveal mt-4 max-w-md text-[15px] leading-relaxed text-white/75"
+              style={after(DELAY.blurb)}
+            >
               A prototype of the unified digital estate, shared for review.
               Everything inside is illustrative and does not represent published
               government data.
@@ -93,7 +134,10 @@ export default async function GatePage({
             {/* Hidden on phones: the panel is context, the password field is the
                 job of the page, and on a 375px screen these three columns push
                 the field a full screen below the fold. */}
-            <dl className="mt-10 hidden max-w-lg grid-cols-3 gap-x-4 border-t border-white/15 pt-8 sm:grid">
+            <dl
+              className="gate-reveal mt-10 hidden max-w-lg grid-cols-3 gap-x-4 border-t border-white/15 pt-8 sm:grid"
+              style={after(DELAY.stats)}
+            >
               {BEHIND_THE_DOOR.map(({ value, label, sub }) => (
                 <div key={label}>
                   <dd className="text-3xl font-bold tracking-tight">{value}</dd>
@@ -109,19 +153,33 @@ export default async function GatePage({
       </section>
 
       {/* ── The door ────────────────────────────────────────────────────── */}
-      <section className="flex items-center justify-center bg-surface px-6 py-14 lg:px-14">
+      <section className="flex items-center justify-center bg-surface px-6 py-14 sm:px-10 lg:px-14">
         <div className="w-full max-w-sm">
-          <h2 className="text-2xl font-bold tracking-tight text-ink">
+          <h2
+            className="gate-reveal text-2xl font-bold tracking-tight text-ink"
+            style={after(DELAY.formHeading)}
+          >
             Enter the access password
           </h2>
-          <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+          <p
+            className="gate-reveal mt-2 text-sm leading-relaxed text-ink-muted"
+            style={after(DELAY.formHeading)}
+          >
             Reviewers were sent this with the link. It is not a portal login —
             those come later, inside.
           </p>
 
-          <GateForm action={unlock} next={target} invalid={error === "1"} />
+          <div
+            className="gate-reveal"
+            style={after(DELAY.form)}
+          >
+            <GateForm action={unlock} next={target} invalid={error === "1"} />
+          </div>
 
-          <p className="mt-10 border-t border-border pt-6 text-xs leading-relaxed text-ink-hint">
+          <p
+            className="gate-reveal mt-10 border-t border-border pt-6 text-xs leading-relaxed text-ink-hint"
+            style={after(DELAY.footnote)}
+          >
             Not for public distribution. If you need access, ask the person who
             shared the link.
           </p>
