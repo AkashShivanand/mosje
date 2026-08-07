@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, FileText } from "lucide-react";
-import { buttonClasses, Card } from "@mosje/design-system";
+import { Card, Icon, buttonClasses } from "@mosje/design-system";
 
 interface DocumentItem {
   title: string;
@@ -65,7 +64,7 @@ export function RecentDocuments() {
                   className="flex items-start gap-4 border-b border-gray-200 py-4 first:pt-0"
                 >
                   <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-gov-blue/10 text-gov-blue">
-                    <FileText className="h-5 w-5" />
+                    <Icon name="description" size={20} />
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="text-[15px] font-medium leading-snug text-ink">
@@ -88,7 +87,7 @@ export function RecentDocuments() {
               className={buttonClasses("primary", "text", "sm", "mt-6")}
             >
               View All Documents
-              <span className="ds-btn__icon" aria-hidden="true"><ArrowRight className="h-4 w-4" /></span>
+              <span className="ds-btn__icon" aria-hidden="true"><Icon name="arrow_forward" size={16} /></span>
             </Link>
           </div>
 
@@ -125,7 +124,7 @@ export function RecentDocuments() {
                       aria-label={`Explore services for ${persona.label}`}
                     >
                       <span className="ds-btn__icon" aria-hidden="true">
-                        <ArrowRight className="h-5 w-5 text-gov-blue transition-transform group-hover:translate-x-1" />
+                        <Icon name="arrow_forward" size={20} className="text-gov-blue transition-transform group-hover:translate-x-1" />
                       </span>
                     </Link>
                   </div>

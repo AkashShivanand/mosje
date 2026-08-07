@@ -3,12 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { DemoFab } from "@mosje/design-system";
-import { Eye, EyeOff, Loader2, Lock, Phone, ShieldCheck } from "lucide-react";
-import { Button } from "@/components/smile-admin/ui/button";
-import { Input } from "@/components/smile-admin/ui/input";
-import { Label } from "@/components/smile-admin/ui/label";
-import { Checkbox } from "@/components/smile-admin/ui/checkbox";
+import { Button, Checkbox, DemoFab, Icon, Input, Label } from "@mosje/design-system";
 import { useApp } from "@/store/smile-admin/app-context";
 
 const DEMO_ACCOUNTS = [
@@ -88,8 +83,8 @@ export default function LoginPage() {
           <span className="text-label-3 font-bold tracking-[0.16em]">MoSJE</span>
         </div>
         <div className="leading-tight">
-          <div className="text-title-2 font-bold text-foreground">SMILE Admin</div>
-          <div className="text-label-3 text-foreground-muted">
+          <div className="text-title-2 font-bold text-ink">SMILE Admin</div>
+          <div className="text-label-3 text-ink-muted">
             Ministry of Social Justice &amp; Empowerment
           </div>
         </div>
@@ -97,13 +92,13 @@ export default function LoginPage() {
 
       <header className="space-y-xs">
         <div className="inline-flex items-center gap-xs rounded-full border border-primary-100 bg-primary-50 px-sm py-0.5 text-label-3 font-semibold uppercase tracking-[0.1em] text-primary">
-          <ShieldCheck aria-hidden className="h-3 w-3" />
+          <Icon name="verified_user" size={12} aria-hidden />
           Secure sign in
         </div>
-        <h1 className="text-headline-2 font-bold tracking-tight text-foreground">
+        <h1 className="text-headline-2 font-bold tracking-tight text-ink">
           Welcome back
         </h1>
-        <p className="text-body-2 text-foreground-muted">
+        <p className="text-body-2 text-ink-muted">
           Sign in to manage beggary rehabilitation operations.
         </p>
       </header>
@@ -126,7 +121,7 @@ export default function LoginPage() {
             placeholder="name@example.gov.in or 9876543210"
             value={mobile}
             onChange={(e) => setMobile(e.target.value)}
-            leftIcon={<Phone aria-hidden className="h-4 w-4" />}
+            leftIcon={<Icon name="call" size={16} aria-hidden />}
             autoComplete="username"
             aria-invalid={error ? true : undefined}
             aria-required
@@ -152,19 +147,19 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter password"
             enterKeyHint="go"
-            leftIcon={<Lock aria-hidden className="h-4 w-4" />}
+            leftIcon={<Icon name="lock" size={16} aria-hidden />}
             rightIcon={
               <button
                 type="button"
                 onClick={() => setShow(!show)}
                 aria-label={show ? "Hide password" : "Show password"}
                 aria-pressed={show}
-                className="text-foreground-hint hover:text-foreground"
+                className="text-ink-hint hover:text-ink"
               >
                 {show ? (
-                  <EyeOff aria-hidden className="h-4 w-4" />
+                  <Icon name="visibility_off" size={16} aria-hidden />
                 ) : (
-                  <Eye aria-hidden className="h-4 w-4" />
+                  <Icon name="visibility" size={16} aria-hidden />
                 )}
               </button>
             }
@@ -174,10 +169,10 @@ export default function LoginPage() {
           />
         </div>
 
-        <label className="flex items-center gap-sm text-body-3 text-foreground-muted">
+        <label className="flex items-center gap-sm text-body-3 text-ink-muted">
           <Checkbox
             checked={remember}
-            onCheckedChange={(c) => setRemember(c === true)}
+            onChange={(e) => setRemember(e.target.checked === true)}
           />
           Keep me signed in for 30 days
         </label>
@@ -201,7 +196,7 @@ export default function LoginPage() {
         >
           {busy ? (
             <>
-              <Loader2 aria-hidden className="h-4 w-4 animate-spin" />
+              <Icon name="progress_activity" size={16} aria-hidden className="animate-spin" />
               Signing in…
             </>
           ) : (
@@ -215,7 +210,7 @@ export default function LoginPage() {
           <div className="w-full border-t border-stroke-200" />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-white px-sm text-label-3 font-semibold uppercase tracking-[0.12em] text-foreground-hint">
+          <span className="bg-white px-sm text-label-3 font-semibold uppercase tracking-[0.12em] text-ink-hint">
             Quick test accounts · Password@123
           </span>
         </div>
@@ -234,12 +229,12 @@ export default function LoginPage() {
             aria-label={`Use ${q.label} test account, mobile ${q.mobile}`}
             className="group flex items-center justify-between gap-sm rounded-md border border-stroke-200 bg-white px-sm py-1.5 text-body-3 transition-all hover:-translate-y-px hover:border-primary/60 hover:bg-primary-50/40 hover:shadow-xs"
           >
-            <span className="truncate font-semibold text-foreground group-hover:text-primary">
+            <span className="truncate font-semibold text-ink group-hover:text-primary">
               {q.label}
             </span>
             <span
               aria-hidden
-              className="shrink-0 font-mono text-label-3 text-foreground-hint"
+              className="shrink-0 font-mono text-label-3 text-ink-hint"
             >
               {q.mobile}
             </span>
@@ -247,7 +242,7 @@ export default function LoginPage() {
         ))}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-sm border-t border-stroke-100 pt-md text-label-3 text-foreground-hint">
+      <div className="flex flex-wrap items-center justify-between gap-sm border-t border-stroke-100 pt-md text-label-3 text-ink-hint">
         <span>256-bit TLS</span>
         <span>GIGW 3.0</span>
         <span>v1.0.0 · Build 2026.05.15b</span>

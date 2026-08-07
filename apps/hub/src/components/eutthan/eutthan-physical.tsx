@@ -1,10 +1,10 @@
 "use client";
 
-import { Download, Upload, Plus, ChevronDown, Search } from "lucide-react";
 import Link from "next/link";
 import { portalLink } from "./eutthan-shared";
 import { tableScreens } from "@/lib/eutthan/portal-data";
 import { Pagination } from "./eutthan-cells";
+import { Icon } from "@mosje/design-system";
 
 export function PhysicalProgressPage() {
   const screen = tableScreens["/ministry/physical-progress-data"]!;
@@ -22,10 +22,10 @@ export function PhysicalProgressPage() {
           }}
         >
           <button type="button" className="icon-button">
-            <Download size={14} /> Download Sample Template
+            <Icon name="download" size={14} /> Download Sample Template
           </button>
           <button type="button" className="icon-button">
-            <Upload size={14} /> Import Achievements Data
+            <Icon name="upload" size={14} /> Import Achievements Data
           </button>
           <Link
             href={portalLink("/ministry/physical-progress-data/add")}
@@ -37,19 +37,19 @@ export function PhysicalProgressPage() {
               textDecoration: "none",
             }}
           >
-            <Plus size={16} /> Add Progress +
+            <Icon name="add" size={16} /> Add Progress +
           </Link>
         </div>
       </div>
       <div className="data-card">
         <div className="toolbar" style={{ flexWrap: "wrap" }}>
           <div className="search-field">
-            <Search size={16} aria-hidden="true" />
+            <Icon name="search" size={16} aria-hidden="true" />
             <input placeholder={screen.searchPlaceholder} aria-label="Search records" />
           </div>
           {screen.filters?.map((f) => (
             <button key={f} type="button" className="filter-button">
-              {f} <ChevronDown size={14} />
+              {f} <Icon name="keyboard_arrow_down" size={14} />
             </button>
           ))}
         </div>

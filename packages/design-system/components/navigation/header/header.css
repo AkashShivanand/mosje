@@ -98,7 +98,7 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--ds-neutral-1100);
-  background-color: var(--sa-badge-beta-bg);
+  background-color: var(--sa-cmp-badge-beta-bg);
   border-radius: var(--ds-radius-xxs, 2px);
   padding: 2px 4px;
 }

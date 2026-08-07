@@ -1,9 +1,9 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { portalLink } from "./eutthan-shared";
 import { formDefs } from "@/lib/eutthan/portal-data";
+import { Icon } from "@mosje/design-system";
 
 export function FormPage({ path }: { path: string }) {
   const form = formDefs[path];
@@ -25,7 +25,7 @@ export function FormPage({ path }: { path: string }) {
             marginBottom: 12,
           }}
         >
-          <ArrowLeft size={15} /> Back
+          <Icon name="arrow_back" size={15} /> Back
         </Link>
         <p style={{ color: "var(--text-muted)" }}>
           Form not configured for: {path}
@@ -50,7 +50,7 @@ export function FormPage({ path }: { path: string }) {
             borderRadius: 8,
           }}
         >
-          <ArrowLeft size={15} /> Back
+          <Icon name="arrow_back" size={15} /> Back
         </Link>
         <h2 className="page-title">{form.title}</h2>
       </div>

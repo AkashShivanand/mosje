@@ -153,3 +153,60 @@
   padding-top: 8px;
   padding-bottom: 8px;
 }
+
+/* ----------------------------------------------------------------------------
+   Input adornments (leftIcon / rightIcon)
+   Only emitted when <Input> is given an icon; a bare input renders no wrapper.
+   The icon sits on top of the field rather than inside a bordered flex row, so
+   the focus ring stays on the <input> itself and none of the states above need
+   to be duplicated for a wrapper.
+   -------------------------------------------------------------------------- */
+.ds-input-shell {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.ds-input-shell__icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-ink-muted);
+  pointer-events: none;
+}
+
+/* The right slot is usually an interactive control (password reveal, clear),
+   so it must remain clickable — only the decorative left slot opts out. */
+.ds-input-shell__icon--right {
+  pointer-events: auto;
+}
+
+.ds-input-shell__icon--left {
+  left: 12px;
+}
+
+.ds-input-shell__icon--right {
+  right: 12px;
+}
+
+/* Pad the text away from whichever adornment is present. 12px gutter + 20px
+   icon + 8px gap. */
+.ds-input--has-left {
+  padding-left: 40px;
+}
+
+.ds-input--has-right {
+  padding-right: 40px;
+}
+
+/* Tint the leading icon to match the field's focus/error state. */
+.ds-input-shell:focus-within .ds-input-shell__icon--left {
+  color: var(--ds-primary);
+}
+
+.ds-input-shell:has(.ds-input[aria-invalid="true"]) .ds-input-shell__icon--left {
+  color: var(--ds-danger);
+}

@@ -1,0 +1,57 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — Tooltip
+   Portalled hint bubble. Positioned with `position: fixed` from JS-measured
+   coordinates, so no ancestor overflow can clip it.
+   ============================================================================ */
+
+.ds-tooltip {
+  position: fixed;
+  /* Above every overlay in the DS so a tooltip inside a Modal (50) or a
+     Lightbox (80) is not painted behind it. There is no --ds-z-* scale yet;
+     the DS convention is a literal, so keep this in step with those files. */
+  z-index: 90;
+  max-width: 16rem;
+  padding: 6px 10px;
+  border-radius: var(--ds-radius-sm, 4px);
+  background-color: var(--ds-primary-dark);
+  color: var(--ds-on-primary);
+  font-family: var(--ds-font-sans, inherit);
+  font-size: var(--ds-text-label-3, 11px);
+  line-height: var(--ds-leading-label-3, 16px);
+  font-weight: 500;
+  text-align: left;
+  box-shadow: var(--ds-shadow-md, 0 4px 12px rgb(0 0 0 / 0.15));
+  /* The bubble must never swallow a click meant for the UI beneath it; the
+     hoverable requirement is satisfied by the mouseenter handler on the box,
+     which still fires with pointer-events auto. Keep auto — `none` would break
+     WCAG 1.4.13 "hoverable". */
+  pointer-events: auto;
+  animation: ds-tooltip-in 120ms ease-out;
+}
+
+@keyframes ds-tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-tooltip {
+    animation: none;
+  }
+}
+
+/* Side modifiers are emitted for consumers that want to target a specific
+   placement (and to tag the resolved side in the DOM for tests). The offset
+   itself is applied in JS so the flip logic and the paint agree. */
+.ds-tooltip--top,
+.ds-tooltip--bottom,
+.ds-tooltip--left,
+.ds-tooltip--right {
+  /* placement handled by inline top/left */
+}

@@ -12,8 +12,8 @@ import type { RoleId } from "@/lib/nhapoa/store/types";
 /**
  * Shared admin layout shell for the 7 authenticated NHAPOA roles.
  * Takes a `roleId` string (not the role object) so server-component layouts can
- * pass it across the RSC boundary — the lucide icons in ROLES are functions and
- * cannot be serialized. Guards access: if there is no mock session, bounce to /login.
+ * pass it across the RSC boundary. Guards access: if there is no mock session,
+ * bounce to /login.
  */
 export function AdminShell({
   roleId,

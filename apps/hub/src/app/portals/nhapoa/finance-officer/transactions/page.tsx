@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { FileText, Sheet } from "lucide-react";
 import { PageHeader, SearchInput, Button, Card } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate, fmtINR } from "@/lib/nhapoa/case-helpers";
+import { Icon } from "@mosje/design-system";
 
 export default function TransactionsPage() {
   const { state } = useNhapoa();
@@ -16,7 +16,7 @@ export default function TransactionsPage() {
       <PageHeader
         title="Transaction Log"
         subtitle="All fund disbursements — non-editable reconciliation record"
-        action={<div className="flex gap-2"><Button variant="outline"><FileText className="h-4 w-4" /> PDF</Button><Button variant="outline"><Sheet className="h-4 w-4" /> Excel</Button></div>}
+        action={<div className="flex gap-2"><Button variant="outline"><Icon name="description" size={16} /> PDF</Button><Button variant="outline"><Icon name="table_chart" size={16} /> Excel</Button></div>}
       />
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
       {txns.length === 0 ? (

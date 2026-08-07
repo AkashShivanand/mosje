@@ -1,15 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { FolderOpen, ClipboardList, Users, Smartphone, MoreVertical } from "lucide-react";
-import {
-  MetricCard,
-  Select,
-  DonutChart,
-  BarChart,
-  type MetricCardChange,
-  type ChartDatum,
-} from "@mosje/design-system";
+import { BarChart, DonutChart, Icon, MetricCard, Select, type ChartDatum, type MetricCardChange } from "@mosje/design-system";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { DASHBOARD_CARDS, type DashboardMetric } from "@/lib/nmba/treatment-centre/roles";
@@ -25,10 +17,10 @@ import {
 } from "@/lib/nmba/treatment-centre/us-national-stats";
 
 const ICONS: Record<string, React.ReactNode> = {
-  folder: <FolderOpen className="h-5 w-5" />,
-  clipboard: <ClipboardList className="h-5 w-5" />,
-  users: <Users className="h-5 w-5" />,
-  smartphone: <Smartphone className="h-5 w-5" />,
+  folder: <Icon name="folder_open" size={20} />,
+  clipboard: <Icon name="assignment" size={20} />,
+  users: <Icon name="group" size={20} />,
+  smartphone: <Icon name="smartphone" size={20} />,
 };
 
 /** Trend chip per KPI: a tinted pill (value) + a muted suffix. */
@@ -90,7 +82,7 @@ function CardMenuButton() {
       aria-label="Chart options"
       className="inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-muted transition-colors hover:bg-black/5"
     >
-      <MoreVertical className="h-4 w-4" aria-hidden />
+      <Icon name="more_vert" size={16} aria-hidden />
     </button>
   );
 }

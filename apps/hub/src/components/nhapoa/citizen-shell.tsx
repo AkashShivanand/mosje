@@ -3,15 +3,14 @@
 import * as React from "react";
 import { usePathname } from "next/navigation";
 import { SidebarNav } from "@mosje/design-system";
-import { LayoutGrid, FilePlus2, LifeBuoy, FileSearch, HelpCircle } from "lucide-react";
 import { GovTopBar, GovMasthead } from "./gov-chrome";
 
 const CITIZEN_NAV = [
-  { label: "Dashboard", href: "/portals/nhapoa", icon: LayoutGrid },
-  { label: "Register Grievance", href: "/portals/nhapoa/register-grievance", icon: FilePlus2 },
-  { label: "Register Rescue", href: "/portals/nhapoa/register-rescue", icon: LifeBuoy },
-  { label: "Track Status", href: "/portals/nhapoa/track-status", icon: FileSearch },
-  { label: "Help & FAQs", href: "/portals/nhapoa/help-faqs", icon: HelpCircle },
+  { label: "Dashboard", href: "/portals/nhapoa", icon: "grid_view" },
+  { label: "Register Grievance", href: "/portals/nhapoa/register-grievance", icon: "note_add" },
+  { label: "Register Rescue", href: "/portals/nhapoa/register-rescue", icon: "support" },
+  { label: "Track Status", href: "/portals/nhapoa/track-status", icon: "find_in_page" },
+  { label: "Help & FAQs", href: "/portals/nhapoa/help-faqs", icon: "help" },
 ];
 
 /** Public citizen shell — gov chrome + sidebar + footer. No auth (all public). */

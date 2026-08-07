@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArrowRight, Calendar, Clock, MapPin, Phone, Search } from "lucide-react";
 import { UserShell } from "@/components/scw/user-shell";
 import {
   Button,
@@ -10,6 +9,7 @@ import {
 } from "@/components/scw/ui";
 import { EVENTS, EVENTS_TOTAL } from "@/lib/scw/mock-data";
 import { INDIAN_STATES } from "@/lib/scw/states";
+import { Icon } from "@mosje/design-system";
 
 export default function VolunteerDashboardPage() {
   return (
@@ -40,7 +40,7 @@ export default function VolunteerDashboardPage() {
               className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-navy shadow-sm transition-colors hover:bg-white/90"
             >
               Take the Pledge
-              <ArrowRight className="h-4 w-4" />
+              <Icon name="arrow_forward" size={16} />
             </Link>
           </div>
         </div>
@@ -73,11 +73,11 @@ export default function VolunteerDashboardPage() {
                     <div className="min-w-0">
                       <h4 className="font-bold text-ink">{ev.name}</h4>
                       <div className="mt-2 flex items-center gap-1.5 text-sm text-ink-muted">
-                        <Calendar className="h-4 w-4 shrink-0 text-ink-hint" />
+                        <Icon name="calendar_today" size={16} className="shrink-0 text-ink-hint" />
                         {ev.start}
                       </div>
                       <div className="mt-1 flex items-center gap-1.5 text-sm text-ink-muted">
-                        <MapPin className="h-4 w-4 shrink-0 text-ink-hint" />
+                        <Icon name="location_on" size={16} className="shrink-0 text-ink-hint" />
                         {ev.address}
                       </div>
                     </div>
@@ -100,7 +100,7 @@ export default function VolunteerDashboardPage() {
                 <div className="text-xs font-semibold uppercase tracking-wide text-white/80">
                   This Month
                 </div>
-                <Clock className="h-5 w-5 text-white/80" />
+                <Icon name="schedule" size={20} className="text-white/80" />
               </div>
               <div className="mt-4 text-4xl font-bold">0</div>
               <div className="mt-1 text-sm text-white/90">Hours Volunteered</div>
@@ -109,7 +109,7 @@ export default function VolunteerDashboardPage() {
             {/* Service directory */}
             <Card className="p-6">
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brandwash text-navy">
-                <Search className="h-5 w-5" />
+                <Icon name="search" size={20} />
               </div>
               <h4 className="mt-4 text-base font-bold text-ink">Browse Service Directory</h4>
               <p className="mt-2 text-sm leading-relaxed text-ink-muted">
@@ -121,7 +121,7 @@ export default function VolunteerDashboardPage() {
                 className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-navy hover:underline"
               >
                 Search Facilities
-                <ArrowRight className="h-4 w-4" />
+                <Icon name="arrow_forward" size={16} />
               </Link>
             </Card>
 
@@ -132,7 +132,7 @@ export default function VolunteerDashboardPage() {
                 The National Helpline provides guidance and field intervention 7 days a week.
               </p>
               <Button variant="saffron" className="mt-4 w-full">
-                <Phone className="h-4 w-4" />
+                <Icon name="call" size={16} />
                 Call Toll-Free 14567
               </Button>
             </Card>

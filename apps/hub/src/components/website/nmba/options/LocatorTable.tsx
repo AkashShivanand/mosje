@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Search, Navigation, MapPin } from "lucide-react";
-import { Select } from "@mosje/design-system";
+import { Icon, Search, Select } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
 import { CENTRE_TYPE_META, CENTRE_TYPE_ORDER, type CentreType, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
 import { CentreMapDynamic, centreKey, filterCentres, ALL_STATES } from "./locator-shared";
@@ -24,10 +23,15 @@ export function LocatorTable() {
     <div>
       <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
         <div className="flex flex-col gap-2.5 sm:flex-row">
-          <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted" aria-hidden />
-            <input value={query} onChange={(e) => { setQuery(e.target.value); setPage(0); }} placeholder="Search centre, area, district"
-              className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 text-[14px] outline-none focus:border-gov-blue" />
+          <div className="flex-1">
+            <Search
+              value={query}
+              onChange={(e) => { setQuery(e.target.value); setPage(0); }}
+              onClear={() => { setQuery(""); setPage(0); }}
+              size="sm"
+              placeholder="Search centre, area, district"
+              aria-label="Search centres"
+            />
           </div>
           <Select value={state} onChange={(e) => { setState(e.target.value); setPage(0); }} aria-label="State" className="sm:w-48">
             <option value="">All States</option>
@@ -76,8 +80,8 @@ export function LocatorTable() {
                     <td className="px-4 py-2.5 text-ink-muted">{c.state}</td>
                     <td className="whitespace-nowrap px-4 py-2.5 text-right">
                       <span className="inline-flex items-center gap-2">
-                        <button type="button" onClick={(e) => { e.stopPropagation(); setSelected(c); }} className="inline-flex items-center gap-1 text-[12px] font-semibold text-gov-blue hover:text-gov-blue-dark"><MapPin className="h-3.5 w-3.5" /> Map</button>
-                        <a href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-1 text-[12px] font-semibold text-gov-blue hover:text-gov-blue-dark"><Navigation className="h-3.5 w-3.5" /> Directions</a>
+                        <button type="button" onClick={(e) => { e.stopPropagation(); setSelected(c); }} className="inline-flex items-center gap-1 text-[12px] font-semibold text-gov-blue hover:text-gov-blue-dark"><Icon name="location_on" size={14} /> Map</button>
+                        <a href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-1 text-[12px] font-semibold text-gov-blue hover:text-gov-blue-dark"><Icon name="navigation" size={14} /> Directions</a>
                       </span>
                     </td>
                   </tr>

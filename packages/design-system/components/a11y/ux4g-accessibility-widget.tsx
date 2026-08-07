@@ -17,7 +17,7 @@ import * as React from "react";
  * - Framework-agnostic: injects a plain <script> (no `next/script` dependency).
  * - Idempotent: only ever loads the script once per document.
  * - The widget applies the class `.dark-mode` to <html> when its dark theme is on;
- *   this is DISTINCT from the design system's own `data-theme` / `data-color-mode`
+ *   this is DISTINCT from the design system's own `data-theme` / `data-brand`
  *   token theming — see docs/specs/samavesh-accessibility-consolidation.md.
  * - The CDN script wires almost all of its interactive controls (font size, line
  *   height, spacing, contrast, dark mode, the close button — everything except the

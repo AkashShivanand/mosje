@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { HeroSlide } from "@/types/website";
+import { Icon } from "@mosje/design-system";
 
 const SLIDES: HeroSlide[] = [
   { image: "/website/images/Banner-6.png", alt: "Banner 6" },
@@ -61,14 +61,14 @@ export function HeroCarousel() {
         aria-label="Previous slide"
         className="absolute left-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white/70 text-ink shadow transition hover:bg-white"
       >
-        <ChevronLeft className="h-6 w-6" />
+        <Icon name="keyboard_arrow_left" />
       </button>
       <button
         onClick={() => go(index + 1)}
         aria-label="Next slide"
         className="absolute right-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white/70 text-ink shadow transition hover:bg-white"
       >
-        <ChevronRight className="h-6 w-6" />
+        <Icon name="keyboard_arrow_right" />
       </button>
 
       {/* Dots */}

@@ -1,5 +1,5 @@
-import { ArrowUpRight } from "lucide-react";
 import type { SVGProps } from "react";
+import { Icon } from "@mosje/design-system";
 
 type BrandIcon = (props: SVGProps<SVGSVGElement>) => React.JSX.Element;
 
@@ -81,7 +81,10 @@ export function SocialMedia() {
 
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
           {platforms.map((platform) => {
-            const Icon = platform.icon;
+            // Named BrandGlyph, not Icon: the social logos stay inline SVGs
+            // (brand marks are not in the Material Symbols set), and a local
+            // `Icon` would shadow the DS Icon used for the CTA arrow below.
+            const BrandGlyph = platform.icon;
             return (
               <div
                 key={platform.name}
@@ -92,7 +95,7 @@ export function SocialMedia() {
                     <span
                       className={`flex h-10 w-10 items-center justify-center rounded-full ${platform.iconWrapClassName}`}
                     >
-                      <Icon
+                      <BrandGlyph
                         className={`h-5 w-5 ${platform.iconClassName}`}
                         aria-hidden="true"
                       />
@@ -108,13 +111,13 @@ export function SocialMedia() {
                     className="inline-flex items-center gap-1 rounded-lg border border-gov-blue px-3.5 py-1.5 text-[14px] font-medium text-gov-blue transition-colors hover:bg-gov-blue hover:text-white"
                   >
                     {platform.ctaLabel}
-                    <ArrowUpRight className="h-4 w-4" />
+                    <Icon name="arrow_outward" size={16} />
                   </a>
                 </div>
 
                 <div className="p-4">
                   <div className="flex h-[360px] flex-col items-center justify-center gap-3 rounded-lg bg-surface-muted">
-                    <Icon
+                    <BrandGlyph
                       className={`h-12 w-12 ${platform.iconClassName} opacity-60`}
                       aria-hidden="true"
                     />

@@ -1,7 +1,7 @@
 "use client";
 
-import { Check } from "lucide-react";
 import { PageHeader, Card } from "@/components/nhapoa/ui";
+import { Icon } from "@mosje/design-system";
 
 const COLS = ["Citizen", "DM/DC", "SHO", "State", "Finance", "Central", "Call Ctr", "Admin"];
 
@@ -44,7 +44,7 @@ export default function RolesPage() {
                 <td className="sticky left-0 bg-white px-5 py-3 font-medium text-ink">{perm}</td>
                 {cells.map((v, i) => (
                   <td key={i} className="px-3 py-3 text-center">
-                    {v ? <Check className="mx-auto h-4 w-4 text-approve-fg" /> : <span className="text-ink-hint">·</span>}
+                    {v ? <Icon name="check" size={16} className="mx-auto text-approve-fg" /> : <span className="text-ink-hint">·</span>}
                   </td>
                 ))}
               </tr>

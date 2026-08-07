@@ -1,34 +1,33 @@
 "use client";
 
 import * as React from "react";
-import { GraduationCap, Wrench, Home, HeartPulse, ExternalLink } from "lucide-react";
 import { Card, Button } from "@/components/tg/ui";
-import { useToast } from "@mosje/design-system";
+import { Icon, useToast } from "@mosje/design-system";
 
 const SCHEMES = [
   {
-    icon: GraduationCap,
+    icon: "school",
     title: "Scholarships",
     desc: "Pre- and post-matric scholarships for transgender students, covering tuition, maintenance, and academic allowances.",
     cta: "Apply Now",
     eligibility: "Enrolled transgender students with a valid Certificate of Identity.",
   },
   {
-    icon: Wrench,
+    icon: "build",
     title: "Skill Training (PM-DAKSH)",
     desc: "Free skilling and livelihood courses with stipend support, delivered through empanelled training partners.",
     cta: "Browse Courses",
     eligibility: "Transgender persons aged 18–45 seeking employment or self-employment.",
   },
   {
-    icon: Home,
+    icon: "home",
     title: "Garima Greh",
     desc: "Shelter homes offering safe accommodation, food, medical care, and skill development in a supportive community.",
     cta: "Find Homes",
     eligibility: "Transgender persons in need of shelter and rehabilitation.",
   },
   {
-    icon: HeartPulse,
+    icon: "monitor_heart",
     title: "Medical Support",
     desc: "Assistance for health services and gender-affirming care through empanelled hospitals under the Ayushman Bharat convergence.",
     cta: "Register",
@@ -48,10 +47,10 @@ export default function WelfarePage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        {SCHEMES.map(({ icon: Icon, title, desc, cta, eligibility }) => (
+        {SCHEMES.map(({ icon: iconName, title, desc, cta, eligibility }) => (
           <Card key={title} className="flex flex-col p-6">
             <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-navy/10 text-navy">
-              <Icon className="h-6 w-6" />
+              <Icon name={iconName} />
             </span>
             <h2 className="text-lg font-semibold text-ink">{title}</h2>
             <p className="mt-2 text-sm text-ink-muted">{desc}</p>
@@ -60,7 +59,7 @@ export default function WelfarePage() {
             </p>
             <div className="mt-5">
               <Button variant="outline" onClick={() => toast(`${title} — ${cta}: demo action, no real submission is made.`, "info")}>
-                {cta} <ExternalLink className="h-4 w-4" />
+                {cta} <Icon name="open_in_new" size={16} />
               </Button>
             </div>
           </Card>

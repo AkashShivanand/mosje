@@ -3,16 +3,16 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutGrid, IdCard, MessageSquareWarning, LogOut, FilePlus2 } from "lucide-react";
 import { GovTopBar, GovMasthead } from "./gov-chrome";
 import { cn } from "@/lib/tg/utils";
 import { useTg } from "@/lib/tg/store/store";
 import { DEMO_CITIZEN } from "@/lib/tg/store/seed";
+import { Icon } from "@mosje/design-system";
 
 const NAV = [
-  { label: "Dashboard", href: "/portals/tg/citizen/dashboard", icon: LayoutGrid },
-  { label: "Certificate/ID", href: "/portals/tg/citizen/certificate", icon: IdCard },
-  { label: "Grievances", href: "/portals/tg/citizen/grievances", icon: MessageSquareWarning },
+  { label: "Dashboard", href: "/portals/tg/citizen/dashboard", icon: "grid_view" },
+  { label: "Certificate/ID", href: "/portals/tg/citizen/certificate", icon: "badge" },
+  { label: "Grievances", href: "/portals/tg/citizen/grievances", icon: "feedback" },
 ];
 
 /**
@@ -50,7 +50,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
               }}
               className="flex items-center gap-1.5 rounded-lg border border-line px-3 py-2 text-xs font-semibold text-ink-muted transition-colors hover:bg-black/5"
             >
-              <LogOut className="h-4 w-4" aria-hidden="true" />
+              <Icon name="logout" size={16} aria-hidden="true" />
               <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
@@ -59,7 +59,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
       <nav aria-label="Citizen navigation" className="border-b border-line bg-white">
         <div className="mx-auto flex max-w-6xl items-center gap-1 px-4">
           <span className="mr-3 py-3 text-sm font-bold text-navy">Transgender</span>
-          {NAV.map(({ label, href, icon: Icon }) => {
+          {NAV.map(({ label, href, icon: iconName }) => {
             const active = pathname === href || pathname.startsWith(`${href}/`);
             return (
               <Link
@@ -71,7 +71,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
                   active ? "border-navy text-navy" : "border-transparent text-ink-muted hover:text-navy",
                 )}
               >
-                <Icon className="h-4 w-4" />
+                <Icon name={iconName} size={16} />
                 {label}
               </Link>
             );
@@ -80,7 +80,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
             href="/portals/tg/citizen/apply"
             className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-navy px-3.5 py-2 text-sm font-semibold text-white hover:bg-navy-800"
           >
-            <FilePlus2 className="h-4 w-4" />
+            <Icon name="note_add" size={16} />
             Apply
           </Link>
         </div>

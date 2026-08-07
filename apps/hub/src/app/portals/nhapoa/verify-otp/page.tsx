@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { Button, Field, TextInput } from "@/components/nhapoa/ui";
+import { Icon } from "@mosje/design-system";
 
 /**
  * Mock OTP verify screen. Any 6-digit code is accepted (demo). Shown where the
@@ -44,7 +44,7 @@ export default function VerifyOtpPage() {
           </Button>
         </form>
         <Link href="/portals/nhapoa/login" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-navy hover:underline">
-          <ArrowLeft className="h-4 w-4" /> Back to login
+          <Icon name="arrow_back" size={16} /> Back to login
         </Link>
       </div>
     </main>

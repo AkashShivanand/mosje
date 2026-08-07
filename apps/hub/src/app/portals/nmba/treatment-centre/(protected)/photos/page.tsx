@@ -7,15 +7,7 @@
 //     (a photo gallery is not a DataTable; it reuses DS atoms rather than TCListPage)
 
 import * as React from "react";
-import {
-  ImageIcon, Video, Plus, Pencil, Trash2, ZoomIn, Play, Download,
-  Star, LayoutGrid, List as ListIcon, CheckSquare, X, Images, Camera,
-} from "lucide-react";
-import {
-  Button, Input, Textarea, Select, FormField, Checkbox, Search, Chip, Badge, Alert,
-  SideSheet, Modal, Lightbox, EmptyState, MediaGalleryInput,
-  type GalleryMediaItem, type LightboxItem,
-} from "@mosje/design-system";
+import { Alert, Badge, Button, Checkbox, Chip, EmptyState, FormField, Icon, Input, Lightbox, MediaGalleryInput, Modal, Search, Select, SideSheet, Textarea, type GalleryMediaItem, type LightboxItem } from "@mosje/design-system";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { useToast } from "@/components/nmba/toast";
@@ -287,8 +279,8 @@ type ItemHandlers = {
 
 /** Small circular icon button used in card hover bar / list rows. */
 function IconBtn({
-  icon: Icon, label, onClick, danger,
-}: { icon: typeof ZoomIn; label: string; onClick: () => void; danger?: boolean }) {
+  icon: iconName, label, onClick, danger,
+}: { icon: string; label: string; onClick: () => void; danger?: boolean }) {
   return (
     <button
       type="button"
@@ -299,7 +291,7 @@ function IconBtn({
         danger ? "text-danger" : "text-navy"
       }`}
     >
-      <Icon className="h-4 w-4" />
+      <Icon name={iconName} size={16} />
     </button>
   );
 }
@@ -347,10 +339,10 @@ function GalleryCard({
           >
             {isVideo ? (
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-navy shadow">
-                <Play className="h-5 w-5" fill="currentColor" />
+                <Icon name="play_arrow" size={20} fill />
               </span>
             ) : (
-              <ZoomIn className="h-7 w-7 text-white opacity-0 drop-shadow transition-opacity duration-200 group-hover:opacity-100" />
+              <Icon name="zoom_in" size={28} className="text-white opacity-0 drop-shadow transition-opacity duration-200 group-hover:opacity-100" />
             )}
           </span>
         </button>
@@ -372,13 +364,13 @@ function GalleryCard({
         <div className="pointer-events-none absolute right-2 top-2 z-10 flex items-center gap-1">
           {photo.featured && (
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gov-yellow text-navy shadow" title="Highlighted">
-              <Star className="h-3.5 w-3.5" fill="currentColor" aria-hidden />
+              <Icon name="star" size={14} fill aria-hidden />
               <span className="sr-only">Highlighted photo</span>
             </span>
           )}
           {isVideo && (
             <span className="flex items-center gap-1 rounded-full bg-black/65 px-2 py-0.5 text-[10px] font-semibold text-white shadow">
-              <Video className="h-3 w-3" /> Video
+              <Icon name="videocam" size={12} /> Video
             </span>
           )}
         </div>
@@ -386,10 +378,10 @@ function GalleryCard({
         {/* Hover action bar */}
         {!selectMode && (
           <div className="absolute inset-x-0 bottom-0 z-10 flex translate-y-full items-center justify-end gap-1 bg-gradient-to-t from-black/70 to-transparent p-2 transition-transform duration-200 group-hover:translate-y-0">
-            <IconBtn icon={ZoomIn} label="View" onClick={onOpen} />
-            <IconBtn icon={Download} label="Download" onClick={onDownload} />
-            <IconBtn icon={Pencil} label="Edit" onClick={onEdit} />
-            <IconBtn icon={Trash2} label="Delete" onClick={onDelete} danger />
+            <IconBtn icon="zoom_in" label="View" onClick={onOpen} />
+            <IconBtn icon="download" label="Download" onClick={onDownload} />
+            <IconBtn icon="edit" label="Edit" onClick={onEdit} />
+            <IconBtn icon="delete" label="Delete" onClick={onDelete} danger />
           </div>
         )}
       </div>
@@ -444,7 +436,7 @@ function GalleryRow({
         <img src={thumb} alt={photo.caption} className="h-full w-full object-cover" loading="lazy" />
         {isVideo && (
           <span className="absolute inset-0 flex items-center justify-center bg-black/30" aria-hidden>
-            <Play className="h-4 w-4 text-white" fill="currentColor" />
+            <Icon name="play_arrow" size={16} className="text-white" fill />
           </span>
         )}
       </button>
@@ -453,7 +445,7 @@ function GalleryRow({
         <p className="flex items-center gap-1.5 truncate text-sm font-semibold text-ink" title={photo.caption}>
           {photo.featured && (
             <>
-              <Star className="h-3.5 w-3.5 shrink-0 text-gov-yellow" fill="currentColor" aria-hidden />
+              <Icon name="star" size={14} className="shrink-0 text-gov-yellow" fill aria-hidden />
               <span className="sr-only">Highlighted photo —</span>
             </>
           )}
@@ -467,9 +459,9 @@ function GalleryRow({
       </div>
 
       <div className="flex shrink-0 items-center gap-1 pr-1">
-        <IconBtn icon={Download} label="Download" onClick={onDownload} />
-        <IconBtn icon={Pencil} label="Edit" onClick={onEdit} />
-        <IconBtn icon={Trash2} label="Delete" onClick={onDelete} danger />
+        <IconBtn icon="download" label="Download" onClick={onDownload} />
+        <IconBtn icon="edit" label="Edit" onClick={onEdit} />
+        <IconBtn icon="delete" label="Delete" onClick={onDelete} danger />
       </div>
     </div>
   );
@@ -479,11 +471,11 @@ function GalleryRow({
 // Stat tile
 // -------------------------------------------------------------------------
 
-function StatTile({ icon: Icon, label, value }: { icon: typeof Images; label: string; value: number }) {
+function StatTile({ icon: iconName, label, value }: { icon: string; label: string; value: number }) {
   return (
     <div className="flex items-center gap-3 rounded-xl border border-line bg-white px-4 py-3 shadow-xs">
       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-navy/10 text-navy">
-        <Icon className="h-5 w-5" />
+        <Icon name={iconName} size={20} />
       </span>
       <div className="min-w-0">
         <p className="text-lg font-bold leading-none text-navy">{value}</p>
@@ -629,7 +621,7 @@ export default function CenterPhotosPage() {
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-navy px-5 py-3.5 text-white">
         <div className="flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/15">
-            <Images className="h-5 w-5" />
+            <Icon name="collections" size={20} />
           </span>
           <div>
             <h1 className="text-lg font-bold leading-tight">Centre Photo Gallery</h1>
@@ -642,7 +634,7 @@ export default function CenterPhotosPage() {
             onClick={() => { setSelectMode((s) => !s); setSelectedIds(new Set()); }}
             className="inline-flex items-center gap-2 text-sm font-semibold"
           >
-            {selectMode ? <><X className="h-4 w-4" /> Done</> : <><CheckSquare className="h-4 w-4" /> Select</>}
+            {selectMode ? <><Icon name="close" size={16} /> Done</> : <><Icon name="check_box" size={16} /> Select</>}
           </Button>
           {/* Upload isn't a valid action mid-selection — hiding it keeps the header
               from competing with the sticky selection bar for attention. */}
@@ -652,7 +644,7 @@ export default function CenterPhotosPage() {
               onClick={() => setUploadOpen(true)}
               className="inline-flex items-center gap-2 text-sm font-semibold"
             >
-              <Plus className="h-4 w-4" /> Upload Photos
+              <Icon name="add" size={16} /> Upload Photos
             </Button>
           )}
         </div>
@@ -673,10 +665,10 @@ export default function CenterPhotosPage() {
 
       {/* ---- Stats ---- */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatTile icon={Images} label="Total items" value={stats.total} />
-        <StatTile icon={ImageIcon} label="Photos" value={stats.images} />
-        <StatTile icon={Video} label="Videos" value={stats.videos} />
-        <StatTile icon={LayoutGrid} label="Albums" value={stats.albums} />
+        <StatTile icon="collections" label="Total items" value={stats.total} />
+        <StatTile icon="image" label="Photos" value={stats.images} />
+        <StatTile icon="videocam" label="Videos" value={stats.videos} />
+        <StatTile icon="grid_view" label="Albums" value={stats.albums} />
       </div>
 
       {/* ---- Toolbar ---- */}
@@ -708,7 +700,7 @@ export default function CenterPhotosPage() {
               aria-pressed={view === "grid"}
               className={`flex h-9 w-9 items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-inset ${view === "grid" ? "bg-navy text-white" : "bg-white text-ink-muted hover:bg-surface-muted"}`}
             >
-              <LayoutGrid className="h-4 w-4" />
+              <Icon name="grid_view" size={16} />
             </button>
             <button
               type="button"
@@ -717,7 +709,7 @@ export default function CenterPhotosPage() {
               aria-pressed={view === "list"}
               className={`flex h-9 w-9 items-center justify-center border-l border-line transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-inset ${view === "list" ? "bg-navy text-white" : "bg-white text-ink-muted hover:bg-surface-muted"}`}
             >
-              <ListIcon className="h-4 w-4" />
+              <Icon name="list" size={16} />
             </button>
           </div>
         </div>
@@ -766,7 +758,7 @@ export default function CenterPhotosPage() {
               onClick={() => { visible.filter((p) => selectedIds.has(p.id)).forEach(download); }}
               className="inline-flex items-center gap-1.5 text-sm"
             >
-              <Download className="h-4 w-4" /> Download
+              <Icon name="download" size={16} /> Download
             </Button>
             <Button
               variant="danger"
@@ -774,7 +766,7 @@ export default function CenterPhotosPage() {
               onClick={() => setDeleteIds([...selectedIds])}
               className="inline-flex items-center gap-1.5 text-sm"
             >
-              <Trash2 className="h-4 w-4" /> Delete
+              <Icon name="delete" size={16} /> Delete
             </Button>
           </div>
         </div>
@@ -784,7 +776,7 @@ export default function CenterPhotosPage() {
       {visible.length === 0 ? (
         <EmptyState
           className="rounded-xl border border-dashed border-line bg-white py-16"
-          icon={<Camera className="h-10 w-10 text-ink-hint" />}
+          icon={<Icon name="photo_camera" size={40} className="text-ink-hint" />}
           title={photos.length === 0 ? "No photos yet" : "No photos match your filters"}
           description={
             photos.length === 0
@@ -794,7 +786,7 @@ export default function CenterPhotosPage() {
           action={
             photos.length === 0 ? (
               <Button variant="primary" onClick={() => setUploadOpen(true)} className="inline-flex items-center gap-2">
-                <Plus className="h-4 w-4" /> Upload Photos
+                <Icon name="add" size={16} /> Upload Photos
               </Button>
             ) : (
               <Button appearance="outlined" onClick={() => { setQuery(""); setActiveCategory("All"); }}>

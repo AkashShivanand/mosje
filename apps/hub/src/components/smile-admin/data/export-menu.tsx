@@ -1,9 +1,7 @@
 "use client";
 
-import { FileSpreadsheet, FileText } from "lucide-react";
-import { Button } from "@/components/smile-admin/ui/button";
-import { LiveRegion, useLiveRegion } from "@/components/smile-admin/ui/live-region";
 import { exportToCSV, exportToPDF, type ExportColumn } from "@/lib/smile-admin/export";
+import { Button, Icon, LiveRegion, type ButtonSize, useLiveRegion } from "@mosje/design-system";
 
 interface ExportMenuProps<Row> {
   filename: string;
@@ -13,7 +11,8 @@ interface ExportMenuProps<Row> {
   rows: Row[];
   /** Hide individual buttons if needed. */
   formats?: Array<"csv" | "pdf">;
-  size?: "xs" | "sm" | "md";
+  /** Forwarded to the DS Button. No call site overrides it today. */
+  size?: ButtonSize;
 }
 
 export function ExportMenu<Row>({
@@ -42,23 +41,23 @@ export function ExportMenu<Row>({
       <LiveRegion ref={liveRef} />
       {formats.includes("csv") ? (
         <Button
-          variant="outline"
+          appearance="outlined"
           size={size}
           onClick={onCSV}
           aria-label={`Export ${title} as CSV (${rows.length} ${rows.length === 1 ? "record" : "records"})`}
         >
-          <FileSpreadsheet aria-hidden className="h-3.5 w-3.5 text-success-600" />
+          <Icon name="table_chart" size={14} aria-hidden className="text-success-600" />
           CSV
         </Button>
       ) : null}
       {formats.includes("pdf") ? (
         <Button
-          variant="outline"
+          appearance="outlined"
           size={size}
           onClick={onPDF}
           aria-label={`Export ${title} as PDF (${rows.length} ${rows.length === 1 ? "record" : "records"})`}
         >
-          <FileText aria-hidden className="h-3.5 w-3.5 text-danger-600" />
+          <Icon name="description" size={14} aria-hidden className="text-danger-600" />
           PDF
         </Button>
       ) : null}

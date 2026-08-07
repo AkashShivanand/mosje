@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { ArrowRight } from "lucide-react";
 import { useToast } from "@/components/nmba/toast";
 import { STATES, STATE_DISTRICTS } from "@/lib/nmba/states";
-import { Button, Input, Select, FormField } from "@mosje/design-system";
+import { Button, FormField, Icon, Input, Select } from "@mosje/design-system";
 
 interface PledgeFormProps {
   onSuccess?: () => void;
@@ -116,7 +115,7 @@ export function PledgeForm({ onSuccess }: PledgeFormProps) {
       <Button
         type="submit"
         disabled={submitting}
-        iconRight={<ArrowRight className="h-4 w-4" />}
+        iconRight={<Icon name="arrow_forward" size={16} />}
       >
         {submitting ? "Submitting…" : "I Take this Pledge"}
       </Button>

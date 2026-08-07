@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../../utils/cn";
+import { Icon } from "../../icon";
 import type {
   SidebarNavProps,
   SidebarNavItem,
@@ -97,7 +98,6 @@ function MainItem({
   pathname: string;
   collapsed: boolean;
 }) {
-  const Icon = item.icon;
   const hasChildren = Boolean(item.children?.length);
 
   const isSelfActive =
@@ -132,7 +132,7 @@ function MainItem({
             ? { role: "button", onClick: () => setOpen((o) => !o) }
             : {})}
         >
-          <Icon className="ds-sidebar__icon" aria-hidden />
+          <Icon name={item.icon} className="ds-sidebar__icon" aria-hidden />
         </a>
       </div>
     );
@@ -147,7 +147,7 @@ function MainItem({
           aria-current={isSelfActive ? "page" : undefined}
           className={rowClass}
         >
-          <Icon className="ds-sidebar__icon" aria-hidden />
+          <Icon name={item.icon} className="ds-sidebar__icon" aria-hidden />
           <span className="ds-sidebar__label">{item.label}</span>
           {item.badge != null && (
             <span className="ds-sidebar__badge" aria-label={`${item.badge} notifications`}>
@@ -171,7 +171,7 @@ function MainItem({
         className={rowClass}
         onClick={() => setOpen((o) => !o)}
       >
-        <Icon className="ds-sidebar__icon" aria-hidden />
+        <Icon name={item.icon} className="ds-sidebar__icon" aria-hidden />
         <span className="ds-sidebar__label">{item.label}</span>
         {item.badge != null && (
           <span className="ds-sidebar__badge" aria-label={`${item.badge} notifications`}>

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { MousePointerClick } from "lucide-react";
 import { DeAddictionMap } from "@/components/website/nmba/DeAddictionMap";
 import { DualPledge } from "@/components/website/nmba/DualPledge";
 import { NashaMuktiMitr } from "@/components/website/nmba/NashaMuktiMitr";
@@ -13,6 +12,7 @@ import { PledgeSplit, PledgeToggle, PledgeBanner } from "@/components/website/nm
 import { RegisterSplitHero, RegisterPoints, RegisterMiniForm } from "@/components/website/nmba/options/RegisterOptions";
 import { CombinedTwinCards, CombinedUnifiedPanel, CombinedPledgeForward } from "@/components/website/nmba/options/CombinedOptions";
 import { AestheticWatermark, AestheticEdgeVine, AestheticGreenBand, AestheticSeal } from "@/components/website/nmba/options/AestheticOptions";
+import { Icon } from "@mosje/design-system";
 
 interface Variant {
   label: string;
@@ -100,7 +100,7 @@ function Section({ title, variants }: { title: string; variants: Variant[] }) {
 
       {/* Behaviour readout */}
       <div className="mt-4 flex items-center gap-2 rounded-lg border border-dashed border-gray-300 bg-surface-muted/40 px-3.5 py-2 text-[12px]">
-        <MousePointerClick className="h-3.5 w-3.5 shrink-0 text-gov-blue" aria-hidden />
+        <Icon name="ads_click" size={14} className="shrink-0 text-gov-blue" aria-hidden />
         {action ? (
           <span className="text-ink">
             Clicked <span className="font-semibold">“{action.text}”</span>{" "}

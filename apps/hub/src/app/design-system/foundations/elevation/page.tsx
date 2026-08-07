@@ -32,7 +32,7 @@ export default function ElevationPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Elevation</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
+      <p style={{ fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
         Elevation tells people what sits on top of what. SAMAVESH uses three
         shadow levels to express depth — the higher the surface, the softer and
         larger its shadow.

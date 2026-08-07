@@ -3,8 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Lock, User, ArrowLeft } from "lucide-react";
-import { Button, Alert } from "@mosje/design-system";
+import { Alert, Button, FormField, Icon, Input, PasswordInput } from "@mosje/design-system";
 
 /**
  * Admin Login — UI clone only. This is a placeholder screen; it performs no real
@@ -44,45 +43,34 @@ export function AdminLogin() {
               setNotice(true);
             }}
           >
-            <div>
-              <label htmlFor="username" className="mb-1 block text-[14px] font-medium text-ink">
-                Username
-              </label>
-              <div className="relative">
-                <User className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                <input
-                  id="username"
+            <FormField label="Username" id="username" required>
+              {(control) => (
+                <Input
+                  {...control}
                   name="username"
                   type="text"
                   autoComplete="username"
-                  required
-                  className="h-11 w-full rounded-lg border border-gray-300 pl-9 pr-3 text-[14px] outline-none focus:border-gov-blue focus:ring-2 focus:ring-gov-blue/20"
+                  leftIcon={<Icon name="person" size={16} />}
                 />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="password" className="mb-1 block text-[14px] font-medium text-ink">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                <input
-                  id="password"
+              )}
+            </FormField>
+            <FormField label="Password" id="password" required>
+              {(control) => (
+                <PasswordInput
+                  {...control}
                   name="password"
-                  type="password"
                   autoComplete="current-password"
-                  required
-                  className="h-11 w-full rounded-lg border border-gray-300 pl-9 pr-3 text-[14px] outline-none focus:border-gov-blue focus:ring-2 focus:ring-gov-blue/20"
+                  leftIcon={<Icon name="lock" size={16} />}
                 />
-              </div>
-            </div>
+              )}
+            </FormField>
             <Button type="submit" size="md" className="w-full">
               Sign In
             </Button>
           </form>
 
           <Link href="/website" className="mt-6 flex items-center justify-center gap-1.5 text-[14px] text-gov-blue hover:underline">
-            <ArrowLeft className="h-4 w-4" />
+            <Icon name="arrow_back" size={16} />
             Back to website
           </Link>
         </div>

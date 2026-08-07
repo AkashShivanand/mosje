@@ -1,15 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Receipt, Send, Wallet } from "lucide-react";
-import { Badge, statusTone } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/smile-admin/ui/card";
+import { statusTone } from "@/lib/smile-admin/status-tone";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/ui/table";
+import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { SANCTION_ORDERS, SCHEMES, type SanctionOrder } from "@/lib/smile-admin/mock-data";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
 import { formatINR } from "@/lib/smile-admin/utils";
+import { Badge, Card, CardBody, CardHeader, CardTitle, Icon, buttonClasses } from "@mosje/design-system";
 
 export default function FundMonitoringPage() {
   const totals = SCHEMES.reduce(
@@ -40,16 +38,12 @@ export default function FundMonitoringPage() {
               ]}
               rows={SANCTION_ORDERS.map((o, i) => ({ ...o, sno: i + 1 }))}
             />
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/portals/smile-admin/fund-monitoring/sanction-orders/create">
-                <Receipt className="h-3.5 w-3.5" /> Sanction order
+            <Link href="/portals/smile-admin/fund-monitoring/sanction-orders/create" className={buttonClasses("primary", "outlined", "sm")}>
+                <Icon name="receipt_long" size={14} /> Sanction order
               </Link>
-            </Button>
-            <Button size="sm" asChild>
-              <Link href="/portals/smile-admin/fund-monitoring/nisd-releases/create">
-                <Send className="h-3.5 w-3.5" /> Release order
+            <Link href="/portals/smile-admin/fund-monitoring/nisd-releases/create" className={buttonClasses("primary", "filled", "sm")}>
+                <Icon name="send" size={14} /> Release order
               </Link>
-            </Button>
           </div>
         }
       />
@@ -60,21 +54,21 @@ export default function FundMonitoringPage() {
           { label: "Balance",           value: totals.budget - totals.utilised, tone: "bg-warning-50 text-warning-600" },
         ].map((c) => (
           <Card key={c.label}>
-            <CardContent className="flex items-center justify-between p-lg">
+            <CardBody className="flex items-center justify-between p-lg">
               <div>
-                <div className="text-label-2 uppercase tracking-wide text-foreground-muted">{c.label}</div>
-                <div className="mt-xs text-headline-3 font-bold text-foreground">{formatINR(c.value, true)}</div>
+                <div className="text-label-2 uppercase tracking-wide text-ink-muted">{c.label}</div>
+                <div className="mt-xs text-headline-3 font-bold text-ink">{formatINR(c.value, true)}</div>
               </div>
               <div className={`grid h-12 w-12 place-items-center rounded-md ${c.tone}`}>
-                <Wallet className="h-6 w-6" />
+                <Icon name="account_balance_wallet" />
               </div>
-            </CardContent>
+            </CardBody>
           </Card>
         ))}
       </div>
       <Card>
         <CardHeader><CardTitle>Recent sanction orders</CardTitle></CardHeader>
-        <CardContent>
+        <CardBody>
           <Table>
             <THead>
               <tr>
@@ -93,13 +87,13 @@ export default function FundMonitoringPage() {
                   <TD>{o.scheme}</TD>
                   <TD>{o.state}</TD>
                   <TD className="text-right tabular-nums">{formatINR(o.amount, true)}</TD>
-                  <TD><Badge tone={statusTone(o.status)}>{o.status}</Badge></TD>
-                  <TD className="text-foreground-muted">{o.date}</TD>
+                  <TD><Badge status={statusTone(o.status)}>{o.status}</Badge></TD>
+                  <TD className="text-ink-muted">{o.date}</TD>
                 </TR>
               ))}
             </tbody>
           </Table>
-        </CardContent>
+        </CardBody>
       </Card>
     </div>
   );

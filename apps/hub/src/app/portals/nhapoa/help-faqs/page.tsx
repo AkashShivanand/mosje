@@ -2,11 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ChevronDown, Search, Phone, Mail, FilePlus2, FileSearch } from "lucide-react";
 import { CitizenShell } from "@/components/nhapoa/citizen-shell";
 import { Card } from "@/components/nhapoa/ui";
 import { cn } from "@/lib/nhapoa/utils";
 import { FAQS, FAQ_CATEGORIES } from "@/lib/nhapoa/citizen-data";
+import { Icon } from "@mosje/design-system";
 
 export default function HelpFaqsPage() {
   const [cat, setCat] = React.useState<(typeof FAQ_CATEGORIES)[number]>("All");
@@ -30,7 +30,7 @@ export default function HelpFaqsPage() {
         <div>
           {/* Search + tabs */}
           <div className="relative mb-4">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-hint" />
+            <Icon name="search" size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-hint" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -66,7 +66,7 @@ export default function HelpFaqsPage() {
                   className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
                 >
                   <span className="text-sm font-semibold text-ink">{f.q}</span>
-                  <ChevronDown aria-hidden="true" className={cn("h-4 w-4 shrink-0 text-ink-hint transition-transform", open === i && "rotate-180")} />
+                  <Icon name="keyboard_arrow_down" aria-hidden="true" className={cn("h-4 w-4 shrink-0 text-ink-hint transition-transform", open === i && "rotate-180")} />
                 </button>
                 {open === i && <p id={`faq-answer-${i}`} className="border-t border-line px-5 py-4 text-sm leading-relaxed text-ink-muted">{f.a}</p>}
               </Card>
@@ -80,13 +80,13 @@ export default function HelpFaqsPage() {
           <Card className="p-5">
             <p className="text-sm font-bold text-ink">Contact Helpdesk</p>
             <p className="mt-1 text-xs text-ink-hint">Mon–Sat, 9 AM – 6 PM</p>
-            <a href="tel:14566" className="mt-4 flex items-center gap-2 text-sm font-semibold text-navy"><Phone className="h-4 w-4 text-saffron" /> 14566 (Toll Free)</a>
-            <a href="mailto:helpdesk@sambal.gov.in" className="mt-2 flex items-center gap-2 text-sm font-semibold text-navy"><Mail className="h-4 w-4 text-saffron" /> Email Helpdesk</a>
+            <a href="tel:14566" className="mt-4 flex items-center gap-2 text-sm font-semibold text-navy"><Icon name="call" size={16} className="text-saffron" /> 14566 (Toll Free)</a>
+            <a href="mailto:helpdesk@sambal.gov.in" className="mt-2 flex items-center gap-2 text-sm font-semibold text-navy"><Icon name="mail" size={16} className="text-saffron" /> Email Helpdesk</a>
           </Card>
           <Card className="p-5">
             <p className="text-xs font-bold uppercase tracking-wide text-ink-hint">Quick Links</p>
-            <Link href="/portals/nhapoa/register-grievance" className="mt-3 flex items-center gap-2 text-sm font-semibold text-navy hover:underline"><FilePlus2 className="h-4 w-4" /> Submit New Grievance</Link>
-            <Link href="/portals/nhapoa/track-status" className="mt-2 flex items-center gap-2 text-sm font-semibold text-navy hover:underline"><FileSearch className="h-4 w-4" /> Track Existing Case</Link>
+            <Link href="/portals/nhapoa/register-grievance" className="mt-3 flex items-center gap-2 text-sm font-semibold text-navy hover:underline"><Icon name="note_add" size={16} /> Submit New Grievance</Link>
+            <Link href="/portals/nhapoa/track-status" className="mt-2 flex items-center gap-2 text-sm font-semibold text-navy hover:underline"><Icon name="find_in_page" size={16} /> Track Existing Case</Link>
           </Card>
         </div>
       </div>

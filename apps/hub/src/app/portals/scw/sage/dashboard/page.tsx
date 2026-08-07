@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Check } from "lucide-react";
 import { UserShell } from "@/components/scw/user-shell";
 import { Button, Card } from "@/components/scw/ui";
+import { Icon } from "@mosje/design-system";
 
 export default function SageDashboardPage() {
   return (
@@ -28,7 +28,7 @@ export default function SageDashboardPage() {
           <div className="mt-8 flex items-start">
             <div className="flex flex-col items-center text-center">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-approve text-white">
-                <Check className="h-5 w-5" />
+                <Icon name="check" size={20} />
               </div>
               <span className="mt-2 text-xs font-semibold text-ink">Submitted</span>
               <span className="text-xs text-ink-hint">08 Jun 2026</span>
@@ -36,7 +36,7 @@ export default function SageDashboardPage() {
             <div className="mt-4 h-0.5 flex-1 bg-approve" />
             <div className="flex flex-col items-center text-center">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-approve text-white">
-                <Check className="h-5 w-5" />
+                <Icon name="check" size={20} />
               </div>
               <span className="mt-2 text-xs font-semibold text-ink">Approved</span>
               <span className="text-xs text-ink-hint">08 Jun 2026</span>

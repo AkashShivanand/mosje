@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Search, Navigation, X, List } from "lucide-react";
 import { cn } from "@/lib/website/utils";
 import { CENTRE_TYPE_META, CENTRE_TYPE_ORDER, type CentreType, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
 import { CentreMapDynamic, centreKey, filterCentres } from "./locator-shared";
+import { Icon, Search } from "@mosje/design-system";
 
 export function LocatorMapFirst() {
   const [query, setQuery] = React.useState("");
@@ -22,10 +22,15 @@ export function LocatorMapFirst() {
 
       {/* Floating search + chips */}
       <div className="pointer-events-none absolute left-14 right-3 top-3 z-10 flex flex-col gap-2">
-        <div className="pointer-events-auto relative max-w-sm">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted" aria-hidden />
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search centres"
-            className="h-10 w-full rounded-lg border border-gray-200 bg-white/95 pl-9 pr-3 text-[14px] shadow-sm outline-none backdrop-blur focus:border-gov-blue" />
+        <div className="pointer-events-auto max-w-sm">
+          <Search
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onClear={() => setQuery("")}
+            size="sm"
+            placeholder="Search centres"
+            aria-label="Search centres"
+          />
         </div>
         <div className="pointer-events-auto flex max-w-full flex-wrap gap-1.5">
           {(["", ...CENTRE_TYPE_ORDER] as const).map((t) => {
@@ -44,7 +49,7 @@ export function LocatorMapFirst() {
       {/* List toggle */}
       <button type="button" onClick={() => setListOpen((v) => !v)}
         className="absolute right-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-lg bg-gov-blue px-3 py-2 text-[13px] font-semibold text-white shadow-sm">
-        <List className="h-4 w-4" /> {listOpen ? "Hide" : "List"} ({filtered.length})
+        <Icon name="list" size={16} /> {listOpen ? "Hide" : "List"} ({filtered.length})
       </button>
 
       {/* Slide-over list */}
@@ -52,7 +57,7 @@ export function LocatorMapFirst() {
         <div className="absolute bottom-0 right-0 top-0 z-20 flex w-80 max-w-[85%] flex-col border-l border-gray-200 bg-white shadow-xl">
           <div className="flex items-center justify-between border-b border-gray-100 px-4 py-2.5">
             <span className="text-[13px] font-semibold text-ink">{filtered.length} centres</span>
-            <button type="button" onClick={() => setListOpen(false)} aria-label="Close list"><X className="h-4 w-4 text-ink-muted" /></button>
+            <button type="button" onClick={() => setListOpen(false)} aria-label="Close list"><Icon name="close" size={16} className="text-ink-muted" /></button>
           </div>
           <ul className="flex-1 divide-y divide-gray-100 overflow-y-auto">
             {filtered.slice(0, 120).map((c, i) => (
@@ -76,14 +81,14 @@ export function LocatorMapFirst() {
           <div className="flex items-start justify-between">
             <span className="inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold"
               style={{ background: `${CENTRE_TYPE_META[selected.type].color}1a`, color: CENTRE_TYPE_META[selected.type].color }}>{selected.type}</span>
-            <button type="button" onClick={() => setSelected(null)} aria-label="Close"><X className="h-4 w-4 text-ink-muted" /></button>
+            <button type="button" onClick={() => setSelected(null)} aria-label="Close"><Icon name="close" size={16} className="text-ink-muted" /></button>
           </div>
           <p className="mt-2 text-[14px] font-semibold leading-snug text-ink">{selected.name}</p>
           <p className="mt-1 text-[12px] text-ink-muted">{selected.address}</p>
           <p className="mt-1 text-[12px] font-medium text-ink">{selected.district}, {selected.state}</p>
           <a href={`https://www.google.com/maps/search/?api=1&query=${selected.lat},${selected.lng}`} target="_blank" rel="noreferrer"
             className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gov-blue hover:text-gov-blue-dark">
-            <Navigation className="h-3.5 w-3.5" /> Get directions
+            <Icon name="navigation" size={14} /> Get directions
           </a>
         </div>
       )}

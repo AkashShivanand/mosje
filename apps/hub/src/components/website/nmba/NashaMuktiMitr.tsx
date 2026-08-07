@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { Icon } from "@mosje/design-system";
 
 // Entry point to the volunteer registration flow in the NMBA portal.
 // Plain <a> — cross-app link into the NMBA portal, which the hub mounts natively
@@ -18,7 +18,7 @@ export function NashaMuktiMitr() {
         className="group inline-flex shrink-0 items-center gap-2 self-start rounded-lg bg-white px-5 py-2.5 text-[15px] font-semibold text-gov-blue-dark transition-colors hover:bg-gov-yellow sm:self-auto"
       >
         Register as a volunteer
-        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+        <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-0.5" />
       </a>
     </div>
   );

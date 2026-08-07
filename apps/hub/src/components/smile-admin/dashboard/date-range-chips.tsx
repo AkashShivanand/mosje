@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, SlidersHorizontal } from "lucide-react";
-import { Button } from "@/components/smile-admin/ui/button";
 import { cn } from "@/lib/smile-admin/utils";
+import { Button, Icon } from "@mosje/design-system";
 
 const RANGES = [
   "Today",
@@ -34,7 +33,7 @@ export function DateRangeChips({ initial = "Current FY" }: { initial?: Range }) 
               "rounded-sm px-sm py-1 text-body-3 font-semibold transition-colors duration-150",
               active === r
                 ? "bg-primary text-white shadow-xs"
-                : "text-foreground-muted hover:bg-neutral-100 hover:text-foreground",
+                : "text-ink-muted hover:bg-neutral-100 hover:text-ink",
             )}
           >
             {r}
@@ -49,14 +48,14 @@ export function DateRangeChips({ initial = "Current FY" }: { initial?: Range }) 
             "inline-flex items-center gap-xs rounded-sm px-sm py-1 text-body-3 font-semibold transition-colors duration-150",
             active === "Custom"
               ? "bg-primary text-white shadow-xs"
-              : "text-foreground-muted hover:bg-neutral-100 hover:text-foreground",
+              : "text-ink-muted hover:bg-neutral-100 hover:text-ink",
           )}
         >
-          <Calendar className="h-3.5 w-3.5" /> Custom
+          <Icon name="calendar_today" size={14} /> Custom
         </button>
       </div>
-      <Button variant="outline" size="sm">
-        <SlidersHorizontal className="h-3.5 w-3.5" /> Filters
+      <Button appearance="outlined" size="sm">
+        <Icon name="tune" size={14} /> Filters
       </Button>
     </div>
   );

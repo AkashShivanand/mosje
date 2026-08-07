@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Sparkles, Scale, FileBarChart, Mail } from "lucide-react";
 import { PersonaPage, type PersonaCard } from "@/components/website/templates/PersonaPage";
 
 export const metadata: Metadata = {
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 
 const cards: PersonaCard[] = [
   {
-    icon: Sparkles,
+    icon: "auto_awesome",
     title: "Explore Schemes",
     description:
       "Discover all welfare initiatives, social justice schemes, and citizen services offered by the Ministry and its departments.",
@@ -18,7 +17,7 @@ const cards: PersonaCard[] = [
     href: "/website/schemes-services",
   },
   {
-    icon: Scale,
+    icon: "balance",
     title: "View Acts & Policies",
     description:
       "Browse the key legislations, policy frameworks, and government guidelines that protect rights and drive inclusive development.",
@@ -26,7 +25,7 @@ const cards: PersonaCard[] = [
     href: "/website/acts-rules",
   },
   {
-    icon: FileBarChart,
+    icon: "assessment",
     title: "View Reports",
     description:
       "Access annual, financial, and performance reports — track progress, transparency, and impact.",
@@ -34,7 +33,7 @@ const cards: PersonaCard[] = [
     href: "/website/annual-reports",
   },
   {
-    icon: Mail,
+    icon: "mail",
     title: "Contact Us",
     description: "Reach the right office for help with services, schemes or grievances.",
     ctaLabel: "Contact Us",

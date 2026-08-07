@@ -1,7 +1,7 @@
 import * as React from "react";
-import { ChevronDown, Search } from "lucide-react";
 import { cn } from "@/lib/scw/utils";
 import type { AppStatus } from "@/lib/scw/types";
+import { Icon } from "@mosje/design-system";
 
 /* ----------------------------------------------------------------- Buttons */
 export function Button({
@@ -93,7 +93,7 @@ export function SearchInput({
 }) {
   return (
     <div className={cn("relative", className)}>
-      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-hint" />
+      <Icon name="search" size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-hint" />
       <input
         type="text"
         placeholder={placeholder}
@@ -126,7 +126,7 @@ export function FilterSelect({
           </option>
         ))}
       </select>
-      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-hint" />
+      <Icon name="keyboard_arrow_down" size={16} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-ink-hint" />
     </div>
   );
 }
@@ -167,7 +167,7 @@ export function Pagination({
             <option>50</option>
             <option>100</option>
           </select>
-          <ChevronDown className="pointer-events-none absolute right-1.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-hint" />
+          <Icon name="keyboard_arrow_down" size={14} className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-ink-hint" />
         </span>
         <span>
           of <span className="font-semibold text-ink">{total}</span> items
@@ -362,7 +362,7 @@ export function Select({
           <option key={o}>{o}</option>
         ))}
       </select>
-      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-hint" />
+      <Icon name="keyboard_arrow_down" size={16} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-ink-hint" />
     </div>
   );
 }

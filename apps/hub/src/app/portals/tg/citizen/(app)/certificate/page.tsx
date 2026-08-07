@@ -3,10 +3,10 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Download, IdCard, CheckCircle2, RefreshCw } from "lucide-react";
 import { Card, Button, EmptyState } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { DEMO_CITIZEN } from "@/lib/tg/store/seed";
+import { Icon } from "@mosje/design-system";
 
 export default function CertificatePage() {
   const { state, hydrated } = useTg();
@@ -32,7 +32,7 @@ export default function CertificatePage() {
         <Card className="p-6">
           <div className="flex items-center gap-3">
             <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-approve-bg text-approve-fg">
-              <CheckCircle2 className="h-6 w-6" />
+              <Icon name="check_circle" />
             </span>
             <div>
               <h1 className="text-xl font-bold text-ink">Application Approved</h1>
@@ -44,8 +44,8 @@ export default function CertificatePage() {
             under the Transgender Persons (Protection of Rights) Act, 2019.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <Button><Download className="h-4 w-4" /> Download Certificate</Button>
-            <Button variant="outline"><IdCard className="h-4 w-4" /> Download ID Card</Button>
+            <Button><Icon name="download" size={16} /> Download Certificate</Button>
+            <Button variant="outline"><Icon name="badge" size={16} /> Download ID Card</Button>
           </div>
         </Card>
 
@@ -53,7 +53,7 @@ export default function CertificatePage() {
           <div className="flex items-center justify-between">
             <h2 className="text-base font-semibold text-ink">Gender Revision Request</h2>
             <Link href="/portals/tg/citizen/apply" className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy hover:underline">
-              <RefreshCw className="h-4 w-4" /> Request Revised Certificate
+              <Icon name="refresh" size={16} /> Request Revised Certificate
             </Link>
           </div>
           <p className="mt-2 text-sm text-ink-muted">

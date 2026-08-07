@@ -7,8 +7,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Upload, GraduationCap, Users, Pencil, Trash2, CheckCircle, AlertTriangle, FileSpreadsheet, Download } from "lucide-react";
-import { Button, Input, FormField, Alert, Modal, SideSheet, Badge } from "@mosje/design-system";
+import { Alert, Badge, Button, FormField, Icon, Input, Modal, SideSheet } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { TCListPage } from "@/components/nmba/treatment-centre/tc-list";
@@ -132,7 +131,7 @@ function DeleteConfirmModal({
       footer={
         <>
           <Button type="button" appearance="outlined" onClick={onClose}>Cancel</Button>
-          <Button type="button" variant="danger" iconLeft={<Trash2 className="h-4 w-4" />} onClick={confirmDelete}>
+          <Button type="button" variant="danger" iconLeft={<Icon name="delete" size={16} />} onClick={confirmDelete}>
             Remove Educator
           </Button>
         </>
@@ -140,7 +139,7 @@ function DeleteConfirmModal({
     >
       <div className="flex gap-3">
         <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-danger-bg text-danger-fg" aria-hidden>
-          <AlertTriangle className="h-5 w-5" />
+          <Icon name="warning" size={20} />
         </span>
         <div className="text-sm text-ink">
           <p>
@@ -249,7 +248,7 @@ function UploadVolunteersSheet({
 
         <div className="-mt-1 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
           <p className="flex items-center gap-1.5 text-xs text-ink-muted">
-            <FileSpreadsheet className="h-3.5 w-3.5 shrink-0 text-ink-hint" aria-hidden />
+            <Icon name="table_chart" size={14} className="shrink-0 text-ink-hint" aria-hidden />
             Expected columns: <span className="font-mono text-ink">Name, Mobile, Status</span>
           </p>
           <button
@@ -257,7 +256,7 @@ function UploadVolunteersSheet({
             onClick={downloadSample}
             className="inline-flex items-center gap-1.5 rounded text-xs font-semibold text-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
           >
-            <Download className="h-3.5 w-3.5" aria-hidden /> Download sample CSV
+            <Icon name="download" size={14} aria-hidden /> Download sample CSV
           </button>
         </div>
 
@@ -271,7 +270,7 @@ function UploadVolunteersSheet({
               {previewRows.map((v, i) => (
                 <li key={i} className="flex items-center justify-between gap-2 px-4 py-2 text-sm">
                   <span className="flex min-w-0 items-center gap-2">
-                    <CheckCircle className="h-4 w-4 shrink-0 text-green-600" aria-hidden />
+                    <Icon name="check_circle" size={16} className="shrink-0 text-green-600" aria-hidden />
                     <span className="truncate font-medium text-ink">{v.name}</span>
                     <span className="font-mono text-xs text-ink-muted">{v.phone}</span>
                   </span>
@@ -312,7 +311,7 @@ export default function CpliPeerEducatorsPage() {
       exportValue: (r) => String(r.numberOfVolunteers),
       render: (r) => (
         <span className="inline-flex items-center gap-1.5 font-medium tabular-nums text-ink">
-          <Users className="h-3.5 w-3.5 text-ink-hint" aria-hidden />
+          <Icon name="group" size={14} className="text-ink-hint" aria-hidden />
           {r.numberOfVolunteers}
         </span>
       ),
@@ -323,17 +322,17 @@ export default function CpliPeerEducatorsPage() {
       header: "Action",
       render: (r) => (
         <RowActions>
-          <IconAction icon={Pencil} tone="warning" label={`Edit ${r.name}`}
+          <IconAction icon="edit" tone="warning" label={`Edit ${r.name}`}
             onClick={() => { setSelectedEducator(r); setEditOpen(true); }} />
-          <IconAction icon={Trash2} tone="danger" label={`Delete ${r.name}`}
+          <IconAction icon="delete" tone="danger" label={`Delete ${r.name}`}
             onClick={() => { setSelectedEducator(r); setDeleteOpen(true); }} />
           <RowActionDivider />
           <RowActionMenu
             label={`More actions for ${r.name}`}
             items={[
-              { icon: Users, label: "View volunteers", onClick: () => router.push(`/portals/nmba/treatment-centre/cpli/peer-educators/${r.id}/volunteers`) },
-              { icon: Upload, label: "Upload volunteers", onClick: () => { setSelectedEducator(r); setUploadOpen(true); } },
-              { icon: GraduationCap, label: "View training records", onClick: () => router.push(`/portals/nmba/treatment-centre/cpli/peer-educators/${r.id}/training`) },
+              { icon: "group", label: "View volunteers", onClick: () => router.push(`/portals/nmba/treatment-centre/cpli/peer-educators/${r.id}/volunteers`) },
+              { icon: "upload", label: "Upload volunteers", onClick: () => { setSelectedEducator(r); setUploadOpen(true); } },
+              { icon: "school", label: "View training records", onClick: () => router.push(`/portals/nmba/treatment-centre/cpli/peer-educators/${r.id}/training`) },
             ]}
           />
         </RowActions>
@@ -361,7 +360,7 @@ export default function CpliPeerEducatorsPage() {
             onClick={() => { setSelectedEducator(null); setAddOpen(true); }}
             className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-semibold text-navy transition hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
           >
-            <Plus className="h-4 w-4" aria-hidden /> Add New Peer Educator
+            <Icon name="add" size={16} aria-hidden /> Add New Peer Educator
           </button>
         }
       />

@@ -1,0 +1,100 @@
+{
+  "$description": "Declarative source for the Tier-3 Action matrix. Expanded into DTCG tokens by build/generate-component-tokens.mjs — NEVER hand-write the resulting token names. Spec §7.3.",
+
+  "$notes": [
+    "Ramp steps, not filter: brightness(). button.css currently computes hover/active with",
+    "filter: brightness(0.95) — which means those colours cannot be contrast-tested, cannot be",
+    "expressed as Figma variables, and drift unpredictably under dark/HC themes. Naming the",
+    "step makes each state a designed, testable value.",
+    "",
+    "`success` is an intent here but not in UX4G's Action matrix. SAMAVESH's Button ships one,",
+    "so the matrix describes the component we have (spec §7.3, corrected by the Phase 1 slice)."
+  ],
+
+  "intents": {
+    "brand":       { "scale": "primaryScale", "onFill": "{color.neutralScale.0}" },
+    "success":     { "scale": "successScale", "onFill": "{color.neutralScale.0}" },
+    "destructive": { "scale": "dangerScale",  "onFill": "{color.neutralScale.0}" },
+    "neutral":     { "scale": "neutralScale", "onFill": "{color.neutralScale.0}" }
+  },
+
+  "$stepNotes": {
+    "fill": "600 not 500 — 500 fails 4.5:1 against white for the label on several ramps. See test/prominence-contract.test.mjs.",
+    "disabled": "A flat neutral fill, NOT the intent colour at reduced opacity: a washed-out red still reads as an error affordance."
+  },
+
+  "variants": {
+    "primary": {
+      "$comment": "filled",
+      "default":  { "bg": "600", "text": "onFill", "border": "600" },
+      "hover":    { "bg": "700", "text": "onFill", "border": "700" },
+      "active":   { "bg": "800", "text": "onFill", "border": "800" },
+      "disabled": { "bg": "neutral200", "text": "neutralDisabled", "border": "neutral200" }
+    },
+    "secondary": {
+      "$comment": "outlined",
+      "default":  { "bg": "transparent", "text": "700", "border": "300" },
+      "hover":    { "bg": "50",          "text": "700", "border": "400" },
+      "active":   { "bg": "100",         "text": "800", "border": "500" },
+      "disabled": { "bg": "transparent", "text": "neutralDisabled", "border": "neutral200" }
+    },
+    "tertiary": {
+      "$comment": "text",
+      "default":  { "bg": "transparent", "text": "700", "border": "transparent" },
+      "hover":    { "bg": "50",          "text": "700", "border": "transparent" },
+      "active":   { "bg": "100",         "text": "800", "border": "transparent" },
+      "disabled": { "bg": "transparent", "text": "neutralDisabled", "border": "transparent" }
+    },
+    "tonal": {
+      "$comment": "soft fill, dark label",
+      "default":  { "bg": "100", "text": "800", "border": "100" },
+      "hover":    { "bg": "200", "text": "800", "border": "200" },
+      "active":   { "bg": "300", "text": "900", "border": "300" },
+      "disabled": { "bg": "neutral200", "text": "neutralDisabled", "border": "neutral200" }
+    }
+  },
+
+  "$overrideNotes": [
+    "Per-intent step overrides. The four ramps are NOT perceptually equivalent at equal steps,",
+    "so one step table cannot serve all of them. These two were found by",
+    "test/action-contrast.test.mjs, not by eye:",
+    "  destructive/primary/default — white on dangerScale.600 (#d64539) is 4.40:1, just under",
+    "    AA. The danger ramp only clears 4.5:1 at 700 (#b8382f, 5.76:1), so the whole filled",
+    "    progression shifts up one step to 700/800/900.",
+    "  destructive/tonal/hover — dangerScale.800 on 200 is 4.02:1; 900 on 200 is 6.28:1.",
+    "Add an override here rather than moving the shared step table: the other three intents",
+    "pass comfortably and would lose contrast headroom for no reason."
+  ],
+  "overrides": {
+    "destructive": {
+      "primary": {
+        "default": { "bg": "700", "border": "700" },
+        "hover":   { "bg": "800", "border": "800" },
+        "active":  { "bg": "900", "border": "900" }
+      },
+      "tonal": {
+        "hover": { "text": "900" }
+      }
+    }
+  },
+
+  "$inverseNotes": [
+    "For a button sitting on a solid brand surface (e.g. a navy page header). Modelled as a",
+    "qualifier so it composes with the variants above instead of needing new variant words.",
+    "Values are white-alpha, so they work on ANY solid surface rather than assuming navy."
+  ],
+  "inverse": {
+    "primary": {
+      "default":  { "bg": "white",      "text": "700",   "border": "white" },
+      "hover":    { "bg": "white92",    "text": "800",   "border": "white92" },
+      "active":   { "bg": "white84",    "text": "900",   "border": "white84" },
+      "disabled": { "bg": "white40",    "text": "white64", "border": "white40" }
+    },
+    "secondary": {
+      "default":  { "bg": "transparent", "text": "white",   "border": "white40" },
+      "hover":    { "bg": "white10",     "text": "white",   "border": "white64" },
+      "active":   { "bg": "white16",     "text": "white",   "border": "white" },
+      "disabled": { "bg": "transparent", "text": "white40", "border": "white24" }
+    }
+  }
+}

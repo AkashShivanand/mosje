@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Download } from "lucide-react";
-import { KpiRow, BarChart, FilterBar } from "@mosje/design-system";
+import { BarChart, FilterBar, Icon, KpiRow } from "@mosje/design-system";
 import { PageHeader, Select, SearchInput, StatusPill, SlaBadge, Button, Table } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { ROLES } from "@/lib/tg/roles";
@@ -101,7 +100,7 @@ export default function AdminDashboardPage() {
             className="w-72"
           />
           <Button variant="outline">
-            <Download className="h-4 w-4" />
+            <Icon name="download" size={16} />
             Export
           </Button>
         </FilterBar>

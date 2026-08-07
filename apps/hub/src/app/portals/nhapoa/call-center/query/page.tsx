@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
 import { PageHeader, Card, Button, Field, TextInput, Textarea } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
+import { Icon } from "@mosje/design-system";
 
 export default function QueryPage() {
   const { logQuery } = useNhapoa();
@@ -23,7 +23,7 @@ export default function QueryPage() {
       <div>
         <PageHeader title="Query (FTR)" subtitle="Log a first-time-resolution query." />
         <Card className="max-w-xl p-8 text-center">
-          <CheckCircle2 className="mx-auto h-12 w-12 text-approve" />
+          <Icon name="check_circle" size={48} className="mx-auto text-approve" />
           <p className="mt-3 text-sm font-semibold text-ink">Query logged</p>
           <p className="mt-1 text-sm text-ink-muted">The query has been added to the query log.</p>
           <div className="mt-5 flex justify-center gap-2">

@@ -8,13 +8,13 @@ import "@mosje/design-system/components.css";
 export const globalTypes = {
   colorMode: {
     description: "Brand color mode",
-    defaultValue: "blue-light",
+    defaultValue: "blue",
     toolbar: {
       title: "Color mode",
       icon: "circlehollow",
       items: [
-        { value: "blue-light", title: "Blue · Light" },
-        { value: "blue-dark", title: "Blue · Dark" },
+        { value: "blue", title: "Blue · Light" },
+        { value: "navy", title: "Blue · Dark" },
       ],
       dynamicTitle: true,
     },
@@ -58,7 +58,7 @@ const preview: Preview = {
       const { theme, density, colorMode } = context.globals;
       return (
         <div
-          data-color-mode={colorMode}
+          data-brand={colorMode}
           data-theme={theme === "light" ? undefined : theme}
           data-density={density === "comfortable" ? undefined : density}
           style={{

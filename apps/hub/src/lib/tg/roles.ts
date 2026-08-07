@@ -1,17 +1,9 @@
-import {
-  LayoutGrid,
-  Users,
-  Shield,
-  KeyRound,
-  Building2,
-  type LucideIcon,
-} from "lucide-react";
 import type { AdminRoleId } from "./store/types";
 
 export interface NavItem {
   label: string;
   href: string;
-  icon: LucideIcon;
+  icon: string;
 }
 
 export interface RoleDef {
@@ -25,15 +17,15 @@ export interface RoleDef {
 }
 
 const DASHBOARD_ONLY: NavItem[] = [
-  { label: "Dashboard", href: "/portals/tg/admin/dashboard", icon: LayoutGrid },
+  { label: "Dashboard", href: "/portals/tg/admin/dashboard", icon: "grid_view" },
 ];
 
 const ADMIN_NAV: NavItem[] = [
-  { label: "Dashboard", href: "/portals/tg/admin/dashboard", icon: LayoutGrid },
-  { label: "User Management", href: "/portals/tg/admin/users", icon: Users },
-  { label: "Role Management", href: "/portals/tg/admin/roles", icon: Shield },
-  { label: "Password Policy", href: "/portals/tg/admin/password-policy", icon: KeyRound },
-  { label: "Tenants", href: "/portals/tg/admin/tenants", icon: Building2 },
+  { label: "Dashboard", href: "/portals/tg/admin/dashboard", icon: "grid_view" },
+  { label: "User Management", href: "/portals/tg/admin/users", icon: "group" },
+  { label: "Role Management", href: "/portals/tg/admin/roles", icon: "shield" },
+  { label: "Password Policy", href: "/portals/tg/admin/password-policy", icon: "key" },
+  { label: "Tenants", href: "/portals/tg/admin/tenants", icon: "apartment" },
 ];
 
 /**

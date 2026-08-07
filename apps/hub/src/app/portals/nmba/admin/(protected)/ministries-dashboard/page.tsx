@@ -1,6 +1,6 @@
 import { AdminShell } from "@/components/nmba/admin-shell";
 import { StatsCard } from "@/components/nmba/stats-card";
-import { HeartHandshake } from "lucide-react";
+import { Icon } from "@mosje/design-system";
 
 export default function MinistriesDashboard() {
   return (
@@ -16,12 +16,12 @@ export default function MinistriesDashboard() {
         <StatsCard
           label="Total Pledges"
           value="71"
-          icon={<HeartHandshake className="h-5 w-5" />}
+          icon={<Icon name="volunteer_activism" size={20} />}
         />
         <StatsCard
           label="Total Pledges Taken Today"
           value="0"
-          icon={<HeartHandshake className="h-5 w-5" />}
+          icon={<Icon name="volunteer_activism" size={20} />}
         />
       </div>
     </AdminShell>

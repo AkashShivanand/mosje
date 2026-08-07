@@ -1,28 +1,25 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowDownRight, ArrowUpRight, Filter, Target, TrendingUp } from "lucide-react";
-import { Badge } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/smile-admin/ui/card";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { GenderDonut, MonthlyPerf, ShelterStateBars } from "@/components/smile-admin/dashboard/charts";
 import { ScopeBanner } from "@/components/smile-admin/shell/scope-banner";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/ui/table";
+import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { GENDER_DISTRIBUTION, PERF_MONTHLY, PERF_TOP_AGENCIES, SHELTER_HOMES_BY_STATE, STATE_DISTRIBUTION } from "@/lib/smile-admin/mock-data";
 import { cn, formatNumber } from "@/lib/smile-admin/utils";
+import { Badge, Button, Card, CardBody, CardHeader, CardTitle, Icon } from "@mosje/design-system";
 
 const PERIODS = ["Last 12 months", "Current FY", "Last FY", "Calendar Year"] as const;
 
 function HeroStat({ label, value, delta, positive }: { label: string; value: string; delta: string; positive: boolean }) {
   return (
     <div className="rounded-lg border border-stroke-200 bg-white p-lg shadow-xs">
-      <div className="text-label-1 uppercase tracking-wide text-foreground-muted">{label}</div>
-      <div className="mt-xs text-headline-2 font-bold tabular-nums text-foreground">{value}</div>
+      <div className="text-label-1 uppercase tracking-wide text-ink-muted">{label}</div>
+      <div className="mt-xs text-headline-2 font-bold tabular-nums text-ink">{value}</div>
       <div className={cn("mt-sm inline-flex items-center gap-xs rounded-xs px-sm py-0.5 text-label-2 font-semibold", positive ? "bg-success-50 text-success-600" : "bg-danger-50 text-danger-600")}>
-        {positive ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
-        {delta} <span className="text-foreground-muted">vs prior</span>
+        {positive ? <Icon name="arrow_outward" size={12} /> : <Icon name="south_east" size={12} />}
+        {delta} <span className="text-ink-muted">vs prior</span>
       </div>
     </div>
   );
@@ -45,8 +42,8 @@ export default function PerformanceStatsPage() {
         subtitle="Programme momentum across identification, mobilisation and rehabilitation — over time and by geography."
         actions={
           <div className="flex items-center gap-sm">
-            <Button variant="outline" size="sm">
-              <Filter className="h-3.5 w-3.5" /> Filters
+            <Button appearance="outlined" size="sm">
+              <Icon name="filter_alt" size={14} /> Filters
             </Button>
             <ExportMenu
               filename="smile-top-states"
@@ -71,7 +68,7 @@ export default function PerformanceStatsPage() {
             onClick={() => setPeriod(p)}
             className={cn(
               "rounded-md border px-md py-1.5 text-body-3 font-semibold transition",
-              p === period ? "border-primary bg-primary text-white" : "border-stroke-200 bg-white text-foreground-muted hover:text-primary"
+              p === period ? "border-primary bg-primary text-white" : "border-stroke-200 bg-white text-ink-muted hover:text-primary"
             )}
           >
             {p}
@@ -89,11 +86,11 @@ export default function PerformanceStatsPage() {
       <Card>
         <CardHeader>
           <CardTitle>Cumulative momentum</CardTitle>
-          <span className="text-label-2 text-foreground-muted">Beneficiaries by stage · monthly</span>
+          <span className="text-label-2 text-ink-muted">Beneficiaries by stage · monthly</span>
         </CardHeader>
-        <CardContent>
+        <CardBody>
           <MonthlyPerf data={PERF_MONTHLY} />
-        </CardContent>
+        </CardBody>
       </Card>
 
       <div className="grid gap-lg lg:grid-cols-[2fr_1fr]">
@@ -101,10 +98,10 @@ export default function PerformanceStatsPage() {
           <CardHeader>
             <CardTitle>Top performing states</CardTitle>
             <span className="inline-flex items-center gap-xs rounded-xs bg-primary-50 px-sm py-0.5 text-label-3 font-semibold text-primary">
-              <Target className="h-3 w-3" /> Beneficiaries onboarded
+              <Icon name="target" size={12} /> Beneficiaries onboarded
             </span>
           </CardHeader>
-          <CardContent>
+          <CardBody>
             <Table>
               <THead>
                 <tr>
@@ -121,7 +118,7 @@ export default function PerformanceStatsPage() {
                   return (
                     <TR key={s.state}>
                       <TD>
-                        <div className="font-semibold text-foreground">{i + 1}. {s.state}</div>
+                        <div className="font-semibold text-ink">{i + 1}. {s.state}</div>
                       </TD>
                       <TD className="text-right tabular-nums">{formatNumber(s.count)}</TD>
                       <TD>
@@ -129,12 +126,12 @@ export default function PerformanceStatsPage() {
                           <div className="relative h-2 w-32 overflow-hidden rounded-full bg-neutral-100">
                             <div className="absolute inset-y-0 left-0 rounded-full bg-primary" style={{ width: `${pct}%` }} />
                           </div>
-                          <span className="text-label-2 text-foreground-muted">{pct}%</span>
+                          <span className="text-label-2 text-ink-muted">{pct}%</span>
                         </div>
                       </TD>
                       <TD>
                         <span className="inline-flex items-center gap-xs text-label-2 font-semibold text-success-600">
-                          <TrendingUp className="h-3 w-3" /> +{(8 + i * 1.2).toFixed(1)}%
+                          <Icon name="trending_up" size={12} /> +{(8 + i * 1.2).toFixed(1)}%
                         </span>
                       </TD>
                     </TR>
@@ -142,25 +139,25 @@ export default function PerformanceStatsPage() {
                 })}
               </tbody>
             </Table>
-          </CardContent>
+          </CardBody>
         </Card>
 
         <Card>
           <CardHeader>
             <CardTitle>Gender split</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardBody>
             <GenderDonut data={GENDER_DISTRIBUTION} />
-          </CardContent>
+          </CardBody>
         </Card>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Top implementing agencies</CardTitle>
-          <Badge tone="info">FY 2025–26</Badge>
+          <Badge status="info">FY 2025–26</Badge>
         </CardHeader>
-        <CardContent>
+        <CardBody>
           <Table>
             <THead>
               <tr>
@@ -177,7 +174,7 @@ export default function PerformanceStatsPage() {
                 const conv = Math.round((a.rehab / a.identified) * 100);
                 return (
                   <TR key={a.name}>
-                    <TD className="font-semibold text-foreground">{a.name}</TD>
+                    <TD className="font-semibold text-ink">{a.name}</TD>
                     <TD>{a.state}</TD>
                     <TD className="text-right tabular-nums">{formatNumber(a.identified)}</TD>
                     <TD className="text-right tabular-nums">{formatNumber(a.mobilised)}</TD>
@@ -195,17 +192,17 @@ export default function PerformanceStatsPage() {
               })}
             </tbody>
           </Table>
-        </CardContent>
+        </CardBody>
       </Card>
 
       <Card>
         <CardHeader>
           <CardTitle>Shelter homes density</CardTitle>
-          <span className="text-label-2 text-foreground-muted">Top states by operational shelter capacity</span>
+          <span className="text-label-2 text-ink-muted">Top states by operational shelter capacity</span>
         </CardHeader>
-        <CardContent>
+        <CardBody>
           <ShelterStateBars data={SHELTER_HOMES_BY_STATE} />
-        </CardContent>
+        </CardBody>
       </Card>
     </div>
   );

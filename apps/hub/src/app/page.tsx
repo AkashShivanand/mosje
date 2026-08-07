@@ -1,13 +1,4 @@
-import {
-  Globe,
-  Blocks,
-  LayoutGrid,
-  FileBarChart,
-  ArrowRight,
-  Building2,
-  ShieldCheck,
-} from "lucide-react";
-import { DEFAULT_APPS } from "@mosje/design-system";
+import { DEFAULT_APPS, Icon } from "@mosje/design-system";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { EstateField } from "@/components/estate-field";
@@ -22,7 +13,7 @@ const destinations = [
     title: "Website",
     description:
       "The unified informational site for the department and its associated organisations.",
-    icon: Globe,
+    icon: "language",
     href: "/website",
     cta: "Visit website",
   },
@@ -30,7 +21,7 @@ const destinations = [
     title: "Portals",
     description:
       "Authenticated workflow portals for schemes, scholarships, finance corporations and commissions.",
-    icon: LayoutGrid,
+    icon: "grid_view",
     href: "/portals",
     cta: "Browse portals",
   },
@@ -38,7 +29,7 @@ const destinations = [
     title: "Design System",
     description:
       "SAMAVESH — foundations, tokens, components and documentation that power every property.",
-    icon: Blocks,
+    icon: "widgets",
     href: "/design-system",
     cta: "Open SAMAVESH",
   },
@@ -46,17 +37,17 @@ const destinations = [
     title: "Reports",
     description:
       "Design QC, accessibility and audit reports across the MoSJE digital estate.",
-    icon: FileBarChart,
+    icon: "assessment",
     href: "/reports",
     cta: "View reports",
   },
 ] as const;
 
 const glance = [
-  { icon: Globe, value: "1", label: "Unified website", sub: "consolidating 13 legacy sites" },
-  { icon: LayoutGrid, value: `${totalPortals}`, label: "Workflow portals", sub: `${livePortals} live, rest in development` },
-  { icon: Building2, value: "33+", label: "Organisations & schemes", sub: "across the ministry" },
-  { icon: ShieldCheck, value: "AA", label: "WCAG 2.1 + GIGW", sub: "accessibility & gov standards" },
+  { icon: "language", value: "1", label: "Unified website", sub: "consolidating 13 legacy sites" },
+  { icon: "grid_view", value: `${totalPortals}`, label: "Workflow portals", sub: `${livePortals} live, rest in development` },
+  { icon: "apartment", value: "33+", label: "Organisations & schemes", sub: "across the ministry" },
+  { icon: "verified_user", value: "AA", label: "WCAG 2.1 + GIGW", sub: "accessibility & gov standards" },
 ] as const;
 
 export default function HomePage() {
@@ -103,7 +94,7 @@ export default function HomePage() {
                 className="inline-flex items-center gap-2 rounded-lg bg-gov-blue px-5 py-3 text-sm font-semibold text-on-primary shadow-xs transition-colors hover:bg-gov-blue-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
               >
                 Browse the portals
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                <Icon name="arrow_forward" size={16} aria-hidden="true" />
               </a>
               <a
                 href="/website"
@@ -130,7 +121,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {destinations.map(({ title, description, icon: Icon, href, cta }) => (
+            {destinations.map(({ title, description, icon: iconName, href, cta }) => (
               <a
                 key={title}
                 href={href}
@@ -142,7 +133,7 @@ export default function HomePage() {
                 />
                 <div className="mb-5">
                   <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue-tonal text-gov-blue transition-colors group-hover:bg-gov-blue group-hover:text-on-primary">
-                    <Icon className="h-6 w-6" aria-hidden="true" />
+                    <Icon name={iconName} aria-hidden="true" />
                   </span>
                 </div>
                 <h3 className="text-xl font-bold tracking-tight text-ink">{title}</h3>
@@ -151,7 +142,7 @@ export default function HomePage() {
                 </p>
                 <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-gov-blue transition-all group-hover:gap-2.5">
                   {cta}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  <Icon name="arrow_forward" size={16} aria-hidden="true" />
                 </span>
               </a>
             ))}
@@ -171,9 +162,9 @@ export default function HomePage() {
               The estate at a glance
             </h2>
             <dl className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
-              {glance.map(({ icon: Icon, value, label, sub }) => (
+              {glance.map(({ icon: iconName, value, label, sub }) => (
                 <div key={label} className="flex flex-col gap-2">
-                  <Icon className="h-5 w-5 text-gov-blue" aria-hidden="true" />
+                  <Icon name={iconName} size={20} className="text-gov-blue" aria-hidden="true" />
                   <dd className="text-4xl font-bold tracking-tight text-ink">
                     {value}
                   </dd>

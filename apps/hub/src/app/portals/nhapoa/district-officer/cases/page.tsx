@@ -1,12 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Download } from "lucide-react";
 import { PageHeader, SearchInput, Button } from "@/components/nhapoa/ui";
 import { CaseTable } from "@/components/nhapoa/case-views";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { doQueue } from "@/lib/nhapoa/case-helpers";
 import { cn } from "@/lib/nhapoa/utils";
+import { Icon } from "@mosje/design-system";
 
 type Tab = "all" | "new" | "action";
 
@@ -38,7 +38,7 @@ export default function DOCasesPage() {
       <PageHeader
         title="My Cases"
         subtitle={`${queue.length} cases assigned to your district`}
-        action={<Button variant="outline"><Download className="h-4 w-4" /> Export</Button>}
+        action={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>}
       />
 
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />

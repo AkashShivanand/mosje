@@ -12,8 +12,8 @@ function StatusFooter({ collapsed }: { collapsed: boolean }) {
       {!collapsed && (
         <div className="text-label-3 leading-tight">
           <div className="font-semibold uppercase tracking-wide text-success">All systems online</div>
-          <div className="text-foreground-hint">SMILE Beggary Rehabilitation Portal</div>
-          <div className="text-foreground-hint">v1.0.0 · Build 2026.05.15b</div>
+          <div className="text-ink-hint">SMILE Beggary Rehabilitation Portal</div>
+          <div className="text-ink-hint">v1.0.0 · Build 2026.05.15b</div>
         </div>
       )}
     </div>

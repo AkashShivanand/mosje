@@ -6,8 +6,7 @@ import { DataTable } from "@/components/nmba/data-table";
 import { ADMIN_USERS, USERS_TOTAL } from "@/lib/nmba/mock-data";
 import type { AdminUser } from "@/lib/nmba/types";
 import { useToast } from "@/components/nmba/toast";
-import { Plus, Pencil, Trash2, X } from "lucide-react";
-import { Button, Input, Select, FormField } from "@mosje/design-system";
+import { Button, FormField, Icon, Input, Select } from "@mosje/design-system";
 
 const ROLES: AdminUser["role"][] = ["Admin", "State Nodal Officer", "District Nodal Officer"];
 
@@ -30,7 +29,7 @@ function AddUserModal({ open, onClose }: { open: boolean; onClose: () => void })
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
           <h2 id="add-user-title" className="text-base font-bold text-ink">Add User</h2>
           <button onClick={onClose} aria-label="Close" className="rounded p-1 text-ink-hint hover:bg-black/5">
-            <X className="h-4 w-4" />
+            <Icon name="close" size={16} />
           </button>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6">
@@ -97,10 +96,10 @@ export default function UserManagementPage() {
       render: () => (
         <div className="flex items-center gap-2">
           <button onClick={() => toast("Action coming soon.", "info")} aria-label="Edit user" className="rounded p-1 text-ink-hint hover:bg-black/5">
-            <Pencil className="h-3.5 w-3.5" />
+            <Icon name="edit" size={14} />
           </button>
           <button onClick={() => toast("Action coming soon.", "info")} aria-label="Delete user" className="rounded p-1 text-red-400 hover:bg-red-50">
-            <Trash2 className="h-3.5 w-3.5" />
+            <Icon name="delete" size={14} />
           </button>
         </div>
       ),
@@ -114,7 +113,7 @@ export default function UserManagementPage() {
           <h1 className="text-xl font-bold text-ink">User Management</h1>
           <p className="mt-1 text-sm text-ink-muted">{USERS_TOTAL.toLocaleString("en-IN")} registered users</p>
         </div>
-        <Button onClick={() => setModalOpen(true)} iconLeft={<Plus className="h-4 w-4" />}>
+        <Button onClick={() => setModalOpen(true)} iconLeft={<Icon name="add" size={16} />}>
           Add User
         </Button>
       </div>

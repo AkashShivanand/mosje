@@ -3,8 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ArrowRight, ShieldCheck } from "lucide-react";
-import { DemoFab, type DemoFillDetail } from "@mosje/design-system";
+import { DemoFab, Icon, type DemoFillDetail } from "@mosje/design-system";
 import { Button, Field, TextInput } from "@/components/tg/ui";
 import { ADMIN_ROLES, roleByEmail } from "@/lib/tg/roles";
 import { useTg } from "@/lib/tg/store/store";
@@ -96,7 +95,7 @@ export default function AdminLoginPage() {
       <main id="login-main" className="flex flex-1 items-center justify-center bg-surface-muted px-4 py-12 sm:px-6">
         <div className="w-full max-w-md">
           <div className="mb-6 flex items-center gap-2 text-navy">
-            <ShieldCheck className="h-6 w-6" />
+            <Icon name="verified_user" />
             <span className="rounded-full bg-navy/10 px-2.5 py-1 text-xs font-bold uppercase tracking-wide">
               Admin
             </span>
@@ -139,7 +138,7 @@ export default function AdminLoginPage() {
 
             <Button type="submit" className="w-full">
               {otpSent ? "Verify OTP" : "Send OTP"}
-              <ArrowRight className="h-4 w-4" />
+              <Icon name="arrow_forward" size={16} />
             </Button>
           </form>
 

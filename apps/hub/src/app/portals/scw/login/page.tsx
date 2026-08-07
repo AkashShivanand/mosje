@@ -2,10 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowRight, Eye, EyeOff, Repeat } from "lucide-react";
 import { Button, Field, TextInput } from "@/components/scw/ui";
 import { cn } from "@/lib/scw/utils";
-import { DemoFab } from "@mosje/design-system";
+import { DemoFab, Icon } from "@mosje/design-system";
 
 type RoleTab = "citizen" | "officer";
 type CitizenType = "volunteer" | "sage";
@@ -63,7 +62,7 @@ export default function LoginPage() {
             type="button"
             className="inline-flex items-center gap-2 rounded-lg border border-white/30 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10"
           >
-            <Repeat className="h-4 w-4" />
+            <Icon name="repeat" size={16} />
             Change
           </button>
         </div>
@@ -154,9 +153,9 @@ export default function LoginPage() {
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-hint hover:text-ink"
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5" />
+                    <Icon name="visibility_off" size={20} />
                   ) : (
-                    <Eye className="h-5 w-5" />
+                    <Icon name="visibility" size={20} />
                   )}
                 </button>
               </div>
@@ -173,7 +172,7 @@ export default function LoginPage() {
 
             <Button type="submit" className="w-full">
               Login
-              <ArrowRight className="h-4 w-4" />
+              <Icon name="arrow_forward" size={16} />
             </Button>
           </form>
 

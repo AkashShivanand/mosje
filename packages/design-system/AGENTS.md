@@ -65,8 +65,11 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
   `Modal`, `SideSheet` (right-anchored drawer), `Lightbox` (mixed image/video gallery viewer), `Stepper`,
   `SlaProgressIndicator` (Right to Service Act time-remaining; linear/circular/badge, with a
   neutral PAUSED state for time the applicant owns — never hand-roll a days-left badge),
-  `ToastProvider`/`useToast`, `Alert`, `Badge`, `Loader`, `EmptyState`
-  (feedback); `FormSection`, `FormCard`, `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`,
+  `ToastProvider`/`useToast`, `Alert`, `Badge`, `Loader`, `EmptyState`,
+  `Skeleton`/`SkeletonText`/`SkeletonRow` (shaped loading placeholders — use these, not
+  `Loader`, whenever the eventual shape is known), `Tooltip` (hover **and** focus hint;
+  WCAG 1.4.13 dismissible/hoverable/persistent, portalled so Card and DataTable overflow
+  cannot clip it — never hand-roll one from `title=`) (feedback); `FormSection`, `FormCard`, `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`,
   `MediaUpload` (single file/image upload), `MediaGalleryInput` (multi image/video upload),
   `GeoPhotoInput` (geo-tagged evidence photos with EXIF/device location + auto-downscaling),
   `DeclarationCheckbox` (statutory certification panel), the **identity controls**
@@ -75,9 +78,14 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
   PAN; **never** hand-roll these as an `<Input>` + regex), `PasswordInput` (reveal toggle —
   use for **every** password field; never `<Input type="password">` plus a hand-rolled eye,
   which is how the submit-on-toggle bug and the missing accessible name get reintroduced)
-  and the input atoms (forms);
+  `Label` (standalone label for controls **outside** `FormField`) and the input atoms
+  (forms); `SectionTitle` (the shared eyebrow/heading/count/actions row — never hand-roll a
+  `flex justify-between` with its own heading classes) (layout);
   `ApprovalTimeline` (multi-tier approval audit trail, data-display); `SiteHeader`, `SidebarNav`, `Footer`,
-  `AppSwitcher`, `Tabs`/`TabPanel` (navigation); `PortalLoginShell` (auth);
+  `AppSwitcher`, `Tabs`/`TabPanel` (navigation — note `SidebarNavItem.icon` is a Material
+  Symbols NAME STRING, not a component, so nav configs stay serialisable data);
+  `PortalLoginShell` (auth); `LiveRegion`/`useLiveRegion` (announce async results that move
+  no focus — mount one per page);
   `UX4GAccessibilityWidget` (a11y — **CANONICAL**: the official Government of
   India MeitY/UX4G accessibility widget, the single mechanism for text size,
   spacing, contrast and dark mode across the estate; render it once near the

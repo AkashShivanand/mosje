@@ -1,5 +1,4 @@
-import { MapPin, Phone, Mail, Building2 } from "lucide-react";
-import { Card } from "@mosje/design-system";
+import { Card, Icon } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import type { PageHeroProps } from "@/components/website/layout/PageHero";
 import { FeedbackForm } from "@/components/website/ui/feedback-form";
@@ -36,22 +35,22 @@ export function ContactPage({ office, mapSrc, officers = [], showForm = true, ..
             <div>
               <div className="rounded-xl border border-gray-200 bg-white p-6">
                 <h2 className="flex items-center gap-2 text-[18px] font-semibold text-gov-blue-dark">
-                  <Building2 className="h-5 w-5" /> {office.name}
+                  <Icon name="apartment" size={20} /> {office.name}
                 </h2>
                 <ul className="mt-4 space-y-3 text-[14px] text-ink-muted">
                   <li className="flex items-start gap-3">
-                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gov-blue" />
+                    <Icon name="location_on" size={16} className="mt-0.5 shrink-0 text-gov-blue" />
                     <span>{office.address}</span>
                   </li>
                   {office.phone && (
                     <li className="flex items-center gap-3">
-                      <Phone className="h-4 w-4 shrink-0 text-gov-blue" />
+                      <Icon name="call" size={16} className="shrink-0 text-gov-blue" />
                       <span>{office.phone}</span>
                     </li>
                   )}
                   {office.email && (
                     <li className="flex items-center gap-3">
-                      <Mail className="h-4 w-4 shrink-0 text-gov-blue" />
+                      <Icon name="mail" size={16} className="shrink-0 text-gov-blue" />
                       <span>{office.email}</span>
                     </li>
                   )}
@@ -78,8 +77,8 @@ export function ContactPage({ office, mapSrc, officers = [], showForm = true, ..
                       <Card key={o.role} variant="outlined" className="p-4 text-[14px]">
                         <p className="font-semibold text-ink">{o.role}</p>
                         {o.name && <p className="mt-1 text-ink-muted">{o.name}</p>}
-                        {o.phone && <p className="mt-1 flex items-center gap-2 text-ink-muted"><Phone className="h-3.5 w-3.5" />{o.phone}</p>}
-                        {o.email && <p className="mt-1 flex items-center gap-2 text-ink-muted"><Mail className="h-3.5 w-3.5" />{o.email}</p>}
+                        {o.phone && <p className="mt-1 flex items-center gap-2 text-ink-muted"><Icon name="call" size={14} />{o.phone}</p>}
+                        {o.email && <p className="mt-1 flex items-center gap-2 text-ink-muted"><Icon name="mail" size={14} />{o.email}</p>}
                         {o.address && <p className="mt-1 text-gray-500">{o.address}</p>}
                       </Card>
                     ))}

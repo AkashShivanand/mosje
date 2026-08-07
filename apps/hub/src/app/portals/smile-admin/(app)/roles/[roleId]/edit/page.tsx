@@ -3,14 +3,9 @@
 import Link from "next/link";
 import { useParams, notFound, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { ArrowLeft, Save, ShieldCheck } from "lucide-react";
-import { Button } from "@/components/smile-admin/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/smile-admin/ui/card";
-import { Checkbox } from "@/components/smile-admin/ui/checkbox";
-import { Input } from "@/components/smile-admin/ui/input";
-import { Label } from "@/components/smile-admin/ui/label";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { PERMISSION_MATRIX, ROLES } from "@/lib/smile-admin/mock-data";
+import { Button, Card, CardBody, CardHeader, CardTitle, Checkbox, Icon, Input, Label, buttonClasses } from "@mosje/design-system";
 
 export default function RoleEditPage() {
   const { roleId } = useParams<{ roleId: string }>();
@@ -35,8 +30,8 @@ export default function RoleEditPage() {
         subtitle="Adjust scope and permissions for this role. Changes propagate after audit approval."
         actions={
           <div className="flex items-center gap-sm">
-            <Button variant="outline" size="sm" asChild><Link href="/portals/smile-admin/roles"><ArrowLeft className="h-3.5 w-3.5" /> Cancel</Link></Button>
-            <Button size="sm" onClick={() => router.push("/portals/smile-admin/roles")}><Save className="h-3.5 w-3.5" /> Save changes</Button>
+            <Link href="/portals/smile-admin/roles" className={buttonClasses("primary", "outlined", "sm")}><Icon name="arrow_back" size={14} /> Cancel</Link>
+            <Button size="sm" onClick={() => router.push("/portals/smile-admin/roles")}><Icon name="save" size={14} /> Save changes</Button>
           </div>
         }
       />
@@ -44,7 +39,7 @@ export default function RoleEditPage() {
       <div className="grid gap-lg lg:grid-cols-[1fr_2fr]">
         <Card>
           <CardHeader><CardTitle>Role details</CardTitle></CardHeader>
-          <CardContent className="space-y-md">
+          <CardBody className="space-y-md">
             <div className="space-y-xs">
               <Label htmlFor="role-name">Role name</Label>
               <Input id="role-name" value={name} onChange={(e) => setName(e.target.value)} />
@@ -59,24 +54,24 @@ export default function RoleEditPage() {
               </select>
             </div>
             <div className="rounded-md bg-primary-50/60 p-md">
-              <div className="text-label-2 uppercase tracking-wide text-foreground-muted">Granted permissions</div>
+              <div className="text-label-2 uppercase tracking-wide text-ink-muted">Granted permissions</div>
               <div className="text-display-5 font-bold text-primary">{totalGranted}</div>
             </div>
-          </CardContent>
+          </CardBody>
         </Card>
 
         <Card>
           <CardHeader>
             <CardTitle>Permission matrix</CardTitle>
             <span className="inline-flex items-center gap-xs rounded-xs bg-primary-50 px-sm py-1 text-label-3 font-semibold text-primary">
-              <ShieldCheck className="h-3 w-3" /> {totalGranted} granted
+              <Icon name="verified_user" size={12} /> {totalGranted} granted
             </span>
           </CardHeader>
-          <CardContent className="space-y-lg">
+          <CardBody className="space-y-lg">
             {matrix.map((group, gi) => (
               <div key={group.group} className="overflow-hidden rounded-md border border-stroke-200">
                 <header className="flex items-center justify-between bg-neutral-50 px-md py-sm">
-                  <div className="text-label-1 font-semibold uppercase tracking-wide text-foreground-muted">{group.group}</div>
+                  <div className="text-label-1 font-semibold uppercase tracking-wide text-ink-muted">{group.group}</div>
                   <button
                     className="text-label-3 font-semibold text-info hover:underline"
                     onClick={() => {
@@ -94,15 +89,15 @@ export default function RoleEditPage() {
                   {group.permissions.map((p, pi) => (
                     <li key={p.key} className="flex items-center justify-between gap-md px-md py-sm">
                       <div>
-                        <div className="text-body-3 font-semibold text-foreground">{p.label}</div>
-                        <div className="font-mono text-label-3 text-foreground-muted">{p.key}</div>
+                        <div className="text-body-3 font-semibold text-ink">{p.label}</div>
+                        <div className="font-mono text-label-3 text-ink-muted">{p.key}</div>
                       </div>
                       <Checkbox
                         checked={p.granted}
-                        onCheckedChange={(c) => {
+                        onChange={(e) => {
                           const next = matrix.map((g, idx) =>
                             idx === gi
-                              ? { ...g, permissions: g.permissions.map((perm, pIdx) => (pIdx === pi ? { ...perm, granted: c === true } : perm)) }
+                              ? { ...g, permissions: g.permissions.map((perm, pIdx) => (pIdx === pi ? { ...perm, granted: e.target.checked === true } : perm)) }
                               : g
                           );
                           setMatrix(next);
@@ -113,7 +108,7 @@ export default function RoleEditPage() {
                 </ul>
               </div>
             ))}
-          </CardContent>
+          </CardBody>
         </Card>
       </div>
     </div>

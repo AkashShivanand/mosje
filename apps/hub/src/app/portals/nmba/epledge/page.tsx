@@ -4,8 +4,8 @@ import * as React from "react";
 import { PublicShell } from "@/components/nmba/public-shell";
 import { PledgeForm } from "@/components/nmba/pledge-form";
 import { PLEDGE_TEXT_EN, PLEDGE_TEXT_HI, DASHBOARD_STATS } from "@/lib/nmba/mock-data";
-import { Download, HeartHandshake } from "lucide-react";
 import { useToast } from "@/components/nmba/toast";
+import { Icon } from "@mosje/design-system";
 
 export default function EPledgePage() {
   const { toast } = useToast();
@@ -21,7 +21,7 @@ export default function EPledgePage() {
       <div className="max-w-3xl">
         <div className="mb-6 flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brandwash text-navy">
-            <HeartHandshake className="h-5 w-5" />
+            <Icon name="volunteer_activism" size={20} />
           </div>
           <div>
             <h1 className="text-xl font-bold text-ink">E-Pledge</h1>
@@ -84,7 +84,7 @@ export default function EPledgePage() {
               onClick={handleDownload}
               className="mt-4 inline-flex items-center gap-2 rounded-lg border border-green-600 px-4 py-2 text-sm font-semibold text-green-700 hover:bg-green-100"
             >
-              <Download className="h-4 w-4" />
+              <Icon name="download" size={16} />
               Download Certificate
             </button>
           </div>

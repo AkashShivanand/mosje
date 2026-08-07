@@ -1,8 +1,8 @@
 "use client";
 
-import { MapPin, ShieldCheck } from "lucide-react";
 import { useApp } from "@/store/smile-admin/app-context";
 import { ROLE_LABELS, ROLE_SCOPES } from "@/lib/smile-admin/roles";
+import { Icon } from "@mosje/design-system";
 
 export function ScopeBanner() {
   const { account } = useApp();
@@ -25,18 +25,18 @@ export function ScopeBanner() {
         className="inline-flex items-center gap-xs rounded-full bg-primary px-sm py-0.5 font-semibold uppercase tracking-[0.06em] text-white shadow-xs"
         aria-label={`Signed in as ${ROLE_LABELS[account.role]}`}
       >
-        <ShieldCheck aria-hidden className="h-3 w-3" />
+        <Icon name="verified_user" size={12} aria-hidden />
         {ROLE_LABELS[account.role]}
       </span>
       <span className="inline-flex items-center gap-xs">
-        <MapPin aria-hidden className="h-3.5 w-3.5 text-primary" />
-        <span className="text-foreground-muted">Scope</span>
-        <span className="font-semibold text-foreground">{scopeText}</span>
+        <Icon name="location_on" size={14} aria-hidden className="text-primary" />
+        <span className="text-ink-muted">Scope</span>
+        <span className="font-semibold text-ink">{scopeText}</span>
       </span>
       {showAccessLevel ? (
-        <span className="ml-auto hidden items-center gap-xs text-foreground-hint sm:inline-flex">
-          <span className="text-foreground-muted">Access</span>
-          <span className="font-medium text-foreground">{accessLevel}</span>
+        <span className="ml-auto hidden items-center gap-xs text-ink-hint sm:inline-flex">
+          <span className="text-ink-muted">Access</span>
+          <span className="font-medium text-ink">{accessLevel}</span>
         </span>
       ) : null}
     </div>

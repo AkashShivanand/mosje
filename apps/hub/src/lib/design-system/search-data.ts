@@ -14,7 +14,7 @@ export const SEARCH_DATA: SearchEntry[] = [
   { title: "Elevation", section: "Foundations", href: "/design-system/foundations/elevation", keywords: "shadow drop elevation layer depth", type: "foundation" },
   { title: "Motion", section: "Foundations", href: "/design-system/foundations/motion", keywords: "animation transition duration easing", type: "foundation" },
   { title: "Density", section: "Foundations", href: "/design-system/foundations/density", keywords: "compact comfortable dense height control", type: "foundation" },
-  { title: "Iconography", section: "Foundations", href: "/design-system/foundations/iconography", keywords: "icon lucide svg emblems", type: "foundation" },
+  { title: "Iconography", section: "Foundations", href: "/design-system/foundations/iconography", keywords: "icon material symbols svg emblems", type: "foundation" },
   { title: "Accessibility", section: "Foundations", href: "/design-system/foundations/accessibility", keywords: "wcag gigw a11y aria keyboard contrast screen reader", type: "foundation" },
   { title: "Button", section: "Components", href: "/design-system/components/button", keywords: "button cta action primary secondary ghost icon loading", type: "component" },
   { title: "Input", section: "Components", href: "/design-system/components/input", keywords: "input text field form control validation error", type: "component" },

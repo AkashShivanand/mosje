@@ -1,7 +1,7 @@
 "use client";
 
-import { Search, X } from "lucide-react";
 import { cn } from "@/lib/smile-admin/utils";
+import { Icon } from "@mosje/design-system";
 
 export function DataToolbar({
   children,
@@ -41,10 +41,7 @@ export function SearchField({
   const accessibleLabel = label ?? placeholder;
   return (
     <div className={cn("relative w-full sm:w-80", className)}>
-      <Search
-        aria-hidden
-        className="pointer-events-none absolute left-md top-1/2 h-4 w-4 -translate-y-1/2 text-foreground-hint"
-      />
+      <Icon name="search" size={16} aria-hidden className="pointer-events-none absolute left-md top-1/2 -translate-y-1/2 text-ink-hint" />
       <input
         type="search"
         role="searchbox"
@@ -54,16 +51,16 @@ export function SearchField({
         placeholder={placeholder}
         enterKeyHint="search"
         autoComplete="off"
-        className="h-10 w-full rounded-md border border-stroke-300 bg-white pl-9 pr-9 text-body-2 text-foreground shadow-xs placeholder:text-foreground-hint focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15"
+        className="h-10 w-full rounded-md border border-stroke-300 bg-white pl-9 pr-9 text-body-2 text-ink shadow-xs placeholder:text-ink-hint focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15"
       />
       {value ? (
         <button
           type="button"
           aria-label="Clear search"
           onClick={() => onChange("")}
-          className="absolute right-2 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full text-foreground-hint hover:bg-neutral-100 hover:text-foreground"
+          className="absolute right-2 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full text-ink-hint hover:bg-neutral-100 hover:text-ink"
         >
-          <X aria-hidden className="h-3.5 w-3.5" />
+          <Icon name="close" size={14} aria-hidden />
         </button>
       ) : null}
     </div>

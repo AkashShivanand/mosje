@@ -2,11 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { AlertCircle, TriangleAlert, Download } from "lucide-react";
 import { cn } from "@/lib/nhapoa/utils";
 import { StatusPill } from "./ui";
 import { slaDaysLeft, slaTone, slaLabel, priorityOf, fmtDate } from "@/lib/nhapoa/case-helpers";
 import type { Case } from "@/lib/nhapoa/store/types";
+import { Icon } from "@mosje/design-system";
 
 const SLA_TONE_CLASS = {
   approve: "bg-approve-bg text-approve-fg",
@@ -23,9 +23,9 @@ export function PriorityBadge({ case: c }: { case: Case }) {
   const p = priorityOf(c);
   if (!p) return null;
   return p === "Urgent" ? (
-    <span className="mt-1 inline-flex items-center gap-1 rounded bg-reject-bg px-1.5 py-0.5 text-[10px] font-bold uppercase text-reject-fg"><AlertCircle className="h-3 w-3" /> Urgent</span>
+    <span className="mt-1 inline-flex items-center gap-1 rounded bg-reject-bg px-1.5 py-0.5 text-[10px] font-bold uppercase text-reject-fg"><Icon name="error" size={12} /> Urgent</span>
   ) : (
-    <span className="mt-1 inline-flex items-center gap-1 rounded bg-await-bg px-1.5 py-0.5 text-[10px] font-bold uppercase text-await-fg"><TriangleAlert className="h-3 w-3" /> Escalated</span>
+    <span className="mt-1 inline-flex items-center gap-1 rounded bg-await-bg px-1.5 py-0.5 text-[10px] font-bold uppercase text-await-fg"><Icon name="warning" size={12} /> Escalated</span>
   );
 }
 
@@ -110,7 +110,7 @@ export function CaseTable({ cases, detailBase }: { cases: Case[]; detailBase: st
               <td className="px-5 py-4 align-top">
                 <div className="flex items-center justify-end gap-2">
                   <Link href={`${detailBase}/${c.id}`} className="rounded-lg border border-line px-3 py-1.5 text-xs font-semibold text-navy hover:bg-navy/5">View</Link>
-                  <button type="button" aria-label="Download case" className="grid h-8 w-8 place-items-center rounded-lg border border-line text-ink-hint hover:bg-black/5"><Download className="h-4 w-4" /></button>
+                  <button type="button" aria-label="Download case" className="grid h-8 w-8 place-items-center rounded-lg border border-line text-ink-hint hover:bg-black/5"><Icon name="download" size={16} /></button>
                 </div>
               </td>
             </tr>

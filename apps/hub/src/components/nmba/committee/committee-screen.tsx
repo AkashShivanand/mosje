@@ -11,8 +11,7 @@
 //       a row reveals its detail + minutes.
 
 import * as React from "react";
-import { Plus, ClipboardList, Save } from "lucide-react";
-import { Button, EmptyState, SideSheet } from "@mosje/design-system";
+import { Button, EmptyState, Icon, SideSheet } from "@mosje/design-system";
 
 const REGISTER_FORM_ID = "napddr-register-form";
 import { useToast } from "@/components/nmba/toast";
@@ -122,7 +121,7 @@ export function CommitteeTierScreen({ tier }: { tier: CommitteeTier }) {
         <p className="mt-1 text-sm text-ink-muted">{description}</p>
       </div>
       {canAdd && !isSingleTier && (
-        <Button iconLeft={<Plus className="h-4 w-4" />} onClick={() => setAddOpen(true)}>
+        <Button iconLeft={<Icon name="add" size={16} />} onClick={() => setAddOpen(true)}>
           Register committee
         </Button>
       )}
@@ -140,7 +139,7 @@ export function CommitteeTierScreen({ tier }: { tier: CommitteeTier }) {
           <Button appearance="text" onClick={() => setAddOpen(false)}>
             Cancel
           </Button>
-          <Button type="submit" form={REGISTER_FORM_ID} iconLeft={<Save className="h-4 w-4" />}>
+          <Button type="submit" form={REGISTER_FORM_ID} iconLeft={<Icon name="save" size={16} />}>
             Save Committee Notification
           </Button>
         </div>
@@ -178,11 +177,11 @@ export function CommitteeTierScreen({ tier }: { tier: CommitteeTier }) {
         ) : (
           <div className="rounded-xl border border-dashed border-line bg-white py-10">
             <EmptyState
-              icon={<ClipboardList className="h-8 w-8 text-navy" />}
+              icon={<Icon name="assignment" size={32} className="text-navy" />}
               title={`No ${SHORT_TIER[tier]} committee registered yet`}
               description="Register your committee notification to begin. You can add meeting minutes once it is on record."
               action={
-                <Button iconLeft={<Plus className="h-4 w-4" />} onClick={() => setAddOpen(true)}>
+                <Button iconLeft={<Icon name="add" size={16} />} onClick={() => setAddOpen(true)}>
                   Register {SHORT_TIER[tier]} committee
                 </Button>
               }

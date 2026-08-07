@@ -141,7 +141,7 @@ export default function ColorPage(): React.JSX.Element {
           <ul>
             <li>
               <strong>
-                <code>data-color-mode</code>
+                <code>data-brand</code>
               </strong>{" "}
               (brand axis) — controls the brand palette: <code>blue-light</code>{" "}
               (default across the estate) or <code>blue-dark</code>. This is set
@@ -594,7 +594,7 @@ export default function ColorPage(): React.JSX.Element {
         {/* Text group */}
         <h3
           style={{
-            fontSize: "var(--ds-text-headline)",
+            fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
             fontWeight: 600,
             marginTop: "var(--ds-spacing-2xl)",
             marginBottom: "var(--ds-spacing-sm)",
@@ -641,7 +641,7 @@ export default function ColorPage(): React.JSX.Element {
         {/* Surface & border group */}
         <h3
           style={{
-            fontSize: "var(--ds-text-headline)",
+            fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
             fontWeight: 600,
             marginTop: "var(--ds-spacing-2xl)",
             marginBottom: "var(--ds-spacing-sm)",
@@ -688,7 +688,7 @@ export default function ColorPage(): React.JSX.Element {
         {/* Action group */}
         <h3
           style={{
-            fontSize: "var(--ds-text-headline)",
+            fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
             fontWeight: 600,
             marginTop: "var(--ds-spacing-2xl)",
             marginBottom: "var(--ds-spacing-sm)",
@@ -735,7 +735,7 @@ export default function ColorPage(): React.JSX.Element {
         {/* Status group */}
         <h3
           style={{
-            fontSize: "var(--ds-text-headline)",
+            fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
             fontWeight: 600,
             marginTop: "var(--ds-spacing-2xl)",
             marginBottom: "var(--ds-spacing-sm)",
@@ -800,7 +800,7 @@ export default function ColorPage(): React.JSX.Element {
         {/* Brand group */}
         <h3
           style={{
-            fontSize: "var(--ds-text-headline)",
+            fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
             fontWeight: 600,
             marginTop: "var(--ds-spacing-2xl)",
             marginBottom: "var(--ds-spacing-sm)",
@@ -847,7 +847,7 @@ export default function ColorPage(): React.JSX.Element {
         {/* Full ramps & alpha tiers */}
         <h3
           style={{
-            fontSize: "var(--ds-text-headline)",
+            fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
             fontWeight: 600,
             marginTop: "var(--ds-spacing-2xl)",
             marginBottom: "var(--ds-spacing-sm)",
@@ -902,7 +902,7 @@ export default function ColorPage(): React.JSX.Element {
         <div className="docs-section__body ds-prose">
           <p>
             SAMAVESH has <strong>two independent axes</strong>.{" "}
-            <code>data-color-mode</code> (<code>blue-light</code> /{" "}
+            <code>data-brand</code> (<code>blue</code> /{" "}
             <code>blue-dark</code>) are <strong>two peer brand colour modes</strong>,
             mapped 1:1 to the SAMAVESH Figma <code>Blue - Light</code> /{" "}
             <code>Blue - Dark</code> variable modes. <code>blue-dark</code> is{" "}
@@ -925,9 +925,9 @@ export default function ColorPage(): React.JSX.Element {
         >
           {[
             {
-              axis: "data-color-mode",
+              axis: "data-brand",
               label: "Brand colour mode",
-              modes: ["blue-light (default)", "blue-dark", "+ extensible"],
+              modes: ["blue-light (default)", "navy", "+ extensible"],
               desc: "Two peer colour modes (= Figma Blue-Light/Blue-Dark). Swaps the whole brand palette: primary blue↔navy, secondary saffron↔green, neutral warm↔cool grey, + the primary/secondary/neutral transparent tiers. Toggle via ColorModeProvider + ColorModeSwitcher.",
               color: "var(--ds-primary-tonal)",
               border: "var(--ds-primary)",

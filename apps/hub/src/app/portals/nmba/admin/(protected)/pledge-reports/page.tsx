@@ -6,8 +6,7 @@ import { DataTable } from "@/components/nmba/data-table";
 import { PLEDGE_REPORTS, PLEDGE_REPORTS_TOTAL } from "@/lib/nmba/mock-data";
 import { STATES, STATE_DISTRICTS } from "@/lib/nmba/states";
 import type { PledgeReport } from "@/lib/nmba/types";
-import { HeartHandshake } from "lucide-react";
-import { Select, Input, MetricCard } from "@mosje/design-system";
+import { Icon, Input, MetricCard, Select } from "@mosje/design-system";
 
 const columns = [
   {
@@ -59,8 +58,8 @@ export default function PledgeReportsPage() {
 
       {/* Stat cards */}
       <div className="mb-6 grid gap-4 sm:grid-cols-2 max-w-md">
-        <MetricCard label="Total Pledges" value="71" icon={<HeartHandshake className="h-5 w-5" />} />
-        <MetricCard label="Pledges Today" value="0" icon={<HeartHandshake className="h-5 w-5" />} />
+        <MetricCard label="Total Pledges" value="71" icon={<Icon name="volunteer_activism" size={20} />} />
+        <MetricCard label="Pledges Today" value="0" icon={<Icon name="volunteer_activism" size={20} />} />
       </div>
 
       {/* Filters */}

@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { X } from "lucide-react";
 import { RENAME, RENAME_KEYS, RENAME_MESSAGE, campaignActive } from "@/lib/nhapoa/rename-campaign";
+import { Icon } from "@mosje/design-system";
 
 /**
  * Floating rename ribbon — one of the two artefacts the OM (06.07.2026)
@@ -53,7 +53,7 @@ export function AnnouncementBanner() {
           aria-label="Dismiss name change notice"
           className="grid h-6 w-6 shrink-0 place-items-center rounded hover:bg-white/10"
         >
-          <X className="h-4 w-4" />
+          <Icon name="close" size={16} />
         </button>
       </div>
       {/* Announce once to assistive tech without stealing focus. */}

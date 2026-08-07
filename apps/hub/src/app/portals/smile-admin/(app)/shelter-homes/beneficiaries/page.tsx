@@ -2,14 +2,13 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Eye } from "lucide-react";
-import { Badge, statusTone } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
+import { statusTone } from "@/lib/smile-admin/status-tone";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/ui/table";
+import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { BENEFICIARIES, SHELTER_HOMES } from "@/lib/smile-admin/mock-data";
+import { Badge, Icon, buttonClasses } from "@mosje/design-system";
 
 export default function ShelterOccupantsPage() {
   const [search, setSearch] = useState("");
@@ -78,8 +77,8 @@ export default function ShelterOccupantsPage() {
           onChange={setSearch}
           className="flex-1"
         />
-        <div className="ml-auto whitespace-nowrap text-label-2 text-foreground-muted">
-          Showing <span className="font-semibold text-foreground">{occupants.length}</span> records
+        <div className="ml-auto whitespace-nowrap text-label-2 text-ink-muted">
+          Showing <span className="font-semibold text-ink">{occupants.length}</span> records
         </div>
       </DataToolbar>
 
@@ -103,33 +102,31 @@ export default function ShelterOccupantsPage() {
           <tbody>
             {occupants.map((r) => (
               <TR key={r.id}>
-                <TD className="tabular-nums text-foreground-hint">{r.sno}</TD>
+                <TD className="tabular-nums text-ink-hint">{r.sno}</TD>
                 <TD>
                   <Link
                     href={`/portals/smile-admin/persons/${r.id}`}
-                    className="font-semibold text-foreground hover:text-primary hover:underline"
+                    className="font-semibold text-ink hover:text-primary hover:underline"
                   >
                     {r.name}
                   </Link>
                 </TD>
                 <TD>{r.gender}</TD>
                 <TD className="tabular-nums">{r.age}</TD>
-                <TD className="text-foreground-muted">{r.surveyLocation}</TD>
+                <TD className="text-ink-muted">{r.surveyLocation}</TD>
                 <TD>{r.state}</TD>
                 <TD>{r.shelterType}</TD>
                 <TD>{r.beneficiaryType}</TD>
-                <TD className="text-foreground-muted">{r.shelterName}</TD>
+                <TD className="text-ink-muted">{r.shelterName}</TD>
                 <TD>
-                  <Badge tone={statusTone(r.facilityStatus)} withDot>
+                  <Badge status={statusTone(r.facilityStatus)} dot>
                     {r.facilityStatus}
                   </Badge>
                 </TD>
                 <TD className="text-right">
-                  <Button variant="outline" size="xs" asChild>
-                    <Link href={`/portals/smile-admin/persons/${r.id}`}>
-                      <Eye className="h-3.5 w-3.5" /> View
+                  <Link href={`/portals/smile-admin/persons/${r.id}`} className={buttonClasses("primary", "outlined", "sm")}>
+                      <Icon name="visibility" size={14} /> View
                     </Link>
-                  </Button>
                 </TD>
               </TR>
             ))}

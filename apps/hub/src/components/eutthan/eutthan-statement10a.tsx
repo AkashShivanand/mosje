@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Download, FileText, LayoutList } from "lucide-react";
 import { tableScreens } from "@/lib/eutthan/portal-data";
 import { Pagination } from "./eutthan-cells";
+import { Icon } from "@mosje/design-system";
 
 export function Statement10APage() {
   const screen = tableScreens["/reports/statement-10a"]!;
@@ -28,10 +28,10 @@ export function Statement10APage() {
         </div>
         <div className="export-buttons">
           <button type="button" className="icon-button">
-            <Download size={14} /> Export CSV
+            <Icon name="download" size={14} /> Export CSV
           </button>
           <button type="button" className="icon-button">
-            <FileText size={14} /> Export PDF
+            <Icon name="description" size={14} /> Export PDF
           </button>
         </div>
       </div>
@@ -61,7 +61,7 @@ export function Statement10APage() {
               Financial Year
             </span>
             <button type="button" className="filter-button" aria-labelledby="s10a-fy-label">
-              2025-2026 <ChevronDown size={14} />
+              2025-2026 <Icon name="keyboard_arrow_down" size={14} />
             </button>
           </div>
           <div
@@ -80,7 +80,7 @@ export function Statement10APage() {
               Ministry/Department
             </span>
             <button type="button" className="filter-button" aria-labelledby="s10a-ministry-label">
-              -- All Ministries -- <ChevronDown size={14} />
+              -- All Ministries -- <Icon name="keyboard_arrow_down" size={14} />
             </button>
           </div>
           <button
@@ -126,14 +126,7 @@ export function Statement10APage() {
             color: "var(--text-muted)",
           }}
         >
-          <LayoutList
-            size={40}
-            style={{
-              opacity: 0.35,
-              display: "block",
-              margin: "0 auto 16px",
-            }}
-          />
+          <Icon name="view_list" size={40} style={{ opacity: 0.35, display: "block", margin: "0 auto 16px", }} />
           <p style={{ margin: 0 }}>
             Select a Financial Year and click <strong>View</strong> to load
             data.

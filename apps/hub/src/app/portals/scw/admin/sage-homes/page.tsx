@@ -1,4 +1,3 @@
-import { MoreVertical, Plus } from "lucide-react";
 import {
   Button,
   DataTable,
@@ -9,6 +8,7 @@ import {
 } from "@/components/scw/ui";
 import { FACILITY_TYPES, IPSRC_HOMES, IPSRC_TOTAL } from "@/lib/scw/mock-data";
 import { INDIAN_STATES } from "@/lib/scw/states";
+import { Icon } from "@mosje/design-system";
 
 const COLUMNS = [
   { key: "ngo", label: "NGO Name" },
@@ -26,7 +26,7 @@ export default function SageHomesPage() {
         title="IPSrC Homes"
         action={
           <Button variant="primary">
-            <Plus className="h-4 w-4" />
+            <Icon name="add" size={16} />
             Add New
           </Button>
         }
@@ -73,7 +73,7 @@ export default function SageHomesPage() {
                 aria-label="Home actions"
                 className="rounded-md p-1.5 text-ink-muted hover:bg-black/5"
               >
-                <MoreVertical className="h-4 w-4" />
+                <Icon name="more_vert" size={16} />
               </button>
             </td>
           </tr>

@@ -3,8 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, CheckCircle2, FileText, ShieldCheck, Download } from "lucide-react";
-import { Modal } from "@mosje/design-system";
+import { Icon, Modal } from "@mosje/design-system";
 import { Button, Card, StatusPill, SlaBadge, Textarea, cnField } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { ROLES } from "@/lib/tg/roles";
@@ -87,7 +86,7 @@ export default function ApplicationDetailPage() {
   return (
     <div className="mx-auto max-w-5xl">
       <Link href="/portals/tg/admin/dashboard" className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-muted hover:text-navy">
-        <ArrowLeft className="h-4 w-4" /> Back to Dashboard
+        <Icon name="arrow_back" size={16} /> Back to Dashboard
       </Link>
 
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -106,7 +105,7 @@ export default function ApplicationDetailPage() {
             <Button variant="outline" onClick={() => setAction("correction")}>Request Correction</Button>
             {canApprove && (
               <Button onClick={() => setAction("approve")}>
-                {app.stage === "DM_REVIEW" ? <ShieldCheck className="h-4 w-4" /> : <CheckCircle2 className="h-4 w-4" />}
+                {app.stage === "DM_REVIEW" ? <Icon name="verified_user" size={16} /> : <Icon name="check_circle" size={16} />}
                 {fwd!.label}
               </Button>
             )}
@@ -124,12 +123,12 @@ export default function ApplicationDetailPage() {
         <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-ink-hint">System Validation</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="flex items-center gap-2 rounded-lg border border-approve/30 bg-approve-bg/40 px-3 py-2 text-sm">
-            <CheckCircle2 className="h-4 w-4 text-approve-fg" />
+            <Icon name="check_circle" size={16} className="text-approve-fg" />
             <span className="font-medium text-ink">Data Validation</span>
             <span className="ml-auto text-xs text-ink-muted">All mandatory fields present</span>
           </div>
           <div className="flex items-center gap-2 rounded-lg border border-approve/30 bg-approve-bg/40 px-3 py-2 text-sm">
-            <CheckCircle2 className="h-4 w-4 text-approve-fg" />
+            <Icon name="check_circle" size={16} className="text-approve-fg" />
             <span className="font-medium text-ink">Document Verification</span>
             <span className="ml-auto text-xs text-ink-muted">{app.documents.length} documents uploaded</span>
           </div>
@@ -209,13 +208,13 @@ export default function ApplicationDetailPage() {
         <Card className="divide-y divide-line">
           {app.documents.map((d) => (
             <div key={d.filename} className="flex items-center gap-3 px-5 py-3.5">
-              <FileText className="h-5 w-5 shrink-0 text-navy" />
+              <Icon name="description" size={20} className="shrink-0 text-navy" />
               <div className="min-w-0">
                 <div className="truncate text-sm font-medium text-ink">{d.type}</div>
                 <div className="text-xs text-ink-hint">{d.filename} • {d.sizeKb} KB</div>
               </div>
               <button type="button" className="ml-auto inline-flex items-center gap-1 text-sm font-semibold text-navy hover:underline">
-                <Download className="h-4 w-4" /> View
+                <Icon name="download" size={16} /> View
               </button>
             </div>
           ))}

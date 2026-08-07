@@ -1,15 +1,8 @@
 "use client";
 
-import {
-  Check,
-  ToggleRight,
-  Eye,
-  Edit,
-  Trash2,
-  ChevronDown,
-} from "lucide-react";
 import Link from "next/link";
 import { portalLink } from "./eutthan-shared";
+import { Icon } from "@mosje/design-system";
 
 export function CellContent({
   col,
@@ -25,7 +18,7 @@ export function CellContent({
   if (col === "Current Financial Year") {
     return val === "checked" ? (
       <span className="checkbox checked" aria-label="Current year">
-        <Check size={10} />
+        <Icon name="check" size={10} />
       </span>
     ) : (
       <span className="checkbox" aria-label="Not current year" />
@@ -56,7 +49,7 @@ export function CellContent({
           style={{ background: "var(--success-tonal)" }}
           aria-label="Toggle role"
         >
-          <ToggleRight size={18} style={{ color: "var(--success)" }} />
+          <Icon name="toggle_on" size={18} style={{ color: "var(--success)" }} />
         </button>
         <button
           type="button"
@@ -69,7 +62,7 @@ export function CellContent({
           }}
           aria-label="Edit role"
         >
-          <Edit size={14} /> Edit
+          <Icon name="edit" size={14} /> Edit
         </button>
         <button
           type="button"
@@ -77,7 +70,7 @@ export function CellContent({
           style={{ display: "inline-flex", alignItems: "center", gap: 5 }}
           aria-label="Delete role"
         >
-          <Trash2 size={14} /> Delete
+          <Icon name="delete" size={14} /> Delete
         </button>
       </div>
     );
@@ -109,7 +102,7 @@ export function CellContent({
         }}
         aria-label={rowLabel ? `View details for ${rowLabel}` : "View details"}
       >
-        <Eye size={14} /> View
+        <Icon name="visibility" size={14} /> View
       </button>
     );
   }
@@ -131,7 +124,7 @@ export function CellContent({
           }}
           aria-label="Edit this entry"
         >
-          <Edit size={14} /> Edit
+          <Icon name="edit" size={14} /> Edit
         </Link>
         <button
           type="button"
@@ -139,7 +132,7 @@ export function CellContent({
           style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
           aria-label="Delete this entry"
         >
-          <Trash2 size={14} /> Delete
+          <Icon name="delete" size={14} /> Delete
         </button>
       </div>
     );
@@ -162,7 +155,7 @@ export function CellContent({
           }}
           aria-label="Edit this entry"
         >
-          <Edit size={14} /> Edit
+          <Icon name="edit" size={14} /> Edit
         </Link>
       </div>
     );
@@ -189,7 +182,7 @@ export function Pagination({ total }: { total: number }) {
       <div className="page-size">
         <span>Rows per page:</span>
         <button type="button">
-          10 <ChevronDown size={12} />
+          10 <Icon name="keyboard_arrow_down" size={12} />
         </button>
       </div>
       <div className="pages">

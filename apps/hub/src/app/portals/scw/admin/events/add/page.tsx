@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { Button, Card, Field, Select, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
+import { Icon } from "@mosje/design-system";
 
 export default function AddEventPage() {
   return (
@@ -12,7 +12,7 @@ export default function AddEventPage() {
           aria-label="Back to Events"
           className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-ink-muted transition-colors hover:bg-black/5"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <Icon name="arrow_back" size={20} />
         </Link>
         <h1 className="text-2xl font-bold text-ink">Add New Event</h1>
       </div>

@@ -27,7 +27,7 @@ export default function SpacingPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Spacing</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
+      <p style={{ fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
         A consistent spacing rhythm is what makes an interface feel calm and
         trustworthy. SAMAVESH uses one shared scale so every gap, pad and margin
         lines up across 13 websites and 20 portals.

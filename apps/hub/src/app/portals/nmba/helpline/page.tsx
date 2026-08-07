@@ -1,5 +1,5 @@
 import { PublicShell } from "@/components/nmba/public-shell";
-import { Phone, AlertCircle, MapPin } from "lucide-react";
+import { Icon } from "@mosje/design-system";
 
 export const metadata = {
   title: "Helpline — Nasha Mukt Bharat Abhiyaan",
@@ -43,7 +43,7 @@ export default function HelplinePage() {
       <div className="mb-6 rounded-2xl bg-green-700 px-6 py-6 text-white">
         <div className="flex items-start gap-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/15">
-            <Phone className="h-6 w-6" />
+            <Icon name="call" />
           </div>
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-white/70">Primary Helpline</p>
@@ -62,7 +62,7 @@ export default function HelplinePage() {
 
       {/* Info card */}
       <div className="mb-6 flex gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm">
-        <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+        <Icon name="error" size={16} className="mt-0.5 shrink-0 text-amber-600" />
         <p className="text-amber-800">
           All calls are free of charge and completely confidential. Trained counsellors can assist in multiple regional languages.
         </p>
@@ -99,7 +99,7 @@ export default function HelplinePage() {
         <h2 className="mb-4 text-[10px] font-bold uppercase tracking-widest text-ink-muted">Find a Centre Near You</h2>
         <div className="flex items-center gap-4 rounded-xl border border-line bg-white p-5 shadow-card">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-muted">
-            <MapPin className="h-5 w-5 text-navy" />
+            <Icon name="location_on" size={20} className="text-navy" />
           </div>
           <div>
             <div className="text-sm font-semibold text-ink">De-addiction Facility Locator</div>

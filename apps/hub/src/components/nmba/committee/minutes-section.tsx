@@ -6,8 +6,7 @@
 // officer is only reviewing.
 
 import * as React from "react";
-import { Plus, CalendarDays, FileText, X } from "lucide-react";
-import { Button, Input, FormField } from "@mosje/design-system";
+import { Button, FormField, Icon, Input } from "@mosje/design-system";
 import { PdfUploadField } from "./pdf-upload-field";
 import { tierLabel } from "@/lib/nmba/committee/session";
 import type { CommitteeRecord, UploadedFile } from "@/lib/nmba/committee/types";
@@ -72,7 +71,7 @@ export function MinutesSection({ record, onAdd, canManage = true }: MinutesSecti
           </p>
         </div>
         {canManage && !adding && (
-          <Button appearance="outlined" iconLeft={<Plus className="h-4 w-4" />} onClick={() => setAdding(true)}>
+          <Button appearance="outlined" iconLeft={<Icon name="add" size={16} />} onClick={() => setAdding(true)}>
             Add meeting minutes
           </Button>
         )}
@@ -87,14 +86,14 @@ export function MinutesSection({ record, onAdd, canManage = true }: MinutesSecti
               className="flex items-center gap-3 rounded-xl border border-line px-3.5 py-3"
             >
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brandwash text-navy">
-                <CalendarDays className="h-4 w-4" />
+                <Icon name="calendar_month" size={16} />
               </span>
               <span className="min-w-0">
                 <span className="block text-sm font-medium text-ink">
                   Meeting on {formatDate(m.meetingDate)}
                 </span>
                 <span className="flex items-center gap-1 text-xs text-ink-hint">
-                  <FileText className="h-3.5 w-3.5" />
+                  <Icon name="description" size={14} />
                   <span className="truncate">{m.file.name}</span>
                 </span>
               </span>
@@ -143,7 +142,7 @@ export function MinutesSection({ record, onAdd, canManage = true }: MinutesSecti
               aria-label="Close"
               className="flex h-7 w-7 items-center justify-center rounded-full text-ink-muted hover:bg-black/5"
             >
-              <X className="h-4 w-4" />
+              <Icon name="close" size={16} />
             </button>
           </div>
 
@@ -193,7 +192,7 @@ export function MinutesSection({ record, onAdd, canManage = true }: MinutesSecti
             >
               Cancel
             </Button>
-            <Button type="submit" iconLeft={<Plus className="h-4 w-4" />}>
+            <Button type="submit" iconLeft={<Icon name="add" size={16} />}>
               Add minutes
             </Button>
           </div>

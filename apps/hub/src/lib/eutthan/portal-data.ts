@@ -1,24 +1,10 @@
-import type { LucideIcon } from "lucide-react";
-import {
-  BarChart3,
-  CalendarDays,
-  Database,
-  FileText,
-  Landmark,
-  ListChecks,
-  Network,
-  ShieldCheck,
-  Target,
-  TrendingUp,
-  Users,
-} from "lucide-react";
 
 export type Role = "admin" | "ministry";
 
 export type NavItem = {
   label: string;
   href: string;
-  icon: LucideIcon;
+  icon: string;
   children?: Array<{ label: string; href: string }>;
 };
 
@@ -54,40 +40,40 @@ export type DashboardMetric = { label: string; value: string };
 // ── Navigation ───────────────────────────────────────────────────────────────
 
 export const adminNavItems: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: BarChart3 },
-  { label: "Manage Financial Year", href: "/admin/financial-year-management", icon: CalendarDays },
-  { label: "Manage Ministry", href: "/ministry-management", icon: Landmark },
-  { label: "Manage Scheme", href: "/scheme-management", icon: ListChecks },
-  { label: "Manage Outcome", href: "/manage-outcome", icon: Target },
-  { label: "Manage Documents", href: "/document-management", icon: FileText },
+  { label: "Dashboard", href: "/dashboard", icon: "bar_chart" },
+  { label: "Manage Financial Year", href: "/admin/financial-year-management", icon: "calendar_month" },
+  { label: "Manage Ministry", href: "/ministry-management", icon: "account_balance" },
+  { label: "Manage Scheme", href: "/scheme-management", icon: "checklist" },
+  { label: "Manage Outcome", href: "/manage-outcome", icon: "target" },
+  { label: "Manage Documents", href: "/document-management", icon: "description" },
   {
     label: "Map Ministry/Schemes",
     href: "/map-ministry",
-    icon: Network,
+    icon: "hub",
   },
   {
     label: "Reports",
     href: "/reports/statement-10a",
-    icon: BarChart3,
+    icon: "bar_chart",
     children: [
       { label: "Statement 10A", href: "/reports/statement-10a" },
       { label: "Financial Summary", href: "/reports/financial-summary" },
     ],
   },
-  { label: "User Management", href: "/user-management", icon: Users },
-  { label: "Role Management", href: "/role-management", icon: ShieldCheck },
-  { label: "PFMS Logs", href: "/pfms-logs", icon: Database },
+  { label: "User Management", href: "/user-management", icon: "group" },
+  { label: "Role Management", href: "/role-management", icon: "verified_user" },
+  { label: "PFMS Logs", href: "/pfms-logs", icon: "database" },
 ];
 
 export const ministryNavItems: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: BarChart3 },
-  { label: "Physical Progress", href: "/ministry/physical-progress-data", icon: TrendingUp },
-  { label: "Manage Scheme", href: "/scheme-management", icon: ListChecks },
-  { label: "Manage Outcome", href: "/manage-outcome", icon: Target },
+  { label: "Dashboard", href: "/dashboard", icon: "bar_chart" },
+  { label: "Physical Progress", href: "/ministry/physical-progress-data", icon: "trending_up" },
+  { label: "Manage Scheme", href: "/scheme-management", icon: "checklist" },
+  { label: "Manage Outcome", href: "/manage-outcome", icon: "target" },
   {
     label: "Reports",
     href: "/reports/statement-10a",
-    icon: BarChart3,
+    icon: "bar_chart",
     children: [
       { label: "Statement 10A", href: "/reports/statement-10a" },
       { label: "Financial Summary", href: "/reports/financial-summary" },

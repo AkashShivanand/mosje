@@ -3,8 +3,7 @@
 // DS Audit: Card ✅ · Badge ✅ · Button ✅ — all @mosje/design-system.
 
 import Link from "next/link";
-import { MapPin, Users } from "lucide-react";
-import { Card } from "@mosje/design-system";
+import { Card, Icon } from "@mosje/design-system";
 import { StatusBadge, VerificationBadge } from "./status-badge";
 import {
   computeTotal,
@@ -42,14 +41,14 @@ export function SubmissionCard({ submission }: { submission: MassPledgeSubmissio
 
         <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-muted">
           <span className="inline-flex items-center gap-1.5">
-            <Users className="h-4 w-4" aria-hidden="true" />
+            <Icon name="group" size={16} aria-hidden="true" />
             <strong className="font-semibold tabular-nums text-ink">
               {total.toLocaleString("en-IN")}
             </strong>{" "}
             participants
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <MapPin className="h-4 w-4" aria-hidden="true" />
+            <Icon name="location_on" size={16} aria-hidden="true" />
             {submission.photos.length} photo{submission.photos.length === 1 ? "" : "s"}
             {submission.locationUnavailable && (
               <span className="text-await-fg"> · no location</span>

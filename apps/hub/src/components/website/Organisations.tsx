@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { Card } from "@mosje/design-system";
+import { Card, Icon } from "@mosje/design-system";
 
 interface Organisation {
   abbr: string;
@@ -99,7 +98,7 @@ export function Organisations() {
                       {org.name}
                     </span>
                   </span>
-                  <ArrowUpRight className="h-4 w-4 flex-none text-gray-400 transition-colors group-hover:text-gov-blue" />
+                  <Icon name="arrow_outward" size={16} className="flex-none text-gray-400 transition-colors group-hover:text-gov-blue" />
                 </Card>
               </Link>
             </li>

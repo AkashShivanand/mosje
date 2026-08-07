@@ -23,7 +23,7 @@ const sectionStyle: React.CSSProperties = {
 };
 
 const h2Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-headline)",
+  fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
   fontWeight: 700,
   color: "var(--ds-ink)",
   marginBottom: "var(--ds-spacing-lg)",
@@ -141,13 +141,12 @@ import type { SidebarNavGroup } from "@mosje/design-system";`}</CodeBlock>
         </h2>
 
         <h3 style={h3Style}>Basic (flat nav, no groups)</h3>
-        <CodeBlock>{`import { LayoutGrid, Users, FileText } from "lucide-react";
-import { SidebarNav } from "@mosje/design-system";
+        <CodeBlock>{`import { SidebarNav } from "@mosje/design-system";
 
 const NAV = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutGrid },
-  { label: "Users",     href: "/users",     icon: Users },
-  { label: "Reports",   href: "/reports",   icon: FileText },
+  { label: "Dashboard", href: "/dashboard", icon: "grid_view" },
+  { label: "Users",     href: "/users",     icon: "group" },
+  { label: "Reports",   href: "/reports",   icon: "description" },
 ];
 
 <SidebarNav
@@ -161,7 +160,7 @@ const NAV = [
         <h3 style={h3Style}>Grouped with children</h3>
         <CodeBlock>{`const NAV_GROUPS = [
   {
-    items: [{ label: "Dashboard", href: "/dashboard", icon: LayoutGrid }],
+    items: [{ label: "Dashboard", href: "/dashboard", icon: "grid_view" }],
   },
   {
     label: "Beneficiaries",

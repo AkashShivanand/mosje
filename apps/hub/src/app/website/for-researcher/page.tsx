@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { FileBarChart, BookOpen, FlaskConical, Database } from "lucide-react";
 import { PersonaPage, type PersonaCard } from "@/components/website/templates/PersonaPage";
 
 export const metadata: Metadata = {
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 
 const cards: PersonaCard[] = [
   {
-    icon: FileBarChart,
+    icon: "assessment",
     title: "Annual Reports",
     description:
       "Read detailed annual reports documenting the Ministry's programmes, outcomes and expenditure year on year.",
@@ -18,7 +17,7 @@ const cards: PersonaCard[] = [
     href: "/website/annual-reports",
   },
   {
-    icon: BookOpen,
+    icon: "menu_book",
     title: "Publications",
     description:
       "Browse official publications, journals and thematic documents on social justice and empowerment.",
@@ -26,7 +25,7 @@ const cards: PersonaCard[] = [
     href: "/website/publications",
   },
   {
-    icon: FlaskConical,
+    icon: "science",
     title: "Research & Evaluation Studies",
     description:
       "Access commissioned research and independent evaluation studies assessing scheme impact and effectiveness.",
@@ -34,7 +33,7 @@ const cards: PersonaCard[] = [
     href: "/website/list-of-research-evaluation-studies",
   },
   {
-    icon: Database,
+    icon: "database",
     title: "Statistics & Handbooks",
     description:
       "Find datasets, statistical handbooks and reference data for quantitative analysis and citation.",

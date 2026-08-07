@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CalendarDays } from "lucide-react";
 import { PageLayout } from "@/components/website/layout/PageLayout";
+import { Icon } from "@mosje/design-system";
 
 export const metadata: Metadata = {
   title: "Events — DoSJE",
@@ -87,7 +87,7 @@ export default function EventsPage() {
                     className="h-48 w-full object-cover"
                   />
                   <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-gov-blue px-2.5 py-1 text-[12px] font-semibold text-white">
-                    <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
+                    <Icon name="calendar_month" size={14} aria-hidden="true" />
                     {event.date}
                   </span>
                 </div>
@@ -103,7 +103,7 @@ export default function EventsPage() {
                     className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-semibold text-saffron hover:underline"
                   >
                     Read More
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                    <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                   </Link>
                 </div>
               </li>

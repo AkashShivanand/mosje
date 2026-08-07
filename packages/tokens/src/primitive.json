@@ -4,247 +4,1814 @@
     "$type": "color",
     "green": {
       "$description": "Success ramp — full 50–900, matches SAMAVESH Figma Success/* exactly (mode-invariant: identical in Blue-Light and Blue-Dark).",
-      "50":  {"$value":"#e8f5e9"}, "100": {"$value":"#c8e6c9"}, "200": {"$value":"#a5d6a7"},
-      "300": {"$value":"#81c784"}, "400": {"$value":"#66bb6a"}, "500": {"$value":"#2e7d32"},
-      "600": {"$value":"#27682a"}, "700": {"$value":"#1b5e20"}, "800": {"$value":"#124517"},
-      "900": {"$value":"#082d0f"}
+      "50": {
+        "$value": "#e8f5e9"
+      },
+      "100": {
+        "$value": "#c8e6c9"
+      },
+      "200": {
+        "$value": "#a5d6a7"
+      },
+      "300": {
+        "$value": "#81c784"
+      },
+      "400": {
+        "$value": "#66bb6a"
+      },
+      "500": {
+        "$value": "#2e7d32"
+      },
+      "600": {
+        "$value": "#27682a"
+      },
+      "700": {
+        "$value": "#1b5e20"
+      },
+      "800": {
+        "$value": "#124517"
+      },
+      "900": {
+        "$value": "#082d0f"
+      }
     },
     "red": {
       "$description": "Danger ramp — full 50–900, matches SAMAVESH Figma Danger/* exactly (mode-invariant). NOTE: 700 is #b8382f (Figma) — the old code value #a11d12 was not a Figma step and is retained only as the chart.div.negStrong literal.",
-      "50":  {"$value":"#fdecea"}, "100": {"$value":"#fad2cf"}, "200": {"$value":"#f6a89f"},
-      "300": {"$value":"#f47c70"}, "400": {"$value":"#f15848"}, "500": {"$value":"#ec5042"},
-      "600": {"$value":"#d64539"}, "700": {"$value":"#b8382f"}, "800": {"$value":"#992c25"},
-      "900": {"$value":"#661d19"}
+      "50": {
+        "$value": "#fdecea"
+      },
+      "100": {
+        "$value": "#fad2cf"
+      },
+      "200": {
+        "$value": "#f6a89f"
+      },
+      "300": {
+        "$value": "#f47c70"
+      },
+      "400": {
+        "$value": "#f15848"
+      },
+      "500": {
+        "$value": "#ec5042"
+      },
+      "600": {
+        "$value": "#d64539"
+      },
+      "700": {
+        "$value": "#b8382f"
+      },
+      "800": {
+        "$value": "#992c25"
+      },
+      "900": {
+        "$value": "#661d19"
+      }
     },
     "amber": {
       "$description": "Warning ramp — full 50–900, matches SAMAVESH Figma Warning/* exactly (mode-invariant).",
-      "50":  {"$value":"#fff4e5"}, "100": {"$value":"#ffe4bf"}, "200": {"$value":"#ffc97f"},
-      "300": {"$value":"#ffae4f"}, "400": {"$value":"#e9952f"}, "500": {"$value":"#bb772b"},
-      "600": {"$value":"#a66a26"}, "700": {"$value":"#8c571f"}, "800": {"$value":"#704518"},
-      "900": {"$value":"#4c2e0f"}
+      "50": {
+        "$value": "#fff4e5"
+      },
+      "100": {
+        "$value": "#ffe4bf"
+      },
+      "200": {
+        "$value": "#ffc97f"
+      },
+      "300": {
+        "$value": "#ffae4f"
+      },
+      "400": {
+        "$value": "#e9952f"
+      },
+      "500": {
+        "$value": "#bb772b"
+      },
+      "600": {
+        "$value": "#a66a26"
+      },
+      "700": {
+        "$value": "#8c571f"
+      },
+      "800": {
+        "$value": "#704518"
+      },
+      "900": {
+        "$value": "#4c2e0f"
+      }
     },
     "info": {
       "$description": "Info hue (distinct from brand primary — Google-blue family, used in Portal DS).",
-      "50":  {"$value":"#e8f0fe"}, "100": {"$value":"#d2e3fc"}, "200": {"$value":"#a8c8fa"},
-      "300": {"$value":"#7aaff8"}, "400": {"$value":"#4285f4"}, "500": {"$value":"#1a73e8"},
-      "600": {"$value":"#1558b0"}, "700": {"$value":"#11408b"}, "800": {"$value":"#0d2d63"},
-      "900": {"$value":"#081e43"}
+      "50": {
+        "$value": "#e8f0fe"
+      },
+      "100": {
+        "$value": "#d2e3fc"
+      },
+      "200": {
+        "$value": "#a8c8fa"
+      },
+      "300": {
+        "$value": "#7aaff8"
+      },
+      "400": {
+        "$value": "#4285f4"
+      },
+      "500": {
+        "$value": "#1a73e8"
+      },
+      "600": {
+        "$value": "#1558b0"
+      },
+      "700": {
+        "$value": "#11408b"
+      },
+      "800": {
+        "$value": "#0d2d63"
+      },
+      "900": {
+        "$value": "#081e43"
+      }
     },
     "neutral": {
       "$description": "Neutral grey scale — matches UX4G/SAMAVESH Figma Neutral/* variables exactly.",
-      "0":    {"$value":"#ffffff"},
-      "50":   {"$value":"#f8f9fa"},
-      "100":  {"$value":"#f1f3f5"},
-      "200":  {"$value":"#e2e6ea"},
-      "300":  {"$value":"#cdd3da"},
-      "400":  {"$value":"#9aa3af"},
-      "500":  {"$value":"#6c757d"},
-      "600":  {"$value":"#495057"},
-      "700":  {"$value":"#343a40"},
-      "800":  {"$value":"#1f2428"},
-      "900":  {"$value":"#0d1014"},
-      "1000": {"$value":"#0a0d13"},
-      "1100": {"$value":"#000000"}
+      "0": {
+        "$value": "#ffffff"
+      },
+      "50": {
+        "$value": "#f8f9fa"
+      },
+      "100": {
+        "$value": "#f1f3f5"
+      },
+      "200": {
+        "$value": "#e2e6ea"
+      },
+      "300": {
+        "$value": "#cdd3da"
+      },
+      "400": {
+        "$value": "#9aa3af"
+      },
+      "500": {
+        "$value": "#6c757d"
+      },
+      "600": {
+        "$value": "#495057"
+      },
+      "700": {
+        "$value": "#343a40"
+      },
+      "800": {
+        "$value": "#1f2428"
+      },
+      "900": {
+        "$value": "#0d1014"
+      },
+      "1000": {
+        "$value": "#0a0d13"
+      },
+      "1100": {
+        "$value": "#000000"
+      }
     },
     "neutralDark": {
       "$description": "Blue-Dark colour-mode neutral ramp (cooler Tailwind-family greys) — matches SAMAVESH Figma Neutral/* in the Blue-Dark mode. Consumed via colorModes.blue-dark on the neutral-derived semantic tokens; this is the Blue-Dark COLOUR MODE, NOT the accessibility dark theme (that is color.a11y.dark.*).",
-      "0":    {"$value":"#ffffff"},
-      "50":   {"$value":"#f9fafb"},
-      "100":  {"$value":"#f3f4f6"},
-      "200":  {"$value":"#e5e7eb"},
-      "300":  {"$value":"#d1d5db"},
-      "400":  {"$value":"#9ca3af"},
-      "500":  {"$value":"#6b7280"},
-      "600":  {"$value":"#4b5563"},
-      "700":  {"$value":"#374151"},
-      "800":  {"$value":"#1f2937"},
-      "900":  {"$value":"#111827"},
-      "1000": {"$value":"#0a0d13"},
-      "1100": {"$value":"#000000"}
+      "0": {
+        "$value": "#ffffff"
+      },
+      "50": {
+        "$value": "#f9fafb"
+      },
+      "100": {
+        "$value": "#f3f4f6"
+      },
+      "200": {
+        "$value": "#e5e7eb"
+      },
+      "300": {
+        "$value": "#d1d5db"
+      },
+      "400": {
+        "$value": "#9ca3af"
+      },
+      "500": {
+        "$value": "#6b7280"
+      },
+      "600": {
+        "$value": "#4b5563"
+      },
+      "700": {
+        "$value": "#374151"
+      },
+      "800": {
+        "$value": "#1f2937"
+      },
+      "900": {
+        "$value": "#111827"
+      },
+      "1000": {
+        "$value": "#0a0d13"
+      },
+      "1100": {
+        "$value": "#000000"
+      }
     }
   },
   "spacing": {
     "$description": "T-shirt spacing scale — matches Figma Spacing collection 1:1. Every value except 72px (8xl) is a step on the UX4G 3.0 base ramp (--ux4g-space-1…16), so this scale IS the UX4G foundation under different names; the parity layer maps the two by value. 10xl/11xl were added for UX4G padding-3xl/4xl — NEEDS FIGMA SYNC.",
     "$type": "dimension",
-    "none": {"$value":"0px"}, "xxs": {"$value":"2px"}, "xs": {"$value":"4px"},
-    "sm": {"$value":"8px"}, "md": {"$value":"12px"}, "lg": {"$value":"16px"},
-    "xl": {"$value":"20px"}, "2xl": {"$value":"24px"}, "3xl": {"$value":"32px"},
-    "4xl": {"$value":"40px"}, "5xl": {"$value":"48px"}, "6xl": {"$value":"56px"},
-    "7xl": {"$value":"64px"}, "8xl": {"$value":"72px"}, "9xl": {"$value":"80px"},
-    "10xl": {"$value":"120px"}, "11xl": {"$value":"360px"}
+    "none": {
+      "$value": "0px"
+    },
+    "xxs": {
+      "$value": "2px"
+    },
+    "xs": {
+      "$value": "4px"
+    },
+    "sm": {
+      "$value": "8px"
+    },
+    "md": {
+      "$value": "12px"
+    },
+    "lg": {
+      "$value": "16px"
+    },
+    "xl": {
+      "$value": "20px"
+    },
+    "2xl": {
+      "$value": "24px"
+    },
+    "3xl": {
+      "$value": "32px"
+    },
+    "4xl": {
+      "$value": "40px"
+    },
+    "5xl": {
+      "$value": "48px"
+    },
+    "6xl": {
+      "$value": "56px"
+    },
+    "7xl": {
+      "$value": "64px"
+    },
+    "8xl": {
+      "$value": "72px"
+    },
+    "9xl": {
+      "$value": "80px"
+    },
+    "10xl": {
+      "$value": "120px"
+    },
+    "11xl": {
+      "$value": "360px"
+    }
   },
   "radius": {
     "$description": "T-shirt radius scale — matches Figma Border Radius collection.",
     "$type": "dimension",
-    "none": {"$value":"0px"}, "xxs": {"$value":"2px"}, "xs": {"$value":"4px"},
-    "sm": {"$value":"6px"}, "md": {"$value":"8px"}, "lg": {"$value":"12px"},
-    "xl": {"$value":"16px"}, "2xl": {"$value":"20px"}, "3xl": {"$value":"24px"},
-    "4xl": {"$value":"32px"}, "5xl": {"$value":"40px"}, "full": {"$value":"999px"}
+    "none": {
+      "$value": "0px"
+    },
+    "xxs": {
+      "$value": "2px"
+    },
+    "xs": {
+      "$value": "4px"
+    },
+    "sm": {
+      "$value": "6px"
+    },
+    "md": {
+      "$value": "8px"
+    },
+    "lg": {
+      "$value": "12px"
+    },
+    "xl": {
+      "$value": "16px"
+    },
+    "2xl": {
+      "$value": "20px"
+    },
+    "3xl": {
+      "$value": "24px"
+    },
+    "4xl": {
+      "$value": "32px"
+    },
+    "5xl": {
+      "$value": "40px"
+    },
+    "full": {
+      "$value": "999px"
+    }
   },
   "font": {
     "family": {
       "$type": "fontFamily",
-      "latin":      {"$value":"\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"},
-      "devanagari": {"$value":"\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"},
-      "display":    {"$description":"UX4G 3.0 parity: the optical Display cut, for 36px+ headings only (--ux4g-font-family-display). Falls back to Noto Sans, so this token is safe to use before an app opts in to the extra webfont — never load it globally just to satisfy the token.","$value":"\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif"},
-      "mono":       {"$value":"ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"}
+      "latin": {
+        "$value": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+      },
+      "devanagari": {
+        "$value": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"
+      },
+      "display": {
+        "$description": "UX4G 3.0 parity: the optical Display cut, for 36px+ headings only (--ux4g-font-family-display). Falls back to Noto Sans, so this token is safe to use before an app opts in to the extra webfont — never load it globally just to satisfy the token.",
+        "$value": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+      },
+      "mono": {
+        "$value": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+      }
     },
     "weight": {
       "$type": "fontWeight",
-      "regular": {"$value":400}, "medium": {"$value":500}, "semibold": {"$value":600}, "bold": {"$value":700}
+      "regular": {
+        "$value": 400
+      },
+      "medium": {
+        "$value": 500
+      },
+      "semibold": {
+        "$value": 600
+      },
+      "bold": {
+        "$value": 700
+      }
     },
     "size": {
       "$description": "Legacy flat scale. New code should use font.role.* for the responsive role system.",
       "$type": "dimension",
-      "100": {"$value":"11px"}, "200": {"$value":"12px"}, "300": {"$value":"14px"},
-      "400": {"$value":"16px"}, "500": {"$value":"20px"}, "600": {"$value":"22px"}, "900": {"$value":"48px"}
+      "100": {
+        "$value": "11px"
+      },
+      "200": {
+        "$value": "12px"
+      },
+      "300": {
+        "$value": "14px"
+      },
+      "400": {
+        "$value": "16px"
+      },
+      "500": {
+        "$value": "20px"
+      },
+      "600": {
+        "$value": "22px"
+      },
+      "900": {
+        "$value": "48px"
+      }
     },
     "lineHeight": {
       "$type": "dimension",
-      "100": {"$value":"16px"}, "200": {"$value":"20px"}, "300": {"$value":"24px"},
-      "400": {"$value":"28px"}, "900": {"$value":"56px"}, "devanagari": {"$value":"1.7"}
+      "100": {
+        "$value": "16px"
+      },
+      "200": {
+        "$value": "20px"
+      },
+      "300": {
+        "$value": "24px"
+      },
+      "400": {
+        "$value": "28px"
+      },
+      "900": {
+        "$value": "56px"
+      },
+      "devanagari": {
+        "$value": "1.7"
+      }
     },
     "role": {
       "$description": "Two-surface responsive type role scale (Portal DS naming: hyphenated roles). Each size/lh/para carries mosje.type website/portal min+max bounds (min at 360px viewport, max at 1280px). The formatter emits --ds-type-ROLE-size/lh/para as clamp(min, fluid, max): Website in :root, Portal under data-surface=portal. $value is the Website desktop fallback.",
-      "display-1": {
-        "size": {"$type":"dimension","$value":"80px","$extensions":{"mosje":{"type":{"website":{"min":"40px","max":"80px"},"portal":{"min":"40px","max":"56px"}}}}},
-        "lh":   {"$type":"dimension","$value":"88px","$extensions":{"mosje":{"type":{"website":{"min":"44px","max":"88px"},"portal":{"min":"48px","max":"64px"}}}}},
-        "para": {"$type":"dimension","$value":"32px","$extensions":{"mosje":{"type":{"website":{"min":"24px","max":"32px"},"portal":{"min":"24px","max":"32px"}}}}}
+      "display": {
+        "1": {
+          "size": {
+            "$type": "dimension",
+            "$value": "80px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "40px",
+                    "max": "80px"
+                  },
+                  "portal": {
+                    "min": "40px",
+                    "max": "56px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "88px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "44px",
+                    "max": "88px"
+                  },
+                  "portal": {
+                    "min": "48px",
+                    "max": "64px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "32px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "24px",
+                    "max": "32px"
+                  },
+                  "portal": {
+                    "min": "24px",
+                    "max": "32px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "2": {
+          "size": {
+            "$type": "dimension",
+            "$value": "72px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "36px",
+                    "max": "72px"
+                  },
+                  "portal": {
+                    "min": "32px",
+                    "max": "48px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "80px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "40px",
+                    "max": "80px"
+                  },
+                  "portal": {
+                    "min": "40px",
+                    "max": "56px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "32px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "20px",
+                    "max": "32px"
+                  },
+                  "portal": {
+                    "min": "20px",
+                    "max": "32px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "3": {
+          "size": {
+            "$type": "dimension",
+            "$value": "64px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "32px",
+                    "max": "64px"
+                  },
+                  "portal": {
+                    "min": "28px",
+                    "max": "40px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "72px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "36px",
+                    "max": "72px"
+                  },
+                  "portal": {
+                    "min": "36px",
+                    "max": "48px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "24px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "24px"
+                  },
+                  "portal": {
+                    "min": "16px",
+                    "max": "24px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "4": {
+          "size": {
+            "$type": "dimension",
+            "$value": "56px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "28px",
+                    "max": "56px"
+                  },
+                  "portal": {
+                    "min": "24px",
+                    "max": "32px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "64px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "32px",
+                    "max": "64px"
+                  },
+                  "portal": {
+                    "min": "32px",
+                    "max": "40px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "24px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "24px"
+                  },
+                  "portal": {
+                    "min": "16px",
+                    "max": "24px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "5": {
+          "size": {
+            "$type": "dimension",
+            "$value": "48px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "26px",
+                    "max": "48px"
+                  },
+                  "portal": {
+                    "min": "22px",
+                    "max": "28px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "56px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "28px",
+                    "max": "56px"
+                  },
+                  "portal": {
+                    "min": "28px",
+                    "max": "36px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "20px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "20px"
+                  },
+                  "portal": {
+                    "min": "16px",
+                    "max": "20px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "6": {
+          "size": {
+            "$type": "dimension",
+            "$value": "40px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "24px",
+                    "max": "40px"
+                  },
+                  "portal": {
+                    "min": "20px",
+                    "max": "24px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "48px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "28px",
+                    "max": "48px"
+                  },
+                  "portal": {
+                    "min": "28px",
+                    "max": "32px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "20px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "20px"
+                  },
+                  "portal": {
+                    "min": "16px",
+                    "max": "20px"
+                  }
+                }
+              }
+            }
+          }
+        }
       },
-      "display-2": {
-        "size": {"$type":"dimension","$value":"72px","$extensions":{"mosje":{"type":{"website":{"min":"36px","max":"72px"},"portal":{"min":"32px","max":"48px"}}}}},
-        "lh":   {"$type":"dimension","$value":"80px","$extensions":{"mosje":{"type":{"website":{"min":"40px","max":"80px"},"portal":{"min":"40px","max":"56px"}}}}},
-        "para": {"$type":"dimension","$value":"32px","$extensions":{"mosje":{"type":{"website":{"min":"20px","max":"32px"},"portal":{"min":"20px","max":"32px"}}}}}
+      "headline": {
+        "1": {
+          "size": {
+            "$type": "dimension",
+            "$value": "40px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "28px",
+                    "max": "40px"
+                  },
+                  "portal": {
+                    "min": "24px",
+                    "max": "32px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "48px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "32px",
+                    "max": "48px"
+                  },
+                  "portal": {
+                    "min": "32px",
+                    "max": "40px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "24px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "20px",
+                    "max": "24px"
+                  },
+                  "portal": {
+                    "min": "20px",
+                    "max": "24px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "2": {
+          "size": {
+            "$type": "dimension",
+            "$value": "32px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "24px",
+                    "max": "32px"
+                  },
+                  "portal": {
+                    "min": "20px",
+                    "max": "28px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "40px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "28px",
+                    "max": "40px"
+                  },
+                  "portal": {
+                    "min": "28px",
+                    "max": "36px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "24px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "24px"
+                  },
+                  "portal": {
+                    "min": "16px",
+                    "max": "24px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "3": {
+          "size": {
+            "$type": "dimension",
+            "$value": "28px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "22px",
+                    "max": "28px"
+                  },
+                  "portal": {
+                    "min": "18px",
+                    "max": "24px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "32px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "28px",
+                    "max": "32px"
+                  },
+                  "portal": {
+                    "min": "24px",
+                    "max": "32px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "20px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "20px"
+                  },
+                  "portal": {
+                    "min": "16px",
+                    "max": "20px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "4": {
+          "size": {
+            "$type": "dimension",
+            "$value": "24px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "20px",
+                    "max": "24px"
+                  },
+                  "portal": {
+                    "min": "16px",
+                    "max": "20px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "28px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "24px",
+                    "max": "28px"
+                  },
+                  "portal": {
+                    "min": "24px",
+                    "max": "28px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "20px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "20px"
+                  },
+                  "portal": {
+                    "min": "16px",
+                    "max": "20px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "5": {
+          "size": {
+            "$type": "dimension",
+            "$value": "20px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "18px",
+                    "max": "20px"
+                  },
+                  "portal": {
+                    "min": "15px",
+                    "max": "18px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "24px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "24px",
+                    "max": "24px"
+                  },
+                  "portal": {
+                    "min": "20px",
+                    "max": "24px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "16px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "12px",
+                    "max": "16px"
+                  },
+                  "portal": {
+                    "min": "12px",
+                    "max": "16px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "6": {
+          "size": {
+            "$type": "dimension",
+            "$value": "16px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "16px"
+                  },
+                  "portal": {
+                    "min": "14px",
+                    "max": "16px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "20px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "20px",
+                    "max": "20px"
+                  },
+                  "portal": {
+                    "min": "20px",
+                    "max": "24px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "16px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "12px",
+                    "max": "16px"
+                  },
+                  "portal": {
+                    "min": "12px",
+                    "max": "16px"
+                  }
+                }
+              }
+            }
+          }
+        }
       },
-      "display-3": {
-        "size": {"$type":"dimension","$value":"64px","$extensions":{"mosje":{"type":{"website":{"min":"32px","max":"64px"},"portal":{"min":"28px","max":"40px"}}}}},
-        "lh":   {"$type":"dimension","$value":"72px","$extensions":{"mosje":{"type":{"website":{"min":"36px","max":"72px"},"portal":{"min":"36px","max":"48px"}}}}},
-        "para": {"$type":"dimension","$value":"24px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"24px"},"portal":{"min":"16px","max":"24px"}}}}}
+      "title": {
+        "1": {
+          "size": {
+            "$type": "dimension",
+            "$value": "22px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "18px",
+                    "max": "22px"
+                  },
+                  "portal": {
+                    "min": "16px",
+                    "max": "20px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "28px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "24px",
+                    "max": "28px"
+                  },
+                  "portal": {
+                    "min": "24px",
+                    "max": "28px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "20px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "20px"
+                  },
+                  "portal": {
+                    "min": "16px",
+                    "max": "20px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "2": {
+          "size": {
+            "$type": "dimension",
+            "$value": "16px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "16px"
+                  },
+                  "portal": {
+                    "min": "15px",
+                    "max": "18px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "24px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "24px",
+                    "max": "24px"
+                  },
+                  "portal": {
+                    "min": "20px",
+                    "max": "24px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "16px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "12px",
+                    "max": "16px"
+                  },
+                  "portal": {
+                    "min": "12px",
+                    "max": "16px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "3": {
+          "size": {
+            "$type": "dimension",
+            "$value": "14px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "14px",
+                    "max": "14px"
+                  },
+                  "portal": {
+                    "min": "14px",
+                    "max": "16px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "20px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "20px",
+                    "max": "20px"
+                  },
+                  "portal": {
+                    "min": "20px",
+                    "max": "24px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "16px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "12px",
+                    "max": "16px"
+                  },
+                  "portal": {
+                    "min": "12px",
+                    "max": "16px"
+                  }
+                }
+              }
+            }
+          }
+        }
       },
-      "display-4": {
-        "size": {"$type":"dimension","$value":"56px","$extensions":{"mosje":{"type":{"website":{"min":"28px","max":"56px"},"portal":{"min":"24px","max":"32px"}}}}},
-        "lh":   {"$type":"dimension","$value":"64px","$extensions":{"mosje":{"type":{"website":{"min":"32px","max":"64px"},"portal":{"min":"32px","max":"40px"}}}}},
-        "para": {"$type":"dimension","$value":"24px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"24px"},"portal":{"min":"16px","max":"24px"}}}}}
+      "body": {
+        "1": {
+          "size": {
+            "$type": "dimension",
+            "$value": "16px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "16px"
+                  },
+                  "portal": {
+                    "min": "14px",
+                    "max": "16px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "24px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "24px",
+                    "max": "24px"
+                  },
+                  "portal": {
+                    "min": "20px",
+                    "max": "24px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "16px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "12px",
+                    "max": "16px"
+                  },
+                  "portal": {
+                    "min": "12px",
+                    "max": "16px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "2": {
+          "size": {
+            "$type": "dimension",
+            "$value": "14px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "14px",
+                    "max": "14px"
+                  },
+                  "portal": {
+                    "min": "13px",
+                    "max": "14px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "20px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "20px",
+                    "max": "20px"
+                  },
+                  "portal": {
+                    "min": "20px",
+                    "max": "20px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "12px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "12px",
+                    "max": "12px"
+                  },
+                  "portal": {
+                    "min": "12px",
+                    "max": "12px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "3": {
+          "size": {
+            "$type": "dimension",
+            "$value": "12px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "12px",
+                    "max": "12px"
+                  },
+                  "portal": {
+                    "min": "12px",
+                    "max": "13px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "16px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "16px"
+                  },
+                  "portal": {
+                    "min": "20px",
+                    "max": "20px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "12px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "12px",
+                    "max": "12px"
+                  },
+                  "portal": {
+                    "min": "12px",
+                    "max": "12px"
+                  }
+                }
+              }
+            }
+          }
+        }
       },
-      "display-5": {
-        "size": {"$type":"dimension","$value":"48px","$extensions":{"mosje":{"type":{"website":{"min":"26px","max":"48px"},"portal":{"min":"22px","max":"28px"}}}}},
-        "lh":   {"$type":"dimension","$value":"56px","$extensions":{"mosje":{"type":{"website":{"min":"28px","max":"56px"},"portal":{"min":"28px","max":"36px"}}}}},
-        "para": {"$type":"dimension","$value":"20px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"20px"},"portal":{"min":"16px","max":"20px"}}}}}
-      },
-      "display-6": {
-        "size": {"$type":"dimension","$value":"40px","$extensions":{"mosje":{"type":{"website":{"min":"24px","max":"40px"},"portal":{"min":"20px","max":"24px"}}}}},
-        "lh":   {"$type":"dimension","$value":"48px","$extensions":{"mosje":{"type":{"website":{"min":"28px","max":"48px"},"portal":{"min":"28px","max":"32px"}}}}},
-        "para": {"$type":"dimension","$value":"20px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"20px"},"portal":{"min":"16px","max":"20px"}}}}}
-      },
-      "headline-1": {
-        "size": {"$type":"dimension","$value":"40px","$extensions":{"mosje":{"type":{"website":{"min":"28px","max":"40px"},"portal":{"min":"24px","max":"32px"}}}}},
-        "lh":   {"$type":"dimension","$value":"48px","$extensions":{"mosje":{"type":{"website":{"min":"32px","max":"48px"},"portal":{"min":"32px","max":"40px"}}}}},
-        "para": {"$type":"dimension","$value":"24px","$extensions":{"mosje":{"type":{"website":{"min":"20px","max":"24px"},"portal":{"min":"20px","max":"24px"}}}}}
-      },
-      "headline-2": {
-        "size": {"$type":"dimension","$value":"32px","$extensions":{"mosje":{"type":{"website":{"min":"24px","max":"32px"},"portal":{"min":"20px","max":"28px"}}}}},
-        "lh":   {"$type":"dimension","$value":"40px","$extensions":{"mosje":{"type":{"website":{"min":"28px","max":"40px"},"portal":{"min":"28px","max":"36px"}}}}},
-        "para": {"$type":"dimension","$value":"24px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"24px"},"portal":{"min":"16px","max":"24px"}}}}}
-      },
-      "headline-3": {
-        "size": {"$type":"dimension","$value":"28px","$extensions":{"mosje":{"type":{"website":{"min":"22px","max":"28px"},"portal":{"min":"18px","max":"24px"}}}}},
-        "lh":   {"$type":"dimension","$value":"32px","$extensions":{"mosje":{"type":{"website":{"min":"28px","max":"32px"},"portal":{"min":"24px","max":"32px"}}}}},
-        "para": {"$type":"dimension","$value":"20px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"20px"},"portal":{"min":"16px","max":"20px"}}}}}
-      },
-      "headline-4": {
-        "size": {"$type":"dimension","$value":"24px","$extensions":{"mosje":{"type":{"website":{"min":"20px","max":"24px"},"portal":{"min":"16px","max":"20px"}}}}},
-        "lh":   {"$type":"dimension","$value":"28px","$extensions":{"mosje":{"type":{"website":{"min":"24px","max":"28px"},"portal":{"min":"24px","max":"28px"}}}}},
-        "para": {"$type":"dimension","$value":"20px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"20px"},"portal":{"min":"16px","max":"20px"}}}}}
-      },
-      "headline-5": {
-        "size": {"$type":"dimension","$value":"20px","$extensions":{"mosje":{"type":{"website":{"min":"18px","max":"20px"},"portal":{"min":"15px","max":"18px"}}}}},
-        "lh":   {"$type":"dimension","$value":"24px","$extensions":{"mosje":{"type":{"website":{"min":"24px","max":"24px"},"portal":{"min":"20px","max":"24px"}}}}},
-        "para": {"$type":"dimension","$value":"16px","$extensions":{"mosje":{"type":{"website":{"min":"12px","max":"16px"},"portal":{"min":"12px","max":"16px"}}}}}
-      },
-      "headline-6": {
-        "size": {"$type":"dimension","$value":"16px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"16px"},"portal":{"min":"14px","max":"16px"}}}}},
-        "lh":   {"$type":"dimension","$value":"20px","$extensions":{"mosje":{"type":{"website":{"min":"20px","max":"20px"},"portal":{"min":"20px","max":"24px"}}}}},
-        "para": {"$type":"dimension","$value":"16px","$extensions":{"mosje":{"type":{"website":{"min":"12px","max":"16px"},"portal":{"min":"12px","max":"16px"}}}}}
-      },
-      "title-1": {
-        "size": {"$type":"dimension","$value":"22px","$extensions":{"mosje":{"type":{"website":{"min":"18px","max":"22px"},"portal":{"min":"16px","max":"20px"}}}}},
-        "lh":   {"$type":"dimension","$value":"28px","$extensions":{"mosje":{"type":{"website":{"min":"24px","max":"28px"},"portal":{"min":"24px","max":"28px"}}}}},
-        "para": {"$type":"dimension","$value":"20px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"20px"},"portal":{"min":"16px","max":"20px"}}}}}
-      },
-      "title-2": {
-        "size": {"$type":"dimension","$value":"16px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"16px"},"portal":{"min":"15px","max":"18px"}}}}},
-        "lh":   {"$type":"dimension","$value":"24px","$extensions":{"mosje":{"type":{"website":{"min":"24px","max":"24px"},"portal":{"min":"20px","max":"24px"}}}}},
-        "para": {"$type":"dimension","$value":"16px","$extensions":{"mosje":{"type":{"website":{"min":"12px","max":"16px"},"portal":{"min":"12px","max":"16px"}}}}}
-      },
-      "title-3": {
-        "size": {"$type":"dimension","$value":"14px","$extensions":{"mosje":{"type":{"website":{"min":"14px","max":"14px"},"portal":{"min":"14px","max":"16px"}}}}},
-        "lh":   {"$type":"dimension","$value":"20px","$extensions":{"mosje":{"type":{"website":{"min":"20px","max":"20px"},"portal":{"min":"20px","max":"24px"}}}}},
-        "para": {"$type":"dimension","$value":"16px","$extensions":{"mosje":{"type":{"website":{"min":"12px","max":"16px"},"portal":{"min":"12px","max":"16px"}}}}}
-      },
-      "body-1": {
-        "size": {"$type":"dimension","$value":"16px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"16px"},"portal":{"min":"14px","max":"16px"}}}}},
-        "lh":   {"$type":"dimension","$value":"24px","$extensions":{"mosje":{"type":{"website":{"min":"24px","max":"24px"},"portal":{"min":"20px","max":"24px"}}}}},
-        "para": {"$type":"dimension","$value":"16px","$extensions":{"mosje":{"type":{"website":{"min":"12px","max":"16px"},"portal":{"min":"12px","max":"16px"}}}}}
-      },
-      "body-2": {
-        "size": {"$type":"dimension","$value":"14px","$extensions":{"mosje":{"type":{"website":{"min":"14px","max":"14px"},"portal":{"min":"13px","max":"14px"}}}}},
-        "lh":   {"$type":"dimension","$value":"20px","$extensions":{"mosje":{"type":{"website":{"min":"20px","max":"20px"},"portal":{"min":"20px","max":"20px"}}}}},
-        "para": {"$type":"dimension","$value":"12px","$extensions":{"mosje":{"type":{"website":{"min":"12px","max":"12px"},"portal":{"min":"12px","max":"12px"}}}}}
-      },
-      "body-3": {
-        "size": {"$type":"dimension","$value":"12px","$extensions":{"mosje":{"type":{"website":{"min":"12px","max":"12px"},"portal":{"min":"12px","max":"13px"}}}}},
-        "lh":   {"$type":"dimension","$value":"16px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"16px"},"portal":{"min":"20px","max":"20px"}}}}},
-        "para": {"$type":"dimension","$value":"12px","$extensions":{"mosje":{"type":{"website":{"min":"12px","max":"12px"},"portal":{"min":"12px","max":"12px"}}}}}
-      },
-      "label-1": {
-        "size": {"$type":"dimension","$value":"14px","$extensions":{"mosje":{"type":{"website":{"min":"14px","max":"14px"},"portal":{"min":"14px","max":"14px"}}}}},
-        "lh":   {"$type":"dimension","$value":"20px","$extensions":{"mosje":{"type":{"website":{"min":"20px","max":"20px"},"portal":{"min":"20px","max":"20px"}}}}},
-        "para": {"$type":"dimension","$value":"12px","$extensions":{"mosje":{"type":{"website":{"min":"12px","max":"12px"},"portal":{"min":"12px","max":"12px"}}}}}
-      },
-      "label-2": {
-        "size": {"$type":"dimension","$value":"12px","$extensions":{"mosje":{"type":{"website":{"min":"12px","max":"12px"},"portal":{"min":"12px","max":"12px"}}}}},
-        "lh":   {"$type":"dimension","$value":"16px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"16px"},"portal":{"min":"16px","max":"16px"}}}}},
-        "para": {"$type":"dimension","$value":"8px","$extensions":{"mosje":{"type":{"website":{"min":"8px","max":"8px"},"portal":{"min":"8px","max":"8px"}}}}}
-      },
-      "label-3": {
-        "size": {"$type":"dimension","$value":"11px","$extensions":{"mosje":{"type":{"website":{"min":"11px","max":"11px"},"portal":{"min":"11px","max":"11px"}}}}},
-        "lh":   {"$type":"dimension","$value":"16px","$extensions":{"mosje":{"type":{"website":{"min":"16px","max":"16px"},"portal":{"min":"16px","max":"16px"}}}}},
-        "para": {"$type":"dimension","$value":"8px","$extensions":{"mosje":{"type":{"website":{"min":"8px","max":"8px"},"portal":{"min":"8px","max":"8px"}}}}}
+      "label": {
+        "1": {
+          "size": {
+            "$type": "dimension",
+            "$value": "14px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "14px",
+                    "max": "14px"
+                  },
+                  "portal": {
+                    "min": "14px",
+                    "max": "14px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "20px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "20px",
+                    "max": "20px"
+                  },
+                  "portal": {
+                    "min": "20px",
+                    "max": "20px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "12px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "12px",
+                    "max": "12px"
+                  },
+                  "portal": {
+                    "min": "12px",
+                    "max": "12px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "2": {
+          "size": {
+            "$type": "dimension",
+            "$value": "12px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "12px",
+                    "max": "12px"
+                  },
+                  "portal": {
+                    "min": "12px",
+                    "max": "12px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "16px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "16px"
+                  },
+                  "portal": {
+                    "min": "16px",
+                    "max": "16px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "8px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "8px",
+                    "max": "8px"
+                  },
+                  "portal": {
+                    "min": "8px",
+                    "max": "8px"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "3": {
+          "size": {
+            "$type": "dimension",
+            "$value": "11px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "11px",
+                    "max": "11px"
+                  },
+                  "portal": {
+                    "min": "11px",
+                    "max": "11px"
+                  }
+                }
+              }
+            }
+          },
+          "lh": {
+            "$type": "dimension",
+            "$value": "16px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "16px",
+                    "max": "16px"
+                  },
+                  "portal": {
+                    "min": "16px",
+                    "max": "16px"
+                  }
+                }
+              }
+            }
+          },
+          "para": {
+            "$type": "dimension",
+            "$value": "8px",
+            "$extensions": {
+              "mosje": {
+                "type": {
+                  "website": {
+                    "min": "8px",
+                    "max": "8px"
+                  },
+                  "portal": {
+                    "min": "8px",
+                    "max": "8px"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "tracking": {
       "$description": "Letter-spacing (Portal DS naming). Website tracking is 0; Portal display tiers use negative tracking that scales with the fluid size. mosje.type website/portal min+max (px).",
-      "display-1": {"$type":"dimension","$value":"0px","$extensions":{"mosje":{"type":{"website":{"min":"0px","max":"0px"},"portal":{"min":"-0.8px","max":"-1.12px"}}}}},
-      "display-2": {"$type":"dimension","$value":"0px","$extensions":{"mosje":{"type":{"website":{"min":"0px","max":"0px"},"portal":{"min":"-0.64px","max":"-0.96px"}}}}},
-      "display-3": {"$type":"dimension","$value":"0px","$extensions":{"mosje":{"type":{"website":{"min":"0px","max":"0px"},"portal":{"min":"-0.42px","max":"-0.6px"}}}}},
-      "display-4": {"$type":"dimension","$value":"0px","$extensions":{"mosje":{"type":{"website":{"min":"0px","max":"0px"},"portal":{"min":"-0.24px","max":"-0.32px"}}}}},
-      "display-5": {"$type":"dimension","$value":"0px","$extensions":{"mosje":{"type":{"website":{"min":"0px","max":"0px"},"portal":{"min":"-0.22px","max":"-0.28px"}}}}},
-      "display-6": {"$type":"dimension","$value":"0px","$extensions":{"mosje":{"type":{"website":{"min":"0px","max":"0px"},"portal":{"min":"0px","max":"0px"}}}}},
-      "heading": {"$type":"dimension","$value":"0px","$extensions":{"mosje":{"type":{"website":{"min":"0px","max":"0px"},"portal":{"min":"0px","max":"0px"}}}}},
-      "title": {"$type":"dimension","$value":"0px","$extensions":{"mosje":{"type":{"website":{"min":"0px","max":"0px"},"portal":{"min":"0px","max":"0px"}}}}},
-      "body": {"$type":"dimension","$value":"0px","$extensions":{"mosje":{"type":{"website":{"min":"0px","max":"0px"},"portal":{"min":"0px","max":"0px"}}}}},
-      "label": {"$type":"dimension","$value":"0px","$extensions":{"mosje":{"type":{"website":{"min":"0px","max":"0px"},"portal":{"min":"0px","max":"0px"}}}}}
+      "display": {
+        "1": {
+          "$type": "dimension",
+          "$value": "0px",
+          "$extensions": {
+            "mosje": {
+              "type": {
+                "website": {
+                  "min": "0px",
+                  "max": "0px"
+                },
+                "portal": {
+                  "min": "-0.8px",
+                  "max": "-1.12px"
+                }
+              }
+            }
+          }
+        },
+        "2": {
+          "$type": "dimension",
+          "$value": "0px",
+          "$extensions": {
+            "mosje": {
+              "type": {
+                "website": {
+                  "min": "0px",
+                  "max": "0px"
+                },
+                "portal": {
+                  "min": "-0.64px",
+                  "max": "-0.96px"
+                }
+              }
+            }
+          }
+        },
+        "3": {
+          "$type": "dimension",
+          "$value": "0px",
+          "$extensions": {
+            "mosje": {
+              "type": {
+                "website": {
+                  "min": "0px",
+                  "max": "0px"
+                },
+                "portal": {
+                  "min": "-0.42px",
+                  "max": "-0.6px"
+                }
+              }
+            }
+          }
+        },
+        "4": {
+          "$type": "dimension",
+          "$value": "0px",
+          "$extensions": {
+            "mosje": {
+              "type": {
+                "website": {
+                  "min": "0px",
+                  "max": "0px"
+                },
+                "portal": {
+                  "min": "-0.24px",
+                  "max": "-0.32px"
+                }
+              }
+            }
+          }
+        },
+        "5": {
+          "$type": "dimension",
+          "$value": "0px",
+          "$extensions": {
+            "mosje": {
+              "type": {
+                "website": {
+                  "min": "0px",
+                  "max": "0px"
+                },
+                "portal": {
+                  "min": "-0.22px",
+                  "max": "-0.28px"
+                }
+              }
+            }
+          }
+        },
+        "6": {
+          "$type": "dimension",
+          "$value": "0px",
+          "$extensions": {
+            "mosje": {
+              "type": {
+                "website": {
+                  "min": "0px",
+                  "max": "0px"
+                },
+                "portal": {
+                  "min": "0px",
+                  "max": "0px"
+                }
+              }
+            }
+          }
+        }
+      },
+      "heading": {
+        "$type": "dimension",
+        "$value": "0px",
+        "$extensions": {
+          "mosje": {
+            "type": {
+              "website": {
+                "min": "0px",
+                "max": "0px"
+              },
+              "portal": {
+                "min": "0px",
+                "max": "0px"
+              }
+            }
+          }
+        }
+      },
+      "title": {
+        "$type": "dimension",
+        "$value": "0px",
+        "$extensions": {
+          "mosje": {
+            "type": {
+              "website": {
+                "min": "0px",
+                "max": "0px"
+              },
+              "portal": {
+                "min": "0px",
+                "max": "0px"
+              }
+            }
+          }
+        }
+      },
+      "body": {
+        "$type": "dimension",
+        "$value": "0px",
+        "$extensions": {
+          "mosje": {
+            "type": {
+              "website": {
+                "min": "0px",
+                "max": "0px"
+              },
+              "portal": {
+                "min": "0px",
+                "max": "0px"
+              }
+            }
+          }
+        }
+      },
+      "label": {
+        "$type": "dimension",
+        "$value": "0px",
+        "$extensions": {
+          "mosje": {
+            "type": {
+              "website": {
+                "min": "0px",
+                "max": "0px"
+              },
+              "portal": {
+                "min": "0px",
+                "max": "0px"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "shadow": {
     "$description": "Elevation ramp. none→xl is a 6-level superset of UX4G 3.0's 5-level l0…l4, and keeps the SAMAVESH convention of tinting toward ink (rgba(31,36,40,·)) rather than UX4G's flat black — tinted shadows read as depth instead of dirt on a light gov surface. sm/md fill the gap that previously jumped xs→lg.",
     "$type": "shadow",
-    "none": {"$value":"none"},
-    "xs": {"$value":"0 2px 3px 1px rgba(31, 36, 40, 0.12)"},
-    "sm": {"$value":"0 4px 6px -1px rgba(31, 36, 40, 0.10), 0 2px 4px -2px rgba(31, 36, 40, 0.06)"},
-    "md": {"$value":"0 8px 12px -3px rgba(31, 36, 40, 0.09), 0 3px 5px -2px rgba(31, 36, 40, 0.05)"},
-    "lg": {"$value":"0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03)"},
-    "xl": {"$value":"0 24px 48px -12px rgba(31, 36, 40, 0.18)"}
+    "none": {
+      "$value": "none"
+    },
+    "xs": {
+      "$value": "0 2px 3px 1px rgba(31, 36, 40, 0.12)"
+    },
+    "sm": {
+      "$value": "0 4px 6px -1px rgba(31, 36, 40, 0.10), 0 2px 4px -2px rgba(31, 36, 40, 0.06)"
+    },
+    "md": {
+      "$value": "0 8px 12px -3px rgba(31, 36, 40, 0.09), 0 3px 5px -2px rgba(31, 36, 40, 0.05)"
+    },
+    "lg": {
+      "$value": "0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03)"
+    },
+    "xl": {
+      "$value": "0 24px 48px -12px rgba(31, 36, 40, 0.18)"
+    }
   },
   "motion": {
     "$description": "Duration + easing primitives for transitions and animations.",
     "duration": {
-      "fast": {"$value":"150ms"}, "base": {"$value":"250ms"}, "slow": {"$value":"400ms"}
+      "fast": {
+        "$value": "150ms"
+      },
+      "base": {
+        "$value": "250ms"
+      },
+      "slow": {
+        "$value": "400ms"
+      }
     },
     "easing": {
-      "out": {"$value":"cubic-bezier(0, 0, 0.2, 1)"},
-      "in":  {"$value":"cubic-bezier(0.4, 0, 1, 1)"},
-      "inOut": {"$value":"cubic-bezier(0.4, 0, 0.2, 1)"}
+      "out": {
+        "$value": "cubic-bezier(0, 0, 0.2, 1)"
+      },
+      "in": {
+        "$value": "cubic-bezier(0.4, 0, 1, 1)"
+      },
+      "inOut": {
+        "$value": "cubic-bezier(0.4, 0, 0.2, 1)"
+      }
     }
   }
 }

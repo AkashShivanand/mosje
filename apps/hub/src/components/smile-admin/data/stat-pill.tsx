@@ -1,15 +1,15 @@
-import type { LucideIcon } from "lucide-react";
 import { cn, formatNumber } from "@/lib/smile-admin/utils";
+import { Icon } from "@mosje/design-system";
 
 export function StatPill({
   label,
   value,
-  icon: Icon,
+  icon: iconName,
   tone = "primary",
 }: {
   label: string;
   value: number;
-  icon: LucideIcon;
+  icon: string;
   tone?: "primary" | "info" | "danger" | "success" | "warning";
 }) {
   const TONES = {
@@ -31,13 +31,13 @@ export function StatPill({
           TONES[tone],
         )}
       >
-        <Icon className="h-5 w-5" />
+        <Icon name={iconName} size={20} />
       </div>
       <div className="min-w-0 leading-tight">
-        <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-foreground-muted">
+        <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-ink-muted">
           {label}
         </div>
-        <div className="text-title-1 font-bold tabular-nums text-foreground">
+        <div className="text-title-1 font-bold tabular-nums text-ink">
           {formatNumber(value)}
         </div>
       </div>

@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { UserShell } from "@/components/scw/user-shell";
 import { Card } from "@/components/scw/ui";
 import { PLEDGE_POINTS } from "@/lib/scw/mock-data";
+import { Icon } from "@mosje/design-system";
 
 export default function EpledgePage() {
   return (
@@ -57,7 +57,7 @@ export default function EpledgePage() {
               className="inline-flex items-center gap-2 rounded-lg bg-navy px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-navy-800"
             >
               I Take this Pledge
-              <ArrowRight className="h-4 w-4" />
+              <Icon name="arrow_forward" size={16} />
             </Link>
           </div>
 

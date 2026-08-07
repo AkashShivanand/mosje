@@ -5,8 +5,7 @@ import dynamic from "next/dynamic";
 import { PublicShell } from "@/components/nmba/public-shell";
 import { PUBLIC_DASHBOARD_STATS, PROGRAMME_STATS, PUBLIC_ACTIVITIES, FACILITIES } from "@/lib/nmba/mock-data";
 import { STATES, STATE_DISTRICTS } from "@/lib/nmba/states";
-import { MapPin, ArrowRight } from "lucide-react";
-import { Select, Button, Badge, MetricCard, Icon } from "@mosje/design-system";
+import { Badge, Button, Icon, MetricCard, Select } from "@mosje/design-system";
 
 const BASE = "/portals/nmba";
 
@@ -57,7 +56,7 @@ export default function NmbaHome() {
           className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-white/40 bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20"
         >
           Take the Pledge
-          <ArrowRight className="h-4 w-4" />
+          <Icon name="arrow_forward" size={16} />
         </a>
       </div>
 
@@ -136,7 +135,7 @@ export default function NmbaHome() {
           </h2>
           <a href={`${BASE}/activities`} className="flex items-center gap-1 text-sm font-medium text-navy hover:underline">
             View all Activities
-            <ArrowRight className="h-3.5 w-3.5" />
+            <Icon name="arrow_forward" size={14} />
           </a>
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -161,7 +160,7 @@ export default function NmbaHome() {
                 <p className="mt-1 text-xs text-ink-muted line-clamp-2">{act.description}</p>
                 <div className="mt-3 flex items-center gap-3 text-xs text-ink-hint">
                   <span className="flex items-center gap-1">
-                    <MapPin className="h-3 w-3 shrink-0" />
+                    <Icon name="location_on" size={12} className="shrink-0" />
                     {act.location}
                   </span>
                   <span>{act.date}</span>
@@ -182,7 +181,7 @@ export default function NmbaHome() {
                 Locate verified Integrated Rehabilitation Centres (IRCA), Outreach Centres (ODIC), and Addiction Treatment Facilities (ATF) in your district.
               </p>
             </div>
-            <Button href={`${BASE}/facilities`} iconRight={<ArrowRight className="h-4 w-4" />}>
+            <Button href={`${BASE}/facilities`} iconRight={<Icon name="arrow_forward" size={16} />}>
               View Facility Map
             </Button>
           </div>

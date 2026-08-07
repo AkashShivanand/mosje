@@ -11,8 +11,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/nmba/toast";
-import { Eye, EyeOff, LogIn } from "lucide-react";
-import { Button, Input, FormField, Alert, DemoFab, PortalLoginShell } from "@mosje/design-system";
+import { Alert, Button, DemoFab, FormField, Icon, Input, PortalLoginShell } from "@mosje/design-system";
 import { accountFromMobile, DEMO_PORTAL_ACCOUNTS } from "@/lib/nmba/committee/masters";
 import {
   ALL_MASS_PLEDGE_ACCOUNTS,
@@ -151,7 +150,7 @@ export default function AdminLoginPage() {
                 aria-label={showPw ? "Hide password" : "Show password"}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-hint hover:text-ink"
               >
-                {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                {showPw ? <Icon name="visibility_off" size={16} /> : <Icon name="visibility" size={16} />}
               </button>
             </div>
           </div>
@@ -165,7 +164,7 @@ export default function AdminLoginPage() {
           <Button
             type="submit"
             disabled={loading}
-            iconLeft={loading ? undefined : <LogIn className="h-4 w-4" />}
+            iconLeft={loading ? undefined : <Icon name="login" size={16} />}
             style={{ marginTop: "4px" }}
           >
             {loading ? "Signing in…" : "Sign In"}

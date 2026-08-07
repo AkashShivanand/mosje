@@ -1,9 +1,9 @@
 "use client";
 
-import { ArrowRight, HeartHandshake, Users } from "lucide-react";
 import { cn } from "@/lib/website/utils";
 import { PLEDGE_STATS } from "@/content/website/deaddiction-centres";
 import { LeafVine } from "./LeafVine";
+import { Icon } from "@mosje/design-system";
 
 const NON_USER = "/portals/nmba/epledge?channel=non-user";
 const RECOVERED = "/portals/nmba/epledge?channel=recovered";
@@ -51,19 +51,19 @@ function TwinCardsInner({ tone }: { tone: Tone }) {
       </div>
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div className={cn("flex flex-col rounded-xl p-5 shadow-sm", t.card)}>
-          <span className={cn("flex h-11 w-11 items-center justify-center rounded-lg", t.iconChip)}><HeartHandshake className="h-5 w-5" /></span>
+          <span className={cn("flex h-11 w-11 items-center justify-center rounded-lg", t.iconChip)}><Icon name="volunteer_activism" size={20} /></span>
           <h4 className={cn("mt-3 text-[17px] font-semibold", t.title)}>Take the pledge</h4>
           <p className={cn("mt-1 flex-1 text-[13px]", t.meta)}>{pledgedLakh} lakh+ Indians have pledged. Choose the one that applies to you.</p>
           <div className="mt-4 flex flex-wrap gap-2.5">
-            <a href={NON_USER} className={cn("inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[14px] font-semibold transition-colors", t.primary)}>I&rsquo;m a non-user <ArrowRight className="h-4 w-4" /></a>
-            <a href={RECOVERED} className={cn("inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[14px] font-semibold transition-colors", t.outline)}>I&rsquo;m a recovered user <ArrowRight className="h-4 w-4" /></a>
+            <a href={NON_USER} className={cn("inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[14px] font-semibold transition-colors", t.primary)}>I&rsquo;m a non-user <Icon name="arrow_forward" size={16} /></a>
+            <a href={RECOVERED} className={cn("inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[14px] font-semibold transition-colors", t.outline)}>I&rsquo;m a recovered user <Icon name="arrow_forward" size={16} /></a>
           </div>
         </div>
         <div className={cn("flex flex-col rounded-xl p-5 shadow-sm", t.card)}>
-          <span className={cn("flex h-11 w-11 items-center justify-center rounded-lg", t.iconChip)}><Users className="h-5 w-5" /></span>
+          <span className={cn("flex h-11 w-11 items-center justify-center rounded-lg", t.iconChip)}><Icon name="group" size={20} /></span>
           <h4 className={cn("mt-3 text-[17px] font-semibold", t.title)}>Become a Nasha Mukti Mitr</h4>
           <p className={cn("mt-1 flex-1 text-[13px]", t.meta)}>Volunteer to spread awareness and support drug-demand reduction in your community — no prior experience needed.</p>
-          <div className="mt-4"><a href={MITR} className={cn("inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[14px] font-semibold transition-opacity", t.dark)}>Register as a volunteer <ArrowRight className="h-4 w-4" /></a></div>
+          <div className="mt-4"><a href={MITR} className={cn("inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[14px] font-semibold transition-opacity", t.dark)}>Register as a volunteer <Icon name="arrow_forward" size={16} /></a></div>
         </div>
       </div>
     </div>

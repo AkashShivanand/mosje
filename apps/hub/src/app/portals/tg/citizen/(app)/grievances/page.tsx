@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { MessageSquarePlus } from "lucide-react";
-import { Modal, Badge } from "@mosje/design-system";
+import { Badge, Icon, Modal } from "@mosje/design-system";
 import { Card, Button, Field, TextInput, Textarea, Select, EmptyState } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { GRIEVANCE_CATEGORIES } from "@/lib/tg/states";
@@ -40,7 +39,7 @@ export default function GrievancesPage() {
           <h1 className="text-2xl font-bold text-ink">Grievances</h1>
           <p className="mt-1 text-sm text-ink-muted">Raise and track issues with your application or welfare access.</p>
         </div>
-        <Button onClick={() => setOpen(true)}><MessageSquarePlus className="h-4 w-4" /> Raise Grievance</Button>
+        <Button onClick={() => setOpen(true)}><Icon name="add_comment" size={16} /> Raise Grievance</Button>
       </div>
 
       {state.grievances.length === 0 ? (

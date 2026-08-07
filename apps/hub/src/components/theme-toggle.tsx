@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Moon, Sun } from "lucide-react";
 import { applyTheme, readThemeCookie, type Theme } from "@/lib/theme";
+import { Icon } from "@mosje/design-system";
 
 /**
  * Light ⇄ dark appearance toggle for the gate chrome.
@@ -52,9 +52,9 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface text-ink-muted transition-colors hover:border-border-strong hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue ${className}`}
     >
       {isDark ? (
-        <Sun className="h-[18px] w-[18px]" aria-hidden="true" />
+        <Icon name="light_mode" className="h-[18px] w-[18px]" aria-hidden="true" />
       ) : (
-        <Moon className="h-[18px] w-[18px]" aria-hidden="true" />
+        <Icon name="dark_mode" className="h-[18px] w-[18px]" aria-hidden="true" />
       )}
     </button>
   );

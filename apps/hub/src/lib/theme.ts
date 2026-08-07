@@ -2,7 +2,7 @@
  * Appearance theme controller for the MoSJE hub (gate) zone.
  *
  * This is the *appearance* axis (light ⇄ dark) — distinct from the design
- * system's *brand* axis (`data-color-mode`, which picks the primary ramp).
+ * system's *brand* axis (`data-brand`, which picks the primary ramp).
  * It drives the generated `[data-theme="dark"]` token block in
  * `@mosje/design-system/tokens.css`.
  *

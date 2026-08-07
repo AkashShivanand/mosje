@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { Hammer, Wrench } from "lucide-react";
-import { Button } from "@/components/smile-admin/ui/button";
-import { EmptyState } from "@/components/smile-admin/ui/empty-state";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import type { Crumb } from "./breadcrumbs";
+import { EmptyState, Icon, buttonClasses } from "@mosje/design-system";
 
 export function ComingSoon({
   title,
@@ -22,7 +20,7 @@ export function ComingSoon({
     <div className="space-y-lg">
       <PageHeader title={title} subtitle={subtitle} breadcrumbs={breadcrumbs} />
       <EmptyState
-        icon={<Wrench className="h-7 w-7" />}
+        icon={<Icon name="build" size={28} />}
         title="Module under construction"
         description={
           what ??
@@ -30,14 +28,10 @@ export function ComingSoon({
         }
         action={
           <div className="flex flex-wrap items-center justify-center gap-sm">
-            <Button variant="outline" asChild>
-              <Link href={backHref}>Back to dashboard</Link>
-            </Button>
-            <Button asChild>
-              <Link href="/portals/smile-admin/persons">
-                <Hammer className="h-4 w-4" /> See a built module
+            <Link href={backHref} className={buttonClasses("primary", "outlined", "md")}>Back to dashboard</Link>
+            <Link href="/portals/smile-admin/persons" className={buttonClasses("primary", "filled", "md")}>
+                <Icon name="handyman" size={16} /> See a built module
               </Link>
-            </Button>
           </div>
         }
       />

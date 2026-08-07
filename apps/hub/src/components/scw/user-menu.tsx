@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { LogOut, Settings } from "lucide-react";
 import { cn } from "@/lib/scw/utils";
+import { Icon } from "@mosje/design-system";
 
 export interface AccountUser {
   name: string;
@@ -67,7 +67,7 @@ export function UserMenu({
               href="/portals/scw/admin/profile"
               className="flex items-center gap-2 px-4 py-2.5 text-sm text-ink-muted hover:bg-black/5"
             >
-              <Settings className="h-4 w-4" />
+              <Icon name="settings" size={16} />
               Profile Settings
             </Link>
           )}
@@ -75,7 +75,7 @@ export function UserMenu({
             href="/portals/scw/login"
             className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50"
           >
-            <LogOut className="h-4 w-4" />
+            <Icon name="logout" size={16} />
             Logout
           </Link>
         </div>

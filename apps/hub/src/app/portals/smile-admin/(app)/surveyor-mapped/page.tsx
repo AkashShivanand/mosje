@@ -1,14 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Edit3, Plus } from "lucide-react";
-import { Badge, statusTone } from "@/components/smile-admin/ui/badge";
-import { Button } from "@/components/smile-admin/ui/button";
+import { statusTone } from "@/lib/smile-admin/status-tone";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/ui/table";
+import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { SURVEYOR_MAPPINGS, type SurveyorMapping } from "@/lib/smile-admin/mock-data";
+import { Badge, Button, Icon } from "@mosje/design-system";
 
 type Row = SurveyorMapping & { sno: number };
 
@@ -51,7 +50,7 @@ export default function SurveyorMappedPage() {
               rows={rows}
             />
             <Button size="sm">
-              <Plus className="h-3.5 w-3.5" /> New mapping
+              <Icon name="add" size={14} /> New mapping
             </Button>
           </div>
         }
@@ -64,9 +63,9 @@ export default function SurveyorMappedPage() {
           onChange={setSearch}
           className="flex-1"
         />
-        <div className="ml-auto whitespace-nowrap text-label-2 text-foreground-muted">
-          Showing <span className="font-semibold text-foreground">{rows.length}</span> of{" "}
-          <span className="font-semibold text-foreground">{SURVEYOR_MAPPINGS.length}</span>
+        <div className="ml-auto whitespace-nowrap text-label-2 text-ink-muted">
+          Showing <span className="font-semibold text-ink">{rows.length}</span> of{" "}
+          <span className="font-semibold text-ink">{SURVEYOR_MAPPINGS.length}</span>
         </div>
       </DataToolbar>
 
@@ -79,30 +78,30 @@ export default function SurveyorMappedPage() {
           >
             <div className="flex items-start justify-between gap-sm">
               <div className="min-w-0">
-                <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-foreground-hint">
+                <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-ink-hint">
                   #{m.sno.toString().padStart(2, "0")}
                 </div>
-                <div className="truncate text-body-1 font-semibold text-foreground">
+                <div className="truncate text-body-1 font-semibold text-ink">
                   {m.name}
                 </div>
-                <div className="truncate text-label-2 text-foreground-muted">
+                <div className="truncate text-label-2 text-ink-muted">
                   {m.state} · {m.city}
                 </div>
               </div>
-              <Badge tone={statusTone(m.status)} withDot>
+              <Badge status={statusTone(m.status)} dot>
                 {m.status}
               </Badge>
             </div>
             <div className="mt-sm border-t border-stroke-100 pt-sm text-label-3">
-              <div className="text-foreground-hint">Survey location</div>
-              <div className="font-medium text-foreground">{m.surveyLocation}</div>
+              <div className="text-ink-hint">Survey location</div>
+              <div className="font-medium text-ink">{m.surveyLocation}</div>
             </div>
             <div className="mt-sm flex items-center justify-between text-label-3">
-              <span className="text-foreground-hint">
+              <span className="text-ink-hint">
                 Created <span className="font-mono">{m.createdOn}</span>
               </span>
-              <Button variant="outline" size="xs">
-                <Edit3 className="h-3.5 w-3.5" /> Edit
+              <Button appearance="outlined" size="sm">
+                <Icon name="edit" size={14} /> Edit
               </Button>
             </div>
           </li>
@@ -127,20 +126,20 @@ export default function SurveyorMappedPage() {
           <tbody>
             {rows.map((m) => (
               <TR key={m.id}>
-                <TD className="tabular-nums text-foreground-hint">{m.sno}</TD>
-                <TD className="font-medium text-foreground">{m.name}</TD>
+                <TD className="tabular-nums text-ink-hint">{m.sno}</TD>
+                <TD className="font-medium text-ink">{m.name}</TD>
                 <TD>{m.state}</TD>
                 <TD>{m.city}</TD>
-                <TD className="text-foreground-muted">{m.surveyLocation}</TD>
-                <TD className="font-mono text-body-3 text-foreground-muted">{m.createdOn}</TD>
+                <TD className="text-ink-muted">{m.surveyLocation}</TD>
+                <TD className="font-mono text-body-3 text-ink-muted">{m.createdOn}</TD>
                 <TD>
-                  <Badge tone={statusTone(m.status)} withDot>
+                  <Badge status={statusTone(m.status)} dot>
                     {m.status}
                   </Badge>
                 </TD>
                 <TD className="text-right">
-                  <Button variant="outline" size="xs">
-                    <Edit3 className="h-3.5 w-3.5" /> Edit
+                  <Button appearance="outlined" size="sm">
+                    <Icon name="edit" size={14} /> Edit
                   </Button>
                 </TD>
               </TR>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, Home } from "lucide-react";
+import { Icon } from "@mosje/design-system";
 
 export interface Crumb {
   label: string;
@@ -11,21 +11,21 @@ export interface Crumb {
 export function Breadcrumbs({ items }: { items: Crumb[] }) {
   return (
     <nav aria-label="Breadcrumb" className="flex items-center text-label-2">
-      <ol className="flex items-center gap-xs text-foreground-muted">
+      <ol className="flex items-center gap-xs text-ink-muted">
         <li>
           <Link
             href="/portals/smile-admin/dashboard"
             aria-label="Dashboard"
-            className="inline-flex items-center gap-xs rounded-sm text-foreground-hint transition-colors hover:text-primary"
+            className="inline-flex items-center gap-xs rounded-sm text-ink-hint transition-colors hover:text-primary"
           >
-            <Home className="h-3.5 w-3.5" />
+            <Icon name="home" size={14} />
           </Link>
         </li>
         {items.map((c, i) => {
           const isLast = i === items.length - 1;
           return (
             <li key={i} className="inline-flex items-center gap-xs">
-              <ChevronRight aria-hidden className="h-3 w-3 text-stroke-400" />
+              <Icon name="keyboard_arrow_right" size={12} aria-hidden className="text-stroke-400" />
               {c.href && !isLast ? (
                 <Link
                   href={c.href}
@@ -36,7 +36,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
               ) : (
                 <span
                   aria-current={isLast ? "page" : undefined}
-                  className="font-medium text-foreground"
+                  className="font-medium text-ink"
                 >
                   {c.label}
                 </span>

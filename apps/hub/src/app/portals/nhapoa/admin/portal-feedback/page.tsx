@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Star, MessageSquare } from "lucide-react";
 import { PageHeader, Card, StatTile } from "@/components/nhapoa/ui";
+import { Icon } from "@mosje/design-system";
 
 // Portal feedback (captured feedback surface — representative entries).
 const FEEDBACK = [
@@ -27,7 +27,7 @@ export default function PortalFeedbackPage() {
           <Card key={i} className="p-5">
             <div className="flex items-start justify-between gap-4">
               <div className="flex gap-3">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-navy/10 text-navy"><MessageSquare className="h-4 w-4" /></span>
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-navy/10 text-navy"><Icon name="chat" size={16} /></span>
                 <div>
                   <p className="text-sm font-semibold text-ink">{f.name}</p>
                   <p className="mt-0.5 text-sm text-ink-muted">{f.text}</p>
@@ -35,7 +35,10 @@ export default function PortalFeedbackPage() {
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 <span className="flex items-center gap-0.5">
-                  {Array.from({ length: 5 }).map((_, s) => <Star key={s} className={`h-3.5 w-3.5 ${s < f.rating ? "fill-saffron text-saffron" : "text-line"}`} />)}
+                  {/* `fill` is the font's FILL axis, not an SVG paint — a
+                      Tailwind `fill-*` class does nothing to a glyph, so the
+                      earned stars use the filled variant instead. */}
+                  {Array.from({ length: 5 }).map((_, s) => <Icon name="star" size={14} key={s} fill={s < f.rating} className={s < f.rating ? "text-saffron" : "text-line"} />)}
                 </span>
                 <span className="text-xs text-ink-hint">{f.when}</span>
               </div>

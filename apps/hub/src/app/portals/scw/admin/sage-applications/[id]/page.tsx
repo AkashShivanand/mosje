@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { Button, Card, StatusPill } from "@/components/scw/ui";
 import { SAGE_DETAIL } from "@/lib/scw/mock-data";
 import { DetailTabs } from "./detail-tabs";
+import { Icon } from "@mosje/design-system";
 
 export default async function SageApplicationDetailPage({
   params,
@@ -20,7 +20,7 @@ export default async function SageApplicationDetailPage({
             aria-label="Back to SAGE Applications"
             className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-ink-muted transition-colors hover:bg-black/5"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <Icon name="arrow_back" size={20} />
           </Link>
           <h1 className="text-2xl font-bold text-ink">{SAGE_DETAIL.organisation}</h1>
           <StatusPill status={SAGE_DETAIL.status} />

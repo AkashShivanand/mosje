@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, CheckCircle2, IdCard, RefreshCw, ShieldCheck, Pencil, Upload, FileCheck2 } from "lucide-react";
 import {
   Card,
   Button,
@@ -26,6 +25,7 @@ import {
   ID_PROOF_TYPES,
 } from "@/lib/tg/states";
 import type { ApplicantDetails, ApplicationType, AppDocument } from "@/lib/tg/store/types";
+import { Icon } from "@mosje/design-system";
 
 type Phase = "type" | "method" | "manual" | "form" | "done";
 
@@ -87,14 +87,14 @@ export default function ApplyPage() {
       <Wrap title="How would you like to proceed?" subtitle="Selecting the correct option helps us verify your details and process your request.">
         <div className="grid gap-4 sm:grid-cols-2">
           <SelectCard
-            icon={IdCard}
+            icon="badge"
             active={type === "New"}
             title="New Transgender Certificate & ID"
             desc="Apply here if you are registering for the first time. This covers the Identity Card."
             onClick={() => setType("New")}
           />
           <SelectCard
-            icon={RefreshCw}
+            icon="refresh"
             active={type === "Revised"}
             title="Revised Certificate (Post-Medical Intervention)"
             desc="Choose this if you already have a Transgender Certificate but need to update your details."
@@ -102,7 +102,7 @@ export default function ApplyPage() {
           />
         </div>
         <div className="mt-6 flex justify-end">
-          <Button onClick={() => setPhase("method")}>Continue with Selection <ArrowRight className="h-4 w-4" /></Button>
+          <Button onClick={() => setPhase("method")}>Continue with Selection <Icon name="arrow_forward" size={16} /></Button>
         </div>
       </Wrap>
     );
@@ -118,14 +118,14 @@ export default function ApplyPage() {
       >
         <div className="grid gap-4 sm:grid-cols-2">
           <SelectCard
-            icon={ShieldCheck}
+            icon="verified_user"
             active={viaDigiLocker}
             title="Fetch details with DigiLocker"
             desc="Securely retrieve your verified identity details (Name, Date of Birth, Gender) directly."
             onClick={() => setViaDigiLocker(true)}
           />
           <SelectCard
-            icon={Pencil}
+            icon="edit"
             active={!viaDigiLocker}
             title="Enter details manually"
             desc="Fill in your personal and identity details yourself. You will need to upload supporting documents."
@@ -134,7 +134,7 @@ export default function ApplyPage() {
         </div>
         <div className="mt-6 flex justify-end">
           <Button onClick={() => setPhase(viaDigiLocker ? "form" : "manual")}>
-            Continue <ArrowRight className="h-4 w-4" />
+            Continue <Icon name="arrow_forward" size={16} />
           </Button>
         </div>
       </Wrap>
@@ -163,7 +163,7 @@ export default function ApplyPage() {
           <Button variant="ghost" onClick={() => { setViaDigiLocker(true); setPhase("form"); }}>
             I prefer to try DigiLocker again later
           </Button>
-          <Button onClick={() => setPhase("form")}>Continue to Enter Details <ArrowRight className="h-4 w-4" /></Button>
+          <Button onClick={() => setPhase("form")}>Continue to Enter Details <Icon name="arrow_forward" size={16} /></Button>
         </div>
       </Wrap>
     );
@@ -174,7 +174,7 @@ export default function ApplyPage() {
     return (
       <div className="mx-auto max-w-lg py-10 text-center">
         <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-approve-bg text-approve-fg">
-          <CheckCircle2 className="h-8 w-8" />
+          <Icon name="check_circle" size={32} />
         </span>
         <h1 className="mt-5 text-2xl font-bold text-ink">Application Submitted</h1>
         <p className="mt-2 text-sm text-ink-muted">
@@ -255,8 +255,8 @@ export default function ApplyPage() {
           </section>
 
           <div className="flex items-center justify-between border-t border-line pt-5">
-            <Button variant="ghost" onClick={() => setPhase("method")}><ArrowLeft className="h-4 w-4" /> Back</Button>
-            <Button onClick={() => setStep(1)} disabled={!canNextBasic}>Save and Continue <ArrowRight className="h-4 w-4" /></Button>
+            <Button variant="ghost" onClick={() => setPhase("method")}><Icon name="arrow_back" size={16} /> Back</Button>
+            <Button onClick={() => setStep(1)} disabled={!canNextBasic}>Save and Continue <Icon name="arrow_forward" size={16} /></Button>
           </div>
         </Card>
       )}
@@ -280,8 +280,8 @@ export default function ApplyPage() {
           </div>
 
           <div className="flex items-center justify-between border-t border-line pt-5">
-            <Button variant="ghost" onClick={() => setStep(0)}><ArrowLeft className="h-4 w-4" /> Back</Button>
-            <Button onClick={() => setStep(2)} disabled={!docsComplete}>Save and Review <ArrowRight className="h-4 w-4" /></Button>
+            <Button variant="ghost" onClick={() => setStep(0)}><Icon name="arrow_back" size={16} /> Back</Button>
+            <Button onClick={() => setStep(2)} disabled={!docsComplete}>Save and Review <Icon name="arrow_forward" size={16} /></Button>
           </div>
         </Card>
       )}
@@ -314,16 +314,16 @@ export default function ApplyPage() {
           <div>
             <SectionTitle>Documents</SectionTitle>
             <ul className="space-y-1.5 text-sm text-ink">
-              <li className="flex items-center gap-2"><FileCheck2 className="h-4 w-4 text-approve-fg" /> {idProofType}: {docs.idProof || "id-proof.pdf"}</li>
-              <li className="flex items-center gap-2"><FileCheck2 className="h-4 w-4 text-approve-fg" /> Passport Photo: {docs.photo || "photo.jpg"}</li>
-              <li className="flex items-center gap-2"><FileCheck2 className="h-4 w-4 text-approve-fg" /> Signature: {docs.signature || "signature.jpg"}</li>
-              <li className="flex items-center gap-2"><FileCheck2 className="h-4 w-4 text-approve-fg" /> Affidavit: {docs.affidavit || "affidavit.pdf"}</li>
+              <li className="flex items-center gap-2"><Icon name="task" size={16} className="text-approve-fg" /> {idProofType}: {docs.idProof || "id-proof.pdf"}</li>
+              <li className="flex items-center gap-2"><Icon name="task" size={16} className="text-approve-fg" /> Passport Photo: {docs.photo || "photo.jpg"}</li>
+              <li className="flex items-center gap-2"><Icon name="task" size={16} className="text-approve-fg" /> Signature: {docs.signature || "signature.jpg"}</li>
+              <li className="flex items-center gap-2"><Icon name="task" size={16} className="text-approve-fg" /> Affidavit: {docs.affidavit || "affidavit.pdf"}</li>
             </ul>
           </div>
 
           <div className="flex items-center justify-between border-t border-line pt-5">
-            <Button variant="ghost" onClick={() => setStep(1)}><ArrowLeft className="h-4 w-4" /> Back</Button>
-            <Button onClick={submit}>Submit Application <CheckCircle2 className="h-4 w-4" /></Button>
+            <Button variant="ghost" onClick={() => setStep(1)}><Icon name="arrow_back" size={16} /> Back</Button>
+            <Button onClick={submit}>Submit Application <Icon name="check_circle" size={16} /></Button>
           </div>
         </Card>
       )}
@@ -337,7 +337,7 @@ function Wrap({ title, subtitle, onBack, children }: { title: string; subtitle: 
     <div className="mx-auto max-w-3xl">
       {onBack && (
         <button type="button" onClick={onBack} className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-muted hover:text-navy">
-          <ArrowLeft className="h-4 w-4" /> Back
+          <Icon name="arrow_back" size={16} /> Back
         </button>
       )}
       <h1 className="text-2xl font-bold text-ink">{title}</h1>
@@ -347,7 +347,7 @@ function Wrap({ title, subtitle, onBack, children }: { title: string; subtitle: 
   );
 }
 
-function SelectCard({ icon: Icon, title, desc, active, onClick }: { icon: React.ComponentType<{ className?: string }>; title: string; desc: string; active: boolean; onClick: () => void }) {
+function SelectCard({ icon: iconName, title, desc, active, onClick }: { icon: string; title: string; desc: string; active: boolean; onClick: () => void }) {
   return (
     <button
       type="button"
@@ -356,7 +356,7 @@ function SelectCard({ icon: Icon, title, desc, active, onClick }: { icon: React.
       className={`flex flex-col items-start rounded-2xl border-2 p-5 text-left transition ${active ? "border-navy bg-navy/5" : "border-line bg-white hover:border-navy/40"}`}
     >
       <span className={`mb-3 flex h-11 w-11 items-center justify-center rounded-xl ${active ? "bg-navy text-white" : "bg-navy/10 text-navy"}`}>
-        <Icon className="h-5 w-5" />
+        <Icon name={iconName} size={20} />
       </span>
       <span className="text-base font-semibold text-ink">{title}</span>
       <span className="mt-1 text-sm text-ink-muted">{desc}</span>
@@ -382,7 +382,7 @@ function UploadField({ label, hint, value, onFile }: { label: string; hint: stri
     <div>
       <span className={cnField}>{label} <span className="text-reject-fg">*</span></span>
       <label htmlFor={id} className="flex cursor-pointer items-center gap-3 rounded-lg border border-dashed border-navy/30 bg-surface-muted px-4 py-3 text-sm hover:border-navy/50">
-        {value ? <FileCheck2 className="h-5 w-5 text-approve-fg" /> : <Upload className="h-5 w-5 text-navy" />}
+        {value ? <Icon name="task" size={20} className="text-approve-fg" /> : <Icon name="upload" size={20} className="text-navy" />}
         <span className="min-w-0">
           <span className="block truncate font-medium text-ink">{value || "Click to upload"}</span>
           <span className="block text-xs text-ink-hint">{hint}</span>

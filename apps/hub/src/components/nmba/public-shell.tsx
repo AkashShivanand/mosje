@@ -4,30 +4,18 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  LayoutGrid,
-  Activity,
-  HandHeart,
-  MapPin,
-  ChevronsLeft,
-  Globe,
-  ChevronDown,
-  Phone,
-  LogIn,
-  UserPlus,
-} from "lucide-react";
-import { buttonClasses } from "@mosje/design-system";
+import { Icon, buttonClasses } from "@mosje/design-system";
 import { cn } from "@/lib/nmba/utils";
 
 const BASE = "/portals/nmba";
 
 const NAV_ITEMS = [
-  { label: "Dashboard", href: BASE, icon: LayoutGrid },
-  { label: "Activity Snapshot", href: `${BASE}/activities`, icon: Activity },
-  { label: "E-Pledge", href: `${BASE}/epledge`, icon: HandHeart },
-  { label: "Nasha Mukti Mitr", href: `${BASE}/register-mitr`, icon: UserPlus },
-  { label: "Facilities", href: `${BASE}/facilities`, icon: MapPin },
-  { label: "Helpline", href: `${BASE}/helpline`, icon: Phone },
+  { label: "Dashboard", href: BASE, icon: "grid_view" },
+  { label: "Activity Snapshot", href: `${BASE}/activities`, icon: "monitoring" },
+  { label: "E-Pledge", href: `${BASE}/epledge`, icon: "volunteer_activism" },
+  { label: "Nasha Mukti Mitr", href: `${BASE}/register-mitr`, icon: "person_add" },
+  { label: "Facilities", href: `${BASE}/facilities`, icon: "location_on" },
+  { label: "Helpline", href: `${BASE}/helpline`, icon: "call" },
 ];
 
 const LANGUAGES = ["English", "हिंदी"];
@@ -112,9 +100,9 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
                 aria-label="Select language"
                 className="flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-ink hover:bg-surface-muted"
               >
-                <Globe className="h-4 w-4 text-ink-muted" />
+                <Icon name="language" size={16} className="text-ink-muted" />
                 <span>{lang}</span>
-                <ChevronDown className="h-3 w-3 text-ink-muted" />
+                <Icon name="keyboard_arrow_down" size={12} className="text-ink-muted" />
               </button>
               {langOpen && (
                 <ul
@@ -147,7 +135,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
               aria-label="Admin Login"
             >
               <span className="ds-btn__icon" aria-hidden="true">
-                <LogIn className="h-4 w-4" />
+                <Icon name="login" size={16} />
               </span>
               <span className="hidden sm:inline">Admin Login</span>
             </Link>
@@ -157,7 +145,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
               className="flex items-center gap-2 rounded-lg bg-saffron px-3 py-1.5 text-sm font-semibold text-white hover:bg-saffron-600"
               aria-label="Call National De-addiction Helpline 14446"
             >
-              <Phone className="h-4 w-4" />
+              <Icon name="call" size={16} />
               <span className="hidden sm:inline">Helpline 14446</span>
             </a>
           </div>
@@ -173,7 +161,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
           )}
         >
           <nav aria-label="Main navigation" className="flex flex-col gap-1 px-3">
-            {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
+            {NAV_ITEMS.map(({ label, href, icon: iconName }) => {
               const active = isActive(href);
               return (
                 <Link
@@ -188,7 +176,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
                       : "text-ink-muted hover:bg-black/5"
                   )}
                 >
-                  <Icon className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
+                  <Icon name={iconName} className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
                   {!collapsed && <span className="truncate">{label}</span>}
                 </Link>
               );
@@ -200,7 +188,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
               aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
               className="flex h-8 w-8 items-center justify-center rounded-full border border-line text-ink-muted hover:bg-black/5"
             >
-              <ChevronsLeft className={cn("h-4 w-4 transition-transform", collapsed && "rotate-180")} />
+              <Icon name="keyboard_double_arrow_left" className={cn("h-4 w-4 transition-transform", collapsed && "rotate-180")} />
             </button>
           </div>
         </aside>

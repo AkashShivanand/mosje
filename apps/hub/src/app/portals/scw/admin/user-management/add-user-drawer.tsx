@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, X } from "lucide-react";
 import { Button, Field, Select, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
+import { Icon } from "@mosje/design-system";
 
 const ROLES = ["Nodal Officer", "Admin"];
 
@@ -13,7 +13,7 @@ export function AddUserDrawer() {
   return (
     <>
       <Button variant="primary" onClick={() => setOpen(true)}>
-        <Plus className="h-4 w-4" />
+        <Icon name="add" size={16} />
         Add User
       </Button>
 
@@ -35,7 +35,7 @@ export function AddUserDrawer() {
                 onClick={() => setOpen(false)}
                 className="rounded-md p-1 text-ink-muted hover:bg-black/5"
               >
-                <X className="h-5 w-5" />
+                <Icon name="close" size={20} />
               </button>
             </header>
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useMemo } from "react";
-import { FileText, Search, X, ArrowRight } from "lucide-react";
+import { Icon } from "@mosje/design-system";
 
 // ─── Portal report registry ───────────────────────────────────────────────────
 
@@ -85,7 +85,7 @@ function ReportCard({ p }: { p: PortalReport }) {
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gov-blue-tonal text-gov-blue">
-            <FileText className="h-5 w-5" aria-hidden="true" />
+            <Icon name="description" size={20} aria-hidden="true" />
           </span>
           <div>
             <h2 className="text-base font-bold text-ink transition-colors group-hover:text-gov-blue">
@@ -116,7 +116,7 @@ function ReportCard({ p }: { p: PortalReport }) {
 
       <div className="mt-auto flex items-center gap-1.5 border-t border-border pt-3 text-sm font-semibold text-gov-blue transition-all group-hover:gap-2.5">
         View report
-        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        <Icon name="arrow_forward" size={16} aria-hidden="true" />
       </div>
     </Link>
   );
@@ -167,10 +167,7 @@ export function ReportsExplorer() {
       {/* Search */}
       <div className="mb-6 flex items-center gap-4">
         <div className="relative w-full max-w-xs">
-          <Search
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted"
-            aria-hidden="true"
-          />
+          <Icon name="search" size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" aria-hidden="true" />
           <input
             type="search"
             placeholder="Search reports or tags…"
@@ -186,7 +183,7 @@ export function ReportsExplorer() {
               aria-label="Clear search"
               className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-0.5 text-ink-muted hover:text-ink"
             >
-              <X className="h-4 w-4" aria-hidden="true" />
+              <Icon name="close" size={16} aria-hidden="true" />
             </button>
           )}
         </div>
@@ -198,7 +195,7 @@ export function ReportsExplorer() {
       {/* Grid */}
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-20 text-center">
-          <FileText className="mb-3 h-10 w-10 text-ink-muted/40" aria-hidden="true" />
+          <Icon name="description" size={40} className="mb-3 text-ink-muted/40" aria-hidden="true" />
           <p className="text-sm font-semibold text-ink">No reports match your search</p>
           <button
             type="button"

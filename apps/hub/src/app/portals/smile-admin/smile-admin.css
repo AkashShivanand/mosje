@@ -12,6 +12,18 @@
   --portal-surface: var(--surface);
   --portal-surface-muted: var(--surface-muted);
   --portal-border: var(--border);
+  /* Text. smile-admin used to carry a SECOND text vocabulary — the
+     `text-foreground` / `-muted` / `-hint` utilities, bound in globals.css to
+     the --foreground* vars below. It was the only consumer estate-wide, so the
+     utilities were folded into the DS's ink names and these three bindings
+     keep the rendered colours byte-identical (slate-900/600/400, NOT the DS
+     ink ramp). Pointing at the vars rather than the literals preserves the
+     original indirection, exactly as the surface/border keys above do.
+     ink-hint is a plain `@theme` key, so it is re-pointed directly; ink and
+     ink-muted go through globals.css's --portal-* slots. */
+  --portal-ink: var(--foreground);
+  --portal-ink-muted: var(--foreground-muted);
+  --color-ink-hint: var(--foreground-hint);
   /* Status DEFAULTs — the hub's are the DS status ramp (--ds-success etc.). */
   --portal-success: #059669;
   --portal-warning: #d97706;

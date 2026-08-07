@@ -1,6 +1,23 @@
 import StyleDictionary from "style-dictionary";
 import { legacyDsCss } from "./formats/legacy-ds-css.mjs";
 import { ux4gParityCss } from "./formats/ux4g-parity-css.mjs";
+import { makeRetier, retierCss } from "./formats/retier.mjs";
+import { figmaVariables } from "./formats/figma-variables.mjs";
+import { tierOfFile, toCssName } from "./grammar.mjs";
+
+/**
+ * Wrap a CSS format so every `var(--sa-…)` it emits carries the referent's tier marker
+ * (spec §4.1). The alias tables inside these formats predate tier markers; this makes the
+ * whole surface consistent without hand-editing every hardcoded target.
+ */
+const tierAware = (fmt) => ({
+  ...fmt,
+  format: (args) =>
+    retierCss(
+      fmt.format(args),
+      makeRetier(args.dictionary.allTokens, { tierOfFile, toCssName }),
+    ),
+});
 
 const val = (t) => (t.$value !== undefined ? t.$value : t.value);
 
@@ -15,8 +32,9 @@ function nest(tokens) {
   return obj;
 }
 
-StyleDictionary.registerFormat(legacyDsCss);
-StyleDictionary.registerFormat(ux4gParityCss);
+StyleDictionary.registerFormat(figmaVariables);
+StyleDictionary.registerFormat(tierAware(legacyDsCss));
+StyleDictionary.registerFormat(tierAware(ux4gParityCss));
 
 StyleDictionary.registerFormat({
   name: "ts/nested",
@@ -110,7 +128,7 @@ const TRANSFORMS = ["attribute/cti", "name/kebab", "color/css"];
 const BRAND = process.env.BRAND || "mosje";
 
 const sd = new StyleDictionary({
-  source: [`brands/${BRAND}/brand.json`, "src/primitive.json", "src/semantic.json", "src/component.json"],
+  source: [`brands/${BRAND}/brand.json`, "src/primitive.json", "src/semantic.json", "src/system.generated.json", "src/component.json", "src/component.generated.json"],
   platforms: {
     css: {
       transforms: TRANSFORMS,
@@ -134,7 +152,10 @@ const sd = new StyleDictionary({
     figma: {
       transforms: TRANSFORMS,
       buildPath: "dist/",
-      files: [{ destination: "figma.tokens.json", format: "json/nested-values" }],
+      files: [
+        { destination: "figma.tokens.json", format: "json/nested-values" },
+        { destination: "figma.variables.json", format: "json/figma-variables" },
+      ],
     },
     // Emit the generated CSS straight into @mosje/design-system so its existing consumers
     // (e.g. dosje's `@import "@mosje/design-system/tokens.css"`) get real CSS with no extra

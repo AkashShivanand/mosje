@@ -4,8 +4,7 @@ import * as React from "react";
 import { PublicShell } from "@/components/nmba/public-shell";
 import { STATES, STATE_DISTRICTS } from "@/lib/nmba/states";
 import { useToast } from "@/components/nmba/toast";
-import { Button, Input, Select, FormField, Checkbox } from "@mosje/design-system";
-import { HandHeart, ArrowRight, CheckCircle2, ShieldCheck, Users, Megaphone } from "lucide-react";
+import { Button, Checkbox, FormField, Icon, Input, Select } from "@mosje/design-system";
 
 const QUALIFICATIONS = [
   "Below 10th",
@@ -26,9 +25,9 @@ const AFFILIATIONS = [
 ];
 
 const WHAT_MITRS_DO = [
-  { icon: Megaphone, text: "Spread awareness on the ill-effects of substance abuse" },
-  { icon: Users, text: "Reach out to youth, families, and the community" },
-  { icon: ShieldCheck, text: "Guide people toward de-addiction and rehabilitation services" },
+  { icon: "campaign", text: "Spread awareness on the ill-effects of substance abuse" },
+  { icon: "group", text: "Reach out to youth, families, and the community" },
+  { icon: "verified_user", text: "Guide people toward de-addiction and rehabilitation services" },
 ];
 
 function initialForm() {
@@ -80,7 +79,7 @@ export default function RegisterMitrPage() {
         {/* Intro */}
         <div className="mb-6 flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brandwash text-navy">
-            <HandHeart className="h-5 w-5" />
+            <Icon name="volunteer_activism" size={20} />
           </div>
           <div>
             <h1 className="text-xl font-bold text-ink">Register as Nasha Mukti Mitr</h1>
@@ -94,9 +93,9 @@ export default function RegisterMitrPage() {
         <div className="mb-6 rounded-2xl border border-navy/20 bg-brandwash p-5">
           <h2 className="text-sm font-semibold text-navy">What does a Nasha Mukti Mitr do?</h2>
           <ul className="mt-3 grid gap-3 sm:grid-cols-3">
-            {WHAT_MITRS_DO.map(({ icon: Icon, text }) => (
+            {WHAT_MITRS_DO.map(({ icon: iconName, text }) => (
               <li key={text} className="flex items-start gap-2">
-                <Icon className="mt-0.5 h-4 w-4 shrink-0 text-navy" aria-hidden />
+                <Icon name={iconName} size={16} className="mt-0.5 shrink-0 text-navy" aria-hidden />
                 <span className="text-xs leading-relaxed text-ink">{text}</span>
               </li>
             ))}
@@ -105,7 +104,7 @@ export default function RegisterMitrPage() {
 
         {done ? (
           <div className="rounded-2xl border border-green-200 bg-green-50 p-8 text-center">
-            <CheckCircle2 className="mx-auto h-12 w-12 text-green-600" aria-hidden />
+            <Icon name="check_circle" size={48} className="mx-auto text-green-600" aria-hidden />
             <p className="mt-3 text-lg font-semibold text-green-800">
               You&rsquo;re registered as a Nasha Mukti Mitr!
             </p>
@@ -333,7 +332,7 @@ export default function RegisterMitrPage() {
               type="submit"
               variant="success"
               disabled={submitting}
-              iconRight={<ArrowRight className="h-4 w-4" />}
+              iconRight={<Icon name="arrow_forward" size={16} />}
             >
               {submitting ? "Submitting…" : "Register as Nasha Mukti Mitr"}
             </Button>

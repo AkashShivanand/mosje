@@ -21,7 +21,7 @@ export default function AccessibilityPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Accessibility</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
+      <p style={{ fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
         These are government services. Every citizen must be able to use them,
         whatever their ability, device or connection — so accessibility is a
         release requirement here, not a later pass.
@@ -158,7 +158,7 @@ export default function AccessibilityPage(): React.JSX.Element {
             The widget applies the class <code>.dark-mode</code> to{" "}
             <code>&lt;html&gt;</code> for its own dark theme. This is{" "}
             <strong>separate</strong> from the design system&apos;s{" "}
-            <code>data-theme</code> / <code>data-color-mode</code> token theming —
+            <code>data-theme</code> / <code>data-brand</code> token theming —
             keep the citizen-facing accessibility control and product/brand
             theming as distinct concerns.
           </li>

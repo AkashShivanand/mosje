@@ -3,8 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronDown, LogOut } from "lucide-react";
-import { SiteHeader, Footer } from "@mosje/design-system";
+import { Footer, Icon, SiteHeader } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { cn } from "@/lib/nmba/utils";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
@@ -52,8 +51,10 @@ function NavTree({
                   : "text-ink-muted hover:bg-black/5",
               )}
             >
-              <node.icon
-                className={cn("h-5 w-5 shrink-0", isActive(node.href) && "text-navy")}
+              <Icon
+                name={node.icon}
+                size={20}
+                className={cn(isActive(node.href) && "text-navy")}
                 aria-hidden
               />
               <span className="leading-tight">{node.label}</span>
@@ -100,9 +101,9 @@ function NavGroupItem({
           active ? "text-navy" : "text-ink hover:bg-black/5",
         )}
       >
-        <group.icon className="h-5 w-5 shrink-0" aria-hidden />
+        <Icon name={group.icon} size={20} aria-hidden />
         <span className="flex-1 text-left leading-tight">{group.label}</span>
-        <ChevronDown className={cn("h-4 w-4 shrink-0 transition-transform", open && "rotate-180")} aria-hidden />
+        <Icon name="keyboard_arrow_down" className={cn("h-4 w-4 shrink-0 transition-transform", open && "rotate-180")} aria-hidden />
       </button>
       {open && (
         <div id={contentId} className="ml-3 border-l border-line pl-1">
@@ -219,7 +220,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
           {
             label: "Sign out",
             danger: true,
-            icon: <LogOut className="h-4 w-4" />,
+            icon: <Icon name="logout" size={16} />,
             onSelect: handleLogout,
           },
         ]}

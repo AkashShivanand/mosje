@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
 import { PageLayout } from "@/components/website/layout/PageLayout";
+import { Icon } from "@mosje/design-system";
 
 export const metadata: Metadata = {
   title: "SAMAVESH — Citizen Portals — DoSJE",
@@ -109,7 +109,7 @@ export default function CitizenPortalsPage() {
                   className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-gov-blue hover:text-gov-blue-dark"
                 >
                   Visit Portal
-                  <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                  <Icon name="open_in_new" size={16} aria-hidden="true" />
                 </a>
               </div>
             ))}

@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { X } from "lucide-react";
 import { cn } from "@/lib/smile-admin/utils";
+import { Icon } from "@mosje/design-system";
 
 export function BottomSheet({
   open,
@@ -57,14 +57,14 @@ export function BottomSheet({
         )}
       >
         <div className="flex items-center justify-between border-b border-stroke-100 px-lg py-md">
-          <div className="text-title-2 font-semibold text-foreground">{title}</div>
+          <div className="text-title-2 font-semibold text-ink">{title}</div>
           <button
             type="button"
             aria-label="Close"
             onClick={onClose}
-            className="grid h-9 w-9 place-items-center rounded-md text-foreground-muted hover:bg-neutral-100"
+            className="grid h-9 w-9 place-items-center rounded-md text-ink-muted hover:bg-neutral-100"
           >
-            <X className="h-5 w-5" />
+            <Icon name="close" size={20} />
           </button>
         </div>
         <div className="flex-1 overflow-y-auto p-lg">{children}</div>

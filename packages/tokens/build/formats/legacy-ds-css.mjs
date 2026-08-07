@@ -1,3 +1,6 @@
+import { cssNameFor, tierOfFile, toCssName } from "../grammar.mjs";
+import { makeRetier } from "./retier.mjs";
+import { brandSelector } from "../brand-modes.mjs";
 // Emits :root { --sa-*: <value>; ... } plus a hardcoded legacy --ds-* alias block.
 // The legacy block maps each old name to the new token it now derives from, so values
 // stay identical while the source of truth becomes the DTCG tokens.
@@ -210,9 +213,31 @@ export const LEGACY_DS_ALIASES = {
   "--ds-chart-region-stroke": "--sa-color-chart-regionStroke",
 
   // ── Type scale: backed by fluid --ds-type-* clamp() variables ───────────────
-  // These preserve all existing --ds-text-* / --ds-leading-* callsites. --ds-type-*
-  // is defined in :root as the Website surface and overridden under
+  // --ds-type-* is defined in :root as the Website surface and overridden under
   // [data-surface="portal"]; both are fluid clamp() (no @media).
+  //
+  // ⚠ THE NAMES IN THIS BLOCK DO NOT MATCH design.md's ROLE TABLE. That is
+  // deliberate, and it is not a bug — do not "fix" it.
+  //
+  // Two generations of names coexist:
+  //
+  //   1. This block — the HYPHENATED legacy family (--ds-text-title-1, …). These
+  //      predate the Portal-DS scale. Each is mapped to whichever canonical role
+  //      REPRODUCES ITS HISTORICAL RENDERED VALUE, not to the role that shares its
+  //      spelling. So --ds-text-title-1 → headline-2 (24→32px), because that is
+  //      what "title 1" measured in the old scale. Every value here is frozen in
+  //      test/legacy-snapshot.json and asserted by test/build-output.test.mjs;
+  //      re-pointing any of them at its same-named role silently resizes every
+  //      legacy callsite in the estate.
+  //
+  //   2. The block below — the UNHYPHENATED canonical family (--ds-text-title1, …),
+  //      which IS 1:1 with the roles and matches design.md. Prefer the canonical
+  //      --ds-type-<role>-size / -lh tokens in new code; use these only to keep an
+  //      old callsite compiling.
+  //
+  // Both invariants are locked by test/type-alias-parity.test.mjs. If you came
+  // here because an alias "looks one step too large", read its resolved value and
+  // the snapshot before changing anything — that mismatch is the whole point.
   "--ds-text-display":   "--ds-type-display-1-size",
   "--ds-leading-display":"--ds-type-display-1-lh",
   "--ds-text-headline":  "--ds-type-headline-1-size",
@@ -327,9 +352,12 @@ function buildResponsiveType(dictionary) {
   for (const t of roleTokens) {
     // role: --ds-type-<role>-<size|lh|para>  ·  tracking: --ds-type-<key>-tracking
     const cssVar =
+      // Paths were split on the hyphen (font/role/display/1/size) so no segment carries a
+      // delimiter — RULE 1. The EMITTED name is unchanged (--ds-type-display-1-size): the
+      // role family and its number rejoin here, which is the only place that mapping lives.
       t.path[1] === "role"
-        ? `--ds-type-${t.path[2]}-${t.path[3]}`
-        : `--ds-type-${t.path[2]}-tracking`;
+        ? `--ds-type-${t.path.slice(2, -1).join("-")}-${t.path.at(-1)}`
+        : `--ds-type-${t.path.slice(2).join("-")}-tracking`;
     const ty = t.original?.$extensions?.mosje?.type;
     const webExpr = ty?.website ? clampExpr(ty.website.min, ty.website.max) : val(t);
     const portalExpr = ty?.portal ? clampExpr(ty.portal.min, ty.portal.max) : webExpr;
@@ -340,6 +368,11 @@ function buildResponsiveType(dictionary) {
   return { website, portal };
 }
 
+/**
+ * Tier markers (spec §4.1). A token's tier comes from the file it is authored in, so the
+ * DTCG path stays identical to the Figma variable path — the tier becomes the collection
+ * and the CSS marker. Tier 2 carries no marker, so the most-typed token is the shortest.
+ */
 export const legacyDsCss = {
   name: "css/legacy-ds",
   format: ({ dictionary }) => {
@@ -347,21 +380,51 @@ export const legacyDsCss = {
     const regularTokens = dictionary.allTokens.filter(
       (t) => !(t.path[0] === "font" && (t.path[1] === "role" || t.path[1] === "tracking"))
     );
-    const lines = regularTokens.map(
-      (t) => `  --sa-${t.path.join("-")}: ${val(t)};`
+    // Path → tier, so a {reference} can be resolved to the referent's MARKED name.
+    const tierByPath = new Map(
+      dictionary.allTokens.map((t) => [t.path.join("."), tierOfFile(t.filePath)])
     );
+
+    /** Resolve a `{a.b.c}` reference to the referent's tier-marked CSS name. */
+    const refToVar = (ref) => {
+      const path = ref.slice(1, -1).split(".");
+      return toCssName(path, tierByPath.get(path.join(".")) ?? "sys");
+    };
+
+    /**
+     * The canonical Tier-2 namespace is emitted as var() CHAINS, not resolved literals.
+     *
+     * Style Dictionary resolves `{color.text.default}` to a hex by default. If we emitted
+     * that hex, `--sa-text-neutral` would freeze at whatever :root computed and would stop
+     * responding to [data-theme] / [data-brand] — a custom property substitutes var() at the
+     * element where it is DECLARED (design.md §1A). Keeping the chain, and re-asserting it
+     * in any block that redeclares the target, is what makes theme islands work.
+     */
+    const SYSTEM_ALIAS_FILE = /system\.generated\.json$/;
+    const systemAliasPairs = [];
+    const lines = regularTokens.map((t) => {
+      const name = cssNameFor(t);
+      const orig = t.original?.$value ?? t.original?.value;
+      if (SYSTEM_ALIAS_FILE.test(t.filePath ?? "") && typeof orig === "string" && orig.startsWith("{")) {
+        const target = refToVar(orig);
+        systemAliasPairs.push([name, target]);
+        return `  ${name}: var(${target});`;
+      }
+      return `  ${name}: ${val(t)};`;
+    });
 
     // Two-surface responsive type variables (website = default, portal = [data-surface])
     const { website: typeRootLines, portal: typePortalLines } = buildResponsiveType(dictionary);
 
-    const legacyPairs = Object.entries(LEGACY_DS_ALIASES);
+    const retier = makeRetier(dictionary.allTokens, { tierOfFile, toCssName });
+    const legacyPairs = Object.entries(LEGACY_DS_ALIASES).map(([o, n]) => [o, retier(n)]);
     const legacy = legacyPairs.map(([oldName, newVar]) => `  ${oldName}: var(${newVar});`);
 
-    // Resolve a {ref} string to a var(--sa-*) chain; pass literals through.
+    // Resolve a {reference} to a var(--sa-*) chain, honouring the referent's tier marker.
+    // Without the lookup a Tier-2 token pointing at a Tier-1 primitive would emit an
+    // unmarked name that no longer exists.
     const resolveRef = (v) =>
-      typeof v === "string" && v.startsWith("{")
-        ? `var(--sa-${v.slice(1, -1).split(".").join("-")})`
-        : v;
+      typeof v === "string" && v.startsWith("{") ? `var(${refToVar(v)})` : v;
 
     // Each block records BOTH its declaration lines and the set of custom-property
     // names it declares. The name set drives targeted alias re-assertion below.
@@ -375,7 +438,7 @@ export const legacyDsCss = {
     const colorModeMap = {};
     for (const t of dictionary.allTokens) {
       const ext = t.original?.$extensions?.mosje;
-      const name = `--sa-${t.path.join("-")}`;
+      const name = cssNameFor(t);
       if (ext?.themes) {
         for (const [theme, v] of Object.entries(ext.themes)) {
           if (themeMap[theme]) push(themeMap[theme], name, resolveRef(v));
@@ -403,16 +466,16 @@ export const legacyDsCss = {
     // blanket re-assertion was emitting the whole ~290-entry alias table into all four
     // theme blocks — mostly spacing/radius/shadow/type aliases that no theme can vary.
     const reassert = (block) => {
-      const lines = legacyPairs
+      const lines = [...legacyPairs, ...systemAliasPairs]
         .filter(([, target]) => block.vars.has(target))
         .map(([oldName, target]) => `  ${oldName}: var(${target});`);
       return lines.length
-        ? `\n\n  /* re-resolve the --ds-* aliases whose source changed in this block */\n${lines.join("\n")}`
+        ? `\n\n  /* re-resolve every alias whose source changed in this block */\n${lines.join("\n")}`
         : "";
     };
 
     const colorModeBlocks = Object.entries(colorModeMap)
-      .map(([mode, b]) => `[data-color-mode="${mode}"] {\n${b.lines.join("\n")}${reassert(b)}\n}`)
+      .map(([mode, b]) => `${brandSelector(mode)} {\n${b.lines.join("\n")}${reassert(b)}\n}`)
       .join("\n\n");
     const themeBlocks = [
       colorModeBlocks,

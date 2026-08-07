@@ -4,8 +4,7 @@
 // (requirement item 7), and the scoped committee table.
 
 import * as React from "react";
-import { FileSpreadsheet, FileDown, FileText, ClipboardList, Building } from "lucide-react";
-import { Button, MetricCard } from "@mosje/design-system";
+import { Button, Icon, MetricCard } from "@mosje/design-system";
 import { CommitteeList } from "./committee-list";
 import { exportPdf, exportXls } from "@/lib/nmba/committee/export";
 import type { CommitteeRecord } from "@/lib/nmba/committee/types";
@@ -37,17 +36,17 @@ export function ReportView({ records, scopeLabel, hideColumns = [] }: ReportView
         <MetricCard
           label="Committees registered"
           value={String(records.length)}
-          icon={<FileText className="h-5 w-5" />}
+          icon={<Icon name="description" size={20} />}
         />
         <MetricCard
           label="Meeting minutes"
           value={String(minutesCount)}
-          icon={<ClipboardList className="h-5 w-5" />}
+          icon={<Icon name="assignment" size={20} />}
         />
         <MetricCard
           label="Districts covered"
           value={String(districtsCovered)}
-          icon={<Building className="h-5 w-5" />}
+          icon={<Icon name="business" size={20} />}
         />
       </div>
 
@@ -59,7 +58,7 @@ export function ReportView({ records, scopeLabel, hideColumns = [] }: ReportView
           <Button
             appearance="outlined"
             onClick={() => exportXls(records, scopeLabel)}
-            iconLeft={<FileSpreadsheet className="h-4 w-4" />}
+            iconLeft={<Icon name="table_chart" size={16} />}
           >
             Export .XLS
           </Button>
@@ -67,7 +66,7 @@ export function ReportView({ records, scopeLabel, hideColumns = [] }: ReportView
             appearance="outlined"
             onClick={handlePdf}
             disabled={busy}
-            iconLeft={<FileDown className="h-4 w-4" />}
+            iconLeft={<Icon name="file_download" size={16} />}
           >
             {busy ? "Preparing…" : "Export .PDF"}
           </Button>

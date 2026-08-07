@@ -1,10 +1,10 @@
 "use client";
 
-import { Search, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { portalLink } from "./eutthan-shared";
 import { tableScreens } from "@/lib/eutthan/portal-data";
 import { CellContent, Pagination } from "./eutthan-cells";
+import { Icon } from "@mosje/design-system";
 
 export function MapPage({ path }: { path: string }) {
   const isSchemas = path === "/map-schema";
@@ -38,12 +38,12 @@ export function MapPage({ path }: { path: string }) {
       <div className="data-card">
         <div className="toolbar">
           <div className="search-field">
-            <Search size={16} aria-hidden="true" />
+            <Icon name="search" size={16} aria-hidden="true" />
             <input placeholder={screen.searchPlaceholder} aria-label="Search records" />
           </div>
           {screen.filters?.map((f) => (
             <button key={f} type="button" className="filter-button">
-              {f} <ChevronDown size={14} />
+              {f} <Icon name="keyboard_arrow_down" size={14} />
             </button>
           ))}
         </div>

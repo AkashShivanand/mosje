@@ -2,15 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Mail, Phone, UserPlus } from "lucide-react";
-import { Button } from "@/components/smile-admin/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/smile-admin/ui/card";
-import { Input } from "@/components/smile-admin/ui/input";
-import { Label } from "@/components/smile-admin/ui/label";
-import { Checkbox } from "@/components/smile-admin/ui/checkbox";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { STATES } from "@/lib/smile-admin/states";
 import { ROLE_LABELS } from "@/lib/smile-admin/roles";
+import { Button, Card, CardBody, CardHeader, CardTitle, Checkbox, Icon, Input, Label, buttonClasses } from "@mosje/design-system";
 
 export default function OnboardPage() {
   const [form, setForm] = useState({
@@ -24,13 +19,13 @@ export default function OnboardPage() {
         breadcrumbs={[{ label: "Access Control" }, { label: "Users", href: "/portals/smile-admin/users" }, { label: "Onboard user" }]}
         title="Onboard user"
         subtitle="Invite a state, district or field-operations user to the SMILE portal."
-        actions={<Button variant="outline" size="sm" asChild><Link href="/portals/smile-admin/users"><ArrowLeft className="h-3.5 w-3.5" /> Back to users</Link></Button>}
+        actions={<Link href="/portals/smile-admin/users" className={buttonClasses("primary", "outlined", "sm")}><Icon name="arrow_back" size={14} /> Back to users</Link>}
       />
 
       <form className="grid gap-lg lg:grid-cols-[2fr_1fr]" onSubmit={(e) => e.preventDefault()}>
         <Card>
           <CardHeader><CardTitle>Identity</CardTitle></CardHeader>
-          <CardContent className="grid gap-md md:grid-cols-2">
+          <CardBody className="grid gap-md md:grid-cols-2">
             <div className="space-y-xs md:col-span-2">
               <Label htmlFor="name" required>Full name</Label>
               <Input
@@ -48,7 +43,7 @@ export default function OnboardPage() {
               <Input
                 id="email"
                 type="email"
-                leftIcon={<Mail aria-hidden className="h-4 w-4" />}
+                leftIcon={<Icon name="mail" size={16} aria-hidden />}
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 placeholder="name@smile.gov.in"
@@ -61,7 +56,7 @@ export default function OnboardPage() {
               <Label htmlFor="mobile" required>Mobile</Label>
               <Input
                 id="mobile"
-                leftIcon={<Phone aria-hidden className="h-4 w-4" />}
+                leftIcon={<Icon name="call" size={16} aria-hidden />}
                 value={form.mobile}
                 onChange={(e) => setForm({ ...form, mobile: e.target.value })}
                 placeholder="10-digit mobile number"
@@ -73,12 +68,12 @@ export default function OnboardPage() {
                 autoComplete="tel-national"
               />
             </div>
-          </CardContent>
+          </CardBody>
         </Card>
 
         <Card>
           <CardHeader><CardTitle>Role &amp; scope</CardTitle></CardHeader>
-          <CardContent className="space-y-md">
+          <CardBody className="space-y-md">
             <div className="space-y-xs">
               <Label htmlFor="role" required>Role</Label>
               <select
@@ -118,28 +113,28 @@ export default function OnboardPage() {
                 placeholder="Required for District Nodal Officer / Field roles"
               />
             </div>
-          </CardContent>
+          </CardBody>
         </Card>
 
         <Card className="lg:col-span-2">
           <CardHeader><CardTitle>Invitation</CardTitle></CardHeader>
-          <CardContent className="space-y-md">
-            <p className="text-body-3 text-foreground-muted">
+          <CardBody className="space-y-md">
+            <p className="text-body-3 text-ink-muted">
               We&apos;ll send the user a secure invite link valid for 24 hours. They can complete profile setup, set a password and verify their mobile via OTP before signing in.
             </p>
             <div className="flex flex-wrap items-center gap-lg">
               <label className="flex items-center gap-sm text-body-3">
-                <Checkbox checked={form.notifyByEmail} onCheckedChange={(c) => setForm({ ...form, notifyByEmail: c === true })} /> Email invite
+                <Checkbox checked={form.notifyByEmail} onChange={(e) => setForm({ ...form, notifyByEmail: e.target.checked === true })} /> Email invite
               </label>
               <label className="flex items-center gap-sm text-body-3">
-                <Checkbox checked={form.notifyBySms} onCheckedChange={(c) => setForm({ ...form, notifyBySms: c === true })} /> SMS invite
+                <Checkbox checked={form.notifyBySms} onChange={(e) => setForm({ ...form, notifyBySms: e.target.checked === true })} /> SMS invite
               </label>
             </div>
             <div className="flex items-center gap-sm">
-              <Button type="submit"><UserPlus className="h-4 w-4" /> Send invite</Button>
-              <Button type="button" variant="outline">Save as draft</Button>
+              <Button type="submit"><Icon name="person_add" size={16} /> Send invite</Button>
+              <Button type="button" appearance="outlined">Save as draft</Button>
             </div>
-          </CardContent>
+          </CardBody>
         </Card>
       </form>
     </div>

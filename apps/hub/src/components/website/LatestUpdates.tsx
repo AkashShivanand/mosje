@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { Badge, buttonClasses } from "@mosje/design-system";
+import { Badge, Icon, buttonClasses } from "@mosje/design-system";
 import type { UpdateItem } from "@/types/website";
 
 const UPDATES: UpdateItem[] = [
@@ -51,10 +50,10 @@ export function LatestUpdates() {
         {/* Controls */}
         <div className="flex shrink-0 items-center gap-2">
           <button onClick={() => go(index - 1)} aria-label="Previous update" className="grid h-8 w-8 place-items-center rounded-full hover:bg-white/15">
-            <ChevronLeft className="h-5 w-5" />
+            <Icon name="keyboard_arrow_left" size={20} />
           </button>
           <button onClick={() => go(index + 1)} aria-label="Next update" className="grid h-8 w-8 place-items-center rounded-full hover:bg-white/15">
-            <ChevronRight className="h-5 w-5" />
+            <Icon name="keyboard_arrow_right" size={20} />
           </button>
           <Link href="/website/notices" className={buttonClasses("primary", "outlined", "sm", "ml-1 whitespace-nowrap")}>
             View All Updates

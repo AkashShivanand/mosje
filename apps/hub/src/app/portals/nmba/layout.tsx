@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 // so it moves to a wrapper — the selector is attribute-based and the custom
 // properties inherit, so the cascade is identical.
 //
-// data-color-mode="blue-dark" was nmba's own fixed brand ramp (the deep-navy
+// data-brand="navy" was nmba's own fixed brand ramp (the deep-navy
 // #003366 SAMAVESH identity). Its standalone layout set PORTAL_DEFAULT_MODE =
-// "blue-dark" on <html> and primed the cookie in an init script; nmba renders no
+// "navy" on <html> and primed the cookie in an init script; nmba renders no
 // ColorModeSwitcher, so it was never user-togglable — a fixed identity, exactly
 // like smile-admin. The estate default is blue-light, so without this attribute
 // nmba silently renders in the wrong brand ramp. Setting it on this closer
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 // per-portal custom properties scoped by this attribute — see nmba.css.
 export default function NmbaLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div data-portal="nmba" data-color-mode="blue-dark" data-surface="portal">
+    <div data-portal="nmba" data-brand="navy" data-surface="portal">
       <ToastProvider>{children}</ToastProvider>
     </div>
   );

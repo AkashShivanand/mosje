@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Icon } from "@mosje/design-system";
 
 /**
  * Shared row-action primitives for treatment-centre list tables.
@@ -22,7 +23,8 @@ const ACTION_TONES = {
 export type RowActionTone = keyof typeof ACTION_TONES;
 
 export interface IconActionProps {
-  icon: React.ComponentType<{ className?: string }>;
+  /** Material Symbols name for the DS <Icon>. */
+  icon: string;
   /** Used as both the accessible name and the hover tooltip. */
   label: string;
   onClick: () => void;
@@ -31,7 +33,7 @@ export interface IconActionProps {
   disabled?: boolean;
 }
 
-export function IconAction({ icon: Icon, label, onClick, tone = "neutral", disabled }: IconActionProps) {
+export function IconAction({ icon: iconName, label, onClick, tone = "neutral", disabled }: IconActionProps) {
   return (
     <button
       type="button"
@@ -41,7 +43,7 @@ export function IconAction({ icon: Icon, label, onClick, tone = "neutral", disab
       disabled={disabled}
       className={`inline-flex h-9 w-9 items-center justify-center rounded-md transition active:scale-95 disabled:pointer-events-none disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 ${ACTION_TONES[tone]}`}
     >
-      <Icon className="h-4 w-4" aria-hidden />
+      <Icon name={iconName} size={16} aria-hidden />
     </button>
   );
 }

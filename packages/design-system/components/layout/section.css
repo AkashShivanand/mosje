@@ -1,0 +1,84 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — SectionTitle
+   The shared heading row for content sections. Token-driven; no Tailwind.
+   ============================================================================ */
+
+.ds-section-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ds-spacing-lg, 16px);
+}
+
+/* min-width:0 lets a long title ellipsize instead of shoving the actions
+   off the right edge of the flex row. */
+.ds-section-title__text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ds-section-title__eyebrow {
+  font-size: var(--ds-text-label-3, 11px);
+  line-height: var(--ds-leading-label-3, 16px);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ds-ink-muted);
+}
+
+.ds-section-title__headline {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-spacing-sm, 8px);
+}
+
+.ds-section-title__heading {
+  margin: 0;
+  font-family: var(--ds-font-sans, inherit);
+  font-size: var(--ds-text-headline5, 18px);
+  line-height: var(--ds-leading-headline5, 24px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ds-ink);
+}
+
+.ds-section-title__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--ds-radius-full, 999px);
+  background-color: var(--ds-surface-muted);
+  box-shadow: inset 0 0 0 1px var(--ds-border);
+  font-size: var(--ds-text-label-3, 11px);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-ink-muted);
+}
+
+.ds-section-title__description {
+  margin: 0;
+  font-size: var(--ds-text-body-3, 12px);
+  line-height: var(--ds-leading-body-3, 16px);
+  color: var(--ds-ink-muted);
+}
+
+.ds-section-title__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-spacing-sm, 8px);
+  flex-shrink: 0;
+}
+
+/* Stack on narrow viewports so the actions don't crush the heading. */
+@media (max-width: 640px) {
+  .ds-section-title {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--ds-spacing-md, 12px);
+  }
+}

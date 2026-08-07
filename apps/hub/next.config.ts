@@ -91,7 +91,12 @@ const nextConfig: NextConfig = {
     const securityHeaders = {
       source: "/(.*)",
       headers: [
-        { key: "X-Frame-Options", value: "DENY" },
+        // SAMEORIGIN, not DENY. The clickjacking threat is a *hostile* origin
+        // framing us, and SAMEORIGIN still blocks that completely. DENY also
+        // blocked the estate framing itself, which broke Storybook: it renders
+        // every story inside /storybook/iframe.html, so the shell loaded and
+        // the canvas stayed empty.
+        { key: "X-Frame-Options", value: "SAMEORIGIN" },
         { key: "X-Content-Type-Options", value: "nosniff" },
         { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         {

@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { MoreHorizontal } from "lucide-react";
 import type { RowActionTone } from "./row-actions";
+import { Icon } from "@mosje/design-system";
 
 /**
  * Accessible "More actions" menu for dense table rows.
@@ -27,7 +27,8 @@ const ITEM_TONES: Record<RowActionTone, string> = {
 };
 
 export interface RowActionMenuItem {
-  icon: React.ComponentType<{ className?: string }>;
+  /** Material Symbols name for the DS <Icon>. */
+  icon: string;
   label: string;
   onClick: () => void;
   tone?: RowActionTone;
@@ -117,7 +118,7 @@ export function RowActionMenu({ label, items }: { label: string; items: RowActio
         onClick={() => (open ? closeMenu() : openMenu())}
         className="inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-muted transition active:scale-95 hover:bg-navy/10 hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
       >
-        <MoreHorizontal className="h-4 w-4" aria-hidden />
+        <Icon name="more_horiz" size={16} aria-hidden />
       </button>
 
       {open && coords && typeof document !== "undefined"
@@ -130,7 +131,7 @@ export function RowActionMenu({ label, items }: { label: string; items: RowActio
               style={{ position: "fixed", top: coords.top, right: coords.right, zIndex: 60 }}
               className="min-w-52 overflow-hidden rounded-lg border border-line bg-white py-1 shadow-lg"
             >
-              {items.map(({ icon: Icon, label: itemLabel, onClick, tone = "neutral" }) => (
+              {items.map(({ icon: iconName, label: itemLabel, onClick, tone = "neutral" }) => (
                 <button
                   key={itemLabel}
                   type="button"
@@ -138,7 +139,7 @@ export function RowActionMenu({ label, items }: { label: string; items: RowActio
                   onClick={() => { closeMenu(false); onClick(); }}
                   className={`flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm font-medium focus-visible:outline-none focus-visible:bg-navy/10 ${ITEM_TONES[tone]}`}
                 >
-                  <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                  <Icon name={iconName} size={16} className="shrink-0" aria-hidden />
                   {itemLabel}
                 </button>
               ))}

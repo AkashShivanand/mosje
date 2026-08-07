@@ -8,8 +8,7 @@ import { AddEventModal } from "@/components/nmba/add-event-modal";
 import { ACTIVITIES, ACTIVITIES_TOTAL, ACTIVITY_TYPES } from "@/lib/nmba/mock-data";
 import { STATES, STATE_DISTRICTS } from "@/lib/nmba/states";
 import type { ActivityRow } from "@/lib/nmba/types";
-import { Plus } from "lucide-react";
-import { Button, Select } from "@mosje/design-system";
+import { Button, Icon, Select } from "@mosje/design-system";
 
 const FacilityMap = dynamic(
   () => import("@/components/nmba/facility-map").then((m) => m.FacilityMap),
@@ -57,7 +56,7 @@ export default function ActivitiesPage() {
             Showing {filtered.length} of {ACTIVITIES_TOTAL.toLocaleString("en-IN")} activities
           </p>
         </div>
-        <Button onClick={() => setModalOpen(true)} iconLeft={<Plus className="h-4 w-4" />} aria-label="Add new activity event">
+        <Button onClick={() => setModalOpen(true)} iconLeft={<Icon name="add" size={16} />} aria-label="Add new activity event">
           Add Event
         </Button>
       </div>

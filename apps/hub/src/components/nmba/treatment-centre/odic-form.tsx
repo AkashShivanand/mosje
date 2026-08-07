@@ -2,19 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, Pencil } from "lucide-react";
-import {
-  Input,
-  Textarea,
-  Select,
-  FormField,
-  Checkbox,
-  Button,
-  Radio,
-  Alert,
-  type SelectOption,
-  type StepperStep,
-} from "@mosje/design-system";
+import { Alert, Button, Checkbox, FormField, Icon, Input, Radio, Select, Textarea, type SelectOption, type StepperStep } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { FormSection, FormCard } from "@/components/nmba/treatment-centre/tc-form";
@@ -593,7 +581,7 @@ export function OdicBeneficiaryForm({
                           aria-label={`Remove drug ${i + 1}`}
                           className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
                         >
-                          <Trash2 className="h-3.5 w-3.5" aria-hidden /> Remove
+                          <Icon name="delete" size={14} aria-hidden /> Remove
                         </button>
                       )}
                     </div>
@@ -633,7 +621,7 @@ export function OdicBeneficiaryForm({
                 ))}
               </ol>
               <div className="mt-4">
-                <Button type="button" appearance="outlined" iconLeft={<Plus className="h-4 w-4" />} onClick={() => setDrugRows((prev) => [...prev, { ...emptyDrugRow, _key: `row-${(keyRef.current += 1)}` }])}>
+                <Button type="button" appearance="outlined" iconLeft={<Icon name="add" size={16} />} onClick={() => setDrugRows((prev) => [...prev, { ...emptyDrugRow, _key: `row-${(keyRef.current += 1)}` }])}>
                   Add
                 </Button>
               </div>
@@ -826,7 +814,7 @@ export function OdicBeneficiaryForm({
                     onClick={() => jumpTo(j.to)}
                     className="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-semibold text-navy hover:bg-black/5"
                   >
-                    <Pencil className="h-3 w-3" aria-hidden /> {j.label}
+                    <Icon name="edit" size={12} aria-hidden /> {j.label}
                   </button>
                 ))}
               </div>

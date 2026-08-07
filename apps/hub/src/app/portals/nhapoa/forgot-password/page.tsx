@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { Button, Field, TextInput } from "@/components/nhapoa/ui";
+import { Icon } from "@mosje/design-system";
 
 export default function ForgotPasswordPage() {
   const [submitted, setSubmitted] = React.useState(false);
@@ -14,7 +14,7 @@ export default function ForgotPasswordPage() {
       <div className="w-full max-w-md rounded-2xl border border-line bg-white p-8 shadow-card">
         {submitted ? (
           <div className="text-center">
-            <CheckCircle2 className="mx-auto h-12 w-12 text-approve" />
+            <Icon name="check_circle" size={48} className="mx-auto text-approve" />
             <h1 className="mt-4 text-xl font-bold text-ink">Reset link sent</h1>
             <p className="mt-2 text-sm text-ink-muted">
               If <span className="font-semibold text-ink">{username || "that account"}</span> exists, a
@@ -24,7 +24,7 @@ export default function ForgotPasswordPage() {
               href="/portals/nhapoa/login"
               className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-navy hover:underline"
             >
-              <ArrowLeft className="h-4 w-4" /> Back to login
+              <Icon name="arrow_back" size={16} /> Back to login
             </Link>
           </div>
         ) : (
@@ -55,7 +55,7 @@ export default function ForgotPasswordPage() {
               href="/portals/nhapoa/login"
               className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-navy hover:underline"
             >
-              <ArrowLeft className="h-4 w-4" /> Back to login
+              <Icon name="arrow_back" size={16} /> Back to login
             </Link>
           </>
         )}

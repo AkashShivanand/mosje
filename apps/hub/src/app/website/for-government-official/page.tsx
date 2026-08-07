@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { ScrollText, Scale, Info, Contact } from "lucide-react";
 import { PersonaPage, type PersonaCard } from "@/components/website/templates/PersonaPage";
 
 export const metadata: Metadata = {
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 
 const cards: PersonaCard[] = [
   {
-    icon: ScrollText,
+    icon: "article",
     title: "Circulars & Notifications",
     description:
       "Access the latest circulars, office memoranda and notifications issued by the Ministry and its departments.",
@@ -18,7 +17,7 @@ const cards: PersonaCard[] = [
     href: "/website/circulars-notifications",
   },
   {
-    icon: Scale,
+    icon: "balance",
     title: "Acts & Rules",
     description:
       "Refer to the governing acts, rules and statutory frameworks relevant to administration and implementation.",
@@ -26,7 +25,7 @@ const cards: PersonaCard[] = [
     href: "/website/acts-rules",
   },
   {
-    icon: Info,
+    icon: "info",
     title: "RTI",
     description:
       "Find Right to Information disclosures, designated officers and the process for handling RTI requests.",
@@ -34,7 +33,7 @@ const cards: PersonaCard[] = [
     href: "/website/rti",
   },
   {
-    icon: Contact,
+    icon: "contact_page",
     title: "Directory",
     description:
       "Look up officers, contact details and office locations across the Ministry in the staff directory.",

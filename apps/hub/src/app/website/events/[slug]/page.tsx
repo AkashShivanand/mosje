@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CalendarDays, MapPin, Users } from "lucide-react";
 import { ContentPage } from "@/components/website/templates/ContentPage";
+import { Icon } from "@mosje/design-system";
 
 interface EventDetail {
   title: string;
@@ -157,21 +157,21 @@ export default async function EventDetailPage({
           <h2 className="mb-4 text-[15px] font-semibold text-gov-blue-dark">Event Details</h2>
           <dl className="space-y-4">
             <div className="flex items-start gap-3">
-              <CalendarDays className="mt-0.5 h-5 w-5 shrink-0 text-gov-blue" aria-hidden="true" />
+              <Icon name="calendar_month" size={20} className="mt-0.5 shrink-0 text-gov-blue" aria-hidden="true" />
               <div>
                 <dt className="font-semibold text-ink">Date</dt>
                 <dd className="text-ink-muted">{event.date}</dd>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-gov-blue" aria-hidden="true" />
+              <Icon name="location_on" size={20} className="mt-0.5 shrink-0 text-gov-blue" aria-hidden="true" />
               <div>
                 <dt className="font-semibold text-ink">Venue</dt>
                 <dd className="text-ink-muted">{event.venue}</dd>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <Users className="mt-0.5 h-5 w-5 shrink-0 text-gov-blue" aria-hidden="true" />
+              <Icon name="group" size={20} className="mt-0.5 shrink-0 text-gov-blue" aria-hidden="true" />
               <div>
                 <dt className="font-semibold text-ink">Organiser</dt>
                 <dd className="text-ink-muted">{event.organiser}</dd>

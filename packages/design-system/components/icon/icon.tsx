@@ -21,6 +21,12 @@ export interface IconProps {
   weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
   "aria-hidden"?: boolean | "true" | "false";
   "aria-label"?: string;
+  /**
+   * Extra inline styles, merged AFTER the glyph's own (font-size, variation
+   * axes, layout). Use it for placement — `display`, `margin`, `opacity` —
+   * not to re-set the size; pass `size` for that so the `opsz` axis tracks it.
+   */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -52,6 +58,7 @@ export function Icon({
   weight = 300,
   "aria-hidden": ariaHidden,
   "aria-label": ariaLabel,
+  style,
 }: IconProps): React.JSX.Element {
   return (
     <span
@@ -65,6 +72,7 @@ export function Icon({
         justifyContent: "center",
         flexShrink: 0,
         userSelect: "none",
+        ...style,
       }}
       aria-hidden={ariaHidden}
       aria-label={ariaLabel}

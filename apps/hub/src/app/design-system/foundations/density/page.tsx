@@ -66,7 +66,7 @@ export default function DensityPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Density</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
+      <p style={{ fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
         Density controls how tall interactive elements are. SAMAVESH ships two
         modes — <strong>comfortable</strong> for everyday public use and{" "}
         <strong>compact</strong> for screens that need to show a lot of data at

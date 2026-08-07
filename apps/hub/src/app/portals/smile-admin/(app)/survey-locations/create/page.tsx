@@ -2,13 +2,9 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowLeft, MapPin, Save } from "lucide-react";
-import { Button } from "@/components/smile-admin/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/smile-admin/ui/card";
-import { Input } from "@/components/smile-admin/ui/input";
-import { Label } from "@/components/smile-admin/ui/label";
 import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { STATES } from "@/lib/smile-admin/states";
+import { Button, Card, CardBody, CardHeader, CardTitle, Icon, Input, Label, buttonClasses } from "@mosje/design-system";
 
 export default function NewLocationPage() {
   const [form, setForm] = useState({ name: "", state: "", district: "", pincode: "", type: "Traffic Signal", lat: "", lng: "" });
@@ -18,15 +14,15 @@ export default function NewLocationPage() {
         breadcrumbs={[{ label: "Field Operations" }, { label: "Survey Locations", href: "/portals/smile-admin/survey-locations" }, { label: "New" }]}
         title="Add survey location"
         subtitle="Register a new outreach hotspot for surveyor mapping."
-        actions={<Button variant="outline" size="sm" asChild><Link href="/portals/smile-admin/survey-locations"><ArrowLeft className="h-3.5 w-3.5" /> Back</Link></Button>}
+        actions={<Link href="/portals/smile-admin/survey-locations" className={buttonClasses("primary", "outlined", "sm")}><Icon name="arrow_back" size={14} /> Back</Link>}
       />
       <form onSubmit={(e) => e.preventDefault()} className="grid gap-lg lg:grid-cols-2">
         <Card>
           <CardHeader><CardTitle>Location</CardTitle></CardHeader>
-          <CardContent className="space-y-md">
+          <CardBody className="space-y-md">
             <div className="space-y-xs">
               <Label htmlFor="name">Location name</Label>
-              <Input id="name" leftIcon={<MapPin className="h-4 w-4" />} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              <Input id="name" leftIcon={<Icon name="location_on" size={16} />} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
             </div>
             <div className="grid gap-md sm:grid-cols-2">
               <div className="space-y-xs">
@@ -51,11 +47,11 @@ export default function NewLocationPage() {
                 </select>
               </div>
             </div>
-          </CardContent>
+          </CardBody>
         </Card>
         <Card>
           <CardHeader><CardTitle>Geolocation</CardTitle></CardHeader>
-          <CardContent className="space-y-md">
+          <CardBody className="space-y-md">
             <div className="grid gap-md sm:grid-cols-2">
               <div className="space-y-xs">
                 <Label htmlFor="lat">Latitude</Label>
@@ -66,11 +62,11 @@ export default function NewLocationPage() {
                 <Input id="lng" value={form.lng} onChange={(e) => setForm({ ...form, lng: e.target.value })} placeholder="72.8777" />
               </div>
             </div>
-            <div className="grid h-44 place-items-center rounded-md border border-dashed border-stroke-300 bg-neutral-50 text-foreground-muted">
+            <div className="grid h-44 place-items-center rounded-md border border-dashed border-stroke-300 bg-neutral-50 text-ink-muted">
               Map preview (drag the marker to set precise coordinates)
             </div>
-            <Button type="submit" className="w-full"><Save className="h-4 w-4" /> Save location</Button>
-          </CardContent>
+            <Button type="submit" className="w-full"><Icon name="save" size={16} /> Save location</Button>
+          </CardBody>
         </Card>
       </form>
     </div>

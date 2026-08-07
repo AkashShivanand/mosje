@@ -5,8 +5,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { CalendarClock, CheckCircle2 } from "lucide-react";
-import { Alert, Badge, SegmentedControl } from "@mosje/design-system";
+import { Alert, Badge, Icon, SegmentedControl } from "@mosje/design-system";
 import { AdminShell } from "@/components/nmba/admin-shell";
 import { SubmissionForm } from "@/components/nmba/mass-pledge/submission-form";
 import { SubmissionsTable } from "@/components/nmba/mass-pledge/submissions-table";
@@ -107,7 +106,7 @@ export default function MassPledgePage() {
       {isOpen && existing && (
         <Alert status="success" className="mb-8">
           <span className="inline-flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <Icon name="check_circle" size={16} className="shrink-0" aria-hidden="true" />
             Your report for {EVENT_DATE_LABEL} has been submitted.{" "}
             <Link href={`${BASE}/${existing.id}`} className="font-semibold text-navy underline">
               View it
@@ -119,7 +118,7 @@ export default function MassPledgePage() {
       {!isOpen && (
         <Alert status="info" className="mb-8">
           <span className="inline-flex items-center gap-2">
-            <CalendarClock className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <Icon name="event" size={16} className="shrink-0" aria-hidden="true" />
             {state === "BEFORE"
               ? `Reporting opens on ${EVENT_DATE_LABEL} and is available on that day only. Figures reported so far are shown below.`
               : `Reporting closed on ${EVENT_DATE_LABEL}. The figures below are read-only.`}

@@ -40,7 +40,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         aria-live="polite"
         className="grid min-h-dvh place-items-center bg-surface-muted"
       >
-        <div className="text-body-2 text-foreground-muted">Verifying session…</div>
+        <div className="text-body-2 text-ink-muted">Verifying session…</div>
       </div>
     );
   }

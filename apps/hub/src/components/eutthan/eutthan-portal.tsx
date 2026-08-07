@@ -3,7 +3,6 @@
 import { useState, useLayoutEffect } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { type Role } from "@/lib/eutthan/portal-data";
 import { normalizePath, DEMO_CREDENTIALS, portalLink } from "./eutthan-shared";
@@ -34,6 +33,7 @@ const FormPage = dynamic(() =>
 );
 
 import { tableScreens } from "@/lib/eutthan/portal-data";
+import { Icon } from "@mosje/design-system";
 
 export default function EutthanPortal() {
   const pathname = usePathname();
@@ -120,7 +120,7 @@ export default function EutthanPortal() {
             width: "fit-content",
           }}
         >
-          <ArrowLeft size={16} /> Back to Dashboard
+          <Icon name="arrow_back" size={16} /> Back to Dashboard
         </Link>
       </div>
     );
