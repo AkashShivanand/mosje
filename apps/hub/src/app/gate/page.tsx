@@ -15,7 +15,7 @@
 
 import type { Metadata } from "next";
 import { DEFAULT_APPS } from "@mosje/design-system";
-import { safeNextPath } from "@/lib/site-gate";
+import { GATE_EMBLEM_SRC, safeNextPath } from "@/lib/site-gate";
 import { EstateField } from "@/components/estate-field";
 import { unlock } from "./actions";
 import { GateForm } from "./gate-form";
@@ -55,7 +55,7 @@ export default async function GatePage({
                 renders before any gated route, and next/image's /_next/image
                 endpoint sits outside the gate's asset allowlist. */}
             <img
-              src="/images/National_Emblem_logo_white.svg"
+              src={GATE_EMBLEM_SRC}
               alt="National Emblem of India"
               width={28}
               height={45}

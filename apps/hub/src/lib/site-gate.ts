@@ -27,6 +27,17 @@ export { safeEqual };
 
 export const GATE_COOKIE = "mosje-gate";
 
+/**
+ * The emblem the gate page renders.
+ *
+ * Exported so the page and the proxy's asset allowlist read the SAME constant.
+ * They were two hand-written strings once, and the gate shipped with a broken
+ * emblem: the page was changed to the white variant, the allowlist was not, and
+ * every local check passed because the developer's browser already held a gate
+ * cookie. Only a first-time visitor saw it. Import this on both sides.
+ */
+export const GATE_EMBLEM_SRC = "/images/National_Emblem_logo_white.svg";
+
 /** Domain-separation label, so the HMAC can't be reused for another purpose. */
 const GATE_LABEL = "mosje-site-gate.v1";
 

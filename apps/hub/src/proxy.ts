@@ -1,6 +1,6 @@
 import { request as httpRequest } from "node:http";
 import { NextResponse, type NextRequest } from "next/server";
-import { GATE_COOKIE, resolveGateToken, safeEqual } from "@/lib/site-gate";
+import { GATE_COOKIE, GATE_EMBLEM_SRC, resolveGateToken, safeEqual } from "@/lib/site-gate";
 
 /**
  * Multi-zone resilience (dev-time safeguard).
@@ -111,7 +111,7 @@ const PM_AJAY_SESSION_COOKIE = "pmajay_session"; // set by the client auth-conte
  * excluded by the matcher below; the emblem lives in public/ and so needs an
  * explicit pass here.
  */
-const GATE_PUBLIC_ASSETS = ["/images/National-Emblem-logo.svg"];
+const GATE_PUBLIC_ASSETS = [GATE_EMBLEM_SRC];
 
 async function gateRedirect(req: NextRequest): Promise<NextResponse | null> {
   const expected = await resolveGateToken();

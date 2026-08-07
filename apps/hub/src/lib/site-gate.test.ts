@@ -4,8 +4,27 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { deriveToken, resolveGateToken, safeNextPath } from "./site-gate.ts";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { GATE_EMBLEM_SRC, deriveToken, resolveGateToken, safeNextPath } from "./site-gate.ts";
 import { resetSettingsCache } from "./settings/store.ts";
+
+test("the gate's emblem exists in public/ and is allowlisted past the gate", () => {
+  // Regression: the page was switched to the white emblem and the proxy's
+  // allowlist was not, so first-time visitors — the only people who ever see
+  // the gate — got a broken image. Every local check passed because the
+  // developer's browser already held a gate cookie.
+  const publicPath = fileURLToPath(new URL(`../../public${GATE_EMBLEM_SRC}`, import.meta.url));
+  assert.ok(readFileSync(publicPath).length > 0, `${GATE_EMBLEM_SRC} missing from public/`);
+
+  const proxySrc = readFileSync(fileURLToPath(new URL("../proxy.ts", import.meta.url)), "utf8");
+  assert.match(
+    proxySrc,
+    /GATE_PUBLIC_ASSETS\s*=\s*\[GATE_EMBLEM_SRC\]/,
+    "proxy must allowlist the emblem via the shared constant, not a copied string",
+  );
+});
 
 test("safeNextPath keeps same-origin absolute paths", () => {
   assert.equal(safeNextPath("/website"), "/website");
