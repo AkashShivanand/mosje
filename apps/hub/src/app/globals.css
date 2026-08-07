@@ -414,6 +414,25 @@
   html[data-theme="dark"] {
     color-scheme: dark;
   }
+
+  /* Mobile nav panel. A dropdown, so ease-out and under 300ms — it should feel
+     like it was already there. Only transform and opacity, which stay off the
+     layout and paint paths. */
+  @media (prefers-reduced-motion: no-preference) {
+    .site-mobile-nav {
+      animation: site-mobile-nav-in 160ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+    @keyframes site-mobile-nav-in {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  }
   ::selection {
     background-color: var(--ds-primary-tonal);
     color: var(--ds-ink-strong);

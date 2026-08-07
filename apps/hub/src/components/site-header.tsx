@@ -1,25 +1,22 @@
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
-
-const NAV = [
-  { label: "Website", href: "/website" },
-  { label: "Portals", href: "/portals" },
-  { label: "Design System", href: "/design-system" },
-  { label: "Reports", href: "/reports" },
-  // Storybook is its own full-screen UI with no estate chrome and no link
-  // home, so it opens in a new tab rather than stranding the user there.
-  { label: "Storybook", href: "/storybook/", newTab: true },
-] as const;
+import { MobileNav } from "./mobile-nav";
+import { SITE_NAV } from "./site-nav-items";
 
 /**
  * Shared gate chrome. Rendered at the top of every hub gating page so the
  * estate reads as one cohesive product. `current` highlights the active nav
  * item; pass the matching href (or "/" for the landing gate).
+ *
+ * The nav appears twice by design: a flat row from `md` up, and a disclosure
+ * panel below it. Only one is ever in the accessibility tree, because the
+ * other is `display: none` — so both can carry the "Primary" label without
+ * producing duplicate landmarks.
  */
 export function SiteHeader({ current }: { current?: string }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-surface/85 backdrop-blur supports-[backdrop-filter]:bg-surface/72">
-      <div className="mx-auto flex h-16 max-w-[1280px] items-center gap-4 px-6">
+      <div className="relative mx-auto flex h-16 max-w-[1280px] items-center gap-4 px-6">
         {/* Brand lockup — National Emblem + wordmark */}
         <Link
           href="/"
@@ -44,14 +41,12 @@ export function SiteHeader({ current }: { current?: string }) {
           </span>
         </Link>
 
-        {/* Primary nav */}
+        {/* Primary nav — md and up */}
         <nav
           aria-label="Primary"
           className="ml-auto hidden items-center gap-0.5 md:flex"
         >
-          {NAV.map((item) => {
-            const { label, href } = item;
-            const newTab = "newTab" in item && item.newTab;
+          {SITE_NAV.map(({ label, href, newTab }) => {
             const active = current === href;
             return (
               <a
@@ -80,8 +75,9 @@ export function SiteHeader({ current }: { current?: string }) {
           })}
         </nav>
 
-        <div className="ml-auto md:ml-1">
+        <div className="ml-auto flex items-center gap-1 md:ml-1">
           <ThemeToggle />
+          <MobileNav current={current} />
         </div>
       </div>
     </header>
