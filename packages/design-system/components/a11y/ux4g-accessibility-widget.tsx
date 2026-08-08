@@ -41,6 +41,55 @@ import "./ux4g-accessibility-widget.css";
 export const UX4G_A11Y_WIDGET_SRC =
   "https://cdn.ux4g.gov.in/accessibility-beta-v1.15/accessibility-widget.js";
 
+/** The widget's own localStorage key. Must match SETTINGS_KEY in the CDN script. */
+const UX4G_SETTINGS_KEY = "accessibilitySettings";
+
+/**
+ * Work around an unguarded null dereference in the CDN widget.
+ *
+ * `detectRouteChange()` reads its settings once and never null-checks them:
+ *
+ *   const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY));  // null
+ *   setInterval(() => { … if (settings.adhdFriendly) { … } }, 1000);  // throws
+ *
+ * `JSON.parse(null)` is `null`, so for any visitor who has never toggled a
+ * widget setting — nearly everyone — every client-side route change throws
+ * "Cannot read properties of null (reading 'adhdFriendly')". It is installed on
+ * `scroll`, so it fires constantly. `loadSettings()` guards the same read
+ * correctly; this one function does not.
+ *
+ * Seeding the key with the neutral object the widget itself would write on its
+ * first save makes the read succeed and every flag false, which is the state a
+ * fresh visitor is already in. Existing settings are never touched.
+ *
+ * Remove this once the CDN ships a null check.
+ */
+function seedUx4gSettings(): void {
+  try {
+    if (localStorage.getItem(UX4G_SETTINGS_KEY) !== null) return;
+    localStorage.setItem(
+      UX4G_SETTINGS_KEY,
+      // Shape copied from the script's own saveSettings().
+      JSON.stringify({
+        screenReader: false,
+        fontSizeCount: 0,
+        lineHeightCount: 0,
+        textSpacingCount: 0,
+        highlightLinks: false,
+        dyslexiaMode: false,
+        hideImages: false,
+        darkMode: false,
+        cursorChanged: false,
+        invert: false,
+        adhdFriendly: false,
+      }),
+    );
+  } catch {
+    // Storage can be unavailable (Safari private mode, blocked cookies). The
+    // widget still works; the upstream error just remains unfixed.
+  }
+}
+
 export interface UX4GAccessibilityWidgetProps {
   /** Override the widget script URL (e.g. to pin a version or self-host). */
   src?: string;
@@ -52,6 +101,9 @@ export function UX4GAccessibilityWidget({
   React.useEffect(() => {
     if (typeof document === "undefined") return;
     if (document.querySelector(`script[data-ux4g-a11y="true"]`)) return;
+    // Must run BEFORE the script: detectRouteChange() captures settings once,
+    // on the first scroll after load, and never re-reads them.
+    seedUx4gSettings();
     const script = document.createElement("script");
     script.src = src;
     script.defer = true;
