@@ -234,14 +234,14 @@
   overflow-y: auto;
 }
 
-/* ── Colour tab: a labelled swatch list plus a live component preview, so
-   the tab earns its floor height instead of padding it out. Left-aligned
-   (not centred, like the old swatches-only body) — a list of rows and a
-   preview card both read better ranged left than centred. Uses the same
-   floor as `.ds-demodock__body` (not `min-height: 100%`, which can't
-   resolve against an auto-height ancestor) so a two-mode list today and a
-   five-to-ten-mode list later sit in a box the same size as the Apps tab's
-   typical footprint. ── */
+/* ── Colour tab: a labelled, wrapping grid of motif tiles, so the tab earns
+   its floor height instead of padding it out with a live component block.
+   Uses the same floor as `.ds-demodock__body` (not `min-height: 100%`,
+   which can't resolve against an auto-height ancestor) so a two-mode grid
+   today and a five-to-ten-mode grid later sit in a box the same size as the
+   Apps tab's typical footprint — because the grid WRAPS, that floor is also
+   a practical ceiling for how tall the tab gets as modes are added; extra
+   rows scroll inside `.ds-demodock__body` instead of growing the panel. ── */
 .ds-demodock__colour {
   box-sizing: border-box;
   min-height: var(--ds-demodock-content-floor);
@@ -251,26 +251,28 @@
   gap: 16px;
 }
 
-/* Vertical list, not a row of dots — the AAA 44px touch target and a text
-   label per mode only fit stacked, and this is the layout that keeps
-   scaling as more colour modes are added (see the component doc comment). */
+/* A wrapping grid of tile+label cards, not a vertical list — this is what
+   keeps the tab's height from growing one row per mode. Each option is a
+   fixed-width column so tiles line up predictably as they wrap. */
 .ds-demodock__swatch-list {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .ds-demodock__swatch-option {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
+  width: 84px;
   min-height: 44px;
-  padding: 4px 8px;
+  padding: 8px 6px;
   border: 1px solid transparent;
   border-radius: var(--ds-radius-md);
   background: transparent;
   cursor: pointer;
-  text-align: left;
+  text-align: center;
   transition: background-color var(--ds-duration-fast) var(--ds-easing-out),
     border-color var(--ds-duration-fast) var(--ds-easing-out);
 }
@@ -289,35 +291,137 @@
   box-shadow: 0 0 0 2px var(--ds-surface), 0 0 0 4px var(--ds-primary);
 }
 
-.ds-demodock__swatch {
+/* ── Motif tile — a fixed-size (72×48px) miniature UI abstraction: a header
+   bar, a content surface, an accent mark and a button shape. Carries its
+   OWN `data-brand` (set in the .tsx), so every `var(--ds-*)` used inside it
+   resolves against that mode's re-declared aliases rather than the ambient
+   page mode — see the component doc comment for why that works. No hex or
+   rgba anywhere here; every colour is a token that changes meaning per
+   tile. ── */
+.ds-demodock__motif {
   position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1px var(--ds-border-strong);
-  transition: box-shadow var(--ds-duration-fast) var(--ds-easing-out);
+  width: 72px;
+  height: 48px;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-sm);
 }
 
-.ds-demodock__swatch-option.is-active .ds-demodock__swatch {
-  box-shadow: 0 0 0 2px var(--ds-surface), 0 0 0 4px var(--ds-primary);
-}
-
-.ds-demodock__swatch-label {
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
-  font-weight: 600;
-  color: var(--ds-ink);
-}
-
-.ds-demodock__swatch-check {
-  animation: ds-demodock-swatch-check var(--ds-duration-fast) var(--ds-easing-out);
+/* `blue` — COLOR_MODES[0], the estate's default brand — is documented in
+   `packages/tokens/build/brand-modes.mjs` as deliberately carrying no
+   `[data-brand]` selector of its own ("the default brand carries no
+   attribute — it is `:root`"). Every OTHER mode gets a real
+   `[data-brand="…"]` block that re-declares the `--ds-*` aliases (which is
+   what makes the nested-island trick work), but blue's values simply ARE
+   `:root`'s, so there is nothing for `data-brand="blue"` to match — set on
+   this tile alone, it silently does nothing, and the tile would inherit
+   whichever brand happens to be ambient instead of always reading as Gov
+   Blue. Confirmed in the browser: with the page in Gov Navy, an unpatched
+   Blue tile rendered navy.
+   The fix stays local to this one component rather than reaching into the
+   generated token pipeline: every value below is still a `var()` onto a
+   primitive `--sa-ref-color-*` token (never a hex/rgba literal, so this
+   still passes the design system's stylelint gate), and those specific
+   primitives are the ones the real `[data-brand="navy"]` block already
+   points at for the SAME properties — this just does for blue's own
+   (light-ramp / warm-neutral) primitives what the generated CSS already
+   does for navy's. If `brand-modes.mjs` ever stops special-casing the
+   default brand and starts emitting `[data-brand="blue"]` for real, this
+   block becomes redundant (not wrong) and can be deleted. */
+.ds-demodock__motif[data-brand="blue"] {
+  --ds-primary: var(--sa-ref-color-primaryRamp-light-500);
+  --ds-secondary-500: var(--sa-ref-color-secondaryRamp-light-500);
+  --ds-surface: var(--sa-ref-color-neutral-0);
+  --ds-on-primary: var(--sa-ref-color-neutral-0);
+  --ds-border-strong: var(--sa-ref-color-neutral-200);
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .ds-demodock__motif {
+    transition: transform var(--ds-duration-fast) var(--ds-easing-out);
+  }
+
+  .ds-demodock__swatch-option:hover .ds-demodock__motif,
+  .ds-demodock__swatch-option:focus-visible .ds-demodock__motif {
+    transform: translateY(-1px);
+  }
+}
+
+.ds-demodock__swatch-option.is-active .ds-demodock__motif {
+  box-shadow: 0 0 0 2px var(--ds-surface), 0 0 0 4px var(--ds-primary);
+}
+
+.ds-demodock__motif-bar {
+  flex: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 6px;
+  background-color: var(--ds-primary);
+  border-top-left-radius: calc(var(--ds-radius-sm) - 1px);
+  border-top-right-radius: calc(var(--ds-radius-sm) - 1px);
+}
+
+.ds-demodock__motif-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-on-primary);
+  opacity: 0.7;
+}
+
+.ds-demodock__motif-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 7px;
+  background-color: var(--ds-surface);
+  border-bottom-left-radius: calc(var(--ds-radius-sm) - 1px);
+  border-bottom-right-radius: calc(var(--ds-radius-sm) - 1px);
+}
+
+.ds-demodock__motif-accent {
+  width: 20px;
+  height: 4px;
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-secondary-500);
+}
+
+.ds-demodock__motif-button {
+  align-self: flex-start;
+  width: 28px;
+  height: 9px;
+  border-radius: var(--ds-radius-sm);
+  background-color: var(--ds-primary);
+}
+
+/* The selected badge — a small check on a primary-coloured disc, sitting
+   half outside the tile's corner. Scoped inside the same `data-brand`
+   island as the rest of the tile, so it tones with that mode too. */
+.ds-demodock__motif-check {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--ds-surface);
+  border-radius: 50%;
+  background-color: var(--ds-primary);
+  color: var(--ds-on-primary);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-demodock__motif-check {
+    animation: ds-demodock-swatch-check var(--ds-duration-fast) var(--ds-easing-out);
+  }
+
   @keyframes ds-demodock-swatch-check {
     from {
       opacity: 0;
@@ -330,29 +434,11 @@
   }
 }
 
-/* Live preview — demonstrates the palette on real components rather than
-   describing it. A thin card so it reads as a distinct "preview" region,
-   not more of the list above it. */
-.ds-demodock__preview {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 12px;
-  border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-md);
-  background-color: var(--ds-surface-muted);
-}
-
-.ds-demodock__preview-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.ds-demodock__preview-alert {
-  /* The shared Alert already carries its own padding/border/radius. */
-  margin: 0;
+.ds-demodock__swatch-label {
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  font-weight: 600;
+  color: var(--ds-ink);
 }
 
 .ds-demodock__colour-note {

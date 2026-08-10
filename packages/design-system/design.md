@@ -12,7 +12,14 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-10 · System version: v1.11.6 (DEMODOCK REDESIGN: the footer disclaimer
+  Last reviewed: 2026-08-11 · System version: v1.11.7 (COLOUR TAB MOTIF TILES: the Colour tab's
+  swatch-plus-live-preview layout is replaced by a wrapping grid of fixed-size (~72×48px) motif
+  tiles — a miniature header bar/surface/accent/button abstraction per mode, each rendered in that
+  mode's own palette via a nested `data-brand` island on the tile itself (no hardcoded hex; see the
+  "Brand islands" note). The live `Button`/`Badge`/`Alert` preview block is deleted — the tiles
+  themselves are the preview, and give the tab a fixed height regardless of mode count instead of
+  one that grows with a live-component block. Selected state keeps the tick plus a visible ring
+  (still non-colour-only, WCAG 1.4.1); touch targets stay ≥44px (AAA). v1.11.6 (DEMODOCK REDESIGN: the footer disclaimer
   row ("Demo tooling — not part of the product") is gone — the dock is unambiguous demo chrome by
   context, and the row was pure noise. The Colour tab's body min-height no longer collapses when a
   short tab replaces a long one, so switching tabs doesn't visibly resize the panel. Colour is now a
@@ -1048,9 +1055,16 @@ these are not the components you want.
 opening a tabbed panel: **Sign in** (demo credentials for the current login
 route, `DemoAccountsPanel`, shown — and shown *first* — only when `pathname`
 is itself a login route; see `isLoginRoute`), **Apps** (cross-zone
-destination search, `AppSwitcherPanel`), **Colour** (a plain row of
-brand-palette swatches driven directly by `useColorMode()` — no separate
-switcher component; click a swatch to apply that mode immediately).
+destination search, `AppSwitcherPanel`), **Colour** (a wrapping grid of
+labelled motif tiles, driven directly by `useColorMode()` — no separate
+switcher component; click a tile to apply that mode immediately). Each tile
+is a fixed-size (~72×48px) miniature UI abstraction — header bar, content
+surface, accent mark, button shape — rendered in *that* mode's own palette
+via a nested `data-brand` island on the tile itself (see "Brand islands"
+above), so a tile shows what a mode looks like without switching the whole
+page first, and without hardcoding hex. The grid wraps into rows within a
+fixed floor height instead of growing one row per mode, so the tab's height
+doesn't change as modes are added.
 **Props**: `pathname` (drives "Currently in", which accounts exist for the
 path via `findDemoAccounts`, and whether Sign in renders via `isLoginRoute`),
 `apps` (registry override, default `DEFAULT_APPS`), `label` (default

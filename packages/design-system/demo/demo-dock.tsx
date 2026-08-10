@@ -10,22 +10,29 @@
  * - **Apps** — the same searchable cross-zone list as `AppSwitcher`
  *   (`AppSwitcherPanel`), so a stakeholder never has to leave the dock to
  *   jump between portals.
- * - **Colour** — a labelled list of brand-palette swatches, driven directly
- *   by `useColorMode()`, each paired with a live preview of real
- *   design-system components (`Button`, `Badge`, `Alert`) so the tab shows
- *   what the palette change actually does instead of sitting empty. Clicking
- *   a swatch applies that mode immediately — there is no separate switcher
- *   component (the old `ColorModeSwitcher` was retired; this is its
- *   replacement, with the label chrome and pill-track background stripped
- *   out). A global shortcut — **⌘⌥C** / **Ctrl+Alt+C** — cycles the colour
- *   mode from anywhere in the app, whether the dock is open or closed, and
- *   whether this tab is the active one or not; it's suppressed while focus
- *   is in a text input/textarea/select/contenteditable, and the change is
- *   announced to screen readers via a polite live region (`useLiveRegion`).
- *   A row of unlabelled colour dots in the panel *header* was considered and
- *   rejected: at 40px (the AAA 44px touch-target floor) ten future modes
- *   don't fit one header row, and colour alone as the only signal fails
- *   WCAG 1.4.1. A list has room for both a real target size and a label.
+ * - **Colour** — a labelled grid of brand-palette *motif tiles*, driven
+ *   directly by `useColorMode()`. Each tile is a miniature abstraction of a
+ *   UI (header bar, content surface, button shape, accent mark) rendered in
+ *   that mode's own palette via a nested `[data-brand]` island on the tile
+ *   itself — so a tile shows what the palette looks like without needing
+ *   the whole page to switch first, and without hardcoding any hex value
+ *   (see `foundations/color-mode.ts` + `design.md`'s "Brand islands" note).
+ *   Clicking a tile applies that mode immediately — there is no separate
+ *   switcher component (the old `ColorModeSwitcher` was retired; this is
+ *   its replacement, with the label chrome and pill-track background
+ *   stripped out). A global shortcut — **⌘⌥C** / **Ctrl+Alt+C** — cycles the
+ *   colour mode from anywhere in the app, whether the dock is open or
+ *   closed, and whether this tab is the active one or not; it's suppressed
+ *   while focus is in a text input/textarea/select/contenteditable, and the
+ *   change is announced to screen readers via a polite live region
+ *   (`useLiveRegion`). A row of unlabelled colour dots in the panel
+ *   *header* was considered and rejected: at 40px (the AAA 44px
+ *   touch-target floor) ten future modes don't fit one header row, and
+ *   colour alone as the only signal fails WCAG 1.4.1. A wrapping grid of
+ *   labelled tiles has room for both a real target size and a label, and —
+ *   unlike a vertical one-per-row list — keeps the tab's height from
+ *   growing unboundedly as more modes are added (it wraps into rows within
+ *   a fixed floor instead).
  * - **Sign in** — the demo credentials table for whatever login route
  *   `pathname` resolves to (`findDemoAccounts`, gated by `isLoginRoute`).
  *   Present, and ordered *first*, only when `pathname` is itself a login
@@ -53,11 +60,9 @@ import {
 } from "../components/navigation/app-switcher-utils";
 import { AppSwitcherPanel } from "../components/navigation/app-switcher-panel";
 import { Tabs, TabPanel, TabDef } from "../components/navigation/tabs";
-import { Button } from "../components/actions/button";
-import { Badge } from "../components/feedback/badge";
-import { Alert } from "../components/feedback/alert";
 import { LiveRegion, useLiveRegion } from "../components/a11y/live-region";
 import { useColorMode } from "../foundations/color-mode-provider";
+import type { ColorMode } from "../foundations/color-mode";
 import { DemoAccountsPanel } from "./demo-accounts-panel";
 import { findDemoAccounts, isLoginRoute } from "./demo-accounts";
 
@@ -135,33 +140,42 @@ function isTypingTarget(target: EventTarget | null): boolean {
 }
 
 /**
- * A small, real preview of the selected palette applied to actual
- * design-system components — not a mock-up — so the Colour tab demonstrates
- * what picking a mode *does* instead of padding out empty space. Reads the
- * palette purely through inherited CSS custom properties (the `data-brand`
- * attribute lives on the document root; see `foundations/color-mode.ts`), so
- * it re-tones on its own the instant a swatch changes the attribute — no
- * prop threading needed.
+ * A miniature abstraction of a UI — header bar, content surface, accent
+ * mark, button shape — rendered in ONE mode's palette regardless of which
+ * mode the rest of the app is in. The trick is a nested `[data-brand]`
+ * island: `foundations/color-mode.ts` documents that the generated
+ * `tokens.css` re-declares the `--ds-*` aliases inside every
+ * `[data-brand="…"]` block, and a `var()` reference resolves against the
+ * cascade at the element where it's *used* — so setting `data-brand` right
+ * here, on the tile, is enough to make every `var(--ds-*)` inside it
+ * resolve to that mode's own values, live, with no hardcoded hex and no
+ * prop threading. `aria-hidden` because the tile is decorative; the
+ * accessible name for the option comes from the visible text label next to
+ * it.
  */
-function ColourPreview() {
+function ColourModeMotif({
+  mode,
+  checked,
+}: {
+  mode: ColorMode;
+  checked: boolean;
+}) {
   return (
-    <div className="ds-demodock__preview" aria-label="Live component preview">
-      <div className="ds-demodock__preview-row">
-        <Button size="sm">Approve</Button>
-        <Button size="sm" appearance="outlined">
-          Review later
-        </Button>
-      </div>
-      <div className="ds-demodock__preview-row">
-        <Badge status="success">Verified</Badge>
-        <Badge status="primary" emphasis="solid">
-          New
-        </Badge>
-      </div>
-      <Alert status="info" title="Live preview" className="ds-demodock__preview-alert">
-        Components on this page re-tone with the selected palette.
-      </Alert>
-    </div>
+    <span className="ds-demodock__motif" data-brand={mode.id} aria-hidden="true">
+      <span className="ds-demodock__motif-bar">
+        <span className="ds-demodock__motif-dot" />
+        <span className="ds-demodock__motif-dot" />
+      </span>
+      <span className="ds-demodock__motif-body">
+        <span className="ds-demodock__motif-accent" />
+        <span className="ds-demodock__motif-button" />
+      </span>
+      {checked && (
+        <span className="ds-demodock__motif-check">
+          <IconCheck />
+        </span>
+      )}
+    </span>
   );
 }
 
@@ -233,20 +247,12 @@ function ColourTab() {
               onClick={() => setMode(m.id)}
               onKeyDown={(e) => onKeyDown(e, i)}
             >
-              <span
-                className="ds-demodock__swatch"
-                style={{ background: m.swatch }}
-                aria-hidden="true"
-              >
-                {checked && <IconCheck />}
-              </span>
+              <ColourModeMotif mode={m} checked={checked} />
               <span className="ds-demodock__swatch-label">{m.label}</span>
             </button>
           );
         })}
       </div>
-
-      <ColourPreview />
 
       <p className="ds-demodock__colour-note">
         Switches the SAMAVESH brand palette, not a light/dark theme. Press{" "}
