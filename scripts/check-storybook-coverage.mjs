@@ -42,6 +42,10 @@ const NOT_COMPONENTS = new Set([
   "COLOR_MODES", "COLOR_MODE_ATTR", "COLOR_MODE_COOKIE", "DEFAULT_COLOR_MODE",
   "DEFAULT_APPS", "PORTAL_CATEGORIES", "PAN_HOLDER_TYPES",
   "SLA_DEFAULT_THRESHOLDS", "UX4G_A11Y_WIDGET_SRC",
+  // DEMO_ACCOUNTS is a pathname-keyed data registry (packages/design-system/
+  // demo/demo-accounts.ts), not a component — same category as DEFAULT_APPS
+  // above. It is exercised by DemoAccountsPanel.stories.tsx and DemoDock.stories.tsx.
+  "DEMO_ACCOUNTS",
   // Types (exported via `export type`, but belt and braces)
   "ColorMode", "ColorModeId", "ColorModeProviderProps", "ColorModeSwitcherProps",
   // Context providers and non-visual utilities: nothing to look at.
