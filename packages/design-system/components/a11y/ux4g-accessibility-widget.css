@@ -31,6 +31,26 @@
   font-family: "Noto Sans", sans-serif !important;
 }
 
+/* Centre the shortcut label under the trigger icon.
+
+   Upstream positions it absolutely with ASYMMETRIC insets and no text-align:
+
+     left: 17px; right: 15px;   → a 38px box, 1px off-centre in the 70px trigger
+
+   Left-aligned text in that box only looked centred because `Ctrl+F2` happens
+   to fill nearly all 38px. Any shorter string — `⌘⌥A` on macOS — hugs the left
+   edge and visibly misaligns against the icon above it, which IS centred.
+
+   Symmetric insets plus explicit centring make it correct for a label of any
+   length, and incidentally fix the 1px offset upstream has always had. Applied
+   on every platform: `Ctrl+F2` is now genuinely centred instead of approximately
+   so. Specificity from the id is enough here; upstream sets no !important. */
+#uw-widget-custom-trigger .ux4g-accessibility-short-key {
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
 /* ---------------------------------------------------------------------------
    v3.x hardcodes its violet palette in ~13 literal hex values that
    `--color-dark-blue-1` does NOT reach, so overriding the variable alone leaves
