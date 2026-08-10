@@ -9,13 +9,19 @@ import * as React from "react";
  *
  * It injects the official UX4G accessibility script, which renders a floating
  * control providing contrast/high-contrast, text sizing, spacing, link highlighting,
- * dark mode and more. Compliant with WCAG, GIGW and IS 17802.
+ * dark mode, disability profiles, reading guides and more. Compliant with WCAG,
+ * GIGW and IS 17802.
  *
  * Docs: https://doc.ux4g.gov.in/ux4g-accessibility/accessibility-widgets.php
  *
  * Notes:
  * - Framework-agnostic: injects a plain <script> (no `next/script` dependency).
- * - Idempotent: only ever loads the script once per document.
+ * - Idempotent: only ever loads the script once per document. v3.x also guards
+ *   itself with `window.__ux4g_accessibility_loaded`, explicitly for React
+ *   re-hydration, so a double render cannot double-inject the widget.
+ * - The script loads its own stylesheet, resolving the URL relative to its own
+ *   `document.currentScript.src`. Point `src` at a different origin and the CSS
+ *   follows it — so a self-hosted copy must keep the JS and CSS side by side.
  * - The widget applies the class `.dark-mode` to <html> when its dark theme is on;
  *   this is DISTINCT from the design system's own `data-theme` / `data-brand`
  *   token theming — see docs/specs/samavesh-accessibility-consolidation.md.
@@ -31,93 +37,246 @@ import * as React from "react";
  *   brand via the widget's own `--color-dark-blue-1` CSS variable — see
  *   `ux4g-accessibility-widget.css`. This keeps 100% of the official functionality
  *   while matching the look documented in Figma ("AccessibilityWidget / FAB").
+ * - Telemetry is OFF by default. See `analytics` below — this is a deliberate
+ *   choice for this estate, not an upstream default.
  *
  * Render it once, near the end of the root layout (like AppSwitcher).
  */
 
 import "./ux4g-accessibility-widget.css";
 
-/** Official UX4G accessibility widget CDN (current: beta v1.15). */
+/**
+ * Official UX4G accessibility widget CDN (current: v3.28 — the build
+ * ux4g.gov.in itself serves).
+ *
+ * Upgraded from `accessibility-beta-v1.15`, which had two defects this estate
+ * had to work around in code, both fixed upstream in v3.x:
+ *
+ *   1. `detectRouteChange()` dereferenced its settings without a null check, so
+ *      every client-side route change threw for any visitor who had never
+ *      touched the widget. v3.x guards the read and keeps settings in a cookie.
+ *   2. `loadSettings()` restored state by calling the widget's own CLICK
+ *      handlers, which each advance a counter unconditionally — so working
+ *      around (1) by seeding the settings key made every page load apply one
+ *      step of zoom, line height and letter spacing. UX4G acknowledge this in
+ *      v3.28's own source; the seeding workaround is gone with it.
+ */
 export const UX4G_A11Y_WIDGET_SRC =
-  "https://cdn.ux4g.gov.in/accessibility-beta-v1.15/accessibility-widget.js";
-
-/** The widget's own localStorage key. Must match SETTINGS_KEY in the CDN script. */
-const UX4G_SETTINGS_KEY = "accessibilitySettings";
+  "https://cdn.ux4g.gov.in/accessibility-v3.28/accessibility-widget.js";
 
 /**
- * Work around an unguarded null dereference in the CDN widget.
+ * Dead key left behind by the v1.15 workaround.
  *
- * `detectRouteChange()` reads its settings once and never null-checks them:
+ * v3.x keeps its settings in a cookie of the same name and never reads this
+ * localStorage entry, so it is inert — but we are the ones who wrote it, so we
+ * clear it rather than leaving it in every visitor's browser forever.
  *
- *   const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY));  // null
- *   setInterval(() => { … if (settings.adhdFriendly) { … } }, 1000);  // throws
- *
- * `JSON.parse(null)` is `null`, so for any visitor who has never toggled a
- * widget setting — nearly everyone — every client-side route change throws
- * "Cannot read properties of null (reading 'adhdFriendly')". It is installed on
- * `scroll`, so it fires constantly. `loadSettings()` guards the same read
- * correctly; this one function does not.
- *
- * Seeding the key with the neutral object the widget itself would write on its
- * first save makes the read succeed and every flag false, which is the state a
- * fresh visitor is already in. Existing settings are never touched.
- *
- * Remove this once the CDN ships a null check.
+ * Safe to delete this and `clearLegacyUx4gSettings()` once the estate has been
+ * on v3.x long enough that no meaningful number of browsers still hold the key.
  */
-function seedUx4gSettings(): void {
+const LEGACY_UX4G_SETTINGS_KEY = "accessibilitySettings";
+
+function clearLegacyUx4gSettings(): void {
   try {
-    if (localStorage.getItem(UX4G_SETTINGS_KEY) !== null) return;
-    localStorage.setItem(
-      UX4G_SETTINGS_KEY,
-      // Shape copied from the script's own saveSettings().
-      JSON.stringify({
-        screenReader: false,
-        fontSizeCount: 0,
-        lineHeightCount: 0,
-        textSpacingCount: 0,
-        highlightLinks: false,
-        dyslexiaMode: false,
-        hideImages: false,
-        darkMode: false,
-        cursorChanged: false,
-        invert: false,
-        adhdFriendly: false,
+    localStorage.removeItem(LEGACY_UX4G_SETTINGS_KEY);
+  } catch {
+    // Storage can be unavailable (Safari private mode, blocked cookies).
+  }
+}
+
+/**
+ * Turn the widget's built-in telemetry off.
+ *
+ * v3.28 added analytics that v1.15 had none of: on load it beacons the full
+ * URL, pathname, hostname, referrer, user agent, language, screen resolution,
+ * viewport and a session id to `https://audit360.ux4g.gov.in/api/track`, and
+ * tracks panel opens, feature toggles and profile selections after that.
+ *
+ * That is a poor fit for this estate. The portals are authenticated workflow
+ * apps whose URLs carry application and beneficiary identifiers in the path, so
+ * "the full URL of every page view" is not neutral data to send to a third
+ * party — and the whole estate is currently a password-gated prototype whose
+ * internal URLs have no reason to leave it at all.
+ *
+ * There is no documented opt-out and `ANALYTICS_CONFIG` is closed over inside
+ * the script's IIFE, but it is exposed BY REFERENCE as
+ * `window.UX4G_Analytics.config`, and the send path checks `enabled` on every
+ * call — so flipping it here disables every event, not just the first.
+ *
+ * Timing is the reason this runs where it does. The script defers its analytics
+ * init by 100ms whenever `document.readyState` is not "loading", which is
+ * always true for us because we inject after hydration. Our `load` handler runs
+ * immediately after the script executes, comfortably inside that window, so
+ * even the initial widget-load beacon is suppressed. Failed sends are caught
+ * and swallowed upstream, so this cannot surface an error to the page either.
+ */
+function setUx4gAnalyticsEnabled(enabled: boolean): void {
+  const w = window as unknown as { UX4G_Analytics?: { config?: { enabled?: boolean } } };
+  const config = w.UX4G_Analytics?.config;
+  if (config) config.enabled = enabled;
+}
+
+/**
+ * The widget's keyboard shortcut is Windows-only, in label AND in binding.
+ *
+ * v3.28 hardcodes `Ctrl+F2` into the trigger's markup and binds exactly
+ * `e.ctrlKey && e.key === "F2"`. On a Mac that is wrong twice over:
+ *
+ *   1. Ctrl+F2 is a RESERVED macOS system shortcut — "move focus to the menu
+ *      bar" — on by default, so the OS consumes it before the page sees it.
+ *   2. F2 is a media key on Apple keyboards unless the user has turned on
+ *      "Use F1, F2, etc. as standard function keys", so it needs `fn` as well.
+ *
+ * A shortcut advertised on the button and then not working is worse than none
+ * at all, and on an accessibility control specifically so — keyboard users are
+ * the people it exists for.
+ *
+ * We add ⌘⌥A on macOS and relabel the trigger to match. Why that combo:
+ *
+ *   - NOT ⌃⌥ (Control+Option). That is the VoiceOver modifier, the "VO key" —
+ *     binding it would collide with the screen reader on the one widget whose
+ *     users are most likely to be running one.
+ *   - Cmd suppresses Option's character substitution, so it cannot type a stray
+ *     "å" the way ⌥A alone would.
+ *   - Not claimed by macOS or by Safari/Chrome/Firefox defaults.
+ *   - Mnemonic: A for Accessibility.
+ *
+ * The binding is a BRIDGE, not a reimplementation: it dispatches the synthetic
+ * Ctrl+F2 the widget already listens for, so open/close/focus behaviour stays
+ * exactly the vendor's. Verified against the live widget — the panel toggles
+ * cleanly on repeat presses. Windows and Linux are untouched and keep Ctrl+F2.
+ *
+ * `e.code` rather than `e.key`, because holding Option rewrites `e.key`.
+ */
+const MAC_SHORTCUT_LABEL = "⌘⌥A";
+
+function isMacPlatform(): boolean {
+  const nav = navigator as Navigator & { userAgentData?: { platform?: string } };
+  const platform = nav.userAgentData?.platform ?? nav.platform ?? "";
+  return /mac/i.test(platform) || /Mac OS X/.test(nav.userAgent);
+}
+
+/**
+ * Match the A key across the several ways it can present.
+ *
+ * `e.code` is the right answer on real hardware — it is layout-independent, and
+ * holding Option rewrites `e.key` (⌥A alone yields "å"). But `code` is not
+ * guaranteed: synthetic events, some automation/remote-input paths and a few
+ * assistive tools deliver a keydown with `code` empty, which a `code`-only
+ * check silently drops. That is exactly how the first version of this failed —
+ * observed, not theorised: `{key: "a", code: "", meta: true, alt: true}`.
+ *
+ * So accept either signal, and include the Option-modified glyph for the case
+ * where a platform hands us `key` without Cmd having suppressed the rewrite.
+ */
+function isKeyA(e: KeyboardEvent): boolean {
+  if (e.code === "KeyA") return true;
+  if (e.code) return false; // a real, different key — don't fall through to `key`
+  return ["a", "å"].includes(e.key.toLowerCase());
+}
+
+/** Binds ⌘⌥A. Returns a cleanup function that removes the listener. */
+function installMacShortcutKey(): () => void {
+  const onKeyDown = (e: KeyboardEvent): void => {
+    if (!e.metaKey || !e.altKey || e.ctrlKey || e.shiftKey) return;
+    if (!isKeyA(e)) return;
+    e.preventDefault();
+    document.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "F2",
+        code: "F2",
+        ctrlKey: true,
+        bubbles: true,
+        cancelable: true,
       }),
     );
-  } catch {
-    // Storage can be unavailable (Safari private mode, blocked cookies). The
-    // widget still works; the upstream error just remains unfixed.
-  }
+  };
+  document.addEventListener("keydown", onKeyDown);
+  return () => document.removeEventListener("keydown", onKeyDown);
+}
+
+/**
+ * Rewrite the trigger's hardcoded `Ctrl+F2` to the macOS combo.
+ *
+ * Called once the script has loaded, so the markup is already in the document;
+ * the retry only covers the widget deferring its own injection.
+ */
+function relabelMacShortcut(): void {
+  let attempts = 0;
+  const apply = (): void => {
+    const label = document.querySelector(".ux4g-accessibility-short-key");
+    if (!label) {
+      if (attempts++ < 20) window.setTimeout(apply, 100);
+      return;
+    }
+    label.textContent = MAC_SHORTCUT_LABEL;
+    // The trigger's aria-label overrides its text content, so without this the
+    // shortcut would be visible to sighted users and announced to nobody.
+    const trigger = document.getElementById("uw-widget-custom-trigger");
+    const name = trigger?.getAttribute("aria-label");
+    if (trigger && name && !name.includes(MAC_SHORTCUT_LABEL)) {
+      trigger.setAttribute("aria-label", `${name} (${MAC_SHORTCUT_LABEL})`);
+    }
+  };
+  apply();
 }
 
 export interface UX4GAccessibilityWidgetProps {
   /** Override the widget script URL (e.g. to pin a version or self-host). */
   src?: string;
+  /**
+   * Allow the widget to send its usage telemetry to UX4G's `audit360` endpoint.
+   *
+   * Defaults to `false`: the payload includes the full URL of every page view,
+   * which on an authenticated portal can carry application and beneficiary
+   * identifiers. Set it to `true` only for a public, non-authenticated property
+   * where feeding UX4G's accessibility-audit dashboard is worth that trade —
+   * and confirm it against the estate's privacy position first.
+   */
+  analytics?: boolean;
 }
 
 export function UX4GAccessibilityWidget({
   src = UX4G_A11Y_WIDGET_SRC,
+  analytics = false,
 }: UX4GAccessibilityWidgetProps = {}): null {
   React.useEffect(() => {
     if (typeof document === "undefined") return;
     if (document.querySelector(`script[data-ux4g-a11y="true"]`)) return;
-    // Must run BEFORE the script: detectRouteChange() captures settings once,
-    // on the first scroll after load, and never re-reads them.
-    seedUx4gSettings();
+    clearLegacyUx4gSettings();
     const script = document.createElement("script");
     script.src = src;
     script.defer = true;
     script.setAttribute("data-ux4g-a11y", "true");
     script.addEventListener("load", () => {
+      // Before the synthetic DOMContentLoaded below, so the widget's own init
+      // — and the load beacon it fires — already sees the setting.
+      if (!analytics) setUx4gAnalyticsEnabled(false);
       // The widget's own init (feature buttons, close button, settings restore)
       // is gated on DOMContentLoaded, which has already fired by now — replay it
       // so those handlers actually attach. Safe to dispatch more than once.
       document.dispatchEvent(new Event("DOMContentLoaded", { bubbles: true, cancelable: true }));
+      if (isMacPlatform()) relabelMacShortcut();
     });
     document.body.appendChild(script);
     // Intentionally not removed on unmount — the widget is a page-level,
     // idempotent singleton that should persist across route changes.
-  }, [src]);
+  }, [src, analytics]);
+
+  // Separate from the script effect on purpose: that one bails early when the
+  // singleton is already loaded, and both the key binding and the label still
+  // have to be right. Unlike the widget itself the listener IS torn down on
+  // unmount, since one outliving the component would be a leak.
+  //
+  // relabel runs here as well as in the load handler, covering the two ways it
+  // can be missed: a remount past the early return (this effect), and a CDN
+  // slow enough to outlast the retry window (the load handler). It only ever
+  // writes the same text, so running twice is harmless.
+  React.useEffect(() => {
+    if (typeof document === "undefined" || !isMacPlatform()) return;
+    relabelMacShortcut();
+    return installMacShortcutKey();
+  }, []);
 
   return null;
 }
