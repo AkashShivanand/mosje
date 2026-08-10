@@ -40,10 +40,6 @@ export {
   useColorMode,
   type ColorModeProviderProps,
 } from "./foundations/color-mode-provider";
-export {
-  ColorModeSwitcher,
-  type ColorModeSwitcherProps,
-} from "./foundations/color-mode-switcher";
 
 // ---- Components: Icon -------------------------------------------------------
 // Material Symbols Outlined — the official icon system for all MoSJE apps.
@@ -312,7 +308,13 @@ export type { LiveRegionProps, UseLiveRegionResult } from "./components/a11y/liv
 // =============================================================================
 export { DemoFab } from "./demo";
 export type { DemoAccount, DemoFabProps, DemoFillDetail } from "./demo";
-export { DemoAccountsPanel, DemoDock, DEMO_ACCOUNTS, findDemoAccounts } from "./demo";
+export {
+  DemoAccountsPanel,
+  DemoDock,
+  DEMO_ACCOUNTS,
+  findDemoAccounts,
+  isLoginRoute,
+} from "./demo";
 export type {
   DemoAccountsPanelProps,
   DemoDockProps,

@@ -145,3 +145,25 @@ export function findDemoAccounts(pathname: string): DemoAccountSet | null {
   }
   return best;
 }
+
+/**
+ * True when `pathname` IS a login route — not merely somewhere under a
+ * portal that happens to have one. Every login surface in this estate
+ * resolves to a path ending in `/login`, `/login-otp` (OTP-based flows,
+ * e.g. NMBA's treatment-centre login) or `/sign-in` (TG's citizen portal) —
+ * see the login route list in `.claude/rules/portal-login-demos.md`. Derived
+ * from the URL shape rather than an enumerated page list, so a new portal
+ * that follows the same convention is recognised automatically with no
+ * change here. Query string / hash / trailing slash are stripped first so
+ * `/portals/nmba/admin/login/` and `/portals/nmba/admin/login?x=1` both
+ * match, the same as the bare path.
+ *
+ * This is deliberately a narrower question than `findDemoAccounts` answers:
+ * `/portals/nmba/admin/dashboard` has a demo account set (it's under the
+ * `/portals/nmba` prefix) but is NOT a login route, so `isLoginRoute` returns
+ * false for it even though `findDemoAccounts` returns a set.
+ */
+export function isLoginRoute(pathname: string): boolean {
+  const clean = pathname.split(/[?#]/)[0]?.replace(/\/+$/, "") ?? "";
+  return /\/(login|login-otp|sign-in)$/.test(clean);
+}
