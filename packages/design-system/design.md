@@ -12,7 +12,16 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-10 · System version: v1.11.1 (TOKEN GRAMMAR: `default` now means
+  Last reviewed: 2026-08-10 · System version: v1.11.2 (FIGMA SYNC: the SAMAVESH library had four
+  variable names living in BOTH the Color and Theme collections, left over from an earlier
+  hand-migration. All 504 live bindings were rebound onto the Theme copies and the Color leftovers
+  removed; Color 153 -> 149. `Focus/Ring` stays in both on purpose — it is a brand-source companion
+  the appearance layer consumes. Two leftovers were also MISLABELLED: Color's
+  Background/Brand/Primary/Subtle held ramp step 50, which the prominence ladder calls `base`, and
+  Strong held Source rather than 600. The Theme copies already matched the ladder, so retiring the
+  leftovers brings Figma and dist/tokens.css into token-for-token agreement and raises white-on-brand
+  contrast from 4.64:1 to 6.30:1 (Blue) and 12.61:1 to 14.22:1 (Navy). The Figma library needs
+  republishing for consumers to pick this up. v1.11.1: (TOKEN GRAMMAR: `default` now means
   exactly one thing — a state. It previously occupied three slot dictionaries at once
   (prominence, state, link variant), so the parser bound it greedily and text/link/visited/default
   parsed as a prominence, losing the state it spelled. The prominence canonical is now `base`
