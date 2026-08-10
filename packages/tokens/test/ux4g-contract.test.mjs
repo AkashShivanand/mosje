@@ -83,14 +83,20 @@ test("no token in the combined sheet disappears", () => {
 });
 
 /**
- * Aliases that do not resolve today, pinned so the list can only shrink.
+ * Aliases that do not resolve, pinned so the list can only shrink.
  *
  * `--ux4g-blur-none: var(--ux4g-blur-none)` is self-referential, which CSS treats as
- * invalid at computed-value time — the property ends up unset for every consumer. It is
- * PRE-EXISTING (byte-identical at 2cb8837, the commit before the `default` rename) and is
- * left alone here on purpose: giving it a real value would change what renders, and the
- * change that found it was explicitly a rename-only change. Fix it deliberately, with the
- * correct UX4G value, not as a drive-by.
+ * invalid at computed-value time, so the property ends up unset for every consumer.
+ *
+ * It is NOT our bug and must NOT be "fixed" here. The value is copied verbatim from
+ * UX4G's own published contract (`reference/ux4g-3.0.tokens.json`, `--ux4g-blur-none`),
+ * and reproducing UX4G's value faithfully is the entire promise of this layer — see
+ * spec §8.1a. Giving it a working value would mean a developer pasting UX4G markup gets
+ * a different rendering here than in the reference system, with nothing in the code to
+ * explain the divergence. That is the failure mode §8.1a exists to prevent.
+ *
+ * The correct fix is upstream, in UX4G. If they ship one, the stale-entry test below
+ * fails and this entry comes out.
  */
 const KNOWN_UNRESOLVED = new Set(["--ux4g-blur-none"]);
 

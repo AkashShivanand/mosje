@@ -173,6 +173,27 @@ test("theming axes layer cleanly when a page sets more than one at once", () => 
   );
 });
 
+test("the Tailwind v4 @theme points at tokens that actually exist", () => {
+  // dist/tokens-tailwind.css is a public export (@mosje/tokens/tailwind-v4). It once
+  // hand-rolled its target names as `--sa-${path}`, which dropped the tier marker, so 111
+  // entries aliased `--sa-color-*` while the sheet declares `--sa-ref-color-*`. Every
+  // Tailwind colour utility built on those resolved to nothing, and no test noticed
+  // because nothing in the estate imports this file yet.
+  const twCss = readFileSync(new URL("../dist/tokens-tailwind.css", import.meta.url), "utf8");
+  const declared = new Set([...cssText.matchAll(/^\s*(--[a-zA-Z0-9-]+)\s*:/gm)].map((m) => m[1]));
+  const dangling = [
+    ...new Set([...twCss.matchAll(/var\((--sa-[a-zA-Z0-9-]+)/g)].map((m) => m[1])),
+  ].filter((name) => !declared.has(name));
+
+  assert.deepEqual(
+    dangling,
+    [],
+    `the @theme block aliases custom properties tokens.css never declares, so these ` +
+      `utilities resolve to nothing. Build the target name with toCssName/tierOfFile, ` +
+      `never by hand:${summarise(dangling)}`,
+  );
+});
+
 test("the sheet stays flat, so the resolver cannot silently mis-parse it", () => {
   // resolveContract() matches `selector { decls }` with a regex that assumes no nesting.
   // An @media / @supports / CSS-nesting block would not blow up — it would parse into
