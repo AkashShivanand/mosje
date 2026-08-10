@@ -3,22 +3,41 @@
   "button": {
     "$type": "color",
     "primary": {
-      "bg":   {"$value":"{color.action.primary.default}"},
-      "bgHover": {"$value":"{color.action.primary.hover}"},
-      "text": {"$value":"{color.text.onPrimary}"}
+      "bg": {
+        "$value": "{color.action.primary.default}"
+      },
+      "bgHover": {
+        "$value": "{color.action.primary.hover}"
+      },
+      "text": {
+        "$value": "{color.text.onPrimary}"
+      }
     },
-    "radius": {"$type":"dimension","$value":"{radius.md}"}
+    "radius": {
+      "$type": "dimension",
+      "$value": "{radius.md}"
+    }
   },
   "card": {
     "$type": "color",
-    "bg":     {"$value":"{bg.neutral.base}"},
-    "border": {"$value":"{border.neutral.subtle}"},
-    "radius": {"$type":"dimension","$value":"{radius.md}"}
+    "bg": {
+      "$value": "{bg.neutral.base}"
+    },
+    "border": {
+      "$value": "{border.neutral.subtle}"
+    },
+    "radius": {
+      "$type": "dimension",
+      "$value": "{radius.md}"
+    }
   },
   "badge": {
     "$type": "color",
     "beta": {
-      "bg": {"$value":"{color.brand.yellow}", "$description":"BETA badge background — ad-hoc accent (#ffd323), NOT a brand or status colour. Correctly-named entry point for the beta-badge colour; --ds-gov-yellow is the deprecated legacy alias."}
+      "bg": {
+        "$value": "{color.brand.yellow}",
+        "$description": "BETA badge background — ad-hoc accent (#ffd323), NOT a brand or status colour. Correctly-named entry point for the beta-badge colour; --ds-gov-yellow is the deprecated legacy alias."
+      }
     }
   }
 }

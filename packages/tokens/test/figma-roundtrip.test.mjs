@@ -107,14 +107,17 @@ test("no collection is asked to express an axis it has no modes for", () => {
   // points at — a direct read finds nothing and the assertion passes while dark mode is
   // silently absent. That is exactly how this went unnoticed once already.
   const AXIS_MODES = { fluid: "surface", themes: "theme", colorModes: "brand" };
+  // Keyed by the LIVE collection names, which became tier-ordered on 2026-08-10 when the
+  // library was restructured. `Palette` is the brand-bearing ramp layer; `Color` is
+  // the semantic + component layer that aliases into it.
   const COLLECTION_AXES = {
-    Color: ["brand"],
-    Theme: ["theme"],
-    Typography: ["surface"],
-    Density: ["density"],
-    Spacing: [],
-    "Border Radius": [],
-    Motion: [],
+    "Palette": ["brand"],
+    "Color": ["theme"],
+    "Type": ["surface"],
+    "Density": ["density"],
+    "Space": [],
+    "Radius": [],
+    "Motion": [],
   };
 
   const sourceByPath = new Map();
@@ -139,9 +142,9 @@ test("no collection is asked to express an axis it has no modes for", () => {
 
   const aliasedByTheme = new Set();
   for (const v of allVars) {
-    if (v.collection !== "Theme") continue;
+    if (v.collection !== "Color") continue;
     for (const value of Object.values(v.valuesByMode)) {
-      if (value.type === "ALIAS" && value.collection === "Color") aliasedByTheme.add(value.name);
+      if (value.type === "ALIAS" && value.collection === "Palette") aliasedByTheme.add(value.name);
     }
   }
 
@@ -156,15 +159,15 @@ test("no collection is asked to express an axis it has no modes for", () => {
       // Brand delegated through an alias is NOT lost: a Theme token whose Light value
       // aliases into Color resolves per brand mode, because Color carries that axis. Only a
       // literal actually drops it.
-      if (needed === "brand" && v.valuesByMode.Light?.type === "ALIAS" && v.valuesByMode.Light.collection === "Color") {
+      if (needed === "brand" && v.valuesByMode.Default?.type === "ALIAS" && v.valuesByMode.Default.collection === "Palette") {
         continue;
       }
       // A Color variable that some Theme variable ALIASES is a brand source: appearance is
       // expressed by the Theme tokens pointing at it, so the theme axis is not lost here.
-      // Matching by name would miss it — `color/text/disabled` lands as `Color::Text/Disabled`
-      // while its consumers are `Theme::Text/Neutral/Disabled`, `Theme::Icon/Neutral/Disabled`
+      // Matching by name would miss it — `color/text/disabled` lands as `Palette::color/text/disabled`
+      // while its consumers are `Color::text/neutral/disabled`, `Color::icon/neutral/disabled`
       // and 16 more.
-      if (needed === "theme" && v.collection === "Color" && aliasedByTheme.has(v.name)) {
+      if (needed === "theme" && v.collection === "Palette" && aliasedByTheme.has(v.name)) {
         continue;
       }
       if (!supported.includes(needed)) {
@@ -178,8 +181,8 @@ test("no collection is asked to express an axis it has no modes for", () => {
 test("the theme axis actually carries different values, not three identical copies", () => {
   // A Theme collection whose three modes are the same value is worse than none: it looks
   // like dark mode is supported and renders light. Assert real variation exists.
-  const theme = payload.collections.find((c) => c.name === "Theme");
-  assert.ok(theme, "no Theme collection — the accessibility axis has no home");
+  const theme = payload.collections.find((c) => c.name === "Color");
+  assert.ok(theme, "no Color collection — the semantic colour layer has no home");
   const varying = theme.variables.filter((v) => {
     const sigs = Object.values(v.valuesByMode).map((x) =>
       x.type === "ALIAS" ? `${x.collection}::${x.name}` : String(x.value),
@@ -191,7 +194,7 @@ test("the theme axis actually carries different values, not three identical copi
   // drives its own `.dark-mode` class, never `data-theme`. With one mode there is nothing to vary,
   // so this asserts the axis is deliberately flat rather than accidentally flat: exactly one mode.
   const modes = new Set(theme.variables.flatMap((v) => Object.keys(v.valuesByMode)));
-  assert.deepEqual([...modes], ["Light"], `Theme should be single-mode; found ${[...modes]}`);
+  assert.deepEqual([...modes], ["Default"], `Color should be single-mode; found ${[...modes]}`);
   assert.equal(varying.length, 0, "single-mode collection cannot have varying values");
 });
 
@@ -199,7 +202,7 @@ test("a Theme token's Light value stays brand-aware", () => {
   // The bug this guards: the alias chain bottoms out in a private Tier-1 ramp, so Light
   // resolves to a LITERAL and the Navy brand is silently dropped for every token that
   // varies on both axes. Light must alias into Color, which is itself brand-aware.
-  const theme = payload.collections.find((c) => c.name === "Theme");
+  const theme = payload.collections.find((c) => c.name === "Color");
   const mustAlias = ["Background/Neutral/Default", "Text/Neutral/Default", "Border/Neutral/Subtle"];
   for (const name of mustAlias) {
     const v = theme.variables.find((x) => x.name === name);

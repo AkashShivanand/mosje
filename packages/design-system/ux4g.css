@@ -11,10 +11,10 @@
    data-color-mode="ux4g-light" or "ux4g-dark".
 
    90 colour tokens remapped onto SAMAVESH ramps.
-   30 structural tokens aliased to a SAMAVESH token with the identical value.
+   24 structural tokens aliased to a SAMAVESH token with the identical value.
    385 semantic tokens pass through as var() references — they inherit the
      colour remap above, which is what makes the whole semantic layer follow our palette.
-   250 emitted at UX4G's own literal value (no SAMAVESH equivalent).
+   256 emitted at UX4G's own literal value (no SAMAVESH equivalent).
    Ramps deliberately left at UX4G values: gold, lime, pink, purple, skyblue, tertiary, yellow.
 
    WHAT AN ALIAS PROMISES — it preserves UX4G's VALUE, not our rung. --ux4g-bg-primary-subtle
@@ -403,11 +403,11 @@
   --ux4g-lh-72: var(--ux4g-line-height-72);
   --ux4g-lh-80: var(--ux4g-line-height-80);
   --ux4g-line-height-14: 0.875rem;
-  --ux4g-line-height-16: 1rem;
+  --ux4g-line-height-16: var(--sa-ref-font-lineHeight-16);
   --ux4g-line-height-18: 1.125rem;
-  --ux4g-line-height-20: 1.25rem;
-  --ux4g-line-height-24: 1.5rem;
-  --ux4g-line-height-28: 1.75rem;
+  --ux4g-line-height-20: var(--sa-ref-font-lineHeight-20);
+  --ux4g-line-height-24: var(--sa-ref-font-lineHeight-24);
+  --ux4g-line-height-28: var(--sa-ref-font-lineHeight-28);
   --ux4g-line-height-32: 2rem;
   --ux4g-line-height-36: 2.25rem;
   --ux4g-line-height-44: 2.75rem;
@@ -595,42 +595,42 @@
   --ux4g-shadow-l3: 0px 8px 16px 0px var(--ux4g-elevation-color-4),0px 4px 8px 0px var(--ux4g-elevation-color-2);
   --ux4g-shadow-l4: 0px 16px 32px 0px var(--ux4g-elevation-color-6),0px 8px 16px 0px var(--ux4g-elevation-color-4);
   --ux4g-size-10: 0.625rem;
-  --ux4g-size-11: 0.6875rem;
-  --ux4g-size-12: 0.75rem;
+  --ux4g-size-11: var(--sa-ref-font-size-11);
+  --ux4g-size-12: var(--sa-ref-font-size-12);
   --ux4g-size-120: 7.5rem;
-  --ux4g-size-14: 0.875rem;
-  --ux4g-size-16: 1rem;
+  --ux4g-size-14: var(--sa-ref-font-size-14);
+  --ux4g-size-16: var(--sa-ref-font-size-16);
   --ux4g-size-18: 1.125rem;
-  --ux4g-size-20: 1.25rem;
+  --ux4g-size-20: var(--sa-ref-font-size-20);
   --ux4g-size-24: 1.5rem;
   --ux4g-size-28: 1.75rem;
   --ux4g-size-32: 2rem;
   --ux4g-size-36: 2.25rem;
   --ux4g-size-40: 2.5rem;
-  --ux4g-size-48: 3rem;
+  --ux4g-size-48: var(--sa-ref-font-size-48);
   --ux4g-size-52: 3.25rem;
   --ux4g-size-56: 3.5rem;
   --ux4g-size-60: 3.75rem;
   --ux4g-size-64: 4rem;
   --ux4g-size-8: 0.5rem;
   --ux4g-size-80: 5rem;
-  --ux4g-space-1: var(--sa-ref-spacing-xxs);
-  --ux4g-space-10: var(--sa-ref-spacing-4xl);
-  --ux4g-space-11: var(--sa-ref-spacing-5xl);
-  --ux4g-space-12: var(--sa-ref-spacing-6xl);
-  --ux4g-space-13: var(--sa-ref-spacing-7xl);
-  --ux4g-space-14: var(--sa-ref-spacing-9xl);
-  --ux4g-space-15: var(--sa-ref-spacing-10xl);
-  --ux4g-space-16: var(--sa-ref-spacing-11xl);
-  --ux4g-space-2: var(--sa-ref-spacing-xs);
+  --ux4g-space-1: 2px;
+  --ux4g-space-10: 40px;
+  --ux4g-space-11: 48px;
+  --ux4g-space-12: 56px;
+  --ux4g-space-13: 64px;
+  --ux4g-space-14: 80px;
+  --ux4g-space-15: 120px;
+  --ux4g-space-16: 360px;
+  --ux4g-space-2: 4px;
   --ux4g-space-3: 6px;
-  --ux4g-space-4: var(--sa-ref-spacing-sm);
-  --ux4g-space-5: var(--sa-ref-spacing-md);
-  --ux4g-space-6: var(--sa-ref-spacing-lg);
-  --ux4g-space-7: var(--sa-ref-spacing-xl);
-  --ux4g-space-8: var(--sa-ref-spacing-2xl);
-  --ux4g-space-9: var(--sa-ref-spacing-3xl);
-  --ux4g-space-none: var(--sa-ref-spacing-none);
+  --ux4g-space-4: 8px;
+  --ux4g-space-5: 12px;
+  --ux4g-space-6: 16px;
+  --ux4g-space-7: 20px;
+  --ux4g-space-8: 24px;
+  --ux4g-space-9: 32px;
+  --ux4g-space-none: 0px;
   --ux4g-spacing-3: var(--ux4g-space-3);
   --ux4g-spacing-none: var(--ux4g-space-none);
   --ux4g-stack-2xs: var(--ux4g-space-2);
@@ -829,10 +829,10 @@
   --sa-text-link-brand-default: #4a2bc2;
   --sa-focus-ring: rgba(106, 78, 255, 0.48);
   --sa-color-text-default: #171717;
-  --sa-text-neutral-strong: #0a0a0a;
+  --sa-text-neutral-bolder: #0a0a0a;
   --sa-color-text-muted: #404040;
   --sa-bg-neutral-base: #fff;
-  --sa-bg-neutral-soft: #fafafa;
+  --sa-bg-neutral-subtler: #fafafa;
   --sa-border-neutral-subtle: #e5e5e5;
   --sa-border-neutral-base: #d9d9d9;
   --sa-color-status-success: #00522c;
@@ -883,10 +883,10 @@
   --ds-warning: var(--sa-color-status-warning);
   --ds-info: var(--sa-color-status-info);
   --ds-ink: var(--sa-color-text-default);
-  --ds-ink-strong: var(--sa-text-neutral-strong);
+  --ds-ink-strong: var(--sa-text-neutral-bolder);
   --ds-ink-muted: var(--sa-color-text-muted);
   --ds-surface: var(--sa-bg-neutral-base);
-  --ds-surface-muted: var(--sa-bg-neutral-soft);
+  --ds-surface-muted: var(--sa-bg-neutral-subtler);
   --ds-border: var(--sa-border-neutral-subtle);
   --ds-border-strong: var(--sa-border-neutral-base);
 
@@ -1053,10 +1053,10 @@
   --sa-text-link-brand-default: #3d239f;
   --sa-focus-ring: rgba(106, 78, 255, 0.48);
   --sa-color-text-default: #171717;
-  --sa-text-neutral-strong: #0a0a0a;
+  --sa-text-neutral-bolder: #0a0a0a;
   --sa-color-text-muted: #404040;
   --sa-bg-neutral-base: #fff;
-  --sa-bg-neutral-soft: #fafafa;
+  --sa-bg-neutral-subtler: #fafafa;
   --sa-border-neutral-subtle: #e5e5e5;
   --sa-border-neutral-base: #d9d9d9;
   --sa-color-status-success: #00522c;
@@ -1106,10 +1106,10 @@
   --ds-warning: var(--sa-color-status-warning);
   --ds-info: var(--sa-color-status-info);
   --ds-ink: var(--sa-color-text-default);
-  --ds-ink-strong: var(--sa-text-neutral-strong);
+  --ds-ink-strong: var(--sa-text-neutral-bolder);
   --ds-ink-muted: var(--sa-color-text-muted);
   --ds-surface: var(--sa-bg-neutral-base);
-  --ds-surface-muted: var(--sa-bg-neutral-soft);
+  --ds-surface-muted: var(--sa-bg-neutral-subtler);
   --ds-border: var(--sa-border-neutral-subtle);
   --ds-border-strong: var(--sa-border-neutral-base);
 

@@ -364,12 +364,24 @@ Six strictly-ordinal rungs, quietest → loudest, with **no ambiguous `default` 
 canonical value is the token with *no* prominence segment.
 
 ```
-subtlest · subtler · subtle · bold · bolder · boldest
+fill (bg · border · outline)   base · subtler · subtle · bold · bolder · boldest
+ink  (text · icon)             subtler · subtle · base · bolder · boldest
 ```
+
+> **Landed 2026-08-10, with two amendments this section did not anticipate.**
+>
+> **`subtlest` does not exist.** `base` is the CANONICAL value and, on a fill, it already
+> occupies the quietest rung — §5.1a #1 established that the canonical must be an explicit
+> segment, because a token cannot also be a group on a tree. Adding `subtlest` beside it would
+> have meant two names for one value, which is the drift this grammar exists to remove.
+>
+> **`base` sits at a different rung per ladder, and that is the honest description.** It is the
+> canonical value, not a loudness: the ordinary FILL is the quietest thing on the page, while
+> the ordinary INK is mid-way — quieter than a max-contrast heading, louder than a caption.
 
 | SAMAVESH | UX4G equivalent | brand-primary bg |
 |---|---|---|
-| `subtlest` | `default` | ramp 50 |
+| `base` *(canonical)* | `default` | ramp 50 |
 | `subtler` | `soft` | ramp 100 |
 | `subtle` | `subtle` | ramp 200 |
 | `bold` | `emphasis` | ramp 300 |
@@ -396,6 +408,45 @@ Atlassian's ladder is aesthetic; USWDS's grades are predictive but not contractu
 enforced.** This is the single most valuable property in the system and it maps directly onto
 the GIGW / WCAG 2.1 AA obligation.
 
+> **Correction (2026-08-10) — this section described an intention, and the implementation
+> inverted it.** Until now the contract was published by a substring scan of the token path
+> (`path.find(seg => PROMINENCE_CONTRACT[seg])`), which knows nothing about slots, roles or
+> types. It put a WCAG class on **322 Figma variables**, of which **192** were Tier-3 `Action/*`
+> tokens that have no prominence slot, one was a **duration in milliseconds**, and sixteen were
+> **backgrounds** claiming "body and heading text" because `primary` is a brand variant that
+> spells an ink rung. Of the 41 claims that could be measured at all, **23 were false**. Meanwhile
+> `Text/Link/Brand/Default` — the one token that must be AA — carried no class, because `brand`
+> is not a rung word.
+>
+> So the sentence "enforced in CI" was, for the entire life of this document, untrue: §9.2 had
+> never been written, and the only test on the subject asserted that the *threshold table* was
+> sorted. **A design library that asserts a WCAG class it has not measured is worse than one that
+> says nothing**, because a designer cannot tell the two apart.
+>
+> What is enforced now (`build/contrast-contract.mjs`, `test/prominence-contract.test.mjs`):
+>
+> 1. **The class is a measurement, not an assertion.** Every applicable token is resolved through
+>    its alias chain, composited if translucent, and measured against its own surface across every
+>    brand; the worst case is what the description states. The permission sentence is appended
+>    **only where the threshold is met**.
+> 2. **Applicability is decided by the parser, never by a substring.** Colour only, Tier 2 only,
+>    ink ladder for `text`/`icon` and fill ladder for `bg`/`border`/`outline` — which is what makes
+>    the `primary`/`secondary`/`tertiary` overload of §5.1c *unreachable* on a fill, rather than
+>    pinned as harmless. It was not harmless; it was the mechanism producing the false claims.
+> 3. **Silence is a valid output** — and the correct one for a ramp step, a duration, a disabled
+>    state, or a Tier-3 action, whose real contract is the label-on-fill pairing that
+>    `action-contrast.test.mjs` already owns.
+> 4. **Where the ladder has nothing to say about ink, WCAG does.** The ink ladder has no rung for
+>    the canonical value, so text and icon tokens now fall back to 1.4.3 / 1.4.11 — attributed to
+>    WCAG, not to an invented rung.
+>
+> **19 tokens measure below the class their rung implies** and are pinned in a may-only-shrink
+> ledger, stated plainly in their own Figma description rather than suppressed. 17 are
+> `Background/*` tonal chips, where the honest reading is that **the fill ladder's ≥3:1 is the
+> wrong requirement** — WCAG 1.4.11 governs boundaries that identify a control, not quiet fills —
+> so the fix is likely §6.2's ladder, not the palette. That is now a visible decision instead of a
+> hidden falsehood. It is the same finding as §6.4's correction, reached from the other end.
+
 ### 6.4 It dissolves the `primary` overload
 
 UX4G uses `primary`/`secondary`/`tertiary` as *ink prominence* while also using `primary` for
@@ -409,13 +460,35 @@ cannot occur:
 | Tertiary ink | `--ux4g-text-neutral-tertiary` | `--sa-text-neutral-subtler` |
 | The brand colour | `--ux4g-text-brand-primary` | `--sa-text-brand-primary` |
 
-> **Correction (2026-08-10).** This section describes the intended design, not the shipped one.
-> The implemented ink ladder kept UX4G's `primary`/`secondary`/`tertiary` rather than mapping
-> onto `subtle`/`subtler`, so the overload is **not** dissolved: those three words still sit in
-> both the brand `variant` slot and the ink prominence slot. The collision is resolved by the
-> parser's greedy order, not by the grammar. It is pinned in §5.1c and gated by
-> `test/slot-disjointness.test.mjs`. Either finish the ladder migration or accept the overload
-> deliberately — but the spec should not claim it cannot occur while it does.
+> **Correction (2026-08-10), then RESOLVED the same day.** This section described the intended
+> design, not the shipped one: the implemented ink ladder kept UX4G's `primary`/`secondary`/
+> `tertiary`, so the overload was **not** dissolved and the collision was resolved by the
+> parser's greedy order rather than by the grammar.
+>
+> **It is dissolved now.** The ordinal ladder landed and both ladders share one vocabulary:
+>
+> | | Ladder, quietest → loudest |
+> |---|---|
+> | fill (`bg` `border` `outline`) | `base` · `subtler` · `subtle` · `bold` · `bolder` · `boldest` |
+> | ink (`text` `icon`) | `subtler` · `subtle` · `base` · `bolder` · `boldest` |
+>
+> `primary`/`secondary`/`tertiary` are **variants and nothing else**, so the collision can no
+> longer be spelled — asserted by a test rather than asserted by this document, and the three
+> `brand:` entries are gone from `KNOWN_AMBIGUITIES` in `slot-disjointness.test.mjs`.
+>
+> Two consequences worth stating, because neither was obvious before doing it:
+>
+> 1. **`base` sits at a different rung per ladder, and that is correct.** It is the CANONICAL
+>    value, not a loudness. The ordinary fill is the quietest thing on the page; the ordinary
+>    ink is mid-way — quieter than a max-contrast heading, louder than a caption.
+> 2. **The contrast contract had to become per-ladder.** Sharing words means `subtle` is a
+>    quiet tonal chip on a fill (≥3:1, WCAG 1.4.11) and a caption on ink (≥4.5:1, 1.4.3). One
+>    flat table could only have been right about one of them. `PROMINENCE_CONTRACT` is now
+>    `{fill, ink}`, and a test fails if the two ever stop differing — at which point the split
+>    has stopped earning its keep.
+>
+> Nothing renders differently: 34 names moved, all byte-identical, pinned by
+> `visual-contract.test.mjs`.
 
 ---
 
@@ -473,6 +546,28 @@ outline focus                                [canon] inverse
 Non-colour groups: `space` · `inline` · `stack` · `padding` · `section` · `radius` ·
 `border/width` · `opacity` · `z` · `elevation` · `motion` · `density`.
 
+> **Built 2026-08-10, and one claim in this table was wrong.** Until this date `on/*`, `layer/*`,
+> `z`, `opacity` and `border/width` did not exist — in code or Figma — while §7.1 listed the last
+> three as things UX4G has and we lack, and §7.2 listed the first two as capabilities that beat
+> it. Four of the five headline advantages were unbuilt for the life of this document. They exist
+> now:
+>
+> | Group | Built | Note |
+> |---|---|---|
+> | `border/width` · `opacity` | 5 · 14 | UX4G's **exact** values, bound by name (§8.1 structural rule) |
+> | `z` | 8 | UX4G's ladder verbatim — Bootstrap's numbers, which third-party CSS in the estate already assumes |
+> | `layer/*` | 8 | 4 surfaces + 4 hairlines |
+> | `on/*` | 40 | pairing chosen **by measurement**, not by eye — see below |
+> | `density/*` | 1 → 8 | control padding, gaps and row heights, not just one height |
+>
+> **`on/*` is not what this table claimed.** "Every background carries a guaranteed-AA foreground"
+> is the intent; the shipped reality is that **three of the forty cannot** — `bg/brand/secondary/
+> bolder` (3.94:1), `bg/status/error/bolder` (4.40:1), `bg/status/warning/bolder` (4.46:1). No ink
+> rescues a surface that close to its own background; the remedy is the fill. They are pinned in
+> `on-pair-contrast.test.mjs` and are the **same three tokens** as the prominence shortfall ledger,
+> reached by an independent measurement — which the test asserts rather than assumes, so a
+> divergence between the two ledgers fails the build.
+
 **SAMAVESH capability UX4G has no equivalent for — now plain `--sa-*`, no special namespace:**
 
 | Group | Tokens | Why it beats UX4G |
@@ -486,6 +581,38 @@ Non-colour groups: `space` · `inline` · `stack` · `padding` · `section` · `
 | `density/*` | control heights, paddings | UX4G has none. |
 
 ### 7.3 Tier 3 — Component (`--sa-cmp-*`), generated
+
+> **Defect found and fixed 2026-08-10 — the tier existed but did not work.**
+>
+> All 296 `--sa-cmp-*` shipped as **resolved hexes**, so the component tier ignored `data-brand`
+> entirely: `--sa-cmp-action-brand-primary-default-bg` was `#025fb8` under Blue *and* under Navy.
+> The primary button never changed brand. The CSS format granted `var()` chains only to
+> `system.generated.json`; Tier 3 fell through to the literal.
+>
+> The **source was never wrong** — Tier 3 is 196 references and 92 deliberate literals (the
+> white-alpha inverse variants and transparent fills, which are correctly brand-invariant). Only
+> the emit flattened it, which is why nothing in the DTCG tree looked suspect.
+>
+> **Two fixes were required, not one.** Emitting Tier-3 chains is the obvious half. The other is
+> that re-assertion inside an axis block had to become **transitive**: an alias re-declared in a
+> block is a changed source for anything pointing at *it*, so a single pass reaches depth 1 only.
+> With chains restored, `cmp/… → bg/brand/primary/bolder → color/primaryScale/600` is three deep,
+> and one pass would have left the component token resolving against `:root` — brand-blind in
+> exactly the way the fix exists to remove.
+>
+> **It was also a live code↔Figma divergence.** Figma held these as ALIASES, where 85 repainted
+> under Navy against zero in code — a disagreement about the layer that describes buttons, which
+> `figma-roundtrip.test.mjs` cannot see because it validates the payload against itself. 16 live
+> variables were rebound; both sides now report **101 repainting / 195 invariant**, exactly.
+>
+> Gated by `tier-discipline.test.mjs` (no referenced `cmp` token may emit as a literal; the tier
+> must measurably repaint between brands) and by `action-contrast.test.mjs`, which until now
+> resolved `:root` only — it checked Blue and called that coverage. It now runs the full matrix
+> per brand.
+>
+> **Still open (§12 Phase 1):** nothing consumes this tier. `<Button>` binds `--ds-primary`, and
+> the only live consumer estate-wide is `--sa-cmp-badge-beta-bg`. The tier is now *correct*;
+> whether to rebind components onto it, or delete it, is the decision Phase 1 never closed.
 
 ```
 action   {brand, destructive, neutral}
@@ -590,6 +717,47 @@ values), **per-mode values**, and the §6.3 contrast class in each variable's **
 > per-collection mode limit; if it is below what `brand` × `theme` requires, split into
 > `2 · Color / Brand` and `2 · Color / Theme` with the theme collection aliasing the brand one.
 
+### 8.5 What actually shipped, and the constraint that decided it *(2026-08-10)*
+
+> **The table above is not achievable as written, and the reason is a platform constraint, not
+> a compromise.** `Variable.variableCollectionId` is **get-only** — probed, not assumed:
+>
+> ```
+> variableCollectionId: { get: true, set: false }
+> ```
+>
+> A variable cannot change collection. Building §8.4's six collections therefore means deleting
+> and recreating ~500 variables. And this library is **published**: its consumers are other files
+> (the portal handoffs, the design-QC file, the audit projects), whose bindings a plugin running
+> *inside* the library cannot enumerate. So "is this variable safe to delete?" is not a risky
+> question here — it is an **unanswerable** one. A method whose correctness cannot be
+> demonstrated is not the thorough choice.
+>
+> **What shipped instead: rename in place, and put the tier in the NAME.** All 691 variables were
+> renamed to their canonical DTCG paths, which preserves the variable id, so every binding in
+> every consuming file followed automatically. The tier is the first path segment — `ref/…`,
+> unmarked, `cmp/…` — which Figma's variable picker navigates as a tree exactly like a collection.
+> That is the same information §4.1 wanted from six collections, expressed on the axis Figma
+> actually permits.
+
+| Live collection | Modes | Holds | vs §8.4 |
+|---|---|---|---|
+| `1 · Palette` | `Blue` · `Navy` | brand-varying ramps, alpha tiers, Figma-native primitives | ≈ `1 · Reference`, but brand-moded |
+| `2 · Color` | `Default` | `bg` `text` `icon` `border` `overlay` `focus` `chart` + `cmp/*` | `2 · Color` **and** `3 · Component`, separated by the `cmp/` subtree |
+| `2 · Space` | none | `ref/space/*` + `inline` `stack` `padding` `section` | `2 · Space` |
+| `2 · Type` | surface × breakpoint | `ref/font/*` + `type/*` | `2 · Type` |
+| `2 · Radius` · `2 · Motion` | none | `ref/radius/*` · `ref/motion/*` | `2 · Static`, unmerged (same constraint) |
+| `2 · Density` | `Comfortable` · `Compact` | `density/*` | `2 · Space`'s density axis, unmerged |
+
+**730 variables, every name a canonical path.** 40 were newly created — the 38 `chart/*` tokens
+and the two Devanagari type tokens, whose old flat names collided with their own Tier-1 family.
+Five remain uncreatable by construction: `type/*/weight` is a FLOAT in code and a STRING style
+name in Figma, and Figma rejects an alias across resolved types.
+
+**A merged `2 · Static` and a single `2 · Space` are still right** — they are simply unreachable
+without the same delete. If Figma ever ships variable moves, that is the change to make; until
+then, merging them costs the bindings and buys tidiness.
+
 ---
 
 ## 9. CI contracts
@@ -597,8 +765,8 @@ values), **per-mode values**, and the §6.3 contrast class in each variable's **
 | # | Test | Asserts |
 |---|---|---|
 | 9.1 | `naming-grammar.test.mjs` | Every path parses against §5; **no segment contains a hyphen**; `ref`/`cmp` never begin a Tier-2 path. Also runs `--audit-reference` against UX4G's 755 names to keep §2.1 reproducible. |
-| 9.2 | `prominence-contract.test.mjs` | Per family, per `data-brand` × `data-theme`: luminance strictly monotonic across `subtlest…boldest` **and** each rung meets its §6.3 contrast class. |
-| 9.3 | `on-pair-contrast.test.mjs` | Every `--sa-on-*` meets 4.5:1 against its paired background **across the enumerated axis product**, not per-axis (R2). |
+| 9.2 | `prominence-contract.test.mjs` *(written 2026-08-10)* | **Every contrast class the library publishes is one this build measured, and is true.** Fails on an unmeasured sentence, a description that disagrees with its own number, a `meets ≥X:1` that misses, a class on a non-colour / Tier-3 / disabled token, a brand variant read as an ink rung, an ink token left with no class, and any hand-written `≥N:1` in authored prose that does not hold. Tokens falling short of their own rung are pinned in a may-only-shrink ledger with a stale-entry test. *(The `data-theme` half of the original wording is gone with the appearance axis, `4f34f21`. Strict luminance monotonicity across the ladder is **not** asserted — see §6.3's correction: 17 `Background/*` rungs would fail it, and the open question is whether the ladder's thresholds are right for fills at all.)* |
+| 9.3 | `on-pair-contrast.test.mjs` *(written 2026-08-10, with the namespace it checks)* | Every `--sa-on-*` meets 4.5:1 against its paired background across the brand product (R2). Three known-below-AA pairings are pinned in a may-only-shrink list, and a fourth test asserts they are the same tokens as the prominence shortfall ledger — two independent measurements of one defect, so a disagreement is a build failure. |
 | 9.4 | `deprecation.test.mjs` | Every deprecated token still resolves and appears in the generated codemod map (§10.1). |
 | 9.5 | `ux4g-parity.test.mjs` *(existing)* | All 755 published names present; structural values exact. |
 | 9.6 | `manifest.test.mjs` | `dist/manifest.json` — every token with path, tier, collection, `$type`, value per mode, contrast class, description and deprecation — is complete and current (R3). |

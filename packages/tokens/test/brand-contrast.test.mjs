@@ -3,6 +3,17 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { execSync } from "node:child_process";
 
+/**
+ * NOTE — this file REBUILDS dist/ with a different brand pack, which is why the suite runs at
+ * `--test-concurrency=1` (see package.json). `node --test` parallelises across FILES by
+ * default, so while this test holds dist/tokens.css at the `_starter` brand, any other file
+ * reading dist/ sees the wrong brand's output and fails at random. That produced two
+ * non-reproducing failures before it was tracked down, in build-output and visual-contract.
+ *
+ * Serialising is the cheap fix. The real fix is to build into a temp directory and point the
+ * assertions at that — worth doing if the suite ever gets slow enough to care.
+ */
+
 import { contrast, PAIRINGS } from "./lib/contrast.mjs";
 
 // The brand contrast gate. White-labelling swaps the brand pack's colour ramp;

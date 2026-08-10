@@ -12,7 +12,143 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-10 · System version: v1.11.4 (APPEARANCE AXIS REMOVED: `data-theme`
+  Last reviewed: 2026-08-10 · System version: v1.12.3 (SIX GAPS CLOSED — each of these existed
+  as a hardcoded literal before it was a token, which is exactly what a token system is meant to
+  remove. icon/size/* (5; md=24px is the estate default <Icon> ships with, and every component
+  had been hardcoding its own). focus/width + focus/offset — the ring's COLOUR was tokenised long
+  before its geometry, so WCAG 2.4.7's most-regulated affordance was two-thirds hardcoded.
+  container/* (5) including the 1280px content width CLAUDE.md mandates estate-wide, which lived
+  only as a literal. elevation/* (6) — a semantic layer over the raw shadow ramp, so a card
+  versus a modal is chosen by WHAT THE SURFACE IS rather than by how deep the shadow looks; CSS
+  only, because Figma models shadows as EFFECT STYLES not variables, and that exclusion is now
+  asserted to stay explained. motion/{enter,exit,emphasis} pairing a duration with the easing
+  that belongs to it — entering decelerates and may take its time, leaving accelerates and gets
+  out of the way; a bare duration loses that. control/{radius,border/width}, because density
+  moved a control's SIZE while its SHAPE stayed hardcoded. Figma routing became TYPE-AWARE in the
+  process: focus, icon and control each own both a colour and a measurement, so routing by root
+  alone had put five FLOATs in the colour collection. 865 variables, 102 tests.
+  v1.12.2: (USAGE GUIDANCE — every semantic token now
+  says WHEN to reach for it, not only what it is worth. Descriptions were a measured contrast
+  ratio plus, at best, a two-word label ("Hovered rows, quiet panels"): rigorous and nearly
+  useless for choosing between neighbours. UX4G's Figma does the opposite ("Use when the tonal
+  button's action is not available") — worse evidence, much better guidance. Both halves now ship:
+  what it is FOR, then what it is WORTH. 417 variables had NO description; 7 do now, and those are
+  deliberate. The vocabulary lives in ONE module (build/usage-guidance.mjs) derived from the path,
+  not 400 hand-written strings that would drift apart unnoticed. ALSO FOUND AND FIXED: the Tier-2
+  generator had been UNRUNNABLE since the ordinal-ladder rename — it validates every path and
+  exits before writing, and five put() calls still used retired rung names, so
+  src/system.generated.json said "GENERATED — do not edit" while being hand-maintained. Both
+  generators are now gated by a test that runs them and diffs the output. CAVEAT: the Figma push
+  computed guidance in-plugin and its prose differs from the module by 1-4 characters on ~330
+  variables; the build is authoritative and a faithful re-push is queued.
+  v1.12.1: (ADOPTED FROM UX4G — the three conventions
+  where UX4G was plainly better, plus the one scale we simply lacked. (1) VALUE-NAMED type
+  primitives: `--sa-ref-font-size-400` told you nothing, `--sa-ref-font-size-16` cannot be
+  misread, which is UX4G's convention and Tailwind's and Spectrum's. (2) A general `size/*` scale
+  — UX4G's 20 steps at their exact rem values, plus 22 and 44 as a SAMAVESH superset — and font
+  sizes now ALIAS it, exactly as UX4G's `fs-16 -> size-16` does, so a px value has one definition
+  instead of one per namespace. (3) `breakpoint/*`, which matters less as a token than as a fix:
+  360/768/1280 were restated as literals in TWO build files, and the fluid type curve now reads
+  the token in both, gated by a test that fails if a literal returns. (4) `blur/*` (8), UX4G
+  verbatim, which we had none of. NOT adopted: UX4G's 116 utility-value tokens
+  (`--ux4g-object-fit-cover: cover`) — a CSS keyword with a variable wrapped round it is not a
+  design decision, and copying them would inflate the count while buying nothing. The px->rem
+  shift on the raw type steps is a UNIT change, not a rename, and is recorded as such: nothing
+  renders from those tokens, and their one consumer is the UX4G parity layer, where rem is what
+  UX4G's own contract says. Conformance is unaffected — all 755 names still emit.
+  v1.12.0: (INVENTORY COMPLETED — the four scales the
+  spec promised and never built now exist. NEW: border/width (5) and opacity (14) at UX4G's exact
+  values, the z ladder (8, Bootstrap's numbers that UX4G inherited and third-party CSS already
+  assumes), layer/* (8, Carbon's nestable surfaces) and on/* (40). Every on/* pairing was CHOSEN BY
+  MEASUREMENT — the ink that clears AA on that fill in the WORST brand — and §9.3's
+  on-pair-contrast test finally exists to hold it; three pairings sit below AA and are the SAME
+  tokens as the prominence shortfall ledger, reached independently, which is asserted rather than
+  assumed. Density went from ONE variable to 8, so the axis moves control padding, gaps and row
+  heights instead of a single height. REMOVED: the dead fixed 5-role type scale (0 consumers,
+  shadowed the fluid scale under a friendlier name) — renamed to deprecated/* in Figma rather than
+  deleted, because a binding in a consuming file cannot be ruled out from inside a published
+  library. NEW Figma collection `Static` for the unitless scales — the one place §8.4's design was
+  buildable, precisely because those tokens are new and nothing is bound to them. 267 variables
+  scoped, so a colour is no longer offered for corner radius; ref/z/* hidden (no canvas property,
+  provably unbound). Blanket-hiding ref/* was NOT done and should not be: ref/color/ink/dark alone
+  carries 1,143 bindings, and un-publishing a bound variable strands it. Also fixed a test-suite
+  RACE that made results non-deterministic — brand-contrast rebuilds dist/ under another brand
+  while node --test parallelises across files; the suite now runs serially.
+  v1.11.9: (COMPONENT TIER FOLLOWS THE BRAND — all
+  296 `--sa-cmp-*` shipped as frozen hexes, so the entire component layer ignored `data-brand`:
+  `--sa-cmp-action-brand-primary-default-bg` was #025fb8 under Blue AND under Navy — the primary
+  button never changed brand. The CSS format handed var() chains only to system.generated.json
+  and Tier 3 fell through to the resolved literal. The SOURCE was never at fault: Tier 3 is 196
+  references plus 92 deliberate literals (white-alpha inverse variants and transparent fills,
+  correctly brand-invariant). Two fixes were needed, not one — the format now emits Tier-3 chains,
+  AND re-assertion inside an axis block became TRANSITIVE, because a chain three deep
+  (cmp -> bg/brand/primary/bolder -> color/primaryScale/600) is not reached by a single pass.
+  101 component tokens now repaint under Navy, up from 0. Figma held the same tokens as ALIASES
+  where 85 repainted, so the two sides had silently disagreed about the layer that describes
+  buttons; 16 live variables were rebound and both now report 101 repainting / 195 invariant,
+  exactly. :root is byte-identical — the only values that moved are inside [data-brand=navy], and
+  the one Tier-3 token anything currently consumes (--sa-cmp-badge-beta-bg, gov-yellow) is
+  correctly unchanged. Also fixed the gate that missed all of this: action-contrast.test.mjs
+  resolved only :root — it checked Blue and called that coverage — and now runs the full matrix
+  per brand. Navy passes AA.
+  v1.11.8: (UX4G WIDGET v3.28 — the accessibility
+  widget is upgraded from `accessibility-beta-v1.15`, and the workaround that made every page
+  load at 110% zoom with three features falsely active is deleted rather than corrected, because
+  v3.x fixes the null dereference that forced it. The brand skin now covers ~13 hardcoded violets
+  that `--color-dark-blue-1` never reached — overriding the variable alone left the panel half
+  violet. Telemetry new in v3.28 is OFF by default: it beacons the full URL of every page view,
+  which on an authenticated portal can carry beneficiary identifiers. See the `analytics` prop.
+  Two icons bake their colour into an SVG `data:` URI and stay violet by design — recolouring
+  them would hardcode a brand hex in a multi-brand estate. The keyboard shortcut is now
+  platform-aware: v3.28 advertises and binds Ctrl+F2, which macOS reserves for the menu bar and
+  which needs `fn` on Apple keyboards, so Macs get `⌘⌥A` — relabelled on the trigger and appended
+  to its aria-label. Deliberately NOT `⌃⌥`, which is VoiceOver's modifier. Windows and Linux keep
+  Ctrl+F2.) v1.11.7 (ORDINAL LADDER — the prominence scale is
+  renamed and now actually ORDERS. UX4G's `base · soft · subtle · emphasis · strong · stronger`
+  did not: `subtle` sat louder than `soft` while reading quieter, and `base` was quietest of all
+  while reading like the default. The ladder is now `base · subtler · subtle · bold · bolder ·
+  boldest` for fills and `subtler · subtle · base · bolder · boldest` for ink — Atlassian's shipped
+  pattern, not a private scale. Ink adopts the SAME words, which finally dissolves the
+  `primary`/`secondary`/`tertiary` overload: those three are variants and nothing else now, so the
+  collision cannot be spelled, and the three `brand:` entries are gone from KNOWN_AMBIGUITIES.
+  `base` is the canonical value rather than a loudness, which is why it sits at a different rung
+  per ladder — the ordinary fill is the quietest thing on the page, the ordinary ink is mid-way.
+  Sharing words forced the contrast contract to become PER-LADDER: `subtle` is a quiet tonal chip
+  on a fill (≥3:1, WCAG 1.4.11) and a caption on ink (≥4.5:1, 1.4.3), and one flat table could
+  only ever be right about one of them. 34 names moved, all byte-identical, pinned by
+  visual-contract.test.mjs. Figma collection names also dropped their tier-number prefixes —
+  redundant once tier moved into the variable path, and six of seven read '2 ·' anyway.
+  v1.11.6: (FIGMA STRUCTURE — the library is canonical
+  end to end. All 691 variables renamed IN PLACE to their DTCG paths, so a Figma variable name IS
+  its token path: `bg/neutral/subtle`, `ref/space/md`, `cmp/action/brand/primary/hover/bg`.
+  Collections are tier-ordered: 1 · Palette, 2 · Color, 2 · Space, 2 · Type, 2 · Radius, 2 · Motion,
+  2 · Density. RENAME ONLY, never recreate: Figma refuses to move a variable between collections
+  (variableCollectionId is get-only, probed not assumed), and this is a PUBLISHED library whose
+  consumers are other files — so a delete could not be shown to be safe from inside it. Renaming
+  preserves the variable id, so every binding followed automatically; tier therefore lives in the
+  NAME (ref/ … cmp/), which Figma's picker navigates exactly like a collection. 40 tokens got a
+  Figma home for the first time: the 38 data-viz tokens and the two Devanagari type tokens, whose
+  old names collided. Source paths were canonicalised FIRST so the projection would not import
+  naming debt — `spacing/*`→`space/*`, `color/chart/*`→`chart/*` (spec §11.4, decided but never
+  done), brand ramps `light|dark`→`blue|navy` (§4.2: palettes, not appearance). The grammar
+  allowlist is now ITEMISED (150 paths) instead of four ROOTS, which had exempted every future
+  token under them too. NOTHING RENDERS DIFFERENTLY — proven by visual-contract.test.mjs. Five
+  variables remain uncreatable in Figma by construction: type/*/weight is a FLOAT in code and a
+  STRING style name in Figma, and Figma rejects an alias across resolved types.
+  v1.11.5: (CONTRAST CLAIMS: the Figma library was
+  publishing 322 WCAG contrast guarantees that nothing had measured, produced by a substring scan
+  of the token path. 192 sat on Tier-3 Action/* variables, which have no prominence slot;
+  Background/Brand/Primary/Base claimed "body and heading text" because `primary` is a brand
+  VARIANT that spells an ink rung; motion/duration-base, a NUMBER, claimed a contrast class. Of the
+  41 measurable claims, 23 were false. A class is now a MEASUREMENT: resolved through the alias
+  chain, composited if translucent, measured against its own surface across every brand, worst case
+  published. The permission sentence is added only where the threshold is met. Text and icon tokens
+  can no longer be silent — where the ladder has no rung, WCAG 1.4.3 / 1.4.11 apply. Enforced by
+  test/prominence-contract.test.mjs (spec §9.2, previously unwritten) with a 19-token shortfall
+  ledger that may only shrink. NOTHING RENDERS DIFFERENTLY — description-only, proven by
+  visual-contract.test.mjs. The Figma library needs republishing for the corrected descriptions to
+  reach designers. v1.11.3: (FIGMA SYNC, second pass: the library now
+  v1.11.4: (APPEARANCE AXIS REMOVED: `data-theme`
   (light/dark/hc) no longer exists. Figma's Theme collection is single-mode and `tokens.css` emits
   no `[data-theme]` block. The UX4G accessibility widget is the estate's single canonical dark and
   high-contrast mechanism — it applies its own `.dark-mode` class and never read `data-theme`, so
@@ -181,6 +317,19 @@ Use semantic tokens — never reference primitive `--sa-color-*` values directly
 > **Critical rule:** use `var(--ds-danger)` for red error text on white — it resolves to `#B8382F` (Figma `Danger/700`) at **5.8:1**, which passes AA. Do **not** reach into the ramp for `--ds-danger-500` (`#EC5042`, 3.8:1); it is a border/fill value and fails for text.
 >
 > *Corrected 2026-08-07:* this rule previously stated that `--ds-danger` fails AA and directed callers to `--ds-danger-strong`. `--ds-danger` was rebound from `red.500` to `red.700` and now passes; `--ds-danger-strong` has never been an emitted token. Verified against `packages/tokens/dist/tokens.css`. The old `#A11D12` survives only as the `--ds-chart-div-neg-strong` data-viz literal.
+
+> **The table above is hand-maintained; it is not the authority.** Every `--sa-*` colour token
+> carries a contrast class that is **measured at build time** against its own surface, across every
+> brand, and published in `dist/figma.variables.json` (`contrast.measured` / `contrast.shortfall`)
+> and in each Figma variable's description. `test/prominence-contract.test.mjs` fails the build if
+> any published class is not true. Read those numbers, not these, when the two disagree — and fix
+> this table when they do.
+>
+> **A rung name is not a guarantee.** Nineteen tokens currently measure below the class their
+> prominence rung implies — mostly `Background/*` tonal chips, where the fill ladder's ≥3:1 is the
+> wrong requirement rather than the colour being wrong. They are listed in the ledger at the foot
+> of `test/prominence-contract.test.mjs` and stated plainly in their own Figma description. Choose
+> a token by its measured number, never by how loud its name sounds.
 
 ### D. Typography
 

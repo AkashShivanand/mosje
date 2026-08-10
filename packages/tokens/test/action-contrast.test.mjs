@@ -17,15 +17,38 @@ import { relLum } from "./lib/contrast.mjs";
 
 const root = new URL("..", import.meta.url).pathname;
 const css = readFileSync(root + "dist/tokens.css", "utf8");
-const ROOT_BLOCK = css.slice(css.indexOf(":root {"), css.indexOf("\n}", css.indexOf(":root {")));
 
-/** Resolve a var() chain inside :root to a literal. */
+/**
+ * Declarations visible in a given brand context: `:root`, then the brand block layered over
+ * it. Until 2026-08-10 this file read `:root` ONLY — i.e. it checked the Blue brand and
+ * called that coverage. That was safe while the component tier shipped as frozen literals,
+ * because Navy rendered identically (which was itself the bug). Now that 101 component
+ * tokens genuinely repaint under Navy, resolving only `:root` would leave every one of those
+ * values unverified — a gate that goes green on colours nobody measured.
+ */
+function blockFor(match) {
+  const decls = new Map();
+  const stripped = css.replace(/\/\*[\s\S]*?\*\//g, "");
+  for (const m of stripped.matchAll(/([^{}]+)\{([^}]*)\}/g)) {
+    const sel = m[1].trim();
+    if (sel !== ":root" && !(match && sel.includes(match))) continue;
+    for (const d of m[2].matchAll(/(--[A-Za-z0-9-]+)\s*:\s*([^;]+);/g)) decls.set(d[1], d[2].trim());
+  }
+  return decls;
+}
+
+/** The brands this estate ships. Each is checked independently and in full. */
+const BRANDS = [
+  { name: "blue", decls: blockFor(null) },
+  { name: "navy", decls: blockFor('data-brand="navy"') },
+];
+let CURRENT = BRANDS[0].decls;
+
+/** Resolve a var() chain in the current brand context to a literal. */
 function resolve(name, depth = 0) {
   if (depth > 10) return null;
-  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const m = ROOT_BLOCK.match(new RegExp(`^\\s*${escaped}\\s*:\\s*([^;]+);`, "m"));
-  if (!m) return null;
-  const v = m[1].trim();
+  const v = CURRENT.get(name);
+  if (v === undefined) return null;
   const ref = v.match(/^var\((--[A-Za-z0-9-]+)\)$/);
   return ref ? resolve(ref[1], depth + 1) : v;
 }
@@ -61,8 +84,8 @@ const VARIANTS = ["primary", "secondary", "tertiary", "tonal"];
 const ENABLED = ["default", "hover", "active"];
 const AA_TEXT = 4.5;
 
-const SURFACE = parseColor(resolve("--ds-surface"));
-const INVERSE_SURFACE = parseColor(resolve("--ds-gov-navy"));
+const surfaceOf = () => parseColor(resolve("--ds-surface"));
+const inverseSurfaceOf = () => parseColor(resolve("--ds-gov-navy"));
 
 function check(prefix, base) {
   const failures = [];
@@ -89,20 +112,27 @@ function check(prefix, base) {
 }
 
 test("every enabled Action combination puts an AA-readable label on its own fill", () => {
-  const { checked, failures } = check("--sa-cmp-action", SURFACE);
-  assert.ok(checked >= 40, `expected the full matrix, only resolved ${checked} combinations`);
-  assert.deepEqual(
-    failures,
-    [],
-    `\n  ${failures.join("\n  ")}\n\nFix by adding a per-intent step override in ` +
-      `src/component-matrix.json — do NOT lower this threshold.`,
-  );
+  // Per brand, in full. A label that is readable on gov-blue is not thereby readable on
+  // gov-navy: the two ramps differ at every step, and the component tier now follows them.
+  for (const brand of BRANDS) {
+    CURRENT = brand.decls;
+    const { checked, failures } = check("--sa-cmp-action", surfaceOf());
+    assert.ok(checked >= 40, `${brand.name}: expected the full matrix, only resolved ${checked}`);
+    assert.deepEqual(
+      failures,
+      [],
+      `\n  [${brand.name}]\n  ${failures.join("\n  ")}\n\nFix by adding a per-intent step ` +
+        `override in src/component-matrix.json — do NOT lower this threshold.`,
+    );
+  }
+  CURRENT = BRANDS[0].decls;
 });
 
 test("inverse actions stay AA-readable on a solid brand surface", () => {
   // The inverse qualifier exists for buttons on a solid brand header. Its values are
   // white-alpha so they work on any brand colour; gov-navy is the darkest surface in the
   // estate and therefore the binding case for the translucent steps.
+  const INVERSE_SURFACE = inverseSurfaceOf();
   assert.ok(INVERSE_SURFACE, "--ds-gov-navy must resolve for this test to mean anything");
   const failures = [];
   let checked = 0;

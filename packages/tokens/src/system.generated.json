@@ -4,72 +4,72 @@
     "neutral": {
       "subtle": {
         "$value": "{color.neutralScale.100}",
-        "$description": "Hovered rows, quiet panels"
+        "$description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting."
       },
-      "emphasis": {
+      "bold": {
         "$value": "{color.neutralScale.200}",
-        "$description": "Pressed rows, dividers as fills"
+        "$description": "Use for a tonal fill with more presence, for selected rows and active filters."
       },
       "inverse": {
         "$value": "{color.neutralScale.900}",
-        "$description": "Inverted surface (tooltips, dark panels)"
+        "$description": "Use for an inverted surface such as a tooltip or dark panel."
       },
       "disabled": {
         "$value": "{color.neutralScale.200}",
-        "$description": "Disabled control fill"
+        "$description": "Use when a control is disabled — it is deliberately low-contrast and exempt from the text contrast rules."
       }
     },
     "brand": {
       "primary": {
         "base": {
           "$value": "{color.primaryScale.50}",
-          "$description": "Brand primary background, base"
+          "$description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, tinted with the primary brand colour."
         },
-        "soft": {
+        "subtler": {
           "$value": "{color.primaryScale.100}",
-          "$description": "Brand primary background, soft"
+          "$description": "Use for a barely-there tint, for hovered rows and zebra striping, tinted with the primary brand colour."
         },
         "subtle": {
           "$value": "{color.primaryScale.200}",
-          "$description": "Brand primary background, subtle"
+          "$description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the primary brand colour."
         },
-        "emphasis": {
+        "bold": {
           "$value": "{color.primaryScale.300}",
-          "$description": "Brand primary background, emphasis"
+          "$description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the primary brand colour."
         },
-        "strong": {
+        "bolder": {
           "$value": "{color.primaryScale.600}",
-          "$description": "Brand primary background, strong"
+          "$description": "Use for a solid fill that carries white text — primary buttons and filled banners, tinted with the primary brand colour."
         },
-        "stronger": {
+        "boldest": {
           "$value": "{color.primaryScale.800}",
-          "$description": "Brand primary background, stronger"
+          "$description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the primary brand colour."
         }
       },
       "secondary": {
         "base": {
           "$value": "{color.secondaryScale.50}",
-          "$description": "Brand secondary background, base"
+          "$description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, tinted with the secondary brand colour."
         },
-        "soft": {
+        "subtler": {
           "$value": "{color.secondaryScale.100}",
-          "$description": "Brand secondary background, soft"
+          "$description": "Use for a barely-there tint, for hovered rows and zebra striping, tinted with the secondary brand colour."
         },
         "subtle": {
           "$value": "{color.secondaryScale.200}",
-          "$description": "Brand secondary background, subtle"
+          "$description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the secondary brand colour."
         },
-        "emphasis": {
+        "bold": {
           "$value": "{color.secondaryScale.300}",
-          "$description": "Brand secondary background, emphasis"
+          "$description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the secondary brand colour."
         },
-        "strong": {
+        "bolder": {
           "$value": "{color.secondaryScale.600}",
-          "$description": "Brand secondary background, strong"
+          "$description": "Use for a solid fill that carries white text — primary buttons and filled banners, tinted with the secondary brand colour."
         },
-        "stronger": {
+        "boldest": {
           "$value": "{color.secondaryScale.800}",
-          "$description": "Brand secondary background, stronger"
+          "$description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the secondary brand colour."
         }
       }
     },
@@ -77,133 +77,133 @@
       "success": {
         "base": {
           "$value": "{color.successScale.50}",
-          "$description": "success background, base"
+          "$description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, when the surface signals a successful or completed state."
         },
-        "soft": {
+        "subtler": {
           "$value": "{color.successScale.100}",
-          "$description": "success background, soft"
+          "$description": "Use for a barely-there tint, for hovered rows and zebra striping, when the surface signals a successful or completed state."
         },
         "subtle": {
           "$value": "{color.successScale.200}",
-          "$description": "success background, subtle"
+          "$description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals a successful or completed state."
         },
-        "emphasis": {
+        "bold": {
           "$value": "{color.successScale.300}",
-          "$description": "success background, emphasis"
+          "$description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals a successful or completed state."
         },
-        "strong": {
+        "bolder": {
           "$value": "{color.successScale.600}",
-          "$description": "success background, strong"
+          "$description": "Use for a solid fill that carries white text — primary buttons and filled banners, when the surface signals a successful or completed state."
         },
-        "stronger": {
+        "boldest": {
           "$value": "{color.successScale.800}",
-          "$description": "success background, stronger"
+          "$description": "Use for the heaviest fill, for maximum emphasis on a light page, when the surface signals a successful or completed state."
         }
       },
       "error": {
         "base": {
           "$value": "{color.dangerScale.50}",
-          "$description": "error background, base"
+          "$description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, when the surface signals an error or destructive state."
         },
-        "soft": {
+        "subtler": {
           "$value": "{color.dangerScale.100}",
-          "$description": "error background, soft"
+          "$description": "Use for a barely-there tint, for hovered rows and zebra striping, when the surface signals an error or destructive state."
         },
         "subtle": {
           "$value": "{color.dangerScale.200}",
-          "$description": "error background, subtle"
+          "$description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals an error or destructive state."
         },
-        "emphasis": {
+        "bold": {
           "$value": "{color.dangerScale.300}",
-          "$description": "error background, emphasis"
+          "$description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals an error or destructive state."
         },
-        "strong": {
+        "bolder": {
           "$value": "{color.dangerScale.600}",
-          "$description": "error background, strong"
+          "$description": "Use for a solid fill that carries white text — primary buttons and filled banners, when the surface signals an error or destructive state."
         },
-        "stronger": {
+        "boldest": {
           "$value": "{color.dangerScale.800}",
-          "$description": "error background, stronger"
+          "$description": "Use for the heaviest fill, for maximum emphasis on a light page, when the surface signals an error or destructive state."
         }
       },
       "warning": {
         "base": {
           "$value": "{color.warningScale.50}",
-          "$description": "warning background, base"
+          "$description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, when the surface signals a warning or a state needing attention."
         },
-        "soft": {
+        "subtler": {
           "$value": "{color.warningScale.100}",
-          "$description": "warning background, soft"
+          "$description": "Use for a barely-there tint, for hovered rows and zebra striping, when the surface signals a warning or a state needing attention."
         },
         "subtle": {
           "$value": "{color.warningScale.200}",
-          "$description": "warning background, subtle"
+          "$description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals a warning or a state needing attention."
         },
-        "emphasis": {
+        "bold": {
           "$value": "{color.warningScale.300}",
-          "$description": "warning background, emphasis"
+          "$description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals a warning or a state needing attention."
         },
-        "strong": {
+        "bolder": {
           "$value": "{color.warningScale.600}",
-          "$description": "warning background, strong"
+          "$description": "Use for a solid fill that carries white text — primary buttons and filled banners, when the surface signals a warning or a state needing attention."
         },
-        "stronger": {
+        "boldest": {
           "$value": "{color.warningScale.800}",
-          "$description": "warning background, stronger"
+          "$description": "Use for the heaviest fill, for maximum emphasis on a light page, when the surface signals a warning or a state needing attention."
         }
       },
       "info": {
         "base": {
           "$value": "{color.infoScale.50}",
-          "$description": "info background, base"
+          "$description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, when the surface signals an informational or in-progress state."
         },
-        "soft": {
+        "subtler": {
           "$value": "{color.infoScale.100}",
-          "$description": "info background, soft"
+          "$description": "Use for a barely-there tint, for hovered rows and zebra striping, when the surface signals an informational or in-progress state."
         },
         "subtle": {
           "$value": "{color.infoScale.200}",
-          "$description": "info background, subtle"
+          "$description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals an informational or in-progress state."
         },
-        "emphasis": {
+        "bold": {
           "$value": "{color.infoScale.300}",
-          "$description": "info background, emphasis"
+          "$description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals an informational or in-progress state."
         },
-        "strong": {
+        "bolder": {
           "$value": "{color.infoScale.600}",
-          "$description": "info background, strong"
+          "$description": "Use for a solid fill that carries white text — primary buttons and filled banners, when the surface signals an informational or in-progress state."
         },
-        "stronger": {
+        "boldest": {
           "$value": "{color.infoScale.800}",
-          "$description": "info background, stronger"
+          "$description": "Use for the heaviest fill, for maximum emphasis on a light page, when the surface signals an informational or in-progress state."
         }
       }
     }
   },
   "text": {
     "neutral": {
-      "primary": {
+      "base": {
         "$value": "{color.text.default}",
-        "$description": "Body and heading text"
+        "$description": "Use for body copy and headings — the default reading colour."
       },
-      "secondary": {
+      "subtle": {
         "$value": "{color.text.muted}",
-        "$description": "Captions, hints, secondary text"
+        "$description": "Use for captions, hints and secondary labels that sit beside primary text."
       },
       "disabled": {
         "$value": "{color.text.disabled}",
-        "$description": "Disabled label"
+        "$description": "Use when a control’s content is disabled — it is deliberately low-contrast and exempt from the text contrast rules."
       },
       "inverse": {
         "$value": "{color.text.onPrimary}",
-        "$description": "Text on a solid brand or inverse surface"
+        "$description": "Use for text placed on an inverted or solid brand surface."
       }
     },
     "brand": {
       "primary": {
         "base": {
           "$value": "{color.action.primary.default}",
-          "$description": "Brand-coloured text"
+          "$description": "Use for text in the primary brand colour — not for long-form reading."
         }
       }
     },
@@ -211,25 +211,25 @@
       "success": {
         "base": {
           "$value": "{color.status.success}",
-          "$description": "success message text"
+          "$description": "Use for text that report a successful or completed state."
         }
       },
       "error": {
         "base": {
           "$value": "{color.status.danger}",
-          "$description": "error message text"
+          "$description": "Use for text that report an error or destructive state."
         }
       },
       "warning": {
         "base": {
           "$value": "{color.status.warning}",
-          "$description": "warning message text"
+          "$description": "Use for text that report a warning or a state needing attention."
         }
       },
       "info": {
         "base": {
           "$value": "{color.status.info}",
-          "$description": "info message text"
+          "$description": "Use for text that report an informational or in-progress state."
         }
       }
     },
@@ -237,55 +237,55 @@
       "brand": {
         "hover": {
           "$value": "{color.action.primary.hover}",
-          "$description": "Link, hovered"
+          "$description": "Use for a standard text link in its hover state."
         },
         "active": {
           "$value": "{color.primaryScale.800}",
-          "$description": "Link, pressed"
+          "$description": "Use for a standard text link in its active state."
         },
         "disabled": {
           "$value": "{color.text.disabled}",
-          "$description": "Link, disabled"
+          "$description": "Use when a control’s content is disabled — it is deliberately low-contrast and exempt from the text contrast rules."
         }
       },
       "visited": {
         "default": {
           "$value": "{color.primaryScale.800}",
-          "$description": "Visited link — required by GIGW on public pages"
+          "$description": "Use for an already-visited link."
         }
       },
       "neutral": {
         "default": {
           "$value": "{color.text.muted}",
-          "$description": "Link in quiet chrome (footers, breadcrumbs)"
+          "$description": "Use for a link that must not stand out from surrounding text."
         }
       }
     }
   },
   "icon": {
     "neutral": {
-      "primary": {
+      "base": {
         "$value": "{color.text.default}",
-        "$description": "Default icon"
+        "$description": "Use for body copy and headings — the default reading colour."
       },
-      "secondary": {
+      "subtle": {
         "$value": "{color.text.muted}",
-        "$description": "Quiet icon"
+        "$description": "Use for captions, hints and secondary labels that sit beside primary text."
       },
       "disabled": {
         "$value": "{color.text.disabled}",
-        "$description": "Disabled icon"
+        "$description": "Use when a control’s content is disabled — it is deliberately low-contrast and exempt from the text contrast rules."
       },
       "inverse": {
         "$value": "{color.text.onPrimary}",
-        "$description": "Icon on a solid brand surface"
+        "$description": "Use for icons placed on an inverted or solid brand surface."
       }
     },
     "brand": {
       "primary": {
         "base": {
           "$value": "{color.action.primary.default}",
-          "$description": "Brand-coloured icon"
+          "$description": "Use for icons in the primary brand colour — not for long-form reading."
         }
       }
     },
@@ -293,35 +293,35 @@
       "success": {
         "base": {
           "$value": "{color.status.success}",
-          "$description": "success icon"
+          "$description": "Use for icons that report a successful or completed state."
         }
       },
       "error": {
         "base": {
           "$value": "{color.status.danger}",
-          "$description": "error icon"
+          "$description": "Use for icons that report an error or destructive state."
         }
       },
       "warning": {
         "base": {
           "$value": "{color.status.warning}",
-          "$description": "warning icon"
+          "$description": "Use for icons that report a warning or a state needing attention."
         }
       },
       "info": {
         "base": {
           "$value": "{color.status.info}",
-          "$description": "info icon"
+          "$description": "Use for icons that report an informational or in-progress state."
         }
       }
     }
   },
   "border": {
     "neutral": {
-      "strong": {
+      "bolder": {
         "hover": {
           "$value": "{color.border.controlHover}",
-          "$description": "Form control border, hovered"
+          "$description": "Use for the visible edge of an interactive control, such as an input or a checkbox."
         }
       }
     },
@@ -329,7 +329,7 @@
       "primary": {
         "base": {
           "$value": "{color.action.primary.default}",
-          "$description": "Brand-coloured border"
+          "$description": "Use for the outline of a primary-brand control, such as a selected card or a focused input."
         }
       }
     },
@@ -337,25 +337,25 @@
       "success": {
         "base": {
           "$value": "{color.status.success}",
-          "$description": "success border"
+          "$description": "Use for the outline of a control or callout reporting a successful or completed state."
         }
       },
       "error": {
         "base": {
           "$value": "{color.status.danger}",
-          "$description": "error border"
+          "$description": "Use for the outline of a control or callout reporting an error or destructive state."
         }
       },
       "warning": {
         "base": {
           "$value": "{color.status.warning}",
-          "$description": "warning border"
+          "$description": "Use for the outline of a control or callout reporting a warning or a state needing attention."
         }
       },
       "info": {
         "base": {
           "$value": "{color.status.info}",
-          "$description": "info border"
+          "$description": "Use for the outline of a control or callout reporting an informational or in-progress state."
         }
       }
     }

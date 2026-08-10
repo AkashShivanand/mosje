@@ -86,38 +86,63 @@ export const QUALIFIER = new Set(["elevated", "inverse", "translucent", "none"])
 export const CANONICAL = "base";
 
 /**
- * Ordinal, quietest → loudest. `base` is both the canonical value (CANONICAL) and the
- * quietest rung — for a fill, "the ordinary one" and "the plainest one" are the same
- * token, so they share a name rather than being two spellings of one value. Each rung
- * carries a contrast contract (§6.3).
+ * The prominence ladder — ORDINAL, quietest → loudest, one vocabulary for every role.
+ *
+ * Renamed 2026-08-10 from UX4G's `base · soft · subtle · emphasis · strong · stronger`.
+ * That vocabulary does not ORDER: `subtle` sat louder than `soft` while reading quieter, and
+ * `base` was the quietest of all while reading like the default. A ladder whose names do not
+ * sort is not a ladder, it is six adjectives. These words sort, and they follow Atlassian's
+ * shipped pattern (`subtlest` … `boldest`) rather than inventing a private scale.
+ *
+ * `base` is the CANONICAL value, not a rung of loudness — and its position in the order
+ * therefore differs per ladder, which is the honest description rather than an inconsistency:
+ * the ordinary FILL is the quietest thing on the page, while the ordinary INK is mid-way,
+ * quieter than a max-contrast heading and louder than a caption.
  */
-export const PROMINENCE = ["base", "soft", "subtle", "emphasis", "strong", "stronger"];
+export const PROMINENCE = ["base", "subtler", "subtle", "bold", "bolder", "boldest"];
 
 /**
- * Ink prominence. UX4G runs text and icon on their own ladder rather than the fill ladder,
- * which is right: "how strong is this fill" and "how prominent is this text" are different
- * questions. `strong` is a SAMAVESH addition above UX4G's three — it is the max-contrast
- * heading ink the estate already ships and UX4G has no rung for.
+ * Ink prominence — the SAME words, because "how loud is this" is one question whatever it is
+ * asked about, and two vocabularies for one concept is what produced the `primary` overload.
+ *
+ * That overload is now gone. `primary` / `secondary` / `tertiary` were ink rungs AND brand
+ * variants at once, disambiguated only by the parser's greedy order — §5.1c pinned it as
+ * harmless and §6.4 recorded that it was not. Those three words are now variants and nothing
+ * else, so the collision cannot be spelled.
  */
-export const INK_PROMINENCE = ["primary", "secondary", "tertiary", "strong"];
+export const INK_PROMINENCE = ["subtler", "subtle", "base", "bolder", "boldest"];
 
-/** What may appear in the prominence slot: the ladder, plus the canonical marker. */
+/** What may appear in the prominence slot. */
 export const PROMINENCE_SLOT = new Set([CANONICAL, ...PROMINENCE, ...INK_PROMINENCE]);
 
-/** Contrast class guaranteed by each rung, against its own surface. */
+/**
+ * Contrast class guaranteed by each rung — keyed BY LADDER, not by word.
+ *
+ * Sharing one vocabulary forces this, and the forcing is a feature: `subtle` on a fill is a
+ * quiet tonal chip that need only be distinguishable (WCAG 1.4.11, ≥3:1), while `subtle` on
+ * ink is a caption, which is still text and still owes AA (1.4.3, ≥4.5:1). A single flat
+ * table could only have held one of those two numbers, and would have been wrong about the
+ * other for every token that used it.
+ *
+ * Each ladder's entries are listed in its own ORDER, and naming-grammar.test.mjs asserts the
+ * thresholds are non-decreasing along it.
+ */
 export const PROMINENCE_CONTRACT = {
-  // Fill ladder — UX4G's vocabulary, our thresholds. `base` is both the canonical value
-  // and the quietest rung, which is what UX4G means by its own `default` too.
-  base: { minContrast: 0, use: "decorative fills only" },
-  soft: { minContrast: 0, use: "decorative fills only" },
-  subtle: { minContrast: 3.0, use: "UI boundaries, icons, non-text (WCAG 1.4.11)" },
-  emphasis: { minContrast: 3.0, use: "UI boundaries, icons, non-text (WCAG 1.4.11)" },
-  strong: { minContrast: 4.5, use: "text-safe (WCAG 1.4.3 AA)" },
-  stronger: { minContrast: 7.0, use: "text-safe (WCAG 1.4.6 AAA)" },
-  // Ink ladder.
-  primary: { minContrast: 4.5, use: "body and heading text (WCAG 1.4.3 AA)" },
-  secondary: { minContrast: 4.5, use: "captions and hints — still text, still AA" },
-  tertiary: { minContrast: 3.0, use: "non-essential text and quiet icons" },
+  fill: {
+    base: { minContrast: 0, use: "decorative fills only" },
+    subtler: { minContrast: 0, use: "decorative fills only" },
+    subtle: { minContrast: 3.0, use: "UI boundaries, icons, non-text (WCAG 1.4.11)" },
+    bold: { minContrast: 3.0, use: "UI boundaries, icons, non-text (WCAG 1.4.11)" },
+    bolder: { minContrast: 4.5, use: "text-safe (WCAG 1.4.3 AA)" },
+    boldest: { minContrast: 7.0, use: "text-safe (WCAG 1.4.6 AAA)" },
+  },
+  ink: {
+    subtler: { minContrast: 3.0, use: "non-essential text and quiet icons" },
+    subtle: { minContrast: 4.5, use: "captions and hints — still text, still AA" },
+    base: { minContrast: 4.5, use: "body and heading text (WCAG 1.4.3 AA)" },
+    bolder: { minContrast: 4.5, use: "max-contrast headings (WCAG 1.4.3 AA)" },
+    boldest: { minContrast: 7.0, use: "max-contrast text (WCAG 1.4.6 AAA)" },
+  },
 };
 
 export const STATE = new Set([
@@ -138,7 +163,11 @@ export const STATE = new Set([
 export const GROUP = new Set([
   "space", "inline", "stack", "padding", "section",
   "radius", "opacity", "z", "border", "elevation", "motion",
-  "type", "density", "chart", "on", "layer", "font", "leading",
+  "type", "density", "chart", "on", "layer", "font", "leading", "blur",
+  // `icon` and `control` are also a colour ROLE and a Tier-3 component respectively. RULE 2
+  // keeps that unambiguous by position, not by exception: a colour role always takes a FAMILY
+  // in position 2, so `icon/neutral/base` reads as a role and `icon/size/md` reads as a group.
+  "icon", "control", "container",
   // `focus` is a GROUP, not a role+state. A focus ring is not "an outline in the focus
   // state" — it is its own semantic object with its own colour, width and offset, and it
   // is the one affordance WCAG 2.4.7 makes non-optional. UX4G models it the same way

@@ -42,9 +42,13 @@ const colourSlotSequence = (family) => [
  *     `text/link/brand/visited` instead.
  */
 const KNOWN_AMBIGUITIES = new Set([
-  "brand: primary in variant + prominence",
-  "brand: secondary in variant + prominence",
-  "brand: tertiary in variant + prominence",
+  // The three `brand:` entries — `primary` / `secondary` / `tertiary` reachable as BOTH a
+  // brand variant and an ink prominence — were removed on 2026-08-10 when the ordinal ladder
+  // landed. That is the fix §6.4 promised and then had to record as unmet: the collision was
+  // being resolved by the parser's greedy order rather than by the grammar, which is what put
+  // "body and heading text" on sixteen backgrounds. Those three words are now variants and
+  // nothing else, so the ambiguity cannot be spelled. This test is what forced them out of
+  // the list rather than leaving a stale exemption behind.
   "link: visited in variant + state",
 ]);
 

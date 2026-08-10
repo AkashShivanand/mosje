@@ -13,7 +13,7 @@ export const tokens = {
       "700": "#003366"
     },
     "secondaryRamp": {
-      "light": {
+      "blue": {
         "50": "#ffedd5",
         "100": "#fed9b7",
         "200": "#fdb980",
@@ -25,7 +25,7 @@ export const tokens = {
         "800": "#7c3503",
         "900": "#512202"
       },
-      "dark": {
+      "navy": {
         "50": "#e6f6ef",
         "100": "#c2ead7",
         "200": "#99dcbc",
@@ -39,7 +39,7 @@ export const tokens = {
       }
     },
     "primaryRamp": {
-      "light": {
+      "blue": {
         "50": "#e8f2fd",
         "100": "#c6dcf9",
         "200": "#94bff5",
@@ -51,7 +51,7 @@ export const tokens = {
         "800": "#01376b",
         "900": "#002448"
       },
-      "dark": {
+      "navy": {
         "50": "#e5eff9",
         "100": "#c8dbf0",
         "200": "#9cbfe3",
@@ -339,57 +339,9 @@ export const tokens = {
       "saffronDark": "#7c3503",
       "navy": "#003366",
       "yellow": "#ffd323"
-    },
-    "chart": {
-      "cat": {
-        "1": "#0373df",
-        "2": "#f97316",
-        "3": "#2e7d32",
-        "4": "#7e22ce",
-        "5": "#0e7490",
-        "6": "#b45309",
-        "7": "#be185d",
-        "8": "#1558b0",
-        "9": "#4d7c0f",
-        "10": "#9f1239",
-        "11": "#0f766e",
-        "12": "#475569"
-      },
-      "seq": {
-        "50": "#e8f2fd",
-        "100": "#c6dcf9",
-        "200": "#94bff5",
-        "300": "#5fa0ef",
-        "400": "#2d84e8",
-        "500": "#0373df",
-        "600": "#025fb8",
-        "700": "#014b92",
-        "800": "#01376b",
-        "900": "#002448"
-      },
-      "div": {
-        "negStrong": "#a11d12",
-        "neg": "#ec5042",
-        "negSoft": "#fad2cf",
-        "mid": "#e2e6ea",
-        "posSoft": "#c8e6c9",
-        "pos": "#2e7d32",
-        "posStrong": "#1b5e20"
-      },
-      "trend": {
-        "up": "#2e7d32",
-        "down": "#ec5042",
-        "flat": "#6c757d"
-      },
-      "grid": "#f1f3f5",
-      "axis": "#6c757d",
-      "tooltipBg": "#1f2428",
-      "tooltipInk": "#ffffff",
-      "regionEmpty": "#f1f3f5",
-      "regionStroke": "#ffffff"
     }
   },
-  "spacing": {
+  "space": {
     "none": "0px",
     "xxs": "2px",
     "xs": "4px",
@@ -436,20 +388,20 @@ export const tokens = {
       "bold": 700
     },
     "size": {
-      "100": "11px",
-      "200": "12px",
-      "300": "14px",
-      "400": "16px",
-      "500": "20px",
-      "600": "22px",
-      "900": "48px"
+      "11": "0.6875rem",
+      "12": "0.75rem",
+      "14": "0.875rem",
+      "16": "1rem",
+      "20": "1.25rem",
+      "22": "1.375rem",
+      "48": "3rem"
     },
     "lineHeight": {
-      "100": "16px",
-      "200": "20px",
-      "300": "24px",
-      "400": "28px",
-      "900": "56px",
+      "16": "1rem",
+      "20": "1.25rem",
+      "24": "1.5rem",
+      "28": "1.75rem",
+      "56": "3.5rem",
       "devanagari": "1.7"
     },
     "role": {
@@ -603,38 +555,141 @@ export const tokens = {
       "out": "cubic-bezier(0, 0, 0.2, 1)",
       "in": "cubic-bezier(0.4, 0, 1, 1)",
       "inOut": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    "enter": {
+      "duration": "250ms",
+      "easing": "cubic-bezier(0, 0, 0.2, 1)"
+    },
+    "exit": {
+      "duration": "150ms",
+      "easing": "cubic-bezier(0.4, 0, 1, 1)"
+    },
+    "emphasis": {
+      "duration": "400ms",
+      "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
     }
   },
-  "type": {
-    "display": {
-      "size": "48px",
-      "leading": "56px",
-      "weight": 500
+  "border": {
+    "width": {
+      "none": "0px",
+      "sm": "1px",
+      "md": "2px",
+      "lg": "3px",
+      "xl": "4px"
     },
-    "title1": {
-      "size": "22px",
-      "leading": "28px",
-      "weight": 500
+    "neutral": {
+      "subtle": "#f1f3f5",
+      "base": "#e2e6ea",
+      "bolder": {
+        "default": "#9aa3af",
+        "hover": "#6c757d"
+      }
     },
-    "headline": {
-      "size": "20px",
-      "leading": "24px",
-      "weight": 600
+    "brand": {
+      "primary": {
+        "base": "#0373df"
+      }
     },
-    "body1": {
-      "size": "16px",
-      "leading": "24px",
-      "weight": 400
-    },
-    "body2": {
-      "size": "14px",
-      "leading": "20px",
-      "weight": 400
+    "status": {
+      "success": {
+        "base": "#1b5e20"
+      },
+      "error": {
+        "base": "#b8382f"
+      },
+      "warning": {
+        "base": "#8c571f"
+      },
+      "info": {
+        "base": "#1558b0"
+      }
     }
+  },
+  "opacity": {
+    "0": "0",
+    "5": "0.05",
+    "10": "0.1",
+    "20": "0.2",
+    "25": "0.25",
+    "30": "0.3",
+    "40": "0.4",
+    "50": "0.5",
+    "60": "0.6",
+    "70": "0.7",
+    "75": "0.75",
+    "80": "0.8",
+    "90": "0.9",
+    "100": "1"
+  },
+  "z": {
+    "dropdown": "1000",
+    "sticky": "1020",
+    "fixed": "1030",
+    "offcanvas": "1040",
+    "modal": {
+      "backdrop": "1050",
+      "base": "1060"
+    },
+    "popover": "1070",
+    "toast": "1090"
+  },
+  "size": {
+    "8": "0.5rem",
+    "10": "0.625rem",
+    "11": "0.6875rem",
+    "12": "0.75rem",
+    "14": "0.875rem",
+    "16": "1rem",
+    "18": "1.125rem",
+    "20": "1.25rem",
+    "22": "1.375rem",
+    "24": "1.5rem",
+    "28": "1.75rem",
+    "32": "2rem",
+    "36": "2.25rem",
+    "40": "2.5rem",
+    "44": "2.75rem",
+    "48": "3rem",
+    "52": "3.25rem",
+    "56": "3.5rem",
+    "60": "3.75rem",
+    "64": "4rem",
+    "80": "5rem",
+    "120": "7.5rem"
+  },
+  "blur": {
+    "1": "2px",
+    "2": "4px",
+    "3": "8px",
+    "4": "16px",
+    "subtle": "2px",
+    "soft": "4px",
+    "medium": "8px",
+    "strong": "16px"
+  },
+  "breakpoint": {
+    "mobile": "360px",
+    "tablet": "768px",
+    "desktop": "1280px"
   },
   "density": {
     "control": {
-      "height": "40px"
+      "height": "40px",
+      "padding": {
+        "x": "16px",
+        "y": "8px"
+      },
+      "gap": "8px"
+    },
+    "row": {
+      "height": "48px",
+      "padding": {
+        "x": "16px",
+        "y": "12px"
+      }
+    },
+    "section": {
+      "gap": "24px"
     }
   },
   "leading": {
@@ -643,70 +698,70 @@ export const tokens = {
   "bg": {
     "neutral": {
       "base": "#ffffff",
-      "soft": "#f8f9fa",
+      "subtler": "#f8f9fa",
       "subtle": "#f1f3f5",
-      "emphasis": "#e2e6ea",
+      "bold": "#e2e6ea",
       "inverse": "#0d1014",
       "disabled": "#e2e6ea"
     },
     "brand": {
       "primary": {
         "base": "#e8f2fd",
-        "soft": "#c6dcf9",
+        "subtler": "#c6dcf9",
         "subtle": "#94bff5",
-        "emphasis": "#5fa0ef",
-        "strong": "#025fb8",
-        "stronger": "#01376b"
+        "bold": "#5fa0ef",
+        "bolder": "#025fb8",
+        "boldest": "#01376b"
       },
       "secondary": {
         "base": "#ffedd5",
-        "soft": "#fed9b7",
+        "subtler": "#fed9b7",
         "subtle": "#fdb980",
-        "emphasis": "#fc9948",
-        "strong": "#d45c05",
-        "stronger": "#7c3503"
+        "bold": "#fc9948",
+        "bolder": "#d45c05",
+        "boldest": "#7c3503"
       }
     },
     "status": {
       "success": {
         "base": "#e8f5e9",
-        "soft": "#c8e6c9",
+        "subtler": "#c8e6c9",
         "subtle": "#a5d6a7",
-        "emphasis": "#81c784",
-        "strong": "#27682a",
-        "stronger": "#124517"
+        "bold": "#81c784",
+        "bolder": "#27682a",
+        "boldest": "#124517"
       },
       "error": {
         "base": "#fdecea",
-        "soft": "#fad2cf",
+        "subtler": "#fad2cf",
         "subtle": "#f6a89f",
-        "emphasis": "#f47c70",
-        "strong": "#d64539",
-        "stronger": "#992c25"
+        "bold": "#f47c70",
+        "bolder": "#d64539",
+        "boldest": "#992c25"
       },
       "warning": {
         "base": "#fff4e5",
-        "soft": "#ffe4bf",
+        "subtler": "#ffe4bf",
         "subtle": "#ffc97f",
-        "emphasis": "#ffae4f",
-        "strong": "#a66a26",
-        "stronger": "#704518"
+        "bold": "#ffae4f",
+        "bolder": "#a66a26",
+        "boldest": "#704518"
       },
       "info": {
         "base": "#e8f0fe",
-        "soft": "#d2e3fc",
+        "subtler": "#d2e3fc",
         "subtle": "#a8c8fa",
-        "emphasis": "#7aaff8",
-        "strong": "#1558b0",
-        "stronger": "#0d2d63"
+        "bold": "#7aaff8",
+        "bolder": "#1558b0",
+        "boldest": "#0d2d63"
       }
     }
   },
   "text": {
     "neutral": {
-      "strong": "#0d1014",
-      "primary": "#1f2428",
-      "secondary": "#343a40",
+      "bolder": "#0d1014",
+      "base": "#1f2428",
+      "subtle": "#343a40",
       "disabled": "rgba(31, 36, 40, 0.48)",
       "inverse": "#ffffff"
     },
@@ -744,41 +799,14 @@ export const tokens = {
       }
     }
   },
-  "border": {
-    "neutral": {
-      "subtle": "#f1f3f5",
-      "base": "#e2e6ea",
-      "strong": {
-        "default": "#9aa3af",
-        "hover": "#6c757d"
-      }
-    },
-    "brand": {
-      "primary": {
-        "base": "#0373df"
-      }
-    },
-    "status": {
-      "success": {
-        "base": "#1b5e20"
-      },
-      "error": {
-        "base": "#b8382f"
-      },
-      "warning": {
-        "base": "#8c571f"
-      },
-      "info": {
-        "base": "#1558b0"
-      }
-    }
-  },
   "focus": {
-    "ring": "rgba(3, 115, 223, 0.48)"
+    "ring": "rgba(3, 115, 223, 0.48)",
+    "width": "2px",
+    "offset": "2px"
   },
   "overlay": {
     "neutral": {
-      "stronger": "rgba(31, 36, 40, 0.5)"
+      "boldest": "rgba(31, 36, 40, 0.5)"
     }
   },
   "inline": {
@@ -821,10 +849,139 @@ export const tokens = {
     "xl": "64px",
     "2xl": "80px"
   },
+  "chart": {
+    "cat": {
+      "1": "#0373df",
+      "2": "#f97316",
+      "3": "#2e7d32",
+      "4": "#7e22ce",
+      "5": "#0e7490",
+      "6": "#b45309",
+      "7": "#be185d",
+      "8": "#1558b0",
+      "9": "#4d7c0f",
+      "10": "#9f1239",
+      "11": "#0f766e",
+      "12": "#475569"
+    },
+    "seq": {
+      "50": "#e8f2fd",
+      "100": "#c6dcf9",
+      "200": "#94bff5",
+      "300": "#5fa0ef",
+      "400": "#2d84e8",
+      "500": "#0373df",
+      "600": "#025fb8",
+      "700": "#014b92",
+      "800": "#01376b",
+      "900": "#002448"
+    },
+    "div": {
+      "negStrong": "#a11d12",
+      "neg": "#ec5042",
+      "negSoft": "#fad2cf",
+      "mid": "#e2e6ea",
+      "posSoft": "#c8e6c9",
+      "pos": "#2e7d32",
+      "posStrong": "#1b5e20"
+    },
+    "trend": {
+      "up": "#2e7d32",
+      "down": "#ec5042",
+      "flat": "#6c757d"
+    },
+    "grid": "#f1f3f5",
+    "axis": "#6c757d",
+    "tooltipBg": "#1f2428",
+    "tooltipInk": "#ffffff",
+    "regionEmpty": "#f1f3f5",
+    "regionStroke": "#ffffff"
+  },
+  "layer": {
+    "0": "#ffffff",
+    "1": "#f8f9fa",
+    "2": "#f1f3f5",
+    "3": "#e2e6ea",
+    "border": {
+      "0": "#f1f3f5",
+      "1": "#f1f3f5",
+      "2": "#e2e6ea",
+      "3": "#e2e6ea"
+    }
+  },
+  "on": {
+    "bg": {
+      "neutral": {
+        "base": "#1f2428",
+        "subtler": "#1f2428",
+        "subtle": "#1f2428",
+        "bold": "#1f2428"
+      },
+      "brand": {
+        "primary": {
+          "base": "#1f2428",
+          "subtle": "#1f2428",
+          "subtler": "#1f2428",
+          "bold": "#1f2428",
+          "bolder": "#ffffff",
+          "boldest": "#ffffff"
+        },
+        "secondary": {
+          "base": "#1f2428",
+          "subtle": "#1f2428",
+          "subtler": "#1f2428",
+          "bold": "#1f2428",
+          "bolder": "#ffffff",
+          "boldest": "#ffffff"
+        }
+      },
+      "status": {
+        "success": {
+          "base": "#1f2428",
+          "subtle": "#1f2428",
+          "subtler": "#1f2428",
+          "bold": "#1f2428",
+          "bolder": "#ffffff",
+          "boldest": "#ffffff"
+        },
+        "error": {
+          "base": "#1f2428",
+          "subtle": "#1f2428",
+          "subtler": "#1f2428",
+          "bold": "#1f2428",
+          "bolder": "#ffffff",
+          "boldest": "#ffffff"
+        },
+        "warning": {
+          "base": "#1f2428",
+          "subtle": "#1f2428",
+          "subtler": "#1f2428",
+          "bold": "#1f2428",
+          "bolder": "#ffffff",
+          "boldest": "#ffffff"
+        },
+        "info": {
+          "base": "#1f2428",
+          "subtle": "#1f2428",
+          "subtler": "#1f2428",
+          "bold": "#1f2428",
+          "bolder": "#ffffff",
+          "boldest": "#ffffff"
+        }
+      }
+    }
+  },
   "icon": {
+    "size": {
+      "xs": "1rem",
+      "sm": "1.25rem",
+      "md": "1.5rem",
+      "lg": "2rem",
+      "xl": "2.5rem"
+    },
     "neutral": {
-      "primary": "#1f2428",
-      "secondary": "#343a40",
+      "base": "#1f2428",
+      "subtle": "#343a40",
       "disabled": "rgba(31, 36, 40, 0.48)",
       "inverse": "#ffffff"
     },
@@ -846,6 +1003,27 @@ export const tokens = {
       "info": {
         "base": "#1558b0"
       }
+    }
+  },
+  "container": {
+    "sm": "540px",
+    "md": "720px",
+    "lg": "960px",
+    "xl": "1140px",
+    "content": "1280px"
+  },
+  "elevation": {
+    "flat": "none",
+    "card": "0 2px 3px 1px rgba(31, 36, 40, 0.12)",
+    "raised": "0 4px 6px -1px rgba(31, 36, 40, 0.10), 0 2px 4px -2px rgba(31, 36, 40, 0.06)",
+    "dropdown": "0 8px 12px -3px rgba(31, 36, 40, 0.09), 0 3px 5px -2px rgba(31, 36, 40, 0.05)",
+    "modal": "0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03)",
+    "toast": "0 24px 48px -12px rgba(31, 36, 40, 0.18)"
+  },
+  "control": {
+    "radius": "8px",
+    "border": {
+      "width": "1px"
     }
   },
   "button": {

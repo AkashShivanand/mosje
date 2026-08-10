@@ -1,7 +1,7 @@
 {
   "name": "@mosje/tokens",
   "version": "0.1.0",
-  "description": "SAMAVESH design tokens — DTCG source compiled by Style Dictionary to CSS/TS/Tailwind/Figma.",
+  "description": "SAMAVESH design tokens \u2014 DTCG source compiled by Style Dictionary to CSS/TS/Tailwind/Figma.",
   "private": true,
   "type": "module",
   "exports": {
@@ -11,10 +11,13 @@
     "./tailwind-v4": "./dist/tokens-tailwind.css",
     "./figma": "./dist/figma.tokens.json"
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "node build/style-dictionary.config.mjs",
-    "test": "node --test test/*.test.mjs"
+    "test": "node --test --test-concurrency=1 test/*.test.mjs"
   },
   "devDependencies": {
     "style-dictionary": "^4.3.0"

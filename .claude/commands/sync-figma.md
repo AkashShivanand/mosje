@@ -6,7 +6,15 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 
 Sync MoSJE design tokens with Figma (no Code Connect — needs a Dev seat we don't have).
 
-Target file: **${ARGUMENTS:-https://www.figma.com/design/T3bkN5gNKfaNeY6dpT6FwF/MoSJE---UX4G-DS}** (fileKey `T3bkN5gNKfaNeY6dpT6FwF`).
+Target file: **${ARGUMENTS:-https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System}** (fileKey `3FF5l0SMNIwdpZrKkeyPTm`) — the canonical library named in `GOVERNANCE.md`.
+
+> **Do not use `T3bkN5gNKfaNeY6dpT6FwF` or `qyzTEy8dlb3ssYctlkMX5o`.** Both are older SAMAVESH
+> copies that still contain variables, so a sync run against either *appears* to work and
+> silently edits a dead library. Corrected 2026-08-10 after this pointer sent an audit to the
+> wrong file: `T3bk…` has 176 variables under `Color Styles` / `Text Styles` / `Misc`, and
+> `qyzT…` has 261 with no `Theme` collection and the pre-rename `Blue - Light` / `Blue - Dark`
+> modes. The canonical file has **690** variables across eight collections. Check the count
+> before you write.
 
 **Source of truth:** `packages/tokens/src/*.json` — DTCG JSON in 3 tiers:
 `primitive.json` (raw palette/scales, private) → `semantic.json` (the public `--ds-*`/`--sa-*` contract, what apps consume) → `component.json` (resolves to semantic). Style Dictionary v4 compiles these into `tokens.css`, `tokens.ts`, the Tailwind v3/v4 outputs, and a **Figma DTCG export** (`packages/tokens/dist/figma.tokens.json`).
