@@ -116,6 +116,111 @@ function setUx4gAnalyticsEnabled(enabled: boolean): void {
   if (config) config.enabled = enabled;
 }
 
+/**
+ * The widget's keyboard shortcut is Windows-only, in label AND in binding.
+ *
+ * v3.28 hardcodes `Ctrl+F2` into the trigger's markup and binds exactly
+ * `e.ctrlKey && e.key === "F2"`. On a Mac that is wrong twice over:
+ *
+ *   1. Ctrl+F2 is a RESERVED macOS system shortcut — "move focus to the menu
+ *      bar" — on by default, so the OS consumes it before the page sees it.
+ *   2. F2 is a media key on Apple keyboards unless the user has turned on
+ *      "Use F1, F2, etc. as standard function keys", so it needs `fn` as well.
+ *
+ * A shortcut advertised on the button and then not working is worse than none
+ * at all, and on an accessibility control specifically so — keyboard users are
+ * the people it exists for.
+ *
+ * We add ⌘⌥A on macOS and relabel the trigger to match. Why that combo:
+ *
+ *   - NOT ⌃⌥ (Control+Option). That is the VoiceOver modifier, the "VO key" —
+ *     binding it would collide with the screen reader on the one widget whose
+ *     users are most likely to be running one.
+ *   - Cmd suppresses Option's character substitution, so it cannot type a stray
+ *     "å" the way ⌥A alone would.
+ *   - Not claimed by macOS or by Safari/Chrome/Firefox defaults.
+ *   - Mnemonic: A for Accessibility.
+ *
+ * The binding is a BRIDGE, not a reimplementation: it dispatches the synthetic
+ * Ctrl+F2 the widget already listens for, so open/close/focus behaviour stays
+ * exactly the vendor's. Verified against the live widget — the panel toggles
+ * cleanly on repeat presses. Windows and Linux are untouched and keep Ctrl+F2.
+ *
+ * `e.code` rather than `e.key`, because holding Option rewrites `e.key`.
+ */
+const MAC_SHORTCUT_LABEL = "⌘⌥A";
+
+function isMacPlatform(): boolean {
+  const nav = navigator as Navigator & { userAgentData?: { platform?: string } };
+  const platform = nav.userAgentData?.platform ?? nav.platform ?? "";
+  return /mac/i.test(platform) || /Mac OS X/.test(nav.userAgent);
+}
+
+/**
+ * Match the A key across the several ways it can present.
+ *
+ * `e.code` is the right answer on real hardware — it is layout-independent, and
+ * holding Option rewrites `e.key` (⌥A alone yields "å"). But `code` is not
+ * guaranteed: synthetic events, some automation/remote-input paths and a few
+ * assistive tools deliver a keydown with `code` empty, which a `code`-only
+ * check silently drops. That is exactly how the first version of this failed —
+ * observed, not theorised: `{key: "a", code: "", meta: true, alt: true}`.
+ *
+ * So accept either signal, and include the Option-modified glyph for the case
+ * where a platform hands us `key` without Cmd having suppressed the rewrite.
+ */
+function isKeyA(e: KeyboardEvent): boolean {
+  if (e.code === "KeyA") return true;
+  if (e.code) return false; // a real, different key — don't fall through to `key`
+  return ["a", "å"].includes(e.key.toLowerCase());
+}
+
+/** Binds ⌘⌥A. Returns a cleanup function that removes the listener. */
+function installMacShortcutKey(): () => void {
+  const onKeyDown = (e: KeyboardEvent): void => {
+    if (!e.metaKey || !e.altKey || e.ctrlKey || e.shiftKey) return;
+    if (!isKeyA(e)) return;
+    e.preventDefault();
+    document.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "F2",
+        code: "F2",
+        ctrlKey: true,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+  };
+  document.addEventListener("keydown", onKeyDown);
+  return () => document.removeEventListener("keydown", onKeyDown);
+}
+
+/**
+ * Rewrite the trigger's hardcoded `Ctrl+F2` to the macOS combo.
+ *
+ * Called once the script has loaded, so the markup is already in the document;
+ * the retry only covers the widget deferring its own injection.
+ */
+function relabelMacShortcut(): void {
+  let attempts = 0;
+  const apply = (): void => {
+    const label = document.querySelector(".ux4g-accessibility-short-key");
+    if (!label) {
+      if (attempts++ < 20) window.setTimeout(apply, 100);
+      return;
+    }
+    label.textContent = MAC_SHORTCUT_LABEL;
+    // The trigger's aria-label overrides its text content, so without this the
+    // shortcut would be visible to sighted users and announced to nobody.
+    const trigger = document.getElementById("uw-widget-custom-trigger");
+    const name = trigger?.getAttribute("aria-label");
+    if (trigger && name && !name.includes(MAC_SHORTCUT_LABEL)) {
+      trigger.setAttribute("aria-label", `${name} (${MAC_SHORTCUT_LABEL})`);
+    }
+  };
+  apply();
+}
+
 export interface UX4GAccessibilityWidgetProps {
   /** Override the widget script URL (e.g. to pin a version or self-host). */
   src?: string;
@@ -151,11 +256,27 @@ export function UX4GAccessibilityWidget({
       // is gated on DOMContentLoaded, which has already fired by now — replay it
       // so those handlers actually attach. Safe to dispatch more than once.
       document.dispatchEvent(new Event("DOMContentLoaded", { bubbles: true, cancelable: true }));
+      if (isMacPlatform()) relabelMacShortcut();
     });
     document.body.appendChild(script);
     // Intentionally not removed on unmount — the widget is a page-level,
     // idempotent singleton that should persist across route changes.
   }, [src, analytics]);
+
+  // Separate from the script effect on purpose: that one bails early when the
+  // singleton is already loaded, and both the key binding and the label still
+  // have to be right. Unlike the widget itself the listener IS torn down on
+  // unmount, since one outliving the component would be a leak.
+  //
+  // relabel runs here as well as in the load handler, covering the two ways it
+  // can be missed: a remount past the early return (this effect), and a CDN
+  // slow enough to outlast the retry window (the load handler). It only ever
+  // writes the same text, so running twice is harmless.
+  React.useEffect(() => {
+    if (typeof document === "undefined" || !isMacPlatform()) return;
+    relabelMacShortcut();
+    return installMacShortcutKey();
+  }, []);
 
   return null;
 }
