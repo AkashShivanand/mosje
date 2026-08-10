@@ -31,23 +31,35 @@
   font-family: "Noto Sans", sans-serif !important;
 }
 
-/* Centre the shortcut label under the trigger icon.
+/* Centre the shortcut label on the trigger ICON, in both trigger states.
 
-   Upstream positions it absolutely with ASYMMETRIC insets and no text-align:
+   Upstream positions the label absolutely with asymmetric insets and no
+   text-align — `left: 17px; right: 15px`, left-aligned text. That only looked
+   centred because `Ctrl+F2` happens to fill nearly all of the resulting box;
+   `⌘⌥A` is narrower and hugs the left edge.
 
-     left: 17px; right: 15px;   → a 38px box, 1px off-centre in the 70px trigger
+   The trigger has TWO states, and that is what makes this subtle. It is
+   `position: fixed; right: 20px` with `overflow: hidden`, collapsed to a 70px
+   circle and expanding to `max-width: 300px` on hover to reveal its
+   "Accessibility Options" label. Because it is anchored on the right, the pill
+   grows LEFTWARD — so the icon, which is the first flex child, travels with the
+   left edge and is NOT at the pill's centre once expanded.
 
-   Left-aligned text in that box only looked centred because `Ctrl+F2` happens
-   to fill nearly all 38px. Any shorter string — `⌘⌥A` on macOS — hugs the left
-   edge and visibly misaligns against the icon above it, which IS centred.
+   Anything anchored to the pill's own box therefore drifts: stretching the
+   label edge-to-edge and centring it puts the shortcut in the middle of the
+   expanded pill, ~90px away from the icon it labels. Upstream's left-anchoring
+   avoids that by accident, which is why it must not simply be centred.
 
-   Symmetric insets plus explicit centring make it correct for a label of any
-   length, and incidentally fix the 1px offset upstream has always had. Applied
-   on every platform: `Ctrl+F2` is now genuinely centred instead of approximately
-   so. Specificity from the id is enough here; upstream sets no !important. */
+   So anchor to the icon instead. 35px is the icon's centre measured from the
+   pill's left edge (18px padding + 2px margin + half of the 30px icon), which
+   holds in both states because the icon tracks that edge. `translateX(-50%)`
+   with a content-sized box then centres any label length on that point — no
+   dependency on the pill's width, and none on the string. */
 #uw-widget-custom-trigger .ux4g-accessibility-short-key {
-  left: 0;
-  right: 0;
+  left: 35px;
+  right: auto;
+  width: max-content;
+  transform: translateX(-50%);
   text-align: center;
 }
 
