@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { resolveContract } from "./lib/css-resolve.mjs";
+import { resolveAxisCombinations, resolveContract } from "./lib/css-resolve.mjs";
 
 /**
  * THE VISUAL CONTRACT.
@@ -142,6 +142,35 @@ test("every declared rename actually corresponds to a token that moved", () => {
   );
 
   assert.deepEqual(stale, [], `RENAMES lists names that were never in the contract:${summarise(stale)}`);
+});
+
+test("theming axes layer cleanly when a page sets more than one at once", () => {
+  // A portal renders data-brand AND data-theme AND data-surface together. 41 properties
+  // in this sheet are declared by both the brand axis and the theme axis, so each has an
+  // opinion about them, and the single-axis contexts above cannot say who wins.
+  //
+  // The invariant: a combined context's value always equals the value from one of its own
+  // active axes. That holds today, which is why combinations are not pinned separately.
+  // If it ever breaks, some pair of axes has started INTERACTING — producing a colour
+  // nobody declared — and that is a real visual bug that no single-axis test can see.
+  const singles = actual;
+  const surprises = [];
+
+  for (const { key, active, resolved } of resolveAxisCombinations(cssText)) {
+    for (const [prop, value] of Object.entries(resolved)) {
+      const explained =
+        value === singles[":root"]?.[prop] || active.some((sel) => singles[sel]?.[prop] === value);
+      if (!explained) {
+        surprises.push(`${key} ${prop}: ${value} — matches neither :root nor any active axis`);
+      }
+    }
+  }
+
+  assert.deepEqual(
+    surprises,
+    [],
+    `combining theming axes produced values no single axis explains:${summarise(surprises)}`,
+  );
 });
 
 test("the sheet stays flat, so the resolver cannot silently mis-parse it", () => {

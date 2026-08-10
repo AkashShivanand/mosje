@@ -98,40 +98,100 @@ function resolveName(name, fallback, decls, seen) {
 const normalise = (value) => value.replace(/\s+/g, " ").trim();
 
 /**
- * Build the resolved contract for every selector context in the sheet.
+ * Which theming axis a selector belongs to. Axes are independent switches that a real
+ * page sets TOGETHER — a portal in dark mode is `data-brand` and `data-theme` and
+ * `data-surface` all at once — so they have to be enumerated as a product, not a list.
+ */
+function axisOf(selector) {
+  if (selector === ":root") return "root";
+  if (/data-theme/.test(selector)) return "theme";
+  if (/data-brand|data-color-mode/.test(selector)) return "brand";
+  if (/data-density/.test(selector)) return "density";
+  if (/data-surface/.test(selector)) return "surface";
+  return "other";
+}
+
+/** Resolve one context: `:root` overlaid by `active` selectors, in DOCUMENT order. */
+function resolveContext(blocks, root, active) {
+  const effective = new Map(root);
+
+  // Document order, not the order we happened to assemble the combination in — the
+  // sheet decides which block wins when two declare the same property, not us.
+  for (const block of blocks) {
+    if (!active.has(block.selector)) continue;
+    for (const [prop, value] of block.decls) effective.set(prop, value);
+  }
+
+  const resolved = {};
+  for (const prop of [...effective.keys()].sort()) {
+    resolved[prop] = normalise(resolveValue(effective.get(prop), effective, new Set([prop])));
+  }
+  return resolved;
+}
+
+function rootDecls(blocks) {
+  const root = new Map();
+  for (const block of blocks) {
+    if (block.selector !== ":root") continue;
+    for (const [prop, value] of block.decls) root.set(prop, value);
+  }
+  return root;
+}
+
+/**
+ * Build the resolved contract for every single selector context in the sheet.
  *
- * A non-root context is `:root` overlaid by that selector's own declarations, which
- * is how the cascade actually applies them — so `[data-theme="dark"]` resolves a
- * chain through its own overrides even when only the far end of the chain is
- * redeclared.
+ * This is what gets PINNED to the fixture. Combinations are covered separately, by an
+ * invariant rather than by 4.5x more pinned values — see resolveAxisCombinations.
  *
  * @returns {Record<string, Record<string, string>>} selector -> property -> literal
  */
 export function resolveContract(css) {
   const blocks = parseBlocks(css);
-
-  const root = new Map();
-  for (const block of blocks) {
-    if (block.selector === ":root") {
-      for (const [prop, value] of block.decls) root.set(prop, value);
-    }
-  }
+  const root = rootDecls(blocks);
 
   const contract = {};
   for (const selector of [...new Set(blocks.map((b) => b.selector))]) {
-    const effective = new Map(root);
-    if (selector !== ":root") {
-      for (const block of blocks) {
-        if (block.selector !== selector) continue;
-        for (const [prop, value] of block.decls) effective.set(prop, value);
-      }
-    }
-
-    const resolved = {};
-    for (const prop of [...effective.keys()].sort()) {
-      resolved[prop] = normalise(resolveValue(effective.get(prop), effective, new Set([prop])));
-    }
-    contract[selector] = resolved;
+    contract[selector] = resolveContext(blocks, root, new Set(selector === ":root" ? [] : [selector]));
   }
   return contract;
+}
+
+/**
+ * Resolve every COMBINATION of theming axes a real page can be in — a portal renders
+ * `data-brand` and `data-theme` and `data-surface` at once, not one at a time.
+ *
+ * This exists because 41 properties in this sheet are declared by both the brand axis
+ * and the theme axis (including tokens the 2026-08-10 rename touched), so "dark" and
+ * "navy" both have an opinion about them. Today the axes layer cleanly: every combined
+ * value equals the value from one of its own active axes. That is an invariant worth
+ * asserting rather than a table worth pinning — pinning it would add ~30,000 values
+ * that are all duplicates of single-axis values, and would go stale as noise.
+ *
+ * @returns {Array<{key: string, active: string[], resolved: Record<string, string>}>}
+ */
+export function resolveAxisCombinations(css) {
+  const blocks = parseBlocks(css);
+  const root = rootDecls(blocks);
+
+  const axes = new Map();
+  for (const block of blocks) {
+    const axis = axisOf(block.selector);
+    if (axis === "root") continue;
+    if (!axes.has(axis)) axes.set(axis, []);
+    if (!axes.get(axis).includes(block.selector)) axes.get(axis).push(block.selector);
+  }
+
+  let combos = [[]];
+  for (const [, selectors] of axes) {
+    combos = combos.flatMap((combo) => [combo, ...selectors.map((s) => [...combo, s])]);
+  }
+
+  return combos
+    .filter((combo) => combo.length > 1) // singles and :root are already pinned
+    .map((combo) => ({
+      key: combo.join(" + "),
+      active: combo,
+      resolved: resolveContext(blocks, root, new Set(combo)),
+    }));
 }
