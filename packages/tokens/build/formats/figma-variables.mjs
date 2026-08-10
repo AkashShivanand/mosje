@@ -165,7 +165,21 @@ export function figmaNameFor(path, tier = "sys") {
       return map[prop] ? { collection: "Typography", name: `${map[prop]}/${role}` } : null;
     }
     if (kind === "tracking") return { collection: "Typography", name: `letter-spacing/${tail.join("-")}` };
-    return { collection: "Typography", name: `font-family/${rest.join("-")}` };
+    // The raw type scale — primitives the roles above alias. These are FLOATs in px, so
+    // they belong in font-size/ and line-height/, NOT in font-family/.
+    if (kind === "size") return { collection: "Typography", name: `font-size/${tail.join("-")}` };
+    if (kind === "lineHeight") return { collection: "Typography", name: `line-height/${tail.join("-")}` };
+    // `font/devanagari` is a family whose path omits the `family` segment.
+    if (rest.length === 1) return { collection: "Typography", name: `font-family/${rest[0]}` };
+    // Everything under font/ used to fall into `font-family/${rest}` here. That silently
+    // filed 13 px-valued FLOATs as `font-family/size-100`, `font-family/lineHeight-100` …
+    // — a font-family folder full of numbers, discovered only by diffing against the live
+    // library. A catch-all that renames what it does not recognise is worse than a crash:
+    // it ships. Add an explicit mapping instead.
+    throw new Error(
+      `figma-variables: no mapping for "font/${rest.join("/")}". Add one above rather than ` +
+        `letting it fall into font-family/.`,
+    );
   }
   if (head === "leading") return { collection: "Typography", name: `line-height/${rest.join("-")}` };
   if (head === "type") return { collection: "Typography", name: `type/${rest.join("-")}` };

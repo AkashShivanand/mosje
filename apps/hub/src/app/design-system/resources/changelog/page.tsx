@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.11.3",
+    version: "v0.11.4",
     date: "2026-08-10",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "The Figma exporter had a silent catch-all: anything under font/ that it did not recognise was filed as font-family/{name}. That labelled 13 px-valued numbers as font-family/size-100, font-family/lineHeight-100 and so on \u2014 a font-family folder full of sizes. font/size/* and font/lineHeight/* now map to font-size/ and line-height/, and the fallback THROWS instead of guessing. A catch-all that renames what it does not recognise is worse than a crash, because it ships" },
+      { kind: "Added", text: "Figma library: created the 61 variables the code emitted but the library never had \u2014 Spacing 15 to 49 (the inline/stack/padding/section semantic scale) and Typography 79 to 106 (font families, the raw size and line-height scale, and the type/* role aliases). Literals are created before the aliases that reference them, and every variable gets an explicit scope rather than ALL_SCOPES" },
+      { kind: "Changed", text: "Figma library: 28 in-place renames so it matches the shipped grammar \u2014 27 in Theme (prominence /Default to /Base, Text/Link/Default to Text/Link/Brand) and easing-in-out to easing-inOut in Motion. Renamed, never recreated, so every variable id survived and any binding follows" },
+      { kind: "Fixed", text: "Color 149 to 141: retired 8 leftovers the code does not emit and nothing uses. Text/Secondary was NOT retired \u2014 it is bound on 12 nodes, and the pre-delete check caught that after an earlier scan reported it unused. Figma's findAll(predicate) proved unreliable, returning 0 and 12 for the same query minutes apart, so every deletion now needs three independent traversals to agree" },
+      { kind: "Changed", text: "The 24 remaining Color names beyond the payload are deliberate: they are Figma-native primitives designers bind to directly (Text/Dark alone has 1,143 bindings) and the exporter withholds them on purpose. Five type/*-weight variables stay absent from Figma because Figma models font weight as a STRING style name and the code as a numeric FLOAT \u2014 Figma rejects an alias across resolved types, so that is a modelling decision, not a gap to paper over" },
+    ],
+  },
+  {
+    version: "v0.11.3",
+    date: "2026-08-10",
     changes: [
       { kind: "Added", text: "Storybook now documents all 69 exported components, up from 10. The 59 entries in apps/storybook/coverage-baseline.json are paid off and the backlog array is empty, so the coverage ratchet is at 100% — a new component without a story now fails the build outright rather than being absorbed as declared debt" },
       { kind: "Added", text: "Every story is written against real MoSJE content — scheme names, districts, beneficiary counts, the three-tier approval chain — and each file's doc comment leads with the distinction that decides whether the component is the right one, not a restatement of its props. Modal vs SideSheet is about keeping list context visible rather than size; Skeleton vs Loader is about whether the shape is known; SlaProgressIndicator is not a Progress bar because a paused clock must render neutral" },

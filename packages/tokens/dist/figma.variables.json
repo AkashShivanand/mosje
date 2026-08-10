@@ -4,8 +4,8 @@
   "counts": {
     "Spacing": {
       "total": 49,
-      "new": 34,
-      "existing": 15
+      "new": 0,
+      "existing": 49
     },
     "Color": {
       "total": 115,
@@ -14,13 +14,13 @@
     },
     "Theme": {
       "total": 374,
-      "new": 27,
-      "existing": 347
+      "new": 0,
+      "existing": 374
     },
     "Typography": {
-      "total": 110,
-      "new": 33,
-      "existing": 77
+      "total": 109,
+      "new": 5,
+      "existing": 104
     },
     "Border Radius": {
       "total": 12,
@@ -29,8 +29,8 @@
     },
     "Motion": {
       "total": 6,
-      "new": 1,
-      "existing": 5
+      "new": 0,
+      "existing": 6
     },
     "Density": {
       "total": 1,
@@ -228,7 +228,8 @@
     "shadow/sm (Figma models shadows as EFFECT STYLES, not variables — exported separately)",
     "shadow/md (Figma models shadows as EFFECT STYLES, not variables — exported separately)",
     "shadow/lg (Figma models shadows as EFFECT STYLES, not variables — exported separately)",
-    "shadow/xl (Figma models shadows as EFFECT STYLES, not variables — exported separately)"
+    "shadow/xl (Figma models shadows as EFFECT STYLES, not variables — exported separately)",
+    "leading/devanagari (collides with an earlier token on Typography::line-height/devanagari)"
   ],
   "collections": [
     {
@@ -552,7 +553,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-spacing-10xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
@@ -572,7 +573,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-spacing-11xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
@@ -592,7 +593,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-inline-none)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -612,7 +613,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-inline-2xs)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -632,7 +633,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-inline-xs)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -652,7 +653,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-inline-s)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -672,7 +673,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-inline-m)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -692,7 +693,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-inline-l)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -712,7 +713,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-inline-xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -732,7 +733,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-stack-none)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -752,7 +753,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-stack-2xs)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -772,7 +773,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-stack-xs)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -792,7 +793,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-stack-s)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -812,7 +813,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-stack-m)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -832,7 +833,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-stack-l)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -852,7 +853,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-stack-xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -872,7 +873,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-padding-none)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -892,7 +893,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-padding-3xs)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -912,7 +913,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-padding-2xs)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -932,7 +933,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-padding-xs)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -952,7 +953,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-padding-s)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -972,7 +973,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-padding-m)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -992,7 +993,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-padding-l)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -1012,7 +1013,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-padding-xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -1032,7 +1033,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-padding-2xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -1052,7 +1053,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-padding-3xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -1072,7 +1073,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-padding-4xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -1092,7 +1093,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-section-none)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -1112,7 +1113,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-section-xs)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -1132,7 +1133,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-section-s)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -1152,7 +1153,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-section-m)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -1172,7 +1173,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-section-l)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -1192,7 +1193,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-section-xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -1212,7 +1213,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-section-2xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -4087,7 +4088,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4273,7 +4274,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4459,7 +4460,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4645,7 +4646,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-error-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4831,7 +4832,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-warning-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5017,7 +5018,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5322,7 +5323,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-link-brand-hover)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5353,7 +5354,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-link-brand-active)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5383,7 +5384,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-link-brand-disabled)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5474,7 +5475,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-brand-primary-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5504,7 +5505,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-status-success-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5534,7 +5535,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-status-error-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5565,7 +5566,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-status-warning-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5595,7 +5596,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-status-info-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5654,7 +5655,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-border-brand-primary-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5684,7 +5685,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-border-status-success-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5714,7 +5715,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-border-status-error-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5745,7 +5746,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-border-status-warning-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5775,7 +5776,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-border-status-info-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5925,7 +5926,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-icon-brand-primary-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5955,7 +5956,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-success-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5985,7 +5986,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-error-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -6016,7 +6017,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-warning-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -6046,7 +6047,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-info-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -14711,7 +14712,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-neutral-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -14800,7 +14801,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-link-brand-default)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -14858,7 +14859,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-border-neutral-base)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -15232,7 +15233,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-family-latin)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
@@ -15271,7 +15272,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-family-devanagari)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
@@ -15311,7 +15312,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-family-display)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
@@ -15350,7 +15351,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-family-mono)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
@@ -15537,7 +15538,7 @@
           }
         },
         {
-          "name": "font-family/size-100",
+          "name": "font-size/100",
           "path": "font/size/100",
           "type": "FLOAT",
           "valuesByMode": {
@@ -15575,14 +15576,14 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-100)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
           }
         },
         {
-          "name": "font-family/size-200",
+          "name": "font-size/200",
           "path": "font/size/200",
           "type": "FLOAT",
           "valuesByMode": {
@@ -15620,14 +15621,14 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-200)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
           }
         },
         {
-          "name": "font-family/size-300",
+          "name": "font-size/300",
           "path": "font/size/300",
           "type": "FLOAT",
           "valuesByMode": {
@@ -15665,14 +15666,14 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-300)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
           }
         },
         {
-          "name": "font-family/size-400",
+          "name": "font-size/400",
           "path": "font/size/400",
           "type": "FLOAT",
           "valuesByMode": {
@@ -15710,14 +15711,14 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-400)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
           }
         },
         {
-          "name": "font-family/size-500",
+          "name": "font-size/500",
           "path": "font/size/500",
           "type": "FLOAT",
           "valuesByMode": {
@@ -15755,14 +15756,14 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-500)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
           }
         },
         {
-          "name": "font-family/size-600",
+          "name": "font-size/600",
           "path": "font/size/600",
           "type": "FLOAT",
           "valuesByMode": {
@@ -15800,14 +15801,14 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-600)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
           }
         },
         {
-          "name": "font-family/size-900",
+          "name": "font-size/900",
           "path": "font/size/900",
           "type": "FLOAT",
           "valuesByMode": {
@@ -15845,14 +15846,14 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-900)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
           }
         },
         {
-          "name": "font-family/lineHeight-100",
+          "name": "line-height/100",
           "path": "font/lineHeight/100",
           "type": "FLOAT",
           "valuesByMode": {
@@ -15890,14 +15891,14 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-lineHeight-100)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
           }
         },
         {
-          "name": "font-family/lineHeight-200",
+          "name": "line-height/200",
           "path": "font/lineHeight/200",
           "type": "FLOAT",
           "valuesByMode": {
@@ -15935,14 +15936,14 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-lineHeight-200)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
           }
         },
         {
-          "name": "font-family/lineHeight-300",
+          "name": "line-height/300",
           "path": "font/lineHeight/300",
           "type": "FLOAT",
           "valuesByMode": {
@@ -15980,14 +15981,14 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-lineHeight-300)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
           }
         },
         {
-          "name": "font-family/lineHeight-400",
+          "name": "line-height/400",
           "path": "font/lineHeight/400",
           "type": "FLOAT",
           "valuesByMode": {
@@ -16025,14 +16026,14 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-lineHeight-400)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
           }
         },
         {
-          "name": "font-family/lineHeight-900",
+          "name": "line-height/900",
           "path": "font/lineHeight/900",
           "type": "FLOAT",
           "valuesByMode": {
@@ -16070,14 +16071,14 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-lineHeight-900)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
           }
         },
         {
-          "name": "font-family/lineHeight-devanagari",
+          "name": "line-height/devanagari",
           "path": "font/lineHeight/devanagari",
           "type": "FLOAT",
           "valuesByMode": {
@@ -16115,7 +16116,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-lineHeight-devanagari)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
@@ -19414,38 +19415,38 @@
             "Website · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-900"
+              "name": "font-size/900"
             },
             "Website · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-900"
+              "name": "font-size/900"
             },
             "Website · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-900"
+              "name": "font-size/900"
             },
             "Portal · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-900"
+              "name": "font-size/900"
             },
             "Portal · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-900"
+              "name": "font-size/900"
             },
             "Portal · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-900"
+              "name": "font-size/900"
             }
           },
           "codeSyntax": {
             "WEB": "var(--sa-type-display-size)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -19459,38 +19460,38 @@
             "Website · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-900"
+              "name": "line-height/900"
             },
             "Website · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-900"
+              "name": "line-height/900"
             },
             "Website · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-900"
+              "name": "line-height/900"
             },
             "Portal · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-900"
+              "name": "line-height/900"
             },
             "Portal · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-900"
+              "name": "line-height/900"
             },
             "Portal · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-900"
+              "name": "line-height/900"
             }
           },
           "codeSyntax": {
             "WEB": "var(--sa-type-display-leading)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -19549,38 +19550,38 @@
             "Website · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-600"
+              "name": "font-size/600"
             },
             "Website · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-600"
+              "name": "font-size/600"
             },
             "Website · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-600"
+              "name": "font-size/600"
             },
             "Portal · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-600"
+              "name": "font-size/600"
             },
             "Portal · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-600"
+              "name": "font-size/600"
             },
             "Portal · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-600"
+              "name": "font-size/600"
             }
           },
           "codeSyntax": {
             "WEB": "var(--sa-type-title1-size)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -19594,38 +19595,38 @@
             "Website · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-400"
+              "name": "line-height/400"
             },
             "Website · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-400"
+              "name": "line-height/400"
             },
             "Website · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-400"
+              "name": "line-height/400"
             },
             "Portal · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-400"
+              "name": "line-height/400"
             },
             "Portal · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-400"
+              "name": "line-height/400"
             },
             "Portal · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-400"
+              "name": "line-height/400"
             }
           },
           "codeSyntax": {
             "WEB": "var(--sa-type-title1-leading)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -19684,38 +19685,38 @@
             "Website · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-500"
+              "name": "font-size/500"
             },
             "Website · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-500"
+              "name": "font-size/500"
             },
             "Website · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-500"
+              "name": "font-size/500"
             },
             "Portal · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-500"
+              "name": "font-size/500"
             },
             "Portal · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-500"
+              "name": "font-size/500"
             },
             "Portal · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-500"
+              "name": "font-size/500"
             }
           },
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-size)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -19729,38 +19730,38 @@
             "Website · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-300"
+              "name": "line-height/300"
             },
             "Website · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-300"
+              "name": "line-height/300"
             },
             "Website · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-300"
+              "name": "line-height/300"
             },
             "Portal · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-300"
+              "name": "line-height/300"
             },
             "Portal · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-300"
+              "name": "line-height/300"
             },
             "Portal · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-300"
+              "name": "line-height/300"
             }
           },
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-leading)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -19819,38 +19820,38 @@
             "Website · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-400"
+              "name": "font-size/400"
             },
             "Website · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-400"
+              "name": "font-size/400"
             },
             "Website · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-400"
+              "name": "font-size/400"
             },
             "Portal · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-400"
+              "name": "font-size/400"
             },
             "Portal · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-400"
+              "name": "font-size/400"
             },
             "Portal · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-400"
+              "name": "font-size/400"
             }
           },
           "codeSyntax": {
             "WEB": "var(--sa-type-body1-size)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -19864,38 +19865,38 @@
             "Website · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-300"
+              "name": "line-height/300"
             },
             "Website · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-300"
+              "name": "line-height/300"
             },
             "Website · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-300"
+              "name": "line-height/300"
             },
             "Portal · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-300"
+              "name": "line-height/300"
             },
             "Portal · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-300"
+              "name": "line-height/300"
             },
             "Portal · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-300"
+              "name": "line-height/300"
             }
           },
           "codeSyntax": {
             "WEB": "var(--sa-type-body1-leading)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -19954,38 +19955,38 @@
             "Website · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-300"
+              "name": "font-size/300"
             },
             "Website · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-300"
+              "name": "font-size/300"
             },
             "Website · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-300"
+              "name": "font-size/300"
             },
             "Portal · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-300"
+              "name": "font-size/300"
             },
             "Portal · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-300"
+              "name": "font-size/300"
             },
             "Portal · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/size-300"
+              "name": "font-size/300"
             }
           },
           "codeSyntax": {
             "WEB": "var(--sa-type-body2-size)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -19999,38 +20000,38 @@
             "Website · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-200"
+              "name": "line-height/200"
             },
             "Website · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-200"
+              "name": "line-height/200"
             },
             "Website · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-200"
+              "name": "line-height/200"
             },
             "Portal · Desktop": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-200"
+              "name": "line-height/200"
             },
             "Portal · Tablet": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-200"
+              "name": "line-height/200"
             },
             "Portal · Mobile": {
               "type": "ALIAS",
               "collection": "Typography",
-              "name": "font-family/lineHeight-200"
+              "name": "line-height/200"
             }
           },
           "codeSyntax": {
             "WEB": "var(--sa-type-body2-leading)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20074,52 +20075,6 @@
           },
           "codeSyntax": {
             "WEB": "var(--sa-type-body2-weight)"
-          },
-          "status": "new",
-          "$extensions": {
-            "in.gov.mosje.tier": "sys",
-            "in.gov.mosje.source": "src/semantic.json"
-          }
-        },
-        {
-          "name": "line-height/devanagari",
-          "path": "leading/devanagari",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Typography",
-              "name": "font-family/lineHeight-devanagari"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Typography",
-              "name": "font-family/lineHeight-devanagari"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Typography",
-              "name": "font-family/lineHeight-devanagari"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Typography",
-              "name": "font-family/lineHeight-devanagari"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Typography",
-              "name": "font-family/lineHeight-devanagari"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Typography",
-              "name": "font-family/lineHeight-devanagari"
-            }
-          },
-          "description": "Devanagari needs more leading than Latin at the same size — the matras sit above and below the base line.",
-          "codeSyntax": {
-            "WEB": "var(--sa-leading-devanagari)"
           },
           "status": "new",
           "$extensions": {
@@ -20497,7 +20452,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-motion-easing-inOut)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
