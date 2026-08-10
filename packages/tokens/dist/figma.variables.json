@@ -4063,8 +4063,8 @@
           }
         },
         {
-          "name": "Background/Brand/Primary/Default",
-          "path": "bg/brand/primary/default",
+          "name": "Background/Brand/Primary/Base",
+          "path": "bg/brand/primary/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -4083,9 +4083,9 @@
               "name": "Primary/50"
             }
           },
-          "description": "Brand primary background, default Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
+          "description": "Brand primary background, base Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
-            "WEB": "var(--sa-bg-brand-primary-default)"
+            "WEB": "var(--sa-bg-brand-primary-base)"
           },
           "status": "new",
           "$extensions": {
@@ -4249,8 +4249,8 @@
           }
         },
         {
-          "name": "Background/Brand/Secondary/Default",
-          "path": "bg/brand/secondary/default",
+          "name": "Background/Brand/Secondary/Base",
+          "path": "bg/brand/secondary/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -4269,9 +4269,9 @@
               "name": "Secondary/50"
             }
           },
-          "description": "Brand secondary background, default Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
+          "description": "Brand secondary background, base Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
           "codeSyntax": {
-            "WEB": "var(--sa-bg-brand-secondary-default)"
+            "WEB": "var(--sa-bg-brand-secondary-base)"
           },
           "status": "new",
           "$extensions": {
@@ -4435,8 +4435,8 @@
           }
         },
         {
-          "name": "Background/Status/Success/Default",
-          "path": "bg/status/success/default",
+          "name": "Background/Status/Success/Base",
+          "path": "bg/status/success/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -4455,9 +4455,9 @@
               "name": "Success/50"
             }
           },
-          "description": "success background, default No contrast guarantee — decorative fills only.",
+          "description": "success background, base No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-bg-status-success-default)"
+            "WEB": "var(--sa-bg-status-success-base)"
           },
           "status": "new",
           "$extensions": {
@@ -4621,8 +4621,8 @@
           }
         },
         {
-          "name": "Background/Status/Error/Default",
-          "path": "bg/status/error/default",
+          "name": "Background/Status/Error/Base",
+          "path": "bg/status/error/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -4641,9 +4641,9 @@
               "name": "Danger/50"
             }
           },
-          "description": "error background, default No contrast guarantee — decorative fills only.",
+          "description": "error background, base No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-bg-status-error-default)"
+            "WEB": "var(--sa-bg-status-error-base)"
           },
           "status": "new",
           "$extensions": {
@@ -4807,8 +4807,8 @@
           }
         },
         {
-          "name": "Background/Status/Warning/Default",
-          "path": "bg/status/warning/default",
+          "name": "Background/Status/Warning/Base",
+          "path": "bg/status/warning/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -4827,9 +4827,9 @@
               "name": "Warning/50"
             }
           },
-          "description": "warning background, default No contrast guarantee — decorative fills only.",
+          "description": "warning background, base No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-bg-status-warning-default)"
+            "WEB": "var(--sa-bg-status-warning-base)"
           },
           "status": "new",
           "$extensions": {
@@ -4993,8 +4993,8 @@
           }
         },
         {
-          "name": "Background/Status/Info/Default",
-          "path": "bg/status/info/default",
+          "name": "Background/Status/Info/Base",
+          "path": "bg/status/info/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5013,9 +5013,9 @@
               "name": "Info/50"
             }
           },
-          "description": "info background, default No contrast guarantee — decorative fills only.",
+          "description": "info background, base No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-bg-status-info-default)"
+            "WEB": "var(--sa-bg-status-info-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5299,8 +5299,8 @@
           }
         },
         {
-          "name": "Text/Link/Default/Hover",
-          "path": "text/link/default/hover",
+          "name": "Text/Link/Brand/Hover",
+          "path": "text/link/brand/hover",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5318,9 +5318,9 @@
               "name": "Primary/700"
             }
           },
-          "description": "Link, hovered No contrast guarantee — decorative fills only.",
+          "description": "Link, hovered",
           "codeSyntax": {
-            "WEB": "var(--sa-text-link-default-hover)"
+            "WEB": "var(--sa-text-link-brand-hover)"
           },
           "status": "new",
           "$extensions": {
@@ -5329,8 +5329,8 @@
           }
         },
         {
-          "name": "Text/Link/Default/Active",
-          "path": "text/link/default/active",
+          "name": "Text/Link/Brand/Active",
+          "path": "text/link/brand/active",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5349,9 +5349,9 @@
               "name": "Primary/800"
             }
           },
-          "description": "Link, pressed No contrast guarantee — decorative fills only.",
+          "description": "Link, pressed",
           "codeSyntax": {
-            "WEB": "var(--sa-text-link-default-active)"
+            "WEB": "var(--sa-text-link-brand-active)"
           },
           "status": "new",
           "$extensions": {
@@ -5360,8 +5360,8 @@
           }
         },
         {
-          "name": "Text/Link/Default/Disabled",
-          "path": "text/link/default/disabled",
+          "name": "Text/Link/Brand/Disabled",
+          "path": "text/link/brand/disabled",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5379,9 +5379,9 @@
               "name": "Text/Disabled"
             }
           },
-          "description": "Link, disabled No contrast guarantee — decorative fills only.",
+          "description": "Link, disabled",
           "codeSyntax": {
-            "WEB": "var(--sa-text-link-default-disabled)"
+            "WEB": "var(--sa-text-link-brand-disabled)"
           },
           "status": "new",
           "$extensions": {
@@ -5410,7 +5410,7 @@
               "name": "Primary/800"
             }
           },
-          "description": "Visited link — required by GIGW on public pages No contrast guarantee — decorative fills only.",
+          "description": "Visited link — required by GIGW on public pages",
           "codeSyntax": {
             "WEB": "var(--sa-text-link-visited-default)"
           },
@@ -5440,7 +5440,7 @@
               "name": "Neutral/700"
             }
           },
-          "description": "Link in quiet chrome (footers, breadcrumbs) No contrast guarantee — decorative fills only.",
+          "description": "Link in quiet chrome (footers, breadcrumbs)",
           "codeSyntax": {
             "WEB": "var(--sa-text-link-neutral-default)"
           },
@@ -5451,8 +5451,8 @@
           }
         },
         {
-          "name": "Text/Brand/Primary/Default",
-          "path": "text/brand/primary/default",
+          "name": "Text/Brand/Primary/Base",
+          "path": "text/brand/primary/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5472,7 +5472,7 @@
           },
           "description": "Brand-coloured text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
-            "WEB": "var(--sa-text-brand-primary-default)"
+            "WEB": "var(--sa-text-brand-primary-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5481,8 +5481,8 @@
           }
         },
         {
-          "name": "Text/Status/Success/Default",
-          "path": "text/status/success/default",
+          "name": "Text/Status/Success/Base",
+          "path": "text/status/success/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5502,7 +5502,7 @@
           },
           "description": "success message text No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-text-status-success-default)"
+            "WEB": "var(--sa-text-status-success-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5511,8 +5511,8 @@
           }
         },
         {
-          "name": "Text/Status/Error/Default",
-          "path": "text/status/error/default",
+          "name": "Text/Status/Error/Base",
+          "path": "text/status/error/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5532,7 +5532,7 @@
           },
           "description": "error message text No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-text-status-error-default)"
+            "WEB": "var(--sa-text-status-error-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5541,8 +5541,8 @@
           }
         },
         {
-          "name": "Text/Status/Warning/Default",
-          "path": "text/status/warning/default",
+          "name": "Text/Status/Warning/Base",
+          "path": "text/status/warning/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5563,7 +5563,7 @@
           },
           "description": "warning message text No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-text-status-warning-default)"
+            "WEB": "var(--sa-text-status-warning-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5572,8 +5572,8 @@
           }
         },
         {
-          "name": "Text/Status/Info/Default",
-          "path": "text/status/info/default",
+          "name": "Text/Status/Info/Base",
+          "path": "text/status/info/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5593,7 +5593,7 @@
           },
           "description": "info message text No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-text-status-info-default)"
+            "WEB": "var(--sa-text-status-info-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5631,8 +5631,8 @@
           }
         },
         {
-          "name": "Border/Brand/Primary/Default",
-          "path": "border/brand/primary/default",
+          "name": "Border/Brand/Primary/Base",
+          "path": "border/brand/primary/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5652,7 +5652,7 @@
           },
           "description": "Brand-coloured border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
-            "WEB": "var(--sa-border-brand-primary-default)"
+            "WEB": "var(--sa-border-brand-primary-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5661,8 +5661,8 @@
           }
         },
         {
-          "name": "Border/Status/Success/Default",
-          "path": "border/status/success/default",
+          "name": "Border/Status/Success/Base",
+          "path": "border/status/success/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5682,7 +5682,7 @@
           },
           "description": "success border No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-border-status-success-default)"
+            "WEB": "var(--sa-border-status-success-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5691,8 +5691,8 @@
           }
         },
         {
-          "name": "Border/Status/Error/Default",
-          "path": "border/status/error/default",
+          "name": "Border/Status/Error/Base",
+          "path": "border/status/error/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5712,7 +5712,7 @@
           },
           "description": "error border No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-border-status-error-default)"
+            "WEB": "var(--sa-border-status-error-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5721,8 +5721,8 @@
           }
         },
         {
-          "name": "Border/Status/Warning/Default",
-          "path": "border/status/warning/default",
+          "name": "Border/Status/Warning/Base",
+          "path": "border/status/warning/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5743,7 +5743,7 @@
           },
           "description": "warning border No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-border-status-warning-default)"
+            "WEB": "var(--sa-border-status-warning-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5752,8 +5752,8 @@
           }
         },
         {
-          "name": "Border/Status/Info/Default",
-          "path": "border/status/info/default",
+          "name": "Border/Status/Info/Base",
+          "path": "border/status/info/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5773,7 +5773,7 @@
           },
           "description": "info border No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-border-status-info-default)"
+            "WEB": "var(--sa-border-status-info-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5902,8 +5902,8 @@
           }
         },
         {
-          "name": "Icon/Brand/Primary/Default",
-          "path": "icon/brand/primary/default",
+          "name": "Icon/Brand/Primary/Base",
+          "path": "icon/brand/primary/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5923,7 +5923,7 @@
           },
           "description": "Brand-coloured icon Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
-            "WEB": "var(--sa-icon-brand-primary-default)"
+            "WEB": "var(--sa-icon-brand-primary-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5932,8 +5932,8 @@
           }
         },
         {
-          "name": "Icon/Status/Success/Default",
-          "path": "icon/status/success/default",
+          "name": "Icon/Status/Success/Base",
+          "path": "icon/status/success/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5953,7 +5953,7 @@
           },
           "description": "success icon No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-icon-status-success-default)"
+            "WEB": "var(--sa-icon-status-success-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5962,8 +5962,8 @@
           }
         },
         {
-          "name": "Icon/Status/Error/Default",
-          "path": "icon/status/error/default",
+          "name": "Icon/Status/Error/Base",
+          "path": "icon/status/error/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -5983,7 +5983,7 @@
           },
           "description": "error icon No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-icon-status-error-default)"
+            "WEB": "var(--sa-icon-status-error-base)"
           },
           "status": "new",
           "$extensions": {
@@ -5992,8 +5992,8 @@
           }
         },
         {
-          "name": "Icon/Status/Warning/Default",
-          "path": "icon/status/warning/default",
+          "name": "Icon/Status/Warning/Base",
+          "path": "icon/status/warning/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -6014,7 +6014,7 @@
           },
           "description": "warning icon No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-icon-status-warning-default)"
+            "WEB": "var(--sa-icon-status-warning-base)"
           },
           "status": "new",
           "$extensions": {
@@ -6023,8 +6023,8 @@
           }
         },
         {
-          "name": "Icon/Status/Info/Default",
-          "path": "icon/status/info/default",
+          "name": "Icon/Status/Info/Base",
+          "path": "icon/status/info/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -6044,7 +6044,7 @@
           },
           "description": "info icon No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-icon-status-info-default)"
+            "WEB": "var(--sa-icon-status-info-base)"
           },
           "status": "new",
           "$extensions": {
@@ -7861,7 +7861,7 @@
               "name": "Primary/100"
             }
           },
-          "description": "brand tonal button, default state, bg No contrast guarantee — decorative fills only.",
+          "description": "brand tonal button, default state, bg",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-default-bg)"
           },
@@ -7892,7 +7892,7 @@
               "name": "Primary/800"
             }
           },
-          "description": "brand tonal button, default state, text No contrast guarantee — decorative fills only.",
+          "description": "brand tonal button, default state, text",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-default-text)"
           },
@@ -7923,7 +7923,7 @@
               "name": "Primary/100"
             }
           },
-          "description": "brand tonal button, default state, border No contrast guarantee — decorative fills only.",
+          "description": "brand tonal button, default state, border",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-default-border)"
           },
@@ -10020,7 +10020,7 @@
               "name": "Success/100"
             }
           },
-          "description": "success tonal button, default state, bg No contrast guarantee — decorative fills only.",
+          "description": "success tonal button, default state, bg",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-default-bg)"
           },
@@ -10051,7 +10051,7 @@
               "name": "Success/800"
             }
           },
-          "description": "success tonal button, default state, text No contrast guarantee — decorative fills only.",
+          "description": "success tonal button, default state, text",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-default-text)"
           },
@@ -10082,7 +10082,7 @@
               "name": "Success/100"
             }
           },
-          "description": "success tonal button, default state, border No contrast guarantee — decorative fills only.",
+          "description": "success tonal button, default state, border",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-default-border)"
           },
@@ -12179,7 +12179,7 @@
               "name": "Danger/100"
             }
           },
-          "description": "destructive tonal button, default state, bg No contrast guarantee — decorative fills only.",
+          "description": "destructive tonal button, default state, bg",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-default-bg)"
           },
@@ -12210,7 +12210,7 @@
               "name": "Danger/800"
             }
           },
-          "description": "destructive tonal button, default state, text No contrast guarantee — decorative fills only.",
+          "description": "destructive tonal button, default state, text",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-default-text)"
           },
@@ -12241,7 +12241,7 @@
               "name": "Danger/100"
             }
           },
-          "description": "destructive tonal button, default state, border No contrast guarantee — decorative fills only.",
+          "description": "destructive tonal button, default state, border",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-default-border)"
           },
@@ -14338,7 +14338,7 @@
               "name": "Neutral/100"
             }
           },
-          "description": "neutral tonal button, default state, bg No contrast guarantee — decorative fills only.",
+          "description": "neutral tonal button, default state, bg",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-default-bg)"
           },
@@ -14369,7 +14369,7 @@
               "name": "Neutral/800"
             }
           },
-          "description": "neutral tonal button, default state, text No contrast guarantee — decorative fills only.",
+          "description": "neutral tonal button, default state, text",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-default-text)"
           },
@@ -14400,7 +14400,7 @@
               "name": "Neutral/100"
             }
           },
-          "description": "neutral tonal button, default state, border No contrast guarantee — decorative fills only.",
+          "description": "neutral tonal button, default state, border",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-default-border)"
           },
@@ -14689,8 +14689,8 @@
           }
         },
         {
-          "name": "Background/Neutral/Default",
-          "path": "bg/neutral/default",
+          "name": "Background/Neutral/Base",
+          "path": "bg/neutral/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -14709,7 +14709,7 @@
           },
           "description": "No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-bg-neutral-default)"
+            "WEB": "var(--sa-bg-neutral-base)"
           },
           "status": "new",
           "$extensions": {
@@ -14777,8 +14777,8 @@
           }
         },
         {
-          "name": "Text/Link/Default/Default",
-          "path": "text/link/default/default",
+          "name": "Text/Link/Brand/Default",
+          "path": "text/link/brand/default",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -14796,9 +14796,9 @@
               "name": "Primary/500"
             }
           },
-          "description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast. No contrast guarantee — decorative fills only.",
+          "description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast.",
           "codeSyntax": {
-            "WEB": "var(--sa-text-link-default-default)"
+            "WEB": "var(--sa-text-link-brand-default)"
           },
           "status": "new",
           "$extensions": {
@@ -14836,8 +14836,8 @@
           }
         },
         {
-          "name": "Border/Neutral/Default",
-          "path": "border/neutral/default",
+          "name": "Border/Neutral/Base",
+          "path": "border/neutral/base",
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
@@ -14856,7 +14856,7 @@
           },
           "description": "No contrast guarantee — decorative fills only.",
           "codeSyntax": {
-            "WEB": "var(--sa-border-neutral-default)"
+            "WEB": "var(--sa-border-neutral-base)"
           },
           "status": "new",
           "$extensions": {
@@ -20416,6 +20416,7 @@
               "unit": "ms"
             }
           },
+          "description": "No contrast guarantee — decorative fills only.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-motion-duration-base)"
           },

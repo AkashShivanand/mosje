@@ -642,7 +642,7 @@ export const tokens = {
   },
   "bg": {
     "neutral": {
-      "default": "#ffffff",
+      "base": "#ffffff",
       "soft": "#f8f9fa",
       "subtle": "#f1f3f5",
       "emphasis": "#e2e6ea",
@@ -651,7 +651,7 @@ export const tokens = {
     },
     "brand": {
       "primary": {
-        "default": "#e8f2fd",
+        "base": "#e8f2fd",
         "soft": "#c6dcf9",
         "subtle": "#94bff5",
         "emphasis": "#5fa0ef",
@@ -659,7 +659,7 @@ export const tokens = {
         "stronger": "#01376b"
       },
       "secondary": {
-        "default": "#ffedd5",
+        "base": "#ffedd5",
         "soft": "#fed9b7",
         "subtle": "#fdb980",
         "emphasis": "#fc9948",
@@ -669,7 +669,7 @@ export const tokens = {
     },
     "status": {
       "success": {
-        "default": "#e8f5e9",
+        "base": "#e8f5e9",
         "soft": "#c8e6c9",
         "subtle": "#a5d6a7",
         "emphasis": "#81c784",
@@ -677,7 +677,7 @@ export const tokens = {
         "stronger": "#124517"
       },
       "error": {
-        "default": "#fdecea",
+        "base": "#fdecea",
         "soft": "#fad2cf",
         "subtle": "#f6a89f",
         "emphasis": "#f47c70",
@@ -685,7 +685,7 @@ export const tokens = {
         "stronger": "#992c25"
       },
       "warning": {
-        "default": "#fff4e5",
+        "base": "#fff4e5",
         "soft": "#ffe4bf",
         "subtle": "#ffc97f",
         "emphasis": "#ffae4f",
@@ -693,7 +693,7 @@ export const tokens = {
         "stronger": "#704518"
       },
       "info": {
-        "default": "#e8f0fe",
+        "base": "#e8f0fe",
         "soft": "#d2e3fc",
         "subtle": "#a8c8fa",
         "emphasis": "#7aaff8",
@@ -711,7 +711,7 @@ export const tokens = {
       "inverse": "#ffffff"
     },
     "link": {
-      "default": {
+      "brand": {
         "default": "#0373df",
         "hover": "#014b92",
         "active": "#01376b",
@@ -726,28 +726,28 @@ export const tokens = {
     },
     "brand": {
       "primary": {
-        "default": "#0373df"
+        "base": "#0373df"
       }
     },
     "status": {
       "success": {
-        "default": "#1b5e20"
+        "base": "#1b5e20"
       },
       "error": {
-        "default": "#b8382f"
+        "base": "#b8382f"
       },
       "warning": {
-        "default": "#8c571f"
+        "base": "#8c571f"
       },
       "info": {
-        "default": "#1558b0"
+        "base": "#1558b0"
       }
     }
   },
   "border": {
     "neutral": {
       "subtle": "#f1f3f5",
-      "default": "#e2e6ea",
+      "base": "#e2e6ea",
       "strong": {
         "default": "#9aa3af",
         "hover": "#6c757d"
@@ -755,21 +755,21 @@ export const tokens = {
     },
     "brand": {
       "primary": {
-        "default": "#0373df"
+        "base": "#0373df"
       }
     },
     "status": {
       "success": {
-        "default": "#1b5e20"
+        "base": "#1b5e20"
       },
       "error": {
-        "default": "#b8382f"
+        "base": "#b8382f"
       },
       "warning": {
-        "default": "#8c571f"
+        "base": "#8c571f"
       },
       "info": {
-        "default": "#1558b0"
+        "base": "#1558b0"
       }
     }
   },
@@ -830,21 +830,21 @@ export const tokens = {
     },
     "brand": {
       "primary": {
-        "default": "#0373df"
+        "base": "#0373df"
       }
     },
     "status": {
       "success": {
-        "default": "#1b5e20"
+        "base": "#1b5e20"
       },
       "error": {
-        "default": "#b8382f"
+        "base": "#b8382f"
       },
       "warning": {
-        "default": "#8c571f"
+        "base": "#8c571f"
       },
       "info": {
-        "default": "#1558b0"
+        "base": "#1558b0"
       }
     }
   },

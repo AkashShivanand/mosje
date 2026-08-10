@@ -50,13 +50,16 @@ export const FAMILY = new Set(["neutral", "brand", "status", "link"]);
 export const VARIANT = {
   brand: new Set(["primary", "secondary", "tertiary"]),
   status: new Set(["success", "error", "warning", "info"]),
-  // `brand`, not `default`: the canonical value of a variant already occupies the
-  // `default` slot (see CANONICAL), and `text/link/default/default` is nobody's idea of a
-  // readable token. The standard link IS the brand-coloured one, so name it that.
-  // UX4G's exact variants. `default` here yields `text/link/default/default` for the
-  // canonical link — inelegant, but it is what UX4G ships and a dev grepping
-  // `--ux4g-text-link-default-default` should find ours.
-  link: new Set(["default", "neutral", "visited"]),
+  // `brand`, not `default`. `default` is the canonical STATE, and a link variant spelled
+  // `default` collided with it head-on: `text/link/default/default` consumed the second
+  // segment as a prominence and never reached the state slot at all. The standard link IS
+  // the brand-coloured one, so name it that and the collision disappears.
+  //
+  // UX4G's own spelling survives where it belongs — the parity layer still emits
+  // `--ux4g-text-link-default-default`, built from UX4G's reference contract and resolving
+  // inside the `--ux4g-*` namespace, so a developer grepping UX4G's name still finds it.
+  // That namespace is UX4G's vocabulary; this one is ours.
+  link: new Set(["brand", "neutral", "visited"]),
   neutral: new Set(),
 };
 
@@ -75,15 +78,20 @@ export const QUALIFIER = new Set(["elevated", "inverse", "translucent", "none"])
  * TREES, and a token cannot also be a group: `text/neutral` as a leaf silently swallowed
  * `text/neutral/subtle` and Style Dictionary dropped every child. Ambiguity is precisely
  * what this grammar exists to remove, so the canonical value is named.
+ *
+ * It is named `base`, not `default`, because `default` is the canonical STATE. One word
+ * cannot mean two slots: while it did, `text/link/visited/default` bound `default` to
+ * prominence and silently lost the state it was actually spelling.
  */
-export const CANONICAL = "default";
+export const CANONICAL = "base";
 
 /**
- * Ordinal, quietest → loudest. `default` is NOT a rung — it is the canonical value and is
- * deliberately outside the ladder, so monotonicity has an unambiguous ordering to check.
- * Each rung carries a contrast contract (§6.3).
+ * Ordinal, quietest → loudest. `base` is both the canonical value (CANONICAL) and the
+ * quietest rung — for a fill, "the ordinary one" and "the plainest one" are the same
+ * token, so they share a name rather than being two spellings of one value. Each rung
+ * carries a contrast contract (§6.3).
  */
-export const PROMINENCE = ["default", "soft", "subtle", "emphasis", "strong", "stronger"];
+export const PROMINENCE = ["base", "soft", "subtle", "emphasis", "strong", "stronger"];
 
 /**
  * Ink prominence. UX4G runs text and icon on their own ladder rather than the fill ladder,
@@ -98,9 +106,9 @@ export const PROMINENCE_SLOT = new Set([CANONICAL, ...PROMINENCE, ...INK_PROMINE
 
 /** Contrast class guaranteed by each rung, against its own surface. */
 export const PROMINENCE_CONTRACT = {
-  // Fill ladder — UX4G's vocabulary, our thresholds. `default` is both the canonical value
-  // and the quietest rung, which is what UX4G means by it too, so the two do not collide.
-  default: { minContrast: 0, use: "decorative fills only" },
+  // Fill ladder — UX4G's vocabulary, our thresholds. `base` is both the canonical value
+  // and the quietest rung, which is what UX4G means by its own `default` too.
+  base: { minContrast: 0, use: "decorative fills only" },
   soft: { minContrast: 0, use: "decorative fills only" },
   subtle: { minContrast: 3.0, use: "UI boundaries, icons, non-text (WCAG 1.4.11)" },
   emphasis: { minContrast: 3.0, use: "UI boundaries, icons, non-text (WCAG 1.4.11)" },
@@ -113,10 +121,10 @@ export const PROMINENCE_CONTRACT = {
 };
 
 export const STATE = new Set([
-  // `default` is the canonical STATE, mirroring CANONICAL in the prominence slot. Without it
-  // `border/neutral/strong/default` (the resting form-control border, sibling of
-  // `.../strong/hover`) does not parse — the parser consumes `strong` as prominence and then
-  // has nowhere to put `default`.
+  // `default` is the canonical STATE, and since the prominence slot moved to `base` this is
+  // now its ONLY meaning anywhere in the grammar. Without it `border/neutral/strong/default`
+  // (the resting form-control border, sibling of `.../strong/hover`) does not parse — the
+  // parser consumes `strong` as prominence and then has nowhere to put `default`.
   "default",
   "hover",
   "active",

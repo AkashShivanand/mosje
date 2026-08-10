@@ -28,9 +28,48 @@ const actual = resolveContract(readFileSync(cssPath, "utf8"));
  * old canonical name -> new canonical name.
  *
  * Entries here are claims that a rename was value-preserving. Each one is checked,
- * not trusted.
+ * not trusted: the test asserts the old name's OLD value equals the new name's NEW value.
+ *
+ * 2026-08-10 — resolving the `default` ambiguity. `default` occupied three slot
+ * dictionaries at once (prominence, state, link variant), so `text/link/visited/default`
+ * bound its last segment to prominence and never reached the state slot. The prominence
+ * canonical became `base` and the link variant became `brand`; `default` is now a state
+ * and nothing else. Consumer-facing `--ds-*` and `--ux4g-*` names are deliberately absent
+ * from this list — the compat layer was retargeted, not renamed.
  */
-const RENAMES = {};
+const RENAMES = {
+  // Prominence canonical: `default` -> `base`.
+  "--sa-bg-brand-primary-default": "--sa-bg-brand-primary-base",
+  "--sa-bg-brand-secondary-default": "--sa-bg-brand-secondary-base",
+  "--sa-bg-neutral-default": "--sa-bg-neutral-base",
+  "--sa-bg-status-error-default": "--sa-bg-status-error-base",
+  "--sa-bg-status-info-default": "--sa-bg-status-info-base",
+  "--sa-bg-status-success-default": "--sa-bg-status-success-base",
+  "--sa-bg-status-warning-default": "--sa-bg-status-warning-base",
+  "--sa-border-brand-primary-default": "--sa-border-brand-primary-base",
+  "--sa-border-neutral-default": "--sa-border-neutral-base",
+  "--sa-border-status-error-default": "--sa-border-status-error-base",
+  "--sa-border-status-info-default": "--sa-border-status-info-base",
+  "--sa-border-status-success-default": "--sa-border-status-success-base",
+  "--sa-border-status-warning-default": "--sa-border-status-warning-base",
+  "--sa-icon-brand-primary-default": "--sa-icon-brand-primary-base",
+  "--sa-icon-status-error-default": "--sa-icon-status-error-base",
+  "--sa-icon-status-info-default": "--sa-icon-status-info-base",
+  "--sa-icon-status-success-default": "--sa-icon-status-success-base",
+  "--sa-icon-status-warning-default": "--sa-icon-status-warning-base",
+  "--sa-text-brand-primary-default": "--sa-text-brand-primary-base",
+  "--sa-text-status-error-default": "--sa-text-status-error-base",
+  "--sa-text-status-info-default": "--sa-text-status-info-base",
+  "--sa-text-status-success-default": "--sa-text-status-success-base",
+  "--sa-text-status-warning-default": "--sa-text-status-warning-base",
+
+  // Link variant: `default` -> `brand`. The trailing `default` on the canonical link is
+  // now parsed as the STATE it always meant.
+  "--sa-text-link-default-active": "--sa-text-link-brand-active",
+  "--sa-text-link-default-default": "--sa-text-link-brand-default",
+  "--sa-text-link-default-disabled": "--sa-text-link-brand-disabled",
+  "--sa-text-link-default-hover": "--sa-text-link-brand-hover",
+};
 
 /** Cap the noise when a whole namespace shifts at once. */
 function summarise(problems) {

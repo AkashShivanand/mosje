@@ -25,7 +25,7 @@ import { parse } from "./grammar.mjs";
 const here = (p) => new URL(p, import.meta.url).pathname;
 
 /** Ladder step → ramp step. Shared by every family so the ladder means one thing. */
-const LADDER = { default: 50, soft: 100, subtle: 200, emphasis: 300, strong: 600, stronger: 800 };
+const LADDER = { base: 50, soft: 100, subtle: 200, emphasis: 300, strong: 600, stronger: 800 };
 
 const STATUS = { success: "successScale", error: "dangerScale", warning: "warningScale", info: "infoScale" };
 const BRAND = { primary: "primaryScale", secondary: "secondaryScale" };
@@ -58,16 +58,16 @@ put(["text", "neutral", "primary"], "{color.text.default}", "Body and heading te
 put(["text", "neutral", "secondary"], "{color.text.muted}", "Captions, hints, secondary text");
 put(["text", "neutral", "disabled"], "{color.text.disabled}", "Disabled label");
 put(["text", "neutral", "inverse"], "{color.text.onPrimary}", "Text on a solid brand or inverse surface");
-put(["text", "brand", "primary", "default"], "{color.action.primary.default}", "Brand-coloured text");
+put(["text", "brand", "primary", "base"], "{color.action.primary.default}", "Brand-coloured text");
 for (const [variant] of Object.entries(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
-  put(["text", "status", variant, "default"], `{color.status.${src}}`, `${variant} message text`);
+  put(["text", "status", variant, "base"], `{color.status.${src}}`, `${variant} message text`);
 }
 // Link states — the estate had exactly one link token before this (--ds-link). GIGW expects
 // visited links to be distinguishable on public pages.
-put(["text", "link", "default", "hover"], "{color.action.primary.hover}", "Link, hovered");
-put(["text", "link", "default", "active"], "{color.primaryScale.800}", "Link, pressed");
-put(["text", "link", "default", "disabled"], "{color.text.disabled}", "Link, disabled");
+put(["text", "link", "brand", "hover"], "{color.action.primary.hover}", "Link, hovered");
+put(["text", "link", "brand", "active"], "{color.primaryScale.800}", "Link, pressed");
+put(["text", "link", "brand", "disabled"], "{color.text.disabled}", "Link, disabled");
 put(["text", "link", "visited", "default"], "{color.primaryScale.800}", "Visited link — required by GIGW on public pages");
 put(["text", "link", "neutral", "default"], "{color.text.muted}", "Link in quiet chrome (footers, breadcrumbs)");
 
@@ -76,18 +76,18 @@ put(["icon", "neutral", "primary"], "{color.text.default}", "Default icon");
 put(["icon", "neutral", "secondary"], "{color.text.muted}", "Quiet icon");
 put(["icon", "neutral", "disabled"], "{color.text.disabled}", "Disabled icon");
 put(["icon", "neutral", "inverse"], "{color.text.onPrimary}", "Icon on a solid brand surface");
-put(["icon", "brand", "primary", "default"], "{color.action.primary.default}", "Brand-coloured icon");
+put(["icon", "brand", "primary", "base"], "{color.action.primary.default}", "Brand-coloured icon");
 for (const variant of Object.keys(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
-  put(["icon", "status", variant, "default"], `{color.status.${src}}`, `${variant} icon`);
+  put(["icon", "status", variant, "base"], `{color.status.${src}}`, `${variant} icon`);
 }
 
 // ---- border --------------------------------------------------------------
 put(["border", "neutral", "strong", "hover"], "{color.border.controlHover}", "Form control border, hovered");
-put(["border", "brand", "primary", "default"], "{color.action.primary.default}", "Brand-coloured border");
+put(["border", "brand", "primary", "base"], "{color.action.primary.default}", "Brand-coloured border");
 for (const variant of Object.keys(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
-  put(["border", "status", variant, "default"], `{color.status.${src}}`, `${variant} border`);
+  put(["border", "status", variant, "base"], `{color.status.${src}}`, `${variant} border`);
 }
 
 // ---- focus / overlay -----------------------------------------------------

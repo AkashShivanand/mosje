@@ -1520,7 +1520,7 @@
   },
   "bg": {
     "neutral": {
-      "default": {
+      "base": {
         "$value": "{color.neutral.0}",
         "$extensions": {
           "mosje": {
@@ -1567,7 +1567,7 @@
       }
     },
     "link": {
-      "default": {
+      "brand": {
         "default": {
           "$description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast.",
           "$value": "{color.primaryRamp.light.500}",
@@ -1601,7 +1601,7 @@
           }
         }
       },
-      "default": {
+      "base": {
         "$value": "{color.neutral.200}",
         "$extensions": {
           "mosje": {

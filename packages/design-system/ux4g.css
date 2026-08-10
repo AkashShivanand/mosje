@@ -818,15 +818,15 @@
   --sa-color-action-primary-default: #4a2bc2;
   --sa-color-action-primary-hover: #3d239f;
   --sa-color-action-primary-tonal: #dcd4ff;
-  --sa-text-link-default-default: #4a2bc2;
+  --sa-text-link-brand-default: #4a2bc2;
   --sa-focus-ring: rgba(106, 78, 255, 0.48);
   --sa-color-text-default: #171717;
   --sa-text-neutral-strong: #0a0a0a;
   --sa-color-text-muted: #404040;
-  --sa-bg-neutral-default: #fff;
+  --sa-bg-neutral-base: #fff;
   --sa-bg-neutral-soft: #fafafa;
   --sa-border-neutral-subtle: #e5e5e5;
-  --sa-border-neutral-default: #d9d9d9;
+  --sa-border-neutral-base: #d9d9d9;
   --sa-color-status-success: #00522c;
   --sa-color-status-danger: #8a1a16;
   --sa-color-status-warning: #ad4e00;
@@ -837,7 +837,7 @@
   --ds-primary-tonal: var(--sa-color-action-primary-tonal);
   --ds-primary-dark: var(--sa-color-action-primary-hover);
   --ds-primary-hover: var(--sa-color-action-primary-hover);
-  --ds-link: var(--sa-text-link-default-default);
+  --ds-link: var(--sa-text-link-brand-default);
   --ds-primary-ring: var(--sa-focus-ring);
   --ds-primary-50: var(--sa-color-primaryScale-50);
   --ds-primary-100: var(--sa-color-primaryScale-100);
@@ -877,10 +877,10 @@
   --ds-ink: var(--sa-color-text-default);
   --ds-ink-strong: var(--sa-text-neutral-strong);
   --ds-ink-muted: var(--sa-color-text-muted);
-  --ds-surface: var(--sa-bg-neutral-default);
+  --ds-surface: var(--sa-bg-neutral-base);
   --ds-surface-muted: var(--sa-bg-neutral-soft);
   --ds-border: var(--sa-border-neutral-subtle);
-  --ds-border-strong: var(--sa-border-neutral-default);
+  --ds-border-strong: var(--sa-border-neutral-base);
 
   /* re-resolve the --ux4g-* chain that reads from those primitives */
   --ux4g-accordion-bg: var(--ux4g-bg-neutral-subtle);
@@ -1042,15 +1042,15 @@
   --sa-color-action-primary-default: #3d239f;
   --sa-color-action-primary-hover: #301c7d;
   --sa-color-action-primary-tonal: #c0b3ff;
-  --sa-text-link-default-default: #3d239f;
+  --sa-text-link-brand-default: #3d239f;
   --sa-focus-ring: rgba(106, 78, 255, 0.48);
   --sa-color-text-default: #171717;
   --sa-text-neutral-strong: #0a0a0a;
   --sa-color-text-muted: #404040;
-  --sa-bg-neutral-default: #fff;
+  --sa-bg-neutral-base: #fff;
   --sa-bg-neutral-soft: #fafafa;
   --sa-border-neutral-subtle: #e5e5e5;
-  --sa-border-neutral-default: #d9d9d9;
+  --sa-border-neutral-base: #d9d9d9;
   --sa-color-status-success: #00522c;
   --sa-color-status-danger: #8a1a16;
   --sa-color-status-warning: #ad4e00;
@@ -1061,7 +1061,7 @@
   --ds-primary-tonal: var(--sa-color-action-primary-tonal);
   --ds-primary-dark: var(--sa-color-action-primary-hover);
   --ds-primary-hover: var(--sa-color-action-primary-hover);
-  --ds-link: var(--sa-text-link-default-default);
+  --ds-link: var(--sa-text-link-brand-default);
   --ds-primary-ring: var(--sa-focus-ring);
   --ds-primary-100: var(--sa-color-primaryScale-100);
   --ds-primary-200: var(--sa-color-primaryScale-200);
@@ -1100,10 +1100,10 @@
   --ds-ink: var(--sa-color-text-default);
   --ds-ink-strong: var(--sa-text-neutral-strong);
   --ds-ink-muted: var(--sa-color-text-muted);
-  --ds-surface: var(--sa-bg-neutral-default);
+  --ds-surface: var(--sa-bg-neutral-base);
   --ds-surface-muted: var(--sa-bg-neutral-soft);
   --ds-border: var(--sa-border-neutral-subtle);
-  --ds-border-strong: var(--sa-border-neutral-default);
+  --ds-border-strong: var(--sa-border-neutral-base);
 
   /* re-resolve the --ux4g-* chain that reads from those primitives */
   --ux4g-accordion-bg: var(--ux4g-bg-neutral-subtle);

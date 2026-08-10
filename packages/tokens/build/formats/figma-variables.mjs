@@ -241,7 +241,7 @@ function brandValue(token, brand) {
 /**
  * The theme override for a token, following the alias chain.
  *
- * The canonical namespace is pure aliases (`bg/neutral/default` -> `{color.bg.surface}`) and
+ * The canonical namespace is pure aliases (`bg/neutral/base` -> `{color.bg.surface}`) and
  * it is the LEGACY token that carries `$extensions.mosje.themes`. Reading the override off
  * the canonical token alone would find nothing and silently emit the light value in every
  * mode — the accessibility themes would import as three identical copies.
@@ -261,7 +261,7 @@ function themeOverride(token, theme, tokenByPath, depth = 0) {
 /**
  * Re-attach a Theme token's Light value to the brand-aware Color variable underneath it.
  *
- * Without this the whole split is broken. `bg/neutral/default` aliases `color.bg.surface`,
+ * Without this the whole split is broken. `bg/neutral/base` aliases `color.bg.surface`,
  * which aliases `color.neutral.0` — a private Tier-1 ramp with no Figma home — so the chain
  * bottoms out in a LITERAL #ffffff and the Navy brand is silently discarded for every one of
  * the 15 tokens that vary on both axes.

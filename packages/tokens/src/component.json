@@ -11,7 +11,7 @@
   },
   "card": {
     "$type": "color",
-    "bg":     {"$value":"{bg.neutral.default}"},
+    "bg":     {"$value":"{bg.neutral.base}"},
     "border": {"$value":"{border.neutral.subtle}"},
     "radius": {"$type":"dimension","$value":"{radius.md}"}
   },

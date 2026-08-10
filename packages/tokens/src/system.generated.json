@@ -21,9 +21,9 @@
     },
     "brand": {
       "primary": {
-        "default": {
+        "base": {
           "$value": "{color.primaryScale.50}",
-          "$description": "Brand primary background, default"
+          "$description": "Brand primary background, base"
         },
         "soft": {
           "$value": "{color.primaryScale.100}",
@@ -47,9 +47,9 @@
         }
       },
       "secondary": {
-        "default": {
+        "base": {
           "$value": "{color.secondaryScale.50}",
-          "$description": "Brand secondary background, default"
+          "$description": "Brand secondary background, base"
         },
         "soft": {
           "$value": "{color.secondaryScale.100}",
@@ -75,9 +75,9 @@
     },
     "status": {
       "success": {
-        "default": {
+        "base": {
           "$value": "{color.successScale.50}",
-          "$description": "success background, default"
+          "$description": "success background, base"
         },
         "soft": {
           "$value": "{color.successScale.100}",
@@ -101,9 +101,9 @@
         }
       },
       "error": {
-        "default": {
+        "base": {
           "$value": "{color.dangerScale.50}",
-          "$description": "error background, default"
+          "$description": "error background, base"
         },
         "soft": {
           "$value": "{color.dangerScale.100}",
@@ -127,9 +127,9 @@
         }
       },
       "warning": {
-        "default": {
+        "base": {
           "$value": "{color.warningScale.50}",
-          "$description": "warning background, default"
+          "$description": "warning background, base"
         },
         "soft": {
           "$value": "{color.warningScale.100}",
@@ -153,9 +153,9 @@
         }
       },
       "info": {
-        "default": {
+        "base": {
           "$value": "{color.infoScale.50}",
-          "$description": "info background, default"
+          "$description": "info background, base"
         },
         "soft": {
           "$value": "{color.infoScale.100}",
@@ -201,7 +201,7 @@
     },
     "brand": {
       "primary": {
-        "default": {
+        "base": {
           "$value": "{color.action.primary.default}",
           "$description": "Brand-coloured text"
         }
@@ -209,32 +209,32 @@
     },
     "status": {
       "success": {
-        "default": {
+        "base": {
           "$value": "{color.status.success}",
           "$description": "success message text"
         }
       },
       "error": {
-        "default": {
+        "base": {
           "$value": "{color.status.danger}",
           "$description": "error message text"
         }
       },
       "warning": {
-        "default": {
+        "base": {
           "$value": "{color.status.warning}",
           "$description": "warning message text"
         }
       },
       "info": {
-        "default": {
+        "base": {
           "$value": "{color.status.info}",
           "$description": "info message text"
         }
       }
     },
     "link": {
-      "default": {
+      "brand": {
         "hover": {
           "$value": "{color.action.primary.hover}",
           "$description": "Link, hovered"
@@ -283,7 +283,7 @@
     },
     "brand": {
       "primary": {
-        "default": {
+        "base": {
           "$value": "{color.action.primary.default}",
           "$description": "Brand-coloured icon"
         }
@@ -291,25 +291,25 @@
     },
     "status": {
       "success": {
-        "default": {
+        "base": {
           "$value": "{color.status.success}",
           "$description": "success icon"
         }
       },
       "error": {
-        "default": {
+        "base": {
           "$value": "{color.status.danger}",
           "$description": "error icon"
         }
       },
       "warning": {
-        "default": {
+        "base": {
           "$value": "{color.status.warning}",
           "$description": "warning icon"
         }
       },
       "info": {
-        "default": {
+        "base": {
           "$value": "{color.status.info}",
           "$description": "info icon"
         }
@@ -327,7 +327,7 @@
     },
     "brand": {
       "primary": {
-        "default": {
+        "base": {
           "$value": "{color.action.primary.default}",
           "$description": "Brand-coloured border"
         }
@@ -335,25 +335,25 @@
     },
     "status": {
       "success": {
-        "default": {
+        "base": {
           "$value": "{color.status.success}",
           "$description": "success border"
         }
       },
       "error": {
-        "default": {
+        "base": {
           "$value": "{color.status.danger}",
           "$description": "error border"
         }
       },
       "warning": {
-        "default": {
+        "base": {
           "$value": "{color.status.warning}",
           "$description": "warning border"
         }
       },
       "info": {
-        "default": {
+        "base": {
           "$value": "{color.status.info}",
           "$description": "info border"
         }
