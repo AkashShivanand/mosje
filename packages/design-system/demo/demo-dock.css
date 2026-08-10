@@ -1,0 +1,201 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — DemoDock
+   ─────────────────────────────────────────────────────────────────────────
+   DEMO-ONLY component. NOT included in the production bundle.
+   One floating FAB, bottom-left, opening a tabbed panel (Apps / Colour /
+   Sign in). Structure mirrors the AppSwitcher shell (zone-switcher.css):
+   fixed root, absolutely-positioned panel above the FAB, token-only colour
+   and shadow values. Only `.ds-demodock__body` scrolls — header, tab strip
+   and footer stay put.
+   ============================================================================ */
+
+/* ── Root container ── */
+.ds-demodock {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 2147483000;
+  font-family: var(--ds-font-sans);
+}
+
+/* ── FAB trigger ── */
+.ds-demodock__fab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px 0 14px;
+  border: 1.5px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-surface);
+  color: var(--ds-ink);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-body-2);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--ds-shadow-lg);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ds-demodock__fab:hover {
+  border-color: var(--ds-primary);
+}
+
+.ds-demodock__fab:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+.ds-demodock__fab-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--ds-primary);
+  flex: 0 0 auto;
+}
+
+/* ── Panel ── */
+.ds-demodock__panel {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 10px);
+  width: 400px;
+  max-width: calc(100vw - 40px);
+  max-height: min(600px, calc(100vh - 100px));
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-surface);
+  box-shadow: var(--ds-shadow-xl);
+  overflow: hidden;
+}
+
+/* ── Header (title + "Currently in" + close + tab strip — never scrolls) ── */
+.ds-demodock__header {
+  flex: 0 0 auto;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--ds-border);
+}
+
+.ds-demodock__header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ds-demodock__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ds-demodock__title {
+  font-size: var(--ds-text-title-2);
+  font-weight: 700;
+  color: var(--ds-ink);
+  line-height: 1.2;
+}
+
+.ds-demodock__current {
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ds-demodock__current-label {
+  color: var(--ds-ink-muted);
+}
+
+.ds-demodock__current-name {
+  font-weight: 600;
+  color: var(--ds-ink-strong);
+}
+
+.ds-demodock__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  color: var(--ds-ink-muted);
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.ds-demodock__close:hover {
+  background-color: var(--ds-surface-muted);
+  color: var(--ds-ink);
+}
+
+.ds-demodock__close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ds-primary-ring);
+}
+
+.ds-demodock__tabs {
+  margin-top: 2px;
+}
+
+/* ── Body (the only scrolling region) ── */
+.ds-demodock__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Reuse the tab strip's panel padding rather than doubling up here — the
+   panels themselves (AppSwitcherPanel, DemoAccountsPanel) already carry
+   their own internal padding. The Colour tab is plain content, so it gets
+   its own. */
+.ds-demodock__colour {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ds-demodock__colour-note {
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink-muted);
+}
+
+/* ── Footer (never scrolls) ── */
+.ds-demodock__footer {
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  border-top: 1px solid var(--ds-border);
+  background-color: var(--ds-surface-muted);
+  font-size: var(--ds-text-label-3);
+  font-weight: 600;
+  color: var(--ds-ink-muted);
+  text-align: center;
+}
+
+/* ── Entrance animation ── */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-demodock__panel {
+    animation: ds-demodock-in 0.14s ease;
+  }
+
+  @keyframes ds-demodock-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
