@@ -3,18 +3,16 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { DemoFab, Icon, type DemoFillDetail } from "@mosje/design-system";
+import { Icon, type DemoFillDetail } from "@mosje/design-system";
 import { Button, Field, TextInput } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
-import { DEMO_CITIZEN } from "@/lib/tg/store/seed";
 
 /**
  * Citizen sign-in (mock). Email → Send OTP → Verify (dev OTP 123456; the live
  * flow also offers DigiLocker/Aadhaar — represented here as a mock option). Any
- * email + any 6-digit OTP signs in as the demo citizen.
+ * email + any 6-digit OTP signs in as the demo citizen. Fillable from the
+ * DemoDock's Sign in tab.
  */
-const DEMO_ACCOUNTS = [{ role: "Citizen (Applicant)", id: DEMO_CITIZEN.email, password: "123456" }];
-
 export default function CitizenSignInPage() {
   const router = useRouter();
   const { login } = useTg();
@@ -131,8 +129,6 @@ export default function CitizenSignInPage() {
           </p>
         </div>
       </main>
-
-      <DemoFab accounts={DEMO_ACCOUNTS} devMode={process.env.NODE_ENV === "development"} />
     </div>
   );
 }

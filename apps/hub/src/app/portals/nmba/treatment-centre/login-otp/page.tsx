@@ -5,12 +5,11 @@
 //   Input        ✅ @mosje/design-system
 //   FormField    ✅ @mosje/design-system
 //   Alert        ✅ @mosje/design-system
-//   DemoFab      ✅ @mosje/design-system
 //   PortalLoginShell ✅ @mosje/design-system (added this session)
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Alert, Button, DemoFab, FormField, Icon, Input, PortalLoginShell } from "@mosje/design-system";
+import { Alert, Button, FormField, Icon, Input, PortalLoginShell, type DemoFillDetail } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import {
   TC_SESSION_COOKIE,
@@ -20,14 +19,6 @@ import {
 
 const BASE = "/portals/nmba";
 const DEMO_OTP = "123456";
-
-const DEMO_ACCOUNTS = [
-  { role: "IRCA", id: "IRCA001", password: DEMO_OTP },
-  { role: "ODIC", id: "ODIC001", password: DEMO_OTP },
-  { role: "CPLI", id: "CPLI001", password: DEMO_OTP },
-  { role: "DDAC", id: "DDAC001", password: DEMO_OTP },
-  { role: "US", id: "US001", password: DEMO_OTP },
-];
 
 const TABS = [
   { label: "Admin", href: `${BASE}/admin/login`, active: false },
@@ -42,6 +33,19 @@ export default function TreatmentCentreLoginPage() {
   const [otp, setOtp] = React.useState("");
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+
+  // DemoDock prefill via the design-system CustomEvent.
+  React.useEffect(() => {
+    const handler = (e: Event) => {
+      const { id, password: pw } = (e as CustomEvent<DemoFillDetail>).detail;
+      setProjectId(id.toUpperCase());
+      setOtp(pw);
+      setError("");
+      setStep("otp");
+    };
+    window.addEventListener("demo:fill", handler);
+    return () => window.removeEventListener("demo:fill", handler);
+  }, []);
 
   const sendOtp = (e: React.FormEvent) => {
     e.preventDefault();
@@ -177,17 +181,6 @@ export default function TreatmentCentreLoginPage() {
           For access issues, contact the IDAMS helpdesk.
         </p>
       </PortalLoginShell>
-
-      <DemoFab
-        accounts={DEMO_ACCOUNTS}
-        devMode={process.env.NODE_ENV === "development"}
-        onFill={(id, pw) => {
-          setProjectId(id.toUpperCase());
-          setOtp(pw);
-          setError("");
-          setStep("otp");
-        }}
-      />
     </>
   );
 }

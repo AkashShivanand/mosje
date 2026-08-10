@@ -3,15 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button, Checkbox, DemoFab, Icon, Input, Label } from "@mosje/design-system";
+import { Button, Checkbox, Icon, Input, Label, type DemoFillDetail } from "@mosje/design-system";
 import { useApp } from "@/store/smile-admin/app-context";
 
-const DEMO_ACCOUNTS = [
-  { role: "Super Admin", id: "9000000900", password: "Password@123" },
-  { role: "State Nodal Officer", id: "9000000901", password: "Password@123" },
-  { role: "District Nodal Officer", id: "9000000902", password: "Password@123" },
-];
-
+// This page's own inline "quick accounts" panel, independent of the
+// estate-wide DemoDock (which also reaches this form via the `demo:fill`
+// listener below, using the registry in @mosje/design-system/demo).
 const QUICK_ACCOUNTS = [
   { label: "Super Admin", mobile: "9000000900", scope: "All India" },
   { label: "Central Admin", mobile: "9000000901", scope: "All India" },
@@ -57,6 +54,18 @@ export default function LoginPage() {
     }
     router.replace(next);
   }, [account, router]);
+
+  // DemoDock prefill via the design-system CustomEvent.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { id, password: pw } = (e as CustomEvent<DemoFillDetail>).detail;
+      setMobile(id);
+      setPassword(pw);
+      mobileRef.current?.focus();
+    };
+    window.addEventListener("demo:fill", handler);
+    return () => window.removeEventListener("demo:fill", handler);
+  }, []);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -247,11 +256,6 @@ export default function LoginPage() {
         <span>GIGW 3.0</span>
         <span>v1.0.0 · Build 2026.05.15b</span>
       </div>
-      <DemoFab
-        accounts={DEMO_ACCOUNTS}
-        devMode={process.env.NODE_ENV === "development"}
-        onFill={(id, pw) => { setMobile(id); setPassword(pw); }}
-      />
     </div>
   );
 }

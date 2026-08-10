@@ -40,12 +40,44 @@ export const DEMO_ACCOUNTS: readonly DemoAccountSet[] = [
     ],
   },
   {
+    // Distinct from /portals/nmba above — the treatment-centre login is a
+    // Project Id + OTP flow (see login-otp/page.tsx), not the admin
+    // mobile-number + password form, so it needs its own account shape and
+    // wins the longest-prefix match over the broader /portals/nmba entry.
+    path: "/portals/nmba/treatment-centre",
+    idLabel: "Project Id",
+    accounts: [
+      { role: "IRCA", id: "IRCA001", password: "123456" },
+      { role: "ODIC", id: "ODIC001", password: "123456" },
+      { role: "CPLI", id: "CPLI001", password: "123456" },
+      { role: "DDAC", id: "DDAC001", password: "123456" },
+      { role: "US", id: "US001", password: "123456" },
+    ],
+  },
+  {
     path: "/portals/scw",
     idLabel: "Mobile / ID",
+    // `extra` drives the login page's role-tab switch on fill — see the
+    // `demo:fill` listener in apps/hub/src/app/portals/scw/login/page.tsx.
     accounts: [
-      { role: "Volunteer (Citizen)", id: "9800000001", password: "Demo@123" },
-      { role: "SAGE Organisation", id: "9800000002", password: "Demo@123" },
-      { role: "Nodal Officer", id: "9810000001", password: "Demo@123" },
+      {
+        role: "Volunteer (Citizen)",
+        id: "9800000001",
+        password: "Demo@123",
+        extra: { tab: "citizen", type: "volunteer" },
+      },
+      {
+        role: "SAGE Organisation",
+        id: "9800000002",
+        password: "Demo@123",
+        extra: { tab: "citizen", type: "sage" },
+      },
+      {
+        role: "Nodal Officer",
+        id: "9810000001",
+        password: "Demo@123",
+        extra: { tab: "officer" },
+      },
     ],
   },
   {

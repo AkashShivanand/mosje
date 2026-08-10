@@ -1,6 +1,6 @@
 "use client";
 
-import { ColorModeSwitcher, Icon } from "@mosje/design-system";
+import { Icon } from "@mosje/design-system";
 
 export function AccessBar() {
   return (
@@ -22,8 +22,8 @@ export function AccessBar() {
         <a href="#main-content" className="skip-link">Skip to Main Content</a>
         <div className="flex shrink-0 items-center gap-xs sm:gap-md">
           {/* Font size, contrast and other a11y controls live in the official
-              UX4GAccessibilityWidget (rendered in the root layout) — not here. */}
-          <ColorModeSwitcher compact hideLabel label="Colour mode" />
+              UX4GAccessibilityWidget (rendered in the root layout). Colour-mode
+              switching lives in the DemoDock's Colour tab, not here. */}
           <button className="inline-flex items-center gap-xs rounded-xs px-1 py-1 text-label-3 hover:bg-white/10 sm:px-sm">
             <Icon name="language" size={14} />
             <span className="hidden sm:inline">English</span>

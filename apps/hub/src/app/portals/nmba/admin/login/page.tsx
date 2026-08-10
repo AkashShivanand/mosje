@@ -5,39 +5,17 @@
 //   Input            ✅ @mosje/design-system
 //   FormField        ✅ @mosje/design-system
 //   Alert            ✅ @mosje/design-system
-//   DemoFab          ✅ @mosje/design-system
 //   PortalLoginShell ✅ @mosje/design-system (added this session)
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/nmba/toast";
-import { Alert, Button, DemoFab, FormField, Icon, Input, PortalLoginShell } from "@mosje/design-system";
-import { accountFromMobile, DEMO_PORTAL_ACCOUNTS } from "@/lib/nmba/committee/masters";
-import {
-  ALL_MASS_PLEDGE_ACCOUNTS,
-  massPledgeAccountFromMobile,
-} from "@/lib/nmba/mass-pledge/masters";
-import { PORTAL_SESSION_COOKIE, encodeSession, roleLabel, scopeLabel } from "@/lib/nmba/committee/session";
+import { Alert, Button, FormField, Icon, Input, PortalLoginShell, type DemoFillDetail } from "@mosje/design-system";
+import { accountFromMobile } from "@/lib/nmba/committee/masters";
+import { massPledgeAccountFromMobile } from "@/lib/nmba/mass-pledge/masters";
+import { PORTAL_SESSION_COOKIE, encodeSession } from "@/lib/nmba/committee/session";
 
 const BASE = "/portals/nmba";
-
-// Both account sets sign in through this one form. The committee accounts are
-// the pre-existing portal logins; the Mass Pledge set adds the bottom of the
-// approval chain (Block) and the four non-geographic reporters.
-const DEMO_ACCOUNTS = [
-  ...DEMO_PORTAL_ACCOUNTS.map((a) => ({
-    role: roleLabel(a.session.role),
-    id: a.id,
-    password: a.password,
-  })),
-  ...ALL_MASS_PLEDGE_ACCOUNTS.map((a) => ({
-    // Spares are marked, because every other Mass Pledge account already owns a
-    // seeded report and the one-report-per-account rule will refuse a second.
-    role: `${roleLabel(a.session.role)} — ${scopeLabel(a.session)}${a.spare ? " · can file" : ""}`,
-    id: a.id,
-    password: a.password,
-  })),
-];
 
 /** Landing route per role after sign-in. */
 const LANDING: Record<string, string> = {
@@ -62,6 +40,17 @@ export default function AdminLoginPage() {
   const [showPw, setShowPw] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
+
+  // DemoDock prefill via the design-system CustomEvent.
+  React.useEffect(() => {
+    const handler = (e: Event) => {
+      const { id, password: pw } = (e as CustomEvent<DemoFillDetail>).detail;
+      setMobile(id);
+      setPassword(pw);
+    };
+    window.addEventListener("demo:fill", handler);
+    return () => window.removeEventListener("demo:fill", handler);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -175,12 +164,6 @@ export default function AdminLoginPage() {
           For access issues, contact your State Nodal Officer or the NMBA helpdesk.
         </p>
       </PortalLoginShell>
-
-      <DemoFab
-        accounts={DEMO_ACCOUNTS}
-        devMode={process.env.NODE_ENV === "development"}
-        onFill={(id, pw) => { setMobile(id); setPassword(pw); }}
-      />
     </>
   );
 }

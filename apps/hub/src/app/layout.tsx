@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import { ColorModeProvider, UX4GAccessibilityWidget } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
-import { ConditionalAppSwitcher } from "@/components/conditional-app-switcher";
+import { ConditionalDemoDock } from "@/components/conditional-demo-dock";
 import "./globals.css";
 // Material Symbols Rounded — the SAMAVESH icon system. Loaded ONCE here because
 // the hub is now the single app hosting every natively-mounted portal.
@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ColorModeProvider>
           {children}
           <UX4GAccessibilityWidget />
-          <ConditionalAppSwitcher />
+          <ConditionalDemoDock />
         </ColorModeProvider>
       </body>
     </html>
