@@ -1,5 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Badge, Button, DataTable, type DataTableColumn } from "@mosje/design-system";
+import {
+  Badge,
+  Button,
+  DataTable,
+  type DataTableColumn,
+  type DataTableProps,
+} from "@mosje/design-system";
 
 /**
  * **DataTable** — the one paginated table for the whole estate.
@@ -60,7 +66,7 @@ const COLUMNS: DataTableColumn<Application>[] = [
     render: (row) => (
       <Badge
         status={
-          row.status === "Approved" ? "success" : row.status === "Returned" ? "error" : "warning"
+          row.status === "Approved" ? "success" : row.status === "Returned" ? "danger" : "warning"
         }
       >
         {row.status}
@@ -82,7 +88,15 @@ const COLUMNS: DataTableColumn<Application>[] = [
   },
 ];
 
-const meta = {
+/**
+ * Annotated rather than `satisfies`-inferred, and the stories are typed from the
+ * props rather than from `typeof meta`. `DataTable` is generic over its row type,
+ * and inferring through the `component` field erases that to the constraint
+ * (`Record<string, unknown>`) — at which point a `DataTableColumn<Application>[]`
+ * stops matching its own table. Naming the props type keeps `Application` all
+ * the way through, which is what makes `render: (row) => row.status` check.
+ */
+const meta: Meta<DataTableProps<Application>> = {
   title: "Components/Data display/DataTable",
   component: DataTable,
   args: {
@@ -101,10 +115,10 @@ const meta = {
     data: { control: false },
     pageSizes: { control: false },
   },
-} satisfies Meta<typeof DataTable<Application>>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<DataTableProps<Application>>;
 
 /** Twelve records at ten per page — change the page size to see the pager move. */
 export const Playground: Story = {};

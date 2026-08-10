@@ -18,6 +18,13 @@ import { FormField, Input, Textarea, Select } from "@mosje/design-system";
 const meta = {
   title: "Components/FormField",
   component: FormField,
+  // `label` and `children` are required, and `children` is the render prop —
+  // so the default has to BE a function, not a node. Supplying both here keeps
+  // every story below free to compose its own field through `render`.
+  args: {
+    label: "Full name",
+    children: (c) => <Input {...c} placeholder="As printed on your Aadhaar" />,
+  },
 } satisfies Meta<typeof FormField>;
 
 export default meta;

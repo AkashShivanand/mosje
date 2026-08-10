@@ -72,6 +72,14 @@ jobs:
       - name: Storybook parity — props exercised, no stale references
         run: node scripts/check-storybook-parity.mjs
 
+      # Storybook builds with esbuild, which strips types without checking them,
+      # so a story can ship a wrong prop value and still render. That is how a
+      # Badge went out with status="error" — not a member of BadgeStatus, so it
+      # emitted a class with no CSS rule and rendered untinted. Runs before the
+      # smoke test because it is seconds, not minutes.
+      - name: Typecheck Storybook stories
+        run: npm run typecheck --prefix apps/storybook
+
       - name: Install Chromium for the Storybook smoke test
         run: npx playwright install --with-deps chromium
 

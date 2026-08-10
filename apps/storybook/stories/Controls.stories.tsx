@@ -25,6 +25,11 @@ import { Checkbox, Radio, Textarea, Toggle } from "@mosje/design-system";
 const meta = {
   title: "Components/Controls",
   component: Checkbox,
+  // Checkbox is controlled, so `checked` and `onChange` are required. They live
+  // here rather than on each story because every story below drives its own
+  // state through `render` — without them, `StoryObj<typeof meta>` demands the
+  // pair on all five.
+  args: { checked: false, onChange: () => {} },
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;

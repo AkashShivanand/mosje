@@ -56,8 +56,8 @@ is what BAs, QAs and designers open instead of reading source — it is only
 useful if it reflects what ships. It had drifted to 2 of ~69 components because
 nothing checked.
 
-Three gates in **Design System Quality** enforce that, because "has a story" is
-only the first of three ways it goes wrong.
+Four gates in **Design System Quality** enforce that, because "has a story" is
+only the first of four ways it goes wrong.
 
 ### 1. Coverage — does a story exist? (`npm run check:storybook`)
 
@@ -100,7 +100,30 @@ story is written, so this closes two gaps:
 counts, because "here is when NOT to use this" is often the right guidance. What
 it catches is the prop that exists in the component and nowhere else.
 
-### 3. Smoke — does it render? (`npm run check:storybook:smoke`)
+### 3. Types — are the props right? (`npm run check:storybook:types`)
+
+`npm run typecheck --prefix apps/storybook`. Storybook builds with esbuild,
+which strips types without checking them, so **a story compiles and renders with
+a wrong prop value**. That is exactly how a `Badge` shipped with
+`status="error"` — not a member of `BadgeStatus`, which is `"danger"` — emitting
+a class with no CSS rule, so the badge rendered untinted. Neither the build nor
+the smoke test can see that; only `tsc` can.
+
+Two patterns to know when a story will not type-check:
+
+- **A generic component** (`DataTable<T>`) — inferring through `typeof Component`
+  erases the type parameter to its constraint. Annotate the meta with the props
+  type instead: `const meta: Meta<DataTableProps<Application>>` and
+  `type Story = StoryObj<DataTableProps<Application>>`.
+- **A union props type** (`BarChartProps` is `{data}` | `{labels, series}`) —
+  inferring through `typeof meta` makes every story owe a complete branch of the
+  union. Same fix: annotate with the union and type stories from it.
+
+Otherwise prefer `satisfies Meta<typeof Component>` — it is stricter, and it is
+what makes a required controlled prop (`checked` + `onChange`) impossible to
+forget. Put those in `meta.args` when the stories drive their own state.
+
+### 4. Smoke — does it render? (`npm run check:storybook:smoke`)
 
 `scripts/smoke-storybook.mjs` mounts **every** story in Chromium and fails on an
 uncaught error, a console error, or an **empty canvas**. A story that satisfies

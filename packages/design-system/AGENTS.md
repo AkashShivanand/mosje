@@ -101,7 +101,7 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
 ## Before you finish
 
 - **Wrote or changed a component? Write or update its story in the same commit.**
-  Three gates enforce this, and they fail for different reasons — run all three:
+  Four gates enforce this, and they fail for different reasons — run all four:
   - `npm run check:storybook` — every export has a story. Coverage is **69/69
     and `apps/storybook/coverage-baseline.json` is empty**, so a new component
     without a story fails outright. Do not add a baseline entry to go green.
@@ -109,6 +109,10 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
     no story references an export the barrel no longer has. **Adding a prop
     means updating the story**; renaming or deleting a component means updating
     or deleting its story.
+  - `npm run check:storybook:types` — the stories type-check. Storybook builds
+    with esbuild, which strips types without checking them, so a story renders
+    happily with a **wrong prop value** (a `Badge` shipped `status="error"`;
+    the union is `"danger"`, so it emitted a class with no CSS rule).
   - `npm run check:storybook:smoke` — every story actually renders. Catches a
     story that throws or shows an empty canvas, which the counter cannot see.
 

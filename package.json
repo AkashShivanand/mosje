@@ -30,6 +30,7 @@
     "test": "npm test -w @mosje/design-system && npm test --prefix apps/hub",
     "check:storybook": "node scripts/check-storybook-coverage.mjs",
     "check:storybook:parity": "node scripts/check-storybook-parity.mjs",
+    "check:storybook:types": "npm --prefix apps/storybook run typecheck",
     "check:storybook:smoke": "node scripts/smoke-storybook.mjs",
     "check:storybook:baseline": "node scripts/check-storybook-coverage.mjs --update-baseline"
   },

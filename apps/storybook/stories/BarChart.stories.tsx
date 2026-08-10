@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { BarChart, formatCompact } from "@mosje/design-system";
+import { BarChart, formatCompact, type BarChartProps } from "@mosje/design-system";
 
 /**
  * **BarChart** — the default chart. When in doubt, this is the right answer.
@@ -32,7 +32,15 @@ const DISTRICTS = [
   { label: "Kolhapur", value: 152_470 },
 ];
 
-const meta = {
+/**
+ * Annotated rather than `satisfies`-inferred, and the stories are typed from the
+ * props. `BarChartProps` is a UNION — `{ data }` for one series, `{ labels,
+ * series }` for several — and inferring through `typeof BarChart` made every
+ * story owe a complete branch of it, including the ones that pass their own
+ * props through `render`. Naming the union lets a story set just the arg it is
+ * demonstrating.
+ */
+const meta: Meta<BarChartProps> = {
   title: "Components/Charts/BarChart",
   component: BarChart,
   args: {
@@ -62,10 +70,10 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof BarChart>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<BarChartProps>;
 
 export const Playground: Story = {};
 
@@ -74,7 +82,7 @@ export const Playground: Story = {};
  * the failure this prop exists to avoid.
  */
 export const HorizontalForLongLabels: Story = {
-  render: (args) => (
+  render: (args: BarChartProps) => (
     <div style={{ display: "grid", gap: 32 }}>
       <BarChart
         {...args}
