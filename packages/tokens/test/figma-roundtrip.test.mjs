@@ -39,7 +39,10 @@ test("every authored token is either exported or explicitly unmapped — nothing
     .filter((p) => !byPath.has(p) && !unmappedPaths.has(p));
   assert.deepEqual(unaccounted.slice(0, 10), [], `${unaccounted.length} token(s) silently dropped`);
 
-  const exported = allVars.map((v) => v.path);
+  // Brand-source companions are a deliberate second presence for one authored token (the
+  // brand value in Color, the appearance layer in Theme). Excluded here; the "no two tokens
+  // claim the same library NAME" test still guards the real hazard.
+  const exported = allVars.filter((v) => v.role !== "brand-source").map((v) => v.path);
   const dupPaths = exported.filter((p, i) => exported.indexOf(p) !== i);
   assert.deepEqual(dupPaths.slice(0, 10), [], `${dupPaths.length} token(s) exported twice`);
 
@@ -95,23 +98,113 @@ test("every variable has a value for every mode of its collection", () => {
   assert.deepEqual(gaps.slice(0, 10), [], `${gaps.length} missing mode value(s)`);
 });
 
-test.skip("no collection is asked to express an axis it has no modes for", () => {
-  // This is the check that caught 73 fluid-type variables being routed into the single-mode
-  // Reference collection, which silently discarded the entire Portal type scale.
-  const AXIS_HOME = { fluid: "2 · Type", themes: "2 · Color", colorModes: "2 · Color" };
-  const lost = [];
-  for (const { path, filePath } of authored) {
-    const src = sourceNode(filePath, path);
-    const ext = src?.$extensions?.mosje ?? {};
-    const v = byPath.get(path.join("/"));
-    if (!v) continue;
-    if (ext.type && v.collection !== AXIS_HOME.fluid) lost.push(`${path.join("/")} varies on surface but sits in ${v.collection}`);
-    if (ext.themes && !["2 · Color", "2 · Space"].includes(v.collection))
-      lost.push(`${path.join("/")} varies on theme but sits in ${v.collection}`);
-    if (ext.colorModes && v.collection !== AXIS_HOME.colorModes)
-      lost.push(`${path.join("/")} varies on brand but sits in ${v.collection}`);
+test("no collection is asked to express an axis it has no modes for", () => {
+  // The check that caught 73 fluid-type variables losing the entire Portal scale, and then
+  // the whole theme axis having no home at all.
+  //
+  // It follows the ALIAS CHAIN rather than reading extensions off the token directly. The
+  // canonical namespace is pure aliases, so the theme override lives on the legacy token it
+  // points at — a direct read finds nothing and the assertion passes while dark mode is
+  // silently absent. That is exactly how this went unnoticed once already.
+  const AXIS_MODES = { fluid: "surface", themes: "theme", colorModes: "brand" };
+  const COLLECTION_AXES = {
+    Color: ["brand"],
+    Theme: ["theme"],
+    Typography: ["surface"],
+    Density: ["density"],
+    Spacing: [],
+    "Border Radius": [],
+    Motion: [],
+  };
+
+  const sourceByPath = new Map();
+  for (const { path, filePath } of authored) sourceByPath.set(path.join("."), { path, filePath });
+
+  function axesOf(key, depth = 0) {
+    if (depth > 8) return new Set();
+    const entry = sourceByPath.get(key);
+    if (!entry) return new Set();
+    const node = sourceNode(entry.filePath, entry.path);
+    const ext = node?.$extensions?.mosje ?? {};
+    const found = new Set();
+    if (ext.type) found.add("fluid");
+    if (ext.themes) found.add("themes");
+    if (ext.colorModes) found.add("colorModes");
+    const raw = node?.$value;
+    if (typeof raw === "string" && /^\{[^}]+\}$/.test(raw.trim())) {
+      for (const a of axesOf(raw.trim().slice(1, -1), depth + 1)) found.add(a);
+    }
+    return found;
   }
-  assert.deepEqual(lost.slice(0, 10), [], `${lost.length} token(s) lose axis variation on import`);
+
+  const aliasedByTheme = new Set();
+  for (const v of allVars) {
+    if (v.collection !== "Theme") continue;
+    for (const value of Object.values(v.valuesByMode)) {
+      if (value.type === "ALIAS" && value.collection === "Color") aliasedByTheme.add(value.name);
+    }
+  }
+
+  const lost = [];
+  for (const v of allVars) {
+    const axes = axesOf(v.path.replace(/\//g, "."));
+    const supported = COLLECTION_AXES[v.collection] ?? [];
+    for (const axis of axes) {
+      // `compact` rides on the themes extension but is the density axis, not appearance.
+      if (axis === "themes" && supported.includes("density")) continue;
+      const needed = AXIS_MODES[axis];
+      // Brand delegated through an alias is NOT lost: a Theme token whose Light value
+      // aliases into Color resolves per brand mode, because Color carries that axis. Only a
+      // literal actually drops it.
+      if (needed === "brand" && v.valuesByMode.Light?.type === "ALIAS" && v.valuesByMode.Light.collection === "Color") {
+        continue;
+      }
+      // A Color variable that some Theme variable ALIASES is a brand source: appearance is
+      // expressed by the Theme tokens pointing at it, so the theme axis is not lost here.
+      // Matching by name would miss it — `color/text/disabled` lands as `Color::Text/Disabled`
+      // while its consumers are `Theme::Text/Neutral/Disabled`, `Theme::Icon/Neutral/Disabled`
+      // and 16 more.
+      if (needed === "theme" && v.collection === "Color" && aliasedByTheme.has(v.name)) {
+        continue;
+      }
+      if (!supported.includes(needed)) {
+        lost.push(`${v.collection}::${v.name} varies on ${needed} but that collection has no ${needed} modes`);
+      }
+    }
+  }
+  assert.deepEqual(lost.slice(0, 10), [], `${lost.length} variable(s) lose axis variation on import`);
+});
+
+test("the theme axis actually carries different values, not three identical copies", () => {
+  // A Theme collection whose three modes are the same value is worse than none: it looks
+  // like dark mode is supported and renders light. Assert real variation exists.
+  const theme = payload.collections.find((c) => c.name === "Theme");
+  assert.ok(theme, "no Theme collection — the accessibility axis has no home");
+  const varying = theme.variables.filter((v) => {
+    const sigs = Object.values(v.valuesByMode).map((x) =>
+      x.type === "ALIAS" ? `${x.collection}::${x.name}` : String(x.value),
+    );
+    return new Set(sigs).size > 1;
+  });
+  assert.ok(varying.length > 30, `only ${varying.length} Theme variables differ across modes`);
+});
+
+test("a Theme token's Light value stays brand-aware", () => {
+  // The bug this guards: the alias chain bottoms out in a private Tier-1 ramp, so Light
+  // resolves to a LITERAL and the Navy brand is silently dropped for every token that
+  // varies on both axes. Light must alias into Color, which is itself brand-aware.
+  const theme = payload.collections.find((c) => c.name === "Theme");
+  const mustAlias = ["Background/Neutral/Default", "Text/Neutral/Default", "Border/Neutral/Subtle"];
+  for (const name of mustAlias) {
+    const v = theme.variables.find((x) => x.name === name);
+    if (!v) continue;
+    assert.equal(
+      v.valuesByMode.Light.type,
+      "ALIAS",
+      `${name} Light is a literal — the Navy brand will not reach it`,
+    );
+    assert.equal(v.valuesByMode.Light.collection, "Color");
+  }
 });
 
 test("alias edges survive — references are ALIAS values, not resolved literals", () => {

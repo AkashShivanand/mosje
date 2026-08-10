@@ -25,7 +25,7 @@ import { parse } from "./grammar.mjs";
 const here = (p) => new URL(p, import.meta.url).pathname;
 
 /** Ladder step → ramp step. Shared by every family so the ladder means one thing. */
-const LADDER = { subtlest: 50, subtler: 100, subtle: 200, bold: 300, bolder: 600, boldest: 800 };
+const LADDER = { default: 50, soft: 100, subtle: 200, emphasis: 300, strong: 600, stronger: 800 };
 
 const STATUS = { success: "successScale", error: "dangerScale", warning: "warningScale", info: "infoScale" };
 const BRAND = { primary: "primaryScale", secondary: "secondaryScale" };
@@ -37,10 +37,8 @@ const put = (path, ref, description) => {
 };
 
 // ---- bg ------------------------------------------------------------------
-put(["bg", "neutral", "default"], "{color.bg.surface}", "Page and card background");
-put(["bg", "neutral", "subtler"], "{color.bg.muted}", "Inputs, code blocks, quiet fills");
 put(["bg", "neutral", "subtle"], "{color.neutralScale.100}", "Hovered rows, quiet panels");
-put(["bg", "neutral", "bold"], "{color.neutralScale.200}", "Pressed rows, dividers as fills");
+put(["bg", "neutral", "emphasis"], "{color.neutralScale.200}", "Pressed rows, dividers as fills");
 put(["bg", "neutral", "inverse"], "{color.neutralScale.900}", "Inverted surface (tooltips, dark panels)");
 put(["bg", "neutral", "disabled"], "{color.neutralScale.200}", "Disabled control fill");
 
@@ -56,9 +54,8 @@ for (const [variant, scale] of Object.entries(STATUS)) {
 }
 
 // ---- text ----------------------------------------------------------------
-put(["text", "neutral", "default"], "{color.text.default}", "Body and heading text");
-put(["text", "neutral", "subtle"], "{color.text.muted}", "Captions, hints, secondary text");
-put(["text", "neutral", "bolder"], "{color.text.strong}", "Maximum-contrast headings");
+put(["text", "neutral", "primary"], "{color.text.default}", "Body and heading text");
+put(["text", "neutral", "secondary"], "{color.text.muted}", "Captions, hints, secondary text");
 put(["text", "neutral", "disabled"], "{color.text.disabled}", "Disabled label");
 put(["text", "neutral", "inverse"], "{color.text.onPrimary}", "Text on a solid brand or inverse surface");
 put(["text", "brand", "primary", "default"], "{color.action.primary.default}", "Brand-coloured text");
@@ -68,16 +65,15 @@ for (const [variant] of Object.entries(STATUS)) {
 }
 // Link states — the estate had exactly one link token before this (--ds-link). GIGW expects
 // visited links to be distinguishable on public pages.
-put(["text", "link", "brand", "default"], "{color.action.link}", "Link at rest");
-put(["text", "link", "brand", "hover"], "{color.action.primary.hover}", "Link, hovered");
-put(["text", "link", "brand", "active"], "{color.primaryScale.800}", "Link, pressed");
-put(["text", "link", "brand", "disabled"], "{color.text.disabled}", "Link, disabled");
+put(["text", "link", "default", "hover"], "{color.action.primary.hover}", "Link, hovered");
+put(["text", "link", "default", "active"], "{color.primaryScale.800}", "Link, pressed");
+put(["text", "link", "default", "disabled"], "{color.text.disabled}", "Link, disabled");
 put(["text", "link", "visited", "default"], "{color.primaryScale.800}", "Visited link — required by GIGW on public pages");
 put(["text", "link", "neutral", "default"], "{color.text.muted}", "Link in quiet chrome (footers, breadcrumbs)");
 
 // ---- icon (entirely new — the estate had ZERO icon tokens) ----------------
-put(["icon", "neutral", "default"], "{color.text.default}", "Default icon");
-put(["icon", "neutral", "subtle"], "{color.text.muted}", "Quiet icon");
+put(["icon", "neutral", "primary"], "{color.text.default}", "Default icon");
+put(["icon", "neutral", "secondary"], "{color.text.muted}", "Quiet icon");
 put(["icon", "neutral", "disabled"], "{color.text.disabled}", "Disabled icon");
 put(["icon", "neutral", "inverse"], "{color.text.onPrimary}", "Icon on a solid brand surface");
 put(["icon", "brand", "primary", "default"], "{color.action.primary.default}", "Brand-coloured icon");
@@ -87,10 +83,7 @@ for (const variant of Object.keys(STATUS)) {
 }
 
 // ---- border --------------------------------------------------------------
-put(["border", "neutral", "subtle"], "{color.border.subtle}", "Quiet divider");
-put(["border", "neutral", "default"], "{color.border.strong}", "Default border, table header rule");
-put(["border", "neutral", "bold"], "{color.border.control}", "Form control border");
-put(["border", "neutral", "bold", "hover"], "{color.border.controlHover}", "Form control border, hovered");
+put(["border", "neutral", "strong", "hover"], "{color.border.controlHover}", "Form control border, hovered");
 put(["border", "brand", "primary", "default"], "{color.action.primary.default}", "Brand-coloured border");
 for (const variant of Object.keys(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
@@ -98,24 +91,15 @@ for (const variant of Object.keys(STATUS)) {
 }
 
 // ---- focus / overlay -----------------------------------------------------
-put(["focus", "ring"], "{color.focus.ring}", "Keyboard focus ring — WCAG 2.4.7");
-put(["overlay", "neutral", "bolder"], "{color.overlay.scrim}", "Modal / drawer scrim");
 
 // ---- non-colour groups promoted to the top level -------------------------
 // The grammar has `inline`/`stack`/`padding`/`section` as first-class groups; they were
 // nested under `spacing`, which made them read as a sub-kind of the raw scale rather than
 // as the intent-stating layer they are.
-const SPACING_ROLES = {
-  inline: ["none", "2xs", "xs", "s", "m", "l", "xl"],
-  stack: ["none", "2xs", "xs", "s", "m", "l", "xl"],
-  padding: ["none", "3xs", "2xs", "xs", "s", "m", "l", "xl", "2xl", "3xl", "4xl"],
-  section: ["none", "xs", "s", "m", "l", "xl", "2xl"],
-};
-for (const [group, steps] of Object.entries(SPACING_ROLES)) {
-  for (const step of steps) {
-    put([group, step], `{spacing.${group}.${step}}`, `${group} spacing, ${step}`);
-  }
-}
+// NOTE: inline/stack/padding/section are no longer generated here. They were RENAMED in
+// src/semantic.json (spacing.inline.m -> inline/m) rather than aliased, so they are real
+// authored tokens now. Generating an alias on top would have produced two names for one
+// value — the duplication this pass exists to remove.
 
 // ---- build ---------------------------------------------------------------
 const out = { $description: "GENERATED by build/generate-system-tokens.mjs — do not edit." };

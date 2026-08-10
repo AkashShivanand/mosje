@@ -90,10 +90,12 @@ test("the fluid type scale renders identically in rem as it did in px", () => {
     for (const [part, token] of Object.entries(parts)) {
       const bounds = token.$extensions?.mosje?.type?.website;
       if (!bounds) continue;
+      // The canonical name is --sa-type-*; --ds-type-* is now an alias pointing at it, so
+      // reading the legacy name here would find `var(--sa-type-…)` and parse no dimensions.
       const declared = rootCss.match(
-        new RegExp(`--ds-type-${role}-${part}:\\s*([^;]+);`)
+        new RegExp(`--sa-type-${role}-${part}:\\s*([^;]+);`)
       );
-      assert.ok(declared, `--ds-type-${role}-${part} missing from :root`);
+      assert.ok(declared, `--sa-type-${role}-${part} missing from :root`);
 
       const nums = [...declared[1].matchAll(DIMENSION)].map(([, n, u]) =>
         u === "rem" ? parseFloat(n) * REM_BASE : parseFloat(n)

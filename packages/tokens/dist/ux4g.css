@@ -818,15 +818,15 @@
   --sa-color-action-primary-default: #4a2bc2;
   --sa-color-action-primary-hover: #3d239f;
   --sa-color-action-primary-tonal: #dcd4ff;
-  --sa-color-action-link: #4a2bc2;
-  --sa-color-focus-ring: rgba(106, 78, 255, 0.48);
+  --sa-text-link-default-default: #4a2bc2;
+  --sa-focus-ring: rgba(106, 78, 255, 0.48);
   --sa-color-text-default: #171717;
-  --sa-color-text-strong: #0a0a0a;
+  --sa-text-neutral-strong: #0a0a0a;
   --sa-color-text-muted: #404040;
-  --sa-color-bg-surface: #fff;
-  --sa-color-bg-muted: #fafafa;
-  --sa-color-border-subtle: #e5e5e5;
-  --sa-color-border-strong: #d9d9d9;
+  --sa-bg-neutral-default: #fff;
+  --sa-bg-neutral-soft: #fafafa;
+  --sa-border-neutral-subtle: #e5e5e5;
+  --sa-border-neutral-default: #d9d9d9;
   --sa-color-status-success: #00522c;
   --sa-color-status-danger: #8a1a16;
   --sa-color-status-warning: #ad4e00;
@@ -837,8 +837,8 @@
   --ds-primary-tonal: var(--sa-color-action-primary-tonal);
   --ds-primary-dark: var(--sa-color-action-primary-hover);
   --ds-primary-hover: var(--sa-color-action-primary-hover);
-  --ds-link: var(--sa-color-action-link);
-  --ds-primary-ring: var(--sa-color-focus-ring);
+  --ds-link: var(--sa-text-link-default-default);
+  --ds-primary-ring: var(--sa-focus-ring);
   --ds-primary-50: var(--sa-color-primaryScale-50);
   --ds-primary-100: var(--sa-color-primaryScale-100);
   --ds-primary-200: var(--sa-color-primaryScale-200);
@@ -875,12 +875,12 @@
   --ds-warning: var(--sa-color-status-warning);
   --ds-info: var(--sa-color-status-info);
   --ds-ink: var(--sa-color-text-default);
-  --ds-ink-strong: var(--sa-color-text-strong);
+  --ds-ink-strong: var(--sa-text-neutral-strong);
   --ds-ink-muted: var(--sa-color-text-muted);
-  --ds-surface: var(--sa-color-bg-surface);
-  --ds-surface-muted: var(--sa-color-bg-muted);
-  --ds-border: var(--sa-color-border-subtle);
-  --ds-border-strong: var(--sa-color-border-strong);
+  --ds-surface: var(--sa-bg-neutral-default);
+  --ds-surface-muted: var(--sa-bg-neutral-soft);
+  --ds-border: var(--sa-border-neutral-subtle);
+  --ds-border-strong: var(--sa-border-neutral-default);
 
   /* re-resolve the --ux4g-* chain that reads from those primitives */
   --ux4g-accordion-bg: var(--ux4g-bg-neutral-subtle);
@@ -1042,15 +1042,15 @@
   --sa-color-action-primary-default: #3d239f;
   --sa-color-action-primary-hover: #301c7d;
   --sa-color-action-primary-tonal: #c0b3ff;
-  --sa-color-action-link: #3d239f;
-  --sa-color-focus-ring: rgba(106, 78, 255, 0.48);
+  --sa-text-link-default-default: #3d239f;
+  --sa-focus-ring: rgba(106, 78, 255, 0.48);
   --sa-color-text-default: #171717;
-  --sa-color-text-strong: #0a0a0a;
+  --sa-text-neutral-strong: #0a0a0a;
   --sa-color-text-muted: #404040;
-  --sa-color-bg-surface: #fff;
-  --sa-color-bg-muted: #fafafa;
-  --sa-color-border-subtle: #e5e5e5;
-  --sa-color-border-strong: #d9d9d9;
+  --sa-bg-neutral-default: #fff;
+  --sa-bg-neutral-soft: #fafafa;
+  --sa-border-neutral-subtle: #e5e5e5;
+  --sa-border-neutral-default: #d9d9d9;
   --sa-color-status-success: #00522c;
   --sa-color-status-danger: #8a1a16;
   --sa-color-status-warning: #ad4e00;
@@ -1061,8 +1061,8 @@
   --ds-primary-tonal: var(--sa-color-action-primary-tonal);
   --ds-primary-dark: var(--sa-color-action-primary-hover);
   --ds-primary-hover: var(--sa-color-action-primary-hover);
-  --ds-link: var(--sa-color-action-link);
-  --ds-primary-ring: var(--sa-color-focus-ring);
+  --ds-link: var(--sa-text-link-default-default);
+  --ds-primary-ring: var(--sa-focus-ring);
   --ds-primary-100: var(--sa-color-primaryScale-100);
   --ds-primary-200: var(--sa-color-primaryScale-200);
   --ds-primary-300: var(--sa-color-primaryScale-300);
@@ -1098,12 +1098,12 @@
   --ds-warning: var(--sa-color-status-warning);
   --ds-info: var(--sa-color-status-info);
   --ds-ink: var(--sa-color-text-default);
-  --ds-ink-strong: var(--sa-color-text-strong);
+  --ds-ink-strong: var(--sa-text-neutral-strong);
   --ds-ink-muted: var(--sa-color-text-muted);
-  --ds-surface: var(--sa-color-bg-surface);
-  --ds-surface-muted: var(--sa-color-bg-muted);
-  --ds-border: var(--sa-color-border-subtle);
-  --ds-border-strong: var(--sa-color-border-strong);
+  --ds-surface: var(--sa-bg-neutral-default);
+  --ds-surface-muted: var(--sa-bg-neutral-soft);
+  --ds-border: var(--sa-border-neutral-subtle);
+  --ds-border-strong: var(--sa-border-neutral-default);
 
   /* re-resolve the --ux4g-* chain that reads from those primitives */
   --ux4g-accordion-bg: var(--ux4g-bg-neutral-subtle);

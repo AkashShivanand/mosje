@@ -53,7 +53,10 @@ export const VARIANT = {
   // `brand`, not `default`: the canonical value of a variant already occupies the
   // `default` slot (see CANONICAL), and `text/link/default/default` is nobody's idea of a
   // readable token. The standard link IS the brand-coloured one, so name it that.
-  link: new Set(["brand", "neutral", "visited"]),
+  // UX4G's exact variants. `default` here yields `text/link/default/default` for the
+  // canonical link — inelegant, but it is what UX4G ships and a dev grepping
+  // `--ux4g-text-link-default-default` should find ours.
+  link: new Set(["default", "neutral", "visited"]),
   neutral: new Set(),
 };
 
@@ -80,22 +83,41 @@ export const CANONICAL = "default";
  * deliberately outside the ladder, so monotonicity has an unambiguous ordering to check.
  * Each rung carries a contrast contract (§6.3).
  */
-export const PROMINENCE = ["subtlest", "subtler", "subtle", "bold", "bolder", "boldest"];
+export const PROMINENCE = ["default", "soft", "subtle", "emphasis", "strong", "stronger"];
+
+/**
+ * Ink prominence. UX4G runs text and icon on their own ladder rather than the fill ladder,
+ * which is right: "how strong is this fill" and "how prominent is this text" are different
+ * questions. `strong` is a SAMAVESH addition above UX4G's three — it is the max-contrast
+ * heading ink the estate already ships and UX4G has no rung for.
+ */
+export const INK_PROMINENCE = ["primary", "secondary", "tertiary", "strong"];
 
 /** What may appear in the prominence slot: the ladder, plus the canonical marker. */
-export const PROMINENCE_SLOT = new Set([CANONICAL, ...PROMINENCE]);
+export const PROMINENCE_SLOT = new Set([CANONICAL, ...PROMINENCE, ...INK_PROMINENCE]);
 
 /** Contrast class guaranteed by each rung, against its own surface. */
 export const PROMINENCE_CONTRACT = {
-  subtlest: { minContrast: 0, use: "decorative fills only" },
-  subtler: { minContrast: 0, use: "decorative fills only" },
+  // Fill ladder — UX4G's vocabulary, our thresholds. `default` is both the canonical value
+  // and the quietest rung, which is what UX4G means by it too, so the two do not collide.
+  default: { minContrast: 0, use: "decorative fills only" },
+  soft: { minContrast: 0, use: "decorative fills only" },
   subtle: { minContrast: 3.0, use: "UI boundaries, icons, non-text (WCAG 1.4.11)" },
-  bold: { minContrast: 3.0, use: "UI boundaries, icons, non-text (WCAG 1.4.11)" },
-  bolder: { minContrast: 4.5, use: "text-safe (WCAG 1.4.3 AA)" },
-  boldest: { minContrast: 7.0, use: "text-safe (WCAG 1.4.6 AAA)" },
+  emphasis: { minContrast: 3.0, use: "UI boundaries, icons, non-text (WCAG 1.4.11)" },
+  strong: { minContrast: 4.5, use: "text-safe (WCAG 1.4.3 AA)" },
+  stronger: { minContrast: 7.0, use: "text-safe (WCAG 1.4.6 AAA)" },
+  // Ink ladder.
+  primary: { minContrast: 4.5, use: "body and heading text (WCAG 1.4.3 AA)" },
+  secondary: { minContrast: 4.5, use: "captions and hints — still text, still AA" },
+  tertiary: { minContrast: 3.0, use: "non-essential text and quiet icons" },
 };
 
 export const STATE = new Set([
+  // `default` is the canonical STATE, mirroring CANONICAL in the prominence slot. Without it
+  // `border/neutral/strong/default` (the resting form-control border, sibling of
+  // `.../strong/hover`) does not parse — the parser consumes `strong` as prominence and then
+  // has nowhere to put `default`.
+  "default",
   "hover",
   "active",
   "focus",

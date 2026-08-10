@@ -16,7 +16,9 @@
     "ingest:verify": "node scripts/ingest/index.mjs --verify-only",
     "ingest:assets": "node scripts/ingest/index.mjs --assets-only",
     "test:ingest": "node --test \"scripts/ingest/**/*.test.mjs\"",
-    "test": "node --test \"src/**/*.test.ts\""
+    "test": "node --test \"src/**/*.test.ts\"",
+    "build:storybook": "npm run build -w @mosje/storybook -- --output-dir ../hub/public/storybook --quiet",
+    "prebuild": "npm run build:storybook || echo '::warning:: Storybook build failed \u2014 /storybook will show the unavailable page'"
   },
   "dependencies": {
     "@mosje/design-system": "file:../../packages/design-system",

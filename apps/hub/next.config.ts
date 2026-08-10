@@ -1,25 +1,64 @@
+import fs from "node:fs";
 import type { NextConfig } from "next";
 import path from "node:path";
 
 const ZONE_DS          = process.env.ZONE_DS_URL          ?? "http://localhost:6006";
 
 /**
- * Storybook is the one zone that is still a separate process, and it is NOT
- * part of the Vercel deployment. Proxying to a loopback address from a
- * deployed function fails with a bare `DNS_HOSTNAME_RESOLVED_PRIVATE` 404,
- * which is a dead end for anyone who follows the AppSwitcher link.
+ * Storybook: proxied in dev, baked into this deployment in production.
  *
- * So only proxy when there is something real to proxy to: in local dev (where
- * :6006 may genuinely be running, and the proxy's own probe already falls back
- * to /zone-unavailable when it is not), or when ZONE_DS_URL points somewhere
- * public. Otherwise send people to the explanation page instead of a 404.
+ * In DEV it stays a separate process on :6006 so stories hot-reload; the
+ * proxy's own probe falls back to /zone-unavailable when it is not running.
  *
- * Deploy Storybook and set ZONE_DS_URL to its origin and this lights up with
- * no other change.
+ * In PRODUCTION the hub's prebuild step builds Storybook straight into
+ * public/storybook, so Vercel serves it as static files from this same
+ * deployment. That is deliberate, and it is why there is no second Vercel
+ * project any more:
+ *
+ *  - It sits behind the site gate. Anything under public/ passes through the
+ *    proxy, so /storybook inherits the password like every other route. A
+ *    separate project's origin is a public URL nobody can gate.
+ *  - Assets are served from the CDN rather than proxied through a function
+ *    per request, which is what a rewrite to an external origin costs.
+ *  - One project, one deploy, one thing to keep alive.
+ *
+ * The prebuild step is non-fatal: if Storybook fails to build, the estate
+ * still deploys and the check below routes /storybook to the explanation page
+ * rather than a 404.
  */
 const IS_DEV = process.env.NODE_ENV !== "production";
-const ZONE_DS_IS_REACHABLE =
-  IS_DEV || /^https?:\/\/(?!localhost|127\.0\.0\.1|\[::1\])/i.test(ZONE_DS);
+const STORYBOOK_STATIC_BUILT = fs.existsSync(
+  path.join(process.cwd(), "public", "storybook", "index.html"),
+);
+
+const STORYBOOK_UNAVAILABLE =
+  "/zone-unavailable?zone=Storybook&cmd=npm+run+dev%3Astorybook&from=%2Fstorybook%2F";
+
+function storybookRewrites() {
+  // Dev: proxy the live :6006 process so stories hot-reload.
+  if (IS_DEV) {
+    return [
+      { source: "/storybook", destination: `${ZONE_DS}/` },
+      { source: "/storybook/:path*", destination: `${ZONE_DS}/:path*` },
+    ];
+  }
+  // Production with the static build present: Next serves public/storybook/*
+  // directly, so assets need no rewrite — and must not get one, or it would
+  // shadow them. The one gap is the directory index: Next resolves
+  // /storybook/index.html but NOT the bare /storybook/, which 404s. Map only
+  // those two exact paths.
+  if (STORYBOOK_STATIC_BUILT) {
+    return [
+      { source: "/storybook", destination: "/storybook/index.html" },
+      { source: "/storybook/", destination: "/storybook/index.html" },
+    ];
+  }
+  // Production without it (the prebuild failed): explain rather than 404.
+  return [
+    { source: "/storybook", destination: STORYBOOK_UNAVAILABLE },
+    { source: "/storybook/:path*", destination: STORYBOOK_UNAVAILABLE },
+  ];
+}
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -46,23 +85,7 @@ const nextConfig: NextConfig = {
       // resolve under /storybook/ and proxy via the :path* rule below. The no-slash
       // rule covers the normalized root request. (HMR websocket still needs :6006
       // directly; the full UI loads through the hub.)
-      ...(ZONE_DS_IS_REACHABLE
-        ? [
-            { source: "/storybook",        destination: `${ZONE_DS}/` },
-            { source: "/storybook/:path*", destination: `${ZONE_DS}/:path*` },
-          ]
-        : [
-            {
-              source: "/storybook",
-              destination:
-                "/zone-unavailable?zone=Storybook&cmd=npm+run+dev%3Astorybook&from=%2Fstorybook%2F",
-            },
-            {
-              source: "/storybook/:path*",
-              destination:
-                "/zone-unavailable?zone=Storybook&cmd=npm+run+dev%3Astorybook&from=%2Fstorybook%2F",
-            },
-          ]),
+      ...storybookRewrites(),
     ];
   },
   // Legacy hand-coded org slugs → real ingested slugs (safety net for bookmarks).

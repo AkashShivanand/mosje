@@ -14,6 +14,9 @@ node_modules/
 **/.next/
 **/out/
 **/storybook-static/
+# Storybook is built into the hub's static output at deploy time (see the hub's
+# prebuild script) — generated, never committed.
+apps/hub/public/storybook/
 *.tsbuildinfo
 .turbo/
 

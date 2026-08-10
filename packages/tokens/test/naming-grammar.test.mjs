@@ -31,12 +31,12 @@ const root = new URL("..", import.meta.url).pathname;
 
 const VALID = [
   [["bg", "brand", "primary"], "sys", "--sa-bg-brand-primary"],
-  [["bg", "brand", "primary", "bold"], "sys", "--sa-bg-brand-primary-bold"],
-  [["bg", "brand", "primary", "bold", "hover"], "sys", "--sa-bg-brand-primary-bold-hover"],
+  [["bg", "brand", "primary", "strong"], "sys", "--sa-bg-brand-primary-strong"],
+  [["bg", "brand", "primary", "strong", "hover"], "sys", "--sa-bg-brand-primary-strong-hover"],
   [["bg", "neutral", "inverse", "subtle"], "sys", "--sa-bg-neutral-inverse-subtle"],
   [["bg", "neutral", "disabled"], "sys", "--sa-bg-neutral-disabled"],
-  [["text", "neutral"], "sys", "--sa-text-neutral"],
-  [["text", "neutral", "subtle"], "sys", "--sa-text-neutral-subtle"],
+  [["text", "neutral", "primary"], "sys", "--sa-text-neutral-primary"],
+  [["text", "neutral", "secondary"], "sys", "--sa-text-neutral-secondary"],
   [["text", "link", "visited", "hover"], "sys", "--sa-text-link-visited-hover"],
   [["icon", "status", "error"], "sys", "--sa-icon-status-error"],
   [["border", "width", "md"], "sys", "--sa-border-width-md"],
@@ -77,8 +77,8 @@ test("reserved first segments are rejected on Tier 2, keeping the projection bij
 });
 
 test("slot order is enforced — a variant may not follow a prominence", () => {
-  assert.equal(parse(["bg", "brand", "primary", "bold"], "sys").ok, true);
-  const r = parse(["bg", "brand", "bold", "primary"], "sys");
+  assert.equal(parse(["bg", "brand", "primary", "strong"], "sys").ok, true);
+  const r = parse(["bg", "brand", "strong", "primary"], "sys");
   assert.equal(r.ok, false);
   assert.match(r.error, /unconsumed/);
 });
@@ -220,4 +220,46 @@ test("the generated namespaces are authored all-lowercase (house style)", async 
     }
   }
   assert.deepEqual(bad.slice(0, 10), [], `${bad.length} non-lowercase segment(s) in generated tokens`);
+});
+
+test("no token is also a group — a leaf may never have children", async () => {
+  // DTCG and Figma are both TREES: a node with $value is a token and Style Dictionary does
+  // not descend into it, so any children are silently DROPPED. This has now bitten three
+  // times (`text/neutral`, `bg/neutral`, `border/neutral/strong`), each time losing tokens
+  // with no error. Documenting the rule was not enough; this enforces it.
+  const { SOURCES } = await import("../build/token-index.mjs");
+  const { readFileSync } = await import("node:fs");
+  const offenders = [];
+
+  const walk = (node, path, file) => {
+    if (!node || typeof node !== "object") return;
+    const children = Object.keys(node).filter((k) => !k.startsWith("$"));
+    const isToken = node.$value !== undefined || node.value !== undefined;
+    if (isToken && children.length) {
+      offenders.push(`${file} :: ${path.join("/")} has $value AND children [${children}]`);
+    }
+    if (isToken) return;
+    for (const key of children) walk(node[key], [...path, key], file);
+  };
+
+  // Walk the MERGED tree, not each file separately. The collision that motivated this test
+  // was ACROSS files: semantic.json held `border/neutral/strong` as a leaf while
+  // system.generated.json held `border/neutral/strong/hover`. Style Dictionary merges them,
+  // the leaf wins, and the child vanishes — invisible to any per-file check.
+  const merged = {};
+  const deepMerge = (into, from) => {
+    for (const [k, v] of Object.entries(from)) {
+      if (k.startsWith("$")) continue;
+      if (v && typeof v === "object" && !Array.isArray(v) && v.$value === undefined) {
+        deepMerge((into[k] ??= {}), v);
+      } else {
+        into[k] = v;
+      }
+    }
+  };
+  for (const rel of SOURCES) {
+    deepMerge(merged, JSON.parse(readFileSync(new URL(`../${rel}`, import.meta.url), "utf8")));
+  }
+  walk(merged, [], "merged token tree");
+  assert.deepEqual(offenders.slice(0, 10), [], `${offenders.length} token(s) that are also groups`);
 });

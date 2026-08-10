@@ -9,8 +9,14 @@
 > **v1** proposed adopting UX4G's `--ux4g-*` prefix as SAMAVESH's own application-facing API.
 > An LLM Council audit rejected it and a measurement confirmed the audit (§2.1).
 > **v2** replaced it with `--sa-{ref,sys,cmp}-*`.
-> **v3 (this document)** makes the token's identity a **path** rather than a string, which is
-> what allows a real bidirectional Figma sync, and fixes three defects v2 still carried (§3).
+> **v3 (this document)** makes the token's identity a **path** rather than a string, and fixes
+> three defects v2 still carried (§3).
+>
+> *Corrected 2026-08-07:* v3 originally claimed this enables a **bidirectional** Figma sync.
+> It does not. The pipeline is code → Figma only; there is no import path, and
+> `figma-roundtrip.test.mjs` validates the payload against itself and a snapshot of the live
+> library, not a live read-back. Code-authoritative one-way sync is a deliberate and common
+> choice — but it should not be described as round-tripping.
 >
 > **The goal is not UX4G conformance.** It is the best token system we can build. UX4G
 > conformance is a by-product, discharged by a generated artifact (§8).
@@ -23,7 +29,11 @@
    The CSS custom property is a deterministic projection of that path.
 2. **One application-facing prefix**, `--sa-*`, with the most-used tier carrying no marker.
 3. **Prominence is a contract, not an adjective** — every rung guarantees a contrast class,
-   enforced in CI (§6.3). No comparable system does this.
+   enforced in CI (§6.3).
+   > *Corrected 2026-08-07:* this previously read "no comparable system does this", which is
+   > wrong. Material 3's `on-*` roles carry the same guarantee by construction, USWDS grades
+   > are designed so contrast is predictable from the name, and Spectrum publishes contrast
+   > per token. What is distinctive here is **enforcing it in CI** — not the idea.
 4. UX4G's published contract is emitted as a **100 % generated compatibility layer plus a
    machine-diffable conformance report** (§8) — conformance is a proof obligation, not an API.
 

@@ -42,7 +42,22 @@ function liveSnapshot() {
  */
 export const COLLECTIONS = {
   Spacing: { axis: null, modes: ["Mode 1"] },
+  /** Ramps and brand-varying primitives. Private-ish: designers bind to Theme. */
   Color: { axis: "brand", modes: ["Blue", "Navy"] },
+  /**
+   * Semantic roles and component tokens — the layer designers actually bind to.
+   *
+   * Splitting theme out of Color rests on a measured fact: EVERY theme override in the
+   * source is brand-INVARIANT (`color.text.default` dark is `a11y.dark.ink` for both brands;
+   * `bg.surface` hc is #ffffff full stop). So brand x theme is not a cross product — theme
+   * wins absolutely — and this needs three modes, not six.
+   *
+   * That matters twice over. It removes the mode-limit risk that blocked the accessibility
+   * axis, and it makes tier-as-collection and axis-as-collection coincide instead of compete:
+   * Light aliases straight into Color, which is itself brand-aware, so brand still flows
+   * through a token bound here.
+   */
+  Theme: { axis: "theme", modes: ["Light", "Dark", "HC"] },
   Typography: {
     axis: "surface × breakpoint",
     modes: [
@@ -184,7 +199,9 @@ export function figmaNameFor(path, tier = "sys") {
   }
 
   if (COLOUR_ROOTS.has(head)) {
-    return { collection: "Color", name: [head, ...rest].map(titleCase).join("/") };
+    // Semantic and component colour lives in Theme, not Color: these are the tokens that
+    // vary on light/dark/hc, and Color has no mode to express that.
+    return { collection: "Theme", name: [head, ...rest].map(titleCase).join("/") };
   }
   if (SPACING_ROOTS.has(head)) {
     return { collection: "Spacing", name: `${head}-${rest.join("-")}` };
@@ -219,6 +236,73 @@ function brandValue(token, brand) {
   const ext = token.original?.$extensions?.mosje ?? {};
   if (brand === "Navy" && ext.colorModes?.navy !== undefined) return ext.colorModes.navy;
   return token.original?.$value ?? token.original?.value ?? val(token);
+}
+
+/**
+ * The theme override for a token, following the alias chain.
+ *
+ * The canonical namespace is pure aliases (`bg/neutral/default` -> `{color.bg.surface}`) and
+ * it is the LEGACY token that carries `$extensions.mosje.themes`. Reading the override off
+ * the canonical token alone would find nothing and silently emit the light value in every
+ * mode — the accessibility themes would import as three identical copies.
+ */
+function themeOverride(token, theme, tokenByPath, depth = 0) {
+  if (depth > 8) return undefined;
+  const ext = token.original?.$extensions?.mosje ?? {};
+  if (ext.themes?.[theme] !== undefined) return ext.themes[theme];
+  const raw = token.original?.$value ?? token.original?.value;
+  if (typeof raw === "string" && /^\{[^}]+\}$/.test(raw.trim())) {
+    const next = tokenByPath.get(raw.trim().slice(1, -1));
+    if (next) return themeOverride(next, theme, tokenByPath, depth + 1);
+  }
+  return undefined;
+}
+
+/**
+ * Re-attach a Theme token's Light value to the brand-aware Color variable underneath it.
+ *
+ * Without this the whole split is broken. `bg/neutral/default` aliases `color.bg.surface`,
+ * which aliases `color.neutral.0` — a private Tier-1 ramp with no Figma home — so the chain
+ * bottoms out in a LITERAL #ffffff and the Navy brand is silently discarded for every one of
+ * the 15 tokens that vary on both axes.
+ *
+ * The fix walks the chain looking for a path that some Color variable exposes. `Neutral/0 -
+ * White` is `color.neutralScale.0`, which itself aliases `color.neutral.0` — so the *underlying*
+ * path is the join, not the exported one. Hence the inverted index.
+ */
+function brandAwareAlias(token, tokenByPath, colorByUnderlying, nameByPath, depth = 0) {
+  if (depth > 8) return null;
+  const key = token.path.join(".");
+  const direct = nameByPath.get(key);
+  if (direct && direct.collection === "Color") return direct;
+  const viaUnderlying = colorByUnderlying.get(key);
+  if (viaUnderlying) return viaUnderlying;
+
+  const raw = token.original?.$value ?? token.original?.value;
+  if (typeof raw === "string" && /^\{[^}]+\}$/.test(raw.trim())) {
+    const next = tokenByPath.get(raw.trim().slice(1, -1));
+    if (next) return brandAwareAlias(next, tokenByPath, colorByUnderlying, nameByPath, depth + 1);
+  }
+  return null;
+}
+
+/**
+ * The token in this alias chain that OWNS the brand override, or null.
+ *
+ * Returning the owning TOKEN rather than a boolean matters: the companion emitted for it has
+ * to carry a real authored path (`color/text/disabled`), not a synthetic one. A made-up path
+ * fails "nothing vanishes", the codeSyntax round-trip and the literal-leak guard at once —
+ * which is exactly what happened on the first attempt.
+ */
+function brandOwner(token, tokenByPath, depth = 0) {
+  if (depth > 8) return null;
+  if (token.original?.$extensions?.mosje?.colorModes) return token;
+  const raw = token.original?.$value ?? token.original?.value;
+  if (typeof raw === "string" && /^\{[^}]+\}$/.test(raw.trim())) {
+    const next = tokenByPath.get(raw.trim().slice(1, -1));
+    if (next) return brandOwner(next, tokenByPath, depth + 1);
+  }
+  return null;
 }
 
 function encodeValue(raw, token, nameByPath, resolvedByPath, selfTarget) {
@@ -260,12 +344,34 @@ function emittedCssName(token, tier) {
   return toCssName(token.path, tier);
 }
 
+/**
+ * Why a token has no Figma home. Every exclusion must be explainable — an unexplained one is
+ * indistinguishable from a bug, and 231 of them were shipping with no reason attached.
+ */
+export function exclusionReason(path, tier) {
+  const [head, ...rest] = path;
+  if (tier === "ref" && head === "color") {
+    return "private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer";
+  }
+  if (head === "shadow" || head === "elevation") {
+    return "Figma models shadows as EFFECT STYLES, not variables — exported separately";
+  }
+  if (head === "spacing" && rest.length > 1) {
+    return "legacy nested spacing role, mirrored by the canonical top-level group";
+  }
+  if (head === "color") return "legacy semantic path, mirrored by the canonical grammar namespace";
+  if (head === "font") return "no Figma variable equivalent for this font property";
+  return "no mapping defined for this path";
+}
+
 export function buildPayload(dictionary) {
   const tokens = dictionary.allTokens;
   const live = liveSnapshot();
 
   // Path → fully-resolved value, for references whose target is not exported.
   const resolvedByPath = new Map(tokens.map((t) => [t.path.join("."), val(t)]));
+  // Path → token, so a theme override can be found through an alias chain.
+  const tokenByPath = new Map(tokens.map((t) => [t.path.join("."), t]));
 
   const nameByPath = new Map();
   for (const t of tokens) {
@@ -273,11 +379,26 @@ export function buildPayload(dictionary) {
     if (target) nameByPath.set(t.path.join("."), target);
   }
 
+  // Inverted index: the Tier-1 path a Color variable exposes → that Color variable.
+  // `Neutral/0 - White` comes from `color.neutralScale.0`, which aliases `color.neutral.0`;
+  // a Theme token's chain reaches the latter, so that is what has to be searchable.
+  const colorByUnderlying = new Map();
+  for (const t of tokens) {
+    const target = figmaNameFor(t.path, tierOfFile(t.filePath));
+    if (!target || target.collection !== "Color") continue;
+    const raw = t.original?.$value ?? t.original?.value;
+    if (typeof raw === "string" && /^\{[^}]+\}$/.test(raw.trim())) {
+      colorByUnderlying.set(raw.trim().slice(1, -1), target);
+    }
+  }
+
   const collections = Object.fromEntries(
     Object.entries(COLLECTIONS).map(([name, meta]) => [name, { name, ...meta, variables: [] }]),
   );
   const unmapped = [];
   const seen = new Set();
+  /** Theme tokens needing a brand-aware companion in Color (see the emit pass below). */
+  const companions = new Map();
 
   // Canonical (generated) tokens are processed FIRST so they win a name collision over the
   // legacy path that mirrors them — `focus/ring` should own `Focus/Ring`, not
@@ -292,7 +413,7 @@ export function buildPayload(dictionary) {
     const tier = tierOfFile(token.filePath);
     const target = figmaNameFor(token.path, tier);
     if (!target) {
-      unmapped.push(token.path.join("/"));
+      unmapped.push(`${token.path.join("/")} (${exclusionReason(token.path, tier)})`);
       continue;
     }
     // Two code paths can legitimately project onto one library name (a canonical Tier-2
@@ -313,6 +434,47 @@ export function buildPayload(dictionary) {
       let raw;
       if (target.collection === "Color") {
         raw = brandValue(token, mode);
+      } else if (target.collection === "Theme") {
+        // Light is the base value — which aliases into Color and therefore stays brand-aware.
+        // Dark/HC take the override where one exists, else fall back to Light so a token that
+        // does not vary on theme reads identically in all three modes.
+        const key = mode === "Dark" ? "dark" : mode === "HC" ? "hc" : null;
+        const override = key ? themeOverride(token, key, tokenByPath) : undefined;
+        if (override !== undefined) {
+          raw = override;
+        } else {
+          // Light (and any theme with no override): alias the brand-aware Color variable so
+          // Blue/Navy still flows through. Falling back to a literal would drop the brand.
+          const brandAware = brandAwareAlias(token, tokenByPath, colorByUnderlying, nameByPath);
+          if (brandAware) {
+            valuesByMode[mode] = { type: "ALIAS", collection: brandAware.collection, name: brandAware.name };
+            continue;
+          }
+          // No alias target, yet the chain still varies on brand — e.g. `text/neutral/disabled`,
+          // a literal rgba(31,36,40,.48) on Blue with a DIFFERENT literal on Navy. Emitting the
+          // literal would silently drop the Navy brand, so a brand-aware companion is generated
+          // in Color and aliased instead.
+          const owner = brandOwner(token, tokenByPath);
+          // Keyed by the OWNER, not the target: `color.text.disabled` is the brand source for
+          // 18 different Theme tokens (every disabled label across the Action matrix), and
+          // keying by target created 18 copies of one authored path. One source, many aliases.
+          //
+          // The owner may BE this token — `focus/ring` carries its own brand override and
+          // lives in Theme, which has no brand axis. It still needs a Color companion, so the
+          // test is "does the owner already sit in a brand-capable collection", not "is the
+          // owner mapped at all".
+          const ownerTarget = owner && nameByPath.get(owner.path.join("."));
+          if (owner && ownerTarget?.collection !== "Color") {
+            // Strip only a leading `color` head (color.text.disabled -> Text/Disabled). Slicing
+            // unconditionally turned `focus/ring` into `Ring`, orphaning it from its group.
+            const ownerPath = owner.path[0] === "color" ? owner.path.slice(1) : owner.path;
+            const companionName = ownerPath.map(titleCase).join("/");
+            companions.set(owner.path.join("."), { owner, name: companionName });
+            valuesByMode[mode] = { type: "ALIAS", collection: "Color", name: companionName };
+            continue;
+          }
+          raw = token.original?.$value ?? token.original?.value ?? val(token);
+        }
       } else if (target.collection === "Typography" && fluid) {
         const [surface, breakpoint] = mode.split(" · ");
         const bounds = fluid[surface.toLowerCase()];
@@ -354,13 +516,48 @@ export function buildPayload(dictionary) {
     ]),
   );
 
+  for (const { owner: token, name } of companions.values()) {
+    if (seen.has(`Color::${name}`)) continue;
+    seen.add(`Color::${name}`);
+    collections.Color.variables.push({
+      name,
+      path: token.path.join("/"),
+      // A companion is a SECOND presence for one authored token: the brand source in Color,
+      // consumed by the appearance layer in Theme. `focus/ring` is both. Flagged so the
+      // duplicate-export check can tell a deliberate pair from an accidental one.
+      role: "brand-source",
+      type: "COLOR",
+      status: live?.Color?.includes(name) ? "existing" : "new",
+      valuesByMode: Object.fromEntries(
+        COLLECTIONS.Color.modes.map((m) => {
+          const raw = brandValue(token, m);
+          const lit = typeof raw === "string" && raw.trim().startsWith("{")
+            ? resolvedByPath.get(raw.trim().slice(1, -1)) ?? raw
+            : raw;
+          return [m, { type: "COLOR", value: String(lit) }];
+        }),
+      ),
+      description:
+        `Brand-aware source for Theme::${name}. Generated because that token's light value is ` +
+        `a literal that differs between Blue and Navy; without it the Navy brand is lost.`,
+      codeSyntax: { WEB: `var(${toCssName(token.path, tierOfFile(token.filePath))})` },
+    });
+  }
+
+  for (const { owner: token } of companions.values()) {
+    const prefix = token.path.join("/") + " (";
+    const i = unmapped.findIndex((u) => u.startsWith(prefix));
+    if (i !== -1) unmapped.splice(i, 1);
+  }
+
   return {
     $schema: "samavesh-figma-variables/2",
     $description:
       "GENERATED by @mosje/tokens, targeted at the live SAMAVESH library's seven collections. " +
       "Variables are keyed by the name the library already uses; `status` says whether an " +
-      "import adds or updates. Theme (light/dark/hc) is intentionally absent — the live Color " +
-      "collection carries only the brand axis. See spec §8.4.",
+      "import adds or updates. Colour is split across two collections: Color carries the BRAND " +
+      "axis (Blue|Navy) and Theme carries APPEARANCE (Light|Dark|HC), which works because " +
+      "every theme override in the source is brand-invariant. See spec §8.4.",
     counts,
     unmapped,
     collections: Object.values(collections).filter((c) => c.variables.length),
