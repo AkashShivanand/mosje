@@ -234,28 +234,59 @@
   overflow-y: auto;
 }
 
-/* ── Colour tab: swatches only — no label chrome, no pill track. Uses the
-   same floor as `.ds-demodock__body` (not `min-height: 100%`, which can't
-   resolve against an auto-height ancestor) so the swatches sit centred in
-   a box the same size as the Apps tab's typical footprint, instead of
-   hugging the top with dead space below. ── */
+/* ── Colour tab: a labelled swatch list plus a live component preview, so
+   the tab earns its floor height instead of padding it out. Left-aligned
+   (not centred, like the old swatches-only body) — a list of rows and a
+   preview card both read better ranged left than centred. Uses the same
+   floor as `.ds-demodock__body` (not `min-height: 100%`, which can't
+   resolve against an auto-height ancestor) so a two-mode list today and a
+   five-to-ten-mode list later sit in a box the same size as the Apps tab's
+   typical footprint. ── */
 .ds-demodock__colour {
   box-sizing: border-box;
   min-height: var(--ds-demodock-content-floor);
-  padding: 20px 14px;
+  padding: 16px 14px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
+  gap: 16px;
 }
 
-.ds-demodock__swatch-row {
+/* Vertical list, not a row of dots — the AAA 44px touch target and a text
+   label per mode only fit stacked, and this is the layout that keeps
+   scaling as more colour modes are added (see the component doc comment). */
+.ds-demodock__swatch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ds-demodock__swatch-option {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 14px;
-  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 44px;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-md);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color var(--ds-duration-fast) var(--ds-easing-out),
+    border-color var(--ds-duration-fast) var(--ds-easing-out);
+}
+
+.ds-demodock__swatch-option:hover {
+  background-color: var(--ds-surface-muted);
+}
+
+.ds-demodock__swatch-option.is-active {
+  border-color: var(--ds-border);
+  background-color: var(--ds-surface-muted);
+}
+
+.ds-demodock__swatch-option:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ds-surface), 0 0 0 4px var(--ds-primary);
 }
 
 .ds-demodock__swatch {
@@ -263,32 +294,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border: none;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  cursor: pointer;
   box-shadow: inset 0 0 0 1px var(--ds-border-strong);
-  transition: transform var(--ds-duration-fast) var(--ds-easing-out),
-    box-shadow var(--ds-duration-fast) var(--ds-easing-out);
+  transition: box-shadow var(--ds-duration-fast) var(--ds-easing-out);
 }
 
-.ds-demodock__swatch:hover {
-  transform: scale(1.08);
-}
-
-.ds-demodock__swatch:active {
-  transform: scale(0.96);
-}
-
-.ds-demodock__swatch.is-active {
+.ds-demodock__swatch-option.is-active .ds-demodock__swatch {
   box-shadow: 0 0 0 2px var(--ds-surface), 0 0 0 4px var(--ds-primary);
 }
 
-.ds-demodock__swatch:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--ds-surface), 0 0 0 4px var(--ds-primary);
+.ds-demodock__swatch-label {
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  font-weight: 600;
+  color: var(--ds-ink);
 }
 
 .ds-demodock__swatch-check {
@@ -308,12 +330,44 @@
   }
 }
 
+/* Live preview — demonstrates the palette on real components rather than
+   describing it. A thin card so it reads as a distinct "preview" region,
+   not more of the list above it. */
+.ds-demodock__preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-surface-muted);
+}
+
+.ds-demodock__preview-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ds-demodock__preview-alert {
+  /* The shared Alert already carries its own padding/border/radius. */
+  margin: 0;
+}
+
 .ds-demodock__colour-note {
-  max-width: 280px;
   font-size: var(--ds-text-body-3);
   line-height: var(--ds-leading-body-3);
   color: var(--ds-ink-muted);
-  text-align: center;
+}
+
+.ds-demodock__colour-note kbd {
+  padding: 1px 5px;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-sm);
+  background-color: var(--ds-surface);
+  font-family: var(--ds-font-sans);
+  font-size: 0.9em;
 }
 
 /* ── Entrance / exit animation ── */

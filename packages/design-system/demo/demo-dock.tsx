@@ -10,19 +10,31 @@
  * - **Apps** — the same searchable cross-zone list as `AppSwitcher`
  *   (`AppSwitcherPanel`), so a stakeholder never has to leave the dock to
  *   jump between portals.
- * - **Colour** — a row of brand-palette swatches, driven directly by
- *   `useColorMode()`. Clicking a swatch applies that mode immediately —
- *   there is no separate switcher component (the old `ColorModeSwitcher`
- *   was retired; this is its replacement, with the label chrome and
- *   pill-track background stripped out).
+ * - **Colour** — a labelled list of brand-palette swatches, driven directly
+ *   by `useColorMode()`, each paired with a live preview of real
+ *   design-system components (`Button`, `Badge`, `Alert`) so the tab shows
+ *   what the palette change actually does instead of sitting empty. Clicking
+ *   a swatch applies that mode immediately — there is no separate switcher
+ *   component (the old `ColorModeSwitcher` was retired; this is its
+ *   replacement, with the label chrome and pill-track background stripped
+ *   out). A global shortcut — **⌘⌥C** / **Ctrl+Alt+C** — cycles the colour
+ *   mode from anywhere in the app, whether the dock is open or closed, and
+ *   whether this tab is the active one or not; it's suppressed while focus
+ *   is in a text input/textarea/select/contenteditable, and the change is
+ *   announced to screen readers via a polite live region (`useLiveRegion`).
+ *   A row of unlabelled colour dots in the panel *header* was considered and
+ *   rejected: at 40px (the AAA 44px touch-target floor) ten future modes
+ *   don't fit one header row, and colour alone as the only signal fails
+ *   WCAG 1.4.1. A list has room for both a real target size and a label.
  * - **Sign in** — the demo credentials table for whatever login route
  *   `pathname` resolves to (`findDemoAccounts`, gated by `isLoginRoute`).
  *   Present, and ordered *first*, only when `pathname` is itself a login
  *   route — not merely somewhere under a portal that has one. Absent
  *   entirely — not rendered empty — everywhere else.
  *
- * Requires a `<ColorModeProvider>` ancestor: the Colour tab calls
- * `useColorMode()`, which throws outside one.
+ * Requires a `<ColorModeProvider>` ancestor: both the Colour tab and the
+ * shell itself (for the global shortcut) call `useColorMode()`, which
+ * throws outside one.
  *
  * Owns only the floating shell — FAB, open/close state, outside-click +
  * Escape handling, the focus trap, and which tab is active. Behaviour is
@@ -41,6 +53,10 @@ import {
 } from "../components/navigation/app-switcher-utils";
 import { AppSwitcherPanel } from "../components/navigation/app-switcher-panel";
 import { Tabs, TabPanel, TabDef } from "../components/navigation/tabs";
+import { Button } from "../components/actions/button";
+import { Badge } from "../components/feedback/badge";
+import { Alert } from "../components/feedback/alert";
+import { LiveRegion, useLiveRegion } from "../components/a11y/live-region";
 import { useColorMode } from "../foundations/color-mode-provider";
 import { DemoAccountsPanel } from "./demo-accounts-panel";
 import { findDemoAccounts, isLoginRoute } from "./demo-accounts";
@@ -107,12 +123,57 @@ const IconCheck = () => (
 );
 
 /**
- * The Colour tab's body — a plain row of brand-palette swatches, nothing
- * else. Implemented as a WAI-ARIA radiogroup with a roving tabindex (arrow
- * keys move + select, Home/End jump) so it keeps the accessibility the old
- * `ColorModeSwitcher` had, without any of its visible label or track chrome.
+ * Keeps the global colour-mode shortcut from hijacking normal typing — an
+ * input, a textarea, a select, or any `contenteditable` region swallows the
+ * keystroke instead of cycling the palette out from under the user.
  */
-function ColourSwatches() {
+function isTypingTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) return false;
+  const tag = target.tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
+  return target.isContentEditable;
+}
+
+/**
+ * A small, real preview of the selected palette applied to actual
+ * design-system components — not a mock-up — so the Colour tab demonstrates
+ * what picking a mode *does* instead of padding out empty space. Reads the
+ * palette purely through inherited CSS custom properties (the `data-brand`
+ * attribute lives on the document root; see `foundations/color-mode.ts`), so
+ * it re-tones on its own the instant a swatch changes the attribute — no
+ * prop threading needed.
+ */
+function ColourPreview() {
+  return (
+    <div className="ds-demodock__preview" aria-label="Live component preview">
+      <div className="ds-demodock__preview-row">
+        <Button size="sm">Approve</Button>
+        <Button size="sm" appearance="outlined">
+          Review later
+        </Button>
+      </div>
+      <div className="ds-demodock__preview-row">
+        <Badge status="success">Verified</Badge>
+        <Badge status="primary" emphasis="solid">
+          New
+        </Badge>
+      </div>
+      <Alert status="info" title="Live preview" className="ds-demodock__preview-alert">
+        Components on this page re-tone with the selected palette.
+      </Alert>
+    </div>
+  );
+}
+
+/**
+ * The Colour tab's body — a labelled list of brand-palette swatches plus a
+ * live component preview. Implemented as a WAI-ARIA radiogroup with a roving
+ * tabindex (arrow keys move + select, Home/End jump), same as the old
+ * `ColorModeSwitcher`, but each option now carries a visible text label
+ * (WCAG 1.4.1 — colour is never the only signal) instead of relying on an
+ * unlabelled dot.
+ */
+function ColourTab() {
   const { mode, setMode, modes } = useColorMode();
   const btnRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
 
@@ -154,7 +215,7 @@ function ColourSwatches() {
       <div
         role="radiogroup"
         aria-label="Colour mode"
-        className="ds-demodock__swatch-row"
+        className="ds-demodock__swatch-list"
       >
         {modes.map((m, i) => {
           const checked = m.id === mode;
@@ -167,21 +228,31 @@ function ColourSwatches() {
               type="button"
               role="radio"
               aria-checked={checked}
-              aria-label={m.label}
               tabIndex={checked ? 0 : -1}
-              title={m.label}
-              className={cn("ds-demodock__swatch", checked && "is-active")}
-              style={{ background: m.swatch }}
+              className={cn("ds-demodock__swatch-option", checked && "is-active")}
               onClick={() => setMode(m.id)}
               onKeyDown={(e) => onKeyDown(e, i)}
             >
-              {checked && <IconCheck />}
+              <span
+                className="ds-demodock__swatch"
+                style={{ background: m.swatch }}
+                aria-hidden="true"
+              >
+                {checked && <IconCheck />}
+              </span>
+              <span className="ds-demodock__swatch-label">{m.label}</span>
             </button>
           );
         })}
       </div>
+
+      <ColourPreview />
+
       <p className="ds-demodock__colour-note">
-        Switches the SAMAVESH brand palette, not a light/dark theme.
+        Switches the SAMAVESH brand palette, not a light/dark theme. Press{" "}
+        <kbd>⌘⌥C</kbd> <span aria-hidden="true">/</span>{" "}
+        <kbd>Ctrl+Alt+C</kbd> to cycle it from anywhere — even with this
+        panel closed.
       </p>
     </div>
   );
@@ -252,6 +323,33 @@ export function DemoDock({
       }) ?? null,
     [apps, activeNormPath],
   );
+
+  // Global colour-mode shortcut (⌘⌥C / Ctrl+Alt+C) — cycles to the next
+  // brand palette from anywhere on the page, whether the dock is open or
+  // closed. Matches the shape UX4G's own accessibility widget already uses
+  // for ⌘⌥A / Ctrl+Alt+A, so the two never collide. Keyed off `event.code`
+  // rather than `event.key` so it's layout-stable (Option+C types "ç" on a
+  // US Mac layout, but its `code` is still "KeyC"). The strongest demo
+  // moment — re-toning the whole page live — needs the panel out of the
+  // way, which is exactly what no in-panel control can offer.
+  const { mode: colorMode, setMode: setColorMode, modes: colorModes } = useColorMode();
+  const colourAnnouncer = useLiveRegion();
+  React.useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.code !== "KeyC" || !event.altKey) return;
+      if (!(event.metaKey || event.ctrlKey)) return;
+      if (event.repeat) return;
+      if (isTypingTarget(event.target)) return;
+      event.preventDefault();
+      const index = colorModes.findIndex((m) => m.id === colorMode);
+      const next = colorModes[(index + 1) % colorModes.length];
+      if (!next) return;
+      setColorMode(next.id);
+      colourAnnouncer.announce(`Colour mode: ${next.label}`);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [colorMode, colorModes, setColorMode, colourAnnouncer]);
 
   React.useEffect(() => {
     return () => {
@@ -337,6 +435,10 @@ export function DemoDock({
 
   return (
     <div ref={rootRef} className={cn("ds-demodock", className)}>
+      {/* Always mounted (not just while the panel is open) so the global
+          colour-mode shortcut can announce a change even with the dock
+          closed — that's the whole point of the shortcut. */}
+      <LiveRegion ref={colourAnnouncer.ref} />
       {shouldRender && (
         <div
           ref={panelRef}
@@ -408,7 +510,7 @@ export function DemoDock({
             )}
             {activeTabId === "colour" && (
               <TabPanel idBase={idBase} tabId="colour">
-                <ColourSwatches />
+                <ColourTab />
               </TabPanel>
             )}
           </div>
