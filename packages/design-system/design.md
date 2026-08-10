@@ -12,7 +12,16 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-10 · System version: v1.11.4 (APPEARANCE AXIS REMOVED: `data-theme`
+  Last reviewed: 2026-08-10 · System version: v1.11.5 (DEMO TOOLING CONSOLIDATED: `AppSwitcher`
+  removed — it hand-rolled a duplicate of `ColorModeSwitcher` and was mounted as mandatory
+  per-portal navigation. Replaced by `DemoDock`, one floating console mounted exactly once by the
+  hub root layout, tabbed Apps/Colour/Sign in, gated estate-wide by `NEXT_PUBLIC_DEMO_TOOLS`
+  (default ON). `AppSwitcherPanel` and `DemoAccountsPanel` extracted as reusable panel content;
+  `DemoFab` kept, now sharing `DemoAccountsPanel` with `DemoDock` instead of its own table. Demo
+  credentials moved from per-page consts into a pathname-keyed registry, `DEMO_ACCOUNTS` in
+  `packages/design-system/demo/demo-accounts.ts` — now the source of truth over
+  `.claude/rules/portal-login-demos.md`'s table. `AppEntry.group` gained `"Reports"`. v1.11.4
+  (APPEARANCE AXIS REMOVED: `data-theme`
   (light/dark/hc) no longer exists. Figma's Theme collection is single-mode and `tokens.css` emits
   no `[data-theme]` block. The UX4G accessibility widget is the estate's single canonical dark and
   high-contrast mechanism — it applies its own `.dark-mode` class and never read `data-theme`, so
@@ -969,12 +978,13 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 **Purpose**: Slim dark-navy app-shell footer with NeGD/DoSJE credit + policy links.  
 **Rule**: Always include: copyright, Accessibility Statement link, Privacy Policy link, Terms of Use link.
 
-#### AppSwitcher
-**Purpose**: Portal-to-portal navigation overlay. Shows all MoSJE portals the user has access to.  
-**Groups**: `Website` · `Portals` · `Resources` (the design system and Storybook).  
-**Rule**: Render `<AppSwitcher />`. The `devMode` prop is **deprecated and inert** — remove it from call sites.
+#### AppSwitcher — removed
 
-`Resources` was the old `Dev` group, hidden unless `devMode` was true. That gated the design system and Storybook on `NODE_ENV`, which hid them from exactly the people who most need to check what a component is meant to do — BAs, QAs and designers, none of whom run a dev build. Nothing in the switcher is environment-gated now.
+`AppSwitcher` no longer exists and is not exported. It carried a hand-rolled
+copy of the colour-mode swatches and was mandated as real per-portal
+navigation, both of which turned out wrong — see **Demo Tooling** below for
+its replacement, `DemoDock`, which is demo-only and mounted exactly once by
+the hub, not per portal.
 
 ---
 
@@ -1006,6 +1016,65 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 import { UX4GAccessibilityWidget } from "@mosje/design-system";
 <UX4GAccessibilityWidget />   // injects https://cdn.ux4g.gov.in/.../accessibility-widget.js, idempotently
 ```
+
+---
+
+### Demo Tooling (NOT product UI)
+
+Everything in this subsection lives in `packages/design-system/demo/`, is
+demo-only, and must never be reached for when building a screen a citizen or
+officer will actually use. It is the estate's tooling for reviewers,
+stakeholders and QAs to drive a demo without real accounts. If you are
+building product UI and find yourself about to import from here, stop —
+these are not the components you want.
+
+#### DemoDock
+**Purpose**: The single floating demo console — one FAB, bottom-left,
+opening a tabbed panel: **Apps** (cross-zone destination search,
+`AppSwitcherPanel`), **Colour** (the brand-palette picker,
+`ColorModeSwitcher`), **Sign in** (demo credentials for the current login
+surface, `DemoAccountsPanel`, shown only when one applies).
+**Props**: `pathname` (drives "Currently in" and which accounts show — via
+`findDemoAccounts`), `apps` (registry override, default `DEFAULT_APPS`),
+`label` (default `"Demo tools"`).
+**Rule**: Mounted **exactly once**, by the hub's root layout via
+`ConditionalDemoDock` — never per portal, never per page. Requires a
+`ColorModeProvider` ancestor (the Colour tab throws without one). Gated
+estate-wide by `NEXT_PUBLIC_DEMO_TOOLS`: absent or anything but the exact
+string `"false"` means visible; `"false"` removes it entirely, which is the
+correct state for a genuinely public deployment. See
+`.claude/rules/portal-appswitcher.md`.
+
+#### AppSwitcherPanel
+**Purpose**: The searchable, grouped destination list — DemoDock's Apps tab.
+**Groups**: `Website` · `Portals` · `Reports` · `Resources` (the design
+system and Storybook).
+**Props**: `apps`, `pathname`, `onNavigate`, `showCurrentApp` (default
+`true`; a shell that states the current app itself, like `DemoDock`'s own
+header, sets this `false` to avoid saying it twice).
+**Rule**: Pure content — no fixed positioning, no open/close state. Reused
+directly by `DemoDock`; do not fork a second copy for a different shell.
+
+#### DemoAccountsPanel
+**Purpose**: The shared demo-credentials table — one definition used by both
+`DemoFab` and `DemoDock`'s Sign in tab, so they cannot drift apart.
+**Props**: `accounts`, `idLabel` (default `"Mobile / ID"`), `onFill`
+(replaces the default global dispatch), `onUse` (fires after either fill
+path, so a containing shell can close itself).
+**Rule**: **Use**'s default behaviour dispatches a `demo:fill` CustomEvent
+with `{ id, password, extra }` — that is what lets a login page anywhere in
+the tree prefill itself with no prop-drilling. Accounts come from
+`DEMO_ACCOUNTS` / `findDemoAccounts` in
+`packages/design-system/demo/demo-accounts.ts` — see
+`.claude/rules/portal-login-demos.md`.
+
+#### DemoFab
+**Purpose**: A standalone, per-page demo-credentials FAB — the older pattern
+`DemoDock` superseded for every page inside the hub. Still exported and still
+valid for a page genuinely outside the hub's layout tree; not to be mounted
+alongside `DemoDock` inside it.
+**Props**: `accounts`, `devMode` (renders `null` when falsy — never
+hard-code `true`), `idLabel`, `onFill`.
 
 **DOM note:** the widget applies the class **`.dark-mode`** to `<html>` for its dark theme. This is **distinct** from the design system's own `data-theme` / `data-brand` token theming — keep the two concerns separate (see the consolidation spec).
 

@@ -22,9 +22,24 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.11.5",
+    version: "v0.11.6",
     date: "2026-08-10",
     current: true,
+    changes: [
+      { kind: "Added", text: "DemoDock — the estate's single floating demo console (Apps / Colour / Sign in tabs behind one FAB), replacing three widgets that used to compete for the bottom-left corner: the AppSwitcher FAB, its hand-rolled colour swatches, and DemoFab mounted separately on 8 login pages. Mounted exactly once, by the hub root layout via ConditionalDemoDock, and gated estate-wide by NEXT_PUBLIC_DEMO_TOOLS — absent or anything but the literal string \"false\" keeps it visible, so the deployed review site (the one place stakeholders actually need it) shows it by default" },
+      { kind: "Removed", text: "AppSwitcher is gone — no longer exported. The colour-mode swatches it carried were a hand-rolled duplicate of ColorModeSwitcher; they're deleted outright rather than ported, and DemoDock's Colour tab renders the real ColorModeSwitcher instead. ColorModeSwitcher also came out of SMILE Admin's access bar for the same reason: one colour control, not two" },
+      { kind: "Added", text: "AppSwitcherPanel and DemoAccountsPanel, extracted as the reusable content behind DemoDock's Apps and Sign in tabs. AppSwitcherPanel owns the search box and the grouped destination list with no position:fixed and no scroll box of its own — whatever mounts it owns the one scrollbar. DemoAccountsPanel is now the single credentials table shared by DemoDock and DemoFab, so the two can no longer drift apart the way the old per-page copies did" },
+      { kind: "Changed", text: "Demo credentials moved out of 8 per-page consts into one pathname-keyed registry, DEMO_ACCOUNTS in packages/design-system/demo/demo-accounts.ts, resolved via findDemoAccounts (longest-prefix match). This is a direct consequence of the dock mounting once, above every page — a page can no longer hand its accounts down as a prop to something already mounted above it in the tree. Where a path matches nothing in the registry (the website, a dashboard), the Sign in tab is not rendered at all rather than shown empty. .claude/rules/portal-login-demos.md now points at the registry as the source of truth instead of being one" },
+      { kind: "Added", text: "AppEntry.group gained \"Reports\", carrying the two QC report pages (SCW Design QC, E-Utthan Admin QC) into the Apps tab's search alongside Website / Portals / Resources" },
+      { kind: "Fixed", text: "AppSwitcherPanel's CSS lived only in the old AppSwitcher shell's stylesheet. Once the panel could be mounted by something else, DemoDock's Apps tab would have rendered completely unstyled — caught before it shipped, and the styles now live in their own app-switcher-panel.css so they load wherever the panel is used" },
+      { kind: "Fixed", text: "4 of the 8 login pages (NMBA admin, NMBA treatment-centre, PM-AJAY, SMILE Admin) drove DemoFab's onFill prop directly and had no demo:fill listener at all. DemoDock only ever dispatches that event — without a listener, pressing Use on those four pages would have silently done nothing. A listener was added to each" },
+      { kind: "Fixed", text: "The NMBA treatment-centre login — a Project Id + OTP flow, not the admin mobile-number form — was matching the broader /portals/nmba prefix and would have inherited the admin accounts. Gave it its own /portals/nmba/treatment-centre registry entry so the longest-prefix match resolves it correctly" },
+      { kind: "Fixed", text: "npm test -w @mosje/design-system had never run in CI — the Design System Quality workflow only ever executed the tokens package's tests, so a broken design-system unit test could merge unnoticed. Added it as a CI step, and widened the package's own tsconfig include, which had stopped at index.ts/tokens.ts/components/** and left demo/, foundations/ and utils/ silently untypechecked" },
+    ],
+  },
+  {
+    version: "v0.11.5",
+    date: "2026-08-10",
     changes: [
       { kind: "Changed", text: "The appearance axis is gone. `data-theme` (light/dark/hc) no longer exists: Figma's Theme collection is single-mode and tokens.css emits no [data-theme] block at all. The UX4G accessibility widget is the estate's single canonical dark and high-contrast mechanism \u2014 it applies its own .dark-mode class to <html> and never read data-theme, so this was a second parallel mechanism nothing consumed. Removing it removes confusion, not capability" },
       { kind: "Fixed", text: "Verified a true no-op: three selector contexts disappeared and ZERO tokens changed value in any surviving context. [data-theme=light] went too, correctly \u2014 it existed only to re-assert base values when returning from dark, and :root already holds them" },

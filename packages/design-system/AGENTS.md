@@ -82,29 +82,46 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
   (forms); `SectionTitle` (the shared eyebrow/heading/count/actions row — never hand-roll a
   `flex justify-between` with its own heading classes) (layout);
   `ApprovalTimeline` (multi-tier approval audit trail, data-display); `SiteHeader`, `SidebarNav`, `Footer`,
-  `AppSwitcher`, `Tabs`/`TabPanel` (navigation — note `SidebarNavItem.icon` is a Material
+  `AppSwitcherPanel` (the searchable, grouped Website/Portals/Reports/Resources destination
+  list — pure content, no fixed positioning; used by `DemoDock`'s Apps tab, see Demo Tooling
+  below — the standalone `AppSwitcher` FAB it used to live inside no longer exists),
+  `Tabs`/`TabPanel` (navigation — note `SidebarNavItem.icon` is a Material
   Symbols NAME STRING, not a component, so nav configs stay serialisable data);
   `PortalLoginShell` (auth); `LiveRegion`/`useLiveRegion` (announce async results that move
   no focus — mount one per page);
   `UX4GAccessibilityWidget` (a11y — **CANONICAL**: the official Government of
   India MeitY/UX4G accessibility widget, the single mechanism for text size,
   spacing, contrast and dark mode across the estate; render it once near the
-  end of every root layout, like `AppSwitcher`). The bespoke `AccessibilityWidget`
+  end of every root layout, like `DemoDock` below). The bespoke `AccessibilityWidget`
   reimplementation it replaced has been deleted — Figma's "AccessibilityWidget /
   FAB" component still documents the widget's visual spec.
   Tables, modals, toasts, tabs, charts and dashboards were previously
   hand-rolled per portal — always reuse these.
   Chart geometry for `IndiaMap` is generated — see
   `components/data-display/charts/geo/README.md`; never hand-edit `*.paths.ts`.
+- **Demo Tooling** (`packages/design-system/demo/`) — **NOT product UI; never
+  reach for these when building a real screen.** `DemoDock` is the single
+  floating demo console (Apps/Colour/Sign in tabs) mounted **exactly once**,
+  by the hub root layout via `ConditionalDemoDock` — never per portal. Gated
+  estate-wide by `NEXT_PUBLIC_DEMO_TOOLS` (default ON; `"false"` removes it).
+  `DemoAccountsPanel` is the shared credentials table (`DemoFab` and
+  `DemoDock`'s Sign in tab both render it, so they cannot drift). `DemoFab`
+  itself is kept for a standalone page outside the hub's layout tree — do not
+  mount it alongside `DemoDock` inside the hub. Demo credentials live in the
+  pathname-keyed `DEMO_ACCOUNTS` registry
+  (`packages/design-system/demo/demo-accounts.ts`), the source of truth over
+  `.claude/rules/portal-login-demos.md`'s table. See
+  `.claude/rules/portal-appswitcher.md`.
 - **Figma sync** → `/sync-figma`.
 
 ## Before you finish
 
 - **Wrote or changed a component? Write or update its story in the same commit.**
   Four gates enforce this, and they fail for different reasons — run all four:
-  - `npm run check:storybook` — every export has a story. Coverage is **69/69
-    and `apps/storybook/coverage-baseline.json` is empty**, so a new component
-    without a story fails outright. Do not add a baseline entry to go green.
+  - `npm run check:storybook` — every export has a story. Coverage is
+    **N/N with `apps/storybook/coverage-baseline.json` empty** (71/71 as of
+    the DemoDock work), so a new component without a story fails outright.
+    Do not add a baseline entry to go green.
   - `npm run check:storybook:parity` — every prop is mentioned by a story, and
     no story references an export the barrel no longer has. **Adding a prop
     means updating the story**; renaming or deleting a component means updating

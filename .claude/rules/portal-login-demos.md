@@ -1,17 +1,72 @@
 # Portal login pages — demo credentials (MANDATORY)
 
-Every login page in every portal MUST include a **Demo Credentials** panel so reviewers, stakeholders, and developers can test all roles without needing real credentials.
+Every login page in every portal MUST be reachable by demo credentials so
+reviewers, stakeholders, and developers can test all roles without needing a
+real account.
+
+## Source of truth: the registry, not this file
+
+**`packages/design-system/demo/demo-accounts.ts`** (`DEMO_ACCOUNTS`,
+`findDemoAccounts`) is the source of truth for every demo credential in the
+estate. The table further down this file is a **human-readable index** kept
+in sync with it, nothing more — **when the two disagree, the registry wins.**
+Never transcribe a "corrected" credential into this table without updating
+the registry to match; do it the other way around.
+
+This changed because presentation moved: credentials used to be declared
+per-page (first as a local `DEMO_ACCOUNTS` const feeding `DemoFab`, mounted in
+each portal's own layout). Now `DemoDock` is mounted **once**, in the hub's
+root layout, above every page — see `.claude/rules/portal-appswitcher.md`.
+Something mounted once above the whole tree cannot read a per-page prop, so
+the accounts had to move into a registry the dock can query by pathname
+instead. `findDemoAccounts(pathname)` does a longest-prefix match against
+`DEMO_ACCOUNTS[].path`, so a nested login surface (e.g.
+`/portals/nmba/treatment-centre`, a Project-Id + OTP flow) can win over a
+broader one (`/portals/nmba`, mobile-number + password) that would otherwise
+also match.
 
 ## Rule
 
-All portal login pages must render a collapsible `<details>` panel below the submit button that:
+1. Every login surface's credentials live in `DEMO_ACCOUNTS` in
+   `packages/design-system/demo/demo-accounts.ts`, keyed by the hub-origin
+   path prefix that reaches it (`path`), with an optional `idLabel` for
+   portals that don't sign in by mobile number.
+2. The login page itself owns **only** a `demo:fill` `CustomEvent` listener —
+   no local accounts const, no mounted `DemoFab` or `DemoDock`. `DemoDock`'s
+   **Sign in** tab (`DemoAccountsPanel`) dispatches `demo:fill` with
+   `{ id, password, extra }` when a row's **Use** button is pressed; the
+   listener sets the corresponding controlled fields and, if the form has
+   role tabs, switches to the tab named in `extra.tab`.
+3. Where a path has no entry in `DEMO_ACCOUNTS`, `findDemoAccounts` returns
+   `null` and the dock's Sign in tab is **absent**, not shown empty — so a
+   page with real credentials only (none, currently) simply isn't offered one.
+4. Credentials use a consistent demo password where the portal allows it:
+   **`Demo@123`**. Portals with their own auth stub carry whatever value that
+   stub actually checks (see the table) — never invent a nicer-looking one.
+5. Never invent an account. Transcribe it from the registry, or — for a login
+   surface not yet in the registry — from the portal's own login page source,
+   then add it to the registry so `DemoDock` can find it.
 
-1. Lists every available demo role with mobile/ID, password, and a **Use** button.
-2. The **Use** button fills the form fields (controlled state) and, if the form has role tabs, switches to the correct tab.
-3. The panel is **closed by default** (`<details>` without `open`) so it doesn't distract logged-in users.
-4. Credentials use a consistent demo password: **`Demo@123`** (or `any password` for mock-auth portals).
+## Listener pattern (what a login page actually implements)
 
-## UI pattern (copy-paste template)
+```tsx
+React.useEffect(() => {
+  const handler = (e: Event) => {
+    const { id, password, extra } = (e as CustomEvent<DemoFillDetail>).detail;
+    setMobile(id);
+    setPassword(password);
+    if (extra?.tab) setActiveTab(extra.tab as string);
+  };
+  window.addEventListener("demo:fill", handler);
+  return () => window.removeEventListener("demo:fill", handler);
+}, []);
+```
+
+## UI pattern — superseded
+
+The `<details>` disclosure panel below described the pattern before `DemoFab`
+and then `DemoDock` existed. No current login page renders one; keep reading
+only for the shape a bespoke, non-hub page might still choose to hand-roll.
 
 ```tsx
 <details className="group mt-4 rounded-lg border border-dashed border-navy/25 bg-surface-muted">
@@ -81,6 +136,34 @@ All portal login pages must render a collapsible `<details>` panel below the sub
 | **PM-AJAY** | State Officer | SO003 | Password@123 |
 | **PM-AJAY** | District Officer | DO005 | Password@123 |
 
+The four sets below don't sign in by mobile number, so they're kept separate
+rather than forced into the table above's "Mobile / ID" column.
+
+| Portal | Role | ID | Password |
+|--------|------|----|---------|
+| **NMBA — Treatment Centre** (Project Id) | IRCA | IRCA001 | 123456 |
+| **NMBA — Treatment Centre** (Project Id) | ODIC | ODIC001 | 123456 |
+| **NMBA — Treatment Centre** (Project Id) | CPLI | CPLI001 | 123456 |
+| **NMBA — Treatment Centre** (Project Id) | DDAC | DDAC001 | 123456 |
+| **NMBA — Treatment Centre** (Project Id) | US | US001 | 123456 |
+| **TG Admin** (Email) | Central Admin | central.admin@mosje.in | 123456 |
+| **TG Admin** (Email) | Examining Officer | examining.officer@mosje.in | 123456 |
+| **TG Admin** (Email) | Checker | checker@mosje.in | 123456 |
+| **TG Admin** (Email) | District Magistrate | district.magistrate@mosje.in | 123456 |
+| **TG Citizen** (Email) | Citizen (Applicant) | anshul@example.com | 123456 |
+| **NHAPOA** (Username) | District Officer | ba.districtofficer | Demo@123 |
+| **NHAPOA** (Username) | Station House Officer | so_govindnagar_kn | Demo@123 |
+| **NHAPOA** (Username) | State Authority | ba.stateauthority | Demo@123 |
+| **NHAPOA** (Username) | Finance Officer | ba.financeofficer | Demo@123 |
+| **NHAPOA** (Username) | Central Authority | ba.centralauthority | Demo@123 |
+| **NHAPOA** (Username) | System Administrator | nhapoa_sysadmin | Demo@123 |
+| **NHAPOA** (Username) | Call Centre Operator | ankitSharma | Demo@123 |
+
+> **NMBA — Treatment Centre** is a distinct login surface from the NMBA admin
+> login above — a Project Id + OTP flow, not mobile number + password — so it
+> gets its own entry in `DEMO_ACCOUNTS` (`path: "/portals/nmba/treatment-centre"`)
+> that wins the longest-prefix match over the broader `/portals/nmba` entry.
+
 > **NMBA Mass Pledge (18 August 2026)** is a flow inside the **existing** NMBA portal (no separate
 > login/portal). The five documented reporting forms share one form component; the reporter's
 > identity and which form they see are resolved from the login. The five accounts above are new;
@@ -100,12 +183,20 @@ All portal login pages must render a collapsible `<details>` panel below the sub
 > approved by the existing Pune DNO (9890001234) and then by the Maharashtra SNO (9890123456),
 > demonstrating the full three-tier chain live rather than reading it off the seed data.
 
-> **NMBA NAPDDR Three-Tier Committee** is a flow inside the **existing** NMBA portal (no separate login/portal). The single portal login (`/portals/nmba/admin/login`) resolves the role (Admin / State Nodal Officer / District Nodal Officer) from the mobile number and lands each in the sidebar's "NAPDDR Three-Tier Committee" flow, scoped to their state/district. Admin sees all; State officer sees/manages its state (State, District & Block committees); District officer sees/manages its district (District & Block committees). Uses the shared `DemoFab`.
+> **NMBA NAPDDR Three-Tier Committee** is a flow inside the **existing** NMBA portal (no separate login/portal). The single portal login (`/portals/nmba/admin/login`) resolves the role (Admin / State Nodal Officer / District Nodal Officer) from the mobile number and lands each in the sidebar's "NAPDDR Three-Tier Committee" flow, scoped to their state/district. Admin sees all; State officer sees/manages its state (State, District & Block committees); District officer sees/manages its district (District & Block committees). Reached via the shared `DemoDock`, mounted once in the hub root layout.
 
 ## Checklist when adding a new login page
 
 - [ ] Login form uses controlled state (React `useState`) for all credential fields
-- [ ] Demo panel (`<details>`) added below the submit button  
-- [ ] Each role has a **Use** button that fills fields and switches tabs if needed
-- [ ] Demo password is `Demo@123` (or note in the table if mock-auth accepts any)
-- [ ] Panel is closed by default
+- [ ] A `demo:fill` listener is wired (see the pattern above) — this is the
+      whole integration; there is nothing else for the page to render
+- [ ] The page's accounts are added to `DEMO_ACCOUNTS` in
+      `packages/design-system/demo/demo-accounts.ts`, keyed by the page's
+      hub-origin path prefix, **not** declared locally in the page
+- [ ] If the form has role tabs, the listener switches to the tab named in
+      `extra.tab` for accounts that need it (see SCW's accounts for the pattern)
+- [ ] Demo password is `Demo@123` where the portal's stub accepts it — otherwise
+      whatever value the stub actually checks, transcribed into the registry
+- [ ] The table in this file is updated to match — a human-readable copy of
+      the same accounts, kept only for a reviewer who doesn't want to open
+      `demo-accounts.ts`
