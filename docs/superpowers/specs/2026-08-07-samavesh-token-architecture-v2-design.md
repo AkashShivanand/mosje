@@ -219,8 +219,8 @@ Four grammar changes, each forced by something the implementation surfaced. All 
 
 | # | Change | Why |
 |---|---|---|
-| 1 | **The canonical value takes an explicit `default` segment** — `text/neutral/default`, not `text/neutral` | DTCG and Figma are both **trees**, and a token cannot also be a group. `text/neutral` as a leaf silently swallowed `text/neutral/subtle`, and Style Dictionary dropped every child. "Omitted prominence = canonical" is unimplementable on a tree. |
-| 2 | **Link variant `default` → `brand`** | With (1), the canonical link would be `text/link/default/default`. The standard link *is* the brand-coloured one, so name it that: `text/link/brand/default`. |
+| 1 | **The canonical value takes an explicit segment** — `text/neutral/base`, not `text/neutral`. Spelled `default` until 2026-08-10; see §5.1c | DTCG and Figma are both **trees**, and a token cannot also be a group. `text/neutral` as a leaf silently swallowed `text/neutral/subtle`, and Style Dictionary dropped every child. "Omitted prominence = canonical" is unimplementable on a tree. |
+| 2 | **Link variant `default` → `brand`** *(landed 2026-08-10, §5.1c)* | With (1), the canonical link would be `text/link/default/default`. The standard link *is* the brand-coloured one, so name it that: `text/link/brand/default`. |
 | 3 | **`focus` is a GROUP, not a role + state** | A focus ring is not "an outline in the focus state" — it has its own colour, width and offset, and WCAG 2.4.7 makes it non-optional. `outline/focus` did not parse; `focus/ring` does. UX4G models it the same way. |
 | 4 | **RULE 1 bans a delimiter inside a segment, not uppercase** | The first regex (`^[a-z0-9]+$`) also banned camelCase and flagged 224 legacy segments. camelCase splits unambiguously (`--sa-ref-color-secondaryRamp-light-50`); a hyphen does not. Lowercase remains house style for newly-authored namespaces, enforced separately. |
 
@@ -244,6 +244,45 @@ That matters because Style Dictionary resolves references to literals by default
 would pass at `:root` and then freeze, silently ignoring `[data-theme]`. The canonical
 namespace is therefore emitted as `var()` chains and re-asserted in every block that
 redeclares a target.
+
+### 5.1c One word, one slot (2026-08-10)
+
+`default` occupied **three** slot dictionaries at once — prominence, state, and the link
+variant. The parser fills slots greedily and positionally, so it bound `default` to the first
+dictionary that claimed it and never reached the others. `text/link/visited/default` parsed as
+`{variant: visited, prominence: default}`, silently discarding the state it was spelling. No
+error was raised; the token simply meant something other than it read.
+
+Two renames, no third:
+
+| Slot | Was | Is | Resulting names |
+|---|---|---|---|
+| Prominence canonical | `default` | **`base`** | `bg/neutral/base`, `text/brand/primary/base` |
+| Link variant | `default` | **`brand`** | `text/link/brand/default`, `text/link/brand/hover` |
+| State canonical | `default` | unchanged | `text/link/visited/default` — now genuinely a state |
+
+This was a rename, not a redesign. `test/visual-contract.test.mjs` resolves every `var()` chain
+in `dist/tokens.css` to a literal, per selector context, and pins it: all 27 moved names resolve
+byte-identically before and after, in all 7 contexts, and nothing else moved. The `--ds-*` compat
+layer and the `--ux4g-*` parity layer keep their names — the former was retargeted at the new
+canonical names, the latter never referenced them (§8.1a).
+
+**The invariant is now enforced.** `test/slot-disjointness.test.mjs` fails the build if any word
+becomes reachable in two slots of the same path. It is scoped to what the parser actually does:
+`bg` being both a Tier-2 `role` and a Tier-3 `property` is not ambiguity, because no single
+position consults both.
+
+**Two ambiguities survive, pinned rather than fixed:**
+
+| Words | Slots | Reading the parser picks |
+|---|---|---|
+| `primary` `secondary` `tertiary` | `variant` (brand) vs ink prominence | the brand variant; the ink-prominence reading is unreachable for `family=brand` |
+| `visited` | `variant` (link) vs `state` | the visited-link *family*; "canonical link, visited state" is spelled `text/link/brand/visited` |
+
+Both are the same class of defect as `default` was, resolved by greedy order rather than by the
+grammar being unambiguous. They are listed instead of fixed because fixing them renames shipped
+tokens, which is its own change with its own visual-contract review. The guard's stale-entry test
+forces the list to shrink when they are.
 
 ### 5.2 The rule that fixes D1
 
@@ -275,9 +314,9 @@ Tier 3   <component>/<intent>/<variant>/<state>/<property>
 |---|---|---|
 | `role` | ✅ | `bg` · `text` · `icon` · `border` · `outline` · `shadow` · `overlay` |
 | `family` | ✅ | `neutral` · `brand` · `status` · `link` |
-| `variant` | conditional | brand → `primary` `secondary` `tertiary` · status → `success` `error` `warning` `info` · link → `default` `neutral` `visited` |
-| `prominence` | ❌ | `subtlest` `subtler` `subtle` `bold` `bolder` `boldest` — **omitted ⇒ the canonical value** |
-| `state` | ❌ | `hover` `active` `focus` `visited` `selected` `disabled` — omitted ⇒ default |
+| `variant` | conditional | brand → `primary` `secondary` `tertiary` · status → `success` `error` `warning` `info` · link → `brand` `neutral` `visited` |
+| `prominence` | ❌ | fill ladder `base` `soft` `subtle` `emphasis` `strong` `stronger` · ink ladder `primary` `secondary` `tertiary` `strong` — **the canonical value is `base`, named explicitly (§5.1a #1)** |
+| `state` | ❌ | `default` `hover` `active` `focus` `visited` `selected` `disabled` — `default` is the canonical state and, since 2026-08-10, its **only** meaning anywhere in the grammar (§5.1c) |
 | `group` | — | `space` `inline` `stack` `padding` `section` `radius` `opacity` `z` `border` `elevation` `motion` `type` `density` `chart` `on` `layer` |
 
 Optional prominence with a canonical fallback is what lets the grammar cover the cases UX4G
@@ -369,6 +408,14 @@ cannot occur:
 | Secondary ink | `--ux4g-text-neutral-secondary` | `--sa-text-neutral-subtle` |
 | Tertiary ink | `--ux4g-text-neutral-tertiary` | `--sa-text-neutral-subtler` |
 | The brand colour | `--ux4g-text-brand-primary` | `--sa-text-brand-primary` |
+
+> **Correction (2026-08-10).** This section describes the intended design, not the shipped one.
+> The implemented ink ladder kept UX4G's `primary`/`secondary`/`tertiary` rather than mapping
+> onto `subtle`/`subtler`, so the overload is **not** dissolved: those three words still sit in
+> both the brand `variant` slot and the ink prominence slot. The collision is resolved by the
+> parser's greedy order, not by the grammar. It is pinned in §5.1c and gated by
+> `test/slot-disjointness.test.mjs`. Either finish the ladder migration or accept the overload
+> deliberately — but the spec should not claim it cannot occur while it does.
 
 ---
 
@@ -473,6 +520,35 @@ these names**; drift is impossible by construction.
 | **Structure** (space, radius, type size, weight, border, opacity, z) | UX4G's **exact value**, bound to the same number so they cannot drift | `--ux4g-stack-m` → `--sa-ref-space-lg` → `16px` |
 | **Colour** | Maps by **role**, to the MoSJE palette | `--ux4g-bg-primary-strong` → gov-blue, **not** UX4G violet |
 
+### 8.1a What a `--ux4g-*` alias promises — and what it does not
+
+**An alias preserves UX4G's VALUE, not our rung.** `--ux4g-bg-primary-subtle` emits UX4G's ramp
+step 200. That is *not* what `subtle` means in our ladder, and the two must not be conflated.
+
+The consequence, stated plainly so nobody has to rediscover it:
+
+> **`--ux4g-*` names sit OUTSIDE the SAMAVESH contrast contract (§6.3).** The prominence ladder
+> test does not check them, and it does not check them **by construction, not by exception** —
+> the ladder is a property of `--sa-*` rungs, and a `--ux4g-*` name is not a rung. There is no
+> allowlist to keep in sync and no suppression to review, because there is nothing to suppress.
+
+**Why value, not rung.** A developer pasting UX4G markup into a MoSJE page must get UX4G's
+rendering. If our aliases quietly re-pointed UX4G's names at our ladder, that markup would render
+differently here than in the reference system, with nothing in the code to explain it. Silently
+changing what a borrowed name renders is the worse failure — worse than the honest inconsistency
+of two vocabularies coexisting, each meaning what it says.
+
+Two vocabularies, two namespaces, no overlap:
+
+| Namespace | Owns | Contrast contract | Renamed by §5.1c? |
+|---|---|---|---|
+| `--sa-*` | SAMAVESH | ✅ §6.3 rungs | yes — 27 names |
+| `--ux4g-*` | UX4G 3.0 | ❌ outside it, by construction | **no** — resolves inside its own namespace from UX4G's reference contract, so our renames cannot reach it |
+
+This is also why §5.1c could rename `text/link/default` to `text/link/brand` without touching
+`--ux4g-text-link-default-default`: that name is UX4G's spelling of UX4G's value, and a developer
+grepping for it still finds it.
+
 ### 8.2 The conformance report
 
 `npm run conformance -w @mosje/tokens` → `docs/ux4g/conformance-report.md`: coverage (755/755),
@@ -530,6 +606,25 @@ values), **per-mode values**, and the §6.3 contrast class in each variable's **
 | 9.8 | `brand-contrast` / `mode-contrast` *(existing)* | Updated for `data-brand`. |
 
 **Lint:** `--sa-ref-*` outside `packages/tokens/**` and generated CSS is an error.
+
+### 9.9 The freeze criterion
+
+**The grammar is frozen once CI is green and all 245 `--ds-*` call sites map.**
+
+Both halves are mechanically checkable, which is the point — this architecture has been revised
+three times, and each revision reopened a naming debate that had no defined end. Without a written
+stopping condition the next revision reopens it again.
+
+- *CI green* = the §9 table plus `visual-contract`, `slot-disjointness` and `tier2-parity`.
+- *All 245 mapped* = the legacy allowlist in `test/naming-grammar.test.mjs` (§5.1b), which may
+  only shrink, reaches zero unmapped entries.
+
+After the freeze, a slot dictionary changes only by the deprecation path in §10 — an additive
+rename with both names live and a generated codemod entry — never by editing a dictionary in
+place. Renaming a word in place is exactly what §5.1c had to undo.
+
+The two ambiguities pinned in §5.1c are **inside** the freeze, not blockers of it: they are
+recorded, gated, and cost a rename to fix. Deciding them is a deliberate post-freeze change.
 
 ---
 

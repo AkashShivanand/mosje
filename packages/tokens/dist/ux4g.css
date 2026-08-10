@@ -17,6 +17,14 @@
    250 emitted at UX4G's own literal value (no SAMAVESH equivalent).
    Ramps deliberately left at UX4G values: gold, lime, pink, purple, skyblue, tertiary, yellow.
 
+   WHAT AN ALIAS PROMISES — it preserves UX4G's VALUE, not our rung. --ux4g-bg-primary-subtle
+   emits UX4G's ramp step 200, which is NOT what `subtle` means in the SAMAVESH ladder.
+   So --ux4g-* names sit OUTSIDE the SAMAVESH contrast contract (spec §6.3), and the
+   prominence-ladder test exempts them BY CONSTRUCTION, not by exception: the ladder is a
+   property of --sa-* rungs, and a --ux4g-* name is not a rung. Nothing to allowlist.
+   The reason is deliberate: a developer pasting UX4G markup must get UX4G's rendering.
+   Silently re-pointing a borrowed name at our ladder is the worse failure. See spec §8.1a.
+
    NOTE — UX4G sizes type in rem, SAMAVESH in px. The --ux4g-size and --ux4g-line-height
    tokens are therefore kept in UX4G's rem so browser default-font-size scaling keeps
    working; they are NOT aliased to our px tokens. Reconciling the SAMAVESH fluid scale

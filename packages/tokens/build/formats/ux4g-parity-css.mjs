@@ -304,6 +304,13 @@ export const ux4gParityCss = {
       `     colour remap above, which is what makes the whole semantic layer follow our palette.\n` +
       `   ${stats.literal} emitted at UX4G's own literal value (no SAMAVESH equivalent).\n` +
       `   Ramps deliberately left at UX4G values: ${[...stats.unmappedRamps].sort().join(", ")}.\n\n` +
+      `   WHAT AN ALIAS PROMISES — it preserves UX4G's VALUE, not our rung. --ux4g-bg-primary-subtle\n` +
+      `   emits UX4G's ramp step 200, which is NOT what \`subtle\` means in the SAMAVESH ladder.\n` +
+      `   So --ux4g-* names sit OUTSIDE the SAMAVESH contrast contract (spec §6.3), and the\n` +
+      `   prominence-ladder test exempts them BY CONSTRUCTION, not by exception: the ladder is a\n` +
+      `   property of --sa-* rungs, and a --ux4g-* name is not a rung. Nothing to allowlist.\n` +
+      `   The reason is deliberate: a developer pasting UX4G markup must get UX4G's rendering.\n` +
+      `   Silently re-pointing a borrowed name at our ladder is the worse failure. See spec §8.1a.\n\n` +
       `   NOTE — UX4G sizes type in rem, SAMAVESH in px. The --ux4g-size and --ux4g-line-height\n` +
       `   tokens are therefore kept in UX4G's rem so browser default-font-size scaling keeps\n` +
       `   working; they are NOT aliased to our px tokens. Reconciling the SAMAVESH fluid scale\n` +
