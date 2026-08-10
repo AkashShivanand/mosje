@@ -1,15 +1,3 @@
 {
-  "missing": [
-    "AccountMenu",
-    "AppSwitcher",
-    "BrandLockup",
-    "ColorModeSwitcher",
-    "DemoFab",
-    "Footer",
-    "Icon",
-    "PortalLoginShell",
-    "SidebarNav",
-    "SiteHeader",
-    "Tabs"
-  ]
+  "missing": []
 }
