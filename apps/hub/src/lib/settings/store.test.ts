@@ -132,3 +132,101 @@ test("resetSettingsCache forces the next read to refetch", async () => {
     assert.equal(calls(), 2);
   });
 });
+
+// ── Single-flight ─────────────────────────────────────────────────────────
+// Concurrent readers of the same key must share one round-trip. Without this,
+// every request arriving during a cold start hits the database independently,
+// on the request hot path, exactly when the store is most likely struggling.
+
+test("concurrent reads of the same key share a single fetch", async () => {
+  const previous = { ...process.env };
+  Object.assign(process.env, ENV);
+  resetSettingsCache();
+  try {
+    let calls = 0;
+    let release: (() => void) | undefined;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const deps: StoreDeps = {
+      fetchImpl: (async () => {
+        calls += 1;
+        await gate;
+        return jsonResponse([{ value: "shared" }]);
+      }) as unknown as typeof fetch,
+      now: () => Date.now(),
+    };
+
+    const reads = [
+      readSetting(SETTING_GATE_TOKEN, deps),
+      readSetting(SETTING_GATE_TOKEN, deps),
+      readSetting(SETTING_GATE_TOKEN, deps),
+    ];
+    release?.();
+    const results = await Promise.all(reads);
+
+    assert.equal(calls, 1, "three concurrent readers must cost one fetch");
+    assert.deepEqual(results, ["shared", "shared", "shared"]);
+  } finally {
+    process.env = previous;
+  }
+});
+
+test("a failed in-flight read is not left behind to poison later reads", async () => {
+  const previous = { ...process.env };
+  Object.assign(process.env, ENV);
+  resetSettingsCache();
+  try {
+    let calls = 0;
+    const deps: StoreDeps = {
+      fetchImpl: (async () => {
+        calls += 1;
+        throw new Error("network down");
+      }) as unknown as typeof fetch,
+      now: () => Date.now(),
+    };
+    assert.equal(await readSetting("k1", deps), null);
+    resetSettingsCache();
+    assert.equal(await readSetting("k1", deps), null);
+    assert.equal(calls, 2, "the in-flight entry must clear after a failure");
+  } finally {
+    process.env = previous;
+  }
+});
+
+test("a read in flight during a write does not re-cache the pre-write value", async () => {
+  const previous = { ...process.env };
+  Object.assign(process.env, ENV);
+  resetSettingsCache();
+  try {
+    let calls = 0;
+    let release: (() => void) | undefined;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const deps: StoreDeps = {
+      fetchImpl: (async () => {
+        calls += 1;
+        // First read blocks; later reads resolve immediately with the new value.
+        if (calls === 1) {
+          await gate;
+          return jsonResponse([{ value: "stale" }]);
+        }
+        return jsonResponse([{ value: "fresh" }]);
+      }) as unknown as typeof fetch,
+      now: () => Date.now(),
+    };
+
+    const inflight = readSetting("k", deps);
+    // A write lands while that read is still outstanding.
+    resetSettingsCache();
+    release?.();
+    assert.equal(await inflight, "stale", "the caller still gets its own result");
+
+    // The stale value must NOT have been cached, so the next read refetches.
+    assert.equal(await readSetting("k", deps), "fresh");
+    assert.equal(calls, 2);
+  } finally {
+    process.env = previous;
+  }
+});
