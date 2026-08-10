@@ -146,34 +146,48 @@ try {
       // and Tooltip render through a portal attached to <body>, which leaves the
       // root legitimately empty — so count the portalled subtrees too, or this
       // check would fail exactly the components most worth smoke-testing.
-      const canvas = await page.evaluate(() => {
-        const roots = [];
-        const root = document.querySelector("#storybook-root");
-        if (root) roots.push(root);
-        for (const child of document.body.children) {
-          if (child === root) continue;
-          if (child.id === "storybook-docs") continue;
-          if (["SCRIPT", "STYLE", "LINK", "TEMPLATE"].includes(child.tagName)) continue;
-          // Storybook's own chrome — the error display, the "no preview" panel
-          // and the loader — is always in the markup, hidden. Counting it would
-          // make every empty canvas look populated, which is the one thing this
-          // check exists to catch.
-          if ([...child.classList].some((c) => c.startsWith("sb-"))) continue;
-          roots.push(child);
-        }
-        return roots.reduce(
-          (acc, el) => ({
-            elements: acc.elements + el.querySelectorAll("*").length,
-            text: acc.text + (el.innerText ?? "").trim().length,
-          }),
-          { elements: 0, text: 0 },
-        );
-      });
-      // The preview decorator alone contributes one wrapper element, so a story
-      // that rendered nothing still shows 1. Require more than the wrapper.
-      if (canvas.elements <= 1 && canvas.text === 0) {
-        problems.push("rendered an empty canvas");
-      }
+      //
+      // POLLED, not sampled once. `sb-show-main` goes on the body when Storybook
+      // starts rendering, which is not the same moment React has committed — so
+      // a single reading straight afterwards is a race, and it lost on CI's
+      // slower runner while passing every time locally. Waiting for the canvas
+      // to become non-empty is deterministic in both directions: a story that
+      // really renders nothing is still empty when the timeout expires.
+      const notEmpty = await page
+        .waitForFunction(
+          () => {
+            const roots = [];
+            const root = document.querySelector("#storybook-root");
+            if (root) roots.push(root);
+            for (const child of document.body.children) {
+              if (child === root) continue;
+              if (child.id === "storybook-docs") continue;
+              if (["SCRIPT", "STYLE", "LINK", "TEMPLATE"].includes(child.tagName)) continue;
+              // Storybook's own chrome — the error display, the "no preview"
+              // panel and the loader — is always in the markup, hidden. Counting
+              // it would make every empty canvas look populated, which is the one
+              // thing this check exists to catch.
+              if ([...child.classList].some((c) => c.startsWith("sb-"))) continue;
+              roots.push(child);
+            }
+            const { elements, text } = roots.reduce(
+              (acc, el) => ({
+                elements: acc.elements + el.querySelectorAll("*").length,
+                text: acc.text + (el.innerText ?? "").trim().length,
+              }),
+              { elements: 0, text: 0 },
+            );
+            // The preview decorator alone contributes one wrapper element, so a
+            // story that rendered nothing still shows 1. Require more than that.
+            return elements > 1 || text > 0;
+          },
+          null,
+          { timeout: 10_000, polling: 100 },
+        )
+        .then(() => true)
+        .catch(() => false);
+
+      if (!notEmpty) problems.push("rendered an empty canvas");
     } catch (err) {
       problems.push(`navigation failed: ${err.message.split("\n")[0]}`);
     } finally {
