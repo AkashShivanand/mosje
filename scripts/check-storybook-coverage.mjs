@@ -46,6 +46,13 @@ const NOT_COMPONENTS = new Set([
   // demo/demo-accounts.ts), not a component — same category as DEFAULT_APPS
   // above. It is exercised by DemoAccountsPanel.stories.tsx and DemoDock.stories.tsx.
   "DEMO_ACCOUNTS",
+  // Numeric constants of the estate-registry override layer (packages/
+  // design-system/components/navigation/registry-overrides.ts): the schema
+  // version the settings row must declare, and the byte ceiling a stored
+  // config may not exceed. Same category as the constants above — there is
+  // nothing to render. The behaviour they govern is covered by
+  // registry-overrides.test.ts.
+  "REGISTRY_CONFIG_VERSION", "REGISTRY_CONFIG_MAX_BYTES",
   // Types (exported via `export type`, but belt and braces)
   "ColorMode", "ColorModeId", "ColorModeProviderProps", "ColorModeSwitcherProps",
   // Context providers and non-visual utilities: nothing to look at.

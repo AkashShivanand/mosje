@@ -17,8 +17,8 @@
 
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
-import { DEFAULT_APPS } from "@mosje/design-system";
 import { GATE_EMBLEM_SRC, safeNextPath } from "@/lib/site-gate";
+import { resolvePortals } from "@/lib/registry/resolve";
 import { EstateField } from "@/components/estate-field";
 import { unlock } from "./actions";
 import { GateForm } from "./gate-form";
@@ -29,15 +29,16 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-// Counted from the registry rather than typed by hand, so the door cannot
-// advertise a number the estate no longer has.
-const PORTAL_COUNT = DEFAULT_APPS.filter((a) => a.group === "Portals").length;
-
-const BEHIND_THE_DOOR = [
-  { value: "1", label: "Unified website", sub: "consolidating 13 legacy sites" },
-  { value: `${PORTAL_COUNT}`, label: "Workflow portals", sub: "schemes, scholarships, corporations" },
-  { value: "33+", label: "Organisations", sub: "across the ministry" },
-] as const;
+// Counted from the resolved registry rather than typed by hand, so the door
+// cannot advertise a number the estate no longer has — including portals an
+// admin has switched off.
+function behindTheDoor(portalCount: number) {
+  return [
+    { value: "1", label: "Unified website", sub: "consolidating 13 legacy sites" },
+    { value: `${portalCount}`, label: "Workflow portals", sub: "schemes, scholarships, corporations" },
+    { value: "33+", label: "Organisations", sub: "across the ministry" },
+  ] as const;
+}
 
 /** Reading order, in milliseconds. Short gaps — long ones read as slow. */
 const DELAY = {
@@ -61,6 +62,7 @@ export default async function GatePage({
 }) {
   const { next, error } = await searchParams;
   const target = safeNextPath(next);
+  const stats = behindTheDoor((await resolvePortals()).length);
 
   return (
     <main className="gate grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
@@ -138,7 +140,7 @@ export default async function GatePage({
               className="gate-reveal mt-10 hidden max-w-lg grid-cols-3 gap-x-4 border-t border-white/15 pt-8 sm:grid"
               style={after(DELAY.stats)}
             >
-              {BEHIND_THE_DOOR.map(({ value, label, sub }) => (
+              {stats.map(({ value, label, sub }) => (
                 <div key={label}>
                   <dd className="text-3xl font-bold tracking-tight">{value}</dd>
                   <dt className="mt-1.5 text-[13px] font-semibold text-white/90">{label}</dt>

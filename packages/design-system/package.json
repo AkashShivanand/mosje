@@ -12,7 +12,8 @@
     "./components.css": "./components.css",
     "./icons.css": "./icons.css",
     "./color-mode": "./foundations/color-mode.ts",
-    "./cn": "./utils/cn.ts"
+    "./cn": "./utils/cn.ts",
+    "./registry": "./components/navigation/registry-overrides.ts"
   },
   "files": [
     "index.ts",
