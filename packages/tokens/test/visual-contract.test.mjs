@@ -21,8 +21,9 @@ import { resolveContract } from "./lib/css-resolve.mjs";
 const cssPath = new URL("../dist/tokens.css", import.meta.url);
 const fixturePath = new URL("./visual-contract.fixture.json", import.meta.url);
 
+const cssText = readFileSync(cssPath, "utf8");
 const expected = JSON.parse(readFileSync(fixturePath, "utf8"));
-const actual = resolveContract(readFileSync(cssPath, "utf8"));
+const actual = resolveContract(cssText);
 
 /**
  * old canonical name -> new canonical name.
@@ -141,6 +142,23 @@ test("every declared rename actually corresponds to a token that moved", () => {
   );
 
   assert.deepEqual(stale, [], `RENAMES lists names that were never in the contract:${summarise(stale)}`);
+});
+
+test("the sheet stays flat, so the resolver cannot silently mis-parse it", () => {
+  // resolveContract() matches `selector { decls }` with a regex that assumes no nesting.
+  // An @media / @supports / CSS-nesting block would not blow up — it would parse into
+  // something subtly wrong, and this whole contract would go quietly green on garbage.
+  // Cheaper to forbid the shape than to make the parser clever: if the generator ever
+  // needs an at-rule, that is the moment to reach for a real CSS parser here.
+  const atRules = [...cssText.matchAll(/^\s*@[a-z-]+/gim)].map((m) => m[0].trim());
+
+  assert.deepEqual(
+    atRules,
+    [],
+    `dist/tokens.css now contains at-rules (${atRules.join(", ")}). test/lib/css-resolve.mjs ` +
+      `parses flat blocks only — teach it to nest before allowing these, or the visual contract ` +
+      `silently stops meaning anything.`,
+  );
 });
 
 test("no var() chain dead-ends or loops in any context", () => {
