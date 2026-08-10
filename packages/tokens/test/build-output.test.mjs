@@ -150,7 +150,10 @@ test("every override block re-asserts the --ds-* aliases it invalidates", () => 
   assert.ok(aliasesInRoot.length > 100, "expected the --ds-* alias table in :root");
 
   const blocks = [...css.matchAll(/^(\[[^\]]+\]) \{\n([\s\S]*?)\n\}/gm)];
-  assert.ok(blocks.length >= 4, `expected the override blocks, found ${blocks.length}`);
+  // Was >= 4 when the appearance axis emitted [data-theme="light"|"dark"|"hc"]. That axis was
+  // removed on 2026-08-10 — the UX4G widget owns dark/high-contrast and never read it — so the
+  // remaining override blocks are brand, density and surface.
+  assert.ok(blocks.length >= 3, `expected the override blocks, found ${blocks.length}`);
 
   const failures = [];
   for (const [, selector, body] of blocks) {

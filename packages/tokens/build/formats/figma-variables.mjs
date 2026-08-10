@@ -57,7 +57,7 @@ export const COLLECTIONS = {
    * Light aliases straight into Color, which is itself brand-aware, so brand still flows
    * through a token bound here.
    */
-  Theme: { axis: "theme", modes: ["Light", "Dark", "HC"] },
+  Theme: { axis: "theme", modes: ["Light"] },
   Typography: {
     axis: "surface × breakpoint",
     modes: [

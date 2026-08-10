@@ -12,7 +12,15 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-10 · System version: v1.11.3 (FIGMA SYNC, second pass: the library now
+  Last reviewed: 2026-08-10 · System version: v1.11.4 (APPEARANCE AXIS REMOVED: `data-theme`
+  (light/dark/hc) no longer exists. Figma's Theme collection is single-mode and `tokens.css` emits
+  no `[data-theme]` block. The UX4G accessibility widget is the estate's single canonical dark and
+  high-contrast mechanism — it applies its own `.dark-mode` class and never read `data-theme`, so
+  this was a second parallel mechanism nothing consumed. Verified no-op: zero value drift in every
+  surviving selector context. Removed three dead switches (gate header, docs header, playground),
+  the Storybook theme picker, two theme modules, the no-flash script and the orphaned CSS; corrected
+  Storybook's pre-rename brand labels to Blue/Navy. Also normalised 33 Figma alphas stored as 8-bit
+  n/255 values rather than clean percentages (max shift 0.16pp). v1.11.3: (FIGMA SYNC, second pass: the library now
   matches the code on Spacing (49), Theme (374), Border Radius, Motion and Density, and on all 117
   Color names the exporter emits. Created 61 missing variables (Spacing 15->49, Typography 79->106);
   renamed 28 in place so ids and bindings survived; retired 8 unused Color leftovers (149->141).
@@ -119,13 +127,13 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 | Axis | Attribute | Values | Meaning |
 | :--- | :--- | :--- | :--- |
 | **Brand** | `data-brand` | `blue` (default), `navy` | Two peer brand palettes, BOTH on light surfaces — `blue` is gov-blue + saffron + warm grey, `navy` is gov-navy + green + cool grey. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. In Figma they are the brand half of the `2 · Color` collection's `Brand × Theme` modes. Selects the whole mode-aware palette: **primary** (blue↔navy), **secondary** (saffron↔green), **neutral** greys (warm↔cool), and the primary/secondary/neutral **transparent** tiers. |
-| **Appearance** | `data-theme` | `light` (default/unset), `dark`, `hc` | Light theme, dark theme, or high-contrast (a11y). |
+| ~~Appearance~~ | ~~`data-theme`~~ | **REMOVED 2026-08-10** | Dark and high-contrast are owned entirely by the UX4G accessibility widget, which applies its own `.dark-mode` class to `<html>` and never read `data-theme`. This axis was a second, parallel mechanism nothing consumed. The token source still carries the overrides (unemitted) so it can be revived deliberately — see `docs/superpowers/records/2026-08-10-figma-theme-dark-hc-removed.md`. |
 | **Density** | `data-density` | `comfortable` (default/unset), `compact` | Controls padding, heights, and spatial density. |
 | **Surface** | `data-surface` | `website` (default/unset), `portal` | Selects the **typography scale**. `website` = the expressive editorial ramp (display-1 ≈ 80px); `portal` = the dense functional ramp (display-1 ≈ 56px). Same role token names in both; only the `--ds-type-*` values differ. Set `data-surface="portal"` on portal `<html>` roots; the website/hub stay default. Maps 1:1 to the SAMAVESH Figma `Website` / `Portal` type modes. |
 
-> **Surface is a type axis only.** `data-surface` swaps the fluid type scale (`--ds-type-*`), nothing else — colour still comes from `data-brand`/`data-theme`. All type is fluid `clamp()` between a 360px-viewport min and a 1280px max, so the two surfaces each scale smoothly; there are no type media-query breakpoints.
+> **Surface is a type axis only.** `data-surface` swaps the fluid type scale (`--ds-type-*`), nothing else — colour comes from `data-brand`. All type is fluid `clamp()` between a 360px-viewport min and a 1280px max, so the two surfaces each scale smoothly; there are no type media-query breakpoints.
 
-> **Brand ≠ Appearance.** `data-brand` (blue/navy) and `data-theme` (light/dark/hc) are **independent axes**. `navy` is NOT a dark UI theme — it keeps light surfaces and simply swaps the brand palette to navy/green/cool-grey (matching Figma's `Blue - Dark` mode). The actual dark/high-contrast surfaces live on `data-theme`. The two compose: e.g. `data-brand="navy" data-theme="dark"` is the navy palette on dark a11y surfaces.
+> **Brand is the only colour axis.** `data-brand` (blue/navy) swaps the brand palette; `navy` is NOT a dark UI theme — it keeps light surfaces and simply uses navy/green/cool-grey. There is no appearance axis: dark and high-contrast belong to the UX4G accessibility widget, the estate's single canonical mechanism for both.
 
 > **Two more colour modes ship opt-in: `ux4g` and `ux4gdeep`.** They carry UX4G 3.0's
 > own palette (violet `#6a4eff` / `#4a2bc2`) *literally*, so UX4G conformance can be
@@ -137,9 +145,9 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 > `<ColorModeSwitcher modes={[...COLOR_MODES, ...UX4G_COLOR_MODES]} />`.
 > The MoSJE default stays gov-blue, as DBIM requires.
 
-> **Tip:** Nested theme "islands" (e.g. a dark-themed preview wrapper inside a light page) must be explicitly scoped using nested `[data-theme="dark"]` elements. To prevent theme flashes on initial render, initialize attributes using the exported `colorModeInitScript()`.
+> **Tip:** Nested brand "islands" (e.g. a navy portal shell inside the blue hub) must be explicitly scoped with a nested `[data-brand]` element. To prevent a flash on initial render, initialize the attribute with the exported `colorModeInitScript()`.
 
-> **Islands work on BOTH axes — `data-theme` and `data-brand`.** You can put either attribute on any element, not just `<html>`, and the subtree re-themes. This works because the generated `tokens.css` re-declares the `--ds-*` aliases inside every `[data-theme="…"]` **and** every `[data-brand="…"]` block (each of which also carries the deprecated `[data-color-mode="…"]` selector, so existing markup keeps working). That matters: a custom property substitutes `var()` at the element where it is **declared**, so if a block only flipped the `--sa-*` primitives, `--ds-primary` would stay resolved at whatever `:root` computed and the island would not repaint. (`data-brand` islands were silently broken until the generator emitted the alias re-resolution in those blocks too — a portal mounting natively moved the attribute off `<html>` and exposed it.) Anything changing this lives in `packages/tokens/build/formats/legacy-ds-css.mjs`, never in the generated CSS.
+> **Brand islands.** You can put `data-brand` on any element, not just `<html>`, and the subtree re-themes, because the generated `tokens.css` re-declares the `--ds-*` aliases inside every `[data-brand="…"]` block (each also carrying the deprecated `[data-color-mode="…"]` selector, so existing markup keeps working). A custom property substitutes `var()` at the element where it is **declared**, so a block that only flipped the `--sa-*` primitives would leave `--ds-primary` resolved at whatever `:root` computed and the island would not repaint. Anything changing this lives in `packages/tokens/build/formats/legacy-ds-css.mjs`, never in the generated CSS.
 
 ### B. Colour Usage Contract
 

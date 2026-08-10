@@ -186,7 +186,13 @@ test("the theme axis actually carries different values, not three identical copi
     );
     return new Set(sigs).size > 1;
   });
-  assert.ok(varying.length > 30, `only ${varying.length} Theme variables differ across modes`);
+  // The Theme collection is SINGLE-MODE since 2026-08-10 (Light only). Dark and HC were removed
+  // because the UX4G accessibility widget is the estate's canonical high-contrast mechanism and
+  // drives its own `.dark-mode` class, never `data-theme`. With one mode there is nothing to vary,
+  // so this asserts the axis is deliberately flat rather than accidentally flat: exactly one mode.
+  const modes = new Set(theme.variables.flatMap((v) => Object.keys(v.valuesByMode)));
+  assert.deepEqual([...modes], ["Light"], `Theme should be single-mode; found ${[...modes]}`);
+  assert.equal(varying.length, 0, "single-mode collection cannot have varying values");
 });
 
 test("a Theme token's Light value stays brand-aware", () => {

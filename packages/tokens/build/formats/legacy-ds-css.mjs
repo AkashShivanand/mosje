@@ -456,11 +456,16 @@ export const legacyDsCss = {
       const ext = t.original?.$extensions?.mosje;
       const name = cssNameFor(t);
       if (ext?.themes) {
+        // `dark` and `hc` are deliberately NOT emitted. The UX4G accessibility widget is the
+        // single canonical high-contrast / dark mechanism for the estate — it applies its own
+        // `.dark-mode` class to <html> and never reads `data-theme`, so this axis was a second,
+        // parallel mechanism nothing consumed. `compact` is the density axis and is unrelated.
+        // The source overrides are kept so the axis can be revived deliberately if it is ever
+        // wanted; only the emission is switched off. See
+        // docs/superpowers/records/2026-08-10-figma-theme-dark-hc-removed.md
         for (const [theme, v] of Object.entries(ext.themes)) {
+          if (theme === "dark" || theme === "hc") continue;
           if (themeMap[theme]) push(themeMap[theme], name, resolveRef(v));
-        }
-        if (ext.themes.dark || ext.themes.hc) {
-          push(themeMap.light, name, val(t));
         }
       }
       if (ext?.colorModes) {
@@ -496,8 +501,6 @@ export const legacyDsCss = {
     const themeBlocks = [
       colorModeBlocks,
       themeMap.light.lines.length  ? `[data-theme="light"] {\n${themeMap.light.lines.join("\n")}${reassert(themeMap.light)}\n}` : "",
-      themeMap.dark.lines.length   ? `[data-theme="dark"] {\n${themeMap.dark.lines.join("\n")}${reassert(themeMap.dark)}\n}` : "",
-      themeMap.hc.lines.length     ? `[data-theme="hc"] {\n${themeMap.hc.lines.join("\n")}${reassert(themeMap.hc)}\n}` : "",
       themeMap.compact.lines.length? `[data-density="compact"] {\n${themeMap.compact.lines.join("\n")}${reassert(themeMap.compact)}\n}` : "",
     ]
       .filter(Boolean)

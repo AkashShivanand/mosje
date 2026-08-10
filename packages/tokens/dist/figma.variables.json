@@ -3934,9 +3934,7 @@
       "name": "Theme",
       "axis": "theme",
       "modes": [
-        "Light",
-        "Dark",
-        "HC"
+        "Light"
       ],
       "variables": [
         {
@@ -3945,16 +3943,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/100"
@@ -3979,16 +3967,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "Pressed rows, dividers as fills Guarantees ≥3:1 — UI boundaries, icons, non-text (WCAG 1.4.11).",
@@ -4007,16 +3985,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/900"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/900"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/900"
@@ -4041,16 +4009,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "Disabled control fill",
@@ -4069,16 +4027,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/50"
@@ -4103,16 +4051,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/100"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/100"
             }
           },
           "description": "Brand primary background, soft Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -4131,16 +4069,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/200"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/200"
@@ -4165,16 +4093,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/300"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/300"
             }
           },
           "description": "Brand primary background, emphasis Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -4193,16 +4111,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/600"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/600"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/600"
@@ -4227,16 +4135,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
             }
           },
           "description": "Brand primary background, stronger Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -4255,16 +4153,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Secondary/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Secondary/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Secondary/50"
@@ -4289,16 +4177,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Secondary/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Secondary/100"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Secondary/100"
             }
           },
           "description": "Brand secondary background, soft Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -4317,16 +4195,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Secondary/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Secondary/200"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Secondary/200"
@@ -4351,16 +4219,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Secondary/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Secondary/300"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Secondary/300"
             }
           },
           "description": "Brand secondary background, emphasis Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -4379,16 +4237,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Secondary/600"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Secondary/600"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Secondary/600"
@@ -4413,16 +4261,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Secondary/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Secondary/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Secondary/800"
             }
           },
           "description": "Brand secondary background, stronger Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -4441,16 +4279,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/50"
@@ -4475,16 +4303,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/100"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/100"
             }
           },
           "description": "success background, soft No contrast guarantee — decorative fills only.",
@@ -4503,16 +4321,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/200"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/200"
@@ -4537,16 +4345,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/300"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/300"
             }
           },
           "description": "success background, emphasis Guarantees ≥3:1 — UI boundaries, icons, non-text (WCAG 1.4.11).",
@@ -4565,16 +4363,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/600"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/600"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/600"
@@ -4599,16 +4387,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
             }
           },
           "description": "success background, stronger Guarantees ≥7:1 — text-safe (WCAG 1.4.6 AAA).",
@@ -4627,16 +4405,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/50"
@@ -4661,16 +4429,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/100"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/100"
             }
           },
           "description": "error background, soft No contrast guarantee — decorative fills only.",
@@ -4689,16 +4447,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/200"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/200"
@@ -4723,16 +4471,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/300"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/300"
             }
           },
           "description": "error background, emphasis Guarantees ≥3:1 — UI boundaries, icons, non-text (WCAG 1.4.11).",
@@ -4751,16 +4489,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/600"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/600"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/600"
@@ -4785,16 +4513,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
             }
           },
           "description": "error background, stronger Guarantees ≥7:1 — text-safe (WCAG 1.4.6 AAA).",
@@ -4813,16 +4531,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Warning/50"
@@ -4847,16 +4555,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Warning/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/100"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/100"
             }
           },
           "description": "warning background, soft No contrast guarantee — decorative fills only.",
@@ -4875,16 +4573,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/200"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Warning/200"
@@ -4909,16 +4597,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Warning/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/300"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/300"
             }
           },
           "description": "warning background, emphasis Guarantees ≥3:1 — UI boundaries, icons, non-text (WCAG 1.4.11).",
@@ -4937,16 +4615,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/600"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/600"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Warning/600"
@@ -4971,16 +4639,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Warning/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/800"
             }
           },
           "description": "warning background, stronger Guarantees ≥7:1 — text-safe (WCAG 1.4.6 AAA).",
@@ -4999,16 +4657,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Info/50"
@@ -5033,16 +4681,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Info/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/100"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/100"
             }
           },
           "description": "info background, soft No contrast guarantee — decorative fills only.",
@@ -5061,16 +4699,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/200"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Info/200"
@@ -5095,16 +4723,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Info/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/300"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/300"
             }
           },
           "description": "info background, emphasis Guarantees ≥3:1 — UI boundaries, icons, non-text (WCAG 1.4.11).",
@@ -5123,16 +4741,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/600"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/600"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Info/600"
@@ -5157,16 +4765,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Info/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/800"
             }
           },
           "description": "info background, stronger Guarantees ≥7:1 — text-safe (WCAG 1.4.6 AAA).",
@@ -5188,14 +4786,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/800"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#f3f4f6"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "#000000"
             }
           },
           "description": "Body and heading text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -5214,15 +4804,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#c2c7d0"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/700"
@@ -5247,15 +4828,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
             }
           },
           "description": "Disabled label",
@@ -5274,16 +4846,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -5308,15 +4870,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/700"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#025fb8"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
             }
           },
           "description": "Link, hovered",
@@ -5335,16 +4888,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/800"
@@ -5369,15 +4912,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
             }
           },
           "description": "Link, disabled",
@@ -5396,16 +4930,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/800"
@@ -5430,15 +4954,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/700"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#c2c7d0"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
             }
           },
           "description": "Link in quiet chrome (footers, breadcrumbs)",
@@ -5457,15 +4972,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/500"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#0373df"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/500"
@@ -5490,15 +4996,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/700"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#66bb6a"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
             }
           },
           "description": "success message text No contrast guarantee — decorative fills only.",
@@ -5517,15 +5014,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#ff6b5e"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/700"
@@ -5550,16 +5038,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Warning/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/700"
             }
           },
           "description": "warning message text No contrast guarantee — decorative fills only.",
@@ -5578,15 +5056,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/600"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#4285f4"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Info/600"
@@ -5611,14 +5080,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/500"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#5b6577"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "#000000"
             }
           },
           "description": "Form control border, hovered Guarantees ≥4.5:1 — text-safe (WCAG 1.4.3 AA).",
@@ -5637,15 +5098,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/500"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#0373df"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/500"
@@ -5670,15 +5122,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/700"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#66bb6a"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
             }
           },
           "description": "success border No contrast guarantee — decorative fills only.",
@@ -5697,15 +5140,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#ff6b5e"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/700"
@@ -5730,16 +5164,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Warning/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/700"
             }
           },
           "description": "warning border No contrast guarantee — decorative fills only.",
@@ -5758,15 +5182,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/600"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#4285f4"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Info/600"
@@ -5791,14 +5206,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/800"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#f3f4f6"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "#000000"
             }
           },
           "description": "Default icon Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -5817,15 +5224,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#c2c7d0"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/700"
@@ -5850,15 +5248,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
             }
           },
           "description": "Disabled icon",
@@ -5877,16 +5266,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -5911,15 +5290,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/500"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#0373df"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/500"
             }
           },
           "description": "Brand-coloured icon Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -5938,15 +5308,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#66bb6a"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/700"
@@ -5971,15 +5332,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/700"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#ff6b5e"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
             }
           },
           "description": "error icon No contrast guarantee — decorative fills only.",
@@ -5998,16 +5350,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Warning/700"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Warning/700"
@@ -6032,15 +5374,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Info/600"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#4285f4"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Info/600"
             }
           },
           "description": "info icon No contrast guarantee — decorative fills only.",
@@ -6059,16 +5392,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/600"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/600"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/600"
@@ -6093,16 +5416,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "brand primary button, default state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -6121,16 +5434,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/600"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/600"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/600"
@@ -6155,16 +5458,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
             }
           },
           "description": "brand primary button, hover state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -6183,16 +5476,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -6217,16 +5500,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
             }
           },
           "description": "brand primary button, hover state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -6245,16 +5518,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/800"
@@ -6279,16 +5542,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "brand primary button, active state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -6307,16 +5560,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/800"
@@ -6341,16 +5584,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "brand primary button, disabled state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -6369,15 +5602,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
@@ -6402,16 +5626,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "brand primary button, disabled state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -6430,16 +5644,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -6464,16 +5668,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
             }
           },
           "description": "brand primary button on a solid brand surface, default state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -6492,16 +5686,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -6525,14 +5709,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
             }
           },
           "description": "brand primary button on a solid brand surface, hover state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -6551,16 +5727,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/800"
@@ -6584,14 +5750,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
             }
           },
           "description": "brand primary button on a solid brand surface, hover state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -6610,14 +5768,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.84)"
             }
@@ -6641,16 +5791,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/900"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/900"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/900"
             }
           },
           "description": "brand primary button on a solid brand surface, active state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -6669,14 +5809,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.84)"
             }
@@ -6699,14 +5831,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "brand primary button on a solid brand surface, disabled state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -6725,14 +5849,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.64)"
             }
@@ -6755,14 +5871,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "brand primary button on a solid brand surface, disabled state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -6783,14 +5891,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "brand secondary button, default state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -6809,16 +5909,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/700"
@@ -6843,16 +5933,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/300"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/300"
             }
           },
           "description": "brand secondary button, default state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -6871,16 +5951,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/50"
@@ -6905,16 +5975,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
             }
           },
           "description": "brand secondary button, hover state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -6933,16 +5993,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/400"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/400"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/400"
@@ -6967,16 +6017,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/100"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/100"
             }
           },
           "description": "brand secondary button, active state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -6995,16 +6035,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/800"
@@ -7029,16 +6059,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/500"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/500"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/500"
             }
           },
           "description": "brand secondary button, active state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -7059,14 +6079,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "brand secondary button, disabled state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -7085,15 +6097,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
@@ -7118,16 +6121,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "brand secondary button, disabled state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -7146,14 +6139,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -7177,16 +6162,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "brand secondary button on a solid brand surface, default state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -7207,14 +6182,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "brand secondary button on a solid brand surface, default state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -7233,14 +6200,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.10)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.10)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.10)"
             }
@@ -7264,16 +6223,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "brand secondary button on a solid brand surface, hover state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -7292,14 +6241,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.64)"
             }
@@ -7322,14 +6263,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.16)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
             }
           },
           "description": "brand secondary button on a solid brand surface, active state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -7348,16 +6281,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -7382,16 +6305,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "brand secondary button on a solid brand surface, active state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -7410,14 +6323,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -7440,14 +6345,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "brand secondary button on a solid brand surface, disabled state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -7468,14 +6365,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.24)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
             }
           },
           "description": "brand secondary button on a solid brand surface, disabled state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -7494,14 +6383,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -7525,16 +6406,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
             }
           },
           "description": "brand tertiary button, default state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -7555,14 +6426,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "brand tertiary button, default state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -7581,16 +6444,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/50"
@@ -7615,16 +6468,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
             }
           },
           "description": "brand tertiary button, hover state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -7645,14 +6488,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "brand tertiary button, hover state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -7671,16 +6506,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/100"
@@ -7705,16 +6530,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
             }
           },
           "description": "brand tertiary button, active state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -7735,14 +6550,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "brand tertiary button, active state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -7761,14 +6568,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -7792,15 +6591,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
             }
           },
           "description": "brand tertiary button, disabled state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -7821,14 +6611,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "brand tertiary button, disabled state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -7847,16 +6629,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/100"
@@ -7881,16 +6653,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
             }
           },
           "description": "brand tonal button, default state, text",
@@ -7909,16 +6671,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/100"
@@ -7943,16 +6695,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/200"
             }
           },
           "description": "brand tonal button, hover state, bg",
@@ -7971,16 +6713,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/800"
@@ -8005,16 +6737,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/200"
             }
           },
           "description": "brand tonal button, hover state, border",
@@ -8033,16 +6755,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/300"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/300"
@@ -8067,16 +6779,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/900"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/900"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/900"
             }
           },
           "description": "brand tonal button, active state, text",
@@ -8095,16 +6797,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/300"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/300"
@@ -8129,16 +6821,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "brand tonal button, disabled state, bg",
@@ -8157,15 +6839,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
@@ -8190,16 +6863,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "brand tonal button, disabled state, border",
@@ -8218,16 +6881,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/600"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/600"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/600"
@@ -8252,16 +6905,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "success primary button, default state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -8280,16 +6923,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/600"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/600"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/600"
@@ -8314,16 +6947,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
             }
           },
           "description": "success primary button, hover state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -8342,16 +6965,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -8376,16 +6989,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
             }
           },
           "description": "success primary button, hover state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -8404,16 +7007,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/800"
@@ -8438,16 +7031,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "success primary button, active state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -8466,16 +7049,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/800"
@@ -8500,16 +7073,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "success primary button, disabled state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -8528,15 +7091,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
@@ -8561,16 +7115,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "success primary button, disabled state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -8589,16 +7133,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -8623,16 +7157,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
             }
           },
           "description": "success primary button on a solid brand surface, default state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -8651,16 +7175,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -8684,14 +7198,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
             }
           },
           "description": "success primary button on a solid brand surface, hover state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -8710,16 +7216,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/800"
@@ -8743,14 +7239,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
             }
           },
           "description": "success primary button on a solid brand surface, hover state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -8769,14 +7257,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.84)"
             }
@@ -8800,16 +7280,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/900"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/900"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/900"
             }
           },
           "description": "success primary button on a solid brand surface, active state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -8828,14 +7298,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.84)"
             }
@@ -8858,14 +7320,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "success primary button on a solid brand surface, disabled state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -8884,14 +7338,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.64)"
             }
@@ -8914,14 +7360,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "success primary button on a solid brand surface, disabled state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -8942,14 +7380,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "success secondary button, default state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -8968,16 +7398,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/700"
@@ -9002,16 +7422,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/300"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/300"
             }
           },
           "description": "success secondary button, default state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9030,16 +7440,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/50"
@@ -9064,16 +7464,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
             }
           },
           "description": "success secondary button, hover state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9092,16 +7482,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/400"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/400"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/400"
@@ -9126,16 +7506,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/100"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/100"
             }
           },
           "description": "success secondary button, active state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9154,16 +7524,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/800"
@@ -9188,16 +7548,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/500"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/500"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/500"
             }
           },
           "description": "success secondary button, active state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9218,14 +7568,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "success secondary button, disabled state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9244,15 +7586,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
@@ -9277,16 +7610,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "success secondary button, disabled state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9305,14 +7628,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -9336,16 +7651,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "success secondary button on a solid brand surface, default state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9366,14 +7671,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "success secondary button on a solid brand surface, default state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9392,14 +7689,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.10)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.10)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.10)"
             }
@@ -9423,16 +7712,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "success secondary button on a solid brand surface, hover state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9451,14 +7730,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.64)"
             }
@@ -9481,14 +7752,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.16)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
             }
           },
           "description": "success secondary button on a solid brand surface, active state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9507,16 +7770,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -9541,16 +7794,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "success secondary button on a solid brand surface, active state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9569,14 +7812,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -9599,14 +7834,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "success secondary button on a solid brand surface, disabled state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9627,14 +7854,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.24)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
             }
           },
           "description": "success secondary button on a solid brand surface, disabled state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -9653,14 +7872,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -9684,16 +7895,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
             }
           },
           "description": "success tertiary button, default state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -9714,14 +7915,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "success tertiary button, default state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -9740,16 +7933,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/50"
@@ -9774,16 +7957,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/700"
             }
           },
           "description": "success tertiary button, hover state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -9804,14 +7977,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "success tertiary button, hover state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -9830,16 +7995,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/100"
@@ -9864,16 +8019,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
             }
           },
           "description": "success tertiary button, active state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -9894,14 +8039,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "success tertiary button, active state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -9920,14 +8057,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -9951,15 +8080,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
             }
           },
           "description": "success tertiary button, disabled state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -9980,14 +8100,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "success tertiary button, disabled state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -10006,16 +8118,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/100"
@@ -10040,16 +8142,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
             }
           },
           "description": "success tonal button, default state, text",
@@ -10068,16 +8160,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/100"
@@ -10102,16 +8184,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/200"
             }
           },
           "description": "success tonal button, hover state, bg",
@@ -10130,16 +8202,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/800"
@@ -10164,16 +8226,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/200"
             }
           },
           "description": "success tonal button, hover state, border",
@@ -10192,16 +8244,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/300"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/300"
@@ -10226,16 +8268,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/900"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/900"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/900"
             }
           },
           "description": "success tonal button, active state, text",
@@ -10254,16 +8286,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Success/300"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Success/300"
@@ -10288,16 +8310,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "success tonal button, disabled state, bg",
@@ -10316,15 +8328,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
@@ -10349,16 +8352,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "success tonal button, disabled state, border",
@@ -10377,16 +8370,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/700"
@@ -10411,16 +8394,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "destructive primary button, default state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -10439,16 +8412,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/700"
@@ -10473,16 +8436,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
             }
           },
           "description": "destructive primary button, hover state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -10501,16 +8454,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -10535,16 +8478,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
             }
           },
           "description": "destructive primary button, hover state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -10563,16 +8496,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/900"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/900"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/900"
@@ -10597,16 +8520,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "destructive primary button, active state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -10625,16 +8538,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/900"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/900"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/900"
@@ -10659,16 +8562,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "destructive primary button, disabled state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -10687,15 +8580,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
@@ -10720,16 +8604,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "destructive primary button, disabled state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -10748,16 +8622,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -10782,16 +8646,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
             }
           },
           "description": "destructive primary button on a solid brand surface, default state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -10810,16 +8664,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -10843,14 +8687,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
             }
           },
           "description": "destructive primary button on a solid brand surface, hover state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -10869,16 +8705,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/800"
@@ -10902,14 +8728,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
             }
           },
           "description": "destructive primary button on a solid brand surface, hover state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -10928,14 +8746,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.84)"
             }
@@ -10959,16 +8769,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/900"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/900"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/900"
             }
           },
           "description": "destructive primary button on a solid brand surface, active state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -10987,14 +8787,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.84)"
             }
@@ -11017,14 +8809,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "destructive primary button on a solid brand surface, disabled state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -11043,14 +8827,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.64)"
             }
@@ -11073,14 +8849,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "destructive primary button on a solid brand surface, disabled state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -11101,14 +8869,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "destructive secondary button, default state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11127,16 +8887,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/700"
@@ -11161,16 +8911,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/300"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/300"
             }
           },
           "description": "destructive secondary button, default state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11189,16 +8929,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/50"
@@ -11223,16 +8953,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
             }
           },
           "description": "destructive secondary button, hover state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11251,16 +8971,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/400"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/400"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/400"
@@ -11285,16 +8995,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/100"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/100"
             }
           },
           "description": "destructive secondary button, active state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11313,16 +9013,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/800"
@@ -11347,16 +9037,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/500"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/500"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/500"
             }
           },
           "description": "destructive secondary button, active state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11377,14 +9057,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "destructive secondary button, disabled state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11403,15 +9075,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
@@ -11436,16 +9099,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "destructive secondary button, disabled state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11464,14 +9117,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -11495,16 +9140,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "destructive secondary button on a solid brand surface, default state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11525,14 +9160,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "destructive secondary button on a solid brand surface, default state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11551,14 +9178,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.10)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.10)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.10)"
             }
@@ -11582,16 +9201,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "destructive secondary button on a solid brand surface, hover state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11610,14 +9219,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.64)"
             }
@@ -11640,14 +9241,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.16)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
             }
           },
           "description": "destructive secondary button on a solid brand surface, active state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11666,16 +9259,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -11700,16 +9283,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "destructive secondary button on a solid brand surface, active state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11728,14 +9301,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -11758,14 +9323,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "destructive secondary button on a solid brand surface, disabled state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11786,14 +9343,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.24)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
             }
           },
           "description": "destructive secondary button on a solid brand surface, disabled state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -11812,14 +9361,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -11843,16 +9384,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
             }
           },
           "description": "destructive tertiary button, default state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -11873,14 +9404,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "destructive tertiary button, default state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -11899,16 +9422,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/50"
@@ -11933,16 +9446,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/700"
             }
           },
           "description": "destructive tertiary button, hover state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -11963,14 +9466,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "destructive tertiary button, hover state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -11989,16 +9484,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/100"
@@ -12023,16 +9508,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
             }
           },
           "description": "destructive tertiary button, active state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -12053,14 +9528,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "destructive tertiary button, active state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -12079,14 +9546,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -12110,15 +9569,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
             }
           },
           "description": "destructive tertiary button, disabled state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -12139,14 +9589,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "destructive tertiary button, disabled state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -12165,16 +9607,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/100"
@@ -12199,16 +9631,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/800"
             }
           },
           "description": "destructive tonal button, default state, text",
@@ -12227,16 +9649,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/100"
@@ -12261,16 +9673,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/200"
             }
           },
           "description": "destructive tonal button, hover state, bg",
@@ -12289,16 +9691,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/900"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/900"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/900"
@@ -12323,16 +9715,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/200"
             }
           },
           "description": "destructive tonal button, hover state, border",
@@ -12351,16 +9733,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/300"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/300"
@@ -12385,16 +9757,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/900"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/900"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/900"
             }
           },
           "description": "destructive tonal button, active state, text",
@@ -12413,16 +9775,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Danger/300"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Danger/300"
@@ -12447,16 +9799,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "destructive tonal button, disabled state, bg",
@@ -12475,15 +9817,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
@@ -12508,16 +9841,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "destructive tonal button, disabled state, border",
@@ -12536,16 +9859,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/600"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/600"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/600"
@@ -12570,16 +9883,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "neutral primary button, default state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -12598,16 +9901,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/600"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/600"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/600"
@@ -12632,16 +9925,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
             }
           },
           "description": "neutral primary button, hover state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -12660,16 +9943,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -12694,16 +9967,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
             }
           },
           "description": "neutral primary button, hover state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -12722,16 +9985,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/800"
@@ -12756,16 +10009,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "neutral primary button, active state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -12784,16 +10027,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/800"
@@ -12818,16 +10051,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "neutral primary button, disabled state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -12846,15 +10069,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
@@ -12879,16 +10093,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "neutral primary button, disabled state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -12907,16 +10111,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -12941,16 +10135,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
             }
           },
           "description": "neutral primary button on a solid brand surface, default state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -12969,16 +10153,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -13002,14 +10176,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
             }
           },
           "description": "neutral primary button on a solid brand surface, hover state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -13028,16 +10194,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/800"
@@ -13061,14 +10217,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
             }
           },
           "description": "neutral primary button on a solid brand surface, hover state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -13087,14 +10235,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.84)"
             }
@@ -13118,16 +10258,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/900"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/900"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/900"
             }
           },
           "description": "neutral primary button on a solid brand surface, active state, text Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -13146,14 +10276,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.84)"
             }
@@ -13176,14 +10298,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "neutral primary button on a solid brand surface, disabled state, bg Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -13202,14 +10316,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.64)"
             }
@@ -13232,14 +10338,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "neutral primary button on a solid brand surface, disabled state, border Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -13260,14 +10358,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "neutral secondary button, default state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13286,16 +10376,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/700"
@@ -13320,16 +10400,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/300"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/300"
             }
           },
           "description": "neutral secondary button, default state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13348,16 +10418,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/50"
@@ -13382,16 +10442,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
             }
           },
           "description": "neutral secondary button, hover state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13410,16 +10460,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/400"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/400"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/400"
@@ -13444,16 +10484,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/100"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/100"
             }
           },
           "description": "neutral secondary button, active state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13472,16 +10502,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/800"
@@ -13506,16 +10526,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/500"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/500"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/500"
             }
           },
           "description": "neutral secondary button, active state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13536,14 +10546,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "neutral secondary button, disabled state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13562,15 +10564,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
@@ -13595,16 +10588,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "neutral secondary button, disabled state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13623,14 +10606,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -13654,16 +10629,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "neutral secondary button on a solid brand surface, default state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13684,14 +10649,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "neutral secondary button on a solid brand surface, default state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13710,14 +10667,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.10)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.10)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.10)"
             }
@@ -13741,16 +10690,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "neutral secondary button on a solid brand surface, hover state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13769,14 +10708,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.64)"
             }
@@ -13799,14 +10730,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.16)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
             }
           },
           "description": "neutral secondary button on a solid brand surface, active state, bg Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13825,16 +10748,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -13859,16 +10772,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
             }
           },
           "description": "neutral secondary button on a solid brand surface, active state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13887,14 +10790,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -13917,14 +10812,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
             }
           },
           "description": "neutral secondary button on a solid brand surface, disabled state, text Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13945,14 +10832,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(255, 255, 255, 0.24)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
             }
           },
           "description": "neutral secondary button on a solid brand surface, disabled state, border Guarantees ≥4.5:1 — captions and hints — still text, still AA.",
@@ -13971,14 +10850,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -14002,16 +10873,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
             }
           },
           "description": "neutral tertiary button, default state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -14032,14 +10893,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "neutral tertiary button, default state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -14058,16 +10911,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/50"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/50"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/50"
@@ -14092,16 +10935,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/700"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/700"
             }
           },
           "description": "neutral tertiary button, hover state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -14122,14 +10955,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "neutral tertiary button, hover state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -14148,16 +10973,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/100"
@@ -14182,16 +10997,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
             }
           },
           "description": "neutral tertiary button, active state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -14212,14 +11017,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "neutral tertiary button, active state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -14238,14 +11035,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
             }
@@ -14269,15 +11058,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
             }
           },
           "description": "neutral tertiary button, disabled state, text Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -14298,14 +11078,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(0, 0, 0, 0)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
             }
           },
           "description": "neutral tertiary button, disabled state, border Guarantees ≥3:1 — non-essential text and quiet icons.",
@@ -14324,16 +11096,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/100"
@@ -14358,16 +11120,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
             }
           },
           "description": "neutral tonal button, default state, text",
@@ -14386,16 +11138,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/100"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/100"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/100"
@@ -14420,16 +11162,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "neutral tonal button, hover state, bg",
@@ -14448,16 +11180,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/800"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/800"
@@ -14482,16 +11204,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "neutral tonal button, hover state, border",
@@ -14510,16 +11222,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/300"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/300"
@@ -14544,16 +11246,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/900"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/900"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/900"
             }
           },
           "description": "neutral tonal button, active state, text",
@@ -14572,16 +11264,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/300"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/300"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/300"
@@ -14606,16 +11288,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "neutral tonal button, disabled state, bg",
@@ -14634,15 +11306,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Text/Disabled"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(243, 244, 246, 0.40)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Text/Disabled"
@@ -14667,16 +11330,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/200"
             }
           },
           "description": "neutral tonal button, disabled state, border",
@@ -14698,14 +11351,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#1b1f27"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "#ffffff"
             }
           },
           "description": "No contrast guarantee — decorative fills only.",
@@ -14727,14 +11372,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/50"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#0f1115"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "#ffffff"
             }
           },
           "description": "No contrast guarantee — decorative fills only.",
@@ -14753,15 +11390,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/900"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#ffffff"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/900"
@@ -14786,15 +11414,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/500"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#5fa0ef"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/500"
             }
           },
           "description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast.",
@@ -14816,14 +11435,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/100"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#262b33"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "#000000"
             }
           },
           "description": "Guarantees ≥3:1 — UI boundaries, icons, non-text (WCAG 1.4.11).",
@@ -14845,14 +11456,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/200"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#343b48"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "#000000"
             }
           },
           "description": "No contrast guarantee — decorative fills only.",
@@ -14874,14 +11477,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/400"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#4a5263"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "#000000"
             }
           },
           "description": "Guarantees ≥4.5:1 — text-safe (WCAG 1.4.3 AA).",
@@ -14900,15 +11495,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Focus/Ring"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(125, 180, 245, 0.55)"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Focus/Ring"
@@ -14931,14 +11517,6 @@
             "Light": {
               "type": "COLOR",
               "value": "rgba(31, 36, 40, 0.5)"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0.6)"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "rgba(31, 36, 40, 0.5)"
             }
           },
           "description": "Guarantees ≥7:1 — text-safe (WCAG 1.4.6 AAA).",
@@ -14957,15 +11535,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/500"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#0373df"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/500"
@@ -14990,15 +11559,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Primary/700"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#025fb8"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Primary/700"
             }
           },
           "description": "Guarantees ≥4.5:1 — body and heading text (WCAG 1.4.3 AA).",
@@ -15017,16 +11577,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Color",
-              "name": "Neutral/0 - White"
-            },
-            "HC": {
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
@@ -15051,16 +11601,6 @@
               "type": "ALIAS",
               "collection": "Border Radius",
               "name": "radius-md"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Border Radius",
-              "name": "radius-md"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Border Radius",
-              "name": "radius-md"
             }
           },
           "codeSyntax": {
@@ -15081,14 +11621,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/0 - White"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#1b1f27"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "#ffffff"
             }
           },
           "codeSyntax": {
@@ -15109,14 +11641,6 @@
               "type": "ALIAS",
               "collection": "Color",
               "name": "Neutral/100"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#262b33"
-            },
-            "HC": {
-              "type": "COLOR",
-              "value": "#000000"
             }
           },
           "codeSyntax": {
@@ -15137,16 +11661,6 @@
               "type": "ALIAS",
               "collection": "Border Radius",
               "name": "radius-md"
-            },
-            "Dark": {
-              "type": "ALIAS",
-              "collection": "Border Radius",
-              "name": "radius-md"
-            },
-            "HC": {
-              "type": "ALIAS",
-              "collection": "Border Radius",
-              "name": "radius-md"
             }
           },
           "codeSyntax": {
@@ -15164,14 +11678,6 @@
           "type": "COLOR",
           "valuesByMode": {
             "Light": {
-              "type": "COLOR",
-              "value": "#ffd323"
-            },
-            "Dark": {
-              "type": "COLOR",
-              "value": "#ffd323"
-            },
-            "HC": {
               "type": "COLOR",
               "value": "#ffd323"
             }

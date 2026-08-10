@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ThemeToggle } from "./theme-toggle";
 import { MobileNav } from "./mobile-nav";
 import { SITE_NAV } from "./site-nav-items";
 
@@ -76,7 +75,6 @@ export function SiteHeader({ current }: { current?: string }) {
         </nav>
 
         <div className="ml-auto flex items-center gap-1 md:ml-1">
-          <ThemeToggle />
           <MobileNav current={current} />
         </div>
       </div>
