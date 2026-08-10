@@ -141,12 +141,28 @@ try {
       }
 
       // The empty-canvas check: something must actually be on screen.
+      //
+      // "On screen" is not "inside #storybook-root". Modal, SideSheet, Lightbox
+      // and Tooltip render through a portal attached to <body>, which leaves the
+      // root legitimately empty — so count the portalled subtrees too, or this
+      // check would fail exactly the components most worth smoke-testing.
       const canvas = await page.evaluate(() => {
-        const root = document.querySelector("#storybook-root") ?? document.body;
-        return {
-          elements: root.querySelectorAll("*").length,
-          text: (root.innerText ?? "").trim().length,
-        };
+        const roots = [];
+        const root = document.querySelector("#storybook-root");
+        if (root) roots.push(root);
+        for (const child of document.body.children) {
+          if (child === root) continue;
+          if (child.id === "storybook-docs") continue;
+          if (["SCRIPT", "STYLE", "LINK", "TEMPLATE"].includes(child.tagName)) continue;
+          roots.push(child);
+        }
+        return roots.reduce(
+          (acc, el) => ({
+            elements: acc.elements + el.querySelectorAll("*").length,
+            text: acc.text + (el.innerText ?? "").trim().length,
+          }),
+          { elements: 0, text: 0 },
+        );
       });
       // The preview decorator alone contributes one wrapper element, so a story
       // that rendered nothing still shows 1. Require more than the wrapper.
