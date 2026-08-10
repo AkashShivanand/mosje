@@ -12,7 +12,16 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-10 · System version: v1.11.2 (FIGMA SYNC: the SAMAVESH library had four
+  Last reviewed: 2026-08-10 · System version: v1.11.3 (FIGMA SYNC, second pass: the library now
+  matches the code on Spacing (49), Theme (374), Border Radius, Motion and Density, and on all 117
+  Color names the exporter emits. Created 61 missing variables (Spacing 15->49, Typography 79->106);
+  renamed 28 in place so ids and bindings survived; retired 8 unused Color leftovers (149->141).
+  TWO DELIBERATE NON-GAPS: the 24 extra Color names are Figma-native primitives designers bind to
+  directly and the exporter withholds them on purpose; the 5 type/*-weight variables are absent
+  because Figma models font weight as a STRING style name while the code uses a numeric FLOAT, and
+  Figma rejects an alias across types. Also fixed a silent catch-all in the exporter that filed 13
+  px-valued numbers under font-family/. The library needs republishing for any of this to reach
+  consumers. v1.11.2: (FIGMA SYNC: the SAMAVESH library had four
   variable names living in BOTH the Color and Theme collections, left over from an earlier
   hand-migration. All 504 live bindings were rebound onto the Theme copies and the Color leftovers
   removed; Color 153 -> 149. `Focus/Ring` stays in both on purpose — it is a brand-source companion
