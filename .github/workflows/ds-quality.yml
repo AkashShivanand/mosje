@@ -8,7 +8,10 @@ on:
       - "apps/hub/src/app/design-system/resources/changelog/page.tsx"
       - "scripts/check-changelog-freshness.mjs"
       - "apps/storybook/**"
+      # Every script the job runs, so a change to a GATE re-runs the gate.
       - "scripts/check-storybook-coverage.mjs"
+      - "scripts/check-storybook-parity.mjs"
+      - "scripts/smoke-storybook.mjs"
       - ".stylelintrc.tokens.json"
       - ".github/workflows/ds-quality.yml"
   pull_request:
@@ -17,7 +20,10 @@ on:
       - "apps/hub/src/app/design-system/resources/changelog/page.tsx"
       - "scripts/check-changelog-freshness.mjs"
       - "apps/storybook/**"
+      # Every script the job runs, so a change to a GATE re-runs the gate.
       - "scripts/check-storybook-coverage.mjs"
+      - "scripts/check-storybook-parity.mjs"
+      - "scripts/smoke-storybook.mjs"
       - ".stylelintrc.tokens.json"
       - ".github/workflows/ds-quality.yml"
 
