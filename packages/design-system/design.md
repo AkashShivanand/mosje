@@ -12,7 +12,17 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-07 · System version: v1.11.0 (The estate is off lucide-react and off
+  Last reviewed: 2026-08-10 · System version: v1.11.1 (TOKEN GRAMMAR: `default` now means
+  exactly one thing — a state. It previously occupied three slot dictionaries at once
+  (prominence, state, link variant), so the parser bound it greedily and text/link/visited/default
+  parsed as a prominence, losing the state it spelled. The prominence canonical is now `base`
+  (`--sa-bg-neutral-base`) and the link variant is now `brand` (`--sa-text-link-brand-default`).
+  NOTHING RENDERS DIFFERENTLY — a rename, not a redesign: all 27 moved names resolve
+  byte-identically in all 7 selector contexts, pinned by test/visual-contract.test.mjs, and the
+  `--ds-*` names app code uses are unchanged. `--ux4g-*` names are unchanged too and sit OUTSIDE
+  the contrast contract by construction: an alias preserves UX4G's VALUE, not our rung. Two slot
+  ambiguities remain, pinned by test/slot-disjointness.test.mjs — see spec §5.1c/§8.1a.
+  v1.11.0: The estate is off lucide-react and off
   shadcn/Radix entirely. Every icon is Material Symbols Rounded via <Icon> — 668 call sites
   across 239 files — and SidebarNavItem.icon is now a Material Symbols NAME STRING, not a
   component, so nav configs stay serialisable. NEW components: Tooltip (WCAG 1.4.13 —

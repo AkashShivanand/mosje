@@ -44,20 +44,6 @@
             }
           }
         }
-      },
-      "link": {
-        "$description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast.",
-        "$value": "{color.primaryRamp.light.500}",
-        "$extensions": {
-          "mosje": {
-            "colorModes": {
-              "navy": "{color.primaryRamp.dark.500}"
-            },
-            "themes": {
-              "dark": "{color.primaryRamp.light.300}"
-            }
-          }
-        }
       }
     },
     "primaryScale": {
@@ -828,19 +814,6 @@
           }
         }
       },
-      "strong": {
-        "$value": "{color.neutral.900}",
-        "$extensions": {
-          "mosje": {
-            "colorModes": {
-              "navy": "{color.neutralDark.900}"
-            },
-            "themes": {
-              "dark": "{color.neutral.0}"
-            }
-          }
-        }
-      },
       "disabled": {
         "$value": "rgba(31, 36, 40, 0.48)",
         "$extensions": {
@@ -868,79 +841,7 @@
         }
       }
     },
-    "bg": {
-      "surface": {
-        "$value": "{color.neutral.0}",
-        "$extensions": {
-          "mosje": {
-            "colorModes": {
-              "navy": "{color.neutralDark.0}"
-            },
-            "themes": {
-              "dark": "{color.a11y.dark.surface}",
-              "hc": "#ffffff"
-            }
-          }
-        }
-      },
-      "muted": {
-        "$value": "{color.neutral.50}",
-        "$extensions": {
-          "mosje": {
-            "colorModes": {
-              "navy": "{color.neutralDark.50}"
-            },
-            "themes": {
-              "dark": "{color.a11y.dark.bg}",
-              "hc": "#ffffff"
-            }
-          }
-        }
-      }
-    },
     "border": {
-      "subtle": {
-        "$value": "{color.neutral.100}",
-        "$extensions": {
-          "mosje": {
-            "colorModes": {
-              "navy": "{color.neutralDark.100}"
-            },
-            "themes": {
-              "dark": "#262b33",
-              "hc": "#000000"
-            }
-          }
-        }
-      },
-      "strong": {
-        "$value": "{color.neutral.200}",
-        "$extensions": {
-          "mosje": {
-            "colorModes": {
-              "navy": "{color.neutralDark.200}"
-            },
-            "themes": {
-              "dark": "{color.a11y.dark.border}",
-              "hc": "#000000"
-            }
-          }
-        }
-      },
-      "control": {
-        "$value": "{color.neutral.400}",
-        "$extensions": {
-          "mosje": {
-            "colorModes": {
-              "navy": "{color.neutralDark.400}"
-            },
-            "themes": {
-              "dark": "#4a5263",
-              "hc": "#000000"
-            }
-          }
-        }
-      },
       "controlHover": {
         "$value": "{color.neutral.500}",
         "$extensions": {
@@ -951,21 +852,6 @@
             "themes": {
               "dark": "#5b6577",
               "hc": "#000000"
-            }
-          }
-        }
-      }
-    },
-    "focus": {
-      "ring": {
-        "$value": "rgba(3, 115, 223, 0.48)",
-        "$extensions": {
-          "mosje": {
-            "colorModes": {
-              "navy": "rgba(0, 51, 102, 0.48)"
-            },
-            "themes": {
-              "dark": "rgba(125, 180, 245, 0.55)"
             }
           }
         }
@@ -1071,18 +957,6 @@
           "mosje": {
             "themes": {
               "dark": "rgba(66, 133, 244, 0.16)"
-            }
-          }
-        }
-      }
-    },
-    "overlay": {
-      "scrim": {
-        "$value": "rgba(31, 36, 40, 0.5)",
-        "$extensions": {
-          "mosje": {
-            "themes": {
-              "dark": "rgba(0, 0, 0, 0.6)"
             }
           }
         }
@@ -1613,118 +1487,6 @@
       }
     }
   },
-  "spacing": {
-    "$description": "UX4G 3.0 semantic spacing roles, adopted verbatim (values match --ux4g-inline/stack/padding/section 1:1). Reach for these FIRST — they state intent (a gap on a line vs. between stacked blocks vs. inside a container vs. between page sections) where the raw t-shirt scale states only a number. The t-shirt scale remains for one-off values.",
-    "$type": "dimension",
-    "inline": {
-      "$description": "Horizontal gaps between elements on the same line.",
-      "none": {
-        "$value": "{spacing.none}"
-      },
-      "2xs": {
-        "$value": "{spacing.xxs}"
-      },
-      "xs": {
-        "$value": "{spacing.xs}"
-      },
-      "s": {
-        "$value": "{spacing.sm}"
-      },
-      "m": {
-        "$value": "{spacing.md}"
-      },
-      "l": {
-        "$value": "{spacing.lg}"
-      },
-      "xl": {
-        "$value": "{spacing.3xl}"
-      }
-    },
-    "stack": {
-      "$description": "Vertical gaps between stacked elements.",
-      "none": {
-        "$value": "{spacing.none}"
-      },
-      "2xs": {
-        "$value": "{spacing.xs}"
-      },
-      "xs": {
-        "$value": "{spacing.sm}"
-      },
-      "s": {
-        "$value": "{spacing.md}"
-      },
-      "m": {
-        "$value": "{spacing.lg}"
-      },
-      "l": {
-        "$value": "{spacing.2xl}"
-      },
-      "xl": {
-        "$value": "{spacing.3xl}"
-      }
-    },
-    "padding": {
-      "$description": "Inner padding for components and containers.",
-      "none": {
-        "$value": "{spacing.none}"
-      },
-      "3xs": {
-        "$value": "{spacing.xxs}"
-      },
-      "2xs": {
-        "$value": "{spacing.xs}"
-      },
-      "xs": {
-        "$value": "{spacing.sm}"
-      },
-      "s": {
-        "$value": "{spacing.md}"
-      },
-      "m": {
-        "$value": "{spacing.lg}"
-      },
-      "l": {
-        "$value": "{spacing.xl}"
-      },
-      "xl": {
-        "$value": "{spacing.2xl}"
-      },
-      "2xl": {
-        "$value": "{spacing.3xl}"
-      },
-      "3xl": {
-        "$value": "{spacing.10xl}"
-      },
-      "4xl": {
-        "$value": "{spacing.11xl}"
-      }
-    },
-    "section": {
-      "$description": "Large gaps between page sections.",
-      "none": {
-        "$value": "{spacing.none}"
-      },
-      "xs": {
-        "$value": "{spacing.2xl}"
-      },
-      "s": {
-        "$value": "{spacing.3xl}"
-      },
-      "m": {
-        "$value": "{spacing.5xl}"
-      },
-      "l": {
-        "$value": "{spacing.6xl}"
-      },
-      "xl": {
-        "$value": "{spacing.7xl}"
-      },
-      "2xl": {
-        "$value": "{spacing.9xl}"
-      }
-    }
-  },
   "density": {
     "$description": "Density token set: control height per density mode.",
     "control": {
@@ -1754,6 +1516,254 @@
       "$type": "number",
       "$value": "{font.lineHeight.devanagari}",
       "$description": "Devanagari needs more leading than Latin at the same size — the matras sit above and below the base line."
+    }
+  },
+  "bg": {
+    "neutral": {
+      "base": {
+        "$value": "{color.neutral.0}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.neutralDark.0}"
+            },
+            "themes": {
+              "dark": "{color.a11y.dark.surface}",
+              "hc": "#ffffff"
+            }
+          }
+        }
+      },
+      "soft": {
+        "$value": "{color.neutral.50}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.neutralDark.50}"
+            },
+            "themes": {
+              "dark": "{color.a11y.dark.bg}",
+              "hc": "#ffffff"
+            }
+          }
+        }
+      }
+    }
+  },
+  "text": {
+    "neutral": {
+      "strong": {
+        "$value": "{color.neutral.900}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.neutralDark.900}"
+            },
+            "themes": {
+              "dark": "{color.neutral.0}"
+            }
+          }
+        }
+      }
+    },
+    "link": {
+      "brand": {
+        "default": {
+          "$description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast.",
+          "$value": "{color.primaryRamp.light.500}",
+          "$extensions": {
+            "mosje": {
+              "colorModes": {
+                "navy": "{color.primaryRamp.dark.500}"
+              },
+              "themes": {
+                "dark": "{color.primaryRamp.light.300}"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "border": {
+    "neutral": {
+      "subtle": {
+        "$value": "{color.neutral.100}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.neutralDark.100}"
+            },
+            "themes": {
+              "dark": "#262b33",
+              "hc": "#000000"
+            }
+          }
+        }
+      },
+      "base": {
+        "$value": "{color.neutral.200}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.neutralDark.200}"
+            },
+            "themes": {
+              "dark": "{color.a11y.dark.border}",
+              "hc": "#000000"
+            }
+          }
+        }
+      },
+      "strong": {
+        "default": {
+          "$value": "{color.neutral.400}",
+          "$extensions": {
+            "mosje": {
+              "colorModes": {
+                "navy": "{color.neutralDark.400}"
+              },
+              "themes": {
+                "dark": "#4a5263",
+                "hc": "#000000"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "focus": {
+    "ring": {
+      "$value": "rgba(3, 115, 223, 0.48)",
+      "$extensions": {
+        "mosje": {
+          "colorModes": {
+            "navy": "rgba(0, 51, 102, 0.48)"
+          },
+          "themes": {
+            "dark": "rgba(125, 180, 245, 0.55)"
+          }
+        }
+      }
+    }
+  },
+  "overlay": {
+    "neutral": {
+      "stronger": {
+        "$value": "rgba(31, 36, 40, 0.5)",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "rgba(0, 0, 0, 0.6)"
+            }
+          }
+        }
+      }
+    }
+  },
+  "inline": {
+    "none": {
+      "$value": "{spacing.none}"
+    },
+    "2xs": {
+      "$value": "{spacing.xxs}"
+    },
+    "xs": {
+      "$value": "{spacing.xs}"
+    },
+    "s": {
+      "$value": "{spacing.sm}"
+    },
+    "m": {
+      "$value": "{spacing.md}"
+    },
+    "l": {
+      "$value": "{spacing.lg}"
+    },
+    "xl": {
+      "$value": "{spacing.3xl}"
+    }
+  },
+  "stack": {
+    "none": {
+      "$value": "{spacing.none}"
+    },
+    "2xs": {
+      "$value": "{spacing.xs}"
+    },
+    "xs": {
+      "$value": "{spacing.sm}"
+    },
+    "s": {
+      "$value": "{spacing.md}"
+    },
+    "m": {
+      "$value": "{spacing.lg}"
+    },
+    "l": {
+      "$value": "{spacing.2xl}"
+    },
+    "xl": {
+      "$value": "{spacing.3xl}"
+    }
+  },
+  "padding": {
+    "none": {
+      "$value": "{spacing.none}"
+    },
+    "3xs": {
+      "$value": "{spacing.xxs}"
+    },
+    "2xs": {
+      "$value": "{spacing.xs}"
+    },
+    "xs": {
+      "$value": "{spacing.sm}"
+    },
+    "s": {
+      "$value": "{spacing.md}"
+    },
+    "m": {
+      "$value": "{spacing.lg}"
+    },
+    "l": {
+      "$value": "{spacing.xl}"
+    },
+    "xl": {
+      "$value": "{spacing.2xl}"
+    },
+    "2xl": {
+      "$value": "{spacing.3xl}"
+    },
+    "3xl": {
+      "$value": "{spacing.10xl}"
+    },
+    "4xl": {
+      "$value": "{spacing.11xl}"
+    }
+  },
+  "section": {
+    "none": {
+      "$value": "{spacing.none}"
+    },
+    "xs": {
+      "$value": "{spacing.2xl}"
+    },
+    "s": {
+      "$value": "{spacing.3xl}"
+    },
+    "m": {
+      "$value": "{spacing.5xl}"
+    },
+    "l": {
+      "$value": "{spacing.6xl}"
+    },
+    "xl": {
+      "$value": "{spacing.7xl}"
+    },
+    "2xl": {
+      "$value": "{spacing.9xl}"
     }
   }
 }

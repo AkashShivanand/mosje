@@ -11,8 +11,8 @@
   },
   "card": {
     "$type": "color",
-    "bg":     {"$value":"{color.bg.surface}"},
-    "border": {"$value":"{color.border.subtle}"},
+    "bg":     {"$value":"{bg.neutral.base}"},
+    "border": {"$value":"{border.neutral.subtle}"},
     "radius": {"$type":"dimension","$value":"{radius.md}"}
   },
   "badge": {

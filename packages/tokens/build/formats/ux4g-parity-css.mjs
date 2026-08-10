@@ -219,15 +219,15 @@ export const ux4gParityCss = {
         ["--sa-color-action-primary-default", p(dark ? 700 : 600)],
         ["--sa-color-action-primary-hover", p(dark ? 800 : 700)],
         ["--sa-color-action-primary-tonal", p(dark ? 200 : 100)],
-        ["--sa-color-action-link", p(dark ? 700 : 600)],
-        ["--sa-color-focus-ring", "rgba(106, 78, 255, 0.48)"],
+        ["--sa-text-link-brand-default", p(dark ? 700 : 600)],
+        ["--sa-focus-ring", "rgba(106, 78, 255, 0.48)"],
         ["--sa-color-text-default", rampLiteral("neutral", 900)],
-        ["--sa-color-text-strong", rampLiteral("neutral", 950)],
+        ["--sa-text-neutral-strong", rampLiteral("neutral", 950)],
         ["--sa-color-text-muted", rampLiteral("neutral", 700)],
-        ["--sa-color-bg-surface", rampLiteral("neutral", 0)],
-        ["--sa-color-bg-muted", rampLiteral("neutral", 50)],
-        ["--sa-color-border-subtle", rampLiteral("neutral", 200)],
-        ["--sa-color-border-strong", rampLiteral("neutral", 300)],
+        ["--sa-bg-neutral-base", rampLiteral("neutral", 0)],
+        ["--sa-bg-neutral-soft", rampLiteral("neutral", 50)],
+        ["--sa-border-neutral-subtle", rampLiteral("neutral", 200)],
+        ["--sa-border-neutral-base", rampLiteral("neutral", 300)],
         ["--sa-color-status-success", rampLiteral("green", 800)],
         ["--sa-color-status-danger", rampLiteral("red", 800)],
         ["--sa-color-status-warning", rampLiteral("orange", 800)],
@@ -304,6 +304,13 @@ export const ux4gParityCss = {
       `     colour remap above, which is what makes the whole semantic layer follow our palette.\n` +
       `   ${stats.literal} emitted at UX4G's own literal value (no SAMAVESH equivalent).\n` +
       `   Ramps deliberately left at UX4G values: ${[...stats.unmappedRamps].sort().join(", ")}.\n\n` +
+      `   WHAT AN ALIAS PROMISES — it preserves UX4G's VALUE, not our rung. --ux4g-bg-primary-subtle\n` +
+      `   emits UX4G's ramp step 200, which is NOT what \`subtle\` means in the SAMAVESH ladder.\n` +
+      `   So --ux4g-* names sit OUTSIDE the SAMAVESH contrast contract (spec §6.3), and the\n` +
+      `   prominence-ladder test exempts them BY CONSTRUCTION, not by exception: the ladder is a\n` +
+      `   property of --sa-* rungs, and a --ux4g-* name is not a rung. Nothing to allowlist.\n` +
+      `   The reason is deliberate: a developer pasting UX4G markup must get UX4G's rendering.\n` +
+      `   Silently re-pointing a borrowed name at our ladder is the worse failure. See spec §8.1a.\n\n` +
       `   NOTE — UX4G sizes type in rem, SAMAVESH in px. The --ux4g-size and --ux4g-line-height\n` +
       `   tokens are therefore kept in UX4G's rem so browser default-font-size scaling keeps\n` +
       `   working; they are NOT aliased to our px tokens. Reconciling the SAMAVESH fluid scale\n` +
