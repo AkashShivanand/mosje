@@ -22,7 +22,7 @@ export interface AppEntry {
    * developer tooling, and hiding them outside `devMode` meant the people who
    * most needed them could never reach them.
    */
-  group: "Website" | "Portals" | "Resources";
+  group: "Website" | "Portals" | "Reports" | "Resources";
   /**
    * Open in a new tab. Set this for destinations that are NOT part of the hub
    * shell and therefore offer no way back — Storybook renders its own
@@ -328,6 +328,22 @@ export const DEFAULT_APPS: AppEntry[] = [
     group: "Portals",
     category: "Commissions & boards",
     status: "planned",
+  },
+
+  // ── Reports ─────────────────────────────────────────────────────────────
+  {
+    name: "SCW Design QC",
+    path: "/reports/scw",
+    group: "Reports",
+    desc: "Design-vs-build QC report",
+    org: "Senior Citizens Welfare",
+  },
+  {
+    name: "E-Utthan Admin QC",
+    path: "/reports/eutthan-admin",
+    group: "Reports",
+    desc: "Design-vs-build QC report",
+    org: "E-Utthan",
   },
 
   // ── Resources (visible everywhere) ─────────────────────────────────────
