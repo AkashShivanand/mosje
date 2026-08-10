@@ -59,6 +59,9 @@ jobs:
       - name: Tokens contract test (legacy --ds-* + figma export)
         run: npm test -w @mosje/tokens
 
+      - name: Design-system unit tests
+        run: npm test -w @mosje/design-system
+
       - name: Changelog freshness — notable DS changes must be logged
         run: node scripts/check-changelog-freshness.mjs
 
