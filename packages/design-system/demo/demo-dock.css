@@ -72,7 +72,7 @@
   position: absolute;
   left: 0;
   bottom: calc(100% + 10px);
-  width: 400px;
+  width: 500px;
   max-width: calc(100vw - 40px);
   max-height: min(72vh, 680px);
   display: flex;

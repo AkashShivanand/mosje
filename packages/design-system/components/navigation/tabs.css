@@ -16,9 +16,9 @@
 
 .ds-tabs__tab {
   flex: 1 1 0;
-  min-width: 140px;
+  min-width: 0;
   white-space: nowrap;
-  padding: 10px 16px;
+  padding: 10px 12px;
   border: none;
   border-radius: var(--ds-radius-lg);
   background: transparent;

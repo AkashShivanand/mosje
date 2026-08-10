@@ -3,10 +3,11 @@
 /**
  * SAMAVESH Design System — DemoAccountsPanel
  *
- * DEMO-ONLY component. The credentials table shared by `DemoFab` today and
- * the upcoming DemoDock — one definition, so the two never drift apart.
- * Renders a role / id / password row per account, with copy-to-clipboard and
- * a "Use" button.
+ * DEMO-ONLY component. The credentials list shared by `DemoFab` and
+ * `DemoDock` — one definition, so the two never drift apart. Renders one row
+ * per account: the role on its own line (the longest field, so it doesn't
+ * fight the rest of the row for space), then id / password / actions
+ * aligned in a grid below it, with copy-to-clipboard and a "Use" button.
  *
  * Default behaviour on "Use": dispatches a `demo:fill` CustomEvent so a login
  * page can prefill its form without prop-drilling — see `DemoFab`'s doc
@@ -77,7 +78,7 @@ export interface DemoAccountsPanelProps {
 }
 
 /**
- * DemoAccountsPanel — the shared credentials table body used by `DemoFab`
+ * DemoAccountsPanel — the shared credentials list body used by `DemoFab`
  * and DemoDock. Pure content: no floating chrome, no open/close state — a
  * shell (e.g. `DemoFab`) owns that and renders this for its body.
  */
@@ -112,20 +113,20 @@ export function DemoAccountsPanel({
 
   return (
     <div className={cn("ds-demo-accounts", className)}>
-      <table className="ds-demo-accounts__table">
-        <thead>
-          <tr>
-            <th>Role</th>
-            <th>{idLabel}</th>
-            <th>Password</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {accounts.map((account) => (
-            <tr key={account.id}>
-              <td className="ds-demo-accounts__role">{account.role}</td>
-              <td>
+      <div className="ds-demo-accounts__col-labels" aria-hidden="true">
+        <span>{idLabel}</span>
+        <span>Password</span>
+      </div>
+      <ul className="ds-demo-accounts__list">
+        {accounts.map((account) => (
+          <li className="ds-demo-accounts__row" key={account.id}>
+            {/* The role name is the longest field in the row, so it gets its
+                own line — cramming it into a fourth table column is what
+                forced the id/password/actions to fight for space. */}
+            <div className="ds-demo-accounts__role">{account.role}</div>
+            <div className="ds-demo-accounts__data">
+              <span className="ds-demo-accounts__cell">
+                <span className="ds-sr-only">{idLabel}: </span>
                 <span className="ds-demo-accounts__id">{account.id}</span>
                 <button
                   className="ds-demo-accounts__copy"
@@ -134,8 +135,9 @@ export function DemoAccountsPanel({
                 >
                   {copied === `id-${account.id}` ? <IconCheck /> : <IconCopy />}
                 </button>
-              </td>
-              <td>
+              </span>
+              <span className="ds-demo-accounts__cell">
+                <span className="ds-sr-only">Password: </span>
                 <span className="ds-demo-accounts__pw">{account.password}</span>
                 <button
                   className="ds-demo-accounts__copy"
@@ -144,20 +146,18 @@ export function DemoAccountsPanel({
                 >
                   {copied === `pw-${account.id}` ? <IconCheck /> : <IconCopy />}
                 </button>
-              </td>
-              <td>
-                <button
-                  className="ds-demo-accounts__use"
-                  onClick={() => use(account)}
-                  aria-label={`Use ${account.role} credentials`}
-                >
-                  Use
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </span>
+              <button
+                className="ds-demo-accounts__use"
+                onClick={() => use(account)}
+                aria-label={`Use ${account.role} credentials`}
+              >
+                Use
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
       <p className="ds-demo-accounts__footer">
         For stakeholder review only · not for production use
       </p>
