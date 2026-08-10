@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "node --test \"utils/*.test.ts\"",
+    "test": "node --test \"utils/*.test.ts\" \"demo/*.test.ts\" \"components/**/*.test.ts\"",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
   },
