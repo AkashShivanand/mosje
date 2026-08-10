@@ -1,0 +1,281 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — AppSwitcherPanel  (app-switcher-panel.css)
+   The searchable content of the AppSwitcher / DemoDock "Apps" tab. Pure
+   content — no fixed positioning of its own. Whatever mounts it owns the
+   scrolling box (`.ds-appsw__panel` for the standalone AppSwitcher shell,
+   `.ds-demodock__body` for DemoDock); this file only owns what sticks
+   *within* that scroll and what doesn't.
+   ============================================================================ */
+
+/* ── Header (current-app indicator + search — sticks to the top of
+   whatever scroll container this panel lives in) ── */
+.ds-appsw__header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--ds-border);
+  background-color: var(--ds-surface);
+}
+
+.ds-appsw__header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* Current app indicator */
+.ds-appsw__current {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ds-appsw__current-icon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  border-radius: var(--ds-radius-sm);
+  background-color: var(--ds-primary-tonal);
+  color: var(--ds-primary);
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ds-appsw__current-label {
+  font-size: var(--ds-text-label-3);
+  color: var(--ds-ink-muted);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.ds-appsw__current-name {
+  font-size: var(--ds-text-body-2);
+  font-weight: 700;
+  color: var(--ds-ink);
+  line-height: 1;
+}
+
+/* Search bar */
+.ds-appsw__search {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background-color: var(--ds-surface-muted);
+  border-radius: var(--ds-radius-sm);
+  padding: 6px 10px;
+  transition: background-color 0.12s ease;
+}
+
+.ds-appsw__search:focus-within {
+  background-color: var(--ds-primary-tonal);
+  outline: 1.5px solid var(--ds-primary-ring);
+}
+
+.ds-appsw__search-icon {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  color: var(--ds-ink-muted);
+  transition: color 0.12s ease;
+}
+
+.ds-appsw__search:focus-within .ds-appsw__search-icon {
+  color: var(--ds-primary);
+}
+
+.ds-appsw__search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-body-2);
+  color: var(--ds-ink);
+  min-width: 0;
+}
+
+.ds-appsw__search-input::placeholder {
+  color: var(--ds-ink-muted);
+}
+
+/* Remove default search clear button */
+.ds-appsw__search-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.ds-appsw__search-kbd {
+  font-family: var(--ds-font-sans);
+  font-size: 10px;
+  color: var(--ds-ink-muted);
+  background-color: var(--ds-border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  flex: 0 0 auto;
+}
+
+/* ── Body (flows with the ambient scroll container — no scroll box of its
+   own, so there is exactly one scrollbar wherever this panel is mounted) ── */
+.ds-appsw__body {
+  padding: 4px 0;
+}
+
+/* ── Group headings — sticky just below the header. The offset is measured
+   at runtime (header height varies: the standalone AppSwitcher shows the
+   current-app row + search, DemoDock's embedded panel shows search only)
+   and written to `--ds-appsw-sticky-offset` on the panel root; the px
+   fallback covers the first paint before that effect runs. ── */
+.ds-appsw__group-label {
+  position: sticky;
+  top: var(--ds-appsw-sticky-offset, 56px);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px 3px;
+  font-size: var(--ds-text-label-3);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-ink-muted);
+  background-color: var(--ds-surface);
+}
+
+/* ── List items (shared) ── */
+.ds-appsw__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  color: var(--ds-ink);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.ds-appsw__item:hover {
+  background-color: var(--ds-surface-muted);
+}
+
+.ds-appsw__item.is-active {
+  background-color: var(--ds-primary-tonal);
+}
+
+.ds-appsw__item:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--ds-primary-ring);
+}
+
+/* Planned (non-interactive) */
+.ds-appsw__item--planned {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.ds-appsw__item--planned:hover {
+  background-color: transparent;
+}
+
+/* Icon */
+.ds-appsw__item-icon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  border-radius: var(--ds-radius-sm);
+  background-color: var(--ds-primary-tonal);
+  color: var(--ds-primary);
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ds-appsw__item.is-active .ds-appsw__item-icon {
+  background-color: var(--ds-primary);
+  color: var(--ds-surface);
+}
+
+.ds-appsw__item--planned .ds-appsw__item-icon {
+  background-color: var(--ds-surface-muted);
+  color: var(--ds-ink-muted);
+}
+
+/* Text stack */
+.ds-appsw__item-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ds-appsw__item-name {
+  font-size: var(--ds-text-body-2);
+  font-weight: 600;
+  color: var(--ds-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* New-tab affordance. Muted so it annotates the name rather than competing
+   with it — the name is the thing you are scanning for. */
+.ds-appsw__item-external {
+  margin-inline-start: 5px;
+  font-size: 0.85em;
+  font-weight: 500;
+  color: var(--ds-ink-muted);
+}
+
+.ds-appsw__item.is-active .ds-appsw__item-name {
+  color: var(--ds-primary);
+}
+
+.ds-appsw__item-desc {
+  font-size: var(--ds-text-body-3);
+  color: var(--ds-ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: var(--ds-leading-body-3);
+}
+
+/* Badges */
+.ds-appsw__badge {
+  flex: 0 0 auto;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: var(--ds-radius-sm);
+  padding: 2px 5px;
+}
+
+.ds-appsw__badge--live {
+  background-color: var(--ds-success-tonal);
+  color: var(--ds-success);
+}
+
+.ds-appsw__badge--soon {
+  background-color: var(--ds-warning-tonal);
+  color: var(--ds-saffron-dark);
+}
+
+/* "In development" note shown below planned items in search */
+.ds-appsw__planned-note {
+  padding: 6px 14px 8px;
+  font-size: var(--ds-text-body-3);
+  color: var(--ds-ink-muted);
+  border-top: 1px solid var(--ds-border);
+  text-align: center;
+}
+
+/* Empty state */
+.ds-appsw__empty {
+  padding: 20px 14px;
+  font-size: var(--ds-text-body-2);
+  color: var(--ds-ink-muted);
+  text-align: center;
+}

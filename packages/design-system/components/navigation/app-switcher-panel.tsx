@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import "./app-switcher-panel.css";
 import { cn } from "../../utils/cn";
 import {
   AppEntry,
@@ -17,6 +18,13 @@ export interface AppSwitcherPanelProps {
   pathname: string | null;
   /** Called when a destination is chosen, so the shell can close itself. */
   onNavigate?: () => void;
+  /**
+   * Render the internal "Currently in" current-app row above the search box.
+   * A shell that already shows its own current-app indicator (DemoDock's
+   * header shows one on every tab) sets this to `false` so the fact isn't
+   * stated twice. @default true
+   */
+  showCurrentApp?: boolean;
   className?: string;
 }
 
@@ -37,11 +45,39 @@ export function AppSwitcherPanel({
   apps = DEFAULT_APPS,
   pathname,
   onNavigate,
+  showCurrentApp = true,
   className,
 }: AppSwitcherPanelProps): React.JSX.Element {
   const [query, setQuery] = React.useState("");
   const searchRef = React.useRef<HTMLInputElement>(null);
+  const headerRef = React.useRef<HTMLDivElement>(null);
   const panelId = React.useId();
+
+  // Group labels stick just below the header (current-app row + search, or
+  // search alone when `showCurrentApp` is false). The header's height isn't
+  // fixed — it depends on which of those it renders and on the host app's
+  // font settings — so it's measured rather than assumed. The CSS fallback
+  // (56px) covers the first paint before this effect runs.
+  const [stickyOffset, setStickyOffset] = React.useState(0);
+  React.useEffect(() => {
+    const el = headerRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    // Read `offsetHeight` (border-box: content + padding + border) rather
+    // than the observer's own `contentRect` (content-box only, which is
+    // shorter by the header's padding + border) — the sticky offset has to
+    // match the header's actual rendered footprint, or the group label
+    // sticks a few pixels too high and hides under the header instead of
+    // sitting just below it.
+    const observer = new ResizeObserver(() => {
+      setStickyOffset(el.offsetHeight);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [showCurrentApp]);
+
+  const stickyOffsetStyle = {
+    "--ds-appsw-sticky-offset": `${stickyOffset}px`,
+  } as React.CSSProperties;
 
   // `/` focuses search while the panel is mounted.
   React.useEffect(() => {
@@ -103,23 +139,25 @@ export function AppSwitcherPanel({
   const noResults = query.trim().length > 0 && visibleApps.length === 0;
 
   return (
-    <div className={cn(className)}>
+    <div className={cn(className)} style={stickyOffsetStyle}>
       {/* ── Header ── */}
-      <div className="ds-appsw__header">
-        <div className="ds-appsw__header-row">
-          {/* Current app */}
-          <div className="ds-appsw__current">
-            <span className="ds-appsw__current-icon" aria-hidden="true">
-              {currentApp ? deriveAbbr(currentApp) : "?"}
-            </span>
-            <div>
-              <div className="ds-appsw__current-label">Currently in</div>
-              <div className="ds-appsw__current-name">
-                {currentApp?.name ?? "Unknown"}
+      <div ref={headerRef} className="ds-appsw__header">
+        {showCurrentApp && (
+          <div className="ds-appsw__header-row">
+            {/* Current app */}
+            <div className="ds-appsw__current">
+              <span className="ds-appsw__current-icon" aria-hidden="true">
+                {currentApp ? deriveAbbr(currentApp) : "?"}
+              </span>
+              <div>
+                <div className="ds-appsw__current-label">Currently in</div>
+                <div className="ds-appsw__current-name">
+                  {currentApp?.name ?? "Unknown"}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
         {/* Search */}
         <div className="ds-appsw__search">
           <svg

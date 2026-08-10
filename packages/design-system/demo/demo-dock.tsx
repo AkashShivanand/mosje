@@ -250,6 +250,7 @@ export function DemoDock({
                   apps={apps}
                   pathname={pathname}
                   onNavigate={closePanel}
+                  showCurrentApp={false}
                 />
               </TabPanel>
             )}

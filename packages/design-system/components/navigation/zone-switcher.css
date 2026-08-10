@@ -13,18 +13,10 @@
   font-family: var(--ds-font-sans);
 }
 
-/* The FAB is fixed, so anything a page paints in the bottom-left corner ends up
-   underneath it (observed: the SAMBAL login's "Signing into…" footer). Pages
-   that place content there reserve its footprint with `.ds-appsw-safe-bottom`
-   (padding) or by reading the custom property directly. 20px offset + 44px FAB
-   + 20px breathing room. */
-:root {
-  --ds-appsw-safe-area: 84px;
-}
-
-.ds-appsw-safe-bottom {
-  padding-bottom: var(--ds-appsw-safe-area);
-}
+/* `--ds-appsw-safe-area` / `.ds-appsw-safe-bottom` moved to demo-dock.css —
+   DemoDock is the FAB that actually mounts in every app now, and CSS only
+   ships for components an app actually imports. Kept here as a comment so
+   the class name doesn't look orphaned when grepped from this file. */
 
 /* ── FAB trigger ── */
 .ds-appsw__fab {
@@ -61,279 +53,23 @@
   flex: 0 0 auto;
 }
 
-/* ── Panel ── */
+/* ── Panel ──
+   Owns the scroll box: `AppSwitcherPanel`'s own CSS (app-switcher-panel.css)
+   no longer scrolls itself — it flows, and its header/group-labels stick
+   relative to whichever ancestor scrolls. For the standalone shell, that's
+   this element. */
 .ds-appsw__panel {
   position: absolute;
   left: 0;
   bottom: calc(100% + 10px);
   width: 288px;
+  max-height: min(70vh, 640px);
   border: 1px solid var(--ds-border-strong);
   border-radius: var(--ds-radius-md);
   background-color: var(--ds-surface);
   box-shadow: var(--ds-shadow-xl);
-  overflow: hidden;
-}
-
-/* ── Header (never scrolls) ── */
-.ds-appsw__header {
-  padding: 12px 14px 10px;
-  border-bottom: 1px solid var(--ds-border);
-}
-
-.ds-appsw__header-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-/* Current app indicator */
-.ds-appsw__current {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.ds-appsw__current-icon {
-  width: 30px;
-  height: 30px;
-  flex: 0 0 auto;
-  border-radius: var(--ds-radius-sm);
-  background-color: var(--ds-primary-tonal);
-  color: var(--ds-primary);
-  font-size: 11px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ds-appsw__current-label {
-  font-size: var(--ds-text-label-3);
-  color: var(--ds-ink-muted);
-  line-height: 1;
-  margin-bottom: 2px;
-}
-
-.ds-appsw__current-name {
-  font-size: var(--ds-text-body-2);
-  font-weight: 700;
-  color: var(--ds-ink);
-  line-height: 1;
-}
-
-/* Search bar */
-.ds-appsw__search {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background-color: var(--ds-surface-muted);
-  border-radius: var(--ds-radius-sm);
-  padding: 6px 10px;
-  transition: background-color 0.12s ease;
-}
-
-.ds-appsw__search:focus-within {
-  background-color: var(--ds-primary-tonal);
-  outline: 1.5px solid var(--ds-primary-ring);
-}
-
-.ds-appsw__search-icon {
-  width: 14px;
-  height: 14px;
-  flex: 0 0 auto;
-  color: var(--ds-ink-muted);
-  transition: color 0.12s ease;
-}
-
-.ds-appsw__search:focus-within .ds-appsw__search-icon {
-  color: var(--ds-primary);
-}
-
-.ds-appsw__search-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-body-2);
-  color: var(--ds-ink);
-  min-width: 0;
-}
-
-.ds-appsw__search-input::placeholder {
-  color: var(--ds-ink-muted);
-}
-
-/* Remove default search clear button */
-.ds-appsw__search-input::-webkit-search-cancel-button {
-  display: none;
-}
-
-.ds-appsw__search-kbd {
-  font-family: var(--ds-font-sans);
-  font-size: 10px;
-  color: var(--ds-ink-muted);
-  background-color: var(--ds-border);
-  border-radius: 4px;
-  padding: 1px 5px;
-  flex: 0 0 auto;
-}
-
-/* ── Body (scrollable) ── */
-.ds-appsw__body {
-  max-height: calc(70vh - 100px);
   overflow-y: auto;
-  padding: 4px 0;
-}
-
-/* ── Group headings ── */
-.ds-appsw__group-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 14px 3px;
-  font-size: var(--ds-text-label-3);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ds-ink-muted);
-}
-
-
-/* ── List items (shared) ── */
-.ds-appsw__item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 14px;
-  color: var(--ds-ink);
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.1s ease;
-}
-
-.ds-appsw__item:hover {
-  background-color: var(--ds-surface-muted);
-}
-
-.ds-appsw__item.is-active {
-  background-color: var(--ds-primary-tonal);
-}
-
-.ds-appsw__item:focus-visible {
-  outline: none;
-  box-shadow: inset 0 0 0 2px var(--ds-primary-ring);
-}
-
-/* Planned (non-interactive) */
-.ds-appsw__item--planned {
-  opacity: 0.45;
-  cursor: default;
-}
-
-.ds-appsw__item--planned:hover {
-  background-color: transparent;
-}
-
-/* Icon */
-.ds-appsw__item-icon {
-  width: 30px;
-  height: 30px;
-  flex: 0 0 auto;
-  border-radius: var(--ds-radius-sm);
-  background-color: var(--ds-primary-tonal);
-  color: var(--ds-primary);
-  font-size: 11px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ds-appsw__item.is-active .ds-appsw__item-icon {
-  background-color: var(--ds-primary);
-  color: var(--ds-surface);
-}
-
-.ds-appsw__item--planned .ds-appsw__item-icon {
-  background-color: var(--ds-surface-muted);
-  color: var(--ds-ink-muted);
-}
-
-/* Text stack */
-.ds-appsw__item-text {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.ds-appsw__item-name {
-  font-size: var(--ds-text-body-2);
-  font-weight: 600;
-  color: var(--ds-ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* New-tab affordance. Muted so it annotates the name rather than competing
-   with it — the name is the thing you are scanning for. */
-.ds-appsw__item-external {
-  margin-inline-start: 5px;
-  font-size: 0.85em;
-  font-weight: 500;
-  color: var(--ds-ink-muted);
-}
-
-.ds-appsw__item.is-active .ds-appsw__item-name {
-  color: var(--ds-primary);
-}
-
-.ds-appsw__item-desc {
-  font-size: var(--ds-text-body-3);
-  color: var(--ds-ink-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: var(--ds-leading-body-3);
-}
-
-/* Badges */
-.ds-appsw__badge {
-  flex: 0 0 auto;
-  font-size: 9px;
-  font-weight: 700;
-  border-radius: var(--ds-radius-sm);
-  padding: 2px 5px;
-}
-
-.ds-appsw__badge--live {
-  background-color: var(--ds-success-tonal);
-  color: var(--ds-success);
-}
-
-.ds-appsw__badge--soon {
-  background-color: var(--ds-warning-tonal);
-  color: var(--ds-saffron-dark);
-}
-
-/* "In development" note shown below planned items in search */
-.ds-appsw__planned-note {
-  padding: 6px 14px 8px;
-  font-size: var(--ds-text-body-3);
-  color: var(--ds-ink-muted);
-  border-top: 1px solid var(--ds-border);
-  text-align: center;
-}
-
-/* Empty state */
-.ds-appsw__empty {
-  padding: 20px 14px;
-  font-size: var(--ds-text-body-2);
-  color: var(--ds-ink-muted);
-  text-align: center;
+  overflow-x: hidden;
 }
 
 /* ── Entrance animation ── */

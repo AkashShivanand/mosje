@@ -18,6 +18,20 @@
   font-family: var(--ds-font-sans);
 }
 
+/* DemoDock is the FAB that actually mounts in every app (the standalone
+   AppSwitcher shell it superseded is unexported now). Pages that paint
+   content in the bottom-left corner reserve its footprint with
+   `.ds-appsw-safe-bottom` (padding) or by reading the custom property
+   directly — same names as before, so those call sites needed no changes.
+   20px offset + 44px FAB + 20px breathing room. */
+:root {
+  --ds-appsw-safe-area: 84px;
+}
+
+.ds-appsw-safe-bottom {
+  padding-bottom: var(--ds-appsw-safe-area);
+}
+
 /* ── FAB trigger ── */
 .ds-demodock__fab {
   display: inline-flex;
@@ -60,7 +74,7 @@
   bottom: calc(100% + 10px);
   width: 400px;
   max-width: calc(100vw - 40px);
-  max-height: min(600px, calc(100vh - 100px));
+  max-height: min(72vh, 680px);
   display: flex;
   flex-direction: column;
   border: 1px solid var(--ds-border-strong);
