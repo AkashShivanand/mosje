@@ -14,8 +14,14 @@
 
 **Embed (authoritative):**
 ```html
-<script src="https://cdn.ux4g.gov.in/accessibility-beta-v1.15/accessibility-widget.js" defer></script>
+<script src="https://cdn.ux4g.gov.in/accessibility-v3.28/accessibility-widget.js" defer></script>
 ```
+> **v3.28 sends telemetry.** On load it beacons the full URL, referrer, user
+> agent, screen resolution and a session id to `https://audit360.ux4g.gov.in/api/track`,
+> then tracks panel opens and feature toggles. The shared wrapper disables this
+> by default — see the `analytics` prop. A hand-rolled embed like the one above
+> does NOT, which is one more reason to use the wrapper.
+
 Place before `</body>`. Officially supports HTML, PHP, JS, TS, Angular, **React.js, Next.js**, Ionic, Drupal, WordPress, AngularJS. Compliance: **WCAG, GIGW, IS 17802**.
 
 **In this codebase — use the shared wrapper (do NOT hand-embed the script):**

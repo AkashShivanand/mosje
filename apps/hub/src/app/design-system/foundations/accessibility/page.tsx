@@ -15,7 +15,7 @@ const WIDGET_IMPORT_SNIPPET = `import { UX4GAccessibilityWidget } from "@mosje/d
 // render once near the end of the root layout, alongside AppSwitcher:
 <UX4GAccessibilityWidget />`;
 
-const WIDGET_EMBED_SNIPPET = `<script src="https://cdn.ux4g.gov.in/accessibility-beta-v1.15/accessibility-widget.js" defer></script>`;
+const WIDGET_EMBED_SNIPPET = `<script src="https://cdn.ux4g.gov.in/accessibility-v3.28/accessibility-widget.js" defer></script>`;
 
 export default function AccessibilityPage(): React.JSX.Element {
   return (
