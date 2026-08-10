@@ -136,6 +136,17 @@ Key routing rules:
 - **Moves are non-destructive; deletes are not.** Prefer `mv`/copy-verify-then-`rmdir` (which refuses non-empty dirs). Never `rm -rf` project content without explicit human confirmation.
 - Don't touch `Incoming/` (21 GB of raw source material) or commit it.
 - Never read or commit `.env*` files or secrets.
+- **A `.husky/pre-push` hook typechecks the hub before anything reaches `main`.**
+  CI already builds the hub (`Apps CI`: lint → check → build) and it works — but
+  a commit pushed **straight to main** makes CI report *after the fact*, racing
+  the production deploy. That is exactly how a deleted module reached
+  production: `Apps CI` failed on it and the Vercel deploy failed on it, at the
+  same time, after it had landed. Required status checks would prevent that, but
+  branch protection needs GitHub Pro or a public repo — so the gate is local.
+  It runs only when pushing `main`, takes ~3s, and is bypassable with
+  `git push --no-verify` when you mean it. **Prefer a PR**: on a feature branch
+  the hook stands aside and the full CI runs on the pull request, which is the
+  path that catches everything rather than just unresolved imports.
 
 ## Workflow tooling (this `.claude/`)
 

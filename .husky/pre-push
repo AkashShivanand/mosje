@@ -1,0 +1,42 @@
+# Typecheck the hub before anything reaches main.
+#
+# The hub build already runs in CI (Apps CI: lint → check → build), and it works
+# — it failed on 81c61b3, which deleted apps/hub/src/lib/theme.ts and two
+# siblings while three files still imported them:
+#
+#   src/components/site-header.tsx(2,29): error TS2307:
+#     Cannot find module './theme-toggle'
+#
+# But that commit was pushed STRAIGHT TO main, so CI ran after the fact, racing
+# a production deploy that failed the same way. A `push:` workflow reports; it
+# cannot block. Required status checks would, except branch protection needs
+# GitHub Pro or a public repo — neither applies here.
+#
+# So the gate has to be local. This is the same typecheck CI runs, and it takes
+# about 3 seconds, which is the whole reason it is affordable here: a missing
+# module is caught before the push instead of after the deploy.
+#
+# Deliberately NOT the full build (~3 min) — too slow for a hook, and CI already
+# covers it. This catches the class that actually broke: unresolved imports.
+#
+# Only guards main. Feature branches push freely; their PR runs the full CI.
+# Genuinely need to bypass: `git push --no-verify`.
+
+# Which remote ref is being pushed? stdin is "<local ref> <local sha> <remote ref> <remote sha>".
+pushing_to_main=0
+while read -r _local_ref _local_sha remote_ref _remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main) pushing_to_main=1 ;;
+  esac
+done
+
+[ "$pushing_to_main" -eq 1 ] || exit 0
+
+echo "pre-push: typechecking the hub before main…"
+if ! npm run check --silent; then
+  echo ""
+  echo "✖ pre-push: the hub does not typecheck — not pushing to main."
+  echo "  This is what reaches production, so it fails here rather than in the deploy."
+  echo "  Fix it, or bypass deliberately with: git push --no-verify"
+  exit 1
+fi
