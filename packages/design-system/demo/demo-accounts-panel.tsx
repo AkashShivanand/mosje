@@ -64,6 +64,15 @@ export interface DemoAccountsPanelProps {
    * default global `demo:fill` CustomEvent dispatch.
    */
   onFill?: (id: string, password: string, extra?: Record<string, unknown>) => void;
+  /**
+   * Called after a row's credentials are applied, whichever path ran —
+   * the default `demo:fill` dispatch or a supplied `onFill`. Lets a
+   * containing shell (e.g. `DemoFab`) close itself on selection without
+   * listening to the global `demo:fill` event, which is reserved for "a
+   * credential was chosen" as seen by a login page, not "some demo picker
+   * somewhere was used."
+   */
+  onUse?: () => void;
   className?: string;
 }
 
@@ -76,6 +85,7 @@ export function DemoAccountsPanel({
   accounts,
   idLabel = "Mobile / ID",
   onFill,
+  onUse,
   className,
 }: DemoAccountsPanelProps): React.JSX.Element {
   const [copied, setCopied] = React.useState<string | null>(null);
@@ -97,6 +107,7 @@ export function DemoAccountsPanel({
         }),
       );
     }
+    onUse?.();
   };
 
   return (

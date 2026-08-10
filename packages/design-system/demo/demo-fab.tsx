@@ -80,29 +80,7 @@ export function DemoFab({
 }: DemoFabProps) {
   const [open, setOpen] = React.useState(false);
 
-  // When no custom `onFill` is supplied, DemoAccountsPanel dispatches the
-  // default `demo:fill` CustomEvent itself (that dispatch lives in exactly
-  // one place: demo-accounts-panel.tsx) — listen for it here too, purely to
-  // close this panel on selection, the same way a login page listens for it
-  // to prefill its form.
-  React.useEffect(() => {
-    if (!open || onFill) return;
-    const handler = () => setOpen(false);
-    window.addEventListener("demo:fill", handler);
-    return () => window.removeEventListener("demo:fill", handler);
-  }, [open, onFill]);
-
   if (!devMode) return null;
-
-  // When a caller supplies its own onFill (DemoFab co-located with the login
-  // form), DemoAccountsPanel never dispatches — so closing has to be wired
-  // here instead of via the listener above.
-  const handleFill = onFill
-    ? (id: string, password: string, extra?: Record<string, unknown>) => {
-        onFill(id, password, extra);
-        setOpen(false);
-      }
-    : undefined;
 
   return (
     <div className="ds-demo-fab">
@@ -127,7 +105,12 @@ export function DemoFab({
             </button>
           </div>
 
-          <DemoAccountsPanel accounts={accounts} idLabel={idLabel} onFill={handleFill} />
+          <DemoAccountsPanel
+            accounts={accounts}
+            idLabel={idLabel}
+            onFill={onFill}
+            onUse={() => setOpen(false)}
+          />
         </div>
       )}
 
