@@ -12,7 +12,19 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-10 · System version: v1.11.5 (DEMO TOOLING CONSOLIDATED: `AppSwitcher`
+  Last reviewed: 2026-08-10 · System version: v1.11.6 (DEMODOCK REDESIGN: the footer disclaimer
+  row ("Demo tooling — not part of the product") is gone — the dock is unambiguous demo chrome by
+  context, and the row was pure noise. The Colour tab's body min-height no longer collapses when a
+  short tab replaces a long one, so switching tabs doesn't visibly resize the panel. Colour is now a
+  plain row of brand-palette swatches driven directly by `useColorMode()` — no label, no pill track
+  — and `ColorModeSwitcher` is **removed from the design system entirely** (deleted from
+  `foundations/`, the barrel, and Storybook); an app that still wants a standalone brand-mode
+  control builds one from `useColorMode()` the same way DemoDock's Colour tab now does. Sign in only
+  renders on an actual login route (`isLoginRoute`: path ends in `/login`, `/login-otp` or
+  `/sign-in`) rather than anywhere under a portal with a demo account set, and when it renders it is
+  the first tab and the one selected on open. Open/close and swatch selection are animated
+  (CSS-only, token durations/easings, `prefers-reduced-motion` respected). v1.11.5 (DEMO TOOLING
+  CONSOLIDATED: `AppSwitcher`
   removed — it hand-rolled a duplicate of `ColorModeSwitcher` and was mounted as mandatory
   per-portal navigation. Replaced by `DemoDock`, one floating console mounted exactly once by the
   hub root layout, tabbed Apps/Colour/Sign in, gated estate-wide by `NEXT_PUBLIC_DEMO_TOOLS`
@@ -150,8 +162,11 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 > `@mosje/design-system/ux4g.css` (opt-in — the default bundle does not grow) and are
 > exported from `color-mode.ts` as `UX4G_COLOR_MODES`, deliberately **not** merged into
 > `COLOR_MODES`: offering a mode in an app that has not loaded that stylesheet would show a
-> switch that does nothing. Opt in explicitly:
-> `<ColorModeSwitcher modes={[...COLOR_MODES, ...UX4G_COLOR_MODES]} />`.
+> switch that does nothing. There is no ready-made switcher component — `ColorModeSwitcher`
+> was removed 2026-08-10 (see the DemoDock entry under Demo Tooling for why). Opt in by
+> reading `useColorMode()` yourself and rendering your own control over
+> `[...COLOR_MODES, ...UX4G_COLOR_MODES]`, calling `setMode(id)` on selection — exactly what
+> DemoDock's Colour tab does for the default two modes.
 > The MoSJE default stays gov-blue, as DBIM requires.
 
 > **Tip:** Nested brand "islands" (e.g. a navy portal shell inside the blue hub) must be explicitly scoped with a nested `[data-brand]` element. To prevent a flash on initial render, initialize the attribute with the exported `colorModeInitScript()`.
@@ -1030,19 +1045,24 @@ these are not the components you want.
 
 #### DemoDock
 **Purpose**: The single floating demo console — one FAB, bottom-left,
-opening a tabbed panel: **Apps** (cross-zone destination search,
-`AppSwitcherPanel`), **Colour** (the brand-palette picker,
-`ColorModeSwitcher`), **Sign in** (demo credentials for the current login
-surface, `DemoAccountsPanel`, shown only when one applies).
-**Props**: `pathname` (drives "Currently in" and which accounts show — via
-`findDemoAccounts`), `apps` (registry override, default `DEFAULT_APPS`),
-`label` (default `"Demo tools"`).
+opening a tabbed panel: **Sign in** (demo credentials for the current login
+route, `DemoAccountsPanel`, shown — and shown *first* — only when `pathname`
+is itself a login route; see `isLoginRoute`), **Apps** (cross-zone
+destination search, `AppSwitcherPanel`), **Colour** (a plain row of
+brand-palette swatches driven directly by `useColorMode()` — no separate
+switcher component; click a swatch to apply that mode immediately).
+**Props**: `pathname` (drives "Currently in", which accounts exist for the
+path via `findDemoAccounts`, and whether Sign in renders via `isLoginRoute`),
+`apps` (registry override, default `DEFAULT_APPS`), `label` (default
+`"Demo tools"`).
 **Rule**: Mounted **exactly once**, by the hub's root layout via
 `ConditionalDemoDock` — never per portal, never per page. Requires a
 `ColorModeProvider` ancestor (the Colour tab throws without one). Gated
 estate-wide by `NEXT_PUBLIC_DEMO_TOOLS`: absent or anything but the exact
 string `"false"` means visible; `"false"` removes it entirely, which is the
-correct state for a genuinely public deployment. See
+correct state for a genuinely public deployment. Open/close and swatch
+selection are animated in CSS only, using `--ds-duration-*`/`--ds-easing-*`
+tokens, and collapse to instant under `prefers-reduced-motion`. See
 `.claude/rules/portal-appswitcher.md`.
 
 #### AppSwitcherPanel

@@ -22,9 +22,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.11.6",
+    version: "v0.11.7",
     date: "2026-08-10",
     current: true,
+    changes: [
+      { kind: "Changed", text: "DemoDock redesign: real visual hierarchy in the header (a badge mark, a tonal wash separating it from the body), a token-driven open/close animation and a swatch-selection animation, both collapsing to instant under prefers-reduced-motion. The footer disclaimer row (\"Demo tooling — not part of the product\") is gone — the dock is unambiguous demo chrome by context, and the row was pure noise" },
+      { kind: "Fixed", text: "Switching to the Colour tab used to collapse the panel dramatically, because that tab had almost no content and nothing gave the body a floor. The body now carries a min-height calibrated to the Apps tab's typical unscrolled footprint, so no tab switch visibly resizes the panel" },
+      { kind: "Removed", text: "ColorModeSwitcher is gone from the design system entirely — deleted from foundations/, the public barrel, and Storybook. The Colour tab is now a plain row of brand-palette swatches reading useColorMode() directly: no \"Colour mode\" label, no pill-track background, just swatches that apply on click. An app that still wants a standalone brand-mode control builds one from useColorMode() the same way" },
+      { kind: "Changed", text: "The Sign in tab now renders — and leads the tab order — only when the current path IS a login route (isLoginRoute: ends in /login, /login-otp or /sign-in), not merely somewhere under a portal that has one. Previously it appeared on every page under a portal's prefix, including dashboards with no login form to fill. Apps and Colour keep their relative order behind it" },
+    ],
+  },
+  {
+    version: "v0.11.6",
+    date: "2026-08-10",
     changes: [
       { kind: "Added", text: "DemoDock — the estate's single floating demo console (Apps / Colour / Sign in tabs behind one FAB), replacing three widgets that used to compete for the bottom-left corner: the AppSwitcher FAB, its hand-rolled colour swatches, and DemoFab mounted separately on 8 login pages. Mounted exactly once, by the hub root layout via ConditionalDemoDock, and gated estate-wide by NEXT_PUBLIC_DEMO_TOOLS — absent or anything but the literal string \"false\" keeps it visible, so the deployed review site (the one place stakeholders actually need it) shows it by default" },
       { kind: "Removed", text: "AppSwitcher is gone — no longer exported. The colour-mode swatches it carried were a hand-rolled duplicate of ColorModeSwitcher; they're deleted outright rather than ported, and DemoDock's Colour tab renders the real ColorModeSwitcher instead. ColorModeSwitcher also came out of SMILE Admin's access bar for the same reason: one colour control, not two" },

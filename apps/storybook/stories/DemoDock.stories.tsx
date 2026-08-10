@@ -11,22 +11,31 @@ import { ColorModeProvider, DemoDock } from "@mosje/design-system";
  * hand-rolled colour swatches, and a `DemoFab` mounted per login page).
  *
  * **This is demo tooling, not product UI.** Nothing here is meant to be seen
- * by a citizen or an officer using a real portal — the footer says so on
- * every render (`Demo tooling — not part of the product`), which is what
- * stops a screenshot of the dock being mistaken for shipped chrome. In the
- * hub it is mounted once, above every page, by `ConditionalDemoDock`, and is
- * hidden entirely when `NEXT_PUBLIC_DEMO_TOOLS === "false"`.
+ * by a citizen or an officer using a real portal. In the hub it is mounted
+ * once, above every page, by `ConditionalDemoDock`, and is hidden entirely
+ * when `NEXT_PUBLIC_DEMO_TOOLS === "false"`.
  *
- * `pathname` drives two things: the "Currently in" label on every tab (via
- * `apps`/`DEFAULT_APPS`), and which demo accounts appear on **Sign in**
- * (via `findDemoAccounts`). Where the current path matches nothing in the
- * registry — a dashboard, the marketing site — **the Sign in tab is not
- * rendered at all**, not shown empty. That is the behaviour the
- * `NoAccountsForThisPath` story below exists to prove.
+ * `pathname` drives three things:
+ * - the "Currently in" label (via `apps`/`DEFAULT_APPS`);
+ * - which demo accounts *exist* for the current portal (via
+ *   `findDemoAccounts`, a path-prefix match — a dashboard three levels under
+ *   a portal still has a set);
+ * - whether **Sign in** actually renders (via `isLoginRoute` — a *narrower*
+ *   check than the above: only a path literally ending in `/login`,
+ *   `/login-otp` or `/sign-in` counts). A path with a set but that isn't a
+ *   login route itself — a dashboard, a report — gets no Sign in tab at all,
+ *   not shown empty. `SignInHiddenOffLoginRoute` below proves that case;
+ *   `NoAccountsForThisPath` proves the "no set at all" case.
  *
- * Requires a **`ColorModeProvider`** ancestor: the Colour tab renders
- * `ColorModeSwitcher`, which calls `useColorMode()` and throws outside one —
- * every story here is wrapped for that reason.
+ * When Sign in does apply it is the **first** tab, and the one selected on
+ * open — it's the reason a reviewer opens the dock on a login page. Apps and
+ * Colour follow behind it in their usual order. Where the current path is
+ * not a login route, the dock opens on Apps as before.
+ *
+ * Requires a **`ColorModeProvider`** ancestor: the Colour tab calls
+ * `useColorMode()` directly (there's no separate switcher component to
+ * render) and throws outside one — every story here is wrapped for that
+ * reason.
  *
  * `label` names both the FAB and the panel's header title, in case a
  * consumer wants something other than the default "Demo tools". `apps`
@@ -34,10 +43,10 @@ import { ColorModeProvider, DemoDock } from "@mosje/design-system";
  * to a consumer building a scoped or test registry — production code leaves
  * it at its default (`DEFAULT_APPS`).
  *
- * Opening the dock always starts on **Apps**, regardless of which tab was
- * open when it was last closed — a demo should start from the same place
- * every time. Escape and an outside click both close it; focus returns to
- * the FAB.
+ * Escape and an outside click both close it; focus returns to the FAB. Open
+ * and close are both animated (respecting `prefers-reduced-motion`), which
+ * doesn't show up in a static screenshot but is worth knowing about when
+ * reviewing this component live.
  *
  * Lifecycle: **Stable** (demo tooling — never part of the production
  * surface).
@@ -73,8 +82,8 @@ type Story = StoryObj<typeof meta>;
  * the reviewer sees the expanded state immediately instead of the collapsed
  * FAB. DemoDock keeps its open/tab state internal — there is no controlled
  * prop for it, by design, since the shell is meant to always open fresh on
- * Apps — so driving it from outside means simulating the same click a
- * presenter would make.
+ * its first tab — so driving it from outside means simulating the same
+ * click a presenter would make.
  */
 function ExpandOnMount({ tabIndex }: { tabIndex?: number }) {
   React.useEffect(() => {
@@ -97,11 +106,14 @@ function ExpandOnMount({ tabIndex }: { tabIndex?: number }) {
 export const Playground: Story = {};
 
 /**
- * Expanded on **Apps** — the tab it always opens on. Search (with the `/`
- * shortcut) over the grouped, ~26-entry estate registry: Website, Portals,
- * Reports, Resources.
+ * Expanded on **Sign in** — the tab order when `pathname` is itself a login
+ * route (here, NMBA's admin login: Admin, State/District/Block Nodal
+ * Officers, and the NAPDDR reporting roles). It's first, and it's what the
+ * dock opens on — no click needed beyond the FAB. Each row's **Use** button
+ * dispatches the global `demo:fill` CustomEvent; a real NMBA login page
+ * listens for it and prefills.
  */
-export const ExpandedOnApps: Story = {
+export const ExpandedOnSignIn: Story = {
   render: (args) => (
     <>
       <DemoDock {...args} />
@@ -111,12 +123,11 @@ export const ExpandedOnApps: Story = {
 };
 
 /**
- * Expanded on **Colour** — the SAMAVESH brand-palette picker
- * (`ColorModeSwitcher`) at full size, plus the on-panel note that this is a
- * *brand* axis, not a light/dark theme (that belongs to the official UX4G
- * accessibility widget, not this component).
+ * Expanded on **Apps** — one click over from Sign in on a login page. Search
+ * (with the `/` shortcut) over the grouped, ~26-entry estate registry:
+ * Website, Portals, Reports, Resources.
  */
-export const ExpandedOnColour: Story = {
+export const ExpandedOnApps: Story = {
   render: (args) => (
     <>
       <DemoDock {...args} />
@@ -126,16 +137,11 @@ export const ExpandedOnColour: Story = {
 };
 
 /**
- * Expanded on **Sign in** — the demo credentials for whatever login surface
- * `pathname` resolves to (here, NMBA's admin login: Admin, State/District/
- * Block Nodal Officers, and the NAPDDR reporting roles). Each row's **Use**
- * button dispatches the global `demo:fill` CustomEvent; a real NMBA login
- * page listens for it and prefills.
+ * Expanded on **Colour** — a plain row of brand-palette swatches. Click one
+ * to apply it immediately; the active swatch carries a ring and a check
+ * mark. No label, no track — the swatches ARE the control.
  */
-export const ExpandedOnSignIn: Story = {
-  args: {
-    pathname: "/portals/nmba/admin/login",
-  },
+export const ExpandedOnColour: Story = {
   render: (args) => (
     <>
       <DemoDock {...args} />
@@ -145,10 +151,28 @@ export const ExpandedOnSignIn: Story = {
 };
 
 /**
- * `pathname` is `/website` — nowhere in the demo-accounts registry. Open the
- * dock: it has only **two** tabs, Apps and Colour. "Sign in" is not rendered
- * at all, rather than appearing with an empty table — an empty credentials
- * list would read as a bug, not a deliberate absence.
+ * `pathname` is a real page *under* NMBA (`.../admin/dashboard`), which has
+ * a demo account set — but is not itself a login route. Open the dock: it
+ * has only **two** tabs, Apps and Colour. `findDemoAccounts` would happily
+ * return NMBA's accounts here; `isLoginRoute` is what keeps Sign in off a
+ * page where there's no login form to fill.
+ */
+export const SignInHiddenOffLoginRoute: Story = {
+  args: {
+    pathname: "/portals/nmba/admin/dashboard",
+  },
+  render: (args) => (
+    <>
+      <DemoDock {...args} />
+      <ExpandOnMount />
+    </>
+  ),
+};
+
+/**
+ * `pathname` is `/website` — nowhere in the demo-accounts registry either.
+ * Same two-tab result as `SignInHiddenOffLoginRoute`, for the simpler reason
+ * that there's no account set to begin with.
  */
 export const NoAccountsForThisPath: Story = {
   args: {
