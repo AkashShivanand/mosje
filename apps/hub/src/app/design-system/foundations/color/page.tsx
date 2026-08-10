@@ -145,8 +145,10 @@ export default function ColorPage(): React.JSX.Element {
               </strong>{" "}
               (brand axis) — controls the brand palette: <code>blue-light</code>{" "}
               (default across the estate) or <code>blue-dark</code>. This is set
-              by <code>&lt;ColorModeProvider&gt;</code> and toggled by{" "}
-              <code>&lt;ColorModeSwitcher&gt;</code>.
+              by <code>&lt;ColorModeProvider&gt;</code> and toggled via{" "}
+              <code>useColorMode()</code> — DemoDock&rsquo;s Colour tab is the
+              estate&rsquo;s shared control; there is no standalone switcher
+              component.
             </li>
             <li>
               <strong>
@@ -928,7 +930,7 @@ export default function ColorPage(): React.JSX.Element {
               axis: "data-brand",
               label: "Brand colour mode",
               modes: ["blue-light (default)", "navy", "+ extensible"],
-              desc: "Two peer colour modes (= Figma Blue-Light/Blue-Dark). Swaps the whole brand palette: primary blue↔navy, secondary saffron↔green, neutral warm↔cool grey, + the primary/secondary/neutral transparent tiers. Toggle via ColorModeProvider + ColorModeSwitcher.",
+              desc: "Two peer colour modes (= Figma Blue-Light/Blue-Dark). Swaps the whole brand palette: primary blue↔navy, secondary saffron↔green, neutral warm↔cool grey, + the primary/secondary/neutral transparent tiers. Toggle via ColorModeProvider + useColorMode() — DemoDock's Colour tab is the estate's shared control.",
               color: "var(--ds-primary-tonal)",
               border: "var(--ds-primary)",
             },

@@ -4,16 +4,10 @@ import * as React from "react";
 import Link from "next/link";
 import { Button, Field, TextInput } from "@/components/scw/ui";
 import { cn } from "@/lib/scw/utils";
-import { DemoFab, Icon } from "@mosje/design-system";
+import { Icon, type DemoFillDetail } from "@mosje/design-system";
 
 type RoleTab = "citizen" | "officer";
 type CitizenType = "volunteer" | "sage";
-
-const DEMO_ACCOUNTS = [
-  { role: "Volunteer", id: "9800000001", password: "Demo@123", extra: { tab: "citizen", type: "volunteer" } },
-  { role: "SAGE Organisation", id: "9800000002", password: "Demo@123", extra: { tab: "citizen", type: "sage" } },
-  { role: "Nodal Officer", id: "9810000001", password: "Demo@123", extra: { tab: "officer" } },
-];
 
 export default function LoginPage() {
   const [roleTab, setRoleTab] = React.useState<RoleTab>("citizen");
@@ -21,6 +15,19 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [mobile, setMobile] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  // DemoDock prefill via the design-system CustomEvent.
+  React.useEffect(() => {
+    const handler = (e: Event) => {
+      const { id, password: pw, extra } = (e as CustomEvent<DemoFillDetail>).detail;
+      setMobile(id);
+      setPassword(pw);
+      if (extra?.tab) setRoleTab(extra.tab as RoleTab);
+      if (extra?.type) setCitizenType(extra.type as CitizenType);
+    };
+    window.addEventListener("demo:fill", handler);
+    return () => window.removeEventListener("demo:fill", handler);
+  }, []);
 
 
   return (
@@ -209,16 +216,6 @@ export default function LoginPage() {
           </p>
         </div>
       </main>
-      <DemoFab
-        accounts={DEMO_ACCOUNTS}
-        devMode={process.env.NODE_ENV === "development"}
-        onFill={(id, pw, extra) => {
-          setMobile(id);
-          setPassword(pw);
-          if (extra?.tab) setRoleTab(extra.tab as RoleTab);
-          if (extra?.type) setCitizenType(extra.type as CitizenType);
-        }}
-      />
     </div>
   );
 }

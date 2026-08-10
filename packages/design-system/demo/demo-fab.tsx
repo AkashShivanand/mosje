@@ -23,6 +23,7 @@
 
 import * as React from "react";
 import "./demo-fab.css";
+import { DemoAccountsPanel } from "./demo-accounts-panel";
 
 const IconFlask = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -33,18 +34,6 @@ const IconFlask = () => (
 const IconX = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
-  </svg>
-);
-
-const IconCopy = () => (
-  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
-  </svg>
-);
-
-const IconCheck = () => (
-  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--ds-success, #16a34a)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M20 6 9 17l-5-5"/>
   </svg>
 );
 
@@ -90,29 +79,8 @@ export function DemoFab({
   onFill,
 }: DemoFabProps) {
   const [open, setOpen] = React.useState(false);
-  const [copied, setCopied] = React.useState<string | null>(null);
 
   if (!devMode) return null;
-
-  const copy = (text: string, key: string) => {
-    navigator.clipboard.writeText(text).catch(() => {});
-    setCopied(key);
-    setTimeout(() => setCopied(null), 1500);
-  };
-
-  const use = (account: DemoAccount) => {
-    if (onFill) {
-      onFill(account.id, account.password, account.extra);
-    } else {
-      window.dispatchEvent(
-        new CustomEvent<DemoFillDetail>("demo:fill", {
-          detail: { id: account.id, password: account.password, extra: account.extra },
-          bubbles: true,
-        }),
-      );
-    }
-    setOpen(false);
-  };
 
   return (
     <div className="ds-demo-fab">
@@ -137,57 +105,12 @@ export function DemoFab({
             </button>
           </div>
 
-          <div className="ds-demo-fab__body">
-            <table className="ds-demo-fab__table">
-              <thead>
-                <tr>
-                  <th>Role</th>
-                  <th>{idLabel}</th>
-                  <th>Password</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {accounts.map((account) => (
-                  <tr key={account.id}>
-                    <td className="ds-demo-fab__role">{account.role}</td>
-                    <td>
-                      <span className="ds-demo-fab__id">{account.id}</span>
-                      <button
-                        className="ds-demo-fab__copy"
-                        onClick={() => copy(account.id, `id-${account.id}`)}
-                        aria-label={`Copy ${account.id}`}
-                      >
-                        {copied === `id-${account.id}` ? <IconCheck /> : <IconCopy />}
-                      </button>
-                    </td>
-                    <td>
-                      <span className="ds-demo-fab__pw">{account.password}</span>
-                      <button
-                        className="ds-demo-fab__copy"
-                        onClick={() => copy(account.password, `pw-${account.id}`)}
-                        aria-label="Copy password"
-                      >
-                        {copied === `pw-${account.id}` ? <IconCheck /> : <IconCopy />}
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="ds-demo-fab__use"
-                        onClick={() => use(account)}
-                        aria-label={`Use ${account.role} credentials`}
-                      >
-                        Use
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className="ds-demo-fab__footer">
-              For stakeholder review only · not for production use
-            </p>
-          </div>
+          <DemoAccountsPanel
+            accounts={accounts}
+            idLabel={idLabel}
+            onFill={onFill}
+            onUse={() => setOpen(false)}
+          />
         </div>
       )}
 

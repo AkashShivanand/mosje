@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-10 · System version: v1.12.3 (SIX GAPS CLOSED — each of these existed
+  Last reviewed: 2026-08-10 · System version: v1.12.5 (SIX GAPS CLOSED — each of these existed
   as a hardcoded literal before it was a token, which is exactly what a token system is meant to
   remove. icon/size/* (5; md=24px is the estate default <Icon> ships with, and every component
   had been hardcoding its own). focus/width + focus/offset — the ring's COLOUR was tokenised long
@@ -27,7 +27,7 @@
   moved a control's SIZE while its SHAPE stayed hardcoded. Figma routing became TYPE-AWARE in the
   process: focus, icon and control each own both a colour and a measurement, so routing by root
   alone had put five FLOATs in the colour collection. 865 variables, 102 tests.
-  v1.12.2: (USAGE GUIDANCE — every semantic token now
+  v1.12.4: (USAGE GUIDANCE — every semantic token now
   says WHEN to reach for it, not only what it is worth. Descriptions were a measured contrast
   ratio plus, at best, a two-word label ("Hovered rows, quiet panels"): rigorous and nearly
   useless for choosing between neighbours. UX4G's Figma does the opposite ("Use when the tonal
@@ -41,7 +41,7 @@
   generators are now gated by a test that runs them and diffs the output. CAVEAT: the Figma push
   computed guidance in-plugin and its prose differs from the module by 1-4 characters on ~330
   variables; the build is authoritative and a faithful re-push is queued.
-  v1.12.1: (ADOPTED FROM UX4G — the three conventions
+  v1.12.3: (ADOPTED FROM UX4G — the three conventions
   where UX4G was plainly better, plus the one scale we simply lacked. (1) VALUE-NAMED type
   primitives: `--sa-ref-font-size-400` told you nothing, `--sa-ref-font-size-16` cannot be
   misread, which is UX4G's convention and Tailwind's and Spectrum's. (2) A general `size/*` scale
@@ -56,7 +56,7 @@
   shift on the raw type steps is a UNIT change, not a rename, and is recorded as such: nothing
   renders from those tokens, and their one consumer is the UX4G parity layer, where rem is what
   UX4G's own contract says. Conformance is unaffected — all 755 names still emit.
-  v1.12.0: (INVENTORY COMPLETED — the four scales the
+  v1.12.2: (INVENTORY COMPLETED — the four scales the
   spec promised and never built now exist. NEW: border/width (5) and opacity (14) at UX4G's exact
   values, the z ladder (8, Bootstrap's numbers that UX4G inherited and third-party CSS already
   assumes), layer/* (8, Carbon's nestable surfaces) and on/* (40). Every on/* pairing was CHOSEN BY
@@ -74,7 +74,7 @@
   carries 1,143 bindings, and un-publishing a bound variable strands it. Also fixed a test-suite
   RACE that made results non-deterministic — brand-contrast rebuilds dist/ under another brand
   while node --test parallelises across files; the suite now runs serially.
-  v1.11.9: (COMPONENT TIER FOLLOWS THE BRAND — all
+  v1.12.1: (COMPONENT TIER FOLLOWS THE BRAND — all
   296 `--sa-cmp-*` shipped as frozen hexes, so the entire component layer ignored `data-brand`:
   `--sa-cmp-action-brand-primary-default-bg` was #025fb8 under Blue AND under Navy — the primary
   button never changed brand. The CSS format handed var() chains only to system.generated.json
@@ -91,7 +91,7 @@
   correctly unchanged. Also fixed the gate that missed all of this: action-contrast.test.mjs
   resolved only :root — it checked Blue and called that coverage — and now runs the full matrix
   per brand. Navy passes AA.
-  v1.11.8: (UX4G WIDGET v3.28 — the accessibility
+  v1.12.0: (UX4G WIDGET v3.28 — the accessibility
   widget is upgraded from `accessibility-beta-v1.15`, and the workaround that made every page
   load at 110% zoom with three features falsely active is deleted rather than corrected, because
   v3.x fixes the null dereference that forced it. The brand skin now covers ~13 hardcoded violets
@@ -118,7 +118,7 @@
   only ever be right about one of them. 34 names moved, all byte-identical, pinned by
   visual-contract.test.mjs. Figma collection names also dropped their tier-number prefixes —
   redundant once tier moved into the variable path, and six of seven read '2 ·' anyway.
-  v1.11.6: (FIGMA STRUCTURE — the library is canonical
+  v1.11.8: (FIGMA STRUCTURE — the library is canonical
   end to end. All 691 variables renamed IN PLACE to their DTCG paths, so a Figma variable name IS
   its token path: `bg/neutral/subtle`, `ref/space/md`, `cmp/action/brand/primary/hover/bg`.
   Collections are tier-ordered: 1 · Palette, 2 · Color, 2 · Space, 2 · Type, 2 · Radius, 2 · Motion,
@@ -135,7 +135,7 @@
   token under them too. NOTHING RENDERS DIFFERENTLY — proven by visual-contract.test.mjs. Five
   variables remain uncreatable in Figma by construction: type/*/weight is a FLOAT in code and a
   STRING style name in Figma, and Figma rejects an alias across resolved types.
-  v1.11.5: (CONTRAST CLAIMS: the Figma library was
+  v1.11.7: (CONTRAST CLAIMS: the Figma library was
   publishing 322 WCAG contrast guarantees that nothing had measured, produced by a substring scan
   of the token path. 192 sat on Tier-3 Action/* variables, which have no prominence slot;
   Background/Brand/Primary/Base claimed "body and heading text" because `primary` is a brand
@@ -148,6 +148,27 @@
   ledger that may only shrink. NOTHING RENDERS DIFFERENTLY — description-only, proven by
   visual-contract.test.mjs. The Figma library needs republishing for the corrected descriptions to
   reach designers. v1.11.3: (FIGMA SYNC, second pass: the library now
+  v1.11.6 (DEMODOCK REDESIGN: the footer disclaimer
+  row ("Demo tooling — not part of the product") is gone — the dock is unambiguous demo chrome by
+  context, and the row was pure noise. The Colour tab's body min-height no longer collapses when a
+  short tab replaces a long one, so switching tabs doesn't visibly resize the panel. Colour is now a
+  plain row of brand-palette swatches driven directly by `useColorMode()` — no label, no pill track
+  — and `ColorModeSwitcher` is **removed from the design system entirely** (deleted from
+  `foundations/`, the barrel, and Storybook); an app that still wants a standalone brand-mode
+  control builds one from `useColorMode()` the same way DemoDock's Colour tab now does. Sign in only
+  renders on an actual login route (`isLoginRoute`: path ends in `/login`, `/login-otp` or
+  `/sign-in`) rather than anywhere under a portal with a demo account set, and when it renders it is
+  the first tab and the one selected on open. Open/close and swatch selection are animated
+  (CSS-only, token durations/easings, `prefers-reduced-motion` respected). v1.11.5 (DEMO TOOLING
+  CONSOLIDATED: `AppSwitcher`
+  removed — it hand-rolled a duplicate of `ColorModeSwitcher` and was mounted as mandatory
+  per-portal navigation. Replaced by `DemoDock`, one floating console mounted exactly once by the
+  hub root layout, tabbed Apps/Colour/Sign in, gated estate-wide by `NEXT_PUBLIC_DEMO_TOOLS`
+  (default ON). `AppSwitcherPanel` and `DemoAccountsPanel` extracted as reusable panel content;
+  `DemoFab` kept, now sharing `DemoAccountsPanel` with `DemoDock` instead of its own table. Demo
+  credentials moved from per-page consts into a pathname-keyed registry, `DEMO_ACCOUNTS` in
+  `packages/design-system/demo/demo-accounts.ts` — now the source of truth over
+  `.claude/rules/portal-login-demos.md`'s table. `AppEntry.group` gained `"Reports"`.
   v1.11.4: (APPEARANCE AXIS REMOVED: `data-theme`
   (light/dark/hc) no longer exists. Figma's Theme collection is single-mode and `tokens.css` emits
   no `[data-theme]` block. The UX4G accessibility widget is the estate's single canonical dark and

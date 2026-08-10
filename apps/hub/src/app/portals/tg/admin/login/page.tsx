@@ -3,23 +3,17 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { DemoFab, Icon, type DemoFillDetail } from "@mosje/design-system";
+import { Icon, type DemoFillDetail } from "@mosje/design-system";
 import { Button, Field, TextInput } from "@/components/tg/ui";
-import { ADMIN_ROLES, roleByEmail } from "@/lib/tg/roles";
+import { roleByEmail } from "@/lib/tg/roles";
 import { useTg } from "@/lib/tg/store/store";
 
 /**
  * TG officer/admin login (mock). Email → Send OTP → Verify (dev OTP 123456; the
  * mock accepts any 6-digit OTP). The email resolves the role, stored in the mock
- * session, which drives routing. All 4 roles are one-click fillable via the
- * DemoFab (demo OTP 123456).
+ * session, which drives routing. All 4 roles are one-click fillable from the
+ * DemoDock's Sign in tab (demo OTP 123456).
  */
-const DEMO_ACCOUNTS = ADMIN_ROLES.map((r) => ({
-  role: r.label,
-  id: r.email,
-  password: "123456",
-}));
-
 export default function AdminLoginPage() {
   const router = useRouter();
   const { login } = useTg();
@@ -147,8 +141,6 @@ export default function AdminLoginPage() {
           </p>
         </div>
       </main>
-
-      <DemoFab accounts={DEMO_ACCOUNTS} devMode={process.env.NODE_ENV === "development"} />
     </div>
   );
 }

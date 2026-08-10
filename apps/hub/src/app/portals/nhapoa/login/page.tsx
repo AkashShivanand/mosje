@@ -4,23 +4,18 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { DemoFab, Icon, type DemoFillDetail } from "@mosje/design-system";
+import { Icon, type DemoFillDetail } from "@mosje/design-system";
 import { Button, Field, TextInput } from "@/components/nhapoa/ui";
 import { RenameNotice } from "@/components/nhapoa/rename-notice";
-import { ADMIN_ROLES, roleByUsername } from "@/lib/nhapoa/roles";
+import { roleByUsername } from "@/lib/nhapoa/roles";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 
 /**
  * NHAPOA admin login (mock auth). Any password is accepted — the username
  * resolves the role, which is stored in the mock session and drives routing.
- * All 8 roles are one-click fillable via the DemoFab (demo password Demo@123).
+ * All 8 roles are one-click fillable from the DemoDock's Sign in tab (demo
+ * password Demo@123).
  */
-const DEMO_ACCOUNTS = ADMIN_ROLES.map((r) => ({
-  role: r.label,
-  id: r.username,
-  password: "Demo@123",
-}));
-
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useNhapoa();
@@ -29,7 +24,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  // DemoFab prefill via the design-system CustomEvent.
+  // DemoDock prefill via the design-system CustomEvent.
   React.useEffect(() => {
     const handler = (e: Event) => {
       const { id, password: pw } = (e as CustomEvent<DemoFillDetail>).detail;
@@ -136,7 +131,6 @@ export default function LoginPage() {
         </div>
       </main>
 
-      <DemoFab accounts={DEMO_ACCOUNTS} devMode={process.env.NODE_ENV === "development"} />
       <RenameNotice />
     </div>
   );

@@ -11,3 +11,9 @@
 
 export { DemoFab } from "./demo-fab";
 export type { DemoAccount, DemoFabProps, DemoFillDetail } from "./demo-fab";
+export { DemoAccountsPanel } from "./demo-accounts-panel";
+export type { DemoAccountsPanelProps } from "./demo-accounts-panel";
+export { DEMO_ACCOUNTS, findDemoAccounts, isLoginRoute } from "./demo-accounts";
+export type { DemoAccountSet } from "./demo-accounts";
+export { DemoDock } from "./demo-dock";
+export type { DemoDockProps } from "./demo-dock";

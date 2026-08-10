@@ -68,9 +68,11 @@ only the first of four ways it goes wrong.
 - A baseline entry that now **has** a story also fails, telling you to delete
   the line. That is what stops the backlog growing back.
 
-**The backlog is now empty and coverage is 69/69** (August 2026). The baseline
-still exists, but there is nothing in it: a new component without a story fails
-outright. Do not add entries to it to get a build green.
+**The backlog is empty and coverage stays N/N** — 69/69 when this was written
+(August 2026), 71/71 after `AppSwitcher` was retired in favour of `DemoDock` +
+`AppSwitcherPanel` + `DemoAccountsPanel`. The baseline still exists, but there
+is nothing in it: a new component without a story fails outright. Do not add
+entries to it to get a build green.
 
 - After writing a story, `npm run check:storybook:baseline` prunes the entry.
 - One file may document several components (`Controls.stories.tsx` covers the

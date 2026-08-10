@@ -22,4 +22,4 @@
 @import "./components/dashboard/dashboard.css";
 @import "./components/a11y/ux4g-accessibility-widget.css";
 @import "./components/navigation/zone-switcher.css";
-@import "./foundations/color-mode-switcher.css";
+@import "./components/navigation/app-switcher-panel.css";

@@ -7,7 +7,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { DemoFab } from "@mosje/design-system";
+import type { DemoFillDetail } from "@mosje/design-system";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/store/pm-ajay/auth-context";
@@ -18,13 +18,9 @@ import { useAuth } from "@/store/pm-ajay/auth-context";
 const BASE = "/portals/pm-ajay";
 const IMG_BASE = "/portals/pm-ajay";
 
-const FAB_ACCOUNTS = [
-  { role: "Joint Secretary", id: "JS001", password: "Password@123" },
-  { role: "District Secretary", id: "DS002", password: "Password@123" },
-  { role: "State Officer", id: "SO003", password: "Password@123" },
-  { role: "District Officer", id: "DO005", password: "Password@123" },
-];
-
+// This page's own inline "quick accounts" panel, independent of the
+// estate-wide DemoDock (which also reaches this form via the `demo:fill`
+// listener below, using the registry in @mosje/design-system/demo).
 const DEMO_ACCOUNTS = [
   { label: "Joint Secretary", id: "JS001", scope: "All India" },
   { label: "Deputy Secretary", id: "DS002", scope: "All India" },
@@ -54,6 +50,18 @@ export default function LoginPage() {
       idRef.current?.focus();
       idRef.current?.select();
     }
+  }, []);
+
+  // DemoDock prefill via the design-system CustomEvent.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { id, password: pw } = (e as CustomEvent<DemoFillDetail>).detail;
+      setEmployeeId(id);
+      setPassword(pw);
+      idRef.current?.focus();
+    };
+    window.addEventListener("demo:fill", handler);
+    return () => window.removeEventListener("demo:fill", handler);
   }, []);
 
   function handleSubmit(e: React.FormEvent) {
@@ -307,12 +315,6 @@ export default function LoginPage() {
           <a href="#">Help</a>
         </span>
       </footer>
-      <DemoFab
-        accounts={FAB_ACCOUNTS}
-        devMode={process.env.NODE_ENV === "development"}
-        idLabel="Employee ID"
-        onFill={(id, pw) => { setEmployeeId(id); setPassword(pw); }}
-      />
     </div>
   );
 }

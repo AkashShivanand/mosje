@@ -40,10 +40,6 @@ export {
   useColorMode,
   type ColorModeProviderProps,
 } from "./foundations/color-mode-provider";
-export {
-  ColorModeSwitcher,
-  type ColorModeSwitcherProps,
-} from "./foundations/color-mode-switcher";
 
 // ---- Components: Icon -------------------------------------------------------
 // Material Symbols Outlined — the official icon system for all MoSJE apps.
@@ -261,9 +257,12 @@ export type {
 export { Footer } from "./components/navigation/footer";
 export type { FooterProps, FooterLink } from "./components/navigation/footer";
 
-// The interactive component lives in a "use client" module.
-export { AppSwitcher } from "./components/navigation/zone-switcher";
-export type { AppSwitcherProps } from "./components/navigation/zone-switcher";
+// AppSwitcherPanel — the searchable cross-zone content, reused by DemoDock's
+// Apps tab. The interactive component lives in a "use client" module. (The
+// old standalone `AppSwitcher` FAB shell is superseded by `DemoDock` below
+// and is no longer exported — see demo/demo-dock.tsx.)
+export { AppSwitcherPanel } from "./components/navigation/app-switcher-panel";
+export type { AppSwitcherPanelProps } from "./components/navigation/app-switcher-panel";
 // Data, types and helpers come from the plain (server-safe) module so server
 // components can read them directly.
 export {
@@ -300,8 +299,24 @@ export type { LiveRegionProps, UseLiveRegionResult } from "./components/a11y/liv
 
 // =============================================================================
 // DEMO-ONLY — Review & development tooling (NOT for production builds)
-// Guard every usage: devMode={process.env.NODE_ENV === "development"}
+// `DemoFab` is guarded per usage (devMode={process.env.NODE_ENV === "development"}).
+// `DemoDock` — the single floating dock that replaces every per-page DemoFab —
+// is guarded estate-wide by NEXT_PUBLIC_DEMO_TOOLS (see apps/hub's
+// ConditionalDemoDock): defaults ON, set to "false" to hide it on a
+// genuinely public deployment.
 // These live in packages/design-system/demo/ and are separate from the core DS.
 // =============================================================================
 export { DemoFab } from "./demo";
 export type { DemoAccount, DemoFabProps, DemoFillDetail } from "./demo";
+export {
+  DemoAccountsPanel,
+  DemoDock,
+  DEMO_ACCOUNTS,
+  findDemoAccounts,
+  isLoginRoute,
+} from "./demo";
+export type {
+  DemoAccountsPanelProps,
+  DemoDockProps,
+  DemoAccountSet,
+} from "./demo";

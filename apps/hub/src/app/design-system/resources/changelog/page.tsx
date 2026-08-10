@@ -73,7 +73,7 @@ const RELEASES: Release[] = [
     ],
   },
   {
-    version: "v0.11.10",
+    version: "v0.11.11",
     date: "2026-08-10",
     changes: [
       { kind: "Fixed", text: "The entire component tier ignored the brand axis. All 296 --sa-cmp-* shipped as frozen hexes, so --sa-cmp-action-brand-primary-default-bg was #025fb8 under Blue and #025fb8 under Navy — the primary button never changed brand. The CSS format handed var() chains only to system.generated.json, and Tier 3 fell through to the resolved literal. The source was never at fault: Tier 3 is 196 references plus 92 deliberate literals (white-alpha inverse variants and transparent fills, which are correctly brand-invariant). 101 component tokens now repaint under Navy, up from zero" },
@@ -85,7 +85,7 @@ const RELEASES: Release[] = [
     ],
   },
   {
-    version: "v0.11.9",
+    version: "v0.11.10",
     date: "2026-08-10",
     changes: [
       { kind: "Fixed", text: "Every page in the estate was loading at 110% zoom with letter-spacing and line-height bumped, and three accessibility features showing as switched on that nobody had switched on. The cause was our own workaround for a null dereference in the UX4G v1.15 widget: it seeded the widget's settings key BEFORE the script ran, which pushed loadSettings() down its restore branch instead of the no-op path a fresh visitor should take — and that branch ends in updateWidgetToggles(), which calls the widget's own CLICK handlers, each of which advances a counter unconditionally. Seeding a neutral object was therefore indistinguishable from clicking three controls once per page load. The squeezed National Emblem in the header was the same bug, not a broken asset" },
@@ -100,7 +100,7 @@ const RELEASES: Release[] = [
     ],
   },
   {
-    version: "v0.11.8",
+    version: "v0.11.9",
     date: "2026-08-10",
     changes: [
       { kind: "Changed", text: "The prominence ladder is renamed and now actually ORDERS. UX4G's base / soft / subtle / emphasis / strong / stronger did not: subtle sat louder than soft while reading quieter, and base was the quietest of all while reading like the default. A ladder whose names do not sort is not a ladder, it is six adjectives. It is now base / subtler / subtle / bold / bolder / boldest for fills — Atlassian's shipped pattern rather than a private scale" },
@@ -112,7 +112,7 @@ const RELEASES: Release[] = [
     ],
   },
   {
-    version: "v0.11.7",
+    version: "v0.11.8",
     date: "2026-08-10",
     changes: [
       { kind: "Changed", text: "The Figma library is canonical end to end. All 691 variables were renamed in place so a variable's NAME is its token path — bg/neutral/subtle, ref/space/md, cmp/action/brand/primary/hover/bg — and the collections are tier-ordered: 1 · Palette, 2 · Color, 2 · Space, 2 · Type, 2 · Radius, 2 · Motion, 2 · Density. 435 of 669 names previously differed from the path they came from, and 179 carried a hyphen inside a segment, which is the exact defect RULE 1 exists to remove" },
@@ -122,6 +122,16 @@ const RELEASES: Release[] = [
       { kind: "Fixed", text: "The grammar allowlist is itemised instead of rooted. It was four ROOTS (color, type, spacing, density), and the check skipped every path beginning with one — so it exempted 188 existing tokens AND every token anyone might write under those roots in future. A brand-new ungrammatical color/… landed green, and the freeze criterion could never be met. It is now 150 explicit paths with two ratchet tests: a stale entry fails, and an entry that now parses fails. Three of the four roots turned out not to need exempting at all" },
       { kind: "Fixed", text: "Two repo pointers sent syncs to the wrong Figma file. Both .claude/commands/sync-figma.md and the sync handoff doc named older SAMAVESH copies that still contain variables — so a run against either looks successful and reaches nobody. Both now name the canonical file from GOVERNANCE.md, with the variable count to check against" },
       { kind: "Changed", text: "Renaming type/title1 to type/title/1 was attempted and REVERTED: it flattens onto a name the fluid font/role scale already owns, silently merging a fixed 22px semantic role with a clamp(). The visual-contract test caught it, and the two namespaces now stay spelled differently on purpose, with the reason written down where the next person will look" },
+    ],
+  },
+  {
+    version: "v0.11.7",
+    date: "2026-08-10",
+    changes: [
+      { kind: "Changed", text: "DemoDock redesign: real visual hierarchy in the header (a badge mark, a tonal wash separating it from the body), a token-driven open/close animation and a swatch-selection animation, both collapsing to instant under prefers-reduced-motion. The footer disclaimer row (\"Demo tooling — not part of the product\") is gone — the dock is unambiguous demo chrome by context, and the row was pure noise" },
+      { kind: "Fixed", text: "Switching to the Colour tab used to collapse the panel dramatically, because that tab had almost no content and nothing gave the body a floor. The body now carries a min-height calibrated to the Apps tab's typical unscrolled footprint, so no tab switch visibly resizes the panel" },
+      { kind: "Removed", text: "ColorModeSwitcher is gone from the design system entirely — deleted from foundations/, the public barrel, and Storybook. The Colour tab is now a plain row of brand-palette swatches reading useColorMode() directly: no \"Colour mode\" label, no pill-track background, just swatches that apply on click. An app that still wants a standalone brand-mode control builds one from useColorMode() the same way" },
+      { kind: "Changed", text: "The Sign in tab now renders — and leads the tab order — only when the current path IS a login route (isLoginRoute: ends in /login, /login-otp or /sign-in), not merely somewhere under a portal that has one. Previously it appeared on every page under a portal's prefix, including dashboards with no login form to fill. Apps and Colour keep their relative order behind it" },
     ],
   },
   {

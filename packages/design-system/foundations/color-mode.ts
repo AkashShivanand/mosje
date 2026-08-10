@@ -50,11 +50,13 @@ export const LEGACY_COLOR_MODE_IDS: Readonly<Record<string, string>> = {
  * UX4G 3.0's own palette, as two extra peer modes.
  *
  * These are NOT in `COLOR_MODES` on purpose: they only render correctly in an app that
- * also imports `@mosje/design-system/ux4g.css`, which is opt-in. Offering them from the
- * switcher in an app that has not loaded that stylesheet would show a mode that does
- * nothing. An app that HAS loaded it opts in explicitly:
+ * also imports `@mosje/design-system/ux4g.css`, which is opt-in. Offering them in a
+ * switcher UI in an app that has not loaded that stylesheet would show a mode that does
+ * nothing. An app that HAS loaded it opts in explicitly, by reading `useColorMode()` and
+ * rendering its own control over the combined list:
  *
- *   <ColorModeSwitcher modes={[...COLOR_MODES, ...UX4G_COLOR_MODES]} />
+ *   const { mode, setMode } = useColorMode();
+ *   [...COLOR_MODES, ...UX4G_COLOR_MODES].map((m) => <button onClick={() => setMode(m.id)} />)
  *
  * They exist so UX4G conformance can be demonstrated by flipping one attribute rather
  * than argued about — the MoSJE default (gov-blue, per DBIM) is unchanged either way.

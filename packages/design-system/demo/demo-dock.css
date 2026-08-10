@@ -1,0 +1,350 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — DemoDock
+   ─────────────────────────────────────────────────────────────────────────
+   DEMO-ONLY component. NOT included in the production bundle.
+   One floating FAB, bottom-left, opening a tabbed panel (Sign in / Apps /
+   Colour — Sign in leads only on an actual login route). Structure mirrors
+   the AppSwitcher shell (zone-switcher.css): fixed root, absolutely
+   positioned panel above the FAB, token-only colour and shadow values. Only
+   `.ds-demodock__body` scrolls — header and tab strip stay put. The body
+   carries a `min-height` (see below) so the panel doesn't resize when a
+   short tab (Colour) replaces a long one (Apps).
+   ============================================================================ */
+
+/* ── Root container ── */
+.ds-demodock {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 2147483000;
+  font-family: var(--ds-font-sans);
+}
+
+/* DemoDock is the FAB that actually mounts in every app (the standalone
+   AppSwitcher shell it superseded is unexported now). Pages that paint
+   content in the bottom-left corner reserve its footprint with
+   `.ds-appsw-safe-bottom` (padding) or by reading the custom property
+   directly — same names as before, so those call sites needed no changes.
+   20px offset + 44px FAB + 20px breathing room. */
+:root {
+  --ds-appsw-safe-area: 84px;
+}
+
+.ds-appsw-safe-bottom {
+  padding-bottom: var(--ds-appsw-safe-area);
+}
+
+/* ── FAB trigger ── */
+.ds-demodock__fab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px 0 14px;
+  border: 1.5px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-surface);
+  color: var(--ds-ink);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-body-2);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--ds-shadow-lg);
+  transition: border-color var(--ds-duration-fast) var(--ds-easing-out),
+    box-shadow var(--ds-duration-fast) var(--ds-easing-out),
+    transform var(--ds-duration-fast) var(--ds-easing-out);
+}
+
+.ds-demodock__fab:hover {
+  border-color: var(--ds-primary);
+}
+
+/* Tactile press feedback — confirms the FAB heard the click before the
+   panel has even had time to animate in. */
+.ds-demodock__fab:active {
+  transform: scale(0.97);
+}
+
+.ds-demodock__fab:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+}
+
+.ds-demodock__fab-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--ds-primary);
+  flex: 0 0 auto;
+  transition: transform var(--ds-duration-base) var(--ds-easing-in-out);
+}
+
+.ds-demodock__fab[aria-expanded="true"] .ds-demodock__fab-icon {
+  transform: rotate(-8deg) scale(1.05);
+}
+
+/* ── Panel ── */
+.ds-demodock__panel {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 10px);
+  width: 500px;
+  max-width: calc(100vw - 40px);
+  max-height: min(72vh, 680px);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-surface);
+  box-shadow: var(--ds-shadow-xl);
+  overflow: hidden;
+  transform-origin: bottom left;
+  /* Shared floor for the body/tab content (see `.ds-demodock__body` below).
+     Derived from this panel's own `max-height` (72vh, capped 680px) minus
+     the header's measured footprint (~126px, rounded up for safety) so it
+     scales with the viewport instead of a viewport-blind magic number, and
+     a `420px` ceiling so it doesn't keep growing on tall screens. Defined
+     once here and read by both the body and the Colour tab so they can't
+     drift apart. */
+  --ds-demodock-content-floor: min(420px, calc(72vh - 128px));
+}
+
+/* ── Header (badge + title + "Currently in" + close + tab strip — never
+   scrolls). A faint tonal wash separates it from the body without a hard
+   rule, and the badge gives the panel an anchor mark instead of reading as
+   an unstyled dialog. ── */
+.ds-demodock__header {
+  flex: 0 0 auto;
+  padding: 14px 14px 10px;
+  background: linear-gradient(
+    to bottom,
+    var(--ds-surface-muted),
+    var(--ds-surface)
+  );
+  border-bottom: 1px solid var(--ds-border);
+}
+
+.ds-demodock__header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.ds-demodock__title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ds-demodock__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ds-radius-sm);
+  background-color: var(--ds-primary-tonal);
+  color: var(--ds-primary);
+}
+
+.ds-demodock__badge svg {
+  width: 17px;
+  height: 17px;
+}
+
+.ds-demodock__title-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.ds-demodock__title {
+  font-size: var(--ds-text-title-2);
+  font-weight: 700;
+  color: var(--ds-ink);
+  line-height: 1.2;
+}
+
+.ds-demodock__current {
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ds-demodock__current-label {
+  color: var(--ds-ink-muted);
+}
+
+.ds-demodock__current-name {
+  font-weight: 600;
+  color: var(--ds-ink-strong);
+}
+
+.ds-demodock__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  color: var(--ds-ink-muted);
+  cursor: pointer;
+  transition: background-color var(--ds-duration-fast) var(--ds-easing-out),
+    color var(--ds-duration-fast) var(--ds-easing-out),
+    transform var(--ds-duration-fast) var(--ds-easing-out);
+}
+
+.ds-demodock__close:hover {
+  background-color: var(--ds-surface-muted);
+  color: var(--ds-ink);
+}
+
+.ds-demodock__close:active {
+  transform: scale(0.92);
+}
+
+.ds-demodock__close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ds-primary-ring);
+}
+
+.ds-demodock__tabs {
+  margin-top: 2px;
+}
+
+/* ── Body (the only scrolling region). `--ds-demodock-content-floor` (set
+   on `.ds-demodock__panel` above) is a floor sized to the Apps tab's usual
+   footprint, so Colour — which has almost no content — doesn't collapse
+   the panel to a fraction of its Apps-tab size. It's a floor, not a fixed
+   height: Apps' long list still grows past it up to the panel's own
+   `max-height`, then scrolls, exactly as before. ── */
+.ds-demodock__body {
+  flex: 1 1 auto;
+  min-height: var(--ds-demodock-content-floor);
+  overflow-y: auto;
+}
+
+/* ── Colour tab: swatches only — no label chrome, no pill track. Uses the
+   same floor as `.ds-demodock__body` (not `min-height: 100%`, which can't
+   resolve against an auto-height ancestor) so the swatches sit centred in
+   a box the same size as the Apps tab's typical footprint, instead of
+   hugging the top with dead space below. ── */
+.ds-demodock__colour {
+  box-sizing: border-box;
+  min-height: var(--ds-demodock-content-floor);
+  padding: 20px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.ds-demodock__swatch-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.ds-demodock__swatch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--ds-border-strong);
+  transition: transform var(--ds-duration-fast) var(--ds-easing-out),
+    box-shadow var(--ds-duration-fast) var(--ds-easing-out);
+}
+
+.ds-demodock__swatch:hover {
+  transform: scale(1.08);
+}
+
+.ds-demodock__swatch:active {
+  transform: scale(0.96);
+}
+
+.ds-demodock__swatch.is-active {
+  box-shadow: 0 0 0 2px var(--ds-surface), 0 0 0 4px var(--ds-primary);
+}
+
+.ds-demodock__swatch:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ds-surface), 0 0 0 4px var(--ds-primary);
+}
+
+.ds-demodock__swatch-check {
+  animation: ds-demodock-swatch-check var(--ds-duration-fast) var(--ds-easing-out);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes ds-demodock-swatch-check {
+    from {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+.ds-demodock__colour-note {
+  max-width: 280px;
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink-muted);
+  text-align: center;
+}
+
+/* ── Entrance / exit animation ── */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-demodock__panel {
+    animation: ds-demodock-in var(--ds-duration-fast) var(--ds-easing-out);
+  }
+
+  .ds-demodock__panel.is-closing {
+    animation: ds-demodock-out var(--ds-duration-fast) var(--ds-easing-in) forwards;
+  }
+
+  @keyframes ds-demodock-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes ds-demodock-out {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(6px) scale(0.98);
+    }
+  }
+}
