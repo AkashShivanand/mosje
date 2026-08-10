@@ -7,6 +7,8 @@ on:
       - "packages/**"
       - "apps/hub/src/app/design-system/resources/changelog/page.tsx"
       - "scripts/check-changelog-freshness.mjs"
+      - "apps/storybook/**"
+      - "scripts/check-storybook-coverage.mjs"
       - ".stylelintrc.tokens.json"
       - ".github/workflows/ds-quality.yml"
   pull_request:
@@ -14,6 +16,8 @@ on:
       - "packages/**"
       - "apps/hub/src/app/design-system/resources/changelog/page.tsx"
       - "scripts/check-changelog-freshness.mjs"
+      - "apps/storybook/**"
+      - "scripts/check-storybook-coverage.mjs"
       - ".stylelintrc.tokens.json"
       - ".github/workflows/ds-quality.yml"
 
@@ -51,6 +55,9 @@ jobs:
 
       - name: Changelog freshness — notable DS changes must be logged
         run: node scripts/check-changelog-freshness.mjs
+
+      - name: Storybook coverage — every exported component needs a story
+        run: node scripts/check-storybook-coverage.mjs
 
       - name: Typecheck design-system
         run: npm run typecheck -w @mosje/design-system

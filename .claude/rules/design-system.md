@@ -48,6 +48,39 @@ library** — they are the design system's contract for machines:
 This is enforced as a step in `/sync-figma` and in the `design-system-guardian`
 review. Treat docs/tokens/Figma drift as a defect, not a follow-up.
 
+## Storybook must track the design system (enforced in CI)
+
+**Every component exported from `packages/design-system/index.ts` has a story.**
+Storybook is what BAs, QAs and designers open instead of reading source — it is
+only useful if it reflects what actually ships. It had drifted to 2 of ~69
+components because nothing checked.
+
+`scripts/check-storybook-coverage.mjs` fails **Design System Quality** when an
+exported component has no story. It is a **ratchet**, not a demand for 100%
+today:
+
+- A component with no story fails — *unless* it is listed in
+  `apps/storybook/coverage-baseline.json` as pre-existing debt.
+- A baseline entry that now **has** a story also fails, telling you to delete
+  the line. That is what stops the backlog growing back.
+
+So coverage can only improve. Adding a component without a story is blocked;
+paying off debt tightens the gate automatically.
+
+- Run it locally with `npm run check:storybook`.
+- After writing a story, `npm run check:storybook:baseline` prunes the entry.
+- One file may document several components (`Controls.stories.tsx` covers the
+  selection controls) — declare them with `@covers A, B, C` in the file's
+  doc comment. **Imports are deliberately not a coverage signal**: a story that
+  imports `Button` to sit next to what it is demonstrating does not document
+  `Button`.
+- Something that genuinely cannot have a story (a context provider, the
+  CDN-loaded UX4G widget) goes in `NOT_COMPONENTS` in the script, **with a
+  reason**. Sub-parts shown inside a parent's story go in `DOCUMENTED_BY`.
+
+**When you add or change a component, the story is part of the change**, in the
+same commit — exactly like `design.md` and the changelog.
+
 ## Changelog freshness (enforced in CI)
 
 The changelog at `apps/hub/src/app/design-system/resources/changelog/page.tsx`

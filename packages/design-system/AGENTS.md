@@ -100,6 +100,11 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
 
 ## Before you finish
 
+- **Wrote or changed a component? Write its story in the same commit.**
+  `npm run check:storybook` fails the build for any export without one. It is a
+  ratchet — `apps/storybook/coverage-baseline.json` records pre-existing debt,
+  and an entry that now has a story must be removed from it
+  (`npm run check:storybook:baseline`). See `.claude/rules/design-system.md`.
 - `npm test -w @mosje/tokens` passes (token contract intact).
 - Consuming apps still build.
 - Review with the `design-system-guardian` agent; audit pages with

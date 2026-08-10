@@ -27,7 +27,9 @@
     "ux4g:measure": "node tools/ux4g-conformance/measure.mjs",
     "ux4g:report": "npm run build -w @mosje/tokens && node tools/ux4g-conformance/measure.mjs --write",
     "ux4g:extract": "node tools/ux4g-conformance/extract-ux4g-tokens.mjs",
-    "test": "npm test -w @mosje/design-system && npm test --prefix apps/hub"
+    "test": "npm test -w @mosje/design-system && npm test --prefix apps/hub",
+    "check:storybook": "node scripts/check-storybook-coverage.mjs",
+    "check:storybook:baseline": "node scripts/check-storybook-coverage.mjs --update-baseline"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",
