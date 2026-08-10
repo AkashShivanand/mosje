@@ -16,5 +16,6 @@
   "include": ["index.ts", "tokens.ts", "components/**/*.ts", "components/**/*.tsx",
               "foundations/**/*.ts", "foundations/**/*.tsx",
               "demo/**/*.ts", "demo/**/*.tsx",
-              "utils/**/*.ts"]
+              "utils/**/*.ts"],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "node_modules"]
 }
