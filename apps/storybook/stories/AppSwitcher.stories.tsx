@@ -9,11 +9,17 @@ import { AppSwitcher, ColorModeProvider, DEFAULT_APPS } from "@mosje/design-syst
  * going back to the hub and starting again. See
  * `.claude/rules/portal-appswitcher.md`.
  *
- * Two things it needs from the app:
+ * Two things worth knowing:
  *
- * - It must be rendered **inside a `ColorModeProvider`** — the panel header
- *   carries the colour-mode swatches, so without the provider it throws. That
- *   is why the stories below wrap it.
+ * - It does **not** need a `ColorModeProvider` — `AppSwitcher` has no
+ *   colour-mode UI of its own any more (the panel header used to carry
+ *   duplicated colour-mode swatches; they were removed). The stories below
+ *   still wrap it in one because `portal-appswitcher.md` requires every real
+ *   layout to nest `AppSwitcher` inside a `ColorModeProvider` regardless, so
+ *   the story matches production mounting — not because the component
+ *   requires it. A later task adds a `DemoDock` shell that renders the real
+ *   `ColorModeSwitcher` beside this panel's content; *that* shell will need
+ *   the provider.
  * - It renders plain `<a href>` links, not a router's `Link`, so navigation
  *   works from inside any basePath-ed zone. Nothing to configure; just do not
  *   swap them.

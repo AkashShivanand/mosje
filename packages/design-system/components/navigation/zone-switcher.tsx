@@ -37,7 +37,9 @@ export interface AppSwitcherProps {
  * floating shell — the FAB, open/close state, outside-click + Escape
  * handling, and the focus trap.
  *
- * Must be rendered inside a <ColorModeProvider>.
+ * Does not need a <ColorModeProvider> — it has no colour-mode UI of its own.
+ * (A later task adds a `DemoDock` shell that renders the real
+ * `ColorModeSwitcher` alongside this panel; that shell will need one.)
  * Uses plain <a href> links so navigation works from inside any basePath-ed zone.
  */
 export function AppSwitcher({
