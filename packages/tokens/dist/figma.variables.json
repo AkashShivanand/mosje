@@ -14,8 +14,8 @@
     },
     "Theme": {
       "total": 374,
-      "new": 374,
-      "existing": 0
+      "new": 27,
+      "existing": 347
     },
     "Typography": {
       "total": 110,
@@ -3911,7 +3911,7 @@
           "path": "focus/ring",
           "role": "brand-source",
           "type": "COLOR",
-          "status": "new",
+          "status": "existing",
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
@@ -3963,7 +3963,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-neutral-subtle)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -3994,7 +3994,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-neutral-emphasis)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4025,7 +4025,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-neutral-inverse)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4056,7 +4056,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-neutral-disabled)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4118,7 +4118,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-soft)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4149,7 +4149,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-subtle)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4180,7 +4180,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-emphasis)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4211,7 +4211,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-strong)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4242,7 +4242,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-stronger)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4304,7 +4304,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-soft)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4335,7 +4335,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-subtle)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4366,7 +4366,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-emphasis)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4397,7 +4397,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-strong)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4428,7 +4428,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-stronger)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4490,7 +4490,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-soft)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4521,7 +4521,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-subtle)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4552,7 +4552,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-emphasis)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4583,7 +4583,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-strong)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4614,7 +4614,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-stronger)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4676,7 +4676,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-error-soft)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4707,7 +4707,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-error-subtle)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4738,7 +4738,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-error-emphasis)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4769,7 +4769,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-error-strong)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4800,7 +4800,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-error-stronger)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4862,7 +4862,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-warning-soft)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4893,7 +4893,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-warning-subtle)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4924,7 +4924,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-warning-emphasis)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4955,7 +4955,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-warning-strong)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -4986,7 +4986,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-warning-stronger)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5048,7 +5048,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-soft)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5079,7 +5079,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-subtle)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5110,7 +5110,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-emphasis)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5141,7 +5141,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-strong)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5172,7 +5172,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-stronger)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5201,7 +5201,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-neutral-primary)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5231,7 +5231,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-neutral-secondary)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5261,7 +5261,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-neutral-disabled)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5292,7 +5292,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-neutral-inverse)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5414,7 +5414,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-link-visited-default)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5444,7 +5444,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-link-neutral-default)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5624,7 +5624,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-border-neutral-strong-hover)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5804,7 +5804,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-icon-neutral-primary)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5834,7 +5834,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-icon-neutral-secondary)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5864,7 +5864,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-icon-neutral-disabled)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -5895,7 +5895,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-icon-neutral-inverse)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/system.generated.json"
@@ -6077,7 +6077,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6108,7 +6108,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6139,7 +6139,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6170,7 +6170,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6201,7 +6201,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6232,7 +6232,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6263,7 +6263,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6294,7 +6294,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6325,7 +6325,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6356,7 +6356,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6386,7 +6386,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6417,7 +6417,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6448,7 +6448,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-inverse-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6479,7 +6479,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-inverse-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6510,7 +6510,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-inverse-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6538,7 +6538,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-inverse-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6569,7 +6569,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-inverse-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6597,7 +6597,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-inverse-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6625,7 +6625,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-inverse-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6656,7 +6656,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-inverse-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6684,7 +6684,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-inverse-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6712,7 +6712,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-inverse-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6740,7 +6740,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-inverse-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6768,7 +6768,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-primary-inverse-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6796,7 +6796,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6827,7 +6827,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6858,7 +6858,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6889,7 +6889,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6920,7 +6920,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6951,7 +6951,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -6982,7 +6982,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7013,7 +7013,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7044,7 +7044,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7072,7 +7072,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7102,7 +7102,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7133,7 +7133,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7161,7 +7161,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-inverse-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7192,7 +7192,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-inverse-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7220,7 +7220,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-inverse-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7248,7 +7248,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-inverse-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7279,7 +7279,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-inverse-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7307,7 +7307,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-inverse-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7335,7 +7335,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-inverse-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7366,7 +7366,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-inverse-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7397,7 +7397,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-inverse-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7425,7 +7425,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-inverse-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7453,7 +7453,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-inverse-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7481,7 +7481,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-secondary-inverse-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7509,7 +7509,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tertiary-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7540,7 +7540,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tertiary-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7568,7 +7568,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tertiary-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7599,7 +7599,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tertiary-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7630,7 +7630,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tertiary-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7658,7 +7658,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tertiary-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7689,7 +7689,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tertiary-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7720,7 +7720,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tertiary-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7748,7 +7748,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tertiary-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7776,7 +7776,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tertiary-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7806,7 +7806,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tertiary-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7834,7 +7834,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tertiary-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7865,7 +7865,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7896,7 +7896,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7927,7 +7927,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7958,7 +7958,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -7989,7 +7989,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8020,7 +8020,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8051,7 +8051,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8082,7 +8082,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8113,7 +8113,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8144,7 +8144,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8174,7 +8174,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8205,7 +8205,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-brand-tonal-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8236,7 +8236,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8267,7 +8267,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8298,7 +8298,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8329,7 +8329,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8360,7 +8360,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8391,7 +8391,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8422,7 +8422,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8453,7 +8453,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8484,7 +8484,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8515,7 +8515,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8545,7 +8545,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8576,7 +8576,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8607,7 +8607,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-inverse-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8638,7 +8638,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-inverse-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8669,7 +8669,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-inverse-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8697,7 +8697,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-inverse-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8728,7 +8728,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-inverse-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8756,7 +8756,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-inverse-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8784,7 +8784,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-inverse-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8815,7 +8815,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-inverse-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8843,7 +8843,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-inverse-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8871,7 +8871,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-inverse-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8899,7 +8899,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-inverse-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8927,7 +8927,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-primary-inverse-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8955,7 +8955,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -8986,7 +8986,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9017,7 +9017,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9048,7 +9048,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9079,7 +9079,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9110,7 +9110,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9141,7 +9141,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9172,7 +9172,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9203,7 +9203,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9231,7 +9231,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9261,7 +9261,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9292,7 +9292,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9320,7 +9320,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-inverse-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9351,7 +9351,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-inverse-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9379,7 +9379,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-inverse-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9407,7 +9407,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-inverse-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9438,7 +9438,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-inverse-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9466,7 +9466,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-inverse-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9494,7 +9494,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-inverse-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9525,7 +9525,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-inverse-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9556,7 +9556,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-inverse-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9584,7 +9584,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-inverse-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9612,7 +9612,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-inverse-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9640,7 +9640,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-secondary-inverse-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9668,7 +9668,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tertiary-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9699,7 +9699,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tertiary-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9727,7 +9727,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tertiary-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9758,7 +9758,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tertiary-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9789,7 +9789,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tertiary-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9817,7 +9817,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tertiary-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9848,7 +9848,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tertiary-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9879,7 +9879,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tertiary-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9907,7 +9907,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tertiary-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9935,7 +9935,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tertiary-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9965,7 +9965,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tertiary-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -9993,7 +9993,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tertiary-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10024,7 +10024,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10055,7 +10055,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10086,7 +10086,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10117,7 +10117,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10148,7 +10148,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10179,7 +10179,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10210,7 +10210,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10241,7 +10241,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10272,7 +10272,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10303,7 +10303,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10333,7 +10333,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10364,7 +10364,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-success-tonal-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10395,7 +10395,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10426,7 +10426,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10457,7 +10457,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10488,7 +10488,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10519,7 +10519,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10550,7 +10550,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10581,7 +10581,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10612,7 +10612,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10643,7 +10643,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10674,7 +10674,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10704,7 +10704,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10735,7 +10735,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10766,7 +10766,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-inverse-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10797,7 +10797,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-inverse-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10828,7 +10828,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-inverse-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10856,7 +10856,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-inverse-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10887,7 +10887,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-inverse-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10915,7 +10915,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-inverse-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10943,7 +10943,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-inverse-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -10974,7 +10974,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-inverse-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11002,7 +11002,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-inverse-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11030,7 +11030,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-inverse-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11058,7 +11058,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-inverse-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11086,7 +11086,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-primary-inverse-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11114,7 +11114,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11145,7 +11145,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11176,7 +11176,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11207,7 +11207,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11238,7 +11238,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11269,7 +11269,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11300,7 +11300,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11331,7 +11331,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11362,7 +11362,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11390,7 +11390,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11420,7 +11420,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11451,7 +11451,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11479,7 +11479,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-inverse-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11510,7 +11510,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-inverse-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11538,7 +11538,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-inverse-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11566,7 +11566,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-inverse-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11597,7 +11597,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-inverse-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11625,7 +11625,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-inverse-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11653,7 +11653,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-inverse-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11684,7 +11684,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-inverse-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11715,7 +11715,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-inverse-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11743,7 +11743,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-inverse-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11771,7 +11771,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-inverse-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11799,7 +11799,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-secondary-inverse-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11827,7 +11827,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tertiary-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11858,7 +11858,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tertiary-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11886,7 +11886,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tertiary-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11917,7 +11917,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tertiary-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11948,7 +11948,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tertiary-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -11976,7 +11976,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tertiary-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12007,7 +12007,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tertiary-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12038,7 +12038,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tertiary-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12066,7 +12066,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tertiary-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12094,7 +12094,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tertiary-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12124,7 +12124,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tertiary-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12152,7 +12152,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tertiary-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12183,7 +12183,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12214,7 +12214,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12245,7 +12245,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12276,7 +12276,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12307,7 +12307,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12338,7 +12338,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12369,7 +12369,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12400,7 +12400,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12431,7 +12431,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12462,7 +12462,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12492,7 +12492,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12523,7 +12523,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-destructive-tonal-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12554,7 +12554,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12585,7 +12585,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12616,7 +12616,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12647,7 +12647,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12678,7 +12678,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12709,7 +12709,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12740,7 +12740,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12771,7 +12771,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12802,7 +12802,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12833,7 +12833,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12863,7 +12863,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12894,7 +12894,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12925,7 +12925,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-inverse-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12956,7 +12956,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-inverse-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -12987,7 +12987,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-inverse-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13015,7 +13015,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-inverse-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13046,7 +13046,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-inverse-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13074,7 +13074,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-inverse-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13102,7 +13102,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-inverse-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13133,7 +13133,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-inverse-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13161,7 +13161,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-inverse-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13189,7 +13189,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-inverse-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13217,7 +13217,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-inverse-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13245,7 +13245,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-primary-inverse-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13273,7 +13273,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13304,7 +13304,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13335,7 +13335,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13366,7 +13366,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13397,7 +13397,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13428,7 +13428,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13459,7 +13459,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13490,7 +13490,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13521,7 +13521,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13549,7 +13549,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13579,7 +13579,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13610,7 +13610,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13638,7 +13638,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-inverse-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13669,7 +13669,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-inverse-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13697,7 +13697,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-inverse-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13725,7 +13725,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-inverse-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13756,7 +13756,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-inverse-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13784,7 +13784,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-inverse-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13812,7 +13812,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-inverse-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13843,7 +13843,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-inverse-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13874,7 +13874,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-inverse-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13902,7 +13902,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-inverse-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13930,7 +13930,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-inverse-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13958,7 +13958,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-secondary-inverse-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -13986,7 +13986,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tertiary-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14017,7 +14017,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tertiary-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14045,7 +14045,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tertiary-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14076,7 +14076,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tertiary-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14107,7 +14107,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tertiary-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14135,7 +14135,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tertiary-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14166,7 +14166,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tertiary-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14197,7 +14197,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tertiary-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14225,7 +14225,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tertiary-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14253,7 +14253,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tertiary-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14283,7 +14283,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tertiary-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14311,7 +14311,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tertiary-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14342,7 +14342,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-default-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14373,7 +14373,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-default-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14404,7 +14404,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-default-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14435,7 +14435,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-hover-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14466,7 +14466,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-hover-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14497,7 +14497,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-hover-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14528,7 +14528,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-active-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14559,7 +14559,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-active-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14590,7 +14590,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-active-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14621,7 +14621,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-disabled-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14651,7 +14651,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-disabled-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14682,7 +14682,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-action-neutral-tonal-disabled-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.generated.json"
@@ -14740,7 +14740,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-bg-neutral-soft)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -14770,7 +14770,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-text-neutral-strong)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -14829,7 +14829,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-border-neutral-subtle)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -14887,7 +14887,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-border-neutral-strong-default)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -14916,7 +14916,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-focus-ring)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -14944,7 +14944,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-overlay-neutral-stronger)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -14974,7 +14974,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-button-primary-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.json"
@@ -15004,7 +15004,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-button-primary-bgHover)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.json"
@@ -15035,7 +15035,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-button-primary-text)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.json"
@@ -15065,7 +15065,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-button-radius)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.json"
@@ -15093,7 +15093,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-card-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.json"
@@ -15121,7 +15121,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-card-border)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.json"
@@ -15151,7 +15151,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-card-radius)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.json"
@@ -15179,7 +15179,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-cmp-badge-beta-bg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.json"
