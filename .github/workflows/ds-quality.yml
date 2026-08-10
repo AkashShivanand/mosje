@@ -59,6 +59,19 @@ jobs:
       - name: Storybook coverage — every exported component needs a story
         run: node scripts/check-storybook-coverage.mjs
 
+      # Coverage only asks whether a story EXISTS. These two ask whether it is
+      # still true: parity catches a prop added with no story mentioning it and
+      # a story left behind by a rename or deletion; the smoke test mounts every
+      # story in Chromium and fails on a thrown error or an empty canvas.
+      - name: Storybook parity — props exercised, no stale references
+        run: node scripts/check-storybook-parity.mjs
+
+      - name: Install Chromium for the Storybook smoke test
+        run: npx playwright install --with-deps chromium
+
+      - name: Storybook smoke — every story must actually render
+        run: node scripts/smoke-storybook.mjs
+
       - name: Typecheck design-system
         run: npm run typecheck -w @mosje/design-system
 

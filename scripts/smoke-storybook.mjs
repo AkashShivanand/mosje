@@ -154,6 +154,11 @@ try {
           if (child === root) continue;
           if (child.id === "storybook-docs") continue;
           if (["SCRIPT", "STYLE", "LINK", "TEMPLATE"].includes(child.tagName)) continue;
+          // Storybook's own chrome — the error display, the "no preview" panel
+          // and the loader — is always in the markup, hidden. Counting it would
+          // make every empty canvas look populated, which is the one thing this
+          // check exists to catch.
+          if ([...child.classList].some((c) => c.startsWith("sb-"))) continue;
           roots.push(child);
         }
         return roots.reduce(

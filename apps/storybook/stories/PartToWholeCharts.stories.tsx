@@ -92,7 +92,12 @@ export const Donut: Story = {
   ),
 };
 
-/** A custom centre, when the headline is not simply the sum. */
+/**
+ * A custom centre, when the headline is not simply the sum — and a
+ * `valueFormat`, which controls how every figure in the tooltips and the
+ * screen-reader table is rendered. Amounts in lakh need the unit; a bare
+ * `84,200` reads as a count.
+ */
 export const DonutWithCustomCentre: Story = {
   render: () => (
     <DonutChart
@@ -102,6 +107,7 @@ export const DonutWithCustomCentre: Story = {
         { label: "Grants-in-Aid", value: 46_800 },
         { label: "Hostels", value: 31_500 },
       ]}
+      valueFormat={(v) => `₹${(v / 100).toFixed(1)} cr`}
       center="₹1,625 cr"
       centerSub="released this year"
     />

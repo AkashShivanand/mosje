@@ -50,24 +50,28 @@ review. Treat docs/tokens/Figma drift as a defect, not a follow-up.
 
 ## Storybook must track the design system (enforced in CI)
 
-**Every component exported from `packages/design-system/index.ts` has a story.**
-Storybook is what BAs, QAs and designers open instead of reading source — it is
-only useful if it reflects what actually ships. It had drifted to 2 of ~69
-components because nothing checked.
+**Every component exported from `packages/design-system/index.ts` has a story,
+that story still describes the component, and it actually renders.** Storybook
+is what BAs, QAs and designers open instead of reading source — it is only
+useful if it reflects what ships. It had drifted to 2 of ~69 components because
+nothing checked.
 
-`scripts/check-storybook-coverage.mjs` fails **Design System Quality** when an
-exported component has no story. It is a **ratchet**, not a demand for 100%
-today:
+Three gates in **Design System Quality** enforce that, because "has a story" is
+only the first of three ways it goes wrong.
+
+### 1. Coverage — does a story exist? (`npm run check:storybook`)
+
+`scripts/check-storybook-coverage.mjs`. A **ratchet**:
 
 - A component with no story fails — *unless* it is listed in
   `apps/storybook/coverage-baseline.json` as pre-existing debt.
 - A baseline entry that now **has** a story also fails, telling you to delete
   the line. That is what stops the backlog growing back.
 
-So coverage can only improve. Adding a component without a story is blocked;
-paying off debt tightens the gate automatically.
+**The backlog is now empty and coverage is 69/69** (August 2026). The baseline
+still exists, but there is nothing in it: a new component without a story fails
+outright. Do not add entries to it to get a build green.
 
-- Run it locally with `npm run check:storybook`.
 - After writing a story, `npm run check:storybook:baseline` prunes the entry.
 - One file may document several components (`Controls.stories.tsx` covers the
   selection controls) — declare them with `@covers A, B, C` in the file's
@@ -77,6 +81,56 @@ paying off debt tightens the gate automatically.
 - Something that genuinely cannot have a story (a context provider, the
   CDN-loaded UX4G widget) goes in `NOT_COMPONENTS` in the script, **with a
   reason**. Sub-parts shown inside a parent's story go in `DOCUMENTED_BY`.
+
+### 2. Parity — is the story still true? (`npm run check:storybook:parity`)
+
+`scripts/check-storybook-parity.mjs`. Coverage cannot see what happens *after* a
+story is written, so this closes two gaps:
+
+- **A prop added that no story mentions.** The gate stays green while the
+  documentation quietly stops being complete. Props are read from the
+  design-system **source** (the package ships TypeScript directly, so there are
+  no `.d.ts` files); native HTML attributes inherited from React are out of
+  scope, as are `className`/`style`/`key`/`ref`.
+- **A story left behind by a rename or deletion**, still documenting an export
+  the barrel no longer has. That is worse than a missing story — a reviewer
+  reads it and believes it.
+
+"Mentions" is the bar deliberately: a prop explained in the file's doc comment
+counts, because "here is when NOT to use this" is often the right guidance. What
+it catches is the prop that exists in the component and nowhere else.
+
+### 3. Smoke — does it render? (`npm run check:storybook:smoke`)
+
+`scripts/smoke-storybook.mjs` mounts **every** story in Chromium and fails on an
+uncaught error, a console error, or an **empty canvas**. A story that satisfies
+the counter but throws in the canvas is worse than no story, because the gate
+then reports green while the documentation is blank.
+
+It uses the Playwright already installed for `test:e2e` rather than
+`@storybook/test-runner`, which would add Jest and a second Playwright pin for
+what is one page visit per story. Portalled components (Modal, SideSheet,
+Lightbox, Tooltip) leave `#storybook-root` empty by design, so the canvas check
+counts portalled subtrees on `<body>` too — while skipping Storybook's own
+`sb-*` chrome, which is always in the markup and would otherwise make every
+empty canvas look populated.
+
+### Writing a story
+
+Follow `Alert.stories.tsx` and `Controls.stories.tsx`.
+
+- **Read the props interface first.** Several components take required
+  controlled props (`Checkbox`/`Radio`/`Toggle` need `checked` + `onChange`;
+  `Radio` also needs `name` + `value`). Guessing produces stories that render
+  empty or throw.
+- **Use real MoSJE content** — scheme names, districts, beneficiary counts. Not
+  "Lorem ipsum", not "Foo/Bar". Reviewers judge the component by what it holds.
+- A `Playground` story with `argTypes` controls, then focused stories for the
+  states that carry meaning (statuses, sizes, invalid, disabled, empty).
+- **The doc comment says when to use it and when not to** — the distinction that
+  saves someone choosing wrong, not a restatement of the prop table. Where the
+  wrong choice is the common one, render it beside the right one so the failure
+  is visible rather than described.
 
 **When you add or change a component, the story is part of the change**, in the
 same commit — exactly like `design.md` and the changelog.

@@ -24,6 +24,19 @@ import { Button, SiteHeader } from "@mosje/design-system";
  * Two standing estate rules apply here: the logo is the **National Emblem**,
  * never an invented mark, and there is **no tricolour stripe** in the chrome.
  *
+ * The accessibility bar carries three things worth setting deliberately:
+ *
+ * - **`skipTo`** is the skip-link target, defaulting to `#main-content`. It is
+ *   only a WCAG 2.4.1 pass if that id **exists on the page** — a skip link that
+ *   lands nowhere is worse than none, because a keyboard user believes they
+ *   have moved.
+ * - **`accessibilityHref`** points at the accessibility statement, which GIGW
+ *   requires to be reachable from every page. **`onAccessibility`** overrides it
+ *   with a handler when the property opens a dialog instead; set one or the
+ *   other, not both.
+ * - **`language`** is the language selector. Give it an `onClick` only when the
+ *   property genuinely has another language to switch to.
+ *
  * Font-size and contrast controls deliberately do **not** live in the
  * accessibility bar — they duplicated the official UX4G widget, which is the
  * single canonical accessibility mechanism estate-wide.
@@ -218,6 +231,36 @@ export const WithSearch: Story = {
       />
     );
   },
+};
+
+/**
+ * The accessibility bar configured properly: a skip target that exists on the
+ * page, the GIGW-required statement link, and a language selector.
+ */
+export const AccessibilityBar: Story = {
+  render: (args) => (
+    <div>
+      <SiteHeader
+        {...args}
+        skipTo="#sb-main"
+        accessibilityHref="/accessibility-statement"
+        language={{ label: "English", onClick: () => {} }}
+      />
+      {/* The skip link is only a WCAG 2.4.1 pass because this id exists. */}
+      <main id="sb-main" tabIndex={-1} style={{ padding: 24, color: "var(--ds-ink)" }}>
+        Tab from the very top of the page: the first stop is “Skip to main content”, and
+        it lands here.
+      </main>
+    </div>
+  ),
+};
+
+/**
+ * `onAccessibility` instead of `accessibilityHref` — for a property that opens
+ * a dialog rather than navigating. Set one or the other, never both.
+ */
+export const AccessibilityAsADialog: Story = {
+  render: (args) => <SiteHeader {...args} onAccessibility={() => {}} />,
 };
 
 /**

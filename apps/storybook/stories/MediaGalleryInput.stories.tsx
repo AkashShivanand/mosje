@@ -23,6 +23,10 @@ import {
  * records. Do **not** use it where each photograph must carry coordinates —
  * that is `GeoPhotoInput`, which will not accept an untagged image silently.
  *
+ * Spread the `FormField` control props onto it. The `id` it passes lands on the
+ * add tile, so the label points at the thing the user actually operates rather
+ * than at the grid around it.
+ *
  * Lifecycle: **Stable**.
  */
 

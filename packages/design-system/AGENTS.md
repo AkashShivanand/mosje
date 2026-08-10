@@ -100,11 +100,21 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
 
 ## Before you finish
 
-- **Wrote or changed a component? Write its story in the same commit.**
-  `npm run check:storybook` fails the build for any export without one. It is a
-  ratchet — `apps/storybook/coverage-baseline.json` records pre-existing debt,
-  and an entry that now has a story must be removed from it
-  (`npm run check:storybook:baseline`). See `.claude/rules/design-system.md`.
+- **Wrote or changed a component? Write or update its story in the same commit.**
+  Three gates enforce this, and they fail for different reasons — run all three:
+  - `npm run check:storybook` — every export has a story. Coverage is **69/69
+    and `apps/storybook/coverage-baseline.json` is empty**, so a new component
+    without a story fails outright. Do not add a baseline entry to go green.
+  - `npm run check:storybook:parity` — every prop is mentioned by a story, and
+    no story references an export the barrel no longer has. **Adding a prop
+    means updating the story**; renaming or deleting a component means updating
+    or deleting its story.
+  - `npm run check:storybook:smoke` — every story actually renders. Catches a
+    story that throws or shows an empty canvas, which the counter cannot see.
+
+  Read the props interface before writing the story (several components take
+  required controlled props), use real MoSJE content, and make the doc comment
+  say when **not** to use the component. See `.claude/rules/design-system.md`.
 - `npm test -w @mosje/tokens` passes (token contract intact).
 - Consuming apps still build.
 - Review with the `design-system-guardian` agent; audit pages with

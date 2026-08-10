@@ -9,6 +9,12 @@ import { FormField, PasswordInput } from "@mosje/design-system";
  *
  * Always pass `autoComplete`: `"current-password"` to sign in,
  * `"new-password"` to set one. Password managers key on it.
+ *
+ * `showLabel` and `hideLabel` are the reveal button's accessible names, and they
+ * default to "Show password" / "Hide password". Override them **only to
+ * translate**, and keep them naming the *action* rather than the state — a
+ * screen-reader user needs to hear what pressing the button will do, not what
+ * the field is currently doing.
  */
 const meta = {
   title: "Components/PasswordInput",
@@ -18,6 +24,8 @@ const meta = {
     invalid: { control: "boolean" },
     disabled: { control: "boolean" },
     hideToggle: { control: "boolean" },
+    showLabel: { control: "text" },
+    hideLabel: { control: "text" },
   },
 } satisfies Meta<typeof PasswordInput>;
 
@@ -49,3 +57,11 @@ export const Invalid: Story = {
 
 /** Degrades to a plain password field where a reveal would be inappropriate. */
 export const WithoutToggle: Story = { args: { hideToggle: true } };
+
+/**
+ * Translated reveal labels. Note both still name the **action** — "दिखाएँ" /
+ * "छिपाएँ" — rather than the current state.
+ */
+export const TranslatedRevealLabels: Story = {
+  args: { showLabel: "पासवर्ड दिखाएँ", hideLabel: "पासवर्ड छिपाएँ" },
+};
