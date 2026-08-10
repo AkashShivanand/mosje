@@ -5,26 +5,31 @@ import path from "node:path";
 const ZONE_DS          = process.env.ZONE_DS_URL          ?? "http://localhost:6006";
 
 /**
- * Storybook: proxied in dev, baked into this deployment in production.
- *
- * In DEV it stays a separate process on :6006 so stories hot-reload; the
- * proxy's own probe falls back to /zone-unavailable when it is not running.
- *
- * In PRODUCTION the hub's prebuild step builds Storybook straight into
- * public/storybook, so Vercel serves it as static files from this same
- * deployment. That is deliberate, and it is why there is no second Vercel
- * project any more:
+ * Storybook ships INSIDE this deployment: the hub's prebuild builds it into
+ * public/storybook, and Next serves it as static files. There is no second
+ * Vercel project, deliberately:
  *
  *  - It sits behind the site gate. Anything under public/ passes through the
  *    proxy, so /storybook inherits the password like every other route. A
  *    separate project's origin is a public URL nobody can gate.
- *  - Assets are served from the CDN rather than proxied through a function
- *    per request, which is what a rewrite to an external origin costs.
+ *  - Assets come off the CDN rather than being proxied through a function per
+ *    request, which is what a rewrite to an external origin costs.
  *  - One project, one deploy, one thing to keep alive.
  *
- * The prebuild step is non-fatal: if Storybook fails to build, the estate
- * still deploys and the check below routes /storybook to the explanation page
- * rather than a 404.
+ * Resolution order, the SAME in dev and production so /storybook behaves
+ * identically in both:
+ *
+ *   1. public/storybook exists  → serve it. Locally: `npm run build:storybook`.
+ *   2. dev, no static build     → proxy the live :6006 process, so a bare
+ *                                 `npm run dev` still works with hot reload.
+ *   3. prod, no static build    → the prebuild failed; explain, don't 404.
+ *
+ * Authoring stories? Run `npm run dev:storybook` and use localhost:6006
+ * directly for hot reload — once a static build exists it takes precedence at
+ * /storybook, and is only refreshed when you rebuild.
+ *
+ * The prebuild is non-fatal, so a Storybook break can never stop the estate
+ * deploying; case 3 catches it.
  */
 const IS_DEV = process.env.NODE_ENV !== "production";
 const STORYBOOK_STATIC_BUILT = fs.existsSync(
@@ -35,25 +40,26 @@ const STORYBOOK_UNAVAILABLE =
   "/zone-unavailable?zone=Storybook&cmd=npm+run+dev%3Astorybook&from=%2Fstorybook%2F";
 
 function storybookRewrites() {
-  // Dev: proxy the live :6006 process so stories hot-reload.
-  if (IS_DEV) {
-    return [
-      { source: "/storybook", destination: `${ZONE_DS}/` },
-      { source: "/storybook/:path*", destination: `${ZONE_DS}/:path*` },
-    ];
-  }
-  // Production with the static build present: Next serves public/storybook/*
-  // directly, so assets need no rewrite — and must not get one, or it would
-  // shadow them. The one gap is the directory index: Next resolves
-  // /storybook/index.html but NOT the bare /storybook/, which 404s. Map only
-  // those two exact paths.
+  // 1. Static build present — dev or production alike. Next serves
+  //    public/storybook/* directly, so assets need no rewrite and must not get
+  //    one, or it would shadow them. The only gap is the directory index: Next
+  //    resolves /storybook/index.html but NOT the bare /storybook/, which
+  //    404s. Map exactly those two paths and nothing else.
   if (STORYBOOK_STATIC_BUILT) {
     return [
       { source: "/storybook", destination: "/storybook/index.html" },
       { source: "/storybook/", destination: "/storybook/index.html" },
     ];
   }
-  // Production without it (the prebuild failed): explain rather than 404.
+  // 2. Dev without one — proxy the live :6006 process. The proxy's own probe
+  //    falls back to the explanation page when it is not running.
+  if (IS_DEV) {
+    return [
+      { source: "/storybook", destination: `${ZONE_DS}/` },
+      { source: "/storybook/:path*", destination: `${ZONE_DS}/:path*` },
+    ];
+  }
+  // 3. Production without one — the prebuild failed. Explain rather than 404.
   return [
     { source: "/storybook", destination: STORYBOOK_UNAVAILABLE },
     { source: "/storybook/:path*", destination: STORYBOOK_UNAVAILABLE },
@@ -62,6 +68,11 @@ function storybookRewrites() {
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // Told to the proxy so its dev zone-probe knows to leave /storybook alone
+  // when the static build is serving it. Without this the probe finds :6006
+  // down and rewrites to the "app not running" page, shadowing the very files
+  // Next was about to serve.
+  env: { STORYBOOK_STATIC: STORYBOOK_STATIC_BUILT ? "1" : "" },
   // Required for the one remaining zone (Storybook): prevents the hub from
   // stripping the trailing slash off /storybook/, which Storybook's relative
   // asset URLs depend on.

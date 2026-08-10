@@ -29,7 +29,14 @@ interface Zone {
 const base = (env: string | undefined, fallback: string) => env ?? fallback;
 
 const ZONES: Zone[] = [
-  { prefix: "/storybook",           probeUrl: base(process.env.ZONE_DS_URL,          "http://localhost:6006"),                                 label: "Storybook",      cmd: "npm run dev:storybook" },
+  // Only probed when Storybook is NOT already built into public/storybook. If
+  // it is, next.config serves those static files and this probe must stay out
+  // of the way — otherwise it finds :6006 down and rewrites to the "app not
+  // running" page, shadowing the files Next was about to serve. The flag is
+  // set in next.config, which is where the filesystem check lives.
+  ...(process.env.STORYBOOK_STATIC
+    ? []
+    : [{ prefix: "/storybook", probeUrl: base(process.env.ZONE_DS_URL, "http://localhost:6006"), label: "Storybook", cmd: "npm run dev:storybook" }]),
   // The DoSJE website migrated to a native hub route (apps/hub/src/app/website) —
   // no zone to proxy. Storybook is the last remaining child process.
   // scw migrated to a native hub route (apps/hub/src/app/portals/scw) — no zone to proxy.
