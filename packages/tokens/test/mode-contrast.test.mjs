@@ -81,12 +81,17 @@ test("every colour mode meets WCAG AA on the load-bearing pairings", () => {
   assert.deepEqual(failures, [], "\n" + failures.join("\n"));
 });
 
-test("every appearance theme meets WCAG AA on the load-bearing pairings", () => {
-  const failures = [];
-  for (const theme of ["light", "dark", "hc"]) {
-    const overrides = blockOf(tokensCss, `[data-theme="${theme}"]`);
-    assert.ok(overrides, `theme block missing: ${theme}`);
-    failures.push(...sweep(`theme:${theme}`, overrides));
-  }
-  assert.deepEqual(failures, [], "\n" + failures.join("\n"));
+test("the appearance axis stays removed — the widget owns dark and high contrast", () => {
+  // Removed 2026-08-10. The UX4G accessibility widget is the single canonical high-contrast and
+  // dark mechanism for the estate; it applies its own `.dark-mode` class to <html> and never reads
+  // `data-theme`, so this axis was a second, parallel mechanism nothing consumed. Emitting it again
+  // would reintroduce that confusion AND would need its own contrast sweep before it could ship.
+  // See docs/superpowers/records/2026-08-10-figma-theme-dark-hc-removed.md
+  const resurrected = ["dark", "hc"].filter((t) => blockOf(tokensCss, `[data-theme="${t}"]`));
+  assert.deepEqual(
+    resurrected,
+    [],
+    `[data-theme="${resurrected.join('"], [data-theme="')}"] is being emitted again. If the axis is ` +
+      `wanted back, restore the contrast sweep in the same change — do not ship an untested one.`,
+  );
 });

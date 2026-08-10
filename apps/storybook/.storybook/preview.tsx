@@ -17,22 +17,8 @@ export const globalTypes = {
       title: "Color mode",
       icon: "circlehollow",
       items: [
-        { value: "blue", title: "Blue · Light" },
-        { value: "navy", title: "Blue · Dark" },
-      ],
-      dynamicTitle: true,
-    },
-  },
-  theme: {
-    description: "Theme",
-    defaultValue: "light",
-    toolbar: {
-      title: "Theme",
-      icon: "paintbrush",
-      items: [
-        { value: "light", title: "Light" },
-        { value: "dark", title: "Dark" },
-        { value: "hc", title: "High contrast" },
+        { value: "blue", title: "Blue" },
+        { value: "navy", title: "Navy" },
       ],
       dynamicTitle: true,
     },
@@ -59,11 +45,10 @@ const preview: Preview = {
   },
   decorators: [
     (Story, context) => {
-      const { theme, density, colorMode } = context.globals;
+      const { density, colorMode } = context.globals;
       return (
         <div
           data-brand={colorMode}
-          data-theme={theme === "light" ? undefined : theme}
           data-density={density === "comfortable" ? undefined : density}
           style={{
             padding: 24,

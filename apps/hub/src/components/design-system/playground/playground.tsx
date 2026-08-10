@@ -21,7 +21,6 @@ interface PlaygroundProps {
 }
 
 export function Playground({ code: initialCode, controls = [], buildCode }: PlaygroundProps): React.JSX.Element {
-  const [theme, setTheme] = React.useState("light");
   const [density, setDensity] = React.useState("comfortable");
   const [rtl, setRtl] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
@@ -42,23 +41,17 @@ export function Playground({ code: initialCode, controls = [], buildCode }: Play
       setTimeout(() => setCopied(false), 1500);
     });
   };
-
-  // Always set an explicit appearance so the canvas previews the chosen theme
-  // independently of the page theme (light must be addressable to reset dark).
-  const dataTheme = theme === "hc" ? "hc" : theme === "dark" ? "dark" : "light";
   const dataDensity = density === "compact" ? "compact" : undefined;
 
   return (
     <div className="playground">
       <PlaygroundToolbar
-        theme={theme} onThemeChange={setTheme}
         density={density} onDensityChange={setDensity}
         rtl={rtl} onRtlChange={setRtl}
       />
       <LiveProvider code={code} scope={LIVE_SCOPE} noInline={false}>
         <div
           className="playground-canvas"
-          data-theme={dataTheme}
           data-density={dataDensity}
           dir={rtl ? "rtl" : undefined}
         >

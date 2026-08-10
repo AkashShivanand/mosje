@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 interface ChangeEntry {
-  kind: "Added" | "Changed" | "Fixed";
+  kind: "Added" | "Changed" | "Fixed" | "Removed";
   text: string;
 }
 
@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.11.4",
+    version: "v0.11.5",
     date: "2026-08-10",
     current: true,
+    changes: [
+      { kind: "Changed", text: "The appearance axis is gone. `data-theme` (light/dark/hc) no longer exists: Figma's Theme collection is single-mode and tokens.css emits no [data-theme] block at all. The UX4G accessibility widget is the estate's single canonical dark and high-contrast mechanism \u2014 it applies its own .dark-mode class to <html> and never read data-theme, so this was a second parallel mechanism nothing consumed. Removing it removes confusion, not capability" },
+      { kind: "Fixed", text: "Verified a true no-op: three selector contexts disappeared and ZERO tokens changed value in any surviving context. [data-theme=light] went too, correctly \u2014 it existed only to re-assert base values when returning from dark, and :root already holds them" },
+      { kind: "Removed", text: "Three switches that would now toggle nothing: the gate-chrome light/dark toggle, the design-system docs-header toggle and the playground theme control \u2014 plus both theme modules, the no-flash init script and the orphaned CSS. Storybook's theme picker is gone, and its brand labels are corrected from the pre-rename \u201cBlue \u00b7 Light\u201d / \u201cBlue \u00b7 Dark\u201d to \u201cBlue\u201d / \u201cNavy\u201d" },
+      { kind: "Fixed", text: "Figma alpha values: 33 were stored as 8-bit n/255 steps (0.47843137 = 122/255) while their siblings used clean percentages \u2014 one role, two conventions. All normalised to two decimals; RGB untouched, largest shift 0.16 percentage points. The other 156 fractional-looking alphas are NOT a defect \u2014 that is float32 storage, and rewriting them would change nothing" },
+      { kind: "Changed", text: "The obsolete contrast test was replaced rather than deleted: mode-contrast.test.mjs now asserts the axis STAYS removed, and says that if it is ever wanted back, the contrast sweep must return in the same change. Deleting it would have let a future re-add ship an untested accessibility mode" },
+    ],
+  },
+  {
+    version: "v0.11.4",
+    date: "2026-08-10",
     changes: [
       { kind: "Fixed", text: "The Figma exporter had a silent catch-all: anything under font/ that it did not recognise was filed as font-family/{name}. That labelled 13 px-valued numbers as font-family/size-100, font-family/lineHeight-100 and so on \u2014 a font-family folder full of sizes. font/size/* and font/lineHeight/* now map to font-size/ and line-height/, and the fallback THROWS instead of guessing. A catch-all that renames what it does not recognise is worse than a crash, because it ships" },
       { kind: "Added", text: "Figma library: created the 61 variables the code emitted but the library never had \u2014 Spacing 15 to 49 (the inline/stack/padding/section semantic scale) and Typography 79 to 106 (font families, the raw size and line-height scale, and the type/* role aliases). Literals are created before the aliases that reference them, and every variable gets an explicit scope rather than ALL_SCOPES" },
@@ -201,6 +212,9 @@ const KIND_COLOR: Record<ChangeEntry["kind"], string> = {
   Added: "var(--ds-success)",
   Changed: "var(--ds-info)",
   Fixed: "var(--ds-saffron)",
+  // Taking something away is worth its own badge: a reader scanning for "why did that control
+  // disappear" should not have to read a paragraph filed under "Changed" to find out.
+  Removed: "var(--ds-danger)",
 };
 
 export default function ChangelogPage(): React.JSX.Element {

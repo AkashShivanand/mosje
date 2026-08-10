@@ -3,7 +3,6 @@ import { Noto_Sans } from "next/font/google";
 import { ColorModeProvider, UX4GAccessibilityWidget } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import { ConditionalAppSwitcher } from "@/components/conditional-app-switcher";
-import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 // Material Symbols Rounded — the SAMAVESH icon system. Loaded ONCE here because
 // the hub is now the single app hosting every natively-mounted portal.
@@ -27,7 +26,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-IN" className={`${notoSans.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
       </head>
       {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject
           attributes onto <body> before React hydrates — benign, React-recommended. */}
