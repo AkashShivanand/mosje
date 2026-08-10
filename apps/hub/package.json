@@ -17,7 +17,7 @@
     "ingest:assets": "node scripts/ingest/index.mjs --assets-only",
     "test:ingest": "node --test \"scripts/ingest/**/*.test.mjs\"",
     "test": "node --test \"src/**/*.test.ts\"",
-    "build:storybook": "cd ../storybook && ../../node_modules/.bin/storybook build --output-dir ../hub/public/storybook --quiet",
+    "build:storybook": "cd ../storybook && (ls -d node_modules/.bin/storybook ../../node_modules/.bin/storybook 2>/dev/null || echo 'no storybook bin found') && npx --no-install storybook build --output-dir ../hub/public/storybook --quiet",
     "prebuild": "npm run build:storybook || echo '::warning:: Storybook build failed \u2014 /storybook will show the unavailable page'"
   },
   "dependencies": {

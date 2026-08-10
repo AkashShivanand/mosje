@@ -23,8 +23,10 @@ node_modules
 *.tsbuildinfo
 .turbo/
 
-# Storybook is a separate zone, not part of the hub build
-/apps/storybook/
+# apps/storybook IS uploaded: the hub's prebuild builds it into
+# public/storybook so it ships inside this deployment. Excluding it here is why
+# the build kept reporting "no storybook bin found" — the source was never
+# uploaded, so npm installed the workspace set minus Storybook's dependencies.
 
 # Test artifacts
 /test-results/
