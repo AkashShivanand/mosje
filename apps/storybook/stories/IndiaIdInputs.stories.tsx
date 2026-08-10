@@ -227,6 +227,14 @@ export const OtpVariants: Story = {
           <span style={{ color: "var(--ds-ink-muted)" }}>Disabled while resending</span>
           <OtpInput label="One-time password" value="" onValueChange={() => {}} disabled />
         </div>
+        <div style={{ display: "grid", gap: 6 }}>
+          <span style={{ color: "var(--ds-ink-muted)" }}>
+            <code>autoFocus</code> — right on a dedicated OTP screen, where the code is the
+            only thing to do. Wrong on a page with anything above it: it yanks a screen-reader
+            user past the heading that says what the code is for.
+          </span>
+          <OtpInput label="One-time password" value="" onValueChange={() => {}} autoFocus />
+        </div>
       </div>
     );
   },

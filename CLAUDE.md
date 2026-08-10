@@ -67,21 +67,27 @@ pm-ajay remains Tailwind-free by design — its MIS dashboard uses hand-rolled S
 
 Run inside the app folder (or via `npm --prefix <app>`):
 - `npm run dev` · `npm run build` · `npm run lint` · `npm run typecheck`
-- `npm run dev` (repo root) — boots the **two** processes that still exist: hub and Storybook.
-  **The whole estate is native inside the hub** — every portal, the website AND the docs. There is
-  no per-portal dev server, and no `dev:website` / `dev:docs` / `dev:smile` / `dev:pm-ajay` /
-  `dev:eutthan` / `dev:scw` / `dev:nmba` / `dev:nhapoa` / `dev:tg` script. `npm run dev:hub` alone
-  serves everything except Storybook.
+- `npm run dev` (repo root) — boots **one** process: the hub. That is the whole estate, Storybook
+  included. There is no per-portal dev server, and no `dev:website` / `dev:docs` / `dev:smile` /
+  `dev:pm-ajay` / `dev:eutthan` / `dev:scw` / `dev:nmba` / `dev:nhapoa` / `dev:tg` script.
 
 | Process | Port | Script | Reached at |
 |---------|------|--------|------------|
-| `apps/hub` — **the entire estate** | **3007** | `npm run dev:hub` | `/`, `/website`, `/design-system`, `/portals/<slug>`, `/reports/<slug>` |
-| `apps/storybook` | 6006 | `npm run dev:storybook` | `/storybook` (proxied — the ONLY remaining zone) |
+| `apps/hub` — **the entire estate** | **3007** | `npm run dev` | `/`, `/website`, `/design-system`, `/portals/<slug>`, `/reports/<slug>`, `/storybook` |
+| `apps/storybook` — **authoring only** | 6006 | `npm run dev:storybook` | `localhost:6006` directly |
 
-Dev servers are defined in `.claude/launch.json`. Storybook is the one irreducible child process:
-it is not a Next app, so it cannot be mounted natively. Everything else lives under
-`apps/hub/src/app/` — the website at `website/`, the docs at `design-system/`, and the portals at
-`portals/<slug>` (scw, nmba, nhapoa, tg, smile-admin, pm-ajay, eutthan-admin).
+**Storybook is served by the hub, in dev exactly as in production.** The hub's build compiles it
+into `apps/hub/public/storybook`, and `/storybook` serves those static files behind the site gate —
+there is no proxy and no second Vercel project. A `predev` hook builds it once if it is missing, so
+a fresh clone works with no extra step; `npm run build:storybook --prefix apps/hub` refreshes it.
+
+Run `npm run dev:storybook` **only to author stories** — it is Storybook's own dev server with hot
+reload, reached at `localhost:6006`. Note the static build takes precedence at `/storybook`, so
+edits do not appear there until you rebuild. Nobody who is only *reading* Storybook needs :6006.
+
+Dev servers are defined in `.claude/launch.json`. Everything else lives under `apps/hub/src/app/` —
+the website at `website/`, the docs at `design-system/`, and the portals at `portals/<slug>`
+(scw, nmba, nhapoa, tg, smile-admin, pm-ajay, eutthan-admin).
 `apps/dosje` and `apps/docs` no longer exist as apps.
 - Design tokens: `npm run build -w @mosje/tokens` (regenerate) · `npm test -w @mosje/tokens` (contract).
 

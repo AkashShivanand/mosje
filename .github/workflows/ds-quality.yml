@@ -8,7 +8,10 @@ on:
       - "apps/hub/src/app/design-system/resources/changelog/page.tsx"
       - "scripts/check-changelog-freshness.mjs"
       - "apps/storybook/**"
+      # Every script the job runs, so a change to a GATE re-runs the gate.
       - "scripts/check-storybook-coverage.mjs"
+      - "scripts/check-storybook-parity.mjs"
+      - "scripts/smoke-storybook.mjs"
       - ".stylelintrc.tokens.json"
       - ".github/workflows/ds-quality.yml"
   pull_request:
@@ -17,7 +20,10 @@ on:
       - "apps/hub/src/app/design-system/resources/changelog/page.tsx"
       - "scripts/check-changelog-freshness.mjs"
       - "apps/storybook/**"
+      # Every script the job runs, so a change to a GATE re-runs the gate.
       - "scripts/check-storybook-coverage.mjs"
+      - "scripts/check-storybook-parity.mjs"
+      - "scripts/smoke-storybook.mjs"
       - ".stylelintrc.tokens.json"
       - ".github/workflows/ds-quality.yml"
 
@@ -58,6 +64,27 @@ jobs:
 
       - name: Storybook coverage — every exported component needs a story
         run: node scripts/check-storybook-coverage.mjs
+
+      # Coverage only asks whether a story EXISTS. These two ask whether it is
+      # still true: parity catches a prop added with no story mentioning it and
+      # a story left behind by a rename or deletion; the smoke test mounts every
+      # story in Chromium and fails on a thrown error or an empty canvas.
+      - name: Storybook parity — props exercised, no stale references
+        run: node scripts/check-storybook-parity.mjs
+
+      # Storybook builds with esbuild, which strips types without checking them,
+      # so a story can ship a wrong prop value and still render. That is how a
+      # Badge went out with status="error" — not a member of BadgeStatus, so it
+      # emitted a class with no CSS rule and rendered untinted. Runs before the
+      # smoke test because it is seconds, not minutes.
+      - name: Typecheck Storybook stories
+        run: npm run typecheck --prefix apps/storybook
+
+      - name: Install Chromium for the Storybook smoke test
+        run: npx playwright install --with-deps chromium
+
+      - name: Storybook smoke — every story must actually render
+        run: node scripts/smoke-storybook.mjs
 
       - name: Typecheck design-system
         run: npm run typecheck -w @mosje/design-system

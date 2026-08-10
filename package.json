@@ -15,8 +15,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "kill-ports": "bash scripts/kill-dev-ports.sh",
-    "predev": "npm run kill-ports",
-    "dev": "concurrently --restart-tries 3 --restart-after 2000 --prefix-colors \"blue,cyan\" -n \"hub,storybook\" \"bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3007'\" \"bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006 --ci'\"",
+    "predev": "npm run kill-ports && npm run ensure:storybook",
+    "dev": "bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3007'",
     "dev:hub": "bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3007'",
     "dev:storybook": "bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006'",
     "check": "npm run check:hub",
@@ -29,7 +29,12 @@
     "ux4g:extract": "node tools/ux4g-conformance/extract-ux4g-tokens.mjs",
     "test": "npm test -w @mosje/design-system && npm test --prefix apps/hub",
     "check:storybook": "node scripts/check-storybook-coverage.mjs",
-    "check:storybook:baseline": "node scripts/check-storybook-coverage.mjs --update-baseline"
+    "check:storybook:parity": "node scripts/check-storybook-parity.mjs",
+    "check:storybook:types": "npm --prefix apps/storybook run typecheck",
+    "check:storybook:smoke": "node scripts/smoke-storybook.mjs",
+    "check:storybook:baseline": "node scripts/check-storybook-coverage.mjs --update-baseline",
+    "ensure:storybook": "node -e \"require('fs').existsSync('apps/hub/public/storybook/index.html')||(console.log('\u2022 building Storybook once into apps/hub/public/storybook\u2026'),process.exit(1))\" || npm run build:storybook --prefix apps/hub",
+    "predev:hub": "npm run ensure:storybook"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

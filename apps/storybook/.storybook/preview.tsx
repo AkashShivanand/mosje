@@ -4,6 +4,10 @@ import type { Preview } from "@storybook/react";
 // The generated token contract + all component styles.
 import "@mosje/design-system/tokens.css";
 import "@mosje/design-system/components.css";
+// Material Symbols Rounded. An app loads this once in its root layout; without
+// it every <Icon> renders its name as literal text, so any story using an icon
+// would look broken here rather than in the component.
+import "@mosje/design-system/icons.css";
 
 export const globalTypes = {
   colorMode: {

@@ -1,34 +1,3 @@
 {
-  "missing": [
-    "AccountMenu",
-    "AppSwitcher",
-    "AreaChart",
-    "BarChart",
-    "BrandLockup",
-    "ChartCard",
-    "ColorModeSwitcher",
-    "ComboChart",
-    "DashboardGrid",
-    "DemoFab",
-    "DonutChart",
-    "FilterBar",
-    "Footer",
-    "FunnelChart",
-    "Gauge",
-    "Heatmap",
-    "Icon",
-    "IndiaMap",
-    "KpiRow",
-    "Legend",
-    "LineChart",
-    "PieChart",
-    "PortalLoginShell",
-    "Progress",
-    "ScatterChart",
-    "SegmentedControl",
-    "SidebarNav",
-    "SiteHeader",
-    "Sparkline",
-    "Tabs"
-  ]
+  "missing": []
 }

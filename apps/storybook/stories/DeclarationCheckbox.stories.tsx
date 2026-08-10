@@ -19,6 +19,10 @@ import { DeclarationCheckbox } from "@mosje/design-system";
  * Put the points in a `<ul>` when the declaration covers several, so each is
  * separately readable rather than one wall of text.
  *
+ * `id` is generated for you and used to bind the statement, the error and the
+ * control together. Pass one only when an error summary elsewhere on the page
+ * needs to link straight to this checkbox.
+ *
  * Lifecycle: **Stable**.
  */
 const meta = {

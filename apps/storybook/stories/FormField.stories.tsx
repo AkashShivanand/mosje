@@ -5,10 +5,26 @@ import { FormField, Input, Textarea, Select } from "@mosje/design-system";
  * **FormField** — accessibly wires a label, hint, and error to any control via
  * `htmlFor` + `aria-describedby` + `aria-invalid` (+ `role="alert"` on errors).
  * Spread the render-prop wiring onto Input / Textarea / Select. Lifecycle: **Alpha**.
+ *
+ * `children` is a **render prop**, not a node: it receives the wiring object and
+ * you spread it onto the control. That is the whole design — the ids have to be
+ * generated before the control exists, so the field hands them to you rather
+ * than guessing at what you rendered.
+ *
+ * `id` is generated for you. Pass one only when something outside the field
+ * needs to point at the control — a "jump to the first error" link in an error
+ * summary, say. Two fields sharing an `id` silently mislabel one of them.
  */
 const meta = {
   title: "Components/FormField",
   component: FormField,
+  // `label` and `children` are required, and `children` is the render prop —
+  // so the default has to BE a function, not a node. Supplying both here keeps
+  // every story below free to compose its own field through `render`.
+  args: {
+    label: "Full name",
+    children: (c) => <Input {...c} placeholder="As printed on your Aadhaar" />,
+  },
 } satisfies Meta<typeof FormField>;
 
 export default meta;
