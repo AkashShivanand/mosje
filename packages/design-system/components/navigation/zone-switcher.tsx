@@ -38,8 +38,8 @@ export interface AppSwitcherProps {
  * handling, and the focus trap.
  *
  * Does not need a <ColorModeProvider> — it has no colour-mode UI of its own.
- * (A later task adds a `DemoDock` shell that renders the real
- * `ColorModeSwitcher` alongside this panel; that shell will need one.)
+ * (`DemoDock` is the shell that renders colour-mode swatches alongside this
+ * panel's content; it needs one.)
  * Uses plain <a href> links so navigation works from inside any basePath-ed zone.
  */
 export function AppSwitcher({

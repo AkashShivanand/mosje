@@ -17,7 +17,8 @@ export const metadata: Metadata = {
 // data-brand="navy" was nmba's own fixed brand ramp (the deep-navy
 // #003366 SAMAVESH identity). Its standalone layout set PORTAL_DEFAULT_MODE =
 // "navy" on <html> and primed the cookie in an init script; nmba renders no
-// ColorModeSwitcher, so it was never user-togglable — a fixed identity, exactly
+// colour-mode control of its own (DemoDock's shared Colour tab is the only
+// one, estate-wide), so it was never user-togglable — a fixed identity, exactly
 // like smile-admin. The estate default is blue-light, so without this attribute
 // nmba silently renders in the wrong brand ramp. Setting it on this closer
 // wrapper overrides the hub's html-level mode for nmba's subtree only.

@@ -34,9 +34,9 @@ export interface AppSwitcherPanelProps {
  * Renders the current-app indicator, the search box (`/` shortcut focuses it
  * while the panel is mounted), and the grouped destination list. Pure
  * content: no fixed positioning, no open/close state, and no colour-mode
- * handling — a shell (e.g. `AppSwitcher`) owns the floating chrome, and a
- * real `ColorModeSwitcher` supplies colour-mode controls alongside this
- * panel where needed.
+ * handling — a shell (e.g. `DemoDock`) owns the floating chrome and supplies
+ * colour-mode controls (via `useColorMode()`) alongside this panel where
+ * needed.
  *
  * Uses plain <a href> links so navigation works from inside any basePath-ed
  * zone.

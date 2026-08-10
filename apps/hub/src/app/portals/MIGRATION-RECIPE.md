@@ -136,8 +136,9 @@ that ref (`git cat-file -e "$REF:path"`) before concluding anything.
 recipe claimed "only smile-admin", and nmba's deep-navy ramp was silently lost as a result. Never
 assert which portals carry an attribute from memory; run the grep for EVERY portal. The tell is a
 `PORTAL_DEFAULT_MODE`/`DEFAULT_MODE` const feeding `<html data-color-mode={…}>` plus a cookie-priming
-init script — and if the portal renders no `ColorModeSwitcher` (`grep -rn ColorModeSwitcher`), the
-mode was a fixed brand identity, so hard-code it on the wrapper.)
+init script — and if the portal renders no colour-mode control of its own (no per-portal switcher
+exists anymore; DemoDock's shared Colour tab is the only one, estate-wide), the mode was a fixed
+brand identity, so hard-code it on the wrapper.)
 Also add **`data-portal="<slug>"`** to the same wrapper — it is what binds the portal's Tailwind
 palette to its subtree (see §5b). Verify after with a computed-CSS check in the browser.
 
