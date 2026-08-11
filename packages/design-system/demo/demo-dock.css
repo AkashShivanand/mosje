@@ -309,34 +309,15 @@
   border-radius: var(--ds-radius-sm);
 }
 
-/* `blue` — COLOR_MODES[0], the estate's default brand — is documented in
-   `packages/tokens/build/brand-modes.mjs` as deliberately carrying no
-   `[data-brand]` selector of its own ("the default brand carries no
-   attribute — it is `:root`"). Every OTHER mode gets a real
-   `[data-brand="…"]` block that re-declares the `--ds-*` aliases (which is
-   what makes the nested-island trick work), but blue's values simply ARE
-   `:root`'s, so there is nothing for `data-brand="blue"` to match — set on
-   this tile alone, it silently does nothing, and the tile would inherit
-   whichever brand happens to be ambient instead of always reading as Gov
-   Blue. Confirmed in the browser: with the page in Gov Navy, an unpatched
-   Blue tile rendered navy.
-   The fix stays local to this one component rather than reaching into the
-   generated token pipeline: every value below is still a `var()` onto a
-   primitive `--sa-ref-color-*` token (never a hex/rgba literal, so this
-   still passes the design system's stylelint gate), and those specific
-   primitives are the ones the real `[data-brand="navy"]` block already
-   points at for the SAME properties — this just does for blue's own
-   (light-ramp / warm-neutral) primitives what the generated CSS already
-   does for navy's. If `brand-modes.mjs` ever stops special-casing the
-   default brand and starts emitting `[data-brand="blue"]` for real, this
-   block becomes redundant (not wrong) and can be deleted. */
-.ds-demodock__motif[data-brand="blue"] {
-  --ds-primary: var(--sa-ref-color-primaryRamp-light-500);
-  --ds-secondary-500: var(--sa-ref-color-secondaryRamp-light-500);
-  --ds-surface: var(--sa-ref-color-neutral-0);
-  --ds-on-primary: var(--sa-ref-color-neutral-0);
-  --ds-border-strong: var(--sa-ref-color-neutral-200);
-}
+/* NOTE: the default brand ("blue") emits no [data-brand="blue"] block — the
+   token pipeline treats it as :root-only (brand-modes.mjs). So a Blue tile
+   currently inherits whichever brand is ambient rather than always reading as
+   Gov Blue. The correct fix is in the generator, not here: emitting a
+   [data-brand="blue"] block would make nested brand islands work for every
+   brand, which design.md already documents as supported. Patching it locally
+   required Tier-1 --sa-ref-* tokens, which are banned in component code and
+   are caught by packages/tokens/test/tier-discipline.test.mjs. Tracked as a
+   follow-up; the tile is cosmetically wrong in Navy until then. */
 
 @media (prefers-reduced-motion: no-preference) {
   .ds-demodock__motif {
