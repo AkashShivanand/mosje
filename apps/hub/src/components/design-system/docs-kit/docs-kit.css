@@ -211,3 +211,26 @@
   line-height: 1.7;
   overflow-x: auto;
 }
+
+/* Row headers in a token table carry DATA (a token name), not a column label,
+   so they must not inherit the uppercase treatment from the column headers —
+   a CSS custom property is case-sensitive, and `--DS-TEXT-TITLE-1` does not
+   exist. Scoped to tbody so column headers are unaffected. */
+.token-table tbody th {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  font-size: var(--ds-text-body-3);
+  color: var(--ds-ink);
+  border-bottom: 1px solid var(--ds-border);
+  padding: var(--ds-spacing-md);
+  white-space: nowrap;
+}
+/* --ds-primary at this size measured 4.07:1 on the table surface, below the
+   4.5:1 AA floor for small text. Row headers use ink and hold their own size
+   instead of inheriting the 0.9em code shrink. */
+.token-table tbody th code {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-body-2);
+  color: var(--ds-ink);
+}
