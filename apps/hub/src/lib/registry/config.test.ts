@@ -7,7 +7,7 @@
 import { test, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 
-import { DEFAULT_APPS } from "@mosje/design-system/registry";
+import { DEFAULT_APPS } from "@mosje/design-system/app-registry";
 import { resetSettingsCache, type StoreDeps } from "../settings/store.ts";
 import { blockedEntry, hiddenFrom, readRegistryConfig, registryFrom } from "./config.ts";
 

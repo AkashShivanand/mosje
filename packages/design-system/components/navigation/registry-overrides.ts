@@ -19,17 +19,23 @@
  *    edit to appear.
  */
 
-import {
-  DEFAULT_APPS,
-  PORTAL_CATEGORIES,
-  type AppEntry,
-  // Explicit extension: this module is exercised by `node --test`, which does
-  // not do extensionless ESM resolution the way the bundler does.
-} from "./app-switcher-utils.ts";
+/*
+ * Type-only, and deliberately so.
+ *
+ * Nothing in this module needs a runtime value from that one — every function
+ * takes the registry as a `base` parameter. A type-only import is erased
+ * before Node sees it, so this file has no relative runtime import at all,
+ * and therefore needs no explicit `.ts` extension.
+ *
+ * That matters beyond tidiness. An explicit extension forces
+ * `allowImportingTsExtensions` on every project that typechecks this package's
+ * source: apps/storybook hit exactly that, and the error named a compiler flag
+ * rather than the real problem. Callers that want `DEFAULT_APPS` itself take
+ * it from the `@mosje/design-system/app-registry` subpath, which is equally
+ * component-free and so equally safe to import from middleware.
+ */
+import type { AppEntry } from "./app-switcher-utils";
 
-// Re-exported so `@mosje/design-system/registry` is a single, component-free
-// entry point that middleware can import without dragging in React.
-export { DEFAULT_APPS, PORTAL_CATEGORIES };
 export type { AppEntry };
 
 /**

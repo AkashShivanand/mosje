@@ -13,7 +13,8 @@
     "./icons.css": "./icons.css",
     "./color-mode": "./foundations/color-mode.ts",
     "./cn": "./utils/cn.ts",
-    "./registry": "./components/navigation/registry-overrides.ts"
+    "./registry": "./components/navigation/registry-overrides.ts",
+    "./app-registry": "./components/navigation/app-switcher-utils.ts"
   },
   "files": [
     "index.ts",

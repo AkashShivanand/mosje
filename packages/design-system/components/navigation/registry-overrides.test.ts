@@ -2,7 +2,6 @@ import { strict as assert } from "node:assert";
 import { test } from "node:test";
 
 import {
-  DEFAULT_APPS,
   REGISTRY_CONFIG_MAX_BYTES,
   applyRegistryOverrides,
   bucketKey,
@@ -20,6 +19,7 @@ import {
   type RegistryRowInput,
   type RegistryStatus,
 } from "./registry-overrides.ts";
+import { DEFAULT_APPS } from "./app-switcher-utils.ts";
 
 /** A small stand-in registry, so ordering assertions do not depend on DEFAULT_APPS. */
 const BASE: AppEntry[] = [
