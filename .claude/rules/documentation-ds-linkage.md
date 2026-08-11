@@ -87,6 +87,48 @@ grep -nE '#[0-9a-fA-F]{3,6}|[0-9]+px' apps/hub/src/app/design-system --include=*
 
 Every hit must be inside a token definition or a documented specimen.
 
+## Bind by RESOLVED VALUE, not by name
+
+Binding is necessary but not sufficient: **a binding can be the wrong binding.** Semantic
+slot names describe prominence in product UI, and they do not mean what a documentation
+layout assumes they mean. Resolve the variable and compare it to the appearance you
+intend before you bind.
+
+This was learned by breaking the Typography page. Mapping the documentation palette to
+semantics that *sounded* right produced:
+
+| Intended | Bound to | Actually resolved to |
+|---|---|---|
+| `#ecf4ff` pale hero tint | `bg/brand/primary/subtle` | **`#95c2fb`** — a saturated blue hero |
+| `#0373df` pill | `bg/brand/primary/base` | **`#ecf4ff`** — near-white pill, unreadable |
+| `#eef0f3` panel | `bg/neutral/subtle` | **`#dcdee1`** |
+| `#1e2124` ink | `text/neutral/bolder` | **`#0e1114`** |
+| `#fef2f1` tint | `bg/status/error/subtle` | **`#ff9d8f`** — an alert, not a card |
+
+Every one of those was 100 % "linked" and 100 % wrong. The correct targets — verified by
+resolving each — were `bg/brand/primary/base`, `color/primaryScale/600`,
+`bg/neutral/subtler`, `text/neutral/base`.
+
+**Procedure:** resolve every candidate to a hex (following aliases to the end), pick the
+variable whose resolved value matches the intended appearance *and* whose name matches the
+intent, and only then bind. If nothing resolves to the intended value, the intended value
+was never a design-system colour — change the design, do not add a variable for it.
+
+### Restraint beats tint
+
+Where the system has no pale status tint, do not reach for the strongest one it does have.
+The `Colour` documentation page carries do/don't signals in a **coloured label and border on
+a neutral card** (`bg/neutral/subtler`, no status fill), and reserves `bg/status/*/subtler`
+for callouts that are meant to dominate. Typography now follows the same treatment. A
+tinted fill across a whole card or data row overwhelms the specimen it is meant to frame.
+
+### Do not flatten alignment in bulk
+
+Setting `counterAxisAlignItems` across every horizontal row at once destroyed the centring
+on eyebrow rows, role-plus-token rows and table rows. The reference page runs
+**MIN 74 / CENTER 5 / BASELINE 14** — mixed by intent. The working rule: a row whose
+children are all text (or text plus a pill) is **centred**; a row of cards is **top-aligned**.
+
 ## Why this rule exists
 
 The Typography documentation page was audited on **2026-08-11** and scored **1.0 %
