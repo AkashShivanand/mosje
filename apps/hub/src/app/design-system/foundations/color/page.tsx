@@ -1,31 +1,56 @@
 import type { Metadata } from "next";
 import { buttonClasses } from "@mosje/design-system";
-import {
-  ColorSwatchGrid,
-  TokenTable,
-  DoDont,
-  Callout,
-  A11yChecklist,
-} from "@/components/design-system/docs-kit/index";
+import { Callout, DoDont, A11yChecklist } from "@/components/design-system/docs-kit/index";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
+import { BrandSwitcher, LivePair } from "./color-live";
+import "./color.css";
+import {
+  META, SECTIONS, RAMPS, INK_PAIRS, RUNG_LEDGER, CHART, ALPHA, LAYERS, SLOT_COUNTS, RETIRED,
+} from "./color-data";
 
 export const metadata: Metadata = { title: "Color — Foundations" };
 
+/**
+ * DS Audit: Callout ✅ existing · DoDont ✅ existing · A11yChecklist ✅ existing ·
+ * ColorSwatchGrid ✅ existing (gained a `cssVar` prop so chips paint through their token
+ * instead of a literal) · BrandSwitcher/LivePair ➕ page-local client islands, because they
+ * depend on this page's generated data and have no second consumer yet.
+ *
+ * EVERY value on this page comes from ./color-data.ts, which is generated from
+ * packages/tokens/dist/tokens.css. Nothing here is typed by hand. The section order and titles
+ * mirror the Figma frame (FIGMA_NODES.color) and are gated by scripts/check-color-docs.mjs.
+ */
+
+const title = (id: string): string => SECTIONS.find((s) => s.id === id)?.title ?? id;
+
+function Section({ id, children }: { id: string; children: React.ReactNode }): React.JSX.Element {
+  return (
+    <section className="docs-section" aria-labelledby={id}>
+      <h2 id={id} className="docs-section__heading">{title(id)}</h2>
+      {children}
+    </section>
+  );
+}
+
 export default function ColorPage(): React.JSX.Element {
+  const allPairs = INK_PAIRS.flatMap((f) => f.rungs);
+  // Read the anchors out of the generated ramps. Typing them is how a page starts lying:
+  // the gate rejects a hex literal in this file for exactly that reason.
+  const primary = RAMPS.find((r) => r.name === "primaryScale");
+  const navyAnchor = primary?.steps.find((s) => s.anchor?.includes("navy"));
+  const saffronAnchor = RAMPS.find((r) => r.name === "secondaryScale")?.steps.find((s) => s.anchor);
+  const primaryBolder = allPairs.find((p) => p.bgToken === "bg/brand/primary/bolder");
+
   return (
     <>
-      {/* ── Page header ───────────────────────────────────────── */}
       <header className="docs-page-header">
         <div className="docs-page-header__text">
           <h1 className="docs-page-header__title">Color</h1>
           <p className="docs-page-header__desc">
-            Color in SAMAVESH is named by <strong>purpose</strong>, not by
-            appearance. A button is &ldquo;primary&rdquo; — it is not
-            &ldquo;blue.&rdquo; This lets the same screens adapt to light, dark,
-            and high-contrast modes without rewriting a single component. The
-            system is structured in three tiers — primitives, semantic tokens,
-            and component-level aliases — so a single change at the top flows
-            everywhere below.
+            Eight ramps, two brands, and {META.inkPairs} ink pairings chosen by measurement
+            rather than by eye. Every colour in SAMAVESH carries its own contrast number —
+            measured at build against its own surface, in the worst brand, and published into
+            the description of the variable you are about to use.
           </p>
           <div className="docs-page-header__actions">
             <a
@@ -34,1277 +59,557 @@ export default function ColorPage(): React.JSX.Element {
               target="_blank"
               rel="noreferrer noopener"
             >
-              Open color library in Figma <span aria-hidden="true">↗</span>
+              Open the colour library in Figma <span aria-hidden="true">↗</span>
             </a>
           </div>
         </div>
       </header>
 
-      {/* ── Section 1: How the system works ───────────────────── */}
-      <section className="docs-section">
-        <span className="docs-section__label">For everyone</span>
-        <h2 id="how-it-works" className="docs-section__heading">
-          How the system works
-        </h2>
-        <div className="docs-section__body ds-prose">
-          <p>
-            A <strong>color token</strong> is a nickname for a color that
-            describes the job it does — not the shade it happens to be. Instead
-            of telling a designer or developer to &ldquo;use the blue{" "}
-            <code>#0373df</code>,&rdquo; we say use <code>--sa-color-action-primary-default</code>:
-            the color for the main action on a page.
-          </p>
-          <p>
-            The system is built in <strong>three tiers</strong>:
-          </p>
-        </div>
-
-        {/* Three-tier diagram */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "var(--sa-stack-m)",
-            marginTop: "var(--sa-padding-l)",
-          }}
-        >
+      {/* ── At a glance ───────────────────────────────────────── */}
+      <Section id="hero">
+        <div className="color-stats">
           {[
-            {
-              tier: "1. Primitives",
-              subtitle: "Raw values",
-              desc: "The actual hex / rgba values in the palette ramps — primaryRamp, neutral, success-ramp, etc. These live in token JSON files and are never used directly in components.",
-              bg: "var(--sa-bg-neutral-subtler)",
-              border: "var(--sa-border-neutral-subtle)",
-            },
-            {
-              tier: "2. Semantic tokens",
-              subtitle: "--sa-* properties",
-              desc: "Purposeful names like --sa-color-action-primary-default, --sa-color-text-default, --sa-color-status-danger. These are what components consume. They point to a primitive, and that pointer changes per color mode.",
-              bg: "var(--sa-color-action-primary-tonal)",
-              border: "var(--sa-color-action-primary-default)",
-            },
-            {
-              tier: "3. Component aliases",
-              subtitle: "Button, Input, Badge…",
-              desc: "Component-scoped tokens (e.g. --btn-bg) that map onto semantic tokens. Changing a semantic token updates every component that uses it.",
-              bg: "var(--sa-bg-neutral-subtler)",
-              border: "var(--sa-border-neutral-subtle)",
-            },
-          ].map(({ tier, subtitle, desc, bg, border }) => (
-            <div
-              key={tier}
-              style={{
-                background: bg,
-                border: `1px solid ${border}`,
-                borderRadius: "var(--sa-shape-md)",
-                padding: "var(--sa-padding-l)",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: 700,
-                  color: "var(--sa-color-text-default)",
-                  margin: 0,
-                  fontSize: "var(--sa-type-body-1-size)",
-                }}
-              >
-                {tier}
-              </p>
-              <p
-                style={{
-                  color: "var(--sa-color-action-primary-default)",
-                  fontSize: "var(--sa-type-label-1-size)",
-                  margin: "var(--sa-stack-2xs) 0",
-                  fontFamily: "var(--sa-font-mono)",
-                  fontWeight: 600,
-                }}
-              >
-                {subtitle}
-              </p>
-              <p
-                style={{
-                  color: "var(--sa-color-text-muted)",
-                  fontSize: "var(--sa-type-body-2-size)",
-                  margin: 0,
-                }}
-              >
-                {desc}
-              </p>
+            [String(META.ramps), "ramps", "Seven chromatic at 11 steps, one neutral at 13."],
+            [String(META.brands), "brands", "Blue and Navy. Brand is the only colour axis."],
+            [String(META.rungs), "rungs", "subtler → boldest, UX4G's prominence ladder."],
+            [String(META.inkPairs), "ink pairs", `Worst measures ${META.worstInkPair}:1.`],
+            [String(META.belowAA), "AA shortfalls", "On every on/* pair, in both estate brands."],
+            [String(META.rungCaveats), "rung caveats", "Fills whose rung name overstates contrast."],
+          ].map(([n, label, note]) => (
+            <div key={label} className="color-stat">
+              <div className="color-stat__n">
+                {n} <span className="color-stat__label">{label}</span>
+              </div>
+              <p className="color-stat__note">{note}</p>
             </div>
           ))}
         </div>
+        <BrandSwitcher />
+      </Section>
 
-        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--sa-stack-l)" }}>
-          <p>
-            Tokens also respond to <strong>two theming axes</strong>:
-          </p>
-          <ul>
-            <li>
-              <strong>
-                <code>data-brand</code>
-              </strong>{" "}
-              (brand axis) — controls the brand palette: <code>blue-light</code>{" "}
-              (default across the estate) or <code>navy</code>. This is set
-              by <code>&lt;ColorModeProvider&gt;</code> and toggled via{" "}
-              <code>useColorMode()</code> — DemoDock&rsquo;s Colour tab is the
-              estate&rsquo;s shared control; there is no standalone switcher
-              component.
-            </li>
-            <li>
-              <strong>
-                <code>data-theme</code>
-              </strong>{" "}
-              (appearance axis) — controls light / dark / high-contrast rendering
-              within the active brand. This axis is planned for GIGW accessibility
-              profiles.
-            </li>
-          </ul>
-          <p>
-            Every token below begins with <code>--sa-</code> (SAMAVESH).
-            Read them as sentences: <code>--sa-color-status-danger</code> is &ldquo;the color
-            that signals danger,&rdquo; <code>--sa-border-neutral-subtle</code> is &ldquo;the
-            color we draw lines with.&rdquo;
-          </p>
-        </div>
-
-        <Callout type="tip" title="Rule of thumb">
-          If you are about to type a hex value into a design or stylesheet, stop
-          and find the token that means what you want. There is almost always one.
-          Use <code>var(--sa-color-action-primary-default)</code>, not <code>#0373df</code>.
-        </Callout>
-      </section>
-
-      {/* ── Section 2: Text colors ────────────────────────────── */}
-      <section className="docs-section">
-        <span className="docs-section__label">For designers</span>
-        <h2 id="text-colors" className="docs-section__heading">
-          Text colors
-        </h2>
-        <div className="docs-section__body ds-prose">
-          <p>
-            Five tokens cover every text role from maximum-emphasis headings down
-            to text on colored backgrounds. All five pass WCAG AA or better on
-            their intended backgrounds.
-          </p>
-        </div>
-        <ColorSwatchGrid
-          swatches={[
-            {
-              name: "Ink",
-              token: "--sa-color-text-default",
-              hex: "#1f2428",
-              contrastWith: "white",
-            },
-            {
-              name: "Ink strong",
-              token: "--sa-text-neutral-bolder",
-              hex: "#0d1014",
-              contrastWith: "white",
-            },
-            {
-              name: "Ink muted",
-              token: "--sa-color-text-muted",
-              hex: "#343a40",
-              contrastWith: "white",
-            },
-            {
-              name: "Ink info",
-              token: "--sa-color-text-info",
-              hex: "#1558b0",
-              contrastWith: "white",
-            },
-            {
-              name: "On primary",
-              token: "--sa-color-text-onPrimary",
-              hex: "#ffffff",
-              contrastWith: "black",
-            },
-          ]}
-        />
-        <div
-          style={{
-            marginTop: "var(--sa-padding-l)",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "var(--sa-stack-s)",
-          }}
-        >
-          {[
-            { token: "--sa-color-text-default", label: "Primary body text, all headings" },
-            { token: "--sa-text-neutral-bolder", label: "Maximum emphasis, pull quotes, key numbers" },
-            { token: "--sa-color-text-muted", label: "Secondary text, helper copy, captions" },
-            { token: "--sa-color-text-info", label: "Informational text, links in prose" },
-            { token: "--sa-color-text-onPrimary", label: "Text on primary-colored backgrounds" },
-          ].map(({ token, label }) => (
-            <div
-              key={token}
-              style={{
-                padding: "var(--sa-padding-m)",
-                background: "var(--sa-bg-neutral-subtler)",
-                borderRadius: "var(--sa-shape-sm)",
-                border: "1px solid var(--sa-border-neutral-subtle)",
-              }}
-            >
-              <code style={{ fontSize: "var(--sa-type-label-1-size)", color: "var(--sa-color-action-primary-default)", display: "block", marginBottom: "var(--sa-stack-2xs)" }}>
-                {token}
-              </code>
-              <span style={{ fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)" }}>
-                {label}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Section 3: Surfaces & borders ────────────────────── */}
-      <section className="docs-section">
-        <span className="docs-section__label">For designers</span>
-        <h2 id="surfaces-borders" className="docs-section__heading">
-          Surfaces &amp; borders
-        </h2>
-        <div className="docs-section__body ds-prose">
-          <p>
-            Surfaces are the backgrounds that hold content; borders structure and
-            separate. The subtle-to-strong border split means you can choose how
-            loudly a divider speaks.
-          </p>
-        </div>
-        <ColorSwatchGrid
-          swatches={[
-            {
-              name: "Surface",
-              token: "--sa-bg-neutral-base",
-              hex: "#ffffff",
-              contrastWith: "black",
-            },
-            {
-              name: "Surface muted",
-              token: "--sa-bg-neutral-subtler",
-              hex: "#f8f9fa",
-              contrastWith: "black",
-            },
-            {
-              name: "Border (subtle)",
-              token: "--sa-border-neutral-subtle",
-              hex: "#f1f3f5",
-              contrastWith: "black",
-            },
-            {
-              name: "Border strong",
-              token: "--sa-border-neutral-base",
-              hex: "#e2e6ea",
-              contrastWith: "black",
-            },
-          ]}
-        />
-        <Callout type="info" title="Overlay">
-          <code>--sa-overlay-neutral-boldest</code> (<code>rgba(31,36,40,0.5)</code>) is used for
-          modal backdrops and drawer scrims. It is intentionally semi-transparent
-          so context remains visible behind it.
-        </Callout>
-      </section>
-
-      {/* ── Section 4: Action & interactive ──────────────────── */}
-      <section className="docs-section">
-        <span className="docs-section__label">For designers</span>
-        <h2 id="action-interactive" className="docs-section__heading">
-          Action &amp; interactive
-        </h2>
-        <div className="docs-section__body ds-prose">
-          <p>
-            The primary blue and its companion tokens cover every interactive
-            state: default, hover/pressed, tonal background, focus ring, and
-            in-prose links.
-          </p>
-        </div>
-        <ColorSwatchGrid
-          swatches={[
-            {
-              name: "Primary",
-              token: "--sa-color-action-primary-default",
-              hex: "#0373df",
-              contrastWith: "white",
-            },
-            {
-              name: "Primary hover",
-              token: "--sa-color-action-primary-hover",
-              hex: "#014b92",
-              contrastWith: "white",
-            },
-            {
-              name: "Primary tonal",
-              token: "--sa-color-action-primary-tonal",
-              hex: "#c6dcf9",
-              contrastWith: "black",
-            },
-            {
-              name: "Link",
-              token: "--sa-text-link-brand-default",
-              hex: "#0373df",
-              contrastWith: "white",
-            },
-          ]}
-        />
-
-        {/* Primary ramp */}
-        <div style={{ marginTop: "var(--sa-stack-l)" }}>
-          <p
-            style={{
-              fontSize: "var(--sa-type-body-2-size)",
-              fontWeight: 600,
-              color: "var(--sa-color-text-muted)",
-              textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              marginBottom: "var(--sa-stack-s)",
-            }}
-          >
-            Primary ramp — <code style={{ textTransform: "none" }}>--sa-color-primaryScale-50</code> through{" "}
-            <code style={{ textTransform: "none" }}>--sa-color-primaryScale-900</code>
-          </p>
-          <div
-            style={{
-              display: "flex",
-              borderRadius: "var(--sa-shape-md)",
-              overflow: "hidden",
-              height: 48,
-            }}
-          >
+      {/* ── Anatomy ───────────────────────────────────────────── */}
+      <Section id="anatomy">
+        <p className="docs-lede">
+          Every semantic colour name answers three questions in order: what are you colouring,
+          what does it mean, and how loud should it be. Learn the grammar once and you can
+          construct the token you need instead of hunting for it.
+        </p>
+        <div className="color-anatomy">
+          <code className="color-anatomy__name">
+            <span data-part="slot">bg</span>/<span data-part="family">status/error</span>/
+            <span data-part="prominence">bolder</span>
+          </code>
+          <div className="color-anatomy__legend">
             {[
-              { stop: "50",  hex: "#e8f2fd" },
-              { stop: "100", hex: "#c6dcf9" },
-              { stop: "200", hex: "#94bff5" },
-              { stop: "300", hex: "#5fa0ef" },
-              { stop: "400", hex: "#2d84e8" },
-              { stop: "500", hex: "#0373df" },
-              { stop: "600", hex: "#025fb8" },
-              { stop: "700", hex: "#014b92" },
-              { stop: "800", hex: "#01376b" },
-              { stop: "900", hex: "#002448" },
-            ].map(({ stop, hex }) => (
-              <div
-                key={stop}
-                style={{ flex: 1, background: hex, position: "relative" }}
-                title={`--sa-color-primaryScale-${stop}: ${hex}`}
-              />
-            ))}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              marginTop: "var(--sa-stack-2xs)",
-            }}
-          >
-            {["50", "100", "200", "300", "400", "500", "600", "700", "800", "900"].map((stop) => (
-              <div
-                key={stop}
-                style={{
-                  flex: 1,
-                  textAlign: "center",
-                  fontSize: "10px",
-                  color: "var(--sa-color-text-muted)",
-                  fontFamily: "var(--sa-font-mono)",
-                }}
-              >
-                {stop}
+              ["SLOT", "bg", "What you are colouring. bg · text · border · icon · on · overlay · layer · focus — a slot means one thing only."],
+              ["FAMILY", "status / error", "What it means. neutral · brand (primary, secondary, accent) · status (success, error, warning, info)."],
+              ["PROMINENCE", "bolder", "How loud. subtler → subtle → base → bold → bolder → boldest. A prominence claim, not a contrast guarantee."],
+            ].map(([lab, val, note]) => (
+              <div key={lab} className="color-anatomy__part">
+                <span className="color-anatomy__part-label">{lab}</span>
+                <code>{val}</code>
+                <p>{note}</p>
               </div>
             ))}
           </div>
-          <p
-            style={{
-              marginTop: "var(--sa-stack-s)",
-              fontSize: "var(--sa-type-body-2-size)",
-              color: "var(--sa-color-text-muted)",
-            }}
-          >
-            The semantic token <code>--sa-color-action-primary-default</code> maps to ramp step 500
-            (#0373df). <code>--sa-color-action-primary-hover</code> maps to step 700
-            (#014b92). <code>--sa-color-action-primary-tonal</code> maps to step 100
-            (#c6dcf9). Use the ramp steps directly only in special cases (data
-            visualization, branded illustrations) — for all component work, use
-            the semantic tokens.
-          </p>
         </div>
-
-        <Callout type="tip" title="Focus ring">
-          <code>--sa-focus-ring</code> (<code>rgba(3,115,223,0.48)</code>) is the
-          color used for keyboard focus rings. It is semi-transparent so it adapts
-          gracefully over any background.
+        <Callout type="tip" title="One name, four places">
+          <code>bg/status/error/bolder</code> in Figma → <code>--sa-bg-status-error-bolder</code>{" "}
+          in CSS → the Palette rung it aliases → <code>on/bg/status/error/bolder</code>, the ink
+          measured for it. Bind the fill and the ink in the same edit; they are one decision.
         </Callout>
-      </section>
+      </Section>
 
-      {/* ── Section 5: Status colors ──────────────────────────── */}
-      <section className="docs-section">
-        <span className="docs-section__label">For designers</span>
-        <h2 id="status-colors" className="docs-section__heading">
-          Status colors
-        </h2>
-        <div className="docs-section__body ds-prose">
-          <p>
-            Status colors communicate the outcome of an action or the state of a
-            record. Every status token has a paired <strong>tonal</strong> token
-            for soft background use. Always pair status color with text or an
-            icon — color alone is never enough to convey meaning (a requirement
-            for both accessibility and GIGW compliance).
-          </p>
-        </div>
-
-        <ColorSwatchGrid
-          swatches={[
-            {
-              name: "Success",
-              token: "--sa-color-status-success",
-              hex: "#004220",
-              contrastWith: "white",
-            },
-            {
-              name: "Success tonal",
-              token: "--sa-color-status-successTonal",
-              hex: "#c8e6c9",
-              contrastWith: "black",
-            },
-            {
-              name: "Warning",
-              token: "--sa-color-status-warning",
-              hex: "#bb772b",
-              contrastWith: "white",
-            },
-            {
-              name: "Warning tonal",
-              token: "--sa-color-status-warningTonal",
-              hex: "#fff4e5",
-              contrastWith: "black",
-            },
-            {
-              name: "Danger",
-              token: "--sa-color-status-danger",
-              hex: "#ec5042",
-              contrastWith: "white",
-            },
-            {
-              name: "Danger tonal",
-              token: "--sa-color-status-dangerTonal",
-              hex: "#fad2cf",
-              contrastWith: "black",
-            },
-            {
-              name: "Info",
-              token: "--sa-color-status-info",
-              hex: "#1558b0",
-              contrastWith: "white",
-            },
-            {
-              name: "Info tonal",
-              token: "--sa-color-status-infoTonal",
-              hex: "#d2e3fc",
-              contrastWith: "black",
-            },
-          ]}
-        />
-
-        <Callout type="warning" title="Warning is amber, not yellow">
-          <strong>Warning</strong> (<code>--sa-color-status-warning</code>, <code>#bb772b</code>)
-          is a dark amber — deliberately distinct from the brand{" "}
-          <code>--sa-color-brand-yellow</code> (<code>#ffd323</code>), which is a
-          badge/identity accent and never a status colour. Use{" "}
-          <code>--sa-color-status-warningTonal</code> (<code>#fff4e5</code>) as the soft
-          background and <code>--sa-color-status-warning</code> (or <code>--sa-color-text-default</code>) for
-          text/icons on it.
-        </Callout>
-
-        <Callout type="info" title="Why info is not the same as primary">
-          The info semantic role uses a dedicated blue (#1558b0) that is
-          intentionally distinct from the brand primary (#0373df). Info messages
-          should feel neutral and informational; using the same blue as interactive
-          buttons creates confusion between &ldquo;do something&rdquo; and
-          &ldquo;here is information.&rdquo; The info blue achieves AAA contrast
-          (7.1:1) as text on white, while also mapping to the Portal DS&rsquo;s
-          established info palette.
-        </Callout>
-      </section>
-
-      {/* ── Section 6: Government brand layer ────────────────── */}
-      <section className="docs-section">
-        <span className="docs-section__label">For designers</span>
-        <h2 id="brand-layer" className="docs-section__heading">
-          Government brand layer
-        </h2>
-        <div className="docs-section__body ds-prose">
-          <p>
-            The saffron, navy, and yellow tokens are reserved for{" "}
-            <strong>identity moments and brand accents</strong> — not for everyday
-            interface chrome. A header accent strip, a featured badge, or a splash
-            illustration are appropriate uses; using saffron for body links or
-            warning states would break the semantic contract and confuse users.
-          </p>
-        </div>
-        <ColorSwatchGrid
-          swatches={[
-            {
-              name: "Saffron",
-              token: "--sa-color-brand-saffron",
-              hex: "#ff671f",
-              contrastWith: "white",
-            },
-            {
-              name: "Saffron light",
-              token: "--sa-color-brand-saffronLight",
-              hex: "#ffedd5",
-              contrastWith: "black",
-            },
-            {
-              name: "Saffron dark",
-              token: "--sa-color-brand-saffronDark",
-              hex: "#7c3503",
-              contrastWith: "white",
-            },
-            {
-              name: "Navy",
-              token: "--sa-color-brand-navy",
-              hex: "#162f6a",
-              contrastWith: "white",
-            },
-            {
-              name: "Government yellow",
-              token: "--sa-color-brand-yellow",
-              hex: "#ffd323",
-              contrastWith: "black",
-            },
-          ]}
-        />
-        <Callout type="tip" title="No tricolour stripe motif">
-          Do not arrange saffron, white, and green as a flag stripe in UI chrome
-          (headers, footers, dividers) — this is a standing rule for all MoSJE
-          properties. A single brand-token accent is appropriate; the flag
-          decoration is not.
-        </Callout>
-      </section>
-
-      {/* ── Section 7: Complete token reference ───────────────── */}
-      <section className="docs-section">
-        <span className="docs-section__label">For developers</span>
-        <h2 id="token-reference" className="docs-section__heading">
-          Complete token reference
-        </h2>
-        <div className="docs-section__body ds-prose">
-          <p>
-            All semantic color tokens, grouped by category. Use them via{" "}
-            <code>var(--sa-TOKEN)</code> in CSS. Never inline the raw hex — the
-            value updates automatically when the color mode changes.
-          </p>
-        </div>
-
-        {/* Text group */}
-        <h3
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
-            fontWeight: 600,
-            marginTop: "var(--sa-stack-l)",
-            marginBottom: "var(--sa-stack-xs)",
-            scrollMarginTop: "calc(56px + var(--sa-stack-l))",
-          }}
-        >
-          Text
-        </h3>
-        <TokenTable
-          tokens={[
-            {
-              token: "--sa-color-text-default",
-              value: "#1f2428",
-              description: "Primary body text and all headings",
-              isColor: true,
-            },
-            {
-              token: "--sa-text-neutral-bolder",
-              value: "#0d1014",
-              description: "Maximum emphasis — pull quotes, key numbers, critical labels",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-text-muted",
-              value: "#343a40",
-              description: "Secondary text, captions, helper copy",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-text-info",
-              value: "#1558b0",
-              description: "Informational text, links within prose paragraphs",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-text-onPrimary",
-              value: "#ffffff",
-              description: "Text and icons placed on --sa-color-action-primary-default backgrounds",
-              isColor: true,
-            },
-          ]}
-        />
-
-        {/* Surface & border group */}
-        <h3
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
-            fontWeight: 600,
-            marginTop: "var(--sa-stack-l)",
-            marginBottom: "var(--sa-stack-xs)",
-            scrollMarginTop: "calc(56px + var(--sa-stack-l))",
-          }}
-        >
-          Surface &amp; border
-        </h3>
-        <TokenTable
-          tokens={[
-            {
-              token: "--sa-bg-neutral-base",
-              value: "#ffffff",
-              description: "Default page and card background",
-              isColor: true,
-            },
-            {
-              token: "--sa-bg-neutral-subtler",
-              value: "#f8f9fa",
-              description: "Recessed sections, table stripes, input backgrounds",
-              isColor: true,
-            },
-            {
-              token: "--sa-border-neutral-subtle",
-              value: "#f1f3f5",
-              description: "Subtle dividing lines — separators, section dividers",
-              isColor: true,
-            },
-            {
-              token: "--sa-border-neutral-base",
-              value: "#e2e6ea",
-              description: "Higher-emphasis borders — input outlines, card edges",
-              isColor: true,
-            },
-            {
-              token: "--sa-overlay-neutral-boldest",
-              value: "rgba(31,36,40,0.5)",
-              description: "Modal backdrops and drawer scrims",
-              isColor: false,
-            },
-          ]}
-        />
-
-        {/* Action group */}
-        <h3
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
-            fontWeight: 600,
-            marginTop: "var(--sa-stack-l)",
-            marginBottom: "var(--sa-stack-xs)",
-            scrollMarginTop: "calc(56px + var(--sa-stack-l))",
-          }}
-        >
-          Action &amp; interactive
-        </h3>
-        <TokenTable
-          tokens={[
-            {
-              token: "--sa-color-action-primary-default",
-              value: "#0373df",
-              description: "Main interactive blue — primary buttons, active links",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-action-primary-hover",
-              value: "#014b92",
-              description: "Hover / pressed state for primary actions",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-action-primary-tonal",
-              value: "#c6dcf9",
-              description: "Soft tint behind selected items, info banners, badges",
-              isColor: true,
-            },
-            {
-              token: "--sa-focus-ring",
-              value: "rgba(3,115,223,0.48)",
-              description: "Focus ring color for keyboard navigation",
-              isColor: false,
-            },
-            {
-              token: "--sa-text-link-brand-default",
-              value: "#0373df",
-              description: "In-prose hyperlinks (same hue as primary, distinct semantic role)",
-              isColor: true,
-            },
-          ]}
-        />
-
-        {/* Status group */}
-        <h3
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
-            fontWeight: 600,
-            marginTop: "var(--sa-stack-l)",
-            marginBottom: "var(--sa-stack-xs)",
-            scrollMarginTop: "calc(56px + var(--sa-stack-l))",
-          }}
-        >
-          Status
-        </h3>
-        <TokenTable
-          tokens={[
-            {
-              token: "--sa-color-status-success",
-              value: "#004220",
-              description: "Positive outcomes, completed states",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-status-successTonal",
-              value: "#c8e6c9",
-              description: "Soft background for success banners, tags",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-status-warning",
-              value: "#bb772b",
-              description: "Caution — dark amber (not yellow); pair with --sa-color-status-warningTonal background",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-status-warningTonal",
-              value: "#fff4e5",
-              description: "Soft background for warning messages",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-status-danger",
-              value: "#ec5042",
-              description: "Errors, destructive actions, validation failures",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-status-dangerTonal",
-              value: "#fad2cf",
-              description: "Soft background for error banners, alert regions",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-status-info",
-              value: "#1558b0",
-              description: "Neutral informational messages — distinct from brand primary",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-status-infoTonal",
-              value: "#d2e3fc",
-              description: "Soft background for info banners and callouts",
-              isColor: true,
-            },
-          ]}
-        />
-
-        {/* Brand group */}
-        <h3
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
-            fontWeight: 600,
-            marginTop: "var(--sa-stack-l)",
-            marginBottom: "var(--sa-stack-xs)",
-            scrollMarginTop: "calc(56px + var(--sa-stack-l))",
-          }}
-        >
-          Brand
-        </h3>
-        <TokenTable
-          tokens={[
-            {
-              token: "--sa-color-brand-saffron",
-              value: "#ff671f",
-              description: "Identity accent — sparingly, for brand moments",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-brand-saffronLight",
-              value: "#ffedd5",
-              description: "Soft saffron tint for backgrounds and tonal uses",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-brand-saffronDark",
-              value: "#7c3503",
-              description: "Deep saffron for high-contrast text on light saffron surfaces",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-brand-navy",
-              value: "#162f6a",
-              description: "Deep brand navy — headers, emphasis bands",
-              isColor: true,
-            },
-            {
-              token: "--sa-color-brand-yellow",
-              value: "#ffd323",
-              description: "Government yellow — highlights, identity accents",
-              isColor: true,
-            },
-          ]}
-        />
-
-        {/* Full ramps & alpha tiers */}
-        <h3
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
-            fontWeight: 600,
-            marginTop: "var(--sa-stack-l)",
-            marginBottom: "var(--sa-stack-xs)",
-            scrollMarginTop: "calc(56px + var(--sa-stack-l))",
-          }}
-        >
-          Full colour ramps &amp; alpha tiers
-        </h3>
-        <div className="docs-section__body ds-prose">
-          <p>
-            Every family below is available as a full <strong>50–950 ramp</strong> (11 steps, matching UX4G 3.0),
-            synced 1:1 with the SAMAVESH Figma library. Use the single semantic
-            tokens above for normal component work; reach for a specific ramp step
-            only for tints, shades, charts, or illustrations.
-          </p>
-          <ul>
-            <li>
-              <code>--sa-color-primaryScale-50…900</code> &amp;{" "}
-              <code>--sa-color-secondaryScale-50…900</code> &amp;{" "}
-              <code>--sa-color-neutralScale-0…1100</code> — <strong>colour-mode-aware</strong>:
-              primary blue↔navy and neutral warm↔cool grey under <code>navy</code>.
-              Secondary and accent do NOT change — both are SAMAVESH logo colours.
-            </li>
-            <li>
-              <code>--sa-color-successScale-50…900</code>, <code>--sa-color-dangerScale-50…900</code>,{" "}
-              <code>--sa-color-warningScale-50…900</code>, <code>--sa-color-infoScale-50…900</code> —
-              mode-invariant (identical in both colour modes).
-            </li>
-            <li>
-              <strong>Alpha / transparent overlays</strong> (8/16/24/32/40/48%):{" "}
-              <code>--sa-color-transparent-&#123;primary,secondary,neutral,success,danger,warning,white&#125;-&#123;step&#125;</code>.
-              primary/secondary/neutral are mode-aware; success/danger/warning/white
-              are mode-invariant.
-            </li>
-          </ul>
-        </div>
-
-        <Callout type="tip" title="Using a token in code">
-          Wrap the token in <code>var()</code>:{" "}
-          <code>color: var(--sa-color-text-default); background: var(--sa-bg-neutral-base);</code>. The
-          value updates automatically when the color mode changes — no component
-          changes needed.
-        </Callout>
-      </section>
-
-      {/* ── Section 8: Color modes ────────────────────────────── */}
-      <section className="docs-section">
-        <span className="docs-section__label">For everyone</span>
-        <h2 id="color-modes" className="docs-section__heading">
-          Color modes
-        </h2>
-        <div className="docs-section__body ds-prose">
-          <p>
-            SAMAVESH has <strong>two independent axes</strong>.{" "}
-            <code>data-brand</code> (<code>blue</code> /{" "}
-            <code>navy</code>) are <strong>two peer brand colour modes</strong>,
-            mapped 1:1 to the SAMAVESH Figma <code>Blue - Light</code> /{" "}
-            <code>Navy</code> variable modes. <code>navy</code> is{" "}
-            <strong>not</strong> a dark UI theme — it keeps light surfaces and
-            swaps the primary ramp and the neutral greys — primary blue→navy —
-            and neutral greys warm→cool. The actual dark / high-contrast surfaces
-            live on the separate <code>data-theme</code> axis, and the two
-            compose.
-          </p>
-        </div>
-
-        {/* Mode axis diagram */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "var(--sa-stack-m)",
-            marginTop: "var(--sa-padding-l)",
-          }}
-        >
+      {/* ── Tiers ─────────────────────────────────────────────── */}
+      <Section id="tiers">
+        <div className="color-tiers">
           {[
-            {
-              axis: "data-brand",
-              label: "Brand colour mode",
-              modes: ["blue-light (default)", "navy", "+ extensible"],
-              desc: "Two peer colour modes (= Figma Blue/Navy). Swaps the PRIMARY ramp (blue↔navy, navy being the DBIM key colour #162f6a) and the neutral greys (warm↔cool), plus their transparent tiers. Secondary (India Saffron) and accent (India Green) are brand-INVARIANT — both come from the SAMAVESH logo. Toggle via ColorModeProvider + useColorMode() — DemoDock's Colour tab is the estate's shared control.",
-              color: "var(--sa-color-action-primary-tonal)",
-              border: "var(--sa-color-action-primary-default)",
-            },
-            {
-              axis: "data-theme",
-              label: "Appearance axis",
-              modes: ["light (default)", "dark (planned)", "high-contrast (GIGW)"],
-              desc: "Controls light / dark / hc rendering within the active brand. Planned for GIGW accessibility profiles.",
-              color: "var(--sa-bg-neutral-subtler)",
-              border: "var(--sa-border-neutral-base)",
-            },
-          ].map(({ axis, label, modes, desc, color, border }) => (
-            <div
-              key={axis}
-              style={{
-                background: color,
-                border: `1px solid ${border}`,
-                borderRadius: "var(--sa-shape-md)",
-                padding: "var(--sa-padding-l)",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: "var(--sa-type-label-1-size)",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  color: "var(--sa-color-text-muted)",
-                  margin: 0,
-                }}
-              >
-                {label}
-              </p>
-              <code
-                style={{
-                  display: "block",
-                  fontSize: "var(--sa-type-body-2-size)",
-                  color: "var(--sa-color-action-primary-default)",
-                  margin: "var(--sa-stack-2xs) 0 var(--sa-stack-s)",
-                  fontWeight: 600,
-                }}
-              >
-                {axis}
-              </code>
-              <ul style={{ margin: 0, paddingLeft: "var(--sa-stack-m)", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-default)" }}>
-                {modes.map((m) => (
-                  <li key={m} style={{ marginBottom: "var(--sa-stack-2xs)" }}>
-                    <code style={{ fontFamily: "var(--sa-font-mono)" }}>{m}</code>
-                  </li>
-                ))}
-              </ul>
-              <p
-                style={{
-                  marginTop: "var(--sa-stack-s)",
-                  fontSize: "var(--sa-type-body-2-size)",
-                  color: "var(--sa-color-text-muted)",
-                  margin: "var(--sa-stack-s) 0 0",
-                }}
-              >
-                {desc}
-              </p>
+            ["TIER 1 · REFERENCE", "--sa-ref-*", "The raw ramps. Banned in app code. A component bound to a ref value cannot follow the brand."],
+            ["TIER 2 · SYSTEM", "--sa-*", "This is the tier you use. Slot, family, prominence. It carries the contrast guarantee and follows the brand."],
+            ["TIER 3 · COMPONENT", "--sa-cmp-*", "Per-component overrides, for advanced work only — not a way to avoid learning Tier 2."],
+          ].map(([lab, prefix, note]) => (
+            <div key={lab} className="color-tier">
+              <span className="color-tier__label">{lab}</span>
+              <code className="color-tier__prefix">{prefix}</code>
+              <p>{note}</p>
             </div>
           ))}
         </div>
+        <p className="docs-note">
+          A token&rsquo;s tier comes from the file it is authored in, and{" "}
+          <code>ref</code>/<code>cmp</code> are reserved first segments. That is what keeps the
+          projection reversible for the Figma round-trip — the same name identifies the same
+          token in both places, which is why Tier 2 carries no marker and is the shortest to type.
+        </p>
+      </Section>
 
-        <Callout type="info" title="Why components never hardcode color">
-          Because a component reads <code>var(--sa-bg-neutral-base)</code> rather than{" "}
-          <code>#ffffff</code>, it becomes a dark panel the instant the mode
-          changes — with zero component changes. This is the single biggest
-          reason to always reach for a token.
+      {/* ── Ramps ─────────────────────────────────────────────── */}
+      <Section id="ramps">
+        <p className="docs-lede">
+          Every ramp is generated from an anchor, not hand-picked: each step 4–16 L* from the
+          last, monotonic, hue held within about 6°, chroma on a single arc peaking at the
+          anchor. Contrast below is against the page, by the WCAG 2.x formula.
+        </p>
+        {RAMPS.map((ramp) => (
+          <div key={ramp.name} className="color-ramp">
+            <div className="color-ramp__head">
+              <h3 className="color-ramp__name">{ramp.name}</h3>
+              <span className="color-ramp__meta">
+                {ramp.steps.length} steps ·{" "}
+                {ramp.brandVaries ? "repainted by a brand swap" : "brand-invariant"}
+              </span>
+            </div>
+            <div className="color-ramp__strip">
+              {ramp.steps.map((s) => (
+                <div key={s.step} className="color-ramp__cell">
+                  <div className="color-ramp__swatch" style={{ background: `var(${s.token})` }}
+                       data-anchor={s.anchor ? "true" : undefined} aria-hidden="true" />
+                  <span className="color-ramp__step">{s.step}</span>
+                  <span className="color-ramp__hex">{s.blue}</span>
+                  <span className="color-ramp__ratio">{s.onWhite?.toFixed(2)}:1</span>
+                  {s.anchor ? <span className="color-ramp__anchor">{s.anchor}</span> : null}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+        <Callout type="info" title="Where an anchor sits is decided by lightness, not convention">
+          <code>{navyAnchor?.navy}</code> is a shade, so it sits at rung {navyAnchor?.step};{" "}
+          <code>{saffronAnchor?.blue}</code> is light, so it sits at {saffronAnchor?.step}. Forcing an anchor to 500 pushes a neighbouring rung into the
+          dead zone — roughly L* 59–66 — where a fill is too dark for dark ink and too light for
+          white, and neither reaches 4.5:1. This was learned twice, expensively.
         </Callout>
-      </section>
+      </Section>
 
-      {/* ── Section 9: Do / Don't ─────────────────────────────── */}
-      <section className="docs-section">
-        <span className="docs-section__label">Guidance</span>
-        <h2 id="do-and-dont" className="docs-section__heading">
-          Do &amp; Don&rsquo;t
-        </h2>
-        <DoDont
-          cards={[
-            {
-              type: "do",
-              label:
-                "Use --sa-color-action-primary-default for the interactive blue. It adapts across modes and updates everywhere if the brand changes.",
-              preview: (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%",
-                  }}
-                >
-                  <span
-                    style={{
-                      background: "var(--sa-color-action-primary-default)",
-                      color: "var(--sa-color-text-onPrimary)",
-                      padding: "var(--sa-padding-xs) var(--sa-padding-m)",
-                      borderRadius: "var(--sa-shape-sm)",
-                      fontWeight: 600,
-                      fontSize: "var(--sa-type-body-2-size)",
-                    }}
-                  >
-                    Apply now
-                  </span>
-                </div>
-              ),
-            },
-            {
-              type: "dont",
-              label:
-                "Don't hardcode #0373df. It breaks dark mode, ignores theming, and can drift out of sync with the real brand value.",
-              preview: (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%",
-                  }}
-                >
-                  <span
-                    style={{
-                      background: "#0373df",
-                      color: "#fff",
-                      padding: "var(--sa-padding-xs) var(--sa-padding-m)",
-                      borderRadius: "var(--sa-shape-sm)",
-                      fontWeight: 600,
-                      fontSize: "var(--sa-type-body-2-size)",
-                      fontFamily: "var(--sa-font-mono)",
-                    }}
-                  >
-                    #0373df
-                  </span>
-                </div>
-              ),
-            },
-            {
-              type: "do",
-              label:
-                "Use --sa-color-status-info (not --sa-color-action-primary-default) for informational banners. The dedicated info blue signals 'here is information', not 'do something'.",
-              preview: (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "var(--sa-stack-xs)",
-                    padding: "var(--sa-padding-s)",
-                    background: "var(--sa-color-status-infoTonal)",
-                    borderRadius: "var(--sa-shape-sm)",
-                    border: "1px solid var(--sa-color-status-info)",
-                    color: "var(--sa-color-status-info)",
-                    fontSize: "var(--sa-type-body-2-size)",
-                    fontWeight: 600,
-                    width: "100%",
-                  }}
-                >
-                  <span aria-hidden="true">ℹ</span>
-                  Your application is under review.
-                </div>
-              ),
-            },
-            {
-              type: "dont",
-              label:
-                "Don't rely on color alone to signal status — colorblind users and screen readers will miss it.",
-              preview: (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "var(--sa-stack-s)",
-                    height: "100%",
-                  }}
-                >
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      width: 14,
-                      height: 14,
-                      borderRadius: "50%",
-                      background: "var(--sa-color-status-success)",
-                      display: "inline-block",
-                    }}
-                  />
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      width: 14,
-                      height: 14,
-                      borderRadius: "50%",
-                      background: "var(--sa-color-status-danger)",
-                      display: "inline-block",
-                    }}
-                  />
-                </div>
-              ),
-            },
-          ]}
-        />
-      </section>
-
-      {/* ── Section 10: Accessibility ─────────────────────────── */}
-      <section className="docs-section">
-        <span className="docs-section__label">Accessibility</span>
-        <h2 id="accessibility" className="docs-section__heading">
-          Accessibility
-        </h2>
-        <div className="docs-section__body ds-prose">
+      {/* ── Prominence ────────────────────────────────────────── */}
+      <Section id="prominence">
+        <p className="docs-lede">
+          SAMAVESH uses UX4G&rsquo;s prominence vocabulary, so a designer moving between the two
+          systems finds the same ladder. The rung says how much presence a fill should have —
+          and that is all it says.
+        </p>
+        <Callout type="warning" title="A rung name is a prominence claim, not a contrast guarantee">
           <p>
-            These are government properties: color choices must meet{" "}
-            <strong>WCAG 2.1 AA</strong> and GIGW. The token pairings below are
-            pre-verified with actual contrast ratios. Always re-verify any custom
-            combination with a contrast tool.
+            {META.rungCaveats} tokens measure below the class their rung implies. Almost all are
+            tonal <code>bg/*</code> chips, where the fill ladder&rsquo;s ≥3:1 is the wrong
+            requirement rather than the colour being wrong — a quiet chip is supposed to be
+            quiet. Choose a token by its measured number, never by how loud its name sounds.
           </p>
-        </div>
-
-        {/* Contrast ratio table */}
-        <div style={{ overflowX: "auto", marginTop: "var(--sa-padding-l)" }}>
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              fontSize: "var(--sa-type-body-2-size)",
-            }}
-          >
+          <table className="token-table">
+            <caption className="visually-hidden">
+              Tokens measuring below the contrast their prominence rung implies
+            </caption>
             <thead>
-              <tr style={{ borderBottom: "2px solid var(--sa-border-neutral-base)" }}>
-                <th
-                  style={{
-                    textAlign: "left",
-                    padding: "var(--sa-padding-xs) var(--sa-padding-s)",
-                    color: "var(--sa-color-text-muted)",
-                    fontWeight: 600,
-                  }}
-                >
-                  Token
-                </th>
-                <th
-                  style={{
-                    textAlign: "left",
-                    padding: "var(--sa-padding-xs) var(--sa-padding-s)",
-                    color: "var(--sa-color-text-muted)",
-                    fontWeight: 600,
-                  }}
-                >
-                  Value
-                </th>
-                <th
-                  style={{
-                    textAlign: "left",
-                    padding: "var(--sa-padding-xs) var(--sa-padding-s)",
-                    color: "var(--sa-color-text-muted)",
-                    fontWeight: 600,
-                  }}
-                >
-                  Contrast on white
-                </th>
-                <th
-                  style={{
-                    textAlign: "left",
-                    padding: "var(--sa-padding-xs) var(--sa-padding-s)",
-                    color: "var(--sa-color-text-muted)",
-                    fontWeight: 600,
-                  }}
-                >
-                  Level
-                </th>
-              </tr>
+              <tr><th scope="col">Token</th><th scope="col">Measured</th><th scope="col">Implied by rung</th></tr>
             </thead>
             <tbody>
-              {[
-                { token: "--sa-color-text-default", value: "#1f2428", ratio: "~16:1", level: "AAA", note: "" },
-                { token: "--sa-text-neutral-bolder", value: "#0d1014", ratio: "~21:1", level: "AAA", note: "" },
-                { token: "--sa-color-text-muted", value: "#343a40", ratio: "~10:1", level: "AAA", note: "" },
-                { token: "--sa-color-status-info / --sa-color-text-info", value: "#1558b0", ratio: "7.1:1", level: "AAA", note: "" },
-                { token: "--sa-color-status-success", value: "#004220", ratio: "11.67:1", level: "AAA", note: "" },
-                { token: "--sa-color-action-primary-default", value: "#0373df", ratio: "4.7:1", level: "AA ✓ (not AAA)", note: "Meets AA for text ≥ 18px or bold ≥ 14px" },
-                { token: "--sa-color-status-danger", value: "#ec5042", ratio: "3.5:1", level: "AA (large/UI only)", note: "Not for body text — use --sa-text-status-error-base (#b8382f, 5.8:1) for error text" },
-                { token: "--sa-color-status-warning", value: "#bb772b", ratio: "3.3:1", level: "AA (large/UI only)", note: "Dark amber. For text on white use a darker warning step (--sa-color-warningScale-700)" },
-              ].map(({ token, value, ratio, level, note }) => (
-                <tr key={token} style={{ borderBottom: "1px solid var(--sa-border-neutral-subtle)" }}>
-                  <td
-                    style={{
-                      padding: "var(--sa-padding-xs) var(--sa-padding-s)",
-                      fontFamily: "var(--sa-font-mono)",
-                      color: "var(--sa-color-action-primary-default)",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {token}
-                  </td>
-                  <td
-                    style={{
-                      padding: "var(--sa-padding-xs) var(--sa-padding-s)",
-                      fontFamily: "var(--sa-font-mono)",
-                      color: "var(--sa-color-text-muted)",
-                    }}
-                  >
-                    {value}
-                  </td>
-                  <td
-                    style={{
-                      padding: "var(--sa-padding-xs) var(--sa-padding-s)",
-                      fontWeight: 700,
-                      color: "var(--sa-color-text-default)",
-                    }}
-                  >
-                    {ratio}
-                  </td>
-                  <td
-                    style={{
-                      padding: "var(--sa-padding-xs) var(--sa-padding-s)",
-                      color: level.includes("Fails") ? "var(--sa-color-status-danger)" : level.includes("AAA") ? "var(--sa-color-status-success)" : "var(--sa-color-text-muted)",
-                      fontWeight: 600,
-                      fontSize: "var(--sa-type-label-1-size)",
-                    }}
-                  >
-                    {level}
-                    {note && (
-                      <span style={{ display: "block", fontWeight: 400, color: "var(--sa-color-text-muted)", fontSize: "11px", marginTop: 2 }}>
-                        {note}
-                      </span>
-                    )}
-                  </td>
+              {RUNG_LEDGER.map((l) => (
+                <tr key={l.token}>
+                  <th scope="row"><code>{l.token}</code></th>
+                  <td>{l.measured ? `${l.measured}:1` : "—"}</td>
+                  <td>{l.implied ? `≥${l.implied}:1 ("${l.rung}")` : "—"}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
+        </Callout>
+      </Section>
 
-        <A11yChecklist
-          items={[
-            {
-              criterion: "Body text contrast ≥ 4.5:1",
-              level: "AA",
-              description:
-                "--sa-color-text-default (#1f2428) on white achieves ~16:1; --sa-color-text-muted (#343a40) achieves ~10:1. Both are AAA.",
-            },
-            {
-              criterion: "Large text & UI contrast ≥ 3:1",
-              level: "AA",
-              description:
-                "Headings ≥ 24px and component boundaries (borders, focus rings) meet at least 3:1 against their background.",
-            },
-            {
-              criterion: "Color is never the only signal",
-              level: "A",
-              description:
-                "Every status uses an icon, label, or shape in addition to color so meaning is clear for colorblind users.",
-            },
-            {
-              criterion: "Visible focus indicator",
-              level: "AA",
-              description:
-                "Interactive elements show a --sa-focus-ring outline on keyboard focus with sufficient contrast and offset.",
-            },
-            {
-              criterion: "Dark / high-contrast parity",
-              level: "GIGW",
-              description:
-                "Every token pairing maintains its contrast ratio across all color modes, not just blue-light.",
-            },
+      {/* ── Ink pairings ──────────────────────────────────────── */}
+      <Section id="ink-pairings">
+        <p className="docs-lede">
+          For every fill there is exactly one foreground token, chosen by measuring the
+          candidates against that fill in the worst brand. Bind text to the <code>on/*</code>{" "}
+          token that matches the fill you used and the pairing cannot fail. Each chip below
+          renders its real pair, and the ratio is <strong>measured in your browser</strong> — not
+          printed from a table. Switch brands above and watch them move.
+        </p>
+        {INK_PAIRS.map((fam) => (
+          <div key={fam.family} className="color-pairs">
+            <h3 className="color-pairs__label">{fam.label}</h3>
+            <div className="color-pairs__row">
+              {fam.rungs.map((p) => (
+                <LivePair key={p.rung} bgToken={p.bgToken} onToken={p.onToken}
+                          rung={p.rung} expected={p.ratio} />
+              ))}
+            </div>
+          </div>
+        ))}
+        <p className="docs-note">
+          {allPairs.length} pairs, and the worst measures {META.worstInkPair}:1 — above the 4.5:1
+          AA floor for text, in both estate brands, with margin. That is not a design goal but a
+          build-time gate: <code>on-pair-contrast.test.mjs</code> fails the build if any pair
+          drops below, and its exemption list may only ever shrink.
+        </p>
+      </Section>
+
+      {/* ── Slots ─────────────────────────────────────────────── */}
+      <Section id="slots">
+        <p className="docs-lede">
+          The first segment of a token name says what part of the interface it colours. Slots do
+          not overlap — that disjointness is asserted by a test, so a border token can never
+          quietly become a fill.
+        </p>
+        <div className="color-slots">
+          {[
+            ["bg", "Filled surfaces: buttons, chips, banners, selected rows, page and card backgrounds."],
+            ["text", "Copy and numerals, including the link ladder — default, hover, active, visited, disabled."],
+            ["border", "Dividers, input outlines, table rules, and the edges of tonal containers."],
+            ["icon", "Glyph fills. Separate from text because an icon carries meaning at 3:1, not 4.5:1."],
+            ["on", "The foreground measured for a specific fill."],
+            ["layer", "Stacked surfaces and their matching borders — four depths."],
+            ["overlay", "Scrims behind modals and drawers."],
+            ["focus", "The focus ring: colour, width and offset."],
+            ["chart", "The data-visualisation palette."],
+          ].map(([slot, note]) => (
+            <div key={slot} className="color-slot">
+              <code className="color-slot__name">{slot}</code>
+              <span className="color-slot__count">
+                {(SLOT_COUNTS as Record<string, number>)[slot as string] ?? 0} tokens
+              </span>
+              <p>{note}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ── Status ────────────────────────────────────────────── */}
+      <Section id="status">
+        <p className="docs-lede">
+          Status colour tells someone what happened. It must never be the only thing that does
+          — WCAG 1.4.1 requires the meaning to survive without colour, and roughly one in twelve
+          men has a colour-vision deficiency.
+        </p>
+        <div className="color-status">
+          {[
+            ["success", "Something completed. Application submitted, record saved, payment released."],
+            ["error", "Something failed or will destroy data. Validation failure, rejection, delete confirmation."],
+            ["warning", "Amber, not yellow. Something needs attention before it becomes a problem."],
+            ["info", "Neutral context. Guidance, an explanatory note, a scheme eligibility hint."],
+          ].map(([name, note]) => (
+            <div key={name} className="color-status__card"
+                 style={{ background: `var(--sa-bg-status-${name}-subtler)` }}>
+              <div className="color-status__bar" style={{ background: `var(--sa-bg-status-${name}-bolder)` }} />
+              <div className="color-status__body">
+                <h3 style={{ color: `var(--sa-text-status-${name}-base)` }}>{name}</h3>
+                <p>{note}</p>
+                <code>{`bg/status/${name}/* · text · icon · border`}</code>
+              </div>
+            </div>
+          ))}
+        </div>
+        <Callout type="warning" title="Success and accent are the same green, on purpose">
+          One India Green for the estate rather than two that almost match. The union is recorded
+          and gated in <code>hue-separation.test.mjs</code>. The consequence to design around: a
+          success state and a brand accent cannot be told apart by colour, so where both can
+          appear together, separate them by shape, position and copy.
+        </Callout>
+      </Section>
+
+      {/* ── States ────────────────────────────────────────────── */}
+      <Section id="states">
+        <p className="docs-lede">
+          Every interaction state has its own token. Hover and active are not opacity tricks —
+          they are separate values, so they stay correct in every brand and under the
+          accessibility widget&rsquo;s high-contrast mode.
+        </p>
+        <div className="color-states">
+          {["default", "hover", "active", "visited", "disabled"].map((state) => (
+            <div key={state} className="color-state">
+              <a
+                className="color-state__link"
+                style={{
+                  color: `var(--sa-text-link-${state === "visited" ? "visited" : "brand"}-${
+                    state === "visited" ? "default" : state
+                  })`,
+                }}
+              >
+                Apply for this scheme
+              </a>
+              <span className="color-state__name">{state}</span>
+            </div>
+          ))}
+        </div>
+        <Callout type="tip" title="The focus ring is not optional">
+          <code>focus/ring</code> is a 48% alpha of the brand primary, rendered 2px wide and held
+          2px off the control. It is never removed for mouse users — GIGW requires a visible
+          focus indicator, and the ring must reach 3:1 against both the control and the page.
+        </Callout>
+      </Section>
+
+      {/* ── Layers ────────────────────────────────────────────── */}
+      <Section id="layers">
+        <p className="docs-lede">
+          Stacked surfaces come from a four-step layer ladder, each with a matching border token.
+          Raise a layer when content is genuinely nested; draw a border when it is merely
+          adjacent. The two together are why components stop reaching for a one-off grey.
+        </p>
+        <div className="color-layers">
+          {LAYERS.map((l) => (
+            <div key={l.depth} className="color-layer"
+                 style={{ background: `var(--sa-layer-${l.depth})`, borderColor: `var(--sa-layer-border-${l.depth})` }}>
+              <code>layer/{l.depth}</code> <span>{l.surface}</span>
+              <span className="color-layer__border">border {l.border}</span>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ── Neutrals & alpha ──────────────────────────────────── */}
+      <Section id="neutrals-alpha">
+        <p className="docs-lede">
+          The neutral ramp is deliberately tinted: its hue is locked to the brand&rsquo;s own
+          primary, with chroma on a single arc that falls to zero at both ends. That is why 0 is
+          exactly white and 1000 exactly black — the two achromatic values in the whole system.
+        </p>
+        {ALPHA.filter((a) => ["neutral", "primary", "white"].includes(a.family)).map((a) => (
+          <div key={a.family} className="color-alpha"
+               style={{ background: a.family === "white" ? "var(--sa-bg-brand-primary-bolder)" : "var(--sa-bg-neutral-subtle)" }}>
+            <code className="color-alpha__label"
+                  style={{ color: a.family === "white" ? "var(--sa-on-bg-brand-primary-bolder)" : "var(--sa-text-neutral-subtle)" }}>
+              transparent/{a.family}
+            </code>
+            {a.steps.map((s) => (
+              <div key={s.step} className="color-alpha__chip"
+                   style={{ background: `var(--sa-color-transparent-${a.family}-${s.step})` }}
+                   title={`${s.token} — ${s.value}`} />
+            ))}
+          </div>
+        ))}
+        <Callout type="warning" title="A translucent fill has no contrast of its own">
+          Its measured ratio depends on whatever sits behind it, so an alpha token can pass on
+          white and fail on a tonal chip. Use them for scrims, hover washes and focus rings —
+          never for the fill behind text you need to guarantee.
+        </Callout>
+        <p className="docs-note">
+          In practice the two brands&rsquo; greys differ by at most one unit per channel at 8-bit
+          precision. The re-lock is a systemic guarantee that the grey follows the brand, not a
+          visible change — do not promise a stakeholder they will see it.
+        </p>
+      </Section>
+
+      {/* ── Brands ────────────────────────────────────────────── */}
+      <Section id="brands">
+        <p className="docs-lede">
+          Brand is the only colour axis in SAMAVESH. A swap repaints{" "}
+          {META.brandVaryingRamps.join(" and ")} — and, verified against the built stylesheet,
+          nothing else. Use the switcher at the top of this page to see it.
+        </p>
+        <DoDont
+          cards={[
+            { type: "do", label: "Let secondary and accent stay put — both are SAMAVESH logo colours, so they are constants of the identity rather than variants of it.", preview: null },
+            { type: "do", label: "Scope a brand island with a nested data-brand element, and initialise it with colorModeInitScript() so the page does not flash the default brand first.", preview: null },
+            { type: "dont", label: "Do not expect the greys to look different between brands — the hue re-locks, but the shift is under one 8-bit unit at most rungs.", preview: null },
+            { type: "dont", label: "Do not treat the six DBIM entries as shipping options. They are conformance previews, code-only, and never in the Figma library.", preview: null },
           ]}
         />
+      </Section>
 
-        <Callout type="tip" title="How to check contrast">
-          Use the WebAIM Contrast Checker or your browser&rsquo;s DevTools color
-          picker. Sample the actual rendered foreground and background, confirm the
-          ratio meets the threshold for the text size, and repeat in dark mode.
+      {/* ── Conformance ───────────────────────────────────────── */}
+      <Section id="conformance">
+        <p className="docs-lede">
+          SAMAVESH is not a palette invented in a vacuum. It answers to DBIM, which requires a
+          departmental palette built from the ministry&rsquo;s key colour, and it holds a parity
+          contract with UX4G 3.0, the Government of India&rsquo;s own design system.
+        </p>
+        <div className="color-origin">
+          {[
+            ["Primary", "--sa-color-primaryScale-500", "DBIM requires a departmental palette built from the ministry's own key colour. The primary is given, not chosen."],
+            ["Secondary", "--sa-color-secondaryScale-400", "India Saffron, from the SAMAVESH logo. A constant of the identity, which is why a brand swap cannot touch it."],
+            ["Accent", "--sa-color-accentScale-500", "India Green, also from the logo. Success is unified onto this same green deliberately."],
+          ].map(([name, token, note]) => (
+            <div key={name} className="color-origin__card">
+              <div className="color-origin__swatch" style={{ background: `var(${token})` }} aria-hidden="true" />
+              <h3>{name}</h3>
+              <p>{note}</p>
+            </div>
+          ))}
+        </div>
+        <Callout type="info" title="UX4G 3.0 — the grammar is theirs">
+          The slot families, the six-rung prominence ladder and the 50–950 ramp shape are all
+          UX4G&rsquo;s, adopted deliberately. Structure maps by <em>value</em>; colour maps by{" "}
+          <em>role</em>, because DBIM requires the department&rsquo;s key colour and UX4G ships
+          Theme Craft precisely so an organisation can substitute its own. We conform to the
+          specification, not the distribution — <code>ux4g-web-components</code> is a 7.6 MB
+          stylesheet plus a 286 KB runtime that breaks hydration in Next 16.
         </Callout>
-      </section>
+        <Callout type="warning" title="DBIM conformance previews are deliberately not in the Figma library">
+          All six DBIM primary groups exist in code, each transcribing DBIM&rsquo;s five published
+          shades verbatim and applying DBIM&rsquo;s whole functional palette with them. The
+          Palette collection&rsquo;s modes stay exactly Blue and Navy, asserted by the push script
+          before it writes. Note that DBIM&rsquo;s own Green group measures 4.32:1 at its bolder
+          fill — below AA, using DBIM&rsquo;s own published shade 2. Reported rather than
+          corrected, because correcting it would mean shipping a colour DBIM never issued.
+        </Callout>
+      </Section>
+
+      {/* ── Charts ────────────────────────────────────────────── */}
+      <Section id="charts">
+        <p className="docs-lede">
+          Charts are where colour carries the most meaning and fails the most people. Every
+          categorical series clears WCAG 1.4.11&rsquo;s 3:1 against the page — the worst measures{" "}
+          {META.worstChartSeries}:1 — but contrast is not distinguishability, and neither is a
+          substitute for a label.
+        </p>
+        <div className="color-chart-cats">
+          {CHART.categorical.map((c) => (
+            <div key={c.n} className="color-chart-cat">
+              <div className="color-chart-cat__swatch" style={{ background: `var(--sa-chart-cat-${c.n})` }} aria-hidden="true" />
+              <span>{c.n}</span>
+              <span className="color-chart-cat__ratio">{c.onPage?.toFixed(2)}:1</span>
+            </div>
+          ))}
+        </div>
+        <div className="color-chart-scales">
+          {[
+            ["Sequential", CHART.sequential.map((s) => `--sa-chart-seq-${s.step}`), "One hue, ten steps. Choropleths and heatmaps."],
+            ["Diverging", CHART.diverging.map((d) => `--sa-chart-div-${d.key}`), "Signed data around a neutral midpoint."],
+            ["Trend", CHART.trend.map((t) => `--sa-chart-trend-${t.key}`), "KPI direction. Up, down, flat."],
+          ].map(([label, tokens, note]) => (
+            <div key={label as string} className="color-chart-scale">
+              <h3>{label as string}</h3>
+              <p>{note as string}</p>
+              <div className="color-chart-scale__strip">
+                {(tokens as string[]).map((t) => (
+                  <div key={t} className="color-chart-scale__cell" style={{ background: `var(${t})` }} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <DoDont
+          cards={[
+            { type: "do", label: "Direct-label the series, or vary shape, pattern and line style as well as colour.", preview: null },
+            { type: "do", label: "Treat twelve as a ceiling, not a target — if a chart needs more than about seven series, group the tail into an Other.", preview: null },
+            { type: "dont", label: "Do not rely on colour alone (WCAG 1.4.1) — a reader with a colour-vision deficiency or a greyscale printout must still read the chart.", preview: null },
+            { type: "dont", label: "Do not invent a grey for grid lines or empty map regions; grid, axis, tooltip and regionEmpty all have their own tokens.", preview: null },
+          ]}
+        />
+      </Section>
+
+      {/* ── Do / Don't ────────────────────────────────────────── */}
+      <Section id="do-and-dont">
+        <p className="docs-lede">
+          Every pair below comes from something that went wrong in a real MoSJE surface, or from
+          a rule a build gate now enforces. Consequences make rules stick.
+        </p>
+        <DoDont
+          cards={[
+            { type: "do", label: "Bind the ink to the on/* token for the fill you used — the pairing was already measured in the worst brand.", preview: null },
+            { type: "do", label: "Use a text/* token for copy; ramp rungs are measured against nothing in particular.", preview: null },
+            { type: "do", label: "Pair every status colour with an icon and a word.", preview: null },
+            { type: "do", label: "Bind components to semantic tokens so they follow a brand swap.", preview: null },
+            { type: "do", label: "Use the disabled tokens — they are measured values that stay predictable on any surface.", preview: null },
+            { type: "do", label: "Read the measured number in the variable's description before trusting a rung name.", preview: null },
+            { type: "do", label: "Use layer/0–3 and their matching borders instead of inventing a grey.", preview: null },
+            { type: "dont", label: "Do not choose an ink by eye on a tonal chip — a brand swap or a ramp rebuild moves the fill underneath it.", preview: null },
+            { type: "dont", label: "Do not reach into a ramp rung for body text.", preview: null },
+            { type: "dont", label: "Do not use a bright brand colour as an icon or chart series on white — India Saffron measures 2.91:1, below the 3:1 non-text floor.", preview: null },
+            { type: "dont", label: "Do not bind a component to a ref/* palette rung; it is frozen to one brand.", preview: null },
+            { type: "dont", label: "Do not fake a disabled state with opacity — it drags the label below AA and depends on what is behind it.", preview: null },
+            { type: "dont", label: "Do not assume a bold rung clears 3:1; sixteen tokens do not.", preview: null },
+          ]}
+        />
+      </Section>
+
+      {/* ── Accessibility ─────────────────────────────────────── */}
+      <Section id="accessibility">
+        <p className="docs-lede">
+          GIGW 3.0 binds this estate to WCAG 2.1 AA and IS 17802. For colour that means four
+          criteria, and every one of them is checked by arithmetic at build time rather than by
+          review.
+        </p>
+        <A11yChecklist
+          items={[
+            { criterion: "1.4.1 Use of colour", level: "A", description: "Colour is never the only carrier of meaning. Pair it with an icon, a label, a pattern or a position." },
+            { criterion: "1.4.3 Contrast (minimum)", level: "AA", description: `4.5:1 for body text, 3:1 for large text. Every on/* pair clears the first; the worst measures ${META.worstInkPair}:1.` },
+            { criterion: "1.4.11 Non-text contrast", level: "AA", description: "3:1 for borders, icons, focus rings, chart series and any control boundary someone must find." },
+            { criterion: "1.4.12 Text spacing", level: "AA", description: "Colour choices must survive 200% zoom and user stylesheets." },
+            { criterion: "Dark & high contrast", level: "GIGW", description: "Owned entirely by the UX4G accessibility widget, not by a token axis. Do not build a second mechanism." },
+            { criterion: "forced-colors: active", level: "GIGW", description: "Windows High Contrast replaces the palette wholesale — keep meaning in markup and icons." },
+          ]}
+        />
+        <Callout type="info" title="What these numbers do and do not certify">
+          Every ratio on this page is a measured contrast value, computed by the WCAG 2.x formula
+          against a named partner. That is a fact about two colours. It is <strong>not</strong> a
+          claim that a screen using them is WCAG 2.1 AA or GIGW conformant — conformance depends
+          on markup, focus order, labelling and content, and needs human sign-off. Use these
+          numbers as evidence in an audit, never as the audit.
+        </Callout>
+      </Section>
+
+      {/* ── Handoff ───────────────────────────────────────────── */}
+      <Section id="handoff">
+        <p className="docs-lede">
+          The Figma variable name and the CSS custom property are the same name, projected. That
+          is not a convention anyone maintains — it is what makes the round-trip reversible.
+        </p>
+        <table className="token-table">
+          <caption className="visually-hidden">From Figma variable to CSS to component</caption>
+          <thead>
+            <tr><th scope="col">Where</th><th scope="col">What you write</th><th scope="col">Note</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">In Figma</th><td><code>bg/brand/primary/bolder</code></td><td>Bind the fill. Dev Mode shows the name and its measured contrast.</td></tr>
+            <tr><th scope="row">In CSS</th><td><code>var(--sa-bg-brand-primary-bolder)</code></td><td>Slashes become hyphens. Tier 2 carries no marker.</td></tr>
+            <tr><th scope="row">Its ink</th><td><code>var(--sa-on-bg-brand-primary-bolder)</code></td><td>Always paired — change one, change both.</td></tr>
+            <tr><th scope="row">Never</th><td><code>{primaryBolder?.fill}</code></td><td>A hex cannot follow a brand, and it cannot carry a guarantee.</td></tr>
+          </tbody>
+        </table>
+      </Section>
+
+      {/* ── Retired ───────────────────────────────────────────── */}
+      <Section id="retired">
+        <p className="docs-lede">
+          On 12 August 2026 the legacy <code>--ds-*</code> vocabulary was retired: all 341 names,
+          deleted from every generated artifact, with 3,561 call sites migrated to the canonical{" "}
+          <code>--sa-*</code> token each one already resolved to. Nothing rendered differently.
+          This section is the record of what went, so older code stays readable — not guidance.
+        </p>
+        <table className="token-table">
+          <caption className="visually-hidden">Retired token names and their replacements</caption>
+          <thead>
+            <tr><th scope="col">Retired</th><th scope="col">Use instead</th><th scope="col">Value</th><th scope="col">Why it is worth recording</th></tr>
+          </thead>
+          <tbody>
+            {RETIRED.map((r) => (
+              <tr key={r.from}>
+                <th scope="row"><code>{r.from}</code></th>
+                <td><code>{r.to}</code></td>
+                <td>{r.value}{r.onWhite ? ` · ${r.onWhite}:1` : ""}</td>
+                <td>{r.note}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Section>
+
+      {/* ── Provenance ────────────────────────────────────────── */}
+      <Section id="provenance">
+        <p className="docs-lede">
+          Every value on this page is read from <code>packages/tokens/dist/tokens.css</code> at
+          build time and every swatch is painted through its token, so this page cannot state a
+          colour the build does not produce. Its counterpart in Figma is variable-bound for the
+          same reason. Both surfaces are pinned to one source.
+        </p>
+        <table className="token-table">
+          <caption className="visually-hidden">Where the numbers on this page come from</caption>
+          <thead>
+            <tr><th scope="col">Source</th><th scope="col">What it gives</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row"><code>packages/tokens/src/*.json</code></th><td>DTCG source — eight ramps, the slot grammar, the alpha families.</td></tr>
+            <tr><th scope="row"><code>packages/tokens/dist/tokens.css</code></th><td>Every hex and every ratio on this page.</td></tr>
+            <tr><th scope="row"><code>docs/design-system/colour-system.md</code></th><td>Ramp shape, per-mode accessibility and the hue-separation ledger. Generated.</td></tr>
+            <tr><th scope="row"><code>packages/tokens/test/</code></th><td>on-pair-contrast · prominence-contract · hue-separation · brand-contrast.</td></tr>
+            <tr><th scope="row"><code>scripts/check-color-docs.mjs</code></th><td>Fails the build if this page&rsquo;s data or section list drifts from the source.</td></tr>
+          </tbody>
+        </table>
+        <p className="docs-note">
+          Contrast figures are computed with the WCAG 2.x formula and state a fact about two
+          colours. They are not a conformance certificate.
+        </p>
+      </Section>
     </>
   );
 }

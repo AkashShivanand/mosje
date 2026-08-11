@@ -216,6 +216,9 @@ if (BRAND === "mosje") {
   // document with hand-typed hexes is a second source of truth, and this repo has already had
   // three of those quietly go wrong.
   await import("./generate-colour-audit.mjs");
+  // …and the colour page's data, for the third time the same lesson had to be learned: it was
+  // printing 88 hand-copied hexes, 14 of which no longer matched any token in the system.
+  await import("./generate-color-docs-data.mjs");
 }
 
 console.log(`✓ @mosje/tokens built (brand: ${BRAND})`);
