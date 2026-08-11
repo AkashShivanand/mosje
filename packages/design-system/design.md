@@ -12,7 +12,16 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.15.1 (CODE AND FIGMA NOW AGREE ON VALUES, not
+  Last reviewed: 2026-08-11 · System version: v0.15.2 (CODE AND FIGMA NOW AGREE ON EVERY
+  VALUE, in all eight collections. The last difference was `ref/font/weight/*`, and it was
+  fixed in the EXPORTER, not the library: it projected CSS numbers (400/500/600/700) where
+  Figma holds STRING font-STYLE names (Regular/Medium/SemiBold/Bold), because Figma has no
+  numeric weight — a text style selects a cut by `fontName.style`. The library was already
+  right; the payload was the wrong side, and it could not have been fixed by pushing because a
+  variable’s resolvedType is fixed at creation. Nothing renders differently: CSS still emits
+  400/500/600/700.)
+
+  System version: v0.15.1 (CODE AND FIGMA NOW AGREE ON VALUES, not
   just names. The library was holding 80 wrong values under the correct names — 13 component
   tokens bound to the wrong palette rung (one set stale since v0.13.0), a reverted webfont, and
   54 fluid-type variables carrying the previous tablet curve. Every existing check compared
