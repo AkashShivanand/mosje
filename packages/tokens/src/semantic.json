@@ -994,7 +994,12 @@
           "mosje": {
             "colorModes": {
               "navy": "rgba(30, 32, 36, 0.48)",
-              "dbim": "rgba(30, 32, 36, 0.48)"
+              "dbim-blue": "rgba(21, 2, 2, 0.48)",
+              "dbim-burgundy": "rgba(21, 2, 2, 0.48)",
+              "dbim-purple": "rgba(21, 2, 2, 0.48)",
+              "dbim-green": "rgba(21, 2, 2, 0.48)",
+              "dbim-chrome-yellow": "rgba(21, 2, 2, 0.48)",
+              "dbim-cinnamon-red": "rgba(21, 2, 2, 0.48)"
             },
             "themes": {
               "dark": "rgba(243, 244, 246, 0.40)"
@@ -1456,11 +1461,19 @@
   "overlay": {
     "neutral": {
       "boldest": {
-        "$value": "rgba(31, 36, 40, 0.5)",
+        "$value": "rgba(30, 33, 36, 0.5)",
         "$extensions": {
           "mosje": {
             "themes": {
               "dark": "rgba(0, 0, 0, 0.6)"
+            },
+            "colorModes": {
+              "dbim-blue": "rgba(21, 2, 2, 0.5)",
+              "dbim-burgundy": "rgba(21, 2, 2, 0.5)",
+              "dbim-purple": "rgba(21, 2, 2, 0.5)",
+              "dbim-green": "rgba(21, 2, 2, 0.5)",
+              "dbim-chrome-yellow": "rgba(21, 2, 2, 0.5)",
+              "dbim-cinnamon-red": "rgba(21, 2, 2, 0.5)"
             }
           }
         }
