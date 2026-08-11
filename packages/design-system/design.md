@@ -12,7 +12,17 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.15.0 (EVERY RAMP NOW OBEYS ONE RULE, and the
+  Last reviewed: 2026-08-11 · System version: v0.15.1 (CODE AND FIGMA NOW AGREE ON VALUES, not
+  just names. The library was holding 80 wrong values under the correct names — 13 component
+  tokens bound to the wrong palette rung (one set stale since v0.13.0), a reverted webfont, and
+  54 fluid-type variables carrying the previous tablet curve. Every existing check compared
+  NAMES, so none of it was visible. All pushed, and `figma-value-parity.test.mjs` now fails the
+  build when a value moves without the library record being refreshed. Seven of eight collections
+  are byte-identical to the payload; the eighth differs only in `ref/font/weight/*`, which is
+  CORRECT — Figma binds text styles by font-STYLE name ("Bold"), CSS needs the number (700), and
+  a variable's resolvedType cannot change after creation.)
+
+  System version: v0.15.0 (EVERY RAMP NOW OBEYS ONE RULE, and the
   system has ZERO WCAG AA shortfalls in every brand. The 2026-08-11 rebuild reached only the
   brand ramps; `dangerScale`, `warningScale`, `infoScale` and `neutralScale` still carried the
   shape the audit had measured — `danger/400` and `danger/500` 1.8 L* apart, `warning/500`
