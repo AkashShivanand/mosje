@@ -39,6 +39,10 @@ reviewer as the spec that agent is being held to.
 
 **02 → 03 → 04 → 05 → 07 → 06 → 08 → 10 → 09 → 11.**
 
+> ⚠ **Revised 2026-08-12:** Typography's Phase 0 found it blocked on the `--ds-*` retirement (see
+> the status ledger). Until that lands, start at **04 (shape)** — a new surface the retirement does
+> not touch — then 05, then return to 02 → 03.
+
 The reasoning:
 
 - **Typography (02) first** — it is the foundation with the most existing work to build on, and it
@@ -59,7 +63,7 @@ The reasoning:
 | Prompt | Status | Branch / PR | Notes |
 |---|---|---|---|
 | 01 colour | ✅ Executed | `ds/colour-documentation` | Reference implementation. The master was extracted from it |
-| 02 typography | ⏳ Not run | — | |
+| 02 typography | ⚠ Phase 0 done, **blocked** | `docs/ds-foundation-documentation` | See `02-typography-phase0-findings.md`. **Blocked on `chore/retire-legacy-tokens` landing** — that branch rewrites the type vocabulary the page would document |
 | 03 space & layout | ⏳ Not run | — | |
 | 04 shape | ⏳ Not run | — | New surface — no page exists |
 | 05 depth | ⏳ Not run | — | New surface — elevation page covers ⅓ of it |
