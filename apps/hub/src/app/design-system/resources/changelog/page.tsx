@@ -22,9 +22,21 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.13.2",
+    version: "v0.14.0",
     date: "2026-08-11",
     current: true,
+    changes: [
+      { kind: "Added", text: "THE LAYOUT GRID, which did not exist. The only grid in the system was chart/grid — a chart GRIDLINE COLOUR. grid/columns (12), grid/gutter (24px) and grid/margin/{mobile,tablet,desktop} (16/24/32px) are now first-class tokens, so a designer can bind a Figma layout grid and a developer can read the same numbers from CSS" },
+      { kind: "Changed", text: "The grid's GEOMETRY is UX4G 3.0/Bootstrap exactly — 12 columns, 1.5rem/24px gutter — because UX4G is the Government of India's own system and this repo holds a parity contract with it. A designer moving between the two libraries must not find a different grid. What is NOT UX4G's is the shape: UX4G expresses its grid as Bootstrap CSS classes, which is exactly why none of it ever reached Figma. These are tokens instead, on IBM Carbon's model" },
+      { kind: "Changed", text: "Page margin is RESPONSIVE (16/24/32px), not Bootstrap's flat 12px half-gutter. 12px either side of a government page on a 1280px desktop is too thin; Carbon uses 32px and GOV.UK 30px. Every value aliases an existing space step — no new literals" },
+      { kind: "Added", text: "A tap-target LADDER, because 44px is not the only truth and is not even the AA floor. 44 is WCAG 2.5.5 Target Size (Enhanced), Level AAA. The AA floor is WCAG 2.2 SC 2.5.8 at 24x24 CSS px, carrying a spacing exception. And GIGW 3.0 binds this estate to WCAG 2.1 AA + IS 17802 — WCAG 2.1 AA has NO target-size criterion at all, because 2.5.8 arrived in 2.2 and 2.5.5 is AAA. So target/min (24, AA), target/comfortable (44, AAA + Apple 44pt), target/spacious (48, Material 48dp) and target/spacing (8, Material separation) each name their authority, and every one is a deliberate choice ABOVE the mandate" },
+      { kind: "Changed", text: "Targets alias the rem-based size scale, so CSS emits 1.5/2.75/3/0.5rem and Figma receives 24/44/48/8px. rem is deliberate, not incidental: a citizen who raises their browser font size gets proportionally larger targets, which a hardcoded px floor would deny them" },
+      { kind: "Fixed", text: "NOT changed, and the reasons are worth recording. breakpoint/* was NOT extended to UX4G's six — those three are the fluid TYPE ramp's clamp anchors (the generator throws without mobile/desktop), not layout media queries, so layout breakpoints are a separate axis and a separate decision. container/2xl (1320px) was not added because the estate's content width is 1280px and a wider container would contradict it. Shadow/elevation still has no Figma representation and cannot as a variable — Figma holds only COLOR/FLOAT/STRING/BOOLEAN, and a shadow is composite; it needs effect STYLES" },
+    ],
+  },
+  {
+    version: "v0.13.2",
+    date: "2026-08-11",
     changes: [
       { kind: "Fixed", text: "DEV MODE WAS LYING. 61 Figma variables published a codeSyntax naming a CSS custom property that does not exist — a developer who opened Dev Mode, copied var(--sa-bg-brand-primary-strong) and pasted it got a declaration that silently does nothing. The prominence ladder was renamed to base/subtler/subtle/bold/bolder/boldest and codeSyntax was never re-pushed, so every rung name in it (default/soft/emphasis/strong/stronger) plus the old ink rungs (text-neutral-primary/secondary) went stale; one, --color-border-neutral-inverse, had the wrong prefix entirely. Verified by resolving all 91 semantic entries against dist/tokens.css: 62 dead" },
       { kind: "Added", text: "codeSyntax on every code-owned variable — 487 had none at all, so Space, Type, Radius, Motion, Density and Static showed a developer nothing but the Figma name. All 863 now carry the exporter's own emitted name, proven rule-derivable against the payload (863/863, 0 mismatches) before a single write" },

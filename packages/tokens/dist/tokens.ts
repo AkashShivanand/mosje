@@ -1104,6 +1104,21 @@ export const tokens = {
     "xl": "1140px",
     "content": "1280px"
   },
+  "grid": {
+    "columns": 12,
+    "gutter": "24px",
+    "margin": {
+      "mobile": "16px",
+      "tablet": "24px",
+      "desktop": "32px"
+    }
+  },
+  "target": {
+    "min": "1.5rem",
+    "comfortable": "2.75rem",
+    "spacious": "3rem",
+    "spacing": "0.5rem"
+  },
   "elevation": {
     "flat": "none",
     "card": "0 2px 3px 1px rgba(31, 36, 40, 0.12)",

@@ -174,6 +174,14 @@ export const GROUP = new Set([
   // keeps that unambiguous by position, not by exception: a colour role always takes a FAMILY
   // in position 2, so `icon/neutral/base` reads as a role and `icon/size/md` reads as a group.
   "icon", "control", "container",
+  // `grid` is the LAYOUT grid — columns, gutter, page margin. Note the estate already had a
+  // `chart/grid` (a gridline colour); they are different objects and RULE 2 keeps them apart by
+  // position, since a colour role takes a family in position 2.
+  "grid",
+  // `target` is the POINTER TARGET, and it is a group rather than a size step because the
+  // number alone is meaningless: 24, 44 and 48 each come from a different authority, and a
+  // token that does not say which one is being met cannot be audited against any of them.
+  "target",
   // `focus` is a GROUP, not a role+state. A focus ring is not "an outline in the focus
   // state" — it is its own semantic object with its own colour, width and offset, and it
   // is the one affordance WCAG 2.4.7 makes non-optional. UX4G models it the same way

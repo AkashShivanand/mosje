@@ -186,6 +186,13 @@ function groupGuidance(path) {
     const fill = rest.slice(1).join("/");
     return `Use for text and icons placed on \`bg/${fill}\`. The pairing was chosen by measurement, so it is the safe foreground for that fill in every brand — do not substitute another ink.`;
   }
+  // The page margin is one shape repeated per viewport, so it is derived here rather than
+  // hand-written three times — which is the difference between one sentence to review and
+  // three that drift.
+  if (head === "grid" && rest[0] === "margin") {
+    const AT = { mobile: "on a phone", tablet: "on a tablet", desktop: "on a desktop" };
+    return `Use for the page’s side margin ${AT[rest[1]] ?? `at ${rest[1]}`} — the gap between the layout grid and the viewport edge. Bind it to the frame’s horizontal padding, not to the grid’s gutter, which is \`grid/gutter\`.`;
+  }
   if (head === "layer") {
     if (rest[0] === "border") return `Use for the hairline separating a level-${rest[1]} surface from the one beneath it.`;
     return rest[0] === "0"
