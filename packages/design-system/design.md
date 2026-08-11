@@ -12,7 +12,19 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.13.1 (v0.13.0 IS NOW LIVE IN FIGMA —
+  Last reviewed: 2026-08-11 · System version: v0.13.2 (DEV MODE NOW TELLS THE TRUTH.
+  A re-audit of the Figma library looked past variable NAMES — which were already correct —
+  at the metadata Figma actually shows people, and found 61 variables publishing a codeSyntax
+  naming a CSS custom property that does not exist (the prominence ladder was renamed and
+  codeSyntax was never re-pushed), plus 487 carrying none at all. All 863 code-owned variables
+  now carry the exporter's own emitted name. Also fixed: 18 accent variables scoped to
+  ALL_SCOPES so they appeared in every picker, and 12 blank or stale descriptions — coverage
+  is now 900/900 and gated. KNOWN GAPS, not yet built: there are no layout/grid tokens at all
+  (columns, gutter, margin); shadow/elevation exists in CSS but CANNOT be a Figma variable and
+  needs effect styles; there are only 3 breakpoints; and nothing names the 44px touch-target
+  floor. See the audit section in the changelog.)
+
+  System version: v0.13.1 (v0.13.0 IS NOW LIVE IN FIGMA —
   36 variables created, 899 total across 8 collections, and set equality with the build
   payload is PROVEN per collection by checksum rather than inferred from counts. The six
   accent foregrounds were chosen BY MEASUREMENT, not by rung name: accent flips to white
