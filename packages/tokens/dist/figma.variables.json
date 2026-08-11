@@ -13695,7 +13695,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "rgba(31, 36, 40, 0.5)"
+              "value": "rgba(30, 33, 36, 0.5)"
             }
           },
           "description": "Use for the scrim behind a modal or drawer — it suppresses the page beneath rather than carrying content.",

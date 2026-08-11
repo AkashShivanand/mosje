@@ -132,7 +132,14 @@ test("no collection is asked to express an axis it has no modes for", () => {
     const found = new Set();
     if (ext.type) found.add("fluid");
     if (ext.themes) found.add("themes");
-    if (ext.colorModes) found.add("colorModes");
+    // `navy` SPECIFICALLY, matching `brandOwner` in formats/figma-variables.mjs — the two
+    // encode one rule from opposite sides and must agree on it. Figma's Palette models exactly
+    // one brand axis, [Blue, Navy], so that is the only brand variation an import can lose. A
+    // token whose only overrides are the code-only `dbim-*` conformance modes loses nothing by
+    // living in single-mode Color: those modes never reach the library at all, by standing
+    // instruction. Counting any `colorModes` key made this gate demand that such a token be
+    // promoted into Palette, which creates a variable whose two modes are identical.
+    if (ext.colorModes?.navy !== undefined) found.add("colorModes");
     const raw = node?.$value;
     if (typeof raw === "string" && /^\{[^}]+\}$/.test(raw.trim())) {
       for (const a of axesOf(raw.trim().slice(1, -1), depth + 1)) found.add(a);

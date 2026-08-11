@@ -315,7 +315,15 @@ function brandAwareAlias(token, tokenByPath, colorByUnderlying, nameByPath, dept
  */
 function brandOwner(token, tokenByPath, depth = 0) {
   if (depth > 8) return null;
-  if (token.original?.$extensions?.mosje?.colorModes) return token;
+  // `navy` SPECIFICALLY, not "has any colorModes". The Palette collection models exactly one
+  // brand axis — [Blue, Navy] — so that is the only variation Figma can express. A token whose
+  // only overrides are the code-only `dbim-*` conformance modes has nothing brand-varying to
+  // say HERE, and claiming it anyway promotes it out of the single-mode Color collection into
+  // Palette as a new variable whose two modes are identical. That is a structural change to a
+  // shared library in exchange for nothing, and it is what `overlay/neutral/boldest` did the
+  // moment it was given DBIM inks: +1 Palette variable, and the Color entry demoted to an
+  // alias, for a Blue-vs-Navy difference measured at dE 0.00.
+  if (token.original?.$extensions?.mosje?.colorModes?.navy !== undefined) return token;
   const raw = token.original?.$value ?? token.original?.value;
   if (typeof raw === "string" && /^\{[^}]+\}$/.test(raw.trim())) {
     const next = tokenByPath.get(raw.trim().slice(1, -1));

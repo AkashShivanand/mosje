@@ -763,11 +763,11 @@ export const tokens = {
   },
   "shadow": {
     "none": "none",
-    "xs": "0 2px 3px 1px rgba(31, 36, 40, 0.12)",
-    "sm": "0 4px 6px -1px rgba(31, 36, 40, 0.10), 0 2px 4px -2px rgba(31, 36, 40, 0.06)",
-    "md": "0 8px 12px -3px rgba(31, 36, 40, 0.09), 0 3px 5px -2px rgba(31, 36, 40, 0.05)",
-    "lg": "0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03)",
-    "xl": "0 24px 48px -12px rgba(31, 36, 40, 0.18)"
+    "xs": "0 2px 3px 1px rgba(30, 33, 36, 0.12)",
+    "sm": "0 4px 6px -1px rgba(30, 33, 36, 0.10), 0 2px 4px -2px rgba(30, 33, 36, 0.06)",
+    "md": "0 8px 12px -3px rgba(30, 33, 36, 0.09), 0 3px 5px -2px rgba(30, 33, 36, 0.05)",
+    "lg": "0 12px 16px -4px rgba(30, 33, 36, 0.08), 0 4px 6px -2px rgba(30, 33, 36, 0.03)",
+    "xl": "0 24px 48px -12px rgba(30, 33, 36, 0.18)"
   },
   "motion": {
     "duration": {
@@ -1038,7 +1038,7 @@ export const tokens = {
   },
   "overlay": {
     "neutral": {
-      "boldest": "rgba(31, 36, 40, 0.5)"
+      "boldest": "rgba(30, 33, 36, 0.5)"
     }
   },
   "inline": {
@@ -1269,11 +1269,11 @@ export const tokens = {
   },
   "elevation": {
     "flat": "none",
-    "card": "0 2px 3px 1px rgba(31, 36, 40, 0.12)",
-    "raised": "0 4px 6px -1px rgba(31, 36, 40, 0.10), 0 2px 4px -2px rgba(31, 36, 40, 0.06)",
-    "dropdown": "0 8px 12px -3px rgba(31, 36, 40, 0.09), 0 3px 5px -2px rgba(31, 36, 40, 0.05)",
-    "modal": "0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03)",
-    "toast": "0 24px 48px -12px rgba(31, 36, 40, 0.18)"
+    "card": "0 2px 3px 1px rgba(30, 33, 36, 0.12)",
+    "raised": "0 4px 6px -1px rgba(30, 33, 36, 0.10), 0 2px 4px -2px rgba(30, 33, 36, 0.06)",
+    "dropdown": "0 8px 12px -3px rgba(30, 33, 36, 0.09), 0 3px 5px -2px rgba(30, 33, 36, 0.05)",
+    "modal": "0 12px 16px -4px rgba(30, 33, 36, 0.08), 0 4px 6px -2px rgba(30, 33, 36, 0.03)",
+    "toast": "0 24px 48px -12px rgba(30, 33, 36, 0.18)"
   },
   "control": {
     "radius": "8px",

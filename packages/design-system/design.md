@@ -12,7 +12,35 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.16.1 (THE CHART PALETTE NOW SAYS WHICH OF ITS
+  Last reviewed: 2026-08-11 · System version: v0.16.2 (THE SHADOWS WERE TINTED TOWARD A COLOUR
+  THE SYSTEM NO LONGER HAD. The ramp's own description claims it keeps "the SAMAVESH convention
+  of tinting toward ink rather than UX4G's flat black", and it did not: five rungs plus the
+  modal scrim carried `rgba(31, 36, 40)`, hand-written from a neutral/800 that the ramp rebuild
+  moved to #1e2124. Derived from neutral/800 now — geometry stays authored, only the ink is
+  generated, so it cannot drift again. Nobody could see it, which is precisely why deriving
+  beat correcting: composited over white the two inks differ by dE 0.14-0.54, under the ~1.0
+  just-noticeable threshold at every alpha this ramp uses. A wrong value you can see gets fixed
+  the first time somebody looks; a wrong value you cannot see survives every review.
+  A REAL BUG THIS SURFACED, shipped in v0.16.0: `text/disabled` fell back to the blue-grey in
+  all six DBIM modes while `text/default` resolved to Deep Earthy Brown — enabled text brown,
+  disabled text blue-grey, in modes whose entire claim is conformance. The DBIM preprocessor
+  synthesises those modes by remapping token REFERENCES, so an rgba() literal was invisible to
+  it and the hand-written override was deleted on the way past. `text/disabled` and the scrim
+  now carry real brand ids and follow the ink everywhere.
+  SHADOWS STAY BRAND-INVARIANT, structurally rather than by taste. Blue and Navy composite to
+  dE 0.00 — identical — so the shipping brands gain nothing; DBIM differs by up to 1.63 at
+  `xl`, marginally over threshold. Against that: a shadow is COMPOSITE and `elevation/*` inlines
+  its resolved value rather than aliasing it, so a per-brand override repaints `--ds-shadow-*`
+  and leaves `--sa-elevation-*` behind. Two names for one shadow disagreeing by brand is worse
+  than a uniform sub-threshold difference. Revisit if `elevation/*` ever aliases.
+  ONE ASSUMPTION CORRECTED IN TWO PLACES: the Figma exporter's `brandOwner` and the round-trip
+  gate's axis check both read "has any colorModes" as "varies by brand". Figma's Palette models
+  exactly one brand axis, [Blue, Navy], so a token whose only overrides are the code-only
+  `dbim-*` modes has nothing brand-varying to say there — and giving the scrim DBIM inks
+  promoted it out of single-mode Color into Palette as a new variable whose two modes were
+  identical. Both now key on `navy` specifically.)
+
+  System version: v0.16.1 (THE CHART PALETTE NOW SAYS WHICH OF ITS
   VALUES ARE COPIES AND WHICH ARE CHOICES, per group, because the difference was not guessable
   and the copies had rotted. `chart/div/*` — the diverging scale for signed data — was seven
   hardcoded hexes, two of them copies of `danger/100` and `neutral/200` taken before those ramps
