@@ -10,8 +10,10 @@
  * opposite of what they said. Appearance lives on `data-theme` (light | dark | hc) and the
  * two axes compose.
  *
- * The token pipeline emits a `[data-brand="<id>"]` block per non-default brand (see packages/tokens/src/*.json + the generated
- * @mosje/design-system/tokens.css). Adding a mode = add a ramp + colorModes
+ * The token pipeline emits a `[data-brand="<id>"]` block per brand, including the default
+ * (see packages/tokens/src/*.json + the generated @mosje/design-system/tokens.css) — so a
+ * `data-brand` island always resolves through the cascade, even one that nests back to the
+ * default brand inside an ambient non-default page. Adding a mode = add a ramp + colorModes
  * override in the tokens, then one entry here. Nothing else changes.
  *
  * Safe to import from both server and client (browser APIs are guarded).
