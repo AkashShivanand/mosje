@@ -434,6 +434,19 @@
   --sa-ref-font-family-display:
     var(--font-noto-display), var(--font-noto-sans), "Noto Sans Display", "Noto Sans",
     ui-sans-serif, system-ui, sans-serif;
+
+  /* The Tier-2 role token has to be bridged SEPARATELY. It is emitted as a literal copy of
+     the stack rather than a var() onto the Tier-1 primitive, so overriding the primitive
+     above does not reach it — and this is the token design.md actually tells people to use
+     for Hindi (`font-family: var(--sa-font-devanagari)` on the lang="hi" element).
+
+     Missing it looked harmless in testing precisely because it is invisible on any machine
+     with Noto Sans Devanagari installed locally: the bare family name matches the local copy
+     and Hindi renders correctly. On a device without it, the stack falls past the plain
+     "Noto Sans" too — next/font's family is hashed, so a bare name never matches the loaded
+     face — and lands on a system fallback, which is the bug this whole change exists to fix. */
+  --sa-font-devanagari:
+    var(--font-noto-sans), "Noto Sans Devanagari", "Noto Sans", ui-sans-serif, sans-serif;
 }
 
 @layer base {
