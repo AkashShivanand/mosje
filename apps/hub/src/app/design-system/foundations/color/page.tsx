@@ -51,7 +51,7 @@ export default function ColorPage(): React.JSX.Element {
             A <strong>color token</strong> is a nickname for a color that
             describes the job it does — not the shade it happens to be. Instead
             of telling a designer or developer to &ldquo;use the blue{" "}
-            <code>#0373df</code>,&rdquo; we say use <code>--ds-primary</code>:
+            <code>#0373df</code>,&rdquo; we say use <code>--sa-color-action-primary-default</code>:
             the color for the main action on a page.
           </p>
           <p>
@@ -64,8 +64,8 @@ export default function ColorPage(): React.JSX.Element {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "var(--ds-spacing-lg)",
-            marginTop: "var(--ds-spacing-xl)",
+            gap: "var(--sa-stack-m)",
+            marginTop: "var(--sa-padding-l)",
           }}
         >
           {[
@@ -73,22 +73,22 @@ export default function ColorPage(): React.JSX.Element {
               tier: "1. Primitives",
               subtitle: "Raw values",
               desc: "The actual hex / rgba values in the palette ramps — primaryRamp, neutral, success-ramp, etc. These live in token JSON files and are never used directly in components.",
-              bg: "var(--ds-surface-muted)",
-              border: "var(--ds-border)",
+              bg: "var(--sa-bg-neutral-subtler)",
+              border: "var(--sa-border-neutral-subtle)",
             },
             {
               tier: "2. Semantic tokens",
-              subtitle: "--ds-* properties",
-              desc: "Purposeful names like --ds-primary, --ds-ink, --ds-danger. These are what components consume. They point to a primitive, and that pointer changes per color mode.",
-              bg: "var(--ds-primary-tonal)",
-              border: "var(--ds-primary)",
+              subtitle: "--sa-* properties",
+              desc: "Purposeful names like --sa-color-action-primary-default, --sa-color-text-default, --sa-color-status-danger. These are what components consume. They point to a primitive, and that pointer changes per color mode.",
+              bg: "var(--sa-color-action-primary-tonal)",
+              border: "var(--sa-color-action-primary-default)",
             },
             {
               tier: "3. Component aliases",
               subtitle: "Button, Input, Badge…",
               desc: "Component-scoped tokens (e.g. --btn-bg) that map onto semantic tokens. Changing a semantic token updates every component that uses it.",
-              bg: "var(--ds-surface-muted)",
-              border: "var(--ds-border)",
+              bg: "var(--sa-bg-neutral-subtler)",
+              border: "var(--sa-border-neutral-subtle)",
             },
           ].map(({ tier, subtitle, desc, bg, border }) => (
             <div
@@ -96,26 +96,26 @@ export default function ColorPage(): React.JSX.Element {
               style={{
                 background: bg,
                 border: `1px solid ${border}`,
-                borderRadius: "var(--ds-radius-md)",
-                padding: "var(--ds-spacing-xl)",
+                borderRadius: "var(--sa-shape-md)",
+                padding: "var(--sa-padding-l)",
               }}
             >
               <p
                 style={{
                   fontWeight: 700,
-                  color: "var(--ds-ink)",
+                  color: "var(--sa-color-text-default)",
                   margin: 0,
-                  fontSize: "var(--ds-text-body-1)",
+                  fontSize: "var(--sa-type-body-1-size)",
                 }}
               >
                 {tier}
               </p>
               <p
                 style={{
-                  color: "var(--ds-primary)",
-                  fontSize: "var(--ds-text-label-1)",
-                  margin: "var(--ds-spacing-xs) 0",
-                  fontFamily: "var(--ds-font-mono)",
+                  color: "var(--sa-color-action-primary-default)",
+                  fontSize: "var(--sa-type-label-1-size)",
+                  margin: "var(--sa-stack-2xs) 0",
+                  fontFamily: "var(--sa-font-mono)",
                   fontWeight: 600,
                 }}
               >
@@ -123,8 +123,8 @@ export default function ColorPage(): React.JSX.Element {
               </p>
               <p
                 style={{
-                  color: "var(--ds-ink-muted)",
-                  fontSize: "var(--ds-text-body-2)",
+                  color: "var(--sa-color-text-muted)",
+                  fontSize: "var(--sa-type-body-2-size)",
                   margin: 0,
                 }}
               >
@@ -134,7 +134,7 @@ export default function ColorPage(): React.JSX.Element {
           ))}
         </div>
 
-        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--ds-spacing-2xl)" }}>
+        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--sa-stack-l)" }}>
           <p>
             Tokens also respond to <strong>two theming axes</strong>:
           </p>
@@ -160,9 +160,9 @@ export default function ColorPage(): React.JSX.Element {
             </li>
           </ul>
           <p>
-            Every token below begins with <code>--ds-</code> (design system).
-            Read them as sentences: <code>--ds-danger</code> is &ldquo;the color
-            that signals danger,&rdquo; <code>--ds-border</code> is &ldquo;the
+            Every token below begins with <code>--sa-</code> (SAMAVESH).
+            Read them as sentences: <code>--sa-color-status-danger</code> is &ldquo;the color
+            that signals danger,&rdquo; <code>--sa-border-neutral-subtle</code> is &ldquo;the
             color we draw lines with.&rdquo;
           </p>
         </div>
@@ -170,7 +170,7 @@ export default function ColorPage(): React.JSX.Element {
         <Callout type="tip" title="Rule of thumb">
           If you are about to type a hex value into a design or stylesheet, stop
           and find the token that means what you want. There is almost always one.
-          Use <code>var(--ds-primary)</code>, not <code>#0373df</code>.
+          Use <code>var(--sa-color-action-primary-default)</code>, not <code>#0373df</code>.
         </Callout>
       </section>
 
@@ -191,31 +191,31 @@ export default function ColorPage(): React.JSX.Element {
           swatches={[
             {
               name: "Ink",
-              token: "--ds-ink",
+              token: "--sa-color-text-default",
               hex: "#1f2428",
               contrastWith: "white",
             },
             {
               name: "Ink strong",
-              token: "--ds-ink-strong",
+              token: "--sa-text-neutral-bolder",
               hex: "#0d1014",
               contrastWith: "white",
             },
             {
               name: "Ink muted",
-              token: "--ds-ink-muted",
+              token: "--sa-color-text-muted",
               hex: "#343a40",
               contrastWith: "white",
             },
             {
               name: "Ink info",
-              token: "--ds-ink-info",
+              token: "--sa-color-text-info",
               hex: "#1558b0",
               contrastWith: "white",
             },
             {
               name: "On primary",
-              token: "--ds-on-primary",
+              token: "--sa-color-text-onPrimary",
               hex: "#ffffff",
               contrastWith: "black",
             },
@@ -223,32 +223,32 @@ export default function ColorPage(): React.JSX.Element {
         />
         <div
           style={{
-            marginTop: "var(--ds-spacing-xl)",
+            marginTop: "var(--sa-padding-l)",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "var(--ds-spacing-md)",
+            gap: "var(--sa-stack-s)",
           }}
         >
           {[
-            { token: "--ds-ink", label: "Primary body text, all headings" },
-            { token: "--ds-ink-strong", label: "Maximum emphasis, pull quotes, key numbers" },
-            { token: "--ds-ink-muted", label: "Secondary text, helper copy, captions" },
-            { token: "--ds-ink-info", label: "Informational text, links in prose" },
-            { token: "--ds-on-primary", label: "Text on primary-colored backgrounds" },
+            { token: "--sa-color-text-default", label: "Primary body text, all headings" },
+            { token: "--sa-text-neutral-bolder", label: "Maximum emphasis, pull quotes, key numbers" },
+            { token: "--sa-color-text-muted", label: "Secondary text, helper copy, captions" },
+            { token: "--sa-color-text-info", label: "Informational text, links in prose" },
+            { token: "--sa-color-text-onPrimary", label: "Text on primary-colored backgrounds" },
           ].map(({ token, label }) => (
             <div
               key={token}
               style={{
-                padding: "var(--ds-spacing-lg)",
-                background: "var(--ds-surface-muted)",
-                borderRadius: "var(--ds-radius-sm)",
-                border: "1px solid var(--ds-border)",
+                padding: "var(--sa-padding-m)",
+                background: "var(--sa-bg-neutral-subtler)",
+                borderRadius: "var(--sa-shape-sm)",
+                border: "1px solid var(--sa-border-neutral-subtle)",
               }}
             >
-              <code style={{ fontSize: "var(--ds-text-label-1)", color: "var(--ds-primary)", display: "block", marginBottom: "var(--ds-spacing-xs)" }}>
+              <code style={{ fontSize: "var(--sa-type-label-1-size)", color: "var(--sa-color-action-primary-default)", display: "block", marginBottom: "var(--sa-stack-2xs)" }}>
                 {token}
               </code>
-              <span style={{ fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)" }}>
+              <span style={{ fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)" }}>
                 {label}
               </span>
             </div>
@@ -273,32 +273,32 @@ export default function ColorPage(): React.JSX.Element {
           swatches={[
             {
               name: "Surface",
-              token: "--ds-surface",
+              token: "--sa-bg-neutral-base",
               hex: "#ffffff",
               contrastWith: "black",
             },
             {
               name: "Surface muted",
-              token: "--ds-surface-muted",
+              token: "--sa-bg-neutral-subtler",
               hex: "#f8f9fa",
               contrastWith: "black",
             },
             {
               name: "Border (subtle)",
-              token: "--ds-border",
+              token: "--sa-border-neutral-subtle",
               hex: "#f1f3f5",
               contrastWith: "black",
             },
             {
               name: "Border strong",
-              token: "--ds-border-strong",
+              token: "--sa-border-neutral-base",
               hex: "#e2e6ea",
               contrastWith: "black",
             },
           ]}
         />
         <Callout type="info" title="Overlay">
-          <code>--ds-overlay</code> (<code>rgba(31,36,40,0.5)</code>) is used for
+          <code>--sa-overlay-neutral-boldest</code> (<code>rgba(31,36,40,0.5)</code>) is used for
           modal backdrops and drawer scrims. It is intentionally semi-transparent
           so context remains visible behind it.
         </Callout>
@@ -321,25 +321,25 @@ export default function ColorPage(): React.JSX.Element {
           swatches={[
             {
               name: "Primary",
-              token: "--ds-primary",
+              token: "--sa-color-action-primary-default",
               hex: "#0373df",
               contrastWith: "white",
             },
             {
               name: "Primary hover",
-              token: "--ds-primary-hover",
+              token: "--sa-color-action-primary-hover",
               hex: "#014b92",
               contrastWith: "white",
             },
             {
               name: "Primary tonal",
-              token: "--ds-primary-tonal",
+              token: "--sa-color-action-primary-tonal",
               hex: "#c6dcf9",
               contrastWith: "black",
             },
             {
               name: "Link",
-              token: "--ds-link",
+              token: "--sa-text-link-brand-default",
               hex: "#0373df",
               contrastWith: "white",
             },
@@ -347,24 +347,24 @@ export default function ColorPage(): React.JSX.Element {
         />
 
         {/* Primary ramp */}
-        <div style={{ marginTop: "var(--ds-spacing-2xl)" }}>
+        <div style={{ marginTop: "var(--sa-stack-l)" }}>
           <p
             style={{
-              fontSize: "var(--ds-text-body-2)",
+              fontSize: "var(--sa-type-body-2-size)",
               fontWeight: 600,
-              color: "var(--ds-ink-muted)",
+              color: "var(--sa-color-text-muted)",
               textTransform: "uppercase",
               letterSpacing: "0.08em",
-              marginBottom: "var(--ds-spacing-md)",
+              marginBottom: "var(--sa-stack-s)",
             }}
           >
-            Primary ramp — <code style={{ textTransform: "none" }}>--ds-primary-50</code> through{" "}
-            <code style={{ textTransform: "none" }}>--ds-primary-900</code>
+            Primary ramp — <code style={{ textTransform: "none" }}>--sa-color-primaryScale-50</code> through{" "}
+            <code style={{ textTransform: "none" }}>--sa-color-primaryScale-900</code>
           </p>
           <div
             style={{
               display: "flex",
-              borderRadius: "var(--ds-radius-md)",
+              borderRadius: "var(--sa-shape-md)",
               overflow: "hidden",
               height: 48,
             }}
@@ -384,14 +384,14 @@ export default function ColorPage(): React.JSX.Element {
               <div
                 key={stop}
                 style={{ flex: 1, background: hex, position: "relative" }}
-                title={`--ds-primary-${stop}: ${hex}`}
+                title={`--sa-color-primaryScale-${stop}: ${hex}`}
               />
             ))}
           </div>
           <div
             style={{
               display: "flex",
-              marginTop: "var(--ds-spacing-xs)",
+              marginTop: "var(--sa-stack-2xs)",
             }}
           >
             {["50", "100", "200", "300", "400", "500", "600", "700", "800", "900"].map((stop) => (
@@ -401,8 +401,8 @@ export default function ColorPage(): React.JSX.Element {
                   flex: 1,
                   textAlign: "center",
                   fontSize: "10px",
-                  color: "var(--ds-ink-muted)",
-                  fontFamily: "var(--ds-font-mono)",
+                  color: "var(--sa-color-text-muted)",
+                  fontFamily: "var(--sa-font-mono)",
                 }}
               >
                 {stop}
@@ -411,14 +411,14 @@ export default function ColorPage(): React.JSX.Element {
           </div>
           <p
             style={{
-              marginTop: "var(--ds-spacing-md)",
-              fontSize: "var(--ds-text-body-2)",
-              color: "var(--ds-ink-muted)",
+              marginTop: "var(--sa-stack-s)",
+              fontSize: "var(--sa-type-body-2-size)",
+              color: "var(--sa-color-text-muted)",
             }}
           >
-            The semantic token <code>--ds-primary</code> maps to ramp step 500
-            (#0373df). <code>--ds-primary-hover</code> maps to step 700
-            (#014b92). <code>--ds-primary-tonal</code> maps to step 100
+            The semantic token <code>--sa-color-action-primary-default</code> maps to ramp step 500
+            (#0373df). <code>--sa-color-action-primary-hover</code> maps to step 700
+            (#014b92). <code>--sa-color-action-primary-tonal</code> maps to step 100
             (#c6dcf9). Use the ramp steps directly only in special cases (data
             visualization, branded illustrations) — for all component work, use
             the semantic tokens.
@@ -426,7 +426,7 @@ export default function ColorPage(): React.JSX.Element {
         </div>
 
         <Callout type="tip" title="Focus ring">
-          <code>--ds-primary-ring</code> (<code>rgba(3,115,223,0.48)</code>) is the
+          <code>--sa-focus-ring</code> (<code>rgba(3,115,223,0.48)</code>) is the
           color used for keyboard focus rings. It is semi-transparent so it adapts
           gracefully over any background.
         </Callout>
@@ -452,49 +452,49 @@ export default function ColorPage(): React.JSX.Element {
           swatches={[
             {
               name: "Success",
-              token: "--ds-success",
+              token: "--sa-color-status-success",
               hex: "#004220",
               contrastWith: "white",
             },
             {
               name: "Success tonal",
-              token: "--ds-success-tonal",
+              token: "--sa-color-status-successTonal",
               hex: "#c8e6c9",
               contrastWith: "black",
             },
             {
               name: "Warning",
-              token: "--ds-warning",
+              token: "--sa-color-status-warning",
               hex: "#bb772b",
               contrastWith: "white",
             },
             {
               name: "Warning tonal",
-              token: "--ds-warning-tonal",
+              token: "--sa-color-status-warningTonal",
               hex: "#fff4e5",
               contrastWith: "black",
             },
             {
               name: "Danger",
-              token: "--ds-danger",
+              token: "--sa-color-status-danger",
               hex: "#ec5042",
               contrastWith: "white",
             },
             {
               name: "Danger tonal",
-              token: "--ds-danger-tonal",
+              token: "--sa-color-status-dangerTonal",
               hex: "#fad2cf",
               contrastWith: "black",
             },
             {
               name: "Info",
-              token: "--ds-info",
+              token: "--sa-color-status-info",
               hex: "#1558b0",
               contrastWith: "white",
             },
             {
               name: "Info tonal",
-              token: "--ds-info-tonal",
+              token: "--sa-color-status-infoTonal",
               hex: "#d2e3fc",
               contrastWith: "black",
             },
@@ -502,12 +502,12 @@ export default function ColorPage(): React.JSX.Element {
         />
 
         <Callout type="warning" title="Warning is amber, not yellow">
-          <strong>Warning</strong> (<code>--ds-warning</code>, <code>#bb772b</code>)
+          <strong>Warning</strong> (<code>--sa-color-status-warning</code>, <code>#bb772b</code>)
           is a dark amber — deliberately distinct from the brand{" "}
-          <code>--ds-yellow</code> (<code>#ffd323</code>), which is a
+          <code>--sa-color-brand-yellow</code> (<code>#ffd323</code>), which is a
           badge/identity accent and never a status colour. Use{" "}
-          <code>--ds-warning-tonal</code> (<code>#fff4e5</code>) as the soft
-          background and <code>--ds-warning</code> (or <code>--ds-ink</code>) for
+          <code>--sa-color-status-warningTonal</code> (<code>#fff4e5</code>) as the soft
+          background and <code>--sa-color-status-warning</code> (or <code>--sa-color-text-default</code>) for
           text/icons on it.
         </Callout>
 
@@ -541,31 +541,31 @@ export default function ColorPage(): React.JSX.Element {
           swatches={[
             {
               name: "Saffron",
-              token: "--ds-saffron",
+              token: "--sa-color-brand-saffron",
               hex: "#ff671f",
               contrastWith: "white",
             },
             {
               name: "Saffron light",
-              token: "--ds-saffron-light",
+              token: "--sa-color-brand-saffronLight",
               hex: "#ffedd5",
               contrastWith: "black",
             },
             {
               name: "Saffron dark",
-              token: "--ds-saffron-dark",
+              token: "--sa-color-brand-saffronDark",
               hex: "#7c3503",
               contrastWith: "white",
             },
             {
               name: "Navy",
-              token: "--ds-navy",
+              token: "--sa-color-brand-navy",
               hex: "#162f6a",
               contrastWith: "white",
             },
             {
               name: "Government yellow",
-              token: "--ds-yellow",
+              token: "--sa-color-brand-yellow",
               hex: "#ffd323",
               contrastWith: "black",
             },
@@ -588,7 +588,7 @@ export default function ColorPage(): React.JSX.Element {
         <div className="docs-section__body ds-prose">
           <p>
             All semantic color tokens, grouped by category. Use them via{" "}
-            <code>var(--ds-TOKEN)</code> in CSS. Never inline the raw hex — the
+            <code>var(--sa-TOKEN)</code> in CSS. Never inline the raw hex — the
             value updates automatically when the color mode changes.
           </p>
         </div>
@@ -596,11 +596,11 @@ export default function ColorPage(): React.JSX.Element {
         {/* Text group */}
         <h3
           style={{
-            fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
+            fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
             fontWeight: 600,
-            marginTop: "var(--ds-spacing-2xl)",
-            marginBottom: "var(--ds-spacing-sm)",
-            scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))",
+            marginTop: "var(--sa-stack-l)",
+            marginBottom: "var(--sa-stack-xs)",
+            scrollMarginTop: "calc(56px + var(--sa-stack-l))",
           }}
         >
           Text
@@ -608,33 +608,33 @@ export default function ColorPage(): React.JSX.Element {
         <TokenTable
           tokens={[
             {
-              token: "--ds-ink",
+              token: "--sa-color-text-default",
               value: "#1f2428",
               description: "Primary body text and all headings",
               isColor: true,
             },
             {
-              token: "--ds-ink-strong",
+              token: "--sa-text-neutral-bolder",
               value: "#0d1014",
               description: "Maximum emphasis — pull quotes, key numbers, critical labels",
               isColor: true,
             },
             {
-              token: "--ds-ink-muted",
+              token: "--sa-color-text-muted",
               value: "#343a40",
               description: "Secondary text, captions, helper copy",
               isColor: true,
             },
             {
-              token: "--ds-ink-info",
+              token: "--sa-color-text-info",
               value: "#1558b0",
               description: "Informational text, links within prose paragraphs",
               isColor: true,
             },
             {
-              token: "--ds-on-primary",
+              token: "--sa-color-text-onPrimary",
               value: "#ffffff",
-              description: "Text and icons placed on --ds-primary backgrounds",
+              description: "Text and icons placed on --sa-color-action-primary-default backgrounds",
               isColor: true,
             },
           ]}
@@ -643,11 +643,11 @@ export default function ColorPage(): React.JSX.Element {
         {/* Surface & border group */}
         <h3
           style={{
-            fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
+            fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
             fontWeight: 600,
-            marginTop: "var(--ds-spacing-2xl)",
-            marginBottom: "var(--ds-spacing-sm)",
-            scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))",
+            marginTop: "var(--sa-stack-l)",
+            marginBottom: "var(--sa-stack-xs)",
+            scrollMarginTop: "calc(56px + var(--sa-stack-l))",
           }}
         >
           Surface &amp; border
@@ -655,31 +655,31 @@ export default function ColorPage(): React.JSX.Element {
         <TokenTable
           tokens={[
             {
-              token: "--ds-surface",
+              token: "--sa-bg-neutral-base",
               value: "#ffffff",
               description: "Default page and card background",
               isColor: true,
             },
             {
-              token: "--ds-surface-muted",
+              token: "--sa-bg-neutral-subtler",
               value: "#f8f9fa",
               description: "Recessed sections, table stripes, input backgrounds",
               isColor: true,
             },
             {
-              token: "--ds-border",
+              token: "--sa-border-neutral-subtle",
               value: "#f1f3f5",
               description: "Subtle dividing lines — separators, section dividers",
               isColor: true,
             },
             {
-              token: "--ds-border-strong",
+              token: "--sa-border-neutral-base",
               value: "#e2e6ea",
               description: "Higher-emphasis borders — input outlines, card edges",
               isColor: true,
             },
             {
-              token: "--ds-overlay",
+              token: "--sa-overlay-neutral-boldest",
               value: "rgba(31,36,40,0.5)",
               description: "Modal backdrops and drawer scrims",
               isColor: false,
@@ -690,11 +690,11 @@ export default function ColorPage(): React.JSX.Element {
         {/* Action group */}
         <h3
           style={{
-            fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
+            fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
             fontWeight: 600,
-            marginTop: "var(--ds-spacing-2xl)",
-            marginBottom: "var(--ds-spacing-sm)",
-            scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))",
+            marginTop: "var(--sa-stack-l)",
+            marginBottom: "var(--sa-stack-xs)",
+            scrollMarginTop: "calc(56px + var(--sa-stack-l))",
           }}
         >
           Action &amp; interactive
@@ -702,31 +702,31 @@ export default function ColorPage(): React.JSX.Element {
         <TokenTable
           tokens={[
             {
-              token: "--ds-primary",
+              token: "--sa-color-action-primary-default",
               value: "#0373df",
               description: "Main interactive blue — primary buttons, active links",
               isColor: true,
             },
             {
-              token: "--ds-primary-hover",
+              token: "--sa-color-action-primary-hover",
               value: "#014b92",
               description: "Hover / pressed state for primary actions",
               isColor: true,
             },
             {
-              token: "--ds-primary-tonal",
+              token: "--sa-color-action-primary-tonal",
               value: "#c6dcf9",
               description: "Soft tint behind selected items, info banners, badges",
               isColor: true,
             },
             {
-              token: "--ds-primary-ring",
+              token: "--sa-focus-ring",
               value: "rgba(3,115,223,0.48)",
               description: "Focus ring color for keyboard navigation",
               isColor: false,
             },
             {
-              token: "--ds-link",
+              token: "--sa-text-link-brand-default",
               value: "#0373df",
               description: "In-prose hyperlinks (same hue as primary, distinct semantic role)",
               isColor: true,
@@ -737,11 +737,11 @@ export default function ColorPage(): React.JSX.Element {
         {/* Status group */}
         <h3
           style={{
-            fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
+            fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
             fontWeight: 600,
-            marginTop: "var(--ds-spacing-2xl)",
-            marginBottom: "var(--ds-spacing-sm)",
-            scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))",
+            marginTop: "var(--sa-stack-l)",
+            marginBottom: "var(--sa-stack-xs)",
+            scrollMarginTop: "calc(56px + var(--sa-stack-l))",
           }}
         >
           Status
@@ -749,49 +749,49 @@ export default function ColorPage(): React.JSX.Element {
         <TokenTable
           tokens={[
             {
-              token: "--ds-success",
+              token: "--sa-color-status-success",
               value: "#004220",
               description: "Positive outcomes, completed states",
               isColor: true,
             },
             {
-              token: "--ds-success-tonal",
+              token: "--sa-color-status-successTonal",
               value: "#c8e6c9",
               description: "Soft background for success banners, tags",
               isColor: true,
             },
             {
-              token: "--ds-warning",
+              token: "--sa-color-status-warning",
               value: "#bb772b",
-              description: "Caution — dark amber (not yellow); pair with --ds-warning-tonal background",
+              description: "Caution — dark amber (not yellow); pair with --sa-color-status-warningTonal background",
               isColor: true,
             },
             {
-              token: "--ds-warning-tonal",
+              token: "--sa-color-status-warningTonal",
               value: "#fff4e5",
               description: "Soft background for warning messages",
               isColor: true,
             },
             {
-              token: "--ds-danger",
+              token: "--sa-color-status-danger",
               value: "#ec5042",
               description: "Errors, destructive actions, validation failures",
               isColor: true,
             },
             {
-              token: "--ds-danger-tonal",
+              token: "--sa-color-status-dangerTonal",
               value: "#fad2cf",
               description: "Soft background for error banners, alert regions",
               isColor: true,
             },
             {
-              token: "--ds-info",
+              token: "--sa-color-status-info",
               value: "#1558b0",
               description: "Neutral informational messages — distinct from brand primary",
               isColor: true,
             },
             {
-              token: "--ds-info-tonal",
+              token: "--sa-color-status-infoTonal",
               value: "#d2e3fc",
               description: "Soft background for info banners and callouts",
               isColor: true,
@@ -802,11 +802,11 @@ export default function ColorPage(): React.JSX.Element {
         {/* Brand group */}
         <h3
           style={{
-            fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
+            fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
             fontWeight: 600,
-            marginTop: "var(--ds-spacing-2xl)",
-            marginBottom: "var(--ds-spacing-sm)",
-            scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))",
+            marginTop: "var(--sa-stack-l)",
+            marginBottom: "var(--sa-stack-xs)",
+            scrollMarginTop: "calc(56px + var(--sa-stack-l))",
           }}
         >
           Brand
@@ -814,31 +814,31 @@ export default function ColorPage(): React.JSX.Element {
         <TokenTable
           tokens={[
             {
-              token: "--ds-saffron",
+              token: "--sa-color-brand-saffron",
               value: "#ff671f",
               description: "Identity accent — sparingly, for brand moments",
               isColor: true,
             },
             {
-              token: "--ds-saffron-light",
+              token: "--sa-color-brand-saffronLight",
               value: "#ffedd5",
               description: "Soft saffron tint for backgrounds and tonal uses",
               isColor: true,
             },
             {
-              token: "--ds-saffron-dark",
+              token: "--sa-color-brand-saffronDark",
               value: "#7c3503",
               description: "Deep saffron for high-contrast text on light saffron surfaces",
               isColor: true,
             },
             {
-              token: "--ds-navy",
+              token: "--sa-color-brand-navy",
               value: "#162f6a",
               description: "Deep brand navy — headers, emphasis bands",
               isColor: true,
             },
             {
-              token: "--ds-yellow",
+              token: "--sa-color-brand-yellow",
               value: "#ffd323",
               description: "Government yellow — highlights, identity accents",
               isColor: true,
@@ -849,11 +849,11 @@ export default function ColorPage(): React.JSX.Element {
         {/* Full ramps & alpha tiers */}
         <h3
           style={{
-            fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
+            fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
             fontWeight: 600,
-            marginTop: "var(--ds-spacing-2xl)",
-            marginBottom: "var(--ds-spacing-sm)",
-            scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))",
+            marginTop: "var(--sa-stack-l)",
+            marginBottom: "var(--sa-stack-xs)",
+            scrollMarginTop: "calc(56px + var(--sa-stack-l))",
           }}
         >
           Full colour ramps &amp; alpha tiers
@@ -867,15 +867,15 @@ export default function ColorPage(): React.JSX.Element {
           </p>
           <ul>
             <li>
-              <code>--ds-primary-50…900</code> &amp;{" "}
-              <code>--ds-secondary-50…900</code> &amp;{" "}
-              <code>--ds-neutral-0…1100</code> — <strong>colour-mode-aware</strong>:
+              <code>--sa-color-primaryScale-50…900</code> &amp;{" "}
+              <code>--sa-color-secondaryScale-50…900</code> &amp;{" "}
+              <code>--sa-color-neutralScale-0…1100</code> — <strong>colour-mode-aware</strong>:
               primary blue↔navy and neutral warm↔cool grey under <code>navy</code>.
               Secondary and accent do NOT change — both are SAMAVESH logo colours.
             </li>
             <li>
-              <code>--ds-success-50…900</code>, <code>--ds-danger-50…900</code>,{" "}
-              <code>--ds-warning-50…900</code>, <code>--ds-info-50…900</code> —
+              <code>--sa-color-successScale-50…900</code>, <code>--sa-color-dangerScale-50…900</code>,{" "}
+              <code>--sa-color-warningScale-50…900</code>, <code>--sa-color-infoScale-50…900</code> —
               mode-invariant (identical in both colour modes).
             </li>
             <li>
@@ -889,7 +889,7 @@ export default function ColorPage(): React.JSX.Element {
 
         <Callout type="tip" title="Using a token in code">
           Wrap the token in <code>var()</code>:{" "}
-          <code>color: var(--ds-ink); background: var(--ds-surface);</code>. The
+          <code>color: var(--sa-color-text-default); background: var(--sa-bg-neutral-base);</code>. The
           value updates automatically when the color mode changes — no component
           changes needed.
         </Callout>
@@ -921,8 +921,8 @@ export default function ColorPage(): React.JSX.Element {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "var(--ds-spacing-lg)",
-            marginTop: "var(--ds-spacing-xl)",
+            gap: "var(--sa-stack-m)",
+            marginTop: "var(--sa-padding-l)",
           }}
         >
           {[
@@ -931,16 +931,16 @@ export default function ColorPage(): React.JSX.Element {
               label: "Brand colour mode",
               modes: ["blue-light (default)", "navy", "+ extensible"],
               desc: "Two peer colour modes (= Figma Blue/Navy). Swaps the PRIMARY ramp (blue↔navy, navy being the DBIM key colour #162f6a) and the neutral greys (warm↔cool), plus their transparent tiers. Secondary (India Saffron) and accent (India Green) are brand-INVARIANT — both come from the SAMAVESH logo. Toggle via ColorModeProvider + useColorMode() — DemoDock's Colour tab is the estate's shared control.",
-              color: "var(--ds-primary-tonal)",
-              border: "var(--ds-primary)",
+              color: "var(--sa-color-action-primary-tonal)",
+              border: "var(--sa-color-action-primary-default)",
             },
             {
               axis: "data-theme",
               label: "Appearance axis",
               modes: ["light (default)", "dark (planned)", "high-contrast (GIGW)"],
               desc: "Controls light / dark / hc rendering within the active brand. Planned for GIGW accessibility profiles.",
-              color: "var(--ds-surface-muted)",
-              border: "var(--ds-border-strong)",
+              color: "var(--sa-bg-neutral-subtler)",
+              border: "var(--sa-border-neutral-base)",
             },
           ].map(({ axis, label, modes, desc, color, border }) => (
             <div
@@ -948,17 +948,17 @@ export default function ColorPage(): React.JSX.Element {
               style={{
                 background: color,
                 border: `1px solid ${border}`,
-                borderRadius: "var(--ds-radius-md)",
-                padding: "var(--ds-spacing-xl)",
+                borderRadius: "var(--sa-shape-md)",
+                padding: "var(--sa-padding-l)",
               }}
             >
               <p
                 style={{
-                  fontSize: "var(--ds-text-label-1)",
+                  fontSize: "var(--sa-type-label-1-size)",
                   fontWeight: 700,
                   textTransform: "uppercase",
                   letterSpacing: "0.08em",
-                  color: "var(--ds-ink-muted)",
+                  color: "var(--sa-color-text-muted)",
                   margin: 0,
                 }}
               >
@@ -967,27 +967,27 @@ export default function ColorPage(): React.JSX.Element {
               <code
                 style={{
                   display: "block",
-                  fontSize: "var(--ds-text-body-2)",
-                  color: "var(--ds-primary)",
-                  margin: "var(--ds-spacing-xs) 0 var(--ds-spacing-md)",
+                  fontSize: "var(--sa-type-body-2-size)",
+                  color: "var(--sa-color-action-primary-default)",
+                  margin: "var(--sa-stack-2xs) 0 var(--sa-stack-s)",
                   fontWeight: 600,
                 }}
               >
                 {axis}
               </code>
-              <ul style={{ margin: 0, paddingLeft: "var(--ds-spacing-lg)", fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink)" }}>
+              <ul style={{ margin: 0, paddingLeft: "var(--sa-stack-m)", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-default)" }}>
                 {modes.map((m) => (
-                  <li key={m} style={{ marginBottom: "var(--ds-spacing-xs)" }}>
-                    <code style={{ fontFamily: "var(--ds-font-mono)" }}>{m}</code>
+                  <li key={m} style={{ marginBottom: "var(--sa-stack-2xs)" }}>
+                    <code style={{ fontFamily: "var(--sa-font-mono)" }}>{m}</code>
                   </li>
                 ))}
               </ul>
               <p
                 style={{
-                  marginTop: "var(--ds-spacing-md)",
-                  fontSize: "var(--ds-text-body-2)",
-                  color: "var(--ds-ink-muted)",
-                  margin: "var(--ds-spacing-md) 0 0",
+                  marginTop: "var(--sa-stack-s)",
+                  fontSize: "var(--sa-type-body-2-size)",
+                  color: "var(--sa-color-text-muted)",
+                  margin: "var(--sa-stack-s) 0 0",
                 }}
               >
                 {desc}
@@ -997,7 +997,7 @@ export default function ColorPage(): React.JSX.Element {
         </div>
 
         <Callout type="info" title="Why components never hardcode color">
-          Because a component reads <code>var(--ds-surface)</code> rather than{" "}
+          Because a component reads <code>var(--sa-bg-neutral-base)</code> rather than{" "}
           <code>#ffffff</code>, it becomes a dark panel the instant the mode
           changes — with zero component changes. This is the single biggest
           reason to always reach for a token.
@@ -1015,7 +1015,7 @@ export default function ColorPage(): React.JSX.Element {
             {
               type: "do",
               label:
-                "Use --ds-primary for the interactive blue. It adapts across modes and updates everywhere if the brand changes.",
+                "Use --sa-color-action-primary-default for the interactive blue. It adapts across modes and updates everywhere if the brand changes.",
               preview: (
                 <div
                   style={{
@@ -1027,12 +1027,12 @@ export default function ColorPage(): React.JSX.Element {
                 >
                   <span
                     style={{
-                      background: "var(--ds-primary)",
-                      color: "var(--ds-on-primary)",
-                      padding: "var(--ds-spacing-sm) var(--ds-spacing-lg)",
-                      borderRadius: "var(--ds-radius-sm)",
+                      background: "var(--sa-color-action-primary-default)",
+                      color: "var(--sa-color-text-onPrimary)",
+                      padding: "var(--sa-padding-xs) var(--sa-padding-m)",
+                      borderRadius: "var(--sa-shape-sm)",
                       fontWeight: 600,
-                      fontSize: "var(--ds-text-body-2)",
+                      fontSize: "var(--sa-type-body-2-size)",
                     }}
                   >
                     Apply now
@@ -1057,11 +1057,11 @@ export default function ColorPage(): React.JSX.Element {
                     style={{
                       background: "#0373df",
                       color: "#fff",
-                      padding: "var(--ds-spacing-sm) var(--ds-spacing-lg)",
-                      borderRadius: "var(--ds-radius-sm)",
+                      padding: "var(--sa-padding-xs) var(--sa-padding-m)",
+                      borderRadius: "var(--sa-shape-sm)",
                       fontWeight: 600,
-                      fontSize: "var(--ds-text-body-2)",
-                      fontFamily: "var(--ds-font-mono)",
+                      fontSize: "var(--sa-type-body-2-size)",
+                      fontFamily: "var(--sa-font-mono)",
                     }}
                   >
                     #0373df
@@ -1072,19 +1072,19 @@ export default function ColorPage(): React.JSX.Element {
             {
               type: "do",
               label:
-                "Use --ds-info (not --ds-primary) for informational banners. The dedicated info blue signals 'here is information', not 'do something'.",
+                "Use --sa-color-status-info (not --sa-color-action-primary-default) for informational banners. The dedicated info blue signals 'here is information', not 'do something'.",
               preview: (
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "var(--ds-spacing-sm)",
-                    padding: "var(--ds-spacing-md)",
-                    background: "var(--ds-info-tonal)",
-                    borderRadius: "var(--ds-radius-sm)",
-                    border: "1px solid var(--ds-info)",
-                    color: "var(--ds-info)",
-                    fontSize: "var(--ds-text-body-2)",
+                    gap: "var(--sa-stack-xs)",
+                    padding: "var(--sa-padding-s)",
+                    background: "var(--sa-color-status-infoTonal)",
+                    borderRadius: "var(--sa-shape-sm)",
+                    border: "1px solid var(--sa-color-status-info)",
+                    color: "var(--sa-color-status-info)",
+                    fontSize: "var(--sa-type-body-2-size)",
                     fontWeight: 600,
                     width: "100%",
                   }}
@@ -1104,7 +1104,7 @@ export default function ColorPage(): React.JSX.Element {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    gap: "var(--ds-spacing-md)",
+                    gap: "var(--sa-stack-s)",
                     height: "100%",
                   }}
                 >
@@ -1114,7 +1114,7 @@ export default function ColorPage(): React.JSX.Element {
                       width: 14,
                       height: 14,
                       borderRadius: "50%",
-                      background: "var(--ds-success)",
+                      background: "var(--sa-color-status-success)",
                       display: "inline-block",
                     }}
                   />
@@ -1124,7 +1124,7 @@ export default function ColorPage(): React.JSX.Element {
                       width: 14,
                       height: 14,
                       borderRadius: "50%",
-                      background: "var(--ds-danger)",
+                      background: "var(--sa-color-status-danger)",
                       display: "inline-block",
                     }}
                   />
@@ -1151,21 +1151,21 @@ export default function ColorPage(): React.JSX.Element {
         </div>
 
         {/* Contrast ratio table */}
-        <div style={{ overflowX: "auto", marginTop: "var(--ds-spacing-xl)" }}>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-padding-l)" }}>
           <table
             style={{
               width: "100%",
               borderCollapse: "collapse",
-              fontSize: "var(--ds-text-body-2)",
+              fontSize: "var(--sa-type-body-2-size)",
             }}
           >
             <thead>
-              <tr style={{ borderBottom: "2px solid var(--ds-border-strong)" }}>
+              <tr style={{ borderBottom: "2px solid var(--sa-border-neutral-base)" }}>
                 <th
                   style={{
                     textAlign: "left",
-                    padding: "var(--ds-spacing-sm) var(--ds-spacing-md)",
-                    color: "var(--ds-ink-muted)",
+                    padding: "var(--sa-padding-xs) var(--sa-padding-s)",
+                    color: "var(--sa-color-text-muted)",
                     fontWeight: 600,
                   }}
                 >
@@ -1174,8 +1174,8 @@ export default function ColorPage(): React.JSX.Element {
                 <th
                   style={{
                     textAlign: "left",
-                    padding: "var(--ds-spacing-sm) var(--ds-spacing-md)",
-                    color: "var(--ds-ink-muted)",
+                    padding: "var(--sa-padding-xs) var(--sa-padding-s)",
+                    color: "var(--sa-color-text-muted)",
                     fontWeight: 600,
                   }}
                 >
@@ -1184,8 +1184,8 @@ export default function ColorPage(): React.JSX.Element {
                 <th
                   style={{
                     textAlign: "left",
-                    padding: "var(--ds-spacing-sm) var(--ds-spacing-md)",
-                    color: "var(--ds-ink-muted)",
+                    padding: "var(--sa-padding-xs) var(--sa-padding-s)",
+                    color: "var(--sa-color-text-muted)",
                     fontWeight: 600,
                   }}
                 >
@@ -1194,8 +1194,8 @@ export default function ColorPage(): React.JSX.Element {
                 <th
                   style={{
                     textAlign: "left",
-                    padding: "var(--ds-spacing-sm) var(--ds-spacing-md)",
-                    color: "var(--ds-ink-muted)",
+                    padding: "var(--sa-padding-xs) var(--sa-padding-s)",
+                    color: "var(--sa-color-text-muted)",
                     fontWeight: 600,
                   }}
                 >
@@ -1205,21 +1205,21 @@ export default function ColorPage(): React.JSX.Element {
             </thead>
             <tbody>
               {[
-                { token: "--ds-ink", value: "#1f2428", ratio: "~16:1", level: "AAA", note: "" },
-                { token: "--ds-ink-strong", value: "#0d1014", ratio: "~21:1", level: "AAA", note: "" },
-                { token: "--ds-ink-muted", value: "#343a40", ratio: "~10:1", level: "AAA", note: "" },
-                { token: "--ds-info / --ds-ink-info", value: "#1558b0", ratio: "7.1:1", level: "AAA", note: "" },
-                { token: "--ds-success", value: "#004220", ratio: "11.67:1", level: "AAA", note: "" },
-                { token: "--ds-primary", value: "#0373df", ratio: "4.7:1", level: "AA ✓ (not AAA)", note: "Meets AA for text ≥ 18px or bold ≥ 14px" },
-                { token: "--ds-danger", value: "#ec5042", ratio: "3.5:1", level: "AA (large/UI only)", note: "Not for body text — use --ds-danger-strong (#b8382f, 5.8:1) for error text" },
-                { token: "--ds-warning", value: "#bb772b", ratio: "3.3:1", level: "AA (large/UI only)", note: "Dark amber. For text on white use a darker warning step (--ds-warning-700)" },
+                { token: "--sa-color-text-default", value: "#1f2428", ratio: "~16:1", level: "AAA", note: "" },
+                { token: "--sa-text-neutral-bolder", value: "#0d1014", ratio: "~21:1", level: "AAA", note: "" },
+                { token: "--sa-color-text-muted", value: "#343a40", ratio: "~10:1", level: "AAA", note: "" },
+                { token: "--sa-color-status-info / --sa-color-text-info", value: "#1558b0", ratio: "7.1:1", level: "AAA", note: "" },
+                { token: "--sa-color-status-success", value: "#004220", ratio: "11.67:1", level: "AAA", note: "" },
+                { token: "--sa-color-action-primary-default", value: "#0373df", ratio: "4.7:1", level: "AA ✓ (not AAA)", note: "Meets AA for text ≥ 18px or bold ≥ 14px" },
+                { token: "--sa-color-status-danger", value: "#ec5042", ratio: "3.5:1", level: "AA (large/UI only)", note: "Not for body text — use --sa-text-status-error-base (#b8382f, 5.8:1) for error text" },
+                { token: "--sa-color-status-warning", value: "#bb772b", ratio: "3.3:1", level: "AA (large/UI only)", note: "Dark amber. For text on white use a darker warning step (--sa-color-warningScale-700)" },
               ].map(({ token, value, ratio, level, note }) => (
-                <tr key={token} style={{ borderBottom: "1px solid var(--ds-border)" }}>
+                <tr key={token} style={{ borderBottom: "1px solid var(--sa-border-neutral-subtle)" }}>
                   <td
                     style={{
-                      padding: "var(--ds-spacing-sm) var(--ds-spacing-md)",
-                      fontFamily: "var(--ds-font-mono)",
-                      color: "var(--ds-primary)",
+                      padding: "var(--sa-padding-xs) var(--sa-padding-s)",
+                      fontFamily: "var(--sa-font-mono)",
+                      color: "var(--sa-color-action-primary-default)",
                       whiteSpace: "nowrap",
                     }}
                   >
@@ -1227,33 +1227,33 @@ export default function ColorPage(): React.JSX.Element {
                   </td>
                   <td
                     style={{
-                      padding: "var(--ds-spacing-sm) var(--ds-spacing-md)",
-                      fontFamily: "var(--ds-font-mono)",
-                      color: "var(--ds-ink-muted)",
+                      padding: "var(--sa-padding-xs) var(--sa-padding-s)",
+                      fontFamily: "var(--sa-font-mono)",
+                      color: "var(--sa-color-text-muted)",
                     }}
                   >
                     {value}
                   </td>
                   <td
                     style={{
-                      padding: "var(--ds-spacing-sm) var(--ds-spacing-md)",
+                      padding: "var(--sa-padding-xs) var(--sa-padding-s)",
                       fontWeight: 700,
-                      color: "var(--ds-ink)",
+                      color: "var(--sa-color-text-default)",
                     }}
                   >
                     {ratio}
                   </td>
                   <td
                     style={{
-                      padding: "var(--ds-spacing-sm) var(--ds-spacing-md)",
-                      color: level.includes("Fails") ? "var(--ds-danger)" : level.includes("AAA") ? "var(--ds-success)" : "var(--ds-ink-muted)",
+                      padding: "var(--sa-padding-xs) var(--sa-padding-s)",
+                      color: level.includes("Fails") ? "var(--sa-color-status-danger)" : level.includes("AAA") ? "var(--sa-color-status-success)" : "var(--sa-color-text-muted)",
                       fontWeight: 600,
-                      fontSize: "var(--ds-text-label-1)",
+                      fontSize: "var(--sa-type-label-1-size)",
                     }}
                   >
                     {level}
                     {note && (
-                      <span style={{ display: "block", fontWeight: 400, color: "var(--ds-ink-muted)", fontSize: "11px", marginTop: 2 }}>
+                      <span style={{ display: "block", fontWeight: 400, color: "var(--sa-color-text-muted)", fontSize: "11px", marginTop: 2 }}>
                         {note}
                       </span>
                     )}
@@ -1270,7 +1270,7 @@ export default function ColorPage(): React.JSX.Element {
               criterion: "Body text contrast ≥ 4.5:1",
               level: "AA",
               description:
-                "--ds-ink (#1f2428) on white achieves ~16:1; --ds-ink-muted (#343a40) achieves ~10:1. Both are AAA.",
+                "--sa-color-text-default (#1f2428) on white achieves ~16:1; --sa-color-text-muted (#343a40) achieves ~10:1. Both are AAA.",
             },
             {
               criterion: "Large text & UI contrast ≥ 3:1",
@@ -1288,7 +1288,7 @@ export default function ColorPage(): React.JSX.Element {
               criterion: "Visible focus indicator",
               level: "AA",
               description:
-                "Interactive elements show a --ds-primary-ring outline on keyboard focus with sufficient contrast and offset.",
+                "Interactive elements show a --sa-focus-ring outline on keyboard focus with sufficient contrast and offset.",
             },
             {
               criterion: "Dark / high-contrast parity",

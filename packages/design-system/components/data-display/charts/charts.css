@@ -20,8 +20,8 @@
 /* ── Frame ───────────────────────────────────────────────────────────────── */
 .ds-chart {
   margin: 0;
-  font-family: var(--ds-font-sans);
-  color: var(--ds-ink);
+  font-family: var(--sa-font-latin);
+  color: var(--sa-color-text-default);
 }
 
 .ds-chart__canvas {
@@ -37,17 +37,17 @@
 }
 
 .ds-chart__caption {
-  margin-top: var(--ds-spacing-sm, 8px);
-  font-size: var(--ds-text-body-3, 13px);
-  color: var(--ds-ink-muted);
+  margin-top: var(--sa-stack-xs, 8px);
+  font-size: var(--sa-type-body-3-size, 13px);
+  color: var(--sa-color-text-muted);
   text-align: center;
 }
 
 .ds-chart__empty {
   padding: 40px 0;
   text-align: center;
-  font-size: var(--ds-text-body-3, 14px);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size, 14px);
+  color: var(--sa-color-text-muted);
 }
 
 /* ── Pie layout (legacy PieChart keeps the side-by-side legend) ───────────── */
@@ -69,30 +69,30 @@
   flex-shrink: 0;
 }
 .ds-chart__pie-slice {
-  stroke: var(--ds-surface);
+  stroke: var(--sa-bg-neutral-base);
   stroke-width: 2;
-  transition: opacity var(--ds-duration-fast, 150ms) var(--ds-easing-out, ease);
+  transition: opacity var(--sa-motion-exit-duration, 150ms) var(--sa-motion-enter-easing, ease);
 }
 
 /* ── Axis + grid + value text ────────────────────────────────────────────── */
 .ds-chart__axis {
   font-size: 10px;
-  fill: var(--ds-chart-axis);
+  fill: var(--sa-chart-axis);
 }
 .ds-chart__value {
   font-size: 10px;
   font-weight: 600;
-  fill: var(--ds-ink);
+  fill: var(--sa-color-text-default);
 }
 .ds-chart__axis-title {
   font-size: 11px;
   font-weight: 600;
-  fill: var(--ds-ink-muted);
+  fill: var(--sa-color-text-muted);
 }
 
 /* ── Interactive marks (bars, points, slices, regions) ───────────────────── */
 .ds-chart__mark {
-  transition: opacity var(--ds-duration-fast, 150ms) var(--ds-easing-out, ease);
+  transition: opacity var(--sa-motion-exit-duration, 150ms) var(--sa-motion-enter-easing, ease);
   cursor: default;
 }
 .ds-chart__mark:hover {
@@ -100,7 +100,7 @@
 }
 .ds-chart__mark:focus-visible {
   outline: none;
-  stroke: var(--ds-ink);
+  stroke: var(--sa-color-text-default);
   stroke-width: 2;
 }
 
@@ -111,7 +111,7 @@
   margin: 12px 0 0;
   padding: 0;
   list-style: none;
-  font-size: var(--ds-text-body-3, 13px);
+  font-size: var(--sa-type-body-3-size, 13px);
 }
 .ds-chart__legend--vertical {
   flex-direction: column;
@@ -133,11 +133,11 @@
   flex-shrink: 0;
 }
 .ds-chart__legend-label {
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
 }
 .ds-chart__legend-pct {
   font-weight: 600;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
 }
 
 /* ── Tooltip ─────────────────────────────────────────────────────────────── */
@@ -146,14 +146,14 @@
   z-index: 10;
   transform: translate(-50%, calc(-100% - 12px));
   padding: 6px 10px;
-  border-radius: var(--ds-radius-sm, 6px);
-  background: var(--ds-chart-tooltip-bg);
-  color: var(--ds-chart-tooltip-ink);
-  font-size: var(--ds-text-body-3, 13px);
+  border-radius: var(--sa-shape-sm, 6px);
+  background: var(--sa-chart-tooltipBg);
+  color: var(--sa-chart-tooltipInk);
+  font-size: var(--sa-type-body-3-size, 13px);
   line-height: 1.35;
   white-space: nowrap;
   pointer-events: none;
-  box-shadow: var(--ds-shadow-lg);
+  box-shadow: var(--sa-elevation-modal);
 }
 .ds-chart__tooltip-title {
   font-weight: 600;
@@ -174,18 +174,18 @@
 .ds-chart__center-value {
   font-size: 22px;
   font-weight: 700;
-  fill: var(--ds-ink);
+  fill: var(--sa-color-text-default);
 }
 .ds-chart__center-sub {
   font-size: 11px;
-  fill: var(--ds-ink-muted);
+  fill: var(--sa-color-text-muted);
 }
 
 /* ── Choropleth map regions ──────────────────────────────────────────────── */
 .ds-chart__region {
-  stroke: var(--ds-chart-region-stroke);
+  stroke: var(--sa-chart-regionStroke);
   stroke-width: 0.5;
-  transition: opacity var(--ds-duration-fast, 150ms) var(--ds-easing-out, ease);
+  transition: opacity var(--sa-motion-exit-duration, 150ms) var(--sa-motion-enter-easing, ease);
   cursor: default;
 }
 .ds-chart__region:hover {
@@ -193,40 +193,40 @@
 }
 .ds-chart__region:focus-visible {
   outline: none;
-  stroke: var(--ds-ink);
+  stroke: var(--sa-color-text-default);
   stroke-width: 1.5;
 }
 
 /* ── Categorical palette (12 series) ─────────────────────────────────────── */
-.ds-chart-fill-0 { fill: var(--ds-chart-cat-1); }
-.ds-chart-fill-1 { fill: var(--ds-chart-cat-2); }
-.ds-chart-fill-2 { fill: var(--ds-chart-cat-3); }
-.ds-chart-fill-3 { fill: var(--ds-chart-cat-4); }
-.ds-chart-fill-4 { fill: var(--ds-chart-cat-5); }
-.ds-chart-fill-5 { fill: var(--ds-chart-cat-6); }
-.ds-chart-fill-6 { fill: var(--ds-chart-cat-7); }
-.ds-chart-fill-7 { fill: var(--ds-chart-cat-8); }
-.ds-chart-fill-8 { fill: var(--ds-chart-cat-9); }
-.ds-chart-fill-9 { fill: var(--ds-chart-cat-10); }
-.ds-chart-fill-10 { fill: var(--ds-chart-cat-11); }
-.ds-chart-fill-11 { fill: var(--ds-chart-cat-12); }
+.ds-chart-fill-0 { fill: var(--sa-chart-cat-1); }
+.ds-chart-fill-1 { fill: var(--sa-chart-cat-2); }
+.ds-chart-fill-2 { fill: var(--sa-chart-cat-3); }
+.ds-chart-fill-3 { fill: var(--sa-chart-cat-4); }
+.ds-chart-fill-4 { fill: var(--sa-chart-cat-5); }
+.ds-chart-fill-5 { fill: var(--sa-chart-cat-6); }
+.ds-chart-fill-6 { fill: var(--sa-chart-cat-7); }
+.ds-chart-fill-7 { fill: var(--sa-chart-cat-8); }
+.ds-chart-fill-8 { fill: var(--sa-chart-cat-9); }
+.ds-chart-fill-9 { fill: var(--sa-chart-cat-10); }
+.ds-chart-fill-10 { fill: var(--sa-chart-cat-11); }
+.ds-chart-fill-11 { fill: var(--sa-chart-cat-12); }
 
-.ds-chart-swatch-0 { background-color: var(--ds-chart-cat-1); }
-.ds-chart-swatch-1 { background-color: var(--ds-chart-cat-2); }
-.ds-chart-swatch-2 { background-color: var(--ds-chart-cat-3); }
-.ds-chart-swatch-3 { background-color: var(--ds-chart-cat-4); }
-.ds-chart-swatch-4 { background-color: var(--ds-chart-cat-5); }
-.ds-chart-swatch-5 { background-color: var(--ds-chart-cat-6); }
-.ds-chart-swatch-6 { background-color: var(--ds-chart-cat-7); }
-.ds-chart-swatch-7 { background-color: var(--ds-chart-cat-8); }
-.ds-chart-swatch-8 { background-color: var(--ds-chart-cat-9); }
-.ds-chart-swatch-9 { background-color: var(--ds-chart-cat-10); }
-.ds-chart-swatch-10 { background-color: var(--ds-chart-cat-11); }
-.ds-chart-swatch-11 { background-color: var(--ds-chart-cat-12); }
+.ds-chart-swatch-0 { background-color: var(--sa-chart-cat-1); }
+.ds-chart-swatch-1 { background-color: var(--sa-chart-cat-2); }
+.ds-chart-swatch-2 { background-color: var(--sa-chart-cat-3); }
+.ds-chart-swatch-3 { background-color: var(--sa-chart-cat-4); }
+.ds-chart-swatch-4 { background-color: var(--sa-chart-cat-5); }
+.ds-chart-swatch-5 { background-color: var(--sa-chart-cat-6); }
+.ds-chart-swatch-6 { background-color: var(--sa-chart-cat-7); }
+.ds-chart-swatch-7 { background-color: var(--sa-chart-cat-8); }
+.ds-chart-swatch-8 { background-color: var(--sa-chart-cat-9); }
+.ds-chart-swatch-9 { background-color: var(--sa-chart-cat-10); }
+.ds-chart-swatch-10 { background-color: var(--sa-chart-cat-11); }
+.ds-chart-swatch-11 { background-color: var(--sa-chart-cat-12); }
 
 /* ── Linear progress ─────────────────────────────────────────────────────── */
 .ds-progress {
-  font-family: var(--ds-font-sans);
+  font-family: var(--sa-font-latin);
 }
 .ds-progress__head {
   display: flex;
@@ -234,28 +234,28 @@
   align-items: baseline;
   gap: 8px;
   margin-bottom: 6px;
-  font-size: var(--ds-text-body-3, 13px);
+  font-size: var(--sa-type-body-3-size, 13px);
 }
 .ds-progress__label {
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
   font-weight: 500;
 }
 .ds-progress__value {
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 .ds-progress__track {
   width: 100%;
   height: 8px;
-  border-radius: var(--ds-radius-full, 999px);
-  background: var(--ds-chart-grid);
+  border-radius: var(--sa-shape-full, 999px);
+  background: var(--sa-chart-grid);
   overflow: hidden;
 }
 .ds-progress__fill {
   height: 100%;
   border-radius: inherit;
-  transition: width var(--ds-duration-base, 250ms) var(--ds-easing-out, ease);
+  transition: width var(--sa-motion-enter-duration, 250ms) var(--sa-motion-enter-easing, ease);
 }
 
 /* ── Funnel ──────────────────────────────────────────────────────────────── */
@@ -263,7 +263,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-family: var(--ds-font-sans);
+  font-family: var(--sa-font-latin);
 }
 .ds-funnel__row {
   display: grid;
@@ -272,8 +272,8 @@
   gap: 12px;
 }
 .ds-funnel__label {
-  font-size: var(--ds-text-body-3, 13px);
-  color: var(--ds-ink);
+  font-size: var(--sa-type-body-3-size, 13px);
+  color: var(--sa-color-text-default);
 }
 .ds-funnel__bar-track {
   position: relative;
@@ -283,27 +283,27 @@
 }
 .ds-funnel__bar {
   height: 100%;
-  border-radius: var(--ds-radius-sm, 6px);
+  border-radius: var(--sa-shape-sm, 6px);
   min-width: 2px;
-  transition: width var(--ds-duration-base, 250ms) var(--ds-easing-out, ease);
+  transition: width var(--sa-motion-enter-duration, 250ms) var(--sa-motion-enter-easing, ease);
 }
 .ds-funnel__value {
-  font-size: var(--ds-text-body-3, 13px);
+  font-size: var(--sa-type-body-3-size, 13px);
   font-weight: 600;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
   font-variant-numeric: tabular-nums;
 }
 
 /* ── Heatmap ─────────────────────────────────────────────────────────────── */
 .ds-chart__cell {
-  transition: opacity var(--ds-duration-fast, 150ms) var(--ds-easing-out, ease);
+  transition: opacity var(--sa-motion-exit-duration, 150ms) var(--sa-motion-enter-easing, ease);
 }
 .ds-chart__cell:hover {
   opacity: 0.82;
 }
 .ds-chart__cell:focus-visible {
   outline: none;
-  stroke: var(--ds-ink);
+  stroke: var(--sa-color-text-default);
   stroke-width: 2;
 }
 

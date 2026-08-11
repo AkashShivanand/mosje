@@ -31,7 +31,7 @@ const IcCheck = () => (
  * stepper: a green ✓ for completed steps, a filled navy marker for the current
  * step, and muted markers for upcoming steps, joined by connector lines that
  * fill green as the user advances. Styled via `.ds-stepper*` semantic classes
- * that reference design tokens (--ds-*). No Tailwind, no hardcoded values.
+ * that reference design tokens (--sa-*). No Tailwind, no hardcoded values.
  */
 export const Stepper = React.forwardRef<HTMLOListElement, StepperProps>(
   function Stepper({ steps, current, ariaLabel = "Progress", className, ...rest }, ref) {

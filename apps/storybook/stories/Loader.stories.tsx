@@ -57,8 +57,8 @@ export const OnABrandSurface: Story = {
       <div
         style={{
           padding: 24,
-          borderRadius: "var(--ds-radius-md)",
-          background: "var(--ds-surface-muted)",
+          borderRadius: "var(--sa-shape-md)",
+          background: "var(--sa-bg-neutral-subtler)",
         }}
       >
         <Loader {...args} variant="primary" label="Loading on a muted surface" />
@@ -66,8 +66,8 @@ export const OnABrandSurface: Story = {
       <div
         style={{
           padding: 24,
-          borderRadius: "var(--ds-radius-md)",
-          background: "var(--ds-primary)",
+          borderRadius: "var(--sa-shape-md)",
+          background: "var(--sa-color-action-primary-default)",
         }}
       >
         <Loader {...args} variant="secondary" label="Loading on the brand surface" />

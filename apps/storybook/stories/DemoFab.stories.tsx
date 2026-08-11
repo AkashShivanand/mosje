@@ -72,7 +72,7 @@ export const Playground: Story = {};
 export const DevModeOffRendersNothing: Story = {
   args: { devMode: false },
   render: (args) => (
-    <div style={{ color: "var(--ds-ink-muted)" }}>
+    <div style={{ color: "var(--sa-color-text-muted)" }}>
       <p style={{ marginTop: 0 }}>
         Nothing is rendered below — with <code>devMode</code> false the component returns
         <code> null</code> before any account reaches the DOM. This is the production path.
@@ -108,16 +108,16 @@ export const GlobalFillEvent: Story = {
       return () => window.removeEventListener("demo:fill", handler);
     }, []);
     return (
-      <div style={{ display: "grid", gap: 12, color: "var(--ds-ink)" }}>
+      <div style={{ display: "grid", gap: 12, color: "var(--sa-color-text-default)" }}>
         <p style={{ margin: 0 }}>
           A stand-in login form, listening for <code>demo:fill</code>:
         </p>
         <dl style={{ margin: 0, display: "grid", gridTemplateColumns: "auto 1fr", gap: "6px 16px" }}>
-          <dt style={{ color: "var(--ds-ink-muted)" }}>Mobile / ID</dt>
+          <dt style={{ color: "var(--sa-color-text-muted)" }}>Mobile / ID</dt>
           <dd style={{ margin: 0 }}>
             <code>{filled?.id ?? "—"}</code>
           </dd>
-          <dt style={{ color: "var(--ds-ink-muted)" }}>Password</dt>
+          <dt style={{ color: "var(--sa-color-text-muted)" }}>Password</dt>
           <dd style={{ margin: 0 }}>
             <code>{filled?.password ?? "—"}</code>
           </dd>
@@ -133,7 +133,7 @@ export const CoLocatedOnFill: Story = {
   render: function Render(args) {
     const [filled, setFilled] = React.useState<string>("—");
     return (
-      <div style={{ display: "grid", gap: 12, color: "var(--ds-ink)" }}>
+      <div style={{ display: "grid", gap: 12, color: "var(--sa-color-text-default)" }}>
         <p style={{ margin: 0 }}>
           Filled directly, with no event: <code>{filled}</code>
         </p>

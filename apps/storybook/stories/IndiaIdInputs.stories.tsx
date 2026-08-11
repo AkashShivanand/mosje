@@ -84,7 +84,7 @@ export const Aadhaar: Story = {
         >
           {(c) => <AadhaarInput {...args} {...c} value={value} onValueChange={setValue} />}
         </FormField>
-        <p style={{ margin: 0, color: "var(--ds-ink-muted)", fontSize: "var(--ds-type-body-3-size)" }}>
+        <p style={{ margin: 0, color: "var(--sa-color-text-muted)", fontSize: "var(--sa-type-body-3-size)" }}>
           Value in state: <code>{value || "(empty)"}</code>
         </p>
       </div>
@@ -146,7 +146,7 @@ export const Pan: Story = {
         >
           {(c) => <PanInput {...c} value={value} onValueChange={setValue} />}
         </FormField>
-        <p style={{ margin: 0, color: "var(--ds-ink-muted)", fontSize: "var(--ds-type-body-3-size)" }}>
+        <p style={{ margin: 0, color: "var(--sa-color-text-muted)", fontSize: "var(--sa-type-body-3-size)" }}>
           Holder type: <strong>{holder ?? "—"}</strong>
         </p>
       </div>
@@ -191,7 +191,7 @@ export const Otp: Story = {
           }}
           onComplete={() => setVerified(true)}
         />
-        <p style={{ margin: 0, color: "var(--ds-ink-muted)", fontSize: "var(--ds-type-body-3-size)" }}>
+        <p style={{ margin: 0, color: "var(--sa-color-text-muted)", fontSize: "var(--sa-type-body-3-size)" }}>
           {verified ? "Code complete — verify call would fire here." : "Sent to 98900 01234."}
         </p>
       </div>
@@ -207,11 +207,11 @@ export const OtpVariants: Story = {
     return (
       <div style={{ display: "grid", gap: 20 }}>
         <div style={{ display: "grid", gap: 6 }}>
-          <span style={{ color: "var(--ds-ink-muted)" }}>Four digits</span>
+          <span style={{ color: "var(--sa-color-text-muted)" }}>Four digits</span>
           <OtpInput label="Four-digit code" length={4} value={four} onValueChange={setFour} />
         </div>
         <div style={{ display: "grid", gap: 6 }}>
-          <span style={{ color: "var(--ds-ink-muted)" }}>Incorrect code</span>
+          <span style={{ color: "var(--sa-color-text-muted)" }}>Incorrect code</span>
           <OtpInput
             label="One-time password"
             value={wrong}
@@ -219,16 +219,16 @@ export const OtpVariants: Story = {
             invalid
             aria-describedby="sb-otp-error"
           />
-          <p id="sb-otp-error" role="alert" style={{ margin: 0, color: "var(--ds-danger)" }}>
+          <p id="sb-otp-error" role="alert" style={{ margin: 0, color: "var(--sa-color-status-danger)" }}>
             That code is incorrect or has expired.
           </p>
         </div>
         <div style={{ display: "grid", gap: 6 }}>
-          <span style={{ color: "var(--ds-ink-muted)" }}>Disabled while resending</span>
+          <span style={{ color: "var(--sa-color-text-muted)" }}>Disabled while resending</span>
           <OtpInput label="One-time password" value="" onValueChange={() => {}} disabled />
         </div>
         <div style={{ display: "grid", gap: 6 }}>
-          <span style={{ color: "var(--ds-ink-muted)" }}>
+          <span style={{ color: "var(--sa-color-text-muted)" }}>
             <code>autoFocus</code> — right on a dedicated OTP screen, where the code is the
             only thing to do. Wrong on a page with anything above it: it yanks a screen-reader
             user past the heading that says what the code is for.

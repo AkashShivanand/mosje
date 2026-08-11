@@ -1305,6 +1305,21 @@
       "$type": "fontFamily",
       "$value": "{font.family.devanagari}",
       "$description": "Devanagari/Hindi text. Pair with lang=hi on the element. Never italic — the script has no italic tradition and slanting degrades legibility."
+    },
+    "latin": {
+      "$type": "fontFamily",
+      "$value": "{font.family.latin}",
+      "$description": "The estate default for Latin text. Tier-2 alias so a brand pack can re-font without touching components."
+    },
+    "display": {
+      "$type": "fontFamily",
+      "$value": "{font.family.display}",
+      "$description": "The optical Display cut, for the 40-80px Display ramp. In Figma this is a STYLE of Noto Sans (Display Medium), not a separate family."
+    },
+    "mono": {
+      "$type": "fontFamily",
+      "$value": "{font.family.mono}",
+      "$description": "Tabular and code contexts. A system stack, deliberately not a webfont."
     }
   },
   "leading": {
@@ -1524,6 +1539,9 @@
     },
     "xl": {
       "$value": "{space.3xl}"
+    },
+    "2xl": {
+      "$value": "{space.4xl}"
     }
   },
   "padding": {
@@ -2339,6 +2357,46 @@
         "$type": "dimension",
         "$value": "{border.width.sm}"
       }
+    }
+  },
+  "shape": {
+    "$description": "Tier-2 corner radius (\"shape\"). Apps reach for these, never for the Tier-1 --sa-ref-radius-* primitives. Named shape rather than radius because Style Dictionary merges primitive and semantic namespaces, so a Tier-2 group called radius self-references the Tier-1 scale it is aliasing. Added 2026-08-12 when the legacy --ds-radius-* vocabulary was retired and its 248 usages had no Tier-2 home.",
+    "$type": "dimension",
+    "none": {
+      "$value": "{radius.none}"
+    },
+    "xxs": {
+      "$value": "{radius.xxs}"
+    },
+    "xs": {
+      "$value": "{radius.xs}"
+    },
+    "sm": {
+      "$value": "{radius.sm}"
+    },
+    "md": {
+      "$value": "{radius.md}"
+    },
+    "lg": {
+      "$value": "{radius.lg}"
+    },
+    "xl": {
+      "$value": "{radius.xl}"
+    },
+    "2xl": {
+      "$value": "{radius.2xl}"
+    },
+    "3xl": {
+      "$value": "{radius.3xl}"
+    },
+    "4xl": {
+      "$value": "{radius.4xl}"
+    },
+    "5xl": {
+      "$value": "{radius.5xl}"
+    },
+    "full": {
+      "$value": "{radius.full}"
     }
   }
 }

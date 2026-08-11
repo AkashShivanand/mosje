@@ -1,6 +1,6 @@
 /* ============================================================================
    MoSJE / SAMAVESH — MediaUpload (file/image upload with preview)
-   Semantic ds-* classes; every value references a design token (--ds- / --sa-).
+   Semantic ds-* classes; every value references a design token (--sa-).
    Dark-mode safe (tokens auto-adapt). Drop-zone min target ≥ 44px (WCAG 2.2).
    ============================================================================ */
 
@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-family: var(--ds-font-sans);
+  font-family: var(--sa-font-latin);
 }
 
 /* Visually-hidden native input — triggered programmatically; kept out of tab
@@ -36,9 +36,9 @@
   min-height: 132px;
   padding: 24px 16px;
   text-align: center;
-  background-color: var(--ds-surface);
-  border: 2px dashed var(--ds-border-strong);
-  border-radius: var(--ds-radius-lg);
+  background-color: var(--sa-bg-neutral-base);
+  border: 2px dashed var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-lg);
   cursor: pointer;
   transition:
     border-color 0.15s ease,
@@ -47,22 +47,22 @@
 }
 
 .ds-media-upload__dropzone:hover:not(:disabled) {
-  border-color: var(--ds-primary);
+  border-color: var(--sa-color-action-primary-default);
 }
 
 .ds-media-upload__dropzone:focus-visible {
   outline: none;
-  border-color: var(--ds-primary);
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  border-color: var(--sa-color-action-primary-default);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
 }
 
 .ds-media-upload__dropzone.is-dragover {
-  border-color: var(--ds-primary);
-  background-color: var(--ds-primary-tonal);
+  border-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-color-action-primary-tonal);
 }
 
 .ds-media-upload__dropzone[aria-invalid="true"] {
-  border-color: var(--ds-danger);
+  border-color: var(--sa-color-status-danger);
 }
 
 .ds-media-upload__dropzone:disabled {
@@ -72,20 +72,20 @@
 
 .ds-media-upload__icon {
   display: inline-flex;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
 }
 
 .ds-media-upload__prompt {
-  font-size: var(--ds-text-body-2);
-  line-height: var(--ds-leading-body-2);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   font-weight: 500;
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
 }
 
 .ds-media-upload__hint {
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-color-text-muted);
 }
 
 /* ---- Filled state: preview ---- */
@@ -94,9 +94,9 @@
   align-items: center;
   gap: 16px;
   padding: 12px;
-  background-color: var(--ds-surface);
-  border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-lg);
+  background-color: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-lg);
 }
 
 .ds-media-upload__thumb {
@@ -104,16 +104,16 @@
   height: 80px;
   flex: none;
   object-fit: cover;
-  background-color: var(--ds-surface-muted);
-  border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-md);
+  background-color: var(--sa-bg-neutral-subtler);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-md);
 }
 
 .ds-media-upload__thumb--file {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
 }
 
 .ds-media-upload__meta {
@@ -122,19 +122,19 @@
 }
 
 .ds-media-upload__name {
-  font-size: var(--ds-text-body-2);
-  line-height: var(--ds-leading-body-2);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   font-weight: 500;
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .ds-media-upload__sub {
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-color-text-muted);
 }
 
 .ds-media-upload__actions {
@@ -151,11 +151,11 @@
   padding: 4px 6px;
   background: none;
   border: 0;
-  border-radius: var(--ds-radius-md);
+  border-radius: var(--sa-shape-md);
   font-family: inherit;
-  font-size: var(--ds-text-body-3);
+  font-size: var(--sa-type-body-3-size);
   font-weight: 600;
-  color: var(--ds-primary-dark);
+  color: var(--sa-color-action-primary-hover);
   cursor: pointer;
 }
 
@@ -165,7 +165,7 @@
 
 .ds-media-upload__action:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
 }
 
 .ds-media-upload__action--danger {
@@ -176,7 +176,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
   color: var(--sa-color-status-dangerStrong);
 }

@@ -119,8 +119,8 @@ export const OnABrandSurface: Story = {
         display: "flex",
         gap: 12,
         padding: 24,
-        borderRadius: "var(--ds-radius-md)",
-        background: "var(--ds-primary)",
+        borderRadius: "var(--sa-shape-md)",
+        background: "var(--sa-color-action-primary-default)",
       }}
     >
       <Button {...args} appearance="inverse">

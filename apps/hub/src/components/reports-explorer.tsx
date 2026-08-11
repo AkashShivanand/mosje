@@ -70,9 +70,9 @@ function SevChip({
 }
 
 const SEV = {
-  blocker: { bg: "color-mix(in srgb, var(--ds-danger) 14%, transparent)", fg: "var(--ds-danger)" },
-  major: { bg: "color-mix(in srgb, var(--ds-saffron) 16%, transparent)", fg: "var(--ds-saffron-dark)" },
-  minor: { bg: "color-mix(in srgb, var(--ds-warning) 24%, transparent)", fg: "var(--ds-ink)" },
+  blocker: { bg: "color-mix(in srgb, var(--sa-color-status-danger) 14%, transparent)", fg: "var(--sa-color-status-danger)" },
+  major: { bg: "color-mix(in srgb, var(--sa-color-brand-saffron) 16%, transparent)", fg: "var(--sa-color-brand-saffronDark)" },
+  minor: { bg: "color-mix(in srgb, var(--sa-color-status-warning) 24%, transparent)", fg: "var(--sa-color-text-default)" },
 };
 
 function ReportCard({ p }: { p: PortalReport }) {

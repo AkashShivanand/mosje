@@ -8,9 +8,9 @@
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
-  gap: var(--ds-spacing-5xl, 48px);
+  gap: var(--sa-section-m, 48px);
   align-items: center;
-  margin-bottom: var(--ds-spacing-6xl, 56px);
+  margin-bottom: var(--sa-section-l, 56px);
 }
 
 .hero-glow {
@@ -25,12 +25,12 @@
   will-change: transform;
 }
 .hero-glow--blue {
-  background: var(--ds-primary);
+  background: var(--sa-color-action-primary-default);
   top: -80px;
   left: -120px;
 }
 .hero-glow--saffron {
-  background: var(--ds-saffron);
+  background: var(--sa-color-brand-saffron);
   bottom: -60px;
   right: -40px;
 }
@@ -44,7 +44,7 @@
    fills — stretch the hero across it so the space isn't left blank. */
 @media (min-width: 1025px) {
   .hero {
-    width: calc(100% + 200px + var(--ds-spacing-3xl, 32px));
+    width: calc(100% + 200px + var(--sa-inline-xl, 32px));
   }
 }
 
@@ -58,8 +58,8 @@
 .hero-lockup {
   display: flex;
   align-items: center;
-  gap: var(--ds-spacing-lg);
-  margin-bottom: var(--ds-spacing-xl);
+  gap: var(--sa-stack-m);
+  margin-bottom: var(--sa-padding-l);
 }
 
 .hero-emblem {
@@ -77,33 +77,33 @@
 .hero-divider {
   width: 1px;
   height: 44px;
-  background: var(--ds-border);
+  background: var(--sa-border-neutral-subtle);
 }
 
 /* Institutional eyebrow — small, tracked, with a leading brand rule. */
 .hero-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: var(--ds-spacing-sm);
-  font-size: var(--ds-text-label-3, 0.75rem);
+  gap: var(--sa-stack-xs);
+  font-size: var(--sa-type-label-3-size, 0.75rem);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--ds-ink-muted);
-  margin-bottom: var(--ds-spacing-md);
+  color: var(--sa-color-text-muted);
+  margin-bottom: var(--sa-stack-s);
 }
 .hero-eyebrow::before {
   content: "";
   width: 22px;
   height: 2px;
   border-radius: 2px;
-  background: var(--ds-primary);
+  background: var(--sa-color-action-primary-default);
 }
 
 .hero-title {
   display: flex;
   flex-direction: column;
-  gap: var(--ds-spacing-xs);
+  gap: var(--sa-stack-2xs);
 }
 
 .hero-wordmark {
@@ -115,11 +115,11 @@
      clipped gradient never paints. #4f46e5 (Tailwind indigo-600) used to be the
      second stop — an off-palette literal on the design system's own homepage,
      which is precisely what "tokens first, never hardcode" forbids. */
-  color: var(--ds-primary);
+  color: var(--sa-color-action-primary-default);
   background: linear-gradient(
     135deg,
-    var(--ds-primary) 0%,
-    var(--ds-navy) 100%
+    var(--sa-color-action-primary-default) 0%,
+    var(--sa-color-brand-navy) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -143,16 +143,16 @@
   font-size: clamp(1.5rem, 0.9rem + 2.4vw, 2.75rem);
   font-weight: 600;
   line-height: 1.1;
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
   opacity: 0.85;
   margin: 0;
 }
 
 .hero-subtitle {
-  font-size: var(--ds-text-body-1, 1rem);
-  line-height: var(--ds-leading-body-1, 1.6);
-  color: var(--ds-ink-muted);
-  margin-top: var(--ds-spacing-lg);
+  font-size: var(--sa-type-body-1-size, 1rem);
+  line-height: var(--sa-type-body-1-lh, 1.6);
+  color: var(--sa-color-text-muted);
+  margin-top: var(--sa-stack-m);
   max-width: 38ch;
 }
 
@@ -161,56 +161,56 @@
   position: relative;
   height: 392px;
   overflow: hidden;
-  padding: var(--ds-spacing-xl);
-  border: 1px solid color-mix(in oklab, var(--ds-primary) 12%, var(--ds-border));
-  border-radius: var(--ds-radius-xl, 20px);
-  background: color-mix(in oklab, var(--ds-primary) 2%, rgba(255, 255, 255, 0.45));
+  padding: var(--sa-padding-l);
+  border: 1px solid color-mix(in oklab, var(--sa-color-action-primary-default) 12%, var(--sa-border-neutral-subtle));
+  border-radius: var(--sa-shape-xl, 20px);
+  background: color-mix(in oklab, var(--sa-color-action-primary-default) 2%, rgba(255, 255, 255, 0.45));
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   box-shadow: 
-    var(--ds-shadow-lg, 0 12px 32px -12px rgb(2 32 64 / 0.18)),
+    var(--sa-elevation-modal, 0 12px 32px -12px rgb(2 32 64 / 0.18)),
     inset 0 1px 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 [data-theme="dark"] .hero-panel {
-  background: color-mix(in oklab, var(--ds-primary) 4%, rgba(31, 36, 40, 0.55));
-  border: 1px solid color-mix(in oklab, var(--ds-primary) 20%, rgba(255, 255, 255, 0.12));
+  background: color-mix(in oklab, var(--sa-color-action-primary-default) 4%, rgba(31, 36, 40, 0.55));
+  border: 1px solid color-mix(in oklab, var(--sa-color-action-primary-default) 20%, rgba(255, 255, 255, 0.12));
   box-shadow: 
-    var(--ds-shadow-lg, 0 12px 32px -12px rgb(0 0 0 / 0.5)),
+    var(--sa-elevation-modal, 0 12px 32px -12px rgb(0 0 0 / 0.5)),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
 }
 
 /* "Live" cue — crisp, sits above the faded wall. */
 .hero-panel__tag {
   position: absolute;
-  top: var(--ds-spacing-lg);
-  left: var(--ds-spacing-lg);
+  top: var(--sa-stack-m);
+  left: var(--sa-inline-l);
   z-index: 2;
   display: inline-flex;
   align-items: center;
-  gap: var(--ds-spacing-sm);
-  padding: 5px var(--ds-spacing-md) 5px var(--ds-spacing-sm);
-  font-size: var(--ds-text-label-3, 0.75rem);
+  gap: var(--sa-stack-xs);
+  padding: 5px var(--sa-padding-s) 5px var(--sa-padding-xs);
+  font-size: var(--sa-type-label-3-size, 0.75rem);
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: var(--ds-ink);
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-full, 999px);
-  box-shadow: var(--ds-shadow-xs, 0 1px 2px rgb(2 32 64 / 0.06));
+  color: var(--sa-color-text-default);
+  background: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-full, 999px);
+  box-shadow: var(--sa-elevation-card, 0 1px 2px rgb(2 32 64 / 0.06));
 }
 .hero-panel__pulse {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--ds-primary);
-  box-shadow: 0 0 0 0 color-mix(in oklab, var(--ds-primary) 55%, transparent);
+  background: var(--sa-color-action-primary-default);
+  box-shadow: 0 0 0 0 color-mix(in oklab, var(--sa-color-action-primary-default) 55%, transparent);
 }
 
 .hero-wall {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--ds-spacing-lg);
+  gap: var(--sa-stack-m);
   height: 100%;
   /* Fade the top & bottom so the components appear to stream endlessly. */
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
@@ -235,7 +235,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  margin-bottom: var(--ds-spacing-lg);
+  margin-bottom: var(--sa-stack-m);
   width: 100%;
   min-width: 0;
 }
@@ -252,11 +252,11 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: var(--ds-spacing-sm);
+  gap: var(--sa-stack-xs);
 }
 .hero-muted {
-  font-size: var(--ds-text-body-3, 0.8125rem);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size, 0.8125rem);
+  color: var(--sa-color-text-muted);
 }
 .hero-card {
   width: 100%;
@@ -291,7 +291,7 @@
   border-radius: 50%;
   padding: 3px;
   box-sizing: content-box;
-  box-shadow: 0 0 0 1px var(--ds-border);
+  box-shadow: 0 0 0 1px var(--sa-border-neutral-subtle);
 }
 
 /* ── Entrance + delight (motion-safe only) ── */
@@ -300,9 +300,9 @@
   to   { opacity: 1; transform: none; }
 }
 @keyframes hero-pulse {
-  0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--ds-primary) 55%, transparent); }
-  70%  { box-shadow: 0 0 0 7px color-mix(in oklab, var(--ds-primary) 0%, transparent); }
-  100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--ds-primary) 0%, transparent); }
+  0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--sa-color-action-primary-default) 55%, transparent); }
+  70%  { box-shadow: 0 0 0 7px color-mix(in oklab, var(--sa-color-action-primary-default) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--sa-color-action-primary-default) 0%, transparent); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -322,8 +322,8 @@
 @media (max-width: 860px) {
   .hero {
     grid-template-columns: 1fr;
-    gap: var(--ds-spacing-2xl);
-    margin-bottom: var(--ds-spacing-4xl, 40px);
+    gap: var(--sa-stack-l);
+    margin-bottom: var(--sa-stack-2xl, 40px);
   }
   .hero-panel { height: 320px; }
 }

@@ -174,10 +174,10 @@ const SUGGESTIONS: Suggestion[] = [
 // custom properties directly. The red → saffron → amber → neutral severity ramp
 // is preserved, just sourced from tokens instead of raw Tailwind hex.
 const SEV: Record<Sev, { pill: string; border: string; pinBg: string }> = {
-  Blocker: { pill: "bg-red-100 text-red-700",      border: "border-l-red-500",    pinBg: "var(--ds-danger)" },
-  Major:   { pill: "bg-orange-100 text-orange-700", border: "border-l-orange-500", pinBg: "var(--ds-secondary-700)" },
-  Minor:   { pill: "bg-amber-100 text-amber-700",   border: "border-l-amber-400",  pinBg: "var(--ds-warning)" },
-  Nit:     { pill: "bg-slate-100 text-slate-600",   border: "border-l-slate-300",  pinBg: "var(--ds-neutral-500)" },
+  Blocker: { pill: "bg-red-100 text-red-700",      border: "border-l-red-500",    pinBg: "var(--sa-color-status-danger)" },
+  Major:   { pill: "bg-orange-100 text-orange-700", border: "border-l-orange-500", pinBg: "var(--sa-color-secondaryScale-700)" },
+  Minor:   { pill: "bg-amber-100 text-amber-700",   border: "border-l-amber-400",  pinBg: "var(--sa-color-status-warning)" },
+  Nit:     { pill: "bg-slate-100 text-slate-600",   border: "border-l-slate-300",  pinBg: "var(--sa-color-neutralScale-500)" },
 };
 
 const SSEV: Record<SugSev, { pill: string; border: string }> = {

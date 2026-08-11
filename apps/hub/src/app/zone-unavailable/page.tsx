@@ -21,19 +21,19 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "var(--ds-spacing-2xl, 24px)",
-        background: "var(--ds-surface-muted, #f8f9fa)",
+        padding: "var(--sa-padding-xl, 24px)",
+        background: "var(--sa-bg-neutral-subtler, #f8f9fa)",
       }}
     >
       <div
         style={{
           width: "100%",
           maxWidth: "32rem",
-          background: "var(--ds-surface, #fff)",
-          border: "1px solid var(--ds-border, #f1f3f5)",
-          borderRadius: "var(--ds-radius-md, 8px)",
-          padding: "var(--ds-spacing-3xl, 32px)",
-          boxShadow: "var(--ds-shadow-lg, 0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03))",
+          background: "var(--sa-bg-neutral-base, #fff)",
+          border: "1px solid var(--sa-border-neutral-subtle, #f1f3f5)",
+          borderRadius: "var(--sa-shape-md, 8px)",
+          padding: "var(--sa-padding-2xl, 32px)",
+          boxShadow: "var(--sa-elevation-modal, 0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03))",
         }}
       >
         <div
@@ -41,14 +41,14 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           style={{
             width: 44,
             height: 44,
-            borderRadius: "var(--ds-radius-sm, 6px)",
-            background: "var(--ds-warning-tonal, #fff4e5)",
-            color: "var(--ds-warning, #8c571f)",
+            borderRadius: "var(--sa-shape-sm, 6px)",
+            background: "var(--sa-color-status-warningTonal, #fff4e5)",
+            color: "var(--sa-color-status-warning, #8c571f)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             fontSize: 24,
-            marginBottom: "var(--ds-spacing-xl, 20px)",
+            marginBottom: "var(--sa-padding-l, 20px)",
           }}
         >
           ⚠
@@ -56,10 +56,10 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
 
         <h1
           style={{
-            fontSize: "var(--ds-text-title-1, 22px)",
+            fontSize: "var(--sa-type-headline-2-size, 22px)",
             fontWeight: 600,
-            color: "var(--ds-ink, #1f2428)",
-            marginBottom: "var(--ds-spacing-sm, 8px)",
+            color: "var(--sa-color-text-default, #1f2428)",
+            marginBottom: "var(--sa-stack-xs, 8px)",
           }}
         >
           {zone}{" "}isn&apos;t running
@@ -67,10 +67,10 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
 
         <p
           style={{
-            fontSize: "var(--ds-text-body-1, 16px)",
-            color: "var(--ds-ink-muted, #343a40)",
+            fontSize: "var(--sa-type-body-1-size, 16px)",
+            color: "var(--sa-color-text-muted, #343a40)",
             lineHeight: 1.6,
-            marginBottom: "var(--ds-spacing-xl, 20px)",
+            marginBottom: "var(--sa-padding-l, 20px)",
           }}
         >
           The hub couldn&apos;t reach this app{from ? <> at <code>{from}</code></> : null}. It&apos;s served by
@@ -79,21 +79,21 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
 
         <div
           style={{
-            background: "var(--ds-surface-muted, #f8f9fa)",
-            border: "1px solid var(--ds-border, #f1f3f5)",
-            borderRadius: "var(--ds-radius-sm, 6px)",
-            padding: "var(--ds-spacing-lg, 16px)",
-            marginBottom: "var(--ds-spacing-xl, 20px)",
+            background: "var(--sa-bg-neutral-subtler, #f8f9fa)",
+            border: "1px solid var(--sa-border-neutral-subtle, #f1f3f5)",
+            borderRadius: "var(--sa-shape-sm, 6px)",
+            padding: "var(--sa-padding-m, 16px)",
+            marginBottom: "var(--sa-padding-l, 20px)",
           }}
         >
           <div
             style={{
-              fontSize: "var(--ds-text-label-3, 11px)",
+              fontSize: "var(--sa-type-label-3-size, 11px)",
               fontWeight: 700,
               textTransform: "uppercase",
               letterSpacing: "0.06em",
-              color: "var(--ds-ink-muted, #343a40)",
-              marginBottom: "var(--ds-spacing-sm, 8px)",
+              color: "var(--sa-color-text-muted, #343a40)",
+              marginBottom: "var(--sa-stack-xs, 8px)",
             }}
           >
             Start everything (recommended)
@@ -101,22 +101,22 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           <code
             style={{
               display: "block",
-              fontFamily: "var(--ds-font-mono, ui-monospace, monospace)",
-              fontSize: "var(--ds-text-body-2, 14px)",
-              color: "var(--ds-ink, #1f2428)",
-              marginBottom: "var(--ds-spacing-lg, 16px)",
+              fontFamily: "var(--sa-font-mono, ui-monospace, monospace)",
+              fontSize: "var(--sa-type-body-2-size, 14px)",
+              color: "var(--sa-color-text-default, #1f2428)",
+              marginBottom: "var(--sa-stack-m, 16px)",
             }}
           >
             npm run dev
           </code>
           <div
             style={{
-              fontSize: "var(--ds-text-label-3, 11px)",
+              fontSize: "var(--sa-type-label-3-size, 11px)",
               fontWeight: 700,
               textTransform: "uppercase",
               letterSpacing: "0.06em",
-              color: "var(--ds-ink-muted, #343a40)",
-              marginBottom: "var(--ds-spacing-sm, 8px)",
+              color: "var(--sa-color-text-muted, #343a40)",
+              marginBottom: "var(--sa-stack-xs, 8px)",
             }}
           >
             …or just this app
@@ -124,27 +124,27 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           <code
             style={{
               display: "block",
-              fontFamily: "var(--ds-font-mono, ui-monospace, monospace)",
-              fontSize: "var(--ds-text-body-2, 14px)",
-              color: "var(--ds-ink, #1f2428)",
+              fontFamily: "var(--sa-font-mono, ui-monospace, monospace)",
+              fontSize: "var(--sa-type-body-2-size, 14px)",
+              color: "var(--sa-color-text-default, #1f2428)",
             }}
           >
             {cmd}
           </code>
         </div>
 
-        <div style={{ display: "flex", gap: "var(--ds-spacing-md, 12px)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--sa-stack-s, 12px)", flexWrap: "wrap" }}>
           <a
             href={from ?? "/"}
             style={{
               display: "inline-flex",
               alignItems: "center",
-              padding: "10px var(--ds-spacing-xl, 20px)",
-              borderRadius: "var(--ds-radius-sm, 6px)",
-              background: "var(--ds-primary, #0373df)",
-              color: "var(--ds-on-primary, #fff)",
+              padding: "10px var(--sa-padding-l, 20px)",
+              borderRadius: "var(--sa-shape-sm, 6px)",
+              background: "var(--sa-color-action-primary-default, #0373df)",
+              color: "var(--sa-color-text-onPrimary, #fff)",
               fontWeight: 600,
-              fontSize: "var(--ds-text-body-2, 14px)",
+              fontSize: "var(--sa-type-body-2-size, 14px)",
               textDecoration: "none",
             }}
           >
@@ -155,12 +155,12 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             style={{
               display: "inline-flex",
               alignItems: "center",
-              padding: "10px var(--ds-spacing-xl, 20px)",
-              borderRadius: "var(--ds-radius-sm, 6px)",
-              border: "1px solid var(--ds-border-strong, #e2e6ea)",
-              color: "var(--ds-ink, #1f2428)",
+              padding: "10px var(--sa-padding-l, 20px)",
+              borderRadius: "var(--sa-shape-sm, 6px)",
+              border: "1px solid var(--sa-border-neutral-base, #e2e6ea)",
+              color: "var(--sa-color-text-default, #1f2428)",
               fontWeight: 600,
-              fontSize: "var(--ds-text-body-2, 14px)",
+              fontSize: "var(--sa-type-body-2-size, 14px)",
               textDecoration: "none",
             }}
           >

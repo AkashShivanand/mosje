@@ -1,4 +1,4 @@
-/* --ds-* / --sa-* tokens are already imported app-wide by the hub's own
+/* --sa-* / --sa-* tokens are already imported app-wide by the hub's own
    globals.css — do not re-import here. */
 /* Shared docs-kit component styles — loaded app-wide (within this scope) so
    Callout, StatusBadge, etc. are styled on every design-system page (not only
@@ -15,11 +15,11 @@
 [data-theme="dark"] { color-scheme: dark; }
 
 html {
-  font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-body-1);
-  line-height: var(--ds-leading-body-1);
-  color: var(--ds-ink);
-  background-color: var(--ds-surface);
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
+  color: var(--sa-color-text-default);
+  background-color: var(--sa-bg-neutral-base);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -32,126 +32,126 @@ html {
 
 body { min-height: 100vh; overflow-x: hidden; }
 
-/* Typography defaults — --ds-text-display is now itself a fluid clamp() token
+/* Typography defaults — --sa-type-display-1-size is now itself a fluid clamp() token
    (scales 360px→1280px per surface), so reference it directly — no outer clamp. */
 /* The ladder is 80 → 32 → 22 → 16 at the desktop max.
-   h3 used to sit at `--ds-text-headline` (40px) — LARGER than h2 at 32px, so the
+   h3 used to sit at `--sa-type-headline-1-size` (40px) — LARGER than h2 at 32px, so the
    outline read backwards wherever a section used a bare h3. h2 keeps its 32px:
    that is what `.docs-section__heading` below resolves to, and the two must agree.
-   h3 drops to `--ds-text-title-2` (22px), between h2 and h4.
+   h3 drops to `--sa-type-title-1-size` (22px), between h2 and h4.
 
-   The trap that caused it: the hyphenated `--ds-text-*` family is named for the
-   pre-Portal-DS scale whose values it preserves, so `--ds-text-title-1` is the
-   headline-2 role (32px) and `--ds-text-headline` is headline-1 (40px) — the
-   names do not match design.md's role table. Read the resolved size, and prefer
-   the canonical `--ds-type-<role>-size` tokens in new code. */
-h1 { font-size: var(--ds-text-display); line-height: 1.15; font-weight: 500; }
-h2 { font-size: var(--ds-text-title-1); line-height: 1.3;  font-weight: 600; }
-h3 { font-size: var(--ds-text-title-2); line-height: 1.4;  font-weight: 600; }
-h4 { font-size: var(--ds-text-body-1);  line-height: 1.5;  font-weight: 600; }
+   The trap that caused it — the hyphenated `--ds-text-*` alias family, named for the
+   pre-Portal-DS scale, so `--ds-text-title-1` resolved to the headline-2 role rather
+   than Title 1 — was RETIRED on 2026-08-12 with the rest of the `--ds-*` vocabulary.
+   Every name below is now a canonical `--sa-type-<role>-*` token that means the role
+   it says. */
+h1 { font-size: var(--sa-type-display-1-size); line-height: 1.15; font-weight: 500; }
+h2 { font-size: var(--sa-type-headline-2-size); line-height: 1.3;  font-weight: 600; }
+h3 { font-size: var(--sa-type-title-1-size); line-height: 1.4;  font-weight: 600; }
+h4 { font-size: var(--sa-type-body-1-size);  line-height: 1.5;  font-weight: 600; }
 
 /* Long inline code / pre must scroll, never widen the page on mobile. */
 pre { overflow-x: auto; max-width: 100%; }
 code { overflow-wrap: anywhere; }
 
-p { line-height: var(--ds-leading-body-1); }
+p { line-height: var(--sa-type-body-1-lh); }
 
-a { color: var(--ds-link); text-decoration: none; }
+a { color: var(--sa-text-link-brand-default); text-decoration: none; }
 a:hover { text-decoration: underline; }
 a:focus-visible {
-  outline: 3px solid var(--ds-primary-ring);
+  outline: 3px solid var(--sa-focus-ring);
   outline-offset: 2px;
-  border-radius: var(--ds-radius-xs);
+  border-radius: var(--sa-shape-xs);
 }
 
 /* Prose content (used in page bodies) */
-.ds-prose p + p { margin-top: var(--ds-spacing-lg); }
-.ds-prose ul, .ds-prose ol { padding-left: var(--ds-spacing-2xl); margin-top: var(--ds-spacing-md); }
-.ds-prose li + li { margin-top: var(--ds-spacing-sm); }
+.ds-prose p + p { margin-top: var(--sa-stack-m); }
+.ds-prose ul, .ds-prose ol { padding-left: var(--sa-padding-xl); margin-top: var(--sa-stack-s); }
+.ds-prose li + li { margin-top: var(--sa-stack-xs); }
 
 /* Code */
 code:not([class]) {
   /* The mono face is a token (IBM Plex Mono as of 2026-08-11) — hardcoding the stack here
      meant the docs portal kept rendering the old one after the token changed. */
-  font-family: var(--ds-font-mono);
+  font-family: var(--sa-font-mono);
   font-size: 0.875em;
-  background-color: var(--ds-surface-muted);
-  border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-xs);
+  background-color: var(--sa-bg-neutral-subtler);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-xs);
   padding: 1px 5px;
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
 }
 
 /* Skip to content */
 .skip-link {
   position: absolute;
   top: -100%;
-  left: var(--ds-spacing-lg);
+  left: var(--sa-inline-l);
   z-index: 9999;
-  padding: var(--ds-spacing-sm) var(--ds-spacing-lg);
-  background: var(--ds-primary);
-  color: var(--ds-on-primary);
-  border-radius: var(--ds-radius-sm);
+  padding: var(--sa-padding-xs) var(--sa-padding-m);
+  background: var(--sa-color-action-primary-default);
+  color: var(--sa-color-text-onPrimary);
+  border-radius: var(--sa-shape-sm);
   font-weight: 600;
   transition: top 0.1s;
 }
-.skip-link:focus { top: var(--ds-spacing-lg); }
+.skip-link:focus { top: var(--sa-stack-m); }
 
 /* ── Section kicker — small editorial label above an h2 ── */
 .home-kicker {
   display: inline-flex;
   align-items: center;
-  gap: var(--ds-spacing-sm);
-  font-size: var(--ds-text-label-3, 0.75rem);
+  gap: var(--sa-stack-xs);
+  font-size: var(--sa-type-label-3-size, 0.75rem);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--ds-primary);
-  margin-bottom: var(--ds-spacing-md);
+  color: var(--sa-color-action-primary-default);
+  margin-bottom: var(--sa-stack-s);
 }
 .home-kicker::before {
   content: "";
   width: 18px;
   height: 2px;
   border-radius: 2px;
-  background: var(--ds-primary);
+  background: var(--sa-color-action-primary-default);
 }
 
 /* ── Feature card link — hairline by default, lifts + reveals an arrow ── */
 .docs-welcome-card {
   position: relative;
   display: block;
-  padding: var(--ds-spacing-xl);
-  padding-right: var(--ds-spacing-3xl);
-  border-radius: var(--ds-radius-lg);
-  border: 1px solid var(--ds-border);
-  background: var(--ds-surface);
+  padding: var(--sa-padding-l);
+  padding-right: var(--sa-padding-2xl);
+  border-radius: var(--sa-shape-lg);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  background: var(--sa-bg-neutral-base);
   text-decoration: none;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
     border-color 0.3s ease, box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
     background-color 0.3s ease;
 }
 .docs-welcome-card:hover {
-  border-color: color-mix(in oklab, var(--ds-primary) 50%, transparent);
+  border-color: color-mix(in oklab, var(--sa-color-action-primary-default) 50%, transparent);
   box-shadow: 
-    0 20px 40px -15px color-mix(in oklab, var(--ds-primary) 12%, transparent),
-    0 0 0 1px color-mix(in oklab, var(--ds-primary) 20%, transparent);
-  background-color: color-mix(in oklab, var(--ds-primary) 1.5%, var(--ds-surface));
+    0 20px 40px -15px color-mix(in oklab, var(--sa-color-action-primary-default) 12%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--sa-color-action-primary-default) 20%, transparent);
+  background-color: color-mix(in oklab, var(--sa-color-action-primary-default) 1.5%, var(--sa-bg-neutral-base));
   text-decoration: none;
 }
 [data-theme="dark"] .docs-welcome-card:hover {
-  border-color: color-mix(in oklab, var(--ds-primary) 60%, transparent);
+  border-color: color-mix(in oklab, var(--sa-color-action-primary-default) 60%, transparent);
   box-shadow: 
     0 20px 40px -15px rgba(0, 0, 0, 0.5),
-    0 0 0 1px color-mix(in oklab, var(--ds-primary) 30%, transparent);
-  background-color: color-mix(in oklab, var(--ds-primary) 3%, var(--ds-surface));
+    0 0 0 1px color-mix(in oklab, var(--sa-color-action-primary-default) 30%, transparent);
+  background-color: color-mix(in oklab, var(--sa-color-action-primary-default) 3%, var(--sa-bg-neutral-base));
 }
 .docs-welcome-card::after {
   content: "→";
   position: absolute;
-  top: var(--ds-spacing-xl);
-  right: var(--ds-spacing-xl);
-  color: var(--ds-primary);
+  top: var(--sa-padding-l);
+  right: var(--sa-padding-l);
+  color: var(--sa-color-action-primary-default);
   opacity: 0;
   transform: translateX(-4px);
   transition: opacity 0.2s, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -166,63 +166,63 @@ code:not([class]) {
 .home-stats {
   display: flex;
   flex-wrap: wrap;
-  border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-lg);
-  background: var(--ds-surface);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-lg);
+  background: var(--sa-bg-neutral-base);
   overflow: hidden;
-  margin-bottom: var(--ds-spacing-6xl, 56px);
-  box-shadow: var(--ds-shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.05));
+  margin-bottom: var(--sa-section-l, 56px);
+  box-shadow: var(--sa-elevation-raised, 0 1px 3px rgba(0, 0, 0, 0.05));
   transition: box-shadow 0.3s ease;
 }
 .home-stats:hover {
-  box-shadow: var(--ds-shadow-md, 0 8px 24px -8px rgba(2 32 64 / 0.1));
+  box-shadow: var(--sa-elevation-dropdown, 0 8px 24px -8px rgba(2 32 64 / 0.1));
 }
 .home-stat {
   flex: 1 1 0;
   min-width: 132px;
-  padding: var(--ds-spacing-xl);
-  border-left: 1px solid var(--ds-border);
+  padding: var(--sa-padding-l);
+  border-left: 1px solid var(--sa-border-neutral-subtle);
   transition: background-color 0.3s ease, transform 0.3s ease;
   cursor: default;
 }
 .home-stat:first-child { border-left: 0; }
 .home-stat:hover {
-  background-color: color-mix(in oklab, var(--ds-primary) 1.5%, var(--ds-surface));
+  background-color: color-mix(in oklab, var(--sa-color-action-primary-default) 1.5%, var(--sa-bg-neutral-base));
 }
 [data-theme="dark"] .home-stat:hover {
-  background-color: color-mix(in oklab, var(--ds-primary) 3%, var(--ds-surface));
+  background-color: color-mix(in oklab, var(--sa-color-action-primary-default) 3%, var(--sa-bg-neutral-base));
 }
 /* Align the stats band's right edge with the broken-out hero (reclaims the
    empty TOC rail) so the two full-width bands line up. */
 @media (min-width: 1025px) {
-  .home-stats { width: calc(100% + 200px + var(--ds-spacing-3xl, 32px)); }
+  .home-stats { width: calc(100% + 200px + var(--sa-inline-xl, 32px)); }
 }
 .home-stat__value {
-  font-size: var(--ds-text-title-1);
+  font-size: var(--sa-type-headline-2-size);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
-  color: var(--ds-ink-strong, var(--ds-ink));
+  color: var(--sa-text-neutral-bolder, var(--sa-color-text-default));
   font-variant-numeric: tabular-nums;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 .home-stat:hover .home-stat__value {
-  color: var(--ds-primary);
+  color: var(--sa-color-action-primary-default);
   transform: translateY(-2px);
 }
 .home-stat__label {
-  font-size: var(--ds-text-label-3, 0.75rem);
+  font-size: var(--sa-type-label-3-size, 0.75rem);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--ds-ink-muted);
-  margin-top: var(--ds-spacing-sm);
+  color: var(--sa-color-text-muted);
+  margin-top: var(--sa-stack-xs);
 }
 
 /* ── Card grids ── */
 .home-cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--ds-spacing-lg);
+  gap: var(--sa-stack-m);
 }
 @media (max-width: 900px) {
   .home-stat { min-width: 33%; }

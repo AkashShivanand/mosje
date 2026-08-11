@@ -2,18 +2,18 @@
    MoSJE / SAMAVESH — Label atom
    Standalone <label> for controls outside <FormField>. Deliberately mirrors
    `.ds-field__label` in forms.css so the two are visually identical.
-   All colours reference design tokens (--ds-*).
+   All colours reference design tokens (--sa-*).
    ============================================================================ */
 
 .ds-label {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-family: var(--ds-font-sans, inherit);
-  font-size: var(--ds-text-label-1, 14px);
-  line-height: var(--ds-leading-label-1, 20px);
+  font-family: var(--sa-font-latin, inherit);
+  font-size: var(--sa-type-label-1-size, 14px);
+  line-height: var(--sa-type-label-1-lh, 20px);
   font-weight: 600;
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
 }
 
 /* Required marker. Decorative only — the control itself carries `required`,
@@ -24,7 +24,7 @@
 
 .ds-label__hint {
   font-weight: 400;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
 }
 
 /* Dim the label when the control it labels is disabled. Relies on the control

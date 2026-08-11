@@ -64,9 +64,9 @@ export const AgainstARealCeiling: Story = {
 export const ThresholdColours: Story = {
   render: (args) => (
     <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-      <Gauge {...args} value={42} title="Within capacity" color="var(--ds-success)" unit="occupancy" />
-      <Gauge {...args} value={78} title="Approaching capacity" color="var(--ds-warning)" unit="occupancy" />
-      <Gauge {...args} value={96} title="At capacity" color="var(--ds-danger)" unit="occupancy" />
+      <Gauge {...args} value={42} title="Within capacity" color="var(--sa-color-status-success)" unit="occupancy" />
+      <Gauge {...args} value={78} title="Approaching capacity" color="var(--sa-color-status-warning)" unit="occupancy" />
+      <Gauge {...args} value={96} title="At capacity" color="var(--sa-color-status-danger)" unit="occupancy" />
     </div>
   ),
 };
@@ -90,7 +90,7 @@ export const NonZeroMinimum: Story = {
     max: 80,
     title: "Average days to disbursal",
     unit: "days (target: under 45)",
-    color: "var(--ds-danger)",
+    color: "var(--sa-color-status-danger)",
   },
 };
 

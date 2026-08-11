@@ -45,7 +45,7 @@ const IconCheck = () => (
     height="11"
     viewBox="0 0 24 24"
     fill="none"
-    stroke="var(--ds-success)"
+    stroke="var(--sa-color-status-success)"
     strokeWidth="2.5"
     strokeLinecap="round"
     strokeLinejoin="round"

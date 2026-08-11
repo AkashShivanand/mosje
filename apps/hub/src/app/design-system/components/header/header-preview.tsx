@@ -88,10 +88,10 @@ function Frame({ children }: { children: React.ReactNode }): React.JSX.Element {
   return (
     <div
       style={{
-        border: "1px solid var(--ds-border)",
-        borderRadius: "var(--ds-radius-md, 8px)",
+        border: "1px solid var(--sa-border-neutral-subtle)",
+        borderRadius: "var(--sa-shape-md, 8px)",
         overflow: "hidden",
-        background: "var(--ds-surface)",
+        background: "var(--sa-bg-neutral-base)",
       }}
     >
       {children}

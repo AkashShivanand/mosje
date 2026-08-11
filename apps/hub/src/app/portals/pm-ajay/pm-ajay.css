@@ -2,7 +2,7 @@
    UX4G Design System tokens (MoSJE Portal DS, Figma) + dashboard application styles.
    Faithful port of the Claude Design handoff (colors_and_type.css + app.css). */
 
-/* SAMAVESH token baseline (--ds-/--sa- vars) and Material Symbols Rounded are
+/* SAMAVESH token baseline (--sa- vars) and Material Symbols Rounded are
    already loaded once, hub-wide, by apps/hub/src/app/layout.tsx (tokens.css +
    @mosje/design-system/icons.css) — do not re-import either here.
    Roboto / Red Hat Mono are PM-AJAY-specific and aren't provided by the hub,

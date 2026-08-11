@@ -759,7 +759,10 @@ export const tokens = {
       "body": "0px",
       "label": "0px"
     },
-    "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"
+    "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
+    "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
+    "display": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
+    "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
   },
   "shadow": {
     "none": "none",
@@ -1057,7 +1060,8 @@ export const tokens = {
     "s": "12px",
     "m": "16px",
     "l": "24px",
-    "xl": "32px"
+    "xl": "32px",
+    "2xl": "40px"
   },
   "padding": {
     "none": "0px",
@@ -1280,6 +1284,20 @@ export const tokens = {
     "border": {
       "width": "1px"
     }
+  },
+  "shape": {
+    "none": "0px",
+    "xxs": "2px",
+    "xs": "4px",
+    "sm": "6px",
+    "md": "8px",
+    "lg": "12px",
+    "xl": "16px",
+    "2xl": "20px",
+    "3xl": "24px",
+    "4xl": "32px",
+    "5xl": "40px",
+    "full": "999px"
   },
   "button": {
     "primary": {

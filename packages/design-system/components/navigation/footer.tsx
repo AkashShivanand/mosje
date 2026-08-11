@@ -22,7 +22,7 @@ export interface FooterProps extends React.HTMLAttributes<HTMLElement> {
  *
  * Matches the Figma portal footer: a single navy band with the UX4G / NeGD /
  * MeitY credit line, plus optional policy links. Styled via `.ds-footer*`
- * semantic classes that reference design tokens (--ds-*). No Tailwind.
+ * semantic classes that reference design tokens (--sa-*). No Tailwind.
  */
 export const Footer = React.forwardRef<HTMLElement, FooterProps>(function Footer(
   { copyright, links, maxWidth = 1320, className, ...rest },

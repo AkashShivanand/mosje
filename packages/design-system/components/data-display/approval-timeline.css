@@ -8,7 +8,7 @@
   flex-direction: column;
   padding: 0;
   margin: 0;
-  font-family: var(--ds-font-sans);
+  font-family: var(--sa-font-latin);
   list-style: none;
 }
 
@@ -25,7 +25,7 @@
   left: 6px;
   width: 2px;
   content: "";
-  background-color: var(--ds-line);
+  background-color: var(--sa-border-neutral-subtle);
 }
 
 .ds-timeline__item:last-child {
@@ -42,31 +42,31 @@
   left: 0;
   width: 14px;
   height: 14px;
-  background-color: var(--ds-surface);
-  border: 3px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-full);
+  background-color: var(--sa-bg-neutral-base);
+  border: 3px solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-full);
 }
 
 .ds-timeline__item.is-submitted .ds-timeline__marker {
-  border-color: var(--ds-primary);
+  border-color: var(--sa-color-action-primary-default);
 }
 
 .ds-timeline__item.is-approved .ds-timeline__marker {
-  background-color: var(--ds-success);
-  border-color: var(--ds-success);
+  background-color: var(--sa-color-status-success);
+  border-color: var(--sa-color-status-success);
 }
 
 .ds-timeline__item.is-returned .ds-timeline__marker {
-  background-color: var(--ds-warning);
-  border-color: var(--ds-warning);
+  background-color: var(--sa-color-status-warning);
+  border-color: var(--sa-color-status-warning);
 }
 
-/* `--ds-border-strong` is a hairline against white and reads as an empty circle
+/* `--sa-border-neutral-base` is a hairline against white and reads as an empty circle
    at this size; use the muted ink so the pending step clears the 3:1 bar for
    non-text UI. The adjacent label still carries the meaning in text. */
 .ds-timeline__item.is-pending .ds-timeline__marker {
   border-style: dashed;
-  border-color: var(--ds-ink-muted);
+  border-color: var(--sa-color-text-muted);
 }
 
 .ds-timeline__body {
@@ -77,41 +77,41 @@
 
 .ds-timeline__action {
   margin: 0;
-  font-size: var(--ds-text-body-2);
-  line-height: var(--ds-leading-body-2);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   font-weight: 600;
-  color: var(--ds-ink-strong);
+  color: var(--sa-text-neutral-bolder);
 }
 
 .ds-timeline__action--pending {
   font-weight: 500;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
 }
 
 .ds-timeline__meta {
   margin: 0;
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
-  color: var(--ds-ink);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-color-text-default);
 }
 
 .ds-timeline__sep {
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
 }
 
 .ds-timeline__stamp {
   margin: 0;
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-color-text-muted);
 }
 
 .ds-timeline__remarks {
   padding: 8px 10px;
   margin: 6px 0 0;
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
-  color: var(--ds-ink-strong);
-  background-color: var(--ds-warning-tonal);
-  border-radius: var(--ds-radius-md);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-bolder);
+  background-color: var(--sa-color-status-warningTonal);
+  border-radius: var(--sa-shape-md);
 }

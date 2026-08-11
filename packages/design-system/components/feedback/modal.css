@@ -11,17 +11,17 @@
   align-items: center;
   justify-content: center;
   padding: 16px;
-  background-color: var(--ds-overlay, rgba(0, 0, 0, 0.4));
+  background-color: var(--sa-overlay-neutral-boldest, rgba(0, 0, 0, 0.4));
 }
 
 .ds-modal {
   width: 100%;
   max-height: calc(100vh - 32px);
   overflow-y: auto;
-  background-color: var(--ds-surface);
-  border-radius: var(--ds-radius-lg, 16px);
-  box-shadow: var(--ds-shadow-xl, 0 20px 40px rgba(0, 0, 0, 0.18));
-  font-family: var(--ds-font-sans);
+  background-color: var(--sa-bg-neutral-base);
+  border-radius: var(--sa-shape-lg, 16px);
+  box-shadow: var(--sa-elevation-toast, 0 20px 40px rgba(0, 0, 0, 0.18));
+  font-family: var(--sa-font-latin);
 }
 
 .ds-modal--sm { max-width: 24rem; }
@@ -38,9 +38,9 @@
 
 .ds-modal__title {
   margin: 0;
-  font-size: var(--ds-text-title-2, 18px);
+  font-size: var(--sa-type-title-1-size, 18px);
   font-weight: 700;
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
 }
 
 .ds-modal__close {
@@ -52,19 +52,19 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: var(--ds-radius-sm, 6px);
+  border-radius: var(--sa-shape-sm, 6px);
   background: transparent;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
   transition: background-color 0.12s ease, color 0.12s ease;
 }
 
 .ds-modal__close:hover {
-  background-color: var(--ds-surface-muted);
-  color: var(--ds-ink);
+  background-color: var(--sa-bg-neutral-subtler);
+  color: var(--sa-color-text-default);
 }
 
 .ds-modal__close:focus-visible {
-  outline: 2px solid var(--ds-primary-ring, var(--ds-primary));
+  outline: 2px solid var(--sa-focus-ring, var(--sa-color-action-primary-default));
   outline-offset: 2px;
 }
 

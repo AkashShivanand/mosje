@@ -9,33 +9,33 @@ export const metadata: Metadata = {
     "Tracks time remaining against a Right to Service Act guarantee. Three variants, five states, always a concrete number — never a vague 'Processing…'.",
 };
 
-const SECTION: React.CSSProperties = { marginTop: "var(--ds-section-s)" };
+const SECTION: React.CSSProperties = { marginTop: "var(--sa-section-s)" };
 const ROW: React.CSSProperties = {
   display: "flex",
   flexWrap: "wrap",
-  gap: "var(--ds-inline-l)",
+  gap: "var(--sa-inline-l)",
   alignItems: "flex-start",
-  padding: "var(--ds-padding-l)",
-  border: "1px solid var(--ds-border)",
-  borderRadius: "var(--ds-radius-lg)",
-  background: "var(--ds-surface)",
+  padding: "var(--sa-padding-l)",
+  border: "1px solid var(--sa-border-neutral-subtle)",
+  borderRadius: "var(--sa-shape-lg)",
+  background: "var(--sa-bg-neutral-base)",
 };
 const STACK: React.CSSProperties = {
   display: "grid",
-  gap: "var(--ds-stack-m)",
+  gap: "var(--sa-stack-m)",
   maxWidth: "30rem",
-  padding: "var(--ds-padding-l)",
-  border: "1px solid var(--ds-border)",
-  borderRadius: "var(--ds-radius-lg)",
-  background: "var(--ds-surface)",
+  padding: "var(--sa-padding-l)",
+  border: "1px solid var(--sa-border-neutral-subtle)",
+  borderRadius: "var(--sa-shape-lg)",
+  background: "var(--sa-bg-neutral-base)",
 };
 
 export default function SlaProgressPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
-      <header style={{ marginBottom: "var(--ds-section-xs)" }}>
+      <header style={{ marginBottom: "var(--sa-section-xs)" }}>
         <h1>SLA Progress Indicator</h1>
-        <p style={{ color: "var(--ds-ink-muted)", marginTop: "var(--ds-stack-s)", maxWidth: "62ch" }}>
+        <p style={{ color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-s)", maxWidth: "62ch" }}>
           Tracks time remaining against a service guarantee. A Right to Service Act gives a citizen
           a maximum time for a service and attaches the consequences of missing it to a named
           officer — so this is not a decorative progress bar. It is the promise, rendered.
@@ -83,12 +83,12 @@ export default function SlaProgressPage(): React.JSX.Element {
           <SlaProgressIndicator label="Grievance #4471" total={30} elapsed={34} variant="circular" />
           <SlaProgressIndicator label="Ration card" total={15} elapsed={3} variant="circular" />
         </div>
-        <p style={{ marginTop: "var(--ds-stack-m)" }}>
+        <p style={{ marginTop: "var(--sa-stack-m)" }}>
           <strong>Circular</strong> for a dashboard tile — the big number is the time left.{" "}
           <strong>Linear</strong> for a case detail or a queue, where the bar earns its space.{" "}
           <strong>Badge</strong> for a table cell, where a bar would not fit:
         </p>
-        <div style={{ ...ROW, gap: "var(--ds-inline-s)" }}>
+        <div style={{ ...ROW, gap: "var(--sa-inline-s)" }}>
           <SlaProgressIndicator label="NH/2026/0041" total={30} elapsed={9} variant="badge" />
           <SlaProgressIndicator label="NH/2026/0042" total={30} elapsed={26} variant="badge" />
           <SlaProgressIndicator label="NH/2026/0043" total={30} elapsed={34} variant="badge" />

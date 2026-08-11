@@ -22,12 +22,12 @@ export interface EstateFieldProps {
 
 export function EstateField({ tone = "light", origin = "72% 0%" }: EstateFieldProps) {
   const gridColor =
-    tone === "dark" ? "color-mix(in srgb, #ffffff 12%, transparent)" : "var(--ds-border)";
+    tone === "dark" ? "color-mix(in srgb, #ffffff 12%, transparent)" : "var(--sa-border-neutral-subtle)";
 
   const glow =
     tone === "dark"
-      ? `radial-gradient(64rem 36rem at ${origin}, color-mix(in srgb, var(--ds-primary) 42%, transparent), transparent 68%)`
-      : `radial-gradient(64rem 36rem at 82% -12%, color-mix(in srgb, var(--ds-primary) 16%, transparent), transparent 70%), radial-gradient(40rem 28rem at 4% 116%, color-mix(in srgb, var(--ds-navy) 10%, transparent), transparent 68%)`;
+      ? `radial-gradient(64rem 36rem at ${origin}, color-mix(in srgb, var(--sa-color-action-primary-default) 42%, transparent), transparent 68%)`
+      : `radial-gradient(64rem 36rem at 82% -12%, color-mix(in srgb, var(--sa-color-action-primary-default) 16%, transparent), transparent 70%), radial-gradient(40rem 28rem at 4% 116%, color-mix(in srgb, var(--sa-color-brand-navy) 10%, transparent), transparent 68%)`;
 
   const mask = `radial-gradient(72rem 42rem at ${origin}, black, transparent 76%)`;
 

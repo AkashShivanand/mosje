@@ -18,30 +18,30 @@ export const metadata: Metadata = {
  * ------------------------------------------------------------------ */
 
 const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--ds-spacing-5xl)",
-  scrollMarginTop: "var(--ds-spacing-5xl)",
+  marginTop: "var(--sa-section-m)",
+  scrollMarginTop: "var(--sa-section-m)",
 };
 
 const h2Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
+  fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 700,
-  color: "var(--ds-ink)",
-  marginBottom: "var(--ds-spacing-lg)",
-  paddingBottom: "var(--ds-spacing-sm)",
-  borderBottom: "1px solid var(--ds-border)",
+  color: "var(--sa-color-text-default)",
+  marginBottom: "var(--sa-stack-m)",
+  paddingBottom: "var(--sa-padding-xs)",
+  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
 };
 
 const h3Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-title-1)",
+  fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
-  color: "var(--ds-ink)",
-  marginTop: "var(--ds-spacing-2xl)",
-  marginBottom: "var(--ds-spacing-sm)",
+  color: "var(--sa-color-text-default)",
+  marginTop: "var(--sa-stack-l)",
+  marginBottom: "var(--sa-stack-xs)",
 };
 
 const proseStyle: React.CSSProperties = {
-  color: "var(--ds-ink-muted)",
-  fontSize: "var(--ds-text-body-1)",
+  color: "var(--sa-color-text-muted)",
+  fontSize: "var(--sa-type-body-1-size)",
   lineHeight: 1.7,
   maxWidth: "68ch",
 };
@@ -50,18 +50,18 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
   return (
     <pre
       style={{
-        background: "var(--ds-surface-muted)",
-        border: "1px solid var(--ds-border)",
-        borderRadius: "var(--ds-radius-md, 8px)",
-        padding: "var(--ds-spacing-lg)",
+        background: "var(--sa-bg-neutral-subtler)",
+        border: "1px solid var(--sa-border-neutral-subtle)",
+        borderRadius: "var(--sa-shape-md, 8px)",
+        padding: "var(--sa-padding-m)",
         overflowX: "auto",
-        fontSize: "var(--ds-text-body-2)",
+        fontSize: "var(--sa-type-body-2-size)",
         lineHeight: 1.6,
-        color: "var(--ds-ink)",
-        marginTop: "var(--ds-spacing-sm)",
+        color: "var(--sa-color-text-default)",
+        marginTop: "var(--sa-stack-xs)",
       }}
     >
-      <code style={{ fontFamily: "var(--ds-font-mono, monospace)" }}>
+      <code style={{ fontFamily: "var(--sa-font-mono, monospace)" }}>
         {children}
       </code>
     </pre>
@@ -81,24 +81,24 @@ export default function SidebarPage(): React.JSX.Element {
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
-        padding: "var(--ds-spacing-3xl) var(--ds-spacing-2xl) var(--ds-spacing-6xl)",
+        padding: "var(--sa-padding-2xl) var(--sa-padding-xl) var(--sa-section-l)",
       }}
     >
       {/* ── Title ── */}
-      <header style={{ marginBottom: "var(--ds-spacing-3xl)" }}>
+      <header style={{ marginBottom: "var(--sa-stack-xl)" }}>
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "var(--ds-spacing-md)",
+            gap: "var(--sa-stack-s)",
             flexWrap: "wrap",
           }}
         >
           <h1
             style={{
-              fontSize: "var(--ds-text-display)",
+              fontSize: "var(--sa-type-display-1-size)",
               fontWeight: 800,
-              color: "var(--ds-ink)",
+              color: "var(--sa-color-text-default)",
               margin: 0,
             }}
           >
@@ -106,14 +106,14 @@ export default function SidebarPage(): React.JSX.Element {
           </h1>
           <StatusBadge status="Beta" />
         </div>
-        <p style={{ ...proseStyle, marginTop: "var(--ds-spacing-md)" }}>
+        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-s)" }}>
           The portal app-shell left navigation. Renders a two-level hierarchy —
           top-level items with optional expandable groups and children linked
           by a curved connector — in either an expanded (300 px) or icon-only
           collapsed (64 px) mode. Fully token-driven; active states auto-adapt
           to the portal&apos;s colour mode.
         </p>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <a
             className={buttonClasses("primary", "outlined", "md")}
             href={PORTAL_DS_SIDEBAR_URL}
@@ -341,11 +341,11 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
           4. Design tokens
         </h2>
         <p style={proseStyle}>
-          All values are resolved from the <code>--ds-*</code> contract.
+          All values are resolved from the <code>--sa-*</code> contract.
           In the portal <code>blue-dark</code> colour mode these resolve to the
           navy ramp.
         </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-m)" }}>
           <table className="props-table">
             <thead>
               <tr>
@@ -356,24 +356,24 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
             </thead>
             <tbody>
               {[
-                ["--ds-primary-50", "Active item background", "--primary/50"],
-                ["--ds-primary", "Active item text / icon", "--text/primary"],
-                ["--ds-ink", "Default item text", "--text/dark"],
-                ["--ds-ink-muted", "Group label, muted text", "--text/secondary"],
-                ["--ds-surface-muted", "Hover background", "--neutral/100"],
-                ["--ds-border", "Group separator, resize handle line", "--neutral/200"],
-                ["--ds-radius-xl (16 px)", "Main item row border-radius", "--radius-xl"],
-                ["--ds-radius-md (8 px)", "Child item label border-radius", "--radius-md"],
-                ["--ds-primary-ring", "Focus outline", "--focus/ring"],
-                ["--ds-duration-fast", "Hover/active transition", "--duration/fast"],
+                ["--sa-color-primaryScale-50", "Active item background", "--primary/50"],
+                ["--sa-color-action-primary-default", "Active item text / icon", "--text/primary"],
+                ["--sa-color-text-default", "Default item text", "--text/dark"],
+                ["--sa-color-text-muted", "Group label, muted text", "--text/secondary"],
+                ["--sa-bg-neutral-subtler", "Hover background", "--neutral/100"],
+                ["--sa-border-neutral-subtle", "Group separator, resize handle line", "--neutral/200"],
+                ["--sa-shape-xl (16 px)", "Main item row border-radius", "--radius-xl"],
+                ["--sa-shape-md (8 px)", "Child item label border-radius", "--radius-md"],
+                ["--sa-focus-ring", "Focus outline", "--focus/ring"],
+                ["--sa-motion-exit-duration", "Hover/active transition", "--duration/fast"],
               ].map(([token, use, figma]) => (
                 <tr key={token}>
                   <td>
-                    <code style={{ fontFamily: "var(--ds-font-mono)" }}>{token}</code>
+                    <code style={{ fontFamily: "var(--sa-font-mono)" }}>{token}</code>
                   </td>
-                  <td style={{ color: "var(--ds-ink-muted)" }}>{use}</td>
+                  <td style={{ color: "var(--sa-color-text-muted)" }}>{use}</td>
                   <td>
-                    <code style={{ fontFamily: "var(--ds-font-mono)", fontSize: "0.85em", color: "var(--ds-ink-muted)" }}>
+                    <code style={{ fontFamily: "var(--sa-font-mono)", fontSize: "0.85em", color: "var(--sa-color-text-muted)" }}>
                       {figma}
                     </code>
                   </td>
@@ -411,7 +411,7 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
           Child items within an expanded group are connected by a curved
           border-bottom-left-radius elbow drawn via CSS <code>::before</code>{" "}
           and <code>::after</code> pseudo-elements. The colour is{" "}
-          <code>--ds-primary-50</code> so it automatically stays in sync with
+          <code>--sa-color-primaryScale-50</code> so it automatically stays in sync with
           the portal brand colour mode. The connector is decorative and is not
           announced by screen readers.
         </p>
@@ -431,7 +431,7 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
           All MoSJE portals use <strong>SidebarNav</strong> — do not build
           custom sidebars in individual apps. The two key portals are:
         </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-m)" }}>
           <table className="props-table">
             <thead>
               <tr>
@@ -464,11 +464,11 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
                 ],
               ].map(([portal, state, notes]) => (
                 <tr key={portal}>
-                  <td style={{ fontWeight: 600, color: "var(--ds-ink)" }}>{portal}</td>
-                  <td style={{ fontFamily: "var(--ds-font-mono)", fontSize: "0.9em", color: "var(--ds-ink-muted)" }}>
+                  <td style={{ fontWeight: 600, color: "var(--sa-color-text-default)" }}>{portal}</td>
+                  <td style={{ fontFamily: "var(--sa-font-mono)", fontSize: "0.9em", color: "var(--sa-color-text-muted)" }}>
                     {state}
                   </td>
-                  <td style={{ color: "var(--ds-ink-muted)", fontSize: "0.9em" }}>{notes}</td>
+                  <td style={{ color: "var(--sa-color-text-muted)", fontSize: "0.9em" }}>{notes}</td>
                 </tr>
               ))}
             </tbody>
