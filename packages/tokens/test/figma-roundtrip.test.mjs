@@ -264,8 +264,20 @@ test("the CSS name in codeSyntax round-trips back to the same path", () => {
   const broken = [];
   for (const v of allVars) {
     const name = v.codeSyntax.WEB.slice(4, -1);
-    // Only --sa-* names are grammar-projected; font.role feeds --sa-type-* separately.
     if (!name.startsWith("--sa-")) continue;
+    /**
+     * `font/role/*` and `font/tracking/*` are the one family whose CSS name is NOT a grammar
+     * projection of its authored path: they are built by buildResponsiveType() into the flat
+     * `--sa-type-<role>-<prop>` scale, so `font/role/display/1/size` ships as
+     * `--sa-type-display-1-size`, which parses back to `type/display/1/size`.
+     *
+     * That asymmetry is not new — it was invisible until 2026-08-12 only because the family
+     * used to ship as `--ds-type-*`, and the `--sa-` guard above skipped it silently. Retiring
+     * the legacy prefix made the exemption explicit, which is where it belongs. The name is
+     * still verified: the test above asserts codeSyntax is byte-identical to what the
+     * stylesheet declares for exactly these paths.
+     */
+    if (v.path.startsWith("font/role/") || v.path.startsWith("font/tracking/")) continue;
     const back = fromCssName(name);
     if (back.path.join("/") !== v.path) broken.push(`${v.path} → ${name} → ${back.path.join("/")}`);
   }

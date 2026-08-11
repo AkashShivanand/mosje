@@ -4,8 +4,8 @@
   "counts": {
     "Space": {
       "total": 86,
-      "new": 1,
-      "existing": 85
+      "new": 0,
+      "existing": 86
     },
     "Palette": {
       "total": 138,
@@ -19,13 +19,13 @@
     },
     "Type": {
       "total": 99,
-      "new": 3,
-      "existing": 96
+      "new": 0,
+      "existing": 99
     },
     "Radius": {
       "total": 25,
-      "new": 12,
-      "existing": 13
+      "new": 0,
+      "existing": 25
     },
     "Motion": {
       "total": 12,
@@ -1503,7 +1503,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-stack-2xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20182,7 +20182,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-font-latin)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20228,7 +20228,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-font-display)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20274,7 +20274,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-font-mono)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20346,7 +20346,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step.",
+          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-none)"
           },
@@ -20367,7 +20367,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step.",
+          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-xxs)"
           },
@@ -20388,7 +20388,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step.",
+          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-xs)"
           },
@@ -20409,7 +20409,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step.",
+          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-sm)"
           },
@@ -20430,7 +20430,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step.",
+          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-md)"
           },
@@ -20451,7 +20451,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step.",
+          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-lg)"
           },
@@ -20472,7 +20472,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step.",
+          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-xl)"
           },
@@ -20493,7 +20493,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step.",
+          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-2xl)"
           },
@@ -20514,7 +20514,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step.",
+          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-3xl)"
           },
@@ -20535,7 +20535,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step.",
+          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-4xl)"
           },
@@ -20556,7 +20556,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step.",
+          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-5xl)"
           },
@@ -20577,7 +20577,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step.",
+          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-full)"
           },
@@ -20619,10 +20619,11 @@
               "name": "ref/radius/none"
             }
           },
+          "description": "Use for a square corner — tables, full-bleed media, anything that should read as flush.",
           "codeSyntax": {
             "WEB": "var(--sa-shape-none)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20639,10 +20640,11 @@
               "name": "ref/radius/xxs"
             }
           },
+          "description": "Use for the smallest softening, on dense controls where a visible curve would read as noise.",
           "codeSyntax": {
             "WEB": "var(--sa-shape-xxs)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20659,10 +20661,11 @@
               "name": "ref/radius/xs"
             }
           },
+          "description": "Use for small chips, tags and inline badges.",
           "codeSyntax": {
             "WEB": "var(--sa-shape-xs)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20679,10 +20682,11 @@
               "name": "ref/radius/sm"
             }
           },
+          "description": "Use for inputs, selects and other text-entry controls.",
           "codeSyntax": {
             "WEB": "var(--sa-shape-sm)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20699,10 +20703,11 @@
               "name": "ref/radius/md"
             }
           },
+          "description": "Use for buttons and standard controls. This is the default shape of the system.",
           "codeSyntax": {
             "WEB": "var(--sa-shape-md)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20719,10 +20724,11 @@
               "name": "ref/radius/lg"
             }
           },
+          "description": "Use for cards and panels — a surface holding content rather than a control.",
           "codeSyntax": {
             "WEB": "var(--sa-shape-lg)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20739,10 +20745,11 @@
               "name": "ref/radius/xl"
             }
           },
+          "description": "Use for large containers and modal surfaces.",
           "codeSyntax": {
             "WEB": "var(--sa-shape-xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20759,10 +20766,11 @@
               "name": "ref/radius/2xl"
             }
           },
+          "description": "Use for hero and feature surfaces, where the curve is part of the composition.",
           "codeSyntax": {
             "WEB": "var(--sa-shape-2xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20779,10 +20787,11 @@
               "name": "ref/radius/3xl"
             }
           },
+          "description": "Use for the largest editorial surfaces.",
           "codeSyntax": {
             "WEB": "var(--sa-shape-3xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20799,10 +20808,11 @@
               "name": "ref/radius/4xl"
             }
           },
+          "description": "Use for oversized decorative surfaces. Rare; check a smaller step first.",
           "codeSyntax": {
             "WEB": "var(--sa-shape-4xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20819,10 +20829,11 @@
               "name": "ref/radius/5xl"
             }
           },
+          "description": "Use for the largest decorative surface in the system. Rare.",
           "codeSyntax": {
             "WEB": "var(--sa-shape-5xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -20839,10 +20850,11 @@
               "name": "ref/radius/full"
             }
           },
+          "description": "Use for pills and circles — avatars, toggles, status dots. Fully rounded at any size.",
           "codeSyntax": {
             "WEB": "var(--sa-shape-full)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
