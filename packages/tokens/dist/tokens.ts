@@ -1084,8 +1084,8 @@ export const tokens = {
   "chart": {
     "cat": {
       "1": "#0373df",
-      "2": "#f97316",
-      "3": "#2e7d32",
+      "2": "#e1560f",
+      "3": "#046a38",
       "4": "#7e22ce",
       "5": "#0e7490",
       "6": "#b45309",
@@ -1109,13 +1109,13 @@ export const tokens = {
       "900": "#002448"
     },
     "div": {
-      "negStrong": "#a11d12",
+      "negStrong": "#6c100c",
       "neg": "#ec5042",
-      "negSoft": "#fad2cf",
-      "mid": "#e2e6ea",
-      "posSoft": "#c8e6c9",
-      "pos": "#2e7d32",
-      "posStrong": "#1b5e20"
+      "negSoft": "#ffc2b8",
+      "mid": "#dcdee1",
+      "posSoft": "#bed8c5",
+      "pos": "#659c77",
+      "posStrong": "#004220"
     },
     "trend": {
       "up": "#046a38",

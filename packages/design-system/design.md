@@ -12,7 +12,33 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.16.0 (DBIM CONFORMANCE IS NOW SOMETHING YOU
+  Last reviewed: 2026-08-11 · System version: v0.16.1 (THE CHART PALETTE NOW SAYS WHICH OF ITS
+  VALUES ARE COPIES AND WHICH ARE CHOICES, per group, because the difference was not guessable
+  and the copies had rotted. `chart/div/*` — the diverging scale for signed data — was seven
+  hardcoded hexes, two of them copies of `danger/100` and `neutral/200` taken before those ramps
+  were rebuilt and a positive end still on retired Material green. It REFERENCES the danger,
+  neutral and success ramps now, exactly as `chart/trend/*` always has: negative here means what
+  error means everywhere else, so a scale keeping its own red is a chart claiming bad news is a
+  different kind of bad news. In Figma the same seven stopped being unlinked literals and became
+  aliases onto the Palette collection.
+  RUNGS CHOSEN FOR SYMMETRY, measured: a diverging scale whose wings differ in lightness encodes
+  one sign as louder than the other, and the old set was 15.8 L* asymmetric across its three
+  matched pairs. The new set is 2.1. `div/neg` does not move — #ec5042 turned out to be exactly
+  `danger/400`, the anchor the copy was taken from.
+  `cat/*` AND `seq/*` STAY LITERAL ON PURPOSE and now carry that argument in their own
+  descriptions, because the next reader will otherwise "fix" them. A categorical palette is
+  tuned as a SET and a reference lets one member drift out of that tuning on a brand swap; a
+  sequential ramp needs even perceptual steps, which is a different constraint from
+  primaryScale's contrast rungs.
+  TWO CATEGORICAL SERIES WERE RETIRED BRAND COLOURS and both were replaced by measurement, not
+  tidiness. cat/3 was Material green sitting dE 3.2 from cat/9 — two "distinguishable" series a
+  reader cannot separate — and is India Green, 9.0 apart. cat/2 was the retired saffron at
+  2.80:1 against the page, under WCAG 1.4.11's 3:1 and the only one of the twelve below it; it
+  is `secondaryScale/500` at 3.79:1, so the whole set clears 3:1 for the first time. Bright
+  India Saffron was tried and rejected at 2.91:1, and rung 600 rejected at dE 3.3 from cat/6 —
+  a contrast fix that would have bought a collision.)
+
+  System version: v0.16.0 (DBIM CONFORMANCE IS NOW SOMETHING YOU
   CAN SEE. All six of DBIM's published primary groups — Blue, Burgundy, Purple, Green, Chrome
   Yellow, Cinnamon Red — are selectable in the DemoDock's Colour tab, under their own heading,
   tagged DEMO ONLY. They are CODE-ONLY and never reach the Figma library: the exporter's

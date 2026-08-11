@@ -13735,7 +13735,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#f97316"
+              "value": "#e1560f"
             }
           },
           "description": "Use as series 2 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -13755,7 +13755,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#2e7d32"
+              "value": "#046a38"
             }
           },
           "description": "Use as series 3 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -14154,8 +14154,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "#a11d12"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/800"
             }
           },
           "description": "Use in a diverging scale, for data with a meaningful midpoint such as change versus a target.",
@@ -14174,8 +14175,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "#ec5042"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/400"
             }
           },
           "description": "Use in a diverging scale, for data with a meaningful midpoint such as change versus a target.",
@@ -14194,8 +14196,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "#fad2cf"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/100"
             }
           },
           "description": "Use in a diverging scale, for data with a meaningful midpoint such as change versus a target.",
@@ -14214,8 +14217,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "#e2e6ea"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/100"
             }
           },
           "description": "Use in a diverging scale, for data with a meaningful midpoint such as change versus a target.",
@@ -14234,8 +14238,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "#c8e6c9"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/100"
             }
           },
           "description": "Use in a diverging scale, for data with a meaningful midpoint such as change versus a target.",
@@ -14254,8 +14259,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "#2e7d32"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/300"
             }
           },
           "description": "Use in a diverging scale, for data with a meaningful midpoint such as change versus a target.",
@@ -14274,8 +14280,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "#1b5e20"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/700"
             }
           },
           "description": "Use in a diverging scale, for data with a meaningful midpoint such as change versus a target.",
