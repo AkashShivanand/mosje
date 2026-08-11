@@ -5,15 +5,15 @@
 
 # The SAMAVESH colour system
 
-Three brand modes on `data-brand`. A brand swap repaints the **primary** ramp and the
-**neutral** greys, and nothing else — secondary and accent are SAMAVESH logo colours and are
-therefore constants of the identity, not variants of it.
+TWO estate brands on `data-brand`, plus six DBIM conformance previews. A brand swap repaints
+the **primary** ramp and the **neutral** greys, and nothing else — secondary and accent are
+SAMAVESH logo colours and are therefore constants of the identity, not variants of it.
 
-| mode | key colour | in Figma? |
-|------|-----------|-----------|
-| `blue` (default) | `#0373DF` gov-blue | yes |
-| `navy` | `#003366` | yes |
-| `dbim` | `#162F6A` — DBIM's own key colour | **no, code-only by standing instruction** |
+| mode | key colour | kind | in Figma? |
+|------|-----------|------|-----------|
+| `blue` (default) | `#0373DF` gov-blue | estate brand | yes |
+| `navy` | `#003366` | estate brand | yes |
+| `dbim-blue` … `dbim-cinnamon-red` (6) | DBIM's six published groups | conformance preview | **no — code-only by standing instruction** |
 
 `dbim-*` are CONFORMANCE PREVIEWS, not estate brands, and they live only in the DemoDock’s
 Colour tab. Each transcribes one of DBIM’s six primary groups VERBATIM — five published

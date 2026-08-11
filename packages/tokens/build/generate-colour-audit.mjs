@@ -108,15 +108,18 @@ p("       node packages/tokens/build/generate-colour-audit.mjs -->");
 p();
 p("# The SAMAVESH colour system");
 p();
-p("Three brand modes on `data-brand`. A brand swap repaints the **primary** ramp and the");
-p("**neutral** greys, and nothing else — secondary and accent are SAMAVESH logo colours and are");
-p("therefore constants of the identity, not variants of it.");
+p("TWO estate brands on `data-brand`, plus six DBIM conformance previews. A brand swap repaints");
+p("the **primary** ramp and the **neutral** greys, and nothing else — secondary and accent are");
+p("SAMAVESH logo colours and are therefore constants of the identity, not variants of it.");
 p();
-p("| mode | key colour | in Figma? |");
-p("|------|-----------|-----------|");
-p("| `blue` (default) | `#0373DF` gov-blue | yes |");
-p("| `navy` | `#003366` | yes |");
-p("| `dbim` | `#162F6A` — DBIM's own key colour | **no, code-only by standing instruction** |");
+p("| mode | key colour | kind | in Figma? |");
+p("|------|-----------|------|-----------|");
+p("| `blue` (default) | `#0373DF` gov-blue | estate brand | yes |");
+p("| `navy` | `#003366` | estate brand | yes |");
+p(
+  `| \`dbim-blue\` … \`dbim-cinnamon-red\` (${Object.keys(DBIM_MODES).length}) | DBIM's six published groups | ` +
+    "conformance preview | **no — code-only by standing instruction** |",
+);
 p();
 p("`dbim-*` are CONFORMANCE PREVIEWS, not estate brands, and they live only in the DemoDock\u2019s");
 p("Colour tab. Each transcribes one of DBIM\u2019s six primary groups VERBATIM \u2014 five published");

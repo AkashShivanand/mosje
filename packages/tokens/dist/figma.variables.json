@@ -15958,34 +15958,28 @@
           "type": "FLOAT",
           "valuesByMode": {
             "Website · Desktop": {
-              "type": "FLOAT",
-              "value": 400,
-              "unit": null
+              "type": "STRING",
+              "value": "Regular"
             },
             "Website · Tablet": {
-              "type": "FLOAT",
-              "value": 400,
-              "unit": null
+              "type": "STRING",
+              "value": "Regular"
             },
             "Website · Mobile": {
-              "type": "FLOAT",
-              "value": 400,
-              "unit": null
+              "type": "STRING",
+              "value": "Regular"
             },
             "Portal · Desktop": {
-              "type": "FLOAT",
-              "value": 400,
-              "unit": null
+              "type": "STRING",
+              "value": "Regular"
             },
             "Portal · Tablet": {
-              "type": "FLOAT",
-              "value": 400,
-              "unit": null
+              "type": "STRING",
+              "value": "Regular"
             },
             "Portal · Mobile": {
-              "type": "FLOAT",
-              "value": 400,
-              "unit": null
+              "type": "STRING",
+              "value": "Regular"
             }
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
@@ -16004,34 +15998,28 @@
           "type": "FLOAT",
           "valuesByMode": {
             "Website · Desktop": {
-              "type": "FLOAT",
-              "value": 500,
-              "unit": null
+              "type": "STRING",
+              "value": "Medium"
             },
             "Website · Tablet": {
-              "type": "FLOAT",
-              "value": 500,
-              "unit": null
+              "type": "STRING",
+              "value": "Medium"
             },
             "Website · Mobile": {
-              "type": "FLOAT",
-              "value": 500,
-              "unit": null
+              "type": "STRING",
+              "value": "Medium"
             },
             "Portal · Desktop": {
-              "type": "FLOAT",
-              "value": 500,
-              "unit": null
+              "type": "STRING",
+              "value": "Medium"
             },
             "Portal · Tablet": {
-              "type": "FLOAT",
-              "value": 500,
-              "unit": null
+              "type": "STRING",
+              "value": "Medium"
             },
             "Portal · Mobile": {
-              "type": "FLOAT",
-              "value": 500,
-              "unit": null
+              "type": "STRING",
+              "value": "Medium"
             }
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
@@ -16050,34 +16038,28 @@
           "type": "FLOAT",
           "valuesByMode": {
             "Website · Desktop": {
-              "type": "FLOAT",
-              "value": 600,
-              "unit": null
+              "type": "STRING",
+              "value": "SemiBold"
             },
             "Website · Tablet": {
-              "type": "FLOAT",
-              "value": 600,
-              "unit": null
+              "type": "STRING",
+              "value": "SemiBold"
             },
             "Website · Mobile": {
-              "type": "FLOAT",
-              "value": 600,
-              "unit": null
+              "type": "STRING",
+              "value": "SemiBold"
             },
             "Portal · Desktop": {
-              "type": "FLOAT",
-              "value": 600,
-              "unit": null
+              "type": "STRING",
+              "value": "SemiBold"
             },
             "Portal · Tablet": {
-              "type": "FLOAT",
-              "value": 600,
-              "unit": null
+              "type": "STRING",
+              "value": "SemiBold"
             },
             "Portal · Mobile": {
-              "type": "FLOAT",
-              "value": 600,
-              "unit": null
+              "type": "STRING",
+              "value": "SemiBold"
             }
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
@@ -16096,34 +16078,28 @@
           "type": "FLOAT",
           "valuesByMode": {
             "Website · Desktop": {
-              "type": "FLOAT",
-              "value": 700,
-              "unit": null
+              "type": "STRING",
+              "value": "Bold"
             },
             "Website · Tablet": {
-              "type": "FLOAT",
-              "value": 700,
-              "unit": null
+              "type": "STRING",
+              "value": "Bold"
             },
             "Website · Mobile": {
-              "type": "FLOAT",
-              "value": 700,
-              "unit": null
+              "type": "STRING",
+              "value": "Bold"
             },
             "Portal · Desktop": {
-              "type": "FLOAT",
-              "value": 700,
-              "unit": null
+              "type": "STRING",
+              "value": "Bold"
             },
             "Portal · Tablet": {
-              "type": "FLOAT",
-              "value": 700,
-              "unit": null
+              "type": "STRING",
+              "value": "Bold"
             },
             "Portal · Mobile": {
-              "type": "FLOAT",
-              "value": 700,
-              "unit": null
+              "type": "STRING",
+              "value": "Bold"
             }
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
