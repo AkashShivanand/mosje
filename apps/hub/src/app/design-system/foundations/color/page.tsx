@@ -115,7 +115,7 @@ export default function ColorPage(): React.JSX.Element {
                   color: "var(--ds-primary)",
                   fontSize: "var(--ds-text-label-1)",
                   margin: "var(--ds-spacing-xs) 0",
-                  fontFamily: "ui-monospace, monospace",
+                  fontFamily: "var(--ds-font-mono)",
                   fontWeight: 600,
                 }}
               >
@@ -402,7 +402,7 @@ export default function ColorPage(): React.JSX.Element {
                   textAlign: "center",
                   fontSize: "10px",
                   color: "var(--ds-ink-muted)",
-                  fontFamily: "ui-monospace, monospace",
+                  fontFamily: "var(--ds-font-mono)",
                 }}
               >
                 {stop}
@@ -978,7 +978,7 @@ export default function ColorPage(): React.JSX.Element {
               <ul style={{ margin: 0, paddingLeft: "var(--ds-spacing-lg)", fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink)" }}>
                 {modes.map((m) => (
                   <li key={m} style={{ marginBottom: "var(--ds-spacing-xs)" }}>
-                    <code style={{ fontFamily: "ui-monospace, monospace" }}>{m}</code>
+                    <code style={{ fontFamily: "var(--ds-font-mono)" }}>{m}</code>
                   </li>
                 ))}
               </ul>
@@ -1061,7 +1061,7 @@ export default function ColorPage(): React.JSX.Element {
                       borderRadius: "var(--ds-radius-sm)",
                       fontWeight: 600,
                       fontSize: "var(--ds-text-body-2)",
-                      fontFamily: "ui-monospace, monospace",
+                      fontFamily: "var(--ds-font-mono)",
                     }}
                   >
                     #0373df
@@ -1218,7 +1218,7 @@ export default function ColorPage(): React.JSX.Element {
                   <td
                     style={{
                       padding: "var(--ds-spacing-sm) var(--ds-spacing-md)",
-                      fontFamily: "ui-monospace, monospace",
+                      fontFamily: "var(--ds-font-mono)",
                       color: "var(--ds-primary)",
                       whiteSpace: "nowrap",
                     }}
@@ -1228,7 +1228,7 @@ export default function ColorPage(): React.JSX.Element {
                   <td
                     style={{
                       padding: "var(--ds-spacing-sm) var(--ds-spacing-md)",
-                      fontFamily: "ui-monospace, monospace",
+                      fontFamily: "var(--ds-font-mono)",
                       color: "var(--ds-ink-muted)",
                     }}
                   >
