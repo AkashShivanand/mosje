@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans } from "next/font/google";
+import { Noto_Sans, Noto_Sans_Display } from "next/font/google";
 import { ColorModeProvider, UX4GAccessibilityWidget } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import { ConditionalDemoDock } from "@/components/conditional-demo-dock";
@@ -9,10 +9,47 @@ import "./globals.css";
 // the hub is now the single app hosting every natively-mounted portal.
 import "@mosje/design-system/icons.css";
 
+/**
+ * `devanagari` is in the subset list because the estate ships Hindi and nothing was loading it.
+ *
+ * The previous `subsets: ["latin"]` contains no Devanagari glyphs, so every Hindi string — the
+ * `lang="hi"` samples on the typography page, and any Hindi content — rendered in whatever face
+ * the device happened to have. A different typeface per visitor, on a Government of India
+ * property where Noto Sans is a DBIM requirement.
+ *
+ * Noto Sans is a superfamily and carries Devanagari itself, so this needs no second family:
+ * next/font emits one @font-face per subset with a `unicode-range`, which means the Devanagari
+ * file is fetched ONLY by pages that actually contain Devanagari characters. English-only pages
+ * download exactly what they did before.
+ */
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
-  subsets: ["latin"],
+  subsets: ["latin", "devanagari"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+/**
+ * The OPTICAL DISPLAY CUT, for the 40–80px Display ramp.
+ *
+ * Noto Sans ships two cuts of the same design. The text cut is drawn for reading at 12–24px —
+ * open apertures, generous spacing, sturdy joins. At 80px those same choices read as loose and
+ * slightly clumsy. The Display cut tightens spacing and refines the letterforms for exactly that
+ * size range. It is what `font.family.display` has always named; nothing had ever loaded it, so
+ * the token silently fell through to the text cut.
+ *
+ * Weight 500 only — every Display/* text style is Medium, so loading the other weights would
+ * ship files nothing renders. Add a weight here the moment the ramp uses one.
+ *
+ * NOTE: this cut covers Latin only. `Noto Sans Display` has no Devanagari subset and
+ * `Noto Sans Devanagari` has no Display cut — the pairing does not exist in Noto. Hindi display
+ * headings therefore fall through the stack to Noto Sans, which is correct: the alternative
+ * would be no Devanagari glyphs at all.
+ */
+const notoSansDisplay = Noto_Sans_Display({
+  variable: "--font-noto-display",
+  subsets: ["latin"],
+  weight: ["500"],
   display: "swap",
 });
 
@@ -31,7 +68,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const apps = await resolveRegistry();
 
   return (
-    <html lang="en-IN" className={`${notoSans.variable} h-full antialiased`} suppressHydrationWarning>
+    <html
+      lang="en-IN"
+      className={`${notoSans.variable} ${notoSansDisplay.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />
       </head>

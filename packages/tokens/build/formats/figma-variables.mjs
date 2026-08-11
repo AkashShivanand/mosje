@@ -354,21 +354,19 @@ const CSS_GENERIC_FAMILIES = new Set([
 ]);
 
 /**
- * Real families the stack names but that NO MoSJE surface actually loads.
+ * Families the web serves standalone that Figma models as a STYLE of another family.
  *
- * `font.family.display` exists for UX4G 3.0 parity — `--ux4g-font-family-display` is pinned
- * upstream in `reference/ux4g-3.0.tokens.json`, so the CSS stack must keep naming the optical
- * Display cut. But the token's own description is explicit that it is never loaded ("never
- * load it globally just to satisfy the token"), and Figma has no fallback chain: projecting
- * "Noto Sans Display" gives a variable Figma cannot resolve (it is absent from all 1,938
- * families available in the file).
+ * Noto Sans ships its optical Display cut two ways for two font models: Google Fonts serves it
+ * as its own family (`Noto Sans Display`), while Figma exposes it as nine styles of Noto Sans
+ * — `Display Regular`, `Display Medium`, `Display SemiBold`, and so on. Same drawing, different
+ * addressing.
  *
- * A browser hitting this stack renders Noto Sans. Figma should show the same thing, and the
- * display treatment is carried by WEIGHT — the Display/* text styles are Noto Sans Medium —
- * not by a separate optical family. So the projection skips the unloaded cut and lands on the
- * family the reader actually sees, keeping CSS parity and Figma resolvability at once.
+ * So the CSS stack must name `Noto Sans Display` (that is the family a browser loads) and the
+ * Figma VARIABLE must say `Noto Sans` (that is the family a designer picks), with the cut
+ * selected by the text style's STYLE. Projecting the CSS name verbatim gave Figma a family it
+ * does not have, which is why `ref/font/family/display` was unresolvable and bound to nothing.
  */
-const NOT_LOADED_FAMILIES = new Set(["Noto Sans Display"]);
+const FIGMA_FAMILY_ALIASES = new Map([["Noto Sans Display", "Noto Sans"]]);
 
 /**
  * Project a CSS font stack down to the one family Figma can actually resolve.
@@ -396,7 +394,7 @@ function primaryFontFamily(stack) {
   const unquote = (s) => s.trim().replace(/^["']|["']$/g, "").trim();
   for (const part of String(stack).split(",")) {
     const name = unquote(part);
-    if (name && !CSS_GENERIC_FAMILIES.has(name) && !NOT_LOADED_FAMILIES.has(name)) return name;
+    if (name && !CSS_GENERIC_FAMILIES.has(name)) return FIGMA_FAMILY_ALIASES.get(name) ?? name;
   }
   return unquote(String(stack));
 }

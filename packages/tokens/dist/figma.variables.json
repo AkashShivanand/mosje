@@ -15582,7 +15582,7 @@
               "value": "Noto Sans"
             }
           },
-          "description": "UX4G 3.0 parity: the optical Display cut, for 36px+ headings only (--ux4g-font-family-display). Falls back to Noto Sans, so this token is safe to use before an app opts in to the extra webfont — never load it globally just to satisfy the token. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "The optical Display cut, for the 40-80px Display ramp. Noto Sans ships two cuts of one design: the text cut is drawn for reading at 12-24px, and at 80px its open spacing reads as loose. The Display cut tightens it. This is now genuinely LOADED (apps/hub root layout, weight 500) — for a long time it was named here and loaded nowhere, so it fell through to the text cut and the matching Figma variable could not resolve at all. LATIN ONLY: `Noto Sans Display` has no Devanagari subset and `Noto Sans Devanagari` has no Display cut, so a Hindi heading falls through to Noto Sans by design. In Figma the same cut is a STYLE of Noto Sans (\"Display Medium\"), not a family — see design.md. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-family-display)"
           },
@@ -15599,30 +15599,30 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "STRING",
-              "value": "IBM Plex Mono"
+              "value": "Cascadia Code"
             },
             "Website · Tablet": {
               "type": "STRING",
-              "value": "IBM Plex Mono"
+              "value": "Cascadia Code"
             },
             "Website · Mobile": {
               "type": "STRING",
-              "value": "IBM Plex Mono"
+              "value": "Cascadia Code"
             },
             "Portal · Desktop": {
               "type": "STRING",
-              "value": "IBM Plex Mono"
+              "value": "Cascadia Code"
             },
             "Portal · Tablet": {
               "type": "STRING",
-              "value": "IBM Plex Mono"
+              "value": "Cascadia Code"
             },
             "Portal · Mobile": {
               "type": "STRING",
-              "value": "IBM Plex Mono"
+              "value": "Cascadia Code"
             }
           },
-          "description": "Code, identifiers and tabular figures. IBM Plex Mono is the chosen face: open-licensed, wide weight range, unambiguous 0/O and 1/l/I, and Figma resolves it — which the previous value could not. The stack used to lead with `ui-monospace`, a CSS generic that names no font, so the Figma variable was unbindable and consequently went unused. Generic fallbacks follow for surfaces that have not loaded the webfont. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "CODE AND TECHNICAL STRINGS ONLY — token names, CSS snippets, file paths in the design-system docs. NOT for numbers, amounts or reference numbers: those want `font-variant-numeric: tabular-nums` on Noto Sans, which aligns digits down a column while keeping them in the same typeface as the text beside them. Switching a data column to a monospace face is the clumsier fix and looks like a different design. The estate already does this correctly in the Aadhaar/PAN field, the charts, the SLA indicator and the shared DataTable. DELIBERATELY a system stack: `ui-monospace` resolves to the platform's own mono (SF Mono, Cascadia, Roboto Mono) — all well-drawn, all disambiguating 0/O and 1/l/I, and already on the device. A webfont here would download on every page to style sample code on a handful of documentation pages, which on a low-bandwidth government audience is not a trade worth making. IBM Plex Mono was set here briefly and reverted for that reason. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-family-mono)"
           },
