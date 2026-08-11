@@ -273,6 +273,30 @@ export {
   matchActivePath,
 } from "./components/navigation/app-switcher-utils";
 export type { AppEntry } from "./components/navigation/app-switcher-utils";
+// The runtime override layer over DEFAULT_APPS. Pure data + pure functions, so
+// server components can import it from here — but the hub's middleware must
+// import "@mosje/design-system/registry" instead, because this barrel pulls in
+// React components and CSS that an edge bundle cannot carry.
+export {
+  REGISTRY_CONFIG_MAX_BYTES,
+  REGISTRY_CONFIG_VERSION,
+  applyRegistryOverrides,
+  bucketKey,
+  buildRegistryConfig,
+  effectiveStatus,
+  emptyRegistryConfig,
+  hiddenEntries,
+  matchHiddenEntry,
+  parseRegistryConfig,
+  serializeRegistryConfig,
+  withDenseOrder,
+} from "./components/navigation/registry-overrides";
+export type {
+  RegistryConfig,
+  RegistryOverride,
+  RegistryRowInput,
+  RegistryStatus,
+} from "./components/navigation/registry-overrides";
 
 // ---- Components: Auth (login shells & page templates) -----------------------
 // Full-page login layout shared across all MoSJE portals. Only the slot

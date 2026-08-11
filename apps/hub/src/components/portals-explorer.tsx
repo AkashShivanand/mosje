@@ -1,11 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { DEFAULT_APPS, Icon, PORTAL_CATEGORIES, deriveAbbr, filterApps, type AppEntry } from "@mosje/design-system";
+import { Icon, PORTAL_CATEGORIES, deriveAbbr, filterApps, type AppEntry } from "@mosje/design-system";
 
 type StatusFilter = "all" | "live" | "planned";
-
-const ALL_PORTALS = DEFAULT_APPS.filter((a) => a.group === "Portals");
 
 function PortalCard({ portal }: { portal: AppEntry }) {
   const abbr = deriveAbbr(portal);
@@ -77,17 +75,26 @@ function PortalCard({ portal }: { portal: AppEntry }) {
   );
 }
 
-export function PortalsExplorer() {
+export interface PortalsExplorerProps {
+  /**
+   * The portals to show, already resolved against the admin's registry
+   * overrides. Passed in rather than read from `DEFAULT_APPS` here, because
+   * this is a client component and the override store is server-only.
+   */
+  portals: AppEntry[];
+}
+
+export function PortalsExplorer({ portals }: PortalsExplorerProps) {
   const [query, setQuery] = React.useState("");
   const [status, setStatus] = React.useState<StatusFilter>("all");
 
   const filtered = React.useMemo(() => {
-    let list = ALL_PORTALS;
+    let list = portals;
     if (status !== "all") {
       list = list.filter((a) => (a.status ?? "live") === status);
     }
     return filterApps(list, query);
-  }, [query, status]);
+  }, [portals, query, status]);
 
   const grouped = React.useMemo(
     () =>
@@ -98,14 +105,12 @@ export function PortalsExplorer() {
     [filtered],
   );
 
-  const liveCount = ALL_PORTALS.filter(
-    (a) => (a.status ?? "live") === "live",
-  ).length;
+  const liveCount = portals.filter((a) => (a.status ?? "live") === "live").length;
 
   const filters: { id: StatusFilter; label: string; count: number }[] = [
-    { id: "all", label: "All", count: ALL_PORTALS.length },
+    { id: "all", label: "All", count: portals.length },
     { id: "live", label: "Live", count: liveCount },
-    { id: "planned", label: "Planned", count: ALL_PORTALS.length - liveCount },
+    { id: "planned", label: "Planned", count: portals.length - liveCount },
   ];
 
   return (

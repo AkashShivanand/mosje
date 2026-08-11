@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { PortalsExplorer } from "@/components/portals-explorer";
+import { resolvePortals } from "@/lib/registry/resolve";
 
 export const metadata: Metadata = {
   title: "Portals — MoSJE Digital Estate",
@@ -10,7 +11,9 @@ export const metadata: Metadata = {
     "Browse every workflow portal across the Ministry of Social Justice & Empowerment — schemes, scholarships, finance corporations and commissions.",
 };
 
-export default function PortalsPage() {
+export default async function PortalsPage() {
+  const portals = await resolvePortals();
+
   return (
     <div className="flex min-h-screen flex-col bg-surface-muted">
       <a
@@ -52,7 +55,7 @@ export default function PortalsPage() {
         </div>
 
         <div className="mx-auto max-w-[1280px] px-6 py-10">
-          <PortalsExplorer />
+          <PortalsExplorer portals={portals} />
         </div>
       </main>
 

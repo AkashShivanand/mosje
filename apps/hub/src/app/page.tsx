@@ -1,12 +1,8 @@
-import { DEFAULT_APPS, Icon } from "@mosje/design-system";
+import { Icon } from "@mosje/design-system";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { EstateField } from "@/components/estate-field";
-
-// ── Estate stats, derived from the single-source registry ──────────────────────
-const portals = DEFAULT_APPS.filter((a) => a.group === "Portals");
-const livePortals = portals.filter((a) => (a.status ?? "live") === "live").length;
-const totalPortals = portals.length;
+import { resolvePortals } from "@/lib/registry/resolve";
 
 const destinations = [
   {
@@ -43,14 +39,22 @@ const destinations = [
   },
 ] as const;
 
-const glance = [
-  { icon: "language", value: "1", label: "Unified website", sub: "consolidating 13 legacy sites" },
-  { icon: "grid_view", value: `${totalPortals}`, label: "Workflow portals", sub: `${livePortals} live, rest in development` },
-  { icon: "apartment", value: "33+", label: "Organisations & schemes", sub: "across the ministry" },
-  { icon: "verified_user", value: "AA", label: "WCAG 2.1 + GIGW", sub: "accessibility & gov standards" },
-] as const;
+export default async function HomePage() {
+  // Counted from the resolved registry, not the code one, so a portal an admin
+  // has hidden stops being advertised in the same breath as it stops being
+  // listed. A tile claiming 20 portals above a page showing 19 is worse than
+  // either number alone.
+  const portals = await resolvePortals();
+  const totalPortals = portals.length;
+  const livePortals = portals.filter((a) => (a.status ?? "live") === "live").length;
 
-export default function HomePage() {
+  const glance = [
+    { icon: "language", value: "1", label: "Unified website", sub: "consolidating 13 legacy sites" },
+    { icon: "grid_view", value: `${totalPortals}`, label: "Workflow portals", sub: `${livePortals} live, rest in development` },
+    { icon: "apartment", value: "33+", label: "Organisations & schemes", sub: "across the ministry" },
+    { icon: "verified_user", value: "AA", label: "WCAG 2.1 + GIGW", sub: "accessibility & gov standards" },
+  ] as const;
+
   return (
     <div className="flex min-h-screen flex-col bg-surface-muted">
       <a

@@ -18,8 +18,15 @@
  * justify a dependency on the proxy's cold start.
  */
 
-/** The only key Phase 1 uses. */
+/** The gate's HMAC digest — the first setting this store carried. */
 export const SETTING_GATE_TOKEN = "gate_token";
+
+/**
+ * The estate registry override patch, as serialised `RegistryConfig` JSON.
+ * Absent, unreadable or malformed all mean the same thing: use the code
+ * defaults in `DEFAULT_APPS`.
+ */
+export const SETTING_PORTAL_REGISTRY = "portal_registry";
 
 const CACHE_TTL_MS = 60_000;
 const FETCH_TIMEOUT_MS = 1_500;
@@ -47,9 +54,33 @@ interface CacheEntry {
 
 const cache = new Map<string, CacheEntry>();
 
+/**
+ * Reads currently in flight, keyed by setting.
+ *
+ * Without this, every concurrent request that arrives during a cold start (or
+ * the instant a TTL expires) fires its own fetch at the database — a stampede,
+ * on the request hot path, at exactly the moment the store is most likely to
+ * already be struggling. Sharing the in-flight promise makes N concurrent
+ * readers cost one round-trip.
+ */
+const inFlight = new Map<string, Promise<string | null>>();
+
+/**
+ * Bumped by every invalidation.
+ *
+ * A read that was already in flight when a write landed carries the value from
+ * *before* that write. Letting it populate the cache on arrival would pin the
+ * stale value for a further TTL — so an admin saves, and the estate keeps
+ * serving the old registry for a minute because of a request that started
+ * moments earlier. Reads stamp their generation and drop the write if it moved.
+ */
+let generation = 0;
+
 /** Drop every cached value. Called after a write, and by tests. */
 export function resetSettingsCache(): void {
   cache.clear();
+  inFlight.clear();
+  generation += 1;
 }
 
 interface StoreConfig {
@@ -63,6 +94,18 @@ function config(): StoreConfig | null {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
   if (!url || !serviceKey) return null;
   return { url, serviceKey };
+}
+
+/**
+ * Whether a settings store is configured at all.
+ *
+ * Callers that only READ do not need this — an unconfigured store and an empty
+ * one both yield null, and both mean "use your fallback". A page offering to
+ * SAVE does need it, so it can say the save will not stick instead of letting
+ * the admin press a button that always fails.
+ */
+export function settingsConfigured(): boolean {
+  return config() !== null;
 }
 
 function headers(serviceKey: string): Record<string, string> {
@@ -88,6 +131,23 @@ export async function readSetting(
   const hit = cache.get(key);
   if (hit && deps.now() - hit.at < CACHE_TTL_MS) return hit.value;
 
+  // Join a read that is already running for this key rather than starting a
+  // second one. Deliberately checked after the cache: a cached value is always
+  // cheaper than awaiting someone else's round-trip.
+  const pending = inFlight.get(key);
+  if (pending) return pending;
+
+  const read = fetchSetting(key, cfg, deps).finally(() => inFlight.delete(key));
+  inFlight.set(key, read);
+  return read;
+}
+
+async function fetchSetting(
+  key: string,
+  cfg: StoreConfig,
+  deps: StoreDeps,
+): Promise<string | null> {
+  const startedAt = generation;
   let value: string | null = null;
   try {
     const url = `${cfg.url}/rest/v1/hub_settings?key=eq.${encodeURIComponent(key)}&select=value`;
@@ -113,7 +173,10 @@ export async function readSetting(
   }
 
   // The failure is cached too — a dead store must not be retried per request.
-  cache.set(key, { value, at: deps.now() });
+  // Unless the cache was invalidated while this read was in flight, in which
+  // case this value predates the write and must not be stored. The caller
+  // still receives it; only the caching is skipped.
+  if (startedAt === generation) cache.set(key, { value, at: deps.now() });
   return value;
 }
 

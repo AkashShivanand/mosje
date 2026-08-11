@@ -21,12 +21,23 @@ import { redirect } from "next/navigation";
 import { safeEqual } from "../hmac.ts";
 import {
   ADMIN_COOKIE,
+  ADMIN_COOKIE_CLEAR_PATHS,
+  ADMIN_COOKIE_PATH,
   ADMIN_MAX_AGE_SECONDS,
+  ADMIN_PREVIEW_COOKIE,
+  ADMIN_PREVIEW_COOKIE_PATH,
   expectedAdminToken,
+  expectedPreviewToken,
   verifyAdminPassword,
 } from "./tokens.ts";
 
-export { ADMIN_COOKIE, ADMIN_MAX_AGE_SECONDS, adminConfigured } from "./tokens.ts";
+export {
+  ADMIN_COOKIE,
+  ADMIN_COOKIE_PATH,
+  ADMIN_MAX_AGE_SECONDS,
+  ADMIN_PREVIEW_COOKIE,
+  adminConfigured,
+} from "./tokens.ts";
 
 export async function isAdminAuthenticated(): Promise<boolean> {
   const expected = await expectedAdminToken();
@@ -47,16 +58,35 @@ export async function signInAdmin(entered: string): Promise<boolean> {
   const expected = await expectedAdminToken();
   if (!expected) return false;
 
-  (await cookies()).set(ADMIN_COOKIE, expected, {
+  const preview = await expectedPreviewToken();
+  if (!preview) return false;
+
+  const jar = await cookies();
+  const shared = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/admin",
+    sameSite: "lax" as const,
     maxAge: ADMIN_MAX_AGE_SECONDS,
+  };
+
+  // Settings access, scoped to /admin so an XSS elsewhere in the estate cannot
+  // drive authenticated requests against it.
+  jar.set(ADMIN_COOKIE, expected, { ...shared, path: ADMIN_COOKIE_PATH });
+  // Estate-wide, and deliberately weaker: it only unlocks hidden entries.
+  jar.set(ADMIN_PREVIEW_COOKIE, preview, {
+    ...shared,
+    path: ADMIN_PREVIEW_COOKIE_PATH,
   });
   return true;
 }
 
 export async function signOutAdmin(): Promise<void> {
-  (await cookies()).delete({ name: ADMIN_COOKIE, path: "/admin" });
+  const jar = await cookies();
+  // Every path the admin cookie has ever been set with, not just the current
+  // one — a delete that misses the original path leaves the cookie in the
+  // browser and "sign out" silently does nothing.
+  for (const path of ADMIN_COOKIE_CLEAR_PATHS) {
+    jar.delete({ name: ADMIN_COOKIE, path });
+  }
+  jar.delete({ name: ADMIN_PREVIEW_COOKIE, path: ADMIN_PREVIEW_COOKIE_PATH });
 }

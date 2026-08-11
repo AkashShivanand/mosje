@@ -268,21 +268,25 @@ export const DEFAULT_APPS: AppEntry[] = [
     status: "live",
   },
   {
+    name: "Senior Citizens Welfare",
+    abbr: "SR",
+    // The route is /portals/scw. This entry pointed at /portals/senior-citizens
+    // and sat at "planned" long after the portal shipped, which left a fully
+    // built portal invisible in the explorer and the AppSwitcher. Live entries
+    // precede planned ones within a category — see .claude/rules/hub-integration.md.
+    path: "/portals/scw",
+    desc: "Senior-citizen services — JEEVAN, ARJUN, SHATAYU, SAGE registration, volunteering & the service directory",
+    org: "Ministry of Social Justice & Empowerment",
+    group: "Portals",
+    category: "Social defence & welfare",
+    status: "live",
+  },
+  {
     name: "NISD",
     abbr: "NI",
     path: "/portals/nisd",
     desc: "Training, capacity-building & programme administration",
     org: "National Institute of Social Defence",
-    group: "Portals",
-    category: "Social defence & welfare",
-    status: "planned",
-  },
-  {
-    name: "Senior Citizens Welfare",
-    abbr: "SR",
-    path: "/portals/senior-citizens",
-    desc: "Welfare services & schemes for senior citizens",
-    org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
     category: "Social defence & welfare",
     status: "planned",

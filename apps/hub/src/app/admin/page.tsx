@@ -96,6 +96,39 @@ export default async function AdminPage({
           </div>
         </section>
 
+        <section
+          aria-labelledby="registry-heading"
+          className="mt-10 grid gap-6 border-t border-border pt-10 md:grid-cols-[15rem_1fr]"
+        >
+          <div>
+            <h2
+              id="registry-heading"
+              className="text-base font-semibold tracking-tight text-ink"
+            >
+              Estate registry
+            </h2>
+            <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+              Which portals and destinations the estate shows, in what order,
+              under what name.
+            </p>
+            <p className="mt-3 text-xs leading-relaxed text-ink-hint">
+              Hiding an entry also blocks its URL for everyone but you.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-border bg-surface p-6 shadow-xs">
+            <p className="text-sm leading-relaxed text-ink-muted">
+              Set each entry to live, planned or hidden, reorder it within its
+              category, and override the name or description the estate shows.
+            </p>
+            <div className="mt-4">
+              <Button href="/admin/portals" appearance="outlined">
+                Open estate registry
+              </Button>
+            </div>
+          </div>
+        </section>
+
         <p className="mt-12 border-t border-border pt-6 text-xs leading-relaxed text-ink-hint">
           If the settings store is unreachable the gate falls back to the
           SITE_PASSWORD environment variable, so the estate stays reachable even
