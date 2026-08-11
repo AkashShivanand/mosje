@@ -109,6 +109,13 @@ the website at `website/`, the docs at `design-system/`, and the portals at `por
   3. If a needed component is missing from the DS: **add it to `packages/design-system/` first**, export it from the barrel, then import it. Never build one-off UI that belongs in the shared DS.
   4. Document the audit inline as a short comment block at the top of your plan: `DS Audit: Button ✅ existing · Input ✅ existing · PortalLoginShell ➕ adding to DS`.
   5. Page-level layout templates (login shell, dashboard shell, list shell) belong in the DS and must be reused across all portals — only the slot content (logo, portal name, tabs, form fields) changes per portal.
+- **Documentation is not exempt from the design system — it is the strictest case.** Every
+  element on a Figma library documentation page and on every `apps/hub/src/app/design-system/**`
+  page must be **bound** to the DS: text to published text styles, fills/strokes to Color
+  variables, padding/gap to Space, radius to Radius. A literal that merely *equals* a token is a
+  defect — when the token moves, the binding follows and the literal silently stops matching.
+  The only exemption is a **specimen** (a deliberate off-role value being demonstrated), and it
+  must be *named* as one so an audit can account for it. See `.claude/rules/documentation-ds-linkage.md`.
 - **Commit messages: no AI attribution.** Never add `Co-Authored-By: Claude` (or any AI/bot co-author) or a "Generated with Claude Code" trailer to commits. A `.husky/commit-msg` hook strips them as a backstop, but don't write them in the first place.
 
 ## Skill routing

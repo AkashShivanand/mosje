@@ -533,7 +533,18 @@ tiers: `--ds-type-{heading,title,body,label}-tracking`. Values differ by **surfa
 > The hyphenated family is mapped to whichever role reproduces each alias's
 > *historical rendered value*, so its names deliberately do not line up:
 > `--ds-text-title-1` is the **headline-2** role (24→32px), not Title 1 (20/22px);
-> `--ds-text-title-2` is Title 1. Those values are frozen in
+> `--ds-text-title-2` is Title 1.
+>
+> **RETIRED 2026-08-12.** The whole `--ds-*` layer, including this hyphenated family,
+> was deleted from the build — see the retirement note later in this document. The
+> paragraphs above are kept as the record of a hazard that no longer exists, because
+> the reasoning still applies to any alias family: read the resolved value, not the name.
+>
+> For the record, measured against the generated `tokens.css` on 2026-08-11 before
+> deletion: **precisely two of the nine hyphenated aliases misled** — `title-1` and
+> `title-2`. The other seven (`display`, `headline`, `body-1/2/3`, `label-1/3`) resolved
+> to the role they named. `--ds-text-title-3` and `--ds-text-label-2` never existed at all.
+> Those values are frozen in
 > `packages/tokens/test/legacy-snapshot.json` and asserted on every build — re-pointing
 > one at its same-named role silently resizes every legacy callsite in the estate.
 >
