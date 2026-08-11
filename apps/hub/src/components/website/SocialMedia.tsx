@@ -70,7 +70,7 @@ export function SocialMedia() {
     <section className="bg-white">
       <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
         <div className="text-center">
-          <h2 className="text-[32px] font-semibold leading-tight text-gov-blue-dark">
+          <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
             Explore our Social Media Platforms
           </h2>
           <p className="mt-3 text-[16px] text-ink-muted">
@@ -108,7 +108,7 @@ export function SocialMedia() {
                     href={platform.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 rounded-lg border border-gov-blue px-3.5 py-1.5 text-[14px] font-medium text-gov-blue transition-colors hover:bg-gov-blue hover:text-white"
+                    className="inline-flex items-center gap-1 rounded-lg border border-primary px-3.5 py-1.5 text-[14px] font-medium text-primary transition-colors hover:bg-primary hover:text-white"
                   >
                     {platform.ctaLabel}
                     <Icon name="arrow_outward" size={16} />

@@ -119,7 +119,7 @@
   background: linear-gradient(
     135deg,
     var(--ds-primary) 0%,
-    var(--ds-gov-navy) 100%
+    var(--ds-navy) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

@@ -8,7 +8,7 @@
  * portal will reuse. Portal sign-in screens use `PortalLoginShell` instead.
  *
  * Design note — the gate is the *threshold*. It carries the estate's signature
- * grid-and-glow field (same component as the hub hero) on a gov-navy panel, so
+ * grid-and-glow field (same component as the hub hero) on a navy panel, so
  * arriving here already looks like arriving at this building. Its counterpart,
  * /admin, is deliberately plain: back-of-house should not look like the door.
  *
@@ -68,7 +68,7 @@ export default async function GatePage({
     <main className="gate grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
       {/* ── Threshold panel ─────────────────────────────────────────────── */}
       <section
-        className="relative isolate flex flex-col overflow-hidden bg-gov-navy
+        className="relative isolate flex flex-col overflow-hidden bg-navy
                    px-6 py-10 text-white
                    sm:px-10 sm:py-14
                    lg:px-14 lg:py-16"
@@ -144,7 +144,7 @@ export default async function GatePage({
                 <div key={label}>
                   <dd className="text-3xl font-bold tracking-tight">{value}</dd>
                   <dt className="mt-1.5 text-[13px] font-semibold text-white/90">{label}</dt>
-                  {/* 12px at 70% keeps this above 4.5:1 on gov-navy; 11px at
+                  {/* 12px at 70% keeps this above 4.5:1 on navy; 11px at
                       55% measured marginal, and this is a government page. */}
                   <p className="mt-1 text-xs leading-snug text-white/70">{sub}</p>
                 </div>

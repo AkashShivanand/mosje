@@ -75,7 +75,7 @@ export function Organisations() {
     <section className="bg-surface-muted">
       <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
         <div className="text-center">
-          <h2 className="text-[32px] font-semibold leading-tight text-gov-blue-dark">
+          <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
             Our Organisations
           </h2>
           <p className="mx-auto mt-3 max-w-3xl text-[16px] text-ink-muted">
@@ -90,7 +90,7 @@ export function Organisations() {
             <li key={org.abbr}>
               <Link href={org.href} className="group block h-full">
                 <Card className="flex h-full items-start gap-3 p-4">
-                  <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md bg-gov-blue px-1 text-center text-[11px] font-bold leading-none text-white">
+                  <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md bg-primary px-1 text-center text-[11px] font-bold leading-none text-white">
                     {org.abbr}
                   </span>
                   <span className="flex min-w-0 flex-1 flex-col">
@@ -98,7 +98,7 @@ export function Organisations() {
                       {org.name}
                     </span>
                   </span>
-                  <Icon name="arrow_outward" size={16} className="flex-none text-gray-400 transition-colors group-hover:text-gov-blue" />
+                  <Icon name="arrow_outward" size={16} className="flex-none text-gray-400 transition-colors group-hover:text-primary" />
                 </Card>
               </Link>
             </li>

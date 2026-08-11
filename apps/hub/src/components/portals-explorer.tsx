@@ -11,7 +11,7 @@ function PortalCard({ portal }: { portal: AppEntry }) {
 
   const tile = (
     <span
-      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gov-blue-tonal text-sm font-bold text-gov-blue"
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-tonal text-sm font-bold text-primary"
       aria-hidden="true"
     >
       {abbr}
@@ -54,10 +54,10 @@ function PortalCard({ portal }: { portal: AppEntry }) {
     return (
       <a
         href={portal.path}
-        className="group flex flex-col rounded-2xl border border-border bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-gov-blue/40 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+        className="group flex flex-col rounded-2xl border border-border bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         {body}
-        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-gov-blue transition-all group-hover:gap-2.5">
+        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5">
           Open portal
           <Icon name="arrow_forward" size={16} aria-hidden="true" />
         </span>
@@ -126,7 +126,7 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search portals, schemes or organisations…"
               aria-label="Search portals"
-              className="w-full rounded-lg border border-border bg-surface py-2 pl-9 pr-9 text-sm text-ink placeholder:text-ink-muted focus:border-gov-blue focus:outline-none focus:ring-2 focus:ring-gov-blue/30"
+              className="w-full rounded-lg border border-border bg-surface py-2 pl-9 pr-9 text-sm text-ink placeholder:text-ink-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
             {query && (
               <button
@@ -154,7 +154,7 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
                 aria-pressed={status === f.id}
                 className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
                   status === f.id
-                    ? "bg-surface text-gov-blue shadow-xs"
+                    ? "bg-surface text-primary shadow-xs"
                     : "text-ink-muted hover:text-ink"
                 }`}
               >
@@ -192,7 +192,7 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
               setQuery("");
               setStatus("all");
             }}
-            className="mt-3 text-xs font-semibold text-gov-blue hover:underline"
+            className="mt-3 text-xs font-semibold text-primary hover:underline"
           >
             Reset filters
           </button>
@@ -204,7 +204,7 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
               <div className="mb-4 flex items-center gap-3">
                 <span
                   aria-hidden="true"
-                  className="h-4 w-1 rounded-full bg-gov-blue"
+                  className="h-4 w-1 rounded-full bg-primary"
                 />
                 <h2
                   id={`cat-${category}`}

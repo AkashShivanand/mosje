@@ -1,0 +1,276 @@
+/**
+ * Usage guidance — the "when would I reach for this?" sentence on every semantic token.
+ *
+ * WHY THIS EXISTS
+ *
+ * Our descriptions carried a measured contrast ratio and, at best, a two-word label
+ * ("Hovered rows, quiet panels"). That is rigorous and nearly useless to someone choosing a
+ * token: it says what the colour IS, never when to pick it over its neighbour. UX4G’s Figma
+ * library does the opposite — "Use when the tonal button’s action is not available." — which
+ * is worse evidence and much better guidance.
+ *
+ * They are not alternatives. A description should say what the token is FOR (this file) and
+ * what it is WORTH (the measured contrast, appended by the exporter). This closes the half we
+ * were missing without giving up the half we had.
+ *
+ * WHY IT IS ONE MODULE AND NOT 400 STRINGS
+ *
+ * Guidance written per-token drifts: the same rung ends up described three ways in three
+ * namespaces, and nobody notices because no two descriptions sit next to each other. Deriving
+ * it from the path means the vocabulary is reviewed in ONE place, a whole rung can be reworded
+ * in one edit, and a new token cannot ship with no guidance at all.
+ *
+ * HOUSE STYLE — matched to UX4G’s so a designer moving between the two libraries reads one voice:
+ *   - Start with "Use for" or "Use when".
+ *   - Name the SITUATION, not the colour. "Use when a tonal button is pressed", never
+ *     "the pressed tonal button colour".
+ *   - One sentence. The contrast measurement follows it and does the quantitative work.
+ *   - Where a choice is easy to get wrong, say what NOT to use it for — that is the sentence
+ *     that actually saves someone.
+ */
+
+const FAMILY_NOUN = {
+  neutral: "neutral",
+  brand: "brand",
+  status: "status",
+  link: "link",
+};
+
+const STATUS_MEANING = {
+  success: "a successful or completed state",
+  error: "an error or destructive state",
+  warning: "a warning or a state needing attention",
+  info: "an informational or in-progress state",
+};
+
+/** What each fill rung is FOR — the distinction between neighbouring rungs, which is the hard part. */
+const FILL_RUNG = {
+  base: "the ordinary, quietest fill — page and card surfaces that must not compete with their content",
+  subtler: "a barely-there tint, for hovered rows and zebra striping",
+  subtle: "a quiet tonal fill — chips, badges and callouts that should read as a block without shouting",
+  bold: "a tonal fill with more presence, for selected rows and active filters",
+  bolder: "a solid fill that carries white text — primary buttons and filled banners",
+  boldest: "the heaviest fill, for maximum emphasis on a light page",
+};
+
+/** What each ink rung is FOR. */
+const INK_RUNG = {
+  base: "body copy and headings — the default reading colour",
+  subtle: "captions, hints and secondary labels that sit beside primary text",
+  subtler: "non-essential text and quiet icons, never body copy",
+  bolder: "max-contrast headings that need to outrank surrounding text",
+  boldest: "the highest-contrast text available, for AAA contexts",
+};
+
+const ACTION_STATE = {
+  default: (v) => `Use for ${v} buttons at rest.`,
+  hover: (v) => `Use when the user hovers over a ${v} button.`,
+  active: (v) => `Use when a ${v} button is pressed.`,
+  disabled: (v) => `Use when a ${v} button’s action is not available.`,
+};
+
+const ACTION_INTENT = {
+  brand: "primary-brand",
+  success: "confirming",
+  destructive: "destructive",
+  neutral: "neutral",
+  light: "light",
+};
+
+const PROPERTY_NOUN = { bg: "fill", text: "label", border: "outline", ring: "focus ring" };
+
+/** Tier-3 action matrix: `action/<intent>/<variant>[/inverse]/<state>/<property>`. */
+function actionGuidance(path) {
+  const [, intent, variant, ...rest] = path;
+  const inverse = rest[0] === "inverse";
+  const [state, property] = inverse ? rest.slice(1) : rest;
+  const phrase = ACTION_STATE[state];
+  if (!phrase) return null;
+  const label = `${ACTION_INTENT[intent] ?? intent} ${variant}`;
+  const noun = PROPERTY_NOUN[property] ?? property;
+  const where = inverse ? " placed on a solid brand surface" : "";
+  return `${phrase(label).replace(/\.$/, "")}${where} — the ${noun}.`;
+}
+
+/** Tier-2 colour roles: `<role>/<family>[/<variant>][/<rung>][/<state>]`. */
+function colourGuidance(slots, path) {
+  const { role, family, variant, prominence, state } = slots;
+  const subject =
+    family === "status" && variant
+      ? STATUS_MEANING[variant] ?? variant
+      : family === "brand" && variant
+        ? `the ${variant} brand colour`
+        : FAMILY_NOUN[family] ?? family;
+
+  if (state === "disabled") {
+    return `Use when a ${role === "text" || role === "icon" ? "control’s content" : "control"} is disabled — it is deliberately low-contrast and exempt from the text contrast rules.`;
+  }
+  if (path.includes("inverse")) {
+    return `Use for ${role === "bg" ? "an inverted surface such as a tooltip or dark panel" : `${role === "text" ? "text" : role + "s"} placed on an inverted or solid brand surface`}.`;
+  }
+
+  if (role === "bg" || role === "overlay") {
+    if (role === "overlay") return "Use for the scrim behind a modal or drawer — it suppresses the page beneath rather than carrying content.";
+    const rung = FILL_RUNG[prominence];
+    if (!rung) return `Use as a ${subject} surface.`;
+    return family === "status"
+      ? `Use for ${rung}, when the surface signals ${subject}.`
+      : `Use for ${rung}${family === "brand" ? `, tinted with the ${variant ?? "brand"} brand colour` : ""}.`;
+  }
+
+  if (role === "text" || role === "icon") {
+    const noun = role === "text" ? "text" : "icons";
+    if (family === "link") {
+      const kind = variant === "visited" ? "an already-visited link" : variant === "neutral" ? "a link that must not stand out from surrounding text" : "a standard text link";
+      return state && state !== "default"
+        ? `Use for ${kind} in its ${state} state.`
+        : `Use for ${kind}.`;
+    }
+    if (family === "status") return `Use for ${noun} that report ${subject}.`;
+    if (family === "brand") return `Use for ${noun} in the ${variant ?? "brand"} brand colour — not for long-form reading.`;
+    const rung = INK_RUNG[prominence];
+    return rung ? `Use for ${rung}.` : `Use for ${noun}.`;
+  }
+
+  if (role === "border" || role === "outline") {
+    if (family === "status") return `Use for the outline of a control or callout reporting ${subject}.`;
+    if (family === "brand") return `Use for the outline of a ${variant ?? "brand"}-brand control, such as a selected card or a focused input.`;
+    const strength =
+      prominence === "subtle" ? "a hairline that separates without drawing the eye — dividers and card edges"
+      : prominence === "bolder" ? "the visible edge of an interactive control, such as an input or a checkbox"
+      : "a standard boundary";
+    return `Use for ${strength}.`;
+  }
+  return null;
+}
+
+/** Non-colour groups and everything else that earns a sentence. */
+function groupGuidance(path) {
+  const [head, ...rest] = path;
+  const key = rest.join("/");
+
+  if (head === "on") {
+    const fill = rest.slice(1).join("/");
+    return `Use for text and icons placed on \`bg/${fill}\`. The pairing was chosen by measurement, so it is the safe foreground for that fill in every brand — do not substitute another ink.`;
+  }
+  if (head === "layer") {
+    if (rest[0] === "border") return `Use for the hairline separating a level-${rest[1]} surface from the one beneath it.`;
+    return rest[0] === "0"
+      ? "Use as the page surface — the bottom of the stack."
+      : `Use as the surface for content nested ${rest[0]} level${rest[0] === "1" ? "" : "s"} deep, such as a card${rest[0] === "1" ? "" : "-within-a-card"}. Step one level per nesting rather than picking a grey by eye.`;
+  }
+  if (head === "icon" && rest[0] === "size")
+    return rest[1] === "md"
+      ? "Use as the DEFAULT icon size (24px) — what ⟨Icon⟩ ships with. Bind this rather than passing a number."
+      : `Use for a ${rest[1]} icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves.`;
+  if (head === "container")
+    return rest[0] === "content"
+      ? "Use as the max-width of page content (1280px). This is mandated estate-wide — do not set a different content width per page."
+      : `Use as the container max-width at the ${rest[0]} breakpoint.`;
+  if (head === "elevation")
+    return rest[0] === "flat"
+      ? "Use when a surface must sit flat on the page — explicitly no shadow, rather than omitting one."
+      : `Use for a ${rest[0]}. Pick by WHAT THE SURFACE IS, not by how deep the shadow looks — that is what keeps two dropdowns from disagreeing.`;
+  if (head === "control")
+    return rest[0] === "radius"
+      ? "Use for the corner radius of an interactive control — buttons, inputs, selects. One radius keeps controls a family."
+      : "Use for the border width of an interactive control.";
+  if (head === "motion" && ["enter", "exit", "emphasis"].includes(rest[0]))
+    return rest[0] === "enter" ? `Use for something ARRIVING — the ${rest[1]} half of the pair. Entering decelerates and may take its time.`
+      : rest[0] === "exit" ? `Use for something LEAVING — the ${rest[1]} half of the pair. Leaving accelerates and gets out of the way.`
+      : `Use for a deliberate, attention-carrying move — the ${rest[1]} half of the pair. Reserve it; everything cannot be emphasis.`;
+  if (head === "focus" && (rest[0] === "width" || rest[0] === "offset"))
+    return `Use for the focus ring’s ${rest[0]}. The ring’s colour was tokenised long before its geometry, so this was hardcoded — WCAG 2.4.7 governs all three.`;
+  if (head === "focus") return "Use for the focus indicator. WCAG 2.4.7 makes this non-optional — never suppress it, and never substitute a colour with less contrast.";
+  if (head === "chart") {
+    if (rest[0] === "cat") return `Use as series ${rest[1]} in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.`;
+    if (rest[0] === "seq") return `Use as step ${rest[1]} of a sequential (single-hue) scale, for data that runs low to high.`;
+    if (rest[0] === "div") return "Use in a diverging scale, for data with a meaningful midpoint such as change versus a target.";
+    if (rest[0] === "trend") return `Use for a ${rest[1]} trend indicator. Pair it with an arrow or a sign — colour alone fails WCAG 1.4.1.`;
+    if (rest[0] === "grid" || rest[0] === "axis") return `Use for chart ${rest[0]} lines, which should recede behind the data.`;
+    return "Use in data visualisation.";
+  }
+  if (head === "density") return `Use for ${key.replace(/\//g, " ")} — it changes with the density axis, so bind it rather than hard-coding a value.`;
+  if (head === "inline") return `Use for horizontal gaps between items on one line, at the ${rest[0]} step.`;
+  if (head === "stack") return `Use for vertical gaps between stacked items, at the ${rest[0]} step.`;
+  if (head === "padding") return `Use for padding inside a container, at the ${rest[0]} step.`;
+  if (head === "section") return `Use for the gap between major page sections, at the ${rest[0]} step.`;
+  if (head === "blur") return `Use for a ${rest[0]} blur on backdrops and scrims.`;
+  if (head === "type") return `Use for the ${rest[0]} type role — it responds to surface and viewport, so bind it rather than copying a px value.`;
+  return null;
+}
+
+/**
+ * The guidance sentence for a token, or null when it does not earn one.
+ *
+ * Returns null for Tier-1 primitives on purpose: a palette step has no situation to describe,
+ * and inventing one ("use for blue things") is noise. They get a pointer instead — see
+ * `primitivePointer`.
+ */
+export function guidanceFor(path, tier, parse) {
+  if (tier === "cmp" && path[0] === "action") return actionGuidance(path);
+  if (tier !== "sys") return null;
+
+  // The legacy `color/*` Tier-2 layer: brand-aware ramps and alpha tiers. They are a palette,
+  // not a decision, so they get the same pointer a primitive does — the semantic roles above
+  // them are where the choice belongs.
+  if (path[0] === "color") {
+    if (path[1] === "transparent") return `Use for a translucent ${path[2]} wash at ${path[3]}% — for overlays and hover states, not as a text colour.`;
+    return "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.";
+  }
+
+  const grouped = groupGuidance(path);
+  if (grouped) return grouped;
+
+  const r = parse?.(path, "sys");
+  if (r?.ok && r.slots?.role && r.slots?.family) return colourGuidance(r.slots, path);
+  return null;
+}
+
+/** Display/Headline/Title/Body/Label — the style folder each role ramp lives in, in Figma. */
+const TYPE_STYLE_FOLDER = { display: "Display", headline: "Headline", title: "Title", body: "Body", label: "Label" };
+
+/**
+ * Type primitives point at the TEXT STYLE, never at `type/*`.
+ *
+ * `type/*` is the CSS namespace (`--ds-type-display-1-size`). It has never existed as a Figma
+ * variable — a search for "type/" in the picker returns nothing — yet this sentence was
+ * attached to all 108 variables in the Type collection, sending every designer who read it
+ * after something unfindable. The sentence was written for a stylesheet reader and landed on
+ * a canvas reader.
+ *
+ * In Figma the equivalent of a `type/*` role IS a text style: it binds family, weight, size,
+ * leading, tracking and paragraph spacing in one place, and it follows the surface x
+ * breakpoint modes for free. So a role primitive names its exact style, and the raw ladders
+ * (family, weight, size, lineHeight, tracking) name the ramp they are assembled into.
+ */
+function fontPointer(path) {
+  const [, group, role, step] = path;
+  const folder = group === "role" ? TYPE_STYLE_FOLDER[role] : null;
+  if (folder) {
+    return `Raw type step. Prefer the text style \`${folder}/${role}-${step}\` — it binds size, ` +
+      `leading, tracking and paragraph spacing together and follows the Type modes.`;
+  }
+  return "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label " +
+    "ramp — these are the parts those styles are assembled from.";
+}
+
+/**
+ * Tier-1 primitives get a pointer, not a use case — the semantic layer is where choices are made.
+ *
+ * Consumed ONLY by `formats/figma-variables.mjs`, as the description on a `ref/*` variable
+ * (`guidanceFor` is the one the CSS/TS generators share). The audience is therefore a designer
+ * in the Figma variable picker, which is why these name Figma styles and collections rather
+ * than CSS custom properties.
+ */
+export function primitivePointer(path) {
+  const [head] = path;
+  if (head === "color") return "Palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee and follow the brand.";
+  if (head === "size") return "Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.";
+  if (head === "space") return "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.";
+  if (head === "font") return fontPointer(path);
+  if (head === "radius" || head === "motion" || head === "opacity" || head === "blur") return `Raw ${head} step.`;
+  if (head === "z") return "Stacking order. Code-only — Figma has no canvas property for z-index.";
+  if (head === "breakpoint") return "Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.";
+  return null;
+}

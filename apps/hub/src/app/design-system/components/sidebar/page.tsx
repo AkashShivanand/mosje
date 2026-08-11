@@ -343,7 +343,7 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
         <p style={proseStyle}>
           All values are resolved from the <code>--ds-*</code> contract.
           In the portal <code>blue-dark</code> colour mode these resolve to the
-          gov-navy ramp.
+          navy ramp.
         </p>
         <div style={{ overflowX: "auto", marginTop: "var(--ds-spacing-lg)" }}>
           <table className="props-table">

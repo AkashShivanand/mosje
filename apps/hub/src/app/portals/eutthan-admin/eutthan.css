@@ -1,6 +1,6 @@
 
 :root {
-  --primary: var(--ds-gov-navy);
+  --primary: var(--ds-navy);
   --primary-800: #001933;
   --primary-100: #c8dbf0;
   --primary-50: #e5eff9;
@@ -18,7 +18,7 @@
   --success: var(--ds-success); /* DS success is #2e7d32; original was #27682a */
   --success-tonal: rgba(46, 125, 50, 0.1);
   --primary-tonal: rgba(0, 51, 102, 0.08);
-  --gov-yellow: var(--ds-gov-yellow);
+  --yellow: var(--ds-yellow);
   --chart-danger: #e4776f;
   --chart-warning: #f6c36d;
   --chart-primary-soft: #9cbfe3;
@@ -214,7 +214,7 @@ button {
   padding: 2px 6px;
   border-radius: 2px;
   color: #000;
-  background: var(--gov-yellow);
+  background: var(--yellow);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.5px;

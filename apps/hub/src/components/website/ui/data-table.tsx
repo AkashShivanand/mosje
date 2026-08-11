@@ -29,7 +29,7 @@ function Cell({ col, row }: { col: DataTableColumn; row: Record<string, unknown>
         href={href}
         target="_blank"
         rel="noreferrer"
-        className="inline-flex items-center gap-1.5 font-medium text-gov-blue hover:underline"
+        className="inline-flex items-center gap-1.5 font-medium text-primary hover:underline"
       >
         <Icon name="download" size={16} />
         {col.linkLabel ?? "View / Download"}
@@ -118,7 +118,7 @@ export function DataTable({
         <table className="w-full border-collapse text-[14px]">
           <caption className="sr-only">{caption}</caption>
           <thead>
-            <tr className="bg-gov-blue text-white">
+            <tr className="bg-primary text-white">
               {columns.map((c) => {
                 const isSorted = sortKey === c.key;
                 return (

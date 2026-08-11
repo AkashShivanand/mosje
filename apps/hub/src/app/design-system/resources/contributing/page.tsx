@@ -39,7 +39,7 @@ const codeBlockStyle: React.CSSProperties = {
   background: "#1e2130",
   borderRadius: "var(--ds-radius-md)",
   padding: "var(--ds-spacing-xl)",
-  fontFamily: "ui-monospace, monospace",
+  fontFamily: "var(--ds-font-mono)",
   fontSize: 13,
   color: "#e2e8f0",
   lineHeight: 1.7,

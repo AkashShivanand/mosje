@@ -2,37 +2,279 @@
   "$description": "TEMPLATE brand pack. Copy this folder to brands/<your-body>/ and replace the values with your government body's identity, then build with BRAND=<your-body> npm run build. Keep every token PATH; change only values. Values must pass the AA contrast gate (test/brand-contrast.test.mjs) — keep primaryRamp.*.500 dark enough that white text on it stays ≥4.5:1. This example is an emerald + amber palette so a re-skin is visually obvious.",
   "color": {
     "$type": "color",
-    "yellow": { "500": {"$value":"#f5c518"} },
-    "saffron":{ "50": {"$value":"#fdf3d6"}, "500": {"$value":"#b45309"}, "700": {"$value":"#7c3503"} },
-    "navy":   { "700": {"$value":"#07502c"} },
+    "yellow": {
+      "500": {
+        "$value": "#f5c518"
+      }
+    },
+    "saffron": {
+      "50": {
+        "$value": "#fdf3d6"
+      },
+      "500": {
+        "$value": "#b45309"
+      },
+      "700": {
+        "$value": "#7c3503"
+      }
+    },
+    "navy": {
+      "700": {
+        "$value": "#07502c"
+      }
+    },
     "secondaryRamp": {
       "$description": "Example mode-aware secondary ramp (amber → teal) so a re-skin's Blue-Light/Blue-Dark secondary is visually obvious. Keep both light and dark full 50–900.",
-      "light": {
-        "50":  {"$value":"#fef3c7"}, "100": {"$value":"#fde68a"}, "200": {"$value":"#fcd34d"},
-        "300": {"$value":"#fbbf24"}, "400": {"$value":"#f59e0b"}, "500": {"$value":"#d97706"},
-        "600": {"$value":"#b45309"}, "700": {"$value":"#92400e"}, "800": {"$value":"#78350f"},
-        "900": {"$value":"#451a03"}
+      "blue": {
+        "50": {
+          "$value": "#fef3c7"
+        },
+        "100": {
+          "$value": "#fde68a"
+        },
+        "200": {
+          "$value": "#fcd34d"
+        },
+        "300": {
+          "$value": "#fbbf24"
+        },
+        "400": {
+          "$value": "#f59e0b"
+        },
+        "500": {
+          "$value": "#d97706"
+        },
+        "600": {
+          "$value": "#b45309"
+        },
+        "700": {
+          "$value": "#92400e"
+        },
+        "800": {
+          "$value": "#78350f"
+        },
+        "900": {
+          "$value": "#451a03"
+        },
+        "950": {
+          "$value": "#2c1300"
+        }
       },
-      "dark": {
-        "50":  {"$value":"#ccfbf1"}, "100": {"$value":"#99f6e4"}, "200": {"$value":"#5eead4"},
-        "300": {"$value":"#2dd4bf"}, "400": {"$value":"#14b8a6"}, "500": {"$value":"#0d9488"},
-        "600": {"$value":"#0f766e"}, "700": {"$value":"#115e59"}, "800": {"$value":"#134e4a"},
-        "900": {"$value":"#042f2e"}
+      "navy": {
+        "50": {
+          "$value": "#ccfbf1"
+        },
+        "100": {
+          "$value": "#99f6e4"
+        },
+        "200": {
+          "$value": "#5eead4"
+        },
+        "300": {
+          "$value": "#2dd4bf"
+        },
+        "400": {
+          "$value": "#14b8a6"
+        },
+        "500": {
+          "$value": "#0d9488"
+        },
+        "600": {
+          "$value": "#0f766e"
+        },
+        "700": {
+          "$value": "#115e59"
+        },
+        "800": {
+          "$value": "#134e4a"
+        },
+        "900": {
+          "$value": "#042f2e"
+        },
+        "950": {
+          "$value": "#00201d"
+        }
       }
     },
     "primaryRamp": {
-      "$description": "Example mode-aware primary ramp (emerald). 'light' = default, 'dark' = deep-green mode.",
-      "light": {
-        "50":  {"$value":"#e6f4ea"}, "100": {"$value":"#c2e6cd"}, "200": {"$value":"#94d3a8"},
-        "300": {"$value":"#5cbb80"}, "400": {"$value":"#2fa463"}, "500": {"$value":"#0b6f3d"},
-        "600": {"$value":"#095e34"}, "700": {"$value":"#07502c"}, "800": {"$value":"#053d22"},
-        "900": {"$value":"#022616"}
+      "$description": "Example mode-aware primary ramp (emerald). 'light' = default, 'dark' = deep-green mode. A THIRD brand (dbim) is required since 2026-08-11: the semantic layer references color.primaryRamp.dbim.*, so a brand pack without it fails the build. Give it your own third key colour, or copy your navy values if you do not want a third brand.",
+      "blue": {
+        "50": {
+          "$value": "#e6f4ea"
+        },
+        "100": {
+          "$value": "#c2e6cd"
+        },
+        "200": {
+          "$value": "#94d3a8"
+        },
+        "300": {
+          "$value": "#5cbb80"
+        },
+        "400": {
+          "$value": "#2fa463"
+        },
+        "500": {
+          "$value": "#0b6f3d"
+        },
+        "600": {
+          "$value": "#095e34"
+        },
+        "700": {
+          "$value": "#07502c"
+        },
+        "800": {
+          "$value": "#053d22"
+        },
+        "900": {
+          "$value": "#022616"
+        },
+        "950": {
+          "$value": "#00220e"
+        }
       },
-      "dark": {
-        "50":  {"$value":"#e3f1ea"}, "100": {"$value":"#bfe0cd"}, "200": {"$value":"#8fc7a8"},
-        "300": {"$value":"#5fae84"}, "400": {"$value":"#339966"}, "500": {"$value":"#07502c"},
-        "600": {"$value":"#064526"}, "700": {"$value":"#053a20"}, "800": {"$value":"#042f1a"},
-        "900": {"$value":"#022616"}
+      "navy": {
+        "50": {
+          "$value": "#e3f1ea"
+        },
+        "100": {
+          "$value": "#bfe0cd"
+        },
+        "200": {
+          "$value": "#8fc7a8"
+        },
+        "300": {
+          "$value": "#5fae84"
+        },
+        "400": {
+          "$value": "#339966"
+        },
+        "500": {
+          "$value": "#07502c"
+        },
+        "600": {
+          "$value": "#064526"
+        },
+        "700": {
+          "$value": "#053a20"
+        },
+        "800": {
+          "$value": "#042f1a"
+        },
+        "900": {
+          "$value": "#022616"
+        },
+        "950": {
+          "$value": "#00220f"
+        }
+      },
+      "dbim": {
+        "50": {
+          "$value": "#fcf9fa"
+        },
+        "100": {
+          "$value": "#e2d0d4"
+        },
+        "200": {
+          "$value": "#c6a8ae"
+        },
+        "300": {
+          "$value": "#a9818a"
+        },
+        "400": {
+          "$value": "#8c5e68"
+        },
+        "500": {
+          "$value": "#723e4b"
+        },
+        "600": {
+          "$value": "#5b2333"
+        },
+        "700": {
+          "$value": "#421523"
+        },
+        "800": {
+          "$value": "#300b17"
+        },
+        "900": {
+          "$value": "#21040d"
+        },
+        "950": {
+          "$value": "#110104"
+        }
+      }
+    },
+    "accentRamp": {
+      "$description": "Example ACCENT ramp. In the MoSJE pack this is India Green from the logo and is BRAND-INVARIANT (blue and navy identical) — copy that shape unless your identity genuinely varies its accent per brand. Generate with build/ramp.mjs so the ramp-quality gate passes.",
+      "blue": {
+        "50": {
+          "$value": "#f7eefa"
+        },
+        "100": {
+          "$value": "#dfc5e6"
+        },
+        "200": {
+          "$value": "#c69dd0"
+        },
+        "300": {
+          "$value": "#ac76b9"
+        },
+        "400": {
+          "$value": "#9251a3"
+        },
+        "500": {
+          "$value": "#7b2d8e"
+        },
+        "600": {
+          "$value": "#5f1c6e"
+        },
+        "700": {
+          "$value": "#460f53"
+        },
+        "800": {
+          "$value": "#30043a"
+        },
+        "900": {
+          "$value": "#1a0021"
+        },
+        "950": {
+          "$value": "#210029"
+        }
+      },
+      "navy": {
+        "50": {
+          "$value": "#f7eefa"
+        },
+        "100": {
+          "$value": "#dfc5e6"
+        },
+        "200": {
+          "$value": "#c69dd0"
+        },
+        "300": {
+          "$value": "#ac76b9"
+        },
+        "400": {
+          "$value": "#9251a3"
+        },
+        "500": {
+          "$value": "#7b2d8e"
+        },
+        "600": {
+          "$value": "#5f1c6e"
+        },
+        "700": {
+          "$value": "#460f53"
+        },
+        "800": {
+          "$value": "#30043a"
+        },
+        "900": {
+          "$value": "#1a0021"
+        },
+        "950": {
+          "$value": "#210029"
+        }
       }
     }
   }

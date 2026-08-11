@@ -264,7 +264,7 @@ export function RegistryForm({
                     they skip between categories in a 25-row list. */}
                 {showHeading && (
                   <li className="!mt-8 flex items-center gap-3 first:!mt-0">
-                    <span className="h-4 w-1 rounded-full bg-gov-blue" aria-hidden="true" />
+                    <span className="h-4 w-1 rounded-full bg-primary" aria-hidden="true" />
                     <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-ink">
                       {bucketLabel(row)}
                     </h2>

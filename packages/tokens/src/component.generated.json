@@ -7,68 +7,68 @@
           "bg": {
             "$type": "color",
             "$value": "{color.primaryScale.600}",
-            "$description": "brand primary button, default state, bg"
+            "$description": "Use for primary-brand primary buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.0}",
-            "$description": "brand primary button, default state, text"
+            "$description": "Use for primary-brand primary buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.primaryScale.600}",
-            "$description": "brand primary button, default state, border"
+            "$description": "Use for primary-brand primary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.primaryScale.700}",
-            "$description": "brand primary button, hover state, bg"
+            "$description": "Use when the user hovers over a primary-brand primary button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.0}",
-            "$description": "brand primary button, hover state, text"
+            "$description": "Use when the user hovers over a primary-brand primary button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.primaryScale.700}",
-            "$description": "brand primary button, hover state, border"
+            "$description": "Use when the user hovers over a primary-brand primary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.primaryScale.800}",
-            "$description": "brand primary button, active state, bg"
+            "$description": "Use when a primary-brand primary button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.0}",
-            "$description": "brand primary button, active state, text"
+            "$description": "Use when a primary-brand primary button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.primaryScale.800}",
-            "$description": "brand primary button, active state, border"
+            "$description": "Use when a primary-brand primary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "brand primary button, disabled state, bg"
+            "$description": "Use when a primary-brand primary button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "brand primary button, disabled state, text"
+            "$description": "Use when a primary-brand primary button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "brand primary button, disabled state, border"
+            "$description": "Use when a primary-brand primary button’s action is not available — the outline."
           }
         },
         "inverse": {
@@ -76,68 +76,68 @@
             "bg": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "brand primary button on a solid brand surface, default state, bg"
+              "$description": "Use for primary-brand primary buttons at rest placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.primaryScale.700}",
-              "$description": "brand primary button on a solid brand surface, default state, text"
+              "$description": "Use for primary-brand primary buttons at rest placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "brand primary button on a solid brand surface, default state, border"
+              "$description": "Use for primary-brand primary buttons at rest placed on a solid brand surface — the outline."
             }
           },
           "hover": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.92)",
-              "$description": "brand primary button on a solid brand surface, hover state, bg"
+              "$description": "Use when the user hovers over a primary-brand primary button placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.primaryScale.800}",
-              "$description": "brand primary button on a solid brand surface, hover state, text"
+              "$description": "Use when the user hovers over a primary-brand primary button placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.92)",
-              "$description": "brand primary button on a solid brand surface, hover state, border"
+              "$description": "Use when the user hovers over a primary-brand primary button placed on a solid brand surface — the outline."
             }
           },
           "active": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.84)",
-              "$description": "brand primary button on a solid brand surface, active state, bg"
+              "$description": "Use when a primary-brand primary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.primaryScale.900}",
-              "$description": "brand primary button on a solid brand surface, active state, text"
+              "$description": "Use when a primary-brand primary button is pressed placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.84)",
-              "$description": "brand primary button on a solid brand surface, active state, border"
+              "$description": "Use when a primary-brand primary button is pressed placed on a solid brand surface — the outline."
             }
           },
           "disabled": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "brand primary button on a solid brand surface, disabled state, bg"
+              "$description": "Use when a primary-brand primary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.64)",
-              "$description": "brand primary button on a solid brand surface, disabled state, text"
+              "$description": "Use when a primary-brand primary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "brand primary button on a solid brand surface, disabled state, border"
+              "$description": "Use when a primary-brand primary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
         }
@@ -147,68 +147,68 @@
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "brand secondary button, default state, bg"
+            "$description": "Use for primary-brand secondary buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.primaryScale.700}",
-            "$description": "brand secondary button, default state, text"
+            "$description": "Use for primary-brand secondary buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.primaryScale.300}",
-            "$description": "brand secondary button, default state, border"
+            "$description": "Use for primary-brand secondary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.primaryScale.50}",
-            "$description": "brand secondary button, hover state, bg"
+            "$description": "Use when the user hovers over a primary-brand secondary button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.primaryScale.700}",
-            "$description": "brand secondary button, hover state, text"
+            "$description": "Use when the user hovers over a primary-brand secondary button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.primaryScale.400}",
-            "$description": "brand secondary button, hover state, border"
+            "$description": "Use when the user hovers over a primary-brand secondary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.primaryScale.100}",
-            "$description": "brand secondary button, active state, bg"
+            "$description": "Use when a primary-brand secondary button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.primaryScale.800}",
-            "$description": "brand secondary button, active state, text"
+            "$description": "Use when a primary-brand secondary button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.primaryScale.500}",
-            "$description": "brand secondary button, active state, border"
+            "$description": "Use when a primary-brand secondary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "brand secondary button, disabled state, bg"
+            "$description": "Use when a primary-brand secondary button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "brand secondary button, disabled state, text"
+            "$description": "Use when a primary-brand secondary button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "brand secondary button, disabled state, border"
+            "$description": "Use when a primary-brand secondary button’s action is not available — the outline."
           }
         },
         "inverse": {
@@ -216,68 +216,68 @@
             "bg": {
               "$type": "color",
               "$value": "rgba(0, 0, 0, 0)",
-              "$description": "brand secondary button on a solid brand surface, default state, bg"
+              "$description": "Use for primary-brand secondary buttons at rest placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "brand secondary button on a solid brand surface, default state, text"
+              "$description": "Use for primary-brand secondary buttons at rest placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "brand secondary button on a solid brand surface, default state, border"
+              "$description": "Use for primary-brand secondary buttons at rest placed on a solid brand surface — the outline."
             }
           },
           "hover": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.10)",
-              "$description": "brand secondary button on a solid brand surface, hover state, bg"
+              "$description": "Use when the user hovers over a primary-brand secondary button placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "brand secondary button on a solid brand surface, hover state, text"
+              "$description": "Use when the user hovers over a primary-brand secondary button placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.64)",
-              "$description": "brand secondary button on a solid brand surface, hover state, border"
+              "$description": "Use when the user hovers over a primary-brand secondary button placed on a solid brand surface — the outline."
             }
           },
           "active": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.16)",
-              "$description": "brand secondary button on a solid brand surface, active state, bg"
+              "$description": "Use when a primary-brand secondary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "brand secondary button on a solid brand surface, active state, text"
+              "$description": "Use when a primary-brand secondary button is pressed placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "brand secondary button on a solid brand surface, active state, border"
+              "$description": "Use when a primary-brand secondary button is pressed placed on a solid brand surface — the outline."
             }
           },
           "disabled": {
             "bg": {
               "$type": "color",
               "$value": "rgba(0, 0, 0, 0)",
-              "$description": "brand secondary button on a solid brand surface, disabled state, bg"
+              "$description": "Use when a primary-brand secondary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "brand secondary button on a solid brand surface, disabled state, text"
+              "$description": "Use when a primary-brand secondary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.24)",
-              "$description": "brand secondary button on a solid brand surface, disabled state, border"
+              "$description": "Use when a primary-brand secondary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
         }
@@ -287,68 +287,68 @@
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "brand tertiary button, default state, bg"
+            "$description": "Use for primary-brand tertiary buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.primaryScale.700}",
-            "$description": "brand tertiary button, default state, text"
+            "$description": "Use for primary-brand tertiary buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "brand tertiary button, default state, border"
+            "$description": "Use for primary-brand tertiary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.primaryScale.50}",
-            "$description": "brand tertiary button, hover state, bg"
+            "$description": "Use when the user hovers over a primary-brand tertiary button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.primaryScale.700}",
-            "$description": "brand tertiary button, hover state, text"
+            "$description": "Use when the user hovers over a primary-brand tertiary button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "brand tertiary button, hover state, border"
+            "$description": "Use when the user hovers over a primary-brand tertiary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.primaryScale.100}",
-            "$description": "brand tertiary button, active state, bg"
+            "$description": "Use when a primary-brand tertiary button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.primaryScale.800}",
-            "$description": "brand tertiary button, active state, text"
+            "$description": "Use when a primary-brand tertiary button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "brand tertiary button, active state, border"
+            "$description": "Use when a primary-brand tertiary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "brand tertiary button, disabled state, bg"
+            "$description": "Use when a primary-brand tertiary button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "brand tertiary button, disabled state, text"
+            "$description": "Use when a primary-brand tertiary button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "brand tertiary button, disabled state, border"
+            "$description": "Use when a primary-brand tertiary button’s action is not available — the outline."
           }
         }
       },
@@ -356,69 +356,69 @@
         "default": {
           "bg": {
             "$type": "color",
-            "$value": "{color.primaryScale.100}",
-            "$description": "brand tonal button, default state, bg"
+            "$value": "{color.primaryScale.50}",
+            "$description": "Use for primary-brand tonal buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.primaryScale.800}",
-            "$description": "brand tonal button, default state, text"
+            "$description": "Use for primary-brand tonal buttons at rest — the label."
           },
           "border": {
             "$type": "color",
-            "$value": "{color.primaryScale.100}",
-            "$description": "brand tonal button, default state, border"
+            "$value": "{color.primaryScale.50}",
+            "$description": "Use for primary-brand tonal buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
-            "$value": "{color.primaryScale.200}",
-            "$description": "brand tonal button, hover state, bg"
+            "$value": "{color.primaryScale.100}",
+            "$description": "Use when the user hovers over a primary-brand tonal button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.primaryScale.800}",
-            "$description": "brand tonal button, hover state, text"
+            "$description": "Use when the user hovers over a primary-brand tonal button — the label."
           },
           "border": {
             "$type": "color",
-            "$value": "{color.primaryScale.200}",
-            "$description": "brand tonal button, hover state, border"
+            "$value": "{color.primaryScale.100}",
+            "$description": "Use when the user hovers over a primary-brand tonal button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
-            "$value": "{color.primaryScale.300}",
-            "$description": "brand tonal button, active state, bg"
+            "$value": "{color.primaryScale.200}",
+            "$description": "Use when a primary-brand tonal button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.primaryScale.900}",
-            "$description": "brand tonal button, active state, text"
+            "$description": "Use when a primary-brand tonal button is pressed — the label."
           },
           "border": {
             "$type": "color",
-            "$value": "{color.primaryScale.300}",
-            "$description": "brand tonal button, active state, border"
+            "$value": "{color.primaryScale.200}",
+            "$description": "Use when a primary-brand tonal button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "brand tonal button, disabled state, bg"
+            "$description": "Use when a primary-brand tonal button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "brand tonal button, disabled state, text"
+            "$description": "Use when a primary-brand tonal button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "brand tonal button, disabled state, border"
+            "$description": "Use when a primary-brand tonal button’s action is not available — the outline."
           }
         }
       }
@@ -429,68 +429,68 @@
           "bg": {
             "$type": "color",
             "$value": "{color.successScale.600}",
-            "$description": "success primary button, default state, bg"
+            "$description": "Use for confirming primary buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.0}",
-            "$description": "success primary button, default state, text"
+            "$description": "Use for confirming primary buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.successScale.600}",
-            "$description": "success primary button, default state, border"
+            "$description": "Use for confirming primary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.successScale.700}",
-            "$description": "success primary button, hover state, bg"
+            "$description": "Use when the user hovers over a confirming primary button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.0}",
-            "$description": "success primary button, hover state, text"
+            "$description": "Use when the user hovers over a confirming primary button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.successScale.700}",
-            "$description": "success primary button, hover state, border"
+            "$description": "Use when the user hovers over a confirming primary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.successScale.800}",
-            "$description": "success primary button, active state, bg"
+            "$description": "Use when a confirming primary button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.0}",
-            "$description": "success primary button, active state, text"
+            "$description": "Use when a confirming primary button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.successScale.800}",
-            "$description": "success primary button, active state, border"
+            "$description": "Use when a confirming primary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "success primary button, disabled state, bg"
+            "$description": "Use when a confirming primary button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "success primary button, disabled state, text"
+            "$description": "Use when a confirming primary button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "success primary button, disabled state, border"
+            "$description": "Use when a confirming primary button’s action is not available — the outline."
           }
         },
         "inverse": {
@@ -498,68 +498,68 @@
             "bg": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "success primary button on a solid brand surface, default state, bg"
+              "$description": "Use for confirming primary buttons at rest placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.successScale.700}",
-              "$description": "success primary button on a solid brand surface, default state, text"
+              "$description": "Use for confirming primary buttons at rest placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "success primary button on a solid brand surface, default state, border"
+              "$description": "Use for confirming primary buttons at rest placed on a solid brand surface — the outline."
             }
           },
           "hover": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.92)",
-              "$description": "success primary button on a solid brand surface, hover state, bg"
+              "$description": "Use when the user hovers over a confirming primary button placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.successScale.800}",
-              "$description": "success primary button on a solid brand surface, hover state, text"
+              "$description": "Use when the user hovers over a confirming primary button placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.92)",
-              "$description": "success primary button on a solid brand surface, hover state, border"
+              "$description": "Use when the user hovers over a confirming primary button placed on a solid brand surface — the outline."
             }
           },
           "active": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.84)",
-              "$description": "success primary button on a solid brand surface, active state, bg"
+              "$description": "Use when a confirming primary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.successScale.900}",
-              "$description": "success primary button on a solid brand surface, active state, text"
+              "$description": "Use when a confirming primary button is pressed placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.84)",
-              "$description": "success primary button on a solid brand surface, active state, border"
+              "$description": "Use when a confirming primary button is pressed placed on a solid brand surface — the outline."
             }
           },
           "disabled": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "success primary button on a solid brand surface, disabled state, bg"
+              "$description": "Use when a confirming primary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.64)",
-              "$description": "success primary button on a solid brand surface, disabled state, text"
+              "$description": "Use when a confirming primary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "success primary button on a solid brand surface, disabled state, border"
+              "$description": "Use when a confirming primary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
         }
@@ -569,68 +569,68 @@
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "success secondary button, default state, bg"
+            "$description": "Use for confirming secondary buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.successScale.700}",
-            "$description": "success secondary button, default state, text"
+            "$description": "Use for confirming secondary buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.successScale.300}",
-            "$description": "success secondary button, default state, border"
+            "$description": "Use for confirming secondary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.successScale.50}",
-            "$description": "success secondary button, hover state, bg"
+            "$description": "Use when the user hovers over a confirming secondary button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.successScale.700}",
-            "$description": "success secondary button, hover state, text"
+            "$description": "Use when the user hovers over a confirming secondary button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.successScale.400}",
-            "$description": "success secondary button, hover state, border"
+            "$description": "Use when the user hovers over a confirming secondary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.successScale.100}",
-            "$description": "success secondary button, active state, bg"
+            "$description": "Use when a confirming secondary button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.successScale.800}",
-            "$description": "success secondary button, active state, text"
+            "$description": "Use when a confirming secondary button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.successScale.500}",
-            "$description": "success secondary button, active state, border"
+            "$description": "Use when a confirming secondary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "success secondary button, disabled state, bg"
+            "$description": "Use when a confirming secondary button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "success secondary button, disabled state, text"
+            "$description": "Use when a confirming secondary button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "success secondary button, disabled state, border"
+            "$description": "Use when a confirming secondary button’s action is not available — the outline."
           }
         },
         "inverse": {
@@ -638,68 +638,68 @@
             "bg": {
               "$type": "color",
               "$value": "rgba(0, 0, 0, 0)",
-              "$description": "success secondary button on a solid brand surface, default state, bg"
+              "$description": "Use for confirming secondary buttons at rest placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "success secondary button on a solid brand surface, default state, text"
+              "$description": "Use for confirming secondary buttons at rest placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "success secondary button on a solid brand surface, default state, border"
+              "$description": "Use for confirming secondary buttons at rest placed on a solid brand surface — the outline."
             }
           },
           "hover": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.10)",
-              "$description": "success secondary button on a solid brand surface, hover state, bg"
+              "$description": "Use when the user hovers over a confirming secondary button placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "success secondary button on a solid brand surface, hover state, text"
+              "$description": "Use when the user hovers over a confirming secondary button placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.64)",
-              "$description": "success secondary button on a solid brand surface, hover state, border"
+              "$description": "Use when the user hovers over a confirming secondary button placed on a solid brand surface — the outline."
             }
           },
           "active": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.16)",
-              "$description": "success secondary button on a solid brand surface, active state, bg"
+              "$description": "Use when a confirming secondary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "success secondary button on a solid brand surface, active state, text"
+              "$description": "Use when a confirming secondary button is pressed placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "success secondary button on a solid brand surface, active state, border"
+              "$description": "Use when a confirming secondary button is pressed placed on a solid brand surface — the outline."
             }
           },
           "disabled": {
             "bg": {
               "$type": "color",
               "$value": "rgba(0, 0, 0, 0)",
-              "$description": "success secondary button on a solid brand surface, disabled state, bg"
+              "$description": "Use when a confirming secondary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "success secondary button on a solid brand surface, disabled state, text"
+              "$description": "Use when a confirming secondary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.24)",
-              "$description": "success secondary button on a solid brand surface, disabled state, border"
+              "$description": "Use when a confirming secondary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
         }
@@ -709,68 +709,68 @@
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "success tertiary button, default state, bg"
+            "$description": "Use for confirming tertiary buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.successScale.700}",
-            "$description": "success tertiary button, default state, text"
+            "$description": "Use for confirming tertiary buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "success tertiary button, default state, border"
+            "$description": "Use for confirming tertiary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.successScale.50}",
-            "$description": "success tertiary button, hover state, bg"
+            "$description": "Use when the user hovers over a confirming tertiary button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.successScale.700}",
-            "$description": "success tertiary button, hover state, text"
+            "$description": "Use when the user hovers over a confirming tertiary button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "success tertiary button, hover state, border"
+            "$description": "Use when the user hovers over a confirming tertiary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.successScale.100}",
-            "$description": "success tertiary button, active state, bg"
+            "$description": "Use when a confirming tertiary button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.successScale.800}",
-            "$description": "success tertiary button, active state, text"
+            "$description": "Use when a confirming tertiary button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "success tertiary button, active state, border"
+            "$description": "Use when a confirming tertiary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "success tertiary button, disabled state, bg"
+            "$description": "Use when a confirming tertiary button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "success tertiary button, disabled state, text"
+            "$description": "Use when a confirming tertiary button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "success tertiary button, disabled state, border"
+            "$description": "Use when a confirming tertiary button’s action is not available — the outline."
           }
         }
       },
@@ -779,68 +779,68 @@
           "bg": {
             "$type": "color",
             "$value": "{color.successScale.100}",
-            "$description": "success tonal button, default state, bg"
+            "$description": "Use for confirming tonal buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.successScale.800}",
-            "$description": "success tonal button, default state, text"
+            "$description": "Use for confirming tonal buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.successScale.100}",
-            "$description": "success tonal button, default state, border"
+            "$description": "Use for confirming tonal buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.successScale.200}",
-            "$description": "success tonal button, hover state, bg"
+            "$description": "Use when the user hovers over a confirming tonal button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.successScale.800}",
-            "$description": "success tonal button, hover state, text"
+            "$description": "Use when the user hovers over a confirming tonal button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.successScale.200}",
-            "$description": "success tonal button, hover state, border"
+            "$description": "Use when the user hovers over a confirming tonal button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.successScale.300}",
-            "$description": "success tonal button, active state, bg"
+            "$description": "Use when a confirming tonal button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.successScale.900}",
-            "$description": "success tonal button, active state, text"
+            "$description": "Use when a confirming tonal button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.successScale.300}",
-            "$description": "success tonal button, active state, border"
+            "$description": "Use when a confirming tonal button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "success tonal button, disabled state, bg"
+            "$description": "Use when a confirming tonal button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "success tonal button, disabled state, text"
+            "$description": "Use when a confirming tonal button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "success tonal button, disabled state, border"
+            "$description": "Use when a confirming tonal button’s action is not available — the outline."
           }
         }
       }
@@ -851,68 +851,68 @@
           "bg": {
             "$type": "color",
             "$value": "{color.dangerScale.700}",
-            "$description": "destructive primary button, default state, bg"
+            "$description": "Use for destructive primary buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.0}",
-            "$description": "destructive primary button, default state, text"
+            "$description": "Use for destructive primary buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.dangerScale.700}",
-            "$description": "destructive primary button, default state, border"
+            "$description": "Use for destructive primary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.dangerScale.800}",
-            "$description": "destructive primary button, hover state, bg"
+            "$description": "Use when the user hovers over a destructive primary button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.0}",
-            "$description": "destructive primary button, hover state, text"
+            "$description": "Use when the user hovers over a destructive primary button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.dangerScale.800}",
-            "$description": "destructive primary button, hover state, border"
+            "$description": "Use when the user hovers over a destructive primary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.dangerScale.900}",
-            "$description": "destructive primary button, active state, bg"
+            "$description": "Use when a destructive primary button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.0}",
-            "$description": "destructive primary button, active state, text"
+            "$description": "Use when a destructive primary button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.dangerScale.900}",
-            "$description": "destructive primary button, active state, border"
+            "$description": "Use when a destructive primary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "destructive primary button, disabled state, bg"
+            "$description": "Use when a destructive primary button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "destructive primary button, disabled state, text"
+            "$description": "Use when a destructive primary button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "destructive primary button, disabled state, border"
+            "$description": "Use when a destructive primary button’s action is not available — the outline."
           }
         },
         "inverse": {
@@ -920,68 +920,68 @@
             "bg": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "destructive primary button on a solid brand surface, default state, bg"
+              "$description": "Use for destructive primary buttons at rest placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.dangerScale.700}",
-              "$description": "destructive primary button on a solid brand surface, default state, text"
+              "$description": "Use for destructive primary buttons at rest placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "destructive primary button on a solid brand surface, default state, border"
+              "$description": "Use for destructive primary buttons at rest placed on a solid brand surface — the outline."
             }
           },
           "hover": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.92)",
-              "$description": "destructive primary button on a solid brand surface, hover state, bg"
+              "$description": "Use when the user hovers over a destructive primary button placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.dangerScale.800}",
-              "$description": "destructive primary button on a solid brand surface, hover state, text"
+              "$description": "Use when the user hovers over a destructive primary button placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.92)",
-              "$description": "destructive primary button on a solid brand surface, hover state, border"
+              "$description": "Use when the user hovers over a destructive primary button placed on a solid brand surface — the outline."
             }
           },
           "active": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.84)",
-              "$description": "destructive primary button on a solid brand surface, active state, bg"
+              "$description": "Use when a destructive primary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.dangerScale.900}",
-              "$description": "destructive primary button on a solid brand surface, active state, text"
+              "$description": "Use when a destructive primary button is pressed placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.84)",
-              "$description": "destructive primary button on a solid brand surface, active state, border"
+              "$description": "Use when a destructive primary button is pressed placed on a solid brand surface — the outline."
             }
           },
           "disabled": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "destructive primary button on a solid brand surface, disabled state, bg"
+              "$description": "Use when a destructive primary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.64)",
-              "$description": "destructive primary button on a solid brand surface, disabled state, text"
+              "$description": "Use when a destructive primary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "destructive primary button on a solid brand surface, disabled state, border"
+              "$description": "Use when a destructive primary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
         }
@@ -991,68 +991,68 @@
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "destructive secondary button, default state, bg"
+            "$description": "Use for destructive secondary buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.dangerScale.700}",
-            "$description": "destructive secondary button, default state, text"
+            "$description": "Use for destructive secondary buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.dangerScale.300}",
-            "$description": "destructive secondary button, default state, border"
+            "$description": "Use for destructive secondary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.dangerScale.50}",
-            "$description": "destructive secondary button, hover state, bg"
+            "$description": "Use when the user hovers over a destructive secondary button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.dangerScale.700}",
-            "$description": "destructive secondary button, hover state, text"
+            "$description": "Use when the user hovers over a destructive secondary button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.dangerScale.400}",
-            "$description": "destructive secondary button, hover state, border"
+            "$description": "Use when the user hovers over a destructive secondary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.dangerScale.100}",
-            "$description": "destructive secondary button, active state, bg"
+            "$description": "Use when a destructive secondary button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.dangerScale.800}",
-            "$description": "destructive secondary button, active state, text"
+            "$description": "Use when a destructive secondary button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.dangerScale.500}",
-            "$description": "destructive secondary button, active state, border"
+            "$description": "Use when a destructive secondary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "destructive secondary button, disabled state, bg"
+            "$description": "Use when a destructive secondary button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "destructive secondary button, disabled state, text"
+            "$description": "Use when a destructive secondary button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "destructive secondary button, disabled state, border"
+            "$description": "Use when a destructive secondary button’s action is not available — the outline."
           }
         },
         "inverse": {
@@ -1060,68 +1060,68 @@
             "bg": {
               "$type": "color",
               "$value": "rgba(0, 0, 0, 0)",
-              "$description": "destructive secondary button on a solid brand surface, default state, bg"
+              "$description": "Use for destructive secondary buttons at rest placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "destructive secondary button on a solid brand surface, default state, text"
+              "$description": "Use for destructive secondary buttons at rest placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "destructive secondary button on a solid brand surface, default state, border"
+              "$description": "Use for destructive secondary buttons at rest placed on a solid brand surface — the outline."
             }
           },
           "hover": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.10)",
-              "$description": "destructive secondary button on a solid brand surface, hover state, bg"
+              "$description": "Use when the user hovers over a destructive secondary button placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "destructive secondary button on a solid brand surface, hover state, text"
+              "$description": "Use when the user hovers over a destructive secondary button placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.64)",
-              "$description": "destructive secondary button on a solid brand surface, hover state, border"
+              "$description": "Use when the user hovers over a destructive secondary button placed on a solid brand surface — the outline."
             }
           },
           "active": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.16)",
-              "$description": "destructive secondary button on a solid brand surface, active state, bg"
+              "$description": "Use when a destructive secondary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "destructive secondary button on a solid brand surface, active state, text"
+              "$description": "Use when a destructive secondary button is pressed placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "destructive secondary button on a solid brand surface, active state, border"
+              "$description": "Use when a destructive secondary button is pressed placed on a solid brand surface — the outline."
             }
           },
           "disabled": {
             "bg": {
               "$type": "color",
               "$value": "rgba(0, 0, 0, 0)",
-              "$description": "destructive secondary button on a solid brand surface, disabled state, bg"
+              "$description": "Use when a destructive secondary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "destructive secondary button on a solid brand surface, disabled state, text"
+              "$description": "Use when a destructive secondary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.24)",
-              "$description": "destructive secondary button on a solid brand surface, disabled state, border"
+              "$description": "Use when a destructive secondary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
         }
@@ -1131,68 +1131,68 @@
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "destructive tertiary button, default state, bg"
+            "$description": "Use for destructive tertiary buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.dangerScale.700}",
-            "$description": "destructive tertiary button, default state, text"
+            "$description": "Use for destructive tertiary buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "destructive tertiary button, default state, border"
+            "$description": "Use for destructive tertiary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.dangerScale.50}",
-            "$description": "destructive tertiary button, hover state, bg"
+            "$description": "Use when the user hovers over a destructive tertiary button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.dangerScale.700}",
-            "$description": "destructive tertiary button, hover state, text"
+            "$description": "Use when the user hovers over a destructive tertiary button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "destructive tertiary button, hover state, border"
+            "$description": "Use when the user hovers over a destructive tertiary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.dangerScale.100}",
-            "$description": "destructive tertiary button, active state, bg"
+            "$description": "Use when a destructive tertiary button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.dangerScale.800}",
-            "$description": "destructive tertiary button, active state, text"
+            "$description": "Use when a destructive tertiary button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "destructive tertiary button, active state, border"
+            "$description": "Use when a destructive tertiary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "destructive tertiary button, disabled state, bg"
+            "$description": "Use when a destructive tertiary button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "destructive tertiary button, disabled state, text"
+            "$description": "Use when a destructive tertiary button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "destructive tertiary button, disabled state, border"
+            "$description": "Use when a destructive tertiary button’s action is not available — the outline."
           }
         }
       },
@@ -1201,68 +1201,68 @@
           "bg": {
             "$type": "color",
             "$value": "{color.dangerScale.100}",
-            "$description": "destructive tonal button, default state, bg"
+            "$description": "Use for destructive tonal buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.dangerScale.800}",
-            "$description": "destructive tonal button, default state, text"
+            "$description": "Use for destructive tonal buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.dangerScale.100}",
-            "$description": "destructive tonal button, default state, border"
+            "$description": "Use for destructive tonal buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.dangerScale.200}",
-            "$description": "destructive tonal button, hover state, bg"
+            "$description": "Use when the user hovers over a destructive tonal button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.dangerScale.900}",
-            "$description": "destructive tonal button, hover state, text"
+            "$description": "Use when the user hovers over a destructive tonal button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.dangerScale.200}",
-            "$description": "destructive tonal button, hover state, border"
+            "$description": "Use when the user hovers over a destructive tonal button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.dangerScale.300}",
-            "$description": "destructive tonal button, active state, bg"
+            "$description": "Use when a destructive tonal button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.dangerScale.900}",
-            "$description": "destructive tonal button, active state, text"
+            "$description": "Use when a destructive tonal button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.dangerScale.300}",
-            "$description": "destructive tonal button, active state, border"
+            "$description": "Use when a destructive tonal button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "destructive tonal button, disabled state, bg"
+            "$description": "Use when a destructive tonal button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "destructive tonal button, disabled state, text"
+            "$description": "Use when a destructive tonal button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "destructive tonal button, disabled state, border"
+            "$description": "Use when a destructive tonal button’s action is not available — the outline."
           }
         }
       }
@@ -1273,68 +1273,68 @@
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.600}",
-            "$description": "neutral primary button, default state, bg"
+            "$description": "Use for neutral primary buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.0}",
-            "$description": "neutral primary button, default state, text"
+            "$description": "Use for neutral primary buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.600}",
-            "$description": "neutral primary button, default state, border"
+            "$description": "Use for neutral primary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.700}",
-            "$description": "neutral primary button, hover state, bg"
+            "$description": "Use when the user hovers over a neutral primary button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.0}",
-            "$description": "neutral primary button, hover state, text"
+            "$description": "Use when the user hovers over a neutral primary button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.700}",
-            "$description": "neutral primary button, hover state, border"
+            "$description": "Use when the user hovers over a neutral primary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.800}",
-            "$description": "neutral primary button, active state, bg"
+            "$description": "Use when a neutral primary button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.0}",
-            "$description": "neutral primary button, active state, text"
+            "$description": "Use when a neutral primary button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.800}",
-            "$description": "neutral primary button, active state, border"
+            "$description": "Use when a neutral primary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "neutral primary button, disabled state, bg"
+            "$description": "Use when a neutral primary button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "neutral primary button, disabled state, text"
+            "$description": "Use when a neutral primary button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "neutral primary button, disabled state, border"
+            "$description": "Use when a neutral primary button’s action is not available — the outline."
           }
         },
         "inverse": {
@@ -1342,68 +1342,68 @@
             "bg": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "neutral primary button on a solid brand surface, default state, bg"
+              "$description": "Use for neutral primary buttons at rest placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.700}",
-              "$description": "neutral primary button on a solid brand surface, default state, text"
+              "$description": "Use for neutral primary buttons at rest placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "neutral primary button on a solid brand surface, default state, border"
+              "$description": "Use for neutral primary buttons at rest placed on a solid brand surface — the outline."
             }
           },
           "hover": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.92)",
-              "$description": "neutral primary button on a solid brand surface, hover state, bg"
+              "$description": "Use when the user hovers over a neutral primary button placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.800}",
-              "$description": "neutral primary button on a solid brand surface, hover state, text"
+              "$description": "Use when the user hovers over a neutral primary button placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.92)",
-              "$description": "neutral primary button on a solid brand surface, hover state, border"
+              "$description": "Use when the user hovers over a neutral primary button placed on a solid brand surface — the outline."
             }
           },
           "active": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.84)",
-              "$description": "neutral primary button on a solid brand surface, active state, bg"
+              "$description": "Use when a neutral primary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.900}",
-              "$description": "neutral primary button on a solid brand surface, active state, text"
+              "$description": "Use when a neutral primary button is pressed placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.84)",
-              "$description": "neutral primary button on a solid brand surface, active state, border"
+              "$description": "Use when a neutral primary button is pressed placed on a solid brand surface — the outline."
             }
           },
           "disabled": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "neutral primary button on a solid brand surface, disabled state, bg"
+              "$description": "Use when a neutral primary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.64)",
-              "$description": "neutral primary button on a solid brand surface, disabled state, text"
+              "$description": "Use when a neutral primary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "neutral primary button on a solid brand surface, disabled state, border"
+              "$description": "Use when a neutral primary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
         }
@@ -1413,68 +1413,68 @@
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "neutral secondary button, default state, bg"
+            "$description": "Use for neutral secondary buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.700}",
-            "$description": "neutral secondary button, default state, text"
+            "$description": "Use for neutral secondary buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.300}",
-            "$description": "neutral secondary button, default state, border"
+            "$description": "Use for neutral secondary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.50}",
-            "$description": "neutral secondary button, hover state, bg"
+            "$description": "Use when the user hovers over a neutral secondary button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.700}",
-            "$description": "neutral secondary button, hover state, text"
+            "$description": "Use when the user hovers over a neutral secondary button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.400}",
-            "$description": "neutral secondary button, hover state, border"
+            "$description": "Use when the user hovers over a neutral secondary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.100}",
-            "$description": "neutral secondary button, active state, bg"
+            "$description": "Use when a neutral secondary button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.800}",
-            "$description": "neutral secondary button, active state, text"
+            "$description": "Use when a neutral secondary button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.500}",
-            "$description": "neutral secondary button, active state, border"
+            "$description": "Use when a neutral secondary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "neutral secondary button, disabled state, bg"
+            "$description": "Use when a neutral secondary button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "neutral secondary button, disabled state, text"
+            "$description": "Use when a neutral secondary button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "neutral secondary button, disabled state, border"
+            "$description": "Use when a neutral secondary button’s action is not available — the outline."
           }
         },
         "inverse": {
@@ -1482,68 +1482,68 @@
             "bg": {
               "$type": "color",
               "$value": "rgba(0, 0, 0, 0)",
-              "$description": "neutral secondary button on a solid brand surface, default state, bg"
+              "$description": "Use for neutral secondary buttons at rest placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "neutral secondary button on a solid brand surface, default state, text"
+              "$description": "Use for neutral secondary buttons at rest placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "neutral secondary button on a solid brand surface, default state, border"
+              "$description": "Use for neutral secondary buttons at rest placed on a solid brand surface — the outline."
             }
           },
           "hover": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.10)",
-              "$description": "neutral secondary button on a solid brand surface, hover state, bg"
+              "$description": "Use when the user hovers over a neutral secondary button placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "neutral secondary button on a solid brand surface, hover state, text"
+              "$description": "Use when the user hovers over a neutral secondary button placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.64)",
-              "$description": "neutral secondary button on a solid brand surface, hover state, border"
+              "$description": "Use when the user hovers over a neutral secondary button placed on a solid brand surface — the outline."
             }
           },
           "active": {
             "bg": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.16)",
-              "$description": "neutral secondary button on a solid brand surface, active state, bg"
+              "$description": "Use when a neutral secondary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "neutral secondary button on a solid brand surface, active state, text"
+              "$description": "Use when a neutral secondary button is pressed placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "{color.neutralScale.0}",
-              "$description": "neutral secondary button on a solid brand surface, active state, border"
+              "$description": "Use when a neutral secondary button is pressed placed on a solid brand surface — the outline."
             }
           },
           "disabled": {
             "bg": {
               "$type": "color",
               "$value": "rgba(0, 0, 0, 0)",
-              "$description": "neutral secondary button on a solid brand surface, disabled state, bg"
+              "$description": "Use when a neutral secondary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.40)",
-              "$description": "neutral secondary button on a solid brand surface, disabled state, text"
+              "$description": "Use when a neutral secondary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
               "$value": "rgba(255, 255, 255, 0.24)",
-              "$description": "neutral secondary button on a solid brand surface, disabled state, border"
+              "$description": "Use when a neutral secondary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
         }
@@ -1553,68 +1553,68 @@
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "neutral tertiary button, default state, bg"
+            "$description": "Use for neutral tertiary buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.700}",
-            "$description": "neutral tertiary button, default state, text"
+            "$description": "Use for neutral tertiary buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "neutral tertiary button, default state, border"
+            "$description": "Use for neutral tertiary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.50}",
-            "$description": "neutral tertiary button, hover state, bg"
+            "$description": "Use when the user hovers over a neutral tertiary button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.700}",
-            "$description": "neutral tertiary button, hover state, text"
+            "$description": "Use when the user hovers over a neutral tertiary button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "neutral tertiary button, hover state, border"
+            "$description": "Use when the user hovers over a neutral tertiary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.100}",
-            "$description": "neutral tertiary button, active state, bg"
+            "$description": "Use when a neutral tertiary button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.800}",
-            "$description": "neutral tertiary button, active state, text"
+            "$description": "Use when a neutral tertiary button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "neutral tertiary button, active state, border"
+            "$description": "Use when a neutral tertiary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "neutral tertiary button, disabled state, bg"
+            "$description": "Use when a neutral tertiary button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "neutral tertiary button, disabled state, text"
+            "$description": "Use when a neutral tertiary button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "rgba(0, 0, 0, 0)",
-            "$description": "neutral tertiary button, disabled state, border"
+            "$description": "Use when a neutral tertiary button’s action is not available — the outline."
           }
         }
       },
@@ -1623,68 +1623,68 @@
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.100}",
-            "$description": "neutral tonal button, default state, bg"
+            "$description": "Use for neutral tonal buttons at rest — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.800}",
-            "$description": "neutral tonal button, default state, text"
+            "$description": "Use for neutral tonal buttons at rest — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.100}",
-            "$description": "neutral tonal button, default state, border"
+            "$description": "Use for neutral tonal buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "neutral tonal button, hover state, bg"
+            "$description": "Use when the user hovers over a neutral tonal button — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.800}",
-            "$description": "neutral tonal button, hover state, text"
+            "$description": "Use when the user hovers over a neutral tonal button — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "neutral tonal button, hover state, border"
+            "$description": "Use when the user hovers over a neutral tonal button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.300}",
-            "$description": "neutral tonal button, active state, bg"
+            "$description": "Use when a neutral tonal button is pressed — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.neutralScale.900}",
-            "$description": "neutral tonal button, active state, text"
+            "$description": "Use when a neutral tonal button is pressed — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.300}",
-            "$description": "neutral tonal button, active state, border"
+            "$description": "Use when a neutral tonal button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "neutral tonal button, disabled state, bg"
+            "$description": "Use when a neutral tonal button’s action is not available — the fill."
           },
           "text": {
             "$type": "color",
             "$value": "{color.text.disabled}",
-            "$description": "neutral tonal button, disabled state, text"
+            "$description": "Use when a neutral tonal button’s action is not available — the label."
           },
           "border": {
             "$type": "color",
             "$value": "{color.neutralScale.200}",
-            "$description": "neutral tonal button, disabled state, border"
+            "$description": "Use when a neutral tonal button’s action is not available — the outline."
           }
         }
       }

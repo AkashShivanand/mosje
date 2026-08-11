@@ -27,7 +27,7 @@ export function SiteFooter() {
               <a
                 key={href}
                 href={href}
-                className="text-sm text-ink-muted transition-colors hover:text-gov-blue hover:underline"
+                className="text-sm text-ink-muted transition-colors hover:text-primary hover:underline"
               >
                 {label}
               </a>

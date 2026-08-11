@@ -62,7 +62,7 @@
   /* warning amber needs ink, not the pale yellow itself, for the glyph */
 }
 .ds-alert--warning .ds-alert__icon {
-  color: var(--ds-gov-yellow);
+  color: var(--ds-yellow);
 }
 
 .ds-alert__content {

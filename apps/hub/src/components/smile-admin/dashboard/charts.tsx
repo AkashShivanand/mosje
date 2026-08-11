@@ -22,7 +22,7 @@ import {
 // other CSS colour. Series colours come from the DS chart scale rather than raw
 // Tailwind hex, so a brand re-skin or theme switch carries the charts with it.
 const PALETTE = {
-  brand: "var(--ds-gov-navy)",
+  brand: "var(--ds-navy)",
   brandSoft: "var(--ds-chart-seq-600)",
   info: "var(--ds-chart-cat-1)",
   success: "var(--ds-chart-trend-up)",

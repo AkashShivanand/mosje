@@ -38,7 +38,7 @@ export function LocatorMapFirst() {
             return (
               <button key={t || "all"} type="button" onClick={() => setType(t as CentreType | "")}
                 className={cn("rounded-full px-2.5 py-1 text-[12px] font-medium shadow-sm transition-colors",
-                  active ? "bg-gov-blue text-white" : "bg-white/95 text-ink-muted hover:text-gov-blue-dark")}>
+                  active ? "bg-primary text-white" : "bg-white/95 text-ink-muted hover:text-primary-dark")}>
                 {t === "" ? "All" : t}
               </button>
             );
@@ -48,7 +48,7 @@ export function LocatorMapFirst() {
 
       {/* List toggle */}
       <button type="button" onClick={() => setListOpen((v) => !v)}
-        className="absolute right-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-lg bg-gov-blue px-3 py-2 text-[13px] font-semibold text-white shadow-sm">
+        className="absolute right-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-[13px] font-semibold text-white shadow-sm">
         <Icon name="list" size={16} /> {listOpen ? "Hide" : "List"} ({filtered.length})
       </button>
 
@@ -87,7 +87,7 @@ export function LocatorMapFirst() {
           <p className="mt-1 text-[12px] text-ink-muted">{selected.address}</p>
           <p className="mt-1 text-[12px] font-medium text-ink">{selected.district}, {selected.state}</p>
           <a href={`https://www.google.com/maps/search/?api=1&query=${selected.lat},${selected.lng}`} target="_blank" rel="noreferrer"
-            className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gov-blue hover:text-gov-blue-dark">
+            className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold text-primary hover:text-primary-dark">
             <Icon name="navigation" size={14} /> Get directions
           </a>
         </div>

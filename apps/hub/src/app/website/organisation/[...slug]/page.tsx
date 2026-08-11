@@ -47,7 +47,7 @@ export default async function OrganisationDetailPage({
               <div>
                 <dt className="font-semibold text-ink">Website</dt>
                 <dd>
-                  <a href={org.website} target="_blank" rel="noreferrer" className="text-gov-blue hover:underline">
+                  <a href={org.website} target="_blank" rel="noreferrer" className="text-primary hover:underline">
                     {org.website.replace(/^https?:\/\//, "")}
                   </a>
                 </dd>
@@ -56,7 +56,7 @@ export default async function OrganisationDetailPage({
             <div>
               <dt className="font-semibold text-ink">Source</dt>
               <dd>
-                <a href={org.sourceUrl} target="_blank" rel="noreferrer" className="text-gov-blue hover:underline">
+                <a href={org.sourceUrl} target="_blank" rel="noreferrer" className="text-primary hover:underline">
                   View on dosje.gov.in
                 </a>
               </dd>
@@ -68,7 +68,7 @@ export default async function OrganisationDetailPage({
       {org.sections.length === 0 ? (
         <p className="text-ink-muted">
           Full details for this organisation are available on the official website.{" "}
-          <a href={org.sourceUrl} target="_blank" rel="noreferrer" className="text-gov-blue underline">
+          <a href={org.sourceUrl} target="_blank" rel="noreferrer" className="text-primary underline">
             View on dosje.gov.in
           </a>
         </p>

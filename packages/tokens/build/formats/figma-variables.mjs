@@ -1,28 +1,36 @@
 /**
- * Figma Variables payload, targeted at the LIVE SAMAVESH library (spec §8.4).
+ * Figma Variables payload, targeted at the LIVE SAMAVESH library (spec §8.4 / §8.5).
  *
- * An earlier version of this invented five collections of its own. That was wrong: the
- * library already has seven, with 266 variables, their own modes and their own naming
- * (`Primary/500`, `Text/Dark`). Importing an invented structure alongside would have left
- * ~1,164 variables across twelve collections — two parallel token systems in one file, which
- * is the exact drift this pipeline exists to remove.
+ * A variable's NAME is its canonical DTCG path — `bg/neutral/subtle`, `ref/space/md`,
+ * `cmp/action/brand/primary/hover/bg`. There is no mapping table any more: this file used to
+ * invent a display name per collection, and 435 of 669 names ended up differing from the path
+ * they came from, with a hyphen inside 179 Figma segments. The library was renamed to the
+ * paths on 2026-08-10, so the projection is now derived rather than chosen, and the Figma tree
+ * and the source tree are literally the same tree.
  *
- * So the payload maps ONTO what is there:
- *
- *   Spacing        Mode 1                                  spacing-<step>
- *   Color          Blue | Navy                             Title/Cased/Paths
- *   Typography     Website|Portal × Desktop|Tablet|Mobile  font-size/<role>, line-height/…
- *   Border Radius  Mode 1                                  radius-<step>
- *   Motion         Mode 1                                  duration-*, easing-*
- *   Density        Comfortable | Compact                   control-height
+ *   Palette   Blue | Navy                             brand-varying ramps + alpha tiers
+ *   Color     Default                                 semantic roles + `cmp/*` component tier
+ *   Space     Mode 1                                  ref/space/* + inline|stack|padding|section
+ *   Type      Website|Portal × Desktop|Tablet|Mobile   ref/font/* + type/*
+ *   Radius · Motion   Mode 1
+ *   Density   Comfortable | Compact
  *   Component Options — left untouched (a Figma-only boolean, not a token tier)
+ *
+ * TIER LIVES IN THE NAME, not the collection, and that is forced rather than preferred:
+ * `Variable.variableCollectionId` is get-only, so a variable cannot move between collections.
+ * Splitting tiers into their own collections would mean delete-and-recreate, which detaches
+ * every binding in every consuming file — and since this library is published, a plugin
+ * running inside it cannot even enumerate those consumers to check. See spec §8.5.
  *
  * Every variable carries `status: "new" | "existing"` against a snapshot of the live library,
  * so an import is reviewable as a DELTA instead of applied as a bulk overwrite.
  */
 
 import { readFileSync } from "node:fs";
-import { tierOfFile, toCssName, PROMINENCE_CONTRACT } from "../grammar.mjs";
+import { tierOfFile, toCssName } from "../grammar.mjs";
+import { auditPayload, contractNote } from "../contrast-contract.mjs";
+import { guidanceFor, primitivePointer } from "../usage-guidance.mjs";
+import { parse } from "../grammar.mjs";
 
 const val = (t) => (t.$value !== undefined ? t.$value : t.value);
 
@@ -41,33 +49,37 @@ function liveSnapshot() {
  * catches the two drifting apart.
  */
 export const COLLECTIONS = {
-  Spacing: { axis: null, modes: ["Mode 1"] },
-  /** Ramps and brand-varying primitives. Private-ish: designers bind to Theme. */
-  Color: { axis: "brand", modes: ["Blue", "Navy"] },
+  "Space": { axis: null, modes: ["Mode 1"] },
+  /** Ramps and brand-varying primitives. Private-ish: designers bind to Color. */
+  "Palette": { axis: "brand", modes: ["Blue", "Navy"] },
   /**
-   * Semantic roles and component tokens — the layer designers actually bind to.
+   * Semantic roles and the component tier — the layer designers actually bind to.
    *
-   * Splitting theme out of Color rests on a measured fact: EVERY theme override in the
-   * source is brand-INVARIANT (`color.text.default` dark is `a11y.dark.ink` for both brands;
-   * `bg.surface` hc is #ffffff full stop). So brand x theme is not a cross product — theme
-   * wins absolutely — and this needs three modes, not six.
-   *
-   * That matters twice over. It removes the mode-limit risk that blocked the accessibility
-   * axis, and it makes tier-as-collection and axis-as-collection coincide instead of compete:
-   * Light aliases straight into Color, which is itself brand-aware, so brand still flows
-   * through a token bound here.
+   * Single-mode since the appearance axis was removed (`4f34f21`): the UX4G accessibility
+   * widget is the estate's canonical dark and high-contrast mechanism and drives its own
+   * class, so `data-theme` was a second mechanism nothing consumed. Brand still flows through
+   * every token here, because their values alias into Palette, which carries that axis.
    */
-  Theme: { axis: "theme", modes: ["Light"] },
-  Typography: {
+  "Color": { axis: null, modes: ["Default"] },
+  "Type": {
     axis: "surface × breakpoint",
     modes: [
       "Website · Desktop", "Website · Tablet", "Website · Mobile",
       "Portal · Desktop", "Portal · Tablet", "Portal · Mobile",
     ],
   },
-  "Border Radius": { axis: null, modes: ["Mode 1"] },
-  Motion: { axis: null, modes: ["Mode 1"] },
-  Density: { axis: "density", modes: ["Comfortable", "Compact"] },
+  "Radius": { axis: null, modes: ["Mode 1"] },
+  "Motion": { axis: null, modes: ["Mode 1"] },
+  "Density": { axis: "density", modes: ["Comfortable", "Compact"] },
+  /**
+   * Unitless, mode-less scales: opacity, the z ladder, border widths.
+   *
+   * This is the one collection §8.4's design ("2 · Static") was actually buildable as, and
+   * only because these tokens are NEW. Figma forbids MOVING a variable between collections,
+   * so the existing scales could not be gathered here — but nothing is bound to these yet,
+   * so creating them in the right home costs nothing.
+   */
+  "Static": { axis: null, modes: ["Mode 1"] },
 };
 
 /**
@@ -78,13 +90,24 @@ export const COLLECTIONS = {
  * discrete modes are samples of the fluid scale, not a competing one, which is why this
  * needed no decision about which is authoritative.
  */
-const BREAKPOINT_PX = { Desktop: 1280, Tablet: 768, Mobile: 360 };
-const CLAMP_MIN_VW = 360;
-const CLAMP_MAX_VW = 1280;
+/**
+ * The viewport each Type mode samples — read from `breakpoint/*`, not restated. These were
+ * literals here AND in legacy-ds-css.mjs, so 360/768/1280 lived in three places with nothing
+ * to catch a drift between them.
+ */
+function breakpoints(tokens) {
+  const px = (step) => {
+    const t = tokens.find((x) => x.path.join(".") === `breakpoint.${step}`);
+    if (!t) throw new Error(`figma-variables: breakpoint/${step} is missing — the Type modes ` +
+      `sample the fluid curve at these viewports and cannot be placed without them.`);
+    return parseFloat(t.$value ?? t.value);
+  };
+  return { Desktop: px("desktop"), Tablet: px("tablet"), Mobile: px("mobile") };
+}
 
-function fluidAt(min, max, viewport) {
+function fluidAt(min, max, viewport, wmin, wmax) {
   if (min === max) return min;
-  const t = (viewport - CLAMP_MIN_VW) / (CLAMP_MAX_VW - CLAMP_MIN_VW);
+  const t = (viewport - wmin) / (wmax - wmin);
   return Math.round((min + (max - min) * Math.min(1, Math.max(0, t))) * 100) / 100;
 }
 
@@ -96,6 +119,11 @@ const titleCase = (seg) =>
 const RAMP_FOLDER = {
   primaryScale: "Primary",
   secondaryScale: "Secondary",
+  // `accent` joined 2026-08-11. Without an entry here the ramp still reached Palette, but
+  // only at the six rungs the prominence ladder happens to alias — so a designer opening the
+  // library found 11 steps of every other ramp and 6 of this one, with 400/500/700/900/950
+  // simply absent. A ramp is a ramp; it is exported whole or it is not a ramp.
+  accentScale: "Accent",
   neutralScale: "Neutral",
   successScale: "Success",
   dangerScale: "Danger",
@@ -104,123 +132,95 @@ const RAMP_FOLDER = {
 };
 
 /**
- * The canonical grammar and the Action matrix are all colour and all vary on brand — and the
- * Color collection already groups by folder (`Text/`, `Primary/`, `Background/`, `Icon/`).
- * So `Action/` becomes another folder there rather than an eighth collection. That is what
- * "reconcile to the existing seven" means concretely.
+ * Roots that live in the Color collection. The Tier-3 component matrix is here too, under a
+ * `cmp/` prefix, because Figma will not let a variable move to a collection of its own —
+ * the prefix is what makes the tier navigable in the picker instead.
  */
 const COLOUR_ROOTS = new Set([
   "bg", "text", "icon", "border", "outline", "overlay", "focus",
   "action", "control", "spinner", "button", "card", "badge", "chart", "on", "layer",
 ]);
 
-const SPACING_ROOTS = new Set(["inline", "stack", "padding", "section", "space"]);
+const SPACING_ROOTS = new Set(["inline", "stack", "padding", "section"]);
 
 /**
- * Project a code path onto the variable name the library uses.
- * Returns null when a token has no home in the live structure — those are REPORTED in
- * `unmapped`, never silently dropped.
+ * Which collection a path belongs to. ROUTING ONLY — the NAME is the canonical path.
+ *
+ * Until 2026-08-10 this function also invented a display name per collection (`spacing-md`,
+ * `Background/Neutral/Subtle`, `Neutral/0 - White`), and 435 of 669 names ended up differing
+ * from the path they came from. That made the round-trip depend on a hand-written mapping
+ * table instead of on the grammar, and put a hyphen inside 179 Figma segments — the exact
+ * defect RULE 1 exists to remove. The library has since been renamed to the canonical paths,
+ * so the table is gone and `name` is now derived, not chosen.
  */
-export function figmaNameFor(path, tier = "sys") {
+function collectionFor(path, tier) {
   const [head, ...rest] = path;
 
-  /**
-   * Colour PRIMITIVES have no home in the live library, and must not get one.
-   *
-   * Figma's `Neutral/50` is mode-aware (#f8f9fa on Blue, #f9fafb on Navy) — it is the Tier-2
-   * `color.neutralScale.50`, not the Tier-1 `color.neutral.50` raw ramp, which is fixed. Both
-   * projected onto the same name and collided. Designers bind to the mode-aware layer; the
-   * raw hue ramps are private, exactly as `--sa-ref-*` is banned in app code.
-   *
-   * Non-colour Tier-1 scales (spacing, radius, motion, type) DO have a home — those
-   * collections are the scales themselves — so the exclusion is colour-only.
-   */
+  // Colour PRIMITIVES stay private: Figma's mode-aware ramp is the Tier-2 `color.*Scale.*`,
+  // not the fixed Tier-1 hue, and both projected onto one name until this exclusion existed.
   if (tier === "ref" && head === "color") return null;
 
-  /**
-   * The legacy nested spacing roles (`spacing.inline.m`) are mirrored by the canonical
-   * top-level groups (`inline/m`). Exporting both would put `spacing-inline-m` beside
-   * `inline-m` in one collection — two names for one value, which is the drift this is
-   * meant to remove.
-   */
-  if (head === "spacing" && SPACING_ROOTS.has(rest[0])) return null;
+  // The legacy nested spacing roles are mirrored by the canonical top-level groups.
+  if (head === "space" && SPACING_ROOTS.has(rest[0])) return null;
 
-  if (head === "spacing") return { collection: "Spacing", name: `spacing-${rest.join("-")}` };
-  if (head === "radius") return { collection: "Border Radius", name: `radius-${rest.join("-")}` };
-  if (head === "motion") {
-    const [kind, step] = rest;
-    return { collection: "Motion", name: `${kind === "duration" ? "duration" : "easing"}-${step}` };
-  }
-  if (head === "density") return { collection: "Density", name: rest.join("-") };
-
-  if (head === "font") {
-    const [kind, ...tail] = rest;
-    if (kind === "family") return { collection: "Typography", name: `font-family/${tail.join("-")}` };
-    if (kind === "weight") return { collection: "Typography", name: `font-weight/${tail.join("-")}` };
-    if (kind === "role") {
-      // font/role/display/1/size → font-size/display-1
-      const prop = tail.at(-1);
-      const role = tail.slice(0, -1).join("-");
-      const map = { size: "font-size", lh: "line-height", para: "paragraph-spacing" };
-      return map[prop] ? { collection: "Typography", name: `${map[prop]}/${role}` } : null;
-    }
-    if (kind === "tracking") return { collection: "Typography", name: `letter-spacing/${tail.join("-")}` };
-    // The raw type scale — primitives the roles above alias. These are FLOATs in px, so
-    // they belong in font-size/ and line-height/, NOT in font-family/.
-    if (kind === "size") return { collection: "Typography", name: `font-size/${tail.join("-")}` };
-    if (kind === "lineHeight") return { collection: "Typography", name: `line-height/${tail.join("-")}` };
-    // `font/devanagari` is a family whose path omits the `family` segment.
-    if (rest.length === 1) return { collection: "Typography", name: `font-family/${rest[0]}` };
-    // Everything under font/ used to fall into `font-family/${rest}` here. That silently
-    // filed 13 px-valued FLOATs as `font-family/size-100`, `font-family/lineHeight-100` …
-    // — a font-family folder full of numbers, discovered only by diffing against the live
-    // library. A catch-all that renames what it does not recognise is worse than a crash:
-    // it ships. Add an explicit mapping instead.
-    throw new Error(
-      `figma-variables: no mapping for "font/${rest.join("/")}". Add one above rather than ` +
-        `letting it fall into font-family/.`,
-    );
-  }
-  if (head === "leading") return { collection: "Typography", name: `line-height/${rest.join("-")}` };
-  if (head === "type") return { collection: "Typography", name: `type/${rest.join("-")}` };
+  if (head === "space" || SPACING_ROOTS.has(head)) return "Space";
+  // `size` is the dimensional primitive under BOTH spacing and type, so it belongs with the
+  // dimensional scales. The name tree keeps it distinct from `space` without a new collection.
+  if (head === "size") return "Space";
+  // Effect and viewport constants: mode-less, and neither is a spacing or a colour.
+  if (head === "blur" || head === "breakpoint") return "Static";
+  if (head === "radius") return "Radius";
+  if (head === "opacity" || head === "z") return "Static";
+  if (head === "border" && rest[0] === "width") return "Static";
+  if (head === "motion") return "Motion";
+  if (head === "density") return "Density";
+  if (head === "font" || head === "leading" || head === "type") return "Type";
 
   if (head === "color") {
-    const [group, ...tail] = rest;
-    if (RAMP_FOLDER[group]) {
-      const step = tail.join("-");
-      // The library spells the white end "Neutral/0 - White".
-      if (group === "neutralScale" && step === "0") return { collection: "Color", name: "Neutral/0 - White" };
-      return { collection: "Color", name: `${RAMP_FOLDER[group]}/${step}` };
-    }
-    if (group === "transparent") {
-      const [family, pct] = tail;
-      const folder = family === "white" ? "White Transparent" : `${titleCase(family)} Transparent`;
-      return { collection: "Color", name: `${folder}/${pct}%` };
-    }
+    const [group] = rest;
+    if (RAMP_FOLDER[group] || group === "transparent") return "Palette";
     /**
-     * The legacy code semantic tier (`color.text.default`, `color.bg.surface`,
-     * `color.border.subtle`, …) is NOT exported.
-     *
-     * It is mirrored exactly by the canonical grammar namespace — `tier2-parity.test.mjs`
-     * proves the two agree in every axis block — so exporting both would put THREE names on
-     * one value in the library: `Text/Dark` (Figma's own), `Text/Default` (this path) and
-     * `Text/Neutral/Default` (canonical). Only the canonical one is the target naming.
-     *
-     * Figma's existing legacy names are left untouched; they retire the same way `--ds-*`
-     * does in code, as call sites migrate.
+     * The legacy code semantic tier (`color.text.default`, `color.border.subtle`, …) is NOT
+     * exported. It is mirrored exactly by the canonical grammar namespace — tier2-parity
+     * proves they agree in every axis block — so exporting both would put two names on one
+     * value. It retires the same way `--ds-*` does, as call sites migrate.
      */
     return null;
   }
 
-  if (COLOUR_ROOTS.has(head)) {
-    // Semantic and component colour lives in Theme, not Color: these are the tokens that
-    // vary on light/dark/hc, and Color has no mode to express that.
-    return { collection: "Theme", name: [head, ...rest].map(titleCase).join("/") };
-  }
-  if (SPACING_ROOTS.has(head)) {
-    return { collection: "Spacing", name: `${head}-${rest.join("-")}` };
-  }
+  /**
+   * Geometry that lives under a COLOUR root.
+   *
+   * `focus`, `icon` and `control` each own both a colour and a measurement — `focus/ring` is
+   * a colour, `focus/width` is a number — so routing by the root alone put five FLOATs in the
+   * colour collection. Route the measurement by what it IS, not by whose namespace it sits in.
+   */
+  if (head === "container") return "Static";
+  if (head === "focus" && (rest[0] === "width" || rest[0] === "offset")) return "Static";
+  if (head === "icon" && rest[0] === "size") return "Space";
+  if (head === "control") return rest[0] === "radius" ? "Radius" : "Static";
+
+  if (COLOUR_ROOTS.has(head)) return "Color";
   return null;
+}
+
+/**
+ * Project a code path onto its Figma variable name.
+ *
+ * The name IS the path, with the tier as the first segment for Tier 1 and Tier 3. Figma
+ * refuses to move a variable between collections (`variableCollectionId` is get-only), so
+ * the collection cannot carry the tier — the name tree does, and Figma's variable picker
+ * navigates it exactly like a collection.
+ */
+export function figmaNameFor(path, tier = "sys") {
+  const collection = collectionFor(path, tier);
+  if (!collection) return null;
+  return { collection, name: canonicalFigmaName(path, tier) };
+}
+
+/** The tier marker is the first segment for Tier 1 and Tier 3; Tier 2 is unmarked (§4.1). */
+export function canonicalFigmaName(path, tier) {
+  return (tier === "sys" ? path : [tier, ...path]).join("/");
 }
 
 const COLOR_RE = /^(#|rgba?\(|hsla?\()/i;
@@ -288,7 +288,7 @@ function brandAwareAlias(token, tokenByPath, colorByUnderlying, nameByPath, dept
   if (depth > 8) return null;
   const key = token.path.join(".");
   const direct = nameByPath.get(key);
-  if (direct && direct.collection === "Color") return direct;
+  if (direct && direct.collection === "Palette") return direct;
   const viaUnderlying = colorByUnderlying.get(key);
   if (viaUnderlying) return viaUnderlying;
 
@@ -338,16 +338,104 @@ function encodeValue(raw, token, nameByPath, resolvedByPath, selfTarget) {
   }
   const t = figmaTypeOf({ ...token, $value: raw, original: { $value: raw, $type: token.original?.$type } });
   if (t.type === "FLOAT") return { type: "FLOAT", value: t.number, unit: t.unit };
+  if (token.path?.[0] === "font" && token.path?.[1] === "family") {
+    return { type: t.type, value: primaryFontFamily(raw) };
+  }
   return { type: t.type, value: String(raw) };
 }
 
-function contractNote(path) {
-  const rung = path.find((seg) => PROMINENCE_CONTRACT[seg]);
-  if (!rung) return null;
-  const c = PROMINENCE_CONTRACT[rung];
-  return c.minContrast > 0
-    ? `Guarantees ≥${c.minContrast}:1 — ${c.use}.`
-    : `No contrast guarantee — ${c.use}.`;
+/**
+ * CSS generics name no font — they are instructions to the browser's font matcher.
+ * Figma has no equivalent, so they can never be a FONT_FAMILY variable's value.
+ */
+const CSS_GENERIC_FAMILIES = new Set([
+  "ui-sans-serif", "ui-serif", "ui-monospace", "ui-rounded", "system-ui",
+  "sans-serif", "serif", "monospace", "cursive", "fantasy", "emoji", "math", "fangsong",
+]);
+
+/**
+ * Real families the stack names but that NO MoSJE surface actually loads.
+ *
+ * `font.family.display` exists for UX4G 3.0 parity — `--ux4g-font-family-display` is pinned
+ * upstream in `reference/ux4g-3.0.tokens.json`, so the CSS stack must keep naming the optical
+ * Display cut. But the token's own description is explicit that it is never loaded ("never
+ * load it globally just to satisfy the token"), and Figma has no fallback chain: projecting
+ * "Noto Sans Display" gives a variable Figma cannot resolve (it is absent from all 1,938
+ * families available in the file).
+ *
+ * A browser hitting this stack renders Noto Sans. Figma should show the same thing, and the
+ * display treatment is carried by WEIGHT — the Display/* text styles are Noto Sans Medium —
+ * not by a separate optical family. So the projection skips the unloaded cut and lands on the
+ * family the reader actually sees, keeping CSS parity and Figma resolvability at once.
+ */
+const NOT_LOADED_FAMILIES = new Set(["Noto Sans Display"]);
+
+/**
+ * Project a CSS font stack down to the one family Figma can actually resolve.
+ *
+ * A Figma FONT_FAMILY variable is a FONT PICKER VALUE, not a CSS declaration — it must name a
+ * single family that exists. The source authors these as stacks because that is what the
+ * stylesheet needs, and projecting the stack verbatim shipped four variables Figma could not
+ * resolve at all:
+ *
+ *   ref/font/family/latin       "Noto Sans", ui-sans-serif, system-ui, sans-serif
+ *   ref/font/family/devanagari  "Noto Sans Devanagari", "Noto Sans", ui-sans-serif, …
+ *   ref/font/family/display     "Noto Sans Display", "Noto Sans", ui-sans-serif, …
+ *   ref/font/family/mono        ui-monospace, "Cascadia Code", "Source Code Pro", …
+ *
+ * All four were published and scoped FONT_FAMILY, so they appeared in the picker and bound to
+ * nothing — which is exactly why the 2026-08-11 audit found `latin`, `display` and `mono`
+ * orphaned. They were not neglected; they were unusable.
+ *
+ * Only `heading` and `body` worked, because those happen to be authored as a bare family name.
+ *
+ * The first non-generic entry is the right projection: it is the family the browser will
+ * actually reach for first, so Figma and the build agree on what the reader sees.
+ */
+function primaryFontFamily(stack) {
+  const unquote = (s) => s.trim().replace(/^["']|["']$/g, "").trim();
+  for (const part of String(stack).split(",")) {
+    const name = unquote(part);
+    if (name && !CSS_GENERIC_FAMILIES.has(name) && !NOT_LOADED_FAMILIES.has(name)) return name;
+  }
+  return unquote(String(stack));
+}
+
+/**
+ * Attach the contrast contract, as a MEASUREMENT rather than an assertion.
+ *
+ * This runs as a second pass over the finished payload because a token's contrast cannot be
+ * known while the payload is still being built: the value is reached through an alias into
+ * the brand-aware Color collection, which does not exist yet mid-loop. Measuring after the
+ * fact is what lets the note state a number instead of a hope.
+ *
+ * Anything the audit does not return gets NO contrast sentence at all — Tier-3 actions,
+ * numbers, disabled states, ramp steps, and every token whose value could not be resolved.
+ * See build/contrast-contract.mjs for why silence is the right output there.
+ */
+function applyContractNotes(payload) {
+  const records = auditPayload(payload);
+  const byKey = new Map(records.map((r) => [`${r.collection}::${r.name}`, r]));
+
+  // The human name of each surface, so the note reads as prose rather than as a path.
+  const labelByPath = new Map();
+  for (const c of payload.collections) for (const v of c.variables) if (!labelByPath.has(v.path)) labelByPath.set(v.path, v.name);
+
+  for (const c of payload.collections) {
+    for (const v of c.variables) {
+      const record = byKey.get(`${c.name}::${v.name}`);
+      if (!record) continue;
+      const note = contractNote(record, labelByPath.get(record.surface) ?? record.surface);
+      v.description = [v.description, note].filter(Boolean).join(" ");
+      v.$extensions = {
+        ...v.$extensions,
+        // Published so the gate can check the claim against the same number the library
+        // shows, instead of recomputing it from a second, drifting implementation.
+        "in.gov.mosje.contrast": { rung: record.rung, min: record.minContrast, measured: record.measured, meets: record.meets },
+      };
+    }
+  }
+  return records;
 }
 
 /** The custom property this token actually ships as (font/role feeds --ds-type-*). */
@@ -370,7 +458,7 @@ export function exclusionReason(path, tier) {
   if (head === "shadow" || head === "elevation") {
     return "Figma models shadows as EFFECT STYLES, not variables — exported separately";
   }
-  if (head === "spacing" && rest.length > 1) {
+  if (head === "space" && rest.length > 1) {
     return "legacy nested spacing role, mirrored by the canonical top-level group";
   }
   if (head === "color") return "legacy semantic path, mirrored by the canonical grammar namespace";
@@ -380,6 +468,7 @@ export function exclusionReason(path, tier) {
 
 export function buildPayload(dictionary) {
   const tokens = dictionary.allTokens;
+  const BP = breakpoints(tokens);
   const live = liveSnapshot();
 
   // Path → fully-resolved value, for references whose target is not exported.
@@ -399,7 +488,7 @@ export function buildPayload(dictionary) {
   const colorByUnderlying = new Map();
   for (const t of tokens) {
     const target = figmaNameFor(t.path, tierOfFile(t.filePath));
-    if (!target || target.collection !== "Color") continue;
+    if (!target || target.collection !== "Palette") continue;
     const raw = t.original?.$value ?? t.original?.value;
     if (typeof raw === "string" && /^\{[^}]+\}$/.test(raw.trim())) {
       colorByUnderlying.set(raw.trim().slice(1, -1), target);
@@ -446,9 +535,9 @@ export function buildPayload(dictionary) {
     const valuesByMode = {};
     for (const mode of collection.modes) {
       let raw;
-      if (target.collection === "Color") {
+      if (target.collection === "Palette") {
         raw = brandValue(token, mode);
-      } else if (target.collection === "Theme") {
+      } else if (target.collection === "Color") {
         // Light is the base value — which aliases into Color and therefore stays brand-aware.
         // Dark/HC take the override where one exists, else fall back to Light so a token that
         // does not vary on theme reads identically in all three modes.
@@ -478,22 +567,23 @@ export function buildPayload(dictionary) {
           // test is "does the owner already sit in a brand-capable collection", not "is the
           // owner mapped at all".
           const ownerTarget = owner && nameByPath.get(owner.path.join("."));
-          if (owner && ownerTarget?.collection !== "Color") {
-            // Strip only a leading `color` head (color.text.disabled -> Text/Disabled). Slicing
-            // unconditionally turned `focus/ring` into `Ring`, orphaning it from its group.
-            const ownerPath = owner.path[0] === "color" ? owner.path.slice(1) : owner.path;
-            const companionName = ownerPath.map(titleCase).join("/");
+          if (owner && ownerTarget?.collection !== "Palette") {
+            // The companion is a SECOND presence for one authored token, so it takes that
+            // token's canonical path verbatim. It used to be Title-Cased and stripped of its
+            // `color` head (`color.text.disabled` -> `Text/Disabled`), which made it the one
+            // family of variables whose Figma name could not be derived from its path.
+            const companionName = canonicalFigmaName(owner.path, tierOfFile(owner.filePath));
             companions.set(owner.path.join("."), { owner, name: companionName });
-            valuesByMode[mode] = { type: "ALIAS", collection: "Color", name: companionName };
+            valuesByMode[mode] = { type: "ALIAS", collection: "Palette", name: companionName };
             continue;
           }
           raw = token.original?.$value ?? token.original?.value ?? val(token);
         }
-      } else if (target.collection === "Typography" && fluid) {
+      } else if (target.collection === "Type" && fluid) {
         const [surface, breakpoint] = mode.split(" · ");
         const bounds = fluid[surface.toLowerCase()];
         raw = bounds
-          ? fluidAt(parseFloat(bounds.min), parseFloat(bounds.max), BREAKPOINT_PX[breakpoint])
+          ? fluidAt(parseFloat(bounds.min), parseFloat(bounds.max), BP[breakpoint], BP.Mobile, BP.Desktop)
           : (token.original?.$value ?? val(token));
       } else if (target.collection === "Density" && mode === "Compact") {
         raw = token.original?.$extensions?.mosje?.themes?.compact ?? token.original?.$value ?? val(token);
@@ -503,9 +593,21 @@ export function buildPayload(dictionary) {
       valuesByMode[mode] = encodeValue(raw, token, nameByPath, resolvedByPath, target);
     }
 
-    const description = [token.$description ?? token.original?.$description, contractNote(token.path)]
-      .filter(Boolean)
-      .join(" ");
+    /**
+     * Description = what it is FOR, then what it is WORTH.
+     *
+     * Authored prose wins where it exists — someone wrote it about this token specifically.
+     * Otherwise the guidance vocabulary supplies a "use when…" sentence derived from the path,
+     * so no semantic token reaches a designer with nothing to go on. The measured contrast is
+     * appended afterwards by applyContractNotes(), once the value can actually be resolved.
+     */
+    const authored = token.$description ?? token.original?.$description ?? "";
+    const guidance = tier === "ref"
+      ? primitivePointer(token.path)
+      : guidanceFor(token.path, tier, parse);
+    const description = tier === "ref"
+      ? [authored, guidance].filter(Boolean).join(" ")
+      : authored || guidance || "";
 
     collection.variables.push({
       name: target.name,
@@ -531,9 +633,9 @@ export function buildPayload(dictionary) {
   );
 
   for (const { owner: token, name } of companions.values()) {
-    if (seen.has(`Color::${name}`)) continue;
-    seen.add(`Color::${name}`);
-    collections.Color.variables.push({
+    if (seen.has(`Palette::${name}`)) continue;
+    seen.add(`Palette::${name}`);
+    collections["Palette"].variables.push({
       name,
       path: token.path.join("/"),
       // A companion is a SECOND presence for one authored token: the brand source in Color,
@@ -541,9 +643,9 @@ export function buildPayload(dictionary) {
       // duplicate-export check can tell a deliberate pair from an accidental one.
       role: "brand-source",
       type: "COLOR",
-      status: live?.Color?.includes(name) ? "existing" : "new",
+      status: live?.["Palette"]?.includes(name) ? "existing" : "new",
       valuesByMode: Object.fromEntries(
-        COLLECTIONS.Color.modes.map((m) => {
+        COLLECTIONS["Palette"].modes.map((m) => {
           const raw = brandValue(token, m);
           const lit = typeof raw === "string" && raw.trim().startsWith("{")
             ? resolvedByPath.get(raw.trim().slice(1, -1)) ?? raw
@@ -552,7 +654,7 @@ export function buildPayload(dictionary) {
         }),
       ),
       description:
-        `Brand-aware source for Theme::${name}. Generated because that token's light value is ` +
+        `Brand-aware source for Theme::${name}. Generated because that token’s light value is ` +
         `a literal that differs between Blue and Navy; without it the Navy brand is lost.`,
       codeSyntax: { WEB: `var(${toCssName(token.path, tierOfFile(token.filePath))})` },
     });
@@ -564,18 +666,38 @@ export function buildPayload(dictionary) {
     if (i !== -1) unmapped.splice(i, 1);
   }
 
-  return {
+  const payload = {
     $schema: "samavesh-figma-variables/2",
     $description:
       "GENERATED by @mosje/tokens, targeted at the live SAMAVESH library's seven collections. " +
       "Variables are keyed by the name the library already uses; `status` says whether an " +
       "import adds or updates. Colour is split across two collections: Color carries the BRAND " +
-      "axis (Blue|Navy) and Theme carries APPEARANCE (Light|Dark|HC), which works because " +
-      "every theme override in the source is brand-invariant. See spec §8.4.",
+      "axis (Blue|Navy) and Theme is the single-mode semantic layer that aliases into it. " +
+      "See spec §8.4.",
     counts,
     unmapped,
     collections: Object.values(collections).filter((c) => c.variables.length),
   };
+
+  // Every contrast sentence in this payload is a measurement taken here, on these values.
+  // `contrast.shortfall` is the honest count of tokens whose RUNG NAME promises more than
+  // the token delivers — published rather than suppressed, because a designer choosing
+  // `Background/Status/Error/Strong` for a white label deserves to know it lands at 4.40:1.
+  const measured = applyContractNotes(payload);
+  payload.contrast = {
+    $description:
+      "Contrast classes are MEASURED against each token's own surface, across every brand, " +
+      "and the worst case is what the description states. A token absent from this summary " +
+      "carries no contrast sentence because the prominence ladder does not describe it — " +
+      "see build/contrast-contract.mjs.",
+    measured: measured.length,
+    meets: measured.filter((r) => r.meets).length,
+    shortfall: measured
+      .filter((r) => !r.meets)
+      .map((r) => `${r.collection}::${r.name} — ${r.measured}:1 vs ≥${r.minContrast}:1 ("${r.rung}")`)
+      .sort(),
+  };
+  return payload;
 }
 
 export const figmaVariables = {

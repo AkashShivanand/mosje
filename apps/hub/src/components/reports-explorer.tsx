@@ -80,15 +80,15 @@ function ReportCard({ p }: { p: PortalReport }) {
   return (
     <Link
       href={p.href}
-      className="group flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-border-strong hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+      className="group flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-border-strong hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gov-blue-tonal text-gov-blue">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-tonal text-primary">
             <Icon name="description" size={20} aria-hidden="true" />
           </span>
           <div>
-            <h2 className="text-base font-bold text-ink transition-colors group-hover:text-gov-blue">
+            <h2 className="text-base font-bold text-ink transition-colors group-hover:text-primary">
               {p.title}
             </h2>
             <p className="text-xs text-ink-muted">{p.subtitle}</p>
@@ -114,7 +114,7 @@ function ReportCard({ p }: { p: PortalReport }) {
         <SevChip label="Minor" count={p.findings.Minor} tone={SEV.minor} />
       </div>
 
-      <div className="mt-auto flex items-center gap-1.5 border-t border-border pt-3 text-sm font-semibold text-gov-blue transition-all group-hover:gap-2.5">
+      <div className="mt-auto flex items-center gap-1.5 border-t border-border pt-3 text-sm font-semibold text-primary transition-all group-hover:gap-2.5">
         View report
         <Icon name="arrow_forward" size={16} aria-hidden="true" />
       </div>
@@ -143,10 +143,10 @@ export function ReportsExplorer() {
   const totalSuggestions = PORTALS.reduce((s, p) => s + p.suggestions, 0);
 
   const stats = [
-    { label: "Portals audited", value: PORTALS.length, color: "text-gov-blue" },
+    { label: "Portals audited", value: PORTALS.length, color: "text-primary" },
     { label: "Findings", value: totalFindings, color: "text-ink" },
     { label: "Blockers", value: totalBlockers, color: "text-danger" },
-    { label: "Suggestions", value: totalSuggestions, color: "text-gov-blue" },
+    { label: "Suggestions", value: totalSuggestions, color: "text-primary" },
   ];
 
   return (
@@ -174,7 +174,7 @@ export function ReportsExplorer() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             aria-label="Search reports"
-            className="w-full rounded-lg border border-border bg-surface py-2 pl-9 pr-9 text-sm text-ink placeholder:text-ink-muted focus:border-gov-blue focus:outline-none focus:ring-2 focus:ring-gov-blue/30"
+            className="w-full rounded-lg border border-border bg-surface py-2 pl-9 pr-9 text-sm text-ink placeholder:text-ink-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
           />
           {query && (
             <button
@@ -200,7 +200,7 @@ export function ReportsExplorer() {
           <button
             type="button"
             onClick={() => setQuery("")}
-            className="mt-3 text-xs font-semibold text-gov-blue hover:underline"
+            className="mt-3 text-xs font-semibold text-primary hover:underline"
           >
             Clear search
           </button>

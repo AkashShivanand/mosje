@@ -6,37 +6,40 @@
       "primary": {
         "$description": "Button/CTA fill. MUST stay dark enough to carry white label text at AA in EVERY theme — that is why the dark theme sits on 500 and not on a lighter step, and why hover goes DARKER (600) rather than lighter. Text links use color.action.link instead, which is free to lighten on dark surfaces. Enforced by test/mode-contrast.test.mjs; the dark theme shipped white-on-#2d84e8 at 3.77:1 until 2026-08.",
         "default": {
-          "$value": "{color.primaryRamp.light.500}",
+          "$value": "{color.primaryRamp.blue.500}",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "{color.primaryRamp.dark.500}"
+                "navy": "{color.primaryRamp.navy.500}",
+                "dbim": "{color.primaryRamp.dbim.500}"
               },
               "themes": {
-                "dark": "{color.primaryRamp.light.500}"
+                "dark": "{color.primaryRamp.blue.500}"
               }
             }
           }
         },
         "hover": {
-          "$value": "{color.primaryRamp.light.700}",
+          "$value": "{color.primaryRamp.blue.700}",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "{color.primaryRamp.dark.700}"
+                "navy": "{color.primaryRamp.navy.700}",
+                "dbim": "{color.primaryRamp.dbim.700}"
               },
               "themes": {
-                "dark": "{color.primaryRamp.light.600}"
+                "dark": "{color.primaryRamp.blue.600}"
               }
             }
           }
         },
         "tonal": {
-          "$value": "{color.primaryRamp.light.100}",
+          "$value": "{color.primaryRamp.blue.100}",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "{color.primaryRamp.dark.100}"
+                "navy": "{color.primaryRamp.navy.100}",
+                "dbim": "{color.primaryRamp.dbim.100}"
               },
               "themes": {
                 "dark": "rgba(45, 132, 232, 0.18)"
@@ -47,219 +50,385 @@
       }
     },
     "primaryScale": {
-      "$description": "Full mode-aware primary ramp (50–900). Consume via --ds-primary-50…900. Each step follows the active color mode.",
       "50": {
-        "$value": "{color.primaryRamp.light.50}",
+        "$value": "{color.primaryRamp.blue.50}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.dark.50}"
+              "navy": "{color.primaryRamp.navy.50}",
+              "dbim": "{color.primaryRamp.dbim.50}"
             }
           }
         }
       },
       "100": {
-        "$value": "{color.primaryRamp.light.100}",
+        "$value": "{color.primaryRamp.blue.100}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.dark.100}"
+              "navy": "{color.primaryRamp.navy.100}",
+              "dbim": "{color.primaryRamp.dbim.100}"
             }
           }
         }
       },
       "200": {
-        "$value": "{color.primaryRamp.light.200}",
+        "$value": "{color.primaryRamp.blue.200}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.dark.200}"
+              "navy": "{color.primaryRamp.navy.200}",
+              "dbim": "{color.primaryRamp.dbim.200}"
             }
           }
         }
       },
       "300": {
-        "$value": "{color.primaryRamp.light.300}",
+        "$value": "{color.primaryRamp.blue.300}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.dark.300}"
+              "navy": "{color.primaryRamp.navy.300}",
+              "dbim": "{color.primaryRamp.dbim.300}"
             }
           }
         }
       },
       "400": {
-        "$value": "{color.primaryRamp.light.400}",
+        "$value": "{color.primaryRamp.blue.400}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.dark.400}"
+              "navy": "{color.primaryRamp.navy.400}",
+              "dbim": "{color.primaryRamp.dbim.400}"
             }
           }
         }
       },
       "500": {
-        "$value": "{color.primaryRamp.light.500}",
+        "$value": "{color.primaryRamp.blue.500}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.dark.500}"
+              "navy": "{color.primaryRamp.navy.500}",
+              "dbim": "{color.primaryRamp.dbim.500}"
             }
           }
         }
       },
       "600": {
-        "$value": "{color.primaryRamp.light.600}",
+        "$value": "{color.primaryRamp.blue.600}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.dark.600}"
+              "navy": "{color.primaryRamp.navy.600}",
+              "dbim": "{color.primaryRamp.dbim.600}"
             }
           }
         }
       },
       "700": {
-        "$value": "{color.primaryRamp.light.700}",
+        "$value": "{color.primaryRamp.blue.700}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.dark.700}"
+              "navy": "{color.primaryRamp.navy.700}",
+              "dbim": "{color.primaryRamp.dbim.700}"
             }
           }
         }
       },
       "800": {
-        "$value": "{color.primaryRamp.light.800}",
+        "$value": "{color.primaryRamp.blue.800}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.dark.800}"
+              "navy": "{color.primaryRamp.navy.800}",
+              "dbim": "{color.primaryRamp.dbim.800}"
             }
           }
         }
       },
       "900": {
-        "$value": "{color.primaryRamp.light.900}",
+        "$value": "{color.primaryRamp.blue.900}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.dark.900}"
+              "navy": "{color.primaryRamp.navy.900}",
+              "dbim": "{color.primaryRamp.dbim.900}"
             }
           }
         }
-      }
+      },
+      "950": {
+        "$value": "{color.primaryRamp.blue.950}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.primaryRamp.navy.950}",
+              "dbim": "{color.primaryRamp.dbim.950}"
+            }
+          }
+        }
+      },
+      "$description": "Full mode-aware primary ramp (50–900). Consume via --ds-primary-50…900. Each step follows the active color mode."
     },
     "secondaryScale": {
-      "$description": "Full mode-aware SECONDARY ramp (50–900) = Figma Secondary/*. Blue-Light = saffron, Blue-Dark = green. Consume via --ds-secondary-50…900 / --sa-color-secondaryScale-*.",
       "50": {
-        "$value": "{color.secondaryRamp.light.50}",
+        "$value": "{color.secondaryRamp.blue.50}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.dark.50}"
+              "navy": "{color.secondaryRamp.navy.50}",
+              "dbim": "{color.secondaryRamp.navy.50}"
             }
           }
         }
       },
       "100": {
-        "$value": "{color.secondaryRamp.light.100}",
+        "$value": "{color.secondaryRamp.blue.100}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.dark.100}"
+              "navy": "{color.secondaryRamp.navy.100}",
+              "dbim": "{color.secondaryRamp.navy.100}"
             }
           }
         }
       },
       "200": {
-        "$value": "{color.secondaryRamp.light.200}",
+        "$value": "{color.secondaryRamp.blue.200}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.dark.200}"
+              "navy": "{color.secondaryRamp.navy.200}",
+              "dbim": "{color.secondaryRamp.navy.200}"
             }
           }
         }
       },
       "300": {
-        "$value": "{color.secondaryRamp.light.300}",
+        "$value": "{color.secondaryRamp.blue.300}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.dark.300}"
+              "navy": "{color.secondaryRamp.navy.300}",
+              "dbim": "{color.secondaryRamp.navy.300}"
             }
           }
         }
       },
       "400": {
-        "$value": "{color.secondaryRamp.light.400}",
+        "$value": "{color.secondaryRamp.blue.400}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.dark.400}"
+              "navy": "{color.secondaryRamp.navy.400}",
+              "dbim": "{color.secondaryRamp.navy.400}"
             }
           }
         }
       },
       "500": {
-        "$value": "{color.secondaryRamp.light.500}",
+        "$value": "{color.secondaryRamp.blue.500}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.dark.500}"
+              "navy": "{color.secondaryRamp.navy.500}",
+              "dbim": "{color.secondaryRamp.navy.500}"
             }
           }
         }
       },
       "600": {
-        "$value": "{color.secondaryRamp.light.600}",
+        "$value": "{color.secondaryRamp.blue.600}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.dark.600}"
+              "navy": "{color.secondaryRamp.navy.600}",
+              "dbim": "{color.secondaryRamp.navy.600}"
             }
           }
         }
       },
       "700": {
-        "$value": "{color.secondaryRamp.light.700}",
+        "$value": "{color.secondaryRamp.blue.700}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.dark.700}"
+              "navy": "{color.secondaryRamp.navy.700}",
+              "dbim": "{color.secondaryRamp.navy.700}"
             }
           }
         }
       },
       "800": {
-        "$value": "{color.secondaryRamp.light.800}",
+        "$value": "{color.secondaryRamp.blue.800}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.dark.800}"
+              "navy": "{color.secondaryRamp.navy.800}",
+              "dbim": "{color.secondaryRamp.navy.800}"
             }
           }
         }
       },
       "900": {
-        "$value": "{color.secondaryRamp.light.900}",
+        "$value": "{color.secondaryRamp.blue.900}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.dark.900}"
+              "navy": "{color.secondaryRamp.navy.900}",
+              "dbim": "{color.secondaryRamp.navy.900}"
             }
           }
         }
-      }
+      },
+      "950": {
+        "$value": "{color.secondaryRamp.blue.950}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.secondaryRamp.navy.950}",
+              "dbim": "{color.secondaryRamp.navy.950}"
+            }
+          }
+        }
+      },
+      "$description": "Full mode-aware SECONDARY ramp (50–900) = Figma Secondary/*. Blue-Light = saffron, Blue-Dark = green. Consume via --ds-secondary-50…900 / --sa-color-secondaryScale-*."
+    },
+    "accentScale": {
+      "50": {
+        "$value": "{color.accentRamp.blue.50}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.50}",
+              "dbim": "{color.accentRamp.navy.50}"
+            }
+          }
+        }
+      },
+      "100": {
+        "$value": "{color.accentRamp.blue.100}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.100}",
+              "dbim": "{color.accentRamp.navy.100}"
+            }
+          }
+        }
+      },
+      "200": {
+        "$value": "{color.accentRamp.blue.200}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.200}",
+              "dbim": "{color.accentRamp.navy.200}"
+            }
+          }
+        }
+      },
+      "300": {
+        "$value": "{color.accentRamp.blue.300}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.300}",
+              "dbim": "{color.accentRamp.navy.300}"
+            }
+          }
+        }
+      },
+      "400": {
+        "$value": "{color.accentRamp.blue.400}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.400}",
+              "dbim": "{color.accentRamp.navy.400}"
+            }
+          }
+        }
+      },
+      "500": {
+        "$value": "{color.accentRamp.blue.500}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.500}",
+              "dbim": "{color.accentRamp.navy.500}"
+            }
+          }
+        }
+      },
+      "600": {
+        "$value": "{color.accentRamp.blue.600}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.600}",
+              "dbim": "{color.accentRamp.navy.600}"
+            }
+          }
+        }
+      },
+      "700": {
+        "$value": "{color.accentRamp.blue.700}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.700}",
+              "dbim": "{color.accentRamp.navy.700}"
+            }
+          }
+        }
+      },
+      "800": {
+        "$value": "{color.accentRamp.blue.800}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.800}",
+              "dbim": "{color.accentRamp.navy.800}"
+            }
+          }
+        }
+      },
+      "900": {
+        "$value": "{color.accentRamp.blue.900}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.900}",
+              "dbim": "{color.accentRamp.navy.900}"
+            }
+          }
+        }
+      },
+      "950": {
+        "$value": "{color.accentRamp.blue.950}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.950}",
+              "dbim": "{color.accentRamp.navy.950}"
+            }
+          }
+        }
+      },
+      "$description": "ACCENT brand scale — India Green #046A38 from the SAMAVESH logo. Brand-INVARIANT (blue and navy resolve to identical values), and deliberately the same green as color.successScale: two greens nine degrees apart is a defect whichever token owns them."
     },
     "neutralScale": {
-      "$description": "Full mode-aware NEUTRAL ramp (0–1100) = Figma Neutral/*. Blue-Light = warm grey, Blue-Dark = cooler Tailwind grey. Consume via --ds-neutral-0…1100 / --sa-color-neutralScale-*.",
       "0": {
         "$value": "{color.neutral.0}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.0}"
+              "navy": "{color.neutralDark.0}",
+              "dbim": "{color.neutralDark.0}"
             }
           }
         }
@@ -269,7 +438,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.50}"
+              "navy": "{color.neutralDark.50}",
+              "dbim": "{color.neutralDark.50}"
             }
           }
         }
@@ -279,7 +449,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.100}"
+              "navy": "{color.neutralDark.100}",
+              "dbim": "{color.neutralDark.100}"
             }
           }
         }
@@ -289,7 +460,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.200}"
+              "navy": "{color.neutralDark.200}",
+              "dbim": "{color.neutralDark.200}"
             }
           }
         }
@@ -299,7 +471,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.300}"
+              "navy": "{color.neutralDark.300}",
+              "dbim": "{color.neutralDark.300}"
             }
           }
         }
@@ -309,7 +482,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.400}"
+              "navy": "{color.neutralDark.400}",
+              "dbim": "{color.neutralDark.400}"
             }
           }
         }
@@ -319,7 +493,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.500}"
+              "navy": "{color.neutralDark.500}",
+              "dbim": "{color.neutralDark.500}"
             }
           }
         }
@@ -329,7 +504,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.600}"
+              "navy": "{color.neutralDark.600}",
+              "dbim": "{color.neutralDark.600}"
             }
           }
         }
@@ -339,7 +515,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.700}"
+              "navy": "{color.neutralDark.700}",
+              "dbim": "{color.neutralDark.700}"
             }
           }
         }
@@ -349,7 +526,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.800}"
+              "navy": "{color.neutralDark.800}",
+              "dbim": "{color.neutralDark.800}"
             }
           }
         }
@@ -359,7 +537,19 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.900}"
+              "navy": "{color.neutralDark.900}",
+              "dbim": "{color.neutralDark.900}"
+            }
+          }
+        }
+      },
+      "950": {
+        "$value": "{color.neutral.950}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.neutralDark.950}",
+              "dbim": "{color.neutralDark.950}"
             }
           }
         }
@@ -369,24 +559,15 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.1000}"
+              "navy": "{color.neutralDark.1000}",
+              "dbim": "{color.neutralDark.1000}"
             }
           }
         }
       },
-      "1100": {
-        "$value": "{color.neutral.1100}",
-        "$extensions": {
-          "mosje": {
-            "colorModes": {
-              "navy": "{color.neutralDark.1100}"
-            }
-          }
-        }
-      }
+      "$description": "Full mode-aware NEUTRAL ramp (0–1000) = Figma Palette/color/neutralScale/*. Blue (default) = warm grey, Navy = cooler Tailwind grey. Consume via --ds-neutral-0…1000 / --sa-color-neutralScale-*. Renumbered 2026-08-11 to match UX4G: pure white at 0, pure black at 1000, near-black at 950. There is no 1100 — the old top step was retired by that renumbering."
     },
     "successScale": {
-      "$description": "Full SUCCESS ramp (50–900) = Figma Success/*. Mode-invariant (identical in Blue-Light and Blue-Dark). Consume via --ds-success-50…900.",
       "50": {
         "$value": "{color.green.50}"
       },
@@ -416,10 +597,13 @@
       },
       "900": {
         "$value": "{color.green.900}"
-      }
+      },
+      "950": {
+        "$value": "{color.green.950}"
+      },
+      "$description": "Full SUCCESS ramp (50–900) = Figma Success/*. Mode-invariant (identical in Blue-Light and Blue-Dark). Consume via --ds-success-50…900."
     },
     "dangerScale": {
-      "$description": "Full DANGER ramp (50–900) = Figma Danger/*. Mode-invariant. Consume via --ds-danger-50…900.",
       "50": {
         "$value": "{color.red.50}"
       },
@@ -449,10 +633,13 @@
       },
       "900": {
         "$value": "{color.red.900}"
-      }
+      },
+      "950": {
+        "$value": "{color.red.950}"
+      },
+      "$description": "Full DANGER ramp (50–900) = Figma Danger/*. Mode-invariant. Consume via --ds-danger-50…900."
     },
     "warningScale": {
-      "$description": "Full WARNING ramp (50–900) = Figma Warning/*. Mode-invariant. Consume via --ds-warning-50…900.",
       "50": {
         "$value": "{color.amber.50}"
       },
@@ -482,10 +669,13 @@
       },
       "900": {
         "$value": "{color.amber.900}"
-      }
+      },
+      "950": {
+        "$value": "{color.amber.950}"
+      },
+      "$description": "Full WARNING ramp (50–900) = Figma Warning/*. Mode-invariant. Consume via --ds-warning-50…900."
     },
     "infoScale": {
-      "$description": "Full INFO ramp (50–900) = Figma Info/*. Mode-invariant. Consume via --ds-info-50…900.",
       "50": {
         "$value": "{color.info.50}"
       },
@@ -515,17 +705,22 @@
       },
       "900": {
         "$value": "{color.info.900}"
-      }
+      },
+      "950": {
+        "$value": "{color.info.950}"
+      },
+      "$description": "Full INFO ramp (50–900) = Figma Info/*. Mode-invariant. Consume via --ds-info-50…900."
     },
     "transparent": {
-      "$description": "Alpha overlay tiers (8/16/24/32/40/48%) = Figma '<Family> Transparent/*'. primary/secondary/neutral are mode-aware (Blue-Dark uses navy/green/cool-grey bases); success/danger/warning/white are mode-invariant. Consume via --sa-color-transparent-<family>-<step>.",
+      "$description": "Alpha overlay tiers (8/16/24/32/40/48%). GENERATED by build/brand-ramps.mjs from each family's base colour — never hand-written, because 42 rgba() literals is exactly the shape of thing that silently keeps a retired colour alive. primary and neutral vary by brand; secondary and accent do NOT (both are SAMAVESH logo colours); the status tiers and white are brand-invariant. Consume via --sa-color-transparent-<family>-<step>.",
       "primary": {
         "8": {
           "$value": "rgba(3, 115, 223, 0.08)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.08)"
+                "navy": "rgba(0, 51, 102, 0.08)",
+                "dbim": "rgba(0, 51, 102, 0.08)"
               }
             }
           }
@@ -535,7 +730,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.16)"
+                "navy": "rgba(0, 51, 102, 0.16)",
+                "dbim": "rgba(0, 51, 102, 0.16)"
               }
             }
           }
@@ -545,7 +741,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.24)"
+                "navy": "rgba(0, 51, 102, 0.24)",
+                "dbim": "rgba(0, 51, 102, 0.24)"
               }
             }
           }
@@ -555,7 +752,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.32)"
+                "navy": "rgba(0, 51, 102, 0.32)",
+                "dbim": "rgba(0, 51, 102, 0.32)"
               }
             }
           }
@@ -565,7 +763,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.40)"
+                "navy": "rgba(0, 51, 102, 0.40)",
+                "dbim": "rgba(0, 51, 102, 0.40)"
               }
             }
           }
@@ -575,7 +774,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.48)"
+                "navy": "rgba(0, 51, 102, 0.48)",
+                "dbim": "rgba(0, 51, 102, 0.48)"
               }
             }
           }
@@ -583,64 +783,42 @@
       },
       "secondary": {
         "8": {
-          "$value": "rgba(249, 115, 22, 0.08)",
-          "$extensions": {
-            "mosje": {
-              "colorModes": {
-                "navy": "rgba(25, 135, 84, 0.08)"
-              }
-            }
-          }
+          "$value": "rgba(255, 103, 31, 0.08)"
         },
         "16": {
-          "$value": "rgba(249, 115, 22, 0.16)",
-          "$extensions": {
-            "mosje": {
-              "colorModes": {
-                "navy": "rgba(25, 135, 84, 0.16)"
-              }
-            }
-          }
+          "$value": "rgba(255, 103, 31, 0.16)"
         },
         "24": {
-          "$value": "rgba(249, 115, 22, 0.24)",
-          "$extensions": {
-            "mosje": {
-              "colorModes": {
-                "navy": "rgba(25, 135, 84, 0.24)"
-              }
-            }
-          }
+          "$value": "rgba(255, 103, 31, 0.24)"
         },
         "32": {
-          "$value": "rgba(249, 115, 22, 0.32)",
-          "$extensions": {
-            "mosje": {
-              "colorModes": {
-                "navy": "rgba(25, 135, 84, 0.32)"
-              }
-            }
-          }
+          "$value": "rgba(255, 103, 31, 0.32)"
         },
         "40": {
-          "$value": "rgba(249, 115, 22, 0.40)",
-          "$extensions": {
-            "mosje": {
-              "colorModes": {
-                "navy": "rgba(25, 135, 84, 0.40)"
-              }
-            }
-          }
+          "$value": "rgba(255, 103, 31, 0.40)"
         },
         "48": {
-          "$value": "rgba(249, 115, 22, 0.48)",
-          "$extensions": {
-            "mosje": {
-              "colorModes": {
-                "navy": "rgba(25, 135, 84, 0.48)"
-              }
-            }
-          }
+          "$value": "rgba(255, 103, 31, 0.48)"
+        }
+      },
+      "accent": {
+        "8": {
+          "$value": "rgba(4, 106, 56, 0.08)"
+        },
+        "16": {
+          "$value": "rgba(4, 106, 56, 0.16)"
+        },
+        "24": {
+          "$value": "rgba(4, 106, 56, 0.24)"
+        },
+        "32": {
+          "$value": "rgba(4, 106, 56, 0.32)"
+        },
+        "40": {
+          "$value": "rgba(4, 106, 56, 0.40)"
+        },
+        "48": {
+          "$value": "rgba(4, 106, 56, 0.48)"
         }
       },
       "neutral": {
@@ -649,7 +827,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.08)"
+                "navy": "rgba(31, 41, 55, 0.08)",
+                "dbim": "rgba(31, 41, 55, 0.08)"
               }
             }
           }
@@ -659,7 +838,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.16)"
+                "navy": "rgba(31, 41, 55, 0.16)",
+                "dbim": "rgba(31, 41, 55, 0.16)"
               }
             }
           }
@@ -669,7 +849,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.24)"
+                "navy": "rgba(31, 41, 55, 0.24)",
+                "dbim": "rgba(31, 41, 55, 0.24)"
               }
             }
           }
@@ -679,7 +860,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.32)"
+                "navy": "rgba(31, 41, 55, 0.32)",
+                "dbim": "rgba(31, 41, 55, 0.32)"
               }
             }
           }
@@ -689,7 +871,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.40)"
+                "navy": "rgba(31, 41, 55, 0.40)",
+                "dbim": "rgba(31, 41, 55, 0.40)"
               }
             }
           }
@@ -699,7 +882,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.48)"
+                "navy": "rgba(31, 41, 55, 0.48)",
+                "dbim": "rgba(31, 41, 55, 0.48)"
               }
             }
           }
@@ -707,22 +891,22 @@
       },
       "success": {
         "8": {
-          "$value": "rgba(46, 125, 50, 0.08)"
+          "$value": "rgba(4, 106, 56, 0.08)"
         },
         "16": {
-          "$value": "rgba(46, 125, 50, 0.16)"
+          "$value": "rgba(4, 106, 56, 0.16)"
         },
         "24": {
-          "$value": "rgba(46, 125, 50, 0.24)"
+          "$value": "rgba(4, 106, 56, 0.24)"
         },
         "32": {
-          "$value": "rgba(46, 125, 50, 0.32)"
+          "$value": "rgba(4, 106, 56, 0.32)"
         },
         "40": {
-          "$value": "rgba(46, 125, 50, 0.40)"
+          "$value": "rgba(4, 106, 56, 0.40)"
         },
         "48": {
-          "$value": "rgba(46, 125, 50, 0.48)"
+          "$value": "rgba(4, 106, 56, 0.48)"
         }
       },
       "danger": {
@@ -792,7 +976,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.800}"
+              "navy": "{color.neutralDark.800}",
+              "dbim": "{color.neutralDark.800}"
             },
             "themes": {
               "dark": "{color.a11y.dark.ink}",
@@ -806,7 +991,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.700}"
+              "navy": "{color.neutralDark.700}",
+              "dbim": "{color.neutralDark.700}"
             },
             "themes": {
               "dark": "{color.a11y.dark.inkMuted}"
@@ -819,7 +1005,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "rgba(31, 41, 55, 0.48)"
+              "navy": "rgba(31, 41, 55, 0.48)",
+              "dbim": "rgba(31, 41, 55, 0.48)"
             },
             "themes": {
               "dark": "rgba(243, 244, 246, 0.40)"
@@ -847,7 +1034,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.500}"
+              "navy": "{color.neutralDark.500}",
+              "dbim": "{color.neutralDark.500}"
             },
             "themes": {
               "dark": "#5b6577",
@@ -1015,476 +1203,6 @@
       "yellow": {
         "$value": "{color.yellow.500}"
       }
-    },
-    "chart": {
-      "$description": "Data-visualisation roles. Theme-aware: dark/hc overrides keep series legible on dark surfaces. cat 1–12 are mutually-distinguishable categorical series (brand-led); seq 50–900 is a single-hue ramp for choropleth + heatmap; div is red→neutral→green for signed data; trend/grid/axis/tooltip/region are structural.",
-      "cat": {
-        "1": {
-          "$value": "#0373df",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#5fa0ef"
-              }
-            }
-          }
-        },
-        "2": {
-          "$value": "#f97316",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#fb923c"
-              }
-            }
-          }
-        },
-        "3": {
-          "$value": "#2e7d32",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#66bb6a"
-              }
-            }
-          }
-        },
-        "4": {
-          "$value": "#7e22ce",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#c084fc"
-              }
-            }
-          }
-        },
-        "5": {
-          "$value": "#0e7490",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#22d3ee"
-              }
-            }
-          }
-        },
-        "6": {
-          "$value": "#b45309",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#fbbf24"
-              }
-            }
-          }
-        },
-        "7": {
-          "$value": "#be185d",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#f472b6"
-              }
-            }
-          }
-        },
-        "8": {
-          "$value": "#1558b0",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#7aaff8"
-              }
-            }
-          }
-        },
-        "9": {
-          "$value": "#4d7c0f",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#a3e635"
-              }
-            }
-          }
-        },
-        "10": {
-          "$value": "#9f1239",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#fb7185"
-              }
-            }
-          }
-        },
-        "11": {
-          "$value": "#0f766e",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#5eead4"
-              }
-            }
-          }
-        },
-        "12": {
-          "$value": "#475569",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#94a3b8"
-              }
-            }
-          }
-        }
-      },
-      "seq": {
-        "50": {
-          "$value": "#e8f2fd",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#0d1f33"
-              }
-            }
-          }
-        },
-        "100": {
-          "$value": "#c6dcf9",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#122a45"
-              }
-            }
-          }
-        },
-        "200": {
-          "$value": "#94bff5",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#16395c"
-              }
-            }
-          }
-        },
-        "300": {
-          "$value": "#5fa0ef",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#1c4a78"
-              }
-            }
-          }
-        },
-        "400": {
-          "$value": "#2d84e8",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#235e96"
-              }
-            }
-          }
-        },
-        "500": {
-          "$value": "#0373df",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#2d84e8"
-              }
-            }
-          }
-        },
-        "600": {
-          "$value": "#025fb8",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#4f9bee"
-              }
-            }
-          }
-        },
-        "700": {
-          "$value": "#014b92",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#7ab3f3"
-              }
-            }
-          }
-        },
-        "800": {
-          "$value": "#01376b",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#a6cdf7"
-              }
-            }
-          }
-        },
-        "900": {
-          "$value": "#002448",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#d2e6fb"
-              }
-            }
-          }
-        }
-      },
-      "div": {
-        "negStrong": {
-          "$value": "#a11d12",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#ff8a80"
-              }
-            }
-          }
-        },
-        "neg": {
-          "$value": "#ec5042",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#ff6b5e"
-              }
-            }
-          }
-        },
-        "negSoft": {
-          "$value": "#fad2cf",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#5a2420"
-              }
-            }
-          }
-        },
-        "mid": {
-          "$value": "#e2e6ea",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#343b48"
-              }
-            }
-          }
-        },
-        "posSoft": {
-          "$value": "#c8e6c9",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#1e3a24"
-              }
-            }
-          }
-        },
-        "pos": {
-          "$value": "#2e7d32",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#66bb6a"
-              }
-            }
-          }
-        },
-        "posStrong": {
-          "$value": "#1b5e20",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#81c784"
-              }
-            }
-          }
-        }
-      },
-      "trend": {
-        "up": {
-          "$value": "{color.green.500}",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#66bb6a"
-              }
-            }
-          }
-        },
-        "down": {
-          "$value": "{color.red.500}",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "#ff6b5e"
-              }
-            }
-          }
-        },
-        "flat": {
-          "$value": "{color.neutral.500}",
-          "$extensions": {
-            "mosje": {
-              "themes": {
-                "dark": "{color.a11y.dark.inkMuted}"
-              }
-            }
-          }
-        }
-      },
-      "grid": {
-        "$value": "{color.neutral.100}",
-        "$extensions": {
-          "mosje": {
-            "themes": {
-              "dark": "#262b33",
-              "hc": "#000000"
-            }
-          }
-        }
-      },
-      "axis": {
-        "$value": "{color.neutral.500}",
-        "$extensions": {
-          "mosje": {
-            "themes": {
-              "dark": "{color.a11y.dark.inkMuted}",
-              "hc": "#000000"
-            }
-          }
-        }
-      },
-      "tooltipBg": {
-        "$value": "{color.neutral.800}",
-        "$extensions": {
-          "mosje": {
-            "themes": {
-              "dark": "#2b313b",
-              "hc": "#000000"
-            }
-          }
-        }
-      },
-      "tooltipInk": {
-        "$value": "{color.neutral.0}",
-        "$extensions": {
-          "mosje": {
-            "themes": {
-              "dark": "{color.a11y.dark.ink}",
-              "hc": "#ffffff"
-            }
-          }
-        }
-      },
-      "regionEmpty": {
-        "$value": "{color.neutral.100}",
-        "$extensions": {
-          "mosje": {
-            "themes": {
-              "dark": "{color.a11y.dark.surfaceMuted}",
-              "hc": "#ffffff"
-            }
-          }
-        }
-      },
-      "regionStroke": {
-        "$value": "{color.neutral.0}",
-        "$extensions": {
-          "mosje": {
-            "themes": {
-              "dark": "{color.a11y.dark.bg}",
-              "hc": "#000000"
-            }
-          }
-        }
-      }
-    }
-  },
-  "type": {
-    "$description": "Named type roles → primitive size/leading/weight.",
-    "display": {
-      "size": {
-        "$type": "dimension",
-        "$value": "{font.size.900}"
-      },
-      "leading": {
-        "$type": "dimension",
-        "$value": "{font.lineHeight.900}"
-      },
-      "weight": {
-        "$type": "fontWeight",
-        "$value": "{font.weight.medium}"
-      }
-    },
-    "title1": {
-      "size": {
-        "$type": "dimension",
-        "$value": "{font.size.600}"
-      },
-      "leading": {
-        "$type": "dimension",
-        "$value": "{font.lineHeight.400}"
-      },
-      "weight": {
-        "$type": "fontWeight",
-        "$value": "{font.weight.medium}"
-      }
-    },
-    "headline": {
-      "size": {
-        "$type": "dimension",
-        "$value": "{font.size.500}"
-      },
-      "leading": {
-        "$type": "dimension",
-        "$value": "{font.lineHeight.300}"
-      },
-      "weight": {
-        "$type": "fontWeight",
-        "$value": "{font.weight.semibold}"
-      }
-    },
-    "body1": {
-      "size": {
-        "$type": "dimension",
-        "$value": "{font.size.400}"
-      },
-      "leading": {
-        "$type": "dimension",
-        "$value": "{font.lineHeight.300}"
-      },
-      "weight": {
-        "$type": "fontWeight",
-        "$value": "{font.weight.regular}"
-      }
-    },
-    "body2": {
-      "size": {
-        "$type": "dimension",
-        "$value": "{font.size.300}"
-      },
-      "leading": {
-        "$type": "dimension",
-        "$value": "{font.lineHeight.200}"
-      },
-      "weight": {
-        "$type": "fontWeight",
-        "$value": "{font.weight.regular}"
-      }
     }
   },
   "density": {
@@ -1500,6 +1218,91 @@
             }
           }
         }
+      },
+      "padding": {
+        "x": {
+          "$type": "dimension",
+          "$value": "16px",
+          "$extensions": {
+            "mosje": {
+              "themes": {
+                "compact": "12px"
+              }
+            }
+          }
+        },
+        "y": {
+          "$type": "dimension",
+          "$value": "8px",
+          "$extensions": {
+            "mosje": {
+              "themes": {
+                "compact": "6px"
+              }
+            }
+          }
+        }
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "8px",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "compact": "6px"
+            }
+          }
+        }
+      }
+    },
+    "row": {
+      "height": {
+        "$type": "dimension",
+        "$value": "48px",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "compact": "36px"
+            }
+          }
+        }
+      },
+      "padding": {
+        "x": {
+          "$type": "dimension",
+          "$value": "16px",
+          "$extensions": {
+            "mosje": {
+              "themes": {
+                "compact": "12px"
+              }
+            }
+          }
+        },
+        "y": {
+          "$type": "dimension",
+          "$value": "12px",
+          "$extensions": {
+            "mosje": {
+              "themes": {
+                "compact": "8px"
+              }
+            }
+          }
+        }
+      }
+    },
+    "section": {
+      "gap": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "compact": "16px"
+            }
+          }
+        }
       }
     }
   },
@@ -1508,7 +1311,7 @@
     "devanagari": {
       "$type": "fontFamily",
       "$value": "{font.family.devanagari}",
-      "$description": "Devanagari/Hindi text. Pair with lang=\"hi\" on the element. Never italic — the script has no italic tradition and slanting degrades legibility."
+      "$description": "Devanagari/Hindi text. Pair with lang=hi on the element. Never italic — the script has no italic tradition and slanting degrades legibility."
     }
   },
   "leading": {
@@ -1525,7 +1328,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.0}"
+              "navy": "{color.neutralDark.0}",
+              "dbim": "{color.neutralDark.0}"
             },
             "themes": {
               "dark": "{color.a11y.dark.surface}",
@@ -1534,12 +1338,13 @@
           }
         }
       },
-      "soft": {
+      "subtler": {
         "$value": "{color.neutral.50}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.50}"
+              "navy": "{color.neutralDark.50}",
+              "dbim": "{color.neutralDark.50}"
             },
             "themes": {
               "dark": "{color.a11y.dark.bg}",
@@ -1552,12 +1357,13 @@
   },
   "text": {
     "neutral": {
-      "strong": {
+      "bolder": {
         "$value": "{color.neutral.900}",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.900}"
+              "navy": "{color.neutralDark.900}",
+              "dbim": "{color.neutralDark.900}"
             },
             "themes": {
               "dark": "{color.neutral.0}"
@@ -1570,14 +1376,15 @@
       "brand": {
         "default": {
           "$description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast.",
-          "$value": "{color.primaryRamp.light.500}",
+          "$value": "{color.primaryRamp.blue.500}",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "{color.primaryRamp.dark.500}"
+                "navy": "{color.primaryRamp.navy.500}",
+                "dbim": "{color.primaryRamp.dbim.500}"
               },
               "themes": {
-                "dark": "{color.primaryRamp.light.300}"
+                "dark": "{color.primaryRamp.blue.300}"
               }
             }
           }
@@ -1592,7 +1399,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.100}"
+              "navy": "{color.neutralDark.100}",
+              "dbim": "{color.neutralDark.100}"
             },
             "themes": {
               "dark": "#262b33",
@@ -1606,7 +1414,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.200}"
+              "navy": "{color.neutralDark.200}",
+              "dbim": "{color.neutralDark.200}"
             },
             "themes": {
               "dark": "{color.a11y.dark.border}",
@@ -1615,13 +1424,14 @@
           }
         }
       },
-      "strong": {
+      "bolder": {
         "default": {
           "$value": "{color.neutral.400}",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "{color.neutralDark.400}"
+                "navy": "{color.neutralDark.400}",
+                "dbim": "{color.neutralDark.400}"
               },
               "themes": {
                 "dark": "#4a5263",
@@ -1639,18 +1449,25 @@
       "$extensions": {
         "mosje": {
           "colorModes": {
-            "navy": "rgba(0, 51, 102, 0.48)"
+            "navy": "rgba(0, 51, 102, 0.48)",
+            "dbim": "rgba(0, 51, 102, 0.48)"
           },
           "themes": {
             "dark": "rgba(125, 180, 245, 0.55)"
           }
         }
       }
+    },
+    "width": {
+      "$value": "{border.width.md}"
+    },
+    "offset": {
+      "$value": "{space.xxs}"
     }
   },
   "overlay": {
     "neutral": {
-      "stronger": {
+      "boldest": {
         "$value": "rgba(31, 36, 40, 0.5)",
         "$extensions": {
           "mosje": {
@@ -1664,106 +1481,815 @@
   },
   "inline": {
     "none": {
-      "$value": "{spacing.none}"
+      "$value": "{space.none}"
     },
     "2xs": {
-      "$value": "{spacing.xxs}"
+      "$value": "{space.xxs}"
     },
     "xs": {
-      "$value": "{spacing.xs}"
+      "$value": "{space.xs}"
     },
     "s": {
-      "$value": "{spacing.sm}"
+      "$value": "{space.sm}"
     },
     "m": {
-      "$value": "{spacing.md}"
+      "$value": "{space.md}"
     },
     "l": {
-      "$value": "{spacing.lg}"
+      "$value": "{space.lg}"
     },
     "xl": {
-      "$value": "{spacing.3xl}"
+      "$value": "{space.3xl}"
     }
   },
   "stack": {
     "none": {
-      "$value": "{spacing.none}"
+      "$value": "{space.none}"
     },
     "2xs": {
-      "$value": "{spacing.xs}"
+      "$value": "{space.xs}"
     },
     "xs": {
-      "$value": "{spacing.sm}"
+      "$value": "{space.sm}"
     },
     "s": {
-      "$value": "{spacing.md}"
+      "$value": "{space.md}"
     },
     "m": {
-      "$value": "{spacing.lg}"
+      "$value": "{space.lg}"
     },
     "l": {
-      "$value": "{spacing.2xl}"
+      "$value": "{space.2xl}"
     },
     "xl": {
-      "$value": "{spacing.3xl}"
+      "$value": "{space.3xl}"
     }
   },
   "padding": {
     "none": {
-      "$value": "{spacing.none}"
+      "$value": "{space.none}"
     },
     "3xs": {
-      "$value": "{spacing.xxs}"
+      "$value": "{space.xxs}"
     },
     "2xs": {
-      "$value": "{spacing.xs}"
+      "$value": "{space.xs}"
     },
     "xs": {
-      "$value": "{spacing.sm}"
+      "$value": "{space.sm}"
     },
     "s": {
-      "$value": "{spacing.md}"
+      "$value": "{space.md}"
     },
     "m": {
-      "$value": "{spacing.lg}"
+      "$value": "{space.lg}"
     },
     "l": {
-      "$value": "{spacing.xl}"
+      "$value": "{space.xl}"
     },
     "xl": {
-      "$value": "{spacing.2xl}"
+      "$value": "{space.2xl}"
     },
     "2xl": {
-      "$value": "{spacing.3xl}"
+      "$value": "{space.3xl}"
     },
     "3xl": {
-      "$value": "{spacing.10xl}"
+      "$value": "{space.10xl}"
     },
     "4xl": {
-      "$value": "{spacing.11xl}"
+      "$value": "{space.11xl}"
     }
   },
   "section": {
     "none": {
-      "$value": "{spacing.none}"
+      "$value": "{space.none}"
     },
     "xs": {
-      "$value": "{spacing.2xl}"
+      "$value": "{space.2xl}"
     },
     "s": {
-      "$value": "{spacing.3xl}"
+      "$value": "{space.3xl}"
     },
     "m": {
-      "$value": "{spacing.5xl}"
+      "$value": "{space.5xl}"
     },
     "l": {
-      "$value": "{spacing.6xl}"
+      "$value": "{space.6xl}"
     },
     "xl": {
-      "$value": "{spacing.7xl}"
+      "$value": "{space.7xl}"
     },
     "2xl": {
-      "$value": "{spacing.9xl}"
+      "$value": "{space.9xl}"
+    }
+  },
+  "chart": {
+    "$description": "Data-visualisation roles. Theme-aware: dark/hc overrides keep series legible on dark surfaces. cat 1–12 are mutually-distinguishable categorical series (brand-led); seq 50–900 is a single-hue ramp for choropleth + heatmap; div is red→neutral→green for signed data; trend/grid/axis/tooltip/region are structural.",
+    "cat": {
+      "1": {
+        "$value": "#0373df",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#5fa0ef"
+            }
+          }
+        }
+      },
+      "2": {
+        "$value": "#f97316",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#fb923c"
+            }
+          }
+        }
+      },
+      "3": {
+        "$value": "#2e7d32",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#66bb6a"
+            }
+          }
+        }
+      },
+      "4": {
+        "$value": "#7e22ce",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#c084fc"
+            }
+          }
+        }
+      },
+      "5": {
+        "$value": "#0e7490",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#22d3ee"
+            }
+          }
+        }
+      },
+      "6": {
+        "$value": "#b45309",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#fbbf24"
+            }
+          }
+        }
+      },
+      "7": {
+        "$value": "#be185d",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#f472b6"
+            }
+          }
+        }
+      },
+      "8": {
+        "$value": "#1558b0",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#7aaff8"
+            }
+          }
+        }
+      },
+      "9": {
+        "$value": "#4d7c0f",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#a3e635"
+            }
+          }
+        }
+      },
+      "10": {
+        "$value": "#9f1239",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#fb7185"
+            }
+          }
+        }
+      },
+      "11": {
+        "$value": "#0f766e",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#5eead4"
+            }
+          }
+        }
+      },
+      "12": {
+        "$value": "#475569",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#94a3b8"
+            }
+          }
+        }
+      }
+    },
+    "seq": {
+      "50": {
+        "$value": "#e8f2fd",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#0d1f33"
+            }
+          }
+        }
+      },
+      "100": {
+        "$value": "#c6dcf9",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#122a45"
+            }
+          }
+        }
+      },
+      "200": {
+        "$value": "#94bff5",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#16395c"
+            }
+          }
+        }
+      },
+      "300": {
+        "$value": "#5fa0ef",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#1c4a78"
+            }
+          }
+        }
+      },
+      "400": {
+        "$value": "#2d84e8",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#235e96"
+            }
+          }
+        }
+      },
+      "500": {
+        "$value": "#0373df",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#2d84e8"
+            }
+          }
+        }
+      },
+      "600": {
+        "$value": "#025fb8",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#4f9bee"
+            }
+          }
+        }
+      },
+      "700": {
+        "$value": "#014b92",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#7ab3f3"
+            }
+          }
+        }
+      },
+      "800": {
+        "$value": "#01376b",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#a6cdf7"
+            }
+          }
+        }
+      },
+      "900": {
+        "$value": "#002448",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#d2e6fb"
+            }
+          }
+        }
+      }
+    },
+    "div": {
+      "negStrong": {
+        "$value": "#a11d12",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#ff8a80"
+            }
+          }
+        }
+      },
+      "neg": {
+        "$value": "#ec5042",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#ff6b5e"
+            }
+          }
+        }
+      },
+      "negSoft": {
+        "$value": "#fad2cf",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#5a2420"
+            }
+          }
+        }
+      },
+      "mid": {
+        "$value": "#e2e6ea",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#343b48"
+            }
+          }
+        }
+      },
+      "posSoft": {
+        "$value": "#c8e6c9",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#1e3a24"
+            }
+          }
+        }
+      },
+      "pos": {
+        "$value": "#2e7d32",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#66bb6a"
+            }
+          }
+        }
+      },
+      "posStrong": {
+        "$value": "#1b5e20",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#81c784"
+            }
+          }
+        }
+      }
+    },
+    "trend": {
+      "up": {
+        "$value": "{color.green.500}",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#66bb6a"
+            }
+          }
+        }
+      },
+      "down": {
+        "$value": "{color.red.500}",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "#ff6b5e"
+            }
+          }
+        }
+      },
+      "flat": {
+        "$value": "{color.neutral.500}",
+        "$extensions": {
+          "mosje": {
+            "themes": {
+              "dark": "{color.a11y.dark.inkMuted}"
+            }
+          }
+        }
+      }
+    },
+    "grid": {
+      "$value": "{color.neutral.100}",
+      "$extensions": {
+        "mosje": {
+          "themes": {
+            "dark": "#262b33",
+            "hc": "#000000"
+          }
+        }
+      }
+    },
+    "axis": {
+      "$value": "{color.neutral.500}",
+      "$extensions": {
+        "mosje": {
+          "themes": {
+            "dark": "{color.a11y.dark.inkMuted}",
+            "hc": "#000000"
+          }
+        }
+      }
+    },
+    "tooltipBg": {
+      "$value": "{color.neutral.800}",
+      "$extensions": {
+        "mosje": {
+          "themes": {
+            "dark": "#2b313b",
+            "hc": "#000000"
+          }
+        }
+      }
+    },
+    "tooltipInk": {
+      "$value": "{color.neutral.0}",
+      "$extensions": {
+        "mosje": {
+          "themes": {
+            "dark": "{color.a11y.dark.ink}",
+            "hc": "#ffffff"
+          }
+        }
+      }
+    },
+    "regionEmpty": {
+      "$value": "{color.neutral.100}",
+      "$extensions": {
+        "mosje": {
+          "themes": {
+            "dark": "{color.a11y.dark.surfaceMuted}",
+            "hc": "#ffffff"
+          }
+        }
+      }
+    },
+    "regionStroke": {
+      "$value": "{color.neutral.0}",
+      "$extensions": {
+        "mosje": {
+          "themes": {
+            "dark": "{color.a11y.dark.bg}",
+            "hc": "#000000"
+          }
+        }
+      }
+    }
+  },
+  "layer": {
+    "0": {
+      "$value": "{bg.neutral.base}"
+    },
+    "1": {
+      "$value": "{bg.neutral.subtler}"
+    },
+    "2": {
+      "$value": "{bg.neutral.subtle}"
+    },
+    "3": {
+      "$value": "{bg.neutral.bold}"
+    },
+    "$description": "Nestable surfaces (Carbon's `layer` model). Each step is the background for content sitting ON the step below, so a card inside a card inside a page resolves by depth instead of by eye. `border/N` is the hairline that separates layer N from its parent.",
+    "$type": "color",
+    "border": {
+      "0": {
+        "$value": "{border.neutral.subtle}"
+      },
+      "1": {
+        "$value": "{border.neutral.subtle}"
+      },
+      "2": {
+        "$value": "{border.neutral.base}"
+      },
+      "3": {
+        "$value": "{border.neutral.base}"
+      }
+    }
+  },
+  "on": {
+    "$description": "Guaranteed foreground for a given fill — Material 3's `on-` pairing. Every entry was CHOSEN BY MEASUREMENT, not by eye: the ink (dark or inverse) that clears AA on that fill in the WORST brand wins, because a pairing is only as accessible as its least accessible brand. This exists so a designer reaching for a status chip does not have to guess the label colour.",
+    "$type": "color",
+    "bg": {
+      "neutral": {
+        "base": {
+          "$value": "{text.neutral.base}"
+        },
+        "subtler": {
+          "$value": "{text.neutral.base}"
+        },
+        "subtle": {
+          "$value": "{text.neutral.base}"
+        },
+        "bold": {
+          "$value": "{text.neutral.base}"
+        }
+      },
+      "brand": {
+        "primary": {
+          "base": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtle": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtler": {
+            "$value": "{text.neutral.base}"
+          },
+          "bold": {
+            "$value": "{text.neutral.base}"
+          },
+          "bolder": {
+            "$value": "{text.neutral.inverse}"
+          },
+          "boldest": {
+            "$value": "{text.neutral.inverse}"
+          }
+        },
+        "secondary": {
+          "base": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtle": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtler": {
+            "$value": "{text.neutral.base}"
+          },
+          "bold": {
+            "$value": "{text.neutral.base}"
+          },
+          "bolder": {
+            "$value": "{text.neutral.inverse}"
+          },
+          "boldest": {
+            "$value": "{text.neutral.inverse}"
+          }
+        },
+        "accent": {
+          "base": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtler": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtle": {
+            "$value": "{text.neutral.base}"
+          },
+          "bold": {
+            "$value": "{text.neutral.base}"
+          },
+          "bolder": {
+            "$value": "{text.neutral.inverse}"
+          },
+          "boldest": {
+            "$value": "{text.neutral.inverse}"
+          }
+        }
+      },
+      "status": {
+        "success": {
+          "base": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtle": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtler": {
+            "$value": "{text.neutral.base}"
+          },
+          "bold": {
+            "$value": "{text.neutral.base}"
+          },
+          "bolder": {
+            "$value": "{text.neutral.inverse}"
+          },
+          "boldest": {
+            "$value": "{text.neutral.inverse}"
+          }
+        },
+        "error": {
+          "base": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtle": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtler": {
+            "$value": "{text.neutral.base}"
+          },
+          "bold": {
+            "$value": "{text.neutral.base}"
+          },
+          "bolder": {
+            "$value": "{text.neutral.inverse}"
+          },
+          "boldest": {
+            "$value": "{text.neutral.inverse}"
+          }
+        },
+        "warning": {
+          "base": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtle": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtler": {
+            "$value": "{text.neutral.base}"
+          },
+          "bold": {
+            "$value": "{text.neutral.base}"
+          },
+          "bolder": {
+            "$value": "{text.neutral.inverse}"
+          },
+          "boldest": {
+            "$value": "{text.neutral.inverse}"
+          }
+        },
+        "info": {
+          "base": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtle": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtler": {
+            "$value": "{text.neutral.base}"
+          },
+          "bold": {
+            "$value": "{text.neutral.base}"
+          },
+          "bolder": {
+            "$value": "{text.neutral.inverse}"
+          },
+          "boldest": {
+            "$value": "{text.neutral.inverse}"
+          }
+        }
+      }
+    }
+  },
+  "blur": {
+    "$description": "Named blur strengths — UX4G 3.0's four semantic names over its own ramp.",
+    "$type": "dimension",
+    "subtle": {
+      "$value": "{blur.1}"
+    },
+    "soft": {
+      "$value": "{blur.2}"
+    },
+    "medium": {
+      "$value": "{blur.3}"
+    },
+    "strong": {
+      "$value": "{blur.4}"
+    }
+  },
+  "icon": {
+    "$description": "Icon sizes. `md` is the estate default (24px), matching the Material Symbols optical size <Icon> ships with — pick a step, never a raw number.",
+    "$type": "dimension",
+    "size": {
+      "xs": {
+        "$value": "{size.16}"
+      },
+      "sm": {
+        "$value": "{size.20}"
+      },
+      "md": {
+        "$value": "{size.24}"
+      },
+      "lg": {
+        "$value": "{size.32}"
+      },
+      "xl": {
+        "$value": "{size.40}"
+      }
+    }
+  },
+  "container": {
+    "$description": "Page container max-widths. sm–xl carry UX4G 3.0's exact values; `content` is the MoSJE 1280px content width mandated estate-wide, which until now existed only as a literal.",
+    "$type": "dimension",
+    "sm": {
+      "$value": "540px"
+    },
+    "md": {
+      "$value": "720px"
+    },
+    "lg": {
+      "$value": "960px"
+    },
+    "xl": {
+      "$value": "1140px"
+    },
+    "content": {
+      "$value": "1280px"
+    }
+  },
+  "elevation": {
+    "$description": "Which elevation a surface gets, by what the surface IS. The raw shadow ramp says how deep; this says what for.",
+    "$type": "shadow",
+    "flat": {
+      "$value": "{shadow.none}"
+    },
+    "card": {
+      "$value": "{shadow.xs}"
+    },
+    "raised": {
+      "$value": "{shadow.sm}"
+    },
+    "dropdown": {
+      "$value": "{shadow.md}"
+    },
+    "modal": {
+      "$value": "{shadow.lg}"
+    },
+    "toast": {
+      "$value": "{shadow.xl}"
+    }
+  },
+  "motion": {
+    "$description": "Motion by INTENT, pairing a duration with the easing that belongs to it. Entering decelerates and may take its time; leaving accelerates and gets out of the way. Binding a bare duration loses that pairing.",
+    "enter": {
+      "duration": {
+        "$value": "{motion.duration.base}"
+      },
+      "easing": {
+        "$value": "{motion.easing.out}"
+      }
+    },
+    "exit": {
+      "duration": {
+        "$value": "{motion.duration.fast}"
+      },
+      "easing": {
+        "$value": "{motion.easing.in}"
+      }
+    },
+    "emphasis": {
+      "duration": {
+        "$value": "{motion.duration.slow}"
+      },
+      "easing": {
+        "$value": "{motion.easing.inOut}"
+      }
+    }
+  },
+  "control": {
+    "$description": "The shape of an interactive control. Density already moves a control's size; these are what it is shaped like, which was hardcoded per component.",
+    "radius": {
+      "$type": "dimension",
+      "$value": "{radius.md}"
+    },
+    "border": {
+      "width": {
+        "$type": "dimension",
+        "$value": "{border.width.sm}"
+      }
     }
   }
 }

@@ -4,7 +4,11 @@
 
 Code is the source of truth. This document tells the designer how to import the latest token file into the SAMAVESH Figma library.
 
-**Figma target file:** [SAMAVESH Design System](https://www.figma.com/design/qyzTEy8dlb3ssYctlkMX5o/SAMAVESH-Design-System)
+**Figma target file:** [SAMAVESH Design System](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System) (`3FF5l0SMNIwdpZrKkeyPTm`)
+
+> *Corrected 2026-08-10.* This previously pointed at `qyzTEy8dlb3ssYctlkMX5o`, an older copy
+> that still has 261 variables and no `Theme` collection — so importing there looks successful
+> and reaches nobody. The canonical library is the one in `GOVERNANCE.md`, with 690 variables.
 **Token file to import:** `packages/tokens/dist/figma.tokens.json`
 
 ---

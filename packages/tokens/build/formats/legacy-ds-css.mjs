@@ -10,7 +10,7 @@ import { brandSelector, DEFAULT_BRAND } from "../brand-modes.mjs";
 // fluid, max@1280px) — the Website scale in :root (default) and the Portal scale under
 // [data-surface="portal"]. No @media breakpoints.
 
-/** Expand a UX4G semantic-spacing family into --ds-<family>-<step> → --sa-spacing-<family>-<step>. */
+/** Expand a UX4G semantic-spacing family into --ds-<family>-<step> → --sa-ref-space-<family>-<step>. */
 const spacingRole = (family, steps) =>
   // The semantic spacing roles were RENAMED (spacing.inline.m -> inline/m), so the target is
   // now the canonical top-level group, not a nested path under the raw scale.
@@ -55,8 +55,12 @@ export const LEGACY_DS_ALIASES = {
   "--ds-neutral-700":   "--sa-color-neutralScale-700",
   "--ds-neutral-800":   "--sa-color-neutralScale-800",
   "--ds-neutral-900":   "--sa-color-neutralScale-900",
-  "--ds-neutral-1000":  "--sa-color-neutralScale-1000",
-  "--ds-neutral-1100":  "--sa-color-neutralScale-1100",
+  // RETARGETED 2026-08-11, value-preserving. The canonical neutral endpoints renumbered to
+  // match UX4G (old 1000 -> 950, old 1100 -> 1000), so these two legacy names now point one
+  // rung lower to keep rendering exactly what they always did: #0a0d13 and #000000. Keeping
+  // the legacy spelling while the canonical name moves is precisely this layer's job.
+  "--ds-neutral-1000":  "--sa-color-neutralScale-950",
+  "--ds-neutral-1100":  "--sa-color-neutralScale-1000",
   "--ds-success-50":    "--sa-color-successScale-50",
   "--ds-success-100":   "--sa-color-successScale-100",
   "--ds-success-200":   "--sa-color-successScale-200",
@@ -105,36 +109,36 @@ export const LEGACY_DS_ALIASES = {
   "--ds-warning-tonal": "--sa-color-status-warningTonal",
   "--ds-info":          "--sa-color-status-info",
   "--ds-info-tonal":    "--sa-color-status-infoTonal",
-  "--ds-overlay":       "--sa-overlay-neutral-stronger",
+  "--ds-overlay":       "--sa-overlay-neutral-boldest",
   "--ds-ink":           "--sa-color-text-default",
-  "--ds-ink-strong":    "--sa-text-neutral-strong",
+  "--ds-ink-strong":    "--sa-text-neutral-bolder",
   "--ds-ink-muted":     "--sa-color-text-muted",
   "--ds-ink-info":      "--sa-color-text-info",
   "--ds-on-primary":    "--sa-color-text-onPrimary",
   "--ds-surface":       "--sa-bg-neutral-base",
-  "--ds-surface-muted": "--sa-bg-neutral-soft",
+  "--ds-surface-muted": "--sa-bg-neutral-subtler",
   "--ds-border":        "--sa-border-neutral-subtle",
   "--ds-border-strong": "--sa-border-neutral-base",
   "--ds-saffron":       "--sa-color-brand-saffron",
   "--ds-saffron-light": "--sa-color-brand-saffronLight",
   "--ds-saffron-dark":  "--sa-color-brand-saffronDark",
-  "--ds-gov-navy":      "--sa-color-brand-navy",
-  "--ds-gov-yellow":    "--sa-color-brand-yellow",
-  "--ds-spacing-none":  "--sa-spacing-none",
-  "--ds-spacing-xxs":   "--sa-spacing-xxs",
-  "--ds-spacing-xs":    "--sa-spacing-xs",
-  "--ds-spacing-sm":    "--sa-spacing-sm",
-  "--ds-spacing-md":    "--sa-spacing-md",
-  "--ds-spacing-lg":    "--sa-spacing-lg",
-  "--ds-spacing-xl":    "--sa-spacing-xl",
-  "--ds-spacing-2xl":   "--sa-spacing-2xl",
-  "--ds-spacing-3xl":   "--sa-spacing-3xl",
-  "--ds-spacing-4xl":   "--sa-spacing-4xl",
-  "--ds-spacing-5xl":   "--sa-spacing-5xl",
-  "--ds-spacing-6xl":   "--sa-spacing-6xl",
-  "--ds-spacing-7xl":   "--sa-spacing-7xl",
-  "--ds-spacing-8xl":   "--sa-spacing-8xl",
-  "--ds-spacing-9xl":   "--sa-spacing-9xl",
+  "--ds-navy":          "--sa-color-brand-navy",
+  "--ds-yellow":        "--sa-color-brand-yellow",
+  "--ds-spacing-none":  "--sa-ref-space-none",
+  "--ds-spacing-xxs":   "--sa-ref-space-xxs",
+  "--ds-spacing-xs":    "--sa-ref-space-xs",
+  "--ds-spacing-sm":    "--sa-ref-space-sm",
+  "--ds-spacing-md":    "--sa-ref-space-md",
+  "--ds-spacing-lg":    "--sa-ref-space-lg",
+  "--ds-spacing-xl":    "--sa-ref-space-xl",
+  "--ds-spacing-2xl":   "--sa-ref-space-2xl",
+  "--ds-spacing-3xl":   "--sa-ref-space-3xl",
+  "--ds-spacing-4xl":   "--sa-ref-space-4xl",
+  "--ds-spacing-5xl":   "--sa-ref-space-5xl",
+  "--ds-spacing-6xl":   "--sa-ref-space-6xl",
+  "--ds-spacing-7xl":   "--sa-ref-space-7xl",
+  "--ds-spacing-8xl":   "--sa-ref-space-8xl",
+  "--ds-spacing-9xl":   "--sa-ref-space-9xl",
   "--ds-radius-none":   "--sa-radius-none",
   "--ds-radius-xxs":    "--sa-radius-xxs",
   "--ds-radius-xs":     "--sa-radius-xs",
@@ -147,8 +151,8 @@ export const LEGACY_DS_ALIASES = {
   "--ds-radius-4xl":    "--sa-radius-4xl",
   "--ds-radius-5xl":    "--sa-radius-5xl",
   "--ds-radius-full":   "--sa-radius-full",
-  "--ds-spacing-10xl":  "--sa-spacing-10xl",
-  "--ds-spacing-11xl":  "--sa-spacing-11xl",
+  "--ds-spacing-10xl":  "--sa-ref-space-10xl",
+  "--ds-spacing-11xl":  "--sa-ref-space-11xl",
 
   // ── UX4G 3.0 semantic spacing roles (adopted verbatim; values match --ux4g-* 1:1) ──
   // Prefer these over the raw t-shirt scale: they state intent, not just a number.
@@ -175,44 +179,44 @@ export const LEGACY_DS_ALIASES = {
   "--ds-shadow-xl":     "--sa-shadow-xl",
 
   // ── Data-visualisation palette (see color.chart in semantic.json) ───────────
-  "--ds-chart-cat-1":   "--sa-color-chart-cat-1",
-  "--ds-chart-cat-2":   "--sa-color-chart-cat-2",
-  "--ds-chart-cat-3":   "--sa-color-chart-cat-3",
-  "--ds-chart-cat-4":   "--sa-color-chart-cat-4",
-  "--ds-chart-cat-5":   "--sa-color-chart-cat-5",
-  "--ds-chart-cat-6":   "--sa-color-chart-cat-6",
-  "--ds-chart-cat-7":   "--sa-color-chart-cat-7",
-  "--ds-chart-cat-8":   "--sa-color-chart-cat-8",
-  "--ds-chart-cat-9":   "--sa-color-chart-cat-9",
-  "--ds-chart-cat-10":  "--sa-color-chart-cat-10",
-  "--ds-chart-cat-11":  "--sa-color-chart-cat-11",
-  "--ds-chart-cat-12":  "--sa-color-chart-cat-12",
-  "--ds-chart-seq-50":  "--sa-color-chart-seq-50",
-  "--ds-chart-seq-100": "--sa-color-chart-seq-100",
-  "--ds-chart-seq-200": "--sa-color-chart-seq-200",
-  "--ds-chart-seq-300": "--sa-color-chart-seq-300",
-  "--ds-chart-seq-400": "--sa-color-chart-seq-400",
-  "--ds-chart-seq-500": "--sa-color-chart-seq-500",
-  "--ds-chart-seq-600": "--sa-color-chart-seq-600",
-  "--ds-chart-seq-700": "--sa-color-chart-seq-700",
-  "--ds-chart-seq-800": "--sa-color-chart-seq-800",
-  "--ds-chart-seq-900": "--sa-color-chart-seq-900",
-  "--ds-chart-div-neg-strong": "--sa-color-chart-div-negStrong",
-  "--ds-chart-div-neg":        "--sa-color-chart-div-neg",
-  "--ds-chart-div-neg-soft":   "--sa-color-chart-div-negSoft",
-  "--ds-chart-div-mid":        "--sa-color-chart-div-mid",
-  "--ds-chart-div-pos-soft":   "--sa-color-chart-div-posSoft",
-  "--ds-chart-div-pos":        "--sa-color-chart-div-pos",
-  "--ds-chart-div-pos-strong": "--sa-color-chart-div-posStrong",
-  "--ds-chart-trend-up":    "--sa-color-chart-trend-up",
-  "--ds-chart-trend-down":  "--sa-color-chart-trend-down",
-  "--ds-chart-trend-flat":  "--sa-color-chart-trend-flat",
-  "--ds-chart-grid":          "--sa-color-chart-grid",
-  "--ds-chart-axis":          "--sa-color-chart-axis",
-  "--ds-chart-tooltip-bg":    "--sa-color-chart-tooltipBg",
-  "--ds-chart-tooltip-ink":   "--sa-color-chart-tooltipInk",
-  "--ds-chart-region-empty":  "--sa-color-chart-regionEmpty",
-  "--ds-chart-region-stroke": "--sa-color-chart-regionStroke",
+  "--ds-chart-cat-1":   "--sa-chart-cat-1",
+  "--ds-chart-cat-2":   "--sa-chart-cat-2",
+  "--ds-chart-cat-3":   "--sa-chart-cat-3",
+  "--ds-chart-cat-4":   "--sa-chart-cat-4",
+  "--ds-chart-cat-5":   "--sa-chart-cat-5",
+  "--ds-chart-cat-6":   "--sa-chart-cat-6",
+  "--ds-chart-cat-7":   "--sa-chart-cat-7",
+  "--ds-chart-cat-8":   "--sa-chart-cat-8",
+  "--ds-chart-cat-9":   "--sa-chart-cat-9",
+  "--ds-chart-cat-10":  "--sa-chart-cat-10",
+  "--ds-chart-cat-11":  "--sa-chart-cat-11",
+  "--ds-chart-cat-12":  "--sa-chart-cat-12",
+  "--ds-chart-seq-50":  "--sa-chart-seq-50",
+  "--ds-chart-seq-100": "--sa-chart-seq-100",
+  "--ds-chart-seq-200": "--sa-chart-seq-200",
+  "--ds-chart-seq-300": "--sa-chart-seq-300",
+  "--ds-chart-seq-400": "--sa-chart-seq-400",
+  "--ds-chart-seq-500": "--sa-chart-seq-500",
+  "--ds-chart-seq-600": "--sa-chart-seq-600",
+  "--ds-chart-seq-700": "--sa-chart-seq-700",
+  "--ds-chart-seq-800": "--sa-chart-seq-800",
+  "--ds-chart-seq-900": "--sa-chart-seq-900",
+  "--ds-chart-div-neg-strong": "--sa-chart-div-negStrong",
+  "--ds-chart-div-neg":        "--sa-chart-div-neg",
+  "--ds-chart-div-neg-soft":   "--sa-chart-div-negSoft",
+  "--ds-chart-div-mid":        "--sa-chart-div-mid",
+  "--ds-chart-div-pos-soft":   "--sa-chart-div-posSoft",
+  "--ds-chart-div-pos":        "--sa-chart-div-pos",
+  "--ds-chart-div-pos-strong": "--sa-chart-div-posStrong",
+  "--ds-chart-trend-up":    "--sa-chart-trend-up",
+  "--ds-chart-trend-down":  "--sa-chart-trend-down",
+  "--ds-chart-trend-flat":  "--sa-chart-trend-flat",
+  "--ds-chart-grid":          "--sa-chart-grid",
+  "--ds-chart-axis":          "--sa-chart-axis",
+  "--ds-chart-tooltip-bg":    "--sa-chart-tooltipBg",
+  "--ds-chart-tooltip-ink":   "--sa-chart-tooltipInk",
+  "--ds-chart-region-empty":  "--sa-chart-regionEmpty",
+  "--ds-chart-region-stroke": "--sa-chart-regionStroke",
 
   // ── Type scale: backed by fluid --ds-type-* clamp() variables ───────────────
   // --ds-type-* is defined in :root as the Website surface and overridden under
@@ -298,8 +302,17 @@ export const LEGACY_DS_ALIASES = {
 const val = (t) => (t.$value !== undefined ? t.$value : t.value);
 
 // Fluid type: clamp() between a min (@360px viewport) and max (@1280px), Utopia-style.
-const CLAMP_WMIN = 360;
-const CLAMP_WMAX = 1280;
+/**
+ * The viewport anchors `clamp()` interpolates between. Read from the TOKEN, not restated:
+ * these were literals here and in figma-variables.mjs, so the estate had three copies of
+ * 360/1280 and no way to notice if one drifted. `breakpoint/*` is now the single source.
+ */
+const bpPx = (dict, step) => {
+  const t = dict.allTokens.find((x) => x.path.join(".") === `breakpoint.${step}`);
+  if (!t) throw new Error(`legacy-ds-css: breakpoint/${step} is missing — the fluid type scale ` +
+    `cannot be built without its anchors.`);
+  return parseFloat(t.$value ?? t.value);
+};
 
 // Type is emitted in REM, not px. GIGW 3.0 and WCAG 1.4.4 are satisfied by browser zoom
 // either way, but a reader who raises their browser's DEFAULT FONT SIZE without zooming —
@@ -321,14 +334,14 @@ const round = (n, dp = 4) => Math.round(n * 10 ** dp) / 10 ** dp;
 const rem = (px) => `${round(px / REM_BASE)}rem`;
 
 /** Return a clamp() string (or a static rem value when min === max). */
-function clampExpr(minPx, maxPx) {
+function clampExpr(minPx, maxPx, wmin, wmax) {
   const min = parseFloat(minPx);
   const max = parseFloat(maxPx);
   if (!Number.isFinite(min) || !Number.isFinite(max)) return maxPx ?? minPx;
   if (min === max) return min === 0 ? "0px" : rem(min);
-  const range = CLAMP_WMAX - CLAMP_WMIN;
+  const range = wmax - wmin;
   const slopeVw = ((max - min) / range) * 100; // vw coefficient
-  const yInt = min - ((max - min) / range) * CLAMP_WMIN; // intercept, in px before conversion
+  const yInt = min - ((max - min) / range) * wmin; // intercept, in px before conversion
   const lo = Math.min(min, max);
   const hi = Math.max(min, max);
   const s = round(slopeVw, 3);
@@ -342,6 +355,8 @@ function clampExpr(minPx, maxPx) {
  * Website scale → :root (default surface); Portal scale → [data-surface="portal"].
  */
 function buildResponsiveType(dictionary) {
+  const WMIN = bpPx(dictionary, "mobile");
+  const WMAX = bpPx(dictionary, "desktop");
   // font.role.<role>.{size|lh|para}  and  font.tracking.<key>  (letter-spacing)
   const roleTokens = dictionary.allTokens.filter(
     (t) => t.path[0] === "font" && (t.path[1] === "role" || t.path[1] === "tracking")
@@ -368,8 +383,8 @@ function buildResponsiveType(dictionary) {
     const legacyVar = `--ds-type-${suffix}`;
 
     const ty = t.original?.$extensions?.mosje?.type;
-    const webExpr = ty?.website ? clampExpr(ty.website.min, ty.website.max) : val(t);
-    const portalExpr = ty?.portal ? clampExpr(ty.portal.min, ty.portal.max) : webExpr;
+    const webExpr = ty?.website ? clampExpr(ty.website.min, ty.website.max, WMIN, WMAX) : val(t);
+    const portalExpr = ty?.portal ? clampExpr(ty.portal.min, ty.portal.max, WMIN, WMAX) : webExpr;
 
     website.push(`  ${cssVar}: ${webExpr};`);
     website.push(`  ${legacyVar}: var(${cssVar});`);
@@ -408,20 +423,29 @@ export const legacyDsCss = {
     };
 
     /**
-     * The canonical Tier-2 namespace is emitted as var() CHAINS, not resolved literals.
+     * The canonical Tier-2 AND Tier-3 namespaces are emitted as var() CHAINS, not resolved
+     * literals.
      *
      * Style Dictionary resolves `{color.text.default}` to a hex by default. If we emitted
      * that hex, `--sa-text-neutral` would freeze at whatever :root computed and would stop
-     * responding to [data-theme] / [data-brand] — a custom property substitutes var() at the
-     * element where it is DECLARED (design.md §1A). Keeping the chain, and re-asserting it
-     * in any block that redeclares the target, is what makes theme islands work.
+     * responding to [data-brand] — a custom property substitutes var() at the element where
+     * it is DECLARED (design.md §1A). Keeping the chain, and re-asserting it in any block
+     * that redeclares the target, is what makes brand islands work.
+     *
+     * Tier 3 was excluded until 2026-08-10, and the consequence was silent: all 296
+     * `--sa-cmp-*` shipped as frozen hexes, so the ENTIRE component layer ignored the brand
+     * axis. `--sa-cmp-action-brand-primary-default-bg` was `#025fb8` under Blue and `#025fb8`
+     * under Navy — the primary button never changed brand. Figma had the same tokens as
+     * ALIASES, where 85 of them did repaint, so the two sides disagreed about the layer that
+     * describes buttons and nothing detected it. The source was never the problem: Tier 3 is
+     * 196 references and zero literals. Only the emit flattened it.
      */
-    const SYSTEM_ALIAS_FILE = /system\.generated\.json$/;
+    const ALIAS_EMIT_FILE = /(system|component)\.generated\.json$|component\.json$/;
     const systemAliasPairs = [];
     const lines = regularTokens.map((t) => {
       const name = cssNameFor(t);
       const orig = t.original?.$value ?? t.original?.value;
-      if (SYSTEM_ALIAS_FILE.test(t.filePath ?? "") && typeof orig === "string" && orig.startsWith("{")) {
+      if (ALIAS_EMIT_FILE.test(t.filePath ?? "") && typeof orig === "string" && orig.startsWith("{")) {
         const target = refToVar(orig);
         systemAliasPairs.push([name, target]);
         return `  ${name}: var(${target});`;
@@ -498,10 +522,28 @@ export const legacyDsCss = {
     // Re-asserting the rest is a provable no-op (the target is inherited unchanged), and
     // blanket re-assertion was emitting the whole ~290-entry alias table into all four
     // theme blocks — mostly spacing/radius/shadow/type aliases that no theme can vary.
+    // Re-assertion is TRANSITIVE, and has to be. An alias re-declared inside a block becomes
+    // a changed source for anything pointing at IT, so one pass only reaches depth 1. That
+    // was invisible while Tier 3 emitted literals: with `--sa-cmp-*` now chaining through
+    // Tier 2, `cmp/action/... -> bg/brand/primary/bolder -> color/primaryScale/600` is three
+    // deep, and a single pass would re-assert the middle link while leaving the component
+    // token resolving against :root — brand-blind in exactly the way this change exists to
+    // fix. Iterating to a fixpoint costs one small loop and removes the depth limit entirely.
     const reassert = (block) => {
-      const lines = [...legacyPairs, ...systemAliasPairs]
-        .filter(([, target]) => block.vars.has(target))
-        .map(([oldName, target]) => `  ${oldName}: var(${target});`);
+      const pairs = [...legacyPairs, ...systemAliasPairs];
+      const changed = new Set(block.vars);
+      const emitted = new Map();
+      for (let pass = 0; pass < 16; pass++) {
+        let grew = false;
+        for (const [name, target] of pairs) {
+          if (emitted.has(name) || !changed.has(target)) continue;
+          emitted.set(name, target);
+          changed.add(name);
+          grew = true;
+        }
+        if (!grew) break;
+      }
+      const lines = [...emitted].map(([oldName, target]) => `  ${oldName}: var(${target});`);
       return lines.length
         ? `\n\n  /* re-resolve every alias whose source changed in this block */\n${lines.join("\n")}`
         : "";

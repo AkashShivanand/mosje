@@ -1,6 +1,5 @@
 {
   "$description": "Declarative source for the Tier-3 Action matrix. Expanded into DTCG tokens by build/generate-component-tokens.mjs — NEVER hand-write the resulting token names. Spec §7.3.",
-
   "$notes": [
     "Ramp steps, not filter: brightness(). button.css currently computes hover/active with",
     "filter: brightness(0.95) — which means those colours cannot be contrast-tested, cannot be",
@@ -10,50 +9,122 @@
     "`success` is an intent here but not in UX4G's Action matrix. SAMAVESH's Button ships one,",
     "so the matrix describes the component we have (spec §7.3, corrected by the Phase 1 slice)."
   ],
-
   "intents": {
-    "brand":       { "scale": "primaryScale", "onFill": "{color.neutralScale.0}" },
-    "success":     { "scale": "successScale", "onFill": "{color.neutralScale.0}" },
-    "destructive": { "scale": "dangerScale",  "onFill": "{color.neutralScale.0}" },
-    "neutral":     { "scale": "neutralScale", "onFill": "{color.neutralScale.0}" }
+    "brand": {
+      "scale": "primaryScale",
+      "onFill": "{color.neutralScale.0}"
+    },
+    "success": {
+      "scale": "successScale",
+      "onFill": "{color.neutralScale.0}"
+    },
+    "destructive": {
+      "scale": "dangerScale",
+      "onFill": "{color.neutralScale.0}"
+    },
+    "neutral": {
+      "scale": "neutralScale",
+      "onFill": "{color.neutralScale.0}"
+    }
   },
-
   "$stepNotes": {
     "fill": "600 not 500 — 500 fails 4.5:1 against white for the label on several ramps. See test/prominence-contract.test.mjs.",
     "disabled": "A flat neutral fill, NOT the intent colour at reduced opacity: a washed-out red still reads as an error affordance."
   },
-
   "variants": {
     "primary": {
       "$comment": "filled",
-      "default":  { "bg": "600", "text": "onFill", "border": "600" },
-      "hover":    { "bg": "700", "text": "onFill", "border": "700" },
-      "active":   { "bg": "800", "text": "onFill", "border": "800" },
-      "disabled": { "bg": "neutral200", "text": "neutralDisabled", "border": "neutral200" }
+      "default": {
+        "bg": "600",
+        "text": "onFill",
+        "border": "600"
+      },
+      "hover": {
+        "bg": "700",
+        "text": "onFill",
+        "border": "700"
+      },
+      "active": {
+        "bg": "800",
+        "text": "onFill",
+        "border": "800"
+      },
+      "disabled": {
+        "bg": "neutral200",
+        "text": "neutralDisabled",
+        "border": "neutral200"
+      }
     },
     "secondary": {
       "$comment": "outlined",
-      "default":  { "bg": "transparent", "text": "700", "border": "300" },
-      "hover":    { "bg": "50",          "text": "700", "border": "400" },
-      "active":   { "bg": "100",         "text": "800", "border": "500" },
-      "disabled": { "bg": "transparent", "text": "neutralDisabled", "border": "neutral200" }
+      "default": {
+        "bg": "transparent",
+        "text": "700",
+        "border": "300"
+      },
+      "hover": {
+        "bg": "50",
+        "text": "700",
+        "border": "400"
+      },
+      "active": {
+        "bg": "100",
+        "text": "800",
+        "border": "500"
+      },
+      "disabled": {
+        "bg": "transparent",
+        "text": "neutralDisabled",
+        "border": "neutral200"
+      }
     },
     "tertiary": {
       "$comment": "text",
-      "default":  { "bg": "transparent", "text": "700", "border": "transparent" },
-      "hover":    { "bg": "50",          "text": "700", "border": "transparent" },
-      "active":   { "bg": "100",         "text": "800", "border": "transparent" },
-      "disabled": { "bg": "transparent", "text": "neutralDisabled", "border": "transparent" }
+      "default": {
+        "bg": "transparent",
+        "text": "700",
+        "border": "transparent"
+      },
+      "hover": {
+        "bg": "50",
+        "text": "700",
+        "border": "transparent"
+      },
+      "active": {
+        "bg": "100",
+        "text": "800",
+        "border": "transparent"
+      },
+      "disabled": {
+        "bg": "transparent",
+        "text": "neutralDisabled",
+        "border": "transparent"
+      }
     },
     "tonal": {
       "$comment": "soft fill, dark label",
-      "default":  { "bg": "100", "text": "800", "border": "100" },
-      "hover":    { "bg": "200", "text": "800", "border": "200" },
-      "active":   { "bg": "300", "text": "900", "border": "300" },
-      "disabled": { "bg": "neutral200", "text": "neutralDisabled", "border": "neutral200" }
+      "default": {
+        "bg": "100",
+        "text": "800",
+        "border": "100"
+      },
+      "hover": {
+        "bg": "200",
+        "text": "800",
+        "border": "200"
+      },
+      "active": {
+        "bg": "300",
+        "text": "900",
+        "border": "300"
+      },
+      "disabled": {
+        "bg": "neutral200",
+        "text": "neutralDisabled",
+        "border": "neutral200"
+      }
     }
   },
-
   "$overrideNotes": [
     "Per-intent step overrides. The four ramps are NOT perceptually equivalent at equal steps,",
     "so one step table cannot serve all of them. These two were found by",
@@ -63,21 +134,53 @@
     "    progression shifts up one step to 700/800/900.",
     "  destructive/tonal/hover — dangerScale.800 on 200 is 4.02:1; 900 on 200 is 6.28:1.",
     "Add an override here rather than moving the shared step table: the other three intents",
-    "pass comfortably and would lose contrast headroom for no reason."
+    "pass comfortably and would lose contrast headroom for no reason.",
+    "  brand/tonal/* — added 2026-08-11 with the regenerated ramps. The Navy brand runs DARKER",
+    "    than Blue by design (the two are only 9 degrees apart in hue, so lightness is the only",
+    "    thing telling them apart), which makes primaryScale.300 a MID tone in Navy rather than a",
+    "    tint: navy 900 on navy 300 measured 4.33:1. The tonal progression therefore shifts down a",
+    "    step to 50/100/200 for the brand intent only — the other three ramps are brand-invariant",
+    "    and keep their headroom at 100/200/300."
   ],
   "overrides": {
     "destructive": {
       "primary": {
-        "default": { "bg": "700", "border": "700" },
-        "hover":   { "bg": "800", "border": "800" },
-        "active":  { "bg": "900", "border": "900" }
+        "default": {
+          "bg": "700",
+          "border": "700"
+        },
+        "hover": {
+          "bg": "800",
+          "border": "800"
+        },
+        "active": {
+          "bg": "900",
+          "border": "900"
+        }
       },
       "tonal": {
-        "hover": { "text": "900" }
+        "hover": {
+          "text": "900"
+        }
+      }
+    },
+    "brand": {
+      "tonal": {
+        "default": {
+          "bg": "50",
+          "border": "50"
+        },
+        "hover": {
+          "bg": "100",
+          "border": "100"
+        },
+        "active": {
+          "bg": "200",
+          "border": "200"
+        }
       }
     }
   },
-
   "$inverseNotes": [
     "For a button sitting on a solid brand surface (e.g. a navy page header). Modelled as a",
     "qualifier so it composes with the variants above instead of needing new variant words.",
@@ -85,16 +188,48 @@
   ],
   "inverse": {
     "primary": {
-      "default":  { "bg": "white",      "text": "700",   "border": "white" },
-      "hover":    { "bg": "white92",    "text": "800",   "border": "white92" },
-      "active":   { "bg": "white84",    "text": "900",   "border": "white84" },
-      "disabled": { "bg": "white40",    "text": "white64", "border": "white40" }
+      "default": {
+        "bg": "white",
+        "text": "700",
+        "border": "white"
+      },
+      "hover": {
+        "bg": "white92",
+        "text": "800",
+        "border": "white92"
+      },
+      "active": {
+        "bg": "white84",
+        "text": "900",
+        "border": "white84"
+      },
+      "disabled": {
+        "bg": "white40",
+        "text": "white64",
+        "border": "white40"
+      }
     },
     "secondary": {
-      "default":  { "bg": "transparent", "text": "white",   "border": "white40" },
-      "hover":    { "bg": "white10",     "text": "white",   "border": "white64" },
-      "active":   { "bg": "white16",     "text": "white",   "border": "white" },
-      "disabled": { "bg": "transparent", "text": "white40", "border": "white24" }
+      "default": {
+        "bg": "transparent",
+        "text": "white",
+        "border": "white40"
+      },
+      "hover": {
+        "bg": "white10",
+        "text": "white",
+        "border": "white64"
+      },
+      "active": {
+        "bg": "white16",
+        "text": "white",
+        "border": "white"
+      },
+      "disabled": {
+        "bg": "transparent",
+        "text": "white40",
+        "border": "white24"
+      }
     }
   }
 }

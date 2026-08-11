@@ -86,13 +86,13 @@ function Section({ title, variants }: { title: string; variants: Variant[] }) {
   return (
     <section className="border-t border-gray-200 pt-8">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-[22px] font-semibold text-gov-blue-dark">{title}</h2>
+        <h2 className="text-[22px] font-semibold text-primary-dark">{title}</h2>
         <span className="text-[13px] text-ink-muted">{active.note}</span>
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
         {variants.map((v, idx) => (
           <button key={v.label} type="button" onClick={() => { setI(idx); setAction(null); }} aria-pressed={i === idx}
-            className={`rounded-lg px-3.5 py-1.5 text-[13px] font-semibold transition-colors ${i === idx ? "bg-gov-blue text-white" : "bg-surface-muted text-ink-muted hover:bg-gov-blue/10 hover:text-gov-blue-dark"}`}>
+            className={`rounded-lg px-3.5 py-1.5 text-[13px] font-semibold transition-colors ${i === idx ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:bg-primary/10 hover:text-primary-dark"}`}>
             {v.label}
           </button>
         ))}
@@ -100,7 +100,7 @@ function Section({ title, variants }: { title: string; variants: Variant[] }) {
 
       {/* Behaviour readout */}
       <div className="mt-4 flex items-center gap-2 rounded-lg border border-dashed border-gray-300 bg-surface-muted/40 px-3.5 py-2 text-[12px]">
-        <Icon name="ads_click" size={14} className="shrink-0 text-gov-blue" aria-hidden />
+        <Icon name="ads_click" size={14} className="shrink-0 text-primary" aria-hidden />
         {action ? (
           <span className="text-ink">
             Clicked <span className="font-semibold">“{action.text}”</span>{" "}
@@ -121,8 +121,8 @@ export default function NmbaOptionsPage() {
     <main className="min-h-screen bg-white">
       <div className="border-b border-border-strong bg-surface-muted">
         <div className="mx-auto max-w-[1280px] px-4 py-6">
-          <p className="text-[12px] font-semibold uppercase tracking-wide text-gov-blue">Design options · internal review</p>
-          <h1 className="mt-1 text-[26px] font-semibold text-gov-blue-dark">NMBA widget options</h1>
+          <p className="text-[12px] font-semibold uppercase tracking-wide text-primary">Design options · internal review</p>
+          <h1 className="mt-1 text-[26px] font-semibold text-primary-dark">NMBA widget options</h1>
           <p className="mt-1 max-w-2xl text-[14px] text-ink-muted">
             Flip between designs for each widget and interact with them — hover for states, click to preview each
             action&rsquo;s destination. Nothing here is wired to the live homepage; tell me your final picks and I&rsquo;ll set them.

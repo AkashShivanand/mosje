@@ -71,7 +71,9 @@ a:focus-visible {
 
 /* Code */
 code:not([class]) {
-  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  /* The mono face is a token (IBM Plex Mono as of 2026-08-11) — hardcoding the stack here
+     meant the docs portal kept rendering the old one after the token changed. */
+  font-family: var(--ds-font-mono);
   font-size: 0.875em;
   background-color: var(--ds-surface-muted);
   border: 1px solid var(--ds-border);

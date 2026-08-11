@@ -19,6 +19,12 @@ export const globalTypes = {
       items: [
         { value: "blue", title: "Blue" },
         { value: "navy", title: "Navy" },
+        // A third brand for evaluation (2026-08-11): the DBIM key colour #162F6A. It measures
+        // deltaE 1.9 from navy — the same colour to the eye — so the switch is expected to look
+        // like almost nothing happens. That is the point: seeing them side by side is what
+        // settles whether the estate needs both. Deliberately absent from the Figma library,
+        // which keeps two modes.
+        { value: "dbim", title: "DBIM Blue" },
       ],
       dynamicTitle: true,
     },

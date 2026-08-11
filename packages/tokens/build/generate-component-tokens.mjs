@@ -1,3 +1,4 @@
+import { guidanceFor } from "./usage-guidance.mjs";
 /**
  * Expand src/component-matrix.json into DTCG Tier-3 tokens.
  *
@@ -72,7 +73,7 @@ for (const intent of Object.keys(matrix.intents)) {
         setPath(out, path, {
           $type: "color",
           $value: resolveCell(spec, intent, false),
-          $description: `${intent} ${variant} button, ${state} state, ${property}`,
+          $description: guidanceFor(["action", intent, variant, state, property], "cmp") ?? `${intent} ${variant} button, ${state} state, ${property}`,
         });
         generated.push(toCssName(path, "cmp"));
       }
@@ -92,7 +93,7 @@ for (const intent of Object.keys(matrix.intents)) {
         setPath(out, path, {
           $type: "color",
           $value: resolveCell(spec, intent, true),
-          $description: `${intent} ${variant} button on a solid brand surface, ${state} state, ${property}`,
+          $description: guidanceFor(["action", intent, variant, "inverse", state, property], "cmp") ?? `${intent} ${variant} button on a solid brand surface, ${state} state, ${property}`,
         });
         generated.push(toCssName(path, "cmp"));
       }

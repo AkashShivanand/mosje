@@ -42,7 +42,7 @@ export function LocatorTable() {
           {(["", ...CENTRE_TYPE_ORDER] as const).map((t) => (
             <button key={t || "all"} type="button" onClick={() => { setType(t as CentreType | ""); setPage(0); }}
               className={cn("rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
-                type === t ? "bg-gov-blue text-white" : "bg-surface-muted text-ink-muted hover:text-gov-blue-dark")}>
+                type === t ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:text-primary-dark")}>
               {t === "" ? `All ${filtered.length}` : `${t} ${CENTRE_TYPE_META[t].count}`}
             </button>
           ))}
@@ -69,7 +69,7 @@ export function LocatorTable() {
               {rows.map((c, i) => {
                 const active = selected ? centreKey(selected) === centreKey(c) : false;
                 return (
-                  <tr key={`${centreKey(c)}#${i}`} className={cn("cursor-pointer transition-colors", active ? "bg-gov-blue/[0.06]" : "hover:bg-surface-muted/50")} onClick={() => setSelected(c)}>
+                  <tr key={`${centreKey(c)}#${i}`} className={cn("cursor-pointer transition-colors", active ? "bg-primary/[0.06]" : "hover:bg-surface-muted/50")} onClick={() => setSelected(c)}>
                     <td className="max-w-[280px] px-4 py-2.5 font-medium text-ink"><span className="line-clamp-1">{c.name}</span></td>
                     <td className="px-4 py-2.5">
                       <span className="inline-flex items-center gap-1.5 font-medium" style={{ color: CENTRE_TYPE_META[c.type].color }}>
@@ -80,8 +80,8 @@ export function LocatorTable() {
                     <td className="px-4 py-2.5 text-ink-muted">{c.state}</td>
                     <td className="whitespace-nowrap px-4 py-2.5 text-right">
                       <span className="inline-flex items-center gap-2">
-                        <button type="button" onClick={(e) => { e.stopPropagation(); setSelected(c); }} className="inline-flex items-center gap-1 text-[12px] font-semibold text-gov-blue hover:text-gov-blue-dark"><Icon name="location_on" size={14} /> Map</button>
-                        <a href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-1 text-[12px] font-semibold text-gov-blue hover:text-gov-blue-dark"><Icon name="navigation" size={14} /> Directions</a>
+                        <button type="button" onClick={(e) => { e.stopPropagation(); setSelected(c); }} className="inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:text-primary-dark"><Icon name="location_on" size={14} /> Map</button>
+                        <a href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:text-primary-dark"><Icon name="navigation" size={14} /> Directions</a>
                       </span>
                     </td>
                   </tr>

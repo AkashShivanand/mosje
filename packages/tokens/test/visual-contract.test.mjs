@@ -39,11 +39,67 @@ const actual = resolveContract(cssText);
  * from this list — the compat layer was retargeted, not renamed.
  */
 const RENAMES = {
-  // Empty by design. The 2026-08-10 `default` ambiguity rename (prominence -> `base`, link
-  // variant -> `brand`) was proven here — 27 names, byte-identical values in all 7 contexts —
-  // and the fixture was then re-baselined when the appearance axis was removed, so those claims
-  // are spent. The proof lives in commit fa7dd9b and the changelog, not in a list that can only
-  // grow. Add an entry only for a rename that has not yet been baselined.
+  // 2026-08-11 — `gov-` dropped from every colour name (gov-blue/gov-blue-dark/gov-blue-tonal/
+  // gov-navy/gov-yellow -> primary/primary-dark/primary-tonal/navy/yellow, 330 call sites).
+  // A colour is named for what it DOES in the system, not for who owns the system, and the
+  // prefix carried no information: every colour here is a government colour. `gov-blue` and
+  // `primary` were already the same value, so that pair was a merge, not a remap. The two
+  // --ds-* renames were PROVEN value-preserving here before being baselined, so their
+  // entries are deleted per the note above.
+
+  // 2026-08-11 — the neutral endpoints renumbered to match UX4G 3.0 (pure white at `0`, pure
+  // black at `1000`, near-black shade at `950`); we had them one slot high. All six were
+  // PROVEN value-preserving here first — old name's old value === new name's new value, in
+  // every selector context — and only then baselined, so their entries are deleted per the
+  // note above. The proof is in this commit, not in a list that would otherwise only grow.
+
+  // NOTE — the 2026-08-10 value-naming of the type primitives (`font/size/400` -> `font/size/16`)
+  // is deliberately NOT listed here, because it was a rename AND a unit change: the steps now
+  // alias the new `size/*` scale, which carries UX4G's rem values. RENAMES asserts the old and
+  // new resolve identically, and `16px` -> `1rem` does not, so claiming it here would be false.
+  //
+  // The fixture was re-baselined instead. Safe, and an improvement: nothing renders from these
+  // (zero `var(--sa-ref-font-size-*)` call sites), and their one consumer is the UX4G parity
+  // layer — where `--ux4g-line-height-16` IS `1rem` in UX4G's own contract, so binding a rem
+  // makes conformance more exact than binding a px did.
+
+  // Otherwise empty, and that is the healthy state. Every rename this file has carried —
+  // `spacing/*`→`space/*`, the brand ramps' `light|dark`→`blue|navy`, `color/chart/*`→`chart/*`,
+  // and the ordinal ladder — was PROVEN here first (old name's old value === new name's new
+  // value, in every selector context) and only then baselined into the fixture. The proof
+  // lives in the commits and the changelog, not in a list that would otherwise only grow.
+  //
+  // Add an entry only for a rename that has not yet been baselined, and delete it once it has:
+  // the stale-entry test below will tell you when.
+  //
+  // NOT a place for a VALUE change. A token that renders differently must move the fixture
+  // with a written reason, never be laundered through here as if it had only been renamed.
+};
+
+/**
+ * Tokens DELETED on purpose, with the reason.
+ *
+ * A rename and a deletion are different claims and were being treated the same: the only way
+ * to retire a token was to quietly re-baseline the fixture, which is indistinguishable from
+ * losing one by accident. Listing them makes the removal reviewable, and the stale-entry test
+ * below stops the list outliving the tokens.
+ *
+ * The bar for an entry is EVIDENCE OF ZERO CONSUMERS, not "we think nobody uses it".
+ */
+const REMOVED = {
+  // The fixed 5-role type scale. It shadowed the fluid 21-role scale under a friendlier name
+  // (`--sa-type-display-size` beside `--sa-type-display-1-size`), aliased the RAW size steps so
+  // it could never respond to surface or breakpoint, and had zero consumers — verified with an
+  // exact-match grep for `var(--sa-type-<role>-<prop>)` across packages/ and apps/, including
+  // the generated sheet itself. Anything reaching for type by name now gets the responsive one.
+  ...Object.fromEntries(
+    ["display", "title1", "headline", "body1", "body2"].flatMap((role) =>
+      ["size", "leading", "weight"].map((prop) => [
+        `--sa-type-${role}-${prop}`,
+        "dead fixed type scale, 0 consumers — superseded by the fluid --sa-type-<role>-<n>-* roles",
+      ]),
+    ),
+  ),
 };
 
 /** Cap the noise when a whole namespace shifts at once. */
@@ -95,6 +151,7 @@ test("no token disappears without a declared rename", () => {
     for (const name of Object.keys(props)) {
       const nowName = RENAMES[name] ?? name;
       if (current[nowName] !== undefined) continue;
+      if (REMOVED[name]) continue;
       dropped.push(
         nowName === name
           ? `${selector} ${name}`
@@ -106,7 +163,21 @@ test("no token disappears without a declared rename", () => {
   assert.deepEqual(
     dropped,
     [],
-    `these tokens are gone; add an entry to RENAMES if they moved:${summarise(dropped)}`,
+    `these tokens are gone. Add an entry to RENAMES if one MOVED, or to REMOVED — with ` +
+      `evidence of zero consumers — if one was retired:${summarise(dropped)}`,
+  );
+});
+
+test("every declared removal is actually gone — REMOVED has no stale entries", () => {
+  // Symmetrical with the rename ratchet. A token listed as removed that still ships means the
+  // list has stopped describing the system, and the next real deletion hides inside it.
+  const stillHere = Object.keys(REMOVED).filter((name) =>
+    Object.values(actual).some((props) => props[name] !== undefined),
+  );
+  assert.deepEqual(
+    stillHere,
+    [],
+    `${stillHere.length} token(s) are listed in REMOVED but still emitted — delete the entries`,
   );
 });
 

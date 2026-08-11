@@ -58,9 +58,9 @@ function resolveIn(selector, name, depth = 0) {
 
 /** new canonical name ↔ the legacy name it must agree with. */
 const PAIRS = [
-  ["--sa-text-neutral-primary", "--ds-ink"],
-  ["--sa-text-neutral-secondary", "--ds-ink-muted"],
-  ["--sa-text-neutral-strong", "--ds-ink-strong"],
+  ["--sa-text-neutral-base", "--ds-ink"],
+  ["--sa-text-neutral-subtle", "--ds-ink-muted"],
+  ["--sa-text-neutral-bolder", "--ds-ink-strong"],
   ["--sa-text-neutral-inverse", "--ds-on-primary"],
   ["--sa-text-brand-primary-base", "--ds-primary"],
   ["--sa-text-status-success-base", "--ds-success"],
@@ -69,12 +69,12 @@ const PAIRS = [
   ["--sa-text-status-info-base", "--ds-info"],
   ["--sa-text-link-brand-default", "--ds-link"],
   ["--sa-bg-neutral-base", "--ds-surface"],
-  ["--sa-bg-neutral-soft", "--ds-surface-muted"],
+  ["--sa-bg-neutral-subtler", "--ds-surface-muted"],
   ["--sa-border-neutral-subtle", "--ds-border"],
   ["--sa-border-neutral-base", "--ds-border-strong"],
   ["--sa-border-brand-primary-base", "--ds-primary"],
   ["--sa-focus-ring", "--ds-primary-ring"],
-  ["--sa-overlay-neutral-stronger", "--ds-overlay"],
+  ["--sa-overlay-neutral-boldest", "--ds-overlay"],
   ["--sa-inline-m", "--ds-inline-m"],
   ["--sa-stack-m", "--ds-stack-m"],
   ["--sa-padding-l", "--ds-padding-l"],

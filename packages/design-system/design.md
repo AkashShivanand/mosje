@@ -12,7 +12,32 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v1.11.8 (DEMODOCK PLACEMENT: the FAB moves from
+  Last reviewed: 2026-08-11 · System version: v0.13.1 (v0.13.0 IS NOW LIVE IN FIGMA —
+  36 variables created, 899 total across 8 collections, and set equality with the build
+  payload is PROVEN per collection by checksum rather than inferred from counts. The six
+  accent foregrounds were chosen BY MEASUREMENT, not by rung name: accent flips to white
+  ink at `bolder` and its `bold` rung sits at 4.60:1, so inheriting primary's flip point
+  would have shipped an unreadable pairing. The `on/*` coverage gate no longer asserts a
+  floor — it derives the expected set from the fills, which is what a count could never do.
+  NOTHING WAS DELETED: the neutral endpoints were renumbered by a two-step RENAME CHAIN
+  with ids preserved, so no binding moved. An earlier note here called that a hard delete;
+  it was inferred from a missing NAME, which cannot distinguish a rename from a deletion —
+  only an id lookup can. See $incidents in packages/tokens/reference/figma-live.json.)
+
+  System version: v0.13.0 (THE COLOUR LAYER WAS REBUILT.
+  Audit finding C-02 is closed: in the Navy brand, bg/brand/secondary/bold and
+  bg/status/success/bold measured 1.00:1 apart — a secondary-action chip and a saved-state
+  chip were the same object. Secondary and accent are now brand-INVARIANT and only PRIMARY
+  changes with data-brand. The two SAMAVESH logo colours are first-class ramps (India Saffron
+  #FF671F, India Green #046A38), success is unified onto that same green, and Navy's key
+  colour is the DBIM #162F6A that the DBIM audit fails the estate on twice. Ramps are now
+  GENERATED from anchors by one rule (build/ramp.mjs) rather than hand-picked — the Navy ramp
+  used to fall 27.4 L* in one step and crush four rungs into fifteen points. Every chromatic
+  ramp gained step 950 for UX4G parity (11 steps) and the neutral endpoints renumbered so pure
+  white is 0 and pure black is 1000. `gov-` was dropped from every colour name across 330 call
+  sites. A hue-separation gate now makes the C-02 class of defect unshippable.)
+
+  System version: v1.11.8 (DEMODOCK PLACEMENT: the FAB moves from
   bottom-left to bottom-right, docked directly above the UX4G accessibility widget's own trigger —
   one coordinated utility rail instead of two FABs in unrelated corners at different sizes/offsets.
   The gap above the widget is measured live off its real geometry (never hardcoded), so an upstream
@@ -162,7 +187,7 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 
 | Axis | Attribute | Values | Meaning |
 | :--- | :--- | :--- | :--- |
-| **Brand** | `data-brand` | `blue` (default), `navy` | Two peer brand palettes, BOTH on light surfaces — `blue` is gov-blue + saffron + warm grey, `navy` is gov-navy + green + cool grey. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. In Figma they are the brand half of the `2 · Color` collection's `Brand × Theme` modes. Selects the whole mode-aware palette: **primary** (blue↔navy), **secondary** (saffron↔green), **neutral** greys (warm↔cool), and the primary/secondary/neutral **transparent** tiers. |
+| **Brand** | `data-brand` | `blue` (default), `navy` | Two peer brand palettes, BOTH on light surfaces. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. **Since 2026-08-11 a brand swap changes the PRIMARY ramp and the neutral greys, and nothing else** — `blue` is `#0373DF` + warm grey, `navy` is the DBIM key colour `#162F6A` + cool grey. **Secondary (India Saffron `#FF671F`) and accent (India Green `#046A38`) are brand-INVARIANT**: both are SAMAVESH logo colours, so they are constants of the identity rather than variants of it. Navy used to swap secondary to green, which landed it 1.00:1 from the success colour — see the changelog for audit C-02. |
 | ~~Appearance~~ | ~~`data-theme`~~ | **REMOVED 2026-08-10** | Dark and high-contrast are owned entirely by the UX4G accessibility widget, which applies its own `.dark-mode` class to `<html>` and never read `data-theme`. This axis was a second, parallel mechanism nothing consumed. The token source still carries the overrides (unemitted) so it can be revived deliberately — see `docs/superpowers/records/2026-08-10-figma-theme-dark-hc-removed.md`. |
 | **Density** | `data-density` | `comfortable` (default/unset), `compact` | Controls padding, heights, and spatial density. |
 | **Surface** | `data-surface` | `website` (default/unset), `portal` | Selects the **typography scale**. `website` = the expressive editorial ramp (display-1 ≈ 80px); `portal` = the dense functional ramp (display-1 ≈ 56px). Same role token names in both; only the `--ds-type-*` values differ. Set `data-surface="portal"` on portal `<html>` roots; the website/hub stay default. Maps 1:1 to the SAMAVESH Figma `Website` / `Portal` type modes. |
@@ -177,12 +202,9 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 > `@mosje/design-system/ux4g.css` (opt-in — the default bundle does not grow) and are
 > exported from `color-mode.ts` as `UX4G_COLOR_MODES`, deliberately **not** merged into
 > `COLOR_MODES`: offering a mode in an app that has not loaded that stylesheet would show a
-> switch that does nothing. There is no ready-made switcher component — `ColorModeSwitcher`
-> was removed 2026-08-10 (see the DemoDock entry under Demo Tooling for why). Opt in by
-> reading `useColorMode()` yourself and rendering your own control over
-> `[...COLOR_MODES, ...UX4G_COLOR_MODES]`, calling `setMode(id)` on selection — exactly what
-> DemoDock's Colour tab does for the default two modes.
-> The MoSJE default stays gov-blue, as DBIM requires.
+> switch that does nothing. Opt in explicitly:
+> `<ColorModeSwitcher modes={[...COLOR_MODES, ...UX4G_COLOR_MODES]} />`.
+> The MoSJE default stays the primary blue `#0373DF`, as DBIM requires.
 
 > **Tip:** Nested brand "islands" (e.g. a navy portal shell inside the blue hub) must be explicitly scoped with a nested `[data-brand]` element. To prevent a flash on initial render, initialize the attribute with the exported `colorModeInitScript()`.
 
@@ -196,7 +218,7 @@ Use semantic tokens — never reference primitive `--sa-color-*` values directly
 |-------|------------|------------|---------------|---------------|
 | `--ds-primary` | `#0373DF` | `#3f83c6` | CTA buttons, active links, key icons, focus rings | Body text, large backgrounds |
 | `--ds-saffron` | `#F97316` | `#F97316` | Accents, warning highlights, badges | Primary actions, heading text |
-| `--ds-gov-yellow` | `#FFD323` | `#FFD323` | Warning state backgrounds only | Text on any background (fails WCAG AA contrast) |
+| `--ds-yellow` | `#FFD323` | `#FFD323` | Warning state backgrounds only | Text on any background (fails WCAG AA contrast) |
 | `--ds-ink` | `#1F2428` | `#F4F3F9` | All body/heading text | Interactive elements, backgrounds |
 | `--ds-ink-muted` | `#6C757D` | `#9AA3AF` | Captions, hints, helper text | Primary content (check contrast below 16px) |
 | `--ds-surface` | `#FFFFFF` | `#1F2428` | Page and card backgrounds | Text or icon fills |
@@ -214,12 +236,25 @@ Use semantic tokens — never reference primitive `--sa-color-*` values directly
 | `--ds-ink-muted` (`#6C757D`) | `--ds-surface-muted` (`#F8F9FA`) | **4.1:1** | ⚠️ Borderline | Avoid for body text; use `--ds-ink` instead |
 | `--ds-danger` (`#B8382F`) | `--ds-surface` (`#fff`) | **5.8:1** | ✅ Pass | Error text and icons on white |
 | `--ds-danger-500` (`#EC5042`) | `--ds-surface` (`#fff`) | **3.8:1** | ❌ Fail (text) | Borders and decorative fills only — never error text |
-| `--ds-gov-yellow` (`#FFD323`) | `--ds-surface` (`#fff`) | **1.4:1** | ❌ Fail | Never use as text colour |
+| `--ds-yellow` (`#FFD323`) | `--ds-surface` (`#fff`) | **1.4:1** | ❌ Fail | Never use as text colour |
 | `--ds-primary` (`#0373DF`) | `--ds-surface` (`#fff`) | **4.7:1** | ✅ Pass | Link text (≥16px) |
 
 > **Critical rule:** use `var(--ds-danger)` for red error text on white — it resolves to `#B8382F` (Figma `Danger/700`) at **5.8:1**, which passes AA. Do **not** reach into the ramp for `--ds-danger-500` (`#EC5042`, 3.8:1); it is a border/fill value and fails for text.
 >
 > *Corrected 2026-08-07:* this rule previously stated that `--ds-danger` fails AA and directed callers to `--ds-danger-strong`. `--ds-danger` was rebound from `red.500` to `red.700` and now passes; `--ds-danger-strong` has never been an emitted token. Verified against `packages/tokens/dist/tokens.css`. The old `#A11D12` survives only as the `--ds-chart-div-neg-strong` data-viz literal.
+
+> **The table above is hand-maintained; it is not the authority.** Every `--sa-*` colour token
+> carries a contrast class that is **measured at build time** against its own surface, across every
+> brand, and published in `dist/figma.variables.json` (`contrast.measured` / `contrast.shortfall`)
+> and in each Figma variable's description. `test/prominence-contract.test.mjs` fails the build if
+> any published class is not true. Read those numbers, not these, when the two disagree — and fix
+> this table when they do.
+>
+> **A rung name is not a guarantee.** Nineteen tokens currently measure below the class their
+> prominence rung implies — mostly `Background/*` tonal chips, where the fill ladder's ≥3:1 is the
+> wrong requirement rather than the colour being wrong. They are listed in the ledger at the foot
+> of `test/prominence-contract.test.mjs` and stated plainly in their own Figma description. Choose
+> a token by its measured number, never by how loud its name sounds.
 
 ### D. Typography
 
@@ -529,7 +564,7 @@ Two mapping rules, applied by kind:
 | Kind | Rule | Example |
 |------|------|---------|
 | **Structure** (spacing, radius, type sizes, weights, borders, opacity, blur, z-index) | UX4G's **exact values**. Where SAMAVESH already has a token with that value, the two are *bound* to one number so they cannot drift. | `--ux4g-stack-m` → `var(--sa-spacing-lg)` → `16px` = `--ds-stack-m` |
-| **Colour** | Maps by **role**, not value → the MoSJE palette. DBIM requires a primary group built from the ministry's key colour; UX4G ships Theme Craft precisely to allow it. | `--ux4g-bg-primary-strong` → gov-blue, **not** UX4G violet |
+| **Colour** | Maps by **role**, not value → the MoSJE palette. DBIM requires a primary group built from the ministry's key colour; UX4G ships Theme Craft precisely to allow it. | `--ux4g-bg-primary-strong` → the primary blue, **not** UX4G violet |
 
 Measured conformance is calculated, never estimated —
 `node tools/ux4g-conformance/measure.mjs` (100% token coverage, 100% structural conformance,
@@ -573,8 +608,8 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 
 **Gov Accents:**
 - `--ds-saffron`, `--ds-saffron-dark`, `--ds-saffron-light`
-- `--ds-gov-navy` — Deep navy for footer backgrounds
-- `--ds-gov-yellow` — Warning-only accent
+- `--ds-navy` — Deep navy for footer backgrounds
+- `--ds-yellow` — Warning-only accent
 
 **Borders:**
 - `--ds-border` — Default subtle divider
@@ -590,7 +625,7 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 **Full colour ramps (50–900, synced 1:1 with SAMAVESH Figma `<Family>/*`).** Each ramp is a semantic scale — use these for tints/shades beyond the single-shade status/brand tokens above:
 - `--ds-primary-50` … `--ds-primary-900` — primary (mode-aware: blue in Blue-Light, navy in Blue-Dark)
 - `--ds-secondary-50` … `--ds-secondary-900` — secondary (**mode-aware: saffron in Blue-Light, green in Blue-Dark**; maps to Figma `Secondary/*`)
-- `--ds-neutral-0` … `--ds-neutral-1100` — neutral greys (**mode-aware: warm grey in Blue-Light, cooler Tailwind grey in Blue-Dark**; maps to Figma `Neutral/*`)
+- `--ds-neutral-0` … `--ds-neutral-1100` — neutral greys (**brand-aware: warm grey in `blue`, cooler grey in `navy`**; maps to Figma `Neutral/*`). NOTE the canonical names renumbered on 2026-08-11 to match UX4G — `--sa-color-neutralScale-950` is the near-black shade and `-1000` is pure black. The two `--ds-*` names above keep their old spelling and still render what they always did.
 - `--ds-success-50` … `--ds-success-900` — mode-invariant (Figma `Success/*`)
 - `--ds-danger-50` … `--ds-danger-900` — mode-invariant (Figma `Danger/*`)
 - `--ds-warning-50` … `--ds-warning-900` — mode-invariant (Figma `Warning/*`)
@@ -1008,13 +1043,12 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 **Purpose**: Slim dark-navy app-shell footer with NeGD/DoSJE credit + policy links.  
 **Rule**: Always include: copyright, Accessibility Statement link, Privacy Policy link, Terms of Use link.
 
-#### AppSwitcher — removed
+#### AppSwitcher
+**Purpose**: Portal-to-portal navigation overlay. Shows all MoSJE portals the user has access to.  
+**Groups**: `Website` · `Portals` · `Resources` (the design system and Storybook).  
+**Rule**: Render `<AppSwitcher />`. The `devMode` prop is **deprecated and inert** — remove it from call sites.
 
-`AppSwitcher` no longer exists and is not exported. It carried a hand-rolled
-copy of the colour-mode swatches and was mandated as real per-portal
-navigation, both of which turned out wrong — see **Demo Tooling** below for
-its replacement, `DemoDock`, which is demo-only and mounted exactly once by
-the hub, not per portal.
+`Resources` was the old `Dev` group, hidden unless `devMode` was true. That gated the design system and Storybook on `NODE_ENV`, which hid them from exactly the people who most need to check what a component is meant to do — BAs, QAs and designers, none of whom run a dev build. Nothing in the switcher is environment-gated now.
 
 ---
 

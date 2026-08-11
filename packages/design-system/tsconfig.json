@@ -4,6 +4,11 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
+    // Modules exercised by `node --test` must carry explicit .ts extensions,
+    // because the bare Node runner does no extensionless ESM resolution. Safe
+    // here because this project never emits (noEmit below) — the bundler
+    // resolves the extension and Node resolves it literally.
+    "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "strict": true,
     "noUncheckedIndexedAccess": true,

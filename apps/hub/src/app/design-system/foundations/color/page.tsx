@@ -115,7 +115,7 @@ export default function ColorPage(): React.JSX.Element {
                   color: "var(--ds-primary)",
                   fontSize: "var(--ds-text-label-1)",
                   margin: "var(--ds-spacing-xs) 0",
-                  fontFamily: "ui-monospace, monospace",
+                  fontFamily: "var(--ds-font-mono)",
                   fontWeight: 600,
                 }}
               >
@@ -144,7 +144,7 @@ export default function ColorPage(): React.JSX.Element {
                 <code>data-brand</code>
               </strong>{" "}
               (brand axis) — controls the brand palette: <code>blue-light</code>{" "}
-              (default across the estate) or <code>blue-dark</code>. This is set
+              (default across the estate) or <code>navy</code>. This is set
               by <code>&lt;ColorModeProvider&gt;</code> and toggled via{" "}
               <code>useColorMode()</code> — DemoDock&rsquo;s Colour tab is the
               estate&rsquo;s shared control; there is no standalone switcher
@@ -402,7 +402,7 @@ export default function ColorPage(): React.JSX.Element {
                   textAlign: "center",
                   fontSize: "10px",
                   color: "var(--ds-ink-muted)",
-                  fontFamily: "ui-monospace, monospace",
+                  fontFamily: "var(--ds-font-mono)",
                 }}
               >
                 {stop}
@@ -453,7 +453,7 @@ export default function ColorPage(): React.JSX.Element {
             {
               name: "Success",
               token: "--ds-success",
-              hex: "#2e7d32",
+              hex: "#004220",
               contrastWith: "white",
             },
             {
@@ -504,7 +504,7 @@ export default function ColorPage(): React.JSX.Element {
         <Callout type="warning" title="Warning is amber, not yellow">
           <strong>Warning</strong> (<code>--ds-warning</code>, <code>#bb772b</code>)
           is a dark amber — deliberately distinct from the brand{" "}
-          <code>--ds-gov-yellow</code> (<code>#ffd323</code>), which is a
+          <code>--ds-yellow</code> (<code>#ffd323</code>), which is a
           badge/identity accent and never a status colour. Use{" "}
           <code>--ds-warning-tonal</code> (<code>#fff4e5</code>) as the soft
           background and <code>--ds-warning</code> (or <code>--ds-ink</code>) for
@@ -542,7 +542,7 @@ export default function ColorPage(): React.JSX.Element {
             {
               name: "Saffron",
               token: "--ds-saffron",
-              hex: "#f97316",
+              hex: "#ff671f",
               contrastWith: "white",
             },
             {
@@ -559,13 +559,13 @@ export default function ColorPage(): React.JSX.Element {
             },
             {
               name: "Navy",
-              token: "--ds-gov-navy",
-              hex: "#003366",
+              token: "--ds-navy",
+              hex: "#162f6a",
               contrastWith: "white",
             },
             {
               name: "Government yellow",
-              token: "--ds-gov-yellow",
+              token: "--ds-yellow",
               hex: "#ffd323",
               contrastWith: "black",
             },
@@ -750,7 +750,7 @@ export default function ColorPage(): React.JSX.Element {
           tokens={[
             {
               token: "--ds-success",
-              value: "#2e7d32",
+              value: "#004220",
               description: "Positive outcomes, completed states",
               isColor: true,
             },
@@ -763,7 +763,7 @@ export default function ColorPage(): React.JSX.Element {
             {
               token: "--ds-warning",
               value: "#bb772b",
-              description: "Caution — dark amber (not gov-yellow); pair with --ds-warning-tonal background",
+              description: "Caution — dark amber (not yellow); pair with --ds-warning-tonal background",
               isColor: true,
             },
             {
@@ -815,7 +815,7 @@ export default function ColorPage(): React.JSX.Element {
           tokens={[
             {
               token: "--ds-saffron",
-              value: "#f97316",
+              value: "#ff671f",
               description: "Identity accent — sparingly, for brand moments",
               isColor: true,
             },
@@ -832,13 +832,13 @@ export default function ColorPage(): React.JSX.Element {
               isColor: true,
             },
             {
-              token: "--ds-gov-navy",
-              value: "#003366",
+              token: "--ds-navy",
+              value: "#162f6a",
               description: "Deep brand navy — headers, emphasis bands",
               isColor: true,
             },
             {
-              token: "--ds-gov-yellow",
+              token: "--ds-yellow",
               value: "#ffd323",
               description: "Government yellow — highlights, identity accents",
               isColor: true,
@@ -860,7 +860,7 @@ export default function ColorPage(): React.JSX.Element {
         </h3>
         <div className="docs-section__body ds-prose">
           <p>
-            Every family below is available as a full <strong>50–900 ramp</strong>,
+            Every family below is available as a full <strong>50–950 ramp</strong> (11 steps, matching UX4G 3.0),
             synced 1:1 with the SAMAVESH Figma library. Use the single semantic
             tokens above for normal component work; reach for a specific ramp step
             only for tints, shades, charts, or illustrations.
@@ -870,8 +870,8 @@ export default function ColorPage(): React.JSX.Element {
               <code>--ds-primary-50…900</code> &amp;{" "}
               <code>--ds-secondary-50…900</code> &amp;{" "}
               <code>--ds-neutral-0…1100</code> — <strong>colour-mode-aware</strong>:
-              primary blue↔navy, secondary saffron↔green, neutral warm↔cool grey
-              under <code>blue-dark</code>.
+              primary blue↔navy and neutral warm↔cool grey under <code>navy</code>.
+              Secondary and accent do NOT change — both are SAMAVESH logo colours.
             </li>
             <li>
               <code>--ds-success-50…900</code>, <code>--ds-danger-50…900</code>,{" "}
@@ -905,11 +905,11 @@ export default function ColorPage(): React.JSX.Element {
           <p>
             SAMAVESH has <strong>two independent axes</strong>.{" "}
             <code>data-brand</code> (<code>blue</code> /{" "}
-            <code>blue-dark</code>) are <strong>two peer brand colour modes</strong>,
+            <code>navy</code>) are <strong>two peer brand colour modes</strong>,
             mapped 1:1 to the SAMAVESH Figma <code>Blue - Light</code> /{" "}
-            <code>Blue - Dark</code> variable modes. <code>blue-dark</code> is{" "}
+            <code>Navy</code> variable modes. <code>navy</code> is{" "}
             <strong>not</strong> a dark UI theme — it keeps light surfaces and
-            swaps the brand palette: primary blue→navy, secondary saffron→green,
+            swaps the primary ramp and the neutral greys — primary blue→navy —
             and neutral greys warm→cool. The actual dark / high-contrast surfaces
             live on the separate <code>data-theme</code> axis, and the two
             compose.
@@ -930,7 +930,7 @@ export default function ColorPage(): React.JSX.Element {
               axis: "data-brand",
               label: "Brand colour mode",
               modes: ["blue-light (default)", "navy", "+ extensible"],
-              desc: "Two peer colour modes (= Figma Blue-Light/Blue-Dark). Swaps the whole brand palette: primary blue↔navy, secondary saffron↔green, neutral warm↔cool grey, + the primary/secondary/neutral transparent tiers. Toggle via ColorModeProvider + useColorMode() — DemoDock's Colour tab is the estate's shared control.",
+              desc: "Two peer colour modes (= Figma Blue/Navy). Swaps the PRIMARY ramp (blue↔navy, navy being the DBIM key colour #162f6a) and the neutral greys (warm↔cool), plus their transparent tiers. Secondary (India Saffron) and accent (India Green) are brand-INVARIANT — both come from the SAMAVESH logo. Toggle via ColorModeProvider + useColorMode() — DemoDock's Colour tab is the estate's shared control.",
               color: "var(--ds-primary-tonal)",
               border: "var(--ds-primary)",
             },
@@ -978,7 +978,7 @@ export default function ColorPage(): React.JSX.Element {
               <ul style={{ margin: 0, paddingLeft: "var(--ds-spacing-lg)", fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink)" }}>
                 {modes.map((m) => (
                   <li key={m} style={{ marginBottom: "var(--ds-spacing-xs)" }}>
-                    <code style={{ fontFamily: "ui-monospace, monospace" }}>{m}</code>
+                    <code style={{ fontFamily: "var(--ds-font-mono)" }}>{m}</code>
                   </li>
                 ))}
               </ul>
@@ -1061,7 +1061,7 @@ export default function ColorPage(): React.JSX.Element {
                       borderRadius: "var(--ds-radius-sm)",
                       fontWeight: 600,
                       fontSize: "var(--ds-text-body-2)",
-                      fontFamily: "ui-monospace, monospace",
+                      fontFamily: "var(--ds-font-mono)",
                     }}
                   >
                     #0373df
@@ -1209,7 +1209,7 @@ export default function ColorPage(): React.JSX.Element {
                 { token: "--ds-ink-strong", value: "#0d1014", ratio: "~21:1", level: "AAA", note: "" },
                 { token: "--ds-ink-muted", value: "#343a40", ratio: "~10:1", level: "AAA", note: "" },
                 { token: "--ds-info / --ds-ink-info", value: "#1558b0", ratio: "7.1:1", level: "AAA", note: "" },
-                { token: "--ds-success", value: "#2e7d32", ratio: "7.2:1", level: "AAA", note: "" },
+                { token: "--ds-success", value: "#004220", ratio: "11.67:1", level: "AAA", note: "" },
                 { token: "--ds-primary", value: "#0373df", ratio: "4.7:1", level: "AA ✓ (not AAA)", note: "Meets AA for text ≥ 18px or bold ≥ 14px" },
                 { token: "--ds-danger", value: "#ec5042", ratio: "3.5:1", level: "AA (large/UI only)", note: "Not for body text — use --ds-danger-strong (#b8382f, 5.8:1) for error text" },
                 { token: "--ds-warning", value: "#bb772b", ratio: "3.3:1", level: "AA (large/UI only)", note: "Dark amber. For text on white use a darker warning step (--ds-warning-700)" },
@@ -1218,7 +1218,7 @@ export default function ColorPage(): React.JSX.Element {
                   <td
                     style={{
                       padding: "var(--ds-spacing-sm) var(--ds-spacing-md)",
-                      fontFamily: "ui-monospace, monospace",
+                      fontFamily: "var(--ds-font-mono)",
                       color: "var(--ds-primary)",
                       whiteSpace: "nowrap",
                     }}
@@ -1228,7 +1228,7 @@ export default function ColorPage(): React.JSX.Element {
                   <td
                     style={{
                       padding: "var(--ds-spacing-sm) var(--ds-spacing-md)",
-                      fontFamily: "ui-monospace, monospace",
+                      fontFamily: "var(--ds-font-mono)",
                       color: "var(--ds-ink-muted)",
                     }}
                   >

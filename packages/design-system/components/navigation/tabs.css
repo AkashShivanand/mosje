@@ -27,7 +27,7 @@
   left: 0;
   width: 0;
   border-radius: var(--ds-radius-lg);
-  /* `--ds-gov-navy` (`--sa-color-brand-navy`) is declared once at `:root` and
+  /* `--ds-navy` (`--sa-color-brand-navy`) is declared once at `:root` and
      never re-declared inside a `[data-brand]` block — it's brand-invariant
      by design, meant for things that should stay navy regardless of the
      active brand axis (see tokens.css). The active-tab pill isn't one of

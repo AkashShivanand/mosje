@@ -59,10 +59,10 @@ export default function DashboardPage() {
                 className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
               >
                 <div className="flex items-start justify-between">
-                  <span className="text-[28px] font-bold leading-tight text-gov-blue-dark">
+                  <span className="text-[28px] font-bold leading-tight text-primary-dark">
                     {value}
                   </span>
-                  <span className="rounded-lg bg-surface-muted p-2 text-gov-blue">
+                  <span className="rounded-lg bg-surface-muted p-2 text-primary">
                     <Icon name={iconName} size={20} aria-hidden="true" />
                   </span>
                 </div>
@@ -75,7 +75,7 @@ export default function DashboardPage() {
           <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* Scheme-wise disbursement */}
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-semibold text-gov-blue-dark">
+              <h2 className="text-lg font-semibold text-primary-dark">
                 Scheme-wise Disbursement
               </h2>
               <p className="mt-1 text-xs text-gray-500">Cumulative, current financial year (illustrative)</p>
@@ -88,7 +88,7 @@ export default function DashboardPage() {
                     </div>
                     <div className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full bg-surface-muted">
                       <div
-                        className="h-full rounded-full bg-gov-blue"
+                        className="h-full rounded-full bg-primary"
                         style={{ width: `${percent}%` }}
                         role="img"
                         aria-label={`${label}: ${value}`}
@@ -101,7 +101,7 @@ export default function DashboardPage() {
 
             {/* Beneficiaries by category */}
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-semibold text-gov-blue-dark">
+              <h2 className="text-lg font-semibold text-primary-dark">
                 Beneficiaries by Category
               </h2>
               <p className="mt-1 text-xs text-gray-500">Cumulative coverage across schemes (illustrative)</p>

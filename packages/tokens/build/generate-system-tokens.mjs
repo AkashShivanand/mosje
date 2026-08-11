@@ -1,3 +1,4 @@
+import { guidanceFor } from "./usage-guidance.mjs";
 /**
  * Generate the canonical Tier-2 namespace (spec §5, §7.2) into src/system.generated.json.
  *
@@ -25,10 +26,21 @@ import { parse } from "./grammar.mjs";
 const here = (p) => new URL(p, import.meta.url).pathname;
 
 /** Ladder step → ramp step. Shared by every family so the ladder means one thing. */
-const LADDER = { base: 50, soft: 100, subtle: 200, emphasis: 300, strong: 600, stronger: 800 };
+/**
+ * Rung → ramp step. These are the ORDINAL ladder names (2026-08-10); the previous UX4G
+ * vocabulary (soft/emphasis/strong/stronger) was left here after the rename and is what made
+ * this generator unrunnable — every path it built failed the grammar check below.
+ */
+const LADDER = { base: 50, subtler: 100, subtle: 200, bold: 300, bolder: 600, boldest: 800 };
 
 const STATUS = { success: "successScale", error: "dangerScale", warning: "warningScale", info: "infoScale" };
-const BRAND = { primary: "primaryScale", secondary: "secondaryScale" };
+/**
+ * `accent` joined on 2026-08-11. Secondary and accent are the SAMAVESH logo's two
+ * non-blue colours (India Saffron #FF671F, India Green #046A38) and are brand-invariant —
+ * only `primary` changes with `data-brand`. Adding the key here is what generates the whole
+ * bg/text/border/icon accent family across the prominence ladder.
+ */
+const BRAND = { primary: "primaryScale", secondary: "secondaryScale", accent: "accentScale" };
 
 /** path → DTCG reference. Values bind to existing tokens; nothing new is invented. */
 const MAP = {};
@@ -38,7 +50,7 @@ const put = (path, ref, description) => {
 
 // ---- bg ------------------------------------------------------------------
 put(["bg", "neutral", "subtle"], "{color.neutralScale.100}", "Hovered rows, quiet panels");
-put(["bg", "neutral", "emphasis"], "{color.neutralScale.200}", "Pressed rows, dividers as fills");
+put(["bg", "neutral", "bold"], "{color.neutralScale.200}", "Pressed rows, dividers as fills");
 put(["bg", "neutral", "inverse"], "{color.neutralScale.900}", "Inverted surface (tooltips, dark panels)");
 put(["bg", "neutral", "disabled"], "{color.neutralScale.200}", "Disabled control fill");
 
@@ -54,8 +66,8 @@ for (const [variant, scale] of Object.entries(STATUS)) {
 }
 
 // ---- text ----------------------------------------------------------------
-put(["text", "neutral", "primary"], "{color.text.default}", "Body and heading text");
-put(["text", "neutral", "secondary"], "{color.text.muted}", "Captions, hints, secondary text");
+put(["text", "neutral", "base"], "{color.text.default}", "Body and heading text");
+put(["text", "neutral", "subtle"], "{color.text.muted}", "Captions, hints, secondary text");
 put(["text", "neutral", "disabled"], "{color.text.disabled}", "Disabled label");
 put(["text", "neutral", "inverse"], "{color.text.onPrimary}", "Text on a solid brand or inverse surface");
 put(["text", "brand", "primary", "base"], "{color.action.primary.default}", "Brand-coloured text");
@@ -72,8 +84,8 @@ put(["text", "link", "visited", "default"], "{color.primaryScale.800}", "Visited
 put(["text", "link", "neutral", "default"], "{color.text.muted}", "Link in quiet chrome (footers, breadcrumbs)");
 
 // ---- icon (entirely new — the estate had ZERO icon tokens) ----------------
-put(["icon", "neutral", "primary"], "{color.text.default}", "Default icon");
-put(["icon", "neutral", "secondary"], "{color.text.muted}", "Quiet icon");
+put(["icon", "neutral", "base"], "{color.text.default}", "Default icon");
+put(["icon", "neutral", "subtle"], "{color.text.muted}", "Quiet icon");
 put(["icon", "neutral", "disabled"], "{color.text.disabled}", "Disabled icon");
 put(["icon", "neutral", "inverse"], "{color.text.onPrimary}", "Icon on a solid brand surface");
 put(["icon", "brand", "primary", "base"], "{color.action.primary.default}", "Brand-coloured icon");
@@ -83,7 +95,7 @@ for (const variant of Object.keys(STATUS)) {
 }
 
 // ---- border --------------------------------------------------------------
-put(["border", "neutral", "strong", "hover"], "{color.border.controlHover}", "Form control border, hovered");
+put(["border", "neutral", "bolder", "hover"], "{color.border.controlHover}", "Form control border, hovered");
 put(["border", "brand", "primary", "base"], "{color.action.primary.default}", "Brand-coloured border");
 for (const variant of Object.keys(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
@@ -101,8 +113,17 @@ for (const variant of Object.keys(STATUS)) {
 // authored tokens now. Generating an alias on top would have produced two names for one
 // value — the duplication this pass exists to remove.
 
+// NOTE — these paths were left on the RETIRED rung names (`text/neutral/primary`,
+// `border/neutral/strong/hover`) when the ordinal ladder landed. The generator validates every
+// path and exits(1) before writing, so it had become UNRUNNABLE: src/system.generated.json said
+// "GENERATED — do not edit" while in fact being hand-maintained. Fixed 2026-08-10; the
+// round-trip test below is what stops it drifting out of sync again.
+
 // ---- build ---------------------------------------------------------------
 const out = { $description: "GENERATED by build/generate-system-tokens.mjs — do not edit." };
+// The per-token strings above are terse LABELS ("error background, subtle"). The shared
+// guidance vocabulary says when to reach for the token instead, in one reviewed voice — so it
+// wins, and the label survives only where guidance has nothing to say.
 const errors = [];
 
 for (const { path, ref, description } of Object.values(MAP)) {
@@ -113,7 +134,7 @@ for (const { path, ref, description } of Object.values(MAP)) {
   }
   let node = out;
   for (const seg of path.slice(0, -1)) node = node[seg] ??= {};
-  node[path.at(-1)] = { $value: ref, $description: description };
+  node[path.at(-1)] = { $value: ref, $description: guidanceFor(path, "sys", parse) ?? description };
 }
 
 if (errors.length) {

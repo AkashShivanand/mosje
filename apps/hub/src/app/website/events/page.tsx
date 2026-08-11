@@ -86,13 +86,13 @@ export default function EventsPage() {
                     height={240}
                     className="h-48 w-full object-cover"
                   />
-                  <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-gov-blue px-2.5 py-1 text-[12px] font-semibold text-white">
+                  <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 text-[12px] font-semibold text-white">
                     <Icon name="calendar_month" size={14} aria-hidden="true" />
                     {event.date}
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col p-5">
-                  <h2 className="text-[17px] font-semibold leading-snug text-gov-blue-dark">
+                  <h2 className="text-[17px] font-semibold leading-snug text-primary-dark">
                     {event.title}
                   </h2>
                   <p className="mt-2 flex-1 text-[14px] leading-relaxed text-ink-muted">

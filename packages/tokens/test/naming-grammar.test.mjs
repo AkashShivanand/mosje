@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import {
   parse,
   toCssName,
@@ -8,6 +8,7 @@ import {
   auditReference,
   auditStructure,
   PROMINENCE,
+  INK_PROMINENCE,
   PROMINENCE_CONTRACT,
   RESERVED_FIRST_SEGMENT,
 } from "../build/grammar.mjs";
@@ -31,12 +32,12 @@ const root = new URL("..", import.meta.url).pathname;
 
 const VALID = [
   [["bg", "brand", "primary"], "sys", "--sa-bg-brand-primary"],
-  [["bg", "brand", "primary", "strong"], "sys", "--sa-bg-brand-primary-strong"],
-  [["bg", "brand", "primary", "strong", "hover"], "sys", "--sa-bg-brand-primary-strong-hover"],
+  [["bg", "brand", "primary", "bolder"], "sys", "--sa-bg-brand-primary-bolder"],
+  [["bg", "brand", "primary", "bolder", "hover"], "sys", "--sa-bg-brand-primary-bolder-hover"],
   [["bg", "neutral", "inverse", "subtle"], "sys", "--sa-bg-neutral-inverse-subtle"],
   [["bg", "neutral", "disabled"], "sys", "--sa-bg-neutral-disabled"],
-  [["text", "neutral", "primary"], "sys", "--sa-text-neutral-primary"],
-  [["text", "neutral", "secondary"], "sys", "--sa-text-neutral-secondary"],
+  [["text", "neutral", "base"], "sys", "--sa-text-neutral-base"],
+  [["text", "neutral", "subtle"], "sys", "--sa-text-neutral-subtle"],
   [["text", "link", "visited", "hover"], "sys", "--sa-text-link-visited-hover"],
   [["icon", "status", "error"], "sys", "--sa-icon-status-error"],
   [["border", "width", "md"], "sys", "--sa-border-width-md"],
@@ -77,8 +78,8 @@ test("reserved first segments are rejected on Tier 2, keeping the projection bij
 });
 
 test("slot order is enforced — a variant may not follow a prominence", () => {
-  assert.equal(parse(["bg", "brand", "primary", "strong"], "sys").ok, true);
-  const r = parse(["bg", "brand", "strong", "primary"], "sys");
+  assert.equal(parse(["bg", "brand", "primary", "bolder"], "sys").ok, true);
+  const r = parse(["bg", "brand", "bolder", "primary"], "sys");
   assert.equal(r.ok, false);
   assert.match(r.error, /unconsumed/);
 });
@@ -106,19 +107,47 @@ test("path → CSS name → path round-trips for every example", () => {
 // ---------------------------------------------------------------------------
 
 test("every prominence rung declares a contrast contract, monotonically non-decreasing", () => {
-  let previous = -1;
-  for (const rung of PROMINENCE) {
-    const contract = PROMINENCE_CONTRACT[rung];
-    assert.ok(contract, `${rung} has no contrast contract`);
-    assert.ok(typeof contract.use === "string" && contract.use.length > 0);
-    assert.ok(
-      contract.minContrast >= previous,
-      `${rung} (${contract.minContrast}) weakens the guarantee of the rung below it`,
-    );
-    previous = contract.minContrast;
+  // Checked PER LADDER since 2026-08-10. Fill and ink now share one vocabulary — `subtle`,
+  // `bolder` — but not one set of thresholds, because a quiet tonal chip owes 3:1 (WCAG
+  // 1.4.11) while a caption is still text and owes 4.5:1 (1.4.3). Walking a single flat
+  // table would have compared rungs that are not on the same scale.
+  for (const [ladder, order] of [["fill", PROMINENCE], ["ink", INK_PROMINENCE]]) {
+    let previous = -1;
+    for (const rung of order) {
+      const contract = PROMINENCE_CONTRACT[ladder][rung];
+      assert.ok(contract, `${ladder} ladder: ${rung} has no contrast contract`);
+      assert.ok(typeof contract.use === "string" && contract.use.length > 0);
+      assert.ok(
+        contract.minContrast >= previous,
+        `${ladder}: ${rung} (${contract.minContrast}) weakens the rung below it`,
+      );
+      previous = contract.minContrast;
+    }
+    // Each ladder must reach text-safe, or it cannot express body copy at all.
+    assert.ok(Math.max(...order.map((r) => PROMINENCE_CONTRACT[ladder][r].minContrast)) >= 4.5);
   }
-  // The ladder must reach text-safe, or it cannot express body copy at all.
-  assert.ok(Math.max(...PROMINENCE.map((r) => PROMINENCE_CONTRACT[r].minContrast)) >= 4.5);
+});
+
+test("the two ladders share a vocabulary but never a threshold by accident", () => {
+  // The reason PROMINENCE_CONTRACT is keyed by ladder. If these ever coincide for every
+  // shared word, the split has stopped earning its keep and should be collapsed back.
+  const shared = PROMINENCE.filter((r) => INK_PROMINENCE.includes(r));
+  assert.ok(shared.length > 0, "the ladders are supposed to share words");
+  const differs = shared.some(
+    (r) => PROMINENCE_CONTRACT.fill[r].minContrast !== PROMINENCE_CONTRACT.ink[r].minContrast,
+  );
+  assert.ok(differs, "no shared rung differs between ladders — collapse the per-ladder split");
+});
+
+test("primary/secondary/tertiary are variants ONLY — the ink overload is gone", () => {
+  // §6.4 promised the ordinal ladder would dissolve this and then recorded that it had not:
+  // those three words sat in the brand `variant` slot AND the ink prominence slot, resolved
+  // by the parser's greedy order rather than by the grammar. They are now variants and
+  // nothing else, so the collision cannot be spelled.
+  for (const word of ["primary", "secondary", "tertiary"]) {
+    assert.ok(!PROMINENCE.includes(word), `${word} is still a fill rung`);
+    assert.ok(!INK_PROMINENCE.includes(word), `${word} is still an ink rung`);
+  }
 });
 
 // ---------------------------------------------------------------------------
@@ -166,15 +195,23 @@ test("--audit-reference: UX4G's published contract carries structural inconsiste
 // ---------------------------------------------------------------------------
 
 /**
- * Tier-2 paths authored BEFORE the grammar existed. They still ship (245 tokens across 21
- * properties depend on them) and are mirrored by the canonical namespace in
- * src/system.generated.json — see test/tier2-parity.test.mjs, which proves the two agree
- * in every axis block.
+ * Tier-2 paths authored BEFORE the grammar existed. They still ship and are mirrored by the
+ * canonical namespace in src/system.generated.json — see test/tier2-parity.test.mjs, which
+ * proves the two agree in every axis block.
  *
- * This list may only ever SHRINK. Adding to it means authoring a token that does not follow
- * the grammar, which is the thing this file exists to prevent.
+ * ITEMISED, not rooted. Until 2026-08-10 this was `new Set(["color","type","spacing","density"])`
+ * — four ROOTS — and the check below skipped every path beginning with one. That exempted 188
+ * existing tokens AND every token anyone might write under those roots in future, so a brand-new
+ * ungrammatical `color/…` landed green and the spec's freeze criterion ("the allowlist reaches
+ * zero") could never be met in any meaningful sense. Three of the four roots turned out not to
+ * need exempting at all once `spacing` became `space` and `color/chart/*` moved to `chart/*`:
+ * `space`, `type`, `density` and `chart` are all in the grammar's own GROUP dictionary and parse.
+ *
+ * This list may only ever SHRINK, and the stale-entry test below enforces that.
  */
-const LEGACY_TIER2_ROOTS = new Set(["color", "type", "spacing", "density"]);
+const LEGACY_TIER2_PATHS = new Set(
+  JSON.parse(readFileSync(root + "test/legacy-tier2-paths.json", "utf8")).paths,
+);
 
 test("every authored token path parses, except the explicitly-listed legacy tier", async () => {
   const { index } = await import("../build/token-index.mjs");
@@ -186,14 +223,59 @@ test("every authored token path parses, except the explicitly-listed legacy tier
     const tier = tierOfFile(filePath);
     // Tier 1 is a free namespace (palette/scale shapes vary); only RULE 1 applies there.
     if (tier === "ref") continue;
-    if (tier === "sys" && LEGACY_TIER2_ROOTS.has(path[0])) continue;
+    if (tier === "sys" && LEGACY_TIER2_PATHS.has(path.join("/"))) continue;
     checked++;
     const r = parse(path, tier);
     if (!r.ok) violations.push(`${filePath} :: ${path.join("/")} — ${r.error}`);
   }
 
   assert.ok(checked > 300, `expected the Tier-2 + Tier-3 surface, only checked ${checked}`);
-  assert.deepEqual(violations.slice(0, 15), [], `${violations.length} path(s) violate the grammar`);
+  assert.deepEqual(
+    violations.slice(0, 15),
+    [],
+    `${violations.length} path(s) violate the grammar. Do NOT add them to ` +
+      `test/legacy-tier2-paths.json — that list is closed and may only shrink.`,
+  );
+});
+
+test("the legacy allowlist has no stale entries — a migrated path must leave the list", async () => {
+  // Without this, the list stops describing the system and starts excusing it: entries for
+  // tokens that no longer exist make the remaining debt look larger than it is, and hide the
+  // fact that the freeze criterion (§9.9) has moved.
+  const { index } = await import("../build/token-index.mjs");
+  const { tierOfFile } = await import("../build/grammar.mjs");
+
+  const authored = new Set();
+  for (const { path, filePath } of index()) {
+    if (tierOfFile(filePath) === "sys") authored.add(path.join("/"));
+  }
+  const stale = [...LEGACY_TIER2_PATHS].filter((p) => !authored.has(p)).sort();
+  assert.deepEqual(
+    stale.slice(0, 15),
+    [],
+    `${stale.length} allowlisted path(s) no longer exist — delete them from ` +
+      `test/legacy-tier2-paths.json`,
+  );
+});
+
+test("the legacy allowlist covers only paths that genuinely fail the grammar", async () => {
+  // An entry for a path that now PARSES is a free pass nobody needs, and it keeps the debt
+  // count wrong. This is what turns the list from a static exemption into a ratchet.
+  const { index } = await import("../build/token-index.mjs");
+  const { tierOfFile } = await import("../build/grammar.mjs");
+
+  const needless = [];
+  for (const { path, filePath } of index()) {
+    if (tierOfFile(filePath) !== "sys") continue;
+    const key = path.join("/");
+    if (LEGACY_TIER2_PATHS.has(key) && parse(path, "sys").ok) needless.push(key);
+  }
+  assert.deepEqual(
+    needless.slice(0, 15),
+    [],
+    `${needless.length} allowlisted path(s) now parse — remove them from ` +
+      `test/legacy-tier2-paths.json and let the grammar check them`,
+  );
 });
 
 test("no path segment anywhere contains a hyphen — RULE 1 holds across every tier", async () => {
@@ -263,3 +345,41 @@ test("no token is also a group — a leaf may never have children", async () => 
   walk(merged, [], "merged token tree");
   assert.deepEqual(offenders.slice(0, 10), [], `${offenders.length} token(s) that are also groups`);
 });
+
+// ---------------------------------------------------------------------------
+// The generators must actually run, and agree with what they generated.
+// ---------------------------------------------------------------------------
+
+/**
+ * `src/system.generated.json` says "GENERATED — do not edit". It had not been generatable for
+ * some time: the ordinal-ladder rename updated the OUTPUT (by hand) and left the generator on
+ * the retired rung names, so every path it built failed the grammar check and the script
+ * exited before writing. The file and its generator had silently become two different things,
+ * and the only symptom was a message nobody ran.
+ *
+ * Running each generator and diffing its output is the check that makes "generated" true.
+ */
+import { execFileSync } from "node:child_process";
+
+for (const [script, output] of [
+  ["build/generate-system-tokens.mjs", "src/system.generated.json"],
+  ["build/generate-component-tokens.mjs", "src/component.generated.json"],
+]) {
+  test(`${script} runs, and its output matches the file in the repo`, () => {
+    const before = readFileSync(root + output, "utf8");
+    try {
+      execFileSync(process.execPath, [root + script], { cwd: root, stdio: "pipe" });
+    } catch (err) {
+      const detail = `${err.stdout ?? ""}${err.stderr ?? ""}`.trim();
+      assert.fail(`${script} exited non-zero — it cannot regenerate its own output:\n${detail}`);
+    }
+    const after = readFileSync(root + output, "utf8");
+    if (before !== after) {
+      writeFileSync(root + output, before); // leave the tree as we found it
+      assert.fail(
+        `${output} is not what ${script} produces. Either the generator has drifted from the ` +
+          `file, or the file was hand-edited — regenerate and commit the result.`,
+      );
+    }
+  });
+}

@@ -69,10 +69,10 @@ export default function AdminPortalsPage() {
                 key={name}
                 className="flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
               >
-                <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-surface-muted text-gov-blue">
+                <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-surface-muted text-primary">
                   <Icon name={iconName} aria-hidden="true" />
                 </span>
-                <h2 className="mt-4 text-base font-semibold text-gov-blue-dark">
+                <h2 className="mt-4 text-base font-semibold text-primary-dark">
                   {name}
                 </h2>
                 <p className="mt-1.5 flex-1 text-sm leading-relaxed text-ink-muted">
@@ -80,7 +80,7 @@ export default function AdminPortalsPage() {
                 </p>
                 <a
                   href={href}
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-gov-blue hover:text-gov-blue-dark"
+                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary-dark"
                 >
                   Open Console
                   <Icon name="arrow_outward" size={16} aria-hidden="true" />

@@ -18,7 +18,7 @@ export default async function PortalsPage() {
     <div className="flex min-h-screen flex-col bg-surface-muted">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded-lg focus:bg-gov-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-primary"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-primary"
       >
         Skip to main content
       </a>
@@ -32,7 +32,7 @@ export default async function PortalsPage() {
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex items-center gap-2 text-sm text-ink-muted">
                 <li>
-                  <Link href="/" className="hover:text-gov-blue hover:underline">
+                  <Link href="/" className="hover:text-primary hover:underline">
                     Home
                   </Link>
                 </li>

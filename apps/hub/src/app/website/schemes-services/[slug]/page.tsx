@@ -53,7 +53,7 @@ export default async function SchemeDetailPage({
               <div>
                 <dt className="font-semibold text-ink">Official link</dt>
                 <dd>
-                  <a href={scheme.website} target="_blank" rel="noreferrer" className="text-gov-blue hover:underline">
+                  <a href={scheme.website} target="_blank" rel="noreferrer" className="text-primary hover:underline">
                     {scheme.website.replace(/^https?:\/\//, "")}
                   </a>
                 </dd>
@@ -62,7 +62,7 @@ export default async function SchemeDetailPage({
             <div>
               <dt className="font-semibold text-ink">Source</dt>
               <dd>
-                <a href={scheme.sourceUrl} target="_blank" rel="noreferrer" className="text-gov-blue hover:underline">
+                <a href={scheme.sourceUrl} target="_blank" rel="noreferrer" className="text-primary hover:underline">
                   View on dosje.gov.in
                 </a>
               </dd>
@@ -74,7 +74,7 @@ export default async function SchemeDetailPage({
       {scheme.sections.length === 0 ? (
         <p className="text-ink-muted">
           Full details for this scheme are available on the official website.{" "}
-          <a href={scheme.sourceUrl} target="_blank" rel="noreferrer" className="text-gov-blue underline">
+          <a href={scheme.sourceUrl} target="_blank" rel="noreferrer" className="text-primary underline">
             View on dosje.gov.in
           </a>
         </p>

@@ -1,28 +1,12 @@
-// WCAG 2.1 contrast maths + the load-bearing token pairings, shared by the brand gate
-// (brand-contrast.test.mjs) and the mode/theme sweep (mode-contrast.test.mjs).
-
-export function hexToRgb(h) {
-  h = h.trim().replace("#", "");
-  if (h.length === 3) h = h.split("").map((c) => c + c).join("");
-  const n = parseInt(h, 16);
-  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-}
-
-export function relLum([r, g, b]) {
-  const f = (c) => {
-    c /= 255;
-    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  };
-  const [R, G, B] = [f(r), f(g), f(b)];
-  return 0.2126 * R + 0.7152 * G + 0.0722 * B;
-}
-
-export function contrast(a, b) {
-  const l1 = relLum(hexToRgb(a));
-  const l2 = relLum(hexToRgb(b));
-  const [hi, lo] = l1 > l2 ? [l1, l2] : [l2, l1];
-  return (hi + 0.05) / (lo + 0.05);
-}
+// The load-bearing token pairings, shared by the brand gate (brand-contrast.test.mjs) and
+// the mode sweep (mode-contrast.test.mjs).
+//
+// The WCAG maths itself moved to build/wcag.mjs, because the Figma exporter now measures a
+// token before publishing a contrast class for it and a build step must not import from the
+// test tree. Re-exported here so every existing caller is unchanged and there is still
+// exactly ONE implementation — two copies drifting apart is how a gate starts disagreeing
+// with the artifact it is meant to be checking.
+export { hexToRgb, relLum, contrast } from "../../build/wcag.mjs";
 
 /**
  * Load-bearing pairings a brand swap — or a colour mode — can break.

@@ -8,9 +8,15 @@ import { contrast, PAIRINGS } from "./lib/contrast.mjs";
  * The contrast gate, swept across every THEMING AXIS rather than only the default `:root`.
  *
  * `brand-contrast.test.mjs` proves a brand swap cannot ship an inaccessible portal. It only
- * ever read `:root`, so a colour mode or theme could still put text below AA and nothing
- * would catch it. This sweeps all of them: blue-light (default), blue-dark, the two opt-in
- * UX4G modes, and the light/dark/hc appearance themes.
+ * ever read `:root`, so a brand could still put text below AA and nothing would catch it.
+ * This sweeps all of them: Blue (default), Navy, and the two opt-in UX4G brands.
+ *
+ * There is NO appearance axis to sweep. `data-theme` (light/dark/hc) was retired and
+ * tokens.css emits no [data-theme] block — the UX4G accessibility widget is the estate's
+ * single dark and high-contrast mechanism. The selectors below are read by their CANONICAL
+ * `data-brand` names; `[data-color-mode="<id>-dark"]` survives only as a deprecated alias
+ * for a LIGHT-surface brand, and reading it here is what made the suite look like it was
+ * testing a dark theme.
  *
  * This is the check the UX4G adoption plan schedules for week 2 — "apply the ministry's key
  * colour group through Theme Craft, then check colour contrast across every combination" —
@@ -65,12 +71,16 @@ function sweep(label, overrides) {
   return failures;
 }
 
-test("every colour mode meets WCAG AA on the load-bearing pairings", () => {
+test("every BRAND meets WCAG AA on the load-bearing pairings", () => {
+  // Labels are the canonical brand ids; the selector strings stay on the deprecated
+  // `data-color-mode` alias because that is the last selector before `{` in the emitted
+  // group (`[data-brand="navy"],\n[data-color-mode="blue-dark"] {`), which is what
+  // `blockOf` matches on. Retire the alias and these move to `[data-brand="…"]`.
   const modes = [
-    ["blue-light (default)", new Map()],
-    ["blue-dark", blockOf(tokensCss, '[data-color-mode="blue-dark"]')],
-    ["ux4g-light", blockOf(ux4gCss, '[data-color-mode="ux4g-light"]')],
-    ["ux4g-dark", blockOf(ux4gCss, '[data-color-mode="ux4g-dark"]')],
+    ["blue (default)", new Map()],
+    ["navy", blockOf(tokensCss, '[data-color-mode="blue-dark"]')],
+    ["ux4g", blockOf(ux4gCss, '[data-color-mode="ux4g-light"]')],
+    ["ux4gdeep", blockOf(ux4gCss, '[data-color-mode="ux4g-dark"]')],
   ];
 
   const failures = [];

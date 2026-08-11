@@ -1,0 +1,167 @@
+{
+  "$description": "RATCHET \u2014 pre-existing ghost bindings accepted as known debt, keyed by the deleted variable's identity rather than by page, because the same ~25 deleted variables recur on every component page. figma-ghost-bindings.test.mjs fails on any ghost NOT listed here (new debt) and on any entry listed here that no longer appears (stale \u2014 delete the line). Shrinking this file is the objective; it must never grow.",
+  "$discoveredAt": "2026-08-11",
+  "$incident": "The 2026-08 rename to canonical DTCG paths deleted the old Font Size/N, Line Heights/N and Letter Spacing/N variables. Nothing rebound the canvas, so the library's padding, itemSpacing and cornerRadius layer is still driven by DELETED TYPOGRAPHY variables \u2014 a size ramp doing a spacing ramp's job, detached from @mosje/tokens and unable to receive an update. 11 text nodes on Navbar/Footer were fixed 2026-08-11; the spacing/radius bindings below are untouched and are the real remediation project.",
+  "accepted": [
+    {
+      "id": "VariableID:2274:631",
+      "name": "Slide Controls",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9017",
+      "name": "Line Heights/0",
+      "stillPublished": true,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9018",
+      "name": "Line Heights/2",
+      "stillPublished": true,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9020",
+      "name": "Line Heights/4",
+      "stillPublished": true,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9021",
+      "name": "Line Heights/5",
+      "stillPublished": true,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9022",
+      "name": "Line Heights/6",
+      "stillPublished": true,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9023",
+      "name": "Line Heights/7",
+      "stillPublished": true,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9024",
+      "name": "(unresolvable)",
+      "stillPublished": null,
+      "kind": "unresolvable"
+    },
+    {
+      "id": "VariableID:3791:9025",
+      "name": "Line Heights/9",
+      "stillPublished": true,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9026",
+      "name": "Line Heights/10",
+      "stillPublished": true,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9027",
+      "name": "Line Heights/11",
+      "stillPublished": true,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9031",
+      "name": "Font Size/0",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9032",
+      "name": "Font Size/1",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9033",
+      "name": "Font Size/2",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9034",
+      "name": "Font Size/3",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9035",
+      "name": "Font Size/4",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9036",
+      "name": "Font Size/5",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9037",
+      "name": "Font Size/6",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9038",
+      "name": "Font Size/7",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9039",
+      "name": "Font Size/8",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9040",
+      "name": "Font Size/9",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9041",
+      "name": "Font Size/10",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9042",
+      "name": "Font Size/11",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9045",
+      "name": "Font Size/14",
+      "stillPublished": false,
+      "kind": "ghost"
+    },
+    {
+      "id": "VariableID:3791:9048",
+      "name": "(unresolvable)",
+      "stillPublished": null,
+      "kind": "unresolvable"
+    },
+    {
+      "id": "VariableID:3791:9049",
+      "name": "Letter Spacing/4",
+      "stillPublished": false,
+      "kind": "ghost"
+    }
+  ],
+  "$coverage": "Full 68-page sweep, 2026-08-11 \u2014 every page scanned, so this list is complete.",
+  "$fixed": [
+    "Letter Spacing/5 (VariableID:3791:9050) \u2014 unbound from Footer 2026-08-11; no longer appears anywhere in the file."
+  ]
+}

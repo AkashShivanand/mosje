@@ -20,7 +20,7 @@ export function SiteHeader({ current }: { current?: string }) {
         <Link
           href="/"
           aria-label="MoSJE Digital Estate — home"
-          className="group flex items-center gap-3 rounded-lg pr-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+          className="group flex items-center gap-3 rounded-lg pr-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -55,7 +55,7 @@ export function SiteHeader({ current }: { current?: string }) {
                 aria-current={active ? "page" : undefined}
                 className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                   active
-                    ? "bg-gov-blue-tonal text-gov-blue-dark"
+                    ? "bg-primary-tonal text-primary-dark"
                     : "text-ink-muted hover:bg-surface-muted hover:text-ink"
                 }`}
               >

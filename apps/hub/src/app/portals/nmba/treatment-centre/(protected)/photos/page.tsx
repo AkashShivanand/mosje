@@ -363,7 +363,7 @@ function GalleryCard({
         {/* Type + featured chips */}
         <div className="pointer-events-none absolute right-2 top-2 z-10 flex items-center gap-1">
           {photo.featured && (
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gov-yellow text-navy shadow" title="Highlighted">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-yellow text-navy shadow" title="Highlighted">
               <Icon name="star" size={14} fill aria-hidden />
               <span className="sr-only">Highlighted photo</span>
             </span>
@@ -445,7 +445,7 @@ function GalleryRow({
         <p className="flex items-center gap-1.5 truncate text-sm font-semibold text-ink" title={photo.caption}>
           {photo.featured && (
             <>
-              <Icon name="star" size={14} className="shrink-0 text-gov-yellow" fill aria-hidden />
+              <Icon name="star" size={14} className="shrink-0 text-yellow" fill aria-hidden />
               <span className="sr-only">Highlighted photo —</span>
             </>
           )}

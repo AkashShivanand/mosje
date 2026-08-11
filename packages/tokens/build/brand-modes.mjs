@@ -6,8 +6,13 @@
  * They used to be called `blue-light` and `blue-dark`, which read as light and dark THEMES.
  * They are not. They are two brand palettes, both rendered on light surfaces:
  *
- *   blue  →  gov-blue  #0373df  + saffron secondary + warm grey neutrals
- *   navy  →  gov-navy  #003366  + green   secondary + cool grey neutrals
+ *   blue  →  primary #0373df + warm grey neutrals
+ *   navy  →  primary #162f6a + cool grey neutrals   (the DBIM key colour)
+ *
+ * Since 2026-08-11 the PRIMARY ramp is the only thing a brand swap changes. Secondary
+ * (India Saffron #ff671f) and accent (India Green #046a38) are both SAMAVESH logo colours
+ * and are therefore brand-INVARIANT — navy used to swap secondary to green, which landed it
+ * 1.00:1 from the success colour. See build/brand-ramps.mjs.
  *
  * Appearance is a separate axis (`data-theme`: light | dark | hc) and the two compose. A
  * developer reading `data-color-mode="blue-dark"` had every reason to expect a dark UI and
