@@ -12,7 +12,22 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.13.2 (DEV MODE NOW TELLS THE TRUTH.
+  Last reviewed: 2026-08-11 · System version: v0.14.0 (THE LAYOUT GRID NOW EXISTS, and the
+  tap-target floor is a LADDER rather than a number. `grid/columns` (12) + `grid/gutter` (24px)
+  are UX4G 3.0/Bootstrap exactly, because we hold a parity contract with the Government of
+  India's own system; `grid/margin/{mobile,tablet,desktop}` (16/24/32px) is responsive rather
+  than Bootstrap's flat 12px, which is too thin for a government page (Carbon 32, GOV.UK 30).
+  UX4G ships its grid as CSS classes — which is why none of it ever reached Figma; ours are
+  tokens, on Carbon's model, so a designer can bind a Figma layout grid.
+  ON TAP TARGETS: 44px is WCAG 2.5.5, which is **AAA** — NOT the AA floor it is usually quoted
+  as. The AA floor is WCAG 2.2 SC 2.5.8 at 24x24 CSS px with a spacing exception, and GIGW 3.0
+  binds this estate to WCAG 2.1 AA + IS 17802, which contains NO target-size criterion at all.
+  So `target/min` 24 (AA), `target/comfortable` 44 (AAA + Apple 44pt), `target/spacious` 48
+  (Material 48dp) and `target/spacing` 8 each name their authority — all deliberate choices
+  ABOVE the mandate. Still absent by necessity: shadow/elevation cannot be a Figma variable
+  (composite value) and needs effect STYLES.)
+
+  System version: v0.13.2 (DEV MODE NOW TELLS THE TRUTH.
   A re-audit of the Figma library looked past variable NAMES — which were already correct —
   at the metadata Figma actually shows people, and found 61 variables publishing a codeSyntax
   naming a CSS custom property that does not exist (the prominence ladder was renamed and

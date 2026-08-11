@@ -1,7 +1,7 @@
 {
   "$description": "Snapshot of the LIVE SAMAVESH Figma library — fileKey 3FF5l0SMNIwdpZrKkeyPTm, the canonical one named in GOVERNANCE.md. TWO OLDER COPIES still exist and still contain variables (qyzTEy8… 261 vars, T3bkN5g… 176), so a sync run against either looks successful and reaches nobody: check the count before writing. Variable names ARE the canonical DTCG paths, so this file doubles as the proof that the Figma tree and the source tree are the same tree.",
   "$readAt": "2026-08-11",
-  "$note": "2026-08-11, EIGHTH pass — a full re-audit, and the first one to look past NAMES at the metadata Figma actually shows people. Names were already correct (six of eight collections checksum-identical to the payload; Palette and Type differ only by the orphans in $orphans). What was wrong: DEV MODE. 61 variables published a codeSyntax pointing at a CSS custom property that DOES NOT EXIST — the prominence ladder was renamed to base/subtler/subtle/bold/bolder/boldest and codeSyntax was never re-pushed, so Dev Mode handed developers --sa-bg-brand-primary-strong, --sa-text-neutral-primary and 59 more dead names; one (--color-border-neutral-inverse) had the wrong prefix entirely. A further 487 variables carried no codeSyntax at all. All 863 code-owned variables now carry the exporter-computed name, verified rule-derivable against the payload (863/863) before writing. Also fixed: the 18 accent variables created on 2026-08-11 carried ALL_SCOPES because that push never set scopes, so they appeared in every picker including corner-radius and font-size — now mirrored onto their primary/secondary siblings. And 12 empty/stale descriptions: 5 ref/border/width/* shipped BLANK (primitivePointer had no `border` case) and the 7 legacy cmp/button|card tokens described a Light/Dark mode structure the Color collection no longer has. Description coverage is now 900/900 and gated by a test.",
+  "$note": "2026-08-11, NINTH pass — the layout system, and the tap-target ladder. 9 variables added to Space (now 85; library 909). GRID: 12 columns and a 24px gutter, which is UX4G 3.0 / Bootstrap exactly, because UX4G is the Government of India's own system and this repo holds a parity contract with it — a designer moving between the two libraries must not find a different grid. What is NOT UX4G's is the SHAPE: UX4G expresses its grid as Bootstrap CSS classes, which is precisely why none of it had ever reached Figma and why a designer had nothing to bind a layout grid to. These are tokens instead, following IBM Carbon's model. Page margin is responsive (16 / 24 / 32px) rather than Bootstrap's flat 12px half-gutter, because 12px either side of a government page on a 1280px desktop is too thin — Carbon uses 32px and GOV.UK 30px. TARGET: a ladder, not one number. 44px is WCAG 2.5.5, which is Level AAA and NOT the AA floor it is usually quoted as; the AA floor is WCAG 2.2 SC 2.5.8 at 24 by 24 CSS px, with a spacing exception. GIGW 3.0 binds this estate to WCAG 2.1 AA + IS 17802, and WCAG 2.1 AA contains NO target-size criterion at all, so every value here is a deliberate choice above the mandate rather than a compliance minimum. min=24 (2.5.8 AA), comfortable=44 (2.5.5 AAA and Apple 44pt), spacious=48 (Material 3, 48dp), spacing=8 (Material separation, and what makes the 2.5.8 spacing exception reachable). NOT added, and why. The breakpoint group was NOT extended to UX4G's six: those three are the fluid TYPE ramp's clamp anchors (the generator throws without mobile and desktop), not layout media queries, so a layout breakpoint set is a separate axis and a separate decision. container/2xl (1320px) was not added because the estate's content width is 1280px, so a wider container would contradict it. Shadow and elevation still have NO Figma representation and cannot have one as variables: Figma holds only COLOR / FLOAT / STRING / BOOLEAN and a shadow is composite — it needs effect STYLES.",
   "$ghostAudit": {
     "auditedAt": "2026-08-11",
     "status": "complete",
@@ -585,6 +585,11 @@
     }
   ],
   "Space": [
+    "grid/columns",
+    "grid/gutter",
+    "grid/margin/desktop",
+    "grid/margin/mobile",
+    "grid/margin/tablet",
     "icon/size/lg",
     "icon/size/md",
     "icon/size/sm",
@@ -660,7 +665,11 @@
     "stack/none",
     "stack/s",
     "stack/xl",
-    "stack/xs"
+    "stack/xs",
+    "target/comfortable",
+    "target/min",
+    "target/spacing",
+    "target/spacious"
   ],
   "Palette": [
     "border/neutral/inverse",

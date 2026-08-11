@@ -195,6 +195,11 @@ function collectionFor(path, tier) {
    * a colour, `focus/width` is a number — so routing by the root alone put five FLOATs in the
    * colour collection. Route the measurement by what it IS, not by whose namespace it sits in.
    */
+  // The layout grid and the pointer-target floors are DIMENSIONS, so they sit with the other
+  // dimensional scales rather than with `container/*` in Static. That keeps each family whole
+  // in one collection, and it is what gives them Space's WIDTH_HEIGHT + GAP scopes — the two
+  // properties a designer actually binds a gutter, a page margin or a hit area to.
+  if (head === "grid" || head === "target") return "Space";
   if (head === "container") return "Static";
   if (head === "focus" && (rest[0] === "width" || rest[0] === "offset")) return "Static";
   if (head === "icon" && rest[0] === "size") return "Space";
