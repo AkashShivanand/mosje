@@ -357,7 +357,7 @@
   --sa-ref-font-family-latin: "Noto Sans", ui-sans-serif, system-ui, sans-serif;
   --sa-ref-font-family-devanagari: "Noto Sans Devanagari", "Noto Sans", ui-sans-serif, sans-serif;
   --sa-ref-font-family-display: "Noto Sans Display", "Noto Sans", ui-sans-serif, system-ui, sans-serif;
-  --sa-ref-font-family-mono: "IBM Plex Mono", ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  --sa-ref-font-family-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
   --sa-ref-font-weight-regular: 400;
   --sa-ref-font-weight-medium: 500;
   --sa-ref-font-weight-semibold: 600;

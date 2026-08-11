@@ -61,6 +61,7 @@
      Sans as --font-noto-sans, so alias it or those rules fall back to system-ui. */
   --font-noto: var(--font-noto-sans);
   --font-heading: var(--font-noto), system-ui, sans-serif;
+  --font-devanagari: var(--font-noto-sans), "Noto Sans Devanagari", ui-sans-serif, sans-serif;
 
   /* ── Text ───────────────────────────────────────────────────────────── */
   /* ink / ink-muted: portals pin slate-900/slate-600; hub keeps the DS ramp. */
@@ -404,6 +405,35 @@
   padding-inline: 1rem;
   @media (width >= 40rem) { max-width: none; }
   @media (width >= 1280px) { max-width: 1280px; }
+}
+
+/* ── Webfont bridge: point the design-system font tokens at the LOADED faces ──
+   `next/font` hashes the family name it generates (`__Noto_Sans_abc123`), so the
+   loaded face is reachable ONLY through the CSS variable it exposes. The token
+   package cannot know that name — it ships the plain stack (`"Noto Sans", …`),
+   which resolves to a LOCALLY INSTALLED copy or falls through to a system face.
+
+   Latin got away with it because <body> is styled by Tailwind's `font-sans`,
+   which already points at `--font-noto-sans`. Devanagari had no such path: the
+   only webfont was Noto Sans with `subsets: ["latin"]` — no Devanagari glyphs —
+   so every `var(--sa-font-devanagari)` rendered in whatever the device had.
+
+   Both now point at the SAME loaded family: Noto Sans is a superfamily whose
+   `devanagari` subset covers the script, so one webfont serves both and the
+   browser fetches the Devanagari file only for pages that contain the glyphs.
+
+   Prepending the loaded variable keeps the published stack intact as fallback
+   while making the token resolve to the font the page actually downloads. This
+   belongs in the app, not the token package: only the app knows what it loads. */
+:root {
+  --sa-ref-font-family-latin: var(--font-noto-sans), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+  --sa-ref-font-family-devanagari: var(--font-noto-sans), "Noto Sans Devanagari", ui-sans-serif, sans-serif;
+  /* Display cut first, text cut behind it. The Display cut is Latin-only, so a Devanagari
+     heading finds no glyphs in it and falls through to Noto Sans — which is the correct
+     outcome, and the reason the fallback is the loaded variable rather than a bare name. */
+  --sa-ref-font-family-display:
+    var(--font-noto-display), var(--font-noto-sans), "Noto Sans Display", "Noto Sans",
+    ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
