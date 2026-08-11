@@ -12,11 +12,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  DEFAULT_APPS,
   applyRegistryOverrides,
   effectiveStatus,
   type AppEntry,
 } from "@mosje/design-system/registry";
+import { DEFAULT_APPS } from "@mosje/design-system/app-registry";
 import { Button } from "@mosje/design-system";
 import { requireAdmin } from "@/lib/admin/auth";
 import { settingsConfigured } from "@/lib/settings/store";

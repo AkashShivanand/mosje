@@ -34,6 +34,37 @@ export interface TabsProps {
  */
 export function Tabs({ tabs, active, onChange, idBase, ariaLabel = "Sections" }: TabsProps) {
   const refs = React.useRef<Array<HTMLButtonElement | null>>([]);
+  const listRef = React.useRef<HTMLDivElement>(null);
+  const indicatorRef = React.useRef<HTMLSpanElement>(null);
+
+  // Slides the active-tab pill to the selected button's measured position
+  // instead of each tab painting its own background — that's what lets the
+  // indicator glide with a CSS `transition` rather than snap. Measured with
+  // `getBoundingClientRect` (not `offsetLeft`) so it's correct regardless of
+  // the tablist's padding/border box. `prefers-reduced-motion` is handled in
+  // CSS (`transition: none`), not here — the position still updates, it just
+  // stops animating.
+  const updateIndicator = React.useCallback(() => {
+    const list = listRef.current;
+    const btn = refs.current[active];
+    const indicator = indicatorRef.current;
+    if (!list || !btn || !indicator) return;
+    const listRect = list.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    indicator.style.transform = `translateX(${btnRect.left - listRect.left}px)`;
+    indicator.style.width = `${btnRect.width}px`;
+  }, [active]);
+
+  // Runs before paint so the very first placement (and every tab-count
+  // change) never renders one frame at the wrong spot.
+  React.useLayoutEffect(() => {
+    updateIndicator();
+  }, [updateIndicator, tabs.length]);
+
+  React.useEffect(() => {
+    window.addEventListener("resize", updateIndicator);
+    return () => window.removeEventListener("resize", updateIndicator);
+  }, [updateIndicator]);
 
   const move = (index: number) => {
     onChange(index);
@@ -67,7 +98,14 @@ export function Tabs({ tabs, active, onChange, idBase, ariaLabel = "Sections" }:
 
   return (
     <>
-      <div role="tablist" aria-label={ariaLabel} aria-orientation="horizontal" className="ds-tabs">
+      <div
+        ref={listRef}
+        role="tablist"
+        aria-label={ariaLabel}
+        aria-orientation="horizontal"
+        className="ds-tabs"
+      >
+        <span ref={indicatorRef} className="ds-tabs__indicator" aria-hidden="true" />
         {tabs.map((t, i) => {
           const selected = active === i;
           return (

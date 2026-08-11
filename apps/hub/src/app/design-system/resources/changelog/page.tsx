@@ -107,7 +107,7 @@ const RELEASES: Release[] = [
     ],
   },
   {
-    version: "v0.11.11",
+    version: "v0.11.13",
     date: "2026-08-10",
     changes: [
       { kind: "Fixed", text: "The entire component tier ignored the brand axis. All 296 --sa-cmp-* shipped as frozen hexes, so --sa-cmp-action-brand-primary-default-bg was #025fb8 under Blue and #025fb8 under Navy — the primary button never changed brand. The CSS format handed var() chains only to system.generated.json, and Tier 3 fell through to the resolved literal. The source was never at fault: Tier 3 is 196 references plus 92 deliberate literals (white-alpha inverse variants and transparent fills, which are correctly brand-invariant). 101 component tokens now repaint under Navy, up from zero" },
@@ -119,7 +119,7 @@ const RELEASES: Release[] = [
     ],
   },
   {
-    version: "v0.11.10",
+    version: "v0.11.12",
     date: "2026-08-10",
     changes: [
       { kind: "Fixed", text: "Every page in the estate was loading at 110% zoom with letter-spacing and line-height bumped, and three accessibility features showing as switched on that nobody had switched on. The cause was our own workaround for a null dereference in the UX4G v1.15 widget: it seeded the widget's settings key BEFORE the script ran, which pushed loadSettings() down its restore branch instead of the no-op path a fresh visitor should take — and that branch ends in updateWidgetToggles(), which calls the widget's own CLICK handlers, each of which advances a counter unconditionally. Seeding a neutral object was therefore indistinguishable from clicking three controls once per page load. The squeezed National Emblem in the header was the same bug, not a broken asset" },
@@ -134,7 +134,7 @@ const RELEASES: Release[] = [
     ],
   },
   {
-    version: "v0.11.9",
+    version: "v0.11.11",
     date: "2026-08-10",
     changes: [
       { kind: "Changed", text: "The prominence ladder is renamed and now actually ORDERS. UX4G's base / soft / subtle / emphasis / strong / stronger did not: subtle sat louder than soft while reading quieter, and base was the quietest of all while reading like the default. A ladder whose names do not sort is not a ladder, it is six adjectives. It is now base / subtler / subtle / bold / bolder / boldest for fills — Atlassian's shipped pattern rather than a private scale" },
@@ -146,7 +146,7 @@ const RELEASES: Release[] = [
     ],
   },
   {
-    version: "v0.11.8",
+    version: "v0.11.10",
     date: "2026-08-10",
     changes: [
       { kind: "Changed", text: "The Figma library is canonical end to end. All 691 variables were renamed in place so a variable's NAME is its token path — bg/neutral/subtle, ref/space/md, cmp/action/brand/primary/hover/bg — and the collections are tier-ordered: 1 · Palette, 2 · Color, 2 · Space, 2 · Type, 2 · Radius, 2 · Motion, 2 · Density. 435 of 669 names previously differed from the path they came from, and 179 carried a hyphen inside a segment, which is the exact defect RULE 1 exists to remove" },
@@ -156,6 +156,24 @@ const RELEASES: Release[] = [
       { kind: "Fixed", text: "The grammar allowlist is itemised instead of rooted. It was four ROOTS (color, type, spacing, density), and the check skipped every path beginning with one — so it exempted 188 existing tokens AND every token anyone might write under those roots in future. A brand-new ungrammatical color/… landed green, and the freeze criterion could never be met. It is now 150 explicit paths with two ratchet tests: a stale entry fails, and an entry that now parses fails. Three of the four roots turned out not to need exempting at all" },
       { kind: "Fixed", text: "Two repo pointers sent syncs to the wrong Figma file. Both .claude/commands/sync-figma.md and the sync handoff doc named older SAMAVESH copies that still contain variables — so a run against either looks successful and reaches nobody. Both now name the canonical file from GOVERNANCE.md, with the variable count to check against" },
       { kind: "Changed", text: "Renaming type/title1 to type/title/1 was attempted and REVERTED: it flattens onto a name the fluid font/role scale already owns, silently merging a fixed 22px semantic role with a clamp(). The visual-contract test caught it, and the two namespaces now stay spelled differently on purpose, with the reason written down where the next person will look" },
+    ],
+  },
+  {
+    version: "v0.11.9",
+    date: "2026-08-11",
+    changes: [
+      { kind: "Changed", text: "DemoDock's FAB moves from bottom-left to bottom-right, docked directly above the UX4G accessibility widget's own trigger — one coordinated utility rail (same right edge, a fixed gap) instead of two FABs in unrelated corners at different sizes and offsets. The gap above the widget is measured live off its real geometry rather than hardcoded, so an upstream resize of the widget can't silently reopen an overlap" },
+      { kind: "Removed", text: "The per-registry-entry boolean that raised the FAB above PortalLoginShell's \"Signing Into\" strip on NMBA's two login routes is gone, with no replacement flag — moving the FAB off bottom-left eliminates that collision at the source, so every route now renders the FAB in the identical position, nothing to opt into and nothing to forget" },
+      { kind: "Fixed", text: "The FAB no longer visibly relocates between routes (bottom-left at rest vs. raised on NMBA's login pages) — it now holds one fixed position, bottom-right, on every page" },
+    ],
+  },
+  {
+    version: "v0.11.8",
+    date: "2026-08-11",
+    changes: [
+      { kind: "Changed", text: "DemoDock's Colour tab: the plain swatch row plus live Button/Badge/Alert preview block is replaced by a wrapping grid of fixed-size (~72×48px) motif tiles — a miniature header bar, content surface, accent mark and button shape per mode. Each tile renders in that mode's own palette via a nested data-brand island on the tile itself, so a Navy tile looks navy even while the app is in Blue, with no hardcoded hex" },
+      { kind: "Removed", text: "The live Button/Badge/Alert preview block under the Colour tab's swatch list is gone. The motif tiles are the preview now, and — being fixed-size regardless of mode count — give the tab a height that no longer grows with a live component block or a longer mode list" },
+      { kind: "Changed", text: "Selected state keeps the tick plus a visible ring (still not colour alone — WCAG 1.4.1); touch targets remain ≥44px (AAA, WCAG 2.5.5)" },
     ],
   },
   {

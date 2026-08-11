@@ -3,7 +3,6 @@
 import { updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import {
-  DEFAULT_APPS,
   REGISTRY_CONFIG_MAX_BYTES,
   buildRegistryConfig,
   emptyRegistryConfig,
@@ -12,6 +11,7 @@ import {
   type RegistryRowInput,
   type RegistryStatus,
 } from "@mosje/design-system/registry";
+import { DEFAULT_APPS } from "@mosje/design-system/app-registry";
 import { requireAdmin } from "@/lib/admin/auth";
 import { SETTING_PORTAL_REGISTRY, writeSetting } from "@/lib/settings/store";
 import { REGISTRY_TAG } from "@/lib/registry/resolve";

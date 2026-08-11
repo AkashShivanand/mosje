@@ -14,7 +14,7 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import path from "node:path";
 
-import { DEFAULT_APPS } from "@mosje/design-system/registry";
+import { DEFAULT_APPS } from "@mosje/design-system/app-registry";
 
 const APP_DIR = path.resolve(import.meta.dirname, "..", "..", "app");
 

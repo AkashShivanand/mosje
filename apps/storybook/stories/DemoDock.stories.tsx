@@ -102,7 +102,7 @@ function ExpandOnMount({ tabIndex }: { tabIndex?: number }) {
   return null;
 }
 
-/** Collapsed — just the FAB, bottom-left. Click it to expand the panel. */
+/** Collapsed — just the FAB, bottom-right. Click it to expand the panel. */
 export const Playground: Story = {};
 
 /**

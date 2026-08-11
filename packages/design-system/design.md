@@ -37,6 +37,112 @@
   white is 0 and pure black is 1000. `gov-` was dropped from every colour name across 330 call
   sites. A hue-separation gate now makes the C-02 class of defect unshippable.)
 
+  System version: v1.11.8 (DEMODOCK PLACEMENT: the FAB moves from
+  bottom-left to bottom-right, docked directly above the UX4G accessibility widget's own trigger —
+  one coordinated utility rail instead of two FABs in unrelated corners at different sizes/offsets.
+  The gap above the widget is measured live off its real geometry (never hardcoded), so an upstream
+  resize can't silently reopen an overlap. The per-registry-entry boolean that used to raise the FAB
+  above `PortalLoginShell`'s "Signing Into" strip on NMBA's login routes (making the FAB visibly
+  relocate between routes) is removed outright rather than automated further — moving off
+  bottom-left eliminates that collision at the source, so every route now gets the identical FAB
+  position with nothing to opt into and nothing to forget.) v1.11.7 (COLOUR TAB MOTIF TILES: the Colour tab's
+  swatch-plus-live-preview layout is replaced by a wrapping grid of fixed-size (~72×48px) motif
+  tiles — a miniature header bar/surface/accent/button abstraction per mode, each rendered in that
+  mode's own palette via a nested `data-brand` island on the tile itself (no hardcoded hex; see the
+  "Brand islands" note). The live `Button`/`Badge`/`Alert` preview block is deleted — the tiles
+  themselves are the preview, and give the tab a fixed height regardless of mode count instead of
+  one that grows with a live-component block. Selected state keeps the tick plus a visible ring
+  (still non-colour-only, WCAG 1.4.1); touch targets stay ≥44px (AAA). v1.11.6 (DEMODOCK REDESIGN: the footer disclaimer
+  row ("Demo tooling — not part of the product") is gone — the dock is unambiguous demo chrome by
+  context, and the row was pure noise. The Colour tab's body min-height no longer collapses when a
+  short tab replaces a long one, so switching tabs doesn't visibly resize the panel. Colour is now a
+  plain row of brand-palette swatches driven directly by `useColorMode()` — no label, no pill track
+  — and `ColorModeSwitcher` is **removed from the design system entirely** (deleted from
+  `foundations/`, the barrel, and Storybook); an app that still wants a standalone brand-mode
+  control builds one from `useColorMode()` the same way DemoDock's Colour tab now does. Sign in only
+  renders on an actual login route (`isLoginRoute`: path ends in `/login`, `/login-otp` or
+  `/sign-in`) rather than anywhere under a portal with a demo account set, and when it renders it is
+  the first tab and the one selected on open. Open/close and swatch selection are animated
+  (CSS-only, token durations/easings, `prefers-reduced-motion` respected). v1.11.5 (DEMO TOOLING
+  CONSOLIDATED: `AppSwitcher`
+  removed — it hand-rolled a duplicate of `ColorModeSwitcher` and was mounted as mandatory
+  per-portal navigation. Replaced by `DemoDock`, one floating console mounted exactly once by the
+  hub root layout, tabbed Apps/Colour/Sign in, gated estate-wide by `NEXT_PUBLIC_DEMO_TOOLS`
+  (default ON). `AppSwitcherPanel` and `DemoAccountsPanel` extracted as reusable panel content;
+  `DemoFab` kept, now sharing `DemoAccountsPanel` with `DemoDock` instead of its own table. Demo
+  credentials moved from per-page consts into a pathname-keyed registry, `DEMO_ACCOUNTS` in
+  `packages/design-system/demo/demo-accounts.ts` — now the source of truth over
+  `.claude/rules/portal-login-demos.md`'s table. `AppEntry.group` gained `"Reports"`. v1.11.4
+  (APPEARANCE AXIS REMOVED: `data-theme`
+  (light/dark/hc) no longer exists. Figma's Theme collection is single-mode and `tokens.css` emits
+  no `[data-theme]` block. The UX4G accessibility widget is the estate's single canonical dark and
+  high-contrast mechanism — it applies its own `.dark-mode` class and never read `data-theme`, so
+  this was a second parallel mechanism nothing consumed. Verified no-op: zero value drift in every
+  surviving selector context. Removed three dead switches (gate header, docs header, playground),
+  the Storybook theme picker, two theme modules, the no-flash script and the orphaned CSS; corrected
+  Storybook's pre-rename brand labels to Blue/Navy. Also normalised 33 Figma alphas stored as 8-bit
+  n/255 values rather than clean percentages (max shift 0.16pp). v1.11.3: (FIGMA SYNC, second pass: the library now
+  matches the code on Spacing (49), Theme (374), Border Radius, Motion and Density, and on all 117
+  Color names the exporter emits. Created 61 missing variables (Spacing 15->49, Typography 79->106);
+  renamed 28 in place so ids and bindings survived; retired 8 unused Color leftovers (149->141).
+  TWO DELIBERATE NON-GAPS: the 24 extra Color names are Figma-native primitives designers bind to
+  directly and the exporter withholds them on purpose; the 5 type/*-weight variables are absent
+  because Figma models font weight as a STRING style name while the code uses a numeric FLOAT, and
+  Figma rejects an alias across types. Also fixed a silent catch-all in the exporter that filed 13
+  px-valued numbers under font-family/. The library needs republishing for any of this to reach
+  consumers. v1.11.2: (FIGMA SYNC: the SAMAVESH library had four
+  variable names living in BOTH the Color and Theme collections, left over from an earlier
+  hand-migration. All 504 live bindings were rebound onto the Theme copies and the Color leftovers
+  removed; Color 153 -> 149. `Focus/Ring` stays in both on purpose — it is a brand-source companion
+  the appearance layer consumes. Two leftovers were also MISLABELLED: Color's
+  Background/Brand/Primary/Subtle held ramp step 50, which the prominence ladder calls `base`, and
+  Strong held Source rather than 600. The Theme copies already matched the ladder, so retiring the
+  leftovers brings Figma and dist/tokens.css into token-for-token agreement and raises white-on-brand
+  contrast from 4.64:1 to 6.30:1 (Blue) and 12.61:1 to 14.22:1 (Navy). The Figma library needs
+  republishing for consumers to pick this up. v1.11.1: (TOKEN GRAMMAR: `default` now means
+  exactly one thing — a state. It previously occupied three slot dictionaries at once
+  (prominence, state, link variant), so the parser bound it greedily and text/link/visited/default
+  parsed as a prominence, losing the state it spelled. The prominence canonical is now `base`
+  (`--sa-bg-neutral-base`) and the link variant is now `brand` (`--sa-text-link-brand-default`).
+  NOTHING RENDERS DIFFERENTLY — a rename, not a redesign: all 27 moved names resolve
+  byte-identically in all 7 selector contexts, pinned by test/visual-contract.test.mjs, and the
+  `--ds-*` names app code uses are unchanged. `--ux4g-*` names are unchanged too and sit OUTSIDE
+  the contrast contract by construction: an alias preserves UX4G's VALUE, not our rung. Two slot
+  ambiguities remain, pinned by test/slot-disjointness.test.mjs — see spec §5.1c/§8.1a.
+  v1.11.0: The estate is off lucide-react and off
+  shadcn/Radix entirely. Every icon is Material Symbols Rounded via <Icon> — 668 call sites
+  across 239 files — and SidebarNavItem.icon is now a Material Symbols NAME STRING, not a
+  component, so nav configs stay serialisable. NEW components: Tooltip (WCAG 1.4.13 —
+  dismissible, hoverable, persistent; portalled at z-index 90 so Card/DataTable overflow can't
+  clip it); Skeleton/SkeletonText/SkeletonRow; Label (standalone, for controls outside
+  FormField); LiveRegion + useLiveRegion; SectionTitle. Input gains leftIcon/rightIcon — a bare
+  Input still renders with no wrapper. FIXED: CardTitle painted at 32px because it referenced
+  the Headline-1 alias while its own fallback claimed 20px; it is now bound to the canonical
+  --ds-type-title-1-size. Icon accepts a style prop. NOTE the legacy --ds-text-title-* aliases
+  are still mis-mapped to headline-2 — use the canonical --ds-type-<role>-size tokens.
+  v1.10.0: SlaProgressIndicator — Right to
+  Service Act time-remaining, three variants, seven states including a neutral PAUSED clock and
+  MISSED as distinct from BREACHED; pure logic in utils/sla.ts. v1.9.0: (Type is now sized in REM, not px: a
+  reader who raises their browser's default font size without zooming now gets larger text —
+  a px scale ignored them. Renders identically at the 16px default, proven by test. NEW
+  components: PasswordInput (reveal toggle — use for every password field in the estate;
+  real type="button" so it cannot submit, action-named label, browser's own reveal
+  suppressed); AadhaarInput / OtpInput / PanInput (UX4G 3.0 identity controls) + pure
+  validators in utils/india-id.ts; Aadhaar is Verhoeff-checked and masked to its last four
+  digits by default per DPDP Act 2023 / UIDAI. FIXED: the dark theme shipped a primary button
+  whose white label sat at 3.77:1 — below AA — since the ramp step was chosen for the link
+  role, not the fill; the contrast gate now sweeps every colour mode AND theme, not just
+  :root, and covers the hover state. v1.8.0: UX4G 3.0 adopted as the foundation.
+  New: the opt-in `--ux4g-*` parity layer (`@mosje/design-system/ux4g.css`, all 755 UX4G tokens
+  resolved onto SAMAVESH — structure at UX4G's exact values, colour role-mapped to the MoSJE
+  palette) plus `ux4g-light`/`ux4g-dark` colour modes carrying UX4G's literal palette. Core
+  additions: UX4G's four semantic spacing role families (`--ds-inline/stack/padding/section-*`)
+  — prefer these over the raw t-shirt scale; `--ds-spacing-10xl/11xl`; a 6-level shadow ramp
+  (adds `none`/`sm`/`md`); `--ds-font-display` (Noto Sans Display, 36px+). FIXED: the
+  `[data-surface="portal"]` block did not re-assert the `--ds-text-*`/`--ds-leading-*` aliases,
+  so every natively-mounted portal rendered the WEBSITE type scale (display headings to 80px
+  instead of 56px) — alias re-assertion is now targeted per block, which also cut tokens.css
+  from 92 KB to 60 KB. v1.7.2: Text-entry controls take a hard 16px floor below 768px: iOS Safari zooms any focused control under 16px and does not zoom back out, and the fluid ramp put body-1 at ~14px on a phone. Desktop density unchanged. v1.7.1: `SideSheet` gains `side="left"` for navigation drawers, so portal shells can collapse a fixed sidebar into a drawer on small screens instead of squeezing the page. `DeclarationCheckbox` attestation row now meets the 44px touch floor. v1.7.0: Adds three components for field reporting with sign-off: `GeoPhotoInput` (EXIF/device geo-tagging + auto-downscale), `DeclarationCheckbox` (statutory certification panel), `ApprovalTimeline` (multi-tier approval audit trail). No token values changed. v1.6.2: Theming: `[data-color-mode="…"]` blocks now re-declare the `--ds-*` aliases, exactly as `[data-theme="…"]` blocks already did, so colour-mode "islands" repaint a nested subtree instead of only flipping `--sa-*` primitives. Fixed in the generator `packages/tokens/build/formats/legacy-ds-css.mjs`; surfaced when portals mounted natively in the hub and `data-brand` moved off `<html>` onto a wrapper. No token values changed. v1.6.1: Icon loading: icons.css now declares an inline @font-face (pinned gstatic woff2) instead of an @import, so the documented `import "@mosje/design-system/icons.css"` finally loads the font under Next/Turbopack — no per-app <link> hack. Typography: hyphenated Portal-DS role names — display-1…label-3; added -para (paragraph-spacing) + -tracking (letter-spacing) fluid props so code ↔ SAMAVESH Figma are at full parity. v1.6.0: two-surface fluid type via data-surface=website|portal, 21 role tokens as clamp(min@360px, fluid, max@1280px). v1.5.0: Figma→code colour sync, mode-aware Blue-Light/Blue-Dark, danger-strong #B8382F)
 -->
 
 # SAMAVESH Design System — Specification & AI Design Context
@@ -974,6 +1080,80 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 import { UX4GAccessibilityWidget } from "@mosje/design-system";
 <UX4GAccessibilityWidget />   // injects https://cdn.ux4g.gov.in/.../accessibility-widget.js, idempotently
 ```
+
+---
+
+### Demo Tooling (NOT product UI)
+
+Everything in this subsection lives in `packages/design-system/demo/`, is
+demo-only, and must never be reached for when building a screen a citizen or
+officer will actually use. It is the estate's tooling for reviewers,
+stakeholders and QAs to drive a demo without real accounts. If you are
+building product UI and find yourself about to import from here, stop —
+these are not the components you want.
+
+#### DemoDock
+**Purpose**: The single floating demo console — one FAB, bottom-right,
+docked directly above the UX4G accessibility widget's own trigger (a single
+coordinated utility rail, not two unrelated corners — the gap is measured
+live off the widget's real geometry, never hardcoded), opening a tabbed
+panel: **Sign in** (demo credentials for the current login
+route, `DemoAccountsPanel`, shown — and shown *first* — only when `pathname`
+is itself a login route; see `isLoginRoute`), **Apps** (cross-zone
+destination search, `AppSwitcherPanel`), **Colour** (a wrapping grid of
+labelled motif tiles, driven directly by `useColorMode()` — no separate
+switcher component; click a tile to apply that mode immediately). Each tile
+is a fixed-size (~72×48px) miniature UI abstraction — header bar, content
+surface, accent mark, button shape — rendered in *that* mode's own palette
+via a nested `data-brand` island on the tile itself (see "Brand islands"
+above), so a tile shows what a mode looks like without switching the whole
+page first, and without hardcoding hex. The grid wraps into rows within a
+fixed floor height instead of growing one row per mode, so the tab's height
+doesn't change as modes are added.
+**Props**: `pathname` (drives "Currently in", which accounts exist for the
+path via `findDemoAccounts`, and whether Sign in renders via `isLoginRoute`),
+`apps` (registry override, default `DEFAULT_APPS`), `label` (default
+`"Demo tools"`).
+**Rule**: Mounted **exactly once**, by the hub's root layout via
+`ConditionalDemoDock` — never per portal, never per page. Requires a
+`ColorModeProvider` ancestor (the Colour tab throws without one). Gated
+estate-wide by `NEXT_PUBLIC_DEMO_TOOLS`: absent or anything but the exact
+string `"false"` means visible; `"false"` removes it entirely, which is the
+correct state for a genuinely public deployment. Open/close and swatch
+selection are animated in CSS only, using `--ds-duration-*`/`--ds-easing-*`
+tokens, and collapse to instant under `prefers-reduced-motion`. See
+`.claude/rules/portal-appswitcher.md`.
+
+#### AppSwitcherPanel
+**Purpose**: The searchable, grouped destination list — DemoDock's Apps tab.
+**Groups**: `Website` · `Portals` · `Reports` · `Resources` (the design
+system and Storybook).
+**Props**: `apps`, `pathname`, `onNavigate`, `showCurrentApp` (default
+`true`; a shell that states the current app itself, like `DemoDock`'s own
+header, sets this `false` to avoid saying it twice).
+**Rule**: Pure content — no fixed positioning, no open/close state. Reused
+directly by `DemoDock`; do not fork a second copy for a different shell.
+
+#### DemoAccountsPanel
+**Purpose**: The shared demo-credentials table — one definition used by both
+`DemoFab` and `DemoDock`'s Sign in tab, so they cannot drift apart.
+**Props**: `accounts`, `idLabel` (default `"Mobile / ID"`), `onFill`
+(replaces the default global dispatch), `onUse` (fires after either fill
+path, so a containing shell can close itself).
+**Rule**: **Use**'s default behaviour dispatches a `demo:fill` CustomEvent
+with `{ id, password, extra }` — that is what lets a login page anywhere in
+the tree prefill itself with no prop-drilling. Accounts come from
+`DEMO_ACCOUNTS` / `findDemoAccounts` in
+`packages/design-system/demo/demo-accounts.ts` — see
+`.claude/rules/portal-login-demos.md`.
+
+#### DemoFab
+**Purpose**: A standalone, per-page demo-credentials FAB — the older pattern
+`DemoDock` superseded for every page inside the hub. Still exported and still
+valid for a page genuinely outside the hub's layout tree; not to be mounted
+alongside `DemoDock` inside it.
+**Props**: `accounts`, `devMode` (renders `null` when falsy — never
+hard-code `true`), `idLabel`, `onFill`.
 
 **DOM note:** the widget applies the class **`.dark-mode`** to `<html>` for its dark theme. This is **distinct** from the design system's own `data-theme` / `data-brand` token theming — keep the two concerns separate (see the consolidation spec).
 

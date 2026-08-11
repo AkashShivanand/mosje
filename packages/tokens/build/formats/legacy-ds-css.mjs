@@ -1,6 +1,6 @@
 import { cssNameFor, tierOfFile, toCssName } from "../grammar.mjs";
 import { makeRetier } from "./retier.mjs";
-import { brandSelector } from "../brand-modes.mjs";
+import { brandSelector, DEFAULT_BRAND } from "../brand-modes.mjs";
 // Emits :root { --sa-*: <value>; ... } plus a hardcoded legacy --ds-* alias block.
 // The legacy block maps each old name to the new token it now derives from, so values
 // stay identical while the source of truth becomes the DTCG tokens.
@@ -496,6 +496,18 @@ export const legacyDsCss = {
         for (const [mode, v] of Object.entries(ext.colorModes)) {
           push((colorModeMap[mode] ??= mkBlock()), name, resolveRef(v));
         }
+        // Every token that varies by brand also needs an explicit declaration for the
+        // DEFAULT brand ("blue") — not just the overrides above. Without this, blue never
+        // gets a [data-brand="blue"] block at all (colorModeMap has no "blue" key, because
+        // the source JSON encodes blue as the token's base $value rather than a colorModes
+        // override), so nothing can nest its way back to blue: an explicit
+        // data-brand="blue" island inside an ambient navy/ux4g page silently inherits the
+        // ambient brand instead of rendering blue. design.md documents nested brand islands
+        // as supported for every brand; this is what makes that true for the default one
+        // too. `val(t)` is exactly what :root already emits for this token (see the
+        // `lines` computation above) — this is a genuine ADDITION (a new selector), not a
+        // change to any existing value.
+        push((colorModeMap[DEFAULT_BRAND] ??= mkBlock()), name, val(t));
       }
     }
 

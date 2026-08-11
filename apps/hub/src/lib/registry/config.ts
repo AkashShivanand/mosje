@@ -14,7 +14,6 @@
  */
 
 import {
-  DEFAULT_APPS,
   applyRegistryOverrides,
   hiddenEntries,
   matchHiddenEntry,
@@ -22,6 +21,7 @@ import {
   type AppEntry,
   type RegistryConfig,
 } from "@mosje/design-system/registry";
+import { DEFAULT_APPS } from "@mosje/design-system/app-registry";
 import {
   SETTING_PORTAL_REGISTRY,
   readSetting,

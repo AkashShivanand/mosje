@@ -4,6 +4,7 @@
    ============================================================================ */
 
 .ds-tabs {
+  position: relative;
   display: flex;
   gap: 4px;
   overflow-x: auto;
@@ -14,7 +15,43 @@
   font-family: var(--ds-font-sans);
 }
 
+/* The active-tab pill. A single element that slides to the selected
+   button's measured position (set inline by `Tabs`, see tabs.tsx) rather
+   than each button painting its own background — that's what makes it
+   glide between tabs instead of snapping. Sits behind the buttons
+   (z-index 0) so their hover/focus states still render on top of it. */
+.ds-tabs__indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  width: 0;
+  border-radius: var(--ds-radius-lg);
+  /* `--ds-navy` (`--sa-color-brand-navy`) is declared once at `:root` and
+     never re-declared inside a `[data-brand]` block — it's brand-invariant
+     by design, meant for things that should stay navy regardless of the
+     active brand axis (see tokens.css). The active-tab pill isn't one of
+     those: `.ds-tabs__tab.is-selected` already reads `--ds-on-primary` for
+     its text colour, so `--ds-primary` was the intended fill all along —
+     it's re-declared per `[data-brand]` and re-tones with the rest of the
+     estate. */
+  background-color: var(--ds-primary);
+  box-shadow: var(--ds-shadow-xs);
+  transition: transform var(--ds-duration-fast) var(--ds-easing-out),
+    width var(--ds-duration-fast) var(--ds-easing-out);
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-tabs__indicator {
+    transition: none;
+  }
+}
+
 .ds-tabs__tab {
+  position: relative;
+  z-index: 1;
   flex: 1 1 0;
   min-width: 0;
   white-space: nowrap;
@@ -28,18 +65,26 @@
   font-weight: 600;
   text-align: center;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color var(--ds-duration-fast) var(--ds-easing-out),
+    color var(--ds-duration-fast) var(--ds-easing-out);
 }
 
 .ds-tabs__tab:hover:not(.is-selected) {
-  background-color: rgba(0, 0, 0, 0.05);
+  /* Was a raw `rgba(0, 0, 0, 0.05)` literal — not permitted in design-system
+     CSS (tokens only). `--ds-surface-muted` (the track's own background,
+     see `.ds-tabs` above) isn't a substitute: hovering a tab would then
+     match the track it sits on and the affordance would disappear.
+     `--ds-neutral-100` is one step darker (#f1f3f5 vs #f8f9fa in Blue),
+     giving a visible neutral wash on top of the muted track without
+     inventing a value. */
+  background-color: var(--ds-neutral-100);
   color: var(--ds-ink);
 }
 
+/* The pill's own background/shadow now come from `.ds-tabs__indicator`
+   behind it — this just sets the text color that reads on top of it. */
 .ds-tabs__tab.is-selected {
-  background-color: var(--ds-navy);
   color: var(--ds-on-primary);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .ds-tabs__tab:focus-visible {
@@ -50,6 +95,28 @@
 
 .ds-tabpanel:focus-visible {
   outline: none;
+}
+
+/* Tab-body cross-fade. `.ds-tabpanel` is freshly mounted every time the
+   active tab changes (the parent conditionally renders one panel at a
+   time), so a plain CSS `animation` — which always plays on insertion —
+   is enough; no JS orchestration needed. Kept short and restrained: this
+   is a utility switching state, not a showpiece. */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-tabpanel {
+    animation: ds-tabpanel-fade-in var(--ds-duration-fast) var(--ds-easing-out);
+  }
+
+  @keyframes ds-tabpanel-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 /* Visually-hidden live region (self-contained so the announcer never shows). */
