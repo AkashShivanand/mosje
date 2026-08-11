@@ -26,74 +26,17 @@
 import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import path from "node:path";
 
-const BARREL = process.env.DS_BARREL ?? "packages/design-system/index.ts";
+// Shared with check-design-context.mjs so the two gates cannot disagree about
+// what counts as a component — see scripts/lib/ds-exports.mjs.
+import { exportedComponents } from "./lib/ds-exports.mjs";
+
 const STORIES_DIR = process.env.STORIES_DIR ?? "apps/storybook/stories";
 const BASELINE =
   process.env.STORYBOOK_BASELINE ?? "apps/storybook/coverage-baseline.json";
 
-/**
- * Exports that are not components and so cannot have a story. Anything not
- * listed here and starting with a capital letter is treated as a component —
- * the default is "needs a story", so a new component cannot slip through by
- * being forgotten.
- */
-const NOT_COMPONENTS = new Set([
-  // Constants
-  "COLOR_MODES", "COLOR_MODE_ATTR", "COLOR_MODE_COOKIE", "DEFAULT_COLOR_MODE",
-  "DEFAULT_APPS", "PORTAL_CATEGORIES", "PAN_HOLDER_TYPES",
-  "SLA_DEFAULT_THRESHOLDS", "UX4G_A11Y_WIDGET_SRC",
-  // DEMO_ACCOUNTS is a pathname-keyed data registry (packages/design-system/
-  // demo/demo-accounts.ts), not a component — same category as DEFAULT_APPS
-  // above. It is exercised by DemoAccountsPanel.stories.tsx and DemoDock.stories.tsx.
-  "DEMO_ACCOUNTS",
-  // Numeric constants of the estate-registry override layer (packages/
-  // design-system/components/navigation/registry-overrides.ts): the schema
-  // version the settings row must declare, and the byte ceiling a stored
-  // config may not exceed. Same category as the constants above — there is
-  // nothing to render. The behaviour they govern is covered by
-  // registry-overrides.test.ts.
-  "REGISTRY_CONFIG_VERSION", "REGISTRY_CONFIG_MAX_BYTES",
-  // Types (exported via `export type`, but belt and braces)
-  "ColorMode", "ColorModeId", "ColorModeProviderProps", "ColorModeSwitcherProps",
-  // Context providers and non-visual utilities: nothing to look at.
-  "ColorModeProvider", "ToastProvider", "LiveRegion",
-  // Renders the official MeitY widget from a CDN — cannot run in Storybook.
-  "UX4GAccessibilityWidget",
-]);
-
-/**
- * Sub-parts documented by their parent's story rather than their own, e.g.
- * CardHeader is shown inside the Card story. Keyed to the parent so a reviewer
- * can see the claim is real.
- */
-const DOCUMENTED_BY = {
-  CardHeader: "Card", CardBody: "Card", CardFooter: "Card",
-  CardTitle: "Card", CardSubtitle: "Card",
-  TabPanel: "Tabs",
-  ReviewSection: "Wizard", ReviewItem: "Wizard",
-  SkeletonText: "Skeleton", SkeletonRow: "Skeleton",
-  ChartTooltip: "Legend",
-};
-
 function fail(message) {
   console.error(`\n✖ storybook coverage: ${message}\n`);
   process.exit(1);
-}
-
-/** PascalCase names re-exported from the design-system barrel. */
-function exportedComponents() {
-  const src = readFileSync(BARREL, "utf8");
-  const names = new Set();
-  for (const match of src.matchAll(/^export \{([^}]*)\} from/gms)) {
-    for (let name of match[1].split(",")) {
-      name = name.trim().replace(/^type\s+/, "").split(/\s+as\s+/).pop().trim();
-      if (!name || !/^[A-Z]/.test(name)) continue;
-      if (NOT_COMPONENTS.has(name)) continue;
-      if (name in DOCUMENTED_BY) continue;
-      names.add(name);
-    }
-  }
-  return names;
 }
 
 function storyFiles(dir) {

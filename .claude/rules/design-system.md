@@ -160,6 +160,41 @@ Follow `Alert.stories.tsx` and `Controls.stories.tsx`.
 **When you add or change a component, the story is part of the change**, in the
 same commit — exactly like `design.md` and the changelog.
 
+## Design-context coverage (enforced in CI)
+
+The rule above — *any change to a component MUST update `design.md`* — was
+cultural, and culture does not survive a file rewrite. The UX4G accessibility
+widget's entry landed and was then removed by a commit that renumbered
+`design.md`'s version chain and dropped a whole range with it. The changelog
+half survived, because the changelog has a gate. `design.md` had none, so the
+widget's code sat on `main` while its authoritative context said nothing about
+it — including that its telemetry defaults to OFF for privacy reasons, exactly
+the kind of decision an agent must not flip blind.
+
+`scripts/check-design-context.mjs` closes that. A **ratchet**, same shape as the
+Storybook coverage gate: a component exported from the barrel and not mentioned
+in `design.md` fails, unless it is declared in
+`packages/design-system/design-context-baseline.json`; a baseline entry that is
+now documented also fails, so the backlog cannot grow back.
+
+- Run it with `npm run check:design-context`.
+- `npm run check:design-context:baseline` rewrites the baseline.
+- `DESIGN_MD=<file>` points it at a fixture — that is how the gate itself is
+  exercised, because a check nobody has watched fail cannot be trusted.
+- **The exclusion lists are shared** with the Storybook gate, in
+  `scripts/lib/ds-exports.mjs`, so the two cannot disagree about what a
+  component is. Note the deliberate split: `NOT_COMPONENTS` (constants, types —
+  excluded from both) versus `NOT_RENDERABLE_IN_STORYBOOK` (real components that
+  cannot be rendered in Storybook but **must** be documented). That split is not
+  decoration — with one shared list, `UX4GAccessibilityWidget` was exempt from
+  the very gate written to catch its disappearance.
+
+**What it does not do:** mentioning a component is a low bar. It proves a
+section still exists, not that it is still true. The precise loss that motivated
+it — an entry vanishing from inside a surviving section — is still invisible to
+it. Treat a green tick as "nothing was deleted wholesale", not as "the docs are
+correct".
+
 ## Changelog freshness (enforced in CI)
 
 The changelog at `apps/hub/src/app/design-system/resources/changelog/page.tsx`
