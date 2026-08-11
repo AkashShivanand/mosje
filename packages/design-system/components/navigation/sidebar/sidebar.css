@@ -4,15 +4,15 @@
    Mirrors Portal DS › sidebar/type-1 (node 8190:16300)
 
    Token mapping (Figma → DS):
-     --primary/50      → --ds-primary-50   (active bg; resolves #e8f2fd in light mode)
-     --text/primary    → --ds-primary      (active text)
-     --text/dark       → --ds-ink          (default text)
-     --radius-xl (16px)→ --ds-radius-xl
-     --radius-md  (8px) → --ds-radius-md
-     --spacing-lg(16px)→ --ds-spacing-lg   (px / sidebar padding)
-     --spacing-md(12px)→ --ds-spacing-md   (py / item gap)
-     --spacing-sm (8px)→ --ds-spacing-sm   (subnav py / connector control)
-     --spacing-2xl(24px→ --ds-spacing-2xl  (subnav px — Portal DS: paddingLeft/Right: 24)
+     --primary/50      → --sa-color-primaryScale-50   (active bg; resolves #e8f2fd in light mode)
+     --text/primary    → --sa-color-action-primary-default      (active text)
+     --text/dark       → --sa-color-text-default          (default text)
+     --radius-xl (16px)→ --sa-shape-xl
+     --radius-md  (8px) → --sa-shape-md
+     --spacing-lg(16px)→ --sa-stack-m   (px / sidebar padding)
+     --spacing-md(12px)→ --sa-stack-s   (py / item gap)
+     --spacing-sm (8px)→ --sa-stack-xs   (subnav py / connector control)
+     --spacing-2xl(24px→ --sa-stack-l  (subnav px — Portal DS: paddingLeft/Right: 24)
    ============================================================================= */
 
 /* ── Container ─────────────────────────────────────────────────────────────── */
@@ -20,11 +20,11 @@
 .ds-sidebar {
   display: flex;
   flex-direction: column;
-  background: var(--ds-surface);
-  padding: var(--ds-spacing-lg, 16px); /* 16px — Figma: --spacing-lg */
+  background: var(--sa-bg-neutral-base);
+  padding: var(--sa-padding-m, 16px); /* 16px — Figma: --spacing-lg */
   position: relative;
   overflow: hidden;
-  transition: width var(--ds-duration-base) var(--ds-easing-out);
+  transition: width var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
 }
 
 .ds-sidebar.is-expanded  { width: 300px; } /* 268px content + 2×16px padding */
@@ -38,7 +38,7 @@
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  gap: var(--ds-spacing-md, 12px); /* 12px — Figma: --spacing-md between items */
+  gap: var(--sa-stack-s, 12px); /* 12px — Figma: --spacing-md between items */
 }
 
 /* ── Group ──────────────────────────────────────────────────────────────────── */
@@ -50,18 +50,18 @@
 }
 
 .ds-sidebar__group + .ds-sidebar__group {
-  padding-top: var(--ds-spacing-md, 12px);
-  border-top: 1px solid var(--ds-border);
+  padding-top: var(--sa-padding-s, 12px);
+  border-top: 1px solid var(--sa-border-neutral-subtle);
 }
 
 .ds-sidebar__group-label {
-  font-family: var(--ds-font-sans);
+  font-family: var(--sa-font-latin);
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--ds-ink-muted);
-  padding: 0 var(--ds-spacing-lg, 16px) var(--ds-spacing-sm, 8px);
+  color: var(--sa-color-text-muted);
+  padding: 0 var(--sa-padding-m, 16px) var(--sa-padding-xs, 8px);
 }
 
 .ds-sidebar__group-items {
@@ -70,7 +70,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--ds-spacing-md, 12px); /* 12px */
+  gap: var(--sa-stack-s, 12px); /* 12px */
 }
 
 /* ── Main item ──────────────────────────────────────────────────────────────── */
@@ -87,34 +87,34 @@
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: var(--ds-spacing-md, 12px) var(--ds-spacing-lg, 16px); /* 12px 16px — Figma: py-md px-lg */
-  border-radius: var(--ds-radius-xl); /* 16px */
+  padding: var(--sa-padding-s, 12px) var(--sa-padding-m, 16px); /* 12px 16px — Figma: py-md px-lg */
+  border-radius: var(--sa-shape-xl); /* 16px */
   border: none;
   background: transparent;
   cursor: pointer;
   text-align: left;
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
   text-decoration: none;
-  font-family: var(--ds-font-sans);
+  font-family: var(--sa-font-latin);
   font-size: 14px; /* Figma: font-size/body-2 */
   line-height: 20px;
   transition:
-    background var(--ds-duration-fast) var(--ds-easing-out),
-    color var(--ds-duration-fast) var(--ds-easing-out);
+    background var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
 .ds-sidebar__main-row:hover:not(.is-active) {
-  background: var(--ds-surface-muted);
+  background: var(--sa-bg-neutral-subtler);
 }
 
 .ds-sidebar__main-row:focus-visible {
-  outline: 2px solid var(--ds-primary-ring);
+  outline: 2px solid var(--sa-focus-ring);
   outline-offset: 2px;
 }
 
 .ds-sidebar__main-row.is-active {
-  background: var(--ds-primary-50);
-  color: var(--ds-primary);
+  background: var(--sa-color-primaryScale-50);
+  color: var(--sa-color-action-primary-default);
 }
 
 /* Icon */
@@ -141,10 +141,10 @@
   justify-content: center;
   min-width: 20px;
   height: 20px;
-  padding: 0 var(--ds-spacing-xs, 4px);
-  border-radius: var(--ds-radius-pill, 9999px);
-  background: var(--ds-info);
-  color: var(--ds-on-primary);
+  padding: 0 var(--sa-padding-2xs, 4px);
+  border-radius: var(--sa-shape-full, 9999px);
+  background: var(--sa-color-status-info);
+  color: var(--sa-color-text-onPrimary);
   font-size: 11px;
   font-weight: 700;
   line-height: 1;
@@ -154,7 +154,7 @@
 .ds-sidebar__chevron {
   flex-shrink: 0;
   opacity: 0.6;
-  transition: transform var(--ds-duration-fast) var(--ds-easing-out);
+  transition: transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
 .ds-sidebar__chevron.is-open {
@@ -166,7 +166,7 @@
 .ds-sidebar__subnav {
   list-style: none;
   margin: 0;
-  padding: var(--ds-spacing-sm, 8px) var(--ds-spacing-2xl, 24px);
+  padding: var(--sa-padding-xs, 8px) var(--sa-padding-xl, 24px);
   /* 8px top/bottom, 24px left+right — Portal DS: Children paddingLeft:24 paddingRight:24 paddingTop:8 paddingBottom:8 */
 }
 
@@ -193,7 +193,7 @@
   top: 0;
   width: 1px;
   height: 100%;
-  background: var(--ds-primary-50);
+  background: var(--sa-color-primaryScale-50);
 }
 
 /* Last child: line stops at the corner elbow */
@@ -209,8 +209,8 @@
   top: calc(50% - 8px);
   width: 16px;
   height: 8px;
-  border-left: 1px solid var(--ds-primary-50);
-  border-bottom: 1px solid var(--ds-primary-50);
+  border-left: 1px solid var(--sa-color-primaryScale-50);
+  border-bottom: 1px solid var(--sa-color-primaryScale-50);
   border-bottom-left-radius: 6px;
 }
 
@@ -219,34 +219,34 @@
   flex: 1 1 0;
   display: flex;
   align-items: center;
-  padding: var(--ds-spacing-sm, 8px) var(--ds-spacing-md, 12px); /* 8px 12px — Figma: py-sm px-md */
-  border-radius: var(--ds-radius-md); /* 8px */
-  font-family: var(--ds-font-sans);
+  padding: var(--sa-padding-xs, 8px) var(--sa-padding-s, 12px); /* 8px 12px — Figma: py-sm px-md */
+  border-radius: var(--sa-shape-md); /* 8px */
+  font-family: var(--sa-font-latin);
   font-size: 14px;
   line-height: 20px;
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
   opacity: 0.8;
   text-decoration: none;
   transition:
-    background var(--ds-duration-fast) var(--ds-easing-out),
-    color var(--ds-duration-fast) var(--ds-easing-out),
-    opacity var(--ds-duration-fast);
+    background var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    opacity var(--sa-motion-exit-duration);
 }
 
 .ds-sidebar__child-label:hover:not(.is-active) {
-  background: var(--ds-surface-muted);
+  background: var(--sa-bg-neutral-subtler);
   opacity: 1;
 }
 
 .ds-sidebar__child-label:focus-visible {
-  outline: 2px solid var(--ds-primary-ring);
+  outline: 2px solid var(--sa-focus-ring);
   outline-offset: 2px;
   opacity: 1;
 }
 
 .ds-sidebar__child-label.is-active {
-  background: var(--ds-primary-50);
-  color: var(--ds-primary);
+  background: var(--sa-color-primaryScale-50);
+  color: var(--sa-color-action-primary-default);
   opacity: 1;
 }
 
@@ -254,7 +254,7 @@
 
 .ds-sidebar.is-collapsed .ds-sidebar__main-row {
   gap: 0;
-  padding: var(--ds-spacing-md, 12px) var(--ds-spacing-lg, 16px);
+  padding: var(--sa-padding-s, 12px) var(--sa-padding-m, 16px);
   justify-content: center;
 }
 
@@ -270,8 +270,8 @@
 
 .ds-sidebar__footer {
   flex-shrink: 0;
-  border-top: 1px solid var(--ds-border);
-  padding-top: var(--ds-spacing-md, 12px);
+  border-top: 1px solid var(--sa-border-neutral-subtle);
+  padding-top: var(--sa-padding-s, 12px);
   margin-top: auto;
 }
 
@@ -293,10 +293,10 @@
   background: transparent;
   border: none;
   cursor: col-resize;
-  padding: var(--ds-spacing-sm, 8px) 0;
+  padding: var(--sa-padding-xs, 8px) 0;
   z-index: 1;
   opacity: 0;
-  transition: opacity var(--ds-duration-fast);
+  transition: opacity var(--sa-motion-exit-duration);
 }
 
 .ds-sidebar:hover .ds-sidebar__control,
@@ -305,7 +305,7 @@
 }
 
 .ds-sidebar__control:focus-visible {
-  outline: 2px solid var(--ds-primary-ring);
+  outline: 2px solid var(--sa-focus-ring);
   outline-offset: 2px;
 }
 
@@ -313,12 +313,12 @@
   flex: 1 1 0;
   min-height: 0;
   width: 1px;
-  background: var(--ds-border);
+  background: var(--sa-border-neutral-subtle);
 }
 
 .ds-sidebar__control-handle {
   flex-shrink: 0;
   width: 16px;
   height: 48px;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
 }

@@ -2,7 +2,7 @@
 // @mosje/design-system — Navbar shared types (server-safe, no "use client").
 // SiteHeader (the SAMAVESH Navbar: Website + Portal variants) composes these.
 // Apps pass data + asset URLs; the DS stays framework-agnostic (plain <a>/<img>,
-// --ds-* tokens only).
+// --sa-* tokens only).
 // =============================================================================
 
 /** A single navigation link. */

@@ -42,10 +42,10 @@ const audit = auditRaw as unknown as {
 const PDF = "/reports/SCW-Senior-Citizens-Welfare-Design-QC-Report.pdf";
 
 const SEV: Record<Sev, { bg: string; fg: string }> = {
-  Blocker: { bg: "color-mix(in srgb, var(--ds-danger) 14%, transparent)", fg: "var(--ds-danger)" },
-  Major: { bg: "color-mix(in srgb, var(--ds-saffron) 16%, transparent)", fg: "var(--ds-saffron-dark)" },
-  Minor: { bg: "color-mix(in srgb, var(--ds-warning) 24%, transparent)", fg: "var(--ds-ink)" },
-  Nit: { bg: "var(--ds-surface-muted)", fg: "var(--ds-ink-muted)" },
+  Blocker: { bg: "color-mix(in srgb, var(--sa-color-status-danger) 14%, transparent)", fg: "var(--sa-color-status-danger)" },
+  Major: { bg: "color-mix(in srgb, var(--sa-color-brand-saffron) 16%, transparent)", fg: "var(--sa-color-brand-saffronDark)" },
+  Minor: { bg: "color-mix(in srgb, var(--sa-color-status-warning) 24%, transparent)", fg: "var(--sa-color-text-default)" },
+  Nit: { bg: "var(--sa-bg-neutral-subtler)", fg: "var(--sa-color-text-muted)" },
 };
 
 function Chip({ s, n }: { s: Sev; n?: number }) {

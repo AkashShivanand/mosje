@@ -187,6 +187,12 @@ export const GROUP = new Set([
   // is the one affordance WCAG 2.4.7 makes non-optional. UX4G models it the same way
   // (Focus/Outline, Focus/Inverse).
   "focus",
+  // `shape` is the Tier-2 corner radius. It is NOT called `radius` because Style Dictionary
+  // merges the primitive and semantic namespaces, so a Tier-2 group named `radius` would
+  // self-reference the Tier-1 scale it aliases — the build fails with 12 reference errors.
+  // `shape` is also the word design.md already uses for this group. Added 2026-08-12 with the
+  // retirement of `--ds-radius-*`, whose 248 usages had no Tier-2 home to migrate to.
+  "shape",
 ]);
 
 /**

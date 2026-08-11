@@ -98,10 +98,10 @@ export const NamingATable: Story = {
       <SectionTitle {...args} headingId="sb-district-submissions" count={4} />
       <table
         aria-labelledby="sb-district-submissions"
-        style={{ width: "100%", borderCollapse: "collapse", color: "var(--ds-ink)" }}
+        style={{ width: "100%", borderCollapse: "collapse", color: "var(--sa-color-text-default)" }}
       >
         <thead>
-          <tr style={{ textAlign: "left", color: "var(--ds-ink-muted)" }}>
+          <tr style={{ textAlign: "left", color: "var(--sa-color-text-muted)" }}>
             <th style={{ padding: "8px 12px 8px 0" }}>District</th>
             <th style={{ padding: "8px 12px 8px 0" }}>Blocks reporting</th>
             <th style={{ padding: "8px 12px 8px 0" }}>Participants</th>
@@ -114,7 +114,7 @@ export const NamingATable: Story = {
             ["Nagpur", "13 of 13", "2,98,105"],
             ["Kolhapur", "9 of 12", "1,52,470"],
           ].map(([district, blocks, participants]) => (
-            <tr key={district} style={{ borderTop: "1px solid var(--ds-border)" }}>
+            <tr key={district} style={{ borderTop: "1px solid var(--sa-border-neutral-subtle)" }}>
               <td style={{ padding: "10px 12px 10px 0" }}>{district}</td>
               <td style={{ padding: "10px 12px 10px 0" }}>{blocks}</td>
               <td style={{ padding: "10px 12px 10px 0" }}>{participants}</td>

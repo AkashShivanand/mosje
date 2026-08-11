@@ -9,7 +9,7 @@ export interface DashboardGridProps {
 
 /**
  * MoSJE / SAMAVESH DashboardGrid — responsive 12-column grid. Children set their
- * span via the `span` prop on `ChartCard`/`KpiRow` (or `--ds-card-span`). On
+ * span via the `span` prop on `ChartCard`/`KpiRow` (or `--cmp-card-span`). On
  * mobile every child is full width.
  */
 export function DashboardGrid({ children, className }: DashboardGridProps) {

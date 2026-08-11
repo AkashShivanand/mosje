@@ -169,7 +169,10 @@ function collectionFor(path, tier) {
   if (head === "size") return "Space";
   // Effect and viewport constants: mode-less, and neither is a spacing or a colour.
   if (head === "blur" || head === "breakpoint") return "Static";
-  if (head === "radius") return "Radius";
+  // `radius` is the Tier-1 scale; `shape` is the Tier-2 group that aliases it and is what a
+  // designer should bind to. Both belong in the Radius collection — the tier stays legible in
+  // the variable name (`ref/radius/md` vs `shape/md`), exactly as it does in CSS.
+  if (head === "radius" || head === "shape") return "Radius";
   if (head === "opacity" || head === "z") return "Static";
   if (head === "border" && rest[0] === "width") return "Static";
   if (head === "motion") return "Motion";
@@ -183,7 +186,7 @@ function collectionFor(path, tier) {
      * The legacy code semantic tier (`color.text.default`, `color.border.subtle`, …) is NOT
      * exported. It is mirrored exactly by the canonical grammar namespace — tier2-parity
      * proves they agree in every axis block — so exporting both would put two names on one
-     * value. It retires the same way `--ds-*` does, as call sites migrate.
+     * value. It retires as call sites migrate, the way `--ds-*` did on 2026-08-12.
      */
     return null;
   }
@@ -485,11 +488,11 @@ function applyContractNotes(payload) {
   return records;
 }
 
-/** The custom property this token actually ships as (font/role feeds --ds-type-*). */
+/** The custom property this token actually ships as (font/role feeds --sa-type-*). */
 function emittedCssName(token, tier) {
   const [head, kind, ...rest] = token.path;
-  if (head === "font" && kind === "role") return `--ds-type-${rest.join("-")}`;
-  if (head === "font" && kind === "tracking") return `--ds-type-${rest.join("-")}-tracking`;
+  if (head === "font" && kind === "role") return `--sa-type-${rest.join("-")}`;
+  if (head === "font" && kind === "tracking") return `--sa-type-${rest.join("-")}-tracking`;
   return toCssName(token.path, tier);
 }
 

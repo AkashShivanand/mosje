@@ -89,7 +89,7 @@ export const ColourRamps: Story = {
   render: () => (
     <div style={{ display: "grid", gap: 24 }}>
       <div>
-        <p style={{ margin: "0 0 8px", color: "var(--ds-ink-muted)" }}>
+        <p style={{ margin: "0 0 8px", color: "var(--sa-color-text-muted)" }}>
           categoricalColor — unordered groups
         </p>
         <Legend
@@ -100,7 +100,7 @@ export const ColourRamps: Story = {
         />
       </div>
       <div>
-        <p style={{ margin: "0 0 8px", color: "var(--ds-ink-muted)" }}>
+        <p style={{ margin: "0 0 8px", color: "var(--sa-color-text-muted)" }}>
           sequentialColor — low to high
         </p>
         <Legend
@@ -111,7 +111,7 @@ export const ColourRamps: Story = {
         />
       </div>
       <div>
-        <p style={{ margin: "0 0 8px", color: "var(--ds-ink-muted)" }}>
+        <p style={{ margin: "0 0 8px", color: "var(--sa-color-text-muted)" }}>
           divergingColor — distance from a meaningful centre
         </p>
         <Legend
@@ -181,7 +181,7 @@ export const TooltipInACustomChart: Story = {
                 height: 28,
                 border: 0,
                 padding: 0,
-                borderRadius: "var(--ds-radius-xs)",
+                borderRadius: "var(--sa-shape-xs)",
                 background: categoricalColor(i),
                 cursor: "pointer",
               }}

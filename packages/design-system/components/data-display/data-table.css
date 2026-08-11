@@ -20,19 +20,19 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  font-family: var(--ds-font-sans);
+  font-family: var(--sa-font-latin);
 }
 
 .ds-table__scroll {
   overflow-x: auto;
-  border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-lg, 12px);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-lg, 12px);
 }
 
 .ds-table__table {
   min-width: 100%;
   border-collapse: collapse;
-  font-size: var(--ds-text-body-3, 14px);
+  font-size: var(--sa-type-body-3-size, 14px);
 }
 
 .ds-table__caption {
@@ -49,8 +49,8 @@
 
 /* Header — white, sentence-case, medium weight (matches Figma, not shouty). */
 .ds-table__head {
-  background-color: var(--ds-surface);
-  border-bottom: 1px solid var(--ds-border);
+  background-color: var(--sa-bg-neutral-base);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }
 
 .ds-table__th {
@@ -58,26 +58,26 @@
   text-align: left;
   white-space: nowrap;
   font-weight: 600;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
 }
 
 .ds-table__row {
-  border-top: 1px solid var(--ds-border);
+  border-top: 1px solid var(--sa-border-neutral-subtle);
   transition: background-color 0.12s ease;
 }
 
 /* Brandwash row-hover (light-blue) with navy text — the Figma selected/hover state. */
 .ds-table__row:hover {
-  background-color: var(--ds-primary-50);
+  background-color: var(--sa-color-primaryScale-50);
 }
 
 .ds-table__row:hover .ds-table__td {
-  color: var(--ds-primary);
+  color: var(--sa-color-action-primary-default);
 }
 
 .ds-table__td {
   padding: 14px 16px;
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
   vertical-align: middle;
   /* Tabular figures: every digit takes the same width, so a column of amounts,
      beneficiary counts or reference numbers lines up on the decimal and can be
@@ -94,7 +94,7 @@
 .ds-table__empty {
   padding: 48px 16px;
   text-align: center;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
 }
 
 /* Footer / pagination. */
@@ -110,30 +110,30 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: var(--ds-text-body-3, 14px);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size, 14px);
+  color: var(--sa-color-text-muted);
 }
 
 .ds-table__pagesize-btn {
   appearance: none;
   border: 0;
   cursor: pointer;
-  border-radius: var(--ds-radius-sm, 6px);
+  border-radius: var(--sa-shape-sm, 6px);
   padding: 2px 8px;
   font: inherit;
   font-weight: 600;
   background: transparent;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
   transition: background-color 0.12s ease, color 0.12s ease;
 }
 
 .ds-table__pagesize-btn:hover {
-  background-color: var(--ds-surface-muted);
+  background-color: var(--sa-bg-neutral-subtler);
 }
 
 .ds-table__pagesize-btn.is-active {
-  background-color: var(--ds-primary);
-  color: var(--ds-on-primary);
+  background-color: var(--sa-color-action-primary-default);
+  color: var(--sa-color-text-onPrimary);
 }
 
 .ds-table__pager {
@@ -152,17 +152,17 @@
   justify-content: center;
   height: 36px;
   min-width: 36px;
-  border-radius: var(--ds-radius-sm, 6px);
+  border-radius: var(--sa-shape-sm, 6px);
   border: 1px solid transparent;
   background: transparent;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
   font-weight: 600;
   transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
 }
 
 .ds-table__page-nav:hover:not(:disabled),
 .ds-table__page:hover {
-  background-color: var(--ds-surface-muted);
+  background-color: var(--sa-bg-neutral-subtler);
 }
 
 .ds-table__page-nav:disabled {
@@ -172,16 +172,16 @@
 
 /* Outlined current page (Figma), not a filled block. */
 .ds-table__page.is-current {
-  border-color: var(--ds-primary);
-  color: var(--ds-primary);
-  background: var(--ds-surface);
+  border-color: var(--sa-color-action-primary-default);
+  color: var(--sa-color-action-primary-default);
+  background: var(--sa-bg-neutral-base);
 }
 
 .ds-table__ellipsis {
   display: inline-flex;
   align-items: center;
   padding: 0 4px;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
 }
 
 /* ── Sticky right column (e.g. Action) ─────────────────────────────────────── */
@@ -190,24 +190,24 @@
   position: sticky;
   right: 0;
   z-index: 1;
-  background-color: var(--ds-surface);
+  background-color: var(--sa-bg-neutral-base);
   /* Soft left shadow signals the column is pinned */
   box-shadow: -3px 0 8px -3px rgba(0, 0, 0, 0.10);
 }
 
 .ds-table__head .ds-table__th.is-sticky-right {
-  background-color: var(--ds-surface);
+  background-color: var(--sa-bg-neutral-base);
   z-index: 2;
 }
 
 /* Keep the brandwash hover on sticky cells */
 .ds-table__row:hover .ds-table__td.is-sticky-right {
-  background-color: var(--ds-primary-50);
+  background-color: var(--sa-color-primaryScale-50);
 }
 
 .ds-table__page-nav:focus-visible,
 .ds-table__page:focus-visible,
 .ds-table__pagesize-btn:focus-visible {
-  outline: 2px solid var(--ds-primary-ring, var(--ds-primary));
+  outline: 2px solid var(--sa-focus-ring, var(--sa-color-action-primary-default));
   outline-offset: 2px;
 }

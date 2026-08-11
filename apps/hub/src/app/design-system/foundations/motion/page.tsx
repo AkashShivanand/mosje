@@ -17,8 +17,8 @@ const MOTION_CSS = `
 .motion-demo__box {
   width: 40px;
   height: 40px;
-  border-radius: var(--ds-radius-sm);
-  background: var(--ds-primary);
+  border-radius: var(--sa-shape-sm);
+  background: var(--sa-color-action-primary-default);
 }
 .motion-demo:hover .motion-demo__box--fast,
 .motion-demo:focus-within .motion-demo__box--fast { transform: translateX(160px); }
@@ -42,33 +42,33 @@ export default function MotionPage(): React.JSX.Element {
       <style>{MOTION_CSS}</style>
 
       <h1>Motion</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
+      <p style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-s)" }}>
         Motion in SAMAVESH is quick, quiet and purposeful. It guides attention
         and softens change — it never shows off. On government services, motion
         must also step aside the moment a user asks it to.
       </p>
-      <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+      <div style={{ marginTop: "var(--sa-stack-m)" }}>
         <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.motion)} target="_blank" rel="noopener noreferrer">
           View in Figma <span aria-hidden="true">↗</span>
         </a>
       </div>
 
-      <section aria-labelledby="duration" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="duration" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="duration">Duration scale</h2>
-        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <p style={{ marginTop: "var(--sa-stack-m)" }}>
           Three durations cover almost everything. Faster is better — long
           animations make an interface feel sluggish.
         </p>
-        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <ul style={{ marginTop: "var(--sa-stack-m)" }}>
           <li><strong>Fast — 150ms:</strong> hovers, small state changes, button presses.</li>
           <li><strong>Base — 250ms:</strong> the default for most enter / exit transitions.</li>
           <li><strong>Slow — 400ms:</strong> larger surfaces such as drawers and full-screen panels.</li>
         </ul>
       </section>
 
-      <section aria-labelledby="easing" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="easing" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="easing">Easing</h2>
-        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <p style={{ marginTop: "var(--sa-stack-m)" }}>
           Use <strong>ease-out</strong> for things entering the screen — they
           arrive quickly then settle, which feels responsive. Use{" "}
           <strong>ease-in</strong> for things leaving — they accelerate away,
@@ -76,9 +76,9 @@ export default function MotionPage(): React.JSX.Element {
         </p>
       </section>
 
-      <section aria-labelledby="demo" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="demo" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="demo">Live demo</h2>
-        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <p style={{ marginTop: "var(--sa-stack-m)" }}>
           Hover or focus the panel to see all three durations run side by side.
         </p>
         <div
@@ -87,13 +87,13 @@ export default function MotionPage(): React.JSX.Element {
           role="img"
           aria-label="Three boxes animating across the panel at fast, base and slow durations on hover or focus"
           style={{
-            marginTop: "var(--ds-spacing-2xl)",
-            background: "var(--ds-surface-muted)",
-            borderRadius: "var(--ds-radius-md)",
-            padding: "var(--ds-spacing-3xl)",
+            marginTop: "var(--sa-stack-l)",
+            background: "var(--sa-bg-neutral-subtler)",
+            borderRadius: "var(--sa-shape-md)",
+            padding: "var(--sa-padding-2xl)",
             display: "flex",
             flexDirection: "column",
-            gap: "var(--ds-spacing-2xl)",
+            gap: "var(--sa-stack-l)",
             outlineOffset: "2px",
           }}
         >
@@ -103,7 +103,7 @@ export default function MotionPage(): React.JSX.Element {
             ["slow", "Slow · 400ms"],
           ] as const).map(([key, label]) => (
             <div key={key}>
-              <div style={{ fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)", marginBottom: "var(--ds-spacing-sm)" }}>
+              <div style={{ fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)", marginBottom: "var(--sa-stack-xs)" }}>
                 {label}
               </div>
               <div className={`motion-demo__box motion-demo__box--${key}`} />
@@ -112,9 +112,9 @@ export default function MotionPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="reduced" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="reduced" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="reduced">Reduced motion</h2>
-        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <p style={{ marginTop: "var(--sa-stack-m)" }}>
           When a user has turned on{" "}
           <strong>&ldquo;Reduce motion&rdquo;</strong> in their operating
           system, every motion token resolves to <code>0ms</code>. Transitions
@@ -124,24 +124,24 @@ export default function MotionPage(): React.JSX.Element {
         </p>
       </section>
 
-      <section aria-labelledby="tokens" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="tokens" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="tokens">Tokens</h2>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <TokenTable
             tokens={[
-              { token: "--ds-duration-fast", value: "150ms", description: "Hovers, presses, small state changes" },
-              { token: "--ds-duration-base", value: "250ms", description: "Default enter / exit transitions" },
-              { token: "--ds-duration-slow", value: "400ms", description: "Drawers, panels and large surfaces" },
-              { token: "--ds-easing-out", value: "cubic-bezier(0, 0, 0.2, 1)", description: "Enter animations" },
-              { token: "--ds-easing-in", value: "cubic-bezier(0.4, 0, 1, 1)", description: "Exit animations" },
+              { token: "--sa-motion-exit-duration", value: "150ms", description: "Hovers, presses, small state changes" },
+              { token: "--sa-motion-enter-duration", value: "250ms", description: "Default enter / exit transitions" },
+              { token: "--sa-motion-emphasis-duration", value: "400ms", description: "Drawers, panels and large surfaces" },
+              { token: "--sa-motion-enter-easing", value: "cubic-bezier(0, 0, 0.2, 1)", description: "Enter animations" },
+              { token: "--sa-motion-exit-easing", value: "cubic-bezier(0.4, 0, 1, 1)", description: "Exit animations" },
             ]}
           />
         </div>
       </section>
 
-      <section aria-labelledby="guidance" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="guidance" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="guidance">Guidance</h2>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <Callout type="warning" title="Motion is decoration, never information">
             Never animate content that is essential to understanding. Animation
             should only carry decorative or transitional meaning — if a user

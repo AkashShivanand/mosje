@@ -132,7 +132,7 @@ export const WithFooter: Story = {
         <Button size="sm" appearance="text">
           Sign out
         </Button>
-        <span style={{ color: "var(--ds-ink-muted)", fontSize: "var(--ds-type-body-3-size)" }}>
+        <span style={{ color: "var(--sa-color-text-muted)", fontSize: "var(--sa-type-body-3-size)" }}>
           NMBA portal · v2.4.0
         </span>
       </div>

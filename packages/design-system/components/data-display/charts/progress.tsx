@@ -22,7 +22,7 @@ export function Progress({
   value,
   max = 100,
   label,
-  color = "var(--ds-chart-cat-1)",
+  color = "var(--sa-chart-cat-1)",
   showValue = true,
   className,
 }: ProgressProps) {

@@ -149,10 +149,10 @@ export const CardWithATable: Story = {
     >
       <table
         aria-labelledby="sb-instalments"
-        style={{ width: "100%", borderCollapse: "collapse", color: "var(--ds-ink)" }}
+        style={{ width: "100%", borderCollapse: "collapse", color: "var(--sa-color-text-default)" }}
       >
         <thead>
-          <tr style={{ textAlign: "left", color: "var(--ds-ink-muted)" }}>
+          <tr style={{ textAlign: "left", color: "var(--sa-color-text-muted)" }}>
             <th style={{ padding: "8px 0" }}>Instalment</th>
             <th style={{ padding: "8px 0" }}>Released on</th>
             <th style={{ padding: "8px 0" }}>Amount (₹ lakh)</th>
@@ -163,7 +163,7 @@ export const CardWithATable: Story = {
             ["First", "12 May 2026", "9.20"],
             ["Second", "04 August 2026", "9.20"],
           ].map(([n, on, amt]) => (
-            <tr key={n} style={{ borderTop: "1px solid var(--ds-border)" }}>
+            <tr key={n} style={{ borderTop: "1px solid var(--sa-border-neutral-subtle)" }}>
               <td style={{ padding: "8px 0" }}>{n}</td>
               <td style={{ padding: "8px 0" }}>{on}</td>
               <td style={{ padding: "8px 0" }}>{amt}</td>
@@ -186,7 +186,7 @@ export const APageOfSections: Story = {
         title="Supporting documents"
         description="Upload a scan or clear photograph of each."
       >
-        <ul style={{ margin: 0, paddingLeft: "1.2em", color: "var(--ds-ink)" }}>
+        <ul style={{ margin: 0, paddingLeft: "1.2em", color: "var(--sa-color-text-default)" }}>
           <li>Aadhaar — received 04 August 2026</li>
           <li>Caste certificate — received 04 August 2026</li>
           <li>Income certificate — pending</li>

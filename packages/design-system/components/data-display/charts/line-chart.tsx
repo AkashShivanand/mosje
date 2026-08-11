@@ -123,7 +123,7 @@ export function LineChart({
               cx={xAt(i)}
               cy={y(v)}
               r={active === i ? 4 : 2.5}
-              fill="var(--ds-surface)"
+              fill="var(--sa-bg-neutral-base)"
               stroke={colors[si]}
               strokeWidth={2}
             />

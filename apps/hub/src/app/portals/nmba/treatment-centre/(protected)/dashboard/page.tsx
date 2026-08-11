@@ -40,11 +40,11 @@ const TREND: Record<DashboardMetric, { value?: string; suffix: string; dir: Metr
 
 /** Gender slice colours (DS tokens) mirroring the Figma donut. */
 const GENDER_COLORS: Record<string, string> = {
-  Male: "var(--ds-primary-400)",
-  Female: "var(--ds-danger)",
-  Transgender: "var(--ds-primary-700)",
-  "Do Not Know": "var(--ds-ink-muted)",
-  "Not specified": "var(--ds-ink-muted)",
+  Male: "var(--sa-color-primaryScale-400)",
+  Female: "var(--sa-color-status-danger)",
+  Transgender: "var(--sa-color-primaryScale-700)",
+  "Do Not Know": "var(--sa-color-text-muted)",
+  "Not specified": "var(--sa-color-text-muted)",
 };
 
 const MONTH_OPTIONS = [
@@ -212,11 +212,11 @@ export default function TreatmentCentreDashboard() {
 
   // Uniform bar colours (DS tokens) matching the Figma single-hue bar charts.
   const drugDataColored = React.useMemo<ChartDatum[]>(
-    () => drugData.map(d => ({ ...d, color: "var(--ds-primary-300)" })),
+    () => drugData.map(d => ({ ...d, color: "var(--sa-color-primaryScale-300)" })),
     [drugData],
   );
   const stateDataColored = React.useMemo<ChartDatum[]>(
-    () => stateData.map(d => ({ ...d, color: "var(--ds-primary-400)" })),
+    () => stateData.map(d => ({ ...d, color: "var(--sa-color-primaryScale-400)" })),
     [stateData],
   );
 
@@ -239,7 +239,7 @@ export default function TreatmentCentreDashboard() {
   }, [session.role, store.patients, store.beneficiaries]);
 
   const ageDataColored = React.useMemo<ChartDatum[]>(
-    () => ageData.map(d => ({ ...d, color: "var(--ds-primary-300)" })),
+    () => ageData.map(d => ({ ...d, color: "var(--sa-color-primaryScale-300)" })),
     [ageData],
   );
 

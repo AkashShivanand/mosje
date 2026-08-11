@@ -20,8 +20,8 @@ export default function Page() {
 
   if (!account) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--ds-surface-muted)", fontFamily: "var(--font-sans)" }}>
-        <span style={{ color: "var(--ds-ink-hint)", fontSize: 14 }}>Redirecting to sign-in…</span>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--sa-bg-neutral-subtler)", fontFamily: "var(--font-sans)" }}>
+        <span style={{ color: "var(--sa-text-neutral-subtle)", fontSize: 14 }}>Redirecting to sign-in…</span>
       </div>
     );
   }

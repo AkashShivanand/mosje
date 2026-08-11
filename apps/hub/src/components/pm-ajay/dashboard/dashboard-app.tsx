@@ -81,9 +81,9 @@ const META: Record<ViewId, Meta> = {
 };
 
 // Baked-in display defaults (the editor-only Tweaks panel is omitted in production).
-const ACCENT = "var(--ds-info)";
-const ACCENT_BG = "var(--ds-info-50)";
-const CANVAS = "var(--ds-surface-muted)";
+const ACCENT = "var(--sa-color-status-info)";
+const ACCENT_BG = "var(--sa-color-infoScale-50)";
+const CANVAS = "var(--sa-bg-neutral-subtler)";
 const SPARK = false;
 const DENSITY = "comfortable";
 

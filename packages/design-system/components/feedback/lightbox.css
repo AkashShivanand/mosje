@@ -15,7 +15,7 @@
     "bar    bar    bar"
     "prev   stage  next"
     "footer footer footer";
-  font-family: var(--ds-font-sans);
+  font-family: var(--sa-font-latin);
   animation: ds-lightbox-fade 0.18s ease-out;
 }
 
@@ -65,14 +65,14 @@
   border: 0;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.1);
-  color: var(--ds-neutral-0);
+  color: var(--sa-color-neutralScale-0);
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
 
 .ds-lightbox__close:hover { background: rgba(255, 255, 255, 0.22); }
 .ds-lightbox__close:focus-visible {
-  outline: 2px solid var(--ds-neutral-0);
+  outline: 2px solid var(--sa-color-neutralScale-0);
   outline-offset: 2px;
 }
 
@@ -89,7 +89,7 @@
   border: 0;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.1);
-  color: var(--ds-neutral-0);
+  color: var(--sa-color-neutralScale-0);
   cursor: pointer;
   transition: background-color 0.15s ease, transform 0.15s ease;
 }
@@ -100,7 +100,7 @@
 .ds-lightbox__nav:hover { background: rgba(255, 255, 255, 0.22); }
 .ds-lightbox__nav:active { transform: scale(0.94); }
 .ds-lightbox__nav:focus-visible {
-  outline: 2px solid var(--ds-neutral-0);
+  outline: 2px solid var(--sa-color-neutralScale-0);
   outline-offset: 2px;
 }
 
@@ -121,7 +121,7 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: var(--ds-radius-md, 8px);
+  border-radius: var(--sa-shape-md, 8px);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
   animation: ds-lightbox-pop 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
@@ -168,7 +168,7 @@
   height: 42px;
   padding: 0;
   border: 2px solid transparent;
-  border-radius: var(--ds-radius-sm, 6px);
+  border-radius: var(--sa-shape-sm, 6px);
   overflow: hidden;
   background: rgba(255, 255, 255, 0.08);
   cursor: pointer;
@@ -179,10 +179,10 @@
 .ds-lightbox__thumb:hover { opacity: 0.85; }
 .ds-lightbox__thumb.is-active {
   opacity: 1;
-  border-color: var(--ds-neutral-0);
+  border-color: var(--sa-color-neutralScale-0);
 }
 .ds-lightbox__thumb:focus-visible {
-  outline: 2px solid var(--ds-neutral-0);
+  outline: 2px solid var(--sa-color-neutralScale-0);
   outline-offset: 2px;
 }
 
@@ -199,7 +199,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ds-neutral-0);
+  color: var(--sa-color-neutralScale-0);
   background: rgba(0, 0, 0, 0.35);
 }
 

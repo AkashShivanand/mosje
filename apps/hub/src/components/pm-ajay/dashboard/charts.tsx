@@ -6,16 +6,16 @@
 import { useId, type CSSProperties, type ReactNode } from "react";
 
 export const C = {
-  navy:  "var(--ds-navy)",
-  blue:  "var(--ds-primary)",
-  blue2: "var(--ds-primary-400)",
-  green: "var(--ds-success)",
-  amber: "var(--ds-warning)",
-  red:   "var(--ds-danger)",
-  track: "var(--ds-border)",
-  grid:  "var(--ds-surface-muted)",
-  ink:   "var(--ds-ink)",
-  muted: "var(--ds-ink-muted)",
+  navy:  "var(--sa-color-brand-navy)",
+  blue:  "var(--sa-color-action-primary-default)",
+  blue2: "var(--sa-color-primaryScale-400)",
+  green: "var(--sa-color-status-success)",
+  amber: "var(--sa-color-status-warning)",
+  red:   "var(--sa-color-status-danger)",
+  track: "var(--sa-border-neutral-subtle)",
+  grid:  "var(--sa-bg-neutral-subtler)",
+  ink:   "var(--sa-color-text-default)",
+  muted: "var(--sa-color-text-muted)",
 };
 
 export const fmt = (n: number) => n.toLocaleString("en-IN");

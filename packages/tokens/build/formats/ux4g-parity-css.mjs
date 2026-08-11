@@ -34,7 +34,6 @@ import { brandSelector } from "../brand-modes.mjs";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { LEGACY_DS_ALIASES } from "./legacy-ds-css.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REFERENCE = join(HERE, "../../reference/ux4g-3.0.tokens.json");
@@ -246,7 +245,8 @@ export const ux4gParityCss = {
       return out.filter(([, v]) => v);
     };
 
-    const legacyPairs = Object.entries(LEGACY_DS_ALIASES);
+    // The legacy --ds-* vocabulary was retired 2026-08-12; there is nothing to re-assert.
+    const legacyPairs = [];
 
     // Which --ux4g-* tokens does a given set of changed --sa-* names affect? Substitution
     // happens where a property is DECLARED, so it is not enough to flip the --sa-* roots:
@@ -289,7 +289,7 @@ export const ux4gParityCss = {
       return (
         `${brandSelector(id === "ux4g-light" ? "ux4g" : id === "ux4g-dark" ? "ux4gdeep" : id)} {\n` +
         decls.map(([n, v]) => `  ${n}: ${v};`).join("\n") +
-        `\n\n  /* re-resolve the --ds-* aliases whose source changed in this block */\n` +
+        `\n\n  /* re-resolve the aliases whose source changed in this block */\n` +
         dsReassert.join("\n") +
         `\n\n  /* re-resolve the --ux4g-* chain that reads from those primitives */\n` +
         ux4gReassert.join("\n") +

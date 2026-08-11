@@ -96,13 +96,13 @@ export const LoadingTable: Story = {
   render: () => (
     <table
       aria-busy="true"
-      style={{ width: "100%", borderCollapse: "collapse", color: "var(--ds-ink)" }}
+      style={{ width: "100%", borderCollapse: "collapse", color: "var(--sa-color-text-default)" }}
     >
-      <caption style={{ textAlign: "left", paddingBottom: 8, color: "var(--ds-ink-muted)" }}>
+      <caption style={{ textAlign: "left", paddingBottom: 8, color: "var(--sa-color-text-muted)" }}>
         Loading district submissions…
       </caption>
       <thead>
-        <tr style={{ textAlign: "left", color: "var(--ds-ink-muted)" }}>
+        <tr style={{ textAlign: "left", color: "var(--sa-color-text-muted)" }}>
           <th style={{ padding: "8px 12px 8px 0" }}>District</th>
           <th style={{ padding: "8px 12px 8px 0" }}>Blocks reporting</th>
           <th style={{ padding: "8px 12px 8px 0" }}>Participants</th>

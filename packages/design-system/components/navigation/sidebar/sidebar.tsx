@@ -209,7 +209,7 @@ function MainItem({
  * - Expanded (300px) / Collapsed (88px) modes.
  * - Two-level hierarchy: top-level items + optional collapsible children with
  *   a curved-connector visual matching the Figma design.
- * - Token-driven: `--ds-primary-50` active bg, `--ds-primary` active text.
+ * - Token-driven: `--sa-color-primaryScale-50` active bg, `--sa-color-action-primary-default` active text.
  * - Optional collapse-control drag handle (showCollapseControl).
  *
  * @example

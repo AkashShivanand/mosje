@@ -103,8 +103,8 @@ export default function ResourcesPage(): React.JSX.Element {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-            gap: "var(--ds-spacing-lg)",
-            marginTop: "var(--ds-spacing-lg)",
+            gap: "var(--sa-stack-m)",
+            marginTop: "var(--sa-stack-m)",
           }}
         >
           {QUICK_LINKS.map((link) => (
@@ -116,10 +116,10 @@ export default function ResourcesPage(): React.JSX.Element {
                 : {})}
               style={{
                 display: "block",
-                padding: "var(--ds-spacing-xl)",
-                borderRadius: "var(--ds-radius-md)",
-                border: "1px solid var(--ds-border)",
-                background: "var(--ds-surface)",
+                padding: "var(--sa-padding-l)",
+                borderRadius: "var(--sa-shape-md)",
+                border: "1px solid var(--sa-border-neutral-subtle)",
+                background: "var(--sa-bg-neutral-base)",
                 textDecoration: "none",
                 transition: "border-color 0.15s, box-shadow 0.15s",
               }}
@@ -128,8 +128,8 @@ export default function ResourcesPage(): React.JSX.Element {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "var(--ds-spacing-md)",
-                  marginBottom: "var(--ds-spacing-sm)",
+                  gap: "var(--sa-stack-s)",
+                  marginBottom: "var(--sa-stack-xs)",
                 }}
               >
                 <span
@@ -141,9 +141,9 @@ export default function ResourcesPage(): React.JSX.Element {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    borderRadius: "var(--ds-radius-sm)",
-                    background: "var(--ds-primary-tonal)",
-                    color: "var(--ds-primary)",
+                    borderRadius: "var(--sa-shape-sm)",
+                    background: "var(--sa-color-action-primary-tonal)",
+                    color: "var(--sa-color-action-primary-default)",
                     fontSize: 18,
                   }}
                 >
@@ -152,8 +152,8 @@ export default function ResourcesPage(): React.JSX.Element {
                 <span
                   style={{
                     fontWeight: 600,
-                    color: "var(--ds-ink)",
-                    fontSize: "var(--ds-text-body-1)",
+                    color: "var(--sa-color-text-default)",
+                    fontSize: "var(--sa-type-body-1-size)",
                   }}
                 >
                   {link.title}
@@ -166,9 +166,9 @@ export default function ResourcesPage(): React.JSX.Element {
               </div>
               <div
                 style={{
-                  fontSize: "var(--ds-text-body-2)",
-                  color: "var(--ds-ink-muted)",
-                  lineHeight: "var(--ds-leading-body-2)",
+                  fontSize: "var(--sa-type-body-2-size)",
+                  color: "var(--sa-color-text-muted)",
+                  lineHeight: "var(--sa-type-body-2-lh)",
                 }}
               >
                 {link.desc}
@@ -218,7 +218,7 @@ export default function ResourcesPage(): React.JSX.Element {
           </p>
         </div>
         <Callout type="tip" title="One rule above all">
-          Build only from the <code>--ds-*</code> tokens and the{" "}
+          Build only from the <code>--sa-*</code> tokens and the{" "}
           <code>@mosje/design-system</code> components. If a value isn&apos;t a
           token, it&apos;s a token gap — add it to <code>@mosje/tokens</code>,
           never hardcode it.

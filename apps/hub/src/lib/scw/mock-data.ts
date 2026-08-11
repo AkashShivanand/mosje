@@ -204,10 +204,10 @@ export const FACILITIES: Facility[] = [
 ];
 
 export const FACILITY_LEGEND = [
-  { label: "Senior Citizen Homes", count: 699, color: "var(--ds-chart-cat-1)" },
-  { label: "Continuous Care Homes", count: 13, color: "var(--ds-chart-cat-3)" },
-  { label: "Mobile Medicare Units", count: 17, color: "var(--ds-chart-cat-2)" },
-  { label: "Physiotherapy Clinics", count: 3, color: "var(--ds-chart-cat-4)" },
+  { label: "Senior Citizen Homes", count: 699, color: "var(--sa-chart-cat-1)" },
+  { label: "Continuous Care Homes", count: 13, color: "var(--sa-chart-cat-3)" },
+  { label: "Mobile Medicare Units", count: 17, color: "var(--sa-chart-cat-2)" },
+  { label: "Physiotherapy Clinics", count: 3, color: "var(--sa-chart-cat-4)" },
 ];
 
 export const VOLUNTEER_INTERESTS = [

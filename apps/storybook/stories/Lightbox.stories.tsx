@@ -101,8 +101,8 @@ export const Playground: Story = {
               onClick={() => setOpenAt(i)}
               style={{
                 padding: 0,
-                border: "1px solid var(--ds-border)",
-                borderRadius: "var(--ds-radius-md)",
+                border: "1px solid var(--sa-border-neutral-subtle)",
+                borderRadius: "var(--sa-shape-md)",
                 background: "none",
                 cursor: "pointer",
                 overflow: "hidden",

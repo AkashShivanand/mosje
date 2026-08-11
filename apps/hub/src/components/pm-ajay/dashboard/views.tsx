@@ -147,8 +147,8 @@ function AlertRow({
   desc: string;
   when: string;
 }) {
-  const bg = tone === "red" ? "var(--ds-danger-tonal)" : "var(--ds-warning-tonal)",
-    fg = tone === "red" ? "var(--ds-danger)" : "var(--ds-warning)";
+  const bg = tone === "red" ? "var(--sa-color-status-dangerTonal)" : "var(--sa-color-status-warningTonal)",
+    fg = tone === "red" ? "var(--sa-color-status-danger)" : "var(--sa-color-status-warning)";
   return (
     <div style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: 13, border: "1px solid var(--pm-line)", borderRadius: 10 }}>
       <div
@@ -219,7 +219,7 @@ function Executive({ kpis, sp, scope, filters, onDrill }: ViewProps) {
             <Funnel
               stages={[
                 { label: "Allocation", pct: 100, value: INR(9250), color: C.navy },
-                { label: "Sanction", pct: 88, value: INR(8142), color: "var(--ds-primary)" },
+                { label: "Sanction", pct: 88, value: INR(8142), color: "var(--sa-color-action-primary-default)" },
                 { label: "Release", pct: 73, value: INR(6718), color: C.blue2 },
                 { label: "Utilization", pct: 57, value: INR(5306), color: C.green },
               ]}
@@ -565,7 +565,7 @@ function Adarsh({ kpis, sp, scope, filters, onDrill }: ViewProps) {
             <Funnel
               stages={[
                 { label: "Villages selected", pct: 100, value: "12,640", color: C.navy },
-                { label: "Need assessments", pct: 86, value: "10,842", color: "var(--ds-primary)" },
+                { label: "Need assessments", pct: 86, value: "10,842", color: "var(--sa-color-action-primary-default)" },
                 { label: "VDPs generated", pct: 75, value: "9,418", color: "var(--pm-accent)" },
                 { label: "DLCC approved", pct: 65, value: "8,206", color: C.blue2 },
                 { label: "Adarsh Gram declared", pct: 62, value: "7,842", color: C.green },

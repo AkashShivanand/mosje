@@ -99,7 +99,7 @@ import { findDemoAccounts, isLoginRoute } from "./demo-accounts";
 
 import "./demo-dock.css";
 
-// Matches --ds-duration-fast (150ms, see tokens.css). Kept in sync by hand —
+// Matches --sa-motion-exit-duration (150ms, see tokens.css). Kept in sync by hand —
 // there is no runtime token reader in this dependency-free package — so the
 // exit animation (CSS) and the DOM-removal delay (this constant) agree on
 // how long the closing panel stays mounted.
@@ -160,7 +160,7 @@ const IconCheck = () => (
     height="12"
     viewBox="0 0 24 24"
     fill="none"
-    stroke="var(--ds-on-primary)"
+    stroke="var(--sa-color-text-onPrimary)"
     strokeWidth="3"
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -187,10 +187,10 @@ function isTypingTarget(target: EventTarget | null): boolean {
  * mark, button shape — rendered in ONE mode's palette regardless of which
  * mode the rest of the app is in. The trick is a nested `[data-brand]`
  * island: `foundations/color-mode.ts` documents that the generated
- * `tokens.css` re-declares the `--ds-*` aliases inside every
+ * `tokens.css` re-declares the `--sa-*` aliases inside every
  * `[data-brand="…"]` block, and a `var()` reference resolves against the
  * cascade at the element where it's *used* — so setting `data-brand` right
- * here, on the tile, is enough to make every `var(--ds-*)` inside it
+ * here, on the tile, is enough to make every `var(--sa-*)` inside it
  * resolve to that mode's own values, live, with no hardcoded hex and no
  * prop threading. `aria-hidden` because the tile is decorative; the
  * accessible name for the option comes from the visible text label next to
@@ -395,7 +395,7 @@ export function DemoDock({
   // The widget's script injects its markup asynchronously (its own file
   // documents the same "wait for late DOM" shape via `relabelMacShortcut`),
   // so this polls briefly rather than assuming the element exists on mount.
-  // `--ds-demodock-bottom` is read by `.ds-demodock` in demo-dock.css, which
+  // `--cmp-demodock-bottom` is read by `.ds-demodock` in demo-dock.css, which
   // also carries a fallback for the (today, only theoretical) case where the
   // widget never appears — a CDN block, a future zone without it — so the
   // FAB still lands in a sensible spot rather than at `bottom: 0`.
@@ -409,7 +409,7 @@ export function DemoDock({
       if (trigger) {
         const rect = trigger.getBoundingClientRect();
         const bottom = Math.round(window.innerHeight - rect.top + DOCK_GAP_PX);
-        root.style.setProperty("--ds-demodock-bottom", `${bottom}px`);
+        root.style.setProperty("--cmp-demodock-bottom", `${bottom}px`);
         return;
       }
       if (attempts++ < UX4G_TRIGGER_MAX_ATTEMPTS) {

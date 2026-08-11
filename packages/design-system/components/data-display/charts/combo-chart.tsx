@@ -157,7 +157,7 @@ export function ComboChart({
       ))}
       {lines.map((s, si) =>
         s.data.map((v, i) => (
-          <circle key={`${si}-${i}`} cx={centerX(i)} cy={yR(v)} r={active === i ? 4 : 2.5} fill="var(--ds-surface)" stroke={lineColors[si] ?? categoricalColor(bars.length + si)} strokeWidth={2} />
+          <circle key={`${si}-${i}`} cx={centerX(i)} cy={yR(v)} r={active === i ? 4 : 2.5} fill="var(--sa-bg-neutral-base)" stroke={lineColors[si] ?? categoricalColor(bars.length + si)} strokeWidth={2} />
         )),
       )}
 

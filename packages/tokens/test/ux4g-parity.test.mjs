@@ -108,13 +108,13 @@ test("colour maps by ROLE onto the MoSJE palette, not by UX4G's value", () => {
 test("the ux4g colour modes repaint the whole --ux4g-* chain, not just the roots", () => {
   // Custom properties substitute where they are DECLARED, so flipping the --sa-* roots is
   // not enough: every --ux4g-* token reading from them has to be re-declared inside the
-  // block. Without the closure the mode changed --ds-primary but left --ux4g-bg-primary-*
+  // block. Without the closure the mode changed the primary action colour but left --ux4g-bg-primary-*
   // on gov-blue, which is exactly the wrong way round for a conformance demo.
   const start = css.indexOf('[data-color-mode="ux4g-light"]');
   assert.notEqual(start, -1, "ux4g-light mode block missing");
   const block = css.slice(start, css.indexOf("\n}", start));
 
-  for (const name of ["--ux4g-color-primary-600", "--ux4g-bg-primary-strong", "--ds-primary"]) {
+  for (const name of ["--ux4g-color-primary-600", "--ux4g-bg-primary-strong", "--sa-color-action-primary-default"]) {
     assert.ok(block.includes(`\n  ${name}:`), `${name} not re-asserted in the ux4g-light block`);
   }
 
@@ -133,7 +133,7 @@ test("the ux4g colour modes repaint the whole --ux4g-* chain, not just the roots
     return ref ? resolveInMode(ref[1], depth + 1) : value;
   };
 
-  assert.equal(resolveInMode("--ds-primary").toLowerCase(), "#4a2bc2");
+  assert.equal(resolveInMode("--sa-color-action-primary-default").toLowerCase(), "#4a2bc2");
   assert.equal(resolveInMode("--ux4g-bg-primary-strong").toLowerCase(), "#4a2bc2");
   assert.equal(resolveInMode("--ux4g-color-primary-600").toLowerCase(), "#4a2bc2");
 
@@ -141,16 +141,3 @@ test("the ux4g colour modes repaint the whole --ux4g-* chain, not just the roots
   assert.equal(resolveInMode("--ux4g-stack-m"), "16px");
 });
 
-test("the [data-surface=portal] block re-asserts the --ds-text-* aliases", () => {
-  // Regression guard. data-surface sits on a wrapper <div> in all six natively-mounted
-  // portals, not on <html>. Without re-assertion the --ds-text-*/--ds-leading-* aliases
-  // keep the value they resolved to at :root — the WEBSITE scale — so portals silently
-  // rendered display headings up to 80px instead of 56px. Verified in-browser.
-  const start = tokensCss.indexOf('[data-surface="portal"]');
-  assert.notEqual(start, -1, "portal surface block missing");
-  const block = tokensCss.slice(start, tokensCss.indexOf("\n}", start));
-
-  for (const alias of ["--ds-text-display", "--ds-leading-display", "--ds-text-body-1"]) {
-    assert.ok(block.includes(`\n  ${alias}:`), `${alias} not re-asserted under [data-surface="portal"]`);
-  }
-});
