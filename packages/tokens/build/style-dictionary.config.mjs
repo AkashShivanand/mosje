@@ -186,4 +186,12 @@ const sd = new StyleDictionary({
 
 await sd.hasInitialized;
 await sd.buildAllPlatforms();
+
+// The typed named-export mirror (packages/design-system/tokens.ts) is derived from the CSS
+// this build just emitted, so it runs LAST and only for the default brand — its values are
+// resolved literals and cannot carry the brand axis. It was hand-maintained until
+// 2026-08-11, by which point 12 of its 22 colours had drifted; generating it is what stops
+// that recurring. It throws rather than emitting holes, so a broken build fails here.
+if (BRAND === "mosje") await import("./generate-ts-mirror.mjs");
+
 console.log(`✓ @mosje/tokens built (brand: ${BRAND})`);
