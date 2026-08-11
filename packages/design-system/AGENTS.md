@@ -21,7 +21,7 @@ Also in force:
 
 ## The two hard rules
 
-1. **Tokens, not values.** Style only with the `--ds-*` CSS custom properties
+1. **Tokens, not values.** Style only with the `--sa-*` CSS custom properties
    (or `@mosje/design-system`'s exports). No raw hex / px / rgba / shadows. A
    missing value is a token gap — add it in `packages/tokens/src/`, never inline.
 2. **One component, one definition.** Import components from
@@ -36,13 +36,15 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
   rewrites the DOM (11 MutationObservers, 42 `innerHTML` writes). React 19 owns the nodes
   it renders; the two models cannot both be right, and it breaks hydration in Next 16.
   Rationale and figures: `docs/ux4g/UX4G-Code-Readiness-Audit.md`.
-- **Write React components against `--ds-*`.** That is how conformance is achieved here.
+- **Write React components against `--sa-*`.** That is how conformance is achieved here.
+  The legacy `--ds-*` vocabulary was retired on 2026-08-12 and resolves to nothing.
 - `--ux4g-*` names exist for interop only, via the **opt-in**
   `@mosje/design-system/ux4g.css`. Import it when rendering UX4G-authored markup or
   demonstrating conformance — not by default.
-- **Prefer the semantic spacing roles** `--ds-inline-*` / `--ds-stack-*` /
-  `--ds-padding-*` / `--ds-section-*` (adopted verbatim from UX4G) over the raw
-  `--ds-spacing-*` t-shirt scale. They state intent; the t-shirt scale states a number.
+- **Prefer the semantic spacing roles** `--sa-inline-*` / `--sa-stack-*` /
+  `--sa-padding-*` / `--sa-section-*` (adopted verbatim from UX4G) over the raw
+  `--sa-ref-space-*` t-shirt scale, which is Tier 1 and banned in app code. They state
+  intent; the t-shirt scale states a number.
 - Conformance is measured, not asserted: `node tools/ux4g-conformance/measure.mjs`.
   If you add or remove a component, update `tools/ux4g-conformance/component-map.json`
   in the same change or the coverage figure silently lies.

@@ -22,9 +22,22 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.17.0",
+    date: "2026-08-12",
+    current: true,
+    changes: [
+      { kind: "Removed", text: "THE LEGACY --ds-* VOCABULARY IS GONE. All 341 tokens, retired in one pass. Nothing emits them: zero occurrences in tokens.css, tokens.ts, tailwind-preset.cjs, ux4g.css or the Figma payload, and zero references in source. 3,561 call sites across 162 files were moved to the canonical --sa-* token each legacy name already resolved to, so the migration was value-preserving BY CONSTRUCTION rather than by inspection — 0 of 192 distinct mappings change a rendered value" },
+      { kind: "Changed", text: "The proof is the re-baselined ux4g contract fixture: 4,433 removals, every single one a --ds-* name, 208 additions (the new Tier-2 tokens), and ZERO changed values across all 13 selector contexts — every brand, every axis block. Brand swap, brand-invariance of secondary and accent, and the six DBIM previews were re-verified in the browser after the migration and all still behave" },
+      { kind: "Added", text: "Three Tier-2 groups had to exist first, because 320 usages had no canonical home and were binding Tier-1 primitives by proxy: --sa-shape-* (corner radius, 12 steps), --sa-font-latin/display/mono alongside the existing devanagari, and --sa-stack-2xl (40px). It is called shape rather than radius because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 radius group self-references the Tier-1 scale it aliases — the build fails with 12 reference errors" },
+      { kind: "Fixed", text: "About 40 references that RENDERED NOTHING, found because the migration had to resolve every name. --ds-space-2 through -12, --ds-line, --ds-border-control, --ds-leading-label-2 and --ds-ink-hint were never declared anywhere, so the declarations carrying them were dropped as invalid CSS: the markdown docs pages had no vertical rhythm and two form controls had no border. Nobody had noticed, because a dropped declaration looks like a design decision" },
+      { kind: "Fixed", text: "The Figma library was telling designers, in Dev Mode, to use tokens that no longer exist — 73 font/role variables published var(--ds-type-*) as their codeSyntax. Repointed, and 16 new variables pushed with their GENERATED descriptions. Six of eight collections now agree with the payload byte-for-byte; Palette and Type differ by exactly the documented orphan set (24 x 2 modes and 13 x 6 modes), now recorded with the arithmetic so anything that is not a whole orphan reads as real drift" },
+      { kind: "Removed", text: "Two test files deleted rather than repaired: tier2-parity and type-alias-parity existed solely to prove the canonical and legacy layers agreed, and there is no longer a second layer. legacy-snapshot.json goes with them. A test whose subject no longer exists is not coverage" },
+      { kind: "Changed", text: "The --ds-text-* alias trap retires with the vocabulary that carried it: --ds-text-title-1 resolved to the headline-2 role, which caused four production bugs. The only surviving record of the mismatch is the TYPE_TOKEN table in build/generate-ts-mirror.mjs, which preserves it so the mirror's named exports keep their values" },
+    ],
+  },
+  {
     version: "v0.16.2",
     date: "2026-08-11",
-    current: true,
     changes: [
       { kind: "Fixed", text: "THE SHADOWS WERE TINTED TOWARD A COLOUR THE SYSTEM NO LONGER HAD. The ramp's own description says it keeps \"the SAMAVESH convention of tinting toward ink rather than UX4G's flat black\" — and it was not: five rungs plus the modal scrim carried rgba(31, 36, 40), hand-written from a neutral/800 the ramp rebuild moved to #1e2124. Derived from neutral/800 now, so it cannot drift again. Geometry stays authored; only the ink is generated" },
       { kind: "Changed", text: "Nobody could see it, which is exactly why it needed deriving rather than a one-time correction. Composited over white the old ink and the new differ by dE 0.14 to 0.54 across the ramp's alphas — under the ~1.0 just-noticeable threshold at every rung. A wrong value you can see gets fixed the first time somebody looks at it; a wrong value you cannot see survives every review and is still wrong" },
