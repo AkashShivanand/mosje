@@ -1,7 +1,7 @@
 {
   "$description": "Snapshot of the LIVE SAMAVESH Figma library — fileKey 3FF5l0SMNIwdpZrKkeyPTm, the canonical one named in GOVERNANCE.md. TWO OLDER COPIES still exist and still contain variables (qyzTEy8… 261 vars, T3bkN5g… 176), so a sync run against either looks successful and reaches nobody: check the count before writing. Variable names ARE the canonical DTCG paths, so this file doubles as the proof that the Figma tree and the source tree are the same tree.",
   "$readAt": "2026-08-11",
-  "$note": "2026-08-11, NINTH pass — the layout system, and the tap-target ladder. 9 variables added to Space (now 85; library 909). GRID: 12 columns and a 24px gutter, which is UX4G 3.0 / Bootstrap exactly, because UX4G is the Government of India's own system and this repo holds a parity contract with it — a designer moving between the two libraries must not find a different grid. What is NOT UX4G's is the SHAPE: UX4G expresses its grid as Bootstrap CSS classes, which is precisely why none of it had ever reached Figma and why a designer had nothing to bind a layout grid to. These are tokens instead, following IBM Carbon's model. Page margin is responsive (16 / 24 / 32px) rather than Bootstrap's flat 12px half-gutter, because 12px either side of a government page on a 1280px desktop is too thin — Carbon uses 32px and GOV.UK 30px. TARGET: a ladder, not one number. 44px is WCAG 2.5.5, which is Level AAA and NOT the AA floor it is usually quoted as; the AA floor is WCAG 2.2 SC 2.5.8 at 24 by 24 CSS px, with a spacing exception. GIGW 3.0 binds this estate to WCAG 2.1 AA + IS 17802, and WCAG 2.1 AA contains NO target-size criterion at all, so every value here is a deliberate choice above the mandate rather than a compliance minimum. min=24 (2.5.8 AA), comfortable=44 (2.5.5 AAA and Apple 44pt), spacious=48 (Material 3, 48dp), spacing=8 (Material separation, and what makes the 2.5.8 spacing exception reachable). NOT added, and why. The breakpoint group was NOT extended to UX4G's six: those three are the fluid TYPE ramp's clamp anchors (the generator throws without mobile and desktop), not layout media queries, so a layout breakpoint set is a separate axis and a separate decision. container/2xl (1320px) was not added because the estate's content width is 1280px, so a wider container would contradict it. Shadow and elevation still have NO Figma representation and cannot have one as variables: Figma holds only COLOR / FLOAT / STRING / BOOLEAN and a shadow is composite — it needs effect STYLES.",
+  "$note": "2026-08-11, NINTH pass — the layout system, and the tap-target ladder. 9 variables added to Space (now 85; library 909). GRID: 12 columns and a 24px gutter, which is UX4G 3.0 / Bootstrap exactly, because UX4G is the Government of India's own system and this repo holds a parity contract with it — a designer moving between the two libraries must not find a different grid. What is NOT UX4G's is the SHAPE: UX4G expresses its grid as Bootstrap CSS classes, which is precisely why none of it had ever reached Figma and why a designer had nothing to bind a layout grid to. These are tokens instead, following IBM Carbon's model. Page margin is responsive (16 / 24 / 32px) rather than Bootstrap's flat 12px half-gutter, because 12px either side of a government page on a 1280px desktop is too thin — Carbon uses 32px and GOV.UK 30px. TARGET: a ladder, not one number. 44px is WCAG 2.5.5, which is Level AAA and NOT the AA floor it is usually quoted as; the AA floor is WCAG 2.2 SC 2.5.8 at 24 by 24 CSS px, with a spacing exception. GIGW 3.0 binds this estate to WCAG 2.1 AA + IS 17802, and WCAG 2.1 AA contains NO target-size criterion at all, so every value here is a deliberate choice above the mandate rather than a compliance minimum. min=24 (2.5.8 AA), comfortable=44 (2.5.5 AAA and Apple 44pt), spacious=48 (Material 3, 48dp), spacing=8 (Material separation, and what makes the 2.5.8 spacing exception reachable). NOT added, and why. The breakpoint group was NOT extended to UX4G's six: those three are the fluid TYPE ramp's clamp anchors (the generator throws without mobile and desktop), not layout media queries, so a layout breakpoint set is a separate axis and a separate decision. container/2xl (1320px) was not added because the estate's content width is 1280px, so a wider container would contradict it. Shadow and elevation still have NO Figma representation and cannot have one as variables: Figma holds only COLOR / FLOAT / STRING / BOOLEAN and a shadow is composite — it needs effect STYLES. TENTH pass — elevation reached Figma, as effect STYLES rather than variables (a shadow is composite; variables cannot hold one). Six elevation/* created from shadow.* exactly. The claim in the ninth pass that designers had NO shadow tokens was WRONG: six Shadows/shadow-* effect styles already existed, unknown to the code — and not one of them matches the token source. All six use flat #212121 against the tokens' tinted rgb(31,36,40), and shadow-s and shadow-md also differ in geometry. They were left untouched and annotated rather than corrected, because they are applied in consumer files this library cannot enumerate. ELEVENTH pass — the six Focus States/* effect styles had no description at all (found by the coverage check after the elevation work) and now have one each. They are otherwise the healthiest thing in the library: every colour is variable-BOUND to color/transparent/<family>/48, so unlike the Shadows/* they cannot rot into a literal. One thing worth knowing and now written down: each is a single flush 4px spread, while the build renders a 2px ring held 2px off the control — same 4px footprint, no transparent gap, because a drop shadow cannot leave one without painting the backdrop. Recorded as a limitation, not as drift to fix. Effect-style description coverage is now 18/18. ",
   "$ghostAudit": {
     "auditedAt": "2026-08-11",
     "status": "complete",
@@ -1560,5 +1560,50 @@
       "what": "RESOLVED — color/neutralScale/1100 was RENAMED in place, not deleted. No binding was detached.",
       "detail": "A concurrent session recorded this as a hard delete with unrecoverable bindings. That was a reasonable reading of what it could see — the NAME was gone — but it is wrong, and the correction matters because \"bindings are detached and cannot be restored\" is alarming and false. What actually happened: the renumbering was applied as a two-step RENAME CHAIN (1000 -> 950 first to free the name, then 1100 -> 1000), which is the only safe way to renumber in a published library because renaming preserves the variable id and therefore every binding that points at it. Verified against the ids captured BEFORE the write: VariableID:3791:8969 (was 1000, #0a0d13) is now named color/neutralScale/950 and still exists; VariableID:3791:8970 (was 1100, #000000) is now named color/neutralScale/1000 and still exists. Both were re-read by id afterwards and both resolve. Nothing was created to replace them, so no id changed and no consumer lost its reference. The lesson is about OBSERVATION, not about the write: a missing NAME does not imply a missing VARIABLE, and the two can only be told apart by looking the id up directly."
     }
-  ]
+  ],
+  "$effectStyles": {
+    "note": "Effect styles, NOT variables. A shadow is a composite value and Figma variables hold only COLOR / FLOAT / STRING / BOOLEAN, so `shadow.*` and `elevation.*` can never be variables — an effect style is the only Figma primitive that fits. `elevation/*` is generated from `shadow.*` in src/primitive.json via build/shadow.mjs, and elevation-parity.test.mjs asserts these strings still match what that parser produces.",
+    "generated": {
+      "elevation/flat": [],
+      "elevation/card": [
+        "0/2/3/1 rgba(31,36,40,0.12)"
+      ],
+      "elevation/raised": [
+        "0/4/6/-1 rgba(31,36,40,0.1)",
+        "0/2/4/-2 rgba(31,36,40,0.06)"
+      ],
+      "elevation/dropdown": [
+        "0/8/12/-3 rgba(31,36,40,0.09)",
+        "0/3/5/-2 rgba(31,36,40,0.05)"
+      ],
+      "elevation/modal": [
+        "0/12/16/-4 rgba(31,36,40,0.08)",
+        "0/4/6/-2 rgba(31,36,40,0.03)"
+      ],
+      "elevation/toast": [
+        "0/24/48/-12 rgba(31,36,40,0.18)"
+      ]
+    },
+    "preExisting": {
+      "note": "Six `Shadows/shadow-*` effect styles predate the token sync and the code never knew about them. NONE of the six matches the token source: all use flat #212121 where the tokens use the tinted rgb(31,36,40), and shadow-s and shadow-md also differ in GEOMETRY, so a design using either does not match what ships. They were NOT changed — this is a published library and they are applied in consumer files, so altering their geometry would restyle other people's work unannounced. Each now carries a description naming the elevation/* style that supersedes it and the exact divergence. Retire them only with evidence of zero consumers.",
+      "Shadows/shadow-xs": "colour differs only — superseded by elevation/card",
+      "Shadows/shadow-s": "GEOMETRY differs — superseded by elevation/raised",
+      "Shadows/shadow-md": "GEOMETRY differs — superseded by elevation/dropdown",
+      "Shadows/shadow-lg": "colour differs only — superseded by elevation/modal",
+      "Shadows/shadow-xl": "colour differs only — superseded by elevation/toast",
+      "Shadows/shadow-2xl": "ORPHAN — no token behind it; the code ramp stops at shadow.xl"
+    },
+    "focus": {
+      "note": "Six `Focus States/*` effect styles. Unlike the shadows these are in GOOD shape — every one binds its colour to `color/transparent/<family>/48`, so they follow the brand and cannot rot into a literal. They shipped with no description at all, which is now fixed; each says which intent it belongs to and carries the geometry caveat below.",
+      "geometryDivergence": "Each style is a SINGLE FLUSH 4px spread. The build renders a 2px ring held 2px off the control (focus/width = ref/border/width/md = 2px, focus/offset = ref/space/xxs = 2px), so the total footprint agrees at 4px but the transparent gap does not exist in Figma. This is a LIMITATION, not drift to be fixed: a drop shadow cannot leave a transparent gap without painting the backdrop, and faking the gap means painting the inner 2px in the page colour — correct on the default surface and wrong on every other. Do not 'correct' these to two layers; the Figma ring is deliberately the heavier reading of the same affordance.",
+      "styles": {
+        "Focus States/Primary - Active Shadow": "bound to color/transparent/primary/48 — same value as the focus/ring token; the estate default",
+        "Focus States/Secondary - Active Shadow": "bound to color/transparent/secondary/48",
+        "Focus States/Success - Active Shadow": "bound to color/transparent/success/48",
+        "Focus States/Danger - Active Shadow": "bound to color/transparent/danger/48",
+        "Focus States/Warning - Active Shadow": "bound to color/transparent/warning/48",
+        "Focus States/Neutral - Active Shadow": "bound to color/transparent/neutral/48"
+      }
+    }
+  }
 }

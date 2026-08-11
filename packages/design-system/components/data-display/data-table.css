@@ -79,6 +79,16 @@
   padding: 14px 16px;
   color: var(--ds-ink);
   vertical-align: middle;
+  /* Tabular figures: every digit takes the same width, so a column of amounts,
+     beneficiary counts or reference numbers lines up on the decimal and can be
+     scanned down rather than read row by row. Noto Sans ships them, so this costs
+     nothing and — unlike switching the column to a monospace face — keeps the
+     digits in the same typeface as the text beside them.
+
+     `tabular-nums` affects digits only; text cells are unchanged. The estate
+     already relies on this in the Aadhaar/PAN field, the charts and the SLA
+     indicator; the shared table was the one place handling numbers that missed it. */
+  font-variant-numeric: tabular-nums;
 }
 
 .ds-table__empty {

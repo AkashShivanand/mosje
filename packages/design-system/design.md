@@ -35,6 +35,26 @@
   DESTRUCTIVE BUTTONS lost their step override and now use the same 600/700/800 progression as
   every other intent; the override existed only because danger/600 could not carry white text.)
 
+  System version: v0.14.2 (The six `Focus States/*` effect styles
+  had NO description; they now have one each, so effect-style coverage is 18/18 to match the
+  variables' 909/909. Unlike the `Shadows/*` these needed no correction — every one already
+  BINDS its colour to `color/transparent/<family>/48`, so they follow the brand and cannot rot
+  into literals. One thing to know before "fixing" it: each is a single flush 4px spread while
+  the build renders a 2px ring held 2px off the control (`--sa-focus-width` / `--sa-focus-offset`
+  are both 2px). Same 4px footprint, no transparent gap — a drop shadow cannot leave one without
+  painting the backdrop, so this is a limitation, not drift.)
+
+  System version: v0.14.1 (ELEVATION IS IN FIGMA, as effect
+  STYLES — a shadow is composite and Figma variables hold only COLOR/FLOAT/STRING/BOOLEAN, so
+  it could never be a variable. `elevation/{flat,card,raised,dropdown,modal,toast}` are
+  generated from `shadow.*` exactly. CORRECTION to v0.14.0, which said designers had no shadow
+  tokens: six `Shadows/shadow-*` effect styles already existed, unknown to the code — and NOT
+  ONE matches the token source (all use flat #212121 vs the tokens' tinted rgb(31,36,40), and
+  `shadow-s`/`shadow-md` also differ in geometry). They are deliberately NOT corrected — a
+  published library whose consumers cannot be enumerated — but each now names the `elevation/*`
+  that supersedes it. Effect styles are invisible to the payload, the checksums and the
+  round-trip test, so `elevation-parity.test.mjs` is what keeps them honest.)
+
   System version: v0.14.0 (THE LAYOUT GRID NOW EXISTS, and the
   tap-target floor is a LADDER rather than a number. `grid/columns` (12) + `grid/gutter` (24px)
   are UX4G 3.0/Bootstrap exactly, because we hold a parity contract with the Government of
@@ -309,6 +329,14 @@ Use semantic tokens — never reference primitive `--sa-color-*` values directly
 ### D. Typography
 
 - **Typeface**: Noto Sans (`var(--ds-font-sans)`) — non-negotiable across all English interfaces. Devanagari/Hindi uses `--sa-font-devanagari`.
+- **Which faces are actually loaded** (`apps/hub` root layout — a token that names a font nobody loads renders as a system fallback, which is how Hindi silently lost its typeface):
+  - `Noto Sans`, subsets `latin` + `devanagari`, weights 400/500/600/700. One superfamily covers both scripts; `unicode-range` means the Devanagari file is fetched only by pages that contain Devanagari.
+  - `Noto Sans Display`, subset `latin`, weight 500 — the optical Display cut, for the 40–80px Display ramp only.
+  - **No monospace webfont**, by choice — see the mono rule below.
+- **The Display cut is addressed differently in each medium.** Noto Sans ships two cuts of one design: the text cut is drawn for 12–24px, and at 80px its open spacing reads as loose. CSS loads the cut as a **separate family** (`"Noto Sans Display"` + `font-weight: 500`); Figma exposes it as a **style of Noto Sans** (`Display Medium`), because Figma's style axis conflates cut and weight into one string. So `ref/font/family/display` says `Noto Sans` in Figma and `"Noto Sans Display", …` in CSS — deliberately, not a drift. The `Display/display-1…6` text styles bind `ref/font/weight/displayMedium`.
+  - **Latin only.** `Noto Sans Display` has no Devanagari subset and `Noto Sans Devanagari` has no Display cut — the pairing does not exist in Noto. A Hindi display heading falls through the stack to Noto Sans, which is correct; the alternative is no glyphs.
+- **Numbers are NOT a job for monospace.** Use `font-variant-numeric: tabular-nums` on Noto Sans: digits get equal width so a column of amounts, counts or reference numbers aligns and can be scanned down, while staying in the same typeface as the text beside them. Switching a column to a mono face is the clumsier fix and reads as a different design. Already applied in `DataTable`, the Aadhaar/PAN field, charts, the SLA indicator and `Section`.
+- **`--ds-font-mono` is for CODE AND TECHNICAL STRINGS ONLY** — token names, CSS snippets, file paths in these docs. It is a **system stack** (`ui-monospace` → SF Mono / Cascadia / Roboto Mono), deliberately not a webfont: mono appears only on documentation pages, and a download on every page to style sample code is a poor trade for a low-bandwidth government audience. The Figma variable is hidden from publishing, because "whatever mono the device has" has no single Figma family.
 - **Line Length**: Body text and prose containers max-width `65ch`–`75ch` (`max-w-prose`). Never wider.
 - **Fluid type**: Every role is `clamp(min, fluid, max)` — `min` at a 360px viewport, `max` at 1280px. No type media queries. Two surfaces (`data-surface`) supply different min/max: **Website** (expressive) vs **Portal** (dense).
 - **Text Wrapping**: Use `text-wrap: balance` on `h1`–`h3`; `text-wrap: pretty` on paragraphs to eliminate orphans.

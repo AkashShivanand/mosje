@@ -455,7 +455,7 @@ export const tokens = {
       "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
       "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
       "display": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
-      "mono": "\"IBM Plex Mono\", ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+      "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
     },
     "weight": {
       "regular": 400,
