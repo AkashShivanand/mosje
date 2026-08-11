@@ -91,6 +91,35 @@ test("the pre-existing Shadows/* divergence stays recorded until it is resolved"
   }
 });
 
+test("the focus styles stay recorded, with their geometry caveat", () => {
+  // These are NOT generated from tokens — they are authored in Figma with their colours BOUND to
+  // `color/transparent/<family>/48`, which is why they cannot rot into literals the way the
+  // Shadows/* did. So there is nothing to regenerate and compare; what there IS to protect is the
+  // written reason they look different from the build.
+  //
+  // Each is a single flush 4px spread, while the build renders a 2px ring held 2px off the control.
+  // That is a LIMITATION (a drop shadow cannot leave a transparent gap without painting the
+  // backdrop), and the next person to notice it will otherwise "fix" it into a two-layer style
+  // that is correct on the default surface and wrong on every other.
+  const focus = live.$effectStyles?.focus;
+  assert.ok(focus, "the Focus States/* record is gone from reference/figma-live.json");
+  assert.match(
+    focus.geometryDivergence ?? "",
+    /transparent gap/,
+    "the focus geometry caveat has lost the reason the gap is absent — without it the divergence " +
+      "reads as a bug and someone will 'correct' it",
+  );
+  for (const family of ["primary", "secondary", "success", "danger", "warning", "neutral"]) {
+    const key = `Focus States/${family[0].toUpperCase()}${family.slice(1)} - Active Shadow`;
+    assert.ok(focus.styles?.[key], `${key} dropped out of the focus record`);
+    assert.match(
+      focus.styles[key],
+      new RegExp(`color/transparent/${family}/48`),
+      `${key} no longer records which variable its colour is bound to`,
+    );
+  }
+});
+
 test("parseShadow handles the shapes this ramp actually uses", () => {
   assert.deepEqual(parseShadow("none"), [], "`none` is an empty effect list, not a failure");
   assert.deepEqual(parseShadow(""), []);

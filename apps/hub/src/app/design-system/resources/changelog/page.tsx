@@ -22,9 +22,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.14.1",
+    version: "v0.14.2",
     date: "2026-08-11",
     current: true,
+    changes: [
+      { kind: "Added", text: "Descriptions on the six Focus States/* effect styles, which had none — surfaced by the coverage check added with the elevation work. Each now says which intent it belongs to, and that reaching for a ring whose colour disagrees with its control makes the control read as a different component. Effect-style description coverage is now 18/18, matching the 909/909 the variables already had" },
+      { kind: "Fixed", text: "Recorded a geometry divergence worth knowing before someone 'fixes' it: each focus style is a SINGLE FLUSH 4px spread, while the build renders a 2px ring held 2px off the control (--sa-focus-width 2px, --sa-focus-offset 2px). The 4px total footprint agrees; the transparent gap does not exist in Figma. That is a limitation, not drift — a drop shadow cannot leave a transparent gap without painting the backdrop, and faking it means painting the inner 2px in the page colour, which is right on the default surface and wrong on every other" },
+      { kind: "Changed", text: "Unlike the Shadows/* styles, these needed no correction: every one already BINDS its colour to color/transparent/<family>/48, so they follow the brand and cannot rot into literals. Worth stating plainly, because the previous two releases found the opposite everywhere they looked" },
+      { kind: "Added", text: "The focus record is gated alongside the elevation parity check — the six styles and the variable each binds to must stay recorded, and the caveat must keep its reason. A caveat that loses its reason reads as a bug, and the next person corrects it into a two-layer style that only works on one background" },
+    ],
+  },
+  {
+    version: "v0.14.1",
+    date: "2026-08-11",
     changes: [
       { kind: "Added", text: "ELEVATION REACHED FIGMA — as effect STYLES, not variables. A shadow is a composite value and Figma variables hold only COLOR/FLOAT/STRING/BOOLEAN, so shadow.* and elevation.* could never be variables; an effect style is the only Figma primitive that fits. elevation/{flat,card,raised,dropdown,modal,toast} are generated from shadow.{none,xs,sm,md,lg,xl} exactly, including the two-layer shadows and their negative spreads" },
       { kind: "Fixed", text: "A CORRECTION to the previous entry, which said designers had no shadow tokens at all. They did: six Shadows/shadow-* effect styles already existed in the library, unknown to the code — which is worse than none, because nothing was checking them. NOT ONE of the six matches the token source. All six use flat #212121 where the tokens use the tinted rgb(31,36,40), and shadow-s and shadow-md also differ in GEOMETRY (0/1/3/+1 plus 0/4/4/0 against the token's 0/4/6/-1 plus 0/2/4/-2; 0/2/8/-2 plus 0/6/8/-2 against 0/8/12/-3 plus 0/3/5/-2), so a design using either does not match what ships" },

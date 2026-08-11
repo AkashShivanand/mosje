@@ -12,7 +12,16 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.14.1 (ELEVATION IS IN FIGMA, as effect
+  Last reviewed: 2026-08-11 · System version: v0.14.2 (The six `Focus States/*` effect styles
+  had NO description; they now have one each, so effect-style coverage is 18/18 to match the
+  variables' 909/909. Unlike the `Shadows/*` these needed no correction — every one already
+  BINDS its colour to `color/transparent/<family>/48`, so they follow the brand and cannot rot
+  into literals. One thing to know before "fixing" it: each is a single flush 4px spread while
+  the build renders a 2px ring held 2px off the control (`--sa-focus-width` / `--sa-focus-offset`
+  are both 2px). Same 4px footprint, no transparent gap — a drop shadow cannot leave one without
+  painting the backdrop, so this is a limitation, not drift.)
+
+  System version: v0.14.1 (ELEVATION IS IN FIGMA, as effect
   STYLES — a shadow is composite and Figma variables hold only COLOR/FLOAT/STRING/BOOLEAN, so
   it could never be a variable. `elevation/{flat,card,raised,dropdown,modal,toast}` are
   generated from `shadow.*` exactly. CORRECTION to v0.14.0, which said designers had no shadow
