@@ -26,7 +26,7 @@ const RELEASES: Release[] = [
     date: "2026-08-11",
     current: true,
     changes: [
-      { kind: "Changed", text: "DemoDock's Colour tab: the plain swatch row plus live Button/Badge/Alert preview block is replaced by a wrapping grid of fixed-size (~72×48px) motif tiles — a miniature header bar, content surface, accent mark and button shape per mode. Each tile renders in that mode's own palette via a nested data-brand island on the tile itself, so a Navy tile looks navy even while the app is in Gov Blue, with no hardcoded hex" },
+      { kind: "Changed", text: "DemoDock's Colour tab: the plain swatch row plus live Button/Badge/Alert preview block is replaced by a wrapping grid of fixed-size (~72×48px) motif tiles — a miniature header bar, content surface, accent mark and button shape per mode. Each tile renders in that mode's own palette via a nested data-brand island on the tile itself, so a Navy tile looks navy even while the app is in Blue, with no hardcoded hex" },
       { kind: "Removed", text: "The live Button/Badge/Alert preview block under the Colour tab's swatch list is gone. The motif tiles are the preview now, and — being fixed-size regardless of mode count — give the tab a height that no longer grows with a live component block or a longer mode list" },
       { kind: "Changed", text: "Selected state keeps the tick plus a visible ring (still not colour alone — WCAG 1.4.1); touch targets remain ≥44px (AAA, WCAG 2.5.5)" },
     ],

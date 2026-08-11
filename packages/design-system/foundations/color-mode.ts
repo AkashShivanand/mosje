@@ -33,8 +33,8 @@ export interface ColorMode {
  * and carries no `data-color-mode` attribute.
  */
 export const COLOR_MODES: readonly ColorMode[] = [
-  { id: "blue", label: "Gov Blue", swatch: "#0373df" },
-  { id: "navy", label: "Gov Navy", swatch: "#003366" },
+  { id: "blue", label: "Blue", swatch: "#0373df" },
+  { id: "navy", label: "Navy", swatch: "#003366" },
 ] as const;
 
 /**
