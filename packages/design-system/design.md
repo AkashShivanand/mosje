@@ -12,7 +12,18 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.15.1 (CODE AND FIGMA NOW AGREE ON VALUES, not
+  Last reviewed: 2026-08-11 · System version: v0.15.2 (DESIGN-CONTEXT COVERAGE IS 100% — the
+  three components the new gate recorded as debt are documented, and the baseline is empty.
+  `BrandLockup` (always the National Emblem; a plain `<a>`/`<img>` on purpose, which is what
+  makes it server-safe inside a `basePath`-ed zone — do not "upgrade" it to `next/image`),
+  `AccountMenu` (`items` decides what it IS: empty renders the static Figma block, non-empty an
+  accessible dropdown; initials stand in for a missing avatar), and `Legend` (`aria-hidden` BY
+  DESIGN — `ChartFrame`'s screen-reader table carries the values, so a series explained only by
+  its legend label is invisible to a screen reader). Documenting them made the ratchet fail on
+  its own baseline, which is the half of it worth having: coverage that improves forces the
+  backlog to shrink with it.)
+
+  System version: v0.15.1 (CODE AND FIGMA NOW AGREE ON VALUES, not
   just names. The library was holding 80 wrong values under the correct names — 13 component
   tokens bound to the wrong palette rung (one set stale since v0.13.0), a reverted webfont, and
   54 fluid-type variables carrying the previous tablet curve. Every existing check compared
@@ -1110,6 +1121,14 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 - `IndiaMap` geometry is generated — see `components/data-display/charts/geo/README.md`.
 - Charts are CSS-var driven (no Tailwind), so they work in every app including
   pm-ajay (no Tailwind) and the v3/v4 portals.
+- **`Legend` is `aria-hidden` on purpose, and that is not a bug to fix.** The real
+  values live in `ChartFrame`'s screen-reader data table; the legend is the sighted
+  reader's colour key and would otherwise read out a second, redundant list of
+  labels with no numbers. The consequence is the rule above restated with teeth:
+  never put information in the legend that is not also in the data — a series whose
+  only explanation is its legend label is invisible to a screen reader. It renders
+  `null` for an empty `items`, so a chart with no series shows no empty rail, and
+  takes `orientation` (`horizontal` default, `vertical` for a side rail).
 
 ---
 
@@ -1123,6 +1142,38 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 - Website: always pass `search` and `actions` (Login button).
 - Portal: pass `onToggleNav`, `brandDivider`, `cobranding`, `account`, `accountMenu`.
 - `collapseOnScroll` is opt-in on Portal variant — when on, ensure sidebar offsets account for the shorter scrolled height.
+
+#### BrandLockup
+**Purpose**: The National Emblem plus the government text stack — BETA badge on its
+own row, then `org` (12px) · `ministry` (14px) · `department` (20px bold) — matching
+the UX4G Portal Navbar in Figma.  
+**Key props**: `emblemSrc`, `lines`, `href`, `beta`, `compact`, `divider`, `textHiddenOnMobile`  
+**Rules**:
+- **Always the National Emblem, never an invented or abstract mark.** This is an
+  estate rule, not a component preference — see CLAUDE.md.
+- It renders a plain `<a>`/`<img>`, deliberately, and is **server-safe**. That is
+  what lets it work inside any `basePath`-ed zone, which is why the app supplies a
+  basePath-aware `emblemSrc` rather than the component resolving one. Do not
+  "upgrade" it to `next/image`: that couples the design system to Next and breaks
+  the zones.
+- `SiteHeader` composes it for you. Reach for it directly only when building a
+  surface that is not a `SiteHeader` — a gate page, a standalone print header —
+  not to rebuild a masthead beside one.
+
+#### AccountMenu
+**Purpose**: The portal header's account block — name / email plus a 48px avatar,
+matching the Figma "Navbar Portal" account.  
+**Key props**: `account`, `items`  
+**Rules**:
+- **`items` decides what it IS.** Empty (the default) renders a *static* block, which
+  is the Figma portal display; passing items makes it an interactive dropdown with
+  `aria-haspopup="menu"`, Escape-to-close and focus returned to the trigger. Do not
+  pass `items: []` expecting a menu, and do not wrap a static one in your own button.
+- The avatar falls back to **derived initials** (up to two letters, first + last) when
+  `account.avatarSrc` is absent, so a missing image is never a broken image.
+- Outside-click and Escape are hand-rolled rather than taken from Radix, because the
+  design system ships **zero runtime dependencies**. Match that pattern if you add a
+  popover; do not introduce a menu library for one component.
 
 #### SidebarNav
 **Purpose**: Portal app-shell left navigation.  
