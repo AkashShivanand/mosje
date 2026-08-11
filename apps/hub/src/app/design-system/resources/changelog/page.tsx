@@ -22,7 +22,7 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.15.2",
+    version: "v0.15.3",
     date: "2026-08-11",
     current: true,
     changes: [
