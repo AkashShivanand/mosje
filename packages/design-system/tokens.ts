@@ -9,7 +9,7 @@
    px for a scale that is fluid. Regenerate with: npm run build -w @mosje/tokens
 
    PREFER THE CSS CUSTOM PROPERTIES. These literals are resolved at BUILD time, so they are
-   frozen to the default brand and cannot follow `data-brand` — `var(--ds-primary)` repaints
+   frozen to the default brand and cannot follow `data-brand` — `var(--sa-color-action-primary-default)` repaints
    when the brand switches and `colors.primary` does not. */
 export const colors = {
   primary: "#0373df",

@@ -809,7 +809,7 @@
       }
     },
     "role": {
-      "$description": "Two-surface responsive type role scale (Portal DS naming: hyphenated roles). Each size/lh/para carries mosje.type website/portal min+max bounds (min at 360px viewport, max at 1280px). The formatter emits --ds-type-ROLE-size/lh/para as clamp(min, fluid, max): Website in :root, Portal under data-surface=portal. $value is the Website desktop fallback.",
+      "$description": "Two-surface responsive type role scale (Portal DS naming: hyphenated roles). Each size/lh/para carries mosje.type website/portal min+max bounds (min at 360px viewport, max at 1280px). The formatter emits --sa-type-ROLE-size/lh/para as clamp(min, fluid, max): Website in :root, Portal under data-surface=portal. $value is the Website desktop fallback.",
       "display": {
         "1": {
           "size": {

@@ -247,13 +247,13 @@ test("codeSyntax is byte-identical to the CSS name the stylesheet declares", () 
   for (const { path, filePath } of authored) {
     const v = byPath.get(path.join("/"));
     if (!v) continue;
-    // font/role and font/tracking ship as --ds-type-*, not --sa-*; see emittedCssName().
+    // font/role and font/tracking ship as --sa-type-*, built by buildResponsiveType().
     const [head, kind, ...rest] = path;
     const expected =
       head === "font" && kind === "role"
-        ? `var(--ds-type-${rest.join("-")})`
+        ? `var(--sa-type-${rest.join("-")})`
         : head === "font" && kind === "tracking"
-          ? `var(--ds-type-${rest.join("-")}-tracking)`
+          ? `var(--sa-type-${rest.join("-")}-tracking)`
           : `var(${toCssName(path, tierOfFile(filePath))})`;
     if (v.codeSyntax?.WEB !== expected) wrong.push(`${path.join("/")}: ${v.codeSyntax?.WEB} ≠ ${expected}`);
   }
@@ -264,7 +264,7 @@ test("the CSS name in codeSyntax round-trips back to the same path", () => {
   const broken = [];
   for (const v of allVars) {
     const name = v.codeSyntax.WEB.slice(4, -1);
-    // Only --sa-* names are grammar-projected; font.role feeds --ds-type-* separately.
+    // Only --sa-* names are grammar-projected; font.role feeds --sa-type-* separately.
     if (!name.startsWith("--sa-")) continue;
     const back = fromCssName(name);
     if (back.path.join("/") !== v.path) broken.push(`${v.path} → ${name} → ${back.path.join("/")}`);

@@ -23,8 +23,8 @@
       "existing": 96
     },
     "Radius": {
-      "total": 13,
-      "new": 0,
+      "total": 25,
+      "new": 12,
       "existing": 13
     },
     "Motion": {
@@ -365,19 +365,7 @@
     "elevation/raised (Figma models shadows as EFFECT STYLES, not variables — exported separately)",
     "elevation/dropdown (Figma models shadows as EFFECT STYLES, not variables — exported separately)",
     "elevation/modal (Figma models shadows as EFFECT STYLES, not variables — exported separately)",
-    "elevation/toast (Figma models shadows as EFFECT STYLES, not variables — exported separately)",
-    "shape/none (no mapping defined for this path)",
-    "shape/xxs (no mapping defined for this path)",
-    "shape/xs (no mapping defined for this path)",
-    "shape/sm (no mapping defined for this path)",
-    "shape/md (no mapping defined for this path)",
-    "shape/lg (no mapping defined for this path)",
-    "shape/xl (no mapping defined for this path)",
-    "shape/2xl (no mapping defined for this path)",
-    "shape/3xl (no mapping defined for this path)",
-    "shape/4xl (no mapping defined for this path)",
-    "shape/5xl (no mapping defined for this path)",
-    "shape/full (no mapping defined for this path)"
+    "elevation/toast (Figma models shadows as EFFECT STYLES, not variables — exported separately)"
   ],
   "collections": [
     {
@@ -15808,7 +15796,7 @@
               "value": "#ffd323"
             }
           },
-          "description": "BETA badge background — ad-hoc accent (#ffd323), NOT a brand or status colour. Correctly-named entry point for the beta-badge colour; --ds-gov-yellow is the deprecated legacy alias.",
+          "description": "BETA badge background — ad-hoc accent (#ffd323), NOT a brand or status colour. Correctly-named entry point for the beta-badge colour.",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-badge-beta-bg)"
           },
@@ -16788,7 +16776,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-1-size)"
+            "WEB": "var(--sa-type-display-1-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -16834,7 +16822,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-1-lh)"
+            "WEB": "var(--sa-type-display-1-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -16880,7 +16868,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-1-para)"
+            "WEB": "var(--sa-type-display-1-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -16926,7 +16914,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-2-size)"
+            "WEB": "var(--sa-type-display-2-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -16972,7 +16960,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-2-lh)"
+            "WEB": "var(--sa-type-display-2-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -17018,7 +17006,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-2-para)"
+            "WEB": "var(--sa-type-display-2-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -17064,7 +17052,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-3-size)"
+            "WEB": "var(--sa-type-display-3-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -17110,7 +17098,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-3-lh)"
+            "WEB": "var(--sa-type-display-3-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -17156,7 +17144,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-3-para)"
+            "WEB": "var(--sa-type-display-3-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -17202,7 +17190,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-4-size)"
+            "WEB": "var(--sa-type-display-4-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -17248,7 +17236,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-4-lh)"
+            "WEB": "var(--sa-type-display-4-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -17294,7 +17282,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-4-para)"
+            "WEB": "var(--sa-type-display-4-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -17340,7 +17328,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-5-size)"
+            "WEB": "var(--sa-type-display-5-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -17386,7 +17374,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-5-lh)"
+            "WEB": "var(--sa-type-display-5-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -17432,7 +17420,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-5-para)"
+            "WEB": "var(--sa-type-display-5-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -17478,7 +17466,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-6-size)"
+            "WEB": "var(--sa-type-display-6-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -17524,7 +17512,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-6-lh)"
+            "WEB": "var(--sa-type-display-6-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -17570,7 +17558,7 @@
           },
           "description": "Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-6-para)"
+            "WEB": "var(--sa-type-display-6-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -17616,7 +17604,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-1-size)"
+            "WEB": "var(--sa-type-headline-1-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -17662,7 +17650,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-1-lh)"
+            "WEB": "var(--sa-type-headline-1-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -17708,7 +17696,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-1-para)"
+            "WEB": "var(--sa-type-headline-1-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -17754,7 +17742,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-2-size)"
+            "WEB": "var(--sa-type-headline-2-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -17800,7 +17788,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-2-lh)"
+            "WEB": "var(--sa-type-headline-2-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -17846,7 +17834,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-2-para)"
+            "WEB": "var(--sa-type-headline-2-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -17892,7 +17880,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-3-size)"
+            "WEB": "var(--sa-type-headline-3-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -17938,7 +17926,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-3-lh)"
+            "WEB": "var(--sa-type-headline-3-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -17984,7 +17972,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-3-para)"
+            "WEB": "var(--sa-type-headline-3-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -18030,7 +18018,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-4-size)"
+            "WEB": "var(--sa-type-headline-4-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -18076,7 +18064,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-4-lh)"
+            "WEB": "var(--sa-type-headline-4-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -18122,7 +18110,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-4-para)"
+            "WEB": "var(--sa-type-headline-4-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -18168,7 +18156,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-5-size)"
+            "WEB": "var(--sa-type-headline-5-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -18214,7 +18202,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-5-lh)"
+            "WEB": "var(--sa-type-headline-5-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -18260,7 +18248,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-5-para)"
+            "WEB": "var(--sa-type-headline-5-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -18306,7 +18294,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-6-size)"
+            "WEB": "var(--sa-type-headline-6-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -18352,7 +18340,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-6-lh)"
+            "WEB": "var(--sa-type-headline-6-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -18398,7 +18386,7 @@
           },
           "description": "Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-headline-6-para)"
+            "WEB": "var(--sa-type-headline-6-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -18444,7 +18432,7 @@
           },
           "description": "Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-title-1-size)"
+            "WEB": "var(--sa-type-title-1-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -18490,7 +18478,7 @@
           },
           "description": "Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-title-1-lh)"
+            "WEB": "var(--sa-type-title-1-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -18536,7 +18524,7 @@
           },
           "description": "Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-title-1-para)"
+            "WEB": "var(--sa-type-title-1-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -18582,7 +18570,7 @@
           },
           "description": "Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-title-2-size)"
+            "WEB": "var(--sa-type-title-2-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -18628,7 +18616,7 @@
           },
           "description": "Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-title-2-lh)"
+            "WEB": "var(--sa-type-title-2-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -18674,7 +18662,7 @@
           },
           "description": "Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-title-2-para)"
+            "WEB": "var(--sa-type-title-2-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -18720,7 +18708,7 @@
           },
           "description": "Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-title-3-size)"
+            "WEB": "var(--sa-type-title-3-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -18766,7 +18754,7 @@
           },
           "description": "Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-title-3-lh)"
+            "WEB": "var(--sa-type-title-3-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -18812,7 +18800,7 @@
           },
           "description": "Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-title-3-para)"
+            "WEB": "var(--sa-type-title-3-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -18858,7 +18846,7 @@
           },
           "description": "Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-body-1-size)"
+            "WEB": "var(--sa-type-body-1-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -18904,7 +18892,7 @@
           },
           "description": "Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-body-1-lh)"
+            "WEB": "var(--sa-type-body-1-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -18950,7 +18938,7 @@
           },
           "description": "Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-body-1-para)"
+            "WEB": "var(--sa-type-body-1-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -18996,7 +18984,7 @@
           },
           "description": "Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-body-2-size)"
+            "WEB": "var(--sa-type-body-2-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -19042,7 +19030,7 @@
           },
           "description": "Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-body-2-lh)"
+            "WEB": "var(--sa-type-body-2-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -19088,7 +19076,7 @@
           },
           "description": "Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-body-2-para)"
+            "WEB": "var(--sa-type-body-2-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -19134,7 +19122,7 @@
           },
           "description": "Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-body-3-size)"
+            "WEB": "var(--sa-type-body-3-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -19180,7 +19168,7 @@
           },
           "description": "Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-body-3-lh)"
+            "WEB": "var(--sa-type-body-3-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -19226,7 +19214,7 @@
           },
           "description": "Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-body-3-para)"
+            "WEB": "var(--sa-type-body-3-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -19272,7 +19260,7 @@
           },
           "description": "Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-label-1-size)"
+            "WEB": "var(--sa-type-label-1-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -19318,7 +19306,7 @@
           },
           "description": "Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-label-1-lh)"
+            "WEB": "var(--sa-type-label-1-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -19364,7 +19352,7 @@
           },
           "description": "Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-label-1-para)"
+            "WEB": "var(--sa-type-label-1-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -19410,7 +19398,7 @@
           },
           "description": "Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-label-2-size)"
+            "WEB": "var(--sa-type-label-2-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -19456,7 +19444,7 @@
           },
           "description": "Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-label-2-lh)"
+            "WEB": "var(--sa-type-label-2-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -19502,7 +19490,7 @@
           },
           "description": "Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-label-2-para)"
+            "WEB": "var(--sa-type-label-2-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -19548,7 +19536,7 @@
           },
           "description": "Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-label-3-size)"
+            "WEB": "var(--sa-type-label-3-size)"
           },
           "status": "existing",
           "$extensions": {
@@ -19594,7 +19582,7 @@
           },
           "description": "Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-label-3-lh)"
+            "WEB": "var(--sa-type-label-3-lh)"
           },
           "status": "existing",
           "$extensions": {
@@ -19640,7 +19628,7 @@
           },
           "description": "Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-label-3-para)"
+            "WEB": "var(--sa-type-label-3-para)"
           },
           "status": "existing",
           "$extensions": {
@@ -19686,7 +19674,7 @@
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-1-tracking)"
+            "WEB": "var(--sa-type-display-1-tracking)"
           },
           "status": "existing",
           "$extensions": {
@@ -19732,7 +19720,7 @@
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-2-tracking)"
+            "WEB": "var(--sa-type-display-2-tracking)"
           },
           "status": "existing",
           "$extensions": {
@@ -19778,7 +19766,7 @@
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-3-tracking)"
+            "WEB": "var(--sa-type-display-3-tracking)"
           },
           "status": "existing",
           "$extensions": {
@@ -19824,7 +19812,7 @@
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-4-tracking)"
+            "WEB": "var(--sa-type-display-4-tracking)"
           },
           "status": "existing",
           "$extensions": {
@@ -19870,7 +19858,7 @@
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-5-tracking)"
+            "WEB": "var(--sa-type-display-5-tracking)"
           },
           "status": "existing",
           "$extensions": {
@@ -19916,7 +19904,7 @@
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-display-6-tracking)"
+            "WEB": "var(--sa-type-display-6-tracking)"
           },
           "status": "existing",
           "$extensions": {
@@ -19962,7 +19950,7 @@
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-heading-tracking)"
+            "WEB": "var(--sa-type-heading-tracking)"
           },
           "status": "existing",
           "$extensions": {
@@ -20008,7 +19996,7 @@
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-title-tracking)"
+            "WEB": "var(--sa-type-title-tracking)"
           },
           "status": "existing",
           "$extensions": {
@@ -20054,7 +20042,7 @@
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-body-tracking)"
+            "WEB": "var(--sa-type-body-tracking)"
           },
           "status": "existing",
           "$extensions": {
@@ -20100,7 +20088,7 @@
           },
           "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
-            "WEB": "var(--ds-type-label-tracking)"
+            "WEB": "var(--sa-type-label-tracking)"
           },
           "status": "existing",
           "$extensions": {
@@ -20615,6 +20603,246 @@
             "WEB": "var(--sa-control-radius)"
           },
           "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "shape/none",
+          "path": "shape/none",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "ref/radius/none"
+            }
+          },
+          "codeSyntax": {
+            "WEB": "var(--sa-shape-none)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "shape/xxs",
+          "path": "shape/xxs",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "ref/radius/xxs"
+            }
+          },
+          "codeSyntax": {
+            "WEB": "var(--sa-shape-xxs)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "shape/xs",
+          "path": "shape/xs",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "ref/radius/xs"
+            }
+          },
+          "codeSyntax": {
+            "WEB": "var(--sa-shape-xs)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "shape/sm",
+          "path": "shape/sm",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "ref/radius/sm"
+            }
+          },
+          "codeSyntax": {
+            "WEB": "var(--sa-shape-sm)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "shape/md",
+          "path": "shape/md",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "ref/radius/md"
+            }
+          },
+          "codeSyntax": {
+            "WEB": "var(--sa-shape-md)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "shape/lg",
+          "path": "shape/lg",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "ref/radius/lg"
+            }
+          },
+          "codeSyntax": {
+            "WEB": "var(--sa-shape-lg)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "shape/xl",
+          "path": "shape/xl",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "ref/radius/xl"
+            }
+          },
+          "codeSyntax": {
+            "WEB": "var(--sa-shape-xl)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "shape/2xl",
+          "path": "shape/2xl",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "ref/radius/2xl"
+            }
+          },
+          "codeSyntax": {
+            "WEB": "var(--sa-shape-2xl)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "shape/3xl",
+          "path": "shape/3xl",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "ref/radius/3xl"
+            }
+          },
+          "codeSyntax": {
+            "WEB": "var(--sa-shape-3xl)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "shape/4xl",
+          "path": "shape/4xl",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "ref/radius/4xl"
+            }
+          },
+          "codeSyntax": {
+            "WEB": "var(--sa-shape-4xl)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "shape/5xl",
+          "path": "shape/5xl",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "ref/radius/5xl"
+            }
+          },
+          "codeSyntax": {
+            "WEB": "var(--sa-shape-5xl)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "shape/full",
+          "path": "shape/full",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "ref/radius/full"
+            }
+          },
+          "codeSyntax": {
+            "WEB": "var(--sa-shape-full)"
+          },
+          "status": "new",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
