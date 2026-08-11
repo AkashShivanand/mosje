@@ -15,18 +15,27 @@ therefore constants of the identity, not variants of it.
 | `navy` | `#003366` | yes |
 | `dbim` | `#162F6A` — DBIM's own key colour | **no, code-only by standing instruction** |
 
-`dbim` transcribes DBIM's published Blue primary palette rather than deriving a ramp from one
-anchor. DBIM issues five numbered shades (1 = darkest = key colour, 5 = lightest) and all five
-are reproduced verbatim; the intervening rungs are interpolated. Source: `docs/source-brd/MoSJE
-DBIM Audit.pdf` p.14, reproducing DBIM section 2.1 Figure 1.
+`dbim-*` are CONFORMANCE PREVIEWS, not estate brands, and they live only in the DemoDock’s
+Colour tab. Each transcribes one of DBIM’s six primary groups VERBATIM — five published
+shades pinned at rungs 100/200/400/600/800, the rest interpolated — and applies DBIM’s whole
+functional palette with it: Liberty Green, Mustard Yellow, Coral Red and DBIM Blue for the four
+statuses, DBIM’s PURE greys in place of the brand-tinted ones, and Deep Earthy Brown `#150202`
+for body text. A mode repainting only the primary ramp would not be conformance. Source:
+`packages/tokens/reference/dbim-palette.json`.
 
-| DBIM shade | rung | value | rule |
+| DBIM group | key colour (shade 1) | rung 600 on white | verdict |
 |---|---|---|---|
-| 1 | 800 | `#162f6a` | key colour — icons and footer (DBIM 3.7, 5.6) |
-| 2 | 600 | `#214aab` | text may use shade 1 or 2 (DBIM 4.4) |
-| 3 | 400 | `#5279d7` |  |
-| 4 | 200 | `#a3bbf3` |  |
-| 5 | 100 | `#d2dfff` |  |
+| blue | `#162f6a` | 7.98:1 | AA |
+| burgundy | `#6c1340` | 6.85:1 | AA |
+| purple | `#29136c` | 9.93:1 | AA |
+| green | `#0f5757` | 4.32:1 | **below AA — DBIM’s own shade 2** |
+| chrome yellow | `#5d3e00` | 5.37:1 | AA |
+| cinnamon red | `#771d1d` | 7.12:1 | AA |
+
+The shape rule below does NOT apply to these six. Reproducing DBIM’s exact hexes and holding
+a 4–16 L\* ladder are mutually exclusive — an exhaustive search over every assignment of five
+shades to eleven rungs found no configuration satisfying both for five of the six groups — so a
+transcription is exempt by construction and the accessibility gates are what still bind.
 
 ## Ramp inventory
 
@@ -54,30 +63,43 @@ the ink chosen for it BY MEASUREMENT in the worst brand, not by assumption.
 |---|---|---|
 | blue | 46 | none |
 | navy | 46 | none |
-| dbim | 46 | none |
+| dbim-blue | 46 | none |
+| dbim-burgundy | 46 | none |
+| dbim-purple | 46 | none |
+| dbim-green | 46 | `brand-primary-bolder` 4.32 |
+| dbim-chrome-yellow | 46 | none |
+| dbim-cinnamon-red | 46 | none |
 
-**No shortfalls, in any mode.** Every `on/*` foreground is AA-readable on the fill it names. The last two — `status-error-bolder` at 4.40:1 and `status-warning-bolder` at 4.46:1 — closed on 2026-08-11 when the danger and warning ramps were re-anchored at the rung their lightness says (400 and 300, not 500), taking those rungs to 6.68:1 and 5.68:1.
+**The estate's own brands have no shortfall at all.** Every `on/*` foreground is AA-readable on the fill it names in both Blue and Navy. The last two — `status-error-bolder` at 4.40:1 and `status-warning-bolder` at 4.46:1 — closed on 2026-08-11 when the danger and warning ramps were re-anchored at the rung their lightness says (400 and 300, not 500), taking those rungs to 6.68:1 and 5.68:1.
+
+The remaining row is DBIM's, and it is left alone deliberately: `dbim-green`'s `brand-primary-bolder` is DBIM's OWN published shade 2 (#2D8686), and DBIM's own rule 4 asks that "colour usage must ensure accessibility of digital platform". Correcting it would mean shipping a colour DBIM never issued under DBIM's name, at which point the preview stops previewing anything. It is a finding about the palette, reported rather than smoothed over — and it is one reason an organisation picking a DBIM group should pick a different one.
 
 ## Hue separation
 
 Two families that mean different things must look different. Measured at matched rungs, worst
-case across all three modes, in OKLab. A pair passes on hue **or** perceptual distance —
+case across every mode including the DBIM previews, in OKLab. A pair passes on hue **or**
+perceptual distance —
 hue alone is too weak (blue and navy are 9° apart and separated by lightness) and too strong
 (red and orange are adjacent and can never separate in hue).
 
-| pair | worst Δhue | worst ΔE | verdict |
-|---|---|---|---|
-| accent · success | 0° | 0.0 | **deliberately one colour** |
-| primary · info | 1° | 0.5 | **deliberately one colour** |
-| secondary · warning | 34° | 4.3 | separated |
-| secondary · error | 12° | 4.3 | **too close** |
-| primary · accent | 98° | 5.0 | separated |
-| primary · success | 98° | 5.0 | separated |
-| error · warning | 46° | 6.1 | separated |
-| accent · info | 103° | 8.0 | separated |
+| pair | worst Δhue | worst ΔE | worst in | verdict |
+|---|---|---|---|---|
+| accent · success | 0° | 0.0 | `blue` | **indistinguishable** |
+| primary · info | 1° | 0.5 | `blue` | **indistinguishable** |
+| primary · error | 2° | 0.9 | `dbim-cinnamon-red` | **indistinguishable** |
+| primary · warning | 10° | 2.0 | `dbim-chrome-yellow` | **indistinguishable** |
+| secondary · error | 21° | 2.6 | `dbim-blue` | **indistinguishable** |
+| primary · secondary | 24° | 2.8 | `dbim-cinnamon-red` | **indistinguishable** |
+| secondary · warning | 34° | 4.3 | `blue` | separated |
+| primary · accent | 98° | 5.0 | `navy` | separated |
 
-Only the closest eight are listed; every other pair clears comfortably. `accent · success` is
-one colour on purpose, and `info · primary` is a pre-existing union recorded in the gate.
+Only the closest eight are listed; every other pair clears comfortably. Whether a row is a
+DECISION or a DEFECT is recorded in `test/hue-separation.test.mjs`, which is the gate that
+enforces it: `accent · success` and `info · primary` are deliberate unions, `error · secondary`
+is a known defect on the ledger, and every row whose worst case is a `dbim-*` mode is a
+finding about DBIM's own palette — what selecting that primary group would cost. The three
+of those are Cinnamon Red against the error status, Cinnamon Red against India Saffron, and
+Chrome Yellow against the warning status.
 
 ---
 

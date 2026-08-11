@@ -68,7 +68,12 @@ const ROOT = blockOf(null);
  */
 const BRANDS = [
   ["blue", ROOT],
-  ...[...css.matchAll(/^\[data-brand="([a-z0-9]+)"\]/gm)]
+  // The character class must allow HYPHENS. It did not, and the six `dbim-*` conformance
+  // brands added on 2026-08-11 were therefore invisible to a gate whose own comment is about
+  // exactly this failure: it reported green while a third of the product went unchecked, then
+  // three quarters of it. A discovery pattern that silently matches nothing is worse than a
+  // hardcoded list, because a hardcoded list is at least obviously incomplete.
+  ...[...css.matchAll(/^\[data-brand="([a-z0-9-]+)"\]/gm)]
     .map((m) => m[1])
     .filter((id, i, a) => a.indexOf(id) === i)
     .map((id) => [id, new Map([...ROOT, ...(blockOf(`[data-brand="${id}"]`) ?? [])])]),
@@ -150,9 +155,53 @@ const SEPARATION_LEDGER = new Map([
       "what one of the two families IS — the candidate is moving danger toward a true crimson " +
       "(hue ~15) — and that is a decision about the estate's error colour, not a ramp shape.",
   ],
+
+  /* ---- DBIM conformance previews (2026-08-11). Brand-scoped; see the note above. ---- */
+  [
+    "dbim-cinnamon-red::error|primary",
+    "2 degrees and dE 0.9 at the `subtle` rung (#faaaaa against #fea7a5). This is the most " +
+      "consequential finding the DBIM preview produced: a department that selects Cinnamon Red " +
+      "as its primary group has a brand colour its users cannot tell apart from its ERROR " +
+      "colour, at every rung. Both halves are DBIM's own — the group is Figure 1's, the error " +
+      "is Coral Red #DC3545 from Table 1 — so DBIM's palette collides with itself for this one " +
+      "selection. Nothing here can fix it: the remedy is to choose a different group, which is " +
+      "exactly the decision this preview exists to inform.",
+  ],
+  [
+    "dbim-cinnamon-red::primary|secondary",
+    "24 degrees and dE 2.8 at the `subtler` rung (#fcdada against #ffd4c4). The same adjacency " +
+      "the estate's own error|secondary entry above describes — India Saffron against a red — " +
+      "except here it is the BRAND primary that has moved into saffron's neighbourhood rather " +
+      "than the error status. A department on Cinnamon Red would find its primary and secondary " +
+      "actions hard to tell apart at the pale rungs, on top of the error collision above.",
+  ],
+  [
+    "dbim-chrome-yellow::primary|warning",
+    "10 degrees and dE 2.0 at the `bolder` rung (#916100 against #886600) — the filled brand " +
+      "button and the filled warning chip, side by side, the same colour. Chrome Yellow's key " +
+      "colour sits at hue 77 and DBIM's own Mustard Yellow warning at hue 85. Same shape as the " +
+      "Cinnamon Red finding and the same remedy: this is what selecting that group costs.",
+  ],
 ]);
 
+/*
+ * DBIM CONFORMANCE FINDINGS — brand-scoped, and that scoping is the point.
+ *
+ * The six `dbim-*` brands are a demo-only preview of DBIM's published palette (see
+ * `build/brand-ramps.mjs`). DBIM's rule is that an organisation picks ONE primary group; these
+ * modes exist so the consequences of each choice can be seen rather than argued about, and
+ * three of those consequences are collisions that DBIM's own accessibility rule 4 would care
+ * about. They are recorded here with their measurements instead of being designed away,
+ * because designing them away would mean altering DBIM's colours — at which point the preview
+ * stops previewing anything.
+ *
+ * Every entry is scoped `<brand>::<pair>`. An unscoped `<pair>` key silences that pair in
+ * EVERY brand, which is right for a defect in the shared palette and badly wrong for one that
+ * only exists in a conformance demo: an unscoped `error|primary` entry would have hidden a
+ * genuine C-02 regression in the shipping Blue and Navy brands behind a DBIM finding.
+ */
 const key = (a, b) => [a, b].sort().join("|");
+const scopedKey = (brand, a, b) => `${brand}::${key(a, b)}`;
 
 /** Every family pair, at every rung, in every brand, with its worst separation. */
 function measure() {
@@ -192,7 +241,12 @@ test("the gate can see the palette at all", () => {
 test("no two colour families collide, in any brand, at any matched rung", () => {
   const failures = measured
     .filter((m) => !m.separated)
-    .filter((m) => !INTENTIONAL_UNIONS.has(m.pair) && !SEPARATION_LEDGER.has(m.pair))
+    .filter(
+      (m) =>
+        !INTENTIONAL_UNIONS.has(m.pair) &&
+        !SEPARATION_LEDGER.has(m.pair) &&
+        !SEPARATION_LEDGER.has(`${m.brand}::${m.pair}`),
+    )
     .map(
       (m) =>
         `[${m.brand}] ${m.pair.replace("|", " vs ")} @ ${m.rung}: ${m.a} / ${m.b} — ` +
@@ -224,8 +278,11 @@ test("every intentional union is still actually a union", () => {
 });
 
 test("the separation ledger has no stale entries", () => {
-  const fixed = [...SEPARATION_LEDGER.keys()].filter((pair) => {
-    const rows = measured.filter((m) => m.pair === pair);
+  const fixed = [...SEPARATION_LEDGER.keys()].filter((entry) => {
+    // A scoped entry is checked only against the brand it names, so fixing the pair in one
+    // brand cannot prune a finding that still reproduces in another.
+    const [brand, pair] = entry.includes("::") ? entry.split("::") : [null, entry];
+    const rows = measured.filter((m) => m.pair === pair && (!brand || m.brand === brand));
     return rows.length > 0 && rows.every((m) => m.separated);
   });
   assert.deepEqual(

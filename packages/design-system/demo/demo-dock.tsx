@@ -93,7 +93,7 @@ import { AppSwitcherPanel } from "../components/navigation/app-switcher-panel";
 import { Tabs, TabPanel, TabDef } from "../components/navigation/tabs";
 import { LiveRegion, useLiveRegion } from "../components/a11y/live-region";
 import { useColorMode } from "../foundations/color-mode-provider";
-import type { ColorMode } from "../foundations/color-mode";
+import { DBIM_COLOR_MODES, type ColorMode } from "../foundations/color-mode";
 import { DemoAccountsPanel } from "./demo-accounts-panel";
 import { findDemoAccounts, isLoginRoute } from "./demo-accounts";
 
@@ -230,8 +230,17 @@ function ColourModeMotif({
  * (WCAG 1.4.1 — colour is never the only signal) instead of relying on an
  * unlabelled dot.
  */
-function ColourTab() {
-  const { mode, setMode, modes } = useColorMode();
+function ColourGroup({
+  modes,
+  mode,
+  setMode,
+  ariaLabel,
+}: {
+  modes: readonly ColorMode[];
+  mode: string;
+  setMode: (id: string) => void;
+  ariaLabel: string;
+}) {
   const btnRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
 
   const focusAndSelect = (index: number) => {
@@ -267,35 +276,51 @@ function ColourTab() {
     }
   };
 
+  // Each group is its own radiogroup. A single group spanning both sections would let an
+  // arrow key walk from a shipping brand into a conformance preview without the heading that
+  // explains the difference ever being announced.
+  const activeInGroup = modes.some((m) => m.id === mode);
+
+  return (
+    <div role="radiogroup" aria-label={ariaLabel} className="ds-demodock__swatch-list">
+      {modes.map((m, i) => {
+        const checked = m.id === mode;
+        return (
+          <button
+            key={m.id}
+            ref={(el) => {
+              btnRefs.current[i] = el;
+            }}
+            type="button"
+            role="radio"
+            aria-checked={checked}
+            // Roving tabindex: when nothing in this group is selected the first option is the
+            // tab stop, so the group is always reachable by keyboard.
+            tabIndex={checked || (!activeInGroup && i === 0) ? 0 : -1}
+            className={cn("ds-demodock__swatch-option", checked && "is-active")}
+            onClick={() => setMode(m.id)}
+            onKeyDown={(e) => onKeyDown(e, i)}
+          >
+            <ColourModeMotif mode={m} checked={checked} />
+            <span className="ds-demodock__swatch-label">{m.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function ColourTab() {
+  const { mode, setMode, modes } = useColorMode();
+
   return (
     <div className="ds-demodock__colour">
-      <div
-        role="radiogroup"
-        aria-label="Colour mode"
-        className="ds-demodock__swatch-list"
-      >
-        {modes.map((m, i) => {
-          const checked = m.id === mode;
-          return (
-            <button
-              key={m.id}
-              ref={(el) => {
-                btnRefs.current[i] = el;
-              }}
-              type="button"
-              role="radio"
-              aria-checked={checked}
-              tabIndex={checked ? 0 : -1}
-              className={cn("ds-demodock__swatch-option", checked && "is-active")}
-              onClick={() => setMode(m.id)}
-              onKeyDown={(e) => onKeyDown(e, i)}
-            >
-              <ColourModeMotif mode={m} checked={checked} />
-              <span className="ds-demodock__swatch-label">{m.label}</span>
-            </button>
-          );
-        })}
-      </div>
+      <ColourGroup
+        modes={modes}
+        mode={mode}
+        setMode={setMode}
+        ariaLabel="SAMAVESH brand palette"
+      />
 
       <p className="ds-demodock__colour-note">
         Switches the SAMAVESH brand palette, not a light/dark theme. Press{" "}
@@ -303,6 +328,34 @@ function ColourTab() {
         <kbd>Ctrl+Alt+C</kbd> to cycle it from anywhere — even with this
         panel closed.
       </p>
+
+      {/* DBIM conformance previews, deliberately separated from the estate's own brands by a
+          heading, a rule and a caveat. They are not shipping options and must not read as a
+          sixth and seventh way to theme a portal: DBIM's rule is that an organisation selects
+          exactly ONE primary group, MoSJE's selection is Blue, and the other five are here so
+          the alternatives can be SEEN. Two of them collide with DBIM's own status palette —
+          that is a finding these previews exist to surface, not a bug in this dock. */}
+      <div className="ds-demodock__colour-section">
+        <h3 className="ds-demodock__colour-heading">
+          DBIM conformance
+          <span className="ds-demodock__colour-tag">demo only</span>
+        </h3>
+        <p className="ds-demodock__colour-subnote">
+          DBIM&rsquo;s six primary groups, transcribed from the DBIM ToolKit. Selecting one
+          applies <strong>full</strong>{" "}
+          DBIM conformance — the primary group, DBIM&rsquo;s four status colours, its pure
+          greys, and Deep Earthy Brown body text — not just a repainted brand ramp. For
+          evaluating conformance only:{" "}
+          <strong>these are not in the Figma library</strong>{" "}
+          and are not a shipping palette. MoSJE&rsquo;s selected group is Blue.
+        </p>
+        <ColourGroup
+          modes={DBIM_COLOR_MODES}
+          mode={mode}
+          setMode={setMode}
+          ariaLabel="DBIM conformance preview palette"
+        />
+      </div>
     </div>
   );
 }

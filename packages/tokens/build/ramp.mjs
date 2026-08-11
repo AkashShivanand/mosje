@@ -34,7 +34,7 @@
  * around it.
  */
 
-import { hexToOklch, oklchToHex, nearestHex, rgbToOklab, hexToRgb } from "./oklch.mjs";
+import { hexToOklch, oklchToHex, nearestHex, hueDelta, rgbToOklab, hexToRgb } from "./oklch.mjs";
 
 /**
  * The rung ladder, matching UX4G 3.0's chromatic ramps exactly (50..900 plus 950).
@@ -162,6 +162,97 @@ export function buildRamp({ anchor, anchorStep = 500, lightest = 96.5, darkest =
       : oklchToHex({ L: ladder[i], C: chromaArc(ladder[i], aL, aC), H });
   });
   return out;
+}
+
+/* ------------------------------------------------------------------ transcribed ramps */
+
+/**
+ * Build an 11-rung ramp through a palette somebody ELSE published, reproducing every
+ * published value exactly and interpolating the gaps.
+ *
+ * WHY THIS IS NOT `buildRamp`
+ * ---------------------------
+ * `buildRamp` derives ten steps from one anchor and a shape rule. That is the right tool for
+ * a ramp this estate owns. It is the WRONG tool for a conformance palette: DBIM publishes five
+ * numbered shades per colour group, and re-deriving them from one anchor would quietly replace
+ * four of the five with values DBIM never issued. A conformance palette that has been
+ * re-derived is no longer a conformance palette — it is our palette wearing DBIM's name.
+ *
+ * THE SHAPE RULE DOES NOT APPLY HERE, AND THAT IS A DECISION
+ * ---------------------------------------------------------
+ * Measured, the two are mutually exclusive. DBIM's five shades span roughly L* 30-95 while
+ * this system's ladder spans L* 19-96 in eleven steps, so pinning five fixed points inside it
+ * leaves gaps that cannot all be 4-16 L* apart: every group lands somewhere between ΔL* 1.7
+ * and 3.6, and chrome yellow's hue drifts 56 degrees because DBIM's own shades 1 and 5 are 8
+ * degrees apart in a ramp that has to reach both. An exhaustive search over every assignment
+ * of five shades to eleven rungs found NO configuration satisfying the shape rule for five of
+ * the six groups.
+ *
+ * So the shape rule is scoped to the ramps this estate generates, and a transcription is
+ * exempt by construction — recorded here rather than left as a silent difference. What is NOT
+ * relaxed is accessibility: a DBIM mode is measured by the same contrast gates as any other
+ * brand, and where DBIM's own palette falls short, the measurement is reported (see
+ * `docs/design-system/colour-system.md`) rather than the colour being adjusted to hide it.
+ *
+ * @param {object} spec
+ * @param {Record<number,string>} spec.pins  rung -> published hex. At least two.
+ * @param {number} [spec.tipToward]   L* the extrapolated light end runs toward. Default 100.
+ * @param {number} [spec.tailToward]  L* the extrapolated dark end runs toward. Default 0.
+ * @returns {Record<number, string>}
+ */
+export function buildPublishedRamp({ pins, tipToward = 100, tailToward = 0 }) {
+  const anchored = Object.keys(pins)
+    .map(Number)
+    .sort((a, b) => a - b)
+    .map((rung) => {
+      const i = STEPS.indexOf(rung);
+      if (i === -1) throw new Error(`pinned rung ${rung} is not one of ${STEPS.join(", ")}`);
+      return { i, hex: pins[rung].toLowerCase(), oklch: hexToOklch(pins[rung]) };
+    });
+  if (anchored.length < 2) throw new Error("a transcribed ramp needs at least two published shades");
+
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const first = anchored[0];
+  const last = anchored[anchored.length - 1];
+
+  const out = {};
+  for (const p of anchored) out[STEPS[p.i]] = p.hex;
+
+  STEPS.forEach((step, i) => {
+    if (out[step] !== undefined) return;
+
+    // Between two published shades: straight-line interpolation in OKLCH, taking the SHORT
+    // way round the hue circle so a ramp whose ends straddle 0 degrees (burgundy, cinnamon
+    // red) does not sweep the entire wheel on the way.
+    for (let k = 0; k < anchored.length - 1; k++) {
+      const a = anchored[k];
+      const b = anchored[k + 1];
+      if (i > a.i && i < b.i) {
+        const t = (i - a.i) / (b.i - a.i);
+        out[step] = nearestHex({
+          L: lerp(a.oklch.L, b.oklch.L, t),
+          C: lerp(a.oklch.C, b.oklch.C, t),
+          H: a.oklch.H + hueDelta(a.oklch.H, b.oklch.H) * t,
+        });
+        return;
+      }
+    }
+
+    // Outside the published span there is nothing to interpolate BETWEEN, so these steps run
+    // toward white or black shedding chroma. They are the only values on the ramp DBIM did
+    // not issue, which is why `$dbimShades` records which rungs are theirs and which are ours.
+    const ref = i < first.i ? first : last;
+    const toward = i < first.i ? tipToward : tailToward;
+    const span = i < first.i ? first.i + 1 : STEPS.length - last.i;
+    const t = Math.abs(i - ref.i) / span;
+    out[step] = nearestHex({
+      L: lerp(ref.oklch.L, toward, t),
+      C: ref.oklch.C * (1 - t * 0.8),
+      H: ref.oklch.H,
+    });
+  });
+
+  return Object.fromEntries(STEPS.map((s) => [s, out[s]]));
 }
 
 /* ------------------------------------------------------------------ the neutral ramp */

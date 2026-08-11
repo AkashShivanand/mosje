@@ -40,11 +40,19 @@ const resolverFor = (b) => {
   };
 };
 
+const MODES_KEYS = ["blue", "navy"];
 const MODES = {
   blue: resolverFor(null),
   navy: resolverFor(block('[data-brand="navy"]')),
-  dbim: resolverFor(block('[data-brand="dbim"]')),
 };
+
+/** The six DBIM conformance previews, measured separately — they are not estate brands. */
+const DBIM_MODES = Object.fromEntries(
+  [...css.matchAll(/^\[data-brand="(dbim-[a-z-]+)"\]/gm)]
+    .map((m) => m[1])
+    .filter((id, i, a) => a.indexOf(id) === i)
+    .map((id) => [id, resolverFor(block(`[data-brand="${id}"]`))]),
+);
 const HEX = /^#[0-9a-f]{6}$/i;
 const STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 const NEUTRAL_STEPS = [0, ...STEPS, 1000];
@@ -110,19 +118,31 @@ p("| `blue` (default) | `#0373DF` gov-blue | yes |");
 p("| `navy` | `#003366` | yes |");
 p("| `dbim` | `#162F6A` — DBIM's own key colour | **no, code-only by standing instruction** |");
 p();
-p("`dbim` transcribes DBIM's published Blue primary palette rather than deriving a ramp from one");
-p("anchor. DBIM issues five numbered shades (1 = darkest = key colour, 5 = lightest) and all five");
-p("are reproduced verbatim; the intervening rungs are interpolated. Source: `docs/source-brd/MoSJE");
-p("DBIM Audit.pdf` p.14, reproducing DBIM section 2.1 Figure 1.");
+p("`dbim-*` are CONFORMANCE PREVIEWS, not estate brands, and they live only in the DemoDock\u2019s");
+p("Colour tab. Each transcribes one of DBIM\u2019s six primary groups VERBATIM \u2014 five published");
+p("shades pinned at rungs 100/200/400/600/800, the rest interpolated \u2014 and applies DBIM\u2019s whole");
+p("functional palette with it: Liberty Green, Mustard Yellow, Coral Red and DBIM Blue for the four");
+p("statuses, DBIM\u2019s PURE greys in place of the brand-tinted ones, and Deep Earthy Brown `#150202`");
+p("for body text. A mode repainting only the primary ramp would not be conformance. Source:");
+p("`packages/tokens/reference/dbim-palette.json`.");
 p();
-const dbimShades = ANCHORS["primaryRamp.dbim"]?.dbimShades ?? {};
-p("| DBIM shade | rung | value | rule |");
+p("| DBIM group | key colour (shade 1) | rung 600 on white | verdict |");
 p("|---|---|---|---|");
-for (const [rung, shade] of Object.entries(dbimShades).sort((a, b) => a[1] - b[1])) {
-  const hex = MODES.dbim(`--sa-color-primaryScale-${rung}`);
-  const rule = shade === 1 ? "key colour — icons and footer (DBIM 3.7, 5.6)" : shade === 2 ? "text may use shade 1 or 2 (DBIM 4.4)" : "";
-  p(`| ${shade} | ${rung} | \`${hex}\` | ${rule} |`);
+for (const [id, res] of Object.entries(DBIM_MODES)) {
+  const key = res("--sa-color-primaryScale-800");
+  const bolder = res("--sa-bg-brand-primary-bolder");
+  const ratio = HEX.test(bolder ?? "") ? contrastRatio(bolder, "#ffffff") : 0;
+  const label = id.replace("dbim-", "").replace(/-/g, " ");
+  p(
+    `| ${label} | \`${key}\` | ${ratio.toFixed(2)}:1 | ` +
+      `${ratio >= 4.5 ? "AA" : "**below AA \u2014 DBIM\u2019s own shade 2**"} |`,
+  );
 }
+p();
+p("The shape rule below does NOT apply to these six. Reproducing DBIM\u2019s exact hexes and holding");
+p("a 4\u201316 L\\* ladder are mutually exclusive \u2014 an exhaustive search over every assignment of five");
+p("shades to eleven rungs found no configuration satisfying both for five of the six groups \u2014 so a");
+p("transcription is exempt by construction and the accessibility gates are what still bind.");
 p();
 
 p("## Ramp inventory");
@@ -166,7 +186,7 @@ p("| mode | on/* pairings | below AA (4.5:1) |");
 p("|---|---|---|");
 const onNames = [...ROOT.keys()].filter((n) => n.startsWith("--sa-on-bg-"));
 const failures = {};
-for (const [mode, res] of Object.entries(MODES)) {
+for (const [mode, res] of Object.entries({ ...MODES, ...DBIM_MODES })) {
   let checked = 0;
   const bad = [];
   for (const on of onNames) {
@@ -181,27 +201,38 @@ for (const [mode, res] of Object.entries(MODES)) {
   p(`| ${mode} | ${checked} | ${bad.length ? bad.join(", ") : "none"} |`);
 }
 p();
-const worst = Math.max(...Object.values(failures).map((b) => b.length));
+const estateBad = [...MODES_KEYS].reduce((n, m) => n + (failures[m]?.length ?? 0), 0);
+const dbimBad = Object.keys(DBIM_MODES).reduce((n, m) => n + (failures[m]?.length ?? 0), 0);
 p(
-  worst === 0
-    ? "**No shortfalls, in any mode.** Every `on/*` foreground is AA-readable on the fill it names. " +
-      "The last two — `status-error-bolder` at 4.40:1 and `status-warning-bolder` at 4.46:1 — closed " +
-      "on 2026-08-11 when the danger and warning ramps were re-anchored at the rung their lightness " +
-      "says (400 and 300, not 500), taking those rungs to 6.68:1 and 5.68:1."
+  estateBad === 0
+    ? "**The estate's own brands have no shortfall at all.** Every `on/*` foreground is " +
+      "AA-readable on the fill it names in both Blue and Navy. The last two — " +
+      "`status-error-bolder` at 4.40:1 and `status-warning-bolder` at 4.46:1 — closed on " +
+      "2026-08-11 when the danger and warning ramps were re-anchored at the rung their " +
+      "lightness says (400 and 300, not 500), taking those rungs to 6.68:1 and 5.68:1." +
+      (dbimBad === 0
+        ? " The DBIM previews are clean too."
+        : "\n\nThe remaining row is DBIM's, and it is left alone deliberately: `dbim-green`'s " +
+          "`brand-primary-bolder` is DBIM's OWN published shade 2 (#2D8686), and DBIM's own " +
+          "rule 4 asks that \"colour usage must ensure accessibility of digital platform\". " +
+          "Correcting it would mean shipping a colour DBIM never issued under DBIM's name, at " +
+          "which point the preview stops previewing anything. It is a finding about the " +
+          "palette, reported rather than smoothed over — and it is one reason an organisation " +
+          "picking a DBIM group should pick a different one.")
     : "Each shortfall above is a FILL that no ink can rescue — the remedy is the ramp, not the " +
       "foreground. `test/on-pair-contrast.mjs` pins them in a list that may only shrink.",
 );
 p();
-
 p("## Hue separation");
 p();
 p("Two families that mean different things must look different. Measured at matched rungs, worst");
-p("case across all three modes, in OKLab. A pair passes on hue **or** perceptual distance —");
+p("case across every mode including the DBIM previews, in OKLab. A pair passes on hue **or**");
+p("perceptual distance —");
 p("hue alone is too weak (blue and navy are 9° apart and separated by lightness) and too strong");
 p("(red and orange are adjacent and can never separate in hue).");
 p();
-p("| pair | worst Δhue | worst ΔE | verdict |");
-p("|---|---|---|---|");
+p("| pair | worst Δhue | worst ΔE | worst in | verdict |");
+p("|---|---|---|---|---|");
 const FAMILY_BG = {
   primary: "bg-brand-primary", secondary: "bg-brand-secondary", accent: "bg-brand-accent",
   success: "bg-status-success", error: "bg-status-error", warning: "bg-status-warning", info: "bg-status-info",
@@ -212,27 +243,35 @@ const pairs = [];
 for (let i = 0; i < names.length; i++) {
   for (let j = i + 1; j < names.length; j++) {
     let worst = null;
-    for (const [, res] of Object.entries(MODES)) {
+    for (const [mode, res] of Object.entries({ ...MODES, ...DBIM_MODES })) {
       for (const rung of RUNGS) {
         const a = res(`--sa-${FAMILY_BG[names[i]]}-${rung}`);
         const b = res(`--sa-${FAMILY_BG[names[j]]}-${rung}`);
         if (!HEX.test(a ?? "") || !HEX.test(b ?? "")) continue;
         const dE = deltaE(a, b);
         const dH = Math.abs(hueDelta(hexToOklch(a).H, hexToOklch(b).H));
-        if (!worst || dE < worst.dE) worst = { dE, dH };
+        if (!worst || dE < worst.dE) worst = { dE, dH, mode };
       }
     }
     if (worst) pairs.push({ pair: `${names[i]} · ${names[j]}`, ...worst });
   }
 }
 for (const x of pairs.sort((a, b) => a.dE - b.dE).slice(0, 8)) {
-  const ok = x.dH >= 30 || x.dE >= 12;
-  const verdict = x.dE < 1 ? "**deliberately one colour**" : ok ? "separated" : "**too close**";
-  p(`| ${x.pair} | ${x.dH.toFixed(0)}° | ${x.dE.toFixed(1)} | ${verdict} |`);
+  // Descriptive, not intentional. Whether a collision is a DECISION or a FINDING is recorded
+  // in `test/hue-separation.test.mjs` — this document measures, it does not adjudicate, and a
+  // generator that guessed "deliberately one colour" from a small dE labelled DBIM's Cinnamon
+  // Red brand-vs-error collision as a design choice.
+  const verdict = x.dH >= 30 || x.dE >= 12 ? "separated" : "**indistinguishable**";
+  p(`| ${x.pair} | ${x.dH.toFixed(0)}° | ${x.dE.toFixed(1)} | \`${x.mode}\` | ${verdict} |`);
 }
 p();
-p("Only the closest eight are listed; every other pair clears comfortably. `accent · success` is");
-p("one colour on purpose, and `info · primary` is a pre-existing union recorded in the gate.");
+p("Only the closest eight are listed; every other pair clears comfortably. Whether a row is a");
+p("DECISION or a DEFECT is recorded in `test/hue-separation.test.mjs`, which is the gate that");
+p("enforces it: `accent · success` and `info · primary` are deliberate unions, `error · secondary`");
+p("is a known defect on the ledger, and every row whose worst case is a `dbim-*` mode is a");
+p("finding about DBIM's own palette — what selecting that primary group would cost. The three");
+p("of those are Cinnamon Red against the error status, Cinnamon Red against India Saffron, and");
+p("Chrome Yellow against the warning status.");
 p();
 p("---");
 p();

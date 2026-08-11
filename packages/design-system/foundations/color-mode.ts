@@ -38,12 +38,40 @@ export const COLOR_MODES: readonly ColorMode[] = [
   // deltaE 1.9 apart — the same colour to the eye — so this is a compliance fix, not a
   // restyle, and a THIRD brand for the old navy would be a switch with no visible effect.
   { id: "navy", label: "Navy", swatch: "#003366" },
-  // The DBIM key colour, added 2026-08-11 as a THIRD brand for evaluation in dev. It measures
-  // deltaE 1.9 from navy — the same colour to the eye — which is precisely why seeing them side
-  // by side beats arguing about it. Deliberately NOT in the Figma library: the Palette
-  // collection's modes are a hardcoded [Blue, Navy] list, so the library keeps two and dev
-  // gets three. Decide, then collapse back to two.
-  { id: "dbim", label: "DBIM Blue", swatch: "#162f6a" },
+] as const;
+
+/**
+ * DBIM's six primary colour groups, as brands — a CONFORMANCE PREVIEW, not shipping options.
+ *
+ * Kept OUT of `COLOR_MODES` deliberately, exactly as `UX4G_COLOR_MODES` is. `COLOR_MODES` is
+ * the estate's own brand axis and anything listed there reads as a supported choice; these
+ * exist so DBIM conformance can be demonstrated in the running app rather than argued about,
+ * and the UI that offers them has to say so. `DemoDock`'s Colour tab renders them under their
+ * own heading with that caveat attached, and nothing else in the estate offers them at all.
+ *
+ * MoSJE's selection is Blue. DBIM's rule is that an organisation picks exactly ONE group, so
+ * the other five are here to show what the alternatives would have cost — which is a real
+ * question, because two of them collide with the functional palette DBIM itself mandates (see
+ * `test/hue-separation.test.mjs`, where the measurements are recorded).
+ *
+ * FULL CONFORMANCE, not a primary-ramp reskin. Selecting one of these also repaints the four
+ * status colours to DBIM's own (Liberty Green, Mustard Yellow, Coral Red, DBIM Blue), swaps
+ * the brand-tinted greys for DBIM's pure ones, and moves body text to Deep Earthy Brown. A
+ * mode that changed only the primary ramp would be a much weaker claim and is not what these
+ * are.
+ *
+ * NEVER IN FIGMA, by standing instruction. The Palette collection's modes are a hardcoded
+ * [Blue, Navy] pair in `formats/figma-variables.mjs`, which reads only `colorModes.navy` — so
+ * a DBIM brand cannot reach the library by accident, only by someone deliberately changing
+ * that file.
+ */
+export const DBIM_COLOR_MODES: readonly ColorMode[] = [
+  { id: "dbim-blue", label: "Blue", swatch: "#162f6a" },
+  { id: "dbim-burgundy", label: "Burgundy", swatch: "#6c1340" },
+  { id: "dbim-purple", label: "Purple", swatch: "#29136c" },
+  { id: "dbim-green", label: "Green", swatch: "#0f5757" },
+  { id: "dbim-chrome-yellow", label: "Chrome Yellow", swatch: "#5d3e00" },
+  { id: "dbim-cinnamon-red", label: "Cinnamon Red", swatch: "#771d1d" },
 ] as const;
 
 /**
@@ -55,6 +83,11 @@ export const LEGACY_COLOR_MODE_IDS: Readonly<Record<string, string>> = {
   "blue-dark": "navy",
   "ux4g-light": "ux4g",
   "ux4g-dark": "ux4gdeep",
+  // `dbim` shipped earlier on 2026-08-11 as the single DBIM brand, when Blue was the only
+  // group implemented. Renamed when the other five landed and a bare `dbim` became the odd id
+  // out beside `dbim-burgundy`, `dbim-purple`, … Migrated here so a persisted cookie resolves,
+  // and aliased as a CSS selector in `build/brand-modes.mjs` so server-rendered markup does.
+  dbim: "dbim-blue",
 } as const;
 
 /**
@@ -90,7 +123,9 @@ const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 export function isColorMode(value: string | null | undefined): boolean {
   return (
     !!value &&
-    (COLOR_MODES.some((m) => m.id === value) || UX4G_COLOR_MODES.some((m) => m.id === value))
+    (COLOR_MODES.some((m) => m.id === value) ||
+      UX4G_COLOR_MODES.some((m) => m.id === value) ||
+      DBIM_COLOR_MODES.some((m) => m.id === value))
   );
 }
 

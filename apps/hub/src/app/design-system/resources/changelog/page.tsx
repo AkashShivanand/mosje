@@ -22,9 +22,23 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.15.0",
+    version: "v0.16.0",
     date: "2026-08-11",
     current: true,
+    changes: [
+      { kind: "Added", text: "DBIM CONFORMANCE IS NOW SOMETHING YOU CAN SEE. All six of DBIM's published primary groups — Blue, Burgundy, Purple, Green, Chrome Yellow, Cinnamon Red — are selectable in the DemoDock's Colour tab, under their own heading with a DEMO ONLY tag and a plain statement of what they are. DBIM's rule is that an organisation picks exactly one group; MoSJE's is Blue, and the other five are there so the alternatives can be looked at instead of argued about" },
+      { kind: "Added", text: "FULL conformance, not a repainted primary ramp — the difference matters enough that the UI says which claim it is making. Selecting a group also swaps all four status colours to DBIM's own (Liberty Green #198754, Mustard Yellow #FFC107, Coral Red #DC3545, DBIM Blue #0D6EFD), replaces the brand-tinted greys with DBIM's pure ones, and moves body text to Deep Earthy Brown #150202, which is not a neutral step at all" },
+      { kind: "Fixed", text: "WHAT THE PREVIEW FOUND, which is the reason to build it: DBIM's own palette does not always meet DBIM's own rule 4, \"colour usage must ensure accessibility of digital platform\". The Green group's shade 2 (#2D8686) lands on the filled rung that carries white text at 4.32:1 — below AA. On Cinnamon Red the brand primary is 2 degrees and dE 0.9 from the error status, which is to say indistinguishable from it. On Chrome Yellow the primary sits 10 degrees from the warning status. All three are recorded with their measurements rather than corrected — a conformance palette that has been quietly fixed demonstrates nothing" },
+      { kind: "Changed", text: "The hue-separation ledger is now scoped per brand (dbim-cinnamon-red::error|primary, not error|primary). An unscoped entry silences a pair in EVERY brand, so recording a DBIM finding the old way would have hidden a genuine C-02 regression in the shipping Blue and Navy brands behind it" },
+      { kind: "Fixed", text: "The same gate's brand-discovery pattern excluded hyphens, so all six dbim-* brands were invisible to it — a gate whose own comment is about exactly this failure mode was reporting green while three quarters of the brand axis went unchecked. A discovery pattern that silently matches nothing is worse than a hardcoded list, because a hardcoded list is at least obviously incomplete" },
+      { kind: "Changed", text: "The shape rule does NOT apply to the DBIM ramps, and the exemption is written down rather than left as a silent difference. Reproducing DBIM's exact hexes and holding a 4-16 L* ladder are mutually exclusive: a search over every assignment of five published shades to eleven rungs found no configuration satisfying both for five of the six groups. A transcription is exempt by construction; the accessibility gates still bind" },
+      { kind: "Changed", text: "The single dbim brand added earlier today is renamed dbim-blue now that the other five groups exist and a bare dbim would be the odd id out. Both the old CSS selector and a persisted cookie keep working, via the alias mechanisms the estate already had for blue-dark and ux4g-light" },
+      { kind: "Added", text: "DBIM's palette lives in the PRIMITIVE layer, not a brand pack — DBIM's colours are DBIM's whichever brand this estate wears, and a re-skin does not get its own Burgundy. It also means brands/_starter still resolves every DBIM mode instead of failing the build on 75 missing references" },
+    ],
+  },
+  {
+    version: "v0.15.0",
+    date: "2026-08-11",
     changes: [
       { kind: "Fixed", text: "THE SYSTEM HAS NO WCAG AA SHORTFALL LEFT, in any brand. The last two were bg/status/error/bolder at 4.40:1 and bg/status/warning/bolder at 4.46:1 — the fills that carry white text on a destructive button and a warning chip. Both now measure 6.68:1 and 5.68:1. The known-below-AA list that pinned them is empty for the first time" },
       { kind: "Changed", text: "Both closed the same way, and it is the rule this system keeps re-learning: AN ANCHOR BELONGS AT THE RUNG ITS LIGHTNESS SAYS, not at 500 by convention. #ec5042 is L* 64 and the warning amber is L* 76. Forced to 500, the rung below them lands inside the dead zone — roughly L* 59-66, where a fill is too dark for dark ink and too light for white and NEITHER ink reaches 4.5:1, so that rung cannot be made accessible at all. Anchored at 400 and 300 the ramps clear it comfortably" },

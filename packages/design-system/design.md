@@ -12,7 +12,31 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.15.0 (EVERY RAMP NOW OBEYS ONE RULE, and the
+  Last reviewed: 2026-08-11 · System version: v0.16.0 (DBIM CONFORMANCE IS NOW SOMETHING YOU
+  CAN SEE. All six of DBIM's published primary groups — Blue, Burgundy, Purple, Green, Chrome
+  Yellow, Cinnamon Red — are selectable in the DemoDock's Colour tab, under their own heading,
+  tagged DEMO ONLY. They are CODE-ONLY and never reach the Figma library: the exporter's
+  Palette modes are a hardcoded [Blue, Navy] pair, so a DBIM brand is unreachable from it by
+  construction rather than by discipline.
+  FULL CONFORMANCE, not a repainted primary ramp. Selecting a group also swaps all four status
+  colours to DBIM's own (Liberty Green #198754, Mustard Yellow #FFC107, Coral Red #DC3545, DBIM
+  Blue #0D6EFD), replaces the brand-tinted greys with DBIM's PURE ones, and moves body text to
+  Deep Earthy Brown #150202 — which is not a neutral step at all. A mode changing only the
+  primary ramp would be a much weaker claim, so the UI states which one is being made.
+  WHAT THE PREVIEW FOUND, which is the point of building it: DBIM's own palette does not always
+  meet DBIM's own rule 4 ("colour usage must ensure accessibility"). `dbim-green`'s shade 2
+  (#2D8686) lands on the filled rung at 4.32:1, BELOW AA. On Cinnamon Red the brand primary is
+  2 degrees and dE 0.9 from the error status — indistinguishable. On Chrome Yellow the primary
+  is 10 degrees from the warning status. All three are recorded with their measurements in
+  `test/hue-separation.test.mjs` and `docs/design-system/colour-system.md` rather than
+  corrected: a conformance palette that has been quietly fixed demonstrates nothing.
+  THE SHAPE RULE DOES NOT APPLY to these six, and that is a deliberate, recorded exemption.
+  Reproducing DBIM's exact hexes and holding a 4-16 L* ladder are mutually exclusive — a search
+  over every assignment of five published shades to eleven rungs found no configuration
+  satisfying both for five of the six groups. A transcription is exempt; the accessibility
+  gates still bind.)
+
+  System version: v0.15.0 (EVERY RAMP NOW OBEYS ONE RULE, and the
   system has ZERO WCAG AA shortfalls in every brand. The 2026-08-11 rebuild reached only the
   brand ramps; `dangerScale`, `warningScale`, `infoScale` and `neutralScale` still carried the
   shape the audit had measured — `danger/400` and `danger/500` 1.8 L* apart, `warning/500`

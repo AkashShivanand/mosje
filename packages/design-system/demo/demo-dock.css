@@ -513,6 +513,54 @@
   font-size: 0.9em;
 }
 
+/* ── DBIM conformance previews ──────────────────────────────────────────
+   Visually separated from the estate's own brands on purpose. These are not
+   shipping palettes and must not read as more of the same list: a rule, a
+   heading and a "demo only" tag do that work, so a stakeholder clicking
+   Burgundy knows they are previewing DBIM conformance rather than choosing
+   a MoSJE theme. Kept quiet rather than alarming — it is a legitimate tool,
+   not a warning state, so no danger colours here. ── */
+.ds-demodock__colour-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ds-border);
+}
+
+.ds-demodock__colour-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: var(--ds-text-label-1);
+  line-height: var(--ds-leading-label-1);
+  font-weight: 600;
+  color: var(--ds-ink);
+}
+
+/* A text tag, not a colour-only signal — WCAG 1.4.1. It reads the same to a
+   screen reader as it does on screen. */
+.ds-demodock__colour-tag {
+  padding: 1px 6px;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-surface-muted);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-label-3);
+  line-height: var(--ds-leading-label-3);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ds-demodock__colour-subnote {
+  margin: 0;
+  font-size: var(--ds-text-body-3);
+  line-height: var(--ds-leading-body-3);
+  color: var(--ds-ink-muted);
+}
+
 /* ── Entrance / exit animation ── */
 @media (prefers-reduced-motion: no-preference) {
   .ds-demodock__panel {
