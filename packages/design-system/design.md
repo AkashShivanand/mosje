@@ -35,6 +35,17 @@
   DESTRUCTIVE BUTTONS lost their step override and now use the same 600/700/800 progression as
   every other intent; the override existed only because danger/600 could not carry white text.)
 
+  System version: v0.14.3 (UX4G WIDGET DOCS RESTORED — the
+  accessibility widget's entry documented the v3.28 upgrade and was then lost when this
+  file's version chain was rewritten, so the code shipped (#34, #35, #37) while its
+  authoritative context did not. The component section now records what carries a
+  decision: the pin to `accessibility-v3.28` and the two upstream defects that made the
+  old workarounds necessary — reintroducing settings seeding is how every page ended up
+  at 110% zoom; `analytics` defaulting to OFF, because the widget beacons the full URL of
+  every page view and a portal URL can carry beneficiary identifiers; the macOS `⌘⌥A`
+  shortcut, since v3.28's hardcoded `Ctrl+F2` is a reserved macOS system shortcut that
+  never fires; and the brand skin being PINNED to v3.28, re-checked on any upgrade.)
+
   System version: v0.14.2 (The six `Focus States/*` effect styles
   had NO description; they now have one each, so effect-style coverage is 18/18 to match the
   variables' 909/909. Unlike the `Shadows/*` these needed no correction — every one already
@@ -1158,6 +1169,38 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 import { UX4GAccessibilityWidget } from "@mosje/design-system";
 <UX4GAccessibilityWidget />   // injects https://cdn.ux4g.gov.in/.../accessibility-widget.js, idempotently
 ```
+
+**Pinned to `accessibility-v3.28`** — the build ux4g.gov.in itself serves. Upgraded
+from `accessibility-beta-v1.15`, which had two defects the estate worked around in
+code and v3.x fixes upstream: `detectRouteChange()` dereferenced its settings with no
+null check, and `loadSettings()` restored state by calling the widget's own CLICK
+handlers, each of which advances a counter unconditionally. Working around the first
+by seeding the settings key therefore triggered the second, and every page loaded at
+110% zoom with three features falsely active. Both workarounds are gone with the
+upgrade — do not reintroduce settings seeding.
+
+**`analytics` defaults to `false`, and that is a deliberate estate decision, not an
+upstream default.** v3.28 beacons the full URL, pathname, referrer, user agent,
+language, screen resolution and a session id to `audit360.ux4g.gov.in` on load, then
+tracks panel opens and feature toggles. On an authenticated portal a full URL can
+carry application and beneficiary identifiers, so it is off everywhere. Turn it on
+only for a public, non-authenticated property, and only after checking that against
+the estate's privacy position.
+
+**The keyboard shortcut is platform-aware.** v3.28 hardcodes `Ctrl+F2` in both label
+and binding; on macOS that is a reserved system shortcut (focus the menu bar) and F2
+is a media key besides, so it never fires. Macs get `⌘⌥A` instead — relabelled on the
+trigger and appended to its `aria-label`, since the aria-label overrides the visible
+text. Deliberately NOT `⌃⌥`, which is VoiceOver's modifier. Windows and Linux keep
+`Ctrl+F2`.
+
+**Brand skin**: `ux4g-accessibility-widget.css` re-points the widget's palette at
+`--sa-color-action-primary-*`. v3.x hardcodes ~13 literal violets that its own
+`--color-dark-blue-1` hook never reaches, so that file is **pinned to v3.28** and must
+be re-checked on any widget upgrade — open the panel and look for violet. Two icons
+stay violet by design: they carry `fill='#613AF5'` inside an SVG `data:` URI, which no
+CSS colour property can reach, and re-emitting it would hardcode a brand hex in a
+multi-brand estate.
 
 ---
 
