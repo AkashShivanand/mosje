@@ -1572,7 +1572,7 @@
     }
   },
   "chart": {
-    "$description": "Data-visualisation roles. Theme-aware: dark/hc overrides keep series legible on dark surfaces. cat 1–12 are mutually-distinguishable categorical series (brand-led); seq 50–900 is a single-hue ramp for choropleth + heatmap; div is red→neutral→green for signed data; trend/grid/axis/tooltip/region are structural.",
+    "$description": "Data-visualisation roles, and the one place in this system where a literal is sometimes the RIGHT answer — so each group states which it is and why, because the difference is not guessable from the values.\n\nREFERENCES the system ramps: div/* (signed data) and trend/* (KPI direction). Both encode MEANING the rest of the UI already has a colour for — negative is what error means — so they follow it, and follow it into a DBIM conformance mode too.\n\nLITERAL on purpose: cat/* (twelve categorical series) and seq/* (single-hue sequential ramp). Both are tuned as a SET for a job the UI ramps are not tuned for — mutual distinguishability and even perceptual steps respectively — and a reference would let one member drift out of that tuning on a brand swap. Their own descriptions carry the argument in full.\n\ngrid/axis/tooltip/region are structural. Theme-aware dark/hc overrides are retained on these tokens but NOT currently emitted: the appearance axis was retired on 2026-08-10 and the UX4G accessibility widget owns dark and high contrast (see build/formats/legacy-ds-css.mjs).",
     "cat": {
       "1": {
         "$value": "#0373df",
@@ -1585,7 +1585,7 @@
         }
       },
       "2": {
-        "$value": "#f97316",
+        "$value": "#e1560f",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1595,7 +1595,7 @@
         }
       },
       "3": {
-        "$value": "#2e7d32",
+        "$value": "#046a38",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1693,7 +1693,8 @@
             }
           }
         }
-      }
+      },
+      "$description": "Twelve categorical series. DELIBERATELY LITERAL, and deliberately NOT tracking the brand ramps — do not \"fix\" these into references. A categorical palette has one job: twelve colours a reader can tell apart AT ONCE, which is a property of the SET, chosen and checked together. A reference would let one member move on its own: point cat/1 at primaryScale and a Blue-to-Navy brand swap slides it toward cat/8, already a dark blue, and two series in one chart become one. The set is fixed so that cannot happen.\n\nTwo members WERE retired brand colours; both were replaced on 2026-08-11, each decided by measurement rather than tidiness.\n\ncat/3 was Material green #2E7D32, sitting dE 3.2 from cat/9 (#4d7c0f) — two \"distinguishable\" series a reader cannot separate, the exact defect this palette exists to prevent. India Green #046A38 puts them 9.0 apart and lifts the set's worst pair from 3.2 to 5.8.\n\ncat/2 was the retired saffron #F97316 at 2.80:1 against the page — under the 3:1 that WCAG 1.4.11 asks of a graphical object you need in order to read the chart, and the only member of the twelve below it. It is now secondaryScale/500 #e1560f at 3.79:1, which is the SAME compromise secondaryRamp already documents for the same colour: bright India Saffron #FF671F cannot carry contrast (2.91:1 here), so the usable rung is a deeper burnt orange and the identity colour stays reachable at secondaryScale/400. Rung 600 was rejected by measurement, not by eye — 4.97:1 but only dE 3.3 from cat/6, which would have traded a contrast failure for a collision.\n\nThe set is now entirely at or above 3:1 against the page (lowest is cat/1 at 4.64:1 after cat/2), and its closest pairs are cat/5·cat/11 at dE 5.8 and cat/2·cat/6 at 8.8. If this palette is ever re-cut, re-cut all twelve together and re-measure both properties."
     },
     "seq": {
       "50": {
@@ -1795,11 +1796,12 @@
             }
           }
         }
-      }
+      },
+      "$description": "Single-hue sequential ramp for choropleths and heatmaps. DELIBERATELY LITERAL — do not point it at primaryScale, even though seq/500 is gov-blue exactly. The two ramps are tuned for different jobs and cannot share a ladder: primaryScale places its rungs by CONTRAST, so a named rung clears a WCAG threshold against its ink, while a sequential data ramp needs even PERCEPTUAL steps so equal differences in the data read as equal differences on the map. Rungs chosen for contrast produce a choropleth with a visible band where two adjacent buckets look identical and another where they jump. Ten steps here against primaryScale's eleven is the same story from the other end."
     },
     "div": {
       "negStrong": {
-        "$value": "#a11d12",
+        "$value": "{color.red.800}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1809,7 +1811,7 @@
         }
       },
       "neg": {
-        "$value": "#ec5042",
+        "$value": "{color.red.400}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1819,7 +1821,7 @@
         }
       },
       "negSoft": {
-        "$value": "#fad2cf",
+        "$value": "{color.red.100}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1829,7 +1831,7 @@
         }
       },
       "mid": {
-        "$value": "#e2e6ea",
+        "$value": "{color.neutral.100}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1839,7 +1841,7 @@
         }
       },
       "posSoft": {
-        "$value": "#c8e6c9",
+        "$value": "{color.green.100}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1849,7 +1851,7 @@
         }
       },
       "pos": {
-        "$value": "#2e7d32",
+        "$value": "{color.green.300}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1859,7 +1861,7 @@
         }
       },
       "posStrong": {
-        "$value": "#1b5e20",
+        "$value": "{color.green.700}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1867,7 +1869,8 @@
             }
           }
         }
-      }
+      },
+      "$description": "Diverging scale for SIGNED data — negative through neutral to positive. REFERENCES the danger, neutral and success ramps rather than carrying its own hexes, for the same reason chart/trend/* always has: \"negative\" here means exactly what \"error\" means everywhere else, so a scale keeping its own red is a chart saying that bad news is a different kind of bad news. It had drifted into saying that — negSoft and mid were copies of danger/100 and neutral/200 taken before those ramps were rebuilt, and the pos end was Material green, which this estate retired.\n\nRungs were chosen for SYMMETRY, measured, not for nearest-match: a diverging scale whose wings differ in lightness encodes one sign as louder than the other. The old set was 15.8 L* asymmetric across its three matched pairs (negative reading heavier); this is 2.1, with neg and pos landing on the same L* 64.4. div/neg is unchanged at #ec5042 — it turned out to be exactly danger/400, the ramp anchor, which is where the copy came from.\n\nOne limit worth knowing: div/mid follows the neutral ramp but does NOT re-tint between the Blue and Navy brands, because  is the blue ramp and the navy override lives on each consuming token. Every other chart neutral (grid, axis, tooltipBg, regionEmpty, trend/flat) behaves the same way, so this is the chart layer's existing convention rather than a gap introduced here — and the two neutrals differ by ~9 degrees of hue at chroma 0.015, which is not visible on a gridline. It DOES follow a DBIM conformance mode, where the whole neutral family is remapped to DBIM's pure greys."
     },
     "trend": {
       "up": {

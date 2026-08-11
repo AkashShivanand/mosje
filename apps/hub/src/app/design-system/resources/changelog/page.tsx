@@ -22,9 +22,22 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.16.0",
+    version: "v0.16.1",
     date: "2026-08-11",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "THE DIVERGING CHART SCALE NOW FOLLOWS THE RAMPS instead of carrying copies of them. chart/div/* was seven hardcoded hexes, and they had already gone stale: negSoft and mid were copies of danger/100 and neutral/200 taken before those ramps were rebuilt, and the positive end was Material green, which this estate retired. They are references now — the same treatment chart/trend/* always had, and for the same reason: \"negative\" here means exactly what \"error\" means everywhere else, so a scale keeping its own red is a chart saying that bad news is a different kind of bad news" },
+      { kind: "Changed", text: "The rungs were chosen for SYMMETRY, measured, not for nearest match. A diverging scale whose wings differ in lightness encodes one sign as louder than the other, and the old set was 15.8 L* asymmetric across its three matched pairs — negative reading heavier than positive. The new set is 2.1, with neg and pos landing on the same L* 64.4. div/neg does not move at all: #ec5042 turned out to be exactly danger/400, the ramp anchor, which is where the copy came from" },
+      { kind: "Changed", text: "In Figma the same seven stopped being unlinked literals and became ALIASES onto the Palette collection — the identical defect the font-size variables had in v0.15.1, in a different corner of the library. A palette change now reaches the diverging scale there too, instead of drifting until somebody measures it" },
+      { kind: "Fixed", text: "TWO CATEGORICAL SERIES WERE RETIRED BRAND COLOURS. cat/3 was Material green #2E7D32 sitting dE 3.2 from cat/9 — two \"mutually distinguishable\" series a reader cannot actually separate, which is the one defect a categorical palette exists to prevent. India Green #046A38 puts them 9.0 apart and lifts the set's worst pair from 3.2 to 5.8" },
+      { kind: "Fixed", text: "cat/2 was the retired saffron #F97316 at 2.80:1 against the page — under the 3:1 WCAG 1.4.11 asks of a graphical object you need in order to read the chart, and the only one of the twelve below it. It is now secondaryScale/500 at 3.79:1, so the whole categorical set clears 3:1 for the first time. Bright India Saffron was tried and rejected by measurement at 2.91:1, and rung 600 was rejected too — 4.97:1 but only dE 3.3 from cat/6, trading a contrast failure for a collision" },
+      { kind: "Changed", text: "cat/* and seq/* stay LITERAL on purpose and now say so in their own descriptions, because the next person to read them will otherwise \"fix\" them. A categorical palette is tuned as a SET, and a reference would let one member drift out of that tuning on a brand swap — point cat/1 at primaryScale and a Blue-to-Navy switch slides it toward cat/8, which is already a dark blue. A sequential ramp needs even PERCEPTUAL steps so equal data differences read as equal, which is a different constraint from primaryScale's contrast rungs" },
+      { kind: "Fixed", text: "One limit recorded rather than papered over: div/mid follows the neutral ramp but does not re-tint between Blue and Navy, because color.neutral.* is the blue ramp and the navy override lives on each consuming token. Every other chart neutral — grid, axis, tooltipBg, regionEmpty, trend/flat — already behaved that way, so this is the chart layer's existing convention, and the two neutrals differ by ~9 degrees of hue at chroma 0.015, which is not visible on a gridline. It does follow a DBIM mode, where the whole neutral family is remapped" },
+    ],
+  },
+  {
+    version: "v0.16.0",
+    date: "2026-08-11",
     changes: [
       { kind: "Added", text: "DBIM CONFORMANCE IS NOW SOMETHING YOU CAN SEE. All six of DBIM's published primary groups — Blue, Burgundy, Purple, Green, Chrome Yellow, Cinnamon Red — are selectable in the DemoDock's Colour tab, under their own heading with a DEMO ONLY tag and a plain statement of what they are. DBIM's rule is that an organisation picks exactly one group; MoSJE's is Blue, and the other five are there so the alternatives can be looked at instead of argued about" },
       { kind: "Added", text: "FULL conformance, not a repainted primary ramp — the difference matters enough that the UI says which claim it is making. Selecting a group also swaps all four status colours to DBIM's own (Liberty Green #198754, Mustard Yellow #FFC107, Coral Red #DC3545, DBIM Blue #0D6EFD), replaces the brand-tinted greys with DBIM's pure ones, and moves body text to Deep Earthy Brown #150202, which is not a neutral step at all" },
