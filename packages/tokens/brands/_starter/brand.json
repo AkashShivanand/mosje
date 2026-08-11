@@ -55,6 +55,9 @@
         },
         "900": {
           "$value": "#451a03"
+        },
+        "950": {
+          "$value": "#2c1300"
         }
       },
       "navy": {
@@ -87,11 +90,14 @@
         },
         "900": {
           "$value": "#042f2e"
+        },
+        "950": {
+          "$value": "#00201d"
         }
       }
     },
     "primaryRamp": {
-      "$description": "Example mode-aware primary ramp (emerald). 'light' = default, 'dark' = deep-green mode.",
+      "$description": "Example mode-aware primary ramp (emerald). 'light' = default, 'dark' = deep-green mode. A THIRD brand (dbim) is required since 2026-08-11: the semantic layer references color.primaryRamp.dbim.*, so a brand pack without it fails the build. Give it your own third key colour, or copy your navy values if you do not want a third brand.",
       "blue": {
         "50": {
           "$value": "#e6f4ea"
@@ -122,6 +128,9 @@
         },
         "900": {
           "$value": "#022616"
+        },
+        "950": {
+          "$value": "#00220e"
         }
       },
       "navy": {
@@ -154,6 +163,117 @@
         },
         "900": {
           "$value": "#022616"
+        },
+        "950": {
+          "$value": "#00220f"
+        }
+      },
+      "dbim": {
+        "50": {
+          "$value": "#fcf9fa"
+        },
+        "100": {
+          "$value": "#e2d0d4"
+        },
+        "200": {
+          "$value": "#c6a8ae"
+        },
+        "300": {
+          "$value": "#a9818a"
+        },
+        "400": {
+          "$value": "#8c5e68"
+        },
+        "500": {
+          "$value": "#723e4b"
+        },
+        "600": {
+          "$value": "#5b2333"
+        },
+        "700": {
+          "$value": "#421523"
+        },
+        "800": {
+          "$value": "#300b17"
+        },
+        "900": {
+          "$value": "#21040d"
+        },
+        "950": {
+          "$value": "#110104"
+        }
+      }
+    },
+    "accentRamp": {
+      "$description": "Example ACCENT ramp. In the MoSJE pack this is India Green from the logo and is BRAND-INVARIANT (blue and navy identical) — copy that shape unless your identity genuinely varies its accent per brand. Generate with build/ramp.mjs so the ramp-quality gate passes.",
+      "blue": {
+        "50": {
+          "$value": "#f7eefa"
+        },
+        "100": {
+          "$value": "#dfc5e6"
+        },
+        "200": {
+          "$value": "#c69dd0"
+        },
+        "300": {
+          "$value": "#ac76b9"
+        },
+        "400": {
+          "$value": "#9251a3"
+        },
+        "500": {
+          "$value": "#7b2d8e"
+        },
+        "600": {
+          "$value": "#5f1c6e"
+        },
+        "700": {
+          "$value": "#460f53"
+        },
+        "800": {
+          "$value": "#30043a"
+        },
+        "900": {
+          "$value": "#1a0021"
+        },
+        "950": {
+          "$value": "#210029"
+        }
+      },
+      "navy": {
+        "50": {
+          "$value": "#f7eefa"
+        },
+        "100": {
+          "$value": "#dfc5e6"
+        },
+        "200": {
+          "$value": "#c69dd0"
+        },
+        "300": {
+          "$value": "#ac76b9"
+        },
+        "400": {
+          "$value": "#9251a3"
+        },
+        "500": {
+          "$value": "#7b2d8e"
+        },
+        "600": {
+          "$value": "#5f1c6e"
+        },
+        "700": {
+          "$value": "#460f53"
+        },
+        "800": {
+          "$value": "#30043a"
+        },
+        "900": {
+          "$value": "#1a0021"
+        },
+        "950": {
+          "$value": "#210029"
         }
       }
     }

@@ -53,7 +53,7 @@ export function RecentDocuments() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-12">
           {/* PART A — Recent Documents */}
           <div className="lg:col-span-3">
-            <h2 className="text-[30px] font-semibold leading-tight text-gov-blue-dark">
+            <h2 className="text-[30px] font-semibold leading-tight text-primary-dark">
               Recent Documents
             </h2>
 
@@ -63,7 +63,7 @@ export function RecentDocuments() {
                   key={doc.title}
                   className="flex items-start gap-4 border-b border-gray-200 py-4 first:pt-0"
                 >
-                  <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-gov-blue/10 text-gov-blue">
+                  <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
                     <Icon name="description" size={20} />
                   </span>
                   <div className="min-w-0 flex-1">
@@ -93,7 +93,7 @@ export function RecentDocuments() {
 
           {/* PART B — Explore User Personas */}
           <div className="lg:col-span-2">
-            <h2 className="text-[30px] font-semibold leading-tight text-gov-blue-dark">
+            <h2 className="text-[30px] font-semibold leading-tight text-primary-dark">
               Explore User Personas
             </h2>
             <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
@@ -124,7 +124,7 @@ export function RecentDocuments() {
                       aria-label={`Explore services for ${persona.label}`}
                     >
                       <span className="ds-btn__icon" aria-hidden="true">
-                        <Icon name="arrow_forward" size={20} className="text-gov-blue transition-transform group-hover:translate-x-1" />
+                        <Icon name="arrow_forward" size={20} className="text-primary transition-transform group-hover:translate-x-1" />
                       </span>
                     </Link>
                   </div>

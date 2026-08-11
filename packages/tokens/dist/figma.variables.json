@@ -8,14 +8,14 @@
       "existing": 76
     },
     "Palette": {
-      "total": 115,
+      "total": 138,
       "new": 0,
-      "existing": 115
+      "existing": 138
     },
     "Color": {
-      "total": 460,
+      "total": 472,
       "new": 0,
-      "existing": 460
+      "existing": 472
     },
     "Type": {
       "total": 96,
@@ -59,6 +59,7 @@
     "color/secondaryRamp/blue/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/secondaryRamp/blue/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/secondaryRamp/blue/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/secondaryRamp/blue/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/secondaryRamp/navy/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/secondaryRamp/navy/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/secondaryRamp/navy/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
@@ -69,6 +70,7 @@
     "color/secondaryRamp/navy/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/secondaryRamp/navy/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/secondaryRamp/navy/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/secondaryRamp/navy/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/primaryRamp/blue/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/primaryRamp/blue/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/primaryRamp/blue/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
@@ -79,6 +81,7 @@
     "color/primaryRamp/blue/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/primaryRamp/blue/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/primaryRamp/blue/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/blue/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/primaryRamp/navy/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/primaryRamp/navy/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/primaryRamp/navy/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
@@ -89,6 +92,40 @@
     "color/primaryRamp/navy/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/primaryRamp/navy/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/primaryRamp/navy/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/navy/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/dbim/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/dbim/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/dbim/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/dbim/300 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/dbim/400 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/dbim/500 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/dbim/600 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/dbim/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/dbim/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/dbim/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/primaryRamp/dbim/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/blue/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/blue/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/blue/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/blue/300 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/blue/400 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/blue/500 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/blue/600 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/blue/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/blue/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/blue/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/blue/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/navy/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/navy/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/navy/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/navy/300 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/navy/400 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/navy/500 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/navy/600 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/navy/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/navy/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/navy/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/accentRamp/navy/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/green/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/green/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/green/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
@@ -99,6 +136,7 @@
     "color/green/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/green/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/green/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/green/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/red/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/red/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/red/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
@@ -109,6 +147,7 @@
     "color/red/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/red/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/red/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/red/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/amber/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/amber/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/amber/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
@@ -119,6 +158,7 @@
     "color/amber/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/amber/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/amber/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/amber/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/info/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/info/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/info/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
@@ -129,6 +169,7 @@
     "color/info/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/info/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/info/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/info/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutral/0 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutral/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutral/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
@@ -140,8 +181,8 @@
     "color/neutral/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutral/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutral/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/neutral/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutral/1000 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
-    "color/neutral/1100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDark/0 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDark/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDark/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
@@ -153,8 +194,8 @@
     "color/neutralDark/700 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDark/800 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDark/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/neutralDark/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDark/1000 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
-    "color/neutralDark/1100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/action/primary/default (legacy semantic path, mirrored by the canonical grammar namespace)",
     "color/action/primary/hover (legacy semantic path, mirrored by the canonical grammar namespace)",
     "color/action/primary/tonal (legacy semantic path, mirrored by the canonical grammar namespace)",
@@ -578,7 +619,7 @@
               "unit": "rem"
             }
           },
-          "description": "8px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "8px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-8)"
           },
@@ -599,7 +640,7 @@
               "unit": "rem"
             }
           },
-          "description": "10px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "10px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-10)"
           },
@@ -620,7 +661,7 @@
               "unit": "rem"
             }
           },
-          "description": "11px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "11px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-11)"
           },
@@ -641,7 +682,7 @@
               "unit": "rem"
             }
           },
-          "description": "12px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "12px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-12)"
           },
@@ -662,7 +703,7 @@
               "unit": "rem"
             }
           },
-          "description": "14px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "14px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-14)"
           },
@@ -683,7 +724,7 @@
               "unit": "rem"
             }
           },
-          "description": "16px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "16px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-16)"
           },
@@ -704,7 +745,7 @@
               "unit": "rem"
             }
           },
-          "description": "18px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "18px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-18)"
           },
@@ -725,7 +766,7 @@
               "unit": "rem"
             }
           },
-          "description": "20px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "20px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-20)"
           },
@@ -746,7 +787,7 @@
               "unit": "rem"
             }
           },
-          "description": "22px — SAMAVESH superset step Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "22px — SAMAVESH superset step Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-22)"
           },
@@ -767,7 +808,7 @@
               "unit": "rem"
             }
           },
-          "description": "24px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "24px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-24)"
           },
@@ -788,7 +829,7 @@
               "unit": "rem"
             }
           },
-          "description": "28px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "28px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-28)"
           },
@@ -809,7 +850,7 @@
               "unit": "rem"
             }
           },
-          "description": "32px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "32px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-32)"
           },
@@ -830,7 +871,7 @@
               "unit": "rem"
             }
           },
-          "description": "36px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "36px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-36)"
           },
@@ -851,7 +892,7 @@
               "unit": "rem"
             }
           },
-          "description": "40px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "40px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-40)"
           },
@@ -872,7 +913,7 @@
               "unit": "rem"
             }
           },
-          "description": "44px — SAMAVESH superset step Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "44px — SAMAVESH superset step Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-44)"
           },
@@ -893,7 +934,7 @@
               "unit": "rem"
             }
           },
-          "description": "48px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "48px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-48)"
           },
@@ -914,7 +955,7 @@
               "unit": "rem"
             }
           },
-          "description": "52px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "52px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-52)"
           },
@@ -935,7 +976,7 @@
               "unit": "rem"
             }
           },
-          "description": "56px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "56px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-56)"
           },
@@ -956,7 +997,7 @@
               "unit": "rem"
             }
           },
-          "description": "60px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "60px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-60)"
           },
@@ -977,7 +1018,7 @@
               "unit": "rem"
             }
           },
-          "description": "64px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "64px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-64)"
           },
@@ -998,7 +1039,7 @@
               "unit": "rem"
             }
           },
-          "description": "80px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "80px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-80)"
           },
@@ -1019,7 +1060,7 @@
               "unit": "rem"
             }
           },
-          "description": "120px Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.",
+          "description": "120px Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-size-120)"
           },
@@ -1823,11 +1864,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#e8f2fd"
+              "value": "#ecf4ff"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#e5eff9"
+              "value": "#f8fafd"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -1847,11 +1888,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#c6dcf9"
+              "value": "#c0dbff"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#c8dbf0"
+              "value": "#c9d6e5"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -1871,11 +1912,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#94bff5"
+              "value": "#95c2fb"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#9cbfe3"
+              "value": "#9cb0ca"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -1895,11 +1936,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#5fa0ef"
+              "value": "#6ca8f3"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#6da1d5"
+              "value": "#708caf"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -1919,11 +1960,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#2d84e8"
+              "value": "#428dea"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#3f83c6"
+              "value": "#486a94"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -1947,7 +1988,7 @@
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#003366"
+              "value": "#244c7b"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -1967,11 +2008,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#025fb8"
+              "value": "#005eb9"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#002b55"
+              "value": "#003366"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -1991,11 +2032,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#014b92"
+              "value": "#004b96"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#002244"
+              "value": "#002249"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2015,11 +2056,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#01376b"
+              "value": "#003975"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#001933"
+              "value": "#001734"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2039,16 +2080,40 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#002448"
+              "value": "#002855"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#001122"
+              "value": "#000e24"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
           "codeSyntax": {
             "WEB": "var(--sa-color-primaryScale-900)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/primaryScale/950",
+          "path": "color/primaryScale/950",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#001737"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#000614"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-primaryScale-950)"
           },
           "status": "existing",
           "$extensions": {
@@ -2063,11 +2128,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#ffedd5"
+              "value": "#fff2ed"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#e6f6ef"
+              "value": "#fff2ed"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2087,11 +2152,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#fed9b7"
+              "value": "#ffd4c4"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#c2ead7"
+              "value": "#ffd4c4"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2111,11 +2176,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#fdb980"
+              "value": "#ffb498"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#99dcbc"
+              "value": "#ffb498"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2135,11 +2200,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#fc9948"
+              "value": "#ff9167"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#66c99b"
+              "value": "#ff9167"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2159,11 +2224,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#fb8428"
+              "value": "#ff671f"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#33b57c"
+              "value": "#ff671f"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2183,11 +2248,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#f97316"
+              "value": "#e1560f"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#198754"
+              "value": "#e1560f"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2207,11 +2272,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#d45c05"
+              "value": "#c34700"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#15784c"
+              "value": "#c34700"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2231,11 +2296,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#a84804"
+              "value": "#a43a00"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#116641"
+              "value": "#a43a00"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2255,11 +2320,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#7c3503"
+              "value": "#862e00"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#0d5537"
+              "value": "#862e00"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2279,16 +2344,304 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#512202"
+              "value": "#692200"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#083c26"
+              "value": "#692200"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
           "codeSyntax": {
             "WEB": "var(--sa-color-secondaryScale-900)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/secondaryScale/950",
+          "path": "color/secondaryScale/950",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#4d1700"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#4d1700"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-secondaryScale-950)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/accentScale/50",
+          "path": "color/accentScale/50",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#ecf4ee"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#ecf4ee"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-accentScale-50)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/accentScale/100",
+          "path": "color/accentScale/100",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#bed8c5"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#bed8c5"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-accentScale-100)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/accentScale/200",
+          "path": "color/accentScale/200",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#91b99c"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#91b99c"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-accentScale-200)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/accentScale/300",
+          "path": "color/accentScale/300",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#659c77"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#659c77"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-accentScale-300)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/accentScale/400",
+          "path": "color/accentScale/400",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#3b8155"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#3b8155"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-accentScale-400)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/accentScale/500",
+          "path": "color/accentScale/500",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#046a38"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#046a38"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-accentScale-500)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/accentScale/600",
+          "path": "color/accentScale/600",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#00542b"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#00542b"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-accentScale-600)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/accentScale/700",
+          "path": "color/accentScale/700",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#004220"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#004220"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-accentScale-700)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/accentScale/800",
+          "path": "color/accentScale/800",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#003318"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#003318"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-accentScale-800)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/accentScale/900",
+          "path": "color/accentScale/900",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#002510"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#002510"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-accentScale-900)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/accentScale/950",
+          "path": "color/accentScale/950",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#001708"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#001708"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-accentScale-950)"
           },
           "status": "existing",
           "$extensions": {
@@ -2561,8 +2914,8 @@
           }
         },
         {
-          "name": "color/neutralScale/1000",
-          "path": "color/neutralScale/1000",
+          "name": "color/neutralScale/950",
+          "path": "color/neutralScale/950",
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
@@ -2576,7 +2929,7 @@
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
           "codeSyntax": {
-            "WEB": "var(--sa-color-neutralScale-1000)"
+            "WEB": "var(--sa-color-neutralScale-950)"
           },
           "status": "existing",
           "$extensions": {
@@ -2585,8 +2938,8 @@
           }
         },
         {
-          "name": "color/neutralScale/1100",
-          "path": "color/neutralScale/1100",
+          "name": "color/neutralScale/1000",
+          "path": "color/neutralScale/1000",
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
@@ -2600,7 +2953,7 @@
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
           "codeSyntax": {
-            "WEB": "var(--sa-color-neutralScale-1100)"
+            "WEB": "var(--sa-color-neutralScale-1000)"
           },
           "status": "existing",
           "$extensions": {
@@ -2615,11 +2968,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#e8f5e9"
+              "value": "#ecf4ee"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#e8f5e9"
+              "value": "#ecf4ee"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2639,11 +2992,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#c8e6c9"
+              "value": "#bed8c5"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#c8e6c9"
+              "value": "#bed8c5"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2663,11 +3016,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#a5d6a7"
+              "value": "#91b99c"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#a5d6a7"
+              "value": "#91b99c"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2687,11 +3040,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#81c784"
+              "value": "#659c77"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#81c784"
+              "value": "#659c77"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2711,11 +3064,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#66bb6a"
+              "value": "#3b8155"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#66bb6a"
+              "value": "#3b8155"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2735,11 +3088,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#2e7d32"
+              "value": "#046a38"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#2e7d32"
+              "value": "#046a38"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2759,11 +3112,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#27682a"
+              "value": "#00542b"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#27682a"
+              "value": "#00542b"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2783,11 +3136,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#1b5e20"
+              "value": "#004220"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#1b5e20"
+              "value": "#004220"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2807,11 +3160,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#124517"
+              "value": "#003318"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#124517"
+              "value": "#003318"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -2831,16 +3184,40 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#082d0f"
+              "value": "#002510"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#082d0f"
+              "value": "#002510"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
           "codeSyntax": {
             "WEB": "var(--sa-color-successScale-900)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/successScale/950",
+          "path": "color/successScale/950",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#001708"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#001708"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-successScale-950)"
           },
           "status": "existing",
           "$extensions": {
@@ -3089,6 +3466,30 @@
           }
         },
         {
+          "name": "color/dangerScale/950",
+          "path": "color/dangerScale/950",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#3a0000"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#3a0000"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-dangerScale-950)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
           "name": "color/warningScale/50",
           "path": "color/warningScale/50",
           "type": "COLOR",
@@ -3321,6 +3722,30 @@
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
           "codeSyntax": {
             "WEB": "var(--sa-color-warningScale-900)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/warningScale/950",
+          "path": "color/warningScale/950",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#2a1500"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#2a1500"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-warningScale-950)"
           },
           "status": "existing",
           "$extensions": {
@@ -3569,6 +3994,30 @@
           }
         },
         {
+          "name": "color/infoScale/950",
+          "path": "color/infoScale/950",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#00183f"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#00183f"
+            }
+          },
+          "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-infoScale-950)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
           "name": "color/transparent/primary/8",
           "path": "color/transparent/primary/8",
           "type": "COLOR",
@@ -3719,11 +4168,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(249, 115, 22, 0.08)"
+              "value": "rgba(255, 103, 31, 0.08)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(25, 135, 84, 0.08)"
+              "value": "rgba(255, 103, 31, 0.08)"
             }
           },
           "description": "Use for a translucent secondary wash at 8% — for overlays and hover states, not as a text colour.",
@@ -3743,11 +4192,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(249, 115, 22, 0.16)"
+              "value": "rgba(255, 103, 31, 0.16)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(25, 135, 84, 0.16)"
+              "value": "rgba(255, 103, 31, 0.16)"
             }
           },
           "description": "Use for a translucent secondary wash at 16% — for overlays and hover states, not as a text colour.",
@@ -3767,11 +4216,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(249, 115, 22, 0.24)"
+              "value": "rgba(255, 103, 31, 0.24)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(25, 135, 84, 0.24)"
+              "value": "rgba(255, 103, 31, 0.24)"
             }
           },
           "description": "Use for a translucent secondary wash at 24% — for overlays and hover states, not as a text colour.",
@@ -3791,11 +4240,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(249, 115, 22, 0.32)"
+              "value": "rgba(255, 103, 31, 0.32)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(25, 135, 84, 0.32)"
+              "value": "rgba(255, 103, 31, 0.32)"
             }
           },
           "description": "Use for a translucent secondary wash at 32% — for overlays and hover states, not as a text colour.",
@@ -3815,11 +4264,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(249, 115, 22, 0.40)"
+              "value": "rgba(255, 103, 31, 0.40)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(25, 135, 84, 0.40)"
+              "value": "rgba(255, 103, 31, 0.40)"
             }
           },
           "description": "Use for a translucent secondary wash at 40% — for overlays and hover states, not as a text colour.",
@@ -3839,16 +4288,160 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(249, 115, 22, 0.48)"
+              "value": "rgba(255, 103, 31, 0.48)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(25, 135, 84, 0.48)"
+              "value": "rgba(255, 103, 31, 0.48)"
             }
           },
           "description": "Use for a translucent secondary wash at 48% — for overlays and hover states, not as a text colour.",
           "codeSyntax": {
             "WEB": "var(--sa-color-transparent-secondary-48)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/transparent/accent/8",
+          "path": "color/transparent/accent/8",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "rgba(4, 106, 56, 0.08)"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "rgba(4, 106, 56, 0.08)"
+            }
+          },
+          "description": "Use for a translucent accent wash at 8% — for overlays and hover states, not as a text colour.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-transparent-accent-8)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/transparent/accent/16",
+          "path": "color/transparent/accent/16",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "rgba(4, 106, 56, 0.16)"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "rgba(4, 106, 56, 0.16)"
+            }
+          },
+          "description": "Use for a translucent accent wash at 16% — for overlays and hover states, not as a text colour.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-transparent-accent-16)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/transparent/accent/24",
+          "path": "color/transparent/accent/24",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "rgba(4, 106, 56, 0.24)"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "rgba(4, 106, 56, 0.24)"
+            }
+          },
+          "description": "Use for a translucent accent wash at 24% — for overlays and hover states, not as a text colour.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-transparent-accent-24)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/transparent/accent/32",
+          "path": "color/transparent/accent/32",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "rgba(4, 106, 56, 0.32)"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "rgba(4, 106, 56, 0.32)"
+            }
+          },
+          "description": "Use for a translucent accent wash at 32% — for overlays and hover states, not as a text colour.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-transparent-accent-32)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/transparent/accent/40",
+          "path": "color/transparent/accent/40",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "rgba(4, 106, 56, 0.40)"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "rgba(4, 106, 56, 0.40)"
+            }
+          },
+          "description": "Use for a translucent accent wash at 40% — for overlays and hover states, not as a text colour.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-transparent-accent-40)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/transparent/accent/48",
+          "path": "color/transparent/accent/48",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "rgba(4, 106, 56, 0.48)"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "rgba(4, 106, 56, 0.48)"
+            }
+          },
+          "description": "Use for a translucent accent wash at 48% — for overlays and hover states, not as a text colour.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-transparent-accent-48)"
           },
           "status": "existing",
           "$extensions": {
@@ -4007,11 +4600,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(46, 125, 50, 0.08)"
+              "value": "rgba(4, 106, 56, 0.08)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(46, 125, 50, 0.08)"
+              "value": "rgba(4, 106, 56, 0.08)"
             }
           },
           "description": "Use for a translucent success wash at 8% — for overlays and hover states, not as a text colour.",
@@ -4031,11 +4624,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(46, 125, 50, 0.16)"
+              "value": "rgba(4, 106, 56, 0.16)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(46, 125, 50, 0.16)"
+              "value": "rgba(4, 106, 56, 0.16)"
             }
           },
           "description": "Use for a translucent success wash at 16% — for overlays and hover states, not as a text colour.",
@@ -4055,11 +4648,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(46, 125, 50, 0.24)"
+              "value": "rgba(4, 106, 56, 0.24)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(46, 125, 50, 0.24)"
+              "value": "rgba(4, 106, 56, 0.24)"
             }
           },
           "description": "Use for a translucent success wash at 24% — for overlays and hover states, not as a text colour.",
@@ -4079,11 +4672,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(46, 125, 50, 0.32)"
+              "value": "rgba(4, 106, 56, 0.32)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(46, 125, 50, 0.32)"
+              "value": "rgba(4, 106, 56, 0.32)"
             }
           },
           "description": "Use for a translucent success wash at 32% — for overlays and hover states, not as a text colour.",
@@ -4103,11 +4696,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(46, 125, 50, 0.40)"
+              "value": "rgba(4, 106, 56, 0.40)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(46, 125, 50, 0.40)"
+              "value": "rgba(4, 106, 56, 0.40)"
             }
           },
           "description": "Use for a translucent success wash at 40% — for overlays and hover states, not as a text colour.",
@@ -4127,11 +4720,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(46, 125, 50, 0.48)"
+              "value": "rgba(4, 106, 56, 0.48)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(46, 125, 50, 0.48)"
+              "value": "rgba(4, 106, 56, 0.48)"
             }
           },
           "description": "Use for a translucent success wash at 48% — for overlays and hover states, not as a text colour.",
@@ -4692,7 +5285,7 @@
               "name": "color/successScale/700"
             }
           },
-          "description": "Use for the outline of a control or callout reporting a successful or completed state. Contrast 7.87:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
+          "description": "Use for the outline of a control or callout reporting a successful or completed state. Contrast 11.67:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-border-status-success-base)"
           },
@@ -4703,7 +5296,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 7.87,
+              "measured": 11.67,
               "meets": true
             }
           }
@@ -4896,7 +5489,7 @@
               "name": "color/primaryScale/50"
             }
           },
-          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, tinted with the primary brand colour. Contrast 1.13:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, tinted with the primary brand colour. Contrast 1.11:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-base)"
           },
@@ -4907,7 +5500,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 1.13,
+              "measured": 1.11,
               "meets": true
             }
           }
@@ -4923,7 +5516,7 @@
               "name": "color/primaryScale/100"
             }
           },
-          "description": "Use for a barely-there tint, for hovered rows and zebra striping, tinted with the primary brand colour. Contrast 1.4:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for a barely-there tint, for hovered rows and zebra striping, tinted with the primary brand colour. Contrast 1.42:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-subtler)"
           },
@@ -4934,7 +5527,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtler",
               "min": 0,
-              "measured": 1.4,
+              "measured": 1.42,
               "meets": true
             }
           }
@@ -4950,7 +5543,7 @@
               "name": "color/primaryScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the primary brand colour. Contrast 1.9:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the primary brand colour. Contrast 1.84:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-subtle)"
           },
@@ -4961,7 +5554,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtle",
               "min": 3,
-              "measured": 1.9,
+              "measured": 1.84,
               "meets": false
             }
           }
@@ -4977,7 +5570,7 @@
               "name": "color/primaryScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the primary brand colour. Contrast 2.71:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the primary brand colour. Contrast 2.46:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-bold)"
           },
@@ -4988,7 +5581,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bold",
               "min": 3,
-              "measured": 2.71,
+              "measured": 2.46,
               "meets": false
             }
           }
@@ -5004,7 +5597,7 @@
               "name": "color/primaryScale/600"
             }
           },
-          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, tinted with the primary brand colour. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, tinted with the primary brand colour. Contrast 6.36:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-bolder)"
           },
@@ -5015,7 +5608,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 6.3,
+              "measured": 6.36,
               "meets": true
             }
           }
@@ -5031,7 +5624,7 @@
               "name": "color/primaryScale/800"
             }
           },
-          "description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the primary brand colour. Contrast 11.93:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
+          "description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the primary brand colour. Contrast 11.4:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-boldest)"
           },
@@ -5042,7 +5635,7 @@
             "in.gov.mosje.contrast": {
               "rung": "boldest",
               "min": 7,
-              "measured": 11.93,
+              "measured": 11.4,
               "meets": true
             }
           }
@@ -5058,7 +5651,7 @@
               "name": "color/secondaryScale/50"
             }
           },
-          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, tinted with the secondary brand colour. Contrast 1.15:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, tinted with the secondary brand colour. Contrast 1.1:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-base)"
           },
@@ -5069,7 +5662,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 1.15,
+              "measured": 1.1,
               "meets": true
             }
           }
@@ -5085,7 +5678,7 @@
               "name": "color/secondaryScale/100"
             }
           },
-          "description": "Use for a barely-there tint, for hovered rows and zebra striping, tinted with the secondary brand colour. Contrast 1.33:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for a barely-there tint, for hovered rows and zebra striping, tinted with the secondary brand colour. Contrast 1.36:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-subtler)"
           },
@@ -5096,7 +5689,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtler",
               "min": 0,
-              "measured": 1.33,
+              "measured": 1.36,
               "meets": true
             }
           }
@@ -5112,7 +5705,7 @@
               "name": "color/secondaryScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the secondary brand colour. Contrast 1.69:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the secondary brand colour. Contrast 1.72:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-subtle)"
           },
@@ -5123,7 +5716,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtle",
               "min": 3,
-              "measured": 1.69,
+              "measured": 1.72,
               "meets": false
             }
           }
@@ -5139,7 +5732,7 @@
               "name": "color/secondaryScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the secondary brand colour. Contrast 2.15:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the secondary brand colour. Contrast 2.21:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-bold)"
           },
@@ -5150,7 +5743,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bold",
               "min": 3,
-              "measured": 2.15,
+              "measured": 2.21,
               "meets": false
             }
           }
@@ -5166,7 +5759,7 @@
               "name": "color/secondaryScale/600"
             }
           },
-          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, tinted with the secondary brand colour. Contrast 3.94:1 vs bg/neutral/base — BELOW the ≥4.5:1 implied by the “bolder” rung.",
+          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, tinted with the secondary brand colour. Contrast 4.97:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-bolder)"
           },
@@ -5177,8 +5770,8 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 3.94,
-              "meets": false
+              "measured": 4.97,
+              "meets": true
             }
           }
         },
@@ -5193,7 +5786,7 @@
               "name": "color/secondaryScale/800"
             }
           },
-          "description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the secondary brand colour. Contrast 8.87:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
+          "description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the secondary brand colour. Contrast 8.73:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-boldest)"
           },
@@ -5204,7 +5797,169 @@
             "in.gov.mosje.contrast": {
               "rung": "boldest",
               "min": 7,
-              "measured": 8.87,
+              "measured": 8.73,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "bg/brand/accent/base",
+          "path": "bg/brand/accent/base",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/50"
+            }
+          },
+          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, tinted with the accent brand colour. Contrast 1.12:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "codeSyntax": {
+            "WEB": "var(--sa-bg-brand-accent-base)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "base",
+              "min": 0,
+              "measured": 1.12,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "bg/brand/accent/subtler",
+          "path": "bg/brand/accent/subtler",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/100"
+            }
+          },
+          "description": "Use for a barely-there tint, for hovered rows and zebra striping, tinted with the accent brand colour. Contrast 1.52:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "codeSyntax": {
+            "WEB": "var(--sa-bg-brand-accent-subtler)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "subtler",
+              "min": 0,
+              "measured": 1.52,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "bg/brand/accent/subtle",
+          "path": "bg/brand/accent/subtle",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/200"
+            }
+          },
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the accent brand colour. Contrast 2.18:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "codeSyntax": {
+            "WEB": "var(--sa-bg-brand-accent-subtle)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "subtle",
+              "min": 3,
+              "measured": 2.18,
+              "meets": false
+            }
+          }
+        },
+        {
+          "name": "bg/brand/accent/bold",
+          "path": "bg/brand/accent/bold",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/300"
+            }
+          },
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the accent brand colour. Contrast 3.19:1 vs bg/neutral/base — meets ≥3:1: UI boundaries, icons, non-text (WCAG 1.4.11).",
+          "codeSyntax": {
+            "WEB": "var(--sa-bg-brand-accent-bold)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bold",
+              "min": 3,
+              "measured": 3.19,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "bg/brand/accent/bolder",
+          "path": "bg/brand/accent/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600"
+            }
+          },
+          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, tinted with the accent brand colour. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-bg-brand-accent-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 9.12,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "bg/brand/accent/boldest",
+          "path": "bg/brand/accent/boldest",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/800"
+            }
+          },
+          "description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the accent brand colour. Contrast 14.13:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-bg-brand-accent-boldest)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "boldest",
+              "min": 7,
+              "measured": 14.13,
               "meets": true
             }
           }
@@ -5247,7 +6002,7 @@
               "name": "color/successScale/100"
             }
           },
-          "description": "Use for a barely-there tint, for hovered rows and zebra striping, when the surface signals a successful or completed state. Contrast 1.34:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for a barely-there tint, for hovered rows and zebra striping, when the surface signals a successful or completed state. Contrast 1.52:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-subtler)"
           },
@@ -5258,7 +6013,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtler",
               "min": 0,
-              "measured": 1.34,
+              "measured": 1.52,
               "meets": true
             }
           }
@@ -5274,7 +6029,7 @@
               "name": "color/successScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals a successful or completed state. Contrast 1.64:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals a successful or completed state. Contrast 2.18:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-subtle)"
           },
@@ -5285,7 +6040,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtle",
               "min": 3,
-              "measured": 1.64,
+              "measured": 2.18,
               "meets": false
             }
           }
@@ -5301,7 +6056,7 @@
               "name": "color/successScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals a successful or completed state. Contrast 2.01:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals a successful or completed state. Contrast 3.19:1 vs bg/neutral/base — meets ≥3:1: UI boundaries, icons, non-text (WCAG 1.4.11).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-bold)"
           },
@@ -5312,8 +6067,8 @@
             "in.gov.mosje.contrast": {
               "rung": "bold",
               "min": 3,
-              "measured": 2.01,
-              "meets": false
+              "measured": 3.19,
+              "meets": true
             }
           }
         },
@@ -5328,7 +6083,7 @@
               "name": "color/successScale/600"
             }
           },
-          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, when the surface signals a successful or completed state. Contrast 6.77:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, when the surface signals a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-bolder)"
           },
@@ -5339,7 +6094,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 6.77,
+              "measured": 9.12,
               "meets": true
             }
           }
@@ -5355,7 +6110,7 @@
               "name": "color/successScale/800"
             }
           },
-          "description": "Use for the heaviest fill, for maximum emphasis on a light page, when the surface signals a successful or completed state. Contrast 11.11:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
+          "description": "Use for the heaviest fill, for maximum emphasis on a light page, when the surface signals a successful or completed state. Contrast 14.13:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-boldest)"
           },
@@ -5366,7 +6121,7 @@
             "in.gov.mosje.contrast": {
               "rung": "boldest",
               "min": 7,
-              "measured": 11.11,
+              "measured": 14.13,
               "meets": true
             }
           }
@@ -5970,7 +6725,7 @@
               "name": "color/primaryScale/700"
             }
           },
-          "description": "Use for a standard text link in its hover state. Contrast 8.67:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
+          "description": "Use for a standard text link in its hover state. Contrast 8.58:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-link-brand-hover)"
           },
@@ -5981,7 +6736,7 @@
             "in.gov.mosje.contrast": {
               "rung": null,
               "min": 4.5,
-              "measured": 8.67,
+              "measured": 8.58,
               "meets": true
             }
           }
@@ -5997,7 +6752,7 @@
               "name": "color/primaryScale/800"
             }
           },
-          "description": "Use for a standard text link in its active state. Contrast 11.93:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
+          "description": "Use for a standard text link in its active state. Contrast 11.4:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-link-brand-active)"
           },
@@ -6008,7 +6763,7 @@
             "in.gov.mosje.contrast": {
               "rung": null,
               "min": 4.5,
-              "measured": 11.93,
+              "measured": 11.4,
               "meets": true
             }
           }
@@ -6045,7 +6800,7 @@
               "name": "color/primaryScale/800"
             }
           },
-          "description": "Use for an already-visited link. Contrast 11.93:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
+          "description": "Use for an already-visited link. Contrast 11.4:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-link-visited-default)"
           },
@@ -6056,7 +6811,7 @@
             "in.gov.mosje.contrast": {
               "rung": null,
               "min": 4.5,
-              "measured": 11.93,
+              "measured": 11.4,
               "meets": true
             }
           }
@@ -6126,7 +6881,7 @@
               "name": "color/successScale/700"
             }
           },
-          "description": "Use for text that report a successful or completed state. Contrast 7.87:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for text that report a successful or completed state. Contrast 11.67:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-success-base)"
           },
@@ -6137,7 +6892,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 7.87,
+              "measured": 11.67,
               "meets": true
             }
           }
@@ -6363,7 +7118,7 @@
               "name": "color/successScale/700"
             }
           },
-          "description": "Use for icons that report a successful or completed state. Contrast 7.87:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for icons that report a successful or completed state. Contrast 11.67:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-success-base)"
           },
@@ -6374,7 +7129,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 7.87,
+              "measured": 11.67,
               "meets": true
             }
           }
@@ -7705,7 +8460,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/100"
+              "name": "color/primaryScale/50"
             }
           },
           "description": "Use for primary-brand tonal buttons at rest — the fill.",
@@ -7747,7 +8502,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/100"
+              "name": "color/primaryScale/50"
             }
           },
           "description": "Use for primary-brand tonal buttons at rest — the outline.",
@@ -7768,7 +8523,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/200"
+              "name": "color/primaryScale/100"
             }
           },
           "description": "Use when the user hovers over a primary-brand tonal button — the fill.",
@@ -7810,7 +8565,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/200"
+              "name": "color/primaryScale/100"
             }
           },
           "description": "Use when the user hovers over a primary-brand tonal button — the outline.",
@@ -7831,7 +8586,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/300"
+              "name": "color/primaryScale/200"
             }
           },
           "description": "Use when a primary-brand tonal button is pressed — the fill.",
@@ -7873,7 +8628,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/300"
+              "name": "color/primaryScale/200"
             }
           },
           "description": "Use when a primary-brand tonal button is pressed — the outline.",
@@ -13914,6 +14669,132 @@
           }
         },
         {
+          "name": "on/bg/brand/accent/base",
+          "path": "on/bg/brand/accent/base",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800"
+            }
+          },
+          "description": "Use for text and icons placed on `bg/brand/accent/base`. The pairing was chosen by measurement, so it is the safe foreground for that fill in every brand — do not substitute another ink.",
+          "codeSyntax": {
+            "WEB": "var(--sa-on-bg-brand-accent-base)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "on/bg/brand/accent/subtler",
+          "path": "on/bg/brand/accent/subtler",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800"
+            }
+          },
+          "description": "Use for text and icons placed on `bg/brand/accent/subtler`. The pairing was chosen by measurement, so it is the safe foreground for that fill in every brand — do not substitute another ink.",
+          "codeSyntax": {
+            "WEB": "var(--sa-on-bg-brand-accent-subtler)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "on/bg/brand/accent/subtle",
+          "path": "on/bg/brand/accent/subtle",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800"
+            }
+          },
+          "description": "Use for text and icons placed on `bg/brand/accent/subtle`. The pairing was chosen by measurement, so it is the safe foreground for that fill in every brand — do not substitute another ink.",
+          "codeSyntax": {
+            "WEB": "var(--sa-on-bg-brand-accent-subtle)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "on/bg/brand/accent/bold",
+          "path": "on/bg/brand/accent/bold",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800"
+            }
+          },
+          "description": "Use for text and icons placed on `bg/brand/accent/bold`. The pairing was chosen by measurement, so it is the safe foreground for that fill in every brand — do not substitute another ink.",
+          "codeSyntax": {
+            "WEB": "var(--sa-on-bg-brand-accent-bold)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "on/bg/brand/accent/bolder",
+          "path": "on/bg/brand/accent/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0"
+            }
+          },
+          "description": "Use for text and icons placed on `bg/brand/accent/bolder`. The pairing was chosen by measurement, so it is the safe foreground for that fill in every brand — do not substitute another ink.",
+          "codeSyntax": {
+            "WEB": "var(--sa-on-bg-brand-accent-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "on/bg/brand/accent/boldest",
+          "path": "on/bg/brand/accent/boldest",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0"
+            }
+          },
+          "description": "Use for text and icons placed on `bg/brand/accent/boldest`. The pairing was chosen by measurement, so it is the safe foreground for that fill in every brand — do not substitute another ink.",
+          "codeSyntax": {
+            "WEB": "var(--sa-on-bg-brand-accent-boldest)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
           "name": "on/bg/status/success/base",
           "path": "on/bg/status/success/base",
           "type": "COLOR",
@@ -14598,30 +15479,30 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "STRING",
-              "value": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+              "value": "Noto Sans"
             },
             "Website · Tablet": {
               "type": "STRING",
-              "value": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+              "value": "Noto Sans"
             },
             "Website · Mobile": {
               "type": "STRING",
-              "value": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+              "value": "Noto Sans"
             },
             "Portal · Desktop": {
               "type": "STRING",
-              "value": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+              "value": "Noto Sans"
             },
             "Portal · Tablet": {
               "type": "STRING",
-              "value": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+              "value": "Noto Sans"
             },
             "Portal · Mobile": {
               "type": "STRING",
-              "value": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+              "value": "Noto Sans"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-family-latin)"
           },
@@ -14638,30 +15519,30 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "STRING",
-              "value": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"
+              "value": "Noto Sans Devanagari"
             },
             "Website · Tablet": {
               "type": "STRING",
-              "value": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"
+              "value": "Noto Sans Devanagari"
             },
             "Website · Mobile": {
               "type": "STRING",
-              "value": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"
+              "value": "Noto Sans Devanagari"
             },
             "Portal · Desktop": {
               "type": "STRING",
-              "value": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"
+              "value": "Noto Sans Devanagari"
             },
             "Portal · Tablet": {
               "type": "STRING",
-              "value": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"
+              "value": "Noto Sans Devanagari"
             },
             "Portal · Mobile": {
               "type": "STRING",
-              "value": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"
+              "value": "Noto Sans Devanagari"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-family-devanagari)"
           },
@@ -14678,30 +15559,30 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "STRING",
-              "value": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+              "value": "Noto Sans"
             },
             "Website · Tablet": {
               "type": "STRING",
-              "value": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+              "value": "Noto Sans"
             },
             "Website · Mobile": {
               "type": "STRING",
-              "value": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+              "value": "Noto Sans"
             },
             "Portal · Desktop": {
               "type": "STRING",
-              "value": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+              "value": "Noto Sans"
             },
             "Portal · Tablet": {
               "type": "STRING",
-              "value": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+              "value": "Noto Sans"
             },
             "Portal · Mobile": {
               "type": "STRING",
-              "value": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
+              "value": "Noto Sans"
             }
           },
-          "description": "UX4G 3.0 parity: the optical Display cut, for 36px+ headings only (--ux4g-font-family-display). Falls back to Noto Sans, so this token is safe to use before an app opts in to the extra webfont — never load it globally just to satisfy the token. Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "UX4G 3.0 parity: the optical Display cut, for 36px+ headings only (--ux4g-font-family-display). Falls back to Noto Sans, so this token is safe to use before an app opts in to the extra webfont — never load it globally just to satisfy the token. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-family-display)"
           },
@@ -14718,30 +15599,30 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "STRING",
-              "value": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+              "value": "IBM Plex Mono"
             },
             "Website · Tablet": {
               "type": "STRING",
-              "value": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+              "value": "IBM Plex Mono"
             },
             "Website · Mobile": {
               "type": "STRING",
-              "value": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+              "value": "IBM Plex Mono"
             },
             "Portal · Desktop": {
               "type": "STRING",
-              "value": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+              "value": "IBM Plex Mono"
             },
             "Portal · Tablet": {
               "type": "STRING",
-              "value": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+              "value": "IBM Plex Mono"
             },
             "Portal · Mobile": {
               "type": "STRING",
-              "value": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+              "value": "IBM Plex Mono"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Code, identifiers and tabular figures. IBM Plex Mono is the chosen face: open-licensed, wide weight range, unambiguous 0/O and 1/l/I, and Figma resolves it — which the previous value could not. The stack used to lead with `ui-monospace`, a CSS generic that names no font, so the Figma variable was unbindable and consequently went unused. Generic fallbacks follow for surfaces that have not loaded the webfont. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-family-mono)"
           },
@@ -14787,7 +15668,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-weight-regular)"
           },
@@ -14833,7 +15714,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-weight-medium)"
           },
@@ -14879,7 +15760,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-weight-semibold)"
           },
@@ -14925,7 +15806,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-weight-bold)"
           },
@@ -14971,7 +15852,7 @@
               "name": "ref/size/11"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-11)"
           },
@@ -15017,7 +15898,7 @@
               "name": "ref/size/12"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-12)"
           },
@@ -15063,7 +15944,7 @@
               "name": "ref/size/14"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-14)"
           },
@@ -15109,7 +15990,7 @@
               "name": "ref/size/16"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-16)"
           },
@@ -15155,7 +16036,7 @@
               "name": "ref/size/20"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-20)"
           },
@@ -15201,7 +16082,7 @@
               "name": "ref/size/22"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-22)"
           },
@@ -15247,7 +16128,7 @@
               "name": "ref/size/48"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-size-48)"
           },
@@ -15293,7 +16174,7 @@
               "name": "ref/size/16"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-lineHeight-16)"
           },
@@ -15339,7 +16220,7 @@
               "name": "ref/size/20"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-lineHeight-20)"
           },
@@ -15385,7 +16266,7 @@
               "name": "ref/size/24"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-lineHeight-24)"
           },
@@ -15431,7 +16312,7 @@
               "name": "ref/size/28"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-lineHeight-28)"
           },
@@ -15477,7 +16358,7 @@
               "name": "ref/size/56"
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-lineHeight-56)"
           },
@@ -15523,7 +16404,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-font-lineHeight-devanagari)"
           },
@@ -15569,7 +16450,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-1-size)"
           },
@@ -15615,7 +16496,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-1-lh)"
           },
@@ -15661,7 +16542,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-1-para)"
           },
@@ -15707,7 +16588,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-2-size)"
           },
@@ -15753,7 +16634,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-2-lh)"
           },
@@ -15799,7 +16680,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-2-para)"
           },
@@ -15845,7 +16726,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-3-size)"
           },
@@ -15891,7 +16772,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-3-lh)"
           },
@@ -15937,7 +16818,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-3-para)"
           },
@@ -15983,7 +16864,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-4-size)"
           },
@@ -16029,7 +16910,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-4-lh)"
           },
@@ -16075,7 +16956,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-4-para)"
           },
@@ -16121,7 +17002,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-5-size)"
           },
@@ -16167,7 +17048,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-5-lh)"
           },
@@ -16213,7 +17094,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-5-para)"
           },
@@ -16259,7 +17140,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-6-size)"
           },
@@ -16305,7 +17186,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-6-lh)"
           },
@@ -16351,7 +17232,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-6-para)"
           },
@@ -16397,7 +17278,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-1-size)"
           },
@@ -16443,7 +17324,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-1-lh)"
           },
@@ -16489,7 +17370,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-1-para)"
           },
@@ -16535,7 +17416,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-2-size)"
           },
@@ -16581,7 +17462,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-2-lh)"
           },
@@ -16627,7 +17508,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-2-para)"
           },
@@ -16673,7 +17554,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-3-size)"
           },
@@ -16719,7 +17600,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-3-lh)"
           },
@@ -16765,7 +17646,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-3-para)"
           },
@@ -16811,7 +17692,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-4-size)"
           },
@@ -16857,7 +17738,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-4-lh)"
           },
@@ -16903,7 +17784,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-4-para)"
           },
@@ -16949,7 +17830,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-5-size)"
           },
@@ -16995,7 +17876,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-5-lh)"
           },
@@ -17041,7 +17922,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-5-para)"
           },
@@ -17087,7 +17968,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-6-size)"
           },
@@ -17133,7 +18014,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-6-lh)"
           },
@@ -17179,7 +18060,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-headline-6-para)"
           },
@@ -17225,7 +18106,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-title-1-size)"
           },
@@ -17271,7 +18152,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-title-1-lh)"
           },
@@ -17317,7 +18198,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-title-1-para)"
           },
@@ -17363,7 +18244,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-title-2-size)"
           },
@@ -17409,7 +18290,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-title-2-lh)"
           },
@@ -17455,7 +18336,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-title-2-para)"
           },
@@ -17501,7 +18382,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-title-3-size)"
           },
@@ -17547,7 +18428,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-title-3-lh)"
           },
@@ -17593,7 +18474,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-title-3-para)"
           },
@@ -17639,7 +18520,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-body-1-size)"
           },
@@ -17685,7 +18566,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-body-1-lh)"
           },
@@ -17731,7 +18612,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-body-1-para)"
           },
@@ -17777,7 +18658,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-body-2-size)"
           },
@@ -17823,7 +18704,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-body-2-lh)"
           },
@@ -17869,7 +18750,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-body-2-para)"
           },
@@ -17915,7 +18796,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-body-3-size)"
           },
@@ -17961,7 +18842,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-body-3-lh)"
           },
@@ -18007,7 +18888,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-body-3-para)"
           },
@@ -18053,7 +18934,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-label-1-size)"
           },
@@ -18099,7 +18980,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-label-1-lh)"
           },
@@ -18145,7 +19026,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-label-1-para)"
           },
@@ -18191,7 +19072,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-label-2-size)"
           },
@@ -18237,7 +19118,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-label-2-lh)"
           },
@@ -18283,7 +19164,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-label-2-para)"
           },
@@ -18329,7 +19210,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-label-3-size)"
           },
@@ -18375,7 +19256,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-label-3-lh)"
           },
@@ -18421,7 +19302,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--ds-type-label-3-para)"
           },
@@ -18467,7 +19348,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-1-tracking)"
           },
@@ -18513,7 +19394,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-2-tracking)"
           },
@@ -18559,7 +19440,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-3-tracking)"
           },
@@ -18605,7 +19486,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-4-tracking)"
           },
@@ -18651,7 +19532,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-5-tracking)"
           },
@@ -18697,7 +19578,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--ds-type-display-6-tracking)"
           },
@@ -18743,7 +19624,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--ds-type-heading-tracking)"
           },
@@ -18789,7 +19670,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--ds-type-title-tracking)"
           },
@@ -18835,7 +19716,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--ds-type-body-tracking)"
           },
@@ -18881,7 +19762,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.",
+          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--ds-type-label-tracking)"
           },
@@ -20716,14 +21597,14 @@
   ],
   "contrast": {
     "$description": "Contrast classes are MEASURED against each token's own surface, across every brand, and the worst case is what the description states. A token absent from this summary carries no contrast sentence because the prominence ladder does not describe it — see build/contrast-contract.mjs.",
-    "measured": 70,
-    "meets": 51,
+    "measured": 76,
+    "meets": 58,
     "shortfall": [
-      "Color::bg/brand/primary/bold — 2.71:1 vs ≥3:1 (\"bold\")",
-      "Color::bg/brand/primary/subtle — 1.9:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/brand/secondary/bold — 2.15:1 vs ≥3:1 (\"bold\")",
-      "Color::bg/brand/secondary/bolder — 3.94:1 vs ≥4.5:1 (\"bolder\")",
-      "Color::bg/brand/secondary/subtle — 1.69:1 vs ≥3:1 (\"subtle\")",
+      "Color::bg/brand/accent/subtle — 2.18:1 vs ≥3:1 (\"subtle\")",
+      "Color::bg/brand/primary/bold — 2.46:1 vs ≥3:1 (\"bold\")",
+      "Color::bg/brand/primary/subtle — 1.84:1 vs ≥3:1 (\"subtle\")",
+      "Color::bg/brand/secondary/bold — 2.21:1 vs ≥3:1 (\"bold\")",
+      "Color::bg/brand/secondary/subtle — 1.72:1 vs ≥3:1 (\"subtle\")",
       "Color::bg/neutral/bold — 1.25:1 vs ≥3:1 (\"bold\")",
       "Color::bg/neutral/subtle — 1.11:1 vs ≥3:1 (\"subtle\")",
       "Color::bg/status/error/bold — 2.64:1 vs ≥3:1 (\"bold\")",
@@ -20731,8 +21612,7 @@
       "Color::bg/status/error/subtle — 1.91:1 vs ≥3:1 (\"subtle\")",
       "Color::bg/status/info/bold — 2.25:1 vs ≥3:1 (\"bold\")",
       "Color::bg/status/info/subtle — 1.71:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/status/success/bold — 2.01:1 vs ≥3:1 (\"bold\")",
-      "Color::bg/status/success/subtle — 1.64:1 vs ≥3:1 (\"subtle\")",
+      "Color::bg/status/success/subtle — 2.18:1 vs ≥3:1 (\"subtle\")",
       "Color::bg/status/warning/bold — 1.84:1 vs ≥3:1 (\"bold\")",
       "Color::bg/status/warning/bolder — 4.46:1 vs ≥4.5:1 (\"bolder\")",
       "Color::bg/status/warning/subtle — 1.51:1 vs ≥3:1 (\"subtle\")",

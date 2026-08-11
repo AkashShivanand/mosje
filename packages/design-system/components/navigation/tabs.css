@@ -37,7 +37,7 @@
 }
 
 .ds-tabs__tab.is-selected {
-  background-color: var(--ds-gov-navy);
+  background-color: var(--ds-navy);
   color: var(--ds-on-primary);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }

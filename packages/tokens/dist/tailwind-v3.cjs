@@ -4,10 +4,9 @@ module.exports = {
   "theme": {
     "extend": {
       "colors": {
-        "gov-blue": "var(--ds-primary)",
-        "gov-blue-dark": "var(--ds-primary-dark)",
-        "gov-navy": "var(--ds-gov-navy)",
+        "navy": "var(--ds-navy)",
         "primary": "var(--ds-primary)",
+        "primary-dark": "var(--ds-primary-dark)",
         "primary-tonal": "var(--ds-primary-tonal)",
         "success": "var(--ds-success)",
         "success-tonal": "var(--ds-success-tonal)",
@@ -16,7 +15,7 @@ module.exports = {
         "saffron": "var(--ds-saffron)",
         "saffron-light": "var(--ds-saffron-light)",
         "saffron-dark": "var(--ds-saffron-dark)",
-        "gov-yellow": "var(--ds-gov-yellow)",
+        "yellow": "var(--ds-yellow)",
         "ink": "var(--ds-ink)",
         "ink-muted": "var(--ds-ink-muted)",
         "surface": "var(--ds-surface)",

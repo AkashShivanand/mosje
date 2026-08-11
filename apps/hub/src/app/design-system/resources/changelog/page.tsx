@@ -22,9 +22,43 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.13.1",
+    date: "2026-08-11",
+    current: true,
+    changes: [
+      { kind: "Added", text: "v0.13.0 reached the Figma library. 36 variables created: the accentScale ramp (11 steps), its transparent washes (6), the 950 step on all seven chromatic ramps, and the accent semantics bg/brand/accent/* (6) + on/bg/brand/accent/* (6). The library now carries 899 variables across 8 collections" },
+      { kind: "Added", text: "Set equality between the build payload and the live library is now PROVEN per collection by checksum rather than inferred from counts. Six of the eight collections — including Color, all 472 of it — hash identically; Palette and Type differ only by the 36 orphans now itemised in reference/figma-live.json under $orphans. Counting had been hiding two-way drift: the previous snapshot recorded a Component Options collection that no longer exists, and every earlier check looked only for what was MISSING, never for what the library carried that the source does not define" },
+      { kind: "Fixed", text: "The on/* coverage gate asserted a floor (found.length >= 40) and therefore passed while six bg/brand/accent/* fills had no foreground at all — a brand colour wired as far as the palette and stopped. It now derives the expected set from the fills themselves, so a fill that carries content and has no measured ink fails by name. Mutation-tested by deleting a pairing" },
+      { kind: "Added", text: "The six accent foregrounds, each chosen BY MEASUREMENT across both brands rather than assumed from the rung name. Accent flips to white ink at bolder, and its bold rung measures 4.60:1 with dark ink — margins that differ enough from primary that inheriting primary's flip point would have shipped an unreadable pairing" },
+      { kind: "Fixed", text: "The neutral ramp's own $description still advertised a 0-1100 range and --ds-neutral-0…1100 after the 2026-08-11 renumbering retired the 1100 step. Stale prose in the token source, describing a token that no longer exists" },
+      { kind: "Changed", text: "color/neutralScale/1100 no longer exists under that NAME — it was renamed, not deleted, and no binding was detached. An earlier entry recorded this as an unaccounted hard delete with unrecoverable bindings; that was a fair reading of a missing name but it is wrong. The renumbering was applied as a rename CHAIN (1000 -> 950 first to free the name, then 1100 -> 1000), which is the only safe way to renumber in a published library: renaming preserves the variable id, so every binding follows. Verified against ids captured before the write — VariableID:3791:8969 (was 1000) is now 950, VariableID:3791:8970 (was 1100) is now 1000, both re-read by id afterwards and both resolve. A missing name does not imply a missing variable; only an id lookup can tell the two apart" },
+    ],
+  },
+  {
+    version: "v0.13.0",
+    date: "2026-08-11",
+    changes: [
+      { kind: "Fixed", text: "THE COLOUR COLLISION (audit C-02). In the Navy brand, bg/brand/secondary/bold (#66c99b) and bg/status/success/bold (#81c784) measured 0.3 L* and 16 degrees apart — a contrast ratio between them of 1.00:1, so a secondary-action chip and a saved-state chip were the same object on screen. The brand axis was rotating secondary's hue about 100 degrees into territory the success semantic already owned. Secondary and accent are now brand-INVARIANT: only primary changes with data-brand" },
+      { kind: "Added", text: "A hue-separation gate (test/hue-separation.test.mjs) — every colour-family pair, at every matched rung, in every brand. A pair passes on hue OR perceptual distance, because hue alone is both too weak (Blue and Navy are 9 degrees apart and told apart by lightness) and too strong (red and orange are adjacent and can never separate in hue). Verified by reintroducing C-02 and watching it fail" },
+      { kind: "Added", text: "The two SAMAVESH logo colours as first-class brand ramps: secondary = India Saffron #FF671F, accent = India Green #046A38. Both read from the logo, identical in the Figma handoff file and Assets/SAMAVESH Logo.svg. Both brand-invariant, because a logo colour is a constant of the identity, not a variant of it" },
+      { kind: "Changed", text: "The Navy brand's key colour is now the DBIM colour #162F6A, replacing #003366. The DBIM Compliance Audit fails the estate on this twice — checkpoint 3 (icons) and checkpoint 5.6 (footer must be the key colour's darkest shade). The two colours measure deltaE 1.9 apart, so the brand does not visibly move; it just becomes compliant" },
+      { kind: "Changed", text: "Success is now the same green as the accent. Two greens nine degrees apart is a defect whichever token owns them, and a citizen seeing the ministry's own green on a success state is better brand than the leftover Material green it replaced" },
+      { kind: "Added", text: "Ramps are GENERATED, not hand-picked (build/ramp.mjs + build/brand-ramps.mjs). Only the anchors are authored; the other ten steps are derived to even L*, held hue and a single chroma arc. The Navy ramp used to fall 27.4 L* in one step and then crush four rungs into fifteen points — nobody chose that, it is what happens when ten values are picked one at a time. It is now 8.6-11.0 throughout" },
+      { kind: "Changed", text: "Anchors sit at the rung their LIGHTNESS says, not at 500 by convention. #162F6A is L* 32 (a shade) and sits at 600 — the rung that paints the primary button, so the brand's most prominent surface IS the DBIM colour. #FF671F is L* 70 and sits at 400: forced to 500 it put rung 600 at L* 62.6, inside the dead zone where a fill is too dark for dark ink and too light for white and NEITHER reaches 4.5:1" },
+      { kind: "Fixed", text: "bg/brand/secondary/bolder went from 3.94:1 to 4.97:1 and left the known-below-AA ledger; bg/status/success/bold now clears 3:1. Both fell out of the ramp rebuild rather than being chased" },
+      { kind: "Added", text: "Step 950 on every chromatic ramp — 11 steps, matching UX4G 3.0, which we were one short of. 950 is the near-black shade a footer or a boldest fill wants without falling back to pure black" },
+      { kind: "Changed", text: "The neutral endpoints renumbered to match UX4G: 1000 -> 950 and 1100 -> 1000, so pure white is 0 and pure black is 1000. Pure white and black are achromatic and therefore belong to the neutral ramp ONLY — a 'pure black red' is just black. Both renames were proven value-preserving in every selector context before being baselined" },
+      { kind: "Fixed", text: "The alpha overlay tiers are now DERIVED from the ramps. They were 42 hand-written rgba() literals and had rotted exactly as you would expect — still carrying the retired saffron, the retired Material green and the retired navy after the rebuild. Nothing caught it, because a literal has no reference to break. An accent tier was added and secondary is brand-invariant like its ramp" },
+      { kind: "Fixed", text: "accentScale exported only 6 of its 11 steps to Figma — it was missing from RAMP_FOLDER, so it reached the Palette collection only at the rungs the prominence ladder happens to alias. A designer would have found 11 steps of every other ramp and 6 of that one" },
+      { kind: "Changed", text: "gov- dropped from every colour name: gov-blue/gov-blue-dark/gov-blue-tonal/gov-navy/gov-yellow became primary/primary-dark/primary-tonal/navy/yellow, across 330 call sites in 78 files. gov-blue and primary were already two names for one value, so that pair was a merge rather than a remap. A colour is named for what it DOES, not for who owns the system" },
+      { kind: "Changed", text: "The legacy Tier-2 allowlist went 150 -> 35, by NAMING RULES rather than widening exemptions: the palette-scale shape (color/<x>Scale/<step>, 73 entries) and the alpha-tier shape (color/transparent/<family>/<pct>, 42) now parse natively. Of the 35 left, 10 are deliberately-retained source for the revivable dark/hc axis and the other 25 are internal plumbing no app code references" },
+      { kind: "Added", text: "brand/accent as a fourth brand variant in the grammar, and the whole bg/text/border/icon accent family it generates. accent names a specific identity colour rather than a rank, which is why it joined the ordinal words primary/secondary/tertiary instead of becoming a fourth ordinal" },
+      { kind: "Fixed", text: "brand/tonal shifted to rungs 50/100/200 for the brand intent only. The Navy ramp runs darker by design, which made primaryScale.300 a MID tone there rather than a tint: navy 900 on navy 300 measured 4.33:1. The other three intents are brand-invariant and keep their headroom" },
+    ],
+  },
+  {
     version: "v0.12.3",
     date: "2026-08-10",
-    current: true,
     changes: [
       { kind: "Added", text: "icon/size/* — five steps, md=24px being the default <Icon> already ships with. Every component needed an icon size and none had a token to bind, so each hardcoded its own and they drifted" },
       { kind: "Added", text: "focus/width and focus/offset. The focus ring's COLOUR was tokenised long ago and its geometry never was, which left WCAG 2.4.7's most-regulated affordance two-thirds hardcoded. All three parts are now tokens" },
@@ -81,7 +115,7 @@ const RELEASES: Release[] = [
       { kind: "Fixed", text: "Code and Figma had silently disagreed about this layer. Figma held the same tokens as ALIASES, where 85 of them did repaint under Navy, against zero in code — a divergence in the layer that describes buttons, which nothing detected because figma-roundtrip validates the payload against itself. 16 live variables were rebound onto the brand-bearing Palette; both sides now report 101 repainting and 195 brand-invariant, exactly" },
       { kind: "Fixed", text: "The gate that missed all of this. action-contrast.test.mjs resolved only :root — it checked the Blue brand and called that coverage. That was harmless while Navy rendered identically (which was itself the bug), but it would have left all 101 newly-live Navy values unverified. It now runs the full 48-combination matrix per brand; Navy passes AA" },
       { kind: "Added", text: "Two gates so this cannot return: no --sa-cmp-* whose SOURCE is a reference may be emitted as a literal (compared against the source, so the 92 legitimate literals are not flagged), and the component tier must measurably repaint between brands — a chain that bottoms out in something brand-invariant would pass the first check and fail the second" },
-      { kind: "Changed", text: "Nothing that renders today changes. :root is byte-identical; every value that moved is inside [data-brand=navy], and the one component token anything currently consumes — --sa-cmp-badge-beta-bg, the gov-yellow accent — is correctly unchanged. The layer is now correct for whenever it is adopted" },
+      { kind: "Changed", text: "Nothing that renders today changes. :root is byte-identical; every value that moved is inside [data-brand=navy], and the one component token anything currently consumes — --sa-cmp-badge-beta-bg, the yellow accent — is correctly unchanged. The layer is now correct for whenever it is adopted" },
     ],
   },
   {
@@ -327,7 +361,7 @@ const RELEASES: Release[] = [
     date: "2026-06-06",
     changes: [
       { kind: "Added", text: "Initial design system package with Button, Card, Badge, Chip, Avatar" },
-      { kind: "Added", text: "Brand tokens (gov-blue, saffron, navy, gov-yellow) in tokens.css" },
+      { kind: "Added", text: "Brand tokens (primary, saffron, navy, yellow) in tokens.css" },
     ],
   },
 ];

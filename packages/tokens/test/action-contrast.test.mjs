@@ -85,7 +85,7 @@ const ENABLED = ["default", "hover", "active"];
 const AA_TEXT = 4.5;
 
 const surfaceOf = () => parseColor(resolve("--ds-surface"));
-const inverseSurfaceOf = () => parseColor(resolve("--ds-gov-navy"));
+const inverseSurfaceOf = () => parseColor(resolve("--ds-navy"));
 
 function check(prefix, base) {
   const failures = [];
@@ -112,8 +112,8 @@ function check(prefix, base) {
 }
 
 test("every enabled Action combination puts an AA-readable label on its own fill", () => {
-  // Per brand, in full. A label that is readable on gov-blue is not thereby readable on
-  // gov-navy: the two ramps differ at every step, and the component tier now follows them.
+  // Per brand, in full. A label that is readable on the primary blue is not thereby
+  // readable on navy: the two ramps differ at every step, and the component tier follows them.
   for (const brand of BRANDS) {
     CURRENT = brand.decls;
     const { checked, failures } = check("--sa-cmp-action", surfaceOf());
@@ -130,10 +130,10 @@ test("every enabled Action combination puts an AA-readable label on its own fill
 
 test("inverse actions stay AA-readable on a solid brand surface", () => {
   // The inverse qualifier exists for buttons on a solid brand header. Its values are
-  // white-alpha so they work on any brand colour; gov-navy is the darkest surface in the
+  // white-alpha so they work on any brand colour; navy is the darkest surface in the
   // estate and therefore the binding case for the translucent steps.
   const INVERSE_SURFACE = inverseSurfaceOf();
-  assert.ok(INVERSE_SURFACE, "--ds-gov-navy must resolve for this test to mean anything");
+  assert.ok(INVERSE_SURFACE, "--ds-navy must resolve for this test to mean anything");
   const failures = [];
   let checked = 0;
   for (const intent of INTENTS) {

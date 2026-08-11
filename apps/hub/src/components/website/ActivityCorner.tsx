@@ -36,7 +36,7 @@ export function ActivityCorner() {
     <section className="bg-surface-muted">
       <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
         <div className="text-center">
-          <h2 className="text-[32px] font-semibold leading-tight text-gov-blue-dark">
+          <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
             Activity Corner
           </h2>
           <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">

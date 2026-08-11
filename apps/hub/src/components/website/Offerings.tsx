@@ -152,7 +152,7 @@ export function Offerings() {
     <section className="bg-white">
       <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
         <div className="text-center">
-          <h2 className="text-[32px] font-semibold leading-tight text-gov-blue-dark">
+          <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
             Our Offerings
           </h2>
           <p className="mt-3 text-[16px] text-ink-muted">
@@ -177,8 +177,8 @@ export function Offerings() {
                 className={cn(
                   "rounded-full px-6 py-2.5 text-[15px] font-medium transition-colors",
                   isActive
-                    ? "bg-gov-blue text-white shadow-sm"
-                    : "bg-surface-muted text-ink-muted hover:bg-gov-blue/10 hover:text-gov-blue-dark"
+                    ? "bg-primary text-white shadow-sm"
+                    : "bg-surface-muted text-ink-muted hover:bg-primary/10 hover:text-primary-dark"
                 )}
               >
                 {tab.label}

@@ -54,7 +54,7 @@ export function MobileNav({ current }: { current?: string }) {
         aria-expanded={open}
         aria-controls="site-mobile-nav"
         aria-label={open ? "Close menu" : "Open menu"}
-        className="flex h-11 w-11 items-center justify-center rounded-lg text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+        className="flex h-11 w-11 items-center justify-center rounded-lg text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         <Icon name={open ? "close" : "menu"} size={22} aria-hidden />
       </button>
@@ -81,7 +81,7 @@ export function MobileNav({ current }: { current?: string }) {
                     onClick={() => setOpen(false)}
                     className={`flex min-h-11 items-center rounded-lg px-3 text-sm font-medium transition-colors ${
                       active
-                        ? "bg-gov-blue-tonal text-gov-blue-dark"
+                        ? "bg-primary-tonal text-primary-dark"
                         : "text-ink hover:bg-surface-muted"
                     }`}
                   >

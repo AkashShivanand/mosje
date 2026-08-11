@@ -5,7 +5,7 @@
  *
  * These were called `blue-light` and `blue-dark` until 2026-08-07, which read as light and
  * dark THEMES. They never were: both render on LIGHT surfaces and differ only in palette
- * (gov-blue + saffron + warm grey vs gov-navy + green + cool grey). The names were actively
+ * (primary + saffron + warm grey vs navy + green + cool grey). The names were actively
  * misleading — this file used to need a comment explaining that its own ids meant the
  * opposite of what they said. Appearance lives on `data-theme` (light | dark | hc) and the
  * two axes compose.
@@ -31,8 +31,17 @@ export interface ColorMode {
  * and carries no `data-color-mode` attribute.
  */
 export const COLOR_MODES: readonly ColorMode[] = [
-  { id: "blue", label: "Gov Blue", swatch: "#0373df" },
-  { id: "navy", label: "Gov Navy", swatch: "#003366" },
+  { id: "blue", label: "Blue", swatch: "#0373df" },
+  // #162f6a is the DBIM key colour, which replaced #003366 on 2026-08-11. The two are
+  // deltaE 1.9 apart — the same colour to the eye — so this is a compliance fix, not a
+  // restyle, and a THIRD brand for the old navy would be a switch with no visible effect.
+  { id: "navy", label: "Navy", swatch: "#003366" },
+  // The DBIM key colour, added 2026-08-11 as a THIRD brand for evaluation in dev. It measures
+  // deltaE 1.9 from navy — the same colour to the eye — which is precisely why seeing them side
+  // by side beats arguing about it. Deliberately NOT in the Figma library: the Palette
+  // collection's modes are a hardcoded [Blue, Navy] list, so the library keeps two and dev
+  // gets three. Decide, then collapse back to two.
+  { id: "dbim", label: "DBIM Blue", swatch: "#162f6a" },
 ] as const;
 
 /**
@@ -59,7 +68,7 @@ export const LEGACY_COLOR_MODE_IDS: Readonly<Record<string, string>> = {
  *   [...COLOR_MODES, ...UX4G_COLOR_MODES].map((m) => <button onClick={() => setMode(m.id)} />)
  *
  * They exist so UX4G conformance can be demonstrated by flipping one attribute rather
- * than argued about — the MoSJE default (gov-blue, per DBIM) is unchanged either way.
+ * than argued about — the MoSJE default (primary, per DBIM) is unchanged either way.
  */
 export const UX4G_COLOR_MODES: readonly ColorMode[] = [
   { id: "ux4g", label: "UX4G Violet", swatch: "#6a4eff" },

@@ -59,7 +59,7 @@ export default async function UnavailablePage({
             it under{" "}
             <Link
               href="/admin/portals"
-              className="font-semibold text-gov-blue underline-offset-2 hover:underline"
+              className="font-semibold text-primary underline-offset-2 hover:underline"
             >
               Estate registry
             </Link>
@@ -70,14 +70,14 @@ export default async function UnavailablePage({
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
             href="/portals"
-            className="inline-flex items-center gap-2 rounded-lg bg-gov-blue px-4 py-2.5 text-sm font-semibold text-on-primary transition-colors hover:bg-gov-blue-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-on-primary transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Browse the portals
             <Icon name="arrow_forward" size={16} aria-hidden="true" />
           </Link>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-border-strong hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-border-strong hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Back to the estate
           </Link>

@@ -154,7 +154,7 @@ export function DeAddictionMap() {
             type="button"
             onClick={locate}
             disabled={locating}
-            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg bg-gov-blue px-4 text-[14px] font-semibold text-white transition-colors hover:bg-gov-blue-dark disabled:opacity-70"
+            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-[14px] font-semibold text-white transition-colors hover:bg-primary-dark disabled:opacity-70"
           >
             {locating ? <Icon name="progress_activity" size={16} className="animate-spin" aria-hidden /> : <Icon name="my_location" size={16} aria-hidden />}
             {locating ? "Locating…" : "Use my location"}
@@ -168,7 +168,7 @@ export function DeAddictionMap() {
             aria-pressed={type === ""}
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
-              type === "" ? "bg-gov-blue text-white" : "bg-surface-muted text-ink-muted hover:bg-gov-blue/10 hover:text-gov-blue-dark",
+              type === "" ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:bg-primary/10 hover:text-primary-dark",
             )}
           >
             All <span className={type === "" ? "text-white/70" : "text-ink"}>{TOTAL_CENTRES}</span>
@@ -184,7 +184,7 @@ export function DeAddictionMap() {
                 title={CENTRE_TYPE_META[t].label}
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
-                  active ? "bg-gov-blue text-white" : "bg-surface-muted text-ink-muted hover:bg-gov-blue/10 hover:text-gov-blue-dark",
+                  active ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:bg-primary/10 hover:text-primary-dark",
                 )}
               >
                 <span className="h-2 w-2 rounded-full" style={{ background: CENTRE_TYPE_META[t].color }} aria-hidden />
@@ -216,7 +216,7 @@ export function DeAddictionMap() {
                   setUserLoc(null);
                   setSelected(null);
                 }}
-                className="inline-flex items-center gap-1 text-[12px] font-medium text-gov-blue hover:text-gov-blue-dark"
+                className="inline-flex items-center gap-1 text-[12px] font-medium text-primary hover:text-primary-dark"
               >
                 <Icon name="close" size={12} /> Reset
               </button>
@@ -240,7 +240,7 @@ export function DeAddictionMap() {
                       onClick={() => setSelected(c)}
                       className={cn(
                         "flex w-full items-start gap-2.5 px-4 py-3 text-left transition-colors",
-                        active ? "bg-gov-blue/[0.06]" : "hover:bg-surface-muted",
+                        active ? "bg-primary/[0.06]" : "hover:bg-surface-muted",
                       )}
                     >
                       <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: meta.color }} aria-hidden />
@@ -248,7 +248,7 @@ export function DeAddictionMap() {
                         <span className="flex items-center gap-2">
                           <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-ink">{c.name}</span>
                           {dist !== undefined && (
-                            <span className="shrink-0 text-[11px] font-semibold text-gov-blue">
+                            <span className="shrink-0 text-[11px] font-semibold text-primary">
                               {dist < 1 ? "<1 km" : `${Math.round(dist)} km`}
                             </span>
                           )}
@@ -266,7 +266,7 @@ export function DeAddictionMap() {
                             target="_blank"
                             rel="noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="mt-1.5 inline-flex items-center gap-1 text-[12px] font-semibold text-gov-blue hover:text-gov-blue-dark"
+                            className="mt-1.5 inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:text-primary-dark"
                           >
                             <Icon name="navigation" size={12} aria-hidden /> Get directions
                           </a>
@@ -289,9 +289,9 @@ export function DeAddictionMap() {
             href={`tel:${HELPLINE}`}
             className="flex items-center gap-2.5 border-t border-gray-200 bg-white px-4 py-3 transition-colors hover:bg-surface-muted"
           >
-            <Icon name="call" size={16} className="shrink-0 text-gov-blue" aria-hidden />
+            <Icon name="call" size={16} className="shrink-0 text-primary" aria-hidden />
             <span className="text-[12px] text-ink-muted">24×7 Helpline</span>
-            <span className="ml-auto text-[16px] font-bold tracking-tight text-gov-blue-dark">{HELPLINE}</span>
+            <span className="ml-auto text-[16px] font-bold tracking-tight text-primary-dark">{HELPLINE}</span>
           </a>
         </div>
 

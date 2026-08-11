@@ -60,27 +60,42 @@ function pairs() {
 /**
  * Pairings that do not reach AA, pinned so the list can only shrink.
  *
- * All three are the SAME tokens already on the prominence shortfall ledger, reached from the
+ * Both are the SAME tokens already on the prominence shortfall ledger, reached from the
  * other direction: a `bolder` fill that measures below its own rung is also a fill no ink can
  * sit on legibly. That the two measurements agree independently is the useful part — if this
  * list and that one ever diverge, one of them is wrong.
  *
- * The remedy is the fill, not the ink: there is no foreground that rescues a 3.94:1 surface.
+ * The remedy is the fill, not the ink: there is no foreground that rescues a 4.4:1 surface.
+ *
+ * `--sa-on-bg-brand-secondary-bolder` LEFT this list on 2026-08-11: the regenerated saffron
+ * ramp puts its `bolder` rung at 4.62:1, up from 3.94:1. That is what the ratchet is for.
  */
 const KNOWN_BELOW_AA = new Set([
-  "--sa-on-bg-brand-secondary-bolder",
   "--sa-on-bg-status-error-bolder",
   "--sa-on-bg-status-warning-bolder",
 ]);
 
-test("the on/* namespace exists and covers every fill that carries content", () => {
-  const found = pairs();
-  assert.ok(
-    found.length >= 40,
-    `expected the on/* pairings, found ${found.length}. §7.2 promises this namespace; a missing ` +
-      `one means the fills lost their guaranteed foreground.`,
+test("EVERY fill that carries content has a foreground — no floor, an invariant", () => {
+  // This assertion used to be `found.length >= 40`, a FLOOR. It passed while six
+  // `bg/brand/accent/*` fills had no pairing at all: a third brand colour was added, wired as
+  // far as the palette, and stopped. A count cannot notice that — only a comparison against
+  // the fills themselves can. The gate now derives the expected set instead of trusting a
+  // number somebody typed when the number happened to be right.
+  const fills = [...BRANDS[0].ctx.map.keys()].filter(
+    (n) => /^--sa-bg-/.test(n) && !/-inverse|-disabled/.test(n),
   );
-  for (const { on, fill } of found) {
+  const paired = new Set(pairs().map((p) => p.fill));
+  const unpaired = fills.filter((f) => !paired.has(f)).sort();
+  assert.deepEqual(
+    unpaired,
+    [],
+    `${unpaired.length} fill(s) carry content with no guaranteed foreground:\n  ` +
+      `${unpaired.join("\n  ")}\n\nAdd an on/* pairing CHOSEN BY MEASUREMENT — the ink that ` +
+      `clears AA on that fill in the worst brand. Do not raise a threshold to make this pass.`,
+  );
+
+  // And nothing points at a fill that does not exist, which is the same invariant reversed.
+  for (const { on, fill } of pairs()) {
     assert.ok(BRANDS[0].ctx.map.has(fill), `${on} names a fill that does not exist: ${fill}`);
   }
 });

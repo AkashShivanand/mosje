@@ -57,14 +57,14 @@ export function LocatorAccordion() {
                       return (
                         <li key={`${centreKey(c)}#${i}`}>
                           <button type="button" onClick={() => setSelected(c)}
-                            className={`flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors ${active ? "bg-gov-blue/[0.06]" : "hover:bg-white"}`}>
+                            className={`flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors ${active ? "bg-primary/[0.06]" : "hover:bg-white"}`}>
                             <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: CENTRE_TYPE_META[c.type].color }} />
                             <span className="min-w-0">
                               <span className="block truncate text-[13px] font-medium text-ink">{c.name}</span>
                               <span className="block text-[12px] text-ink-muted">{c.type} · {c.district}</span>
                               {active && (
                                 <a href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}
-                                  className="mt-1 inline-flex items-center gap-1 text-[12px] font-semibold text-gov-blue"><Icon name="navigation" size={12} /> Directions</a>
+                                  className="mt-1 inline-flex items-center gap-1 text-[12px] font-semibold text-primary"><Icon name="navigation" size={12} /> Directions</a>
                               )}
                             </span>
                           </button>

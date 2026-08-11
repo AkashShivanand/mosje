@@ -13,8 +13,19 @@ Target file: **${ARGUMENTS:-https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/
 > silently edits a dead library. Corrected 2026-08-10 after this pointer sent an audit to the
 > wrong file: `T3bk…` has 176 variables under `Color Styles` / `Text Styles` / `Misc`, and
 > `qyzT…` has 261 with no `Theme` collection and the pre-rename `Blue - Light` / `Blue - Dark`
-> modes. The canonical file has **690** variables across eight collections. Check the count
-> before you write.
+> modes. The canonical file has **899** variables across eight collections (2026-08-11).
+> Check the count before you write.
+
+> **A missing NAME is not a missing VARIABLE.** Renaming a variable in Figma preserves its
+> id, so every binding follows it; deleting one detaches every binding and cannot be undone
+> by re-creating the name, because the replacement gets a new id. A name-only diff — which
+> is all `reference/figma-live.json` stores — renders those two identically. **Never conclude
+> a variable was deleted from its absence in a name list.** Resolve the id with
+> `figma.variables.getVariableByIdAsync(id)`: if it resolves, it was renamed. This is not
+> hypothetical — on 2026-08-11 the neutral endpoints were renumbered by a two-step rename
+> chain (`1000 -> 950`, then `1100 -> 1000`) and were reported as an unaccounted hard delete
+> with unrecoverable bindings. Nothing had been lost. Capture ids *before* a write if you
+> intend to verify one afterwards.
 
 **Source of truth:** `packages/tokens/src/*.json` — DTCG JSON in 3 tiers:
 `primitive.json` (raw palette/scales, private) → `semantic.json` (the public `--ds-*`/`--sa-*` contract, what apps consume) → `component.json` (resolves to semantic). Style Dictionary v4 compiles these into `tokens.css`, `tokens.ts`, the Tailwind v3/v4 outputs, and a **Figma DTCG export** (`packages/tokens/dist/figma.tokens.json`).

@@ -39,6 +39,20 @@ const actual = resolveContract(cssText);
  * from this list — the compat layer was retargeted, not renamed.
  */
 const RENAMES = {
+  // 2026-08-11 — `gov-` dropped from every colour name (gov-blue/gov-blue-dark/gov-blue-tonal/
+  // gov-navy/gov-yellow -> primary/primary-dark/primary-tonal/navy/yellow, 330 call sites).
+  // A colour is named for what it DOES in the system, not for who owns the system, and the
+  // prefix carried no information: every colour here is a government colour. `gov-blue` and
+  // `primary` were already the same value, so that pair was a merge, not a remap. The two
+  // --ds-* renames were PROVEN value-preserving here before being baselined, so their
+  // entries are deleted per the note above.
+
+  // 2026-08-11 — the neutral endpoints renumbered to match UX4G 3.0 (pure white at `0`, pure
+  // black at `1000`, near-black shade at `950`); we had them one slot high. All six were
+  // PROVEN value-preserving here first — old name's old value === new name's new value, in
+  // every selector context — and only then baselined, so their entries are deleted per the
+  // note above. The proof is in this commit, not in a list that would otherwise only grow.
+
   // NOTE — the 2026-08-10 value-naming of the type primitives (`font/size/400` -> `font/size/16`)
   // is deliberately NOT listed here, because it was a rename AND a unit change: the steps now
   // alias the new `size/*` scale, which carries UX4G's rem values. RENAMES asserts the old and

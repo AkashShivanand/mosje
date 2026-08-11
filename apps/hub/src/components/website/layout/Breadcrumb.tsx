@@ -12,7 +12,7 @@ export function Breadcrumb({ items }: { items: Crumb[] }) {
     <nav aria-label="Breadcrumb">
       <ol className="flex flex-wrap items-center gap-1.5 text-[13px] text-ink-muted">
         <li className="flex items-center gap-1.5">
-          <Link href="/website" className="flex items-center gap-1 hover:text-gov-blue hover:underline">
+          <Link href="/website" className="flex items-center gap-1 hover:text-primary hover:underline">
             <Icon name="home" size={14} />
             <span>Home</span>
           </Link>
@@ -23,7 +23,7 @@ export function Breadcrumb({ items }: { items: Crumb[] }) {
             <li key={`${c.label}-${i}`} className="flex items-center gap-1.5">
               <Icon name="keyboard_arrow_right" size={14} className="text-gray-400" aria-hidden="true" />
               {c.href && !isLast ? (
-                <Link href={c.href} className="hover:text-gov-blue hover:underline">
+                <Link href={c.href} className="hover:text-primary hover:underline">
                   {c.label}
                 </Link>
               ) : (

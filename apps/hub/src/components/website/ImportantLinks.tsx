@@ -47,7 +47,7 @@ export function ImportantLinks() {
         aria-haspopup="dialog"
         aria-expanded={isOpen}
         onClick={() => setIsOpen(true)}
-        className="fixed right-0 top-[42%] z-[1002] flex flex-col items-center gap-2 rounded-l-lg bg-gov-blue px-2 py-4 text-white shadow-md transition-colors hover:bg-gov-blue-dark"
+        className="fixed right-0 top-[42%] z-[1002] flex flex-col items-center gap-2 rounded-l-lg bg-primary px-2 py-4 text-white shadow-md transition-colors hover:bg-primary-dark"
       >
         <Icon name="link" size={20} aria-hidden="true" />
         <span
@@ -72,7 +72,7 @@ export function ImportantLinks() {
           />
 
           <div className="relative z-10 flex w-full max-w-lg flex-col overflow-hidden rounded-xl bg-white shadow-2xl">
-            <div className="flex items-center justify-between gap-3 bg-gov-blue px-5 py-4">
+            <div className="flex items-center justify-between gap-3 bg-primary px-5 py-4">
               <h2
                 id="important-links-title"
                 className="text-[18px] font-semibold text-white"
@@ -102,10 +102,10 @@ export function ImportantLinks() {
                     href={link.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-between gap-3 px-5 py-3.5 text-[15px] font-medium text-ink transition-colors hover:bg-surface-muted hover:text-gov-blue"
+                    className="flex items-center justify-between gap-3 px-5 py-3.5 text-[15px] font-medium text-ink transition-colors hover:bg-surface-muted hover:text-primary"
                   >
                     <span>{link.label}</span>
-                    <Icon name="open_in_new" size={16} className="shrink-0 text-gov-blue" aria-hidden="true" />
+                    <Icon name="open_in_new" size={16} className="shrink-0 text-primary" aria-hidden="true" />
                   </a>
                 </li>
               ))}

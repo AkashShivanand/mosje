@@ -6,7 +6,7 @@
 import { useId, type CSSProperties, type ReactNode } from "react";
 
 export const C = {
-  navy:  "var(--ds-gov-navy)",
+  navy:  "var(--ds-navy)",
   blue:  "var(--ds-primary)",
   blue2: "var(--ds-primary-400)",
   green: "var(--ds-success)",

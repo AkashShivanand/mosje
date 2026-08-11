@@ -12,233 +12,31 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-10 · System version: v1.12.5 (SIX GAPS CLOSED — each of these existed
-  as a hardcoded literal before it was a token, which is exactly what a token system is meant to
-  remove. icon/size/* (5; md=24px is the estate default <Icon> ships with, and every component
-  had been hardcoding its own). focus/width + focus/offset — the ring's COLOUR was tokenised long
-  before its geometry, so WCAG 2.4.7's most-regulated affordance was two-thirds hardcoded.
-  container/* (5) including the 1280px content width CLAUDE.md mandates estate-wide, which lived
-  only as a literal. elevation/* (6) — a semantic layer over the raw shadow ramp, so a card
-  versus a modal is chosen by WHAT THE SURFACE IS rather than by how deep the shadow looks; CSS
-  only, because Figma models shadows as EFFECT STYLES not variables, and that exclusion is now
-  asserted to stay explained. motion/{enter,exit,emphasis} pairing a duration with the easing
-  that belongs to it — entering decelerates and may take its time, leaving accelerates and gets
-  out of the way; a bare duration loses that. control/{radius,border/width}, because density
-  moved a control's SIZE while its SHAPE stayed hardcoded. Figma routing became TYPE-AWARE in the
-  process: focus, icon and control each own both a colour and a measurement, so routing by root
-  alone had put five FLOATs in the colour collection. 865 variables, 102 tests.
-  v1.12.4: (USAGE GUIDANCE — every semantic token now
-  says WHEN to reach for it, not only what it is worth. Descriptions were a measured contrast
-  ratio plus, at best, a two-word label ("Hovered rows, quiet panels"): rigorous and nearly
-  useless for choosing between neighbours. UX4G's Figma does the opposite ("Use when the tonal
-  button's action is not available") — worse evidence, much better guidance. Both halves now ship:
-  what it is FOR, then what it is WORTH. 417 variables had NO description; 7 do now, and those are
-  deliberate. The vocabulary lives in ONE module (build/usage-guidance.mjs) derived from the path,
-  not 400 hand-written strings that would drift apart unnoticed. ALSO FOUND AND FIXED: the Tier-2
-  generator had been UNRUNNABLE since the ordinal-ladder rename — it validates every path and
-  exits before writing, and five put() calls still used retired rung names, so
-  src/system.generated.json said "GENERATED — do not edit" while being hand-maintained. Both
-  generators are now gated by a test that runs them and diffs the output. CAVEAT: the Figma push
-  computed guidance in-plugin and its prose differs from the module by 1-4 characters on ~330
-  variables; the build is authoritative and a faithful re-push is queued.
-  v1.12.3: (ADOPTED FROM UX4G — the three conventions
-  where UX4G was plainly better, plus the one scale we simply lacked. (1) VALUE-NAMED type
-  primitives: `--sa-ref-font-size-400` told you nothing, `--sa-ref-font-size-16` cannot be
-  misread, which is UX4G's convention and Tailwind's and Spectrum's. (2) A general `size/*` scale
-  — UX4G's 20 steps at their exact rem values, plus 22 and 44 as a SAMAVESH superset — and font
-  sizes now ALIAS it, exactly as UX4G's `fs-16 -> size-16` does, so a px value has one definition
-  instead of one per namespace. (3) `breakpoint/*`, which matters less as a token than as a fix:
-  360/768/1280 were restated as literals in TWO build files, and the fluid type curve now reads
-  the token in both, gated by a test that fails if a literal returns. (4) `blur/*` (8), UX4G
-  verbatim, which we had none of. NOT adopted: UX4G's 116 utility-value tokens
-  (`--ux4g-object-fit-cover: cover`) — a CSS keyword with a variable wrapped round it is not a
-  design decision, and copying them would inflate the count while buying nothing. The px->rem
-  shift on the raw type steps is a UNIT change, not a rename, and is recorded as such: nothing
-  renders from those tokens, and their one consumer is the UX4G parity layer, where rem is what
-  UX4G's own contract says. Conformance is unaffected — all 755 names still emit.
-  v1.12.2: (INVENTORY COMPLETED — the four scales the
-  spec promised and never built now exist. NEW: border/width (5) and opacity (14) at UX4G's exact
-  values, the z ladder (8, Bootstrap's numbers that UX4G inherited and third-party CSS already
-  assumes), layer/* (8, Carbon's nestable surfaces) and on/* (40). Every on/* pairing was CHOSEN BY
-  MEASUREMENT — the ink that clears AA on that fill in the WORST brand — and §9.3's
-  on-pair-contrast test finally exists to hold it; three pairings sit below AA and are the SAME
-  tokens as the prominence shortfall ledger, reached independently, which is asserted rather than
-  assumed. Density went from ONE variable to 8, so the axis moves control padding, gaps and row
-  heights instead of a single height. REMOVED: the dead fixed 5-role type scale (0 consumers,
-  shadowed the fluid scale under a friendlier name) — renamed to deprecated/* in Figma rather than
-  deleted, because a binding in a consuming file cannot be ruled out from inside a published
-  library. NEW Figma collection `Static` for the unitless scales — the one place §8.4's design was
-  buildable, precisely because those tokens are new and nothing is bound to them. 267 variables
-  scoped, so a colour is no longer offered for corner radius; ref/z/* hidden (no canvas property,
-  provably unbound). Blanket-hiding ref/* was NOT done and should not be: ref/color/ink/dark alone
-  carries 1,143 bindings, and un-publishing a bound variable strands it. Also fixed a test-suite
-  RACE that made results non-deterministic — brand-contrast rebuilds dist/ under another brand
-  while node --test parallelises across files; the suite now runs serially.
-  v1.12.1: (COMPONENT TIER FOLLOWS THE BRAND — all
-  296 `--sa-cmp-*` shipped as frozen hexes, so the entire component layer ignored `data-brand`:
-  `--sa-cmp-action-brand-primary-default-bg` was #025fb8 under Blue AND under Navy — the primary
-  button never changed brand. The CSS format handed var() chains only to system.generated.json
-  and Tier 3 fell through to the resolved literal. The SOURCE was never at fault: Tier 3 is 196
-  references plus 92 deliberate literals (white-alpha inverse variants and transparent fills,
-  correctly brand-invariant). Two fixes were needed, not one — the format now emits Tier-3 chains,
-  AND re-assertion inside an axis block became TRANSITIVE, because a chain three deep
-  (cmp -> bg/brand/primary/bolder -> color/primaryScale/600) is not reached by a single pass.
-  101 component tokens now repaint under Navy, up from 0. Figma held the same tokens as ALIASES
-  where 85 repainted, so the two sides had silently disagreed about the layer that describes
-  buttons; 16 live variables were rebound and both now report 101 repainting / 195 invariant,
-  exactly. :root is byte-identical — the only values that moved are inside [data-brand=navy], and
-  the one Tier-3 token anything currently consumes (--sa-cmp-badge-beta-bg, gov-yellow) is
-  correctly unchanged. Also fixed the gate that missed all of this: action-contrast.test.mjs
-  resolved only :root — it checked Blue and called that coverage — and now runs the full matrix
-  per brand. Navy passes AA.
-  v1.12.0: (UX4G WIDGET v3.28 — the accessibility
-  widget is upgraded from `accessibility-beta-v1.15`, and the workaround that made every page
-  load at 110% zoom with three features falsely active is deleted rather than corrected, because
-  v3.x fixes the null dereference that forced it. The brand skin now covers ~13 hardcoded violets
-  that `--color-dark-blue-1` never reached — overriding the variable alone left the panel half
-  violet. Telemetry new in v3.28 is OFF by default: it beacons the full URL of every page view,
-  which on an authenticated portal can carry beneficiary identifiers. See the `analytics` prop.
-  Two icons bake their colour into an SVG `data:` URI and stay violet by design — recolouring
-  them would hardcode a brand hex in a multi-brand estate. The keyboard shortcut is now
-  platform-aware: v3.28 advertises and binds Ctrl+F2, which macOS reserves for the menu bar and
-  which needs `fn` on Apple keyboards, so Macs get `⌘⌥A` — relabelled on the trigger and appended
-  to its aria-label. Deliberately NOT `⌃⌥`, which is VoiceOver's modifier. Windows and Linux keep
-  Ctrl+F2.) v1.11.7 (ORDINAL LADDER — the prominence scale is
-  renamed and now actually ORDERS. UX4G's `base · soft · subtle · emphasis · strong · stronger`
-  did not: `subtle` sat louder than `soft` while reading quieter, and `base` was quietest of all
-  while reading like the default. The ladder is now `base · subtler · subtle · bold · bolder ·
-  boldest` for fills and `subtler · subtle · base · bolder · boldest` for ink — Atlassian's shipped
-  pattern, not a private scale. Ink adopts the SAME words, which finally dissolves the
-  `primary`/`secondary`/`tertiary` overload: those three are variants and nothing else now, so the
-  collision cannot be spelled, and the three `brand:` entries are gone from KNOWN_AMBIGUITIES.
-  `base` is the canonical value rather than a loudness, which is why it sits at a different rung
-  per ladder — the ordinary fill is the quietest thing on the page, the ordinary ink is mid-way.
-  Sharing words forced the contrast contract to become PER-LADDER: `subtle` is a quiet tonal chip
-  on a fill (≥3:1, WCAG 1.4.11) and a caption on ink (≥4.5:1, 1.4.3), and one flat table could
-  only ever be right about one of them. 34 names moved, all byte-identical, pinned by
-  visual-contract.test.mjs. Figma collection names also dropped their tier-number prefixes —
-  redundant once tier moved into the variable path, and six of seven read '2 ·' anyway.
-  v1.11.8: (FIGMA STRUCTURE — the library is canonical
-  end to end. All 691 variables renamed IN PLACE to their DTCG paths, so a Figma variable name IS
-  its token path: `bg/neutral/subtle`, `ref/space/md`, `cmp/action/brand/primary/hover/bg`.
-  Collections are tier-ordered: 1 · Palette, 2 · Color, 2 · Space, 2 · Type, 2 · Radius, 2 · Motion,
-  2 · Density. RENAME ONLY, never recreate: Figma refuses to move a variable between collections
-  (variableCollectionId is get-only, probed not assumed), and this is a PUBLISHED library whose
-  consumers are other files — so a delete could not be shown to be safe from inside it. Renaming
-  preserves the variable id, so every binding followed automatically; tier therefore lives in the
-  NAME (ref/ … cmp/), which Figma's picker navigates exactly like a collection. 40 tokens got a
-  Figma home for the first time: the 38 data-viz tokens and the two Devanagari type tokens, whose
-  old names collided. Source paths were canonicalised FIRST so the projection would not import
-  naming debt — `spacing/*`→`space/*`, `color/chart/*`→`chart/*` (spec §11.4, decided but never
-  done), brand ramps `light|dark`→`blue|navy` (§4.2: palettes, not appearance). The grammar
-  allowlist is now ITEMISED (150 paths) instead of four ROOTS, which had exempted every future
-  token under them too. NOTHING RENDERS DIFFERENTLY — proven by visual-contract.test.mjs. Five
-  variables remain uncreatable in Figma by construction: type/*/weight is a FLOAT in code and a
-  STRING style name in Figma, and Figma rejects an alias across resolved types.
-  v1.11.7: (CONTRAST CLAIMS: the Figma library was
-  publishing 322 WCAG contrast guarantees that nothing had measured, produced by a substring scan
-  of the token path. 192 sat on Tier-3 Action/* variables, which have no prominence slot;
-  Background/Brand/Primary/Base claimed "body and heading text" because `primary` is a brand
-  VARIANT that spells an ink rung; motion/duration-base, a NUMBER, claimed a contrast class. Of the
-  41 measurable claims, 23 were false. A class is now a MEASUREMENT: resolved through the alias
-  chain, composited if translucent, measured against its own surface across every brand, worst case
-  published. The permission sentence is added only where the threshold is met. Text and icon tokens
-  can no longer be silent — where the ladder has no rung, WCAG 1.4.3 / 1.4.11 apply. Enforced by
-  test/prominence-contract.test.mjs (spec §9.2, previously unwritten) with a 19-token shortfall
-  ledger that may only shrink. NOTHING RENDERS DIFFERENTLY — description-only, proven by
-  visual-contract.test.mjs. The Figma library needs republishing for the corrected descriptions to
-  reach designers. v1.11.3: (FIGMA SYNC, second pass: the library now
-  v1.11.6 (DEMODOCK REDESIGN: the footer disclaimer
-  row ("Demo tooling — not part of the product") is gone — the dock is unambiguous demo chrome by
-  context, and the row was pure noise. The Colour tab's body min-height no longer collapses when a
-  short tab replaces a long one, so switching tabs doesn't visibly resize the panel. Colour is now a
-  plain row of brand-palette swatches driven directly by `useColorMode()` — no label, no pill track
-  — and `ColorModeSwitcher` is **removed from the design system entirely** (deleted from
-  `foundations/`, the barrel, and Storybook); an app that still wants a standalone brand-mode
-  control builds one from `useColorMode()` the same way DemoDock's Colour tab now does. Sign in only
-  renders on an actual login route (`isLoginRoute`: path ends in `/login`, `/login-otp` or
-  `/sign-in`) rather than anywhere under a portal with a demo account set, and when it renders it is
-  the first tab and the one selected on open. Open/close and swatch selection are animated
-  (CSS-only, token durations/easings, `prefers-reduced-motion` respected). v1.11.5 (DEMO TOOLING
-  CONSOLIDATED: `AppSwitcher`
-  removed — it hand-rolled a duplicate of `ColorModeSwitcher` and was mounted as mandatory
-  per-portal navigation. Replaced by `DemoDock`, one floating console mounted exactly once by the
-  hub root layout, tabbed Apps/Colour/Sign in, gated estate-wide by `NEXT_PUBLIC_DEMO_TOOLS`
-  (default ON). `AppSwitcherPanel` and `DemoAccountsPanel` extracted as reusable panel content;
-  `DemoFab` kept, now sharing `DemoAccountsPanel` with `DemoDock` instead of its own table. Demo
-  credentials moved from per-page consts into a pathname-keyed registry, `DEMO_ACCOUNTS` in
-  `packages/design-system/demo/demo-accounts.ts` — now the source of truth over
-  `.claude/rules/portal-login-demos.md`'s table. `AppEntry.group` gained `"Reports"`.
-  v1.11.4: (APPEARANCE AXIS REMOVED: `data-theme`
-  (light/dark/hc) no longer exists. Figma's Theme collection is single-mode and `tokens.css` emits
-  no `[data-theme]` block. The UX4G accessibility widget is the estate's single canonical dark and
-  high-contrast mechanism — it applies its own `.dark-mode` class and never read `data-theme`, so
-  this was a second parallel mechanism nothing consumed. Verified no-op: zero value drift in every
-  surviving selector context. Removed three dead switches (gate header, docs header, playground),
-  the Storybook theme picker, two theme modules, the no-flash script and the orphaned CSS; corrected
-  Storybook's pre-rename brand labels to Blue/Navy. Also normalised 33 Figma alphas stored as 8-bit
-  n/255 values rather than clean percentages (max shift 0.16pp). v1.11.3: (FIGMA SYNC, second pass: the library now
-  matches the code on Spacing (49), Theme (374), Border Radius, Motion and Density, and on all 117
-  Color names the exporter emits. Created 61 missing variables (Spacing 15->49, Typography 79->106);
-  renamed 28 in place so ids and bindings survived; retired 8 unused Color leftovers (149->141).
-  TWO DELIBERATE NON-GAPS: the 24 extra Color names are Figma-native primitives designers bind to
-  directly and the exporter withholds them on purpose; the 5 type/*-weight variables are absent
-  because Figma models font weight as a STRING style name while the code uses a numeric FLOAT, and
-  Figma rejects an alias across types. Also fixed a silent catch-all in the exporter that filed 13
-  px-valued numbers under font-family/. The library needs republishing for any of this to reach
-  consumers. v1.11.2: (FIGMA SYNC: the SAMAVESH library had four
-  variable names living in BOTH the Color and Theme collections, left over from an earlier
-  hand-migration. All 504 live bindings were rebound onto the Theme copies and the Color leftovers
-  removed; Color 153 -> 149. `Focus/Ring` stays in both on purpose — it is a brand-source companion
-  the appearance layer consumes. Two leftovers were also MISLABELLED: Color's
-  Background/Brand/Primary/Subtle held ramp step 50, which the prominence ladder calls `base`, and
-  Strong held Source rather than 600. The Theme copies already matched the ladder, so retiring the
-  leftovers brings Figma and dist/tokens.css into token-for-token agreement and raises white-on-brand
-  contrast from 4.64:1 to 6.30:1 (Blue) and 12.61:1 to 14.22:1 (Navy). The Figma library needs
-  republishing for consumers to pick this up. v1.11.1: (TOKEN GRAMMAR: `default` now means
-  exactly one thing — a state. It previously occupied three slot dictionaries at once
-  (prominence, state, link variant), so the parser bound it greedily and text/link/visited/default
-  parsed as a prominence, losing the state it spelled. The prominence canonical is now `base`
-  (`--sa-bg-neutral-base`) and the link variant is now `brand` (`--sa-text-link-brand-default`).
-  NOTHING RENDERS DIFFERENTLY — a rename, not a redesign: all 27 moved names resolve
-  byte-identically in all 7 selector contexts, pinned by test/visual-contract.test.mjs, and the
-  `--ds-*` names app code uses are unchanged. `--ux4g-*` names are unchanged too and sit OUTSIDE
-  the contrast contract by construction: an alias preserves UX4G's VALUE, not our rung. Two slot
-  ambiguities remain, pinned by test/slot-disjointness.test.mjs — see spec §5.1c/§8.1a.
-  v1.11.0: The estate is off lucide-react and off
-  shadcn/Radix entirely. Every icon is Material Symbols Rounded via <Icon> — 668 call sites
-  across 239 files — and SidebarNavItem.icon is now a Material Symbols NAME STRING, not a
-  component, so nav configs stay serialisable. NEW components: Tooltip (WCAG 1.4.13 —
-  dismissible, hoverable, persistent; portalled at z-index 90 so Card/DataTable overflow can't
-  clip it); Skeleton/SkeletonText/SkeletonRow; Label (standalone, for controls outside
-  FormField); LiveRegion + useLiveRegion; SectionTitle. Input gains leftIcon/rightIcon — a bare
-  Input still renders with no wrapper. FIXED: CardTitle painted at 32px because it referenced
-  the Headline-1 alias while its own fallback claimed 20px; it is now bound to the canonical
-  --ds-type-title-1-size. Icon accepts a style prop. NOTE the legacy --ds-text-title-* aliases
-  are still mis-mapped to headline-2 — use the canonical --ds-type-<role>-size tokens.
-  v1.10.0: SlaProgressIndicator — Right to
-  Service Act time-remaining, three variants, seven states including a neutral PAUSED clock and
-  MISSED as distinct from BREACHED; pure logic in utils/sla.ts. v1.9.0: (Type is now sized in REM, not px: a
-  reader who raises their browser's default font size without zooming now gets larger text —
-  a px scale ignored them. Renders identically at the 16px default, proven by test. NEW
-  components: PasswordInput (reveal toggle — use for every password field in the estate;
-  real type="button" so it cannot submit, action-named label, browser's own reveal
-  suppressed); AadhaarInput / OtpInput / PanInput (UX4G 3.0 identity controls) + pure
-  validators in utils/india-id.ts; Aadhaar is Verhoeff-checked and masked to its last four
-  digits by default per DPDP Act 2023 / UIDAI. FIXED: the dark theme shipped a primary button
-  whose white label sat at 3.77:1 — below AA — since the ramp step was chosen for the link
-  role, not the fill; the contrast gate now sweeps every colour mode AND theme, not just
-  :root, and covers the hover state. v1.8.0: UX4G 3.0 adopted as the foundation.
-  New: the opt-in `--ux4g-*` parity layer (`@mosje/design-system/ux4g.css`, all 755 UX4G tokens
-  resolved onto SAMAVESH — structure at UX4G's exact values, colour role-mapped to the MoSJE
-  palette) plus `ux4g-light`/`ux4g-dark` colour modes carrying UX4G's literal palette. Core
-  additions: UX4G's four semantic spacing role families (`--ds-inline/stack/padding/section-*`)
-  — prefer these over the raw t-shirt scale; `--ds-spacing-10xl/11xl`; a 6-level shadow ramp
-  (adds `none`/`sm`/`md`); `--ds-font-display` (Noto Sans Display, 36px+). FIXED: the
-  `[data-surface="portal"]` block did not re-assert the `--ds-text-*`/`--ds-leading-*` aliases,
-  so every natively-mounted portal rendered the WEBSITE type scale (display headings to 80px
-  instead of 56px) — alias re-assertion is now targeted per block, which also cut tokens.css
-  from 92 KB to 60 KB. v1.7.2: Text-entry controls take a hard 16px floor below 768px: iOS Safari zooms any focused control under 16px and does not zoom back out, and the fluid ramp put body-1 at ~14px on a phone. Desktop density unchanged. v1.7.1: `SideSheet` gains `side="left"` for navigation drawers, so portal shells can collapse a fixed sidebar into a drawer on small screens instead of squeezing the page. `DeclarationCheckbox` attestation row now meets the 44px touch floor. v1.7.0: Adds three components for field reporting with sign-off: `GeoPhotoInput` (EXIF/device geo-tagging + auto-downscale), `DeclarationCheckbox` (statutory certification panel), `ApprovalTimeline` (multi-tier approval audit trail). No token values changed. v1.6.2: Theming: `[data-color-mode="…"]` blocks now re-declare the `--ds-*` aliases, exactly as `[data-theme="…"]` blocks already did, so colour-mode "islands" repaint a nested subtree instead of only flipping `--sa-*` primitives. Fixed in the generator `packages/tokens/build/formats/legacy-ds-css.mjs`; surfaced when portals mounted natively in the hub and `data-brand` moved off `<html>` onto a wrapper. No token values changed. v1.6.1: Icon loading: icons.css now declares an inline @font-face (pinned gstatic woff2) instead of an @import, so the documented `import "@mosje/design-system/icons.css"` finally loads the font under Next/Turbopack — no per-app <link> hack. Typography: hyphenated Portal-DS role names — display-1…label-3; added -para (paragraph-spacing) + -tracking (letter-spacing) fluid props so code ↔ SAMAVESH Figma are at full parity. v1.6.0: two-surface fluid type via data-surface=website|portal, 21 role tokens as clamp(min@360px, fluid, max@1280px). v1.5.0: Figma→code colour sync, mode-aware Blue-Light/Blue-Dark, danger-strong #B8382F)
+  Last reviewed: 2026-08-11 · System version: v0.13.1 (v0.13.0 IS NOW LIVE IN FIGMA —
+  36 variables created, 899 total across 8 collections, and set equality with the build
+  payload is PROVEN per collection by checksum rather than inferred from counts. The six
+  accent foregrounds were chosen BY MEASUREMENT, not by rung name: accent flips to white
+  ink at `bolder` and its `bold` rung sits at 4.60:1, so inheriting primary's flip point
+  would have shipped an unreadable pairing. The `on/*` coverage gate no longer asserts a
+  floor — it derives the expected set from the fills, which is what a count could never do.
+  NOTHING WAS DELETED: the neutral endpoints were renumbered by a two-step RENAME CHAIN
+  with ids preserved, so no binding moved. An earlier note here called that a hard delete;
+  it was inferred from a missing NAME, which cannot distinguish a rename from a deletion —
+  only an id lookup can. See $incidents in packages/tokens/reference/figma-live.json.)
+
+  System version: v0.13.0 (THE COLOUR LAYER WAS REBUILT.
+  Audit finding C-02 is closed: in the Navy brand, bg/brand/secondary/bold and
+  bg/status/success/bold measured 1.00:1 apart — a secondary-action chip and a saved-state
+  chip were the same object. Secondary and accent are now brand-INVARIANT and only PRIMARY
+  changes with data-brand. The two SAMAVESH logo colours are first-class ramps (India Saffron
+  #FF671F, India Green #046A38), success is unified onto that same green, and Navy's key
+  colour is the DBIM #162F6A that the DBIM audit fails the estate on twice. Ramps are now
+  GENERATED from anchors by one rule (build/ramp.mjs) rather than hand-picked — the Navy ramp
+  used to fall 27.4 L* in one step and crush four rungs into fifteen points. Every chromatic
+  ramp gained step 950 for UX4G parity (11 steps) and the neutral endpoints renumbered so pure
+  white is 0 and pure black is 1000. `gov-` was dropped from every colour name across 330 call
+  sites. A hue-separation gate now makes the C-02 class of defect unshippable.)
+
 -->
 
 # SAMAVESH Design System — Specification & AI Design Context
@@ -283,7 +81,7 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 
 | Axis | Attribute | Values | Meaning |
 | :--- | :--- | :--- | :--- |
-| **Brand** | `data-brand` | `blue` (default), `navy` | Two peer brand palettes, BOTH on light surfaces — `blue` is gov-blue + saffron + warm grey, `navy` is gov-navy + green + cool grey. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. In Figma they are the brand half of the `2 · Color` collection's `Brand × Theme` modes. Selects the whole mode-aware palette: **primary** (blue↔navy), **secondary** (saffron↔green), **neutral** greys (warm↔cool), and the primary/secondary/neutral **transparent** tiers. |
+| **Brand** | `data-brand` | `blue` (default), `navy` | Two peer brand palettes, BOTH on light surfaces. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. **Since 2026-08-11 a brand swap changes the PRIMARY ramp and the neutral greys, and nothing else** — `blue` is `#0373DF` + warm grey, `navy` is the DBIM key colour `#162F6A` + cool grey. **Secondary (India Saffron `#FF671F`) and accent (India Green `#046A38`) are brand-INVARIANT**: both are SAMAVESH logo colours, so they are constants of the identity rather than variants of it. Navy used to swap secondary to green, which landed it 1.00:1 from the success colour — see the changelog for audit C-02. |
 | ~~Appearance~~ | ~~`data-theme`~~ | **REMOVED 2026-08-10** | Dark and high-contrast are owned entirely by the UX4G accessibility widget, which applies its own `.dark-mode` class to `<html>` and never read `data-theme`. This axis was a second, parallel mechanism nothing consumed. The token source still carries the overrides (unemitted) so it can be revived deliberately — see `docs/superpowers/records/2026-08-10-figma-theme-dark-hc-removed.md`. |
 | **Density** | `data-density` | `comfortable` (default/unset), `compact` | Controls padding, heights, and spatial density. |
 | **Surface** | `data-surface` | `website` (default/unset), `portal` | Selects the **typography scale**. `website` = the expressive editorial ramp (display-1 ≈ 80px); `portal` = the dense functional ramp (display-1 ≈ 56px). Same role token names in both; only the `--ds-type-*` values differ. Set `data-surface="portal"` on portal `<html>` roots; the website/hub stay default. Maps 1:1 to the SAMAVESH Figma `Website` / `Portal` type modes. |
@@ -300,7 +98,7 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 > `COLOR_MODES`: offering a mode in an app that has not loaded that stylesheet would show a
 > switch that does nothing. Opt in explicitly:
 > `<ColorModeSwitcher modes={[...COLOR_MODES, ...UX4G_COLOR_MODES]} />`.
-> The MoSJE default stays gov-blue, as DBIM requires.
+> The MoSJE default stays the primary blue `#0373DF`, as DBIM requires.
 
 > **Tip:** Nested brand "islands" (e.g. a navy portal shell inside the blue hub) must be explicitly scoped with a nested `[data-brand]` element. To prevent a flash on initial render, initialize the attribute with the exported `colorModeInitScript()`.
 
@@ -314,7 +112,7 @@ Use semantic tokens — never reference primitive `--sa-color-*` values directly
 |-------|------------|------------|---------------|---------------|
 | `--ds-primary` | `#0373DF` | `#3f83c6` | CTA buttons, active links, key icons, focus rings | Body text, large backgrounds |
 | `--ds-saffron` | `#F97316` | `#F97316` | Accents, warning highlights, badges | Primary actions, heading text |
-| `--ds-gov-yellow` | `#FFD323` | `#FFD323` | Warning state backgrounds only | Text on any background (fails WCAG AA contrast) |
+| `--ds-yellow` | `#FFD323` | `#FFD323` | Warning state backgrounds only | Text on any background (fails WCAG AA contrast) |
 | `--ds-ink` | `#1F2428` | `#F4F3F9` | All body/heading text | Interactive elements, backgrounds |
 | `--ds-ink-muted` | `#6C757D` | `#9AA3AF` | Captions, hints, helper text | Primary content (check contrast below 16px) |
 | `--ds-surface` | `#FFFFFF` | `#1F2428` | Page and card backgrounds | Text or icon fills |
@@ -332,7 +130,7 @@ Use semantic tokens — never reference primitive `--sa-color-*` values directly
 | `--ds-ink-muted` (`#6C757D`) | `--ds-surface-muted` (`#F8F9FA`) | **4.1:1** | ⚠️ Borderline | Avoid for body text; use `--ds-ink` instead |
 | `--ds-danger` (`#B8382F`) | `--ds-surface` (`#fff`) | **5.8:1** | ✅ Pass | Error text and icons on white |
 | `--ds-danger-500` (`#EC5042`) | `--ds-surface` (`#fff`) | **3.8:1** | ❌ Fail (text) | Borders and decorative fills only — never error text |
-| `--ds-gov-yellow` (`#FFD323`) | `--ds-surface` (`#fff`) | **1.4:1** | ❌ Fail | Never use as text colour |
+| `--ds-yellow` (`#FFD323`) | `--ds-surface` (`#fff`) | **1.4:1** | ❌ Fail | Never use as text colour |
 | `--ds-primary` (`#0373DF`) | `--ds-surface` (`#fff`) | **4.7:1** | ✅ Pass | Link text (≥16px) |
 
 > **Critical rule:** use `var(--ds-danger)` for red error text on white — it resolves to `#B8382F` (Figma `Danger/700`) at **5.8:1**, which passes AA. Do **not** reach into the ramp for `--ds-danger-500` (`#EC5042`, 3.8:1); it is a border/fill value and fails for text.
@@ -660,7 +458,7 @@ Two mapping rules, applied by kind:
 | Kind | Rule | Example |
 |------|------|---------|
 | **Structure** (spacing, radius, type sizes, weights, borders, opacity, blur, z-index) | UX4G's **exact values**. Where SAMAVESH already has a token with that value, the two are *bound* to one number so they cannot drift. | `--ux4g-stack-m` → `var(--sa-spacing-lg)` → `16px` = `--ds-stack-m` |
-| **Colour** | Maps by **role**, not value → the MoSJE palette. DBIM requires a primary group built from the ministry's key colour; UX4G ships Theme Craft precisely to allow it. | `--ux4g-bg-primary-strong` → gov-blue, **not** UX4G violet |
+| **Colour** | Maps by **role**, not value → the MoSJE palette. DBIM requires a primary group built from the ministry's key colour; UX4G ships Theme Craft precisely to allow it. | `--ux4g-bg-primary-strong` → the primary blue, **not** UX4G violet |
 
 Measured conformance is calculated, never estimated —
 `node tools/ux4g-conformance/measure.mjs` (100% token coverage, 100% structural conformance,
@@ -704,8 +502,8 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 
 **Gov Accents:**
 - `--ds-saffron`, `--ds-saffron-dark`, `--ds-saffron-light`
-- `--ds-gov-navy` — Deep navy for footer backgrounds
-- `--ds-gov-yellow` — Warning-only accent
+- `--ds-navy` — Deep navy for footer backgrounds
+- `--ds-yellow` — Warning-only accent
 
 **Borders:**
 - `--ds-border` — Default subtle divider
@@ -721,7 +519,7 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 **Full colour ramps (50–900, synced 1:1 with SAMAVESH Figma `<Family>/*`).** Each ramp is a semantic scale — use these for tints/shades beyond the single-shade status/brand tokens above:
 - `--ds-primary-50` … `--ds-primary-900` — primary (mode-aware: blue in Blue-Light, navy in Blue-Dark)
 - `--ds-secondary-50` … `--ds-secondary-900` — secondary (**mode-aware: saffron in Blue-Light, green in Blue-Dark**; maps to Figma `Secondary/*`)
-- `--ds-neutral-0` … `--ds-neutral-1100` — neutral greys (**mode-aware: warm grey in Blue-Light, cooler Tailwind grey in Blue-Dark**; maps to Figma `Neutral/*`)
+- `--ds-neutral-0` … `--ds-neutral-1100` — neutral greys (**brand-aware: warm grey in `blue`, cooler grey in `navy`**; maps to Figma `Neutral/*`). NOTE the canonical names renumbered on 2026-08-11 to match UX4G — `--sa-color-neutralScale-950` is the near-black shade and `-1000` is pure black. The two `--ds-*` names above keep their old spelling and still render what they always did.
 - `--ds-success-50` … `--ds-success-900` — mode-invariant (Figma `Success/*`)
 - `--ds-danger-50` … `--ds-danger-900` — mode-invariant (Figma `Danger/*`)
 - `--ds-warning-50` … `--ds-warning-900` — mode-invariant (Figma `Warning/*`)

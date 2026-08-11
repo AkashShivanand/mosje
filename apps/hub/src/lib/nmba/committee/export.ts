@@ -7,7 +7,7 @@ import type { CommitteeRecord } from "./types";
 import { tierLabel } from "./session";
 
 // jsPDF autoTable needs a raw numeric RGB triplet (it can't read CSS vars).
-// Kept traceable to the brand token: gov-blue #0373DF.
+// Kept traceable to the brand token: primary #0373DF.
 const GOV_BLUE_RGB: [number, number, number] = [3, 115, 223];
 
 const COMMITTEE_HEADERS = [

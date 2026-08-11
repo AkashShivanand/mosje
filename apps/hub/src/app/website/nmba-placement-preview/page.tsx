@@ -44,7 +44,7 @@ export default function NmbaPlacementPreview() {
                 aria-pressed={option === o.id}
                 className={`px-3 py-1.5 transition-colors ${
                   option === o.id
-                    ? "bg-gov-blue text-white"
+                    ? "bg-primary text-white"
                     : "bg-white text-ink hover:bg-surface-muted"
                 }`}
               >

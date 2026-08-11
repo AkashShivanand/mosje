@@ -30,7 +30,7 @@ export function LocatorGallery() {
           {(["", ...CENTRE_TYPE_ORDER] as const).map((t) => (
             <button key={t || "all"} type="button" onClick={() => setType(t as CentreType | "")}
               className={cn("rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
-                type === t ? "bg-gov-blue text-white" : "bg-surface-muted text-ink-muted hover:text-gov-blue-dark")}>
+                type === t ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:text-primary-dark")}>
               {t === "" ? `All ${filtered.length}` : `${t} ${CENTRE_TYPE_META[t].count}`}
             </button>
           ))}
@@ -50,7 +50,7 @@ export function LocatorGallery() {
               <span className="mt-1 line-clamp-2 flex-1 text-[12px] text-ink-muted">{c.address}</span>
               <span className="mt-3 flex items-center justify-between border-t border-gray-100 pt-2.5">
                 <span className="text-[12px] font-medium text-ink">{c.district}, {c.state}</span>
-                <Icon name="arrow_outward" size={16} className="text-gov-blue transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <Icon name="arrow_outward" size={16} className="text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </span>
             </button>
           );
@@ -74,7 +74,7 @@ export function LocatorGallery() {
               <p className="mt-1.5 text-[13px] text-ink-muted">{modal.address}</p>
               <p className="mt-1 text-[13px] font-medium text-ink">{modal.district}, {modal.state}</p>
               <a href={`https://www.google.com/maps/search/?api=1&query=${modal.lat},${modal.lng}`} target="_blank" rel="noreferrer"
-                className="mt-3 inline-flex items-center gap-2 rounded-lg bg-gov-blue px-4 py-2 text-[14px] font-semibold text-white hover:bg-gov-blue-dark">
+                className="mt-3 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-[14px] font-semibold text-white hover:bg-primary-dark">
                 <Icon name="navigation" size={16} /> Get directions
               </a>
             </div>

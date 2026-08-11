@@ -356,7 +356,7 @@
         "default": {
           "bg": {
             "$type": "color",
-            "$value": "{color.primaryScale.100}",
+            "$value": "{color.primaryScale.50}",
             "$description": "Use for primary-brand tonal buttons at rest — the fill."
           },
           "text": {
@@ -366,14 +366,14 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.primaryScale.100}",
+            "$value": "{color.primaryScale.50}",
             "$description": "Use for primary-brand tonal buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
-            "$value": "{color.primaryScale.200}",
+            "$value": "{color.primaryScale.100}",
             "$description": "Use when the user hovers over a primary-brand tonal button — the fill."
           },
           "text": {
@@ -383,14 +383,14 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.primaryScale.200}",
+            "$value": "{color.primaryScale.100}",
             "$description": "Use when the user hovers over a primary-brand tonal button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
-            "$value": "{color.primaryScale.300}",
+            "$value": "{color.primaryScale.200}",
             "$description": "Use when a primary-brand tonal button is pressed — the fill."
           },
           "text": {
@@ -400,7 +400,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.primaryScale.300}",
+            "$value": "{color.primaryScale.200}",
             "$description": "Use when a primary-brand tonal button is pressed — the outline."
           }
         },

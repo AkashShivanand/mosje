@@ -119,6 +119,11 @@ const titleCase = (seg) =>
 const RAMP_FOLDER = {
   primaryScale: "Primary",
   secondaryScale: "Secondary",
+  // `accent` joined 2026-08-11. Without an entry here the ramp still reached Palette, but
+  // only at the six rungs the prominence ladder happens to alias — so a designer opening the
+  // library found 11 steps of every other ramp and 6 of this one, with 400/500/700/900/950
+  // simply absent. A ramp is a ramp; it is exported whole or it is not a ramp.
+  accentScale: "Accent",
   neutralScale: "Neutral",
   successScale: "Success",
   dangerScale: "Danger",
@@ -333,7 +338,67 @@ function encodeValue(raw, token, nameByPath, resolvedByPath, selfTarget) {
   }
   const t = figmaTypeOf({ ...token, $value: raw, original: { $value: raw, $type: token.original?.$type } });
   if (t.type === "FLOAT") return { type: "FLOAT", value: t.number, unit: t.unit };
+  if (token.path?.[0] === "font" && token.path?.[1] === "family") {
+    return { type: t.type, value: primaryFontFamily(raw) };
+  }
   return { type: t.type, value: String(raw) };
+}
+
+/**
+ * CSS generics name no font — they are instructions to the browser's font matcher.
+ * Figma has no equivalent, so they can never be a FONT_FAMILY variable's value.
+ */
+const CSS_GENERIC_FAMILIES = new Set([
+  "ui-sans-serif", "ui-serif", "ui-monospace", "ui-rounded", "system-ui",
+  "sans-serif", "serif", "monospace", "cursive", "fantasy", "emoji", "math", "fangsong",
+]);
+
+/**
+ * Real families the stack names but that NO MoSJE surface actually loads.
+ *
+ * `font.family.display` exists for UX4G 3.0 parity — `--ux4g-font-family-display` is pinned
+ * upstream in `reference/ux4g-3.0.tokens.json`, so the CSS stack must keep naming the optical
+ * Display cut. But the token's own description is explicit that it is never loaded ("never
+ * load it globally just to satisfy the token"), and Figma has no fallback chain: projecting
+ * "Noto Sans Display" gives a variable Figma cannot resolve (it is absent from all 1,938
+ * families available in the file).
+ *
+ * A browser hitting this stack renders Noto Sans. Figma should show the same thing, and the
+ * display treatment is carried by WEIGHT — the Display/* text styles are Noto Sans Medium —
+ * not by a separate optical family. So the projection skips the unloaded cut and lands on the
+ * family the reader actually sees, keeping CSS parity and Figma resolvability at once.
+ */
+const NOT_LOADED_FAMILIES = new Set(["Noto Sans Display"]);
+
+/**
+ * Project a CSS font stack down to the one family Figma can actually resolve.
+ *
+ * A Figma FONT_FAMILY variable is a FONT PICKER VALUE, not a CSS declaration — it must name a
+ * single family that exists. The source authors these as stacks because that is what the
+ * stylesheet needs, and projecting the stack verbatim shipped four variables Figma could not
+ * resolve at all:
+ *
+ *   ref/font/family/latin       "Noto Sans", ui-sans-serif, system-ui, sans-serif
+ *   ref/font/family/devanagari  "Noto Sans Devanagari", "Noto Sans", ui-sans-serif, …
+ *   ref/font/family/display     "Noto Sans Display", "Noto Sans", ui-sans-serif, …
+ *   ref/font/family/mono        ui-monospace, "Cascadia Code", "Source Code Pro", …
+ *
+ * All four were published and scoped FONT_FAMILY, so they appeared in the picker and bound to
+ * nothing — which is exactly why the 2026-08-11 audit found `latin`, `display` and `mono`
+ * orphaned. They were not neglected; they were unusable.
+ *
+ * Only `heading` and `body` worked, because those happen to be authored as a bare family name.
+ *
+ * The first non-generic entry is the right projection: it is the family the browser will
+ * actually reach for first, so Figma and the build agree on what the reader sees.
+ */
+function primaryFontFamily(stack) {
+  const unquote = (s) => s.trim().replace(/^["']|["']$/g, "").trim();
+  for (const part of String(stack).split(",")) {
+    const name = unquote(part);
+    if (name && !CSS_GENERIC_FAMILIES.has(name) && !NOT_LOADED_FAMILIES.has(name)) return name;
+  }
+  return unquote(String(stack));
 }
 
 /**

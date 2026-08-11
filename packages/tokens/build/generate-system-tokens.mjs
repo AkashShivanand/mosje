@@ -34,7 +34,13 @@ const here = (p) => new URL(p, import.meta.url).pathname;
 const LADDER = { base: 50, subtler: 100, subtle: 200, bold: 300, bolder: 600, boldest: 800 };
 
 const STATUS = { success: "successScale", error: "dangerScale", warning: "warningScale", info: "infoScale" };
-const BRAND = { primary: "primaryScale", secondary: "secondaryScale" };
+/**
+ * `accent` joined on 2026-08-11. Secondary and accent are the SAMAVESH logo's two
+ * non-blue colours (India Saffron #FF671F, India Green #046A38) and are brand-invariant —
+ * only `primary` changes with `data-brand`. Adding the key here is what generates the whole
+ * bg/text/border/icon accent family across the prominence ladder.
+ */
+const BRAND = { primary: "primaryScale", secondary: "secondaryScale", accent: "accentScale" };
 
 /** path → DTCG reference. Values bind to existing tokens; nothing new is invented. */
 const MAP = {};

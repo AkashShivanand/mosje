@@ -174,11 +174,11 @@ test("ink roles are never left silent — text and icons always carry a measured
  * name; the stale-entry test below makes a fixed token fail until its line is deleted.
  */
 const SHORTFALL_LEDGER = new Set([
-  "Color::bg/brand/primary/bold — 2.71:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/brand/primary/subtle — 1.9:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/brand/secondary/bold — 2.15:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/brand/secondary/bolder — 3.94:1 vs ≥4.5:1 (\"bolder\")",
-  "Color::bg/brand/secondary/subtle — 1.69:1 vs ≥3:1 (\"subtle\")",
+  "Color::bg/brand/accent/subtle — 2.18:1 vs ≥3:1 (\"subtle\")",
+  "Color::bg/brand/primary/bold — 2.46:1 vs ≥3:1 (\"bold\")",
+  "Color::bg/brand/primary/subtle — 1.84:1 vs ≥3:1 (\"subtle\")",
+  "Color::bg/brand/secondary/bold — 2.21:1 vs ≥3:1 (\"bold\")",
+  "Color::bg/brand/secondary/subtle — 1.72:1 vs ≥3:1 (\"subtle\")",
   "Color::bg/neutral/bold — 1.25:1 vs ≥3:1 (\"bold\")",
   "Color::bg/neutral/subtle — 1.11:1 vs ≥3:1 (\"subtle\")",
   "Color::bg/status/error/bold — 2.64:1 vs ≥3:1 (\"bold\")",
@@ -186,8 +186,7 @@ const SHORTFALL_LEDGER = new Set([
   "Color::bg/status/error/subtle — 1.91:1 vs ≥3:1 (\"subtle\")",
   "Color::bg/status/info/bold — 2.25:1 vs ≥3:1 (\"bold\")",
   "Color::bg/status/info/subtle — 1.71:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/status/success/bold — 2.01:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/status/success/subtle — 1.64:1 vs ≥3:1 (\"subtle\")",
+  "Color::bg/status/success/subtle — 2.18:1 vs ≥3:1 (\"subtle\")",
   "Color::bg/status/warning/bold — 1.84:1 vs ≥3:1 (\"bold\")",
   "Color::bg/status/warning/bolder — 4.46:1 vs ≥4.5:1 (\"bolder\")",
   "Color::bg/status/warning/subtle — 1.51:1 vs ≥3:1 (\"subtle\")",

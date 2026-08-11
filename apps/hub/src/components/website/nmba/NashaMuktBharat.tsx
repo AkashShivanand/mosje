@@ -16,7 +16,7 @@ interface NashaMuktBharatProps {
 function SectionHeading({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <div className="text-center">
-      <h2 className="text-[32px] font-semibold leading-tight text-gov-blue-dark">
+      <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
         {title}
       </h2>
       <p className="mx-auto mt-3 max-w-3xl text-[16px] leading-relaxed text-ink-muted">
@@ -85,7 +85,7 @@ export function NashaMuktBharat({ variant = "full" }: NashaMuktBharatProps) {
 
         <div className="mt-16 border-t border-gray-200 pt-14">
           <div className="mb-8 text-center">
-            <h3 className="text-[24px] font-semibold leading-tight text-gov-blue-dark">
+            <h3 className="text-[24px] font-semibold leading-tight text-primary-dark">
               Find a De-addiction Centre near you
             </h3>
             <p className="mx-auto mt-2 max-w-2xl text-[15px] leading-relaxed text-ink-muted">

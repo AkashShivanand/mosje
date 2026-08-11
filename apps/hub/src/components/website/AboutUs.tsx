@@ -45,7 +45,7 @@ export function AboutUs() {
       <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="text-[32px] font-semibold leading-tight text-gov-blue-dark">
+            <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
               About Us
             </h2>
             <p className="mt-5 text-[16px] leading-relaxed text-ink-muted">
@@ -112,7 +112,7 @@ export function AboutUs() {
           </div>
         </div>
 
-        <div className="mt-12 overflow-hidden rounded-xl bg-gradient-to-r from-gov-blue-dark to-gov-blue">
+        <div className="mt-12 overflow-hidden rounded-xl bg-gradient-to-r from-primary-dark to-primary">
           <dl className="grid grid-cols-1 divide-y divide-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {stats.map((stat) => (
               <div

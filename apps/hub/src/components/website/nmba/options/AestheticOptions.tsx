@@ -17,15 +17,15 @@ type Tone = "light" | "onGreen";
 
 const TONE = {
   light: {
-    heading: "text-gov-blue-dark",
+    heading: "text-primary-dark",
     sub: "text-ink-muted",
     card: "border border-gray-200 bg-white",
-    iconChip: "bg-gov-blue/10 text-gov-blue",
+    iconChip: "bg-primary/10 text-primary",
     title: "text-ink",
     meta: "text-ink-muted",
-    primary: "bg-gov-blue text-white hover:bg-gov-blue-dark",
-    outline: "border border-gov-blue/40 text-gov-blue hover:bg-gov-blue/5",
-    dark: "bg-gov-blue-dark text-white hover:opacity-90",
+    primary: "bg-primary text-white hover:bg-primary-dark",
+    outline: "border border-primary/40 text-primary hover:bg-primary/5",
+    dark: "bg-primary-dark text-white hover:opacity-90",
   },
   onGreen: {
     heading: "text-white",

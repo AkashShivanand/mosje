@@ -59,7 +59,7 @@ export default async function HomePage() {
     <div className="flex min-h-screen flex-col bg-surface-muted">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded-lg focus:bg-gov-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-primary"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-primary"
       >
         Skip to main content
       </a>
@@ -73,8 +73,8 @@ export default async function HomePage() {
           <EstateField />
 
           <div className="relative mx-auto max-w-[1280px] px-6 py-20 sm:py-24">
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-gov-blue shadow-xs backdrop-blur">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-gov-blue" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-primary shadow-xs backdrop-blur">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
               Government of India
             </div>
 
@@ -83,7 +83,7 @@ export default async function HomePage() {
                 orphaned the "&" at the end of line 1. */}
             <h1 className="mt-6 text-balance text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-[3.5rem]">
               Ministry of Social Justice{" "}
-              <span className="whitespace-nowrap text-gov-blue">&amp; Empowerment</span>
+              <span className="whitespace-nowrap text-primary">&amp; Empowerment</span>
             </h1>
 
             <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">
@@ -95,14 +95,14 @@ export default async function HomePage() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
                 href="/portals"
-                className="inline-flex items-center gap-2 rounded-lg bg-gov-blue px-5 py-3 text-sm font-semibold text-on-primary shadow-xs transition-colors hover:bg-gov-blue-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-on-primary shadow-xs transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 Browse the portals
                 <Icon name="arrow_forward" size={16} aria-hidden="true" />
               </a>
               <a
                 href="/website"
-                className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-border-strong hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+                className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-border-strong hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 Visit the website
               </a>
@@ -129,14 +129,14 @@ export default async function HomePage() {
               <a
                 key={title}
                 href={href}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-gov-blue/40 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-blue"
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 <span
                   aria-hidden="true"
-                  className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-gov-blue transition-transform duration-300 group-hover:scale-x-100"
+                  className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-primary transition-transform duration-300 group-hover:scale-x-100"
                 />
                 <div className="mb-5">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gov-blue-tonal text-gov-blue transition-colors group-hover:bg-gov-blue group-hover:text-on-primary">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-tonal text-primary transition-colors group-hover:bg-primary group-hover:text-on-primary">
                     <Icon name={iconName} aria-hidden="true" />
                   </span>
                 </div>
@@ -144,7 +144,7 @@ export default async function HomePage() {
                 <p className="mb-6 mt-2 flex-1 text-sm leading-relaxed text-ink-muted">
                   {description}
                 </p>
-                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-gov-blue transition-all group-hover:gap-2.5">
+                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5">
                   {cta}
                   <Icon name="arrow_forward" size={16} aria-hidden="true" />
                 </span>
@@ -168,7 +168,7 @@ export default async function HomePage() {
             <dl className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
               {glance.map(({ icon: iconName, value, label, sub }) => (
                 <div key={label} className="flex flex-col gap-2">
-                  <Icon name={iconName} size={20} className="text-gov-blue" aria-hidden="true" />
+                  <Icon name={iconName} size={20} className="text-primary" aria-hidden="true" />
                   <dd className="text-4xl font-bold tracking-tight text-ink">
                     {value}
                   </dd>

@@ -55,7 +55,7 @@ export function GalleryClient() {
                   type="button"
                   onClick={() => setActiveIndex(index)}
                   aria-label={`View larger image: ${image.caption}`}
-                  className="group relative block aspect-[4/3] w-full overflow-hidden rounded-xl border border-gray-200 bg-surface-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-gov-blue focus-visible:ring-offset-2"
+                  className="group relative block aspect-[4/3] w-full overflow-hidden rounded-xl border border-gray-200 bg-surface-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 >
                   <Image
                     src={image.src}
@@ -91,7 +91,7 @@ export function GalleryClient() {
               type="button"
               onClick={close}
               aria-label="Close image viewer"
-              className="absolute -top-3 -right-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-ink shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-gov-blue focus-visible:ring-offset-2"
+              className="absolute -top-3 -right-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-ink shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               <Icon name="close" size={20} aria-hidden="true" />
             </button>

@@ -1,0 +1,203 @@
+/**
+ * The ramp generator — one rule for every chromatic ramp in the system.
+ *
+ * WHY
+ * ---
+ * The 2026-08-11 colour audit found the palette had been assembled from several sources
+ * rather than generated: a brand colour here, a Material ramp there. The symptoms were
+ * `danger/400` and `danger/500` sitting 1.8 L* apart, `success/600` and `success/700`
+ * sharing chroma exactly, the Navy primary ramp dropping 27.4 L* in one step, and "500"
+ * meaning something different in each of seven ramps. A designer could not predict what a
+ * step would look like before trying it.
+ *
+ * THE MODEL — contrast-anchored, after Adobe Leonardo
+ * --------------------------------------------------
+ * Steps are placed by LIGHTNESS, which is what contrast is a function of, so a rung's
+ * contrast becomes a property of the ladder rather than something measured afterwards and
+ * hoped for. Material 3's HCT and Radix's fixed-meaning steps solve the same problem; the
+ * contrast-first framing is the one that also fixes the prominence contract, because a rung
+ * can be DEFINED as "the step that clears 4.5:1" instead of audited into compliance.
+ *
+ * Three invariants, enforced by `test/ramp-quality.test.mjs`:
+ *
+ *   1. L* is strictly monotonic, with every step 4..16 apart — no duplicate rungs, no cliffs.
+ *   2. Hue is held to within 2 degrees across the ramp — greys and brand colours do not
+ *      drift temperature as they darken.
+ *   3. Chroma follows a single arc peaking at the anchor — never darker AND duller at once,
+ *      which is what made `warning/500` read muddy.
+ *
+ * THE ANCHOR IS SACRED
+ * --------------------
+ * Each ramp is built around a real, externally-mandated colour that the generator must
+ * reproduce EXACTLY: gov-blue #0373DF, the DBIM key colour #162F6A, and the two SAMAVESH
+ * logo colours. The generator never "improves" an anchor — it builds the other nine steps
+ * around it.
+ */
+
+import { hexToOklch, oklchToHex, rgbToOklab, hexToRgb } from "./oklch.mjs";
+
+/**
+ * The rung ladder, matching UX4G 3.0's chromatic ramps exactly (50..900 plus 950).
+ *
+ * 950 joined on 2026-08-11. UX4G ships 11 steps on every chromatic ramp and we shipped 10,
+ * which left a parity gap in the one layer a whole conformance suite exists to map. 950 is
+ * the near-black shade a footer or a `boldest` fill wants without falling back to pure
+ * black — which is harsh, and being achromatic carries no hue, so it cannot belong to a
+ * chromatic ramp at all. Pure white and pure black live on the NEUTRAL ramp only, as
+ * `0` and `1000`, for exactly that reason.
+ */
+export const STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+
+/* ------------------------------------------------------------------ lightness ladder */
+
+/**
+ * Monotone cubic Hermite (Fritsch-Carlson) through the ramp's three fixed points:
+ * the lightest step, the anchor, and the darkest step.
+ *
+ * A plain two-segment linear ramp would put a visible kink at the anchor whenever the two
+ * segments have different slopes — which is always, because an anchor is rarely at the
+ * midpoint of its own range. #162F6A sits at L* 32 in a ramp running 96 -> 8, so its light
+ * side has to cover 64 points and its dark side 24. Linear segments would step 12.7 above
+ * the anchor and 6.1 below it, and the seam would be plainly visible in a swatch strip.
+ * Monotone Hermite varies the step size gradually instead, and cannot overshoot into a
+ * non-monotonic wobble the way an unconstrained spline can.
+ */
+function monotoneLadder(anchorIndex, lightest, anchorL, darkest) {
+  const n = STEPS.length;
+  const xs = [0, anchorIndex, n - 1];
+  const ys = [lightest, anchorL, darkest];
+
+  // Secant slopes, then Fritsch-Carlson limiting to guarantee monotonicity.
+  const d = [];
+  for (let i = 0; i < xs.length - 1; i++) d.push((ys[i + 1] - ys[i]) / (xs[i + 1] - xs[i]));
+  const m = [d[0], (d[0] + d[1]) / 2, d[1]];
+  for (let i = 0; i < d.length; i++) {
+    if (d[i] === 0) {
+      m[i] = 0;
+      m[i + 1] = 0;
+    } else {
+      const a = m[i] / d[i];
+      const b = m[i + 1] / d[i];
+      const s = Math.hypot(a, b);
+      if (s > 3) {
+        m[i] = ((3 / s) * a) * d[i];
+        m[i + 1] = ((3 / s) * b) * d[i];
+      }
+    }
+  }
+
+  return STEPS.map((_, i) => {
+    if (i === 0) return lightest;
+    if (i === anchorIndex) return anchorL;
+    if (i === n - 1) return darkest;
+    const seg = i < anchorIndex ? 0 : 1;
+    const h = xs[seg + 1] - xs[seg];
+    const t = (i - xs[seg]) / h;
+    const t2 = t * t;
+    const t3 = t2 * t;
+    return (
+      (2 * t3 - 3 * t2 + 1) * ys[seg] +
+      (t3 - 2 * t2 + t) * h * m[seg] +
+      (-2 * t3 + 3 * t2) * ys[seg + 1] +
+      (t3 - t2) * h * m[seg + 1]
+    );
+  });
+}
+
+/* ------------------------------------------------------------------ chroma arc */
+
+/**
+ * Chroma as a single arc peaking at the anchor and tapering to both ends.
+ *
+ * Tints near white and shades near black cannot hold much chroma without looking synthetic,
+ * and — more importantly — a step that is both darker and duller than its neighbour reads
+ * as muddy. That is precisely what `warning/500` did: 11 L* darker than 400 and 17% less
+ * chromatic at the same time. A single arc makes that shape unrepresentable.
+ *
+ * The exponents are asymmetric because the two ends fail differently: light tints wash out
+ * quickly (so chroma is held longer, 0.85), while dark shades muddy quickly (so chroma is
+ * shed faster, 0.70).
+ */
+function chromaArc(L, anchorL, anchorC) {
+  if (L >= anchorL) {
+    const t = (100 - L) / (100 - anchorL);
+    return anchorC * Math.pow(Math.max(0, t), 0.85);
+  }
+  const t = L / anchorL;
+  return anchorC * Math.pow(Math.max(0, t), 0.7);
+}
+
+/* ------------------------------------------------------------------ the generator */
+
+/**
+ * Build a 50..900 ramp around an anchor.
+ *
+ * @param {object}  spec
+ * @param {string}  spec.anchor       Hex the ramp must reproduce exactly.
+ * @param {number} [spec.anchorStep]  Which rung the anchor occupies. Default 500.
+ * @param {number} [spec.lightest]    L* of step 50.
+ * @param {number} [spec.darkest]     L* of step 900.
+ * @returns {Record<number, string>}  `{ 50: "#…", …, 900: "#…" }`
+ */
+export function buildRamp({ anchor, anchorStep = 500, lightest = 96.5, darkest = 20 }) {
+  const anchorIndex = STEPS.indexOf(anchorStep);
+  if (anchorIndex === -1) throw new Error(`anchorStep must be one of ${STEPS.join(", ")}`);
+
+  const { L: aL, C: aC, H } = hexToOklch(anchor);
+  if (!(lightest > aL && aL > darkest)) {
+    throw new Error(
+      `anchor ${anchor} has L* ${aL.toFixed(1)}, which is not strictly between ` +
+        `darkest ${darkest} and lightest ${lightest}`,
+    );
+  }
+
+  const ladder = monotoneLadder(anchorIndex, lightest, aL, darkest);
+
+  const out = {};
+  STEPS.forEach((step, i) => {
+    // The anchor is reproduced verbatim — never round-tripped through the generator, so a
+    // mandated brand value can never drift by a rounding step.
+    out[step] = i === anchorIndex
+      ? anchor.toLowerCase()
+      : oklchToHex({ L: ladder[i], C: chromaArc(ladder[i], aL, aC), H });
+  });
+  return out;
+}
+
+/* ------------------------------------------------------------------ reporting */
+
+/** WCAG 2.x relative luminance, for the contrast readout below. */
+function luminance(hex) {
+  const [r, g, b] = hexToRgb(hex).map((c) =>
+    c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4),
+  );
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** WCAG contrast ratio between two hexes. */
+export function contrastRatio(a, b) {
+  const x = luminance(a);
+  const y = luminance(b);
+  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+}
+
+/** Per-step metrics for a generated ramp — used by the tests and the CLI readout. */
+export function describeRamp(ramp) {
+  let prev = null;
+  return STEPS.map((step) => {
+    const hex = ramp[step];
+    const { L, C, H } = hexToOklch(hex);
+    const row = {
+      step,
+      hex,
+      L,
+      C,
+      H,
+      dL: prev === null ? null : prev - L,
+      onWhite: contrastRatio(hex, "#ffffff"),
+      onBlack: contrastRatio(hex, "#000000"),
+    };
+    prev = L;
+    return row;
+  });
+}

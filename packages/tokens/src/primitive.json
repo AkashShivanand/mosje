@@ -1,39 +1,42 @@
 {
-  "$description": "Tier 1 \u2014 core (brand-agnostic) primitive tokens. PRIVATE: never reference directly in app code. Brand-IDENTITY primitives (color.primaryRamp, color.saffron, color.navy, color.yellow) live in the active brand pack (packages/tokens/brands/<id>/brand.json) so the system can be white-labelled \u2014 see brands/README.md.",
+  "$description": "Tier 1 — core (brand-agnostic) primitive tokens. PRIVATE: never reference directly in app code. Brand-IDENTITY primitives (color.primaryRamp, color.saffron, color.navy, color.yellow) live in the active brand pack (packages/tokens/brands/<id>/brand.json) so the system can be white-labelled — see brands/README.md.",
   "color": {
     "$type": "color",
     "green": {
       "50": {
-        "$value": "#e8f5e9"
+        "$value": "#ecf4ee"
       },
       "100": {
-        "$value": "#c8e6c9"
+        "$value": "#bed8c5"
       },
       "200": {
-        "$value": "#a5d6a7"
+        "$value": "#91b99c"
       },
       "300": {
-        "$value": "#81c784"
+        "$value": "#659c77"
       },
       "400": {
-        "$value": "#66bb6a"
+        "$value": "#3b8155"
       },
       "500": {
-        "$value": "#2e7d32"
+        "$value": "#046a38"
       },
       "600": {
-        "$value": "#27682a"
+        "$value": "#00542b"
       },
       "700": {
-        "$value": "#1b5e20"
+        "$value": "#004220"
       },
       "800": {
-        "$value": "#124517"
+        "$value": "#003318"
       },
       "900": {
-        "$value": "#082d0f"
+        "$value": "#002510"
       },
-      "$description": "Success ramp \u2014 full 50\u2013900, matches SAMAVESH Figma Success/* exactly (mode-invariant: identical in Blue-Light and Blue-Dark)."
+      "950": {
+        "$value": "#001708"
+      },
+      "$description": "Success ramp. UNIFIED with the accent brand ramp (India Green #046A38 from the SAMAVESH logo) on 2026-08-11 — see build/brand-ramps.mjs. It was Material green #2E7D32, which sat 9 degrees and 6 L* from the logo green: two greens that close is a defect whichever token owns them. Brand-invariant (identical in Blue and Navy). Regenerate with: node build/brand-ramps.mjs then re-apply here."
     },
     "red": {
       "50": {
@@ -66,7 +69,10 @@
       "900": {
         "$value": "#661d19"
       },
-      "$description": "Danger ramp \u2014 full 50\u2013900, matches SAMAVESH Figma Danger/* exactly (mode-invariant). NOTE: 700 is #b8382f (Figma) \u2014 the old code value #a11d12 was not a Figma step and is retained only as the chart.div.negStrong literal."
+      "950": {
+        "$value": "#3a0000"
+      },
+      "$description": "Danger ramp — full 50–900, matches SAMAVESH Figma Danger/* exactly (mode-invariant). NOTE: 700 is #b8382f (Figma) — the old code value #a11d12 was not a Figma step and is retained only as the chart.div.negStrong literal. Step 950 added 2026-08-11 for UX4G parity (11 steps); derived from this ramp’s own 500 anchor, the 50-900 steps are untouched."
     },
     "amber": {
       "50": {
@@ -99,7 +105,10 @@
       "900": {
         "$value": "#4c2e0f"
       },
-      "$description": "Warning ramp \u2014 full 50\u2013900, matches SAMAVESH Figma Warning/* exactly (mode-invariant)."
+      "950": {
+        "$value": "#2a1500"
+      },
+      "$description": "Warning ramp — full 50–900, matches SAMAVESH Figma Warning/* exactly (mode-invariant). Step 950 added 2026-08-11 for UX4G parity (11 steps); derived from this ramp’s own 500 anchor, the 50-900 steps are untouched."
     },
     "info": {
       "50": {
@@ -132,7 +141,10 @@
       "900": {
         "$value": "#081e43"
       },
-      "$description": "Info hue (distinct from brand primary \u2014 Google-blue family, used in Portal DS)."
+      "950": {
+        "$value": "#00183f"
+      },
+      "$description": "Info hue (distinct from brand primary — Google-blue family, used in Portal DS). Step 950 added 2026-08-11 for UX4G parity (11 steps); derived from this ramp’s own 500 anchor, the 50-900 steps are untouched."
     },
     "neutral": {
       "0": {
@@ -168,13 +180,13 @@
       "900": {
         "$value": "#0d1014"
       },
-      "1000": {
+      "950": {
         "$value": "#0a0d13"
       },
-      "1100": {
+      "1000": {
         "$value": "#000000"
       },
-      "$description": "Neutral grey scale \u2014 matches UX4G/SAMAVESH Figma Neutral/* variables exactly."
+      "$description": "Neutral grey scale — matches UX4G/SAMAVESH Figma Neutral/* variables exactly. Endpoints renumbered 2026-08-11 to match UX4G: old 1000 -> 950, old 1100 -> 1000. Pure white (0) and pure black (1000) live ONLY on the neutral ramp — they are achromatic and cannot belong to a chromatic ramp."
     },
     "neutralDark": {
       "0": {
@@ -210,17 +222,17 @@
       "900": {
         "$value": "#111827"
       },
-      "1000": {
+      "950": {
         "$value": "#0a0d13"
       },
-      "1100": {
+      "1000": {
         "$value": "#000000"
       },
-      "$description": "Blue-Dark colour-mode neutral ramp (cooler Tailwind-family greys) \u2014 matches SAMAVESH Figma Neutral/* in the Blue-Dark mode. Consumed via colorModes.blue-dark on the neutral-derived semantic tokens; this is the Blue-Dark COLOUR MODE, NOT the accessibility dark theme (that is color.a11y.dark.*)."
+      "$description": "NAVY BRAND neutral ramp (cooler Tailwind-family greys) — matches SAMAVESH Figma Palette/color/neutralScale/* in the Navy mode. Consumed via colorModes.navy on the neutral-derived semantic tokens. NOT a dark theme: the Navy brand renders on LIGHT surfaces, and the estate has no appearance axis at all (see apps/hub/src/app/globals.css). The key is still spelled `neutralDark` for the pre-2026-08-07 mode name; rename it with the ramp regeneration, not on its own. Endpoints renumbered 2026-08-11 to match UX4G: old 1000 -> 950, old 1100 -> 1000. Pure white (0) and pure black (1000) live ONLY on the neutral ramp — they are achromatic and cannot belong to a chromatic ramp."
     }
   },
   "space": {
-    "$description": "T-shirt spacing scale \u2014 matches Figma Spacing collection 1:1. Every value except 72px (8xl) is a step on the UX4G 3.0 base ramp (--ux4g-space-1\u202616), so this scale IS the UX4G foundation under different names; the parity layer maps the two by value. 10xl/11xl were added for UX4G padding-3xl/4xl \u2014 NEEDS FIGMA SYNC.",
+    "$description": "T-shirt spacing scale — matches Figma Spacing collection 1:1. Every value except 72px (8xl) is a step on the UX4G 3.0 base ramp (--ux4g-space-1…16), so this scale IS the UX4G foundation under different names; the parity layer maps the two by value. 10xl/11xl were added for UX4G padding-3xl/4xl — NEEDS FIGMA SYNC.",
     "$type": "dimension",
     "none": {
       "$value": "0px"
@@ -275,7 +287,7 @@
     }
   },
   "radius": {
-    "$description": "T-shirt radius scale \u2014 matches Figma Border Radius collection.",
+    "$description": "T-shirt radius scale — matches Figma Border Radius collection.",
     "$type": "dimension",
     "none": {
       "$value": "0px"
@@ -324,11 +336,12 @@
         "$value": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"
       },
       "display": {
-        "$description": "UX4G 3.0 parity: the optical Display cut, for 36px+ headings only (--ux4g-font-family-display). Falls back to Noto Sans, so this token is safe to use before an app opts in to the extra webfont \u2014 never load it globally just to satisfy the token.",
+        "$description": "UX4G 3.0 parity: the optical Display cut, for 36px+ headings only (--ux4g-font-family-display). Falls back to Noto Sans, so this token is safe to use before an app opts in to the extra webfont — never load it globally just to satisfy the token.",
         "$value": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif"
       },
       "mono": {
-        "$value": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+        "$description": "Code, identifiers and tabular figures. IBM Plex Mono is the chosen face: open-licensed, wide weight range, unambiguous 0/O and 1/l/I, and Figma resolves it — which the previous value could not. The stack used to lead with `ui-monospace`, a CSS generic that names no font, so the Figma variable was unbindable and consequently went unused. Generic fallbacks follow for surfaces that have not loaded the webfont.",
+        "$value": "\"IBM Plex Mono\", ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
       }
     },
     "weight": {
@@ -347,8 +360,6 @@
       }
     },
     "size": {
-      "$description": "Legacy flat scale. New code should use font.role.* for the responsive role system.",
-      "$type": "dimension",
       "11": {
         "$value": "{size.11}"
       },
@@ -369,10 +380,11 @@
       },
       "48": {
         "$value": "{size.48}"
-      }
+      },
+      "$description": "Legacy flat scale. New code should use font.role.* for the responsive role system.",
+      "$type": "dimension"
     },
     "lineHeight": {
-      "$type": "dimension",
       "16": {
         "$value": "{size.16}"
       },
@@ -388,6 +400,7 @@
       "56": {
         "$value": "{size.56}"
       },
+      "$type": "dimension",
       "devanagari": {
         "$value": "1.7"
       }
@@ -1768,7 +1781,7 @@
     }
   },
   "shadow": {
-    "$description": "Elevation ramp. none\u2192xl is a 6-level superset of UX4G 3.0's 5-level l0\u2026l4, and keeps the SAMAVESH convention of tinting toward ink (rgba(31,36,40,\u00b7)) rather than UX4G's flat black \u2014 tinted shadows read as depth instead of dirt on a light gov surface. sm/md fill the gap that previously jumped xs\u2192lg.",
+    "$description": "Elevation ramp. none→xl is a 6-level superset of UX4G 3.0's 5-level l0…l4, and keeps the SAMAVESH convention of tinting toward ink (rgba(31,36,40,·)) rather than UX4G's flat black — tinted shadows read as depth instead of dirt on a light gov surface. sm/md fill the gap that previously jumped xs→lg.",
     "$type": "shadow",
     "none": {
       "$value": "none"
@@ -1815,7 +1828,7 @@
     }
   },
   "border": {
-    "$description": "Border widths. UX4G 3.0's exact values (border-none/thin/thick/thicker/thickest), bound by name so the two cannot drift \u2014 spec \u00a78.1 'structural' rule.",
+    "$description": "Border widths. UX4G 3.0's exact values (border-none/thin/thick/thicker/thickest), bound by name so the two cannot drift — spec §8.1 'structural' rule.",
     "$type": "dimension",
     "width": {
       "none": {
@@ -1836,8 +1849,6 @@
     }
   },
   "opacity": {
-    "$description": "Opacity scale \u2014 UX4G 3.0's 17 steps, exact.",
-    "$type": "number",
     "0": {
       "$value": "0"
     },
@@ -1879,10 +1890,12 @@
     },
     "100": {
       "$value": "1"
-    }
+    },
+    "$description": "Opacity scale — UX4G 3.0's 17 steps, exact.",
+    "$type": "number"
   },
   "z": {
-    "$description": "Named stacking order. UX4G 3.0's z-index ladder verbatim \u2014 these numbers are Bootstrap's, which UX4G inherited and which third-party CSS in the estate already assumes, so diverging would put our modals under someone else's.",
+    "$description": "Named stacking order. UX4G 3.0's z-index ladder verbatim — these numbers are Bootstrap's, which UX4G inherited and which third-party CSS in the estate already assumes, so diverging would put our modals under someone else's.",
     "$type": "number",
     "dropdown": {
       "$value": "1000"
@@ -1912,8 +1925,6 @@
     }
   },
   "size": {
-    "$description": "One numeric size scale, VALUE-NAMED: `size/16` is 16px. Adopted from UX4G 3.0, whose 20 steps are carried at their exact rem values \u2014 the name needing no lookup is the thing worth copying, and it is what Tailwind and Spectrum do too. 22 and 44 are a SAMAVESH superset: our type scale already ships them and UX4G has no step there.",
-    "$type": "dimension",
     "8": {
       "$value": "0.5rem",
       "$description": "8px"
@@ -1948,7 +1959,7 @@
     },
     "22": {
       "$value": "1.375rem",
-      "$description": "22px \u2014 SAMAVESH superset step"
+      "$description": "22px — SAMAVESH superset step"
     },
     "24": {
       "$value": "1.5rem",
@@ -1972,7 +1983,7 @@
     },
     "44": {
       "$value": "2.75rem",
-      "$description": "44px \u2014 SAMAVESH superset step"
+      "$description": "44px — SAMAVESH superset step"
     },
     "48": {
       "$value": "3rem",
@@ -2001,11 +2012,11 @@
     "120": {
       "$value": "7.5rem",
       "$description": "120px"
-    }
+    },
+    "$description": "One numeric size scale, VALUE-NAMED: `size/16` is 16px. Adopted from UX4G 3.0, whose 20 steps are carried at their exact rem values — the name needing no lookup is the thing worth copying, and it is what Tailwind and Spectrum do too. 22 and 44 are a SAMAVESH superset: our type scale already ships them and UX4G has no step there.",
+    "$type": "dimension"
   },
   "blur": {
-    "$description": "Backdrop/effect blur. UX4G 3.0's ramp verbatim.",
-    "$type": "dimension",
     "1": {
       "$value": "2px"
     },
@@ -2017,10 +2028,12 @@
     },
     "4": {
       "$value": "16px"
-    }
+    },
+    "$description": "Backdrop/effect blur. UX4G 3.0's ramp verbatim.",
+    "$type": "dimension"
   },
   "breakpoint": {
-    "$description": "Viewport anchors. These are not decoration: `clamp()` interpolates type between mobile and desktop, and Figma's Type modes sample the same curve at all three. The numbers were duplicated as literals in two build files until 2026-08-10 \u2014 this is now their one source.",
+    "$description": "Viewport anchors. These are not decoration: `clamp()` interpolates type between mobile and desktop, and Figma's Type modes sample the same curve at all three. The numbers were duplicated as literals in two build files until 2026-08-10 — this is now their one source.",
     "$type": "dimension",
     "mobile": {
       "$value": "360px"

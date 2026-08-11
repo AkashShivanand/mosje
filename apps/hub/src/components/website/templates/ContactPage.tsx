@@ -34,23 +34,23 @@ export function ContactPage({ office, mapSrc, officers = [], showForm = true, ..
             {/* Left: address + map + officers */}
             <div>
               <div className="rounded-xl border border-gray-200 bg-white p-6">
-                <h2 className="flex items-center gap-2 text-[18px] font-semibold text-gov-blue-dark">
+                <h2 className="flex items-center gap-2 text-[18px] font-semibold text-primary-dark">
                   <Icon name="apartment" size={20} /> {office.name}
                 </h2>
                 <ul className="mt-4 space-y-3 text-[14px] text-ink-muted">
                   <li className="flex items-start gap-3">
-                    <Icon name="location_on" size={16} className="mt-0.5 shrink-0 text-gov-blue" />
+                    <Icon name="location_on" size={16} className="mt-0.5 shrink-0 text-primary" />
                     <span>{office.address}</span>
                   </li>
                   {office.phone && (
                     <li className="flex items-center gap-3">
-                      <Icon name="call" size={16} className="shrink-0 text-gov-blue" />
+                      <Icon name="call" size={16} className="shrink-0 text-primary" />
                       <span>{office.phone}</span>
                     </li>
                   )}
                   {office.email && (
                     <li className="flex items-center gap-3">
-                      <Icon name="mail" size={16} className="shrink-0 text-gov-blue" />
+                      <Icon name="mail" size={16} className="shrink-0 text-primary" />
                       <span>{office.email}</span>
                     </li>
                   )}
@@ -71,7 +71,7 @@ export function ContactPage({ office, mapSrc, officers = [], showForm = true, ..
 
               {officers.length > 0 && (
                 <div className="mt-8">
-                  <h2 className="mb-4 text-[18px] font-semibold text-gov-blue-dark">Key Officers</h2>
+                  <h2 className="mb-4 text-[18px] font-semibold text-primary-dark">Key Officers</h2>
                   <div className="grid gap-4 sm:grid-cols-2">
                     {officers.map((o) => (
                       <Card key={o.role} variant="outlined" className="p-4 text-[14px]">
@@ -91,7 +91,7 @@ export function ContactPage({ office, mapSrc, officers = [], showForm = true, ..
             {showForm && (
               <aside>
                 <div className="rounded-xl border border-gray-200 bg-surface-muted p-6">
-                  <h2 className="mb-4 text-[18px] font-semibold text-gov-blue-dark">Send us a message</h2>
+                  <h2 className="mb-4 text-[18px] font-semibold text-primary-dark">Send us a message</h2>
                   <FeedbackForm />
                 </div>
               </aside>

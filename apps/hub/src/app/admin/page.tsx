@@ -135,7 +135,7 @@ export default async function AdminPage({
           when this page cannot save.{" "}
           <Link
             href="/"
-            className="font-semibold text-gov-blue underline-offset-2 hover:underline"
+            className="font-semibold text-primary underline-offset-2 hover:underline"
           >
             Back to the estate
           </Link>

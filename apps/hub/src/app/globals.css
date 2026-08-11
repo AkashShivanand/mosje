@@ -10,10 +10,12 @@
    here — once, app-wide. Path is relative to THIS file (apps/hub/src/app/). */
 @source "../../../../packages/design-system/components";
 
-/* Attribute-based dark variant (matches the element itself AND descendants of
-   [data-theme="dark"]). The appearance axis is driven by data-theme, NOT the OS
-   prefers-color-scheme, so the default Tailwind dark variant must be overridden. */
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+/* NO DARK APPEARANCE AXIS. There is deliberately no `dark:` variant here.
+   `data-theme` (light/dark/hc) was retired: tokens.css emits no [data-theme]
+   block, so a `dark:` utility would have applied with nothing to repaint. The
+   UX4G accessibility widget is the estate's single canonical dark and
+   high-contrast mechanism — it sets its own .dark-mode class on <html>.
+   Do not re-add @custom-variant dark without first adding the token layer. */
 
 /* ══════════════════════════════════════════════════════════════════════════
    PORTAL THEMES — global utility NAMES, per-portal VALUES.
@@ -68,9 +70,13 @@
   --color-on-primary:     var(--ds-on-primary);
 
   /* ── Brand / primary ────────────────────────────────────────────────── */
-  --color-gov-blue:       var(--ds-primary);
-  --color-gov-blue-tonal: var(--ds-primary-tonal);
-  --color-gov-blue-dark:  var(--ds-primary-dark);
+  /* `gov-` prefixes were dropped 2026-08-11. `gov-blue` and `primary` were already two
+     names for one value (both var(--ds-primary)), so this merged them rather than
+     remapping anything; `gov-blue-dark`/`gov-blue-tonal` became `primary-dark`/
+     `primary-tonal`, and `gov-navy`/`gov-yellow` lost the prefix. The colour is named for
+     what it DOES in the system, not for who owns the system. */
+  --color-primary-tonal:  var(--ds-primary-tonal);
+  --color-primary-dark:   var(--ds-primary-dark);
   /* smile-admin's `primary` scale maps 1:1 onto the DS primary ramp, so it stays
      inline and mode-reactive — that is precisely what makes smile-admin's
      data-brand="navy" wrapper repaint it to the GoI navy. */
@@ -85,9 +91,10 @@
   --color-primary-700:    var(--ds-primary-700);
   --color-primary-800:    var(--ds-primary-800);
   --color-primary-900:    var(--ds-primary-900);
-  --color-gov-navy:       var(--ds-gov-navy);
-  --color-gov-yellow:     var(--ds-gov-yellow);
-  /* saffron: scw/nmba/nhapoa/tg pin #ec6a1f; hub keeps the DS saffron #f97316. */
+  --color-navy:           var(--ds-navy);
+  --color-yellow:         var(--ds-yellow);
+  /* saffron: scw/nmba/nhapoa/tg pin #ec6a1f; hub keeps the DS saffron #ff671f (the
+     SAMAVESH logo's India Saffron, since the 2026-08-11 palette rebuild). */
   --color-saffron:        var(--portal-saffron, var(--ds-saffron));
   --color-saffron-light:  var(--ds-saffron-light);
   --color-saffron-dark:   var(--ds-saffron-dark);

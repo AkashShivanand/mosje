@@ -117,7 +117,7 @@ export default async function AdminPortalsPage({
         <nav aria-label="Breadcrumb" className="mb-6">
           <ol className="flex items-center gap-2 text-sm text-ink-muted">
             <li>
-              <Link href="/admin" className="hover:text-gov-blue hover:underline">
+              <Link href="/admin" className="hover:text-primary hover:underline">
                 Settings
               </Link>
             </li>

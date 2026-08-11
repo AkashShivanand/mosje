@@ -154,24 +154,24 @@ export default async function EventDetailPage({
       lastUpdated="06 Jun 2026"
       sidebar={
         <div className="rounded-xl border border-gray-200 bg-surface-muted p-5 text-[14px]">
-          <h2 className="mb-4 text-[15px] font-semibold text-gov-blue-dark">Event Details</h2>
+          <h2 className="mb-4 text-[15px] font-semibold text-primary-dark">Event Details</h2>
           <dl className="space-y-4">
             <div className="flex items-start gap-3">
-              <Icon name="calendar_month" size={20} className="mt-0.5 shrink-0 text-gov-blue" aria-hidden="true" />
+              <Icon name="calendar_month" size={20} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
               <div>
                 <dt className="font-semibold text-ink">Date</dt>
                 <dd className="text-ink-muted">{event.date}</dd>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <Icon name="location_on" size={20} className="mt-0.5 shrink-0 text-gov-blue" aria-hidden="true" />
+              <Icon name="location_on" size={20} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
               <div>
                 <dt className="font-semibold text-ink">Venue</dt>
                 <dd className="text-ink-muted">{event.venue}</dd>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <Icon name="group" size={20} className="mt-0.5 shrink-0 text-gov-blue" aria-hidden="true" />
+              <Icon name="group" size={20} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
               <div>
                 <dt className="font-semibold text-ink">Organiser</dt>
                 <dd className="text-ink-muted">{event.organiser}</dd>

@@ -10,11 +10,11 @@
    (DBIM key colour via UX4G Theme Craft). For UX4G's literal violet palette, set
    data-color-mode="ux4g-light" or "ux4g-dark".
 
-   90 colour tokens remapped onto SAMAVESH ramps.
+   89 colour tokens remapped onto SAMAVESH ramps.
    24 structural tokens aliased to a SAMAVESH token with the identical value.
    385 semantic tokens pass through as var() references — they inherit the
      colour remap above, which is what makes the whole semantic layer follow our palette.
-   256 emitted at UX4G's own literal value (no SAMAVESH equivalent).
+   257 emitted at UX4G's own literal value (no SAMAVESH equivalent).
    Ramps deliberately left at UX4G values: gold, lime, pink, purple, skyblue, tertiary, yellow.
 
    WHAT AN ALIAS PROMISES — it preserves UX4G's VALUE, not our rung. --ux4g-bg-primary-subtle
@@ -217,7 +217,7 @@
   --ux4g-color-lime-950: #254000;
   --ux4g-color-neutral-0: var(--sa-color-neutralScale-0);
   --ux4g-color-neutral-100: var(--sa-color-neutralScale-100);
-  --ux4g-color-neutral-1000: var(--sa-color-neutralScale-1100);
+  --ux4g-color-neutral-1000: #000;
   --ux4g-color-neutral-200: var(--sa-color-neutralScale-200);
   --ux4g-color-neutral-300: var(--sa-color-neutralScale-300);
   --ux4g-color-neutral-400: var(--sa-color-neutralScale-400);

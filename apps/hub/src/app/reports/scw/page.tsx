@@ -64,7 +64,7 @@ export default function ScwReportPage() {
   const all = audit.screens.flatMap((s) => s.findings);
   const count = (s: Sev) => all.filter((f) => f.severity === s).length;
   const stats: { label: string; value: number; color: string }[] = [
-    { label: "Screens", value: audit.screens.length, color: "text-gov-blue" },
+    { label: "Screens", value: audit.screens.length, color: "text-primary" },
     { label: "Findings", value: all.length, color: "text-ink" },
     { label: "Blockers", value: count("Blocker"), color: "text-danger" },
     { label: "Major", value: count("Major"), color: "text-ink" },
@@ -74,7 +74,7 @@ export default function ScwReportPage() {
     <div className="flex min-h-screen flex-col bg-surface-muted">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded-lg focus:bg-gov-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-primary"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-primary"
       >
         Skip to main content
       </a>
@@ -85,15 +85,15 @@ export default function ScwReportPage() {
           <div className="mx-auto max-w-[1280px] px-6 pb-8 pt-10">
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex items-center gap-2 text-sm text-ink-muted">
-                <li><Link href="/" className="hover:text-gov-blue hover:underline">Home</Link></li>
+                <li><Link href="/" className="hover:text-primary hover:underline">Home</Link></li>
                 <li aria-hidden="true">/</li>
-                <li><Link href="/reports" className="hover:text-gov-blue hover:underline">Reports</Link></li>
+                <li><Link href="/reports" className="hover:text-primary hover:underline">Reports</Link></li>
                 <li aria-hidden="true">/</li>
                 <li aria-current="page" className="font-medium text-ink">SCW</li>
               </ol>
             </nav>
 
-            <Link href="/reports" className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-gov-blue hover:underline">
+            <Link href="/reports" className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
               <Icon name="arrow_back" size={16} aria-hidden="true" /> All reports
             </Link>
 
@@ -110,7 +110,7 @@ export default function ScwReportPage() {
               <a
                 href={PDF}
                 download
-                className="inline-flex items-center gap-2 rounded-lg bg-gov-blue px-4 py-2.5 text-sm font-semibold text-on-primary transition-colors hover:bg-gov-blue-dark"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-on-primary transition-colors hover:bg-primary-dark"
               >
                 <Icon name="download" size={16} aria-hidden="true" /> Download PDF
               </a>
@@ -134,12 +134,12 @@ export default function ScwReportPage() {
                 <h2 className="text-lg font-bold text-ink">{screen.name}</h2>
                 <div className="flex items-center gap-3 text-xs">
                   {screen.figmaUrl && (
-                    <a href={screen.figmaUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-semibold text-gov-blue hover:underline">
+                    <a href={screen.figmaUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">
                       Figma frame <Icon name="open_in_new" size={12} aria-hidden="true" />
                     </a>
                   )}
                   {screen.liveUrl && (
-                    <a href={screen.liveUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-semibold text-gov-blue hover:underline">
+                    <a href={screen.liveUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">
                       Live page <Icon name="open_in_new" size={12} aria-hidden="true" />
                     </a>
                   )}
@@ -162,7 +162,7 @@ export default function ScwReportPage() {
                       </div>
                       <dl className="mt-3 grid gap-3 sm:grid-cols-2">
                         <div>
-                          <dt className="text-[11px] font-bold uppercase tracking-wide text-gov-blue">Design — Figma intent</dt>
+                          <dt className="text-[11px] font-bold uppercase tracking-wide text-primary">Design — Figma intent</dt>
                           <dd className="mt-1 text-sm text-ink-muted">{f.figma}</dd>
                         </div>
                         <div>

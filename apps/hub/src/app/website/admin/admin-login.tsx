@@ -14,7 +14,7 @@ export function AdminLogin() {
 
   return (
     <main className="flex min-h-screen flex-col bg-surface-muted">
-      <div className="bg-gov-blue py-3 text-center text-[13px] text-white">
+      <div className="bg-primary py-3 text-center text-[13px] text-white">
         Government of India · Ministry of Social Justice &amp; Empowerment
       </div>
 
@@ -69,7 +69,7 @@ export function AdminLogin() {
             </Button>
           </form>
 
-          <Link href="/website" className="mt-6 flex items-center justify-center gap-1.5 text-[14px] text-gov-blue hover:underline">
+          <Link href="/website" className="mt-6 flex items-center justify-center gap-1.5 text-[14px] text-primary hover:underline">
             <Icon name="arrow_back" size={16} />
             Back to website
           </Link>

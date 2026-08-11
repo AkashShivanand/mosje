@@ -59,7 +59,7 @@ const bottomLinks: FooterLink[] = [
 
 export function SiteFooter() {
   return (
-    <footer className="bg-gov-navy text-white">
+    <footer className="bg-navy text-white">
       {/* TOP AREA */}
       <div className="mx-auto max-w-[1280px] px-4 py-12">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-6">
@@ -91,7 +91,7 @@ export function SiteFooter() {
               </p>
               <Link
                 href="/website/contact-us"
-                className="mt-3 inline-flex items-center rounded-md bg-gov-blue px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-gov-blue-dark"
+                className="mt-3 inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
               >
                 Get in Touch
               </Link>
@@ -154,7 +154,7 @@ export function SiteFooter() {
       </div>
 
       {/* BOTTOM BAR */}
-      <div className="bg-gov-blue-dark">
+      <div className="bg-primary-dark">
         <div className="mx-auto flex max-w-[1280px] flex-col items-center gap-3 px-4 py-4 text-sm text-white/70 md:flex-row md:justify-between">
           <p>
             © 2026 Department of Social Justice &amp; Empowerment. All Rights

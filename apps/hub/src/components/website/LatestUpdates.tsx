@@ -31,7 +31,7 @@ export function LatestUpdates() {
   if (!item) return null;
 
   return (
-    <section className="bg-gov-blue text-white">
+    <section className="bg-primary text-white">
       <div className="mx-auto flex h-[72px] max-w-[1280px] items-center gap-4 px-4">
         {/* Label pill */}
         <div className="flex shrink-0 items-center gap-2 rounded-md bg-white px-3 py-2 text-ink">

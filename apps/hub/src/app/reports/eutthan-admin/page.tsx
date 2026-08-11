@@ -77,7 +77,7 @@ const SUGGESTIONS: Suggestion[] = [
     title: "Replace hardcoded colors with DS tokens",
     context: "47 findings include numerous hardcoded hex values (#003366, #374151, #e5eff9, #f9fafb) that should reference DS color tokens.",
     current: "color: #003366 · bg: #e5eff9 · border: #e2e8f0 — hardcoded throughout",
-    proposed: "var(--color-gov-blue) · var(--color-primary-50) · var(--color-stroke-200)",
+    proposed: "var(--color-primary) · var(--color-primary-50) · var(--color-stroke-200)",
     rationale: "Token drift means design updates require hunt-and-replace across all screens instead of a single variable change.",
     action: "Add a CSS custom-property layer to the portal globals. Map all hardcoded colors in one pass.",
     figmaRef: "DS Library → Colors → Semantic tokens",
@@ -317,7 +317,7 @@ function ScreenGroup({ screen, findings }: { screen: Screen; findings: Finding[]
               href={screen.figmaUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 rounded-full bg-blue-50 border border-blue-200 px-2.5 py-0.5 text-[11px] font-medium text-gov-blue hover:bg-blue-100 transition"
+              className="flex items-center gap-1 rounded-full bg-blue-50 border border-blue-200 px-2.5 py-0.5 text-[11px] font-medium text-primary hover:bg-blue-100 transition"
             >
               <Icon name="open_in_new" size={12} /> Figma
             </a>
@@ -395,8 +395,8 @@ function SuggestionCard({ s }: { s: Suggestion }) {
           <div className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-500">Current state</div>
           <p className="leading-relaxed text-slate-800">{s.current}</p>
         </div>
-        <div className="rounded-md border border-gov-blue/10 bg-blue-50 p-3">
-          <div className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-gov-blue">Proposed</div>
+        <div className="rounded-md border border-primary/10 bg-blue-50 p-3">
+          <div className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-primary">Proposed</div>
           <p className="leading-relaxed text-blue-900">{s.proposed}</p>
         </div>
       </div>
@@ -498,7 +498,7 @@ export default function EutthanAdminReport() {
                 {label}
                 <span
                   className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
-                    tab === key ? "bg-gov-blue text-white" : "bg-border text-ink-muted"
+                    tab === key ? "bg-primary text-white" : "bg-border text-ink-muted"
                   }`}
                 >
                   {badge}
@@ -536,7 +536,7 @@ export default function EutthanAdminReport() {
                   placeholder="Search findings, elements, axis…"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="w-full rounded-lg border border-border bg-surface py-2 pl-8 pr-8 text-xs text-ink placeholder:text-ink-muted focus:border-gov-blue focus:outline-none focus:ring-1 focus:ring-gov-blue"
+                  className="w-full rounded-lg border border-border bg-surface py-2 pl-8 pr-8 text-xs text-ink placeholder:text-ink-muted focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
                 {query && (
                   <button
@@ -564,7 +564,7 @@ export default function EutthanAdminReport() {
                       onClick={() => setActiveScreen(slug)}
                       className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold transition ${
                         activeScreen === slug
-                          ? "bg-gov-blue text-white"
+                          ? "bg-primary text-white"
                           : "bg-surface-muted text-ink-muted hover:text-ink"
                       }`}
                     >
@@ -608,7 +608,7 @@ export default function EutthanAdminReport() {
               <div className="h-8 w-px bg-border" />
               <div className="flex flex-wrap gap-5">
                 {[
-                  { label: "Screens",  value: audit.screens.length,  color: "text-gov-blue" },
+                  { label: "Screens",  value: audit.screens.length,  color: "text-primary" },
                   { label: "Findings", value: allFindings.length,     color: "text-ink" },
                   { label: "Blockers", value: counts.Blocker,         color: "text-red-600" },
                   { label: "Major",    value: counts.Major,           color: "text-orange-600" },
@@ -633,7 +633,7 @@ export default function EutthanAdminReport() {
                 <p className="text-xs text-ink-muted mt-1">Try adjusting the search or filter criteria.</p>
                 <button
                   onClick={() => { setQuery(""); setActiveScreen("ALL"); setActiveSev("All"); }}
-                  className="mt-4 text-xs font-semibold text-gov-blue hover:underline"
+                  className="mt-4 text-xs font-semibold text-primary hover:underline"
                 >
                   Clear all filters
                 </button>
@@ -659,7 +659,7 @@ export default function EutthanAdminReport() {
               <div className="h-8 w-px bg-border" />
               <div className="flex flex-wrap gap-5">
                 {[
-                  { label: "Total",    value: SUGGESTIONS.length,                                          color: "text-gov-blue" },
+                  { label: "Total",    value: SUGGESTIONS.length,                                          color: "text-primary" },
                   { label: "Critical", value: SUGGESTIONS.filter((s) => s.severity === "Critical").length, color: "text-red-600" },
                   { label: "High",     value: SUGGESTIONS.filter((s) => s.severity === "High").length,     color: "text-orange-600" },
                   { label: "Medium",   value: SUGGESTIONS.filter((s) => s.severity === "Medium").length,   color: "text-amber-600" },

@@ -48,7 +48,13 @@ export const ROLE = new Set(["bg", "text", "icon", "border", "outline", "shadow"
 export const FAMILY = new Set(["neutral", "brand", "status", "link"]);
 
 export const VARIANT = {
-  brand: new Set(["primary", "secondary", "tertiary"]),
+  // `accent` joined 2026-08-11. `primary`/`secondary`/`tertiary` are ORDINAL — they rank
+  // emphasis — whereas `accent` names a specific identity colour that outranks nothing.
+  // Both live in the same slot because both answer "which brand colour", and the ordinal
+  // words keep their existing meaning; a fourth ordinal (`quaternary`) would have implied a
+  // rank the SAMAVESH green does not have. The green is the logo's second colour, not its
+  // third-most-important one.
+  brand: new Set(["primary", "secondary", "tertiary", "accent"]),
   status: new Set(["success", "error", "warning", "info"]),
   // `brand`, not `default`. `default` is the canonical STATE, and a link variant spelled
   // `default` collided with it head-on: `text/link/default/default` consumed the second
@@ -316,6 +322,40 @@ export function parse(path, tier) {
     const r = parseColourPath(path);
     return r.error ? { ok: false, error: r.error } : { ok: true, slots: r.slots };
   }
+  // RULE 2b — the PALETTE SCALE shape: `color/<family>Scale/<step>`.
+  //
+  // These are the mode-aware Tier-1 ramps every semantic token aliases into. They were
+  // authored before the grammar and 73 of them sat in test/legacy-tier2-paths.json, which
+  // meant the one shape the system uses most had no rule of its own — and a NEW scale could
+  // not be added at all without editing a list that is explicitly closed. `accentScale`
+  // (2026-08-11) is exactly that case: a sibling of `primaryScale` and `secondaryScale` that
+  // must live beside them or a designer finds two brand ramps in one place and the third
+  // somewhere else.
+  //
+  // Naming a rule rather than widening the exemption is what lets the allowlist SHRINK,
+  // which is the direction the ratchet is built to allow.
+  // RULE 2c — the ALPHA TIER shape: `color/transparent/<family>/<percent>`.
+  //
+  // Same argument as the palette scales below: these are Tier-1 overlay washes exported to
+  // the Palette collection, 42 of them sat in the closed legacy allowlist, and a new family
+  // (`accent`, 2026-08-11) could not be added at all without editing a list that may only
+  // shrink. Naming the shape lets those 42 leave.
+  if (
+    path[0] === "color" &&
+    path[1] === "transparent" &&
+    path.length === 4 &&
+    /^\d+$/.test(path[3])
+  ) {
+    return { ok: true, slots: { group: "color", tier: "transparent", family: path[2], alpha: path[3] } };
+  }
+
+  if (path[0] === "color" && /^[a-z][A-Za-z]*Scale$/.test(path[1] ?? "") && path.length === 3) {
+    if (!/^\d+$/.test(path[2])) {
+      return { ok: false, error: `palette scale step must be numeric, got ${JSON.stringify(path[2])}` };
+    }
+    return { ok: true, slots: { group: "color", scale: path[1], step: path[2] } };
+  }
+
   if (GROUP.has(path[0])) return { ok: true, slots: { group: path[0], rest: path.slice(1) } };
   if (ROLE.has(path[0])) {
     // A colour role with a bad family — report that, not "unknown group".

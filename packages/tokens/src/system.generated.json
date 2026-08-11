@@ -71,6 +71,32 @@
           "$value": "{color.secondaryScale.800}",
           "$description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the secondary brand colour."
         }
+      },
+      "accent": {
+        "base": {
+          "$value": "{color.accentScale.50}",
+          "$description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, tinted with the accent brand colour."
+        },
+        "subtler": {
+          "$value": "{color.accentScale.100}",
+          "$description": "Use for a barely-there tint, for hovered rows and zebra striping, tinted with the accent brand colour."
+        },
+        "subtle": {
+          "$value": "{color.accentScale.200}",
+          "$description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the accent brand colour."
+        },
+        "bold": {
+          "$value": "{color.accentScale.300}",
+          "$description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the accent brand colour."
+        },
+        "bolder": {
+          "$value": "{color.accentScale.600}",
+          "$description": "Use for a solid fill that carries white text — primary buttons and filled banners, tinted with the accent brand colour."
+        },
+        "boldest": {
+          "$value": "{color.accentScale.800}",
+          "$description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the accent brand colour."
+        }
       }
     },
     "status": {

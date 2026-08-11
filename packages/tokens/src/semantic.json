@@ -1,16 +1,17 @@
 {
-  "$description": "Tier 2 \u2014 semantic/alias tokens. The PUBLIC contract apps consume.",
+  "$description": "Tier 2 — semantic/alias tokens. The PUBLIC contract apps consume.",
   "color": {
     "$type": "color",
     "action": {
       "primary": {
-        "$description": "Button/CTA fill. MUST stay dark enough to carry white label text at AA in EVERY theme \u2014 that is why the dark theme sits on 500 and not on a lighter step, and why hover goes DARKER (600) rather than lighter. Text links use color.action.link instead, which is free to lighten on dark surfaces. Enforced by test/mode-contrast.test.mjs; the dark theme shipped white-on-#2d84e8 at 3.77:1 until 2026-08.",
+        "$description": "Button/CTA fill. MUST stay dark enough to carry white label text at AA in EVERY theme — that is why the dark theme sits on 500 and not on a lighter step, and why hover goes DARKER (600) rather than lighter. Text links use color.action.link instead, which is free to lighten on dark surfaces. Enforced by test/mode-contrast.test.mjs; the dark theme shipped white-on-#2d84e8 at 3.77:1 until 2026-08.",
         "default": {
           "$value": "{color.primaryRamp.blue.500}",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "{color.primaryRamp.navy.500}"
+                "navy": "{color.primaryRamp.navy.500}",
+                "dbim": "{color.primaryRamp.dbim.500}"
               },
               "themes": {
                 "dark": "{color.primaryRamp.blue.500}"
@@ -23,7 +24,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "{color.primaryRamp.navy.700}"
+                "navy": "{color.primaryRamp.navy.700}",
+                "dbim": "{color.primaryRamp.dbim.700}"
               },
               "themes": {
                 "dark": "{color.primaryRamp.blue.600}"
@@ -36,7 +38,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "{color.primaryRamp.navy.100}"
+                "navy": "{color.primaryRamp.navy.100}",
+                "dbim": "{color.primaryRamp.dbim.100}"
               },
               "themes": {
                 "dark": "rgba(45, 132, 232, 0.18)"
@@ -52,7 +55,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.navy.50}"
+              "navy": "{color.primaryRamp.navy.50}",
+              "dbim": "{color.primaryRamp.dbim.50}"
             }
           }
         }
@@ -62,7 +66,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.navy.100}"
+              "navy": "{color.primaryRamp.navy.100}",
+              "dbim": "{color.primaryRamp.dbim.100}"
             }
           }
         }
@@ -72,7 +77,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.navy.200}"
+              "navy": "{color.primaryRamp.navy.200}",
+              "dbim": "{color.primaryRamp.dbim.200}"
             }
           }
         }
@@ -82,7 +88,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.navy.300}"
+              "navy": "{color.primaryRamp.navy.300}",
+              "dbim": "{color.primaryRamp.dbim.300}"
             }
           }
         }
@@ -92,7 +99,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.navy.400}"
+              "navy": "{color.primaryRamp.navy.400}",
+              "dbim": "{color.primaryRamp.dbim.400}"
             }
           }
         }
@@ -102,7 +110,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.navy.500}"
+              "navy": "{color.primaryRamp.navy.500}",
+              "dbim": "{color.primaryRamp.dbim.500}"
             }
           }
         }
@@ -112,7 +121,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.navy.600}"
+              "navy": "{color.primaryRamp.navy.600}",
+              "dbim": "{color.primaryRamp.dbim.600}"
             }
           }
         }
@@ -122,7 +132,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.navy.700}"
+              "navy": "{color.primaryRamp.navy.700}",
+              "dbim": "{color.primaryRamp.dbim.700}"
             }
           }
         }
@@ -132,7 +143,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.navy.800}"
+              "navy": "{color.primaryRamp.navy.800}",
+              "dbim": "{color.primaryRamp.dbim.800}"
             }
           }
         }
@@ -142,12 +154,24 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.primaryRamp.navy.900}"
+              "navy": "{color.primaryRamp.navy.900}",
+              "dbim": "{color.primaryRamp.dbim.900}"
             }
           }
         }
       },
-      "$description": "Full mode-aware primary ramp (50\u2013900). Consume via --ds-primary-50\u2026900. Each step follows the active color mode."
+      "950": {
+        "$value": "{color.primaryRamp.blue.950}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.primaryRamp.navy.950}",
+              "dbim": "{color.primaryRamp.dbim.950}"
+            }
+          }
+        }
+      },
+      "$description": "Full mode-aware primary ramp (50–900). Consume via --ds-primary-50…900. Each step follows the active color mode."
     },
     "secondaryScale": {
       "50": {
@@ -155,7 +179,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.navy.50}"
+              "navy": "{color.secondaryRamp.navy.50}",
+              "dbim": "{color.secondaryRamp.navy.50}"
             }
           }
         }
@@ -165,7 +190,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.navy.100}"
+              "navy": "{color.secondaryRamp.navy.100}",
+              "dbim": "{color.secondaryRamp.navy.100}"
             }
           }
         }
@@ -175,7 +201,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.navy.200}"
+              "navy": "{color.secondaryRamp.navy.200}",
+              "dbim": "{color.secondaryRamp.navy.200}"
             }
           }
         }
@@ -185,7 +212,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.navy.300}"
+              "navy": "{color.secondaryRamp.navy.300}",
+              "dbim": "{color.secondaryRamp.navy.300}"
             }
           }
         }
@@ -195,7 +223,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.navy.400}"
+              "navy": "{color.secondaryRamp.navy.400}",
+              "dbim": "{color.secondaryRamp.navy.400}"
             }
           }
         }
@@ -205,7 +234,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.navy.500}"
+              "navy": "{color.secondaryRamp.navy.500}",
+              "dbim": "{color.secondaryRamp.navy.500}"
             }
           }
         }
@@ -215,7 +245,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.navy.600}"
+              "navy": "{color.secondaryRamp.navy.600}",
+              "dbim": "{color.secondaryRamp.navy.600}"
             }
           }
         }
@@ -225,7 +256,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.navy.700}"
+              "navy": "{color.secondaryRamp.navy.700}",
+              "dbim": "{color.secondaryRamp.navy.700}"
             }
           }
         }
@@ -235,7 +267,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.navy.800}"
+              "navy": "{color.secondaryRamp.navy.800}",
+              "dbim": "{color.secondaryRamp.navy.800}"
             }
           }
         }
@@ -245,12 +278,148 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.secondaryRamp.navy.900}"
+              "navy": "{color.secondaryRamp.navy.900}",
+              "dbim": "{color.secondaryRamp.navy.900}"
             }
           }
         }
       },
-      "$description": "Full mode-aware SECONDARY ramp (50\u2013900) = Figma Secondary/*. Blue-Light = saffron, Blue-Dark = green. Consume via --ds-secondary-50\u2026900 / --sa-color-secondaryScale-*."
+      "950": {
+        "$value": "{color.secondaryRamp.blue.950}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.secondaryRamp.navy.950}",
+              "dbim": "{color.secondaryRamp.navy.950}"
+            }
+          }
+        }
+      },
+      "$description": "Full mode-aware SECONDARY ramp (50–900) = Figma Secondary/*. Blue-Light = saffron, Blue-Dark = green. Consume via --ds-secondary-50…900 / --sa-color-secondaryScale-*."
+    },
+    "accentScale": {
+      "50": {
+        "$value": "{color.accentRamp.blue.50}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.50}",
+              "dbim": "{color.accentRamp.navy.50}"
+            }
+          }
+        }
+      },
+      "100": {
+        "$value": "{color.accentRamp.blue.100}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.100}",
+              "dbim": "{color.accentRamp.navy.100}"
+            }
+          }
+        }
+      },
+      "200": {
+        "$value": "{color.accentRamp.blue.200}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.200}",
+              "dbim": "{color.accentRamp.navy.200}"
+            }
+          }
+        }
+      },
+      "300": {
+        "$value": "{color.accentRamp.blue.300}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.300}",
+              "dbim": "{color.accentRamp.navy.300}"
+            }
+          }
+        }
+      },
+      "400": {
+        "$value": "{color.accentRamp.blue.400}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.400}",
+              "dbim": "{color.accentRamp.navy.400}"
+            }
+          }
+        }
+      },
+      "500": {
+        "$value": "{color.accentRamp.blue.500}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.500}",
+              "dbim": "{color.accentRamp.navy.500}"
+            }
+          }
+        }
+      },
+      "600": {
+        "$value": "{color.accentRamp.blue.600}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.600}",
+              "dbim": "{color.accentRamp.navy.600}"
+            }
+          }
+        }
+      },
+      "700": {
+        "$value": "{color.accentRamp.blue.700}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.700}",
+              "dbim": "{color.accentRamp.navy.700}"
+            }
+          }
+        }
+      },
+      "800": {
+        "$value": "{color.accentRamp.blue.800}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.800}",
+              "dbim": "{color.accentRamp.navy.800}"
+            }
+          }
+        }
+      },
+      "900": {
+        "$value": "{color.accentRamp.blue.900}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.900}",
+              "dbim": "{color.accentRamp.navy.900}"
+            }
+          }
+        }
+      },
+      "950": {
+        "$value": "{color.accentRamp.blue.950}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.accentRamp.navy.950}",
+              "dbim": "{color.accentRamp.navy.950}"
+            }
+          }
+        }
+      },
+      "$description": "ACCENT brand scale — India Green #046A38 from the SAMAVESH logo. Brand-INVARIANT (blue and navy resolve to identical values), and deliberately the same green as color.successScale: two greens nine degrees apart is a defect whichever token owns them."
     },
     "neutralScale": {
       "0": {
@@ -258,7 +427,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.0}"
+              "navy": "{color.neutralDark.0}",
+              "dbim": "{color.neutralDark.0}"
             }
           }
         }
@@ -268,7 +438,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.50}"
+              "navy": "{color.neutralDark.50}",
+              "dbim": "{color.neutralDark.50}"
             }
           }
         }
@@ -278,7 +449,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.100}"
+              "navy": "{color.neutralDark.100}",
+              "dbim": "{color.neutralDark.100}"
             }
           }
         }
@@ -288,7 +460,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.200}"
+              "navy": "{color.neutralDark.200}",
+              "dbim": "{color.neutralDark.200}"
             }
           }
         }
@@ -298,7 +471,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.300}"
+              "navy": "{color.neutralDark.300}",
+              "dbim": "{color.neutralDark.300}"
             }
           }
         }
@@ -308,7 +482,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.400}"
+              "navy": "{color.neutralDark.400}",
+              "dbim": "{color.neutralDark.400}"
             }
           }
         }
@@ -318,7 +493,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.500}"
+              "navy": "{color.neutralDark.500}",
+              "dbim": "{color.neutralDark.500}"
             }
           }
         }
@@ -328,7 +504,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.600}"
+              "navy": "{color.neutralDark.600}",
+              "dbim": "{color.neutralDark.600}"
             }
           }
         }
@@ -338,7 +515,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.700}"
+              "navy": "{color.neutralDark.700}",
+              "dbim": "{color.neutralDark.700}"
             }
           }
         }
@@ -348,7 +526,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.800}"
+              "navy": "{color.neutralDark.800}",
+              "dbim": "{color.neutralDark.800}"
             }
           }
         }
@@ -358,7 +537,19 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.900}"
+              "navy": "{color.neutralDark.900}",
+              "dbim": "{color.neutralDark.900}"
+            }
+          }
+        }
+      },
+      "950": {
+        "$value": "{color.neutral.950}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.neutralDark.950}",
+              "dbim": "{color.neutralDark.950}"
             }
           }
         }
@@ -368,22 +559,13 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.1000}"
+              "navy": "{color.neutralDark.1000}",
+              "dbim": "{color.neutralDark.1000}"
             }
           }
         }
       },
-      "1100": {
-        "$value": "{color.neutral.1100}",
-        "$extensions": {
-          "mosje": {
-            "colorModes": {
-              "navy": "{color.neutralDark.1100}"
-            }
-          }
-        }
-      },
-      "$description": "Full mode-aware NEUTRAL ramp (0\u20131100) = Figma Neutral/*. Blue-Light = warm grey, Blue-Dark = cooler Tailwind grey. Consume via --ds-neutral-0\u20261100 / --sa-color-neutralScale-*."
+      "$description": "Full mode-aware NEUTRAL ramp (0–1000) = Figma Palette/color/neutralScale/*. Blue (default) = warm grey, Navy = cooler Tailwind grey. Consume via --ds-neutral-0…1000 / --sa-color-neutralScale-*. Renumbered 2026-08-11 to match UX4G: pure white at 0, pure black at 1000, near-black at 950. There is no 1100 — the old top step was retired by that renumbering."
     },
     "successScale": {
       "50": {
@@ -416,7 +598,10 @@
       "900": {
         "$value": "{color.green.900}"
       },
-      "$description": "Full SUCCESS ramp (50\u2013900) = Figma Success/*. Mode-invariant (identical in Blue-Light and Blue-Dark). Consume via --ds-success-50\u2026900."
+      "950": {
+        "$value": "{color.green.950}"
+      },
+      "$description": "Full SUCCESS ramp (50–900) = Figma Success/*. Mode-invariant (identical in Blue-Light and Blue-Dark). Consume via --ds-success-50…900."
     },
     "dangerScale": {
       "50": {
@@ -449,7 +634,10 @@
       "900": {
         "$value": "{color.red.900}"
       },
-      "$description": "Full DANGER ramp (50\u2013900) = Figma Danger/*. Mode-invariant. Consume via --ds-danger-50\u2026900."
+      "950": {
+        "$value": "{color.red.950}"
+      },
+      "$description": "Full DANGER ramp (50–900) = Figma Danger/*. Mode-invariant. Consume via --ds-danger-50…900."
     },
     "warningScale": {
       "50": {
@@ -482,7 +670,10 @@
       "900": {
         "$value": "{color.amber.900}"
       },
-      "$description": "Full WARNING ramp (50\u2013900) = Figma Warning/*. Mode-invariant. Consume via --ds-warning-50\u2026900."
+      "950": {
+        "$value": "{color.amber.950}"
+      },
+      "$description": "Full WARNING ramp (50–900) = Figma Warning/*. Mode-invariant. Consume via --ds-warning-50…900."
     },
     "infoScale": {
       "50": {
@@ -515,17 +706,21 @@
       "900": {
         "$value": "{color.info.900}"
       },
-      "$description": "Full INFO ramp (50\u2013900) = Figma Info/*. Mode-invariant. Consume via --ds-info-50\u2026900."
+      "950": {
+        "$value": "{color.info.950}"
+      },
+      "$description": "Full INFO ramp (50–900) = Figma Info/*. Mode-invariant. Consume via --ds-info-50…900."
     },
     "transparent": {
-      "$description": "Alpha overlay tiers (8/16/24/32/40/48%) = Figma '<Family> Transparent/*'. primary/secondary/neutral are mode-aware (Blue-Dark uses navy/green/cool-grey bases); success/danger/warning/white are mode-invariant. Consume via --sa-color-transparent-<family>-<step>.",
+      "$description": "Alpha overlay tiers (8/16/24/32/40/48%). GENERATED by build/brand-ramps.mjs from each family's base colour — never hand-written, because 42 rgba() literals is exactly the shape of thing that silently keeps a retired colour alive. primary and neutral vary by brand; secondary and accent do NOT (both are SAMAVESH logo colours); the status tiers and white are brand-invariant. Consume via --sa-color-transparent-<family>-<step>.",
       "primary": {
         "8": {
           "$value": "rgba(3, 115, 223, 0.08)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.08)"
+                "navy": "rgba(0, 51, 102, 0.08)",
+                "dbim": "rgba(0, 51, 102, 0.08)"
               }
             }
           }
@@ -535,7 +730,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.16)"
+                "navy": "rgba(0, 51, 102, 0.16)",
+                "dbim": "rgba(0, 51, 102, 0.16)"
               }
             }
           }
@@ -545,7 +741,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.24)"
+                "navy": "rgba(0, 51, 102, 0.24)",
+                "dbim": "rgba(0, 51, 102, 0.24)"
               }
             }
           }
@@ -555,7 +752,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.32)"
+                "navy": "rgba(0, 51, 102, 0.32)",
+                "dbim": "rgba(0, 51, 102, 0.32)"
               }
             }
           }
@@ -565,7 +763,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.40)"
+                "navy": "rgba(0, 51, 102, 0.40)",
+                "dbim": "rgba(0, 51, 102, 0.40)"
               }
             }
           }
@@ -575,7 +774,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.48)"
+                "navy": "rgba(0, 51, 102, 0.48)",
+                "dbim": "rgba(0, 51, 102, 0.48)"
               }
             }
           }
@@ -583,64 +783,42 @@
       },
       "secondary": {
         "8": {
-          "$value": "rgba(249, 115, 22, 0.08)",
-          "$extensions": {
-            "mosje": {
-              "colorModes": {
-                "navy": "rgba(25, 135, 84, 0.08)"
-              }
-            }
-          }
+          "$value": "rgba(255, 103, 31, 0.08)"
         },
         "16": {
-          "$value": "rgba(249, 115, 22, 0.16)",
-          "$extensions": {
-            "mosje": {
-              "colorModes": {
-                "navy": "rgba(25, 135, 84, 0.16)"
-              }
-            }
-          }
+          "$value": "rgba(255, 103, 31, 0.16)"
         },
         "24": {
-          "$value": "rgba(249, 115, 22, 0.24)",
-          "$extensions": {
-            "mosje": {
-              "colorModes": {
-                "navy": "rgba(25, 135, 84, 0.24)"
-              }
-            }
-          }
+          "$value": "rgba(255, 103, 31, 0.24)"
         },
         "32": {
-          "$value": "rgba(249, 115, 22, 0.32)",
-          "$extensions": {
-            "mosje": {
-              "colorModes": {
-                "navy": "rgba(25, 135, 84, 0.32)"
-              }
-            }
-          }
+          "$value": "rgba(255, 103, 31, 0.32)"
         },
         "40": {
-          "$value": "rgba(249, 115, 22, 0.40)",
-          "$extensions": {
-            "mosje": {
-              "colorModes": {
-                "navy": "rgba(25, 135, 84, 0.40)"
-              }
-            }
-          }
+          "$value": "rgba(255, 103, 31, 0.40)"
         },
         "48": {
-          "$value": "rgba(249, 115, 22, 0.48)",
-          "$extensions": {
-            "mosje": {
-              "colorModes": {
-                "navy": "rgba(25, 135, 84, 0.48)"
-              }
-            }
-          }
+          "$value": "rgba(255, 103, 31, 0.48)"
+        }
+      },
+      "accent": {
+        "8": {
+          "$value": "rgba(4, 106, 56, 0.08)"
+        },
+        "16": {
+          "$value": "rgba(4, 106, 56, 0.16)"
+        },
+        "24": {
+          "$value": "rgba(4, 106, 56, 0.24)"
+        },
+        "32": {
+          "$value": "rgba(4, 106, 56, 0.32)"
+        },
+        "40": {
+          "$value": "rgba(4, 106, 56, 0.40)"
+        },
+        "48": {
+          "$value": "rgba(4, 106, 56, 0.48)"
         }
       },
       "neutral": {
@@ -649,7 +827,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.08)"
+                "navy": "rgba(31, 41, 55, 0.08)",
+                "dbim": "rgba(31, 41, 55, 0.08)"
               }
             }
           }
@@ -659,7 +838,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.16)"
+                "navy": "rgba(31, 41, 55, 0.16)",
+                "dbim": "rgba(31, 41, 55, 0.16)"
               }
             }
           }
@@ -669,7 +849,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.24)"
+                "navy": "rgba(31, 41, 55, 0.24)",
+                "dbim": "rgba(31, 41, 55, 0.24)"
               }
             }
           }
@@ -679,7 +860,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.32)"
+                "navy": "rgba(31, 41, 55, 0.32)",
+                "dbim": "rgba(31, 41, 55, 0.32)"
               }
             }
           }
@@ -689,7 +871,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.40)"
+                "navy": "rgba(31, 41, 55, 0.40)",
+                "dbim": "rgba(31, 41, 55, 0.40)"
               }
             }
           }
@@ -699,7 +882,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.48)"
+                "navy": "rgba(31, 41, 55, 0.48)",
+                "dbim": "rgba(31, 41, 55, 0.48)"
               }
             }
           }
@@ -707,22 +891,22 @@
       },
       "success": {
         "8": {
-          "$value": "rgba(46, 125, 50, 0.08)"
+          "$value": "rgba(4, 106, 56, 0.08)"
         },
         "16": {
-          "$value": "rgba(46, 125, 50, 0.16)"
+          "$value": "rgba(4, 106, 56, 0.16)"
         },
         "24": {
-          "$value": "rgba(46, 125, 50, 0.24)"
+          "$value": "rgba(4, 106, 56, 0.24)"
         },
         "32": {
-          "$value": "rgba(46, 125, 50, 0.32)"
+          "$value": "rgba(4, 106, 56, 0.32)"
         },
         "40": {
-          "$value": "rgba(46, 125, 50, 0.40)"
+          "$value": "rgba(4, 106, 56, 0.40)"
         },
         "48": {
-          "$value": "rgba(46, 125, 50, 0.48)"
+          "$value": "rgba(4, 106, 56, 0.48)"
         }
       },
       "danger": {
@@ -792,7 +976,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.800}"
+              "navy": "{color.neutralDark.800}",
+              "dbim": "{color.neutralDark.800}"
             },
             "themes": {
               "dark": "{color.a11y.dark.ink}",
@@ -806,7 +991,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.700}"
+              "navy": "{color.neutralDark.700}",
+              "dbim": "{color.neutralDark.700}"
             },
             "themes": {
               "dark": "{color.a11y.dark.inkMuted}"
@@ -819,7 +1005,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "rgba(31, 41, 55, 0.48)"
+              "navy": "rgba(31, 41, 55, 0.48)",
+              "dbim": "rgba(31, 41, 55, 0.48)"
             },
             "themes": {
               "dark": "rgba(243, 244, 246, 0.40)"
@@ -847,7 +1034,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.500}"
+              "navy": "{color.neutralDark.500}",
+              "dbim": "{color.neutralDark.500}"
             },
             "themes": {
               "dark": "#5b6577",
@@ -1123,14 +1311,14 @@
     "devanagari": {
       "$type": "fontFamily",
       "$value": "{font.family.devanagari}",
-      "$description": "Devanagari/Hindi text. Pair with lang=hi on the element. Never italic \u2014 the script has no italic tradition and slanting degrades legibility."
+      "$description": "Devanagari/Hindi text. Pair with lang=hi on the element. Never italic — the script has no italic tradition and slanting degrades legibility."
     }
   },
   "leading": {
     "devanagari": {
       "$type": "number",
       "$value": "{font.lineHeight.devanagari}",
-      "$description": "Devanagari needs more leading than Latin at the same size \u2014 the matras sit above and below the base line."
+      "$description": "Devanagari needs more leading than Latin at the same size — the matras sit above and below the base line."
     }
   },
   "bg": {
@@ -1140,7 +1328,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.0}"
+              "navy": "{color.neutralDark.0}",
+              "dbim": "{color.neutralDark.0}"
             },
             "themes": {
               "dark": "{color.a11y.dark.surface}",
@@ -1154,7 +1343,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.50}"
+              "navy": "{color.neutralDark.50}",
+              "dbim": "{color.neutralDark.50}"
             },
             "themes": {
               "dark": "{color.a11y.dark.bg}",
@@ -1172,7 +1362,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.900}"
+              "navy": "{color.neutralDark.900}",
+              "dbim": "{color.neutralDark.900}"
             },
             "themes": {
               "dark": "{color.neutral.0}"
@@ -1184,12 +1375,13 @@
     "link": {
       "brand": {
         "default": {
-          "$description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (\u22654.5:1 as text) without weakening white-on-primary button contrast.",
+          "$description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast.",
           "$value": "{color.primaryRamp.blue.500}",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "{color.primaryRamp.navy.500}"
+                "navy": "{color.primaryRamp.navy.500}",
+                "dbim": "{color.primaryRamp.dbim.500}"
               },
               "themes": {
                 "dark": "{color.primaryRamp.blue.300}"
@@ -1207,7 +1399,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.100}"
+              "navy": "{color.neutralDark.100}",
+              "dbim": "{color.neutralDark.100}"
             },
             "themes": {
               "dark": "#262b33",
@@ -1221,7 +1414,8 @@
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "{color.neutralDark.200}"
+              "navy": "{color.neutralDark.200}",
+              "dbim": "{color.neutralDark.200}"
             },
             "themes": {
               "dark": "{color.a11y.dark.border}",
@@ -1236,7 +1430,8 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "{color.neutralDark.400}"
+                "navy": "{color.neutralDark.400}",
+                "dbim": "{color.neutralDark.400}"
               },
               "themes": {
                 "dark": "#4a5263",
@@ -1254,7 +1449,8 @@
       "$extensions": {
         "mosje": {
           "colorModes": {
-            "navy": "rgba(0, 51, 102, 0.48)"
+            "navy": "rgba(0, 51, 102, 0.48)",
+            "dbim": "rgba(0, 51, 102, 0.48)"
           },
           "themes": {
             "dark": "rgba(125, 180, 245, 0.55)"
@@ -1388,7 +1584,7 @@
     }
   },
   "chart": {
-    "$description": "Data-visualisation roles. Theme-aware: dark/hc overrides keep series legible on dark surfaces. cat 1\u201312 are mutually-distinguishable categorical series (brand-led); seq 50\u2013900 is a single-hue ramp for choropleth + heatmap; div is red\u2192neutral\u2192green for signed data; trend/grid/axis/tooltip/region are structural.",
+    "$description": "Data-visualisation roles. Theme-aware: dark/hc overrides keep series legible on dark surfaces. cat 1–12 are mutually-distinguishable categorical series (brand-led); seq 50–900 is a single-hue ramp for choropleth + heatmap; div is red→neutral→green for signed data; trend/grid/axis/tooltip/region are structural.",
     "cat": {
       "1": {
         "$value": "#0373df",
@@ -1815,7 +2011,7 @@
     }
   },
   "on": {
-    "$description": "Guaranteed foreground for a given fill \u2014 Material 3's `on-` pairing. Every entry was CHOSEN BY MEASUREMENT, not by eye: the ink (dark or inverse) that clears AA on that fill in the WORST brand wins, because a pairing is only as accessible as its least accessible brand. This exists so a designer reaching for a status chip does not have to guess the label colour.",
+    "$description": "Guaranteed foreground for a given fill — Material 3's `on-` pairing. Every entry was CHOSEN BY MEASUREMENT, not by eye: the ink (dark or inverse) that clears AA on that fill in the WORST brand wins, because a pairing is only as accessible as its least accessible brand. This exists so a designer reaching for a status chip does not have to guess the label colour.",
     "$type": "color",
     "bg": {
       "neutral": {
@@ -1861,6 +2057,26 @@
             "$value": "{text.neutral.base}"
           },
           "subtler": {
+            "$value": "{text.neutral.base}"
+          },
+          "bold": {
+            "$value": "{text.neutral.base}"
+          },
+          "bolder": {
+            "$value": "{text.neutral.inverse}"
+          },
+          "boldest": {
+            "$value": "{text.neutral.inverse}"
+          }
+        },
+        "accent": {
+          "base": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtler": {
+            "$value": "{text.neutral.base}"
+          },
+          "subtle": {
             "$value": "{text.neutral.base}"
           },
           "bold": {
@@ -1959,7 +2175,7 @@
     }
   },
   "blur": {
-    "$description": "Named blur strengths \u2014 UX4G 3.0's four semantic names over its own ramp.",
+    "$description": "Named blur strengths — UX4G 3.0's four semantic names over its own ramp.",
     "$type": "dimension",
     "subtle": {
       "$value": "{blur.1}"
@@ -1975,7 +2191,7 @@
     }
   },
   "icon": {
-    "$description": "Icon sizes. `md` is the estate default (24px), matching the Material Symbols optical size <Icon> ships with \u2014 pick a step, never a raw number.",
+    "$description": "Icon sizes. `md` is the estate default (24px), matching the Material Symbols optical size <Icon> ships with — pick a step, never a raw number.",
     "$type": "dimension",
     "size": {
       "xs": {
@@ -1996,7 +2212,7 @@
     }
   },
   "container": {
-    "$description": "Page container max-widths. sm\u2013xl carry UX4G 3.0's exact values; `content` is the MoSJE 1280px content width mandated estate-wide, which until now existed only as a literal.",
+    "$description": "Page container max-widths. sm–xl carry UX4G 3.0's exact values; `content` is the MoSJE 1280px content width mandated estate-wide, which until now existed only as a literal.",
     "$type": "dimension",
     "sm": {
       "$value": "540px"

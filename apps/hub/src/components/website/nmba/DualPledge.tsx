@@ -34,7 +34,7 @@ export function DualPledge() {
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-gray-100 px-6 py-5 sm:px-8">
         <h3 className="text-[20px] font-semibold text-ink">Take the pledge</h3>
         <p className="text-[14px] text-ink-muted">
-          <span className="font-semibold text-gov-blue-dark">{total}</span> Indians have
+          <span className="font-semibold text-primary-dark">{total}</span> Indians have
           already pledged
         </p>
       </div>
@@ -44,11 +44,11 @@ export function DualPledge() {
           <li key={p.key}>
             <a
               href={p.href}
-              className="group flex items-center gap-5 px-6 py-6 transition-colors hover:bg-gov-blue/[0.04] sm:gap-8 sm:px-8"
+              className="group flex items-center gap-5 px-6 py-6 transition-colors hover:bg-primary/[0.04] sm:gap-8 sm:px-8"
             >
               {/* momentum number — the hook */}
               <div className="w-[104px] shrink-0 sm:w-[132px]">
-                <div className="text-[26px] font-bold leading-none tracking-tight text-gov-blue-dark sm:text-[30px]">
+                <div className="text-[26px] font-bold leading-none tracking-tight text-primary-dark sm:text-[30px]">
                   {p.count}
                 </div>
                 <div className="mt-1 text-[12px] uppercase tracking-wide text-ink-muted">
@@ -63,11 +63,11 @@ export function DualPledge() {
                 <p className="mt-1 text-[14px] leading-relaxed text-ink-muted">{p.blurb}</p>
               </div>
 
-              <span className="ml-auto hidden shrink-0 items-center gap-1.5 text-[14px] font-semibold text-gov-blue sm:inline-flex">
+              <span className="ml-auto hidden shrink-0 items-center gap-1.5 text-[14px] font-semibold text-primary sm:inline-flex">
                 Pledge
                 <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-1" />
               </span>
-              <Icon name="arrow_forward" size={20} className="ml-auto shrink-0 text-gov-blue transition-transform group-hover:translate-x-1 sm:hidden" aria-hidden />
+              <Icon name="arrow_forward" size={20} className="ml-auto shrink-0 text-primary transition-transform group-hover:translate-x-1 sm:hidden" aria-hidden />
             </a>
           </li>
         ))}

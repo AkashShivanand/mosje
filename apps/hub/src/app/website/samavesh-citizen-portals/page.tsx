@@ -96,7 +96,7 @@ export default function CitizenPortalsPage() {
                     className="h-full w-full object-contain"
                   />
                 </div>
-                <h2 className="mt-4 text-base font-semibold text-gov-blue-dark">
+                <h2 className="mt-4 text-base font-semibold text-primary-dark">
                   {portal.name}
                 </h2>
                 <p className="mt-1.5 flex-1 text-sm leading-relaxed text-ink-muted">
@@ -106,7 +106,7 @@ export default function CitizenPortalsPage() {
                   href={portal.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-gov-blue hover:text-gov-blue-dark"
+                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary-dark"
                 >
                   Visit Portal
                   <Icon name="open_in_new" size={16} aria-hidden="true" />

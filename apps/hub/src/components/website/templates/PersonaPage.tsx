@@ -38,7 +38,7 @@ export function PersonaPage({ tagline, cards, ...hero }: PersonaPageProps) {
                   <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-saffron-light text-saffron-dark">
                     <Icon name={iconName} aria-hidden="true" />
                   </span>
-                  <h3 className="text-[18px] font-semibold text-gov-blue-dark">{card.title}</h3>
+                  <h3 className="text-[18px] font-semibold text-primary-dark">{card.title}</h3>
                   <p className="mt-2 flex-1 text-[14px] leading-relaxed text-ink-muted">{card.description}</p>
                   <Button
                     href={card.href}

@@ -55,8 +55,12 @@ export const LEGACY_DS_ALIASES = {
   "--ds-neutral-700":   "--sa-color-neutralScale-700",
   "--ds-neutral-800":   "--sa-color-neutralScale-800",
   "--ds-neutral-900":   "--sa-color-neutralScale-900",
-  "--ds-neutral-1000":  "--sa-color-neutralScale-1000",
-  "--ds-neutral-1100":  "--sa-color-neutralScale-1100",
+  // RETARGETED 2026-08-11, value-preserving. The canonical neutral endpoints renumbered to
+  // match UX4G (old 1000 -> 950, old 1100 -> 1000), so these two legacy names now point one
+  // rung lower to keep rendering exactly what they always did: #0a0d13 and #000000. Keeping
+  // the legacy spelling while the canonical name moves is precisely this layer's job.
+  "--ds-neutral-1000":  "--sa-color-neutralScale-950",
+  "--ds-neutral-1100":  "--sa-color-neutralScale-1000",
   "--ds-success-50":    "--sa-color-successScale-50",
   "--ds-success-100":   "--sa-color-successScale-100",
   "--ds-success-200":   "--sa-color-successScale-200",
@@ -118,8 +122,8 @@ export const LEGACY_DS_ALIASES = {
   "--ds-saffron":       "--sa-color-brand-saffron",
   "--ds-saffron-light": "--sa-color-brand-saffronLight",
   "--ds-saffron-dark":  "--sa-color-brand-saffronDark",
-  "--ds-gov-navy":      "--sa-color-brand-navy",
-  "--ds-gov-yellow":    "--sa-color-brand-yellow",
+  "--ds-navy":          "--sa-color-brand-navy",
+  "--ds-yellow":        "--sa-color-brand-yellow",
   "--ds-spacing-none":  "--sa-ref-space-none",
   "--ds-spacing-xxs":   "--sa-ref-space-xxs",
   "--ds-spacing-xs":    "--sa-ref-space-xs",

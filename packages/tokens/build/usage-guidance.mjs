@@ -227,13 +227,48 @@ export function guidanceFor(path, tier, parse) {
   return null;
 }
 
-/** Tier-1 primitives get a pointer, not a use case — the semantic layer is where choices are made. */
+/** Display/Headline/Title/Body/Label — the style folder each role ramp lives in, in Figma. */
+const TYPE_STYLE_FOLDER = { display: "Display", headline: "Headline", title: "Title", body: "Body", label: "Label" };
+
+/**
+ * Type primitives point at the TEXT STYLE, never at `type/*`.
+ *
+ * `type/*` is the CSS namespace (`--ds-type-display-1-size`). It has never existed as a Figma
+ * variable — a search for "type/" in the picker returns nothing — yet this sentence was
+ * attached to all 108 variables in the Type collection, sending every designer who read it
+ * after something unfindable. The sentence was written for a stylesheet reader and landed on
+ * a canvas reader.
+ *
+ * In Figma the equivalent of a `type/*` role IS a text style: it binds family, weight, size,
+ * leading, tracking and paragraph spacing in one place, and it follows the surface x
+ * breakpoint modes for free. So a role primitive names its exact style, and the raw ladders
+ * (family, weight, size, lineHeight, tracking) name the ramp they are assembled into.
+ */
+function fontPointer(path) {
+  const [, group, role, step] = path;
+  const folder = group === "role" ? TYPE_STYLE_FOLDER[role] : null;
+  if (folder) {
+    return `Raw type step. Prefer the text style \`${folder}/${role}-${step}\` — it binds size, ` +
+      `leading, tracking and paragraph spacing together and follows the Type modes.`;
+  }
+  return "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label " +
+    "ramp — these are the parts those styles are assembled from.";
+}
+
+/**
+ * Tier-1 primitives get a pointer, not a use case — the semantic layer is where choices are made.
+ *
+ * Consumed ONLY by `formats/figma-variables.mjs`, as the description on a `ref/*` variable
+ * (`guidanceFor` is the one the CSS/TS generators share). The audience is therefore a designer
+ * in the Figma variable picker, which is why these name Figma styles and collections rather
+ * than CSS custom properties.
+ */
 export function primitivePointer(path) {
   const [head] = path;
   if (head === "color") return "Palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee and follow the brand.";
-  if (head === "size") return "Raw size step, value-named. Prefer `space/*`, `padding/*` or a type role unless you genuinely need an arbitrary dimension.";
+  if (head === "size") return "Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.";
   if (head === "space") return "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.";
-  if (head === "font") return "Raw type step. Prefer a `type/*` role, which responds to surface and viewport.";
+  if (head === "font") return fontPointer(path);
   if (head === "radius" || head === "motion" || head === "opacity" || head === "blur") return `Raw ${head} step.`;
   if (head === "z") return "Stacking order. Code-only — Figma has no canvas property for z-index.";
   if (head === "breakpoint") return "Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.";

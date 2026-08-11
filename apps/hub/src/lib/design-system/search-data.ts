@@ -8,7 +8,7 @@ export interface SearchEntry {
 
 export const SEARCH_DATA: SearchEntry[] = [
   { title: "What is SAMAVESH?", section: "Getting Started", href: "/design-system", keywords: "overview introduction welcome", type: "page" },
-  { title: "Color", section: "Foundations", href: "/design-system/foundations/color", keywords: "color colour palette primary brand token swatch gov-blue saffron", type: "foundation" },
+  { title: "Color", section: "Foundations", href: "/design-system/foundations/color", keywords: "color colour palette primary brand token swatch primary saffron", type: "foundation" },
   { title: "Typography", section: "Foundations", href: "/design-system/foundations/typography", keywords: "font noto sans devanagari hindi type specimen size weight", type: "foundation" },
   { title: "Spacing", section: "Foundations", href: "/design-system/foundations/spacing", keywords: "space gap margin padding scale 4px 8px 16px", type: "foundation" },
   { title: "Elevation", section: "Foundations", href: "/design-system/foundations/elevation", keywords: "shadow drop elevation layer depth", type: "foundation" },
