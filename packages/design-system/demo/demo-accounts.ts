@@ -21,16 +21,6 @@ export interface DemoAccountSet {
   path: string;
   /** Column header for the account identifier (mobile, email, employee ID, …). */
   idLabel?: string;
-  /**
-   * True when this set's login page is built on `PortalLoginShell` and
-   * passes a `signingInto` prop — which renders a "Signing Into" strip
-   * pinned to the bottom of the hero panel (see `portal-login-shell.tsx`).
-   * `DemoDock` reads this to raise its FAB above that strip on the set's own
-   * login route (never on the rest of the portal — see `demo-dock.tsx`'s
-   * `clearsHeroStrip`). Leave unset (falsy) for every login page built on a
-   * different shell; only NMBA uses `PortalLoginShell` today.
-   */
-  heroStrip?: boolean;
   accounts: DemoAccount[];
 }
 
@@ -38,7 +28,6 @@ export const DEMO_ACCOUNTS: readonly DemoAccountSet[] = [
   {
     path: "/portals/nmba",
     idLabel: "Mobile / ID",
-    heroStrip: true,
     accounts: [
       { role: "Admin", id: "9999999999", password: "Demo@123" },
       { role: "State Nodal Officer (Maharashtra)", id: "9890123456", password: "Demo@123" },
@@ -57,7 +46,6 @@ export const DEMO_ACCOUNTS: readonly DemoAccountSet[] = [
     // wins the longest-prefix match over the broader /portals/nmba entry.
     path: "/portals/nmba/treatment-centre",
     idLabel: "Project Id",
-    heroStrip: true,
     accounts: [
       { role: "IRCA", id: "IRCA001", password: "123456" },
       { role: "ODIC", id: "ODIC001", password: "123456" },

@@ -12,7 +12,15 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v1.11.7 (COLOUR TAB MOTIF TILES: the Colour tab's
+  Last reviewed: 2026-08-11 · System version: v1.11.8 (DEMODOCK PLACEMENT: the FAB moves from
+  bottom-left to bottom-right, docked directly above the UX4G accessibility widget's own trigger —
+  one coordinated utility rail instead of two FABs in unrelated corners at different sizes/offsets.
+  The gap above the widget is measured live off its real geometry (never hardcoded), so an upstream
+  resize can't silently reopen an overlap. The per-registry-entry boolean that used to raise the FAB
+  above `PortalLoginShell`'s "Signing Into" strip on NMBA's login routes (making the FAB visibly
+  relocate between routes) is removed outright rather than automated further — moving off
+  bottom-left eliminates that collision at the source, so every route now gets the identical FAB
+  position with nothing to opt into and nothing to forget.) v1.11.7 (COLOUR TAB MOTIF TILES: the Colour tab's
   swatch-plus-live-preview layout is replaced by a wrapping grid of fixed-size (~72×48px) motif
   tiles — a miniature header bar/surface/accent/button abstraction per mode, each rendered in that
   mode's own palette via a nested `data-brand` island on the tile itself (no hardcoded hex; see the
@@ -1051,8 +1059,11 @@ building product UI and find yourself about to import from here, stop —
 these are not the components you want.
 
 #### DemoDock
-**Purpose**: The single floating demo console — one FAB, bottom-left,
-opening a tabbed panel: **Sign in** (demo credentials for the current login
+**Purpose**: The single floating demo console — one FAB, bottom-right,
+docked directly above the UX4G accessibility widget's own trigger (a single
+coordinated utility rail, not two unrelated corners — the gap is measured
+live off the widget's real geometry, never hardcoded), opening a tabbed
+panel: **Sign in** (demo credentials for the current login
 route, `DemoAccountsPanel`, shown — and shown *first* — only when `pathname`
 is itself a login route; see `isLoginRoute`), **Apps** (cross-zone
 destination search, `AppSwitcherPanel`), **Colour** (a wrapping grid of

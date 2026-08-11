@@ -22,9 +22,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.11.8",
+    version: "v0.11.9",
     date: "2026-08-11",
     current: true,
+    changes: [
+      { kind: "Changed", text: "DemoDock's FAB moves from bottom-left to bottom-right, docked directly above the UX4G accessibility widget's own trigger — one coordinated utility rail (same right edge, a fixed gap) instead of two FABs in unrelated corners at different sizes and offsets. The gap above the widget is measured live off its real geometry rather than hardcoded, so an upstream resize of the widget can't silently reopen an overlap" },
+      { kind: "Removed", text: "The per-registry-entry boolean that raised the FAB above PortalLoginShell's \"Signing Into\" strip on NMBA's two login routes is gone, with no replacement flag — moving the FAB off bottom-left eliminates that collision at the source, so every route now renders the FAB in the identical position, nothing to opt into and nothing to forget" },
+      { kind: "Fixed", text: "The FAB no longer visibly relocates between routes (bottom-left at rest vs. raised on NMBA's login pages) — it now holds one fixed position, bottom-right, on every page" },
+    ],
+  },
+  {
+    version: "v0.11.8",
+    date: "2026-08-11",
     changes: [
       { kind: "Changed", text: "DemoDock's Colour tab: the plain swatch row plus live Button/Badge/Alert preview block is replaced by a wrapping grid of fixed-size (~72×48px) motif tiles — a miniature header bar, content surface, accent mark and button shape per mode. Each tile renders in that mode's own palette via a nested data-brand island on the tile itself, so a Navy tile looks navy even while the app is in Blue, with no hardcoded hex" },
       { kind: "Removed", text: "The live Button/Badge/Alert preview block under the Colour tab's swatch list is gone. The motif tiles are the preview now, and — being fixed-size regardless of mode count — give the tab a height that no longer grows with a live component block or a longer mode list" },

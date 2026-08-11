@@ -2,30 +2,43 @@
    MoSJE / SAMAVESH — DemoDock
    ─────────────────────────────────────────────────────────────────────────
    DEMO-ONLY component. NOT included in the production bundle.
-   One floating FAB, bottom-left, opening a tabbed panel (Sign in / Apps /
+   One floating FAB, bottom-right, opening a tabbed panel (Sign in / Apps /
    Colour — Sign in leads only on an actual login route). Structure mirrors
-   the AppSwitcher shell (zone-switcher.css): fixed root, absolutely
+   the retired AppSwitcher shell (zone-switcher.css): fixed root, absolutely
    positioned panel above the FAB, token-only colour and shadow values. Only
    `.ds-demodock__body` scrolls — header and tab strip stay put. The body
    carries a `min-height` (see below) so the panel doesn't resize when a
    short tab (Colour) replaces a long one (Apps).
    ============================================================================ */
 
-/* ── Root container ── */
+/* ── Root container ──────────────────────────────────────────────────────
+   Bottom-right, docked directly above the UX4G accessibility widget's own
+   70px trigger — one utility rail instead of two FABs in opposite corners.
+   See the component doc comment (demo-dock.tsx) for why this moved off
+   bottom-left. `--ds-demodock-bottom` is set by the effect in demo-dock.tsx
+   once it measures the widget's real position; the `108px` fallback here
+   (24px UX4G offset + 70px UX4G height + 14px gap) covers the brief window
+   before that measurement lands, and the rarer case where the widget never
+   appears at all — the FAB still ends up in a sensible spot, not off-corner
+   or overlapping nothing at `bottom: 0`. ── */
 .ds-demodock {
   position: fixed;
-  left: 20px;
-  bottom: 20px;
+  right: 20px;
+  bottom: var(--ds-demodock-bottom, 108px);
   z-index: 2147483000;
   font-family: var(--ds-font-sans);
 }
 
-/* DemoDock is the FAB that actually mounts in every app (the standalone
-   AppSwitcher shell it superseded is unexported now). Pages that paint
-   content in the bottom-left corner reserve its footprint with
-   `.ds-appsw-safe-bottom` (padding) or by reading the custom property
-   directly — same names as before, so those call sites needed no changes.
-   20px offset + 44px FAB + 20px breathing room. */
+/* Legacy — kept for backward compatibility, not because DemoDock still needs
+   it. Three production login pages (scw, nhapoa, tg admin —
+   `bottom-[var(--ds-appsw-safe-area)]` on their own footer dividers) reserve
+   this much clearance at bottom-LEFT for the retired `AppSwitcher` FAB that
+   used to live there. Now that DemoDock docks bottom-right instead (see
+   above), nothing occupies that corner any more and the reservation is inert
+   — but removing the variable would break those three pages' layout, so it
+   stays defined here rather than being deleted out from under them. Not
+   consumed by DemoDock itself. A follow-up could drop the now-unnecessary
+   padding from those three pages and retire this var for good. */
 :root {
   --ds-appsw-safe-area: 84px;
 }
@@ -34,26 +47,10 @@
   padding-bottom: var(--ds-appsw-safe-area);
 }
 
-/* Applied only when `DemoDock` resolves a demo account set whose registry
-   entry is flagged `heroStrip: true` (see `demo-accounts.ts`) AND the current
-   route is that set's actual login page — i.e. only on the two NMBA login
-   routes today, never on the rest of that portal. Those routes render
-   `PortalLoginShell`'s "Signing Into" strip pinned to the bottom of its hero
-   panel, which the default 20px offset sits directly on top of. Raising just
-   this instance (not the shared root default) means every other page keeps
-   the FAB flush in the corner. 90px clears the strip's ~70px footprint plus
-   a comfortable margin — measured at 1280×860 and 1280×720; the strip's
-   height doesn't depend on viewport height, since it's pinned to the hero
-   column's own bottom edge, not the viewport's. */
-.ds-demodock--clear-strip {
-  bottom: 90px;
-}
-
 /* ── FAB trigger ──────────────────────────────────────────────────────────
    Icon-only circle at rest; reveals its text label on hover/focus. Ported
-   from the UX4G accessibility widget's own trigger — the OTHER FAB that
-   shares these pages (bottom-right; see
-   `components/a11y/ux4g-accessibility-widget.css`) — rather than inventing a
+   from the UX4G accessibility widget's own trigger it now docks above (see
+   `components/a11y/ux4g-accessibility-widget.css`) rather than inventing a
    new interaction: a fixed-size circle (44px — this estate's touch-target
    floor; UX4G's own equivalent is 70px, sized for its own icon) with
    `overflow: hidden` and a `max-width` transition that grows the box to
@@ -61,6 +58,13 @@
    reads as the pill sliding open rather than text fading in over the icon.
    `padding: 0 14px` is what makes the collapsed box an exact circle: with no
    border, 14 + 16 (icon) + 14 = 44, so the icon sits dead-centre.
+
+   `justify-content: flex-end` plus the label-before-icon DOM order (see
+   demo-dock.tsx) is what keeps the icon pinned to the button's fixed RIGHT
+   edge as `max-width` grows: the button's own right edge is anchored (its
+   left edge is the one that moves), so packing content toward the end makes
+   the reveal grow leftward, away from the corner, instead of the icon
+   drifting with it.
 
    `@media (hover: hover)` gates the mouse trigger — same as UX4G's own CSS —
    so a touch device that has no real "hover" can't get stuck mid-expand
@@ -73,6 +77,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
+  justify-content: flex-end;
   height: 44px;
   width: auto;
   max-width: 44px;
@@ -125,10 +130,13 @@
 /* The label is always in the DOM (so `max-width` has something to reveal)
    but invisible at rest — `opacity`, not `display`/`visibility`, so it never
    affects the accessible-name calculation either way (moot here since it's
-   also `aria-hidden`, but keeps the two hiding mechanisms from fighting). */
+   also `aria-hidden`, but keeps the two hiding mechanisms from fighting).
+   Precedes the icon in markup (see demo-dock.tsx), so the gap sits on its
+   trailing edge — `margin-right`, not `-left` — to separate it from the
+   icon that follows. */
 .ds-demodock__fab-label {
   flex: 0 0 auto;
-  margin-left: 8px;
+  margin-right: 8px;
   white-space: nowrap;
   opacity: 0;
   transition: opacity var(--ds-duration-fast) var(--ds-easing-out);
@@ -152,7 +160,7 @@
 /* ── Panel ── */
 .ds-demodock__panel {
   position: absolute;
-  left: 0;
+  right: 0;
   bottom: calc(100% + 10px);
   width: 500px;
   max-width: calc(100vw - 40px);
@@ -164,7 +172,7 @@
   background-color: var(--ds-surface);
   box-shadow: var(--ds-shadow-xl);
   overflow: hidden;
-  transform-origin: bottom left;
+  transform-origin: bottom right;
   /* Shared floor for the body/tab content (see `.ds-demodock__body` below).
      Derived from this panel's own `max-height` (72vh, capped 680px) minus
      the header's measured footprint (~126px, rounded up for safety) so it
