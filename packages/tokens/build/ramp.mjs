@@ -34,7 +34,7 @@
  * around it.
  */
 
-import { hexToOklch, oklchToHex, rgbToOklab, hexToRgb } from "./oklch.mjs";
+import { hexToOklch, oklchToHex, nearestHex, rgbToOklab, hexToRgb } from "./oklch.mjs";
 
 /**
  * The rung ladder, matching UX4G 3.0's chromatic ramps exactly (50..900 plus 950).
@@ -164,6 +164,77 @@ export function buildRamp({ anchor, anchorStep = 500, lightest = 96.5, darkest =
   return out;
 }
 
+/* ------------------------------------------------------------------ the neutral ramp */
+
+/**
+ * The neutral ladder, thirteen steps. `0` and `1000` are pure white and pure black.
+ *
+ * They live here and on no chromatic ramp, because they are ACHROMATIC — they carry no hue,
+ * so they cannot belong to a family that is defined by one. That is also why the neutral ramp
+ * has two more rungs than the others rather than the same eleven.
+ */
+export const NEUTRAL_STEPS = [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 1000];
+
+/**
+ * Build the 13-step neutral ramp: one hue, one chroma arc, an explicit lightness ladder.
+ *
+ * WHY THE GREYS ARE TINTED
+ * ------------------------
+ * They already were, and had been for years — the question was never whether to tint but
+ * whether the tint was chosen. It was not: `neutral/400` measured C 0.020 at hue 256,
+ * `neutral/500` C 0.017 at hue 245, and `neutral/950` C 0.014 at hue 264. Chroma DROPPED
+ * between 400 and 500 while lightness fell, which is the same "darker and duller at once"
+ * defect that made `warning/500` read muddy, and the hue wandered 22 degrees across the ramp.
+ * Nobody picked 245 or 264; independent 8-bit rounding of a nearly-grey colour did (see
+ * `nearestHex`). A brand-tinted neutral is standard practice — Material 3 derives neutral
+ * from the source colour, Radix ships tinted grays, Tailwind's slate/zinc/stone are the same
+ * idea. The failure mode is an INCONSISTENT tint, which is what was there.
+ *
+ * So: hue is locked to the brand's own primary hue for the whole ramp, and chroma follows a
+ * single arc that reaches zero at both ends. The peak is deliberately low — above about 0.02
+ * a grey stops reading as grey and starts reading as a colour.
+ *
+ * WHY THE LADDER IS AN EXPLICIT LIST
+ * ----------------------------------
+ * Unlike a chromatic ramp there is no anchor to derive from: nobody mandates a grey. What the
+ * ladder has to fix is DISTRIBUTION. The old one put four steps inside the lightest 7.7 L*
+ * and then crossed the mid-range in two jumps of 15.2 and 15.5, which is why there was exactly
+ * one grey between a light surface and a mid grey, and why components kept reaching for a
+ * one-off hex that the system had no name for.
+ *
+ * @param {object} spec
+ * @param {number} spec.hue          The brand's primary hue, held constant across the ramp.
+ * @param {number[]} spec.lightness  L* per step, in `NEUTRAL_STEPS` order. Must start 100, end 0.
+ * @param {number} spec.peakL        L* at which chroma peaks.
+ * @param {number} spec.peakC        Chroma at the peak.
+ * @param {number} [spec.gamma]      Taper exponent; higher sheds chroma faster off the peak.
+ * @returns {Record<number, string>}
+ */
+export function buildNeutralRamp({ hue, lightness, peakL, peakC, gamma = 0.8 }) {
+  if (lightness.length !== NEUTRAL_STEPS.length) {
+    throw new Error(`neutral ladder needs ${NEUTRAL_STEPS.length} lightnesses, got ${lightness.length}`);
+  }
+  if (lightness[0] !== 100 || lightness.at(-1) !== 0) {
+    throw new Error("the neutral ramp must start at pure white (L* 100) and end at pure black (L* 0)");
+  }
+
+  const chroma = (L) =>
+    peakC * Math.pow(Math.max(0, L >= peakL ? (100 - L) / (100 - peakL) : L / peakL), gamma);
+
+  const out = {};
+  NEUTRAL_STEPS.forEach((step, i) => {
+    // The endpoints are white and black EXACTLY. Tinting them would be a contradiction: they
+    // are on this ramp precisely because they have no hue to tint.
+    if (i === 0) out[step] = "#ffffff";
+    else if (i === NEUTRAL_STEPS.length - 1) out[step] = "#000000";
+    // `nearestHex`, not `oklchToHex` — at this chroma naive rounding scrambles the hue. Where
+    // the arc asks for less chroma than the 8-bit grid can express, `nearestHex` returns a true
+    // grey on its own; there is no threshold here to tune.
+    else out[step] = nearestHex({ L: lightness[i], C: chroma(lightness[i]), H: hue });
+  });
+  return out;
+}
+
 /* ------------------------------------------------------------------ reporting */
 
 /** WCAG 2.x relative luminance, for the contrast readout below. */
@@ -182,9 +253,9 @@ export function contrastRatio(a, b) {
 }
 
 /** Per-step metrics for a generated ramp — used by the tests and the CLI readout. */
-export function describeRamp(ramp) {
+export function describeRamp(ramp, steps = STEPS) {
   let prev = null;
-  return STEPS.map((step) => {
+  return steps.map((step) => {
     const hex = ramp[step];
     const { L, C, H } = hexToOklch(hex);
     const row = {

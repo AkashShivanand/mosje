@@ -47,7 +47,7 @@
 
 import { readFileSync, writeFileSync } from "node:fs";
 
-import { buildRamp, describeRamp, STEPS } from "./ramp.mjs";
+import { buildRamp, buildNeutralRamp, describeRamp, STEPS, NEUTRAL_STEPS } from "./ramp.mjs";
 import { hexToRgb } from "./oklch.mjs";
 
 const here = (p) => new URL(p, import.meta.url).pathname;
@@ -75,20 +75,46 @@ export const ANCHORS = {
       "(rung 300) into mid-tone territory where the dark ink the ladder pairs with it falls " +
       "below AA. 600 is also the rung that paints the primary button.",
   },
+  /**
+   * DBIM's OWN Blue primary palette — not a ramp generated from one anchor.
+   *
+   * DBIM publishes five numbered shades per colour group (1 = darkest = the key colour,
+   * 5 = lightest), read from `docs/source-brd/MoSJE DBIM Audit.pdf` p.14, which reproduces
+   * Figure 1 of DBIM section 2.1 'Primary palette':
+   *
+   *     1 #162F6A   2 #214AAB   3 #5279D7   4 #A3BBF3   5 #D2DFFF
+   *
+   * All five are reproduced EXACTLY, pinned at the rung their lightness actually lands on
+   * (800, 600, 400, 200, 100). The other six steps are interpolated between them so the ramp
+   * fills our 11-rung ladder without inventing a DBIM value that DBIM did not publish —
+   * `$dbimShades` below records which is which.
+   *
+   * DBIM rules that come with the palette, also from the audit:
+   *   - text must use shade 1 or 2 (p.20, section 4.4)
+   *   - icons and the footer must use the key colour, i.e. shade 1 (checkpoints 3 and 5.6)
+   *
+   * CODE-ONLY, BY STANDING INSTRUCTION (2026-08-11). This brand is never pushed to the Figma
+   * library unless explicitly asked — the Palette collection stays [Blue, Navy]. The exporter
+   * enforces that by construction: its modes are a hardcoded pair and it reads only
+   * `colorModes.navy`, so a third brand cannot reach Figma by accident.
+   */
   "primaryRamp.dbim": {
-    anchor: "#162F6A",
-    anchorStep: 600,
-    lightest: 98.5,
-    darkest: 12,
-    note:
-      "The DBIM key colour, as a THIRD brand for evaluation in dev. The DBIM Compliance Audit " +
-      "fails the estate on it twice - checkpoint 3 (icons must be the key colour) and 5.6 " +
-      "(footer must be its darkest shade). It measures deltaE 1.9 from #003366, i.e. the same " +
-      "colour to the eye, which is exactly why it is worth seeing side by side before " +
-      "choosing. DELIBERATELY NOT EXPORTED TO FIGMA: the Palette collection's modes are a " +
-      "hardcoded [Blue, Navy] list in build/formats/figma-variables.mjs and the exporter reads " +
-      "only colorModes.navy, so a third brand is ignored there by construction. The library " +
-      "keeps two modes; dev gets three.",
+    shades: {
+      50: "#eef4ff",
+      100: "#d2dfff",
+      200: "#a3bbf3",
+      300: "#7a9ae6",
+      400: "#5279d7",
+      500: "#3962c1",
+      600: "#214aab",
+      700: "#1c3c8a",
+      800: "#162f6a",
+      900: "#0c1e4a",
+      950: "#041132",
+    },
+    /** Which rungs are DBIM's published values rather than interpolation. */
+    dbimShades: { 100: 5, 200: 4, 400: 3, 600: 2, 800: 1 },
+    note: "DBIM Blue primary palette, verbatim where DBIM publishes a value.",
   },
   secondaryRamp: {
     anchor: "#FF671F",
@@ -112,18 +138,161 @@ export const ANCHORS = {
     darkest: 18,
     note: "India Green from the SAMAVESH logo. Brand-INVARIANT. Deliberately the SAME green as the success status: two greens nine degrees apart is a defect whichever token owns it, and a citizen seeing the ministry's own green on a success state is better brand than a leftover Material green.",
   },
+
+  /* ---------------------------------------------------------------- functional ramps
+   *
+   * These three were left alone by the 2026-08-11 rebuild, which was scoped to the brand
+   * ramps, so they still carried every defect the audit had measured: `danger/400` and
+   * `danger/500` 1.8 L* apart (one colour wearing two names), `warning/500` darker AND duller
+   * than 400, `info/400` and `info/500` another near-duplicate pair, and 5-13 degrees of hue
+   * drift apiece. Two of them also owned the last two AA shortfalls in the whole system.
+   *
+   * There is no external mandate behind a status colour the way there is behind gov-blue or
+   * India Saffron, so the anchor here is the ramp's OWN existing Figma value — moved to the
+   * rung its lightness actually says, which is the rule the saffron and navy anchors already
+   * follow and the one that closes the accessibility gap.
+   */
+
+  dangerRamp: {
+    anchor: "#ec5042",
+    anchorStep: 400,
+    lightest: 94,
+    darkest: 19.5,
+    note:
+      "The estate's error red, unchanged as a colour and re-laddered around. ANCHORED AT 400, " +
+      "NOT 500, and that is what closes the AA gap: #ec5042 is L* 64, which sits INSIDE the " +
+      "dead zone (roughly L* 59-66) where a fill is too dark for dark ink and too light for " +
+      "white, so neither ink reaches 4.5:1. At 500 the rung below it — 600, the `bolder` fill " +
+      "that carries white text — landed at 4.40:1, which is the shortfall this ramp had. At " +
+      "400 the same rung measures 6.68:1 and rung 300 keeps 5.5:1 against the dark ink. " +
+      "`lightest` is 94 rather than the 95-97 the brand ramps use for one measured reason: it " +
+      "holds dE 4.3 from India Saffron at the `subtler` rung, so the error|secondary entry on " +
+      "the separation ledger does not get WORSE while this ramp is being fixed.",
+  },
+
+  warningRamp: {
+    // #e9952f rotated onto its own ramp's light-end hue, at identical L* and chroma.
+    anchor: "#e09c1d",
+    anchorStep: 300,
+    lightest: 96.5,
+    darkest: 22,
+    note:
+      "The estate's warning amber. THE ANCHOR MOVED IN HUE, which no other ramp's did, because " +
+      "this ramp disagreed with itself: steps 50-200 sat at hue 75-76 and steps 300-950 at hue " +
+      "63-67, a 13-degree drift, and a ramp cannot have two hues. 75.9 wins over 65.9 for three " +
+      "reasons. It is the hue of the rungs people actually see most (the pale status " +
+      "backgrounds), it is what `amber` means rather than orange, and — decisively — 65.9 is " +
+      "only 25 degrees from India Saffron, which puts `secondary|warning` UNDER the " +
+      "hue-separation gate's 30-degree threshold. Locking the old dark-end hue would have " +
+      "traded one defect for a harder one. #e09c1d is #e9952f at the same L* and chroma, " +
+      "rotated to 75.9. Anchored at 300 because it is L* 76, a tint. Rung 600 goes from " +
+      "4.46:1 to 5.68:1, closing the system's other AA shortfall.",
+  },
+
+  infoRamp: {
+    anchor: "#1a73e8",
+    anchorStep: 500,
+    lightest: 96.5,
+    darkest: 18,
+    note:
+      "The info blue, unchanged as a colour and re-laddered around. L* 57 is a mid-tone and 500 " +
+      "is where it belongs — the only ramp here whose anchor did not have to move rung. It had " +
+      "no AA shortfall; what it had was `info/400` and `info/500` 2.3 L* apart, a duplicate " +
+      "pair. Stays in the blue family on purpose: `info|primary` is a recorded INTENTIONAL " +
+      "UNION (Carbon and Spectrum do the same), and moving it would break that gate rather " +
+      "than satisfy it.",
+  },
 };
 
-/** Build every ramp declared above. Returns `{ [name]: { 50: "#…", … } }`. */
+/**
+ * The neutral ramp, per brand. Hue is the brand's OWN primary hue; everything else is shared,
+ * so the two brands' greys differ in temperature and in nothing else.
+ *
+ * The ladder is the same for both, which is what makes a brand swap unable to change the
+ * lightness of a surface — only its temperature. See `buildNeutralRamp` for why the greys are
+ * tinted at all and why the old ramp's 22 degrees of wander was not a tint but a rounding
+ * artefact.
+ */
+export const NEUTRAL_ANCHORS = {
+  // `neutral` is the Blue brand's ramp; `neutralDark` is Navy's, and is shared with dbim.
+  // The name is a fossil of a retired mode name — neither is a dark theme, and the estate has
+  // no appearance axis at all. Renaming it is a separate change with its own migration.
+  neutral: { hue: 255.2, note: "gov-blue's hue (#0373DF)." },
+  neutralDark: { hue: 264.0, note: "the navy/dbim hue (#003366 measures 253.9, #162F6A 264.0)." },
+};
+
+/**
+ * Shared shape of both neutral ramps.
+ *
+ * WHY 800 SITS AT L* 24.5 SPECIFICALLY
+ * ------------------------------------
+ * Everything else about this ladder is a distribution decision; that one number is a hard
+ * constraint, because `text.default` — the estate's body ink — IS neutral/800, and the tightest
+ * pairing in the system is that ink on the Navy brand's `bg/brand/primary/bold` (#708caf).
+ * That fill is fixed: primaryRamp.navy is already generated, shipped and in Figma. It measured
+ * exactly 4.50:1 against the old #1f2428, i.e. AA with nothing to spare, so an ink even one L*
+ * lighter drops it below. A first cut of this ladder put 800 at L* 29.5 and did exactly that,
+ * failing three previously-passing pairings (accent/success `bold` at 4.33, navy primary
+ * `bold` at 3.99). At L* 24.5 the same pairing measures 4.65:1 — a slight improvement on what
+ * was there, rather than a regression bought to buy an even ramp.
+ */
+export const NEUTRAL_SHAPE = {
+  // 12 gaps from white to black, none under 4.5 or over 11.5, widening smoothly through the
+  // mid-range and narrowing again at the ends. The old ladder ran 1.3 to 15.9: four steps
+  // inside the lightest 7.7 L* and then two jumps of 15.2 and 15.5 across the middle, which is
+  // why there was exactly ONE grey between a light surface and a mid grey.
+  // 950 stops at L* 11 rather than reaching further toward black, because below about L* 10
+  // sRGB runs out of colours: the whole range is spanned by channel values 0-3, greys sit ~3
+  // L* apart, and the nearest representable colour to a faint tint can be six times too
+  // chromatic at an arbitrary hue. A step placed there does not get the hue it was given. The
+  // 11 -> 0 gap is the largest on the ramp at 11, still inside the shape rule, and it lands
+  // where it should: on pure black, which is a defined endpoint rather than an approximation.
+  // 500 sits at L* 56 for a second hard reason: it paints `border/neutral/bolder/hover`,
+  // which the prominence ladder holds to ≥4.5:1 against the page. L* 58 measures 4.28:1 and
+  // put a NEW entry on the shortfall ledger — a ledger that may only shrink. 56 measures
+  // 4.65:1, against the old ramp's 4.69:1.
+  lightness: [100, 95.5, 90, 83.5, 76, 66.5, 56, 46, 36, 24.5, 17.5, 11, 0],
+  // Chroma peaks in the mid-tones and tapers to nothing at both ends. 0.016 is deliberately
+  // near the top of what still reads as GREY — much above 0.02 and a neutral starts reading as
+  // a colour, which is a different token's job.
+  peakL: 64,
+  peakC: 0.015,
+  gamma: 0.9,
+};
+
+/**
+ * Build every ramp declared above. Returns `{ [name]: { 50: "#…", … } }`.
+ *
+ * Two spec shapes, because two kinds of source:
+ *   - `{ anchor, … }` — one mandated colour, the other ten steps DERIVED by `ramp.mjs`.
+ *   - `{ shades }`    — a palette someone else already published in full, reproduced as
+ *                       given. DBIM is the only one: it publishes five numbered shades, and
+ *                       re-deriving them from an anchor would quietly replace four of the
+ *                       five with values DBIM never issued. A conformance palette is
+ *                       transcribed, not regenerated.
+ */
 export function generateAll() {
   return Object.fromEntries(
-    Object.entries(ANCHORS).map(([name, spec]) => [name, buildRamp(spec)]),
+    Object.entries(ANCHORS).map(([name, spec]) => [
+      name,
+      spec.shades ? { ...spec.shades } : buildRamp(spec),
+    ]),
+  );
+}
+
+/** The two neutral ramps, `{ neutral: {...}, neutralDark: {...} }`. */
+export function generateNeutrals() {
+  return Object.fromEntries(
+    Object.entries(NEUTRAL_ANCHORS).map(([name, { hue }]) => [
+      name,
+      buildNeutralRamp({ hue, ...NEUTRAL_SHAPE }),
+    ]),
   );
 }
 
 /** A ramp as DTCG `{ "50": { "$value": "#…" }, … }`. */
-function toDtcg(ramp) {
-  return Object.fromEntries(STEPS.map((s) => [String(s), { $value: ramp[s] }]));
+function toDtcg(ramp, steps = STEPS) {
+  return Object.fromEntries(steps.map((s) => [String(s), { $value: ramp[s] }]));
 }
 
 /* ------------------------------------------------------------------ alpha tiers */
@@ -246,25 +415,74 @@ function main() {
 
   writeFileSync(path, `${JSON.stringify(brand, null, 2)}\n`);
 
+  /* ---- the functional and neutral ramps, which live in primitive.json ----
+   *
+   * They are written from here, not hand-maintained there, for the reason every other value
+   * in this file is: `green` was regenerated on 2026-08-11 and then COPIED into primitive.json
+   * by hand, with a comment telling the next person to do the same. Four ramps went unrebuilt
+   * partly because that step was manual. A generated file should be generated. */
+  const primitivePath = here("../src/primitive.json");
+  const primitive = JSON.parse(readFileSync(primitivePath, "utf8"));
+  const neutrals = generateNeutrals();
+
+  // `green` is here too, and produces byte-identical values: it was already regenerated on
+  // 2026-08-11, then copied across by hand under a comment telling the next person to repeat
+  // the copy. Wiring it up removes the last manual step rather than changing any colour.
+  const FUNCTIONAL = {
+    green: "accentRamp", red: "dangerRamp", amber: "warningRamp", info: "infoRamp",
+  };
+  for (const [family, rampName] of Object.entries(FUNCTIONAL)) {
+    primitive.color[family] = {
+      $description: `${primitive.color[family].$description.split(" GENERATED by")[0].trim()} ` +
+        `GENERATED by build/brand-ramps.mjs from the ${rampName} anchor; do not hand-edit steps.`,
+      ...toDtcg(ramps[rampName]),
+    };
+  }
+  for (const [family, ramp] of Object.entries(neutrals)) {
+    primitive.color[family] = {
+      $description: `${primitive.color[family].$description.split(" GENERATED by")[0].trim()} ` +
+        `GENERATED by build/brand-ramps.mjs; do not hand-edit steps.`,
+      ...toDtcg(ramp, NEUTRAL_STEPS),
+    };
+  }
+  writeFileSync(primitivePath, `${JSON.stringify(primitive, null, 2)}\n`);
+
   // The alpha tiers live in semantic.json but are derived from the same anchors, so they are
   // rewritten here — one command regenerates every colour this file is the source of.
   const semanticPath = here("../src/semantic.json");
-  const primitive = JSON.parse(readFileSync(here("../src/primitive.json"), "utf8"));
   const semantic = JSON.parse(readFileSync(semanticPath, "utf8"));
   semantic.color.transparent = buildAlphaTiers(ramps, primitive);
+
+  // `text.disabled` is the body ink at 48%. It was written out as a literal rgba() computed
+  // from whatever neutral/800 happened to be, which is exactly the shape of thing the alpha
+  // tiers turned out to be: a derived value with no reference to break, still carrying a
+  // retired colour long after the source moved. Derived here so it cannot rot again.
+  const disabled = semantic.color.text.disabled;
+  disabled.$value = rgba(neutrals.neutral[800], 48);
+  for (const mode of ["navy", "dbim"]) {
+    disabled.$extensions.mosje.colorModes[mode] = rgba(neutrals.neutralDark[800], 48);
+  }
+
   writeFileSync(semanticPath, `${JSON.stringify(semantic, null, 2)}\n`);
 
-  for (const [name, ramp] of Object.entries(ramps)) {
-    const rows = describeRamp(ramp);
+  for (const [name, ramp] of Object.entries({ ...ramps, ...neutrals })) {
+    const steps = neutrals[name] ? NEUTRAL_STEPS : STEPS;
+    const rows = describeRamp(ramp, steps);
     const dl = rows.slice(1).map((r) => r.dL);
+    const spec = ANCHORS[name];
+    const source = !spec
+      ? `hue ${NEUTRAL_ANCHORS[name].hue}`
+      : spec.anchor
+        ? `anchor ${spec.anchor}`
+        : `${Object.keys(spec.dbimShades ?? {}).length} published shades`;
     process.stdout.write(
-      `${name.padEnd(20)} anchor ${ANCHORS[name].anchor}  ` +
+      `${name.padEnd(20)} ${source.padEnd(18)} ` +
         `dL ${Math.min(...dl).toFixed(1)}-${Math.max(...dl).toFixed(1)}  ` +
         `600 ${rows.find((r) => r.step === 600).onWhite.toFixed(2)}:1  ` +
         `800 ${rows.find((r) => r.step === 800).onWhite.toFixed(2)}:1\n`,
     );
   }
-  process.stdout.write(`\n✓ wrote ${path}\n`);
+  process.stdout.write(`\n✓ wrote ${path}\n✓ wrote ${primitivePath}\n✓ wrote ${semanticPath}\n`);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) main();

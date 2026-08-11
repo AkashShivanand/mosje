@@ -232,6 +232,16 @@ export const ux4gParityCss = {
         ["--sa-color-status-danger", rampLiteral("red", 800)],
         ["--sa-color-status-warning", rampLiteral("orange", 800)],
         ["--sa-color-status-info", rampLiteral("cyan", 800)],
+        // The TONALS have to move with the text they sit behind. These modes used to override
+        // only the four status foregrounds, which left e.g. UX4G's teal `--sa-color-status-info`
+        // (#006d75) painted on SAMAVESH's blue `infoScale/100` — a mismatched pair that passed
+        // AA by luck rather than by pairing, and stopped passing the moment the info ramp was
+        // regenerated (4.36:1). Taking both halves from the same UX4G ramp makes the pairing a
+        // property of the mode instead of a coincidence: 8.24, 8.25, 4.51 and 5.25:1.
+        ["--sa-color-status-successTonal", rampLiteral("green", 100)],
+        ["--sa-color-status-dangerTonal", rampLiteral("red", 100)],
+        ["--sa-color-status-warningTonal", rampLiteral("orange", 100)],
+        ["--sa-color-status-infoTonal", rampLiteral("cyan", 100)],
       );
       return out.filter(([, v]) => v);
     };

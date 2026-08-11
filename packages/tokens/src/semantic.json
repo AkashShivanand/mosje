@@ -719,8 +719,7 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.08)",
-                "dbim": "rgba(0, 51, 102, 0.08)"
+                "navy": "rgba(0, 51, 102, 0.08)"
               }
             }
           }
@@ -730,8 +729,7 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.16)",
-                "dbim": "rgba(0, 51, 102, 0.16)"
+                "navy": "rgba(0, 51, 102, 0.16)"
               }
             }
           }
@@ -741,8 +739,7 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.24)",
-                "dbim": "rgba(0, 51, 102, 0.24)"
+                "navy": "rgba(0, 51, 102, 0.24)"
               }
             }
           }
@@ -752,8 +749,7 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.32)",
-                "dbim": "rgba(0, 51, 102, 0.32)"
+                "navy": "rgba(0, 51, 102, 0.32)"
               }
             }
           }
@@ -763,8 +759,7 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.40)",
-                "dbim": "rgba(0, 51, 102, 0.40)"
+                "navy": "rgba(0, 51, 102, 0.40)"
               }
             }
           }
@@ -774,8 +769,7 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.48)",
-                "dbim": "rgba(0, 51, 102, 0.48)"
+                "navy": "rgba(0, 51, 102, 0.48)"
               }
             }
           }
@@ -823,67 +817,61 @@
       },
       "neutral": {
         "8": {
-          "$value": "rgba(31, 36, 40, 0.08)",
+          "$value": "rgba(30, 33, 36, 0.08)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.08)",
-                "dbim": "rgba(31, 41, 55, 0.08)"
+                "navy": "rgba(30, 32, 36, 0.08)"
               }
             }
           }
         },
         "16": {
-          "$value": "rgba(31, 36, 40, 0.16)",
+          "$value": "rgba(30, 33, 36, 0.16)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.16)",
-                "dbim": "rgba(31, 41, 55, 0.16)"
+                "navy": "rgba(30, 32, 36, 0.16)"
               }
             }
           }
         },
         "24": {
-          "$value": "rgba(31, 36, 40, 0.24)",
+          "$value": "rgba(30, 33, 36, 0.24)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.24)",
-                "dbim": "rgba(31, 41, 55, 0.24)"
+                "navy": "rgba(30, 32, 36, 0.24)"
               }
             }
           }
         },
         "32": {
-          "$value": "rgba(31, 36, 40, 0.32)",
+          "$value": "rgba(30, 33, 36, 0.32)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.32)",
-                "dbim": "rgba(31, 41, 55, 0.32)"
+                "navy": "rgba(30, 32, 36, 0.32)"
               }
             }
           }
         },
         "40": {
-          "$value": "rgba(31, 36, 40, 0.40)",
+          "$value": "rgba(30, 33, 36, 0.40)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.40)",
-                "dbim": "rgba(31, 41, 55, 0.40)"
+                "navy": "rgba(30, 32, 36, 0.40)"
               }
             }
           }
         },
         "48": {
-          "$value": "rgba(31, 36, 40, 0.48)",
+          "$value": "rgba(30, 33, 36, 0.48)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.48)",
-                "dbim": "rgba(31, 41, 55, 0.48)"
+                "navy": "rgba(30, 32, 36, 0.48)"
               }
             }
           }
@@ -911,42 +899,42 @@
       },
       "danger": {
         "8": {
-          "$value": "rgba(236, 80, 66, 0.08)"
+          "$value": "rgba(203, 63, 51, 0.08)"
         },
         "16": {
-          "$value": "rgba(236, 80, 66, 0.16)"
+          "$value": "rgba(203, 63, 51, 0.16)"
         },
         "24": {
-          "$value": "rgba(236, 80, 66, 0.24)"
+          "$value": "rgba(203, 63, 51, 0.24)"
         },
         "32": {
-          "$value": "rgba(236, 80, 66, 0.32)"
+          "$value": "rgba(203, 63, 51, 0.32)"
         },
         "40": {
-          "$value": "rgba(236, 80, 66, 0.40)"
+          "$value": "rgba(203, 63, 51, 0.40)"
         },
         "48": {
-          "$value": "rgba(236, 80, 66, 0.48)"
+          "$value": "rgba(203, 63, 51, 0.48)"
         }
       },
       "warning": {
         "8": {
-          "$value": "rgba(187, 119, 43, 0.08)"
+          "$value": "rgba(167, 114, 0, 0.08)"
         },
         "16": {
-          "$value": "rgba(187, 119, 43, 0.16)"
+          "$value": "rgba(167, 114, 0, 0.16)"
         },
         "24": {
-          "$value": "rgba(187, 119, 43, 0.24)"
+          "$value": "rgba(167, 114, 0, 0.24)"
         },
         "32": {
-          "$value": "rgba(187, 119, 43, 0.32)"
+          "$value": "rgba(167, 114, 0, 0.32)"
         },
         "40": {
-          "$value": "rgba(187, 119, 43, 0.40)"
+          "$value": "rgba(167, 114, 0, 0.40)"
         },
         "48": {
-          "$value": "rgba(187, 119, 43, 0.48)"
+          "$value": "rgba(167, 114, 0, 0.48)"
         }
       },
       "white": {
@@ -1001,12 +989,12 @@
         }
       },
       "disabled": {
-        "$value": "rgba(31, 36, 40, 0.48)",
+        "$value": "rgba(30, 33, 36, 0.48)",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "rgba(31, 41, 55, 0.48)",
-              "dbim": "rgba(31, 41, 55, 0.48)"
+              "navy": "rgba(30, 32, 36, 0.48)",
+              "dbim": "rgba(30, 32, 36, 0.48)"
             },
             "themes": {
               "dark": "rgba(243, 244, 246, 0.40)"
@@ -2228,6 +2216,51 @@
     },
     "content": {
       "$value": "1280px"
+    }
+  },
+  "grid": {
+    "$description": "The LAYOUT grid. Geometry is UX4G 3.0's — 12 columns, a 24px gutter — because UX4G is the Government of India's own system and we hold a parity contract with it; a designer moving between the two libraries must not find a different grid. What is NOT UX4G's is the shape: UX4G expresses its grid as Bootstrap CSS classes, which is exactly why none of it ever reached Figma and why a designer had nothing to bind a layout grid to. These are tokens instead, per IBM Carbon's model, so the grid is bindable in Figma and auditable in code. Page MARGIN is deliberately responsive rather than Bootstrap's flat half-gutter (12px): 12px of breathing room either side of a government page on a 1280px desktop is too thin, and Carbon (32px) and GOV.UK (30px) both agree. Every value aliases an existing space step — no new literals. NOTE `grid/*` is the layout grid; `chart/grid` is a chart gridline COLOUR. Different objects, kept apart by position.",
+    "$type": "dimension",
+    "columns": {
+      "$value": 12,
+      "$type": "number",
+      "$description": "Column count, 12 — UX4G/Bootstrap. Divisible by 2, 3, 4 and 6, which is the whole reason 12 is the near-universal choice. Carbon's 16 (dropping to 8 and 4 at smaller breakpoints) is more expressive but would break UX4G parity for no gain the estate can use."
+    },
+    "gutter": {
+      "$value": "{space.2xl}",
+      "$description": "The gap BETWEEN columns — 24px, UX4G/Bootstrap's 1.5rem exactly. Bootstrap applies half either side of each column; bind this as the layout grid's gutter and let the implementation split it."
+    },
+    "margin": {
+      "$description": "The page's own side margin — the gap between the grid and the viewport edge. Responsive, because a margin that reads generous on a phone reads cramped on a desktop.",
+      "mobile": {
+        "$value": "{space.lg}"
+      },
+      "tablet": {
+        "$value": "{space.2xl}"
+      },
+      "desktop": {
+        "$value": "{space.3xl}"
+      }
+    }
+  },
+  "target": {
+    "$description": "Minimum POINTER TARGET sizes. There is no single correct number, which is the entire reason this group exists as a ladder rather than one token: 44px is WCAG 2.5.5 Target Size (Enhanced), which is Level AAA — NOT the AA floor it is usually quoted as. The AA floor is WCAG 2.2's 2.5.8 Target Size (Minimum) at 24x24 CSS px, and it carries a spacing exception: an undersized target passes if a 24px-diameter circle centred on it touches no other target's circle. GIGW 3.0 binds this estate to WCAG 2.1 Level AA + IS 17802 — and WCAG 2.1 AA contains NO target-size criterion at all, because 2.5.8 arrived in 2.2 and 2.5.5 is AAA. So every value here is a deliberate choice above the mandate, not a compliance minimum. UNITS: these alias the `size/*` scale, so CSS emits rem (1.5/2.75/3/0.5rem) and Figma receives the px equivalent (24/44/48/8). rem is the right choice and not an accident — a citizen who raises their browser font size gets proportionally larger targets, which a hardcoded px floor would deny them; at the 16px browser default the values are exactly the published numbers. Apple's 44 is points and Material's 48 is dp — equal to CSS px at 1x, but not the same unit, so do not treat the three as interchangeable when reading their specs.",
+    "$type": "dimension",
+    "min": {
+      "$value": "{size.24}",
+      "$description": "The absolute floor — WCAG 2.2 SC 2.5.8 Target Size (Minimum), Level AA. Use ONLY where the spacing exception is genuinely satisfied or the target is inline in a sentence. Anything a citizen must hit on a phone deserves `comfortable`."
+    },
+    "comfortable": {
+      "$value": "{size.44}",
+      "$description": "WCAG 2.5.5 Target Size (Enhanced), Level AAA, and Apple's Human Interface Guidelines minimum (44pt). The right default for a public government service: it clears the AA floor with room to spare and matches what iOS users' fingers are calibrated to."
+    },
+    "spacious": {
+      "$value": "{size.48}",
+      "$description": "Material Design 3 / Android's minimum touch target (48dp). Use for primary actions and anything used one-handed on the move — this is the largest of the three published floors, so meeting it satisfies all of them."
+    },
+    "spacing": {
+      "$value": "{size.8}",
+      "$description": "Minimum gap BETWEEN adjacent targets — Material 3's 8dp separation. It is also what makes WCAG 2.5.8's spacing exception reachable: separation, not size, is what stops a 24px target being mis-tapped."
     }
   },
   "elevation": {

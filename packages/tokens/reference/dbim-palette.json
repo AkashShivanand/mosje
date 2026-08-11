@@ -1,0 +1,53 @@
+{
+  "$description": "The DBIM colour system, transcribed from the DBIM ToolKit 'Colours' chapter (https://dbimtoolkit.digifootprint.gov.in/dbim-chapters?slug=colours) on 2026-08-11. The page is a JS-rendered SPA behind a login, so it cannot be fetched programmatically — these values were read from a screenshot of the rendered chapter and cross-checked against docs/source-brd/MoSJE DBIM Audit.pdf, which independently reproduces the Blue group (p.14) and the Linen background rule (p.15). TRANSCRIBED, NOT DERIVED: every hex here is DBIM's own. Do not regenerate these from an anchor — a conformance palette that has been re-derived is no longer a conformance palette.",
+  "$source": {
+    "url": "https://dbimtoolkit.digifootprint.gov.in/dbim-chapters?slug=colours",
+    "readAt": "2026-08-11",
+    "corroboratedBy": "docs/source-brd/MoSJE DBIM Audit.pdf (Blue group p.14; Linen #EBEAEA p.15; key-colour rules p.16)"
+  },
+
+  "primaryPalette": {
+    "$description": "Figure 1 — six colour groups, five shades each, ordered 1 (darkest) to 5 (lightest). Shade 1 is the GROUP'S KEY COLOUR.",
+    "$rules": [
+      "Only ONE colour group may be selected from the primary palette.",
+      "The selected group should best represent the organisation's primary functions and objectives.",
+      "If the entity has an established brand colour, the group should complement and enhance it.",
+      "Colour usage must ensure accessibility of the digital platform.",
+      "The selected colour group is mandated for DIGITAL PLATFORMS ONLY.",
+      "Gradients may use any two variants from the selected group (Figure 2)."
+    ],
+    "groups": {
+      "burgundy":     { "1": "#6C1340", "2": "#A32966", "3": "#DB70A6", "4": "#EBADCC", "5": "#FAEBF2" },
+      "purple":       { "1": "#29136C", "2": "#4729A3", "3": "#8B70DB", "4": "#BDADEB", "5": "#EEEBFA" },
+      "blue":         { "1": "#162F6A", "2": "#214AAB", "3": "#5279D7", "4": "#A3BBF3", "5": "#D2DFFF" },
+      "green":        { "1": "#0F5757", "2": "#2D8686", "3": "#75BDBD", "4": "#A6D9D9", "5": "#D9F2F2" },
+      "chromeYellow": { "1": "#5D3E00", "2": "#916100", "3": "#DDA73A", "4": "#F4D390", "5": "#FFEECC" },
+      "cinnamonRed":  { "1": "#771D1D", "2": "#A72626", "3": "#D75151", "4": "#FAAAAA", "5": "#FCDADA" }
+    },
+    "selectedForMoSJE": "blue"
+  },
+
+  "functionalPalette": {
+    "$description": "Table 1 — applies across functional elements (text, background, status) regardless of which primary group is selected.",
+    "linen":           { "hex": "#EBEAEA", "use": "Background to highlight images. Background for quotes or text needing special attention. Outlines to boxes and components." },
+    "inclusive":       { "hex": "#FFFFFF", "use": "Primary page background. Headshot background. Text over a dark background. Icon on a dark background. State Emblem on a dark background. Cookie consent banner background." },
+    "deepEarthyBrown": { "hex": "#150202", "use": "Text colour over a light background such as Inclusive white or Linen." },
+    "black":           { "hex": "#000000", "use": "State Emblem of India on a light background." },
+    "deepBlue":        { "hex": "#1D0A69", "use": "Gov.In root website identity only — NOT for departmental platforms." },
+    "libertyGreen":    { "hex": "#198754", "use": "Status colour for SUCCESS.", "status": "success" },
+    "mustardYellow":   { "hex": "#FFC107", "use": "Status colour for WARNING.", "status": "warning" },
+    "coralRed":        { "hex": "#DC3545", "use": "Status colour for ERROR.", "status": "error" },
+    "blue":            { "hex": "#0D6EFD", "use": "Status colour for INFORMATION. Also the hyperlink colour, in addition to the key colour of the selected group.", "status": "info" },
+    "grey01":          { "hex": "#C6C6C6", "use": "Functional grey 1." },
+    "grey02":          { "hex": "#8E8E8E", "use": "Functional grey 2." },
+    "grey03":          { "hex": "#606060", "use": "Functional grey 3." }
+  },
+
+  "$notesForImplementers": [
+    "DBIM's greys are PURE neutrals — R=G=B, chroma exactly 0. If a DBIM mode is implemented, its neutrals must not be tinted with the primary hue the way the blue/navy brands are.",
+    "DBIM's status colours differ from the estate's: Liberty Green #198754 vs our success #046A38; Mustard Yellow #FFC107 vs our warning; Coral Red #DC3545 vs our danger; Blue #0D6EFD vs our info. A DBIM mode that repaints only the primary ramp is NOT DBIM-conformant — the functional palette moves too.",
+    "DBIM publishes five shades per group; this estate's ramps have eleven rungs. Pin the five DBIM values at the rungs their lightness lands on and interpolate the rest; never re-derive a published shade.",
+    "Text over light backgrounds is Deep Earthy Brown #150202, not black and not a neutral step.",
+    "Deep Blue #1D0A69 is reserved for the Gov.In root site. Do not use it in a departmental palette."
+  ]
+}

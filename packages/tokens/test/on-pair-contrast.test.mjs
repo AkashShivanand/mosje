@@ -60,20 +60,23 @@ function pairs() {
 /**
  * Pairings that do not reach AA, pinned so the list can only shrink.
  *
- * Both are the SAME tokens already on the prominence shortfall ledger, reached from the
- * other direction: a `bolder` fill that measures below its own rung is also a fill no ink can
- * sit on legibly. That the two measurements agree independently is the useful part — if this
- * list and that one ever diverge, one of them is wrong.
+ * IT IS NOW EMPTY. Every `--sa-on-*` in every brand is AA-readable on the fill it names.
  *
- * The remedy is the fill, not the ink: there is no foreground that rescues a 4.4:1 surface.
+ * The three entries this list ever held all left the same way — by fixing the FILL, which is
+ * the only thing that works, since no foreground rescues a surface 4.4:1 from its own text:
  *
- * `--sa-on-bg-brand-secondary-bolder` LEFT this list on 2026-08-11: the regenerated saffron
- * ramp puts its `bolder` rung at 4.62:1, up from 3.94:1. That is what the ratchet is for.
+ *   - `--sa-on-bg-brand-secondary-bolder` (2026-08-11) — the regenerated saffron ramp moved
+ *     its `bolder` rung from 3.94:1 to 4.62:1.
+ *   - `--sa-on-bg-status-error-bolder` and `--sa-on-bg-status-warning-bolder` — the danger and
+ *     warning ramps were the two the 2026-08-11 rebuild did not reach. Re-anchoring them at
+ *     the rung their lightness actually says (400 and 300, not 500) took their `bolder` rungs
+ *     from 4.40:1 and 4.46:1 to 6.68:1 and 5.68:1.
+ *
+ * An empty ratchet is the point of a ratchet. Do not add to it: the `no floor, an invariant`
+ * test above derives the expected set of pairings from the fills themselves, so a new fill
+ * arrives already required to be legible.
  */
-const KNOWN_BELOW_AA = new Set([
-  "--sa-on-bg-status-error-bolder",
-  "--sa-on-bg-status-warning-bolder",
-]);
+const KNOWN_BELOW_AA = new Set([]);
 
 test("EVERY fill that carries content has a foreground — no floor, an invariant", () => {
   // This assertion used to be `found.length >= 40`, a FLOOR. It passed while six

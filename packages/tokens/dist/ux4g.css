@@ -839,6 +839,10 @@
   --sa-color-status-danger: #8a1a16;
   --sa-color-status-warning: #ad4e00;
   --sa-color-status-info: #006d75;
+  --sa-color-status-successTonal: #ddf8d8;
+  --sa-color-status-dangerTonal: #ffecee;
+  --sa-color-status-warningTonal: #ffe7bf;
+  --sa-color-status-infoTonal: #c9f7f2;
 
   /* re-resolve the --ds-* aliases whose source changed in this block */
   --ds-primary: var(--sa-color-action-primary-default);
@@ -879,9 +883,13 @@
   --ds-neutral-800: var(--sa-color-neutralScale-800);
   --ds-neutral-900: var(--sa-color-neutralScale-900);
   --ds-success: var(--sa-color-status-success);
+  --ds-success-tonal: var(--sa-color-status-successTonal);
   --ds-danger: var(--sa-color-status-danger);
+  --ds-danger-tonal: var(--sa-color-status-dangerTonal);
   --ds-warning: var(--sa-color-status-warning);
+  --ds-warning-tonal: var(--sa-color-status-warningTonal);
   --ds-info: var(--sa-color-status-info);
+  --ds-info-tonal: var(--sa-color-status-infoTonal);
   --ds-ink: var(--sa-color-text-default);
   --ds-ink-strong: var(--sa-text-neutral-bolder);
   --ds-ink-muted: var(--sa-color-text-muted);
@@ -1063,6 +1071,10 @@
   --sa-color-status-danger: #8a1a16;
   --sa-color-status-warning: #ad4e00;
   --sa-color-status-info: #006d75;
+  --sa-color-status-successTonal: #ddf8d8;
+  --sa-color-status-dangerTonal: #ffecee;
+  --sa-color-status-warningTonal: #ffe7bf;
+  --sa-color-status-infoTonal: #c9f7f2;
 
   /* re-resolve the --ds-* aliases whose source changed in this block */
   --ds-primary: var(--sa-color-action-primary-default);
@@ -1102,9 +1114,13 @@
   --ds-neutral-800: var(--sa-color-neutralScale-800);
   --ds-neutral-900: var(--sa-color-neutralScale-900);
   --ds-success: var(--sa-color-status-success);
+  --ds-success-tonal: var(--sa-color-status-successTonal);
   --ds-danger: var(--sa-color-status-danger);
+  --ds-danger-tonal: var(--sa-color-status-dangerTonal);
   --ds-warning: var(--sa-color-status-warning);
+  --ds-warning-tonal: var(--sa-color-status-warningTonal);
   --ds-info: var(--sa-color-status-info);
+  --ds-info-tonal: var(--sa-color-status-infoTonal);
   --ds-ink: var(--sa-color-text-default);
   --ds-ink-strong: var(--sa-text-neutral-bolder);
   --ds-ink-muted: var(--sa-color-text-muted);

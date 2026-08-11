@@ -7,7 +7,9 @@ const root = new URL("..", import.meta.url).pathname;
 test("figma.tokens.json is valid JSON and resolves aliases to final values", () => {
   const json = JSON.parse(readFileSync(root + "dist/figma.tokens.json", "utf8"));
   assert.equal(json.color.action.primary.default, "#0373df");
-  assert.equal(json.color.status.danger, "#b8382f");
+  // dangerScale/700. Was #b8382f until the danger ramp was regenerated on 2026-08-11 —
+  // see ANCHORS.dangerRamp in build/brand-ramps.mjs for why the anchor moved to rung 400.
+  assert.equal(json.color.status.danger, "#8b1f18");
   // primitives + dimensions are present and resolved (px preserved, not rem).
   // `spacing` became `space` on 2026-08-10 — the grammar's own group dictionary (§5.4) says
   // `space`, and the legacy root was one of the four that skipped grammar parsing entirely.

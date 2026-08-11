@@ -55,10 +55,12 @@ export const LEGACY_DS_ALIASES = {
   "--ds-neutral-700":   "--sa-color-neutralScale-700",
   "--ds-neutral-800":   "--sa-color-neutralScale-800",
   "--ds-neutral-900":   "--sa-color-neutralScale-900",
-  // RETARGETED 2026-08-11, value-preserving. The canonical neutral endpoints renumbered to
-  // match UX4G (old 1000 -> 950, old 1100 -> 1000), so these two legacy names now point one
-  // rung lower to keep rendering exactly what they always did: #0a0d13 and #000000. Keeping
+  // RETARGETED 2026-08-11. The canonical neutral endpoints renumbered to match UX4G (old
+  // 1000 -> 950, old 1100 -> 1000), so these two legacy names point one rung lower. Keeping
   // the legacy spelling while the canonical name moves is precisely this layer's job.
+  // The retarget was value-preserving on the day; the neutral ramp has since been rebuilt, so
+  // `--ds-neutral-1000` now renders whatever neutralScale/950 is rather than the #0a0d13 it
+  // originally froze. That is correct — this layer preserves the NAME, not a snapshot.
   "--ds-neutral-1000":  "--sa-color-neutralScale-950",
   "--ds-neutral-1100":  "--sa-color-neutralScale-1000",
   "--ds-success-50":    "--sa-color-successScale-50",

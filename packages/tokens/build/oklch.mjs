@@ -93,6 +93,60 @@ const inGamut = ([r, g, b]) =>
   r >= -EPS && r <= 1 + EPS && g >= -EPS && g <= 1 + EPS && b >= -EPS && b <= 1 + EPS;
 
 /**
+ * The 8-bit triple nearest a target OKLCH, chosen by search rather than by rounding.
+ *
+ * WHY NOT JUST ROUND
+ * ------------------
+ * Rounding each channel independently minimises error in sRGB, which is not the space the
+ * error matters in. On a chromatic ramp that is harmless — at C 0.15 one 1/255 step moves
+ * chroma by ~3% and hue by a fraction of a degree, invisible either way. On a NEUTRAL ramp
+ * it is not: at C 0.010 the chroma vector is barely longer than the quantisation grid, so a
+ * single rounded channel can swing the measured hue by 15 degrees. That is the whole reason
+ * the old neutral ramp "drifted" 22 degrees between 242 and 264 — nobody chose those hues,
+ * they are what independent rounding did to a colour too grey to survive it.
+ *
+ * So the 27 neighbouring triples are scored in OKLCH and the best is taken. The weights say
+ * what the ramp guarantees: lightness carries contrast (weight 1 per L* point), hue carries
+ * identity (0.02 per degree, so 50 degrees costs as much as one L* point), and chroma is the
+ * slack variable that absorbs the rest.
+ *
+ * WHY `oklchToHex` DOES NOT USE THIS
+ * ----------------------------------
+ * It was tried. Routing every ramp through it moves ~30 already-shipped chromatic values by
+ * one unit in one channel — `#a43a00` -> `#a43a01`, `#e1560f` -> `#e15610` — which is a
+ * perceptually invisible change that would nonetheless have to be pushed to the Figma library
+ * and re-baselined through every fixture. A rounding improvement worth nothing at C 0.15 is
+ * not worth that churn, so it is applied only where it changes an outcome: the neutral ramp.
+ */
+export function nearestHex({ L, C, H }) {
+  const base = oklchToRgb({ L, C, H }).map((v) => Math.min(255, Math.max(0, Math.round(v * 255))));
+  let best = null;
+  for (let dr = -1; dr <= 1; dr++) {
+    for (let dg = -1; dg <= 1; dg++) {
+      for (let db = -1; db <= 1; db++) {
+        const cand = [base[0] + dr, base[1] + dg, base[2] + db];
+        if (cand.some((v) => v < 0 || v > 255)) continue;
+        const hex = rgbToHex(cand.map((v) => v / 255));
+        const m = hexToOklch(hex);
+        // An ACHROMATIC candidate is scored with no hue error, because it has no hue to be
+        // wrong about — `hexToOklch("#f0f0f0")` reports 89.9 only because `atan2(0, 0)` must
+        // return something. Charging it 166 degrees of error is how the search comes to prefer
+        // a colour one bit off grey, which is precisely the artefact that gave the old neutral
+        // ramp a step at hue 284 in a ramp that has no business leaving 264. With this, the
+        // chroma term decides: near the ends of the arc, where the target chroma is smaller
+        // than the 8-bit grid can express, the true grey IS the nearest colour and wins.
+        const err =
+          Math.abs(m.L - L) +
+          (m.C < 1e-9 ? 0 : Math.abs(hueDelta(H, m.H)) * 0.02) +
+          Math.abs(m.C - C) * 20;
+        if (!best || err < best.err) best = { hex, err };
+      }
+    }
+  }
+  return best.hex;
+}
+
+/**
  * { L, C, H } -> the nearest in-gamut `#rrggbb`, holding L and H and reducing C.
  *
  * Chroma-reduction is the right gamut strategy for a token ramp: lightness carries the
