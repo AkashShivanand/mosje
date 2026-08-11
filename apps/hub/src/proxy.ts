@@ -1,6 +1,9 @@
 import { request as httpRequest } from "node:http";
 import { NextResponse, type NextRequest } from "next/server";
 import { GATE_COOKIE, GATE_EMBLEM_SRC, resolveGateToken, safeEqual } from "@/lib/site-gate";
+import { ADMIN_PREVIEW_COOKIE, expectedPreviewToken } from "@/lib/admin/tokens";
+import type { RegistryConfig } from "@mosje/design-system/registry";
+import { blockedEntry, hiddenFrom, readRegistryConfig } from "@/lib/registry/config";
 
 /**
  * Multi-zone resilience (dev-time safeguard).
@@ -164,6 +167,87 @@ function httpProbe(url: string): Promise<boolean> {
   });
 }
 
+/**
+ * True when the request carries a valid admin *preview* cookie.
+ *
+ * Deliberately not the admin cookie: that one is scoped to /admin and is never
+ * sent here, and widening it would let an XSS anywhere in the estate drive
+ * authenticated requests against the settings page. The preview cookie
+ * authorises one thing — seeing past a hidden entry.
+ */
+async function isAdminRequest(req: NextRequest): Promise<boolean> {
+  const presented = req.cookies.get(ADMIN_PREVIEW_COOKIE)?.value;
+  if (!presented) return false;
+  const expected = await expectedPreviewToken();
+  if (!expected) return false;
+  return safeEqual(presented, expected);
+}
+
+/**
+ * Block the paths an admin has switched off.
+ *
+ * "Hidden" means hidden: dropping the card from the explorer while the URL
+ * still serves the portal would only hide it from people who were not going to
+ * find it anyway. An admin passes through, so the person who hid a portal can
+ * still check it before switching it back on.
+ *
+ * Reads the settings store directly rather than through `resolveRegistry`,
+ * because middleware cannot use `unstable_cache`. The store's own 60s TTL
+ * still applies, so an instance that did not handle the write can lag by up to
+ * a minute — the same propagation behaviour the gate password already has.
+ */
+type HiddenOutcome =
+  | { kind: "block"; response: NextResponse }
+  /** Matched a hidden entry, but the caller is an admin — let it through. */
+  | { kind: "admin-pass" }
+  | null;
+
+/**
+ * Responses that must never be cached by a shared cache.
+ *
+ * Both directions are dangerous. A cached admin pass-through would serve a
+ * hidden portal to the next anonymous visitor; a cached 503 would keep denying
+ * the portal after it is switched back on. Neither is recoverable from the
+ * admin page, because the request never reaches the origin.
+ */
+function noStore(response: NextResponse): NextResponse {
+  response.headers.set("Cache-Control", "private, no-store");
+  return response;
+}
+
+async function hiddenCheck(
+  req: NextRequest,
+  configPromise: Promise<RegistryConfig | null>,
+): Promise<HiddenOutcome> {
+  const { pathname } = req.nextUrl;
+
+  const config = await configPromise;
+  // The overwhelmingly common case: nothing is hidden, so this costs one
+  // cached store read and no further work.
+  if (!config) return null;
+
+  const hidden = hiddenFrom(config);
+  if (hidden.length === 0) return null;
+
+  // The admin check is deliberately last — it is the only part that costs an
+  // HMAC, and it only matters once a path has actually matched.
+  const provisional = blockedEntry({ pathname, hidden, isAdmin: false });
+  if (!provisional) return null;
+
+  if (await isAdminRequest(req)) return { kind: "admin-pass" };
+
+  const url = req.nextUrl.clone();
+  url.pathname = "/unavailable";
+  url.search = "";
+  url.searchParams.set("entry", provisional.name);
+  // Rewrite, not redirect: the URL the visitor typed stays in the address bar,
+  // so a bookmark that starts working again later still points at the portal.
+  return {
+    kind: "block",
+    response: noStore(NextResponse.rewrite(url, { status: 503 })),
+  };
+}
+
 async function zoneIsUp(probeUrl: string): Promise<boolean> {
   const now = Date.now();
   const hit = cache.get(probeUrl);
@@ -177,10 +261,43 @@ async function zoneIsUp(probeUrl: string): Promise<boolean> {
 export async function proxy(req: NextRequest): Promise<NextResponse> {
   const { pathname } = req.nextUrl;
 
+  /*
+   * Start the registry read now, before awaiting the gate.
+   *
+   * Both the gate token and the registry come from the same settings store,
+   * and both are cold on a fresh instance. Awaited in sequence they stack two
+   * 1.5s timeouts onto the first request of every serverless instance; started
+   * together they overlap. The cost when the gate redirects is one extra read
+   * that the 60s cache absorbs — and it warms the cache for the request that
+   * follows the unlock.
+   */
+  const registryPromise = readRegistryConfig();
+
   // Site gate runs first — nothing behind it should be reachable, including the
   // portal login pages that the guards below treat as public.
   const gated = await gateRedirect(req);
-  if (gated) return gated;
+  if (gated) {
+    // Never leave the read unobserved: an unhandled rejection in middleware
+    // takes down the request that would otherwise have redirected cleanly.
+    void registryPromise.catch(() => {});
+    return gated;
+  }
+
+  // Entries an admin has switched off, blocked before any portal guard runs —
+  // a hidden portal must not even offer its login page.
+  const hidden = await hiddenCheck(req, registryPromise);
+  if (hidden?.kind === "block") return hidden.response;
+
+  /*
+   * An admin looking at a hidden portal still has to clear that portal's own
+   * session guard — the block is about visibility, not authentication, and
+   * bypassing it here would let /admin double as a portal login.
+   *
+   * So the pass-through only tags the eventual response as uncacheable, and
+   * every remaining branch returns through `finish`.
+   */
+  const finish =
+    hidden?.kind === "admin-pass" ? noStore : (response: NextResponse) => response;
 
   // SMILE Admin route guard — must run in every environment (it's a real auth
   // check, not a dev convenience), so it sits before the dev-only production
@@ -191,13 +308,13 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
     );
     // Let public pages and asset-like paths (e.g. the portal's public/ files,
     // now served at /portals/smile-admin/…) through unguarded.
-    if (isPublic || pathname.includes(".")) return NextResponse.next();
+    if (isPublic || pathname.includes(".")) return finish(NextResponse.next());
     if (!req.cookies.get(SMILE_ADMIN_SESSION_COOKIE)) {
       const loginUrl = req.nextUrl.clone();
       loginUrl.pathname = "/portals/smile-admin/login";
-      return NextResponse.redirect(loginUrl);
+      return finish(NextResponse.redirect(loginUrl));
     }
-    return NextResponse.next();
+    return finish(NextResponse.next());
   }
 
   // PM-AJAY route guard — must run in every environment (it's a real auth
@@ -209,23 +326,23 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
     );
     // Let public pages and asset-like paths (e.g. the portal's public/ files,
     // now served at /portals/pm-ajay/…) through unguarded.
-    if (isPublic || pathname.includes(".")) return NextResponse.next();
+    if (isPublic || pathname.includes(".")) return finish(NextResponse.next());
     if (!req.cookies.get(PM_AJAY_SESSION_COOKIE)) {
       const loginUrl = req.nextUrl.clone();
       loginUrl.pathname = "/portals/pm-ajay/login";
-      return NextResponse.redirect(loginUrl);
+      return finish(NextResponse.redirect(loginUrl));
     }
-    return NextResponse.next();
+    return finish(NextResponse.next());
   }
 
-  if (process.env.NODE_ENV === "production") return NextResponse.next();
+  if (process.env.NODE_ENV === "production") return finish(NextResponse.next());
 
   const zone = ZONES.find(
     (z) => pathname === z.prefix || pathname.startsWith(z.prefix + "/"),
   );
-  if (!zone) return NextResponse.next();
+  if (!zone) return finish(NextResponse.next());
 
-  if (await zoneIsUp(zone.probeUrl)) return NextResponse.next();
+  if (await zoneIsUp(zone.probeUrl)) return finish(NextResponse.next());
 
   const url = req.nextUrl.clone();
   url.pathname = "/zone-unavailable";
@@ -233,7 +350,7 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
   url.searchParams.set("zone", zone.label);
   url.searchParams.set("cmd", zone.cmd);
   url.searchParams.set("from", pathname);
-  return NextResponse.rewrite(url, { status: 503 });
+  return finish(NextResponse.rewrite(url, { status: 503 }));
 }
 
 export const config = {

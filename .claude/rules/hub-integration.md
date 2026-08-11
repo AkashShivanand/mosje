@@ -8,9 +8,36 @@ paths:
 
 **Every new portal or site added to the MoSJE estate MUST be registered in all three places in the same commit as the portal build:**
 
+## 0. Code is the seed; `/admin/portals` is the runtime layer
+
+`DEFAULT_APPS` is the **only place registry entries are born**, and it stays that way.
+On top of it, `/admin/portals` writes a **sparse override patch** to the `portal_registry`
+row in `hub_settings`, merged at render time by `applyRegistryOverrides`
+(`packages/design-system/components/navigation/registry-overrides.ts`).
+
+What that means when you add a portal:
+
+- **Nothing changes for you.** A path absent from the stored patch renders exactly as
+  code defines it, so a new entry appears with its code status and needs no admin edit.
+- **Do not "fix" the registry from `/admin`.** Renaming or reordering there pins that
+  field to the stored patch, and a later code change to the same field stops taking
+  effect. Edit `DEFAULT_APPS` for anything permanent; use `/admin` for demo curation.
+- **`status: "hidden"` exists only at runtime.** It is not a value you write in code —
+  code has `live` and `planned` only.
+- **Hidden means blocked.** `apps/hub/src/proxy.ts` rewrites hidden paths to
+  `/unavailable` with a 503 for everyone except a signed-in admin, so a hidden portal's
+  login page is unreachable too.
+- **`path`, `group` and `newTab` are code-only** and cannot be overridden.
+
+Every live entry's path must resolve to a real route — `src/lib/registry/routes.test.ts`
+fails CI otherwise. That guard exists because SCW shipped at `/portals/scw` while the
+registry still pointed at `/portals/senior-citizens` and said `planned`, so a finished
+portal was invisible and nothing caught it.
+
 ## 1. `DEFAULT_APPS` in `packages/design-system/components/navigation/app-switcher-utils.ts`
 
-This is the **single source of truth** for both the hub portals explorer page and the compact AppSwitcher FAB.
+This is the **single source of truth in code** for the hub portals explorer page and the
+DemoDock's Apps tab (both read it through the resolver above, never directly).
 
 - Add an `AppEntry` with the correct `group`, `category`, `path`, `desc`, `org`, and `status`.
 - Set `status: "live"` immediately when the portal is built and running. Never leave a built portal as `"planned"`.

@@ -1,0 +1,401 @@
+"use client";
+
+/**
+ * The estate registry editor.
+ *
+ * Rows with move-up / move-down buttons rather than drag-and-drop, on purpose:
+ * this is a government estate held to WCAG 2.1 AA, and buttons are keyboard
+ * operable and announceable with no dnd library, no custom keyboard fallback,
+ * and no pointer-only affordance to explain.
+ *
+ * The form posts one hidden field holding every row in display order. The
+ * server derives the minimal patch from that, so this component never has to
+ * reason about which fields count as overrides.
+ */
+
+import * as React from "react";
+import { useFormStatus } from "react-dom";
+import { Alert, Badge, Button, Icon, Input, Select } from "@mosje/design-system";
+import type { RegistryStatus } from "@mosje/design-system/registry";
+
+export interface RegistryRow {
+  path: string;
+  group: string;
+  status: RegistryStatus;
+  code: {
+    name: string;
+    desc: string;
+    org: string;
+    abbr: string;
+    category: string;
+    status: "live" | "planned";
+  };
+  override: {
+    name: string;
+    desc: string;
+    org: string;
+    abbr: string;
+    category: string;
+  };
+}
+
+export interface RegistryFormProps {
+  rows: RegistryRow[];
+  saveAction: (formData: FormData) => Promise<void>;
+  resetAction: () => Promise<void>;
+  storeConfigured: boolean;
+  overrideCount: number;
+  savedMessage?: string;
+  errorMessage?: string;
+}
+
+const STATUS_OPTIONS = [
+  { value: "live", label: "Live — shown and clickable" },
+  { value: "planned", label: "Planned — shown, greyed out" },
+  { value: "hidden", label: "Hidden — removed and blocked" },
+];
+
+const LABEL_FIELDS = [
+  { key: "name", label: "Name" },
+  { key: "abbr", label: "Icon initials" },
+  { key: "org", label: "Organisation" },
+  { key: "category", label: "Category" },
+  { key: "desc", label: "Description" },
+] as const;
+
+/** The bucket a row is ordered within — its overridden category, else code's. */
+function bucketOf(row: RegistryRow): string {
+  const category = row.override.category.trim() || row.code.category;
+  return `${row.group} ${category}`;
+}
+
+/** Human-readable bucket heading. */
+function bucketLabel(row: RegistryRow): string {
+  const category = row.override.category.trim() || row.code.category;
+  return category ? `${row.group} · ${category}` : row.group;
+}
+
+function statusBadge(status: RegistryStatus) {
+  if (status === "live") return <Badge status="success">Live</Badge>;
+  if (status === "planned") return <Badge>Planned</Badge>;
+  return <Badge status="warning">Hidden</Badge>;
+}
+
+function SaveButton({ disabled }: { disabled: boolean }) {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" size="lg" disabled={disabled || pending}>
+      {pending ? "Saving…" : "Save registry"}
+    </Button>
+  );
+}
+
+function ResetButton({ disabled }: { disabled: boolean }) {
+  const { pending } = useFormStatus();
+  return (
+    <Button
+      type="submit"
+      appearance="outlined"
+      variant="danger"
+      disabled={disabled || pending}
+    >
+      {pending ? "Clearing…" : "Reset all to code defaults"}
+    </Button>
+  );
+}
+
+export function RegistryForm({
+  rows: initialRows,
+  saveAction,
+  resetAction,
+  storeConfigured,
+  overrideCount,
+  savedMessage,
+  errorMessage,
+}: RegistryFormProps) {
+  const [rows, setRows] = React.useState<RegistryRow[]>(initialRows);
+  const [expanded, setExpanded] = React.useState<string | null>(null);
+  const [announcement, setAnnouncement] = React.useState("");
+
+  const setRow = (path: string, next: (row: RegistryRow) => RegistryRow) => {
+    setRows((current) => current.map((row) => (row.path === path ? next(row) : row)));
+  };
+
+  /**
+   * Swap a row with its nearest neighbour in the same bucket.
+   *
+   * Nearest in-bucket neighbour, not the adjacent array index: rows from other
+   * groups sit between buckets in the list, and stepping over one would move an
+   * entry out of its category by accident.
+   */
+  const move = (path: string, direction: -1 | 1) => {
+    setRows((current) => {
+      const index = current.findIndex((row) => row.path === path);
+      const row = current[index];
+      if (!row) return current;
+
+      const bucket = bucketOf(row);
+      let target = -1;
+      for (
+        let i = index + direction;
+        i >= 0 && i < current.length;
+        i += direction
+      ) {
+        const candidate = current[i];
+        if (candidate && bucketOf(candidate) === bucket) {
+          target = i;
+          break;
+        }
+      }
+      if (target === -1) return current;
+
+      const next = [...current];
+      next[index] = next[target]!;
+      next[target] = row;
+
+      const inBucket = next.filter((r) => bucketOf(r) === bucket);
+      const position = inBucket.findIndex((r) => r.path === path) + 1;
+      setAnnouncement(
+        `${row.override.name.trim() || row.code.name} moved ${direction === -1 ? "up" : "down"} to position ${position} of ${inBucket.length} in ${bucketLabel(row)}.`,
+      );
+      return next;
+    });
+  };
+
+  const resetRow = (path: string) => {
+    setRow(path, (row) => ({
+      ...row,
+      status: row.code.status,
+      override: { name: "", desc: "", org: "", abbr: "", category: "" },
+    }));
+    const row = rows.find((r) => r.path === path);
+    setAnnouncement(`${row?.code.name ?? path} reset to its code defaults.`);
+  };
+
+  // What the server receives: intent in display order, not a patch.
+  const payload = JSON.stringify(
+    rows.map((row) => ({
+      path: row.path,
+      status: row.status,
+      name: row.override.name,
+      desc: row.override.desc,
+      org: row.override.org,
+      abbr: row.override.abbr,
+      category: row.override.category,
+    })),
+  );
+
+  /**
+   * Everything each row needs to render, derived once.
+   *
+   * Precomputed rather than tracked with a running variable inside the map:
+   * mutating during render is exactly what the React Compiler forbids, and a
+   * heading that depends on iteration order is the kind of thing that breaks
+   * silently under a re-render.
+   */
+  const view = React.useMemo(() => {
+    const bucketPaths = new Map<string, string[]>();
+    for (const row of rows) {
+      const key = bucketOf(row);
+      const list = bucketPaths.get(key) ?? [];
+      list.push(row.path);
+      bucketPaths.set(key, list);
+    }
+
+    return rows.map((row, index) => {
+      const bucket = bucketOf(row);
+      // Compared against the previous row by index rather than tracked in a
+      // running variable — no reassignment during render.
+      const previous = index > 0 ? bucketOf(rows[index - 1]!) : "";
+      const showHeading = bucket !== previous;
+      const siblings = bucketPaths.get(bucket) ?? [];
+      return {
+        row,
+        showHeading,
+        isFirst: siblings[0] === row.path,
+        isLast: siblings[siblings.length - 1] === row.path,
+      };
+    });
+  }, [rows]);
+
+  return (
+    <>
+      <div className="mt-6 space-y-3">
+        {savedMessage && (
+          <Alert status="success" title="Registry updated">
+            {savedMessage}
+          </Alert>
+        )}
+        {errorMessage && (
+          <Alert status="error" title="Not saved">
+            {errorMessage}
+          </Alert>
+        )}
+        {!storeConfigured && (
+          <Alert status="warning" title="No settings store configured">
+            SUPABASE_URL is not set, so nothing can be saved from here. Every
+            surface is rendering the code defaults in <code>DEFAULT_APPS</code>.
+            This is the expected state in local development.
+          </Alert>
+        )}
+      </div>
+
+      <p className="mt-6 text-xs text-ink-hint" role="status" aria-live="polite">
+        {announcement ||
+          (overrideCount === 0
+            ? `${rows.length} entries, all following the code defaults.`
+            : `${rows.length} entries, ${overrideCount} with a saved override.`)}
+      </p>
+
+      <form action={saveAction} className="mt-4">
+        <input type="hidden" name="rows" value={payload} />
+
+        <ul className="space-y-2">
+          {view.map(({ row, showHeading, isFirst, isLast }, index) => {
+            const displayName = row.override.name.trim() || row.code.name;
+            const isOpen = expanded === row.path;
+            const panelId = `overrides-${index}`;
+
+            return (
+              <React.Fragment key={row.path}>
+                {/* The heading li is deliberately NOT aria-hidden: it is the
+                    only thing telling a screen-reader user which category the
+                    following rows belong to, and heading navigation is how
+                    they skip between categories in a 25-row list. */}
+                {showHeading && (
+                  <li className="!mt-8 flex items-center gap-3 first:!mt-0">
+                    <span className="h-4 w-1 rounded-full bg-gov-blue" aria-hidden="true" />
+                    <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-ink">
+                      {bucketLabel(row)}
+                    </h2>
+                  </li>
+                )}
+
+                <li className="rounded-xl border border-border bg-surface shadow-xs">
+                  <div className="flex flex-wrap items-center gap-3 p-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="truncate text-sm font-semibold text-ink">
+                          {displayName}
+                        </span>
+                        {statusBadge(row.status)}
+                      </div>
+                      <code className="mt-0.5 block truncate text-xs text-ink-muted">
+                        {row.path}
+                      </code>
+                    </div>
+
+                    <label className="flex items-center gap-2 text-xs font-medium text-ink-muted">
+                      <span className="sr-only">{`Status for ${displayName}`}</span>
+                      <Select
+                        value={row.status}
+                        options={STATUS_OPTIONS}
+                        aria-label={`Status for ${displayName}`}
+                        onChange={(event) =>
+                          setRow(row.path, (r) => ({
+                            ...r,
+                            status: event.target.value as RegistryStatus,
+                          }))
+                        }
+                      />
+                    </label>
+
+                    <div className="flex items-center gap-1">
+                      <Button
+                        type="button"
+                        appearance="text"
+                        size="sm"
+                        disabled={isFirst}
+                        aria-label={`Move ${displayName} up`}
+                        onClick={() => move(row.path, -1)}
+                      >
+                        <Icon name="arrow_upward" size={18} aria-hidden="true" />
+                      </Button>
+                      <Button
+                        type="button"
+                        appearance="text"
+                        size="sm"
+                        disabled={isLast}
+                        aria-label={`Move ${displayName} down`}
+                        onClick={() => move(row.path, 1)}
+                      >
+                        <Icon name="arrow_downward" size={18} aria-hidden="true" />
+                      </Button>
+                      <Button
+                        type="button"
+                        appearance="text"
+                        size="sm"
+                        aria-expanded={isOpen}
+                        aria-controls={panelId}
+                        onClick={() => setExpanded(isOpen ? null : row.path)}
+                      >
+                        {isOpen ? "Hide labels" : "Edit labels"}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {isOpen && (
+                    <div
+                      id={panelId}
+                      className="grid gap-4 border-t border-border p-4 sm:grid-cols-2"
+                    >
+                      {LABEL_FIELDS.map(({ key, label }) => (
+                        <label key={key} className="flex flex-col gap-1.5 text-xs">
+                          <span className="font-semibold text-ink">{label}</span>
+                          <Input
+                            value={row.override[key]}
+                            placeholder={row.code[key] || "—"}
+                            onChange={(event) =>
+                              setRow(row.path, (r) => ({
+                                ...r,
+                                override: { ...r.override, [key]: event.target.value },
+                              }))
+                            }
+                          />
+                        </label>
+                      ))}
+                      <p className="text-xs leading-relaxed text-ink-hint sm:col-span-2">
+                        Leave a field empty to keep the value from the code
+                        registry, shown as the placeholder. The path, group and
+                        new-tab behaviour are code-only and cannot be changed
+                        here.
+                      </p>
+                      <div className="sm:col-span-2">
+                        <Button
+                          type="button"
+                          appearance="outlined"
+                          size="sm"
+                          onClick={() => resetRow(row.path)}
+                        >
+                          Reset this entry
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </li>
+              </React.Fragment>
+            );
+          })}
+        </ul>
+
+        <div className="sticky bottom-0 mt-8 flex flex-wrap items-center gap-3 border-t border-border bg-surface-muted/95 py-4 backdrop-blur">
+          <SaveButton disabled={!storeConfigured} />
+          <span className="text-xs text-ink-hint">
+            Nothing is stored until you save.
+          </span>
+        </div>
+      </form>
+
+      <form
+        action={resetAction}
+        className="mt-6 border-t border-border pt-6"
+      >
+        <p className="mb-3 text-xs leading-relaxed text-ink-hint">
+          Clearing removes every override at once and puts the estate back on
+          the code defaults. It cannot be undone from this page.
+        </p>
+        <ResetButton disabled={!storeConfigured} />
+      </form>
+    </>
+  );
+}
