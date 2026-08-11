@@ -299,6 +299,13 @@ export function DemoDock({
     [pathname],
   );
   const showSignIn = Boolean(demoSet) && !!pathname && isLoginRoute(pathname);
+  // The icon-only FAB sits bottom-left at a fixed 20px offset. On the two
+  // NMBA login routes, `PortalLoginShell` renders a "Signing Into" strip
+  // pinned to the bottom of its hero panel — see `demo-accounts.ts`'
+  // `heroStrip` doc comment — which the FAB would otherwise sit on top of.
+  // Gating on `showSignIn` (not just `demoSet`) keeps the raised offset
+  // scoped to the login page itself, not every route under that portal.
+  const clearsHeroStrip = showSignIn && Boolean(demoSet?.heroStrip);
 
   // Sign in, when it applies, leads — it's the reason a reviewer opens the
   // dock on a login page. Apps and Colour keep their order behind it.
@@ -440,7 +447,10 @@ export function DemoDock({
   const activeTabId = tabs[activeTab]?.id ?? "apps";
 
   return (
-    <div ref={rootRef} className={cn("ds-demodock", className)}>
+    <div
+      ref={rootRef}
+      className={cn("ds-demodock", clearsHeroStrip && "ds-demodock--clear-strip", className)}
+    >
       {/* Always mounted (not just while the panel is open) so the global
           colour-mode shortcut can announce a change even with the dock
           closed — that's the whole point of the shortcut. */}
@@ -530,10 +540,17 @@ export function DemoDock({
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={open ? panelId : undefined}
+        aria-label={label}
         onClick={() => (open ? closePanel() : openPanel())}
       >
         <IconFlask />
-        {label}
+        {/* Visual only — the button's accessible name comes from
+            `aria-label` above, so the reveal-on-hover label is never the
+            sole source of the name (it stays hidden from assistive tech at
+            every width, not just when collapsed). */}
+        <span className="ds-demodock__fab-label" aria-hidden="true">
+          {label}
+        </span>
       </button>
     </div>
   );
