@@ -19,49 +19,49 @@ export const metadata: Metadata = {
 };
 
 /* ------------------------------------------------------------------ *
- * Shared layout primitives (inline styles, --ds-* tokens only)
+ * Shared layout primitives (inline styles, --sa-* tokens only)
  * ------------------------------------------------------------------ */
 
 const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--ds-spacing-5xl)",
-  scrollMarginTop: "var(--ds-spacing-5xl)",
+  marginTop: "var(--sa-section-m)",
+  scrollMarginTop: "var(--sa-section-m)",
 };
 
 const h2Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
+  fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 700,
-  color: "var(--ds-ink)",
-  marginBottom: "var(--ds-spacing-lg)",
-  paddingBottom: "var(--ds-spacing-sm)",
-  borderBottom: "1px solid var(--ds-border)",
+  color: "var(--sa-color-text-default)",
+  marginBottom: "var(--sa-stack-m)",
+  paddingBottom: "var(--sa-padding-xs)",
+  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
 };
 
 const h3Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-title-1)",
+  fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
-  color: "var(--ds-ink)",
-  marginTop: "var(--ds-spacing-2xl)",
-  marginBottom: "var(--ds-spacing-sm)",
+  color: "var(--sa-color-text-default)",
+  marginTop: "var(--sa-stack-l)",
+  marginBottom: "var(--sa-stack-xs)",
 };
 
 const proseStyle: React.CSSProperties = {
-  color: "var(--ds-ink-muted)",
-  fontSize: "var(--ds-text-body-1)",
+  color: "var(--sa-color-text-muted)",
+  fontSize: "var(--sa-type-body-1-size)",
   lineHeight: 1.7,
   maxWidth: "68ch",
 };
 
 const captionStyle: React.CSSProperties = {
-  marginTop: "var(--ds-spacing-sm)",
-  marginBottom: "var(--ds-spacing-2xl)",
-  color: "var(--ds-ink-muted)",
-  fontSize: "var(--ds-text-body-2)",
+  marginTop: "var(--sa-stack-xs)",
+  marginBottom: "var(--sa-stack-l)",
+  color: "var(--sa-color-text-muted)",
+  fontSize: "var(--sa-type-body-2-size)",
 };
 
 const listStyle: React.CSSProperties = {
   ...proseStyle,
-  marginTop: "var(--ds-spacing-md)",
-  paddingLeft: "var(--ds-spacing-xl)",
+  marginTop: "var(--sa-stack-s)",
+  paddingLeft: "var(--sa-padding-l)",
   lineHeight: 1.9,
 };
 
@@ -69,18 +69,18 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
   return (
     <pre
       style={{
-        background: "var(--ds-surface-muted)",
-        border: "1px solid var(--ds-border)",
-        borderRadius: "var(--ds-radius-md, 8px)",
-        padding: "var(--ds-spacing-lg)",
+        background: "var(--sa-bg-neutral-subtler)",
+        border: "1px solid var(--sa-border-neutral-subtle)",
+        borderRadius: "var(--sa-shape-md, 8px)",
+        padding: "var(--sa-padding-m)",
         overflowX: "auto",
-        fontSize: "var(--ds-text-body-2)",
+        fontSize: "var(--sa-type-body-2-size)",
         lineHeight: 1.6,
-        color: "var(--ds-ink)",
-        marginTop: "var(--ds-spacing-sm)",
+        color: "var(--sa-color-text-default)",
+        marginTop: "var(--sa-stack-xs)",
       }}
     >
-      <code style={{ fontFamily: "var(--ds-font-mono, monospace)" }}>
+      <code style={{ fontFamily: "var(--sa-font-mono, monospace)" }}>
         {children}
       </code>
     </pre>
@@ -106,8 +106,8 @@ function AnatomyBand({
       style={{
         display: "flex",
         alignItems: "center",
-        gap: "var(--ds-spacing-md)",
-        padding: "var(--ds-spacing-md) var(--ds-spacing-lg)",
+        gap: "var(--sa-stack-s)",
+        padding: "var(--sa-padding-s) var(--sa-padding-m)",
         background: bg,
         color: fg,
       }}
@@ -120,7 +120,7 @@ function AnatomyBand({
           width: 22,
           height: 22,
           flex: "0 0 auto",
-          borderRadius: "var(--ds-radius-full)",
+          borderRadius: "var(--sa-shape-full)",
           border: `1px solid ${fg}`,
           fontSize: 12,
           fontWeight: 700,
@@ -129,7 +129,7 @@ function AnatomyBand({
         {n}
       </span>
       <span style={{ fontWeight: 600 }}>{title}</span>
-      <span style={{ opacity: 0.85, fontSize: "var(--ds-text-body-2)" }}>{desc}</span>
+      <span style={{ opacity: 0.85, fontSize: "var(--sa-type-body-2-size)" }}>{desc}</span>
     </div>
   );
 }
@@ -144,24 +144,24 @@ export default function HeaderPage(): React.JSX.Element {
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
-        padding: "var(--ds-spacing-3xl) var(--ds-spacing-2xl) var(--ds-spacing-6xl)",
+        padding: "var(--sa-padding-2xl) var(--sa-padding-xl) var(--sa-section-l)",
       }}
     >
       {/* ---------------- Page header / Purpose ---------------- */}
-      <header style={{ marginBottom: "var(--ds-spacing-3xl)" }}>
+      <header style={{ marginBottom: "var(--sa-stack-xl)" }}>
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "var(--ds-spacing-md)",
+            gap: "var(--sa-stack-s)",
             flexWrap: "wrap",
           }}
         >
           <h1
             style={{
-              fontSize: "var(--ds-text-display)",
+              fontSize: "var(--sa-type-display-1-size)",
               fontWeight: 800,
-              color: "var(--ds-ink)",
+              color: "var(--sa-color-text-default)",
               margin: 0,
             }}
           >
@@ -169,7 +169,7 @@ export default function HeaderPage(): React.JSX.Element {
           </h1>
           <StatusBadge status="Beta" />
         </div>
-        <p style={{ ...proseStyle, marginTop: "var(--ds-spacing-md)" }}>
+        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-s)" }}>
           The masthead of every SAMAVESH property is one component —{" "}
           <strong>SiteHeader</strong>, the SAMAVESH Navbar — matching the two Figma
           &quot;Navbar&quot; components pixel-for-pixel. Three tiers (accessibility bar ·
@@ -178,18 +178,18 @@ export default function HeaderPage(): React.JSX.Element {
         </p>
         <ul style={listStyle}>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Website</strong> — public
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Website</strong> — public
             Government-of-India chrome: emblem lockup, a search field, mega-menu
             navigation, and a Login CTA.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Portal</strong> — signed-in
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Portal</strong> — signed-in
             chrome: a sidebar collapse toggle, emblem divider, Digital India /
             SAMAVESH cobranding, an account block (with optional dropdown), and an
             opt-in scroll-collapse of the accessibility bar.
           </li>
         </ul>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <a
             className={buttonClasses("primary", "outlined", "md")}
             href={figmaUrl()}
@@ -212,9 +212,9 @@ export default function HeaderPage(): React.JSX.Element {
         </p>
         <div
           style={{
-            marginTop: "var(--ds-spacing-lg)",
-            border: "1px solid var(--ds-border)",
-            borderRadius: "var(--ds-radius-md, 8px)",
+            marginTop: "var(--sa-stack-m)",
+            border: "1px solid var(--sa-border-neutral-subtle)",
+            borderRadius: "var(--sa-shape-md, 8px)",
             overflow: "hidden",
           }}
         >
@@ -222,22 +222,22 @@ export default function HeaderPage(): React.JSX.Element {
             n={1}
             title="Accessibility bar"
             desc="GoI link · accessibility statement · language"
-            bg="var(--ds-primary)"
-            fg="var(--ds-on-primary, #fff)"
+            bg="var(--sa-color-action-primary-default)"
+            fg="var(--sa-color-text-onPrimary, #fff)"
           />
           <AnatomyBand
             n={2}
             title="Brand row"
             desc="[collapse] · National Emblem + lockup · {search + CTA | cobranding + account}"
-            bg="var(--ds-surface)"
-            fg="var(--ds-ink)"
+            bg="var(--sa-bg-neutral-base)"
+            fg="var(--sa-color-text-default)"
           />
           <AnatomyBand
             n={3}
             title="Navigation row"
             desc="Primary nav — simple dropdowns or multi-column mega-menus; drawer < 1024px"
-            bg="var(--ds-surface-muted)"
-            fg="var(--ds-ink)"
+            bg="var(--sa-bg-neutral-subtler)"
+            fg="var(--sa-color-text-default)"
           />
         </div>
         <p style={captionStyle}>
@@ -261,7 +261,7 @@ export default function HeaderPage(): React.JSX.Element {
           The <code>variant</code> prop also defaults <code>sticky</code> on for
           portals.
         </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-m)" }}>
           <table className="props-table">
             <thead>
               <tr>
@@ -324,7 +324,7 @@ export default function HeaderPage(): React.JSX.Element {
           <strong>&quot;Associated Organisations&quot;</strong> mega-menu. Open a
           dropdown, open the mega-menu, and resize below 1024px to see the drawer.
         </p>
-        <div style={{ marginTop: "var(--ds-spacing-2xl)" }}>
+        <div style={{ marginTop: "var(--sa-stack-l)" }}>
           <SiteHeaderPreview />
           <p style={captionStyle}>
             Website variant — <code>search</code> + <code>actions</code> (Login) +{" "}
@@ -332,7 +332,7 @@ export default function HeaderPage(): React.JSX.Element {
           </p>
         </div>
 
-        <h3 id="portal" style={{ ...h3Style, scrollMarginTop: "var(--ds-spacing-5xl)" }}>Portal variant</h3>
+        <h3 id="portal" style={{ ...h3Style, scrollMarginTop: "var(--sa-section-m)" }}>Portal variant</h3>
         <p style={proseStyle}>
           Matches the <strong>Navbar Portal / Appbar</strong> (Figma{" "}
           <code>4235-3170</code>): a collapse toggle (<code>onToggleNav</code>), a
@@ -340,7 +340,7 @@ export default function HeaderPage(): React.JSX.Element {
           marks, and an account block (<code>account</code>) in place of the search
           field + Login.
         </p>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <SiteHeaderNavyPreview />
           <p style={captionStyle}>
             Portal variant — <code>onToggleNav</code> + <code>brandDivider</code> +{" "}
@@ -427,7 +427,7 @@ export default function HeaderPage(): React.JSX.Element {
           Every control is reachable and operable by keyboard, and announces its
           state.
         </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-m)" }}>
           <table className="props-table">
             <thead>
               <tr>
@@ -461,7 +461,7 @@ export default function HeaderPage(): React.JSX.Element {
           <strong>functional by default</strong> — the design system owns the
           behaviour so no property can ship a dead control.
         </p>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <A11yChecklist
             items={[
               { criterion: "Text resize & contrast", level: "AA", description: "Font-size, spacing, and contrast are handled by the official UX4GAccessibilityWidget (one canonical mechanism, everywhere) — the header no longer duplicates them. (WCAG 1.4.4)" },
@@ -492,28 +492,28 @@ export default function HeaderPage(): React.JSX.Element {
         </h2>
         <ul style={listStyle}>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Department line</strong> —
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Department line</strong> —
             use the full official name (&quot;Department of Social Justice &amp;
             Empowerment&quot;). Don&apos;t abbreviate to an acronym in the masthead.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Nav labels</strong> — short
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Nav labels</strong> — short
             noun phrases in Title Case (&quot;Schemes &amp; Services&quot;, not
             &quot;Click here for schemes&quot;). Keep them to 1–2 words where
             possible so the row doesn&apos;t wrap.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Mega-menu headings</strong> —
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Mega-menu headings</strong> —
             name the grouping, not the action (&quot;Commissions&quot;,
             &quot;Corporations&quot;).
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Search placeholder</strong> —
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Search placeholder</strong> —
             hint at scope (&quot;Search schemes, services, documents&quot;) rather
             than a bare &quot;Search&quot;.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>CTA</strong> — one primary
+            <strong style={{ color: "var(--sa-color-text-default)" }}>CTA</strong> — one primary
             action only (&quot;Login&quot; / &quot;Apply Online&quot;). The masthead
             is wayfinding, not a place to stack buttons.
           </li>
@@ -563,13 +563,13 @@ export default function HeaderPage(): React.JSX.Element {
         <h2 id="responsive" style={h2Style}>
           10. Responsive
         </h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--ds-spacing-xl)", lineHeight: 1.9 }}>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-l)", lineHeight: 1.9 }}>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>≥1024px</strong> — the
+            <strong style={{ color: "var(--sa-color-text-default)" }}>≥1024px</strong> — the
             horizontal nav row (with dropdowns / mega-menus) is shown.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>&lt;1024px</strong> — the nav
+            <strong style={{ color: "var(--sa-color-text-default)" }}>&lt;1024px</strong> — the nav
             row collapses; a hamburger in the brand row opens the drawer, where
             mega-menu columns flatten into a single sub-list.
           </li>
@@ -594,7 +594,7 @@ export default function HeaderPage(): React.JSX.Element {
           One definition, imported everywhere — no per-app header forks. Each app
           supplies its own data and basePath-aware asset URLs.
         </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-m)" }}>
           <table className="props-table">
             <thead>
               <tr>
@@ -627,19 +627,19 @@ export default function HeaderPage(): React.JSX.Element {
         </h2>
         <ul style={listStyle}>
           <li>
-            <a href="/design-system/components/sidebar" style={{ color: "var(--ds-primary)" }}>Sidebar Nav</a>{" "}
+            <a href="/design-system/components/sidebar" style={{ color: "var(--sa-color-action-primary-default)" }}>Sidebar Nav</a>{" "}
             — the portal app-shell left navigation that pairs with the Portal variant.
           </li>
           <li>
-            <a href="/design-system/components/app-switcher" style={{ color: "var(--ds-primary)" }}>App Switcher</a>{" "}
+            <a href="/design-system/components/app-switcher" style={{ color: "var(--sa-color-action-primary-default)" }}>App Switcher</a>{" "}
             — the estate-wide FAB for jumping between portals.
           </li>
           <li>
-            <a href="/design-system/components/button" style={{ color: "var(--ds-primary)" }}>Button</a>{" "}
+            <a href="/design-system/components/button" style={{ color: "var(--sa-color-action-primary-default)" }}>Button</a>{" "}
             — used for the brand-row CTA (<code>actions</code>).
           </li>
           <li>
-            <a href="/design-system/foundations/color" style={{ color: "var(--ds-primary)" }}>Color &amp; theming</a>{" "}
+            <a href="/design-system/foundations/color" style={{ color: "var(--sa-color-action-primary-default)" }}>Color &amp; theming</a>{" "}
             — the brand axis (<code>data-brand</code>) and appearance
             (<code>data-theme</code>), distinct from the accessibility widget&apos;s
             own contrast/dark mode.
@@ -652,9 +652,9 @@ export default function HeaderPage(): React.JSX.Element {
         <h2 id="changelog" style={h2Style}>
           13. Changelog
         </h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--ds-spacing-xl)", lineHeight: 1.9 }}>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-l)", lineHeight: 1.9 }}>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Accessibility consolidation</strong>{" "}
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Accessibility consolidation</strong>{" "}
             — retired the header&apos;s own text-size (A−/A/A+) and contrast controls
             from the &quot;Accessibility hardening&quot; update below; they duplicated
             the official <code>UX4GAccessibilityWidget</code>, now the single
@@ -662,13 +662,13 @@ export default function HeaderPage(): React.JSX.Element {
             <code>docs/specs/samavesh-accessibility-consolidation.md</code>.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Variants &amp; menus</strong>{" "}
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Variants &amp; menus</strong>{" "}
             — added an explicit <code>variant</code> prop, multi-column{" "}
             <code>columns</code> mega-menus, an opt-in <code>collapseOnScroll</code>{" "}
             state, and tooltips on the icon controls.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Accessibility hardening</strong>{" "}
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Accessibility hardening</strong>{" "}
             — the text-size and contrast controls are functional by default
             (root font-size + <code>data-theme=&quot;hc&quot;</code>, persisted);
             added <code>aria-pressed</code>; visible keyboard focus on every
@@ -676,12 +676,12 @@ export default function HeaderPage(): React.JSX.Element {
             blur; the mobile menu is a proper disclosure region (no fake dialog).
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Consolidation</strong> — one{" "}
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Consolidation</strong> — one{" "}
             <code>SiteHeader</code> (Website + Portal variants) replaces the retired{" "}
             <code>AppHeader</code>; account block gains an optional dropdown.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Figma parity</strong> — rebuilt
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Figma parity</strong> — rebuilt
             to the UX4G Navbar Website (<code>2210-11837</code>) + Portal Appbar
             (<code>4235-3170</code>) components.
           </li>

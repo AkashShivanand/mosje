@@ -118,16 +118,16 @@ export const GlobalFillEvent: Story = {
       return () => window.removeEventListener("demo:fill", handler);
     }, []);
     return (
-      <div style={{ display: "grid", gap: 12, color: "var(--ds-ink)" }}>
+      <div style={{ display: "grid", gap: 12, color: "var(--sa-color-text-default)" }}>
         <p style={{ margin: 0 }}>
           A stand-in login form, listening for <code>demo:fill</code>:
         </p>
         <dl style={{ margin: 0, display: "grid", gridTemplateColumns: "auto 1fr", gap: "6px 16px" }}>
-          <dt style={{ color: "var(--ds-ink-muted)" }}>Mobile / ID</dt>
+          <dt style={{ color: "var(--sa-color-text-muted)" }}>Mobile / ID</dt>
           <dd style={{ margin: 0 }}>
             <code>{filled?.id ?? "—"}</code>
           </dd>
-          <dt style={{ color: "var(--ds-ink-muted)" }}>Password</dt>
+          <dt style={{ color: "var(--sa-color-text-muted)" }}>Password</dt>
           <dd style={{ margin: 0 }}>
             <code>{filled?.password ?? "—"}</code>
           </dd>
@@ -149,13 +149,13 @@ export const OnFillAndOnUseCallbacks: Story = {
     const [closed, setClosed] = React.useState(false);
     if (closed) {
       return (
-        <p style={{ color: "var(--ds-ink-muted)" }}>
+        <p style={{ color: "var(--sa-color-text-muted)" }}>
           <code>onUse</code> fired — the containing shell would close here.
         </p>
       );
     }
     return (
-      <div style={{ display: "grid", gap: 12, color: "var(--ds-ink)" }}>
+      <div style={{ display: "grid", gap: 12, color: "var(--sa-color-text-default)" }}>
         <p style={{ margin: 0 }}>
           Filled directly, with no event: <code>{filled}</code>
         </p>

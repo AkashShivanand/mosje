@@ -10,7 +10,7 @@
   --portal-ink-muted: #475569;
   --portal-saffron: #ec6a1f;
   --portal-surface-muted: #f5f7fb;
-  /* colors.danger.DEFAULT — the hub's is the DS status red (--ds-danger). */
+  /* colors.danger.DEFAULT — the hub's is the DS status red (--sa-color-status-danger). */
   --portal-danger: #dc2626;
 
   /* CONFLICT — nhapoa/tg darkened theirs to #b8500f; NMBA kept #d35912. */

@@ -57,7 +57,7 @@ const CHANGE_ARROWS: Record<MetricCardChange, React.ReactNode> = {
  *
  * Shows a label + a large formatted value + an optional icon badge and optional
  * change indicator. Styled via `.ds-metric-card*` semantic CSS classes that
- * reference design tokens (--ds-*). No Tailwind, no hardcoded values.
+ * reference design tokens (--sa-*). No Tailwind, no hardcoded values.
  */
 export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
   function MetricCard(

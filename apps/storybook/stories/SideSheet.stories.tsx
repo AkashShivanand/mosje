@@ -104,7 +104,7 @@ export const Playground: Story = {
         <Button onClick={() => setOpen(true)}>Review first application</Button>
         <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 8 }}>
           {queue.map(([id, name, scheme]) => (
-            <li key={id} style={{ color: "var(--ds-ink)" }}>
+            <li key={id} style={{ color: "var(--sa-color-text-default)" }}>
               <strong>{id}</strong> · {name} · {scheme}
             </li>
           ))}

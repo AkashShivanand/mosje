@@ -54,9 +54,9 @@ const meta = {
           width: 420,
           maxHeight: 460,
           overflowY: "auto",
-          border: "1px solid var(--ds-border)",
-          borderRadius: "var(--ds-radius-md)",
-          background: "var(--ds-surface)",
+          border: "1px solid var(--sa-border-neutral-subtle)",
+          borderRadius: "var(--sa-shape-md)",
+          background: "var(--sa-bg-neutral-base)",
         }}
       >
         <Story />
@@ -120,8 +120,8 @@ export const Search: Story = {
           placeholder="Type to filter the list below…"
           style={{
             padding: "6px 10px",
-            border: "1px solid var(--ds-border)",
-            borderRadius: "var(--ds-radius-sm)",
+            border: "1px solid var(--sa-border-neutral-subtle)",
+            borderRadius: "var(--sa-shape-sm)",
             font: "inherit",
           }}
         />
@@ -130,9 +130,9 @@ export const Search: Story = {
             width: 420,
             maxHeight: 380,
             overflowY: "auto",
-            border: "1px solid var(--ds-border)",
-            borderRadius: "var(--ds-radius-md)",
-            background: "var(--ds-surface)",
+            border: "1px solid var(--sa-border-neutral-subtle)",
+            borderRadius: "var(--sa-shape-md)",
+            background: "var(--sa-bg-neutral-base)",
           }}
         >
           <AppSwitcherPanel {...args} apps={filtered} />
@@ -148,7 +148,7 @@ export const OnNavigateCallback: Story = {
     const [lastClicked, setLastClicked] = React.useState("—");
     return (
       <div style={{ display: "grid", gap: 8 }}>
-        <p style={{ margin: 0, color: "var(--ds-ink)" }}>
+        <p style={{ margin: 0, color: "var(--sa-color-text-default)" }}>
           Last navigated to: <code>{lastClicked}</code>
         </p>
         <div
@@ -156,9 +156,9 @@ export const OnNavigateCallback: Story = {
             width: 420,
             maxHeight: 380,
             overflowY: "auto",
-            border: "1px solid var(--ds-border)",
-            borderRadius: "var(--ds-radius-md)",
-            background: "var(--ds-surface)",
+            border: "1px solid var(--sa-border-neutral-subtle)",
+            borderRadius: "var(--sa-shape-md)",
+            background: "var(--sa-bg-neutral-base)",
           }}
           onClickCapture={(e) => {
             const link = (e.target as HTMLElement).closest("a[href]");

@@ -51,8 +51,8 @@ export function CmdSearch({ onClose }: CmdSearchProps): React.JSX.Element {
       <div className="cmd-modal" onClick={(e) => e.stopPropagation()} onKeyDown={onKeyDown}>
         <div className="cmd-search-row">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <circle cx="7" cy="7" r="5.5" stroke="var(--ds-ink-muted)" strokeWidth="1.5" />
-            <path d="m11 11 2.5 2.5" stroke="var(--ds-ink-muted)" strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="7" cy="7" r="5.5" stroke="var(--sa-color-text-muted)" strokeWidth="1.5" />
+            <path d="m11 11 2.5 2.5" stroke="var(--sa-color-text-muted)" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
           <input
             ref={inputRef}

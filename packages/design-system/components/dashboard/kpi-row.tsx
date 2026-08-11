@@ -16,7 +16,7 @@ export interface KpiRowProps {
  * the existing `MetricCard` (not a re-implementation).
  */
 export function KpiRow({ items, span, className }: KpiRowProps) {
-  const style = span ? ({ ["--ds-card-span" as string]: String(span) } as React.CSSProperties) : undefined;
+  const style = span ? ({ ["--cmp-card-span" as string]: String(span) } as React.CSSProperties) : undefined;
   return (
     <div className={cn("ds-kpi-row", className)} style={style}>
       {items.map(({ key, ...item }, i) => (

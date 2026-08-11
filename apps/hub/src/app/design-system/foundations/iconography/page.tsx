@@ -51,19 +51,19 @@ export default function IconographyPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Iconography</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
+      <p style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-s)" }}>
         Icons help people scan and recognise actions quickly. SAMAVESH keeps the
         set small, consistent and always paired with a label.
       </p>
-      <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+      <div style={{ marginTop: "var(--sa-stack-m)" }}>
         <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.iconography)} target="_blank" rel="noopener noreferrer">
           View in Figma <span aria-hidden="true">↗</span>
         </a>
       </div>
 
-      <section aria-labelledby="system" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="system" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="system">The icon system</h2>
-        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <ul style={{ marginTop: "var(--sa-stack-m)" }}>
           <li>
             <strong>Material Symbols Rounded</strong> is the source for every UI
             icon, rendered through the design system&rsquo;s{" "}
@@ -85,14 +85,14 @@ export default function IconographyPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="grid" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="grid" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="grid">Most-used icons</h2>
         <div
           style={{
-            marginTop: "var(--ds-spacing-2xl)",
+            marginTop: "var(--sa-stack-l)",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-            gap: "var(--ds-spacing-md)",
+            gap: "var(--sa-stack-s)",
           }}
         >
           {COMMON_ICONS.map((name) => (
@@ -102,23 +102,23 @@ export default function IconographyPage(): React.JSX.Element {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: "var(--ds-spacing-sm)",
-                padding: "var(--ds-spacing-lg)",
-                background: "var(--ds-surface-muted)",
-                borderRadius: "var(--ds-radius-md)",
-                color: "var(--ds-ink)",
+                gap: "var(--sa-stack-xs)",
+                padding: "var(--sa-padding-m)",
+                background: "var(--sa-bg-neutral-subtler)",
+                borderRadius: "var(--sa-shape-md)",
+                color: "var(--sa-color-text-default)",
               }}
             >
               <Icon name={name} size={24} aria-hidden />
-              <code style={{ fontSize: "var(--ds-text-body-3)", color: "var(--ds-ink-muted)" }}>{name}</code>
+              <code style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)" }}>{name}</code>
             </div>
           ))}
         </div>
       </section>
 
-      <section aria-labelledby="usage" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="usage" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="usage">Usage rules</h2>
-        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <ul style={{ marginTop: "var(--sa-stack-m)" }}>
           <li>
             Decorative icons next to visible text must carry{" "}
             <code>aria-hidden=&quot;true&quot;</code> so screen readers
@@ -137,16 +137,16 @@ export default function IconographyPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="size" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="size" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="size">Size guidance</h2>
         <div
           style={{
-            marginTop: "var(--ds-spacing-2xl)",
+            marginTop: "var(--sa-stack-l)",
             display: "flex",
             flexWrap: "wrap",
-            gap: "var(--ds-spacing-3xl)",
+            gap: "var(--sa-stack-xl)",
             alignItems: "flex-end",
-            color: "var(--ds-ink)",
+            color: "var(--sa-color-text-default)",
           }}
         >
           {[
@@ -154,9 +154,9 @@ export default function IconographyPage(): React.JSX.Element {
             { size: 20, label: "20px — list items and menu rows" },
             { size: 24, label: "24px — standalone controls" },
           ].map(({ size, label }) => (
-            <div key={size} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--ds-spacing-sm)" }}>
+            <div key={size} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--sa-stack-xs)" }}>
               <Icon name="search" size={size} aria-hidden />
-              <span style={{ fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)", textAlign: "center", maxWidth: "120px" }}>
+              <span style={{ fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)", textAlign: "center", maxWidth: "120px" }}>
                 {label}
               </span>
             </div>

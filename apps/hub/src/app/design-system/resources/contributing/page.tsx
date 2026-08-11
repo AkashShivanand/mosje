@@ -12,7 +12,7 @@ const CHECKLIST: { label: string; detail: string }[] = [
   {
     label: "Token-only CSS",
     detail:
-      "No hardcoded colors, sizes, or spacing. Every value comes from a --ds-* custom property.",
+      "No hardcoded colors, sizes, or spacing. Every value comes from a --sa-* custom property.",
   },
   {
     label: "TypeScript strict",
@@ -37,13 +37,13 @@ const CHECKLIST: { label: string; detail: string }[] = [
 
 const codeBlockStyle: React.CSSProperties = {
   background: "#1e2130",
-  borderRadius: "var(--ds-radius-md)",
-  padding: "var(--ds-spacing-xl)",
-  fontFamily: "var(--ds-font-mono)",
+  borderRadius: "var(--sa-shape-md)",
+  padding: "var(--sa-padding-l)",
+  fontFamily: "var(--sa-font-mono)",
   fontSize: 13,
   color: "#e2e8f0",
   lineHeight: 1.7,
-  marginTop: "var(--ds-spacing-lg)",
+  marginTop: "var(--sa-stack-m)",
   overflowX: "auto",
 };
 
@@ -119,7 +119,7 @@ export default function ContributingPage(): React.JSX.Element {
               <strong>Edit the source.</strong> Change{" "}
               <code>packages/tokens/src/primitive.json</code> (raw values like
               hex codes) or <code>packages/tokens/src/semantic.json</code> (named
-              roles like <code>--ds-primary</code>).
+              roles like <code>--sa-color-action-primary-default</code>).
             </li>
             <li>
               <strong>Regenerate the outputs</strong> with Style Dictionary:
@@ -132,18 +132,18 @@ export default function ContributingPage(): React.JSX.Element {
             <span style={{ color: "#7dd3fc" }}>npm</span> run build -w
             @mosje/tokens
           </div>
-          <div style={{ marginTop: "var(--ds-spacing-lg)", color: "#8892a4" }}>
+          <div style={{ marginTop: "var(--sa-stack-m)", color: "#8892a4" }}>
             # Confirm the token contract still holds
           </div>
           <div>
             <span style={{ color: "#7dd3fc" }}>npm</span> test -w @mosje/tokens
           </div>
         </div>
-        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--sa-stack-m)" }}>
           <ol start={3}>
             <li>
               <strong>Check the contract test passes.</strong> The 50-token
-              snapshot test guards the backward-compatible <code>--ds-*</code>{" "}
+              snapshot test guards the backward-compatible <code>--sa-*</code>{" "}
               contract. If it fails, you have removed or renamed a token other
               apps depend on — that is a breaking change and needs a major-version
               discussion.
@@ -177,7 +177,7 @@ export default function ContributingPage(): React.JSX.Element {
             <span style={{ color: "#7dd3fc" }}>npm</span> run dev
           </div>
         </div>
-        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--sa-stack-m)" }}>
           <p>
             Need just one app? Use the targeted scripts:{" "}
             <code>npm run dev:website</code>, <code>npm run dev:smile</code>,{" "}
@@ -208,11 +208,11 @@ export default function ContributingPage(): React.JSX.Element {
         <ul
           style={{
             listStyle: "none",
-            margin: "var(--ds-spacing-lg) 0 0",
+            margin: "var(--sa-stack-m) 0 0",
             padding: 0,
             display: "flex",
             flexDirection: "column",
-            gap: "var(--ds-spacing-md)",
+            gap: "var(--sa-stack-s)",
           }}
         >
           {CHECKLIST.map((item) => (
@@ -220,12 +220,12 @@ export default function ContributingPage(): React.JSX.Element {
               key={item.label}
               style={{
                 display: "flex",
-                gap: "var(--ds-spacing-md)",
+                gap: "var(--sa-stack-s)",
                 alignItems: "flex-start",
-                padding: "var(--ds-spacing-lg)",
-                border: "1px solid var(--ds-border)",
-                borderRadius: "var(--ds-radius-md)",
-                background: "var(--ds-surface)",
+                padding: "var(--sa-padding-m)",
+                border: "1px solid var(--sa-border-neutral-subtle)",
+                borderRadius: "var(--sa-shape-md)",
+                background: "var(--sa-bg-neutral-base)",
               }}
             >
               <span
@@ -237,8 +237,8 @@ export default function ContributingPage(): React.JSX.Element {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius: "var(--ds-radius-sm)",
-                  background: "var(--ds-success)",
+                  borderRadius: "var(--sa-shape-sm)",
+                  background: "var(--sa-color-status-success)",
                   color: "#fff",
                   fontSize: 14,
                   fontWeight: 700,
@@ -251,17 +251,17 @@ export default function ContributingPage(): React.JSX.Element {
                   style={{
                     display: "block",
                     fontWeight: 600,
-                    color: "var(--ds-ink)",
-                    fontSize: "var(--ds-text-body-1)",
+                    color: "var(--sa-color-text-default)",
+                    fontSize: "var(--sa-type-body-1-size)",
                   }}
                 >
                   {item.label}
                 </span>
                 <span
                   style={{
-                    fontSize: "var(--ds-text-body-2)",
-                    color: "var(--ds-ink-muted)",
-                    lineHeight: "var(--ds-leading-body-2)",
+                    fontSize: "var(--sa-type-body-2-size)",
+                    color: "var(--sa-color-text-muted)",
+                    lineHeight: "var(--sa-type-body-2-lh)",
                   }}
                 >
                   {item.detail}

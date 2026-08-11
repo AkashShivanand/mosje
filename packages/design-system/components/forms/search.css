@@ -1,6 +1,6 @@
 /* ============================================================================
    MoSJE / UX4G — Search atom
-   Semantic CSS classes only; all colours reference design tokens (--ds-*).
+   Semantic CSS classes only; all colours reference design tokens (--sa-*).
    Combine: .ds-search  +  .ds-search--<size>   (md ≈ 44px · lg ≈ 56px)
    ============================================================================ */
 
@@ -11,10 +11,10 @@
   width: 100%;
   height: var(--_h, 44px);
   padding: 0 14px;
-  font-family: var(--ds-font-sans, inherit);
-  background-color: var(--ds-surface);
-  border: 1px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-md, 8px);
+  font-family: var(--sa-font-latin, inherit);
+  background-color: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-md, 8px);
   transition:
     border-color 0.15s ease,
     box-shadow 0.15s ease;
@@ -36,8 +36,8 @@
 
 /* Focus ring lives on the wrapper, driven by the inner input's focus. */
 .ds-search:focus-within {
-  border-color: var(--ds-primary);
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  border-color: var(--sa-color-action-primary-default);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
 }
 
 .ds-search__icon {
@@ -45,7 +45,7 @@
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
 }
 
 .ds-search__icon svg {
@@ -61,17 +61,17 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
   font-family: inherit;
-  font-size: var(--ds-text-body-1, 16px);
-  line-height: var(--ds-leading-body-1, 24px);
+  font-size: var(--sa-type-body-1-size, 16px);
+  line-height: var(--sa-type-body-1-lh, 24px);
   outline: none;
   -webkit-appearance: none;
   appearance: none;
 }
 
 .ds-search__input::placeholder {
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
   opacity: 1;
 }
 
@@ -94,9 +94,9 @@
   margin: 0;
   padding: 0;
   border: 0;
-  border-radius: var(--ds-radius-full, 100px);
+  border-radius: var(--sa-shape-full, 100px);
   background: transparent;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
   cursor: pointer;
   transition:
     background-color 0.15s ease,
@@ -109,18 +109,18 @@
 }
 
 .ds-search__clear:hover {
-  background-color: var(--ds-surface-muted);
-  color: var(--ds-ink);
+  background-color: var(--sa-bg-neutral-subtler);
+  color: var(--sa-color-text-default);
 }
 
 .ds-search__clear:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
 }
 
 /* Disabled */
 .ds-search--disabled {
-  background-color: var(--ds-surface-muted);
+  background-color: var(--sa-bg-neutral-subtler);
   opacity: 0.6;
   cursor: not-allowed;
 }

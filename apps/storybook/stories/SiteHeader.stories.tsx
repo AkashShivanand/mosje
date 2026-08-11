@@ -247,7 +247,7 @@ export const AccessibilityBar: Story = {
         language={{ label: "English", onClick: () => {} }}
       />
       {/* The skip link is only a WCAG 2.4.1 pass because this id exists. */}
-      <main id="sb-main" tabIndex={-1} style={{ padding: 24, color: "var(--ds-ink)" }}>
+      <main id="sb-main" tabIndex={-1} style={{ padding: 24, color: "var(--sa-color-text-default)" }}>
         Tab from the very top of the page: the first stop is “Skip to main content”, and
         it lands here.
       </main>

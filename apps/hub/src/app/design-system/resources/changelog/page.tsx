@@ -22,9 +22,22 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.17.0",
+    date: "2026-08-12",
+    current: true,
+    changes: [
+      { kind: "Removed", text: "THE LEGACY --ds-* VOCABULARY IS GONE. All 341 tokens, retired in one pass. Nothing emits them: zero occurrences in tokens.css, tokens.ts, tailwind-preset.cjs, ux4g.css or the Figma payload, and zero references in source. 3,561 call sites across 162 files were moved to the canonical --sa-* token each legacy name already resolved to, so the migration was value-preserving BY CONSTRUCTION rather than by inspection — 0 of 192 distinct mappings change a rendered value" },
+      { kind: "Changed", text: "The proof is the re-baselined ux4g contract fixture: 4,433 removals, every single one a --ds-* name, 208 additions (the new Tier-2 tokens), and ZERO changed values across all 13 selector contexts — every brand, every axis block. Brand swap, brand-invariance of secondary and accent, and the six DBIM previews were re-verified in the browser after the migration and all still behave" },
+      { kind: "Added", text: "Three Tier-2 groups had to exist first, because 320 usages had no canonical home and were binding Tier-1 primitives by proxy: --sa-shape-* (corner radius, 12 steps), --sa-font-latin/display/mono alongside the existing devanagari, and --sa-stack-2xl (40px). It is called shape rather than radius because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 radius group self-references the Tier-1 scale it aliases — the build fails with 12 reference errors" },
+      { kind: "Fixed", text: "About 40 references that RENDERED NOTHING, found because the migration had to resolve every name. --ds-space-2 through -12, --ds-line, --ds-border-control, --ds-leading-label-2 and --ds-ink-hint were never declared anywhere, so the declarations carrying them were dropped as invalid CSS: the markdown docs pages had no vertical rhythm and two form controls had no border. Nobody had noticed, because a dropped declaration looks like a design decision" },
+      { kind: "Fixed", text: "The Figma library was telling designers, in Dev Mode, to use tokens that no longer exist — 73 font/role variables published var(--ds-type-*) as their codeSyntax. Repointed, and 16 new variables pushed with their GENERATED descriptions. Six of eight collections now agree with the payload byte-for-byte; Palette and Type differ by exactly the documented orphan set (24 x 2 modes and 13 x 6 modes), now recorded with the arithmetic so anything that is not a whole orphan reads as real drift" },
+      { kind: "Removed", text: "Two test files deleted rather than repaired: tier2-parity and type-alias-parity existed solely to prove the canonical and legacy layers agreed, and there is no longer a second layer. legacy-snapshot.json goes with them. A test whose subject no longer exists is not coverage" },
+      { kind: "Changed", text: "The --ds-text-* alias trap retires with the vocabulary that carried it: --ds-text-title-1 resolved to the headline-2 role, which caused four production bugs. The only surviving record of the mismatch is the TYPE_TOKEN table in build/generate-ts-mirror.mjs, which preserves it so the mirror's named exports keep their values" },
+    ],
+  },
+  {
     version: "v0.16.2",
     date: "2026-08-11",
-    current: true,
     changes: [
       { kind: "Fixed", text: "THE SHADOWS WERE TINTED TOWARD A COLOUR THE SYSTEM NO LONGER HAD. The ramp's own description says it keeps \"the SAMAVESH convention of tinting toward ink rather than UX4G's flat black\" — and it was not: five rungs plus the modal scrim carried rgba(31, 36, 40), hand-written from a neutral/800 the ramp rebuild moved to #1e2124. Derived from neutral/800 now, so it cannot drift again. Geometry stays authored; only the ink is generated" },
       { kind: "Changed", text: "Nobody could see it, which is exactly why it needed deriving rather than a one-time correction. Composited over white the old ink and the new differ by dE 0.14 to 0.54 across the ramp's alphas — under the ~1.0 just-noticeable threshold at every rung. A wrong value you can see gets fixed the first time somebody looks at it; a wrong value you cannot see survives every review and is still wrong" },
@@ -91,7 +104,7 @@ const RELEASES: Release[] = [
       { kind: "Changed", text: "dangerScale, warningScale, infoScale and neutralScale are now GENERATED from anchors like every other ramp. They were the four the 2026-08-11 rebuild did not reach, and they still carried what the audit measured: danger/400 and danger/500 were 1.8 L* apart (one colour wearing two names), warning/500 was darker AND duller than 400 (which is what made it read muddy), info/400 and /500 were another near-duplicate pair. All eight ramps now step 4-16 L* apart, monotonic, hue held within ~6 degrees" },
       { kind: "Changed", text: "The warning ramp's anchor MOVED IN HUE, which no other ramp's did, because that ramp disagreed with itself: steps 50-200 sat at hue 75 and steps 300-950 at hue 65. A ramp cannot have two hues. 75.9 wins because it is the hue of the rungs people see most, because it is what amber means rather than orange, and decisively because 65.9 is only 25 degrees from India Saffron — under the hue-separation gate's 30-degree floor. Locking the dark end's hue would have traded one defect for a harder one" },
       { kind: "Changed", text: "THE GREYS ARE DELIBERATELY TINTED, which they always were — the defect was that nobody had chosen the tint. neutral/400 measured hue 256, neutral/500 hue 245 and neutral/950 hue 264, with chroma DROPPING between 400 and 500 while lightness fell. Nobody picked those numbers; independent 8-bit rounding of a nearly-grey colour did. Hue is now locked to the brand's own primary for the whole ramp, with chroma on one arc peaking ~0.016 in the mid-tones. Material 3, Radix and Tailwind's slate all tint their neutrals the same way" },
-      { kind: "Changed", text: "VISIBLE CHANGE, expect it: the neutral ladder was re-cut. It used to put four steps inside its lightest 7.7 L* and then cross the middle in two jumps of 15+, which is why there was exactly one grey between a light surface and a mid grey, and why components kept reaching for a one-off hex the system had no name for. Borders and subtle surfaces are now genuinely visible — --ds-border moves from #f1f3f5 to #dcdee1, --ds-border-strong from #e2e6ea to #c6c9cd" },
+      { kind: "Changed", text: "VISIBLE CHANGE, expect it: the neutral ladder was re-cut. It used to put four steps inside its lightest 7.7 L* and then cross the middle in two jumps of 15+, which is why there was exactly one grey between a light surface and a mid grey, and why components kept reaching for a one-off hex the system had no name for. Borders and subtle surfaces are now genuinely visible — --sa-border-neutral-subtle moves from #f1f3f5 to #dcdee1, --sa-border-neutral-base from #e2e6ea to #c6c9cd" },
       { kind: "Changed", text: "0 and 1000 stay EXACTLY #ffffff and #000000. They are achromatic, which is the whole reason they live on the neutral ramp and on no chromatic one, and tinting them would contradict that. The arc reaches zero at both ends so the steps beside them are true greys too" },
       { kind: "Removed", text: "The destructive button's step override. It shifted the filled progression up to 700/800/900 for one reason — white on dangerScale.600 was 4.40:1 — and that reason is gone. Destructive now uses the same 600/700/800 table as every other intent. A workaround kept past its cause is just an inconsistency nobody can explain" },
       { kind: "Fixed", text: "The ux4g and ux4gdeep demo brands overrode the four status FOREGROUNDS to UX4G's palette but left the TONAL backgrounds on SAMAVESH's ramps, so UX4G's teal #006d75 sat on SAMAVESH's blue infoScale/100 — a mismatched pair that met AA by luck and stopped the moment the info ramp moved. Both halves now come from the same UX4G ramp" },
@@ -150,7 +163,7 @@ const RELEASES: Release[] = [
       { kind: "Added", text: "Set equality between the build payload and the live library is now PROVEN per collection by checksum rather than inferred from counts. Six of the eight collections — including Color, all 472 of it — hash identically; Palette and Type differ only by the 36 orphans now itemised in reference/figma-live.json under $orphans. Counting had been hiding two-way drift: the previous snapshot recorded a Component Options collection that no longer exists, and every earlier check looked only for what was MISSING, never for what the library carried that the source does not define" },
       { kind: "Fixed", text: "The on/* coverage gate asserted a floor (found.length >= 40) and therefore passed while six bg/brand/accent/* fills had no foreground at all — a brand colour wired as far as the palette and stopped. It now derives the expected set from the fills themselves, so a fill that carries content and has no measured ink fails by name. Mutation-tested by deleting a pairing" },
       { kind: "Added", text: "The six accent foregrounds, each chosen BY MEASUREMENT across both brands rather than assumed from the rung name. Accent flips to white ink at bolder, and its bold rung measures 4.60:1 with dark ink — margins that differ enough from primary that inheriting primary's flip point would have shipped an unreadable pairing" },
-      { kind: "Fixed", text: "The neutral ramp's own $description still advertised a 0-1100 range and --ds-neutral-0…1100 after the 2026-08-11 renumbering retired the 1100 step. Stale prose in the token source, describing a token that no longer exists" },
+      { kind: "Fixed", text: "The neutral ramp's own $description still advertised a 0-1100 range and --sa-color-neutralScale-0…1100 after the 2026-08-11 renumbering retired the 1100 step. Stale prose in the token source, describing a token that no longer exists" },
       { kind: "Changed", text: "color/neutralScale/1100 no longer exists under that NAME — it was renamed, not deleted, and no binding was detached. An earlier entry recorded this as an unaccounted hard delete with unrecoverable bindings; that was a fair reading of a missing name but it is wrong. The renumbering was applied as a rename CHAIN (1000 -> 950 first to free the name, then 1100 -> 1000), which is the only safe way to renumber in a published library: renaming preserves the variable id, so every binding follows. Verified against ids captured before the write — VariableID:3791:8969 (was 1000) is now 950, VariableID:3791:8970 (was 1100) is now 1000, both re-read by id afterwards and both resolve. A missing name does not imply a missing variable; only an id lookup can tell the two apart" },
     ],
   },
@@ -380,7 +393,7 @@ const RELEASES: Release[] = [
       { kind: "Changed", text: "Nothing renders differently. This was a rename, not a redesign: all 27 moved token names resolve to byte-identical values in all 7 selector contexts (:root, light/dark/hc, brand, density, portal surface). The --ds-* names your code actually uses did not change at all \u2014 they were retargeted at the new canonical names" },
       { kind: "Added", text: "A visual-contract test that resolves every var() chain in the generated CSS down to a literal, per selector block, and pins all 8,393 of them. A rename must be declared, and the test then proves the old name's old value equals the new name's new value \u2014 so a rename that changes what renders cannot pass quietly" },
       { kind: "Fixed", text: "The Tailwind v4 @theme export (@mosje/tokens/tailwind-v4) aliased 111 custom properties that do not exist. It hand-rolled its target names as --sa-{path}, which drops the tier marker, so every Tier-1 entry pointed at --sa-color-* while the sheet declares --sa-ref-color-* \u2014 every colour utility built on them resolved to nothing. Names now come from toCssName/tierOfFile like everywhere else. No utility name changed; nothing in the estate imports this file yet, which is why it went unnoticed since v0.11.0" },
-      { kind: "Added", text: "A UX4G parity contract that pins the combined tokens.css + ux4g.css sheet. ux4g.css emits --sa-* overrides inside its colour-mode blocks from a hand-typed name table \u2014 that is how the UX4G palette repaints SAMAVESH tokens \u2014 and nothing pinned them, so a rename that forgot that table would have left the UX4G colour modes silently failing to repaint --ds-surface while every other test stayed green" },
+      { kind: "Added", text: "A UX4G parity contract that pins the combined tokens.css + ux4g.css sheet. ux4g.css emits --sa-* overrides inside its colour-mode blocks from a hand-typed name table \u2014 that is how the UX4G palette repaints SAMAVESH tokens \u2014 and nothing pinned them, so a rename that forgot that table would have left the UX4G colour modes silently failing to repaint --sa-bg-neutral-base while every other test stayed green" },
       { kind: "Added", text: "A theming-axis invariant: a page setting data-brand and data-theme together must resolve to a value one of those axes actually declares. 41 properties are declared by both axes, so neither single-axis test can say who wins. It holds today, so combinations are asserted rather than pinned" },
       { kind: "Added", text: "A slot-disjointness guard that fails the build if any word becomes reachable in two slots of the same token path. Two pre-existing ambiguities are pinned rather than fixed (primary/secondary/tertiary as both a brand variant and an ink prominence; visited as both a link variant and a state) \u2014 both are recorded in the spec and cost a token rename to resolve" },
     ],
@@ -514,12 +527,12 @@ const RELEASES: Release[] = [
 ];
 
 const KIND_COLOR: Record<ChangeEntry["kind"], string> = {
-  Added: "var(--ds-success)",
-  Changed: "var(--ds-info)",
-  Fixed: "var(--ds-saffron)",
+  Added: "var(--sa-color-status-success)",
+  Changed: "var(--sa-color-status-info)",
+  Fixed: "var(--sa-color-brand-saffron)",
   // Taking something away is worth its own badge: a reader scanning for "why did that control
   // disappear" should not have to read a paragraph filed under "Changed" to find out.
-  Removed: "var(--ds-danger)",
+  Removed: "var(--sa-color-status-danger)",
 };
 
 export default function ChangelogPage(): React.JSX.Element {
@@ -548,43 +561,43 @@ export default function ChangelogPage(): React.JSX.Element {
 
         <div
           style={{
-            marginTop: "var(--ds-spacing-2xl)",
+            marginTop: "var(--sa-stack-l)",
             display: "flex",
             flexDirection: "column",
-            gap: "var(--ds-spacing-3xl)",
+            gap: "var(--sa-stack-xl)",
           }}
         >
           {RELEASES.map((release) => (
             <article
               key={release.version}
               id={release.version.replace(/\./g, "-")}
-              style={{ scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}
+              style={{ scrollMarginTop: "calc(56px + var(--sa-stack-l))" }}
             >
               {/* Release heading */}
               <div
                 style={{
                   display: "flex",
                   alignItems: "baseline",
-                  gap: "var(--ds-spacing-md)",
+                  gap: "var(--sa-stack-s)",
                   flexWrap: "wrap",
-                  paddingBottom: "var(--ds-spacing-md)",
-                  borderBottom: "1px solid var(--ds-border)",
-                  marginBottom: "var(--ds-spacing-lg)",
+                  paddingBottom: "var(--sa-padding-s)",
+                  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
+                  marginBottom: "var(--sa-stack-m)",
                 }}
               >
                 <h2
                   style={{
-                    fontSize: "var(--ds-text-title-1)",
+                    fontSize: "var(--sa-type-headline-2-size)",
                     fontWeight: 700,
-                    color: "var(--ds-ink)",
+                    color: "var(--sa-color-text-default)",
                   }}
                 >
                   {release.version}
                 </h2>
                 <span
                   style={{
-                    fontSize: "var(--ds-text-body-2)",
-                    color: "var(--ds-ink-muted)",
+                    fontSize: "var(--sa-type-body-2-size)",
+                    color: "var(--sa-color-text-muted)",
                   }}
                 >
                   {release.date}
@@ -592,12 +605,12 @@ export default function ChangelogPage(): React.JSX.Element {
                 {release.current ? (
                   <span
                     style={{
-                      fontSize: "var(--ds-text-body-3)",
+                      fontSize: "var(--sa-type-body-3-size)",
                       fontWeight: 600,
                       color: "#fff",
-                      background: "var(--ds-primary)",
-                      padding: "2px var(--ds-spacing-sm)",
-                      borderRadius: "var(--ds-radius-sm)",
+                      background: "var(--sa-color-action-primary-default)",
+                      padding: "2px var(--sa-padding-xs)",
+                      borderRadius: "var(--sa-shape-sm)",
                     }}
                   >
                     Current
@@ -613,7 +626,7 @@ export default function ChangelogPage(): React.JSX.Element {
                   padding: 0,
                   display: "flex",
                   flexDirection: "column",
-                  gap: "var(--ds-spacing-md)",
+                  gap: "var(--sa-stack-s)",
                 }}
               >
                 {release.changes.map((change, i) => (
@@ -621,7 +634,7 @@ export default function ChangelogPage(): React.JSX.Element {
                     key={i}
                     style={{
                       display: "flex",
-                      gap: "var(--ds-spacing-md)",
+                      gap: "var(--sa-stack-s)",
                       alignItems: "flex-start",
                     }}
                   >
@@ -630,21 +643,21 @@ export default function ChangelogPage(): React.JSX.Element {
                         flexShrink: 0,
                         minWidth: 64,
                         textAlign: "center",
-                        fontSize: "var(--ds-text-body-3)",
+                        fontSize: "var(--sa-type-body-3-size)",
                         fontWeight: 700,
                         color: "#fff",
                         background: KIND_COLOR[change.kind],
-                        padding: "2px var(--ds-spacing-sm)",
-                        borderRadius: "var(--ds-radius-sm)",
+                        padding: "2px var(--sa-padding-xs)",
+                        borderRadius: "var(--sa-shape-sm)",
                       }}
                     >
                       {change.kind}
                     </span>
                     <span
                       style={{
-                        fontSize: "var(--ds-text-body-2)",
-                        color: "var(--ds-ink)",
-                        lineHeight: "var(--ds-leading-body-2)",
+                        fontSize: "var(--sa-type-body-2-size)",
+                        color: "var(--sa-color-text-default)",
+                        lineHeight: "var(--sa-type-body-2-lh)",
                       }}
                     >
                       {change.text}

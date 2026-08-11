@@ -47,7 +47,7 @@ function SurfaceToggle({ surface, onChange }: { surface: Surface; onChange: (s: 
   );
 }
 
-/* ── live type ramp (real --ds-type-* tokens via data-surface) ── */
+/* ── live type ramp (real --sa-type-* tokens via data-surface) ── */
 function Ramp({ surface }: { surface: Surface }): React.JSX.Element {
   return (
     <div className="ty-ramp" data-surface={surface}>
@@ -59,7 +59,7 @@ function Ramp({ surface }: { surface: Surface }): React.JSX.Element {
         return (
           <div className="ty-row" key={r.role} data-tier={r.tier}>
             <div className="ty-row__meta">
-              <Copy text={`--ds-type-${r.role}-size`} />
+              <Copy text={`--sa-type-${r.role}-size`} />
               <dl className="ty-specs">
                 <div><dt>size</dt><dd>{fluid ? `${sMin}→${sMax}` : sMax}<span className="u">px</span></dd></div>
                 <div><dt>line</dt><dd>{lMin !== lMax ? `${lMin}→${lMax}` : lMax}<span className="u">px</span></dd></div>
@@ -74,10 +74,10 @@ function Ramp({ surface }: { surface: Surface }): React.JSX.Element {
               <div
                 className="ty-sample"
                 style={{
-                  fontSize: `var(--ds-type-${r.role}-size)`,
-                  lineHeight: `var(--ds-type-${r.role}-lh)`,
+                  fontSize: `var(--sa-type-${r.role}-size)`,
+                  lineHeight: `var(--sa-type-${r.role}-lh)`,
                   fontWeight: r.weightVal,
-                  letterSpacing: `var(--ds-type-${r.role}-tracking, 0)`,
+                  letterSpacing: `var(--sa-type-${r.role}-tracking, 0)`,
                 }}
               >
                 {r.en}
@@ -86,7 +86,7 @@ function Ramp({ surface }: { surface: Surface }): React.JSX.Element {
                 className="ty-sample ty-hi"
                 lang="hi"
                 style={{
-                  fontSize: `var(--ds-type-${r.role}-size)`,
+                  fontSize: `var(--sa-type-${r.role}-size)`,
                   lineHeight: 1.7,
                   fontWeight: r.weightVal,
                 }}
@@ -156,18 +156,18 @@ function RefTable({ prop }: { prop: Prop }): React.JSX.Element {
       <div className="ty-table-scroll"><table className="ty-table">
         <thead><tr><th>Token</th><th>Value</th><th>Used by</th></tr></thead>
         <tbody>{rows.map(([n, v, u]) => (
-          <tr key={n}><td><Copy text={`--ds-font-weight-${n}`} /></td><td className="num">{v}</td><td className="use">{u}</td></tr>
+          <tr key={n}><td><Copy text={`--sa-ref-font-weight-${n}`} /></td><td className="num">{v}</td><td className="use">{u}</td></tr>
         ))}</tbody>
       </table></div>
     );
   }
   if (prop === "family") {
-    const rows = [["--ds-font-sans", "Noto Sans", "Latin / English — all UI text"], ["--sa-font-family-devanagari", "Noto Sans Devanagari", "हिन्दी text (see Indic line height)"]] as const;
+    const rows = [["--sa-font-latin", "Noto Sans", "Latin / English — all UI text"], ["--sa-font-family-devanagari", "Noto Sans Devanagari", "हिन्दी text (see Indic line height)"]] as const;
     return (
       <div className="ty-table-scroll"><table className="ty-table">
         <thead><tr><th>Token</th><th>Family</th><th>Used for</th></tr></thead>
         <tbody>{rows.map(([t, f, u]) => (
-          <tr key={t}><td><Copy text={t} /></td><td className="fam" style={t.includes("devanagari") ? { fontFamily: '"Noto Sans Devanagari", var(--ds-font-sans)' } : undefined}>{f}</td><td className="use">{u}</td></tr>
+          <tr key={t}><td><Copy text={t} /></td><td className="fam" style={t.includes("devanagari") ? { fontFamily: '"Noto Sans Devanagari", var(--sa-font-latin)' } : undefined}>{f}</td><td className="use">{u}</td></tr>
         ))}</tbody>
       </table></div>
     );
@@ -180,11 +180,11 @@ function RefTable({ prop }: { prop: Prop }): React.JSX.Element {
         <thead><tr><th>Token</th><th className="web">Website</th><th className="por">Portal (min→max)</th></tr></thead>
         <tbody>
           {disp.map((r) => (
-            <tr key={r.role}><td><Copy text={`--ds-type-${r.role}-tracking`} /></td>
+            <tr key={r.role}><td><Copy text={`--sa-type-${r.role}-tracking`} /></td>
               <td className="num web">0</td><td className="num por">{range(r.tracking.portal)}</td></tr>
           ))}
           {groups.map(([k, label]) => (
-            <tr key={k} data-tier="headline"><td><Copy text={`--ds-type-${k}-tracking`} /></td>
+            <tr key={k} data-tier="headline"><td><Copy text={`--sa-type-${k}-tracking`} /></td>
               <td className="num web">0</td><td className="num por" title={label}>0</td></tr>
           ))}
         </tbody>
@@ -208,7 +208,7 @@ function RefTable({ prop }: { prop: Prop }): React.JSX.Element {
           const por = prop === "size" ? r.size.portal : prop === "lh" ? r.lh.portal : r.para;
           return (
             <tr key={r.role} data-tier={r.tier}>
-              <td><Copy text={`--ds-type-${key}-${suffix}`} /></td>
+              <td><Copy text={`--sa-type-${key}-${suffix}`} /></td>
               {dual ? (
                 <>
                   <td className="num web">{range(web)}</td>
@@ -258,7 +258,7 @@ function Compare(): React.JSX.Element {
           <div className="ty-compare__cap"><b>{s.label}</b> · {s.sample}</div>
           {rows.map((r) => (
             <div className="ty-compare__line" key={r.role}
-              style={{ fontSize: `var(--ds-type-${r.role}-size)`, lineHeight: `var(--ds-type-${r.role}-lh)`, fontWeight: r.weightVal }}>
+              style={{ fontSize: `var(--sa-type-${r.role}-size)`, lineHeight: `var(--sa-type-${r.role}-lh)`, fontWeight: r.weightVal }}>
               {r.tier === "display" ? "Aa" : r.en.split(" ").slice(0, r.tier === "body" ? 6 : 3).join(" ")}
             </div>
           ))}
@@ -277,7 +277,7 @@ export function TypeLab(): React.JSX.Element {
         <span className="docs-section__label">Interactive</span>
         <h2 id="the-scale" className="docs-section__heading">The type scale, live</h2>
         <p className="ty-lead">One role vocabulary, two surfaces. Toggle to render every role at its real token
-          value — the specimens below use the actual <code>--ds-type-*</code> variables, so what you see is what ships.</p>
+          value — the specimens below use the actual <code>--sa-type-*</code> variables, so what you see is what ships.</p>
         <SurfaceToggle surface={surface} onChange={setSurface} />
         <Ramp surface={surface} />
       </section>

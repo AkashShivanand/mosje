@@ -90,9 +90,9 @@ export const WithoutPrintedValue: Story = {
 export const StatusColours: Story = {
   render: () => (
     <div style={{ display: "grid", gap: 16 }}>
-      <Progress label="Funds utilised — on track" value={88} color="var(--ds-success)" />
-      <Progress label="Funds utilised — behind schedule" value={41} color="var(--ds-warning)" />
-      <Progress label="Funds utilised — at risk of lapsing" value={12} color="var(--ds-danger)" />
+      <Progress label="Funds utilised — on track" value={88} color="var(--sa-color-status-success)" />
+      <Progress label="Funds utilised — behind schedule" value={41} color="var(--sa-color-status-warning)" />
+      <Progress label="Funds utilised — at risk of lapsing" value={12} color="var(--sa-color-status-danger)" />
     </div>
   ),
 };

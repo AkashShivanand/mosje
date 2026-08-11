@@ -255,6 +255,10 @@ export function guidanceFor(path, tier, parse) {
   if (tier === "cmp") return componentGuidance(path);
   if (tier !== "sys") return null;
 
+  // Tier-2 corner radius. Added 2026-08-12 with the retirement of `--ds-radius-*`, whose 248
+  // usages had no Tier-2 home — every one of them was binding a Tier-1 primitive by proxy.
+  if (path[0] === "shape") return SHAPE_GUIDANCE[path[1]] ?? null;
+
   // The legacy `color/*` Tier-2 layer: brand-aware ramps and alpha tiers. They are a palette,
   // not a decision, so they get the same pointer a primitive does — the semantic roles above
   // them are where the choice belongs.
@@ -307,13 +311,32 @@ function fontPointer(path) {
  * in the Figma variable picker, which is why these name Figma styles and collections rather
  * than CSS custom properties.
  */
+
+/** Tier-2 corner radius. Named `shape` because a Tier-2 group called `radius` would
+ * self-reference the Tier-1 scale it aliases; see build/grammar.mjs. */
+const SHAPE_GUIDANCE = {
+  "none": "Use for a square corner \u2014 tables, full-bleed media, anything that should read as flush.",
+  "xxs": "Use for the smallest softening, on dense controls where a visible curve would read as noise.",
+  "xs": "Use for small chips, tags and inline badges.",
+  "sm": "Use for inputs, selects and other text-entry controls.",
+  "md": "Use for buttons and standard controls. This is the default shape of the system.",
+  "lg": "Use for cards and panels \u2014 a surface holding content rather than a control.",
+  "xl": "Use for large containers and modal surfaces.",
+  "2xl": "Use for hero and feature surfaces, where the curve is part of the composition.",
+  "3xl": "Use for the largest editorial surfaces.",
+  "4xl": "Use for oversized decorative surfaces. Rare; check a smaller step first.",
+  "5xl": "Use for the largest decorative surface in the system. Rare.",
+  "full": "Use for pills and circles \u2014 avatars, toggles, status dots. Fully rounded at any size."
+};
+
 export function primitivePointer(path) {
   const [head] = path;
   if (head === "color") return "Palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee and follow the brand.";
   if (head === "size") return "Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.";
   if (head === "space") return "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.";
   if (head === "font") return fontPointer(path);
-  if (head === "radius" || head === "motion" || head === "opacity" || head === "blur") return `Raw ${head} step.`;
+  if (head === "radius") return "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.";
+  if (head === "motion" || head === "opacity" || head === "blur") return `Raw ${head} step.`;
   // `border` was the one primitive group with no pointer, so all five ref/border/width/*
   // shipped to Figma with an EMPTY description — the only variables in the library that had
   // none. A missing case here is silent: guidanceFor returns null and the exporter writes "".

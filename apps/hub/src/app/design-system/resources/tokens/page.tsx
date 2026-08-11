@@ -53,7 +53,7 @@ export default function TokensPage(): React.JSX.Element {
             All {total} tokens and their resolved values, rendered live from the
             generated DTCG export (<code>@mosje/tokens</code>) — so this reference
             is always in sync with the system. Consume the public contract as{" "}
-            <code>--ds-*</code> CSS variables; never hardcode values.
+            <code>--sa-*</code> CSS variables; never hardcode values.
           </p>
         </div>
       </header>
@@ -71,7 +71,7 @@ export default function TokensPage(): React.JSX.Element {
       </Callout>
 
       {groups.map(({ group, leaves }) => (
-        <section key={group} className="docs-section" style={{ marginTop: "var(--ds-space-10)" }}>
+        <section key={group} className="docs-section" style={{ marginTop: "var(--sa-stack-2xl)" }}>
           <span className="docs-section__label">{leaves.length} tokens</span>
           <h2 id={group} className="docs-section__heading" style={{ textTransform: "capitalize" }}>
             {group}

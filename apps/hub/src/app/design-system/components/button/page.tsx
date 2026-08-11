@@ -18,34 +18,34 @@ export const metadata: Metadata = {
 };
 
 /* ------------------------------------------------------------------ *
- * Shared layout primitives (inline styles, --ds-* tokens only)
+ * Shared layout primitives (inline styles, --sa-* tokens only)
  * ------------------------------------------------------------------ */
 
 const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--ds-spacing-5xl)",
-  scrollMarginTop: "var(--ds-spacing-5xl)",
+  marginTop: "var(--sa-section-m)",
+  scrollMarginTop: "var(--sa-section-m)",
 };
 
 const h2Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
+  fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 700,
-  color: "var(--ds-ink)",
-  marginBottom: "var(--ds-spacing-lg)",
-  paddingBottom: "var(--ds-spacing-sm)",
-  borderBottom: "1px solid var(--ds-border)",
+  color: "var(--sa-color-text-default)",
+  marginBottom: "var(--sa-stack-m)",
+  paddingBottom: "var(--sa-padding-xs)",
+  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
 };
 
 const h3Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-title-1)",
+  fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
-  color: "var(--ds-ink)",
-  marginTop: "var(--ds-spacing-2xl)",
-  marginBottom: "var(--ds-spacing-sm)",
+  color: "var(--sa-color-text-default)",
+  marginTop: "var(--sa-stack-l)",
+  marginBottom: "var(--sa-stack-xs)",
 };
 
 const proseStyle: React.CSSProperties = {
-  color: "var(--ds-ink-muted)",
-  fontSize: "var(--ds-text-body-1)",
+  color: "var(--sa-color-text-muted)",
+  fontSize: "var(--sa-type-body-1-size)",
   lineHeight: 1.7,
   maxWidth: "68ch",
 };
@@ -69,17 +69,17 @@ function StateRow({
       style={{
         display: "grid",
         gridTemplateColumns: "120px 1fr 1.4fr",
-        gap: "var(--ds-spacing-lg)",
+        gap: "var(--sa-stack-m)",
         alignItems: "center",
-        padding: "var(--ds-spacing-md) 0",
-        borderBottom: "1px solid var(--ds-border)",
+        padding: "var(--sa-padding-s) 0",
+        borderBottom: "1px solid var(--sa-border-neutral-subtle)",
       }}
     >
-      <strong style={{ color: "var(--ds-ink)", fontSize: "var(--ds-text-body-2)" }}>
+      <strong style={{ color: "var(--sa-color-text-default)", fontSize: "var(--sa-type-body-2-size)" }}>
         {state}
       </strong>
       <div>{children}</div>
-      <span style={{ color: "var(--ds-ink-muted)", fontSize: "var(--ds-text-body-2)" }}>
+      <span style={{ color: "var(--sa-color-text-muted)", fontSize: "var(--sa-type-body-2-size)" }}>
         {note}
       </span>
     </div>
@@ -110,13 +110,13 @@ function KeyTable({
               <td>
                 <kbd
                   style={{
-                    fontFamily: "var(--ds-font-mono, monospace)",
-                    fontSize: "var(--ds-text-body-2)",
-                    background: "var(--ds-surface-muted)",
-                    border: "1px solid var(--ds-border)",
-                    borderRadius: "var(--ds-radius-sm, 4px)",
+                    fontFamily: "var(--sa-font-mono, monospace)",
+                    fontSize: "var(--sa-type-body-2-size)",
+                    background: "var(--sa-bg-neutral-subtler)",
+                    border: "1px solid var(--sa-border-neutral-subtle)",
+                    borderRadius: "var(--sa-shape-sm, 4px)",
                     padding: "2px 6px",
-                    color: "var(--ds-ink)",
+                    color: "var(--sa-color-text-default)",
                   }}
                 >
                   {r.key}
@@ -141,24 +141,24 @@ export default function ButtonPage(): React.JSX.Element {
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
-        padding: "var(--ds-spacing-3xl) var(--ds-spacing-2xl) var(--ds-spacing-6xl)",
+        padding: "var(--sa-padding-2xl) var(--sa-padding-xl) var(--sa-section-l)",
       }}
     >
       {/* ---------------- Header ---------------- */}
-      <header style={{ marginBottom: "var(--ds-spacing-3xl)" }}>
+      <header style={{ marginBottom: "var(--sa-stack-xl)" }}>
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "var(--ds-spacing-md)",
+            gap: "var(--sa-stack-s)",
             flexWrap: "wrap",
           }}
         >
           <h1
             style={{
-              fontSize: "var(--ds-text-display)",
+              fontSize: "var(--sa-type-display-1-size)",
               fontWeight: 800,
-              color: "var(--ds-ink)",
+              color: "var(--sa-color-text-default)",
               margin: 0,
             }}
           >
@@ -166,13 +166,13 @@ export default function ButtonPage(): React.JSX.Element {
           </h1>
           <StatusBadge status="Stable" />
         </div>
-        <p style={{ ...proseStyle, marginTop: "var(--ds-spacing-md)" }}>
+        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-s)" }}>
           A Button triggers an action within the system — submitting a form,
           confirming a dialog, or running a command. It is the most-used
           interactive atom in SAMAVESH and the reference implementation for every
           other component page.
         </p>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.buttons)} target="_blank" rel="noopener noreferrer">
             View in Figma <span aria-hidden="true">↗</span>
           </a>
@@ -190,7 +190,7 @@ export default function ButtonPage(): React.JSX.Element {
           draft, confirm a choice, or run a command. A button always performs an
           action on the current page or in the current flow.
         </p>
-        <p style={{ ...proseStyle, marginTop: "var(--ds-spacing-md)" }}>
+        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-s)" }}>
           If the control takes the user to a different page or resource, it is a{" "}
           <strong>link</strong>, not a button. Getting this distinction right is
           the single most important accessibility decision for an interactive
@@ -210,26 +210,26 @@ export default function ButtonPage(): React.JSX.Element {
         <div
           style={{
             display: "flex",
-            gap: "var(--ds-spacing-3xl)",
+            gap: "var(--sa-stack-xl)",
             alignItems: "center",
             flexWrap: "wrap",
-            marginTop: "var(--ds-spacing-2xl)",
-            padding: "var(--ds-spacing-3xl)",
-            background: "var(--ds-surface-muted)",
-            borderRadius: "var(--ds-radius-md, 8px)",
-            border: "1px solid var(--ds-border)",
+            marginTop: "var(--sa-stack-l)",
+            padding: "var(--sa-padding-2xl)",
+            background: "var(--sa-bg-neutral-subtler)",
+            borderRadius: "var(--sa-shape-md, 8px)",
+            border: "1px solid var(--sa-border-neutral-subtle)",
           }}
         >
           {/* Annotated specimen */}
-          <div style={{ position: "relative", padding: "var(--ds-spacing-2xl)" }}>
+          <div style={{ position: "relative", padding: "var(--sa-stack-l)" }}>
             <span
               aria-hidden="true"
               style={{
                 position: "absolute",
-                inset: "calc(-1 * var(--ds-spacing-xs))",
-                outline: "3px solid var(--ds-primary-ring, var(--ds-primary))",
+                inset: "calc(-1 * var(--sa-stack-2xs))",
+                outline: "3px solid var(--sa-focus-ring, var(--sa-color-action-primary-default))",
                 outlineOffset: "2px",
-                borderRadius: "var(--ds-radius-md, 8px)",
+                borderRadius: "var(--sa-shape-md, 8px)",
                 opacity: 0.55,
               }}
             />
@@ -244,23 +244,23 @@ export default function ButtonPage(): React.JSX.Element {
           <ol
             style={{
               margin: 0,
-              paddingLeft: "var(--ds-spacing-xl)",
-              color: "var(--ds-ink-muted)",
-              fontSize: "var(--ds-text-body-2)",
+              paddingLeft: "var(--sa-padding-l)",
+              color: "var(--sa-color-text-muted)",
+              fontSize: "var(--sa-type-body-2-size)",
               lineHeight: 1.9,
             }}
           >
             <li>
-              <strong style={{ color: "var(--ds-ink)" }}>Label text</strong> —
+              <strong style={{ color: "var(--sa-color-text-default)" }}>Label text</strong> —
               clear and verb-first (&ldquo;Submit application&rdquo;).
             </li>
             <li>
-              <strong style={{ color: "var(--ds-ink)" }}>Container</strong> — a
+              <strong style={{ color: "var(--sa-color-text-default)" }}>Container</strong> — a
               real <code>&lt;button&gt;</code>, 32 / 40 / 48px tall by size.
             </li>
             <li>
-              <strong style={{ color: "var(--ds-ink)" }}>Focus ring</strong> — a
-              3px ring drawn with <code>--ds-primary-ring</code>.
+              <strong style={{ color: "var(--sa-color-text-default)" }}>Focus ring</strong> — a
+              3px ring drawn with <code>--sa-focus-ring</code>.
             </li>
           </ol>
         </div>
@@ -275,7 +275,7 @@ export default function ButtonPage(): React.JSX.Element {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "var(--ds-spacing-lg)",
+            gap: "var(--sa-stack-m)",
           }}
         >
           <UseCard tone="do" title="Use a Button when…">
@@ -315,25 +315,25 @@ export default function ButtonPage(): React.JSX.Element {
         <ul
           style={{
             ...proseStyle,
-            marginTop: "var(--ds-spacing-md)",
-            paddingLeft: "var(--ds-spacing-xl)",
+            marginTop: "var(--sa-stack-s)",
+            paddingLeft: "var(--sa-padding-l)",
             lineHeight: 1.9,
           }}
         >
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Primary</strong> — the
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Primary</strong> — the
             main call to action. One per view, maximum.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Secondary</strong> —
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Secondary</strong> —
             secondary actions that sit beside the primary CTA.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Ghost</strong> — tertiary,
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Ghost</strong> — tertiary,
             low-emphasis actions such as table-row actions.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>Danger</strong> —
+            <strong style={{ color: "var(--sa-color-text-default)" }}>Danger</strong> —
             destructive actions; always pair with a confirmation step.
           </li>
         </ul>
@@ -351,7 +351,7 @@ export default function ButtonPage(): React.JSX.Element {
           <code>appearance=&quot;inverseOutlined&quot;</code> (secondary) instead
           of overriding <code>className</code>.
         </Callout>
-        <div style={{ marginTop: "var(--ds-spacing-2xl)" }}>
+        <div style={{ marginTop: "var(--sa-stack-l)" }}>
           <ButtonPlayground />
         </div>
       </section>
@@ -364,7 +364,7 @@ export default function ButtonPage(): React.JSX.Element {
         <p style={proseStyle}>
           Every interactive state is visually distinct and meets AA contrast.
         </p>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <StateRow state="Default" note="Resting state — full colour, no overlay.">
             <Button variant="primary" appearance="filled">
               Submit application
@@ -379,13 +379,13 @@ export default function ButtonPage(): React.JSX.Element {
               Submit application
             </Button>
           </StateRow>
-          <StateRow state="Focus" note="3px --ds-primary-ring, visible for keyboard users.">
+          <StateRow state="Focus" note="3px --sa-focus-ring, visible for keyboard users.">
             <span
               style={{
                 display: "inline-block",
-                outline: "3px solid var(--ds-primary-ring, var(--ds-primary))",
+                outline: "3px solid var(--sa-focus-ring, var(--sa-color-action-primary-default))",
                 outlineOffset: "2px",
-                borderRadius: "var(--ds-radius-md, 8px)",
+                borderRadius: "var(--sa-shape-md, 8px)",
               }}
             >
               <Button variant="primary" appearance="filled">
@@ -429,7 +429,7 @@ export default function ButtonPage(): React.JSX.Element {
           Because <code>Button</code> renders a native <code>&lt;button&gt;</code>,
           all standard keyboard semantics work for free.
         </p>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <KeyTable
             rows={[
               { key: "Enter", action: "Activates the button (fires onClick)." },
@@ -458,7 +458,7 @@ export default function ButtonPage(): React.JSX.Element {
           Buttons are government-grade controls — they must satisfy WCAG 2.1 AA and
           GIGW. The checklist below is verified for every release.
         </p>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <A11yChecklist
             items={[
               {
@@ -519,7 +519,7 @@ export default function ButtonPage(): React.JSX.Element {
           &ldquo;हाँ&rdquo; नहीं), &ldquo;सहेजें&rdquo;, &ldquo;रद्द करें&rdquo;.
         </p>
 
-        <div style={{ marginTop: "var(--ds-spacing-2xl)" }}>
+        <div style={{ marginTop: "var(--sa-stack-l)" }}>
           <DoDont
             cards={[
               {
@@ -630,7 +630,7 @@ export function ApplicationForm() {
   return (
     <form onSubmit={handleSubmit}>
       {/* …fields… */}
-      <div style={{ display: "flex", gap: "var(--ds-spacing-md)" }}>
+      <div style={{ display: "flex", gap: "var(--sa-stack-s)" }}>
         {/* Primary CTA — one per view */}
         <Button variant="primary" appearance="filled" type="submit">
           Submit application
@@ -659,30 +659,30 @@ export function ApplicationForm() {
         <TokenTable
           tokens={[
             {
-              token: "--ds-primary",
+              token: "--sa-color-action-primary-default",
               value: "#0373df",
               description: "Fill colour for the primary variant.",
               isColor: true,
             },
             {
-              token: "--ds-primary-ring",
+              token: "--sa-focus-ring",
               value: "rgba(3,115,223,0.48)",
               description: "3px focus ring colour.",
               isColor: false,
             },
             {
-              token: "--ds-danger",
+              token: "--sa-color-status-danger",
               value: "#DC2626",
               description: "Fill colour for the danger variant.",
               isColor: true,
             },
             {
-              token: "--ds-radius-md",
+              token: "--sa-shape-md",
               value: "8px",
               description: "Corner radius of the button container.",
             },
             {
-              token: "--ds-spacing-md",
+              token: "--sa-stack-s",
               value: "12px",
               description: "Horizontal padding inside the button.",
             },
@@ -698,7 +698,7 @@ export function ApplicationForm() {
         <ul
           style={{
             ...proseStyle,
-            paddingLeft: "var(--ds-spacing-xl)",
+            paddingLeft: "var(--sa-padding-l)",
             lineHeight: 1.9,
           }}
         >
@@ -730,22 +730,22 @@ export function ApplicationForm() {
         <ul
           style={{
             ...proseStyle,
-            paddingLeft: "var(--ds-spacing-xl)",
+            paddingLeft: "var(--sa-padding-l)",
             lineHeight: 1.9,
           }}
         >
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>GOV.UK Button research</strong>{" "}
+            <strong style={{ color: "var(--sa-color-text-default)" }}>GOV.UK Button research</strong>{" "}
             — verb-first, action-naming labels measurably increase form completion
             versus generic labels.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>WCAG 2.5.8 Target Size (Minimum)</strong>{" "}
+            <strong style={{ color: "var(--sa-color-text-default)" }}>WCAG 2.5.8 Target Size (Minimum)</strong>{" "}
             — Level AA requires 24×24px, which every size clears. The 44×44px
             figure belongs to 2.5.5 Target Size (Enhanced), Level AAA.
           </li>
           <li>
-            <strong style={{ color: "var(--ds-ink)" }}>GOI GIGW 3.5</strong> — all
+            <strong style={{ color: "var(--sa-color-text-default)" }}>GOI GIGW 3.5</strong> — all
             interactive elements must be fully keyboard operable.
           </li>
         </ul>
@@ -760,8 +760,8 @@ export function ApplicationForm() {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "var(--ds-spacing-lg)",
-            marginTop: "var(--ds-spacing-lg)",
+            gap: "var(--sa-stack-m)",
+            marginTop: "var(--sa-stack-m)",
           }}
         >
           <RelatedCard
@@ -787,37 +787,37 @@ export function ApplicationForm() {
         <h2 id="changelog" style={h2Style}>
           13. Changelog
         </h2>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "100px 1fr",
-              gap: "var(--ds-spacing-lg)",
-              padding: "var(--ds-spacing-md) 0",
-              borderTop: "1px solid var(--ds-border)",
+              gap: "var(--sa-stack-m)",
+              padding: "var(--sa-padding-s) 0",
+              borderTop: "1px solid var(--sa-border-neutral-subtle)",
             }}
           >
             <code
               style={{
-                color: "var(--ds-primary)",
+                color: "var(--sa-color-action-primary-default)",
                 fontWeight: 700,
-                fontSize: "var(--ds-text-body-2)",
+                fontSize: "var(--sa-type-body-2-size)",
               }}
             >
               v0.5.0
             </code>
             <div>
-              <div style={{ color: "var(--ds-ink)", fontWeight: 600 }}>
+              <div style={{ color: "var(--sa-color-text-default)", fontWeight: 600 }}>
                 Initial release{" "}
-                <span style={{ marginLeft: "var(--ds-spacing-sm)" }}>
+                <span style={{ marginLeft: "var(--sa-inline-s)" }}>
                   <StatusBadge status="Stable" />
                 </span>
               </div>
               <p
                 style={{
                   ...proseStyle,
-                  marginTop: "var(--ds-spacing-xs)",
-                  fontSize: "var(--ds-text-body-2)",
+                  marginTop: "var(--sa-stack-2xs)",
+                  fontSize: "var(--sa-type-body-2-size)",
                 }}
               >
                 Primary, secondary (outlined), ghost (text), and danger variants.
@@ -861,8 +861,8 @@ function Marker({
         width: "20px",
         height: "20px",
         borderRadius: "50%",
-        background: "var(--ds-primary)",
-        color: "var(--ds-on-primary, #fff)",
+        background: "var(--sa-color-action-primary-default)",
+        color: "var(--sa-color-text-onPrimary, #fff)",
         fontSize: "11px",
         fontWeight: 700,
         display: "inline-flex",
@@ -884,24 +884,24 @@ function UseCard({
   title: string;
   children: React.ReactNode;
 }): React.JSX.Element {
-  const accent = tone === "do" ? "var(--ds-success, #16A34A)" : "var(--ds-danger, #DC2626)";
+  const accent = tone === "do" ? "var(--sa-color-status-success, #16A34A)" : "var(--sa-color-status-danger, #DC2626)";
   return (
     <div
       style={{
-        border: "1px solid var(--ds-border)",
+        border: "1px solid var(--sa-border-neutral-subtle)",
         borderTop: `3px solid ${accent}`,
-        borderRadius: "var(--ds-radius-md, 8px)",
-        padding: "var(--ds-spacing-xl)",
-        background: "var(--ds-surface)",
+        borderRadius: "var(--sa-shape-md, 8px)",
+        padding: "var(--sa-padding-l)",
+        background: "var(--sa-bg-neutral-base)",
       }}
     >
       <h3
         style={{
           margin: 0,
-          marginBottom: "var(--ds-spacing-md)",
-          fontSize: "var(--ds-text-title-1)",
+          marginBottom: "var(--sa-stack-s)",
+          fontSize: "var(--sa-type-headline-2-size)",
           fontWeight: 600,
-          color: "var(--ds-ink)",
+          color: "var(--sa-color-text-default)",
         }}
       >
         {title}
@@ -909,9 +909,9 @@ function UseCard({
       <ul
         style={{
           margin: 0,
-          paddingLeft: "var(--ds-spacing-xl)",
-          color: "var(--ds-ink-muted)",
-          fontSize: "var(--ds-text-body-2)",
+          paddingLeft: "var(--sa-padding-l)",
+          color: "var(--sa-color-text-muted)",
+          fontSize: "var(--sa-type-body-2-size)",
           lineHeight: 1.8,
         }}
       >
@@ -936,18 +936,18 @@ function RelatedCard({
       style={{
         display: "block",
         textDecoration: "none",
-        border: "1px solid var(--ds-border)",
-        borderRadius: "var(--ds-radius-md, 8px)",
-        padding: "var(--ds-spacing-lg)",
-        background: "var(--ds-surface)",
+        border: "1px solid var(--sa-border-neutral-subtle)",
+        borderRadius: "var(--sa-shape-md, 8px)",
+        padding: "var(--sa-padding-m)",
+        background: "var(--sa-bg-neutral-base)",
       }}
     >
       <span
         style={{
           display: "block",
-          color: "var(--ds-primary)",
+          color: "var(--sa-color-action-primary-default)",
           fontWeight: 600,
-          fontSize: "var(--ds-text-body-1)",
+          fontSize: "var(--sa-type-body-1-size)",
         }}
       >
         {title} →
@@ -955,9 +955,9 @@ function RelatedCard({
       <span
         style={{
           display: "block",
-          marginTop: "var(--ds-spacing-xs)",
-          color: "var(--ds-ink-muted)",
-          fontSize: "var(--ds-text-body-2)",
+          marginTop: "var(--sa-stack-2xs)",
+          color: "var(--sa-color-text-muted)",
+          fontSize: "var(--sa-type-body-2-size)",
           lineHeight: 1.6,
         }}
       >
@@ -971,18 +971,18 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
   return (
     <pre
       style={{
-        background: "var(--ds-surface-muted)",
-        border: "1px solid var(--ds-border)",
-        borderRadius: "var(--ds-radius-md, 8px)",
-        padding: "var(--ds-spacing-lg)",
+        background: "var(--sa-bg-neutral-subtler)",
+        border: "1px solid var(--sa-border-neutral-subtle)",
+        borderRadius: "var(--sa-shape-md, 8px)",
+        padding: "var(--sa-padding-m)",
         overflowX: "auto",
-        fontSize: "var(--ds-text-body-2)",
+        fontSize: "var(--sa-type-body-2-size)",
         lineHeight: 1.6,
-        color: "var(--ds-ink)",
-        marginTop: "var(--ds-spacing-sm)",
+        color: "var(--sa-color-text-default)",
+        marginTop: "var(--sa-stack-xs)",
       }}
     >
-      <code style={{ fontFamily: "var(--ds-font-mono, monospace)" }}>
+      <code style={{ fontFamily: "var(--sa-font-mono, monospace)" }}>
         {children}
       </code>
     </pre>

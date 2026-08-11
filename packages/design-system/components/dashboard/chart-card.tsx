@@ -36,7 +36,7 @@ export function ChartCard({
   className,
   children,
 }: ChartCardProps) {
-  const style = span ? ({ ["--ds-card-span" as string]: String(span) } as React.CSSProperties) : undefined;
+  const style = span ? ({ ["--cmp-card-span" as string]: String(span) } as React.CSSProperties) : undefined;
   return (
     <section className={cn("ds-chart-card", className)} style={style}>
       <header className="ds-chart-card__head">

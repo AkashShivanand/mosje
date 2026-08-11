@@ -8,7 +8,7 @@
   position: fixed;
   inset: 0;
   z-index: 50;
-  background-color: var(--ds-overlay, rgba(0, 0, 0, 0.4));
+  background-color: var(--sa-overlay-neutral-boldest, rgba(0, 0, 0, 0.4));
 }
 
 .ds-sheet {
@@ -18,10 +18,10 @@
   bottom: 0;
   display: flex;
   flex-direction: column;
-  background-color: var(--ds-surface);
+  background-color: var(--sa-bg-neutral-base);
   box-shadow: -4px 0 32px rgba(0, 0, 0, 0.16);
   z-index: 51;
-  font-family: var(--ds-font-sans);
+  font-family: var(--sa-font-latin);
   animation: ds-sheet-in 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -41,14 +41,14 @@
   justify-content: space-between;
   gap: 12px;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--ds-line);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }
 
 .ds-sheet__title {
   margin: 0;
-  font-size: var(--ds-text-title-2, 18px);
+  font-size: var(--sa-type-title-1-size, 18px);
   font-weight: 700;
-  color: var(--ds-ink);
+  color: var(--sa-color-text-default);
   line-height: 1.3;
 }
 
@@ -62,19 +62,19 @@
   width: 32px;
   height: 32px;
   flex-shrink: 0;
-  border-radius: var(--ds-radius-sm, 6px);
+  border-radius: var(--sa-shape-sm, 6px);
   background: transparent;
-  color: var(--ds-ink-muted);
+  color: var(--sa-color-text-muted);
   transition: background-color 0.12s ease, color 0.12s ease;
 }
 
 .ds-sheet__close:hover {
-  background-color: var(--ds-surface-muted);
-  color: var(--ds-ink);
+  background-color: var(--sa-bg-neutral-subtler);
+  color: var(--sa-color-text-default);
 }
 
 .ds-sheet__close:focus-visible {
-  outline: 2px solid var(--ds-primary-ring, var(--ds-primary));
+  outline: 2px solid var(--sa-focus-ring, var(--sa-color-action-primary-default));
   outline-offset: 2px;
 }
 
@@ -90,8 +90,8 @@
   justify-content: flex-end;
   gap: 8px;
   padding: 16px 24px;
-  border-top: 1px solid var(--ds-line);
-  background-color: var(--ds-surface);
+  border-top: 1px solid var(--sa-border-neutral-subtle);
+  background-color: var(--sa-bg-neutral-base);
 }
 
 /* ---- Anchoring ------------------------------------------------------------

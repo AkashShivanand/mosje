@@ -139,7 +139,7 @@ export const OtpTab: Story = {
       >
         <form id="login-form" style={{ display: "grid", gap: 16 }} onSubmit={(e) => e.preventDefault()}>
           <h1 style={{ margin: 0 }}>Sign in with a one-time password</h1>
-          <p style={{ margin: 0, color: "var(--ds-ink-muted)" }}>Sent to 98900 01234.</p>
+          <p style={{ margin: 0, color: "var(--sa-color-text-muted)" }}>Sent to 98900 01234.</p>
           <OtpInput label="One-time password" value={code} onValueChange={setCode} />
           <Button type="submit">Verify and sign in</Button>
         </form>

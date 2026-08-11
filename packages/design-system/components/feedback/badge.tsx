@@ -31,7 +31,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
  *
  * A small pill label used for counts, statuses and tags. Tonal background of
  * the status colour with readable text. Styled entirely via semantic CSS
- * classes that reference design tokens (--ds-*). No Tailwind, no deps.
+ * classes that reference design tokens (--sa-*). No Tailwind, no deps.
  */
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   function Badge(

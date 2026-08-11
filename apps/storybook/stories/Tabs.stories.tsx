@@ -68,11 +68,11 @@ type Story = StoryObj<typeof meta>;
 const PANEL_CONTENT: Record<string, React.ReactNode> = {
   details: (
     <dl style={{ margin: 0, display: "grid", gridTemplateColumns: "auto 1fr", gap: "8px 24px" }}>
-      <dt style={{ color: "var(--ds-ink-muted)" }}>Application ID</dt>
+      <dt style={{ color: "var(--sa-color-text-muted)" }}>Application ID</dt>
       <dd style={{ margin: 0 }}>MH/PUN/2026/004182</dd>
-      <dt style={{ color: "var(--ds-ink-muted)" }}>Applicant</dt>
+      <dt style={{ color: "var(--sa-color-text-muted)" }}>Applicant</dt>
       <dd style={{ margin: 0 }}>Sunita Deshmukh</dd>
-      <dt style={{ color: "var(--ds-ink-muted)" }}>Scheme</dt>
+      <dt style={{ color: "var(--sa-color-text-muted)" }}>Scheme</dt>
       <dd style={{ margin: 0 }}>Pre-Matric Scholarship (SC), 2026–27</dd>
     </dl>
   ),
@@ -109,7 +109,7 @@ export const Playground: Story = {
         {/* One panel at a time — hiding the others with CSS would leave them
             in the accessibility tree and the tab order. */}
         <TabPanel idBase={idBase} tabId={tab?.id ?? TABS[0]!.id}>
-          <div style={{ paddingTop: 16, color: "var(--ds-ink)" }}>
+          <div style={{ paddingTop: 16, color: "var(--sa-color-text-default)" }}>
             {tab ? PANEL_CONTENT[tab.id] : null}
           </div>
         </TabPanel>
@@ -137,7 +137,7 @@ export const TwoTabs: Story = {
           onChange={setActive}
         />
         <TabPanel idBase={idBase} tabId={active === 0 ? "chart" : "table"}>
-          <p style={{ paddingTop: 16, margin: 0, color: "var(--ds-ink)" }}>
+          <p style={{ paddingTop: 16, margin: 0, color: "var(--sa-color-text-default)" }}>
             {active === 0
               ? "The district roll-up, drawn as a chart."
               : "The same roll-up as a table of figures."}
@@ -158,7 +158,7 @@ export const StartingOnALaterTab: Story = {
       <div>
         <Tabs {...args} idBase={idBase} tabs={TABS} active={active} onChange={setActive} />
         <TabPanel idBase={idBase} tabId={tab?.id ?? TABS[0]!.id}>
-          <div style={{ paddingTop: 16, color: "var(--ds-ink)" }}>
+          <div style={{ paddingTop: 16, color: "var(--sa-color-text-default)" }}>
             {tab ? PANEL_CONTENT[tab.id] : null}
           </div>
         </TabPanel>
@@ -184,7 +184,7 @@ export const ManyTabs: Story = {
       <div>
         <Tabs {...args} idBase={idBase} ariaLabel="Components" tabs={many} active={active} onChange={setActive} />
         <TabPanel idBase={idBase} tabId={many[active]!.id}>
-          <p style={{ paddingTop: 16, margin: 0, color: "var(--ds-ink)" }}>
+          <p style={{ paddingTop: 16, margin: 0, color: "var(--sa-color-text-default)" }}>
             {many[active]?.label} — PM-AJAY, financial year 2026–27.
           </p>
         </TabPanel>

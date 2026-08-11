@@ -98,9 +98,9 @@ export const Circular: Story = {
 /** A table cell, where a bar will not fit. */
 export const Badge: Story = {
   render: (args) => (
-    <table style={{ width: "100%", borderCollapse: "collapse", color: "var(--ds-ink)" }}>
+    <table style={{ width: "100%", borderCollapse: "collapse", color: "var(--sa-color-text-default)" }}>
       <thead>
-        <tr style={{ textAlign: "left", color: "var(--ds-ink-muted)" }}>
+        <tr style={{ textAlign: "left", color: "var(--sa-color-text-muted)" }}>
           <th style={{ padding: "8px 12px 8px 0" }}>Application</th>
           <th style={{ padding: "8px 12px 8px 0" }}>Service</th>
           <th style={{ padding: "8px 12px 8px 0" }}>Time remaining</th>
@@ -112,7 +112,7 @@ export const Badge: Story = {
           ["MH/NAS/2026/004183", "Caste certificate", 21, 17],
           ["MH/NAG/2026/004184", "Grievance redressal", 30, 34],
         ].map(([id, service, total, elapsed]) => (
-          <tr key={String(id)} style={{ borderTop: "1px solid var(--ds-border)" }}>
+          <tr key={String(id)} style={{ borderTop: "1px solid var(--sa-border-neutral-subtle)" }}>
             <td style={{ padding: "10px 12px 10px 0" }}>{id}</td>
             <td style={{ padding: "10px 12px 10px 0" }}>{service}</td>
             <td style={{ padding: "10px 12px 10px 0" }}>

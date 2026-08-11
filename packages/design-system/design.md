@@ -12,7 +12,16 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.16.2 (THE SHADOWS WERE TINTED TOWARD A COLOUR
+  Last reviewed: 2026-08-12 · System version: v0.16.2 (COLOUR SECTIONS §A/§B/§C/§6 RECONCILED
+  AGAINST THE BUILT STYLESHEET. Every colour value and every contrast ratio in this file was
+  recomputed from packages/tokens/dist/tokens.css and corrected: the §C pairs table was wrong in
+  eight of nine rows after the 2026-08-11 ramp rebuild, §B carried a Dark column for an axis
+  removed on 2026-08-10, §A named DBIM Blue #162F6A as Navy's key colour when Navy is #003366
+  at rung 600, and §6 listed --ds-danger-strong, which has never been an emitted token. The
+  rung-shortfall ledger is SIXTEEN, not nineteen. The lesson is the one this file already states
+  about itself and did not obey: a hand-maintained value table is a second source of truth, and
+  it rots silently while every gate stays green — no test reads prose. PREVIOUS ENTRY:
+  THE SHADOWS WERE TINTED TOWARD A COLOUR
   THE SYSTEM NO LONGER HAD. The ramp's own description claims it keeps "the SAMAVESH convention
   of tinting toward ink rather than UX4G's flat black", and it did not: five rungs plus the
   modal scrim carried `rgba(31, 36, 40)`, hand-written from a neutral/800 that the ramp rebuild
@@ -219,7 +228,10 @@
   chip were the same object. Secondary and accent are now brand-INVARIANT and only PRIMARY
   changes with data-brand. The two SAMAVESH logo colours are first-class ramps (India Saffron
   #FF671F, India Green #046A38), success is unified onto that same green, and Navy's key
-  colour is the DBIM #162F6A that the DBIM audit fails the estate on twice. Ramps are now
+  colour is the DBIM #162F6A that the DBIM audit fails the estate on twice.
+  [CORRECTION, 2026-08-12: Navy's key colour in the shipped build is #003366, at rung 600.
+  #162F6A is DBIM Blue, which reaches the estate only as a code-only conformance preview and
+  is never in the Figma library. Verified against dist/tokens.css.] Ramps are now
   GENERATED from anchors by one rule (build/ramp.mjs) rather than hand-picked — the Navy ramp
   used to fall 27.4 L* in one step and crush four rungs into fifteen points. Every chromatic
   ramp gained step 950 for UX4G parity (11 steps) and the neutral endpoints renumbered so pure
@@ -376,7 +388,7 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 
 | Axis | Attribute | Values | Meaning |
 | :--- | :--- | :--- | :--- |
-| **Brand** | `data-brand` | `blue` (default), `navy` | Two peer brand palettes, BOTH on light surfaces. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. **Since 2026-08-11 a brand swap changes the PRIMARY ramp and the neutral greys, and nothing else** — `blue` is `#0373DF` + warm grey, `navy` is the DBIM key colour `#162F6A` + cool grey. **Secondary (India Saffron `#FF671F`) and accent (India Green `#046A38`) are brand-INVARIANT**: both are SAMAVESH logo colours, so they are constants of the identity rather than variants of it. Navy used to swap secondary to green, which landed it 1.00:1 from the success colour — see the changelog for audit C-02. |
+| **Brand** | `data-brand` | `blue` (default), `navy` | Two peer brand palettes, BOTH on light surfaces. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. **Since 2026-08-11 a brand swap changes the PRIMARY ramp and the neutral greys, and nothing else** — `blue` anchors `#0373DF` at rung 500, `navy` anchors `#003366` at rung **600** (the rung its lightness says, not the rung convention expects). Verified against the built stylesheet on 2026-08-12: `primaryScale` differs in 11 of 11 rungs, `neutralScale` in 10 of 13, and every other ramp is byte-identical across the two brands. The neutral re-lock is a systemic guarantee that the grey follows the brand's hue, **not a visible change** — at 8-bit precision the two brands' greys differ by ≤1 per channel at most rungs, so do not describe them to a stakeholder as "warm" versus "cool". `#162F6A` is **not** navy: it is DBIM Blue, which exists only as a code-only conformance preview. **Secondary (India Saffron `#FF671F`) and accent (India Green `#046A38`) are brand-INVARIANT**: both are SAMAVESH logo colours, so they are constants of the identity rather than variants of it. Navy used to swap secondary to green, which landed it 1.00:1 from the success colour — see the changelog for audit C-02. |
 | ~~Appearance~~ | ~~`data-theme`~~ | **REMOVED 2026-08-10** | Dark and high-contrast are owned entirely by the UX4G accessibility widget, which applies its own `.dark-mode` class to `<html>` and never read `data-theme`. This axis was a second, parallel mechanism nothing consumed. The token source still carries the overrides (unemitted) so it can be revived deliberately — see `docs/superpowers/records/2026-08-10-figma-theme-dark-hc-removed.md`. |
 | **Density** | `data-density` | `comfortable` (default/unset), `compact` | Controls padding, heights, and spatial density. |
 | **Surface** | `data-surface` | `website` (default/unset), `portal` | Selects the **typography scale**. `website` = the expressive editorial ramp (display-1 ≈ 80px); `portal` = the dense functional ramp (display-1 ≈ 56px). Same role token names in both; only the `--ds-type-*` values differ. Set `data-surface="portal"` on portal `<html>` roots; the website/hub stay default. Maps 1:1 to the SAMAVESH Figma `Website` / `Portal` type modes. |
@@ -403,34 +415,54 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 
 Use semantic tokens — never reference primitive `--sa-color-*` values directly in components. Primitives are referenced only within `tokens.css`.
 
-| Token | Light value | Dark value | Correct usage | Never use for |
-|-------|------------|------------|---------------|---------------|
-| `--ds-primary` | `#0373DF` | `#3f83c6` | CTA buttons, active links, key icons, focus rings | Body text, large backgrounds |
-| `--ds-saffron` | `#F97316` | `#F97316` | Accents, warning highlights, badges | Primary actions, heading text |
-| `--ds-yellow` | `#FFD323` | `#FFD323` | Warning state backgrounds only | Text on any background (fails WCAG AA contrast) |
-| `--ds-ink` | `#1F2428` | `#F4F3F9` | All body/heading text | Interactive elements, backgrounds |
-| `--ds-ink-muted` | `#6C757D` | `#9AA3AF` | Captions, hints, helper text | Primary content (check contrast below 16px) |
-| `--ds-surface` | `#FFFFFF` | `#1F2428` | Page and card backgrounds | Text or icon fills |
-| `--ds-danger` | `#B8382F` | `#B8382F` | Error states, destructive action labels, error text on white | Decorative fills (use `--ds-danger-tonal`) |
-| `--ds-success` | `#2E7D32` | `#4CAF50` | Success states, validation confirmation | Primary brand actions |
-| `--ds-on-primary` | `#FFFFFF` | `#FFFFFF` | Text/icons placed on solid `--ds-primary` backgrounds | Any other background |
+**There is no Light/Dark column, because there is no appearance axis.** `data-theme` was removed on
+2026-08-10; dark and high-contrast belong entirely to the UX4G accessibility widget. The only axis
+that changes a colour is `data-brand`, so the two value columns below are Blue and Navy.
+
+| Token | Blue | Navy | Correct usage | Never use for |
+|-------|------|------|---------------|---------------|
+| `--ds-primary` | `#0373DF` | `#244C7B` | CTA buttons, active links, key icons | Body text, large backgrounds |
+| `--ds-saffron` | `#FF671F` | same | Accents, badges, decorative emphasis | Text, icons or chart series on white — it measures **2.91:1**, below even the 3:1 non-text floor |
+| `--ds-yellow` | `#FFD323` | same | Nothing, in new work. Retained for older markup | Text at any size (**1.44:1**). For yellow emphasis use `bg/status/warning/subtler` behind dark ink |
+| `--ds-ink` | `#1E2124` | `#1E2024` | All body/heading text | Interactive elements, backgrounds |
+| `--ds-ink-muted` | `#3A3D41` | `#3B3D41` | Captions, hints, helper text | — comfortably AA at 10.92:1; the old "check below 16px" caveat no longer applies |
+| `--ds-surface` | `#FFFFFF` | same | Page and card backgrounds | Text or icon fills |
+| `--ds-surface-muted` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels | Anything needing a measured contrast — it is a surface, not a fill with a guarantee |
+| `--ds-danger` | `#8B1F18` | same | Error text and icons on white, destructive labels | Decorative fills (use `--ds-danger-tonal`) |
+| `--ds-success` | `#004220` | same | Success states, validation confirmation | Primary brand actions |
+| `--ds-on-primary` | `#FFFFFF` | same | Text/icons on solid `--ds-primary` backgrounds | Any other background |
+
+*Every value above was read from `packages/tokens/dist/tokens.css` on 2026-08-12. The previous
+table pre-dated the 2026-08-11 ramp rebuild and was wrong on `--ds-saffron`, `--ds-ink`,
+`--ds-ink-muted`, `--ds-danger` and `--ds-success`, and carried a Dark column for an axis that had
+already been removed.*
 
 ### C. Contrast Pairs (WCAG 2.1 AA — minimum 4.5:1 for text, 3:1 for UI elements)
 
 | Foreground | Background | Ratio | Status | Usage context |
 |-----------|-----------|-------|--------|---------------|
-| `--ds-on-primary` (`#fff`) | `--ds-primary` (`#0373DF`) | **5.4:1** | ✅ Pass | Filled primary buttons, nav active state |
-| `--ds-ink` (`#1F2428`) | `--ds-surface` (`#fff`) | **17.5:1** | ✅ Pass | All body text |
-| `--ds-ink-muted` (`#6C757D`) | `--ds-surface` (`#fff`) | **4.6:1** | ✅ Pass | Hint text, captions (≥14px only) |
-| `--ds-ink-muted` (`#6C757D`) | `--ds-surface-muted` (`#F8F9FA`) | **4.1:1** | ⚠️ Borderline | Avoid for body text; use `--ds-ink` instead |
-| `--ds-danger` (`#B8382F`) | `--ds-surface` (`#fff`) | **5.8:1** | ✅ Pass | Error text and icons on white |
-| `--ds-danger-500` (`#EC5042`) | `--ds-surface` (`#fff`) | **3.8:1** | ❌ Fail (text) | Borders and decorative fills only — never error text |
-| `--ds-yellow` (`#FFD323`) | `--ds-surface` (`#fff`) | **1.4:1** | ❌ Fail | Never use as text colour |
-| `--ds-primary` (`#0373DF`) | `--ds-surface` (`#fff`) | **4.7:1** | ✅ Pass | Link text (≥16px) |
+| `--ds-on-primary` (`#fff`) | `--ds-primary` (`#0373DF`) | **4.64:1** | ✅ Pass | Filled primary buttons, nav active state. Passes, but with little headroom — in Navy the same pair is 8.77:1 |
+| `--ds-ink` (`#1E2124`) | `--ds-surface` (`#fff`) | **16.18:1** | ✅ Pass | All body text |
+| `--ds-ink-muted` (`#3A3D41`) | `--ds-surface` (`#fff`) | **10.92:1** | ✅ Pass | Hint text, captions — at any size |
+| `--ds-ink-muted` (`#3A3D41`) | `--ds-surface-muted` (`#EEF0F3`) | **9.56:1** | ✅ Pass | Safe on quiet panels too; the old "borderline" warning is obsolete |
+| `--ds-danger` (`#8B1F18`) | `--ds-surface` (`#fff`) | **9.10:1** | ✅ Pass | Error text and icons on white |
+| `--ds-danger-500` (`#CB3F33`) | `--ds-surface` (`#fff`) | **4.89:1** | ✅ Pass | Passes since the 2026-08-11 rebuild, but prefer `--ds-danger` for text — a ramp rung carries no guarantee against your surface |
+| `--ds-saffron` (`#FF671F`) | `--ds-surface` (`#fff`) | **2.91:1** | ❌ Fail (even non-text) | Decorative fills only. Below the 3:1 of WCAG 1.4.11 — never an icon, a border or a chart series |
+| `--ds-yellow` (`#FFD323`) | `--ds-surface` (`#fff`) | **1.44:1** | ❌ Fail | Never a text colour, at any size |
+| `--ds-primary` (`#0373DF`) | `--ds-surface` (`#fff`) | **4.64:1** | ✅ Pass | Link text |
+| `--ds-success` (`#004220`) | `--ds-surface` (`#fff`) | **11.67:1** | ✅ Pass | Confirmation text and icons |
+| `--ds-border` (`#DCDEE1`) | `--ds-surface` (`#fff`) | **1.35:1** | ⚠️ Decorative | A hairline divider only. For a control boundary someone must find, use `border/neutral/bolder/default` |
 
-> **Critical rule:** use `var(--ds-danger)` for red error text on white — it resolves to `#B8382F` (Figma `Danger/700`) at **5.8:1**, which passes AA. Do **not** reach into the ramp for `--ds-danger-500` (`#EC5042`, 3.8:1); it is a border/fill value and fails for text.
+> **Critical rule:** use `var(--ds-danger)` for red error text on white — it resolves to `#8B1F18`
+> (`dangerScale/700`) at **9.10:1**. `--ds-danger-500` now also clears AA at 4.89:1, but reaching into
+> a ramp for text is still the wrong habit: a rung is a value, not a decision, and it carries no
+> guarantee against whatever surface you put it on.
 >
-> *Corrected 2026-08-07:* this rule previously stated that `--ds-danger` fails AA and directed callers to `--ds-danger-strong`. `--ds-danger` was rebound from `red.500` to `red.700` and now passes; `--ds-danger-strong` has never been an emitted token. Verified against `packages/tokens/dist/tokens.css`. The old `#A11D12` survives only as the `--ds-chart-div-neg-strong` data-viz literal.
+> *Corrected 2026-08-12:* every ratio in this table was recomputed from `dist/tokens.css` with the
+> WCAG 2.x formula. The previous table pre-dated the 2026-08-11 ramp rebuild and was wrong in eight
+> of nine rows — most consequentially, it warned that `--ds-ink-muted` was borderline at 4.1:1 (it is
+> 9.56:1) and that `--ds-danger-500` fails for text (it passes). It also omitted `--ds-saffron`,
+> which is the one value here that genuinely fails, and fails a criterion the table never mentioned.
 
 > **The table above is hand-maintained; it is not the authority.** Every `--sa-*` colour token
 > carries a contrast class that is **measured at build time** against its own surface, across every
@@ -439,11 +471,14 @@ Use semantic tokens — never reference primitive `--sa-color-*` values directly
 > any published class is not true. Read those numbers, not these, when the two disagree — and fix
 > this table when they do.
 >
-> **A rung name is not a guarantee.** Nineteen tokens currently measure below the class their
-> prominence rung implies — mostly `Background/*` tonal chips, where the fill ladder's ≥3:1 is the
-> wrong requirement rather than the colour being wrong. They are listed in the ledger at the foot
-> of `test/prominence-contract.test.mjs` and stated plainly in their own Figma description. Choose
-> a token by its measured number, never by how loud its name sounds.
+> **A rung name is not a guarantee.** **Sixteen** tokens currently measure below the class their
+> prominence rung implies — fourteen `bg/*` tonal chips plus `border/neutral/subtle` and
+> `border/neutral/bolder/default`, where the fill ladder's ≥3:1 is the wrong requirement rather than
+> the colour being wrong. They are listed in the ledger at the foot of
+> `test/prominence-contract.test.mjs`, published in `dist/figma.variables.json`
+> (`contrast.shortfall`), and stated plainly in their own Figma description. Choose a token by its
+> measured number, never by how loud its name sounds. *(Was nineteen before the 2026-08-11 ramp
+> rebuild; corrected 2026-08-12.)*
 
 ### D. Typography
 
@@ -500,12 +535,15 @@ tiers: `--ds-type-{heading,title,body,label}-tracking`. Values differ by **surfa
 > `--ds-text-title-1` is the **headline-2** role (24→32px), not Title 1 (20/22px);
 > `--ds-text-title-2` is Title 1.
 >
-> **Precisely two of the nine hyphenated aliases mislead** — `title-1` and `title-2`.
-> The other seven (`display`, `headline`, `body-1/2/3`, `label-1/3`) resolve to the
-> role they name and are safe to read at face value. Verified against the generated
-> `tokens.css` on 2026-08-11 and tabulated on
-> `/design-system/foundations/typography`. Note also that `--ds-text-title-3` and
-> `--ds-text-label-2` **do not exist** in the hyphenated family at all.
+> **RETIRED 2026-08-12.** The whole `--ds-*` layer, including this hyphenated family,
+> was deleted from the build — see the retirement note later in this document. The
+> paragraphs above are kept as the record of a hazard that no longer exists, because
+> the reasoning still applies to any alias family: read the resolved value, not the name.
+>
+> For the record, measured against the generated `tokens.css` on 2026-08-11 before
+> deletion: **precisely two of the nine hyphenated aliases misled** — `title-1` and
+> `title-2`. The other seven (`display`, `headline`, `body-1/2/3`, `label-1/3`) resolved
+> to the role they named. `--ds-text-title-3` and `--ds-text-label-2` never existed at all.
 > Those values are frozen in
 > `packages/tokens/test/legacy-snapshot.json` and asserted on every build — re-pointing
 > one at its same-named role silently resizes every legacy callsite in the estate.
@@ -604,7 +642,7 @@ graph TD
 5. **Disabled** — Opacity `0.4`. Add `pointer-events: none`, `tabindex="-1"`, `aria-disabled="true"`. **Do not use** a neutral flat fill only — combine it with reduced opacity.
    *(There is no `--ds-opacity-disabled` token yet — the value is currently hardcoded at call sites. An `opacity` scale lands in Phase 2 of the token-architecture spec.)*
 6. **Loading/Skeleton** — While data is fetching, render `<Loader />` or a skeleton placeholder using `--ds-surface-muted` with a CSS shimmer animation. Never leave an empty container with no loading signal.
-7. **Error** — Persistent state (unlike Disabled, the user must actively correct it). Show `var(--ds-danger-strong)` border + inline error message below the control. Error text requires `role="alert"` or `aria-describedby` linkage.
+7. **Error** — Persistent state (unlike Disabled, the user must actively correct it). Show a `var(--sa-border-status-error-base)` border + inline error message in `var(--sa-text-status-error-base)` below the control. Error text requires `role="alert"` or `aria-describedby` linkage, and the border alone must never be the only error signal (WCAG 1.4.1).
 
 ### B. Keyboard Navigation & Focus Management
 
@@ -649,7 +687,7 @@ graph TD
 | Do | Don't |
 | :--- | :--- |
 | Wrap every input in `<FormField>` containing explicit label, hint, and error nodes. | Do not use placeholder text as a substitute for labels. Placeholders disappear on type and fail accessibility. |
-| Show red error states (`var(--ds-danger-strong)`) only after validation runs or input blur. | Do not render inline inputs without surrounding margin-bottom/padding constraints. |
+| Show red error states (`var(--sa-border-status-error-base)` + `var(--sa-text-status-error-base)`) only after validation runs or input blur. | Do not render inline inputs without surrounding margin-bottom/padding constraints. |
 | Use `<FormSection>` to group related fields under a sub-heading within a form. | Do not render a single `<form>` with 20+ fields — break it into `<FormSection>` groups or use `<Wizard>`. |
 | Use `<Search>` (not `<Input>`) for search affordances — it includes the correct icon and clear button. | Do not use `type="search"` on a plain `<Input>` and style it manually. |
 
@@ -788,62 +826,105 @@ follow-up in the audit.
 
 ---
 
-## 6. Token Vocabulary Reference (`--ds-*`)
+## 6. Token Vocabulary Reference (`--sa-*`)
 
 Custom properties are defined in `@mosje/tokens` and generated into `packages/design-system/tokens.css`.
+
+> **The legacy `--ds-*` vocabulary was RETIRED on 2026-08-12 and no longer exists.** Nothing emits
+> it: zero occurrences in `tokens.css`, `tokens.ts`, `tailwind-preset.cjs`, `ux4g.css` or the Figma
+> payload, and zero references in source. A `var(--ds-…)` in new code resolves to nothing and the
+> declaration carrying it is dropped as invalid — which is exactly how ~40 pre-existing dangling
+> references were found and fixed during the migration.
+>
+> All 3,561 call sites were moved to the canonical `--sa-*` token each legacy name already resolved
+> to, so **nothing rendered differently**: the ux4g contract fixture re-baselined to 4,433 removals
+> (every one a `--ds-*` name), 208 additions and **zero changed values** across all 13 selector
+> contexts. The full old→new mapping is preserved at `tools/token-migration/mapping.json`, and the
+> codemod that applied it at `tools/token-migration/migrate.py`.
+>
+> **Three Tier-2 groups were created to make the migration possible**, because 320 usages had no
+> canonical home at all:
+> - **`--sa-shape-*`** — corner radius. Named `shape`, not `radius`, because Style Dictionary merges
+>   the primitive and semantic namespaces and a Tier-2 `radius` group self-references the Tier-1
+>   scale it aliases. `shape` is also the word this section already used.
+> - **`--sa-font-latin` / `-display` / `-mono`** — alongside the existing `--sa-font-devanagari`.
+> - **`--sa-stack-2xl`** (40px) — the one spacing value with no purpose-scale home.
+>
+> **What the retired names could never express**, and why retiring beat maintaining:
+> 1. **They stopped at rung 900.** Every canonical ramp runs to 950.
+> 2. **There was no accent family at all.** India Green `#046A38` was unreachable by any `--ds-*` name.
+> 3. **There was exactly one `on/*` pair** (`--ds-on-primary`) against 46 in the slot grammar, so the
+>    measured-ink contract — the system's strongest safety property — was unavailable through them.
+> 4. **`--ds-text-title-1` resolved to the headline-2 role.** That alias trap caused four production
+>    bugs and is gone with the vocabulary that carried it. The only surviving record of the mismatch
+>    is the `TYPE_TOKEN` table in `build/generate-ts-mirror.mjs`.
+>
+> The names below are grouped as they were, but every one is now a `--sa-*` token. Prefer the slot
+> grammar (`bg` / `text` / `border` / `icon` / `on` / `overlay` / `layer` / `focus`, each × family ×
+> prominence) over the flatter `--sa-color-*` names wherever a slot exists: only the slots carry the
+> measured contrast guarantee.
 
 ### Color Tokens
 
 **Text (Ink):**
-- `--ds-ink` — Primary body text (default)
-- `--ds-ink-strong` — Maximum contrast headings
-- `--ds-ink-muted` — Hint text, captions, secondary info
-- `--ds-on-primary` — Text/icons placed on solid `--ds-primary` surface
-- `--ds-ink-info` — High-contrast text for info callout boxes
+- `--sa-color-text-default` — Primary body text (default)
+- `--sa-text-neutral-bolder` — Maximum contrast headings
+- `--sa-color-text-muted` — Hint text, captions, secondary info
+- `--sa-color-text-onPrimary` — Text/icons placed on solid `--sa-color-action-primary-default` surface
+- `--sa-color-text-info` — High-contrast text for info callout boxes
 
 **Backgrounds:**
-- `--ds-surface` — Base page/card background
-- `--ds-surface-muted` — Subtle background for inputs, code blocks
+- `--sa-bg-neutral-base` — Base page/card background
+- `--sa-bg-neutral-subtler` — Subtle background for inputs, code blocks
 
 **Brand:**
-- `--ds-primary` — Main brand blue (GoI Navy/Blue)
-- `--ds-primary-dark` — Pressed/hover state of primary
-- `--ds-primary-tonal` — Tonal (light wash) variant for backgrounds
-- `--ds-primary-ring` — Focus ring colour
+- `--sa-color-action-primary-default` — Main brand blue (GoI Navy/Blue)
+- `--sa-color-action-primary-hover` — Pressed/hover state of primary
+- `--sa-color-action-primary-tonal` — Tonal (light wash) variant for backgrounds
+- `--sa-focus-ring` — Focus ring colour
 
 **Gov Accents:**
-- `--ds-saffron`, `--ds-saffron-dark`, `--ds-saffron-light`
-- `--ds-navy` — Deep navy for footer backgrounds
-- `--ds-yellow` — Warning-only accent
+- `--sa-color-brand-saffron`, `--sa-color-brand-saffronDark`, `--sa-color-brand-saffronLight`
+- `--sa-color-brand-navy` — Deep navy for footer backgrounds
+- `--sa-color-brand-yellow` — Warning-only accent
 
 **Borders:**
-- `--ds-border` — Default subtle divider
-- `--ds-border-strong` — Prominent dividers, table headers
-- `--ds-border-strong` — Input/form control borders, table headers
+- `--sa-border-neutral-subtle` — Default subtle divider (1.35:1 — decorative only)
+- `--sa-border-neutral-base` — Input/form control borders, table headers (1.66:1). For a boundary that must
+  clear WCAG 1.4.11, use `--sa-border-neutral-bolder-default` — and note even that measures 3.06:1,
+  which clears 3:1 but not the 4.5:1 its `bolder` rung implies
 
 **Status:**
-- `--ds-success`, `--ds-success-tonal`
-- `--ds-warning`, `--ds-warning-tonal`
-- `--ds-danger`, `--ds-danger-strong`, `--ds-danger-tonal`
-- `--ds-info`, `--ds-info-tonal`
+- `--sa-color-status-success`, `--sa-color-status-successTonal`
+- `--sa-color-status-warning`, `--sa-color-status-warningTonal`
+- `--sa-color-status-danger`, `--sa-color-status-dangerTonal` — **`--sa-color-status-danger-strong` does not exist and never has**; it was
+  listed here in error until 2026-08-12
+- `--sa-color-status-info`, `--sa-color-status-infoTonal`
 
-**Full colour ramps (50–900, synced 1:1 with SAMAVESH Figma `<Family>/*`).** Each ramp is a semantic scale — use these for tints/shades beyond the single-shade status/brand tokens above:
-- `--ds-primary-50` … `--ds-primary-900` — primary (mode-aware: blue in Blue-Light, navy in Blue-Dark)
-- `--ds-secondary-50` … `--ds-secondary-900` — secondary, India Saffron `#FF671F` from the SAMAVESH logo. **BRAND-INVARIANT** — a brand swap does not touch it. (It used to swap to green in the Navy brand, which landed it 0.3 L\* from the success colour; that is audit finding C-02, fixed 2026-08-11 and pinned by `hue-separation.test.mjs`.) Maps to Figma `Secondary/*`.
-- `--ds-neutral-0` … `--ds-neutral-1100` — neutral greys (**brand-aware: hue-locked to the brand's own primary — 255° in `blue`, 264° in `navy`**; maps to Figma `Neutral/*`). The tint is deliberate and follows a single chroma arc peaking ~0.016 in the mid-tones and falling to zero at both ends, so `0` is exactly `#ffffff` and `1000` exactly `#000000` — the two achromatic values, which is why they live only here and on no chromatic ramp. NOTE the canonical names renumbered on 2026-08-11 to match UX4G — `--sa-color-neutralScale-950` is the near-black shade and `-1000` is pure black; the two `--ds-*` names above keep their old spelling one rung lower.
-- `--ds-success-50` … `--ds-success-900` — mode-invariant (Figma `Success/*`)
-- `--ds-danger-50` … `--ds-danger-900` — mode-invariant (Figma `Danger/*`)
-- `--ds-warning-50` … `--ds-warning-900` — mode-invariant (Figma `Warning/*`)
-- `--ds-info-50` … `--ds-info-900` — mode-invariant (Figma `Info/*`)
+**Full colour ramps (50–900 — the canonical `--sa-*` ramps run to 950; the legacy names stop one rung
+short).** Each ramp is a semantic scale — use these for tints/shades beyond the single-shade
+status/brand tokens above:
+- `--sa-color-action-primary-default-50` … `--sa-color-action-primary-default-900` — primary (**brand-aware: blue in `blue`, navy in `navy`**)
+- `--sa-color-secondaryScale-50` … `--sa-color-secondaryScale-900` — secondary, India Saffron `#FF671F` from the SAMAVESH logo. **BRAND-INVARIANT** — a brand swap does not touch it. (It used to swap to green in the Navy brand, which landed it 0.3 L\* from the success colour; that is audit finding C-02, fixed 2026-08-11 and pinned by `hue-separation.test.mjs`.) Maps to Figma `Secondary/*`.
+- `--sa-color-neutralScale-0` … `--sa-color-neutralScale-1100` — neutral greys (**brand-aware: hue-locked to the brand's own primary — 255° in `blue`, 264° in `navy`**; maps to Figma `Neutral/*`). The tint is deliberate and follows a single chroma arc peaking ~0.016 in the mid-tones and falling to zero at both ends, so `0` is exactly `#ffffff` and `1000` exactly `#000000` — the two achromatic values, which is why they live only here and on no chromatic ramp. NOTE the canonical names renumbered on 2026-08-11 to match UX4G — `--sa-color-neutralScale-950` is the near-black shade and `-1000` is pure black; the two `--sa-*` names above keep their old spelling one rung lower.
+- `--sa-color-status-success-50` … `--sa-color-status-success-900` — brand-invariant (Figma `Success/*`). Byte-identical to the
+  accent ramp: `accentScale` and `successScale` are the same green, deliberately, and that union is
+  recorded and gated in `hue-separation.test.mjs`
+- `--sa-color-status-danger-50` … `--sa-color-status-danger-900` — brand-invariant (Figma `Danger/*`). Anchored at rung **400**
+- `--sa-color-status-warning-50` … `--sa-color-status-warning-900` — brand-invariant (Figma `Warning/*`). Anchored at rung **300**
+- `--sa-color-status-info-50` … `--sa-color-status-info-900` — brand-invariant (Figma `Info/*`). Anchored at rung 500, ~3° from
+  primary — a deliberate union, so never rely on info and primary reading as different colours
+- **No `--sa-accent-*` exists.** India Green `#046A38` is reachable only as `--sa-color-accentScale-*`
+  or through the `brand/accent` slots
 
-**Alpha / transparent overlays (8/16/24/32/40/48%, Figma `<Family> Transparent/*`).** Consumed via `--sa-color-transparent-<family>-<step>` (canonical `--sa-*` name; no `--ds-*` alias). `primary`, `secondary`, `neutral` are mode-aware (Blue-Dark uses navy/green/cool-grey bases); `success`, `danger`, `warning`, `white` are mode-invariant. Example: `--sa-color-transparent-neutral-8`, `--sa-color-transparent-white-24`.
+**Alpha / transparent overlays (8/16/24/32/40/48%, Figma `<Family> Transparent/*`).** Consumed via `--sa-color-transparent-<family>-<step>` (canonical `--sa-*` name; no `--sa-*` alias). `primary` and `neutral` are brand-aware; `secondary`, `accent`, `success`, `danger`, `warning`, `white` are brand-invariant. Example: `--sa-color-transparent-neutral-8`, `--sa-color-transparent-white-24`. **A translucent fill has no contrast of its own** — its measured ratio depends on what sits behind it, so never use one as the surface behind text you need to guarantee.
 
-**Data-visualisation (charts):** theme-aware, used by the chart layer (§7).
-- `--ds-chart-cat-1` … `--ds-chart-cat-12` — categorical series (mutually distinguishable)
-- `--ds-chart-seq-50` … `--ds-chart-seq-900` — sequential single-hue ramp (choropleth, heatmap)
-- `--ds-chart-div-neg-strong/neg/neg-soft/mid/pos-soft/pos/pos-strong` — diverging (signed data)
-- `--ds-chart-trend-up/down/flat` — KPI trend
-- `--ds-chart-grid`, `--ds-chart-axis`, `--ds-chart-tooltip-bg`, `--ds-chart-tooltip-ink`, `--ds-chart-region-empty`, `--ds-chart-region-stroke` — structural
+**Data-visualisation (charts):** brand-aware, used by the chart layer (§7). All twelve categorical series clear WCAG 1.4.11's 3:1 against the page; the worst is `--sa-chart-cat-2` at 3.79:1.
+- `--sa-chart-cat-1` … `--sa-chart-cat-12` — categorical series (mutually distinguishable)
+- `--sa-chart-seq-50` … `--sa-chart-seq-900` — sequential single-hue ramp (choropleth, heatmap)
+- `--sa-chart-div-neg-strong/neg/neg-soft/mid/pos-soft/pos/pos-strong` — diverging (signed data)
+- `--sa-chart-trend-up/down/flat` — KPI trend
+- `--sa-chart-grid`, `--sa-chart-axis`, `--sa-chart-tooltip-bg`, `--sa-chart-tooltip-ink`, `--sa-chart-region-empty`, `--sa-chart-region-stroke` — structural
 
 ### Shape Tokens
 
@@ -1175,7 +1256,7 @@ Docs: `/design-system/components/sla-progress`.
 
 A dependency-free (no recharts/d3/visx), token-driven, theme-aware SVG chart
 layer. Every chart re-themes automatically under `data-brand` /
-`data-theme` / `data-density`, renders `role="img"` + `<title>`/`<desc>`, and
+`data-density`, renders `role="img"` + `<title>`/`<desc>`, and
 ships a visually-hidden `<table>` data equivalent. Interactive marks (bars,
 points, slices, map regions) are keyboard-focusable with tooltips on hover +
 focus. Colours come from the chart token group (see §6: `--ds-chart-cat-1..12`
@@ -1432,7 +1513,7 @@ alongside `DemoDock` inside it.
 **Props**: `accounts`, `devMode` (renders `null` when falsy — never
 hard-code `true`), `idLabel`, `onFill`.
 
-**DOM note:** the widget applies the class **`.dark-mode`** to `<html>` for its dark theme. This is **distinct** from the design system's own `data-theme` / `data-brand` token theming — keep the two concerns separate (see the consolidation spec).
+**DOM note:** the widget applies the class **`.dark-mode`** to `<html>` for its dark theme. This is **distinct** from the design system's own `data-brand` token theming — keep the two concerns separate (see the consolidation spec). Since `data-theme` was removed on 2026-08-10, the widget is the estate's *only* dark and high-contrast mechanism; do not build a second one.
 
 **Brand skin, official functionality:** the CDN widget's look is reskinned to the SAMAVESH
 brand via `ux4g-accessibility-widget.css`, which overrides the widget's own

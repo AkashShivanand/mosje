@@ -4,7 +4,7 @@ import { buttonClasses } from "@mosje/design-system";
 import { DoDont, Callout, A11yChecklist } from "@/components/design-system/docs-kit/index";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 import { TypeLab } from "./type-lab";
-import { LEGACY_ALIASES, STANDARDS } from "./typography-data";
+import { STANDARDS } from "./typography-data";
 import "./typography.css";
 
 /**
@@ -72,7 +72,7 @@ export default function TypographyPage(): React.JSX.Element {
             <strong>Noto Sans Devanagari</strong>{" "}for <span lang="hi">हिन्दी</span>. Both come from Google&rsquo;s Noto family, so they
             share the same overall character and tone — but each one is drawn specifically for the script it serves.
           </p>
-          <ul style={{ marginTop: "var(--ds-spacing-md)" }}>
+          <ul style={{ marginTop: "var(--sa-stack-s)" }}>
             <li><strong>Different visual weight.</strong> Devanagari letterforms are denser and carry more ink per character than Latin letters.</li>
             <li><strong>Different vertical space.</strong> Devanagari hangs from a top line (the शिरोरेखा) and stacks vowel signs and conjuncts above and below.</li>
             <li><strong>Different line-height needs.</strong> Because Devanagari reaches further up and down, Hindi text needs more room between lines (see below).</li>
@@ -104,11 +104,11 @@ export default function TypographyPage(): React.JSX.Element {
             { ok: false, label: "✕ Line height 1.5 — too tight", lh: 1.5, color: "danger" },
             { ok: true, label: "✓ Line height 1.7 — correct", lh: 1.7, color: "success" },
           ].map((c) => (
-            <div key={c.label} style={{ border: `1px solid var(--ds-${c.color})`, borderRadius: "var(--ds-radius-md)", overflow: "hidden" }}>
-              <div style={{ padding: "var(--ds-spacing-md) var(--ds-spacing-lg)", background: `var(--ds-${c.color}-tonal)`, color: `var(--ds-${c.color})`, fontSize: "var(--ds-text-body-2)", fontWeight: 700, borderBottom: `1px solid var(--ds-${c.color})` }}>
+            <div key={c.label} style={{ border: `1px solid var(--sa-color-status-${c.color})`, borderRadius: "var(--sa-shape-md)", overflow: "hidden" }}>
+              <div style={{ padding: "var(--sa-padding-s) var(--sa-padding-m)", background: `var(--sa-color-status-${c.color}Tonal)`, color: `var(--sa-color-status-${c.color})`, fontSize: "var(--sa-type-body-2-size)", fontWeight: 700, borderBottom: `1px solid var(--sa-color-status-${c.color})` }}>
                 {c.label}
               </div>
-              <p lang="hi" style={{ padding: "var(--ds-spacing-xl)", margin: 0, fontFamily: "var(--sa-font-devanagari)", fontSize: "var(--ds-type-body-1-size)", lineHeight: c.lh, color: "var(--ds-ink)" }}>
+              <p lang="hi" style={{ padding: "var(--sa-padding-l)", margin: 0, fontFamily: "var(--sa-font-devanagari)", fontSize: "var(--sa-type-body-1-size)", lineHeight: c.lh, color: "var(--sa-color-text-default)" }}>
                 सामाजिक न्याय और अधिकारिता मंत्रालय देश के वंचित और कमज़ोर वर्गों के कल्याण के लिए अनेक योजनाएँ
                 संचालित करता है। आवेदक अपने सभी आवश्यक दस्तावेज़ों के साथ ऑनलाइन आवेदन जमा कर सकते हैं।
               </p>
@@ -116,7 +116,7 @@ export default function TypographyPage(): React.JSX.Element {
           ))}
         </div>
         <Callout type="tip" title="Rule of thumb">
-          When a block can hold Hindi, give it the Indic line height. The <code>--ds-type-body-*-lh</code> tokens
+          When a block can hold Hindi, give it the Indic line height. The <code>--sa-type-body-*-lh</code> tokens
           already bake this in — use them and you get the right spacing for free.
         </Callout>
       </section>
@@ -134,10 +134,10 @@ export default function TypographyPage(): React.JSX.Element {
               type: "do",
               label: "Use a role token and pair size with its line-height so size, leading, and fluid scaling travel together. Set data-surface on portal roots.",
               preview: (
-                <code style={{ fontFamily: "var(--ds-font-mono)", fontSize: "var(--ds-type-body-3-size)", color: "var(--ds-ink)", textAlign: "left", whiteSpace: "pre" }}>
+                <code style={{ fontFamily: "var(--sa-font-mono)", fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-default)", textAlign: "left", whiteSpace: "pre" }}>
 {`.lead {
-  font-size:   var(--ds-type-body-1-size);
-  line-height: var(--ds-type-body-1-lh);
+  font-size:   var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
 }
 /* portal shell */
 <html data-surface="portal">`}
@@ -148,7 +148,7 @@ export default function TypographyPage(): React.JSX.Element {
               type: "dont",
               label: "Don't hardcode font-size in px. Raw values break the fluid scale, ignore the surface, and usually pair Hindi with a Latin-tight line height.",
               preview: (
-                <code style={{ fontFamily: "var(--ds-font-mono)", fontSize: "var(--ds-type-body-3-size)", color: "var(--ds-ink)", textAlign: "left", whiteSpace: "pre" }}>
+                <code style={{ fontFamily: "var(--sa-font-mono)", fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-default)", textAlign: "left", whiteSpace: "pre" }}>
 {`.lead {
   font-size: 16px;
   line-height: 1.4;
@@ -201,65 +201,31 @@ export default function TypographyPage(): React.JSX.Element {
         </Callout>
       </section>
 
-      {/* ── 9. Legacy aliases — the trap that has caused four bugs ─ */}
+      {/* ── 9. The retired alias family — history, not a live hazard ─ */}
       <section className="docs-section" aria-labelledby="legacy-aliases">
-        <span className="docs-section__label">Legacy</span>
-        <h2 id="legacy-aliases" className="docs-section__heading">Two aliases don&rsquo;t mean what they&rsquo;re called</h2>
+        <span className="docs-section__label">History</span>
+        <h2 id="legacy-aliases" className="docs-section__heading">The alias family that lied, and why it is gone</h2>
         <div className="docs-section__body">
           <p>
-            Three families of type variable exist in CSS. The canonical{" "}
-            <code>--ds-type-&lt;role&gt;-size</code> family and the unhyphenated{" "}
-            <code>--ds-text-title1</code> family both map 1:1 to the role they name. The third —
-            the <strong>hyphenated</strong> <code>--ds-text-title-1</code> family — is named for the
-            pre-Portal-DS scale, and two of its entries resolve to a different role than their name suggests.
+            Until August 2026 a third family of type variable existed alongside the canonical roles: a hyphenated{" "}
+            <code>--ds-text-*</code> set kept for backwards compatibility. It was mapped to whichever role reproduced each
+            alias&rsquo;s <em>historical rendered value</em>, so two of its names pointed somewhere other than they read —{" "}
+            <code>--ds-text-title-1</code> was the <strong>headline-2</strong> role at 24&nbsp;→&nbsp;32px, not Title&nbsp;1
+            at 18&nbsp;→&nbsp;22px, and <code>--ds-text-title-2</code> was Title&nbsp;1.
+          </p>
+          <p>
+            Reading those names instead of their resolved values caused <strong>four separate production bugs</strong>:{" "}
+            <code>CardTitle</code> painting at 32–40px, an <code>h2</code> rendering smaller than its <code>h3</code>,
+            twelve pages setting a 40px lead against a 24px line-height, and a stale 22px fallback for a token that
+            resolved to 32px.
           </p>
         </div>
-        <Callout type="danger" title="Read the resolved value, not the name">
-          <code>--ds-text-title-1</code> is the <strong>headline-2</strong>{" "}role (24&nbsp;→&nbsp;32px), not Title&nbsp;1
-          (18&nbsp;→&nbsp;22px). Misreading it has produced four separate production bugs: <code>CardTitle</code> painting at
-          32–40px, an <code>h2</code> rendering smaller than its <code>h3</code>, twelve pages setting a 40px lead against a
-          24px line-height, and a stale 22px fallback for a token that resolves to 32px. In new code, always write{" "}
-          <code>--ds-type-&lt;role&gt;-size</code>.
+        <Callout type="tip" title="Retired — there is nothing to avoid any more">
+          The whole legacy layer was deleted from the build, and the canonical family now ships as{" "}
+          <code>--sa-type-&lt;role&gt;-size</code>. If you are reading code from before that change and see a{" "}
+          <code>--ds-</code> name, check its resolved value rather than its name — and then migrate it. Nothing in the
+          current stylesheet declares one.
         </Callout>
-        <div style={{ overflowX: "auto" }}>
-          <table className="token-table">
-            <caption className="ty-visually-hidden">
-              Legacy hyphenated type aliases and the roles they actually resolve to
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Legacy alias</th>
-                <th scope="col">Actually resolves to</th>
-                <th scope="col">Rendered size</th>
-                <th scope="col">Its name implies</th>
-                <th scope="col">Verdict</th>
-              </tr>
-            </thead>
-            <tbody>
-              {LEGACY_ALIASES.map((a) => (
-                <tr key={a.alias}>
-                  <th scope="row"><code>{a.alias}</code></th>
-                  <td><code>{a.resolvesTo}</code></td>
-                  <td>{a.rendered}</td>
-                  <td>{a.implies}</td>
-                  <td>
-                    <strong style={{ color: a.misleading ? "var(--ds-danger)" : "var(--ds-ink-muted)" }}>
-                      {a.misleading ? "Misleading" : "Safe"}
-                    </strong>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="docs-section__body">
-          <p>
-            There is no <code>--ds-text-title-3</code> and no <code>--ds-text-label-2</code> in the hyphenated family —
-            for those roles the canonical <code>--ds-type-*</code> name is the only option. The mapping above is frozen in{" "}
-            <code>packages/tokens/test/legacy-snapshot.json</code> and asserted on every build, so re-pointing an alias at
-            its same-named role would silently resize every legacy callsite in the estate.
-          </p>
-        </div>
       </section>
 
       {/* ── 9. Accessibility ────────────────────────────────────── */}

@@ -38,7 +38,7 @@ export function TerminalCode({ title = "bash", codeText, children }: TerminalCod
         >
           {copied ? (
             <>
-              <svg viewBox="0 0 20 20" width="14" height="14" fill="none" aria-hidden="true" style={{ color: "var(--ds-success)" }}>
+              <svg viewBox="0 0 20 20" width="14" height="14" fill="none" aria-hidden="true" style={{ color: "var(--sa-color-status-success)" }}>
                 <path d="M4 10l4 4 8-8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               <span>Copied!</span>

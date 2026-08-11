@@ -22,21 +22,21 @@ import {
 // other CSS colour. Series colours come from the DS chart scale rather than raw
 // Tailwind hex, so a brand re-skin or theme switch carries the charts with it.
 const PALETTE = {
-  brand: "var(--ds-navy)",
-  brandSoft: "var(--ds-chart-seq-600)",
-  info: "var(--ds-chart-cat-1)",
-  success: "var(--ds-chart-trend-up)",
-  warning: "var(--ds-chart-cat-6)",
-  amber: "var(--ds-chart-cat-2)",
-  axis: "var(--ds-chart-axis)",
-  grid: "var(--ds-chart-grid)",
+  brand: "var(--sa-color-brand-navy)",
+  brandSoft: "var(--sa-chart-seq-600)",
+  info: "var(--sa-chart-cat-1)",
+  success: "var(--sa-chart-trend-up)",
+  warning: "var(--sa-chart-cat-6)",
+  amber: "var(--sa-chart-cat-2)",
+  axis: "var(--sa-chart-axis)",
+  grid: "var(--sa-chart-grid)",
 };
 
 const tickStyle = { fill: PALETTE.axis, fontSize: 11 };
 const tooltipStyle = {
   borderRadius: 8,
-  borderColor: "var(--ds-border-strong)",
-  boxShadow: "var(--ds-shadow-lg)",
+  borderColor: "var(--sa-border-neutral-base)",
+  boxShadow: "var(--sa-elevation-modal)",
   fontSize: 12,
 };
 
@@ -56,7 +56,7 @@ export function GenderDonut({
           innerRadius={62}
           outerRadius={92}
           paddingAngle={2}
-          stroke="var(--ds-chart-region-stroke)"
+          stroke="var(--sa-chart-regionStroke)"
           strokeWidth={2}
         >
           {data.map((d) => (

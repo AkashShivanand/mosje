@@ -136,7 +136,7 @@ export function DonutChart(props: DonutChartProps) {
   // Progress-ring mode
   const max = props.max ?? 100;
   const frac = max <= 0 ? 0 : Math.max(0, Math.min(1, props.value / max));
-  const color = props.color ?? "var(--ds-chart-cat-1)";
+  const color = props.color ?? "var(--sa-chart-cat-1)";
   const sweep = frac * 360;
 
   return (
@@ -147,14 +147,14 @@ export function DonutChart(props: DonutChartProps) {
       className={className}
       table={{ columns: ["Metric", "Value", "Max"], rows: [[title, props.value, max]] }}
     >
-      <path d={ringPath(C, C, R0, R1, 0, 359.999)} fill="var(--ds-chart-grid)" />
+      <path d={ringPath(C, C, R0, R1, 0, 359.999)} fill="var(--sa-chart-grid)" />
       {sweep > 0 && <path d={ringPath(C, C, R0, R1, 0, sweep)} fill={color} className="ds-chart__mark" />}
       {props.target !== undefined &&
         (() => {
           const ta = (Math.max(0, Math.min(1, props.target! / max)) * 360);
           const a = polarToCartesian(C, C, R1 + 4, ta);
           const b = polarToCartesian(C, C, R0 - 4, ta);
-          return <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="var(--ds-ink)" strokeWidth={2} />;
+          return <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="var(--sa-color-text-default)" strokeWidth={2} />;
         })()}
       <text x={C} y={C - 4} textAnchor="middle" className="ds-chart__center-value">
         {props.center ?? formatPercent(frac * 100, 0)}

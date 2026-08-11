@@ -84,8 +84,8 @@ const VARIANTS = ["primary", "secondary", "tertiary", "tonal"];
 const ENABLED = ["default", "hover", "active"];
 const AA_TEXT = 4.5;
 
-const surfaceOf = () => parseColor(resolve("--ds-surface"));
-const inverseSurfaceOf = () => parseColor(resolve("--ds-navy"));
+const surfaceOf = () => parseColor(resolve("--sa-bg-neutral-base"));
+const inverseSurfaceOf = () => parseColor(resolve("--sa-color-brand-navy"));
 
 function check(prefix, base) {
   const failures = [];
@@ -133,7 +133,7 @@ test("inverse actions stay AA-readable on a solid brand surface", () => {
   // white-alpha so they work on any brand colour; navy is the darkest surface in the
   // estate and therefore the binding case for the translucent steps.
   const INVERSE_SURFACE = inverseSurfaceOf();
-  assert.ok(INVERSE_SURFACE, "--ds-navy must resolve for this test to mean anything");
+  assert.ok(INVERSE_SURFACE, "--sa-color-brand-navy must resolve for this test to mean anything");
   const failures = [];
   let checked = 0;
   for (const intent of INTENTS) {

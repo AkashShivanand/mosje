@@ -1,6 +1,6 @@
 /* ============================================================================
    MoSJE / UX4G — Button atom
-   Semantic CSS classes only; all colours reference design tokens (--ds-*).
+   Semantic CSS classes only; all colours reference design tokens (--sa-*).
    Combine: .ds-btn  +  .ds-btn--<variant>  +  .ds-btn--<appearance>  +  .ds-btn--<size>
    Variants: primary | success | danger
    Appearances: filled | outlined | text | tonal
@@ -12,12 +12,12 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: var(--ds-font-sans, inherit);
+  font-family: var(--sa-font-latin, inherit);
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0.1px;
   border: 1px solid transparent;
-  border-radius: var(--ds-radius-md, 8px);
+  border-radius: var(--sa-shape-md, 8px);
   cursor: pointer;
   white-space: nowrap;
   text-decoration: none;
@@ -56,7 +56,7 @@
 
 /* Visible, accessible focus ring (keyboard) */
 .ds-btn:focus-visible {
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
   outline: none;
 }
 
@@ -64,23 +64,23 @@
    Per-variant token mapping (drives every appearance via local custom props)
    -------------------------------------------------------------------------- */
 .ds-btn--primary {
-  --_color: var(--ds-primary);
-  --_tonal-bg: var(--ds-primary-tonal);
-  --_tonal-fg: var(--ds-primary-dark);
-  --_dark: var(--ds-primary-dark);
-  --_ring: var(--ds-primary-ring);
+  --_color: var(--sa-color-action-primary-default);
+  --_tonal-bg: var(--sa-color-action-primary-tonal);
+  --_tonal-fg: var(--sa-color-action-primary-hover);
+  --_dark: var(--sa-color-action-primary-hover);
+  --_ring: var(--sa-focus-ring);
 }
 
 .ds-btn--success {
-  --_color: var(--ds-success);
-  --_tonal-bg: var(--ds-success-tonal);
+  --_color: var(--sa-color-status-success);
+  --_tonal-bg: var(--sa-color-status-successTonal);
   --_tonal-fg: var(--sa-color-status-successStrong); /* darkened success for tonal label contrast */
   --_dark: var(--sa-color-status-successStrong);
   --_ring: rgba(46, 125, 50, 0.4);
 }
 
 .ds-btn--danger {
-  --_color: var(--ds-danger);
+  --_color: var(--sa-color-status-danger);
   --_tonal-bg: var(--sa-color-status-dangerTonal);
   --_tonal-fg: var(--sa-color-status-dangerStrong);
   --_dark: var(--sa-color-status-dangerStrong);
@@ -119,7 +119,7 @@
    -------------------------------------------------------------------------- */
 .ds-btn--filled {
   background-color: var(--_color);
-  color: var(--ds-on-primary);
+  color: var(--sa-color-text-onPrimary);
   border-color: var(--_color);
 }
 
@@ -188,9 +188,9 @@
    page header) — replaces the className overrides every portal was hand-rolling.
    -------------------------------------------------------------------------- */
 .ds-btn--inverse {
-  background-color: var(--ds-neutral-0);
+  background-color: var(--sa-color-neutralScale-0);
   color: var(--_color);
-  border-color: var(--ds-neutral-0);
+  border-color: var(--sa-color-neutralScale-0);
 }
 
 .ds-btn--inverse:hover {
@@ -205,7 +205,7 @@
 
 .ds-btn--inverseOutlined {
   background-color: transparent;
-  color: var(--ds-on-primary);
+  color: var(--sa-color-text-onPrimary);
   border-color: rgba(255, 255, 255, 0.4);
 }
 

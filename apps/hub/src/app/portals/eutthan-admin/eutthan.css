@@ -1,24 +1,24 @@
 
 :root {
-  --primary: var(--ds-navy);
+  --primary: var(--sa-color-brand-navy);
   --primary-800: #001933;
   --primary-100: #c8dbf0;
   --primary-50: #e5eff9;
-  --text: var(--ds-ink); /* DS ink is #212121; original was #374151 — intentional shift to DS value */
-  --text-strong: var(--ds-ink-strong); /* DS ink-strong is #1f2428; original was #1f2937 */
-  --text-muted: #6b7280; /* TODO: add to DS — --ds-ink-muted is #343a40, too dark; keeping original */
-  --surface: var(--ds-surface);
-  --surface-muted: var(--ds-surface-muted); /* DS surface-muted is #f8f9fa; original was #f9fafb */
+  --text: var(--sa-color-text-default); /* DS ink is #212121; original was #374151 — intentional shift to DS value */
+  --text-strong: var(--sa-text-neutral-bolder); /* DS ink-strong is #1f2428; original was #1f2937 */
+  --text-muted: #6b7280; /* TODO: add to DS — --sa-color-text-muted is #343a40, too dark; keeping original */
+  --surface: var(--sa-bg-neutral-base);
+  --surface-muted: var(--sa-bg-neutral-subtler); /* DS surface-muted is #f8f9fa; original was #f9fafb */
   --stroke-50: #f9fafb;
   --stroke-100: #f3f4f6;
-  --stroke-200: var(--ds-border-strong); /* DS border-strong is #e2e6ea; original was #e5e7eb */
+  --stroke-200: var(--sa-border-neutral-base); /* DS border-strong is #e2e6ea; original was #e5e7eb */
   --stroke-300: #d1d5db;
-  --danger: var(--ds-danger); /* DS danger is #ec5042; original was #d64539 — intentional shift to DS value */
+  --danger: var(--sa-color-status-danger); /* DS danger is #ec5042; original was #d64539 — intentional shift to DS value */
   --danger-tonal: rgba(236, 80, 66, 0.08);
-  --success: var(--ds-success); /* DS success is #2e7d32; original was #27682a */
+  --success: var(--sa-color-status-success); /* DS success is #2e7d32; original was #27682a */
   --success-tonal: rgba(46, 125, 50, 0.1);
   --primary-tonal: rgba(0, 51, 102, 0.08);
-  --yellow: var(--ds-yellow);
+  --yellow: var(--sa-color-brand-yellow);
   --chart-danger: #e4776f;
   --chart-warning: #f6c36d;
   --chart-primary-soft: #9cbfe3;
@@ -45,7 +45,7 @@ body {
   margin: 0;
   color: var(--text);
   background: var(--surface-muted);
-  font-family: var(--ds-font-sans, "Noto Sans", system-ui, sans-serif);
+  font-family: var(--sa-font-latin, "Noto Sans", system-ui, sans-serif);
 }
 
 a {

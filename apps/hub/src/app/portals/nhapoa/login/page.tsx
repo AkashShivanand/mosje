@@ -69,7 +69,7 @@ export default function LoginPage() {
           Tribes (Prevention of Atrocities) Act — one accountable workflow from complaint to relief.
         </p>
         {/* bottom offset clears the fixed AppSwitcher FAB (bottom-left) */}
-        <div className="absolute inset-x-12 bottom-[var(--ds-appsw-safe-area)] border-t border-white/15 pt-6">
+        <div className="absolute inset-x-12 bottom-[var(--cmp-appsw-safe-area)] border-t border-white/15 pt-6">
           <p className="text-[11px] font-semibold uppercase tracking-wider text-white/55">Signing Into</p>
           <p className="text-sm font-bold">SAMBAL Administration</p>
         </div>

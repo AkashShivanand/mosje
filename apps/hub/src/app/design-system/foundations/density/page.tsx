@@ -12,18 +12,18 @@ export const metadata: Metadata = {
 
 function DemoControls(): React.JSX.Element {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "var(--ds-spacing-md)" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-s)" }}>
       <button
         type="button"
         style={{
           height: "var(--sa-density-control-height)",
-          padding: "0 var(--ds-spacing-lg)",
-          background: "var(--ds-primary)",
+          padding: "0 var(--sa-padding-m)",
+          background: "var(--sa-color-action-primary-default)",
           color: "#fff",
           border: "none",
-          borderRadius: "var(--ds-radius-sm)",
+          borderRadius: "var(--sa-shape-sm)",
           fontWeight: 600,
-          fontFamily: "var(--ds-font-sans)",
+          fontFamily: "var(--sa-font-latin)",
           cursor: "pointer",
         }}
       >
@@ -35,24 +35,24 @@ function DemoControls(): React.JSX.Element {
         defaultValue="Sample input"
         style={{
           height: "var(--sa-density-control-height)",
-          padding: "0 var(--ds-spacing-md)",
-          background: "var(--ds-surface)",
-          color: "var(--ds-ink)",
-          border: "1px solid var(--ds-border-strong)",
-          borderRadius: "var(--ds-radius-sm)",
-          fontFamily: "var(--ds-font-sans)",
+          padding: "0 var(--sa-padding-s)",
+          background: "var(--sa-bg-neutral-base)",
+          color: "var(--sa-color-text-default)",
+          border: "1px solid var(--sa-border-neutral-base)",
+          borderRadius: "var(--sa-shape-sm)",
+          fontFamily: "var(--sa-font-latin)",
         }}
       />
       <select
         defaultValue="one"
         style={{
           height: "var(--sa-density-control-height)",
-          padding: "0 var(--ds-spacing-md)",
-          background: "var(--ds-surface)",
-          color: "var(--ds-ink)",
-          border: "1px solid var(--ds-border-strong)",
-          borderRadius: "var(--ds-radius-sm)",
-          fontFamily: "var(--ds-font-sans)",
+          padding: "0 var(--sa-padding-s)",
+          background: "var(--sa-bg-neutral-base)",
+          color: "var(--sa-color-text-default)",
+          border: "1px solid var(--sa-border-neutral-base)",
+          borderRadius: "var(--sa-shape-sm)",
+          fontFamily: "var(--sa-font-latin)",
         }}
       >
         <option value="one">Option one</option>
@@ -66,64 +66,64 @@ export default function DensityPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Density</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
+      <p style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-s)" }}>
         Density controls how tall interactive elements are. SAMAVESH ships two
         modes — <strong>comfortable</strong> for everyday public use and{" "}
         <strong>compact</strong> for screens that need to show a lot of data at
         once.
       </p>
-      <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+      <div style={{ marginTop: "var(--sa-stack-m)" }}>
         <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.density)} target="_blank" rel="noopener noreferrer">
           View in Figma <span aria-hidden="true">↗</span>
         </a>
       </div>
 
-      <section aria-labelledby="demo" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="demo" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="demo">Side by side</h2>
         <div
           style={{
-            marginTop: "var(--ds-spacing-2xl)",
+            marginTop: "var(--sa-stack-l)",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "var(--ds-spacing-2xl)",
+            gap: "var(--sa-stack-l)",
           }}
         >
-          <div style={{ background: "var(--ds-surface-muted)", borderRadius: "var(--ds-radius-md)", padding: "var(--ds-spacing-2xl)" }}>
-            <div style={{ fontWeight: 600, marginBottom: "var(--ds-spacing-lg)" }}>
-              Comfortable <span style={{ color: "var(--ds-ink-muted)", fontWeight: 400 }}>· 40px</span>
+          <div style={{ background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-l)" }}>
+            <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-m)" }}>
+              Comfortable <span style={{ color: "var(--sa-color-text-muted)", fontWeight: 400 }}>· 40px</span>
             </div>
             <DemoControls />
           </div>
-          <div data-density="compact" style={{ background: "var(--ds-surface-muted)", borderRadius: "var(--ds-radius-md)", padding: "var(--ds-spacing-2xl)" }}>
-            <div style={{ fontWeight: 600, marginBottom: "var(--ds-spacing-lg)" }}>
-              Compact <span style={{ color: "var(--ds-ink-muted)", fontWeight: 400 }}>· 32px</span>
+          <div data-density="compact" style={{ background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-l)" }}>
+            <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-m)" }}>
+              Compact <span style={{ color: "var(--sa-color-text-muted)", fontWeight: 400 }}>· 32px</span>
             </div>
             <DemoControls />
           </div>
         </div>
       </section>
 
-      <section aria-labelledby="when-compact" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="when-compact" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="when-compact">When to use compact</h2>
-        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <ul style={{ marginTop: "var(--sa-stack-m)" }}>
           <li>Data-dense portals — for example the PM-AJAY MIS dashboard.</li>
           <li>Tables with many rows where vertical space is at a premium.</li>
           <li>Expert tools used repeatedly by trained staff who value scanning speed.</li>
         </ul>
       </section>
 
-      <section aria-labelledby="when-not" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="when-not" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="when-not">When NOT to use compact</h2>
-        <ul style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <ul style={{ marginTop: "var(--sa-stack-m)" }}>
           <li>Public-facing forms, where comfortable targets reduce errors.</li>
           <li>Mobile, where fingers need larger touch targets.</li>
           <li>Accessibility-critical flows, where the 44px minimum target matters most.</li>
         </ul>
       </section>
 
-      <section aria-labelledby="activate" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="activate" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="activate">How to activate it</h2>
-        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <p style={{ marginTop: "var(--sa-stack-m)" }}>
           Set <code>data-density=&quot;compact&quot;</code> on any wrapper
           element. Every SAMAVESH control inside that wrapper picks up the
           smaller control height automatically — no per-component changes
@@ -131,18 +131,18 @@ export default function DensityPage(): React.JSX.Element {
         </p>
       </section>
 
-      <section aria-labelledby="tokens" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="tokens" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="tokens">Tokens</h2>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <TokenTable
             tokens={[
               {
-                token: "--ds-control-height (comfortable)",
+                token: "--sa-density-control-height (comfortable)",
                 value: "40px",
                 description: "Default control height for public sites and forms",
               },
               {
-                token: "--ds-control-height (compact)",
+                token: "--sa-density-control-height (compact)",
                 value: "32px",
                 description: 'Active under [data-density="compact"] for dense portals',
               },

@@ -24,7 +24,7 @@
   --portal-ink: var(--foreground);
   --portal-ink-muted: var(--foreground-muted);
   --color-ink-hint: var(--foreground-hint);
-  /* Status DEFAULTs — the hub's are the DS status ramp (--ds-success etc.). */
+  /* Status DEFAULTs — the hub's are the DS status ramp (--sa-color-status-success etc.). */
   --portal-success: #059669;
   --portal-warning: #d97706;
   --portal-danger: #dc2626;

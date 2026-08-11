@@ -133,11 +133,11 @@ export const FilteringAList: Story = {
             listStyle: "none",
             display: "grid",
             gap: 4,
-            color: "var(--ds-ink)",
+            color: "var(--sa-color-text-default)",
           }}
         >
           {matches.length === 0 ? (
-            <li style={{ color: "var(--ds-ink-muted)" }}>No districts match “{value}”.</li>
+            <li style={{ color: "var(--sa-color-text-muted)" }}>No districts match “{value}”.</li>
           ) : (
             matches.map((d) => <li key={d}>{d}</li>)
           )}

@@ -76,7 +76,7 @@ export function AppSwitcherPanel({
   }, [showCurrentApp]);
 
   const stickyOffsetStyle = {
-    "--ds-appsw-sticky-offset": `${stickyOffset}px`,
+    "--cmp-appsw-sticky-offset": `${stickyOffset}px`,
   } as React.CSSProperties;
 
   // `/` focuses search while the panel is mounted.

@@ -11,36 +11,36 @@ export const metadata: Metadata = {
 };
 
 const SCALE: { token: string; px: number }[] = [
-  { token: "--ds-spacing-xs", px: 4 },
-  { token: "--ds-spacing-sm", px: 8 },
-  { token: "--ds-spacing-md", px: 12 },
-  { token: "--ds-spacing-lg", px: 16 },
-  { token: "--ds-spacing-xl", px: 20 },
-  { token: "--ds-spacing-2xl", px: 24 },
-  { token: "--ds-spacing-3xl", px: 32 },
-  { token: "--ds-spacing-4xl", px: 40 },
-  { token: "--ds-spacing-5xl", px: 48 },
-  { token: "--ds-spacing-6xl", px: 56 },
+  { token: "--sa-stack-2xs", px: 4 },
+  { token: "--sa-stack-xs", px: 8 },
+  { token: "--sa-stack-s", px: 12 },
+  { token: "--sa-stack-m", px: 16 },
+  { token: "--sa-padding-l", px: 20 },
+  { token: "--sa-stack-l", px: 24 },
+  { token: "--sa-stack-xl", px: 32 },
+  { token: "--sa-stack-2xl", px: 40 },
+  { token: "--sa-section-m", px: 48 },
+  { token: "--sa-section-l", px: 56 },
 ];
 
 export default function SpacingPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Spacing</h1>
-      <p style={{ fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)", color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)" }}>
+      <p style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-s)" }}>
         A consistent spacing rhythm is what makes an interface feel calm and
         trustworthy. SAMAVESH uses one shared scale so every gap, pad and margin
         lines up across 13 websites and 20 portals.
       </p>
-      <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+      <div style={{ marginTop: "var(--sa-stack-m)" }}>
         <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.spacing)} target="_blank" rel="noopener noreferrer">
           View in Figma <span aria-hidden="true">↗</span>
         </a>
       </div>
 
-      <section aria-labelledby="how-it-works" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="how-it-works" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="how-it-works">How spacing works</h2>
-        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <p style={{ marginTop: "var(--sa-stack-m)" }}>
           Spacing in SAMAVESH follows an 8px base grid. Almost every value is a
           multiple of 8 (8, 16, 24, 32, 40, 48, 56), with a single 4px half-step
           for the tightest gaps inside dense controls. Working in these fixed
@@ -51,15 +51,15 @@ export default function SpacingPage(): React.JSX.Element {
         </p>
       </section>
 
-      <section aria-labelledby="scale" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="scale" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="scale">The scale</h2>
-        <p style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <p style={{ marginTop: "var(--sa-stack-m)" }}>
           Each bar below is rendered at its real pixel height, so the steps are
           shown literally to scale.
         </p>
-        <div style={{ marginTop: "var(--ds-spacing-2xl)", display: "flex", flexDirection: "column", gap: "var(--ds-spacing-md)" }}>
+        <div style={{ marginTop: "var(--sa-stack-l)", display: "flex", flexDirection: "column", gap: "var(--sa-stack-s)" }}>
           {SCALE.map(({ token, px }) => (
-            <div key={token} style={{ display: "flex", alignItems: "center", gap: "var(--ds-spacing-lg)" }}>
+            <div key={token} style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-m)" }}>
               <div style={{ width: "140px", flexShrink: 0 }}>
                 <code className="token-table__name">{token}</code>
               </div>
@@ -68,8 +68,8 @@ export default function SpacingPage(): React.JSX.Element {
                   height: `var(${token})`,
                   width: `var(${token})`,
                   minWidth: `var(${token})`,
-                  background: "var(--ds-primary)",
-                  borderRadius: "var(--ds-radius-xs)",
+                  background: "var(--sa-color-action-primary-default)",
+                  borderRadius: "var(--sa-shape-xs)",
                 }}
                 aria-hidden="true"
               />
@@ -77,12 +77,12 @@ export default function SpacingPage(): React.JSX.Element {
                 style={{
                   height: `var(${token})`,
                   flex: 1,
-                  background: "var(--ds-primary-tonal)",
-                  borderRadius: "var(--ds-radius-xs)",
+                  background: "var(--sa-color-action-primary-tonal)",
+                  borderRadius: "var(--sa-shape-xs)",
                 }}
                 aria-hidden="true"
               />
-              <div style={{ width: "56px", flexShrink: 0, textAlign: "right", color: "var(--ds-ink-muted)", fontSize: "var(--ds-text-body-2)" }}>
+              <div style={{ width: "56px", flexShrink: 0, textAlign: "right", color: "var(--sa-color-text-muted)", fontSize: "var(--sa-type-body-2-size)" }}>
                 {px}px
               </div>
             </div>
@@ -90,9 +90,9 @@ export default function SpacingPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="tokens" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="tokens" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="tokens">Tokens</h2>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <TokenTable
             tokens={SCALE.map(({ token, px }) => ({
               token,
@@ -108,9 +108,9 @@ export default function SpacingPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="guidance" style={{ marginTop: "var(--ds-spacing-4xl)" }}>
+      <section aria-labelledby="guidance" style={{ marginTop: "var(--sa-stack-2xl)" }}>
         <h2 id="guidance">Do &amp; Don&apos;t</h2>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <DoDont
             cards={[
               {
@@ -118,10 +118,10 @@ export default function SpacingPage(): React.JSX.Element {
                 label:
                   "Use spacing tokens for every gap, padding and margin so layouts stay on the 8px grid.",
                 preview: (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "var(--ds-spacing-lg)", padding: "var(--ds-spacing-lg)" }}>
-                    <div style={{ height: "16px", background: "var(--ds-primary-tonal)", borderRadius: "var(--ds-radius-xs)" }} />
-                    <div style={{ height: "16px", background: "var(--ds-primary-tonal)", borderRadius: "var(--ds-radius-xs)" }} />
-                    <code style={{ fontSize: "var(--ds-text-body-2)" }}>gap: var(--ds-spacing-lg)</code>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-m)", padding: "var(--sa-stack-m)" }}>
+                    <div style={{ height: "16px", background: "var(--sa-color-action-primary-tonal)", borderRadius: "var(--sa-shape-xs)" }} />
+                    <div style={{ height: "16px", background: "var(--sa-color-action-primary-tonal)", borderRadius: "var(--sa-shape-xs)" }} />
+                    <code style={{ fontSize: "var(--sa-type-body-2-size)" }}>gap: var(--sa-stack-m)</code>
                   </div>
                 ),
               },
@@ -131,9 +131,9 @@ export default function SpacingPage(): React.JSX.Element {
                   "Don't hardcode arbitrary pixel values like 13px or 27px — they break the grid and drift between screens.",
                 preview: (
                   <div style={{ display: "flex", flexDirection: "column", gap: "13px", padding: "11px" }}>
-                    <div style={{ height: "16px", background: "var(--ds-surface-muted)", borderRadius: "var(--ds-radius-xs)" }} />
-                    <div style={{ height: "16px", background: "var(--ds-surface-muted)", borderRadius: "var(--ds-radius-xs)" }} />
-                    <code style={{ fontSize: "var(--ds-text-body-2)" }}>gap: 13px</code>
+                    <div style={{ height: "16px", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-xs)" }} />
+                    <div style={{ height: "16px", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-xs)" }} />
+                    <code style={{ fontSize: "var(--sa-type-body-2-size)" }}>gap: 13px</code>
                   </div>
                 ),
               },

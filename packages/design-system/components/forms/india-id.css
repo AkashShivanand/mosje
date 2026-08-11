@@ -23,7 +23,7 @@
 
 .ds-otp {
   display: flex;
-  gap: var(--ds-inline-s);
+  gap: var(--sa-inline-s);
   align-items: center;
 }
 
@@ -32,60 +32,60 @@
      so the digit is comfortable to read back. */
   width: clamp(2.75rem, 10vw, 3.25rem);
   min-height: 44px;
-  padding: var(--ds-padding-2xs);
-  font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-title-1);
-  line-height: var(--ds-leading-title-1);
+  padding: var(--sa-padding-2xs);
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-headline-2-size);
+  line-height: var(--sa-type-headline-2-lh);
   font-variant-numeric: tabular-nums;
   font-weight: 600;
   text-align: center;
-  color: var(--ds-ink);
-  background-color: var(--ds-surface);
-  border: 1px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-md);
+  color: var(--sa-color-text-default);
+  background-color: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-md);
   transition:
-    border-color var(--ds-duration-fast) var(--ds-easing-out),
-    box-shadow var(--ds-duration-fast) var(--ds-easing-out);
+    border-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    box-shadow var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
   -webkit-appearance: none;
   appearance: none;
 }
 
 .ds-otp__box:hover:not(:disabled) {
-  border-color: var(--ds-primary);
+  border-color: var(--sa-color-action-primary-default);
 }
 
 .ds-otp__box:focus-visible {
-  border-color: var(--ds-primary);
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  border-color: var(--sa-color-action-primary-default);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
   outline: none;
 }
 
 .ds-otp__box:disabled {
   cursor: not-allowed;
   opacity: 0.5;
-  background-color: var(--ds-surface-muted);
+  background-color: var(--sa-bg-neutral-subtler);
 }
 
 .ds-otp--invalid .ds-otp__box,
 .ds-otp__box[aria-invalid="true"] {
-  border-color: var(--ds-danger);
+  border-color: var(--sa-color-status-danger);
 }
 
 .ds-otp--invalid .ds-otp__box:focus-visible {
-  box-shadow: 0 0 0 3px var(--ds-danger);
+  box-shadow: 0 0 0 3px var(--sa-color-status-danger);
 }
 
 /* Six 44px boxes plus gaps overflow a 320px viewport. Let them shrink rather than push the
    page sideways — the target stays 44px tall, which is the axis that matters for tapping. */
 @media (max-width: 380px) {
   .ds-otp {
-    gap: var(--ds-inline-xs);
+    gap: var(--sa-inline-xs);
   }
 
   .ds-otp__box {
     width: 100%;
     min-width: 0;
-    font-size: var(--ds-text-body-1);
+    font-size: var(--sa-type-body-1-size);
   }
 }
 

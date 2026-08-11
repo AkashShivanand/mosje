@@ -67,7 +67,7 @@ const FORM_CARD_EXAMPLE = `<FormCard
   description="Each substance gets its own card — add as many as needed."
   required
 >
-  <p style={{ margin: 0, color: "var(--ds-ink-muted)" }}>
+  <p style={{ margin: 0, color: "var(--sa-color-text-muted)" }}>
     Custom body content goes here — a repeatable card list, a data table, or
     any layout that is not a simple field grid.
   </p>
@@ -108,14 +108,14 @@ const REVIEW_EXAMPLE = `<ReviewSection title="Personal Details">
 export default function InputPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
-      <header style={{ marginBottom: "var(--ds-spacing-3xl)" }}>
+      <header style={{ marginBottom: "var(--sa-stack-xl)" }}>
         <h1>Input &amp; FormField</h1>
-        <p style={{ color: "var(--ds-ink-muted)", marginTop: "var(--ds-spacing-md)", maxWidth: "60ch" }}>
+        <p style={{ color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-s)", maxWidth: "60ch" }}>
           The form layer of the design system. Three native, token-styled controls — <code>Input</code>,{" "}
           <code>Textarea</code>, and <code>Select</code> — paired with the <code>FormField</code> molecule that
           wires labels, hints, and errors together so every field is accessible by default.
         </p>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.inputs)} target="_blank" rel="noopener noreferrer">
             View in Figma <span aria-hidden="true">↗</span>
           </a>
@@ -206,7 +206,7 @@ export default function InputPage(): React.JSX.Element {
       {/* ---------------------------------------------------------------- */}
       {/* TEXTAREA                                                         */}
       {/* ---------------------------------------------------------------- */}
-      <section style={{ marginTop: "var(--ds-spacing-5xl)" }}>
+      <section style={{ marginTop: "var(--sa-section-m)" }}>
         <h2 id="textarea">Textarea</h2>
         <p>
           A multi-line text field for longer free-form input — grievance descriptions, remarks, addresses. It is a
@@ -277,7 +277,7 @@ export default function InputPage(): React.JSX.Element {
       {/* ---------------------------------------------------------------- */}
       {/* SELECT                                                           */}
       {/* ---------------------------------------------------------------- */}
-      <section style={{ marginTop: "var(--ds-spacing-5xl)" }}>
+      <section style={{ marginTop: "var(--sa-section-m)" }}>
         <h2 id="select">Select</h2>
         <p>
           A dropdown built on the native <code>&lt;select&gt;</code> element, so it keeps full keyboard and
@@ -356,7 +356,7 @@ export default function InputPage(): React.JSX.Element {
       {/* ---------------------------------------------------------------- */}
       {/* FORM FIELD                                                       */}
       {/* ---------------------------------------------------------------- */}
-      <section style={{ marginTop: "var(--ds-spacing-5xl)" }}>
+      <section style={{ marginTop: "var(--sa-section-m)" }}>
         <h2 id="form-field">FormField</h2>
         <p>
           <code>FormField</code> is the molecule that ties a control together with its label, optional hint, and
@@ -460,7 +460,7 @@ export default function InputPage(): React.JSX.Element {
       {/* ---------------------------------------------------------------- */}
       {/* FORM SECTION                                                     */}
       {/* ---------------------------------------------------------------- */}
-      <section style={{ marginTop: "var(--ds-spacing-5xl)" }}>
+      <section style={{ marginTop: "var(--sa-section-m)" }}>
         <h2 id="form-section">FormSection</h2>
         <p>
           <code>FormSection</code> is the form-layout primitive: a titled surface card wrapping a responsive 1/2/3-column
@@ -508,7 +508,7 @@ export default function InputPage(): React.JSX.Element {
       {/* ---------------------------------------------------------------- */}
       {/* FORM CARD                                                        */}
       {/* ---------------------------------------------------------------- */}
-      <section style={{ marginTop: "var(--ds-spacing-5xl)" }}>
+      <section style={{ marginTop: "var(--sa-section-m)" }}>
         <h2 id="form-card">FormCard</h2>
         <p>
           <code>FormCard</code> is the sibling of <code>FormSection</code>: it has the <strong>same card chrome and
@@ -575,7 +575,7 @@ export default function InputPage(): React.JSX.Element {
       {/* ---------------------------------------------------------------- */}
       {/* WIZARD                                                           */}
       {/* ---------------------------------------------------------------- */}
-      <section style={{ marginTop: "var(--ds-spacing-5xl)" }}>
+      <section style={{ marginTop: "var(--sa-section-m)" }}>
         <h2 id="wizard">Wizard</h2>
         <p>
           <code>Wizard</code> is the shared multi-step form shell. It renders the <code>Stepper</code>, the current

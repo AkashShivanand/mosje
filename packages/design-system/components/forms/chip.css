@@ -1,6 +1,6 @@
 /* ============================================================================
    MoSJE / UX4G — Chip atom
-   Semantic CSS classes only; all colours reference design tokens (--ds-*).
+   Semantic CSS classes only; all colours reference design tokens (--sa-*).
    Base: .ds-chip
    Modifiers: .ds-chip--interactive / --selected / --disabled
    Sub-parts: .ds-chip__icon / __label / __dismiss
@@ -15,14 +15,14 @@
   min-height: 32px;
   box-sizing: border-box;
   padding: 6px 12px;
-  font-family: var(--ds-font-sans, inherit);
-  font-size: var(--ds-text-body-2, 14px);
-  line-height: var(--ds-leading-body-2, 20px);
+  font-family: var(--sa-font-latin, inherit);
+  font-size: var(--sa-type-body-2-size, 14px);
+  line-height: var(--sa-type-body-2-lh, 20px);
   font-weight: 500;
-  color: var(--ds-ink-strong);
-  background-color: var(--ds-surface);
-  border: 1px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-md, 8px);
+  color: var(--sa-text-neutral-bolder);
+  background-color: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-md, 8px);
   user-select: none;
   transition:
     background-color 0.15s ease,
@@ -51,16 +51,16 @@
 }
 
 .ds-chip--interactive:hover {
-  background-color: var(--ds-surface-muted);
-  border-color: var(--ds-border-strong);
+  background-color: var(--sa-bg-neutral-subtler);
+  border-color: var(--sa-border-neutral-base);
 }
 
 .ds-chip--interactive:active {
-  background-color: color-mix(in srgb, var(--ds-ink) 6%, transparent);
+  background-color: color-mix(in srgb, var(--sa-color-text-default) 6%, transparent);
 }
 
 .ds-chip:focus-visible {
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
   outline: none;
 }
 
@@ -68,25 +68,25 @@
    Selected
    -------------------------------------------------------------------------- */
 .ds-chip--selected {
-  background-color: var(--ds-primary-tonal);
-  color: var(--ds-primary-dark);
-  border-color: var(--ds-primary);
+  background-color: var(--sa-color-action-primary-tonal);
+  color: var(--sa-color-action-primary-hover);
+  border-color: var(--sa-color-action-primary-default);
 }
 
 .ds-chip--selected.ds-chip--interactive:hover {
   background-color: color-mix(
     in srgb,
-    var(--ds-primary) 22%,
-    var(--ds-surface)
+    var(--sa-color-action-primary-default) 22%,
+    var(--sa-bg-neutral-base)
   );
-  border-color: var(--ds-primary);
+  border-color: var(--sa-color-action-primary-default);
 }
 
 .ds-chip--selected.ds-chip--interactive:active {
   background-color: color-mix(
     in srgb,
-    var(--ds-primary) 30%,
-    var(--ds-surface)
+    var(--sa-color-action-primary-default) 30%,
+    var(--sa-bg-neutral-base)
   );
 }
 
@@ -105,7 +105,7 @@
   color: inherit;
   background: transparent;
   border: none;
-  border-radius: var(--ds-radius-full, 100px);
+  border-radius: var(--sa-shape-full, 100px);
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
@@ -113,11 +113,11 @@
 }
 
 .ds-chip__dismiss:hover {
-  background-color: color-mix(in srgb, var(--ds-ink) 12%, transparent);
+  background-color: color-mix(in srgb, var(--sa-color-text-default) 12%, transparent);
 }
 
 .ds-chip__dismiss:focus-visible {
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
   outline: none;
 }
 
@@ -134,14 +134,14 @@
 .ds-chip--disabled.ds-chip--interactive:active,
 .ds-chip--disabled.ds-chip--selected.ds-chip--interactive:hover,
 .ds-chip--disabled.ds-chip--selected.ds-chip--interactive:active {
-  background-color: var(--ds-surface);
-  border-color: var(--ds-border-strong);
+  background-color: var(--sa-bg-neutral-base);
+  border-color: var(--sa-border-neutral-base);
 }
 
 .ds-chip--disabled.ds-chip--selected.ds-chip--interactive:hover,
 .ds-chip--disabled.ds-chip--selected.ds-chip--interactive:active {
-  background-color: var(--ds-primary-tonal);
-  border-color: var(--ds-primary);
+  background-color: var(--sa-color-action-primary-tonal);
+  border-color: var(--sa-color-action-primary-default);
 }
 
 .ds-chip--disabled .ds-chip__dismiss {

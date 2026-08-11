@@ -166,29 +166,3 @@ export const STANDARDS: StandardsGroup[] = [
   },
 ];
 
-export interface LegacyAlias {
-  alias: string;
-  resolvesTo: string;
-  rendered: string;
-  implies: string;
-  misleading: boolean;
-}
-
-/**
- * The hyphenated `--ds-text-*` family, transcribed from the generated
- * `packages/design-system/tokens.css` (:root block) — NOT from prose.
- * Only two entries disagree with their own name; the rest map 1:1 and are
- * listed so a reader can confirm a safe alias without opening the stylesheet.
- * Frozen by `packages/tokens/test/type-alias-parity.test.mjs`.
- */
-export const LEGACY_ALIASES: LegacyAlias[] = [
-  { alias: "--ds-text-title-1", resolvesTo: "headline-2", rendered: "24 → 32px", implies: "title-1, 18 → 22px", misleading: true },
-  { alias: "--ds-text-title-2", resolvesTo: "title-1", rendered: "18 → 22px", implies: "title-2, 16px", misleading: true },
-  { alias: "--ds-text-display", resolvesTo: "display-1", rendered: "40 → 80px", implies: "display-1", misleading: false },
-  { alias: "--ds-text-headline", resolvesTo: "headline-1", rendered: "28 → 40px", implies: "headline-1", misleading: false },
-  { alias: "--ds-text-body-1", resolvesTo: "body-1", rendered: "16px", implies: "body-1", misleading: false },
-  { alias: "--ds-text-body-2", resolvesTo: "body-2", rendered: "14px", implies: "body-2", misleading: false },
-  { alias: "--ds-text-body-3", resolvesTo: "body-3", rendered: "12px", implies: "body-3", misleading: false },
-  { alias: "--ds-text-label-1", resolvesTo: "label-1", rendered: "14px", implies: "label-1", misleading: false },
-  { alias: "--ds-text-label-3", resolvesTo: "label-3", rendered: "11px", implies: "label-3", misleading: false },
-];
