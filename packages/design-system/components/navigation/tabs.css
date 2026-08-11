@@ -27,7 +27,15 @@
   left: 0;
   width: 0;
   border-radius: var(--ds-radius-lg);
-  background-color: var(--ds-gov-navy);
+  /* `--ds-gov-navy` (`--sa-color-brand-navy`) is declared once at `:root` and
+     never re-declared inside a `[data-brand]` block — it's brand-invariant
+     by design, meant for things that should stay navy regardless of the
+     active brand axis (see tokens.css). The active-tab pill isn't one of
+     those: `.ds-tabs__tab.is-selected` already reads `--ds-on-primary` for
+     its text colour, so `--ds-primary` was the intended fill all along —
+     it's re-declared per `[data-brand]` and re-tones with the rest of the
+     estate. */
+  background-color: var(--ds-primary);
   box-shadow: var(--ds-shadow-xs);
   transition: transform var(--ds-duration-fast) var(--ds-easing-out),
     width var(--ds-duration-fast) var(--ds-easing-out);
@@ -62,7 +70,14 @@
 }
 
 .ds-tabs__tab:hover:not(.is-selected) {
-  background-color: rgba(0, 0, 0, 0.05);
+  /* Was a raw `rgba(0, 0, 0, 0.05)` literal — not permitted in design-system
+     CSS (tokens only). `--ds-surface-muted` (the track's own background,
+     see `.ds-tabs` above) isn't a substitute: hovering a tab would then
+     match the track it sits on and the affordance would disappear.
+     `--ds-neutral-100` is one step darker (#f1f3f5 vs #f8f9fa in Blue),
+     giving a visible neutral wash on top of the muted track without
+     inventing a value. */
+  background-color: var(--ds-neutral-100);
   color: var(--ds-ink);
 }
 
