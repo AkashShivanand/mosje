@@ -99,7 +99,7 @@ export default function TypographyPage(): React.JSX.Element {
             works for Latin. The two columns below use the <em>same</em> font size — only the line height changes.
           </p>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "var(--ds-spacing-xl)", marginTop: "var(--ds-spacing-xl)" }}>
+        <div className="ty-indic-compare">
           {[
             { ok: false, label: "✕ Line height 1.5 — too tight", lh: 1.5, color: "danger" },
             { ok: true, label: "✓ Line height 1.7 — correct", lh: 1.7, color: "success" },
@@ -108,7 +108,7 @@ export default function TypographyPage(): React.JSX.Element {
               <div style={{ padding: "var(--ds-spacing-md) var(--ds-spacing-lg)", background: `var(--ds-${c.color}-tonal)`, color: `var(--ds-${c.color})`, fontSize: "var(--ds-text-body-2)", fontWeight: 700, borderBottom: `1px solid var(--ds-${c.color})` }}>
                 {c.label}
               </div>
-              <p lang="hi" style={{ padding: "var(--ds-spacing-xl)", margin: 0, fontFamily: "var(--sa-font-devanagari)", fontSize: "16px", lineHeight: c.lh, color: "var(--ds-ink)" }}>
+              <p lang="hi" style={{ padding: "var(--ds-spacing-xl)", margin: 0, fontFamily: "var(--sa-font-devanagari)", fontSize: "var(--ds-type-body-1-size)", lineHeight: c.lh, color: "var(--ds-ink)" }}>
                 सामाजिक न्याय और अधिकारिता मंत्रालय देश के वंचित और कमज़ोर वर्गों के कल्याण के लिए अनेक योजनाएँ
                 संचालित करता है। आवेदक अपने सभी आवश्यक दस्तावेज़ों के साथ ऑनलाइन आवेदन जमा कर सकते हैं।
               </p>
@@ -134,7 +134,7 @@ export default function TypographyPage(): React.JSX.Element {
               type: "do",
               label: "Use a role token and pair size with its line-height so size, leading, and fluid scaling travel together. Set data-surface on portal roots.",
               preview: (
-                <code style={{ fontFamily: "var(--ds-font-mono)", fontSize: "12px", color: "var(--ds-ink)", textAlign: "left", whiteSpace: "pre" }}>
+                <code style={{ fontFamily: "var(--ds-font-mono)", fontSize: "var(--ds-type-body-3-size)", color: "var(--ds-ink)", textAlign: "left", whiteSpace: "pre" }}>
 {`.lead {
   font-size:   var(--ds-type-body-1-size);
   line-height: var(--ds-type-body-1-lh);
@@ -148,7 +148,7 @@ export default function TypographyPage(): React.JSX.Element {
               type: "dont",
               label: "Don't hardcode font-size in px. Raw values break the fluid scale, ignore the surface, and usually pair Hindi with a Latin-tight line height.",
               preview: (
-                <code style={{ fontFamily: "var(--ds-font-mono)", fontSize: "12px", color: "var(--ds-ink)", textAlign: "left", whiteSpace: "pre" }}>
+                <code style={{ fontFamily: "var(--ds-font-mono)", fontSize: "var(--ds-type-body-3-size)", color: "var(--ds-ink)", textAlign: "left", whiteSpace: "pre" }}>
 {`.lead {
   font-size: 16px;
   line-height: 1.4;

@@ -194,3 +194,14 @@
   .ty-std__item { flex-direction: column; gap: var(--ds-spacing-xs); }
   .ty-std__src { white-space: normal; }
 }
+
+/* ── Indic line-height comparison grid ──────────────────────── */
+/* The 260px min track is a layout constraint, not a design value: below it the
+   Devanagari sample stops wrapping to enough lines for the comparison to read.
+   It lives here rather than inline so the page carries no raw values. */
+.ty-indic-compare {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--ds-spacing-xl);
+  margin-top: var(--ds-spacing-xl);
+}
