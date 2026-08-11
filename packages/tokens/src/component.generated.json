@@ -850,7 +850,7 @@
         "default": {
           "bg": {
             "$type": "color",
-            "$value": "{color.dangerScale.700}",
+            "$value": "{color.dangerScale.600}",
             "$description": "Use for destructive primary buttons at rest — the fill."
           },
           "text": {
@@ -860,14 +860,14 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.dangerScale.700}",
+            "$value": "{color.dangerScale.600}",
             "$description": "Use for destructive primary buttons at rest — the outline."
           }
         },
         "hover": {
           "bg": {
             "$type": "color",
-            "$value": "{color.dangerScale.800}",
+            "$value": "{color.dangerScale.700}",
             "$description": "Use when the user hovers over a destructive primary button — the fill."
           },
           "text": {
@@ -877,14 +877,14 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.dangerScale.800}",
+            "$value": "{color.dangerScale.700}",
             "$description": "Use when the user hovers over a destructive primary button — the outline."
           }
         },
         "active": {
           "bg": {
             "$type": "color",
-            "$value": "{color.dangerScale.900}",
+            "$value": "{color.dangerScale.800}",
             "$description": "Use when a destructive primary button is pressed — the fill."
           },
           "text": {
@@ -894,7 +894,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.dangerScale.900}",
+            "$value": "{color.dangerScale.800}",
             "$description": "Use when a destructive primary button is pressed — the outline."
           }
         },
@@ -1222,7 +1222,7 @@
           },
           "text": {
             "$type": "color",
-            "$value": "{color.dangerScale.900}",
+            "$value": "{color.dangerScale.800}",
             "$description": "Use when the user hovers over a destructive tonal button — the label."
           },
           "border": {

@@ -192,6 +192,12 @@ await sd.buildAllPlatforms();
 // resolved literals and cannot carry the brand axis. It was hand-maintained until
 // 2026-08-11, by which point 12 of its 22 colours had drifted; generating it is what stops
 // that recurring. It throws rather than emitting holes, so a broken build fails here.
-if (BRAND === "mosje") await import("./generate-ts-mirror.mjs");
+if (BRAND === "mosje") {
+  await import("./generate-ts-mirror.mjs");
+  // The colour reference doc is generated from the same CSS for the same reason: a colour
+  // document with hand-typed hexes is a second source of truth, and this repo has already had
+  // three of those quietly go wrong.
+  await import("./generate-colour-audit.mjs");
+}
 
 console.log(`✓ @mosje/tokens built (brand: ${BRAND})`);

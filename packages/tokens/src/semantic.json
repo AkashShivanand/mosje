@@ -719,8 +719,7 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.08)",
-                "dbim": "rgba(0, 51, 102, 0.08)"
+                "navy": "rgba(0, 51, 102, 0.08)"
               }
             }
           }
@@ -730,8 +729,7 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.16)",
-                "dbim": "rgba(0, 51, 102, 0.16)"
+                "navy": "rgba(0, 51, 102, 0.16)"
               }
             }
           }
@@ -741,8 +739,7 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.24)",
-                "dbim": "rgba(0, 51, 102, 0.24)"
+                "navy": "rgba(0, 51, 102, 0.24)"
               }
             }
           }
@@ -752,8 +749,7 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.32)",
-                "dbim": "rgba(0, 51, 102, 0.32)"
+                "navy": "rgba(0, 51, 102, 0.32)"
               }
             }
           }
@@ -763,8 +759,7 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.40)",
-                "dbim": "rgba(0, 51, 102, 0.40)"
+                "navy": "rgba(0, 51, 102, 0.40)"
               }
             }
           }
@@ -774,8 +769,7 @@
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.48)",
-                "dbim": "rgba(0, 51, 102, 0.48)"
+                "navy": "rgba(0, 51, 102, 0.48)"
               }
             }
           }
@@ -823,67 +817,61 @@
       },
       "neutral": {
         "8": {
-          "$value": "rgba(31, 36, 40, 0.08)",
+          "$value": "rgba(30, 33, 36, 0.08)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.08)",
-                "dbim": "rgba(31, 41, 55, 0.08)"
+                "navy": "rgba(30, 32, 36, 0.08)"
               }
             }
           }
         },
         "16": {
-          "$value": "rgba(31, 36, 40, 0.16)",
+          "$value": "rgba(30, 33, 36, 0.16)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.16)",
-                "dbim": "rgba(31, 41, 55, 0.16)"
+                "navy": "rgba(30, 32, 36, 0.16)"
               }
             }
           }
         },
         "24": {
-          "$value": "rgba(31, 36, 40, 0.24)",
+          "$value": "rgba(30, 33, 36, 0.24)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.24)",
-                "dbim": "rgba(31, 41, 55, 0.24)"
+                "navy": "rgba(30, 32, 36, 0.24)"
               }
             }
           }
         },
         "32": {
-          "$value": "rgba(31, 36, 40, 0.32)",
+          "$value": "rgba(30, 33, 36, 0.32)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.32)",
-                "dbim": "rgba(31, 41, 55, 0.32)"
+                "navy": "rgba(30, 32, 36, 0.32)"
               }
             }
           }
         },
         "40": {
-          "$value": "rgba(31, 36, 40, 0.40)",
+          "$value": "rgba(30, 33, 36, 0.40)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.40)",
-                "dbim": "rgba(31, 41, 55, 0.40)"
+                "navy": "rgba(30, 32, 36, 0.40)"
               }
             }
           }
         },
         "48": {
-          "$value": "rgba(31, 36, 40, 0.48)",
+          "$value": "rgba(30, 33, 36, 0.48)",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "rgba(31, 41, 55, 0.48)",
-                "dbim": "rgba(31, 41, 55, 0.48)"
+                "navy": "rgba(30, 32, 36, 0.48)"
               }
             }
           }
@@ -911,42 +899,42 @@
       },
       "danger": {
         "8": {
-          "$value": "rgba(236, 80, 66, 0.08)"
+          "$value": "rgba(203, 63, 51, 0.08)"
         },
         "16": {
-          "$value": "rgba(236, 80, 66, 0.16)"
+          "$value": "rgba(203, 63, 51, 0.16)"
         },
         "24": {
-          "$value": "rgba(236, 80, 66, 0.24)"
+          "$value": "rgba(203, 63, 51, 0.24)"
         },
         "32": {
-          "$value": "rgba(236, 80, 66, 0.32)"
+          "$value": "rgba(203, 63, 51, 0.32)"
         },
         "40": {
-          "$value": "rgba(236, 80, 66, 0.40)"
+          "$value": "rgba(203, 63, 51, 0.40)"
         },
         "48": {
-          "$value": "rgba(236, 80, 66, 0.48)"
+          "$value": "rgba(203, 63, 51, 0.48)"
         }
       },
       "warning": {
         "8": {
-          "$value": "rgba(187, 119, 43, 0.08)"
+          "$value": "rgba(167, 114, 0, 0.08)"
         },
         "16": {
-          "$value": "rgba(187, 119, 43, 0.16)"
+          "$value": "rgba(167, 114, 0, 0.16)"
         },
         "24": {
-          "$value": "rgba(187, 119, 43, 0.24)"
+          "$value": "rgba(167, 114, 0, 0.24)"
         },
         "32": {
-          "$value": "rgba(187, 119, 43, 0.32)"
+          "$value": "rgba(167, 114, 0, 0.32)"
         },
         "40": {
-          "$value": "rgba(187, 119, 43, 0.40)"
+          "$value": "rgba(167, 114, 0, 0.40)"
         },
         "48": {
-          "$value": "rgba(187, 119, 43, 0.48)"
+          "$value": "rgba(167, 114, 0, 0.48)"
         }
       },
       "white": {
@@ -1001,12 +989,12 @@
         }
       },
       "disabled": {
-        "$value": "rgba(31, 36, 40, 0.48)",
+        "$value": "rgba(30, 33, 36, 0.48)",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "rgba(31, 41, 55, 0.48)",
-              "dbim": "rgba(31, 41, 55, 0.48)"
+              "navy": "rgba(30, 32, 36, 0.48)",
+              "dbim": "rgba(30, 32, 36, 0.48)"
             },
             "themes": {
               "dark": "rgba(243, 244, 246, 0.40)"

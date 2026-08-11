@@ -7,10 +7,14 @@
  * sync". On 2026-08-11 that was measured: **12 of its 22 colours had drifted**, and most of
  * the drift long predated the colour rebuild that surfaced it —
  *
- *   warning  #ffd323  was gov-yellow, not the warning colour (#8c571f)
- *   info     #0373df  was the primary blue, not info (#1558b0)
- *   danger   #ec5042  was dangerScale/500, while --ds-danger is /700 (#b8382f)
+ *   warning  #ffd323  was gov-yellow, not the warning colour
+ *   info     #0373df  was the primary blue, not info
+ *   danger   #ec5042  was dangerScale/500, while --ds-danger is /700
  *   ink      #212121  was a colour the system had already stopped using
+ *
+ * (The correct values are deliberately not quoted here. They were, and four of them went
+ * stale within the day when the functional and neutral ramps were regenerated — a comment
+ * about a file that exists to stop hand-copied values is a poor place to hand-copy values.)
  *
  * plus `radius.pill` at 100px against a real 999px, shadows built on `rgba(33,33,33,…)`
  * against a real `rgba(31,36,40,…)`, and a typography block written in fixed px for a scale

@@ -179,20 +179,34 @@ const SHORTFALL_LEDGER = new Set([
   "Color::bg/brand/primary/subtle — 1.84:1 vs ≥3:1 (\"subtle\")",
   "Color::bg/brand/secondary/bold — 2.21:1 vs ≥3:1 (\"bold\")",
   "Color::bg/brand/secondary/subtle — 1.72:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/neutral/bold — 1.25:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/neutral/subtle — 1.11:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/status/error/bold — 2.64:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/status/error/bolder — 4.4:1 vs ≥4.5:1 (\"bolder\")",
-  "Color::bg/status/error/subtle — 1.91:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/status/info/bold — 2.25:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/status/info/subtle — 1.71:1 vs ≥3:1 (\"subtle\")",
+  "Color::bg/neutral/bold — 1.66:1 vs ≥3:1 (\"bold\")",
+  "Color::bg/neutral/subtle — 1.35:1 vs ≥3:1 (\"subtle\")",
+  "Color::bg/status/error/bold — 2.67:1 vs ≥3:1 (\"bold\")",
+  "Color::bg/status/error/subtle — 2.01:1 vs ≥3:1 (\"subtle\")",
+  "Color::bg/status/info/bold — 2.39:1 vs ≥3:1 (\"bold\")",
+  "Color::bg/status/info/subtle — 1.81:1 vs ≥3:1 (\"subtle\")",
   "Color::bg/status/success/subtle — 2.18:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/status/warning/bold — 1.84:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/status/warning/bolder — 4.46:1 vs ≥4.5:1 (\"bolder\")",
-  "Color::bg/status/warning/subtle — 1.51:1 vs ≥3:1 (\"subtle\")",
-  "Color::border/neutral/bolder/default — 2.55:1 vs ≥4.5:1 (\"bolder\")",
-  "Color::border/neutral/subtle — 1.11:1 vs ≥3:1 (\"subtle\")",
+  "Color::bg/status/warning/bold — 2.35:1 vs ≥3:1 (\"bold\")",
+  "Color::bg/status/warning/subtle — 1.79:1 vs ≥3:1 (\"subtle\")",
+  "Color::border/neutral/bolder/default — 3.06:1 vs ≥4.5:1 (\"bolder\")",
+  "Color::border/neutral/subtle — 1.35:1 vs ≥3:1 (\"subtle\")",
 ]);
+
+/*
+ * 2026-08-11, the functional and neutral ramp rebuild. 18 entries -> 16, none added.
+ *
+ *   - `bg/status/error/bolder` (4.4:1) and `bg/status/warning/bolder` (4.46:1) are GONE. They
+ *     were the only two entries on this ledger that were also WCAG AA failures rather than
+ *     ladder-definition arguments, and they are the two the rebuild was for: 6.68:1 and
+ *     5.68:1 now. The system has no AA shortfall left in any brand.
+ *   - Every surviving `Background/*` measurement MOVED, because the ramps under them did. All
+ *     of them moved UP — `bg/neutral/subtle` 1.11 -> 1.35, `bg/status/warning/bold` 1.84 ->
+ *     2.35, `border/neutral/bolder/default` 2.55 -> 3.06 — since evening out a ladder that
+ *     had four steps crammed into its lightest 7.7 L* necessarily pushes the middle rungs
+ *     away from the page. None reaches its rung's threshold, so none leaves the ledger, and
+ *     the argument recorded above is unchanged: for quiet fills the LADDER is the thing that
+ *     is wrong, not the colours.
+ */
 
 test("no token falls short of its own rung except the ones already on the ledger", () => {
   const current = new Set(payload.contrast.shortfall);

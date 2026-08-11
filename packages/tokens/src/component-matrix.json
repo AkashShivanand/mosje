@@ -127,14 +127,18 @@
   },
   "$overrideNotes": [
     "Per-intent step overrides. The four ramps are NOT perceptually equivalent at equal steps,",
-    "so one step table cannot serve all of them. These two were found by",
-    "test/action-contrast.test.mjs, not by eye:",
-    "  destructive/primary/default — white on dangerScale.600 (#d64539) is 4.40:1, just under",
-    "    AA. The danger ramp only clears 4.5:1 at 700 (#b8382f, 5.76:1), so the whole filled",
-    "    progression shifts up one step to 700/800/900.",
-    "  destructive/tonal/hover — dangerScale.800 on 200 is 4.02:1; 900 on 200 is 6.28:1.",
-    "Add an override here rather than moving the shared step table: the other three intents",
-    "pass comfortably and would lose contrast headroom for no reason.",
+    "so one step table cannot serve all of them. Entries here are found by",
+    "test/action-contrast.test.mjs, not by eye.",
+    "",
+    "REMOVED 2026-08-11 — the whole `destructive` block, because the defect it worked around is",
+    "gone. It read: white on dangerScale.600 (#d64539) is 4.40:1, just under AA, so the filled",
+    "progression shifts up one step to 700/800/900; and dangerScale.800 on 200 is 4.02:1, so",
+    "the tonal hover text shifts to 900. Both were symptoms of a danger ramp anchored at the",
+    "wrong rung — #ec5042 is L* 64, inside the dead zone where no ink reaches 4.5:1. Re-anchored",
+    "at 400 (see build/brand-ramps.mjs) the same rungs measure 6.68:1 and 6.10:1, so destructive",
+    "now uses the SAME step table as every other intent, which is what a shared table is for.",
+    "A workaround kept past its cause is just an inconsistency nobody can explain.",
+    "",
     "  brand/tonal/* — added 2026-08-11 with the regenerated ramps. The Navy brand runs DARKER",
     "    than Blue by design (the two are only 9 degrees apart in hue, so lightness is the only",
     "    thing telling them apart), which makes primaryScale.300 a MID tone in Navy rather than a",
@@ -143,27 +147,6 @@
     "    and keep their headroom at 100/200/300."
   ],
   "overrides": {
-    "destructive": {
-      "primary": {
-        "default": {
-          "bg": "700",
-          "border": "700"
-        },
-        "hover": {
-          "bg": "800",
-          "border": "800"
-        },
-        "active": {
-          "bg": "900",
-          "border": "900"
-        }
-      },
-      "tonal": {
-        "hover": {
-          "text": "900"
-        }
-      }
-    },
     "brand": {
       "tonal": {
         "default": {

@@ -173,37 +173,37 @@
       },
       "dbim": {
         "50": {
-          "$value": "#f9fafd"
+          "$value": "#eef4ff"
         },
         "100": {
-          "$value": "#ccd5e6"
+          "$value": "#d2dfff"
         },
         "200": {
-          "$value": "#a0afcc"
+          "$value": "#a3bbf3"
         },
         "300": {
-          "$value": "#768ab2"
+          "$value": "#7a9ae6"
         },
         "400": {
-          "$value": "#506797"
+          "$value": "#5279d7"
         },
         "500": {
-          "$value": "#30497f"
+          "$value": "#3962c1"
         },
         "600": {
-          "$value": "#162f6a"
+          "$value": "#214aab"
         },
         "700": {
-          "$value": "#0b1f4e"
+          "$value": "#1c3c8a"
         },
         "800": {
-          "$value": "#05143b"
+          "$value": "#162f6a"
         },
         "900": {
-          "$value": "#020b2b"
+          "$value": "#0c1e4a"
         },
         "950": {
-          "$value": "#01041a"
+          "$value": "#041132"
         }
       }
     },

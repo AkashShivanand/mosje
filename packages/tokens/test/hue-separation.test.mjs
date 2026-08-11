@@ -58,9 +58,20 @@ function blockOf(selector) {
 }
 
 const ROOT = blockOf(null);
+/**
+ * EVERY brand the stylesheet emits — discovered, not listed.
+ *
+ * `dbim` was added on 2026-08-11 and this gate kept sweeping only blue and navy, so a third
+ * of the product went unchecked while the suite reported green. That is the failure mode a
+ * hardcoded list always has, so the list is now derived from the sheet: add a brand and it is
+ * covered automatically, and the assertion below fails if the discovery ever finds nothing.
+ */
 const BRANDS = [
   ["blue", ROOT],
-  ["navy", new Map([...ROOT, ...(blockOf('[data-brand="navy"]') ?? [])])],
+  ...[...css.matchAll(/^\[data-brand="([a-z0-9]+)"\]/gm)]
+    .map((m) => m[1])
+    .filter((id, i, a) => a.indexOf(id) === i)
+    .map((id) => [id, new Map([...ROOT, ...(blockOf(`[data-brand="${id}"]`) ?? [])])]),
 ];
 
 /** Resolve a custom property to its literal, following var() chains within a brand. */
@@ -123,13 +134,21 @@ const INTENTIONAL_UNIONS = new Map([
 const SEPARATION_LEDGER = new Map([
   [
     "error|secondary",
-    "India Saffron (hue 41) against the danger red (hue 29): 17 degrees and dE 4.0 at the " +
-      "`subtler` rung, where the two read as #ffe2d8 and #fad2cf. Red and orange are adjacent " +
-      "hues, so this cannot be fixed by moving saffron — which is mandated by the logo and " +
-      "not ours to move. The fix is the DANGER ramp: re-anchoring it deeper and redder pulls " +
-      "the two apart by lightness at matched rungs. Deliberately NOT done in the 2026-08-11 " +
-      "ramp work, which was scoped to the brand ramps; changing the estate's error colour is " +
-      "its own decision with its own review.",
+    "India Saffron (hue 41) against the danger red (hue 29): 12 degrees and dE 4.3 at the " +
+      "`subtler` rung. Red and orange are adjacent hues, so this cannot be fixed by moving " +
+      "saffron — which is mandated by the logo and not ours to move.\n\n" +
+      "This entry used to say the fix was the DANGER ramp, re-anchored deeper and redder. When " +
+      "that ramp WAS regenerated on 2026-08-11 the claim was tested by sweeping the whole " +
+      "parameter space — every anchor from #ec5042 to #b3261e, every rung, every lightness " +
+      "range — and the best separation reachable at the `subtler` rung was dE 11.3, still short " +
+      "of the threshold of 12, and only by starting the ramp at L* 90, which makes the error " +
+      "banner background a saturated pink unlike any other family's. So the old note was " +
+      "wrong: at the pale end of two adjacent hues there is no ramp shape that pulls them " +
+      "apart, because both rungs are nearly white and nearly white is one colour.\n\n" +
+      "What the rebuild did do is not make it worse: `lightest` is 94 rather than the 95-97 " +
+      "used elsewhere precisely to hold dE at 4.3, against 4.0 before. A real fix has to change " +
+      "what one of the two families IS — the candidate is moving danger toward a true crimson " +
+      "(hue ~15) — and that is a decision about the estate's error colour, not a ramp shape.",
   ],
 ]);
 

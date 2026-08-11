@@ -184,6 +184,35 @@ Delete the branch once merged, and **never reuse a branch whose PR was closed** 
 fresh one from current `main`. A stale local branch whose remote was deleted is how this
 repo ended up with `feat/hub-registry-admin` still holding commits after PR #40 was closed.
 
+## Brand modes: `dbim` is CODE-ONLY (standing instruction, 2026-08-11)
+
+The estate carries **three** brand modes on the `data-brand` axis, and they are not equal in
+where they may travel:
+
+| mode | key colour | goes to Figma? |
+|------|-----------|----------------|
+| `blue` (default) | `#0373DF` gov-blue | yes |
+| `navy` | `#003366` | yes |
+| `dbim` | `#162F6A` — DBIM's own key colour | **NO — never, unless explicitly asked** |
+
+`dbim` exists so DBIM's published palette can be evaluated and demonstrated **in the running
+app**. It is DBIM's own Blue primary palette transcribed, not a ramp derived from one anchor:
+DBIM publishes five numbered shades (1 = darkest = key colour → 5 = lightest) and all five are
+reproduced verbatim, with the intervening rungs interpolated. Source: `docs/source-brd/MoSJE
+DBIM Audit.pdf` p.14 (DBIM section 2.1, Figure 1 'Primary palette'). Blue group:
+`1 #162F6A · 2 #214AAB · 3 #5279D7 · 4 #A3BBF3 · 5 #D2DFFF`.
+
+**The Figma library's Palette collection stays `[Blue, Navy]`.** That is enforced by
+construction, not by discipline — `build/formats/figma-variables.mjs` declares those two modes
+as a hardcoded list and reads only `colorModes.navy`, so a third brand cannot reach Figma by
+accident. Do not "fix" that by adding a Dbim mode; adding one is a deliberate act that needs
+asking first.
+
+Two DBIM usage rules ship with the palette and apply wherever `dbim` is active:
+- **Text** uses shade 1 or 2 (DBIM §4.4).
+- **Icons and the footer** use the key colour, i.e. shade 1 (DBIM §3.7, §5.6) — the two
+  checkpoints the MoSJE DBIM audit currently fails.
+
 ## Safety rules (learned the hard way)
 
 - **macOS is case-insensitive.** `Portals` and `portals` are the SAME directory. Never `mkdir` a case-variant of an existing dir, and never `rm -rf` a path you just `mv`'d into a case-colliding name. A `.claude/hooks/guard.sh` PreToolUse hook now **blocks `rm -rf` / `rm -r`, force-push, and other destructive commands** — run those manually and deliberately if truly needed.

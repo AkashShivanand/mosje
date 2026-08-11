@@ -12,7 +12,30 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.14.3 (UX4G WIDGET DOCS RESTORED — the
+  Last reviewed: 2026-08-11 · System version: v0.15.0 (EVERY RAMP NOW OBEYS ONE RULE, and the
+  system has ZERO WCAG AA shortfalls in every brand. The 2026-08-11 rebuild reached only the
+  brand ramps; `dangerScale`, `warningScale`, `infoScale` and `neutralScale` still carried the
+  shape the audit had measured — `danger/400` and `danger/500` 1.8 L* apart, `warning/500`
+  darker AND duller than 400, and a neutral whose hue wandered 22 degrees. All four are now
+  generated from anchors in `build/brand-ramps.mjs` like the rest, so all eight ramps step
+  4-16 L* apart, monotonic, hue held within ~6 degrees, chroma on a single arc.
+  ON THE TWO AA GAPS: `status-error-bolder` (4.40:1) and `status-warning-bolder` (4.46:1) were
+  the last two failures in the estate, and both closed the same way — by anchoring a ramp at
+  the rung its LIGHTNESS says rather than at 500 by convention. #ec5042 is L* 64 and #e09c1d
+  is L* 76; forced to 500 they push the `bolder` rung into the dead zone (roughly L* 59-66)
+  where a fill is too dark for dark ink and too light for white and NEITHER reaches 4.5:1.
+  At 400 and 300 the same rungs measure 6.68:1 and 5.68:1. `KNOWN_BELOW_AA` is now empty.
+  ON THE GREYS: they were always tinted — the defect was that the tint was never CHOSEN. Hue
+  is now locked to the brand's own primary for the whole ramp (255 in blue, 264 in navy) with
+  chroma on one arc peaking ~0.016 in the mid-tones and reaching zero at both ends, so `0` and
+  `1000` stay exactly white and black. The ladder was also re-cut: it used to put four steps
+  inside its lightest 7.7 L* and then cross the middle in two jumps of 15+, which is why there
+  was exactly ONE grey between a light surface and a mid grey. Expect visibly different
+  borders and subtle surfaces — `--ds-border` moves from #f1f3f5 to #dcdee1.
+  DESTRUCTIVE BUTTONS lost their step override and now use the same 600/700/800 progression as
+  every other intent; the override existed only because danger/600 could not carry white text.)
+
+  System version: v0.14.3 (UX4G WIDGET DOCS RESTORED — the
   accessibility widget's entry documented the v3.28 upgrade and was then lost when this
   file's version chain was rewritten, so the code shipped (#34, #35, #37) while its
   authoritative context did not. The component section now records what carries a
@@ -690,8 +713,8 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 
 **Full colour ramps (50–900, synced 1:1 with SAMAVESH Figma `<Family>/*`).** Each ramp is a semantic scale — use these for tints/shades beyond the single-shade status/brand tokens above:
 - `--ds-primary-50` … `--ds-primary-900` — primary (mode-aware: blue in Blue-Light, navy in Blue-Dark)
-- `--ds-secondary-50` … `--ds-secondary-900` — secondary (**mode-aware: saffron in Blue-Light, green in Blue-Dark**; maps to Figma `Secondary/*`)
-- `--ds-neutral-0` … `--ds-neutral-1100` — neutral greys (**brand-aware: warm grey in `blue`, cooler grey in `navy`**; maps to Figma `Neutral/*`). NOTE the canonical names renumbered on 2026-08-11 to match UX4G — `--sa-color-neutralScale-950` is the near-black shade and `-1000` is pure black. The two `--ds-*` names above keep their old spelling and still render what they always did.
+- `--ds-secondary-50` … `--ds-secondary-900` — secondary, India Saffron `#FF671F` from the SAMAVESH logo. **BRAND-INVARIANT** — a brand swap does not touch it. (It used to swap to green in the Navy brand, which landed it 0.3 L\* from the success colour; that is audit finding C-02, fixed 2026-08-11 and pinned by `hue-separation.test.mjs`.) Maps to Figma `Secondary/*`.
+- `--ds-neutral-0` … `--ds-neutral-1100` — neutral greys (**brand-aware: hue-locked to the brand's own primary — 255° in `blue`, 264° in `navy`**; maps to Figma `Neutral/*`). The tint is deliberate and follows a single chroma arc peaking ~0.016 in the mid-tones and falling to zero at both ends, so `0` is exactly `#ffffff` and `1000` exactly `#000000` — the two achromatic values, which is why they live only here and on no chromatic ramp. NOTE the canonical names renumbered on 2026-08-11 to match UX4G — `--sa-color-neutralScale-950` is the near-black shade and `-1000` is pure black; the two `--ds-*` names above keep their old spelling one rung lower.
 - `--ds-success-50` … `--ds-success-900` — mode-invariant (Figma `Success/*`)
 - `--ds-danger-50` … `--ds-danger-900` — mode-invariant (Figma `Danger/*`)
 - `--ds-warning-50` … `--ds-warning-900` — mode-invariant (Figma `Warning/*`)
