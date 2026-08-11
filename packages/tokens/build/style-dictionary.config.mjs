@@ -4,6 +4,7 @@ import { ux4gParityCss } from "./formats/ux4g-parity-css.mjs";
 import { makeRetier, retierCss } from "./formats/retier.mjs";
 import { figmaVariables } from "./formats/figma-variables.mjs";
 import { tierOfFile, toCssName } from "./grammar.mjs";
+import { addDbimBrandModes } from "./dbim-brand-modes.mjs";
 
 /**
  * Wrap a CSS format so every `var(--sa-…)` it emits carries the referent's tier marker
@@ -35,6 +36,20 @@ function nest(tokens) {
 StyleDictionary.registerFormat(figmaVariables);
 StyleDictionary.registerFormat(tierAware(legacyDsCss));
 StyleDictionary.registerFormat(tierAware(ux4gParityCss));
+
+/**
+ * The six DBIM conformance brands, expanded from a rule instead of stored as ~900 JSON
+ * entries. See `build/dbim-brand-modes.mjs` for what they are and why they are synthesised.
+ * Runs before the formats, so `legacy-ds-css` sees the extra `colorModes` keys and emits one
+ * `[data-brand="dbim-…"]` block per group with its alias closure, exactly as for any brand.
+ */
+StyleDictionary.registerPreprocessor({
+  name: "mosje/dbim-brands",
+  preprocessor: (dictionary) => {
+    addDbimBrandModes(dictionary);
+    return dictionary;
+  },
+});
 
 StyleDictionary.registerFormat({
   name: "ts/nested",
@@ -134,6 +149,7 @@ const TRANSFORMS = ["attribute/cti", "name/kebab", "color/css"];
 const BRAND = process.env.BRAND || "mosje";
 
 const sd = new StyleDictionary({
+  preprocessors: ["mosje/dbim-brands"],
   source: [`brands/${BRAND}/brand.json`, "src/primitive.json", "src/semantic.json", "src/system.generated.json", "src/component.json", "src/component.generated.json"],
   platforms: {
     css: {

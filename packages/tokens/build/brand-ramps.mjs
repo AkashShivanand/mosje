@@ -47,8 +47,15 @@
 
 import { readFileSync, writeFileSync } from "node:fs";
 
-import { buildRamp, buildNeutralRamp, describeRamp, STEPS, NEUTRAL_STEPS } from "./ramp.mjs";
-import { hexToRgb } from "./oklch.mjs";
+import {
+  buildRamp,
+  buildNeutralRamp,
+  buildPublishedRamp,
+  describeRamp,
+  STEPS,
+  NEUTRAL_STEPS,
+} from "./ramp.mjs";
+import { hexToRgb, hexToOklch, oklchToHex } from "./oklch.mjs";
 
 const here = (p) => new URL(p, import.meta.url).pathname;
 
@@ -221,6 +228,125 @@ export const NEUTRAL_ANCHORS = {
   neutralDark: { hue: 264.0, note: "the navy/dbim hue (#003366 measures 253.9, #162F6A 264.0)." },
 };
 
+/* ---------------------------------------------------------------- the DBIM conformance modes
+ *
+ * CODE-ONLY, BY STANDING INSTRUCTION. None of this reaches the Figma library: the exporter's
+ * Palette modes are a hardcoded ["Blue", "Navy"] pair and it reads only `colorModes.navy`, so
+ * a DBIM brand cannot leak into Figma by accident. It exists so DBIM conformance can be
+ * DEMONSTRATED in the running app rather than argued about.
+ *
+ * SIX GROUPS, NOT ONE. DBIM's rule is that an organisation selects exactly one primary group,
+ * the one that "best represents the organisation's primary functions". Seeing each of the six
+ * live is the whole point of a conformance preview — MoSJE's selection is Blue, and Blue is
+ * what the estate ships.
+ *
+ * FULL CONFORMANCE, NOT PRIMARY-ONLY. A mode that repainted only the primary ramp would be
+ * mislabelled: DBIM's functional palette differs from this estate's on every status colour
+ * (Liberty Green vs our India Green, Mustard Yellow vs our amber, Coral Red vs our red, DBIM
+ * Blue vs our info), its greys are PURE neutrals rather than brand-tinted, and its body text
+ * is Deep Earthy Brown rather than a neutral step. All of that moves with the mode.
+ *
+ * WHAT DBIM'S OWN PALETTE COSTS, MEASURED RATHER THAN SMOOTHED OVER
+ * ----------------------------------------------------------------
+ * DBIM's own rule 4 is "colour usage must ensure accessibility of digital platform". Its
+ * published palette does not always meet that, and these modes report it rather than correct
+ * it — a conformance palette that has been quietly fixed no longer demonstrates anything:
+ *
+ *   - GREEN group, shade 2 (#2D8686) occupies rung 600 — the `bolder` fill that carries white
+ *     text — at 4.32:1, BELOW WCAG AA. No remedy exists here that is not a rewrite of DBIM's
+ *     own colour, so it is recorded and surfaced instead.
+ *   - The functional statuses are marginal by construction: Liberty Green 4.53:1, Coral Red
+ *     4.53:1 and DBIM Blue 4.50:1 on white all sit within 0.03 of the AA floor.
+ *   - MUSTARD YELLOW #FFC107 is 1.63:1 on white — it cannot carry white text AT ITS PUBLISHED
+ *     VALUE. That is why it is anchored at rung 200, a subtle fill that takes dark ink, rather
+ *     than at 500 by convention; the `bolder` rung two-thirds of the way down the ramp is a
+ *     deep mustard that clears 5.32:1 with white in the ordinary way. Same rule as saffron:
+ *     the identity colour stays reachable at the rung its lightness says, and the filled rung
+ *     is a deeper version of it.
+ */
+
+/** DBIM's six primary groups. Keys are token paths; `brand` is the `data-brand` id. */
+export const DBIM_GROUPS = {
+  dbimBlue: { group: "blue", brand: "dbim-blue", label: "Blue" },
+  dbimBurgundy: { group: "burgundy", brand: "dbim-burgundy", label: "Burgundy" },
+  dbimPurple: { group: "purple", brand: "dbim-purple", label: "Purple" },
+  dbimGreen: { group: "green", brand: "dbim-green", label: "Green" },
+  dbimChromeYellow: { group: "chromeYellow", brand: "dbim-chrome-yellow", label: "Chrome Yellow" },
+  dbimCinnamonRed: { group: "cinnamonRed", brand: "dbim-cinnamon-red", label: "Cinnamon Red" },
+};
+
+/**
+ * Which rung each published shade occupies. Shade 1 is the group's KEY COLOUR.
+ *
+ * Uniform across all six groups rather than fitted per group, and that is deliberate: DBIM
+ * numbers its shades 1-5 with fixed meanings ("shade 1 is the key colour", "text uses shade 1
+ * or 2"), so a designer holding the DBIM chapter must find shade 2 at the same rung whichever
+ * group is active. Fitting each group to its own lightness would put shade 2 on rung 600 in
+ * one group and 700 in another, and DBIM's rules would stop being expressible as a token
+ * reference at all.
+ */
+export const DBIM_SHADE_RUNGS = { 100: "5", 200: "4", 400: "3", 600: "2", 800: "1" };
+
+/**
+ * DBIM's functional palette (Table 1) — group-INDEPENDENT, so all six modes share it.
+ *
+ * Each is a single published colour rather than a ramp, so unlike the primary groups there is
+ * no published ladder to contradict: the value is pinned at the rung its lightness says and
+ * the rest is derived, which is the ordinary `buildRamp` treatment.
+ */
+export const DBIM_FUNCTIONAL = {
+  greenDbim: {
+    anchor: "#198754", anchorStep: 500, lightest: 96, darkest: 19,
+    note: "Liberty Green — DBIM's SUCCESS status.",
+  },
+  amberDbim: {
+    anchor: "#FFC107", anchorStep: 200, lightest: 97.5, darkest: 20,
+    note:
+      "Mustard Yellow — DBIM's WARNING status. ANCHORED AT 200, NOT 500: L* 84 is a TINT, and " +
+      "the rule this system keeps re-learning is that an anchor belongs at the rung its " +
+      "lightness says. It is also the one DBIM status that cannot carry white text anywhere " +
+      "near its published value (1.63:1), which is why its `bolder` fill takes dark ink.",
+  },
+  redDbim: {
+    anchor: "#DC3545", anchorStep: 500, lightest: 96, darkest: 19,
+    note:
+      "Coral Red — DBIM's ERROR status. Anchored at 500 (L* 59) — the same rung our own " +
+      "#ec5042 used to occupy, and 4.53:1 is the same reason it had to leave.",
+  },
+  infoDbim: {
+    anchor: "#0D6EFD", anchorStep: 500, lightest: 96.5, darkest: 18,
+    note:
+      "DBIM Blue — the INFORMATION status, and DBIM's hyperlink colour alongside the selected " +
+      "group's key colour. Anchored at 500 (L* 58), where gov-blue sits at L* 56.",
+  },
+};
+
+/**
+ * DBIM's greys, pinned. PURE neutrals — R=G=B, chroma exactly 0.
+ *
+ * This is the one place a DBIM mode must NOT inherit this estate's treatment. Blue and navy
+ * tint their greys with the brand's own hue on purpose (see `buildNeutralRamp`); DBIM
+ * publishes three flat greys plus a flat Linen, and tinting those would be inventing a colour
+ * DBIM did not issue in the part of the palette where it shows most.
+ */
+export const DBIM_NEUTRAL_PINS = {
+  0: "#ffffff",     // Inclusive white — DBIM's primary page background
+  100: "#ebeaea",   // Linen — highlight backgrounds, quote blocks, component outlines
+  200: "#c6c6c6",   // Functional grey 1
+  400: "#8e8e8e",   // Functional grey 2
+  600: "#606060",   // Functional grey 3
+  1000: "#000000",  // State Emblem on a light background
+};
+
+/**
+ * Deep Earthy Brown — DBIM's body text colour on a light background.
+ *
+ * NOT black (#000000 is reserved for the State Emblem) and NOT a neutral step. 20.16:1 on
+ * white. Deep Blue #1D0A69 is deliberately absent from this entire file: DBIM reserves it for
+ * the Gov.In root site and it must not appear in a departmental palette.
+ */
+export const DBIM_INK = "#150202";
+
 /**
  * Shared shape of both neutral ramps.
  *
@@ -288,6 +414,53 @@ export function generateNeutrals() {
       buildNeutralRamp({ hue, ...NEUTRAL_SHAPE }),
     ]),
   );
+}
+
+/**
+ * Every DBIM ramp: six transcribed primary groups, four derived functional ramps, and one
+ * pure-grey neutral. Returns `{ primary: {...}, functional: {...}, neutral: {...} }`.
+ */
+export function generateDbim() {
+  const groups = JSON.parse(readFileSync(here("../reference/dbim-palette.json"), "utf8"));
+  const published = groups.primaryPalette.groups;
+
+  const primary = {};
+  for (const [path, { group }] of Object.entries(DBIM_GROUPS)) {
+    const shades = published[group];
+    if (!shades) throw new Error(`dbim-palette.json has no primary group "${group}"`);
+    primary[path] = buildPublishedRamp({
+      pins: Object.fromEntries(
+        Object.entries(DBIM_SHADE_RUNGS).map(([rung, shade]) => [rung, shades[shade]]),
+      ),
+    });
+  }
+
+  const functional = Object.fromEntries(
+    Object.entries(DBIM_FUNCTIONAL).map(([name, spec]) => [name, buildRamp(spec)]),
+  );
+
+  // The neutral is pinned rather than derived — DBIM published these greys, and it is a
+  // 13-rung ladder, so it interpolates lightness between pins at chroma exactly 0.
+  const pinnedRungs = Object.keys(DBIM_NEUTRAL_PINS).map(Number).sort((a, b) => a - b);
+  const pinL = Object.fromEntries(
+    pinnedRungs.map((r) => [r, hexToOklch(DBIM_NEUTRAL_PINS[r]).L]),
+  );
+  const neutral = {};
+  NEUTRAL_STEPS.forEach((step, i) => {
+    if (DBIM_NEUTRAL_PINS[step]) {
+      neutral[step] = DBIM_NEUTRAL_PINS[step];
+      return;
+    }
+    const lo = [...pinnedRungs].reverse().find((r) => NEUTRAL_STEPS.indexOf(r) < i);
+    const hi = pinnedRungs.find((r) => NEUTRAL_STEPS.indexOf(r) > i);
+    const li = NEUTRAL_STEPS.indexOf(lo);
+    const hi_i = NEUTRAL_STEPS.indexOf(hi);
+    const t = (i - li) / (hi_i - li);
+    const L = pinL[lo] + (pinL[hi] - pinL[lo]) * t;
+    neutral[step] = oklchToHex({ L, C: 0, H: 0 });
+  });
+
+  return { primary, functional, neutral };
 }
 
 /** A ramp as DTCG `{ "50": { "$value": "#…" }, … }`. */
@@ -363,13 +536,18 @@ function main() {
   const brand = JSON.parse(readFileSync(path, "utf8"));
   const ramps = generateAll();
 
+  const dbim = generateDbim();
+
   brand.color.primaryRamp = {
     $description:
       "Mode-aware PRIMARY brand ramp — the only ramp that changes with `data-brand`. " +
       "GENERATED by build/brand-ramps.mjs from the anchors documented there; do not hand-edit steps.",
     blue: toDtcg(ramps["primaryRamp.blue"]),
     navy: toDtcg(ramps["primaryRamp.navy"]),
-    dbim: toDtcg(ramps["primaryRamp.dbim"]),
+    // Kept for the brand-pack contract (a re-skin may define its own DBIM-equivalent ramp),
+    // but the DBIM conformance MODES no longer read it — they read `color.dbimPrimary.*` in
+    // primitive.json, because DBIM's palette is DBIM's whichever brand this estate wears.
+    dbim: toDtcg(dbim.primary.dbimBlue),
   };
 
   // Both brands get the SAME secondary. The `blue`/`navy` keys are kept so semantic.json's
@@ -445,6 +623,52 @@ function main() {
       ...toDtcg(ramp, NEUTRAL_STEPS),
     };
   }
+
+  // DBIM's functional palette and its pure greys. CODE-ONLY — the Figma exporter reads only
+  // `colorModes.navy`, so nothing here can reach the library.
+  for (const [family, ramp] of Object.entries(dbim.functional)) {
+    primitive.color[family] = {
+      $description:
+        `${DBIM_FUNCTIONAL[family].note} DBIM functional palette (Table 1), group-independent ` +
+        `— shared by all six DBIM conformance modes. CODE-ONLY. GENERATED by ` +
+        `build/brand-ramps.mjs; do not hand-edit steps.`,
+      ...toDtcg(ramp),
+    };
+  }
+  primitive.color.neutralDbim = {
+    $description:
+      "DBIM's greys — PURE neutrals, R=G=B, chroma exactly 0, pinned at Linen #EBEAEA and the " +
+      "three published functional greys. Deliberately NOT tinted the way the blue and navy " +
+      "neutrals are: DBIM publishes flat greys, and tinting them would invent a colour DBIM " +
+      "never issued. CODE-ONLY. GENERATED by build/brand-ramps.mjs; do not hand-edit steps.",
+    ...toDtcg(dbim.neutral, NEUTRAL_STEPS),
+  };
+  // The six DBIM primary groups live in the PRIMITIVE layer, not in a brand pack, because
+  // DBIM's palette is DBIM's whichever brand this estate wears — a re-skin does not get its
+  // own Burgundy. It also means a brand pack that has never heard of DBIM (`brands/_starter`)
+  // still resolves every DBIM mode instead of failing the build on 75 missing references.
+  primitive.color.dbimPrimary = {
+    $description:
+      "DBIM's six primary colour groups, TRANSCRIBED from the DBIM ToolKit 'Colours' chapter " +
+      "(see reference/dbim-palette.json). Each group's five published shades appear VERBATIM at " +
+      "rungs 100/200/400/600/800 — shade 1 is the group's key colour — and the remaining six " +
+      "rungs are interpolated. Never re-derive these from an anchor: a conformance palette that " +
+      "has been re-derived is no longer a conformance palette. CODE-ONLY — the Figma exporter " +
+      "reads only `colorModes.navy`, so none of this can reach the library. GENERATED by " +
+      "build/brand-ramps.mjs; do not hand-edit steps.",
+    ...Object.fromEntries(
+      Object.entries(DBIM_GROUPS).map(([path, { group }]) => [group, toDtcg(dbim.primary[path])]),
+    ),
+  };
+
+  primitive.color.dbimInk = {
+    $description:
+      "Deep Earthy Brown — DBIM's body-text colour on a light background (Table 1). NOT black " +
+      "(#000000 is reserved for the State Emblem) and NOT a neutral step. 20.16:1 on white. " +
+      "CODE-ONLY. GENERATED by build/brand-ramps.mjs.",
+    $value: DBIM_INK,
+  };
+
   writeFileSync(primitivePath, `${JSON.stringify(primitive, null, 2)}\n`);
 
   // The alpha tiers live in semantic.json but are derived from the same anchors, so they are

@@ -28,6 +28,12 @@ export const LEGACY_BRAND_ID = {
   navy: "blue-dark",
   ux4g: "ux4g-light",
   ux4gdeep: "ux4g-dark",
+  // `dbim` shipped on 2026-08-11 as a single DBIM brand, when DBIM's Blue group was the only
+  // one implemented. The other five groups landed the same day and the bare id became the odd
+  // one out in a list of `dbim-burgundy`, `dbim-purple`, … so it was renamed. The old
+  // attribute keeps working as a selector alias, and `LEGACY_COLOR_MODE_IDS` in
+  // `foundations/color-mode.ts` migrates a persisted cookie.
+  "dbim-blue": "dbim",
 };
 
 /** The default brand carries no attribute — it is `:root`. */
@@ -44,6 +50,16 @@ export const LEGACY_BRAND_ATTR = "data-color-mode";
 export function brandSelector(id) {
   const legacy = LEGACY_BRAND_ID[id];
   const parts = [`[${BRAND_ATTR}="${id}"]`];
-  if (legacy) parts.push(`[${LEGACY_BRAND_ATTR}="${legacy}"]`);
+  if (legacy) {
+    parts.push(`[${LEGACY_BRAND_ATTR}="${legacy}"]`);
+    // `dbim` is the one legacy id that was never a `data-color-mode` value — it shipped on the
+    // CURRENT attribute and was renamed to `dbim-blue` when the other five DBIM groups landed.
+    // The others (`blue-dark`, `ux4g-light`, `ux4g-dark`) only ever existed on the old
+    // attribute, so aliasing them on `data-brand` too would claim ids that never shipped.
+    if (RENAMED_ON_CURRENT_ATTR.has(legacy)) parts.push(`[${BRAND_ATTR}="${legacy}"]`);
+  }
   return parts.join(",\n");
 }
+
+/** Legacy ids that were `data-brand` values, not `data-color-mode` values. */
+const RENAMED_ON_CURRENT_ATTR = new Set(["dbim"]);
