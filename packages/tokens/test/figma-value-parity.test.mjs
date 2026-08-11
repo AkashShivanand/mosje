@@ -71,7 +71,12 @@ test("every knownDifference is a real difference, not a stale excuse", () => {
   // Symmetrical with the RENAMES and REMOVED ratchets: an exemption that no longer applies is
   // worse than none, because the next real difference hides behind it.
   const { payload: want, figmaObserved: have, knownDifference = {} } = live.$valueChecksums;
-  const stale = Object.keys(knownDifference).filter((c) => want[c] === have[c]);
+  // `$`-prefixed keys are metadata, the convention this whole snapshot file uses. Without this
+  // filter a `$note` explaining an EMPTY exemption list gets read as a collection, and since
+  // `want.$note` and `have.$note` are both undefined it compares equal and reports itself stale.
+  const stale = Object.keys(knownDifference)
+    .filter((c) => !c.startsWith("$"))
+    .filter((c) => want[c] === have[c]);
   assert.deepEqual(
     stale,
     [],

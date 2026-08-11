@@ -342,11 +342,47 @@ function encodeValue(raw, token, nameByPath, resolvedByPath, selfTarget) {
     if (resolved !== undefined) raw = resolved;
   }
   const t = figmaTypeOf({ ...token, $value: raw, original: { $value: raw, $type: token.original?.$type } });
+  // WEIGHT IS CHECKED BEFORE FLOAT, because a CSS weight IS a number and would otherwise be
+  // projected as one. Figma has no numeric weight: a text style selects a cut by STYLE NAME,
+  // so the variable must be a STRING scoped FONT_STYLE. See figmaFontStyle.
+  if (token.path?.[0] === "font" && token.path?.[1] === "weight") {
+    return { type: "STRING", value: figmaFontStyle(raw) };
+  }
   if (t.type === "FLOAT") return { type: "FLOAT", value: t.number, unit: t.unit };
   if (token.path?.[0] === "font" && token.path?.[1] === "family") {
     return { type: t.type, value: primaryFontFamily(raw) };
   }
   return { type: t.type, value: String(raw) };
+}
+
+/**
+ * CSS numeric weight -> the STYLE NAME Figma addresses that cut by.
+ *
+ * The same shape of mismatch as `primaryFontFamily`, one axis over. A stylesheet says
+ * `font-weight: 700`; Figma has no numeric weight at all — a text style names `fontName.style`,
+ * and the picker offers `Regular` / `Medium` / `SemiBold` / `Bold`. Projecting the number gave
+ * the payload a FLOAT for a variable the library correctly holds as a STRING, so the two
+ * disagreed on all four weights and could not be reconciled from the Figma side: a variable's
+ * `resolvedType` is fixed at creation, so pushing 700 into a STRING was impossible — and would
+ * have broken every text style bound to it if it were not.
+ *
+ * That is why this is fixed HERE and not by a push. The library was already right; the payload
+ * was wrong, and it was the payload claiming a difference that made the two look out of sync.
+ *
+ * The full 100-900 ladder is mapped, not just the four in use, so adding `light` or `black` to
+ * the source does not silently reintroduce a FLOAT. An unmapped value falls back to its own
+ * string rather than a guess — a wrong style name binds to nothing, and a visible
+ * `"350"` in the picker is easier to diagnose than a plausible-but-absent `"Book"`.
+ */
+const FIGMA_FONT_STYLES = new Map([
+  [100, "Thin"], [200, "ExtraLight"], [300, "Light"], [400, "Regular"], [500, "Medium"],
+  [600, "SemiBold"], [700, "Bold"], [800, "ExtraBold"], [900, "Black"],
+]);
+
+function figmaFontStyle(weight) {
+  const n = Number(weight);
+  if (Number.isFinite(n) && FIGMA_FONT_STYLES.has(n)) return FIGMA_FONT_STYLES.get(n);
+  return String(weight);
 }
 
 /**

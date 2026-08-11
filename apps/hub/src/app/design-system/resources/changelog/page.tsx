@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.15.1",
+    version: "v0.15.3",
     date: "2026-08-11",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "THE LAST VALUE DIFFERENCE WITH FIGMA IS CLOSED, and it was closed in the EXPORTER rather than the library. ref/font/weight/* projected CSS numbers (400/500/600/700) into a payload whose live counterparts are STRING font-STYLE names (Regular/Medium/SemiBold/Bold). Figma has no numeric weight at all — a text style selects a cut by fontName.style — so the library was already right and the PAYLOAD was the wrong side. All eight collections are now byte-identical to the library on values" },
+      { kind: "Changed", text: "This one could not have been fixed by pushing, which is why it sat as a recorded exception. A variable resolvedType is fixed at creation, so a FLOAT 700 cannot be written into a STRING variable — and forcing it would have broken every text style bound to the name. The fix had to be on the code side or nowhere" },
+      { kind: "Added", text: "figmaFontStyle maps the full 100-900 ladder, not just the four weights in use, so adding light or black to the source cannot silently reintroduce a FLOAT. An unmapped value falls back to its own string rather than a guess: a visible 350 in the picker is easier to diagnose than a plausible-but-absent Book. Same shape of projection as primaryFontFamily, one axis over" },
+      { kind: "Fixed", text: "A bug in the value-parity gate itself, found immediately by using it: the stale-exemption ratchet read the $-prefixed metadata key inside knownDifference as a collection name, and since neither side has a checksum for it the two compared equal and it reported ITSELF stale. It now skips $-prefixed keys, which is the convention the rest of the snapshot file already uses. Re-verified that it still catches a genuinely stale exemption" },
+      { kind: "Changed", text: "Nothing renders differently. CSS still emits --sa-ref-font-weight-* as 400/500/600/700; only the Figma payload changed, and only in the type it declares for four variables" },
+    ],
+  },
+  {
+    version: "v0.15.1",
+    date: "2026-08-11",
     changes: [
       { kind: "Fixed", text: "THE LIBRARY DISAGREED WITH THE CODE ON 80 VALUES, all under the correct names, which is why nothing had noticed. 13 component tokens were bound to the WRONG palette rung: cmp/action/destructive/primary/* still on danger 700/800/900 after the code moved to 600/700/800, and cmp/action/brand/tonal/* still on primary 100/200/300 — stale since v0.13.0. ref/font/family/mono still held the webfont the code had deliberately reverted. And 54 fluid-type variables carried the OLD tablet curve (body/1/size at 15 where the code says 14.89; body/1/para at 16 where it says 13.77). All pushed" },
       { kind: "Changed", text: "12 font size/lineHeight variables were unlinked LITERALS in Figma where the payload declares aliases into Space — same numbers, but a change to the Space step would not have followed. Now aliased. Every pair was verified value-identical first, so nothing renders differently" },

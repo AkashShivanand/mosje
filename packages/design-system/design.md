@@ -12,7 +12,16 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.15.2 (DESIGN-CONTEXT COVERAGE IS 100% — the
+  Last reviewed: 2026-08-11 · System version: v0.15.3 (CODE AND FIGMA NOW AGREE ON EVERY
+  VALUE, in all eight collections. The last difference was `ref/font/weight/*`, and it was
+  fixed in the EXPORTER, not the library: it projected CSS numbers (400/500/600/700) where
+  Figma holds STRING font-STYLE names (Regular/Medium/SemiBold/Bold), because Figma has no
+  numeric weight — a text style selects a cut by `fontName.style`. The library was already
+  right; the payload was the wrong side, and it could not have been fixed by pushing because a
+  variable’s resolvedType is fixed at creation. Nothing renders differently: CSS still emits
+  400/500/600/700.)
+
+  System version: v0.15.2 (DESIGN-CONTEXT COVERAGE IS 100% — the
   three components the new gate recorded as debt are documented, and the baseline is empty.
   `BrandLockup` (always the National Emblem; a plain `<a>`/`<img>` on purpose, which is what
   makes it server-safe inside a `basePath`-ed zone — do not "upgrade" it to `next/image`),
