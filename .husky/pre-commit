@@ -1,1 +1,52 @@
+# Refuse commits made directly on `main`.
+#
+# Every task, module, feature and fix belongs on its own branch (see "Branching &
+# merging" in CLAUDE.md). This is the gate that makes that a rule rather than an
+# intention, and it is the cheapest of the three: it costs one `git branch` check
+# and it fires BEFORE the work is recorded, when moving it is still free.
+#
+# Why a commit gate and not just the existing pre-push one: `.husky/pre-push`
+# typechecks the hub when main is the target, which catches a broken main but not
+# an unreviewed one. A commit that lands on main has already skipped the PR, and
+# with it the full CI that runs there — the path that "catches everything rather
+# than just unresolved imports". By push time the only remedies are a reset or a
+# branch-and-cherry-pick, both of which people skip when they are in a hurry.
+#
+# Moving work off main after the fact is easy but nobody does it, so the gate has
+# to be here. If you are already on a branch this exits immediately and costs
+# nothing.
+#
+# Genuinely need to commit on main — a hotfix you are about to push alone, or
+# resolving a merge that main itself owns:
+#
+#   git commit --no-verify
+#
+# NOTE: --no-verify skips lint-staged below as well, so run `npm run lint` yourself
+# if you take that path.
+
+# `git branch --show-current`, NOT `rev-parse --abbrev-ref HEAD`: on an unborn branch (a
+# repo with no commits yet) rev-parse errors and yields an empty string, so the check below
+# would silently pass and the gate would fail OPEN. Caught by testing the hook for real in a
+# fresh repo rather than reasoning about it. --show-current reports `main` correctly there,
+# and prints nothing for a detached HEAD, which is the behaviour we want in both cases.
+branch="$(git branch --show-current 2>/dev/null)"
+
+# A merge in progress on main is legitimate — that is how a PR branch lands.
+if [ "$branch" = "main" ] && [ ! -f "$(git rev-parse --git-dir)/MERGE_HEAD" ]; then
+  echo ""
+  echo "✖ pre-commit: you are committing directly on main."
+  echo ""
+  echo "  Every task/module/feature/fix goes on its own branch and reaches main"
+  echo "  through a PR, where the full CI runs. See CLAUDE.md → Branching & merging."
+  echo ""
+  echo "  Move what you have onto a branch — nothing is lost, the work is still staged:"
+  echo ""
+  echo "      git switch -c feat/<short-slug>"
+  echo "      git commit"
+  echo ""
+  echo "  Deliberate exception (skips lint-staged too): git commit --no-verify"
+  echo ""
+  exit 1
+fi
+
 npx lint-staged
