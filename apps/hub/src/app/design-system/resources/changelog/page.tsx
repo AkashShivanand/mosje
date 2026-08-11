@@ -22,9 +22,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.15.0",
+    version: "v0.15.1",
     date: "2026-08-11",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "THE LIBRARY DISAGREED WITH THE CODE ON 80 VALUES, all under the correct names, which is why nothing had noticed. 13 component tokens were bound to the WRONG palette rung: cmp/action/destructive/primary/* still on danger 700/800/900 after the code moved to 600/700/800, and cmp/action/brand/tonal/* still on primary 100/200/300 — stale since v0.13.0. ref/font/family/mono still held the webfont the code had deliberately reverted. And 54 fluid-type variables carried the OLD tablet curve (body/1/size at 15 where the code says 14.89; body/1/para at 16 where it says 13.77). All pushed" },
+      { kind: "Changed", text: "12 font size/lineHeight variables were unlinked LITERALS in Figma where the payload declares aliases into Space — same numbers, but a change to the Space step would not have followed. Now aliased. Every pair was verified value-identical first, so nothing renders differently" },
+      { kind: "Added", text: "A VALUE parity gate (test/figma-value-parity.test.mjs), because every existing check compared NAMES. reference/figma-live.json lists names, figma-roundtrip checks names, and the per-collection checksums were over names — all of it blind to a token bound to the wrong rung. One checksum per collection over name|mode|value now fails the build when a value moves without the library record being refreshed. Mutation-tested: changing one hex digit fails it, naming the collection and both checksums" },
+      { kind: "Fixed", text: "NOT pushed, and correctly so: ref/font/weight/* is the only value difference left. Figma holds these as STRING font-STYLE names (Regular/Medium/SemiBold/Bold) because that is what a text style binds; the payload declares FLOAT 400/500/600/700 because that is what CSS needs. resolvedType cannot change after creation, so the number cannot be pushed — and pushing it would break every text style bound to the string. Recorded as a knownDifference with a ratchet that fails if it ever stops being a real difference" },
+    ],
+  },
+  {
+    version: "v0.15.0",
+    date: "2026-08-11",
     changes: [
       { kind: "Fixed", text: "THE SYSTEM HAS NO WCAG AA SHORTFALL LEFT, in any brand. The last two were bg/status/error/bolder at 4.40:1 and bg/status/warning/bolder at 4.46:1 — the fills that carry white text on a destructive button and a warning chip. Both now measure 6.68:1 and 5.68:1. The known-below-AA list that pinned them is empty for the first time" },
       { kind: "Changed", text: "Both closed the same way, and it is the rule this system keeps re-learning: AN ANCHOR BELONGS AT THE RUNG ITS LIGHTNESS SAYS, not at 500 by convention. #ec5042 is L* 64 and the warning amber is L* 76. Forced to 500, the rung below them lands inside the dead zone — roughly L* 59-66, where a fill is too dark for dark ink and too light for white and NEITHER ink reaches 4.5:1, so that rung cannot be made accessible at all. Anchored at 400 and 300 the ramps clear it comfortably" },
