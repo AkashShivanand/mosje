@@ -1,0 +1,6983 @@
+[
+  {
+    "name": "Andhra Pradesh ",
+    "nodeId": "160:24861",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "4bd08c1e0610e08bb6aad5f3cc1beba72a452091"
+  },
+  {
+    "name": "Arunachal Pradesh",
+    "nodeId": "160:24863",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "79c0b926dc3d853a7e0e62e7bf19780ace4b37f7"
+  },
+  {
+    "name": "Assam",
+    "nodeId": "160:24857",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "b3fd54172edddad42c86765e72ed439ca8a5c7af"
+  },
+  {
+    "name": "Bihar",
+    "nodeId": "160:24868",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "976157b148a74904dd0f5bcfeb6ec1f94f98ce6a"
+  },
+  {
+    "name": "Chattisgarh",
+    "nodeId": "160:24855",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "4ad68915dc35a623c031eb3f9ccf470b87827379"
+  },
+  {
+    "name": "Goa",
+    "nodeId": "160:24847",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "89b3dfc3612cf4c51f60f7888228a8e3de7dfeaf"
+  },
+  {
+    "name": "Gujarat",
+    "nodeId": "160:24869",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "4f54dac109329641c44008ea196444dca21aac50"
+  },
+  {
+    "name": "Haryana",
+    "nodeId": "160:24864",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "cfef6235467ea63817e26e842cca3dd169edd8a9"
+  },
+  {
+    "name": "Himachal Pradesh",
+    "nodeId": "160:24865",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "07852758b056530f3a2df5b1f9934a8c2da8fc1a"
+  },
+  {
+    "name": "Jharkhand",
+    "nodeId": "160:24854",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "af58abd443db55d871817cf2a9b09dee06ec6609"
+  },
+  {
+    "name": "Karnataka",
+    "nodeId": "160:24852",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "c451135572d960b34dc16a0bc23a4b1026f9e0d1"
+  },
+  {
+    "name": "Kerala",
+    "nodeId": "160:24853",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "e876277aef63ac07ca789ea9613dc9e1bb1eb754"
+  },
+  {
+    "name": "Madhya Pradesh",
+    "nodeId": "160:24867",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "41ca46e4b08370cf8c6af36179217e0889f7ac62"
+  },
+  {
+    "name": "Maharashta",
+    "nodeId": "160:24862",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "f5967f99197dc44a14cefcb31642e7240ddadd9b"
+  },
+  {
+    "name": "Manipur",
+    "nodeId": "160:24866",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "f9bdb5c9b754f96b05c0f6a52e3efa56e5d183da"
+  },
+  {
+    "name": "Meghalaya",
+    "nodeId": "160:24850",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "e44e003927a4818a389dcfdb191c55b52e11cb31"
+  },
+  {
+    "name": "Mizoram ",
+    "nodeId": "160:24849",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "6b3194c9cefa4640e1076a6584a3285a78e052d4"
+  },
+  {
+    "name": "Nagaland",
+    "nodeId": "160:24846",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "811ede6d809efc375baaa1c0389f432509b33dcb"
+  },
+  {
+    "name": "Odisha",
+    "nodeId": "160:24858",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "926fce7262d24d19981b6d7b932b4fb31fdf289f"
+  },
+  {
+    "name": "Punjab",
+    "nodeId": "160:24859",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "8c84ec595e4f589c685496eb87e614412c4abb2f"
+  },
+  {
+    "name": "Sikkim",
+    "nodeId": "160:24856",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "c636b1482da70955e7b059608d4c83255be214d0"
+  },
+  {
+    "name": "Tamil nadu",
+    "nodeId": "160:24860",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "bd86bf10f521c873fbd702813b55c641f9d0276e"
+  },
+  {
+    "name": "Tripura",
+    "nodeId": "160:24848",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "c8294ca1ff5f617d7ace5591336c7e3f547d9c22"
+  },
+  {
+    "name": "Uttar Pradesh",
+    "nodeId": "160:24851",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "6f1ee89425ff9ef35d746c83670ff3909363f98c"
+  },
+  {
+    "name": "Uttarakhand",
+    "nodeId": "160:24845",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "a299f6c89275708bd332db98e6fd2bf90448824c"
+  },
+  {
+    "name": "Flag of India",
+    "nodeId": "2277:15548",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "559060f88f0f64f890e21790c3d126a63c9a7626"
+  },
+  {
+    "name": "National Emblem",
+    "nodeId": "534:22126",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 2,
+    "dependencies": [],
+    "assetKey": "0f518fe7d7945f8ad1182f9983231f0de94cafa0"
+  },
+  {
+    "name": "SAMAVESH",
+    "nodeId": "4033:1920",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 1,
+    "dependencies": [],
+    "assetKey": "f2d03148591f5996dae6d78027458ddbb568e344"
+  },
+  {
+    "name": "UX4G Logo",
+    "nodeId": "3032:4874",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 3,
+    "dependencies": [],
+    "assetKey": "a62627c72202da5dc32e12a93a6f08d6c911feaa"
+  },
+  {
+    "name": "Digital India",
+    "nodeId": "534:22119",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "b2733027e787a5bb5f202fa207312ee1c4b5fa41"
+  },
+  {
+    "name": "MyGov",
+    "nodeId": "534:22124",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "cecce35f4e10df5e79d77725a53ae75ab06c8085"
+  },
+  {
+    "name": "NeGD",
+    "nodeId": "534:22120",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "e8d2994e6fa14c32160cdd1f75ccee2118c1075c"
+  },
+  {
+    "name": "Gov.in",
+    "nodeId": "534:22121",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "e6612806d97d8f092253fb5e717d5140aec6c405"
+  },
+  {
+    "name": "Aadhaar",
+    "nodeId": "534:22122",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "a15e35a82253e22bfd1e9b4ddef3cd57594a2608"
+  },
+  {
+    "name": "UPI",
+    "nodeId": "534:22123",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "10f59a0ea27e62427ee233b79d447ac33be88258"
+  },
+  {
+    "name": "MyGov",
+    "nodeId": "534:22125",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "af48fa20da1235d937b7d88ae655b9e76aaed963"
+  },
+  {
+    "name": "Logo",
+    "nodeId": "496:30912",
+    "type": "COMPONENT_SET",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": true,
+    "properties": {
+      "Size": {
+        "name": "Size",
+        "type": "VARIANT",
+        "key": "Size",
+        "variantOptions": [
+          "20px",
+          "56px",
+          "48px",
+          "40px",
+          "32px",
+          "24px"
+        ],
+        "defaultValue": "56px"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "a26b854d2a1c662039db69a182b41766696ad044"
+  },
+  {
+    "name": "Andaman & Nicobar",
+    "nodeId": "160:57382",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "9a0d65cafcb5e167ff3be034b9dc3970e2ac63c7"
+  },
+  {
+    "name": "Chandigarh",
+    "nodeId": "160:57380",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "ea4751375fc6bf375d2e4aa18bbbb68df1b4872e"
+  },
+  {
+    "name": "Dadra and Nagar Haveli and Daman and Diu",
+    "nodeId": "160:57379",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "183b9670df3847933d2848a541d1b9edb3556358"
+  },
+  {
+    "name": "Delhi",
+    "nodeId": "160:57381",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "fac128907a09436f055a95d79e3ab57778dad754"
+  },
+  {
+    "name": "Jammu and Kashmir",
+    "nodeId": "160:57378",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "166b5cfbc11cd16210a1df7dbc8c7a0c99643212"
+  },
+  {
+    "name": "Lakshadweep",
+    "nodeId": "160:57376",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "9aaf458ec284a568348af3f6053f00ab46f4ca5a"
+  },
+  {
+    "name": "Puducherry",
+    "nodeId": "160:57377",
+    "type": "COMPONENT",
+    "pageId": "67:12464",
+    "pageName": "Logos and Misc Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "5d7d7b8c44f4729ea573daf24485830946439a3c"
+  },
+  {
+    "name": "auto_stories",
+    "nodeId": "2316:254",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "ea2bc1c0cd3ca51e7d65f505cda89e7b6ee1f14c"
+  },
+  {
+    "name": "group_search",
+    "nodeId": "2316:261",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "a82f245538a1b800901a4601547b6989f6ea6f19"
+  },
+  {
+    "name": "business_center",
+    "nodeId": "2316:310",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "a30a97b0c00f565722c329d229052be466fd8c26"
+  },
+  {
+    "name": "diversity_3",
+    "nodeId": "2322:375",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "53b3d6c1317ff07caea9bd6a54f10c998a36743f"
+  },
+  {
+    "name": "chevron_right",
+    "nodeId": "2322:425",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "1a548f2ec5fa9fd7654b36e9a1d9fa3c323b8272"
+  },
+  {
+    "name": "ministry",
+    "nodeId": "2322:401",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "444e902e51c8043147f6ea1259ca484a3dbe592d"
+  },
+  {
+    "name": "analytics",
+    "nodeId": "2322:410",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "624daaf0cffa720704d372dcf3b3758f68286849"
+  },
+  {
+    "name": "dehaze",
+    "nodeId": "2535:2012",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "8059e3384c0efbe1d21b87d75d91e6af788b7495"
+  },
+  {
+    "name": "search",
+    "nodeId": "2535:2011",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "0a8eed62587e72822cb91546881d3ac5f9af36da"
+  },
+  {
+    "name": "Aadhaar",
+    "nodeId": "2729:3349",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "a055beb2db75d0d90451a8525f386a59ddd08d2d"
+  },
+  {
+    "name": "accessible_forward",
+    "nodeId": "2749:1077",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "724f0c2e13603c6a4730dc2a6edd7fc977ac8b10"
+  },
+  {
+    "name": "add",
+    "nodeId": "2730:4910",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "01c9002bb5d9526b8bb9d4d0b72bb2919404a8b5"
+  },
+  {
+    "name": "admit-card",
+    "nodeId": "2730:4911",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "a0fa4d29d25cb52b195c8222ce44f8048dcf6c7c"
+  },
+  {
+    "name": "Annual-Reports",
+    "nodeId": "2730:4923",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "d6a53421c30098f44d58720ccb41bc03dbc0af83"
+  },
+  {
+    "name": "apply",
+    "nodeId": "2730:4924",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "4d81b620cf87428b506bc7b1525df3c1f72bdbdc"
+  },
+  {
+    "name": "archives",
+    "nodeId": "2730:4934",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "517ffd862da39452059746ac4866a416c566fef4"
+  },
+  {
+    "name": "arrow-down",
+    "nodeId": "2730:4930",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "4520f1bae8184654e68a1abdf37bd0a712de68a4"
+  },
+  {
+    "name": "arrow-drop-down",
+    "nodeId": "2730:4931",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "239c628505397aeb1d74c52bf022df2dcf669149"
+  },
+  {
+    "name": "filter_list",
+    "nodeId": "2730:4964",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "a231d465109f661d663b66ba41871eacbb02ce2f"
+  },
+  {
+    "name": "ios_share",
+    "nodeId": "2730:4974",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "2823844475c90a0f1c5091145ab9bbbb58483354"
+  },
+  {
+    "name": "edit",
+    "nodeId": "2730:4975",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "4a4b90d20cdd219f50e7751331c9d9ca9ee3b14e"
+  },
+  {
+    "name": "mobile_2",
+    "nodeId": "2730:4989",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "35ea6d4ec958d360db406e48cbe682649b124875"
+  },
+  {
+    "name": "mail",
+    "nodeId": "2730:4909",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "1c608678d64cd8939f23747e59c8c342314e0239"
+  },
+  {
+    "name": "arrow-left",
+    "nodeId": "2730:4912",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "f1793aa726685a0830001b3ae2d69eb3de36ed80"
+  },
+  {
+    "name": "arrow-right",
+    "nodeId": "2730:4922",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "794f42dd8aa81c95c5a0e2844f3937b7cbfa5347"
+  },
+  {
+    "name": "article-person",
+    "nodeId": "2730:4925",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "f7ae48294243d71eaf6ed63f2e73ae0ccac988bf"
+  },
+  {
+    "name": "certificate",
+    "nodeId": "2730:4951",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "067c4b5ab200baffd8c7de6bd61f0df7fd3ebd8c"
+  },
+  {
+    "name": "check",
+    "nodeId": "2730:4933",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "2c7828cb3ca25386d5660e460feeeea71a9434c7"
+  },
+  {
+    "name": "chevron-right",
+    "nodeId": "2730:4932",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "40bceaa4b1a9a8830d23900e87273714a7d9339d"
+  },
+  {
+    "name": "close",
+    "nodeId": "2730:4965",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "3a7a392fbc9bc38095d5adfa17e0000303df3768"
+  },
+  {
+    "name": "Court-Judgments",
+    "nodeId": "2730:4973",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "bd728ae87c20b0b10e9942ac334733e2086206c8"
+  },
+  {
+    "name": "delete",
+    "nodeId": "2730:4976",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "02c3d40360224b179b14b41b9af7c78804327a37"
+  },
+  {
+    "name": "Department of Personnel & Training",
+    "nodeId": "2730:4988",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "79f9e8a3c6bd76a191e180c9a1b899340e1444fc"
+  },
+  {
+    "name": "Department of Personnel & Training",
+    "nodeId": "2730:4908",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "748de49cd6d58e83fe3094823282a421add9cd75"
+  },
+  {
+    "name": "desktop",
+    "nodeId": "2730:4913",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "a7f8826f22d61110e3e67b456e1407bbbbb15679"
+  },
+  {
+    "name": "desktop-filled",
+    "nodeId": "2730:4921",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "b44c41a2182c461351778f6508a2589515dc4eae"
+  },
+  {
+    "name": "Download",
+    "nodeId": "2730:4926",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "49c400f1cdb339e487f82d97744f2688167e8ae8"
+  },
+  {
+    "name": "dynamic-attributes",
+    "nodeId": "2730:4906",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "1db155eac84296f65b07663a9da2dd627ac6677e"
+  },
+  {
+    "name": "elements",
+    "nodeId": "2729:2241",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "c4c8621c9f9f13c2fe4176e9ccdf857c341b1c37"
+  },
+  {
+    "name": "employee-Corner",
+    "nodeId": "2730:4952",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "0b66692209e0792e8a2a0796bd9b5b66118461c7"
+  },
+  {
+    "name": "calendar",
+    "nodeId": "2730:4959",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "d8f99dcb3598c101029ac54821115e3321c4a18b"
+  },
+  {
+    "name": "exam-date",
+    "nodeId": "2730:4960",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "1aa256deaf692de4556cceec404872e4f8b980a6"
+  },
+  {
+    "name": "external-link",
+    "nodeId": "2730:4966",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "96dfc14fcba6e84760003e783cabfb1c806e81d3"
+  },
+  {
+    "name": "visibility_off",
+    "nodeId": "2749:1155",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "ece36243f2a93b6a9efc8e3a85b6e77b26a22d7b"
+  },
+  {
+    "name": "visibility",
+    "nodeId": "2749:1154",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "f8aec0c9b5e64d3be0b0db7b14ef44cdd3d0d27f"
+  },
+  {
+    "name": "facebook",
+    "nodeId": "2730:4972",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "932994216320ec375bb274d8477772975a035fd2"
+  },
+  {
+    "name": "faq",
+    "nodeId": "2730:4977",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "38125fe34dfbc881c123d4ed5c95d3f3556699bf"
+  },
+  {
+    "name": "fullscreen",
+    "nodeId": "2730:4987",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "baecbe723df253308564837e97587ddd5fc5591e"
+  },
+  {
+    "name": "fullscreen-exit",
+    "nodeId": "2730:4907",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "1b433d29e4b1431bd2861db7faeed964f6d29dbb"
+  },
+  {
+    "name": "Green-Initiatives",
+    "nodeId": "2730:4914",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "7bf6475e8528c737c3aeb3dadd30b091f3746725"
+  },
+  {
+    "name": "Indian Country Code",
+    "nodeId": "2729:3331",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "81d41e1b6928a68ddf70d9b3ade54a3d9c957733"
+  },
+  {
+    "name": "indian-flag",
+    "nodeId": "2730:4920",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "11c8ae848a0b340a1e78ed62c3b54dca1dc4e546"
+  },
+  {
+    "name": "language-switch",
+    "nodeId": "2748:1744",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "99f2529b1c7573ba125218ab7984059211a4893d"
+  },
+  {
+    "name": "location",
+    "nodeId": "2730:4927",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "4ea1423087afd86a792ea250331bc4fbdaf18a38"
+  },
+  {
+    "name": "lock",
+    "nodeId": "2749:1082",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "68ab8f95ca403b235f4790356d9219d039be88c8"
+  },
+  {
+    "name": "mobile",
+    "nodeId": "2730:4953",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "a84aab18409f7717c0058b068eb3e0b19b4e3c2e"
+  },
+  {
+    "name": "mobile-filled",
+    "nodeId": "2730:4958",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "73b9e93410ecd5f8e52b2d84993cd51ae8cc0857"
+  },
+  {
+    "name": "navigation/help/active",
+    "nodeId": "2777:152",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "d0aa7845f73e984f9d23d9c8c8cee3c88eb79c30"
+  },
+  {
+    "name": "navigation/help/default",
+    "nodeId": "2777:197",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "8e40d3ec89d816302b58b853ba05ec37bfa5429b"
+  },
+  {
+    "name": "navigation/home/active",
+    "nodeId": "2774:29",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "11c48533f316b73440cc4ba8e45133fac7260119"
+  },
+  {
+    "name": "navigation/home/default",
+    "nodeId": "2774:8",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "1568389c471ebe20d4d5f9b85b6d975f7abd2741"
+  },
+  {
+    "name": "navigation/service/active",
+    "nodeId": "2774:71",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "c42f7ff6eb94785a8903fd5101ecb7dca52e4a25"
+  },
+  {
+    "name": "navigation/service/default",
+    "nodeId": "2774:50",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "0e8128ee700cd5451061026c63edf818bdadeb2d"
+  },
+  {
+    "name": "navigation/track/active",
+    "nodeId": "2774:131",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "4c61a77c23211ea8e3a826f47a2f4ecff069337f"
+  },
+  {
+    "name": "navigation/track/default",
+    "nodeId": "2774:110",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "db430fc1b25797106eeaf707817dcd0e7bf0d9d4"
+  },
+  {
+    "name": "news-letters",
+    "nodeId": "2730:4961",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "1665230314c381ec61f3ae43f9ee9bd41d41c443"
+  },
+  {
+    "name": "notification",
+    "nodeId": "2730:4967",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "09b8f4eea21ff721e35154509f9e3079aca49503"
+  },
+  {
+    "name": "photo",
+    "nodeId": "2729:2231",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "47aab65e5edeb4371821c2634d313c7b48fa18a1"
+  },
+  {
+    "name": "pledge",
+    "nodeId": "2730:4915",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "b47a761611148795e8d40aefbfd7abe5cca8ec02"
+  },
+  {
+    "name": "print",
+    "nodeId": "2730:4919",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "346f3728a4e8701d92a24ddf5a4f7e3d72bd86db"
+  },
+  {
+    "name": "question-papers",
+    "nodeId": "2730:4928",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "2909da62f3a37bd9c0bdf6708b4edce50ce822aa"
+  },
+  {
+    "name": "recruitment",
+    "nodeId": "2730:4954",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "834489b2d49eb529ca4ce15d2a922fe7136728ac"
+  },
+  {
+    "name": "Remove",
+    "nodeId": "2730:4957",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "641a6474bb1030cff234602bc57f8c91809b17f4"
+  },
+  {
+    "name": "replace-image",
+    "nodeId": "2730:4962",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "d575d96a57d8a3053efec77357e1f30862484984"
+  },
+  {
+    "name": "results",
+    "nodeId": "2730:4968",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "25e655464d5121dde86270ecce2e8e350778f1bd"
+  },
+  {
+    "name": "search",
+    "nodeId": "2730:4971",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "172ade294e833fbeb4834724907ea2846ffca220"
+  },
+  {
+    "name": "search-check",
+    "nodeId": "2730:4983",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "905f450e358d38021fa0de3d8e6fffefde4272a8"
+  },
+  {
+    "name": "elderly",
+    "nodeId": "2749:1080",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "09472086222c3e8de4dd95933b675cb96f2a6892"
+  },
+  {
+    "name": "SHe-Box",
+    "nodeId": "2730:4986",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "f3d1f1c05724c08a08a7a42501ea67fac880d794"
+  },
+  {
+    "name": "Single Window / e-Appointment",
+    "nodeId": "2730:4886",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "76ec8f8d297411291adc9c760245c78d1699d86e"
+  },
+  {
+    "name": "speech",
+    "nodeId": "2730:4917",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "af056f0b6ec25724e027e3981e9dde5752dd74d6"
+  },
+  {
+    "name": "State Public Service Commissions",
+    "nodeId": "2730:4918",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "4a111028d506172552cec1122805534178047dff"
+  },
+  {
+    "name": "Swachh bharat",
+    "nodeId": "2730:4929",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "7586aaf0e70d523f61f95abe0cfcca5d40bfcde9"
+  },
+  {
+    "name": "syllabus",
+    "nodeId": "2730:4955",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "8279ea315bf7346c047756d770ef149591503e70"
+  },
+  {
+    "name": "article",
+    "nodeId": "2730:4956",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "49c7aee63262ca1e199849604967700de4076ba1"
+  },
+  {
+    "name": "text",
+    "nodeId": "2729:2251",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "e52d30b5e1014c55cde36381136b2a82b88b0907"
+  },
+  {
+    "name": "track-status",
+    "nodeId": "2730:4963",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "562bf55bdeeb5f639b983192b1baec63cbbce9f2"
+  },
+  {
+    "name": "transgender",
+    "nodeId": "2749:1049",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "65d271f88966d83a9f6ddc5e81549984d8a551c3"
+  },
+  {
+    "name": "trending-down",
+    "nodeId": "2730:4969",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "e473eb2fbfc3b125320a3bdc0a824a333d5269b3"
+  },
+  {
+    "name": "trending-up",
+    "nodeId": "2730:4970",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "825331d8801358f4d9443e599152c4c99c9a6623"
+  },
+  {
+    "name": "vacancies",
+    "nodeId": "2730:4984",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "5ef26faed32d1021d96282732b73287762f68451"
+  },
+  {
+    "name": "business_center",
+    "nodeId": "2730:4985",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "b0808c045d0fd8158a9b85482e5671d036bc22ea"
+  },
+  {
+    "name": "content_copy",
+    "nodeId": "2730:4887",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "6d31aece053ce0c025fed1bc01e715cdcd12486e"
+  },
+  {
+    "name": "x",
+    "nodeId": "2730:4916",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "c66eede02d4478daf350c1ee3302acf2951b51c0"
+  },
+  {
+    "name": "manage_search",
+    "nodeId": "2861:915",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "c4041132b4d537ee0af759d329b75b67ca3a6d36"
+  },
+  {
+    "name": "Rupees",
+    "nodeId": "2863:949",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "adf72b9abaf6f1e8da1bcae930f2be31e5195f3d"
+  },
+  {
+    "name": "Love",
+    "nodeId": "2863:983",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "fcc4071ef26b4eee0d0cb4e234b2ffc99287ace7"
+  },
+  {
+    "name": "Call",
+    "nodeId": "2867:56329",
+    "type": "COMPONENT",
+    "pageId": "2316:246",
+    "pageName": "Icons",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "8822b1f3f6e5776e606b3210ad9581f0ed967788"
+  },
+  {
+    "name": "org-logo",
+    "nodeId": "4273:720",
+    "type": "COMPONENT_SET",
+    "pageId": "4273:695",
+    "pageName": "Org Logos",
+    "hasVariants": true,
+    "properties": {
+      "Org": {
+        "name": "Org",
+        "type": "VARIANT",
+        "key": "Org",
+        "variantOptions": [
+          "NCSC",
+          "NCSK",
+          "NCBC",
+          "NSFDC",
+          "NSKFDC",
+          "NBCFDC",
+          "DAF",
+          "JRF",
+          "DAIC",
+          "DWBDNC",
+          "SCW",
+          "NISD",
+          "NOS",
+          "PM-AJAY",
+          "NMBA",
+          "SMILE",
+          "SAMBAL"
+        ],
+        "defaultValue": "NCSC"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "056c77aee2864cc042df3864a8e61eab9b25772c"
+  },
+  {
+    "name": "Button",
+    "nodeId": "609:283111",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296705",
+    "pageName": "Buttons",
+    "hasVariants": true,
+    "properties": {
+      "Change Icon": {
+        "name": "Change Icon",
+        "type": "INSTANCE_SWAP",
+        "key": "Change Icon#2179:0",
+        "defaultValue": "2141:320270"
+      },
+      "Text": {
+        "name": "Text",
+        "type": "TEXT",
+        "key": "Text#3356:0",
+        "defaultValue": "Button"
+      },
+      "Size": {
+        "name": "Size",
+        "type": "VARIANT",
+        "key": "Size",
+        "variantOptions": [
+          "Large",
+          "Default",
+          "Small"
+        ],
+        "defaultValue": "Default"
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Primary",
+          "Success",
+          "Danger"
+        ],
+        "defaultValue": "Primary"
+      },
+      "Sub-type": {
+        "name": "Sub-type",
+        "type": "VARIANT",
+        "key": "Sub-type",
+        "variantOptions": [
+          "Filled",
+          "Outlined",
+          "Text",
+          "Tonal"
+        ],
+        "defaultValue": "Filled"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Pressed",
+          "Focused",
+          "Disabled"
+        ],
+        "defaultValue": "Default"
+      },
+      "Icon": {
+        "name": "Icon",
+        "type": "VARIANT",
+        "key": "Icon",
+        "variantOptions": [
+          "None",
+          "Left",
+          "Right"
+        ],
+        "defaultValue": "None"
+      }
+    },
+    "childInstanceTags": [
+      "icon"
+    ],
+    "instanceCount": 6,
+    "dependencies": [],
+    "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+  },
+  {
+    "name": "Link",
+    "nodeId": "2723:1598",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296705",
+    "pageName": "Buttons",
+    "hasVariants": true,
+    "properties": {
+      "Size": {
+        "name": "Size",
+        "type": "VARIANT",
+        "key": "Size",
+        "variantOptions": [
+          "Default",
+          "Large",
+          "Small"
+        ],
+        "defaultValue": "Default"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Pressed",
+          "Focused",
+          "Disabled"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "027884e4b03f49bd5167d59392e9dd9e347e9473"
+  },
+  {
+    "name": "IconButton",
+    "nodeId": "3:3497",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296705",
+    "pageName": "Buttons",
+    "hasVariants": true,
+    "properties": {
+      "Change Icon": {
+        "name": "Change Icon",
+        "type": "INSTANCE_SWAP",
+        "key": "Change Icon#2179:541",
+        "defaultValue": "2141:320270"
+      },
+      "Size": {
+        "name": "Size",
+        "type": "VARIANT",
+        "key": "Size",
+        "variantOptions": [
+          "Default",
+          "Large",
+          "Small"
+        ],
+        "defaultValue": "Default"
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Default",
+          "Outlined",
+          "Filled",
+          "Tonal"
+        ],
+        "defaultValue": "Default"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Pressed",
+          "Focused",
+          "Disabled"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "icon"
+    ],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+  },
+  {
+    "name": "CloseButton",
+    "nodeId": "303:9214",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296711",
+    "pageName": "Close Button",
+    "hasVariants": true,
+    "properties": {
+      "Size": {
+        "name": "Size",
+        "type": "VARIANT",
+        "key": "Size",
+        "variantOptions": [
+          "Default",
+          "Large",
+          "Small"
+        ],
+        "defaultValue": "Default"
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Default",
+          "Outlined",
+          "Tonal"
+        ],
+        "defaultValue": "Default"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Pressed",
+          "Focused",
+          "Disabled"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "icon"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "close",
+        "external": true,
+        "assetKey": "50bcb09f0a3082609d581375438bf2f811f7fc5f"
+      }
+    ],
+    "assetKey": "9174d33be195d3d1bf2edfdb0147072c0aab4c69"
+  },
+  {
+    "name": "Checkbox",
+    "nodeId": "15:664",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296710",
+    "pageName": "Checkbox",
+    "hasVariants": true,
+    "properties": {
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Selected",
+          "Intermediate",
+          "Unselected"
+        ],
+        "defaultValue": "Selected"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Enabled",
+          "Disabled",
+          "Hover",
+          "Focused",
+          "Pressed"
+        ],
+        "defaultValue": "Enabled"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 1,
+    "dependencies": [],
+    "assetKey": "f41f0eb6c5b211f05bc5c302e842c8287abb2c60"
+  },
+  {
+    "name": "Chip",
+    "nodeId": "123:28380",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296709",
+    "pageName": "Chips",
+    "hasVariants": true,
+    "properties": {
+      "Badge": {
+        "name": "Badge",
+        "type": "BOOLEAN",
+        "key": "Badge#3820:0",
+        "defaultValue": false
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Default",
+          "Default + Dropdown",
+          "Default + Leading + Dropdown"
+        ],
+        "defaultValue": "Default"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Pressed"
+        ],
+        "defaultValue": "Default"
+      },
+      "Selected": {
+        "name": "Selected",
+        "type": "VARIANT",
+        "key": "Selected",
+        "variantOptions": [
+          "False",
+          "True"
+        ],
+        "defaultValue": "False"
+      },
+      "Disabled": {
+        "name": "Disabled",
+        "type": "VARIANT",
+        "key": "Disabled",
+        "variantOptions": [
+          "False",
+          "True"
+        ],
+        "defaultValue": "False"
+      }
+    },
+    "childInstanceTags": [
+      "Badge",
+      "trailing-icon"
+    ],
+    "instanceCount": 3,
+    "dependencies": [
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      },
+      {
+        "name": "done",
+        "external": true,
+        "assetKey": "99437422897145a55be8c46b6933fa5602678362"
+      },
+      {
+        "name": "arrow_drop_down",
+        "external": true,
+        "assetKey": "1d1486688901161694798d971ced48ce0dce8f33"
+      },
+      {
+        "name": "done",
+        "external": true,
+        "assetKey": "18193d03194bcfdb011687c4ec725a67dd7bc859"
+      },
+      {
+        "name": "close",
+        "external": true,
+        "assetKey": "50bcb09f0a3082609d581375438bf2f811f7fc5f"
+      },
+      {
+        "name": "ac_unit",
+        "external": true,
+        "assetKey": "e618ba53798b57d95fb123ab8dd357f87675c3cf"
+      },
+      {
+        "name": "done",
+        "external": true,
+        "assetKey": "0bb755c213121ac90d85b3d68beef439838b37bd"
+      }
+    ],
+    "assetKey": "87e3bb3c82ce22e42a5e5c4ff97883ed384f4a2b"
+  },
+  {
+    "name": "Chip / User",
+    "nodeId": "123:28471",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296709",
+    "pageName": "Chips",
+    "hasVariants": true,
+    "properties": {
+      "Badge": {
+        "name": "Badge",
+        "type": "BOOLEAN",
+        "key": "Badge#3822:22",
+        "defaultValue": false
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "User Chip"
+        ],
+        "defaultValue": "User Chip"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Pressed",
+          "Disabled"
+        ],
+        "defaultValue": "Default"
+      },
+      "Selected": {
+        "name": "Selected",
+        "type": "VARIANT",
+        "key": "Selected",
+        "variantOptions": [
+          "False",
+          "True"
+        ],
+        "defaultValue": "False"
+      },
+      "Disabled": {
+        "name": "Disabled",
+        "type": "VARIANT",
+        "key": "Disabled",
+        "variantOptions": [
+          "False",
+          "True"
+        ],
+        "defaultValue": "False"
+      }
+    },
+    "childInstanceTags": [
+      "avatar",
+      "Badge",
+      "trailing-icon"
+    ],
+    "instanceCount": 1,
+    "dependencies": [
+      {
+        "name": "avatar",
+        "external": true,
+        "assetKey": "cdde5067f00a9b807f91d7caecc463bd5193c82e"
+      },
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      },
+      {
+        "name": "done",
+        "external": true,
+        "assetKey": "99437422897145a55be8c46b6933fa5602678362"
+      }
+    ],
+    "assetKey": "bdc9521ddf285c3be37c841450067f5e56ddd299"
+  },
+  {
+    "name": "ColorPicker",
+    "nodeId": "404:71926",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296713",
+    "pageName": "Color Picker",
+    "hasVariants": true,
+    "properties": {
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "normal",
+          "focused"
+        ],
+        "defaultValue": "normal"
+      },
+      "Direction": {
+        "name": "Direction",
+        "type": "VARIANT",
+        "key": "Direction",
+        "variantOptions": [
+          "top ↑",
+          "bottom ↓"
+        ],
+        "defaultValue": "top ↑"
+      }
+    },
+    "childInstanceTags": [
+      "input",
+      "components/color-picker-dropdown"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "input",
+        "external": true,
+        "assetKey": "3ea9c99597e7a4e361687d2f2597550f9d0959ac"
+      },
+      {
+        "name": "components/color-picker-dropdown",
+        "external": true,
+        "assetKey": "bd44de06e1ba3c869cdd4b795ce9827c1f661f1e"
+      }
+    ],
+    "assetKey": "9b291fffdd570085751bb9739879693b7a6ef9c3"
+  },
+  {
+    "name": "DatePicker",
+    "nodeId": "169:65175",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296716",
+    "pageName": "Date-Time Picker",
+    "hasVariants": true,
+    "properties": {
+      "Size": {
+        "name": "Size",
+        "type": "VARIANT",
+        "key": "Size",
+        "variantOptions": [
+          "1 month",
+          "Bi-monthly",
+          "Yealy",
+          "Decade"
+        ],
+        "defaultValue": "1 month"
+      }
+    },
+    "childInstanceTags": [
+      "date-picker-dropdown/date",
+      "calendar-card/month",
+      "date-picker-dropdown/month",
+      "date-picker-dropdown/year"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "date-picker-dropdown/date",
+        "external": true,
+        "assetKey": "7b727304819051e7cb8049422442b69fc99dc27c"
+      },
+      {
+        "name": "calendar-card/month",
+        "external": true,
+        "assetKey": "cfb4e80fce7aa234bf0965f3346f6294b12fcaf4"
+      },
+      {
+        "name": "date-picker-dropdown/month",
+        "external": true,
+        "assetKey": "bfc3f741112ee3a124454aadc60690226b2e46af"
+      },
+      {
+        "name": "date-picker-dropdown/year",
+        "external": true,
+        "assetKey": "604527f657da7246492464742d26d4da347845df"
+      }
+    ],
+    "assetKey": "c70e88fead5f39effe32ef649ebddb51c7865aff"
+  },
+  {
+    "name": "DateTimePicker",
+    "nodeId": "169:70125",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296716",
+    "pageName": "Date-Time Picker",
+    "hasVariants": true,
+    "properties": {
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "Date-Time Picker"
+        ],
+        "defaultValue": "Date-Time Picker"
+      },
+      "Property 2": {
+        "name": "Property 2",
+        "type": "VARIANT",
+        "key": "Property 2",
+        "variantOptions": [
+          "Default"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "date-picker-dropdown/datetime"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "date-picker-dropdown/datetime",
+        "external": true,
+        "assetKey": "02bad335c17d5a633c67115645185ac94e0b18fe"
+      }
+    ],
+    "assetKey": "ffb58dd4935f14d65205d004980c7cec4c52a616"
+  },
+  {
+    "name": "TimePicker",
+    "nodeId": "632:276058",
+    "type": "COMPONENT",
+    "pageId": "2141:296716",
+    "pageName": "Date-Time Picker",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "TimePicker / Item",
+      "button",
+      "text/text",
+      "Rectangular button/Small/Primary/Filled/Default/None"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "TimePicker / Item",
+        "external": false,
+        "nodeId": "632:276223",
+        "assetKey": "09a20fe70b2e8645992b1179facba57b1d0c6e84"
+      },
+      {
+        "name": "button",
+        "external": true,
+        "assetKey": "1d7a80c724d4f1d02c05a035c850aca33fd9762d"
+      },
+      {
+        "name": "text/text",
+        "external": true,
+        "assetKey": "2f11abae25261310ebc7fbecefb694613d637c12"
+      },
+      {
+        "name": "Rectangular button/Small/Primary/Filled/Default/None",
+        "external": true,
+        "assetKey": "fa3094bfb615531f6cdd1a127313c3cbc7a6d7d2"
+      }
+    ],
+    "assetKey": "6de45d35cf7240be3b37ee21587ea42cd35b5762"
+  },
+  {
+    "name": "TimePicker / Item",
+    "nodeId": "632:276223",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296716",
+    "pageName": "Date-Time Picker",
+    "hasVariants": true,
+    "properties": {
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "normal",
+          "hovered",
+          "selected"
+        ],
+        "defaultValue": "normal"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "09a20fe70b2e8645992b1179facba57b1d0c6e84"
+  },
+  {
+    "name": "DatePicker / Trigger",
+    "nodeId": "2101:26344",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296716",
+    "pageName": "Date-Time Picker",
+    "hasVariants": true,
+    "properties": {
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Input Fields",
+          "Icon Button"
+        ],
+        "defaultValue": "Input Fields"
+      }
+    },
+    "childInstanceTags": [
+      "Input Field",
+      "IconButton"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Input Field",
+        "external": false,
+        "nodeId": "85:837",
+        "assetKey": "fca6f0243673ec4eaa4f0cba4b3d29ebeca1d533"
+      },
+      {
+        "name": "IconButton",
+        "external": false,
+        "nodeId": "3:3497",
+        "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+      }
+    ],
+    "assetKey": "131e4c7c62464fcbeba10e74687cb594d0513aaf"
+  },
+  {
+    "name": "TimePicker / Trigger",
+    "nodeId": "2101:26352",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296716",
+    "pageName": "Date-Time Picker",
+    "hasVariants": true,
+    "properties": {
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Input Fields",
+          "Icon Button"
+        ],
+        "defaultValue": "Input Fields"
+      }
+    },
+    "childInstanceTags": [
+      "Input Field",
+      "IconButton"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Input Field",
+        "external": false,
+        "nodeId": "85:837",
+        "assetKey": "fca6f0243673ec4eaa4f0cba4b3d29ebeca1d533"
+      },
+      {
+        "name": "IconButton",
+        "external": false,
+        "nodeId": "3:3497",
+        "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+      }
+    ],
+    "assetKey": "28b005bf815a3f5d374216e1a8aac5bf0f23c1d4"
+  },
+  {
+    "name": "Input Area",
+    "nodeId": "87:4945",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296720",
+    "pageName": "Inputs",
+    "hasVariants": true,
+    "properties": {
+      "Placeholder": {
+        "name": "Placeholder",
+        "type": "TEXT",
+        "key": "Placeholder#2029:44",
+        "defaultValue": "Placeholder"
+      },
+      "Input Text": {
+        "name": "Input Text",
+        "type": "TEXT",
+        "key": "Input Text#2029:52",
+        "defaultValue": "Input text"
+      },
+      "Required": {
+        "name": "Required",
+        "type": "BOOLEAN",
+        "key": "Required#6779:0",
+        "defaultValue": false
+      },
+      "Label icon": {
+        "name": "Label icon",
+        "type": "BOOLEAN",
+        "key": "Label icon#6779:8",
+        "defaultValue": false
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Warning",
+          "Empty",
+          "Focused",
+          "Filled",
+          "Error",
+          "Success",
+          "Hover"
+        ],
+        "defaultValue": "Empty"
+      }
+    },
+    "childInstanceTags": [
+      "info_outline"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "info_outline",
+        "external": true,
+        "assetKey": "9d8b7466e47fb3b3b6c84a47b7d3a91f0da39f60"
+      }
+    ],
+    "assetKey": "b6483c271d510c54daa16933017250248b784366"
+  },
+  {
+    "name": "Input Field",
+    "nodeId": "85:837",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296720",
+    "pageName": "Inputs",
+    "hasVariants": true,
+    "properties": {
+      "Label": {
+        "name": "Label",
+        "type": "BOOLEAN",
+        "key": "Label#85:12",
+        "defaultValue": true
+      },
+      "Caption": {
+        "name": "Caption",
+        "type": "BOOLEAN",
+        "key": "Caption#85:31",
+        "defaultValue": true
+      },
+      "Caption icon": {
+        "name": "Caption icon",
+        "type": "BOOLEAN",
+        "key": "Caption icon#85:50",
+        "defaultValue": true
+      },
+      "Left icon": {
+        "name": "Left icon",
+        "type": "BOOLEAN",
+        "key": "Left icon#85:69",
+        "defaultValue": true
+      },
+      "Right icon": {
+        "name": "Right icon",
+        "type": "BOOLEAN",
+        "key": "Right icon#85:88",
+        "defaultValue": true
+      },
+      "Input Text": {
+        "name": "Input Text",
+        "type": "TEXT",
+        "key": "Input Text#2020:0",
+        "defaultValue": "Input Text"
+      },
+      "Placeholder": {
+        "name": "Placeholder",
+        "type": "TEXT",
+        "key": "Placeholder#2029:22",
+        "defaultValue": "Placeholder"
+      },
+      "Required": {
+        "name": "Required",
+        "type": "BOOLEAN",
+        "key": "Required#6767:22",
+        "defaultValue": false
+      },
+      "Label icon": {
+        "name": "Label icon",
+        "type": "BOOLEAN",
+        "key": "Label icon#6767:66",
+        "defaultValue": false
+      },
+      "Size": {
+        "name": "Size",
+        "type": "VARIANT",
+        "key": "Size",
+        "variantOptions": [
+          "Default",
+          "Small",
+          "Large"
+        ],
+        "defaultValue": "Default"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Warning",
+          "Empty",
+          "Focused",
+          "Filled",
+          "Error",
+          "Success",
+          "Hover"
+        ],
+        "defaultValue": "Empty"
+      }
+    },
+    "childInstanceTags": [
+      "info_outline",
+      "Leading_icon",
+      "Trailing_icon",
+      "error_outline",
+      "check_circle_outline",
+      "warning_amber"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "info_outline",
+        "external": true,
+        "assetKey": "9d8b7466e47fb3b3b6c84a47b7d3a91f0da39f60"
+      },
+      {
+        "name": "swappable icon",
+        "external": true,
+        "assetKey": "dacd7b5169b41a7078761158f12d6b61fffe59dd"
+      },
+      {
+        "name": "close",
+        "external": true,
+        "assetKey": "b1b3969fd72207bbd9ccab1e7d84027a11897a6f"
+      },
+      {
+        "name": "error_outline",
+        "external": true,
+        "assetKey": "e734383466caa087625a4b5e938e08caeb4d2a98"
+      },
+      {
+        "name": "check_circle_outline",
+        "external": true,
+        "assetKey": "bb4e8d42732a552ab0ef705ad4d4f22e19cd307b"
+      },
+      {
+        "name": "warning_amber",
+        "external": true,
+        "assetKey": "62cbf5c1e9d82525fadac96ba4c23c0d8975c898"
+      }
+    ],
+    "assetKey": "fca6f0243673ec4eaa4f0cba4b3d29ebeca1d533"
+  },
+  {
+    "name": "Input-container",
+    "nodeId": "2727:1565",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296720",
+    "pageName": "Inputs",
+    "hasVariants": true,
+    "properties": {
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "Filled",
+          "Unfilled",
+          "Focused"
+        ],
+        "defaultValue": "Unfilled"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "a34cc74ad8d6e9ac67363c41a969e804ef29aae0"
+  },
+  {
+    "name": "Input Field — Label & Description",
+    "nodeId": "2727:1578",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296720",
+    "pageName": "Inputs",
+    "hasVariants": true,
+    "properties": {
+      "Label": {
+        "name": "Label",
+        "type": "TEXT",
+        "key": "Label#6518:9",
+        "defaultValue": "Label"
+      },
+      "Show label": {
+        "name": "Show label",
+        "type": "BOOLEAN",
+        "key": "Show label#6518:10",
+        "defaultValue": true
+      },
+      "Description": {
+        "name": "Description",
+        "type": "TEXT",
+        "key": "Description#6518:11",
+        "defaultValue": "Description"
+      },
+      "Show Description": {
+        "name": "Show Description",
+        "type": "BOOLEAN",
+        "key": "Show Description#6518:12",
+        "defaultValue": true
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Filled",
+          "Error"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "info_outline",
+      "Input-container"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "info_outline",
+        "external": true,
+        "assetKey": "593aa97c0f7532578408e903ab533831ab1f3710"
+      },
+      {
+        "name": "Input-container",
+        "external": false,
+        "nodeId": "2727:1565",
+        "assetKey": "a34cc74ad8d6e9ac67363c41a969e804ef29aae0"
+      }
+    ],
+    "assetKey": "df16c1d0a56b307046d03657859a4f39e507b2ef"
+  },
+  {
+    "name": "Radio",
+    "nodeId": "18:791",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323876",
+    "pageName": "Radio Buttons",
+    "hasVariants": true,
+    "properties": {
+      "Selected": {
+        "name": "Selected",
+        "type": "VARIANT",
+        "key": "Selected",
+        "variantOptions": [
+          "False",
+          "True"
+        ],
+        "defaultValue": "True"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Enabled",
+          "Disabled",
+          "Hover",
+          "Pressed",
+          "Focused"
+        ],
+        "defaultValue": "Enabled"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 1,
+    "dependencies": [],
+    "assetKey": "2e23632787973e6b35047e5fbc210956cdebedfe"
+  },
+  {
+    "name": "RangeSlider",
+    "nodeId": "2179:66711",
+    "type": "COMPONENT_SET",
+    "pageId": "2179:67252",
+    "pageName": "Range Slider",
+    "hasVariants": true,
+    "properties": {
+      "Label": {
+        "name": "Label",
+        "type": "VARIANT",
+        "key": "Label",
+        "variantOptions": [
+          "False",
+          "Bottom"
+        ],
+        "defaultValue": "False"
+      },
+      "Right control": {
+        "name": "Right control",
+        "type": "VARIANT",
+        "key": "Right control",
+        "variantOptions": [
+          "25%",
+          "50%",
+          "75%",
+          "100%"
+        ],
+        "defaultValue": "25%"
+      },
+      "Left control": {
+        "name": "Left control",
+        "type": "VARIANT",
+        "key": "Left control",
+        "variantOptions": [
+          "0%",
+          "25%",
+          "50%",
+          "75%"
+        ],
+        "defaultValue": "0%"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "af5bf96de0c8a7081ad4f1d27032787cacbf791a"
+  },
+  {
+    "name": "Search",
+    "nodeId": "399:1808",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323878",
+    "pageName": "Search",
+    "hasVariants": true,
+    "properties": {
+      "AI Assistant": {
+        "name": "AI Assistant",
+        "type": "BOOLEAN",
+        "key": "AI Assistant#399:0",
+        "defaultValue": true
+      },
+      "Voice Search": {
+        "name": "Voice Search",
+        "type": "BOOLEAN",
+        "key": "Voice Search#399:7",
+        "defaultValue": true
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused",
+          "Filled",
+          "Disabled"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "IconButton",
+      "2nd trailing-icon"
+    ],
+    "instanceCount": 1,
+    "dependencies": [
+      {
+        "name": "IconButton",
+        "external": false,
+        "nodeId": "3:3497",
+        "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+      }
+    ],
+    "assetKey": "d8cc346da011a7e5b17951af2c14e70b51389bea"
+  },
+  {
+    "name": "Toggle",
+    "nodeId": "23:599",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323883",
+    "pageName": "Toggle",
+    "hasVariants": true,
+    "properties": {
+      "Selected": {
+        "name": "Selected",
+        "type": "VARIANT",
+        "key": "Selected",
+        "variantOptions": [
+          "True",
+          "False"
+        ],
+        "defaultValue": "True"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Press",
+          "Focused",
+          "Disabled"
+        ],
+        "defaultValue": "Default"
+      },
+      "Size": {
+        "name": "Size",
+        "type": "VARIANT",
+        "key": "Size",
+        "variantOptions": [
+          "Default",
+          "Small"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 2,
+    "dependencies": [],
+    "assetKey": "b0729ff0256c202cfef0c1c55377ff58cc941802"
+  },
+  {
+    "name": "Accordion / Item",
+    "nodeId": "395:67819",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296700",
+    "pageName": "Accordion",
+    "hasVariants": true,
+    "properties": {
+      "Content": {
+        "name": "Content",
+        "type": "INSTANCE_SWAP",
+        "key": "Content#1665:220",
+        "defaultValue": "165:2270"
+      },
+      "Active": {
+        "name": "Active",
+        "type": "VARIANT",
+        "key": "Active",
+        "variantOptions": [
+          "true",
+          "false"
+        ],
+        "defaultValue": "false"
+      },
+      "Disabled": {
+        "name": "Disabled",
+        "type": "VARIANT",
+        "key": "Disabled",
+        "variantOptions": [
+          "true",
+          "false"
+        ],
+        "defaultValue": "false"
+      },
+      "Borderless": {
+        "name": "Borderless",
+        "type": "VARIANT",
+        "key": "Borderless",
+        "variantOptions": [
+          "false",
+          "true"
+        ],
+        "defaultValue": "false"
+      },
+      "Clicked": {
+        "name": "Clicked",
+        "type": "VARIANT",
+        "key": "Clicked",
+        "variantOptions": [
+          "false",
+          "true"
+        ],
+        "defaultValue": "false"
+      }
+    },
+    "childInstanceTags": [
+      "layout-blocks/base",
+      "title",
+      "icon",
+      ".AccordionLayoutBlocks"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "layout-blocks/base",
+        "external": true,
+        "assetKey": "d2b0f9efd1681f5bc70252dcb622375da6b96feb"
+      },
+      {
+        "name": "text/title",
+        "external": true,
+        "assetKey": "31d36caafc8bf4df5205359aba846428e7555dd6"
+      },
+      {
+        "name": "chevron_left",
+        "external": true,
+        "assetKey": "05a6a85d8a2bf9350dfedff1f50720b1a48123c0"
+      },
+      {
+        "name": ".AccordionLayoutBlocks",
+        "external": false,
+        "nodeId": "193:6540",
+        "assetKey": "a33ed4b486e736b53828383534c3720a39c8b5a6"
+      }
+    ],
+    "assetKey": "4016dbd021323aec54c61435a22eb513781c17e9"
+  },
+  {
+    "name": "Accordion",
+    "nodeId": "395:67692",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296700",
+    "pageName": "Accordion",
+    "hasVariants": true,
+    "properties": {
+      "Item Count": {
+        "name": "Item Count",
+        "type": "VARIANT",
+        "key": "Item Count",
+        "variantOptions": [
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10"
+        ],
+        "defaultValue": "3"
+      },
+      "Stroke": {
+        "name": "Stroke",
+        "type": "VARIANT",
+        "key": "Stroke",
+        "variantOptions": [
+          "false",
+          "true"
+        ],
+        "defaultValue": "false"
+      }
+    },
+    "childInstanceTags": [
+      "Accordion / Item"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Accordion / Item",
+        "external": false,
+        "nodeId": "395:67819",
+        "assetKey": "4016dbd021323aec54c61435a22eb513781c17e9"
+      }
+    ],
+    "assetKey": "f396b0c839ba419fd525592e96d9e3872adb2b00"
+  },
+  {
+    "name": ".AccordionLayoutBlocks",
+    "nodeId": "193:6540",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296700",
+    "pageName": "Accordion",
+    "hasVariants": true,
+    "properties": {
+      "Text": {
+        "name": "Text",
+        "type": "TEXT",
+        "key": "Text#193:0",
+        "defaultValue": "Place your content here"
+      },
+      "Content": {
+        "name": "Content",
+        "type": "VARIANT",
+        "key": "Content",
+        "variantOptions": [
+          "Others",
+          "Text"
+        ],
+        "defaultValue": "Others"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "a33ed4b486e736b53828383534c3720a39c8b5a6"
+  },
+  {
+    "name": "Breadcrumb",
+    "nodeId": "76:179",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296704",
+    "pageName": "Breadcrumbs",
+    "hasVariants": true,
+    "properties": {
+      "Level": {
+        "name": "Level",
+        "type": "VARIANT",
+        "key": "Level",
+        "variantOptions": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "4+"
+        ],
+        "defaultValue": "1"
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Default",
+          "Divider icons"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 7,
+    "dependencies": [],
+    "assetKey": "5c8453b47c94451d8de63fdc43366260cc29e88d"
+  },
+  {
+    "name": "Dropdown",
+    "nodeId": "485:136599",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296718",
+    "pageName": "Dropdown",
+    "hasVariants": true,
+    "properties": {
+      "Arrow": {
+        "name": "Arrow",
+        "type": "VARIANT",
+        "key": "Arrow",
+        "variantOptions": [
+          "no arrow",
+          "top left",
+          "top center",
+          "top right",
+          "bottom left",
+          "bottom center",
+          "bottom right"
+        ],
+        "defaultValue": "no arrow"
+      },
+      "Items": {
+        "name": "Items",
+        "type": "VARIANT",
+        "key": "Items",
+        "variantOptions": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ],
+        "defaultValue": "3"
+      }
+    },
+    "childInstanceTags": [
+      "Dropdown / MenuItem"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Dropdown / MenuItem",
+        "external": false,
+        "nodeId": "485:139372",
+        "assetKey": "e94452a622ba8ce90ebb6757468c2509f9867f0f"
+      }
+    ],
+    "assetKey": "c7eb380a460cefb7badcdbddeb325af3df2f2162"
+  },
+  {
+    "name": "Dropdown / MenuItem",
+    "nodeId": "485:139372",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296718",
+    "pageName": "Dropdown",
+    "hasVariants": true,
+    "properties": {
+      "Extra": {
+        "name": "Extra",
+        "type": "BOOLEAN",
+        "key": "Extra#1707:0",
+        "defaultValue": false
+      },
+      "Extra Instance": {
+        "name": "Extra Instance",
+        "type": "INSTANCE_SWAP",
+        "key": "Extra Instance#1707:38",
+        "defaultValue": "485:99674"
+      },
+      "Custom Instance": {
+        "name": "Custom Instance",
+        "type": "INSTANCE_SWAP",
+        "key": "Custom Instance#1707:76",
+        "defaultValue": "485:99672"
+      },
+      "Arrow": {
+        "name": "Arrow",
+        "type": "BOOLEAN",
+        "key": "Arrow#1722:0",
+        "defaultValue": false
+      },
+      "Icon": {
+        "name": "Icon",
+        "type": "BOOLEAN",
+        "key": "Icon#1722:14",
+        "defaultValue": false
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Item",
+          "Header",
+          "Divider",
+          "Custom"
+        ],
+        "defaultValue": "Item"
+      },
+      "Hovered": {
+        "name": "Hovered",
+        "type": "VARIANT",
+        "key": "Hovered",
+        "variantOptions": [
+          "True",
+          "False"
+        ],
+        "defaultValue": "False"
+      },
+      "Active": {
+        "name": "Active",
+        "type": "VARIANT",
+        "key": "Active",
+        "variantOptions": [
+          "True",
+          "False"
+        ],
+        "defaultValue": "False"
+      },
+      "Disabled": {
+        "name": "Disabled",
+        "type": "VARIANT",
+        "key": "Disabled",
+        "variantOptions": [
+          "True",
+          "False"
+        ],
+        "defaultValue": "False"
+      }
+    },
+    "childInstanceTags": [
+      "icon",
+      "text",
+      "layout-blocks/horizontal×1",
+      "arrow",
+      "layout-blocks/base"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "icon-wrapper",
+        "external": true,
+        "assetKey": "9690304e130f2355d3dd7c8ff41c799b75c250dd"
+      },
+      {
+        "name": "text/text",
+        "external": true,
+        "assetKey": "2f11abae25261310ebc7fbecefb694613d637c12"
+      }
+    ],
+    "assetKey": "e94452a622ba8ce90ebb6757468c2509f9867f0f"
+  },
+  {
+    "name": ".PaginationPage",
+    "nodeId": "522:216215",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323872",
+    "pageName": "Pagination",
+    "hasVariants": true,
+    "properties": {
+      "selected": {
+        "name": "selected",
+        "type": "VARIANT",
+        "key": "selected",
+        "variantOptions": [
+          "true",
+          "false"
+        ],
+        "defaultValue": "false"
+      },
+      "state": {
+        "name": "state",
+        "type": "VARIANT",
+        "key": "state",
+        "variantOptions": [
+          "default",
+          "hover",
+          "focus",
+          "clicked",
+          "disabled"
+        ],
+        "defaultValue": "default"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "11bf8266ed750bd9f74cc0b102077ad82de44ffb"
+  },
+  {
+    "name": "Pagination",
+    "nodeId": "522:216228",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323872",
+    "pageName": "Pagination",
+    "hasVariants": true,
+    "properties": {
+      "Selceted": {
+        "name": "Selceted",
+        "type": "VARIANT",
+        "key": "Selceted",
+        "variantOptions": [
+          "First",
+          "middle",
+          "last"
+        ],
+        "defaultValue": "First"
+      },
+      "item control": {
+        "name": "item control",
+        "type": "VARIANT",
+        "key": "item control",
+        "variantOptions": [
+          "true",
+          "false"
+        ],
+        "defaultValue": "true"
+      }
+    },
+    "childInstanceTags": [
+      "Rectangular - Icon only ",
+      ".PaginationPage",
+      "select"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Rectangular - Icon only ",
+        "external": true,
+        "assetKey": "0a06535e2e85845ba90a36e74ef28b9b25791225"
+      },
+      {
+        "name": ".PaginationPage",
+        "external": false,
+        "nodeId": "522:216215",
+        "assetKey": "11bf8266ed750bd9f74cc0b102077ad82de44ffb"
+      },
+      {
+        "name": "select",
+        "external": true,
+        "assetKey": "cf4b22415405437d98ef3d90e329a7241431cad7"
+      }
+    ],
+    "assetKey": "ca7fadea62cc2237007cf4714e7d2e4837c6c101"
+  },
+  {
+    "name": "Pagination / Dropdown",
+    "nodeId": "523:232317",
+    "type": "COMPONENT",
+    "pageId": "2141:323872",
+    "pageName": "Pagination",
+    "hasVariants": false,
+    "properties": {
+      "Page number": {
+        "name": "Page number",
+        "type": "BOOLEAN",
+        "key": "Page number#523:0",
+        "defaultValue": true
+      },
+      "Items per page": {
+        "name": "Items per page",
+        "type": "BOOLEAN",
+        "key": "Items per page#523:1",
+        "defaultValue": true
+      }
+    },
+    "childInstanceTags": [
+      "Pagination",
+      "Dropdown",
+      "Cursor"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Pagination",
+        "external": false,
+        "nodeId": "522:216228",
+        "assetKey": "ca7fadea62cc2237007cf4714e7d2e4837c6c101"
+      },
+      {
+        "name": "Dropdown",
+        "external": false,
+        "nodeId": "485:136599",
+        "assetKey": "c7eb380a460cefb7badcdbddeb325af3df2f2162"
+      },
+      {
+        "name": "Cursor",
+        "external": true,
+        "assetKey": "7afe8f2a811b08baf022275dc3ef1e2edb231360"
+      }
+    ],
+    "assetKey": "1701aaa57a10e48500353ed867a620e737d0778f"
+  },
+  {
+    "name": "Stepper / Vertical",
+    "nodeId": "2106:659",
+    "type": "COMPONENT_SET",
+    "pageId": "2106:2",
+    "pageName": "Stepper",
+    "hasVariants": true,
+    "properties": {
+      "Horizontal Line": {
+        "name": "Horizontal Line",
+        "type": "BOOLEAN",
+        "key": "Horizontal Line#2106:0",
+        "defaultValue": true
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "With Step Numbers",
+          "No Step Number"
+        ],
+        "defaultValue": "With Step Numbers"
+      },
+      "Label Position": {
+        "name": "Label Position",
+        "type": "VARIANT",
+        "key": "Label Position",
+        "variantOptions": [
+          "Right",
+          "Bottom"
+        ],
+        "defaultValue": "Right"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Current",
+          "Completed",
+          "Incomplete",
+          "Error"
+        ],
+        "defaultValue": "Current"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 1,
+    "dependencies": [],
+    "assetKey": "6d390ebc2415d35c46ed6f9387c8419b8455a466"
+  },
+  {
+    "name": "Stepper / Horizontal",
+    "nodeId": "2106:856",
+    "type": "COMPONENT_SET",
+    "pageId": "2106:2",
+    "pageName": "Stepper",
+    "hasVariants": true,
+    "properties": {
+      "Horizontal Line": {
+        "name": "Horizontal Line",
+        "type": "BOOLEAN",
+        "key": "Horizontal Line #2106:0",
+        "defaultValue": true
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "With Step Numbers",
+          "No Step Number"
+        ],
+        "defaultValue": "With Step Numbers"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Current",
+          "Completed",
+          "Incomplete",
+          "Error"
+        ],
+        "defaultValue": "Current"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "5f7c508115f38fdcf687d23918dd1d48b6b78ed2"
+  },
+  {
+    "name": "Stepper / Example - Vertical, no numbers",
+    "nodeId": "2106:855",
+    "type": "COMPONENT",
+    "pageId": "2106:2",
+    "pageName": "Stepper",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "Stepper / Vertical"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Stepper / Vertical",
+        "external": false,
+        "nodeId": "2106:659",
+        "assetKey": "6d390ebc2415d35c46ed6f9387c8419b8455a466"
+      }
+    ],
+    "assetKey": "37e21e76056f54a75782fe6611089d0921015ec6"
+  },
+  {
+    "name": "Stepper / Example - Vertical, numbers",
+    "nodeId": "2106:854",
+    "type": "COMPONENT",
+    "pageId": "2106:2",
+    "pageName": "Stepper",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "Stepper / Vertical"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Stepper / Vertical",
+        "external": false,
+        "nodeId": "2106:659",
+        "assetKey": "6d390ebc2415d35c46ed6f9387c8419b8455a466"
+      }
+    ],
+    "assetKey": "f0ed9d8ef6740a71cbf9750aa8f4995912abab82"
+  },
+  {
+    "name": "Stepper / Example - Horizontal, numbers",
+    "nodeId": "2106:1122",
+    "type": "COMPONENT",
+    "pageId": "2106:2",
+    "pageName": "Stepper",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "Stepper / Horizontal"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Stepper / Horizontal",
+        "external": false,
+        "nodeId": "2106:856",
+        "assetKey": "5f7c508115f38fdcf687d23918dd1d48b6b78ed2"
+      }
+    ],
+    "assetKey": "cc8f1ed749d9ba6c241b8680e95b239c3ac86d3a"
+  },
+  {
+    "name": "Stepper / Example - Horizontal, no numbers",
+    "nodeId": "2106:1123",
+    "type": "COMPONENT",
+    "pageId": "2106:2",
+    "pageName": "Stepper",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "Stepper / Horizontal"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Stepper / Horizontal",
+        "external": false,
+        "nodeId": "2106:856",
+        "assetKey": "5f7c508115f38fdcf687d23918dd1d48b6b78ed2"
+      }
+    ],
+    "assetKey": "09121b314f1049e5c4309a57b5763a350b46fc9f"
+  },
+  {
+    "name": "Stepper / Step Count",
+    "nodeId": "2741:1403",
+    "type": "COMPONENT_SET",
+    "pageId": "2106:2",
+    "pageName": "Stepper",
+    "hasVariants": true,
+    "properties": {
+      "Step Count Type": {
+        "name": "Step Count Type",
+        "type": "VARIANT",
+        "key": "Step Count Type",
+        "variantOptions": [
+          "First Step Active",
+          "First Step Inactive",
+          "Last Step Active",
+          "Last Step Inactive",
+          "Step Active",
+          "Step Inactive",
+          "Step Error",
+          "Step countCompleted",
+          "First Step Completed",
+          "Last Step Completed"
+        ],
+        "defaultValue": "First Step Active"
+      }
+    },
+    "childInstanceTags": [
+      "warning"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "warning",
+        "external": true,
+        "assetKey": "b66fd0045c2f927ada6e7d7ebab58b186106d81c"
+      }
+    ],
+    "assetKey": "29ace5b424ee865043cb934a45414994d68eb6b0"
+  },
+  {
+    "name": "Stepper / Step",
+    "nodeId": "2741:1460",
+    "type": "COMPONENT_SET",
+    "pageId": "2106:2",
+    "pageName": "Stepper",
+    "hasVariants": true,
+    "properties": {
+      "Description": {
+        "name": "Description",
+        "type": "TEXT",
+        "key": "Description#2741:0",
+        "defaultValue": "Stepper info"
+      },
+      "Show Description": {
+        "name": "Show Description",
+        "type": "BOOLEAN",
+        "key": "Show Description#2741:7",
+        "defaultValue": true
+      },
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "Error",
+          "Inactive",
+          "Step with both progress indicator",
+          "Step with left progress indicator",
+          "Step with right progress indicator",
+          "Completed"
+        ],
+        "defaultValue": "Step with right progress indicator"
+      }
+    },
+    "childInstanceTags": [
+      "Stepper / Step Count"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Stepper / Step Count",
+        "external": false,
+        "nodeId": "2741:1403",
+        "assetKey": "29ace5b424ee865043cb934a45414994d68eb6b0"
+      }
+    ],
+    "assetKey": "5591721d83b0854ea017c75422ed3e69d08390c4"
+  },
+  {
+    "name": "Stepper / Style",
+    "nodeId": "2741:1491",
+    "type": "COMPONENT_SET",
+    "pageId": "2106:2",
+    "pageName": "Stepper",
+    "hasVariants": true,
+    "properties": {
+      "Stepper Type": {
+        "name": "Stepper Type",
+        "type": "VARIANT",
+        "key": "Stepper Type",
+        "variantOptions": [
+          "Default",
+          "Step 1 Completed",
+          "Step 2 Complete",
+          "Step 3 Completed",
+          "Step 4 Completed",
+          "Step 5 Completed",
+          "All Steps Completed"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "Stepper / Step"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Stepper / Step",
+        "external": false,
+        "nodeId": "2741:1460",
+        "assetKey": "5591721d83b0854ea017c75422ed3e69d08390c4"
+      }
+    ],
+    "assetKey": "cfbbf0ba35537adfaa7b823927253da5c4deac32"
+  },
+  {
+    "name": "Tabs",
+    "nodeId": "2316:389",
+    "type": "COMPONENT",
+    "pageId": "4645:10196",
+    "pageName": "Tabs",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "Tabs / Tab"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Tabs / Tab",
+        "external": false,
+        "nodeId": "2316:353",
+        "assetKey": "0b1d7214f8d56bfbfc9a7e72dea52c16af734239"
+      }
+    ],
+    "assetKey": "9a9efcece8f5710f35100c592c506be85f3ed150"
+  },
+  {
+    "name": "Tabs / Tab",
+    "nodeId": "2316:353",
+    "type": "COMPONENT_SET",
+    "pageId": "4645:10196",
+    "pageName": "Tabs",
+    "hasVariants": true,
+    "properties": {
+      "Instance": {
+        "name": "Instance",
+        "type": "INSTANCE_SWAP",
+        "key": "Instance#2316:0",
+        "defaultValue": "2316:254"
+      },
+      "Label": {
+        "name": "Label",
+        "type": "TEXT",
+        "key": "Label#2316:3",
+        "defaultValue": "Label"
+      },
+      "Show Icon": {
+        "name": "Show Icon",
+        "type": "BOOLEAN",
+        "key": "Show Icon#2316:6",
+        "defaultValue": true
+      },
+      "Active": {
+        "name": "Active",
+        "type": "VARIANT",
+        "key": "Active",
+        "variantOptions": [
+          "True",
+          "False"
+        ],
+        "defaultValue": "True"
+      }
+    },
+    "childInstanceTags": [
+      "auto_stories"
+    ],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "0b1d7214f8d56bfbfc9a7e72dea52c16af734239"
+  },
+  {
+    "name": "Tabs / Example",
+    "nodeId": "2725:1351",
+    "type": "COMPONENT",
+    "pageId": "4645:10196",
+    "pageName": "Tabs",
+    "hasVariants": false,
+    "properties": {
+      "Container": {
+        "name": "Container",
+        "type": "SLOT",
+        "key": "Container#2921:0",
+        "defaultValue": "-1:-1"
+      }
+    },
+    "childInstanceTags": [
+      "Tabs / Tab (Alt)"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Tabs / Tab (Alt)",
+        "external": false,
+        "nodeId": "2725:1217",
+        "assetKey": "5f17a3dafb42d70da8b47cafab0025ba698422e4"
+      }
+    ],
+    "assetKey": "e8783f6372e9938f3e50b894d6cb40b6271e643f"
+  },
+  {
+    "name": "Tabs / Tab (Alt)",
+    "nodeId": "2725:1217",
+    "type": "COMPONENT_SET",
+    "pageId": "4645:10196",
+    "pageName": "Tabs",
+    "hasVariants": true,
+    "properties": {
+      "Instance": {
+        "name": "Instance",
+        "type": "INSTANCE_SWAP",
+        "key": "Instance#2316:0",
+        "defaultValue": "2730:4955"
+      },
+      "Label": {
+        "name": "Label",
+        "type": "TEXT",
+        "key": "Label#2316:3",
+        "defaultValue": "Label"
+      },
+      "Show Icon": {
+        "name": "Show Icon",
+        "type": "BOOLEAN",
+        "key": "Show Icon#2316:6",
+        "defaultValue": true
+      },
+      "Active": {
+        "name": "Active",
+        "type": "VARIANT",
+        "key": "Active",
+        "variantOptions": [
+          "True",
+          "False"
+        ],
+        "defaultValue": "True"
+      }
+    },
+    "childInstanceTags": [
+      "syllabus"
+    ],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "5f17a3dafb42d70da8b47cafab0025ba698422e4"
+  },
+  {
+    "name": ".ToastStatus",
+    "nodeId": "220:7769",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296701",
+    "pageName": "Alerts/Toasts",
+    "hasVariants": true,
+    "properties": {
+      "Status": {
+        "name": "Status",
+        "type": "VARIANT",
+        "key": "Status",
+        "variantOptions": [
+          "Avatar",
+          "Success",
+          "Download",
+          "Error",
+          "Info",
+          "Warning",
+          "Loading",
+          "Upload"
+        ],
+        "defaultValue": "Success"
+      }
+    },
+    "childInstanceTags": [
+      "Loader",
+      "Avatar"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Loader",
+        "external": false,
+        "nodeId": "443:88127",
+        "assetKey": "dd9fe6fcd4a5aaa6f1a3d0ccfeed5b1637cb6e5c"
+      },
+      {
+        "name": "Avatar",
+        "external": false,
+        "nodeId": "248:2268",
+        "assetKey": "68f2b1f7fbd9053ace8d9f7df686b5af497bffc5"
+      }
+    ],
+    "assetKey": "4e1a2907623bce6f28c628901fd2868012143558"
+  },
+  {
+    "name": ".RightContent",
+    "nodeId": "220:7849",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296701",
+    "pageName": "Alerts/Toasts",
+    "hasVariants": true,
+    "properties": {
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "Time stamp",
+          "Action"
+        ],
+        "defaultValue": "Action"
+      }
+    },
+    "childInstanceTags": [
+      "Button"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "84fd960edbfddf0e715d97796ebf34cc9b1b6698"
+  },
+  {
+    "name": "Alert",
+    "nodeId": "2272:12530",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296701",
+    "pageName": "Alerts/Toasts",
+    "hasVariants": true,
+    "properties": {
+      "Body Content": {
+        "name": "Body Content",
+        "type": "TEXT",
+        "key": "Body Content#2272:9",
+        "defaultValue": "Insert body content"
+      },
+      "Body": {
+        "name": "Body",
+        "type": "BOOLEAN",
+        "key": "Body#2272:10",
+        "defaultValue": true
+      },
+      "Body Text": {
+        "name": "Body Text",
+        "type": "BOOLEAN",
+        "key": "Body Text#2272:12",
+        "defaultValue": true
+      },
+      "Progress bar": {
+        "name": "Progress bar",
+        "type": "INSTANCE_SWAP",
+        "key": "Progress bar#2272:13",
+        "defaultValue": "2104:1542"
+      },
+      "Progress Bar": {
+        "name": "Progress Bar",
+        "type": "BOOLEAN",
+        "key": "Progress Bar#2272:15",
+        "defaultValue": true
+      },
+      "Time Stamp": {
+        "name": "Time Stamp",
+        "type": "BOOLEAN",
+        "key": "Time Stamp#2277:17",
+        "defaultValue": true
+      },
+      "Close": {
+        "name": "Close",
+        "type": "BOOLEAN",
+        "key": "Close#2277:20",
+        "defaultValue": true
+      },
+      "Action Buttons": {
+        "name": "Action Buttons",
+        "type": "BOOLEAN",
+        "key": "Action Buttons#2277:23",
+        "defaultValue": true
+      },
+      "Variant": {
+        "name": "Variant",
+        "type": "VARIANT",
+        "key": "Variant",
+        "variantOptions": [
+          "Time stamp",
+          "Action"
+        ],
+        "defaultValue": "Time stamp"
+      }
+    },
+    "childInstanceTags": [
+      ".ToastStatus",
+      "CloseButton",
+      "ProgressBar",
+      "Button"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": ".ToastStatus",
+        "external": false,
+        "nodeId": "220:7769",
+        "assetKey": "4e1a2907623bce6f28c628901fd2868012143558"
+      },
+      {
+        "name": "CloseButton",
+        "external": false,
+        "nodeId": "303:9214",
+        "assetKey": "9174d33be195d3d1bf2edfdb0147072c0aab4c69"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "86fdf95ef85b6f3d5b68c4f11cd03f663a725bbf"
+  },
+  {
+    "name": "EmptyState",
+    "nodeId": "452:97007",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296719",
+    "pageName": "Empty State",
+    "hasVariants": true,
+    "properties": {
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "basic",
+          "simple",
+          "customize"
+        ],
+        "defaultValue": "basic"
+      }
+    },
+    "childInstanceTags": [
+      "_components/empty-img-gray",
+      "text/text",
+      "_components/empty-img-simple",
+      "_components/empty-image",
+      "Button"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "_components/empty-img-gray",
+        "external": true,
+        "assetKey": "c7add71a18f988a1f66c159ad66cee58bdbe1b9a"
+      },
+      {
+        "name": "text/text",
+        "external": true,
+        "assetKey": "2f11abae25261310ebc7fbecefb694613d637c12"
+      },
+      {
+        "name": "_components/empty-img-simple",
+        "external": true,
+        "assetKey": "d08050fe4f250a96d9323ea1eb7c2851daee1f1c"
+      },
+      {
+        "name": "_components/empty-image",
+        "external": true,
+        "assetKey": "e46bed7c421f233ace59e36d06c3d842f6f408a8"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "d0915c1b4a42daa66e53aa6b371c39b10f716b47"
+  },
+  {
+    "name": "FeedbackWidget / Modal",
+    "nodeId": "3991:4357",
+    "type": "COMPONENT",
+    "pageId": "3989:33663",
+    "pageName": "Feedback Widget",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "Input Field",
+      ".FeedbackEmojis",
+      "Input Area",
+      "Button"
+    ],
+    "instanceCount": 2,
+    "dependencies": [
+      {
+        "name": "Input Field",
+        "external": false,
+        "nodeId": "85:837",
+        "assetKey": "fca6f0243673ec4eaa4f0cba4b3d29ebeca1d533"
+      },
+      {
+        "name": ".FeedbackEmojis",
+        "external": false,
+        "nodeId": "3991:3654",
+        "assetKey": "fac67de7e4b4d1ab0ac4bfb470540bbf678c65e3"
+      },
+      {
+        "name": "Input Area",
+        "external": false,
+        "nodeId": "87:4945",
+        "assetKey": "b6483c271d510c54daa16933017250248b784366"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "61167b03f800791050656901c6f2efeaa2643958"
+  },
+  {
+    "name": "FeedbackWidget / Button",
+    "nodeId": "3991:3480",
+    "type": "COMPONENT_SET",
+    "pageId": "3989:33663",
+    "pageName": "Feedback Widget",
+    "hasVariants": true,
+    "properties": {
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "Frame 1000005710",
+          "Variant2"
+        ],
+        "defaultValue": "Frame 1000005710"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 2,
+    "dependencies": [],
+    "assetKey": "f374f8e88a3dde3b455c06c4b59f4c435babcf32"
+  },
+  {
+    "name": ".FeedbackEmojis",
+    "nodeId": "3991:3654",
+    "type": "COMPONENT_SET",
+    "pageId": "3989:33663",
+    "pageName": "Feedback Widget",
+    "hasVariants": true,
+    "properties": {
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "5",
+          "De",
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "defaultValue": "1"
+      }
+    },
+    "childInstanceTags": [
+      "emojis"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "emojis",
+        "external": true,
+        "assetKey": "ebd743e476262b7eafefd80031605499dc9eb2b5"
+      }
+    ],
+    "assetKey": "fac67de7e4b4d1ab0ac4bfb470540bbf678c65e3"
+  },
+  {
+    "name": "Loader",
+    "nodeId": "443:88127",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323879",
+    "pageName": "Loader",
+    "hasVariants": true,
+    "properties": {
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "border",
+          "growing"
+        ],
+        "defaultValue": "border"
+      },
+      "Color": {
+        "name": "Color",
+        "type": "VARIANT",
+        "key": "Color",
+        "variantOptions": [
+          "dark",
+          "primary",
+          "secondary"
+        ],
+        "defaultValue": "dark"
+      },
+      "Phase": {
+        "name": "Phase",
+        "type": "VARIANT",
+        "key": "Phase",
+        "variantOptions": [
+          "phase 1",
+          "phase 2",
+          "phase 3"
+        ],
+        "defaultValue": "phase 1"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 2,
+    "dependencies": [],
+    "assetKey": "dd9fe6fcd4a5aaa6f1a3d0ccfeed5b1637cb6e5c"
+  },
+  {
+    "name": "ProgressBar",
+    "nodeId": "2104:1541",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323875",
+    "pageName": "Progress Indicators",
+    "hasVariants": true,
+    "properties": {
+      "Progress": {
+        "name": "Progress",
+        "type": "VARIANT",
+        "key": "Progress",
+        "variantOptions": [
+          "0%",
+          "10%",
+          "20%",
+          "30%",
+          "40%",
+          "50%",
+          "60%",
+          "70%",
+          "80%",
+          "90%",
+          "100%"
+        ],
+        "defaultValue": "0%"
+      },
+      "Label": {
+        "name": "Label",
+        "type": "VARIANT",
+        "key": "Label",
+        "variantOptions": [
+          "False",
+          "Right",
+          "Bottom"
+        ],
+        "defaultValue": "False"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "413147fd5c7c71aff580e7d3df581264374c78c6"
+  },
+  {
+    "name": "ProgressCircle",
+    "nodeId": "2104:1826",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323875",
+    "pageName": "Progress Indicators",
+    "hasVariants": true,
+    "properties": {
+      "Size": {
+        "name": "Size",
+        "type": "VARIANT",
+        "key": "Size",
+        "variantOptions": [
+          "xxs",
+          "xs",
+          "sm",
+          "md",
+          "lg"
+        ],
+        "defaultValue": "xxs"
+      },
+      "Shape": {
+        "name": "Shape",
+        "type": "VARIANT",
+        "key": "Shape",
+        "variantOptions": [
+          "Circle",
+          "Half circle"
+        ],
+        "defaultValue": "Circle"
+      },
+      "Label": {
+        "name": "Label",
+        "type": "VARIANT",
+        "key": "Label",
+        "variantOptions": [
+          "False",
+          "True"
+        ],
+        "defaultValue": "False"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 1,
+    "dependencies": [],
+    "assetKey": "008ce96db03c18a5a0a2a6a408b91dc245f12a32"
+  },
+  {
+    "name": "ProgressIndicator",
+    "nodeId": "2753:1967",
+    "type": "COMPONENT",
+    "pageId": "2141:323875",
+    "pageName": "Progress Indicators",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "ProgressBar / Simple"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "ProgressBar / Simple",
+        "external": false,
+        "nodeId": "2753:1946",
+        "assetKey": "1474d1bd7d1a3368cbf31ae482af8db6240adea6"
+      }
+    ],
+    "assetKey": "0ba3613ccc1fe9a41a2b8e328ed44cad5be8c5ab"
+  },
+  {
+    "name": "ProgressBar / Simple",
+    "nodeId": "2753:1946",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323875",
+    "pageName": "Progress Indicators",
+    "hasVariants": true,
+    "properties": {
+      "Progress bar": {
+        "name": "Progress bar",
+        "type": "VARIANT",
+        "key": "Progress bar",
+        "variantOptions": [
+          "Current",
+          "Static",
+          "Default",
+          "Completed"
+        ],
+        "defaultValue": "Static"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "1474d1bd7d1a3368cbf31ae482af8db6240adea6"
+  },
+  {
+    "name": "Modal",
+    "nodeId": "136:916",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323869",
+    "pageName": "Modal",
+    "hasVariants": true,
+    "properties": {
+      "Device": {
+        "name": "Device",
+        "type": "VARIANT",
+        "key": "Device",
+        "variantOptions": [
+          "Desktop",
+          "Mobile"
+        ],
+        "defaultValue": "Desktop"
+      },
+      "Size": {
+        "name": "Size",
+        "type": "VARIANT",
+        "key": "Size",
+        "variantOptions": [
+          "Default",
+          "Small",
+          "Large"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "Button"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "81e9aaaa6284b2204f45886bb79981d9b477ddb9"
+  },
+  {
+    "name": "Modal / Backdrop",
+    "nodeId": "136:956",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323869",
+    "pageName": "Modal",
+    "hasVariants": true,
+    "properties": {
+      "Device": {
+        "name": "Device",
+        "type": "VARIANT",
+        "key": "Device",
+        "variantOptions": [
+          "Mobile",
+          "Desktop"
+        ],
+        "defaultValue": "Mobile"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "ea863ed0cde3fc5eb8838abdc38721b2eb6ca336"
+  },
+  {
+    "name": "popover",
+    "nodeId": "378:69007",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323874",
+    "pageName": "Popover",
+    "hasVariants": true,
+    "properties": {
+      "Direction": {
+        "name": "Direction",
+        "type": "VARIANT",
+        "key": "Direction",
+        "variantOptions": [
+          "top ↑",
+          "bottom ↓",
+          "left <-",
+          "right ->"
+        ],
+        "defaultValue": "top ↑"
+      },
+      "Title": {
+        "name": "Title",
+        "type": "VARIANT",
+        "key": "Title",
+        "variantOptions": [
+          "false",
+          "true"
+        ],
+        "defaultValue": "false"
+      },
+      "Auto width": {
+        "name": "Auto width",
+        "type": "VARIANT",
+        "key": "Auto width",
+        "variantOptions": [
+          "false",
+          "true"
+        ],
+        "defaultValue": "false"
+      }
+    },
+    "childInstanceTags": [
+      "text/paragraph",
+      "text/title"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "text/paragraph",
+        "external": true,
+        "assetKey": "a6ae15d8ac227a305fb52b92eb4416d3c56adcf9"
+      },
+      {
+        "name": "text/title",
+        "external": true,
+        "assetKey": "31d36caafc8bf4df5205359aba846428e7555dd6"
+      }
+    ],
+    "assetKey": "54d76a97bfb29d11a178441c858f8a7a285118dc"
+  },
+  {
+    "name": "Tooltip",
+    "nodeId": "320:67518",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323884",
+    "pageName": "Tooltip",
+    "hasVariants": true,
+    "properties": {
+      "Direction": {
+        "name": "Direction",
+        "type": "VARIANT",
+        "key": "Direction",
+        "variantOptions": [
+          "top ↑",
+          "bottom ↓",
+          "left ←",
+          "right →"
+        ],
+        "defaultValue": "left ←"
+      },
+      "Auto Width": {
+        "name": "Auto Width",
+        "type": "VARIANT",
+        "key": "Auto Width",
+        "variantOptions": [
+          "true",
+          "false"
+        ],
+        "defaultValue": "true"
+      }
+    },
+    "childInstanceTags": [
+      "text/paragraph"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "text/paragraph",
+        "external": true,
+        "assetKey": "a6ae15d8ac227a305fb52b92eb4416d3c56adcf9"
+      }
+    ],
+    "assetKey": "0842e27c46543faa924ffa134a2d9a53ae335bcb"
+  },
+  {
+    "name": "Avatar",
+    "nodeId": "248:2268",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296702",
+    "pageName": "Avatars",
+    "hasVariants": true,
+    "properties": {
+      "Badge": {
+        "name": "Badge",
+        "type": "BOOLEAN",
+        "key": "Badge#248:0",
+        "defaultValue": true
+      },
+      "Shape": {
+        "name": "Shape",
+        "type": "VARIANT",
+        "key": "Shape",
+        "variantOptions": [
+          "Rectangular",
+          "Circular"
+        ],
+        "defaultValue": "Circular"
+      },
+      "Size": {
+        "name": "Size",
+        "type": "VARIANT",
+        "key": "Size",
+        "variantOptions": [
+          "Small - 24px",
+          "Medium - 32px",
+          "Large - 40px",
+          "X-Large - 48px"
+        ],
+        "defaultValue": "Small - 24px"
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Picture",
+          "Initials",
+          "Icons"
+        ],
+        "defaultValue": "Initials"
+      },
+      "Gender": {
+        "name": "Gender",
+        "type": "VARIANT",
+        "key": "Gender",
+        "variantOptions": [
+          "Neutral",
+          "Male",
+          "Female"
+        ],
+        "defaultValue": "Neutral"
+      }
+    },
+    "childInstanceTags": [
+      "Badge",
+      "person"
+    ],
+    "instanceCount": 4,
+    "dependencies": [
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      },
+      {
+        "name": "person",
+        "external": true,
+        "assetKey": "772596b1ecf1a143ce24ac2ea2c5a862f3d1c4cf"
+      }
+    ],
+    "assetKey": "68f2b1f7fbd9053ace8d9f7df686b5af497bffc5"
+  },
+  {
+    "name": "Badge",
+    "nodeId": "75:321",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296703",
+    "pageName": "Badges",
+    "hasVariants": true,
+    "properties": {
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Large - Single Digit",
+          "Small",
+          "Large - Multiple Digit",
+          "Text"
+        ],
+        "defaultValue": "Small"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Danger",
+          "Primary",
+          "Success"
+        ],
+        "defaultValue": "Primary"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+  },
+  {
+    "name": "Card",
+    "nodeId": "292:72630",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296707",
+    "pageName": "Card",
+    "hasVariants": true,
+    "properties": {
+      "Header": {
+        "name": "Header",
+        "type": "BOOLEAN",
+        "key": "Header#292:0",
+        "defaultValue": true
+      },
+      "Image": {
+        "name": "Image",
+        "type": "BOOLEAN",
+        "key": "Image#294:3",
+        "defaultValue": true
+      },
+      "Title": {
+        "name": "Title",
+        "type": "BOOLEAN",
+        "key": "Title#296:6",
+        "defaultValue": true
+      },
+      "Subtitle": {
+        "name": "Subtitle",
+        "type": "BOOLEAN",
+        "key": "Subtitle#296:9",
+        "defaultValue": true
+      },
+      "Body": {
+        "name": "Body",
+        "type": "BOOLEAN",
+        "key": "Body#296:12",
+        "defaultValue": true
+      },
+      "Footer": {
+        "name": "Footer",
+        "type": "BOOLEAN",
+        "key": "Footer#296:15",
+        "defaultValue": true
+      },
+      "Header icon": {
+        "name": "Header icon",
+        "type": "BOOLEAN",
+        "key": "Header icon#296:18",
+        "defaultValue": true
+      },
+      "Footer Secondary Button": {
+        "name": "Footer Secondary Button",
+        "type": "BOOLEAN",
+        "key": "Footer Secondary Button#296:21",
+        "defaultValue": true
+      },
+      "Footer Primary Button": {
+        "name": "Footer Primary Button",
+        "type": "BOOLEAN",
+        "key": "Footer Primary Button#296:24",
+        "defaultValue": true
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Horizontal",
+          "Vertical"
+        ],
+        "defaultValue": "Vertical"
+      },
+      "Sub-Type": {
+        "name": "Sub-Type",
+        "type": "VARIANT",
+        "key": "Sub-Type",
+        "variantOptions": [
+          "Outlined",
+          "Elevated"
+        ],
+        "defaultValue": "Outlined"
+      }
+    },
+    "childInstanceTags": [
+      "image",
+      "size-adjuster",
+      "Button"
+    ],
+    "instanceCount": 1,
+    "dependencies": [
+      {
+        "name": "image",
+        "external": true,
+        "assetKey": "5f411361d0f7b57329e4360ebb0fe39799a2cdb2"
+      },
+      {
+        "name": "size-adjuster",
+        "external": true,
+        "assetKey": "a4ec0260d337e44371a158ef33afea84a2c6aaff"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "33e3128eb7c1092e252e28fe67cb4bb067e2a62f"
+  },
+  {
+    "name": "Chart",
+    "nodeId": "4643:64404",
+    "type": "COMPONENT_SET",
+    "pageId": "2840:10801",
+    "pageName": "Charts & Graphs",
+    "hasVariants": true,
+    "properties": {},
+    "childInstanceTags": [
+      "Dataset",
+      "Name",
+      "Month small",
+      "Number small",
+      "Number",
+      "Month",
+      "Bar",
+      "Responsive Layout"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Dataset",
+        "external": true,
+        "assetKey": "d5e9b69eca35b09cc45d4f4379338d7f271c3e49"
+      },
+      {
+        "name": "Name",
+        "external": true,
+        "assetKey": "29699fb17f1a8f6023ef75c42481538a70b5f361"
+      },
+      {
+        "name": "Month small",
+        "external": true,
+        "assetKey": "7ff23de9bc645e1720bae038d797a3fbaec894f2"
+      },
+      {
+        "name": "Number small",
+        "external": true,
+        "assetKey": "f58dfe8c1402375397fe4a9903d84982ce739cc0"
+      },
+      {
+        "name": "Number",
+        "external": true,
+        "assetKey": "7b56ad7a1a4990622f1d200b0c5bedb6402a8b28"
+      },
+      {
+        "name": "Month",
+        "external": true,
+        "assetKey": "5d8f3dbc6065e35e191f9a543877822c7cba67e7"
+      },
+      {
+        "name": "Bar",
+        "external": true,
+        "assetKey": "bc15e148db811aa10fac73635b72cd4d7954b031"
+      },
+      {
+        "name": "Bar",
+        "external": true,
+        "assetKey": "fe9cb89620d617b96ba2702974ad3922531e19af"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "f10a094a1d70ce5e662d09ef36ff79467951f951"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "06bb717bc29d0e3e82866759dd02183cadea6f3d"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "9687d1a5317dc86b2c74ff47670bd67ebc092b23"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "d4e00c885c8ebd4371d5f3e532471bf5b5ff0d51"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "e61107f76ba5c2827953c128da29471a341d42cd"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "c7ffb6f2420713841836ac9207d767b174813bc6"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "f7a5c7d049bd77263d086d70a10752995562867b"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "56b93912d26b258a0f488729a8c20dd1425ef819"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "3db164e086f525fad89ea030fc9fbd071b267273"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "901025c7034a83cefc4cb09f8ec09de854f17b7c"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "bd65a931aa9b0c731346c4ed8fab841f219cc582"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "35f64def2d10b9cde7485aff5328f6bc6d72f3bf"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "8dd5481659db5f5cadf775b86bdd6dc5bd2d49b4"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "4846ed57b8227a6dd077aa9abf673254c5a86432"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "70b3dc8e25e094213bfe65a2b794adbb7efa3095"
+      },
+      {
+        "name": "Responsive Layout",
+        "external": true,
+        "assetKey": "adc6c3efc9d4122fb4a6f9d8250d93de585c4205"
+      }
+    ],
+    "assetKey": "707a7d77cac755695819aed9ecba54bfc5fb91b0"
+  },
+  {
+    "name": "Comment / Box",
+    "nodeId": "404:95392",
+    "type": "COMPONENT",
+    "pageId": "2141:296714",
+    "pageName": "Comment",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "Avatar",
+      "textarea/normal/false/true/normal",
+      "Button"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Avatar",
+        "external": false,
+        "nodeId": "248:2268",
+        "assetKey": "68f2b1f7fbd9053ace8d9f7df686b5af497bffc5"
+      },
+      {
+        "name": "textarea/normal/false/true/normal",
+        "external": true,
+        "assetKey": "e640feccdc6dee0f6decdbc6ba5b8c579aeef5a1"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "a2ae55e1b1ca8ac3e1fbb2be9e4b47fc27ac825f"
+  },
+  {
+    "name": "Comment",
+    "nodeId": "404:95403",
+    "type": "COMPONENT",
+    "pageId": "2141:296714",
+    "pageName": "Comment",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "size-adjuster",
+      "Avatar",
+      "username",
+      "time",
+      "comment",
+      "spacer",
+      "count",
+      "reply-to"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "size-adjuster",
+        "external": true,
+        "assetKey": "a4ec0260d337e44371a158ef33afea84a2c6aaff"
+      },
+      {
+        "name": "Avatar",
+        "external": false,
+        "nodeId": "248:2268",
+        "assetKey": "68f2b1f7fbd9053ace8d9f7df686b5af497bffc5"
+      },
+      {
+        "name": "text/text",
+        "external": true,
+        "assetKey": "4a758fbe9d1b0b22d03069df95ca6abad02ef3ef"
+      },
+      {
+        "name": "text/paragraph",
+        "external": true,
+        "assetKey": "a6ae15d8ac227a305fb52b92eb4416d3c56adcf9"
+      },
+      {
+        "name": "spacer",
+        "external": true,
+        "assetKey": "bdb2f8d8f3b4cc0586e4605fcf5ee3859f6bc930"
+      }
+    ],
+    "assetKey": "38a133fb30e36e7a520ad05d202227991ebc5a8f"
+  },
+  {
+    "name": "List",
+    "nodeId": "412:119740",
+    "type": "COMPONENT",
+    "pageId": "2141:323867",
+    "pageName": "List",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "List / Item"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "List / Item",
+        "external": false,
+        "nodeId": "409:95050",
+        "assetKey": "276da86e3cf051743086089c175c6aae0ad13b52"
+      }
+    ],
+    "assetKey": "142b850c7f1df415d400935e6b42802ce08cb94b"
+  },
+  {
+    "name": "List / Item",
+    "nodeId": "409:95050",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323867",
+    "pageName": "List",
+    "hasVariants": true,
+    "properties": {
+      "Show trailing supporting text": {
+        "name": "Show trailing supporting text",
+        "type": "BOOLEAN",
+        "key": "Show trailing supporting text#70:0",
+        "defaultValue": false
+      },
+      "Show divider": {
+        "name": "Show divider",
+        "type": "BOOLEAN",
+        "key": "Show divider#70:113",
+        "defaultValue": false
+      },
+      "Show leading icon": {
+        "name": "Show leading icon",
+        "type": "BOOLEAN",
+        "key": "Show leading icon#2891:233",
+        "defaultValue": true
+      },
+      "Show image": {
+        "name": "Show image",
+        "type": "BOOLEAN",
+        "key": "Show image#2892:0",
+        "defaultValue": true
+      },
+      "Swap divider type": {
+        "name": "Swap divider type",
+        "type": "INSTANCE_SWAP",
+        "key": "Swap divider type#52066:0",
+        "defaultValue": "409:86779"
+      },
+      "Headline": {
+        "name": "Headline",
+        "type": "TEXT",
+        "key": "Headline#53045:239",
+        "defaultValue": "List item"
+      },
+      "Overline": {
+        "name": "Overline",
+        "type": "TEXT",
+        "key": "Overline#53045:478",
+        "defaultValue": "Overline"
+      },
+      "Trailing supporting text": {
+        "name": "Trailing supporting text",
+        "type": "TEXT",
+        "key": "Trailing supporting text#53045:717",
+        "defaultValue": "100+"
+      },
+      "Condition": {
+        "name": "Condition",
+        "type": "VARIANT",
+        "key": "Condition",
+        "variantOptions": [
+          "1-line",
+          "2-line",
+          "3-line+"
+        ],
+        "defaultValue": "3-line+"
+      },
+      "Leading": {
+        "name": "Leading",
+        "type": "VARIANT",
+        "key": "Leading",
+        "variantOptions": [
+          "None",
+          "Monogram",
+          "Icon",
+          "Image",
+          "Check Box",
+          "Radio Button",
+          "Switch"
+        ],
+        "defaultValue": "None"
+      },
+      "Trailing": {
+        "name": "Trailing",
+        "type": "VARIANT",
+        "key": "Trailing",
+        "variantOptions": [
+          "None",
+          "Check Box",
+          "Icon",
+          "Radio Button",
+          "Switch"
+        ],
+        "defaultValue": "None"
+      },
+      "Show supporting text": {
+        "name": "Show supporting text",
+        "type": "VARIANT",
+        "key": "Show supporting text",
+        "variantOptions": [
+          "False",
+          "True"
+        ],
+        "defaultValue": "True"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Active",
+          "Hover",
+          "Pressed",
+          "Disabled"
+        ],
+        "defaultValue": "Active"
+      }
+    },
+    "childInstanceTags": [
+      "Building Blocks/state-layer/1. enabled",
+      "Divider",
+      "Toggle",
+      "Radio",
+      "Checkbox",
+      "Icons/arrow_right_24px",
+      "Avatar",
+      "Icons/person_outline_24px",
+      "Building Blocks/image-Thumbnail"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Building Blocks/state-layer/1. enabled",
+        "external": true,
+        "assetKey": "310ba39e48a541657c2945b1afbbfd4c600083e6"
+      },
+      {
+        "name": "Toggle",
+        "external": false,
+        "nodeId": "23:599",
+        "assetKey": "b0729ff0256c202cfef0c1c55377ff58cc941802"
+      },
+      {
+        "name": "Radio",
+        "external": false,
+        "nodeId": "18:791",
+        "assetKey": "2e23632787973e6b35047e5fbc210956cdebedfe"
+      },
+      {
+        "name": "Checkbox",
+        "external": false,
+        "nodeId": "15:664",
+        "assetKey": "f41f0eb6c5b211f05bc5c302e842c8287abb2c60"
+      },
+      {
+        "name": "Icons/arrow_right_24px",
+        "external": true,
+        "assetKey": "4e60083ca44d6a7ee83c777300ee4317c09a4452"
+      },
+      {
+        "name": "Avatar",
+        "external": false,
+        "nodeId": "248:2268",
+        "assetKey": "68f2b1f7fbd9053ace8d9f7df686b5af497bffc5"
+      },
+      {
+        "name": "Icons/person_outline_24px",
+        "external": true,
+        "assetKey": "29b7622220085e95d69701b7a4ad064670135944"
+      },
+      {
+        "name": "Building Blocks/image-Thumbnail",
+        "external": true,
+        "assetKey": "050430c854bfaa3ec6f7b27135d6d3e1a6a95a80"
+      }
+    ],
+    "assetKey": "276da86e3cf051743086089c175c6aae0ad13b52"
+  },
+  {
+    "name": "IndiaMap",
+    "nodeId": "6803:291103",
+    "type": "COMPONENT_SET",
+    "pageId": "6803:290942",
+    "pageName": "Map of India",
+    "hasVariants": true,
+    "properties": {
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "Default",
+          "Variant2"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "Tooltip"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Tooltip",
+        "external": false,
+        "nodeId": "320:67518",
+        "assetKey": "0842e27c46543faa924ffa134a2d9a53ae335bcb"
+      }
+    ],
+    "assetKey": "de9e24e9ab132b42adcd215cbda84b7a6f7d2497"
+  },
+  {
+    "name": "Table",
+    "nodeId": "3836:4600",
+    "type": "COMPONENT_SET",
+    "pageId": "3836:3939",
+    "pageName": "Tables",
+    "hasVariants": true,
+    "properties": {
+      "Columns": {
+        "name": "Columns",
+        "type": "VARIANT",
+        "key": "Columns",
+        "variantOptions": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "defaultValue": "1"
+      }
+    },
+    "childInstanceTags": [
+      "Table / Cell"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Table / Cell",
+        "external": false,
+        "nodeId": "3836:4624",
+        "assetKey": "cdb5910a5bba875b6479c3089a7fd4d1300e87fc"
+      }
+    ],
+    "assetKey": "4c310eed839e8f9c9bebd38c4d0dc708c2231661"
+  },
+  {
+    "name": "Table / Cell",
+    "nodeId": "3836:4624",
+    "type": "COMPONENT_SET",
+    "pageId": "3836:3939",
+    "pageName": "Tables",
+    "hasVariants": true,
+    "properties": {
+      "Cell Type": {
+        "name": "Cell Type",
+        "type": "VARIANT",
+        "key": "Cell Type",
+        "variantOptions": [
+          "Default (Blank)",
+          "Text",
+          "Avatar",
+          "Tag",
+          "Rating",
+          "Action",
+          "Icon"
+        ],
+        "defaultValue": "Default (Blank)"
+      }
+    },
+    "childInstanceTags": [
+      "Avatar",
+      "Checkbox",
+      "Badge",
+      "Button"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Avatar",
+        "external": false,
+        "nodeId": "248:2268",
+        "assetKey": "68f2b1f7fbd9053ace8d9f7df686b5af497bffc5"
+      },
+      {
+        "name": "Checkbox",
+        "external": false,
+        "nodeId": "15:664",
+        "assetKey": "f41f0eb6c5b211f05bc5c302e842c8287abb2c60"
+      },
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "cdb5910a5bba875b6479c3089a7fd4d1300e87fc"
+  },
+  {
+    "name": "Table / Row",
+    "nodeId": "3836:4647",
+    "type": "COMPONENT_SET",
+    "pageId": "3836:3939",
+    "pageName": "Tables",
+    "hasVariants": true,
+    "properties": {
+      "Row Type": {
+        "name": "Row Type",
+        "type": "VARIANT",
+        "key": "Row Type",
+        "variantOptions": [
+          "Default",
+          "Checkbox",
+          "Header"
+        ],
+        "defaultValue": "Header"
+      }
+    },
+    "childInstanceTags": [
+      "Table"
+    ],
+    "instanceCount": 46,
+    "dependencies": [
+      {
+        "name": "Table",
+        "external": false,
+        "nodeId": "3836:4600",
+        "assetKey": "4c310eed839e8f9c9bebd38c4d0dc708c2231661"
+      }
+    ],
+    "assetKey": "a126d1f2bff4527db8c551ffd33b24567e6dca8c"
+  },
+  {
+    "name": "Table / Example - User",
+    "nodeId": "4653:22066",
+    "type": "COMPONENT",
+    "pageId": "3836:3939",
+    "pageName": "Tables",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "Table / Row"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Table / Row",
+        "external": false,
+        "nodeId": "3836:4647",
+        "assetKey": "a126d1f2bff4527db8c551ffd33b24567e6dca8c"
+      }
+    ],
+    "assetKey": "d73030607163dd4e0d1c909a1d1e07256026e9e8"
+  },
+  {
+    "name": ".AccessibilityIcons",
+    "nodeId": "2764:4238",
+    "type": "COMPONENT_SET",
+    "pageId": "2382:295905",
+    "pageName": "Accessibility Bar and Widget",
+    "hasVariants": true,
+    "properties": {
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "Text Size",
+          "Text Spacing",
+          "Line Height"
+        ],
+        "defaultValue": "Text Spacing"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "2c647e046784e859a0f456ed4f12e4b025a44352"
+  },
+  {
+    "name": "AccessibilityPanel / Item",
+    "nodeId": "2764:4423",
+    "type": "COMPONENT_SET",
+    "pageId": "2382:295905",
+    "pageName": "Accessibility Bar and Widget",
+    "hasVariants": true,
+    "properties": {
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "Frame 1000004725",
+          "Frame 1000004726",
+          "Frame 1000004727",
+          "Frame 1000004728",
+          "Frame 1000004729"
+        ],
+        "defaultValue": "Frame 1000004725"
+      }
+    },
+    "childInstanceTags": [
+      ".AccessibilityIcons",
+      "IconButton"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": ".AccessibilityIcons",
+        "external": false,
+        "nodeId": "2764:4238",
+        "assetKey": "2c647e046784e859a0f456ed4f12e4b025a44352"
+      },
+      {
+        "name": "IconButton",
+        "external": false,
+        "nodeId": "3:3497",
+        "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+      }
+    ],
+    "assetKey": "2599a485be02a37b3179460c468d19de56650a57"
+  },
+  {
+    "name": "AccessibilityWidget / FAB",
+    "nodeId": "5046:55544",
+    "type": "COMPONENT_SET",
+    "pageId": "2382:295905",
+    "pageName": "Accessibility Bar and Widget",
+    "hasVariants": true,
+    "properties": {
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "On",
+          "Off"
+        ],
+        "defaultValue": "Off"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "59120a5f2b3b83638d75f80c0c0376ce6408279e"
+  },
+  {
+    "name": "AccessibilityPanel / Mobile",
+    "nodeId": "2764:7285",
+    "type": "COMPONENT",
+    "pageId": "2382:295905",
+    "pageName": "Accessibility Bar and Widget",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "icon",
+      "Toggle",
+      "Component 27",
+      "Component 28",
+      "Component 29",
+      "Device/Device frame components/status bar",
+      "Button"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "close",
+        "external": true,
+        "assetKey": "85e4c0acdf469fe137bf9b55262e50cf0760a9c2"
+      },
+      {
+        "name": "Toggle",
+        "external": false,
+        "nodeId": "23:599",
+        "assetKey": "b0729ff0256c202cfef0c1c55377ff58cc941802"
+      },
+      {
+        "name": "AccessibilityPanel / Item",
+        "external": false,
+        "nodeId": "2764:4423",
+        "assetKey": "2599a485be02a37b3179460c468d19de56650a57"
+      },
+      {
+        "name": "Device/Device frame components/status bar",
+        "external": true,
+        "assetKey": "5f4764ea4c07e6b79598d1099805abffe6828e9a"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "931d6273a4cc1c0e7b3e3ce1d73b354dae391744"
+  },
+  {
+    "name": "AccessibilityPanel / Web v2",
+    "nodeId": "2764:4977",
+    "type": "COMPONENT",
+    "pageId": "2382:295905",
+    "pageName": "Accessibility Bar and Widget",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "icon",
+      "Toggle",
+      "Component 27",
+      "Component 28",
+      "Component 29",
+      "Button"
+    ],
+    "instanceCount": 2,
+    "dependencies": [
+      {
+        "name": "close",
+        "external": true,
+        "assetKey": "85e4c0acdf469fe137bf9b55262e50cf0760a9c2"
+      },
+      {
+        "name": "Toggle",
+        "external": false,
+        "nodeId": "23:599",
+        "assetKey": "b0729ff0256c202cfef0c1c55377ff58cc941802"
+      },
+      {
+        "name": "AccessibilityPanel / Item",
+        "external": false,
+        "nodeId": "2764:4423",
+        "assetKey": "2599a485be02a37b3179460c468d19de56650a57"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "2dda4204306461f9b27f28cde5be372a916e8f55"
+  },
+  {
+    "name": "AccessibilityPanel / Web v1",
+    "nodeId": "4660:8266",
+    "type": "COMPONENT",
+    "pageId": "2382:295905",
+    "pageName": "Accessibility Bar and Widget",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "icon",
+      "text_fields",
+      ".AccessibilityIcons",
+      "Button"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "close",
+        "external": true,
+        "assetKey": "85e4c0acdf469fe137bf9b55262e50cf0760a9c2"
+      },
+      {
+        "name": "text_fields",
+        "external": true,
+        "assetKey": "2a2db2493e7a53a1d804249f849223a688d04579"
+      },
+      {
+        "name": ".AccessibilityIcons",
+        "external": false,
+        "nodeId": "2764:4238",
+        "assetKey": "2c647e046784e859a0f456ed4f12e4b025a44352"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "28e25022704371ade7599eb86f5b9875b8f54f42"
+  },
+  {
+    "name": "AccessibilityBar",
+    "nodeId": "4516:1537",
+    "type": "COMPONENT_SET",
+    "pageId": "2382:295905",
+    "pageName": "Accessibility Bar and Widget",
+    "hasVariants": true,
+    "properties": {
+      "Device": {
+        "name": "Device",
+        "type": "VARIANT",
+        "key": "Device",
+        "variantOptions": [
+          "Desktop",
+          "Desktop XL",
+          "Tablet",
+          "Mobile"
+        ],
+        "defaultValue": "Desktop"
+      },
+      "Layout": {
+        "name": "Layout",
+        "type": "VARIANT",
+        "key": "Layout",
+        "variantOptions": [
+          "Wide",
+          "Narrow",
+          "Fluid"
+        ],
+        "defaultValue": "Wide"
+      },
+      "Right side options": {
+        "name": "Right side options",
+        "type": "VARIANT",
+        "key": "Right side options",
+        "variantOptions": [
+          "Custom",
+          "Language",
+          "Skip to main content",
+          "Font size",
+          "Accessibility options"
+        ],
+        "defaultValue": "Custom"
+      }
+    },
+    "childInstanceTags": [
+      "open_in_new",
+      "accessibility_new",
+      "language",
+      "arrow_drop_down"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "open_in_new",
+        "external": true,
+        "assetKey": "2f8f2da7b09fe127738f7e81e0dc7e24208b6c02"
+      },
+      {
+        "name": "accessibility_new",
+        "external": true,
+        "assetKey": "d2bb7863ec1d045d894cf5c795b44d63f10fb116"
+      },
+      {
+        "name": "language",
+        "external": true,
+        "assetKey": "73e043886b841048c9843b7904d30cc5e61543f1"
+      },
+      {
+        "name": "arrow_drop_down",
+        "external": true,
+        "assetKey": "125189712169b03f60f831c6c86ca5e095508a1b"
+      }
+    ],
+    "assetKey": "972d54d86627413490ef3ff7a2aa4414d405acc1"
+  },
+  {
+    "name": "Slide 1/Desktop",
+    "nodeId": "3037:5551",
+    "type": "COMPONENT",
+    "pageId": "2141:296708",
+    "pageName": "Carousel",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "8cfbde04902d7fff4c7140291e6442620bd9a4e4"
+  },
+  {
+    "name": "Slide 2/Desktop",
+    "nodeId": "3037:5552",
+    "type": "COMPONENT",
+    "pageId": "2141:296708",
+    "pageName": "Carousel",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "Button"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "daa73b02a7535db008decd3a4106a1adc86bf82f"
+  },
+  {
+    "name": "Slide 3/Desktop",
+    "nodeId": "3037:5553",
+    "type": "COMPONENT",
+    "pageId": "2141:296708",
+    "pageName": "Carousel",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "11dadf18d6cd5cba6fcb386ddb9fa30fd2a9442e"
+  },
+  {
+    "name": "Slide 4/Desktop",
+    "nodeId": "3037:5554",
+    "type": "COMPONENT",
+    "pageId": "2141:296708",
+    "pageName": "Carousel",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "0e294f0b3142a374da441f4f34da39972333c7d6"
+  },
+  {
+    "name": "Slide 5/Desktop",
+    "nodeId": "3037:5556",
+    "type": "COMPONENT",
+    "pageId": "2141:296708",
+    "pageName": "Carousel",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "e56f1d2ae5ca60f802f640870f1a99cdc962c6a6"
+  },
+  {
+    "name": "Pause/Play Button",
+    "nodeId": "3037:5078",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296708",
+    "pageName": "Carousel",
+    "hasVariants": true,
+    "properties": {
+      "Action": {
+        "name": "Action",
+        "type": "VARIANT",
+        "key": "Action",
+        "variantOptions": [
+          "Pause",
+          "Play"
+        ],
+        "defaultValue": "Pause"
+      }
+    },
+    "childInstanceTags": [
+      "icon"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "pause",
+        "external": true,
+        "assetKey": "a2ef0ccb4457d75f7f24b6b69028dc1303d2d722"
+      },
+      {
+        "name": "play_arrow",
+        "external": true,
+        "assetKey": "d0f4785dc287b7cff180812206dfe2ae46d39d38"
+      }
+    ],
+    "assetKey": "b8070770dc233c555f6f01c6ad173d12af2c21f2"
+  },
+  {
+    "name": "Loader",
+    "nodeId": "3037:5097",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296708",
+    "pageName": "Carousel",
+    "hasVariants": true,
+    "properties": {
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "Frame 3",
+          "Frame 4"
+        ],
+        "defaultValue": "Frame 3"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "1de78d7e4d2f0c33045a2a615ce6af1825f7f88c"
+  },
+  {
+    "name": "Carousel/Light-Controls",
+    "nodeId": "3045:949",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296708",
+    "pageName": "Carousel",
+    "hasVariants": true,
+    "properties": {
+      "Slide": {
+        "name": "Slide",
+        "type": "VARIANT",
+        "key": "Slide",
+        "variantOptions": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "1 Again"
+        ],
+        "defaultValue": "1"
+      }
+    },
+    "childInstanceTags": [
+      "Slide 1/Desktop",
+      "Slide 2/Desktop",
+      "Slide 3/Desktop",
+      "Slide 4/Desktop",
+      "Slide 5/Desktop",
+      "icon",
+      "Pause/Play Button",
+      "Loader",
+      "Slide 1 Again"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Slide 1/Desktop",
+        "external": false,
+        "nodeId": "3037:5551",
+        "assetKey": "8cfbde04902d7fff4c7140291e6442620bd9a4e4"
+      },
+      {
+        "name": "Slide 2/Desktop",
+        "external": false,
+        "nodeId": "3037:5552",
+        "assetKey": "daa73b02a7535db008decd3a4106a1adc86bf82f"
+      },
+      {
+        "name": "Slide 3/Desktop",
+        "external": false,
+        "nodeId": "3037:5553",
+        "assetKey": "11dadf18d6cd5cba6fcb386ddb9fa30fd2a9442e"
+      },
+      {
+        "name": "Slide 4/Desktop",
+        "external": false,
+        "nodeId": "3037:5554",
+        "assetKey": "0e294f0b3142a374da441f4f34da39972333c7d6"
+      },
+      {
+        "name": "Slide 5/Desktop",
+        "external": false,
+        "nodeId": "3037:5556",
+        "assetKey": "e56f1d2ae5ca60f802f640870f1a99cdc962c6a6"
+      },
+      {
+        "name": "arrow_back",
+        "external": true,
+        "assetKey": "04c50c3d2fccf558f19b54471429eca198279330"
+      },
+      {
+        "name": "arrow_forward",
+        "external": true,
+        "assetKey": "48699debd3086aa7db29f78ce93b92384ae7da80"
+      },
+      {
+        "name": "Pause/Play Button",
+        "external": false,
+        "nodeId": "3037:5078",
+        "assetKey": "b8070770dc233c555f6f01c6ad173d12af2c21f2"
+      },
+      {
+        "name": "Loader",
+        "external": false,
+        "nodeId": "3037:5097",
+        "assetKey": "1de78d7e4d2f0c33045a2a615ce6af1825f7f88c"
+      }
+    ],
+    "assetKey": "f974a4de87e4cd30b82e1b24c6ef27cc29f28318"
+  },
+  {
+    "name": "Carousel/Dark-Controls",
+    "nodeId": "2249:18519",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296708",
+    "pageName": "Carousel",
+    "hasVariants": true,
+    "properties": {
+      "Slide": {
+        "name": "Slide",
+        "type": "VARIANT",
+        "key": "Slide",
+        "variantOptions": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "1 Again"
+        ],
+        "defaultValue": "1"
+      }
+    },
+    "childInstanceTags": [
+      "Slide 1/Desktop",
+      "Slide 2/Desktop",
+      "Slide 3/Desktop",
+      "Slide 4/Desktop",
+      "Slide 5/Desktop",
+      "icon",
+      "Pause/Play Button",
+      "Loader"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Slide 1/Desktop",
+        "external": false,
+        "nodeId": "3037:5551",
+        "assetKey": "8cfbde04902d7fff4c7140291e6442620bd9a4e4"
+      },
+      {
+        "name": "Slide 2/Desktop",
+        "external": false,
+        "nodeId": "3037:5552",
+        "assetKey": "daa73b02a7535db008decd3a4106a1adc86bf82f"
+      },
+      {
+        "name": "Slide 3/Desktop",
+        "external": false,
+        "nodeId": "3037:5553",
+        "assetKey": "11dadf18d6cd5cba6fcb386ddb9fa30fd2a9442e"
+      },
+      {
+        "name": "Slide 4/Desktop",
+        "external": false,
+        "nodeId": "3037:5554",
+        "assetKey": "0e294f0b3142a374da441f4f34da39972333c7d6"
+      },
+      {
+        "name": "Slide 5/Desktop",
+        "external": false,
+        "nodeId": "3037:5556",
+        "assetKey": "e56f1d2ae5ca60f802f640870f1a99cdc962c6a6"
+      },
+      {
+        "name": "arrow_back",
+        "external": true,
+        "assetKey": "04c50c3d2fccf558f19b54471429eca198279330"
+      },
+      {
+        "name": "arrow_forward",
+        "external": true,
+        "assetKey": "48699debd3086aa7db29f78ce93b92384ae7da80"
+      },
+      {
+        "name": "Pause/Play Button",
+        "external": false,
+        "nodeId": "3037:5078",
+        "assetKey": "b8070770dc233c555f6f01c6ad173d12af2c21f2"
+      },
+      {
+        "name": "Loader",
+        "external": false,
+        "nodeId": "3037:5097",
+        "assetKey": "1de78d7e4d2f0c33045a2a615ce6af1825f7f88c"
+      }
+    ],
+    "assetKey": "c7fca6b504422c78aadc4fdfbdae409b205f8d88"
+  },
+  {
+    "name": "navbar/sitebar",
+    "nodeId": "2476:296125",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323870",
+    "pageName": "Navbar",
+    "hasVariants": true,
+    "properties": {
+      "Login Signup": {
+        "name": "Login Signup",
+        "type": "BOOLEAN",
+        "key": "Login Signup#2198:4",
+        "defaultValue": true
+      },
+      "Search": {
+        "name": "Search",
+        "type": "BOOLEAN",
+        "key": "Search#2210:0",
+        "defaultValue": true
+      },
+      "Device": {
+        "name": "Device",
+        "type": "VARIANT",
+        "key": "Device",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ],
+        "defaultValue": "Desktop"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "on Scroll",
+          "Drawer Open"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "AccessibilityBar — v1 (legacy · Device only)",
+      "navbar/logo",
+      "Search",
+      "Button",
+      "nav-item",
+      "IconButton"
+    ],
+    "instanceCount": 7,
+    "dependencies": [
+      {
+        "name": "AccessibilityBar — v1 (legacy · Device only)",
+        "external": true,
+        "assetKey": "b47475ac3c4b519e0c16c47c34e7815ce0a16da5"
+      },
+      {
+        "name": "navbar/logo",
+        "external": false,
+        "nodeId": "4235:3652",
+        "assetKey": "b321ac9b16f33132b0840c65611aa9318a81108d"
+      },
+      {
+        "name": "Search",
+        "external": false,
+        "nodeId": "399:1808",
+        "assetKey": "d8cc346da011a7e5b17951af2c14e70b51389bea"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      },
+      {
+        "name": "nav-item",
+        "external": false,
+        "nodeId": "2065:292757",
+        "assetKey": "abf321df89287825c405a12920a06833bdc0447b"
+      },
+      {
+        "name": "IconButton",
+        "external": false,
+        "nodeId": "3:3497",
+        "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+      }
+    ],
+    "assetKey": "e8ea2160df1928be8d4f05ab6611cef6fc9f99a2"
+  },
+  {
+    "name": "navbar/appbar",
+    "nodeId": "4235:3169",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323870",
+    "pageName": "Navbar",
+    "hasVariants": true,
+    "properties": {
+      "Login Signup": {
+        "name": "Login Signup",
+        "type": "BOOLEAN",
+        "key": "Login Signup#2198:4",
+        "defaultValue": false
+      },
+      "Search": {
+        "name": "Search",
+        "type": "BOOLEAN",
+        "key": "Search#2210:0",
+        "defaultValue": false
+      },
+      "Show Navbar": {
+        "name": "Show Navbar",
+        "type": "BOOLEAN",
+        "key": "Show Navbar#8043:0",
+        "defaultValue": true
+      },
+      "Device": {
+        "name": "Device",
+        "type": "VARIANT",
+        "key": "Device",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ],
+        "defaultValue": "Desktop"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "on Scroll"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "AccessibilityBar — v1 (legacy · Device only)",
+      "dehaze",
+      "navbar/logo",
+      "Search",
+      "Avatar",
+      "Button",
+      "IconButton"
+    ],
+    "instanceCount": 1,
+    "dependencies": [
+      {
+        "name": "AccessibilityBar — v1 (legacy · Device only)",
+        "external": true,
+        "assetKey": "b47475ac3c4b519e0c16c47c34e7815ce0a16da5"
+      },
+      {
+        "name": "dehaze",
+        "external": false,
+        "nodeId": "2535:2012",
+        "assetKey": "8059e3384c0efbe1d21b87d75d91e6af788b7495"
+      },
+      {
+        "name": "navbar/logo",
+        "external": false,
+        "nodeId": "4235:3652",
+        "assetKey": "b321ac9b16f33132b0840c65611aa9318a81108d"
+      },
+      {
+        "name": "Search",
+        "external": false,
+        "nodeId": "399:1808",
+        "assetKey": "d8cc346da011a7e5b17951af2c14e70b51389bea"
+      },
+      {
+        "name": "Avatar",
+        "external": false,
+        "nodeId": "248:2268",
+        "assetKey": "68f2b1f7fbd9053ace8d9f7df686b5af497bffc5"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      },
+      {
+        "name": "IconButton",
+        "external": false,
+        "nodeId": "3:3497",
+        "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+      }
+    ],
+    "assetKey": "b28518ee0987978ada866965a77972797fdb1404"
+  },
+  {
+    "name": "navbar/mega-menu",
+    "nodeId": "4268:914",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323870",
+    "pageName": "Navbar",
+    "hasVariants": true,
+    "properties": {
+      "Device": {
+        "name": "Device",
+        "type": "VARIANT",
+        "key": "Device",
+        "variantOptions": [
+          "Desktop",
+          "Mobile",
+          "Tablet"
+        ],
+        "defaultValue": "Desktop"
+      }
+    },
+    "childInstanceTags": [
+      "mega-menu-item"
+    ],
+    "instanceCount": 1,
+    "dependencies": [
+      {
+        "name": "mega-menu-item",
+        "external": false,
+        "nodeId": "4258:33604",
+        "assetKey": "3f2deee53f00707d8e7d74a98978ffa39b9dc84f"
+      }
+    ],
+    "assetKey": "141f728cd144e2f770f2ccd7bb322f5fbb3d92ff"
+  },
+  {
+    "name": "mega-menu-item",
+    "nodeId": "4258:33604",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323870",
+    "pageName": "Navbar",
+    "hasVariants": true,
+    "properties": {
+      "Org logo": {
+        "name": "Org logo",
+        "type": "INSTANCE_SWAP",
+        "key": "Org logo#4359:0",
+        "defaultValue": "4273:696"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hovered",
+          "Focused"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "Org logo"
+    ],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "3f2deee53f00707d8e7d74a98978ffa39b9dc84f"
+  },
+  {
+    "name": "nav-item",
+    "nodeId": "2065:292757",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323870",
+    "pageName": "Navbar",
+    "hasVariants": true,
+    "properties": {
+      "Label": {
+        "name": "Label",
+        "type": "TEXT",
+        "key": "Label#2065:0",
+        "defaultValue": "Label"
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Default",
+          "Dropdown"
+        ],
+        "defaultValue": "Default"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Focused",
+          "Hovered"
+        ],
+        "defaultValue": "Default"
+      },
+      "Active": {
+        "name": "Active",
+        "type": "VARIANT",
+        "key": "Active",
+        "variantOptions": [
+          "False",
+          "True"
+        ],
+        "defaultValue": "False"
+      }
+    },
+    "childInstanceTags": [
+      "keyboard_arrow_down"
+    ],
+    "instanceCount": 5,
+    "dependencies": [
+      {
+        "name": "keyboard_arrow_down",
+        "external": true,
+        "assetKey": "247f5299c85391a78ce44eeaaca70551467b8bcb"
+      }
+    ],
+    "assetKey": "abf321df89287825c405a12920a06833bdc0447b"
+  },
+  {
+    "name": "nav-dropdown",
+    "nodeId": "4300:1950",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323870",
+    "pageName": "Navbar",
+    "hasVariants": true,
+    "properties": {
+      "Device": {
+        "name": "Device",
+        "type": "VARIANT",
+        "key": "Device",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ],
+        "defaultValue": "Desktop"
+      }
+    },
+    "childInstanceTags": [
+      "dropdown-item"
+    ],
+    "instanceCount": 1,
+    "dependencies": [
+      {
+        "name": "dropdown-item",
+        "external": false,
+        "nodeId": "4299:1940",
+        "assetKey": "e7d1abb6a55aaf5bc0c67e93f74964a06d4ce769"
+      }
+    ],
+    "assetKey": "032a19fece63d64ecf9f5c7f980e4266ccf6a25e"
+  },
+  {
+    "name": "dropdown-item",
+    "nodeId": "4299:1940",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323870",
+    "pageName": "Navbar",
+    "hasVariants": true,
+    "properties": {
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hovered",
+          "Focused"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "e7d1abb6a55aaf5bc0c67e93f74964a06d4ce769"
+  },
+  {
+    "name": "navbar/logo",
+    "nodeId": "4235:3652",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323870",
+    "pageName": "Navbar",
+    "hasVariants": true,
+    "properties": {
+      "Show beta": {
+        "name": "Show beta",
+        "type": "BOOLEAN",
+        "key": "Show beta#4512:0",
+        "defaultValue": true
+      },
+      "Device": {
+        "name": "Device",
+        "type": "VARIANT",
+        "key": "Device",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ],
+        "defaultValue": "Desktop"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 1,
+    "dependencies": [],
+    "assetKey": "b321ac9b16f33132b0840c65611aa9318a81108d"
+  },
+  {
+    "name": "Gov Dept.",
+    "nodeId": "2500:297855",
+    "type": "COMPONENT_SET",
+    "pageId": "2500:295967",
+    "pageName": "Footer",
+    "hasVariants": true,
+    "properties": {
+      "Company": {
+        "name": "Company",
+        "type": "VARIANT",
+        "key": "Company",
+        "variantOptions": [
+          "NIC",
+          "NeDG"
+        ],
+        "defaultValue": "NeDG"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "df0fc70bb2d1774521e4031e12687917e6c7acee"
+  },
+  {
+    "name": "Footer - Bottom Strip",
+    "nodeId": "2500:297936",
+    "type": "COMPONENT_SET",
+    "pageId": "2500:295967",
+    "pageName": "Footer",
+    "hasVariants": true,
+    "properties": {
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "Type 2",
+          "Type1"
+        ],
+        "defaultValue": "Type1"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "c5334018a3687a932920d34e69e35067f4c4b86f"
+  },
+  {
+    "name": "Footer/Desktop",
+    "nodeId": "2152:1738",
+    "type": "COMPONENT_SET",
+    "pageId": "2500:295967",
+    "pageName": "Footer",
+    "hasVariants": true,
+    "properties": {
+      "Theme": {
+        "name": "Theme",
+        "type": "VARIANT",
+        "key": "Theme",
+        "variantOptions": [
+          "Light",
+          "Dark"
+        ],
+        "defaultValue": "Light"
+      }
+    },
+    "childInstanceTags": [
+      "location_on",
+      "phone_enabled",
+      "mail_outline",
+      "Group 55026",
+      "Group 55027",
+      "Group 55029",
+      "Group 55028",
+      "Gov Dept.",
+      "Footer - Bottom Strip"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "location_on",
+        "external": true,
+        "assetKey": "eb77d9a98519ff6dfb8578f8d8ab928029ae9546"
+      },
+      {
+        "name": "phone_enabled",
+        "external": true,
+        "assetKey": "eae00c3c07abb2ceb53bf33265926f94e532fabd"
+      },
+      {
+        "name": "mail_outline",
+        "external": true,
+        "assetKey": "3fb3ce0ec92a25304f4674d82bdd3a9dff780ebf"
+      },
+      {
+        "name": "Group 55026",
+        "external": true,
+        "assetKey": "59d48fa34ed98535034143aade1d5e1f31af5337"
+      },
+      {
+        "name": "Gov Dept.",
+        "external": false,
+        "nodeId": "2500:297855",
+        "assetKey": "df0fc70bb2d1774521e4031e12687917e6c7acee"
+      },
+      {
+        "name": "Footer - Bottom Strip",
+        "external": false,
+        "nodeId": "2500:297936",
+        "assetKey": "c5334018a3687a932920d34e69e35067f4c4b86f"
+      }
+    ],
+    "assetKey": "bfea762d6dbad2f7cf2bce91f2143b8436173096"
+  },
+  {
+    "name": "Footer/Mobile",
+    "nodeId": "2422:14532",
+    "type": "COMPONENT_SET",
+    "pageId": "2500:295967",
+    "pageName": "Footer",
+    "hasVariants": true,
+    "properties": {
+      "Theme": {
+        "name": "Theme",
+        "type": "VARIANT",
+        "key": "Theme",
+        "variantOptions": [
+          "Light",
+          "Dark"
+        ],
+        "defaultValue": "Light"
+      }
+    },
+    "childInstanceTags": [
+      "location_on",
+      "phone_enabled",
+      "mail_outline",
+      "Group 55026",
+      "Group 55027",
+      "Group 55029",
+      "Group 55028",
+      "Gov Dept.",
+      "Footer - Bottom Strip"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "location_on",
+        "external": true,
+        "assetKey": "eb77d9a98519ff6dfb8578f8d8ab928029ae9546"
+      },
+      {
+        "name": "phone_enabled",
+        "external": true,
+        "assetKey": "eae00c3c07abb2ceb53bf33265926f94e532fabd"
+      },
+      {
+        "name": "mail_outline",
+        "external": true,
+        "assetKey": "3fb3ce0ec92a25304f4674d82bdd3a9dff780ebf"
+      },
+      {
+        "name": "Group 55026",
+        "external": true,
+        "assetKey": "59d48fa34ed98535034143aade1d5e1f31af5337"
+      },
+      {
+        "name": "Gov Dept.",
+        "external": false,
+        "nodeId": "2500:297855",
+        "assetKey": "df0fc70bb2d1774521e4031e12687917e6c7acee"
+      },
+      {
+        "name": "Footer - Bottom Strip",
+        "external": false,
+        "nodeId": "2500:297936",
+        "assetKey": "c5334018a3687a932920d34e69e35067f4c4b86f"
+      }
+    ],
+    "assetKey": "72711fc47d88cecc35b799b647f6b7fec48d757d"
+  },
+  {
+    "name": "sidebar/type-1/main-item",
+    "nodeId": "4286:285",
+    "type": "COMPONENT_SET",
+    "pageId": "4645:10200",
+    "pageName": "Sidebar",
+    "hasVariants": true,
+    "properties": {
+      "Icon": {
+        "name": "Icon",
+        "type": "INSTANCE_SWAP",
+        "key": "Icon#6154:3",
+        "defaultValue": "4286:206"
+      },
+      "Label": {
+        "name": "Label",
+        "type": "TEXT",
+        "key": "Label#6154:10",
+        "defaultValue": "Label"
+      },
+      "Show Badge": {
+        "name": "Show Badge",
+        "type": "BOOLEAN",
+        "key": "Show Badge#8803:13",
+        "defaultValue": false
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hovered",
+          "Active"
+        ],
+        "defaultValue": "Default"
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "no Child",
+          "has Child"
+        ],
+        "defaultValue": "no Child"
+      },
+      "Sidebar": {
+        "name": "Sidebar",
+        "type": "VARIANT",
+        "key": "Sidebar",
+        "variantOptions": [
+          "Expanded",
+          "Collapsed"
+        ],
+        "defaultValue": "Collapsed"
+      }
+    },
+    "childInstanceTags": [
+      "home/default",
+      "Badge",
+      "chevron-right",
+      "sidebar/type-1/child-item"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Badge",
+        "external": true,
+        "assetKey": "280bf8122f63577a3abacc1c2fcd3d809fd7c45d"
+      },
+      {
+        "name": "chevron-right",
+        "external": true,
+        "assetKey": "f8c9374a64afcfdd857c652aa0007fbea989e4f1"
+      },
+      {
+        "name": "sidebar/type-1/child-item",
+        "external": false,
+        "nodeId": "4286:361",
+        "assetKey": "e6601220b195f936ef321eb434f93d3ac88c9e9b"
+      }
+    ],
+    "assetKey": "b58bce47b23a528c0152c9c7916f10393c119173"
+  },
+  {
+    "name": "sidebar/type-1/child-item",
+    "nodeId": "4286:361",
+    "type": "COMPONENT_SET",
+    "pageId": "4645:10200",
+    "pageName": "Sidebar",
+    "hasVariants": true,
+    "properties": {
+      "Label": {
+        "name": "Label",
+        "type": "TEXT",
+        "key": "Label#6155:17",
+        "defaultValue": "Label"
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "first-child",
+          "other-child",
+          "last-child"
+        ],
+        "defaultValue": "first-child"
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hovered",
+          "Active"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "e6601220b195f936ef321eb434f93d3ac88c9e9b"
+  },
+  {
+    "name": "sidebar/type-1",
+    "nodeId": "4286:428",
+    "type": "COMPONENT_SET",
+    "pageId": "4645:10200",
+    "pageName": "Sidebar",
+    "hasVariants": true,
+    "properties": {
+      "Menu": {
+        "name": "Menu",
+        "type": "SLOT",
+        "key": "Menu#8723:0",
+        "defaultValue": "-1:-1"
+      },
+      "Show Control": {
+        "name": "Show Control",
+        "type": "BOOLEAN",
+        "key": "Show Control#9007:0",
+        "defaultValue": false
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Expanded",
+          "Collapsed"
+        ],
+        "defaultValue": "Expanded"
+      }
+    },
+    "childInstanceTags": [
+      "sidebar/type-1/main-item",
+      ".control"
+    ],
+    "instanceCount": 1,
+    "dependencies": [
+      {
+        "name": "sidebar/type-1/main-item",
+        "external": false,
+        "nodeId": "4286:285",
+        "assetKey": "b58bce47b23a528c0152c9c7916f10393c119173"
+      },
+      {
+        "name": ".control",
+        "external": true,
+        "assetKey": "ef3db02210c5521c28e341c461c3c2b24b74c381"
+      }
+    ],
+    "assetKey": "e80c78fef42eaba2fa01c5ad2212488c1a8a46ab"
+  }
+]

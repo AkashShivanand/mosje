@@ -65,7 +65,32 @@ plus **98 icon components** (page `Icons`) and **44 logo/misc components**.
 
 ---
 
-## PHASE A — THE GAP LEDGER (do this before writing a single mapping)
+## PHASE A — THE GAP LEDGER — ✅ DONE (2026-08-12)
+
+**Built and generated.** `tools/design-parity/build-ledger.mjs` → `docs/design-system/parity-ledger.md`.
+
+First honest measurement of design↔code divergence in this estate:
+
+| Verdict | Count |
+|---|---:|
+| `mapped` | **43** |
+| `figma-only` (designed, never built) | 30 |
+| `code-only` (built, never designed) | 50 |
+| `deliberately-unmapped` | 19 |
+
+**84** published component sets · **85** code components · **43** paired.
+
+Refresh the Figma side with `list_file_components_for_code_connect`, save to
+`tools/design-parity/figma-components.json`, re-run the script. The `PAIRINGS` map in the script is
+the human-confirmed correspondence — **name similarity is a hint, not a mapping** (the Carousel
+page's `Loader` is not the `Loader` atom, and is excluded explicitly).
+
+Still to do: publish the ledger as a docs route, and verdict each `figma-only` row as *backlog* vs
+*retire* and each `code-only` row as *Figma backlog* vs *deliberately code-only*.
+
+<details>
+<summary>Original Phase A brief (kept for the method)</summary>
+
 
 Produce a three-column ledger covering **every** Figma component set and **every** code export:
 
@@ -94,6 +119,8 @@ it, so it cannot rot.
 
 ---
 
+</details>
+
 ## PHASE B — THE 98 ICONS ARE ONE MAPPING, NOT 98
 
 Do not author 98 Code Connect files. `<Icon>` takes a `name` prop and renders a Material Symbols
@@ -110,9 +137,18 @@ a mapping built on mismatched names produces 98 broken snippets.
 
 ### Layout
 
+> **Format — get this right, it is easy to get wrong.** Code Connect has two formats and they are
+> published differently. Invoke the **`figma-code-connect` skill** and follow it: it mandates
+> **parserless templates** — a `ComponentName.figma.ts` file whose default export uses a
+> `` figma.code`…` `` tagged template. Do **not** write `ComponentName.figma.tsx` and do **not** use
+> `figma.connect()`; that is the separate parser-based format and is the wrong artifact here.
+> The familiar `figma.connect()` pattern is the one a model reaches for from memory — resist it.
+
 - `figma.config.json` at `packages/design-system/` root — parser `react`, include globs, and the
   `documentUrlSubstitutions` for the file key so URLs are not repeated in every file.
-- **Colocate** each mapping next to its component: `components/actions/button.figma.tsx` beside
+- Add `@figma/code-connect/figma-types` to `types` in the package's `tsconfig.json` so `.figma.ts`
+  files type-check.
+- **Colocate** each mapping next to its component: `components/actions/button.figma.ts` beside
   `components/actions/button.tsx`. A mapping in a distant folder rots because nobody editing the
   component sees it.
 - Add `@figma/code-connect` as a **devDependency** of `packages/design-system` only. It must not
@@ -123,8 +159,10 @@ a mapping built on mismatched names produces 98 broken snippets.
 1. `get_context_for_code_connect(fileKey, <componentSetNodeId>)` → the real property and variant
    names. **Never guess a variant name**; Figma's are case- and space-sensitive.
 2. `get_code_connect_suggestions(...)` → review, do not accept blindly. Suggestions are a draft.
-3. Author the `*.figma.tsx`, mapping Figma props → React props with `figma.enum`, `figma.boolean`,
-   `figma.string`, `figma.children`, `figma.instance`.
+3. Author the `*.figma.ts` template, mapping Figma properties → React props with
+   `instance.getString`, `instance.getBoolean`, `instance.getEnum`, `instance.getInstanceSwap`,
+   `instance.getSlot`. **A VARIANT's `getEnum` mapping must list every value** the context call
+   returned — an unmapped value silently returns `undefined` and renders broken output.
 4. The `example` must be **the code a developer should actually write** — the real import path
    (`@mosje/design-system`), real prop names, real children. A snippet that would not compile is
    worse than no snippet.
