@@ -92,6 +92,39 @@ function actionGuidance(path) {
   return `${phrase(label).replace(/\.$/, "")}${where} — the ${noun}.`;
 }
 
+/** What a component-token's last segment IS, in words a designer uses. */
+const CMP_PROPERTY = {
+  bg: "fill",
+  bgHover: "hovered fill",
+  text: "label colour",
+  border: "outline",
+  radius: "corner radius",
+};
+
+/**
+ * Tier-3 component tokens outside the action matrix: `cmp/<component>/[<variant>/]<property>`.
+ *
+ * These say WHERE a value is wired, not WHEN to choose it — which is exactly why the sentence
+ * has to point back up at the semantic layer. A designer who binds `cmp/card/bg` to something
+ * that is not a card has bound a value that will move when the Card component changes.
+ */
+function componentGuidance(path) {
+  // NOTE the path does NOT carry the `cmp` tier segment — tier arrives separately, and only the
+  // action matrix spells its own first segment (`action/…`). Destructuring as if `cmp` were
+  // present ate the component name: `button/primary/bg` described "the primary’s fill", and the
+  // two-segment `button/radius` fell off the end and returned null.
+  const [component, ...rest] = path;
+  if (!component || rest.length === 0) return null;
+  const prop = rest[rest.length - 1];
+  const variant = rest.length > 1 ? rest.slice(0, -1).join(" ") : "";
+  const noun = CMP_PROPERTY[prop] ?? prop;
+  return (
+    `Use for the ${variant ? variant + " " : ""}${component}’s ${noun}. ` +
+    `Component-internal: it resolves to a semantic token, so bind that semantic token instead ` +
+    `unless you are building the ${component} itself.`
+  );
+}
+
 /** Tier-2 colour roles: `<role>/<family>[/<variant>][/<rung>][/<state>]`. */
 function colourGuidance(slots, path) {
   const { role, family, variant, prominence, state } = slots;
@@ -209,6 +242,10 @@ function groupGuidance(path) {
  */
 export function guidanceFor(path, tier, parse) {
   if (tier === "cmp" && path[0] === "action") return actionGuidance(path);
+  // Every OTHER cmp token — the legacy button/card set from component.json — used to fall
+  // straight through to `null` and ship with an empty description. Only the action matrix was
+  // ever covered, because it was the only cmp family that existed when this was written.
+  if (tier === "cmp") return componentGuidance(path);
   if (tier !== "sys") return null;
 
   // The legacy `color/*` Tier-2 layer: brand-aware ramps and alpha tiers. They are a palette,
@@ -270,6 +307,10 @@ export function primitivePointer(path) {
   if (head === "space") return "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.";
   if (head === "font") return fontPointer(path);
   if (head === "radius" || head === "motion" || head === "opacity" || head === "blur") return `Raw ${head} step.`;
+  // `border` was the one primitive group with no pointer, so all five ref/border/width/*
+  // shipped to Figma with an EMPTY description — the only variables in the library that had
+  // none. A missing case here is silent: guidanceFor returns null and the exporter writes "".
+  if (head === "border") return "Raw border-width step. Prefer `control/border/width`, which says what the edge is for and follows the control, rather than binding a raw width.";
   if (head === "z") return "Stacking order. Code-only — Figma has no canvas property for z-index.";
   if (head === "breakpoint") return "Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.";
   return null;

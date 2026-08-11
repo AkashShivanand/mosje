@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.13.1",
+    version: "v0.13.2",
     date: "2026-08-11",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "DEV MODE WAS LYING. 61 Figma variables published a codeSyntax naming a CSS custom property that does not exist — a developer who opened Dev Mode, copied var(--sa-bg-brand-primary-strong) and pasted it got a declaration that silently does nothing. The prominence ladder was renamed to base/subtler/subtle/bold/bolder/boldest and codeSyntax was never re-pushed, so every rung name in it (default/soft/emphasis/strong/stronger) plus the old ink rungs (text-neutral-primary/secondary) went stale; one, --color-border-neutral-inverse, had the wrong prefix entirely. Verified by resolving all 91 semantic entries against dist/tokens.css: 62 dead" },
+      { kind: "Added", text: "codeSyntax on every code-owned variable — 487 had none at all, so Space, Type, Radius, Motion, Density and Static showed a developer nothing but the Figma name. All 863 now carry the exporter's own emitted name, proven rule-derivable against the payload (863/863, 0 mismatches) before a single write" },
+      { kind: "Fixed", text: "The 18 accent variables added earlier carried ALL_SCOPES, because the push that created them never set scopes — so a brand fill offered itself in the corner-radius and font-size pickers. They now mirror their primary/secondary siblings (FRAME_FILL+SHAPE_FILL for fills, SHAPE_FILL+TEXT_FILL for foregrounds, ALL_FILLS+STROKE_COLOR+EFFECT_COLOR for the alpha washes). The 17 that remain ALL_SCOPES are z-index, breakpoints and motion, which Figma has no property to scope to" },
+      { kind: "Fixed", text: "Twelve descriptions. Five ref/border/width/* shipped BLANK — primitivePointer had no `border` case, and a missing case returns null which the exporter writes as an empty string. The seven legacy cmp/button|card tokens described a Light/Dark mode structure the Color collection has not had since the theme axis was removed. Description coverage is now 900/900" },
+      { kind: "Added", text: "A gate: no variable may ship to Figma with an empty description. It guards the sync as much as the docs — descriptions are pushed from the payload, so an empty string does not merely omit guidance, it ERASES whatever the library already had" },
+    ],
+  },
+  {
+    version: "v0.13.1",
+    date: "2026-08-11",
     changes: [
       { kind: "Added", text: "v0.13.0 reached the Figma library. 36 variables created: the accentScale ramp (11 steps), its transparent washes (6), the 950 step on all seven chromatic ramps, and the accent semantics bg/brand/accent/* (6) + on/bg/brand/accent/* (6). The library now carries 899 variables across 8 collections" },
       { kind: "Added", text: "Set equality between the build payload and the live library is now PROVEN per collection by checksum rather than inferred from counts. Six of the eight collections — including Color, all 472 of it — hash identically; Palette and Type differ only by the 36 orphans now itemised in reference/figma-live.json under $orphans. Counting had been hiding two-way drift: the previous snapshot recorded a Component Options collection that no longer exists, and every earlier check looked only for what was MISSING, never for what the library carried that the source does not define" },

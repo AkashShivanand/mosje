@@ -15309,6 +15309,7 @@
               "name": "color/primaryScale/500"
             }
           },
+          "description": "Use for the primary button’s fill. Component-internal: it resolves to a semantic token, so bind that semantic token instead unless you are building the button itself.",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-button-primary-bg)"
           },
@@ -15329,6 +15330,7 @@
               "name": "color/primaryScale/700"
             }
           },
+          "description": "Use for the primary button’s hovered fill. Component-internal: it resolves to a semantic token, so bind that semantic token instead unless you are building the button itself.",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-button-primary-bgHover)"
           },
@@ -15349,6 +15351,7 @@
               "name": "color/neutralScale/0"
             }
           },
+          "description": "Use for the primary button’s label colour. Component-internal: it resolves to a semantic token, so bind that semantic token instead unless you are building the button itself.",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-button-primary-text)"
           },
@@ -15369,6 +15372,7 @@
               "name": "ref/radius/md"
             }
           },
+          "description": "Use for the button’s corner radius. Component-internal: it resolves to a semantic token, so bind that semantic token instead unless you are building the button itself.",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-button-radius)"
           },
@@ -15389,6 +15393,7 @@
               "name": "color/neutralScale/0"
             }
           },
+          "description": "Use for the card’s fill. Component-internal: it resolves to a semantic token, so bind that semantic token instead unless you are building the card itself.",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-card-bg)"
           },
@@ -15409,6 +15414,7 @@
               "name": "color/neutralScale/100"
             }
           },
+          "description": "Use for the card’s outline. Component-internal: it resolves to a semantic token, so bind that semantic token instead unless you are building the card itself.",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-card-border)"
           },
@@ -15429,6 +15435,7 @@
               "name": "ref/radius/md"
             }
           },
+          "description": "Use for the card’s corner radius. Component-internal: it resolves to a semantic token, so bind that semantic token instead unless you are building the card itself.",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-card-radius)"
           },
@@ -20642,6 +20649,7 @@
               "unit": "px"
             }
           },
+          "description": "Raw border-width step. Prefer `control/border/width`, which says what the edge is for and follows the control, rather than binding a raw width.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-border-width-none)"
           },
@@ -20662,6 +20670,7 @@
               "unit": "px"
             }
           },
+          "description": "Raw border-width step. Prefer `control/border/width`, which says what the edge is for and follows the control, rather than binding a raw width.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-border-width-sm)"
           },
@@ -20682,6 +20691,7 @@
               "unit": "px"
             }
           },
+          "description": "Raw border-width step. Prefer `control/border/width`, which says what the edge is for and follows the control, rather than binding a raw width.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-border-width-md)"
           },
@@ -20702,6 +20712,7 @@
               "unit": "px"
             }
           },
+          "description": "Raw border-width step. Prefer `control/border/width`, which says what the edge is for and follows the control, rather than binding a raw width.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-border-width-lg)"
           },
@@ -20722,6 +20733,7 @@
               "unit": "px"
             }
           },
+          "description": "Raw border-width step. Prefer `control/border/width`, which says what the edge is for and follows the control, rather than binding a raw width.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-border-width-xl)"
           },
