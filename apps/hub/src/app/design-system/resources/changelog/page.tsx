@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.14.0",
+    version: "v0.14.1",
     date: "2026-08-11",
     current: true,
+    changes: [
+      { kind: "Added", text: "ELEVATION REACHED FIGMA — as effect STYLES, not variables. A shadow is a composite value and Figma variables hold only COLOR/FLOAT/STRING/BOOLEAN, so shadow.* and elevation.* could never be variables; an effect style is the only Figma primitive that fits. elevation/{flat,card,raised,dropdown,modal,toast} are generated from shadow.{none,xs,sm,md,lg,xl} exactly, including the two-layer shadows and their negative spreads" },
+      { kind: "Fixed", text: "A CORRECTION to the previous entry, which said designers had no shadow tokens at all. They did: six Shadows/shadow-* effect styles already existed in the library, unknown to the code — which is worse than none, because nothing was checking them. NOT ONE of the six matches the token source. All six use flat #212121 where the tokens use the tinted rgb(31,36,40), and shadow-s and shadow-md also differ in GEOMETRY (0/1/3/+1 plus 0/4/4/0 against the token's 0/4/6/-1 plus 0/2/4/-2; 0/2/8/-2 plus 0/6/8/-2 against 0/8/12/-3 plus 0/3/5/-2), so a design using either does not match what ships" },
+      { kind: "Changed", text: "The six pre-existing styles were LEFT AS THEY ARE, not corrected. This is a published library and they are applied in consumer files that cannot be enumerated from inside it, so changing their geometry would restyle other people's work unannounced. Each now carries a description naming the elevation/* style that supersedes it and the exact divergence, so a designer choosing between the two can see which is authoritative. Shadows/shadow-2xl is marked ORPHAN — no token stands behind it and the code ramp stops at shadow.xl" },
+      { kind: "Added", text: "A drift gate (test/elevation-parity.test.mjs), because effect styles are invisible to every existing check — the payload, the checksums and the round-trip test all see variables only, which is exactly how six mismatched shadow styles sat in the library unnoticed. It asserts the ELEVATION map matches semantic.json, that the recorded library state still matches what build/shadow.mjs produces from primitive.json, and that the pre-existing divergence stays recorded until it is resolved. Mutation-tested: changing shadow.md's blur by 2px fails it with both values named" },
+      { kind: "Added", text: "build/shadow.mjs — one CSS-box-shadow parser shared by the sync that WRITES the styles and the test that CHECKS them. Two parsers would eventually disagree, which is the same defect class as the stale codeSyntax. It splits layers on commas outside brackets (so rgba() survives), treats spread as optional, and throws on a layer with no colour rather than defaulting one" },
+    ],
+  },
+  {
+    version: "v0.14.0",
+    date: "2026-08-11",
     changes: [
       { kind: "Added", text: "THE LAYOUT GRID, which did not exist. The only grid in the system was chart/grid — a chart GRIDLINE COLOUR. grid/columns (12), grid/gutter (24px) and grid/margin/{mobile,tablet,desktop} (16/24/32px) are now first-class tokens, so a designer can bind a Figma layout grid and a developer can read the same numbers from CSS" },
       { kind: "Changed", text: "The grid's GEOMETRY is UX4G 3.0/Bootstrap exactly — 12 columns, 1.5rem/24px gutter — because UX4G is the Government of India's own system and this repo holds a parity contract with it. A designer moving between the two libraries must not find a different grid. What is NOT UX4G's is the shape: UX4G expresses its grid as Bootstrap CSS classes, which is exactly why none of it ever reached Figma. These are tokens instead, on IBM Carbon's model" },

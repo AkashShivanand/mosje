@@ -12,7 +12,18 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-11 · System version: v0.14.0 (THE LAYOUT GRID NOW EXISTS, and the
+  Last reviewed: 2026-08-11 · System version: v0.14.1 (ELEVATION IS IN FIGMA, as effect
+  STYLES — a shadow is composite and Figma variables hold only COLOR/FLOAT/STRING/BOOLEAN, so
+  it could never be a variable. `elevation/{flat,card,raised,dropdown,modal,toast}` are
+  generated from `shadow.*` exactly. CORRECTION to v0.14.0, which said designers had no shadow
+  tokens: six `Shadows/shadow-*` effect styles already existed, unknown to the code — and NOT
+  ONE matches the token source (all use flat #212121 vs the tokens' tinted rgb(31,36,40), and
+  `shadow-s`/`shadow-md` also differ in geometry). They are deliberately NOT corrected — a
+  published library whose consumers cannot be enumerated — but each now names the `elevation/*`
+  that supersedes it. Effect styles are invisible to the payload, the checksums and the
+  round-trip test, so `elevation-parity.test.mjs` is what keeps them honest.)
+
+  System version: v0.14.0 (THE LAYOUT GRID NOW EXISTS, and the
   tap-target floor is a LADDER rather than a number. `grid/columns` (12) + `grid/gutter` (24px)
   are UX4G 3.0/Bootstrap exactly, because we hold a parity contract with the Government of
   India's own system; `grid/margin/{mobile,tablet,desktop}` (16/24/32px) is responsive rather
