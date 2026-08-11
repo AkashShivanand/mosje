@@ -11,6 +11,8 @@ on:
       # Every script the job runs, so a change to a GATE re-runs the gate.
       - "scripts/check-storybook-coverage.mjs"
       - "scripts/check-storybook-parity.mjs"
+      - "scripts/check-design-context.mjs"
+      - "scripts/lib/ds-exports.mjs"
       - "scripts/smoke-storybook.mjs"
       - ".stylelintrc.tokens.json"
       - ".github/workflows/ds-quality.yml"
@@ -23,6 +25,8 @@ on:
       # Every script the job runs, so a change to a GATE re-runs the gate.
       - "scripts/check-storybook-coverage.mjs"
       - "scripts/check-storybook-parity.mjs"
+      - "scripts/check-design-context.mjs"
+      - "scripts/lib/ds-exports.mjs"
       - "scripts/smoke-storybook.mjs"
       - ".stylelintrc.tokens.json"
       - ".github/workflows/ds-quality.yml"
@@ -64,6 +68,13 @@ jobs:
 
       - name: Changelog freshness — notable DS changes must be logged
         run: node scripts/check-changelog-freshness.mjs
+
+      # The changelog gate above guards one half of the docs; this guards the
+      # other. design.md is what agents read INSTEAD of the source, and it had
+      # no gate at all — which is how the UX4G widget's entry was deleted by a
+      # version-chain rewrite and nobody noticed for a day.
+      - name: Design context — every exported component documented in design.md
+        run: node scripts/check-design-context.mjs
 
       - name: Storybook coverage — every exported component needs a story
         run: node scripts/check-storybook-coverage.mjs
