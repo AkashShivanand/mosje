@@ -193,6 +193,12 @@ export default function TypographyPage(): React.JSX.Element {
           <strong>ALL-CAPS paragraphs</strong> as failing. SAMAVESH must fix them, not reproduce them — which is why they
           are stated here as rules rather than left implicit.
         </Callout>
+        <Callout type="info" title="Where UX4G and DBIM disagree, SAMAVESH follows DBIM">
+          UX4G&rsquo;s typography page recommends <strong>justified alignment</strong> for column layouts. DBIM 4.1.1
+          requires body text to be left-aligned, and justified text on the web opens uneven word spacing that is
+          measurably harder for dyslexic readers. SAMAVESH is left-aligned throughout and treats that UX4G line as
+          superseded rather than silently reproducing it — flagged for the next UX4G clarification round.
+        </Callout>
       </section>
 
       {/* ── 9. Legacy aliases — the trap that has caused four bugs ─ */}
@@ -276,11 +282,15 @@ export default function TypographyPage(): React.JSX.Element {
             { criterion: "Language of parts — lang=\"hi\" on every Devanagari string", level: "AA", description: "Screen readers switch voice on it, and the Devanagari face is applied from it." },
           ]}
         />
-        <Callout type="warning" title="The 16px input floor">
-          Below 768px, text-entry controls take a hard 16px floor whatever the role says. iOS Safari zooms into any
-          focused control under 16px and does not zoom back out, which strands the user mid-form. This is a GIGW-relevant
-          usability rule rather than a WCAG success criterion, so it is stated here rather than in the checklist above.
-        </Callout>
+        <div className="docs-section__body">
+          <p>
+            Three further rules come from UX4G&rsquo;s own typography guidance and are honoured here rather than restated
+            as WCAG criteria: sizes ship in <strong>rem</strong> so a raised browser default font size enlarges text
+            without zooming; <strong>Dynamic Type</strong> (iOS) and <strong>Font Scaling</strong> (Android) are respected
+            wherever the estate renders inside a native shell; and hierarchy lives in <strong>semantic markup</strong> —
+            a visually large paragraph is not a heading and will not be announced as one.
+          </p>
+        </div>
       </section>
 
       {/* ── 10. Provenance ──────────────────────────────────────── */}
@@ -296,10 +306,17 @@ export default function TypographyPage(): React.JSX.Element {
             <code>Website|Portal × Desktop|Tablet|Mobile</code> modes, plus 24 published text styles.
           </p>
           <p>
-            Reconciled across source, generated CSS, the Figma library and this page on <strong>11 August 2026</strong>:{" "}
-            <strong>126 of 126 value checks agree</strong>. The written contract lives in{" "}
-            <code>packages/design-system/design.md</code>, sections D, E and F.
+            Reconciled on <strong>11 August 2026</strong>: <strong>126 of 126</strong> checks agree across the DTCG
+            source, the generated CSS and this page, and <strong>378 of 378</strong> Figma role variables match the
+            source in all six modes. The written contract lives in <code>packages/design-system/design.md</code>,
+            sections D, E and F; the national guidance it implements is at <code>doc.ux4g.gov.in/tokens/typography</code>.
           </p>
+          <Callout type="tip" title="One set of text styles serves both surfaces">
+            The 24 published styles are bound to Type-collection variables, so they re-resolve from the{" "}
+            <strong>Type mode of the enclosing frame</strong> — <code>Display/display-1</code> renders 80/88 on
+            Website&nbsp;·&nbsp;Desktop and 56/64 on Portal&nbsp;·&nbsp;Desktop from the same style. There is deliberately
+            no surface-prefixed duplicate set: a hardcoded copy would freeze one breakpoint and stop tracking the tokens.
+          </Callout>
         </div>
       </section>
     </article>
