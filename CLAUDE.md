@@ -130,6 +130,60 @@ Key routing rules:
 - Resume context → invoke /context-restore
 - Author a backlog-ready spec/issue → invoke /spec
 
+## Branching & merging (MANDATORY — every task, module, feature, fix)
+
+**Never commit to `main`.** Every new task, module, feature, refactor or fix starts on its
+own branch and reaches `main` through a pull request. A `.husky/pre-commit` gate refuses
+commits made on `main` (bypass deliberately with `git commit --no-verify` when you truly
+mean it, e.g. a hotfix you are about to push alone).
+
+```bash
+git switch main && git pull                 # start from current main, always
+git switch -c <type>/<short-slug>            # feat/ fix/ ds/ docs/ chore/
+```
+
+### A branch is short-lived, and that is the part that actually prevents conflicts
+
+Isolating work on a branch does **not** by itself avoid merge conflicts — a branch that
+lives a long time *causes* them, because `main` moves underneath it. The 14-conflict merge
+on 2026-08-11 happened on a branch that was **12 commits behind `main`**, not because the
+work was branched.
+
+So the discipline is two-sided, and the second half is the one people skip:
+
+1. **Sync from `main` at the start of every working session, and again before opening the
+   PR** — `git merge origin/main`. Cheap and boring while the branch is young; expensive and
+   error-prone once it is not.
+2. **Merge to `main` when the unit of work is done, not when the whole initiative is.** If a
+   branch cannot land within a few days, it is too big — split it. "Merge at the end" is only
+   safe when the end arrives quickly.
+
+**Merge, do not rebase, on this repo.** A rebase of a long branch here conflicted badly
+enough to be abandoned (2026-08-11); `git merge origin/main` resolved the same divergence.
+Rebase is fine for a young branch you own alone.
+
+### Conflict magnets to expect, and how to resolve them
+
+- **Hand-maintained version histories** — `apps/hub/src/app/design-system/resources/changelog/page.tsx`
+  and the `design.md` header. Two branches appending releases in parallel **will** collide on
+  the same version number. Resolution: `main`'s numbers are published and stand; the
+  unmerged branch renumbers upward. Keep **both** sets of entries — never drop one — and
+  check the result is strictly descending with exactly one `current: true`.
+- **Generated baselines** — `packages/tokens/test/visual-contract.fixture.json` and friends.
+  Git will happily auto-merge these into a union that matches **neither** build. Regenerate
+  deliberately (`node test/lib/write-visual-contract.mjs --visual`), then *audit the diff
+  against both parents* rather than trusting it: every changed key must be attributable to
+  one side's intended change.
+- **`add/add` on the same path** — happens when work reaches `main` via a different branch
+  than the one you hold it on. Do not assume "ours" is newer: diff both and take the one
+  carrying the later fix, then re-apply whatever your side uniquely contributed.
+
+### After the PR
+
+Delete the branch once merged, and **never reuse a branch whose PR was closed** — start a
+fresh one from current `main`. A stale local branch whose remote was deleted is how this
+repo ended up with `feat/hub-registry-admin` still holding commits after PR #40 was closed.
+
 ## Safety rules (learned the hard way)
 
 - **macOS is case-insensitive.** `Portals` and `portals` are the SAME directory. Never `mkdir` a case-variant of an existing dir, and never `rm -rf` a path you just `mv`'d into a case-colliding name. A `.claude/hooks/guard.sh` PreToolUse hook now **blocks `rm -rf` / `rm -r`, force-push, and other destructive commands** — run those manually and deliberately if truly needed.
