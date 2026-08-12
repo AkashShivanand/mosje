@@ -225,6 +225,21 @@ Two DBIM usage rules ship with the palette and apply wherever `dbim` is active:
 
 - **macOS is case-insensitive.** `Portals` and `portals` are the SAME directory. Never `mkdir` a case-variant of an existing dir, and never `rm -rf` a path you just `mv`'d into a case-colliding name. A `.claude/hooks/guard.sh` PreToolUse hook now **blocks `rm -rf` / `rm -r`, force-push, and other destructive commands** — run those manually and deliberately if truly needed.
 - **Moves are non-destructive; deletes are not.** Prefer `mv`/copy-verify-then-`rmdir` (which refuses non-empty dirs). Never `rm -rf` project content without explicit human confirmation.
+- **Never `git add -A` or `git commit -a`. Stage explicit paths.** Two sessions
+  frequently share this working tree — a second Claude window, a terminal, an
+  editor's own git integration — and a working tree has no idea which of them
+  authored a change. On 2026-08-12 a token-migration session ran `git add -A`
+  and swept **15 files of a parallel session's in-flight `docs/guidelines/`
+  work** into a commit whose message described only the typography generator.
+  Nothing was lost, but the history now claims one thing and contains another,
+  and untangling it would have meant rewriting the other session's commit.
+  - Stage what you touched: `git add packages/tokens apps/hub/src/app/...`.
+  - `git status` **before** staging, and read it. Files you do not recognise are
+    the signal — they are somebody else's work, not stray noise to hoover up.
+  - `git diff --cached --stat` **before** committing. If the file count is
+    larger than the change you just made, stop.
+  - This compounds the concurrency rule below: check `git status` and
+    `git branch --show-current` before and after anything consequential.
 - Don't touch `Incoming/` (21 GB of raw source material) or commit it.
 - Never read or commit `.env*` files or secrets.
 - **A `.husky/pre-push` hook typechecks the hub before anything reaches `main`.**
