@@ -195,6 +195,37 @@ it — an entry vanishing from inside a surviving section — is still invisible
 it. Treat a green tick as "nothing was deleted wholesale", not as "the docs are
 correct".
 
+## Icon size scale — a ratchet, not a sweep (enforced in CI)
+
+**Do not add a new off-scale icon size.** The scale is `16 · 20 · 24 · 32 · 40 · 48 ·
+64`, it is generated from the stylesheet, and the size comes from the **`size` prop** —
+a CSS class (`h-5 w-5`, `h-[18px]`) sets the box but **not** the `opsz` optical-size
+axis, so the glyph gets drawn for one size and displayed at another.
+
+213 of 762 call sites are currently off the scale, 126 of them at `size={14}`. That is
+**known, declared debt**, not an oversight: 14 was chosen to sit against 14px body text,
+and raising 126 glyphs by 2px moves row heights in dense admin tables across seven live
+portals. **The decision (2026-08-12) is to let it go as the pages are redesigned one by
+one** — a redesign rewrites the sizing for free, so sweeping now would pay for it twice
+and take all the regression risk up front.
+
+`tools/icon-audit/check.mjs --gate` is what makes deferring safe, and it is the same
+**ratchet** shape as the Storybook and design-context gates:
+
+- `npm run check:icon-scale` — the gate. New file with off-scale sizing, or a growth in
+  a baselined file, **fails**.
+- A count that **shrinks** also fails, telling you to re-run
+  `npm run check:icon-scale:baseline` and commit it in the same change. That is what
+  stops a redesign's gain from being quietly given back later.
+- `npm run check:icon-scale:report` — the full picture, including the per-file ordering
+  to work through and the 9 icon names Figma's starter set is missing.
+
+**The baseline is PER FILE on purpose.** One global count would let a redesign remove
+five off-scale icons from one page while another page added five, and report clean.
+
+When you redesign a page, map `10 · 12 · 14 · 15 → 16`, `18 · 22 → 20`, and take
+`28` and `56` case by case. Full findings: `docs/design-system/icon-audit.md`.
+
 ## Changelog freshness (enforced in CI)
 
 The changelog at `apps/hub/src/app/design-system/resources/changelog/page.tsx`

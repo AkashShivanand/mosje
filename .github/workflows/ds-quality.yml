@@ -123,3 +123,17 @@ jobs:
       # advisory, so the gate stays honest rather than becoming a wall of exemptions.
       - name: DS linkage — documentation must be BUILT from the design system
         run: npm run check:ds-linkage
+
+      # A RATCHET, not a sweep. 213 of 762 icon call sites sit off the seven-step size
+      # scale, 126 of them at size={14} — chosen to sit against 14px body text, not by
+      # accident. Raising those by 2px changes row heights in dense admin tables across
+      # seven live portals, so the decision (2026-08-12) is to let them go as the pages
+      # are redesigned one by one rather than spend a sweep on them now.
+      #
+      # This gate makes that safe: it costs nothing today, refuses to let the number
+      # grow, and fails when a redesign takes some away without lowering the baseline —
+      # so the backlog can only shrink and cannot quietly grow back. The baseline is PER
+      # FILE, because a single global count would let one page add five off-scale icons
+      # while another removed five and call it clean.
+      - name: Icon scale — ratchet, no NEW off-scale icon sizing
+        run: npm run check:icon-scale

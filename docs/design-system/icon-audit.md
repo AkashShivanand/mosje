@@ -7,9 +7,10 @@ documents? Run the audit and see:
 node tools/icon-audit/check.mjs
 ```
 
-It reports; it does not gate. Two of the three findings below are visual changes in
-live portals, and that is a human decision, not something a script should make on its
-own.
+Findings **1 and 2 are ratcheted** — frozen at today's counts and enforced in CI by
+`npm run check:icon-scale`, so they can shrink but never grow. They are not being
+swept, because the pages carrying them are going to be redesigned anyway (see the
+decision under finding 1). Finding **3 is Figma-side** and reported only.
 
 **Scope:** `apps/hub/src`, `packages/design-system`, `apps/storybook/stories` —
 **762** `<Icon>` elements. The Iconography documentation page is excluded, since it
@@ -22,8 +23,8 @@ renders the whole scale and the whole catalogue deliberately.
 | # | Check | Result |
 |---|---|---|
 | — | **Accessible name** | ✅ **Fixed at source.** Was 533 of 718 unmarked. |
-| 1 | **Size on the seven-step scale** | ⚠️ 510 on-scale · **213 off-scale** |
-| 2 | **Sized by the `size` prop, not a CSS class** | ⚠️ **4** sized by class |
+| 1 | **Size on the seven-step scale** | 🔒 510 on-scale · **213 off-scale, ratcheted** |
+| 2 | **Sized by the `size` prop, not a CSS class** | 🔒 **4** sized by class, ratcheted |
 | 3 | **Name in the Figma starter set** | ⚠️ **9** used names absent from Figma |
 | — | Icon library discipline | ✅ No lucide / heroicons / react-icons anywhere |
 
@@ -52,7 +53,7 @@ fix went into the component instead (`packages/design-system/components/icon/ico
 
 ---
 
-## 1. Off-scale sizes — 213 call sites ⚠️ needs a decision
+## 1. Off-scale sizes — 213 call sites ✅ decided: ratcheted, not swept
 
 The documented scale is seven steps, generated from the stylesheet: **16 · 20 · 24 ·
 32 · 40 · 48 · 64**.
@@ -81,10 +82,54 @@ chose 14 to sit against 14px body text. The documentation gives the intended ans
 across seven live portals, and `size={10}` → 16 is a 60% jump. That is a visual
 change to shipped product, and it is the user's call, not a script's.
 
-**Recommended mapping if adopted:** 10 · 12 · 14 · 15 → **16** · 18 · 22 → **20** ·
-28 → **24 or 32** (case by case) · 56 → **48 or 64** (case by case).
+**The decision (2026-08-12): let these go as the pages are redesigned, one by one.**
+No sweep now. The pages carrying this debt are going to be rebuilt anyway, and a
+redesign rewrites the icon sizing for free — so a sweep would be paid for twice, and
+the first payment carries all the regression risk.
 
-Do it portal by portal with a visual check, not as one sweep.
+**What holds the line in the meantime** is a ratchet, not discipline:
+
+```bash
+npm run check:icon-scale          # the gate — runs in CI (Design System Quality)
+npm run check:icon-scale:report   # the full picture, any time
+npm run check:icon-scale:baseline # record the reduction after a redesign lands
+```
+
+`tools/icon-audit/scale-baseline.json` freezes today's counts **per file**. The gate:
+
+| Change | Result |
+|---|---|
+| A new file starts sizing icons off-scale | ❌ fails |
+| A baselined file's count **grows** | ❌ fails |
+| A baselined file's count **shrinks** | ❌ fails — "run `--baseline` and commit it" |
+| Nothing moved | ✅ passes |
+
+Per file, not one global number — otherwise one page could add five off-scale icons
+while another removed five, and the total would report clean. The shrink case failing
+is the point: it is what stops a redesign's gain from being silently given back later.
+
+All three failure modes were exercised before this shipped, because a gate nobody has
+watched fail cannot be trusted.
+
+**Mapping for whoever does the redesign:** 10 · 12 · 14 · 15 → **16** · 18 · 22 →
+**20** · 28 → **24 or 32** (case by case) · 56 → **48 or 64** (case by case).
+
+The heaviest files, as a rough ordering for the redesign queue:
+
+| Off-scale | File |
+|---:|---|
+| 10 | `portals/smile-admin/(preview)/mobilised-options/page.tsx` |
+| 9 | `components/eutthan/eutthan-cells.tsx` |
+| 7 | `portals/nmba/treatment-centre/…/peer-educators/[id]/training/page.tsx` |
+| 6 | `portals/nmba/treatment-centre/…/peer-educators/[id]/volunteers/page.tsx` |
+| 6 | `app/reports/eutthan-admin/page.tsx` |
+| 6 | `components/eutthan/eutthan-shell.tsx` |
+
+One exception worth knowing about: **`apps/storybook/stories/Icon.stories.tsx` holds 5**
+(an 18px icon in a Button, four 28px status icons). That file is not a page and will
+never be "redesigned", so it will sit in the baseline until someone spends the two
+minutes. It is baselined rather than fixed only because the no-sweep decision was
+taken as a blanket one.
 
 ---
 
