@@ -792,11 +792,10 @@
   --sa-on-bg-status-info-bold: #1e2124;
   --sa-on-bg-status-info-bolder: #ffffff;
   --sa-on-bg-status-info-boldest: #ffffff;
-  --sa-icon-size-xs: 1rem;
-  --sa-icon-size-sm: 1.25rem;
-  --sa-icon-size-md: 1.5rem;
-  --sa-icon-size-lg: 2rem;
-  --sa-icon-size-xl: 2.5rem;
+  --sa-icon-size-24: 1.5rem;
+  --sa-icon-size-32: 2rem;
+  --sa-icon-size-48: 3rem;
+  --sa-icon-size-64: 4rem;
   --sa-icon-neutral-base: var(--sa-color-text-default);
   --sa-icon-neutral-subtle: var(--sa-color-text-muted);
   --sa-icon-neutral-disabled: var(--sa-color-text-disabled);

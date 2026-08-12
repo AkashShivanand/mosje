@@ -232,7 +232,8 @@ test("a font size step resolves to the size scale, not to its own literal", asyn
 test("the semantic layers that replaced hardcoded values are all present", () => {
   const required = [
     // Every component needed an icon size and none had a token, so each hardcoded its own.
-    "--sa-icon-size-xs", "--sa-icon-size-md", "--sa-icon-size-xl",
+    // Renamed 2026-08-12 to the pixel value, and narrowed to the four sizes DBIM 3.4 sanctions.
+    "--sa-icon-size-24", "--sa-icon-size-32", "--sa-icon-size-48", "--sa-icon-size-64",
     // The focus ring's COLOUR was tokenised long before its geometry (WCAG 2.4.7).
     "--sa-focus-ring", "--sa-focus-width", "--sa-focus-offset",
     // CLAUDE.md mandates a 1280px content width; it lived only as a literal.
