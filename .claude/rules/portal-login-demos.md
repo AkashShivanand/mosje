@@ -135,6 +135,18 @@ only for the shape a bespoke, non-hub page might still choose to hand-roll.
 | **PM-AJAY** | District Secretary | DS002 | Password@123 |
 | **PM-AJAY** | State Officer | SO003 | Password@123 |
 | **PM-AJAY** | District Officer | DO005 | Password@123 |
+| **E-Anudaan** | ASO — Programme Division | 9200000801 | Demo@123 |
+| **E-Anudaan** | SO — Programme Division | 9200000802 | Demo@123 |
+| **E-Anudaan** | US — Programme Division | 9200000803 | Demo@123 |
+| **E-Anudaan** | DS — Programme Division | 9200000804 | Demo@123 |
+| **E-Anudaan** | JS — Programme Division | 9200000810 | Demo@123 |
+| **E-Anudaan** | ASO — Integrated Finance | 9200000805 | Demo@123 |
+| **E-Anudaan** | SO — Integrated Finance | 9200000806 | Demo@123 |
+| **E-Anudaan** | US — Integrated Finance | 9200000807 | Demo@123 |
+| **E-Anudaan** | DS — Integrated Finance | 9200000808 | Demo@123 |
+| **E-Anudaan** | JS — Integrated Finance | 9200000809 | Demo@123 |
+| **E-Anudaan** | Programme Director | 9200000811 | Demo@123 |
+| **E-Anudaan** | PMU Field Officer | 9200000812 | Demo@123 |
 
 The four sets below don't sign in by mobile number, so they're kept separate
 rather than forced into the table above's "Mobile / ID" column.
@@ -158,6 +170,20 @@ rather than forced into the table above's "Mobile / ID" column.
 | **NHAPOA** (Username) | Central Authority | ba.centralauthority | Demo@123 |
 | **NHAPOA** (Username) | System Administrator | nhapoa_sysadmin | Demo@123 |
 | **NHAPOA** (Username) | Call Centre Operator | ankitSharma | Demo@123 |
+| **E-Anudaan — NGO** (Login ID) | NGO Applicant | LGN3712 | Demo@123 |
+
+> **E-Anudaan** carries two audiences on one portal, so it has four
+> `DEMO_ACCOUNTS` entries. The base `/portals/e-anudaan` prefix serves the
+> officer console (its `/login` and everything under `/dashboard`); the three
+> more specific prefixes — `/sign-in`, `/ngo`, `/apply-grant` — win by
+> longest-prefix match and serve the NGO applicant.
+>
+> The mobile numbers mirror the live dev accounts so the demo reads as the real
+> thing, but **the passwords are deliberately the estate's `Demo@123`, not the
+> live dev passwords.** Those exist only in
+> `tools/design-audit/projects/e-anudaan/secrets.json`, which is gitignored.
+> `demo-accounts.ts` ships inside a published package and must never carry a
+> credential that works against a real deployment.
 
 > **NMBA — Treatment Centre** is a distinct login surface from the NMBA admin
 > login above — a Project Id + OTP flow, not mobile number + password — so it

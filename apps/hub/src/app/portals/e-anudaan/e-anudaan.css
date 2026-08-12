@@ -1,0 +1,18 @@
+/* ── E-Anudaan portal theme ────────────────────────────────────────────────
+   The hub's globals.css declares the utility NAMES; this block binds
+   E-Anudaan's VALUES to its subtree. Only keys where E-Anudaan differs from
+   the hub-wide default are listed.
+
+   The live portal's palette is navy-family and already close to the estate's:
+   #003366 is the SAMAVESH `navy` token verbatim, with #1a4d80 and #1e3a6e as
+   its companions. So this file is deliberately short — most of the palette
+   already resolves correctly without an override. */
+[data-portal="e-anudaan"] {
+  /* DS-token names E-Anudaan redefines (the hub keeps its own value outside
+     this scope). Values transcribed from the live dev portal's computed CSS —
+     see docs/research/eanudaan-admin-dev.mosje.in/INVENTORY.md. */
+  --portal-ink: #1e2124;
+  --portal-ink-muted: #4b5563;
+  --portal-surface-muted: #f8f9fa;
+  --portal-border: #dee2e6;
+}
