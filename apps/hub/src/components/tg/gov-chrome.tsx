@@ -10,16 +10,17 @@ const BASE = "/portals/tg";
     Font size / contrast live in the UX4GAccessibilityWidget (root layout). */
 export function GovTopBar() {
   return (
-    <AccessibilityBar
-      tone="navy"
-      layout="fluid"
-      govLink={{ href: "#", label: "Government of India" }}
-      skipTo="#main"
-      showSkip
-      fontSize
-      accessibility
-      language={{ label: "English" }}
-    />
+    <div data-brand="navy">
+      <AccessibilityBar
+        layout="fluid"
+        govLink={{ href: "#", label: "Government of India" }}
+        skipTo={"#main"}
+        showSkip
+        fontSize
+        accessibility
+        language={{ label: "English" }}
+      />
+    </div>
   );
 }
 

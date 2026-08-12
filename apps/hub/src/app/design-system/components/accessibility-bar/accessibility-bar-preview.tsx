@@ -24,7 +24,6 @@ export function AccessibilityBarPreview(): React.JSX.Element {
   return (
     <Frame>
       <AccessibilityBar
-        tone="blue"
         layout="fluid"
         accessibilityHref="#"
         language={{ label: "English" }}
@@ -33,16 +32,17 @@ export function AccessibilityBarPreview(): React.JSX.Element {
   );
 }
 
-/** Navy tone — portal chrome. */
+/** Navy — via the brand axis (`data-brand="navy"`), not a prop. */
 export function AccessibilityBarNavyPreview(): React.JSX.Element {
   return (
     <Frame>
-      <AccessibilityBar
-        tone="navy"
-        layout="fluid"
-        accessibilityHref="#"
-        language={{ label: "English" }}
-      />
+      <div data-brand="navy">
+        <AccessibilityBar
+          layout="fluid"
+          accessibilityHref="#"
+          language={{ label: "English" }}
+        />
+      </div>
     </Frame>
   );
 }
@@ -56,7 +56,6 @@ export function AccessibilityBarFontSizePreview(): React.JSX.Element {
   return (
     <Frame>
       <AccessibilityBar
-        tone="blue"
         layout="fluid"
         showSkip={false}
         accessibility={false}

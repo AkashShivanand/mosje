@@ -19,7 +19,12 @@ import { AccessibilityBar } from "@mosje/design-system";
  *
  * `layout` sets the inner content-container width — **narrow** (720), **wide**
  * (1200), or **fluid** (full-bleed) — reproducing UX4G's per-breakpoint padding
- * with one mechanism. `tone` is the brand fill (`blue` default, or `navy`).
+ * with one mechanism.
+ *
+ * **There is no `tone` prop.** Blue vs Navy is the BRAND AXIS: put `data-brand="navy"`
+ * on the bar or any ancestor and the same token resolves to the navy ramp (#003366).
+ * Figma models it identically, as Palette collection modes — which is why the master
+ * has no Tone variant. Never reintroduce a colour prop here.
  *
  * `maxWidth` is an escape hatch that overrides the `layout` preset with an
  * explicit pixel width — `SiteHeader` passes its own `maxWidth` so the bar's
@@ -38,7 +43,6 @@ const meta = {
   parameters: { layout: "fullscreen" },
   argTypes: {
     layout: { control: "inline-radio", options: ["narrow", "wide", "fluid"] },
-    tone: { control: "inline-radio", options: ["blue", "navy"] },
     showSkip: { control: "boolean" },
     fontSize: { control: "boolean" },
     accessibility: { control: "boolean" },
@@ -51,7 +55,6 @@ const meta = {
     accessibility: true,
     language: { label: "English" },
     layout: "wide",
-    tone: "blue",
   },
 } satisfies Meta<typeof AccessibilityBar>;
 
@@ -61,9 +64,13 @@ type Story = StoryObj<typeof meta>;
 /** All four controls, wide container — the default masthead bar. */
 export const Playground: Story = {};
 
-/** Portal chrome tone. */
+/** Navy — set by the brand axis, not a prop. Identical markup, `data-brand="navy"`. */
 export const Navy: Story = {
-  args: { tone: "navy" },
+  render: (args) => (
+    <div data-brand="navy">
+      <AccessibilityBar {...args} />
+    </div>
+  ),
 };
 
 /** Full-bleed: the content spans the whole viewport (only edge padding). */

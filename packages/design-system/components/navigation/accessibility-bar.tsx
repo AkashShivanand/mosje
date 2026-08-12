@@ -19,7 +19,6 @@ import { Icon } from "../icon";
 import "./accessibility-bar.css";
 
 export type AccessibilityBarLayout = "narrow" | "wide" | "fluid";
-export type AccessibilityBarTone = "blue" | "navy";
 /**
  * Mirrors the Figma master's `Device` variant axis. `"auto"` (the default) is the
  * web-native form: the same breakpoints, resolved by CSS instead of by a prop, so
@@ -72,8 +71,6 @@ export interface AccessibilityBarProps {
    * @default "auto"
    */
   device?: AccessibilityBarDevice;
-  /** Brand tone. @default "blue" */
-  tone?: AccessibilityBarTone;
   /** Notified whenever the reader changes the font scale (0.9 – 1.2). */
   onFontScaleChange?: (scale: number) => void;
   className?: string;
@@ -150,7 +147,6 @@ export function AccessibilityBar({
   layout = "wide",
   maxWidth,
   device = "auto",
-  tone = "blue",
   onFontScaleChange,
   className,
 }: AccessibilityBarProps): React.JSX.Element {
@@ -197,7 +193,7 @@ export function AccessibilityBar({
   const reset = () => setScaleIx(DEFAULT_SCALE_INDEX);
 
   return (
-    <div className={cn("sa-abar", `tone-${tone}`, `layout-${layout}`, `device-${device}`, className)} role="region" aria-label="Accessibility toolbar">
+    <div className={cn("sa-abar", `layout-${layout}`, `device-${device}`, className)} role="region" aria-label="Accessibility toolbar">
       <div className="sa-abar__in" style={maxWidth ? { maxWidth } : undefined}>
         <a className="sa-abar__gov" href={govLink.href} target="_blank" rel="noreferrer">
           {govLink.flagSrc && (

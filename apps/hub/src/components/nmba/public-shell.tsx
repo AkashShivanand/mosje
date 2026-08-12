@@ -39,17 +39,18 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
           stepper is wired back to nmba's `data-fontscale` (line above) so the
           portal's own scaling CSS keeps working; the language switcher lives in
           the masthead below, so the bar's own language control is off. */}
-      <AccessibilityBar
-        tone="navy"
-        layout="fluid"
-        govLink={{ href: "https://india.gov.in", label: "Government of India" }}
-        skipTo="#main-content"
-        showSkip
-        fontSize
-        accessibility
-        language={false}
-        onFontScaleChange={(s) => setFontScale(s < 1 ? "small" : s > 1 ? "large" : "default")}
-      />
+      <div data-brand="navy">
+        <AccessibilityBar
+          layout="fluid"
+          govLink={{ href: "https://india.gov.in", label: "Government of India" }}
+          skipTo="#main-content"
+          showSkip
+          fontSize
+          accessibility
+          language={false}
+          onFontScaleChange={(s) => setFontScale(s < 1 ? "small" : s > 1 ? "large" : "default")}
+        />
+      </div>
 
       {/* Masthead */}
       <header className="border-b border-line bg-white">

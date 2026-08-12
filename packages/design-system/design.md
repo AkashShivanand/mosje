@@ -1318,12 +1318,16 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 
 #### AccessibilityBar
 **Purpose**: The government top utility bar (UX4G / GIGW) — the Government of India link plus the accessibility controls (skip to content, font size A−/A/A+, accessibility, language). The a11y surface itself; matches the SAMAVESH Figma *Accessibility Bar* component.  
-**Variants**: `layout` = `narrow` (720) | `wide` (1200, default) | `fluid` (full-bleed) · `tone` = `blue` | `navy` · `device` = `auto` (default) | `mobile` | `tablet` | `desktop` | `desktop-xl`  
-**Key props**: `govLink`, `skipTo`, `showSkip`, `fontSize`, `accessibility`, `accessibilityHref`, `onAccessibility`, `language`, `layout`, `maxWidth`, `device`, `tone`, `onFontScaleChange`  
+**Variants**: `layout` = `narrow` (720) | `wide` (1200, default) | `fluid` (full-bleed) · `device` = `auto` (default) | `mobile` | `tablet` | `desktop` | `desktop-xl`  
+**Key props**: `govLink`, `skipTo`, `showSkip`, `fontSize`, `accessibility`, `accessibilityHref`, `onAccessibility`, `language`, `layout`, `maxWidth`, `device`, `onFontScaleChange`  
 **Rules**:
 - Every control is keyboard-operable and labelled; the skip link is the first interactive element and must target an id that exists.
 - The font-size stepper drives a `--sa-font-scale` variable (+ `data-sa-font-scale`) on the document root; content sized in `rem` reflows. Pass `onFontScaleChange` to persist the choice.
 - **This standalone bar keeps font-size because the Figma component does.** `SiteHeader` renders its OWN Tier-1 bar with font-size deliberately removed — the UX4G widget is the single canonical mechanism for font-size/contrast estate-wide (see the accessibility-consolidation spec). Do not enable font-size in both at once.
+- **There is NO `tone` prop.** Blue vs Navy is the brand axis — `data-brand="navy"` on the bar
+  or an ancestor re-resolves `bg/brand/primary/bolder` to the navy ramp (#003366), which is what
+  the retired prop hardcoded. Figma models it the same way (Palette modes), so the master has no
+  Tone variant. `SiteHeader` keeps a `tone` prop as its own public API and implements it this way.
 - Set `onAccessibility` OR `accessibilityHref`, not both. Left unset, the accessibility
   control **opens the UX4G accessibility widget** (it replays the click on the widget's own
   trigger — the vendor's `[data-uw-trigger]` hook is broken, see the source comment).

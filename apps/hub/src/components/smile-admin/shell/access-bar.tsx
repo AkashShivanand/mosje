@@ -7,15 +7,16 @@ import { AccessibilityBar } from "@mosje/design-system";
     contrast live in the official UX4GAccessibilityWidget (root layout). */
 export function AccessBar() {
   return (
-    <AccessibilityBar
-      tone="navy"
-      layout="fluid"
-      govLink={{ href: "https://www.india.gov.in", label: "Government of India" }}
-      skipTo="#main-content"
-      showSkip
-      fontSize
-      accessibility
-      language={{ label: "English" }}
-    />
+    <div data-brand="navy">
+      <AccessibilityBar
+        layout="fluid"
+        govLink={{ href: "https://www.india.gov.in", label: "Government of India" }}
+        skipTo={"#main-content"}
+        showSkip
+        fontSize
+        accessibility
+        language={{ label: "English" }}
+      />
+    </div>
   );
 }

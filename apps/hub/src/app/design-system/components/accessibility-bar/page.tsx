@@ -47,7 +47,6 @@ const previewLabel: React.CSSProperties = {
 const USAGE = `import { AccessibilityBar } from "@mosje/design-system";
 
 <AccessibilityBar
-  tone="blue"
   layout="wide"
   govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
   skipTo="#main-content"
@@ -101,11 +100,14 @@ export default function AccessibilityBarPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="tone" style={h2Style}>Tone</h2>
         <p style={leadStyle}>
-          Two brand tones: <code>blue</code> (default, public site) and <code>navy</code> (portal
-          chrome). The fill is a filled brand surface — one rung deeper than the brand ink — so
-          white text clears AA.
+          <strong>Tone is not a prop.</strong> Blue and Navy are the <em>brand axis</em>: put{" "}
+          <code>data-brand=&quot;navy&quot;</code> on the bar or any ancestor and the same{" "}
+          <code>bg/brand/primary/bolder</code> token re-resolves to the navy ramp (#003366).
+          Figma models it identically, as Palette collection modes — which is why the master has
+          no Tone variant. The fill is a filled brand surface, one rung deeper than the brand
+          ink, so white text clears AA in both.
         </p>
-        <div style={previewLabel}>Navy · portal chrome</div>
+        <div style={previewLabel}>Navy · via data-brand=&quot;navy&quot;</div>
         <AccessibilityBarNavyPreview />
       </section>
 
@@ -170,9 +172,8 @@ export default function AccessibilityBarPage(): React.JSX.Element {
         </p>
         <TokenTable
           tokens={[
-            { token: "--sa-color-action-primary-default", value: "bar fill (blue)", description: "Filled brand surface for tone=blue.", isColor: true },
-            { token: "--sa-color-brand-navy", value: "bar fill (navy)", description: "Filled brand surface for tone=navy.", isColor: true },
-            { token: "--sa-on-bg-brand-primary-bolder", value: "text / icons", description: "White content on the brand fill (AA on both tones).", isColor: true },
+            { token: "--sa-bg-brand-primary-bolder", value: "bar fill", description: "The ONLY fill. Re-resolves to the navy ramp (#003366) under data-brand=\"navy\" — no second token, no tone prop.", isColor: true },
+            { token: "--sa-text-neutral-inverse", value: "text / icons", description: "White content on the brand fill (AA on both brands).", isColor: true },
             { token: "--sa-border-neutral-inverse", value: "separators @ 40%", description: "The 1×20 dividers between control groups." },
             { token: "--sa-type-label-2-size / -lh", value: "12 / 16", description: "Bar type — Noto Sans Medium (UX4G navbar spec)." },
             { token: "--sa-shape-full", value: "pill radius", description: "Icon-button hit area (accessibility, language)." },
@@ -250,7 +251,6 @@ export default function AccessibilityBarPage(): React.JSX.Element {
             { name: "onAccessibility", type: "() => void", description: "Makes the accessibility control a button (opens a dialog/widget). Set this OR accessibilityHref." },
             { name: "language", type: "{ label?; onClick? } | false", default: '{ label: "English" }', description: "Language selector. Pass false to hide." },
             { name: "layout", type: '"narrow" | "wide" | "fluid"', default: '"wide"', description: "Inner content-container width (720 / 1200 / full-bleed)." },
-            { name: "tone", type: '"blue" | "navy"', default: '"blue"', description: "Brand fill of the bar." },
             { name: "onFontScaleChange", type: "(scale: number) => void", description: "Notified when the reader changes the font scale (0.9–1.2). Persist it to keep the choice across pages." },
             { name: "className", type: "string", description: "Additional classes merged onto the root." },
           ]}

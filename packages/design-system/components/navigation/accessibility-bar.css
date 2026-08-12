@@ -11,9 +11,14 @@
 }
 /* Filled brand surface — one rung deeper than the brand ink (filled-surface
    convention): bg/brand/primary/bolder = #005EB9, white on it clears AA at 6.36:1.
-   NOT the #0373DF ink, which the convention reserves for text/borders. */
-.sa-abar.tone-blue { background-color: var(--sa-bg-brand-primary-bolder); }
-.sa-abar.tone-navy { background-color: var(--sa-color-brand-navy); }
+   NOT the #0373DF ink, which the convention reserves for text/borders.
+
+   THERE IS NO `tone` PROP. Blue vs Navy is the BRAND AXIS: put `data-brand="navy"`
+   on the bar or any ancestor and this same token resolves to the navy ramp
+   (#003366) — which is exactly what the old tone="navy" hardcoded. Figma models it
+   the same way, as Palette collection MODES, which is why the master has no Tone
+   variant. Never reintroduce a colour prop here. */
+.sa-abar { background-color: var(--sa-bg-brand-primary-bolder); }
 
 /* Inner content container — width follows the `layout` prop. */
 .sa-abar__in {

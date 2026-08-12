@@ -243,19 +243,24 @@ export function SiteHeader({
          second, visually-hidden `.ds-hdr-skip` — two links to the same target
          announce the bypass twice. WCAG 2.4.1 is satisfied by the visible one.
          The accessibility control opens the UX4G widget. */}
-      <AccessibilityBar
-        govLink={govLink}
-        skipTo={skipTo}
-        showSkip
-        fontSize
-        accessibility={accessibilityToolbar}
-        accessibilityHref={accessibilityHref}
-        onAccessibility={onAccessibility}
-        language={language}
-        layout="fluid"
-        maxWidth={maxWidth}
-        tone={tone}
-      />
+      {/* `tone` is the BRAND AXIS, not a component prop — `data-brand="navy"`
+          re-resolves bg/brand/primary/bolder to the navy ramp (#003366), the same
+          value the retired tone="navy" hardcoded. Scoped to the bar so the brand
+          row and nav row below keep their own surfaces. */}
+      <div data-brand={tone === "navy" ? "navy" : undefined}>
+        <AccessibilityBar
+          govLink={govLink}
+          skipTo={skipTo}
+          showSkip
+          fontSize
+          accessibility={accessibilityToolbar}
+          accessibilityHref={accessibilityHref}
+          onAccessibility={onAccessibility}
+          language={language}
+          layout="fluid"
+          maxWidth={maxWidth}
+        />
+      </div>
 
       {/* ── Tier 2: Brand row ── */}
       <div className="ds-hdr-brand">

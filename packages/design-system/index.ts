@@ -226,7 +226,7 @@ export { AccessibilityBar } from "./components/navigation/accessibility-bar";
 export type {
   AccessibilityBarProps,
   AccessibilityBarLayout,
-  AccessibilityBarTone,
+  AccessibilityBarDevice,
 } from "./components/navigation/accessibility-bar";
 
 // Navbar — SiteHeader (the SAMAVESH Navbar: Website + Portal variants, 3-tier).
