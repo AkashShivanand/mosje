@@ -22,9 +22,21 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.18.1",
+    version: "v0.18.2",
     date: "2026-08-12",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "ICON IS NOW DECORATIVE BY DEFAULT, which closes an accessibility gap at 533 of 718 call sites. A Material Symbols glyph is real text content, so an unmarked <Icon name=\"arrow_back\" /> is announced by a screen reader as the stray word \"arrow back\". The Iconography page has always stated the rule — every icon is either hidden from assistive technology or given a label, with no third option — but as an unenforced convention depending on 533 separate acts of memory, that is what it converged to. The component now decides: aria-label given means meaningful, so role=\"img\" and announced; otherwise aria-hidden. An explicit aria-hidden={false} still wins. Editing 533 call sites would have fixed today's instances and none of tomorrow's" },
+      { kind: "Changed", text: "THE ICONOGRAPHY DOCS PAGE IS SYNCED WITH FIGMA — four sections against Figma's eight, so the two surfaces documenting one system said different things. It now mirrors Icons — Documentation section for section: 01 How it works, 02 The catalogue, 03 Sizes, 04 Weight, 05 Colour, 06 Bespoke marks, 07 Accessibility, 08 Handoff. The prose is the Figma prose; the numbers come from code" },
+      { kind: "Added", text: "The 223-icon starter set is GENERATED from Figma section 02 into icon-catalogue.data.ts rather than hand-listed, so the web catalogue cannot drift from the sheet. On the web it filters and copies on click — Figma's own section states the problem it is solving (\"a text property cannot be browsed visually, so this sheet is the browser\") and a static grid of 223 tiles is a weak answer to it" },
+      { kind: "Changed", text: "Section 05 documents all NINE --sa-icon-* colour roles, not the six Figma swatches. info, disabled and inverse ship in the system with no swatch; documentation that under-reports what ships is how a colour gets reinvented as a literal. The gap is recorded as Figma-side drift rather than quietly matched" },
+      { kind: "Fixed", text: "SIX HAND-DRAWN DUPLICATES OF MATERIAL SYMBOLS WERE LIVING IN THE DESIGN SYSTEM'S OWN DOCS CHROME — the strictest case under the documentation-linkage rule, which requires documentation to be BUILT from the system it documents. terminal-code.tsx drew its own tick and clipboard, docs-header.tsx its own X, hamburger and magnifier, cmd-search.tsx another magnifier. All six are now the Icon component, and each landed ON the size scale (14 → 16, 18 → 20) rather than preserving an off-scale value" },
+      { kind: "Added", text: "tools/icon-audit/check.mjs — a repeatable audit of whether the estate uses the system the page documents. It reads the size scale and the catalogue from their sources rather than holding copies, so it tracks them. Reports, does not gate: 213 of 762 call sites are off the seven-step scale, and moving them changes rendered size in live portals, which is a human decision. Full findings in docs/design-system/icon-audit.md" },
+    ],
+  },
+  {
+    version: "v0.18.1",
+    date: "2026-08-12",
     changes: [
       { kind: "Removed", text: "THE TEN DEAD [data-theme=\"dark\"] RULES ARE GONE. The appearance axis was retired earlier — tokens.css emits no [data-theme] block and nothing anywhere sets the attribute — but ten hand-written companion rules outlived the token layer they depended on, in globals.css, design-system.css, hero.css and skeleton.css. They could never match, so they were not styling a dark mode; they were describing one that does not exist" },
       { kind: "Changed", text: "DELETED rather than rewired to the UX4G widget's .dark-mode, which was the other option. The accessibility consolidation spec (§3) is explicit: the widget owns citizen-facing accessibility dark, tokens own product brand, and the two must not be wired together without a deliberate decision and QA, because both applying at once double-darkens. Re-pointing these ten rules would have re-added a capability that was removed on purpose. The spec now carries a status note saying the caveat is moot, since the design-side half no longer exists" },
