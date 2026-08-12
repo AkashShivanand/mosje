@@ -137,6 +137,17 @@ function main() {
   const colors = Object.fromEntries(Object.entries(COLORS).map(([k, v]) => [k, take(v)]));
   const radius = Object.fromEntries(Object.entries(RADIUS).map(([k, v]) => [k, take(v)]));
   const shadow = Object.fromEntries(Object.entries(SHADOW).map(([k, v]) => [k, take(v)]));
+  // Read the icon scale straight out of the stylesheet. Listing the steps here would be a
+  // second place to forget when the scale moves — which is exactly how the docs page that
+  // documented only 16/20/24 fell three steps behind the tokens.
+  const iconSize = Object.fromEntries(
+    [...css.matchAll(/--sa-icon-size-(\d+)\s*:/g)]
+      .map((m) => Number(m[1]))
+      .filter((n, i, a) => a.indexOf(n) === i)
+      .sort((a, b) => a - b)
+      .map((n) => [`px${n}`, n]),
+  );
+
   const typography = Object.fromEntries(
     TYPE_ROLES.map((r) => [camel(r), { size: take(`--sa-type-${TYPE_TOKEN[r]}-size`), leading: take(`--sa-type-${TYPE_TOKEN[r]}-lh`) }]),
   );
@@ -191,14 +202,22 @@ export const shadow = {
 ${obj(shadow)}
 } as const;
 
-export const tokens = { colors, radius, fontFamily, typography, shadow } as const;
+/** Icon sizes in px, read from the stylesheet so this list cannot fall behind the scale.
+    DBIM 3.0 section 3.4 publishes 24, 32, 48 and 64; the smaller steps are ours and are kept
+    deliberately (.claude/rules/standards-precedence.md). */
+export const iconSize = {
+${obj(iconSize)}
+} as const;
+
+export const tokens = { colors, radius, fontFamily, typography, shadow, iconSize } as const;
 export default tokens;
 `;
 
   writeFileSync(here("../../design-system/tokens.ts"), out);
   process.stdout.write(
     `✓ generated packages/design-system/tokens.ts — ${Object.keys(colors).length} colours, ` +
-      `${Object.keys(radius).length} radii, ${Object.keys(typography).length} type roles\n`,
+      `${Object.keys(radius).length} radii, ${Object.keys(typography).length} type roles, ` +
+      `${Object.keys(iconSize).length} icon sizes\n`,
   );
 }
 
