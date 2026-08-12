@@ -1,6 +1,8 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import { Icon, buttonClasses } from "@mosje/design-system";
+import { iconSize } from "@mosje/design-system/tokens";
+import { Callout } from "@/components/design-system/docs-kit/index";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
@@ -14,6 +16,26 @@ export const metadata: Metadata = {
  * rendered through the DS `<Icon>`, not redrawn copies. A documentation page
  * that hand-draws its own icons drifts from the system it documents.
  */
+/**
+ * DBIM 3.0 §3.4 (Figure 9) publishes four icon sizes. This is a fact about the
+ * STANDARD, not about our tokens, so it is stated once here — the sizes themselves
+ * come from `iconSize`, which is generated from the stylesheet and cannot drift.
+ */
+const DBIM_SIZES = new Set<number>([24, 32, 48, 64]);
+
+/** Generated from the stylesheet by @mosje/tokens — never hand-typed here. */
+const SIZES: number[] = Object.values(iconSize);
+
+const SIZE_USE: Record<number, string> = {
+  16: "Inline with body text — the most-used size in the estate",
+  20: "List items and menu rows",
+  24: "Standalone controls — the default",
+  32: "Section headers and empty states",
+  40: "Feature tiles",
+  48: "Hero and landing surfaces",
+  64: "Largest published step",
+};
+
 const COMMON_ICONS = [
   "search",
   "keyboard_arrow_down",
@@ -138,7 +160,13 @@ export default function IconographyPage(): React.JSX.Element {
       </section>
 
       <section aria-labelledby="size" style={{ marginTop: "var(--sa-stack-2xl)" }}>
-        <h2 id="size">Size guidance</h2>
+        <h2 id="size">Sizes</h2>
+        <p style={{ marginTop: "var(--sa-stack-s)", color: "var(--sa-color-text-muted)" }}>
+          Seven steps. The four tagged <strong>DBIM</strong> are the sizes the Digital Brand Identity
+          Manual publishes (§3.4, Figure 9) — those are <em>frames</em> that include 2px of padding on
+          every edge, so their live area is 4px smaller. The other three are ours and are kept
+          deliberately.
+        </p>
         <div
           style={{
             marginTop: "var(--sa-stack-l)",
@@ -149,20 +177,35 @@ export default function IconographyPage(): React.JSX.Element {
             color: "var(--sa-text-neutral-base)",
           }}
         >
-          {[
-            { size: 16, label: "16px — inline with body text" },
-            { size: 20, label: "20px — list items and menu rows" },
-            { size: 24, label: "24px — standalone controls" },
-          ].map(({ size, label }) => (
-            <div key={size} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--sa-stack-xs)" }}>
-              <Icon name="search" size={size} aria-hidden />
-              <span style={{ fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)", textAlign: "center", maxWidth: "120px" }}>
-                {label}
+          {SIZES.map((size) => (
+            <div
+              key={size}
+              style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--sa-stack-2xs)", maxWidth: "14ch" }}
+            >
+              <Icon name="settings" size={size} aria-hidden />
+              <span style={{ fontSize: "var(--sa-type-body-2-size)", fontWeight: 500 }}>{size}px</span>
+              <span style={{ fontSize: "var(--sa-type-label-3-size)", color: DBIM_SIZES.has(size) ? "var(--sa-color-action-primary-default)" : "var(--sa-color-text-muted)" }}>
+                {DBIM_SIZES.has(size) ? `DBIM · live area ${size - 4}` : "Interface"}
+              </span>
+              <code style={{ fontSize: "var(--sa-type-label-3-size)", color: "var(--sa-color-text-muted)" }}>
+                --sa-icon-size-{size}
+              </code>
+              <span style={{ fontSize: "var(--sa-type-label-3-size)", color: "var(--sa-color-text-muted)", textAlign: "center" }}>
+                {SIZE_USE[size]}
               </span>
             </div>
           ))}
         </div>
+        <Callout type="info" title="Quality first, then the standard">
+          A standard&rsquo;s list is a <strong>floor, not a ceiling</strong>. DBIM §3.4 governs the
+          downloadable icon asset bank; it does not forbid a smaller inline glyph, and 16px beside 14px
+          body text is the right size there. When a standard specifies a set, we <strong>add what is
+          missing</strong> and never delete what quality needs — with accessibility the one thing never
+          traded, because accessibility is quality. See{" "}
+          <code>.claude/rules/standards-precedence.md</code>.
+        </Callout>
       </section>
+
     </article>
   );
 }
