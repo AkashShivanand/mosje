@@ -861,7 +861,7 @@ function Marker({
         width: "20px",
         height: "20px",
         borderRadius: "50%",
-        background: "var(--sa-color-action-primary-default)",
+        background: "var(--sa-bg-brand-primary-bolder)",
         color: "var(--sa-on-bg-brand-primary-bolder, #fff)",
         fontSize: "11px",
         fontWeight: 700,

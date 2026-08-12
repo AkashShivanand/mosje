@@ -67,7 +67,7 @@ export const OnABrandSurface: Story = {
         style={{
           padding: 24,
           borderRadius: "var(--sa-shape-md)",
-          background: "var(--sa-color-action-primary-default)",
+          background: "var(--sa-bg-brand-primary-bolder)",
         }}
       >
         <Loader {...args} variant="secondary" label="Loading on the brand surface" />

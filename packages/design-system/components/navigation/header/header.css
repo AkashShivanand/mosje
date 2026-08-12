@@ -150,7 +150,7 @@
 }
 
 .ds-hdr-util.tone-blue {
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
 }
 
 .ds-hdr-util.tone-navy {

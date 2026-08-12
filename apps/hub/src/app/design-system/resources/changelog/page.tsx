@@ -22,9 +22,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.17.0",
+    version: "v0.18.0",
     date: "2026-08-12",
     current: true,
+    changes: [
+      { kind: "Changed", text: "FILLED PRIMARY BUTTONS MOVED ONE RUNG DEEPER, from #0373DF to #005EB9. White-on-primary goes 4.64:1 to 6.36:1, and Navy 8.77:1 to 12.61:1. 36 solid fills across the estate plus the DS Button. The ladder already said this should be so: a bg rung sits one step deeper than the ink of the same family precisely because a fill carries white text while an ink sits on the page. The button had been reaching past its own system" },
+      { kind: "Fixed", text: "The DS Button painted its filled background from a TEXT token. Its single --_color drove background, border AND outlined ink at once, so there was no way to move the fill without dragging outlined text with it. Split into --_fill and --_color: filled uses the bg slot, outlined and text keep the ink at 4.64:1 against the page, which is where that value is correct" },
+      { kind: "Changed", text: "What did NOT move, and why. Success and danger keep ink as their fill — their bg bolder rungs are different values (#00542b, #aa2f25), so moving them is a separate design decision rather than a consequence of this one. Gradients and color-mix washes keep the lighter value deliberately: a wash is not a fill and does not carry text. Links, borders and icons keep #0373DF, measured against the page" },
+      { kind: "Changed", text: "design.md sections B and C rewritten onto canonical token names. They still spelled every token in the --ds-* vocabulary retired earlier the same day — the values had been corrected but the names had not, which is its own kind of wrong in the file agents read first" },
+    ],
+  },
+  {
+    version: "v0.17.0",
+    date: "2026-08-12",
     changes: [
       { kind: "Changed", text: "ICON SIZES ARE NOW DBIM'S, NOT OURS. DBIM 3.0 section 3.4 (Figure 9) defines exactly four icon sizes — 24, 32, 48, 64 — and section 3.7.i makes them mandatory. The scale held 16, 20, 24, 32, 40: three sizes DBIM does not sanction, and two of its four missing entirely. Now exactly the four, named for their pixel value (--sa-icon-size-24 …) rather than t-shirt letters, because a letter can quietly come to mean a different number — which is exactly how the retired --ds-text-title-* family shipped a name that resolved to another role" },
       { kind: "Changed", text: "Both sides were pushed and then read back independently rather than asserted: the built payload and the live Figma library each check to baa9e208:85. md and lg were renamed in place to 24 and 32 (same values, so ids and any bindings survived); 16, 20 and 40 were removed with evidence of zero consumers — the only occurrences of icon-size- in source were the five declarations in tokens.css itself, and Icon takes a raw size number that never read the scale" },
@@ -612,7 +622,7 @@ export default function ChangelogPage(): React.JSX.Element {
                       fontSize: "var(--sa-type-body-3-size)",
                       fontWeight: 600,
                       color: "#fff",
-                      background: "var(--sa-color-action-primary-default)",
+                      background: "var(--sa-bg-brand-primary-bolder)",
                       padding: "2px var(--sa-padding-xs)",
                       borderRadius: "var(--sa-shape-sm)",
                     }}

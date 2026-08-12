@@ -40,7 +40,7 @@
   width: 28px;
   height: 28px;
   border-radius: var(--sa-shape-sm);
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
   display: flex;
   align-items: center;

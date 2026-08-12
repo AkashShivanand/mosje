@@ -12,7 +12,18 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-12 · System version: v0.17.0 (COLOUR SECTIONS §A/§B/§C/§6 RECONCILED
+  Last reviewed: 2026-08-12 · System version: v0.18.0 (FILLED PRIMARY MOVED TO THE bolder RUNG.
+  A filled primary button now paints bg/brand/primary/bolder (#005EB9) instead of the ink of the
+  same family (#0373DF), taking white-on-primary from 4.64:1 to 6.36:1 and Navy from 8.77:1 to
+  12.61:1. 36 solid fills across the estate plus the DS Button, whose single --_color was split
+  into --_fill and --_color so outlined and text appearances keep the ink. THE LADDER ALREADY
+  SAID THIS: bg rungs sit one step deeper than the ink of the same family precisely because a
+  fill carries white text and an ink sits on the page. The Button was reaching past its own
+  system — and a slot migration the same day had briefly put a TEXT token in charge of its fill,
+  which is what surfaced it. Success and danger were NOT moved: their bg bolder rungs are
+  different values, so that is a separate decision. SS B and SS C were also rewritten onto
+  canonical names — they still spelled tokens in the --ds-* vocabulary retired earlier that day.
+  PREVIOUS ENTRY: COLOUR SECTIONS SS A/B/C/6 RECONCILED
   AGAINST THE BUILT STYLESHEET. Every colour value and every contrast ratio in this file was
   recomputed from packages/tokens/dist/tokens.css and corrected: the §C pairs table was wrong in
   eight of nine rows after the 2026-08-11 ramp rebuild, §B carried a Dark column for an axis
@@ -421,16 +432,24 @@ that changes a colour is `data-brand`, so the two value columns below are Blue a
 
 | Token | Blue | Navy | Correct usage | Never use for |
 |-------|------|------|---------------|---------------|
-| `--ds-primary` | `#0373DF` | `#244C7B` | CTA buttons, active links, key icons | Body text, large backgrounds |
-| `--ds-saffron` | `#FF671F` | same | Accents, badges, decorative emphasis | Text, icons or chart series on white — it measures **2.91:1**, below even the 3:1 non-text floor |
-| `--ds-yellow` | `#FFD323` | same | Nothing, in new work. Retained for older markup | Text at any size (**1.44:1**). For yellow emphasis use `bg/status/warning/subtler` behind dark ink |
-| `--ds-ink` | `#1E2124` | `#1E2024` | All body/heading text | Interactive elements, backgrounds |
-| `--ds-ink-muted` | `#3A3D41` | `#3B3D41` | Captions, hints, helper text | — comfortably AA at 10.92:1; the old "check below 16px" caveat no longer applies |
-| `--ds-surface` | `#FFFFFF` | same | Page and card backgrounds | Text or icon fills |
-| `--ds-surface-muted` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels | Anything needing a measured contrast — it is a surface, not a fill with a guarantee |
-| `--ds-danger` | `#8B1F18` | same | Error text and icons on white, destructive labels | Decorative fills (use `--ds-danger-tonal`) |
-| `--ds-success` | `#004220` | same | Success states, validation confirmation | Primary brand actions |
-| `--ds-on-primary` | `#FFFFFF` | same | Text/icons on solid `--ds-primary` backgrounds | Any other background |
+| `--sa-bg-brand-primary-bolder` | `#005EB9` | `#003366` | **Solid primary fills** — filled buttons, active nav, brand banners | Text or borders on a light page; the ink slot below is measured for that |
+| `--sa-text-brand-primary-base` | `#0373DF` | `#244C7B` | Brand-coloured text, links, outlined-button ink, key icons | Solid fills behind white text — that is the `bg` slot's job |
+| `--sa-color-brand-saffron` | `#FF671F` | same | Accents, badges, decorative emphasis | Text, icons or chart series on white — **2.91:1**, below even the 3:1 non-text floor |
+| `--sa-color-brand-yellow` | `#FFD323` | same | Nothing, in new work. Retained for older markup | Text at any size (**1.44:1**). For yellow emphasis use `bg/status/warning/subtler` behind dark ink |
+| `--sa-text-neutral-base` | `#1E2124` | `#1E2024` | All body/heading text | Interactive elements, backgrounds |
+| `--sa-text-neutral-subtle` | `#3A3D41` | `#3B3D41` | Captions, hints, helper text | — comfortably AA at 10.92:1; the old "check below 16px" caveat no longer applies |
+| `--sa-bg-neutral-base` | `#FFFFFF` | same | Page and card backgrounds | Text or icon fills |
+| `--sa-bg-neutral-subtler` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels | Anything needing a measured contrast — it is a surface, not a fill with a guarantee |
+| `--sa-text-status-error-base` | `#8B1F18` | same | Error text and icons on white, destructive labels | Decorative fills (use `bg/status/error/subtler`) |
+| `--sa-text-status-success-base` | `#004220` | same | Success states, validation confirmation | Primary brand actions |
+| `--sa-on-bg-brand-primary-bolder` | `#FFFFFF` | same | Text/icons on a solid primary fill | Any other background |
+
+> **A fill sits one rung deeper than the ink of the same family, and that is the point.**
+> `bg/brand/primary/bolder` is `primaryScale/600`; `text/brand/primary/base` is `/500`. The fill
+> carries white text, so it is measured against white and needs the headroom; the ink sits on the
+> page, where 4.64:1 is measured against the page and correct. Reaching for the ink token to paint
+> a button is the mistake this split exists to prevent — and it is the one the DS Button itself
+> made until 2026-08-12.
 
 *Every value above was read from `packages/tokens/dist/tokens.css` on 2026-08-12. The previous
 table pre-dated the 2026-08-11 ramp rebuild and was wrong on `--ds-saffron`, `--ds-ink`,
@@ -441,28 +460,29 @@ already been removed.*
 
 | Foreground | Background | Ratio | Status | Usage context |
 |-----------|-----------|-------|--------|---------------|
-| `--ds-on-primary` (`#fff`) | `--ds-primary` (`#0373DF`) | **4.64:1** | ✅ Pass | Filled primary buttons, nav active state. Passes, but with little headroom — in Navy the same pair is 8.77:1 |
-| `--ds-ink` (`#1E2124`) | `--ds-surface` (`#fff`) | **16.18:1** | ✅ Pass | All body text |
-| `--ds-ink-muted` (`#3A3D41`) | `--ds-surface` (`#fff`) | **10.92:1** | ✅ Pass | Hint text, captions — at any size |
-| `--ds-ink-muted` (`#3A3D41`) | `--ds-surface-muted` (`#EEF0F3`) | **9.56:1** | ✅ Pass | Safe on quiet panels too; the old "borderline" warning is obsolete |
-| `--ds-danger` (`#8B1F18`) | `--ds-surface` (`#fff`) | **9.10:1** | ✅ Pass | Error text and icons on white |
-| `--ds-danger-500` (`#CB3F33`) | `--ds-surface` (`#fff`) | **4.89:1** | ✅ Pass | Passes since the 2026-08-11 rebuild, but prefer `--ds-danger` for text — a ramp rung carries no guarantee against your surface |
-| `--ds-saffron` (`#FF671F`) | `--ds-surface` (`#fff`) | **2.91:1** | ❌ Fail (even non-text) | Decorative fills only. Below the 3:1 of WCAG 1.4.11 — never an icon, a border or a chart series |
-| `--ds-yellow` (`#FFD323`) | `--ds-surface` (`#fff`) | **1.44:1** | ❌ Fail | Never a text colour, at any size |
-| `--ds-primary` (`#0373DF`) | `--ds-surface` (`#fff`) | **4.64:1** | ✅ Pass | Link text |
-| `--ds-success` (`#004220`) | `--ds-surface` (`#fff`) | **11.67:1** | ✅ Pass | Confirmation text and icons |
-| `--ds-border` (`#DCDEE1`) | `--ds-surface` (`#fff`) | **1.35:1** | ⚠️ Decorative | A hairline divider only. For a control boundary someone must find, use `border/neutral/bolder/default` |
+| `on/bg/brand/primary/bolder` (`#fff`) | `bg/brand/primary/bolder` (`#005EB9`) | **6.36:1** | ✅ Pass | **Filled primary buttons, active nav.** In Navy the same pair is 12.61:1 |
+| `text/neutral/base` (`#1E2124`) | `bg/neutral/base` (`#fff`) | **16.18:1** | ✅ Pass | All body text |
+| `text/neutral/subtle` (`#3A3D41`) | `bg/neutral/base` (`#fff`) | **10.92:1** | ✅ Pass | Hint text, captions — at any size |
+| `text/neutral/subtle` (`#3A3D41`) | `bg/neutral/subtler` (`#EEF0F3`) | **9.56:1** | ✅ Pass | Safe on quiet panels too |
+| `text/status/error/base` (`#8B1F18`) | `bg/neutral/base` (`#fff`) | **9.10:1** | ✅ Pass | Error text and icons on white |
+| `text/brand/primary/base` (`#0373DF`) | `bg/neutral/base` (`#fff`) | **4.64:1** | ✅ Pass | Link text, outlined-button ink. Clears the floor by 0.14 — do not put white on it |
+| `color/brand/saffron` (`#FF671F`) | `bg/neutral/base` (`#fff`) | **2.91:1** | ❌ Fail (even non-text) | Decorative fills only. Below the 3:1 of WCAG 1.4.11 |
+| `color/brand/yellow` (`#FFD323`) | `bg/neutral/base` (`#fff`) | **1.44:1** | ❌ Fail | Never a text colour, at any size |
+| `text/status/success/base` (`#004220`) | `bg/neutral/base` (`#fff`) | **11.67:1** | ✅ Pass | Confirmation text and icons |
+| `border/neutral/subtle` (`#DCDEE1`) | `bg/neutral/base` (`#fff`) | **1.35:1** | ⚠️ Decorative | A hairline divider only. For a control boundary use `border/neutral/bolder/default` |
 
-> **Critical rule:** use `var(--ds-danger)` for red error text on white — it resolves to `#8B1F18`
-> (`dangerScale/700`) at **9.10:1**. `--ds-danger-500` now also clears AA at 4.89:1, but reaching into
-> a ramp for text is still the wrong habit: a rung is a value, not a decision, and it carries no
-> guarantee against whatever surface you put it on.
+> **Critical rule — a fill is not an ink.** Paint a solid primary surface with
+> `bg/brand/primary/bolder` and put `on/bg/brand/primary/bolder` on it; that pairing was measured
+> and clears AA by 1.86. `text/brand/primary/base` is the *ink* of the same family — correct for a
+> link or an outlined button on the page, and 0.14 above the floor there, but white text on it
+> would be the marginal pairing this ladder exists to avoid.
 >
-> *Corrected 2026-08-12:* every ratio in this table was recomputed from `dist/tokens.css` with the
-> WCAG 2.x formula. The previous table pre-dated the 2026-08-11 ramp rebuild and was wrong in eight
-> of nine rows — most consequentially, it warned that `--ds-ink-muted` was borderline at 4.1:1 (it is
-> 9.56:1) and that `--ds-danger-500` fails for text (it passes). It also omitted `--ds-saffron`,
-> which is the one value here that genuinely fails, and fails a criterion the table never mentioned.
+> *Changed 2026-08-12:* filled primary buttons moved from `#0373DF` to `#005EB9` across the estate
+> (36 solid fills plus the DS Button), taking white-on-primary from 4.64:1 to 6.36:1 and Navy from
+> 8.77:1 to 12.61:1. The DS Button's single `--_color` was split into `--_fill` and `--_color`, so
+> outlined and text appearances keep the ink. Gradients and `color-mix` washes deliberately keep
+> the lighter value. Success and danger were NOT moved: their `bg` bolder rungs are different
+> values, so that is a separate decision.
 
 > **The table above is hand-maintained; it is not the authority.** Every `--sa-*` colour token
 > carries a contrast class that is **measured at build time** against its own surface, across every

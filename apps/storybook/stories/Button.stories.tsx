@@ -120,7 +120,7 @@ export const OnABrandSurface: Story = {
         gap: 12,
         padding: 24,
         borderRadius: "var(--sa-shape-md)",
-        background: "var(--sa-color-action-primary-default)",
+        background: "var(--sa-bg-brand-primary-bolder)",
       }}
     >
       <Button {...args} appearance="inverse">

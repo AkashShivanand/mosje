@@ -125,7 +125,7 @@ export default function CardPage(): React.JSX.Element {
                 <div style={{ border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-m)", background: "var(--sa-bg-neutral-base)", width: 220 }}>
                   <div style={{ fontWeight: 600, marginBottom: 4, color: "var(--sa-color-text-default)" }}>NSFDC Loan</div>
                   <div style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)", marginBottom: "var(--sa-stack-m)" }}>Term loan for self-employment.</div>
-                  <span style={{ display: "inline-block", padding: "6px 14px", borderRadius: "var(--sa-shape-sm)", background: "var(--sa-color-action-primary-default)", color: "#fff", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600 }}>Apply</span>
+                  <span style={{ display: "inline-block", padding: "6px 14px", borderRadius: "var(--sa-shape-sm)", background: "var(--sa-bg-brand-primary-bolder)", color: "#fff", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600 }}>Apply</span>
                 </div>
               ),
             },
@@ -136,7 +136,7 @@ export default function CardPage(): React.JSX.Element {
                 <div style={{ border: "2px solid var(--sa-border-status-error-base)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-m)", background: "var(--sa-bg-neutral-base)", width: 220, cursor: "pointer" }}>
                   <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-s)", color: "var(--sa-color-text-default)" }}>Clickable card</div>
                   <div style={{ display: "flex", gap: 8 }}>
-                    <span style={{ padding: "6px 12px", borderRadius: "var(--sa-shape-sm)", background: "var(--sa-color-action-primary-default)", color: "#fff", fontSize: "var(--sa-type-body-3-size)" }}>Edit</span>
+                    <span style={{ padding: "6px 12px", borderRadius: "var(--sa-shape-sm)", background: "var(--sa-bg-brand-primary-bolder)", color: "#fff", fontSize: "var(--sa-type-body-3-size)" }}>Edit</span>
                     <span style={{ padding: "6px 12px", borderRadius: "var(--sa-shape-sm)", border: "1px solid var(--sa-border-neutral-base)", color: "var(--sa-color-text-default)", fontSize: "var(--sa-type-body-3-size)" }}>Delete</span>
                   </div>
                 </div>

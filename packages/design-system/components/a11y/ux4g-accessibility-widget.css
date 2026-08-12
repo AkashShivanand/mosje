@@ -101,7 +101,7 @@
 #uw-main .ux4g-accessibility-btn-submit,
 #uw-main .ux4g-accessibility-help-form-container::-webkit-scrollbar-thumb,
 #uw-main .ux4g-accessibility-ux4g-checkbox-grid input[type="checkbox"]:checked {
-  background: var(--sa-color-action-primary-default) !important;
+  background: var(--sa-bg-brand-primary-bolder) !important;
 }
 
 #uw-main .ux4g-accessibility-chat-container .ux4g-accessibility-cancel {
@@ -162,5 +162,5 @@
 
 .ux4g-accessibility-uwaw-text-reading-guide,
 .ux4g-accessibility-reading-mask-horizontal::before {
-  background-color: var(--sa-color-action-primary-default) !important;
+  background-color: var(--sa-bg-brand-primary-bolder) !important;
 }

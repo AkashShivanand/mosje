@@ -35,7 +35,7 @@
      its text colour, so `--sa-color-action-primary-default` was the intended fill all along —
      it's re-declared per `[data-brand]` and re-tones with the rest of the
      estate. */
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   box-shadow: var(--sa-elevation-card);
   transition: transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
     width var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);

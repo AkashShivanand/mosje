@@ -67,7 +67,7 @@
 }
 
 .ds-stepper__item.is-current .ds-stepper__marker {
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   border-color: var(--sa-border-brand-primary-base);
   color: var(--sa-on-bg-brand-primary-bolder);
   box-shadow: 0 0 0 4px var(--sa-color-primaryScale-50);

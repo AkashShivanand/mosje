@@ -18,7 +18,7 @@ function DemoControls(): React.JSX.Element {
         style={{
           height: "var(--sa-density-control-height)",
           padding: "0 var(--sa-padding-m)",
-          background: "var(--sa-color-action-primary-default)",
+          background: "var(--sa-bg-brand-primary-bolder)",
           color: "#fff",
           border: "none",
           borderRadius: "var(--sa-shape-sm)",

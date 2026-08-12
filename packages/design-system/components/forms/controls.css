@@ -63,7 +63,7 @@
 /* Checked OR indeterminate (aria-checked="mixed") = primary fill + visible mark */
 .ds-checkbox__input:checked ~ .ds-checkbox__box,
 .ds-checkbox__input[aria-checked="mixed"] ~ .ds-checkbox__box {
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   border-color: var(--sa-border-brand-primary-base);
 }
 
@@ -136,7 +136,7 @@
   width: 8px;
   height: 8px;
   border-radius: var(--sa-shape-full, 100px);
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   transform: scale(0);
   transition: transform 0.12s ease;
 }
@@ -229,7 +229,7 @@
 }
 
 .ds-toggle__input:checked ~ .ds-toggle__track {
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
 }
 
 .ds-toggle__input:checked ~ .ds-toggle__track .ds-toggle__knob {

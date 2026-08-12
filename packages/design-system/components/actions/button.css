@@ -63,7 +63,15 @@
 /* --------------------------------------------------------------------------
    Per-variant token mapping (drives every appearance via local custom props)
    -------------------------------------------------------------------------- */
+/* A variant contributes two colours, not one. `--_fill` is the solid background — the bg
+   ladder deliberately sits a rung deeper than the ink of the same family, so white text on it
+   clears AA with headroom (6.36:1) rather than by 0.14. `--_color` is the ink the outlined and
+   text appearances paint with, measured against the page instead. Splitting them was what let
+   the primary fill move to `bolder` on 2026-08-12 without dragging outlined text with it.
+   The full Tier-3 matrix (`--sa-cmp-action-brand-primary-*`) models every state and is the
+   eventual home for this; restructuring the Button onto it is a separate change. */
 .ds-btn--primary {
+  --_fill: var(--sa-bg-brand-primary-bolder);
   --_color: var(--sa-text-brand-primary-base);
   --_tonal-bg: var(--sa-color-action-primary-tonal);
   --_tonal-fg: var(--sa-color-action-primary-hover);
@@ -72,6 +80,9 @@
 }
 
 .ds-btn--success {
+  /* success and danger keep ink as their fill: their bg `bolder` rungs are a different value
+     (#00542b / #aa2f25), so moving them is a separate design decision, not this one. */
+  --_fill: var(--sa-text-status-success-base);
   --_color: var(--sa-text-status-success-base);
   --_tonal-bg: var(--sa-color-status-successTonal);
   --_tonal-fg: var(--sa-color-status-successStrong); /* darkened success for tonal label contrast */
@@ -80,6 +91,7 @@
 }
 
 .ds-btn--danger {
+  --_fill: var(--sa-text-status-error-base);
   --_color: var(--sa-text-status-error-base);
   --_tonal-bg: var(--sa-color-status-dangerTonal);
   --_tonal-fg: var(--sa-color-status-dangerStrong);
@@ -118,9 +130,9 @@
    Appearance: filled
    -------------------------------------------------------------------------- */
 .ds-btn--filled {
-  background-color: var(--_color);
+  background-color: var(--_fill);
   color: var(--sa-on-bg-brand-primary-bolder);
-  border-color: var(--_color);
+  border-color: var(--_fill);
 }
 
 .ds-btn--filled:hover {
