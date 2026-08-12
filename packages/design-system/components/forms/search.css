@@ -36,7 +36,7 @@
 
 /* Focus ring lives on the wrapper, driven by the inner input's focus. */
 .ds-search:focus-within {
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
   box-shadow: 0 0 0 3px var(--sa-focus-ring);
 }
 
@@ -45,7 +45,7 @@
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-search__icon svg {
@@ -61,7 +61,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   font-family: inherit;
   font-size: var(--sa-type-body-1-size, 16px);
   line-height: var(--sa-type-body-1-lh, 24px);
@@ -71,7 +71,7 @@
 }
 
 .ds-search__input::placeholder {
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   opacity: 1;
 }
 
@@ -96,7 +96,7 @@
   border: 0;
   border-radius: var(--sa-shape-full, 100px);
   background: transparent;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   cursor: pointer;
   transition:
     background-color 0.15s ease,
@@ -110,7 +110,7 @@
 
 .ds-search__clear:hover {
   background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-search__clear:focus-visible {

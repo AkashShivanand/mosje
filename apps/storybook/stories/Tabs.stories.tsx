@@ -68,11 +68,11 @@ type Story = StoryObj<typeof meta>;
 const PANEL_CONTENT: Record<string, React.ReactNode> = {
   details: (
     <dl style={{ margin: 0, display: "grid", gridTemplateColumns: "auto 1fr", gap: "8px 24px" }}>
-      <dt style={{ color: "var(--sa-color-text-muted)" }}>Application ID</dt>
+      <dt style={{ color: "var(--sa-text-neutral-subtle)" }}>Application ID</dt>
       <dd style={{ margin: 0 }}>MH/PUN/2026/004182</dd>
-      <dt style={{ color: "var(--sa-color-text-muted)" }}>Applicant</dt>
+      <dt style={{ color: "var(--sa-text-neutral-subtle)" }}>Applicant</dt>
       <dd style={{ margin: 0 }}>Sunita Deshmukh</dd>
-      <dt style={{ color: "var(--sa-color-text-muted)" }}>Scheme</dt>
+      <dt style={{ color: "var(--sa-text-neutral-subtle)" }}>Scheme</dt>
       <dd style={{ margin: 0 }}>Pre-Matric Scholarship (SC), 2026–27</dd>
     </dl>
   ),

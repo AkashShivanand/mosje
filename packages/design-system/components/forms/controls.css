@@ -47,7 +47,7 @@
   border: 1.5px solid var(--sa-border-neutral-base);
   border-radius: var(--sa-shape-xs, 4px);
   background-color: var(--sa-bg-neutral-base);
-  color: var(--sa-color-text-onPrimary);
+  color: var(--sa-on-bg-brand-primary-bolder);
   transition:
     background-color 0.15s ease,
     border-color 0.15s ease;
@@ -64,7 +64,7 @@
 .ds-checkbox__input:checked ~ .ds-checkbox__box,
 .ds-checkbox__input[aria-checked="mixed"] ~ .ds-checkbox__box {
   background-color: var(--sa-color-action-primary-default);
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-checkbox__input:checked ~ .ds-checkbox__box .ds-checkbox__mark,
@@ -73,7 +73,7 @@
 }
 
 .ds-checkbox__input:hover:not(:disabled) ~ .ds-checkbox__box {
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-checkbox__input:focus-visible ~ .ds-checkbox__box {
@@ -84,7 +84,7 @@
 .ds-checkbox__label {
   font-size: var(--sa-type-body-2-size, 14px);
   line-height: var(--sa-type-body-2-lh, 20px);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   cursor: pointer;
   user-select: none;
 }
@@ -142,7 +142,7 @@
 }
 
 .ds-radio__input:checked ~ .ds-radio__circle {
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-radio__input:checked ~ .ds-radio__circle .ds-radio__dot {
@@ -150,7 +150,7 @@
 }
 
 .ds-radio__input:hover:not(:disabled) ~ .ds-radio__circle {
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-radio__input:focus-visible ~ .ds-radio__circle {
@@ -161,7 +161,7 @@
 .ds-radio__label {
   font-size: var(--sa-type-body-2-size, 14px);
   line-height: var(--sa-type-body-2-lh, 20px);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   cursor: pointer;
   user-select: none;
 }
@@ -245,7 +245,7 @@
 .ds-toggle__label {
   font-size: var(--sa-type-body-2-size, 14px);
   line-height: var(--sa-type-body-2-lh, 20px);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   cursor: pointer;
   user-select: none;
 }
@@ -281,18 +281,18 @@
 }
 
 .ds-radio-card:hover {
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
   background: var(--sa-bg-neutral-subtler);
 }
 
 .ds-radio-card--selected,
 .ds-radio-card--selected:hover {
-  border-color: var(--sa-color-action-primary-default);
-  background: var(--sa-color-action-primary-tonal);
+  border-color: var(--sa-border-brand-primary-base);
+  background: var(--sa-bg-brand-primary-subtler);
 }
 
 .ds-radio-card:focus-within {
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
   box-shadow: 0 0 0 3px var(--sa-focus-ring);
 }
 
@@ -306,13 +306,13 @@
   font-size: var(--sa-type-label-1-size, 14px);
   line-height: var(--sa-type-label-1-lh, 20px);
   font-weight: 500;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-radio-card__desc {
   font-size: var(--sa-type-body-2-size, 14px);
   line-height: var(--sa-type-body-2-lh, 20px);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-radio-card--disabled {

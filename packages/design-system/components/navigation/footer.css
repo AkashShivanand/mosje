@@ -5,7 +5,7 @@
 
 .ds-footer {
   background-color: var(--sa-color-brand-navy);
-  color: var(--sa-color-text-onPrimary);
+  color: var(--sa-on-bg-brand-primary-bolder);
 }
 
 .ds-footer__in {
@@ -23,12 +23,12 @@
   margin: 0;
   font-size: var(--sa-type-body-3-size, 13px);
   line-height: 1.5;
-  color: color-mix(in srgb, var(--sa-color-text-onPrimary) 82%, transparent);
+  color: color-mix(in srgb, var(--sa-on-bg-brand-primary-bolder) 82%, transparent);
 }
 
 .ds-footer__copy strong {
   font-weight: 700;
-  color: var(--sa-color-text-onPrimary);
+  color: var(--sa-on-bg-brand-primary-bolder);
 }
 
 .ds-footer__links {
@@ -50,13 +50,13 @@
   cursor: pointer;
   font: inherit;
   font-size: var(--sa-type-body-3-size, 13px);
-  color: color-mix(in srgb, var(--sa-color-text-onPrimary) 82%, transparent);
+  color: color-mix(in srgb, var(--sa-on-bg-brand-primary-bolder) 82%, transparent);
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
 .ds-footer__link:hover {
-  color: var(--sa-color-text-onPrimary);
+  color: var(--sa-on-bg-brand-primary-bolder);
   text-decoration: underline;
 }
 

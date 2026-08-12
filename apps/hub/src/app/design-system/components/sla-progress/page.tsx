@@ -35,7 +35,7 @@ export default function SlaProgressPage(): React.JSX.Element {
     <article className="ds-prose">
       <header style={{ marginBottom: "var(--sa-section-xs)" }}>
         <h1>SLA Progress Indicator</h1>
-        <p style={{ color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-s)", maxWidth: "62ch" }}>
+        <p style={{ color: "var(--sa-text-neutral-subtle)", marginTop: "var(--sa-stack-s)", maxWidth: "62ch" }}>
           Tracks time remaining against a service guarantee. A Right to Service Act gives a citizen
           a maximum time for a service and attaches the consequences of missing it to a named
           officer — so this is not a decorative progress bar. It is the promise, rendered.

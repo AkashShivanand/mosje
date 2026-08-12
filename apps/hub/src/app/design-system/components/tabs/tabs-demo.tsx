@@ -31,7 +31,7 @@ export function TabsDemo(): React.JSX.Element {
             border: "1px solid var(--sa-border-neutral-subtle)",
             borderRadius: "var(--sa-shape-lg, 10px)",
             background: "var(--sa-bg-neutral-base)",
-            color: "var(--sa-color-text-default)",
+            color: "var(--sa-text-neutral-base)",
             fontSize: "var(--sa-type-body-1-size)",
             lineHeight: 1.6,
           }}

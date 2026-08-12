@@ -25,7 +25,7 @@ const sectionStyle: React.CSSProperties = {
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 700,
-  color: "var(--sa-color-text-default)",
+  color: "var(--sa-text-neutral-base)",
   marginBottom: "var(--sa-stack-m)",
   paddingBottom: "var(--sa-padding-xs)",
   borderBottom: "1px solid var(--sa-border-neutral-subtle)",
@@ -34,13 +34,13 @@ const h2Style: React.CSSProperties = {
 const h3Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
-  color: "var(--sa-color-text-default)",
+  color: "var(--sa-text-neutral-base)",
   marginTop: "var(--sa-stack-l)",
   marginBottom: "var(--sa-stack-xs)",
 };
 
 const proseStyle: React.CSSProperties = {
-  color: "var(--sa-color-text-muted)",
+  color: "var(--sa-text-neutral-subtle)",
   fontSize: "var(--sa-type-body-1-size)",
   lineHeight: 1.7,
   maxWidth: "68ch",
@@ -57,7 +57,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",
         lineHeight: 1.6,
-        color: "var(--sa-color-text-default)",
+        color: "var(--sa-text-neutral-base)",
         marginTop: "var(--sa-stack-xs)",
       }}
     >
@@ -98,7 +98,7 @@ export default function SidebarPage(): React.JSX.Element {
             style={{
               fontSize: "var(--sa-type-display-1-size)",
               fontWeight: 800,
-              color: "var(--sa-color-text-default)",
+              color: "var(--sa-text-neutral-base)",
               margin: 0,
             }}
           >
@@ -371,7 +371,7 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
                   <td>
                     <code style={{ fontFamily: "var(--sa-font-mono)" }}>{token}</code>
                   </td>
-                  <td style={{ color: "var(--sa-color-text-muted)" }}>{use}</td>
+                  <td style={{ color: "var(--sa-text-neutral-subtle)" }}>{use}</td>
                   <td>
                     <code style={{ fontFamily: "var(--sa-font-mono)", fontSize: "0.85em", color: "var(--sa-color-text-muted)" }}>
                       {figma}
@@ -468,7 +468,7 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
                   <td style={{ fontFamily: "var(--sa-font-mono)", fontSize: "0.9em", color: "var(--sa-color-text-muted)" }}>
                     {state}
                   </td>
-                  <td style={{ color: "var(--sa-color-text-muted)", fontSize: "0.9em" }}>{notes}</td>
+                  <td style={{ color: "var(--sa-text-neutral-subtle)", fontSize: "0.9em" }}>{notes}</td>
                 </tr>
               ))}
             </tbody>

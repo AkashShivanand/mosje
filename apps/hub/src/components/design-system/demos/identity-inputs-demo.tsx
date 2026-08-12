@@ -86,7 +86,7 @@ export function IdentityInputsDemo(): React.JSX.Element {
             margin: "0 0 var(--sa-stack-xs)",
             fontSize: "var(--sa-type-label-1-size)",
             fontWeight: 600,
-            color: "var(--sa-color-text-default)",
+            color: "var(--sa-text-neutral-base)",
           }}
         >
           One-time password
@@ -106,7 +106,7 @@ export function IdentityInputsDemo(): React.JSX.Element {
           style={{
             margin: "var(--sa-stack-xs) 0 0",
             fontSize: "var(--sa-type-body-2-size)",
-            color: "var(--sa-color-text-muted)",
+            color: "var(--sa-text-neutral-subtle)",
           }}
         >
           {otpResult

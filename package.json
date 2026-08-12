@@ -19,7 +19,7 @@
     "dev": "bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3007'",
     "dev:hub": "bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3007'",
     "dev:storybook": "bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006'",
-    "check": "npm run check:hub && npm run check:color-docs",
+    "check": "npm run check:hub && npm run check:docs-data",
     "check:changelog": "node scripts/check-changelog-freshness.mjs",
     "check:design-context": "node scripts/check-design-context.mjs",
     "check:design-context:baseline": "node scripts/check-design-context.mjs --update-baseline",
@@ -37,7 +37,7 @@
     "check:storybook:baseline": "node scripts/check-storybook-coverage.mjs --update-baseline",
     "ensure:storybook": "node -e \"require('fs').existsSync('apps/hub/public/storybook/index.html')||(console.log('\u2022 building Storybook once into apps/hub/public/storybook\u2026'),process.exit(1))\" || npm run build:storybook --prefix apps/hub",
     "predev:hub": "npm run ensure:storybook",
-    "check:color-docs": "node scripts/check-color-docs.mjs"
+    "check:docs-data": "node scripts/check-docs-data.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

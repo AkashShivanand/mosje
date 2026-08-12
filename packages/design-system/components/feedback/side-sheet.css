@@ -48,7 +48,7 @@
   margin: 0;
   font-size: var(--sa-type-title-1-size, 18px);
   font-weight: 700;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   line-height: 1.3;
 }
 
@@ -64,17 +64,17 @@
   flex-shrink: 0;
   border-radius: var(--sa-shape-sm, 6px);
   background: transparent;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   transition: background-color 0.12s ease, color 0.12s ease;
 }
 
 .ds-sheet__close:hover {
   background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-sheet__close:focus-visible {
-  outline: 2px solid var(--sa-focus-ring, var(--sa-color-action-primary-default));
+  outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
   outline-offset: 2px;
 }
 

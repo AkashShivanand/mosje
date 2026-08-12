@@ -60,7 +60,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   padding: 0 var(--sa-padding-m, 16px) var(--sa-padding-xs, 8px);
 }
 
@@ -93,7 +93,7 @@
   background: transparent;
   cursor: pointer;
   text-align: left;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   text-decoration: none;
   font-family: var(--sa-font-latin);
   font-size: 14px; /* Figma: font-size/body-2 */
@@ -114,7 +114,7 @@
 
 .ds-sidebar__main-row.is-active {
   background: var(--sa-color-primaryScale-50);
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
 }
 
 /* Icon */
@@ -143,8 +143,8 @@
   height: 20px;
   padding: 0 var(--sa-padding-2xs, 4px);
   border-radius: var(--sa-shape-full, 9999px);
-  background: var(--sa-color-status-info);
-  color: var(--sa-color-text-onPrimary);
+  background: var(--sa-bg-status-info-bolder);
+  color: var(--sa-on-bg-brand-primary-bolder);
   font-size: 11px;
   font-weight: 700;
   line-height: 1;
@@ -224,7 +224,7 @@
   font-family: var(--sa-font-latin);
   font-size: 14px;
   line-height: 20px;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   opacity: 0.8;
   text-decoration: none;
   transition:
@@ -246,7 +246,7 @@
 
 .ds-sidebar__child-label.is-active {
   background: var(--sa-color-primaryScale-50);
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
   opacity: 1;
 }
 
@@ -320,5 +320,5 @@
   flex-shrink: 0;
   width: 16px;
   height: 48px;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }

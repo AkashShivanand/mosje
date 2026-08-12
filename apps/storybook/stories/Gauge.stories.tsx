@@ -90,7 +90,7 @@ export const NonZeroMinimum: Story = {
     max: 80,
     title: "Average days to disbursal",
     unit: "days (target: under 45)",
-    color: "var(--sa-color-status-danger)",
+    color: "var(--sa-text-status-error-base)",
   },
 };
 

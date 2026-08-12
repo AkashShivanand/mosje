@@ -4,9 +4,12 @@ The single enforceable checklist for every MoSJE page/portal, merging three stan
 
 | Standard | What it governs | Source |
 |----------|-----------------|--------|
-| **DBIM** — Digital Brand Identity Manual | Visual brand: colour, icons, typography, header/footer, logo, imagery, content | `Documents/MoSJE DBIM Audit.pdf` (NIC, May 2026) |
-| **GIGW 3.0** — Guidelines for Indian Government Websites & Apps | Quality, Accessibility (WCAG 2.1 AA), Cybersecurity, Lifecycle + mandatory pages/certification | guidelines.india.gov.in |
-| **UX4G** — User Experience for Government | Design system, components, accessibility widget, UX principles | ux4g.gov.in · doc.ux4g.gov.in |
+| **DBIM** — Digital Brand Identity Manual | Visual brand: colour, icons, typography, header/footer, logo, imagery, content | [`docs/guidelines/DBIM-3.0/`](../guidelines/DBIM-3.0/) · audit: `docs/source-brd/MoSJE DBIM Audit.pdf` (NIC, May 2026) |
+| **GIGW 3.0** — Guidelines for Indian Government Websites & Apps | Quality, Accessibility (WCAG 2.1 AA), Cybersecurity, Lifecycle + mandatory pages/certification | [`docs/guidelines/GIGW-3.0/`](../guidelines/GIGW-3.0/) · guidelines.india.gov.in |
+| **UX4G** — User Experience for Government | Design system, components, accessibility widget, UX principles | [`docs/guidelines/UX4G-3.0/`](../guidelines/UX4G-3.0/) · ux4g.gov.in · doc.ux4g.gov.in |
+| **GuDApps** — e-Governance application development | Portal data quality, authentication, forms, reports | [`docs/guidelines/GuDApps/`](../guidelines/GuDApps/) — best practice, not a gate |
+
+> **This checklist is the gate; [`docs/guidelines/`](../guidelines/) is the source.** Read the source when a clause needs quoting exactly or the checklist compresses an area you're working in. Its README carries the precedence ladder and the register of **deliberate divergences** — check it before reporting a failure, so an intentional decision isn't logged as a defect.
 
 Legend: each item is `[ ]` checkable. **Source tags:** `[DBIM n.n]`, `[GIGW]`, `[UX4G]`. Items the MoSJE audit flagged as **failing** are marked ⚠️ (fix these first).
 

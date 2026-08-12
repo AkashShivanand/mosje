@@ -39,13 +39,13 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-form-section__desc {
   margin: 4px 0 0;
   font-size: var(--sa-type-body-3-size, 13px);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-form-section__grid {

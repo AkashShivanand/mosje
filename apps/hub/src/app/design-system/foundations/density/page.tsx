@@ -37,7 +37,7 @@ function DemoControls(): React.JSX.Element {
           height: "var(--sa-density-control-height)",
           padding: "0 var(--sa-padding-s)",
           background: "var(--sa-bg-neutral-base)",
-          color: "var(--sa-color-text-default)",
+          color: "var(--sa-text-neutral-base)",
           border: "1px solid var(--sa-border-neutral-base)",
           borderRadius: "var(--sa-shape-sm)",
           fontFamily: "var(--sa-font-latin)",
@@ -49,7 +49,7 @@ function DemoControls(): React.JSX.Element {
           height: "var(--sa-density-control-height)",
           padding: "0 var(--sa-padding-s)",
           background: "var(--sa-bg-neutral-base)",
-          color: "var(--sa-color-text-default)",
+          color: "var(--sa-text-neutral-base)",
           border: "1px solid var(--sa-border-neutral-base)",
           borderRadius: "var(--sa-shape-sm)",
           fontFamily: "var(--sa-font-latin)",
@@ -90,13 +90,13 @@ export default function DensityPage(): React.JSX.Element {
         >
           <div style={{ background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-l)" }}>
             <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-m)" }}>
-              Comfortable <span style={{ color: "var(--sa-color-text-muted)", fontWeight: 400 }}>· 40px</span>
+              Comfortable <span style={{ color: "var(--sa-text-neutral-subtle)", fontWeight: 400 }}>· 40px</span>
             </div>
             <DemoControls />
           </div>
           <div data-density="compact" style={{ background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-l)" }}>
             <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-m)" }}>
-              Compact <span style={{ color: "var(--sa-color-text-muted)", fontWeight: 400 }}>· 32px</span>
+              Compact <span style={{ color: "var(--sa-text-neutral-subtle)", fontWeight: 400 }}>· 32px</span>
             </div>
             <DemoControls />
           </div>

@@ -32,7 +32,7 @@ const sectionStyle: React.CSSProperties = {
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 700,
-  color: "var(--sa-color-text-default)",
+  color: "var(--sa-text-neutral-base)",
   marginBottom: "var(--sa-stack-m)",
   paddingBottom: "var(--sa-padding-xs)",
   borderBottom: "1px solid var(--sa-border-neutral-subtle)",
@@ -40,12 +40,12 @@ const h2Style: React.CSSProperties = {
 const h3Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 600,
-  color: "var(--sa-color-text-default)",
+  color: "var(--sa-text-neutral-base)",
   marginTop: "var(--sa-stack-l)",
   marginBottom: "var(--sa-stack-xs)",
 };
 const proseStyle: React.CSSProperties = {
-  color: "var(--sa-color-text-muted)",
+  color: "var(--sa-text-neutral-subtle)",
   fontSize: "var(--sa-type-body-1-size)",
   lineHeight: 1.7,
   maxWidth: "68ch",
@@ -59,7 +59,7 @@ const preStyle: React.CSSProperties = {
   fontFamily: "var(--sa-font-mono)",
   overflowX: "auto",
   lineHeight: 1.7,
-  color: "var(--sa-color-text-default)",
+  color: "var(--sa-text-neutral-base)",
 };
 
 export default function PatternsPage(): React.JSX.Element {
@@ -150,8 +150,8 @@ export default function PatternsPage(): React.JSX.Element {
                   style={{
                     padding: "var(--sa-padding-xs) var(--sa-padding-s)",
                     borderRadius: "var(--sa-shape-sm)",
-                    background: i === 0 ? "var(--sa-color-action-primary-tonal)" : "transparent",
-                    color: i === 0 ? "var(--sa-color-action-primary-default)" : "var(--sa-color-text-muted)",
+                    background: i === 0 ? "var(--sa-bg-brand-primary-subtler)" : "transparent",
+                    color: i === 0 ? "var(--sa-text-brand-primary-base)" : "var(--sa-text-neutral-subtle)",
                     fontSize: "var(--sa-type-body-2-size)",
                     fontWeight: i === 0 ? 600 : 400,
                     marginBottom: "var(--sa-stack-2xs)",
@@ -211,7 +211,7 @@ export default function PatternsPage(): React.JSX.Element {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        color: "var(--sa-color-text-muted)",
+                        color: "var(--sa-text-neutral-subtle)",
                         fontSize: "var(--sa-type-body-2-size)",
                       }}
                     >
@@ -232,7 +232,7 @@ export default function PatternsPage(): React.JSX.Element {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        color: "var(--sa-color-text-muted)",
+                        color: "var(--sa-text-neutral-subtle)",
                         fontSize: "var(--sa-type-body-2-size)",
                       }}
                     >
@@ -258,7 +258,7 @@ export default function PatternsPage(): React.JSX.Element {
                               style={{
                                 textAlign: "left",
                                 padding: "var(--sa-padding-xs) var(--sa-padding-s)",
-                                color: "var(--sa-color-text-muted)",
+                                color: "var(--sa-text-neutral-subtle)",
                                 fontWeight: 700,
                                 fontSize: "var(--sa-type-label-3-size)",
                                 textTransform: "uppercase",
@@ -355,7 +355,7 @@ export default function PatternsPage(): React.JSX.Element {
               preview: (
                 <div style={{ fontSize: "var(--sa-type-body-2-size)", textAlign: "center" }}>
                   <div style={{ fontWeight: 700, color: "var(--sa-color-status-success)" }}>4 MetricCards</div>
-                  <div style={{ color: "var(--sa-color-text-muted)" }}>in equal-width columns</div>
+                  <div style={{ color: "var(--sa-text-neutral-subtle)" }}>in equal-width columns</div>
                 </div>
               ),
               label: "Use auto-fill grid so cards naturally wrap on narrow viewports.",
@@ -365,7 +365,7 @@ export default function PatternsPage(): React.JSX.Element {
               preview: (
                 <div style={{ fontSize: "var(--sa-type-body-2-size)", textAlign: "center" }}>
                   <div style={{ fontWeight: 700, color: "var(--sa-color-status-danger)" }}>8 MetricCards</div>
-                  <div style={{ color: "var(--sa-color-text-muted)" }}>cramped in one row</div>
+                  <div style={{ color: "var(--sa-text-neutral-subtle)" }}>cramped in one row</div>
                 </div>
               ),
               label: "Never put more than 4 MetricCards in a single row — cognitive overload.",
@@ -451,7 +451,7 @@ export default function PatternsPage(): React.JSX.Element {
                     padding: "6px 16px",
                     borderRadius: "var(--sa-shape-full)",
                     background: i === 0 ? "var(--sa-color-action-primary-default)" : "transparent",
-                    color: i === 0 ? "white" : "var(--sa-color-text-muted)",
+                    color: i === 0 ? "white" : "var(--sa-text-neutral-subtle)",
                     fontSize: "var(--sa-type-body-2-size)",
                     fontWeight: i === 0 ? 600 : 400,
                     border: i === 0 ? "none" : "1px solid var(--sa-border-neutral-subtle)",
@@ -469,7 +469,7 @@ export default function PatternsPage(): React.JSX.Element {
                   border: "1px solid var(--sa-border-neutral-bolder-default)",
                   borderRadius: "var(--sa-shape-sm)",
                   padding: "10px var(--sa-padding-s)",
-                  color: "var(--sa-color-text-muted)",
+                  color: "var(--sa-text-neutral-subtle)",
                   fontSize: "var(--sa-type-body-2-size)",
                 }}
               >
@@ -558,7 +558,7 @@ export default function PatternsPage(): React.JSX.Element {
                       border: "1px solid var(--sa-border-neutral-bolder-default)",
                       borderRadius: "var(--sa-shape-sm)",
                       padding: "10px var(--sa-padding-s)",
-                      color: "var(--sa-color-text-muted)",
+                      color: "var(--sa-text-neutral-subtle)",
                       fontSize: "var(--sa-type-body-2-size)",
                     }}
                   >

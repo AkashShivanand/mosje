@@ -77,7 +77,7 @@ export const CommonGlyphs: Story = {
             display: "grid",
             justifyItems: "center",
             gap: 6,
-            color: "var(--sa-color-text-muted)",
+            color: "var(--sa-text-neutral-subtle)",
             fontSize: "var(--sa-type-body-3-size)",
           }}
         >
@@ -149,16 +149,16 @@ export const AccessibleUsage: Story = {
 export const InheritsColour: Story = {
   render: (args) => (
     <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-      <span style={{ color: "var(--sa-color-text-default)" }}>
+      <span style={{ color: "var(--sa-text-neutral-base)" }}>
         <Icon {...args} name="check_circle" size={28} />
       </span>
-      <span style={{ color: "var(--sa-color-status-success)" }}>
+      <span style={{ color: "var(--sa-text-status-success-base)" }}>
         <Icon {...args} name="check_circle" size={28} />
       </span>
-      <span style={{ color: "var(--sa-color-status-warning)" }}>
+      <span style={{ color: "var(--sa-text-status-warning-base)" }}>
         <Icon {...args} name="warning" size={28} />
       </span>
-      <span style={{ color: "var(--sa-color-status-danger)" }}>
+      <span style={{ color: "var(--sa-text-status-error-base)" }}>
         <Icon {...args} name="error" size={28} />
       </span>
     </div>

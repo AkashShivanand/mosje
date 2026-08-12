@@ -207,11 +207,11 @@ export const OtpVariants: Story = {
     return (
       <div style={{ display: "grid", gap: 20 }}>
         <div style={{ display: "grid", gap: 6 }}>
-          <span style={{ color: "var(--sa-color-text-muted)" }}>Four digits</span>
+          <span style={{ color: "var(--sa-text-neutral-subtle)" }}>Four digits</span>
           <OtpInput label="Four-digit code" length={4} value={four} onValueChange={setFour} />
         </div>
         <div style={{ display: "grid", gap: 6 }}>
-          <span style={{ color: "var(--sa-color-text-muted)" }}>Incorrect code</span>
+          <span style={{ color: "var(--sa-text-neutral-subtle)" }}>Incorrect code</span>
           <OtpInput
             label="One-time password"
             value={wrong}
@@ -224,11 +224,11 @@ export const OtpVariants: Story = {
           </p>
         </div>
         <div style={{ display: "grid", gap: 6 }}>
-          <span style={{ color: "var(--sa-color-text-muted)" }}>Disabled while resending</span>
+          <span style={{ color: "var(--sa-text-neutral-subtle)" }}>Disabled while resending</span>
           <OtpInput label="One-time password" value="" onValueChange={() => {}} disabled />
         </div>
         <div style={{ display: "grid", gap: 6 }}>
-          <span style={{ color: "var(--sa-color-text-muted)" }}>
+          <span style={{ color: "var(--sa-text-neutral-subtle)" }}>
             <code>autoFocus</code> — right on a dedicated OTP screen, where the code is the
             only thing to do. Wrong on a page with anything above it: it yanks a screen-reader
             user past the heading that says what the code is for.

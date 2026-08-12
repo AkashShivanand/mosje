@@ -65,7 +65,7 @@ const preview: Preview = {
             padding: 24,
             minHeight: "100vh",
             background: "var(--sa-bg-neutral-base)",
-            color: "var(--sa-color-text-default)",
+            color: "var(--sa-text-neutral-base)",
             fontFamily: "var(--sa-font-latin)",
           }}
         >

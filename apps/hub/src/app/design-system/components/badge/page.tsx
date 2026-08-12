@@ -21,7 +21,7 @@ const h2Style: React.CSSProperties = {
 };
 const leadStyle: React.CSSProperties = {
   fontSize: "var(--sa-type-body-1-size)",
-  color: "var(--sa-color-text-muted)",
+  color: "var(--sa-text-neutral-subtle)",
   lineHeight: "var(--sa-type-body-1-lh)",
   maxWidth: "64ch",
   marginBottom: "var(--sa-stack-m)",
