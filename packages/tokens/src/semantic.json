@@ -2213,14 +2213,23 @@
     }
   },
   "icon": {
-    "$description": "Icon sizes, fixed to the four DBIM 3.0 sizes (section 3.4, Figure 9): 24, 32, 48 and 64px. DBIM 3.7.i makes these mandatory, so this scale is EXHAUSTIVE rather than indicative — there is deliberately no step below 24. Each size is a FRAME that includes 2px of padding on every edge, so the live area is size minus 4 (24->20, 32->28, 48->44, 64->60) and icon artwork must not touch the frame edge. 24 is the estate default and the Material Symbols optical size <Icon> ships with. Named for the pixel value on purpose: a t-shirt name can drift from what it renders, a number cannot.",
+    "$description": "Icon sizes: 16, 20, 24, 32, 40, 48, 64. DBIM 3.0 section 3.4 (Figure 9) publishes four — 24, 32, 48, 64 — and all four are here. The other three are NOT a deviation to be corrected: 16px is the correct icon beside 14px body text and is the estate's most-used size, and DBIM 3.4 governs the downloadable asset bank rather than forbidding a smaller inline glyph. A standard's list is a floor, not a ceiling — see .claude/rules/standards-precedence.md. 24 is the estate default and the Material Symbols optical size <Icon> ships with. Each step is a FRAME: DBIM's four include 2px padding per edge, so their live area is size minus 4 (24>20, 32>28, 48>44, 64>60). Named for the pixel value on purpose — a t-shirt name can drift from what it renders, a number cannot.",
     "$type": "dimension",
     "size": {
+      "16": {
+        "$value": "{size.16}"
+      },
+      "20": {
+        "$value": "{size.20}"
+      },
       "24": {
         "$value": "{size.24}"
       },
       "32": {
         "$value": "{size.32}"
+      },
+      "40": {
+        "$value": "{size.40}"
       },
       "48": {
         "$value": "{size.48}"

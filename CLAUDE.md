@@ -95,6 +95,13 @@ the website at `website/`, the docs at `design-system/`, and the portals at `por
 
 - **TypeScript strict, no `any`.** Named exports. PascalCase components, camelCase utils.
 - **Design tokens, never hardcoded values.** Use the brand tokens (`gov-blue #0373DF`, `saffron #F97316`, `gov-yellow #FFD323`, `ink`, `surface-muted`, …). When the design system lands, import from `@mosje/design-system`.
+- **Standards precedence — quality first.** The order of authority is: (1) current design-craft
+  standards, including WCAG 2.1 AA, then (2) DBIM, (3) GIGW 3.0, (4) UX4G — each adopted wherever
+  it fits **without hampering quality**. When a standard specifies a set of values, **ADD what is
+  missing; never DELETE what quality needs** — its list is a floor, not a ceiling. Where a standard
+  would force a worse interface, quality wins and the deviation is *documented*, not hidden.
+  Accessibility is the one thing never traded against, because accessibility **is** quality.
+  See `.claude/rules/standards-precedence.md`.
 - **Noto Sans** is the typeface across all gov properties (DBIM standard). Don't introduce other fonts.
 - **No Indian tricolour band/stripe motif** (the saffron-white-green flag bar) anywhere in UI chrome — headers, footers, hero bands, dividers — **unless the user explicitly asks for it.** A single brand-token accent is fine; the flag-stripe decoration is not. (Standing instruction, 2026-06-13.)
 - **Logo & favicon: use the National Emblem** (`National-Emblem-logo.svg` / `National_Emblem_logo_white.svg` for dark) — never an invented/abstract mark.
