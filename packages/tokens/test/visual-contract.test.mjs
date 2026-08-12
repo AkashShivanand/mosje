@@ -39,6 +39,10 @@ const actual = resolveContract(cssText);
  * from this list — the compat layer was retargeted, not renamed.
  */
 const RENAMES = {
+  // 2026-08-12 — icon-size md/lg were renamed to their pixel value (24/32). They were PROVEN
+  // value-preserving here before the fixture was rebaselined, so per the note above their
+  // entries are deleted rather than left to outlive the move.
+
   // 2026-08-11 — `gov-` dropped from every colour name (gov-blue/gov-blue-dark/gov-blue-tonal/
   // gov-navy/gov-yellow -> primary/primary-dark/primary-tonal/navy/yellow, 330 call sites).
   // A colour is named for what it DOES in the system, not for who owns the system, and the
@@ -87,6 +91,16 @@ const RENAMES = {
  * The bar for an entry is EVIDENCE OF ZERO CONSUMERS, not "we think nobody uses it".
  */
 const REMOVED = {
+  // 2026-08-12 — the three icon sizes DBIM 3.0 does not sanction. Section 3.4 (Figure 9)
+  // defines exactly four sizes — 24, 32, 48, 64 — and section 3.7.i makes them mandatory,
+  // so 16, 20 and 40 had no standing. Evidence of zero consumers: the only occurrences of
+  // `icon-size-` in source were the five declarations in tokens.css itself; <Icon> takes a
+  // raw `size` number and never read this scale. 48 and 64 were missing entirely and are
+  // added by the same change.
+  "--sa-icon-size-xs": "16px — not a DBIM size (DBIM 3.4); no consumers",
+  "--sa-icon-size-sm": "20px — this is the LIVE AREA of a 24px frame, not a size (DBIM 3.4); no consumers",
+  "--sa-icon-size-xl": "40px — not a DBIM size (DBIM 3.4); no consumers. 48 is the DBIM step above 32",
+
   // The legacy `--ds-*` vocabulary, retired 2026-08-12. All 341 names are gone from every
   // generated artifact. This was not a rename: each name was a pure alias, and all 3,561
   // call sites were migrated to the canonical `--sa-*` token each one already resolved to

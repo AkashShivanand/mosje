@@ -2213,23 +2213,20 @@
     }
   },
   "icon": {
-    "$description": "Icon sizes. `md` is the estate default (24px), matching the Material Symbols optical size <Icon> ships with — pick a step, never a raw number.",
+    "$description": "Icon sizes, fixed to the four DBIM 3.0 sizes (section 3.4, Figure 9): 24, 32, 48 and 64px. DBIM 3.7.i makes these mandatory, so this scale is EXHAUSTIVE rather than indicative — there is deliberately no step below 24. Each size is a FRAME that includes 2px of padding on every edge, so the live area is size minus 4 (24->20, 32->28, 48->44, 64->60) and icon artwork must not touch the frame edge. 24 is the estate default and the Material Symbols optical size <Icon> ships with. Named for the pixel value on purpose: a t-shirt name can drift from what it renders, a number cannot.",
     "$type": "dimension",
     "size": {
-      "xs": {
-        "$value": "{size.16}"
-      },
-      "sm": {
-        "$value": "{size.20}"
-      },
-      "md": {
+      "24": {
         "$value": "{size.24}"
       },
-      "lg": {
+      "32": {
         "$value": "{size.32}"
       },
-      "xl": {
-        "$value": "{size.40}"
+      "48": {
+        "$value": "{size.48}"
+      },
+      "64": {
+        "$value": "{size.64}"
       }
     }
   },

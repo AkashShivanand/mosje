@@ -1217,11 +1217,10 @@ export const tokens = {
   },
   "icon": {
     "size": {
-      "xs": "1rem",
-      "sm": "1.25rem",
-      "md": "1.5rem",
-      "lg": "2rem",
-      "xl": "2.5rem"
+      "24": "1.5rem",
+      "32": "2rem",
+      "48": "3rem",
+      "64": "4rem"
     },
     "neutral": {
       "base": "#1e2124",
