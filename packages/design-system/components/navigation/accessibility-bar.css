@@ -2,7 +2,8 @@
    Token-driven; mirrors the SAMAVESH Figma "Accessibility Bar" component. */
 
 .sa-abar {
-  color: var(--sa-on-bg-brand-primary-bolder, #fff);
+  /* Figma binds text/icons to text|icon/neutral/inverse, not the on/* pairing. */
+  color: var(--sa-text-neutral-inverse);
   width: 100%;
 }
 /* Filled brand surface — one rung deeper than the brand ink (filled-surface
@@ -15,25 +16,35 @@
 .sa-abar__in {
   margin: 0 auto;
   display: flex;
-  min-height: 40px;
+  /* Figma layout/bar/height = 46. No code token exists for it yet (flagged), so
+     the value is carried here until `layout.bar.height` is added to @mosje/tokens. */
+  min-height: 46px;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-stack-l, 16px);
-  padding: var(--sa-padding-xxs, 2px) var(--sa-padding-l, 32px);
+  gap: var(--sa-inline-l);
+  padding: var(--sa-ref-space-xxs) var(--sa-padding-2xl);
   /* UX4G Navbar spec: Noto Sans Medium, 12/16 in the bar. */
-  font-size: var(--sa-type-label-2-size, 12px);
-  line-height: var(--sa-type-label-2-lh, 16px);
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
   letter-spacing: 0.1px;
 }
-.sa-abar.layout-narrow .sa-abar__in { max-width: 720px; }
+/* Narrow = container/md (720). Figma's layout/container/wide is 1200, which has
+   no equivalent on the code container scale (xl 1140 · content 1280) — see the
+   divergence flagged in docs/design-system/components/accessibility-bar.md. */
+.sa-abar.layout-narrow .sa-abar__in { max-width: var(--sa-container-md); }
 .sa-abar.layout-wide   .sa-abar__in { max-width: 1200px; }
-.sa-abar.layout-fluid  .sa-abar__in { max-width: none; padding-inline: var(--sa-padding-m, 16px); }
+/* Fluid is full-bleed: edge padding only. Figma uses padding/2xl (32) from tablet
+   up and padding/m (16) on mobile — matching its Device axis with a media query. */
+.sa-abar.layout-fluid .sa-abar__in { max-width: none; padding-inline: var(--sa-padding-m); }
+@media (min-width: 768px) {
+  .sa-abar.layout-fluid .sa-abar__in { padding-inline: var(--sa-padding-2xl); }
+}
 
 /* Government of India link */
 .sa-abar__gov {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-s, 12px);
+  gap: var(--sa-inline-m);
   color: inherit;
   font-weight: 500;
   text-decoration: underline;
@@ -41,9 +52,9 @@
 }
 .sa-abar__gov:hover { text-decoration-thickness: 2px; }
 .sa-abar__flag {
-  height: 22px;
-  width: 33px;
-  border-radius: var(--sa-shape-xxs, 2px);
+  height: var(--sa-ref-size-22);
+  width: 33px; /* Figma layout/flag/width — no code token yet (flagged) */
+  border-radius: var(--sa-shape-xxs);
   object-fit: cover;
 }
 .sa-abar__ext { width: 12px; height: 12px; flex: 0 0 auto; }
@@ -52,7 +63,7 @@
 .sa-abar__end {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-l, 16px);
+  gap: var(--sa-inline-l);
 }
 .sa-abar__skip { color: inherit; text-decoration: none; }
 .sa-abar__skip:hover { text-decoration: underline; }
@@ -61,30 +72,31 @@
    border token in code, so the white inverse ink carries a 40% alpha (opacity is
    the one thing Figma/CSS cannot bind to a variable). Figma: border/neutral/inverse-subtle. */
 .sa-abar__sep {
-  width: 1px;
-  height: 20px;
-  background-color: var(--sa-text-neutral-inverse, #fff);
-  opacity: 0.4;
+  width: 1px; /* Figma ref/border-width/hairline — no code token yet (flagged) */
+  height: var(--sa-ref-size-20);
+  background-color: var(--sa-text-neutral-inverse);
+  opacity: 0.4; /* = Figma border/neutral/inverse-subtle #ffffff66 */
   flex: 0 0 auto;
 }
 
 /* Font-size stepper: A− · A · A+ */
-.sa-abar__fs { display: inline-flex; align-items: center; gap: var(--sa-stack-xs, 8px); }
+.sa-abar__fs { display: inline-flex; align-items: center; gap: var(--sa-inline-s); }
 .sa-abar__fsbtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 24px;
-  height: 24px;
-  padding: 0 4px;
+  min-width: var(--sa-ref-size-24, 24px);
+  height: var(--sa-ref-size-24, 24px);
+  padding: 0 var(--sa-ref-space-xxs);
   border: none;
-  border-radius: var(--sa-shape-xs, 4px);
+  border-radius: var(--sa-shape-xs);
   background: transparent;
   color: inherit;
   font: inherit;
   cursor: pointer;
 }
-.sa-abar__fsbtn.is-current { min-width: 32px; height: 32px; font-weight: 600; }
+/* Selected pill — Figma: ref/size/32, shape/xs, overlay/on-brand/pressed (#ffffff29 = 16%) */
+.sa-abar__fsbtn.is-current { min-width: var(--sa-ref-size-32); height: var(--sa-ref-size-32); font-weight: 600; }
 .sa-abar__fsbtn.is-current.is-active { background-color: rgb(255 255 255 / 0.16); }
 .sa-abar__fsbtn:hover:not(:disabled) { background-color: rgb(255 255 255 / 0.12); }
 .sa-abar__fsbtn:disabled { opacity: 0.45; cursor: default; }
@@ -93,20 +105,22 @@
 .sa-abar__icbtn {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--sa-inline-2xs);
   height: 28px;
   min-width: 28px;
-  padding: 0 6px;
+  padding: 0 var(--sa-inline-2xs);
   border: none;
-  border-radius: var(--sa-shape-full, 999px);
+  border-radius: var(--sa-shape-full);
   background: transparent;
   color: inherit;
   text-decoration: none;
   cursor: pointer;
 }
-.sa-abar__icbtn.has-text { padding: 0 8px; }
+.sa-abar__icbtn.has-text { padding: 0 var(--sa-inline-s); gap: var(--sa-inline-s); }
 .sa-abar__icbtn:hover { background-color: rgb(255 255 255 / 0.12); }
-.sa-abar__icbtn svg { width: 20px; height: 20px; }
+/* Figma binds icons to icon/size/20; the code icon scale is DBIM's 24/32/48/64,
+   so 20 has no code token (flagged divergence). */
+.sa-abar__icbtn svg { width: var(--sa-ref-size-20); height: var(--sa-ref-size-20); }
 .sa-abar__icbtn .sa-abar__caret { width: 16px; height: 16px; }
 
 /* Focus (WCAG 2.4.7): the ring is never removed. The global --sa-focus-ring is

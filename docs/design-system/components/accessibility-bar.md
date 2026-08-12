@@ -28,6 +28,52 @@ Documented at `/design-system/components/accessibility-bar`, story at
 > and deciding whether the live public masthead should surface font-size — is a
 > flagged human decision, and Code Connect mapping (Figma ↔ code) is pending.
 
+## Figma ↔ code parity audit (2026-08-12)
+
+Audited the code component against the Figma master's own variable defs. **The code
+is now a faithful match on everything the code token contract can express**, with
+six divergences recorded below — five of which need a human decision because
+"fixing" them would contradict an existing documented decision.
+
+### Matching (verified by computed style in the browser)
+
+| Property | Figma | Code | ✓ |
+|---|---|---|---|
+| Bar fill | `bg/brand/primary/bolder` #005EB9 | `--sa-bg-brand-primary-bolder` | ✓ |
+| Text / icons | `text|icon/neutral/inverse` #fff | `--sa-text-neutral-inverse` | ✓ |
+| Type | `label/2` 12/16 | `--sa-type-label-2-size|-lh` → 12px/16px | ✓ |
+| Bar height | `layout/bar/height` 46 | `min-height: 46px` | ✓ |
+| Edge padding | `padding/2xl` 32 ≥tablet · `padding/m` 16 mobile | same, via media query | ✓ |
+| Vertical padding | `ref/space/xxs` 2 | `--sa-ref-space-xxs` | ✓ |
+| Gaps | `inline/m` 12 · `inline/l` 16 · `inline/s` 8 · `inline/2xs` 2 | same `--sa-inline-*` | ✓ |
+| Separator | 1 × `ref/size/20`, white @40% | same | ✓ |
+| Font-size pill | `ref/size/32`, `shape/xs`, white @16% | same | ✓ |
+| Flag | 33 × `ref/size/22`, `shape/xxs` | same | ✓ |
+| Icon size | 20 | `--sa-ref-size-20` | ✓ |
+| Container (narrow) | `layout/container/narrow` 720 | `--sa-container-md` (720) | ✓ |
+
+### Divergences — FLAGGED for decision
+
+1. **`icon/size/20` exists in Figma but not in code.** v0.17.0 deliberately reduced
+   the code icon scale to DBIM's four sanctioned sizes (24/32/48/64) and *removed*
+   16/20/40. The bar's 20px icons therefore bind `ref/size/20` in code. Either
+   Figma moves the bar to 24, or DBIM conformance is knowingly relaxed here.
+2. **`layout/container/wide` = 1200 has no code equivalent.** The code container
+   scale is sm 540 · md 720 · lg 960 · xl 1140 · content 1280. 1200 is carried as a
+   literal. Either add the token, or move the Wide layout onto 1140/1280.
+3. **`layout/bar/height` (46), `layout/flag/width` (33), `ref/border-width/hairline`
+   (1), `overlay/on-brand/pressed`, `border/neutral/inverse-subtle`** exist only in
+   Figma — they were added there during the rebuild and never to `@mosje/tokens`.
+   Values are correct in code but carried as literals until the tokens are added.
+4. **Icons are hand-drawn inline SVGs in code**, but Material Symbols glyphs in
+   Figma (`launch`, `text_decrease`, `text_increase`, `accessibility_new`,
+   `language`, `arrow_drop_down`). This also diverges from the estate icon rule.
+5. **The font-size control differs**: Figma uses `text_decrease` / an "A" pill /
+   `text_increase` glyphs; code renders the text "A−", "A", "A+".
+6. **No `Device` variant axis in code.** Figma varies by Mobile/Tablet/Desktop/
+   Desktop XL (Mobile collapses the right cluster); code is responsive via CSS
+   instead — the better web approach, but not a 1:1 structural mirror.
+
 ## Anatomy
 
 ```
