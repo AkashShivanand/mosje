@@ -956,3 +956,63 @@ export const SURFACES: { key: Surface; label: string; note: string; sample: stri
 
 /** Round to 3dp for display, drop trailing zeros. */
 export const px = (n: number): string => `${Math.round(n * 1000) / 1000}px`;
+
+export interface StandardsGroup {
+  title: string;
+  rules: { rule: string; src: string }[];
+}
+
+/**
+ * Typography rules grouped the way UX4G groups them, with each rule tagged to
+ * its source so a reviewer can audit rather than trust. Sourced from
+ * `docs/compliance/COMPLIANCE-CHECKLIST.md` §3 (DBIM C) and the WCAG 2.1 AA
+ * criteria it cites. Items the MoSJE DBIM audit recorded as FAILING on the
+ * legacy estate are the ones SAMAVESH exists to fix.
+ */
+export const STANDARDS: StandardsGroup[] = [
+  {
+    title: "Consistency",
+    rules: [
+      { rule: "Noto Sans is the typeface for every MoSJE property. No second family is introduced for display or accent.", src: "DBIM 4.1" },
+      { rule: "Body text is left-aligned. Never justified, never centred for running paragraphs.", src: "DBIM 4.1.1" },
+      { rule: "In tables: text left, numbers right, column headers centred.", src: "DBIM 4.1.1" },
+      { rule: "No Hinglish. Write English or हिन्दी, each in its own script, each marked with lang.", src: "DBIM 4.1.1" },
+    ],
+  },
+  {
+    title: "Hierarchy",
+    rules: [
+      { rule: "One h1 per page, and heading order never skips a level.", src: "GIGW · WCAG 1.3.1" },
+      { rule: "Pick a role by the job it does, not by the size it happens to be — the tiers overlap.", src: "SAMAVESH" },
+      { rule: "Display carries presence; Headline carries document structure. Do not substitute one for the other.", src: "SAMAVESH" },
+      { rule: "The 21-role scale is the DBIM type scale as implemented — no ad-hoc sizes outside it.", src: "DBIM 4.3.1" },
+    ],
+  },
+  {
+    title: "Spacing",
+    rules: [
+      { rule: "Latin body sits at 1.5–1.7 line height; Devanagari body targets ~1.7 at the same point size.", src: "SAMAVESH · DBIM 4.3.1" },
+      { rule: "ALL-CAPS is never used for a sentence or paragraph — only 1–3 word labels, always with added tracking.", src: "DBIM 4.1.1" },
+      { rule: "Measure stays between 45 and 75 characters; body copy is capped rather than run full width.", src: "SAMAVESH" },
+      { rule: "Text spacing must survive user overrides of line height, word and letter spacing without clipping.", src: "GIGW · WCAG 1.4.12" },
+    ],
+  },
+  {
+    title: "Colour & contrast",
+    rules: [
+      { rule: "Body text ≥ 4.5:1 against its background; large text ≥ 3:1.", src: "DBIM 4.4 · WCAG 1.4.3" },
+      { rule: "At 11px (label-3) treat 4.5:1 as a floor rather than a target, and avoid tinted fills behind it.", src: "SAMAVESH" },
+      { rule: "In dbim brand mode, text uses shade 1 or 2 of the key colour group.", src: "DBIM 4.4" },
+    ],
+  },
+  {
+    title: "Responsiveness",
+    rules: [
+      { rule: "Text resizes to 200% with no loss of content or function.", src: "GIGW · WCAG 1.4.4" },
+      { rule: "Content reflows at a 320px equivalent without two-dimensional scrolling.", src: "GIGW · WCAG 1.4.10" },
+      { rule: "Sizes are fluid between 360px and 1280px — no type breakpoints, and no role grows as the viewport shrinks.", src: "SAMAVESH" },
+      { rule: "Text-entry controls hold a hard 16px floor below 768px so iOS Safari does not trap the user zoomed in.", src: "SAMAVESH · GIGW" },
+    ],
+  },
+];
+
