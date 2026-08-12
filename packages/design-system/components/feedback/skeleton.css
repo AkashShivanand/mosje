@@ -24,21 +24,19 @@
   animation: ds-skeleton-shimmer 1.4s ease-in-out infinite;
 }
 
-/* On a dark SURFACE a white sweep blows out; darken it instead.
-   This used to also match [data-color-mode$="-dark"], which was wrong: that suffix caught
-   the `blue-dark` and `ux4g-dark` BRANDS, and those render on LIGHT surfaces — the shimmer
-   was being darkened on a white background purely because a brand id ended in "-dark".
-   A textbook consequence of naming a brand axis after an appearance. The brands are now
-   `navy` / `ux4gdeep`, and appearance is `data-theme` alone, which is the only thing that
-   should ever have driven this. */
-[data-theme="dark"] .ds-skeleton {
-  background-image: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--sa-color-transparent-white-8) 50%,
-    transparent 100%
-  );
-}
+/* NO DARK VARIANT, deliberately. The shimmer is a white sweep, which would blow out
+   on a dark surface — but there is no dark surface: the `data-theme` appearance axis
+   was retired, tokens.css emits no [data-theme] block, and nothing sets the attribute.
+   The rule that used to live here styled a state that could not occur.
+
+   Worth keeping the history: it once ALSO matched [data-color-mode$="-dark"], which
+   caught the `blue-dark` and `ux4g-dark` BRANDS — and those render on LIGHT surfaces,
+   so the shimmer was darkened on a white background purely because a brand id ended in
+   "-dark". A textbook consequence of naming a brand axis after an appearance. If a dark
+   surface is ever reintroduced, key this off THAT, never off a brand id.
+
+   Accessibility dark is the UX4G widget's `.dark-mode` class, which is a separate
+   concern — see docs/specs/samavesh-accessibility-consolidation.md §3. */
 
 .ds-skeleton--circle {
   border-radius: var(--sa-shape-full);

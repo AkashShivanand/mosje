@@ -461,10 +461,6 @@
       scroll-behavior: smooth;
     }
   }
-  html[data-theme="dark"] {
-    color-scheme: dark;
-  }
-
   /* Mobile nav panel. A dropdown, so ease-out and under 300ms — it should feel
      like it was already there. Only transform and opacity, which stay off the
      layout and paint paths. */
@@ -489,10 +485,3 @@
   }
 }
 
-/* National Emblem is a black monochrome SVG; recolour it to white in dark mode
-   so it stays visible on dark chrome. Unlayered (not in @layer base) and keyed
-   on the data-theme attribute, so it is always emitted and wins the cascade
-   regardless of Tailwind utility ordering. */
-[data-theme="dark"] .estate-emblem {
-  filter: brightness(0) invert(1);
-}

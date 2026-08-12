@@ -35,11 +35,6 @@
   right: -40px;
 }
 
-[data-theme="dark"] .hero-glow {
-  opacity: 0.24;
-  filter: blur(140px);
-}
-
 /* The docs layout reserves a 200px "on this page" rail the homepage never
    fills — stretch the hero across it so the space isn't left blank. */
 @media (min-width: 1025px) {
@@ -172,14 +167,6 @@
     inset 0 1px 1px 0 color-mix(in oklab, var(--sa-bg-neutral-base) 60%, transparent);
 }
 
-[data-theme="dark"] .hero-panel {
-  background: color-mix(in oklab, var(--sa-color-action-primary-default) 4%, color-mix(in oklab, var(--sa-color-a11y-dark-surface) 55%, transparent));
-  border: 1px solid color-mix(in oklab, var(--sa-border-brand-primary-base) 20%, color-mix(in oklab, var(--sa-bg-neutral-base) 12%, transparent));
-  box-shadow: 
-    var(--sa-elevation-modal),
-    inset 0 1px 0 0 var(--sa-color-transparent-white-8);
-}
-
 /* "Live" cue — crisp, sits above the faded wall. */
 .hero-panel__tag {
   position: absolute;
@@ -279,26 +266,6 @@
 
 .hero-panel:hover .hero-col__track {
   animation-play-state: paused;
-}
-
-/* The emblem SVG is black line-art; flip it to read on the dark surface. */
-[data-theme="dark"] .hero-emblem {
-  filter: invert(1) brightness(1.6);
-}
-
-/* The SAMAVESH seal is a multi-colour medallion with dark (#1F2937) lettering
-   that disappears on dark surfaces. Inverting would ruin its brand colours, so
-   sit it on a small light "coin" plate instead — keeps the artwork intact and
-   legible. The 3px padding makes the plate's total height match the emblem. */
-[data-theme="dark"] .hero-seal {
-  /* bg/neutral/base, which resolves to #ffffff under EVERY brand on the axis (blue, navy
-     and all six dbim modes all alias a white neutral-0), so the plate stays white without
-     reaching for a Tier-1 reference — which the tier-discipline gate rightly refuses. */
-  background: var(--sa-bg-neutral-base);
-  border-radius: 50%;
-  padding: var(--sa-padding-2xs);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px var(--sa-border-neutral-subtle);
 }
 
 /* ── Entrance + delight (motion-safe only) ── */
