@@ -15,7 +15,7 @@ export function UserShell({
 }) {
   return (
     <div className="flex min-h-screen flex-col">
-      <GovTopBar variant="user" />
+      <GovTopBar />
       <GovMasthead
         right={
           user ? (

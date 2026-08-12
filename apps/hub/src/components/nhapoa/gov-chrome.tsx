@@ -1,33 +1,23 @@
 import * as React from "react";
 import Image from "next/image";
-import { Icon } from "@mosje/design-system";
+import { AccessibilityBar } from "@mosje/design-system";
 
 const BASE = "/portals/nhapoa";
 
-/** Dark government utility bar pinned to the very top. */
+/** Government utility bar pinned to the very top — the shared DS AccessibilityBar.
+    Font size / contrast live in the official UX4GAccessibilityWidget (root layout). */
 export function GovTopBar() {
   return (
-    <div className="bg-navy-950 text-white">
-      <div className="flex h-9 items-center justify-between px-4 text-xs">
-        <a className="flex items-center gap-2 font-medium" href="#">
-          <span>Government of India</span>
-          <Icon name="open_in_new" size={12} className="opacity-80" />
-        </a>
-        <div className="flex items-center gap-3">
-          <a href="#main" className="hidden sm:inline hover:underline">
-            Skip to Main Content
-          </a>
-          {/* Text size / contrast controls live in the official UX4GAccessibilityWidget
-              (rendered in the root layout) — not here. */}
-          <span className="hidden h-4 w-px bg-white/25 sm:block" />
-          <button className="flex items-center gap-1 rounded px-1 hover:bg-white/10">
-            <Icon name="language" size={16} />
-            <span>English</span>
-            <Icon name="keyboard_arrow_down" size={12} />
-          </button>
-        </div>
-      </div>
-    </div>
+    <AccessibilityBar
+      tone="navy"
+      layout="fluid"
+      govLink={{ href: "#", label: "Government of India" }}
+      skipTo="#main"
+      showSkip
+      fontSize={false}
+      accessibility={false}
+      language={{ label: "English" }}
+    />
   );
 }
 

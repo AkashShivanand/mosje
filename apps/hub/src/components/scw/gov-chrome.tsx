@@ -1,47 +1,26 @@
 import * as React from "react";
 import Image from "next/image";
-import { Icon } from "@mosje/design-system";
+import { AccessibilityBar } from "@mosje/design-system";
 
 const BASE = "/portals/scw";
 
-/** Dark government utility bar pinned to the very top. */
-export function GovTopBar({ variant = "admin" }: { variant?: "admin" | "user" }) {
+/** Government utility bar pinned to the very top — the shared DS AccessibilityBar.
+    (The old admin language dropdown and the user-variant translate toggle — both
+    non-functional placeholders — are superseded by the DS language selector, so
+    the bar no longer varies by role.) Font size / contrast live in the
+    UX4GAccessibilityWidget (root layout). */
+export function GovTopBar() {
   return (
-    <div className="bg-navy-950 text-white">
-      <div className="flex h-9 items-center justify-between px-4 text-xs">
-        <a className="flex items-center gap-2 font-medium" href="#">
-          <span>Government of India</span>
-          <Icon name="open_in_new" size={12} className="opacity-80" />
-        </a>
-        <div className="flex items-center gap-3">
-          <a href="#main" className="hidden sm:inline hover:underline">
-            Skip to Main Content
-          </a>
-          {/* Text size, contrast and other a11y controls live in the official
-              UX4GAccessibilityWidget (rendered in the root layout) — not here. */}
-          {variant === "admin" ? (
-            <>
-              <span className="hidden h-4 w-px bg-white/25 sm:block" />
-              <button className="flex items-center gap-1 rounded px-1 hover:bg-white/10">
-                <Icon name="language" size={16} />
-                <span>English</span>
-                <Icon name="keyboard_arrow_down" size={12} />
-              </button>
-            </>
-          ) : (
-            <button
-              className="flex h-6 w-6 items-center justify-center rounded hover:bg-white/10"
-              aria-label="Translate this page"
-              title="Translate this page!"
-            >
-              <span className="text-sm leading-none">
-                अ<span className="align-top text-[10px]">A</span>
-              </span>
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
+    <AccessibilityBar
+      tone="navy"
+      layout="fluid"
+      govLink={{ href: "#", label: "Government of India" }}
+      skipTo="#main"
+      showSkip
+      fontSize={false}
+      accessibility={false}
+      language={{ label: "English" }}
+    />
   );
 }
 
