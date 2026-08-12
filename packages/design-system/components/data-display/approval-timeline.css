@@ -14,7 +14,7 @@
 
 .ds-timeline__item {
   position: relative;
-  padding: 0 0 20px 26px;
+  padding: 0 0 var(--sa-padding-l) var(--sa-padding-xl);
 }
 
 /* The rail, drawn behind every item except the last. */
@@ -72,7 +72,7 @@
 .ds-timeline__body {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--sa-padding-3xs);
 }
 
 .ds-timeline__action {
@@ -107,8 +107,8 @@
 }
 
 .ds-timeline__remarks {
-  padding: 8px 10px;
-  margin: 6px 0 0;
+  padding: var(--sa-padding-xs) var(--sa-padding-s);
+  margin: var(--sa-padding-xs) 0 0;
   font-size: var(--sa-type-body-3-size);
   line-height: var(--sa-type-body-3-lh);
   color: var(--sa-text-neutral-bolder);

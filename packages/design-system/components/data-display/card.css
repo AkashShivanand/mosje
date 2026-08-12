@@ -12,9 +12,9 @@
   flex-direction: column;
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid transparent;
-  border-radius: var(--sa-shape-md, 8px);
+  border-radius: var(--sa-shape-md);
   color: var(--sa-text-neutral-bolder);
-  font-family: var(--sa-font-latin, inherit);
+  font-family: var(--sa-font-latin);
   overflow: hidden;
 }
 
@@ -50,23 +50,23 @@
 .ds-card__header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
+  gap: var(--sa-stack-s);
+  padding: var(--sa-padding-m);
 }
 
 .ds-card__body {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
+  gap: var(--sa-stack-xs);
+  padding: var(--sa-padding-m);
   flex: 1 1 auto;
 }
 
 .ds-card__footer {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 16px;
+  gap: var(--sa-stack-xs);
+  padding: var(--sa-padding-m);
 }
 
 /* Collapse doubled padding when sections stack directly. */
@@ -93,16 +93,16 @@
    created is gone; a `--sa-type-<role>-*` name now means the role it says. */
 .ds-card__title {
   margin: 0;
-  font-size: var(--sa-type-title-1-size, 20px);
-  line-height: var(--sa-type-title-1-lh, 28px);
+  font-size: var(--sa-type-title-1-size);
+  line-height: var(--sa-type-title-1-lh);
   font-weight: 600;
   color: var(--sa-text-neutral-bolder);
 }
 
 .ds-card__subtitle {
   margin: 0;
-  font-size: var(--sa-type-body-2-size, 14px);
-  line-height: var(--sa-type-body-2-lh, 20px);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   font-weight: 400;
   color: var(--sa-text-neutral-subtle);
 }

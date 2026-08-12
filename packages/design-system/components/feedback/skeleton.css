@@ -8,7 +8,7 @@
   display: block;
   width: 100%;
   height: 1rem;
-  border-radius: var(--sa-shape-sm, 4px);
+  border-radius: var(--sa-shape-sm);
   background-color: var(--sa-bg-neutral-subtler);
   background-image: linear-gradient(
     90deg,
@@ -16,7 +16,7 @@
     /* The sweep is a translucent white so the shimmer rides on top of whatever
        --sa-bg-neutral-subtler resolves to in the active colour mode, instead of
        hardcoding a second grey that would break in blue-dark. */
-      rgb(255 255 255 / 0.55) 50%,
+      color-mix(in oklab, var(--sa-bg-neutral-base) 55%, transparent) 50%,
     transparent 100%
   );
   background-size: 200% 100%;
@@ -35,13 +35,13 @@
   background-image: linear-gradient(
     90deg,
     transparent 0%,
-    rgb(255 255 255 / 0.08) 50%,
+    var(--sa-color-transparent-white-8) 50%,
     transparent 100%
   );
 }
 
 .ds-skeleton--circle {
-  border-radius: var(--sa-shape-full, 999px);
+  border-radius: var(--sa-shape-full);
 }
 
 @keyframes ds-skeleton-shimmer {
@@ -68,10 +68,10 @@
 .ds-skeleton-text {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--sa-stack-xs);
 }
 
 .ds-skeleton-row > td {
-  padding: var(--sa-padding-s, 12px) var(--sa-padding-m, 16px);
+  padding: var(--sa-padding-s) var(--sa-padding-m);
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }

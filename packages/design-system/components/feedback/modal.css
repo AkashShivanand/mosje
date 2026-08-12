@@ -10,8 +10,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  background-color: var(--sa-overlay-neutral-boldest, rgba(0, 0, 0, 0.4));
+  padding: var(--sa-padding-m);
+  background-color: var(--sa-overlay-neutral-boldest);
 }
 
 .ds-modal {
@@ -19,8 +19,8 @@
   max-height: calc(100vh - 32px);
   overflow-y: auto;
   background-color: var(--sa-bg-neutral-base);
-  border-radius: var(--sa-shape-lg, 16px);
-  box-shadow: var(--sa-elevation-toast, 0 20px 40px rgba(0, 0, 0, 0.18));
+  border-radius: var(--sa-shape-lg);
+  box-shadow: var(--sa-elevation-toast);
   font-family: var(--sa-font-latin);
 }
 
@@ -32,13 +32,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 20px 24px 0;
+  gap: var(--sa-stack-s);
+  padding: var(--sa-padding-l) var(--sa-padding-xl) 0;
 }
 
 .ds-modal__title {
   margin: 0;
-  font-size: var(--sa-type-title-1-size, 18px);
+  font-size: var(--sa-type-title-1-size);
   font-weight: 700;
   color: var(--sa-text-neutral-base);
 }
@@ -52,7 +52,7 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: var(--sa-shape-sm, 6px);
+  border-radius: var(--sa-shape-sm);
   background: transparent;
   color: var(--sa-text-neutral-subtle);
   transition: background-color 0.12s ease, color 0.12s ease;
@@ -65,11 +65,11 @@
 
 .ds-modal__close:focus-visible {
   outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
-  outline-offset: 2px;
+  outline-offset: var(--sa-focus-offset);
 }
 
 .ds-modal__body {
-  padding: 16px 24px 24px;
+  padding: var(--sa-padding-m) var(--sa-padding-xl) var(--sa-padding-xl);
 }
 
 .ds-modal__footer {
@@ -77,6 +77,6 @@
   justify-content: flex-end;
   /* Wider than the default 8px control gap — confirm/destructive actions sit
      here, and a mis-tap between Cancel/Delete is costlier than elsewhere. */
-  gap: 12px;
-  padding: 0 24px 24px;
+  gap: var(--sa-stack-s);
+  padding: 0 var(--sa-padding-xl) var(--sa-padding-xl);
 }

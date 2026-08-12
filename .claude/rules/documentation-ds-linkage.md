@@ -4,7 +4,11 @@
 
 - the SAMAVESH **Figma library** documentation pages (`Typography`, `Navbar`, `Motion`,
   `Density`, `Color Styles`, and every page added later)
-- the **web hub** design-system docs (`apps/hub/src/app/design-system/**`)
+- the **web hub** design-system docs (`apps/hub/src/app/design-system/**`) and the
+  docs chrome they are built from (`apps/hub/src/components/design-system/**`)
+- the **design-system package itself** (`packages/design-system/components|foundations`) —
+  gated since 2026-08-12; it is not documentation, but it is the thing the documentation
+  documents, and it was the worse offender of the two
 - any Storybook doc page, spec page, or report page we author
 
 ## The rule
@@ -239,4 +243,42 @@ Two lessons worth keeping:
    would have put `#1e2124` ink on a `#3a3d41` chip (**1.48:1**, invisible), and
    `--sa-bg-neutral-base` inside a `[data-theme="dark"]` rule resolves to **white**,
    because `tokens.css` emits no `[data-theme]` block at all. Both looked correct by name.
+
+## What gating the PACKAGE found (2026-08-12)
+
+The documentation was fixed first and the package left advisory, on the assumption that the
+shipped library — which already had a stylelint raw-hex gate — was in better shape. It was
+not. **472 gated findings**, against 352 for the docs.
+
+The stylelint gate was real but narrow: it reads component *stylesheets*, so it never saw
+inline `style={{}}` objects, `var()` fallbacks, or padding and gap literals. Nearly
+everything lived in those three blind spots.
+
+- **Seven `--color-*` names were defined NOWHERE**, so their hardcoded fallbacks were what
+  actually painted. All 16 usages sat in `PortalLoginShell` — the login page every portal
+  renders — which meant that screen was drawn in Tailwind-default slate and an off-brand
+  navy and saffron that no token, and no brand switch, could reach. A `var()` fallback does
+  not just risk being stale; when the name is dead it **is** the value.
+- **Four WCAG AA failures on that one screen**, none visible without measuring: hint text at
+  **2.56:1**, a section label at **3.53:1**, a badge at **3.56:1**, and bold saffron text
+  that was fine until it was bound — see below.
+- **231 fallbacks, 128 disagreeing with their token**, mostly stale px left behind when the
+  type scale went fluid: `--sa-type-title-1-size` falling back to `16px` against a `clamp()`
+  that resolves to 18px and up.
+- **85 declarations off the 8px grid** — 3, 5, 6, 7, 10, 11, 13, 14, 18px — in the library
+  whose own Spacing page tells everyone not to do that.
+
+### Two rules this pass added
+
+**Bind to the step that matches the SURFACE, not the swatch name.** The saffron in the login
+hero was mapped to `secondaryScale-600` because that is the on-white step, and it sits on a
+dark panel: **4.93:1 → 3.13:1**, a regression introduced *by* binding it. The light step
+(`-400`) measures **6.63:1** live. A ramp has a light end and a dark end, and which one is
+correct is a property of the background, not of the token's name.
+
+**Prefer an exact cross-family token over an inexact same-family one.** `padding: 40px` has
+no step in the padding scale but is exactly `stack/2xl`; `48px` is exactly `section/m`; a
+`20px` gap is exactly `padding/l`. Binding across the family keeps the pixels identical,
+where snapping within the family would have moved them for no reason. Snap only when nothing
+in the system holds the value.
 

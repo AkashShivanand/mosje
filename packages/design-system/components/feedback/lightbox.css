@@ -28,7 +28,7 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: rgba(8, 11, 20, 0.92);
+  background: color-mix(in oklab, var(--sa-text-neutral-bolder) 92%, transparent);
   backdrop-filter: blur(2px);
 }
 
@@ -39,8 +39,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 16px;
-  padding: 16px 20px;
+  gap: var(--sa-stack-m);
+  padding: var(--sa-padding-m) var(--sa-padding-l);
 }
 
 .ds-lightbox__counter {
@@ -48,12 +48,12 @@
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.92);
+  color: color-mix(in oklab, var(--sa-bg-neutral-base) 92%, transparent);
 }
 
 .ds-lightbox__counter-sep {
-  color: rgba(255, 255, 255, 0.45);
-  margin: 0 2px;
+  color: color-mix(in oklab, var(--sa-bg-neutral-base) 45%, transparent);
+  margin: 0 var(--sa-padding-3xs);
 }
 
 .ds-lightbox__close {
@@ -63,17 +63,17 @@
   width: 40px;
   height: 40px;
   border: 0;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--sa-shape-full);
+  background: color-mix(in oklab, var(--sa-bg-neutral-base) 10%, transparent);
   color: var(--sa-color-neutralScale-0);
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
 
-.ds-lightbox__close:hover { background: rgba(255, 255, 255, 0.22); }
+.ds-lightbox__close:hover { background: color-mix(in oklab, var(--sa-bg-neutral-base) 22%, transparent); }
 .ds-lightbox__close:focus-visible {
   outline: 2px solid var(--sa-color-neutralScale-0);
-  outline-offset: 2px;
+  outline-offset: var(--sa-focus-offset);
 }
 
 /* ---- Slidenav arrows ---- */
@@ -85,10 +85,10 @@
   justify-content: center;
   width: 52px;
   height: 52px;
-  margin: 0 12px;
+  margin: 0 var(--sa-padding-s);
   border: 0;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--sa-shape-full);
+  background: color-mix(in oklab, var(--sa-bg-neutral-base) 10%, transparent);
   color: var(--sa-color-neutralScale-0);
   cursor: pointer;
   transition: background-color 0.15s ease, transform 0.15s ease;
@@ -97,11 +97,11 @@
 .ds-lightbox__nav--prev { grid-area: prev; }
 .ds-lightbox__nav--next { grid-area: next; }
 
-.ds-lightbox__nav:hover { background: rgba(255, 255, 255, 0.22); }
+.ds-lightbox__nav:hover { background: color-mix(in oklab, var(--sa-bg-neutral-base) 22%, transparent); }
 .ds-lightbox__nav:active { transform: scale(0.94); }
 .ds-lightbox__nav:focus-visible {
   outline: 2px solid var(--sa-color-neutralScale-0);
-  outline-offset: 2px;
+  outline-offset: var(--sa-focus-offset);
 }
 
 /* ---- Stage ---- */
@@ -113,7 +113,7 @@
   justify-content: center;
   min-width: 0;
   min-height: 0;
-  padding: 4px;
+  padding: var(--sa-padding-2xs);
   outline: none;
 }
 
@@ -121,8 +121,8 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: var(--sa-shape-md, 8px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  border-radius: var(--sa-shape-md);
+  box-shadow: 0 24px 60px color-mix(in oklab, var(--sa-text-neutral-bolder) 50%, transparent);
   animation: ds-lightbox-pop 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
@@ -138,8 +138,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 12px 20px 20px;
+  gap: var(--sa-stack-s);
+  padding: var(--sa-padding-s) var(--sa-padding-l) var(--sa-padding-l);
 }
 
 .ds-lightbox__caption {
@@ -148,17 +148,17 @@
   text-align: center;
   font-size: 14px;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.88);
+  color: color-mix(in oklab, var(--sa-bg-neutral-base) 88%, transparent);
 }
 
 .ds-lightbox__thumbs {
   display: flex;
-  gap: 8px;
+  gap: var(--sa-stack-xs);
   max-width: 100%;
-  padding: 4px;
+  padding: var(--sa-padding-2xs);
   overflow-x: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  scrollbar-color: var(--sa-color-transparent-white-32) transparent;
 }
 
 .ds-lightbox__thumb {
@@ -168,9 +168,9 @@
   height: 42px;
   padding: 0;
   border: 2px solid transparent;
-  border-radius: var(--sa-shape-sm, 6px);
+  border-radius: var(--sa-shape-sm);
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--sa-color-transparent-white-8);
   cursor: pointer;
   opacity: 0.55;
   transition: opacity 0.15s ease, border-color 0.15s ease;
@@ -183,7 +183,7 @@
 }
 .ds-lightbox__thumb:focus-visible {
   outline: 2px solid var(--sa-color-neutralScale-0);
-  outline-offset: 2px;
+  outline-offset: var(--sa-focus-offset);
 }
 
 .ds-lightbox__thumb-img {
@@ -200,11 +200,11 @@
   align-items: center;
   justify-content: center;
   color: var(--sa-color-neutralScale-0);
-  background: rgba(0, 0, 0, 0.35);
+  background: color-mix(in oklab, var(--sa-text-neutral-bolder) 35%, transparent);
 }
 
 @media (max-width: 640px) {
-  .ds-lightbox__nav { width: 40px; height: 40px; margin: 0 4px; }
+  .ds-lightbox__nav { width: 40px; height: 40px; margin: 0 var(--sa-padding-2xs); }
   .ds-lightbox__thumb { width: 48px; height: 36px; }
 }
 
