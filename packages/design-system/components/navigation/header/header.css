@@ -128,116 +128,25 @@
    accessibility bar tucks away so the pinned chrome reclaims vertical space.
    Only the .is-scrolled flag (set when collapseOnScroll is on) triggers it, so
    static website headers are unaffected. */
-.ds-hdr.is-sticky .ds-hdr-util {
+.ds-hdr.is-sticky .sa-abar {
   overflow: hidden;
   max-height: 40px;
   transition: max-height var(--sa-motion-enter-duration, 0.2s) ease;
 }
 
-.ds-hdr.is-sticky.is-scrolled .ds-hdr-util {
+.ds-hdr.is-sticky.is-scrolled .sa-abar {
   max-height: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ds-hdr.is-sticky .ds-hdr-util {
+  .ds-hdr.is-sticky .sa-abar {
     transition: none;
   }
 }
 
-/* Utility bar */
-.ds-hdr-util {
-  color: var(--sa-on-bg-brand-primary-bolder);
-}
-
-.ds-hdr-util.tone-blue {
-  background-color: var(--sa-color-action-primary-default);
-}
-
-.ds-hdr-util.tone-navy {
-  background-color: var(--sa-color-brand-navy);
-}
-
-.ds-hdr-util__in {
-  margin: 0 auto;
-  display: flex;
-  height: 40px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 0 16px;
-  /* UX4G Navbar spec: Noto Sans Medium 14px / 20px, letter-spacing 0.1px */
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.1px;
-}
-
-.ds-hdr-util__gov {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: inherit;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.ds-hdr-util__gov:hover {
-  text-decoration: underline;
-}
-
-.ds-hdr-util__flag {
-  height: 22px;
-  width: 33px;
-  border-radius: var(--sa-shape-xxs, 2px);
-  object-fit: cover;
-}
-
-.ds-hdr-util__end {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-/* Vertical separator between accessibility-toolbar groups (UX4G: 20px rule) */
-.ds-hdr-util__sep {
-  width: 1px;
-  height: 20px;
-  background-color: var(--sa-bg-neutral-base);
-  opacity: 0.5;
-  flex: 0 0 auto;
-}
-
-.ds-hdr-util__icbtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 28px;
-  min-width: 28px;
-  padding: 0 6px;
-  border: none;
-  border-radius: var(--sa-shape-full);
-  background: transparent;
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.ds-hdr-util__icbtn:hover {
-  background-color: rgb(255 255 255 / 0.15);
-}
-
-.ds-hdr-util__icbtn.has-text {
-  padding: 0 10px;
-}
-
-.ds-hdr-util__icbtn svg {
-  width: 18px;
-  height: 18px;
-}
-
-.ds-hdr-util__icbtn:focus-visible {
-  outline: 2px solid var(--sa-color-text-onPrimary);
-  outline-offset: 1px;
-}
+/* The Tier-1 accessibility bar is now the shared <AccessibilityBar> component
+   (styles in accessibility-bar.css). Its scroll-collapse is driven above, via
+   .ds-hdr.is-sticky .sa-abar. Only the page skip link remains header-owned. */
 
 /* Skip link — visible only on focus */
 .ds-hdr-skip {
@@ -250,19 +159,6 @@
   position: static;
   left: auto;
   text-decoration: underline;
-}
-
-/* External-link glyph in the GoI link */
-.ds-hdr-util__ext {
-  width: 12px;
-  height: 12px;
-  flex: 0 0 auto;
-}
-
-.ds-hdr-util__gov:focus-visible {
-  outline: 2px solid var(--sa-color-text-onPrimary);
-  outline-offset: 1px;
-  border-radius: var(--sa-shape-xs, 4px);
 }
 
 /* ── Tier 2: Brand row (UX4G / Portal: white, 12px py, 24px px, gap 24) ── */

@@ -1,0 +1,122 @@
+/* AccessibilityBar — government top utility bar (UX4G / GIGW).
+   Token-driven; mirrors the SAMAVESH Figma "Accessibility Bar" component. */
+
+.sa-abar {
+  color: var(--sa-on-bg-brand-primary-bolder, #fff);
+  width: 100%;
+}
+/* Filled brand surface — one rung deeper than the brand ink (filled-surface
+   convention): bg/brand/primary/bolder = #005EB9, white on it clears AA at 6.36:1.
+   NOT the #0373DF ink, which the convention reserves for text/borders. */
+.sa-abar.tone-blue { background-color: var(--sa-bg-brand-primary-bolder); }
+.sa-abar.tone-navy { background-color: var(--sa-color-brand-navy); }
+
+/* Inner content container — width follows the `layout` prop. */
+.sa-abar__in {
+  margin: 0 auto;
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-stack-l, 16px);
+  padding: var(--sa-padding-xxs, 2px) var(--sa-padding-l, 32px);
+  /* UX4G Navbar spec: Noto Sans Medium, 12/16 in the bar. */
+  font-size: var(--sa-type-label-2-size, 12px);
+  line-height: var(--sa-type-label-2-lh, 16px);
+  letter-spacing: 0.1px;
+}
+.sa-abar.layout-narrow .sa-abar__in { max-width: 720px; }
+.sa-abar.layout-wide   .sa-abar__in { max-width: 1200px; }
+.sa-abar.layout-fluid  .sa-abar__in { max-width: none; padding-inline: var(--sa-padding-m, 16px); }
+
+/* Government of India link */
+.sa-abar__gov {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-stack-s, 12px);
+  color: inherit;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.sa-abar__gov:hover { text-decoration-thickness: 2px; }
+.sa-abar__flag {
+  height: 22px;
+  width: 33px;
+  border-radius: var(--sa-shape-xxs, 2px);
+  object-fit: cover;
+}
+.sa-abar__ext { width: 12px; height: 12px; flex: 0 0 auto; }
+
+/* Right-side controls */
+.sa-abar__end {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-stack-l, 16px);
+}
+.sa-abar__skip { color: inherit; text-decoration: none; }
+.sa-abar__skip:hover { text-decoration: underline; }
+
+/* Divider between control groups. There is no pre-composited inverse-subtle
+   border token in code, so the white inverse ink carries a 40% alpha (opacity is
+   the one thing Figma/CSS cannot bind to a variable). Figma: border/neutral/inverse-subtle. */
+.sa-abar__sep {
+  width: 1px;
+  height: 20px;
+  background-color: var(--sa-text-neutral-inverse, #fff);
+  opacity: 0.4;
+  flex: 0 0 auto;
+}
+
+/* Font-size stepper: A− · A · A+ */
+.sa-abar__fs { display: inline-flex; align-items: center; gap: var(--sa-stack-xs, 8px); }
+.sa-abar__fsbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 4px;
+  border: none;
+  border-radius: var(--sa-shape-xs, 4px);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.sa-abar__fsbtn.is-current { min-width: 32px; height: 32px; font-weight: 600; }
+.sa-abar__fsbtn.is-current.is-active { background-color: rgb(255 255 255 / 0.16); }
+.sa-abar__fsbtn:hover:not(:disabled) { background-color: rgb(255 255 255 / 0.12); }
+.sa-abar__fsbtn:disabled { opacity: 0.45; cursor: default; }
+
+/* Icon buttons (accessibility, language) */
+.sa-abar__icbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0 6px;
+  border: none;
+  border-radius: var(--sa-shape-full, 999px);
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.sa-abar__icbtn.has-text { padding: 0 8px; }
+.sa-abar__icbtn:hover { background-color: rgb(255 255 255 / 0.12); }
+.sa-abar__icbtn svg { width: 20px; height: 20px; }
+.sa-abar__icbtn .sa-abar__caret { width: 16px; height: 16px; }
+
+/* Focus (WCAG 2.4.7): the ring is never removed. The global --sa-focus-ring is
+   brand-blue, which would vanish on this blue/navy surface — so the outline is the
+   white inverse ink (text/onPrimary), matching every other control on the bar. */
+.sa-abar__gov:focus-visible,
+.sa-abar__skip:focus-visible,
+.sa-abar__fsbtn:focus-visible,
+.sa-abar__icbtn:focus-visible {
+  outline: 2px solid var(--sa-text-neutral-inverse, #fff);
+  outline-offset: 2px;
+  border-radius: var(--sa-shape-xs, 4px);
+}

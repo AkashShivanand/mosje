@@ -221,6 +221,14 @@ export { FilterBar, SegmentedControl } from "./components/dashboard/filter-bar";
 export type { FilterBarProps, SegmentedControlProps, SegmentedOption } from "./components/dashboard/filter-bar";
 
 // ---- Components: Navigation --------------------------------------------------
+// AccessibilityBar — the government top utility bar (UX4G / GIGW).
+export { AccessibilityBar } from "./components/navigation/accessibility-bar";
+export type {
+  AccessibilityBarProps,
+  AccessibilityBarLayout,
+  AccessibilityBarTone,
+} from "./components/navigation/accessibility-bar";
+
 // Navbar — SiteHeader (the SAMAVESH Navbar: Website + Portal variants, 3-tier).
 export {
   SiteHeader,

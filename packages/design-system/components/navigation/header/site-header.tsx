@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../../utils/cn";
+import { AccessibilityBar } from "../accessibility-bar";
 import { BrandLockup } from "./brand-lockup";
 import { AccountMenu } from "./account-menu";
 import type {
@@ -107,23 +108,9 @@ export interface SiteHeaderProps {
 }
 
 /* ── Inline icons (no runtime icon dependency) ─────────────────────────────── */
-const IcExternal = () => (
-  <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" className="ds-hdr-util__ext">
-    <path d="M4 2h6v6M10 2 5 7M8 7v3H2V4h3" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-const IcAccessibility = () => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <circle cx="12" cy="4" r="2" fill="currentColor" />
-    <path d="M4 8h16M12 8v6m0 0-3 6m3-6 3 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-  </svg>
-);
-const IcGlobe = () => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
-    <path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18" stroke="currentColor" strokeWidth="1.4" />
-  </svg>
-);
+/* The accessibility bar's icons (external, accessibility, globe) now live in the
+   shared <AccessibilityBar> component; only the icons the brand/nav rows use
+   remain here. */
 const IcCaret = () => (
   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="ds-hdr-ic">
     <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -252,44 +239,23 @@ export function SiteHeader({
       {/* Skip link MUST be the first focusable element on the page (WCAG 2.4.1). */}
       <a href={skipTo} className="ds-hdr-skip">Skip to Main Content</a>
 
-      {/* ── Tier 1: Accessibility bar ── */}
-      <div className={cn("ds-hdr-util", `tone-${tone}`)}>
-        <div className="ds-hdr-util__in" style={inner}>
-          <a className="ds-hdr-util__gov" href={govLink.href} target="_blank" rel="noreferrer">
-            {govLink.flagSrc && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img className="ds-hdr-util__flag" src={govLink.flagSrc} alt="" />
-            )}
-            <span>{govLink.label}</span>
-            <IcExternal />
-          </a>
-
-          <div className="ds-hdr-util__end">
-            {accessibilityToolbar && (
-              <>
-                <span className="ds-hdr-util__sep" aria-hidden="true" />
-                {onAccessibility ? (
-                  <button type="button" className="ds-hdr-util__icbtn" aria-label="Accessibility statement" title="Accessibility statement" onClick={onAccessibility}>
-                    <IcAccessibility />
-                  </button>
-                ) : (
-                  <a className="ds-hdr-util__icbtn" href={accessibilityHref} aria-label="Accessibility statement" title="Accessibility statement">
-                    <IcAccessibility />
-                  </a>
-                )}
-                <span className="ds-hdr-util__sep" aria-hidden="true" />
-              </>
-            )}
-            {language && (
-              <button type="button" className="ds-hdr-util__icbtn has-text" aria-label="Select language" title="Select language" onClick={language.onClick}>
-                <IcGlobe />
-                {language.label && <span>{language.label}</span>}
-                <IcCaret />
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
+      {/* ── Tier 1: Accessibility bar (the shared DS component) ──
+         The page already carries its own skip link (.ds-hdr-skip, above) as the
+         WCAG-first element, so the bar's own skip is off. Font size stays off on
+         the masthead: the UX4G widget is the single canonical font-size/contrast
+         mechanism estate-wide (accessibility-consolidation spec). */}
+      <AccessibilityBar
+        govLink={govLink}
+        showSkip={false}
+        fontSize={false}
+        accessibility={accessibilityToolbar}
+        accessibilityHref={accessibilityHref}
+        onAccessibility={onAccessibility}
+        language={language}
+        layout="fluid"
+        maxWidth={maxWidth}
+        tone={tone}
+      />
 
       {/* ── Tier 2: Brand row ── */}
       <div className="ds-hdr-brand">

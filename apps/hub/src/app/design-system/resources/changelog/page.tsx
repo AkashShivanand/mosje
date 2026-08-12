@@ -22,9 +22,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.17.0",
+    version: "v0.18.0",
     date: "2026-08-12",
     current: true,
+    changes: [
+      { kind: "Added", text: "AccessibilityBar is now a real code component, not just a Figma master. `@mosje/design-system` exports `AccessibilityBar` — the government top utility bar (UX4G / GIGW): the Government of India link plus skip-to-content, a working A−/A/A+ font-size stepper, the accessibility entry and the language selector. It mirrors the SAMAVESH Figma *Accessibility Bar* component, is fully tokenised (`--sa-*`, zero raw hex/px), and passes AA (white on the brand fill at 6.36:1). Storybook story, hub documentation page, and design.md entry ship with it" },
+      { kind: "Added", text: "The font-size control drives a `--sa-font-scale` CSS variable (and a `data-sa-font-scale` attribute) on the document root, so content sized in `rem` reflows with the reader's choice; `onFontScaleChange` persists it. `layout` (narrow 720 / wide 1200 / fluid full-bleed) reproduces UX4G's per-breakpoint padding with one content-container mechanism; `tone` is blue or navy" },
+      { kind: "Changed", text: "DELIBERATE DIVERGENCE, recorded: the standalone AccessibilityBar keeps font-size because the Figma component does, but `SiteHeader`'s own Tier-1 bar still omits it — the UX4G widget remains the single canonical mechanism for font-size/contrast on the shipping website, per the accessibility-consolidation spec. SiteHeader has NOT yet been migrated onto the standalone component; that migration (and whether to surface font-size on the live masthead) is flagged for a human decision because it changes public-site behaviour" },
+    ],
+  },
+  {
+    version: "v0.17.0",
+    date: "2026-08-12",
     changes: [
       { kind: "Changed", text: "ICON SIZES ARE NOW DBIM'S, NOT OURS. DBIM 3.0 section 3.4 (Figure 9) defines exactly four icon sizes — 24, 32, 48, 64 — and section 3.7.i makes them mandatory. The scale held 16, 20, 24, 32, 40: three sizes DBIM does not sanction, and two of its four missing entirely. Now exactly the four, named for their pixel value (--sa-icon-size-24 …) rather than t-shirt letters, because a letter can quietly come to mean a different number — which is exactly how the retired --ds-text-title-* family shipped a name that resolved to another role" },
       { kind: "Changed", text: "Both sides were pushed and then read back independently rather than asserted: the built payload and the live Figma library each check to baa9e208:85. md and lg were renamed in place to 24 and 32 (same values, so ids and any bindings survived); 16, 20 and 40 were removed with evidence of zero consumers — the only occurrences of icon-size- in source were the five declarations in tokens.css itself, and Icon takes a raw size number that never read the scale" },

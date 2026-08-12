@@ -16,6 +16,13 @@ This package is the **single source of truth** for the visual language across al
 - **One component, one definition.** Each shared component (Button, Card, Header pieces, nav, etc.) lives here once and is imported as `@mosje/design-system`. No per-app forks.
 - **Framework-agnostic where possible.** Tokens as plain CSS vars + a Tailwind preset (`packages/config`) so both Tailwind v4 (website) and v3 (portals) can consume the same values.
 - **Code Connect.** Every exported component maps to its Figma component; keep mappings validated.
+- **Component authoring standard (MANDATORY).** Every component created or updated —
+  in Figma or code — must pass the checklist in **`.claude/rules/component-authoring.md`**:
+  discover first, tokenise **everything** (zero raw values), nested parts are library
+  instances (icons = Material Symbols glyphs, separators = the `Divider` component),
+  add-and-flag anything missing, variants for structure + properties for options,
+  match the reference visually, pass WCAG AA, flag questionable properties for the
+  human, document in detail, and validate with a screenshot + zero-unbound audit.
 
 ## When extracting (phase 2)
 1. Reconcile code tokens ↔ Figma variables (`/sync-figma <url>`); agree one canonical set.
