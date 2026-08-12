@@ -24,6 +24,15 @@ const here = (p) => new URL(p, import.meta.url).pathname;
 const prim = JSON.parse(readFileSync(here("../src/primitive.json"), "utf8"));
 const CONTENT_PATH = here("../../../apps/hub/src/app/design-system/foundations/typography/typography-content.json");
 const content = JSON.parse(readFileSync(CONTENT_PATH, "utf8"));
+for (const key of ["tierWeights", "tiers", "surfaces", "samples", "standards"]) {
+  if (!content[key]) {
+    throw new Error(
+      `generate-typography-docs-data: typography-content.json is missing "${key}". Every key here ` +
+        "backs an EXPORT the page imports — dropping one produces a file that generates cleanly " +
+        "and only fails when it meets its consumer, which is how STANDARDS was lost.",
+    );
+  }
+}
 
 const px = (v) => {
   const n = parseFloat(String(v).replace("px", ""));
@@ -134,6 +143,19 @@ export const ROLES: RoleSpec[] = ${JSON.stringify(roles, null, 2)};
 export const TIERS: { key: Tier; label: string; blurb: string }[] = ${JSON.stringify(content.tiers, null, 2)};
 
 export const SURFACES: { key: Surface; label: string; note: string; sample: string }[] = ${JSON.stringify(content.surfaces, null, 2)};
+
+export interface StandardsRule { rule: string; src: string }
+export interface StandardsGroup { title: string; rules: StandardsRule[] }
+
+/**
+ * The typography rules, grouped as UX4G groups them, each tagged to the standard it comes from
+ * so a reviewer can audit rather than trust. Editorial — authored in typography-content.json.
+ *
+ * This export was LOST when the generator first replaced this file: the generated version
+ * compiled fine on its own and only failed once it met the page that imports it. Regenerating a
+ * file means owning every export it had, not just the ones you came for.
+ */
+export const STANDARDS: StandardsGroup[] = ${JSON.stringify(content.standards, null, 2)};
 
 /** Round to 3dp for display, drop trailing zeros. */
 export const px = (n: number): string => \`\${Math.round(n * 1000) / 1000}px\`;

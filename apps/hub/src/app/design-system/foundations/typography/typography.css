@@ -166,7 +166,7 @@
   font-size: var(--sa-type-title-1-size);
   line-height: var(--sa-type-title-1-lh);
   font-weight: 600;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 .ty-std__list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--sa-border-neutral-subtle); }
 .ty-std__item {
@@ -180,14 +180,14 @@
 .ty-std__rule {
   font-size: var(--sa-type-body-2-size);
   line-height: var(--sa-type-body-2-lh);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 .ty-std__src {
   flex: none;
   font-family: var(--sa-font-mono);
   font-size: var(--sa-type-label-3-size);
   line-height: var(--sa-type-label-3-lh);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   white-space: nowrap;
 }
 @media (max-width: 720px) {
