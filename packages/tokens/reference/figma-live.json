@@ -1,7 +1,7 @@
 {
   "$description": "Snapshot of the LIVE SAMAVESH Figma library — fileKey 3FF5l0SMNIwdpZrKkeyPTm, the canonical one named in GOVERNANCE.md. TWO OLDER COPIES still exist and still contain variables (qyzTEy8… 261 vars, T3bkN5g… 176), so a sync run against either looks successful and reaches nobody: check the count before writing. Variable names ARE the canonical DTCG paths, so this file doubles as the proof that the Figma tree and the source tree are the same tree.",
   "$readAt": "2026-08-12",
-  "$note": "2026-08-12, icon sizes reconciled to DBIM 3.0. Section 3.4 (Figure 9) defines exactly four icon sizes — 24, 32, 48, 64 — and section 3.7.i makes them mandatory. The scale held 16, 20, 24, 32 and 40: three sizes DBIM does not sanction, and two of its four missing. 16 and 20 and 40 were removed, 48 and 64 created, and md/lg renamed to 24/32 in place so their ids and any bindings survived. Renamed to the PIXEL VALUE on purpose: a t-shirt name can quietly come to mean a different number, which is exactly how the retired --ds-text-title-* family shipped a name that resolved to another role. Both sides were pushed and then read back independently — the built payload and the live library both check to baa9e208:85, so this record is evidence rather than an assertion. Note 20/28/44/60 are DBIM LIVE AREAS (frame minus 2px padding per edge), not sizes; 20 had been sitting in the scale as `sm`. Previous note: 2026-08-11, NINTH pass — the layout system, and the tap-target ladder. 9 variables added to Space (now 85; library 909). GRID: 12 columns and a 24px gutter, which is UX4G 3.0 / Bootstrap exactly, because UX4G is the Government of India's own system and this repo holds a parity contract with it — a d",
+  "$note": "2026-08-12, icon sizes RESTORED to 16/20/24/32/40/48/64 after an earlier pass on the same day narrowed them to DBIM 3.4's four and deleted 16, 20 and 40. That narrowing is withdrawn: DBIM 3.4 publishes a downloadable asset bank in four sizes, it does not forbid a smaller inline glyph, and 16px beside 14px body text is 358 of 713 call sites because it is the right size there. A standard's list is a floor, not a ceiling — the four DBIM sizes are all present, and the three smaller steps interface work needs are kept. Precedence rule at .claude/rules/standards-precedence.md. Names stay numeric so they cannot drift from what they render. Previous note: 2026-08-12, icon sizes reconciled to DBIM 3.0. Section 3.4 (Figure 9) defines exactly four icon sizes — 24, 32, 48, 64 — and section 3.7.i makes them mandatory. The scale held 16, 20, 24, 32 and 40: three sizes DBIM does not sanction, and two of its four missi",
   "$ghostAudit": {
     "auditedAt": "2026-08-12",
     "status": "complete",
@@ -590,8 +590,11 @@
     "grid/margin/desktop",
     "grid/margin/mobile",
     "grid/margin/tablet",
+    "icon/size/16",
+    "icon/size/20",
     "icon/size/24",
     "icon/size/32",
+    "icon/size/40",
     "icon/size/48",
     "icon/size/64",
     "inline/2xs",
@@ -601,6 +604,8 @@
     "inline/s",
     "inline/xl",
     "inline/xs",
+    "layout/container/narrow",
+    "layout/container/wide",
     "padding/2xl",
     "padding/2xs",
     "padding/3xl",
@@ -1625,7 +1630,7 @@
     "note": "Per-collection checksum over `name|mode|value`, computed by build/figma-value-parity.mjs. The rest of this file records NAMES, and every check built on it compares names — which is why the library could hold 13 component tokens bound to the wrong palette rung, a reverted webfont, and 54 fluid-type variables carrying the old tablet curve, all under the correct names, with nothing noticing. `payload` is what the build produces; `figmaObserved` is a verified read of the library. They are expected to be EQUAL, and figma-value-parity.test.mjs fails when the payload moves without this record being refreshed.",
     "recordedAt": "2026-08-12",
     "payload": {
-      "Space": "baa9e208:85",
+      "Space": "c02ac299:88",
       "Palette": "a518c86a:280",
       "Color": "424d4b73:472",
       "Type": "316f0bd4:594",
@@ -1635,7 +1640,7 @@
       "Static": "afe2d55f:46"
     },
     "figmaObserved": {
-      "Space": "baa9e208:85",
+      "Space": "b0498287:90",
       "Palette": "96a50128:328",
       "Type": "2e3f0fdb:672",
       "Radius": "71dee6f9:25",
@@ -1647,7 +1652,8 @@
     "knownDifference": {
       "$note": "Recorded 2026-08-12. Every difference below is the ORPHAN set — variables that exist in the live library but that the build payload does not define. They are left in place deliberately (see $orphans): a published library cannot enumerate its consumers, so a delete is unverifiable. The arithmetic is exact, which is what makes this an explanation rather than an excuse — if either number moves by anything other than a whole orphan, the difference is real drift.",
       "Palette": "payload 280 entries vs library 328. The gap is exactly 48 = 24 Palette orphans x 2 modes (Blue, Navy). The orphans are border/neutral/inverse, focus/ring and 22 ref/color/* legacy names.",
-      "Type": "payload 594 entries vs library 672. The gap is exactly 78 = 13 Type orphans x 6 modes (Website|Portal x Desktop|Tablet|Mobile). The orphans are the 10 deprecated/type/* variables, ref/font/family/body, ref/font/family/heading and ref/font/weight/displayMedium."
+      "Type": "payload 594 entries vs library 672. The gap is exactly 78 = 13 Type orphans x 6 modes (Website|Portal x Desktop|Tablet|Mobile). The orphans are the 10 deprecated/type/* variables, ref/font/family/body, ref/font/family/heading and ref/font/weight/displayMedium.",
+      "Space": "payload 88 entries vs library 90. The gap is exactly 2 = layout/container/narrow and layout/container/wide, which exist in the live library but the build payload does not define — they belong to in-flight work that has not reached main. They are NOT this change's doing and are deliberately left alone rather than deleted from a shared library. The arithmetic is exact: if the gap moves by anything other than those two whole variables, the difference is real drift and this entry stops applying."
     }
   }
 }

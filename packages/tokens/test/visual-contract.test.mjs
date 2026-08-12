@@ -91,15 +91,16 @@ const RENAMES = {
  * The bar for an entry is EVIDENCE OF ZERO CONSUMERS, not "we think nobody uses it".
  */
 const REMOVED = {
-  // 2026-08-12 — the three icon sizes DBIM 3.0 does not sanction. Section 3.4 (Figure 9)
-  // defines exactly four sizes — 24, 32, 48, 64 — and section 3.7.i makes them mandatory,
-  // so 16, 20 and 40 had no standing. Evidence of zero consumers: the only occurrences of
-  // `icon-size-` in source were the five declarations in tokens.css itself; <Icon> takes a
-  // raw `size` number and never read this scale. 48 and 64 were missing entirely and are
-  // added by the same change.
-  "--sa-icon-size-xs": "16px — not a DBIM size (DBIM 3.4); no consumers",
-  "--sa-icon-size-sm": "20px — this is the LIVE AREA of a 24px frame, not a size (DBIM 3.4); no consumers",
-  "--sa-icon-size-xl": "40px — not a DBIM size (DBIM 3.4); no consumers. 48 is the DBIM step above 32",
+  // 2026-08-12 — the icon scale was renamed from t-shirt letters to pixel values, so these
+  // three NAMES are gone. Their VALUES are not: 16, 20 and 40 ship as --sa-icon-size-16/20/40.
+  // An earlier pass deleted those values outright, reading DBIM 3.7.i as exclusive; that was
+  // withdrawn the same day. DBIM 3.4 publishes an asset bank in four sizes, it does not forbid
+  // a 16px inline glyph — and 16px beside 14px body text is 358 of 713 call sites because it
+  // is the right size there. A standard's list is a floor, not a ceiling.
+  // See .claude/rules/standards-precedence.md.
+  "--sa-icon-size-xs": "renamed to --sa-icon-size-16; the value ships unchanged",
+  "--sa-icon-size-sm": "renamed to --sa-icon-size-20; the value ships unchanged",
+  "--sa-icon-size-xl": "renamed to --sa-icon-size-40; the value ships unchanged",
 
   // The legacy `--ds-*` vocabulary, retired 2026-08-12. All 341 names are gone from every
   // generated artifact. This was not a rename: each name was a pure alias, and all 3,561
