@@ -1,0 +1,49 @@
+{
+  "project": "e-anudaan",
+  "portal": "E-Anudaan — Grant-in-Aid (Dev)",
+  "idPrefix": "EAN",
+  "_purpose": "CLONE RECON, not design QC. There is no Figma design for E-Anudaan — this project exists to capture the live dev portal (screenshots + computed CSS per route per role) as the reference for rebuilding it on @mosje/design-system. Only `--phase capture` is meaningful here; analyze/report compare against a Figma baseline that does not exist.",
+  "figma": {
+    "fileKey": "",
+    "rootNode": "0:0",
+    "framesFile": "inputs/figma-frames.json",
+    "tokensFile": "inputs/tokens.json",
+    "urlTemplate": ""
+  },
+  "capture": { "width": 1440, "dpr": 2, "waitMs": 2200 },
+  "live": {
+    "auth": {
+      "type": "form",
+      "loginPath": "/login",
+      "userField": "#mobile_number",
+      "passField": "#password",
+      "submit": "form button[type='submit']",
+      "_submit_why": "The page has stray type=submit buttons in the SAMAVESH accessibility bar (A-, A, A+, language). Scoping to the form gives exactly one match — verified in-browser 2026-08-12.",
+      "loginMarker": "/login"
+    },
+    "roles": [
+      { "name": "pd-aso", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000801" },
+      { "name": "pd-so", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000802" },
+      { "name": "pd-us", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000803" },
+      { "name": "pd-ds", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000804" },
+      { "name": "pd-js", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000810" },
+      { "name": "ifd-aso", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000805" },
+      { "name": "ifd-so", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000806" },
+      { "name": "ifd-us", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000807" },
+      { "name": "ifd-ds", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000808" },
+      { "name": "ifd-js", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000809" },
+      { "name": "programme-director", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000811" },
+      { "name": "pmu-field-officer", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000812" },
+      { "name": "pmu-field-officer-2", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000032" },
+      { "name": "js-finance", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9000000033" }
+    ],
+    "skipRoutes": ["/login", "/logout", "/terms-and-conditions", "/privacy-policy", "/forgot-password", "/reset-password"]
+  },
+  "baseline": {
+    "mode": "internal",
+    "_why_internal": "No Figma source and no intent to score DS adoption of the VENDOR build — the live app is Mantine + Poppins, deliberately outside the SAMAVESH system. Scoring it against our tokens would be meaningless. The captures are reference material for the rebuild.",
+    "source": "inputs/tokens.json"
+  },
+  "manifest": "screen-manifest.yaml",
+  "notes": "Passwords live in secrets.json (gitignored), keyed by role name. Never commit them. Source: the 'Portal access — dev and UAT test logins' sheet, E-Anudaan rows."
+}
