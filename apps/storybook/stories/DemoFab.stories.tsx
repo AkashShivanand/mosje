@@ -72,7 +72,7 @@ export const Playground: Story = {};
 export const DevModeOffRendersNothing: Story = {
   args: { devMode: false },
   render: (args) => (
-    <div style={{ color: "var(--sa-color-text-muted)" }}>
+    <div style={{ color: "var(--sa-text-neutral-subtle)" }}>
       <p style={{ marginTop: 0 }}>
         Nothing is rendered below — with <code>devMode</code> false the component returns
         <code> null</code> before any account reaches the DOM. This is the production path.
@@ -113,11 +113,11 @@ export const GlobalFillEvent: Story = {
           A stand-in login form, listening for <code>demo:fill</code>:
         </p>
         <dl style={{ margin: 0, display: "grid", gridTemplateColumns: "auto 1fr", gap: "6px 16px" }}>
-          <dt style={{ color: "var(--sa-color-text-muted)" }}>Mobile / ID</dt>
+          <dt style={{ color: "var(--sa-text-neutral-subtle)" }}>Mobile / ID</dt>
           <dd style={{ margin: 0 }}>
             <code>{filled?.id ?? "—"}</code>
           </dd>
-          <dt style={{ color: "var(--sa-color-text-muted)" }}>Password</dt>
+          <dt style={{ color: "var(--sa-text-neutral-subtle)" }}>Password</dt>
           <dd style={{ margin: 0 }}>
             <code>{filled?.password ?? "—"}</code>
           </dd>

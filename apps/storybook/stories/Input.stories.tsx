@@ -103,7 +103,7 @@ export const WithAdornments: Story = {
         aria-label="Sanctioned amount"
         leftIcon={<Icon name="currency_rupee" size={18} aria-hidden />}
         rightIcon={
-          <span style={{ color: "var(--sa-color-text-muted)", fontSize: "var(--sa-type-body-3-size)" }}>
+          <span style={{ color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-body-3-size)" }}>
             lakh
           </span>
         }

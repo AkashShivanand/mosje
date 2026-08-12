@@ -30,7 +30,7 @@ const sectionStyle: React.CSSProperties = {
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 700,
-  color: "var(--sa-color-text-default)",
+  color: "var(--sa-text-neutral-base)",
   marginBottom: "var(--sa-stack-m)",
   paddingBottom: "var(--sa-padding-xs)",
   borderBottom: "1px solid var(--sa-border-neutral-subtle)",
@@ -39,13 +39,13 @@ const h2Style: React.CSSProperties = {
 const h3Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
-  color: "var(--sa-color-text-default)",
+  color: "var(--sa-text-neutral-base)",
   marginTop: "var(--sa-stack-l)",
   marginBottom: "var(--sa-stack-xs)",
 };
 
 const proseStyle: React.CSSProperties = {
-  color: "var(--sa-color-text-muted)",
+  color: "var(--sa-text-neutral-subtle)",
   fontSize: "var(--sa-type-body-1-size)",
   lineHeight: 1.7,
   maxWidth: "68ch",
@@ -54,7 +54,7 @@ const proseStyle: React.CSSProperties = {
 const captionStyle: React.CSSProperties = {
   marginTop: "var(--sa-stack-xs)",
   marginBottom: "var(--sa-stack-l)",
-  color: "var(--sa-color-text-muted)",
+  color: "var(--sa-text-neutral-subtle)",
   fontSize: "var(--sa-type-body-2-size)",
 };
 
@@ -76,7 +76,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",
         lineHeight: 1.6,
-        color: "var(--sa-color-text-default)",
+        color: "var(--sa-text-neutral-base)",
         marginTop: "var(--sa-stack-xs)",
       }}
     >
@@ -161,7 +161,7 @@ export default function HeaderPage(): React.JSX.Element {
             style={{
               fontSize: "var(--sa-type-display-1-size)",
               fontWeight: 800,
-              color: "var(--sa-color-text-default)",
+              color: "var(--sa-text-neutral-base)",
               margin: 0,
             }}
           >
@@ -178,12 +178,12 @@ export default function HeaderPage(): React.JSX.Element {
         </p>
         <ul style={listStyle}>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Website</strong> — public
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Website</strong> — public
             Government-of-India chrome: emblem lockup, a search field, mega-menu
             navigation, and a Login CTA.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Portal</strong> — signed-in
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Portal</strong> — signed-in
             chrome: a sidebar collapse toggle, emblem divider, Digital India /
             SAMAVESH cobranding, an account block (with optional dropdown), and an
             opt-in scroll-collapse of the accessibility bar.
@@ -492,28 +492,28 @@ export default function HeaderPage(): React.JSX.Element {
         </h2>
         <ul style={listStyle}>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Department line</strong> —
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Department line</strong> —
             use the full official name (&quot;Department of Social Justice &amp;
             Empowerment&quot;). Don&apos;t abbreviate to an acronym in the masthead.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Nav labels</strong> — short
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Nav labels</strong> — short
             noun phrases in Title Case (&quot;Schemes &amp; Services&quot;, not
             &quot;Click here for schemes&quot;). Keep them to 1–2 words where
             possible so the row doesn&apos;t wrap.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Mega-menu headings</strong> —
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Mega-menu headings</strong> —
             name the grouping, not the action (&quot;Commissions&quot;,
             &quot;Corporations&quot;).
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Search placeholder</strong> —
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Search placeholder</strong> —
             hint at scope (&quot;Search schemes, services, documents&quot;) rather
             than a bare &quot;Search&quot;.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>CTA</strong> — one primary
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>CTA</strong> — one primary
             action only (&quot;Login&quot; / &quot;Apply Online&quot;). The masthead
             is wayfinding, not a place to stack buttons.
           </li>
@@ -565,11 +565,11 @@ export default function HeaderPage(): React.JSX.Element {
         </h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-l)", lineHeight: 1.9 }}>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>≥1024px</strong> — the
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>≥1024px</strong> — the
             horizontal nav row (with dropdowns / mega-menus) is shown.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>&lt;1024px</strong> — the nav
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>&lt;1024px</strong> — the nav
             row collapses; a hamburger in the brand row opens the drawer, where
             mega-menu columns flatten into a single sub-list.
           </li>
@@ -627,19 +627,19 @@ export default function HeaderPage(): React.JSX.Element {
         </h2>
         <ul style={listStyle}>
           <li>
-            <a href="/design-system/components/sidebar" style={{ color: "var(--sa-color-action-primary-default)" }}>Sidebar Nav</a>{" "}
+            <a href="/design-system/components/sidebar" style={{ color: "var(--sa-text-brand-primary-base)" }}>Sidebar Nav</a>{" "}
             — the portal app-shell left navigation that pairs with the Portal variant.
           </li>
           <li>
-            <a href="/design-system/components/app-switcher" style={{ color: "var(--sa-color-action-primary-default)" }}>App Switcher</a>{" "}
+            <a href="/design-system/components/app-switcher" style={{ color: "var(--sa-text-brand-primary-base)" }}>App Switcher</a>{" "}
             — the estate-wide FAB for jumping between portals.
           </li>
           <li>
-            <a href="/design-system/components/button" style={{ color: "var(--sa-color-action-primary-default)" }}>Button</a>{" "}
+            <a href="/design-system/components/button" style={{ color: "var(--sa-text-brand-primary-base)" }}>Button</a>{" "}
             — used for the brand-row CTA (<code>actions</code>).
           </li>
           <li>
-            <a href="/design-system/foundations/color" style={{ color: "var(--sa-color-action-primary-default)" }}>Color &amp; theming</a>{" "}
+            <a href="/design-system/foundations/color" style={{ color: "var(--sa-text-brand-primary-base)" }}>Color &amp; theming</a>{" "}
             — the brand axis (<code>data-brand</code>) and appearance
             (<code>data-theme</code>), distinct from the accessibility widget&apos;s
             own contrast/dark mode.
@@ -654,7 +654,7 @@ export default function HeaderPage(): React.JSX.Element {
         </h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-l)", lineHeight: 1.9 }}>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Accessibility consolidation</strong>{" "}
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Accessibility consolidation</strong>{" "}
             — retired the header&apos;s own text-size (A−/A/A+) and contrast controls
             from the &quot;Accessibility hardening&quot; update below; they duplicated
             the official <code>UX4GAccessibilityWidget</code>, now the single
@@ -662,13 +662,13 @@ export default function HeaderPage(): React.JSX.Element {
             <code>docs/specs/samavesh-accessibility-consolidation.md</code>.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Variants &amp; menus</strong>{" "}
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Variants &amp; menus</strong>{" "}
             — added an explicit <code>variant</code> prop, multi-column{" "}
             <code>columns</code> mega-menus, an opt-in <code>collapseOnScroll</code>{" "}
             state, and tooltips on the icon controls.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Accessibility hardening</strong>{" "}
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Accessibility hardening</strong>{" "}
             — the text-size and contrast controls are functional by default
             (root font-size + <code>data-theme=&quot;hc&quot;</code>, persisted);
             added <code>aria-pressed</code>; visible keyboard focus on every
@@ -676,12 +676,12 @@ export default function HeaderPage(): React.JSX.Element {
             blur; the mobile menu is a proper disclosure region (no fake dialog).
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Consolidation</strong> — one{" "}
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Consolidation</strong> — one{" "}
             <code>SiteHeader</code> (Website + Portal variants) replaces the retired{" "}
             <code>AppHeader</code>; account block gains an optional dropdown.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Figma parity</strong> — rebuilt
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Figma parity</strong> — rebuilt
             to the UX4G Navbar Website (<code>2210-11837</code>) + Portal Appbar
             (<code>4235-3170</code>) components.
           </li>

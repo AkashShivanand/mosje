@@ -85,7 +85,7 @@
   border: none;
   border-radius: var(--sa-shape-full);
   background-color: var(--sa-bg-neutral-base);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   font-family: var(--sa-font-latin);
   font-size: var(--sa-type-body-2-size);
   font-weight: 600;
@@ -118,7 +118,7 @@
 .ds-demodock__fab-icon {
   width: 16px;
   height: 16px;
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
   flex: 0 0 auto;
   transition: transform var(--sa-motion-enter-duration) var(--sa-motion-emphasis-easing);
 }
@@ -221,8 +221,8 @@
   width: 32px;
   height: 32px;
   border-radius: var(--sa-shape-sm);
-  background-color: var(--sa-color-action-primary-tonal);
-  color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-subtler);
+  color: var(--sa-text-brand-primary-base);
 }
 
 .ds-demodock__badge svg {
@@ -240,21 +240,21 @@
 .ds-demodock__title {
   font-size: var(--sa-type-title-1-size);
   font-weight: 700;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   line-height: 1.2;
 }
 
 .ds-demodock__current {
   font-size: var(--sa-type-body-3-size);
   line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .ds-demodock__current-label {
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-demodock__current-name {
@@ -272,7 +272,7 @@
   border: none;
   border-radius: var(--sa-shape-sm);
   background: transparent;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   cursor: pointer;
   transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
     color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
@@ -281,7 +281,7 @@
 
 .ds-demodock__close:hover {
   background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-demodock__close:active {
@@ -425,7 +425,7 @@
   width: 4px;
   height: 4px;
   border-radius: var(--sa-shape-full);
-  background-color: var(--sa-color-text-onPrimary);
+  background-color: var(--sa-bg-neutral-base);
   opacity: 0.7;
 }
 
@@ -471,7 +471,7 @@
   border: 2px solid var(--sa-bg-neutral-base);
   border-radius: 50%;
   background-color: var(--sa-color-action-primary-default);
-  color: var(--sa-color-text-onPrimary);
+  color: var(--sa-on-bg-brand-primary-bolder);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -495,13 +495,13 @@
   font-size: var(--sa-type-body-3-size);
   line-height: var(--sa-type-body-3-lh);
   font-weight: 600;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-demodock__colour-note {
   font-size: var(--sa-type-body-3-size);
   line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-demodock__colour-note kbd {
@@ -536,7 +536,7 @@
   font-size: var(--sa-type-label-1-size);
   line-height: var(--sa-type-label-1-lh);
   font-weight: 600;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 /* A text tag, not a colour-only signal — WCAG 1.4.1. It reads the same to a
@@ -546,7 +546,7 @@
   border: 1px solid var(--sa-border-neutral-base);
   border-radius: var(--sa-shape-full);
   background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   font-size: var(--sa-type-label-3-size);
   line-height: var(--sa-type-label-3-lh);
   font-weight: 500;
@@ -558,7 +558,7 @@
   margin: 0;
   font-size: var(--sa-type-body-3-size);
   line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 /* ── Entrance / exit animation ── */

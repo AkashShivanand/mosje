@@ -77,7 +77,7 @@ export default function SpacingPage(): React.JSX.Element {
                 style={{
                   height: `var(${token})`,
                   flex: 1,
-                  background: "var(--sa-color-action-primary-tonal)",
+                  background: "var(--sa-bg-brand-primary-subtler)",
                   borderRadius: "var(--sa-shape-xs)",
                 }}
                 aria-hidden="true"

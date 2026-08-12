@@ -28,7 +28,7 @@
   border: 1.5px solid var(--sa-border-neutral-base);
   border-radius: var(--sa-shape-full);
   background-color: var(--sa-bg-neutral-base);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   font-family: var(--sa-font-latin);
   font-size: var(--sa-type-body-2-size);
   font-weight: 600;
@@ -38,7 +38,7 @@
 }
 
 .ds-appsw__fab:hover {
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-appsw__fab:focus-visible {
@@ -49,7 +49,7 @@
 .ds-appsw__fab-icon {
   width: 18px;
   height: 18px;
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
   flex: 0 0 auto;
 }
 

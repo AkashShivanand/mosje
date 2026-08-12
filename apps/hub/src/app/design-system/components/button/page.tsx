@@ -29,7 +29,7 @@ const sectionStyle: React.CSSProperties = {
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 700,
-  color: "var(--sa-color-text-default)",
+  color: "var(--sa-text-neutral-base)",
   marginBottom: "var(--sa-stack-m)",
   paddingBottom: "var(--sa-padding-xs)",
   borderBottom: "1px solid var(--sa-border-neutral-subtle)",
@@ -38,13 +38,13 @@ const h2Style: React.CSSProperties = {
 const h3Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
-  color: "var(--sa-color-text-default)",
+  color: "var(--sa-text-neutral-base)",
   marginTop: "var(--sa-stack-l)",
   marginBottom: "var(--sa-stack-xs)",
 };
 
 const proseStyle: React.CSSProperties = {
-  color: "var(--sa-color-text-muted)",
+  color: "var(--sa-text-neutral-subtle)",
   fontSize: "var(--sa-type-body-1-size)",
   lineHeight: 1.7,
   maxWidth: "68ch",
@@ -75,11 +75,11 @@ function StateRow({
         borderBottom: "1px solid var(--sa-border-neutral-subtle)",
       }}
     >
-      <strong style={{ color: "var(--sa-color-text-default)", fontSize: "var(--sa-type-body-2-size)" }}>
+      <strong style={{ color: "var(--sa-text-neutral-base)", fontSize: "var(--sa-type-body-2-size)" }}>
         {state}
       </strong>
       <div>{children}</div>
-      <span style={{ color: "var(--sa-color-text-muted)", fontSize: "var(--sa-type-body-2-size)" }}>
+      <span style={{ color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-body-2-size)" }}>
         {note}
       </span>
     </div>
@@ -116,7 +116,7 @@ function KeyTable({
                     border: "1px solid var(--sa-border-neutral-subtle)",
                     borderRadius: "var(--sa-shape-sm, 4px)",
                     padding: "2px 6px",
-                    color: "var(--sa-color-text-default)",
+                    color: "var(--sa-text-neutral-base)",
                   }}
                 >
                   {r.key}
@@ -158,7 +158,7 @@ export default function ButtonPage(): React.JSX.Element {
             style={{
               fontSize: "var(--sa-type-display-1-size)",
               fontWeight: 800,
-              color: "var(--sa-color-text-default)",
+              color: "var(--sa-text-neutral-base)",
               margin: 0,
             }}
           >
@@ -227,7 +227,7 @@ export default function ButtonPage(): React.JSX.Element {
               style={{
                 position: "absolute",
                 inset: "calc(-1 * var(--sa-stack-2xs))",
-                outline: "3px solid var(--sa-focus-ring, var(--sa-color-action-primary-default))",
+                outline: "3px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base))",
                 outlineOffset: "2px",
                 borderRadius: "var(--sa-shape-md, 8px)",
                 opacity: 0.55,
@@ -245,21 +245,21 @@ export default function ButtonPage(): React.JSX.Element {
             style={{
               margin: 0,
               paddingLeft: "var(--sa-padding-l)",
-              color: "var(--sa-color-text-muted)",
+              color: "var(--sa-text-neutral-subtle)",
               fontSize: "var(--sa-type-body-2-size)",
               lineHeight: 1.9,
             }}
           >
             <li>
-              <strong style={{ color: "var(--sa-color-text-default)" }}>Label text</strong> —
+              <strong style={{ color: "var(--sa-text-neutral-base)" }}>Label text</strong> —
               clear and verb-first (&ldquo;Submit application&rdquo;).
             </li>
             <li>
-              <strong style={{ color: "var(--sa-color-text-default)" }}>Container</strong> — a
+              <strong style={{ color: "var(--sa-text-neutral-base)" }}>Container</strong> — a
               real <code>&lt;button&gt;</code>, 32 / 40 / 48px tall by size.
             </li>
             <li>
-              <strong style={{ color: "var(--sa-color-text-default)" }}>Focus ring</strong> — a
+              <strong style={{ color: "var(--sa-text-neutral-base)" }}>Focus ring</strong> — a
               3px ring drawn with <code>--sa-focus-ring</code>.
             </li>
           </ol>
@@ -321,19 +321,19 @@ export default function ButtonPage(): React.JSX.Element {
           }}
         >
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Primary</strong> — the
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Primary</strong> — the
             main call to action. One per view, maximum.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Secondary</strong> —
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Secondary</strong> —
             secondary actions that sit beside the primary CTA.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Ghost</strong> — tertiary,
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Ghost</strong> — tertiary,
             low-emphasis actions such as table-row actions.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>Danger</strong> —
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Danger</strong> —
             destructive actions; always pair with a confirmation step.
           </li>
         </ul>
@@ -383,7 +383,7 @@ export default function ButtonPage(): React.JSX.Element {
             <span
               style={{
                 display: "inline-block",
-                outline: "3px solid var(--sa-focus-ring, var(--sa-color-action-primary-default))",
+                outline: "3px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base))",
                 outlineOffset: "2px",
                 borderRadius: "var(--sa-shape-md, 8px)",
               }}
@@ -735,17 +735,17 @@ export function ApplicationForm() {
           }}
         >
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>GOV.UK Button research</strong>{" "}
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>GOV.UK Button research</strong>{" "}
             — verb-first, action-naming labels measurably increase form completion
             versus generic labels.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>WCAG 2.5.8 Target Size (Minimum)</strong>{" "}
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>WCAG 2.5.8 Target Size (Minimum)</strong>{" "}
             — Level AA requires 24×24px, which every size clears. The 44×44px
             figure belongs to 2.5.5 Target Size (Enhanced), Level AAA.
           </li>
           <li>
-            <strong style={{ color: "var(--sa-color-text-default)" }}>GOI GIGW 3.5</strong> — all
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>GOI GIGW 3.5</strong> — all
             interactive elements must be fully keyboard operable.
           </li>
         </ul>
@@ -799,7 +799,7 @@ export function ApplicationForm() {
           >
             <code
               style={{
-                color: "var(--sa-color-action-primary-default)",
+                color: "var(--sa-text-brand-primary-base)",
                 fontWeight: 700,
                 fontSize: "var(--sa-type-body-2-size)",
               }}
@@ -807,7 +807,7 @@ export function ApplicationForm() {
               v0.5.0
             </code>
             <div>
-              <div style={{ color: "var(--sa-color-text-default)", fontWeight: 600 }}>
+              <div style={{ color: "var(--sa-text-neutral-base)", fontWeight: 600 }}>
                 Initial release{" "}
                 <span style={{ marginLeft: "var(--sa-inline-s)" }}>
                   <StatusBadge status="Stable" />
@@ -862,7 +862,7 @@ function Marker({
         height: "20px",
         borderRadius: "50%",
         background: "var(--sa-color-action-primary-default)",
-        color: "var(--sa-color-text-onPrimary, #fff)",
+        color: "var(--sa-on-bg-brand-primary-bolder, #fff)",
         fontSize: "11px",
         fontWeight: 700,
         display: "inline-flex",
@@ -901,7 +901,7 @@ function UseCard({
           marginBottom: "var(--sa-stack-s)",
           fontSize: "var(--sa-type-headline-2-size)",
           fontWeight: 600,
-          color: "var(--sa-color-text-default)",
+          color: "var(--sa-text-neutral-base)",
         }}
       >
         {title}
@@ -910,7 +910,7 @@ function UseCard({
         style={{
           margin: 0,
           paddingLeft: "var(--sa-padding-l)",
-          color: "var(--sa-color-text-muted)",
+          color: "var(--sa-text-neutral-subtle)",
           fontSize: "var(--sa-type-body-2-size)",
           lineHeight: 1.8,
         }}
@@ -945,7 +945,7 @@ function RelatedCard({
       <span
         style={{
           display: "block",
-          color: "var(--sa-color-action-primary-default)",
+          color: "var(--sa-text-brand-primary-base)",
           fontWeight: 600,
           fontSize: "var(--sa-type-body-1-size)",
         }}
@@ -956,7 +956,7 @@ function RelatedCard({
         style={{
           display: "block",
           marginTop: "var(--sa-stack-2xs)",
-          color: "var(--sa-color-text-muted)",
+          color: "var(--sa-text-neutral-subtle)",
           fontSize: "var(--sa-type-body-2-size)",
           lineHeight: 1.6,
         }}
@@ -978,7 +978,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",
         lineHeight: 1.6,
-        color: "var(--sa-color-text-default)",
+        color: "var(--sa-text-neutral-base)",
         marginTop: "var(--sa-stack-xs)",
       }}
     >

@@ -106,7 +106,7 @@ export default function IconographyPage(): React.JSX.Element {
                 padding: "var(--sa-padding-m)",
                 background: "var(--sa-bg-neutral-subtler)",
                 borderRadius: "var(--sa-shape-md)",
-                color: "var(--sa-color-text-default)",
+                color: "var(--sa-text-neutral-base)",
               }}
             >
               <Icon name={name} size={24} aria-hidden />
@@ -146,7 +146,7 @@ export default function IconographyPage(): React.JSX.Element {
             flexWrap: "wrap",
             gap: "var(--sa-stack-xl)",
             alignItems: "flex-end",
-            color: "var(--sa-color-text-default)",
+            color: "var(--sa-text-neutral-base)",
           }}
         >
           {[

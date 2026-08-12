@@ -99,7 +99,7 @@ export default function GovernancePage(): React.JSX.Element {
                 <p
                   style={{
                     fontSize: "var(--sa-type-body-1-size)",
-                    color: "var(--sa-color-text-default)",
+                    color: "var(--sa-text-neutral-base)",
                     margin: 0,
                     lineHeight: "var(--sa-type-body-1-lh)",
                   }}
@@ -109,7 +109,7 @@ export default function GovernancePage(): React.JSX.Element {
                 <p
                   style={{
                     fontSize: "var(--sa-type-body-2-size)",
-                    color: "var(--sa-color-text-muted)",
+                    color: "var(--sa-text-neutral-subtle)",
                     margin: "var(--sa-stack-xs) 0 0",
                   }}
                 >

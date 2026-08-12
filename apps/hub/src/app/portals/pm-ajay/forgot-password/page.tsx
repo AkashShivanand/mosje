@@ -55,7 +55,7 @@ export default function ForgotPasswordPage() {
           </div>
 
           <div style={{ padding: "28px 28px 20px", display: "flex", flexDirection: "column", gap: 16 }}>
-            <div style={{ background: "var(--sa-color-status-infoTonal)", border: "1px solid var(--sa-color-infoScale-200)", borderRadius: 8, padding: "14px 16px", fontSize: 13, color: "var(--sa-color-status-info)", lineHeight: 1.6 }}>
+            <div style={{ background: "var(--sa-bg-status-info-subtler)", border: "1px solid var(--sa-color-infoScale-200)", borderRadius: 8, padding: "14px 16px", fontSize: 13, color: "var(--sa-bg-status-info-bolder)", lineHeight: 1.6 }}>
               <strong>NIC Helpdesk:</strong> 1800-111-555 (toll-free, 9am–6pm IST)<br />
               <strong>Email:</strong> helpdesk@nic.in
             </div>

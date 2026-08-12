@@ -142,8 +142,8 @@ export default function ResourcesPage(): React.JSX.Element {
                     alignItems: "center",
                     justifyContent: "center",
                     borderRadius: "var(--sa-shape-sm)",
-                    background: "var(--sa-color-action-primary-tonal)",
-                    color: "var(--sa-color-action-primary-default)",
+                    background: "var(--sa-bg-brand-primary-subtler)",
+                    color: "var(--sa-text-brand-primary-base)",
                     fontSize: 18,
                   }}
                 >
@@ -152,7 +152,7 @@ export default function ResourcesPage(): React.JSX.Element {
                 <span
                   style={{
                     fontWeight: 600,
-                    color: "var(--sa-color-text-default)",
+                    color: "var(--sa-text-neutral-base)",
                     fontSize: "var(--sa-type-body-1-size)",
                   }}
                 >
@@ -167,7 +167,7 @@ export default function ResourcesPage(): React.JSX.Element {
               <div
                 style={{
                   fontSize: "var(--sa-type-body-2-size)",
-                  color: "var(--sa-color-text-muted)",
+                  color: "var(--sa-text-neutral-subtle)",
                   lineHeight: "var(--sa-type-body-2-lh)",
                 }}
               >

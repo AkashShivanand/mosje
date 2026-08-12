@@ -251,7 +251,7 @@ export default function ContributingPage(): React.JSX.Element {
                   style={{
                     display: "block",
                     fontWeight: 600,
-                    color: "var(--sa-color-text-default)",
+                    color: "var(--sa-text-neutral-base)",
                     fontSize: "var(--sa-type-body-1-size)",
                   }}
                 >
@@ -260,7 +260,7 @@ export default function ContributingPage(): React.JSX.Element {
                 <span
                   style={{
                     fontSize: "var(--sa-type-body-2-size)",
-                    color: "var(--sa-color-text-muted)",
+                    color: "var(--sa-text-neutral-subtle)",
                     lineHeight: "var(--sa-type-body-2-lh)",
                   }}
                 >

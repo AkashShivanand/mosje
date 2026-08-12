@@ -103,7 +103,7 @@ export const InAList: Story = {
           <span>
             <strong>{name}</strong>
             <br />
-            <span style={{ color: "var(--sa-color-text-muted)" }}>{role}</span>
+            <span style={{ color: "var(--sa-text-neutral-subtle)" }}>{role}</span>
           </span>
         </li>
       ))}

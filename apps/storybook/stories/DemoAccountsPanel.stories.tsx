@@ -123,11 +123,11 @@ export const GlobalFillEvent: Story = {
           A stand-in login form, listening for <code>demo:fill</code>:
         </p>
         <dl style={{ margin: 0, display: "grid", gridTemplateColumns: "auto 1fr", gap: "6px 16px" }}>
-          <dt style={{ color: "var(--sa-color-text-muted)" }}>Mobile / ID</dt>
+          <dt style={{ color: "var(--sa-text-neutral-subtle)" }}>Mobile / ID</dt>
           <dd style={{ margin: 0 }}>
             <code>{filled?.id ?? "—"}</code>
           </dd>
-          <dt style={{ color: "var(--sa-color-text-muted)" }}>Password</dt>
+          <dt style={{ color: "var(--sa-text-neutral-subtle)" }}>Password</dt>
           <dd style={{ margin: 0 }}>
             <code>{filled?.password ?? "—"}</code>
           </dd>
@@ -149,7 +149,7 @@ export const OnFillAndOnUseCallbacks: Story = {
     const [closed, setClosed] = React.useState(false);
     if (closed) {
       return (
-        <p style={{ color: "var(--sa-color-text-muted)" }}>
+        <p style={{ color: "var(--sa-text-neutral-subtle)" }}>
           <code>onUse</code> fired — the containing shell would close here.
         </p>
       );

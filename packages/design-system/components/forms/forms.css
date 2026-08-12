@@ -15,7 +15,7 @@
   font-family: var(--sa-font-latin);
   font-size: var(--sa-type-body-1-size);
   line-height: var(--sa-type-body-1-lh);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-base);
   border-radius: var(--sa-shape-md);
@@ -47,20 +47,20 @@
 
 .ds-input::placeholder,
 .ds-textarea::placeholder {
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   opacity: 0.7;
 }
 
 .ds-input:hover:not(:disabled),
 .ds-textarea:hover:not(:disabled),
 .ds-select__el:hover:not(:disabled) {
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-input:focus-visible,
 .ds-textarea:focus-visible,
 .ds-select__el:focus-visible {
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
   box-shadow: 0 0 0 3px var(--sa-focus-ring);
   outline: none;
 }
@@ -77,7 +77,7 @@
 .ds-input[aria-invalid="true"],
 .ds-textarea[aria-invalid="true"],
 .ds-select__el[aria-invalid="true"] {
-  border-color: var(--sa-color-status-danger);
+  border-color: var(--sa-border-status-error-base);
 }
 
 .ds-input[aria-invalid="true"]:focus-visible,
@@ -104,7 +104,7 @@
   width: 18px;
   height: 18px;
   transform: translateY(-50%);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   pointer-events: none;
 }
 
@@ -120,7 +120,7 @@
   font-size: var(--sa-type-body-2-size);
   line-height: var(--sa-type-body-2-lh);
   font-weight: 500;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-field__required {
@@ -132,7 +132,7 @@
 .ds-field__hint {
   font-size: var(--sa-type-body-3-size);
   line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-field__error {
@@ -174,7 +174,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   pointer-events: none;
 }
 
@@ -204,9 +204,9 @@
 
 /* Tint the leading icon to match the field's focus/error state. */
 .ds-input-shell:focus-within .ds-input-shell__icon--left {
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
 }
 
 .ds-input-shell:has(.ds-input[aria-invalid="true"]) .ds-input-shell__icon--left {
-  color: var(--sa-color-status-danger);
+  color: var(--sa-text-status-error-base);
 }

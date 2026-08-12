@@ -14,7 +14,7 @@
   padding: 6px 10px;
   border-radius: var(--sa-shape-sm, 4px);
   background-color: var(--sa-color-action-primary-hover);
-  color: var(--sa-color-text-onPrimary);
+  color: var(--sa-on-bg-brand-primary-bolder);
   font-family: var(--sa-font-latin, inherit);
   font-size: var(--sa-type-label-3-size, 11px);
   line-height: var(--sa-type-label-3-lh, 16px);

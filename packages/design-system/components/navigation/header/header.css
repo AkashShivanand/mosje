@@ -61,7 +61,7 @@
   line-height: 16px;
   letter-spacing: 0.4px;
   font-weight: 500;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-hdr-lockup__ministry {
@@ -69,14 +69,14 @@
   line-height: 16px;
   letter-spacing: 0.4px;
   font-weight: 500;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-hdr-lockup__dept {
   font-size: 20px;
   line-height: 20px;
   font-weight: 700;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-hdr-lockup.is-compact .ds-hdr-lockup__org,
@@ -146,7 +146,7 @@
 
 /* Utility bar */
 .ds-hdr-util {
-  color: var(--sa-color-text-onPrimary);
+  color: var(--sa-on-bg-brand-primary-bolder);
 }
 
 .ds-hdr-util.tone-blue {
@@ -201,7 +201,7 @@
 .ds-hdr-util__sep {
   width: 1px;
   height: 20px;
-  background-color: var(--sa-color-text-onPrimary);
+  background-color: var(--sa-bg-neutral-base);
   opacity: 0.5;
   flex: 0 0 auto;
 }
@@ -288,7 +288,7 @@
   border: none;
   border-radius: var(--sa-shape-md, 8px);
   background: transparent;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   cursor: pointer;
 }
 
@@ -337,7 +337,7 @@
   display: inline-grid;
   place-items: center;
   padding: 8px;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-hdr-searchfield__icon svg {
@@ -355,7 +355,7 @@
   line-height: 24px;
   letter-spacing: 0.5px;
   text-align: left;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 @media (min-width: 900px) {
@@ -406,7 +406,7 @@
   width: 16px;
   height: 16px;
   flex: 0 0 auto;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-hdr-account__details {
@@ -427,13 +427,13 @@
   font-size: 16px;
   line-height: 24px;
   font-weight: 600;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-hdr-account__email {
   font-size: 13px;
   line-height: 20px;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-hdr-account__avatar {
@@ -461,7 +461,7 @@
   border: none;
   border-radius: var(--sa-shape-md);
   background: transparent;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   cursor: pointer;
 }
 
@@ -519,7 +519,7 @@
   line-height: 20px;
   letter-spacing: 0.1px;
   font-weight: 500;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   text-decoration: none;
   cursor: pointer;
   transition: color var(--sa-motion-exit-duration, 0.12s) ease, background-color var(--sa-motion-exit-duration, 0.12s) ease;
@@ -527,7 +527,7 @@
 
 .ds-hdr-nav__link:hover {
   background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
 }
 
 /* Visible keyboard focus — WCAG 2.4.7. Applies to every interactive control in
@@ -540,13 +540,13 @@
 .ds-hdr-iconbtn:focus-visible,
 .ds-hdr-drawer__link:focus-visible,
 .ds-hdr-drawer__sublink:focus-visible {
-  outline: 2px solid var(--sa-color-action-primary-default);
+  outline: 2px solid var(--sa-border-brand-primary-base);
   outline-offset: -2px;
   border-radius: var(--sa-shape-xs, 4px);
 }
 
 .ds-hdr-nav__link.is-active {
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
   font-weight: 600;
 }
 
@@ -578,13 +578,13 @@
   display: block;
   padding: 8px 16px;
   font-size: var(--sa-type-body-3-size, 0.875rem);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   text-decoration: none;
 }
 
 .ds-hdr-nav__drop-link:hover {
   background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
 }
 
 /* Mega-menu — multi-column dropdown for org-heavy nav items
@@ -624,7 +624,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--sa-text-neutral-subtle, var(--sa-color-text-muted));
+  color: var(--sa-text-neutral-subtle, var(--sa-text-neutral-subtle));
 }
 
 .ds-hdr-nav__mega-list {
@@ -684,13 +684,13 @@
   font-size: var(--sa-type-body-2-size, 1rem);
   line-height: 1.5;
   font-weight: 600;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-hdr-mega-item__name {
   font-size: var(--sa-type-body-3-size, 0.875rem);
   line-height: 1.4;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-hdr-mega-item .ds-hdr-ic {
@@ -699,7 +699,7 @@
   height: 20px;
   transform: rotate(-90deg);
   opacity: 0;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   transition: opacity var(--sa-motion-exit-duration, 0.12s) ease;
 }
 
@@ -722,7 +722,7 @@
 }
 
 .ds-hdr-mega-item:focus-visible {
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
   box-shadow: 0 0 0 1px var(--sa-color-action-primary-default);
 }
 
@@ -751,12 +751,12 @@
   padding: 10px 16px;
   font-size: var(--sa-type-body-2-size, 1rem);
   font-weight: 600;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   text-decoration: none;
 }
 
 .ds-hdr-drawer__link.is-active {
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
 }
 
 .ds-hdr-drawer__sub {
@@ -769,13 +769,13 @@
   display: block;
   padding: 7px 16px 7px 28px;
   font-size: var(--sa-type-body-3-size, 0.875rem);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   text-decoration: none;
 }
 
 .ds-hdr-drawer__sublink:hover {
   background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
 }
 
 /* ── Account dropdown popover (SiteHeader portal account) ──────────────── */
@@ -805,12 +805,12 @@
 .ds-hdr-acct__menu-name {
   font-size: var(--sa-type-body-2-size, 1rem);
   font-weight: 600;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-hdr-acct__menu-role {
   font-size: var(--sa-type-label-3-size, 0.75rem);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-hdr-acct__menu-sep {
@@ -829,7 +829,7 @@
   border-radius: var(--sa-shape-sm);
   background: transparent;
   font-size: var(--sa-type-body-3-size, 0.9375rem);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   text-align: left;
   cursor: pointer;
 }
@@ -837,18 +837,18 @@
 .ds-hdr-acct__menu-item:hover,
 .ds-hdr-acct__menu-item:focus-visible {
   outline: none;
-  background-color: var(--sa-color-action-primary-tonal);
-  color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-subtler);
+  color: var(--sa-text-brand-primary-base);
 }
 
 .ds-hdr-acct__menu-item.is-danger {
-  color: var(--sa-color-status-danger);
+  color: var(--sa-text-status-error-base);
 }
 
 .ds-hdr-acct__menu-item.is-danger:hover,
 .ds-hdr-acct__menu-item.is-danger:focus-visible {
-  background-color: var(--sa-color-status-dangerTonal);
-  color: var(--sa-color-status-danger);
+  background-color: var(--sa-bg-status-error-base);
+  color: var(--sa-text-status-error-base);
 }
 
 .ds-hdr-acct__menu-icon {

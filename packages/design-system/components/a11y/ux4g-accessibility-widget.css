@@ -94,8 +94,8 @@
 #uw-main .ux4g-accessibility-uw-card:active,
 #uw-main .ux4g-accessibility-profile-item.ux4g-accessibility-active,
 #uw-main .ux4g-accessibility-help-form-container:hover {
-  border-color: var(--sa-color-action-primary-default) !important;
-  outline-color: var(--sa-color-action-primary-default) !important;
+  border-color: var(--sa-border-brand-primary-base) !important;
+  outline-color: var(--sa-border-brand-primary-base) !important;
 }
 
 #uw-main .ux4g-accessibility-btn-submit,
@@ -110,13 +110,13 @@
 
 #uw-main .ux4g-accessibility-copyrights-accessibility a span,
 #uw-main .ux4g-accessibility-icon-btn.ux4g-accessibility-active svg {
-  color: var(--sa-color-action-primary-default) !important;
-  fill: var(--sa-color-action-primary-default) !important;
+  color: var(--sa-text-brand-primary-base) !important;
+  fill: var(--sa-icon-brand-primary-base) !important;
 }
 
 #uw-main .ux4g-accessibility-dict-spinner,
 #uw-main .dict-spinner1 {
-  border-top-color: var(--sa-color-action-primary-default) !important;
+  border-top-color: var(--sa-border-brand-primary-base) !important;
 }
 
 /* Light/tonal accent — #ecd0ff, #faefff, #d8b2ff, #ede6ff → brand tonal. */
@@ -126,8 +126,8 @@
 #uw-main .ux4g-accessibility-inner-short-key,
 #uw-main .ux4g-accessibility-icon-btn.ux4g-accessibility-active,
 #uw-main .ux4g-accessibility-uw-chip.ux4g-accessibility-active {
-  background: var(--sa-color-action-primary-tonal) !important;
-  background-color: var(--sa-color-action-primary-tonal) !important;
+  background: var(--sa-bg-brand-primary-subtler) !important;
+  background-color: var(--sa-bg-brand-primary-subtler) !important;
 }
 
 #uw-main .ux4g-accessibility-icon-btn.ux4g-accessibility-active,
@@ -157,7 +157,7 @@
 /* Outside the panel — no id available, but upstream leaves these unflagged so
    ordinary source order is enough. */
 .ux4g-accessibility-skip-link {
-  border-color: var(--sa-color-action-primary-default) !important;
+  border-color: var(--sa-border-brand-primary-base) !important;
 }
 
 .ux4g-accessibility-uwaw-text-reading-guide,

@@ -21,7 +21,7 @@ const h2Style: React.CSSProperties = {
 };
 const leadStyle: React.CSSProperties = {
   fontSize: "var(--sa-type-body-1-size)",
-  color: "var(--sa-color-text-muted)",
+  color: "var(--sa-text-neutral-subtle)",
   lineHeight: "var(--sa-type-body-1-lh)",
   maxWidth: "64ch",
   marginBottom: "var(--sa-stack-m)",
@@ -133,7 +133,7 @@ export default function CardPage(): React.JSX.Element {
               type: "dont",
               label: "Don't nest buttons (or other clickable controls) inside a card that is itself clickable — it creates nested interactive elements and ambiguous hit targets.",
               preview: (
-                <div style={{ border: "2px solid var(--sa-color-status-danger)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-m)", background: "var(--sa-bg-neutral-base)", width: 220, cursor: "pointer" }}>
+                <div style={{ border: "2px solid var(--sa-border-status-error-base)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-m)", background: "var(--sa-bg-neutral-base)", width: 220, cursor: "pointer" }}>
                   <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-s)", color: "var(--sa-color-text-default)" }}>Clickable card</div>
                   <div style={{ display: "flex", gap: 8 }}>
                     <span style={{ padding: "6px 12px", borderRadius: "var(--sa-shape-sm)", background: "var(--sa-color-action-primary-default)", color: "#fff", fontSize: "var(--sa-type-body-3-size)" }}>Edit</span>

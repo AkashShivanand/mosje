@@ -23,7 +23,7 @@
    Statuses: success | warning | info | error
    ============================================================================ */
 .ds-alert {
-  --_color: var(--sa-color-action-primary-default);
+  --_color: var(--sa-text-brand-primary-base);
   display: flex;
   align-items: flex-start;
   gap: 12px;
@@ -39,19 +39,19 @@
 
 /* Status → colour mapping (info→primary, success→success, warning→warning, error→danger) */
 .ds-alert--info {
-  --_color: var(--sa-color-action-primary-default);
+  --_color: var(--sa-text-brand-primary-base);
   background-color: color-mix(in srgb, var(--sa-color-action-primary-default) 6%, var(--sa-bg-neutral-base));
 }
 .ds-alert--success {
-  --_color: var(--sa-color-status-success);
+  --_color: var(--sa-text-status-success-base);
   background-color: color-mix(in srgb, var(--sa-color-status-success) 7%, var(--sa-bg-neutral-base));
 }
 .ds-alert--warning {
-  --_color: var(--sa-color-status-warning);
+  --_color: var(--sa-text-status-warning-base);
   background-color: color-mix(in srgb, var(--sa-color-status-warning) 14%, var(--sa-bg-neutral-base));
 }
 .ds-alert--error {
-  --_color: var(--sa-color-status-danger);
+  --_color: var(--sa-text-status-error-base);
   background-color: color-mix(in srgb, var(--sa-color-status-danger) 6%, var(--sa-bg-neutral-base));
 }
 
@@ -92,13 +92,13 @@
   flex: 0 0 auto;
   font-size: var(--sa-type-body-3-size, 12px);
   line-height: var(--sa-type-body-3-lh, 16px);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-alert__body {
   font-size: var(--sa-type-body-2-size, 14px);
   line-height: var(--sa-type-body-2-lh, 20px);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-alert__action {
@@ -119,7 +119,7 @@
   background: transparent;
   border: none;
   border-radius: var(--sa-shape-sm, 6px);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
@@ -127,7 +127,7 @@
 }
 .ds-alert__close:hover {
   background-color: color-mix(in srgb, var(--sa-color-text-default) 8%, transparent);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 .ds-alert__close:focus-visible {
   outline: none;
@@ -216,7 +216,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   margin-bottom: 8px;
 }
 
@@ -233,7 +233,7 @@
   max-width: 42ch;
   font-size: var(--sa-type-body-2-size, 14px);
   line-height: var(--sa-type-body-2-lh, 20px);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-empty__action {
@@ -289,5 +289,5 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }

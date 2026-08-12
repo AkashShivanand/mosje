@@ -484,7 +484,7 @@
     }
   }
   ::selection {
-    background-color: var(--sa-color-action-primary-tonal);
+    background-color: var(--sa-bg-brand-primary-subtler);
     color: var(--sa-text-neutral-bolder);
   }
 }

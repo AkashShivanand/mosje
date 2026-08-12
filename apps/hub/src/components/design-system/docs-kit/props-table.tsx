@@ -29,7 +29,7 @@ export function PropsTable({ props }: { props: PropDef[] }): React.JSX.Element {
                 {p.required && <span className="props-table__required"> *required</span>}
               </td>
               <td><code className="props-table__type">{p.type}</code></td>
-              <td>{p.default ? <code className="props-table__type">{p.default}</code> : <span style={{ color: "var(--sa-color-text-muted)" }}>—</span>}</td>
+              <td>{p.default ? <code className="props-table__type">{p.default}</code> : <span style={{ color: "var(--sa-text-neutral-subtle)" }}>—</span>}</td>
               <td>{p.description}</td>
             </tr>
           ))}

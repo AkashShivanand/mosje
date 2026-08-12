@@ -42,8 +42,8 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             width: 44,
             height: 44,
             borderRadius: "var(--sa-shape-sm, 6px)",
-            background: "var(--sa-color-status-warningTonal, #fff4e5)",
-            color: "var(--sa-color-status-warning, #8c571f)",
+            background: "var(--sa-bg-status-warning-base, #fff4e5)",
+            color: "var(--sa-text-status-warning-base, #8c571f)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -58,7 +58,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           style={{
             fontSize: "var(--sa-type-headline-2-size, 22px)",
             fontWeight: 600,
-            color: "var(--sa-color-text-default, #1f2428)",
+            color: "var(--sa-text-neutral-base, #1f2428)",
             marginBottom: "var(--sa-stack-xs, 8px)",
           }}
         >
@@ -68,7 +68,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
         <p
           style={{
             fontSize: "var(--sa-type-body-1-size, 16px)",
-            color: "var(--sa-color-text-muted, #343a40)",
+            color: "var(--sa-text-neutral-subtle, #343a40)",
             lineHeight: 1.6,
             marginBottom: "var(--sa-padding-l, 20px)",
           }}
@@ -92,7 +92,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               fontWeight: 700,
               textTransform: "uppercase",
               letterSpacing: "0.06em",
-              color: "var(--sa-color-text-muted, #343a40)",
+              color: "var(--sa-text-neutral-subtle, #343a40)",
               marginBottom: "var(--sa-stack-xs, 8px)",
             }}
           >
@@ -103,7 +103,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               display: "block",
               fontFamily: "var(--sa-font-mono, ui-monospace, monospace)",
               fontSize: "var(--sa-type-body-2-size, 14px)",
-              color: "var(--sa-color-text-default, #1f2428)",
+              color: "var(--sa-text-neutral-base, #1f2428)",
               marginBottom: "var(--sa-stack-m, 16px)",
             }}
           >
@@ -115,7 +115,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               fontWeight: 700,
               textTransform: "uppercase",
               letterSpacing: "0.06em",
-              color: "var(--sa-color-text-muted, #343a40)",
+              color: "var(--sa-text-neutral-subtle, #343a40)",
               marginBottom: "var(--sa-stack-xs, 8px)",
             }}
           >
@@ -126,7 +126,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               display: "block",
               fontFamily: "var(--sa-font-mono, ui-monospace, monospace)",
               fontSize: "var(--sa-type-body-2-size, 14px)",
-              color: "var(--sa-color-text-default, #1f2428)",
+              color: "var(--sa-text-neutral-base, #1f2428)",
             }}
           >
             {cmd}
@@ -142,7 +142,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               padding: "10px var(--sa-padding-l, 20px)",
               borderRadius: "var(--sa-shape-sm, 6px)",
               background: "var(--sa-color-action-primary-default, #0373df)",
-              color: "var(--sa-color-text-onPrimary, #fff)",
+              color: "var(--sa-on-bg-brand-primary-bolder, #fff)",
               fontWeight: 600,
               fontSize: "var(--sa-type-body-2-size, 14px)",
               textDecoration: "none",
@@ -158,7 +158,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               padding: "10px var(--sa-padding-l, 20px)",
               borderRadius: "var(--sa-shape-sm, 6px)",
               border: "1px solid var(--sa-border-neutral-base, #e2e6ea)",
-              color: "var(--sa-color-text-default, #1f2428)",
+              color: "var(--sa-text-neutral-base, #1f2428)",
               fontWeight: 600,
               fontSize: "var(--sa-type-body-2-size, 14px)",
               textDecoration: "none",

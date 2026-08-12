@@ -37,8 +37,8 @@
   height: 30px;
   flex: 0 0 auto;
   border-radius: var(--sa-shape-sm);
-  background-color: var(--sa-color-action-primary-tonal);
-  color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-subtler);
+  color: var(--sa-text-brand-primary-base);
   font-size: 11px;
   font-weight: 800;
   display: flex;
@@ -48,7 +48,7 @@
 
 .ds-appsw__current-label {
   font-size: var(--sa-type-label-3-size);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   line-height: 1;
   margin-bottom: 2px;
 }
@@ -56,7 +56,7 @@
 .ds-appsw__current-name {
   font-size: var(--sa-type-body-2-size);
   font-weight: 700;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   line-height: 1;
 }
 
@@ -72,7 +72,7 @@
 }
 
 .ds-appsw__search:focus-within {
-  background-color: var(--sa-color-action-primary-tonal);
+  background-color: var(--sa-bg-brand-primary-subtler);
   outline: 1.5px solid var(--sa-focus-ring);
 }
 
@@ -80,12 +80,12 @@
   width: 14px;
   height: 14px;
   flex: 0 0 auto;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   transition: color 0.12s ease;
 }
 
 .ds-appsw__search:focus-within .ds-appsw__search-icon {
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
 }
 
 .ds-appsw__search-input {
@@ -95,12 +95,12 @@
   background: transparent;
   font-family: var(--sa-font-latin);
   font-size: var(--sa-type-body-2-size);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   min-width: 0;
 }
 
 .ds-appsw__search-input::placeholder {
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 /* Remove default search clear button */
@@ -111,7 +111,7 @@
 .ds-appsw__search-kbd {
   font-family: var(--sa-font-latin);
   font-size: 10px;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   background-color: var(--sa-border-neutral-subtle);
   border-radius: 4px;
   padding: 1px 5px;
@@ -141,7 +141,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   background-color: var(--sa-bg-neutral-base);
 }
 
@@ -151,7 +151,7 @@
   align-items: center;
   gap: 10px;
   padding: 7px 14px;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   text-decoration: none;
   cursor: pointer;
   transition: background-color 0.1s ease;
@@ -162,7 +162,7 @@
 }
 
 .ds-appsw__item.is-active {
-  background-color: var(--sa-color-action-primary-tonal);
+  background-color: var(--sa-bg-brand-primary-subtler);
 }
 
 .ds-appsw__item:focus-visible {
@@ -186,8 +186,8 @@
   height: 30px;
   flex: 0 0 auto;
   border-radius: var(--sa-shape-sm);
-  background-color: var(--sa-color-action-primary-tonal);
-  color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-subtler);
+  color: var(--sa-text-brand-primary-base);
   font-size: 11px;
   font-weight: 800;
   display: flex;
@@ -202,7 +202,7 @@
 
 .ds-appsw__item--planned .ds-appsw__item-icon {
   background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 /* Text stack */
@@ -216,7 +216,7 @@
 .ds-appsw__item-name {
   font-size: var(--sa-type-body-2-size);
   font-weight: 600;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -228,16 +228,16 @@
   margin-inline-start: 5px;
   font-size: 0.85em;
   font-weight: 500;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-appsw__item.is-active .ds-appsw__item-name {
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
 }
 
 .ds-appsw__item-desc {
   font-size: var(--sa-type-body-3-size);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -254,12 +254,12 @@
 }
 
 .ds-appsw__badge--live {
-  background-color: var(--sa-color-status-successTonal);
-  color: var(--sa-color-status-success);
+  background-color: var(--sa-bg-status-success-subtler);
+  color: var(--sa-text-status-success-base);
 }
 
 .ds-appsw__badge--soon {
-  background-color: var(--sa-color-status-warningTonal);
+  background-color: var(--sa-bg-status-warning-base);
   color: var(--sa-color-brand-saffronDark);
 }
 
@@ -267,7 +267,7 @@
 .ds-appsw__planned-note {
   padding: 6px 14px 8px;
   font-size: var(--sa-type-body-3-size);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   border-top: 1px solid var(--sa-border-neutral-subtle);
   text-align: center;
 }
@@ -276,6 +276,6 @@
 .ds-appsw__empty {
   padding: 20px 14px;
   font-size: var(--sa-type-body-2-size);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   text-align: center;
 }

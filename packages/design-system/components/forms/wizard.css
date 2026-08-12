@@ -60,7 +60,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-review-section__grid {
@@ -92,11 +92,11 @@
 .ds-review-item__label {
   font-size: var(--sa-type-body-3-size, 12px);
   font-weight: 500;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-review-item__value {
   margin: 0;
   font-size: var(--sa-type-body-2-size, 14px);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }

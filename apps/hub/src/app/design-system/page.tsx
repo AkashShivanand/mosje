@@ -79,7 +79,7 @@ export default function WelcomePage(): React.JSX.Element {
         <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-m)", scrollMarginTop: "calc(56px + var(--sa-stack-l))" }}>
           For Designers
         </h2>
-        <p style={{ color: "var(--sa-color-text-muted)", marginBottom: "var(--sa-padding-l)", lineHeight: "var(--sa-type-body-1-lh)" }}>
+        <p style={{ color: "var(--sa-text-neutral-subtle)", marginBottom: "var(--sa-padding-l)", lineHeight: "var(--sa-type-body-1-lh)" }}>
           SAMAVESH gives you a complete Figma library — colors, typography, spacing, components — all in sync with the code. When a token changes in the system, your designs update automatically.
         </p>
         <div className="home-cards">
@@ -106,7 +106,7 @@ export default function WelcomePage(): React.JSX.Element {
         <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-m)", scrollMarginTop: "calc(56px + var(--sa-stack-l))" }}>
           For Developers
         </h2>
-        <p style={{ color: "var(--sa-color-text-muted)", marginBottom: "var(--sa-padding-l)", lineHeight: "var(--sa-type-body-1-lh)" }}>
+        <p style={{ color: "var(--sa-text-neutral-subtle)", marginBottom: "var(--sa-padding-l)", lineHeight: "var(--sa-type-body-1-lh)" }}>
           Import the package, import the tokens, use the components. Design system decisions are pre-made — focus on building features, not reimplementing buttons.
         </p>
         <TerminalCode
@@ -128,7 +128,7 @@ export default function WelcomePage(): React.JSX.Element {
           ].map((item) => (
             <div key={item.title} style={{ fontSize: "var(--sa-type-body-2-size)" }}>
               <div style={{ fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-2xs)" }}>✓ {item.title}</div>
-              <div style={{ color: "var(--sa-color-text-muted)" }}>{item.desc}</div>
+              <div style={{ color: "var(--sa-text-neutral-subtle)" }}>{item.desc}</div>
             </div>
           ))}
         </div>

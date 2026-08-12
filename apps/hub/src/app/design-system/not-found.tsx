@@ -4,7 +4,7 @@ export default function NotFound() {
       <h1 style={{ fontSize: "var(--sa-type-display-1-size)", color: "var(--sa-color-text-default)" }}>
         404
       </h1>
-      <p style={{ color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-m)" }}>
+      <p style={{ color: "var(--sa-text-neutral-subtle)", marginTop: "var(--sa-stack-m)" }}>
         This page doesn&apos;t exist in the design system docs yet.
       </p>
       <a
@@ -12,7 +12,7 @@ export default function NotFound() {
         style={{
           display: "inline-block",
           marginTop: "var(--sa-stack-l)",
-          color: "var(--sa-color-action-primary-default)",
+          color: "var(--sa-text-brand-primary-base)",
         }}
       >
         ← Back to SAMAVESH

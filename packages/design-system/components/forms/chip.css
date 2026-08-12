@@ -68,9 +68,9 @@
    Selected
    -------------------------------------------------------------------------- */
 .ds-chip--selected {
-  background-color: var(--sa-color-action-primary-tonal);
-  color: var(--sa-color-action-primary-hover);
-  border-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-subtler);
+  color: var(--sa-text-link-brand-hover);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-chip--selected.ds-chip--interactive:hover {
@@ -79,7 +79,7 @@
     var(--sa-color-action-primary-default) 22%,
     var(--sa-bg-neutral-base)
   );
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-chip--selected.ds-chip--interactive:active {
@@ -140,8 +140,8 @@
 
 .ds-chip--disabled.ds-chip--selected.ds-chip--interactive:hover,
 .ds-chip--disabled.ds-chip--selected.ds-chip--interactive:active {
-  background-color: var(--sa-color-action-primary-tonal);
-  border-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-subtler);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-chip--disabled .ds-chip__dismiss {

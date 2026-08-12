@@ -104,5 +104,5 @@
   font-size: var(--sa-type-body-2-size, 14px);
   line-height: var(--sa-type-body-2-lh, 20px);
   font-weight: 400;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }

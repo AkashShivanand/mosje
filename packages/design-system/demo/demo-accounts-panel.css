@@ -34,7 +34,7 @@
   padding-bottom: 0.375rem;
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-demo-accounts__list {
@@ -83,7 +83,7 @@
 }
 .ds-demo-accounts__pw  {
   font-family: var(--sa-font-mono);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -98,24 +98,24 @@
   background: transparent;
   cursor: pointer;
   padding: 0;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   transition: color 0.1s ease;
 }
-.ds-demo-accounts__copy:hover { color: var(--sa-color-action-primary-default); }
+.ds-demo-accounts__copy:hover { color: var(--sa-text-brand-primary-base); }
 
 .ds-demo-accounts__use {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
 }
-.ds-demo-accounts__use:hover { background: var(--sa-color-action-primary-tonal); }
+.ds-demo-accounts__use:hover { background: var(--sa-bg-brand-primary-subtler); }
 
 /* Footer note */
 .ds-demo-accounts__footer {
   margin-top: 0.625rem;
   font-size: 0.625rem;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   line-height: 1.4;
 }

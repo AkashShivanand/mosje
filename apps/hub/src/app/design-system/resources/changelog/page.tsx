@@ -589,7 +589,7 @@ export default function ChangelogPage(): React.JSX.Element {
                   style={{
                     fontSize: "var(--sa-type-headline-2-size)",
                     fontWeight: 700,
-                    color: "var(--sa-color-text-default)",
+                    color: "var(--sa-text-neutral-base)",
                   }}
                 >
                   {release.version}
@@ -597,7 +597,7 @@ export default function ChangelogPage(): React.JSX.Element {
                 <span
                   style={{
                     fontSize: "var(--sa-type-body-2-size)",
-                    color: "var(--sa-color-text-muted)",
+                    color: "var(--sa-text-neutral-subtle)",
                   }}
                 >
                   {release.date}
@@ -656,7 +656,7 @@ export default function ChangelogPage(): React.JSX.Element {
                     <span
                       style={{
                         fontSize: "var(--sa-type-body-2-size)",
-                        color: "var(--sa-color-text-default)",
+                        color: "var(--sa-text-neutral-base)",
                         lineHeight: "var(--sa-type-body-2-lh)",
                       }}
                     >

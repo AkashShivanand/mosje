@@ -110,7 +110,7 @@ export default function InputPage(): React.JSX.Element {
     <article className="ds-prose">
       <header style={{ marginBottom: "var(--sa-stack-xl)" }}>
         <h1>Input &amp; FormField</h1>
-        <p style={{ color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-s)", maxWidth: "60ch" }}>
+        <p style={{ color: "var(--sa-text-neutral-subtle)", marginTop: "var(--sa-stack-s)", maxWidth: "60ch" }}>
           The form layer of the design system. Three native, token-styled controls — <code>Input</code>,{" "}
           <code>Textarea</code>, and <code>Select</code> — paired with the <code>FormField</code> molecule that
           wires labels, hints, and errors together so every field is accessible by default.

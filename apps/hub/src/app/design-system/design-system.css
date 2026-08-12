@@ -1,4 +1,4 @@
-/* --sa-* / --sa-* tokens are already imported app-wide by the hub's own
+/* --sa-* tokens are already imported app-wide by the hub's own
    globals.css — do not re-import here. */
 /* Shared docs-kit component styles — loaded app-wide (within this scope) so
    Callout, StatusBadge, etc. are styled on every design-system page (not only
@@ -18,7 +18,7 @@ html {
   font-family: var(--sa-font-latin);
   font-size: var(--sa-type-body-1-size);
   line-height: var(--sa-type-body-1-lh);
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   background-color: var(--sa-bg-neutral-base);
   -webkit-font-smoothing: antialiased;
 }
@@ -79,7 +79,7 @@ code:not([class]) {
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-xs);
   padding: 1px 5px;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 /* Skip to content */
@@ -90,7 +90,7 @@ code:not([class]) {
   z-index: 9999;
   padding: var(--sa-padding-xs) var(--sa-padding-m);
   background: var(--sa-color-action-primary-default);
-  color: var(--sa-color-text-onPrimary);
+  color: var(--sa-on-bg-brand-primary-bolder);
   border-radius: var(--sa-shape-sm);
   font-weight: 600;
   transition: top 0.1s;
@@ -106,7 +106,7 @@ code:not([class]) {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
   margin-bottom: var(--sa-stack-s);
 }
 .home-kicker::before {
@@ -132,7 +132,7 @@ code:not([class]) {
     background-color 0.3s ease;
 }
 .docs-welcome-card:hover {
-  border-color: color-mix(in oklab, var(--sa-color-action-primary-default) 50%, transparent);
+  border-color: color-mix(in oklab, var(--sa-border-brand-primary-base) 50%, transparent);
   box-shadow: 
     0 20px 40px -15px color-mix(in oklab, var(--sa-color-action-primary-default) 12%, transparent),
     0 0 0 1px color-mix(in oklab, var(--sa-color-action-primary-default) 20%, transparent);
@@ -140,7 +140,7 @@ code:not([class]) {
   text-decoration: none;
 }
 [data-theme="dark"] .docs-welcome-card:hover {
-  border-color: color-mix(in oklab, var(--sa-color-action-primary-default) 60%, transparent);
+  border-color: color-mix(in oklab, var(--sa-border-brand-primary-base) 60%, transparent);
   box-shadow: 
     0 20px 40px -15px rgba(0, 0, 0, 0.5),
     0 0 0 1px color-mix(in oklab, var(--sa-color-action-primary-default) 30%, transparent);
@@ -151,7 +151,7 @@ code:not([class]) {
   position: absolute;
   top: var(--sa-padding-l);
   right: var(--sa-padding-l);
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
   opacity: 0;
   transform: translateX(-4px);
   transition: opacity 0.2s, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -202,19 +202,19 @@ code:not([class]) {
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
-  color: var(--sa-text-neutral-bolder, var(--sa-color-text-default));
+  color: var(--sa-text-neutral-bolder, var(--sa-text-neutral-base));
   font-variant-numeric: tabular-nums;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 .home-stat:hover .home-stat__value {
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
   transform: translateY(-2px);
 }
 .home-stat__label {
   font-size: var(--sa-type-label-3-size, 0.75rem);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   margin-top: var(--sa-stack-xs);
 }
 

@@ -43,7 +43,7 @@
   font-size: var(--sa-type-body-2-size);
   line-height: var(--sa-type-body-2-lh);
   font-weight: 500;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-metric-card__value {
@@ -65,7 +65,7 @@
   flex: 0 0 auto;
   border-radius: var(--sa-shape-md);
   background-color: var(--sa-color-primaryScale-50);
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
 }
 
 /* ── Size variants ── */
@@ -91,9 +91,9 @@
   line-height: 1;
 }
 
-.ds-metric-card__change--up   { color: var(--sa-color-status-success); }
-.ds-metric-card__change--down { color: var(--sa-color-status-danger); }
-.ds-metric-card__change--flat { color: var(--sa-color-text-muted); }
+.ds-metric-card__change--up   { color: var(--sa-text-status-success-base); }
+.ds-metric-card__change--down { color: var(--sa-text-status-error-base); }
+.ds-metric-card__change--flat { color: var(--sa-text-neutral-subtle); }
 
 /* ── Tinted delta pill + muted suffix (SAMAVESH KPI card) ── */
 .ds-metric-card__pill {
@@ -106,11 +106,11 @@
   font-weight: 600;
   line-height: 16px;
 }
-.ds-metric-card__pill--up   { background-color: var(--sa-color-status-successTonal); color: var(--sa-color-status-success); }
-.ds-metric-card__pill--down { background-color: var(--sa-color-status-dangerTonal);  color: var(--sa-color-status-danger); }
+.ds-metric-card__pill--up   { background-color: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
+.ds-metric-card__pill--down { background-color: var(--sa-bg-status-error-base);  color: var(--sa-text-status-error-base); }
 .ds-metric-card__suffix {
   margin-left: 6px;
   font-size: 12px;
   font-weight: 500;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
 }

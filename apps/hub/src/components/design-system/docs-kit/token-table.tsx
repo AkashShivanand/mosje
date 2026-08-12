@@ -32,7 +32,7 @@ export function TokenTable({ tokens }: { tokens: TokenRow[] }): React.JSX.Elemen
                 )}
                 <code className="token-table__value">{t.value}</code>
               </td>
-              <td style={{ color: "var(--sa-color-text-muted)", fontSize: "var(--sa-type-body-2-size)" }}>{t.description}</td>
+              <td style={{ color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-body-2-size)" }}>{t.description}</td>
             </tr>
           ))}
         </tbody>

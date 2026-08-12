@@ -164,7 +164,7 @@ export default function RoadmapPage(): React.JSX.Element {
                     style={{
                       fontSize: "var(--sa-type-headline-2-size)",
                       fontWeight: 700,
-                      color: "var(--sa-color-text-default)",
+                      color: "var(--sa-text-neutral-base)",
                     }}
                   >
                     {col.phase}
@@ -185,7 +185,7 @@ export default function RoadmapPage(): React.JSX.Element {
                 <p
                   style={{
                     fontSize: "var(--sa-type-body-2-size)",
-                    color: "var(--sa-color-text-muted)",
+                    color: "var(--sa-text-neutral-subtle)",
                     marginBottom: "var(--sa-stack-m)",
                     lineHeight: "var(--sa-type-body-2-lh)",
                   }}
@@ -205,7 +205,7 @@ export default function RoadmapPage(): React.JSX.Element {
                           fontWeight: 700,
                           textTransform: "uppercase",
                           letterSpacing: "0.04em",
-                          color: "var(--sa-color-text-muted)",
+                          color: "var(--sa-text-neutral-subtle)",
                           marginBottom: "var(--sa-stack-xs)",
                         }}
                       >
@@ -230,7 +230,7 @@ export default function RoadmapPage(): React.JSX.Element {
                             gap: "var(--sa-stack-xs)",
                             alignItems: "baseline",
                             fontSize: "var(--sa-type-body-2-size)",
-                            color: "var(--sa-color-text-default)",
+                            color: "var(--sa-text-neutral-base)",
                             lineHeight: "var(--sa-type-body-2-lh)",
                           }}
                         >

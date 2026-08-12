@@ -16,7 +16,7 @@ export default function IdentityInputsPage(): React.JSX.Element {
     <article className="ds-prose">
       <header style={{ marginBottom: "var(--sa-section-xs)" }}>
         <h1>Identity Inputs</h1>
-        <p style={{ color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-s)", maxWidth: "62ch" }}>
+        <p style={{ color: "var(--sa-text-neutral-subtle)", marginTop: "var(--sa-stack-s)", maxWidth: "62ch" }}>
           Aadhaar, OTP and PAN are the three identity controls almost every MoSJE service journey
           asks for, and the three UX4G 3.0 names them explicitly. They are not plain text fields:
           each has a checksum or a shape, and Aadhaar carries a statutory handling obligation.

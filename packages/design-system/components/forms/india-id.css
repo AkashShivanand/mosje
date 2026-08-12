@@ -39,7 +39,7 @@
   font-variant-numeric: tabular-nums;
   font-weight: 600;
   text-align: center;
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-base);
   border-radius: var(--sa-shape-md);
@@ -51,11 +51,11 @@
 }
 
 .ds-otp__box:hover:not(:disabled) {
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-otp__box:focus-visible {
-  border-color: var(--sa-color-action-primary-default);
+  border-color: var(--sa-border-brand-primary-base);
   box-shadow: 0 0 0 3px var(--sa-focus-ring);
   outline: none;
 }
@@ -68,7 +68,7 @@
 
 .ds-otp--invalid .ds-otp__box,
 .ds-otp__box[aria-invalid="true"] {
-  border-color: var(--sa-color-status-danger);
+  border-color: var(--sa-border-status-error-base);
 }
 
 .ds-otp--invalid .ds-otp__box:focus-visible {

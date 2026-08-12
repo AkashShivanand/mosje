@@ -50,7 +50,7 @@
   border-radius: var(--sa-shape-full);
   border: 2px solid var(--sa-border-neutral-subtle);
   background-color: var(--sa-bg-neutral-base);
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   font-size: 13px;
   font-weight: 700;
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
@@ -62,14 +62,14 @@
 
 .ds-stepper__item.is-done .ds-stepper__marker {
   background-color: var(--sa-color-status-success);
-  border-color: var(--sa-color-status-success);
-  color: var(--sa-color-text-onPrimary);
+  border-color: var(--sa-border-status-success-base);
+  color: var(--sa-on-bg-brand-primary-bolder);
 }
 
 .ds-stepper__item.is-current .ds-stepper__marker {
   background-color: var(--sa-color-action-primary-default);
-  border-color: var(--sa-color-action-primary-default);
-  color: var(--sa-color-text-onPrimary);
+  border-color: var(--sa-border-brand-primary-base);
+  color: var(--sa-on-bg-brand-primary-bolder);
   box-shadow: 0 0 0 4px var(--sa-color-primaryScale-50);
 }
 
@@ -83,21 +83,21 @@
 .ds-stepper__label {
   font-size: var(--sa-type-body-3-size, 13px);
   font-weight: 600;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   line-height: 1.3;
 }
 
 .ds-stepper__item.is-current .ds-stepper__label {
-  color: var(--sa-color-action-primary-default);
+  color: var(--sa-text-brand-primary-base);
 }
 
 .ds-stepper__item.is-done .ds-stepper__label {
-  color: var(--sa-color-text-default);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-stepper__desc {
   font-size: 12px;
-  color: var(--sa-color-text-muted);
+  color: var(--sa-text-neutral-subtle);
   line-height: 1.3;
 }
 
