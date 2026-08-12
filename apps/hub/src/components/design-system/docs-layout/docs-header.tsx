@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { Icon } from "@mosje/design-system";
 import { NAV } from "@/lib/design-system/nav";
 
 interface DocsHeaderProps {
@@ -72,15 +73,7 @@ export function DocsHeader({ onSearchOpen, navOpen, onMenuToggle }: DocsHeaderPr
         aria-controls="docs-sidebar"
         type="button"
       >
-        {navOpen ? (
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
-        ) : (
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
-        )}
+        <Icon name={navOpen ? "close" : "menu"} size={20} />
       </button>
       <nav className="docs-header__breadcrumb" aria-label="Breadcrumb">
         <a href="/design-system" className="docs-header__breadcrumb-home">
@@ -101,10 +94,7 @@ export function DocsHeader({ onSearchOpen, navOpen, onMenuToggle }: DocsHeaderPr
         aria-label="Search documentation (Cmd K)"
         type="button"
       >
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.5" />
-          <path d="m11 11 2.5 2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
+        <Icon name="search" size={16} />
         <span className="docs-header__search-label">Search docs…</span>
         <kbd className="docs-header__search-kbd">⌘K</kbd>
       </button>

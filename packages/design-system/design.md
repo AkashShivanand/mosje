@@ -12,7 +12,11 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-12 · System version: v0.18.0 (FILLED PRIMARY MOVED TO THE bolder RUNG.
+  Last reviewed: 2026-08-12 · System version: v0.18.2 (ICON IS NOW DECORATIVE BY DEFAULT — it
+  sets aria-hidden itself unless given an aria-label, which then makes it role="img". The rule
+  was documented but unenforced and was missed at 533 of 718 call sites; the component now
+  decides instead of the caller. Do not add aria-hidden to decorative icons. Previously
+  v0.18.0: FILLED PRIMARY MOVED TO THE bolder RUNG.
   A filled primary button now paints bg/brand/primary/bolder (#005EB9) instead of the ink of the
   same family (#0373DF), taking white-on-primary from 4.64:1 to 6.36:1 and Navy from 8.77:1 to
   12.61:1. 36 solid fills across the estate plus the DS Button, whose single --_color was split
@@ -1040,7 +1044,8 @@ All components are exported from `@mosje/design-system`. Import from the package
 **Setup**: Load `import "@mosje/design-system/icons.css"` once in the app root (this is the **only** step — it declares the `@font-face` for Material Symbols Rounded + the `.material-symbols-rounded` class). No per-app `<link>` tag is needed. The font MUST be present wherever the UI renders — a missing font makes the glyph fall back to its literal ligature text (e.g. "chevron_right"). `icons.css` uses a plain inline `@font-face` (pinned to the versioned gstatic woff2), **not** an `@import` — Next/Turbopack silently drops a leading external `@import` from a bundled CSS module, which is why the earlier `@import`-based file loaded the class but never the font. To go CDN-free (offline kiosks / no-third-party-CDN policy) self-host that woff2 and swap the `src` — see the recipe in `icons.css`.  
 **Sizes**: `16 / 20 / 24 / 32 / 40 / 48 / 64`. DBIM 3.0 §3.4 (Figure 9) publishes four — 24, 32, 48, 64 — and all four are here; those are FRAMES including 2px padding per edge, so their live area is size − 4 (24→20, 32→28, 48→44, 64→60). The other three are kept **deliberately**: §3.4 governs the downloadable asset bank, it does not forbid a smaller inline glyph, and **16px beside 14px body text is the estate's most-used icon size** (358 of 713 call sites). A standard's list is a floor, not a ceiling — see `.claude/rules/standards-precedence.md`. Tokens are named for the pixel value (`--sa-icon-size-16` …) so a name cannot drift from what it renders.  
 **Figma text styles**: `Icon/16 · 20 · 24 · 32 · 40 · 48 · 64`, each Material Symbols Rounded / **Light**, with `fontSize` and `lineHeight` **bound to `icon/size/*`** so a change to the scale reaches every style. Prefer the `Icon` **component** for normal work — it carries the size variants and the `icon` text property. The styles exist so a glyph that is already a text node can be *bound* rather than hand-set: they took the Icons documentation from 62% to 98% of text on a published style, converting 140 declared exemptions into real bindings.  
-**Usage**: `<Icon name="home" size={24} />` (wraps the font glyph; always `aria-hidden` for decorative icons, `aria-label` on icon-only buttons).  
+**Usage**: `<Icon name="home" size={24} />` (wraps the font glyph).  
+**Accessibility — DECORATIVE BY DEFAULT (changed v0.18.2)**: the glyph is real text, so an unmarked icon is announced by a screen reader as its ligature ("arrow back"). The component therefore hides itself: no `aria-label` ⇒ `aria-hidden="true"`; `aria-label` given ⇒ `role="img"` and announced; an explicit `aria-hidden={false}` still wins. **Do not add `aria-hidden` to decorative icons — it is already the default.** For an icon-only control the label belongs on the **button**, not the glyph: `<button aria-label="Search"><Icon name="search" /></button>`. This replaced a convention that was being missed at **533 of 718** call sites.  
 **Rules**:
 - Use the Material Symbols Rounded **font glyph** for any icon in the Material set — never inline SVG for those.
 - Brand/social marks (National Emblem, Digital India, etc.) that are **not** in Material Symbols use inline SVG.
