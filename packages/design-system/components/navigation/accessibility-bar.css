@@ -1,5 +1,8 @@
 /* AccessibilityBar — government top utility bar (UX4G / GIGW).
-   Token-driven; mirrors the SAMAVESH Figma "Accessibility Bar" component. */
+   Mirrors the SAMAVESH Figma "Accessibility Bar" master 1:1. Every value binds to a
+   Tier-2 (--sa-*) or Tier-3 (--sa-cmp-accessibilityBar-*) token — no Tier-1 refs, no
+   raw values. The bar's own geometry and its inverse state layers are Tier-3 because
+   they exist only on this component. */
 
 .sa-abar {
   /* Figma binds text/icons to text|icon/neutral/inverse, not the on/* pairing. */
@@ -16,28 +19,47 @@
 .sa-abar__in {
   margin: 0 auto;
   display: flex;
-  /* Figma layout/bar/height = 46. No code token exists for it yet (flagged), so
-     the value is carried here until `layout.bar.height` is added to @mosje/tokens. */
-  min-height: 46px;
+  min-height: var(--sa-cmp-accessibilityBar-height);
   align-items: center;
   justify-content: space-between;
   gap: var(--sa-inline-l);
-  padding: var(--sa-ref-space-xxs) var(--sa-padding-2xl);
+  padding: var(--sa-padding-3xs) var(--sa-padding-2xl);
   /* UX4G Navbar spec: Noto Sans Medium, 12/16 in the bar. */
   font-size: var(--sa-type-label-2-size);
   line-height: var(--sa-type-label-2-lh);
   letter-spacing: 0.1px;
 }
-/* Narrow = container/md (720). Figma's layout/container/wide is 1200, which has
-   no equivalent on the code container scale (xl 1140 · content 1280) — see the
-   divergence flagged in docs/design-system/components/accessibility-bar.md. */
-.sa-abar.layout-narrow .sa-abar__in { max-width: var(--sa-container-md); }
-.sa-abar.layout-wide   .sa-abar__in { max-width: 1200px; }
+.sa-abar.layout-narrow .sa-abar__in { max-width: var(--sa-container-narrow); }
+.sa-abar.layout-wide   .sa-abar__in { max-width: var(--sa-container-wide); }
 /* Fluid is full-bleed: edge padding only. Figma uses padding/2xl (32) from tablet
    up and padding/m (16) on mobile — matching its Device axis with a media query. */
 .sa-abar.layout-fluid .sa-abar__in { max-width: none; padding-inline: var(--sa-padding-m); }
 @media (min-width: 768px) {
   .sa-abar.layout-fluid .sa-abar__in { padding-inline: var(--sa-padding-2xl); }
+}
+
+/* ── Device axis (Figma: Mobile · Tablet · Desktop · Desktop XL) ──────────────
+   On Mobile the master collapses the right-hand cluster — font size, accessibility
+   and language move into the consumer's menu.
+
+   The SKIP LINK is deliberately exempt. Figma drops the whole cluster, but the skip
+   link is the page's WCAG 2.4.1 bypass mechanism and removing the only one is a
+   mandatory-criterion failure, which the guidelines precedence ladder does not allow
+   a brand/structural preference to override. Recorded in the component spec.
+
+   `device="auto"` (the default) resolves the same breakpoint in CSS; an explicit
+   `device-mobile` pins it regardless of viewport, for specimens and visual tests. */
+.sa-abar.device-mobile .sa-abar__fs,
+.sa-abar.device-mobile .sa-abar__icbtn,
+.sa-abar.device-mobile .sa-abar__sep {
+  display: none;
+}
+@media (max-width: 767px) {
+  .sa-abar.device-auto .sa-abar__fs,
+  .sa-abar.device-auto .sa-abar__icbtn,
+  .sa-abar.device-auto .sa-abar__sep {
+    display: none;
+  }
 }
 
 /* Government of India link */
@@ -52,12 +74,12 @@
 }
 .sa-abar__gov:hover { text-decoration-thickness: 2px; }
 .sa-abar__flag {
-  height: var(--sa-ref-size-22);
-  width: 33px; /* Figma layout/flag/width — no code token yet (flagged) */
+  height: var(--sa-cmp-accessibilityBar-flagHeight);
+  width: var(--sa-cmp-accessibilityBar-flagWidth);
   border-radius: var(--sa-shape-xxs);
   object-fit: cover;
 }
-.sa-abar__ext { width: 12px; height: 12px; flex: 0 0 auto; }
+.sa-abar__ext { flex: 0 0 auto; }
 
 /* Right-side controls */
 .sa-abar__end {
@@ -68,26 +90,25 @@
 .sa-abar__skip { color: inherit; text-decoration: none; }
 .sa-abar__skip:hover { text-decoration: underline; }
 
-/* Divider between control groups. There is no pre-composited inverse-subtle
-   border token in code, so the white inverse ink carries a 40% alpha (opacity is
-   the one thing Figma/CSS cannot bind to a variable). Figma: border/neutral/inverse-subtle. */
+/* Divider between control groups — Figma instances the Divider component with
+   Orientation=Vertical, Tone=Inverse subtle. The colour is pre-composited, so no
+   opacity is hand-rolled here. */
 .sa-abar__sep {
-  width: 1px; /* Figma ref/border-width/hairline — no code token yet (flagged) */
-  height: var(--sa-ref-size-20);
-  background-color: var(--sa-text-neutral-inverse);
-  opacity: 0.4; /* = Figma border/neutral/inverse-subtle #ffffff66 */
+  width: var(--sa-cmp-accessibilityBar-dividerWidth);
+  height: var(--sa-cmp-accessibilityBar-dividerHeight);
+  background-color: var(--sa-cmp-accessibilityBar-dividerColor);
   flex: 0 0 auto;
 }
 
-/* Font-size stepper: A− · A · A+ */
+/* Font-size stepper: text_decrease · A · text_increase (Material Symbols) */
 .sa-abar__fs { display: inline-flex; align-items: center; gap: var(--sa-inline-s); }
 .sa-abar__fsbtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--sa-ref-size-24, 24px);
-  height: var(--sa-ref-size-24, 24px);
-  padding: 0 var(--sa-ref-space-xxs);
+  min-width: var(--sa-cmp-accessibilityBar-stepSize);
+  height: var(--sa-cmp-accessibilityBar-stepSize);
+  padding: 0 var(--sa-padding-3xs);
   border: none;
   border-radius: var(--sa-shape-xs);
   background: transparent;
@@ -95,10 +116,15 @@
   font: inherit;
   cursor: pointer;
 }
-/* Selected pill — Figma: ref/size/32, shape/xs, overlay/on-brand/pressed (#ffffff29 = 16%) */
-.sa-abar__fsbtn.is-current { min-width: var(--sa-ref-size-32); height: var(--sa-ref-size-32); font-weight: 600; }
-.sa-abar__fsbtn.is-current.is-active { background-color: rgb(255 255 255 / 0.16); }
-.sa-abar__fsbtn:hover:not(:disabled) { background-color: rgb(255 255 255 / 0.12); }
+/* Glyph size is set by <Icon size>, which mirrors --sa-icon-size-20. */
+/* Selected pill — Figma: ref/size/32, shape/xs, overlay/on-brand/pressed */
+.sa-abar__fsbtn.is-current {
+  min-width: var(--sa-cmp-accessibilityBar-pillSize);
+  height: var(--sa-cmp-accessibilityBar-pillSize);
+  font-weight: 600;
+}
+.sa-abar__fsbtn.is-current.is-active { background-color: var(--sa-cmp-accessibilityBar-pillBg); }
+.sa-abar__fsbtn:hover:not(:disabled) { background-color: var(--sa-cmp-accessibilityBar-hoverBg); }
 .sa-abar__fsbtn:disabled { opacity: 0.45; cursor: default; }
 
 /* Icon buttons (accessibility, language) */
@@ -117,11 +143,8 @@
   cursor: pointer;
 }
 .sa-abar__icbtn.has-text { padding: 0 var(--sa-inline-s); gap: var(--sa-inline-s); }
-.sa-abar__icbtn:hover { background-color: rgb(255 255 255 / 0.12); }
-/* Figma binds icons to icon/size/20; the code icon scale is DBIM's 24/32/48/64,
-   so 20 has no code token (flagged divergence). */
-.sa-abar__icbtn svg { width: var(--sa-ref-size-20); height: var(--sa-ref-size-20); }
-.sa-abar__icbtn .sa-abar__caret { width: 16px; height: 16px; }
+.sa-abar__icbtn:hover { background-color: var(--sa-cmp-accessibilityBar-hoverBg); }
+/* Figma binds the bar's glyphs to icon/size/20; <Icon size> sets it inline. */
 
 /* Focus (WCAG 2.4.7): the ring is never removed. The global --sa-focus-ring is
    brand-blue, which would vanish on this blue/navy surface — so the outline is the
@@ -130,7 +153,7 @@
 .sa-abar__skip:focus-visible,
 .sa-abar__fsbtn:focus-visible,
 .sa-abar__icbtn:focus-visible {
-  outline: 2px solid var(--sa-text-neutral-inverse, #fff);
+  outline: 2px solid var(--sa-text-neutral-inverse);
   outline-offset: 2px;
-  border-radius: var(--sa-shape-xs, 4px);
+  border-radius: var(--sa-shape-xs);
 }

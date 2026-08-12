@@ -1217,6 +1217,7 @@ export const tokens = {
   },
   "icon": {
     "size": {
+      "20": "1.25rem",
       "24": "1.5rem",
       "32": "2rem",
       "48": "3rem",
@@ -1253,7 +1254,9 @@ export const tokens = {
     "md": "720px",
     "lg": "960px",
     "xl": "1140px",
-    "content": "1280px"
+    "content": "1280px",
+    "narrow": "720px",
+    "wide": "1200px"
   },
   "grid": {
     "columns": 12,
@@ -1315,6 +1318,19 @@ export const tokens = {
     "beta": {
       "bg": "#ffd323"
     }
+  },
+  "accessibilityBar": {
+    "height": "46px",
+    "flagWidth": "33px",
+    "flagHeight": "1.375rem",
+    "dividerWidth": "1px",
+    "dividerHeight": "1.25rem",
+    "dividerColor": "rgba(255, 255, 255, 0.4)",
+    "pillSize": "2rem",
+    "pillBg": "rgba(255, 255, 255, 0.16)",
+    "hoverBg": "rgba(255, 255, 255, 0.12)",
+    "stepSize": "1.5rem",
+    "launchIconSize": "0.75rem"
   },
   "action": {
     "brand": {

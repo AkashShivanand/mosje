@@ -97,6 +97,21 @@ export const FontSizeControl: Story = {
 };
 
 /**
+ * **Mobile** — the Figma `Device` axis. `device` defaults to `"auto"`, which resolves
+ * the same breakpoints in CSS so a single instance adapts; pin an explicit device
+ * (`mobile` · `tablet` · `desktop` · `desktop-xl`) only to reproduce one Figma variant
+ * for a specimen or a visual test.
+ *
+ * On mobile the right-hand cluster collapses — font size, accessibility and language
+ * move into the consumer's own menu — but **the skip link deliberately stays**, because
+ * it is the page's WCAG 2.4.1 bypass mechanism and Figma's Mobile variant dropping it
+ * is the one place the code does not follow the design.
+ */
+export const MobileDevice: Story = {
+  args: { device: "mobile" },
+};
+
+/**
  * The accessibility entry as a button (opens a dialog/widget) rather than a link
  * to the statement page. Set `onAccessibility` OR `accessibilityHref`, not both.
  */

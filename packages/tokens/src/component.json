@@ -39,5 +39,61 @@
         "$description": "BETA badge background — ad-hoc accent (#ffd323), NOT a brand or status colour. Correctly-named entry point for the beta-badge colour."
       }
     }
+  },
+  "accessibilityBar": {
+    "$description": "AccessibilityBar (UX4G/GIGW top utility bar). Component-scoped dimensions and inverse state layers that mirror the Figma master 1:1. They live in Tier 3 because they are the bar's own geometry — a 46px bar height and a 33px flag chip are not shared scale steps, and the inverse overlays only make sense on this bar's brand fill.",
+    "height": {
+      "$type": "dimension",
+      "$description": "Bar height (Figma layout/bar/height).",
+      "$value": "46px"
+    },
+    "flagWidth": {
+      "$type": "dimension",
+      "$description": "Flag/emblem chip width (Figma layout/flag/width); height is {size.22}, a 3:2 chip.",
+      "$value": "33px"
+    },
+    "flagHeight": {
+      "$type": "dimension",
+      "$value": "{size.22}"
+    },
+    "dividerWidth": {
+      "$type": "dimension",
+      "$description": "Hairline divider width (Figma ref/border-width/hairline).",
+      "$value": "{border.width.sm}"
+    },
+    "dividerHeight": {
+      "$type": "dimension",
+      "$value": "{size.20}"
+    },
+    "dividerColor": {
+      "$type": "color",
+      "$description": "Divider ink on the brand fill (Figma border/neutral/inverse-subtle, #ffffff66 = 40%). Pre-composited so consumers never hand-roll an opacity.",
+      "$value": "rgba(255, 255, 255, 0.4)"
+    },
+    "pillSize": {
+      "$type": "dimension",
+      "$description": "Selected font-size pill (Figma ref/size/32).",
+      "$value": "{size.32}"
+    },
+    "pillBg": {
+      "$type": "color",
+      "$description": "Selected font-size pill fill (Figma overlay/on-brand/pressed, #ffffff29 = 16%).",
+      "$value": "rgba(255, 255, 255, 0.16)"
+    },
+    "hoverBg": {
+      "$type": "color",
+      "$description": "Hover state layer for the bar's controls on the brand fill.",
+      "$value": "rgba(255, 255, 255, 0.12)"
+    },
+    "stepSize": {
+      "$type": "dimension",
+      "$description": "A- / A+ step button hit area.",
+      "$value": "{size.24}"
+    },
+    "launchIconSize": {
+      "$type": "dimension",
+      "$description": "The GoI link's launch glyph (Figma: 12px).",
+      "$value": "{size.12}"
+    }
   }
 }

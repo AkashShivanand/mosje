@@ -205,7 +205,11 @@ export const GROUP = new Set([
  */
 // `button`, `card` and `badge` are the hand-authored Tier-3 tokens that predate the
 // generated Action matrix. They are legitimate components, not violations.
-export const COMPONENT = new Set(["action", "control", "spinner", "button", "card", "badge"]);
+// `accessibilityBar` (2026-08-12) owns the UX4G/GIGW top utility bar's geometry and its
+// inverse state layers. They are Tier 3 rather than Tier 2 because they are not shared scale
+// steps: a 46px bar and a 33px flag chip exist only on this component, and a white-@40%
+// divider only means anything on this bar's brand fill.
+export const COMPONENT = new Set(["action", "control", "spinner", "button", "card", "badge", "accessibilityBar"]);
 export const INTENT = new Set(["brand", "success", "destructive", "neutral", "light"]);
 export const ACTION_VARIANT = new Set(["primary", "secondary", "tertiary", "tonal"]);
 /**

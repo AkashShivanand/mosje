@@ -15,10 +15,18 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { Icon } from "../icon";
 import "./accessibility-bar.css";
 
 export type AccessibilityBarLayout = "narrow" | "wide" | "fluid";
 export type AccessibilityBarTone = "blue" | "navy";
+/**
+ * Mirrors the Figma master's `Device` variant axis. `"auto"` (the default) is the
+ * web-native form: the same breakpoints, resolved by CSS instead of by a prop, so
+ * one instance adapts. Pin an explicit device only to reproduce a single Figma
+ * variant — a specimen, a visual test, or a fixed-width render.
+ */
+export type AccessibilityBarDevice = "auto" | "mobile" | "tablet" | "desktop" | "desktop-xl";
 
 export interface AccessibilityBarProps {
   /** Top-left "Government of India" link. */
@@ -53,6 +61,17 @@ export interface AccessibilityBarProps {
    * brand and nav rows below it. Prefer `layout` for standalone use.
    */
   maxWidth?: number;
+  /**
+   * Figma's `Device` axis. `"auto"` (default) resolves the same breakpoints in CSS.
+   *
+   * On **mobile** the Figma master collapses the right-hand cluster (font size,
+   * accessibility, language) — consumers move those into a menu. **The skip link is
+   * deliberately kept**, because it is the WCAG 2.4.1 bypass mechanism and dropping
+   * the page's only one would fail a mandatory criterion; see the divergence note in
+   * docs/design-system/components/accessibility-bar.md.
+   * @default "auto"
+   */
+  device?: AccessibilityBarDevice;
   /** Brand tone. @default "blue" */
   tone?: AccessibilityBarTone;
   /** Notified whenever the reader changes the font scale (0.9 – 1.2). */
@@ -103,28 +122,21 @@ function openUx4gWidget(): boolean {
   return true;
 }
 
-const IcExternal = () => (
-  <svg className="sa-abar__ext" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path d="M14 5h5v5M19 5l-8 8M12 5H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-const IcAccessibility = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    <circle cx="12" cy="3.5" r="1.8" />
-    <path d="M20 6.5a1 1 0 0 1-.7 1.2l-4.3 1.2v3.3l2.6 6.1a1 1 0 0 1-1.84.78L12 15.5l-2.76 3.58a1 1 0 0 1-1.84-.78l2.6-6.1V8.9L4.7 7.7A1 1 0 0 1 5.24 5.8L11 7.4a3.4 3.4 0 0 0 2 0l5.76-1.6a1 1 0 0 1 1.24.7Z" />
-  </svg>
-);
-const IcGlobe = () => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
-    <path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
-const IcCaret = () => (
-  <svg className="sa-abar__caret" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
+/**
+ * The bar's glyphs are the SAME Material Symbols the Figma master instances —
+ * `launch`, `text_decrease`, `text_increase`, `accessibility_new`, `language`,
+ * `arrow_drop_down` — rather than hand-drawn vectors, per the estate icon rule.
+ *
+ * Sizes mirror the tokens: `icon/size/20` for the controls, and the GoI link's
+ * launch glyph at 12 (`cmp/accessibilityBar/launchIconSize`). `<Icon>` sets
+ * font-size inline so the `opsz` axis tracks the size, which is why these are
+ * numbers here rather than CSS.
+ *
+ * Requires the Material Symbols font: `import "@mosje/design-system/icons.css"`
+ * once in the app root (the hub already does).
+ */
+const ICON_SIZE = 20;
+const LAUNCH_ICON_SIZE = 12;
 
 export function AccessibilityBar({
   govLink = { href: "https://india.gov.in/", label: "Government of India" },
@@ -137,6 +149,7 @@ export function AccessibilityBar({
   language = { label: "English" },
   layout = "wide",
   maxWidth,
+  device = "auto",
   tone = "blue",
   onFontScaleChange,
   className,
@@ -184,7 +197,7 @@ export function AccessibilityBar({
   const reset = () => setScaleIx(DEFAULT_SCALE_INDEX);
 
   return (
-    <div className={cn("sa-abar", `tone-${tone}`, `layout-${layout}`, className)} role="region" aria-label="Accessibility toolbar">
+    <div className={cn("sa-abar", `tone-${tone}`, `layout-${layout}`, `device-${device}`, className)} role="region" aria-label="Accessibility toolbar">
       <div className="sa-abar__in" style={maxWidth ? { maxWidth } : undefined}>
         <a className="sa-abar__gov" href={govLink.href} target="_blank" rel="noreferrer">
           {govLink.flagSrc && (
@@ -192,7 +205,7 @@ export function AccessibilityBar({
             <img className="sa-abar__flag" src={govLink.flagSrc} alt="" />
           )}
           <span>{govLink.label}</span>
-          <IcExternal />
+          <Icon name="launch" size={LAUNCH_ICON_SIZE} className="sa-abar__ext" aria-hidden />
         </a>
 
         <div className="sa-abar__end">
@@ -206,9 +219,13 @@ export function AccessibilityBar({
           {fontSize && (
             <>
               <div className="sa-abar__fs" role="group" aria-label="Text size">
-                <button type="button" className="sa-abar__fsbtn" onClick={dec} disabled={scaleIx === 0} aria-label="Decrease text size">A<span aria-hidden="true">−</span></button>
+                <button type="button" className="sa-abar__fsbtn" onClick={dec} disabled={scaleIx === 0} aria-label="Decrease text size">
+                  <Icon name="text_decrease" size={ICON_SIZE} aria-hidden />
+                </button>
                 <button type="button" className={cn("sa-abar__fsbtn", "is-current", scaleIx === DEFAULT_SCALE_INDEX && "is-active")} onClick={reset} aria-label="Reset text size" aria-pressed={scaleIx === DEFAULT_SCALE_INDEX}>A</button>
-                <button type="button" className="sa-abar__fsbtn" onClick={inc} disabled={scaleIx === FONT_SCALES.length - 1} aria-label="Increase text size">A<span aria-hidden="true">+</span></button>
+                <button type="button" className="sa-abar__fsbtn" onClick={inc} disabled={scaleIx === FONT_SCALES.length - 1} aria-label="Increase text size">
+                  <Icon name="text_increase" size={ICON_SIZE} aria-hidden />
+                </button>
               </div>
               <span className="sa-abar__sep" aria-hidden="true" />
             </>
@@ -224,7 +241,7 @@ export function AccessibilityBar({
                 aria-haspopup="dialog"
                 onClick={handleAccessibility}
               >
-                <IcAccessibility />
+                <Icon name="accessibility_new" size={ICON_SIZE} aria-hidden />
               </button>
               {language && <span className="sa-abar__sep" aria-hidden="true" />}
             </>
@@ -232,9 +249,9 @@ export function AccessibilityBar({
 
           {language && (
             <button type="button" className="sa-abar__icbtn has-text" aria-label="Select language" title="Select language" onClick={language.onClick}>
-              <IcGlobe />
+              <Icon name="language" size={ICON_SIZE} aria-hidden />
               {language.label && <span>{language.label}</span>}
-              <IcCaret />
+              <Icon name="arrow_drop_down" size={ICON_SIZE} aria-hidden />
             </button>
           )}
         </div>

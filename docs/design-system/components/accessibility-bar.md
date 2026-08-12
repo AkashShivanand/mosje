@@ -52,27 +52,47 @@ six divergences recorded below — five of which need a human decision because
 | Icon size | 20 | `--sa-ref-size-20` | ✓ |
 | Container (narrow) | `layout/container/narrow` 720 | `--sa-container-md` (720) | ✓ |
 
-### Divergences — FLAGGED for decision
+### Divergences — ALL SIX CLOSED (2026-08-12, "Figma is the source of truth")
 
-1. **`icon/size/20` exists in Figma but not in code.** v0.17.0 deliberately reduced
-   the code icon scale to DBIM's four sanctioned sizes (24/32/48/64) and *removed*
-   16/20/40. The bar's 20px icons therefore bind `ref/size/20` in code. Either
-   Figma moves the bar to 24, or DBIM conformance is knowingly relaxed here.
-2. **`layout/container/wide` = 1200 has no code equivalent.** The code container
-   scale is sm 540 · md 720 · lg 960 · xl 1140 · content 1280. 1200 is carried as a
-   literal. Either add the token, or move the Wide layout onto 1140/1280.
-3. **`layout/bar/height` (46), `layout/flag/width` (33), `ref/border-width/hairline`
-   (1), `overlay/on-brand/pressed`, `border/neutral/inverse-subtle`** exist only in
-   Figma — they were added there during the rebuild and never to `@mosje/tokens`.
-   Values are correct in code but carried as literals until the tokens are added.
-4. **Icons are hand-drawn inline SVGs in code**, but Material Symbols glyphs in
-   Figma (`launch`, `text_decrease`, `text_increase`, `accessibility_new`,
-   `language`, `arrow_drop_down`). This also diverges from the estate icon rule.
-5. **The font-size control differs**: Figma uses `text_decrease` / an "A" pill /
-   `text_increase` glyphs; code renders the text "A−", "A", "A+".
-6. **No `Device` variant axis in code.** Figma varies by Mobile/Tablet/Desktop/
-   Desktop XL (Mobile collapses the right cluster); code is responsive via CSS
-   instead — the better web approach, but not a 1:1 structural mirror.
+1. **`icon/size/20`** — added to the code scale as `icon/size/20`. This is a
+   **recorded divergence from DBIM 3.4/3.7.i**, whose sanctioned scale is exactly
+   24/32/48/64. Mitigating fact captured in the token's own description: 20 is
+   precisely the *live area* of a DBIM 24 frame (24 − 2px padding per edge), so the
+   rendered glyph matches DBIM's 24 step. 24 remains the estate default.
+2. **`layout/container/wide` = 1200** — added as `container/wide` (Tier 2), with
+   `container/narrow` aliasing `container/md` (720). 1200 deliberately does not
+   reuse `container/xl` (1140) or `container/content` (1280); it is Figma's value.
+3. **The five Figma-only tokens** — added as **Tier 3**, under a new
+   `cmp/accessibilityBar/*` component: `height` (46), `flagWidth` (33) / `flagHeight`,
+   `dividerWidth` / `dividerHeight` / `dividerColor` (#ffffff66), `pillSize` /
+   `pillBg` (#ffffff29), plus `hoverBg`, `stepSize` and `launchIconSize`. Tier 3 is
+   the correct home — a 46px bar and a white-@40% divider are this component's own
+   geometry, not shared scale steps. `accessibilityBar` was added to the grammar's
+   `COMPONENT` set. **The CSS now references zero Tier-1 tokens and zero raw
+   colours**, which `tier-discipline.test.mjs` enforces.
+4. **Icons** — now the same Material Symbols glyphs Figma instances (`launch`,
+   `text_decrease`, `text_increase`, `accessibility_new`, `language`,
+   `arrow_drop_down`) via `<Icon>`, replacing the hand-drawn SVGs. This also brings
+   the component back under the estate icon rule.
+5. **Font-size control** — now `text_decrease` / the "A" pill / `text_increase`,
+   matching Figma, instead of the literal text "A−", "A", "A+".
+6. **`Device` axis** — added as a `device` prop (`auto` · `mobile` · `tablet` ·
+   `desktop` · `desktop-xl`). `auto` (default) resolves the same breakpoints in CSS
+   so one instance adapts; an explicit device pins a single Figma variant for
+   specimens and visual tests. Mobile collapses the right-hand cluster, as Figma does.
+
+> **One deliberate exemption inside #6, and it is an accessibility one.** Figma's
+> Mobile variant drops the *entire* right cluster including the skip link. The code
+> keeps the **skip link** on mobile: it is the page's WCAG 2.4.1 bypass mechanism, and
+> `.claude/rules/guidelines.md` places accessibility/legal requirements above brand and
+> structural preferences and forbids weakening one to make something match. Font size,
+> accessibility and language do collapse, exactly as Figma specifies.
+
+### Verified in the browser after the change
+
+Material Symbols glyphs render at 12 (launch) / 20 (controls); `min-height` 46px;
+divider `rgba(255,255,255,0.4)` at 1×20; pill 32px; mobile collapses the cluster while
+the skip link survives; font scale 1 → 1.1; the accessibility icon opens the UX4G widget.
 
 ## Anatomy
 
