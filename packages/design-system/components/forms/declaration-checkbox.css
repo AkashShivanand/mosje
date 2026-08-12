@@ -6,8 +6,8 @@
 .ds-declaration {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 16px;
+  gap: var(--sa-stack-s);
+  padding: var(--sa-padding-m);
   font-family: var(--sa-font-latin);
   background-color: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-subtle);
@@ -33,18 +33,18 @@
 }
 
 .ds-declaration__lead {
-  margin: 0 0 4px;
+  margin: 0 0 var(--sa-padding-2xs);
   font-weight: 600;
   color: var(--sa-text-neutral-bolder);
 }
 
 .ds-declaration__statement ul {
-  padding-left: 18px;
+  padding-left: var(--sa-padding-l);
   margin: 0;
 }
 
 .ds-declaration__statement li + li {
-  margin-top: 4px;
+  margin-top: var(--sa-padding-2xs);
 }
 
 /* The attestation is the one action on the form carrying legal weight, and it
@@ -53,7 +53,7 @@
 .ds-declaration .ds-checkbox {
   align-items: center;
   min-height: 44px;
-  padding: 4px 0;
+  padding: var(--sa-padding-2xs) 0;
   cursor: pointer;
 }
 

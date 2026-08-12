@@ -1,9 +1,9 @@
 {
   "note": [
     "Scopes are checked in the order listed. `gated: true` means the scope runs in",
-    "`npm run check` and CI and MUST be clean. `gated: false` means it is reported",
     "by `--all` but does not fail the build yet \u2014 used while a surface is being",
-    "brought up to the rule, so the gate can land before the whole estate is clean.",
+    "All scopes are now gated. `gated: false` remains supported for bringing a NEW",
+    "surface up to the rule without blocking the gate on day one.",
     "",
     "borderWidthLiterals: the rule's property table covers fills, strokes, padding,",
     "gaps and radii \u2014 it does not cover stroke WIDTH. A hairline is a constant, and",
@@ -36,12 +36,12 @@
     {
       "name": "design-system package \u2014 components",
       "path": "packages/design-system/components",
-      "gated": false
+      "gated": true
     },
     {
       "name": "design-system package \u2014 foundations",
       "path": "packages/design-system/foundations",
-      "gated": false
+      "gated": true
     }
   ],
   "skipDirs": [

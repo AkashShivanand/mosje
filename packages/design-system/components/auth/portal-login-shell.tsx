@@ -79,13 +79,13 @@ export function PortalLoginShell({
       <a
         href="#login-form"
         className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow-md"
-        style={{ color: "var(--color-navy, #13366b)" }}
+        style={{ color: "var(--sa-color-primaryScale-800)" }}
       >
         Skip to Main Content
       </a>
 
       {/* ── Utility bar ─────────────────────────────────────────────────────── */}
-      <div style={{ background: "var(--color-navy-900, #0a2452)", color: "#fff" }}>
+      <div style={{ background: "var(--sa-bg-brand-primary-boldest)", color: "var(--sa-on-bg-brand-primary-boldest)" }}>
         <div
           className="mx-auto flex max-w-screen-2xl items-center justify-between px-4 py-1.5"
         >
@@ -96,7 +96,7 @@ export function PortalLoginShell({
             <span className="font-medium">Government of India</span>
           </span>
 
-          <div className="flex items-center gap-2 text-xs" style={{ color: "rgba(255,255,255,0.75)" }}>
+          <div className="flex items-center gap-2 text-xs" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 75%, transparent)" }}>
             <a
               href="#login-form"
               className="hidden hover:text-white sm:inline"
@@ -104,7 +104,7 @@ export function PortalLoginShell({
             >
               Skip to Main Content
             </a>
-            <span className="hidden h-3.5 w-px sm:block" style={{ background: "rgba(255,255,255,0.3)" }} aria-hidden="true" />
+            <span className="hidden h-3.5 w-px sm:block" style={{ background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 30%, transparent)" }} aria-hidden="true" />
 
             {/* Text-size controls */}
             <div className="flex items-center" role="group" aria-label="Adjust text size">
@@ -113,7 +113,7 @@ export function PortalLoginShell({
                 onClick={() => setScale(90)}
                 aria-pressed={scale === 90}
                 className="rounded px-1.5 py-0.5 hover:text-white"
-                style={{ fontWeight: scale === 90 ? "700" : undefined, color: scale === 90 ? "#fff" : undefined }}
+                style={{ fontWeight: scale === 90 ? "700" : undefined, color: scale === 90 ? "var(--sa-on-bg-brand-primary-boldest)" : undefined }}
               >
                 A-
               </button>
@@ -122,7 +122,7 @@ export function PortalLoginShell({
                 onClick={() => setScale(100)}
                 aria-pressed={scale === 100}
                 className="rounded px-1.5 py-0.5 hover:text-white"
-                style={{ fontWeight: scale === 100 ? "700" : undefined, color: scale === 100 ? "#fff" : undefined }}
+                style={{ fontWeight: scale === 100 ? "700" : undefined, color: scale === 100 ? "var(--sa-on-bg-brand-primary-boldest)" : undefined }}
               >
                 A
               </button>
@@ -131,17 +131,17 @@ export function PortalLoginShell({
                 onClick={() => setScale(115)}
                 aria-pressed={scale === 115}
                 className="rounded px-1.5 py-0.5 text-sm hover:text-white"
-                style={{ fontWeight: scale === 115 ? "700" : undefined, color: scale === 115 ? "#fff" : undefined }}
+                style={{ fontWeight: scale === 115 ? "700" : undefined, color: scale === 115 ? "var(--sa-on-bg-brand-primary-boldest)" : undefined }}
               >
                 A+
               </button>
             </div>
 
-            <span className="h-3.5 w-px" style={{ background: "rgba(255,255,255,0.3)" }} aria-hidden="true" />
+            <span className="h-3.5 w-px" style={{ background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 30%, transparent)" }} aria-hidden="true" />
             <button type="button" className="hover:text-white" aria-label="Toggle high contrast" title="Toggle high contrast">◑</button>
-            <span className="h-3.5 w-px" style={{ background: "rgba(255,255,255,0.3)" }} aria-hidden="true" />
+            <span className="h-3.5 w-px" style={{ background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 30%, transparent)" }} aria-hidden="true" />
             <button type="button" className="hover:text-white" aria-label="Accessibility options" title="Accessibility options">♿</button>
-            <span className="h-3.5 w-px" style={{ background: "rgba(255,255,255,0.3)" }} aria-hidden="true" />
+            <span className="h-3.5 w-px" style={{ background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 30%, transparent)" }} aria-hidden="true" />
             <button
               type="button"
               className="flex items-center gap-1 hover:text-white"
@@ -156,27 +156,31 @@ export function PortalLoginShell({
       </div>
 
       {/* ── Brand header ────────────────────────────────────────────────────── */}
-      <div style={{ background: "#fff", borderBottom: "1px solid var(--color-line, #e2e8f0)" }}>
+      <div style={{ background: "var(--sa-bg-neutral-base)", borderBottom: "1px solid var(--sa-border-neutral-subtle)" }}>
         <div className="mx-auto flex max-w-screen-2xl items-center justify-between px-4 py-3">
           {/* Left: National Emblem + ministry hierarchy */}
           <div className="flex items-center gap-3">
             <img src={emblemSrc} alt="National Emblem of India" className="h-14 w-auto" />
             <div className="leading-snug">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-medium" style={{ color: "var(--color-ink-hint, #94a3b8)" }}>
+                <span className="text-xs font-medium" style={{ color: "var(--sa-text-neutral-subtle)" }}>
                   Government of India
                 </span>
                 <span
-                  className="rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider"
-                  style={{ background: "rgba(236,106,31,0.1)", color: "#d35912" }}
+                  className="rounded px-1.5 py-0.5 font-bold uppercase tracking-wider"
+                  style={{
+                    fontSize: "var(--sa-type-label-3-size)",
+                    background: "var(--sa-bg-brand-secondary-base)",
+                    color: "var(--sa-on-bg-brand-secondary-base)",
+                  }}
                 >
                   Beta
                 </span>
               </div>
-              <p className="text-xs" style={{ color: "var(--color-ink-muted, #475569)" }}>
+              <p className="text-xs" style={{ color: "var(--sa-text-neutral-subtle)" }}>
                 Ministry of Social Justice &amp; Empowerment
               </p>
-              <p className="text-sm font-bold" style={{ color: "var(--color-navy, #13366b)" }}>
+              <p className="text-sm font-bold" style={{ color: "var(--sa-color-primaryScale-800)" }}>
                 Department of Social Justice &amp; Empowerment
               </p>
             </div>
@@ -185,12 +189,12 @@ export function PortalLoginShell({
           {/* Right: Digital India + SAMAVESH */}
           <div className="hidden items-center gap-4 md:flex">
             <img src={digitalIndiaSrc} alt="Digital India" className="h-10 w-auto opacity-90" />
-            <span className="h-8 w-px" style={{ background: "var(--color-line, #e2e8f0)" }} aria-hidden="true" />
+            <span className="h-8 w-px" style={{ background: "var(--sa-border-neutral-subtle)" }} aria-hidden="true" />
             <div className="flex items-center gap-2.5">
               <img src={samaveshLogoSrc} alt="SAMAVESH" className="h-10 w-10" />
               <div className="leading-snug">
-                <p className="text-xs font-bold" style={{ color: "var(--color-navy, #13366b)" }}>SAMAVESH</p>
-                <p lang="hi" className="text-[10px]" style={{ color: "var(--color-ink-hint, #64748b)" }}>समावेश</p>
+                <p className="text-xs font-bold" style={{ color: "var(--sa-color-primaryScale-800)" }}>SAMAVESH</p>
+                <p lang="hi" style={{ fontSize: "var(--sa-type-label-3-size)", color: "var(--sa-text-neutral-subtle)" }}>समावेश</p>
               </div>
             </div>
           </div>
@@ -204,7 +208,9 @@ export function PortalLoginShell({
         <div
           className="relative hidden flex-col lg:flex lg:w-[58%]"
           style={{
-            background: "linear-gradient(155deg, #071a3d 0%, #0a2452 38%, #0d3070 64%, #0a2452 100%)",
+            background:
+              "linear-gradient(155deg, var(--sa-color-primaryScale-900) 0%, var(--sa-color-primaryScale-900) 38%, "
+              + "var(--sa-color-primaryScale-800) 64%, var(--sa-color-primaryScale-900) 100%)",
           }}
           aria-hidden="true"
         >
@@ -214,15 +220,15 @@ export function PortalLoginShell({
               src={samaveshLogoSrc}
               alt=""
               className="mb-6 h-24 w-24 rounded-full"
-              style={{ boxShadow: "0 0 0 4px rgba(255,255,255,0.2)" }}
+              style={{ boxShadow: "0 0 0 4px color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 20%, transparent)" }}
             />
             <p className="text-4xl font-extrabold tracking-tight">SAMAVESH</p>
-            <p lang="hi" className="mt-1.5 font-medium" style={{ color: "rgba(255,255,255,0.8)" }}>समावेश</p>
-            <div className="mx-auto mt-6 h-px w-14" style={{ background: "var(--color-saffron, #ec6a1f)" }} />
-            <p className="mt-6 text-2xl font-bold leading-snug" style={{ color: "rgba(255,255,255,0.9)" }}>
+            <p lang="hi" className="mt-1.5 font-medium" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 80%, transparent)" }}>समावेश</p>
+            <div className="mx-auto mt-6 h-px w-14" style={{ background: "var(--sa-color-secondaryScale-400)" }} />
+            <p className="mt-6 text-2xl font-bold leading-snug" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 90%, transparent)" }}>
               Justice. Equality. Dignity.
             </p>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 55%, transparent)" }}>
               A unified digital platform for social welfare schemes under the Ministry of Social
               Justice &amp; Empowerment, Government of India.
             </p>
@@ -232,19 +238,22 @@ export function PortalLoginShell({
           <div
             className="border-t px-8 py-4"
             style={{
-              background: "rgba(7,26,61,0.65)",
-              borderColor: "rgba(255,255,255,0.1)",
+              background: "color-mix(in oklab, var(--sa-color-primaryScale-900) 65%, transparent)",
+              borderColor: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 10%, transparent)",
             }}
           >
             <div className="flex items-center justify-between">
               <div>
                 <p
-                  className="text-[10px] font-semibold uppercase tracking-widest"
-                  style={{ color: "rgba(255,255,255,0.45)" }}
+                  className="font-semibold uppercase tracking-widest"
+                  style={{
+                    fontSize: "var(--sa-type-label-3-size)",
+                    color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 70%, transparent)",
+                  }}
                 >
                   Signing Into
                 </p>
-                <p className="mt-0.5 text-sm font-bold" style={{ color: "var(--color-saffron, #ec6a1f)" }}>
+                <p className="mt-0.5 text-sm font-bold" style={{ color: "var(--sa-color-secondaryScale-400)" }}>
                   {signingInto}
                 </p>
               </div>
@@ -252,8 +261,8 @@ export function PortalLoginShell({
                 href={changeHref}
                 className="rounded-full px-3.5 py-1 text-xs font-semibold transition"
                 style={{
-                  border: "1px solid rgba(255,255,255,0.25)",
-                  color: "rgba(255,255,255,0.65)",
+                  border: "1px solid color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 25%, transparent)",
+                  color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 65%, transparent)",
                 }}
               >
                 Change
@@ -263,7 +272,7 @@ export function PortalLoginShell({
         </div>
 
         {/* Right panel */}
-        <div className="flex flex-1 flex-col" style={{ background: "#fff" }}>
+        <div className="flex flex-1 flex-col" style={{ background: "var(--sa-bg-neutral-base)" }}>
 
           {/* Tab nav (pill segmented control) */}
           <div className="px-6 pb-0 pt-5">
@@ -271,7 +280,7 @@ export function PortalLoginShell({
               className="flex rounded-full p-1"
               role="tablist"
               aria-label="Portal login type"
-              style={{ background: "var(--color-surface-muted, #f5f7fb)" }}
+              style={{ background: "var(--sa-bg-neutral-subtler)" }}
             >
               {tabs.map((tab) => (
                 <a
@@ -285,8 +294,8 @@ export function PortalLoginShell({
                   )}
                   style={
                     tab.active
-                      ? { background: "var(--color-navy, #13366b)", color: "#fff" }
-                      : { color: "var(--color-ink-muted, #475569)" }
+                      ? { background: "var(--sa-color-primaryScale-800)", color: "var(--sa-on-bg-brand-primary-boldest)" }
+                      : { color: "var(--sa-text-neutral-subtle)" }
                   }
                 >
                   {tab.label}
@@ -305,12 +314,12 @@ export function PortalLoginShell({
           {/* Footer */}
           <footer
             className="px-6 py-3.5"
-            style={{ borderTop: "1px solid var(--color-line, #e2e8f0)" }}
+            style={{ borderTop: "1px solid var(--sa-border-neutral-subtle)" }}
           >
             <nav
               aria-label="Footer links"
               className="flex flex-wrap items-center justify-center gap-4 text-xs"
-              style={{ color: "var(--color-ink-hint, #94a3b8)" }}
+              style={{ color: "var(--sa-text-neutral-subtle)" }}
             >
               <button
                 type="button"

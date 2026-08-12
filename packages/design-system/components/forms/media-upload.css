@@ -7,7 +7,7 @@
 .ds-media-upload {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--sa-stack-xs);
   font-family: var(--sa-font-latin);
 }
 
@@ -18,7 +18,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: calc(-1 * var(--sa-padding-3xs));
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
@@ -31,10 +31,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--sa-stack-xs);
   width: 100%;
   min-height: 132px;
-  padding: 24px 16px;
+  padding: var(--sa-padding-xl) var(--sa-padding-m);
   text-align: center;
   background-color: var(--sa-bg-neutral-base);
   border: 2px dashed var(--sa-border-neutral-base);
@@ -92,8 +92,8 @@
 .ds-media-upload__preview {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 12px;
+  gap: var(--sa-stack-m);
+  padding: var(--sa-padding-s);
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-lg);
@@ -139,16 +139,16 @@
 
 .ds-media-upload__actions {
   display: flex;
-  gap: 12px;
-  margin-top: 8px;
+  gap: var(--sa-stack-s);
+  margin-top: var(--sa-padding-xs);
 }
 
 .ds-media-upload__action {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--sa-stack-2xs);
   min-height: 32px;
-  padding: 4px 6px;
+  padding: var(--sa-padding-2xs) var(--sa-padding-xs);
   background: none;
   border: 0;
   border-radius: var(--sa-shape-md);
@@ -175,7 +175,7 @@
 .ds-media-upload__error {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--sa-stack-2xs);
   font-size: var(--sa-type-body-3-size);
   line-height: var(--sa-type-body-3-lh);
   color: var(--sa-color-status-dangerStrong);

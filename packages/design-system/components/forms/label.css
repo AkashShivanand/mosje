@@ -8,10 +8,10 @@
 .ds-label {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-family: var(--sa-font-latin, inherit);
-  font-size: var(--sa-type-label-1-size, 14px);
-  line-height: var(--sa-type-label-1-lh, 20px);
+  gap: var(--sa-stack-2xs);
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
   font-weight: 600;
   color: var(--sa-text-neutral-base);
 }

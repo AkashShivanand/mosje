@@ -11,7 +11,7 @@
   display: block;
   width: 100%;
   min-height: 44px;
-  padding: 10px 12px;
+  padding: var(--sa-padding-s) var(--sa-padding-s);
   font-family: var(--sa-font-latin);
   font-size: var(--sa-type-body-1-size);
   line-height: var(--sa-type-body-1-lh);
@@ -94,7 +94,7 @@
 }
 
 .ds-select__el {
-  padding-right: 40px;
+  padding-right: var(--sa-stack-2xl);
 }
 
 .ds-select__chevron {
@@ -112,7 +112,7 @@
 .ds-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--sa-stack-xs);
   font-family: var(--sa-font-latin);
 }
 
@@ -124,7 +124,7 @@
 }
 
 .ds-field__required {
-  margin-left: 2px;
+  margin-left: var(--sa-padding-3xs);
   /* dangerStrong (#b8382f, Figma Danger/700) clears 4.5:1 on white (5.8:1); --sa-color-status-danger (#ec5042) is only 3.6:1. */
   color: var(--sa-color-status-dangerStrong);
 }
@@ -138,7 +138,7 @@
 .ds-field__error {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--sa-stack-2xs);
   font-size: var(--sa-type-body-3-size);
   line-height: var(--sa-type-body-3-lh);
   /* Error TEXT must clear 4.5:1 (WCAG 1.4.3); --sa-color-status-danger only meets the 3:1 UI-border bar. */
@@ -150,8 +150,8 @@
 [data-density="compact"] .ds-textarea,
 [data-density="compact"] .ds-select__el {
   min-height: 40px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: var(--sa-padding-xs);
+  padding-bottom: var(--sa-padding-xs);
 }
 
 /* ----------------------------------------------------------------------------
@@ -195,11 +195,11 @@
 /* Pad the text away from whichever adornment is present. 12px gutter + 20px
    icon + 8px gap. */
 .ds-input--has-left {
-  padding-left: 40px;
+  padding-left: var(--sa-stack-2xl);
 }
 
 .ds-input--has-right {
-  padding-right: 40px;
+  padding-right: var(--sa-stack-2xl);
 }
 
 /* Tint the leading icon to match the field's focus/error state. */
