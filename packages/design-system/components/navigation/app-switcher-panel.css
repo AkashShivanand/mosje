@@ -196,7 +196,7 @@
 }
 
 .ds-appsw__item.is-active .ds-appsw__item-icon {
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-bg-neutral-base);
 }
 

@@ -89,7 +89,7 @@ code:not([class]) {
   left: var(--sa-inline-l);
   z-index: 9999;
   padding: var(--sa-padding-xs) var(--sa-padding-m);
-  background: var(--sa-color-action-primary-default);
+  background: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
   border-radius: var(--sa-shape-sm);
   font-weight: 600;
@@ -114,7 +114,7 @@ code:not([class]) {
   width: 18px;
   height: 2px;
   border-radius: 2px;
-  background: var(--sa-color-action-primary-default);
+  background: var(--sa-bg-brand-primary-bolder);
 }
 
 /* ── Feature card link — hairline by default, lifts + reveals an arrow ── */

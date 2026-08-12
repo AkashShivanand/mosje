@@ -132,7 +132,7 @@
 }
 
 .ds-table__pagesize-btn.is-active {
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
 }
 

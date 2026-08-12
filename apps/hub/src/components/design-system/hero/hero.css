@@ -25,7 +25,7 @@
   will-change: transform;
 }
 .hero-glow--blue {
-  background: var(--sa-color-action-primary-default);
+  background: var(--sa-bg-brand-primary-bolder);
   top: -80px;
   left: -120px;
 }
@@ -97,7 +97,7 @@
   width: 22px;
   height: 2px;
   border-radius: 2px;
-  background: var(--sa-color-action-primary-default);
+  background: var(--sa-bg-brand-primary-bolder);
 }
 
 .hero-title {
@@ -203,7 +203,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--sa-color-action-primary-default);
+  background: var(--sa-bg-brand-primary-bolder);
   box-shadow: 0 0 0 0 color-mix(in oklab, var(--sa-color-action-primary-default) 55%, transparent);
 }
 

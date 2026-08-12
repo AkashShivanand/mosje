@@ -22,9 +22,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.17.0",
+    version: "v0.18.0",
     date: "2026-08-12",
     current: true,
+    changes: [
+      { kind: "Changed", text: "FILLED PRIMARY BUTTONS MOVED ONE RUNG DEEPER, from #0373DF to #005EB9. White-on-primary goes 4.64:1 to 6.36:1, and Navy 8.77:1 to 12.61:1. 36 solid fills across the estate plus the DS Button. The ladder already said this should be so: a bg rung sits one step deeper than the ink of the same family precisely because a fill carries white text while an ink sits on the page. The button had been reaching past its own system" },
+      { kind: "Fixed", text: "The DS Button painted its filled background from a TEXT token. Its single --_color drove background, border AND outlined ink at once, so there was no way to move the fill without dragging outlined text with it. Split into --_fill and --_color: filled uses the bg slot, outlined and text keep the ink at 4.64:1 against the page, which is where that value is correct" },
+      { kind: "Changed", text: "What did NOT move, and why. Success and danger keep ink as their fill — their bg bolder rungs are different values (#00542b, #aa2f25), so moving them is a separate design decision rather than a consequence of this one. Gradients and color-mix washes keep the lighter value deliberately: a wash is not a fill and does not carry text. Links, borders and icons keep #0373DF, measured against the page" },
+      { kind: "Changed", text: "design.md sections B and C rewritten onto canonical token names. They still spelled every token in the --ds-* vocabulary retired earlier the same day — the values had been corrected but the names had not, which is its own kind of wrong in the file agents read first" },
+    ],
+  },
+  {
+    version: "v0.17.0",
+    date: "2026-08-12",
     changes: [
       { kind: "Fixed", text: "ICON SIZES 16, 20 AND 40 ARE BACK. Earlier the same day the scale was narrowed to DBIM 3.4's four and those three deleted, reading section 3.7.i as exclusive. Withdrawn: 3.4 publishes a downloadable ASSET BANK in four sizes, it does not forbid a smaller inline glyph — and 16px beside 14px body text is 358 of 713 call sites because it is the right size there. Narrowing would have visibly enlarged icons in every dense table, button and form row to make a checklist go green. The scale is 16/20/24/32/40/48/64: DBIM's four, all present, plus the three steps interface work needs" },
       { kind: "Added", text: "A precedence rule, so this does not recur: current design-craft standards first, then DBIM, GIGW and UX4G fitted in wherever they do not hamper quality. When a standard specifies a set, ADD what is missing and never DELETE what quality needs — a standard's list is a floor, not a ceiling. Accessibility is the one thing never traded against, because accessibility IS quality. .claude/rules/standards-precedence.md, referenced from CLAUDE.md" },
@@ -614,7 +624,7 @@ export default function ChangelogPage(): React.JSX.Element {
                       fontSize: "var(--sa-type-body-3-size)",
                       fontWeight: 600,
                       color: "#fff",
-                      background: "var(--sa-color-action-primary-default)",
+                      background: "var(--sa-bg-brand-primary-bolder)",
                       padding: "2px var(--sa-padding-xs)",
                       borderRadius: "var(--sa-shape-sm)",
                     }}

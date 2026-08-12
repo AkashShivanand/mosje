@@ -46,7 +46,7 @@
   transition: background 0.1s, color 0.1s;
 }
 .pg-toggle.is-active {
-  background: var(--sa-color-action-primary-default);
+  background: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
 }
 .pg-toggle:not(:last-child) { border-right: 1px solid var(--sa-border-neutral-base); }

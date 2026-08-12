@@ -116,7 +116,7 @@ export default function PatternsPage(): React.JSX.Element {
           {/* Mock chrome */}
           <div
             style={{
-              background: "var(--sa-color-action-primary-default)",
+              background: "var(--sa-bg-brand-primary-bolder)",
               padding: "var(--sa-padding-s) var(--sa-padding-l)",
               display: "flex",
               alignItems: "center",
@@ -407,7 +407,7 @@ export default function PatternsPage(): React.JSX.Element {
           {/* Left: brand panel */}
           <div
             style={{
-              background: "var(--sa-color-action-primary-default)",
+              background: "var(--sa-bg-brand-primary-bolder)",
               padding: "var(--sa-padding-2xl)",
               display: "flex",
               flexDirection: "column",
@@ -450,7 +450,7 @@ export default function PatternsPage(): React.JSX.Element {
                   style={{
                     padding: "6px 16px",
                     borderRadius: "var(--sa-shape-full)",
-                    background: i === 0 ? "var(--sa-color-action-primary-default)" : "transparent",
+                    background: i === 0 ? "var(--sa-bg-brand-primary-bolder)" : "transparent",
                     color: i === 0 ? "white" : "var(--sa-text-neutral-subtle)",
                     fontSize: "var(--sa-type-body-2-size)",
                     fontWeight: i === 0 ? 600 : 400,

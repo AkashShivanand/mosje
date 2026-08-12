@@ -27,7 +27,7 @@ function makeIcon(color: string, active: boolean) {
 function userIcon() {
   return L.divIcon({
     className: "",
-    html: `<div style="width:16px;height:16px;border-radius:50%;background:var(--sa-color-action-primary-default);border:3px solid white;box-shadow:0 0 0 4px rgba(3,115,223,.25)"></div>`,
+    html: `<div style="width:16px;height:16px;border-radius:50%;background:var(--sa-bg-brand-primary-bolder);border:3px solid white;box-shadow:0 0 0 4px rgba(3,115,223,.25)"></div>`,
     iconSize: [16, 16],
     iconAnchor: [8, 8],
   });

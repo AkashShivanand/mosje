@@ -416,7 +416,7 @@
   align-items: center;
   gap: 4px;
   padding: 0 8px;
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   border-top-left-radius: calc(var(--sa-shape-sm) - 1px);
   border-top-right-radius: calc(var(--sa-shape-sm) - 1px);
 }
@@ -453,7 +453,7 @@
   width: 35px;
   height: 11px;
   border-radius: var(--sa-shape-sm);
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
 }
 
 /* The selected badge — a small check on a primary-coloured disc, sitting
@@ -470,7 +470,7 @@
   height: 20px;
   border: 2px solid var(--sa-bg-neutral-base);
   border-radius: 50%;
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
 }
 

@@ -125,7 +125,7 @@ export default function BadgePage(): React.JSX.Element {
               type: "dont",
               label: "Don't use a badge as an action. It isn't a button or a link — use Button or Chip for anything clickable.",
               preview: (
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "2px 10px", borderRadius: 999, background: "var(--sa-color-action-primary-tonal)", color: "var(--sa-color-action-primary-default)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600, cursor: "pointer", border: "2px solid var(--sa-color-status-danger)" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "2px 10px", borderRadius: 999, background: "var(--sa-color-action-primary-tonal)", color: "var(--sa-bg-brand-primary-bolder)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600, cursor: "pointer", border: "2px solid var(--sa-color-status-danger)" }}>
                   Click me →
                 </span>
               ),
