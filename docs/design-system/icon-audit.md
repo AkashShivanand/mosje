@@ -156,6 +156,48 @@ Bundled with finding 1 because the fix changes rendered size by the same 2px.
 
 ---
 
+## Code ↔ Figma sync audit — 2026-08-12 (second pass) ✅ all fixed
+
+A separate question from "does the estate use the system": **do the two surfaces
+documenting it agree?** Structure held up — 8 sections in the same order, 7 size
+variants matching `iconSize`, weight 300 throughout, the same 223-icon catalogue,
+`--sa-icon-neutral-base` on both sides. Five defects, all now closed.
+
+| # | Defect | Where | Fixed |
+|---|---|---|---|
+| 1 | `icon/size/20` published **`var(--icon-size-20)`** — no `--sa-` prefix, so Dev Mode handed developers a property that **exists nowhere in the codebase**. 1 of 7 wrong; the `Icon/20` text style inherited it. | Figma | ✅ → `var(--sa-icon-size-20)` |
+| 2 | A callout claiming three vectors were *"superseded but still standing"* — they were **migrated and deleted in v0.18.1**. The names survived only inside the callout's own text. | Figma **and** code | ✅ both rewritten |
+| 3 | "What stays" named **State Public Service Commissions** (no such mark) and omitted **certificate** (which exists). | Figma **and** code | ✅ both corrected to the real five |
+| 4 | A component named **"MyGov"** actually draws the **NIC** logo — two components, one name. | Figma | ✅ renamed to `NIC` |
+| 5 | **Aadhaar exists twice** — a 13-vector 40×40 logo, and a 37×24 **raster** rectangle in the section that assumes drawn vectors. | Figma | ⚠️ documented, not deleted |
+
+### Two notes on how these were handled
+
+**Defect 2 is the instructive one.** The Figma page was stale, PR #78 transcribed it
+faithfully, and *both* surfaces then asserted the same false thing — the code page even
+told readers to go migrate instances that no longer existed. Copying a fact is how a
+single stale source becomes two. The parts of this page that are **generated** — the
+size scale and the catalogue — could not drift this way, which is the argument for
+generating rather than transcribing wherever it is possible.
+
+**Nothing was deleted.** The MyGov and Aadhaar "duplicates" turned out not to be
+duplicates on inspection — different geometry, and in Aadhaar's case raster vs vector —
+so deleting either would have destroyed a distinct asset. Renaming is safe (the
+component key survives, so no instance breaks); deleting is not, and instances across
+the file's other 65 pages were never traced. Both Aadhaar components now carry
+descriptions saying which to prefer and why the other still stands.
+
+### Still open, Figma-side
+
+- **`icon/size/20` carries an extra `FONT_SIZE` scope** the other six lack (they are
+  `WIDTH_HEIGHT` only). Since the `Icon/*` text styles bind *fontSize* to these
+  variables, `FONT_SIZE` is arguably right for all seven — but that changes what six
+  variables offer in the designer's picker, so it is flagged rather than changed.
+- **The raster Aadhaar** should be retired once its instances are traced.
+- The three missing colour swatches and nine missing catalogue names, below.
+
+---
+
 ## 3. Catalogue drift — 9 names ⚠️ Figma-side
 
 These are used in code but absent from the 223-icon starter set synced from Figma

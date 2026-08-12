@@ -1750,9 +1750,22 @@ Ensure the generated contract is valid:
 npm test -w @mosje/tokens
 ```
 
-### Figma Code Connect
+### Figma Code Connect — NOT SET UP (blocked on plan)
 
-Visual components are synced with the designer Figma library using Code Connect. See `/sync-figma` and `docs/research/figma-code-connect-readiness.md` for sync workflows.
+**Do not assume a Figma component carries our code snippet — none do.** Code Connect
+needs a Developer seat on an Organization/Enterprise plan. Verified 2026-08-12: zero
+mappings in the SAMAVESH file, zero `*.figma.ts(x)` in the repo, no
+`@figma/code-connect` dependency. Do not author mapping files in anticipation; they
+cannot be published and read as a finished integration.
+
+**What syncs code ↔ Figma today:** tokens through `@mosje/tokens` (DTCG → Style
+Dictionary), and on the Iconography page the size scale (`iconSize`) and the 223-icon
+catalogue, both **generated** from their sources. Everything else is manual and drifts
+— prefer generating a fact over transcribing one.
+
+Status, the per-component node map, and the Icon mapping (Figma `Size` variant → `size`,
+Figma `icon` text property → `name`): `docs/research/figma-code-connect-readiness.md`.
+Sync workflow for tokens: `/sync-figma`.
 
 ### Adding a New Component — Contribution Checklist
 
