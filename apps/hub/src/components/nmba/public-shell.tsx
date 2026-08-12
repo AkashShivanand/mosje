@@ -46,7 +46,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
         skipTo="#main-content"
         showSkip
         fontSize
-        accessibility={false}
+        accessibility
         language={false}
         onFontScaleChange={(s) => setFontScale(s < 1 ? "small" : s > 1 ? "large" : "default")}
       />

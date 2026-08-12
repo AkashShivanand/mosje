@@ -236,18 +236,18 @@ export function SiteHeader({
       className={cn("ds-hdr", isSticky && "is-sticky", scrolled && "is-scrolled", className)}
       data-variant={variant}
     >
-      {/* Skip link MUST be the first focusable element on the page (WCAG 2.4.1). */}
-      <a href={skipTo} className="ds-hdr-skip">Skip to Main Content</a>
-
       {/* ── Tier 1: Accessibility bar (the shared DS component) ──
-         The page already carries its own skip link (.ds-hdr-skip, above) as the
-         WCAG-first element, so the bar's own skip is off. Font size stays off on
-         the masthead: the UX4G widget is the single canonical font-size/contrast
-         mechanism estate-wide (accessibility-consolidation spec). */}
+         Figma is the source of truth, so all four actions render: skip · font
+         size · accessibility · language. The bar's skip is VISIBLE (as in Figma
+         and on UX4G government sites), which is why the header no longer emits a
+         second, visually-hidden `.ds-hdr-skip` — two links to the same target
+         announce the bypass twice. WCAG 2.4.1 is satisfied by the visible one.
+         The accessibility control opens the UX4G widget. */}
       <AccessibilityBar
         govLink={govLink}
-        showSkip={false}
-        fontSize={false}
+        skipTo={skipTo}
+        showSkip
+        fontSize
         accessibility={accessibilityToolbar}
         accessibilityHref={accessibilityHref}
         onAccessibility={onAccessibility}

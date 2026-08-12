@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Image from "next/image";
 import { AccessibilityBar } from "@mosje/design-system";
@@ -17,8 +19,8 @@ export function GovTopBar() {
       govLink={{ href: "#", label: "Government of India" }}
       skipTo="#main"
       showSkip
-      fontSize={false}
-      accessibility={false}
+      fontSize
+      accessibility
       language={{ label: "English" }}
     />
   );

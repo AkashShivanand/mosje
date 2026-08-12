@@ -13,8 +13,8 @@ export function AccessBar() {
       govLink={{ href: "https://www.india.gov.in", label: "Government of India" }}
       skipTo="#main-content"
       showSkip
-      fontSize={false}
-      accessibility={false}
+      fontSize
+      accessibility
       language={{ label: "English" }}
     />
   );

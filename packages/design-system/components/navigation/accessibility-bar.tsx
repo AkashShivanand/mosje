@@ -29,11 +29,19 @@ export interface AccessibilityBarProps {
   showSkip?: boolean;
   /** Show the A−/A/A+ font-size control. @default true */
   fontSize?: boolean;
-  /** Show the accessibility entry (opens the widget, or links to the statement). @default true */
+  /** Show the accessibility entry (opens the UX4G accessibility widget). @default true */
   accessibility?: boolean;
-  /** Accessibility-statement page (GIGW-required). @default "/accessibility-statement" */
+  /**
+   * Fallback accessibility-statement page (GIGW-required), used **only** when the
+   * UX4G widget is not present on the page. With the widget mounted — the estate
+   * default — the control opens the widget instead of navigating.
+   * @default "/accessibility-statement"
+   */
   accessibilityHref?: string;
-  /** If provided, the accessibility control is a button calling this (opens the widget). */
+  /**
+   * Override the accessibility control's action. Leave unset for the standard
+   * behaviour: open the UX4G accessibility widget.
+   */
   onAccessibility?: () => void;
   /** Language selector. Pass `false` to hide. @default { label: "English" } */
   language?: { label?: string; onClick?: () => void } | false;
@@ -55,6 +63,45 @@ export interface AccessibilityBarProps {
 /** A−, default, A+, A++ — the reader's text-size steps. */
 const FONT_SCALES = [0.9, 1, 1.1, 1.2] as const;
 const DEFAULT_SCALE_INDEX = 1;
+
+/** The id the official UX4G widget script gives its own floating trigger. */
+const UX4G_TRIGGER_ID = "uw-widget-custom-trigger";
+
+/**
+ * Open the official UX4G accessibility widget, returning whether it was there.
+ *
+ * This is a BRIDGE, not a reimplementation: it replays the click on the widget's
+ * OWN trigger element, so open/close/focus behaviour stays exactly the vendor's.
+ *
+ * WHY IT IS DONE THIS WAY — read before "simplifying" it. The v3.28 script binds
+ * two competing listeners on `document`:
+ *
+ *   opener: `event.target.closest('#uw-widget-custom-trigger, [data-uw-trigger="true"]')`
+ *           → openPanel()
+ *   closer: closes unless the target is inside `#uw-main`, `#uw-widget-custom-trigger`,
+ *           or `#open-the-accessibility-menu` — it does NOT honour `[data-uw-trigger]`
+ *
+ * So marking our own button `data-uw-trigger="true"` (the documented hook) opens
+ * the panel and then has the SAME click close it again — a vendor bug that looks
+ * exactly like "the button does nothing". Verified live: the panel's offset went
+ * straight back to `right: -530px`.
+ *
+ * Replaying the click on the vendor's trigger satisfies both listeners at once.
+ * The caller must also stop its own event from reaching `document`, or the closer
+ * fires on the original click and undoes the open.
+ *
+ * Presence is probed via the same element, so a page without the widget mounted
+ * falls back to the accessibility statement rather than swallowing the click.
+ */
+function openUx4gWidget(): boolean {
+  if (typeof document === "undefined") return false;
+  const trigger = document.getElementById(UX4G_TRIGGER_ID);
+  if (!trigger) return false;
+  trigger.dispatchEvent(
+    new MouseEvent("click", { bubbles: true, cancelable: true, view: window }),
+  );
+  return true;
+}
 
 const IcExternal = () => (
   <svg className="sa-abar__ext" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -106,6 +153,34 @@ export function AccessibilityBar({
 
   const dec = () => setScaleIx((i) => Math.max(0, i - 1));
   const inc = () => setScaleIx((i) => Math.min(FONT_SCALES.length - 1, i + 1));
+
+  /**
+   * Open the UX4G widget; only navigate to the statement page if it isn't there.
+   * An explicit `onAccessibility` always wins.
+   */
+  const handleAccessibility = React.useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (onAccessibility) {
+        onAccessibility();
+        return;
+      }
+      // Open on the NEXT TASK, not inline. This click is still propagating to the
+      // widget's document-level outside-click closer, which would shut the panel
+      // we just opened (see openUx4gWidget). Stopping propagation is not a reliable
+      // fix here — under the Next.js App Router React renders the whole document,
+      // so React's delegated listener and the widget's sit on the same node and the
+      // ordering is not ours to guarantee. Deferring sidesteps the race entirely:
+      // the closer runs first against an already-closed panel (a no-op), then we
+      // open. Measured: inline opening lost the race every time.
+      e.stopPropagation();
+      window.setTimeout(() => {
+        if (!openUx4gWidget() && accessibilityHref) {
+          window.location.href = accessibilityHref;
+        }
+      }, 0);
+    },
+    [onAccessibility, accessibilityHref],
+  );
   const reset = () => setScaleIx(DEFAULT_SCALE_INDEX);
 
   return (
@@ -141,15 +216,16 @@ export function AccessibilityBar({
 
           {accessibility && (
             <>
-              {onAccessibility ? (
-                <button type="button" className="sa-abar__icbtn" aria-label="Accessibility options" title="Accessibility options" onClick={onAccessibility}>
-                  <IcAccessibility />
-                </button>
-              ) : (
-                <a className="sa-abar__icbtn" href={accessibilityHref} aria-label="Accessibility statement" title="Accessibility statement">
-                  <IcAccessibility />
-                </a>
-              )}
+              <button
+                type="button"
+                className="sa-abar__icbtn"
+                aria-label="Accessibility options"
+                title="Accessibility options"
+                aria-haspopup="dialog"
+                onClick={handleAccessibility}
+              >
+                <IcAccessibility />
+              </button>
               {language && <span className="sa-abar__sep" aria-hidden="true" />}
             </>
           )}
