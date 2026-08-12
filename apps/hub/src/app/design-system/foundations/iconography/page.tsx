@@ -323,8 +323,9 @@ export default function IconographyPage(): React.JSX.Element {
             <div className="icon-card">
               <p className="icon-card__title">What stays</p>
               <p className="icon-card__body">
-                Aadhaar, the Indian flag, the X logo, Facebook, State Public Service
-                Commissions, and the state / UT emblems and organisation logos.
+                Five bespoke marks — Aadhaar, the Indian flag, certificate, Facebook
+                and X — plus the state and UT emblems, the government and programme
+                marks, and the organisation logos, which sit in their own sections.
                 Material draws none of these.
               </p>
             </div>
@@ -348,14 +349,15 @@ export default function IconographyPage(): React.JSX.Element {
             </div>
           </div>
         </div>
-        <Callout type="warning" title="Three vectors are superseded but still standing">
+        <Callout type="tip" title="Five marks remain, and the test is what keeps it at five">
+          <strong>Aadhaar</strong>, <strong>Indian flag</strong>,{" "}
+          <strong>certificate</strong>, <strong>Facebook</strong> and{" "}
+          <strong>X</strong>. None resolves to a Material ligature, which is the only
+          reason each is still a vector. The last three that <em>did</em> —{" "}
           <code>external-link</code>, <code>language-switch</code> and{" "}
-          <code>syllabus</code> all duplicate a Material icon —{" "}
-          <code>open_in_new</code>, <code>translate_indic</code> and{" "}
-          <code>auto_stories</code>. They were not deleted because instances of them
-          still exist in the Figma file, and deleting a component breaks every
-          instance of it. Migrate those instances to the Icon component, then remove
-          the three. Each carries the same note in its own description.
+          <code>syllabus</code>, duplicating <code>open_in_new</code>,{" "}
+          <code>translate_indic</code> and <code>auto_stories</code> — were migrated
+          and deleted in v0.18.1. Apply the test above before adding a sixth.
         </Callout>
       </section>
 

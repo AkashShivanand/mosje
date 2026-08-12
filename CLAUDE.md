@@ -20,7 +20,9 @@ Digital estate for the **Ministry / Department of Social Justice & Empowerment (
 1. **The Website** (`apps/dosje/`) — one **unified informational site** that consolidates **13 legacy websites** (the department + its commissions/bodies) into a single portal. This is built and live. Public-facing, content-driven, DBIM/GIGW-compliant.
 2. **The Portals** (`apps/portals/`) — **20 functional workflow portals** covering **33+ organisations & schemes** under MoSJE (SMILE, PM-AJAY, NOS, scholarships, NSFDC/NSKFDC/NBCFDC, NMBA, etc.). Authenticated, transactional apps.
 
-**North-star:** every site and portal renders from **one shared design system** (`packages/design-system/`) that stays **100% in sync with a Figma library** via Code Connect. We will build all 13 + 20 incrementally on this shared system.
+**North-star:** every site and portal renders from **one shared design system** (`packages/design-system/`) that stays **100% in sync with a Figma library**. We will build all 13 + 20 incrementally on this shared system.
+
+> **Code Connect is the intended mechanism, but it is NOT in place** — it needs a Figma Developer seat on an Organization/Enterprise plan, and as of 2026-08-12 there are zero mappings in the file and no `@figma/code-connect` in the repo. Sync today runs on **generated artifacts** (`@mosje/tokens`, and the generated icon scale + catalogue) plus manual discipline everywhere else. Status and the wiring plan: `docs/research/figma-code-connect-readiness.md`.
 
 ## Structure
 
