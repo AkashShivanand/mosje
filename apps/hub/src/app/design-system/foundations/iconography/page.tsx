@@ -27,13 +27,13 @@ const DBIM_SIZES = new Set<number>([24, 32, 48, 64]);
 const SIZES: number[] = Object.values(iconSize);
 
 const SIZE_USE: Record<number, string> = {
-  16: "Inline with body text — the most-used size in the estate",
-  20: "List items and menu rows",
-  24: "Standalone controls — the default",
-  32: "Section headers and empty states",
+  16: "Beside body text",
+  20: "List rows and menus",
+  24: "Default — standalone controls",
+  32: "Section headers",
   40: "Feature tiles",
-  48: "Hero and landing surfaces",
-  64: "Largest published step",
+  48: "Hero surfaces",
+  64: "Largest step",
 };
 
 const COMMON_ICONS = [
