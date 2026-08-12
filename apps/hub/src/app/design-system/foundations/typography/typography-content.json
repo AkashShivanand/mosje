@@ -1,0 +1,153 @@
+{
+  "$description": "Hand-authored EDITORIAL content for the typography documentation. Specimens, tier blurbs and surface notes are writing, not derived values, so they live here and a human owns them.",
+  "$note": "The NUMBERS are not here. Sizes, line heights, tracking and paragraph spacing are generated from packages/tokens/src/primitive.json by build/generate-typography-docs-data.mjs. That split is deliberate: the 168 numbers this file used to sit beside were hand-typed and verified once, which is exactly how the colour page came to print 14 values that no longer existed.",
+  "tierWeights": {
+    "display": {
+      "name": "Medium",
+      "value": 500
+    },
+    "headline": {
+      "name": "SemiBold",
+      "value": 600
+    },
+    "title": {
+      "name": "Medium",
+      "value": 500
+    },
+    "body": {
+      "name": "Regular",
+      "value": 400
+    },
+    "label": {
+      "name": "Medium",
+      "value": 500
+    }
+  },
+  "tiers": [
+    {
+      "key": "display",
+      "label": "Display",
+      "blurb": "Hero and marketing headings"
+    },
+    {
+      "key": "headline",
+      "label": "Headline",
+      "blurb": "Page and section headings (h1–h3)"
+    },
+    {
+      "key": "title",
+      "label": "Title",
+      "blurb": "Panel, list and card titles"
+    },
+    {
+      "key": "body",
+      "label": "Body",
+      "blurb": "Running text and paragraphs"
+    },
+    {
+      "key": "label",
+      "label": "Label",
+      "blurb": "UI controls, badges, captions"
+    }
+  ],
+  "surfaces": [
+    {
+      "key": "website",
+      "label": "Website",
+      "note": "dosje.gov.in · expressive, editorial",
+      "sample": "display-1 = 80px"
+    },
+    {
+      "key": "portal",
+      "label": "Portal",
+      "note": "20+ workflow portals · dense, functional",
+      "sample": "display-1 = 56px"
+    }
+  ],
+  "samples": {
+    "display-1": {
+      "en": "Digital India, Inclusive India",
+      "hi": "डिजिटल भारत, समावेशी भारत"
+    },
+    "display-2": {
+      "en": "Justice for every citizen",
+      "hi": "हर नागरिक के लिए न्याय"
+    },
+    "display-3": {
+      "en": "Empowerment through schemes",
+      "hi": "योजनाओं से सशक्तिकरण"
+    },
+    "display-4": {
+      "en": "Dignity, access, opportunity",
+      "hi": "गरिमा, पहुँच, अवसर"
+    },
+    "display-5": {
+      "en": "Serving the last mile",
+      "hi": "अंतिम छोर तक सेवा"
+    },
+    "display-6": {
+      "en": "A portal for every scheme",
+      "hi": "हर योजना का पोर्टल"
+    },
+    "headline-1": {
+      "en": "Ministry of Social Justice & Empowerment",
+      "hi": "सामाजिक न्याय और अधिकारिता मंत्रालय"
+    },
+    "headline-2": {
+      "en": "PM-AJAY Scheme Dashboard",
+      "hi": "पीएम-अजय योजना डैशबोर्ड"
+    },
+    "headline-3": {
+      "en": "Scholarship applications this quarter",
+      "hi": "इस तिमाही की छात्रवृत्ति आवेदन"
+    },
+    "headline-4": {
+      "en": "Beneficiary verification status",
+      "hi": "लाभार्थी सत्यापन स्थिति"
+    },
+    "headline-5": {
+      "en": "Recent grievances",
+      "hi": "हाल की शिकायतें"
+    },
+    "headline-6": {
+      "en": "Documents required",
+      "hi": "आवश्यक दस्तावेज़"
+    },
+    "title-1": {
+      "en": "Section heading and panel title",
+      "hi": "अनुभाग शीर्षक और पैनल शीर्षक"
+    },
+    "title-2": {
+      "en": "List headers and compact titles",
+      "hi": "सूची शीर्षक और संक्षिप्त शीर्षक"
+    },
+    "title-3": {
+      "en": "Sidebar and tertiary labels",
+      "hi": "साइडबार और तृतीयक लेबल"
+    },
+    "body-1": {
+      "en": "Submit your application along with all required documents.",
+      "hi": "सभी आवश्यक दस्तावेज़ों के साथ अपना आवेदन जमा करें।"
+    },
+    "body-2": {
+      "en": "Secondary information, helper text, and table cell content.",
+      "hi": "द्वितीयक जानकारी, सहायक पाठ और तालिका सामग्री।"
+    },
+    "body-3": {
+      "en": "Captions, timestamps, and fine print.",
+      "hi": "कैप्शन, समय-चिह्न और बारीक अक्षर।"
+    },
+    "label-1": {
+      "en": "Form label · Applicant name",
+      "hi": "फ़ॉर्म लेबल · आवेदक का नाम"
+    },
+    "label-2": {
+      "en": "Badge · Verified",
+      "hi": "बैज · सत्यापित"
+    },
+    "label-3": {
+      "en": "STATUS · UPLOADED",
+      "hi": "स्थिति · अपलोड"
+    }
+  }
+}

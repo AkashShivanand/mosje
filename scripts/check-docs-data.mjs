@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Keep the colour documentation's two surfaces in sync.
+ * Keep the generated documentation data honest, and the colour page's two surfaces in sync.
  *
  * The colour system is documented twice — a Figma frame designers read, and a web page
  * engineers and stakeholders link to. On 2026-08-12 an audit found the web page printing
@@ -22,11 +22,15 @@
  * That means this gate catches website drift immediately and Figma drift at the next refresh —
  * a real limit, stated rather than papered over.
  *
- * Run: npm run check:color-docs
+ * Typography is covered by the staleness half only. Its 168 numbers were hand-typed and
+ * verified once (126/126 on 2026-08-11) and were STILL correct when the generator replaced
+ * them a day later — which is the argument, not a counter-argument. A table that is right
+ * today and hand-maintained is not a correct table; it is one that has not drifted yet.
+ *
+ * Run: npm run check:docs-data
  */
-import { readFileSync, writeFileSync, mkdtempSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const root = new URL("..", import.meta.url).pathname;
@@ -37,25 +41,37 @@ const GENERATOR = join(root, "packages/tokens/build/generate-color-docs-data.mjs
 
 const problems = [];
 
-// ── 1. is the committed data still what the generator produces? ─────────────
-const committed = readFileSync(DATA, "utf8");
-const backup = mkdtempSync(join(tmpdir(), "color-docs-"));
-const backupFile = join(backup, "color-data.ts");
-writeFileSync(backupFile, committed);
-try {
-  execFileSync("node", [GENERATOR], { stdio: "pipe" });
-  const regenerated = readFileSync(DATA, "utf8");
-  if (regenerated !== committed) {
-    problems.push(
-      "color-data.ts is STALE — it no longer matches what the tokens produce.\n" +
-        "    A token changed and the colour page was not rebuilt, so the page is stating values\n" +
-        "    the build does not produce. This is the exact failure the file exists to prevent.\n" +
-        "    Fix: npm run build -w @mosje/tokens && commit the regenerated color-data.ts",
-    );
+// ── 1. is the committed data still what its generator produces? ────────────
+const GENERATED = [
+  {
+    label: "colour",
+    data: DATA,
+    generator: GENERATOR,
+  },
+  {
+    label: "typography",
+    data: join(root, "apps/hub/src/app/design-system/foundations/typography/typography-data.ts"),
+    generator: join(root, "packages/tokens/build/generate-typography-docs-data.mjs"),
+  },
+];
+
+for (const g of GENERATED) {
+  const before = readFileSync(g.data, "utf8");
+  try {
+    execFileSync("node", [g.generator], { stdio: "pipe" });
+    if (readFileSync(g.data, "utf8") !== before) {
+      writeFileSync(g.data, before);
+      problems.push(
+        `${g.label} docs data is STALE — it no longer matches what the tokens produce.\n` +
+          "    A token changed and the page was not rebuilt, so it is stating values the build\n" +
+          "    does not produce. This is the exact failure the generated file exists to prevent.\n" +
+          "    Fix: npm run build -w @mosje/tokens && commit the regenerated file",
+      );
+    }
+  } catch (err) {
+    writeFileSync(g.data, before);
+    problems.push(`${g.label} generator failed to run: ${err.message.split("\n")[0]}`);
   }
-} finally {
-  // never leave a half-regenerated file behind on failure
-  if (problems.length) writeFileSync(DATA, committed);
 }
 
 // ── 2. do both surfaces agree on structure? ─────────────────────────────────
@@ -109,11 +125,11 @@ if (literals.length) {
 }
 
 if (problems.length) {
-  console.error(`✖ colour docs out of sync — ${problems.length} problem(s):\n`);
+  console.error(`✖ docs data out of sync — ${problems.length} problem(s):\n`);
   for (const p of problems) console.error(`  • ${p}\n`);
   process.exit(1);
 }
 console.log(
-  `✔ colour docs in sync: ${expected.length} sections match across Figma and the website, ` +
-    `color-data.ts is current, and the page holds no hand-written colour literals.`,
+  `✔ docs data in sync: colour and typography data are current, ${expected.length} colour sections ` +
+    `match across Figma and the website, and the colour page holds no hand-written literals.`,
 );

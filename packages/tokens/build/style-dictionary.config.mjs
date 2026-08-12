@@ -219,6 +219,9 @@ if (BRAND === "mosje") {
   // …and the colour page's data, for the third time the same lesson had to be learned: it was
   // printing 88 hand-copied hexes, 14 of which no longer matched any token in the system.
   await import("./generate-color-docs-data.mjs");
+  // Typography's numbers were hand-typed too — 168 of them, correct on the day they were
+  // checked and with no way of staying that way. Same fix, before the same failure.
+  await import("./generate-typography-docs-data.mjs");
 }
 
 console.log(`✓ @mosje/tokens built (brand: ${BRAND})`);
