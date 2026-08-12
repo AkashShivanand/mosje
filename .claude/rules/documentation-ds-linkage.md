@@ -72,20 +72,77 @@ below reports it as `UNACCOUNTED`, and `UNACCOUNTED` must be zero.
 |---|---|
 | Fills, strokes, padding, gaps, radii (Figma) | **100 % bound.** No exceptions — these are never specimens. |
 | Text nodes (Figma) | 100 % either bound to a text style **or** carrying a declared specimen name. |
-| Raw hex / raw px in web docs | **zero** |
+| Raw fills, strokes, padding, gaps, radii in web docs | **zero** — enforced by `npm run check:ds-linkage` |
 | `UNACCOUNTED` nodes | **zero** |
+
+Note the web row says *fills, strokes, padding, gaps, radii*, not "raw px". It used to say
+raw px, which was never achievable and therefore never enforced: a grid track of
+`minmax(180px, 1fr)` and a `640px` breakpoint are not token material, and a threshold
+nobody can hit is a threshold nobody runs. See **What is gated** below.
 
 ## How to check
 
-Run the linkage audit against the frame before calling a documentation page done. It
-walks every `TEXT` and `FRAME`, counts bound vs raw for each property, and buckets
-unbound text into *specimen / code sample / UNACCOUNTED*. On the web side:
+**Figma:** run the linkage audit against the frame before calling a documentation page
+done. It walks every `TEXT` and `FRAME`, counts bound vs raw for each property, and
+buckets unbound text into *specimen / code sample / UNACCOUNTED*.
+
+**Web: run the gate. Do not grep.**
 
 ```bash
-grep -nE '#[0-9a-fA-F]{3,6}|[0-9]+px' apps/hub/src/app/design-system --include=*.tsx -r
+npm run check:ds-linkage
 ```
 
-Every hit must be inside a token definition or a documented specimen.
+`tools/ds-linkage/check.mjs` runs in `npm run check` and in the **Design System Quality**
+workflow, so this rule now fails a pull request instead of being rediscovered by audit.
+It replaces the grep that used to live here, which was wrong in both directions: it
+flagged every prose mention of "the 8px grid" as a violation, and it missed the two forms
+that actually caused the drift —
+
+- `style={{ … }}` objects and Tailwind arbitrary values, which are code, not stylesheets;
+- **bare numerics**: React turns `fontSize: 13` into `13px`, so a grep for `px` can never
+  see it. There were **64** of these when the gate was first run.
+
+It also scans `.css`, which the grep never did, and that is where most raw values were.
+
+### What is gated, and what is only reported
+
+| | |
+|---|---|
+| **Gated** — fails the build | fills, strokes, padding, margin, gaps, radii — the properties this rule's own table names |
+| **Advisory** — reported, does not fail | widths, heights, grid tracks, media-query breakpoints, blur radii, shadow offsets |
+
+The split is deliberate. Those advisory values are geometry the token scales do not
+model, and minting a one-use token for each would inflate the palette — which the
+"bind by resolved value" section below warns against. Forcing them through the gate
+would produce a wall of exemptions, and a gate everyone learns to silence is not a gate.
+
+### Declaring an exemption in code
+
+Same principle as Figma: **declared, never merely present.** The reason must say *why*,
+and a category the checker does not recognise is itself a failure.
+
+```tsx
+// ds-exempt(specimen): 13px and 11px are the POINT of this example — the "don't"
+// half of a do/don't pair. Binding them would delete what is being demonstrated.
+<div style={{ gap: "13px", padding: "11px" }}>
+```
+
+```css
+/* ds-exempt-start(third-party): macOS window-control colours, quoted so the block
+   reads as a terminal. A reference to another product's chrome, not ours. */
+…
+/* ds-exempt-end */
+```
+
+Categories: `specimen`, `code-sample`, `demo-geometry`, `third-party`, `layout-literal`,
+`optical` (a 1–2px nudge that aligns a glyph, where the 2px token would misalign it).
+
+### Scope is checked, not assumed
+
+A scope path that cannot be read is a **hard error** (`exit 2`), not a skipped scope.
+The first version of this checker pointed at `packages/design-system/src`, which has
+never existed, and it cheerfully reported that scope clean. A gate that cannot fail is
+worse than no gate.
 
 ## Bind by RESOLVED VALUE, not by name
 
@@ -148,3 +205,38 @@ what replaced it, which is exactly how this kind of drift goes unnoticed.
 
 Remediated the same day to **93.6 % overall**, 100 % on every non-text property, with
 every remaining unbound node declared as a specimen and zero `UNACCOUNTED`.
+
+## What the first gated run found (2026-08-12)
+
+The rule had been written, and the Typography page remediated, but nothing enforced it on
+the web side. Ten weeks later the first run of `check:ds-linkage` across the whole
+documentation surface — 37 pages plus the docs-kit and docs chrome — found **352**
+unbound values in styling positions:
+
+- **64 bare numerics** (`fontSize: 13`, `gap: 8`) — invisible to any grep for `px`, which
+  is exactly why the previous check never saw them.
+- **The same six-hex code palette hand-rolled in THREE places** independently — the home
+  page, the contributing page and the playground — with two different "terminal black"
+  values (`#12141c`, `#1e2130`) that were never meant to differ. There was no `code/*`
+  namespace to bind to, so everyone invented one. There is now.
+- **42 `var(--token, fallback)` fallbacks, 15 of which disagreed with their token.**
+  `--sa-shape-sm` fell back to `4px` against a real `6px`; `--sa-color-status-danger` fell
+  back to a bright `#DC2626` against a real `#8b1f18`. A fallback is a second, stale copy
+  of a value that no build ever checks — treat it as a defect, not a safety net.
+- **`56px` written out in seven files** as the docs header height, so changing the header
+  silently broke anchor scrolling in six of them.
+- Two accessibility defects found by measuring rather than by looking: the terminal
+  titlebar at `rgba(255,255,255,0.4)` was **4.1:1**, below AA (now 4.52:1), and a WCAG
+  badge was set at **10px**, under the 11px floor the Typography page itself declares.
+
+Two lessons worth keeping:
+
+1. **A rule with no gate is a rule with a half-life.** This one was written the day a page
+   scored 1.0 % linked, and the surface it governed drifted anyway, because the only check
+   was a grep in a markdown file that nobody ran and that would have been wrong if they had.
+2. **Bind by resolved value — including when the value is a theme.** Two bindings made
+   during this sweep were caught by arithmetic, not by eye: `--sa-on-bg-neutral-bold`
+   would have put `#1e2124` ink on a `#3a3d41` chip (**1.48:1**, invisible), and
+   `--sa-bg-neutral-base` inside a `[data-theme="dark"]` rule resolves to **white**,
+   because `tokens.css` emits no `[data-theme]` block at all. Both looked correct by name.
+

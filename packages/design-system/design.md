@@ -953,6 +953,31 @@ status/brand tokens above:
 - `--sa-chart-trend-up/down/flat` — KPI trend
 - `--sa-chart-grid`, `--sa-chart-axis`, `--sa-chart-tooltip-bg`, `--sa-chart-tooltip-ink`, `--sa-chart-region-empty`, `--sa-chart-region-stroke` — structural
 
+**Code and terminal specimens (`--sa-code-*`).** The chrome a documentation page needs in
+order to *show* code. **Brand-invariant and theme-invariant on purpose** — a terminal
+specimen that flips to a light surface stops reading as a terminal, so there are no
+`colorModes` or `themes` overrides and the block looks identical under blue, navy, dbim,
+light and dark. Literal values rather than references, for the same reason `chart/cat/*`
+is: the set is tuned against its own background, and a brand swap must not pull one member
+out of that tuning.
+
+- `--sa-code-bg` — the block surface · `--sa-code-shell` — the terminal *window*, one step
+  darker so the titlebar reads as chrome and the code reads as content
+- `--sa-code-text` (12.95:1) · `--sa-code-comment` (5.09:1) · `--sa-code-keyword` (6.04:1)
+  · `--sa-code-string` (11.37:1) · `--sa-code-builtin` (9.58:1) — every foreground role
+  clears AA against `--sa-code-bg`; `comment` is the floor, so re-measure if it is lightened
+- `--sa-code-border` / `--sa-code-borderStrong`, `--sa-code-chrome` / `--sa-code-chromeHover`,
+  `--sa-code-chromeText` (4.52:1) / `--sa-code-chromeTextStrong` — titlebar and affordances
+
+**Not published as Figma variables**, deliberately: Figma's own documentation pages show
+code as text and images, so a designer never binds to these, and publishing them would add
+thirteen entries to the Palette picker that no frame can use. The exclusion carries that
+reason in `figma.variables.json` rather than defaulting to "no mapping defined".
+
+**Do not hand-colour code.** Use `TerminalCode` / `CodeBlock` and the `Syn.*` parts from
+`docs-kit`; the palette existed as three independent hand-rolled copies before it was a
+namespace, which is what these tokens exist to prevent.
+
 ### Shape Tokens
 
 | Token | Value | Usage |

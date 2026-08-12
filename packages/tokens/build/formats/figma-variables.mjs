@@ -508,6 +508,14 @@ export function exclusionReason(path, tier) {
   if (head === "shadow" || head === "elevation") {
     return "Figma models shadows as EFFECT STYLES, not variables — exported separately";
   }
+  if (head === "code") {
+    // Deliberate, not an oversight. code/* is the chrome around a CODE SPECIMEN in the web
+    // documentation — a terminal window and its syntax parts. Figma's own documentation
+    // pages show code as text and images, so a designer never binds to these; publishing
+    // them would add thirteen variables to the Palette picker that no frame can use.
+    // Revisit only if the library starts rendering live code blocks.
+    return "web documentation chrome — Figma shows code as text, so there is nothing to bind";
+  }
   if (head === "space" && rest.length > 1) {
     return "legacy nested spacing role, mirrored by the canonical top-level group";
   }

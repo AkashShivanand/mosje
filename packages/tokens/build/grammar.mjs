@@ -193,6 +193,14 @@ export const GROUP = new Set([
   // `shape` is also the word design.md already uses for this group. Added 2026-08-12 with the
   // retirement of `--ds-radius-*`, whose 248 usages had no Tier-2 home to migrate to.
   "shape",
+  // `code` is the CODE/TERMINAL SPECIMEN surface — the chrome a documentation page needs in
+  // order to show code. It is a group and not a colour role because its members are syntax
+  // parts (`keyword`, `string`, `builtin`, `comment`), not prominence rungs: there is no
+  // `code/neutral/base`, and asking for one would be asking the wrong question. Same shape as
+  // `chart`, which models series and axes rather than rungs for the same reason.
+  // Added 2026-08-12, after an audit found the identical six hexes hand-rolled independently
+  // in two docs pages — the drift this namespace exists to prevent.
+  "code",
 ]);
 
 /**

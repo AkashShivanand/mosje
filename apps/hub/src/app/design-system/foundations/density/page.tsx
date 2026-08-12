@@ -19,7 +19,7 @@ function DemoControls(): React.JSX.Element {
           height: "var(--sa-density-control-height)",
           padding: "0 var(--sa-padding-m)",
           background: "var(--sa-bg-brand-primary-bolder)",
-          color: "#fff",
+          color: "var(--sa-on-bg-brand-primary-bolder)",
           border: "none",
           borderRadius: "var(--sa-shape-sm)",
           fontWeight: 600,

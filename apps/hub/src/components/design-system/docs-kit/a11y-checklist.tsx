@@ -15,7 +15,7 @@ export function A11yChecklist({ items }: { items: A11yItem[] }): React.JSX.Eleme
           <div>
             <div className="a11y-checklist__criterion">
               {item.criterion}{" "}
-              <span style={{ fontSize: "10px", fontWeight: 700, padding: "1px 5px", borderRadius: "3px", background: "var(--sa-color-action-primary-tonal)", color: "var(--sa-bg-brand-primary-bolder)" }}>
+              <span style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, padding: "var(--sa-padding-3xs) var(--sa-padding-2xs)", borderRadius: "var(--sa-shape-xs)", background: "var(--sa-color-action-primary-tonal)", color: "var(--sa-bg-brand-primary-bolder)" }}>
                 WCAG {item.level}
               </span>
             </div>

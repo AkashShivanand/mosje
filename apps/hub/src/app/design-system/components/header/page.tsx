@@ -71,7 +71,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
       style={{
         background: "var(--sa-bg-neutral-subtler)",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md, 8px)",
+        borderRadius: "var(--sa-shape-md)",
         padding: "var(--sa-padding-m)",
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",
@@ -80,7 +80,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
         marginTop: "var(--sa-stack-xs)",
       }}
     >
-      <code style={{ fontFamily: "var(--sa-font-mono, monospace)" }}>
+      <code style={{ fontFamily: "var(--sa-font-mono)" }}>
         {children}
       </code>
     </pre>
@@ -214,7 +214,7 @@ export default function HeaderPage(): React.JSX.Element {
           style={{
             marginTop: "var(--sa-stack-m)",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-md, 8px)",
+            borderRadius: "var(--sa-shape-md)",
             overflow: "hidden",
           }}
         >
@@ -223,7 +223,7 @@ export default function HeaderPage(): React.JSX.Element {
             title="Accessibility bar"
             desc="GoI link · accessibility statement · language"
             bg="var(--sa-color-action-primary-default)"
-            fg="var(--sa-color-text-onPrimary, #fff)"
+            fg="var(--sa-color-text-onPrimary)"
           />
           <AnatomyBand
             n={2}

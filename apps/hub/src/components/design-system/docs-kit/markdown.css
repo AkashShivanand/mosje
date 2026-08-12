@@ -17,7 +17,7 @@
   color: var(--sa-text-neutral-base);
   font-weight: 600;
   line-height: 1.25;
-  scroll-margin-top: calc(56px + var(--sa-stack-l));
+  scroll-margin-top: var(--docs-anchor-offset);
 }
 .markdown-body h1 { font-size: var(--sa-type-display-1-size); font-weight: 500; line-height: 1.15; margin: 0 0 var(--sa-stack-m); }
 .markdown-body h2 {
@@ -49,7 +49,7 @@
   background: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-xs);
-  padding: 1px 5px;
+  padding: var(--sa-padding-3xs) var(--sa-padding-2xs);
   overflow-wrap: anywhere;
 }
 .markdown-body pre {

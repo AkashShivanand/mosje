@@ -56,7 +56,7 @@ export function Playground({ code: initialCode, controls = [], buildCode }: Play
           dir={rtl ? "rtl" : undefined}
         >
           <LivePreview />
-          <LiveError style={{ color: "var(--sa-text-status-error-base)", fontSize: "13px", marginTop: "8px" }} />
+          <LiveError style={{ color: "var(--sa-text-status-error-base)", fontSize: "13px", marginTop: "var(--sa-padding-xs)" }} />
         </div>
         {controls.length > 0 && (
           <PlaygroundControls controls={controls} values={values} onChange={onChange} />

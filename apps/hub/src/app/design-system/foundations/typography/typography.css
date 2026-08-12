@@ -18,7 +18,7 @@
 .ty-seg {
   text-align: left; cursor: pointer; padding: var(--sa-padding-s) var(--sa-padding-m);
   background: var(--sa-bg-neutral-base); border: 1.5px solid var(--sa-border-neutral-subtle); border-radius: var(--sa-shape-md);
-  display: flex; flex-direction: column; gap: 2px; transition: border-color .15s, background .15s, box-shadow .15s;
+  display: flex; flex-direction: column; gap: var(--sa-padding-3xs); transition: border-color .15s, background .15s, box-shadow .15s;
 }
 .ty-seg:hover { border-color: var(--sa-border-neutral-base); }
 .ty-seg__label { font-weight: 700; font-size: var(--sa-type-body-1-size); color: var(--sa-text-neutral-base); }
@@ -27,13 +27,13 @@
   box-shadow: 0 0 0 1px var(--sa-color-action-primary-default) inset; }
 .ty-seg[data-active][data-surface-key="portal"] { border-color: var(--sa-color-text-default); background: var(--sa-bg-neutral-subtler);
   box-shadow: 0 0 0 1px var(--sa-color-text-default) inset; }
-.ty-seg:focus-visible { outline: 2px solid var(--sa-border-brand-primary-base); outline-offset: 2px; }
+.ty-seg:focus-visible { outline: 2px solid var(--sa-border-brand-primary-base); outline-offset: var(--sa-focus-offset); }
 
 /* ── copy token chip ────────────────────────────────────────── */
 .ty-copy {
   display: inline-flex; align-items: center; gap: var(--sa-stack-2xs); cursor: pointer;
   background: transparent; border: 1px solid transparent; border-radius: var(--sa-shape-xs);
-  padding: 2px 5px; margin: -2px -5px; color: var(--sa-text-brand-primary-base); font-family: var(--sa-font-mono);
+  padding: var(--sa-padding-3xs) var(--sa-padding-2xs); margin: calc(-1 * var(--sa-padding-3xs)) calc(-1 * var(--sa-padding-2xs)); color: var(--sa-text-brand-primary-base); font-family: var(--sa-font-mono);
   max-width: 100%;
 }
 .ty-copy code { font-size: var(--sa-type-label-3-size); font-family: inherit; overflow-wrap: anywhere; }
@@ -53,12 +53,14 @@
 .ty-row[data-tier="display"] { background: linear-gradient(90deg, var(--sa-bg-brand-primary-subtler) 0 3px, transparent 3px); }
 .ty-row:hover { background-color: var(--sa-bg-neutral-subtler); }
 .ty-row__meta { position: sticky; top: 0; }
-.ty-specs { margin: var(--sa-stack-xs) 0 0; display: flex; flex-direction: column; gap: 3px; }
+.ty-specs { margin: var(--sa-stack-xs) 0 0; display: flex; flex-direction: column; gap: var(--sa-padding-2xs); }
 .ty-specs > div { display: flex; gap: var(--sa-stack-xs); align-items: baseline; }
 .ty-specs dt { font-size: var(--sa-type-label-3-size); text-transform: uppercase; letter-spacing: .06em;
-  color: var(--sa-text-neutral-subtle, var(--sa-text-neutral-subtle)); width: 44px; flex: none; }
+  color: var(--sa-text-neutral-subtle); width: 44px; flex: none; }
 .ty-specs dd { margin: 0; font-family: var(--sa-font-mono); font-size: var(--sa-type-label-2-size);
   color: var(--sa-text-neutral-base); font-variant-numeric: tabular-nums; }
+/* ds-exempt(optical): 1px sets the unit glyph (px, rem) hard against its number.
+   The smallest space token is 2px, which reads as a word gap and breaks the pairing. */
 .ty-specs .u { color: var(--sa-text-neutral-subtle); margin-left: 1px; }
 .ty-row__spec { min-width: 0; }
 .ty-sample { color: var(--sa-text-neutral-base); overflow-wrap: anywhere; text-wrap: balance; }
@@ -75,7 +77,7 @@
   font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; gap: var(--sa-stack-xs); }
 .ty-fluid__read b { font-size: var(--sa-type-headline-2-size); }
 .ty-fluid__bp { font-size: var(--sa-type-label-3-size); font-family: var(--sa-font-latin); text-transform: uppercase;
-  letter-spacing: .06em; padding: 2px 8px; border-radius: 999px; background: var(--sa-bg-brand-primary-subtler);
+  letter-spacing: .06em; padding: var(--sa-padding-3xs) var(--sa-padding-xs); border-radius: var(--sa-shape-full); background: var(--sa-bg-brand-primary-subtler);
   color: var(--sa-text-brand-primary-base); font-weight: 700; }
 .ty-fluid__bp[data-bp="Mobile"] { background: var(--sa-bg-status-warning-base); color: var(--sa-text-status-warning-base); }
 .ty-fluid__bp[data-bp="Tablet"] { background: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
@@ -86,7 +88,7 @@
   transition: width .05s linear; overflow: hidden; }
 .ty-fluid__line + .ty-fluid__line { margin-top: var(--sa-stack-m); }
 .ty-fluid__line > div { color: var(--sa-text-neutral-base); overflow-wrap: anywhere; }
-.ty-fluid__tag { display: inline-block; margin-top: 4px; font-family: var(--sa-font-mono);
+.ty-fluid__tag { display: inline-block; margin-top: var(--sa-padding-2xs); font-family: var(--sa-font-mono);
   font-size: var(--sa-type-label-3-size); color: var(--sa-text-neutral-subtle); font-variant-numeric: tabular-nums; }
 
 /* ── two-surface compare ────────────────────────────────────── */
@@ -106,7 +108,7 @@
 .ty-tabs { display: flex; flex-wrap: wrap; gap: var(--sa-stack-2xs); margin-bottom: var(--sa-stack-m);
   border-bottom: 1px solid var(--sa-border-neutral-subtle); padding-bottom: var(--sa-padding-xs); }
 .ty-tab { cursor: pointer; background: transparent; border: 1px solid transparent; border-radius: var(--sa-shape-sm);
-  padding: 6px 12px; font-size: var(--sa-type-label-1-size); font-weight: 600; color: var(--sa-text-neutral-subtle); }
+  padding: var(--sa-padding-xs) var(--sa-padding-s); font-size: var(--sa-type-label-1-size); font-weight: 600; color: var(--sa-text-neutral-subtle); }
 .ty-tab:hover { color: var(--sa-text-neutral-base); background: var(--sa-bg-neutral-subtler); }
 .ty-tab[data-active] { color: var(--sa-text-brand-primary-base); background: var(--sa-bg-brand-primary-subtler); }
 .ty-tab:focus-visible { outline: 2px solid var(--sa-border-brand-primary-base); outline-offset: 1px; }
@@ -117,7 +119,7 @@
   background: var(--sa-bg-neutral-base); position: sticky; top: 0; }
 .ty-table th.web { color: var(--sa-text-brand-primary-base); }
 .ty-table th.por { color: var(--sa-text-neutral-base); }
-.ty-table td { padding: 8px var(--sa-padding-s); border-bottom: 1px solid var(--sa-border-neutral-subtle); }
+.ty-table td { padding: var(--sa-padding-xs) var(--sa-padding-s); border-bottom: 1px solid var(--sa-border-neutral-subtle); }
 .ty-table tr:last-child td { border-bottom: none; }
 .ty-table td.num { font-family: var(--sa-font-mono); font-size: var(--sa-type-label-2-size); color: var(--sa-text-neutral-base);
   font-variant-numeric: tabular-nums; white-space: nowrap; }

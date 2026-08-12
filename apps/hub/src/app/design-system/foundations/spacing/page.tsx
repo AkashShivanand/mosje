@@ -129,6 +129,9 @@ export default function SpacingPage(): React.JSX.Element {
                 type: "dont",
                 label:
                   "Don't hardcode arbitrary pixel values like 13px or 27px — they break the grid and drift between screens.",
+                // ds-exempt(specimen): 13px and 11px are the POINT of this example — it is
+                // the "don't" half of a do/don't pair showing what falls off the 8px grid.
+                // Binding them to tokens would delete the thing being demonstrated.
                 preview: (
                   <div style={{ display: "flex", flexDirection: "column", gap: "13px", padding: "11px" }}>
                     <div style={{ height: "16px", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-xs)" }} />

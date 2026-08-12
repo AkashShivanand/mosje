@@ -26,6 +26,14 @@ const RELEASES: Release[] = [
     date: "2026-08-12",
     current: true,
     changes: [
+      { kind: "Added", text: "A GATE FOR THE DOCUMENTATION-LINKAGE RULE (tools/ds-linkage/check.mjs, wired into npm run check and the Design System Quality workflow). The rule said documentation must be BUILT from the design system; the only check was a grep in a markdown file, and the surface drifted back to raw values anyway. The grep was wrong in both directions — it flagged every prose mention of the 8px grid, and missed inline style objects, Tailwind arbitrary values, .css files entirely, and bare numerics like fontSize: 13, which React silently turns into px and no px-grep can ever see" },
+      { kind: "Added", text: "code/* — the code and terminal specimen palette, 13 tokens. It did not exist, so the SAME six hexes had been hand-rolled independently in THREE places (home page, contributing page, playground), with two different terminal blacks (#12141c, #1e2130) that were never meant to differ. Brand- and theme-invariant on purpose: a terminal that flips to a light surface stops reading as a terminal. Every foreground role clears AA against code/bg, measured, with comment the floor at 5.09:1" },
+      { kind: "Added", text: "TerminalCode gained CodeBlock and Syn.Comment / Syn.Keyword / Syn.Str / Syn.Builtin in docs-kit, so a page never colours a token of code by hand again" },
+      { kind: "Fixed", text: "42 var(--token, fallback) FALLBACKS DROPPED, AND 15 OF THEM DISAGREED WITH THEIR TOKEN. --sa-shape-sm fell back to 4px against a real 6px; --sa-color-status-danger fell back to a bright #DC2626 against a real #8b1f18; --sa-shape-xl to 20px against 16px. A fallback is a second, stale copy of a value that no build ever checks. Treat it as a defect, not a safety net" },
+      { kind: "Fixed", text: "TWO ACCESSIBILITY DEFECTS FOUND BY MEASURING RATHER THAN LOOKING. The terminal titlebar sat at rgba(255,255,255,0.4) = 4.1:1, below AA; it is now 0.45 = 4.52:1. A WCAG badge in the a11y checklist was set at 10px, under the 11px floor the Typography page itself declares; it is now label-3" },
+      { kind: "Fixed", text: "The docs header height 56px was written out in SEVEN files (shell grid, two scroll-margins, three heading offsets, an IntersectionObserver rootMargin), so changing the header silently broke anchor scrolling in six of them. One declaration now, --docs-header-h, read from JS via getComputedStyle where CSS cannot reach" },
+      { kind: "Fixed", text: "The roadmap's later column used --sa-color-text-muted as a BACKGROUND — a text role standing in for a surface role, which is why it had no on- companion and carried a hardcoded white. Each tone now carries its own ink: 11.67:1, 4.64:1 and 9.73:1. Binding it by NAME to on-bg-neutral-bold would have put dark ink on a dark chip at 1.48:1; the arithmetic caught it, the name did not" },
+      { kind: "Fixed", text: "Stale documentation corrected against the code it describes: the contributing page still told people to run npm run dev:website / dev:smile / dev:pm-ajay / dev:docs on :3000 — none of which have existed since the single-origin consolidation — and a comment claimed the mono token is IBM Plex Mono, which the token's own description records as tried briefly and reverted. It is a system stack" },
       { kind: "Removed", text: "The last three vectors that duplicated a Material glyph are gone — external-link, language-switch and syllabus. They were held back because instances existed; by this point only two remained, both syllabus inside Tab components, and both were MIGRATED to the Icon component at auto_stories before the components were deleted. Nothing broke. Six bespoke marks remain on the page and NONE of them resolves to a Material ligature: Aadhaar, certificate, facebook, indian-flag, Indian Country Code, x" },
       { kind: "Changed", text: "Iconography page reorganised so every group is a PEER of the others. It had four different treatments — a bare component set with no label, a raw frame, and two sections — which is why it read as clutter. Now four numbered sections, one shell each: 1 The component, 2 Bespoke marks, 3 Emblems logos & misc marks, 4 Organisation logos, then the documentation. Same card, same padding, same heading-plus-note, so grouping is unambiguous rather than implied by proximity" },
       { kind: "Fixed", text: "THE ICON MASTER COMPONENT HAD SIX OF ITS SEVEN VARIANTS STACKED AT 0,0. Only Size=24 had a position, so the set rendered as one overlapping blob 264x24 — a 64px variant inside a 24px box. Caused by an earlier reorder loop that appended each variant without repositioning it. The variants now sit in a baseline-aligned row, 16 through 64, and the set is sized to contain them: the component reads as a size ladder, which is what a variant set is for" },
@@ -612,7 +620,7 @@ export default function ChangelogPage(): React.JSX.Element {
             <article
               key={release.version}
               id={release.version.replace(/\./g, "-")}
-              style={{ scrollMarginTop: "calc(56px + var(--sa-stack-l))" }}
+              style={{ scrollMarginTop: "var(--docs-anchor-offset)" }}
             >
               {/* Release heading */}
               <div
@@ -648,9 +656,9 @@ export default function ChangelogPage(): React.JSX.Element {
                     style={{
                       fontSize: "var(--sa-type-body-3-size)",
                       fontWeight: 600,
-                      color: "#fff",
+                      color: "var(--sa-on-bg-brand-primary-bolder)",
                       background: "var(--sa-bg-brand-primary-bolder)",
-                      padding: "2px var(--sa-padding-xs)",
+                      padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
                       borderRadius: "var(--sa-shape-sm)",
                     }}
                   >
@@ -686,9 +694,9 @@ export default function ChangelogPage(): React.JSX.Element {
                         textAlign: "center",
                         fontSize: "var(--sa-type-body-3-size)",
                         fontWeight: 700,
-                        color: "#fff",
+                        color: "var(--sa-on-bg-brand-primary-bolder)",
                         background: KIND_COLOR[change.kind],
-                        padding: "2px var(--sa-padding-xs)",
+                        padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
                         borderRadius: "var(--sa-shape-sm)",
                       }}
                     >

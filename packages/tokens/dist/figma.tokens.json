@@ -1132,6 +1132,21 @@
     "regionEmpty": "#dcdee1",
     "regionStroke": "#ffffff"
   },
+  "code": {
+    "bg": "#1e2130",
+    "text": "#e2e8f0",
+    "comment": "#8892a4",
+    "keyword": "#c084fc",
+    "string": "#86efac",
+    "builtin": "#7dd3fc",
+    "shell": "#12141c",
+    "border": "rgba(255, 255, 255, 0.1)",
+    "chrome": "rgba(255, 255, 255, 0.03)",
+    "chromeText": "rgba(255, 255, 255, 0.45)",
+    "chromeTextStrong": "rgba(255, 255, 255, 0.7)",
+    "chromeHover": "rgba(255, 255, 255, 0.08)",
+    "borderStrong": "rgba(255, 255, 255, 0.3)"
+  },
   "layer": {
     "0": "#ffffff",
     "1": "#eef0f3",

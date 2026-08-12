@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import { Button, buttonClasses } from "@mosje/design-system";
-import { StatusBadge, Callout, TerminalCode } from "@/components/design-system/docs-kit";
+import { StatusBadge, Callout, TerminalCode, Syn } from "@/components/design-system/docs-kit";
 import { HeroShowcase } from "@/components/design-system/hero/hero";
 import { FIGMA_FILE_URL } from "@/lib/design-system/figma";
 
@@ -76,7 +76,7 @@ export default function WelcomePage(): React.JSX.Element {
       {/* ── For each audience ── */}
       <section style={{ marginTop: "var(--sa-section-l)" }} id="for-designers">
         <span className="home-kicker">Design</span>
-        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-m)", scrollMarginTop: "calc(56px + var(--sa-stack-l))" }}>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-m)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
           For Designers
         </h2>
         <p style={{ color: "var(--sa-text-neutral-subtle)", marginBottom: "var(--sa-padding-l)", lineHeight: "var(--sa-type-body-1-lh)" }}>
@@ -103,7 +103,7 @@ export default function WelcomePage(): React.JSX.Element {
 
       <section style={{ marginTop: "var(--sa-section-l)" }} id="for-developers">
         <span className="home-kicker">Develop</span>
-        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-m)", scrollMarginTop: "calc(56px + var(--sa-stack-l))" }}>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-m)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
           For Developers
         </h2>
         <p style={{ color: "var(--sa-text-neutral-subtle)", marginBottom: "var(--sa-padding-l)", lineHeight: "var(--sa-type-body-1-lh)" }}>
@@ -113,11 +113,11 @@ export default function WelcomePage(): React.JSX.Element {
           title="Terminal"
           codeText={`npm install @mosje/design-system\n\nimport { Button, Card, FormField } from '@mosje/design-system';\nimport '@mosje/design-system/tokens.css';`}
         >
-          <div style={{ color: "#8892a4", marginBottom: "var(--sa-stack-s)" }}># Install</div>
-          <div><span style={{ color: "#7dd3fc" }}>npm</span> install @mosje/design-system</div>
-          <div style={{ marginTop: "var(--sa-stack-m)", color: "#8892a4" }}># Use in your app</div>
-          <div><span style={{ color: "#c084fc" }}>import</span> {`{ Button, Card, FormField }`} <span style={{ color: "#c084fc" }}>from</span> <span style={{ color: "#86efac" }}>&apos;@mosje/design-system&apos;</span>;</div>
-          <div><span style={{ color: "#c084fc" }}>import</span> <span style={{ color: "#86efac" }}>&apos;@mosje/design-system/tokens.css&apos;</span>;</div>
+          <div style={{ marginBottom: "var(--sa-stack-s)" }}><Syn.Comment># Install</Syn.Comment></div>
+          <div><Syn.Builtin>npm</Syn.Builtin> install @mosje/design-system</div>
+          <div style={{ marginTop: "var(--sa-stack-m)" }}><Syn.Comment># Use in your app</Syn.Comment></div>
+          <div><Syn.Keyword>import</Syn.Keyword> {`{ Button, Card, FormField }`} <Syn.Keyword>from</Syn.Keyword> <Syn.Str>&apos;@mosje/design-system&apos;</Syn.Str>;</div>
+          <div><Syn.Keyword>import</Syn.Keyword> <Syn.Str>&apos;@mosje/design-system/tokens.css&apos;</Syn.Str>;</div>
         </TerminalCode>
         <div className="home-cards" style={{ marginTop: "var(--sa-padding-l)" }}>
           {[
@@ -136,7 +136,7 @@ export default function WelcomePage(): React.JSX.Element {
 
       <section style={{ marginTop: "var(--sa-section-l)" }}>
         <span className="home-kicker">Library</span>
-        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-padding-l)", scrollMarginTop: "calc(56px + var(--sa-stack-l))" }}>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-padding-l)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
           What&apos;s available
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "var(--sa-stack-s)" }}>
