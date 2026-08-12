@@ -1,0 +1,395 @@
+{
+  "note": [
+    "Known, pre-existing icon-scale debt, PER FILE. Written by",
+    "`node tools/icon-audit/check.mjs --update-baseline`.",
+    "",
+    "These call sites size an icon off the seven-step scale, or size it with a",
+    "CSS class instead of the `size` prop. The decision (2026-08-12) is to let",
+    "them go as the pages are redesigned one by one, rather than sweep them now:",
+    "126 of them are `size={14}`, and raising those by 2px changes row heights in",
+    "dense admin tables across seven live portals.",
+    "",
+    "This file is a RATCHET, not a permission slip. The gate fails if a count",
+    "GROWS or a new file appears, and it fails if a count SHRINKS without this",
+    "file being updated — so the backlog can only go down. When you redesign a",
+    "page, re-run --update-baseline in the same change."
+  ],
+  "totals": {
+    "offScale": 213,
+    "classSized": 4
+  },
+  "files": {
+    "apps/hub/src/app/admin/portals/registry-form.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nhapoa/admin/portal-feedback/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nhapoa/call-center/dashboard/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nhapoa/call-center/track/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nhapoa/district-officer/cases/[id]/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nhapoa/district-officer/dashboard/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nhapoa/finance-officer/dashboard/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nhapoa/register-rescue/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nhapoa/state-authority/dashboard/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nhapoa/track-status/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nmba/admin/(protected)/important-documents/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nmba/admin/(protected)/mass-pledge/[id]/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nmba/admin/(protected)/user-management/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nmba/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nmba/treatment-centre/(protected)/cpli/peer-educators/[id]/training/page.tsx": {
+      "offScale": 7,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nmba/treatment-centre/(protected)/cpli/peer-educators/[id]/volunteers/page.tsx": {
+      "offScale": 6,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nmba/treatment-centre/(protected)/cpli/peer-educators/page.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nmba/treatment-centre/(protected)/irca/patients/[id]/page.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nmba/treatment-centre/(protected)/irca/register/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/nmba/treatment-centre/(protected)/photos/page.tsx": {
+      "offScale": 4,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/scw/page.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/beggary-schemes/[id]/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/beggary-schemes/page.tsx": {
+      "offScale": 4,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/dashboard/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/fund-monitoring/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/immediate-review/page.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/notifications/compose/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/notifications/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/performance-stats/page.tsx": {
+      "offScale": 5,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/persons/[id]/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/persons/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/roles/[roleId]/edit/page.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/roles/page.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/shelter-homes/beneficiaries/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/shelter-homes/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/survey-locations/create/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/survey-locations/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/surveyor-mapped/page.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/surveys/[id]/page.tsx": {
+      "offScale": 3,
+      "classSized": 2
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/surveys/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/users/onboard/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(app)/users/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(auth)/login/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/portals/smile-admin/(preview)/mobilised-options/page.tsx": {
+      "offScale": 10,
+      "classSized": 1
+    },
+    "apps/hub/src/app/reports/eutthan-admin/page.tsx": {
+      "offScale": 6,
+      "classSized": 0
+    },
+    "apps/hub/src/app/reports/scw/page.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/app/website/events/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/website/nmba-options/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/app/website/samavesh-admin-portals/page.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/eutthan/eutthan-cells.tsx": {
+      "offScale": 9,
+      "classSized": 0
+    },
+    "apps/hub/src/components/eutthan/eutthan-financial.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/hub/src/components/eutthan/eutthan-form.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/eutthan/eutthan-map.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/eutthan/eutthan-pfms.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/hub/src/components/eutthan/eutthan-physical.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/hub/src/components/eutthan/eutthan-shell.tsx": {
+      "offScale": 6,
+      "classSized": 0
+    },
+    "apps/hub/src/components/eutthan/eutthan-statement10a.tsx": {
+      "offScale": 4,
+      "classSized": 0
+    },
+    "apps/hub/src/components/eutthan/eutthan-table.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/mobile-nav.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/nhapoa/case-views.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/nhapoa/gov-chrome.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/nhapoa/grievance-wizard.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/nmba/committee/minutes-section.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/nmba/public-shell.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/nmba/treatment-centre/odic-form.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/nmba/treatment-centre/outreach-patient-form.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/nmba/treatment-centre/tc-list.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/hub/src/components/portals-explorer.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/scw/gov-chrome.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/scw/ui.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/smile-admin/dashboard/date-range-chips.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/smile-admin/dashboard/kpi-card.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/smile-admin/dashboard/system-users-rail.tsx": {
+      "offScale": 0,
+      "classSized": 1
+    },
+    "apps/hub/src/components/smile-admin/data/data-toolbar.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/smile-admin/data/export-menu.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/smile-admin/shell/access-bar.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/smile-admin/shell/breadcrumbs.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/smile-admin/shell/coming-soon.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/smile-admin/shell/scope-banner.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/tg/gov-chrome.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/website/layout/Breadcrumb.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/website/nmba/DeAddictionMap.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/website/nmba/NmbaHomeCompact.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/website/nmba/options/CombinedOptions.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/hub/src/components/website/nmba/options/LocatorAccordion.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/website/nmba/options/LocatorMapFirst.tsx": {
+      "offScale": 1,
+      "classSized": 0
+    },
+    "apps/hub/src/components/website/nmba/options/LocatorTable.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/website/templates/ContactPage.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    },
+    "apps/hub/src/components/website/ui/data-table.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/storybook/stories/AccountMenu.stories.tsx": {
+      "offScale": 3,
+      "classSized": 0
+    },
+    "apps/storybook/stories/Button.stories.tsx": {
+      "offScale": 4,
+      "classSized": 0
+    },
+    "apps/storybook/stories/Icon.stories.tsx": {
+      "offScale": 5,
+      "classSized": 0
+    },
+    "apps/storybook/stories/Input.stories.tsx": {
+      "offScale": 2,
+      "classSized": 0
+    }
+  }
+}
