@@ -1,0 +1,67 @@
+// url=https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH?node-id=55065-33766
+// source=packages/design-system/components/navigation/accessibility-bar.tsx
+// component=AccessibilityBar
+//
+// Code Connect template for the SAMAVESH AccessibilityBar — the government top
+// utility bar (UX4G / GIGW). This file IS the instruction the Figma MCP server
+// hands an agent that opens the component in Dev Mode, so it carries the usage
+// rules as well as the snippet. See .claude/rules/component-authoring.md §12.
+//
+// PROPERTY COVERAGE — all 9 Figma properties are accounted for:
+//   Device            -> device      (auto | mobile | tablet | desktop | desktop-xl)
+//   Layout            -> layout      (narrow | wide | fluid)
+//   Skip to content   -> showSkip
+//   Font size         -> fontSize
+//   Accessibility     -> accessibility
+//   Language          -> language    (boolean in Figma; {label} | false in code)
+//   Government label  -> govLink.label
+//   Language label    -> language.label
+//   Skip label        -> DELIBERATELY OMITTED. The code fixes the skip text to
+//                        "Skip to Main Content" (GIGW wording) and exposes only
+//                        `skipTo`, the target id. There is no code prop to map it
+//                        to, and the skill's rule is to omit rather than invent one.
+//
+// TONE IS NOT A PROPERTY. Blue vs Navy is resolved by the `data-color-mode` brand
+// axis (Figma's Palette collection modes), not by a variant — which is why the
+// master has no Tone axis. Do not add a `tone` prop to generated code.
+import figma from "figma";
+
+const instance = figma.selectedInstance;
+
+const skip = instance.getBoolean("Skip to content");
+const fontSize = instance.getBoolean("Font size");
+const accessibility = instance.getBoolean("Accessibility");
+const language = instance.getBoolean("Language");
+
+const govLabel = instance.getString("Government label");
+const langLabel = instance.getString("Language label");
+
+const layout = instance.getEnum("Layout", {
+  Narrow: "narrow",
+  Wide: "wide",
+  Fluid: "fluid",
+});
+
+// `auto` has no Figma variant on purpose: it is the web-native default that
+// resolves the same breakpoints in CSS. An explicit device pins one variant.
+const device = instance.getEnum("Device", {
+  Mobile: "mobile",
+  Tablet: "tablet",
+  Desktop: "desktop",
+  "Desktop XL": "desktop-xl",
+});
+
+export default {
+  example: figma.code`<AccessibilityBar
+  govLink={{ label: "${govLabel}" }}
+  showSkip={${skip}}
+  fontSize={${fontSize}}
+  accessibility={${accessibility}}
+  language={${language ? figma.code`{ label: "${langLabel}" }` : "false"}}
+  layout="${layout}"
+  device="${device}"
+/>`,
+  imports: ['import { AccessibilityBar } from "@mosje/design-system"'],
+  id: "accessibility-bar",
+  metadata: { nestable: true },
+};

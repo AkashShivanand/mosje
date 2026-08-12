@@ -22,5 +22,9 @@
               "foundations/**/*.ts", "foundations/**/*.tsx",
               "demo/**/*.ts", "demo/**/*.tsx",
               "utils/**/*.ts"],
-  "exclude": ["**/*.test.ts", "**/*.test.tsx", "node_modules"]
+  // `*.figma.ts` are Code Connect TEMPLATES, not application code. They import the
+  // virtual `figma` module the Code Connect CLI provides and are compiled by it
+  // (against @figma/code-connect/figma-types), so this project must not try to
+  // resolve them — `components/**/*.ts` would otherwise sweep them in and fail.
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/*.figma.ts", "node_modules"]
 }

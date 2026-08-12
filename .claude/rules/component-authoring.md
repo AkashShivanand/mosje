@@ -208,6 +208,64 @@ work is linked to.
   AccessibilityBar), **check for orphaned instances and broken Code Connect first**,
   re-point them to the surviving component, and record it.
 
+## 12. Write the MCP instructions — for EVERY component, no exceptions
+
+**A component is not done until an AI agent that has never seen it can use it
+correctly from Figma alone.** Designers read the documentation page; agents read
+what the Figma MCP server serves them. Those are different surfaces and both are
+part of shipping the component.
+
+Two artifacts, and both are mandatory:
+
+### 12a. The Code Connect template — `<component>.figma.ts`
+
+Lives beside the component (`packages/design-system/components/**/<name>.figma.ts`)
+and is picked up by `figma.config.json`. It is a **parserless template**: a
+`.figma.ts` file whose default export uses `` figma.code`…` ``.
+
+- **`.figma.ts`, never `.figma.tsx`.** `.figma.tsx` + `figma.connect()` is the
+  separate parser-based format and is the wrong artifact here.
+- **Account for EVERY Figma property.** Map it, or state in a comment why it is
+  omitted — an unmapped property silently emits `undefined`.
+- **Map every VARIANT value exhaustively.** A missing enum key is a broken snippet.
+- **Never invent a code prop.** If no prop fits, omit and say so.
+- **Resolve nested instances dynamically** (`getInstanceSwap` / `findInstance` +
+  `executeTemplate()`), never hardcode a child from its layer name.
+- Push it with `add_code_connect_map`. **An existing mapping cannot be
+  overwritten via the API** — it must be disconnected in the Figma UI first, so
+  get the template right before connecting.
+- **Keep `*.figma.ts` out of the package tsconfig.** It imports the virtual
+  `figma` module that only the Code Connect CLI provides, so
+  `packages/design-system/tsconfig.json` excludes `**/*.figma.ts`. Without that,
+  `components/**/*.ts` sweeps the template into `npm run typecheck` and it fails
+  on an unresolved import — which is exactly what happened the first time.
+
+### 12b. The component description — the agent's briefing
+
+The Figma component's `description` is what the MCP server hands an agent as
+context. It is not a tagline. It carries, in this order:
+
+1. One line on what the component is and its anatomy.
+2. **The import and source path**, plus "Code Connect is mapped — use the
+   generated snippet, do not hand-roll one."
+3. **Numbered RULES** — the things an agent would otherwise get wrong: which
+   axes are *not* properties (e.g. tone comes from a colour mode, not a variant),
+   what a control actually does (opens a widget, not a link), what must never be
+   removed (a WCAG affordance), and any duplication to avoid.
+4. **TOKENS** — where the component's geometry and colours come from.
+
+Write the rules as *prohibitions and consequences*, not description. "Never add a
+tone prop" prevents a defect; "supports theming" prevents nothing.
+
+### Why this is a rule
+
+The AccessibilityBar shipped with a correct Figma master, a correct code
+component and a Code Connect mapping — and an agent reading it in Dev Mode would
+still have hand-rolled a `tone` prop (tone is a colour *mode*), linked the
+accessibility icon to a statement page (it opens the UX4G widget), and dropped
+the skip link on mobile (a WCAG 2.4.1 failure). None of that is inferable from
+the geometry. It has to be written down where the agent actually looks.
+
 ## The one-line version
 
 > Discover first · tokenise everything (zero raw values, dimensions included) · nested
@@ -216,4 +274,6 @@ work is linked to.
 > in place, never fork its key** · match the reference visually · pass AA · flag
 > anything questionable for the human · document it in the SAMAVESH house doc style
 > (Hero + numbered specimen sections, published text styles, like the Colour /
-> Typography pages) · validate with a screenshot and a zero-unbound audit.
+> Typography pages) · **write the MCP instructions — a `.figma.ts` Code Connect
+> template and a rules-bearing component description** · validate with a screenshot
+> and a zero-unbound audit.
