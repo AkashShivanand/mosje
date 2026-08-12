@@ -22,9 +22,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.18.0",
+    version: "v0.18.1",
     date: "2026-08-12",
     current: true,
+    changes: [
+      { kind: "Changed", text: "Success and danger filled buttons move to their bg bolder rungs, finishing what v0.18.0 started for primary: #004220 to #00542B, and #8B1F18 to #AA2F25. Note the direction — for these two the change LOWERS contrast, 11.67:1 to 9.12:1 and 9.10:1 to 6.68:1, where primary's raised it. Both stay far clear of the 4.5:1 floor. The trade is systemic consistency, not accessibility: a fill is painted from the bg slot in every family, or the rule is not a rule" },
+      { kind: "Fixed", text: "The filled Button hardcoded its label colour to primary's ink — success and danger painted their text with a foreground measured for a different fill. All three resolve to #ffffff today, which is why nothing looked wrong and nothing caught it. Each variant now declares its own --_on, so the measured pairing cannot silently diverge if any of those inks ever moves" },
+      { kind: "Changed", text: "Peer actions now read as peers. A primary, success and danger button sitting in one row previously drew from two different ladders — one fill slot and two ink slots — so success and danger were visibly darker than primary for no reason a reader could infer" },
+    ],
+  },
+  {
+    version: "v0.18.0",
+    date: "2026-08-12",
     changes: [
       { kind: "Added", text: "tokens.ts now exports iconSize, READ OUT OF THE STYLESHEET rather than listed in the generator — so adding or removing a step needs no edit anywhere else. The iconography docs page renders the scale from it instead of hand-typed numbers, which is what let that page sit on 16/20/24 while the tokens had grown to seven steps. Same failure the typography data table had before it was generated" },
       { kind: "Fixed", text: "Iconography docs rebuilt against the real scale: all seven sizes, each tagged DBIM or Interface, with its token name, its live area where DBIM defines one, and what it is for. Zero hardcoded values left in the page's style objects. Figma section 01 still told designers to pick 16, 20 or 24 — corrected" },
