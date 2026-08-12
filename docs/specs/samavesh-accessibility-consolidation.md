@@ -52,6 +52,15 @@ import { UX4GAccessibilityWidget } from "@mosje/design-system";
 
 ## 3. Integration caveat to resolve (theming)
 
+> **Status update (2026-08-12): resolved, and the caveat is now moot.** The design-side
+> half of this section no longer exists. The `data-theme` axis (light/dark/hc) was retired
+> — `tokens.css` emits no `[data-theme]` block and nothing sets the attribute — so there is
+> no second notion of "dark" left to fight the widget. The last ten hand-written
+> `[data-theme="dark"]` rules, which had outlived the token layer they depended on and
+> could never match, were deleted the same day. The recommendation below stands unchanged
+> for anything added in future: react to `.dark-mode` with explicit overrides if you need
+> to, and do **not** wire the widget to a token axis without a deliberate decision + QA.
+
 The official widget owns **accessibility contrast + its own `.dark-mode`**. The design system separately ships **design dark mode** via `data-theme="dark"` and **brand** via `data-color-mode="blue-dark"` (token-driven). These are two different notions of "dark":
 
 - **Accessibility dark/contrast** → owned by the official widget (`.dark-mode`, user-driven a11y preference).

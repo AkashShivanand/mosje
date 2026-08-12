@@ -8,11 +8,14 @@
 /* Base reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Appearance theme (light is :root default; dark via [data-theme]) ──
-   All theming (incl. success/warning/danger tonals) is now token-driven in
-   @mosje/tokens; only the native color-scheme hint lives here. */
-:root, [data-theme="light"] { color-scheme: light; }
-[data-theme="dark"] { color-scheme: dark; }
+/* ── Appearance ──
+   There is ONE appearance: light. The `data-theme` axis (light/dark/hc) was
+   retired — tokens.css emits no [data-theme] block, and nothing sets the
+   attribute — so a dark branch here would style a state that cannot occur.
+   Accessibility dark and high contrast are owned by the UX4G widget, which
+   applies its own `.dark-mode` class; see
+   docs/specs/samavesh-accessibility-consolidation.md §3. */
+:root { color-scheme: light; }
 
 /* ── Docs shell metrics ──
    The height of the docs portal's sticky header. This is APP-SHELL CHROME, not a
@@ -161,13 +164,6 @@ code:not([class]) {
   background-color: color-mix(in oklab, var(--sa-color-action-primary-default) 1.5%, var(--sa-bg-neutral-base));
   text-decoration: none;
 }
-[data-theme="dark"] .docs-welcome-card:hover {
-  border-color: color-mix(in oklab, var(--sa-border-brand-primary-base) 60%, transparent);
-  box-shadow: 
-    0 20px 40px -15px var(--sa-overlay-neutral-boldest),
-    0 0 0 1px color-mix(in oklab, var(--sa-color-action-primary-default) 30%, transparent);
-  background-color: color-mix(in oklab, var(--sa-color-action-primary-default) 3%, var(--sa-bg-neutral-base));
-}
 .docs-welcome-card::after {
   content: "→";
   position: absolute;
@@ -210,9 +206,6 @@ code:not([class]) {
 .home-stat:first-child { border-left: 0; }
 .home-stat:hover {
   background-color: color-mix(in oklab, var(--sa-color-action-primary-default) 1.5%, var(--sa-bg-neutral-base));
-}
-[data-theme="dark"] .home-stat:hover {
-  background-color: color-mix(in oklab, var(--sa-color-action-primary-default) 3%, var(--sa-bg-neutral-base));
 }
 /* Align the stats band's right edge with the broken-out hero (reclaims the
    empty TOC rail) so the two full-width bands line up. */
