@@ -22,9 +22,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.18.0",
+    version: "v0.18.1",
     date: "2026-08-12",
     current: true,
+    changes: [
+      { kind: "Changed", text: "Success and danger filled buttons move to their bg bolder rungs, finishing what v0.18.0 started for primary: #004220 to #00542B, and #8B1F18 to #AA2F25. Note the direction — for these two the change LOWERS contrast, 11.67:1 to 9.12:1 and 9.10:1 to 6.68:1, where primary's raised it. Both stay far clear of the 4.5:1 floor. The trade is systemic consistency, not accessibility: a fill is painted from the bg slot in every family, or the rule is not a rule" },
+      { kind: "Fixed", text: "The filled Button hardcoded its label colour to primary's ink — success and danger painted their text with a foreground measured for a different fill. All three resolve to #ffffff today, which is why nothing looked wrong and nothing caught it. Each variant now declares its own --_on, so the measured pairing cannot silently diverge if any of those inks ever moves" },
+      { kind: "Changed", text: "Peer actions now read as peers. A primary, success and danger button sitting in one row previously drew from two different ladders — one fill slot and two ink slots — so success and danger were visibly darker than primary for no reason a reader could infer" },
+    ],
+  },
+  {
+    version: "v0.18.0",
+    date: "2026-08-12",
     changes: [
       { kind: "Changed", text: "FILLED PRIMARY BUTTONS MOVED ONE RUNG DEEPER, from #0373DF to #005EB9. White-on-primary goes 4.64:1 to 6.36:1, and Navy 8.77:1 to 12.61:1. 36 solid fills across the estate plus the DS Button. The ladder already said this should be so: a bg rung sits one step deeper than the ink of the same family precisely because a fill carries white text while an ink sits on the page. The button had been reaching past its own system" },
       { kind: "Fixed", text: "The DS Button painted its filled background from a TEXT token. Its single --_color drove background, border AND outlined ink at once, so there was no way to move the fill without dragging outlined text with it. Split into --_fill and --_color: filled uses the bg slot, outlined and text keep the ink at 4.64:1 against the page, which is where that value is correct" },

@@ -477,7 +477,14 @@ already been removed.*
 > link or an outlined button on the page, and 0.14 above the floor there, but white text on it
 > would be the marginal pairing this ladder exists to avoid.
 >
-> *Changed 2026-08-12:* filled primary buttons moved from `#0373DF` to `#005EB9` across the estate
+> *Changed 2026-08-12 (v0.18.1):* success and danger filled buttons followed primary onto their
+> `bg` bolder rungs — `#00542B` and `#AA2F25`. For these two the move **lowers** contrast (11.67:1
+> → 9.12:1 and 9.10:1 → 6.68:1) where primary's raised it; both stay far clear of the floor, and the
+> trade is consistency rather than accessibility. A fill comes from the `bg` slot in every family,
+> or the rule is not a rule. The filled Button also stopped hardcoding primary's ink for every
+> variant — each now declares the foreground measured for its own fill.
+>
+> *Changed 2026-08-12 (v0.18.0):* filled primary buttons moved from `#0373DF` to `#005EB9` across the estate
 > (36 solid fills plus the DS Button), taking white-on-primary from 4.64:1 to 6.36:1 and Navy from
 > 8.77:1 to 12.61:1. The DS Button's single `--_color` was split into `--_fill` and `--_color`, so
 > outlined and text appearances keep the ink. Gradients and `color-mix` washes deliberately keep
