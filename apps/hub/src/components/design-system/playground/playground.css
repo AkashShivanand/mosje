@@ -36,7 +36,7 @@
 }
 
 .pg-toggle {
-  padding: 4px var(--sa-padding-s);
+  padding: var(--sa-padding-2xs) var(--sa-padding-s);
   background: transparent;
   border: none;
   font-size: var(--sa-type-body-3-size);
@@ -100,27 +100,27 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--sa-padding-xs) var(--sa-padding-m);
-  background: #1e2130;
+  background: var(--sa-code-bg);
   font-size: var(--sa-type-body-3-size);
-  color: #8892a4;
+  color: var(--sa-code-comment);
 }
 
 .playground-code__copy {
   background: transparent;
-  border: 1px solid #3d4458;
+  border: 1px solid var(--sa-code-border);
   border-radius: var(--sa-shape-xs);
-  color: #8892a4;
+  color: var(--sa-code-comment);
   font-family: var(--sa-font-latin);
   font-size: 11px;
-  padding: 2px 8px;
+  padding: var(--sa-padding-3xs) var(--sa-padding-xs);
   cursor: pointer;
   transition: color 0.1s, border-color 0.1s;
 }
-.playground-code__copy:hover { color: #e2e8f0; border-color: #6b7280; }
+.playground-code__copy:hover { color: var(--sa-code-text); border-color: var(--sa-code-borderStrong); }
 
 /* react-live editor override */
 .playground-code .prism-code {
-  background: #1e2130 !important;
+  background: var(--sa-code-bg) !important;
   padding: var(--sa-padding-m) var(--sa-padding-l) !important;
   font-size: 13px !important;
   line-height: 1.6 !important;

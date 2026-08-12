@@ -8,9 +8,9 @@
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
-  gap: var(--sa-section-m, 48px);
+  gap: var(--sa-section-m);
   align-items: center;
-  margin-bottom: var(--sa-section-l, 56px);
+  margin-bottom: var(--sa-section-l);
 }
 
 .hero-glow {
@@ -44,7 +44,7 @@
    fills — stretch the hero across it so the space isn't left blank. */
 @media (min-width: 1025px) {
   .hero {
-    width: calc(100% + 200px + var(--sa-inline-xl, 32px));
+    width: calc(100% + 200px + var(--sa-inline-xl));
   }
 }
 
@@ -85,7 +85,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--sa-stack-xs);
-  font-size: var(--sa-type-label-3-size, 0.75rem);
+  font-size: var(--sa-type-label-3-size);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -96,7 +96,7 @@
   content: "";
   width: 22px;
   height: 2px;
-  border-radius: 2px;
+  border-radius: var(--sa-shape-xxs);
   background: var(--sa-bg-brand-primary-bolder);
 }
 
@@ -149,8 +149,8 @@
 }
 
 .hero-subtitle {
-  font-size: var(--sa-type-body-1-size, 1rem);
-  line-height: var(--sa-type-body-1-lh, 1.6);
+  font-size: var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
   color: var(--sa-text-neutral-subtle);
   margin-top: var(--sa-stack-m);
   max-width: 38ch;
@@ -163,21 +163,21 @@
   overflow: hidden;
   padding: var(--sa-padding-l);
   border: 1px solid color-mix(in oklab, var(--sa-border-brand-primary-base) 12%, var(--sa-border-neutral-subtle));
-  border-radius: var(--sa-shape-xl, 20px);
-  background: color-mix(in oklab, var(--sa-color-action-primary-default) 2%, rgba(255, 255, 255, 0.45));
+  border-radius: var(--sa-shape-xl);
+  background: color-mix(in oklab, var(--sa-color-action-primary-default) 2%, color-mix(in oklab, var(--sa-bg-neutral-base) 45%, transparent));
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   box-shadow: 
-    var(--sa-elevation-modal, 0 12px 32px -12px rgb(2 32 64 / 0.18)),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.6);
+    var(--sa-elevation-modal),
+    inset 0 1px 1px 0 color-mix(in oklab, var(--sa-bg-neutral-base) 60%, transparent);
 }
 
 [data-theme="dark"] .hero-panel {
-  background: color-mix(in oklab, var(--sa-color-action-primary-default) 4%, rgba(31, 36, 40, 0.55));
-  border: 1px solid color-mix(in oklab, var(--sa-border-brand-primary-base) 20%, rgba(255, 255, 255, 0.12));
+  background: color-mix(in oklab, var(--sa-color-action-primary-default) 4%, color-mix(in oklab, var(--sa-color-a11y-dark-surface) 55%, transparent));
+  border: 1px solid color-mix(in oklab, var(--sa-border-brand-primary-base) 20%, color-mix(in oklab, var(--sa-bg-neutral-base) 12%, transparent));
   box-shadow: 
-    var(--sa-elevation-modal, 0 12px 32px -12px rgb(0 0 0 / 0.5)),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+    var(--sa-elevation-modal),
+    inset 0 1px 0 0 var(--sa-color-transparent-white-8);
 }
 
 /* "Live" cue — crisp, sits above the faded wall. */
@@ -189,15 +189,15 @@
   display: inline-flex;
   align-items: center;
   gap: var(--sa-stack-xs);
-  padding: 5px var(--sa-padding-s) 5px var(--sa-padding-xs);
-  font-size: var(--sa-type-label-3-size, 0.75rem);
+  padding: var(--sa-padding-2xs) var(--sa-padding-s) var(--sa-padding-2xs) var(--sa-padding-xs);
+  font-size: var(--sa-type-label-3-size);
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--sa-text-neutral-base);
   background: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-full, 999px);
-  box-shadow: var(--sa-elevation-card, 0 1px 2px rgb(2 32 64 / 0.06));
+  border-radius: var(--sa-shape-full);
+  box-shadow: var(--sa-elevation-card);
 }
 .hero-panel__pulse {
   width: 8px;
@@ -213,8 +213,12 @@
   gap: var(--sa-stack-m);
   height: 100%;
   /* Fade the top & bottom so the components appear to stream endlessly. */
+  /* ds-exempt-start(layout-literal): #000 in a mask-image is an ALPHA STENCIL, not a
+     colour — it means "fully opaque here" and never reaches a pixel. Binding it to a
+     palette entry would be actively misleading, and a theme swap must not move it. */
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
   mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  /* ds-exempt-end */
 }
 
 .hero-col {
@@ -255,7 +259,7 @@
   gap: var(--sa-stack-xs);
 }
 .hero-muted {
-  font-size: var(--sa-type-body-3-size, 0.8125rem);
+  font-size: var(--sa-type-body-3-size);
   color: var(--sa-text-neutral-subtle);
 }
 .hero-card {
@@ -287,9 +291,12 @@
    sit it on a small light "coin" plate instead — keeps the artwork intact and
    legible. The 3px padding makes the plate's total height match the emblem. */
 [data-theme="dark"] .hero-seal {
-  background: #fff;
+  /* bg/neutral/base, which resolves to #ffffff under EVERY brand on the axis (blue, navy
+     and all six dbim modes all alias a white neutral-0), so the plate stays white without
+     reaching for a Tier-1 reference — which the tier-discipline gate rightly refuses. */
+  background: var(--sa-bg-neutral-base);
   border-radius: 50%;
-  padding: 3px;
+  padding: var(--sa-padding-2xs);
   box-sizing: content-box;
   box-shadow: 0 0 0 1px var(--sa-border-neutral-subtle);
 }
@@ -323,7 +330,7 @@
   .hero {
     grid-template-columns: 1fr;
     gap: var(--sa-stack-l);
-    margin-bottom: var(--sa-stack-2xl, 40px);
+    margin-bottom: var(--sa-stack-2xl);
   }
   .hero-panel { height: 320px; }
 }

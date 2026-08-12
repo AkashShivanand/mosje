@@ -2002,6 +2002,62 @@
       }
     }
   },
+  "code": {
+    "$description": "Code and terminal specimens — the chrome a documentation page needs in order to SHOW code, which until now every docs page hand-rolled. The same six hexes were copied into two pages independently, which is exactly the drift the design system exists to stop.\n\nLITERAL on purpose, like chart/cat/* and chart/seq/*: this palette is tuned as a SET against its own background for token-level legibility, not against the page. Referencing the UI ramps would let one member drift out of that tuning on a brand swap and quietly wreck the contrast the set was built for.\n\nDELIBERATELY DARK IN EVERY THEME. A terminal specimen that flips to a light surface stops reading as a terminal, so there are no colorModes or themes overrides here — the block looks the same under blue, navy, dbim, light and dark. It is chrome around a specimen, not a UI surface.\n\nEvery foreground role clears WCAG AA against code/bg, measured: text 12.95:1, string 11.37:1, builtin 9.58:1, keyword 6.04:1, comment 5.09:1. Comment is the floor and has the least headroom — if it is ever lightened, re-measure.",
+    "$type": "color",
+    "bg": {
+      "$value": "#1e2130",
+      "$description": "The block surface. Dark in every theme, on purpose."
+    },
+    "text": {
+      "$value": "#e2e8f0",
+      "$description": "Default code foreground — plain identifiers, punctuation, shell output. 12.95:1."
+    },
+    "comment": {
+      "$value": "#8892a4",
+      "$description": "Comments and shell prompt annotations (the # lines). 5.09:1 — the lowest-contrast role in the set, and still AA."
+    },
+    "keyword": {
+      "$value": "#c084fc",
+      "$description": "Language keywords — import, from, const, export. 6.04:1."
+    },
+    "string": {
+      "$value": "#86efac",
+      "$description": "String literals and module specifiers. 11.37:1."
+    },
+    "builtin": {
+      "$value": "#7dd3fc",
+      "$description": "The executable or callee in a command — npm, node, git. 9.58:1."
+    },
+    "shell": {
+      "$value": "#12141c",
+      "$description": "The terminal WINDOW around the code body — deliberately a step darker than code/bg so the titlebar reads as chrome and the code reads as content. The two were #12141c and #1e2130 chosen independently in two files; this pair makes that relationship intentional."
+    },
+    "border": {
+      "$value": "rgba(255, 255, 255, 0.1)",
+      "$description": "Hairline around the terminal window and under its titlebar. Alpha-on-dark rather than a solid, so it holds up if the shell colour is ever retuned."
+    },
+    "chrome": {
+      "$value": "rgba(255, 255, 255, 0.03)",
+      "$description": "The titlebar strip fill — barely-there lift off code/shell."
+    },
+    "chromeText": {
+      "$value": "rgba(255, 255, 255, 0.45)",
+      "$description": "Titlebar label and the resting state of the copy button. 4.6:1 on code/shell — AA for the UI text it carries."
+    },
+    "chromeTextStrong": {
+      "$value": "rgba(255, 255, 255, 0.7)",
+      "$description": "Copy button on hover/focus, and any titlebar affordance that must read as interactive."
+    },
+    "chromeHover": {
+      "$value": "rgba(255, 255, 255, 0.08)",
+      "$description": "Titlebar affordance background on hover — the resting state is transparent, so this is the whole hover cue."
+    },
+    "borderStrong": {
+      "$value": "rgba(255, 255, 255, 0.3)",
+      "$description": "Border of a titlebar affordance on hover/focus, where the resting code/border hairline is too faint to read as a control edge."
+    }
+  },
   "layer": {
     "0": {
       "$value": "{bg.neutral.base}"

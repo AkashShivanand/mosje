@@ -1,0 +1,73 @@
+{
+  "note": [
+    "Scopes are checked in the order listed. `gated: true` means the scope runs in",
+    "`npm run check` and CI and MUST be clean. `gated: false` means it is reported",
+    "by `--all` but does not fail the build yet \u2014 used while a surface is being",
+    "brought up to the rule, so the gate can land before the whole estate is clean.",
+    "",
+    "borderWidthLiterals: the rule's property table covers fills, strokes, padding,",
+    "gaps and radii \u2014 it does not cover stroke WIDTH. A hairline is a constant, and",
+    "the only token for it is `--sa-ref-border-width-sm`, a REF token that product",
+    "code is not supposed to consume directly. So `1px solid var(--sa-border-\u2026)` is",
+    "accepted: the COLOUR, which is what drifts, is bound. This is a recorded",
+    "decision, not an oversight \u2014 see docs/guidelines/README.md.",
+    "",
+    "allowedLengths: `0px` is not a value, it is the absence of one.",
+    "",
+    "optical: a sub-token nudge (1-2px) that exists to align a glyph against text.",
+    "Snapping it to the spacing scale would MISALIGN it, so it is declared instead.",
+    "",
+    "A scope path that does not exist is a HARD ERROR, not a silent skip. The first",
+    "version of this config pointed at packages/design-system/src, which has never",
+    "existed, and the checker reported a clean scope because the walk threw and was",
+    "swallowed. A gate that cannot fail is worse than no gate."
+  ],
+  "scopes": [
+    {
+      "name": "design-system docs (apps/hub/src/app/design-system)",
+      "path": "apps/hub/src/app/design-system",
+      "gated": true
+    },
+    {
+      "name": "docs-kit + docs chrome (apps/hub/src/components/design-system)",
+      "path": "apps/hub/src/components/design-system",
+      "gated": true
+    },
+    {
+      "name": "design-system package \u2014 components",
+      "path": "packages/design-system/components",
+      "gated": false
+    },
+    {
+      "name": "design-system package \u2014 foundations",
+      "path": "packages/design-system/foundations",
+      "gated": false
+    }
+  ],
+  "skipDirs": [
+    "node_modules",
+    ".next",
+    "dist",
+    "__snapshots__",
+    "storybook-static"
+  ],
+  "exemptionCategories": [
+    "specimen",
+    "code-sample",
+    "demo-geometry",
+    "third-party",
+    "layout-literal",
+    "optical"
+  ],
+  "minReasonChars": 12,
+  "allowedLengths": [
+    "0px",
+    "0rem"
+  ],
+  "borderWidthLiterals": [
+    "1px",
+    "2px",
+    "3px",
+    "4px"
+  ]
+}

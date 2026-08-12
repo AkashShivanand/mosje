@@ -21,12 +21,19 @@ export function OnThisPage(): React.JSX.Element {
 
   React.useEffect(() => {
     if (headings.length === 0) return;
+    // The top inset must equal the sticky header's height, or the heading that is
+    // level with the header counts as "visible" and the wrong item highlights. Read
+    // it from --docs-header-h rather than repeating the number: this used to be a
+    // bare "-56px", which is how the two could drift apart unnoticed.
+    const headerH =
+      getComputedStyle(document.documentElement).getPropertyValue("--docs-header-h").trim() ||
+      "0px";
     const obs = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting);
         if (visible.length > 0 && visible[0]) setActiveId(visible[0].target.id);
       },
-      { rootMargin: "-56px 0px -60% 0px" }
+      { rootMargin: `-${headerH} 0px -60% 0px` }
     );
     headings.forEach((h) => {
       const el = document.getElementById(h.id);

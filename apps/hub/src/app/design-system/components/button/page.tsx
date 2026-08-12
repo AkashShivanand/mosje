@@ -110,12 +110,12 @@ function KeyTable({
               <td>
                 <kbd
                   style={{
-                    fontFamily: "var(--sa-font-mono, monospace)",
+                    fontFamily: "var(--sa-font-mono)",
                     fontSize: "var(--sa-type-body-2-size)",
                     background: "var(--sa-bg-neutral-subtler)",
                     border: "1px solid var(--sa-border-neutral-subtle)",
-                    borderRadius: "var(--sa-shape-sm, 4px)",
-                    padding: "2px 6px",
+                    borderRadius: "var(--sa-shape-sm)",
+                    padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
                     color: "var(--sa-text-neutral-base)",
                   }}
                 >
@@ -216,7 +216,7 @@ export default function ButtonPage(): React.JSX.Element {
             marginTop: "var(--sa-stack-l)",
             padding: "var(--sa-padding-2xl)",
             background: "var(--sa-bg-neutral-subtler)",
-            borderRadius: "var(--sa-shape-md, 8px)",
+            borderRadius: "var(--sa-shape-md)",
             border: "1px solid var(--sa-border-neutral-subtle)",
           }}
         >
@@ -228,8 +228,8 @@ export default function ButtonPage(): React.JSX.Element {
                 position: "absolute",
                 inset: "calc(-1 * var(--sa-stack-2xs))",
                 outline: "3px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base))",
-                outlineOffset: "2px",
-                borderRadius: "var(--sa-shape-md, 8px)",
+                outlineOffset: "var(--sa-focus-offset)",
+                borderRadius: "var(--sa-shape-md)",
                 opacity: 0.55,
               }}
             />
@@ -384,8 +384,8 @@ export default function ButtonPage(): React.JSX.Element {
               style={{
                 display: "inline-block",
                 outline: "3px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base))",
-                outlineOffset: "2px",
-                borderRadius: "var(--sa-shape-md, 8px)",
+                outlineOffset: "var(--sa-focus-offset)",
+                borderRadius: "var(--sa-shape-md)",
               }}
             >
               <Button variant="primary" appearance="filled">
@@ -862,7 +862,7 @@ function Marker({
         height: "20px",
         borderRadius: "50%",
         background: "var(--sa-bg-brand-primary-bolder)",
-        color: "var(--sa-on-bg-brand-primary-bolder, #fff)",
+        color: "var(--sa-on-bg-brand-primary-bolder)",
         fontSize: "11px",
         fontWeight: 700,
         display: "inline-flex",
@@ -884,13 +884,13 @@ function UseCard({
   title: string;
   children: React.ReactNode;
 }): React.JSX.Element {
-  const accent = tone === "do" ? "var(--sa-color-status-success, #16A34A)" : "var(--sa-color-status-danger, #DC2626)";
+  const accent = tone === "do" ? "var(--sa-color-status-success)" : "var(--sa-color-status-danger)";
   return (
     <div
       style={{
         border: "1px solid var(--sa-border-neutral-subtle)",
         borderTop: `3px solid ${accent}`,
-        borderRadius: "var(--sa-shape-md, 8px)",
+        borderRadius: "var(--sa-shape-md)",
         padding: "var(--sa-padding-l)",
         background: "var(--sa-bg-neutral-base)",
       }}
@@ -937,7 +937,7 @@ function RelatedCard({
         display: "block",
         textDecoration: "none",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md, 8px)",
+        borderRadius: "var(--sa-shape-md)",
         padding: "var(--sa-padding-m)",
         background: "var(--sa-bg-neutral-base)",
       }}
@@ -973,7 +973,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
       style={{
         background: "var(--sa-bg-neutral-subtler)",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md, 8px)",
+        borderRadius: "var(--sa-shape-md)",
         padding: "var(--sa-padding-m)",
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",
@@ -982,7 +982,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
         marginTop: "var(--sa-stack-xs)",
       }}
     >
-      <code style={{ fontFamily: "var(--sa-font-mono, monospace)" }}>
+      <code style={{ fontFamily: "var(--sa-font-mono)" }}>
         {children}
       </code>
     </pre>

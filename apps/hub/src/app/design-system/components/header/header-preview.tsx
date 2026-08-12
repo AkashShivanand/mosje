@@ -89,7 +89,7 @@ function Frame({ children }: { children: React.ReactNode }): React.JSX.Element {
     <div
       style={{
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md, 8px)",
+        borderRadius: "var(--sa-shape-md)",
         overflow: "hidden",
         background: "var(--sa-bg-neutral-base)",
       }}

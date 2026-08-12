@@ -69,7 +69,9 @@
 .callout--warning { background: var(--sa-bg-status-warning-base); border-color: var(--sa-border-status-warning-base); color: var(--sa-text-neutral-base); }
 .callout--tip     { background: var(--sa-bg-status-success-subtler); border-color: var(--sa-border-status-success-base); color: var(--sa-text-neutral-base); }
 .callout--danger  { background: var(--sa-bg-status-error-base); border-color: var(--sa-border-status-error-base); color: var(--sa-text-neutral-base); }
-.callout__icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+/* ds-exempt(optical): 1px drops the glyph onto the first line's baseline. A 2px token
+   nudge overshoots and the icon sits low against the heading it labels. */
+.callout__icon { flex-shrink: 0; font-size: var(--sa-icon-size-16); margin-top: 1px; }
 .callout__title { font-weight: 700; margin-bottom: var(--sa-stack-2xs); }
 
 /* ── Token Table ── */
@@ -86,7 +88,7 @@
 }
 .token-table td { padding: var(--sa-padding-s); border-bottom: 1px solid var(--sa-border-neutral-subtle); vertical-align: middle; }
 .token-table__name { font-family: var(--sa-font-mono); font-size: var(--sa-type-body-3-size); color: var(--sa-text-brand-primary-base); }
-.token-table__preview { width: 24px; height: 24px; border-radius: var(--sa-shape-xs); border: 1px solid var(--sa-border-neutral-subtle); }
+.token-table__preview { width: var(--sa-icon-size-24); height: var(--sa-icon-size-24); border-radius: var(--sa-shape-xs); border: 1px solid var(--sa-border-neutral-subtle); }
 .token-table__value { font-family: var(--sa-font-mono); font-size: var(--sa-type-label-3-size); color: var(--sa-text-neutral-subtle); }
 
 /* ── Color Swatch ── */
@@ -99,7 +101,7 @@
 .color-swatch__chip { height: 80px; }
 .color-swatch__info { padding: var(--sa-padding-s); }
 .color-swatch__name { font-size: var(--sa-type-body-2-size); font-weight: 600; color: var(--sa-text-neutral-base); }
-.color-swatch__token { font-family: var(--sa-font-mono); font-size: var(--sa-type-label-3-size); color: var(--sa-text-neutral-subtle); margin-top: 2px; }
+.color-swatch__token { font-family: var(--sa-font-mono); font-size: var(--sa-type-label-3-size); color: var(--sa-text-neutral-subtle); margin-top: var(--sa-padding-3xs); }
 .color-swatch__value { font-family: var(--sa-font-mono); font-size: var(--sa-type-label-3-size); color: var(--sa-text-neutral-subtle); }
 
 /* ── Type Specimen ── */
@@ -113,7 +115,7 @@
   gap: var(--sa-stack-2xs);
   font-size: var(--sa-type-body-3-size);
   font-weight: 700;
-  padding: 3px var(--sa-padding-s);
+  padding: var(--sa-padding-2xs) var(--sa-padding-s);
   border-radius: var(--sa-shape-full);
 }
 .status-badge--Stable     { background: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
@@ -133,47 +135,53 @@
   font-size: var(--sa-type-body-2-size);
 }
 .a11y-checklist__item:last-child { border-bottom: none; }
+/* ds-exempt(optical): as above — baseline alignment of the tick against its criterion. */
 .a11y-checklist__icon { color: var(--sa-text-status-success-base); flex-shrink: 0; margin-top: 1px; }
 .a11y-checklist__criterion { font-weight: 600; color: var(--sa-text-neutral-base); }
-.a11y-checklist__desc { color: var(--sa-text-neutral-subtle); margin-top: 2px; font-size: var(--sa-type-body-3-size); }
+.a11y-checklist__desc { color: var(--sa-text-neutral-subtle); margin-top: var(--sa-padding-3xs); font-size: var(--sa-type-body-3-size); }
 
 /* ── Terminal Code ── */
 .terminal-code {
-  background: #12141c;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--sa-code-shell);
+  border: 1px solid var(--sa-code-border);
   border-radius: var(--sa-shape-lg);
   overflow: hidden;
-  box-shadow: var(--sa-elevation-modal), 0 20px 30px -15px rgba(0, 0, 0, 0.4);
-  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  box-shadow: var(--sa-elevation-modal);
+  font-family: var(--sa-font-mono);
 }
 
 .terminal-code__header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--sa-stack-xs);
   padding: var(--sa-padding-s) var(--sa-padding-l);
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--sa-code-chrome);
+  border-bottom: 1px solid var(--sa-code-border);
 }
 
 .terminal-code__controls {
   display: flex;
-  gap: 6px;
+  gap: var(--sa-stack-2xs);
   align-items: center;
 }
 
 .terminal-code__dot {
-  width: 10px;
-  height: 10px;
+  width: var(--sa-padding-3xs);
+  height: var(--sa-padding-3xs);
   border-radius: 50%;
 }
+/* ds-exempt-start(third-party): macOS window-control colours, quoted verbatim so the
+   block reads as a terminal at a glance. They are a REFERENCE to another product's
+   chrome, not SAMAVESH colours — putting them in the palette would imply they are ours
+   and invite reuse. Decorative only: aria-hidden, carrying no state or meaning. */
 .terminal-code__dot--red    { background: #ff5f56; }
 .terminal-code__dot--yellow { background: #ffbd2e; }
 .terminal-code__dot--green  { background: #27c93f; }
+/* ds-exempt-end */
 
 .terminal-code__title {
   font-size: var(--sa-type-label-3-size);
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--sa-code-chromeText);
   margin-left: var(--sa-inline-m);
   font-weight: 500;
 }
@@ -181,10 +189,10 @@
 .terminal-code__copy {
   margin-left: auto;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--sa-code-border);
   border-radius: var(--sa-shape-sm);
-  color: rgba(255, 255, 255, 0.7);
-  padding: 4px 10px;
+  color: var(--sa-code-chromeTextStrong);
+  padding: var(--sa-padding-2xs) var(--sa-padding-s);
   font-size: var(--sa-type-label-3-size);
   font-family: var(--sa-font-latin);
   cursor: pointer;
@@ -195,9 +203,9 @@
 }
 
 .terminal-code__copy:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.3);
+  background: var(--sa-code-chromeHover);
+  color: var(--sa-code-text);
+  border-color: var(--sa-code-borderStrong);
 }
 
 .terminal-code__copy:active {
@@ -207,7 +215,7 @@
 .terminal-code__body {
   padding: var(--sa-padding-l);
   font-size: 13px;
-  color: #e2e8f0;
+  color: var(--sa-code-text);
   line-height: 1.7;
   overflow-x: auto;
 }

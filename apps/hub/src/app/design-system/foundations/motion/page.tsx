@@ -94,7 +94,7 @@ export default function MotionPage(): React.JSX.Element {
             display: "flex",
             flexDirection: "column",
             gap: "var(--sa-stack-l)",
-            outlineOffset: "2px",
+            outlineOffset: "var(--sa-focus-offset)",
           }}
         >
           {([

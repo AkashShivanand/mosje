@@ -123,8 +123,8 @@ export default function PatternsPage(): React.JSX.Element {
               gap: "var(--sa-stack-s)",
             }}
           >
-            <div style={{ width: 24, height: 24, borderRadius: "50%", background: "rgba(255,255,255,0.3)" }} />
-            <span style={{ color: "white", fontWeight: 700, fontSize: "var(--sa-type-body-1-size)" }}>
+            <div style={{ width: 24, height: 24, borderRadius: "50%", background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 30%, transparent)" }} />
+            <span style={{ color: "var(--sa-on-bg-brand-primary-bolder)", fontWeight: 700, fontSize: "var(--sa-type-body-1-size)" }}>
               PM-AJAY — Dashboard
             </span>
             <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
@@ -416,15 +416,15 @@ export default function PatternsPage(): React.JSX.Element {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-s)" }}>
-              <div style={{ width: 48, height: 48, borderRadius: "50%", background: "rgba(255,255,255,0.2)", flexShrink: 0 }} />
+              <div style={{ width: 48, height: 48, borderRadius: "50%", background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 20%, transparent)", flexShrink: 0 }} />
               <div>
-                <div style={{ color: "white", fontWeight: 700, fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)" }}>PM-AJAY</div>
-                <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "var(--sa-type-body-3-size)" }}>
+                <div style={{ color: "var(--sa-on-bg-brand-primary-bolder)", fontWeight: 700, fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)" }}>PM-AJAY</div>
+                <div style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 70%, transparent)", fontSize: "var(--sa-type-body-3-size)" }}>
                   Ministry of Social Justice & Empowerment
                 </div>
               </div>
             </div>
-            <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "var(--sa-type-body-2-size)", lineHeight: 1.6 }}>
+            <p style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 85%, transparent)", fontSize: "var(--sa-type-body-2-size)", lineHeight: 1.6 }}>
               PM Anudaan for Jobs and Aspirations for Youth — one portal for all beneficiary management.
             </p>
           </div>
@@ -448,7 +448,7 @@ export default function PatternsPage(): React.JSX.Element {
                 <div
                   key={tab}
                   style={{
-                    padding: "6px 16px",
+                    padding: "var(--sa-padding-xs) var(--sa-padding-m)",
                     borderRadius: "var(--sa-shape-full)",
                     background: i === 0 ? "var(--sa-bg-brand-primary-bolder)" : "transparent",
                     color: i === 0 ? "white" : "var(--sa-text-neutral-subtle)",
@@ -468,7 +468,7 @@ export default function PatternsPage(): React.JSX.Element {
                 style={{
                   border: "1px solid var(--sa-border-neutral-bolder-default)",
                   borderRadius: "var(--sa-shape-sm)",
-                  padding: "10px var(--sa-padding-s)",
+                  padding: "var(--sa-padding-s) var(--sa-padding-s)",
                   color: "var(--sa-text-neutral-subtle)",
                   fontSize: "var(--sa-type-body-2-size)",
                 }}
@@ -557,7 +557,7 @@ export default function PatternsPage(): React.JSX.Element {
                     style={{
                       border: "1px solid var(--sa-border-neutral-bolder-default)",
                       borderRadius: "var(--sa-shape-sm)",
-                      padding: "10px var(--sa-padding-s)",
+                      padding: "var(--sa-padding-s) var(--sa-padding-s)",
                       color: "var(--sa-text-neutral-subtle)",
                       fontSize: "var(--sa-type-body-2-size)",
                     }}
