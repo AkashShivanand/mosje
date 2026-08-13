@@ -1,7 +1,7 @@
 # E-Anudaan Admin — Recon Inventory
 
 **Domain:** `https://eanudaan-admin-dev.mosje.in` (Dev)
-**Captured:** 2026-08-12, 13 of 14 supplied logins, 92 screens (incl. 2 review screens)
+**Captured:** 2026-08-12, 13 of 14 supplied logins, **100 screens / 53 unique routes**, including the review screen for **all 10 officer grades**
 **Roles seen:** 10 chain officers (PD ×5, IFD ×5) + 2 PMU field officers
 **App title:** `E-Anudaan | Admin`
 **Stack signals:** Create React App (`/static/js/main.<hash>.js`), **Mantine UI**, Poppins + Noto Sans,
@@ -23,8 +23,8 @@ different design languages in one app. Only one scheme is live: **`SHRESHTA_M2`*
 |---|---|---|---|
 | `pd-aso` … `pd-ds` | ✅ | 9 each | complete |
 | `pd-js` | ✅ | 10 | adds Audit Trail |
-| `ifd-aso` … `ifd-ds` | ✅ | 7 each | complete |
-| `ifd-js` | ✅ | 8 | adds Audit Trail |
+| `ifd-aso` … `ifd-ds` | ✅ | 7–8 each | complete, incl. review screen |
+| `ifd-js` | ✅ | 9 | adds Audit Trail |
 | `pmu-field-officer` (9200000812) | ✅ | 4 | complete |
 | "JS – Finance" (9000000033) | ✅ | 4 | **mislabelled in the source sheet** — this account is a *PMU Field Officer*; its nav is byte-identical to `pmu-field-officer`. There is no JS-Finance role behind it. |
 | **`programme-director` (9200000811)** | ✅ | **0** | ⚠️ **NOT IMPLEMENTED ON DEV — see §17.** Originally recorded here as a renderer crash. That was wrong: verified in a *headed* browser on 2026-08-12, the console loads with no crash, no JS error and **zero API calls**, and simply renders nothing. There is no sanction desk. |
@@ -213,7 +213,7 @@ Worth raising with whoever owns the dev deployment.
 > `/dashboard/pd/<grade>/review/:id` the JS bundle's route table implies.**
 
 This is the portal's most important screen — the whole ten-grade chain is *one* screen with a
-different action bar. **Captured for 9 of the 10 grades.** Path shape is `/dashboard/sm2/<key>/review/:id`, where
+different action bar. **Captured for all 10 grades.** Path shape is `/dashboard/sm2/<key>/review/:id`, where
 `<key>` is the grade for PD (`aso`/`so`/`us`/`ds`) but **`jspd` for PD:JS**, and `ifd<grade>`
 for the IFD.
 
@@ -224,12 +224,12 @@ for the IFD.
 | pd-us | `/dashboard/sm2/us/review/:id` | 6,975 |
 | pd-ds | `/dashboard/sm2/ds/review/:id` | 3,933 |
 | pd-js | `/dashboard/sm2/**jspd**/review/:id` | 3,835 |
-| ifd-aso / ifd-so / ifd-us / ifd-js | `/dashboard/sm2/ifd<grade>/review/:id` | **3,724 each** |
-| ifd-ds | — | rate-limited, see coverage table |
+| ifd-aso / ifd-so / ifd-us / ifd-ds / ifd-js | `/dashboard/sm2/ifd<grade>/review/:id` | **3,724 each — all five** |
 
 The PD heights vary because the underlying applications differ in document count and history.
-**All four captured IFD screens are byte-identical in height (3,724)** — the IFD review screen
-does not vary by grade, which is why the one missing IFD capture carries little risk.
+**All five IFD screens are byte-identical in height (3,724) with 200 extracted elements each** —
+the IFD review screen genuinely does not vary by grade. The PD screens do vary, but only
+because their underlying applications differ; their structure is the same.
 
 H1 **`ASO Review — <GIA ID>`** (IFD: `IFD-ASO Review — <GIA ID>`), sub-line
 `Assistant Section Officer · SHRESHTA Mode-2`. Top-right: **`Generate Review Report`** button
