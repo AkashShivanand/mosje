@@ -38,6 +38,7 @@ import {
 
 export type WorkflowAction =
   | "submit"
+  | "certify"
   | "forward"
   | "raiseDeficiency"
   | "communicateDeficiency"
@@ -66,7 +67,11 @@ export interface Clock {
 
 export interface Rule {
   action: WorkflowAction;
-  label: string;
+  /**
+   * Button copy. A function, not a string, because the live portal names the destination:
+   * PD:ASO reads "Certify & Forward to SO" while IFD:ASO reads "Forward to IFD-SO".
+   */
+  label: (role: RoleDef, app: GrantApplication) => string;
   intent: "primary" | "secondary" | "danger";
   requiresRemarks: boolean;
   requiresCertification?: boolean;
@@ -86,10 +91,22 @@ function chainHolder(app: GrantApplication): { division: "pd" | "finance"; grade
   return app.holder.kind === "chain" ? { division: app.holder.division, grade: app.holder.grade } : null;
 }
 
+/**
+ * Forward-button copy, matching the live screens: PD:ASO reads "Certify & Forward to SO"
+ * (its certification gate is part of the same button), IFD grades name the IFD destination.
+ */
+function forwardLabel(role: RoleDef): string {
+  const nxt = role.grade ? nextGrade(role.grade) : null;
+  if (!nxt) return role.division === "pd" ? "Forward to Integrated Finance" : "Forward";
+  const dest = role.division === "finance" ? `IFD-${nxt.toUpperCase()}` : nxt.toUpperCase();
+  const prefix = role.caps.includes("certify") ? "Certify & " : "";
+  return `${prefix}Forward to ${dest}`;
+}
+
 export const RULES: readonly Rule[] = [
   {
     action: "submit",
-    label: "Submit application",
+    label: () => "Submit application",
     intent: "primary",
     requiresRemarks: false,
     audit: "submit",
@@ -97,8 +114,20 @@ export const RULES: readonly Rule[] = [
     next: () => ({ holder: { kind: "chain", division: "pd", grade: "aso" }, status: "Submitted" }),
   },
   {
+    action: "certify",
+    label: () => "Record Certification",
+    intent: "secondary",
+    requiresRemarks: false,
+    requiresCertification: true,
+    audit: "certify",
+    // The live ASO screen renders this as its own section and its own button, and leaves the
+    // file exactly where it is — only `certifiedAt` changes. Forwarding is then unblocked.
+    can: (app, role) => holds(app, role) && role.caps.includes("certify") && !app.certifiedAt,
+    next: (app) => ({ holder: app.holder, status: app.status }),
+  },
+  {
     action: "forward",
-    label: "Forward",
+    label: (role) => forwardLabel(role),
     intent: "primary",
     requiresRemarks: true,
     // Only the ASO certifies; every other grade forwards on remarks alone. [BRD FR-SM2-27]
@@ -108,6 +137,8 @@ export const RULES: readonly Rule[] = [
       const h = chainHolder(app);
       if (!h || !holds(app, role)) return false;
       if (app.status === "QueryRaised") return false; // must resolve the query first
+      // "Certify & Forward" is disabled until Record Certification has been pressed.
+      if (role.caps.includes("certify") && !app.certifiedAt) return false;
       // IFD:JS concurs rather than forwards; that is a separate rule.
       return !(h.division === "finance" && h.grade === "js");
     },
@@ -123,7 +154,7 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "concur",
-    label: "Record financial concurrence",
+    label: () => "Record financial concurrence",
     intent: "primary",
     requiresRemarks: true,
     audit: "concur",
@@ -135,7 +166,7 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "sanction",
-    label: "Sanction",
+    label: () => "Sanction",
     intent: "primary",
     requiresRemarks: true,
     audit: "sanction",
@@ -144,7 +175,7 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "return",
-    label: "Return for reconsideration",
+    label: () => "Return for reconsideration",
     intent: "danger",
     requiresRemarks: true,
     audit: "return",
@@ -154,7 +185,7 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "raiseDeficiency",
-    label: "Raise deficiency",
+    label: () => "Raise deficiency",
     intent: "secondary",
     requiresRemarks: true,
     audit: "raiseDeficiency",
@@ -164,7 +195,7 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "communicateDeficiency",
-    label: "Communicate deficiency to NGO",
+    label: () => "Communicate deficiency to NGO",
     intent: "secondary",
     requiresRemarks: true,
     audit: "communicateDeficiency",
@@ -174,7 +205,7 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "respondDeficiency",
-    label: "Submit response",
+    label: () => "Submit response",
     intent: "primary",
     requiresRemarks: true,
     audit: "respondDeficiency",
@@ -183,7 +214,7 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "raiseQuery",
-    label: "Raise query",
+    label: (role) => (role.division === "finance" ? "Return to Previous" : "Raise query"),
     intent: "secondary",
     requiresRemarks: true,
     audit: "raiseQuery",
@@ -199,7 +230,7 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "resolveQuery",
-    label: "Resolve query and send back",
+    label: () => "Resolve query and send back",
     intent: "primary",
     requiresRemarks: true,
     audit: "resolveQuery",
@@ -214,7 +245,7 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "reject",
-    label: "Reject",
+    label: () => "Reject",
     intent: "danger",
     requiresRemarks: true,
     audit: "reject",
@@ -249,7 +280,10 @@ export function applyAction(
   const rule = RULES.find((r) => r.action === action);
   if (!rule) return { ok: false, error: `Unknown action: ${action}` };
   if (!rule.can(app, role)) {
-    return { ok: false, error: `${role.label} cannot ${rule.label.toLowerCase()} on this application right now.` };
+    return {
+      ok: false,
+      error: `${role.label} cannot ${rule.label(role, app).toLowerCase()} on this application right now.`,
+    };
   }
   if (rule.requiresRemarks && !payload.remarks?.trim()) {
     return { ok: false, error: "Remarks are required for this action." };
@@ -282,6 +316,11 @@ export function applyAction(
   };
 
   if (action === "submit") next.submittedAt = clock.now;
+
+  if (action === "certify") {
+    next.certifiedAt = clock.now;
+    next.certifiedBy = roleId;
+  }
 
   if (action === "raiseDeficiency") {
     next.deficiencies = [

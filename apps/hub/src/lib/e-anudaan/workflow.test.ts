@@ -37,6 +37,7 @@ function draft(): GrantApplication {
     documents: [],
     deficiencies: [],
     queries: [],
+    showCauseNotices: [],
     audit: [],
     updatedAt: "2026-08-01T00:00:00.000Z",
     ageingDays: 11,
@@ -50,12 +51,26 @@ function must(app: GrantApplication, role: RoleId, action: WorkflowAction, remar
   return res.app;
 }
 
+/** Climb the whole PD chain, honouring PD:ASO's certification gate. */
+function climbPd(app: GrantApplication): GrantApplication {
+  let cur = must(app, "pd-aso", "certify");
+  for (const g of GRADES) cur = must(cur, `pd-${g}`, "forward");
+  return cur;
+}
+
+/** Climb PD then the IFD up to (not including) IFD:JS. */
+function climbToIfdJs(app: GrantApplication): GrantApplication {
+  let cur = climbPd(app);
+  for (const g of GRADES.slice(0, 4)) cur = must(cur, `finance-${g}`, "forward");
+  return cur;
+}
+
 test("an application climbs PD → IFD → Programme Director and is sanctioned", () => {
   let app = must(draft(), "ngo", "submit");
   assert.deepEqual(app.holder, { kind: "chain", division: "pd", grade: "aso" });
   assert.equal(app.status, "Submitted");
 
-  for (const g of GRADES) app = must(app, `pd-${g}`, "forward");
+  app = climbPd(app);
   // Forwarding past PD:JS crosses into the Integrated Finance Division.
   assert.deepEqual(app.holder, { kind: "chain", division: "finance", grade: "aso" });
   assert.equal(app.status, "WithFinance");
@@ -76,8 +91,7 @@ test("an application climbs PD → IFD → Programme Director and is sanctioned"
 
 test("IFD:JS concurs rather than forwards", () => {
   let app = must(draft(), "ngo", "submit");
-  for (const g of GRADES) app = must(app, `pd-${g}`, "forward");
-  for (const g of GRADES.slice(0, 4)) app = must(app, `finance-${g}`, "forward");
+  app = climbToIfdJs(app);
 
   const actions = permittedActions(app, ROLES["finance-js"]).map((r) => r.action);
   assert.ok(actions.includes("concur"), "IFD:JS should be able to concur");
@@ -86,8 +100,7 @@ test("IFD:JS concurs rather than forwards", () => {
 
 test("the Programme Director's return sends the file back to PD:ASO to re-climb", () => {
   let app = must(draft(), "ngo", "submit");
-  for (const g of GRADES) app = must(app, `pd-${g}`, "forward");
-  for (const g of GRADES.slice(0, 4)) app = must(app, `finance-${g}`, "forward");
+  app = climbToIfdJs(app);
   app = must(app, "finance-js", "concur");
 
   app = must(app, "programme-director", "return", "Reconcile the beneficiary figures.");
@@ -119,6 +132,7 @@ test("only PD:ASO raises a deficiency and only PD:SO communicates it", () => {
 
 test("US and DS raise queries that push the file down a grade; ASO and SO cannot", () => {
   let app = must(draft(), "ngo", "submit");
+  app = must(app, "pd-aso", "certify");
   app = must(app, "pd-aso", "forward");
   app = must(app, "pd-so", "forward");
   assert.deepEqual(app.holder, { kind: "chain", division: "pd", grade: "us" });
@@ -141,7 +155,8 @@ test("US and DS raise queries that push the file down a grade; ASO and SO cannot
 
 test("actions requiring remarks are refused without them", () => {
   const app = must(draft(), "ngo", "submit");
-  const res = applyAction(app, "pd-aso", "forward", { remarks: "   " }, clock());
+  const certified = must(app, "pd-aso", "certify");
+  const res = applyAction(certified, "pd-aso", "forward", { remarks: "   " }, clock());
   assert.equal(res.ok, false);
   assert.match(res.ok ? "" : res.error, /remarks/i);
 });
@@ -151,14 +166,13 @@ test("a role that does not hold the file gets no actions", () => {
   assert.deepEqual(permittedActions(app, ROLES["pd-ds"]), []);
   assert.deepEqual(permittedActions(app, ROLES["finance-js"]), []);
   // …and a closed file is inert for everyone.
-  const done = must(must(app, "pd-aso", "forward"), "pd-so", "reject", "Ineligible.");
+  const done = must(must(must(app, "pd-aso", "certify"), "pd-aso", "forward"), "pd-so", "reject", "Ineligible.");
   assert.deepEqual(permittedActions(done, ROLES["pd-so"]), []);
 });
 
 test("only the Programme Director can sanction", () => {
   let app = must(draft(), "ngo", "submit");
-  for (const g of GRADES) app = must(app, `pd-${g}`, "forward");
-  for (const g of GRADES.slice(0, 4)) app = must(app, `finance-${g}`, "forward");
+  app = climbToIfdJs(app);
   app = must(app, "finance-js", "concur");
 
   for (const role of ["pd-js", "finance-js", "pd-aso"] as const) {
@@ -215,4 +229,34 @@ test("the seed is deterministic — two builds are identical", () => {
   const a = buildSeed().applications.map((x) => `${x.id}:${x.status}:${JSON.stringify(x.holder)}`);
   const b = buildSeed().applications.map((x) => `${x.id}:${x.status}:${JSON.stringify(x.holder)}`);
   assert.deepEqual(a, b);
+});
+
+test("PD:ASO cannot forward until certification is recorded", () => {
+  // The live ASO review screen renders Record Certification as its own section and its own
+  // button, and leaves "Certify & Forward to SO" disabled until it is pressed.
+  const app = must(draft(), "ngo", "submit");
+  assert.equal(app.certifiedAt, undefined);
+
+  const early = applyAction(app, "pd-aso", "forward", { remarks: "looks fine" }, clock());
+  assert.equal(early.ok, false, "forward must be blocked before certification");
+
+  const certified = must(app, "pd-aso", "certify");
+  assert.ok(certified.certifiedAt, "certification should be stamped");
+  assert.deepEqual(certified.holder, app.holder, "certifying must not move the file");
+  assert.equal(certified.status, app.status);
+
+  const after = applyAction(certified, "pd-aso", "forward", { remarks: "verified" }, clock());
+  assert.equal(after.ok, true, "forward should be permitted once certified");
+});
+
+test("forward buttons name their destination, as the live screens do", () => {
+  const app = must(draft(), "ngo", "submit");
+  const asoFwd = permittedActions(must(app, "pd-aso", "certify"), ROLES["pd-aso"]).find(
+    (r) => r.action === "forward",
+  );
+  assert.equal(asoFwd?.label(ROLES["pd-aso"], app), "Certify & Forward to SO");
+
+  const ifd = climbPd(app);
+  const ifdFwd = permittedActions(ifd, ROLES["finance-aso"]).find((r) => r.action === "forward");
+  assert.equal(ifdFwd?.label(ROLES["finance-aso"], ifd), "Forward to IFD-SO");
 });

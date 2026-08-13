@@ -226,6 +226,14 @@ const DOC_TITLES: readonly {
   { title: "Audit Report — Previous Year" },
 ];
 
+/** Titles the review screen groups as permanent rather than annual. */
+const PERMANENT_DOCS = new Set([
+  "Registration Certificate (Societies Registration Act 1860 / Charitable Trust)",
+  "PAN of the Organisation",
+  "Bank Authorisation Letter (name, A/C no., address, IFSC / MICR)",
+  "School Recognition Certificate",
+]);
+
 function docsFor(complete: boolean): MockDoc[] {
   return DOC_TITLES.map((d, i) => {
     const filled = complete || i < 12;
@@ -233,14 +241,16 @@ function docsFor(complete: boolean): MockDoc[] {
       id: nextId("doc"),
       slot: i + 1,
       title: d.title,
+      group: PERMANENT_DOCS.has(d.title) ? "permanent" : "annual",
       optional: d.optional,
       conditional: d.conditional,
+      reviewStatus: "Pending",
+      reUploadedThisYear: PERMANENT_DOCS.has(d.title) && i % 2 === 0,
       ...(filled
         ? {
             fileName: `annexure-${i + 1}.pdf`,
             sizeKb: between(60, 1400),
             uploadedAt: iso(between(20, 200)),
-            verified: i % 7 !== 3,
           }
         : {}),
     };
@@ -285,6 +295,7 @@ function draft(
     documents: docsFor(true),
     deficiencies: [],
     queries: [],
+    showCauseNotices: [],
     audit: [],
     updatedAt: iso(ageDays),
     ageingDays: ageDays,
@@ -323,6 +334,11 @@ function replay(
   return cur;
 }
 
+/** How many PD grades a file must pass through to reach the target seat. */
+function pdTargetFor(division: Division, grade: Grade): number {
+  return division === "pd" ? GRADES.indexOf(grade) : GRADES.length;
+}
+
 /** Walk a fresh draft up to (and including) the given division/grade seat. */
 function driveToChain(
   app: GrantApplication,
@@ -334,9 +350,21 @@ function driveToChain(
     role: Parameters<typeof applyAction>[1];
     action: WorkflowAction;
     daysAgo: number;
-  }[] = [{ role: "ngo", action: "submit", daysAgo: startDaysAgo }];
+  }[] = [
+    { role: "ngo", action: "submit", daysAgo: startDaysAgo },
+  ];
+  // PD:ASO's "Certify & Forward" is gated on Record Certification, so a file that moves
+  // PAST the ASO must carry one. A file that STOPS at the ASO deliberately does not — that
+  // is the "awaiting certification" state the review screen is built to show.
+  if (pdTargetFor(division, grade) > 0) {
+    steps.push({
+      role: "pd-aso",
+      action: "certify",
+      daysAgo: Math.max(startDaysAgo - 1, 1),
+    });
+  }
   let d = startDaysAgo - 2;
-  const pdTarget = division === "pd" ? GRADES.indexOf(grade) : GRADES.length;
+  const pdTarget = pdTargetFor(division, grade);
   for (let i = 0; i < pdTarget; i++) {
     steps.push({
       role: `pd-${GRADES[i] as Grade}`,

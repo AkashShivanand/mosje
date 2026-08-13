@@ -61,18 +61,18 @@ export const GRADE_FULL: Record<Grade, string> = {
  */
 const CAPS: Record<Division, Record<Grade, readonly Capability[]>> = {
   pd: {
-    aso: ["review", "raiseDeficiency", "sanctionRegister", "forwardedRegister"],
+    aso: ["review", "certify", "raiseDeficiency", "sanctionRegister", "forwardedRegister"],
     so: ["review", "communicateDeficiency", "sanctionRegister", "forwardedRegister"],
     us: ["review", "raiseQuery", "sanctionRegister", "forwardedRegister"],
     ds: ["review", "raiseQuery", "sanctionRegister", "forwardedRegister"],
     js: ["review", "concur", "sanctionRegister", "forwardedRegister", "auditTrail"],
   },
   finance: {
-    aso: ["review"],
-    so: ["review"],
-    us: ["review", "raiseQuery"],
-    ds: ["review", "raiseQuery"],
-    js: ["review", "concur", "auditTrail"],
+    aso: ["review", "scheduleInspection"],
+    so: ["review", "scheduleInspection"],
+    us: ["review", "raiseQuery", "scheduleInspection"],
+    ds: ["review", "raiseQuery", "scheduleInspection"],
+    js: ["review", "concur", "scheduleInspection", "auditTrail"],
   },
 };
 

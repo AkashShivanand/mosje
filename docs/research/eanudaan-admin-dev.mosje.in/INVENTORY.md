@@ -1,7 +1,7 @@
 # E-Anudaan Admin — Recon Inventory
 
 **Domain:** `https://eanudaan-admin-dev.mosje.in` (Dev)
-**Captured:** 2026-08-12, 13 of 14 supplied logins, 90 screens
+**Captured:** 2026-08-12, 13 of 14 supplied logins, 92 screens (incl. 2 review screens)
 **Roles seen:** 10 chain officers (PD ×5, IFD ×5) + 2 PMU field officers
 **App title:** `E-Anudaan | Admin`
 **Stack signals:** Create React App (`/static/js/main.<hash>.js`), **Mantine UI**, Poppins + Noto Sans,
@@ -181,6 +181,50 @@ Columns: `NGO NAME` · `SCHEME` · `VISIT TYPE` · `SCHEDULED DATE` · `STATUS`
 ## 15. Notifications — `/dashboard/notifications`
 H1 **`Notifications`**. Empty in every capture; no table rendered.
 
+## 16. Review screen — `/dashboard/sm2/<grade>/review/:id` ⭐
+
+> Captured 2026-08-12 by `capture_review.py`, which harvests detail links from the worklist —
+> **no sidebar links here**, which is why the declarative crawl never found them.
+> **Note the real path shape: `/dashboard/sm2/<grade>/review/:id`, NOT the
+> `/dashboard/pd/<grade>/review/:id` the JS bundle's route table implies.**
+
+This is the portal's most important screen — the whole ten-grade chain is *one* screen with a
+different action bar. Captured for `pd-aso` (3,500px) and `ifd-aso` (3,724px).
+
+H1 **`ASO Review — <GIA ID>`** (IFD: `IFD-ASO Review — <GIA ID>`), sub-line
+`Assistant Section Officer · SHRESHTA Mode-2`. Top-right: **`Generate Review Report`** button
+and the compound status badge (`Submitted / ASO`).
+
+**Sections, in order:**
+
+| # | Section | Notes |
+|---|---|---|
+| 1 | **Applicant** | NGO · NGO-Darpan ID · Financial Year · Total Beneficiaries · Grant Sought · **ASO Certified** (Yes/No) |
+| 2 | **Sanction & Disbursement — this Project** | *"Sanctioned grants for THIS project (same school/location across years) — with how much has actually been released. Read-only · due-diligence context."* KPIs `Sanctioned Grants`, `Total Sanctioned`. Table: `GIA ID · SCHEME · PROJECT / LOCATION · FY · SANCTION NO. · SANCTION DATE · SANCTIONED · RELEASED · STATUS` |
+| 3 | **Application Details** | Bank Ifsc · Institution Id · Institution Level · Bank Account Number · Nature Of Institution · Institution Gender Type |
+| 4 | **Show Cause Notices** | *"Formal notices to the NGO requiring a written explanation. Issued by the SO and above; shown here for your reference."* |
+| 5 | **Documents (20)** | Columns `# · Document · Review · PD Remarks · File`. **Split into two groups** — `Annual documents` *(verified & remarked each year)* and `Permanent documents` *(one-time · view-only unless re-uploaded this year)*. Each row: a `Pending` select, an `Add remarks…` input, and a download icon. A permanent doc re-uploaded this year carries an amber **`Permanent · re-uploaded this year · verify`** chip. Mandatory titles are marked `*`. |
+| 6 | **Certification Declaration (mandatory)** | **PD:ASO ONLY.** Checkbox: *"I certify that the application and documents have been examined and are complete and correct as per scheme guidelines (BR-SM2-05)."* + a separate **`Record Certification`** button, disabled until ticked. |
+| — | **Online Inspection — BharatVC** | **IFD ONLY.** Carries a `Schedule BharatVC` action. |
+| 7 | **Officer Supporting Documents (n)** | *"No supporting documents uploaded yet."* + `Document title (optional)` + `Upload PDF/JPG/PNG` |
+| 8 | **Your Action** | `REMARKS (REQUIRED TO FORWARD)` textarea · `ATTACH A FILE (OPTIONAL)` with *"PDF / JPG / PNG, ≤ 5 MB. Attached to your forward, deficiency, or in-file-query remark."* · then the action button(s) |
+
+**The PD/IFD diff — this is what proves one shell can serve every grade:**
+
+| | PD:ASO | IFD:ASO |
+|---|---|---|
+| Extra section | Certification Declaration (mandatory) | Online Inspection — BharatVC |
+| Actions | `Record Certification`, then `Certify & Forward to SO` | `Forward to IFD-SO`, `Return to Previous` |
+
+Everything else is byte-identical in structure. **Action buttons name their destination**, so
+button copy is a function of the role, not a constant.
+
+Two behaviours the model must carry, both observed:
+- **Certification is a distinct, gated step** — its own section, its own button, and it does
+  **not** move the file. `Certify & Forward` stays disabled until it has been pressed.
+- **Documents are reviewed individually** — a per-document verdict *and* per-document officer
+  remarks, not one verdict for the whole set.
+
 ---
 
 ## Inferred (NOT observed — build a sensible mock and mark it)
@@ -189,10 +233,8 @@ H1 **`Notifications`**. Empty in every capture; no table rendered.
   PD sanction decision (YES → sanction order, NO → return via SO-PD) is the spine of the whole
   workflow and **we have not seen a pixel of it.** Model it from
   `docs/specs/shreshta-mode2-portal-spec.md` §5.2 and flag every screen as inferred.
-- **Every `/review/:id` and `/approve/:id` detail screen.** No nav links to them; they are
-  reached by the `Review` action in a table row, which the declarative crawl cannot follow.
-  These are the highest-value screens in the portal and need an interactive capture driver
-  (the `tools/design-audit/projects/tg/capture_flows.py` pattern) before they are built.
+- ~~Every `/review/:id` detail screen.~~ **CLOSED 2026-08-12** — captured via
+  `capture_review.py`; see §16. The `/approve/:id` variant (PD:JS) remains unobserved.
 - **Populated states for Queries, Forwarded, Finance Queries/Rejected and Notifications** —
   observed only empty.
 - **`pmu-field-officer-2`** — credential rejected; no screens.
@@ -228,4 +270,5 @@ login's nav, so none were captured.
 | `/dashboard/sm2/reports` | Reports & Analytics | all |
 | `/dashboard/sm2/audit` | Audit Trail | JS grades only |
 | `/dashboard/notifications` | Notifications (empty) | all |
+| `/dashboard/sm2/<grade>/review/:id` | Officer review screen (the chain's core) | reached from a worklist row only |
 | `/dashboard/sm2/pd` | Programme Director console | **UNCAPTURED — renderer crash** |

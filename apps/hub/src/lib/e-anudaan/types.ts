@@ -36,11 +36,16 @@ export type RoleId = ChainRoleId | "programme-director" | "pmu-field" | "ngo";
  */
 export type Capability =
   | "review"
+  /** PD:ASO only — the mandatory "Record Certification" gate before forwarding. Observed on
+   *  the live ASO review screen as a separate section and a separate button. */
+  | "certify"
   | "raiseDeficiency"
   | "communicateDeficiency"
   | "raiseQuery"
   | "concur"
   | "sanction"
+  /** IFD grades carry an "Online Inspection — BharatVC" panel with a Schedule action. */
+  | "scheduleInspection"
   | "inspect"
   | "auditTrail"
   | "sanctionRegister"
@@ -128,18 +133,47 @@ export interface Query {
   resolvedAt?: string;
 }
 
+/** Per-document verdict an officer records on the review screen's Documents table. */
+export type DocReviewStatus = "Pending" | "Verified" | "Deficient" | "Not applicable";
+
 export interface MockDoc {
   id: string;
   /** 1-20, matching the live Documents Checklist ordering. */
   slot: number;
   title: string;
+  /**
+   * The review screen splits the checklist in two, with different rules per group:
+   *   annual    — "verified & remarked each year"
+   *   permanent — "one-time · view-only unless re-uploaded this year"
+   * A permanent document re-uploaded this year carries a "verify" chip.
+   */
+  group: "annual" | "permanent";
   fileName?: string;
   sizeKb?: number;
   uploadedAt?: string;
-  verified?: boolean;
   optional?: boolean;
   /** Rendered as the live portal's "Required when …" note. */
   conditional?: string;
+  /** Officer-side review state, per document — the Review column on the review screen. */
+  reviewStatus: DocReviewStatus;
+  /** The "Add remarks…" field beside each document. */
+  officerRemarks?: string;
+  /** A permanent document re-uploaded this year needs re-verification. */
+  reUploadedThisYear?: boolean;
+}
+
+/**
+ * "Formal notices to the NGO requiring a written explanation. Issued by the SO and above."
+ * Verbatim from the live review screen's Show Cause Notices section.
+ */
+export interface ShowCauseNotice {
+  id: string;
+  issuedBy: RoleId;
+  issuedAt: string;
+  grounds: string;
+  respondByDays: number;
+  response?: string;
+  respondedAt?: string;
 }
 
 export interface SanctionOrder {
@@ -204,6 +238,13 @@ export interface GrantApplication {
   documents: MockDoc[];
   deficiencies: Deficiency[];
   queries: Query[];
+  showCauseNotices: ShowCauseNotice[];
+  /**
+   * Set when PD:ASO records the mandatory certification. The live screen shows this as
+   * "ASO Certified: Yes/No" in the Applicant panel and gates "Certify & Forward to SO" on it.
+   */
+  certifiedAt?: string;
+  certifiedBy?: RoleId;
   sanction?: SanctionOrder;
   inspectionId?: string;
   audit: AuditEntry[];
