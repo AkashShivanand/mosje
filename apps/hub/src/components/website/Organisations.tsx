@@ -73,7 +73,7 @@ const organisations: Organisation[] = [
 export function Organisations() {
   return (
     <section className="bg-surface-muted">
-      <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
+      <div className="sa-container py-12 md:py-16">
         <div className="text-center">
           <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
             Our Organisations

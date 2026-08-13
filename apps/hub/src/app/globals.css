@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "@mosje/design-system/tokens.css";
+/* The estate content container (UX4G 1200/1320) and the .sa-container class.
+   Imported app-wide, not per-component: a page with no SiteHeader still needs it. */
+@import "@mosje/design-system/layout.css";
 
 /* The DS components live outside this app's source tree, so Tailwind's automatic
    source detection never sees them and every utility class they use (e.g.

@@ -24,7 +24,7 @@ export function PersonaPage({ tagline, cards, ...hero }: PersonaPageProps) {
   return (
     <PageLayout {...hero}>
       <section>
-        <div className="mx-auto max-w-[1280px] px-4 py-10 md:py-12">
+        <div className="sa-container py-10 md:py-12">
           <h2 className="mb-8 text-center text-[22px] font-semibold text-ink md:text-[26px]">{tagline}</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {cards.map((card) => {

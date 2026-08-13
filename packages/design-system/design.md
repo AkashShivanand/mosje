@@ -12,7 +12,11 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-12 · System version: v0.18.2 (ICON IS NOW DECORATIVE BY DEFAULT — it
+  Last reviewed: 2026-08-13 · System version: v0.19.0 (THE CONTENT CONTAINER IS UX4G'S TWO-STEP
+  1200/1320 AND `.sa-container` IS THE ONLY WAY TO APPLY IT. Four widths shipped at once and the
+  masthead sat 20px wider each side than the page beneath it; `SiteHeader.maxWidth` is now an
+  override, not a default. New: `container/contentXl`, `ref/breakpoint/desktopXl`.
+  Previously v0.18.2 — ICON IS NOW DECORATIVE BY DEFAULT — it
   sets aria-hidden itself unless given an aria-label, which then makes it role="img". The rule
   was documented but unenforced and was missed at 533 of 718 call sites; the component now
   decides instead of the caller. Do not add aria-hidden to decorative icons. Previously
@@ -639,9 +643,71 @@ for one-offs that no role describes.
 /* Over   */  gap: var(--ds-spacing-lg);     /* "16px, for some reason" */
 ```
 
-**Responsive Layout Grid:**
-- **Desktop (≥ 1024px)**: 12-column grid, max-width `1280px`, `24px` gutters.
-- **Mobile (< 1024px)**: 4-column fluid grid, `16px` gutters.
+**Responsive Layout Grid — `<Grid>` / `<GridItem>`:**
+- **Twelve columns at every breakpoint**, `24px` gutter (`grid/columns`, `grid/gutter`).
+  A child spans *more* of them on a small screen rather than the track count changing —
+  UX4G's model, and Bootstrap's. There is deliberately **no 4-column mobile grid**;
+  the earlier claim of one contradicted `grid/columns`, which has always been 12.
+- Side margin is responsive (`grid/margin/*`): 16 mobile · 24 tablet · 32 desktop.
+
+**Content container — never hardcode a max-width.** Use the `.sa-container` class from
+`@mosje/design-system/layout.css`, which carries the cap *and* the responsive side margin.
+The estate follows **UX4G 3.0's two-step container**: `--sa-container-content` **1200px**,
+widening to `--sa-container-contentXl` **1320px** at `--sa-ref-breakpoint-desktopXl` (1768px).
+`--sa-container-page` is the derived variable that selects between them; bind that when a
+media query is unavailable (an inline style, for instance — it is how `SiteHeader` caps its
+own column).
+
+> A container is a **cap**, not a width. `grid/margin/*` (16 mobile / 24 tablet / 32 desktop)
+> is a **floor** that wins on narrower viewports, so the effective column is
+> `min(container, viewport − 2 × margin)`.
+
+**Page-skeleton tokens (`--sa-layout-*`).** Only genuinely fixed measurements:
+
+| Token | Value | Applies to |
+| --- | --- | --- |
+| `layout/bar/height` | 46 | accessibility bar — fixed |
+| `layout/flag/width` | 33 | flag mark in the bar — fixed |
+| `layout/masthead/minHeight` | 72 | brand row — **minimum only, it hugs** |
+| `layout/chrome/minHeight` | 118 | sticky offsets and scroll anchors **only** |
+| `layout/sidebar/width` | 300 | portal sidebar — fixed |
+
+**Fixed, hug, or fill — decide this before sizing anything.**
+
+| Region | Sizing |
+| --- | --- |
+| Accessibility bar · sidebar width · sidebar item | **Fixed** — a token sets it |
+| Brand row · website nav row · page header · card, panel, band | **Hug** — content sets it; a minimum is allowed, a fixed size is not |
+| Sidebar height · content area | **Fill** — what remains sets it |
+| Content column | **Cap**, then the margin floor |
+
+> **Never size a shell by subtracting a chrome height from the viewport.** The brand row
+> hugs, so its height is not knowable in advance — `h-[calc(100vh-5.75rem)]` is wrong by
+> construction. `AppShell` is a grid whose chrome rows are `auto` and whose body row is
+> `1fr`. `layout/chrome/minHeight` is for sticky offsets, not layout arithmetic.
+
+### Layout components
+
+Primitives compose the content column; templates compose the page. All are presentational —
+no store, no router, no redirect.
+
+| Component | Use it for | Never |
+| --- | --- | --- |
+| `Container` | the centred content column; applies the cap **and** the side margin | adding your own `px-*` — the margin is already there |
+| `Grid` / `GridItem` | page-level column layouts; `span={{ base, md, lg }}` | a simple wrapping row of cards — flex is simpler |
+| `Band` | a website section: full-bleed tone + rhythm around a `Container` | a portal page — portal content is fluid, not banded |
+| `PageHeader` | the title + meta + actions row a portal page opens with | a heading *inside* a page — that is `SectionTitle` |
+| `AppShell` | every signed-in portal page | a login screen — that is `PortalLoginShell` |
+| `SiteLayout` | every public website page | a portal page |
+
+Composition is always **`Band` → `Container` → content**. A bare `Container` where a `Band`
+belongs produces a tint that stops short of the viewport edge.
+>
+> **Changed 13 August 2026.** Four widths shipped simultaneously: UX4G specified 1200,
+> `container/content` said 1280 and nothing consumed it, 22 website section files hardcoded
+> that same 1280 beside it, `SiteHeader` defaulted to 1320, and `PortalLoginShell`'s chrome
+> used 1536. Above 1320px the masthead's column ran 20px wider each side than the page, so
+> the National Emblem did not line up with the content below it.
 
 ---
 
@@ -1731,7 +1797,8 @@ inventing a page-local variant.
 **Rules**:
 - Only one `<h1>` per page.
 - All sections must have an `id` for deep-linking.
-- Content max-width: `1280px`. Prose sections: `max-w-prose` (`65ch`).
+- Content max-width: use `.sa-container` (UX4G 1200 / 1320 — see §1). Never a literal.
+  Prose sections: `max-w-prose` (`65ch`).
 
 ---
 

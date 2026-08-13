@@ -202,7 +202,12 @@ function collectionFor(path, tier) {
   // dimensional scales rather than with `container/*` in Static. That keeps each family whole
   // in one collection, and it is what gives them Space's WIDTH_HEIGHT + GAP scopes — the two
   // properties a designer actually binds a gutter, a page margin or a hit area to.
-  if (head === "grid" || head === "target") return "Space";
+  // `layout/*` joins them for the same reason: a bar height, a sidebar width and a chrome
+  // offset are dimensions a designer binds to WIDTH_HEIGHT. Without this case they emitted to
+  // CSS but fell out of the Figma payload entirely, so the library could only ever have carried
+  // them by hand — which is how `layout/bar/height` and `layout/flag/width` came to exist in
+  // the library with nothing in the build defining them.
+  if (head === "grid" || head === "target" || head === "layout") return "Space";
   if (head === "container") return "Static";
   if (head === "focus" && (rest[0] === "width" || rest[0] === "offset")) return "Static";
   if (head === "icon" && rest[0] === "size") return "Space";

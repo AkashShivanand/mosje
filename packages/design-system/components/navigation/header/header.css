@@ -1,3 +1,7 @@
+/* The navbar's content column must match the page beneath it, so it takes its
+   cap from the same place every other container does. See foundations/layout.css. */
+@import "../../../foundations/layout.css";
+
 /* ============================================================================
    MoSJE / SAMAVESH — Navbar / Header (header.css)
    The SAMAVESH Navbar + shared parts. Token-only — no raw hex.

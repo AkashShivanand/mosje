@@ -49,7 +49,7 @@ const personas: Persona[] = [
 export function RecentDocuments() {
   return (
     <section className="bg-white">
-      <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
+      <div className="sa-container py-12 md:py-16">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-12">
           {/* PART A — Recent Documents */}
           <div className="lg:col-span-3">

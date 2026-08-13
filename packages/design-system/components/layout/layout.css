@@ -1,0 +1,170 @@
+/* ============================================================================
+   SAMAVESH — layout components (Container variants, Grid, Band, AppShell)
+   ============================================================================
+   The content container itself lives in foundations/layout.css, because the
+   navbar needs it without pulling in these components. This file styles what
+   is built on top of it.
+
+   SIZING CONTRACT — see the Layout page in the Figma library:
+     FIXED  a token sets it        (bar height, sidebar width)
+     HUG    its content sets it    (brand row, page header, cards)
+     FILL   what remains sets it   (sidebar height, content area)
+
+   Nothing here computes a height by subtracting chrome from the viewport.
+   ========================================================================== */
+
+@import "../../foundations/layout.css";
+
+/* ---- Container variants ---------------------------------------------------
+   `page` is the default and comes from .sa-container itself. */
+.sa-container--narrow { max-width: var(--sa-container-lg); }
+.sa-container--prose { max-width: 75ch; }
+.sa-container--full { max-width: none; }
+
+/* ---- Grid -----------------------------------------------------------------
+   Twelve columns at every breakpoint, UX4G/Bootstrap's model: a child spans
+   more columns on a small screen rather than the track count changing. */
+.sa-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--sa-grid-cols, 12), minmax(0, 1fr));
+  gap: var(--sa-grid-row-gap, var(--sa-grid-gutter)) var(--sa-grid-gutter);
+}
+
+/* Spans cascade upward: lg falls back to md, md to base. A child with only a
+   base span therefore keeps it at every width, which is the common case. */
+.sa-grid__item { grid-column: span var(--sa-span-base, 12); }
+
+@media (min-width: 768px) {
+  .sa-grid__item { grid-column: span var(--sa-span-md, var(--sa-span-base, 12)); }
+}
+@media (min-width: 1280px) {
+  .sa-grid__item {
+    grid-column: span var(--sa-span-lg, var(--sa-span-md, var(--sa-span-base, 12)));
+  }
+}
+
+/* ---- Band -----------------------------------------------------------------
+   A full-bleed horizontal section. The tone paints edge to edge; the Container
+   inside it holds the content column. */
+.sa-band { width: 100%; }
+
+.sa-band--default { background: var(--sa-bg-neutral-base); }
+.sa-band--muted { background: var(--sa-bg-neutral-subtler); }
+.sa-band--brand { background: var(--sa-bg-brand-primary-base); }
+.sa-band--inverse {
+  background: var(--sa-bg-neutral-inverse);
+  color: var(--sa-text-neutral-inverse);
+}
+
+.sa-band--none { padding-block: 0; }
+.sa-band--s { padding-block: var(--sa-section-s); }
+.sa-band--m { padding-block: var(--sa-section-m); }
+.sa-band--l { padding-block: var(--sa-section-l); }
+
+/* ---- PageHeader -----------------------------------------------------------
+   HUGS. Title, optional meta line, optional actions. Wraps rather than
+   truncating — a scheme name is long and a portal title is not negotiable. */
+.sa-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sa-padding-m);
+}
+.sa-page-header__text { display: flex; flex-direction: column; gap: var(--sa-stack-2xs); }
+.sa-page-header__title {
+  margin: 0;
+  font-size: var(--sa-type-headline-1-size);
+  line-height: var(--sa-type-headline-1-lh);
+  font-weight: 600;
+  color: var(--sa-text-neutral-base);
+}
+.sa-page-header__meta {
+  margin: 0;
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+.sa-page-header__actions { display: flex; flex-wrap: wrap; gap: var(--sa-inline-s); }
+
+/* ---- AppShell -------------------------------------------------------------
+   Chrome rows are `auto`; the body row is `1fr`. This is the whole reason no
+   chrome height is subtracted anywhere: the brand row HUGS its content, so its
+   height is not knowable in advance. */
+.sa-app-shell {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100dvh;
+  background: var(--sa-bg-neutral-subtler);
+}
+
+.sa-app-shell__body {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 0; /* lets a scrolling child shrink inside the 1fr row */
+}
+
+/* The sidebar appears as a column only where there is room for it. Below the
+   tablet anchor it is a drawer instead — never a narrowed column, which would
+   leave the labels unreadable. */
+.sa-app-shell__sidebar { display: none; }
+
+@media (min-width: 768px) {
+  .sa-app-shell__body {
+    grid-template-columns: var(--sa-layout-sidebar-width) minmax(0, 1fr);
+  }
+  .sa-app-shell__sidebar {
+    display: block;
+    border-right: 1px solid var(--sa-border-neutral-subtle);
+    background: var(--sa-bg-neutral-base);
+  }
+}
+
+.sa-app-shell__main {
+  min-width: 0;
+  padding: var(--sa-grid-gutter);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-padding-xl);
+}
+
+/* ---- Pending --------------------------------------------------------------
+   Replaces the "return null while hydrating" pattern each portal reinvented.
+   A blank frame reads as a broken page; a skeleton reads as a loading one. */
+.sa-app-shell__pending { display: flex; flex-direction: column; gap: var(--sa-padding-xl); }
+/* The skeleton's two dimensions come from the padding scale rather than the
+   size scale: `size/*` is Tier 1 and banned in component CSS, and padding/2xl
+   and padding/3xl are exactly 32 and 120. Preferring an exact cross-family
+   token to an inexact same-family one is the estate's rule. */
+.sa-app-shell__pending-bar {
+  height: var(--sa-padding-2xl);
+  border-radius: var(--sa-shape-sm);
+  background: var(--sa-bg-neutral-subtle);
+}
+.sa-app-shell__pending-block {
+  flex: 1;
+  min-height: var(--sa-padding-3xl);
+  border-radius: var(--sa-shape-md);
+  background: var(--sa-bg-neutral-subtle);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sa-app-shell__pending-bar,
+  .sa-app-shell__pending-block { animation: sa-app-shell-pulse 1.6s ease-in-out infinite; }
+}
+
+@keyframes sa-app-shell-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+/* ---- SiteLayout -----------------------------------------------------------
+   Chrome, then a stack of Bands. The main region grows so a short page still
+   pins its footer to the bottom of the viewport. */
+.sa-site-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--sa-bg-neutral-base);
+}
+.sa-site-layout__main { flex: 1; }

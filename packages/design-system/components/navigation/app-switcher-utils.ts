@@ -176,6 +176,16 @@ export const DEFAULT_APPS: AppEntry[] = [
     status: "live",
   },
   {
+    name: "E-Anudaan",
+    abbr: "EA",
+    path: "/portals/e-anudaan",
+    desc: "Grant-in-Aid Management — NGO applications under SHRESHTA, AVYAY, NAPDDR & SMILE through the Programme Division and Integrated Finance Division approval chains",
+    org: "Ministry of Social Justice & Empowerment",
+    group: "Portals",
+    category: "Schemes & scholarships",
+    status: "live",
+  },
+  {
     name: "National Overseas Scholarship",
     abbr: "NO",
     path: "/portals/nos",
