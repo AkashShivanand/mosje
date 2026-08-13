@@ -68,7 +68,7 @@ const platforms: SocialPlatform[] = [
 export function SocialMedia() {
   return (
     <section className="bg-white">
-      <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
+      <div className="sa-container py-12 md:py-16">
         <div className="text-center">
           <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
             Explore our Social Media Platforms

@@ -32,7 +32,7 @@ export function LatestUpdates() {
 
   return (
     <section className="bg-primary text-white">
-      <div className="mx-auto flex h-[72px] max-w-[1280px] items-center gap-4 px-4">
+      <div className="sa-container flex h-[72px] items-center gap-4">
         {/* Label pill */}
         <div className="flex shrink-0 items-center gap-2 rounded-md bg-white px-3 py-2 text-ink">
           <Image src="/website/images/updates.png" alt="" width={20} height={20} className="h-5 w-5" />

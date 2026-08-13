@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.19.0",
+    date: "2026-08-13",
+    current: true,
+    changes: [
+      { kind: "Fixed", text: "THE MASTHEAD NO LONGER MISALIGNS WITH THE PAGE. SiteHeader defaulted to a hardcoded maxWidth of 1320 while all 22 website section files capped at 1280, so above a 1320px viewport the header's content column ran 20px wider on each side than the content beneath it and the National Emblem did not line up. Verified fixed in the running hub: header and page both measure 1200 from x=150 at a 1500px viewport, and both measure 1320 from x=240 at 1800px" },
+      { kind: "Changed", text: "THE ESTATE ADOPTS UX4G 3.0'S TWO-STEP CONTENT CONTAINER — 1200 at desktop, 1320 at desktop XL, per UX4G's 'Grid and layout' section. Four widths had been shipping at once: UX4G specified 1200, container/content said 1280 with no consumer anywhere, 22 files hardcoded that same 1280 as a literal beside it, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. container/content is now 1200 and container/contentXl (1320) is new" },
+      { kind: "Added", text: "ref/breakpoint/desktopXl (1768) — the anchor where the container widens. UX4G names the desktop-XL step but publishes no breakpoint for it, so this takes the estate's own desktop-XL design frame rather than inventing a number. It is NOT part of the type curve: clamp() still interpolates between mobile and desktop and tops out at 1280, so no glyph resizes" },
+      { kind: "Added", text: "foundations/layout.css ships .sa-container — the centred content column, with the cap AND the responsive side margin (grid/margin 16/24/32) in one place. It replaced 22 hand-copied `mx-auto max-w-[1280px] px-4` strings. The one unavoidable literal is the 1768px media-query threshold, because a CSS media query cannot read a custom property; it is duplicated FROM ref/breakpoint/desktopXl and says so" },
+      { kind: "Changed", text: "SiteHeader's maxWidth prop is now an override rather than a default. Left unset it binds --sa-container-page, the same variable the page content uses, which is what makes the two columns provably identical rather than coincidentally equal" },
+    ],
+  },
+  {
     version: "v0.18.2",
     date: "2026-08-12",
-    current: true,
     changes: [
       { kind: "Fixed", text: "ICON IS NOW DECORATIVE BY DEFAULT, which closes an accessibility gap at 533 of 718 call sites. A Material Symbols glyph is real text content, so an unmarked <Icon name=\"arrow_back\" /> is announced by a screen reader as the stray word \"arrow back\". The Iconography page has always stated the rule — every icon is either hidden from assistive technology or given a label, with no third option — but as an unenforced convention depending on 533 separate acts of memory, that is what it converged to. The component now decides: aria-label given means meaningful, so role=\"img\" and announced; otherwise aria-hidden. An explicit aria-hidden={false} still wins. Editing 533 call sites would have fixed today's instances and none of tomorrow's" },
       { kind: "Changed", text: "THE ICONOGRAPHY DOCS PAGE IS SYNCED WITH FIGMA — four sections against Figma's eight, so the two surfaces documenting one system said different things. It now mirrors Icons — Documentation section for section: 01 How it works, 02 The catalogue, 03 Sizes, 04 Weight, 05 Colour, 06 Bespoke marks, 07 Accessibility, 08 Handoff. The prose is the Figma prose; the numbers come from code" },

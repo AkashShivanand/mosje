@@ -590,6 +590,7 @@
   --sa-ref-breakpoint-mobile: 360px;
   --sa-ref-breakpoint-tablet: 768px;
   --sa-ref-breakpoint-desktop: 1280px;
+  --sa-ref-breakpoint-desktopXl: 1768px;
   --sa-density-control-height: 40px;
   --sa-density-control-padding-x: 16px;
   --sa-density-control-padding-y: 8px;
@@ -825,7 +826,8 @@
   --sa-container-md: 720px;
   --sa-container-lg: 960px;
   --sa-container-xl: 1140px;
-  --sa-container-content: 1280px;
+  --sa-container-content: 1200px;
+  --sa-container-contentXl: 1320px;
   --sa-grid-columns: 12;
   --sa-grid-gutter: 24px;
   --sa-grid-margin-mobile: 16px;

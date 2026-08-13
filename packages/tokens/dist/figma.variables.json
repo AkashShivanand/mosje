@@ -38,8 +38,8 @@
       "existing": 8
     },
     "Static": {
-      "total": 46,
-      "new": 0,
+      "total": 48,
+      "new": 2,
       "existing": 46
     }
   },
@@ -22199,6 +22199,27 @@
           }
         },
         {
+          "name": "ref/breakpoint/desktopXl",
+          "path": "breakpoint/desktopXl",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "FLOAT",
+              "value": 1768,
+              "unit": "px"
+            }
+          },
+          "description": "The fourth anchor, added 13 August 2026 for UX4G's two-step content container (1200px desktop, 1320px desktop XL). UX4G names the step but publishes no breakpoint for it, so this takes the value from the estate's own desktop-XL design frame rather than inventing one. It is NOT part of the type curve: `clamp()` still interpolates between mobile and desktop and tops out at 1280, so adding this anchor does not resize a single glyph. It exists solely to say where the container widens. Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.",
+          "codeSyntax": {
+            "WEB": "var(--sa-ref-breakpoint-desktopXl)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "ref",
+            "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
           "name": "focus/width",
           "path": "focus/width",
           "type": "FLOAT",
@@ -22331,15 +22352,36 @@
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 1280,
+              "value": 1200,
               "unit": "px"
             }
           },
-          "description": "Use as the max-width of page content (1280px). This is mandated estate-wide — do not set a different content width per page.",
+          "description": "The desktop content cap. Changed from 1280px to UX4G 3.0's published 1200px on 13 August 2026 ('Grid and layout': max content width 1200px desktop, 1320px desktop XL). Until then the estate ran FOUR widths at once — this token said 1280 and nothing consumed it, 22 website section files hardcoded the same 1280 as a literal, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. The visible defect was that above 1320px the masthead's content ran 20px wider each side than the page beneath it, so the National Emblem did not line up with the content column. At the 1440 design frame 1200 leaves a 120px margin either side, comfortably clear of the 32px `grid/margin/desktop` floor.",
           "codeSyntax": {
             "WEB": "var(--sa-container-content)"
           },
           "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "container/contentXl",
+          "path": "container/contentXl",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "FLOAT",
+              "value": 1320,
+              "unit": "px"
+            }
+          },
+          "description": "The desktop-XL content cap, applied from `breakpoint/desktopXl` (1768px) upward. Do NOT apply it below that: 1320 inside a 1440 viewport leaves only 60px either side, which is the cramped result the 13 August 2026 change removed. It coincides with Bootstrap's container-xxl, but the anchor here is our own desktop-XL frame, not Bootstrap's 1400px tier.",
+          "codeSyntax": {
+            "WEB": "var(--sa-container-contentXl)"
+          },
+          "status": "new",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"

@@ -897,7 +897,8 @@ export const tokens = {
   "breakpoint": {
     "mobile": "360px",
     "tablet": "768px",
-    "desktop": "1280px"
+    "desktop": "1280px",
+    "desktopXl": "1768px"
   },
   "density": {
     "control": {
@@ -1271,7 +1272,8 @@ export const tokens = {
     "md": "720px",
     "lg": "960px",
     "xl": "1140px",
-    "content": "1280px"
+    "content": "1200px",
+    "contentXl": "1320px"
   },
   "grid": {
     "columns": 12,

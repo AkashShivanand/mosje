@@ -1,0 +1,65 @@
+/* ============================================================================
+   SAMAVESH — page container
+   ============================================================================
+   UX4G 3.0 ("Grid and layout") specifies a two-step content container:
+   1200px at desktop, 1320px at desktop XL. Before 13 August 2026 nothing in the
+   estate implemented it. Four widths shipped at once — SiteHeader defaulted to
+   1320, 22 website section files hardcoded 1280, PortalLoginShell's chrome used
+   1536, and the 1200 from the standard existed only on paper. The visible
+   symptom was that above 1320px the masthead's content ran 20px wider on each
+   side than the page beneath it, so the National Emblem did not line up with
+   the content column.
+
+   `--sa-layout-container` is the single answer to "how wide is the content".
+   Bind to it; never re-state a max-width.
+
+   NOTE ON THE LITERAL: a CSS media query cannot read a custom property, so the
+   1768px threshold below cannot be written as var(--sa-ref-breakpoint-desktopXl).
+   It is the one value here that must be duplicated, and it is duplicated FROM
+   that token — if the token moves, this moves with it. Media-query breakpoints
+   are advisory rather than gated under .claude/rules/documentation-ds-linkage.md
+   for exactly this reason.
+
+   Requires tokens.css.
+   ========================================================================== */
+
+/* --sa-container-page is DERIVED, not a token: it selects between the two real
+   tokens (--sa-container-content / --sa-container-contentXl) at the desktop-XL
+   anchor. It exists because an inline style cannot carry a media query, and
+   SiteHeader sets its cap through one. Do not add it to the token source. */
+:root {
+  --sa-container-page: var(--sa-container-content);
+}
+
+@media (min-width: 1768px) {
+  :root {
+    --sa-container-page: var(--sa-container-contentXl);
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   .sa-container — the centred content column.
+
+   The max-width is a CAP and the side padding is a FLOOR: on a viewport
+   narrower than the cap plus two margins, the padding is what keeps content off
+   the edge. That is why this sets both, and why a caller must not add its own
+   `px-*`. Effective width is min(container, viewport - 2 x margin).
+   -------------------------------------------------------------------------- */
+.sa-container {
+  width: 100%;
+  max-width: var(--sa-container-page);
+  margin-inline: auto;
+  padding-inline: var(--sa-grid-margin-mobile);
+}
+
+@media (min-width: 768px) {
+  .sa-container {
+    padding-inline: var(--sa-grid-margin-tablet);
+  }
+}
+
+@media (min-width: 1280px) {
+  .sa-container {
+    padding-inline: var(--sa-grid-margin-desktop);
+  }
+}

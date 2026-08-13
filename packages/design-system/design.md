@@ -12,7 +12,11 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-12 · System version: v0.18.2 (ICON IS NOW DECORATIVE BY DEFAULT — it
+  Last reviewed: 2026-08-13 · System version: v0.19.0 (THE CONTENT CONTAINER IS UX4G'S TWO-STEP
+  1200/1320 AND `.sa-container` IS THE ONLY WAY TO APPLY IT. Four widths shipped at once and the
+  masthead sat 20px wider each side than the page beneath it; `SiteHeader.maxWidth` is now an
+  override, not a default. New: `container/contentXl`, `ref/breakpoint/desktopXl`.
+  Previously v0.18.2 — ICON IS NOW DECORATIVE BY DEFAULT — it
   sets aria-hidden itself unless given an aria-label, which then makes it role="img". The rule
   was documented but unenforced and was missed at 533 of 718 call sites; the component now
   decides instead of the caller. Do not add aria-hidden to decorative icons. Previously
@@ -640,8 +644,26 @@ for one-offs that no role describes.
 ```
 
 **Responsive Layout Grid:**
-- **Desktop (≥ 1024px)**: 12-column grid, max-width `1280px`, `24px` gutters.
+- **Desktop (≥ 1024px)**: 12-column grid, `24px` gutters (`grid/columns`, `grid/gutter`).
 - **Mobile (< 1024px)**: 4-column fluid grid, `16px` gutters.
+
+**Content container — never hardcode a max-width.** Use the `.sa-container` class from
+`@mosje/design-system/layout.css`, which carries the cap *and* the responsive side margin.
+The estate follows **UX4G 3.0's two-step container**: `--sa-container-content` **1200px**,
+widening to `--sa-container-contentXl` **1320px** at `--sa-ref-breakpoint-desktopXl` (1768px).
+`--sa-container-page` is the derived variable that selects between them; bind that when a
+media query is unavailable (an inline style, for instance — it is how `SiteHeader` caps its
+own column).
+
+> A container is a **cap**, not a width. `grid/margin/*` (16 mobile / 24 tablet / 32 desktop)
+> is a **floor** that wins on narrower viewports, so the effective column is
+> `min(container, viewport − 2 × margin)`.
+>
+> **Changed 13 August 2026.** Four widths shipped simultaneously: UX4G specified 1200,
+> `container/content` said 1280 and nothing consumed it, 22 website section files hardcoded
+> that same 1280 beside it, `SiteHeader` defaulted to 1320, and `PortalLoginShell`'s chrome
+> used 1536. Above 1320px the masthead's column ran 20px wider each side than the page, so
+> the National Emblem did not line up with the content below it.
 
 ---
 
@@ -1731,7 +1753,8 @@ inventing a page-local variant.
 **Rules**:
 - Only one `<h1>` per page.
 - All sections must have an `id` for deep-linking.
-- Content max-width: `1280px`. Prose sections: `max-w-prose` (`65ch`).
+- Content max-width: use `.sa-container` (UX4G 1200 / 1320 — see §1). Never a literal.
+  Prose sections: `max-w-prose` (`65ch`).
 
 ---
 
