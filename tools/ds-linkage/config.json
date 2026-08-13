@@ -1,16 +1,16 @@
 {
   "note": [
     "Scopes are checked in the order listed. `gated: true` means the scope runs in",
-    "by `--all` but does not fail the build yet \u2014 used while a surface is being",
+    "by `--all` but does not fail the build yet — used while a surface is being",
     "All scopes are now gated. `gated: false` remains supported for bringing a NEW",
     "surface up to the rule without blocking the gate on day one.",
     "",
     "borderWidthLiterals: the rule's property table covers fills, strokes, padding,",
-    "gaps and radii \u2014 it does not cover stroke WIDTH. A hairline is a constant, and",
+    "gaps and radii — it does not cover stroke WIDTH. A hairline is a constant, and",
     "the only token for it is `--sa-ref-border-width-sm`, a REF token that product",
-    "code is not supposed to consume directly. So `1px solid var(--sa-border-\u2026)` is",
+    "code is not supposed to consume directly. So `1px solid var(--sa-border-…)` is",
     "accepted: the COLOUR, which is what drifts, is bound. This is a recorded",
-    "decision, not an oversight \u2014 see docs/guidelines/README.md.",
+    "decision, not an oversight — see docs/guidelines/README.md.",
     "",
     "allowedLengths: `0px` is not a value, it is the absence of one.",
     "",
@@ -34,13 +34,23 @@
       "gated": true
     },
     {
-      "name": "design-system package \u2014 components",
+      "name": "design-system package — components",
       "path": "packages/design-system/components",
       "gated": true
     },
     {
-      "name": "design-system package \u2014 foundations",
+      "name": "design-system package — foundations",
       "path": "packages/design-system/foundations",
+      "gated": true
+    },
+    {
+      "name": "e-anudaan portal — routes (apps/hub/src/app/portals/e-anudaan)",
+      "path": "apps/hub/src/app/portals/e-anudaan",
+      "gated": true
+    },
+    {
+      "name": "e-anudaan portal — components (apps/hub/src/components/e-anudaan)",
+      "path": "apps/hub/src/components/e-anudaan",
       "gated": true
     }
   ],

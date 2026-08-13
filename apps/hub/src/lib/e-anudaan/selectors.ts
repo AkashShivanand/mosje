@@ -95,9 +95,15 @@ export function statusTone(status: AppStatus): "warning" | "success" | "danger" 
   return "info";
 }
 
-/** Resolve the role a `/dashboard/sm2/<key>/…` segment belongs to. `jspd` is PD:JS. */
+/**
+ * Resolve the role a `/dashboard/sm2/<key>/…` segment belongs to.
+ *
+ * Three special cases, all from the live path shapes: `jspd` is PD:JS, `pd` is the Programme
+ * Director (NOT a grade), and `ifd<grade>` is the Integrated Finance Division.
+ */
 export function roleForSchemeKey(key: string): RoleDef | undefined {
   if (key === "jspd") return ROLES["pd-js"];
+  if (key === "pd") return ROLES["programme-director"];
   if (key.startsWith("ifd")) {
     const g = key.slice(3);
     return ROLES[`finance-${g}` as RoleId];

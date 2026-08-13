@@ -1,18 +1,31 @@
 /* ── E-Anudaan portal theme ────────────────────────────────────────────────
-   The hub's globals.css declares the utility NAMES; this block binds
-   E-Anudaan's VALUES to its subtree. Only keys where E-Anudaan differs from
-   the hub-wide default are listed.
+   DELIBERATELY EMPTY OF OVERRIDES.
 
-   The live portal's palette is navy-family and already close to the estate's:
-   #003366 is the SAMAVESH `navy` token verbatim, with #1a4d80 and #1e3a6e as
-   its companions. So this file is deliberately short — most of the palette
-   already resolves correctly without an override. */
+   E-Anudaan is the estate's reference portal for design-system alignment: it
+   renders entirely from SAMAVESH semantics, with no per-portal colour, spacing
+   or radius values of its own. That is why this file declares no `--portal-*`
+   slots — every one it could set already resolves to the right DS token in
+   `apps/hub/src/app/globals.css`:
+
+     --color-ink            → var(--sa-color-text-default)
+     --color-ink-muted      → var(--sa-color-text-muted)
+     --color-surface-muted  → var(--sa-bg-neutral-subtler)
+     --color-border         → var(--sa-border-neutral-subtle)
+
+   An earlier version pinned those four slots to the LIVE VENDOR's hexes
+   (#1e2124, #4b5563, #f8f9fa, #dee2e6), transcribed from the captures. That was
+   backwards: the clone's brief is to rebuild E-Anudaan ON the design system, not
+   to reproduce the Mantine build's palette. Copying the vendor's greys made the
+   portal drift from the DS by construction — when a token moves, a hardcoded
+   lookalike silently stops matching.
+
+   `tools/ds-linkage/check.mjs` gates this file, so a raw value reintroduced here
+   fails the build rather than being rediscovered by audit.
+
+   If E-Anudaan ever genuinely needs a value the DS does not model, add the slot
+   here WITH a comment saying why the DS token is wrong for this portal — the
+   same standard `.claude/rules/documentation-ds-linkage.md` sets for a specimen. */
+
 [data-portal="e-anudaan"] {
-  /* DS-token names E-Anudaan redefines (the hub keeps its own value outside
-     this scope). Values transcribed from the live dev portal's computed CSS —
-     see docs/research/eanudaan-admin-dev.mosje.in/INVENTORY.md. */
-  --portal-ink: #1e2124;
-  --portal-ink-muted: #4b5563;
-  --portal-surface-muted: #f8f9fa;
-  --portal-border: #dee2e6;
+  /* No overrides. See above. */
 }
