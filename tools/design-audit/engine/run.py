@@ -41,12 +41,15 @@ def main():
     ap.add_argument("--project", required=True)
     ap.add_argument("--phase", default="analyze+report",
                     choices=["capture", "analyze", "report", "analyze+report", "all"])
-    ap.add_argument("--role", default=None, help="capture only this role")
+    ap.add_argument("--role", default=None, help="capture only this role (merged into the "
+                    "existing manifest — other roles' entries are preserved)")
+    ap.add_argument("--allow-empty", action="store_true",
+                    help="permit a full capture that captured nothing to overwrite a non-empty manifest")
     a = ap.parse_args()
     ph = a.phase
     preflight(need_browser=ph in ("capture", "all"))
     if ph in ("capture", "all"):
-        print("== PHASE: capture =="); CAP.run(a.project, a.role)
+        print("== PHASE: capture =="); CAP.run(a.project, a.role, a.allow_empty)
     if ph in ("analyze", "analyze+report", "all"):
         print("== PHASE: analyze =="); AN.run(a.project)
     if ph in ("report", "analyze+report", "all"):

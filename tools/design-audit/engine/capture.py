@@ -4,7 +4,13 @@ capture every screen in the same context — sessionStorage-safe), also persisti
 storageState for fast re-runs. Per screen: neutralise inner scroll -> full-height
 screenshot normalised to the config width, + structured computed-CSS element rows.
 
-Reusable across any project — reads roles/auth/routes from the config only."""
+Reusable across any project — reads roles/auth/routes from the config only.
+
+Manifest contract (`captures/_captured.json`): a `--role X` run MERGES into the existing
+manifest (rows for that role's slugs are replaced, every other role's rows are preserved),
+and a full run that captured nothing refuses to overwrite a non-empty manifest without
+`--allow-empty`. The manifest is the only record of the captured SET — the PNG/JSON files
+survive a bad write, the set does not."""
 import json, os, struct, subprocess, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import config as C
@@ -327,9 +333,32 @@ def capture_role(pg, role, cfg, paths):
             print(f"  ! {slug} extract failed: {str(e)[:60]}", flush=True)
     return captured
 
-def run(project, only_role=None):
+def merge_manifest(existing, fresh):
+    """Replace rows whose `slug` was re-captured, preserving position, and append the rest.
+
+    A partial capture (`--role X`) must never speak for the roles it did not visit.
+    """
+    # A hand-rebuilt manifest row may be missing `slug` — keep it rather than crashing on it.
+    by_slug = {row["slug"]: row for row in fresh if row.get("slug")}
+    merged, seen = [], set()
+    for row in existing:
+        slug = row.get("slug")
+        if slug in by_slug:
+            merged.append(by_slug[slug]); seen.add(slug)
+        else:
+            merged.append(row)
+    merged += [row for row in fresh if row.get("slug") not in seen]
+    return merged
+
+def run(project, only_role=None, allow_empty=False):
     cfg, paths = C.load(project)
     auth = cfg["live"]["auth"]
+    mpath = os.path.join(paths["captures"], "_captured.json")
+    try:
+        existing = json.load(open(mpath)) if os.path.exists(mpath) else []
+    except Exception as e:
+        print(f"!! could not read existing manifest ({str(e)[:80]}) — treating it as empty", flush=True)
+        existing = []
     manifest = []
     with sync_playwright() as p:
         b = p.chromium.launch(channel="chrome", headless=True)
@@ -361,15 +390,38 @@ def run(project, only_role=None):
                 print(f"[{role['name']}] ROLE ABORTED: {str(e)[:120]}", flush=True)
         try: b.close()
         except Exception: pass
-    json.dump(manifest, open(os.path.join(paths["captures"], "_captured.json"), "w"), indent=2)
-    print(f"CAPTURED {len(manifest)} screens", flush=True)
-    return manifest
+    # NEVER let a partial run speak for the whole manifest. A `--role X` retry that captures
+    # nothing used to truncate `_captured.json` to `[]`, silently discarding every other role
+    # (this really happened: 90 entries across 12 roles, wiped by one 0-screen retry). The PNG +
+    # JSON files survive in captures/live/, but the manifest is the only record of the set.
+    if only_role:
+        out = merge_manifest(existing, manifest)
+        if not manifest:
+            print(f"[{only_role}] captured 0 screens — manifest left untouched "
+                  f"({len(existing)} entries preserved)", flush=True)
+    else:
+        out = manifest
+        if not out and existing and not allow_empty:
+            print(f"!! REFUSING to write an empty manifest over {len(existing)} existing entries. "
+                  f"Nothing was captured — fix the run, or pass --allow-empty to wipe it deliberately.",
+                  flush=True)
+            return existing
+        if existing and len(out) < len(existing):
+            dropped = sorted({r.get("slug") or "?" for r in existing} - {r.get("slug") or "?" for r in out})
+            print(f"!! manifest SHRANK {len(existing)} -> {len(out)}: {len(dropped)} slug(s) no longer "
+                  f"captured (aborted roles?): {dropped[:8]}{' …' if len(dropped) > 8 else ''}", flush=True)
+
+    json.dump(out, open(mpath, "w"), indent=2)
+    print(f"CAPTURED {len(manifest)} screens (manifest now {len(out)})", flush=True)
+    return out
 
 if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument("--project", required=True); ap.add_argument("--role", default=None)
-    a = ap.parse_args(); run(a.project, a.role)
+    ap.add_argument("--allow-empty", action="store_true",
+                    help="permit a full run that captured nothing to overwrite a non-empty manifest")
+    a = ap.parse_args(); run(a.project, a.role, a.allow_empty)
 
 
 def audit_capture_integrity(paths, verbose=True):
