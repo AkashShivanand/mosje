@@ -583,6 +583,18 @@ export function buildSeed(): {
     );
   }
 
+  // Ageing must be recomputed AFTER the replay. `applyAction` resets ageingDays to 0 on every
+  // transition — correct at runtime, since a file that just moved has been with its new holder
+  // for no time at all — but it means a seeded file would always read as 0 days old and the
+  // "Pending — Ageing" panel would be empty on every dashboard. Derive it from the last audit
+  // entry instead, which is when the file actually arrived where it now sits.
+  for (const app of apps) {
+    const arrivedAt = app.audit[app.audit.length - 1]?.at ?? app.updatedAt;
+    const days = Math.round((Date.parse(SEED_NOW) - Date.parse(arrivedAt)) / DAY);
+    app.ageingDays = Math.max(days, 0);
+    app.updatedAt = arrivedAt;
+  }
+
   // Roll NGO aggregates up from the applications rather than inventing them.
   const ngos = ngoPool.map((ngo) => {
     const mine = apps.filter((a) => a.ngoId === ngo.id);
