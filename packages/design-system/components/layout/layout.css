@@ -76,7 +76,7 @@
   margin: 0;
   font-size: var(--sa-type-headline-1-size);
   line-height: var(--sa-type-headline-1-lh);
-  font-weight: var(--sa-ref-font-weight-semibold);
+  font-weight: 600;
   color: var(--sa-text-neutral-base);
 }
 .sa-page-header__meta {
@@ -115,7 +115,7 @@
   }
   .sa-app-shell__sidebar {
     display: block;
-    border-right: var(--sa-ref-border-width-sm) solid var(--sa-border-neutral-subtle);
+    border-right: 1px solid var(--sa-border-neutral-subtle);
     background: var(--sa-bg-neutral-base);
   }
 }
@@ -132,14 +132,18 @@
    Replaces the "return null while hydrating" pattern each portal reinvented.
    A blank frame reads as a broken page; a skeleton reads as a loading one. */
 .sa-app-shell__pending { display: flex; flex-direction: column; gap: var(--sa-padding-xl); }
+/* The skeleton's two dimensions come from the padding scale rather than the
+   size scale: `size/*` is Tier 1 and banned in component CSS, and padding/2xl
+   and padding/3xl are exactly 32 and 120. Preferring an exact cross-family
+   token to an inexact same-family one is the estate's rule. */
 .sa-app-shell__pending-bar {
-  height: var(--sa-ref-size-32);
+  height: var(--sa-padding-2xl);
   border-radius: var(--sa-shape-sm);
   background: var(--sa-bg-neutral-subtle);
 }
 .sa-app-shell__pending-block {
   flex: 1;
-  min-height: var(--sa-ref-size-120);
+  min-height: var(--sa-padding-3xl);
   border-radius: var(--sa-shape-md);
   background: var(--sa-bg-neutral-subtle);
 }
