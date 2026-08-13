@@ -46,6 +46,7 @@
    `px-*`. Effective width is min(container, viewport - 2 x margin).
    -------------------------------------------------------------------------- */
 .sa-container {
+  box-sizing: border-box;
   width: 100%;
   max-width: var(--sa-container-page);
   margin-inline: auto;

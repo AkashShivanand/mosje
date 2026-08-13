@@ -2310,13 +2310,17 @@
     "xl": {
       "$value": "1140px"
     },
+    "2xl": {
+      "$value": "1320px",
+      "$description": "Completes UX4G's container ladder, which is Bootstrap's: 540 / 720 / 960 / 1140 / 1320. It was the one step missing here, so `contentXl` had to restate the literal; it now aliases this."
+    },
     "content": {
       "$value": "1200px",
       "$description": "The desktop content cap. Changed from 1280px to UX4G 3.0's published 1200px on 13 August 2026 ('Grid and layout': max content width 1200px desktop, 1320px desktop XL). Until then the estate ran FOUR widths at once — this token said 1280 and nothing consumed it, 22 website section files hardcoded the same 1280 as a literal, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. The visible defect was that above 1320px the masthead's content ran 20px wider each side than the page beneath it, so the National Emblem did not line up with the content column. At the 1440 design frame 1200 leaves a 120px margin either side, comfortably clear of the 32px `grid/margin/desktop` floor."
     },
     "contentXl": {
-      "$value": "1320px",
-      "$description": "The desktop-XL content cap, applied from `breakpoint/desktopXl` (1768px) upward. Do NOT apply it below that: 1320 inside a 1440 viewport leaves only 60px either side, which is the cramped result the 13 August 2026 change removed. It coincides with Bootstrap's container-xxl, but the anchor here is our own desktop-XL frame, not Bootstrap's 1400px tier."
+      "$value": "{container.2xl}",
+      "$description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages; Bootstrap — whose ladder UX4G's is — engages `container-xxl` at 1400, so that is the anchor."
     }
   },
   "grid": {

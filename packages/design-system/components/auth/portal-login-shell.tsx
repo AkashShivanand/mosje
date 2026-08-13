@@ -21,6 +21,9 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+// The chrome rows use the estate content container, so the emblem lines up with
+// the same column every other page uses. Previously max-w-screen-2xl (1536).
+import "../../foundations/layout.css";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -87,7 +90,7 @@ export function PortalLoginShell({
       {/* ── Utility bar ─────────────────────────────────────────────────────── */}
       <div style={{ background: "var(--sa-bg-brand-primary-boldest)", color: "var(--sa-on-bg-brand-primary-boldest)" }}>
         <div
-          className="mx-auto flex max-w-screen-2xl items-center justify-between px-4 py-1.5"
+          className="sa-container flex items-center justify-between py-1.5"
         >
           {/* No flag emoji: 🇮🇳 falls back to the letters "IN" on Windows and
               several Android builds, so it renders inconsistently on a
@@ -157,7 +160,7 @@ export function PortalLoginShell({
 
       {/* ── Brand header ────────────────────────────────────────────────────── */}
       <div style={{ background: "var(--sa-bg-neutral-base)", borderBottom: "1px solid var(--sa-border-neutral-subtle)" }}>
-        <div className="mx-auto flex max-w-screen-2xl items-center justify-between px-4 py-3">
+        <div className="sa-container flex items-center justify-between py-3">
           {/* Left: National Emblem + ministry hierarchy */}
           <div className="flex items-center gap-3">
             <img src={emblemSrc} alt="National Emblem of India" className="h-14 w-auto" />

@@ -643,9 +643,12 @@ for one-offs that no role describes.
 /* Over   */  gap: var(--ds-spacing-lg);     /* "16px, for some reason" */
 ```
 
-**Responsive Layout Grid:**
-- **Desktop (≥ 1024px)**: 12-column grid, `24px` gutters (`grid/columns`, `grid/gutter`).
-- **Mobile (< 1024px)**: 4-column fluid grid, `16px` gutters.
+**Responsive Layout Grid — `<Grid>` / `<GridItem>`:**
+- **Twelve columns at every breakpoint**, `24px` gutter (`grid/columns`, `grid/gutter`).
+  A child spans *more* of them on a small screen rather than the track count changing —
+  UX4G's model, and Bootstrap's. There is deliberately **no 4-column mobile grid**;
+  the earlier claim of one contradicted `grid/columns`, which has always been 12.
+- Side margin is responsive (`grid/margin/*`): 16 mobile · 24 tablet · 32 desktop.
 
 **Content container — never hardcode a max-width.** Use the `.sa-container` class from
 `@mosje/design-system/layout.css`, which carries the cap *and* the responsive side margin.
@@ -680,8 +683,25 @@ own column).
 
 > **Never size a shell by subtracting a chrome height from the viewport.** The brand row
 > hugs, so its height is not knowable in advance — `h-[calc(100vh-5.75rem)]` is wrong by
-> construction. `AppShell` lays the shell out as three grid rows, `auto · auto · 1fr`.
-> `layout/chrome/minHeight` is for sticky offsets, not layout arithmetic.
+> construction. `AppShell` is a grid whose chrome rows are `auto` and whose body row is
+> `1fr`. `layout/chrome/minHeight` is for sticky offsets, not layout arithmetic.
+
+### Layout components
+
+Primitives compose the content column; templates compose the page. All are presentational —
+no store, no router, no redirect.
+
+| Component | Use it for | Never |
+| --- | --- | --- |
+| `Container` | the centred content column; applies the cap **and** the side margin | adding your own `px-*` — the margin is already there |
+| `Grid` / `GridItem` | page-level column layouts; `span={{ base, md, lg }}` | a simple wrapping row of cards — flex is simpler |
+| `Band` | a website section: full-bleed tone + rhythm around a `Container` | a portal page — portal content is fluid, not banded |
+| `PageHeader` | the title + meta + actions row a portal page opens with | a heading *inside* a page — that is `SectionTitle` |
+| `AppShell` | every signed-in portal page | a login screen — that is `PortalLoginShell` |
+| `SiteLayout` | every public website page | a portal page |
+
+Composition is always **`Band` → `Container` → content**. A bare `Container` where a `Band`
+belongs produces a tint that stops short of the viewport edge.
 >
 > **Changed 13 August 2026.** Four widths shipped simultaneously: UX4G specified 1200,
 > `container/content` said 1280 and nothing consumed it, 22 website section files hardcoded

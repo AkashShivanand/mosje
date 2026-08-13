@@ -2464,7 +2464,7 @@
     },
     "desktopXl": {
       "$value": "1768px",
-      "$description": "The fourth anchor, added 13 August 2026 for UX4G's two-step content container (1200px desktop, 1320px desktop XL). UX4G names the step but publishes no breakpoint for it, so this takes the value from the estate's own desktop-XL design frame rather than inventing one. It is NOT part of the type curve: `clamp()` still interpolates between mobile and desktop and tops out at 1280, so adding this anchor does not resize a single glyph. It exists solely to say where the container widens."
+      "$description": "The fourth anchor — where the content cap widens from `container/content` (1200) to `container/contentXl` (1320). UX4G states the two widths as guidance (\"max content width: 1200px desktop, 1320px desktop XL\") without publishing a breakpoint, so the anchor comes from the estate's own viewport ladder, where desktop is 1440 and desktop-XL is 1768. Bootstrap's `container-xxl` engages at 1400 and was rejected for this: at 1400 the 1440 design frame would take the 1320 cap, contradicting the 1200-at-desktop guidance and the website Handoff, which shows the wide margin of a 1200 column at 1440. UX4G's Bootstrap CONTAINER LADDER is a separate thing and is kept faithfully as `container/sm`…`container/2xl`; this token governs the CONTENT CAP only. Not part of the type curve either — `clamp()` still tops out at 1280, so this anchor resizes no glyph."
     }
   }
 }
