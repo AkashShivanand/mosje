@@ -178,6 +178,13 @@ export const GROUP = new Set([
   // `chart/grid` (a gridline colour); they are different objects and RULE 2 keeps them apart by
   // position, since a colour role takes a family in position 2.
   "grid",
+  // `layout` is PAGE-SKELETON geometry — the fixed measurements a shell needs (bar height,
+  // sidebar width), as distinct from `grid`, which describes the column system inside it, and
+  // from `container`, which is the content cap. The name matches the published Figma library,
+  // which already carries `layout/bar/height` and `layout/flag/width`, so the projection stays
+  // reversible. Only measurements that are genuinely FIXED belong here: anything that sizes to
+  // its content is a hug in the component, not a token.
+  "layout",
   // `target` is the POINTER TARGET, and it is a group rather than a size step because the
   // number alone is meaningless: 24, 44 and 48 each come from a different authority, and a
   // token that does not say which one is being met cannot be audited against any of them.

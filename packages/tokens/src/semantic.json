@@ -2344,6 +2344,40 @@
       }
     }
   },
+  "layout": {
+    "$description": "Page-skeleton geometry — the measurements a shell needs that do NOT come from its content. `grid/*` describes the column system, `container/*` caps the content column, and this group holds the chrome around them. Only genuinely fixed values belong here. A masthead, a page header and a sidebar's own height all size to what they contain, so they are hugs in the component and carry at most a minimum here; a shell must never be laid out by subtracting a hardcoded chrome height. Measured from MoSJE-Portal--Handoff- node 2309:14405, a native 1440 x 1068 frame.",
+    "$type": "dimension",
+    "bar": {
+      "height": {
+        "$value": "46px",
+        "$description": "The government accessibility bar. Genuinely fixed: it carries one row of controls at a known size, in every surface and every locale."
+      }
+    },
+    "flag": {
+      "width": {
+        "$value": "33px",
+        "$description": "The Indian flag mark in the accessibility bar. Fixed so the bar's left edge is identical across the estate."
+      }
+    },
+    "masthead": {
+      "minHeight": {
+        "$value": "72px",
+        "$description": "The brand row's MINIMUM, not its height. It hugs its content, which varies: two or three lines of ministry lockup, an optional BETA badge, a search field on the website, an account block on portals. 72 is the floor that keeps the emblem legible when the lockup is shortest. Never lay out against a fixed masthead height — see `layout/chrome/minHeight`."
+      }
+    },
+    "chrome": {
+      "minHeight": {
+        "$value": "118px",
+        "$description": "Accessibility bar plus brand row at their minimum — the offset the sidebar and content start at on a portal page. Use it for a scroll anchor or a sticky offset, NOT to size the shell: the brand row hugs, so the real value moves with the content. AppShell lays the shell out as a three-row grid (`auto auto 1fr`) so nothing subtracts this from the viewport. At the documented content the navbar measures 134 including its shadow, of which 118 is the layout box."
+      }
+    },
+    "sidebar": {
+      "width": {
+        "$value": "300px",
+        "$description": "The portal sidebar's expanded width. Genuinely fixed: the nav labels are known copy, and a fluid sidebar would move the content edge on every route. Its inner padding is `padding/m` (16), leaving a 268 item column; items are `target/spacious` (48) tall. Below the tablet breakpoint the sidebar is not narrowed — it becomes a drawer."
+      }
+    }
+  },
   "target": {
     "$description": "Minimum POINTER TARGET sizes. There is no single correct number, which is the entire reason this group exists as a ladder rather than one token: 44px is WCAG 2.5.5 Target Size (Enhanced), which is Level AAA — NOT the AA floor it is usually quoted as. The AA floor is WCAG 2.2's 2.5.8 Target Size (Minimum) at 24x24 CSS px, and it carries a spacing exception: an undersized target passes if a 24px-diameter circle centred on it touches no other target's circle. GIGW 3.0 binds this estate to WCAG 2.1 Level AA + IS 17802 — and WCAG 2.1 AA contains NO target-size criterion at all, because 2.5.8 arrived in 2.2 and 2.5.5 is AAA. So every value here is a deliberate choice above the mandate, not a compliance minimum. UNITS: these alias the `size/*` scale, so CSS emits rem (1.5/2.75/3/0.5rem) and Figma receives the px equivalent (24/44/48/8). rem is the right choice and not an accident — a citizen who raises their browser font size gets proportionally larger targets, which a hardcoded px floor would deny them; at the 16px browser default the values are exactly the published numbers. Apple's 44 is points and Material's 48 is dp — equal to CSS px at 1x, but not the same unit, so do not treat the three as interchangeable when reading their specs.",
     "$type": "dimension",

@@ -1283,6 +1283,23 @@
       "desktop": "32px"
     }
   },
+  "layout": {
+    "bar": {
+      "height": "46px"
+    },
+    "flag": {
+      "width": "33px"
+    },
+    "masthead": {
+      "minHeight": "72px"
+    },
+    "chrome": {
+      "minHeight": "118px"
+    },
+    "sidebar": {
+      "width": "300px"
+    }
+  },
   "target": {
     "min": "1.5rem",
     "comfortable": "2.75rem",

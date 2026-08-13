@@ -833,6 +833,11 @@
   --sa-grid-margin-mobile: 16px;
   --sa-grid-margin-tablet: 24px;
   --sa-grid-margin-desktop: 32px;
+  --sa-layout-bar-height: 46px;
+  --sa-layout-flag-width: 33px;
+  --sa-layout-masthead-minHeight: 72px;
+  --sa-layout-chrome-minHeight: 118px;
+  --sa-layout-sidebar-width: 300px;
   --sa-target-min: 1.5rem;
   --sa-target-comfortable: 2.75rem;
   --sa-target-spacious: 3rem;

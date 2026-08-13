@@ -14,11 +14,11 @@
    Bind to it; never re-state a max-width.
 
    NOTE ON THE LITERAL: a CSS media query cannot read a custom property, so the
-   1768px threshold below cannot be written as var(--sa-ref-breakpoint-desktopXl).
-   It is the one value here that must be duplicated, and it is duplicated FROM
-   that token — if the token moves, this moves with it. Media-query breakpoints
-   are advisory rather than gated under .claude/rules/documentation-ds-linkage.md
-   for exactly this reason.
+   1768px threshold below cannot be expressed as a token reference. It is the one
+   value here that must be duplicated, and it is duplicated FROM the Tier-1 anchor
+   `ref/breakpoint/desktopXl` — if that token moves, this moves with it.
+   Media-query breakpoints are advisory rather than gated under
+   .claude/rules/documentation-ds-linkage.md for exactly this reason.
 
    Requires tokens.css.
    ========================================================================== */

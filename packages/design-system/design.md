@@ -658,6 +658,30 @@ own column).
 > A container is a **cap**, not a width. `grid/margin/*` (16 mobile / 24 tablet / 32 desktop)
 > is a **floor** that wins on narrower viewports, so the effective column is
 > `min(container, viewport − 2 × margin)`.
+
+**Page-skeleton tokens (`--sa-layout-*`).** Only genuinely fixed measurements:
+
+| Token | Value | Applies to |
+| --- | --- | --- |
+| `layout/bar/height` | 46 | accessibility bar — fixed |
+| `layout/flag/width` | 33 | flag mark in the bar — fixed |
+| `layout/masthead/minHeight` | 72 | brand row — **minimum only, it hugs** |
+| `layout/chrome/minHeight` | 118 | sticky offsets and scroll anchors **only** |
+| `layout/sidebar/width` | 300 | portal sidebar — fixed |
+
+**Fixed, hug, or fill — decide this before sizing anything.**
+
+| Region | Sizing |
+| --- | --- |
+| Accessibility bar · sidebar width · sidebar item | **Fixed** — a token sets it |
+| Brand row · website nav row · page header · card, panel, band | **Hug** — content sets it; a minimum is allowed, a fixed size is not |
+| Sidebar height · content area | **Fill** — what remains sets it |
+| Content column | **Cap**, then the margin floor |
+
+> **Never size a shell by subtracting a chrome height from the viewport.** The brand row
+> hugs, so its height is not knowable in advance — `h-[calc(100vh-5.75rem)]` is wrong by
+> construction. `AppShell` lays the shell out as three grid rows, `auto · auto · 1fr`.
+> `layout/chrome/minHeight` is for sticky offsets, not layout arithmetic.
 >
 > **Changed 13 August 2026.** Four widths shipped simultaneously: UX4G specified 1200,
 > `container/content` said 1280 and nothing consumed it, 22 website section files hardcoded
