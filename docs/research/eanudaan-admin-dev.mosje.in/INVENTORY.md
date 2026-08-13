@@ -27,7 +27,7 @@ different design languages in one app. Only one scheme is live: **`SHRESHTA_M2`*
 | `ifd-js` | ✅ | 8 | adds Audit Trail |
 | `pmu-field-officer` (9200000812) | ✅ | 4 | complete |
 | "JS – Finance" (9000000033) | ✅ | 4 | **mislabelled in the source sheet** — this account is a *PMU Field Officer*; its nav is byte-identical to `pmu-field-officer`. There is no JS-Finance role behind it. |
-| **`programme-director` (9200000811)** | ✅ | **0** | ⚠️ **UNCAPTURED.** Login succeeds and lands on `/dashboard/sm2/pd`, but that page **reliably crashes the Chrome renderer** (`Target page, context or browser has been closed`) within ~1.5 s, before the session can even be banked. Survived raising the JS heap to 4 GB, `--disable-dev-shm-usage`, blocking images/media/fonts, and racing a navigation away from the landing route. **The single most important role — final sanctioning authority — has no observed screens.** |
+| **`programme-director` (9200000811)** | ✅ | **0** | ⚠️ **NOT IMPLEMENTED ON DEV — see §17.** Originally recorded here as a renderer crash. That was wrong: verified in a *headed* browser on 2026-08-12, the console loads with no crash, no JS error and **zero API calls**, and simply renders nothing. There is no sanction desk. |
 | **`pmu-field-officer-2` (9200000032)** | ❌ | 0 | Login rejected repeatedly, alone and in a batch — so not rate-limiting. Credential is likely wrong or the account is disabled. |
 
 **Nothing below is inferred unless a section says so.** The two gaps above are the whole
@@ -181,6 +181,30 @@ Columns: `NGO NAME` · `SCHEME` · `VISIT TYPE` · `SCHEDULED DATE` · `STATUS`
 ## 15. Notifications — `/dashboard/notifications`
 H1 **`Notifications`**. Empty in every capture; no table rendered.
 
+## 17. Programme Director — `/dashboard/sm2/pd` ⚠️ NOT BUILT
+
+Verified by signing in as `programme-director` in a **headed** browser (the headless capture
+kept OOMing, which is what produced the original, incorrect "renderer crash" diagnosis).
+
+What is actually there:
+
+- **Sidebar carries exactly three items** — `NGO Directory`, `Audit Trail`, `Notifications`.
+  **There is no sanction desk, and no link to `/dashboard/sm2/pd` at all.**
+- Login lands on **`/dashboard`**, whose main element has **0 child nodes**.
+- **`/dashboard/sm2/pd` renders an empty main.** No console error beyond a CSP-blocked
+  Font Awesome stylesheet, and **no API request is made** — so nothing is failing to load;
+  there is nothing to load.
+- **`Audit Trail` and `Notifications` both redirect to `/dashboard/sm2/pd`** and render
+  nothing. For this role those two nav items are dead links.
+- **Only `NGO Directory` works** (20 rows, full columns).
+
+**Consequence for the clone:** the Programme Director is the final sanctioning authority —
+the last step of the entire approval chain — and its surface does not exist to copy. Every
+PD screen in the clone is built from `docs/specs/shreshta-mode2-portal-spec.md` §5.2 and is
+marked inferred. This is a gap in the *source system*, not in the capture.
+
+Worth raising with whoever owns the dev deployment.
+
 ## 16. Review screen — `/dashboard/sm2/<grade>/review/:id` ⭐
 
 > Captured 2026-08-12 by `capture_review.py`, which harvests detail links from the worklist —
@@ -189,7 +213,23 @@ H1 **`Notifications`**. Empty in every capture; no table rendered.
 > `/dashboard/pd/<grade>/review/:id` the JS bundle's route table implies.**
 
 This is the portal's most important screen — the whole ten-grade chain is *one* screen with a
-different action bar. Captured for `pd-aso` (3,500px) and `ifd-aso` (3,724px).
+different action bar. **Captured for 9 of the 10 grades.** Path shape is `/dashboard/sm2/<key>/review/:id`, where
+`<key>` is the grade for PD (`aso`/`so`/`us`/`ds`) but **`jspd` for PD:JS**, and `ifd<grade>`
+for the IFD.
+
+| Role | Route | Height |
+|---|---|---|
+| pd-aso | `/dashboard/sm2/aso/review/:id` | 3,500 |
+| pd-so | `/dashboard/sm2/so/review/:id` | 7,901 |
+| pd-us | `/dashboard/sm2/us/review/:id` | 6,975 |
+| pd-ds | `/dashboard/sm2/ds/review/:id` | 3,933 |
+| pd-js | `/dashboard/sm2/**jspd**/review/:id` | 3,835 |
+| ifd-aso / ifd-so / ifd-us / ifd-js | `/dashboard/sm2/ifd<grade>/review/:id` | **3,724 each** |
+| ifd-ds | — | rate-limited, see coverage table |
+
+The PD heights vary because the underlying applications differ in document count and history.
+**All four captured IFD screens are byte-identical in height (3,724)** — the IFD review screen
+does not vary by grade, which is why the one missing IFD capture carries little risk.
 
 H1 **`ASO Review — <GIA ID>`** (IFD: `IFD-ASO Review — <GIA ID>`), sub-line
 `Assistant Section Officer · SHRESHTA Mode-2`. Top-right: **`Generate Review Report`** button

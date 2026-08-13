@@ -41,11 +41,15 @@ from playwright.sync_api import sync_playwright  # noqa: E402
 # shipped JS bundle's route table plus the nav shape observed on the roles that
 # captured cleanly. Anything that 404s or redirects is simply skipped.
 FALLBACK_ROUTES = {
+    # Verified in a headed browser 2026-08-12: the Programme Director's sidebar carries
+    # exactly these three, and only NGO Directory renders anything. The other two redirect
+    # to /dashboard/sm2/pd, which is blank. Captured anyway so the emptiness is on record.
     "programme-director": [
-        "/dashboard", "/dashboard/sm2/pd", "/dashboard/sm2/reports",
-        "/dashboard/sm2/audit", "/dashboard/ngo-directory",
-        "/dashboard/notifications", "/dashboard/pd/us/all-applications",
-        "/dashboard/pd/us/sanctioned", "/dashboard/pd/forwarded",
+        "/dashboard",
+        "/dashboard/sm2/pd",
+        "/dashboard/ngo-directory",
+        "/dashboard/sm2/audit",
+        "/dashboard/notifications",
     ],
 }
 
@@ -89,10 +93,11 @@ def _login_and_save(p, browser, role, cfg, paths):
         print(f"[{role['name']}] SKIP — missing credentials", flush=True)
         ctx.close()
         return None, None
-    # Starve the crashing landing route of the heaviest resources while we get the session
-    # banked. Only active during login — per-route capture contexts load everything.
-    ctx.route("**/*", lambda r: r.abort()
-              if r.request.resource_type in ("image", "media", "font") else r.continue_())
+    # NOTE: an earlier version installed a catch-all ctx.route() here to starve the landing
+    # route of images/media/fonts. It was removed: intercepting every request made page loads
+    # pathologically slow (a single login never completed in 20 minutes), and it turned out to
+    # be unnecessary — the programme-director console is not heavy, it is EMPTY. See the
+    # INVENTORY's Programme Director entry.
 
     pg.goto(role["base"] + auth.get("loginPath", "/login"),
             wait_until="domcontentloaded", timeout=60000)

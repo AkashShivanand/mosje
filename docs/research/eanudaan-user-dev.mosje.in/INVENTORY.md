@@ -1,7 +1,7 @@
 # E-Anudaan User (NGO) — Recon Inventory
 
 **Domain:** `https://eanudaan-user-dev.mosje.in` (Dev)
-**Captured:** 2026-08-12, signed in as an NGO applicant (`LGN3712`)
+**Captured:** 2026-08-12, signed in as an NGO applicant (`LGN3712`), two sessions
 **App title:** `E-Anudaan | User`
 **Stack signals:** Vite (`/assets/index-<hash>.js`), **Tailwind**, Lexend + Noto Sans,
 react-toastify, Bhashini translation plugin loaded from `index.html`. Session is held in
@@ -224,14 +224,62 @@ This is the NGO end of the admin portal's e-inspection / video-call feature.
 
 ---
 
+## 12. Application detail — `/ngo/my-applications/:id`
+
+Reached from a row's **`View`** button (a button, not a link — the crawler cannot follow it).
+Note the id in the URL is a **numeric internal id** (`83251`), not the GIA reference.
+
+H1 **`Application — <GIA ID>`**. Sections: **`Processing History`** *("Where your application
+has been, and when")* → **`Application Summary`** → **`Uploaded Documents`**.
+
+`Processing History` is a timeline; an observed entry reads
+*"Application submitted · 11 Aug 2026 · You · Application submitted (GIA/2026-27/AVYAY/…)"*.
+
+`Application Summary` is a label/value list: Application ID · NGO Name · Scheme · Financial
+Year · Project Title.
+
+**`Uploaded Documents`** — columns `Document` · `Uploaded On` · `Status` · `Remarks` · `Action`
+(`View`). A *sanctioned* application shows no Processing History section — only Summary and
+Documents.
+
+### ⭐ AI document validation (not previously known)
+
+Each document row carries an **AI verdict** rendered inline with the title —
+`AI: pending`, `AI: not valid` — and, when it fails, the model's reasoning. Verbatim from a
+failed PAN upload:
+
+> *"This is a list of district nodal officers, not a PAN card. Please upload the organisation's
+> PAN card issued by the Income Tax Department. The document does not contain a Permanent
+> Account Number (PAN) in the format AAAAA9999A. No Income Tax Department branding or PAN card
+> details are present in this document."*
+
+So the portal runs **automated AI verification on every uploaded document**, independent of the
+officer's own per-document review on the admin side (§16 of the admin inventory). The clone
+should represent this as a distinct, NGO-visible verdict — it is not the officer's verdict.
+
+**Document checklists are per-scheme.** The AVYAY application's list (`Registration Certificate`,
+`PAN Card of the Organisation`, `Annual Report of NGO — previous FY`, …) differs from
+SHRESHTA_M2's 20-slot list in §5.
+
+## 13. Online Inspection Meeting — `/ngo/my-applications/:id/inspection/meeting`
+Renders **only an `<h1>`: `Online Inspection Meeting`** — no body, no controls. A stub on dev.
+
+## 14. Utilisation Certificate — `/ngo/my-applications/:id/uc` ❌ unreachable
+Returns **"Application not found." + `Back to My Applications`** for every id tried, including a
+freshly-opened **sanctioned** application (`LGCY/85779`, id `77026`) — i.e. exactly the state a
+UC should apply to. Either the route keys off a different identifier or no application in this
+account satisfies its precondition. **Unobserved; build from the BRD and mark it inferred.**
+
+---
+
 ## Inferred (NOT observed — build a mock and mark it)
 
 - **Step 6 Review & Submit**, and the whole submit → success path (`/apply-grant/success`).
 - **Populated Deficiencies**, and the deficiency-response flow (`/ngo/my-applications/:id` edit
   with reopened fields).
-- **Application detail** `/ngo/my-applications/:id` — reachable only via a row's `View →`.
-- **UC submission** `/ngo/my-applications/:id/uc` and **inspection meeting**
-  `/ngo/my-applications/:id/inspection/meeting` — no nav entry.
+- ~~Application detail `/ngo/my-applications/:id`~~ — **CLOSED**, see §12.
+- ~~Inspection meeting~~ — **CLOSED**, see §13: it is a stub rendering only a heading.
+- **UC submission** `/ngo/my-applications/:id/uc` — see §14; unreachable on dev.
 - **`/login/v2`, `/login/select-branch`, `/login/verify-otp`, `/inspection/call`,
   `/ngo/sage-registration`** — declared in the bundle, not reachable from the signed-in nav.
 - **The entire School audience** (`/school/**`, 12 routes) — out of scope for this clone.
