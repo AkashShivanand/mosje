@@ -1,9 +1,16 @@
-# Prompt — Document SAMAVESH Colour (Figma library first, then the docs site)
+# 01 — Document SAMAVESH Colour (Figma library first, then the docs site)
 
+> **This is the reference implementation of the suite.** `00-MASTER-documentation-law.md` was
+> extracted from it — so where the two overlap they agree, and the master is the shorter statement
+> of the same law. A reader coming to this file first loses nothing; a reader coming from the
+> master will find the shared sections restated here in full, deliberately.
+>
 > Paste everything below the line into a fresh session. It is written to be executed by an
 > agent with repo + Figma MCP access, and to be read by a human reviewer as the spec it is
-> being held to. Companion to `docs/design-system/typography-documentation-prompt.md`; the
-> two pages must read as one document.
+> being held to. Companion to `02-typography.md`; the two pages must read as one document.
+>
+> **Status: executed** on branch `ds/colour-documentation`. Re-running it is a re-audit, not a
+> first build — read the current `foundations/color/page.tsx` before assuming anything is missing.
 
 ---
 

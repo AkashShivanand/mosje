@@ -1,0 +1,12 @@
+{
+  "codeConnect": {
+    "parser": "react",
+    "include": ["components/**/*.figma.ts"],
+    "importPaths": {
+      "components/**": "@mosje/design-system"
+    },
+    "documentUrlSubstitutions": {
+      "<SAMAVESH>": "https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System"
+    }
+  }
+}
