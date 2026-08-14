@@ -31,7 +31,7 @@
   padding: 0.5rem 0.875rem;
   border: none;
   border-radius: 9999px;
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
   font-size: 0.75rem;
   font-weight: 600;

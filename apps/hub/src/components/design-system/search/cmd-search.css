@@ -93,6 +93,6 @@
   background: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-base);
   border-radius: var(--sa-shape-xxs);
-  padding: 1px 4px;
+  padding: var(--sa-padding-3xs) var(--sa-padding-2xs);
   font-size: var(--sa-type-label-3-size);
 }

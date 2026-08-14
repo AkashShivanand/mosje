@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "@mosje/design-system/tokens.css";
+/* The estate content container (UX4G 1200/1320) and the .sa-container class.
+   Imported app-wide, not per-component: a page with no SiteHeader still needs it. */
+@import "@mosje/design-system/layout.css";
 
 /* The DS components live outside this app's source tree, so Tailwind's automatic
    source detection never sees them and every utility class they use (e.g.
@@ -461,10 +464,6 @@
       scroll-behavior: smooth;
     }
   }
-  html[data-theme="dark"] {
-    color-scheme: dark;
-  }
-
   /* Mobile nav panel. A dropdown, so ease-out and under 300ms — it should feel
      like it was already there. Only transform and opacity, which stay off the
      layout and paint paths. */
@@ -489,10 +488,3 @@
   }
 }
 
-/* National Emblem is a black monochrome SVG; recolour it to white in dark mode
-   so it stays visible on dark chrome. Unlayered (not in @layer base) and keyed
-   on the data-theme attribute, so it is always emitted and wins the cascade
-   regardless of Tailwind utility ordering. */
-[data-theme="dark"] .estate-emblem {
-  filter: brightness(0) invert(1);
-}

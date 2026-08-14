@@ -18,7 +18,7 @@ const MOTION_CSS = `
   width: 40px;
   height: 40px;
   border-radius: var(--sa-shape-sm);
-  background: var(--sa-color-action-primary-default);
+  background: var(--sa-bg-brand-primary-bolder);
 }
 .motion-demo:hover .motion-demo__box--fast,
 .motion-demo:focus-within .motion-demo__box--fast { transform: translateX(160px); }
@@ -94,7 +94,7 @@ export default function MotionPage(): React.JSX.Element {
             display: "flex",
             flexDirection: "column",
             gap: "var(--sa-stack-l)",
-            outlineOffset: "2px",
+            outlineOffset: "var(--sa-focus-offset)",
           }}
         >
           {([

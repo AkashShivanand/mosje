@@ -8,11 +8,32 @@
 /* Base reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Appearance theme (light is :root default; dark via [data-theme]) ──
-   All theming (incl. success/warning/danger tonals) is now token-driven in
-   @mosje/tokens; only the native color-scheme hint lives here. */
-:root, [data-theme="light"] { color-scheme: light; }
-[data-theme="dark"] { color-scheme: dark; }
+/* ── Appearance ──
+   There is ONE appearance: light. The `data-theme` axis (light/dark/hc) was
+   retired — tokens.css emits no [data-theme] block, and nothing sets the
+   attribute — so a dark branch here would style a state that cannot occur.
+   Accessibility dark and high contrast are owned by the UX4G widget, which
+   applies its own `.dark-mode` class; see
+   docs/specs/samavesh-accessibility-consolidation.md §3. */
+:root { color-scheme: light; }
+
+/* ── Docs shell metrics ──
+   The height of the docs portal's sticky header. This is APP-SHELL CHROME, not a
+   design-system token: the docs site's own header is not a thing any portal or the
+   website renders, so it has no business in the --sa-* namespace.
+
+   It lives here because it was previously a bare `56px` repeated in SEVEN files
+   (the shell grid, two scroll-margin rules, the heading offsets on three pages, and
+   an IntersectionObserver rootMargin) — so a change to the header height silently
+   broke anchor scrolling in the six places nobody remembered to update. One
+   declaration, consumed by var() everywhere else, including from JS via
+   getComputedStyle in on-this-page.tsx. */
+:root {
+  --docs-header-h: 56px;
+  --docs-sidebar-w: 280px;
+  /* Where an anchored heading comes to rest: clear of the header, plus a breath. */
+  --docs-anchor-offset: calc(var(--docs-header-h) + var(--sa-stack-l));
+}
 
 html {
   font-family: var(--sa-font-latin);
@@ -60,7 +81,7 @@ a { color: var(--sa-text-link-brand-default); text-decoration: none; }
 a:hover { text-decoration: underline; }
 a:focus-visible {
   outline: 3px solid var(--sa-focus-ring);
-  outline-offset: 2px;
+  outline-offset: var(--sa-focus-offset);
   border-radius: var(--sa-shape-xs);
 }
 
@@ -71,14 +92,18 @@ a:focus-visible {
 
 /* Code */
 code:not([class]) {
-  /* The mono face is a token (IBM Plex Mono as of 2026-08-11) — hardcoding the stack here
-     meant the docs portal kept rendering the old one after the token changed. */
+  /* The mono face is a token — hardcoding the stack here meant the docs portal kept
+     rendering the old one after the token changed. It resolves to a SYSTEM STACK
+     (ui-monospace, Cascadia Code, Source Code Pro, Menlo), deliberately not a webfont,
+     which is also why it has no Figma family and why a mono specimen is a declared
+     exemption in the linkage rule. This comment previously named IBM Plex Mono, which
+     the token has never carried. */
   font-family: var(--sa-font-mono);
   font-size: 0.875em;
   background-color: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-xs);
-  padding: 1px 5px;
+  padding: var(--sa-padding-3xs) var(--sa-padding-2xs);
   color: var(--sa-text-neutral-base);
 }
 
@@ -89,7 +114,7 @@ code:not([class]) {
   left: var(--sa-inline-l);
   z-index: 9999;
   padding: var(--sa-padding-xs) var(--sa-padding-m);
-  background: var(--sa-color-action-primary-default);
+  background: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
   border-radius: var(--sa-shape-sm);
   font-weight: 600;
@@ -102,7 +127,7 @@ code:not([class]) {
   display: inline-flex;
   align-items: center;
   gap: var(--sa-stack-xs);
-  font-size: var(--sa-type-label-3-size, 0.75rem);
+  font-size: var(--sa-type-label-3-size);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -113,8 +138,8 @@ code:not([class]) {
   content: "";
   width: 18px;
   height: 2px;
-  border-radius: 2px;
-  background: var(--sa-color-action-primary-default);
+  border-radius: var(--sa-shape-xxs);
+  background: var(--sa-bg-brand-primary-bolder);
 }
 
 /* ── Feature card link — hairline by default, lifts + reveals an arrow ── */
@@ -138,13 +163,6 @@ code:not([class]) {
     0 0 0 1px color-mix(in oklab, var(--sa-color-action-primary-default) 20%, transparent);
   background-color: color-mix(in oklab, var(--sa-color-action-primary-default) 1.5%, var(--sa-bg-neutral-base));
   text-decoration: none;
-}
-[data-theme="dark"] .docs-welcome-card:hover {
-  border-color: color-mix(in oklab, var(--sa-border-brand-primary-base) 60%, transparent);
-  box-shadow: 
-    0 20px 40px -15px rgba(0, 0, 0, 0.5),
-    0 0 0 1px color-mix(in oklab, var(--sa-color-action-primary-default) 30%, transparent);
-  background-color: color-mix(in oklab, var(--sa-color-action-primary-default) 3%, var(--sa-bg-neutral-base));
 }
 .docs-welcome-card::after {
   content: "→";
@@ -170,12 +188,12 @@ code:not([class]) {
   border-radius: var(--sa-shape-lg);
   background: var(--sa-bg-neutral-base);
   overflow: hidden;
-  margin-bottom: var(--sa-section-l, 56px);
-  box-shadow: var(--sa-elevation-raised, 0 1px 3px rgba(0, 0, 0, 0.05));
+  margin-bottom: var(--sa-section-l);
+  box-shadow: var(--sa-elevation-raised);
   transition: box-shadow 0.3s ease;
 }
 .home-stats:hover {
-  box-shadow: var(--sa-elevation-dropdown, 0 8px 24px -8px rgba(2 32 64 / 0.1));
+  box-shadow: var(--sa-elevation-dropdown);
 }
 .home-stat {
   flex: 1 1 0;
@@ -189,13 +207,10 @@ code:not([class]) {
 .home-stat:hover {
   background-color: color-mix(in oklab, var(--sa-color-action-primary-default) 1.5%, var(--sa-bg-neutral-base));
 }
-[data-theme="dark"] .home-stat:hover {
-  background-color: color-mix(in oklab, var(--sa-color-action-primary-default) 3%, var(--sa-bg-neutral-base));
-}
 /* Align the stats band's right edge with the broken-out hero (reclaims the
    empty TOC rail) so the two full-width bands line up. */
 @media (min-width: 1025px) {
-  .home-stats { width: calc(100% + 200px + var(--sa-inline-xl, 32px)); }
+  .home-stats { width: calc(100% + 200px + var(--sa-inline-xl)); }
 }
 .home-stat__value {
   font-size: var(--sa-type-headline-2-size);
@@ -211,7 +226,7 @@ code:not([class]) {
   transform: translateY(-2px);
 }
 .home-stat__label {
-  font-size: var(--sa-type-label-3-size, 0.75rem);
+  font-size: var(--sa-type-label-3-size);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--sa-text-neutral-subtle);

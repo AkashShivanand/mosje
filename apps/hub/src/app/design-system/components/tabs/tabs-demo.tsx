@@ -29,7 +29,7 @@ export function TabsDemo(): React.JSX.Element {
             marginTop: "var(--sa-stack-m)",
             padding: "var(--sa-padding-l)",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-lg, 10px)",
+            borderRadius: "var(--sa-shape-lg)",
             background: "var(--sa-bg-neutral-base)",
             color: "var(--sa-text-neutral-base)",
             fontSize: "var(--sa-type-body-1-size)",

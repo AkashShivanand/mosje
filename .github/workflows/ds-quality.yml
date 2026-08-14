@@ -5,7 +5,8 @@ on:
     branches: [main]
     paths:
       - "packages/**"
-      - "apps/hub/src/app/design-system/resources/changelog/page.tsx"
+      - "apps/hub/src/app/design-system/**"
+      - "apps/hub/src/components/design-system/**"
       - "scripts/check-changelog-freshness.mjs"
       - "apps/storybook/**"
       # Every script the job runs, so a change to a GATE re-runs the gate.
@@ -15,11 +16,13 @@ on:
       - "scripts/lib/ds-exports.mjs"
       - "scripts/smoke-storybook.mjs"
       - ".stylelintrc.tokens.json"
+      - "tools/ds-linkage/**"
       - ".github/workflows/ds-quality.yml"
   pull_request:
     paths:
       - "packages/**"
-      - "apps/hub/src/app/design-system/resources/changelog/page.tsx"
+      - "apps/hub/src/app/design-system/**"
+      - "apps/hub/src/components/design-system/**"
       - "scripts/check-changelog-freshness.mjs"
       - "apps/storybook/**"
       # Every script the job runs, so a change to a GATE re-runs the gate.
@@ -29,6 +32,7 @@ on:
       - "scripts/lib/ds-exports.mjs"
       - "scripts/smoke-storybook.mjs"
       - ".stylelintrc.tokens.json"
+      - "tools/ds-linkage/**"
       - ".github/workflows/ds-quality.yml"
 
 jobs:
@@ -105,3 +109,31 @@ jobs:
 
       - name: Token-lint — strict (no raw hex, no tier-1 use) across ALL component CSS
         run: npx stylelint --config .stylelintrc.tokens.json "packages/design-system/components/**/*.css"
+
+      # The stylelint gate above covers the design-system PACKAGE's CSS. This one covers
+      # the DOCUMENTATION — which had no gate at all, and drifted back to raw hexes twice
+      # despite a written rule saying it must not. It reads the same rule
+      # (.claude/rules/documentation-ds-linkage.md) and enforces the half of it that a
+      # stylesheet linter cannot see: inline `style={{}}` objects, Tailwind arbitrary
+      # values, and bare numerics like `fontSize: 13`, which React silently turns into px
+      # and which no grep for "px" will ever find.
+      #
+      # It gates the properties the rule's own table names — fills, strokes, padding,
+      # gaps, radii — and reports everything else (widths, grid tracks, breakpoints) as
+      # advisory, so the gate stays honest rather than becoming a wall of exemptions.
+      - name: DS linkage — documentation must be BUILT from the design system
+        run: npm run check:ds-linkage
+
+      # A RATCHET, not a sweep. 213 of 762 icon call sites sit off the seven-step size
+      # scale, 126 of them at size={14} — chosen to sit against 14px body text, not by
+      # accident. Raising those by 2px changes row heights in dense admin tables across
+      # seven live portals, so the decision (2026-08-12) is to let them go as the pages
+      # are redesigned one by one rather than spend a sweep on them now.
+      #
+      # This gate makes that safe: it costs nothing today, refuses to let the number
+      # grow, and fails when a redesign takes some away without lowering the baseline —
+      # so the backlog can only shrink and cannot quietly grow back. The baseline is PER
+      # FILE, because a single global count would let one page add five off-scale icons
+      # while another removed five and call it clean.
+      - name: Icon scale — ratchet, no NEW off-scale icon sizing
+        run: npm run check:icon-scale

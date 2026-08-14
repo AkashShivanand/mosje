@@ -11,7 +11,7 @@ export interface PageHeroProps {
 export function PageHero({ title, breadcrumb, description, lastUpdated }: PageHeroProps) {
   return (
     <section className="border-b border-gray-200 bg-surface-muted">
-      <div className="mx-auto max-w-[1280px] px-4 py-6 md:py-8">
+      <div className="sa-container py-6 md:py-8">
         <Breadcrumb items={breadcrumb} />
         <h1 className="mt-3 text-[28px] font-bold leading-tight text-primary-dark md:text-[32px]">
           {title}

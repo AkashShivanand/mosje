@@ -18,7 +18,7 @@
   flex: 1 1 0;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: var(--sa-stack-xs);
   text-align: center;
   min-width: 0;
 }
@@ -67,7 +67,7 @@
 }
 
 .ds-stepper__item.is-current .ds-stepper__marker {
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   border-color: var(--sa-border-brand-primary-base);
   color: var(--sa-on-bg-brand-primary-bolder);
   box-shadow: 0 0 0 4px var(--sa-color-primaryScale-50);
@@ -77,11 +77,11 @@
 .ds-stepper__text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--sa-padding-3xs);
 }
 
 .ds-stepper__label {
-  font-size: var(--sa-type-body-3-size, 13px);
+  font-size: var(--sa-type-body-3-size);
   font-weight: 600;
   color: var(--sa-text-neutral-subtle);
   line-height: 1.3;
@@ -106,7 +106,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: calc(-1 * var(--sa-padding-3xs));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;

@@ -11,13 +11,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-family: var(--sa-font-latin, inherit);
+  gap: var(--sa-stack-xs);
+  font-family: var(--sa-font-latin);
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0.1px;
   border: 1px solid transparent;
-  border-radius: var(--sa-shape-md, 8px);
+  border-radius: var(--sa-shape-md);
   cursor: pointer;
   white-space: nowrap;
   text-decoration: none;
@@ -63,7 +63,20 @@
 /* --------------------------------------------------------------------------
    Per-variant token mapping (drives every appearance via local custom props)
    -------------------------------------------------------------------------- */
+/* A variant contributes THREE colours. `--_fill` is the solid background — the bg
+   ladder deliberately sits a rung deeper than the ink of the same family, so white text on it
+   clears AA with headroom (6.36:1) rather than by 0.14. `--_color` is the ink the outlined and
+   text appearances paint with, measured against the page instead. Splitting them was what let
+   the primary fill move to `bolder` on 2026-08-12 without dragging outlined text with it.
+   `--_on` is the ink MEASURED for that fill — it was hardcoded to primary's until 2026-08-12,
+   so success and danger painted their labels with a foreground chosen for a different colour.
+   They share #ffffff today, which is why nothing looked wrong; the pairing is now declared per
+   family so it cannot silently diverge.
+   The full Tier-3 matrix (`--sa-cmp-action-brand-primary-*`) models every state and is the
+   eventual home for this; restructuring the Button onto it is a separate change. */
 .ds-btn--primary {
+  --_fill: var(--sa-bg-brand-primary-bolder);
+  --_on: var(--sa-on-bg-brand-primary-bolder);
   --_color: var(--sa-text-brand-primary-base);
   --_tonal-bg: var(--sa-color-action-primary-tonal);
   --_tonal-fg: var(--sa-color-action-primary-hover);
@@ -72,19 +85,23 @@
 }
 
 .ds-btn--success {
+  --_fill: var(--sa-bg-status-success-bolder);
+  --_on: var(--sa-on-bg-status-success-bolder);
   --_color: var(--sa-text-status-success-base);
   --_tonal-bg: var(--sa-color-status-successTonal);
   --_tonal-fg: var(--sa-color-status-successStrong); /* darkened success for tonal label contrast */
   --_dark: var(--sa-color-status-successStrong);
-  --_ring: rgba(46, 125, 50, 0.4);
+  --_ring: color-mix(in oklab, var(--sa-color-status-success) 40%, transparent);
 }
 
 .ds-btn--danger {
+  --_fill: var(--sa-bg-status-error-bolder);
+  --_on: var(--sa-on-bg-status-error-bolder);
   --_color: var(--sa-text-status-error-base);
   --_tonal-bg: var(--sa-color-status-dangerTonal);
   --_tonal-fg: var(--sa-color-status-dangerStrong);
   --_dark: var(--sa-color-status-dangerStrong);
-  --_ring: rgba(236, 80, 66, 0.4);
+  --_ring: color-mix(in oklab, var(--sa-color-status-danger) 40%, transparent);
 }
 
 /* Route the focus ring to the active variant's colour */
@@ -98,19 +115,19 @@
    -------------------------------------------------------------------------- */
 .ds-btn--sm {
   height: 32px;
-  padding: 0 16px;
+  padding: 0 var(--sa-padding-m);
   font-size: 14px;
 }
 
 .ds-btn--md {
   height: 40px;
-  padding: 0 24px;
+  padding: 0 var(--sa-padding-xl);
   font-size: 16px;
 }
 
 .ds-btn--lg {
   height: 48px;
-  padding: 0 28px;
+  padding: 0 var(--sa-padding-xl);
   font-size: 16px;
 }
 
@@ -118,9 +135,9 @@
    Appearance: filled
    -------------------------------------------------------------------------- */
 .ds-btn--filled {
-  background-color: var(--_color);
-  color: var(--sa-on-bg-brand-primary-bolder);
-  border-color: var(--_color);
+  background-color: var(--_fill);
+  color: var(--_on);
+  border-color: var(--_fill);
 }
 
 .ds-btn--filled:hover {
@@ -206,21 +223,21 @@
 .ds-btn--inverseOutlined {
   background-color: transparent;
   color: var(--sa-on-bg-brand-primary-bolder);
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: var(--sa-color-transparent-white-40);
 }
 
 .ds-btn--inverseOutlined:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.6);
+  background-color: color-mix(in oklab, var(--sa-bg-neutral-base) 10%, transparent);
+  border-color: color-mix(in oklab, var(--sa-bg-neutral-base) 60%, transparent);
 }
 
 .ds-btn--inverseOutlined:active {
-  background-color: rgba(255, 255, 255, 0.16);
+  background-color: var(--sa-color-transparent-white-16);
 }
 
 .ds-btn--inverse:focus-visible,
 .ds-btn--inverseOutlined:focus-visible {
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--sa-bg-neutral-base) 55%, transparent);
 }
 
 .ds-btn--inverseOutlined:disabled:hover,

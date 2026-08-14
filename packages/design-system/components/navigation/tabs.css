@@ -6,9 +6,9 @@
 .ds-tabs {
   position: relative;
   display: flex;
-  gap: 4px;
+  gap: var(--sa-stack-2xs);
   overflow-x: auto;
-  padding: 4px;
+  padding: var(--sa-padding-2xs);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-xl);
   background-color: var(--sa-bg-neutral-subtler);
@@ -35,7 +35,7 @@
      its text colour, so `--sa-color-action-primary-default` was the intended fill all along —
      it's re-declared per `[data-brand]` and re-tones with the rest of the
      estate. */
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   box-shadow: var(--sa-elevation-card);
   transition: transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
     width var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
@@ -55,7 +55,7 @@
   flex: 1 1 0;
   min-width: 0;
   white-space: nowrap;
-  padding: 10px 12px;
+  padding: var(--sa-padding-s) var(--sa-padding-s);
   border: none;
   border-radius: var(--sa-shape-lg);
   background: transparent;
@@ -126,7 +126,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: calc(-1 * var(--sa-padding-3xs));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;

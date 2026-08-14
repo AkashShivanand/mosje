@@ -897,7 +897,8 @@ export const tokens = {
   "breakpoint": {
     "mobile": "360px",
     "tablet": "768px",
-    "desktop": "1280px"
+    "desktop": "1280px",
+    "desktopXl": "1768px"
   },
   "density": {
     "control": {
@@ -1133,6 +1134,21 @@ export const tokens = {
     "regionEmpty": "#dcdee1",
     "regionStroke": "#ffffff"
   },
+  "code": {
+    "bg": "#1e2130",
+    "text": "#e2e8f0",
+    "comment": "#8892a4",
+    "keyword": "#c084fc",
+    "string": "#86efac",
+    "builtin": "#7dd3fc",
+    "shell": "#12141c",
+    "border": "rgba(255, 255, 255, 0.1)",
+    "chrome": "rgba(255, 255, 255, 0.03)",
+    "chromeText": "rgba(255, 255, 255, 0.45)",
+    "chromeTextStrong": "rgba(255, 255, 255, 0.7)",
+    "chromeHover": "rgba(255, 255, 255, 0.08)",
+    "borderStrong": "rgba(255, 255, 255, 0.3)"
+  },
   "layer": {
     "0": "#ffffff",
     "1": "#eef0f3",
@@ -1217,9 +1233,11 @@ export const tokens = {
   },
   "icon": {
     "size": {
+      "16": "1rem",
       "20": "1.25rem",
       "24": "1.5rem",
       "32": "2rem",
+      "40": "2.5rem",
       "48": "3rem",
       "64": "4rem"
     },
@@ -1254,7 +1272,9 @@ export const tokens = {
     "md": "720px",
     "lg": "960px",
     "xl": "1140px",
-    "content": "1280px",
+    "2xl": "1320px",
+    "content": "1200px",
+    "contentXl": "1320px",
     "narrow": "720px",
     "wide": "1200px"
   },
@@ -1265,6 +1285,23 @@ export const tokens = {
       "mobile": "16px",
       "tablet": "24px",
       "desktop": "32px"
+    }
+  },
+  "layout": {
+    "bar": {
+      "height": "46px"
+    },
+    "flag": {
+      "width": "33px"
+    },
+    "masthead": {
+      "minHeight": "72px"
+    },
+    "chrome": {
+      "minHeight": "118px"
+    },
+    "sidebar": {
+      "width": "300px"
     }
   },
   "target": {

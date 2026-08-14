@@ -311,6 +311,23 @@ export type {
 // content changes per portal (logo paths, signing-into name, tabs, form).
 export { SectionTitle } from "./components/layout/section";
 export type { SectionTitleProps } from "./components/layout/section";
+
+// ---- Components: Layout (the page skeleton) ---------------------------------
+// Primitives compose the content column; templates compose the page. All are
+// presentational — no store, no router, no redirect. See the Layout page in the
+// Figma library for the fixed / hug / fill contract these implement.
+export { Container } from "./components/layout/container";
+export type { ContainerProps, ContainerSize } from "./components/layout/container";
+export { Grid, GridItem } from "./components/layout/grid";
+export type { GridProps, GridItemProps, GridSpan } from "./components/layout/grid";
+export { Band } from "./components/layout/band";
+export type { BandProps, BandTone, BandSpacing } from "./components/layout/band";
+export { PageHeader } from "./components/layout/page-header";
+export type { PageHeaderProps } from "./components/layout/page-header";
+export { AppShell } from "./components/layout/app-shell";
+export type { AppShellProps } from "./components/layout/app-shell";
+export { SiteLayout } from "./components/layout/site-layout";
+export type { SiteLayoutProps } from "./components/layout/site-layout";
 export { PortalLoginShell } from "./components/auth/portal-login-shell";
 export type {
   PortalLoginShellProps,

@@ -156,11 +156,20 @@ export default function AccessibilityPage(): React.JSX.Element {
         <ul style={{ marginTop: "var(--sa-stack-m)" }}>
           <li>
             The widget applies the class <code>.dark-mode</code> to{" "}
-            <code>&lt;html&gt;</code> for its own dark theme. This is{" "}
-            <strong>separate</strong> from the design system&apos;s{" "}
-            <code>data-theme</code> / <code>data-brand</code> token theming —
-            keep the citizen-facing accessibility control and product/brand
-            theming as distinct concerns.
+            <code>&lt;html&gt;</code> for its own dark theme. It is the{" "}
+            <strong>only</strong> dark appearance in the estate: the design
+            system&apos;s own <code>data-theme</code> axis (light/dark/hc) was
+            retired, <code>tokens.css</code> emits no <code>[data-theme]</code>{" "}
+            block, and nothing sets the attribute. What remains token-driven is{" "}
+            <code>data-brand</code>, which is <em>palette</em>, not appearance —
+            every brand renders on a light surface.
+          </li>
+          <li>
+            The widget does <strong>not</strong> consume our tokens, and nothing
+            wires it to <code>data-brand</code>. If a surface should react to{" "}
+            <code>.dark-mode</code>, add explicit <code>.dark-mode …</code>{" "}
+            overrides for it — deliberately, and with QA, because the widget
+            already applies its own treatment and a second one double-darkens.
           </li>
           <li>
             Deployments must allow the UX4G CDN (<code>cdn.ux4g.gov.in</code>) in

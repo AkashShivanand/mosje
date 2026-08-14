@@ -14,9 +14,13 @@
      of them (no `data-open:`/`data-closed:`/… variant, no `no-scrollbar`, no
      accordion), so nothing needs re-homing into the hub.
    • `@custom-variant dark (&:is(.dark *))` — the website has no `dark:` utility
-     and never sets a `.dark` class, so the variant was dead. Only one definition
-     can win globally and the hub's attribute-based
-     `dark (&:where([data-theme="dark"], …))` stands.
+     and never sets a `.dark` class, so the variant was dead. Nor does the hub
+     define a replacement: there is NO `dark` variant anywhere in the estate, by
+     decision — see the "NO DARK APPEARANCE AXIS" note at the top of globals.css.
+     (This comment previously said the hub's attribute-based
+     `dark (&:where([data-theme="dark"], …))` "stands"; that variant was removed
+     with the appearance axis and saying otherwise invited someone to write a
+     `dark:` utility that would silently never apply.)
    • the `.dark { … }` block — unreachable for the same reason (nothing applies
      `.dark`), and as an UNSCOPED global rule it could only ever leak.
    • the `@theme inline` block — `@theme` only registers utilities in the Tailwind

@@ -101,10 +101,30 @@ const COLUMNS: Column[] = [
   },
 ];
 
-const TONE: Record<Column["tone"], { bar: string; chip: string }> = {
-  now: { bar: "var(--sa-color-status-success)", chip: "var(--sa-color-status-success)" },
-  next: { bar: "var(--sa-color-action-primary-default)", chip: "var(--sa-color-action-primary-default)" },
-  later: { bar: "var(--sa-color-text-muted)", chip: "var(--sa-color-text-muted)" },
+// Each tone carries the INK that belongs to its own chip colour. It used to be one
+// hardcoded "#fff" for all three, which happened to be legible but said nothing about
+// which background it was legible against — so a chip recolour could not carry its
+// text with it.
+const TONE: Record<Column["tone"], { bar: string; chip: string; ink: string }> = {
+  now: {
+    bar: "var(--sa-color-status-success)",
+    chip: "var(--sa-color-status-success)",
+    ink: "var(--sa-on-bg-status-success-bolder)",
+  },
+  next: {
+    bar: "var(--sa-color-action-primary-default)",
+    chip: "var(--sa-color-action-primary-default)",
+    ink: "var(--sa-on-bg-brand-primary-bolder)",
+  },
+  // `later` used --sa-color-text-muted as a BACKGROUND — a text role standing in for a
+  // surface role, which is why it had no `on-` companion to pair with and ended up with a
+  // hardcoded white. Moved to the real background role: a quiet grey chip with dark ink,
+  // 9.73:1, which also reads as the least-emphasised column, which is what `later` means.
+  later: {
+    bar: "var(--sa-bg-neutral-bold)",
+    chip: "var(--sa-bg-neutral-bold)",
+    ink: "var(--sa-on-bg-neutral-bold)",
+  },
 };
 
 export default function RoadmapPage(): React.JSX.Element {
@@ -173,9 +193,9 @@ export default function RoadmapPage(): React.JSX.Element {
                     style={{
                       fontSize: "var(--sa-type-body-3-size)",
                       fontWeight: 600,
-                      color: "#fff",
+                      color: TONE[col.tone].ink,
                       background: TONE[col.tone].chip,
-                      padding: "2px var(--sa-padding-xs)",
+                      padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
                       borderRadius: "var(--sa-shape-sm)",
                     }}
                   >

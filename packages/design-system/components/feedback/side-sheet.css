@@ -8,7 +8,7 @@
   position: fixed;
   inset: 0;
   z-index: 50;
-  background-color: var(--sa-overlay-neutral-boldest, rgba(0, 0, 0, 0.4));
+  background-color: var(--sa-overlay-neutral-boldest);
 }
 
 .ds-sheet {
@@ -19,7 +19,7 @@
   display: flex;
   flex-direction: column;
   background-color: var(--sa-bg-neutral-base);
-  box-shadow: -4px 0 32px rgba(0, 0, 0, 0.16);
+  box-shadow: -4px 0 32px color-mix(in oklab, var(--sa-text-neutral-bolder) 16%, transparent);
   z-index: 51;
   font-family: var(--sa-font-latin);
   animation: ds-sheet-in 0.22s cubic-bezier(0.4, 0, 0.2, 1);
@@ -39,14 +39,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 20px 24px;
+  gap: var(--sa-stack-s);
+  padding: var(--sa-padding-l) var(--sa-padding-xl);
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }
 
 .ds-sheet__title {
   margin: 0;
-  font-size: var(--sa-type-title-1-size, 18px);
+  font-size: var(--sa-type-title-1-size);
   font-weight: 700;
   color: var(--sa-text-neutral-base);
   line-height: 1.3;
@@ -62,7 +62,7 @@
   width: 32px;
   height: 32px;
   flex-shrink: 0;
-  border-radius: var(--sa-shape-sm, 6px);
+  border-radius: var(--sa-shape-sm);
   background: transparent;
   color: var(--sa-text-neutral-subtle);
   transition: background-color 0.12s ease, color 0.12s ease;
@@ -75,21 +75,21 @@
 
 .ds-sheet__close:focus-visible {
   outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
-  outline-offset: 2px;
+  outline-offset: var(--sa-focus-offset);
 }
 
 .ds-sheet__body {
   flex: 1;
   overflow-y: auto;
-  padding: 24px;
+  padding: var(--sa-padding-xl);
 }
 
 .ds-sheet__footer {
   flex-shrink: 0;
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  padding: 16px 24px;
+  gap: var(--sa-stack-xs);
+  padding: var(--sa-padding-m) var(--sa-padding-xl);
   border-top: 1px solid var(--sa-border-neutral-subtle);
   background-color: var(--sa-bg-neutral-base);
 }
@@ -100,7 +100,7 @@
 .ds-sheet--left {
   right: auto;
   left: 0;
-  box-shadow: 4px 0 32px rgb(0 0 0 / 16%);
+  box-shadow: 4px 0 32px color-mix(in oklab, var(--sa-text-neutral-bolder) 16%, transparent);
   animation-name: ds-sheet-in-left;
 }
 

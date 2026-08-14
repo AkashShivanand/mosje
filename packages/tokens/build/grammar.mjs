@@ -178,6 +178,13 @@ export const GROUP = new Set([
   // `chart/grid` (a gridline colour); they are different objects and RULE 2 keeps them apart by
   // position, since a colour role takes a family in position 2.
   "grid",
+  // `layout` is PAGE-SKELETON geometry — the fixed measurements a shell needs (bar height,
+  // sidebar width), as distinct from `grid`, which describes the column system inside it, and
+  // from `container`, which is the content cap. The name matches the published Figma library,
+  // which already carries `layout/bar/height` and `layout/flag/width`, so the projection stays
+  // reversible. Only measurements that are genuinely FIXED belong here: anything that sizes to
+  // its content is a hug in the component, not a token.
+  "layout",
   // `target` is the POINTER TARGET, and it is a group rather than a size step because the
   // number alone is meaningless: 24, 44 and 48 each come from a different authority, and a
   // token that does not say which one is being met cannot be audited against any of them.
@@ -193,6 +200,14 @@ export const GROUP = new Set([
   // `shape` is also the word design.md already uses for this group. Added 2026-08-12 with the
   // retirement of `--ds-radius-*`, whose 248 usages had no Tier-2 home to migrate to.
   "shape",
+  // `code` is the CODE/TERMINAL SPECIMEN surface — the chrome a documentation page needs in
+  // order to show code. It is a group and not a colour role because its members are syntax
+  // parts (`keyword`, `string`, `builtin`, `comment`), not prominence rungs: there is no
+  // `code/neutral/base`, and asking for one would be asking the wrong question. Same shape as
+  // `chart`, which models series and axes rather than rungs for the same reason.
+  // Added 2026-08-12, after an audit found the identical six hexes hand-rolled independently
+  // in two docs pages — the drift this namespace exists to prevent.
+  "code",
 ]);
 
 /**

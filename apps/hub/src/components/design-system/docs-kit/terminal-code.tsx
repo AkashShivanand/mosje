@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Icon } from "@mosje/design-system";
 
 interface TerminalCodeProps {
   title?: string;
@@ -38,17 +39,12 @@ export function TerminalCode({ title = "bash", codeText, children }: TerminalCod
         >
           {copied ? (
             <>
-              <svg viewBox="0 0 20 20" width="14" height="14" fill="none" aria-hidden="true" style={{ color: "var(--sa-text-status-success-base)" }}>
-                <path d="M4 10l4 4 8-8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <Icon name="check" size={16} style={{ color: "var(--sa-text-status-success-base)" }} />
               <span>Copied!</span>
             </>
           ) : (
             <>
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-              </svg>
+              <Icon name="content_copy" size={16} />
               <span>Copy</span>
             </>
           )}

@@ -52,7 +52,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
       style={{
         background: "var(--sa-bg-neutral-subtler)",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md, 8px)",
+        borderRadius: "var(--sa-shape-md)",
         padding: "var(--sa-padding-m)",
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",
@@ -61,7 +61,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
         marginTop: "var(--sa-stack-xs)",
       }}
     >
-      <code style={{ fontFamily: "var(--sa-font-mono, monospace)" }}>
+      <code style={{ fontFamily: "var(--sa-font-mono)" }}>
         {children}
       </code>
     </pre>

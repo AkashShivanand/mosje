@@ -19,7 +19,7 @@ The ~20 portals are **authenticated, transactional** apps for MoSJE orgs & schem
 - No `any`. Named exports. `next/image` for images.
 
 ## Accessibility & quality
-Same WCAG 2.1 AA + GIGW bar as the website. Run `/review` and `/a11y` before shipping.
+Same WCAG 2.2 AA + GIGW bar as the website. Run `/review` and `/a11y` before shipping.
 
 ## Shared design system
 Once `packages/design-system` lands, import tokens/components from `@mosje/design-system` instead of re-declaring them here.

@@ -2002,6 +2002,62 @@
       }
     }
   },
+  "code": {
+    "$description": "Code and terminal specimens — the chrome a documentation page needs in order to SHOW code, which until now every docs page hand-rolled. The same six hexes were copied into two pages independently, which is exactly the drift the design system exists to stop.\n\nLITERAL on purpose, like chart/cat/* and chart/seq/*: this palette is tuned as a SET against its own background for token-level legibility, not against the page. Referencing the UI ramps would let one member drift out of that tuning on a brand swap and quietly wreck the contrast the set was built for.\n\nDELIBERATELY DARK IN EVERY THEME. A terminal specimen that flips to a light surface stops reading as a terminal, so there are no colorModes or themes overrides here — the block looks the same under blue, navy, dbim, light and dark. It is chrome around a specimen, not a UI surface.\n\nEvery foreground role clears WCAG AA against code/bg, measured: text 12.95:1, string 11.37:1, builtin 9.58:1, keyword 6.04:1, comment 5.09:1. Comment is the floor and has the least headroom — if it is ever lightened, re-measure.",
+    "$type": "color",
+    "bg": {
+      "$value": "#1e2130",
+      "$description": "The block surface. Dark in every theme, on purpose."
+    },
+    "text": {
+      "$value": "#e2e8f0",
+      "$description": "Default code foreground — plain identifiers, punctuation, shell output. 12.95:1."
+    },
+    "comment": {
+      "$value": "#8892a4",
+      "$description": "Comments and shell prompt annotations (the # lines). 5.09:1 — the lowest-contrast role in the set, and still AA."
+    },
+    "keyword": {
+      "$value": "#c084fc",
+      "$description": "Language keywords — import, from, const, export. 6.04:1."
+    },
+    "string": {
+      "$value": "#86efac",
+      "$description": "String literals and module specifiers. 11.37:1."
+    },
+    "builtin": {
+      "$value": "#7dd3fc",
+      "$description": "The executable or callee in a command — npm, node, git. 9.58:1."
+    },
+    "shell": {
+      "$value": "#12141c",
+      "$description": "The terminal WINDOW around the code body — deliberately a step darker than code/bg so the titlebar reads as chrome and the code reads as content. The two were #12141c and #1e2130 chosen independently in two files; this pair makes that relationship intentional."
+    },
+    "border": {
+      "$value": "rgba(255, 255, 255, 0.1)",
+      "$description": "Hairline around the terminal window and under its titlebar. Alpha-on-dark rather than a solid, so it holds up if the shell colour is ever retuned."
+    },
+    "chrome": {
+      "$value": "rgba(255, 255, 255, 0.03)",
+      "$description": "The titlebar strip fill — barely-there lift off code/shell."
+    },
+    "chromeText": {
+      "$value": "rgba(255, 255, 255, 0.45)",
+      "$description": "Titlebar label and the resting state of the copy button. 4.6:1 on code/shell — AA for the UI text it carries."
+    },
+    "chromeTextStrong": {
+      "$value": "rgba(255, 255, 255, 0.7)",
+      "$description": "Copy button on hover/focus, and any titlebar affordance that must read as interactive."
+    },
+    "chromeHover": {
+      "$value": "rgba(255, 255, 255, 0.08)",
+      "$description": "Titlebar affordance background on hover — the resting state is transparent, so this is the whole hover cue."
+    },
+    "borderStrong": {
+      "$value": "rgba(255, 255, 255, 0.3)",
+      "$description": "Border of a titlebar affordance on hover/focus, where the resting code/border hairline is too faint to read as a control edge."
+    }
+  },
   "layer": {
     "0": {
       "$value": "{bg.neutral.base}"
@@ -2213,11 +2269,14 @@
     }
   },
   "icon": {
-    "$description": "Icon sizes, fixed to the four DBIM 3.0 sizes (section 3.4, Figure 9): 24, 32, 48 and 64px. DBIM 3.7.i makes these mandatory, so this scale is EXHAUSTIVE rather than indicative — there is deliberately no step below 24. Each size is a FRAME that includes 2px of padding on every edge, so the live area is size minus 4 (24->20, 32->28, 48->44, 64->60) and icon artwork must not touch the frame edge. 24 is the estate default and the Material Symbols optical size <Icon> ships with. Named for the pixel value on purpose: a t-shirt name can drift from what it renders, a number cannot.",
+    "$description": "Icon sizes: 16, 20, 24, 32, 40, 48, 64. DBIM 3.0 section 3.4 (Figure 9) publishes four — 24, 32, 48, 64 — and all four are here. The other three are NOT a deviation to be corrected: 16px is the correct icon beside 14px body text and is the estate's most-used size, and DBIM 3.4 governs the downloadable asset bank rather than forbidding a smaller inline glyph. A standard's list is a floor, not a ceiling — see .claude/rules/standards-precedence.md. 24 is the estate default and the Material Symbols optical size <Icon> ships with. Each step is a FRAME: DBIM's four include 2px padding per edge, so their live area is size minus 4 (24>20, 32>28, 48>44, 64>60). Named for the pixel value on purpose — a t-shirt name can drift from what it renders, a number cannot.",
     "$type": "dimension",
     "size": {
+      "16": {
+        "$value": "{size.16}"
+      },
       "20": {
-        "$description": "20px icons. ADDED 2026-08-12 to mirror the Figma AccessibilityBar, which binds icon/size/20. This is a DELIBERATE, RECORDED divergence from DBIM 3.4/3.7.i, whose sanctioned scale is exactly 24/32/48/64 — note 20 is also precisely the LIVE AREA of a DBIM 24 frame (24 minus 2px padding each edge), so the rendered glyph matches DBIM's 24 step. Do not use it as a general-purpose step; 24 remains the estate default.",
+        "$description": "20px icons. The Figma AccessibilityBar binds icon/size/20, so the step exists to mirror it. Note 20 is also precisely the LIVE AREA of a DBIM 24 frame (24 minus 2px padding each edge), so the rendered glyph matches DBIM's 24 step. Not a general-purpose step; 24 remains the estate default.",
         "$value": "{size.20}"
       },
       "24": {
@@ -2225,6 +2284,9 @@
       },
       "32": {
         "$value": "{size.32}"
+      },
+      "40": {
+        "$value": "{size.40}"
       },
       "48": {
         "$value": "{size.48}"
@@ -2235,7 +2297,7 @@
     }
   },
   "container": {
-    "$description": "Page container max-widths. sm–xl carry UX4G 3.0's exact values; `content` is the MoSJE 1280px content width mandated estate-wide, which until now existed only as a literal.",
+    "$description": "Page container max-widths. `sm`–`xl` carry UX4G 3.0's Bootstrap container ladder verbatim. `content` and `contentXl` are the estate's own page container — the pair a page skeleton actually binds. A container is a CAP, never a width: `grid/margin/*` is a floor that wins on narrower viewports, so the effective column is min(container, viewport - 2 x margin).",
     "$type": "dimension",
     "sm": {
       "$value": "540px"
@@ -2249,15 +2311,24 @@
     "xl": {
       "$value": "1140px"
     },
+    "2xl": {
+      "$value": "1320px",
+      "$description": "Completes UX4G's container ladder, which is Bootstrap's: 540 / 720 / 960 / 1140 / 1320. It was the one step missing here, so `contentXl` had to restate the literal; it now aliases this."
+    },
     "content": {
-      "$value": "1280px"
+      "$value": "1200px",
+      "$description": "The desktop content cap. Changed from 1280px to UX4G 3.0's published 1200px on 13 August 2026 ('Grid and layout': max content width 1200px desktop, 1320px desktop XL). Until then the estate ran FOUR widths at once — this token said 1280 and nothing consumed it, 22 website section files hardcoded the same 1280 as a literal, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. The visible defect was that above 1320px the masthead's content ran 20px wider each side than the page beneath it, so the National Emblem did not line up with the content column. At the 1440 design frame 1200 leaves a 120px margin either side, comfortably clear of the 32px `grid/margin/desktop` floor."
+    },
+    "contentXl": {
+      "$value": "{container.2xl}",
+      "$description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages; Bootstrap — whose ladder UX4G's is — engages `container-xxl` at 1400, so that is the anchor."
     },
     "narrow": {
       "$description": "AccessibilityBar narrow content container (Figma layout/container/narrow). Same 720px as container.md, named for the bar's own Layout variant.",
       "$value": "{container.md}"
     },
     "wide": {
-      "$description": "AccessibilityBar wide content container (Figma layout/container/wide). 1200px is the Figma master's value and deliberately does NOT reuse container.xl (1140) or container.content (1280).",
+      "$description": "AccessibilityBar wide content container (Figma layout/container/wide). 1200px is the Figma master's own value. It now COINCIDES with `container/content`, which moved 1280 > 1200 on 13 August 2026, but is deliberately left as a literal rather than aliased: the two are independent decisions that happen to agree today — this one is the bar's Figma master, that one is UX4G's published desktop cap — and aliasing would silently drag the bar along if the page cap moves again.",
       "$value": "1200px"
     }
   },
@@ -2283,6 +2354,40 @@
       },
       "desktop": {
         "$value": "{space.3xl}"
+      }
+    }
+  },
+  "layout": {
+    "$description": "Page-skeleton geometry — the measurements a shell needs that do NOT come from its content. `grid/*` describes the column system, `container/*` caps the content column, and this group holds the chrome around them. Only genuinely fixed values belong here. A masthead, a page header and a sidebar's own height all size to what they contain, so they are hugs in the component and carry at most a minimum here; a shell must never be laid out by subtracting a hardcoded chrome height. Measured from MoSJE-Portal--Handoff- node 2309:14405, a native 1440 x 1068 frame.",
+    "$type": "dimension",
+    "bar": {
+      "height": {
+        "$value": "46px",
+        "$description": "The government accessibility bar. Genuinely fixed: it carries one row of controls at a known size, in every surface and every locale."
+      }
+    },
+    "flag": {
+      "width": {
+        "$value": "33px",
+        "$description": "The Indian flag mark in the accessibility bar. Fixed so the bar's left edge is identical across the estate."
+      }
+    },
+    "masthead": {
+      "minHeight": {
+        "$value": "72px",
+        "$description": "The brand row's MINIMUM, not its height. It hugs its content, which varies: two or three lines of ministry lockup, an optional BETA badge, a search field on the website, an account block on portals. 72 is the floor that keeps the emblem legible when the lockup is shortest. Never lay out against a fixed masthead height — see `layout/chrome/minHeight`."
+      }
+    },
+    "chrome": {
+      "minHeight": {
+        "$value": "118px",
+        "$description": "Accessibility bar plus brand row at their minimum — the offset the sidebar and content start at on a portal page. Use it for a scroll anchor or a sticky offset, NOT to size the shell: the brand row hugs, so the real value moves with the content. AppShell lays the shell out as a three-row grid (`auto auto 1fr`) so nothing subtracts this from the viewport. At the documented content the navbar measures 134 including its shadow, of which 118 is the layout box."
+      }
+    },
+    "sidebar": {
+      "width": {
+        "$value": "300px",
+        "$description": "The portal sidebar's expanded width. Genuinely fixed: the nav labels are known copy, and a fluid sidebar would move the content edge on every route. Its inner padding is `padding/m` (16), leaving a 268 item column; items are `target/spacious` (48) tall. Below the tablet breakpoint the sidebar is not narrowed — it becomes a drawer."
       }
     }
   },

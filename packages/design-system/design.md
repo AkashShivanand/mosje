@@ -12,12 +12,33 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-12 · System version: v0.18.0 (ACCESSIBILITYBAR IS NOW A CODE COMPONENT.
-  `@mosje/design-system` exports `AccessibilityBar` — the UX4G/GIGW top utility bar with a working
-  A−/A/A+ font-size stepper — mirroring the SAMAVESH Figma master, fully `--sa-*` tokenised, AA-clear.
-  It keeps font-size deliberately; SiteHeader's own Tier-1 bar still omits it (widget-canonical) and
-  has NOT been migrated onto the standalone component yet — a flagged, human decision. PREVIOUS ENTRY:
-  COLOUR SECTIONS §A/§B/§C/§6 RECONCILED
+  Last reviewed: 2026-08-14 · System version: v0.20.0 (ACCESSIBILITYBAR IS NOW A CODE COMPONENT AND
+  SITEHEADER IS MIGRATED ONTO IT. `@mosje/design-system` exports `AccessibilityBar` — the UX4G/GIGW
+  top utility bar with a working A−/A/A+ font-size stepper — mirroring the SAMAVESH Figma master,
+  fully `--sa-*` tokenised, AA-clear. SiteHeader's own hand-rolled Tier-1 bar is DELETED and the
+  shared component replaces it, rendered with `fontSize` enabled — so the stepper is now surfaced on
+  the live masthead, where the UX4G widget was previously the only mechanism. That is a public-site
+  behaviour change. `tone` is gone: colour is the brand MODE (`data-brand="navy"`), never a prop.
+  Previously v0.19.0 — THE CONTENT CONTAINER IS UX4G'S TWO-STEP
+  1200/1320 AND `.sa-container` IS THE ONLY WAY TO APPLY IT. Four widths shipped at once and the
+  masthead sat 20px wider each side than the page beneath it; `SiteHeader.maxWidth` is now an
+  override, not a default. New: `container/contentXl`, `ref/breakpoint/desktopXl`.
+  Previously v0.18.2 — ICON IS NOW DECORATIVE BY DEFAULT — it
+  sets aria-hidden itself unless given an aria-label, which then makes it role="img". The rule
+  was documented but unenforced and was missed at 533 of 718 call sites; the component now
+  decides instead of the caller. Do not add aria-hidden to decorative icons. Previously
+  v0.18.0: FILLED PRIMARY MOVED TO THE bolder RUNG.
+  A filled primary button now paints bg/brand/primary/bolder (#005EB9) instead of the ink of the
+  same family (#0373DF), taking white-on-primary from 4.64:1 to 6.36:1 and Navy from 8.77:1 to
+  12.61:1. 36 solid fills across the estate plus the DS Button, whose single --_color was split
+  into --_fill and --_color so outlined and text appearances keep the ink. THE LADDER ALREADY
+  SAID THIS: bg rungs sit one step deeper than the ink of the same family precisely because a
+  fill carries white text and an ink sits on the page. The Button was reaching past its own
+  system — and a slot migration the same day had briefly put a TEXT token in charge of its fill,
+  which is what surfaced it. Success and danger were NOT moved: their bg bolder rungs are
+  different values, so that is a separate decision. SS B and SS C were also rewritten onto
+  canonical names — they still spelled tokens in the --ds-* vocabulary retired earlier that day.
+  PREVIOUS ENTRY: COLOUR SECTIONS SS A/B/C/6 RECONCILED
   AGAINST THE BUILT STYLESHEET. Every colour value and every contrast ratio in this file was
   recomputed from packages/tokens/dist/tokens.css and corrected: the §C pairs table was wrong in
   eight of nine rows after the 2026-08-11 ramp rebuild, §B carried a Dark column for an axis
@@ -426,48 +447,64 @@ that changes a colour is `data-brand`, so the two value columns below are Blue a
 
 | Token | Blue | Navy | Correct usage | Never use for |
 |-------|------|------|---------------|---------------|
-| `--ds-primary` | `#0373DF` | `#244C7B` | CTA buttons, active links, key icons | Body text, large backgrounds |
-| `--ds-saffron` | `#FF671F` | same | Accents, badges, decorative emphasis | Text, icons or chart series on white — it measures **2.91:1**, below even the 3:1 non-text floor |
-| `--ds-yellow` | `#FFD323` | same | Nothing, in new work. Retained for older markup | Text at any size (**1.44:1**). For yellow emphasis use `bg/status/warning/subtler` behind dark ink |
-| `--ds-ink` | `#1E2124` | `#1E2024` | All body/heading text | Interactive elements, backgrounds |
-| `--ds-ink-muted` | `#3A3D41` | `#3B3D41` | Captions, hints, helper text | — comfortably AA at 10.92:1; the old "check below 16px" caveat no longer applies |
-| `--ds-surface` | `#FFFFFF` | same | Page and card backgrounds | Text or icon fills |
-| `--ds-surface-muted` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels | Anything needing a measured contrast — it is a surface, not a fill with a guarantee |
-| `--ds-danger` | `#8B1F18` | same | Error text and icons on white, destructive labels | Decorative fills (use `--ds-danger-tonal`) |
-| `--ds-success` | `#004220` | same | Success states, validation confirmation | Primary brand actions |
-| `--ds-on-primary` | `#FFFFFF` | same | Text/icons on solid `--ds-primary` backgrounds | Any other background |
+| `--sa-bg-brand-primary-bolder` | `#005EB9` | `#003366` | **Solid primary fills** — filled buttons, active nav, brand banners | Text or borders on a light page; the ink slot below is measured for that |
+| `--sa-text-brand-primary-base` | `#0373DF` | `#244C7B` | Brand-coloured text, links, outlined-button ink, key icons | Solid fills behind white text — that is the `bg` slot's job |
+| `--sa-color-brand-saffron` | `#FF671F` | same | Accents, badges, decorative emphasis | Text, icons or chart series on white — **2.91:1**, below even the 3:1 non-text floor |
+| `--sa-color-brand-yellow` | `#FFD323` | same | Nothing, in new work. Retained for older markup | Text at any size (**1.44:1**). For yellow emphasis use `bg/status/warning/subtler` behind dark ink |
+| `--sa-text-neutral-base` | `#1E2124` | `#1E2024` | All body/heading text | Interactive elements, backgrounds |
+| `--sa-text-neutral-subtle` | `#3A3D41` | `#3B3D41` | Captions, hints, helper text | — comfortably AA at 10.92:1; the old "check below 16px" caveat no longer applies |
+| `--sa-bg-neutral-base` | `#FFFFFF` | same | Page and card backgrounds | Text or icon fills |
+| `--sa-bg-neutral-subtler` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels | Anything needing a measured contrast — it is a surface, not a fill with a guarantee |
+| `--sa-text-status-error-base` | `#8B1F18` | same | Error text and icons on white, destructive labels | Decorative fills (use `bg/status/error/subtler`) |
+| `--sa-text-status-success-base` | `#004220` | same | Success states, validation confirmation | Primary brand actions |
+| `--sa-on-bg-brand-primary-bolder` | `#FFFFFF` | same | Text/icons on a solid primary fill | Any other background |
+
+> **A fill sits one rung deeper than the ink of the same family, and that is the point.**
+> `bg/brand/primary/bolder` is `primaryScale/600`; `text/brand/primary/base` is `/500`. The fill
+> carries white text, so it is measured against white and needs the headroom; the ink sits on the
+> page, where 4.64:1 is measured against the page and correct. Reaching for the ink token to paint
+> a button is the mistake this split exists to prevent — and it is the one the DS Button itself
+> made until 2026-08-12.
 
 *Every value above was read from `packages/tokens/dist/tokens.css` on 2026-08-12. The previous
 table pre-dated the 2026-08-11 ramp rebuild and was wrong on `--ds-saffron`, `--ds-ink`,
 `--ds-ink-muted`, `--ds-danger` and `--ds-success`, and carried a Dark column for an axis that had
 already been removed.*
 
-### C. Contrast Pairs (WCAG 2.1 AA — minimum 4.5:1 for text, 3:1 for UI elements)
+### C. Contrast Pairs (WCAG 2.2 AA — minimum 4.5:1 for text, 3:1 for UI elements)
 
 | Foreground | Background | Ratio | Status | Usage context |
 |-----------|-----------|-------|--------|---------------|
-| `--ds-on-primary` (`#fff`) | `--ds-primary` (`#0373DF`) | **4.64:1** | ✅ Pass | Filled primary buttons, nav active state. Passes, but with little headroom — in Navy the same pair is 8.77:1 |
-| `--ds-ink` (`#1E2124`) | `--ds-surface` (`#fff`) | **16.18:1** | ✅ Pass | All body text |
-| `--ds-ink-muted` (`#3A3D41`) | `--ds-surface` (`#fff`) | **10.92:1** | ✅ Pass | Hint text, captions — at any size |
-| `--ds-ink-muted` (`#3A3D41`) | `--ds-surface-muted` (`#EEF0F3`) | **9.56:1** | ✅ Pass | Safe on quiet panels too; the old "borderline" warning is obsolete |
-| `--ds-danger` (`#8B1F18`) | `--ds-surface` (`#fff`) | **9.10:1** | ✅ Pass | Error text and icons on white |
-| `--ds-danger-500` (`#CB3F33`) | `--ds-surface` (`#fff`) | **4.89:1** | ✅ Pass | Passes since the 2026-08-11 rebuild, but prefer `--ds-danger` for text — a ramp rung carries no guarantee against your surface |
-| `--ds-saffron` (`#FF671F`) | `--ds-surface` (`#fff`) | **2.91:1** | ❌ Fail (even non-text) | Decorative fills only. Below the 3:1 of WCAG 1.4.11 — never an icon, a border or a chart series |
-| `--ds-yellow` (`#FFD323`) | `--ds-surface` (`#fff`) | **1.44:1** | ❌ Fail | Never a text colour, at any size |
-| `--ds-primary` (`#0373DF`) | `--ds-surface` (`#fff`) | **4.64:1** | ✅ Pass | Link text |
-| `--ds-success` (`#004220`) | `--ds-surface` (`#fff`) | **11.67:1** | ✅ Pass | Confirmation text and icons |
-| `--ds-border` (`#DCDEE1`) | `--ds-surface` (`#fff`) | **1.35:1** | ⚠️ Decorative | A hairline divider only. For a control boundary someone must find, use `border/neutral/bolder/default` |
+| `on/bg/brand/primary/bolder` (`#fff`) | `bg/brand/primary/bolder` (`#005EB9`) | **6.36:1** | ✅ Pass | **Filled primary buttons, active nav.** In Navy the same pair is 12.61:1 |
+| `text/neutral/base` (`#1E2124`) | `bg/neutral/base` (`#fff`) | **16.18:1** | ✅ Pass | All body text |
+| `text/neutral/subtle` (`#3A3D41`) | `bg/neutral/base` (`#fff`) | **10.92:1** | ✅ Pass | Hint text, captions — at any size |
+| `text/neutral/subtle` (`#3A3D41`) | `bg/neutral/subtler` (`#EEF0F3`) | **9.56:1** | ✅ Pass | Safe on quiet panels too |
+| `text/status/error/base` (`#8B1F18`) | `bg/neutral/base` (`#fff`) | **9.10:1** | ✅ Pass | Error text and icons on white |
+| `text/brand/primary/base` (`#0373DF`) | `bg/neutral/base` (`#fff`) | **4.64:1** | ✅ Pass | Link text, outlined-button ink. Clears the floor by 0.14 — do not put white on it |
+| `color/brand/saffron` (`#FF671F`) | `bg/neutral/base` (`#fff`) | **2.91:1** | ❌ Fail (even non-text) | Decorative fills only. Below the 3:1 of WCAG 1.4.11 |
+| `color/brand/yellow` (`#FFD323`) | `bg/neutral/base` (`#fff`) | **1.44:1** | ❌ Fail | Never a text colour, at any size |
+| `text/status/success/base` (`#004220`) | `bg/neutral/base` (`#fff`) | **11.67:1** | ✅ Pass | Confirmation text and icons |
+| `border/neutral/subtle` (`#DCDEE1`) | `bg/neutral/base` (`#fff`) | **1.35:1** | ⚠️ Decorative | A hairline divider only. For a control boundary use `border/neutral/bolder/default` |
 
-> **Critical rule:** use `var(--ds-danger)` for red error text on white — it resolves to `#8B1F18`
-> (`dangerScale/700`) at **9.10:1**. `--ds-danger-500` now also clears AA at 4.89:1, but reaching into
-> a ramp for text is still the wrong habit: a rung is a value, not a decision, and it carries no
-> guarantee against whatever surface you put it on.
+> **Critical rule — a fill is not an ink.** Paint a solid primary surface with
+> `bg/brand/primary/bolder` and put `on/bg/brand/primary/bolder` on it; that pairing was measured
+> and clears AA by 1.86. `text/brand/primary/base` is the *ink* of the same family — correct for a
+> link or an outlined button on the page, and 0.14 above the floor there, but white text on it
+> would be the marginal pairing this ladder exists to avoid.
 >
-> *Corrected 2026-08-12:* every ratio in this table was recomputed from `dist/tokens.css` with the
-> WCAG 2.x formula. The previous table pre-dated the 2026-08-11 ramp rebuild and was wrong in eight
-> of nine rows — most consequentially, it warned that `--ds-ink-muted` was borderline at 4.1:1 (it is
-> 9.56:1) and that `--ds-danger-500` fails for text (it passes). It also omitted `--ds-saffron`,
-> which is the one value here that genuinely fails, and fails a criterion the table never mentioned.
+> *Changed 2026-08-12 (v0.18.1):* success and danger filled buttons followed primary onto their
+> `bg` bolder rungs — `#00542B` and `#AA2F25`. For these two the move **lowers** contrast (11.67:1
+> → 9.12:1 and 9.10:1 → 6.68:1) where primary's raised it; both stay far clear of the floor, and the
+> trade is consistency rather than accessibility. A fill comes from the `bg` slot in every family,
+> or the rule is not a rule. The filled Button also stopped hardcoding primary's ink for every
+> variant — each now declares the foreground measured for its own fill.
+>
+> *Changed 2026-08-12 (v0.18.0):* filled primary buttons moved from `#0373DF` to `#005EB9` across the estate
+> (36 solid fills plus the DS Button), taking white-on-primary from 4.64:1 to 6.36:1 and Navy from
+> 8.77:1 to 12.61:1. The DS Button's single `--_color` was split into `--_fill` and `--_color`, so
+> outlined and text appearances keep the ink. Gradients and `color-mix` washes deliberately keep
+> the lighter value. Success and danger were NOT moved: their `bg` bolder rungs are different
+> values, so that is a separate decision.
 
 > **The table above is hand-maintained; it is not the authority.** Every `--sa-*` colour token
 > carries a contrast class that is **measured at build time** against its own surface, across every
@@ -613,9 +650,71 @@ for one-offs that no role describes.
 /* Over   */  gap: var(--ds-spacing-lg);     /* "16px, for some reason" */
 ```
 
-**Responsive Layout Grid:**
-- **Desktop (≥ 1024px)**: 12-column grid, max-width `1280px`, `24px` gutters.
-- **Mobile (< 1024px)**: 4-column fluid grid, `16px` gutters.
+**Responsive Layout Grid — `<Grid>` / `<GridItem>`:**
+- **Twelve columns at every breakpoint**, `24px` gutter (`grid/columns`, `grid/gutter`).
+  A child spans *more* of them on a small screen rather than the track count changing —
+  UX4G's model, and Bootstrap's. There is deliberately **no 4-column mobile grid**;
+  the earlier claim of one contradicted `grid/columns`, which has always been 12.
+- Side margin is responsive (`grid/margin/*`): 16 mobile · 24 tablet · 32 desktop.
+
+**Content container — never hardcode a max-width.** Use the `.sa-container` class from
+`@mosje/design-system/layout.css`, which carries the cap *and* the responsive side margin.
+The estate follows **UX4G 3.0's two-step container**: `--sa-container-content` **1200px**,
+widening to `--sa-container-contentXl` **1320px** at `--sa-ref-breakpoint-desktopXl` (1768px).
+`--sa-container-page` is the derived variable that selects between them; bind that when a
+media query is unavailable (an inline style, for instance — it is how `SiteHeader` caps its
+own column).
+
+> A container is a **cap**, not a width. `grid/margin/*` (16 mobile / 24 tablet / 32 desktop)
+> is a **floor** that wins on narrower viewports, so the effective column is
+> `min(container, viewport − 2 × margin)`.
+
+**Page-skeleton tokens (`--sa-layout-*`).** Only genuinely fixed measurements:
+
+| Token | Value | Applies to |
+| --- | --- | --- |
+| `layout/bar/height` | 46 | accessibility bar — fixed |
+| `layout/flag/width` | 33 | flag mark in the bar — fixed |
+| `layout/masthead/minHeight` | 72 | brand row — **minimum only, it hugs** |
+| `layout/chrome/minHeight` | 118 | sticky offsets and scroll anchors **only** |
+| `layout/sidebar/width` | 300 | portal sidebar — fixed |
+
+**Fixed, hug, or fill — decide this before sizing anything.**
+
+| Region | Sizing |
+| --- | --- |
+| Accessibility bar · sidebar width · sidebar item | **Fixed** — a token sets it |
+| Brand row · website nav row · page header · card, panel, band | **Hug** — content sets it; a minimum is allowed, a fixed size is not |
+| Sidebar height · content area | **Fill** — what remains sets it |
+| Content column | **Cap**, then the margin floor |
+
+> **Never size a shell by subtracting a chrome height from the viewport.** The brand row
+> hugs, so its height is not knowable in advance — `h-[calc(100vh-5.75rem)]` is wrong by
+> construction. `AppShell` is a grid whose chrome rows are `auto` and whose body row is
+> `1fr`. `layout/chrome/minHeight` is for sticky offsets, not layout arithmetic.
+
+### Layout components
+
+Primitives compose the content column; templates compose the page. All are presentational —
+no store, no router, no redirect.
+
+| Component | Use it for | Never |
+| --- | --- | --- |
+| `Container` | the centred content column; applies the cap **and** the side margin | adding your own `px-*` — the margin is already there |
+| `Grid` / `GridItem` | page-level column layouts; `span={{ base, md, lg }}` | a simple wrapping row of cards — flex is simpler |
+| `Band` | a website section: full-bleed tone + rhythm around a `Container` | a portal page — portal content is fluid, not banded |
+| `PageHeader` | the title + meta + actions row a portal page opens with | a heading *inside* a page — that is `SectionTitle` |
+| `AppShell` | every signed-in portal page | a login screen — that is `PortalLoginShell` |
+| `SiteLayout` | every public website page | a portal page |
+
+Composition is always **`Band` → `Container` → content**. A bare `Container` where a `Band`
+belongs produces a tint that stops short of the viewport edge.
+>
+> **Changed 13 August 2026.** Four widths shipped simultaneously: UX4G specified 1200,
+> `container/content` said 1280 and nothing consumed it, 22 website section files hardcoded
+> that same 1280 beside it, `SiteHeader` defaulted to 1320, and `PortalLoginShell`'s chrome
+> used 1536. Above 1320px the masthead's column ran 20px wider each side than the page, so
+> the National Emblem did not line up with the content below it.
 
 ---
 
@@ -931,6 +1030,31 @@ status/brand tokens above:
 - `--sa-chart-trend-up/down/flat` — KPI trend
 - `--sa-chart-grid`, `--sa-chart-axis`, `--sa-chart-tooltip-bg`, `--sa-chart-tooltip-ink`, `--sa-chart-region-empty`, `--sa-chart-region-stroke` — structural
 
+**Code and terminal specimens (`--sa-code-*`).** The chrome a documentation page needs in
+order to *show* code. **Brand-invariant and theme-invariant on purpose** — a terminal
+specimen that flips to a light surface stops reading as a terminal, so there are no
+`colorModes` or `themes` overrides and the block looks identical under blue, navy, dbim,
+light and dark. Literal values rather than references, for the same reason `chart/cat/*`
+is: the set is tuned against its own background, and a brand swap must not pull one member
+out of that tuning.
+
+- `--sa-code-bg` — the block surface · `--sa-code-shell` — the terminal *window*, one step
+  darker so the titlebar reads as chrome and the code reads as content
+- `--sa-code-text` (12.95:1) · `--sa-code-comment` (5.09:1) · `--sa-code-keyword` (6.04:1)
+  · `--sa-code-string` (11.37:1) · `--sa-code-builtin` (9.58:1) — every foreground role
+  clears AA against `--sa-code-bg`; `comment` is the floor, so re-measure if it is lightened
+- `--sa-code-border` / `--sa-code-borderStrong`, `--sa-code-chrome` / `--sa-code-chromeHover`,
+  `--sa-code-chromeText` (4.52:1) / `--sa-code-chromeTextStrong` — titlebar and affordances
+
+**Not published as Figma variables**, deliberately: Figma's own documentation pages show
+code as text and images, so a designer never binds to these, and publishing them would add
+thirteen entries to the Palette picker that no frame can use. The exclusion carries that
+reason in `figma.variables.json` rather than defaulting to "no mapping defined".
+
+**Do not hand-colour code.** Use `TerminalCode` / `CodeBlock` and the `Syn.*` parts from
+`docs-kit`; the palette existed as three independent hand-rolled copies before it was a
+namespace, which is what these tokens exist to prevent.
+
 ### Shape Tokens
 
 | Token | Value | Usage |
@@ -991,8 +1115,10 @@ All components are exported from `@mosje/design-system`. Import from the package
 **Rendering (intended approach)**: icons render as an **icon font (text glyph)** via ligatures — i.e. the glyph is a text character in the `Material Symbols Rounded` family, **not** an inline `<svg>` and not a per-icon component. This is the house standard used everywhere applicable (e.g. the navbar mega-menu chevron).  
 **Standard config**: family `Material Symbols Rounded`, **weight 300** (Figma style "Light"), size `24`, optical fill `0`. Colour via `currentColor`/`--ds-*` token — never a hardcoded hex.  
 **Setup**: Load `import "@mosje/design-system/icons.css"` once in the app root (this is the **only** step — it declares the `@font-face` for Material Symbols Rounded + the `.material-symbols-rounded` class). No per-app `<link>` tag is needed. The font MUST be present wherever the UI renders — a missing font makes the glyph fall back to its literal ligature text (e.g. "chevron_right"). `icons.css` uses a plain inline `@font-face` (pinned to the versioned gstatic woff2), **not** an `@import` — Next/Turbopack silently drops a leading external `@import` from a bundled CSS module, which is why the earlier `@import`-based file loaded the class but never the font. To go CDN-free (offline kiosks / no-third-party-CDN policy) self-host that woff2 and swap the `src` — see the recipe in `icons.css`.  
-**Sizes — set by DBIM, not by us**: `24 / 32 / 48 / 64` only. DBIM 3.0 §3.4 (Figure 9) defines exactly these four and §3.7.i makes them mandatory, so `icon/size/*` is EXHAUSTIVE — there is deliberately no step below 24, and the tokens are named for their pixel value (`--sa-icon-size-24` …) because a t-shirt name can drift from what it renders. Each size is a FRAME including 2px padding per edge, so the live area is size − 4 (24→20, 32→28, 48→44, 64→60) and artwork must not touch the frame edge. **Open deviation:** 656 of 713 `<Icon>` call sites still pass 12/14/16/18/20/40 — 92% off-scale. Migrating them is a visible change to every dense table and button, so it is a decision, not a sweep.  
-**Usage**: `<Icon name="home" size={24} />` (wraps the font glyph; always `aria-hidden` for decorative icons, `aria-label` on icon-only buttons).  
+**Sizes**: `16 / 20 / 24 / 32 / 40 / 48 / 64`. DBIM 3.0 §3.4 (Figure 9) publishes four — 24, 32, 48, 64 — and all four are here; those are FRAMES including 2px padding per edge, so their live area is size − 4 (24→20, 32→28, 48→44, 64→60). The other three are kept **deliberately**: §3.4 governs the downloadable asset bank, it does not forbid a smaller inline glyph, and **16px beside 14px body text is the estate's most-used icon size** (358 of 713 call sites). A standard's list is a floor, not a ceiling — see `.claude/rules/standards-precedence.md`. Tokens are named for the pixel value (`--sa-icon-size-16` …) so a name cannot drift from what it renders.  
+**Figma text styles**: `Icon/16 · 20 · 24 · 32 · 40 · 48 · 64`, each Material Symbols Rounded / **Light**, with `fontSize` and `lineHeight` **bound to `icon/size/*`** so a change to the scale reaches every style. Prefer the `Icon` **component** for normal work — it carries the size variants and the `icon` text property. The styles exist so a glyph that is already a text node can be *bound* rather than hand-set: they took the Icons documentation from 62% to 98% of text on a published style, converting 140 declared exemptions into real bindings.  
+**Usage**: `<Icon name="home" size={24} />` (wraps the font glyph).  
+**Accessibility — DECORATIVE BY DEFAULT (changed v0.18.2)**: the glyph is real text, so an unmarked icon is announced by a screen reader as its ligature ("arrow back"). The component therefore hides itself: no `aria-label` ⇒ `aria-hidden="true"`; `aria-label` given ⇒ `role="img"` and announced; an explicit `aria-hidden={false}` still wins. **Do not add `aria-hidden` to decorative icons — it is already the default.** For an icon-only control the label belongs on the **button**, not the glyph: `<button aria-label="Search"><Icon name="search" /></button>`. This replaced a convention that was being missed at **533 of 718** call sites.  
 **Rules**:
 - Use the Material Symbols Rounded **font glyph** for any icon in the Material set — never inline SVG for those.
 - Brand/social marks (National Emblem, Digital India, etc.) that are **not** in Material Symbols use inline SVG.
@@ -1700,7 +1826,8 @@ inventing a page-local variant.
 **Rules**:
 - Only one `<h1>` per page.
 - All sections must have an `id` for deep-linking.
-- Content max-width: `1280px`. Prose sections: `max-w-prose` (`65ch`).
+- Content max-width: use `.sa-container` (UX4G 1200 / 1320 — see §1). Never a literal.
+  Prose sections: `max-w-prose` (`65ch`).
 
 ---
 
@@ -1719,16 +1846,29 @@ Ensure the generated contract is valid:
 npm test -w @mosje/tokens
 ```
 
-### Figma Code Connect
+### Figma Code Connect — NOT SET UP (blocked on plan)
 
-Visual components are synced with the designer Figma library using Code Connect. See `/sync-figma` and `docs/research/figma-code-connect-readiness.md` for sync workflows.
+**Do not assume a Figma component carries our code snippet — none do.** Code Connect
+needs a Developer seat on an Organization/Enterprise plan. Verified 2026-08-12: zero
+mappings in the SAMAVESH file, zero `*.figma.ts(x)` in the repo, no
+`@figma/code-connect` dependency. Do not author mapping files in anticipation; they
+cannot be published and read as a finished integration.
+
+**What syncs code ↔ Figma today:** tokens through `@mosje/tokens` (DTCG → Style
+Dictionary), and on the Iconography page the size scale (`iconSize`) and the 223-icon
+catalogue, both **generated** from their sources. Everything else is manual and drifts
+— prefer generating a fact over transcribing one.
+
+Status, the per-component node map, and the Icon mapping (Figma `Size` variant → `size`,
+Figma `icon` text property → `name`): `docs/research/figma-code-connect-readiness.md`.
+Sync workflow for tokens: `/sync-figma`.
 
 ### Adding a New Component — Contribution Checklist
 
 - [ ] Component is not already in the catalogue (check `index.ts` before building)
 - [ ] Component uses only semantic `--ds-*` tokens (no hardcoded hex)
 - [ ] Implements all 7 interactive states (Normal, Hover, Focus, Active, Loading, Error, Disabled)
-- [ ] Passes WCAG 2.1 AA colour contrast — verify with browser DevTools Accessibility panel
+- [ ] Passes WCAG 2.2 AA colour contrast — verify with browser DevTools Accessibility panel
 - [ ] Has a paired `.css` file in the same directory as the component `.tsx`
 - [ ] Exported from `index.ts` barrel with full TypeScript types
 - [ ] Added to the Component Catalogue section in this `design.md`

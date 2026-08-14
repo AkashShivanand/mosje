@@ -9,7 +9,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: calc(-1 * var(--sa-padding-3xs));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -19,20 +19,20 @@
 .ds-table {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--sa-stack-s);
   font-family: var(--sa-font-latin);
 }
 
 .ds-table__scroll {
   overflow-x: auto;
   border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-lg, 12px);
+  border-radius: var(--sa-shape-lg);
 }
 
 .ds-table__table {
   min-width: 100%;
   border-collapse: collapse;
-  font-size: var(--sa-type-body-3-size, 14px);
+  font-size: var(--sa-type-body-3-size);
 }
 
 .ds-table__caption {
@@ -40,7 +40,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: calc(-1 * var(--sa-padding-3xs));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -54,7 +54,7 @@
 }
 
 .ds-table__th {
-  padding: 14px 16px;
+  padding: var(--sa-padding-m) var(--sa-padding-m);
   text-align: left;
   white-space: nowrap;
   font-weight: 600;
@@ -76,7 +76,7 @@
 }
 
 .ds-table__td {
-  padding: 14px 16px;
+  padding: var(--sa-padding-m) var(--sa-padding-m);
   color: var(--sa-text-neutral-base);
   vertical-align: middle;
   /* Tabular figures: every digit takes the same width, so a column of amounts,
@@ -92,7 +92,7 @@
 }
 
 .ds-table__empty {
-  padding: 48px 16px;
+  padding: var(--sa-section-m) var(--sa-padding-m);
   text-align: center;
   color: var(--sa-text-neutral-subtle);
 }
@@ -103,14 +103,14 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--sa-stack-s);
 }
 
 .ds-table__pagesize {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: var(--sa-type-body-3-size, 14px);
+  gap: var(--sa-stack-xs);
+  font-size: var(--sa-type-body-3-size);
   color: var(--sa-text-neutral-subtle);
 }
 
@@ -118,8 +118,8 @@
   appearance: none;
   border: 0;
   cursor: pointer;
-  border-radius: var(--sa-shape-sm, 6px);
-  padding: 2px 8px;
+  border-radius: var(--sa-shape-sm);
+  padding: var(--sa-padding-3xs) var(--sa-padding-xs);
   font: inherit;
   font-weight: 600;
   background: transparent;
@@ -132,14 +132,14 @@
 }
 
 .ds-table__pagesize-btn.is-active {
-  background-color: var(--sa-color-action-primary-default);
+  background-color: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
 }
 
 .ds-table__pager {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--sa-stack-2xs);
 }
 
 .ds-table__page-nav,
@@ -152,7 +152,7 @@
   justify-content: center;
   height: 36px;
   min-width: 36px;
-  border-radius: var(--sa-shape-sm, 6px);
+  border-radius: var(--sa-shape-sm);
   border: 1px solid transparent;
   background: transparent;
   color: var(--sa-text-neutral-subtle);
@@ -180,7 +180,7 @@
 .ds-table__ellipsis {
   display: inline-flex;
   align-items: center;
-  padding: 0 4px;
+  padding: 0 var(--sa-padding-2xs);
   color: var(--sa-text-neutral-subtle);
 }
 
@@ -192,7 +192,7 @@
   z-index: 1;
   background-color: var(--sa-bg-neutral-base);
   /* Soft left shadow signals the column is pinned */
-  box-shadow: -3px 0 8px -3px rgba(0, 0, 0, 0.10);
+  box-shadow: -3px 0 8px -3px color-mix(in oklab, var(--sa-text-neutral-bolder) 10%, transparent);
 }
 
 .ds-table__head .ds-table__th.is-sticky-right {
@@ -209,5 +209,5 @@
 .ds-table__page:focus-visible,
 .ds-table__pagesize-btn:focus-visible {
   outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
-  outline-offset: 2px;
+  outline-offset: var(--sa-focus-offset);
 }

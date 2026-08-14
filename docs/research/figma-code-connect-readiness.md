@@ -1,10 +1,32 @@
-# Code Connect Readiness — UX4G DS ↔ @mosje/design-system
+# Code Connect Readiness — SAMAVESH library ↔ @mosje/design-system
 
-**Status:** Code Connect is **not available on the current Figma plan** — it requires a **Developer seat on an Organization/Enterprise plan** (probed 2026-06: `get_code_connect_map` → "You need a Developer seat… to access Code Connect"). The account has Full/expert seats but not a Dev seat with Code Connect entitlement on the UX4G org.
+**Status: BLOCKED ON PLAN, and nothing is mapped.** Code Connect requires a
+**Developer seat on an Organization/Enterprise plan**. Probed 2026-06
+(`get_code_connect_map` → *"You need a Developer seat… to access Code Connect"*) and
+re-checked **2026-08-12**: `get_code_connect_map` on the Iconography page returns `{}`,
+and the repo contains **zero** `*.figma.ts(x)` files, no `@figma/code-connect`
+dependency, and no `figma.config.json`.
 
-Everything else for the sync is already done: the **code design system is the single source of truth** (`@mosje/design-system`), tokens are UX4G-aligned, and the atoms map 1:1 to the Figma components. When a Dev seat is enabled, wiring Code Connect is a short, mechanical job using the map below.
+**Do not "get ahead" by authoring mapping files now.** They cannot be published without
+the entitlement, and a tree full of unpublishable `*.figma.tsx` reads as a finished
+integration to the next person. The gap is a licence, not a missing afternoon.
 
-## Atom ↔ Figma component map (file `T3bkN5gNKfaNeY6dpT6FwF` — MoSJE – UX4G DS)
+**What actually keeps code and Figma in sync today** is not Code Connect — see
+*Interim sync* at the bottom. Tokens flow through `@mosje/tokens`; the Iconography
+size scale and the 223-icon catalogue are **generated** from Figma rather than
+hand-kept, which is why that page survives without Code Connect. Everything else is
+manual and therefore drifts — the 2026-08-12 Iconography audit found a stale callout
+and a mis-prefixed variable that a published mapping would not have caught anyway.
+
+## Atom ↔ Figma component map (file `3FF5l0SMNIwdpZrKkeyPTm` — SAMAVESH Design System)
+
+> **File key corrected 2026-08-12.** This table previously named
+> `T3bkN5gNKfaNeY6dpT6FwF` ("MoSJE – UX4G DS") while listing node ids that belong to
+> the **SAMAVESH** library — the ids match `FIGMA_NODES` in
+> `apps/hub/src/lib/design-system/figma.ts`, whose file is `3FF5l0SMNIwdpZrKkeyPTm`.
+> Left alone, the "short, mechanical job" below would have started against the wrong
+> file. (A third key, `qyzTEy8dlb3ssYctlkMX5o`, resolves to the same SAMAVESH document
+> and survives only in dated audit records.)
 
 | Code component (`@mosje/design-system`) | Figma page node | Notes |
 |---|---|---|
@@ -21,6 +43,7 @@ Everything else for the sync is already done: the **code design system is the si
 | `Loader` | `2141:323879` | sm/md/lg, primary/secondary |
 | `EmptyState` | `2141:296719` | basic/simple/custom |
 | `AccessibilityWidget` | `2382:295905` | UX4G accessibility bar & widget |
+| `Icon` | **`55030:701`** (component set) · page `2316:246` | Added 2026-08-12. The set holds **7 size variants** (`Size=16 · 20 · 24 · 32 · 40 · 48 · 64`), matching `iconSize`. Unusually simple to map: Figma's `Size` variant → our `size` prop, and Figma's `icon` **text property** → our `name` prop, taking the same snake_case ligature verbatim. `weight`/`fill` have no Figma axis (Figma exposes cuts as named styles), so they map to defaults. |
 
 > Node ids above are the **page** containers; when wiring, call `get_context_for_code_connect` on each to get the concrete **component-set** node id + its variant property names, then map props.
 
