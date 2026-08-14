@@ -169,7 +169,10 @@ function collectionFor(path, tier) {
   if (head === "size") return "Space";
   // Effect and viewport constants: mode-less, and neither is a spacing or a colour.
   if (head === "blur" || head === "breakpoint") return "Static";
-  if (head === "radius") return "Radius";
+  // `radius` is the Tier-1 scale; `shape` is the Tier-2 group that aliases it and is what a
+  // designer should bind to. Both belong in the Radius collection — the tier stays legible in
+  // the variable name (`ref/radius/md` vs `shape/md`), exactly as it does in CSS.
+  if (head === "radius" || head === "shape") return "Radius";
   if (head === "opacity" || head === "z") return "Static";
   if (head === "border" && rest[0] === "width") return "Static";
   if (head === "motion") return "Motion";
@@ -183,7 +186,7 @@ function collectionFor(path, tier) {
      * The legacy code semantic tier (`color.text.default`, `color.border.subtle`, …) is NOT
      * exported. It is mirrored exactly by the canonical grammar namespace — tier2-parity
      * proves they agree in every axis block — so exporting both would put two names on one
-     * value. It retires the same way `--ds-*` does, as call sites migrate.
+     * value. It retires as call sites migrate, the way `--ds-*` did on 2026-08-12.
      */
     return null;
   }
@@ -199,7 +202,12 @@ function collectionFor(path, tier) {
   // dimensional scales rather than with `container/*` in Static. That keeps each family whole
   // in one collection, and it is what gives them Space's WIDTH_HEIGHT + GAP scopes — the two
   // properties a designer actually binds a gutter, a page margin or a hit area to.
-  if (head === "grid" || head === "target") return "Space";
+  // `layout/*` joins them for the same reason: a bar height, a sidebar width and a chrome
+  // offset are dimensions a designer binds to WIDTH_HEIGHT. Without this case they emitted to
+  // CSS but fell out of the Figma payload entirely, so the library could only ever have carried
+  // them by hand — which is how `layout/bar/height` and `layout/flag/width` came to exist in
+  // the library with nothing in the build defining them.
+  if (head === "grid" || head === "target" || head === "layout") return "Space";
   if (head === "container") return "Static";
   if (head === "focus" && (rest[0] === "width" || rest[0] === "offset")) return "Static";
   if (head === "icon" && rest[0] === "size") return "Space";
@@ -485,11 +493,11 @@ function applyContractNotes(payload) {
   return records;
 }
 
-/** The custom property this token actually ships as (font/role feeds --ds-type-*). */
+/** The custom property this token actually ships as (font/role feeds --sa-type-*). */
 function emittedCssName(token, tier) {
   const [head, kind, ...rest] = token.path;
-  if (head === "font" && kind === "role") return `--ds-type-${rest.join("-")}`;
-  if (head === "font" && kind === "tracking") return `--ds-type-${rest.join("-")}-tracking`;
+  if (head === "font" && kind === "role") return `--sa-type-${rest.join("-")}`;
+  if (head === "font" && kind === "tracking") return `--sa-type-${rest.join("-")}-tracking`;
   return toCssName(token.path, tier);
 }
 
@@ -504,6 +512,14 @@ export function exclusionReason(path, tier) {
   }
   if (head === "shadow" || head === "elevation") {
     return "Figma models shadows as EFFECT STYLES, not variables — exported separately";
+  }
+  if (head === "code") {
+    // Deliberate, not an oversight. code/* is the chrome around a CODE SPECIMEN in the web
+    // documentation — a terminal window and its syntax parts. Figma's own documentation
+    // pages show code as text and images, so a designer never binds to these; publishing
+    // them would add thirteen variables to the Palette picker that no frame can use.
+    // Revisit only if the library starts rendering live code blocks.
+    return "web documentation chrome — Figma shows code as text, so there is nothing to bind";
   }
   if (head === "space" && rest.length > 1) {
     return "legacy nested spacing role, mirrored by the canonical top-level group";

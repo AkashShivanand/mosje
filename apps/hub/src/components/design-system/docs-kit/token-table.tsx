@@ -26,13 +26,13 @@ export function TokenTable({ tokens }: { tokens: TokenRow[] }): React.JSX.Elemen
                 {t.isColor && (
                   <span
                     className="token-table__preview"
-                    style={{ backgroundColor: t.value, display: "inline-block", marginRight: "var(--ds-spacing-sm)", verticalAlign: "middle" }}
+                    style={{ backgroundColor: t.value, display: "inline-block", marginRight: "var(--sa-stack-xs)", verticalAlign: "middle" }}
                     aria-hidden="true"
                   />
                 )}
                 <code className="token-table__value">{t.value}</code>
               </td>
-              <td style={{ color: "var(--ds-ink-muted)", fontSize: "var(--ds-text-body-2)" }}>{t.description}</td>
+              <td style={{ color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-body-2-size)" }}>{t.description}</td>
             </tr>
           ))}
         </tbody>

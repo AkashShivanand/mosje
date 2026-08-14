@@ -45,7 +45,7 @@ function resolver(css) {
 }
 
 /**
- * Named export -> the `--ds-*` it mirrors.
+ * Named export -> the canonical `--sa-*` it mirrors.
  *
  * `gov` was dropped from the colour vocabulary on 2026-08-11, so `govNavy`/`govYellow` are
  * now `navy`/`yellow`. No deprecated aliases are carried: a repo-wide search found no
@@ -53,42 +53,42 @@ function resolver(css) {
  * for one colour is the problem this file already demonstrated.
  */
 const COLORS = {
-  primary: "--ds-primary",
-  primaryTonal: "--ds-primary-tonal",
-  primaryDark: "--ds-primary-dark",
-  primaryRing: "--ds-primary-ring",
-  success: "--ds-success",
-  successTonal: "--ds-success-tonal",
-  danger: "--ds-danger",
-  warning: "--ds-warning",
-  info: "--ds-info",
-  ink: "--ds-ink",
-  inkStrong: "--ds-ink-strong",
-  inkMuted: "--ds-ink-muted",
-  onPrimary: "--ds-on-primary",
-  surface: "--ds-surface",
+  primary: "--sa-color-action-primary-default",
+  primaryTonal: "--sa-color-action-primary-tonal",
+  primaryDark: "--sa-color-action-primary-hover",
+  primaryRing: "--sa-focus-ring",
+  success: "--sa-color-status-success",
+  successTonal: "--sa-color-status-successTonal",
+  danger: "--sa-color-status-danger",
+  warning: "--sa-color-status-warning",
+  info: "--sa-color-status-info",
+  ink: "--sa-color-text-default",
+  inkStrong: "--sa-text-neutral-bolder",
+  inkMuted: "--sa-color-text-muted",
+  onPrimary: "--sa-color-text-onPrimary",
+  surface: "--sa-bg-neutral-base",
   // `surfaceAlt` was the literal #f4f3f9, a neutral-75 step the ramp no longer has. It is
   // pointed at the real muted surface rather than kept as an orphan literal.
-  surfaceAlt: "--ds-surface-muted",
-  surfaceMuted: "--ds-surface-muted",
-  border: "--ds-border",
-  borderStrong: "--ds-border-strong",
-  saffron: "--ds-saffron",
-  saffronLight: "--ds-saffron-light",
-  saffronDark: "--ds-saffron-dark",
-  navy: "--ds-navy",
-  yellow: "--ds-yellow",
+  surfaceAlt: "--sa-bg-neutral-subtler",
+  surfaceMuted: "--sa-bg-neutral-subtler",
+  border: "--sa-border-neutral-subtle",
+  borderStrong: "--sa-border-neutral-base",
+  saffron: "--sa-color-brand-saffron",
+  saffronLight: "--sa-color-brand-saffronLight",
+  saffronDark: "--sa-color-brand-saffronDark",
+  navy: "--sa-color-brand-navy",
+  yellow: "--sa-color-brand-yellow",
 };
 
 const RADIUS = {
-  xxs: "--ds-radius-xxs",
-  xs: "--ds-radius-xs",
-  sm: "--ds-radius-sm",
-  md: "--ds-radius-md",
-  pill: "--ds-radius-full",
+  xxs: "--sa-shape-xxs",
+  xs: "--sa-shape-xs",
+  sm: "--sa-shape-sm",
+  md: "--sa-shape-md",
+  pill: "--sa-shape-full",
 };
 
-const SHADOW = { xs: "--ds-shadow-xs", lg: "--ds-shadow-lg", xl: "--ds-shadow-xl" };
+const SHADOW = { xs: "--sa-elevation-card", lg: "--sa-elevation-modal", xl: "--sa-elevation-toast" };
 
 /**
  * Type roles, as `{ size, leading }` only.
@@ -101,6 +101,27 @@ const SHADOW = { xs: "--ds-shadow-xs", lg: "--ds-shadow-lg", xl: "--ds-shadow-xl
  * old fixed-px block described a system that has not existed for months.
  */
 const TYPE_ROLES = ["display", "title-1", "headline", "title-2", "body-1", "body-2", "body-3", "label-1", "label-3"];
+
+/**
+ * Mirror key -> the canonical type ROLE it resolves to.
+ *
+ * These keys are the old `--ds-text-*` spellings, and two of them do NOT mean what they say:
+ * `title-1` was the headline-2 role and `title-2` was title-1. That was the alias trap the
+ * `--ds-*` vocabulary carried, and it caused four production bugs. The vocabulary was retired
+ * on 2026-08-12; this table preserves the exact resolutions so the mirror's named exports keep
+ * their values, and it is the last place the mismatch survives. Prefer `--sa-type-<role>-*`.
+ */
+const TYPE_TOKEN = {
+  "display": "display-1",
+  "title-1": "headline-2",
+  "headline": "headline-1",
+  "title-2": "title-1",
+  "body-1": "body-1",
+  "body-2": "body-2",
+  "body-3": "body-3",
+  "label-1": "label-1",
+  "label-3": "label-3",
+};
 const camel = (r) => r.replace(/-(\w)/g, (_, c) => c.toUpperCase());
 
 function main() {
@@ -116,8 +137,19 @@ function main() {
   const colors = Object.fromEntries(Object.entries(COLORS).map(([k, v]) => [k, take(v)]));
   const radius = Object.fromEntries(Object.entries(RADIUS).map(([k, v]) => [k, take(v)]));
   const shadow = Object.fromEntries(Object.entries(SHADOW).map(([k, v]) => [k, take(v)]));
+  // Read the icon scale straight out of the stylesheet. Listing the steps here would be a
+  // second place to forget when the scale moves — which is exactly how the docs page that
+  // documented only 16/20/24 fell three steps behind the tokens.
+  const iconSize = Object.fromEntries(
+    [...css.matchAll(/--sa-icon-size-(\d+)\s*:/g)]
+      .map((m) => Number(m[1]))
+      .filter((n, i, a) => a.indexOf(n) === i)
+      .sort((a, b) => a - b)
+      .map((n) => [`px${n}`, n]),
+  );
+
   const typography = Object.fromEntries(
-    TYPE_ROLES.map((r) => [camel(r), { size: take(`--ds-text-${r}`), leading: take(`--ds-leading-${r}`) }]),
+    TYPE_ROLES.map((r) => [camel(r), { size: take(`--sa-type-${TYPE_TOKEN[r]}-size`), leading: take(`--sa-type-${TYPE_TOKEN[r]}-lh`) }]),
   );
 
   if (missing.length) {
@@ -147,7 +179,7 @@ function main() {
    px for a scale that is fluid. Regenerate with: npm run build -w @mosje/tokens
 
    PREFER THE CSS CUSTOM PROPERTIES. These literals are resolved at BUILD time, so they are
-   frozen to the default brand and cannot follow \`data-brand\` — \`var(--ds-primary)\` repaints
+   frozen to the default brand and cannot follow \`data-brand\` — \`var(--sa-color-action-primary-default)\` repaints
    when the brand switches and \`colors.primary\` does not. */
 export const colors = {
 ${obj(colors)}
@@ -158,7 +190,7 @@ ${obj(radius)}
 } as const;
 
 export const fontFamily = {
-  sans: ${JSON.stringify(take("--ds-font-sans") ?? '"Noto Sans", ui-sans-serif, system-ui, sans-serif')},
+  sans: ${JSON.stringify(take("--sa-font-latin") ?? '"Noto Sans", ui-sans-serif, system-ui, sans-serif')},
 } as const;
 
 /** Named type styles. Fluid: \`size\`/\`leading\` are clamp() or rem strings, not px numbers. */
@@ -170,14 +202,22 @@ export const shadow = {
 ${obj(shadow)}
 } as const;
 
-export const tokens = { colors, radius, fontFamily, typography, shadow } as const;
+/** Icon sizes in px, read from the stylesheet so this list cannot fall behind the scale.
+    DBIM 3.0 section 3.4 publishes 24, 32, 48 and 64; the smaller steps are ours and are kept
+    deliberately (.claude/rules/standards-precedence.md). */
+export const iconSize = {
+${obj(iconSize)}
+} as const;
+
+export const tokens = { colors, radius, fontFamily, typography, shadow, iconSize } as const;
 export default tokens;
 `;
 
   writeFileSync(here("../../design-system/tokens.ts"), out);
   process.stdout.write(
     `✓ generated packages/design-system/tokens.ts — ${Object.keys(colors).length} colours, ` +
-      `${Object.keys(radius).length} radii, ${Object.keys(typography).length} type roles\n`,
+      `${Object.keys(radius).length} radii, ${Object.keys(typography).length} type roles, ` +
+      `${Object.keys(iconSize).length} icon sizes\n`,
   );
 }
 

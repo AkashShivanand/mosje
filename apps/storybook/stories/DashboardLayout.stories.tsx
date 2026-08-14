@@ -229,7 +229,7 @@ export const Segments: Story = {
             { label: "Table", value: "table" },
           ]}
         />
-        <p style={{ margin: 0, color: "var(--ds-ink-muted)" }}>
+        <p style={{ margin: 0, color: "var(--sa-color-text-muted)" }}>
           Showing the {period === "fy" ? "financial year" : period} as a {view}.
         </p>
       </div>

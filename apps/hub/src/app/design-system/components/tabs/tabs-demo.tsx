@@ -26,13 +26,13 @@ export function TabsDemo(): React.JSX.Element {
       <TabPanel idBase={idBase} tabId={tab.id}>
         <div
           style={{
-            marginTop: "var(--ds-spacing-lg)",
-            padding: "var(--ds-spacing-xl)",
-            border: "1px solid var(--ds-border)",
-            borderRadius: "var(--ds-radius-lg, 10px)",
-            background: "var(--ds-surface)",
-            color: "var(--ds-ink)",
-            fontSize: "var(--ds-text-body-1)",
+            marginTop: "var(--sa-stack-m)",
+            padding: "var(--sa-padding-l)",
+            border: "1px solid var(--sa-border-neutral-subtle)",
+            borderRadius: "var(--sa-shape-lg)",
+            background: "var(--sa-bg-neutral-base)",
+            color: "var(--sa-text-neutral-base)",
+            fontSize: "var(--sa-type-body-1-size)",
             lineHeight: 1.6,
           }}
         >

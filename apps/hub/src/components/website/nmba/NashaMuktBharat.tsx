@@ -33,7 +33,7 @@ export function NashaMuktBharat({ variant = "full" }: NashaMuktBharatProps) {
   if (variant === "band") {
     return (
       <section className="bg-surface-muted" aria-labelledby="nmba-band-heading">
-        <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
+        <div className="sa-container py-12 md:py-16">
           <div id="nmba-band-heading">
             <SectionHeading
               title="Nasha Mukt Bharat Abhiyaan"
@@ -52,7 +52,7 @@ export function NashaMuktBharat({ variant = "full" }: NashaMuktBharatProps) {
   if (variant === "map") {
     return (
       <section className="bg-white" aria-labelledby="nmba-map-heading">
-        <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
+        <div className="sa-container py-12 md:py-16">
           <div id="nmba-map-heading">
             <SectionHeading
               title="Find a De-addiction Centre near you"
@@ -70,7 +70,7 @@ export function NashaMuktBharat({ variant = "full" }: NashaMuktBharatProps) {
   // full
   return (
     <section className="bg-surface-muted" aria-labelledby="nmba-heading">
-      <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-16">
+      <div className="sa-container py-12 md:py-16">
         <div id="nmba-heading">
           <SectionHeading
             title="Nasha Mukt Bharat Abhiyaan"

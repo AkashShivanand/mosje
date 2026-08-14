@@ -6,34 +6,34 @@
    variant. Adding a tone is two lines, not fifteen. */
 
 .ds-sla {
-  --sla-ink: var(--ds-primary);
-  --sla-fill: var(--ds-primary);
-  --sla-soft: var(--ds-primary-tonal);
+  --sla-ink: var(--sa-color-action-primary-default);
+  --sla-fill: var(--sa-color-action-primary-default);
+  --sla-soft: var(--sa-color-action-primary-tonal);
 }
 
 .ds-sla--success {
-  --sla-ink: var(--ds-success);
-  --sla-fill: var(--ds-success);
-  --sla-soft: var(--ds-success-tonal);
+  --sla-ink: var(--sa-color-status-success);
+  --sla-fill: var(--sa-color-status-success);
+  --sla-soft: var(--sa-color-status-successTonal);
 }
 
 .ds-sla--warning {
-  --sla-ink: var(--ds-warning);
-  --sla-fill: var(--ds-warning);
-  --sla-soft: var(--ds-warning-tonal);
+  --sla-ink: var(--sa-color-status-warning);
+  --sla-fill: var(--sa-color-status-warning);
+  --sla-soft: var(--sa-color-status-warningTonal);
 }
 
 .ds-sla--danger {
-  --sla-ink: var(--ds-danger);
-  --sla-fill: var(--ds-danger);
-  --sla-soft: var(--ds-danger-tonal);
+  --sla-ink: var(--sa-color-status-danger);
+  --sla-fill: var(--sa-color-status-danger);
+  --sla-soft: var(--sa-color-status-dangerTonal);
 }
 
 /* A stopped clock carries no urgency — neutral, deliberately. */
 .ds-sla--neutral {
-  --sla-ink: var(--ds-ink-muted);
-  --sla-fill: var(--ds-border-strong);
-  --sla-soft: var(--ds-surface-muted);
+  --sla-ink: var(--sa-color-text-muted);
+  --sla-fill: var(--sa-border-neutral-base);
+  --sla-soft: var(--sa-bg-neutral-subtler);
 }
 
 /* ---- Linear (default): a case row or a queue ------------------------------------- */
@@ -41,7 +41,7 @@
 .ds-sla--linear {
   display: flex;
   flex-direction: column;
-  gap: var(--ds-stack-2xs);
+  gap: var(--sa-stack-2xs);
   inline-size: 100%;
 }
 
@@ -50,21 +50,21 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--ds-inline-s);
+  gap: var(--sa-inline-s);
 }
 
 .ds-sla__label {
-  font-size: var(--ds-text-label-1);
-  line-height: var(--ds-leading-label-1);
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
   font-weight: 600;
-  color: var(--ds-ink);
+  color: var(--sa-text-neutral-base);
   min-inline-size: 0;
   overflow-wrap: anywhere;
 }
 
 .ds-sla__summary {
-  font-size: var(--ds-text-body-2);
-  line-height: var(--ds-leading-body-2);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   font-weight: 600;
   color: var(--sla-ink);
   white-space: nowrap;
@@ -73,7 +73,7 @@
 .ds-sla__track-wrap {
   block-size: 8px;
   inline-size: 100%;
-  border-radius: var(--ds-radius-full);
+  border-radius: var(--sa-shape-full);
   background: var(--sla-soft);
   overflow: hidden;
 }
@@ -83,13 +83,13 @@
   block-size: 100%;
   border-radius: inherit;
   background: var(--sla-fill);
-  transition: inline-size var(--ds-duration-base) var(--ds-easing-out);
+  transition: inline-size var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
 }
 
 .ds-sla__foot {
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-sla__action {
@@ -102,7 +102,7 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--ds-stack-2xs);
+  gap: var(--sa-stack-2xs);
   text-align: center;
 }
 
@@ -132,7 +132,7 @@
 .ds-sla__fill {
   stroke: var(--sla-fill);
   stroke-linecap: round;
-  transition: stroke-dashoffset var(--ds-duration-base) var(--ds-easing-out);
+  transition: stroke-dashoffset var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
 }
 
 .ds-sla__ring-value {
@@ -140,7 +140,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  font-size: var(--ds-text-title-2);
+  font-size: var(--sa-type-title-1-size);
   line-height: 1;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -148,12 +148,12 @@
 }
 
 .ds-sla--circular .ds-sla__label {
-  font-size: var(--ds-text-body-2);
+  font-size: var(--sa-type-body-2-size);
 }
 
 .ds-sla--circular .ds-sla__summary {
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
 }
 
 /* ---- Badge: a table cell, where a bar will not fit -------------------------------- */
@@ -161,11 +161,11 @@
 .ds-sla--badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--ds-inline-xs);
-  padding: var(--ds-padding-3xs) var(--ds-padding-xs);
+  gap: var(--sa-inline-xs);
+  padding: var(--sa-padding-3xs) var(--sa-padding-xs);
   border: 1px solid var(--sla-soft);
-  border-radius: var(--ds-radius-full);
-  background: var(--ds-surface);
+  border-radius: var(--sa-shape-full);
+  background: var(--sa-bg-neutral-base);
   max-inline-size: 100%;
 }
 
@@ -175,15 +175,15 @@
   flex: none;
   inline-size: 8px;
   block-size: 8px;
-  border-radius: var(--ds-radius-full);
+  border-radius: var(--sa-shape-full);
   background: var(--sla-fill);
 }
 
 .ds-sla--badge .ds-sla__label {
-  font-size: var(--ds-text-label-2);
-  line-height: var(--ds-leading-label-2);
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
   font-weight: 500;
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -193,12 +193,12 @@
   flex: none;
   inline-size: 1px;
   block-size: 10px;
-  background: var(--ds-border-strong);
+  background: var(--sa-border-neutral-base);
 }
 
 .ds-sla--badge .ds-sla__summary {
-  font-size: var(--ds-text-label-2);
-  line-height: var(--ds-leading-label-2);
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
 }
 
 /* ---- Paused: a stopped clock should look stopped ---------------------------------- */
@@ -210,12 +210,12 @@
   background-image: repeating-linear-gradient(
     45deg,
     transparent 0 4px,
-    var(--ds-surface) 4px 8px
+    var(--sa-bg-neutral-base) 4px 8px
   );
 }
 
 .ds-sla--paused .ds-sla__ring-value {
-  font-size: var(--ds-text-body-2);
+  font-size: var(--sa-type-body-2-size);
   letter-spacing: -0.1em;
 }
 

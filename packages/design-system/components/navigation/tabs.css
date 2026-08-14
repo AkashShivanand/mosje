@@ -6,13 +6,13 @@
 .ds-tabs {
   position: relative;
   display: flex;
-  gap: 4px;
+  gap: var(--sa-stack-2xs);
   overflow-x: auto;
-  padding: 4px;
-  border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-xl);
-  background-color: var(--ds-surface-muted);
-  font-family: var(--ds-font-sans);
+  padding: var(--sa-padding-2xs);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-xl);
+  background-color: var(--sa-bg-neutral-subtler);
+  font-family: var(--sa-font-latin);
 }
 
 /* The active-tab pill. A single element that slides to the selected
@@ -26,19 +26,19 @@
   bottom: 4px;
   left: 0;
   width: 0;
-  border-radius: var(--ds-radius-lg);
-  /* `--ds-navy` (`--sa-color-brand-navy`) is declared once at `:root` and
+  border-radius: var(--sa-shape-lg);
+  /* `--sa-color-brand-navy` (`--sa-color-brand-navy`) is declared once at `:root` and
      never re-declared inside a `[data-brand]` block — it's brand-invariant
      by design, meant for things that should stay navy regardless of the
      active brand axis (see tokens.css). The active-tab pill isn't one of
-     those: `.ds-tabs__tab.is-selected` already reads `--ds-on-primary` for
-     its text colour, so `--ds-primary` was the intended fill all along —
+     those: `.ds-tabs__tab.is-selected` already reads `--sa-color-text-onPrimary` for
+     its text colour, so `--sa-color-action-primary-default` was the intended fill all along —
      it's re-declared per `[data-brand]` and re-tones with the rest of the
      estate. */
-  background-color: var(--ds-primary);
-  box-shadow: var(--ds-shadow-xs);
-  transition: transform var(--ds-duration-fast) var(--ds-easing-out),
-    width var(--ds-duration-fast) var(--ds-easing-out);
+  background-color: var(--sa-bg-brand-primary-bolder);
+  box-shadow: var(--sa-elevation-card);
+  transition: transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    width var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
   z-index: 0;
   pointer-events: none;
 }
@@ -55,42 +55,42 @@
   flex: 1 1 0;
   min-width: 0;
   white-space: nowrap;
-  padding: 10px 12px;
+  padding: var(--sa-padding-s) var(--sa-padding-s);
   border: none;
-  border-radius: var(--ds-radius-lg);
+  border-radius: var(--sa-shape-lg);
   background: transparent;
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
+  color: var(--sa-text-neutral-subtle);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
   font-weight: 600;
   text-align: center;
   cursor: pointer;
-  transition: background-color var(--ds-duration-fast) var(--ds-easing-out),
-    color var(--ds-duration-fast) var(--ds-easing-out);
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
 .ds-tabs__tab:hover:not(.is-selected) {
   /* Was a raw `rgba(0, 0, 0, 0.05)` literal — not permitted in design-system
-     CSS (tokens only). `--ds-surface-muted` (the track's own background,
+     CSS (tokens only). `--sa-bg-neutral-subtler` (the track's own background,
      see `.ds-tabs` above) isn't a substitute: hovering a tab would then
      match the track it sits on and the affordance would disappear.
-     `--ds-neutral-100` is one step darker (#f1f3f5 vs #f8f9fa in Blue),
+     `--sa-color-neutralScale-100` is one step darker (#f1f3f5 vs #f8f9fa in Blue),
      giving a visible neutral wash on top of the muted track without
      inventing a value. */
-  background-color: var(--ds-neutral-100);
-  color: var(--ds-ink);
+  background-color: var(--sa-color-neutralScale-100);
+  color: var(--sa-text-neutral-base);
 }
 
 /* The pill's own background/shadow now come from `.ds-tabs__indicator`
    behind it — this just sets the text color that reads on top of it. */
 .ds-tabs__tab.is-selected {
-  color: var(--ds-on-primary);
+  color: var(--sa-on-bg-brand-primary-bolder);
 }
 
 .ds-tabs__tab:focus-visible {
   outline: none;
   /* ring offset over the muted track, then the focus ring */
-  box-shadow: 0 0 0 2px var(--ds-surface-muted), 0 0 0 4px var(--ds-primary);
+  box-shadow: 0 0 0 2px var(--sa-bg-neutral-subtler), 0 0 0 4px var(--sa-color-action-primary-default);
 }
 
 .ds-tabpanel:focus-visible {
@@ -104,7 +104,7 @@
    is a utility switching state, not a showpiece. */
 @media (prefers-reduced-motion: no-preference) {
   .ds-tabpanel {
-    animation: ds-tabpanel-fade-in var(--ds-duration-fast) var(--ds-easing-out);
+    animation: ds-tabpanel-fade-in var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
   }
 
   @keyframes ds-tabpanel-fade-in {
@@ -126,7 +126,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: calc(-1 * var(--sa-padding-3xs));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;

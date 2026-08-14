@@ -88,7 +88,16 @@ export interface SiteHeaderProps {
   /** Horizontal primary navigation. Collapses to a drawer below 1024px. */
   nav?: NavItem[];
 
-  /** Content max-width in px. @default 1320 */
+  /**
+   * Content max-width in px. Overrides the estate container for this header only.
+   *
+   * Leave unset. The default is `--sa-container-page` — UX4G 3.0's two-step
+   * content container (1200 desktop / 1320 desktop XL), the same variable the
+   * page content below the header uses. Passing a number here re-introduces the
+   * misalignment this default exists to prevent: until 13 August 2026 this
+   * defaulted to a hardcoded 1320 while every website section capped at 1280,
+   * so the emblem sat 20px outside the content column on wide viewports.
+   */
   maxWidth?: number;
   /**
    * Stick the whole navbar to the top of the viewport (app-shell portals).
@@ -180,7 +189,7 @@ export function SiteHeader({
   accountMenu,
   actions,
   nav,
-  maxWidth = 1320,
+  maxWidth,
   sticky,
   collapseOnScroll,
   className,
@@ -195,7 +204,11 @@ export function SiteHeader({
   const [openLabel, setOpenLabel] = React.useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
-  const inner = { maxWidth } as React.CSSProperties;
+  // Default to the estate container variable so the navbar's column is the same
+  // width as the page content beneath it. A numeric prop still wins.
+  const inner = {
+    maxWidth: maxWidth ?? "var(--sa-container-page)",
+  } as React.CSSProperties;
   const hasNav = !!nav && nav.length > 0;
   const drawerId = React.useId();
 

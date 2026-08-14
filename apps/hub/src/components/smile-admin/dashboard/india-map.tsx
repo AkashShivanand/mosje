@@ -7,20 +7,20 @@ import type { Feature, FeatureCollection, Geometry } from "geojson";
 import { STATE_DISTRIBUTION } from "@/lib/smile-admin/mock-data";
 
 // Choropleth ramp + region roles come from the DS chart tokens
-// (--ds-chart-seq-* is the single-hue sequential ramp built for exactly this).
+// (--sa-chart-seq-* is the single-hue sequential ramp built for exactly this).
 // These are consumed as SVG fill/stroke values, which resolve var() fine.
 const COLORS = [
-  "var(--ds-chart-seq-50)",
-  "var(--ds-chart-seq-100)",
-  "var(--ds-chart-seq-200)",
-  "var(--ds-chart-seq-300)",
-  "var(--ds-chart-seq-400)",
-  "var(--ds-chart-seq-600)",
-  "var(--ds-chart-seq-700)",
-  "var(--ds-chart-seq-800)",
+  "var(--sa-chart-seq-50)",
+  "var(--sa-chart-seq-100)",
+  "var(--sa-chart-seq-200)",
+  "var(--sa-chart-seq-300)",
+  "var(--sa-chart-seq-400)",
+  "var(--sa-chart-seq-600)",
+  "var(--sa-chart-seq-700)",
+  "var(--sa-chart-seq-800)",
 ];
-const NO_DATA = "var(--ds-chart-region-empty)";
-const SELECTED = "var(--ds-chart-cat-2)";
+const NO_DATA = "var(--sa-chart-regionEmpty)";
+const SELECTED = "var(--sa-chart-cat-2)";
 const BANDS = [0, 100, 500, 1000, 2000, 4000];
 
 function colorFor(n: number) {
@@ -79,7 +79,7 @@ export function IndiaMap({ highlightState }: { highlightState?: string }) {
                 key={stName}
                 d={d}
                 fill={fill}
-                stroke="var(--ds-chart-region-stroke)"
+                stroke="var(--sa-chart-regionStroke)"
                 strokeWidth={isHover ? 1.4 : 0.7}
                 onMouseEnter={() => setHovered(stName)}
                 onMouseLeave={() => setHovered(null)}

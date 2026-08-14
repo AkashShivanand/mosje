@@ -1,0 +1,241 @@
+/**
+ * Iconography documentation page.
+ *
+ * Every fill, stroke, padding, gap and radius resolves through a `--sa-*` token —
+ * `.claude/rules/documentation-ds-linkage.md`. Bindings were chosen by RESOLVED
+ * VALUE, not by name: the surface ladder here is page → panel (`bg-neutral-subtler`)
+ * → card (`bg-neutral-base`), which is the same restraint the Colour page uses and
+ * the same one the Figma sections render.
+ */
+
+/* ── Shared section furniture ─────────────────────────────────────────────── */
+
+/* The grey panel each Figma section drops its specimens into. */
+.icon-panel {
+  margin-top: var(--sa-stack-l);
+  padding: var(--sa-padding-xl);
+  background: var(--sa-bg-neutral-subtler);
+  border-radius: var(--sa-shape-lg);
+}
+
+.icon-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: var(--sa-stack-m);
+}
+
+.icon-card {
+  padding: var(--sa-padding-l);
+  background: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-md);
+}
+
+.icon-card__title {
+  margin: 0;
+  font-size: var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
+  font-weight: 600;
+  color: var(--sa-text-neutral-bolder);
+}
+
+.icon-card__body {
+  margin: var(--sa-stack-xs) 0 0;
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-color-text-muted);
+}
+
+.icon-card__step {
+  margin: 0 0 var(--sa-stack-xs);
+  font-size: var(--sa-type-body-1-size);
+  font-weight: 600;
+  color: var(--sa-color-action-primary-default);
+}
+
+/* The `icon = "home"` line under each How-it-works step. */
+.icon-card__demo {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-stack-xs);
+  margin-top: var(--sa-stack-m);
+  color: var(--sa-text-neutral-base);
+}
+
+.icon-card__demo code {
+  font-size: var(--sa-type-body-3-size);
+  color: var(--sa-color-text-muted);
+}
+
+/* ── 02 The catalogue ─────────────────────────────────────────────────────── */
+
+.icon-catalogue__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-stack-m);
+  margin-top: var(--sa-stack-l);
+}
+
+.icon-catalogue__search {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-stack-xs);
+  flex: 1 1 20rem;
+  padding: var(--sa-padding-s) var(--sa-padding-m);
+  background: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-md);
+  color: var(--sa-color-text-muted);
+}
+
+.icon-catalogue__search:focus-within {
+  outline: 2px solid var(--sa-color-action-primary-default);
+  outline-offset: 2px;
+}
+
+.icon-catalogue__input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: var(--sa-type-body-2-size);
+  color: var(--sa-text-neutral-bolder);
+}
+
+.icon-catalogue__input:focus {
+  outline: none; /* The wrapper carries the focus ring, so the control still shows one. */
+}
+
+.icon-catalogue__count {
+  margin: 0;
+  font-size: var(--sa-type-body-3-size);
+  color: var(--sa-color-text-muted);
+}
+
+.icon-catalogue__empty {
+  margin-top: var(--sa-stack-l);
+  padding: var(--sa-padding-xl);
+  background: var(--sa-bg-neutral-subtler);
+  border-radius: var(--sa-shape-lg);
+  font-size: var(--sa-type-body-2-size);
+  color: var(--sa-color-text-muted);
+  text-align: center;
+}
+
+.icon-catalogue__grid {
+  list-style: none;
+  margin: var(--sa-stack-l) 0 0;
+  padding: var(--sa-padding-xl);
+  background: var(--sa-bg-neutral-subtler);
+  border-radius: var(--sa-shape-lg);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  gap: var(--sa-stack-s);
+}
+
+.icon-catalogue__tile {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sa-stack-2xs);
+  padding: var(--sa-padding-m) var(--sa-padding-xs);
+  background: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-md);
+  color: var(--sa-icon-neutral-base);
+  cursor: pointer;
+}
+
+.icon-catalogue__tile:hover {
+  border-color: var(--sa-color-action-primary-default);
+  color: var(--sa-icon-brand-primary-base);
+}
+
+.icon-catalogue__tile:focus-visible {
+  outline: 2px solid var(--sa-color-action-primary-default);
+  outline-offset: 2px;
+}
+
+.icon-catalogue__name {
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
+  color: var(--sa-color-text-muted);
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+/* Reserves the line so the grid does not reflow when "Copied" appears. */
+.icon-catalogue__copied {
+  min-height: var(--sa-type-label-3-lh);
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
+  color: var(--sa-color-action-primary-default);
+}
+
+/* ── 03 Sizes · 04 Weight · 05 Colour — specimen strips ───────────────────── */
+
+.icon-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: var(--sa-stack-s);
+  align-items: end;
+}
+
+.icon-specimen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sa-stack-2xs);
+  padding: var(--sa-padding-m) var(--sa-padding-s);
+  background: var(--sa-bg-neutral-base);
+  border-radius: var(--sa-shape-md);
+  color: var(--sa-icon-neutral-base);
+  text-align: center;
+}
+
+.icon-specimen__glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--sa-stack-xs);
+}
+
+.icon-specimen__label {
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  font-weight: 500;
+  color: var(--sa-text-neutral-bolder);
+}
+
+.icon-specimen__meta {
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
+  color: var(--sa-color-text-muted);
+}
+
+/* The one rung the estate standardises on, in each of the three scales. */
+.icon-specimen__meta--standard {
+  color: var(--sa-color-action-primary-default);
+  font-weight: 600;
+}
+
+.icon-specimen__token {
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
+  color: var(--sa-color-text-muted);
+}
+
+/* ── 08 Handoff ───────────────────────────────────────────────────────────── */
+
+.icon-handoff__eyebrow {
+  margin: 0 0 var(--sa-stack-xs);
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sa-color-action-primary-default);
+}

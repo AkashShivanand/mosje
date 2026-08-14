@@ -9,7 +9,7 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  font-family: var(--ds-font-sans);
+  font-family: var(--sa-font-latin);
 }
 
 .ds-stepper__item {
@@ -18,7 +18,7 @@
   flex: 1 1 0;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: var(--sa-stack-xs);
   text-align: center;
   min-width: 0;
 }
@@ -30,12 +30,12 @@
   right: 50%;
   left: -50%;
   height: 2px;
-  background-color: var(--ds-border);
+  background-color: var(--sa-border-neutral-subtle);
 }
 
 .ds-stepper__item.is-done .ds-stepper__line,
 .ds-stepper__item.is-current .ds-stepper__line {
-  background-color: var(--ds-success);
+  background-color: var(--sa-color-status-success);
 }
 
 /* Marker circle. */
@@ -47,10 +47,10 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: var(--ds-radius-full);
-  border: 2px solid var(--ds-border);
-  background-color: var(--ds-surface);
-  color: var(--ds-ink-muted);
+  border-radius: var(--sa-shape-full);
+  border: 2px solid var(--sa-border-neutral-subtle);
+  background-color: var(--sa-bg-neutral-base);
+  color: var(--sa-text-neutral-subtle);
   font-size: 13px;
   font-weight: 700;
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
@@ -61,43 +61,43 @@
 }
 
 .ds-stepper__item.is-done .ds-stepper__marker {
-  background-color: var(--ds-success);
-  border-color: var(--ds-success);
-  color: var(--ds-on-primary);
+  background-color: var(--sa-color-status-success);
+  border-color: var(--sa-border-status-success-base);
+  color: var(--sa-on-bg-brand-primary-bolder);
 }
 
 .ds-stepper__item.is-current .ds-stepper__marker {
-  background-color: var(--ds-primary);
-  border-color: var(--ds-primary);
-  color: var(--ds-on-primary);
-  box-shadow: 0 0 0 4px var(--ds-primary-50);
+  background-color: var(--sa-bg-brand-primary-bolder);
+  border-color: var(--sa-border-brand-primary-base);
+  color: var(--sa-on-bg-brand-primary-bolder);
+  box-shadow: 0 0 0 4px var(--sa-color-primaryScale-50);
 }
 
 /* Labels. */
 .ds-stepper__text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--sa-padding-3xs);
 }
 
 .ds-stepper__label {
-  font-size: var(--ds-text-body-3, 13px);
+  font-size: var(--sa-type-body-3-size);
   font-weight: 600;
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
   line-height: 1.3;
 }
 
 .ds-stepper__item.is-current .ds-stepper__label {
-  color: var(--ds-primary);
+  color: var(--sa-text-brand-primary-base);
 }
 
 .ds-stepper__item.is-done .ds-stepper__label {
-  color: var(--ds-ink);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-stepper__desc {
   font-size: 12px;
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
   line-height: 1.3;
 }
 
@@ -106,7 +106,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: calc(-1 * var(--sa-padding-3xs));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;

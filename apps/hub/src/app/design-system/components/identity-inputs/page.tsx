@@ -9,14 +9,14 @@ export const metadata: Metadata = {
     "The three Indian identity controls every MoSJE service journey needs: a Verhoeff-checked, masked-by-default Aadhaar field, a six-box OTP input with paste and SMS autofill, and a PAN field that validates the holder-type character.",
 };
 
-const SECTION: React.CSSProperties = { marginTop: "var(--ds-section-s)" };
+const SECTION: React.CSSProperties = { marginTop: "var(--sa-section-s)" };
 
 export default function IdentityInputsPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
-      <header style={{ marginBottom: "var(--ds-section-xs)" }}>
+      <header style={{ marginBottom: "var(--sa-section-xs)" }}>
         <h1>Identity Inputs</h1>
-        <p style={{ color: "var(--ds-ink-muted)", marginTop: "var(--ds-stack-s)", maxWidth: "62ch" }}>
+        <p style={{ color: "var(--sa-text-neutral-subtle)", marginTop: "var(--sa-stack-s)", maxWidth: "62ch" }}>
           Aadhaar, OTP and PAN are the three identity controls almost every MoSJE service journey
           asks for, and the three UX4G 3.0 names them explicitly. They are not plain text fields:
           each has a checksum or a shape, and Aadhaar carries a statutory handling obligation.

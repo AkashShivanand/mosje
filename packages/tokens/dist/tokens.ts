@@ -759,7 +759,10 @@ export const tokens = {
       "body": "0px",
       "label": "0px"
     },
-    "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif"
+    "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
+    "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
+    "display": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
+    "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
   },
   "shadow": {
     "none": "none",
@@ -894,7 +897,8 @@ export const tokens = {
   "breakpoint": {
     "mobile": "360px",
     "tablet": "768px",
-    "desktop": "1280px"
+    "desktop": "1280px",
+    "desktopXl": "1768px"
   },
   "density": {
     "control": {
@@ -1057,7 +1061,8 @@ export const tokens = {
     "s": "12px",
     "m": "16px",
     "l": "24px",
-    "xl": "32px"
+    "xl": "32px",
+    "2xl": "40px"
   },
   "padding": {
     "none": "0px",
@@ -1128,6 +1133,21 @@ export const tokens = {
     "tooltipInk": "#ffffff",
     "regionEmpty": "#dcdee1",
     "regionStroke": "#ffffff"
+  },
+  "code": {
+    "bg": "#1e2130",
+    "text": "#e2e8f0",
+    "comment": "#8892a4",
+    "keyword": "#c084fc",
+    "string": "#86efac",
+    "builtin": "#7dd3fc",
+    "shell": "#12141c",
+    "border": "rgba(255, 255, 255, 0.1)",
+    "chrome": "rgba(255, 255, 255, 0.03)",
+    "chromeText": "rgba(255, 255, 255, 0.45)",
+    "chromeTextStrong": "rgba(255, 255, 255, 0.7)",
+    "chromeHover": "rgba(255, 255, 255, 0.08)",
+    "borderStrong": "rgba(255, 255, 255, 0.3)"
   },
   "layer": {
     "0": "#ffffff",
@@ -1213,11 +1233,13 @@ export const tokens = {
   },
   "icon": {
     "size": {
-      "xs": "1rem",
-      "sm": "1.25rem",
-      "md": "1.5rem",
-      "lg": "2rem",
-      "xl": "2.5rem"
+      "16": "1rem",
+      "20": "1.25rem",
+      "24": "1.5rem",
+      "32": "2rem",
+      "40": "2.5rem",
+      "48": "3rem",
+      "64": "4rem"
     },
     "neutral": {
       "base": "#1e2124",
@@ -1250,7 +1272,9 @@ export const tokens = {
     "md": "720px",
     "lg": "960px",
     "xl": "1140px",
-    "content": "1280px"
+    "2xl": "1320px",
+    "content": "1200px",
+    "contentXl": "1320px"
   },
   "grid": {
     "columns": 12,
@@ -1259,6 +1283,23 @@ export const tokens = {
       "mobile": "16px",
       "tablet": "24px",
       "desktop": "32px"
+    }
+  },
+  "layout": {
+    "bar": {
+      "height": "46px"
+    },
+    "flag": {
+      "width": "33px"
+    },
+    "masthead": {
+      "minHeight": "72px"
+    },
+    "chrome": {
+      "minHeight": "118px"
+    },
+    "sidebar": {
+      "width": "300px"
     }
   },
   "target": {
@@ -1280,6 +1321,20 @@ export const tokens = {
     "border": {
       "width": "1px"
     }
+  },
+  "shape": {
+    "none": "0px",
+    "xxs": "2px",
+    "xs": "4px",
+    "sm": "6px",
+    "md": "8px",
+    "lg": "12px",
+    "xl": "16px",
+    "2xl": "20px",
+    "3xl": "24px",
+    "4xl": "32px",
+    "5xl": "40px",
+    "full": "999px"
   },
   "button": {
     "primary": {

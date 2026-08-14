@@ -9,7 +9,7 @@
    px for a scale that is fluid. Regenerate with: npm run build -w @mosje/tokens
 
    PREFER THE CSS CUSTOM PROPERTIES. These literals are resolved at BUILD time, so they are
-   frozen to the default brand and cannot follow `data-brand` — `var(--ds-primary)` repaints
+   frozen to the default brand and cannot follow `data-brand` — `var(--sa-color-action-primary-default)` repaints
    when the brand switches and `colors.primary` does not. */
 export const colors = {
   primary: "#0373df",
@@ -68,5 +68,18 @@ export const shadow = {
   xl: "0 24px 48px -12px rgba(30, 33, 36, 0.18)",
 } as const;
 
-export const tokens = { colors, radius, fontFamily, typography, shadow } as const;
+/** Icon sizes in px, read from the stylesheet so this list cannot fall behind the scale.
+    DBIM 3.0 section 3.4 publishes 24, 32, 48 and 64; the smaller steps are ours and are kept
+    deliberately (.claude/rules/standards-precedence.md). */
+export const iconSize = {
+  px16: 16,
+  px20: 20,
+  px24: 24,
+  px32: 32,
+  px40: 40,
+  px48: 48,
+  px64: 64,
+} as const;
+
+export const tokens = { colors, radius, fontFamily, typography, shadow, iconSize } as const;
 export default tokens;

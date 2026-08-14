@@ -29,7 +29,7 @@ export interface ChipProps
  * Controlled selection via `selected` + `onSelectedChange`; optional trailing
  * dismiss. When interactive (toggle or dismiss) it is keyboard-operable
  * (Enter/Space toggles). Styled entirely via semantic CSS classes that
- * reference design tokens (--ds-*). No Tailwind, no deps.
+ * reference design tokens (--sa-*). No Tailwind, no deps.
  */
 export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
   {

@@ -34,7 +34,7 @@ export function Gauge({
   min = 0,
   title,
   unit,
-  color = "var(--ds-chart-cat-1)",
+  color = "var(--sa-chart-cat-1)",
   valueFormat = formatIndian,
   className,
 }: GaugeProps) {
@@ -59,7 +59,7 @@ export function Gauge({
       <path
         d={`M ${sx} ${sy} A ${R} ${R} 0 0 1 ${tx} ${ty}`}
         fill="none"
-        stroke="var(--ds-chart-grid)"
+        stroke="var(--sa-chart-grid)"
         strokeWidth={14}
         strokeLinecap="round"
       />

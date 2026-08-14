@@ -25,7 +25,7 @@ export interface SparklineProps {
  */
 export function Sparkline({
   data,
-  color = "var(--ds-chart-cat-1)",
+  color = "var(--sa-chart-cat-1)",
   fill = true,
   width = 96,
   height = 32,

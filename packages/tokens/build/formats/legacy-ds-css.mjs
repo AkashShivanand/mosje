@@ -1,305 +1,29 @@
 import { cssNameFor, tierOfFile, toCssName } from "../grammar.mjs";
 import { makeRetier } from "./retier.mjs";
 import { brandSelector, DEFAULT_BRAND } from "../brand-modes.mjs";
-// Emits :root { --sa-*: <value>; ... } plus a hardcoded legacy --ds-* alias block.
-// The legacy block maps each old name to the new token it now derives from, so values
-// stay identical while the source of truth becomes the DTCG tokens.
+// Emits :root { --sa-*: <value>; ... } from the DTCG token tree.
+// It used to emit a legacy --ds-* alias block alongside; that vocabulary was retired
+// on 2026-08-12 and nothing emits it any more.
 //
 // Two-surface fluid type: font.role.* tokens carry $extensions.mosje.type.{website,portal}
-// with {min,max} bounds. The formatter emits --ds-type-{role}-{size|lh} as clamp(min@360px,
+// with {min,max} bounds. The formatter emits --sa-type-{role}-{size|lh} as clamp(min@360px,
 // fluid, max@1280px) — the Website scale in :root (default) and the Portal scale under
 // [data-surface="portal"]. No @media breakpoints.
 
-/** Expand a UX4G semantic-spacing family into --ds-<family>-<step> → --sa-ref-space-<family>-<step>. */
+/** Expand a UX4G semantic-spacing family into --sa-<family>-<step>. */
 const spacingRole = (family, steps) =>
   // The semantic spacing roles were RENAMED (spacing.inline.m -> inline/m), so the target is
   // now the canonical top-level group, not a nested path under the raw scale.
   Object.fromEntries(steps.map((s) => [`--ds-${family}-${s}`, `--sa-${family}-${s}`]));
 
-export const LEGACY_DS_ALIASES = {
-  "--ds-primary":       "--sa-color-action-primary-default",
-  "--ds-primary-tonal": "--sa-color-action-primary-tonal",
-  "--ds-primary-dark":  "--sa-color-action-primary-hover",
-  "--ds-primary-hover": "--sa-color-action-primary-hover",
-  "--ds-link":          "--sa-text-link-brand-default",
-  "--ds-primary-ring":  "--sa-focus-ring",
-  "--ds-primary-50":    "--sa-color-primaryScale-50",
-  "--ds-primary-100":   "--sa-color-primaryScale-100",
-  "--ds-primary-200":   "--sa-color-primaryScale-200",
-  "--ds-primary-300":   "--sa-color-primaryScale-300",
-  "--ds-primary-400":   "--sa-color-primaryScale-400",
-  "--ds-primary-500":   "--sa-color-primaryScale-500",
-  "--ds-primary-600":   "--sa-color-primaryScale-600",
-  "--ds-primary-700":   "--sa-color-primaryScale-700",
-  "--ds-primary-800":   "--sa-color-primaryScale-800",
-  "--ds-primary-900":   "--sa-color-primaryScale-900",
-  // ── Full colour ramps synced from SAMAVESH Figma (mode-aware via [data-color-mode]) ──
-  "--ds-secondary-50":  "--sa-color-secondaryScale-50",
-  "--ds-secondary-100": "--sa-color-secondaryScale-100",
-  "--ds-secondary-200": "--sa-color-secondaryScale-200",
-  "--ds-secondary-300": "--sa-color-secondaryScale-300",
-  "--ds-secondary-400": "--sa-color-secondaryScale-400",
-  "--ds-secondary-500": "--sa-color-secondaryScale-500",
-  "--ds-secondary-600": "--sa-color-secondaryScale-600",
-  "--ds-secondary-700": "--sa-color-secondaryScale-700",
-  "--ds-secondary-800": "--sa-color-secondaryScale-800",
-  "--ds-secondary-900": "--sa-color-secondaryScale-900",
-  "--ds-neutral-0":     "--sa-color-neutralScale-0",
-  "--ds-neutral-50":    "--sa-color-neutralScale-50",
-  "--ds-neutral-100":   "--sa-color-neutralScale-100",
-  "--ds-neutral-200":   "--sa-color-neutralScale-200",
-  "--ds-neutral-300":   "--sa-color-neutralScale-300",
-  "--ds-neutral-400":   "--sa-color-neutralScale-400",
-  "--ds-neutral-500":   "--sa-color-neutralScale-500",
-  "--ds-neutral-600":   "--sa-color-neutralScale-600",
-  "--ds-neutral-700":   "--sa-color-neutralScale-700",
-  "--ds-neutral-800":   "--sa-color-neutralScale-800",
-  "--ds-neutral-900":   "--sa-color-neutralScale-900",
-  // RETARGETED 2026-08-11. The canonical neutral endpoints renumbered to match UX4G (old
-  // 1000 -> 950, old 1100 -> 1000), so these two legacy names point one rung lower. Keeping
-  // the legacy spelling while the canonical name moves is precisely this layer's job.
-  // The retarget was value-preserving on the day; the neutral ramp has since been rebuilt, so
-  // `--ds-neutral-1000` now renders whatever neutralScale/950 is rather than the #0a0d13 it
-  // originally froze. That is correct — this layer preserves the NAME, not a snapshot.
-  "--ds-neutral-1000":  "--sa-color-neutralScale-950",
-  "--ds-neutral-1100":  "--sa-color-neutralScale-1000",
-  "--ds-success-50":    "--sa-color-successScale-50",
-  "--ds-success-100":   "--sa-color-successScale-100",
-  "--ds-success-200":   "--sa-color-successScale-200",
-  "--ds-success-300":   "--sa-color-successScale-300",
-  "--ds-success-400":   "--sa-color-successScale-400",
-  "--ds-success-500":   "--sa-color-successScale-500",
-  "--ds-success-600":   "--sa-color-successScale-600",
-  "--ds-success-700":   "--sa-color-successScale-700",
-  "--ds-success-800":   "--sa-color-successScale-800",
-  "--ds-success-900":   "--sa-color-successScale-900",
-  "--ds-danger-50":     "--sa-color-dangerScale-50",
-  "--ds-danger-100":    "--sa-color-dangerScale-100",
-  "--ds-danger-200":    "--sa-color-dangerScale-200",
-  "--ds-danger-300":    "--sa-color-dangerScale-300",
-  "--ds-danger-400":    "--sa-color-dangerScale-400",
-  "--ds-danger-500":    "--sa-color-dangerScale-500",
-  "--ds-danger-600":    "--sa-color-dangerScale-600",
-  "--ds-danger-700":    "--sa-color-dangerScale-700",
-  "--ds-danger-800":    "--sa-color-dangerScale-800",
-  "--ds-danger-900":    "--sa-color-dangerScale-900",
-  "--ds-warning-50":    "--sa-color-warningScale-50",
-  "--ds-warning-100":   "--sa-color-warningScale-100",
-  "--ds-warning-200":   "--sa-color-warningScale-200",
-  "--ds-warning-300":   "--sa-color-warningScale-300",
-  "--ds-warning-400":   "--sa-color-warningScale-400",
-  "--ds-warning-500":   "--sa-color-warningScale-500",
-  "--ds-warning-600":   "--sa-color-warningScale-600",
-  "--ds-warning-700":   "--sa-color-warningScale-700",
-  "--ds-warning-800":   "--sa-color-warningScale-800",
-  "--ds-warning-900":   "--sa-color-warningScale-900",
-  "--ds-info-50":       "--sa-color-infoScale-50",
-  "--ds-info-100":      "--sa-color-infoScale-100",
-  "--ds-info-200":      "--sa-color-infoScale-200",
-  "--ds-info-300":      "--sa-color-infoScale-300",
-  "--ds-info-400":      "--sa-color-infoScale-400",
-  "--ds-info-500":      "--sa-color-infoScale-500",
-  "--ds-info-600":      "--sa-color-infoScale-600",
-  "--ds-info-700":      "--sa-color-infoScale-700",
-  "--ds-info-800":      "--sa-color-infoScale-800",
-  "--ds-info-900":      "--sa-color-infoScale-900",
-  "--ds-success":       "--sa-color-status-success",
-  "--ds-success-tonal": "--sa-color-status-successTonal",
-  "--ds-danger":        "--sa-color-status-danger",
-  "--ds-danger-tonal":  "--sa-color-status-dangerTonal",
-  "--ds-warning":       "--sa-color-status-warning",
-  "--ds-warning-tonal": "--sa-color-status-warningTonal",
-  "--ds-info":          "--sa-color-status-info",
-  "--ds-info-tonal":    "--sa-color-status-infoTonal",
-  "--ds-overlay":       "--sa-overlay-neutral-boldest",
-  "--ds-ink":           "--sa-color-text-default",
-  "--ds-ink-strong":    "--sa-text-neutral-bolder",
-  "--ds-ink-muted":     "--sa-color-text-muted",
-  "--ds-ink-info":      "--sa-color-text-info",
-  "--ds-on-primary":    "--sa-color-text-onPrimary",
-  "--ds-surface":       "--sa-bg-neutral-base",
-  "--ds-surface-muted": "--sa-bg-neutral-subtler",
-  "--ds-border":        "--sa-border-neutral-subtle",
-  "--ds-border-strong": "--sa-border-neutral-base",
-  "--ds-saffron":       "--sa-color-brand-saffron",
-  "--ds-saffron-light": "--sa-color-brand-saffronLight",
-  "--ds-saffron-dark":  "--sa-color-brand-saffronDark",
-  "--ds-navy":          "--sa-color-brand-navy",
-  "--ds-yellow":        "--sa-color-brand-yellow",
-  "--ds-spacing-none":  "--sa-ref-space-none",
-  "--ds-spacing-xxs":   "--sa-ref-space-xxs",
-  "--ds-spacing-xs":    "--sa-ref-space-xs",
-  "--ds-spacing-sm":    "--sa-ref-space-sm",
-  "--ds-spacing-md":    "--sa-ref-space-md",
-  "--ds-spacing-lg":    "--sa-ref-space-lg",
-  "--ds-spacing-xl":    "--sa-ref-space-xl",
-  "--ds-spacing-2xl":   "--sa-ref-space-2xl",
-  "--ds-spacing-3xl":   "--sa-ref-space-3xl",
-  "--ds-spacing-4xl":   "--sa-ref-space-4xl",
-  "--ds-spacing-5xl":   "--sa-ref-space-5xl",
-  "--ds-spacing-6xl":   "--sa-ref-space-6xl",
-  "--ds-spacing-7xl":   "--sa-ref-space-7xl",
-  "--ds-spacing-8xl":   "--sa-ref-space-8xl",
-  "--ds-spacing-9xl":   "--sa-ref-space-9xl",
-  "--ds-radius-none":   "--sa-radius-none",
-  "--ds-radius-xxs":    "--sa-radius-xxs",
-  "--ds-radius-xs":     "--sa-radius-xs",
-  "--ds-radius-sm":     "--sa-radius-sm",
-  "--ds-radius-md":     "--sa-radius-md",
-  "--ds-radius-lg":     "--sa-radius-lg",
-  "--ds-radius-xl":     "--sa-radius-xl",
-  "--ds-radius-2xl":    "--sa-radius-2xl",
-  "--ds-radius-3xl":    "--sa-radius-3xl",
-  "--ds-radius-4xl":    "--sa-radius-4xl",
-  "--ds-radius-5xl":    "--sa-radius-5xl",
-  "--ds-radius-full":   "--sa-radius-full",
-  "--ds-spacing-10xl":  "--sa-ref-space-10xl",
-  "--ds-spacing-11xl":  "--sa-ref-space-11xl",
+// The legacy `--ds-*` vocabulary was RETIRED on 2026-08-12. It used to be declared here
+// as a ~200-entry alias table mapping every old name to the canonical token it resolved to,
+// re-asserted inside each brand block so islands repainted. All 3,561 references across the
+// estate were migrated to the canonical `--sa-*` names by tools/token-migration/migrate.py,
+// which followed those same aliases — so the migration was value-preserving by construction.
+// The full mapping is preserved at tools/token-migration/mapping.json if it is ever needed
+// to read older code. Nothing emits `--ds-*` any more; do not reintroduce it.
 
-  // ── UX4G 3.0 semantic spacing roles (adopted verbatim; values match --ux4g-* 1:1) ──
-  // Prefer these over the raw t-shirt scale: they state intent, not just a number.
-  ...spacingRole("inline",  ["none", "2xs", "xs", "s", "m", "l", "xl"]),
-  ...spacingRole("stack",   ["none", "2xs", "xs", "s", "m", "l", "xl"]),
-  ...spacingRole("padding", ["none", "3xs", "2xs", "xs", "s", "m", "l", "xl", "2xl", "3xl", "4xl"]),
-  ...spacingRole("section", ["none", "xs", "s", "m", "l", "xl", "2xl"]),
-
-  "--ds-control-height":"--sa-density-control-height",
-  "--ds-font-sans":     "--sa-font-family-latin",
-  "--ds-font-display":  "--sa-font-family-display",
-  "--ds-font-mono":     "--sa-font-family-mono",
-  "--ds-duration-fast": "--sa-motion-duration-fast",
-  "--ds-duration-base": "--sa-motion-duration-base",
-  "--ds-duration-slow": "--sa-motion-duration-slow",
-  "--ds-easing-out":    "--sa-motion-easing-out",
-  "--ds-easing-in":     "--sa-motion-easing-in",
-  "--ds-easing-in-out": "--sa-motion-easing-inOut",
-  "--ds-shadow-none":   "--sa-shadow-none",
-  "--ds-shadow-xs":     "--sa-shadow-xs",
-  "--ds-shadow-sm":     "--sa-shadow-sm",
-  "--ds-shadow-md":     "--sa-shadow-md",
-  "--ds-shadow-lg":     "--sa-shadow-lg",
-  "--ds-shadow-xl":     "--sa-shadow-xl",
-
-  // ── Data-visualisation palette (see color.chart in semantic.json) ───────────
-  "--ds-chart-cat-1":   "--sa-chart-cat-1",
-  "--ds-chart-cat-2":   "--sa-chart-cat-2",
-  "--ds-chart-cat-3":   "--sa-chart-cat-3",
-  "--ds-chart-cat-4":   "--sa-chart-cat-4",
-  "--ds-chart-cat-5":   "--sa-chart-cat-5",
-  "--ds-chart-cat-6":   "--sa-chart-cat-6",
-  "--ds-chart-cat-7":   "--sa-chart-cat-7",
-  "--ds-chart-cat-8":   "--sa-chart-cat-8",
-  "--ds-chart-cat-9":   "--sa-chart-cat-9",
-  "--ds-chart-cat-10":  "--sa-chart-cat-10",
-  "--ds-chart-cat-11":  "--sa-chart-cat-11",
-  "--ds-chart-cat-12":  "--sa-chart-cat-12",
-  "--ds-chart-seq-50":  "--sa-chart-seq-50",
-  "--ds-chart-seq-100": "--sa-chart-seq-100",
-  "--ds-chart-seq-200": "--sa-chart-seq-200",
-  "--ds-chart-seq-300": "--sa-chart-seq-300",
-  "--ds-chart-seq-400": "--sa-chart-seq-400",
-  "--ds-chart-seq-500": "--sa-chart-seq-500",
-  "--ds-chart-seq-600": "--sa-chart-seq-600",
-  "--ds-chart-seq-700": "--sa-chart-seq-700",
-  "--ds-chart-seq-800": "--sa-chart-seq-800",
-  "--ds-chart-seq-900": "--sa-chart-seq-900",
-  "--ds-chart-div-neg-strong": "--sa-chart-div-negStrong",
-  "--ds-chart-div-neg":        "--sa-chart-div-neg",
-  "--ds-chart-div-neg-soft":   "--sa-chart-div-negSoft",
-  "--ds-chart-div-mid":        "--sa-chart-div-mid",
-  "--ds-chart-div-pos-soft":   "--sa-chart-div-posSoft",
-  "--ds-chart-div-pos":        "--sa-chart-div-pos",
-  "--ds-chart-div-pos-strong": "--sa-chart-div-posStrong",
-  "--ds-chart-trend-up":    "--sa-chart-trend-up",
-  "--ds-chart-trend-down":  "--sa-chart-trend-down",
-  "--ds-chart-trend-flat":  "--sa-chart-trend-flat",
-  "--ds-chart-grid":          "--sa-chart-grid",
-  "--ds-chart-axis":          "--sa-chart-axis",
-  "--ds-chart-tooltip-bg":    "--sa-chart-tooltipBg",
-  "--ds-chart-tooltip-ink":   "--sa-chart-tooltipInk",
-  "--ds-chart-region-empty":  "--sa-chart-regionEmpty",
-  "--ds-chart-region-stroke": "--sa-chart-regionStroke",
-
-  // ── Type scale: backed by fluid --ds-type-* clamp() variables ───────────────
-  // --ds-type-* is defined in :root as the Website surface and overridden under
-  // [data-surface="portal"]; both are fluid clamp() (no @media).
-  //
-  // ⚠ THE NAMES IN THIS BLOCK DO NOT MATCH design.md's ROLE TABLE. That is
-  // deliberate, and it is not a bug — do not "fix" it.
-  //
-  // Two generations of names coexist:
-  //
-  //   1. This block — the HYPHENATED legacy family (--ds-text-title-1, …). These
-  //      predate the Portal-DS scale. Each is mapped to whichever canonical role
-  //      REPRODUCES ITS HISTORICAL RENDERED VALUE, not to the role that shares its
-  //      spelling. So --ds-text-title-1 → headline-2 (24→32px), because that is
-  //      what "title 1" measured in the old scale. Every value here is frozen in
-  //      test/legacy-snapshot.json and asserted by test/build-output.test.mjs;
-  //      re-pointing any of them at its same-named role silently resizes every
-  //      legacy callsite in the estate.
-  //
-  //   2. The block below — the UNHYPHENATED canonical family (--ds-text-title1, …),
-  //      which IS 1:1 with the roles and matches design.md. Prefer the canonical
-  //      --ds-type-<role>-size / -lh tokens in new code; use these only to keep an
-  //      old callsite compiling.
-  //
-  // Both invariants are locked by test/type-alias-parity.test.mjs. If you came
-  // here because an alias "looks one step too large", read its resolved value and
-  // the snapshot before changing anything — that mismatch is the whole point.
-  "--ds-text-display":   "--ds-type-display-1-size",
-  "--ds-leading-display":"--ds-type-display-1-lh",
-  "--ds-text-headline":  "--ds-type-headline-1-size",
-  "--ds-leading-headline":"--ds-type-headline-1-lh",
-  "--ds-text-title-1":   "--ds-type-headline-2-size",
-  "--ds-leading-title-1":"--ds-type-headline-2-lh",
-  "--ds-text-title-2":   "--ds-type-title-1-size",
-  "--ds-leading-title-2":"--ds-type-title-1-lh",
-  "--ds-text-body-1":    "--ds-type-body-1-size",
-  "--ds-leading-body-1": "--ds-type-body-1-lh",
-  "--ds-text-body-2":    "--ds-type-body-2-size",
-  "--ds-leading-body-2": "--ds-type-body-2-lh",
-  "--ds-text-body-3":    "--ds-type-body-3-size",
-  "--ds-leading-body-3": "--ds-type-body-3-lh",
-  "--ds-text-label-1":   "--ds-type-label-1-size",
-  "--ds-leading-label-1":"--ds-type-label-1-lh",
-  "--ds-text-label-3":   "--ds-type-label-3-size",
-  "--ds-leading-label-3":"--ds-type-label-3-lh",
-
-  // Full responsive role set (new canonical names for all 21 roles)
-  "--ds-text-display1":   "--ds-type-display-1-size",
-  "--ds-text-display2":   "--ds-type-display-2-size",
-  "--ds-text-display3":   "--ds-type-display-3-size",
-  "--ds-text-display4":   "--ds-type-display-4-size",
-  "--ds-text-display5":   "--ds-type-display-5-size",
-  "--ds-text-display6":   "--ds-type-display-6-size",
-  "--ds-text-headline1":  "--ds-type-headline-1-size",
-  "--ds-text-headline2":  "--ds-type-headline-2-size",
-  "--ds-text-headline3":  "--ds-type-headline-3-size",
-  "--ds-text-headline4":  "--ds-type-headline-4-size",
-  "--ds-text-headline5":  "--ds-type-headline-5-size",
-  "--ds-text-headline6":  "--ds-type-headline-6-size",
-  "--ds-text-title1":     "--ds-type-title-1-size",
-  "--ds-text-title2":     "--ds-type-title-2-size",
-  "--ds-text-title3":     "--ds-type-title-3-size",
-  "--ds-text-body1":      "--ds-type-body-1-size",
-  "--ds-text-body2":      "--ds-type-body-2-size",
-  "--ds-text-body3":      "--ds-type-body-3-size",
-  "--ds-text-label1":     "--ds-type-label-1-size",
-  "--ds-text-label2":     "--ds-type-label-2-size",
-  "--ds-text-label3":     "--ds-type-label-3-size",
-  "--ds-leading-display1":  "--ds-type-display-1-lh",
-  "--ds-leading-display2":  "--ds-type-display-2-lh",
-  "--ds-leading-display3":  "--ds-type-display-3-lh",
-  "--ds-leading-headline1": "--ds-type-headline-1-lh",
-  "--ds-leading-headline2": "--ds-type-headline-2-lh",
-  "--ds-leading-headline3": "--ds-type-headline-3-lh",
-  "--ds-leading-title1":    "--ds-type-title-1-lh",
-  "--ds-leading-title2":    "--ds-type-title-2-lh",
-  "--ds-leading-body1":     "--ds-type-body-1-lh",
-  "--ds-leading-body2":     "--ds-type-body-2-lh",
-  "--ds-leading-label1":    "--ds-type-label-1-lh",
-  "--ds-leading-label2":    "--ds-type-label-2-lh",
-};
 
 const val = (t) => (t.$value !== undefined ? t.$value : t.value);
 
@@ -353,7 +77,7 @@ function clampExpr(minPx, maxPx, wmin, wmax) {
 }
 
 /**
- * Build two-surface responsive --ds-type-* blocks from font.role.* tokens.
+ * Build two-surface responsive --sa-type-* blocks from font.role.* tokens.
  * Website scale → :root (default surface); Portal scale → [data-surface="portal"].
  */
 function buildResponsiveType(dictionary) {
@@ -382,20 +106,14 @@ function buildResponsiveType(dictionary) {
         ? `${t.path.slice(2, -1).join("-")}-${t.path.at(-1)}`
         : `${t.path.slice(2).join("-")}-tracking`;
     const cssVar = `--sa-type-${suffix}`;
-    const legacyVar = `--ds-type-${suffix}`;
 
     const ty = t.original?.$extensions?.mosje?.type;
     const webExpr = ty?.website ? clampExpr(ty.website.min, ty.website.max, WMIN, WMAX) : val(t);
     const portalExpr = ty?.portal ? clampExpr(ty.portal.min, ty.portal.max, WMIN, WMAX) : webExpr;
 
     website.push(`  ${cssVar}: ${webExpr};`);
-    website.push(`  ${legacyVar}: var(${cssVar});`);
     if (portalExpr !== webExpr) {
       portal.push(`  ${cssVar}: ${portalExpr};`);
-      // The alias must be re-asserted here too: a custom property substitutes var() at the
-      // element where it is DECLARED, so without this every portal would render the website
-      // scale through the legacy name — the exact bug design.md §1A documents.
-      portal.push(`  ${legacyVar}: var(${cssVar});`);
     }
   }
   return { website, portal };
@@ -409,7 +127,7 @@ function buildResponsiveType(dictionary) {
 export const legacyDsCss = {
   name: "css/legacy-ds",
   format: ({ dictionary }) => {
-    // Exclude font.role.* from the --sa-* emission; they feed --ds-type-* instead.
+    // Exclude font.role.* from the generic --sa-* emission; buildResponsiveType handles them.
     const regularTokens = dictionary.allTokens.filter(
       (t) => !(t.path[0] === "font" && (t.path[1] === "role" || t.path[1] === "tracking"))
     );
@@ -459,8 +177,11 @@ export const legacyDsCss = {
     const { website: typeRootLines, portal: typePortalLines } = buildResponsiveType(dictionary);
 
     const retier = makeRetier(dictionary.allTokens, { tierOfFile, toCssName });
-    const legacyPairs = Object.entries(LEGACY_DS_ALIASES).map(([o, n]) => [o, retier(n)]);
-    const legacy = legacyPairs.map(([oldName, newVar]) => `  ${oldName}: var(${newVar});`);
+    // The legacy `--ds-*` alias block is gone (retired 2026-08-12). Kept as empty arrays
+    // rather than threaded out of every call site, because the brand-block re-assertion
+    // below still needs `systemAliasPairs` and the two were always concatenated.
+    const legacyPairs = [];
+    const legacy = [];
 
     // Resolve a {reference} to a var(--sa-*) chain, honouring the referent's tier marker.
     // Without the lookup a Tier-2 token pointing at a Tier-1 primitive would emit an
@@ -579,8 +300,8 @@ export const legacyDsCss = {
     return (
       `/* GENERATED by @mosje/tokens — do not edit. Edit packages/tokens/src/*.json. */\n` +
       `:root {\n${lines.join("\n")}\n\n` +
-      `  /* ---- fluid type scale (Website surface, default): --ds-type-ROLE-size/lh = clamp(...) ---- */\n${typeRootLines.join("\n")}\n\n` +
-      `  /* ---- legacy --ds-* contract (back-compat) ---- */\n${legacy.join("\n")}\n}\n\n` +
+      `  /* ---- fluid type scale (Website surface, default): --sa-type-ROLE-size/lh = clamp(...) ---- */\n${typeRootLines.join("\n")}\n\n` +
+      `\n${legacy.join("\n")}\n}\n\n` +
       `${themeBlocks}\n\n` +
       `/* ---- Portal surface type scale override ---- */\n${surfaceBlock}\n`
     );

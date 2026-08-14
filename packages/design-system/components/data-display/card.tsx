@@ -17,7 +17,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
  *
  * A styled surface container. Compose with `CardHeader`, `CardBody`,
  * `CardFooter`, `CardTitle`, `CardSubtitle`. Styled entirely via semantic
- * CSS classes that reference design tokens (--ds-*). No Tailwind, no deps.
+ * CSS classes that reference design tokens (--sa-*). No Tailwind, no deps.
  */
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(function Card(
   { variant = "outlined", orientation = "vertical", className, children, ...rest },

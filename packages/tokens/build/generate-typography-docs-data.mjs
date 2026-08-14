@@ -1,0 +1,166 @@
+/**
+ * Generate `apps/hub/.../foundations/typography/typography-data.ts`.
+ *
+ * WHY
+ * ---
+ * This file used to hand-type 168 numbers — every role's size, line height, tracking and
+ * paragraph spacing, on both surfaces. They were verified once, by hand, on 2026-08-11
+ * (126/126 agreed) and were still correct when this generator replaced them on 2026-08-12.
+ *
+ * That is the point. The colour page's numbers were verified by hand too, and by the time
+ * anyone measured again, 14 of them matched no token in the system. A table that is right
+ * today and hand-maintained is not a correct table; it is a table that has not drifted YET.
+ *
+ * The split:
+ *   - NUMBERS come from packages/tokens/src/primitive.json (font.role.*, font.tracking.*).
+ *   - EDITORIAL content — bilingual specimens, tier blurbs, surface notes — is writing, so it
+ *     stays hand-authored in typography-content.json and a human owns it.
+ *
+ * Regenerate: npm run build -w @mosje/tokens
+ */
+import { readFileSync, writeFileSync } from "node:fs";
+
+const here = (p) => new URL(p, import.meta.url).pathname;
+const prim = JSON.parse(readFileSync(here("../src/primitive.json"), "utf8"));
+const CONTENT_PATH = here("../../../apps/hub/src/app/design-system/foundations/typography/typography-content.json");
+const content = JSON.parse(readFileSync(CONTENT_PATH, "utf8"));
+for (const key of ["tierWeights", "tiers", "surfaces", "samples", "standards"]) {
+  if (!content[key]) {
+    throw new Error(
+      `generate-typography-docs-data: typography-content.json is missing "${key}". Every key here ` +
+        "backs an EXPORT the page imports — dropping one produces a file that generates cleanly " +
+        "and only fails when it meets its consumer, which is how STANDARDS was lost.",
+    );
+  }
+}
+
+const px = (v) => {
+  const n = parseFloat(String(v).replace("px", ""));
+  if (!Number.isFinite(n)) throw new Error(`generate-typography-docs-data: not a length: ${v}`);
+  return n;
+};
+
+/** font.role.<family>.<n>.<prop> carries $extensions.mosje.type.{website,portal}.{min,max}. */
+function bounds(node, prop) {
+  const ext = node?.$extensions?.mosje?.type;
+  if (!ext) return null;
+  const pick = (surf) => (ext[surf] ? [px(ext[surf].min), px(ext[surf].max)] : null);
+  const website = pick("website");
+  const portal = pick("portal") ?? website;
+  if (!website) throw new Error(`generate-typography-docs-data: ${prop} has no website bounds`);
+  return { website, portal };
+}
+
+const TIER_OF = { display: "display", headline: "headline", title: "title", body: "body", label: "label" };
+
+const roles = [];
+for (const [family, tiers] of Object.entries(prim.font.role)) {
+  if (family.startsWith("$") || typeof tiers !== "object") continue;
+  const tier = TIER_OF[family];
+  if (!tier) throw new Error(`generate-typography-docs-data: unknown role family "${family}"`);
+  for (const [n, props] of Object.entries(tiers)) {
+    if (n.startsWith("$") || typeof props !== "object") continue;
+    const role = `${family}-${n}`;
+    const size = bounds(props.size, `${role}.size`);
+    const lh = bounds(props.lh, `${role}.lh`);
+    const para = bounds(props.para, `${role}.para`);
+    const weight = content.tierWeights[tier];
+    if (!weight) throw new Error(`generate-typography-docs-data: no tier weight for "${tier}"`);
+    const sample = content.samples[role];
+    if (!sample) throw new Error(`generate-typography-docs-data: no specimen authored for "${role}" — add it to typography-content.json`);
+    roles.push({
+      role, tier,
+      weight: weight.name, weightVal: weight.value,
+      size, lh,
+      // tracking is authored per DISPLAY role only, on the portal surface; the rest are 0
+      tracking: { website: [0, 0], portal: [0, 0] },
+      para: para ? para.website : [0, 0],
+      en: sample.en, hi: sample.hi,
+    });
+  }
+}
+
+/** font.tracking.<key> — the display ramp's negative letter-spacing. */
+for (const [key, node] of Object.entries(prim.font.tracking ?? {})) {
+  if (key.startsWith("$")) continue;
+  const flat = (obj, prefix) => {
+    for (const [k, v] of Object.entries(obj)) {
+      if (k.startsWith("$")) continue;
+      if (v?.$value !== undefined || v?.$extensions) {
+        const b = bounds(v, `tracking.${prefix}${k}`);
+        const role = `${prefix}${k}`.replace(/\.$/, "");
+        const hit = roles.find((r) => r.role === role);
+        if (hit && b) hit.tracking = b;
+      } else if (typeof v === "object") {
+        flat(v, `${prefix}${k}-`);
+      }
+    }
+  };
+  if (node?.$value !== undefined || node?.$extensions) {
+    const b = bounds(node, `tracking.${key}`);
+    const hit = roles.find((r) => r.role === key);
+    if (hit && b) hit.tracking = b;
+  } else if (typeof node === "object") {
+    flat(node, `${key}-`);
+  }
+}
+
+const ORDER = ["display", "headline", "title", "body", "label"];
+roles.sort((a, b) =>
+  ORDER.indexOf(a.tier) - ORDER.indexOf(b.tier) ||
+  Number(a.role.split("-")[1]) - Number(b.role.split("-")[1]));
+
+const out = `/* GENERATED by @mosje/tokens (build/generate-typography-docs-data.mjs) — do not edit.
+
+   Every NUMBER here is read from packages/tokens/src/primitive.json, so this page cannot state
+   a size, line height, tracking or paragraph spacing the token source does not declare. It
+   replaced 168 hand-typed values which were correct at the time and had no way of staying that
+   way — the same shape of table that left the colour page printing 14 dead colours.
+
+   The bilingual specimens, tier blurbs and surface notes are WRITING, not derived values, so
+   they stay hand-authored in typography-content.json. Edit them there.
+
+   Regenerate: npm run build -w @mosje/tokens */
+
+export type Surface = "website" | "portal";
+export type Tier = ${content.tiers.map((t) => JSON.stringify(t.key)).join(" | ")};
+
+export interface RoleSpec {
+  role: string;
+  tier: Tier;
+  weight: string;
+  weightVal: number;
+  size: Record<Surface, [number, number]>;
+  lh: Record<Surface, [number, number]>;
+  tracking: Record<Surface, [number, number]>;
+  para: [number, number];
+  en: string;
+  hi: string;
+}
+
+export const ROLES: RoleSpec[] = ${JSON.stringify(roles, null, 2)};
+
+export const TIERS: { key: Tier; label: string; blurb: string }[] = ${JSON.stringify(content.tiers, null, 2)};
+
+export const SURFACES: { key: Surface; label: string; note: string; sample: string }[] = ${JSON.stringify(content.surfaces, null, 2)};
+
+export interface StandardsRule { rule: string; src: string }
+export interface StandardsGroup { title: string; rules: StandardsRule[] }
+
+/**
+ * The typography rules, grouped as UX4G groups them, each tagged to the standard it comes from
+ * so a reviewer can audit rather than trust. Editorial — authored in typography-content.json.
+ *
+ * This export was LOST when the generator first replaced this file: the generated version
+ * compiled fine on its own and only failed once it met the page that imports it. Regenerating a
+ * file means owning every export it had, not just the ones you came for.
+ */
+export const STANDARDS: StandardsGroup[] = ${JSON.stringify(content.standards, null, 2)};
+
+/** Round to 3dp for display, drop trailing zeros. */
+export const px = (n: number): string => \`\${Math.round(n * 1000) / 1000}px\`;
+`;
+
+const target = here("../../../apps/hub/src/app/design-system/foundations/typography/typography-data.ts");
+writeFileSync(target, out);
+console.log(`✓ generated typography-data.ts — ${roles.length} roles, ${content.tiers.length} tiers, ${content.surfaces.length} surfaces`);

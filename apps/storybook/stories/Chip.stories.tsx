@@ -91,7 +91,7 @@ export const Dismissible: Story = {
           </Chip>
         ))}
         {applied.length === 0 && (
-          <span style={{ color: "var(--ds-ink-muted)" }}>No filters applied.</span>
+          <span style={{ color: "var(--sa-text-neutral-subtle)" }}>No filters applied.</span>
         )}
       </div>
     );

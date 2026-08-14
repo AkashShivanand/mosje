@@ -15,7 +15,7 @@
    Bottom-right, docked directly above the UX4G accessibility widget's own
    70px trigger — one utility rail instead of two FABs in opposite corners.
    See the component doc comment (demo-dock.tsx) for why this moved off
-   bottom-left. `--ds-demodock-bottom` is set by the effect in demo-dock.tsx
+   bottom-left. `--cmp-demodock-bottom` is set by the effect in demo-dock.tsx
    once it measures the widget's real position; the `108px` fallback here
    (24px UX4G offset + 70px UX4G height + 14px gap) covers the brief window
    before that measurement lands, and the rarer case where the widget never
@@ -24,14 +24,14 @@
 .ds-demodock {
   position: fixed;
   right: 20px;
-  bottom: var(--ds-demodock-bottom, 108px);
+  bottom: var(--cmp-demodock-bottom, 108px);
   z-index: 2147483000;
-  font-family: var(--ds-font-sans);
+  font-family: var(--sa-font-latin);
 }
 
 /* Legacy — kept for backward compatibility, not because DemoDock still needs
    it. Three production login pages (scw, nhapoa, tg admin —
-   `bottom-[var(--ds-appsw-safe-area)]` on their own footer dividers) reserve
+   `bottom-[var(--cmp-appsw-safe-area)]` on their own footer dividers) reserve
    this much clearance at bottom-LEFT for the retired `AppSwitcher` FAB that
    used to live there. Now that DemoDock docks bottom-right instead (see
    above), nothing occupies that corner any more and the reservation is inert
@@ -40,11 +40,11 @@
    consumed by DemoDock itself. A follow-up could drop the now-unnecessary
    padding from those three pages and retire this var for good. */
 :root {
-  --ds-appsw-safe-area: 84px;
+  --cmp-appsw-safe-area: 84px;
 }
 
 .ds-appsw-safe-bottom {
-  padding-bottom: var(--ds-appsw-safe-area);
+  padding-bottom: var(--cmp-appsw-safe-area);
 }
 
 /* ── FAB trigger ──────────────────────────────────────────────────────────
@@ -83,18 +83,18 @@
   max-width: 44px;
   padding: 0 14px;
   border: none;
-  border-radius: var(--ds-radius-full);
-  background-color: var(--ds-surface);
-  color: var(--ds-ink);
-  font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-body-2);
+  border-radius: var(--sa-shape-full);
+  background-color: var(--sa-bg-neutral-base);
+  color: var(--sa-text-neutral-base);
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-body-2-size);
   font-weight: 600;
   cursor: pointer;
   overflow: hidden;
-  box-shadow: var(--ds-shadow-lg);
-  transition: max-width var(--ds-duration-base) var(--ds-easing-out),
-    box-shadow var(--ds-duration-fast) var(--ds-easing-out),
-    transform var(--ds-duration-fast) var(--ds-easing-out);
+  box-shadow: var(--sa-elevation-modal);
+  transition: max-width var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+    box-shadow var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -112,15 +112,15 @@
 .ds-demodock__fab:focus-visible {
   max-width: 220px;
   outline: none;
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
 }
 
 .ds-demodock__fab-icon {
   width: 16px;
   height: 16px;
-  color: var(--ds-primary);
+  color: var(--sa-text-brand-primary-base);
   flex: 0 0 auto;
-  transition: transform var(--ds-duration-base) var(--ds-easing-in-out);
+  transition: transform var(--sa-motion-enter-duration) var(--sa-motion-emphasis-easing);
 }
 
 .ds-demodock__fab[aria-expanded="true"] .ds-demodock__fab-icon {
@@ -139,7 +139,7 @@
   margin-right: 8px;
   white-space: nowrap;
   opacity: 0;
-  transition: opacity var(--ds-duration-fast) var(--ds-easing-out);
+  transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
 .ds-demodock__fab:hover .ds-demodock__fab-label,
@@ -149,7 +149,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ds-demodock__fab {
-    transition: box-shadow var(--ds-duration-fast) var(--ds-easing-out);
+    transition: box-shadow var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
   }
 
   .ds-demodock__fab-label {
@@ -167,10 +167,10 @@
   max-height: min(72vh, 680px);
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-md);
-  background-color: var(--ds-surface);
-  box-shadow: var(--ds-shadow-xl);
+  border: 1px solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-md);
+  background-color: var(--sa-bg-neutral-base);
+  box-shadow: var(--sa-elevation-toast);
   overflow: hidden;
   transform-origin: bottom right;
   /* Shared floor for the body/tab content (see `.ds-demodock__body` below).
@@ -180,7 +180,7 @@
      a `420px` ceiling so it doesn't keep growing on tall screens. Defined
      once here and read by both the body and the Colour tab so they can't
      drift apart. */
-  --ds-demodock-content-floor: min(420px, calc(72vh - 128px));
+  --cmp-demodock-content-floor: min(420px, calc(72vh - 128px));
 }
 
 /* ── Header (badge + title + "Currently in" + close + tab strip — never
@@ -192,10 +192,10 @@
   padding: 14px 14px 10px;
   background: linear-gradient(
     to bottom,
-    var(--ds-surface-muted),
-    var(--ds-surface)
+    var(--sa-bg-neutral-subtler),
+    var(--sa-bg-neutral-base)
   );
-  border-bottom: 1px solid var(--ds-border);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }
 
 .ds-demodock__header-row {
@@ -220,9 +220,9 @@
   flex: 0 0 auto;
   width: 32px;
   height: 32px;
-  border-radius: var(--ds-radius-sm);
-  background-color: var(--ds-primary-tonal);
-  color: var(--ds-primary);
+  border-radius: var(--sa-shape-sm);
+  background-color: var(--sa-bg-brand-primary-subtler);
+  color: var(--sa-text-brand-primary-base);
 }
 
 .ds-demodock__badge svg {
@@ -238,28 +238,28 @@
 }
 
 .ds-demodock__title {
-  font-size: var(--ds-text-title-2);
+  font-size: var(--sa-type-title-1-size);
   font-weight: 700;
-  color: var(--ds-ink);
+  color: var(--sa-text-neutral-base);
   line-height: 1.2;
 }
 
 .ds-demodock__current {
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .ds-demodock__current-label {
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-demodock__current-name {
   font-weight: 600;
-  color: var(--ds-ink-strong);
+  color: var(--sa-text-neutral-bolder);
 }
 
 .ds-demodock__close {
@@ -270,18 +270,18 @@
   width: 28px;
   height: 28px;
   border: none;
-  border-radius: var(--ds-radius-sm);
+  border-radius: var(--sa-shape-sm);
   background: transparent;
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
   cursor: pointer;
-  transition: background-color var(--ds-duration-fast) var(--ds-easing-out),
-    color var(--ds-duration-fast) var(--ds-easing-out),
-    transform var(--ds-duration-fast) var(--ds-easing-out);
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
 .ds-demodock__close:hover {
-  background-color: var(--ds-surface-muted);
-  color: var(--ds-ink);
+  background-color: var(--sa-bg-neutral-subtler);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-demodock__close:active {
@@ -290,14 +290,14 @@
 
 .ds-demodock__close:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--ds-primary-ring);
+  box-shadow: 0 0 0 2px var(--sa-focus-ring);
 }
 
 .ds-demodock__tabs {
   margin-top: 2px;
 }
 
-/* ── Body (the only scrolling region). `--ds-demodock-content-floor` (set
+/* ── Body (the only scrolling region). `--cmp-demodock-content-floor` (set
    on `.ds-demodock__panel` above) is a floor sized to the Apps tab's usual
    footprint, so Colour — which has almost no content — doesn't collapse
    the panel to a fraction of its Apps-tab size. It's a floor, not a fixed
@@ -305,7 +305,7 @@
    `max-height`, then scrolls, exactly as before. ── */
 .ds-demodock__body {
   flex: 1 1 auto;
-  min-height: var(--ds-demodock-content-floor);
+  min-height: var(--cmp-demodock-content-floor);
   overflow-y: auto;
 }
 
@@ -319,7 +319,7 @@
    rows scroll inside `.ds-demodock__body` instead of growing the panel. ── */
 .ds-demodock__colour {
   box-sizing: border-box;
-  min-height: var(--ds-demodock-content-floor);
+  min-height: var(--cmp-demodock-content-floor);
   padding: 16px 14px;
   display: flex;
   flex-direction: column;
@@ -344,31 +344,31 @@
   min-height: 44px;
   padding: 8px 6px;
   border: 1px solid transparent;
-  border-radius: var(--ds-radius-md);
+  border-radius: var(--sa-shape-md);
   background: transparent;
   cursor: pointer;
   text-align: center;
-  transition: background-color var(--ds-duration-fast) var(--ds-easing-out),
-    border-color var(--ds-duration-fast) var(--ds-easing-out);
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    border-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
 .ds-demodock__swatch-option:hover {
-  background-color: var(--ds-surface-muted);
+  background-color: var(--sa-bg-neutral-subtler);
 }
 
 .ds-demodock__swatch-option.is-active {
-  border-color: var(--ds-border);
-  background-color: var(--ds-surface-muted);
+  border-color: var(--sa-border-neutral-subtle);
+  background-color: var(--sa-bg-neutral-subtler);
 }
 
 .ds-demodock__swatch-option:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--ds-surface), 0 0 0 4px var(--ds-primary);
+  box-shadow: 0 0 0 2px var(--sa-bg-neutral-base), 0 0 0 4px var(--sa-color-action-primary-default);
 }
 
 /* ── Motif tile — a fixed-size (90×60px) miniature UI abstraction: a header
    bar, a content surface, an accent mark and a button shape. Carries its
-   OWN `data-brand` (set in the .tsx), so every `var(--ds-*)` used inside it
+   OWN `data-brand` (set in the .tsx), so every `var(--sa-*)` used inside it
    resolves against that mode's re-declared aliases rather than the ambient
    page mode — see the component doc comment for why that works. No hex or
    rgba anywhere here; every colour is a token that changes meaning per
@@ -380,7 +380,7 @@
    legible but felt cramped; 90×60 reads clearly while still fitting FOUR
    tiles per row inside the panel's 472px content width (`(472+8) /
    (102+8) = 4.36`), so a future ten-mode grid still wraps into 3 compact
-   rows (~307px) well under the `--ds-demodock-content-floor` — which at
+   rows (~307px) well under the `--cmp-demodock-content-floor` — which at
    1280×720 is its smallest, ~390px — so the grid never needs to scroll.
    Internal marks (bar height, dot, accent, button, check badge) scale with
    it so nothing looks disproportionately small inside the larger frame. ── */
@@ -391,13 +391,13 @@
   flex: 0 0 auto;
   width: 90px;
   height: 60px;
-  border: 1px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-sm);
+  border: 1px solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-sm);
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .ds-demodock__motif {
-    transition: transform var(--ds-duration-fast) var(--ds-easing-out);
+    transition: transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
   }
 
   .ds-demodock__swatch-option:hover .ds-demodock__motif,
@@ -407,7 +407,7 @@
 }
 
 .ds-demodock__swatch-option.is-active .ds-demodock__motif {
-  box-shadow: 0 0 0 2px var(--ds-surface), 0 0 0 4px var(--ds-primary);
+  box-shadow: 0 0 0 2px var(--sa-bg-neutral-base), 0 0 0 4px var(--sa-color-action-primary-default);
 }
 
 .ds-demodock__motif-bar {
@@ -416,16 +416,16 @@
   align-items: center;
   gap: 4px;
   padding: 0 8px;
-  background-color: var(--ds-primary);
-  border-top-left-radius: calc(var(--ds-radius-sm) - 1px);
-  border-top-right-radius: calc(var(--ds-radius-sm) - 1px);
+  background-color: var(--sa-bg-brand-primary-bolder);
+  border-top-left-radius: calc(var(--sa-shape-sm) - 1px);
+  border-top-right-radius: calc(var(--sa-shape-sm) - 1px);
 }
 
 .ds-demodock__motif-dot {
   width: 4px;
   height: 4px;
-  border-radius: var(--ds-radius-full);
-  background-color: var(--ds-on-primary);
+  border-radius: var(--sa-shape-full);
+  background-color: var(--sa-bg-neutral-base);
   opacity: 0.7;
 }
 
@@ -436,24 +436,24 @@
   justify-content: center;
   gap: 6px;
   padding: 0 9px;
-  background-color: var(--ds-surface);
-  border-bottom-left-radius: calc(var(--ds-radius-sm) - 1px);
-  border-bottom-right-radius: calc(var(--ds-radius-sm) - 1px);
+  background-color: var(--sa-bg-neutral-base);
+  border-bottom-left-radius: calc(var(--sa-shape-sm) - 1px);
+  border-bottom-right-radius: calc(var(--sa-shape-sm) - 1px);
 }
 
 .ds-demodock__motif-accent {
   width: 25px;
   height: 5px;
-  border-radius: var(--ds-radius-full);
-  background-color: var(--ds-secondary-500);
+  border-radius: var(--sa-shape-full);
+  background-color: var(--sa-color-secondaryScale-500);
 }
 
 .ds-demodock__motif-button {
   align-self: flex-start;
   width: 35px;
   height: 11px;
-  border-radius: var(--ds-radius-sm);
-  background-color: var(--ds-primary);
+  border-radius: var(--sa-shape-sm);
+  background-color: var(--sa-bg-brand-primary-bolder);
 }
 
 /* The selected badge — a small check on a primary-coloured disc, sitting
@@ -468,15 +468,15 @@
   justify-content: center;
   width: 20px;
   height: 20px;
-  border: 2px solid var(--ds-surface);
+  border: 2px solid var(--sa-bg-neutral-base);
   border-radius: 50%;
-  background-color: var(--ds-primary);
-  color: var(--ds-on-primary);
+  background-color: var(--sa-bg-brand-primary-bolder);
+  color: var(--sa-on-bg-brand-primary-bolder);
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .ds-demodock__motif-check {
-    animation: ds-demodock-swatch-check var(--ds-duration-fast) var(--ds-easing-out);
+    animation: ds-demodock-swatch-check var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
   }
 
   @keyframes ds-demodock-swatch-check {
@@ -492,24 +492,24 @@
 }
 
 .ds-demodock__swatch-label {
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
   font-weight: 600;
-  color: var(--ds-ink);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-demodock__colour-note {
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-demodock__colour-note kbd {
   padding: 1px 5px;
-  border: 1px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-sm);
-  background-color: var(--ds-surface);
-  font-family: var(--ds-font-sans);
+  border: 1px solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-sm);
+  background-color: var(--sa-bg-neutral-base);
+  font-family: var(--sa-font-latin);
   font-size: 0.9em;
 }
 
@@ -525,7 +525,7 @@
   flex-direction: column;
   gap: 10px;
   padding-top: 14px;
-  border-top: 1px solid var(--ds-border);
+  border-top: 1px solid var(--sa-border-neutral-subtle);
 }
 
 .ds-demodock__colour-heading {
@@ -533,22 +533,22 @@
   align-items: center;
   gap: 8px;
   margin: 0;
-  font-size: var(--ds-text-label-1);
-  line-height: var(--ds-leading-label-1);
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
   font-weight: 600;
-  color: var(--ds-ink);
+  color: var(--sa-text-neutral-base);
 }
 
 /* A text tag, not a colour-only signal — WCAG 1.4.1. It reads the same to a
    screen reader as it does on screen. */
 .ds-demodock__colour-tag {
   padding: 1px 6px;
-  border: 1px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-full);
-  background-color: var(--ds-surface-muted);
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-label-3);
-  line-height: var(--ds-leading-label-3);
+  border: 1px solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-full);
+  background-color: var(--sa-bg-neutral-subtler);
+  color: var(--sa-text-neutral-subtle);
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -556,19 +556,19 @@
 
 .ds-demodock__colour-subnote {
   margin: 0;
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
 }
 
 /* ── Entrance / exit animation ── */
 @media (prefers-reduced-motion: no-preference) {
   .ds-demodock__panel {
-    animation: ds-demodock-in var(--ds-duration-fast) var(--ds-easing-out);
+    animation: ds-demodock-in var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
   }
 
   .ds-demodock__panel.is-closing {
-    animation: ds-demodock-out var(--ds-duration-fast) var(--ds-easing-in) forwards;
+    animation: ds-demodock-out var(--sa-motion-exit-duration) var(--sa-motion-exit-easing) forwards;
   }
 
   @keyframes ds-demodock-in {

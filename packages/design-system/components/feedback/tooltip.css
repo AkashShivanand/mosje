@@ -7,20 +7,20 @@
 .ds-tooltip {
   position: fixed;
   /* Above every overlay in the DS so a tooltip inside a Modal (50) or a
-     Lightbox (80) is not painted behind it. There is no --ds-z-* scale yet;
+     Lightbox (80) is not painted behind it. There is no --sa-z-* scale yet;
      the DS convention is a literal, so keep this in step with those files. */
   z-index: 90;
   max-width: 16rem;
-  padding: 6px 10px;
-  border-radius: var(--ds-radius-sm, 4px);
-  background-color: var(--ds-primary-dark);
-  color: var(--ds-on-primary);
-  font-family: var(--ds-font-sans, inherit);
-  font-size: var(--ds-text-label-3, 11px);
-  line-height: var(--ds-leading-label-3, 16px);
+  padding: var(--sa-padding-xs) var(--sa-padding-s);
+  border-radius: var(--sa-shape-sm);
+  background-color: var(--sa-color-action-primary-hover);
+  color: var(--sa-on-bg-brand-primary-bolder);
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
   font-weight: 500;
   text-align: left;
-  box-shadow: var(--ds-shadow-md, 0 4px 12px rgb(0 0 0 / 0.15));
+  box-shadow: var(--sa-elevation-dropdown);
   /* The bubble must never swallow a click meant for the UI beneath it; the
      hoverable requirement is satisfied by the mouseenter handler on the box,
      which still fires with pointer-events auto. Keep auto — `none` would break

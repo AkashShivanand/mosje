@@ -150,9 +150,9 @@ export const Sparklines: Story = {
         changeDirection="up"
         icon={<Sparkline data={APPLICATIONS[0].data} width={72} height={28} />}
       />
-      <table style={{ width: "100%", borderCollapse: "collapse", color: "var(--ds-ink)" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", color: "var(--sa-color-text-default)" }}>
         <thead>
-          <tr style={{ textAlign: "left", color: "var(--ds-ink-muted)" }}>
+          <tr style={{ textAlign: "left", color: "var(--sa-color-text-muted)" }}>
             <th style={{ padding: "8px 12px 8px 0" }}>District</th>
             <th style={{ padding: "8px 12px 8px 0" }}>This month</th>
             <th style={{ padding: "8px 12px 8px 0" }}>Trend</th>
@@ -164,7 +164,7 @@ export const Sparklines: Story = {
             ["Thane", "9,180", [4800, 5100, 4900, 6200, 7900, 9180]],
             ["Nagpur", "6,240", [5900, 5600, 5100, 4800, 5400, 6240]],
           ].map(([district, count, trend]) => (
-            <tr key={String(district)} style={{ borderTop: "1px solid var(--ds-border)" }}>
+            <tr key={String(district)} style={{ borderTop: "1px solid var(--sa-border-neutral-subtle)" }}>
               <td style={{ padding: "10px 12px 10px 0" }}>{district}</td>
               <td style={{ padding: "10px 12px 10px 0" }}>{count}</td>
               <td style={{ padding: "10px 12px 10px 0" }}>

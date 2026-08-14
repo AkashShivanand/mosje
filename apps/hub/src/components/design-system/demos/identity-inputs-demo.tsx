@@ -32,11 +32,11 @@ export function IdentityInputsDemo(): React.JSX.Element {
     <div
       style={{
         display: "grid",
-        gap: "var(--ds-stack-l)",
-        padding: "var(--ds-padding-xl)",
-        border: "1px solid var(--ds-border)",
-        borderRadius: "var(--ds-radius-lg)",
-        background: "var(--ds-surface)",
+        gap: "var(--sa-stack-l)",
+        padding: "var(--sa-padding-xl)",
+        border: "1px solid var(--sa-border-neutral-subtle)",
+        borderRadius: "var(--sa-shape-lg)",
+        background: "var(--sa-bg-neutral-base)",
         maxWidth: "34rem",
       }}
     >
@@ -57,7 +57,7 @@ export function IdentityInputsDemo(): React.JSX.Element {
       </FormField>
 
       {isValidAadhaar(aadhaar) && (
-        <p style={{ margin: 0, fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)" }}>
+        <p style={{ margin: 0, fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)" }}>
           Stored as <code>{aadhaar}</code> · displayed to the citizen as{" "}
           <strong>{maskAadhaar(aadhaar)}</strong>
         </p>
@@ -74,7 +74,7 @@ export function IdentityInputsDemo(): React.JSX.Element {
       </FormField>
 
       {holder && !panBad && (
-        <p style={{ margin: 0, fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)" }}>
+        <p style={{ margin: 0, fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)" }}>
           Holder type: <strong>{holder}</strong>
         </p>
       )}
@@ -83,10 +83,10 @@ export function IdentityInputsDemo(): React.JSX.Element {
         <p
           id="otp-demo-label"
           style={{
-            margin: "0 0 var(--ds-stack-xs)",
-            fontSize: "var(--ds-text-label-1)",
+            margin: "0 0 var(--sa-stack-xs)",
+            fontSize: "var(--sa-type-label-1-size)",
             fontWeight: 600,
-            color: "var(--ds-ink)",
+            color: "var(--sa-text-neutral-base)",
           }}
         >
           One-time password
@@ -104,9 +104,9 @@ export function IdentityInputsDemo(): React.JSX.Element {
         <p
           id="otp-demo-hint"
           style={{
-            margin: "var(--ds-stack-xs) 0 0",
-            fontSize: "var(--ds-text-body-2)",
-            color: "var(--ds-ink-muted)",
+            margin: "var(--sa-stack-xs) 0 0",
+            fontSize: "var(--sa-type-body-2-size)",
+            color: "var(--sa-text-neutral-subtle)",
           }}
         >
           {otpResult

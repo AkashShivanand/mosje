@@ -17,7 +17,7 @@ export function ContentPage({ children, sidebar, ...hero }: ContentPageProps) {
     <PageLayout {...hero}>
       <section>
         <div
-          className={`mx-auto grid max-w-[1280px] gap-10 px-4 py-10 md:py-12 ${
+          className={`sa-container grid gap-10 py-10 md:py-12 ${
             sidebar ? "lg:grid-cols-[minmax(0,1fr)_300px]" : ""
           }`}
         >

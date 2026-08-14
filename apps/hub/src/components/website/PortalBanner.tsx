@@ -4,7 +4,7 @@ import Link from "next/link";
 export function PortalBanner() {
   return (
     <section className="bg-surface">
-      <div className="mx-auto max-w-[1280px] px-4 py-8">
+      <div className="sa-container py-8">
         <Link
           href="/website/samavesh-citizen-portals"
           className="block overflow-hidden rounded-xl"

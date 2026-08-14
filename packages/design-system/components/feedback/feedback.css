@@ -1,7 +1,7 @@
 /* ============================================================================
    MoSJE / UX4G — Feedback atoms (shared stylesheet)
    Covers: Alert · Loader · EmptyState · Avatar
-   Semantic CSS classes only; all colours reference design tokens (--ds-*).
+   Semantic CSS classes only; all colours reference design tokens (--sa-*).
    ============================================================================ */
 
 /* Visually-hidden utility (used by Loader label) */
@@ -10,7 +10,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: calc(-1 * var(--sa-padding-3xs));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -23,36 +23,36 @@
    Statuses: success | warning | info | error
    ============================================================================ */
 .ds-alert {
-  --_color: var(--ds-primary);
+  --_color: var(--sa-text-brand-primary-base);
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  padding: 12px;
-  background-color: var(--ds-surface);
-  border: 1px solid var(--ds-border);
+  gap: var(--sa-stack-s);
+  padding: var(--sa-padding-s);
+  background-color: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-subtle);
   border-left: 4px solid var(--_color);
-  border-radius: var(--ds-radius-md, 8px);
-  box-shadow: var(--ds-shadow-lg);
-  font-family: var(--ds-font-sans, inherit);
-  color: var(--ds-ink-strong);
+  border-radius: var(--sa-shape-md);
+  box-shadow: var(--sa-elevation-modal);
+  font-family: var(--sa-font-latin);
+  color: var(--sa-text-neutral-bolder);
 }
 
 /* Status → colour mapping (info→primary, success→success, warning→warning, error→danger) */
 .ds-alert--info {
-  --_color: var(--ds-primary);
-  background-color: color-mix(in srgb, var(--ds-primary) 6%, var(--ds-surface));
+  --_color: var(--sa-text-brand-primary-base);
+  background-color: color-mix(in srgb, var(--sa-color-action-primary-default) 6%, var(--sa-bg-neutral-base));
 }
 .ds-alert--success {
-  --_color: var(--ds-success);
-  background-color: color-mix(in srgb, var(--ds-success) 7%, var(--ds-surface));
+  --_color: var(--sa-text-status-success-base);
+  background-color: color-mix(in srgb, var(--sa-color-status-success) 7%, var(--sa-bg-neutral-base));
 }
 .ds-alert--warning {
-  --_color: var(--ds-warning);
-  background-color: color-mix(in srgb, var(--ds-warning) 14%, var(--ds-surface));
+  --_color: var(--sa-text-status-warning-base);
+  background-color: color-mix(in srgb, var(--sa-color-status-warning) 14%, var(--sa-bg-neutral-base));
 }
 .ds-alert--error {
-  --_color: var(--ds-danger);
-  background-color: color-mix(in srgb, var(--ds-danger) 6%, var(--ds-surface));
+  --_color: var(--sa-text-status-error-base);
+  background-color: color-mix(in srgb, var(--sa-color-status-danger) 6%, var(--sa-bg-neutral-base));
 }
 
 .ds-alert__icon {
@@ -62,7 +62,7 @@
   /* warning amber needs ink, not the pale yellow itself, for the glyph */
 }
 .ds-alert--warning .ds-alert__icon {
-  color: var(--ds-yellow);
+  color: var(--sa-color-brand-yellow);
 }
 
 .ds-alert__content {
@@ -70,42 +70,42 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--sa-stack-2xs);
 }
 
 .ds-alert__head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--sa-stack-s);
 }
 
 .ds-alert__title {
   margin: 0;
-  font-size: var(--ds-text-body-2, 14px);
-  line-height: var(--ds-leading-body-2, 20px);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   font-weight: 600;
-  color: var(--ds-ink-strong);
+  color: var(--sa-text-neutral-bolder);
 }
 
 .ds-alert__timestamp {
   flex: 0 0 auto;
-  font-size: var(--ds-text-body-3, 12px);
-  line-height: var(--ds-leading-body-3, 16px);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-alert__body {
-  font-size: var(--ds-text-body-2, 14px);
-  line-height: var(--ds-leading-body-2, 20px);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-alert__action {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 4px;
+  gap: var(--sa-stack-xs);
+  margin-top: var(--sa-padding-2xs);
 }
 
 .ds-alert__close {
@@ -118,20 +118,20 @@
   padding: 0;
   background: transparent;
   border: none;
-  border-radius: var(--ds-radius-sm, 6px);
-  color: var(--ds-ink-muted);
+  border-radius: var(--sa-shape-sm);
+  color: var(--sa-text-neutral-subtle);
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 .ds-alert__close:hover {
-  background-color: color-mix(in srgb, var(--ds-ink) 8%, transparent);
-  color: var(--ds-ink);
+  background-color: color-mix(in srgb, var(--sa-color-text-default) 8%, transparent);
+  color: var(--sa-text-neutral-base);
 }
 .ds-alert__close:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
 }
 
 /* ============================================================================
@@ -144,7 +144,7 @@
   align-items: center;
   justify-content: center;
   --_loader-size: 32px;
-  --_loader-color: var(--ds-primary);
+  --_loader-color: var(--sa-color-action-primary-default);
 }
 
 .ds-loader--sm {
@@ -158,17 +158,17 @@
 }
 
 .ds-loader--primary {
-  --_loader-color: var(--ds-primary);
+  --_loader-color: var(--sa-color-action-primary-default);
 }
 .ds-loader--secondary {
-  --_loader-color: var(--ds-ink-muted);
+  --_loader-color: var(--sa-color-text-muted);
 }
 
 .ds-loader__spinner {
   display: block;
   width: var(--_loader-size);
   height: var(--_loader-size);
-  border-radius: var(--ds-radius-full, 100px);
+  border-radius: var(--sa-shape-full);
   border: 3px solid color-mix(in srgb, var(--_loader-color) 22%, transparent);
   border-top-color: var(--_loader-color);
   animation: ds-spin 0.7s linear infinite;
@@ -179,7 +179,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: calc(-1 * var(--sa-padding-3xs));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -207,41 +207,41 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 8px;
-  padding: 40px 24px;
-  font-family: var(--ds-font-sans, inherit);
+  gap: var(--sa-stack-xs);
+  padding: var(--sa-stack-2xl) var(--sa-padding-xl);
+  font-family: var(--sa-font-latin);
 }
 
 .ds-empty__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--ds-ink-muted);
-  margin-bottom: 8px;
+  color: var(--sa-text-neutral-subtle);
+  margin-bottom: var(--sa-padding-xs);
 }
 
 .ds-empty__title {
   margin: 0;
-  font-size: var(--ds-text-headline, 20px);
-  line-height: var(--ds-leading-headline, 24px);
+  font-size: var(--sa-type-headline-1-size);
+  line-height: var(--sa-type-headline-1-lh);
   font-weight: 600;
-  color: var(--ds-ink-strong);
+  color: var(--sa-text-neutral-bolder);
 }
 
 .ds-empty__description {
   margin: 0;
   max-width: 42ch;
-  font-size: var(--ds-text-body-2, 14px);
-  line-height: var(--ds-leading-body-2, 20px);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-empty__action {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--sa-stack-xs);
   justify-content: center;
-  margin-top: 8px;
+  margin-top: var(--sa-padding-xs);
 }
 
 /* ============================================================================
@@ -255,19 +255,19 @@
   justify-content: center;
   flex: 0 0 auto;
   overflow: hidden;
-  background-color: var(--ds-surface-muted);
-  color: var(--ds-ink-strong);
-  font-family: var(--ds-font-sans, inherit);
+  background-color: var(--sa-bg-neutral-subtler);
+  color: var(--sa-text-neutral-bolder);
+  font-family: var(--sa-font-latin);
   font-weight: 600;
   line-height: 1;
   user-select: none;
 }
 
 .ds-avatar--circular {
-  border-radius: var(--ds-radius-full, 100px);
+  border-radius: var(--sa-shape-full);
 }
 .ds-avatar--rounded {
-  border-radius: var(--ds-radius-md, 8px);
+  border-radius: var(--sa-shape-md);
 }
 
 .ds-avatar__img {
@@ -289,5 +289,5 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
 }

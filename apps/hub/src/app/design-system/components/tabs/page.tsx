@@ -13,30 +13,30 @@ export const metadata: Metadata = {
  * ------------------------------------------------------------------ */
 
 const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--ds-spacing-5xl)",
-  scrollMarginTop: "var(--ds-spacing-5xl)",
+  marginTop: "var(--sa-section-m)",
+  scrollMarginTop: "var(--sa-section-m)",
 };
 
 const h2Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-headline)", lineHeight: "var(--ds-leading-headline)",
+  fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 700,
-  color: "var(--ds-ink)",
-  marginBottom: "var(--ds-spacing-lg)",
-  paddingBottom: "var(--ds-spacing-sm)",
-  borderBottom: "1px solid var(--ds-border)",
+  color: "var(--sa-text-neutral-base)",
+  marginBottom: "var(--sa-stack-m)",
+  paddingBottom: "var(--sa-padding-xs)",
+  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
 };
 
 const h3Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-title-1)",
+  fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
-  color: "var(--ds-ink)",
-  marginTop: "var(--ds-spacing-2xl)",
-  marginBottom: "var(--ds-spacing-sm)",
+  color: "var(--sa-text-neutral-base)",
+  marginTop: "var(--sa-stack-l)",
+  marginBottom: "var(--sa-stack-xs)",
 };
 
 const proseStyle: React.CSSProperties = {
-  color: "var(--ds-ink-muted)",
-  fontSize: "var(--ds-text-body-1)",
+  color: "var(--sa-text-neutral-subtle)",
+  fontSize: "var(--sa-type-body-1-size)",
   lineHeight: 1.7,
   maxWidth: "68ch",
 };
@@ -45,18 +45,18 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
   return (
     <pre
       style={{
-        background: "var(--ds-surface-muted)",
-        border: "1px solid var(--ds-border)",
-        borderRadius: "var(--ds-radius-md, 8px)",
-        padding: "var(--ds-spacing-lg)",
+        background: "var(--sa-bg-neutral-subtler)",
+        border: "1px solid var(--sa-border-neutral-subtle)",
+        borderRadius: "var(--sa-shape-md)",
+        padding: "var(--sa-padding-m)",
         overflowX: "auto",
-        fontSize: "var(--ds-text-body-2)",
+        fontSize: "var(--sa-type-body-2-size)",
         lineHeight: 1.6,
-        color: "var(--ds-ink)",
-        marginTop: "var(--ds-spacing-sm)",
+        color: "var(--sa-text-neutral-base)",
+        marginTop: "var(--sa-stack-xs)",
       }}
     >
-      <code style={{ fontFamily: "var(--ds-font-mono, monospace)" }}>{children}</code>
+      <code style={{ fontFamily: "var(--sa-font-mono)" }}>{children}</code>
     </pre>
   );
 }
@@ -71,16 +71,16 @@ export default function TabsPage(): React.JSX.Element {
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
-        padding: "var(--ds-spacing-3xl) var(--ds-spacing-2xl) var(--ds-spacing-6xl)",
+        padding: "var(--sa-padding-2xl) var(--sa-padding-xl) var(--sa-section-l)",
       }}
     >
       {/* ── Title ── */}
-      <header style={{ marginBottom: "var(--ds-spacing-3xl)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-spacing-md)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--ds-text-display)", fontWeight: 800, color: "var(--ds-ink)", margin: 0 }}>Tabs</h1>
+      <header style={{ marginBottom: "var(--sa-stack-xl)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-s)", flexWrap: "wrap" }}>
+          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-color-text-default)", margin: 0 }}>Tabs</h1>
           <StatusBadge status="Beta" />
         </div>
-        <p style={{ ...proseStyle, marginTop: "var(--ds-spacing-md)" }}>
+        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-s)" }}>
           Accessible tabbed navigation for <strong>non-linear</strong> sections a user revisits in any order — a clinical
           record, a settings panel, a multi-facet detail view. <code>Tabs</code> implements the WAI-ARIA Tabs pattern with
           a roving <code>tabindex</code>, Arrow / Home / End keys, and a polite live-region announce. Use it when the user
@@ -98,7 +98,7 @@ export default function TabsPage(): React.JSX.Element {
           Focus a tab and use <strong>Arrow</strong> keys to move between sections, or <strong>Home</strong> / <strong>End</strong>{" "}
           to jump to the first / last.
         </p>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <TabsDemo />
         </div>
       </section>
@@ -214,15 +214,15 @@ function ClinicalRecord() {
           5. Guidelines
         </h2>
         <Callout type="info" title="✓ Do">
-          <ul style={{ margin: 0, paddingLeft: "1.2em", display: "flex", flexDirection: "column", gap: "var(--ds-spacing-xs)" }}>
+          <ul style={{ margin: 0, paddingLeft: "1.2em", display: "flex", flexDirection: "column", gap: "var(--sa-stack-2xs)" }}>
             <li>Use Tabs for non-linear sections a user revisits in any order (records, settings, detail facets).</li>
             <li>Run save / validation inside <code>onChange</code> so switching tabs never loses data.</li>
             <li>Give the tablist a meaningful <code>ariaLabel</code> describing what the sections are.</li>
           </ul>
         </Callout>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <Callout type="warning" title="✕ Don't">
-            <ul style={{ margin: 0, paddingLeft: "1.2em", display: "flex", flexDirection: "column", gap: "var(--ds-spacing-xs)" }}>
+            <ul style={{ margin: 0, paddingLeft: "1.2em", display: "flex", flexDirection: "column", gap: "var(--sa-stack-2xs)" }}>
               <li>
                 Don&apos;t use Tabs for an ordered, must-complete-in-sequence flow — use <code>&lt;Wizard&gt;</code> (a linear
                 stepper) instead.

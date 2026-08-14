@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { Metadata } from "next";
-import { Callout } from "@/components/design-system/docs-kit/index";
+import { Callout, CodeBlock, Syn } from "@/components/design-system/docs-kit/index";
 
 export const metadata: Metadata = {
   title: "Contributing",
@@ -12,7 +12,7 @@ const CHECKLIST: { label: string; detail: string }[] = [
   {
     label: "Token-only CSS",
     detail:
-      "No hardcoded colors, sizes, or spacing. Every value comes from a --ds-* custom property.",
+      "No hardcoded colors, sizes, or spacing. Every value comes from a --sa-* custom property.",
   },
   {
     label: "TypeScript strict",
@@ -34,18 +34,6 @@ const CHECKLIST: { label: string; detail: string }[] = [
       "Add an Added / Changed / Fixed line so the next release notes write themselves.",
   },
 ];
-
-const codeBlockStyle: React.CSSProperties = {
-  background: "#1e2130",
-  borderRadius: "var(--ds-radius-md)",
-  padding: "var(--ds-spacing-xl)",
-  fontFamily: "var(--ds-font-mono)",
-  fontSize: 13,
-  color: "#e2e8f0",
-  lineHeight: 1.7,
-  marginTop: "var(--ds-spacing-lg)",
-  overflowX: "auto",
-};
 
 export default function ContributingPage(): React.JSX.Element {
   return (
@@ -119,31 +107,31 @@ export default function ContributingPage(): React.JSX.Element {
               <strong>Edit the source.</strong> Change{" "}
               <code>packages/tokens/src/primitive.json</code> (raw values like
               hex codes) or <code>packages/tokens/src/semantic.json</code> (named
-              roles like <code>--ds-primary</code>).
+              roles like <code>--sa-color-action-primary-default</code>).
             </li>
             <li>
               <strong>Regenerate the outputs</strong> with Style Dictionary:
             </li>
           </ol>
         </div>
-        <div style={codeBlockStyle}>
-          <div style={{ color: "#8892a4" }}># Regenerate CSS / TS / Tailwind / Figma outputs</div>
+        <CodeBlock>
+          <div><Syn.Comment># Regenerate CSS / TS / Tailwind / Figma outputs</Syn.Comment></div>
           <div>
-            <span style={{ color: "#7dd3fc" }}>npm</span> run build -w
+            <Syn.Builtin>npm</Syn.Builtin> run build -w
             @mosje/tokens
           </div>
-          <div style={{ marginTop: "var(--ds-spacing-lg)", color: "#8892a4" }}>
-            # Confirm the token contract still holds
+          <div style={{ marginTop: "var(--sa-stack-m)" }}>
+            <Syn.Comment># Confirm the token contract still holds</Syn.Comment>
           </div>
           <div>
-            <span style={{ color: "#7dd3fc" }}>npm</span> test -w @mosje/tokens
+            <Syn.Builtin>npm</Syn.Builtin> test -w @mosje/tokens
           </div>
-        </div>
-        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        </CodeBlock>
+        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--sa-stack-m)" }}>
           <ol start={3}>
             <li>
               <strong>Check the contract test passes.</strong> The 50-token
-              snapshot test guards the backward-compatible <code>--ds-*</code>{" "}
+              snapshot test guards the backward-compatible <code>--sa-*</code>{" "}
               contract. If it fails, you have removed or renamed a token other
               apps depend on — that is a breaking change and needs a major-version
               discussion.
@@ -168,21 +156,23 @@ export default function ContributingPage(): React.JSX.Element {
           <p>
             One command from the repository root brings up everything — the hub
             gate, the website, the portals, and this documentation site behind{" "}
-            <code>localhost:3000</code>.
+            <code>localhost:3007</code>.
           </p>
         </div>
-        <div style={codeBlockStyle}>
-          <div style={{ color: "#8892a4" }}># From the repo root — boots all apps behind :3000</div>
+        <CodeBlock>
+          <div><Syn.Comment># From the repo root — boots the whole estate on :3007</Syn.Comment></div>
           <div>
-            <span style={{ color: "#7dd3fc" }}>npm</span> run dev
+            <Syn.Builtin>npm</Syn.Builtin> run dev
           </div>
-        </div>
-        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        </CodeBlock>
+        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--sa-stack-m)" }}>
           <p>
-            Need just one app? Use the targeted scripts:{" "}
-            <code>npm run dev:website</code>, <code>npm run dev:smile</code>,{" "}
-            <code>npm run dev:pm-ajay</code>, or <code>npm run dev:docs</code> for
-            this site.
+            There is no per-app dev server to reach for. Since the single-origin
+            consolidation the portals are route groups inside the hub, so{" "}
+            <code>npm run dev</code> is the whole estate — the website at{" "}
+            <code>/website</code>, these docs at <code>/design-system</code>, and each
+            portal at <code>/portals/&lt;slug&gt;</code>. The one exception is{" "}
+            <code>npm run dev:storybook</code>, and only when you are authoring stories.
           </p>
         </div>
         <Callout type="tip" title="Editing tokens while running">
@@ -208,11 +198,11 @@ export default function ContributingPage(): React.JSX.Element {
         <ul
           style={{
             listStyle: "none",
-            margin: "var(--ds-spacing-lg) 0 0",
+            margin: "var(--sa-stack-m) 0 0",
             padding: 0,
             display: "flex",
             flexDirection: "column",
-            gap: "var(--ds-spacing-md)",
+            gap: "var(--sa-stack-s)",
           }}
         >
           {CHECKLIST.map((item) => (
@@ -220,12 +210,12 @@ export default function ContributingPage(): React.JSX.Element {
               key={item.label}
               style={{
                 display: "flex",
-                gap: "var(--ds-spacing-md)",
+                gap: "var(--sa-stack-s)",
                 alignItems: "flex-start",
-                padding: "var(--ds-spacing-lg)",
-                border: "1px solid var(--ds-border)",
-                borderRadius: "var(--ds-radius-md)",
-                background: "var(--ds-surface)",
+                padding: "var(--sa-padding-m)",
+                border: "1px solid var(--sa-border-neutral-subtle)",
+                borderRadius: "var(--sa-shape-md)",
+                background: "var(--sa-bg-neutral-base)",
               }}
             >
               <span
@@ -237,9 +227,9 @@ export default function ContributingPage(): React.JSX.Element {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius: "var(--ds-radius-sm)",
-                  background: "var(--ds-success)",
-                  color: "#fff",
+                  borderRadius: "var(--sa-shape-sm)",
+                  background: "var(--sa-color-status-success)",
+                  color: "var(--sa-on-bg-status-success-bolder)",
                   fontSize: 14,
                   fontWeight: 700,
                 }}
@@ -251,17 +241,17 @@ export default function ContributingPage(): React.JSX.Element {
                   style={{
                     display: "block",
                     fontWeight: 600,
-                    color: "var(--ds-ink)",
-                    fontSize: "var(--ds-text-body-1)",
+                    color: "var(--sa-text-neutral-base)",
+                    fontSize: "var(--sa-type-body-1-size)",
                   }}
                 >
                   {item.label}
                 </span>
                 <span
                   style={{
-                    fontSize: "var(--ds-text-body-2)",
-                    color: "var(--ds-ink-muted)",
-                    lineHeight: "var(--ds-leading-body-2)",
+                    fontSize: "var(--sa-type-body-2-size)",
+                    color: "var(--sa-text-neutral-subtle)",
+                    lineHeight: "var(--sa-type-body-2-lh)",
                   }}
                 >
                   {item.detail}

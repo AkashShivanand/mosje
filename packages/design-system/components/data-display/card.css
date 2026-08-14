@@ -1,6 +1,6 @@
 /* ============================================================================
    MoSJE / UX4G — Card atom
-   Semantic CSS classes only; all colours reference design tokens (--ds-*).
+   Semantic CSS classes only; all colours reference design tokens (--sa-*).
    Combine: .ds-card  +  .ds-card--<variant>  +  .ds-card--<orientation>
    Variants: outlined | elevated
    Orientations: vertical | horizontal
@@ -10,11 +10,11 @@
 .ds-card {
   display: flex;
   flex-direction: column;
-  background-color: var(--ds-surface);
+  background-color: var(--sa-bg-neutral-base);
   border: 1px solid transparent;
-  border-radius: var(--ds-radius-md, 8px);
-  color: var(--ds-ink-strong);
-  font-family: var(--ds-font-sans, inherit);
+  border-radius: var(--sa-shape-md);
+  color: var(--sa-text-neutral-bolder);
+  font-family: var(--sa-font-latin);
   overflow: hidden;
 }
 
@@ -22,13 +22,13 @@
    Variants
    -------------------------------------------------------------------------- */
 .ds-card--outlined {
-  border-color: var(--ds-border);
+  border-color: var(--sa-border-neutral-subtle);
   box-shadow: none;
 }
 
 .ds-card--elevated {
   border-color: transparent;
-  box-shadow: var(--ds-shadow-lg);
+  box-shadow: var(--sa-elevation-modal);
 }
 
 /* --------------------------------------------------------------------------
@@ -50,23 +50,23 @@
 .ds-card__header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
+  gap: var(--sa-stack-s);
+  padding: var(--sa-padding-m);
 }
 
 .ds-card__body {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
+  gap: var(--sa-stack-xs);
+  padding: var(--sa-padding-m);
   flex: 1 1 auto;
 }
 
 .ds-card__footer {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 16px;
+  gap: var(--sa-stack-xs);
+  padding: var(--sa-padding-m);
 }
 
 /* Collapse doubled padding when sections stack directly. */
@@ -82,29 +82,27 @@
    Typography sub-parts
    -------------------------------------------------------------------------- */
 /* Title 1 — "section headings, page titles" in the design.md scale (20px on the
-   portal surface). This previously read `--ds-text-headline`, whose own 20px
+   portal surface). This previously read `--sa-type-headline-1-size`, whose own 20px
    fallback shows the intent, but that alias resolves to the Headline 1 role and
    painted card titles at 32–40px.
 
-   Use the CANONICAL `--ds-type-<role>-*` tokens here, never the `--ds-text-*`
-   family. The latter is a LEGACY alias set named for the pre-Portal-DS scale
-   whose rendered values it deliberately preserves (frozen in
-   packages/tokens/test/legacy-snapshot.json and enforced by build-output.test.mjs),
-   so its names do NOT line up with design.md's role table — `--ds-text-title-1`
-   is the headline-2 role, not Title 1. That mismatch is by design, not a bug;
-   the trap is reading the alias name instead of its resolved size. */
+   Use the CANONICAL `--sa-type-<role>-*` tokens here. The hyphenated `--ds-text-*`
+   alias family that used to sit alongside them — named for the pre-Portal-DS scale,
+   so `--ds-text-title-1` resolved to the headline-2 role rather than Title 1 — was
+   RETIRED on 2026-08-12 along with the rest of the `--ds-*` vocabulary. The trap it
+   created is gone; a `--sa-type-<role>-*` name now means the role it says. */
 .ds-card__title {
   margin: 0;
-  font-size: var(--ds-type-title-1-size, 20px);
-  line-height: var(--ds-type-title-1-lh, 28px);
+  font-size: var(--sa-type-title-1-size);
+  line-height: var(--sa-type-title-1-lh);
   font-weight: 600;
-  color: var(--ds-ink-strong);
+  color: var(--sa-text-neutral-bolder);
 }
 
 .ds-card__subtitle {
   margin: 0;
-  font-size: var(--ds-text-body-2, 14px);
-  line-height: var(--ds-leading-body-2, 20px);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   font-weight: 400;
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
 }

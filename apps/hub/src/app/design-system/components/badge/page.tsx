@@ -12,34 +12,34 @@ export const metadata: Metadata = {
     "Badge is a small label indicating status, count, or category — a tonal pill in semantic colours (success, warning, danger, info) with two sizes.",
 };
 
-const sectionStyle: React.CSSProperties = { marginBottom: "var(--ds-spacing-5xl)" };
+const sectionStyle: React.CSSProperties = { marginBottom: "var(--sa-section-m)" };
 const h2Style: React.CSSProperties = {
-  fontSize: "var(--ds-text-title-1)",
+  fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
-  marginBottom: "var(--ds-spacing-lg)",
-  scrollMarginTop: "var(--ds-spacing-5xl)",
+  marginBottom: "var(--sa-stack-m)",
+  scrollMarginTop: "var(--sa-section-m)",
 };
 const leadStyle: React.CSSProperties = {
-  fontSize: "var(--ds-text-body-1)",
-  color: "var(--ds-ink-muted)",
-  lineHeight: "var(--ds-leading-body-1)",
+  fontSize: "var(--sa-type-body-1-size)",
+  color: "var(--sa-text-neutral-subtle)",
+  lineHeight: "var(--sa-type-body-1-lh)",
   maxWidth: "64ch",
-  marginBottom: "var(--ds-spacing-lg)",
+  marginBottom: "var(--sa-stack-m)",
 };
 
 export default function BadgePage(): React.JSX.Element {
   return (
     <>
       {/* ── Header ── */}
-      <div style={{ marginBottom: "var(--ds-spacing-3xl)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--ds-spacing-md)", marginBottom: "var(--ds-spacing-md)" }}>
-          <h1 style={{ fontSize: "var(--ds-text-display)", fontWeight: 500, lineHeight: 1.1 }}>Badge</h1>
+      <div style={{ marginBottom: "var(--sa-stack-xl)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-s)", marginBottom: "var(--sa-stack-s)" }}>
+          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 500, lineHeight: 1.1 }}>Badge</h1>
           <StatusBadge status="Stable" />
         </div>
-        <p style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 400, color: "var(--ds-ink)", maxWidth: "60ch", lineHeight: 1.5 }}>
+        <p style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 400, color: "var(--sa-color-text-default)", maxWidth: "60ch", lineHeight: 1.5 }}>
           A small label that indicates a status, count, or category.
         </p>
-        <div style={{ marginTop: "var(--ds-spacing-lg)" }}>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
           <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.badges)} target="_blank" rel="noopener noreferrer">
             View in Figma <span aria-hidden="true">↗</span>
           </a>
@@ -115,9 +115,9 @@ export default function BadgePage(): React.JSX.Element {
               label: "Use status badges to surface system states such as Approved, Pending, or Rejected.",
               preview: (
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px var(--ds-spacing-md)", borderRadius: "var(--ds-radius-full)", background: "var(--ds-success-tonal)", color: "var(--ds-success)", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Approved</span>
-                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px var(--ds-spacing-md)", borderRadius: "var(--ds-radius-full)", background: "var(--ds-warning-tonal)", color: "var(--ds-ink)", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Pending</span>
-                  <span style={{ display: "inline-flex", alignItems: "center", padding: "2px var(--ds-spacing-md)", borderRadius: "var(--ds-radius-full)", background: "var(--ds-danger-tonal)", color: "var(--ds-danger)", fontSize: "var(--ds-text-body-3)", fontWeight: 600 }}>Rejected</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", padding: "var(--sa-padding-3xs) var(--sa-stack-s)", borderRadius: "var(--sa-shape-full)", background: "var(--sa-color-status-successTonal)", color: "var(--sa-color-status-success)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600 }}>Approved</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", padding: "var(--sa-padding-3xs) var(--sa-stack-s)", borderRadius: "var(--sa-shape-full)", background: "var(--sa-color-status-warningTonal)", color: "var(--sa-color-text-default)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600 }}>Pending</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", padding: "var(--sa-padding-3xs) var(--sa-stack-s)", borderRadius: "var(--sa-shape-full)", background: "var(--sa-color-status-dangerTonal)", color: "var(--sa-color-status-danger)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600 }}>Rejected</span>
                 </div>
               ),
             },
@@ -125,7 +125,7 @@ export default function BadgePage(): React.JSX.Element {
               type: "dont",
               label: "Don't use a badge as an action. It isn't a button or a link — use Button or Chip for anything clickable.",
               preview: (
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "2px 10px", borderRadius: 999, background: "var(--ds-primary-tonal)", color: "var(--ds-primary)", fontSize: "var(--ds-text-body-3)", fontWeight: 600, cursor: "pointer", border: "2px solid var(--ds-danger)" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "var(--sa-padding-3xs) var(--sa-padding-s)", borderRadius: "var(--sa-shape-full)", background: "var(--sa-color-action-primary-tonal)", color: "var(--sa-bg-brand-primary-bolder)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600, cursor: "pointer", border: "2px solid var(--sa-color-status-danger)" }}>
                   Click me →
                 </span>
               ),
@@ -143,7 +143,7 @@ export default function BadgePage(): React.JSX.Element {
           (&ldquo;Approved&rdquo;, not just a coloured dot). When a badge conveys status through
           colour with little or no text, add an <code>aria-label</code> describing the state.
         </Callout>
-        <div style={{ marginTop: "var(--ds-spacing-xl)" }}>
+        <div style={{ marginTop: "var(--sa-padding-l)" }}>
           <A11yChecklist
             items={[
               { criterion: "Meaning is not colour-only", level: "A", description: "WCAG 1.4.1 — colour must never be the sole way status is conveyed. Pair colour with a clear text label." },

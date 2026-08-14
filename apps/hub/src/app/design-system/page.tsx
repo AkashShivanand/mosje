@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import { Button, buttonClasses } from "@mosje/design-system";
-import { StatusBadge, Callout, TerminalCode } from "@/components/design-system/docs-kit";
+import { StatusBadge, Callout, TerminalCode, Syn } from "@/components/design-system/docs-kit";
 import { HeroShowcase } from "@/components/design-system/hero/hero";
 import { FIGMA_FILE_URL } from "@/lib/design-system/figma";
 
@@ -15,19 +15,19 @@ export default function WelcomePage(): React.JSX.Element {
   return (
     <>
       {/* ── Hero ── */}
-      <div style={{ marginBottom: "var(--ds-spacing-5xl)" }}>
+      <div style={{ marginBottom: "var(--sa-section-m)" }}>
         {/* Live, animated brand hero — the cover rebuilt in code with real,
             interactive design-system components instead of a flat image. */}
         <HeroShowcase />
 
-        <p style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 400, color: "var(--ds-ink)", maxWidth: "60ch", lineHeight: 1.5, marginBottom: "var(--ds-spacing-xl)" }}>
+        <p style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 400, color: "var(--sa-color-text-default)", maxWidth: "60ch", lineHeight: 1.5, marginBottom: "var(--sa-padding-l)" }}>
           The shared visual and interaction language for the <strong>Ministry of Social Justice &amp; Empowerment</strong> digital estate.
         </p>
-        <p style={{ fontSize: "var(--ds-text-body-1)", color: "var(--ds-ink-muted)", maxWidth: "64ch", lineHeight: "var(--ds-leading-body-1)" }}>
+        <p style={{ fontSize: "var(--sa-type-body-1-size)", color: "var(--sa-color-text-muted)", maxWidth: "64ch", lineHeight: "var(--sa-type-body-1-lh)" }}>
           SAMAVESH (समावेश, &ldquo;inclusion / bringing together&rdquo;) ensures every citizen-facing website and portal — from the main DoSJE site to PM-AJAY, SMILE, and 20+ scheme portals — looks, feels, and works consistently. One system, one standard, serving every team.
         </p>
 
-        <div style={{ display: "flex", gap: "var(--ds-spacing-md)", marginTop: "var(--ds-spacing-2xl)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--sa-stack-s)", marginTop: "var(--sa-stack-l)", flexWrap: "wrap" }}>
           <Button
             href="/design-system/foundations/color"
             variant="primary"
@@ -74,12 +74,12 @@ export default function WelcomePage(): React.JSX.Element {
       </Callout>
 
       {/* ── For each audience ── */}
-      <section style={{ marginTop: "var(--ds-spacing-6xl)" }} id="for-designers">
+      <section style={{ marginTop: "var(--sa-section-l)" }} id="for-designers">
         <span className="home-kicker">Design</span>
-        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-spacing-lg)", scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-m)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
           For Designers
         </h2>
-        <p style={{ color: "var(--ds-ink-muted)", marginBottom: "var(--ds-spacing-xl)", lineHeight: "var(--ds-leading-body-1)" }}>
+        <p style={{ color: "var(--sa-text-neutral-subtle)", marginBottom: "var(--sa-padding-l)", lineHeight: "var(--sa-type-body-1-lh)" }}>
           SAMAVESH gives you a complete Figma library — colors, typography, spacing, components — all in sync with the code. When a token changes in the system, your designs update automatically.
         </p>
         <div className="home-cards">
@@ -94,52 +94,52 @@ export default function WelcomePage(): React.JSX.Element {
               href={card.href}
               className="docs-welcome-card"
             >
-              <div style={{ fontWeight: 600, color: "var(--ds-ink)", marginBottom: "var(--ds-spacing-sm)" }}>{card.title}</div>
-              <div style={{ fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink-muted)" }}>{card.desc}</div>
+              <div style={{ fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-xs)" }}>{card.title}</div>
+              <div style={{ fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)" }}>{card.desc}</div>
             </a>
           ))}
         </div>
       </section>
 
-      <section style={{ marginTop: "var(--ds-spacing-6xl)" }} id="for-developers">
+      <section style={{ marginTop: "var(--sa-section-l)" }} id="for-developers">
         <span className="home-kicker">Develop</span>
-        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-spacing-lg)", scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-m)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
           For Developers
         </h2>
-        <p style={{ color: "var(--ds-ink-muted)", marginBottom: "var(--ds-spacing-xl)", lineHeight: "var(--ds-leading-body-1)" }}>
+        <p style={{ color: "var(--sa-text-neutral-subtle)", marginBottom: "var(--sa-padding-l)", lineHeight: "var(--sa-type-body-1-lh)" }}>
           Import the package, import the tokens, use the components. Design system decisions are pre-made — focus on building features, not reimplementing buttons.
         </p>
         <TerminalCode
           title="Terminal"
           codeText={`npm install @mosje/design-system\n\nimport { Button, Card, FormField } from '@mosje/design-system';\nimport '@mosje/design-system/tokens.css';`}
         >
-          <div style={{ color: "#8892a4", marginBottom: "var(--ds-spacing-md)" }}># Install</div>
-          <div><span style={{ color: "#7dd3fc" }}>npm</span> install @mosje/design-system</div>
-          <div style={{ marginTop: "var(--ds-spacing-lg)", color: "#8892a4" }}># Use in your app</div>
-          <div><span style={{ color: "#c084fc" }}>import</span> {`{ Button, Card, FormField }`} <span style={{ color: "#c084fc" }}>from</span> <span style={{ color: "#86efac" }}>&apos;@mosje/design-system&apos;</span>;</div>
-          <div><span style={{ color: "#c084fc" }}>import</span> <span style={{ color: "#86efac" }}>&apos;@mosje/design-system/tokens.css&apos;</span>;</div>
+          <div style={{ marginBottom: "var(--sa-stack-s)" }}><Syn.Comment># Install</Syn.Comment></div>
+          <div><Syn.Builtin>npm</Syn.Builtin> install @mosje/design-system</div>
+          <div style={{ marginTop: "var(--sa-stack-m)" }}><Syn.Comment># Use in your app</Syn.Comment></div>
+          <div><Syn.Keyword>import</Syn.Keyword> {`{ Button, Card, FormField }`} <Syn.Keyword>from</Syn.Keyword> <Syn.Str>&apos;@mosje/design-system&apos;</Syn.Str>;</div>
+          <div><Syn.Keyword>import</Syn.Keyword> <Syn.Str>&apos;@mosje/design-system/tokens.css&apos;</Syn.Str>;</div>
         </TerminalCode>
-        <div className="home-cards" style={{ marginTop: "var(--ds-spacing-xl)" }}>
+        <div className="home-cards" style={{ marginTop: "var(--sa-padding-l)" }}>
           {[
-            { title: "No hardcoded values", desc: "All styling via --ds-* CSS custom properties. Change the theme, nothing breaks." },
+            { title: "No hardcoded values", desc: "All styling via --sa-* CSS custom properties. Change the theme, nothing breaks." },
             { title: "Accessibility included", desc: "ARIA labels, focus management, and keyboard navigation are in the components." },
             { title: "TypeScript-first", desc: "Every component is typed. Your IDE tells you which props are valid." },
             { title: "Works without Tailwind", desc: "Design system tokens are plain CSS variables — no framework dependency." },
           ].map((item) => (
-            <div key={item.title} style={{ fontSize: "var(--ds-text-body-2)" }}>
-              <div style={{ fontWeight: 600, color: "var(--ds-ink)", marginBottom: "var(--ds-spacing-xs)" }}>✓ {item.title}</div>
-              <div style={{ color: "var(--ds-ink-muted)" }}>{item.desc}</div>
+            <div key={item.title} style={{ fontSize: "var(--sa-type-body-2-size)" }}>
+              <div style={{ fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-2xs)" }}>✓ {item.title}</div>
+              <div style={{ color: "var(--sa-text-neutral-subtle)" }}>{item.desc}</div>
             </div>
           ))}
         </div>
       </section>
 
-      <section style={{ marginTop: "var(--ds-spacing-6xl)" }}>
+      <section style={{ marginTop: "var(--sa-section-l)" }}>
         <span className="home-kicker">Library</span>
-        <h2 style={{ fontSize: "var(--ds-text-title-1)", fontWeight: 600, marginBottom: "var(--ds-spacing-xl)", scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-padding-l)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
           What&apos;s available
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "var(--ds-spacing-md)" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "var(--sa-stack-s)" }}>
           {[
             { name: "Button", status: "Stable" as const, href: "/design-system/components/button" },
             { name: "Card", status: "Stable" as const, href: "/design-system/components/card" },
@@ -155,9 +155,9 @@ export default function WelcomePage(): React.JSX.Element {
               href={item.href}
               style={{
                 display: "flex", alignItems: "center", justifyContent: "space-between",
-                padding: "var(--ds-spacing-md) var(--ds-spacing-lg)",
-                borderRadius: "var(--ds-radius-sm)", border: "1px solid var(--ds-border)",
-                fontSize: "var(--ds-text-body-2)", color: "var(--ds-ink)", textDecoration: "none",
+                padding: "var(--sa-padding-s) var(--sa-padding-m)",
+                borderRadius: "var(--sa-shape-sm)", border: "1px solid var(--sa-border-neutral-subtle)",
+                fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-default)", textDecoration: "none",
                 transition: "border-color 0.1s",
               }}
             >

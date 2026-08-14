@@ -77,8 +77,8 @@ export const CommonGlyphs: Story = {
             display: "grid",
             justifyItems: "center",
             gap: 6,
-            color: "var(--ds-ink-muted)",
-            fontSize: "var(--ds-type-body-3-size)",
+            color: "var(--sa-text-neutral-subtle)",
+            fontSize: "var(--sa-type-body-3-size)",
           }}
         >
           <Icon {...args} name={name} />
@@ -105,7 +105,7 @@ export const Weights: Story = {
   render: (args) => (
     <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
       {([200, 300, 400, 600] as const).map((weight) => (
-        <span key={weight} style={{ display: "grid", justifyItems: "center", gap: 6, color: "var(--ds-ink-muted)" }}>
+        <span key={weight} style={{ display: "grid", justifyItems: "center", gap: 6, color: "var(--sa-color-text-muted)" }}>
           <Icon {...args} size={32} weight={weight} />
           <code>{weight}</code>
         </span>
@@ -149,16 +149,16 @@ export const AccessibleUsage: Story = {
 export const InheritsColour: Story = {
   render: (args) => (
     <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-      <span style={{ color: "var(--ds-ink)" }}>
+      <span style={{ color: "var(--sa-text-neutral-base)" }}>
         <Icon {...args} name="check_circle" size={28} />
       </span>
-      <span style={{ color: "var(--ds-success)" }}>
+      <span style={{ color: "var(--sa-text-status-success-base)" }}>
         <Icon {...args} name="check_circle" size={28} />
       </span>
-      <span style={{ color: "var(--ds-warning)" }}>
+      <span style={{ color: "var(--sa-text-status-warning-base)" }}>
         <Icon {...args} name="warning" size={28} />
       </span>
-      <span style={{ color: "var(--ds-danger)" }}>
+      <span style={{ color: "var(--sa-text-status-error-base)" }}>
         <Icon {...args} name="error" size={28} />
       </span>
     </div>

@@ -128,10 +128,29 @@ hard mode and interpolated by `clamp()`.
 Both surfaces expose the same 24 style names (adopt Portal's superset, incl. `body-1/2/3-semibold`):
 `Display/1–6`, `Headline/1–6`, `Title/1–3`, `Body/1–3`, `Body/1–3-semibold`, `Label/1–3`.
 
-**Text-style handling (important):** a Figma text style bakes fixed values and cannot flip per Surface mode.
+> **CORRECTED 2026-08-11 — the two-folder plan below is withdrawn.**
+>
+> This section asserted that "a Figma text style bakes fixed values and cannot flip per Surface mode",
+> and prescribed two style folders (`Website/…`, `Portal/…`) as the workaround. **That premise is false
+> in the live library**, and was verified false by direct measurement: applying the single published
+> `Display/display-1` style inside frames pinned to different Type modes renders **80/88 with 0 tracking**
+> on `Website · Desktop` and **56/64 with −1.12 tracking** on `Portal · Desktop`. A text style whose
+> properties are *bound to variables* resolves those variables in the consuming node's mode.
+>
+> All 24 published styles are bound this way (`fontSize`, `lineHeight`, `letterSpacing`,
+> `paragraphSpacing`, `fontFamily`, `fontStyle`), so **one set of styles already serves both surfaces at
+> all three breakpoints.** Building the second folder would add 24 styles that either resolve identically
+> (if bound to the same variables) or freeze a single breakpoint and stop tracking the tokens (if
+> hardcoded) — strictly worse than what exists.
+>
+> **Do not create surface-prefixed text-style folders.** The mechanism designers need is the frame's
+> Type mode, and it is documented on the Typography page in Figma (section 03) and at
+> `/design-system/foundations/typography`.
+
+~~**Text-style handling (important):** a Figma text style bakes fixed values and cannot flip per Surface mode.
 Source of truth = **mode-aware variables bound to text nodes**; the enclosing frame's `Surface` mode reskins them.
 Provide two thin style folders `Website/…` and `Portal/…` (each bound to variables resolved in that mode) *only*
-for designers who work from the Styles panel.
+for designers who work from the Styles panel.~~
 
 ---
 

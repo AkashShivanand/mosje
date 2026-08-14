@@ -7,7 +7,24 @@ allowed-tools: Read, Grep, Glob, Bash
 
 # Government compliance (DBIM · GIGW 3.0 · UX4G)
 
-Authoritative source: **`docs/compliance/COMPLIANCE-CHECKLIST.md`** (read it first — it has the full, sourced checklist with exact specs). This skill operates that checklist in two modes.
+Authoritative gate: **`docs/compliance/COMPLIANCE-CHECKLIST.md`** (read it first — it has the full, sourced checklist with exact specs). This skill operates that checklist in two modes.
+
+Authoritative **sources** behind that checklist live in **`docs/guidelines/`** — read the
+relevant section there whenever the checklist is ambiguous, a clause needs quoting exactly, or
+you are working an area the checklist compresses:
+
+| Folder | Standard | Binding? | Reach for it when |
+| --- | --- | --- | --- |
+| `docs/guidelines/GIGW-3.0/` | GIGW 3.0 | **Mandatory** | Accessibility, quality, cybersecurity, lifecycle, mandatory pages, STQC certification |
+| `docs/guidelines/DBIM-3.0/` | DBIM v3 | **Mandatory (brand)** | Colour groups, icon colour, footer treatment, type scale, logo, imagery |
+| `docs/guidelines/UX4G-3.0/` | UX4G Design System 3.0 | Recommended | Type scale, spacing, elevation, iconography, focus-ring spec, error/consent copy, journey patterns P-01…P-09 |
+| `docs/guidelines/GuDApps/` | GuDApps v1.1 | Best practice | Portal data quality, authentication, forms, reports |
+
+`docs/guidelines/README.md` carries the precedence ladder and the register of **deliberate
+divergences** — check it before reporting a "failure". Five divergences are recorded and
+intentional (UX4G's violet primary, Material Symbols Rounded 300 over Outlined 400, the
+un-installed `ux4g-web-components` package, the `--sa-*` namespace, the code-only `dbim` brand
+mode). Flagging one of those as a defect is a false positive. See `.claude/rules/guidelines.md`.
 
 ## Mode A — Building (compliance by construction)
 When creating/editing a MoSJE page or component, satisfy these as you build (don't bolt on later):

@@ -9,7 +9,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: calc(-1 * var(--sa-padding-3xs));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -19,19 +19,19 @@
 .ds-metric-card {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 20px;
-  background-color: var(--ds-surface);
-  border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-lg);
-  box-shadow: var(--ds-shadow-sm);
+  gap: var(--sa-stack-2xs);
+  padding: var(--sa-padding-l);
+  background-color: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-lg);
+  box-shadow: var(--sa-elevation-raised);
 }
 
 .ds-metric-card__inner {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--sa-stack-s);
 }
 
 .ds-metric-card__body {
@@ -39,20 +39,20 @@
 }
 
 .ds-metric-card__label {
-  font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-body-2);
-  line-height: var(--ds-leading-body-2);
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   font-weight: 500;
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-metric-card__value {
-  margin-top: 4px;
-  font-family: var(--ds-font-sans);
+  margin-top: var(--sa-padding-2xs);
+  font-family: var(--sa-font-latin);
   font-size: 24px;
   line-height: 32px;
   font-weight: 700;
-  color: var(--ds-ink-strong);
+  color: var(--sa-text-neutral-bolder);
   letter-spacing: -0.01em;
 }
 
@@ -63,9 +63,9 @@
   width: 40px;
   height: 40px;
   flex: 0 0 auto;
-  border-radius: var(--ds-radius-md);
-  background-color: var(--ds-primary-50);
-  color: var(--ds-primary);
+  border-radius: var(--sa-shape-md);
+  background-color: var(--sa-color-primaryScale-50);
+  color: var(--sa-text-brand-primary-base);
 }
 
 /* ── Size variants ── */
@@ -83,34 +83,34 @@
 .ds-metric-card__change {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  margin-top: 6px;
-  font-family: var(--ds-font-sans);
+  gap: var(--sa-stack-2xs);
+  margin-top: var(--sa-padding-xs);
+  font-family: var(--sa-font-latin);
   font-size: 12px;
   font-weight: 600;
   line-height: 1;
 }
 
-.ds-metric-card__change--up   { color: var(--ds-success); }
-.ds-metric-card__change--down { color: var(--ds-danger); }
-.ds-metric-card__change--flat { color: var(--ds-ink-muted); }
+.ds-metric-card__change--up   { color: var(--sa-text-status-success-base); }
+.ds-metric-card__change--down { color: var(--sa-text-status-error-base); }
+.ds-metric-card__change--flat { color: var(--sa-text-neutral-subtle); }
 
 /* ── Tinted delta pill + muted suffix (SAMAVESH KPI card) ── */
 .ds-metric-card__pill {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  padding: 2px 8px;
-  border-radius: var(--ds-radius-full);
+  gap: var(--sa-stack-2xs);
+  padding: var(--sa-padding-3xs) var(--sa-padding-xs);
+  border-radius: var(--sa-shape-full);
   font-size: 12px;
   font-weight: 600;
   line-height: 16px;
 }
-.ds-metric-card__pill--up   { background-color: var(--ds-success-tonal); color: var(--ds-success); }
-.ds-metric-card__pill--down { background-color: var(--ds-danger-tonal);  color: var(--ds-danger); }
+.ds-metric-card__pill--up   { background-color: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
+.ds-metric-card__pill--down { background-color: var(--sa-bg-status-error-base);  color: var(--sa-text-status-error-base); }
 .ds-metric-card__suffix {
-  margin-left: 6px;
+  margin-left: var(--sa-padding-xs);
   font-size: 12px;
   font-weight: 500;
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
 }

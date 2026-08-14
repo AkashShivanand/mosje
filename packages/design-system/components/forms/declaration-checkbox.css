@@ -6,45 +6,45 @@
 .ds-declaration {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 16px;
-  font-family: var(--ds-font-sans);
-  background-color: var(--ds-surface-muted);
-  border: 1px solid var(--ds-line);
-  border-radius: var(--ds-radius-lg);
+  gap: var(--sa-stack-s);
+  padding: var(--sa-padding-m);
+  font-family: var(--sa-font-latin);
+  background-color: var(--sa-bg-neutral-subtler);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-lg);
 }
 
 .ds-declaration.is-invalid {
-  border-color: var(--ds-danger);
+  border-color: var(--sa-border-status-error-base);
 }
 
 .ds-declaration__title {
   margin: 0;
-  font-size: var(--ds-text-body-2);
-  line-height: var(--ds-leading-body-2);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   font-weight: 700;
-  color: var(--ds-ink-strong);
+  color: var(--sa-text-neutral-bolder);
 }
 
 .ds-declaration__statement {
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
-  color: var(--ds-ink);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-declaration__lead {
-  margin: 0 0 4px;
+  margin: 0 0 var(--sa-padding-2xs);
   font-weight: 600;
-  color: var(--ds-ink-strong);
+  color: var(--sa-text-neutral-bolder);
 }
 
 .ds-declaration__statement ul {
-  padding-left: 18px;
+  padding-left: var(--sa-padding-l);
   margin: 0;
 }
 
 .ds-declaration__statement li + li {
-  margin-top: 4px;
+  margin-top: var(--sa-padding-2xs);
 }
 
 /* The attestation is the one action on the form carrying legal weight, and it
@@ -53,7 +53,7 @@
 .ds-declaration .ds-checkbox {
   align-items: center;
   min-height: 44px;
-  padding: 4px 0;
+  padding: var(--sa-padding-2xs) 0;
   cursor: pointer;
 }
 
@@ -65,14 +65,14 @@
 
 .ds-declaration__confirm {
   font-weight: 600;
-  color: var(--ds-ink-strong);
+  color: var(--sa-text-neutral-bolder);
 }
 
 .ds-declaration__error {
   margin: 0;
-  font-size: var(--ds-text-body-3);
-  line-height: var(--ds-leading-body-3);
-  /* Error TEXT must clear 4.5:1 (WCAG 1.4.3); --ds-danger only meets the 3:1
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  /* Error TEXT must clear 4.5:1 (WCAG 1.4.3); --sa-color-status-danger only meets the 3:1
      UI-border bar. Same rule as forms.css. */
   color: var(--sa-color-status-dangerStrong);
 }

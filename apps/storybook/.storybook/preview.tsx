@@ -59,9 +59,9 @@ const preview: Preview = {
           style={{
             padding: 24,
             minHeight: "100vh",
-            background: "var(--ds-surface)",
-            color: "var(--ds-ink)",
-            fontFamily: "var(--ds-font-sans)",
+            background: "var(--sa-bg-neutral-base)",
+            color: "var(--sa-text-neutral-base)",
+            fontFamily: "var(--sa-font-latin)",
           }}
         >
           <Story />

@@ -10,6 +10,7 @@
     "./tokens.css": "./tokens.css",
     "./ux4g.css": "./ux4g.css",
     "./components.css": "./components.css",
+    "./layout.css": "./foundations/layout.css",
     "./icons.css": "./icons.css",
     "./color-mode": "./foundations/color-mode.ts",
     "./cn": "./utils/cn.ts",

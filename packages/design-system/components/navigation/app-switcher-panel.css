@@ -13,32 +13,32 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  padding: 12px 14px 10px;
-  border-bottom: 1px solid var(--ds-border);
-  background-color: var(--ds-surface);
+  padding: var(--sa-padding-s) var(--sa-padding-m) var(--sa-padding-s);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  background-color: var(--sa-bg-neutral-base);
 }
 
 .ds-appsw__header-row {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: var(--sa-padding-s);
 }
 
 /* Current app indicator */
 .ds-appsw__current {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--sa-stack-xs);
 }
 
 .ds-appsw__current-icon {
   width: 30px;
   height: 30px;
   flex: 0 0 auto;
-  border-radius: var(--ds-radius-sm);
-  background-color: var(--ds-primary-tonal);
-  color: var(--ds-primary);
+  border-radius: var(--sa-shape-sm);
+  background-color: var(--sa-bg-brand-primary-subtler);
+  color: var(--sa-text-brand-primary-base);
   font-size: 11px;
   font-weight: 800;
   display: flex;
@@ -47,16 +47,16 @@
 }
 
 .ds-appsw__current-label {
-  font-size: var(--ds-text-label-3);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-label-3-size);
+  color: var(--sa-text-neutral-subtle);
   line-height: 1;
-  margin-bottom: 2px;
+  margin-bottom: var(--sa-padding-3xs);
 }
 
 .ds-appsw__current-name {
-  font-size: var(--ds-text-body-2);
+  font-size: var(--sa-type-body-2-size);
   font-weight: 700;
-  color: var(--ds-ink);
+  color: var(--sa-text-neutral-base);
   line-height: 1;
 }
 
@@ -64,28 +64,28 @@
 .ds-appsw__search {
   display: flex;
   align-items: center;
-  gap: 7px;
-  background-color: var(--ds-surface-muted);
-  border-radius: var(--ds-radius-sm);
-  padding: 6px 10px;
+  gap: var(--sa-stack-xs);
+  background-color: var(--sa-bg-neutral-subtler);
+  border-radius: var(--sa-shape-sm);
+  padding: var(--sa-padding-xs) var(--sa-padding-s);
   transition: background-color 0.12s ease;
 }
 
 .ds-appsw__search:focus-within {
-  background-color: var(--ds-primary-tonal);
-  outline: 1.5px solid var(--ds-primary-ring);
+  background-color: var(--sa-bg-brand-primary-subtler);
+  outline: 1.5px solid var(--sa-focus-ring);
 }
 
 .ds-appsw__search-icon {
   width: 14px;
   height: 14px;
   flex: 0 0 auto;
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
   transition: color 0.12s ease;
 }
 
 .ds-appsw__search:focus-within .ds-appsw__search-icon {
-  color: var(--ds-primary);
+  color: var(--sa-text-brand-primary-base);
 }
 
 .ds-appsw__search-input {
@@ -93,14 +93,14 @@
   border: none;
   outline: none;
   background: transparent;
-  font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-body-2);
-  color: var(--ds-ink);
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-body-2-size);
+  color: var(--sa-text-neutral-base);
   min-width: 0;
 }
 
 .ds-appsw__search-input::placeholder {
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 /* Remove default search clear button */
@@ -109,65 +109,65 @@
 }
 
 .ds-appsw__search-kbd {
-  font-family: var(--ds-font-sans);
+  font-family: var(--sa-font-latin);
   font-size: 10px;
-  color: var(--ds-ink-muted);
-  background-color: var(--ds-border);
-  border-radius: 4px;
-  padding: 1px 5px;
+  color: var(--sa-text-neutral-subtle);
+  background-color: var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-xs);
+  padding: var(--sa-padding-3xs) var(--sa-padding-2xs);
   flex: 0 0 auto;
 }
 
 /* ── Body (flows with the ambient scroll container — no scroll box of its
    own, so there is exactly one scrollbar wherever this panel is mounted) ── */
 .ds-appsw__body {
-  padding: 4px 0;
+  padding: var(--sa-padding-2xs) 0;
 }
 
 /* ── Group headings — sticky just below the header. The offset is measured
    at runtime (header height varies: the standalone AppSwitcher shows the
    current-app row + search, DemoDock's embedded panel shows search only)
-   and written to `--ds-appsw-sticky-offset` on the panel root; the px
+   and written to `--cmp-appsw-sticky-offset` on the panel root; the px
    fallback covers the first paint before that effect runs. ── */
 .ds-appsw__group-label {
   position: sticky;
-  top: var(--ds-appsw-sticky-offset, 56px);
+  top: var(--cmp-appsw-sticky-offset, 56px);
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 14px 3px;
-  font-size: var(--ds-text-label-3);
+  gap: var(--sa-stack-xs);
+  padding: var(--sa-padding-xs) var(--sa-padding-m) var(--sa-padding-2xs);
+  font-size: var(--sa-type-label-3-size);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ds-ink-muted);
-  background-color: var(--ds-surface);
+  color: var(--sa-text-neutral-subtle);
+  background-color: var(--sa-bg-neutral-base);
 }
 
 /* ── List items (shared) ── */
 .ds-appsw__item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 14px;
-  color: var(--ds-ink);
+  gap: var(--sa-stack-s);
+  padding: var(--sa-padding-xs) var(--sa-padding-m);
+  color: var(--sa-text-neutral-base);
   text-decoration: none;
   cursor: pointer;
   transition: background-color 0.1s ease;
 }
 
 .ds-appsw__item:hover {
-  background-color: var(--ds-surface-muted);
+  background-color: var(--sa-bg-neutral-subtler);
 }
 
 .ds-appsw__item.is-active {
-  background-color: var(--ds-primary-tonal);
+  background-color: var(--sa-bg-brand-primary-subtler);
 }
 
 .ds-appsw__item:focus-visible {
   outline: none;
-  box-shadow: inset 0 0 0 2px var(--ds-primary-ring);
+  box-shadow: inset 0 0 0 2px var(--sa-focus-ring);
 }
 
 /* Planned (non-interactive) */
@@ -185,9 +185,9 @@
   width: 30px;
   height: 30px;
   flex: 0 0 auto;
-  border-radius: var(--ds-radius-sm);
-  background-color: var(--ds-primary-tonal);
-  color: var(--ds-primary);
+  border-radius: var(--sa-shape-sm);
+  background-color: var(--sa-bg-brand-primary-subtler);
+  color: var(--sa-text-brand-primary-base);
   font-size: 11px;
   font-weight: 800;
   display: flex;
@@ -196,13 +196,13 @@
 }
 
 .ds-appsw__item.is-active .ds-appsw__item-icon {
-  background-color: var(--ds-primary);
-  color: var(--ds-surface);
+  background-color: var(--sa-bg-brand-primary-bolder);
+  color: var(--sa-bg-neutral-base);
 }
 
 .ds-appsw__item--planned .ds-appsw__item-icon {
-  background-color: var(--ds-surface-muted);
-  color: var(--ds-ink-muted);
+  background-color: var(--sa-bg-neutral-subtler);
+  color: var(--sa-text-neutral-subtle);
 }
 
 /* Text stack */
@@ -214,9 +214,9 @@
 }
 
 .ds-appsw__item-name {
-  font-size: var(--ds-text-body-2);
+  font-size: var(--sa-type-body-2-size);
   font-weight: 600;
-  color: var(--ds-ink);
+  color: var(--sa-text-neutral-base);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -228,20 +228,20 @@
   margin-inline-start: 5px;
   font-size: 0.85em;
   font-weight: 500;
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-appsw__item.is-active .ds-appsw__item-name {
-  color: var(--ds-primary);
+  color: var(--sa-text-brand-primary-base);
 }
 
 .ds-appsw__item-desc {
-  font-size: var(--ds-text-body-3);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size);
+  color: var(--sa-text-neutral-subtle);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: var(--ds-leading-body-3);
+  line-height: var(--sa-type-body-3-lh);
 }
 
 /* Badges */
@@ -249,33 +249,33 @@
   flex: 0 0 auto;
   font-size: 9px;
   font-weight: 700;
-  border-radius: var(--ds-radius-sm);
-  padding: 2px 5px;
+  border-radius: var(--sa-shape-sm);
+  padding: var(--sa-padding-3xs) var(--sa-padding-2xs);
 }
 
 .ds-appsw__badge--live {
-  background-color: var(--ds-success-tonal);
-  color: var(--ds-success);
+  background-color: var(--sa-bg-status-success-subtler);
+  color: var(--sa-text-status-success-base);
 }
 
 .ds-appsw__badge--soon {
-  background-color: var(--ds-warning-tonal);
-  color: var(--ds-saffron-dark);
+  background-color: var(--sa-bg-status-warning-base);
+  color: var(--sa-color-brand-saffronDark);
 }
 
 /* "In development" note shown below planned items in search */
 .ds-appsw__planned-note {
-  padding: 6px 14px 8px;
-  font-size: var(--ds-text-body-3);
-  color: var(--ds-ink-muted);
-  border-top: 1px solid var(--ds-border);
+  padding: var(--sa-padding-xs) var(--sa-padding-m) var(--sa-padding-xs);
+  font-size: var(--sa-type-body-3-size);
+  color: var(--sa-text-neutral-subtle);
+  border-top: 1px solid var(--sa-border-neutral-subtle);
   text-align: center;
 }
 
 /* Empty state */
 .ds-appsw__empty {
-  padding: 20px 14px;
-  font-size: var(--ds-text-body-2);
-  color: var(--ds-ink-muted);
+  padding: var(--sa-padding-l) var(--sa-padding-m);
+  font-size: var(--sa-type-body-2-size);
+  color: var(--sa-text-neutral-subtle);
   text-align: center;
 }

@@ -14,15 +14,19 @@
      of them (no `data-open:`/`data-closed:`/… variant, no `no-scrollbar`, no
      accordion), so nothing needs re-homing into the hub.
    • `@custom-variant dark (&:is(.dark *))` — the website has no `dark:` utility
-     and never sets a `.dark` class, so the variant was dead. Only one definition
-     can win globally and the hub's attribute-based
-     `dark (&:where([data-theme="dark"], …))` stands.
+     and never sets a `.dark` class, so the variant was dead. Nor does the hub
+     define a replacement: there is NO `dark` variant anywhere in the estate, by
+     decision — see the "NO DARK APPEARANCE AXIS" note at the top of globals.css.
+     (This comment previously said the hub's attribute-based
+     `dark (&:where([data-theme="dark"], …))` "stands"; that variant was removed
+     with the appearance axis and saying otherwise invited someone to write a
+     `dark:` utility that would silently never apply.)
    • the `.dark { … }` block — unreachable for the same reason (nothing applies
      `.dark`), and as an UNSCOPED global rule it could only ever leak.
    • the `@theme inline` block — `@theme` only registers utilities in the Tailwind
      entrypoint, which is now the hub's globals.css. Every name the website
      actually uses is already declared there (identically, or via a
-     `var(--portal-X, var(--ds-X))` slot that falls back to the DS value outside a
+     `var(--portal-X, var(--sa-X))` slot that falls back to the DS value outside a
      portal — which is exactly what the website wants); the only genuinely new
      name, `--color-border-ds`, was added there. The rest of the block was shadcn
      boilerplate for utilities the website never uses (bg-card,
@@ -31,17 +35,17 @@
 
 [data-site="website"] {
   /* --- MoSJE brand palette — sourced from @mosje/design-system (UX4G DS) --- */
-  --primary: var(--ds-primary);        /* #0373DF primary */
-  --primary-dark: var(--ds-primary-dark);
-  --navy: var(--ds-navy);
-  --saffron: var(--ds-saffron);
-  --saffron-dark: var(--ds-saffron-dark);
-  --saffron-light: var(--ds-saffron-light);
-  --yellow: var(--ds-yellow);
-  --gov-green: var(--ds-success);       /* unified to DS success #2E7D32 */
-  --ink: var(--ds-ink);                 /* #212121 */
-  --ink-muted: var(--ds-ink-muted);     /* #343A40 */
-  --surface-muted: var(--ds-surface-muted);
+  --primary: var(--sa-color-action-primary-default);        /* #0373DF primary */
+  --primary-dark: var(--sa-color-action-primary-hover);
+  --navy: var(--sa-color-brand-navy);
+  --saffron: var(--sa-color-brand-saffron);
+  --saffron-dark: var(--sa-color-brand-saffronDark);
+  --saffron-light: var(--sa-color-brand-saffronLight);
+  --yellow: var(--sa-color-brand-yellow);
+  --gov-green: var(--sa-color-status-success);       /* unified to DS success #2E7D32 */
+  --ink: var(--sa-color-text-default);                 /* #212121 */
+  --ink-muted: var(--sa-color-text-muted);     /* #343A40 */
+  --surface-muted: var(--sa-bg-neutral-subtler);
 
   /* shadcn's oklch var layer. SCOPED, not `:root` as in the standalone app:
      smile-admin.css declares --border/--ring/--foreground/--primary/--surface*
@@ -83,7 +87,7 @@
 
   /* `border-border` (2 call sites) must resolve to the shadcn --border above, not
      to the DS border the hub defaults to. The hub declares --color-border as
-     `var(--portal-border, var(--ds-border))` in an `@theme inline` block, so the
+     `var(--portal-border, var(--sa-border-neutral-subtle))` in an `@theme inline` block, so the
      value is inlined into the utility and re-pointing --color-border here would do
      nothing — filling the slot is the only scoped way in. Same mechanism
      smile-admin uses. */
@@ -97,7 +101,7 @@
        xl  stock 12px → 14px    (24 call sites)
        2xl stock 16px → 18px    (3 call sites)
      NOT re-bound: `md` (0.8 × 10px = 8px) and `sm` (0.6 × 10px = 6px) already
-     equal the hub's --ds-radius-md/--ds-radius-sm exactly, and 3xl/4xl are
+     equal the hub's --sa-shape-md/--sa-shape-sm exactly, and 3xl/4xl are
      unused. */
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
@@ -173,4 +177,4 @@
 .gov-prose ol { list-style: decimal; padding-left: 1.5rem; }
 .gov-prose li { margin-top: 0.375rem; }
 .gov-prose strong { color: var(--ink); font-weight: 600; }
-.gov-prose hr { border-color: var(--ds-border-strong); margin: 1.5rem 0; }
+.gov-prose hr { border-color: var(--sa-border-neutral-base); margin: 1.5rem 0; }

@@ -20,7 +20,9 @@ Digital estate for the **Ministry / Department of Social Justice & Empowerment (
 1. **The Website** (`apps/dosje/`) — one **unified informational site** that consolidates **13 legacy websites** (the department + its commissions/bodies) into a single portal. This is built and live. Public-facing, content-driven, DBIM/GIGW-compliant.
 2. **The Portals** (`apps/portals/`) — **20 functional workflow portals** covering **33+ organisations & schemes** under MoSJE (SMILE, PM-AJAY, NOS, scholarships, NSFDC/NSKFDC/NBCFDC, NMBA, etc.). Authenticated, transactional apps.
 
-**North-star:** every site and portal renders from **one shared design system** (`packages/design-system/`) that stays **100% in sync with a Figma library** via Code Connect. We will build all 13 + 20 incrementally on this shared system.
+**North-star:** every site and portal renders from **one shared design system** (`packages/design-system/`) that stays **100% in sync with a Figma library**. We will build all 13 + 20 incrementally on this shared system.
+
+> **Code Connect is the intended mechanism, but it is NOT in place** — it needs a Figma Developer seat on an Organization/Enterprise plan, and as of 2026-08-12 there are zero mappings in the file and no `@figma/code-connect` in the repo. Sync today runs on **generated artifacts** (`@mosje/tokens`, and the generated icon scale + catalogue) plus manual discipline everywhere else. Status and the wiring plan: `docs/research/figma-code-connect-readiness.md`.
 
 ## Structure
 
@@ -95,10 +97,18 @@ the website at `website/`, the docs at `design-system/`, and the portals at `por
 
 - **TypeScript strict, no `any`.** Named exports. PascalCase components, camelCase utils.
 - **Design tokens, never hardcoded values.** Use the brand tokens (`gov-blue #0373DF`, `saffron #F97316`, `gov-yellow #FFD323`, `ink`, `surface-muted`, …). When the design system lands, import from `@mosje/design-system`.
+- **Standards precedence — quality first.** The order of authority is: (1) current design-craft
+  standards, including WCAG 2.2 AA, then (2) DBIM, (3) GIGW 3.0, (4) UX4G — each adopted wherever
+  it fits **without hampering quality**. When a standard specifies a set of values, **ADD what is
+  missing; never DELETE what quality needs** — its list is a floor, not a ceiling. Where a standard
+  would force a worse interface, quality wins and the deviation is *documented*, not hidden.
+  Accessibility is the one thing never traded against, because accessibility **is** quality.
+  See `.claude/rules/standards-precedence.md`.
 - **Noto Sans** is the typeface across all gov properties (DBIM standard). Don't introduce other fonts.
 - **No Indian tricolour band/stripe motif** (the saffron-white-green flag bar) anywhere in UI chrome — headers, footers, hero bands, dividers — **unless the user explicitly asks for it.** A single brand-token accent is fine; the flag-stripe decoration is not. (Standing instruction, 2026-06-13.)
 - **Logo & favicon: use the National Emblem** (`National-Emblem-logo.svg` / `National_Emblem_logo_white.svg` for dark) — never an invented/abstract mark.
-- **Accessibility is non-negotiable** — these are government sites. Target **WCAG 2.1 AA + GIGW**: semantic HTML, alt text, keyboard nav, visible focus, AA contrast. Use the `accessibility-auditor` agent before shipping a page.
+- **Accessibility is non-negotiable** — these are government sites. Target **WCAG 2.2 AA + GIGW**: semantic HTML, alt text, keyboard nav, visible focus, AA contrast. Use the `accessibility-auditor` agent before shipping a page.
+- **Government standards live in `docs/guidelines/` — consult them before building or reviewing UI.** Four sources, each as PDF + faithful markdown: **GIGW 3.0** (mandatory), **DBIM 3.0** (mandatory, brand), **UX4G 3.0 Design System** (recommended), **GuDApps** (best practice). Start at `docs/guidelines/README.md` — it carries the routing table, the precedence ladder, and the register of deliberate divergences. **Follow what can be followed without regressing the shipping design system:** accessibility/legal requirements are adopted unconditionally, structural conventions are adopted in `--sa-*` token names, brand/aesthetic preferences (UX4G's violet primary, its icon variant default) are **not** — DBIM and SAMAVESH set our brand. Never weaken a requirement to make something pass; record the divergence instead. Full rule: `.claude/rules/guidelines.md`.
 - **Real content, real assets** — no lorem/placeholder in production pages.
 - `next/image` for images; **`<Icon>`** from `@mosje/design-system` for icons — **use Material Symbols Rounded** (the official SAMAVESH icon system). Standard spec: weight 300, size 24, stroke variant. Load the font once per app: `import "@mosje/design-system/icons.css"` in the root layout. For brand/social logos (National Emblem, etc.) use inline SVGs.
 - Mobile-first responsive; content max-width **1280px**.
@@ -109,6 +119,13 @@ the website at `website/`, the docs at `design-system/`, and the portals at `por
   3. If a needed component is missing from the DS: **add it to `packages/design-system/` first**, export it from the barrel, then import it. Never build one-off UI that belongs in the shared DS.
   4. Document the audit inline as a short comment block at the top of your plan: `DS Audit: Button ✅ existing · Input ✅ existing · PortalLoginShell ➕ adding to DS`.
   5. Page-level layout templates (login shell, dashboard shell, list shell) belong in the DS and must be reused across all portals — only the slot content (logo, portal name, tabs, form fields) changes per portal.
+- **Documentation is not exempt from the design system — it is the strictest case.** Every
+  element on a Figma library documentation page and on every `apps/hub/src/app/design-system/**`
+  page must be **bound** to the DS: text to published text styles, fills/strokes to Color
+  variables, padding/gap to Space, radius to Radius. A literal that merely *equals* a token is a
+  defect — when the token moves, the binding follows and the literal silently stops matching.
+  The only exemption is a **specimen** (a deliberate off-role value being demonstrated), and it
+  must be *named* as one so an audit can account for it. See `.claude/rules/documentation-ds-linkage.md`.
 - **Commit messages: no AI attribution.** Never add `Co-Authored-By: Claude` (or any AI/bot co-author) or a "Generated with Claude Code" trailer to commits. A `.husky/commit-msg` hook strips them as a backstop, but don't write them in the first place.
 
 ## Skill routing
@@ -217,6 +234,21 @@ Two DBIM usage rules ship with the palette and apply wherever `dbim` is active:
 
 - **macOS is case-insensitive.** `Portals` and `portals` are the SAME directory. Never `mkdir` a case-variant of an existing dir, and never `rm -rf` a path you just `mv`'d into a case-colliding name. A `.claude/hooks/guard.sh` PreToolUse hook now **blocks `rm -rf` / `rm -r`, force-push, and other destructive commands** — run those manually and deliberately if truly needed.
 - **Moves are non-destructive; deletes are not.** Prefer `mv`/copy-verify-then-`rmdir` (which refuses non-empty dirs). Never `rm -rf` project content without explicit human confirmation.
+- **Never `git add -A` or `git commit -a`. Stage explicit paths.** Two sessions
+  frequently share this working tree — a second Claude window, a terminal, an
+  editor's own git integration — and a working tree has no idea which of them
+  authored a change. On 2026-08-12 a token-migration session ran `git add -A`
+  and swept **15 files of a parallel session's in-flight `docs/guidelines/`
+  work** into a commit whose message described only the typography generator.
+  Nothing was lost, but the history now claims one thing and contains another,
+  and untangling it would have meant rewriting the other session's commit.
+  - Stage what you touched: `git add packages/tokens apps/hub/src/app/...`.
+  - `git status` **before** staging, and read it. Files you do not recognise are
+    the signal — they are somebody else's work, not stray noise to hoover up.
+  - `git diff --cached --stat` **before** committing. If the file count is
+    larger than the change you just made, stop.
+  - This compounds the concurrency rule below: check `git status` and
+    `git branch --show-current` before and after anything consequential.
 - Don't touch `Incoming/` (21 GB of raw source material) or commit it.
 - Never read or commit `.env*` files or secrets.
 - **A `.husky/pre-push` hook typechecks the hub before anything reaches `main`.**

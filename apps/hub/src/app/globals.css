@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "@mosje/design-system/tokens.css";
+/* The estate content container (UX4G 1200/1320) and the .sa-container class.
+   Imported app-wide, not per-component: a page with no SiteHeader still needs it. */
+@import "@mosje/design-system/layout.css";
 
 /* The DS components live outside this app's source tree, so Tailwind's automatic
    source detection never sees them and every utility class they use (e.g.
@@ -46,7 +49,7 @@
                         override wins. Use for portal-only names.
      • `@theme inline` → the value is INLINED into the utility, so overriding
                         `--color-*` does nothing. The hub's DS tokens must stay
-                        inline (they resolve `--ds-*` at the element, which is
+                        inline (they resolve `--sa-*` at the element, which is
                         what makes `data-brand` switching work at all).
                         Where a portal redefines a DS-token name, the entry below
                         gains a `var(--portal-<name>, <hub default>)` slot: the
@@ -65,71 +68,71 @@
 
   /* ── Text ───────────────────────────────────────────────────────────── */
   /* ink / ink-muted: portals pin slate-900/slate-600; hub keeps the DS ramp. */
-  --color-ink:            var(--portal-ink, var(--ds-ink));
-  --color-ink-strong:     var(--ds-ink-strong);
-  --color-ink-muted:      var(--portal-ink-muted, var(--ds-ink-muted));
-  --color-on-primary:     var(--ds-on-primary);
+  --color-ink:            var(--portal-ink, var(--sa-color-text-default));
+  --color-ink-strong:     var(--sa-text-neutral-bolder);
+  --color-ink-muted:      var(--portal-ink-muted, var(--sa-color-text-muted));
+  --color-on-primary:     var(--sa-color-text-onPrimary);
 
   /* ── Brand / primary ────────────────────────────────────────────────── */
   /* `gov-` prefixes were dropped 2026-08-11. `gov-blue` and `primary` were already two
-     names for one value (both var(--ds-primary)), so this merged them rather than
+     names for one value (both var(--sa-color-action-primary-default)), so this merged them rather than
      remapping anything; `gov-blue-dark`/`gov-blue-tonal` became `primary-dark`/
      `primary-tonal`, and `gov-navy`/`gov-yellow` lost the prefix. The colour is named for
      what it DOES in the system, not for who owns the system. */
-  --color-primary-tonal:  var(--ds-primary-tonal);
-  --color-primary-dark:   var(--ds-primary-dark);
+  --color-primary-tonal:  var(--sa-color-action-primary-tonal);
+  --color-primary-dark:   var(--sa-color-action-primary-hover);
   /* smile-admin's `primary` scale maps 1:1 onto the DS primary ramp, so it stays
      inline and mode-reactive — that is precisely what makes smile-admin's
      data-brand="navy" wrapper repaint it to the GoI navy. */
-  --color-primary:        var(--ds-primary);
-  --color-primary-50:     var(--ds-primary-50);
-  --color-primary-100:    var(--ds-primary-100);
-  --color-primary-200:    var(--ds-primary-200);
-  --color-primary-300:    var(--ds-primary-300);
-  --color-primary-400:    var(--ds-primary-400);
-  --color-primary-500:    var(--ds-primary-500);
-  --color-primary-600:    var(--ds-primary-600);
-  --color-primary-700:    var(--ds-primary-700);
-  --color-primary-800:    var(--ds-primary-800);
-  --color-primary-900:    var(--ds-primary-900);
-  --color-navy:           var(--ds-navy);
-  --color-yellow:         var(--ds-yellow);
+  --color-primary:        var(--sa-color-action-primary-default);
+  --color-primary-50:     var(--sa-color-primaryScale-50);
+  --color-primary-100:    var(--sa-color-primaryScale-100);
+  --color-primary-200:    var(--sa-color-primaryScale-200);
+  --color-primary-300:    var(--sa-color-primaryScale-300);
+  --color-primary-400:    var(--sa-color-primaryScale-400);
+  --color-primary-500:    var(--sa-color-primaryScale-500);
+  --color-primary-600:    var(--sa-color-primaryScale-600);
+  --color-primary-700:    var(--sa-color-primaryScale-700);
+  --color-primary-800:    var(--sa-color-primaryScale-800);
+  --color-primary-900:    var(--sa-color-primaryScale-900);
+  --color-navy:           var(--sa-color-brand-navy);
+  --color-yellow:         var(--sa-color-brand-yellow);
   /* saffron: scw/nmba/nhapoa/tg pin #ec6a1f; hub keeps the DS saffron #ff671f (the
      SAMAVESH logo's India Saffron, since the 2026-08-11 palette rebuild). */
-  --color-saffron:        var(--portal-saffron, var(--ds-saffron));
-  --color-saffron-light:  var(--ds-saffron-light);
-  --color-saffron-dark:   var(--ds-saffron-dark);
+  --color-saffron:        var(--portal-saffron, var(--sa-color-brand-saffron));
+  --color-saffron-light:  var(--sa-color-brand-saffronLight);
+  --color-saffron-dark:   var(--sa-color-brand-saffronDark);
 
   /* ── Surfaces & borders ─────────────────────────────────────────────── */
-  --color-surface:        var(--portal-surface, var(--ds-surface));
-  --color-surface-muted:  var(--portal-surface-muted, var(--ds-surface-muted));
-  --color-border:         var(--portal-border, var(--ds-border));
-  --color-border-strong:  var(--ds-border-strong);
+  --color-surface:        var(--portal-surface, var(--sa-bg-neutral-base));
+  --color-surface-muted:  var(--portal-surface-muted, var(--sa-bg-neutral-subtler));
+  --color-border:         var(--portal-border, var(--sa-border-neutral-subtle));
+  --color-border-strong:  var(--sa-border-neutral-base);
   /* website-only name. The DoSJE website distinguishes `border-border` (its own
      shadcn --border, re-bound via the --portal-border slot in website.css) from
      `border-border-ds`, an explicit escape hatch to the DS border. No other app
      declares it, so there is no conflict to scope. */
-  --color-border-ds:      var(--ds-border);
+  --color-border-ds:      var(--sa-border-neutral-subtle);
 
   /* ── Status ─────────────────────────────────────────────────────────── */
-  --color-success:        var(--portal-success, var(--ds-success));
-  --color-success-tonal:  var(--ds-success-tonal);
-  --color-danger:         var(--portal-danger, var(--ds-danger));
-  /* Error TEXT must clear 4.5:1 (WCAG 1.4.3). `--ds-danger` (#ec5042) is only
+  --color-success:        var(--portal-success, var(--sa-color-status-success));
+  --color-success-tonal:  var(--sa-color-status-successTonal);
+  --color-danger:         var(--portal-danger, var(--sa-color-status-danger));
+  /* Error TEXT must clear 4.5:1 (WCAG 1.4.3). `--sa-color-status-danger` (#ec5042) is only
      3.6:1 on white, which meets the 3:1 UI-border bar but NOT the text bar, so
      use this for any red text. Mirrors what the design system's forms.css does. */
   --color-danger-strong:  var(--sa-color-status-dangerStrong);
-  --color-warning:        var(--portal-warning, var(--ds-warning));
-  --color-info:           var(--portal-info, var(--ds-info));
+  --color-warning:        var(--portal-warning, var(--sa-color-status-warning));
+  --color-info:           var(--portal-info, var(--sa-color-status-info));
 
   /* ── Radius / shadow tokens ─────────────────────────────────────────── */
   /* xs/lg/xl and 2xl/3xl are stock Tailwind vars and already var()-based, so
      portals scope them directly — only the hub's own DS-bound entries need a slot. */
-  --radius-sm:  var(--portal-radius-sm, var(--ds-radius-sm));
-  --radius-md:  var(--portal-radius-md, var(--ds-radius-md));
-  --shadow-xs:  var(--portal-shadow-xs, var(--ds-shadow-xs));
-  --shadow-lg:  var(--portal-shadow-lg, var(--ds-shadow-lg));
-  --shadow-xl:  var(--portal-shadow-xl, var(--ds-shadow-xl));
+  --radius-sm:  var(--portal-radius-sm, var(--sa-shape-sm));
+  --radius-md:  var(--portal-radius-md, var(--sa-shape-md));
+  --shadow-xs:  var(--portal-shadow-xs, var(--sa-elevation-card));
+  --shadow-lg:  var(--portal-shadow-lg, var(--sa-elevation-modal));
+  --shadow-xl:  var(--portal-shadow-xl, var(--sa-elevation-toast));
   /* Stock Tailwind inlines --shadow-md into the utility rather than referencing a
      var, so smile-admin cannot scope it without a slot. Fallback = stock verbatim. */
   --shadow-md:  var(--portal-shadow-md, 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1));
@@ -461,10 +464,6 @@
       scroll-behavior: smooth;
     }
   }
-  html[data-theme="dark"] {
-    color-scheme: dark;
-  }
-
   /* Mobile nav panel. A dropdown, so ease-out and under 300ms — it should feel
      like it was already there. Only transform and opacity, which stay off the
      layout and paint paths. */
@@ -484,15 +483,8 @@
     }
   }
   ::selection {
-    background-color: var(--ds-primary-tonal);
-    color: var(--ds-ink-strong);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-neutral-bolder);
   }
 }
 
-/* National Emblem is a black monochrome SVG; recolour it to white in dark mode
-   so it stays visible on dark chrome. Unlayered (not in @layer base) and keyed
-   on the data-theme attribute, so it is always emitted and wins the cascade
-   regardless of Tailwind utility ordering. */
-[data-theme="dark"] .estate-emblem {
-  filter: brightness(0) invert(1);
-}

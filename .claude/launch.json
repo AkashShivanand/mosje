@@ -9,6 +9,12 @@
       "autoPort": false
     },
     {
+      "_comment": "Attaches to an already-running hub on :3007 instead of starting a second one. Next 16 holds a per-directory dev lock, so only one `next dev` can own apps/hub — use this when another session already started it.",
+      "name": "hub-attach",
+      "url": "http://localhost:3007",
+      "port": 3007
+    },
+    {
       "name": "hub-gated",
       "runtimeExecutable": "bash",
       "runtimeArgs": [

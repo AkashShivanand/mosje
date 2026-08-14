@@ -7,7 +7,7 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: var(--ds-spacing-lg, 16px);
+  gap: var(--sa-stack-m);
 }
 
 /* min-width:0 lets a long title ellipsize instead of shoving the actions
@@ -16,32 +16,32 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--sa-padding-3xs);
 }
 
 .ds-section-title__eyebrow {
-  font-size: var(--ds-text-label-3, 11px);
-  line-height: var(--ds-leading-label-3, 16px);
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-section-title__headline {
   display: flex;
   align-items: center;
-  gap: var(--ds-spacing-sm, 8px);
+  gap: var(--sa-stack-xs);
 }
 
 .ds-section-title__heading {
   margin: 0;
-  font-family: var(--ds-font-sans, inherit);
-  font-size: var(--ds-text-headline5, 18px);
-  line-height: var(--ds-leading-headline5, 24px);
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-headline-5-size);
+  line-height: var(--sa-type-headline-5-lh);
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--ds-ink);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-section-title__count {
@@ -50,27 +50,27 @@
   justify-content: center;
   min-width: 20px;
   height: 20px;
-  padding: 0 6px;
-  border-radius: var(--ds-radius-full, 999px);
-  background-color: var(--ds-surface-muted);
-  box-shadow: inset 0 0 0 1px var(--ds-border);
-  font-size: var(--ds-text-label-3, 11px);
+  padding: 0 var(--sa-padding-xs);
+  border-radius: var(--sa-shape-full);
+  background-color: var(--sa-bg-neutral-subtler);
+  box-shadow: inset 0 0 0 1px var(--sa-border-neutral-subtle);
+  font-size: var(--sa-type-label-3-size);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  color: var(--ds-ink-muted);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-section-title__description {
   margin: 0;
-  font-size: var(--ds-text-body-3, 12px);
-  line-height: var(--ds-leading-body-3, 16px);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-section-title__actions {
   display: flex;
   align-items: center;
-  gap: var(--ds-spacing-sm, 8px);
+  gap: var(--sa-stack-xs);
   flex-shrink: 0;
 }
 
@@ -79,6 +79,6 @@
   .ds-section-title {
     flex-direction: column;
     align-items: stretch;
-    gap: var(--ds-spacing-md, 12px);
+    gap: var(--sa-stack-s);
   }
 }

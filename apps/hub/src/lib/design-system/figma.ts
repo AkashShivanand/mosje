@@ -18,9 +18,11 @@ export const FIGMA_NODES = {
   typography: "2140:295912", // "Text Styles"
   spacing: "2140:295915", // "Layout Grid"
   elevation: "2140:295914", // "Effects"
-  iconography: "2316:246", // "Icons"
+  iconography: "2316:246", // "Iconography" — the Icon component, bespoke marks,
+  //                              emblems, org logos and the documentation, all on one page
   accessibility: "2382:295905", // "Accessibility Bar and Widget"
-  logosIcons: "67:12464", // "Logos and Misc Icons"
+  // `logosIcons` removed 2026-08-12: the "Logos and Misc Icons" and "Org Logos" pages were
+  // merged into Iconography above and deleted, so the id no longer resolves. It had no callers.
   motion: "4162:695", // "Motion" (authored from @mosje/tokens)
   density: "4170:695", // "Density" (authored from @mosje/tokens)
 

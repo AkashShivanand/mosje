@@ -1,6 +1,6 @@
 /* ============================================================================
    MoSJE / UX4G — Form-control atoms (Checkbox · Radio · Toggle)
-   Semantic CSS classes only; all colours reference design tokens (--ds-*).
+   Semantic CSS classes only; all colours reference design tokens (--sa-*).
    Each control = a visually-hidden real <input> + a styled visual element,
    so native keyboard/screen-reader behaviour is preserved.
    ============================================================================ */
@@ -26,8 +26,8 @@
 .ds-checkbox {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-family: var(--ds-font-sans, inherit);
+  gap: var(--sa-stack-xs);
+  font-family: var(--sa-font-latin);
 }
 
 .ds-checkbox__control {
@@ -44,10 +44,10 @@
   justify-content: center;
   width: 18px;
   height: 18px;
-  border: 1.5px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-xs, 4px);
-  background-color: var(--ds-surface);
-  color: var(--ds-on-primary);
+  border: 1.5px solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-xs);
+  background-color: var(--sa-bg-neutral-base);
+  color: var(--sa-on-bg-brand-primary-bolder);
   transition:
     background-color 0.15s ease,
     border-color 0.15s ease;
@@ -63,8 +63,8 @@
 /* Checked OR indeterminate (aria-checked="mixed") = primary fill + visible mark */
 .ds-checkbox__input:checked ~ .ds-checkbox__box,
 .ds-checkbox__input[aria-checked="mixed"] ~ .ds-checkbox__box {
-  background-color: var(--ds-primary);
-  border-color: var(--ds-primary);
+  background-color: var(--sa-bg-brand-primary-bolder);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-checkbox__input:checked ~ .ds-checkbox__box .ds-checkbox__mark,
@@ -73,18 +73,18 @@
 }
 
 .ds-checkbox__input:hover:not(:disabled) ~ .ds-checkbox__box {
-  border-color: var(--ds-primary);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-checkbox__input:focus-visible ~ .ds-checkbox__box {
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
   outline: none;
 }
 
 .ds-checkbox__label {
-  font-size: var(--ds-text-body-2, 14px);
-  line-height: var(--ds-leading-body-2, 20px);
-  color: var(--ds-ink);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  color: var(--sa-text-neutral-base);
   cursor: pointer;
   user-select: none;
 }
@@ -106,8 +106,8 @@
 .ds-radio {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-family: var(--ds-font-sans, inherit);
+  gap: var(--sa-stack-xs);
+  font-family: var(--sa-font-latin);
 }
 
 .ds-radio__control {
@@ -124,9 +124,9 @@
   justify-content: center;
   width: 18px;
   height: 18px;
-  border: 1.5px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-full, 100px);
-  background-color: var(--ds-surface);
+  border: 1.5px solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-full);
+  background-color: var(--sa-bg-neutral-base);
   transition:
     border-color 0.15s ease,
     background-color 0.15s ease;
@@ -135,14 +135,14 @@
 .ds-radio__dot {
   width: 8px;
   height: 8px;
-  border-radius: var(--ds-radius-full, 100px);
-  background-color: var(--ds-primary);
+  border-radius: var(--sa-shape-full);
+  background-color: var(--sa-bg-brand-primary-bolder);
   transform: scale(0);
   transition: transform 0.12s ease;
 }
 
 .ds-radio__input:checked ~ .ds-radio__circle {
-  border-color: var(--ds-primary);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-radio__input:checked ~ .ds-radio__circle .ds-radio__dot {
@@ -150,18 +150,18 @@
 }
 
 .ds-radio__input:hover:not(:disabled) ~ .ds-radio__circle {
-  border-color: var(--ds-primary);
+  border-color: var(--sa-border-brand-primary-base);
 }
 
 .ds-radio__input:focus-visible ~ .ds-radio__circle {
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
   outline: none;
 }
 
 .ds-radio__label {
-  font-size: var(--ds-text-body-2, 14px);
-  line-height: var(--ds-leading-body-2, 20px);
-  color: var(--ds-ink);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  color: var(--sa-text-neutral-base);
   cursor: pointer;
   user-select: none;
 }
@@ -183,8 +183,8 @@
 .ds-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-family: var(--ds-font-sans, inherit);
+  gap: var(--sa-stack-xs);
+  font-family: var(--sa-font-latin);
   /* Per-size local vars (default: 52×32 track, 24 knob) */
   --_track-w: 52px;
   --_track-h: 32px;
@@ -213,23 +213,23 @@
   width: var(--_track-w);
   height: var(--_track-h);
   padding: var(--_pad);
-  border-radius: var(--ds-radius-full, 100px);
-  background-color: var(--ds-border-strong);
+  border-radius: var(--sa-shape-full);
+  background-color: var(--sa-border-neutral-base);
   transition: background-color 0.15s ease;
 }
 
 .ds-toggle__knob {
   width: var(--_knob);
   height: var(--_knob);
-  border-radius: var(--ds-radius-full, 100px);
-  background-color: var(--ds-surface);
-  box-shadow: 0 1px 2px rgba(33, 33, 33, 0.25);
+  border-radius: var(--sa-shape-full);
+  background-color: var(--sa-bg-neutral-base);
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--sa-text-neutral-bolder) 25%, transparent);
   transform: translateX(0);
   transition: transform 0.18s ease;
 }
 
 .ds-toggle__input:checked ~ .ds-toggle__track {
-  background-color: var(--ds-primary);
+  background-color: var(--sa-bg-brand-primary-bolder);
 }
 
 .ds-toggle__input:checked ~ .ds-toggle__track .ds-toggle__knob {
@@ -238,14 +238,14 @@
 }
 
 .ds-toggle__input:focus-visible ~ .ds-toggle__track {
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
   outline: none;
 }
 
 .ds-toggle__label {
-  font-size: var(--ds-text-body-2, 14px);
-  line-height: var(--ds-leading-body-2, 20px);
-  color: var(--ds-ink);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  color: var(--sa-text-neutral-base);
   cursor: pointer;
   user-select: none;
 }
@@ -268,11 +268,11 @@
 .ds-radio-card {
   display: flex;
   align-items: flex-start;
-  gap: var(--ds-spacing-md, 12px);
-  padding: var(--ds-spacing-lg, 16px);
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-lg, 12px);
+  gap: var(--sa-stack-s);
+  padding: var(--sa-padding-m);
+  background: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-lg);
   cursor: pointer;
   transition:
     border-color 0.15s ease,
@@ -281,38 +281,38 @@
 }
 
 .ds-radio-card:hover {
-  border-color: var(--ds-primary);
-  background: var(--ds-surface-muted);
+  border-color: var(--sa-border-brand-primary-base);
+  background: var(--sa-bg-neutral-subtler);
 }
 
 .ds-radio-card--selected,
 .ds-radio-card--selected:hover {
-  border-color: var(--ds-primary);
-  background: var(--ds-primary-tonal);
+  border-color: var(--sa-border-brand-primary-base);
+  background: var(--sa-bg-brand-primary-subtler);
 }
 
 .ds-radio-card:focus-within {
-  border-color: var(--ds-primary);
-  box-shadow: 0 0 0 3px var(--ds-primary-ring);
+  border-color: var(--sa-border-brand-primary-base);
+  box-shadow: 0 0 0 3px var(--sa-focus-ring);
 }
 
 .ds-radio-card__body {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--sa-padding-3xs);
 }
 
 .ds-radio-card__title {
-  font-size: var(--ds-text-label-1, 14px);
-  line-height: var(--ds-leading-label-1, 20px);
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
   font-weight: 500;
-  color: var(--ds-ink);
+  color: var(--sa-text-neutral-base);
 }
 
 .ds-radio-card__desc {
-  font-size: var(--ds-text-body-2, 14px);
-  line-height: var(--ds-leading-body-2, 20px);
-  color: var(--ds-ink-muted);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  color: var(--sa-text-neutral-subtle);
 }
 
 .ds-radio-card--disabled {

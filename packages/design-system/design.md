@@ -12,7 +12,26 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-12 · System version: v0.16.2 (COLOUR SECTIONS §A/§B/§C/§6 RECONCILED
+  Last reviewed: 2026-08-13 · System version: v0.19.0 (THE CONTENT CONTAINER IS UX4G'S TWO-STEP
+  1200/1320 AND `.sa-container` IS THE ONLY WAY TO APPLY IT. Four widths shipped at once and the
+  masthead sat 20px wider each side than the page beneath it; `SiteHeader.maxWidth` is now an
+  override, not a default. New: `container/contentXl`, `ref/breakpoint/desktopXl`.
+  Previously v0.18.2 — ICON IS NOW DECORATIVE BY DEFAULT — it
+  sets aria-hidden itself unless given an aria-label, which then makes it role="img". The rule
+  was documented but unenforced and was missed at 533 of 718 call sites; the component now
+  decides instead of the caller. Do not add aria-hidden to decorative icons. Previously
+  v0.18.0: FILLED PRIMARY MOVED TO THE bolder RUNG.
+  A filled primary button now paints bg/brand/primary/bolder (#005EB9) instead of the ink of the
+  same family (#0373DF), taking white-on-primary from 4.64:1 to 6.36:1 and Navy from 8.77:1 to
+  12.61:1. 36 solid fills across the estate plus the DS Button, whose single --_color was split
+  into --_fill and --_color so outlined and text appearances keep the ink. THE LADDER ALREADY
+  SAID THIS: bg rungs sit one step deeper than the ink of the same family precisely because a
+  fill carries white text and an ink sits on the page. The Button was reaching past its own
+  system — and a slot migration the same day had briefly put a TEXT token in charge of its fill,
+  which is what surfaced it. Success and danger were NOT moved: their bg bolder rungs are
+  different values, so that is a separate decision. SS B and SS C were also rewritten onto
+  canonical names — they still spelled tokens in the --ds-* vocabulary retired earlier that day.
+  PREVIOUS ENTRY: COLOUR SECTIONS SS A/B/C/6 RECONCILED
   AGAINST THE BUILT STYLESHEET. Every colour value and every contrast ratio in this file was
   recomputed from packages/tokens/dist/tokens.css and corrected: the §C pairs table was wrong in
   eight of nine rows after the 2026-08-11 ramp rebuild, §B carried a Dark column for an axis
@@ -421,48 +440,64 @@ that changes a colour is `data-brand`, so the two value columns below are Blue a
 
 | Token | Blue | Navy | Correct usage | Never use for |
 |-------|------|------|---------------|---------------|
-| `--ds-primary` | `#0373DF` | `#244C7B` | CTA buttons, active links, key icons | Body text, large backgrounds |
-| `--ds-saffron` | `#FF671F` | same | Accents, badges, decorative emphasis | Text, icons or chart series on white — it measures **2.91:1**, below even the 3:1 non-text floor |
-| `--ds-yellow` | `#FFD323` | same | Nothing, in new work. Retained for older markup | Text at any size (**1.44:1**). For yellow emphasis use `bg/status/warning/subtler` behind dark ink |
-| `--ds-ink` | `#1E2124` | `#1E2024` | All body/heading text | Interactive elements, backgrounds |
-| `--ds-ink-muted` | `#3A3D41` | `#3B3D41` | Captions, hints, helper text | — comfortably AA at 10.92:1; the old "check below 16px" caveat no longer applies |
-| `--ds-surface` | `#FFFFFF` | same | Page and card backgrounds | Text or icon fills |
-| `--ds-surface-muted` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels | Anything needing a measured contrast — it is a surface, not a fill with a guarantee |
-| `--ds-danger` | `#8B1F18` | same | Error text and icons on white, destructive labels | Decorative fills (use `--ds-danger-tonal`) |
-| `--ds-success` | `#004220` | same | Success states, validation confirmation | Primary brand actions |
-| `--ds-on-primary` | `#FFFFFF` | same | Text/icons on solid `--ds-primary` backgrounds | Any other background |
+| `--sa-bg-brand-primary-bolder` | `#005EB9` | `#003366` | **Solid primary fills** — filled buttons, active nav, brand banners | Text or borders on a light page; the ink slot below is measured for that |
+| `--sa-text-brand-primary-base` | `#0373DF` | `#244C7B` | Brand-coloured text, links, outlined-button ink, key icons | Solid fills behind white text — that is the `bg` slot's job |
+| `--sa-color-brand-saffron` | `#FF671F` | same | Accents, badges, decorative emphasis | Text, icons or chart series on white — **2.91:1**, below even the 3:1 non-text floor |
+| `--sa-color-brand-yellow` | `#FFD323` | same | Nothing, in new work. Retained for older markup | Text at any size (**1.44:1**). For yellow emphasis use `bg/status/warning/subtler` behind dark ink |
+| `--sa-text-neutral-base` | `#1E2124` | `#1E2024` | All body/heading text | Interactive elements, backgrounds |
+| `--sa-text-neutral-subtle` | `#3A3D41` | `#3B3D41` | Captions, hints, helper text | — comfortably AA at 10.92:1; the old "check below 16px" caveat no longer applies |
+| `--sa-bg-neutral-base` | `#FFFFFF` | same | Page and card backgrounds | Text or icon fills |
+| `--sa-bg-neutral-subtler` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels | Anything needing a measured contrast — it is a surface, not a fill with a guarantee |
+| `--sa-text-status-error-base` | `#8B1F18` | same | Error text and icons on white, destructive labels | Decorative fills (use `bg/status/error/subtler`) |
+| `--sa-text-status-success-base` | `#004220` | same | Success states, validation confirmation | Primary brand actions |
+| `--sa-on-bg-brand-primary-bolder` | `#FFFFFF` | same | Text/icons on a solid primary fill | Any other background |
+
+> **A fill sits one rung deeper than the ink of the same family, and that is the point.**
+> `bg/brand/primary/bolder` is `primaryScale/600`; `text/brand/primary/base` is `/500`. The fill
+> carries white text, so it is measured against white and needs the headroom; the ink sits on the
+> page, where 4.64:1 is measured against the page and correct. Reaching for the ink token to paint
+> a button is the mistake this split exists to prevent — and it is the one the DS Button itself
+> made until 2026-08-12.
 
 *Every value above was read from `packages/tokens/dist/tokens.css` on 2026-08-12. The previous
 table pre-dated the 2026-08-11 ramp rebuild and was wrong on `--ds-saffron`, `--ds-ink`,
 `--ds-ink-muted`, `--ds-danger` and `--ds-success`, and carried a Dark column for an axis that had
 already been removed.*
 
-### C. Contrast Pairs (WCAG 2.1 AA — minimum 4.5:1 for text, 3:1 for UI elements)
+### C. Contrast Pairs (WCAG 2.2 AA — minimum 4.5:1 for text, 3:1 for UI elements)
 
 | Foreground | Background | Ratio | Status | Usage context |
 |-----------|-----------|-------|--------|---------------|
-| `--ds-on-primary` (`#fff`) | `--ds-primary` (`#0373DF`) | **4.64:1** | ✅ Pass | Filled primary buttons, nav active state. Passes, but with little headroom — in Navy the same pair is 8.77:1 |
-| `--ds-ink` (`#1E2124`) | `--ds-surface` (`#fff`) | **16.18:1** | ✅ Pass | All body text |
-| `--ds-ink-muted` (`#3A3D41`) | `--ds-surface` (`#fff`) | **10.92:1** | ✅ Pass | Hint text, captions — at any size |
-| `--ds-ink-muted` (`#3A3D41`) | `--ds-surface-muted` (`#EEF0F3`) | **9.56:1** | ✅ Pass | Safe on quiet panels too; the old "borderline" warning is obsolete |
-| `--ds-danger` (`#8B1F18`) | `--ds-surface` (`#fff`) | **9.10:1** | ✅ Pass | Error text and icons on white |
-| `--ds-danger-500` (`#CB3F33`) | `--ds-surface` (`#fff`) | **4.89:1** | ✅ Pass | Passes since the 2026-08-11 rebuild, but prefer `--ds-danger` for text — a ramp rung carries no guarantee against your surface |
-| `--ds-saffron` (`#FF671F`) | `--ds-surface` (`#fff`) | **2.91:1** | ❌ Fail (even non-text) | Decorative fills only. Below the 3:1 of WCAG 1.4.11 — never an icon, a border or a chart series |
-| `--ds-yellow` (`#FFD323`) | `--ds-surface` (`#fff`) | **1.44:1** | ❌ Fail | Never a text colour, at any size |
-| `--ds-primary` (`#0373DF`) | `--ds-surface` (`#fff`) | **4.64:1** | ✅ Pass | Link text |
-| `--ds-success` (`#004220`) | `--ds-surface` (`#fff`) | **11.67:1** | ✅ Pass | Confirmation text and icons |
-| `--ds-border` (`#DCDEE1`) | `--ds-surface` (`#fff`) | **1.35:1** | ⚠️ Decorative | A hairline divider only. For a control boundary someone must find, use `border/neutral/bolder/default` |
+| `on/bg/brand/primary/bolder` (`#fff`) | `bg/brand/primary/bolder` (`#005EB9`) | **6.36:1** | ✅ Pass | **Filled primary buttons, active nav.** In Navy the same pair is 12.61:1 |
+| `text/neutral/base` (`#1E2124`) | `bg/neutral/base` (`#fff`) | **16.18:1** | ✅ Pass | All body text |
+| `text/neutral/subtle` (`#3A3D41`) | `bg/neutral/base` (`#fff`) | **10.92:1** | ✅ Pass | Hint text, captions — at any size |
+| `text/neutral/subtle` (`#3A3D41`) | `bg/neutral/subtler` (`#EEF0F3`) | **9.56:1** | ✅ Pass | Safe on quiet panels too |
+| `text/status/error/base` (`#8B1F18`) | `bg/neutral/base` (`#fff`) | **9.10:1** | ✅ Pass | Error text and icons on white |
+| `text/brand/primary/base` (`#0373DF`) | `bg/neutral/base` (`#fff`) | **4.64:1** | ✅ Pass | Link text, outlined-button ink. Clears the floor by 0.14 — do not put white on it |
+| `color/brand/saffron` (`#FF671F`) | `bg/neutral/base` (`#fff`) | **2.91:1** | ❌ Fail (even non-text) | Decorative fills only. Below the 3:1 of WCAG 1.4.11 |
+| `color/brand/yellow` (`#FFD323`) | `bg/neutral/base` (`#fff`) | **1.44:1** | ❌ Fail | Never a text colour, at any size |
+| `text/status/success/base` (`#004220`) | `bg/neutral/base` (`#fff`) | **11.67:1** | ✅ Pass | Confirmation text and icons |
+| `border/neutral/subtle` (`#DCDEE1`) | `bg/neutral/base` (`#fff`) | **1.35:1** | ⚠️ Decorative | A hairline divider only. For a control boundary use `border/neutral/bolder/default` |
 
-> **Critical rule:** use `var(--ds-danger)` for red error text on white — it resolves to `#8B1F18`
-> (`dangerScale/700`) at **9.10:1**. `--ds-danger-500` now also clears AA at 4.89:1, but reaching into
-> a ramp for text is still the wrong habit: a rung is a value, not a decision, and it carries no
-> guarantee against whatever surface you put it on.
+> **Critical rule — a fill is not an ink.** Paint a solid primary surface with
+> `bg/brand/primary/bolder` and put `on/bg/brand/primary/bolder` on it; that pairing was measured
+> and clears AA by 1.86. `text/brand/primary/base` is the *ink* of the same family — correct for a
+> link or an outlined button on the page, and 0.14 above the floor there, but white text on it
+> would be the marginal pairing this ladder exists to avoid.
 >
-> *Corrected 2026-08-12:* every ratio in this table was recomputed from `dist/tokens.css` with the
-> WCAG 2.x formula. The previous table pre-dated the 2026-08-11 ramp rebuild and was wrong in eight
-> of nine rows — most consequentially, it warned that `--ds-ink-muted` was borderline at 4.1:1 (it is
-> 9.56:1) and that `--ds-danger-500` fails for text (it passes). It also omitted `--ds-saffron`,
-> which is the one value here that genuinely fails, and fails a criterion the table never mentioned.
+> *Changed 2026-08-12 (v0.18.1):* success and danger filled buttons followed primary onto their
+> `bg` bolder rungs — `#00542B` and `#AA2F25`. For these two the move **lowers** contrast (11.67:1
+> → 9.12:1 and 9.10:1 → 6.68:1) where primary's raised it; both stay far clear of the floor, and the
+> trade is consistency rather than accessibility. A fill comes from the `bg` slot in every family,
+> or the rule is not a rule. The filled Button also stopped hardcoding primary's ink for every
+> variant — each now declares the foreground measured for its own fill.
+>
+> *Changed 2026-08-12 (v0.18.0):* filled primary buttons moved from `#0373DF` to `#005EB9` across the estate
+> (36 solid fills plus the DS Button), taking white-on-primary from 4.64:1 to 6.36:1 and Navy from
+> 8.77:1 to 12.61:1. The DS Button's single `--_color` was split into `--_fill` and `--_color`, so
+> outlined and text appearances keep the ink. Gradients and `color-mix` washes deliberately keep
+> the lighter value. Success and danger were NOT moved: their `bg` bolder rungs are different
+> values, so that is a separate decision.
 
 > **The table above is hand-maintained; it is not the authority.** Every `--sa-*` colour token
 > carries a contrast class that is **measured at build time** against its own surface, across every
@@ -533,7 +568,18 @@ tiers: `--ds-type-{heading,title,body,label}-tracking`. Values differ by **surfa
 > The hyphenated family is mapped to whichever role reproduces each alias's
 > *historical rendered value*, so its names deliberately do not line up:
 > `--ds-text-title-1` is the **headline-2** role (24→32px), not Title 1 (20/22px);
-> `--ds-text-title-2` is Title 1. Those values are frozen in
+> `--ds-text-title-2` is Title 1.
+>
+> **RETIRED 2026-08-12.** The whole `--ds-*` layer, including this hyphenated family,
+> was deleted from the build — see the retirement note later in this document. The
+> paragraphs above are kept as the record of a hazard that no longer exists, because
+> the reasoning still applies to any alias family: read the resolved value, not the name.
+>
+> For the record, measured against the generated `tokens.css` on 2026-08-11 before
+> deletion: **precisely two of the nine hyphenated aliases misled** — `title-1` and
+> `title-2`. The other seven (`display`, `headline`, `body-1/2/3`, `label-1/3`) resolved
+> to the role they named. `--ds-text-title-3` and `--ds-text-label-2` never existed at all.
+> Those values are frozen in
 > `packages/tokens/test/legacy-snapshot.json` and asserted on every build — re-pointing
 > one at its same-named role silently resizes every legacy callsite in the estate.
 >
@@ -597,9 +643,71 @@ for one-offs that no role describes.
 /* Over   */  gap: var(--ds-spacing-lg);     /* "16px, for some reason" */
 ```
 
-**Responsive Layout Grid:**
-- **Desktop (≥ 1024px)**: 12-column grid, max-width `1280px`, `24px` gutters.
-- **Mobile (< 1024px)**: 4-column fluid grid, `16px` gutters.
+**Responsive Layout Grid — `<Grid>` / `<GridItem>`:**
+- **Twelve columns at every breakpoint**, `24px` gutter (`grid/columns`, `grid/gutter`).
+  A child spans *more* of them on a small screen rather than the track count changing —
+  UX4G's model, and Bootstrap's. There is deliberately **no 4-column mobile grid**;
+  the earlier claim of one contradicted `grid/columns`, which has always been 12.
+- Side margin is responsive (`grid/margin/*`): 16 mobile · 24 tablet · 32 desktop.
+
+**Content container — never hardcode a max-width.** Use the `.sa-container` class from
+`@mosje/design-system/layout.css`, which carries the cap *and* the responsive side margin.
+The estate follows **UX4G 3.0's two-step container**: `--sa-container-content` **1200px**,
+widening to `--sa-container-contentXl` **1320px** at `--sa-ref-breakpoint-desktopXl` (1768px).
+`--sa-container-page` is the derived variable that selects between them; bind that when a
+media query is unavailable (an inline style, for instance — it is how `SiteHeader` caps its
+own column).
+
+> A container is a **cap**, not a width. `grid/margin/*` (16 mobile / 24 tablet / 32 desktop)
+> is a **floor** that wins on narrower viewports, so the effective column is
+> `min(container, viewport − 2 × margin)`.
+
+**Page-skeleton tokens (`--sa-layout-*`).** Only genuinely fixed measurements:
+
+| Token | Value | Applies to |
+| --- | --- | --- |
+| `layout/bar/height` | 46 | accessibility bar — fixed |
+| `layout/flag/width` | 33 | flag mark in the bar — fixed |
+| `layout/masthead/minHeight` | 72 | brand row — **minimum only, it hugs** |
+| `layout/chrome/minHeight` | 118 | sticky offsets and scroll anchors **only** |
+| `layout/sidebar/width` | 300 | portal sidebar — fixed |
+
+**Fixed, hug, or fill — decide this before sizing anything.**
+
+| Region | Sizing |
+| --- | --- |
+| Accessibility bar · sidebar width · sidebar item | **Fixed** — a token sets it |
+| Brand row · website nav row · page header · card, panel, band | **Hug** — content sets it; a minimum is allowed, a fixed size is not |
+| Sidebar height · content area | **Fill** — what remains sets it |
+| Content column | **Cap**, then the margin floor |
+
+> **Never size a shell by subtracting a chrome height from the viewport.** The brand row
+> hugs, so its height is not knowable in advance — `h-[calc(100vh-5.75rem)]` is wrong by
+> construction. `AppShell` is a grid whose chrome rows are `auto` and whose body row is
+> `1fr`. `layout/chrome/minHeight` is for sticky offsets, not layout arithmetic.
+
+### Layout components
+
+Primitives compose the content column; templates compose the page. All are presentational —
+no store, no router, no redirect.
+
+| Component | Use it for | Never |
+| --- | --- | --- |
+| `Container` | the centred content column; applies the cap **and** the side margin | adding your own `px-*` — the margin is already there |
+| `Grid` / `GridItem` | page-level column layouts; `span={{ base, md, lg }}` | a simple wrapping row of cards — flex is simpler |
+| `Band` | a website section: full-bleed tone + rhythm around a `Container` | a portal page — portal content is fluid, not banded |
+| `PageHeader` | the title + meta + actions row a portal page opens with | a heading *inside* a page — that is `SectionTitle` |
+| `AppShell` | every signed-in portal page | a login screen — that is `PortalLoginShell` |
+| `SiteLayout` | every public website page | a portal page |
+
+Composition is always **`Band` → `Container` → content**. A bare `Container` where a `Band`
+belongs produces a tint that stops short of the viewport edge.
+>
+> **Changed 13 August 2026.** Four widths shipped simultaneously: UX4G specified 1200,
+> `container/content` said 1280 and nothing consumed it, 22 website section files hardcoded
+> that same 1280 beside it, `SiteHeader` defaulted to 1320, and `PortalLoginShell`'s chrome
+> used 1536. Above 1320px the masthead's column ran 20px wider each side than the page, so
+> the National Emblem did not line up with the content below it.
 
 ---
 
@@ -815,84 +923,130 @@ follow-up in the audit.
 
 ---
 
-## 6. Token Vocabulary Reference (`--ds-*`)
+## 6. Token Vocabulary Reference (`--sa-*`)
 
 Custom properties are defined in `@mosje/tokens` and generated into `packages/design-system/tokens.css`.
 
-> **This section documents the DEPRECATED vocabulary, and it is still the one the estate is written
-> in** — 3,632 `--ds-*` references across 171 hand-written source files, against 103 `--sa-*`
-> (counted 2026-08-12). All 341 `--ds-*` tokens are pure `var()` aliases with no literal values, so
-> nothing here has a value of its own.
+> **The legacy `--ds-*` vocabulary was RETIRED on 2026-08-12 and no longer exists.** Nothing emits
+> it: zero occurrences in `tokens.css`, `tokens.ts`, `tailwind-preset.cjs`, `ux4g.css` or the Figma
+> payload, and zero references in source. A `var(--ds-…)` in new code resolves to nothing and the
+> declaration carrying it is dropped as invalid — which is exactly how ~40 pre-existing dangling
+> references were found and fixed during the migration.
 >
-> **Prefer the `--sa-*` slot grammar in new work** (`bg` / `text` / `border` / `icon` / `on` /
-> `overlay` / `layer` / `focus`, each × family × prominence). Three things the legacy names simply
-> cannot express, which is why they are deprecated rather than merely older:
-> 1. **They stop at rung 900.** Every canonical ramp runs to 950; `--ds-<family>-950` does not exist.
-> 2. **There is no accent family at all.** India Green `#046A38` is unreachable by any `--ds-*` name.
-> 3. **There is exactly one `on/*` pair** (`--ds-on-primary`) against 46 in the slot grammar, so the
->    measured-ink contract — the system's strongest safety property — is unavailable here.
+> All 3,561 call sites were moved to the canonical `--sa-*` token each legacy name already resolved
+> to, so **nothing rendered differently**: the ux4g contract fixture re-baselined to 4,433 removals
+> (every one a `--ds-*` name), 208 additions and **zero changed values** across all 13 selector
+> contexts. The full old→new mapping is preserved at `tools/token-migration/mapping.json`, and the
+> codemod that applied it at `tools/token-migration/migrate.py`.
+>
+> **Three Tier-2 groups were created to make the migration possible**, because 320 usages had no
+> canonical home at all:
+> - **`--sa-shape-*`** — corner radius. Named `shape`, not `radius`, because Style Dictionary merges
+>   the primitive and semantic namespaces and a Tier-2 `radius` group self-references the Tier-1
+>   scale it aliases. `shape` is also the word this section already used.
+> - **`--sa-font-latin` / `-display` / `-mono`** — alongside the existing `--sa-font-devanagari`.
+> - **`--sa-stack-2xl`** (40px) — the one spacing value with no purpose-scale home.
+>
+> **What the retired names could never express**, and why retiring beat maintaining:
+> 1. **They stopped at rung 900.** Every canonical ramp runs to 950.
+> 2. **There was no accent family at all.** India Green `#046A38` was unreachable by any `--ds-*` name.
+> 3. **There was exactly one `on/*` pair** (`--ds-on-primary`) against 46 in the slot grammar, so the
+>    measured-ink contract — the system's strongest safety property — was unavailable through them.
+> 4. **`--ds-text-title-1` resolved to the headline-2 role.** That alias trap caused four production
+>    bugs and is gone with the vocabulary that carried it. The only surviving record of the mismatch
+>    is the `TYPE_TOKEN` table in `build/generate-ts-mirror.mjs`.
+>
+> The names below are grouped as they were, but every one is now a `--sa-*` token. Prefer the slot
+> grammar (`bg` / `text` / `border` / `icon` / `on` / `overlay` / `layer` / `focus`, each × family ×
+> prominence) over the flatter `--sa-color-*` names wherever a slot exists: only the slots carry the
+> measured contrast guarantee.
 
 ### Color Tokens
 
 **Text (Ink):**
-- `--ds-ink` — Primary body text (default)
-- `--ds-ink-strong` — Maximum contrast headings
-- `--ds-ink-muted` — Hint text, captions, secondary info
-- `--ds-on-primary` — Text/icons placed on solid `--ds-primary` surface
-- `--ds-ink-info` — High-contrast text for info callout boxes
+- `--sa-color-text-default` — Primary body text (default)
+- `--sa-text-neutral-bolder` — Maximum contrast headings
+- `--sa-color-text-muted` — Hint text, captions, secondary info
+- `--sa-color-text-onPrimary` — Text/icons placed on solid `--sa-color-action-primary-default` surface
+- `--sa-color-text-info` — High-contrast text for info callout boxes
 
 **Backgrounds:**
-- `--ds-surface` — Base page/card background
-- `--ds-surface-muted` — Subtle background for inputs, code blocks
+- `--sa-bg-neutral-base` — Base page/card background
+- `--sa-bg-neutral-subtler` — Subtle background for inputs, code blocks
 
 **Brand:**
-- `--ds-primary` — Main brand blue (GoI Navy/Blue)
-- `--ds-primary-dark` — Pressed/hover state of primary
-- `--ds-primary-tonal` — Tonal (light wash) variant for backgrounds
-- `--ds-primary-ring` — Focus ring colour
+- `--sa-color-action-primary-default` — Main brand blue (GoI Navy/Blue)
+- `--sa-color-action-primary-hover` — Pressed/hover state of primary
+- `--sa-color-action-primary-tonal` — Tonal (light wash) variant for backgrounds
+- `--sa-focus-ring` — Focus ring colour
 
 **Gov Accents:**
-- `--ds-saffron`, `--ds-saffron-dark`, `--ds-saffron-light`
-- `--ds-navy` — Deep navy for footer backgrounds
-- `--ds-yellow` — Warning-only accent
+- `--sa-color-brand-saffron`, `--sa-color-brand-saffronDark`, `--sa-color-brand-saffronLight`
+- `--sa-color-brand-navy` — Deep navy for footer backgrounds
+- `--sa-color-brand-yellow` — Warning-only accent
 
 **Borders:**
-- `--ds-border` — Default subtle divider (1.35:1 — decorative only)
-- `--ds-border-strong` — Input/form control borders, table headers (1.66:1). For a boundary that must
+- `--sa-border-neutral-subtle` — Default subtle divider (1.35:1 — decorative only)
+- `--sa-border-neutral-base` — Input/form control borders, table headers (1.66:1). For a boundary that must
   clear WCAG 1.4.11, use `--sa-border-neutral-bolder-default` — and note even that measures 3.06:1,
   which clears 3:1 but not the 4.5:1 its `bolder` rung implies
 
 **Status:**
-- `--ds-success`, `--ds-success-tonal`
-- `--ds-warning`, `--ds-warning-tonal`
-- `--ds-danger`, `--ds-danger-tonal` — **`--ds-danger-strong` does not exist and never has**; it was
+- `--sa-color-status-success`, `--sa-color-status-successTonal`
+- `--sa-color-status-warning`, `--sa-color-status-warningTonal`
+- `--sa-color-status-danger`, `--sa-color-status-dangerTonal` — **`--sa-color-status-danger-strong` does not exist and never has**; it was
   listed here in error until 2026-08-12
-- `--ds-info`, `--ds-info-tonal`
+- `--sa-color-status-info`, `--sa-color-status-infoTonal`
 
 **Full colour ramps (50–900 — the canonical `--sa-*` ramps run to 950; the legacy names stop one rung
 short).** Each ramp is a semantic scale — use these for tints/shades beyond the single-shade
 status/brand tokens above:
-- `--ds-primary-50` … `--ds-primary-900` — primary (**brand-aware: blue in `blue`, navy in `navy`**)
-- `--ds-secondary-50` … `--ds-secondary-900` — secondary, India Saffron `#FF671F` from the SAMAVESH logo. **BRAND-INVARIANT** — a brand swap does not touch it. (It used to swap to green in the Navy brand, which landed it 0.3 L\* from the success colour; that is audit finding C-02, fixed 2026-08-11 and pinned by `hue-separation.test.mjs`.) Maps to Figma `Secondary/*`.
-- `--ds-neutral-0` … `--ds-neutral-1100` — neutral greys (**brand-aware: hue-locked to the brand's own primary — 255° in `blue`, 264° in `navy`**; maps to Figma `Neutral/*`). The tint is deliberate and follows a single chroma arc peaking ~0.016 in the mid-tones and falling to zero at both ends, so `0` is exactly `#ffffff` and `1000` exactly `#000000` — the two achromatic values, which is why they live only here and on no chromatic ramp. NOTE the canonical names renumbered on 2026-08-11 to match UX4G — `--sa-color-neutralScale-950` is the near-black shade and `-1000` is pure black; the two `--ds-*` names above keep their old spelling one rung lower.
-- `--ds-success-50` … `--ds-success-900` — brand-invariant (Figma `Success/*`). Byte-identical to the
+- `--sa-color-action-primary-default-50` … `--sa-color-action-primary-default-900` — primary (**brand-aware: blue in `blue`, navy in `navy`**)
+- `--sa-color-secondaryScale-50` … `--sa-color-secondaryScale-900` — secondary, India Saffron `#FF671F` from the SAMAVESH logo. **BRAND-INVARIANT** — a brand swap does not touch it. (It used to swap to green in the Navy brand, which landed it 0.3 L\* from the success colour; that is audit finding C-02, fixed 2026-08-11 and pinned by `hue-separation.test.mjs`.) Maps to Figma `Secondary/*`.
+- `--sa-color-neutralScale-0` … `--sa-color-neutralScale-1100` — neutral greys (**brand-aware: hue-locked to the brand's own primary — 255° in `blue`, 264° in `navy`**; maps to Figma `Neutral/*`). The tint is deliberate and follows a single chroma arc peaking ~0.016 in the mid-tones and falling to zero at both ends, so `0` is exactly `#ffffff` and `1000` exactly `#000000` — the two achromatic values, which is why they live only here and on no chromatic ramp. NOTE the canonical names renumbered on 2026-08-11 to match UX4G — `--sa-color-neutralScale-950` is the near-black shade and `-1000` is pure black; the two `--sa-*` names above keep their old spelling one rung lower.
+- `--sa-color-status-success-50` … `--sa-color-status-success-900` — brand-invariant (Figma `Success/*`). Byte-identical to the
   accent ramp: `accentScale` and `successScale` are the same green, deliberately, and that union is
   recorded and gated in `hue-separation.test.mjs`
-- `--ds-danger-50` … `--ds-danger-900` — brand-invariant (Figma `Danger/*`). Anchored at rung **400**
-- `--ds-warning-50` … `--ds-warning-900` — brand-invariant (Figma `Warning/*`). Anchored at rung **300**
-- `--ds-info-50` … `--ds-info-900` — brand-invariant (Figma `Info/*`). Anchored at rung 500, ~3° from
+- `--sa-color-status-danger-50` … `--sa-color-status-danger-900` — brand-invariant (Figma `Danger/*`). Anchored at rung **400**
+- `--sa-color-status-warning-50` … `--sa-color-status-warning-900` — brand-invariant (Figma `Warning/*`). Anchored at rung **300**
+- `--sa-color-status-info-50` … `--sa-color-status-info-900` — brand-invariant (Figma `Info/*`). Anchored at rung 500, ~3° from
   primary — a deliberate union, so never rely on info and primary reading as different colours
-- **No `--ds-accent-*` exists.** India Green `#046A38` is reachable only as `--sa-color-accentScale-*`
+- **No `--sa-accent-*` exists.** India Green `#046A38` is reachable only as `--sa-color-accentScale-*`
   or through the `brand/accent` slots
 
-**Alpha / transparent overlays (8/16/24/32/40/48%, Figma `<Family> Transparent/*`).** Consumed via `--sa-color-transparent-<family>-<step>` (canonical `--sa-*` name; no `--ds-*` alias). `primary` and `neutral` are brand-aware; `secondary`, `accent`, `success`, `danger`, `warning`, `white` are brand-invariant. Example: `--sa-color-transparent-neutral-8`, `--sa-color-transparent-white-24`. **A translucent fill has no contrast of its own** — its measured ratio depends on what sits behind it, so never use one as the surface behind text you need to guarantee.
+**Alpha / transparent overlays (8/16/24/32/40/48%, Figma `<Family> Transparent/*`).** Consumed via `--sa-color-transparent-<family>-<step>` (canonical `--sa-*` name; no `--sa-*` alias). `primary` and `neutral` are brand-aware; `secondary`, `accent`, `success`, `danger`, `warning`, `white` are brand-invariant. Example: `--sa-color-transparent-neutral-8`, `--sa-color-transparent-white-24`. **A translucent fill has no contrast of its own** — its measured ratio depends on what sits behind it, so never use one as the surface behind text you need to guarantee.
 
-**Data-visualisation (charts):** brand-aware, used by the chart layer (§7). All twelve categorical series clear WCAG 1.4.11's 3:1 against the page; the worst is `--ds-chart-cat-2` at 3.79:1.
-- `--ds-chart-cat-1` … `--ds-chart-cat-12` — categorical series (mutually distinguishable)
-- `--ds-chart-seq-50` … `--ds-chart-seq-900` — sequential single-hue ramp (choropleth, heatmap)
-- `--ds-chart-div-neg-strong/neg/neg-soft/mid/pos-soft/pos/pos-strong` — diverging (signed data)
-- `--ds-chart-trend-up/down/flat` — KPI trend
-- `--ds-chart-grid`, `--ds-chart-axis`, `--ds-chart-tooltip-bg`, `--ds-chart-tooltip-ink`, `--ds-chart-region-empty`, `--ds-chart-region-stroke` — structural
+**Data-visualisation (charts):** brand-aware, used by the chart layer (§7). All twelve categorical series clear WCAG 1.4.11's 3:1 against the page; the worst is `--sa-chart-cat-2` at 3.79:1.
+- `--sa-chart-cat-1` … `--sa-chart-cat-12` — categorical series (mutually distinguishable)
+- `--sa-chart-seq-50` … `--sa-chart-seq-900` — sequential single-hue ramp (choropleth, heatmap)
+- `--sa-chart-div-neg-strong/neg/neg-soft/mid/pos-soft/pos/pos-strong` — diverging (signed data)
+- `--sa-chart-trend-up/down/flat` — KPI trend
+- `--sa-chart-grid`, `--sa-chart-axis`, `--sa-chart-tooltip-bg`, `--sa-chart-tooltip-ink`, `--sa-chart-region-empty`, `--sa-chart-region-stroke` — structural
+
+**Code and terminal specimens (`--sa-code-*`).** The chrome a documentation page needs in
+order to *show* code. **Brand-invariant and theme-invariant on purpose** — a terminal
+specimen that flips to a light surface stops reading as a terminal, so there are no
+`colorModes` or `themes` overrides and the block looks identical under blue, navy, dbim,
+light and dark. Literal values rather than references, for the same reason `chart/cat/*`
+is: the set is tuned against its own background, and a brand swap must not pull one member
+out of that tuning.
+
+- `--sa-code-bg` — the block surface · `--sa-code-shell` — the terminal *window*, one step
+  darker so the titlebar reads as chrome and the code reads as content
+- `--sa-code-text` (12.95:1) · `--sa-code-comment` (5.09:1) · `--sa-code-keyword` (6.04:1)
+  · `--sa-code-string` (11.37:1) · `--sa-code-builtin` (9.58:1) — every foreground role
+  clears AA against `--sa-code-bg`; `comment` is the floor, so re-measure if it is lightened
+- `--sa-code-border` / `--sa-code-borderStrong`, `--sa-code-chrome` / `--sa-code-chromeHover`,
+  `--sa-code-chromeText` (4.52:1) / `--sa-code-chromeTextStrong` — titlebar and affordances
+
+**Not published as Figma variables**, deliberately: Figma's own documentation pages show
+code as text and images, so a designer never binds to these, and publishing them would add
+thirteen entries to the Palette picker that no frame can use. The exclusion carries that
+reason in `figma.variables.json` rather than defaulting to "no mapping defined".
+
+**Do not hand-colour code.** Use `TerminalCode` / `CodeBlock` and the `Syn.*` parts from
+`docs-kit`; the palette existed as three independent hand-rolled copies before it was a
+namespace, which is what these tokens exist to prevent.
 
 ### Shape Tokens
 
@@ -954,7 +1108,10 @@ All components are exported from `@mosje/design-system`. Import from the package
 **Rendering (intended approach)**: icons render as an **icon font (text glyph)** via ligatures — i.e. the glyph is a text character in the `Material Symbols Rounded` family, **not** an inline `<svg>` and not a per-icon component. This is the house standard used everywhere applicable (e.g. the navbar mega-menu chevron).  
 **Standard config**: family `Material Symbols Rounded`, **weight 300** (Figma style "Light"), size `24`, optical fill `0`. Colour via `currentColor`/`--ds-*` token — never a hardcoded hex.  
 **Setup**: Load `import "@mosje/design-system/icons.css"` once in the app root (this is the **only** step — it declares the `@font-face` for Material Symbols Rounded + the `.material-symbols-rounded` class). No per-app `<link>` tag is needed. The font MUST be present wherever the UI renders — a missing font makes the glyph fall back to its literal ligature text (e.g. "chevron_right"). `icons.css` uses a plain inline `@font-face` (pinned to the versioned gstatic woff2), **not** an `@import` — Next/Turbopack silently drops a leading external `@import` from a bundled CSS module, which is why the earlier `@import`-based file loaded the class but never the font. To go CDN-free (offline kiosks / no-third-party-CDN policy) self-host that woff2 and swap the `src` — see the recipe in `icons.css`.  
-**Usage**: `<Icon name="home" size={24} />` (wraps the font glyph; always `aria-hidden` for decorative icons, `aria-label` on icon-only buttons).  
+**Sizes**: `16 / 20 / 24 / 32 / 40 / 48 / 64`. DBIM 3.0 §3.4 (Figure 9) publishes four — 24, 32, 48, 64 — and all four are here; those are FRAMES including 2px padding per edge, so their live area is size − 4 (24→20, 32→28, 48→44, 64→60). The other three are kept **deliberately**: §3.4 governs the downloadable asset bank, it does not forbid a smaller inline glyph, and **16px beside 14px body text is the estate's most-used icon size** (358 of 713 call sites). A standard's list is a floor, not a ceiling — see `.claude/rules/standards-precedence.md`. Tokens are named for the pixel value (`--sa-icon-size-16` …) so a name cannot drift from what it renders.  
+**Figma text styles**: `Icon/16 · 20 · 24 · 32 · 40 · 48 · 64`, each Material Symbols Rounded / **Light**, with `fontSize` and `lineHeight` **bound to `icon/size/*`** so a change to the scale reaches every style. Prefer the `Icon` **component** for normal work — it carries the size variants and the `icon` text property. The styles exist so a glyph that is already a text node can be *bound* rather than hand-set: they took the Icons documentation from 62% to 98% of text on a published style, converting 140 declared exemptions into real bindings.  
+**Usage**: `<Icon name="home" size={24} />` (wraps the font glyph).  
+**Accessibility — DECORATIVE BY DEFAULT (changed v0.18.2)**: the glyph is real text, so an unmarked icon is announced by a screen reader as its ligature ("arrow back"). The component therefore hides itself: no `aria-label` ⇒ `aria-hidden="true"`; `aria-label` given ⇒ `role="img"` and announced; an explicit `aria-hidden={false}` still wins. **Do not add `aria-hidden` to decorative icons — it is already the default.** For an icon-only control the label belongs on the **button**, not the glyph: `<button aria-label="Search"><Icon name="search" /></button>`. This replaced a convention that was being missed at **533 of 718** call sites.  
 **Rules**:
 - Use the Material Symbols Rounded **font glyph** for any icon in the Material set — never inline SVG for those.
 - Brand/social marks (National Emblem, Digital India, etc.) that are **not** in Material Symbols use inline SVG.
@@ -1640,7 +1797,8 @@ inventing a page-local variant.
 **Rules**:
 - Only one `<h1>` per page.
 - All sections must have an `id` for deep-linking.
-- Content max-width: `1280px`. Prose sections: `max-w-prose` (`65ch`).
+- Content max-width: use `.sa-container` (UX4G 1200 / 1320 — see §1). Never a literal.
+  Prose sections: `max-w-prose` (`65ch`).
 
 ---
 
@@ -1659,16 +1817,29 @@ Ensure the generated contract is valid:
 npm test -w @mosje/tokens
 ```
 
-### Figma Code Connect
+### Figma Code Connect — NOT SET UP (blocked on plan)
 
-Visual components are synced with the designer Figma library using Code Connect. See `/sync-figma` and `docs/research/figma-code-connect-readiness.md` for sync workflows.
+**Do not assume a Figma component carries our code snippet — none do.** Code Connect
+needs a Developer seat on an Organization/Enterprise plan. Verified 2026-08-12: zero
+mappings in the SAMAVESH file, zero `*.figma.ts(x)` in the repo, no
+`@figma/code-connect` dependency. Do not author mapping files in anticipation; they
+cannot be published and read as a finished integration.
+
+**What syncs code ↔ Figma today:** tokens through `@mosje/tokens` (DTCG → Style
+Dictionary), and on the Iconography page the size scale (`iconSize`) and the 223-icon
+catalogue, both **generated** from their sources. Everything else is manual and drifts
+— prefer generating a fact over transcribing one.
+
+Status, the per-component node map, and the Icon mapping (Figma `Size` variant → `size`,
+Figma `icon` text property → `name`): `docs/research/figma-code-connect-readiness.md`.
+Sync workflow for tokens: `/sync-figma`.
 
 ### Adding a New Component — Contribution Checklist
 
 - [ ] Component is not already in the catalogue (check `index.ts` before building)
 - [ ] Component uses only semantic `--ds-*` tokens (no hardcoded hex)
 - [ ] Implements all 7 interactive states (Normal, Hover, Focus, Active, Loading, Error, Disabled)
-- [ ] Passes WCAG 2.1 AA colour contrast — verify with browser DevTools Accessibility panel
+- [ ] Passes WCAG 2.2 AA colour contrast — verify with browser DevTools Accessibility panel
 - [ ] Has a paired `.css` file in the same directory as the component `.tsx`
 - [ ] Exported from `index.ts` barrel with full TypeScript types
 - [ ] Added to the Component Catalogue section in this `design.md`

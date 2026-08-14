@@ -22,9 +22,112 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.19.0",
+    date: "2026-08-13",
+    current: true,
+    changes: [
+      { kind: "Fixed", text: "THE MASTHEAD NO LONGER MISALIGNS WITH THE PAGE. SiteHeader defaulted to a hardcoded maxWidth of 1320 while all 22 website section files capped at 1280, so above a 1320px viewport the header's content column ran 20px wider on each side than the content beneath it and the National Emblem did not line up. Verified fixed in the running hub: header and page both measure 1200 from x=150 at a 1500px viewport, and both measure 1320 from x=240 at 1800px" },
+      { kind: "Changed", text: "THE ESTATE ADOPTS UX4G 3.0'S TWO-STEP CONTENT CONTAINER — 1200 at desktop, 1320 at desktop XL, per UX4G's 'Grid and layout' section. Four widths had been shipping at once: UX4G specified 1200, container/content said 1280 with no consumer anywhere, 22 files hardcoded that same 1280 as a literal beside it, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. container/content is now 1200 and container/contentXl (1320) is new" },
+      { kind: "Added", text: "ref/breakpoint/desktopXl (1768) — the anchor where the container widens. UX4G names the desktop-XL step but publishes no breakpoint for it, so this takes the estate's own desktop-XL design frame rather than inventing a number. It is NOT part of the type curve: clamp() still interpolates between mobile and desktop and tops out at 1280, so no glyph resizes" },
+      { kind: "Added", text: "foundations/layout.css ships .sa-container — the centred content column, with the cap AND the responsive side margin (grid/margin 16/24/32) in one place. It replaced 22 hand-copied `mx-auto max-w-[1280px] px-4` strings. The one unavoidable literal is the 1768px media-query threshold, because a CSS media query cannot read a custom property; it is duplicated FROM ref/breakpoint/desktopXl and says so" },
+      { kind: "Changed", text: "SiteHeader's maxWidth prop is now an override rather than a default. Left unset it binds --sa-container-page, the same variable the page content uses, which is what makes the two columns provably identical rather than coincidentally equal" },
+      { kind: "Added", text: "PAGE-SKELETON TOKENS — layout/bar/height (46), layout/flag/width (33), layout/masthead/minHeight (72), layout/chrome/minHeight (118) and layout/sidebar/width (300), measured from the portal Handoff at 1440x1068. Only genuinely fixed measurements are tokens: the brand row, the page header and every card HUG their content, so they carry a minimum at most. A shell must never be sized by subtracting a chrome height from the viewport — AppShell is three grid rows, auto/auto/1fr, and layout/chrome/minHeight is for sticky offsets only" },
+      { kind: "Added", text: "THE LAYOUT COMPONENTS SHIP — Container, Grid, GridItem, Band, PageHeader, AppShell and SiteLayout. Primitives compose the content column; templates compose the page. AppShell is a grid whose chrome rows are auto and whose body row is 1fr, so nothing subtracts a chrome height from the viewport; its `pending` prop replaces the `return null` that flashed a blank page while a portal hydrated, and below the tablet anchor its sidebar becomes a drawer rather than a narrowed column. All are presentational — no store, no router, no redirect" },
+      { kind: "Added", text: "FOUR LAYOUT GRID STYLES — Grid/Mobile, Grid/Tablet, Grid/Desktop and Grid/Desktop XL, publishable in Figma so a designer applies one to a frame instead of typing column counts. Twelve tracks at every breakpoint: a child spans more of them on a phone rather than the count changing. design.md's claim of a 4-column mobile grid was stale and contradicted grid/columns, which has always been 12" },
+      { kind: "Fixed", text: "A LAYOUT GRID STYLE IN THE LIBRARY WAS MISLABELLED. 'Container Fixed/940px' held 12 columns of 56 at a 24 gutter — which sums to 936, the inner width of a 960 container, and 940 is not a value in UX4G's ladder (540/720/960/1140/1320). The columns were right and the name was wrong, so it is renamed to 960px and its edge marker corrected from 916 to 936. 'Container Fixed/720px' had a marker describing a 752 container; also corrected. An exact duplicate differing only in 'Col' vs 'Cols' is deprecated by rename, and a 1200px style was added for the estate cap" },
+      { kind: "Added", text: "container/2xl (1320) completes UX4G's container ladder — the one step that was missing, which is why contentXl had to restate the literal. contentXl now ALIASES it, in code and in the library, so the estate cap and UX4G's ladder cannot drift apart" },
+      { kind: "Changed", text: "PortalLoginShell's chrome rows use the estate container instead of max-w-screen-2xl (1536), so the emblem lines up with the same column as every other page. That was the last of the four widths" },
+      { kind: "Fixed", text: "The Figma exporter dropped the entire layout/* group — the tokens emitted to CSS but never reached the variables payload, so the library could only have carried them by hand. That is exactly how layout/bar/height and layout/flag/width came to exist in the published library with nothing in the build defining them. figma-variables.mjs now routes layout/* to Space alongside grid/* and target/*" },
+    ],
+  },
+  {
+    version: "v0.18.2",
+    date: "2026-08-12",
+    changes: [
+      { kind: "Fixed", text: "ICON IS NOW DECORATIVE BY DEFAULT, which closes an accessibility gap at 533 of 718 call sites. A Material Symbols glyph is real text content, so an unmarked <Icon name=\"arrow_back\" /> is announced by a screen reader as the stray word \"arrow back\". The Iconography page has always stated the rule — every icon is either hidden from assistive technology or given a label, with no third option — but as an unenforced convention depending on 533 separate acts of memory, that is what it converged to. The component now decides: aria-label given means meaningful, so role=\"img\" and announced; otherwise aria-hidden. An explicit aria-hidden={false} still wins. Editing 533 call sites would have fixed today's instances and none of tomorrow's" },
+      { kind: "Changed", text: "THE ICONOGRAPHY DOCS PAGE IS SYNCED WITH FIGMA — four sections against Figma's eight, so the two surfaces documenting one system said different things. It now mirrors Icons — Documentation section for section: 01 How it works, 02 The catalogue, 03 Sizes, 04 Weight, 05 Colour, 06 Bespoke marks, 07 Accessibility, 08 Handoff. The prose is the Figma prose; the numbers come from code" },
+      { kind: "Added", text: "The 223-icon starter set is GENERATED from Figma section 02 into icon-catalogue.data.ts rather than hand-listed, so the web catalogue cannot drift from the sheet. On the web it filters and copies on click — Figma's own section states the problem it is solving (\"a text property cannot be browsed visually, so this sheet is the browser\") and a static grid of 223 tiles is a weak answer to it" },
+      { kind: "Changed", text: "Section 05 documents all NINE --sa-icon-* colour roles, not the six Figma swatches. info, disabled and inverse ship in the system with no swatch; documentation that under-reports what ships is how a colour gets reinvented as a literal. The gap is recorded as Figma-side drift rather than quietly matched" },
+      { kind: "Fixed", text: "SIX HAND-DRAWN DUPLICATES OF MATERIAL SYMBOLS WERE LIVING IN THE DESIGN SYSTEM'S OWN DOCS CHROME — the strictest case under the documentation-linkage rule, which requires documentation to be BUILT from the system it documents. terminal-code.tsx drew its own tick and clipboard, docs-header.tsx its own X, hamburger and magnifier, cmd-search.tsx another magnifier. All six are now the Icon component, and each landed ON the size scale (14 → 16, 18 → 20) rather than preserving an off-scale value" },
+      { kind: "Added", text: "tools/icon-audit/check.mjs — a repeatable audit of whether the estate uses the system the page documents. It reads the size scale and the catalogue from their sources rather than holding copies, so it tracks them. Reports, does not gate: 213 of 762 call sites are off the seven-step scale, and moving them changes rendered size in live portals, which is a human decision. Full findings in docs/design-system/icon-audit.md" },
+    ],
+  },
+  {
+    version: "v0.18.1",
+    date: "2026-08-12",
+    changes: [
+      { kind: "Removed", text: "THE TEN DEAD [data-theme=\"dark\"] RULES ARE GONE. The appearance axis was retired earlier — tokens.css emits no [data-theme] block and nothing anywhere sets the attribute — but ten hand-written companion rules outlived the token layer they depended on, in globals.css, design-system.css, hero.css and skeleton.css. They could never match, so they were not styling a dark mode; they were describing one that does not exist" },
+      { kind: "Changed", text: "DELETED rather than rewired to the UX4G widget's .dark-mode, which was the other option. The accessibility consolidation spec (§3) is explicit: the widget owns citizen-facing accessibility dark, tokens own product brand, and the two must not be wired together without a deliberate decision and QA, because both applying at once double-darkens. Re-pointing these ten rules would have re-added a capability that was removed on purpose. The spec now carries a status note saying the caveat is moot, since the design-side half no longer exists" },
+      { kind: "Fixed", text: "A stale nested apps/storybook/.storybook/.storybook/ was found and removed. Storybook loads .storybook/preview.tsx; this second copy was never loaded and had drifted — it still declared the retired Theme toolbar (light/dark/hc), still used the pre-rename brand ids Blue-Light and Blue-Dark, and was missing the icons.css import. It was the only place in the repo that still set data-theme, which is what made the dead rules look live" },
+      { kind: "Fixed", text: "Two documentation claims corrected against the code. website.css said the hub's attribute-based dark variant still stands — it does not exist, and saying so invited someone to write a dark: utility that would silently never apply. The Accessibility page said .dark-mode is separate from the design system's data-theme token theming, which now reads as though data-theme is live; it names data-brand instead, and states that .dark-mode is the estate's only dark appearance" },
+      { kind: "Changed", text: "Skeleton keeps its history without the dead rule. The comment explaining why the shimmer must never key off a brand id — [data-color-mode$=\"-dark\"] once caught blue-dark and ux4g-dark, which render on LIGHT surfaces — is worth more than the rule was, so it stays as a note for whoever reintroduces a dark surface" },
+      { kind: "Fixed", text: "THE DESIGN-SYSTEM PACKAGE IS NOW GATED TOO — 472 unbound values to zero, and packages/design-system is no longer an advisory scope in tools/ds-linkage/config.json. The stylelint gate had covered raw hex in component CSS; it could not see inline style objects, var() fallbacks, or padding and gap literals, which is where nearly all of this lived" },
+      { kind: "Fixed", text: "SEVEN LEGACY --color-* NAMES WERE DEFINED NOWHERE, so their hardcoded fallbacks were what actually painted: --color-navy #13366b, --color-saffron #ec6a1f, --color-line #e2e8f0, --color-ink-muted/#475569, --color-ink-hint #94a3b8, --color-surface-muted #f5f7fb. All 16 usages sat in PortalLoginShell — the login page every portal renders — so that screen was painted in Tailwind-default slate and an off-brand navy that no token and no brand switch could reach" },
+      { kind: "Fixed", text: "FOUR WCAG AA FAILURES IN THAT SAME LOGIN SHELL, all found by measuring rather than looking. Hint text 2.56:1 (now 10.88:1). Bold saffron on the dark bar 4.93:1, and briefly 3.13:1 when it was first bound to the on-white step of the ramp — the correction to the light step measures 6.63:1 live. The SIGNING INTO label 3.53:1 (now 9.58:1). The Beta badge 3.56:1 (now the system's own bg/ink pair). Three text nodes also sat at 10px, under the 11px floor the type scale declares" },
+      { kind: "Fixed", text: "231 var(--token, fallback) FALLBACKS DROPPED ACROSS 47 FILES, 128 of which disagreed with their token. Nearly all the type ones were stale px copies left behind when the scale went fluid: --sa-type-title-1-size fell back to 16px against a clamp() that resolves to 18px and up; --sa-shape-lg to 16px against 12px; --sa-shape-xs to 2px against 4px" },
+      { kind: "Changed", text: "85 declarations snapped onto the published spacing scale. The library had been writing 3, 5, 6, 7, 10, 11, 13, 14 and 18px directly — off the 8px grid its own Spacing page teaches — in chips, tooltips, chart legends and metric cards. Ties round UP, so tap targets grow rather than shrink. Where a value had no step in its own family but an exact one in a sibling (padding 40 = stack/2xl, 48 = section/m, gap 20 = padding/l) the exact cross-family token wins over an inexact same-family one, so those pixels did not move at all" },
+      { kind: "Fixed", text: "Every remaining scrim, shadow and glass edge in lightbox, side-sheet, skeleton, media inputs, data-table and the inverse Button now resolves through a token via color-mix or --sa-color-transparent-white-*, instead of a hand-written rgba" },
+      { kind: "Added", text: "A GATE FOR THE DOCUMENTATION-LINKAGE RULE (tools/ds-linkage/check.mjs, wired into npm run check and the Design System Quality workflow). The rule said documentation must be BUILT from the design system; the only check was a grep in a markdown file, and the surface drifted back to raw values anyway. The grep was wrong in both directions — it flagged every prose mention of the 8px grid, and missed inline style objects, Tailwind arbitrary values, .css files entirely, and bare numerics like fontSize: 13, which React silently turns into px and no px-grep can ever see" },
+      { kind: "Added", text: "code/* — the code and terminal specimen palette, 13 tokens. It did not exist, so the SAME six hexes had been hand-rolled independently in THREE places (home page, contributing page, playground), with two different terminal blacks (#12141c, #1e2130) that were never meant to differ. Brand- and theme-invariant on purpose: a terminal that flips to a light surface stops reading as a terminal. Every foreground role clears AA against code/bg, measured, with comment the floor at 5.09:1" },
+      { kind: "Added", text: "TerminalCode gained CodeBlock and Syn.Comment / Syn.Keyword / Syn.Str / Syn.Builtin in docs-kit, so a page never colours a token of code by hand again" },
+      { kind: "Fixed", text: "42 var(--token, fallback) FALLBACKS DROPPED, AND 15 OF THEM DISAGREED WITH THEIR TOKEN. --sa-shape-sm fell back to 4px against a real 6px; --sa-color-status-danger fell back to a bright #DC2626 against a real #8b1f18; --sa-shape-xl to 20px against 16px. A fallback is a second, stale copy of a value that no build ever checks. Treat it as a defect, not a safety net" },
+      { kind: "Fixed", text: "TWO ACCESSIBILITY DEFECTS FOUND BY MEASURING RATHER THAN LOOKING. The terminal titlebar sat at rgba(255,255,255,0.4) = 4.1:1, below AA; it is now 0.45 = 4.52:1. A WCAG badge in the a11y checklist was set at 10px, under the 11px floor the Typography page itself declares; it is now label-3" },
+      { kind: "Fixed", text: "The docs header height 56px was written out in SEVEN files (shell grid, two scroll-margins, three heading offsets, an IntersectionObserver rootMargin), so changing the header silently broke anchor scrolling in six of them. One declaration now, --docs-header-h, read from JS via getComputedStyle where CSS cannot reach" },
+      { kind: "Fixed", text: "The roadmap's later column used --sa-color-text-muted as a BACKGROUND — a text role standing in for a surface role, which is why it had no on- companion and carried a hardcoded white. Each tone now carries its own ink: 11.67:1, 4.64:1 and 9.73:1. Binding it by NAME to on-bg-neutral-bold would have put dark ink on a dark chip at 1.48:1; the arithmetic caught it, the name did not" },
+      { kind: "Fixed", text: "Stale documentation corrected against the code it describes: the contributing page still told people to run npm run dev:website / dev:smile / dev:pm-ajay / dev:docs on :3000 — none of which have existed since the single-origin consolidation — and a comment claimed the mono token is IBM Plex Mono, which the token's own description records as tried briefly and reverted. It is a system stack" },
+      { kind: "Removed", text: "The last three vectors that duplicated a Material glyph are gone — external-link, language-switch and syllabus. They were held back because instances existed; by this point only two remained, both syllabus inside Tab components, and both were MIGRATED to the Icon component at auto_stories before the components were deleted. Nothing broke. Six bespoke marks remain on the page and NONE of them resolves to a Material ligature: Aadhaar, certificate, facebook, indian-flag, Indian Country Code, x" },
+      { kind: "Changed", text: "Iconography page reorganised so every group is a PEER of the others. It had four different treatments — a bare component set with no label, a raw frame, and two sections — which is why it read as clutter. Now four numbered sections, one shell each: 1 The component, 2 Bespoke marks, 3 Emblems logos & misc marks, 4 Organisation logos, then the documentation. Same card, same padding, same heading-plus-note, so grouping is unambiguous rather than implied by proximity" },
+      { kind: "Fixed", text: "THE ICON MASTER COMPONENT HAD SIX OF ITS SEVEN VARIANTS STACKED AT 0,0. Only Size=24 had a position, so the set rendered as one overlapping blob 264x24 — a 64px variant inside a 24px box. Caused by an earlier reorder loop that appended each variant without repositioning it. The variants now sit in a baseline-aligned row, 16 through 64, and the set is sized to contain them: the component reads as a size ladder, which is what a variant set is for" },
+      { kind: "Fixed", text: "Emblems and org logos restructured into labelled cards — State emblems, Union Territory emblems, Government & programme marks, the org-logo set — each with a heading and a one-line note, each grid filling its card and wrapping wide instead of sitting in a 340px column inside a 1520px card. The `Sample Brand Logo` is now named as the PLACEHOLDER it is, so nobody reads it as an MoSJE mark" },
+      { kind: "Fixed", text: "THE 223-ICON CATALOGUE WAS RENDERING AS 223 EMPTY SLIVERS. Every cell had collapsed to 10px tall with no icon and no label — resize() was called AFTER setting layoutSizingVertical to HUG, and resize resets sizing back to FIXED. The previous entry claimed the catalogue was rebuilt; structurally it was, visually it was blank. Rebuilt with width set before the sizing modes, which is the documented order" },
+      { kind: "Fixed", text: "Iconography page reflowed to a single 1680px column with even gaps: Icon component, bespoke marks, emblems and logos, org logos, documentation. The bespoke frame was still a 3061px single row sized for the 89 marks it used to hold and now wraps at column width for the 9 that remain; a 17x30 orphan group left behind by the logos-page merge is gone" },
+      { kind: "Added", text: "FIGMA: seven Icon TEXT STYLES — Icon/16 through Icon/64, Material Symbols Rounded Light, with fontSize and lineHeight BOUND to icon/size/*, so a change to the scale reaches every style. This was the right answer to `is a type style the correct way to implement font icons`: a glyph IS text, and a text node with no style is an unbound node. Applying them took the Icons documentation from 62% to 97.8% of text on a published style, turning 140 declared exemptions into real bindings. The component still carries the size variants and the icon property and remains the normal way to place an icon" },
+      { kind: "Changed", text: "Reviewed all 228 icon components in the MoSJE Portal DS file. 155 resolve to a Material glyph and need no vector at all; only 7 are genuinely bespoke — Aadhaar, the Indian flag, the X logo, Facebook, Indian Country Code, State Public Service Commissions and a certificate placeholder. Crucially about 100 of them are `name/active` + `name/default` or `filled` + `outline` PAIRS: that is one icon on Material's FILL axis, not two icons, so roughly half the library is a duplicate of the other half" },
+      { kind: "Changed", text: "The catalogue is now 223 icons — the estate's own set unioned with every Material icon the Portal DS calls for — each rendered live from the component. It is a starting point, not a limit: any Material name works" },
+      { kind: "Changed", text: "FIGMA: one Iconography page. `Logos and Misc Icons` and `Org Logos` merged in as labelled sections — state and UT emblems, the org-logo set — and both pages deleted. The page now reads top to bottom: Icon component, bespoke marks, emblems and logos, org logos, documentation. figma.ts drops the now-dangling logosIcons id, which had no callers" },
+      { kind: "Removed", text: "39 more bespoke vectors, on the evidence already sitting in the file: every mark carries an MI: annotation naming its Material counterpart, and where that name resolves to a real glyph the vector is a duplicate — gavel for Court Judgments, quiz for FAQ, home for the navigation home pair. 42 of 48 tested redundant; 39 had zero instances and are gone. external-link, language-switch and syllabus are superseded but STILL STANDING because instances of them exist — deleting a component breaks every instance, so each carries a migrate-then-delete note instead" },
+      { kind: "Fixed", text: "USAGE COUNTS ARE OUT OF THE DOCUMENTATION. `358 uses`, `713 icon usages across 238 files` and the like are snapshots of the codebase, not properties of the system — stale the next time anyone writes an icon, with nothing to regenerate them. Each size now states what it is FOR, which does not rot. The same reasoning that moved the type scale and the icon scale out of hand-typed lists" },
+      { kind: "Changed", text: "Success and danger filled buttons move to their bg bolder rungs, finishing what v0.18.0 started for primary: #004220 to #00542B, and #8B1F18 to #AA2F25. Note the direction — for these two the change LOWERS contrast, 11.67:1 to 9.12:1 and 9.10:1 to 6.68:1, where primary's raised it. Both stay far clear of the 4.5:1 floor. The trade is systemic consistency, not accessibility: a fill is painted from the bg slot in every family, or the rule is not a rule" },
+      { kind: "Fixed", text: "The filled Button hardcoded its label colour to primary's ink — success and danger painted their text with a foreground measured for a different fill. All three resolve to #ffffff today, which is why nothing looked wrong and nothing caught it. Each variant now declares its own --_on, so the measured pairing cannot silently diverge if any of those inks ever moves" },
+      { kind: "Changed", text: "Peer actions now read as peers. A primary, success and danger button sitting in one row previously drew from two different ladders — one fill slot and two ink slots — so success and danger were visibly darker than primary for no reason a reader could infer" },
+    ],
+  },
+  {
+    version: "v0.18.0",
+    date: "2026-08-12",
+    changes: [
+      { kind: "Removed", text: "FIGMA: the `Icons — Material Symbols` page is gone. A hand-built v0.9 sheet — font spec, code usage and about 40 icons drawn as plain frames — with ZERO components and ZERO instances, and unreferenced from code. Every part of it is covered by the Icons documentation: the font spec by sections 04 and 05, the code usage by section 08, and its 40-icon sheet by a 117-icon catalogue rendered live from the component rather than redrawn" },
+      { kind: "Fixed", text: "The Icons page is down to three nodes in reading order — the Icon component, `Bespoke marks — no Material Symbols equivalent` (52), and the documentation. Cleared out: 37 display frames still holding artwork for components deleted in the previous pass, an empty `Rounded` section, a stray vector `search` component Material already draws, a misnamed `Filled` section stranding the `ministry` mark, and one exact duplicate of `Department of Personnel & Training` — all with zero instances" },
+      { kind: "Added", text: "tokens.ts now exports iconSize, READ OUT OF THE STYLESHEET rather than listed in the generator — so adding or removing a step needs no edit anywhere else. The iconography docs page renders the scale from it instead of hand-typed numbers, which is what let that page sit on 16/20/24 while the tokens had grown to seven steps. Same failure the typography data table had before it was generated" },
+      { kind: "Fixed", text: "Iconography docs rebuilt against the real scale: all seven sizes, each tagged DBIM or Interface, with its token name, its live area where DBIM defines one, and what it is for. Zero hardcoded values left in the page's style objects. Figma section 01 still told designers to pick 16, 20 or 24 — corrected" },
+      { kind: "Changed", text: "FILLED PRIMARY BUTTONS MOVED ONE RUNG DEEPER, from #0373DF to #005EB9. White-on-primary goes 4.64:1 to 6.36:1, and Navy 8.77:1 to 12.61:1. 36 solid fills across the estate plus the DS Button. The ladder already said this should be so: a bg rung sits one step deeper than the ink of the same family precisely because a fill carries white text while an ink sits on the page. The button had been reaching past its own system" },
+      { kind: "Fixed", text: "The DS Button painted its filled background from a TEXT token. Its single --_color drove background, border AND outlined ink at once, so there was no way to move the fill without dragging outlined text with it. Split into --_fill and --_color: filled uses the bg slot, outlined and text keep the ink at 4.64:1 against the page, which is where that value is correct" },
+      { kind: "Changed", text: "What did NOT move, and why. Success and danger keep ink as their fill — their bg bolder rungs are different values (#00542b, #aa2f25), so moving them is a separate design decision rather than a consequence of this one. Gradients and color-mix washes keep the lighter value deliberately: a wash is not a fill and does not carry text. Links, borders and icons keep #0373DF, measured against the page" },
+      { kind: "Changed", text: "design.md sections B and C rewritten onto canonical token names. They still spelled every token in the --ds-* vocabulary retired earlier the same day — the values had been corrected but the names had not, which is its own kind of wrong in the file agents read first" },
+    ],
+  },
+  {
+    version: "v0.17.0",
+    date: "2026-08-12",
+    changes: [
+      { kind: "Fixed", text: "ICON SIZES 16, 20 AND 40 ARE BACK. Earlier the same day the scale was narrowed to DBIM 3.4's four and those three deleted, reading section 3.7.i as exclusive. Withdrawn: 3.4 publishes a downloadable ASSET BANK in four sizes, it does not forbid a smaller inline glyph — and 16px beside 14px body text is 358 of 713 call sites because it is the right size there. Narrowing would have visibly enlarged icons in every dense table, button and form row to make a checklist go green. The scale is 16/20/24/32/40/48/64: DBIM's four, all present, plus the three steps interface work needs" },
+      { kind: "Added", text: "A precedence rule, so this does not recur: current design-craft standards first, then DBIM, GIGW and UX4G fitted in wherever they do not hamper quality. When a standard specifies a set, ADD what is missing and never DELETE what quality needs — a standard's list is a floor, not a ceiling. Accessibility is the one thing never traded against, because accessibility IS quality. .claude/rules/standards-precedence.md, referenced from CLAUDE.md" },
+      { kind: "Changed", text: "ICON SIZES ARE NOW DBIM'S, NOT OURS. DBIM 3.0 section 3.4 (Figure 9) defines exactly four icon sizes — 24, 32, 48, 64 — and section 3.7.i makes them mandatory. The scale held 16, 20, 24, 32, 40: three sizes DBIM does not sanction, and two of its four missing entirely. Now exactly the four, named for their pixel value (--sa-icon-size-24 …) rather than t-shirt letters, because a letter can quietly come to mean a different number — which is exactly how the retired --ds-text-title-* family shipped a name that resolved to another role" },
+      { kind: "Changed", text: "Both sides were pushed and then read back independently rather than asserted: the built payload and the live Figma library each check to baa9e208:85. md and lg were renamed in place to 24 and 32 (same values, so ids and any bindings survived); 16, 20 and 40 were removed with evidence of zero consumers — the only occurrences of icon-size- in source were the five declarations in tokens.css itself, and Icon takes a raw size number that never read the scale" },
+      { kind: "Fixed", text: "Deleting a variable is what strands a canvas node on a ghost, so the ghost sweep was re-run rather than assumed: all 68 pages, 46,710 nodes, 89,483 variable references, plus local styles and every variable-to-variable alias. The three removed ids are bound NOWHERE, and no new ghost appeared — 25 distinct local ghosts seen, every one already in the record" },
+      { kind: "Added", text: "Figma: one Icon component replaces the icon library. A text property takes any Material Symbols name, so all ~3,000 icons are reachable from a single component; 44 vector duplicates of icons Material already draws were deleted, and the 54 bespoke MoSJE marks Material has no equivalent for (Aadhaar, SHe-Box, Swachh Bharat, indian-flag, the navigation/* pairs) stay as vectors. New 10-section Icons documentation page. OPEN: 656 of 713 call sites still render at off-DBIM sizes" },
+      { kind: "Removed", text: "THE LEGACY --ds-* VOCABULARY IS GONE. All 341 tokens, retired in one pass. Nothing emits them: zero occurrences in tokens.css, tokens.ts, tailwind-preset.cjs, ux4g.css or the Figma payload, and zero references in source. 3,561 call sites across 162 files were moved to the canonical --sa-* token each legacy name already resolved to, so the migration was value-preserving BY CONSTRUCTION rather than by inspection — 0 of 192 distinct mappings change a rendered value" },
+      { kind: "Changed", text: "The proof is the re-baselined ux4g contract fixture: 4,433 removals, every single one a --ds-* name, 208 additions (the new Tier-2 tokens), and ZERO changed values across all 13 selector contexts — every brand, every axis block. Brand swap, brand-invariance of secondary and accent, and the six DBIM previews were re-verified in the browser after the migration and all still behave" },
+      { kind: "Added", text: "Three Tier-2 groups had to exist first, because 320 usages had no canonical home and were binding Tier-1 primitives by proxy: --sa-shape-* (corner radius, 12 steps), --sa-font-latin/display/mono alongside the existing devanagari, and --sa-stack-2xl (40px). It is called shape rather than radius because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 radius group self-references the Tier-1 scale it aliases — the build fails with 12 reference errors" },
+      { kind: "Fixed", text: "About 40 references that RENDERED NOTHING, found because the migration had to resolve every name. --ds-space-2 through -12, --ds-line, --ds-border-control, --ds-leading-label-2 and --ds-ink-hint were never declared anywhere, so the declarations carrying them were dropped as invalid CSS: the markdown docs pages had no vertical rhythm and two form controls had no border. Nobody had noticed, because a dropped declaration looks like a design decision" },
+      { kind: "Fixed", text: "The Figma library was telling designers, in Dev Mode, to use tokens that no longer exist — 73 font/role variables published var(--ds-type-*) as their codeSyntax. Repointed, and 16 new variables pushed with their GENERATED descriptions. Six of eight collections now agree with the payload byte-for-byte; Palette and Type differ by exactly the documented orphan set (24 x 2 modes and 13 x 6 modes), now recorded with the arithmetic so anything that is not a whole orphan reads as real drift" },
+      { kind: "Removed", text: "Two test files deleted rather than repaired: tier2-parity and type-alias-parity existed solely to prove the canonical and legacy layers agreed, and there is no longer a second layer. legacy-snapshot.json goes with them. A test whose subject no longer exists is not coverage" },
+      { kind: "Changed", text: "The --ds-text-* alias trap retires with the vocabulary that carried it: --ds-text-title-1 resolved to the headline-2 role, which caused four production bugs. The only surviving record of the mismatch is the TYPE_TOKEN table in build/generate-ts-mirror.mjs, which preserves it so the mirror's named exports keep their values" },
+    ],
+  },
+  {
     version: "v0.16.2",
     date: "2026-08-11",
-    current: true,
     changes: [
       { kind: "Fixed", text: "THE SHADOWS WERE TINTED TOWARD A COLOUR THE SYSTEM NO LONGER HAD. The ramp's own description says it keeps \"the SAMAVESH convention of tinting toward ink rather than UX4G's flat black\" — and it was not: five rungs plus the modal scrim carried rgba(31, 36, 40), hand-written from a neutral/800 the ramp rebuild moved to #1e2124. Derived from neutral/800 now, so it cannot drift again. Geometry stays authored; only the ink is generated" },
       { kind: "Changed", text: "Nobody could see it, which is exactly why it needed deriving rather than a one-time correction. Composited over white the old ink and the new differ by dE 0.14 to 0.54 across the ramp's alphas — under the ~1.0 just-noticeable threshold at every rung. A wrong value you can see gets fixed the first time somebody looks at it; a wrong value you cannot see survives every review and is still wrong" },
@@ -91,7 +194,7 @@ const RELEASES: Release[] = [
       { kind: "Changed", text: "dangerScale, warningScale, infoScale and neutralScale are now GENERATED from anchors like every other ramp. They were the four the 2026-08-11 rebuild did not reach, and they still carried what the audit measured: danger/400 and danger/500 were 1.8 L* apart (one colour wearing two names), warning/500 was darker AND duller than 400 (which is what made it read muddy), info/400 and /500 were another near-duplicate pair. All eight ramps now step 4-16 L* apart, monotonic, hue held within ~6 degrees" },
       { kind: "Changed", text: "The warning ramp's anchor MOVED IN HUE, which no other ramp's did, because that ramp disagreed with itself: steps 50-200 sat at hue 75 and steps 300-950 at hue 65. A ramp cannot have two hues. 75.9 wins because it is the hue of the rungs people see most, because it is what amber means rather than orange, and decisively because 65.9 is only 25 degrees from India Saffron — under the hue-separation gate's 30-degree floor. Locking the dark end's hue would have traded one defect for a harder one" },
       { kind: "Changed", text: "THE GREYS ARE DELIBERATELY TINTED, which they always were — the defect was that nobody had chosen the tint. neutral/400 measured hue 256, neutral/500 hue 245 and neutral/950 hue 264, with chroma DROPPING between 400 and 500 while lightness fell. Nobody picked those numbers; independent 8-bit rounding of a nearly-grey colour did. Hue is now locked to the brand's own primary for the whole ramp, with chroma on one arc peaking ~0.016 in the mid-tones. Material 3, Radix and Tailwind's slate all tint their neutrals the same way" },
-      { kind: "Changed", text: "VISIBLE CHANGE, expect it: the neutral ladder was re-cut. It used to put four steps inside its lightest 7.7 L* and then cross the middle in two jumps of 15+, which is why there was exactly one grey between a light surface and a mid grey, and why components kept reaching for a one-off hex the system had no name for. Borders and subtle surfaces are now genuinely visible — --ds-border moves from #f1f3f5 to #dcdee1, --ds-border-strong from #e2e6ea to #c6c9cd" },
+      { kind: "Changed", text: "VISIBLE CHANGE, expect it: the neutral ladder was re-cut. It used to put four steps inside its lightest 7.7 L* and then cross the middle in two jumps of 15+, which is why there was exactly one grey between a light surface and a mid grey, and why components kept reaching for a one-off hex the system had no name for. Borders and subtle surfaces are now genuinely visible — --sa-border-neutral-subtle moves from #f1f3f5 to #dcdee1, --sa-border-neutral-base from #e2e6ea to #c6c9cd" },
       { kind: "Changed", text: "0 and 1000 stay EXACTLY #ffffff and #000000. They are achromatic, which is the whole reason they live on the neutral ramp and on no chromatic one, and tinting them would contradict that. The arc reaches zero at both ends so the steps beside them are true greys too" },
       { kind: "Removed", text: "The destructive button's step override. It shifted the filled progression up to 700/800/900 for one reason — white on dangerScale.600 was 4.40:1 — and that reason is gone. Destructive now uses the same 600/700/800 table as every other intent. A workaround kept past its cause is just an inconsistency nobody can explain" },
       { kind: "Fixed", text: "The ux4g and ux4gdeep demo brands overrode the four status FOREGROUNDS to UX4G's palette but left the TONAL backgrounds on SAMAVESH's ramps, so UX4G's teal #006d75 sat on SAMAVESH's blue infoScale/100 — a mismatched pair that met AA by luck and stopped the moment the info ramp moved. Both halves now come from the same UX4G ramp" },
@@ -150,7 +253,7 @@ const RELEASES: Release[] = [
       { kind: "Added", text: "Set equality between the build payload and the live library is now PROVEN per collection by checksum rather than inferred from counts. Six of the eight collections — including Color, all 472 of it — hash identically; Palette and Type differ only by the 36 orphans now itemised in reference/figma-live.json under $orphans. Counting had been hiding two-way drift: the previous snapshot recorded a Component Options collection that no longer exists, and every earlier check looked only for what was MISSING, never for what the library carried that the source does not define" },
       { kind: "Fixed", text: "The on/* coverage gate asserted a floor (found.length >= 40) and therefore passed while six bg/brand/accent/* fills had no foreground at all — a brand colour wired as far as the palette and stopped. It now derives the expected set from the fills themselves, so a fill that carries content and has no measured ink fails by name. Mutation-tested by deleting a pairing" },
       { kind: "Added", text: "The six accent foregrounds, each chosen BY MEASUREMENT across both brands rather than assumed from the rung name. Accent flips to white ink at bolder, and its bold rung measures 4.60:1 with dark ink — margins that differ enough from primary that inheriting primary's flip point would have shipped an unreadable pairing" },
-      { kind: "Fixed", text: "The neutral ramp's own $description still advertised a 0-1100 range and --ds-neutral-0…1100 after the 2026-08-11 renumbering retired the 1100 step. Stale prose in the token source, describing a token that no longer exists" },
+      { kind: "Fixed", text: "The neutral ramp's own $description still advertised a 0-1100 range and --sa-color-neutralScale-0…1100 after the 2026-08-11 renumbering retired the 1100 step. Stale prose in the token source, describing a token that no longer exists" },
       { kind: "Changed", text: "color/neutralScale/1100 no longer exists under that NAME — it was renamed, not deleted, and no binding was detached. An earlier entry recorded this as an unaccounted hard delete with unrecoverable bindings; that was a fair reading of a missing name but it is wrong. The renumbering was applied as a rename CHAIN (1000 -> 950 first to free the name, then 1100 -> 1000), which is the only safe way to renumber in a published library: renaming preserves the variable id, so every binding follows. Verified against ids captured before the write — VariableID:3791:8969 (was 1000) is now 950, VariableID:3791:8970 (was 1100) is now 1000, both re-read by id afterwards and both resolve. A missing name does not imply a missing variable; only an id lookup can tell the two apart" },
     ],
   },
@@ -380,7 +483,7 @@ const RELEASES: Release[] = [
       { kind: "Changed", text: "Nothing renders differently. This was a rename, not a redesign: all 27 moved token names resolve to byte-identical values in all 7 selector contexts (:root, light/dark/hc, brand, density, portal surface). The --ds-* names your code actually uses did not change at all \u2014 they were retargeted at the new canonical names" },
       { kind: "Added", text: "A visual-contract test that resolves every var() chain in the generated CSS down to a literal, per selector block, and pins all 8,393 of them. A rename must be declared, and the test then proves the old name's old value equals the new name's new value \u2014 so a rename that changes what renders cannot pass quietly" },
       { kind: "Fixed", text: "The Tailwind v4 @theme export (@mosje/tokens/tailwind-v4) aliased 111 custom properties that do not exist. It hand-rolled its target names as --sa-{path}, which drops the tier marker, so every Tier-1 entry pointed at --sa-color-* while the sheet declares --sa-ref-color-* \u2014 every colour utility built on them resolved to nothing. Names now come from toCssName/tierOfFile like everywhere else. No utility name changed; nothing in the estate imports this file yet, which is why it went unnoticed since v0.11.0" },
-      { kind: "Added", text: "A UX4G parity contract that pins the combined tokens.css + ux4g.css sheet. ux4g.css emits --sa-* overrides inside its colour-mode blocks from a hand-typed name table \u2014 that is how the UX4G palette repaints SAMAVESH tokens \u2014 and nothing pinned them, so a rename that forgot that table would have left the UX4G colour modes silently failing to repaint --ds-surface while every other test stayed green" },
+      { kind: "Added", text: "A UX4G parity contract that pins the combined tokens.css + ux4g.css sheet. ux4g.css emits --sa-* overrides inside its colour-mode blocks from a hand-typed name table \u2014 that is how the UX4G palette repaints SAMAVESH tokens \u2014 and nothing pinned them, so a rename that forgot that table would have left the UX4G colour modes silently failing to repaint --sa-bg-neutral-base while every other test stayed green" },
       { kind: "Added", text: "A theming-axis invariant: a page setting data-brand and data-theme together must resolve to a value one of those axes actually declares. 41 properties are declared by both axes, so neither single-axis test can say who wins. It holds today, so combinations are asserted rather than pinned" },
       { kind: "Added", text: "A slot-disjointness guard that fails the build if any word becomes reachable in two slots of the same token path. Two pre-existing ambiguities are pinned rather than fixed (primary/secondary/tertiary as both a brand variant and an ink prominence; visited as both a link variant and a state) \u2014 both are recorded in the spec and cost a token rename to resolve" },
     ],
@@ -514,12 +617,12 @@ const RELEASES: Release[] = [
 ];
 
 const KIND_COLOR: Record<ChangeEntry["kind"], string> = {
-  Added: "var(--ds-success)",
-  Changed: "var(--ds-info)",
-  Fixed: "var(--ds-saffron)",
+  Added: "var(--sa-color-status-success)",
+  Changed: "var(--sa-color-status-info)",
+  Fixed: "var(--sa-color-brand-saffron)",
   // Taking something away is worth its own badge: a reader scanning for "why did that control
   // disappear" should not have to read a paragraph filed under "Changed" to find out.
-  Removed: "var(--ds-danger)",
+  Removed: "var(--sa-color-status-danger)",
 };
 
 export default function ChangelogPage(): React.JSX.Element {
@@ -548,43 +651,43 @@ export default function ChangelogPage(): React.JSX.Element {
 
         <div
           style={{
-            marginTop: "var(--ds-spacing-2xl)",
+            marginTop: "var(--sa-stack-l)",
             display: "flex",
             flexDirection: "column",
-            gap: "var(--ds-spacing-3xl)",
+            gap: "var(--sa-stack-xl)",
           }}
         >
           {RELEASES.map((release) => (
             <article
               key={release.version}
               id={release.version.replace(/\./g, "-")}
-              style={{ scrollMarginTop: "calc(56px + var(--ds-spacing-2xl))" }}
+              style={{ scrollMarginTop: "var(--docs-anchor-offset)" }}
             >
               {/* Release heading */}
               <div
                 style={{
                   display: "flex",
                   alignItems: "baseline",
-                  gap: "var(--ds-spacing-md)",
+                  gap: "var(--sa-stack-s)",
                   flexWrap: "wrap",
-                  paddingBottom: "var(--ds-spacing-md)",
-                  borderBottom: "1px solid var(--ds-border)",
-                  marginBottom: "var(--ds-spacing-lg)",
+                  paddingBottom: "var(--sa-padding-s)",
+                  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
+                  marginBottom: "var(--sa-stack-m)",
                 }}
               >
                 <h2
                   style={{
-                    fontSize: "var(--ds-text-title-1)",
+                    fontSize: "var(--sa-type-headline-2-size)",
                     fontWeight: 700,
-                    color: "var(--ds-ink)",
+                    color: "var(--sa-text-neutral-base)",
                   }}
                 >
                   {release.version}
                 </h2>
                 <span
                   style={{
-                    fontSize: "var(--ds-text-body-2)",
-                    color: "var(--ds-ink-muted)",
+                    fontSize: "var(--sa-type-body-2-size)",
+                    color: "var(--sa-text-neutral-subtle)",
                   }}
                 >
                   {release.date}
@@ -592,12 +695,12 @@ export default function ChangelogPage(): React.JSX.Element {
                 {release.current ? (
                   <span
                     style={{
-                      fontSize: "var(--ds-text-body-3)",
+                      fontSize: "var(--sa-type-body-3-size)",
                       fontWeight: 600,
-                      color: "#fff",
-                      background: "var(--ds-primary)",
-                      padding: "2px var(--ds-spacing-sm)",
-                      borderRadius: "var(--ds-radius-sm)",
+                      color: "var(--sa-on-bg-brand-primary-bolder)",
+                      background: "var(--sa-bg-brand-primary-bolder)",
+                      padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
+                      borderRadius: "var(--sa-shape-sm)",
                     }}
                   >
                     Current
@@ -613,7 +716,7 @@ export default function ChangelogPage(): React.JSX.Element {
                   padding: 0,
                   display: "flex",
                   flexDirection: "column",
-                  gap: "var(--ds-spacing-md)",
+                  gap: "var(--sa-stack-s)",
                 }}
               >
                 {release.changes.map((change, i) => (
@@ -621,7 +724,7 @@ export default function ChangelogPage(): React.JSX.Element {
                     key={i}
                     style={{
                       display: "flex",
-                      gap: "var(--ds-spacing-md)",
+                      gap: "var(--sa-stack-s)",
                       alignItems: "flex-start",
                     }}
                   >
@@ -630,21 +733,21 @@ export default function ChangelogPage(): React.JSX.Element {
                         flexShrink: 0,
                         minWidth: 64,
                         textAlign: "center",
-                        fontSize: "var(--ds-text-body-3)",
+                        fontSize: "var(--sa-type-body-3-size)",
                         fontWeight: 700,
-                        color: "#fff",
+                        color: "var(--sa-on-bg-brand-primary-bolder)",
                         background: KIND_COLOR[change.kind],
-                        padding: "2px var(--ds-spacing-sm)",
-                        borderRadius: "var(--ds-radius-sm)",
+                        padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
+                        borderRadius: "var(--sa-shape-sm)",
                       }}
                     >
                       {change.kind}
                     </span>
                     <span
                       style={{
-                        fontSize: "var(--ds-text-body-2)",
-                        color: "var(--ds-ink)",
-                        lineHeight: "var(--ds-leading-body-2)",
+                        fontSize: "var(--sa-type-body-2-size)",
+                        color: "var(--sa-text-neutral-base)",
+                        lineHeight: "var(--sa-type-body-2-lh)",
                       }}
                     >
                       {change.text}

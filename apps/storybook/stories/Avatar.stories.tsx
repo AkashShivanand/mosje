@@ -74,11 +74,11 @@ export const Sizes: Story = {
 export const Shapes: Story = {
   render: (args) => (
     <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
-      <div style={{ display: "flex", gap: 10, alignItems: "center", color: "var(--ds-ink)" }}>
+      <div style={{ display: "flex", gap: 10, alignItems: "center", color: "var(--sa-color-text-default)" }}>
         <Avatar {...args} shape="circular" initials="RK" />
         <span>R. Kulkarni · District Nodal Officer</span>
       </div>
-      <div style={{ display: "flex", gap: 10, alignItems: "center", color: "var(--ds-ink)" }}>
+      <div style={{ display: "flex", gap: 10, alignItems: "center", color: "var(--sa-color-text-default)" }}>
         <Avatar {...args} shape="rounded" initials="BK" />
         <span>Brahma Kumaris · Spiritual organisation</span>
       </div>
@@ -98,12 +98,12 @@ export const InAList: Story = {
         ["RK", "R. Kulkarni", "District Nodal Officer, Pune"],
         ["IQ", "Imran Qureshi", "Block Nodal Officer, Haveli"],
       ].map(([initials, name, role]) => (
-        <li key={name} style={{ display: "flex", gap: 12, alignItems: "center", color: "var(--ds-ink)" }}>
+        <li key={name} style={{ display: "flex", gap: 12, alignItems: "center", color: "var(--sa-color-text-default)" }}>
           <Avatar {...args} initials={initials} alt="" />
           <span>
             <strong>{name}</strong>
             <br />
-            <span style={{ color: "var(--ds-ink-muted)" }}>{role}</span>
+            <span style={{ color: "var(--sa-text-neutral-subtle)" }}>{role}</span>
           </span>
         </li>
       ))}

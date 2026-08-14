@@ -101,10 +101,30 @@ const COLUMNS: Column[] = [
   },
 ];
 
-const TONE: Record<Column["tone"], { bar: string; chip: string }> = {
-  now: { bar: "var(--ds-success)", chip: "var(--ds-success)" },
-  next: { bar: "var(--ds-primary)", chip: "var(--ds-primary)" },
-  later: { bar: "var(--ds-ink-muted)", chip: "var(--ds-ink-muted)" },
+// Each tone carries the INK that belongs to its own chip colour. It used to be one
+// hardcoded "#fff" for all three, which happened to be legible but said nothing about
+// which background it was legible against — so a chip recolour could not carry its
+// text with it.
+const TONE: Record<Column["tone"], { bar: string; chip: string; ink: string }> = {
+  now: {
+    bar: "var(--sa-color-status-success)",
+    chip: "var(--sa-color-status-success)",
+    ink: "var(--sa-on-bg-status-success-bolder)",
+  },
+  next: {
+    bar: "var(--sa-color-action-primary-default)",
+    chip: "var(--sa-color-action-primary-default)",
+    ink: "var(--sa-on-bg-brand-primary-bolder)",
+  },
+  // `later` used --sa-color-text-muted as a BACKGROUND — a text role standing in for a
+  // surface role, which is why it had no `on-` companion to pair with and ended up with a
+  // hardcoded white. Moved to the real background role: a quiet grey chip with dark ink,
+  // 9.73:1, which also reads as the least-emphasised column, which is what `later` means.
+  later: {
+    bar: "var(--sa-bg-neutral-bold)",
+    chip: "var(--sa-bg-neutral-bold)",
+    ink: "var(--sa-on-bg-neutral-bold)",
+  },
 };
 
 export default function RoadmapPage(): React.JSX.Element {
@@ -128,17 +148,17 @@ export default function RoadmapPage(): React.JSX.Element {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: "var(--ds-spacing-xl)",
-            marginTop: "var(--ds-spacing-sm)",
+            gap: "var(--sa-padding-l)",
+            marginTop: "var(--sa-stack-xs)",
           }}
         >
           {COLUMNS.map((col) => (
             <div
               key={col.phase}
               style={{
-                border: "1px solid var(--ds-border)",
-                borderRadius: "var(--ds-radius-md)",
-                background: "var(--ds-surface)",
+                border: "1px solid var(--sa-border-neutral-subtle)",
+                borderRadius: "var(--sa-shape-md)",
+                background: "var(--sa-bg-neutral-base)",
                 overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",
@@ -151,32 +171,32 @@ export default function RoadmapPage(): React.JSX.Element {
                 }}
                 aria-hidden="true"
               />
-              <div style={{ padding: "var(--ds-spacing-xl)" }}>
+              <div style={{ padding: "var(--sa-padding-l)" }}>
                 <div
                   style={{
                     display: "flex",
                     alignItems: "baseline",
-                    gap: "var(--ds-spacing-sm)",
-                    marginBottom: "var(--ds-spacing-sm)",
+                    gap: "var(--sa-stack-xs)",
+                    marginBottom: "var(--sa-stack-xs)",
                   }}
                 >
                   <h2
                     style={{
-                      fontSize: "var(--ds-text-title-1)",
+                      fontSize: "var(--sa-type-headline-2-size)",
                       fontWeight: 700,
-                      color: "var(--ds-ink)",
+                      color: "var(--sa-text-neutral-base)",
                     }}
                   >
                     {col.phase}
                   </h2>
                   <span
                     style={{
-                      fontSize: "var(--ds-text-body-3)",
+                      fontSize: "var(--sa-type-body-3-size)",
                       fontWeight: 600,
-                      color: "#fff",
+                      color: TONE[col.tone].ink,
                       background: TONE[col.tone].chip,
-                      padding: "2px var(--ds-spacing-sm)",
-                      borderRadius: "var(--ds-radius-sm)",
+                      padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
+                      borderRadius: "var(--sa-shape-sm)",
                     }}
                   >
                     {col.version}
@@ -184,10 +204,10 @@ export default function RoadmapPage(): React.JSX.Element {
                 </div>
                 <p
                   style={{
-                    fontSize: "var(--ds-text-body-2)",
-                    color: "var(--ds-ink-muted)",
-                    marginBottom: "var(--ds-spacing-lg)",
-                    lineHeight: "var(--ds-leading-body-2)",
+                    fontSize: "var(--sa-type-body-2-size)",
+                    color: "var(--sa-text-neutral-subtle)",
+                    marginBottom: "var(--sa-stack-m)",
+                    lineHeight: "var(--sa-type-body-2-lh)",
                   }}
                 >
                   {col.intro}
@@ -196,17 +216,17 @@ export default function RoadmapPage(): React.JSX.Element {
                 {col.groups.map((group, gi) => (
                   <div
                     key={gi}
-                    style={{ marginBottom: "var(--ds-spacing-lg)" }}
+                    style={{ marginBottom: "var(--sa-stack-m)" }}
                   >
                     {group.heading ? (
                       <div
                         style={{
-                          fontSize: "var(--ds-text-body-3)",
+                          fontSize: "var(--sa-type-body-3-size)",
                           fontWeight: 700,
                           textTransform: "uppercase",
                           letterSpacing: "0.04em",
-                          color: "var(--ds-ink-muted)",
-                          marginBottom: "var(--ds-spacing-sm)",
+                          color: "var(--sa-text-neutral-subtle)",
+                          marginBottom: "var(--sa-stack-xs)",
                         }}
                       >
                         {group.heading}
@@ -219,7 +239,7 @@ export default function RoadmapPage(): React.JSX.Element {
                         padding: 0,
                         display: "flex",
                         flexDirection: "column",
-                        gap: "var(--ds-spacing-xs)",
+                        gap: "var(--sa-stack-2xs)",
                       }}
                     >
                       {group.items.map((item) => (
@@ -227,11 +247,11 @@ export default function RoadmapPage(): React.JSX.Element {
                           key={item}
                           style={{
                             display: "flex",
-                            gap: "var(--ds-spacing-sm)",
+                            gap: "var(--sa-stack-xs)",
                             alignItems: "baseline",
-                            fontSize: "var(--ds-text-body-2)",
-                            color: "var(--ds-ink)",
-                            lineHeight: "var(--ds-leading-body-2)",
+                            fontSize: "var(--sa-type-body-2-size)",
+                            color: "var(--sa-text-neutral-base)",
+                            lineHeight: "var(--sa-type-body-2-lh)",
                           }}
                         >
                           <span

@@ -74,8 +74,8 @@ export default function GovernancePage(): React.JSX.Element {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "var(--ds-spacing-md)",
-            marginTop: "var(--ds-spacing-lg)",
+            gap: "var(--sa-stack-s)",
+            marginTop: "var(--sa-stack-m)",
           }}
         >
           {LIFECYCLE.map((item) => (
@@ -84,12 +84,12 @@ export default function GovernancePage(): React.JSX.Element {
               style={{
                 display: "grid",
                 gridTemplateColumns: "minmax(120px, 160px) 1fr",
-                gap: "var(--ds-spacing-lg)",
+                gap: "var(--sa-stack-m)",
                 alignItems: "start",
-                padding: "var(--ds-spacing-lg)",
-                border: "1px solid var(--ds-border)",
-                borderRadius: "var(--ds-radius-md)",
-                background: "var(--ds-surface)",
+                padding: "var(--sa-padding-m)",
+                border: "1px solid var(--sa-border-neutral-subtle)",
+                borderRadius: "var(--sa-shape-md)",
+                background: "var(--sa-bg-neutral-base)",
               }}
             >
               <div style={{ paddingTop: 2 }}>
@@ -98,19 +98,19 @@ export default function GovernancePage(): React.JSX.Element {
               <div>
                 <p
                   style={{
-                    fontSize: "var(--ds-text-body-1)",
-                    color: "var(--ds-ink)",
+                    fontSize: "var(--sa-type-body-1-size)",
+                    color: "var(--sa-text-neutral-base)",
                     margin: 0,
-                    lineHeight: "var(--ds-leading-body-1)",
+                    lineHeight: "var(--sa-type-body-1-lh)",
                   }}
                 >
                   {item.meaning}
                 </p>
                 <p
                   style={{
-                    fontSize: "var(--ds-text-body-2)",
-                    color: "var(--ds-ink-muted)",
-                    margin: "var(--ds-spacing-sm) 0 0",
+                    fontSize: "var(--sa-type-body-2-size)",
+                    color: "var(--sa-text-neutral-subtle)",
+                    margin: "var(--sa-stack-xs) 0 0",
                   }}
                 >
                   <strong>Safe to use?</strong> {item.safeToUse}

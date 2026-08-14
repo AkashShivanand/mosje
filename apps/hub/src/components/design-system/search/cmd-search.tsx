@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import Fuse from "fuse.js";
+import { Icon } from "@mosje/design-system";
 import { SEARCH_DATA, type SearchEntry } from "@/lib/design-system/search-data";
 import "./cmd-search.css";
 
@@ -50,10 +51,7 @@ export function CmdSearch({ onClose }: CmdSearchProps): React.JSX.Element {
     <div className="cmd-overlay" onClick={onClose} role="dialog" aria-label="Search" aria-modal="true">
       <div className="cmd-modal" onClick={(e) => e.stopPropagation()} onKeyDown={onKeyDown}>
         <div className="cmd-search-row">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <circle cx="7" cy="7" r="5.5" stroke="var(--ds-ink-muted)" strokeWidth="1.5" />
-            <path d="m11 11 2.5 2.5" stroke="var(--ds-ink-muted)" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
+          <Icon name="search" size={16} style={{ color: "var(--sa-color-text-muted)" }} />
           <input
             ref={inputRef}
             className="cmd-search-input"

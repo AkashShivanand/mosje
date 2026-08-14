@@ -81,7 +81,7 @@ Five workstreams, sequenced P0 → P2. Each task has an **acceptance criterion**
 | # | Task | Acceptance criterion |
 |---|---|---|
 | 2.1 | **Move Motion & Density up** into the Foundations cluster (they currently sit at the bottom below the WIP graveyard). | Motion & Density appear within Foundations, not after components/templates. |
-| 2.2 | **Consolidate iconography.** Merge `Logos and Misc Icons`, `Icons`, `Icons — Material Symbols`, `Org Logos` into one contiguous **`🎨 Foundations / Iconography`** area with clear sub‑pages (Material Symbols, Logos, Org Logos). | Icons/logos live in one contiguous section; no icon page stranded elsewhere. |
+| 2.2 | **Consolidate iconography.** Merge `Logos and Misc Icons`, `Icons`, `Icons — Material Symbols`, `Org Logos` into one contiguous **`🎨 Foundations / Iconography`** area with clear sub‑pages (Material Symbols, Logos, Org Logos). | Icons/logos live in one contiguous section; no icon page stranded elsewhere. <br>**PARTLY DONE 2026-08-12:** `Icons — Material Symbols` is merged into `Icons` and **deleted** — it was a hand-built v0.9 sheet (font spec, code usage, ~40 icons as plain frames, 0 components, 0 instances) wholly superseded by the `Icons — Documentation` frame. `Logos and Misc Icons` and `Org Logos` remain separate. |
 | 2.3 | **Reorder the whole page list** to a benchmark narrative: `Cover → Get Started → What's New → Changelog & Governance → Roadmap → Foundations → Components (by category) → Patterns/Templates → Playground`. | Page order matches the narrative; section numbers == position. |
 | 2.4 | **Audit the `Cursor` page** (43 children) for junk/dead artifacts. | Cursor page contains only intentional, named assets. |
 

@@ -61,7 +61,7 @@ export function SiteFooter() {
   return (
     <footer className="bg-navy text-white">
       {/* TOP AREA */}
-      <div className="mx-auto max-w-[1280px] px-4 py-12">
+      <div className="sa-container py-12">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-6">
           {/* Column 1 — Brand + Contact (wider) */}
           <div className="lg:col-span-2">
@@ -126,7 +126,7 @@ export function SiteFooter() {
 
       {/* ATTRIBUTION ROW */}
       <div className="border-t border-white/15">
-        <div className="mx-auto flex max-w-[1280px] flex-col items-start gap-4 px-4 py-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="sa-container flex flex-col items-start gap-4 py-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-sm text-white/70">
             <p>Developed &amp; Maintained by</p>
             <p className="font-medium text-white">
@@ -155,7 +155,7 @@ export function SiteFooter() {
 
       {/* BOTTOM BAR */}
       <div className="bg-primary-dark">
-        <div className="mx-auto flex max-w-[1280px] flex-col items-center gap-3 px-4 py-4 text-sm text-white/70 md:flex-row md:justify-between">
+        <div className="sa-container flex flex-col items-center gap-3 py-4 text-sm text-white/70 md:flex-row md:justify-between">
           <p>
             © 2026 Department of Social Justice &amp; Empowerment. All Rights
             Reserved.
