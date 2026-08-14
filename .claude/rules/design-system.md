@@ -16,13 +16,20 @@ This package is the **single source of truth** for the visual language across al
 - **One component, one definition.** Each shared component (Button, Card, Header pieces, nav, etc.) lives here once and is imported as `@mosje/design-system`. No per-app forks.
 - **Framework-agnostic where possible.** Tokens as plain CSS vars + a Tailwind preset (`packages/config`) so both Tailwind v4 (website) and v3 (portals) can consume the same values.
 - **Code Connect is NOT set up, and cannot be on the current plan.** It needs a
-  Developer seat on an Organization/Enterprise plan. As of 2026-08-12 there are **zero**
-  mappings, no `*.figma.ts(x)` files, and no `@figma/code-connect` dependency — verified,
-  not assumed. This bullet used to read "every exported component maps to its Figma
-  component; keep mappings validated", which was never true and made the gap invisible.
-  **Do not author mapping files in anticipation** — unpublishable ones read as a finished
-  integration. The plan of record, including the per-component node map and the Icon
-  mapping, is `docs/research/figma-code-connect-readiness.md`.
+  Developer seat on an Organization/Enterprise plan. There is still **no**
+  `@figma/code-connect` dependency, so nothing here can be published or validated.
+  This bullet used to read "every exported component maps to its Figma component; keep
+  mappings validated", which was never true and made the gap invisible. The plan of
+  record, including the per-component node map and the Icon mapping, is
+  `docs/research/figma-code-connect-readiness.md`.
+  - **Correction, 2026-08-14:** the "zero `*.figma.ts(x)` files" half of this bullet is
+    no longer accurate. `packages/design-system/figma.config.json` and a Button template
+    (`components/actions/button.figma.ts`) landed with the foundation-documentation
+    work, because `component-authoring.md` §12a makes the template part of shipping a
+    component. **Treat them as authored-in-anticipation** — the standing warning applies:
+    an unpublishable mapping reads as a finished integration, so do not infer from their
+    presence that Code Connect works. `*.figma.ts` must stay excluded from the package
+    tsconfig, or `npm run typecheck` fails on the virtual `figma` import.
 - **What syncs code ↔ Figma today, in the absence of Code Connect:** tokens via
   `@mosje/tokens` (DTCG → Style Dictionary), and — on the Iconography page — the size
   scale and the 223-icon catalogue, both **generated** from their sources rather than
