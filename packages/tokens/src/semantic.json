@@ -2276,6 +2276,7 @@
         "$value": "{size.16}"
       },
       "20": {
+        "$description": "20px icons. The Figma AccessibilityBar binds icon/size/20, so the step exists to mirror it. Note 20 is also precisely the LIVE AREA of a DBIM 24 frame (24 minus 2px padding each edge), so the rendered glyph matches DBIM's 24 step. Not a general-purpose step; 24 remains the estate default.",
         "$value": "{size.20}"
       },
       "24": {
@@ -2321,6 +2322,14 @@
     "contentXl": {
       "$value": "{container.2xl}",
       "$description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages; Bootstrap — whose ladder UX4G's is — engages `container-xxl` at 1400, so that is the anchor."
+    },
+    "narrow": {
+      "$description": "AccessibilityBar narrow content container (Figma layout/container/narrow). Same 720px as container.md, named for the bar's own Layout variant.",
+      "$value": "{container.md}"
+    },
+    "wide": {
+      "$description": "AccessibilityBar wide content container (Figma layout/container/wide). 1200px is the Figma master's own value. It now COINCIDES with `container/content`, which moved 1280 > 1200 on 13 August 2026, but is deliberately left as a literal rather than aliased: the two are independent decisions that happen to agree today — this one is the bar's Figma master, that one is UX4G's published desktop cap — and aliasing would silently drag the bar along if the page cap moves again.",
+      "$value": "1200px"
     }
   },
   "grid": {

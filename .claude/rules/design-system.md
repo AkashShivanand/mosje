@@ -23,18 +23,33 @@ This package is the **single source of truth** for the visual language across al
   record, including the per-component node map and the Icon mapping, is
   `docs/research/figma-code-connect-readiness.md`.
   - **Correction, 2026-08-14:** the "zero `*.figma.ts(x)` files" half of this bullet is
-    no longer accurate. `packages/design-system/figma.config.json` and a Button template
-    (`components/actions/button.figma.ts`) landed with the foundation-documentation
-    work, because `component-authoring.md` §12a makes the template part of shipping a
-    component. **Treat them as authored-in-anticipation** — the standing warning applies:
-    an unpublishable mapping reads as a finished integration, so do not infer from their
+    no longer accurate. **Two** templates landed, from two branches, because
+    `component-authoring.md` §12a makes the template part of shipping a component:
+    `components/actions/button.figma.ts` (foundation-documentation) and
+    `components/navigation/accessibility-bar.figma.ts` (AccessibilityBar).
+    **Treat them as authored-in-anticipation** — the standing warning applies: an
+    unpublishable mapping reads as a finished integration, so do not infer from their
     presence that Code Connect works. `*.figma.ts` must stay excluded from the package
     tsconfig, or `npm run typecheck` fails on the virtual `figma` import.
+  - **There is exactly ONE `figma.config.json`, at the repo root.** The two branches
+    each added one — root and `packages/design-system/` — in ignorance of the other;
+    they were consolidated on 2026-08-14. The root wins because only its `include`
+    reaches both templates from where the CLI is run, and it absorbed the package
+    config's `documentUrlSubstitutions`, which `button.figma.ts` depends on (it writes
+    `url=<SAMAVESH>?node-id=…` rather than a full URL). **Do not add a second config**
+    — two of them is a coin-flip about which the CLI reads.
 - **What syncs code ↔ Figma today, in the absence of Code Connect:** tokens via
   `@mosje/tokens` (DTCG → Style Dictionary), and — on the Iconography page — the size
   scale and the 223-icon catalogue, both **generated** from their sources rather than
   hand-kept. Everything else is manual and therefore drifts; prefer generating a fact
   over transcribing it, because transcription is what the 2026-08-12 audit caught.
+- **Component authoring standard (MANDATORY).** Every component created or updated —
+  in Figma or code — must pass the checklist in **`.claude/rules/component-authoring.md`**:
+  discover first, tokenise **everything** (zero raw values), nested parts are library
+  instances (icons = Material Symbols glyphs, separators = the `Divider` component),
+  add-and-flag anything missing, variants for structure + properties for options,
+  match the reference visually, pass WCAG AA, flag questionable properties for the
+  human, document in detail, and validate with a screenshot + zero-unbound audit.
 
 ## When extracting (phase 2)
 1. Reconcile code tokens ↔ Figma variables (`/sync-figma <url>`); agree one canonical set.

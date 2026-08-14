@@ -12,7 +12,15 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-13 · System version: v0.19.0 (THE CONTENT CONTAINER IS UX4G'S TWO-STEP
+  Last reviewed: 2026-08-14 · System version: v0.20.0 (ACCESSIBILITYBAR IS NOW A CODE COMPONENT AND
+  SITEHEADER IS MIGRATED ONTO IT. `@mosje/design-system` exports `AccessibilityBar` — the UX4G/GIGW
+  top utility bar with a working A−/A/A+ font-size stepper — mirroring the SAMAVESH Figma master,
+  fully `--sa-*` tokenised, AA-clear. SiteHeader's own hand-rolled Tier-1 bar is DELETED and the
+  shared component replaces it. PUBLIC-SITE BEHAVIOUR IS UNCHANGED: the masthead passes
+  `fontSize={false}` — explicitly, because the prop DEFAULTS TO TRUE — so the UX4G widget remains
+  the single mechanism for text size and contrast. `tone` is gone: colour is the brand MODE
+  (`data-brand="navy"`), never a prop.
+  Previously v0.19.0 — THE CONTENT CONTAINER IS UX4G'S TWO-STEP
   1200/1320 AND `.sa-container` IS THE ONLY WAY TO APPLY IT. Four widths shipped at once and the
   masthead sat 20px wider each side than the page beneath it; `SiteHeader.maxWidth` is now an
   override, not a default. New: `container/contentXl`, `ref/breakpoint/desktopXl`.
@@ -1434,6 +1442,28 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 ---
 
 ### Navigation
+
+#### AccessibilityBar
+**Purpose**: The government top utility bar (UX4G / GIGW) — the Government of India link plus the accessibility controls (skip to content, font size A−/A/A+, accessibility, language). The a11y surface itself; matches the SAMAVESH Figma *Accessibility Bar* component.  
+**Variants**: `layout` = `narrow` (720) | `wide` (1200, default) | `fluid` (full-bleed) · `device` = `auto` (default) | `mobile` | `tablet` | `desktop` | `desktop-xl`  
+**Key props**: `govLink`, `skipTo`, `showSkip`, `fontSize`, `accessibility`, `accessibilityHref`, `onAccessibility`, `language`, `layout`, `maxWidth`, `device`, `onFontScaleChange`  
+**Rules**:
+- Every control is keyboard-operable and labelled; the skip link is the first interactive element and must target an id that exists.
+- The font-size stepper drives a `--sa-font-scale` variable (+ `data-sa-font-scale`) on the document root; content sized in `rem` reflows. Pass `onFontScaleChange` to persist the choice.
+- **This standalone bar keeps font-size because the Figma component does.** `SiteHeader` renders its OWN Tier-1 bar with font-size deliberately removed — the UX4G widget is the single canonical mechanism for font-size/contrast estate-wide (see the accessibility-consolidation spec). Do not enable font-size in both at once.
+- **There is NO `tone` prop.** Blue vs Navy is the brand axis — `data-brand="navy"` on the bar
+  or an ancestor re-resolves `bg/brand/primary/bolder` to the navy ramp (#003366), which is what
+  the retired prop hardcoded. Figma models it the same way (Palette modes), so the master has no
+  Tone variant. `SiteHeader` keeps a `tone` prop as its own public API and implements it this way.
+- Set `onAccessibility` OR `accessibilityHref`, not both. Left unset, the accessibility
+  control **opens the UX4G accessibility widget** (it replays the click on the widget's own
+  trigger — the vendor's `[data-uw-trigger]` hook is broken, see the source comment).
+- **Icons are Material Symbols** (`launch`, `text_decrease`, `text_increase`,
+  `accessibility_new`, `language`, `arrow_drop_down`), matching the Figma master.
+- **Geometry is Tier-3**: `--sa-cmp-accessibilityBar-*` (height 46, flag, divider, pill,
+  hover, step, launch icon). The CSS references no Tier-1 token and no raw colour.
+- `device="mobile"` collapses the right cluster as Figma does, but **keeps the skip link** —
+  WCAG 2.4.1 outranks a structural preference. Recorded in the component spec.
 
 #### SiteHeader
 **Purpose**: The SAMAVESH Navbar — canonical three-tier masthead (accessibility bar + brand row + nav row).  

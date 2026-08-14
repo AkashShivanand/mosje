@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../../utils/cn";
+import { AccessibilityBar } from "../accessibility-bar";
 import { BrandLockup } from "./brand-lockup";
 import { AccountMenu } from "./account-menu";
 import type {
@@ -116,23 +117,9 @@ export interface SiteHeaderProps {
 }
 
 /* ── Inline icons (no runtime icon dependency) ─────────────────────────────── */
-const IcExternal = () => (
-  <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" className="ds-hdr-util__ext">
-    <path d="M4 2h6v6M10 2 5 7M8 7v3H2V4h3" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-const IcAccessibility = () => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <circle cx="12" cy="4" r="2" fill="currentColor" />
-    <path d="M4 8h16M12 8v6m0 0-3 6m3-6 3 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-  </svg>
-);
-const IcGlobe = () => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
-    <path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18" stroke="currentColor" strokeWidth="1.4" />
-  </svg>
-);
+/* The accessibility bar's icons (external, accessibility, globe) now live in the
+   shared <AccessibilityBar> component; only the icons the brand/nav rows use
+   remain here. */
 const IcCaret = () => (
   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="ds-hdr-ic">
     <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -262,46 +249,37 @@ export function SiteHeader({
       className={cn("ds-hdr", isSticky && "is-sticky", scrolled && "is-scrolled", className)}
       data-variant={variant}
     >
-      {/* Skip link MUST be the first focusable element on the page (WCAG 2.4.1). */}
-      <a href={skipTo} className="ds-hdr-skip">Skip to Main Content</a>
-
-      {/* ── Tier 1: Accessibility bar ── */}
-      <div className={cn("ds-hdr-util", `tone-${tone}`)}>
-        <div className="ds-hdr-util__in" style={inner}>
-          <a className="ds-hdr-util__gov" href={govLink.href} target="_blank" rel="noreferrer">
-            {govLink.flagSrc && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img className="ds-hdr-util__flag" src={govLink.flagSrc} alt="" />
-            )}
-            <span>{govLink.label}</span>
-            <IcExternal />
-          </a>
-
-          <div className="ds-hdr-util__end">
-            {accessibilityToolbar && (
-              <>
-                <span className="ds-hdr-util__sep" aria-hidden="true" />
-                {onAccessibility ? (
-                  <button type="button" className="ds-hdr-util__icbtn" aria-label="Accessibility statement" title="Accessibility statement" onClick={onAccessibility}>
-                    <IcAccessibility />
-                  </button>
-                ) : (
-                  <a className="ds-hdr-util__icbtn" href={accessibilityHref} aria-label="Accessibility statement" title="Accessibility statement">
-                    <IcAccessibility />
-                  </a>
-                )}
-                <span className="ds-hdr-util__sep" aria-hidden="true" />
-              </>
-            )}
-            {language && (
-              <button type="button" className="ds-hdr-util__icbtn has-text" aria-label="Select language" title="Select language" onClick={language.onClick}>
-                <IcGlobe />
-                {language.label && <span>{language.label}</span>}
-                <IcCaret />
-              </button>
-            )}
-          </div>
-        </div>
+      {/* ── Tier 1: Accessibility bar (the shared DS component) ──
+         Figma is the source of truth, so all four actions render: skip · font
+         size · accessibility · language. The bar's skip is VISIBLE (as in Figma
+         and on UX4G government sites), which is why the header no longer emits a
+         second, visually-hidden `.ds-hdr-skip` — two links to the same target
+         announce the bypass twice. WCAG 2.4.1 is satisfied by the visible one.
+         The accessibility control opens the UX4G widget. */}
+      {/* `tone` is the BRAND AXIS, not a component prop — `data-brand="navy"`
+          re-resolves bg/brand/primary/bolder to the navy ramp (#003366), the same
+          value the retired tone="navy" hardcoded. Scoped to the bar so the brand
+          row and nav row below keep their own surfaces. */}
+      <div data-brand={tone === "navy" ? "navy" : undefined}>
+        <AccessibilityBar
+          govLink={govLink}
+          skipTo={skipTo}
+          showSkip
+          /* OFF, deliberately, and it must be passed explicitly because the prop
+             DEFAULTS to true. The UX4G widget is the estate's single mechanism for
+             text size and contrast (accessibility-consolidation spec §3), so surfacing
+             a second stepper on the live masthead would double up on it. This is what
+             navbar.md's Anatomy states, and what the library's 13 nested
+             AccessibilityBar instances were set to in v2.3.0 expressly to match this
+             file — it had "silently reverted to the component default" once already. */
+          fontSize={false}
+          accessibility={accessibilityToolbar}
+          accessibilityHref={accessibilityHref}
+          onAccessibility={onAccessibility}
+          language={language}
+          layout="fluid"
+          maxWidth={maxWidth}
+        />
       </div>
 
       {/* ── Tier 2: Brand row ── */}

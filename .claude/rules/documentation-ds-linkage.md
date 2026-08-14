@@ -11,6 +11,22 @@
   documents, and it was the worse offender of the two
 - any Storybook doc page, spec page, or report page we author
 
+## Order everything (MANDATORY)
+
+Every list on a documentation surface — colour shades, token maps, property tables,
+value lists, swatch rows, section sequences — is ordered **logically, never by
+insertion**, per `.claude/rules/component-authoring.md` §10:
+
+- **Colour shades** ascend by value, lightest first: `base → subtler → subtle → bold →
+  bolder → boldest` (rungs 50 → 800; neutral omits `bolder`/`boldest`). `base` is the
+  lightest rung, so it leads — matching the `Colour` documentation page.
+- **Space / radius / numeric scales** ascend by value.
+- **Variants / breakpoints** by their natural scale (e.g. `Mobile → Desktop XL`).
+- **No natural scale** → alphabetical.
+
+Two lists of the same things use the same order. Random ordering is a defect, the same
+as an unbound literal.
+
 ## The rule
 
 **Not a single element may be unlinked from the design system.** Every visual property

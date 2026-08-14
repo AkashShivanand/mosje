@@ -1274,7 +1274,9 @@ export const tokens = {
     "xl": "1140px",
     "2xl": "1320px",
     "content": "1200px",
-    "contentXl": "1320px"
+    "contentXl": "1320px",
+    "narrow": "720px",
+    "wide": "1200px"
   },
   "grid": {
     "columns": 12,
@@ -1353,6 +1355,19 @@ export const tokens = {
     "beta": {
       "bg": "#ffd323"
     }
+  },
+  "accessibilityBar": {
+    "height": "46px",
+    "flagWidth": "33px",
+    "flagHeight": "1.375rem",
+    "dividerWidth": "1px",
+    "dividerHeight": "1.25rem",
+    "dividerColor": "rgba(255, 255, 255, 0.4)",
+    "pillSize": "2rem",
+    "pillBg": "rgba(255, 255, 255, 0.16)",
+    "hoverBg": "rgba(255, 255, 255, 0.12)",
+    "stepSize": "1.5rem",
+    "launchIconSize": "0.75rem"
   },
   "action": {
     "brand": {

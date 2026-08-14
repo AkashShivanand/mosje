@@ -38,8 +38,8 @@
       "existing": 8
     },
     "Static": {
-      "total": 49,
-      "new": 3,
+      "total": 51,
+      "new": 5,
       "existing": 46
     }
   },
@@ -378,7 +378,18 @@
     "elevation/raised (Figma models shadows as EFFECT STYLES, not variables — exported separately)",
     "elevation/dropdown (Figma models shadows as EFFECT STYLES, not variables — exported separately)",
     "elevation/modal (Figma models shadows as EFFECT STYLES, not variables — exported separately)",
-    "elevation/toast (Figma models shadows as EFFECT STYLES, not variables — exported separately)"
+    "elevation/toast (Figma models shadows as EFFECT STYLES, not variables — exported separately)",
+    "accessibilityBar/height (no mapping defined for this path)",
+    "accessibilityBar/flagWidth (no mapping defined for this path)",
+    "accessibilityBar/flagHeight (no mapping defined for this path)",
+    "accessibilityBar/dividerWidth (no mapping defined for this path)",
+    "accessibilityBar/dividerHeight (no mapping defined for this path)",
+    "accessibilityBar/dividerColor (no mapping defined for this path)",
+    "accessibilityBar/pillSize (no mapping defined for this path)",
+    "accessibilityBar/pillBg (no mapping defined for this path)",
+    "accessibilityBar/hoverBg (no mapping defined for this path)",
+    "accessibilityBar/stepSize (no mapping defined for this path)",
+    "accessibilityBar/launchIconSize (no mapping defined for this path)"
   ],
   "collections": [
     {
@@ -1932,7 +1943,7 @@
               "name": "ref/size/20"
             }
           },
-          "description": "Use for a 20 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves.",
+          "description": "20px icons. The Figma AccessibilityBar binds icon/size/20, so the step exists to mirror it. Note 20 is also precisely the LIVE AREA of a DBIM 24 frame (24 minus 2px padding each edge), so the rendered glyph matches DBIM's 24 step. Not a general-purpose step; 24 remains the estate default.",
           "codeSyntax": {
             "WEB": "var(--sa-icon-size-20)"
           },
@@ -22506,6 +22517,48 @@
           "description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages; Bootstrap — whose ladder UX4G's is — engages `container-xxl` at 1400, so that is the anchor.",
           "codeSyntax": {
             "WEB": "var(--sa-container-contentXl)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "container/narrow",
+          "path": "container/narrow",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/md"
+            }
+          },
+          "description": "AccessibilityBar narrow content container (Figma layout/container/narrow). Same 720px as container.md, named for the bar's own Layout variant.",
+          "codeSyntax": {
+            "WEB": "var(--sa-container-narrow)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "container/wide",
+          "path": "container/wide",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "FLOAT",
+              "value": 1200,
+              "unit": "px"
+            }
+          },
+          "description": "AccessibilityBar wide content container (Figma layout/container/wide). 1200px is the Figma master's own value. It now COINCIDES with `container/content`, which moved 1280 > 1200 on 13 August 2026, but is deliberately left as a literal rather than aliased: the two are independent decisions that happen to agree today — this one is the bar's Figma master, that one is UX4G's published desktop cap — and aliasing would silently drag the bar along if the page cap moves again.",
+          "codeSyntax": {
+            "WEB": "var(--sa-container-wide)"
           },
           "status": "new",
           "$extensions": {

@@ -15,7 +15,7 @@
     "page, re-run --update-baseline in the same change."
   ],
   "totals": {
-    "offScale": 213,
+    "offScale": 205,
     "classSized": 4
   },
   "files": {
@@ -259,10 +259,6 @@
       "offScale": 2,
       "classSized": 0
     },
-    "apps/hub/src/components/nhapoa/gov-chrome.tsx": {
-      "offScale": 2,
-      "classSized": 0
-    },
     "apps/hub/src/components/nhapoa/grievance-wizard.tsx": {
       "offScale": 1,
       "classSized": 0
@@ -291,10 +287,6 @@
       "offScale": 1,
       "classSized": 0
     },
-    "apps/hub/src/components/scw/gov-chrome.tsx": {
-      "offScale": 2,
-      "classSized": 0
-    },
     "apps/hub/src/components/scw/ui.tsx": {
       "offScale": 1,
       "classSized": 0
@@ -319,10 +311,6 @@
       "offScale": 2,
       "classSized": 0
     },
-    "apps/hub/src/components/smile-admin/shell/access-bar.tsx": {
-      "offScale": 2,
-      "classSized": 0
-    },
     "apps/hub/src/components/smile-admin/shell/breadcrumbs.tsx": {
       "offScale": 2,
       "classSized": 0
@@ -332,10 +320,6 @@
       "classSized": 0
     },
     "apps/hub/src/components/smile-admin/shell/scope-banner.tsx": {
-      "offScale": 2,
-      "classSized": 0
-    },
-    "apps/hub/src/components/tg/gov-chrome.tsx": {
       "offScale": 2,
       "classSized": 0
     },

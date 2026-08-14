@@ -119,6 +119,7 @@ the website at `website/`, the docs at `design-system/`, and the portals at `por
   3. If a needed component is missing from the DS: **add it to `packages/design-system/` first**, export it from the barrel, then import it. Never build one-off UI that belongs in the shared DS.
   4. Document the audit inline as a short comment block at the top of your plan: `DS Audit: Button ✅ existing · Input ✅ existing · PortalLoginShell ➕ adding to DS`.
   5. Page-level layout templates (login shell, dashboard shell, list shell) belong in the DS and must be reused across all portals — only the slot content (logo, portal name, tabs, form fields) changes per portal.
+  6. **Authoring standard (MANDATORY, Figma + code):** every component created or updated must pass **`.claude/rules/component-authoring.md`** — discover first, **tokenise everything** (zero raw values), nested parts are library instances (icons = Material Symbols glyphs, separators = the `Divider` component), add-and-flag anything missing, variants for structure + properties for options, match the reference visually, pass WCAG AA, **flag questionable properties for the human to decide**, document in detail, and validate with a screenshot + a zero-unbound audit.
 - **Documentation is not exempt from the design system — it is the strictest case.** Every
   element on a Figma library documentation page and on every `apps/hub/src/app/design-system/**`
   page must be **bound** to the DS: text to published text styles, fills/strokes to Color

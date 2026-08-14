@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import { AccessibilityBar, Icon, buttonClasses } from "@mosje/design-system";
 import { cn } from "@/lib/nmba/utils";
 
 const BASE = "/portals/nmba";
@@ -35,42 +35,21 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       className="flex min-h-screen flex-col"
       data-fontscale={fontScale}
     >
-      {/* Government top bar */}
-      <div className="bg-navy-950 text-white">
-        <div className="flex h-9 items-center justify-between px-4 text-xs">
-          <a className="flex items-center gap-1.5 font-medium" href="https://india.gov.in" target="_blank" rel="noreferrer">
-            <span>Government of India</span>
-          </a>
-          <div className="flex items-center gap-3">
-            <a href="#main-content" className="hidden sm:inline hover:underline">
-              Skip to Main Content
-            </a>
-            <span className="hidden h-4 w-px bg-white/25 sm:block" />
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setFontScale("small")}
-                className="rounded px-1 text-[11px] hover:bg-white/10"
-                aria-label="Decrease text size"
-              >
-                A<sup>-</sup>
-              </button>
-              <button
-                onClick={() => setFontScale("default")}
-                className="rounded px-1 hover:bg-white/10"
-                aria-label="Default text size"
-              >
-                A
-              </button>
-              <button
-                onClick={() => setFontScale("large")}
-                className="rounded px-1 text-[13px] hover:bg-white/10"
-                aria-label="Increase text size"
-              >
-                A<sup>+</sup>
-              </button>
-            </div>
-          </div>
-        </div>
+      {/* Government top bar — the shared DS AccessibilityBar. Its font-size
+          stepper is wired back to nmba's `data-fontscale` (line above) so the
+          portal's own scaling CSS keeps working; the language switcher lives in
+          the masthead below, so the bar's own language control is off. */}
+      <div data-brand="navy">
+        <AccessibilityBar
+          layout="fluid"
+          govLink={{ href: "https://india.gov.in", label: "Government of India" }}
+          skipTo="#main-content"
+          showSkip
+          fontSize
+          accessibility
+          language={false}
+          onFontScaleChange={(s) => setFontScale(s < 1 ? "small" : s > 1 ? "large" : "default")}
+        />
       </div>
 
       {/* Masthead */}

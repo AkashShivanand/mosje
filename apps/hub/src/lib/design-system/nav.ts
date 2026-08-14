@@ -84,6 +84,7 @@ export const NAV: NavGroup[] = [
   {
     title: "Navigation",
     items: [
+      { label: "Accessibility Bar", href: "/design-system/components/accessibility-bar", badge: "Stable" },
       { label: "Navbar (Header)", href: "/design-system/components/header", badge: "Stable" },
       { label: "Navbar · Website", href: "/design-system/components/header#site-header", badge: "Stable" },
       { label: "Navbar · Portal", href: "/design-system/components/header#portal", badge: "Stable" },

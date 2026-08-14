@@ -22,9 +22,21 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.20.0",
+    date: "2026-08-14",
+    current: true,
+    changes: [
+      { kind: "Added", text: "AccessibilityBar is now a real code component, not just a Figma master. `@mosje/design-system` exports `AccessibilityBar` — the government top utility bar (UX4G / GIGW): the Government of India link plus skip-to-content, a working A−/A/A+ font-size stepper, the accessibility entry and the language selector. It mirrors the SAMAVESH Figma *Accessibility Bar* component, is fully tokenised (`--sa-*`, zero raw hex/px), and passes AA (white on the brand fill at 6.36:1). Storybook story, hub documentation page, and design.md entry ship with it" },
+      { kind: "Added", text: "The font-size control drives a `--sa-font-scale` CSS variable (and a `data-sa-font-scale` attribute) on the document root, so content sized in `rem` reflows with the reader's choice; `onFontScaleChange` persists it. `layout` (narrow 720 / wide 1200 / fluid full-bleed) reproduces UX4G's per-breakpoint padding with one content-container mechanism" },
+      { kind: "Changed", text: "SITEHEADER IS MIGRATED ONTO THE SHARED COMPONENT, and its own hand-rolled Tier-1 bar is deleted — the `.ds-hdr-util*` block is gone from header.css, leaving AccessibilityBar as the single implementation. PUBLIC-SITE BEHAVIOUR IS UNCHANGED: the masthead renders `fontSize={false}`, so the A−/A/A+ stepper is NOT surfaced there and the UX4G widget remains the estate's single mechanism for text size and contrast, per the accessibility-consolidation spec §3" },
+      { kind: "Fixed", text: "THAT `fontSize={false}` HAD TO BE PASSED EXPLICITLY, because the prop defaults to true — so the migration silently turned the stepper ON at first. It is the second time this exact default has bitten: navbar.md v2.3.0 records setting Font size off across all 13 nested AccessibilityBar instances in the library because it had already 'silently reverted to the component default' there. A default that is wrong for the estate's only consumer of the component is worth revisiting" },
+      { kind: "Changed", text: "COLOUR IS A MODE, NOT A PROP — the `tone` prop is removed from AccessibilityBar. SiteHeader now wraps the bar in `data-brand=\"navy\"`, which re-resolves bg/brand/primary/bolder to the navy ramp (#003366), the same value the retired prop hardcoded" },
+      { kind: "Changed", text: "The bar's type is bound to `--sa-type-label-2-*` (12/16) from the Figma master's own variable defs, rather than the 14/20 the deleted utility bar hand-set. The two surfaces cited the same UX4G Navbar spec with different numbers; this takes the audited Figma value. Flagged for confirmation against the published spec" },
+    ],
+  },
+  {
     version: "v0.19.0",
     date: "2026-08-13",
-    current: true,
     changes: [
       { kind: "Fixed", text: "THE MASTHEAD NO LONGER MISALIGNS WITH THE PAGE. SiteHeader defaulted to a hardcoded maxWidth of 1320 while all 22 website section files capped at 1280, so above a 1320px viewport the header's content column ran 20px wider on each side than the content beneath it and the National Emblem did not line up. Verified fixed in the running hub: header and page both measure 1200 from x=150 at a 1500px viewport, and both measure 1320 from x=240 at 1800px" },
       { kind: "Changed", text: "THE ESTATE ADOPTS UX4G 3.0'S TWO-STEP CONTENT CONTAINER — 1200 at desktop, 1320 at desktop XL, per UX4G's 'Grid and layout' section. Four widths had been shipping at once: UX4G specified 1200, container/content said 1280 with no consumer anywhere, 22 files hardcoded that same 1280 as a literal beside it, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. container/content is now 1200 and container/contentXl (1320) is new" },

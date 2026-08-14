@@ -7,7 +7,7 @@ import { UserMenu } from "./user-menu";
 export function AdminShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen">
-      <GovTopBar variant="admin" />
+      <GovTopBar />
       <GovMasthead
         right={
           <UserMenu

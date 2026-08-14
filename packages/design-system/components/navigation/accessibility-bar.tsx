@@ -1,0 +1,257 @@
+"use client";
+
+/**
+ * AccessibilityBar — the government top utility bar (UX4G / GIGW).
+ * Figma: SAMAVESH · "Accessibility Bar" (Device × Layout + 4 control toggles).
+ *
+ * Left: the Government of India link. Right, in order: Skip to content ·
+ * Font size (A−/A/A+) · Accessibility · Language — each independently toggleable.
+ * This IS the accessibility surface itself, so every control is keyboard-operable
+ * and announced. Font size drives a `--sa-font-scale` CSS variable (and the root
+ * font-size) so rem-based content reflows; pass `onFontScaleChange` to persist it.
+ *
+ * Reused by `SiteHeader` (its Tier-1 bar) and available standalone for portals.
+ */
+
+import * as React from "react";
+import { cn } from "../../utils/cn";
+import { Icon } from "../icon";
+import "./accessibility-bar.css";
+
+export type AccessibilityBarLayout = "narrow" | "wide" | "fluid";
+/**
+ * Mirrors the Figma master's `Device` variant axis. `"auto"` (the default) is the
+ * web-native form: the same breakpoints, resolved by CSS instead of by a prop, so
+ * one instance adapts. Pin an explicit device only to reproduce a single Figma
+ * variant — a specimen, a visual test, or a fixed-width render.
+ */
+export type AccessibilityBarDevice = "auto" | "mobile" | "tablet" | "desktop" | "desktop-xl";
+
+export interface AccessibilityBarProps {
+  /** Top-left "Government of India" link. */
+  govLink?: { href?: string; label?: string; flagSrc?: string };
+  /** Skip-link target (the page's main landmark). @default "#main-content" */
+  skipTo?: string;
+  /** Show the "Skip to Main Content" link. @default true */
+  showSkip?: boolean;
+  /** Show the A−/A/A+ font-size control. @default true */
+  fontSize?: boolean;
+  /** Show the accessibility entry (opens the UX4G accessibility widget). @default true */
+  accessibility?: boolean;
+  /**
+   * Fallback accessibility-statement page (GIGW-required), used **only** when the
+   * UX4G widget is not present on the page. With the widget mounted — the estate
+   * default — the control opens the widget instead of navigating.
+   * @default "/accessibility-statement"
+   */
+  accessibilityHref?: string;
+  /**
+   * Override the accessibility control's action. Leave unset for the standard
+   * behaviour: open the UX4G accessibility widget.
+   */
+  onAccessibility?: () => void;
+  /** Language selector. Pass `false` to hide. @default { label: "English" } */
+  language?: { label?: string; onClick?: () => void } | false;
+  /** Content-container width: narrow (720) · wide (1200) · fluid (full-bleed). @default "wide" */
+  layout?: AccessibilityBarLayout;
+  /**
+   * Explicit content-container max-width (px), overriding the `layout` preset.
+   * `SiteHeader` passes its own `maxWidth` so the bar's container aligns with the
+   * brand and nav rows below it. Prefer `layout` for standalone use.
+   */
+  maxWidth?: number;
+  /**
+   * Figma's `Device` axis. `"auto"` (default) resolves the same breakpoints in CSS.
+   *
+   * On **mobile** the Figma master collapses the right-hand cluster (font size,
+   * accessibility, language) — consumers move those into a menu. **The skip link is
+   * deliberately kept**, because it is the WCAG 2.4.1 bypass mechanism and dropping
+   * the page's only one would fail a mandatory criterion; see the divergence note in
+   * docs/design-system/components/accessibility-bar.md.
+   * @default "auto"
+   */
+  device?: AccessibilityBarDevice;
+  /** Notified whenever the reader changes the font scale (0.9 – 1.2). */
+  onFontScaleChange?: (scale: number) => void;
+  className?: string;
+}
+
+/** A−, default, A+, A++ — the reader's text-size steps. */
+const FONT_SCALES = [0.9, 1, 1.1, 1.2] as const;
+const DEFAULT_SCALE_INDEX = 1;
+
+/** The id the official UX4G widget script gives its own floating trigger. */
+const UX4G_TRIGGER_ID = "uw-widget-custom-trigger";
+
+/**
+ * Open the official UX4G accessibility widget, returning whether it was there.
+ *
+ * This is a BRIDGE, not a reimplementation: it replays the click on the widget's
+ * OWN trigger element, so open/close/focus behaviour stays exactly the vendor's.
+ *
+ * WHY IT IS DONE THIS WAY — read before "simplifying" it. The v3.28 script binds
+ * two competing listeners on `document`:
+ *
+ *   opener: `event.target.closest('#uw-widget-custom-trigger, [data-uw-trigger="true"]')`
+ *           → openPanel()
+ *   closer: closes unless the target is inside `#uw-main`, `#uw-widget-custom-trigger`,
+ *           or `#open-the-accessibility-menu` — it does NOT honour `[data-uw-trigger]`
+ *
+ * So marking our own button `data-uw-trigger="true"` (the documented hook) opens
+ * the panel and then has the SAME click close it again — a vendor bug that looks
+ * exactly like "the button does nothing". Verified live: the panel's offset went
+ * straight back to `right: -530px`.
+ *
+ * Replaying the click on the vendor's trigger satisfies both listeners at once.
+ * The caller must also stop its own event from reaching `document`, or the closer
+ * fires on the original click and undoes the open.
+ *
+ * Presence is probed via the same element, so a page without the widget mounted
+ * falls back to the accessibility statement rather than swallowing the click.
+ */
+function openUx4gWidget(): boolean {
+  if (typeof document === "undefined") return false;
+  const trigger = document.getElementById(UX4G_TRIGGER_ID);
+  if (!trigger) return false;
+  trigger.dispatchEvent(
+    new MouseEvent("click", { bubbles: true, cancelable: true, view: window }),
+  );
+  return true;
+}
+
+/**
+ * The bar's glyphs are the SAME Material Symbols the Figma master instances —
+ * `launch`, `text_decrease`, `text_increase`, `accessibility_new`, `language`,
+ * `arrow_drop_down` — rather than hand-drawn vectors, per the estate icon rule.
+ *
+ * Sizes mirror the tokens: `icon/size/20` for the controls, and the GoI link's
+ * launch glyph at 12 (`cmp/accessibilityBar/launchIconSize`). `<Icon>` sets
+ * font-size inline so the `opsz` axis tracks the size, which is why these are
+ * numbers here rather than CSS.
+ *
+ * Requires the Material Symbols font: `import "@mosje/design-system/icons.css"`
+ * once in the app root (the hub already does).
+ */
+const ICON_SIZE = 20;
+const LAUNCH_ICON_SIZE = 12;
+
+export function AccessibilityBar({
+  govLink = { href: "https://india.gov.in/", label: "Government of India" },
+  skipTo = "#main-content",
+  showSkip = true,
+  fontSize = true,
+  accessibility = true,
+  accessibilityHref = "/accessibility-statement",
+  onAccessibility,
+  language = { label: "English" },
+  layout = "wide",
+  maxWidth,
+  device = "auto",
+  onFontScaleChange,
+  className,
+}: AccessibilityBarProps): React.JSX.Element {
+  const [scaleIx, setScaleIx] = React.useState(DEFAULT_SCALE_INDEX);
+
+  React.useEffect(() => {
+    const scale = FONT_SCALES[scaleIx] ?? 1;
+    const root = document.documentElement;
+    root.style.setProperty("--sa-font-scale", String(scale));
+    root.dataset.saFontScale = String(scale);
+    onFontScaleChange?.(scale);
+  }, [scaleIx, onFontScaleChange]);
+
+  const dec = () => setScaleIx((i) => Math.max(0, i - 1));
+  const inc = () => setScaleIx((i) => Math.min(FONT_SCALES.length - 1, i + 1));
+
+  /**
+   * Open the UX4G widget; only navigate to the statement page if it isn't there.
+   * An explicit `onAccessibility` always wins.
+   */
+  const handleAccessibility = React.useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (onAccessibility) {
+        onAccessibility();
+        return;
+      }
+      // Open on the NEXT TASK, not inline. This click is still propagating to the
+      // widget's document-level outside-click closer, which would shut the panel
+      // we just opened (see openUx4gWidget). Stopping propagation is not a reliable
+      // fix here — under the Next.js App Router React renders the whole document,
+      // so React's delegated listener and the widget's sit on the same node and the
+      // ordering is not ours to guarantee. Deferring sidesteps the race entirely:
+      // the closer runs first against an already-closed panel (a no-op), then we
+      // open. Measured: inline opening lost the race every time.
+      e.stopPropagation();
+      window.setTimeout(() => {
+        if (!openUx4gWidget() && accessibilityHref) {
+          window.location.href = accessibilityHref;
+        }
+      }, 0);
+    },
+    [onAccessibility, accessibilityHref],
+  );
+  const reset = () => setScaleIx(DEFAULT_SCALE_INDEX);
+
+  return (
+    <div className={cn("sa-abar", `layout-${layout}`, `device-${device}`, className)} role="region" aria-label="Accessibility toolbar">
+      <div className="sa-abar__in" style={maxWidth ? { maxWidth } : undefined}>
+        <a className="sa-abar__gov" href={govLink.href} target="_blank" rel="noreferrer">
+          {govLink.flagSrc && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="sa-abar__flag" src={govLink.flagSrc} alt="" />
+          )}
+          <span>{govLink.label}</span>
+          <Icon name="launch" size={LAUNCH_ICON_SIZE} className="sa-abar__ext" aria-hidden />
+        </a>
+
+        <div className="sa-abar__end">
+          {showSkip && (
+            <>
+              <a href={skipTo} className="sa-abar__skip">Skip to Main Content</a>
+              <span className="sa-abar__sep" aria-hidden="true" />
+            </>
+          )}
+
+          {fontSize && (
+            <>
+              <div className="sa-abar__fs" role="group" aria-label="Text size">
+                <button type="button" className="sa-abar__fsbtn" onClick={dec} disabled={scaleIx === 0} aria-label="Decrease text size">
+                  <Icon name="text_decrease" size={ICON_SIZE} aria-hidden />
+                </button>
+                <button type="button" className={cn("sa-abar__fsbtn", "is-current", scaleIx === DEFAULT_SCALE_INDEX && "is-active")} onClick={reset} aria-label="Reset text size" aria-pressed={scaleIx === DEFAULT_SCALE_INDEX}>A</button>
+                <button type="button" className="sa-abar__fsbtn" onClick={inc} disabled={scaleIx === FONT_SCALES.length - 1} aria-label="Increase text size">
+                  <Icon name="text_increase" size={ICON_SIZE} aria-hidden />
+                </button>
+              </div>
+              <span className="sa-abar__sep" aria-hidden="true" />
+            </>
+          )}
+
+          {accessibility && (
+            <>
+              <button
+                type="button"
+                className="sa-abar__icbtn"
+                aria-label="Accessibility options"
+                title="Accessibility options"
+                aria-haspopup="dialog"
+                onClick={handleAccessibility}
+              >
+                <Icon name="accessibility_new" size={ICON_SIZE} aria-hidden />
+              </button>
+              {language && <span className="sa-abar__sep" aria-hidden="true" />}
+            </>
+          )}
+
+          {language && (
+            <button type="button" className="sa-abar__icbtn has-text" aria-label="Select language" title="Select language" onClick={language.onClick}>
+              <Icon name="language" size={ICON_SIZE} aria-hidden />
+              {language.label && <span>{language.label}</span>}
+              <Icon name="arrow_drop_down" size={ICON_SIZE} aria-hidden />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
