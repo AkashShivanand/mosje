@@ -31,10 +31,13 @@ This package is the **single source of truth** for the visual language across al
     unpublishable mapping reads as a finished integration, so do not infer from their
     presence that Code Connect works. `*.figma.ts` must stay excluded from the package
     tsconfig, or `npm run typecheck` fails on the virtual `figma` import.
-  - **`figma.config.json` exists in TWO places** — `packages/design-system/` and the
-    repo root — because the two branches each added one, in different locations, and
-    neither could see the other. **Consolidate to one before Code Connect is actually
-    wired**; two configs is a coin-flip about which the CLI reads.
+  - **There is exactly ONE `figma.config.json`, at the repo root.** The two branches
+    each added one — root and `packages/design-system/` — in ignorance of the other;
+    they were consolidated on 2026-08-14. The root wins because only its `include`
+    reaches both templates from where the CLI is run, and it absorbed the package
+    config's `documentUrlSubstitutions`, which `button.figma.ts` depends on (it writes
+    `url=<SAMAVESH>?node-id=…` rather than a full URL). **Do not add a second config**
+    — two of them is a coin-flip about which the CLI reads.
 - **What syncs code ↔ Figma today, in the absence of Code Connect:** tokens via
   `@mosje/tokens` (DTCG → Style Dictionary), and — on the Iconography page — the size
   scale and the 223-icon catalogue, both **generated** from their sources rather than

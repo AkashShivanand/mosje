@@ -16,9 +16,10 @@
   SITEHEADER IS MIGRATED ONTO IT. `@mosje/design-system` exports `AccessibilityBar` — the UX4G/GIGW
   top utility bar with a working A−/A/A+ font-size stepper — mirroring the SAMAVESH Figma master,
   fully `--sa-*` tokenised, AA-clear. SiteHeader's own hand-rolled Tier-1 bar is DELETED and the
-  shared component replaces it, rendered with `fontSize` enabled — so the stepper is now surfaced on
-  the live masthead, where the UX4G widget was previously the only mechanism. That is a public-site
-  behaviour change. `tone` is gone: colour is the brand MODE (`data-brand="navy"`), never a prop.
+  shared component replaces it. PUBLIC-SITE BEHAVIOUR IS UNCHANGED: the masthead passes
+  `fontSize={false}` — explicitly, because the prop DEFAULTS TO TRUE — so the UX4G widget remains
+  the single mechanism for text size and contrast. `tone` is gone: colour is the brand MODE
+  (`data-brand="navy"`), never a prop.
   Previously v0.19.0 — THE CONTENT CONTAINER IS UX4G'S TWO-STEP
   1200/1320 AND `.sa-container` IS THE ONLY WAY TO APPLY IT. Four widths shipped at once and the
   masthead sat 20px wider each side than the page beneath it; `SiteHeader.maxWidth` is now an

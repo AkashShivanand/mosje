@@ -265,7 +265,14 @@ export function SiteHeader({
           govLink={govLink}
           skipTo={skipTo}
           showSkip
-          fontSize
+          /* OFF, deliberately, and it must be passed explicitly because the prop
+             DEFAULTS to true. The UX4G widget is the estate's single mechanism for
+             text size and contrast (accessibility-consolidation spec §3), so surfacing
+             a second stepper on the live masthead would double up on it. This is what
+             navbar.md's Anatomy states, and what the library's 13 nested
+             AccessibilityBar instances were set to in v2.3.0 expressly to match this
+             file — it had "silently reverted to the component default" once already. */
+          fontSize={false}
           accessibility={accessibilityToolbar}
           accessibilityHref={accessibilityHref}
           onAccessibility={onAccessibility}
