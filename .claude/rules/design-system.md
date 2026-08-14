@@ -22,15 +22,19 @@ This package is the **single source of truth** for the visual language across al
   mappings validated", which was never true and made the gap invisible. The plan of
   record, including the per-component node map and the Icon mapping, is
   `docs/research/figma-code-connect-readiness.md`.
-  - **Correction, 2026-08-14:** the "zero `*.figma.ts(x)` files" half of this bullet
-    is no longer accurate. A root `figma.config.json` and one template
-    (`components/navigation/accessibility-bar.figma.ts`) landed with the
-    AccessibilityBar, because `component-authoring.md` §12a makes the template part
-    of shipping a component. **Treat those as authored-in-anticipation** — the
-    standing warning applies to them: an unpublishable mapping reads as a finished
-    integration, so do not infer from their presence that Code Connect works.
-    `*.figma.ts` is excluded from the package tsconfig, as it imports a virtual
-    `figma` module only the CLI provides.
+  - **Correction, 2026-08-14:** the "zero `*.figma.ts(x)` files" half of this bullet is
+    no longer accurate. **Two** templates landed, from two branches, because
+    `component-authoring.md` §12a makes the template part of shipping a component:
+    `components/actions/button.figma.ts` (foundation-documentation) and
+    `components/navigation/accessibility-bar.figma.ts` (AccessibilityBar).
+    **Treat them as authored-in-anticipation** — the standing warning applies: an
+    unpublishable mapping reads as a finished integration, so do not infer from their
+    presence that Code Connect works. `*.figma.ts` must stay excluded from the package
+    tsconfig, or `npm run typecheck` fails on the virtual `figma` import.
+  - **`figma.config.json` exists in TWO places** — `packages/design-system/` and the
+    repo root — because the two branches each added one, in different locations, and
+    neither could see the other. **Consolidate to one before Code Connect is actually
+    wired**; two configs is a coin-flip about which the CLI reads.
 - **What syncs code ↔ Figma today, in the absence of Code Connect:** tokens via
   `@mosje/tokens` (DTCG → Style Dictionary), and — on the Iconography page — the size
   scale and the 223-icon catalogue, both **generated** from their sources rather than
