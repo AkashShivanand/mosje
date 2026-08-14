@@ -97,7 +97,7 @@ Legend: each item is `[ ]` checkable. **Source tags:** `[DBIM n.n]`, `[GIGW]`, `
 - [ ] **Cookie consent banner at the bottom**, accept control `[DBIM 7.6.1]` ⚠️
 - [ ] Consent for personalisation obtained in the **user's preferred language** `[DBIM 7.6.1]` ⚠️
 
-## 12. Accessibility — WCAG 2.1 AA `[GIGW + UX4G]`
+## 12. Accessibility — WCAG 2.2 AA `[GIGW + UX4G]`
 - [ ] `<html lang>` set; one `<h1>`; headings nest; landmarks (`header/nav/main/footer`) `[GIGW·WCAG 1.3.1/2.4]`
 - [ ] **Skip to main content** link `[GIGW·WCAG 2.4.1]`
 - [ ] Full **keyboard** operability, no trap, **visible focus** `[WCAG 2.1.1/2.4.7]`

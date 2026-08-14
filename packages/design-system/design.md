@@ -464,7 +464,7 @@ table pre-dated the 2026-08-11 ramp rebuild and was wrong on `--ds-saffron`, `--
 `--ds-ink-muted`, `--ds-danger` and `--ds-success`, and carried a Dark column for an axis that had
 already been removed.*
 
-### C. Contrast Pairs (WCAG 2.1 AA — minimum 4.5:1 for text, 3:1 for UI elements)
+### C. Contrast Pairs (WCAG 2.2 AA — minimum 4.5:1 for text, 3:1 for UI elements)
 
 | Foreground | Background | Ratio | Status | Usage context |
 |-----------|-----------|-------|--------|---------------|
@@ -1839,7 +1839,7 @@ Sync workflow for tokens: `/sync-figma`.
 - [ ] Component is not already in the catalogue (check `index.ts` before building)
 - [ ] Component uses only semantic `--ds-*` tokens (no hardcoded hex)
 - [ ] Implements all 7 interactive states (Normal, Hover, Focus, Active, Loading, Error, Disabled)
-- [ ] Passes WCAG 2.1 AA colour contrast — verify with browser DevTools Accessibility panel
+- [ ] Passes WCAG 2.2 AA colour contrast — verify with browser DevTools Accessibility panel
 - [ ] Has a paired `.css` file in the same directory as the component `.tsx`
 - [ ] Exported from `index.ts` barrel with full TypeScript types
 - [ ] Added to the Component Catalogue section in this `design.md`

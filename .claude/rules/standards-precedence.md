@@ -3,7 +3,7 @@
 **The order of authority, highest first:**
 
 1. **Current design-craft standards.** What a well-made, modern interface requires:
-   readability, hierarchy, density that suits the task, WCAG 2.1 AA, sensible
+   readability, hierarchy, density that suits the task, WCAG 2.2 AA, sensible
    responsive behaviour. This is the floor we never go below.
 2. **DBIM** — Digital Brand Identity Manual (brand, colour, icons, typography).
 3. **GIGW 3.0** — Guidelines for Indian Government Websites.
@@ -40,6 +40,36 @@ dense table, button and form row in the estate.
 
 The scale is now **16, 20, 24, 32, 40, 48, 64** — DBIM's four, plus the three smaller
 steps interface work needs.
+
+## The accessibility baseline is WCAG 2.2 AA (project rule, 2026-08-13)
+
+**This estate targets WCAG 2.2 Level AA.** Not 2.1. GIGW 3.0 binds India's government
+properties to WCAG **2.1** AA, and that remains a true statement about GIGW — but 2.2 is a
+strict superset of 2.1, so conforming to 2.2 satisfies GIGW and exceeds it. Where a document
+describes *what GIGW requires*, it correctly still says 2.1; where it states *our own target*,
+it says 2.2.
+
+**What adopting 2.2 actually adds** — these are now in scope and previously were not:
+
+| Criterion | Level | What it requires |
+| --- | --- | --- |
+| 2.4.11 Focus Not Obscured (Minimum) | AA | A focused control must not be entirely hidden by sticky headers or overlays |
+| 2.5.7 Dragging Movements | AA | Anything draggable needs a single-pointer alternative |
+| **2.5.8 Target Size (Minimum)** | AA | **24×24 CSS px**, or adequate spacing |
+| 3.2.6 Consistent Help | A | Help mechanisms appear in the same relative order across pages |
+| 3.3.7 Redundant Entry | A | Don't ask for the same information twice in a process |
+| 3.3.8 Accessible Authentication (Minimum) | AA | No cognitive function test without an alternative |
+
+**2.5.8 is the one that changes day-to-day work**, and it is the one most often misquoted.
+The AA minimum is **24×24**, not 44×44 — 44×44 is **2.5.5 Target Size (Enhanced), Level AAA**,
+which we do not claim. UX4G separately recommends 44×44 **on mobile**; treat that as a
+recommendation for touch contexts, not a WCAG failure on a pointer surface.
+
+Getting this wrong in an audit is worse than not auditing: calling a 40×40 desktop icon
+button a "critical WCAG failure" sits it beside real failures and devalues both.
+
+**2.4.11 has a direct consequence for this estate**: both mastheads are `sticky`, so a focused
+element must never end up underneath them. Check it whenever the header height changes.
 
 ## Where this does NOT apply
 
