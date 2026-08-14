@@ -2296,7 +2296,7 @@
     }
   },
   "container": {
-    "$description": "Page container max-widths. sm–xl carry UX4G 3.0's exact values; `content` is the MoSJE 1280px content width mandated estate-wide, which until now existed only as a literal.",
+    "$description": "Page container max-widths. `sm`–`xl` carry UX4G 3.0's Bootstrap container ladder verbatim. `content` and `contentXl` are the estate's own page container — the pair a page skeleton actually binds. A container is a CAP, never a width: `grid/margin/*` is a floor that wins on narrower viewports, so the effective column is min(container, viewport - 2 x margin).",
     "$type": "dimension",
     "sm": {
       "$value": "540px"
@@ -2310,8 +2310,17 @@
     "xl": {
       "$value": "1140px"
     },
+    "2xl": {
+      "$value": "1320px",
+      "$description": "Completes UX4G's container ladder, which is Bootstrap's: 540 / 720 / 960 / 1140 / 1320. It was the one step missing here, so `contentXl` had to restate the literal; it now aliases this."
+    },
     "content": {
-      "$value": "1280px"
+      "$value": "1200px",
+      "$description": "The desktop content cap. Changed from 1280px to UX4G 3.0's published 1200px on 13 August 2026 ('Grid and layout': max content width 1200px desktop, 1320px desktop XL). Until then the estate ran FOUR widths at once — this token said 1280 and nothing consumed it, 22 website section files hardcoded the same 1280 as a literal, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. The visible defect was that above 1320px the masthead's content ran 20px wider each side than the page beneath it, so the National Emblem did not line up with the content column. At the 1440 design frame 1200 leaves a 120px margin either side, comfortably clear of the 32px `grid/margin/desktop` floor."
+    },
+    "contentXl": {
+      "$value": "{container.2xl}",
+      "$description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages; Bootstrap — whose ladder UX4G's is — engages `container-xxl` at 1400, so that is the anchor."
     }
   },
   "grid": {
@@ -2336,6 +2345,40 @@
       },
       "desktop": {
         "$value": "{space.3xl}"
+      }
+    }
+  },
+  "layout": {
+    "$description": "Page-skeleton geometry — the measurements a shell needs that do NOT come from its content. `grid/*` describes the column system, `container/*` caps the content column, and this group holds the chrome around them. Only genuinely fixed values belong here. A masthead, a page header and a sidebar's own height all size to what they contain, so they are hugs in the component and carry at most a minimum here; a shell must never be laid out by subtracting a hardcoded chrome height. Measured from MoSJE-Portal--Handoff- node 2309:14405, a native 1440 x 1068 frame.",
+    "$type": "dimension",
+    "bar": {
+      "height": {
+        "$value": "46px",
+        "$description": "The government accessibility bar. Genuinely fixed: it carries one row of controls at a known size, in every surface and every locale."
+      }
+    },
+    "flag": {
+      "width": {
+        "$value": "33px",
+        "$description": "The Indian flag mark in the accessibility bar. Fixed so the bar's left edge is identical across the estate."
+      }
+    },
+    "masthead": {
+      "minHeight": {
+        "$value": "72px",
+        "$description": "The brand row's MINIMUM, not its height. It hugs its content, which varies: two or three lines of ministry lockup, an optional BETA badge, a search field on the website, an account block on portals. 72 is the floor that keeps the emblem legible when the lockup is shortest. Never lay out against a fixed masthead height — see `layout/chrome/minHeight`."
+      }
+    },
+    "chrome": {
+      "minHeight": {
+        "$value": "118px",
+        "$description": "Accessibility bar plus brand row at their minimum — the offset the sidebar and content start at on a portal page. Use it for a scroll anchor or a sticky offset, NOT to size the shell: the brand row hugs, so the real value moves with the content. AppShell lays the shell out as a three-row grid (`auto auto 1fr`) so nothing subtracts this from the viewport. At the documented content the navbar measures 134 including its shadow, of which 118 is the layout box."
+      }
+    },
+    "sidebar": {
+      "width": {
+        "$value": "300px",
+        "$description": "The portal sidebar's expanded width. Genuinely fixed: the nav labels are known copy, and a fluid sidebar would move the content edge on every route. Its inner padding is `padding/m` (16), leaving a 268 item column; items are `target/spacious` (48) tall. Below the tablet breakpoint the sidebar is not narrowed — it becomes a drawer."
       }
     }
   },

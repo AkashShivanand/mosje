@@ -7,7 +7,7 @@ paths:
 
 # Design-system rules (`packages/design-system/` — the Figma-synced source of truth)
 
-This package is the **single source of truth** for the visual language across all 13 sites + 20 portals, kept **100% in sync with the Figma library** via Code Connect.
+This package is the **single source of truth** for the visual language across all 13 sites + 20 portals, kept in sync with the Figma library — **today by generated tokens and generated documentation data, NOT by Code Connect.**
 
 **Phase 2 is underway.** Tokens are authored as DTCG JSON in `@mosje/tokens` (`packages/tokens/src/*.json`) and compiled by Style Dictionary v4 into the `--ds-*`/`--sa-*` CSS contract, a TS module, the Tailwind v3 preset (`@mosje/config`) and v4 `@theme`, and a Figma DTCG export. **Edit tokens in `packages/tokens/src/`, never in generated artifacts** (`packages/tokens/dist/`, `packages/design-system/tokens.css`, `packages/config/tailwind-preset.cjs`). Run `npm run build -w @mosje/tokens` to regenerate and `npm test -w @mosje/tokens` to assert the backward-compatible contract.
 
@@ -15,7 +15,19 @@ This package is the **single source of truth** for the visual language across al
 - **Tokens first.** Define color/spacing/typography/radius as tokens (CSS variables + a TS export), named to match the Figma variables 1:1. Apps consume tokens; they never hardcode.
 - **One component, one definition.** Each shared component (Button, Card, Header pieces, nav, etc.) lives here once and is imported as `@mosje/design-system`. No per-app forks.
 - **Framework-agnostic where possible.** Tokens as plain CSS vars + a Tailwind preset (`packages/config`) so both Tailwind v4 (website) and v3 (portals) can consume the same values.
-- **Code Connect.** Every exported component maps to its Figma component; keep mappings validated.
+- **Code Connect is NOT set up, and cannot be on the current plan.** It needs a
+  Developer seat on an Organization/Enterprise plan. As of 2026-08-12 there are **zero**
+  mappings, no `*.figma.ts(x)` files, and no `@figma/code-connect` dependency — verified,
+  not assumed. This bullet used to read "every exported component maps to its Figma
+  component; keep mappings validated", which was never true and made the gap invisible.
+  **Do not author mapping files in anticipation** — unpublishable ones read as a finished
+  integration. The plan of record, including the per-component node map and the Icon
+  mapping, is `docs/research/figma-code-connect-readiness.md`.
+- **What syncs code ↔ Figma today, in the absence of Code Connect:** tokens via
+  `@mosje/tokens` (DTCG → Style Dictionary), and — on the Iconography page — the size
+  scale and the 223-icon catalogue, both **generated** from their sources rather than
+  hand-kept. Everything else is manual and therefore drifts; prefer generating a fact
+  over transcribing it, because transcription is what the 2026-08-12 audit caught.
 
 ## When extracting (phase 2)
 1. Reconcile code tokens ↔ Figma variables (`/sync-figma <url>`); agree one canonical set.
