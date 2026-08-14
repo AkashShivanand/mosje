@@ -98,7 +98,7 @@ the website at `website/`, the docs at `design-system/`, and the portals at `por
 - **TypeScript strict, no `any`.** Named exports. PascalCase components, camelCase utils.
 - **Design tokens, never hardcoded values.** Use the brand tokens (`gov-blue #0373DF`, `saffron #F97316`, `gov-yellow #FFD323`, `ink`, `surface-muted`, …). When the design system lands, import from `@mosje/design-system`.
 - **Standards precedence — quality first.** The order of authority is: (1) current design-craft
-  standards, including WCAG 2.1 AA, then (2) DBIM, (3) GIGW 3.0, (4) UX4G — each adopted wherever
+  standards, including WCAG 2.2 AA, then (2) DBIM, (3) GIGW 3.0, (4) UX4G — each adopted wherever
   it fits **without hampering quality**. When a standard specifies a set of values, **ADD what is
   missing; never DELETE what quality needs** — its list is a floor, not a ceiling. Where a standard
   would force a worse interface, quality wins and the deviation is *documented*, not hidden.
@@ -107,7 +107,7 @@ the website at `website/`, the docs at `design-system/`, and the portals at `por
 - **Noto Sans** is the typeface across all gov properties (DBIM standard). Don't introduce other fonts.
 - **No Indian tricolour band/stripe motif** (the saffron-white-green flag bar) anywhere in UI chrome — headers, footers, hero bands, dividers — **unless the user explicitly asks for it.** A single brand-token accent is fine; the flag-stripe decoration is not. (Standing instruction, 2026-06-13.)
 - **Logo & favicon: use the National Emblem** (`National-Emblem-logo.svg` / `National_Emblem_logo_white.svg` for dark) — never an invented/abstract mark.
-- **Accessibility is non-negotiable** — these are government sites. Target **WCAG 2.1 AA + GIGW**: semantic HTML, alt text, keyboard nav, visible focus, AA contrast. Use the `accessibility-auditor` agent before shipping a page.
+- **Accessibility is non-negotiable** — these are government sites. Target **WCAG 2.2 AA + GIGW**: semantic HTML, alt text, keyboard nav, visible focus, AA contrast. Use the `accessibility-auditor` agent before shipping a page.
 - **Government standards live in `docs/guidelines/` — consult them before building or reviewing UI.** Four sources, each as PDF + faithful markdown: **GIGW 3.0** (mandatory), **DBIM 3.0** (mandatory, brand), **UX4G 3.0 Design System** (recommended), **GuDApps** (best practice). Start at `docs/guidelines/README.md` — it carries the routing table, the precedence ladder, and the register of deliberate divergences. **Follow what can be followed without regressing the shipping design system:** accessibility/legal requirements are adopted unconditionally, structural conventions are adopted in `--sa-*` token names, brand/aesthetic preferences (UX4G's violet primary, its icon variant default) are **not** — DBIM and SAMAVESH set our brand. Never weaken a requirement to make something pass; record the divergence instead. Full rule: `.claude/rules/guidelines.md`.
 - **Real content, real assets** — no lorem/placeholder in production pages.
 - `next/image` for images; **`<Icon>`** from `@mosje/design-system` for icons — **use Material Symbols Rounded** (the official SAMAVESH icon system). Standard spec: weight 300, size 24, stroke variant. Load the font once per app: `import "@mosje/design-system/icons.css"` in the root layout. For brand/social logos (National Emblem, etc.) use inline SVGs.

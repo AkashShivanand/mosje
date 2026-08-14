@@ -25,7 +25,7 @@ No raw hex/rgb in components. Section headings: ~32px, `font-semibold`, `text-go
 - `lucide-react` for icons — **note this version dropped brand social icons (Facebook/Twitter/Instagram); use inline brand SVGs.**
 
 ## Accessibility (required)
-WCAG 2.1 AA + GIGW. Semantic landmarks, one `<h1>`, alt text, `aria-label` on icon-only controls, keyboard support + visible focus, AA contrast. Run `/a11y` before shipping a page.
+WCAG 2.2 AA + GIGW. Semantic landmarks, one `<h1>`, alt text, `aria-label` on icon-only controls, keyboard support + visible focus, AA contrast. Run `/a11y` before shipping a page.
 
 ## Growth
 New pages/sections (porting the 13 legacy sites' content) are reverse-engineered with the global **`clone-website`** skill, then QA'd with `/qa <live-url>`.
