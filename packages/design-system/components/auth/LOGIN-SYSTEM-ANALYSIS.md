@@ -739,7 +739,10 @@ component set was rebuilt on 17 Aug (by a parallel session) into
 `Orientation × Track` with a slot, and its own description says it plainly:
 *"The track lives HERE, never on a tab."*
 
-Both wrappers are now **deprecated**. `AuthFormCard` holds `Tabs` instances directly:
+Both wrappers are now **deleted**, not deprecated. Deprecation exists to protect downstream
+consumers; these had none — created in this workstream, never adopted anywhere, zero instances
+across all 64 pages. Keeping a labelled corpse in the library is just a second place for someone
+to find the wrong answer. `AuthFormCard` holds `Tabs` instances directly:
 
 | Switch | Component |
 |---|---|
@@ -766,6 +769,25 @@ fixed. Worth knowing for any future component built on slots.
    splits 390 evenly and truncates the longer label. **The reference does not split them**: its
    underline tabs hug their labels and left-align. Set to HUG, and the clipping is gone. The pill
    tabs *should* fill, and do.
+
+### Junk swept at the same time
+
+- **A stray paste of the original handoff screen** (1440×960) was sitting loose on the page,
+  outside every section — two stacked navbars, the broken Forgot Password card, placeholder
+  copy. Reference debris; removed.
+- The `Check slot` frame inside `OrganisationCard` reads as "empty" to a sweep and is
+  **deliberate**: it reserves the check's 24px so selecting a card does not reflow its tagline.
+
+**Final state of the page: zero overlaps, zero raw values, zero unstyled text, no stray nodes.**
+Four sections — `1 · Template`, `2 · Organisms`, `3 · Parts` (8 auth molecules), `4 · Portal hero
+photography` — plus the documentation frame.
+
+### One thing deliberately NOT deleted
+
+`_deprecated/OTP box` and `_deprecated/OTP field` on the `Inputs` page **predate this work** —
+they are pre-existing library components, not ours to remove. The box still has 18 instances
+inside its own demo frame. Retiring them is a separate, deliberate decision for whoever owns the
+Inputs page.
 
 ### Still outstanding
 
