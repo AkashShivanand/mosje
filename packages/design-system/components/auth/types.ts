@@ -1,14 +1,36 @@
 import * as React from "react";
 
 /**
+ * The audiences a portal signs in. ONE taxonomy for the whole estate.
+ *
+ * Every portal's own wording maps onto these three: NMBA's "Patient Monitoring",
+ * SMILE-Transgender's "Garima Greh" and SCW's "SAGE Organisation" are all
+ * `organisation`, renamed via the tab's `label`. Before this existed there were
+ * five bespoke taxonomies across nine portals and no way to write a rule — such
+ * as "hide DigiLocker for officers" — that held in more than one of them.
+ *
+ * Do not add a fourth. A portal that seems to need one is renaming, not adding.
+ */
+export type PortalAudience = "citizen" | "officer" | "organisation";
+
+/**
  * Supported authentication workflows for MoSJE Portals.
+ *
+ * **Corrected 2026-08-17.** This union previously carried `"darpan"` (NGO DARPAN
+ * ID) and `"aadhaar"` (Aadhaar e-KYC). Neither exists: a full read of the
+ * MoSJE Portal handoff — 69 auth screens across 10 pages — found no DARPAN and
+ * no Aadhaar screen anywhere, in any portal. They were invented from a written
+ * brief before the design file was available, and the matching Figma variant
+ * axis has been retired too.
+ *
+ * `digilocker` is kept, but note what it is: a CTA that hands off to a
+ * government identity provider, sitting ABOVE the credentials divider. It is
+ * not a mode of the credential form. The form itself has exactly two modes.
  */
 export type PortalAuthMode =
-  | "password" // Username / Email / Mobile + Password + Captcha
+  | "password" // Username / Email / Mobile + Password (+ optional captcha)
   | "otp" // Mobile / Email + 6-digit OTP verification
-  | "digilocker" // DigiLocker SSO identity & document fetch
-  | "darpan" // NGO DARPAN ID verification (NITI Aayog)
-  | "aadhaar"; // Aadhaar e-KYC OTP verification
+  | "digilocker"; // DigiLocker SSO — a handoff, not a form mode
 
 /**
  * Custom display option for a specific login method under a role.
@@ -28,6 +50,13 @@ export interface PortalAuthModeOption {
 export interface PortalRoleTab {
   /** Unique ID for the role, e.g. "citizen", "ngo", "officer" */
   id: string;
+  /**
+   * Which of the three estate audiences this tab is, regardless of its label.
+   * Rules key off this, not off `label` — `audience === "officer"` is what hides
+   * the DigiLocker button, and it must keep working when a portal calls its
+   * officer tab "Admin" or its organisation tab "Garima Greh".
+   */
+  audience?: PortalAudience;
   /** Display label in the segmented control tab pill */
   label: string;
   /** Supported authentication modes for this specific role */
@@ -70,8 +99,6 @@ export interface LoginSubmitPayload {
     password?: string;
     mobile?: string;
     otp?: string;
-    darpanId?: string;
-    aadhaarNo?: string;
     captcha?: string;
   };
 }

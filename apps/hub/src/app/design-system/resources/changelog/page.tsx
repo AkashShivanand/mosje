@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.21.0",
+    version: "v0.22.0",
     date: "2026-08-17",
     current: true,
+    changes: [
+      { kind: "Removed", text: "THE `darpan` AND `aadhaar` AUTH MODES NEVER EXISTED. A full read of the MoSJE Portal Handoff — 69 auth screens across 10 of its 12 pages — found no NGO DARPAN screen and no Aadhaar e-KYC screen in any portal. Both were invented from a written brief before the design file was available. `PortalAuthMode` is now `password | otp | digilocker`, the two render blocks are gone, and `LoginSubmitPayload.credentials` no longer carries `darpanId` / `aadhaarNo`. The matching Figma axis was retired the same day: `PortalLoginTemplate` went from Device × Auth Method (5) = 10 variants to Device × Step = 8, updated IN PLACE so the component key and every instance link survived" },
+      { kind: "Added", text: "AUTH PARTS — seven small components mirroring the `Auth / *` sets in the Figma library: AuthDivider, ConsentLine, ResendTimer, MaskedContactRow, SSOButton, AccountPrompt, SigningIntoBar. Nine portals were each hand-rolling the same fragments with different rules; the rules now live in one place. Two carry the ones most often got wrong: SSOButton must be hidden for the Officer audience (officers hold no DigiLocker account), and ResendTimer goes active IMMEDIATELY on an incorrect-OTP error rather than waiting out the cooldown" },
+      { kind: "Added", text: "PASSWORDSTRENGTHMETER and CAPTCHAFIELD. The meter takes a zxcvbn score, is advisory rather than a gate, and is for passwords being CREATED — never beside one being entered, where it tells an attacker how close a guess is. CaptchaField ships with the warning attached: WCAG 2.2 SC 3.3.8 is Level AA, so a cognitive-function test with no alternative is a conformance failure, not hardening. One surface in the estate uses it" },
+      { kind: "Added", text: "PORTALAUDIENCE — `citizen · officer · organisation`, one taxonomy for the estate. NMBA's 'Patient Monitoring', SMILE-Transgender's 'Garima Greh' and SCW's 'SAGE Organisation' are all `organisation`, renamed via the tab label. There were five bespoke taxonomies across nine portals and no way to write a rule that held in more than one of them" },
+      { kind: "Added", text: "TOKENS: `layout/login/{hero.width 922, panel.width 518, panel.gutter 64, content.width 390}` and `text/neutral/subtler`. The login group had existed in Figma since 16 August and in code not at all — that drift is now closed, with both sides read back live before the parity record moved. `text/neutral/subtler` was first authored as `text/neutral/placeholder` and renamed in place: the naming grammar has no placeholder slot, and adding one to STATE would have let `bg/*/placeholder` parse too, so the token is named for its rung and its use is in the description" },
+    ],
+  },
+  {
+    version: "v0.21.0",
+    date: "2026-08-17",
     changes: [
       { kind: "Added", text: "PORTALLOGINTEMPLATE — a login page described by a CONFIG OBJECT rather than assembled by hand. It renders the role tabs, the login-method selector and the right fields for each of the five auth modes (password, otp, digilocker, darpan, aadhaar), and returns one `LoginSubmitPayload` from `onSubmit`. It exists because those shapes kept being re-typed per portal. `PortalLoginShell` remains the right choice when a login is genuinely bespoke — forcing a one-off through a config object produces a worse page than composing it" },
       { kind: "Changed", text: "IT SHIPS MID-RESCOPE, DELIBERATELY, AND IS NOT YET ADOPTED — no page renders it; both E-Anudaan logins still use PortalLoginShell. `components/auth/LOGIN-SYSTEM-ANALYSIS.md` supersedes `FIGMA-SPEC.md` §9: the MoSJE Portal Handoff carries 69 auth screens across 10 pages, not the 25 the designer's own index frame counts. The component covers the original reading; the config shape is expected to grow, so it is marked Beta rather than Stable" },

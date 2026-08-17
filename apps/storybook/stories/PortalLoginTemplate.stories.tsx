@@ -10,8 +10,9 @@ import type { PortalLoginConfig } from "@mosje/design-system";
  * Where `PortalLoginShell` gives you the page furniture and leaves the form to
  * the app, this goes one step further: you hand it `config` and it renders the
  * role tabs, the login-method selector and the correct fields for each of the
- * five `PortalAuthMode`s — `password`, `otp`, `digilocker`, `darpan`,
- * `aadhaar`. Submitting calls `onSubmit` with a single `LoginSubmitPayload`
+ * three `PortalAuthMode`s — `password`, `otp` and `digilocker`. (`darpan` and
+ * `aadhaar` were removed on 2026-08-17: a full read of the handoff found no such
+ * screen in any portal.) Submitting calls `onSubmit` with a `LoginSubmitPayload`
  * carrying the role, the mode and the credentials.
  *
  * **When to reach for which.** Use this when a portal's login is one of the
@@ -74,7 +75,7 @@ const eAnudaan: PortalLoginConfig = {
       id: "ngo",
       label: "NGO / Applicant",
       description: "Voluntary organisations applying for or managing a grant.",
-      authModes: ["password", "darpan"],
+      authModes: ["password", "otp"],
       authSelectorType: "segmented",
       defaultMode: "password",
     },
@@ -105,7 +106,7 @@ type Story = StoryObj<typeof meta>;
 
 /**
  * The default: two roles, and the NGO role offering both a password and a
- * DARPAN ID route. Switching role re-derives the available login methods.
+ * OTP route. Switching role re-derives the available login methods.
  */
 export const Playground: Story = {};
 
@@ -127,9 +128,9 @@ export const Submitting: Story = {
 };
 
 /**
- * **Every login method in one place.** A single role exposing all five
+ * **Every login method in one place.** A single role exposing all three
  * `PortalAuthMode`s — not a realistic portal, but the fastest way to review the
- * field sets side by side. Note DigiLocker and Aadhaar are identity flows: they
+ * field sets side by side. Note DigiLocker is an identity handoff, not a form mode: it
  * collect a consent action, not a password.
  */
 export const AllAuthModes: Story = {
@@ -141,8 +142,8 @@ export const AllAuthModes: Story = {
         {
           id: "all",
           label: "Every method",
-          description: "A specimen role carrying all five modes for review.",
-          authModes: ["password", "otp", "digilocker", "darpan", "aadhaar"],
+          description: "A specimen role carrying all three modes for review.",
+          authModes: ["password", "otp", "digilocker"],
           authSelectorType: "dropdown",
           defaultMode: "password",
         },

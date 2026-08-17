@@ -79,6 +79,10 @@ export { Textarea } from "./components/forms/textarea";
 export type { TextareaProps } from "./components/forms/textarea";
 export { Select } from "./components/forms/select";
 export type { SelectProps, SelectOption } from "./components/forms/select";
+export { PasswordStrengthMeter, strengthFromScore } from "./components/forms/password-strength-meter";
+export type { PasswordStrengthMeterProps, PasswordStrength } from "./components/forms/password-strength-meter";
+export { CaptchaField } from "./components/forms/captcha-field";
+export type { CaptchaFieldProps } from "./components/forms/captcha-field";
 export { FormField } from "./components/forms/form-field";
 export type { FormFieldProps, FormFieldControlProps } from "./components/forms/form-field";
 export { Label } from "./components/forms/label";
@@ -339,9 +343,31 @@ export type {
   PortalLoginConfig,
   PortalRoleTab as PortalConfigRoleTab,
   PortalAuthMode,
+  PortalAudience,
   PortalBrandAssets,
   LoginSubmitPayload,
 } from "./components/auth/types";
+// Auth parts — the pieces every portal login is assembled from. Mirrors the
+// `Auth / *` component sets in the SAMAVESH Figma library.
+export {
+  AuthDivider,
+  ConsentLine,
+  ResendTimer,
+  MaskedContactRow,
+  SSOButton,
+  AccountPrompt,
+  SigningIntoBar,
+} from "./components/auth/auth-parts";
+export type {
+  AuthDividerProps,
+  ConsentLineProps,
+  ResendTimerProps,
+  MaskedContactRowProps,
+  SSOButtonProps,
+  AccountPromptProps,
+  AccountPromptOption,
+  SigningIntoBarProps,
+} from "./components/auth/auth-parts";
 
 // ---- Components: Accessibility -----------------------------------------------
 // CANONICAL: the official Government of India (MeitY / UX4G) accessibility widget.

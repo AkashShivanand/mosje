@@ -8,31 +8,41 @@
 // carries the usage rules as well as the snippet.
 // See .claude/rules/component-authoring.md §12.
 //
-// PROPERTY COVERAGE — all 5 Figma properties are accounted for:
-//   Auth Method    -> config.roles[].defaultMode  (password | otp | digilocker |
-//                     darpan | aadhaar)
-//   Signing into   -> config.portalName
-//   Device         -> DELIBERATELY OMITTED. There is no `device` prop: the React
-//                     component is responsive in CSS, and the Figma axis exists
-//                     only so a designer can pin a breakpoint on the canvas.
-//                     Desktop is ref/viewport/desktop (1440), Mobile is
-//                     ref/viewport/mobile (412) — note 412, not the 375 some
-//                     specs quote; 412 is this library's mobile breakpoint.
-//   Role tabs      -> DELIBERATELY OMITTED as a direct prop. The instance swap
-//                     selects which ❖ RoleTabs variant is shown, i.e. which role
-//                     is active; in code that is derived from the `config.roles`
-//                     array plus `config.defaultRoleId`. A single swap cannot
-//                     express an array, so emitting one prop for it would be
-//                     inventing an API that does not exist.
-//   Auth selector  -> DELIBERATELY OMITTED as a direct prop, for the same reason.
-//                     ❖ AuthSelector's Style maps to `authSelectorType`, which in
-//                     code is set PER ROLE inside `config.roles[]`, not once on
-//                     the component.
+// REBUILT 2026-08-17. The component set was re-cut IN PLACE (node id and key
+// preserved, every instance link intact) from `Device × Auth Method (5)` = 10
+// variants to `Device × Step` = 8.
 //
-// ROLE AND SELECTOR STYLE ARE NOT VARIANT AXES. They are nested component sets on
-// purpose: as variants, Device (2) × Role (3) × Auth Method (5) × Selector Style
-// (3) is 90 permutations, ~40 of them combinations that can never ship (a
-// Department Officer cannot hold an NGO DARPAN ID). Do not add them.
+// THE OLD AUTH METHOD AXIS WAS INVENTED. `Password + Captcha`, `Mobile OTP`,
+// `DigiLocker SSO`, `NGO DARPAN ID` and `Aadhaar OTP` came from a written brief
+// written before the design file was available. A full read of the MoSJE Portal
+// handoff — 69 auth screens across 10 of its 12 pages — found exactly two
+// credential modes, and NO DARPAN screen and NO Aadhaar screen in any portal.
+// `darpan` and `aadhaar` are gone from `PortalAuthMode` too. Do not reinstate
+// either axis or either mode.
+//
+// PROPERTY COVERAGE — both Figma properties are accounted for:
+//   Step    -> which part of the journey is on screen. In code this is not one
+//              prop: `Credentials` is the resting render, `OTP` is reached when
+//              the user submits an OTP-mode form, and `Reset` / `Success` belong
+//              to the recovery flow. The variant exists so a designer can pin a
+//              step on the canvas; the component derives it from its own state.
+//   Device  -> DELIBERATELY OMITTED. There is no `device` prop: the React
+//              component is responsive in CSS, and the Figma axis exists only so
+//              a designer can pin a breakpoint. Desktop is ref/viewport/desktop
+//              (1440), Mobile is ref/viewport/mobile (412) — note 412, not the
+//              375 some specs quote. TABLET (768–1024) uses the Mobile variant
+//              by decision, not by omission: the 922/518 split does not survive
+//              below 1024 and the handoff never designed one.
+//
+// EVERYTHING A PORTAL VARIES IS A PROPERTY ON A NESTED PART, NOT A VARIANT.
+// Role tabs, the DigiLocker toggle, the credential-method tabs, the identifier
+// label and the account prompt all live on `Auth / *` components inside the
+// shell. If you find yourself wanting a new Step for a portal, you want a
+// property.
+//
+// HIDE DIGILOCKER FOR OFFICERS. Key it off `PortalRoleTab.audience === "officer"`,
+// never off the tab's label or the portal — SCW calls that tab "Admin", NMBA
+// calls it "Patient Monitoring", and a label test breaks on both.
 //
 // TONE IS NOT A PROPERTY. Light/dark and high contrast resolve through the
 // `data-color-mode` axis and brand through `data-brand`. Never generate a `tone`,
@@ -41,28 +51,40 @@ import figma from "figma";
 
 const instance = figma.selectedInstance;
 
-const portalName = instance.getString("Signing into");
-
-const defaultMode = instance.getEnum("Auth Method", {
-  "Password + Captcha": "password",
-  "Mobile OTP": "otp",
-  "DigiLocker SSO": "digilocker",
-  "NGO DARPAN ID": "darpan",
-  "Aadhaar OTP": "aadhaar",
+// The journey position. `Reset` and `Success` are recovery-flow screens: they
+// render through the same component, driven by its own state rather than a prop,
+// so the snippet shows the entry point and notes where the rest comes from.
+const step = instance.getEnum("Step", {
+  Credentials: "credentials",
+  OTP: "otp",
+  Reset: "reset",
+  Success: "success",
 });
 
 export default {
-  example: figma.code`<PortalLoginTemplate
+  example: figma.code`{/* Figma Step = ${step}. Steps are internal state, not a prop:
+    Credentials is the resting render, OTP follows an otp-mode submit, and
+    Reset / Success belong to the credential-recovery flow. */}
+<PortalLoginTemplate
   config={{
     portalId: "portal-slug",
-    portalName: "${portalName}",
+    // The SCHEME name, never the acronym — "Senior Citizens Welfare", not "SCW".
+    portalName: "Senior Citizens Welfare",
     roles: [
       {
         id: "citizen",
-        label: "Citizen / Applicant",
-        authModes: ["${defaultMode}"],
-        defaultMode: "${defaultMode}",
-        authSelectorType: "segmented",
+        label: "Citizen / Beneficiary",
+        audience: "citizen",
+        authModes: ["password", "otp"],
+        defaultMode: "password",
+      },
+      {
+        id: "officer",
+        label: "Officer / Admin",
+        // audience drives the rules — this is what hides DigiLocker.
+        audience: "officer",
+        authModes: ["password"],
+        defaultMode: "password",
       },
     ],
   }}

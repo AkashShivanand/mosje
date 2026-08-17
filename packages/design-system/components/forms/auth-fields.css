@@ -1,0 +1,124 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — auth-only form fields
+   PasswordStrengthMeter and CaptchaField. Both exist because an authentication
+   screen needs them and nothing else does; keeping them out of forms.css keeps
+   that boundary visible.
+   ============================================================================ */
+
+/* ---- PasswordStrengthMeter ------------------------------------------------ */
+
+.ds-pwmeter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-2xs);
+  font-family: var(--sa-font-latin);
+}
+
+.ds-pwmeter__track {
+  display: flex;
+  gap: var(--sa-inline-2xs);
+}
+
+.ds-pwmeter__seg {
+  flex: 1 1 0;
+  height: var(--sa-padding-2xs);
+  border-radius: var(--sa-shape-full);
+  background-color: var(--sa-bg-neutral-subtle);
+  transition: background-color 0.18s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-pwmeter__seg { transition: none; }
+}
+
+.ds-pwmeter__seg--weak    { background-color: var(--sa-bg-status-error-bolder); }
+.ds-pwmeter__seg--fair    { background-color: var(--sa-bg-status-warning-bolder); }
+.ds-pwmeter__seg--good    { background-color: var(--sa-bg-status-info-bolder); }
+.ds-pwmeter__seg--strong  { background-color: var(--sa-bg-status-success-bolder); }
+
+.ds-pwmeter__legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-inline-s);
+}
+
+.ds-pwmeter__caption {
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+
+.ds-pwmeter__level {
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  font-weight: 600;
+}
+
+.ds-pwmeter__level--none   { color: var(--sa-text-neutral-subtle); }
+.ds-pwmeter__level--weak   { color: var(--sa-text-status-error-base); }
+.ds-pwmeter__level--fair   { color: var(--sa-text-status-warning-base); }
+.ds-pwmeter__level--good   { color: var(--sa-text-status-info-base); }
+.ds-pwmeter__level--strong { color: var(--sa-text-status-success-base); }
+
+/* ---- CaptchaField --------------------------------------------------------- */
+
+.ds-captcha {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-xs);
+  font-family: var(--sa-font-latin);
+}
+
+.ds-captcha__row {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-s);
+}
+
+.ds-captcha__challenge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sa-ref-space-md) var(--sa-padding-m);
+  border-radius: var(--sa-control-radius);
+  background-color: var(--sa-bg-neutral-subtle);
+  color: var(--sa-text-neutral-base);
+  font-size: var(--sa-type-title-2-size);
+  line-height: var(--sa-type-title-2-lh);
+  letter-spacing: 0.12em;
+  user-select: none;
+}
+
+.ds-captcha__challenge img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.ds-captcha__refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--sa-target-comfortable);
+  height: var(--sa-target-comfortable);
+  flex: none;
+  border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-control-radius);
+  background-color: var(--sa-bg-neutral-base);
+  color: var(--sa-icon-neutral-base);
+  cursor: pointer;
+}
+
+.ds-captcha__refresh:hover { background-color: var(--sa-bg-neutral-subtler); }
+
+.ds-captcha__refresh:focus-visible {
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
+}
+
+.ds-captcha__error {
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-status-error-base);
+}

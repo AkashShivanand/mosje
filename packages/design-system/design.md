@@ -1177,6 +1177,24 @@ The details it exists to guarantee:
 **Rule**: pair with `<FormField>` like any other control, and always pass `autoComplete` —
 `"current-password"` to sign in, `"new-password"` to set one. Password managers key on it.
 
+#### PasswordStrengthMeter
+**Purpose**: Four segments and a word, under a password the user is **creating**.
+**Props**: `score` (zxcvbn 0–4, or `null` when empty), `caption`, `aria-describedby`, `id`, `className`. `strengthFromScore` exports the same mapping.
+**Rules**:
+- **Registration and reset only.** Never beside a password someone is *entering*: on a sign-in screen it tells an attacker how close a guess is, and tells a legitimate user something they cannot act on.
+- **Pass zxcvbn's own score.** Do not compute it from character classes ("one capital, one symbol") — those measure the wrong thing, failing a strong passphrase and passing `Passw0rd!`.
+- **Advisory, not a gate.** Never block submit on a Fair score. A policy minimum belongs in the field's error message, where it can say what to change; a colour bar cannot.
+- The word carries the meaning, not the colour — a red bar and an amber bar are the same bar to a colour-blind user. Announce politely, never assertively.
+
+#### CaptchaField
+**Purpose**: A security-check challenge, a refresh control, and an answer field.
+**Props**: `challenge` (`{type:"image"|"text"}`), `value`, `onValueChange`, `onRefresh`, `error`, `label`, `placeholder`, `disabled`, `id`, `className`.
+**Rules**:
+- **A captcha is an accessibility risk, not a feature.** WCAG 2.2 SC 3.3.8 *Accessible Authentication (Minimum)* is Level AA and this estate targets AA, so a cognitive-function test with no alternative is a conformance failure. Prefer rate limiting or a server-side signal. If you must ship one, ship an audio alternative beside it.
+- Exactly one surface uses this today (SMILE-Transgender / Garima Greh). A second portal needs a reason.
+- `onRefresh` replaces the challenge **and** clears the answer — the control says so rather than wiping the field silently.
+- An `error` needs the message. A red border alone is not one.
+
 #### AadhaarInput / OtpInput / PanInput — the identity controls
 **Purpose**: The three Indian identity fields nearly every service journey asks for. UX4G 3.0
 names all three (`Input - Aadhaar`, `Input - OTP`, `Input - Pan Card`). **Never hand-roll these
@@ -1541,7 +1559,9 @@ matching the Figma "Navbar Portal" account.
 **Slots**: `children` is the form. `extraContent` sits **below** the form inside the card and is for page-level content, not credentials — the portal switcher grid, a demo-data notice. A field placed in `extraContent` lands after the submit button, which is the wrong tab order.
 
 #### PortalLoginTemplate
-**Purpose**: A login page described by a **config object** instead of assembled by hand. Renders role tabs, the login-method selector and the right fields for each of the five `PortalAuthMode`s — `password`, `otp`, `digilocker`, `darpan`, `aadhaar` — and returns one `LoginSubmitPayload` (role + mode + credentials) from `onSubmit`.  
+**Purpose**: A login page described by a **config object** instead of assembled by hand. Renders role tabs, the login-method selector and the right fields for each `PortalAuthMode` — `password`, `otp`, `digilocker` — and returns one `LoginSubmitPayload` (role + mode + credentials) from `onSubmit`.
+
+> **`darpan` and `aadhaar` were removed on 2026-08-17.** A full read of the Handoff — 69 auth screens across 10 pages — found no DARPAN and no Aadhaar screen in any portal. Both were invented from a written brief before the design file was available, and the matching Figma variant axis was retired the same day (`PortalLoginTemplate` went from `Device × Auth Method (5)` = 10 variants to `Device × Step` = 8). `digilocker` stays, but it is a **handoff above the credentials divider**, not a mode of the form; the form itself has exactly two.  
 **Props**: `config` (`PortalLoginConfig`), `onSubmit`, `loading`, `error`, `onFooterLinkClick`  
 **Rules**:
 - **Reach for this when the portal's login is one of the shapes the Handoff already describes** — which is most of them, and the reason it exists is that those shapes kept being re-typed per portal.
@@ -1549,6 +1569,46 @@ matching the Figma "Navbar Portal" account.
 - A single role hides the role tabs — a one-audience portal must not render a one-tab strip.
 - **Not yet adopted**: no page renders this today; both E-Anudaan logins still use `PortalLoginShell`. Adoption is portal by portal, not one sweep.
 - **Status: Beta, mid-rescope.** `components/auth/LOGIN-SYSTEM-ANALYSIS.md` supersedes `FIGMA-SPEC.md` §9 — the Handoff carries **69 auth screens across 10 pages**, not the 25 the designer's index frame counts. This covers the original reading; the config shape is expected to grow.
+
+#### Auth parts — the pieces a login is assembled from
+
+Seven small components mirroring the `Auth / *` sets in the SAMAVESH Figma library. They exist because nine portals were each hand-rolling the same fragments with different rules; the rules now live in one place. Import them when composing a bespoke login through `PortalLoginShell`; `PortalLoginTemplate` already uses them internally.
+
+**`AuthDivider`** — a labelled rule between two ways of signing in.
+- The label names the route **below** it ("or sign in with credentials"), never a bare "or". A reader should know what the second route is before choosing it.
+- `aria-hidden`: the two routes are already separate controls, so announcing the rule adds noise.
+
+**`ConsentLine`** — the standing consent sentence under every auth form.
+- **The wording is fixed estate-wide and is deliberately not a prop.** It is legal copy; changing it is a legal decision, not a design one. Only the two hrefs vary.
+- GIGW requires the disclosure. Never drop it to reclaim vertical space, and never turn it into a checkbox unless legal asks — it states a consequence, it does not collect an agreement.
+
+**`ResendTimer`** — the resend affordance under an OTP field.
+- The cooldown is **text, not a disabled button**. A disabled control that silently becomes enabled on a timer is announced badly and invites clicking.
+- **On an incorrect-OTP error, pass `secondsRemaining={0}`.** Resending does not wait out the remaining cooldown — the code the user holds is known-bad, and making them sit out a timer for the system's benefit is the wrong trade. This is the rule most often got wrong.
+- Never put the countdown in a live region; announce the switch to active, once.
+
+**`MaskedContactRow`** — confirms where a one-time code went, and offers the way back.
+- **`maskedValue` must arrive already masked.** The component never masks for you, and these screens are routinely used on shared and public devices. Keep the last 4 of a phone and the first and last of an email local part.
+- `onEdit` returns to the previous step with the value pre-filled. It must never silently spend another send.
+
+**`SSOButton`** — the DigiLocker handoff.
+- **Hide it whenever the Officer / Admin audience is active.** Officers hold no DigiLocker account, so offering it is a dead end. Key the condition off `PortalRoleTab.audience`, not off the tab's label or the portal.
+- It sits **above** the credentials divider: an alternative to the form, not a field in it.
+- The subtitle is a trust signal, not decoration. Do not drop it.
+
+**`AccountPrompt`** — the registration route at the foot of a sign-in form.
+- Two options exist for one reason: SCW registers an individual Volunteer *and* a SAGE Organisation, and making someone guess which "Create Account" means them is the failure this prevents. Not for two brands of the same thing.
+- Portals with no self-registration pass `options={[]}` and get **nothing** — never a disabled Create Account.
+- Buttons are outlined, never filled: the filled button on this screen is Log In, and two filled buttons compete.
+
+**`SigningIntoBar`** — which portal you are signing into, and how to change it.
+- `portalName` is the **scheme** name, never the acronym: "Senior Citizens Welfare", not "SCW"; NHAPOA shows "SAMBAL (NHAA 2.0)".
+- **`tone` follows the surface, not the brand** — `hero` over the photograph scrim, `surface` anywhere else. Backwards is the fastest way to fail contrast here.
+- `onChange` opens the portal picker. It never submits, and anything already typed must survive the round trip.
+
+#### PortalAudience — one taxonomy for the estate
+
+`citizen · officer · organisation`. Every portal's own wording maps onto these three: NMBA's "Patient Monitoring", SMILE-Transgender's "Garima Greh" and SCW's "SAGE Organisation" are all `organisation`, renamed via the tab's `label`. Before this existed there were five bespoke taxonomies across nine portals and no way to write a rule — such as "hide DigiLocker for officers" — that held in more than one of them. **Do not add a fourth**; a portal that seems to need one is renaming, not adding.
 
 ---
 
