@@ -525,6 +525,248 @@ Two decisions the guardrails forced, and both were right:
 | `check:changelog` | pass (v0.22.0) |
 | `check:hub` typecheck | pass |
 
+## 13. Reuse and organisation pass (2026-08-17, after review)
+
+A review asked three fair questions: why two pages, why the components were not organised like
+the `Navbar` page, and how much was genuinely reused versus redefined. The third one found real
+defects.
+
+### Two components were redefining the design system's own tabs
+
+`RoleTabs` and `AuthSelector` hand-drew their tabs — **zero reuse**, though `Tabs / Tab` (filled
+pill) and `Tabs / Tab (Alt)` (underline) already existed with exactly the API they needed
+(`Active` variant, `Label` text, icon swap). Both predate this work, but extending `RoleTabs`
+without fixing that was a miss.
+
+Both are now composed of `Tabs / Tab` instances, rebuilt **in place** so their keys survived.
+Two consequences worth stating:
+
+- **The active tab is now the DS blue, not the handoff's navy.** That is what adopting the
+  system tab means. The handoff was drawn on *MoSJE Portal DS*, not SAMAVESH.
+- **Per-tab labels moved to exposed nested instances.** The plugin API cannot map a parent
+  property onto a nested instance's property, so the `Tab N label` properties were deleted
+  rather than left dead. Designers set the label on the tab itself, which is the standard
+  Figma pattern and survives a change in tab count.
+
+`AuthSelector`'s `Segmented Pills`, `Dropdown` and `Radio Cards` styles were retired at the same
+time — they existed to switch between five credential modes, three of which have no screen
+anywhere in the handoff. It is now `Active = Password | OTP`.
+
+### A defect in `Tabs / Tab (Alt)`, fixed at source
+
+Its `Show Icon` boolean existed but was **never wired to the icon's visibility** — setting it to
+false did nothing. Fixed on the component rather than worked around with an instance override.
+The change only enables a property that previously had no effect, so existing instances are
+untouched; `Tabs / Example` was screenshotted before and after to confirm.
+
+### I had duplicated the OTP field
+
+`Input-container` and `Input Field — Label & Description` on the `Inputs` page **are** an OTP box
+and a 6-box OTP field. I built `OTP Input / Box` and `OTP Input` without recognising them — a
+discovery failure, not a judgement call.
+
+Resolution, on the evidence: the old field had **0 instances** and the old box was used only
+inside its own demo, while the new pair carries 68. The new pair stays; the old two are renamed
+`_deprecated/…` with a description saying what superseded them and why (43px boxes fail the
+`target/spacious` 48 that WCAG 2.5.8 wants, and there was no Error state). Deprecated, not
+deleted — retiring a published component is a separate deliberate act.
+
+**No other duplication.** Checked across all 101 component sets: `Select` vs `Dropdown` (a menu,
+not a field), `SideSheet` vs `Modal`, `PasswordStrengthMeter` vs `ProgressBar` (one bar, not four
+segments), `OrganisationCard` vs `Card` (a 369×514 media card with image and footer buttons —
+forcing an 84px list row through it would mean disabling 7 of its 9 booleans).
+
+### One page, organised like `Navbar`
+
+`Portal Login Parts` existed only because that is how the work happened. It is gone. The estate
+now has:
+
+| Page | Holds |
+|---|---|
+| **Portal Login Template** | `1 · Template` → `2 · Organisms` → `3 · Parts` → `4 · Assets`, each component in a titled wrapper frame with a head and a one-line blurb |
+| **Inputs** | `Select`, `OTP Input`, `OTP Input / Box`, `Captcha Field`, `PasswordStrengthMeter` — general-purpose, so they belong with the other inputs |
+| **Side Sheet** | `SideSheet`, beside `Modal` in the Overlays block |
+
+The `Verification` page is deleted, and so is the WIP parity shell that `PortalAuthShell`
+superseded. Post-consolidation audit: **375 fills, 15 strokes, 324 paddings, 163 gaps and 348
+radii bound; zero raw.**
+
+### Reuse scorecard
+
+**Reused from the DS (13):** `AccessibilityBar` · `Navbar/BrandLockup` · `Divider` ·
+`Input Field` · `Button` · `Link` · `Icon` · `IconButton` · `CloseButton` · `Chip` ·
+**`Tabs / Tab`** · **`Tabs / Tab (Alt)`** · `Modal / Backdrop`
+
+**Genuinely new (15):** `OTP Input` + `/ Box` · `Select` · `Captcha Field` ·
+`PasswordStrengthMeter` · `SideSheet` · the eight `Auth / *` parts · `Auth / PortalList` ·
+`Auth / AuthFormCard` · `Auth / PortalAuthShell`
+
+**One still flagged:** `Auth / SigningIntoBar` builds its Change control inline because the
+**Figma** `Button` has no Inverse tone — the **code** `Button` already has `inverse` and
+`inverseOutlined`. Adding it to the Figma Button is the fix; the inline part is the placeholder.
+
+## 14. Structure, standards and visual fidelity (2026-08-17, second review)
+
+Three instructions: organise exactly like `Navbar`, meet the standards for handoff, and match
+the reference 100 % using SAMAVESH branding. The third one is what found the remaining defects.
+
+### The wrappers were only approximately like Navbar
+
+A property-by-property read of the `Navbar` page produced the exact spec, and mine diverged on
+**seven** counts. Corrected:
+
+| | Navbar (correct) | Mine (was) |
+|---|---|---|
+| Section fill | `bg/neutral/subtler` | none |
+| Wrapper fill | `bg/neutral/base` | `bg/neutral/subtler` — **inverted** |
+| Wrapper padding | 28 (`ref/size/28`) | 32 |
+| Wrapper gap | 16 (`ref/space/lg`) | 24 |
+| Wrapper radius | `ref/radius/lg` | `shape/lg` |
+| Head gap | 2 (`ref/space/xxs`) | 4 |
+| Head type | `Title/title-2` + `Label/label-3` | `Headline/headline-4` + `Body/body-3` |
+| Component-set frame | 32 pad / 40 gap / `ref/radius/xs` | unset |
+
+Wrappers are now stacked in a single column at x=100 with a 24 gap, exactly as `Navbar` does.
+
+**A regression I caused and caught:** applying that spec padded `Auth / OrDivider` and
+`Auth / ConsentLine` *themselves* — they are plain components, not sets — inflating them from
+16px to 80 and 96, which overflowed the form column. Reverted. Wrapper styling now touches only
+`COMPONENT_SET` children.
+
+### Visual fidelity — the reference values, sampled not guessed
+
+| Element | Reference | Was | Now |
+|---|---|---|---|
+| Saffron rule | **`#ff671f`** | `#c34700` ✗ | `ref/brand/samavesh/orange` |
+| Active role tab | **`#003366`** navy | DS blue `#0373df` ✗ | `bg/brand/primary/boldest` |
+| Track | `#e5e7eb` / `#d1d5db`, 390×44, 4px inset | 390×44 white | `bg/neutral/subtler` + `border/neutral/base` |
+| DigiLocker title | **`#5330e6`** | `text/brand/primary/base` ✗ | `ref/brand/digilocker/purple` |
+
+**There is no `tertiary` brand ramp.** SAMAVESH's three brand colours are `primary` (gov blue),
+`secondary` (`#ff671f`, the SAMAVESH orange) and `accent` (`#046a38`, the SAMAVESH green).
+`tertiary` is declared in the grammar but has no variables — worth either building or removing.
+
+**`Tabs / Tab` gained a `Tone` axis** rather than being overridden: `Brand` (unchanged, the
+default, so every existing tab in the estate is untouched) and `Boldest`
+(`bg/brand/primary/boldest`) for a tab sitting in a branded segmented track. That is what lets
+`RoleTabs` match the reference navy *and* still be an instance rather than a redraw.
+
+**A new DS token:** `ref/brand/digilocker/purple` = `#5330e6`, in the Static collection beside
+`ref/brand/samavesh/*`, described as third-party — another product's identity, so it never
+re-themes and never takes a SAMAVESH rung.
+
+### Two more component defects found and fixed at source
+
+- **`Tabs / Tab (Alt)`** never wired its `Show Icon` boolean to the icon's visibility. Setting
+  it did nothing. Fixed on the component.
+- **`clone()` does not carry `componentPropertyReferences`.** The cloned `Tone=Boldest` variants
+  rendered "Label" and an icon regardless of their properties, because their text and icon nodes
+  had no wiring at all. Every clone now has `characters`, `visible` and `mainComponent` re-wired
+  explicitly. Worth remembering: a cloned variant looks correct and is silently inert.
+
+### Final audit
+
+Across the whole login page, excluding component-set wrappers, sections and instance subtrees:
+
+| Fills | Strokes | Padding | Gaps | Radii | Unstyled text |
+|---|---|---|---|---|---|
+| 375 / **0** | 15 / **0** | 352 / **0** | 163 / **0** | 356 / **0** | **0** |
+
+### Known remaining gaps to the reference — all assets, all flagged in-file
+
+The SAMAVESH roundel beside the wordmark, the Digital India and SAMAVESH co-brand marks in the
+masthead, and the portal logo in the signing-into bar are placeholders. They are asset gaps, not
+build gaps; every one is named in the Figma file so an audit can find it.
+
+## 15. Visual audit and redundancy sweep (2026-08-17, third review)
+
+Asked to audit visually and check for redundancy. Both found real things.
+
+### The logos were entirely redundant
+
+`org-logo` on the **Iconography** page is a component set with **17 organisation variants** —
+NCSC, NCSK, NCBC, NSFDC, NSKFDC, NBCFDC, DAF, JRF, DAIC, DWBDNC, SCW, SAMBAL, NISD, NOS, NMBA,
+SMILE, PM-AJAY. It already covered every logo I had re-imported as a flat image frame, **and two
+I had been reporting as missing assets** (SCW, SAMBAL). `SAMAVESH`, `Digital India` and
+`National Emblem` exist there as components too.
+
+- The six logo frames are **deleted**; `SigningIntoBar` and `OrganisationCard` now instance
+  `org-logo`, and the hero carries the real `SAMAVESH` seal instead of a text stand-in.
+- The four hero **photographs** are genuinely not in the library, so they were promoted from
+  loose frames to a `Portal Hero` component set with a `Portal` variant — swappable, which a
+  flat frame never was. The section is renamed `4 · Portal hero photography`.
+- The "missing assets" list in §12 shrinks to the DigiLocker mark alone.
+
+### Layout defects found by measuring, not by looking
+
+| Defect | Cause |
+|---|---|
+| `1 · Template` overlapped the Documentation frame by **1656×2516** | I never repositioned the doc frame after the sections grew |
+| `RoleTabs` overlapped `AuthSelector` by **510×16** in `3 · Parts` | re-tiled with stale heights after restyling |
+| Hero rendered **solid navy, no photograph** | see below |
+
+All resolved; a pairwise overlap test across the page and inside every section now returns none.
+
+### Why the hero scrim kept breaking — the actual root cause
+
+**Paint opacity does not inherit from a component to its instances; node opacity does.** Every
+earlier attempt set opacity on the *paint*, so each instance needed the value re-applied by hand
+and silently reverted whenever the shell was touched. The scrim is now a `Scrim` rectangle with a
+100 % bound fill and `opacity = 0.62` on the **node**, which inherits correctly.
+
+A stale `fills` override (`IMAGE, SOLID`) left on each template variant by those earlier attempts
+was painting over the photograph; cleared on all four.
+
+### One presentation fix
+
+`SigningIntoBar`'s `Tone=On hero` variant is white-on-transparent, so in a white specimen card it
+was invisible. It now sits on a declared `specimen (on hero scrim)` navy stage beneath the set —
+the same specimen convention `documentation-ds-linkage.md` already sanctions.
+
+**Final audit: 372 fills, 15 strokes, 356 paddings, 163 gaps, 344 radii bound — zero raw, zero
+unstyled text, zero overlaps.**
+
+## 16. RoleTabs and AuthSelector retired (2026-08-17, fourth review)
+
+"Can we not use the existing tab component instead of redefining it?" — asked twice, and the
+second time it was still the right question.
+
+### What was actually left
+
+By this point the **tab** was already an instance: `RoleTabs` and `AuthSelector` both composed
+`Tabs / Tab`. What they still redefined was the **track** — the enclosed grey bar. The `Tabs`
+component set was rebuilt on 17 Aug (by a parallel session) into
+`Orientation × Track` with a slot, and its own description says it plainly:
+*"The track lives HERE, never on a tab."*
+
+Both wrappers are now **deprecated**. `AuthFormCard` holds `Tabs` instances directly:
+
+| Switch | Component |
+|---|---|
+| Audience | `Tabs` Track=**Enclosed** + `Tabs / Tab` Indicator=**Pill**, tabs set to FILL |
+| Credential mode | `Tabs` Track=**None** + `Tabs / Tab` Indicator=**Underline**, tabs set to HUG, left-aligned |
+
+The audience taxonomy did **not** move into a component — Citizen / Officer / Organisation lives
+in `PortalRoleTab.audience` in code and in `design.md`. A taxonomy is not a component.
+
+### The plugin API cannot fill a Figma SLOT
+
+Verified three ways before concluding it: `setProperties` on the slot returns *"Slot component
+property values cannot be edited"*; `slot.children[i].remove()` throws *node not found*; and even
+reading `slot.children[i].name` throws. **A human placed the tabs in the Figma UI**; automation
+cannot. Once placed, the children ARE readable and editable — which is how the sizing below got
+fixed. Worth knowing for any future component built on slots.
+
+### Two defects the swap exposed
+
+1. **The form overflowed its column by 13px.** `Tabs` is 8px taller than each part it replaced
+   (52 vs 44, 44 vs 36). The stack gap moved `stack/l` (24) → `stack/m` (16); the form is now
+   727 in a 770 column.
+2. **The underline labels clipped** — "Login with Pass…". I had set those tabs to FILL, which
+   splits 390 evenly and truncates the longer label. **The reference does not split them**: its
+   underline tabs hug their labels and left-align. Set to HUG, and the clipping is gone. The pill
+   tabs *should* fill, and do.
+
 ### Still outstanding
 
 1. **The Figma documentation canvas** in the house style, and the portal configuration table
