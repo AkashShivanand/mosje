@@ -525,6 +525,86 @@ Two decisions the guardrails forced, and both were right:
 | `check:changelog` | pass (v0.22.0) |
 | `check:hub` typecheck | pass |
 
+## 13. Reuse and organisation pass (2026-08-17, after review)
+
+A review asked three fair questions: why two pages, why the components were not organised like
+the `Navbar` page, and how much was genuinely reused versus redefined. The third one found real
+defects.
+
+### Two components were redefining the design system's own tabs
+
+`RoleTabs` and `AuthSelector` hand-drew their tabs — **zero reuse**, though `Tabs / Tab` (filled
+pill) and `Tabs / Tab (Alt)` (underline) already existed with exactly the API they needed
+(`Active` variant, `Label` text, icon swap). Both predate this work, but extending `RoleTabs`
+without fixing that was a miss.
+
+Both are now composed of `Tabs / Tab` instances, rebuilt **in place** so their keys survived.
+Two consequences worth stating:
+
+- **The active tab is now the DS blue, not the handoff's navy.** That is what adopting the
+  system tab means. The handoff was drawn on *MoSJE Portal DS*, not SAMAVESH.
+- **Per-tab labels moved to exposed nested instances.** The plugin API cannot map a parent
+  property onto a nested instance's property, so the `Tab N label` properties were deleted
+  rather than left dead. Designers set the label on the tab itself, which is the standard
+  Figma pattern and survives a change in tab count.
+
+`AuthSelector`'s `Segmented Pills`, `Dropdown` and `Radio Cards` styles were retired at the same
+time — they existed to switch between five credential modes, three of which have no screen
+anywhere in the handoff. It is now `Active = Password | OTP`.
+
+### A defect in `Tabs / Tab (Alt)`, fixed at source
+
+Its `Show Icon` boolean existed but was **never wired to the icon's visibility** — setting it to
+false did nothing. Fixed on the component rather than worked around with an instance override.
+The change only enables a property that previously had no effect, so existing instances are
+untouched; `Tabs / Example` was screenshotted before and after to confirm.
+
+### I had duplicated the OTP field
+
+`Input-container` and `Input Field — Label & Description` on the `Inputs` page **are** an OTP box
+and a 6-box OTP field. I built `OTP Input / Box` and `OTP Input` without recognising them — a
+discovery failure, not a judgement call.
+
+Resolution, on the evidence: the old field had **0 instances** and the old box was used only
+inside its own demo, while the new pair carries 68. The new pair stays; the old two are renamed
+`_deprecated/…` with a description saying what superseded them and why (43px boxes fail the
+`target/spacious` 48 that WCAG 2.5.8 wants, and there was no Error state). Deprecated, not
+deleted — retiring a published component is a separate deliberate act.
+
+**No other duplication.** Checked across all 101 component sets: `Select` vs `Dropdown` (a menu,
+not a field), `SideSheet` vs `Modal`, `PasswordStrengthMeter` vs `ProgressBar` (one bar, not four
+segments), `OrganisationCard` vs `Card` (a 369×514 media card with image and footer buttons —
+forcing an 84px list row through it would mean disabling 7 of its 9 booleans).
+
+### One page, organised like `Navbar`
+
+`Portal Login Parts` existed only because that is how the work happened. It is gone. The estate
+now has:
+
+| Page | Holds |
+|---|---|
+| **Portal Login Template** | `1 · Template` → `2 · Organisms` → `3 · Parts` → `4 · Assets`, each component in a titled wrapper frame with a head and a one-line blurb |
+| **Inputs** | `Select`, `OTP Input`, `OTP Input / Box`, `Captcha Field`, `PasswordStrengthMeter` — general-purpose, so they belong with the other inputs |
+| **Side Sheet** | `SideSheet`, beside `Modal` in the Overlays block |
+
+The `Verification` page is deleted, and so is the WIP parity shell that `PortalAuthShell`
+superseded. Post-consolidation audit: **375 fills, 15 strokes, 324 paddings, 163 gaps and 348
+radii bound; zero raw.**
+
+### Reuse scorecard
+
+**Reused from the DS (13):** `AccessibilityBar` · `Navbar/BrandLockup` · `Divider` ·
+`Input Field` · `Button` · `Link` · `Icon` · `IconButton` · `CloseButton` · `Chip` ·
+**`Tabs / Tab`** · **`Tabs / Tab (Alt)`** · `Modal / Backdrop`
+
+**Genuinely new (15):** `OTP Input` + `/ Box` · `Select` · `Captcha Field` ·
+`PasswordStrengthMeter` · `SideSheet` · the eight `Auth / *` parts · `Auth / PortalList` ·
+`Auth / AuthFormCard` · `Auth / PortalAuthShell`
+
+**One still flagged:** `Auth / SigningIntoBar` builds its Change control inline because the
+**Figma** `Button` has no Inverse tone — the **code** `Button` already has `inverse` and
+`inverseOutlined`. Adding it to the Figma Button is the fix; the inline part is the placeholder.
+
 ### Still outstanding
 
 1. **The Figma documentation canvas** in the house style, and the portal configuration table
