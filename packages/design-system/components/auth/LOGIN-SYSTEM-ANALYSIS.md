@@ -782,12 +782,21 @@ fixed. Worth knowing for any future component built on slots.
 Four sections — `1 · Template`, `2 · Organisms`, `3 · Parts` (8 auth molecules), `4 · Portal hero
 photography` — plus the documentation frame.
 
-### One thing deliberately NOT deleted
+### The superseded OTP pair is gone too
 
-`_deprecated/OTP box` and `_deprecated/OTP field` on the `Inputs` page **predate this work** —
-they are pre-existing library components, not ours to remove. The box still has 18 instances
-inside its own demo frame. Retiring them is a separate, deliberate decision for whoever owns the
-Inputs page.
+`_deprecated/OTP box` and `_deprecated/OTP field` predated this work, so they were left standing
+at first. On review they were removed as well, and the 18 instances turned out to be no obstacle:
+every one lived **inside the field component set**, which lived inside its own `OTP Verrification`
+demo frame. Deleting that frame took the title, both component sets and all 18 instances in one
+move, with **zero orphans** anywhere in the file.
+
+`Inputs` now carries **one** OTP implementation rather than two. `OTP Input` and
+`OTP Input / Box` are intact — 8 variants, verified rendering after the deletion.
+
+The wider point, which is why this needed asking rather than assuming: **deprecate-not-delete is
+a rule about protecting consumers, not about age.** A component nothing instances is not a
+lifecycle stage, it is clutter — and a `_deprecated/` label in a published library is a second
+answer for anyone searching, which is the exact failure the rule exists to prevent.
 
 ### Still outstanding
 
