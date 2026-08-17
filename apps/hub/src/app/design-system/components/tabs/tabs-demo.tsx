@@ -1,7 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { Tabs, TabPanel, type TabDef } from "@mosje/design-system";
+import {
+  Tabs,
+  TabPanel,
+  type TabDef,
+  type TabIndicator,
+  type TabOrientation,
+  type TabSize,
+  type TabTrack,
+} from "@mosje/design-system";
 
 const DEMO_TABS: TabDef[] = [
   { id: "overview", label: "Overview" },
@@ -15,6 +23,17 @@ const PANEL_TEXT: Record<string, string> = {
   history: "History panel. Press Home or End to jump to the first or last tab.",
 };
 
+const panelStyle: React.CSSProperties = {
+  marginTop: "var(--sa-stack-m)",
+  padding: "var(--sa-padding-l)",
+  border: "1px solid var(--sa-border-neutral-subtle)",
+  borderRadius: "var(--sa-shape-lg)",
+  background: "var(--sa-bg-neutral-base)",
+  color: "var(--sa-text-neutral-base)",
+  fontSize: "var(--sa-type-body-1-size)",
+  lineHeight: 1.6,
+};
+
 /** Live, interactive demo of the design-system Tabs / TabPanel. */
 export function TabsDemo(): React.JSX.Element {
   const [active, setActive] = React.useState(0);
@@ -24,21 +43,72 @@ export function TabsDemo(): React.JSX.Element {
     <div>
       <Tabs tabs={DEMO_TABS} active={active} onChange={setActive} idBase={idBase} ariaLabel="Demo sections" />
       <TabPanel idBase={idBase} tabId={tab.id}>
-        <div
-          style={{
-            marginTop: "var(--sa-stack-m)",
-            padding: "var(--sa-padding-l)",
-            border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-lg)",
-            background: "var(--sa-bg-neutral-base)",
-            color: "var(--sa-text-neutral-base)",
-            fontSize: "var(--sa-type-body-1-size)",
-            lineHeight: 1.6,
-          }}
-        >
-          {PANEL_TEXT[tab.id]}
-        </div>
+        <div style={panelStyle}>{PANEL_TEXT[tab.id]}</div>
       </TabPanel>
     </div>
+  );
+}
+
+/**
+ * A tablist on its own, with no panel — for specimens where the point is the
+ * chrome rather than the wiring. It is still a real, keyboard-operable `Tabs`,
+ * so a reader can tab into it and feel the behaviour the prose describes.
+ */
+export function TabsSpecimen({
+  tabs = DEMO_TABS,
+  label,
+  start = 0,
+  width,
+  ...rest
+}: {
+  tabs?: TabDef[];
+  label: string;
+  start?: number;
+  width?: number;
+  indicator?: TabIndicator;
+  size?: TabSize;
+  track?: TabTrack;
+  orientation?: TabOrientation;
+  divider?: boolean;
+}): React.JSX.Element {
+  const [active, setActive] = React.useState(start);
+  const idBase = React.useId();
+  return (
+    <div style={width ? { width } : undefined}>
+      <Tabs
+        {...rest}
+        tabs={tabs}
+        active={active}
+        onChange={setActive}
+        idBase={idBase}
+        ariaLabel={label}
+      />
+    </div>
+  );
+}
+
+/** The three sizes, stacked, so the 36 / 44 / 48 ladder is visible at once. */
+export function TabsSizeSpecimen(): React.JSX.Element {
+  return (
+    <div style={{ display: "grid", gap: "var(--sa-stack-m)" }}>
+      <TabsSpecimen size="s" label="Small tabs" />
+      <TabsSpecimen size="m" label="Medium tabs" />
+      <TabsSpecimen size="l" label="Large tabs" />
+    </div>
+  );
+}
+
+/** Icons, the unread dot, and a disabled section that arrow keys step over. */
+export function TabsContentSpecimen(): React.JSX.Element {
+  return (
+    <TabsSpecimen
+      label="Application sections"
+      tabs={[
+        { id: "details", label: "Details", icon: "description" },
+        { id: "documents", label: "Documents", icon: "folder_open", badge: true },
+        { id: "history", label: "History", icon: "history" },
+        { id: "remarks", label: "Remarks", icon: "chat", disabled: true },
+      ]}
+    />
   );
 }

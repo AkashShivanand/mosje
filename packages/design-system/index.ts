@@ -141,7 +141,14 @@ export type { SlaStatus, SlaThresholds, SlaInput } from "./utils/sla";
 export { Stepper } from "./components/feedback/stepper";
 export type { StepperProps, StepperStep } from "./components/feedback/stepper";
 export { Tabs, TabPanel } from "./components/navigation/tabs";
-export type { TabsProps, TabDef } from "./components/navigation/tabs";
+export type {
+  TabsProps,
+  TabDef,
+  TabIndicator,
+  TabOrientation,
+  TabSize,
+  TabTrack,
+} from "./components/navigation/tabs";
 export { Modal } from "./components/feedback/modal";
 export type { ModalProps, ModalSize } from "./components/feedback/modal";
 export { SideSheet } from "./components/feedback/side-sheet";
