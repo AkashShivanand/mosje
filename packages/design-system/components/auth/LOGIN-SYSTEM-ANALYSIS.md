@@ -726,6 +726,47 @@ the same specimen convention `documentation-ds-linkage.md` already sanctions.
 **Final audit: 372 fills, 15 strokes, 356 paddings, 163 gaps, 344 radii bound — zero raw, zero
 unstyled text, zero overlaps.**
 
+## 16. RoleTabs and AuthSelector retired (2026-08-17, fourth review)
+
+"Can we not use the existing tab component instead of redefining it?" — asked twice, and the
+second time it was still the right question.
+
+### What was actually left
+
+By this point the **tab** was already an instance: `RoleTabs` and `AuthSelector` both composed
+`Tabs / Tab`. What they still redefined was the **track** — the enclosed grey bar. The `Tabs`
+component set was rebuilt on 17 Aug (by a parallel session) into
+`Orientation × Track` with a slot, and its own description says it plainly:
+*"The track lives HERE, never on a tab."*
+
+Both wrappers are now **deprecated**. `AuthFormCard` holds `Tabs` instances directly:
+
+| Switch | Component |
+|---|---|
+| Audience | `Tabs` Track=**Enclosed** + `Tabs / Tab` Indicator=**Pill**, tabs set to FILL |
+| Credential mode | `Tabs` Track=**None** + `Tabs / Tab` Indicator=**Underline**, tabs set to HUG, left-aligned |
+
+The audience taxonomy did **not** move into a component — Citizen / Officer / Organisation lives
+in `PortalRoleTab.audience` in code and in `design.md`. A taxonomy is not a component.
+
+### The plugin API cannot fill a Figma SLOT
+
+Verified three ways before concluding it: `setProperties` on the slot returns *"Slot component
+property values cannot be edited"*; `slot.children[i].remove()` throws *node not found*; and even
+reading `slot.children[i].name` throws. **A human placed the tabs in the Figma UI**; automation
+cannot. Once placed, the children ARE readable and editable — which is how the sizing below got
+fixed. Worth knowing for any future component built on slots.
+
+### Two defects the swap exposed
+
+1. **The form overflowed its column by 13px.** `Tabs` is 8px taller than each part it replaced
+   (52 vs 44, 44 vs 36). The stack gap moved `stack/l` (24) → `stack/m` (16); the form is now
+   727 in a 770 column.
+2. **The underline labels clipped** — "Login with Pass…". I had set those tabs to FILL, which
+   splits 390 evenly and truncates the longer label. **The reference does not split them**: its
+   underline tabs hug their labels and left-align. Set to HUG, and the clipping is gone. The pill
+   tabs *should* fill, and do.
+
 ### Still outstanding
 
 1. **The Figma documentation canvas** in the house style, and the portal configuration table
