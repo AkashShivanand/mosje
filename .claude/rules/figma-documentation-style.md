@@ -114,13 +114,29 @@ This is not decoration; it is the reason the Colour page reads as authoritative.
   contrast guarantee` — not `Caveats`. If a title could be a folder name, rewrite it.
 - **Lead with the number.** "Eight ramps, two brands, and forty-six ink pairings."
   "Sixteen tokens currently measure below the class their rung implies."
-- **Cite the enforcement.** Name the test file, the variable description, the
-  commit date: *"on-pair-contrast.test.mjs fails the build if any pair drops
-  below, and its exemption list may only ever shrink."*
-- **Admit what is wrong, in the documentation itself.** The Colour page lists its
-  own sixteen shortfalls and says *"the honest way to ship them is to say so."*
-  It records that the Button was wrong until 12 August 2026. Documentation that
-  only describes the happy path is how drift hides.
+- **Cite the enforcement, not the history.** Name the rule that holds a claim up —
+  *"on-pair-contrast.test.mjs fails the build if any pair drops below, and its
+  exemption list may only ever shrink."* Name the test, not the commit date and
+  not who changed it.
+- **The page describes what the component IS, not what it has been.**
+  **No defect notes, no remediation history, no dated attribution, no comparison
+  to the source system it was derived from.** A reader is deciding how to use the
+  component today; "this was wrong until 17 August 2026" and "better than UX4G's
+  version" tell them nothing about that and date the page the moment they land.
+  **Do not delete that material — relocate it.** It goes in a sibling
+  **`<Topic> — Component record`** frame on the same page, *outside* the
+  documentation frame, in its own `N · Record — maintainers` section: **open
+  gaps**, Figma↔code parity, change history, and sources. Keep it forward-looking —
+  a catalogue of defects already fixed adds no value to anyone and just grows;
+  what a maintainer needs is the work still to do. A component description or a
+  changelog line is where this kind of
+  detail goes to be lost; a named frame beside the masters is where a maintainer
+  will actually find it.
+
+  Superseded 2026-08-17: this bullet previously required the opposite, and every
+  page built under it carried a defect panel that had to be stripped by hand.
+  The split — clean page for consumers, record frame for maintainers — is the
+  resolution; losing the data is not.
 - **Say what is banned and why.** "Banned in app code — referenced only inside
   tokens.css."
 - Prose is plain and declarative. No marketing adjectives, no "simply", no
@@ -137,6 +153,9 @@ This is not decoration; it is the reason the Colour page reads as authoritative.
 - [ ] Content blocks at 1440; panels `bg/neutral/subtler`, radius 12, padding 28
 - [ ] Section titles are claims, not nouns
 - [ ] Every number is counted or measured, and its enforcement is named
-- [ ] Known failures are stated on the page, not omitted
+- [ ] No defect notes, remediation history, dates or attribution on the page
+- [ ] A sibling `<Topic> — Component record` frame exists outside the
+      documentation frame — open gaps, Figma↔code parity, change history, sources.
+      Forward-looking only; no catalogue of defects already fixed
 - [ ] `.claude/rules/documentation-ds-linkage.md` audit passes: 0 unstyled text,
       0 raw fills, 0 raw strokes, nothing below 11px

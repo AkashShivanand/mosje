@@ -276,3 +276,53 @@ Commits typed `docs` / `chore` / `test` / `style` / `ci` / `build` are ignored.
   is exercised, because a check nobody has watched fail cannot be trusted.
 - The CI checkout uses `fetch-depth: 0`; on a shallow clone the gate skips
   rather than reporting a false red.
+
+## Space linkage — a ratchet over the Figma library (enforced in CI)
+
+**Space had no gate of any kind until 2026-08-17**, while colour had six contract
+tests, icons had a per-file ratchet and the web docs had `check:ds-linkage`. The
+first full census of the live library shows what that cost:
+
+| | |
+|---|---|
+| Spacing properties, 68 pages | **65,657** |
+| "Bound" to *something* | 56,741 — **86.4 %** |
+| Bound to a **correct semantic space token** | 4,568 — **6.96 %** |
+
+The 86.4 % is the trap, and it is why nobody caught this by eye: in the inspector
+every one of those properties reads as bound. The breakdown:
+
+| class | count | what it is |
+|---|---|---|
+| `crossFamily` | **38,799** | a **radius/type/colour** variable bound to padding or gap — `ref/radius/none` alone accounts for most of it |
+| `tier1` | 7,286 | a **hidden** `ref/space` · `ref/size` primitive, which does not publish and whose code syntax `tier-discipline.test.mjs` forbids app code to write |
+| `ghost` | 4,771 | a local variable id **no collection owns** — 19 distinct ids |
+| `remote` | 1,317 | a variable imported from **another library** |
+| `tier2` | 4,568 | correct |
+
+- Run it with `npm run check:space-linkage`; it also runs inside
+  `npm test -w @mosje/tokens`, which **Design System Quality** already executes.
+- `npm run check:space-linkage:baseline` refreshes the frozen debt.
+- Debt is frozen **per page** in `packages/tokens/reference/space-bindings-baseline.json`.
+  A page that regresses fails; a page that **improves** also fails, telling you to
+  re-baseline in the same change — that is what stops one page's cleanup being
+  silently spent on another page's regression. Never add entries to go green.
+- It also asserts source invariants that need no Figma access: a semantic space
+  token may only alias a `space.*` primitive, each family's rungs ascend, and no
+  primitive rung is left with nothing pointing at it (`8xl`/72px is the one
+  currently in that state and is frozen so it cannot be joined).
+- All ten failure modes were exercised by deliberately breaking them, per the
+  rule that a check nobody has watched fail cannot be trusted.
+
+### Re-sweeping the census — the constraint is load-bearing
+
+`reference/figma-space-bindings.json` is produced through the Figma MCP, **one page
+per `use_figma` invocation, via `setCurrentPageAsync`.**
+
+Walking several pages in one invocation — by `setCurrentPageAsync`, by
+`PageNode.loadAsync`, or even after loading every page up front — returns **partial
+and non-deterministic** trees. Navbar measured 2,885 bound properties per-page, then
+**1,685 and 1,669** on two batched runs of *identical code*. `findAll(() => true)`
+returned the same node count both ways, so the shortfall is invisible to a
+node-count sanity check. A batched re-sweep under-reports and must not be committed;
+`space-linkage.test.mjs` refuses a census that does not declare the method.
