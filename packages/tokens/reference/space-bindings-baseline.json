@@ -5,17 +5,17 @@
     "pagesSwept": 68,
     "pagesWithContent": 54,
     "pagesEmpty": 14,
-    "properties": 65657,
-    "bound": 56741,
-    "raw": 8916,
-    "tier2": 4568,
-    "tier1": 7286,
-    "crossFamily": 38799,
+    "properties": 65432,
+    "bound": 56199,
+    "raw": 9233,
+    "tier2": 37632,
+    "tier1": 7111,
+    "crossFamily": 5968,
     "other": 0,
     "ghost": 4771,
-    "remote": 1317,
-    "correctPct": 6.96,
-    "boundPct": 86.42
+    "remote": 717,
+    "correctPct": 57.51,
+    "boundPct": 85.89
   },
   "$knownGhostIds": [
     "3791:9018",
@@ -43,15 +43,15 @@
       "name": "Accessibility Bar",
       "id": "2382:295905",
       "crossFamily": 0,
-      "tier1": 390,
+      "tier1": 380,
       "ghost": 0,
-      "remote": 219,
-      "raw": 60
+      "remote": 0,
+      "raw": 13
     },
     {
       "name": "Accordion",
       "id": "2141:296700",
-      "crossFamily": 2182,
+      "crossFamily": 233,
       "tier1": 16,
       "ghost": 579,
       "remote": 0,
@@ -60,7 +60,7 @@
     {
       "name": "Alerts/Toasts",
       "id": "2141:296701",
-      "crossFamily": 124,
+      "crossFamily": 36,
       "tier1": 12,
       "ghost": 33,
       "remote": 0,
@@ -69,7 +69,7 @@
     {
       "name": "Avatars",
       "id": "2141:296702",
-      "crossFamily": 37,
+      "crossFamily": 32,
       "tier1": 25,
       "ghost": 0,
       "remote": 0,
@@ -78,7 +78,7 @@
     {
       "name": "Badges",
       "id": "2141:296703",
-      "crossFamily": 29,
+      "crossFamily": 18,
       "tier1": 20,
       "ghost": 0,
       "remote": 0,
@@ -87,7 +87,7 @@
     {
       "name": "Breadcrumbs",
       "id": "2141:296704",
-      "crossFamily": 56,
+      "crossFamily": 10,
       "tier1": 20,
       "ghost": 4,
       "remote": 0,
@@ -105,7 +105,7 @@
     {
       "name": "Card",
       "id": "2141:296707",
-      "crossFamily": 196,
+      "crossFamily": 0,
       "tier1": 20,
       "ghost": 95,
       "remote": 0,
@@ -114,7 +114,7 @@
     {
       "name": "Carousel",
       "id": "2141:296708",
-      "crossFamily": 306,
+      "crossFamily": 44,
       "tier1": 107,
       "ghost": 240,
       "remote": 0,
@@ -132,7 +132,7 @@
     {
       "name": "Charts & Graphs",
       "id": "2840:10801",
-      "crossFamily": 7732,
+      "crossFamily": 0,
       "tier1": 0,
       "ghost": 483,
       "remote": 0,
@@ -141,7 +141,7 @@
     {
       "name": "Checkbox",
       "id": "2141:296710",
-      "crossFamily": 96,
+      "crossFamily": 0,
       "tier1": 20,
       "ghost": 64,
       "remote": 0,
@@ -150,7 +150,7 @@
     {
       "name": "Chips",
       "id": "2141:296709",
-      "crossFamily": 174,
+      "crossFamily": 114,
       "tier1": 20,
       "ghost": 25,
       "remote": 0,
@@ -159,7 +159,7 @@
     {
       "name": "Close Button",
       "id": "2141:296711",
-      "crossFamily": 230,
+      "crossFamily": 225,
       "tier1": 20,
       "ghost": 0,
       "remote": 0,
@@ -177,7 +177,7 @@
     {
       "name": "Color Picker",
       "id": "2141:296713",
-      "crossFamily": 535,
+      "crossFamily": 92,
       "tier1": 4,
       "ghost": 16,
       "remote": 0,
@@ -186,7 +186,7 @@
     {
       "name": "Comment",
       "id": "2141:296714",
-      "crossFamily": 110,
+      "crossFamily": 11,
       "tier1": 4,
       "ghost": 13,
       "remote": 0,
@@ -195,7 +195,7 @@
     {
       "name": "Cursor",
       "id": "2141:296715",
-      "crossFamily": 5,
+      "crossFamily": 0,
       "tier1": 4,
       "ghost": 0,
       "remote": 0,
@@ -204,7 +204,7 @@
     {
       "name": "Date-Time Picker",
       "id": "2141:296716",
-      "crossFamily": 1621,
+      "crossFamily": 170,
       "tier1": 20,
       "ghost": 399,
       "remote": 0,
@@ -231,7 +231,7 @@
     {
       "name": "Dropdown",
       "id": "2141:296718",
-      "crossFamily": 11325,
+      "crossFamily": 2924,
       "tier1": 20,
       "ghost": 144,
       "remote": 0,
@@ -249,7 +249,7 @@
     {
       "name": "Empty State",
       "id": "2141:296719",
-      "crossFamily": 32,
+      "crossFamily": 3,
       "tier1": 20,
       "ghost": 2,
       "remote": 0,
@@ -258,7 +258,7 @@
     {
       "name": "Feedback Widget",
       "id": "3989:33663",
-      "crossFamily": 286,
+      "crossFamily": 38,
       "tier1": 40,
       "ghost": 96,
       "remote": 0,
@@ -267,7 +267,7 @@
     {
       "name": "Footer",
       "id": "2500:295967",
-      "crossFamily": 205,
+      "crossFamily": 1,
       "tier1": 175,
       "ghost": 36,
       "remote": 0,
@@ -294,16 +294,16 @@
     {
       "name": "Inputs",
       "id": "2141:296720",
-      "crossFamily": 622,
+      "crossFamily": 100,
       "tier1": 164,
       "ghost": 24,
-      "remote": 339,
-      "raw": 225
+      "remote": 0,
+      "raw": 193
     },
     {
       "name": "Layout Grid",
       "id": "2140:295915",
-      "crossFamily": 589,
+      "crossFamily": 20,
       "tier1": 756,
       "ghost": 55,
       "remote": 0,
@@ -312,7 +312,7 @@
     {
       "name": "List",
       "id": "2141:323867",
-      "crossFamily": 7461,
+      "crossFamily": 438,
       "tier1": 4,
       "ghost": 361,
       "remote": 0,
@@ -321,7 +321,7 @@
     {
       "name": "Loader",
       "id": "2141:323879",
-      "crossFamily": 5,
+      "crossFamily": 0,
       "tier1": 20,
       "ghost": 0,
       "remote": 0,
@@ -330,7 +330,7 @@
     {
       "name": "Map of India",
       "id": "6803:290942",
-      "crossFamily": 28,
+      "crossFamily": 5,
       "tier1": 20,
       "ghost": 6,
       "remote": 0,
@@ -339,7 +339,7 @@
     {
       "name": "Modal",
       "id": "2141:323869",
-      "crossFamily": 46,
+      "crossFamily": 2,
       "tier1": 24,
       "ghost": 72,
       "remote": 0,
@@ -357,16 +357,16 @@
     {
       "name": "Navbar",
       "id": "2141:323870",
-      "crossFamily": 598,
-      "tier1": 1692,
+      "crossFamily": 138,
+      "tier1": 1702,
       "ghost": 0,
-      "remote": 0,
-      "raw": 338
+      "remote": 219,
+      "raw": 385
     },
     {
       "name": "New in 2.0",
       "id": "4645:10701",
-      "crossFamily": 181,
+      "crossFamily": 16,
       "tier1": 10,
       "ghost": 38,
       "remote": 0,
@@ -375,7 +375,7 @@
     {
       "name": "Pagination",
       "id": "2141:323872",
-      "crossFamily": 844,
+      "crossFamily": 503,
       "tier1": 20,
       "ghost": 4,
       "remote": 0,
@@ -384,7 +384,7 @@
     {
       "name": "Popover",
       "id": "2141:323874",
-      "crossFamily": 437,
+      "crossFamily": 8,
       "tier1": 20,
       "ghost": 120,
       "remote": 0,
@@ -393,16 +393,16 @@
     {
       "name": "Portal Login Template",
       "id": "55384:695",
-      "crossFamily": 430,
-      "tier1": 807,
+      "crossFamily": 78,
+      "tier1": 632,
       "ghost": 107,
-      "remote": 309,
-      "raw": 241
+      "remote": 0,
+      "raw": 194
     },
     {
       "name": "Progress Indicators",
       "id": "2141:323875",
-      "crossFamily": 153,
+      "crossFamily": 11,
       "tier1": 25,
       "ghost": 22,
       "remote": 0,
@@ -411,16 +411,16 @@
     {
       "name": "Radio Buttons",
       "id": "2141:323876",
-      "crossFamily": 6,
+      "crossFamily": 0,
       "tier1": 20,
       "ghost": 4,
-      "remote": 0,
-      "raw": 55
+      "remote": 48,
+      "raw": 80
     },
     {
       "name": "Range Slider",
       "id": "2179:67252",
-      "crossFamily": 5,
+      "crossFamily": 0,
       "tier1": 20,
       "ghost": 0,
       "remote": 0,
@@ -438,7 +438,7 @@
     {
       "name": "Search",
       "id": "2141:323878",
-      "crossFamily": 285,
+      "crossFamily": 64,
       "tier1": 25,
       "ghost": 0,
       "remote": 0,
@@ -465,7 +465,7 @@
     {
       "name": "Stepper",
       "id": "2106:2",
-      "crossFamily": 689,
+      "crossFamily": 468,
       "tier1": 20,
       "ghost": 0,
       "remote": 76,
@@ -474,7 +474,7 @@
     {
       "name": "Tables",
       "id": "3836:3939",
-      "crossFamily": 610,
+      "crossFamily": 16,
       "tier1": 0,
       "ghost": 135,
       "remote": 0,
@@ -487,12 +487,12 @@
       "tier1": 19,
       "ghost": 0,
       "remote": 39,
-      "raw": 22
+      "raw": 393
     },
     {
       "name": "Thumbnail",
       "id": "214:68343",
-      "crossFamily": 289,
+      "crossFamily": 60,
       "tier1": 20,
       "ghost": 62,
       "remote": 0,
@@ -501,7 +501,7 @@
     {
       "name": "Toggle",
       "id": "2141:323883",
-      "crossFamily": 5,
+      "crossFamily": 0,
       "tier1": 20,
       "ghost": 0,
       "remote": 0,
@@ -510,7 +510,7 @@
     {
       "name": "Tooltip",
       "id": "2141:323884",
-      "crossFamily": 185,
+      "crossFamily": 40,
       "tier1": 20,
       "ghost": 16,
       "remote": 0,

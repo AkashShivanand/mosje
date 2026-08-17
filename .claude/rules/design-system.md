@@ -289,16 +289,36 @@ first full census of the live library shows what that cost:
 | "Bound" to *something* | 56,741 — **86.4 %** |
 | Bound to a **correct semantic space token** | 4,568 — **6.96 %** |
 
-The 86.4 % is the trap, and it is why nobody caught this by eye: in the inspector
-every one of those properties reads as bound. The breakdown:
+The 86.4 % was the trap, and it is why nobody caught this by eye: in the inspector
+every one of those properties reads as bound.
 
-| class | count | what it is |
-|---|---|---|
-| `crossFamily` | **38,799** | a **radius/type/colour** variable bound to padding or gap — `ref/radius/none` alone accounts for most of it |
-| `tier1` | 7,286 | a **hidden** `ref/space` · `ref/size` primitive, which does not publish and whose code syntax `tier-discipline.test.mjs` forbids app code to write |
-| `ghost` | 4,771 | a local variable id **no collection owns** — 19 distinct ids |
-| `remote` | 1,317 | a variable imported from **another library** |
-| `tier2` | 4,568 | correct |
+| class | before | after | what it is |
+|---|---|---|---|
+| `crossFamily` | **38,799** | 5,968 | a **radius/type/colour** variable bound to padding or gap |
+| `tier1` | 7,286 | 7,111 | a **hidden** `ref/space` · `ref/size` primitive, which does not publish and whose code syntax `tier-discipline.test.mjs` forbids app code to write |
+| `ghost` | 4,771 | 4,771 | a local variable id **no collection owns** — 19 distinct ids |
+| `remote` | 1,317 | 717 | a variable imported from **another library** |
+| `tier2` | 4,568 | **37,632** | correct |
+| | **6.96 %** | **57.51 %** | share of all spacing on a correct token |
+
+**The "after" column is the `ref/radius/none` rebind, same day.** Every
+`ref/radius/none` binding on a spacing property, across 38 pages, was moved to
+`padding/none` · `inline/none` · `stack/none` — chosen by property and layout axis
+(`padding*` → padding; `itemSpacing` → inline on a HORIZONTAL frame, stack on a
+VERTICAL one; `counterAxisSpacing` → the opposite axis). **Zero visual change**: all
+of them resolve to 0, and the script refused to touch any property whose value was
+not already 0.
+
+Two things that pass makes worth knowing next time:
+
+- **Mains first, then overrides.** Rebinding a main component fixes its instances —
+  unless an instance carries an *explicit override*, which does not follow its main.
+  Roughly 13,500 of the total were such overrides (Dropdown alone 7,098) and had to
+  be corrected directly, after the mains.
+- **What is left in `crossFamily` is the non-zero radius rungs** (`ref/radius/md` ·
+  `xs` · `sm` · `xxs`) bound to spacing — chiefly Dropdown 2,924, Pagination 503,
+  Stepper 468, List 438. Those carry real values, so each needs a space rung of
+  equal value chosen for it. That is a separate job, and it is not zero-risk.
 
 - Run it with `npm run check:space-linkage`; it also runs inside
   `npm test -w @mosje/tokens`, which **Design System Quality** already executes.
@@ -326,3 +346,20 @@ and non-deterministic** trees. Navbar measured 2,885 bound properties per-page, 
 returned the same node count both ways, so the shortfall is invisible to a
 node-count sanity check. A batched re-sweep under-reports and must not be committed;
 `space-linkage.test.mjs` refuses a census that does not declare the method.
+
+### Per-page totals move on a library re-sync — expect one false regression
+
+Repeated reads *within* a session are byte-identical, so the census is reproducible.
+Across a **library re-sync** it is not: between the two censuses of 2026-08-17,
+Navbar went 3,223 → 3,510 properties (gaining 219 `remote` bindings) and Inputs went
+1,526 → 1,155 (losing 339), with no edit touching either page. Figma had re-resolved
+remote instance subtrees.
+
+So the ratchet can report a regression nobody caused. When it does: confirm no real
+binding changed, then re-baseline — do not go hunting for an edit that does not exist.
+
+**The fix worth making** is to count only **authorable** nodes (those outside any
+instance). Instance descendants are derived from their main, so counting them both
+double-counts *and* imports this instability — Navbar's authorable-only figures were
+byte-identical across independent invocations while its totals moved. That would
+change every headline number, so it is a deliberate migration, not a patch.
