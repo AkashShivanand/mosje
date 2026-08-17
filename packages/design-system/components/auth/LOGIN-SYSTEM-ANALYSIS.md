@@ -605,6 +605,79 @@ radii bound; zero raw.**
 **Figma** `Button` has no Inverse tone — the **code** `Button` already has `inverse` and
 `inverseOutlined`. Adding it to the Figma Button is the fix; the inline part is the placeholder.
 
+## 14. Structure, standards and visual fidelity (2026-08-17, second review)
+
+Three instructions: organise exactly like `Navbar`, meet the standards for handoff, and match
+the reference 100 % using SAMAVESH branding. The third one is what found the remaining defects.
+
+### The wrappers were only approximately like Navbar
+
+A property-by-property read of the `Navbar` page produced the exact spec, and mine diverged on
+**seven** counts. Corrected:
+
+| | Navbar (correct) | Mine (was) |
+|---|---|---|
+| Section fill | `bg/neutral/subtler` | none |
+| Wrapper fill | `bg/neutral/base` | `bg/neutral/subtler` — **inverted** |
+| Wrapper padding | 28 (`ref/size/28`) | 32 |
+| Wrapper gap | 16 (`ref/space/lg`) | 24 |
+| Wrapper radius | `ref/radius/lg` | `shape/lg` |
+| Head gap | 2 (`ref/space/xxs`) | 4 |
+| Head type | `Title/title-2` + `Label/label-3` | `Headline/headline-4` + `Body/body-3` |
+| Component-set frame | 32 pad / 40 gap / `ref/radius/xs` | unset |
+
+Wrappers are now stacked in a single column at x=100 with a 24 gap, exactly as `Navbar` does.
+
+**A regression I caused and caught:** applying that spec padded `Auth / OrDivider` and
+`Auth / ConsentLine` *themselves* — they are plain components, not sets — inflating them from
+16px to 80 and 96, which overflowed the form column. Reverted. Wrapper styling now touches only
+`COMPONENT_SET` children.
+
+### Visual fidelity — the reference values, sampled not guessed
+
+| Element | Reference | Was | Now |
+|---|---|---|---|
+| Saffron rule | **`#ff671f`** | `#c34700` ✗ | `ref/brand/samavesh/orange` |
+| Active role tab | **`#003366`** navy | DS blue `#0373df` ✗ | `bg/brand/primary/boldest` |
+| Track | `#e5e7eb` / `#d1d5db`, 390×44, 4px inset | 390×44 white | `bg/neutral/subtler` + `border/neutral/base` |
+| DigiLocker title | **`#5330e6`** | `text/brand/primary/base` ✗ | `ref/brand/digilocker/purple` |
+
+**There is no `tertiary` brand ramp.** SAMAVESH's three brand colours are `primary` (gov blue),
+`secondary` (`#ff671f`, the SAMAVESH orange) and `accent` (`#046a38`, the SAMAVESH green).
+`tertiary` is declared in the grammar but has no variables — worth either building or removing.
+
+**`Tabs / Tab` gained a `Tone` axis** rather than being overridden: `Brand` (unchanged, the
+default, so every existing tab in the estate is untouched) and `Boldest`
+(`bg/brand/primary/boldest`) for a tab sitting in a branded segmented track. That is what lets
+`RoleTabs` match the reference navy *and* still be an instance rather than a redraw.
+
+**A new DS token:** `ref/brand/digilocker/purple` = `#5330e6`, in the Static collection beside
+`ref/brand/samavesh/*`, described as third-party — another product's identity, so it never
+re-themes and never takes a SAMAVESH rung.
+
+### Two more component defects found and fixed at source
+
+- **`Tabs / Tab (Alt)`** never wired its `Show Icon` boolean to the icon's visibility. Setting
+  it did nothing. Fixed on the component.
+- **`clone()` does not carry `componentPropertyReferences`.** The cloned `Tone=Boldest` variants
+  rendered "Label" and an icon regardless of their properties, because their text and icon nodes
+  had no wiring at all. Every clone now has `characters`, `visible` and `mainComponent` re-wired
+  explicitly. Worth remembering: a cloned variant looks correct and is silently inert.
+
+### Final audit
+
+Across the whole login page, excluding component-set wrappers, sections and instance subtrees:
+
+| Fills | Strokes | Padding | Gaps | Radii | Unstyled text |
+|---|---|---|---|---|---|
+| 375 / **0** | 15 / **0** | 352 / **0** | 163 / **0** | 356 / **0** | **0** |
+
+### Known remaining gaps to the reference — all assets, all flagged in-file
+
+The SAMAVESH roundel beside the wordmark, the Digital India and SAMAVESH co-brand marks in the
+masthead, and the portal logo in the signing-into bar are placeholders. They are asset gaps, not
+build gaps; every one is named in the Figma file so an audit can find it.
+
 ### Still outstanding
 
 1. **The Figma documentation canvas** in the house style, and the portal configuration table
