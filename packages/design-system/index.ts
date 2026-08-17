@@ -333,6 +333,15 @@ export type {
   PortalLoginShellProps,
   PortalLoginTab,
 } from "./components/auth/portal-login-shell";
+export { PortalLoginTemplate } from "./components/auth/portal-login-template";
+export type { PortalLoginTemplateProps } from "./components/auth/portal-login-template";
+export type {
+  PortalLoginConfig,
+  PortalRoleTab as PortalConfigRoleTab,
+  PortalAuthMode,
+  PortalBrandAssets,
+  LoginSubmitPayload,
+} from "./components/auth/types";
 
 // ---- Components: Accessibility -----------------------------------------------
 // CANONICAL: the official Government of India (MeitY / UX4G) accessibility widget.

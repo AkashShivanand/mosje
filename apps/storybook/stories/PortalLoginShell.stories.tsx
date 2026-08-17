@@ -33,6 +33,13 @@ import {
  * `.claude/rules/portal-login-demos.md`. The last story shows the shell with
  * `DemoFab` in place, which is how it actually ships in review builds.
  *
+ * `extraContent` is a slot **below** the form, inside the card. It is for
+ * content that belongs to the page rather than the credentials — the portal
+ * switcher grid on E-Anudaan's officer login, a demo-data notice. Prefer
+ * `children` for anything the user has to fill in: putting a field in
+ * `extraContent` places it after the submit button, which is the wrong tab
+ * order.
+ *
  * > **A caveat about this page in Storybook.** The shell's own layout is
  * > written in Tailwind utility classes, and Tailwind is built by the hub, not
  * > by Storybook. So it renders here **structurally but unstyled** — the
