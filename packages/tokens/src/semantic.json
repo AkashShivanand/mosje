@@ -1453,7 +1453,7 @@
   },
   "focus": {
     "ring": {
-      "$description": "The focus indicator, and it is OPAQUE on purpose. It carried 48% alpha until 2026-08-17, which composited to 2.01:1 on white, 1.92:1 on a tab track and 1.16:1 on a selected brand pill — all below the 3:1 floor of WCAG 1.4.11 and 2.4.11, and worst exactly where a keyboard user needs it most. An alpha ring cannot be assessed once and trusted, because its contrast is a property of whatever it happens to land on; an opaque one is 3.94:1 on white and holds its own everywhere.",
+      "$description": "The focus indicator, and it is OPAQUE on purpose. It carried 48% alpha until 2026-08-17, which composited to 2.01:1 on white, 1.92:1 on a tab track and 1.16:1 on a selected brand pill — all below the 3:1 floor of WCAG 1.4.11 and 2.4.11, and worst exactly where a keyboard user needs it most. An alpha ring cannot be assessed once and trusted, because its contrast is a property of whatever it happens to land on. Opaque, it measures 4.64:1 on bg/neutral/base and 4.07:1 on bg/neutral/subtler. Note that a ring is judged against what it ABUTS, not what it encircles: the two-layer construction (focus/offset of the surface colour, then focus/width of this) means the ring never touches the filled control inside it, which is what keeps it legible on a selected brand pill.",
       "$value": "#0373DF",
       "$extensions": {
         "mosje": {

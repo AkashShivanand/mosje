@@ -24,6 +24,25 @@ import { TabPanel, Tabs } from "@mosje/design-system";
  * complete in order is a `Wizard`; navigation between different pages is
  * `SidebarNav` or `SiteHeader`.
  *
+ * ### Choosing the chrome
+ *
+ * `indicator` and `track` are two halves of one decision, and only two of the six
+ * combinations are correct. `track="enclosed"` is a filled, bordered track and takes
+ * `indicator="pill"`. `track="none"` is an open list and takes `indicator="underline"`
+ * when `orientation="horizontal"`, or `indicator="rail"` when it is `"vertical"`. A
+ * pill on an open list has nothing to sit in; an underline inside a filled track
+ * competes with the track's own edge. Both are shown below, side by side, because the
+ * wrong pairing is easier to recognise than to describe.
+ *
+ * `size` (`s` / `m` / `l` → 36 / 44 / 48 px) applies to the whole list, never to one
+ * tab. `divider` draws the rule the underline or rail sits in, and is ignored when the
+ * track is enclosed.
+ *
+ * Per-tab, `TabDef` also carries `icon` (a Material Symbols name), `badge` (an unread
+ * dot) and `disabled`. A disabled tab **stays in the tablist** with `aria-disabled` —
+ * arrow keys step over it, but a screen-reader user still hears that the section is
+ * there. Removing it instead would hide that fact entirely.
+ *
  * `TabPanel`, the matching panel wrapper, is documented here rather than in a
  * story of its own.
  *
@@ -50,6 +69,11 @@ const meta = {
     active: { control: { type: "range", min: 0, max: 3, step: 1 } },
     ariaLabel: { control: "text" },
     idBase: { control: "text" },
+    indicator: { control: "inline-radio", options: ["underline", "rail", "pill"] },
+    size: { control: "inline-radio", options: ["s", "m", "l"] },
+    track: { control: "inline-radio", options: ["none", "enclosed"] },
+    orientation: { control: "inline-radio", options: ["horizontal", "vertical"] },
+    divider: { control: "boolean" },
     tabs: { control: false },
     onChange: { control: false },
   },
@@ -167,7 +191,7 @@ export const StartingOnALaterTab: Story = {
   },
 };
 
-/** Many tabs with long labels — the row wraps rather than scrolling off. */
+/** Many tabs with long labels — the row scrolls horizontally rather than wrapping. */
 export const ManyTabs: Story = {
   render: function Render(args) {
     const idBase = React.useId();
@@ -191,4 +215,143 @@ export const ManyTabs: Story = {
       </div>
     );
   },
+};
+
+/** A minimal controlled harness, so the axis stories below stay about the axis. */
+function Demo({
+  tabs = TABS,
+  label = "Application sections",
+  start = 0,
+  ...rest
+}: Partial<React.ComponentProps<typeof Tabs>> & { label?: string; start?: number }) {
+  const idBase = React.useId();
+  const [active, setActive] = React.useState(start);
+  const list = tabs;
+  const tab = list[active] ?? list[0]!;
+  return (
+    <div>
+      <Tabs
+        {...rest}
+        idBase={idBase}
+        ariaLabel={label}
+        tabs={list}
+        active={active}
+        onChange={setActive}
+      />
+      <TabPanel idBase={idBase} tabId={tab.id}>
+        <div style={{ paddingTop: 16, color: "var(--sa-color-text-default)" }}>
+          {PANEL_CONTENT[tab.id] ?? <p style={{ margin: 0 }}>{tab.label}</p>}
+        </div>
+      </TabPanel>
+    </div>
+  );
+}
+
+/**
+ * The two correct pairings, and the two wrong ones beneath them.
+ *
+ * The wrong row is rendered on purpose: a pill floating on an open list reads as a
+ * button that has lost its toolbar, and an underline inside a filled track draws a
+ * second edge a few pixels inside the first. Neither is a bug you would find by
+ * reading a prop table.
+ */
+export const IndicatorAndTrack: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 40 }}>
+      <section>
+        <h3 style={{ margin: "0 0 12px", font: "var(--sa-type-title-2)" }}>Correct</h3>
+        <div style={{ display: "grid", gap: 28 }}>
+          <Demo track="enclosed" indicator="pill" label="Enclosed pill" />
+          <Demo track="none" indicator="underline" label="Open underline" />
+        </div>
+      </section>
+      <section>
+        <h3 style={{ margin: "0 0 12px", font: "var(--sa-type-title-2)" }}>
+          Wrong — do not ship these
+        </h3>
+        <div style={{ display: "grid", gap: 28, opacity: 0.85 }}>
+          <Demo track="none" indicator="pill" label="Pill with no track" />
+          <Demo track="enclosed" indicator="underline" label="Underline in a track" />
+        </div>
+      </section>
+    </div>
+  ),
+};
+
+/** `s` / `m` / `l` resolve to 36 / 44 / 48 px — a hug of padding plus line-height. */
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 28 }}>
+      <Demo size="s" label="Small" />
+      <Demo size="m" label="Medium" />
+      <Demo size="l" label="Large" />
+    </div>
+  ),
+};
+
+/**
+ * Vertical lists. `rail` is the vertical counterpart of `underline` — the same 2px
+ * mark on the leading edge — and Up/Down arrows drive it, with
+ * `aria-orientation="vertical"` telling assistive technology so.
+ */
+export const Vertical: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: 48, alignItems: "flex-start" }}>
+      <div style={{ width: 260 }}>
+        <Demo orientation="vertical" track="none" indicator="rail" label="Open rail" />
+      </div>
+      <div style={{ width: 260 }}>
+        <Demo orientation="vertical" track="enclosed" indicator="pill" label="Enclosed pill" />
+      </div>
+    </div>
+  ),
+};
+
+/**
+ * Icons, unread dots, and an unavailable section.
+ *
+ * Arrow from "Documents" and you land on "Approval history" — "Remarks" is skipped.
+ * It is still announced as a tab, and still reads as disabled, which is the point:
+ * an officer needs to know the remarks section exists before they can ask why it is
+ * shut.
+ */
+export const IconsBadgesAndDisabled: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 28 }}>
+      <Demo
+        label="Application sections"
+        tabs={[
+          { id: "details", label: "Application details", icon: "description" },
+          { id: "documents", label: "Documents", icon: "folder_open", badge: true },
+          { id: "history", label: "Approval history", icon: "history" },
+          { id: "remarks", label: "Remarks", icon: "chat", disabled: true },
+        ]}
+      />
+      <Demo
+        track="none"
+        indicator="underline"
+        label="Application sections, open list"
+        tabs={[
+          { id: "details", label: "Application details", icon: "description" },
+          { id: "documents", label: "Documents", icon: "folder_open", badge: true },
+          { id: "history", label: "Approval history", icon: "history" },
+          { id: "remarks", label: "Remarks", icon: "chat", disabled: true },
+        ]}
+      />
+    </div>
+  ),
+};
+
+/**
+ * `divider` draws the rule the indicator sits **in** — the selected segment replaces
+ * that stretch of the rule rather than stacking a second line above it. Turn it off
+ * where the tabs already sit on a hard edge, such as the top of a card.
+ */
+export const WithoutDivider: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 28 }}>
+      <Demo track="none" indicator="underline" label="With the rule" divider />
+      <Demo track="none" indicator="underline" label="Without the rule" divider={false} />
+    </div>
+  ),
 };

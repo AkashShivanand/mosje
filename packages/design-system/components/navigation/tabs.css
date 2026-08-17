@@ -1,46 +1,143 @@
 /* ============================================================================
    MoSJE / SAMAVESH — Tabs
-   WAI-ARIA tablist: navy active pill on a muted track. Token-driven.
+   WAI-ARIA tablist. Three indicators (underline / rail / pill), three sizes,
+   two tracks, two orientations. Token-driven; no raw values.
+
+   HEIGHT IS ALWAYS A HUG — padding + line-height, never a fixed number. A tab
+   with a pinned height stops growing when a citizen raises their browser font
+   size, which is how a "compliant" control becomes an unreadable one. The
+   documented heights (36 / 44 / 48) are what the hug RESOLVES to at the 16px
+   default, not what is set.
    ============================================================================ */
 
 .ds-tabs {
   position: relative;
   display: flex;
-  gap: var(--sa-stack-2xs);
-  overflow-x: auto;
-  padding: var(--sa-padding-2xs);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-xl);
-  background-color: var(--sa-bg-neutral-subtler);
   font-family: var(--sa-font-latin);
 }
 
-/* The active-tab pill. A single element that slides to the selected
-   button's measured position (set inline by `Tabs`, see tabs.tsx) rather
-   than each button painting its own background — that's what makes it
-   glide between tabs instead of snapping. Sits behind the buttons
-   (z-index 0) so their hover/focus states still render on top of it. */
+/* ---- size: padding + type. Everything else derives from these. ------------ */
+
+.ds-tabs--s {
+  --ds-tabs-pad-y: var(--sa-padding-xs);
+  --ds-tabs-pad-x: var(--sa-padding-s);
+  --ds-tabs-type-size: var(--sa-type-label-1-size);
+  --ds-tabs-type-lh: var(--sa-type-label-1-lh);
+}
+
+.ds-tabs--m {
+  --ds-tabs-pad-y: var(--sa-padding-s);
+  --ds-tabs-pad-x: var(--sa-padding-m);
+  --ds-tabs-type-size: var(--sa-type-label-1-size);
+  --ds-tabs-type-lh: var(--sa-type-label-1-lh);
+}
+
+/* L steps the type up to body-1 rather than the padding — a larger tab reads as
+   larger because its label does, and padding alone would only make it emptier. */
+.ds-tabs--l {
+  --ds-tabs-pad-y: var(--sa-padding-s);
+  --ds-tabs-pad-x: var(--sa-padding-l);
+  --ds-tabs-type-size: var(--sa-type-body-1-size);
+  --ds-tabs-type-lh: var(--sa-type-body-1-lh);
+}
+
+/* ---- orientation --------------------------------------------------------- */
+
+.ds-tabs--horizontal {
+  flex-direction: row;
+  overflow-x: auto;
+}
+
+.ds-tabs--vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* ---- track --------------------------------------------------------------- */
+
+/* An open list, optionally carrying the rule the indicator sits IN — coplanar,
+   not stacked above: the selected segment replaces that stretch of the rule
+   rather than drawing a second line beside it. `control/border/width` is the
+   system's only Tier-2 border width, and it is the right one: this is a control
+   edge. `layout/tab/indicator` is deliberately NOT used here — that token is the
+   selection mark, and the two must be free to move independently. */
+.ds-tabs--track-none.ds-tabs--divider.ds-tabs--horizontal {
+  border-bottom: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+}
+
+.ds-tabs--track-none.ds-tabs--divider.ds-tabs--vertical {
+  border-left: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+}
+
+/* The filled track. `layout/tab/track` is both its padding and the indicator's
+   inset, so the pill always clears the border by the same amount on every edge. */
+.ds-tabs--track-enclosed {
+  gap: var(--sa-stack-2xs);
+  padding: var(--sa-layout-tab-track);
+  border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-lg);
+  background-color: var(--sa-bg-neutral-subtler);
+}
+
+/* ---- the sliding indicator ------------------------------------------------
+   One element that moves, rather than each tab painting its own chrome. Its
+   main-axis position and size are written inline by tabs.tsx; the cross-axis
+   geometry is the stylesheet's job and differs per indicator. */
+
 .ds-tabs__indicator {
   position: absolute;
-  top: 4px;
-  bottom: 4px;
-  left: 0;
-  width: 0;
-  border-radius: var(--sa-shape-lg);
-  /* `--sa-color-brand-navy` (`--sa-color-brand-navy`) is declared once at `:root` and
-     never re-declared inside a `[data-brand]` block — it's brand-invariant
-     by design, meant for things that should stay navy regardless of the
-     active brand axis (see tokens.css). The active-tab pill isn't one of
-     those: `.ds-tabs__tab.is-selected` already reads `--sa-color-text-onPrimary` for
-     its text colour, so `--sa-color-action-primary-default` was the intended fill all along —
-     it's re-declared per `[data-brand]` and re-tones with the rest of the
-     estate. */
-  background-color: var(--sa-bg-brand-primary-bolder);
-  box-shadow: var(--sa-elevation-card);
-  transition: transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-    width var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
   z-index: 0;
   pointer-events: none;
+  transition: transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    width var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    height var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+}
+
+/* Underline — a 2px mark on the bottom edge. */
+.ds-tabs--underline .ds-tabs__indicator {
+  left: 0;
+  bottom: 0;
+  height: var(--sa-layout-tab-indicator);
+  background-color: var(--sa-border-brand-primary-base);
+}
+
+/* Rail — the same mark on the leading edge. Vertical lists only. */
+.ds-tabs--rail .ds-tabs__indicator {
+  top: 0;
+  left: 0;
+  width: var(--sa-layout-tab-indicator);
+  background-color: var(--sa-border-brand-primary-base);
+}
+
+/* With a rule present, the mark is pulled OUT over it by exactly the rule's own
+   width, so the two are coplanar and the selected segment replaces the rule
+   instead of stacking a second line against it. */
+.ds-tabs--divider.ds-tabs--underline .ds-tabs__indicator {
+  bottom: calc(-1 * var(--sa-control-border-width));
+}
+
+.ds-tabs--divider.ds-tabs--rail .ds-tabs__indicator {
+  left: calc(-1 * var(--sa-control-border-width));
+}
+
+/* Pill — a filled shape inset from the track by `layout/tab/track` on the two
+   cross-axis edges; the main axis is measured from the selected button. */
+.ds-tabs--pill .ds-tabs__indicator {
+  border-radius: var(--sa-shape-md);
+  background-color: var(--sa-bg-brand-primary-bolder);
+  box-shadow: var(--sa-elevation-card);
+}
+
+.ds-tabs--pill.ds-tabs--horizontal .ds-tabs__indicator {
+  top: var(--sa-layout-tab-track);
+  bottom: var(--sa-layout-tab-track);
+  left: 0;
+}
+
+.ds-tabs--pill.ds-tabs--vertical .ds-tabs__indicator {
+  left: var(--sa-layout-tab-track);
+  right: var(--sa-layout-tab-track);
+  top: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -49,48 +146,143 @@
   }
 }
 
+/* ---- the tab ------------------------------------------------------------- */
+
 .ds-tabs__tab {
   position: relative;
   z-index: 1;
-  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-s);
   min-width: 0;
   white-space: nowrap;
-  padding: var(--sa-padding-s) var(--sa-padding-s);
+  padding: var(--ds-tabs-pad-y) var(--ds-tabs-pad-x);
   border: none;
-  border-radius: var(--sa-shape-lg);
   background: transparent;
   color: var(--sa-text-neutral-subtle);
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
+  font-size: var(--ds-tabs-type-size);
+  line-height: var(--ds-tabs-type-lh);
   font-weight: 600;
-  text-align: center;
   cursor: pointer;
   transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
     color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
-.ds-tabs__tab:hover:not(.is-selected) {
-  /* Was a raw `rgba(0, 0, 0, 0.05)` literal — not permitted in design-system
-     CSS (tokens only). `--sa-bg-neutral-subtler` (the track's own background,
-     see `.ds-tabs` above) isn't a substitute: hovering a tab would then
-     match the track it sits on and the affordance would disappear.
-     `--sa-color-neutralScale-100` is one step darker (#f1f3f5 vs #f8f9fa in Blue),
-     giving a visible neutral wash on top of the muted track without
-     inventing a value. */
-  background-color: var(--sa-color-neutralScale-100);
+/* Enclosed tabs share the track evenly; an open list is content-width, which is
+   what keeps an underline the width of its own label rather than of a column. */
+.ds-tabs--track-enclosed .ds-tabs__tab {
+  flex: 1 1 0;
+  border-radius: var(--sa-shape-md);
+}
+
+.ds-tabs--track-none .ds-tabs__tab {
+  flex: 0 0 auto;
+  /* Invisible on its own — these tabs have no resting fill. It exists so the
+     focus ring, which is a spread shadow and therefore inherits this radius,
+     resolves to shape/md (4 + 4) instead of a hard square corner. */
+  border-radius: var(--sa-shape-xs);
+}
+
+.ds-tabs--horizontal .ds-tabs__tab {
+  justify-content: center;
+}
+
+/* A column of tabs is a list, and a list reads down its leading edge. */
+.ds-tabs--vertical .ds-tabs__tab {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+/* Equal-width tabs (`flex: 1 1 0`) hand every tab the same slot regardless of how
+   long its label is, and `white-space: nowrap` means a label that does not fit
+   PAINTS OVER ITS NEIGHBOUR — "Application details" ran through "Documents" in a
+   720px track. Ellipsis is the fallback, not the intent: a tab label should be
+   short enough not to need it. The Figma masters define no truncation treatment,
+   so this is a code-side safety net and stays flagged as an open gap. */
+.ds-tabs__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The unread dot. 6px matches `.ds-badge__dot`, the estate's one definition of
+   this affordance — deliberately NOT a new token: the linkage rule keeps widths
+   and heights advisory precisely so a one-use dimension does not mint a
+   one-use variable. `currentColor` makes it track the tab's own state, so it
+   greys out with a disabled tab and goes white on a selected pill. */
+.ds-tabs__badge {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--sa-shape-full);
+  background-color: currentColor;
+}
+
+/* ---- states -------------------------------------------------------------- */
+
+/* Hover paints a fill only where there is a shape to fill. On an open list the
+   affordance is the rule going dark, drawn by the tab's own border so it lands
+   exactly where the selected indicator will. */
+.ds-tabs--track-enclosed .ds-tabs__tab:hover:not(.is-selected):not(.is-disabled) {
+  background-color: var(--sa-bg-neutral-subtle);
   color: var(--sa-text-neutral-base);
 }
 
-/* The pill's own background/shadow now come from `.ds-tabs__indicator`
-   behind it — this just sets the text color that reads on top of it. */
+.ds-tabs--underline .ds-tabs__tab:hover:not(.is-selected):not(.is-disabled) {
+  box-shadow: inset 0 calc(-1 * var(--sa-layout-tab-indicator)) 0 0
+    var(--sa-border-neutral-bolder-default);
+  color: var(--sa-text-neutral-base);
+}
+
+.ds-tabs--rail .ds-tabs__tab:hover:not(.is-selected):not(.is-disabled) {
+  box-shadow: inset var(--sa-layout-tab-indicator) 0 0 0
+    var(--sa-border-neutral-bolder-default);
+  color: var(--sa-text-neutral-base);
+}
+
+/* Selected. The mark itself is `.ds-tabs__indicator` behind the tab; this is
+   only the ink that reads on top of it. `text/brand/primary/bolder` — NOT
+   `/base` — because the brand key colour measures 4.07:1 on the track and fails
+   AA there. On a filled pill the `on/*` pair takes over. */
 .ds-tabs__tab.is-selected {
+  color: var(--sa-text-brand-primary-bolder);
+}
+
+.ds-tabs__tab.is-selected .ds-tabs__icon {
+  color: var(--sa-icon-brand-primary-bolder);
+}
+
+.ds-tabs--pill .ds-tabs__tab.is-selected,
+.ds-tabs--pill .ds-tabs__tab.is-selected .ds-tabs__icon {
   color: var(--sa-on-bg-brand-primary-bolder);
 }
 
+.ds-tabs__tab.is-disabled {
+  color: var(--sa-text-neutral-disabled);
+  cursor: not-allowed;
+}
+
+.ds-tabs__tab.is-disabled .ds-tabs__icon {
+  color: var(--sa-icon-neutral-disabled);
+}
+
+/* Focus. Two layers: `focus/offset` (2) of the surface colour, then
+   `focus/width` (2) of the ring — a 4px outset with a 2px transparent-reading
+   gap. The ring is a SHADOW and not a drawn frame on purpose: a drop shadow in
+   Figma renders from the fill silhouette, so a ring built that way is invisible
+   on Underline and Rail, which have no fill at all. */
 .ds-tabs__tab:focus-visible {
   outline: none;
-  /* ring offset over the muted track, then the focus ring */
-  box-shadow: 0 0 0 2px var(--sa-bg-neutral-subtler), 0 0 0 4px var(--sa-color-action-primary-default);
+  box-shadow: 0 0 0 var(--sa-focus-offset) var(--ds-tabs-focus-gap),
+    0 0 0 calc(var(--sa-focus-offset) + var(--sa-focus-width)) var(--sa-focus-ring);
+}
+
+.ds-tabs--track-enclosed {
+  --ds-tabs-focus-gap: var(--sa-bg-neutral-subtler);
+}
+
+.ds-tabs--track-none {
+  --ds-tabs-focus-gap: var(--sa-bg-neutral-base);
 }
 
 .ds-tabpanel:focus-visible {
