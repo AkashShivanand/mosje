@@ -1054,7 +1054,8 @@ export const tokens = {
     "s": "8px",
     "m": "12px",
     "l": "16px",
-    "xl": "32px"
+    "xl": "24px",
+    "2xl": "32px"
   },
   "stack": {
     "none": "0px",

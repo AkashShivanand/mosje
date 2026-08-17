@@ -1,7 +1,10 @@
 # Tabs — component spec
 
-> Figma masters are built and published-ready; **code is not yet updated**. This file is the
-> executable spec for that work. Figma file `3FF5l0SMNIwdpZrKkeyPTm`, page **Tabs** (`4645:10196`).
+> **Built and shipped, 2026-08-17.** This file was written as the executable spec for the work
+> and is now the record of it: code matches the Figma masters, all three masters are mapped with
+> Code Connect, and the tokens exist on both sides. Figma file `3FF5l0SMNIwdpZrKkeyPTm`, page
+> **Tabs** (`4645:10196`). Section 3a — long labels — is the part that is easiest to get wrong and
+> the part no prop can enforce, so read it before writing any tab copy.
 
 | Master | Node | Key | Variants |
 | --- | --- | --- | --- |
@@ -14,10 +17,13 @@ Deprecated, keys alive: `[Deprecated] Tabs / Tab (Alt)` `2725:1217`,
 
 ---
 
-## 1. Tokens to add — do this first
+## 1. Tokens — done
 
-Everything else depends on these. Add to `packages/tokens/src/semantic.json`, then
-`npm run build -w @mosje/tokens && npm test -w @mosje/tokens`.
+All four exist on both sides, plus two more the work turned up. **Note where they live:**
+`text|icon/brand/primary/bolder` are Tier-2 role tokens and are **generated** by
+`build/generate-system-tokens.mjs` into `src/system.generated.json` — authoring them by hand in
+`semantic.json` would be overwritten on the next build. Only the `layout/tab/*` pair is authored
+in `semantic.json`.
 
 | Token | Alias | Scopes | Why |
 | --- | --- | --- | --- |
@@ -26,13 +32,28 @@ Everything else depends on these. Add to `packages/tokens/src/semantic.json`, th
 | `layout/tab/indicator` | `2` | `WIDTH_HEIGHT` | Indicator thickness. Not a border width — does not follow `control/border/width`. |
 | `layout/tab/track` | `4` | `WIDTH_HEIGHT`, `GAP` | Inset between the enclosed track and its pills. Matches the shipped `.ds-tabs` padding. |
 
-**Also change:** `focus/ring` currently carries **48% alpha**. Composited it measures
-**2.01:1** on white, **1.92:1** on the track and **1.16:1** on a selected pill — all below the
-3:1 floor of WCAG 1.4.11 / 2.4.11. Make it opaque in **both** Blue and Navy modes. Already done
-in Figma (`Palette::focus/ring`); the code side must follow or Figma-parity tests will diverge.
+Two more were added during the work and are **not** Tabs-specific:
 
-Expect `figma-value-parity.test.mjs` and the visual-contract fixture to need regenerating —
-audit the diff against both parents rather than trusting the auto-merge.
+| Token | Value | Why |
+| --- | --- | --- |
+| `cmp/badge/dotSize` · `dotSizeLg` | 6 · 8 | The status dot had **two** hardcoded definitions — `.ds-badge__dot` and the new tab badge. Now one, shared. 6 and not the on-grid 8 because beside 14px label text an 8px dot reads as a bullet, not a signal. Created in the Figma library too. |
+| `inline/xl` | 24 | `inline` was the only spacing family without a 24 step (`stack/l` and `padding/xl` both have one), so every 24px horizontal gap reached past the semantic layer. Inserting it pushed the old `inline/xl` (32) to `inline/2xl` — renamed in place in Figma, 2 code call sites migrated, proven value-preserving by the contract fixture before rebaselining. |
+
+**`focus/ring` is now opaque** in Blue (`#0373DF`) and Navy (`#003366`). At 48% alpha it
+composited to **2.01:1** on white, **1.92:1** on the track and **1.16:1** on a selected pill —
+all below the 3:1 floor of WCAG 1.4.11 / 2.4.11. Opaque it is 4.64:1 on `bg/neutral/base` and
+4.07:1 on `bg/neutral/subtler`.
+
+**A 28 step for `padding` was attempted and abandoned** — the documentation house style's panel
+padding is 28 and had no semantic name. Three independent constraints refuse it, and all three
+are right: `padding` already uses **all eleven** canonical rung names (`none`…`4xl`) in
+`space-linkage.test.mjs`, so there is no slot; `space` has no 28 primitive because its ramp runs
+in 4s to 24 and in 8s from 32; and that gate requires every semantic space token to alias a
+primitive, so a literal is refused too. Aliasing `{size.28}` was tried and reverted — `size/*`
+is a rem scale, and 1.75rem in a px ramp **inverts** the ramp below a 16px root. The
+documentation moved onto 32 instead.
+
+Both contract fixtures were regenerated and the diffs audited key-by-key rather than trusted.
 
 ---
 
@@ -48,7 +69,7 @@ export interface TabDef {
   id: string;
   label: string;
   icon?: string;        // Material Symbols Rounded glyph name
-  badge?: boolean;      // 8px dot
+  badge?: boolean;      // the shared status dot — cmp/badge/dotSize (6), 8 at size="l"
   disabled?: boolean;
 }
 ```
@@ -109,7 +130,7 @@ so a shadow ring is invisible on Underline and Rail, which have no root fill.
 | `Orientation` = Horizontal · Vertical | `orientation` | Vertical ⇒ Up/Down arrows + `aria-orientation="vertical"`. |
 | `Track` = None · Enclosed | `track` | Enclosed is today's `.ds-tabs`: `bg/neutral/subtler`, 1px `border/neutral/subtle`, `shape/lg`, `layout/tab/track` inset. |
 | `Show divider` (boolean) | `divider` | Meaningless when `track="enclosed"`. |
-| `Show overflow` (boolean) | `overflow` | Reveals the More trigger. Horizontal only. |
+| `Show overflow` (boolean) | — | Reveals the More trigger. Horizontal only. NO code prop: there is no React counterpart, so a horizontal list simply scrolls. See §4. |
 | Slot | `children` / `tabs` | Any number of tabs. |
 
 **Pairing rule:** `track="none"` takes Underline (horizontal) or Rail (vertical);
@@ -121,6 +142,65 @@ read as broken.
 
 **Divider:** must be coplanar with the indicator — the selected tab replaces that segment of the
 rule rather than stacking a second line above it.
+
+---
+
+## 3a. Long labels — the rules, the escalation, and what the component actually does
+
+This is the one part of Tabs that no prop can enforce, and the one that breaks most often. A
+label is **content**. No setting fixes a badly written one.
+
+### The rules
+
+1. **A tab label names a destination.** It is not a sentence. One or two words; aim for 20
+   characters or fewer in English.
+2. **Budget for the longest translation, not the English.** Devanagari renders the same phrase
+   10–30 % longer. A label that fits in English and truncates in Hindi is a defect found in
+   production, not in review.
+3. **In `track="enclosed"` every tab is the same width**, so the *longest* label sets what all
+   of them can show. One long label degrades the whole set, not just its own tab. (Measured off
+   the master: three tabs at 102.67px each in a 312px slot — equal width is the design, not an
+   accident.)
+4. **Two labels must never truncate to the same visible string.** "Application details" and
+   "Application status" both become "Application…", and the row stops being navigation.
+   Front-load the word that distinguishes them — "Details" / "Status".
+5. **Never wrap to two lines.** It breaks the height hug and the indicator alignment, and makes
+   the row's height depend on the longest label.
+6. **Icons and the badge dot do not buy space, they spend it.** Both narrow the room the label
+   has, and neither is free.
+
+### The escalation, when a label does not fit
+
+In this order. Truncation is **last**, and reaching for it first is the actual mistake:
+
+| # | Do this | Why it comes first |
+| --- | --- | --- |
+| 1 | **Shorten the label.** | Costs nothing, fixes every viewport, and is almost always available. |
+| 2 | **Move to `track="none"`.** | Tabs become content-width and the row scrolls, so every label keeps its full width. |
+| 3 | **Reveal the overflow menu.** | Preserves both the labels *and* their discoverability. No React counterpart yet — see §4. |
+| 4 | **Accept the ellipsis.** | The fallback the component provides so a squeeze degrades instead of breaking. |
+
+### What the component does, mechanically
+
+- The label is `overflow: hidden; text-overflow: ellipsis` on `.ds-tabs__label`. **CSS only.**
+- **The accessible name is never truncated.** Because the clipping is CSS, the full string stays
+  in the DOM and in the accessibility tree — a screen-reader user loses nothing. **Never**
+  shorten the string in JavaScript: that rewrites the accessible name too and turns a visual
+  compromise into a real loss.
+- A clipped tab gains a **`title`** carrying the full label, set by `updateTruncation()` in the
+  same layout effect that positions the indicator, and only where `scrollWidth > clientWidth`.
+  Every other tab is spared a redundant tooltip.
+- `title` is a **weak affordance** — no keyboard, no touch. It is the escape hatch, not the
+  answer. If a truncated label must be recoverable on a phone, that needs a real Tooltip and is
+  not yet designed.
+
+### Why this behaviour exists at all
+
+`flex: 1 1 0` hands every enclosed tab the same slot and `white-space: nowrap` does not care
+whether the label fits — so before this, a long label **painted over its neighbour**:
+"Application details" ran through "Documents" in a 720px track. The ellipsis is the fix for that
+specific failure. The Figma masters define **no truncation treatment**, so the visual is a
+code-side decision and remains an open design question.
 
 ---
 
@@ -161,20 +241,40 @@ Organization plan. Treat the template as authored-in-anticipation, consistent wi
 
 ---
 
-## 7. Definition of done
+## 7. Definition of done — met
 
-- [ ] Four tokens added; `focus/ring` opaque; `npm test -w @mosje/tokens` green (119 tests)
-- [ ] `tabs.tsx` / `tabs.css` carry indicator, size, track, orientation, disabled, icon, badge
-- [ ] Disabled tabs skipped by arrow keys, retained with `aria-disabled`
-- [ ] `npm run check:ds-linkage` green — no raw values in the new CSS
-- [ ] Storybook story covers the axes; `check:storybook`, `:parity`, `:types`, `:smoke` green
-- [ ] `design.md` updated and `Last reviewed` bumped; changelog entry added
-- [ ] `tabs.figma.ts` written and excluded from tsconfig
-- [ ] Branch + PR — never commit to `main`
+- [x] Tokens added; `focus/ring` opaque; `npm test -w @mosje/tokens` green (**130** tests — the
+      count moved from 119 because the space-linkage gate landed from another branch mid-work)
+- [x] `tabs.tsx` / `tabs.css` carry indicator, size, track, orientation, disabled, icon, badge
+- [x] Disabled tabs skipped by arrow keys, retained with `aria-disabled` — verified in-browser:
+      ArrowRight from index 2 wraps past disabled index 3 to index 0
+- [x] `npm run check:ds-linkage` green — no raw values in the new CSS
+- [x] Storybook covers every axis; `check:storybook`, `:parity`, `:types`, `:smoke` green (342 stories)
+- [x] `design.md` updated and `Last reviewed` bumped; changelog entry added
+- [x] `tabs.figma.ts`, `tab.figma.ts` and `tabs-more.figma.ts` written, excluded from tsconfig,
+      and **all three pushed** — the library is published, so Code Connect is live, not anticipated
+- [x] Branch + PR
+
+**Two defects were found by measuring rather than looking**, both pre-existing: the sliding
+indicator sat 1px off on any bordered track (`getBoundingClientRect` reports the border box, but
+the indicator is positioned against the padding box), and the enclosed track's gap was 4 against
+the master's 2.
 
 ## 8. Known gaps carried forward
 
 Recorded in full in the Figma **`Tabs — Component record`** frame (section `3 · Record —
-maintainers`): the container's new key (breaches §11), the bypassed Density collection, no label
-truncation, alignment by container override rather than a property, the unbindable focus-ring
-offset, and the inherited raw `#FFFFFF` in the library `Badge`.
+maintainers`). Still open:
+
+- The container's key was forked when the master was rebuilt, which breaches
+  `component-authoring.md` §11.
+- The Density collection is bypassed.
+- Alignment is a container override rather than a property.
+- The focus-ring offset is unbindable in Figma.
+- The library `Badge` inherits a raw `#FFFFFF`.
+- **No truncation treatment is designed.** The ellipsis and `title` in §3a are a code-side
+  fallback, not a design decision — and `title` does not work on touch.
+- `Tabs / More` has no React counterpart, so there is no `overflow` prop. Its Code Connect
+  template deliberately emits **no JSX**: an unmapped master hands an agent nothing in Dev Mode,
+  and nothing is indistinguishable from *not looked into*, so the agent invents a component.
+
+Closed by this work: label truncation (§3a), and the estate's duplicate status-dot definitions.

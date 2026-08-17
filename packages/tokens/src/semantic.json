@@ -1516,7 +1516,12 @@
       "$value": "{space.lg}"
     },
     "xl": {
-      "$value": "{space.3xl}"
+      "$value": "{space.2xl}",
+      "$description": "24. Added 2026-08-17. `inline` was the only spacing family missing it — `stack/l` and `padding/xl` are both 24 — so a 24px horizontal gap was the one common measurement with no semantic name, and every one of them had to reach past the layer to `ref/space/2xl`. The old `inline/xl` (32) became `inline/2xl` in the same change, which is why this is a RENAME and not purely an addition: a t-shirt ramp has no slot between `l` and `xl`, so inserting a step means the ones above it shift up."
+    },
+    "2xl": {
+      "$value": "{space.3xl}",
+      "$description": "32. Was `inline/xl` until 2026-08-17 — see the note on `inline/xl`."
     }
   },
   "stack": {
@@ -1571,7 +1576,8 @@
       "$value": "{space.2xl}"
     },
     "2xl": {
-      "$value": "{space.3xl}"
+      "$value": "{space.3xl}",
+      "$description": "32. A 28 step was attempted here on 2026-08-17 and DELIBERATELY ABANDONED — the documentation house style's panel padding is 28, and it has no semantic name for that reason. Three independent constraints refuse it, and all three are correct: this family already uses ALL ELEVEN canonical rung names (none…4xl), so there is no slot to insert into; `space` has no 28 primitive, because its ramp changes cadence here, running in 4s to 24 and in 8s from 32; and `space-linkage.test.mjs` requires every semantic space token to alias a space primitive, so a literal is not an option either. Aliasing `{size.28}` was also tried and reverted: `size/*` is a rem scale, and 1.75rem in a px ramp INVERTS the scale below a 16px root (at 13px it resolves to 22.75px, under `padding/xl`'s 24). The system is saying 28 is not a padding step. The documentation was moved onto 32 instead."
     },
     "3xl": {
       "$value": "{space.10xl}"

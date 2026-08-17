@@ -39,7 +39,7 @@
    fills — stretch the hero across it so the space isn't left blank. */
 @media (min-width: 1025px) {
   .hero {
-    width: calc(100% + 200px + var(--sa-inline-xl));
+    width: calc(100% + 200px + var(--sa-inline-2xl));
   }
 }
 

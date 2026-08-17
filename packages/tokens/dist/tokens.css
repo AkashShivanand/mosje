@@ -676,7 +676,8 @@
   --sa-inline-s: 8px;
   --sa-inline-m: 12px;
   --sa-inline-l: 16px;
-  --sa-inline-xl: 32px;
+  --sa-inline-xl: 24px;
+  --sa-inline-2xl: 32px;
   --sa-stack-none: 0px;
   --sa-stack-2xs: 4px;
   --sa-stack-xs: 8px;
