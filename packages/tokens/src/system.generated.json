@@ -223,6 +223,10 @@
       "inverse": {
         "$value": "{color.text.onPrimary}",
         "$description": "Use for text placed on an inverted or solid brand surface."
+      },
+      "subtler": {
+        "$value": "{color.neutralScale.500}",
+        "$description": "Use for non-essential text and quiet icons, never body copy."
       }
     },
     "brand": {

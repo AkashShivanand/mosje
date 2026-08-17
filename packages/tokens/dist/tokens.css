@@ -653,6 +653,7 @@
   --sa-text-neutral-subtle: var(--sa-color-text-muted);
   --sa-text-neutral-disabled: var(--sa-color-text-disabled);
   --sa-text-neutral-inverse: var(--sa-color-text-onPrimary);
+  --sa-text-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-text-link-brand-default: #0373df;
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
@@ -841,6 +842,10 @@
   --sa-layout-masthead-minHeight: 72px;
   --sa-layout-chrome-minHeight: 118px;
   --sa-layout-sidebar-width: 300px;
+  --sa-layout-login-hero-width: 922px;
+  --sa-layout-login-panel-width: 518px;
+  --sa-layout-login-panel-gutter: 64px;
+  --sa-layout-login-content-width: 390px;
   --sa-target-min: 1.5rem;
   --sa-target-comfortable: 2.75rem;
   --sa-target-spacious: 3rem;
@@ -1356,6 +1361,7 @@
   --sa-text-neutral-base: var(--sa-color-text-default);
   --sa-text-neutral-subtle: var(--sa-color-text-muted);
   --sa-text-neutral-disabled: var(--sa-color-text-disabled);
+  --sa-text-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
@@ -1667,6 +1673,7 @@
   --sa-text-neutral-subtle: var(--sa-color-text-muted);
   --sa-text-neutral-disabled: var(--sa-color-text-disabled);
   --sa-text-neutral-inverse: var(--sa-color-text-onPrimary);
+  --sa-text-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
@@ -2048,6 +2055,7 @@
   --sa-text-neutral-subtle: var(--sa-color-text-muted);
   --sa-text-neutral-disabled: var(--sa-color-text-disabled);
   --sa-text-neutral-inverse: var(--sa-color-text-onPrimary);
+  --sa-text-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
@@ -2429,6 +2437,7 @@
   --sa-text-neutral-subtle: var(--sa-color-text-muted);
   --sa-text-neutral-disabled: var(--sa-color-text-disabled);
   --sa-text-neutral-inverse: var(--sa-color-text-onPrimary);
+  --sa-text-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
@@ -2810,6 +2819,7 @@
   --sa-text-neutral-subtle: var(--sa-color-text-muted);
   --sa-text-neutral-disabled: var(--sa-color-text-disabled);
   --sa-text-neutral-inverse: var(--sa-color-text-onPrimary);
+  --sa-text-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
@@ -3191,6 +3201,7 @@
   --sa-text-neutral-subtle: var(--sa-color-text-muted);
   --sa-text-neutral-disabled: var(--sa-color-text-disabled);
   --sa-text-neutral-inverse: var(--sa-color-text-onPrimary);
+  --sa-text-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
@@ -3572,6 +3583,7 @@
   --sa-text-neutral-subtle: var(--sa-color-text-muted);
   --sa-text-neutral-disabled: var(--sa-color-text-disabled);
   --sa-text-neutral-inverse: var(--sa-color-text-onPrimary);
+  --sa-text-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
@@ -4000,6 +4012,7 @@
   --sa-text-neutral-subtle: var(--sa-color-text-muted);
   --sa-text-neutral-disabled: var(--sa-color-text-disabled);
   --sa-text-neutral-inverse: var(--sa-color-text-onPrimary);
+  --sa-text-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
