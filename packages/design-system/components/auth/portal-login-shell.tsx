@@ -34,6 +34,8 @@ export interface PortalLoginTab {
   href: string;
   /** Whether this tab is currently active */
   active: boolean;
+  /** Optional click handler for tab switching */
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 export interface PortalLoginShellProps {
@@ -56,6 +58,8 @@ export interface PortalLoginShellProps {
   tabs: PortalLoginTab[];
   /** Form content (heading + fields + submit) */
   children: React.ReactNode;
+  /** Optional content below form area (e.g. Portal Switcher Grid) */
+  extraContent?: React.ReactNode;
 
   // ── Callbacks ─────────────────────────────────────────────────────────────
   /** Called when a footer link (Privacy Policy / Contact Us / About Us) is clicked */
@@ -65,13 +69,14 @@ export interface PortalLoginShellProps {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function PortalLoginShell({
-  emblemSrc,
-  digitalIndiaSrc,
-  samaveshLogoSrc,
+  emblemSrc = "/brand/national-emblem.svg",
+  digitalIndiaSrc = "/brand/digital-india.svg",
+  samaveshLogoSrc = "/brand/samavesh-logo.svg",
   signingInto,
   changeHref = "/",
   tabs,
   children,
+  extraContent,
   onFooterLinkClick,
 }: PortalLoginShellProps) {
   const [scale, setScale] = React.useState(100);
@@ -246,29 +251,33 @@ export function PortalLoginShell({
             }}
           >
             <div className="flex items-center justify-between">
-              <div>
-                <p
-                  className="font-semibold uppercase tracking-widest"
-                  style={{
-                    fontSize: "var(--sa-type-label-3-size)",
-                    color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 70%, transparent)",
-                  }}
-                >
-                  Signing Into
-                </p>
-                <p className="mt-0.5 text-sm font-bold" style={{ color: "var(--sa-color-secondaryScale-400)" }}>
-                  {signingInto}
-                </p>
+              <div className="flex items-center gap-3">
+                <img src={samaveshLogoSrc} alt="" className="h-8 w-8 rounded-full border border-white/20 bg-white/10 p-0.5" />
+                <div>
+                  <p
+                    className="font-semibold uppercase tracking-widest"
+                    style={{
+                      fontSize: "var(--sa-type-label-3-size)",
+                      color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 70%, transparent)",
+                    }}
+                  >
+                    Signing Into
+                  </p>
+                  <p className="mt-0.5 text-sm font-bold text-white">
+                    {signingInto}
+                  </p>
+                </div>
               </div>
               <a
                 href={changeHref}
-                className="rounded-full px-3.5 py-1 text-xs font-semibold transition"
+                className="flex items-center gap-1.5 rounded-full px-3.5 py-1 text-xs font-semibold transition hover:bg-white/10"
                 style={{
                   border: "1px solid color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 25%, transparent)",
-                  color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 65%, transparent)",
+                  color: "var(--sa-on-bg-brand-primary-boldest)",
                 }}
               >
-                Change
+                <span aria-hidden="true">⇄</span>
+                <span>Change</span>
               </a>
             </div>
           </div>
@@ -277,42 +286,48 @@ export function PortalLoginShell({
         {/* Right panel */}
         <div className="flex flex-1 flex-col" style={{ background: "var(--sa-bg-neutral-base)" }}>
 
-          {/* Tab nav (pill segmented control) */}
-          <div className="px-6 pb-0 pt-5">
-            <div
-              className="flex rounded-full p-1"
-              role="tablist"
-              aria-label="Portal login type"
-              style={{ background: "var(--sa-bg-neutral-subtler)" }}
-            >
-              {tabs.map((tab) => (
-                <a
-                  key={tab.href}
-                  href={tab.href}
-                  role="tab"
-                  aria-selected={tab.active}
-                  className={cn(
-                    "flex-1 rounded-full py-2 text-center text-sm font-semibold transition-all",
-                    tab.active ? "shadow" : "",
-                  )}
-                  style={
-                    tab.active
-                      ? { background: "var(--sa-color-primaryScale-800)", color: "var(--sa-on-bg-brand-primary-boldest)" }
-                      : { color: "var(--sa-text-neutral-subtle)" }
-                  }
-                >
-                  {tab.label}
-                </a>
-              ))}
+          {/* Tab nav (pill segmented control) — only render if tabs exist */}
+          {tabs && tabs.length > 0 && (
+            <div className="px-6 pb-0 pt-5">
+              <div
+                className="flex rounded-full p-1"
+                role="tablist"
+                aria-label="Portal login type"
+                style={{ background: "var(--sa-bg-neutral-subtler)" }}
+              >
+                {tabs.map((tab) => (
+                  <a
+                    key={tab.href}
+                    href={tab.href}
+                    onClick={tab.onClick}
+                    role="tab"
+                    aria-selected={tab.active}
+                    className={cn(
+                      "flex-1 rounded-full py-2 text-center text-sm font-semibold transition-all",
+                      tab.active ? "shadow" : "",
+                    )}
+                    style={
+                      tab.active
+                        ? { background: "var(--sa-color-primaryScale-800)", color: "var(--sa-on-bg-brand-primary-boldest)" }
+                        : { color: "var(--sa-text-neutral-subtle)" }
+                    }
+                  >
+                    {tab.label}
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Form area */}
-          <div className="flex flex-1 flex-col items-center justify-center px-6 py-10">
+          <div className="flex flex-1 flex-col items-center justify-center px-6 py-6">
             <div id="login-form" className="w-full max-w-sm" tabIndex={-1}>
               {children}
             </div>
           </div>
+
+          {/* Extra content (e.g. Portal Switcher Grid) */}
+          {extraContent && <div className="px-6 pb-6">{extraContent}</div>}
 
           {/* Footer */}
           <footer

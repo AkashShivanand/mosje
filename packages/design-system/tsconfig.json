@@ -4,10 +4,6 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
-    // Modules exercised by `node --test` must carry explicit .ts extensions,
-    // because the bare Node runner does no extensionless ESM resolution. Safe
-    // here because this project never emits (noEmit below) — the bundler
-    // resolves the extension and Node resolves it literally.
     "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "strict": true,
@@ -22,10 +18,5 @@
               "foundations/**/*.ts", "foundations/**/*.tsx",
               "demo/**/*.ts", "demo/**/*.tsx",
               "utils/**/*.ts"],
-  // `*.figma.ts` are Code Connect TEMPLATES, not application code. They import the
-  // virtual `figma` module that only the Code Connect CLI provides, and are compiled
-  // by it (against @figma/code-connect/figma-types). Without this exclusion,
-  // `components/**/*.ts` sweeps them into `npm run typecheck` and it fails on TS2307
-  // — see `.claude/rules/component-authoring.md` §12a.
-  "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/*.figma.ts", "node_modules"]
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/*.figma.ts", "**/*.figma.tsx", "node_modules"]
 }
