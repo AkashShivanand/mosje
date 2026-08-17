@@ -80,7 +80,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--sa-ref-space-md) var(--sa-padding-m);
+  padding: var(--sa-padding-s) var(--sa-padding-m);
   border-radius: var(--sa-control-radius);
   background-color: var(--sa-bg-neutral-subtle);
   color: var(--sa-text-neutral-base);
