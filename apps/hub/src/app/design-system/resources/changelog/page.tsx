@@ -22,9 +22,21 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.21.0",
+    date: "2026-08-17",
+    current: true,
+    changes: [
+      { kind: "Added", text: "PORTALLOGINTEMPLATE — a login page described by a CONFIG OBJECT rather than assembled by hand. It renders the role tabs, the login-method selector and the right fields for each of the five auth modes (password, otp, digilocker, darpan, aadhaar), and returns one `LoginSubmitPayload` from `onSubmit`. It exists because those shapes kept being re-typed per portal. `PortalLoginShell` remains the right choice when a login is genuinely bespoke — forcing a one-off through a config object produces a worse page than composing it" },
+      { kind: "Changed", text: "IT SHIPS MID-RESCOPE, DELIBERATELY, AND IS NOT YET ADOPTED — no page renders it; both E-Anudaan logins still use PortalLoginShell. `components/auth/LOGIN-SYSTEM-ANALYSIS.md` supersedes `FIGMA-SPEC.md` §9: the MoSJE Portal Handoff carries 69 auth screens across 10 pages, not the 25 the designer's own index frame counts. The component covers the original reading; the config shape is expected to grow, so it is marked Beta rather than Stable" },
+      { kind: "Fixed", text: "SIX DEAD TOKEN NAMES IN THE NEW TEMPLATE, verified dead by reading the live page rather than by grep: `--sa-color-danger-base` and `--sa-text-neutral-default` both resolve to EMPTY in the browser. The semantic layer is `status/error`, not `danger`, so the `var(--token, fallback)` fallbacks were what actually painted — Tailwind #ef4444 on six required-field asterisks, #fef2f2/#fca5a5/#991b1b on the error banner, #bfdbfe/#eff6ff on the DigiLocker panel: off-brand and unreachable by the blue/navy brand switch. `--sa-text-neutral-default` appeared ~20 TIMES WITH NO FALLBACK AT ALL, so that text rendered with no colour" },
+      { kind: "Changed", text: "THIS IS THE THIRD RECURRENCE IN THE SAME COMPONENT FAMILY — v0.18.1 records seven dead `--color-*` names, all 16 usages in PortalLoginShell. The ds-linkage gate cannot see the no-fallback form (there is no hex for it to flag), which is why it keeps coming back. A gate that fails on any `--sa-*` name absent from tokens.css would close it. Rebindings were made by RESOLVED VALUE and measured, not assumed: error ink on tint 10.52:1, asterisk on white 9.10:1, DigiLocker heading 11.41:1, body on tint 7.70:1 — all AA, with the banner taking the system's own measured `on/bg/status/error/subtler` pairing rather than a hand-picked ink" },
+      { kind: "Fixed", text: "A HYDRATION FAILURE ON THE E-ANUDAAN NGO SIGN-IN, introduced by an earlier fix for a lint error: `useState(() => generateCaptcha())` runs Math.random() on the SERVER as well as the client, so the two rendered different captchas. The captcha is now generated on mount, client-only. One lint error had been traded for one runtime error; the console is clean on a fresh load" },
+      { kind: "Fixed", text: "The captcha refresh icon was `size={18}`, off the 16/20/24/32/40/48/64 scale — now 20, confirmed rendering at 20px with `opsz 20` so the optical axis matches the box. A CSS class sets the box but never opsz, which is why the size prop is the only correct lever" },
+    ],
+  },
+  {
     version: "v0.20.0",
     date: "2026-08-14",
-    current: true,
     changes: [
       { kind: "Added", text: "AccessibilityBar is now a real code component, not just a Figma master. `@mosje/design-system` exports `AccessibilityBar` — the government top utility bar (UX4G / GIGW): the Government of India link plus skip-to-content, a working A−/A/A+ font-size stepper, the accessibility entry and the language selector. It mirrors the SAMAVESH Figma *Accessibility Bar* component, is fully tokenised (`--sa-*`, zero raw hex/px), and passes AA (white on the brand fill at 6.36:1). Storybook story, hub documentation page, and design.md entry ship with it" },
       { kind: "Added", text: "The font-size control drives a `--sa-font-scale` CSS variable (and a `data-sa-font-scale` attribute) on the document root, so content sized in `rem` reflows with the reader's choice; `onFontScaleChange` persists it. `layout` (narrow 720 / wide 1200 / fluid full-bleed) reproduces UX4G's per-breakpoint padding with one content-container mechanism" },

@@ -1537,7 +1537,18 @@ matching the Figma "Navbar Portal" account.
 
 #### PortalLoginShell
 **Purpose**: Full-page login layout shared across all MoSJE portals.  
-**Rule**: Never rebuild the login layout per-portal. Slot in portal-specific content: logo paths, portal name, tab configuration, form JSX.
+**Rule**: Never rebuild the login layout per-portal. Slot in portal-specific content: logo paths, portal name, tab configuration, form JSX.  
+**Slots**: `children` is the form. `extraContent` sits **below** the form inside the card and is for page-level content, not credentials — the portal switcher grid, a demo-data notice. A field placed in `extraContent` lands after the submit button, which is the wrong tab order.
+
+#### PortalLoginTemplate
+**Purpose**: A login page described by a **config object** instead of assembled by hand. Renders role tabs, the login-method selector and the right fields for each of the five `PortalAuthMode`s — `password`, `otp`, `digilocker`, `darpan`, `aadhaar` — and returns one `LoginSubmitPayload` (role + mode + credentials) from `onSubmit`.  
+**Props**: `config` (`PortalLoginConfig`), `onSubmit`, `loading`, `error`, `onFooterLinkClick`  
+**Rules**:
+- **Reach for this when the portal's login is one of the shapes the Handoff already describes** — which is most of them, and the reason it exists is that those shapes kept being re-typed per portal.
+- **Use `PortalLoginShell` directly when the form is genuinely bespoke** (an extra consent step, a non-standard identity provider). Forcing a one-off through a config object produces a worse page than composing it.
+- A single role hides the role tabs — a one-audience portal must not render a one-tab strip.
+- **Not yet adopted**: no page renders this today; both E-Anudaan logins still use `PortalLoginShell`. Adoption is portal by portal, not one sweep.
+- **Status: Beta, mid-rescope.** `components/auth/LOGIN-SYSTEM-ANALYSIS.md` supersedes `FIGMA-SPEC.md` §9 — the Handoff carries **69 auth screens across 10 pages**, not the 25 the designer's index frame counts. This covers the original reading; the config shape is expected to grow.
 
 ---
 
