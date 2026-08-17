@@ -678,6 +678,54 @@ The SAMAVESH roundel beside the wordmark, the Digital India and SAMAVESH co-bran
 masthead, and the portal logo in the signing-into bar are placeholders. They are asset gaps, not
 build gaps; every one is named in the Figma file so an audit can find it.
 
+## 15. Visual audit and redundancy sweep (2026-08-17, third review)
+
+Asked to audit visually and check for redundancy. Both found real things.
+
+### The logos were entirely redundant
+
+`org-logo` on the **Iconography** page is a component set with **17 organisation variants** —
+NCSC, NCSK, NCBC, NSFDC, NSKFDC, NBCFDC, DAF, JRF, DAIC, DWBDNC, SCW, SAMBAL, NISD, NOS, NMBA,
+SMILE, PM-AJAY. It already covered every logo I had re-imported as a flat image frame, **and two
+I had been reporting as missing assets** (SCW, SAMBAL). `SAMAVESH`, `Digital India` and
+`National Emblem` exist there as components too.
+
+- The six logo frames are **deleted**; `SigningIntoBar` and `OrganisationCard` now instance
+  `org-logo`, and the hero carries the real `SAMAVESH` seal instead of a text stand-in.
+- The four hero **photographs** are genuinely not in the library, so they were promoted from
+  loose frames to a `Portal Hero` component set with a `Portal` variant — swappable, which a
+  flat frame never was. The section is renamed `4 · Portal hero photography`.
+- The "missing assets" list in §12 shrinks to the DigiLocker mark alone.
+
+### Layout defects found by measuring, not by looking
+
+| Defect | Cause |
+|---|---|
+| `1 · Template` overlapped the Documentation frame by **1656×2516** | I never repositioned the doc frame after the sections grew |
+| `RoleTabs` overlapped `AuthSelector` by **510×16** in `3 · Parts` | re-tiled with stale heights after restyling |
+| Hero rendered **solid navy, no photograph** | see below |
+
+All resolved; a pairwise overlap test across the page and inside every section now returns none.
+
+### Why the hero scrim kept breaking — the actual root cause
+
+**Paint opacity does not inherit from a component to its instances; node opacity does.** Every
+earlier attempt set opacity on the *paint*, so each instance needed the value re-applied by hand
+and silently reverted whenever the shell was touched. The scrim is now a `Scrim` rectangle with a
+100 % bound fill and `opacity = 0.62` on the **node**, which inherits correctly.
+
+A stale `fills` override (`IMAGE, SOLID`) left on each template variant by those earlier attempts
+was painting over the photograph; cleared on all four.
+
+### One presentation fix
+
+`SigningIntoBar`'s `Tone=On hero` variant is white-on-transparent, so in a white specimen card it
+was invisible. It now sits on a declared `specimen (on hero scrim)` navy stage beneath the set —
+the same specimen convention `documentation-ds-linkage.md` already sanctions.
+
+**Final audit: 372 fills, 15 strokes, 356 paddings, 163 gaps, 344 radii bound — zero raw, zero
+unstyled text, zero overlaps.**
+
 ### Still outstanding
 
 1. **The Figma documentation canvas** in the house style, and the portal configuration table
