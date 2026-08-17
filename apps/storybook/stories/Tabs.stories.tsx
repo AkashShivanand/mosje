@@ -38,10 +38,32 @@ import { TabPanel, Tabs } from "@mosje/design-system";
  * tab. `divider` draws the rule the underline or rail sits in, and is ignored when the
  * track is enclosed.
  *
- * Per-tab, `TabDef` also carries `icon` (a Material Symbols name), `badge` (an unread
- * dot) and `disabled`. A disabled tab **stays in the tablist** with `aria-disabled` —
- * arrow keys step over it, but a screen-reader user still hears that the section is
- * there. Removing it instead would hide that fact entirely.
+ * Per-tab, `TabDef` also carries `icon` (a Material Symbols name), `badge` (the shared
+ * status dot, bound to `cmp/badge/dotSize`) and `disabled`. A disabled tab **stays in
+ * the tablist** with `aria-disabled` — arrow keys step over it, but a screen-reader user
+ * still hears that the section is there. Removing it instead would hide that fact.
+ *
+ * ### Writing the labels
+ *
+ * These govern the content, and they are the rules most often broken.
+ *
+ * 1. **A tab label names a destination.** Not a sentence. One or two words; aim for
+ *    20 characters or fewer in English.
+ * 2. **Budget for the longest translation, not the English.** Devanagari renders the
+ *    same phrase 10–30% longer. A label that fits in English and truncates in Hindi is
+ *    a defect found in production, not in review.
+ * 3. **In `track="enclosed"` every tab is the same width**, so the *longest* label sets
+ *    what all of them can show. One long label degrades the whole set.
+ * 4. **When a label does not fit, escalate in this order — truncation is last:**
+ *    shorten it → move to `track="none"` and let the row scroll → add the overflow menu
+ *    → only then accept the ellipsis.
+ * 5. **Truncation is CSS-only, never JavaScript.** Shortening the string in code
+ *    rewrites the accessible name too. A truncated tab keeps its full name in the
+ *    accessibility tree and gains a `title` so a sighted user can recover it.
+ * 6. **Two tabs must never truncate to the same visible string.** "Application details"
+ *    and "Application status" both become "Application…". Front-load the distinguishing
+ *    word — "Details" / "Status" — rather than trusting truncation to stay readable.
+ * 7. **Never wrap to two lines.** It breaks the height hug and the indicator alignment.
  *
  * `TabPanel`, the matching panel wrapper, is documented here rather than in a
  * story of its own.
@@ -352,6 +374,57 @@ export const WithoutDivider: Story = {
     <div style={{ display: "grid", gap: 28 }}>
       <Demo track="none" indicator="underline" label="With the rule" divider />
       <Demo track="none" indicator="underline" label="Without the rule" divider={false} />
+    </div>
+  ),
+};
+
+/**
+ * **Label rule 6, rendered.** Both sets hold the same four sections in the same width.
+ *
+ * The first labels them by their shared subject, so three of the four truncate to
+ * "Application…" and the tab row stops being navigation — hover each to see the `title`
+ * that is now the only way to tell them apart. The second front-loads the word that
+ * distinguishes them, and nothing truncates at all.
+ *
+ * Nothing here is a component bug. It is the same component, twice, with the labels
+ * written differently — which is the point: this failure is fixed in the copy, not in
+ * the CSS.
+ */
+export const LabelsThatCollide: Story = {
+  render: () => (
+    // Pinned to 420px rather than left to the decorator: whether a label truncates is a
+    // function of the available width, so a story that relies on the reader's viewport
+    // demonstrates the failure on some screens and nothing at all on others. This is the
+    // width a tab row gets in a narrow panel or on a phone.
+    <div style={{ display: "grid", gap: 40, width: 420 }}>
+      <section>
+        <h3 style={{ margin: "0 0 12px", font: "var(--sa-type-title-2)" }}>
+          Don&rsquo;t — a shared prefix truncates to the same string
+        </h3>
+        <Demo
+          label="Application, by shared prefix"
+          tabs={[
+            { id: "details", label: "Application details" },
+            { id: "status", label: "Application status" },
+            { id: "history", label: "Application history" },
+            { id: "remarks", label: "Remarks" },
+          ]}
+        />
+      </section>
+      <section>
+        <h3 style={{ margin: "0 0 12px", font: "var(--sa-type-title-2)" }}>
+          Do — the distinguishing word comes first
+        </h3>
+        <Demo
+          label="Application, front-loaded"
+          tabs={[
+            { id: "details", label: "Details" },
+            { id: "status", label: "Status" },
+            { id: "history", label: "History" },
+            { id: "remarks", label: "Remarks" },
+          ]}
+        />
+      </section>
     </div>
   ),
 };

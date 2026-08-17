@@ -116,6 +116,7 @@ export function Tabs({
   divider = true,
 }: TabsProps) {
   const refs = React.useRef<Array<HTMLButtonElement | null>>([]);
+  const labelRefs = React.useRef<Array<HTMLSpanElement | null>>([]);
   const listRef = React.useRef<HTMLDivElement>(null);
   const indicatorRef = React.useRef<HTMLSpanElement>(null);
 
@@ -162,16 +163,40 @@ export function Tabs({
     }
   }, [active, vertical]);
 
+  /**
+   * A truncated label must stay RECOVERABLE. The ellipsis is CSS-only, so the
+   * accessibility tree still holds the whole string and a screen-reader user
+   * loses nothing — it is the sighted user who is left with "Application deta…".
+   * `title` is the escape hatch, set only where the text actually overflows so
+   * every other tab is spared a redundant tooltip.
+   *
+   * Never solve this by shortening the string in JS: that rewrites the
+   * accessible name too, and turns a visual compromise into a real loss.
+   */
+  const updateTruncation = React.useCallback(() => {
+    for (const label of labelRefs.current) {
+      if (!label) continue;
+      const clipped = label.scrollWidth > label.clientWidth + 1;
+      if (clipped) label.parentElement?.setAttribute("title", label.textContent ?? "");
+      else label.parentElement?.removeAttribute("title");
+    }
+  }, []);
+
   // Runs before paint so the very first placement (and every tab-count
   // change) never renders one frame at the wrong spot.
   React.useLayoutEffect(() => {
     updateIndicator();
-  }, [updateIndicator, tabs.length, size, indicator, track]);
+    updateTruncation();
+  }, [updateIndicator, updateTruncation, tabs, size, indicator, track, orientation]);
 
   React.useEffect(() => {
-    window.addEventListener("resize", updateIndicator);
-    return () => window.removeEventListener("resize", updateIndicator);
-  }, [updateIndicator]);
+    const onResize = () => {
+      updateIndicator();
+      updateTruncation();
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [updateIndicator, updateTruncation]);
 
   const move = (index: number | null) => {
     if (index === null) return;
@@ -255,7 +280,14 @@ export function Tabs({
               }`}
             >
               {t.icon ? <Icon name={t.icon} size={iconSize} className="ds-tabs__icon" /> : null}
-              <span className="ds-tabs__label">{t.label}</span>
+              <span
+                ref={(el) => {
+                  labelRefs.current[i] = el;
+                }}
+                className="ds-tabs__label"
+              >
+                {t.label}
+              </span>
               {t.badge ? <span className="ds-tabs__badge" aria-hidden="true" /> : null}
             </button>
           );

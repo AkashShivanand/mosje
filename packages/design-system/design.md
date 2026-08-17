@@ -1386,6 +1386,15 @@ Docs: `/design-system/components/sla-progress`.
 - Selected ink is `text/brand/primary/bolder`, **not** `/base` — the brand key colour measures 4.07:1 on the track and fails WCAG 1.4.3 AA.
 - A horizontal list that outgrows its container **scrolls**. The Figma library's `Tabs / More` overflow trigger has no code counterpart yet, so there is no `overflow` prop.
 
+**Tab label rules** (these govern the CONTENT, and are the rules most often broken):
+1. **A tab label names a destination.** It is not a sentence. One or two words; aim for ≤ 20 characters in English.
+2. **Budget for the longest translation, not the English.** Devanagari renders the same phrase 10–30% longer. A label that fits in English and truncates in Hindi is a defect found in production, not in review.
+3. **In `track="enclosed"` every tab is the same width**, so the *longest* label sets what all of them can show. One long label degrades the whole set, not just its own tab.
+4. **When a label does not fit, escalate in this order — truncation is last:** (a) shorten the label, almost always the right answer; (b) move to `track="none"`, where tabs are content-width and the row scrolls, so every label keeps its full width; (c) add the overflow menu when the scrolled tabs would be undiscoverable; (d) only then accept the ellipsis.
+5. **Truncation is CSS-only, never JavaScript.** Shortening the string in code rewrites the accessible name too, turning a visual compromise into a real loss. A truncated tab keeps its full name in the accessibility tree and gains a `title` so a sighted user can recover it.
+6. **Two tabs must never truncate to the same visible string.** "Application details" and "Application status" both become "Application…". Where a set shares a prefix, front-load the distinguishing word — "Details" / "Status" — rather than trusting truncation to stay readable.
+7. **Never wrap to two lines.** It breaks the height hug and the indicator alignment, and makes the row's height depend on the longest label.
+
 #### EmptyState
 **Purpose**: Fills empty data containers with context + a call-to-action.  
 **Variants**: `no-data` (fresh/empty portal), `no-results` (filtered table returned nothing)  

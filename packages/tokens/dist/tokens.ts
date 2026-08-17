@@ -1371,6 +1371,8 @@ export const tokens = {
     "radius": "8px"
   },
   "badge": {
+    "dotSize": "6px",
+    "dotSizeLg": "0.5rem",
     "beta": {
       "bg": "#ffd323"
     }

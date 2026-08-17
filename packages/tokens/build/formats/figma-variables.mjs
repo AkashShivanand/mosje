@@ -212,6 +212,11 @@ function collectionFor(path, tier) {
   if (head === "focus" && (rest[0] === "width" || rest[0] === "offset")) return "Static";
   if (head === "icon" && rest[0] === "size") return "Space";
   if (head === "control") return rest[0] === "radius" ? "Radius" : "Static";
+  // Same class as the two above: `badge` is a COLOUR root, so the status dot's DIAMETER —
+  // a measurement, bound to WIDTH_HEIGHT — went to the Color collection purely because of
+  // whose namespace it sits in. Caught on the run that added it (2026-08-17), which is the
+  // only reason it did not become another silently mis-filed FLOAT.
+  if (head === "badge" && String(rest[0] ?? "").startsWith("dotSize")) return "Space";
 
   if (COLOUR_ROOTS.has(head)) return "Color";
   return null;

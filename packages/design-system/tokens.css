@@ -881,6 +881,8 @@
   --sa-cmp-card-bg: var(--sa-bg-neutral-base);
   --sa-cmp-card-border: var(--sa-border-neutral-subtle);
   --sa-cmp-card-radius: var(--sa-ref-radius-md);
+  --sa-cmp-badge-dotSize: 6px;
+  --sa-cmp-badge-dotSizeLg: var(--sa-ref-size-8);
   --sa-cmp-badge-beta-bg: var(--sa-color-brand-yellow);
   --sa-cmp-accessibilityBar-height: 46px;
   --sa-cmp-accessibilityBar-flagWidth: 33px;

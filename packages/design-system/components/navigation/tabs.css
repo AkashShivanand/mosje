@@ -72,7 +72,11 @@
 /* The filled track. `layout/tab/track` is both its padding and the indicator's
    inset, so the pill always clears the border by the same amount on every edge. */
 .ds-tabs--track-enclosed {
-  gap: var(--sa-stack-2xs);
+  /* 2, not 4 — measured off the master, whose three tabs sit at 0 / 104.67 /
+     209.33 in a 312 slot. `inline`, not `stack`: this is horizontal rhythm
+     between siblings, and it stays 2 in the vertical track so the segments read
+     as one control rather than as a stack of separate pills. */
+  gap: var(--sa-inline-2xs);
   padding: var(--sa-layout-tab-track);
   border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-lg);
@@ -205,17 +209,23 @@
   text-overflow: ellipsis;
 }
 
-/* The unread dot. 6px matches `.ds-badge__dot`, the estate's one definition of
-   this affordance — deliberately NOT a new token: the linkage rule keeps widths
-   and heights advisory precisely so a one-use dimension does not mint a
-   one-use variable. `currentColor` makes it track the tab's own state, so it
-   greys out with a disabled tab and goes white on a selected pill. */
+/* The unread dot. It binds to `cmp/badge/dotSize` — the SAME token `.ds-badge__dot`
+   uses — so the estate has one definition of this affordance rather than one per
+   component. It steps up beside 16px body text for the same reason the Badge's
+   does: a dot is sized against the type it annotates, not against its container.
+   `currentColor` makes it track the tab's own state, so it greys out with a
+   disabled tab and goes white on a selected pill. */
 .ds-tabs__badge {
   flex: 0 0 auto;
-  width: 6px;
-  height: 6px;
+  width: var(--sa-cmp-badge-dotSize);
+  height: var(--sa-cmp-badge-dotSize);
   border-radius: var(--sa-shape-full);
   background-color: currentColor;
+}
+
+.ds-tabs--l .ds-tabs__badge {
+  width: var(--sa-cmp-badge-dotSizeLg);
+  height: var(--sa-cmp-badge-dotSizeLg);
 }
 
 /* ---- states -------------------------------------------------------------- */
