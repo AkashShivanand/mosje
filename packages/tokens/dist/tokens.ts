@@ -999,7 +999,8 @@ export const tokens = {
       "base": "#1e2124",
       "subtle": "#3a3d41",
       "disabled": "rgba(30, 33, 36, 0.48)",
-      "inverse": "#ffffff"
+      "inverse": "#ffffff",
+      "subtler": "#6f757d"
     },
     "link": {
       "brand": {
@@ -1302,6 +1303,18 @@ export const tokens = {
     },
     "sidebar": {
       "width": "300px"
+    },
+    "login": {
+      "hero": {
+        "width": "922px"
+      },
+      "panel": {
+        "width": "518px",
+        "gutter": "64px"
+      },
+      "content": {
+        "width": "390px"
+      }
     }
   },
   "target": {

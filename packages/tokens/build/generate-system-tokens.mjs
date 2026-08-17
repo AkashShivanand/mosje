@@ -70,6 +70,7 @@ put(["text", "neutral", "base"], "{color.text.default}", "Body and heading text"
 put(["text", "neutral", "subtle"], "{color.text.muted}", "Captions, hints, secondary text");
 put(["text", "neutral", "disabled"], "{color.text.disabled}", "Disabled label");
 put(["text", "neutral", "inverse"], "{color.text.onPrimary}", "Text on a solid brand or inverse surface");
+put(["text", "neutral", "subtler"], "{color.neutralScale.500}", "Quietest ink that is still AA on bg/neutral/base (4.72:1) — placeholders in an unfilled input or select. It must read as 'not yet entered'; text/neutral/subtle is dark enough to look like a real value. Named for its rung, not its use, per the grammar: 'placeholder' is neither a prominence nor a state and adding it to STATE would let bg/*/placeholder parse too.");
 put(["text", "brand", "primary", "base"], "{color.action.primary.default}", "Brand-coloured text");
 for (const [variant] of Object.entries(STATUS)) {
   const src = variant === "error" ? "danger" : variant;

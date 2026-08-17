@@ -358,9 +358,193 @@ inventory, Storybook stories, and `design.md` entries, per `.claude/rules/design
 
 ---
 
-## 11. What is deliberately not in scope
+## 11. Build record — Phases 0–4 shipped (2026-08-17)
 
-Building any of it. This document is the analysis and the plan; nothing has been created in
-either Figma file. Phase 0's decisions are genuinely the human's to make — three of them
-(the recovery convergence, the portal naming, the tab taxonomy) change what gets built, not
-just how.
+Phases 0–4 are **built in the SAMAVESH library**. Phase 5 (documentation canvas, Code
+Connect, full audit) and Phase 6 (code mirror) are outstanding.
+
+### Phase 0 — the six decisions, taken
+
+| | Decision | Rationale |
+|---|---|---|
+| **D1** | Recovery and registration converge on **4 steps**, not 5 | The master's Steps 2 and 3 are the *same screen* in two resend states. A state is not a step. Also fixes the `PIN Updated!` defect — the heading is now `Password Reset Successful!`. |
+| **D2** | One audience taxonomy: **Citizen · Officer · Organisation** | NMBA's "Patient Monitoring", SMILE-T's "Garima Greh" and SCW's "SAGE Organisation" are all the Organisation tab, renamed via label properties. Five bespoke taxonomies collapse to one. |
+| **D3** | `nhapoa` is the slug; **`SAMBAL (NHAA 2.0)` is the display name** | Every other portal shows the scheme name, not the acronym. Reversible — it is a text property. |
+| **D4** | The canonical picker is the master's **nine portals**, alphabetical | E-Anudaan's tagline becomes "Grant-in-Aid for Voluntary Organisations". The failing orange (`#F97316`, 3.09:1) is dropped for `text/neutral/base`. |
+| **D5** | **Device = Mobile \| Desktop only**; tablet uses Mobile | The handoff never designed tablet, and a 922/518 split does not survive below 1024. Recorded as a deliberate divergence, not an omission. |
+| **D6** | Everything binds to SAMAVESH semantics | Zero MoSJE Portal DS references in anything built. |
+
+### What was built
+
+**Corrections to §5b found during discovery:** `Stepper`, `Dropdown` and `ProgressBar`
+already existed — `Dropdown` is a *menu*, not a form Select, so Select was still needed.
+The build list dropped from 12 components to 11.
+
+| Tier | Component | Node | Variants |
+|---|---|---|---|
+| 1 | `OTP Input / Box` | `55427:704` | 4 states |
+| 1 | `OTP Input` | `55427:34365` | Length 4/6 × 4 states = 8 |
+| 1 | `Select` | `55430:34472` | Size 3 × State 5 = 15 |
+| 1 | `PasswordStrengthMeter` | `55432:795` | 5 |
+| 1 | `Captcha Field` | `55434:889` | 3 |
+| 1 | `SideSheet` | `55435:813` | 2 + `Content` slot |
+| 2 | `Auth / OrDivider` | `55437:695` | — |
+| 2 | `Auth / ConsentLine` | `55437:699` | — |
+| 2 | `Auth / ResendTimer` | `55437:707` | 2 |
+| 2 | `Auth / MaskedContactRow` | `55437:718` | 2 |
+| 2 | `Auth / SSOButton` | `55438:727` | 4 |
+| 2 | `Auth / AccountPrompt` | `55438:739` | 2 |
+| 2 | `Auth / OrganisationCard` | `55439:730` | 2 |
+| 2 | `Auth / SigningIntoBar` | `55439:749` | 2 tones |
+| 2 | `Auth / PortalList` | `55444:709` | the canonical 9 |
+| 3 | `Auth / AuthFormCard` | `55447:923` | 4 steps |
+| 3 | `Auth / PortalAuthShell` | `55450:1134` | 2 devices |
+| 4 | **`PortalLoginTemplate`** | **`55397:1364`** | **8 — re-cut IN PLACE, key preserved** |
+
+`RoleTabs` (`55384:718`) was extended in place from 2 variants to 5 (`Tabs` 2/3 ×
+`Active` Citizen/Officer/Organisation) with per-tab label properties. `PortalPicker` needed
+no component of its own: it is `SideSheet(Content = PortalList)`.
+
+New pages: **Verification** (`55427:695`) and **Portal Login Parts** (`55436:858`).
+
+**Three tokens added** (§3 add-and-flag):
+`text/neutral/placeholder` (= `#6f757d`; nothing semantic resolved to it, and
+`text/neutral/subtle` is dark enough to read as a real value) ·
+`layout/login/content/width` (390) · `layout/login/panel/gutter` (64 — the space scale
+jumps 32 → 120).
+
+### The invented axis is retired
+
+`PortalLoginTemplate` went from `Device (2) × Auth Method (5)` = 10 to
+`Device (2) × Step (4)` = 8. `Password + Captcha`, `Mobile OTP`, `DigiLocker SSO`,
+`NGO DARPAN ID` and `Aadhaar OTP` are gone: the handoff has two credential modes, DigiLocker
+is a CTA not a form mode, and no DARPAN or Aadhaar screen exists anywhere in the file. The
+four documentation instances that pointed at the old variants were retargeted, not orphaned.
+
+### Library defects found while building — flagged, not silently worked around
+
+1. **`Input Field`'s `Size=Default, State=Empty` variant does not expose its `Label Text`
+   property**, though the set declares it. Field labels are direct text overrides until fixed.
+2. **`Link` has no text property at all** — only `Size` and `State`. Same workaround.
+3. **`Chip` has no label property** — the filter chips set their text node directly.
+4. **`Input Field` binds primitives** (`color/neutralScale/*`), not semantic roles. The new
+   components bind semantics; the two agree by resolved value today, but they will drift.
+5. **`Button` has no Inverse tone**, so the `Change` control inside `SigningIntoBar` is built
+   inline rather than instanced. Replace it if an Inverse sub-type ever lands.
+
+### Figma API behaviours worth writing down
+
+- **`setBoundVariableForPaint` keeps the literal colour you passed as the fallback.** Passing
+  `{0,0,0}` produces a paint that is *bound and correct* in the inspector but renders **black**
+  wherever the binding does not resolve at render time. Always pass the resolved value.
+- **Paint opacity is lost when set in the same assignment as the binding**, and it does **not
+  propagate from a component to its instances**. The hero scrim needs a second-pass assignment
+  on the master *and* on each Desktop variant.
+- **`resize()` resets `primaryAxisSizingMode`/`counterAxisSizingMode` to FIXED.** Call it
+  before setting sizing modes, never after — otherwise variants collapse to the resize height.
+- **Reusing one paint object across many nodes drops the binding.** Build a fresh paint per node.
+
+## 12. Phases 5 and 6 (2026-08-17)
+
+### Phase 5 — audit, descriptions, Code Connect
+
+**Tokenisation audit — zero unbound in everything authored here.**
+
+| Surface | Fills | Strokes | Padding | Gaps | Radii | Unstyled text |
+|---|---|---|---|---|---|---|
+| Verification | 147 / **0** | 19 / **0** | 92 / **0** | 94 / **0** | 174 / **0** | **0** |
+| Portal Login Parts | 59 / **0** | 8 / **0** | 48 / **0** | 34 / **0** | 48 / **0** | **0** |
+| Portal Login Template | 360 / 1 | 19 / 2 | 336 / **0** | 130 / **0** | 304 / 8 | **0** |
+
+Two exclusions, both stated rather than assumed: **COMPONENT_SET wrapper frames** and
+**Figma SECTIONs** carry their own default fill, stroke and 2px radius, and neither is ever
+instanced — they are canvas furniture for laying variants out. Every one of the template
+page's 11 remaining raw values is on one of those two SECTIONs. **INSTANCE roots** are
+excluded too: their geometry belongs to the component's own page, which is where it is
+audited.
+
+The only declared paint-opacity exemptions are the hero scrim at 0.62 and two 0.40 paints on
+the older WIP parity shell. Paint opacity is the one property Figma cannot bind, and each
+node is named to say so.
+
+**Descriptions.** All 20 component sets carry a rules-bearing description — numbered
+prohibitions and their consequences, not a tagline — so an agent reading Dev Mode gets the
+things geometry cannot tell it.
+
+**Code Connect.** `portal-login-template.figma.ts` rewritten for `Device × Step` (its old
+copy still documented the retired five-method axis), and `auth-parts.figma.ts` added for
+`SigningIntoBar`. Both remain **authored in anticipation** — Code Connect still cannot be
+published on this plan.
+
+**Not done:** the full house-style documentation canvas for all 17 components, and the portal
+configuration table as a Figma page. That is the single largest remaining piece.
+
+### Phase 6 — the code mirror
+
+**The code carried the same fiction, and it is gone.** `PortalAuthMode` was
+`password | otp | digilocker | darpan | aadhaar`; it is now `password | otp | digilocker`.
+The two invented render blocks, their state, and `LoginSubmitPayload.credentials.darpanId` /
+`.aadhaarNo` were removed from `portal-login-template.tsx`. Nothing in the estate consumed it
+— only Storybook — so this broke no portal.
+
+**Discovery correction:** `OtpInput`, `Select`, `Chip`, `Stepper` and `SideSheet` **already
+existed in code**. Only the genuinely-missing pieces were built.
+
+| Added | Where |
+|---|---|
+| `PasswordStrengthMeter`, `strengthFromScore` | `components/forms/password-strength-meter.tsx` |
+| `CaptchaField` | `components/forms/captcha-field.tsx` |
+| `AuthDivider`, `ConsentLine`, `ResendTimer`, `MaskedContactRow`, `SSOButton`, `AccountPrompt`, `SigningIntoBar` | `components/auth/auth-parts.tsx` |
+| `PortalAudience`, `PortalRoleTab.audience` | `components/auth/types.ts` |
+
+**Token drift closed.** `layout/login/*` had existed in Figma since 16 August and in code not
+at all. All four now live in `semantic.json`, plus `text/neutral/subtler` in the system-token
+generator. Both sides were **read back live** before the parity record moved — Space 97
+payload / 104 library, Color 473 / 479, both gaps unchanged and fully explained.
+
+Two decisions the guardrails forced, and both were right:
+
+- **The naming grammar rejected `text/neutral/placeholder`.** `placeholder` is neither a
+  prominence nor a state, and adding it to `STATE` would have let `bg/*/placeholder` and
+  `border/*/placeholder` parse too. The token is `text/neutral/subtler` — named for its rung,
+  with its use in the description — and the Figma variable was **renamed in place**, id preserved.
+- **A Storybook story needed `meta.args`** because `CaptchaField` has required controlled
+  props. Exactly the pattern `.claude/rules/design-system.md` warns about.
+
+**Gates, all green:**
+
+| Gate | Result |
+|---|---|
+| `@mosje/tokens` tests | 119 / 119 |
+| `check:storybook` (coverage) | 88 / 88 |
+| `check:storybook:parity` | pass — every prop mentioned |
+| `check:storybook:types` | pass |
+| `check:storybook:smoke` | **336 stories rendered** |
+| `check:design-context` | 92 / 92 documented |
+| `check:ds-linkage` | pass |
+| `check:changelog` | pass (v0.22.0) |
+| `check:hub` typecheck | pass |
+
+### Still outstanding
+
+1. **The Figma documentation canvas** in the house style, and the portal configuration table
+   as a Figma page.
+2. **`AuthFormCard` and `PortalAuthShell` have no code twin.** They were deliberately not
+   added: `PortalLoginShell` and `PortalLoginTemplate` already occupy that role in code, and
+   shipping a second full-page shell would duplicate rather than reconcile. Reconciling those
+   two files against the new Figma anatomy is the right next change, not a parallel pair.
+3. **Five library defects** found while building and flagged, not silently patched:
+   `Input Field`'s `Size=Default, State=Empty` variant does not expose its `Label Text`
+   property; `Link` has no text property; `Chip` has no label property; `Input Field` binds
+   primitives rather than semantic roles; and the **Figma** `Button` has no Inverse tone
+   though the **code** `Button` does — a real Figma↔code divergence, recorded in
+   `auth-parts.figma.ts`.
+4. **Assets** unchanged: the NOS hero, the SAMAVESH roundel and wordmark as components, the
+   DigiLocker mark, and four portal logos. Every placeholder is named in the file.
+5. **Nothing is committed.** All work is in the working tree; per the branching rule this
+   needs a branch and a PR.
+
+**Assets still missing** (unchanged): the NOS hero photograph, the SAMAVESH roundel and
+wordmark as components (the wordmark is still TEXT), the DigiLocker brand mark, and the
+SCW / SMILE-Beggary / E-Utthaan / E-Anudaan logos. Every placeholder is named in the file
+so an audit can find it.

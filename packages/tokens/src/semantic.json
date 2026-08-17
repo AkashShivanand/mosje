@@ -2389,6 +2389,31 @@
         "$value": "300px",
         "$description": "The portal sidebar's expanded width. Genuinely fixed: the nav labels are known copy, and a fluid sidebar would move the content edge on every route. Its inner padding is `padding/m` (16), leaving a 268 item column; items are `target/spacious` (48) tall. Below the tablet breakpoint the sidebar is not narrowed — it becomes a drawer."
       }
+    },
+    "login": {
+      "$description": "The authentication page split. Desktop is a 922 hero beside a 518 form panel; the panel insets by 64 each side leaving a 390 content column. These are genuinely fixed: the split is the design, not a consequence of content. Source: MoSJE Portal — Handoff, Login/Signup. Mobile drops the hero entirely, so none of these apply below 1024.",
+      "hero": {
+        "width": {
+          "$value": "922px",
+          "$description": "Desktop hero column carrying the portal photograph, brand lockup and the signing-into bar."
+        }
+      },
+      "panel": {
+        "width": {
+          "$value": "518px",
+          "$description": "Desktop auth form panel. 1440 - 922 = 518."
+        },
+        "gutter": {
+          "$value": "64px",
+          "$description": "Horizontal inset of the form panel and the hero content. The space scale jumps 32 -> 120, so this sits between them deliberately."
+        }
+      },
+      "content": {
+        "width": {
+          "$value": "390px",
+          "$description": "The form content column itself. 518 - 2x64 = 390. Every auth field, button and divider is this wide."
+        }
+      }
     }
   },
   "target": {

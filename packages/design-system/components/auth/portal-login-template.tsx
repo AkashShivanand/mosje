@@ -52,11 +52,7 @@ export function PortalLoginTemplate({
           ? "Login via Password"
           : mode === "otp"
           ? "Login via Mobile OTP"
-          : mode === "digilocker"
-          ? "Fast-track DigiLocker SSO"
-          : mode === "darpan"
-          ? "Login with NGO DARPAN ID"
-          : "Aadhaar e-KYC OTP",
+          : "Fast-track DigiLocker SSO",
     }));
   }, [activeRole]);
 
@@ -72,8 +68,6 @@ export function PortalLoginTemplate({
   const [showPassword, setShowPassword] = React.useState(false);
   const [mobile, setMobile] = React.useState("");
   const [otp, setOtp] = React.useState("");
-  const [darpanId, setDarpanId] = React.useState("");
-  const [aadhaarNo, setAadhaarNo] = React.useState("");
   const [captchaInput, setCaptchaInput] = React.useState("");
 
   // Captcha code generator
@@ -130,8 +124,6 @@ export function PortalLoginTemplate({
         password,
         mobile,
         otp,
-        darpanId,
-        aadhaarNo,
         captcha: captchaInput,
       },
     });
@@ -440,74 +432,6 @@ export function PortalLoginTemplate({
               <span>Sign in with DigiLocker</span>
               <span>→</span>
             </button>
-          </div>
-        )}
-
-        {/* ── MODE 4: NGO DARPAN ID ───────────────────────────────────────── */}
-        {activeAuthMode === "darpan" && (
-          <div className="space-y-3.5 pt-1">
-            <div>
-              <label
-                htmlFor="login-darpan"
-                className="block text-xs font-semibold text-[var(--sa-text-neutral-base)]"
-              >
-                NGO DARPAN ID <span className="text-[var(--sa-text-status-error-base)]">*</span>
-              </label>
-              <input
-                id="login-darpan"
-                type="text"
-                required
-                value={darpanId}
-                onChange={(e) => setDarpanId(e.target.value.toUpperCase())}
-                placeholder="e.g. DL/2016/0104728"
-                className="mt-1 w-full rounded-md border border-[var(--sa-border-neutral-subtle)] px-3 py-2 font-mono text-sm text-[var(--sa-text-neutral-base)] focus:border-[var(--sa-color-primaryScale-800)] focus:outline-none"
-              />
-              <p className="mt-1 text-[10px] text-[var(--sa-text-neutral-subtle)]">
-                As registered on NITI Aayog NGO DARPAN portal.
-              </p>
-            </div>
-
-            <div>
-              <label
-                htmlFor="login-darpan-pass"
-                className="block text-xs font-semibold text-[var(--sa-text-neutral-base)]"
-              >
-                Password <span className="text-[var(--sa-text-status-error-base)]">*</span>
-              </label>
-              <input
-                id="login-darpan-pass"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter Portal Password"
-                className="mt-1 w-full rounded-md border border-[var(--sa-border-neutral-subtle)] px-3 py-2 text-sm text-[var(--sa-text-neutral-base)] focus:border-[var(--sa-color-primaryScale-800)] focus:outline-none"
-              />
-            </div>
-          </div>
-        )}
-
-        {/* ── MODE 5: AADHAAR OTP ────────────────────────────────────────── */}
-        {activeAuthMode === "aadhaar" && (
-          <div className="space-y-3.5 pt-1">
-            <div>
-              <label
-                htmlFor="login-aadhaar"
-                className="block text-xs font-semibold text-[var(--sa-text-neutral-base)]"
-              >
-                Aadhaar Number <span className="text-[var(--sa-text-status-error-base)]">*</span>
-              </label>
-              <input
-                id="login-aadhaar"
-                type="text"
-                maxLength={12}
-                required
-                value={aadhaarNo}
-                onChange={(e) => setAadhaarNo(e.target.value.replace(/\D/g, ""))}
-                placeholder="12-digit Aadhaar Number"
-                className="mt-1 w-full rounded-md border border-[var(--sa-border-neutral-subtle)] px-3 py-2 font-mono text-sm tracking-wider text-[var(--sa-text-neutral-base)] focus:border-[var(--sa-color-primaryScale-800)] focus:outline-none"
-              />
-            </div>
           </div>
         )}
 

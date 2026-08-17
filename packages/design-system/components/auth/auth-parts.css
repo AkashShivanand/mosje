@@ -1,0 +1,263 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — authentication parts
+   The small pieces every portal login is assembled from. Each is 390px wide in
+   the Figma library (layout/login/content/width); in code they fill their
+   column, because the column is what owns the width.
+   ============================================================================ */
+
+.ds-auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-m);
+  font-family: var(--sa-font-latin);
+}
+
+.ds-auth-divider::before,
+.ds-auth-divider::after {
+  content: "";
+  flex: 1 1 0;
+  height: var(--sa-control-border-width);
+  background-color: var(--sa-border-neutral-subtle);
+}
+
+.ds-auth-divider__label {
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+  white-space: nowrap;
+}
+
+/* ---- consent -------------------------------------------------------------- */
+
+.ds-auth-consent {
+  margin: 0;
+  text-align: center;
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+
+.ds-auth-consent a {
+  color: var(--sa-text-link-brand-default);
+  text-underline-offset: 2px;
+}
+
+.ds-auth-consent a:focus-visible {
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
+}
+
+/* ---- resend --------------------------------------------------------------- */
+
+.ds-auth-resend {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-xs);
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+
+.ds-auth-resend__count {
+  font-weight: 600;
+  color: var(--sa-text-neutral-base);
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-auth-resend__action {
+  font-weight: 600;
+  color: var(--sa-text-link-brand-default);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-size: inherit;
+  line-height: inherit;
+  font-family: inherit;
+}
+
+.ds-auth-resend__action:focus-visible {
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
+}
+
+/* ---- masked contact ------------------------------------------------------- */
+
+.ds-auth-sentto {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-inline-m);
+  font-family: var(--sa-font-latin);
+}
+
+.ds-auth-sentto__prompt {
+  display: block;
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+
+.ds-auth-sentto__value {
+  display: block;
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  font-weight: 600;
+  color: var(--sa-text-neutral-base);
+}
+
+.ds-auth-sentto__action {
+  flex: none;
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  font-weight: 600;
+  color: var(--sa-text-link-brand-default);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.ds-auth-sentto__action:focus-visible {
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
+}
+
+/* ---- SSO button ----------------------------------------------------------- */
+
+.ds-auth-sso {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-m);
+  width: 100%;
+  padding: var(--sa-padding-m);
+  border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-control-radius);
+  background-color: var(--sa-bg-neutral-base);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--sa-font-latin);
+}
+
+.ds-auth-sso:hover:not(:disabled) {
+  background-color: var(--sa-bg-brand-primary-base);
+  border-color: var(--sa-border-brand-primary-base);
+}
+
+.ds-auth-sso:focus-visible {
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
+}
+
+.ds-auth-sso:disabled { cursor: not-allowed; background-color: var(--sa-bg-neutral-subtler); }
+
+.ds-auth-sso__copy { flex: 1 1 auto; min-width: 0; }
+
+.ds-auth-sso__title {
+  display: block;
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  font-weight: 600;
+  color: var(--sa-text-brand-primary-base);
+}
+
+.ds-auth-sso:disabled .ds-auth-sso__title { color: var(--sa-text-neutral-subtler); }
+
+.ds-auth-sso__subtitle {
+  display: block;
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+
+.ds-auth-sso__mark,
+.ds-auth-sso__arrow { flex: none; color: var(--sa-icon-brand-primary-base); }
+
+/* ---- account prompt ------------------------------------------------------- */
+
+.ds-auth-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--sa-stack-s);
+  font-family: var(--sa-font-latin);
+}
+
+.ds-auth-prompt__label {
+  margin: 0;
+  text-align: center;
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+
+.ds-auth-prompt__options { display: flex; gap: var(--sa-inline-s); }
+.ds-auth-prompt__options > * { flex: 1 1 0; }
+
+/* ---- signing-into bar ----------------------------------------------------- */
+
+.ds-auth-signing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-inline-m);
+  font-family: var(--sa-font-latin);
+}
+
+.ds-auth-signing__logo {
+  flex: none;
+  width: var(--sa-target-comfortable);
+  height: var(--sa-target-comfortable);
+  border-radius: var(--sa-shape-sm);
+  background-color: var(--sa-bg-neutral-base);
+  object-fit: contain;
+}
+
+.ds-auth-signing__info { min-width: 0; }
+
+.ds-auth-signing__eyebrow {
+  display: block;
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ds-auth-signing__name {
+  display: block;
+  font-size: var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
+  font-weight: 600;
+}
+
+.ds-auth-signing__change {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-inline-2xs);
+  padding: var(--sa-padding-xs) var(--sa-padding-s);
+  border-radius: var(--sa-control-radius);
+  border: var(--sa-control-border-width) solid currentColor;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
+}
+
+.ds-auth-signing__change:focus-visible {
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
+}
+
+/* Tone follows the SURFACE, not the brand. */
+.ds-auth-signing--hero { color: var(--sa-text-neutral-inverse); }
+.ds-auth-signing--hero .ds-auth-signing__eyebrow { color: var(--sa-text-neutral-inverse); }
+.ds-auth-signing--hero .ds-auth-signing__name { color: var(--sa-text-neutral-inverse); }
+
+.ds-auth-signing--surface { color: var(--sa-text-neutral-base); }
+.ds-auth-signing--surface .ds-auth-signing__eyebrow { color: var(--sa-text-neutral-subtle); }
+.ds-auth-signing--surface .ds-auth-signing__name { color: var(--sa-text-neutral-base); }
