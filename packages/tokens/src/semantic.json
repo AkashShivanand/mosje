@@ -1453,12 +1453,13 @@
   },
   "focus": {
     "ring": {
-      "$value": "rgba(3, 115, 223, 0.48)",
+      "$description": "The focus indicator, and it is OPAQUE on purpose. It carried 48% alpha until 2026-08-17, which composited to 2.01:1 on white, 1.92:1 on a tab track and 1.16:1 on a selected brand pill — all below the 3:1 floor of WCAG 1.4.11 and 2.4.11, and worst exactly where a keyboard user needs it most. An alpha ring cannot be assessed once and trusted, because its contrast is a property of whatever it happens to land on; an opaque one is 3.94:1 on white and holds its own everywhere.",
+      "$value": "#0373DF",
       "$extensions": {
         "mosje": {
           "colorModes": {
-            "navy": "rgba(0, 51, 102, 0.48)",
-            "dbim": "rgba(0, 51, 102, 0.48)"
+            "navy": "#003366",
+            "dbim": "#003366"
           },
           "themes": {
             "dark": "rgba(125, 180, 245, 0.55)"
@@ -2413,6 +2414,17 @@
           "$value": "390px",
           "$description": "The form content column itself. 518 - 2x64 = 390. Every auth field, button and divider is this wide."
         }
+      }
+    },
+    "tab": {
+      "$description": "The two measurements a tablist needs that are not derivable from its content. Everything else about a tab — its height above all — is a hug of padding plus type, and must stay one: a fixed tab height stops the label growing when a citizen raises their browser font size.",
+      "indicator": {
+        "$value": "2px",
+        "$description": "Thickness of the selected tab's underline or rail. Deliberately NOT `control/border/width`: this is a selection mark that happens to be a line, not a control edge, so it must not move when the form-control hairline is retuned."
+      },
+      "track": {
+        "$value": "4px",
+        "$description": "Inset between an enclosed track and the pills inside it — the track's own padding, and the indicator's top/bottom inset. Small enough that the track reads as a frame around the pills rather than a panel containing them."
       }
     }
   },

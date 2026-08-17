@@ -1018,7 +1018,8 @@ export const tokens = {
     },
     "brand": {
       "primary": {
-        "base": "#0373df"
+        "base": "#0373df",
+        "bolder": "#005eb9"
       }
     },
     "status": {
@@ -1037,7 +1038,7 @@ export const tokens = {
     }
   },
   "focus": {
-    "ring": "rgba(3, 115, 223, 0.48)",
+    "ring": "#0373DF",
     "width": "2px",
     "offset": "2px"
   },
@@ -1250,7 +1251,8 @@ export const tokens = {
     },
     "brand": {
       "primary": {
-        "base": "#0373df"
+        "base": "#0373df",
+        "bolder": "#005eb9"
       }
     },
     "status": {
@@ -1315,6 +1317,10 @@ export const tokens = {
       "content": {
         "width": "390px"
       }
+    },
+    "tab": {
+      "indicator": "2px",
+      "track": "4px"
     }
   },
   "target": {

@@ -1925,8 +1925,8 @@ export const LAYERS = [
 export const SLOT_COUNTS = {
   "border": 9,
   "bg": 48,
-  "text": 17,
-  "icon": 9,
+  "text": 18,
+  "icon": 10,
   "cmp": 296,
   "focus": 1,
   "overlay": 1,
