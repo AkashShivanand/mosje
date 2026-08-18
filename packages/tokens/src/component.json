@@ -33,6 +33,16 @@
   },
   "badge": {
     "$type": "color",
+    "dotSize": {
+      "$type": "dimension",
+      "$value": "6px",
+      "$description": "The status/unread DOT — one definition for the whole estate, not one per component. It is 6px and not the on-grid 8 on purpose: beside 14px label text an 8px dot reads as a bullet rather than a signal, and 6 is what the Figma masters render and what Material and Carbon both publish. It carries a literal rather than an alias because no `size/*` step is 6 and inventing one would put a scale step in the system for a single affordance — the same reasoning `accessibilityBar/height` (46) and `flagWidth` (33) already follow. Bound by `.ds-badge__dot` AND `.ds-tabs__badge`: when this moves, every dot moves."
+    },
+    "dotSizeLg": {
+      "$type": "dimension",
+      "$value": "{size.8}",
+      "$description": "The dot beside 16px body text — Badge `lg`, and Tabs at `size=\"l\"`. A dot is sized relative to the type it annotates, not to its container, which is why this steps with the type scale and not with the control height."
+    },
     "beta": {
       "bg": {
         "$value": "{color.brand.yellow}",

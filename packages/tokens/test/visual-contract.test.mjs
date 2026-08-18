@@ -39,6 +39,19 @@ const actual = resolveContract(cssText);
  * from this list — the compat layer was retargeted, not renamed.
  */
 const RENAMES = {
+  // 2026-08-17 — `inline` gained a 24 step, the only spacing family that lacked one
+  // (`stack/l` and `padding/xl` both have it), so every 24px horizontal gap had been
+  // reaching past the semantic layer to `ref/space/2xl`. A t-shirt ramp has no slot between
+  // `l` and `xl`, so inserting a step pushes the ones above it up a name: the old
+  // `inline/xl` (32) became `inline/2xl`. It was PROVEN value-preserving here first — the
+  // old name's old value equalled the new name's new value in all 24 selector contexts —
+  // and only then baselined, so per the note above its entry is deleted rather than left to
+  // outlive the move. The proof is in this commit, not in a list that would only grow.
+  //
+  // The matching 28 step for `padding` was attempted the same day and ABANDONED — that
+  // family already uses all eleven canonical rungs and `space` has no 28. See the note on
+  // `padding/2xl` in semantic.json. It is not listed here because it did not happen.
+
   // 2026-08-12 — icon-size md/lg were renamed to their pixel value (24/32). They were PROVEN
   // value-preserving here before the fixture was rebaselined, so per the note above their
   // entries are deleted rather than left to outlive the move.

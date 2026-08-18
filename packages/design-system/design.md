@@ -12,7 +12,21 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-14 · System version: v0.20.0 (ACCESSIBILITYBAR IS NOW A CODE COMPONENT AND
+  Last reviewed: 2026-08-17 · System version: v0.23.0 (TABS MATCHES THE REBUILT FIGMA MASTERS.
+  `<Tabs>` gains `indicator` (underline | rail | pill), `size` (s | m | l -> 36 / 44 / 48),
+  `track` (none | enclosed) and `orientation`; `TabDef` gains `icon`, `badge` and `disabled`.
+  INDICATOR AND TRACK PAIR — enclosed takes pill, none takes underline (horizontal) or rail
+  (vertical); the other four combinations read as broken. A DISABLED TAB STAYS IN THE TABLIST,
+  marked `aria-disabled` and skipped by the arrow keys — never the native `disabled` attribute,
+  which would drop it out of the accessibility tree. Four tokens land with it —
+  `text|icon/brand/primary/bolder` (the brand key colour fails AA on a tinted surface) and
+  `layout/tab/{indicator,track}` — and `focus/ring` DROPS ITS 48% ALPHA in Blue and Navy, having
+  composited to 1.16:1 on a selected pill.
+  NOTE — this narrative skips v0.21.0 and v0.22.0 (PortalLoginTemplate, the auth parts, and the
+  retirement of the invented `darpan` / `aadhaar` auth modes). Both are in the changelog at
+  /design-system/resources/changelog, which is the complete record; this header carries only the
+  releases whose rules an agent must hold in mind while writing UI.
+  Previously v0.20.0 — ACCESSIBILITYBAR IS NOW A CODE COMPONENT AND
   SITEHEADER IS MIGRATED ONTO IT. `@mosje/design-system` exports `AccessibilityBar` — the UX4G/GIGW
   top utility bar with a working A−/A/A+ font-size stepper — mirroring the SAMAVESH Figma master,
   fully `--sa-*` tokenised, AA-clear. SiteHeader's own hand-rolled Tier-1 bar is DELETED and the
@@ -1360,10 +1374,26 @@ Docs: `/design-system/components/sla-progress`.
 
 #### Tabs / TabPanel
 **Purpose**: Accessible tabbed navigation for **non-linear** sections the user revisits in any order (vs `<Wizard>`, which is a linear stepper).  
+**Props**: `indicator` (`underline` | `rail` | `pill`, default `pill`) · `size` (`s` | `m` | `l` → 36 / 44 / 48, default `m`) · `track` (`none` | `enclosed`, default `enclosed`) · `orientation` (`horizontal` | `vertical`) · `divider`. `TabDef` carries `id`, `label`, `icon?`, `badge?`, `disabled?`.  
 **Rules**:
 - Implements the WAI-ARIA Tabs pattern (`role=tablist/tab/tabpanel`, `aria-selected`, `aria-controls`, roving `tabindex`, Arrow/Home/End keys) with a polite live-region announce.
 - Pair each active tab with a `<TabPanel>` sharing the same `idBase`. Parent owns the active index and renders one panel at a time.
 - Never hand-roll tab `<button>`s — reuse this so the keyboard/SR contract holds estate-wide.
+- **`indicator` and `track` pair; only two of the six combinations are correct.** `track="enclosed"` takes `pill`. `track="none"` takes `underline` when horizontal, `rail` when vertical. A pill on an open list has nothing to sit in; an underline in a filled track draws a second edge inside the first.
+- **`size` and `indicator` are LIST props, never per tab** — even though Figma carries them on each tab, because that is where they are drawn. A list whose tabs disagree about size is a defect.
+- **Heights are hugs** (padding + line-height), never fixed. A pinned tab height stops the label growing when a citizen raises their browser font size.
+- **A disabled tab stays in the tablist**, marked `aria-disabled` and skipped by the arrow keys. Never use the native `disabled` attribute: it drops the button out of the accessibility tree, so a screen-reader user loses the fact that the section exists at all.
+- Selected ink is `text/brand/primary/bolder`, **not** `/base` — the brand key colour measures 4.07:1 on the track and fails WCAG 1.4.3 AA.
+- A horizontal list that outgrows its container **scrolls**. The Figma library's `Tabs / More` overflow trigger has no code counterpart yet, so there is no `overflow` prop.
+
+**Tab label rules** (these govern the CONTENT, and are the rules most often broken):
+1. **A tab label names a destination.** It is not a sentence. One or two words; aim for ≤ 20 characters in English.
+2. **Budget for the longest translation, not the English.** Devanagari renders the same phrase 10–30% longer. A label that fits in English and truncates in Hindi is a defect found in production, not in review.
+3. **In `track="enclosed"` every tab is the same width**, so the *longest* label sets what all of them can show. One long label degrades the whole set, not just its own tab.
+4. **When a label does not fit, escalate in this order — truncation is last:** (a) shorten the label, almost always the right answer; (b) move to `track="none"`, where tabs are content-width and the row scrolls, so every label keeps its full width; (c) add the overflow menu when the scrolled tabs would be undiscoverable; (d) only then accept the ellipsis.
+5. **Truncation is CSS-only, never JavaScript**, and it is solved per input rather than by one affordance. Shortening the string in code would rewrite the accessible name too. A clipped tab keeps its full name in the accessibility tree and pairs with a `Tooltip` that opens on hover **and instantly on keyboard focus**; the bubble is `aria-hidden` with no `aria-describedby`, so the name is never announced twice. On **touch** (`@media (hover: none)`) nothing is clipped at all — enclosed tabs size to content and the row scrolls, because a tooltip is unreachable there.
+6. **Two tabs must never truncate to the same visible string.** "Application details" and "Application status" both become "Application…". Where a set shares a prefix, front-load the distinguishing word — "Details" / "Status" — rather than trusting truncation to stay readable.
+7. **Never wrap to two lines in a ROW** — it makes the row's height depend on the longest label. **Vertical lists wrap deliberately**: their items size independently and the rail is measured at runtime, so wrapping hides nothing and needs no affordance. The documented heights describe a single-line tab.
 
 #### EmptyState
 **Purpose**: Fills empty data containers with context + a call-to-action.  

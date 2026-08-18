@@ -15,7 +15,7 @@ export const colors = {
   primary: "#0373df",
   primaryTonal: "#c0dbff",
   primaryDark: "#004b96",
-  primaryRing: "rgba(3, 115, 223, 0.48)",
+  primaryRing: "#0373DF",
   success: "#004220",
   successTonal: "#bed8c5",
   danger: "#8b1f18",

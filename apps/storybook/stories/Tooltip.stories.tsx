@@ -19,6 +19,14 @@ import { Button, Icon, Tooltip } from "@mosje/design-system";
  * strobe; focus always opens instantly, because a keyboard user asked
  * deliberately.
  *
+ * `duplicatesTriggerName` is for one narrow case: the bubble repeats the
+ * trigger's OWN accessible name, as when CSS has clipped a label a screen
+ * reader can still read in full. It drops `aria-describedby` and hides the
+ * bubble from assistive technology, because without it the name is announced
+ * TWICE — "Application details, tab, Application details" — which is worse than
+ * the visual problem the tooltip was added to solve. Leave it OFF for any
+ * tooltip that adds information; `Tabs` is currently the only caller.
+ *
  * Lifecycle: **Stable**.
  */
 const meta = {
@@ -30,6 +38,7 @@ const meta = {
     sideOffset: 6,
     delay: 200,
     disabled: false,
+    duplicatesTriggerName: false,
     children: <Button appearance="outlined">Processing time</Button>,
   },
   argTypes: {
@@ -37,6 +46,7 @@ const meta = {
     sideOffset: { control: { type: "number", min: 0, max: 24 } },
     delay: { control: { type: "number", min: 0, max: 1000, step: 50 } },
     disabled: { control: "boolean" },
+    duplicatesTriggerName: { control: "boolean" },
     content: { control: "text" },
     children: { control: false },
   },
@@ -98,4 +108,28 @@ export const NoDelay: Story = {
 /** Disabled without unmounting the trigger — the button still works. */
 export const Disabled: Story = {
   args: { disabled: true, children: <Button appearance="outlined">No tooltip</Button> },
+};
+
+/**
+ * **The truncated-label case.** The bubble repeats the trigger's own name, so it
+ * is hidden from assistive technology and carries no `aria-describedby` — the
+ * full string is already the button's accessible name, and announcing it a
+ * second time is a regression, not a rescue.
+ *
+ * Inspect the trigger while it is open: no `aria-describedby`, and the bubble is
+ * `aria-hidden`. Compare with any story above, where the bubble is a real
+ * `role="tooltip"` because it adds something the trigger does not say.
+ */
+export const DuplicatesTriggerName: Story = {
+  args: {
+    duplicatesTriggerName: true,
+    content: "Application details",
+    children: (
+      <Button appearance="outlined" style={{ maxWidth: 140 }}>
+        <span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis" }}>
+          Application details
+        </span>
+      </Button>
+    ),
+  },
 };
