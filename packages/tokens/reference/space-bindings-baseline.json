@@ -6,16 +6,16 @@
     "pagesWithContent": 54,
     "pagesEmpty": 14,
     "properties": 65449,
-    "bound": 56646,
-    "raw": 8803,
-    "tier2": 43956,
+    "bound": 57930,
+    "raw": 7519,
+    "tier2": 45240,
     "tier1": 7202,
     "crossFamily": 0,
     "other": 0,
     "ghost": 4771,
     "remote": 717,
-    "correctPct": 67.16,
-    "boundPct": 86.55
+    "correctPct": 69.12,
+    "boundPct": 88.51
   },
   "$knownGhostIds": [
     "3791:9018",
@@ -164,15 +164,6 @@
       "ghost": 0,
       "remote": 0,
       "raw": 5
-    },
-    {
-      "name": "Color",
-      "id": "2140:295913",
-      "crossFamily": 0,
-      "tier1": 0,
-      "ghost": 0,
-      "remote": 0,
-      "raw": 1284
     },
     {
       "name": "Color Picker",

@@ -1,7 +1,7 @@
 {
   "$description": "Spacing-binding census of the LIVE SAMAVESH Figma library (fileKey 3FF5l0SMNIwdpZrKkeyPTm). For every auto-layout frame on every page, the six spacing properties (paddingLeft/Right/Top/Bottom, itemSpacing, counterAxisSpacing) are classified as: tier2 (a correct semantic space token), tier1 (a hidden ref/space|ref/size primitive), crossFamily (a radius/type/colour variable bound to a spacing property), ghost (a local variable id no collection owns), remote (a variable imported from another library) or raw (unbound, non-zero). Zero-valued unbound properties are not counted — an auto-layout frame defaults every padding to 0 and counting those would drown the signal.",
   "$sweptAt": "2026-08-18",
-  "$note": "THIRD census. Taken after (a) the ref/radius/none rebind, (b) the non-zero radius-rung rebind, and (c) the value-naming migration that renamed 51 Space variables and created 27 to close the coverage gaps. MEASURED RESULT: crossFamily 38,799 -> 0. Not one radius, type or colour variable remains on any spacing property, on any of the 54 content pages. Correct semantic spacing rose 6.96% -> 57.51% -> 67.16%. The remaining debt is now only three things and none of them is a wrong-family binding: ghost ids (Buttons alone holds 1,452), Tier-1 primitives used where a semantic token existed (Navbar 1,702, Iconography 1,525, Typography 963), and raw values (Buttons 1,598, Color 1,284, Charts 1,460).",
+  "$note": "THIRD census. Taken after (a) the ref/radius/none rebind, (b) the non-zero radius-rung rebind, and (c) the value-naming migration that renamed 51 Space variables and created 27 to close the coverage gaps. MEASURED RESULT: crossFamily 38,799 -> 0. Not one radius, type or colour variable remains on any spacing property, on any of the 54 content pages. Correct semantic spacing rose 6.96% -> 57.51% -> 67.16%. The remaining debt is now only three things and none of them is a wrong-family binding: ghost ids (Buttons alone holds 1,452), Tier-1 primitives used where a semantic token existed (Navbar 1,702, Iconography 1,525, Typography 963), and raw values (Buttons 1,598, Color 1,284, Charts 1,460). COLOUR PAGE, same day: the house-style reference page had 1,284 spacing properties and ZERO bound. 997 bound to an exact-value token with no visual change; the remaining 287 were off-ladder and snapped DOWN to the nearest rung (padding 18→16 ×184, 28→24 ×68, 10→8 ×32, 88→80, 14→12), which never grows a layout and lands every value on the 4px grid. It is now 100% bound on padding and gap. Its radii are a separate, untouched defect: 1,632 raw, 0% bound.",
   "$method": "ONE PAGE PER use_figma INVOCATION, via setCurrentPageAsync. This is not a style preference — it is the only method that returns a complete tree. Walking several pages in a single invocation (whether by setCurrentPageAsync or by PageNode.loadAsync, and even after loading every page up front) returns PARTIAL and NON-DETERMINISTIC results: Navbar reported 2885 bound properties per-page, but 1685 and then 1669 on two batched runs of identical code. findAll(() => true) returned the same node count both ways, so the shortfall is invisible to a node-count sanity check. Any future re-sweep that batches pages will silently under-report and must not be used to refresh this file.",
   "$caveat": "Per-page TOTALS are not stable across library re-syncs. Between censuses Navbar went 3223 -> 3510 properties (gaining 219 remote bindings) and Inputs 1526 -> 1155 (losing 339), with no edit touching either. Repeated reads within one session are byte-identical, so this is Figma re-resolving remote/library instance subtrees, not read noise. The ratchet can therefore report a regression nobody caused; confirm no real binding changed, then re-baseline. A future improvement is to count only AUTHORABLE nodes (outside any instance), which is both stable and free of double-counting.",
   "$totals": {
@@ -9,16 +9,16 @@
     "pagesWithContent": 54,
     "pagesEmpty": 14,
     "properties": 65449,
-    "bound": 56646,
-    "raw": 8803,
-    "tier2": 43956,
+    "bound": 57930,
+    "raw": 7519,
+    "tier2": 45240,
     "tier1": 7202,
     "crossFamily": 0,
     "other": 0,
     "ghost": 4771,
     "remote": 717,
-    "correctPct": 67.16,
-    "boundPct": 86.55
+    "correctPct": 69.12,
+    "boundPct": 88.51
   },
   "$ghostTotals": {
     "3791:9032": 865,
@@ -342,10 +342,10 @@
     {
       "name": "Color",
       "id": "2140:295913",
-      "bound": 0,
-      "raw": 1284,
+      "bound": 1284,
+      "raw": 0,
       "tier1": 0,
-      "tier2": 0,
+      "tier2": 1284,
       "crossFamily": 0,
       "other": 0,
       "ghost": 0,
