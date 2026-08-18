@@ -1544,7 +1544,8 @@
     "80": {
       "$value": "{space.80}"
     },
-    "$description": "Horizontal gap between items on one line. VALUE-NAMED: `inline/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead."
+    "$description": "Horizontal gap between items on one line. VALUE-NAMED: `inline/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
+    "$type": "dimension"
   },
   "stack": {
     "0": {
@@ -1595,7 +1596,8 @@
     "80": {
       "$value": "{space.80}"
     },
-    "$description": "Vertical gap between stacked items, and vertical rhythm inside a block. VALUE-NAMED: `stack/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead."
+    "$description": "Vertical gap between stacked items, and vertical rhythm inside a block. VALUE-NAMED: `stack/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
+    "$type": "dimension"
   },
   "padding": {
     "0": {
@@ -1652,7 +1654,8 @@
     "360": {
       "$value": "{space.360}"
     },
-    "$description": "Inset between a container's edge and its content. VALUE-NAMED: `padding/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead."
+    "$description": "Inset between a container's edge and its content. VALUE-NAMED: `padding/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
+    "$type": "dimension"
   },
   "section": {
     "0": {
@@ -1685,7 +1688,8 @@
     "120": {
       "$value": "{space.120}"
     },
-    "$description": "Vertical rhythm between page-level sections. VALUE-NAMED: `section/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead."
+    "$description": "Vertical rhythm between page-level sections. VALUE-NAMED: `section/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
+    "$type": "dimension"
   },
   "chart": {
     "$description": "Data-visualisation roles, and the one place in this system where a literal is sometimes the RIGHT answer — so each group states which it is and why, because the difference is not guessable from the values.\n\nREFERENCES the system ramps: div/* (signed data) and trend/* (KPI direction). Both encode MEANING the rest of the UI already has a colour for — negative is what error means — so they follow it, and follow it into a DBIM conformance mode too.\n\nLITERAL on purpose: cat/* (twelve categorical series) and seq/* (single-hue sequential ramp). Both are tuned as a SET for a job the UI ramps are not tuned for — mutual distinguishability and even perceptual steps respectively — and a reference would let one member drift out of that tuning on a brand swap. Their own descriptions carry the argument in full.\n\ngrid/axis/tooltip/region are structural. Theme-aware dark/hc overrides are retained on these tokens but NOT currently emitted: the appearance axis was retired on 2026-08-10 and the UX4G accessibility widget owns dark and high contrast (see build/formats/legacy-ds-css.mjs).",
