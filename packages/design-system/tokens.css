@@ -893,7 +893,7 @@
   --sa-cmp-accessibilityBar-dividerColor: rgba(255, 255, 255, 0.4);
   --sa-cmp-accessibilityBar-pillSize: var(--sa-ref-size-32);
   --sa-cmp-accessibilityBar-pillBg: rgba(255, 255, 255, 0.16);
-  --sa-cmp-accessibilityBar-hoverBg: rgba(255, 255, 255, 0.12);
+  --sa-cmp-accessibilityBar-hoverBg: rgba(255, 255, 255, 0.08);
   --sa-cmp-accessibilityBar-stepSize: var(--sa-ref-size-24);
   --sa-cmp-accessibilityBar-iconButtonSize: var(--sa-ref-size-28);
   --sa-cmp-accessibilityBar-launchIconSize: var(--sa-ref-size-12);

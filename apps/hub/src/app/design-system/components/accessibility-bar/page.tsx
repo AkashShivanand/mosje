@@ -153,6 +153,46 @@ export default function AccessibilityBarPage(): React.JSX.Element {
         </div>
       </section>
 
+      {/* ── Interaction states ── */}
+      <section style={sectionStyle}>
+        <h2 id="states" style={h2Style}>Interaction states</h2>
+        <p style={leadStyle}>
+          Every <strong>clickable</strong> control on the bar resolves through four states, defined
+          in § 04 of the Figma documentation page. <code>:active</code> is declared{" "}
+          <em>after</em> <code>:hover</code> at equal specificity — a pointer is almost always
+          hovering the control it presses, so the reverse order makes the pressed state
+          unreachable.
+        </p>
+        <TokenTable
+          tokens={[
+            { token: "(none)", value: "Default", description: "Resting. No background; the glyph is icon/neutral/inverse." },
+            { token: "--sa-cmp-accessibilityBar-hoverBg", value: "Hover · white 8%", description: "Figma overlay/on-brand/hover (#ffffff14). Carried an invented 12% until 2026-08-18.", isColor: true },
+            { token: "--sa-text-neutral-inverse", value: "Focus-visible · 2px ring", description: "Never removed. Inverse ink, NOT focus/ring — see the warning below.", isColor: true },
+            { token: "--sa-cmp-accessibilityBar-pillBg", value: "Active · white 16%", description: "Figma overlay/on-brand/pressed (#ffffff29). Pressed OR the current selection.", isColor: true },
+          ]}
+        />
+        <Callout type="info" title="“Active” means two things, and that is deliberate">
+          The documentation page defines ACTIVE as <em>“pressed, or the current selection (e.g. the
+          middle A)”</em>. The light rectangle behind the middle <strong>A</strong> is that ACTIVE
+          layer showing the current selection — its Figma layer is literally named{" "}
+          <code>Selection layer</code> — and pressing <strong>A−</strong> or <strong>A+</strong>{" "}
+          shows the same layer. Both senses bind to one token rather than two look-alike values.
+        </Callout>
+        <Callout type="warning" title="Do not use focus/ring on this bar">
+          <code>focus/ring</code> is <code>#0373DF</code>, and on the bar&apos;s{" "}
+          <code>#005EB9</code> fill it measures <strong>1.37:1</strong> — far below the{" "}
+          <strong>3:1</strong> WCAG 1.4.11 / 2.4.11 require of a focus indicator, i.e. close to
+          invisible exactly where a keyboard user needs it. Inverse ink measures{" "}
+          <strong>6.36:1</strong>. The Figma page specified <code>focus/ring</code> and was
+          corrected on 2026-08-18. A ring&apos;s contrast is a property of what it lands on, not of
+          its name.
+        </Callout>
+        <Callout type="info" title="Text links are not tinted">
+          The Government-of-India and skip links carry the underline affordance instead. Tinting
+          them would invent a control affordance the master does not have.
+        </Callout>
+      </section>
+
       {/* ── Layout ── */}
       <section style={sectionStyle}>
         <h2 id="layout" style={h2Style}>Layout (content width)</h2>

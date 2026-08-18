@@ -22,9 +22,14 @@ import { SiteHeader } from "@mosje/design-system";
 
 Three tiers, top to bottom:
 
-1. **AccessibilityBar** — Government of India link (left); skip-to-content, accessibility
-   options and language (right). `Font size` is **off** here: the UX4G widget is the
-   estate's single mechanism for text size and contrast.
+1. **AccessibilityBar** — Government of India link (left); skip-to-content, font size,
+   accessibility options and language (right). `Font size` is **ON** (changed 2026-08-18;
+   this line said "off" until then). Text size is the bar's own mechanism now that its
+   stepper actually scales the root font size; the UX4G widget keeps contrast, spacing
+   and dark mode, and its floating button is hidden wherever the bar offers the entry.
+   All 21 nested AccessibilityBar instances on this page already had `Font size` ON —
+   the code was the outlier, not the library. See
+   `docs/design-system/components/accessibility-bar.md`.
 2. **Brand row** — National Emblem lockup + government wordmark, optional BETA badge,
    search, and the primary action (Login on the website, account menu on portals).
 3. **Navigation row** — nav items with simple dropdowns and the mega-menu. Rendered only

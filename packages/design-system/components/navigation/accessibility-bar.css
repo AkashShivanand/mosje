@@ -131,8 +131,6 @@
   height: var(--sa-cmp-accessibilityBar-pillSize);
   font-weight: 600;
 }
-.sa-abar__fsbtn.is-current.is-active { background-color: var(--sa-cmp-accessibilityBar-pillBg); }
-.sa-abar__fsbtn:hover:not(:disabled) { background-color: var(--sa-cmp-accessibilityBar-hoverBg); }
 .sa-abar__fsbtn:disabled { opacity: 0.45; cursor: default; }
 
 /* Icon buttons (accessibility, language) */
@@ -151,12 +149,50 @@
   cursor: pointer;
 }
 .sa-abar__icbtn.has-text { padding: 0 var(--sa-inline-s); gap: var(--sa-inline-s); }
-.sa-abar__icbtn:hover { background-color: var(--sa-cmp-accessibilityBar-hoverBg); }
 /* Figma binds the bar's glyphs to icon/size/20; <Icon size> sets it inline. */
 
-/* Focus (WCAG 2.4.7): the ring is never removed. The global --sa-focus-ring is
-   brand-blue, which would vanish on this blue/navy surface — so the outline is the
-   white inverse ink (text/onPrimary), matching every other control on the bar. */
+/* ── Interaction states — the four the documentation page defines ─────────────
+   Source: SAMAVESH library, "AccessibilityBar / Documentation" § 04 States.
+
+     DEFAULT        no background; icon/neutral/inverse
+     HOVER          white @ 8%   (overlay/on-brand/hover)
+     FOCUS-VISIBLE  2px ring, never removed
+     ACTIVE         white @ 16%  (overlay/on-brand/pressed)
+
+   ACTIVE carries TWO senses, exactly as the page states — "pressed, or the
+   current selection (e.g. the middle A)". Both resolve to the same layer, so
+   both are written against the same token rather than two look-alike values.
+
+   Every CLICKABLE control on the bar is covered: the three font-size steps and
+   the two icon buttons. The Government-of-India and skip links are deliberately
+   NOT tinted — they are text links and carry the underline affordance instead;
+   tinting a text link would invent a control affordance the master does not have.
+
+   Ordering is load-bearing: :active is declared AFTER :hover at equal
+   specificity, so a pressed control reads 16% and not 8%. A pointer is almost
+   always hovering the thing it presses, so the reverse order would make the
+   pressed state unreachable. */
+.sa-abar__fsbtn:hover:not(:disabled),
+.sa-abar__icbtn:hover {
+  background-color: var(--sa-cmp-accessibilityBar-hoverBg);
+}
+.sa-abar__fsbtn:active:not(:disabled),
+.sa-abar__icbtn:active,
+.sa-abar__fsbtn.is-current.is-active {
+  background-color: var(--sa-cmp-accessibilityBar-pillBg);
+}
+
+/* Focus (WCAG 2.4.7 / 2.4.11): the ring is never removed.
+   
+   DELIBERATE DEVIATION FROM THE DOCUMENTATION PAGE, and it is an accessibility
+   one. § 04 States specifies `focus/ring · 2px`. `focus/ring` is #0373DF, and on
+   this bar's #005EB9 fill that measures 1.37:1 — far below the 3:1 that WCAG
+   1.4.11 / 2.4.11 require of a focus indicator, i.e. the documented ring is close
+   to invisible exactly where a keyboard user needs it. The white inverse ink
+   measures 6.36:1 on the same fill, so the code uses that and the Figma page is
+   being corrected to match, per `.claude/rules/standards-precedence.md`:
+   accessibility is never traded against, and a standard that would produce a
+   worse interface loses to quality with the deviation written down. */
 .sa-abar__gov:focus-visible,
 .sa-abar__skip:focus-visible,
 .sa-abar__fsbtn:focus-visible,

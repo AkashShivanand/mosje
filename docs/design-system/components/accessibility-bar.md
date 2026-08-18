@@ -57,6 +57,48 @@ ascending by viewport, Layout ascending by content width.
 > *"font"* rather than *"reset to the default size"*; the `aria-label` carries the
 > real meaning, so this is a visual-clarity question, not an accessibility one.
 
+## Interaction states (§ 04 of the Figma documentation page)
+
+Every **clickable control** on the bar resolves through four states. The Figma page
+is the source; the code matched three of them and was missing one entirely.
+
+| State | Value | Token | Code before 2026-08-18 |
+|---|---|---|---|
+| Default | no background | — | ✓ |
+| **Hover** | white **8 %** | `overlay/on-brand/hover` `#ffffff14` | ✗ **12 %** — an invented value |
+| **Focus-visible** | 2 px ring, never removed | inverse ink | ✓ (and the page was wrong — see below) |
+| **Active** | white **16 %** | `overlay/on-brand/pressed` `#ffffff29` | ✗ **absent** |
+
+**ACTIVE carries two senses**, exactly as the page states — *"pressed, or the current
+selection (e.g. the middle A)"*. Both resolve to the same layer, so both bind to the
+same token rather than two look-alike values. The light rectangle behind the middle
+**A** is that ACTIVE layer showing the current selection; pressing **A−** or **A+** now
+shows the same layer, which it did not before. The middle A's Figma layer is literally
+named **`Selection layer`**, which is the clearest evidence of intent in the file.
+
+`:active` is declared **after** `:hover` at equal specificity. A pointer is almost
+always hovering the control it presses, so the reverse order makes the pressed state
+unreachable.
+
+The Government-of-India and skip links are deliberately **not** tinted — they are text
+links carrying the underline affordance, and tinting them would invent a control
+affordance the master does not have.
+
+> **The documentation page prescribed a focus ring that fails WCAG, and it has been
+> corrected in Figma.** § 04 specified `focus/ring · 2px`. `focus/ring` is `#0373DF`,
+> which on this bar's `#005EB9` fill measures **1.37:1** — far below the **3:1** that
+> WCAG 1.4.11 / 2.4.11 require of a focus indicator, i.e. close to invisible exactly
+> where a keyboard user needs it. Inverse ink measures **6.36:1**. The code already used
+> inverse ink; the Figma specimen and its card were rebound to match on 2026-08-18.
+
+> **Open, and it is an accessibility gap in the master:** in Figma the `A−`, `A+`,
+> `accessibility_new` and `translate_indic` glyphs are **bare 20 × 20 text nodes with no
+> hit-area frame** — only the middle A has one (the 32 × 32 `Selection layer`). As drawn,
+> those targets would be 20 × 20 and fail **WCAG 2.2 AA 2.5.8 (24 × 24 minimum)**. The
+> code does not reproduce that: it wraps them in 24 × 24 steppers and 28 × 28 icon
+> buttons, measured live. Figma should gain matching hit frames so the master and the
+> build agree — flagged rather than changed, because it alters the master's structure.
+
 ## The masthead reversal (2026-08-18)
 
 `SiteHeader` shipped `fontSize={false}`, justified in `2f683c1` as "the widget is
@@ -67,10 +109,26 @@ not a competing mechanism, it was an inert control. With the variable now consum
 floating button is hidden wherever the bar offers the same entry. One door, not two.
 Contrast, spacing and dark mode remain the widget's.
 
-**Open divergence, not yet closed:** the Figma library holds **13 nested
-AccessibilityBar instances** set to font-size OFF expressly to match the old code,
-and `navbar.md`'s Anatomy says the same. Flipping code without flipping them
-recreates the drift this file exists to prevent. Logged here as open.
+**No divergence — the library already agreed, and the claim that it did not was
+false.** Both this file and the brief that commissioned the change asserted that
+**13 nested instances** were set to font-size OFF to match the old code, so that
+flipping the code would create drift. **Audited against Figma on 2026-08-18 and it
+is not true:** every nested `AccessibilityBar` instance in the library has
+`Font size = true`.
+
+| Page | Nested instances | `Font size` |
+|---|---|---|
+| Navbar | 21 | all ON |
+| Portal Login Template | 14 | all ON |
+| Accessibility Bar | 4 | all ON |
+| **Total** | **39** | **all ON** |
+
+The **code was the outlier**, so turning the masthead's stepper on **closed** a
+divergence rather than opening one. Nothing needs flipping in Figma.
+
+`navbar.md` §Anatomy still repeats the old "off on all 13 nested instances" line —
+that is a stale historical record of a v2.3.0 action, not a description of the
+library today, and it is corrected there.
 
 ## How the font sizer actually works, and how far it reaches
 

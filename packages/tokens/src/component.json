@@ -87,13 +87,13 @@
     },
     "pillBg": {
       "$type": "color",
-      "$description": "Selected font-size pill fill (Figma overlay/on-brand/pressed, #ffffff29 = 16%).",
+      "$description": "ACTIVE state layer — Figma `overlay/on-brand/pressed`, #ffffff29 = 16%. Per the component's States documentation, ACTIVE covers BOTH senses: a control being pressed, AND the current selection (the middle A at default size). One value, two meanings, deliberately — the name still says `pill` for historical reasons and is flagged for a rename.",
       "$value": "rgba(255, 255, 255, 0.16)"
     },
     "hoverBg": {
       "$type": "color",
-      "$description": "Hover state layer for the bar's controls on the brand fill.",
-      "$value": "rgba(255, 255, 255, 0.12)"
+      "$description": "HOVER state layer for the bar's controls on the brand fill — Figma `overlay/on-brand/hover`, #ffffff14 = 8%. It carried 0.12 until 2026-08-18, an invented value that disagreed with the published variable and with the component's own States documentation. `overlay/on-brand/*` has no Tier-2 name in code yet (the grammar has no `on-brand` family), which is why this mirrors it at Tier 3 rather than aliasing it.",
+      "$value": "rgba(255, 255, 255, 0.08)"
     },
     "stepSize": {
       "$type": "dimension",
