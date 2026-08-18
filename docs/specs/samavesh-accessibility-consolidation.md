@@ -133,3 +133,35 @@ hardcoded non-Noto font on the trigger label. Zero functional risk — it's a CS
 widget itself defines for exactly this purpose — and the panel's existing `font-family: "Noto
 Sans"` and 8–16px border-radius scale already matched our system, so no further overrides
 were needed.
+
+---
+
+## Amendment — 2026-08-14: the bar owns text size
+
+This spec's premise was **one mechanism, and the widget is it**. That was the right call in
+August 2026, when every other font-size control on the estate was a dead stub — the point of the
+consolidation was to delete controls that moved nothing.
+
+The AccessibilityBar's stepper was, until today, in exactly that category: it wrote
+`--sa-font-scale` and **nothing read it**. It was not a competing mechanism; it was an inert one.
+
+That is now fixed, and the rule changes with it:
+
+- `--sa-font-scale` drives the **root font size** (`:root[data-sa-font-scale]`), so the whole
+  rem-based type ramp, spacing and control sizing scale with it. Measured on `/portals/nhapoa`:
+  root `14.4 → 16 → 17.6 → 19.2px` across the four steps, with a real paragraph tracking it
+  `12.6 → 14 → 15.4 → 16.8px`.
+- The choice **persists** in `localStorage` under `sa-font-scale`.
+- Where the bar renders its accessibility entry, the widget's floating button is **hidden**
+  (`:root[data-sa-abar-a11y="1"] #uw-widget-custom-trigger { display: none !important }`) so there
+  is one door to the panel, not two. It is hidden and **never unmounted** — the bar's icon opens
+  the panel by dispatching a click on that very element, so removing it would silently break the
+  icon. Verified: FAB hidden, still in the DOM, panel still opens from the bar.
+- `SiteHeader` therefore ships `fontSize` **on**. The Figma library already had it on across all
+  39 nested instances, so this closes a code-side divergence rather than creating one.
+
+**Unchanged:** contrast, spacing, dark mode and the accessibility profiles remain the widget's,
+and the widget stays mounted on every page. Mechanism C (per-portal bespoke font state) stays
+deleted — nmba's `data-fontscale` is driven *from* the bar via `onFontScaleChange`, not by a
+second control.
+

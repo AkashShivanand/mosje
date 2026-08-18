@@ -94,6 +94,44 @@ Material Symbols glyphs render at 12 (launch) / 20 (controls); `min-height` 46px
 divider `rgba(255,255,255,0.4)` at 1×20; pill 32px; mobile collapses the cluster while
 the skip link survives; font scale 1 → 1.1; the accessibility icon opens the UX4G widget.
 
+## Font size — how it actually works (2026-08-14)
+
+The stepper drives the **root font size**, not each type token:
+
+```css
+:root[data-sa-font-scale] { font-size: calc(100% * var(--sa-font-scale, 1)); }
+```
+
+The whole type scale is authored in `rem` — including the min and max of every fluid `clamp()` —
+so one root change carries the ramp, rem-based spacing, control heights and icons. The rule is
+**armed by the attribute**, which the component sets on mount, so a page with no bar keeps the
+browser's own root size and the reader's own zoom is never overridden.
+
+**Measured** on `/portals/nhapoa`: root `14.4 → 16 → 17.6 → 19.2px` across the four steps; a real
+paragraph tracked it `12.6 → 14 → 15.4 → 16.8px`.
+
+**Documented limit:** the `vw` term inside a fluid `clamp()` is viewport-derived and does not
+scale, so fluid roles reach their (scaling) ceiling sooner than fixed ones. Large text still grows.
+
+The choice persists in `localStorage` (`sa-font-scale`), restored on mount, inside `try/catch` so
+blocked storage degrades to per-page-view scaling rather than throwing.
+
+## The widget's floating button is HIDDEN, never unmounted
+
+```css
+:root[data-sa-abar-a11y="1"] #uw-widget-custom-trigger { display: none !important; }
+```
+
+Two doors to one panel is worse than one, so where the bar offers the accessibility entry the
+vendor's FAB is hidden. **It must stay in the DOM**: `openUx4gWidget()` opens the panel by
+dispatching a click on that element, so unmounting the widget silently breaks the bar's icon.
+`display: none` keeps the element and the vendor's listeners alive, and a dispatched click still
+reaches a hidden element. `!important` because the vendor stylesheet loads after ours. The flag is
+set only while a bar with `accessibility` is mounted, so if the bar unmounts — or renders
+`accessibility={false}` — the floating button returns and the widget is never unreachable.
+
+Verified live: FAB `display: none`, still present in the DOM, panel still opens from the bar's icon.
+
 ## Anatomy
 
 ```

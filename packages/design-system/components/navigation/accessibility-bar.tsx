@@ -79,6 +79,8 @@ export interface AccessibilityBarProps {
 /** A−, default, A+, A++ — the reader's text-size steps. */
 const FONT_SCALES = [0.9, 1, 1.1, 1.2] as const;
 const DEFAULT_SCALE_INDEX = 1;
+/** Where the reader's chosen text size persists across pages. */
+const FONT_SCALE_KEY = "sa-font-scale";
 
 /** The id the official UX4G widget script gives its own floating trigger. */
 const UX4G_TRIGGER_ID = "uw-widget-custom-trigger";
@@ -152,13 +154,46 @@ export function AccessibilityBar({
 }: AccessibilityBarProps): React.JSX.Element {
   const [scaleIx, setScaleIx] = React.useState(DEFAULT_SCALE_INDEX);
 
+  // Restore the reader's choice before first paint where possible. A text-size
+  // control that forgets on every navigation is not an accessibility feature.
+  React.useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(FONT_SCALE_KEY);
+      if (saved === null) return;
+      const ix = FONT_SCALES.indexOf(Number(saved) as (typeof FONT_SCALES)[number]);
+      if (ix >= 0) setScaleIx(ix);
+    } catch {
+      /* storage blocked (private mode, cookie policy) — fall back to the default */
+    }
+  }, []);
+
   React.useEffect(() => {
     const scale = FONT_SCALES[scaleIx] ?? 1;
     const root = document.documentElement;
     root.style.setProperty("--sa-font-scale", String(scale));
+    // `data-sa-font-scale` is what ARMS the :root font-size rule in the stylesheet
+    // (see accessibility-bar.css). Without the attribute the rule does not apply,
+    // so a page with no bar keeps the browser's own root size untouched.
     root.dataset.saFontScale = String(scale);
+    try {
+      window.localStorage.setItem(FONT_SCALE_KEY, String(scale));
+    } catch {
+      /* storage blocked — the scale still applies for this page view */
+    }
     onFontScaleChange?.(scale);
   }, [scaleIx, onFontScaleChange]);
+
+  // Tell the stylesheet a bar is on the page AND offering the widget entry, so the
+  // vendor's floating button can be hidden. Cleared on unmount so a page that drops
+  // the bar gets the floating button back rather than losing the widget entirely.
+  React.useEffect(() => {
+    const root = document.documentElement;
+    if (!accessibility) return;
+    root.dataset.saAbarA11y = "1";
+    return () => {
+      delete root.dataset.saAbarA11y;
+    };
+  }, [accessibility]);
 
   const dec = () => setScaleIx((i) => Math.max(0, i - 1));
   const inc = () => setScaleIx((i) => Math.min(FONT_SCALES.length - 1, i + 1));

@@ -1497,7 +1497,14 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 **Key props**: `govLink`, `skipTo`, `showSkip`, `fontSize`, `accessibility`, `accessibilityHref`, `onAccessibility`, `language`, `layout`, `maxWidth`, `device`, `onFontScaleChange`  
 **Rules**:
 - Every control is keyboard-operable and labelled; the skip link is the first interactive element and must target an id that exists.
-- The font-size stepper drives a `--sa-font-scale` variable (+ `data-sa-font-scale`) on the document root; content sized in `rem` reflows. Pass `onFontScaleChange` to persist the choice.
+- The font-size stepper drives `--sa-font-scale` (+ `data-sa-font-scale`) on the document root, and
+  the component's stylesheet CONSUMES it: `:root[data-sa-font-scale] { font-size: calc(100% * var(--sa-font-scale)) }`.
+  The whole rem-based ramp scales. Armed by the attribute, so a page without a bar keeps the browser's
+  own root size. The choice persists in `localStorage` (`sa-font-scale`). Until 2026-08-14 the variable
+  was written and read by nothing — the control was inert.
+- Where the bar renders its accessibility entry it sets `data-sa-abar-a11y`, which HIDES the UX4G
+  widget's floating button (`display: none !important`). **Hidden, never unmounted** — the bar's icon
+  opens the panel by dispatching a click on that element.
 - **This standalone bar keeps font-size because the Figma component does.** `SiteHeader` renders its OWN Tier-1 bar with font-size deliberately removed — the UX4G widget is the single canonical mechanism for font-size/contrast estate-wide (see the accessibility-consolidation spec). Do not enable font-size in both at once.
 - **There is NO `tone` prop.** Blue vs Navy is the brand axis — `data-brand="navy"` on the bar
   or an ancestor re-resolves `bg/brand/primary/bolder` to the navy ramp (#003366), which is what

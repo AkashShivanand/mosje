@@ -23,8 +23,10 @@ import { SiteHeader } from "@mosje/design-system";
 Three tiers, top to bottom:
 
 1. **AccessibilityBar** — Government of India link (left); skip-to-content, accessibility
-   options and language (right). `Font size` is **off** here: the UX4G widget is the
-   estate's single mechanism for text size and contrast.
+   options and language (right). `Font size` is **on** since 2026-08-14 — the stepper now
+   drives the root font size, so it is the direct, visible way to resize text, and the
+   widget's floating button is hidden wherever the bar offers the same entry. The widget
+   keeps contrast, spacing and dark mode.
 2. **Brand row** — National Emblem lockup + government wordmark, optional BETA badge,
    search, and the primary action (Login on the website, account menu on portals).
 3. **Navigation row** — nav items with simple dropdowns and the mega-menu. Rendered only
@@ -145,6 +147,9 @@ Semantics: `nav[aria-label]` landmark · `aria-current="page"` on the active ite
   They passed a naive "is it bound?" audit while meaning the wrong thing.
 - **`Font size` set off on all 13 nested AccessibilityBar instances**, matching
   `site-header.tsx`. It had silently reverted to the component default.
+  *(Superseded in 2026-08-14: font size is ON again on both sides — see Anatomy. A
+  re-check that day found all 39 nested instances already ON, so the code, not the
+  library, was the outlier.)*
 - Props & API table rewritten to 9 code-aligned rows; family count corrected to 9.
 
 ## Changed in 2.2.0
