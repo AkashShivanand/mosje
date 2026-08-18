@@ -115,17 +115,38 @@ export default function AccessibilityBarPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="font-size" style={h2Style}>Font size</h2>
         <p style={leadStyle}>
-          The A−/A/A+ stepper drives a <code>--sa-font-scale</code> CSS variable on the document
-          root (and a <code>data-sa-font-scale</code> attribute). Content that sizes in{" "}
-          <code>rem</code> — or reads the variable — reflows with the reader&apos;s choice. Pass{" "}
-          <code>onFontScaleChange</code> to persist it across pages.
+          The A−/A/A+ stepper sets <code>--sa-font-scale</code> and{" "}
+          <code>data-sa-font-scale</code> on the document root, and a single rule consumes it:{" "}
+          <code>:root[data-sa-font-scale] &#123; font-size: calc(100% * var(--sa-font-scale, 1)) &#125;</code>.
+          Scaling the <strong>root</strong> carries the whole ramp, because the type scale is
+          authored in <code>rem</code> — including both ends of every fluid <code>clamp()</code> —
+          along with rem-based spacing, control heights and icons. The choice persists in{" "}
+          <code>localStorage</code> and is restored on mount; <code>onFontScaleChange</code> is for
+          consumers that need to mirror it somewhere else.
         </p>
-        <Callout type="info" title="Bar vs. widget">
-          This standalone bar keeps the font-size control because the Figma component does. Note
-          that <code>SiteHeader</code> renders its own Tier-1 bar with font-size deliberately{" "}
-          <em>removed</em> — the official UX4G accessibility widget is the single canonical
-          mechanism for font-size and contrast estate-wide. Use this component directly when you
-          want the full bar in isolation.
+        <Callout type="info" title="Armed by the attribute, not the fallback">
+          The rule keys off <code>[data-sa-font-scale]</code>, which only a mounted bar sets. A page
+          with no bar keeps the browser&apos;s own root size, so we never take over the
+          reader&apos;s browser zoom uninvited.
+        </Callout>
+        <Callout type="warning" title="Two honest limits">
+          The <code>vw</code> term inside a fluid <code>clamp()</code> is viewport-derived and does
+          not scale, so fluid roles reach their (scaling) ceiling sooner. More importantly,{" "}
+          <strong>hardcoded px in consuming markup is out of reach</strong>. Measured 1 → 1.2 on
+          2026-08-18: this documentation surface resizes <strong>80.4%</strong> of its text
+          elements, a portal <strong>29.3%</strong>, and the public homepage only{" "}
+          <strong>14.0%</strong> — because that app is authored in Tailwind arbitrary px
+          (<code>text-[15px]</code> and friends). The mechanism is correct; those pages are the
+          defect.
+        </Callout>
+        <Callout type="info" title="Bar vs. widget — the masthead reversed on 2026-08-18">
+          <code>SiteHeader</code> used to pass <code>fontSize=&#123;false&#125;</code>, on the
+          grounds that the UX4G widget was the single mechanism and a second stepper would double
+          up. That premise was never true in practice: the stepper wrote a variable{" "}
+          <em>nothing read</em>, so it was not a competing mechanism, it was an inert control. It
+          is <strong>ON</strong> now, and the widget&apos;s floating button is hidden wherever the
+          bar offers the same entry — one door, not two. Contrast, spacing and dark mode remain the
+          widget&apos;s.
         </Callout>
         <div style={{ marginTop: "var(--sa-padding-l)" }}>
           <AccessibilityBarFontSizePreview />
@@ -211,7 +232,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
             },
             {
               type: "dont",
-              label: "Don't duplicate font-size/contrast in both the bar and the UX4G widget. Pick one mechanism per property so a reader isn't given two conflicting controls.",
+              label: "Don't surface the same property in both the bar and the widget's floating button. One property, one visible door: text size is the bar's, contrast and spacing are the widget's, and the FAB is hidden (not unmounted) where the bar already offers the entry.",
               preview: (
                 <div style={{ display: "flex", gap: "var(--sa-stack-s)", alignItems: "center", color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-label-2-size)" }}>
                   <span style={{ display: "inline-flex", gap: "var(--sa-stack-xs)", padding: "var(--sa-stack-xs) var(--sa-stack-s)", borderRadius: "var(--sa-shape-xs)", background: "var(--sa-bg-neutral-subtler)" }}>A− A A+</span>
@@ -245,12 +266,15 @@ export default function AccessibilityBarPage(): React.JSX.Element {
             { name: "govLink", type: "{ href?; label?; flagSrc? }", default: "Government of India → india.gov.in", description: "The top-left link. Pass flagSrc to show the emblem/flag chip." },
             { name: "skipTo", type: "string", default: '"#main-content"', description: "Skip-link target. Must be an id that exists on the page." },
             { name: "showSkip", type: "boolean", default: "true", description: "Show the Skip to Main Content link." },
+            { name: "skipLabel", type: "string", default: '"Skip to Main Content"', description: "The skip link's visible text (Figma: Skip label). A prop rather than a fixed string because the estate is bilingual — a Hindi surface needs its own wording." },
             { name: "fontSize", type: "boolean", default: "true", description: "Show the A−/A/A+ font-size control." },
             { name: "accessibility", type: "boolean", default: "true", description: "Show the accessibility entry (button or link)." },
             { name: "accessibilityHref", type: "string", default: '"/accessibility-statement"', description: "GIGW accessibility-statement page. Used when onAccessibility is not set." },
             { name: "onAccessibility", type: "() => void", description: "Makes the accessibility control a button (opens a dialog/widget). Set this OR accessibilityHref." },
             { name: "language", type: "{ label?; onClick? } | false", default: '{ label: "English" }', description: "Language selector. Pass false to hide." },
             { name: "layout", type: '"narrow" | "wide" | "fluid"', default: '"wide"', description: "Inner content-container width (720 / 1200 / full-bleed)." },
+            { name: "device", type: '"auto" | "mobile" | "tablet" | "desktop" | "desktop-xl"', default: '"auto"', description: "Figma's Device axis. auto resolves the same breakpoints in CSS so one instance adapts; pin a device only to reproduce a single variant." },
+            { name: "maxWidth", type: "number", description: "Explicit container max-width (px), overriding the layout preset. SiteHeader passes its own so the bar aligns with the rows below it." },
             { name: "onFontScaleChange", type: "(scale: number) => void", description: "Notified when the reader changes the font scale (0.9–1.2). Persist it to keep the choice across pages." },
             { name: "className", type: "string", description: "Additional classes merged onto the root." },
           ]}

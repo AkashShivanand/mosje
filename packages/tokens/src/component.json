@@ -97,8 +97,13 @@
     },
     "stepSize": {
       "$type": "dimension",
-      "$description": "A- / A+ step button hit area.",
+      "$description": "A- / A+ step button hit area. 24 is the WCAG 2.2 AA Target Size (Minimum) floor exactly, so this token may never go below it.",
       "$value": "{size.24}"
+    },
+    "iconButtonSize": {
+      "$type": "dimension",
+      "$description": "Accessibility / language icon-button hit area. Was a raw 28px literal in the component CSS until 2026-08-18; 28 sits one step above the WCAG 2.2 AA 24px floor because these buttons carry a glyph plus, for language, a text label.",
+      "$value": "{size.28}"
     },
     "launchIconSize": {
       "$type": "dimension",

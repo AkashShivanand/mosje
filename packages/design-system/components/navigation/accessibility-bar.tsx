@@ -34,6 +34,16 @@ export interface AccessibilityBarProps {
   skipTo?: string;
   /** Show the "Skip to Main Content" link. @default true */
   showSkip?: boolean;
+  /**
+   * The skip link's visible text, mirroring Figma's `Skip label` text property.
+   * @default "Skip to Main Content"
+   *
+   * It is a prop rather than a fixed string because this estate is bilingual: a
+   * Hindi surface needs "मुख्य सामग्री पर जाएँ", and a hardcoded English literal
+   * makes that impossible without forking the component. GIGW's wording is the
+   * default, not a lock.
+   */
+  skipLabel?: string;
   /** Show the A−/A/A+ font-size control. @default true */
   fontSize?: boolean;
   /** Show the accessibility entry (opens the UX4G accessibility widget). @default true */
@@ -79,9 +89,22 @@ export interface AccessibilityBarProps {
 /** A−, default, A+, A++ — the reader's text-size steps. */
 const FONT_SCALES = [0.9, 1, 1.1, 1.2] as const;
 const DEFAULT_SCALE_INDEX = 1;
+/** Where the reader's chosen text size persists across pages. */
+const FONT_SCALE_KEY = "sa-font-scale";
 
 /** The id the official UX4G widget script gives its own floating trigger. */
 const UX4G_TRIGGER_ID = "uw-widget-custom-trigger";
+
+/**
+ * How many mounted bars are currently offering the accessibility entry.
+ *
+ * It is a COUNT, not a boolean, and that matters: the documentation page renders
+ * several AccessibilityBar previews at once, and a plain set-on-mount /
+ * delete-on-unmount flag let the first preview to unmount clear the attribute
+ * while other bars were still on the page — which un-hid the vendor's floating
+ * button underneath a live bar. Only the last bar out clears the flag.
+ */
+let a11yEntryCount = 0;
 
 /**
  * Open the official UX4G accessibility widget, returning whether it was there.
@@ -121,8 +144,15 @@ function openUx4gWidget(): boolean {
 
 /**
  * The bar's glyphs are the SAME Material Symbols the Figma master instances —
- * `launch`, `text_decrease`, `text_increase`, `accessibility_new`, `language`,
- * `arrow_drop_down` — rather than hand-drawn vectors, per the estate icon rule.
+ * `launch`, `text_decrease`, `font_download`, `text_increase`, `accessibility_new`,
+ * `translate_indic`, `arrow_drop_down` — rather than hand-drawn vectors, per the
+ * estate icon rule.
+ *
+ * `font_download` and `translate_indic` replaced a literal "A" and the generic
+ * `language` globe on 2026-08-18, matching glyph swaps the designer made in the
+ * Figma master. `translate_indic` is the better call on its own merits — it is the
+ * Devanagari-aware translate glyph, and this estate's language switch is
+ * English↔Hindi, not a generic locale picker.
  *
  * Sizes mirror the tokens: `icon/size/20` for the controls, and the GoI link's
  * launch glyph at 12 (`cmp/accessibilityBar/launchIconSize`). `<Icon>` sets
@@ -139,6 +169,7 @@ export function AccessibilityBar({
   govLink = { href: "https://india.gov.in/", label: "Government of India" },
   skipTo = "#main-content",
   showSkip = true,
+  skipLabel = "Skip to Main Content",
   fontSize = true,
   accessibility = true,
   accessibilityHref = "/accessibility-statement",
@@ -152,13 +183,70 @@ export function AccessibilityBar({
 }: AccessibilityBarProps): React.JSX.Element {
   const [scaleIx, setScaleIx] = React.useState(DEFAULT_SCALE_INDEX);
 
+  /**
+   * Restore-then-apply, in ONE effect, deliberately.
+   *
+   * Two effects (restore, then apply) looked equivalent and was not: on mount the
+   * apply effect ran FIRST with the default index, so it wrote scale 1 to the root
+   * and — worse — wrote "1" over the reader's stored preference before the restore
+   * effect's setState had re-rendered. A reader who had chosen A++ saw the page
+   * snap to 100% and then to 120%, and any unmount caught in between persisted the
+   * wrong value. Restoring inside the same effect and bailing out before the apply
+   * removes both: the stored scale is applied once, and nothing is written until
+   * the restore has had its say.
+   */
+  const restored = React.useRef(false);
   React.useEffect(() => {
+    if (!restored.current) {
+      restored.current = true;
+      try {
+        const raw = window.localStorage.getItem(FONT_SCALE_KEY);
+        if (raw !== null) {
+          const ix = FONT_SCALES.indexOf(Number(raw) as (typeof FONT_SCALES)[number]);
+          // Bail before applying: the setState re-runs this effect with the restored
+          // index, which then applies exactly once.
+          if (ix >= 0 && ix !== scaleIx) {
+            setScaleIx(ix);
+            return;
+          }
+        }
+      } catch {
+        /* storage blocked (private mode, cookie policy) — keep the default */
+      }
+    }
+
     const scale = FONT_SCALES[scaleIx] ?? 1;
     const root = document.documentElement;
     root.style.setProperty("--sa-font-scale", String(scale));
+    // `data-sa-font-scale` is what ARMS the :root font-size rule in the stylesheet
+    // (see accessibility-bar.css). Without the attribute the rule does not apply,
+    // so a page with no bar keeps the browser's own root size untouched.
     root.dataset.saFontScale = String(scale);
+    try {
+      window.localStorage.setItem(FONT_SCALE_KEY, String(scale));
+    } catch {
+      /* storage blocked — the scale still applies for this page view */
+    }
     onFontScaleChange?.(scale);
   }, [scaleIx, onFontScaleChange]);
+
+  // Tell the stylesheet a bar is on the page AND offering the widget entry, so the
+  // vendor's floating button can be hidden. Refcounted, so on a page with several
+  // bars (the documentation previews) the last one out clears the flag rather than
+  // the first — otherwise the floating button reappears under a live bar.
+  React.useEffect(() => {
+    if (!accessibility) return;
+    const root = document.documentElement;
+    a11yEntryCount += 1;
+    root.dataset.saAbarA11y = "1";
+    return () => {
+      a11yEntryCount -= 1;
+      if (a11yEntryCount <= 0) {
+        a11yEntryCount = 0;
+        delete root.dataset.saAbarA11y;
+      }
+    };
+  }, [accessibility]);
 
   const dec = () => setScaleIx((i) => Math.max(0, i - 1));
   const inc = () => setScaleIx((i) => Math.min(FONT_SCALES.length - 1, i + 1));
@@ -207,7 +295,7 @@ export function AccessibilityBar({
         <div className="sa-abar__end">
           {showSkip && (
             <>
-              <a href={skipTo} className="sa-abar__skip">Skip to Main Content</a>
+              <a href={skipTo} className="sa-abar__skip">{skipLabel}</a>
               <span className="sa-abar__sep" aria-hidden="true" />
             </>
           )}
@@ -218,7 +306,9 @@ export function AccessibilityBar({
                 <button type="button" className="sa-abar__fsbtn" onClick={dec} disabled={scaleIx === 0} aria-label="Decrease text size">
                   <Icon name="text_decrease" size={ICON_SIZE} aria-hidden />
                 </button>
-                <button type="button" className={cn("sa-abar__fsbtn", "is-current", scaleIx === DEFAULT_SCALE_INDEX && "is-active")} onClick={reset} aria-label="Reset text size" aria-pressed={scaleIx === DEFAULT_SCALE_INDEX}>A</button>
+                <button type="button" className={cn("sa-abar__fsbtn", "is-current", scaleIx === DEFAULT_SCALE_INDEX && "is-active")} onClick={reset} aria-label="Reset text size" aria-pressed={scaleIx === DEFAULT_SCALE_INDEX}>
+                  <Icon name="font_download" size={ICON_SIZE} aria-hidden />
+                </button>
                 <button type="button" className="sa-abar__fsbtn" onClick={inc} disabled={scaleIx === FONT_SCALES.length - 1} aria-label="Increase text size">
                   <Icon name="text_increase" size={ICON_SIZE} aria-hidden />
                 </button>
@@ -245,7 +335,7 @@ export function AccessibilityBar({
 
           {language && (
             <button type="button" className="sa-abar__icbtn has-text" aria-label="Select language" title="Select language" onClick={language.onClick}>
-              <Icon name="language" size={ICON_SIZE} aria-hidden />
+              <Icon name="translate_indic" size={ICON_SIZE} aria-hidden />
               {language.label && <span>{language.label}</span>}
               <Icon name="arrow_drop_down" size={ICON_SIZE} aria-hidden />
             </button>

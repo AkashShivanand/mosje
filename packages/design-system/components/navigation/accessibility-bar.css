@@ -32,7 +32,10 @@
   /* UX4G Navbar spec: Noto Sans Medium, 12/16 in the bar. */
   font-size: var(--sa-type-label-2-size);
   line-height: var(--sa-type-label-2-lh);
-  letter-spacing: 0.1px;
+  /* Figma binds this to type/label/tracking, which is 0. It was a raw 0.1px here
+     until 2026-08-18 — a literal that no token backed and that disagreed with the
+     master by 0.1px per character. */
+  letter-spacing: var(--sa-type-label-tracking);
 }
 .sa-abar.layout-narrow .sa-abar__in { max-width: var(--sa-container-narrow); }
 .sa-abar.layout-wide   .sa-abar__in { max-width: var(--sa-container-wide); }
@@ -137,8 +140,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--sa-inline-2xs);
-  height: 28px;
-  min-width: 28px;
+  height: var(--sa-cmp-accessibilityBar-iconButtonSize);
+  min-width: var(--sa-cmp-accessibilityBar-iconButtonSize);
   padding: 0 var(--sa-inline-2xs);
   border: none;
   border-radius: var(--sa-shape-full);
@@ -161,4 +164,46 @@
   outline: 2px solid var(--sa-text-neutral-inverse);
   outline-offset: 2px;
   border-radius: var(--sa-shape-xs);
+}
+
+/* ── The font sizer, made real ────────────────────────────────────────────────
+   Until 2026-08-14 the A−/A/A+ control WROTE `--sa-font-scale` and nothing read
+   it, so the buttons moved a variable and not a single pixel of text. This is the
+   consumer.
+
+   Scaling the ROOT font size is the mechanism, not multiplying each type token:
+   the whole type scale is authored in `rem` (including the min/max of every fluid
+   `clamp()`), so one root change carries the entire ramp, plus every rem-based
+   spacing, control height and icon. The `vw` term inside a fluid clamp is the one
+   part that does NOT scale — it is viewport-derived by definition — so fluid roles
+   scale slightly less than 20% at the top step. That is a documented limit, not a
+   bug: the clamp's own ceiling is a rem value and it scales, so large text still
+   grows; it simply reaches its ceiling sooner.
+
+   The rule is ARMED BY THE ATTRIBUTE, not by the variable's fallback. A page with
+   no AccessibilityBar never gets `data-sa-font-scale`, so its root size is left
+   exactly as the browser (and the reader's own browser zoom / font preference) set
+   it. We never take that over uninvited. */
+:root[data-sa-font-scale] {
+  font-size: calc(100% * var(--sa-font-scale, 1));
+}
+
+/* ── The vendor's floating button, hidden rather than unmounted ───────────────
+   Where the bar offers the accessibility entry, the UX4G widget's own floating FAB
+   is redundant chrome — two doors to one panel, one of them covering page content.
+
+   IT IS HIDDEN, NEVER UNMOUNTED, AND THAT IS LOAD-BEARING. The bar's icon opens the
+   panel by dispatching a click on `#uw-widget-custom-trigger` — the FAB itself. Take
+   it out of the DOM and the bar's icon silently stops working, because the thing it
+   clicks no longer exists. `display: none` keeps the element (and the vendor's
+   listeners) alive; a dispatched click still reaches a hidden element, since that is
+   programmatic dispatch and not hit-testing.
+
+   `!important` because the vendor's own stylesheet sets display on this element and
+   loads after ours. Scoped to `[data-sa-abar-a11y]`, which the component sets only
+   while a bar with `accessibility` is mounted — so if the bar unmounts, or renders
+   with `accessibility={false}`, the floating button comes straight back and the
+   widget is never unreachable. */
+:root[data-sa-abar-a11y="1"] #uw-widget-custom-trigger {
+  display: none !important;
 }

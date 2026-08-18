@@ -18,15 +18,86 @@ stepper**, which drives a `--sa-font-scale` variable (and `data-sa-font-scale`)
 on the document root so `rem`-sized content reflows; `onFontScaleChange`
 persists it. Props: `govLink`, `skipTo`, `showSkip`, `fontSize`,
 `accessibility`, `accessibilityHref`, `onAccessibility`, `language`, `layout`
-(`narrow`/`wide`/`fluid`), `tone` (`blue`/`navy`), `onFontScaleChange`.
+(`narrow`/`wide`/`fluid`), `device`, `skipLabel`, `maxWidth`, `onFontScaleChange`.
+**There is no `tone` prop** — this file listed one until 2026-08-18 and the code has
+never had it. Blue vs Navy is the `data-brand` axis (Figma models it as Palette
+MODES), which is why the master has no Tone variant. Never reintroduce a colour prop.
 Documented at `/design-system/components/accessibility-bar`, story at
 `apps/storybook/stories/AccessibilityBar.stories.tsx`.
 
-> **Not yet wired into `SiteHeader`.** SiteHeader still renders its own Tier-1
-> bar with font-size deliberately removed (widget-canonical, per the
-> accessibility-consolidation spec). Migrating SiteHeader onto this component —
-> and deciding whether the live public masthead should surface font-size — is a
-> flagged human decision, and Code Connect mapping (Figma ↔ code) is pending.
+> **Wired into `SiteHeader`, with font size ON (2026-08-18).** Both halves of the
+> note that used to sit here were stale. `SiteHeader` renders this component (see
+> `site-header.tsx`), and the flagged decision — "should the live public masthead
+> surface font size?" — is now answered **yes**. See "The masthead reversal" below.
+
+## Changed in Figma since the last sync — recorded 2026-08-18
+
+The designer edited the master after the 2026-08-12 parity pass. Read back from
+`get_context_for_code_connect` + `get_variable_defs` + a 3.2× render of
+`Device=Desktop, Layout=Wide`, and diffed against what this file and the Code
+Connect template claimed. **Two glyph swaps, nothing structural:**
+
+| Element | Repo believed | Figma now | Code |
+|---|---|---|---|
+| Font-size pill (middle) | plain `A` text, "no double box" | **`font_download`** | matched |
+| Language | `language` (globe) | **`translate_indic`** | matched |
+
+Everything else held: 9 variants (Mobile {Fluid}, Tablet {Narrow, Fluid}, Desktop
+and Desktop XL {Narrow, Wide, Fluid}), the same 9 properties, `Divider` still an
+instance at `Orientation=Vertical, Tone=Inverse subtle`, and the same token set.
+The variant ordering is already correct per `component-authoring.md` §10 — Device
+ascending by viewport, Layout ascending by content width.
+
+> **FLAGGED — `font_download` reinstates the double box this spec once rejected.**
+> The glyph draws its own rounded outline, and it sits on the 32px pill, which is
+> also a box. The token map below still carries the old decision's words: *"plain
+> 'A' glyph (no double box)"*. Code now follows Figma, because Figma is the source
+> of truth per the 2026-08-12 decision — but the two records disagree and only the
+> designer can settle which is intended. It is also worth noting the glyph reads as
+> *"font"* rather than *"reset to the default size"*; the `aria-label` carries the
+> real meaning, so this is a visual-clarity question, not an accessibility one.
+
+## The masthead reversal (2026-08-18)
+
+`SiteHeader` shipped `fontSize={false}`, justified in `2f683c1` as "the widget is
+the single mechanism; a second stepper doubles up". **That premise was never true
+in practice** — the stepper wrote `--sa-font-scale` and nothing read it, so it was
+not a competing mechanism, it was an inert control. With the variable now consumed
+(see below) it becomes the direct, visible way to resize text, and the widget's
+floating button is hidden wherever the bar offers the same entry. One door, not two.
+Contrast, spacing and dark mode remain the widget's.
+
+**Open divergence, not yet closed:** the Figma library holds **13 nested
+AccessibilityBar instances** set to font-size OFF expressly to match the old code,
+and `navbar.md`'s Anatomy says the same. Flipping code without flipping them
+recreates the drift this file exists to prevent. Logged here as open.
+
+## How the font sizer actually works, and how far it reaches
+
+`:root[data-sa-font-scale] { font-size: calc(100% * var(--sa-font-scale, 1)) }`.
+Scaling the **root** carries the whole ramp because the type scale is authored in
+`rem` (including both ends of every fluid `clamp()`), along with rem-based spacing,
+control heights and icons. The rule is armed by the **attribute**, never by the
+variable's fallback, so a page with no bar keeps the reader's own browser zoom.
+
+Two honest limits, measured rather than assumed:
+
+1. **The `vw` term inside a fluid `clamp()` does not scale** — it is viewport-derived
+   by definition — so fluid roles reach their (scaling) ceiling sooner.
+2. **Hardcoded px in consuming markup is out of reach.** Measured at scale 1 → 1.2
+   on 2026-08-18:
+
+   | Surface | Text elements | Actually resize |
+   |---|---|---|
+   | `/design-system/components/accessibility-bar` | 285 | **80.4 %** |
+   | `/portals/nhapoa` | 123 | **29.3 %** |
+   | `/website` (public homepage) | 272 | **14.0 %** |
+
+   The homepage is authored in Tailwind arbitrary px — `text-[15px]`, `text-[14px]`,
+   `text-[13px]`, `text-[11px]` — which no root change can move. **The mechanism is
+   correct; the consuming pages are not.** A citizen pressing A+ on the homepage
+   today sees almost nothing move, and that is a content-authoring defect to fix in
+   the website app, not a reason to change the mechanism.
 
 ## Figma ↔ code parity audit (2026-08-12)
 

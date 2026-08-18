@@ -16,10 +16,14 @@
 //   Language          -> language    (boolean in Figma; {label} | false in code)
 //   Government label  -> govLink.label
 //   Language label    -> language.label
-//   Skip label        -> DELIBERATELY OMITTED. The code fixes the skip text to
-//                        "Skip to Main Content" (GIGW wording) and exposes only
-//                        `skipTo`, the target id. There is no code prop to map it
-//                        to, and the skill's rule is to omit rather than invent one.
+//   Skip label        -> skipLabel   (NEWLY MAPPED, 2026-08-18)
+//
+// `Skip label` used to be listed here as "deliberately omitted, there is no code
+// prop to map it to". That was accurate and it was also the wrong resting place:
+// the reason there was no prop is that the component hardcoded the English string,
+// which on a bilingual estate is a defect rather than a design. The prop exists
+// now, so the property is mapped and the omission note is gone. All 9 Figma
+// properties are mapped; none are omitted.
 //
 // TONE IS NOT A PROPERTY. Blue vs Navy is resolved by the `data-color-mode` brand
 // axis (Figma's Palette collection modes), not by a variant — which is why the
@@ -35,6 +39,7 @@ const language = instance.getBoolean("Language");
 
 const govLabel = instance.getString("Government label");
 const langLabel = instance.getString("Language label");
+const skipLabel = instance.getString("Skip label");
 
 const layout = instance.getEnum("Layout", {
   Narrow: "narrow",
@@ -55,6 +60,7 @@ export default {
   example: figma.code`<AccessibilityBar
   govLink={{ label: "${govLabel}" }}
   showSkip={${skip}}
+  skipLabel="${skipLabel}"
   fontSize={${fontSize}}
   accessibility={${accessibility}}
   language={${language ? figma.code`{ label: "${langLabel}" }` : "false"}}

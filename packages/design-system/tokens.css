@@ -895,6 +895,7 @@
   --sa-cmp-accessibilityBar-pillBg: rgba(255, 255, 255, 0.16);
   --sa-cmp-accessibilityBar-hoverBg: rgba(255, 255, 255, 0.12);
   --sa-cmp-accessibilityBar-stepSize: var(--sa-ref-size-24);
+  --sa-cmp-accessibilityBar-iconButtonSize: var(--sa-ref-size-28);
   --sa-cmp-accessibilityBar-launchIconSize: var(--sa-ref-size-12);
   --sa-cmp-action-brand-primary-default-bg: var(--sa-color-primaryScale-600);
   --sa-cmp-action-brand-primary-default-text: var(--sa-color-neutralScale-0);

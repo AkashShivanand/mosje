@@ -127,3 +127,25 @@ export const AccessibilityAsButton: Story = {
     onAccessibility: () => window.alert("Open accessibility options"),
   },
 };
+
+/**
+ * **`skipLabel` — the skip link is translatable.** The text was a hardcoded English
+ * string until 2026-08-18, which on a bilingual estate is a defect rather than a
+ * design: a Hindi surface needs its own wording and could not have it without
+ * forking the component. GIGW's "Skip to Main Content" remains the default, so no
+ * existing call site moves.
+ *
+ * Mirrors Figma's `Skip label` text property, which the Code Connect template now
+ * maps (it previously recorded the omission honestly, for want of a prop to map to).
+ *
+ * Note what does NOT change: `skipTo` is still the target id, and the link is still
+ * the first interactive element on the page — translating the label does not touch
+ * the WCAG 2.4.1 bypass mechanism itself.
+ */
+export const TranslatedSkipLabel: Story = {
+  args: {
+    skipLabel: "मुख्य सामग्री पर जाएँ",
+    govLink: { label: "भारत सरकार" },
+    language: { label: "हिन्दी" },
+  },
+};

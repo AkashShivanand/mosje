@@ -1389,6 +1389,7 @@ export const tokens = {
     "pillBg": "rgba(255, 255, 255, 0.16)",
     "hoverBg": "rgba(255, 255, 255, 0.12)",
     "stepSize": "1.5rem",
+    "iconButtonSize": "1.75rem",
     "launchIconSize": "0.75rem"
   },
   "action": {
