@@ -12,7 +12,13 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-14 · System version: v0.20.0 (ACCESSIBILITYBAR IS NOW A CODE COMPONENT AND
+  Last reviewed: 2026-08-18 · System version: v0.23.0 (THE SPACING LADDER IS VALUE-NAMED — the
+  rung IS the pixel value, `padding/16` is 16px and so is `inline/16`, `stack/16` and `section/16`.
+  The t-shirt labels collided across families — `l` meant 16, 24, 20 and 56 — a defect inherited
+  from UX4G 3.0. Every family now carries the same ladder, so no measurement is unexpressible, and
+  a new step can be inserted without renaming anything. 38,799 spacing properties that were bound
+  to a RADIUS variable are now zero; correct semantic spacing is 69.12%, up from 6.96%. See §G.
+  Previously v0.20.0: ACCESSIBILITYBAR IS NOW A CODE COMPONENT AND
   SITEHEADER IS MIGRATED ONTO IT. `@mosje/design-system` exports `AccessibilityBar` — the UX4G/GIGW
   top utility bar with a working A−/A/A+ font-size stepper — mirroring the SAMAVESH Figma master,
   fully `--sa-*` tokenised, AA-clear. SiteHeader's own hand-rolled Tier-1 bar is DELETED and the
