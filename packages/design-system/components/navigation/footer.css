@@ -63,5 +63,5 @@
 .ds-footer__link:focus-visible {
   outline: 2px solid var(--sa-color-text-onPrimary);
   outline-offset: 3px;
-  border-radius: var(--sa-shape-xs);
+  border-radius: var(--sa-shape-4);
 }

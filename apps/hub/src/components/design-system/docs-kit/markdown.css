@@ -48,14 +48,14 @@
   font-size: 0.875em;
   background: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-xs);
+  border-radius: var(--sa-shape-4);
   padding: var(--sa-padding-2) var(--sa-padding-4);
   overflow-wrap: anywhere;
 }
 .markdown-body pre {
   background: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   padding: var(--sa-padding-16) var(--sa-padding-20);
   overflow-x: auto;
   margin: 0 0 var(--sa-padding-20);
@@ -99,7 +99,7 @@
   padding: var(--sa-padding-12) var(--sa-padding-20);
   border-left: 4px solid var(--sa-border-brand-primary-base);
   background: var(--sa-bg-brand-primary-subtler);
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   color: var(--sa-text-neutral-base);
 }
 .markdown-body blockquote p { margin: 0; }

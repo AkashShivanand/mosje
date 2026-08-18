@@ -85,7 +85,7 @@ export default function SpacingPage(): React.JSX.Element {
                   width: `var(--sa-padding-${px})`,
                   minWidth: `var(--sa-padding-${px})`,
                   background: "var(--sa-bg-brand-primary-bolder)",
-                  borderRadius: "var(--sa-shape-xs)",
+                  borderRadius: "var(--sa-shape-4)",
                 }}
                 aria-hidden="true"
               />
@@ -94,7 +94,7 @@ export default function SpacingPage(): React.JSX.Element {
                   height: `var(--sa-padding-${px})`,
                   flex: 1,
                   background: "var(--sa-bg-brand-primary-subtler)",
-                  borderRadius: "var(--sa-shape-xs)",
+                  borderRadius: "var(--sa-shape-4)",
                 }}
                 aria-hidden="true"
               />
@@ -160,8 +160,8 @@ export default function SpacingPage(): React.JSX.Element {
                   "Use spacing tokens for every gap, padding and margin so layouts stay on the 8px grid.",
                 preview: (
                   <div style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-16)", padding: "var(--sa-stack-16)" }}>
-                    <div style={{ height: "16px", background: "var(--sa-color-action-primary-tonal)", borderRadius: "var(--sa-shape-xs)" }} />
-                    <div style={{ height: "16px", background: "var(--sa-color-action-primary-tonal)", borderRadius: "var(--sa-shape-xs)" }} />
+                    <div style={{ height: "16px", background: "var(--sa-color-action-primary-tonal)", borderRadius: "var(--sa-shape-4)" }} />
+                    <div style={{ height: "16px", background: "var(--sa-color-action-primary-tonal)", borderRadius: "var(--sa-shape-4)" }} />
                     <code style={{ fontSize: "var(--sa-type-body-2-size)" }}>gap: var(--sa-stack-16)</code>
                   </div>
                 ),
@@ -175,8 +175,8 @@ export default function SpacingPage(): React.JSX.Element {
                 // Binding them to tokens would delete the thing being demonstrated.
                 preview: (
                   <div style={{ display: "flex", flexDirection: "column", gap: "13px", padding: "11px" }}>
-                    <div style={{ height: "16px", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-xs)" }} />
-                    <div style={{ height: "16px", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-xs)" }} />
+                    <div style={{ height: "16px", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)" }} />
+                    <div style={{ height: "16px", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)" }} />
                     <code style={{ fontSize: "var(--sa-type-body-2-size)" }}>gap: 13px</code>
                   </div>
                 ),

@@ -104,7 +104,7 @@ export default function TypographyPage(): React.JSX.Element {
             { ok: false, label: "✕ Line height 1.5 — too tight", lh: 1.5, color: "danger" },
             { ok: true, label: "✓ Line height 1.7 — correct", lh: 1.7, color: "success" },
           ].map((c) => (
-            <div key={c.label} style={{ border: `1px solid var(--sa-color-status-${c.color})`, borderRadius: "var(--sa-shape-md)", overflow: "hidden" }}>
+            <div key={c.label} style={{ border: `1px solid var(--sa-color-status-${c.color})`, borderRadius: "var(--sa-shape-8)", overflow: "hidden" }}>
               <div style={{ padding: "var(--sa-padding-12) var(--sa-padding-16)", background: `var(--sa-color-status-${c.color}Tonal)`, color: `var(--sa-color-status-${c.color})`, fontSize: "var(--sa-type-body-2-size)", fontWeight: 700, borderBottom: `1px solid var(--sa-color-status-${c.color})` }}>
                 {c.label}
               </div>

@@ -17,7 +17,7 @@ const ROW: React.CSSProperties = {
   alignItems: "flex-start",
   padding: "var(--sa-padding-20)",
   border: "1px solid var(--sa-border-neutral-subtle)",
-  borderRadius: "var(--sa-shape-lg)",
+  borderRadius: "var(--sa-shape-12)",
   background: "var(--sa-bg-neutral-base)",
 };
 const STACK: React.CSSProperties = {
@@ -26,7 +26,7 @@ const STACK: React.CSSProperties = {
   maxWidth: "30rem",
   padding: "var(--sa-padding-20)",
   border: "1px solid var(--sa-border-neutral-subtle)",
-  borderRadius: "var(--sa-shape-lg)",
+  borderRadius: "var(--sa-shape-12)",
   background: "var(--sa-bg-neutral-base)",
 };
 

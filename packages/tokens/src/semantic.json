@@ -2578,8 +2578,8 @@
     "$description": "The shape of an interactive control. Density already moves a control's size; these are what it is shaped like, which was hardcoded per component.",
     "radius": {
       "$type": "dimension",
-      "$value": "{shape.md}",
-      "$description": "Aliases shape/md, the system default control shape. Value unchanged at 8px; this used to alias {radius.md} — a HIDDEN Tier-1 primitive — which published a variable pointing at one designers cannot see."
+      "$value": "{shape.8}",
+      "$description": "Aliases shape/8, the system default control shape. Value unchanged at 8px. It previously aliased the Tier-1 radius primitive directly — a published variable pointing at one designers cannot see."
     },
     "border": {
       "width": {
@@ -2589,41 +2589,41 @@
     }
   },
   "shape": {
-    "$description": "Tier-2 corner radius (\"shape\"). Apps reach for these, never for the Tier-1 --sa-ref-radius-* primitives. Named shape rather than radius because Style Dictionary merges primitive and semantic namespaces, so a Tier-2 group called radius self-references the Tier-1 scale it is aliasing. Added 2026-08-12 when the legacy --sa-radius-* vocabulary was retired and its 248 usages had no Tier-2 home.",
+    "0": {
+      "$value": "{radius.0}"
+    },
+    "2": {
+      "$value": "{radius.2}"
+    },
+    "4": {
+      "$value": "{radius.4}"
+    },
+    "6": {
+      "$value": "{radius.6}"
+    },
+    "8": {
+      "$value": "{radius.8}"
+    },
+    "12": {
+      "$value": "{radius.12}"
+    },
+    "16": {
+      "$value": "{radius.16}"
+    },
+    "20": {
+      "$value": "{radius.20}"
+    },
+    "24": {
+      "$value": "{radius.24}"
+    },
+    "32": {
+      "$value": "{radius.32}"
+    },
+    "40": {
+      "$value": "{radius.40}"
+    },
+    "$description": "Tier-2 corner radius (\"shape\"). VALUE-NAMED: the rung IS the pixel value, matching the spacing ladder, except `full` — a sentinel meaning fully rounded, not a measurement. Apps bind these, never the Tier-1 ref/radius/* primitives. Named shape rather than radius because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 group called radius would self-reference the Tier-1 scale it aliases. ROLES live at Tier 3 (control/radius, cmp/*/radius) — that is why the rungs need not carry role names.",
     "$type": "dimension",
-    "none": {
-      "$value": "{radius.none}"
-    },
-    "xxs": {
-      "$value": "{radius.xxs}"
-    },
-    "xs": {
-      "$value": "{radius.xs}"
-    },
-    "sm": {
-      "$value": "{radius.sm}"
-    },
-    "md": {
-      "$value": "{radius.md}"
-    },
-    "lg": {
-      "$value": "{radius.lg}"
-    },
-    "xl": {
-      "$value": "{radius.xl}"
-    },
-    "2xl": {
-      "$value": "{radius.2xl}"
-    },
-    "3xl": {
-      "$value": "{radius.3xl}"
-    },
-    "4xl": {
-      "$value": "{radius.4xl}"
-    },
-    "5xl": {
-      "$value": "{radius.5xl}"
-    },
     "full": {
       "$value": "{radius.full}"
     }

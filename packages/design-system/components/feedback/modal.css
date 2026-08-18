@@ -19,7 +19,7 @@
   max-height: calc(100vh - 32px);
   overflow-y: auto;
   background-color: var(--sa-bg-neutral-base);
-  border-radius: var(--sa-shape-lg);
+  border-radius: var(--sa-shape-12);
   box-shadow: var(--sa-elevation-toast);
   font-family: var(--sa-font-latin);
 }
@@ -52,7 +52,7 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background: transparent;
   color: var(--sa-text-neutral-subtle);
   transition: background-color 0.12s ease, color 0.12s ease;

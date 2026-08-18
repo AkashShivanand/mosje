@@ -211,7 +211,7 @@
   flex: none;
   width: var(--sa-target-comfortable);
   height: var(--sa-target-comfortable);
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background-color: var(--sa-bg-neutral-base);
   object-fit: contain;
 }

@@ -62,7 +62,7 @@
   width: 32px;
   height: 32px;
   flex-shrink: 0;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background: transparent;
   color: var(--sa-text-neutral-subtle);
   transition: background-color 0.12s ease, color 0.12s ease;

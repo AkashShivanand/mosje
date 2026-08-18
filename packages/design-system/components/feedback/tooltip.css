@@ -12,7 +12,7 @@
   z-index: 90;
   max-width: 16rem;
   padding: var(--sa-padding-8) var(--sa-padding-12);
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background-color: var(--sa-color-action-primary-hover);
   color: var(--sa-on-bg-brand-primary-bolder);
   font-family: var(--sa-font-latin);

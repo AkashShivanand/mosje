@@ -138,13 +138,13 @@
    token to an inexact same-family one is the estate's rule. */
 .sa-app-shell__pending-bar {
   height: var(--sa-padding-32);
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background: var(--sa-bg-neutral-subtle);
 }
 .sa-app-shell__pending-block {
   flex: 1;
   min-height: var(--sa-padding-120);
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   background: var(--sa-bg-neutral-subtle);
 }
 

@@ -694,41 +694,41 @@
     "$type": "dimension"
   },
   "radius": {
-    "$description": "T-shirt radius scale — matches Figma Border Radius collection.",
-    "$type": "dimension",
-    "none": {
+    "0": {
       "$value": "0px"
     },
-    "xxs": {
+    "2": {
       "$value": "2px"
     },
-    "xs": {
+    "4": {
       "$value": "4px"
     },
-    "sm": {
+    "6": {
       "$value": "6px"
     },
-    "md": {
+    "8": {
       "$value": "8px"
     },
-    "lg": {
+    "12": {
       "$value": "12px"
     },
-    "xl": {
+    "16": {
       "$value": "16px"
     },
-    "2xl": {
+    "20": {
       "$value": "20px"
     },
-    "3xl": {
+    "24": {
       "$value": "24px"
     },
-    "4xl": {
+    "32": {
       "$value": "32px"
     },
-    "5xl": {
+    "40": {
       "$value": "40px"
     },
+    "$description": "Radius ladder — VALUE-NAMED. The rung IS the pixel value, except `full`, a sentinel meaning fully rounded. Tier 1: hidden from publishing, banned in app code.",
+    "$type": "dimension",
     "full": {
       "$value": "999px"
     }

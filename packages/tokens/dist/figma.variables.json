@@ -16643,10 +16643,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "shape/md"
+              "name": "shape/8"
             }
           },
-          "description": "Value unchanged at 8px. NOTE: shape/lg (12px) is the rung whose published description reads \"cards and panels\", and design.md asks for 12-16px on cards. That contradiction is a DESIGN decision, deliberately not resolved by this tier fix — see .claude/rules/design-system.md.",
+          "description": "Value unchanged at 8px. NOTE: shape/12 is the rung whose published description reads \"cards and panels\", and design.md asks for 12px on cards. That contradiction is a DESIGN decision, deliberately not resolved by the tier fix.",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-card-radius)"
           },
@@ -21206,8 +21206,8 @@
       ],
       "variables": [
         {
-          "name": "ref/radius/none",
-          "path": "radius/none",
+          "name": "ref/radius/0",
+          "path": "radius/0",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
@@ -21216,9 +21216,9 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
+          "description": "0px raw radius step, value-named. TIER 1 — hidden from publishing and banned in app code. Bind `shape/0` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-radius-none)"
+            "WEB": "var(--sa-ref-radius-0)"
           },
           "status": "existing",
           "$extensions": {
@@ -21227,8 +21227,8 @@
           }
         },
         {
-          "name": "ref/radius/xxs",
-          "path": "radius/xxs",
+          "name": "ref/radius/2",
+          "path": "radius/2",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
@@ -21237,9 +21237,9 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
+          "description": "2px raw radius step, value-named. TIER 1 — hidden from publishing and banned in app code. Bind `shape/2` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-radius-xxs)"
+            "WEB": "var(--sa-ref-radius-2)"
           },
           "status": "existing",
           "$extensions": {
@@ -21248,8 +21248,8 @@
           }
         },
         {
-          "name": "ref/radius/xs",
-          "path": "radius/xs",
+          "name": "ref/radius/4",
+          "path": "radius/4",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
@@ -21258,9 +21258,9 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
+          "description": "4px raw radius step, value-named. TIER 1 — hidden from publishing and banned in app code. Bind `shape/4` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-radius-xs)"
+            "WEB": "var(--sa-ref-radius-4)"
           },
           "status": "existing",
           "$extensions": {
@@ -21269,8 +21269,8 @@
           }
         },
         {
-          "name": "ref/radius/sm",
-          "path": "radius/sm",
+          "name": "ref/radius/6",
+          "path": "radius/6",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
@@ -21279,9 +21279,9 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
+          "description": "6px raw radius step, value-named. TIER 1 — hidden from publishing and banned in app code. Bind `shape/6` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-radius-sm)"
+            "WEB": "var(--sa-ref-radius-6)"
           },
           "status": "existing",
           "$extensions": {
@@ -21290,8 +21290,8 @@
           }
         },
         {
-          "name": "ref/radius/md",
-          "path": "radius/md",
+          "name": "ref/radius/8",
+          "path": "radius/8",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
@@ -21300,9 +21300,9 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
+          "description": "8px raw radius step, value-named. TIER 1 — hidden from publishing and banned in app code. Bind `shape/8` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-radius-md)"
+            "WEB": "var(--sa-ref-radius-8)"
           },
           "status": "existing",
           "$extensions": {
@@ -21311,8 +21311,8 @@
           }
         },
         {
-          "name": "ref/radius/lg",
-          "path": "radius/lg",
+          "name": "ref/radius/12",
+          "path": "radius/12",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
@@ -21321,9 +21321,9 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
+          "description": "12px raw radius step, value-named. TIER 1 — hidden from publishing and banned in app code. Bind `shape/12` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-radius-lg)"
+            "WEB": "var(--sa-ref-radius-12)"
           },
           "status": "existing",
           "$extensions": {
@@ -21332,8 +21332,8 @@
           }
         },
         {
-          "name": "ref/radius/xl",
-          "path": "radius/xl",
+          "name": "ref/radius/16",
+          "path": "radius/16",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
@@ -21342,9 +21342,9 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
+          "description": "16px raw radius step, value-named. TIER 1 — hidden from publishing and banned in app code. Bind `shape/16` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-radius-xl)"
+            "WEB": "var(--sa-ref-radius-16)"
           },
           "status": "existing",
           "$extensions": {
@@ -21353,8 +21353,8 @@
           }
         },
         {
-          "name": "ref/radius/2xl",
-          "path": "radius/2xl",
+          "name": "ref/radius/20",
+          "path": "radius/20",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
@@ -21363,9 +21363,9 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
+          "description": "20px raw radius step, value-named. TIER 1 — hidden from publishing and banned in app code. Bind `shape/20` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-radius-2xl)"
+            "WEB": "var(--sa-ref-radius-20)"
           },
           "status": "existing",
           "$extensions": {
@@ -21374,8 +21374,8 @@
           }
         },
         {
-          "name": "ref/radius/3xl",
-          "path": "radius/3xl",
+          "name": "ref/radius/24",
+          "path": "radius/24",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
@@ -21384,9 +21384,9 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
+          "description": "24px raw radius step, value-named. TIER 1 — hidden from publishing and banned in app code. Bind `shape/24` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-radius-3xl)"
+            "WEB": "var(--sa-ref-radius-24)"
           },
           "status": "existing",
           "$extensions": {
@@ -21395,8 +21395,8 @@
           }
         },
         {
-          "name": "ref/radius/4xl",
-          "path": "radius/4xl",
+          "name": "ref/radius/32",
+          "path": "radius/32",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
@@ -21405,9 +21405,9 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
+          "description": "32px raw radius step, value-named. TIER 1 — hidden from publishing and banned in app code. Bind `shape/32` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-radius-4xl)"
+            "WEB": "var(--sa-ref-radius-32)"
           },
           "status": "existing",
           "$extensions": {
@@ -21416,8 +21416,8 @@
           }
         },
         {
-          "name": "ref/radius/5xl",
-          "path": "radius/5xl",
+          "name": "ref/radius/40",
+          "path": "radius/40",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
@@ -21426,9 +21426,9 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
+          "description": "40px raw radius step, value-named. TIER 1 — hidden from publishing and banned in app code. Bind `shape/40` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-radius-5xl)"
+            "WEB": "var(--sa-ref-radius-40)"
           },
           "status": "existing",
           "$extensions": {
@@ -21447,7 +21447,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.",
+          "description": "Fully-rounded sentinel. TIER 1 — hidden from publishing and banned in app code. Bind `shape/full` instead, which resolves here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-radius-full)"
           },
@@ -21465,10 +21465,10 @@
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "shape/md"
+              "name": "shape/8"
             }
           },
-          "description": "Aliases shape/md, the system default control shape. Value unchanged at 8px; this used to alias 8px — a HIDDEN Tier-1 primitive — which published a variable pointing at one designers cannot see.",
+          "description": "Aliases shape/8, the system default control shape. Value unchanged at 8px. It previously aliased the Tier-1 radius primitive directly — a published variable pointing at one designers cannot see.",
           "codeSyntax": {
             "WEB": "var(--sa-control-radius)"
           },
@@ -21479,19 +21479,19 @@
           }
         },
         {
-          "name": "shape/none",
-          "path": "shape/none",
+          "name": "shape/0",
+          "path": "shape/0",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/none"
+              "name": "ref/radius/0"
             }
           },
           "description": "Use for a square corner — tables, full-bleed media, anything that should read as flush.",
           "codeSyntax": {
-            "WEB": "var(--sa-shape-none)"
+            "WEB": "var(--sa-shape-0)"
           },
           "status": "existing",
           "$extensions": {
@@ -21500,19 +21500,19 @@
           }
         },
         {
-          "name": "shape/xxs",
-          "path": "shape/xxs",
+          "name": "shape/2",
+          "path": "shape/2",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/xxs"
+              "name": "ref/radius/2"
             }
           },
           "description": "Use for the smallest softening, on dense controls where a visible curve would read as noise.",
           "codeSyntax": {
-            "WEB": "var(--sa-shape-xxs)"
+            "WEB": "var(--sa-shape-2)"
           },
           "status": "existing",
           "$extensions": {
@@ -21521,19 +21521,19 @@
           }
         },
         {
-          "name": "shape/xs",
-          "path": "shape/xs",
+          "name": "shape/4",
+          "path": "shape/4",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/xs"
+              "name": "ref/radius/4"
             }
           },
           "description": "Use for small chips, tags and inline badges.",
           "codeSyntax": {
-            "WEB": "var(--sa-shape-xs)"
+            "WEB": "var(--sa-shape-4)"
           },
           "status": "existing",
           "$extensions": {
@@ -21542,19 +21542,19 @@
           }
         },
         {
-          "name": "shape/sm",
-          "path": "shape/sm",
+          "name": "shape/6",
+          "path": "shape/6",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/sm"
+              "name": "ref/radius/6"
             }
           },
           "description": "Use for inputs, selects and other text-entry controls.",
           "codeSyntax": {
-            "WEB": "var(--sa-shape-sm)"
+            "WEB": "var(--sa-shape-6)"
           },
           "status": "existing",
           "$extensions": {
@@ -21563,19 +21563,19 @@
           }
         },
         {
-          "name": "shape/md",
-          "path": "shape/md",
+          "name": "shape/8",
+          "path": "shape/8",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/md"
+              "name": "ref/radius/8"
             }
           },
           "description": "Use for buttons and standard controls. This is the default shape of the system.",
           "codeSyntax": {
-            "WEB": "var(--sa-shape-md)"
+            "WEB": "var(--sa-shape-8)"
           },
           "status": "existing",
           "$extensions": {
@@ -21584,19 +21584,19 @@
           }
         },
         {
-          "name": "shape/lg",
-          "path": "shape/lg",
+          "name": "shape/12",
+          "path": "shape/12",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/lg"
+              "name": "ref/radius/12"
             }
           },
           "description": "Use for cards and panels — a surface holding content rather than a control.",
           "codeSyntax": {
-            "WEB": "var(--sa-shape-lg)"
+            "WEB": "var(--sa-shape-12)"
           },
           "status": "existing",
           "$extensions": {
@@ -21605,19 +21605,19 @@
           }
         },
         {
-          "name": "shape/xl",
-          "path": "shape/xl",
+          "name": "shape/16",
+          "path": "shape/16",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/xl"
+              "name": "ref/radius/16"
             }
           },
           "description": "Use for large containers and modal surfaces.",
           "codeSyntax": {
-            "WEB": "var(--sa-shape-xl)"
+            "WEB": "var(--sa-shape-16)"
           },
           "status": "existing",
           "$extensions": {
@@ -21626,19 +21626,19 @@
           }
         },
         {
-          "name": "shape/2xl",
-          "path": "shape/2xl",
+          "name": "shape/20",
+          "path": "shape/20",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/2xl"
+              "name": "ref/radius/20"
             }
           },
           "description": "Use for hero and feature surfaces, where the curve is part of the composition.",
           "codeSyntax": {
-            "WEB": "var(--sa-shape-2xl)"
+            "WEB": "var(--sa-shape-20)"
           },
           "status": "existing",
           "$extensions": {
@@ -21647,19 +21647,19 @@
           }
         },
         {
-          "name": "shape/3xl",
-          "path": "shape/3xl",
+          "name": "shape/24",
+          "path": "shape/24",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/3xl"
+              "name": "ref/radius/24"
             }
           },
           "description": "Use for the largest editorial surfaces.",
           "codeSyntax": {
-            "WEB": "var(--sa-shape-3xl)"
+            "WEB": "var(--sa-shape-24)"
           },
           "status": "existing",
           "$extensions": {
@@ -21668,19 +21668,19 @@
           }
         },
         {
-          "name": "shape/4xl",
-          "path": "shape/4xl",
+          "name": "shape/32",
+          "path": "shape/32",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/4xl"
+              "name": "ref/radius/32"
             }
           },
           "description": "Use for oversized decorative surfaces. Rare; check a smaller step first.",
           "codeSyntax": {
-            "WEB": "var(--sa-shape-4xl)"
+            "WEB": "var(--sa-shape-32)"
           },
           "status": "existing",
           "$extensions": {
@@ -21689,19 +21689,19 @@
           }
         },
         {
-          "name": "shape/5xl",
-          "path": "shape/5xl",
+          "name": "shape/40",
+          "path": "shape/40",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/5xl"
+              "name": "ref/radius/40"
             }
           },
           "description": "Use for the largest decorative surface in the system. Rare.",
           "codeSyntax": {
-            "WEB": "var(--sa-shape-5xl)"
+            "WEB": "var(--sa-shape-40)"
           },
           "status": "existing",
           "$extensions": {

@@ -71,7 +71,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
       style={{
         background: "var(--sa-bg-neutral-subtler)",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md)",
+        borderRadius: "var(--sa-shape-8)",
         padding: "var(--sa-padding-16)",
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",
@@ -214,7 +214,7 @@ export default function HeaderPage(): React.JSX.Element {
           style={{
             marginTop: "var(--sa-stack-16)",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             overflow: "hidden",
           }}
         >

@@ -580,7 +580,7 @@
       "what": "`Frame header` shared component (main id 3347:1311)",
       "nodes": 3,
       "bindings": 18,
-      "detail": "Font Size/6(24)->ref/radius/3xl · Font Size/11(56)->ref/space/6xl · Font Size/9(40)->ref/space/4xl · Font Size/10(48)->ref/space/5xl · Font Size/14(80)->ref/space/9xl. All exact value matches, zero visual drift.",
+      "detail": "Font Size/6(24)->ref/radius/24 · Font Size/11(56)->ref/space/6xl · Font Size/9(40)->ref/space/4xl · Font Size/10(48)->ref/space/5xl · Font Size/14(80)->ref/space/9xl. All exact value matches, zero visual drift.",
       "reach": "Instances on 38 of 68 pages. Sampled after: Badges 94->4, Toggle 98->8, Avatars 116->8, Loader 94->8 (91-96% cleared per page)."
     }
   ],
@@ -958,30 +958,30 @@
   ],
   "Radius": [
     "control/radius",
-    "ref/radius/2xl",
-    "ref/radius/3xl",
-    "ref/radius/4xl",
-    "ref/radius/5xl",
+    "ref/radius/20",
+    "ref/radius/24",
+    "ref/radius/32",
+    "ref/radius/40",
     "ref/radius/full",
-    "ref/radius/lg",
-    "ref/radius/md",
-    "ref/radius/none",
-    "ref/radius/sm",
-    "ref/radius/xl",
-    "ref/radius/xs",
-    "ref/radius/xxs",
-    "shape/2xl",
-    "shape/3xl",
-    "shape/4xl",
-    "shape/5xl",
+    "ref/radius/12",
+    "ref/radius/8",
+    "ref/radius/0",
+    "ref/radius/6",
+    "ref/radius/16",
+    "ref/radius/4",
+    "ref/radius/2",
+    "shape/20",
+    "shape/24",
+    "shape/32",
+    "shape/40",
     "shape/full",
-    "shape/lg",
-    "shape/md",
-    "shape/none",
-    "shape/sm",
-    "shape/xl",
-    "shape/xs",
-    "shape/xxs"
+    "shape/12",
+    "shape/8",
+    "shape/0",
+    "shape/6",
+    "shape/16",
+    "shape/4",
+    "shape/2"
   ],
   "Motion": [
     "motion/emphasis/duration",
@@ -1629,13 +1629,13 @@
   "$valueChecksums": {
     "note": "Per-collection checksum over `name|mode|value`, computed by build/figma-value-parity.mjs. The rest of this file records NAMES, and every check built on it compares names — which is why the library could hold 13 component tokens bound to the wrong palette rung, a reverted webfont, and 54 fluid-type variables carrying the old tablet curve, all under the correct names, with nothing noticing. `payload` is what the build produces; `figmaObserved` is a verified read of the library. They are expected to be EQUAL, and figma-value-parity.test.mjs fails when the payload moves without this record being refreshed.",
     "recordedAt": "2026-08-18",
-    "$lastChange": "2026-08-18 - RADIUS TIER FIX. control/radius, cmp/button/radius and cmp/card/radius each aliased {radius.md}, a HIDDEN Tier-1 primitive, so three PUBLISHED variables pointed at one designers cannot see. Re-pointed to shape/md, control/radius and shape/md respectively, in code and in Figma, with descriptions rewritten (a re-point does not update description or codeSyntax - the spacing work lost 51 of them exactly this way). VALUE-PRESERVING: all three still resolve to 8px, and tokens.css changed only the two alias paths. VERIFICATION: the library was read back and Radius checksums identical between payload and library at 6c85d7f0:25. Two unrelated drifts were surfaced by that same read and are recorded under knownDifference rather than absorbed: two new library-only Color variables, and an unexplained Palette value change.",
+    "$lastChange": "2026-08-18 — THE RADIUS LADDER WAS VALUE-NAMED, matching the spacing ladder renamed the same day. 22 variables renamed (ref/radius/md -> ref/radius/8, shape/md -> shape/8, and so on across both tiers), with codeSyntax and description REWRITTEN in the same pass — a rename updates neither, and the spacing rename lost 51 codeSyntax entries exactly that way. `full` is deliberately NOT renamed: it is a sentinel meaning fully rounded, not a measurement, and S7 in radius-linkage.test.mjs asserts it is the only permitted non-numeric rung. Figma binds by variable id, so every canvas binding followed the rename automatically and no node was touched. VALUE-PRESERVING, proven twice: the 22 renames passed all nine visual-contract assertions against the UN-REGENERATED fixture before it was rebaselined, and the library read back equal to the payload at 77e146:25. Color's payload moved only because cmp/card/radius re-aliased to shape/8; its entry count is unchanged at 473.",
     "payload": {
       "Space": "3ffe54dd:125",
       "Palette": "a518c86a:280",
-      "Color": "47d1331e:473",
+      "Color": "3c9eb62f:473",
       "Type": "316f0bd4:594",
-      "Radius": "6c85d7f0:25",
+      "Radius": "77e146:25",
       "Motion": "48f2a0c:12",
       "Density": "b2baae79:16",
       "Static": "584ad09d:51"
@@ -1644,10 +1644,10 @@
       "Space": "6d5a1c80:136",
       "Palette": "641cf696:326",
       "Type": "2e3f0fdb:672",
-      "Radius": "6c85d7f0:25",
+      "Radius": "77e146:25",
       "Motion": "48f2a0c:12",
       "Density": "b2baae79:16",
-      "Color": "a16b6573:481",
+      "Color": "84bc082:481",
       "Static": "4699ff75:59"
     },
     "knownDifference": {
@@ -1657,7 +1657,7 @@
       "Type": "payload 594 entries (99 x 6 modes) vs library 672 (112 x 6). The gap is exactly 78 = 13 library-only variables x 6 modes: the 10 `deprecated/type/*`, plus `ref/font/family/body`, `ref/font/family/heading` and `ref/font/weight/displayMedium`. payload-only is EMPTY.",
       "Color": "payload 473 entries vs library 481. The gap is now EIGHT library-only variables, up from six. The original six are unchanged: border/brand/primary/hover, border/brand/primary/subtle, border/neutral/inverse, border/neutral/inverse-subtle, overlay/on-brand/hover, overlay/on-brand/pressed. TWO ARE NEW and were NOT introduced by the radius work: icon/brand/primary/bolder and text/brand/primary/bolder, both present in the library and absent from the built payload, verified by a live read on 2026-08-18. They are drift to close, recorded rather than smoothed over. payload-only is EMPTY. The payload checksum moved on 2026-08-18 because cmp/button/radius and cmp/card/radius were re-pointed off the hidden Tier-1 primitive; the entry COUNT is unchanged at 473 and both still resolve to 8px.",
       "Static": "payload 51 entries vs library 59. The gap is exactly 8 library-only variables — the brand marks ref/brand/samavesh/{black,blue,green,ink,orange,saffron,white} and ref/brand/digilocker/purple. They are library-only by design: a partner or seal colour never re-themes, so it is authored in Figma and not projected. payload-only is EMPTY. Static's checksum moved on 2026-08-18 only because focus/offset's alias TARGET was renamed ref/space/xxs -> ref/space/2; its value is unchanged at 2px.",
-      "$equal": "Motion (48f2a0c:12) and Density (b2baae79:16) are byte-identical between payload and library, verified by the same live read. Radius rejoins them at the NEW value 6c85d7f0:25 — the 2026-08-18 tier fix was pushed to Figma and read back, and payload and library agree entry-for-entry across all 25 variables."
+      "$equal": "Motion (48f2a0c:12) and Density (b2baae79:16) are byte-identical between payload and library, verified by live read. Radius rejoins them at 77e146:25 after the 2026-08-18 value-naming: all 25 variables were renamed IN FIGMA with codeSyntax and description rewritten in the same pass, and the library was read back and compared entry-for-entry against the built payload. Equal."
     }
   }
 }

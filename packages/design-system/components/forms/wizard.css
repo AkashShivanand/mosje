@@ -25,7 +25,7 @@
 .ds-wizard__stepper {
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-lg);
+  border-radius: var(--sa-shape-12);
   padding: var(--sa-padding-20);
 }
 
@@ -49,7 +49,7 @@
 .ds-review-section {
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-lg);
+  border-radius: var(--sa-shape-12);
   padding: var(--sa-padding-20);
 }
 

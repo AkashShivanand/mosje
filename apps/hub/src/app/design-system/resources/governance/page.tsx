@@ -88,7 +88,7 @@ export default function GovernancePage(): React.JSX.Element {
                 alignItems: "start",
                 padding: "var(--sa-padding-16)",
                 border: "1px solid var(--sa-border-neutral-subtle)",
-                borderRadius: "var(--sa-shape-md)",
+                borderRadius: "var(--sa-shape-8)",
                 background: "var(--sa-bg-neutral-base)",
               }}
             >

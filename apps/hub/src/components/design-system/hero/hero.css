@@ -91,7 +91,7 @@
   content: "";
   width: 22px;
   height: 2px;
-  border-radius: var(--sa-shape-xxs);
+  border-radius: var(--sa-shape-2);
   background: var(--sa-bg-brand-primary-bolder);
 }
 
@@ -158,7 +158,7 @@
   overflow: hidden;
   padding: var(--sa-padding-20);
   border: 1px solid color-mix(in oklab, var(--sa-border-brand-primary-base) 12%, var(--sa-border-neutral-subtle));
-  border-radius: var(--sa-shape-xl);
+  border-radius: var(--sa-shape-16);
   background: color-mix(in oklab, var(--sa-color-action-primary-default) 2%, color-mix(in oklab, var(--sa-bg-neutral-base) 45%, transparent));
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);

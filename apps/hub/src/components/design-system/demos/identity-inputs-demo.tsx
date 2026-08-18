@@ -35,7 +35,7 @@ export function IdentityInputsDemo(): React.JSX.Element {
         gap: "var(--sa-stack-24)",
         padding: "var(--sa-padding-24)",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-lg)",
+        borderRadius: "var(--sa-shape-12)",
         background: "var(--sa-bg-neutral-base)",
         maxWidth: "34rem",
       }}

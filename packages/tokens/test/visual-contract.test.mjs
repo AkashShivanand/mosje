@@ -39,6 +39,29 @@ const actual = resolveContract(cssText);
  * from this list — the compat layer was retargeted, not renamed.
  */
 const RENAMES = {
+  // 2026-08-18 — THE RADIUS LADDER WAS VALUE-NAMED, matching the spacing ladder renamed the
+  // same day. `shape/md` -> `shape/8`, and the hidden Tier-1 `ref/radius/*` with it.
+  //
+  // The reasoning differs from spacing's and is worth stating, because the FIRST review of this
+  // rename reached the opposite conclusion and was wrong. Radius has no label COLLISION —
+  // there is one semantic family, so `shape/md` was never ambiguous. The argument for keeping
+  // T-shirt names was that they carry a ROLE (`sm` = input, `md` = button) that a number does
+  // not. That argument fails on inspection: the role layer ALREADY EXISTS at Tier 3, as
+  // `control/radius` and `cmp/*/radius`. A button binds `cmp/button/radius`, never `shape/md`.
+  // So role-naming was never Tier 2's job, and value-naming Tier 2 costs nothing while buying
+  // the same expandability spacing gained — plus one mental model across both ladders instead
+  // of two.
+  //
+  // `full` is deliberately NOT renamed. It is a sentinel meaning "fully rounded", not a
+  // measurement, so `shape/999` would assert a precision that does not exist. S7 in
+  // radius-linkage.test.mjs asserts it is the ONLY permitted non-numeric rung, so a second
+  // exception cannot be added quietly.
+  //
+  // The 22 entries were PROVEN value-preserving against the un-regenerated fixture — all nine
+  // assertions passed with the OLD fixture still in place — and only then was it rebaselined.
+  // Per the note at the top of this block they are deleted rather than left to outlive the
+  // move; `git show` this commit to see them.
+
   // 2026-08-18 — THE SPACING LADDER WAS VALUE-NAMED. `padding/m` -> `padding/16`, and 16px in
   // every other family too. Two measured reasons, both structural rather than cosmetic.
   //

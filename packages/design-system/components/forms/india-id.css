@@ -42,7 +42,7 @@
   color: var(--sa-text-neutral-base);
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   transition:
     border-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
     box-shadow var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);

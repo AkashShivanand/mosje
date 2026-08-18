@@ -102,7 +102,7 @@ export const Playground: Story = {
               style={{
                 padding: 0,
                 border: "1px solid var(--sa-border-neutral-subtle)",
-                borderRadius: "var(--sa-shape-md)",
+                borderRadius: "var(--sa-shape-8)",
                 background: "none",
                 cursor: "pointer",
                 overflow: "hidden",

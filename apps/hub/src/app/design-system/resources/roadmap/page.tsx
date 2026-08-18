@@ -157,7 +157,7 @@ export default function RoadmapPage(): React.JSX.Element {
               key={col.phase}
               style={{
                 border: "1px solid var(--sa-border-neutral-subtle)",
-                borderRadius: "var(--sa-shape-md)",
+                borderRadius: "var(--sa-shape-8)",
                 background: "var(--sa-bg-neutral-base)",
                 overflow: "hidden",
                 display: "flex",
@@ -196,7 +196,7 @@ export default function RoadmapPage(): React.JSX.Element {
                       color: TONE[col.tone].ink,
                       background: TONE[col.tone].chip,
                       padding: "var(--sa-padding-2) var(--sa-padding-8)",
-                      borderRadius: "var(--sa-shape-sm)",
+                      borderRadius: "var(--sa-shape-6)",
                     }}
                   >
                     {col.version}

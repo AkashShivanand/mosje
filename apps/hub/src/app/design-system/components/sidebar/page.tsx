@@ -52,7 +52,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
       style={{
         background: "var(--sa-bg-neutral-subtler)",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md)",
+        borderRadius: "var(--sa-shape-8)",
         padding: "var(--sa-padding-16)",
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",
@@ -362,8 +362,8 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
                 ["--sa-color-text-muted", "Group label, muted text", "--text/secondary"],
                 ["--sa-bg-neutral-subtler", "Hover background", "--neutral/100"],
                 ["--sa-border-neutral-subtle", "Group separator, resize handle line", "--neutral/200"],
-                ["--sa-shape-xl (16 px)", "Main item row border-radius", "--radius-xl"],
-                ["--sa-shape-md (8 px)", "Child item label border-radius", "--radius-md"],
+                ["--sa-shape-16 (16 px)", "Main item row border-radius", "--radius-xl"],
+                ["--sa-shape-8 (8 px)", "Child item label border-radius", "--radius-md"],
                 ["--sa-focus-ring", "Focus outline", "--focus/ring"],
                 ["--sa-motion-exit-duration", "Hover/active transition", "--duration/fast"],
               ].map(([token, use, figma]) => (

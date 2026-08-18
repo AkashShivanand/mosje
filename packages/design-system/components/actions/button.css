@@ -17,7 +17,7 @@
   line-height: 1;
   letter-spacing: 0.1px;
   border: 1px solid transparent;
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   cursor: pointer;
   white-space: nowrap;
   text-decoration: none;

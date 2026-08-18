@@ -31,7 +31,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           maxWidth: "32rem",
           background: "var(--sa-bg-neutral-base, #fff)",
           border: "1px solid var(--sa-border-neutral-subtle, #f1f3f5)",
-          borderRadius: "var(--sa-shape-md, 8px)",
+          borderRadius: "var(--sa-shape-8, 8px)",
           padding: "var(--sa-padding-32, 32px)",
           boxShadow: "var(--sa-elevation-modal, 0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03))",
         }}
@@ -41,7 +41,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           style={{
             width: 44,
             height: 44,
-            borderRadius: "var(--sa-shape-sm, 6px)",
+            borderRadius: "var(--sa-shape-6, 6px)",
             background: "var(--sa-bg-status-warning-base, #fff4e5)",
             color: "var(--sa-text-status-warning-base, #8c571f)",
             display: "flex",
@@ -81,7 +81,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           style={{
             background: "var(--sa-bg-neutral-subtler, #f8f9fa)",
             border: "1px solid var(--sa-border-neutral-subtle, #f1f3f5)",
-            borderRadius: "var(--sa-shape-sm, 6px)",
+            borderRadius: "var(--sa-shape-6, 6px)",
             padding: "var(--sa-padding-16, 16px)",
             marginBottom: "var(--sa-padding-20, 20px)",
           }}
@@ -140,7 +140,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               display: "inline-flex",
               alignItems: "center",
               padding: "10px var(--sa-padding-20, 20px)",
-              borderRadius: "var(--sa-shape-sm, 6px)",
+              borderRadius: "var(--sa-shape-6, 6px)",
               background: "var(--sa-color-action-primary-default, #0373df)",
               color: "var(--sa-on-bg-brand-primary-bolder, #fff)",
               fontWeight: 600,
@@ -156,7 +156,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               display: "inline-flex",
               alignItems: "center",
               padding: "10px var(--sa-padding-20, 20px)",
-              borderRadius: "var(--sa-shape-sm, 6px)",
+              borderRadius: "var(--sa-shape-6, 6px)",
               border: "1px solid var(--sa-border-neutral-base, #e2e6ea)",
               color: "var(--sa-text-neutral-base, #1f2428)",
               fontWeight: 600,

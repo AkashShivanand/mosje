@@ -117,7 +117,7 @@ export default function ResourcesPage(): React.JSX.Element {
               style={{
                 display: "block",
                 padding: "var(--sa-padding-20)",
-                borderRadius: "var(--sa-shape-md)",
+                borderRadius: "var(--sa-shape-8)",
                 border: "1px solid var(--sa-border-neutral-subtle)",
                 background: "var(--sa-bg-neutral-base)",
                 textDecoration: "none",
@@ -141,7 +141,7 @@ export default function ResourcesPage(): React.JSX.Element {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    borderRadius: "var(--sa-shape-sm)",
+                    borderRadius: "var(--sa-shape-6)",
                     background: "var(--sa-bg-brand-primary-subtler)",
                     color: "var(--sa-text-brand-primary-base)",
                     fontSize: 18,

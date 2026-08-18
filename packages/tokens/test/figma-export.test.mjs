@@ -16,7 +16,9 @@ test("figma.tokens.json is valid JSON and resolves aliases to final values", () 
   // `space.lg` became `space.16` on 2026-08-18 when the ladder was value-named — the label IS
   // the value now, so this assertion reads as a tautology and that is exactly the point.
   assert.equal(json.space["16"], "16px");
-  assert.equal(json.radius.md, "8px");
+  // `radius.md` became `radius.8` on 2026-08-18 when the radius ladder was value-named, for
+  // the same reason space did — the label IS the value, so this reads as a tautology by design.
+  assert.equal(json.radius["8"], "8px");
   assert.equal(json.radius.full, "999px");
 });
 

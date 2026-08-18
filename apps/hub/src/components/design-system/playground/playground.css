@@ -3,7 +3,7 @@
    ============================================================================ */
 .playground {
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   overflow: hidden;
   margin: var(--sa-padding-20) 0;
 }
@@ -31,7 +31,7 @@
 .pg-toggle-group {
   display: flex;
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   overflow: hidden;
 }
 
@@ -76,7 +76,7 @@
 .pg-control__input {
   height: 32px;
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-xs);
+  border-radius: var(--sa-shape-4);
   background: var(--sa-bg-neutral-base);
   color: var(--sa-text-neutral-base);
   font-family: var(--sa-font-latin);
@@ -108,7 +108,7 @@
 .playground-code__copy {
   background: transparent;
   border: 1px solid var(--sa-code-border);
-  border-radius: var(--sa-shape-xs);
+  border-radius: var(--sa-shape-4);
   color: var(--sa-code-comment);
   font-family: var(--sa-font-latin);
   font-size: 11px;

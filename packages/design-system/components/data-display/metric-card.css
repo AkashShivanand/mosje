@@ -23,7 +23,7 @@
   padding: var(--sa-padding-20);
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-lg);
+  border-radius: var(--sa-shape-12);
   box-shadow: var(--sa-elevation-raised);
 }
 
@@ -63,7 +63,7 @@
   width: 40px;
   height: 40px;
   flex: 0 0 auto;
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   background-color: var(--sa-color-primaryScale-50);
   color: var(--sa-text-brand-primary-base);
 }

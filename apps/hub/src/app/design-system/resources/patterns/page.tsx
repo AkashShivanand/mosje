@@ -53,7 +53,7 @@ const proseStyle: React.CSSProperties = {
 const preStyle: React.CSSProperties = {
   background: "var(--sa-bg-neutral-subtler)",
   border: "1px solid var(--sa-border-neutral-subtle)",
-  borderRadius: "var(--sa-shape-md)",
+  borderRadius: "var(--sa-shape-8)",
   padding: "var(--sa-padding-20)",
   fontSize: "var(--sa-type-body-3-size)",
   fontFamily: "var(--sa-font-mono)",
@@ -108,7 +108,7 @@ export default function PatternsPage(): React.JSX.Element {
           style={{
             marginTop: "var(--sa-padding-20)",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             overflow: "hidden",
             background: "var(--sa-bg-neutral-subtler)",
           }}
@@ -149,7 +149,7 @@ export default function PatternsPage(): React.JSX.Element {
                   key={item}
                   style={{
                     padding: "var(--sa-padding-8) var(--sa-padding-12)",
-                    borderRadius: "var(--sa-shape-sm)",
+                    borderRadius: "var(--sa-shape-6)",
                     background: i === 0 ? "var(--sa-bg-brand-primary-subtler)" : "transparent",
                     color: i === 0 ? "var(--sa-text-brand-primary-base)" : "var(--sa-text-neutral-subtle)",
                     fontSize: "var(--sa-type-body-2-size)",
@@ -207,7 +207,7 @@ export default function PatternsPage(): React.JSX.Element {
                       style={{
                         height: 80,
                         background: "var(--sa-bg-neutral-subtler)",
-                        borderRadius: "var(--sa-shape-sm)",
+                        borderRadius: "var(--sa-shape-6)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -228,7 +228,7 @@ export default function PatternsPage(): React.JSX.Element {
                       style={{
                         height: 80,
                         background: "var(--sa-bg-neutral-subtler)",
-                        borderRadius: "var(--sa-shape-sm)",
+                        borderRadius: "var(--sa-shape-6)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -397,7 +397,7 @@ export default function PatternsPage(): React.JSX.Element {
           style={{
             marginTop: "var(--sa-padding-20)",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             overflow: "hidden",
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
@@ -467,7 +467,7 @@ export default function PatternsPage(): React.JSX.Element {
               <div
                 style={{
                   border: "1px solid var(--sa-border-neutral-bolder-default)",
-                  borderRadius: "var(--sa-shape-sm)",
+                  borderRadius: "var(--sa-shape-6)",
                   padding: "var(--sa-padding-12) var(--sa-padding-12)",
                   color: "var(--sa-text-neutral-subtle)",
                   fontSize: "var(--sa-type-body-2-size)",
@@ -527,7 +527,7 @@ export default function PatternsPage(): React.JSX.Element {
           style={{
             marginTop: "var(--sa-padding-20)",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             overflow: "hidden",
             background: "var(--sa-bg-neutral-base)",
           }}
@@ -556,7 +556,7 @@ export default function PatternsPage(): React.JSX.Element {
                   <div
                     style={{
                       border: "1px solid var(--sa-border-neutral-bolder-default)",
-                      borderRadius: "var(--sa-shape-sm)",
+                      borderRadius: "var(--sa-shape-6)",
                       padding: "var(--sa-padding-12) var(--sa-padding-12)",
                       color: "var(--sa-text-neutral-subtle)",
                       fontSize: "var(--sa-type-body-2-size)",

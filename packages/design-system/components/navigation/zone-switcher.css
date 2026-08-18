@@ -65,7 +65,7 @@
   width: 288px;
   max-height: min(70vh, 640px);
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   background-color: var(--sa-bg-neutral-base);
   box-shadow: var(--sa-elevation-toast);
   overflow-y: auto;

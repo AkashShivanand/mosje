@@ -39,7 +39,7 @@
 .docs-sidebar__logo {
   width: 28px;
   height: 28px;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background-color: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
   display: flex;
@@ -172,7 +172,7 @@
   height: 40px;
   margin-left: calc(var(--sa-inline-8) * -1);
   border: none;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background: transparent;
   color: var(--sa-text-neutral-base);
   cursor: pointer;
@@ -191,7 +191,7 @@
   gap: var(--sa-stack-8);
   padding: var(--sa-padding-8) var(--sa-padding-12);
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background: var(--sa-bg-neutral-subtler);
   color: var(--sa-text-neutral-subtle);
   font-size: var(--sa-type-body-2-size);
@@ -211,7 +211,7 @@
   margin-left: auto;
   font-size: var(--sa-type-label-3-size);
   background: var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-xxs);
+  border-radius: var(--sa-shape-2);
   padding: var(--sa-padding-2) var(--sa-padding-4);
 }
 
@@ -298,7 +298,7 @@
   font-size: var(--sa-type-body-2-size);
   color: var(--sa-text-brand-primary-base);
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   padding: var(--sa-padding-4) var(--sa-padding-12);
   text-decoration: none;
   transition: border-color 0.1s, background-color 0.1s;

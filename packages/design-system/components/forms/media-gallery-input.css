@@ -35,7 +35,7 @@
   text-align: center;
   background-color: var(--sa-bg-neutral-base);
   border: 2px dashed var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-lg);
+  border-radius: var(--sa-shape-12);
   cursor: pointer;
   transition:
     border-color 0.15s ease,
@@ -97,7 +97,7 @@
   position: relative;
   margin: 0;
   aspect-ratio: 4 / 3;
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   overflow: hidden;
   background-color: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-subtle);
@@ -184,7 +184,7 @@
   padding: var(--sa-padding-8);
   background-color: var(--sa-bg-neutral-base);
   border: 2px dashed var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   color: var(--sa-text-neutral-subtle);
   cursor: pointer;
   transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;

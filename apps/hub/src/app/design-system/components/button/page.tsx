@@ -114,7 +114,7 @@ function KeyTable({
                     fontSize: "var(--sa-type-body-2-size)",
                     background: "var(--sa-bg-neutral-subtler)",
                     border: "1px solid var(--sa-border-neutral-subtle)",
-                    borderRadius: "var(--sa-shape-sm)",
+                    borderRadius: "var(--sa-shape-6)",
                     padding: "var(--sa-padding-2) var(--sa-padding-8)",
                     color: "var(--sa-text-neutral-base)",
                   }}
@@ -216,7 +216,7 @@ export default function ButtonPage(): React.JSX.Element {
             marginTop: "var(--sa-stack-24)",
             padding: "var(--sa-padding-32)",
             background: "var(--sa-bg-neutral-subtler)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             border: "1px solid var(--sa-border-neutral-subtle)",
           }}
         >
@@ -229,7 +229,7 @@ export default function ButtonPage(): React.JSX.Element {
                 inset: "calc(-1 * var(--sa-stack-4))",
                 outline: "3px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base))",
                 outlineOffset: "var(--sa-focus-offset)",
-                borderRadius: "var(--sa-shape-md)",
+                borderRadius: "var(--sa-shape-8)",
                 opacity: 0.55,
               }}
             />
@@ -385,7 +385,7 @@ export default function ButtonPage(): React.JSX.Element {
                 display: "inline-block",
                 outline: "3px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base))",
                 outlineOffset: "var(--sa-focus-offset)",
-                borderRadius: "var(--sa-shape-md)",
+                borderRadius: "var(--sa-shape-8)",
               }}
             >
               <Button variant="primary" appearance="filled">
@@ -677,7 +677,7 @@ export function ApplicationForm() {
               isColor: true,
             },
             {
-              token: "--sa-shape-md",
+              token: "--sa-shape-8",
               value: "8px",
               description: "Corner radius of the button container.",
             },
@@ -890,7 +890,7 @@ function UseCard({
       style={{
         border: "1px solid var(--sa-border-neutral-subtle)",
         borderTop: `3px solid ${accent}`,
-        borderRadius: "var(--sa-shape-md)",
+        borderRadius: "var(--sa-shape-8)",
         padding: "var(--sa-padding-20)",
         background: "var(--sa-bg-neutral-base)",
       }}
@@ -937,7 +937,7 @@ function RelatedCard({
         display: "block",
         textDecoration: "none",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md)",
+        borderRadius: "var(--sa-shape-8)",
         padding: "var(--sa-padding-16)",
         background: "var(--sa-bg-neutral-base)",
       }}
@@ -973,7 +973,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
       style={{
         background: "var(--sa-bg-neutral-subtler)",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md)",
+        borderRadius: "var(--sa-shape-8)",
         padding: "var(--sa-padding-16)",
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",

@@ -325,17 +325,17 @@ function fontPointer(path) {
 /** Tier-2 corner radius. Named `shape` because a Tier-2 group called `radius` would
  * self-reference the Tier-1 scale it aliases; see build/grammar.mjs. */
 const SHAPE_GUIDANCE = {
-  "none": "Use for a square corner \u2014 tables, full-bleed media, anything that should read as flush.",
-  "xxs": "Use for the smallest softening, on dense controls where a visible curve would read as noise.",
-  "xs": "Use for small chips, tags and inline badges.",
-  "sm": "Use for inputs, selects and other text-entry controls.",
-  "md": "Use for buttons and standard controls. This is the default shape of the system.",
-  "lg": "Use for cards and panels \u2014 a surface holding content rather than a control.",
-  "xl": "Use for large containers and modal surfaces.",
-  "2xl": "Use for hero and feature surfaces, where the curve is part of the composition.",
-  "3xl": "Use for the largest editorial surfaces.",
-  "4xl": "Use for oversized decorative surfaces. Rare; check a smaller step first.",
-  "5xl": "Use for the largest decorative surface in the system. Rare.",
+  "0": "Use for a square corner \u2014 tables, full-bleed media, anything that should read as flush.",
+  "2": "Use for the smallest softening, on dense controls where a visible curve would read as noise.",
+  "4": "Use for small chips, tags and inline badges.",
+  "6": "Use for inputs, selects and other text-entry controls.",
+  "8": "Use for buttons and standard controls. This is the default shape of the system.",
+  "12": "Use for cards and panels \u2014 a surface holding content rather than a control.",
+  "16": "Use for large containers and modal surfaces.",
+  "20": "Use for hero and feature surfaces, where the curve is part of the composition.",
+  "24": "Use for the largest editorial surfaces.",
+  "32": "Use for oversized decorative surfaces. Rare; check a smaller step first.",
+  "40": "Use for the largest decorative surface in the system. Rare.",
   "full": "Use for pills and circles \u2014 avatars, toggles, status dots. Fully rounded at any size."
 };
 
@@ -345,7 +345,7 @@ export function primitivePointer(path) {
   if (head === "size") return "Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.";
   if (head === "space") return `${path[1]}px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind \`inline/${path[1]}\`, \`stack/${path[1]}\`, \`padding/${path[1]}\` or \`section/${path[1]}\` instead; all four resolve here.`;
   if (head === "font") return fontPointer(path);
-  if (head === "radius") return "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.";
+  if (head === "radius") return `${path[1] === "full" ? "Fully-rounded sentinel" : path[1] + "px raw radius step, value-named"}. TIER 1 — hidden from publishing and banned in app code. Bind \`shape/${path[1]}\` instead, which resolves here.`;
   if (head === "motion" || head === "opacity" || head === "blur") return `Raw ${head} step.`;
   // `border` was the one primitive group with no pointer, so all five ref/border/width/*
   // shipped to Figma with an EMPTY description — the only variables in the library that had

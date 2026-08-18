@@ -121,7 +121,7 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   box-shadow: 0 24px 60px color-mix(in oklab, var(--sa-text-neutral-bolder) 50%, transparent);
   animation: ds-lightbox-pop 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
@@ -168,7 +168,7 @@
   height: 42px;
   padding: 0;
   border: 2px solid transparent;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   overflow: hidden;
   background: var(--sa-color-transparent-white-8);
   cursor: pointer;

@@ -21,7 +21,7 @@ function DemoControls(): React.JSX.Element {
           background: "var(--sa-bg-brand-primary-bolder)",
           color: "var(--sa-on-bg-brand-primary-bolder)",
           border: "none",
-          borderRadius: "var(--sa-shape-sm)",
+          borderRadius: "var(--sa-shape-6)",
           fontWeight: 600,
           fontFamily: "var(--sa-font-latin)",
           cursor: "pointer",
@@ -39,7 +39,7 @@ function DemoControls(): React.JSX.Element {
           background: "var(--sa-bg-neutral-base)",
           color: "var(--sa-text-neutral-base)",
           border: "1px solid var(--sa-border-neutral-base)",
-          borderRadius: "var(--sa-shape-sm)",
+          borderRadius: "var(--sa-shape-6)",
           fontFamily: "var(--sa-font-latin)",
         }}
       />
@@ -51,7 +51,7 @@ function DemoControls(): React.JSX.Element {
           background: "var(--sa-bg-neutral-base)",
           color: "var(--sa-text-neutral-base)",
           border: "1px solid var(--sa-border-neutral-base)",
-          borderRadius: "var(--sa-shape-sm)",
+          borderRadius: "var(--sa-shape-6)",
           fontFamily: "var(--sa-font-latin)",
         }}
       >
@@ -88,13 +88,13 @@ export default function DensityPage(): React.JSX.Element {
             gap: "var(--sa-stack-24)",
           }}
         >
-          <div style={{ background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-24)" }}>
+          <div style={{ background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-8)", padding: "var(--sa-stack-24)" }}>
             <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-16)" }}>
               Comfortable <span style={{ color: "var(--sa-text-neutral-subtle)", fontWeight: 400 }}>· 40px</span>
             </div>
             <DemoControls />
           </div>
-          <div data-density="compact" style={{ background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-24)" }}>
+          <div data-density="compact" style={{ background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-8)", padding: "var(--sa-stack-24)" }}>
             <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-16)" }}>
               Compact <span style={{ color: "var(--sa-text-neutral-subtle)", fontWeight: 400 }}>· 32px</span>
             </div>

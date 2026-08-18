@@ -29,8 +29,8 @@
     },
     "radius": {
       "$type": "dimension",
-      "$value": "{shape.md}",
-      "$description": "Value unchanged at 8px. NOTE: shape/lg (12px) is the rung whose published description reads \"cards and panels\", and design.md asks for 12-16px on cards. That contradiction is a DESIGN decision, deliberately not resolved by this tier fix — see .claude/rules/design-system.md."
+      "$value": "{shape.8}",
+      "$description": "Value unchanged at 8px. NOTE: shape/12 is the rung whose published description reads \"cards and panels\", and design.md asks for 12px on cards. That contradiction is a DESIGN decision, deliberately not resolved by the tier fix."
     }
   },
   "badge": {

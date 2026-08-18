@@ -7,8 +7,8 @@
      --primary/50      → --sa-color-primaryScale-50   (active bg; resolves #e8f2fd in light mode)
      --text/primary    → --sa-color-action-primary-default      (active text)
      --text/dark       → --sa-color-text-default          (default text)
-     --radius-xl (16px)→ --sa-shape-xl
-     --radius-md  (8px) → --sa-shape-md
+     --radius-xl (16px)→ --sa-shape-16
+     --radius-md  (8px) → --sa-shape-8
      --spacing-lg(16px)→ --sa-stack-16   (px / sidebar padding)
      --spacing-md(12px)→ --sa-stack-12   (py / item gap)
      --spacing-sm (8px)→ --sa-stack-8   (subnav py / connector control)
@@ -88,7 +88,7 @@
   gap: var(--sa-stack-8);
   width: 100%;
   padding: var(--sa-padding-12) var(--sa-padding-16); /* 12px 16px — Figma: py-md px-lg */
-  border-radius: var(--sa-shape-xl); /* 16px */
+  border-radius: var(--sa-shape-16); /* 16px */
   border: none;
   background: transparent;
   cursor: pointer;
@@ -220,7 +220,7 @@
   display: flex;
   align-items: center;
   padding: var(--sa-padding-8) var(--sa-padding-12); /* 8px 12px — Figma: py-sm px-md */
-  border-radius: var(--sa-shape-md); /* 8px */
+  border-radius: var(--sa-shape-8); /* 8px */
   font-family: var(--sa-font-latin);
   font-size: 14px;
   line-height: 20px;

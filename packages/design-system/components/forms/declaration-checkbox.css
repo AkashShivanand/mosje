@@ -11,7 +11,7 @@
   font-family: var(--sa-font-latin);
   background-color: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-lg);
+  border-radius: var(--sa-shape-12);
 }
 
 .ds-declaration.is-invalid {

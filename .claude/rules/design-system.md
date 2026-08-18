@@ -451,36 +451,42 @@ from the start.
   list is how a surface goes ungated.
 - All ten failure modes were exercised by deliberately breaking them.
 
-### The radius ladder KEEPS its T-shirt names — a deliberate divergence
+### The radius ladder is VALUE-NAMED too — and the first call on this was wrong
 
-The spacing ladder is value-named and that is load-bearing. **Radius is not, and that is a
-decision, not an oversight.** Weighed on 2026-08-18:
+**Both ladders are value-named.** `shape/8` is 8px exactly as `padding/16` is 16px. `full` is the
+single named rung, a sentinel meaning *fully rounded*; **S7** asserts it is the only permitted
+non-numeric rung, so a second exception cannot appear quietly.
 
-| Reason spacing was renamed | Applies to radius? |
+**This reverses a decision made earlier the same day, and the reversal is the instructive part.**
+The first review kept T-shirt names on two arguments:
+
+| Argument for keeping T-shirt names | Why it does not hold |
 |---|---|
-| The same label meant different values in different families (`l` = 16/24/20/56) | **No.** One semantic family. `shape/md` is unambiguous. |
-| A T-shirt ramp cannot absorb a mid-step without renaming everything above | **Yes** — but no insertion is pending (see below) |
+| Radius has no label *collision*, so the defect that forced the spacing rename is absent | True, but that is an argument that renaming is not *urgent* — not that it is wrong |
+| A T-shirt name carries a ROLE (`sm` = input, `md` = button) that a number does not | **False.** The role layer already exists at **Tier 3** — `control/radius`, `cmp/button/radius`, `cmp/card/radius`. A button binds `cmp/button/radius`, never `shape/md`. Role-naming was never Tier 2's job |
 
-So only half the argument carries, and radius has something spacing never had to lose: the
-**role mapping**. `shape/sm` is "inputs and text-entry controls", `shape/md` "buttons and
-standard controls", `shape/lg` "cards and panels". `shape/6` and `shape/8` say none of that.
+Once the second argument goes, nothing is left on that side: value-naming costs nothing, buys the
+same free insertion spacing gained, and leaves **one** mental model across both ladders instead of
+two. The rungs' roles are still published — in each variable's *description*, which is generated
+from `SHAPE_GUIDANCE` and reaches designers in the Figma picker.
 
-The one measured insertion pressure — **240 raw `10px` radii on the Colour page**, a value with
-no rung — was resolved by **snapping 10 → 12 (`shape/lg`)**, on the grounds that a page carrying
-1,632 raw radii chose none of them against a scale, and 10 and 12 differ by 2px and read as one
-curve. That removed the pressure rather than deferring it.
+**How it was done safely**, and the two traps it confirms:
 
-Against renaming: it would be the **second** churn of this exact vocabulary in six days
-(`--sa-radius-*` → `--sa-shape-*` was 2026-08-12, across 248 usages), and it would rewrite 12
-codeSyntax and 12 description fields, for zero movement on the measured defect.
-
-**A third layer of role aliases (`shape/control`, `shape/card`) was considered and rejected**:
-three published names for 8px means every rebind picks between two valid answers and no audit
-can tell a wrong pick from a right one.
-
-> **Trigger to revisit:** the first time a radius value is genuinely needed that cannot be
-> snapped to an existing rung without a design regression. At that moment the insertion problem
-> is real rather than hypothetical, and value-naming becomes the better answer.
+- **22 variables renamed in Figma with `codeSyntax` AND `description` rewritten in the same pass.**
+  A rename updates neither; the spacing rename lost 51 codeSyntax entries exactly that way.
+  Figma binds by variable **id**, so every canvas binding followed automatically — no node touched.
+- **Value preservation was PROVEN before anything was rebaselined.** All 22 renames were declared
+  in `RENAMES` in `visual-contract.test.mjs` and all nine assertions passed against the
+  **un-regenerated** fixture — the old fixture is the evidence. Only then was it rebaselined and
+  the entries retired. The library was then read back and matched the built payload at
+  `77e146:25`.
+- **`$description` is reference-interpolated by Style Dictionary.** A note reading *"this used to
+  alias {radius.md}"* was parsed as a real token reference and failed the build with
+  `control.radius.$description tries to reference radius.md`. Do not put braces in prose.
+- **Two legacy alias maps keep their own key vocabulary**, values repointed only: Tailwind's
+  `borderRadius` scale (`rounded-md` is Tailwind's name, not ours) and the `tokens.ts` `RADIUS`
+  export (which already diverged — `pill`, not `full`). Renaming those keys would be a breaking
+  change to two separate public APIs.
 
 ### Tier discipline: ONLY `shape/*` may alias a Tier-1 radius
 

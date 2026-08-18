@@ -51,6 +51,25 @@ test("S3 · the ladder ascends", () => {
   }
 });
 
+test("S7 · a rung's NAME equals its resolved value", () => {
+  // The invariant value-naming exists to buy, and it was impossible to write while the ladder
+  // read none/xxs/xs/sm/md/lg/xl/2xl. `full` is the one exception: it is a SENTINEL meaning
+  // "fully rounded", not a measurement, so it is named rather than numbered — deliberately, and
+  // asserted as the ONLY exception so a second one cannot be added quietly.
+  for (const [tree, label] of [[primitive.radius, "radius"], [semantic.shape, "shape"]]) {
+    for (const [path, tok] of leaves(tree)) {
+      const rung = path.at(-1);
+      if (rung === "full") continue;
+      assert.match(rung, /^\d+$/, `${label}/${rung} is not a number — the ladder is value-named, and \`full\` is the only permitted name`);
+      const resolved = String(tok.$value).startsWith("{")
+        ? px(primitive.radius[String(tok.$value).slice(8, -1)].$value)
+        : px(tok.$value);
+      assert.equal(resolved, Number(rung), `${label}/${rung} resolves to ${resolved}px — a value-name that lies is worse than a T-shirt name`);
+    }
+  }
+  assert.equal(px(primitive.radius.full.$value), 999, "radius.full is the fully-rounded sentinel and must stay 999");
+});
+
 test("S4 · no primitive rung is orphaned", () => {
   const pointed = new Set(leaves(semantic.shape).map(([, t]) => String(t.$value).slice(8, -1)));
   for (const k of Object.keys(primitive.radius).filter((k) => !k.startsWith("$"))) {

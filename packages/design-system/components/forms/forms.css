@@ -18,7 +18,7 @@
   color: var(--sa-text-neutral-base);
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   transition:
     border-color 0.15s ease,
     box-shadow 0.15s ease;

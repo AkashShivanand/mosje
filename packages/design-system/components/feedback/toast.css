@@ -22,7 +22,7 @@
   max-width: 24rem;
   padding: var(--sa-padding-12) var(--sa-padding-16);
   border: 1px solid transparent;
-  border-radius: var(--sa-shape-lg);
+  border-radius: var(--sa-shape-12);
   box-shadow: var(--sa-elevation-modal);
   background-color: var(--sa-bg-neutral-base);
 }
@@ -46,7 +46,7 @@
   cursor: pointer;
   flex-shrink: 0;
   padding: var(--sa-padding-2);
-  border-radius: var(--sa-shape-xs);
+  border-radius: var(--sa-shape-4);
   background: transparent;
   color: var(--sa-text-neutral-subtle);
   transition: color 0.12s ease;

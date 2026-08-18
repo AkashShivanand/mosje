@@ -17,7 +17,7 @@ const MOTION_CSS = `
 .motion-demo__box {
   width: 40px;
   height: 40px;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background: var(--sa-bg-brand-primary-bolder);
 }
 .motion-demo:hover .motion-demo__box--fast,
@@ -89,7 +89,7 @@ export default function MotionPage(): React.JSX.Element {
           style={{
             marginTop: "var(--sa-stack-24)",
             background: "var(--sa-bg-neutral-subtler)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             padding: "var(--sa-padding-32)",
             display: "flex",
             flexDirection: "column",

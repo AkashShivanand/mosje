@@ -49,7 +49,7 @@ export default function ElevationPage(): React.JSX.Element {
           style={{
             marginTop: "var(--sa-stack-24)",
             background: "var(--sa-bg-neutral-subtler)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             padding: "var(--sa-section-48) var(--sa-padding-32)",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
@@ -62,7 +62,7 @@ export default function ElevationPage(): React.JSX.Element {
               style={{
                 background: "var(--sa-bg-neutral-base)",
                 boxShadow: `var(${token})`,
-                borderRadius: "var(--sa-shape-md)",
+                borderRadius: "var(--sa-shape-8)",
                 padding: "var(--sa-padding-24)",
                 textAlign: "center",
               }}

@@ -196,7 +196,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
                     display: "inline-flex",
                     alignItems: "center",
                     padding: "var(--sa-stack-8) var(--sa-stack-12)",
-                    borderRadius: "var(--sa-shape-xs)",
+                    borderRadius: "var(--sa-shape-4)",
                     background: "var(--sa-color-action-primary-default)",
                     color: "var(--sa-on-bg-brand-primary-bolder)",
                     fontSize: "var(--sa-type-label-2-size)",
@@ -214,9 +214,9 @@ export default function AccessibilityBarPage(): React.JSX.Element {
               label: "Don't duplicate font-size/contrast in both the bar and the UX4G widget. Pick one mechanism per property so a reader isn't given two conflicting controls.",
               preview: (
                 <div style={{ display: "flex", gap: "var(--sa-stack-12)", alignItems: "center", color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-label-2-size)" }}>
-                  <span style={{ display: "inline-flex", gap: "var(--sa-stack-8)", padding: "var(--sa-stack-8) var(--sa-stack-12)", borderRadius: "var(--sa-shape-xs)", background: "var(--sa-bg-neutral-subtler)" }}>A− A A+</span>
+                  <span style={{ display: "inline-flex", gap: "var(--sa-stack-8)", padding: "var(--sa-stack-8) var(--sa-stack-12)", borderRadius: "var(--sa-shape-4)", background: "var(--sa-bg-neutral-subtler)" }}>A− A A+</span>
                   <span aria-hidden="true">+</span>
-                  <span style={{ padding: "var(--sa-stack-8) var(--sa-stack-12)", borderRadius: "var(--sa-shape-xs)", background: "var(--sa-bg-neutral-subtler)" }}>Widget: text size</span>
+                  <span style={{ padding: "var(--sa-stack-8) var(--sa-stack-12)", borderRadius: "var(--sa-shape-4)", background: "var(--sa-bg-neutral-subtler)" }}>Widget: text size</span>
                 </div>
               ),
             },

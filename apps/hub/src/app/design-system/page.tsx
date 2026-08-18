@@ -156,7 +156,7 @@ export default function WelcomePage(): React.JSX.Element {
               style={{
                 display: "flex", alignItems: "center", justifyContent: "space-between",
                 padding: "var(--sa-padding-12) var(--sa-padding-16)",
-                borderRadius: "var(--sa-shape-sm)", border: "1px solid var(--sa-border-neutral-subtle)",
+                borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)",
                 fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-default)", textDecoration: "none",
                 transition: "border-color 0.1s",
               }}

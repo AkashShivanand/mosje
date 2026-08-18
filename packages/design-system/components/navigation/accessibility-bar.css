@@ -81,7 +81,7 @@
 .sa-abar__flag {
   height: var(--sa-cmp-accessibilityBar-flagHeight);
   width: var(--sa-cmp-accessibilityBar-flagWidth);
-  border-radius: var(--sa-shape-xxs);
+  border-radius: var(--sa-shape-2);
   object-fit: cover;
 }
 .sa-abar__ext { flex: 0 0 auto; }
@@ -115,7 +115,7 @@
   height: var(--sa-cmp-accessibilityBar-stepSize);
   padding: 0 var(--sa-padding-2);
   border: none;
-  border-radius: var(--sa-shape-xs);
+  border-radius: var(--sa-shape-4);
   background: transparent;
   color: inherit;
   font: inherit;
@@ -160,5 +160,5 @@
 .sa-abar__icbtn:focus-visible {
   outline: 2px solid var(--sa-text-neutral-inverse);
   outline-offset: 2px;
-  border-radius: var(--sa-shape-xs);
+  border-radius: var(--sa-shape-4);
 }

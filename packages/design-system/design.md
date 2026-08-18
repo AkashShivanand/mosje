@@ -789,7 +789,7 @@ graph TD
 
 | Do | Don't |
 | :--- | :--- |
-| Group content into clean cards using `var(--sa-shape-lg)` (12px). See the open question under Shape Tokens: `--sa-cmp-card-radius` is still 8px. | Banned: Sharp corners (`0px` radius) or excessively rounded (`> 20px`) for cards. |
+| Group content into clean cards using `var(--sa-shape-12)` (12px). See the open question under Shape Tokens: `--sa-cmp-card-radius` is still 8px. | Banned: Sharp corners (`0px` radius) or excessively rounded (`> 20px`) for cards. |
 | Use solid semantic borders (`--ds-border`) or `--ds-surface-muted` background for separation. | Banned: Coloured accent side-stripes (`border-left: 4px solid`) on cards. These are a legacy gov-portal pattern that fragments visual hierarchy. |
 | Keep grids structured with equal-height cards via flex or CSS grid. | Do not nest cards within other cards — flat hierarchy only. |
 | Use `<CardHeader>`, `<CardBody>`, `<CardFooter>` sub-components. | Do not build bespoke card layouts with raw `div`s inside a `<Card>`. |
@@ -1080,23 +1080,26 @@ namespace, which is what these tokens exist to prevent.
 > real 8px. Two of the five names below therefore have no `--ds-*` ancestor at all. Verify with
 > `grep -c -- "--ds-radius-" packages/design-system/tokens.css`, which returns 0.
 
+**The ladder is VALUE-NAMED** — the rung IS the pixel value, matching the spacing ladder, with
+`full` the single named exception (a sentinel, not a measurement).
+
 **Tier 2 is what you write.** `--sa-shape-*` is the published vocabulary; `--sa-ref-radius-*` is
 Tier 1, hidden from Figma publishing, and banned in app code.
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--sa-shape-none` | `0px` | Square corners — tables, full-bleed media |
-| `--sa-shape-xxs` | `2px` | Smallest softening, on dense controls |
-| `--sa-shape-xs` | `4px` | Small chips, tags, inline badges |
-| `--sa-shape-sm` | `6px` | Inputs, selects, text-entry controls |
-| `--sa-shape-md` | `8px` | Buttons and standard controls — **the system default** |
-| `--sa-shape-lg` | `12px` | Cards and panels |
-| `--sa-shape-xl` | `16px` | Large containers and modal surfaces |
-| `--sa-shape-2xl` | `20px` | Hero and feature surfaces |
-| `--sa-shape-3xl` | `24px` | Largest editorial surfaces |
-| `--sa-shape-4xl` | `32px` | Oversized decorative surfaces — rare |
-| `--sa-shape-5xl` | `40px` | Largest decorative surface — rare |
-| `--sa-shape-full` | `999px` | Pills and circles. A **sentinel**, not a measurement: any value over half the shorter side renders fully rounded, and 999 is that for every surface in the estate. Write this, never `9999px` and never `50%` |
+| `--sa-shape-0` | `0px` | Square corners — tables, full-bleed media |
+| `--sa-shape-2` | `2px` | Smallest softening, on dense controls |
+| `--sa-shape-4` | `4px` | Small chips, tags, inline badges |
+| `--sa-shape-6` | `6px` | Inputs, selects, text-entry controls |
+| `--sa-shape-8` | `8px` | Buttons and standard controls — **the system default** |
+| `--sa-shape-12` | `12px` | Cards and panels |
+| `--sa-shape-16` | `16px` | Large containers and modal surfaces |
+| `--sa-shape-20` | `20px` | Hero and feature surfaces |
+| `--sa-shape-24` | `24px` | Largest editorial surfaces |
+| `--sa-shape-32` | `32px` | Oversized decorative surfaces — rare |
+| `--sa-shape-40` | `40px` | Largest decorative surface — rare |
+| `--sa-shape-full` | `999px` | Pills and circles. A **sentinel**, not a measurement: any value over half the shorter side renders fully rounded. Write this, never `9999px`, `100px` or `50%` |
 
 **Figma:** the `Radius` documentation page (between `Spacing` and `Motion` in FOUNDATION) carries
 the full ladder, the tier model and the census. It is audited at 100 % bound with zero unaccounted
@@ -1105,7 +1108,7 @@ nodes. **There is no web Shape page yet** — `apps/hub/src/app/design-system/fo
 `accessibility`, but no `shape`. That is an open gap, not an omission from this table.
 
 **Open design question, deliberately not resolved by the 2026-08-18 tier fix:**
-`--sa-cmp-card-radius` resolves to **8px** (`shape/md`), while `shape/lg`'s own published
+`--sa-cmp-card-radius` resolves to **8px** (`shape/8`), while `shape/12`'s own published
 description reads *"cards and panels"* and section 3.B below asks for 12–16px on cards. The
 token is the outlier. Changing it moves every card in the estate, so it is a design decision,
 not a refactor — see `.claude/rules/design-system.md`.

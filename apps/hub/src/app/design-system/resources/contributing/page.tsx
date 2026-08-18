@@ -214,7 +214,7 @@ export default function ContributingPage(): React.JSX.Element {
                 alignItems: "flex-start",
                 padding: "var(--sa-padding-16)",
                 border: "1px solid var(--sa-border-neutral-subtle)",
-                borderRadius: "var(--sa-shape-md)",
+                borderRadius: "var(--sa-shape-8)",
                 background: "var(--sa-bg-neutral-base)",
               }}
             >
@@ -227,7 +227,7 @@ export default function ContributingPage(): React.JSX.Element {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius: "var(--sa-shape-sm)",
+                  borderRadius: "var(--sa-shape-6)",
                   background: "var(--sa-color-status-success)",
                   color: "var(--sa-on-bg-status-success-bolder)",
                   fontSize: 14,

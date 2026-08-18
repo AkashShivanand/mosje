@@ -36,7 +36,7 @@
   width: 30px;
   height: 30px;
   flex: 0 0 auto;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background-color: var(--sa-bg-brand-primary-subtler);
   color: var(--sa-text-brand-primary-base);
   font-size: 11px;
@@ -66,7 +66,7 @@
   align-items: center;
   gap: var(--sa-stack-8);
   background-color: var(--sa-bg-neutral-subtler);
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   padding: var(--sa-padding-8) var(--sa-padding-12);
   transition: background-color 0.12s ease;
 }
@@ -113,7 +113,7 @@
   font-size: 10px;
   color: var(--sa-text-neutral-subtle);
   background-color: var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-xs);
+  border-radius: var(--sa-shape-4);
   padding: var(--sa-padding-2) var(--sa-padding-4);
   flex: 0 0 auto;
 }
@@ -185,7 +185,7 @@
   width: 30px;
   height: 30px;
   flex: 0 0 auto;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background-color: var(--sa-bg-brand-primary-subtler);
   color: var(--sa-text-brand-primary-base);
   font-size: 11px;
@@ -249,7 +249,7 @@
   flex: 0 0 auto;
   font-size: 9px;
   font-weight: 700;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   padding: var(--sa-padding-2) var(--sa-padding-4);
 }
 
