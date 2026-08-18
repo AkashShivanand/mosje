@@ -168,15 +168,30 @@ export default function AccessibilityBarPage(): React.JSX.Element {
             { token: "(none)", value: "Default", description: "Resting. No background; the glyph is icon/neutral/inverse." },
             { token: "--sa-cmp-accessibilityBar-hoverBg", value: "Hover · white 8%", description: "Figma overlay/on-brand/hover (#ffffff14). Carried an invented 12% until 2026-08-18.", isColor: true },
             { token: "--sa-text-neutral-inverse", value: "Focus-visible · 2px ring", description: "Never removed. Inverse ink, NOT focus/ring — see the warning below.", isColor: true },
-            { token: "--sa-cmp-accessibilityBar-pillBg", value: "Active · white 16%", description: "Figma overlay/on-brand/pressed (#ffffff29). Pressed OR the current selection.", isColor: true },
+            { token: "--sa-cmp-accessibilityBar-pillBg", value: "Active · white 16%", description: "Figma overlay/on-brand/pressed (#ffffff29). Pressed — or the font-size pill while away from the default size.", isColor: true },
           ]}
         />
-        <Callout type="info" title="“Active” means two things, and that is deliberate">
-          The documentation page defines ACTIVE as <em>“pressed, or the current selection (e.g. the
-          middle A)”</em>. The light rectangle behind the middle <strong>A</strong> is that ACTIVE
-          layer showing the current selection — its Figma layer is literally named{" "}
-          <code>Selection layer</code> — and pressing <strong>A−</strong> or <strong>A+</strong>{" "}
-          shows the same layer. Both senses bind to one token rather than two look-alike values.
+        <Callout type="info" title="The pill lights when you have CHANGED the size, not at the default">
+          Inverted on 2026-08-18. It used to light at the default, which said nothing useful and
+          failed the returning reader: the scale <strong>persists</strong>, so someone who chose
+          120% last visit came back to a bar identical to an untouched one — 90 / 110 / 120% were
+          indistinguishable. Lighting on deviation makes it mean{" "}
+          <em>“this page is not at the default size, and this is the control that undoes it”</em>.
+          An unlit pill means 100%.
+        </Callout>
+        <Callout type="info" title="It carries no aria-pressed, deliberately">
+          The middle <strong>A</strong> is a reset <em>action</em>, not a toggle — announcing it as
+          pressed/unpressed described a control that does not exist. The state a screen-reader user
+          needs is the current size, so the accessible name carries it:{" "}
+          <code>Text size: 100% (default)</code> at rest,{" "}
+          <code>Reset text size to default — currently 110%</code> when deviated. It stays{" "}
+          <strong>enabled</strong> at the default: disabling it on reset would destroy focus at the
+          exact moment the reader activated it.
+        </Callout>
+        <Callout type="info" title="Hit areas are ≥24×24 — WCAG 2.2 AA 2.5.8">
+          Steppers are 24×24, icon buttons 28×28, measured live. The Figma master carried bare
+          20×20 glyphs until 2026-08-18 and gained matching transparent <code>hit-area</code>{" "}
+          frames — the target grew, the look did not.
         </Callout>
         <Callout type="warning" title="Do not use focus/ring on this bar">
           <code>focus/ring</code> is <code>#0373DF</code>, and on the bar&apos;s{" "}

@@ -159,9 +159,17 @@
      FOCUS-VISIBLE  2px ring, never removed
      ACTIVE         white @ 16%  (overlay/on-brand/pressed)
 
-   ACTIVE carries TWO senses, exactly as the page states — "pressed, or the
-   current selection (e.g. the middle A)". Both resolve to the same layer, so
-   both are written against the same token rather than two look-alike values.
+   ACTIVE carries TWO senses, so both are written against the same token rather
+   than two look-alike values:
+     1. a control being PRESSED, and
+     2. the font-size pill while the reader is AWAY FROM the default size.
+
+   Sense 2 was inverted on 2026-08-18 ("Option B"). It previously lit at the
+   DEFAULT, which said nothing useful and actively failed the returning reader:
+   the scale persists, so 90 / 110 / 120 % all rendered identically to an
+   untouched bar. Lighting on deviation makes the highlight mean "this page is
+   not at the default size, and this is the control that undoes it". The Figma
+   States card was reworded to match.
 
    Every CLICKABLE control on the bar is covered: the three font-size steps and
    the two icon buttons. The Government-of-India and skip links are deliberately
@@ -178,6 +186,7 @@
 }
 .sa-abar__fsbtn:active:not(:disabled),
 .sa-abar__icbtn:active,
+/* `.is-active` on the pill = the reader is away from the default size. */
 .sa-abar__fsbtn.is-current.is-active {
   background-color: var(--sa-cmp-accessibilityBar-pillBg);
 }

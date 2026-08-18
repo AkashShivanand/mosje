@@ -69,12 +69,32 @@ is the source; the code matched three of them and was missing one entirely.
 | **Focus-visible** | 2 px ring, never removed | inverse ink | ✓ (and the page was wrong — see below) |
 | **Active** | white **16 %** | `overlay/on-brand/pressed` `#ffffff29` | ✗ **absent** |
 
-**ACTIVE carries two senses**, exactly as the page states — *"pressed, or the current
-selection (e.g. the middle A)"*. Both resolve to the same layer, so both bind to the
-same token rather than two look-alike values. The light rectangle behind the middle
-**A** is that ACTIVE layer showing the current selection; pressing **A−** or **A+** now
-shows the same layer, which it did not before. The middle A's Figma layer is literally
-named **`Selection layer`**, which is the clearest evidence of intent in the file.
+**ACTIVE carries two senses.** Both resolve to the same layer, so both bind to the same
+token rather than two look-alike values:
+
+1. a control being **pressed** — including `A−` and `A+`, which had no pressed state at all
+   before 2026-08-18; and
+2. the font-size pill while the reader is **away from the default size**.
+
+**Sense 2 was inverted on 2026-08-18 (design decision "Option B").** It previously lit at
+the *default*, which said nothing useful and actively failed the returning reader: the
+scale now **persists**, so someone who chose 120 % last visit came back to a bar that
+looked identical to an untouched one — 90 / 110 / 120 % were visually indistinguishable.
+Lighting on deviation makes the highlight mean *"this page is not at the default size,
+and this is the control that undoes it"*. An unlit pill now means 100 %.
+
+Two consequences worth recording:
+
+- **`aria-pressed` was removed.** The middle A is a reset **action**, not a toggle, and
+  announcing it as pressed/unpressed described a control that does not exist. The state a
+  screen-reader user actually needs — the current size — is carried by the accessible
+  name instead: `Text size: 100% (default)` at rest, `Reset text size to default —
+  currently 110%` when deviated.
+- **It stays enabled at the default**, even though resetting is then a no-op. Disabling it
+  on reset would destroy focus at the exact moment the reader activated it.
+
+The Figma master's `Selection layer` frames were cleared to transparent in the same pass
+(9 of them), so the master's resting state is the default size, unlit — matching the code.
 
 `:active` is declared **after** `:hover` at equal specificity. A pointer is almost
 always hovering the control it presses, so the reverse order makes the pressed state
@@ -91,13 +111,18 @@ affordance the master does not have.
 > where a keyboard user needs it. Inverse ink measures **6.36:1**. The code already used
 > inverse ink; the Figma specimen and its card were rebound to match on 2026-08-18.
 
-> **Open, and it is an accessibility gap in the master:** in Figma the `A−`, `A+`,
-> `accessibility_new` and `translate_indic` glyphs are **bare 20 × 20 text nodes with no
-> hit-area frame** — only the middle A has one (the 32 × 32 `Selection layer`). As drawn,
-> those targets would be 20 × 20 and fail **WCAG 2.2 AA 2.5.8 (24 × 24 minimum)**. The
-> code does not reproduce that: it wraps them in 24 × 24 steppers and 28 × 28 icon
-> buttons, measured live. Figma should gain matching hit frames so the master and the
-> build agree — flagged rather than changed, because it alters the master's structure.
+> **CLOSED 2026-08-18 (design decision "Fix A").** The master's `A−`, `A+`,
+> `accessibility_new` and language controls were **bare 20 × 20 glyphs with no hit-area
+> frame** — only the middle A had one — so as drawn those targets failed **WCAG 2.2 AA
+> 2.5.8 (24 × 24 minimum)**. Every one of the **8 variants that carries the cluster** now
+> has explicit `hit-area` frames: **24 × 24** on the steppers (`shape/4`), **28 × 28** on
+> the accessibility button and **28** tall on the language pill (`shape/full`), with width,
+> height and all four radii **bound to variables** — no literals. Figma now matches the
+> code, which already shipped these sizes.
+>
+> Nothing moved visually: the hit frames are transparent, so the bar renders exactly as
+> before. The right-hand cluster grew by ~35px on a 1200 container, and every variant is
+> still 46px tall — verified after the change.
 
 ## The masthead reversal (2026-08-18)
 

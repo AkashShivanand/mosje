@@ -279,6 +279,8 @@ export function AccessibilityBar({
     [onAccessibility, accessibilityHref],
   );
   const reset = () => setScaleIx(DEFAULT_SCALE_INDEX);
+  /** The current step as a whole percentage — announced, never rendered. */
+  const scalePercent = Math.round((FONT_SCALES[scaleIx] ?? 1) * 100);
 
   return (
     <div className={cn("sa-abar", `layout-${layout}`, `device-${device}`, className)} role="region" aria-label="Accessibility toolbar">
@@ -306,7 +308,36 @@ export function AccessibilityBar({
                 <button type="button" className="sa-abar__fsbtn" onClick={dec} disabled={scaleIx === 0} aria-label="Decrease text size">
                   <Icon name="text_decrease" size={ICON_SIZE} aria-hidden />
                 </button>
-                <button type="button" className={cn("sa-abar__fsbtn", "is-current", scaleIx === DEFAULT_SCALE_INDEX && "is-active")} onClick={reset} aria-label="Reset text size" aria-pressed={scaleIx === DEFAULT_SCALE_INDEX}>
+                {/*
+                  THE PILL LIGHTS WHEN THE READER HAS CHANGED THE SIZE — not when they
+                  are at the default. Inverted on 2026-08-18 (design decision "Option B").
+
+                  It read the other way until then, which left the returning reader with
+                  no signal at all: the scale now PERSISTS, so someone who chose 120 % last
+                  visit came back to a bar that looked identical to an untouched one. Three
+                  of the four steps were visually indistinguishable. Lighting on deviation
+                  turns the highlight into the thing that is actually worth saying — "this
+                  page is not at the default size, and this is the control that undoes it".
+
+                  `aria-pressed` was REMOVED with the same change. This is a reset ACTION,
+                  not a toggle, and announcing it as a pressed/unpressed toggle described a
+                  control that does not exist. The state a screen-reader user needs is the
+                  current size, so the accessible name carries it instead.
+
+                  It deliberately stays ENABLED at the default even though resetting is then
+                  a no-op: disabling it on reset would destroy focus at the exact moment the
+                  reader activated it.
+                */}
+                <button
+                  type="button"
+                  className={cn("sa-abar__fsbtn", "is-current", scaleIx !== DEFAULT_SCALE_INDEX && "is-active")}
+                  onClick={reset}
+                  aria-label={
+                    scaleIx === DEFAULT_SCALE_INDEX
+                      ? `Text size: ${scalePercent}% (default)`
+                      : `Reset text size to default — currently ${scalePercent}%`
+                  }
+                >
                   <Icon name="font_download" size={ICON_SIZE} aria-hidden />
                 </button>
                 <button type="button" className="sa-abar__fsbtn" onClick={inc} disabled={scaleIx === FONT_SCALES.length - 1} aria-label="Increase text size">
