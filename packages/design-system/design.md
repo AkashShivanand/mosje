@@ -1098,6 +1098,12 @@ Tier 1, hidden from Figma publishing, and banned in app code.
 | `--sa-shape-5xl` | `40px` | Largest decorative surface — rare |
 | `--sa-shape-full` | `999px` | Pills and circles. A **sentinel**, not a measurement: any value over half the shorter side renders fully rounded, and 999 is that for every surface in the estate. Write this, never `9999px` and never `50%` |
 
+**Figma:** the `Radius` documentation page (between `Spacing` and `Motion` in FOUNDATION) carries
+the full ladder, the tier model and the census. It is audited at 100 % bound with zero unaccounted
+nodes. **There is no web Shape page yet** — `apps/hub/src/app/design-system/foundations/` has
+`spacing`, `color`, `typography`, `density`, `elevation`, `iconography`, `motion` and
+`accessibility`, but no `shape`. That is an open gap, not an omission from this table.
+
 **Open design question, deliberately not resolved by the 2026-08-18 tier fix:**
 `--sa-cmp-card-radius` resolves to **8px** (`shape/md`), while `shape/lg`'s own published
 description reads *"cards and panels"* and section 3.B below asks for 12–16px on cards. The

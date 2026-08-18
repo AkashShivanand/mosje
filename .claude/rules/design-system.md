@@ -501,6 +501,35 @@ reads *"cards and panels"* and `design.md` §3.B asks for 12px on cards. The tok
 The 2026-08-18 fix deliberately left the value alone: changing it moves every card in the estate,
 which is a design decision, not a refactor.
 
+### The Figma documentation page
+
+**`Radius` — page `55623:695`**, between `Spacing` and `Motion` in the FOUNDATION run. Two
+frames, matching the `Spacing` precedent exactly:
+
+- **`Radius — Documentation`** (`55623:696`, 1680 wide) — hero + six sections: `01 Anatomy`,
+  `02 Tiers`, `03 Ladder`, `04 Divergence`, `05 Measured`, `06 Do and Don't`.
+- **`Radius — Component record`** (`55628:695`, 880 wide) — the sibling maintainer frame of
+  **open gaps only**, forward-looking, not a catalogue of what was fixed.
+
+**Audited at 100 % bound on every gated property** — 197 fills, 356 padding, 87 gaps, **404
+radii**, 149 text nodes, all on a variable or a published style, with **zero `UNACCOUNTED`** and
+zero declared specimens (nothing on the page needed one).
+
+Two things worth knowing if you build the next one:
+
+- **`figma.createAutoLayout()` gives every frame a default white fill.** 53 pure layout
+  containers (`row`, `header`, `stat`, `meta`, `eyebrow`, `stats`, and each `rung` cell) carried
+  an unbound white the audit counted as raw — 78.8 % on fills before it was found. The fix is
+  `fills = []`, not a bound fill: a layout container should have **no** fill, not a correct one.
+- **The hero's top padding is 80, not the 88 the house style states.** There is no `padding/88`
+  on the value-named ladder, so 88 is unbindable. `Spacing` already resolved this the same way;
+  `figma-documentation-style.md` records the intent, and the implemented precedent wins where a
+  literal reading would force an unbound value.
+
+**Every swatch in `03 Ladder` has its corner radius bound to the rung it demonstrates** — none is
+drawn at a typed number, so the page moves when the ladder moves. That is the difference between
+documentation that is correct and documentation that merely looks correct.
+
 ### `shape/full` is a SENTINEL, not a measurement
 
 `999px` means "fully rounded". Any value exceeding half the shorter side renders the same, and
