@@ -429,6 +429,17 @@
    (`bg/neutral/subtler` inside the enclosed track, the page behind an open
    list). Masking is colour-agnostic and therefore correct in both.
 
+   OPEN TRACK ONLY (`track="none"`). The fade exists to explain a cut that
+   nothing else explains. An ENCLOSED track already explains it: it is a bordered,
+   rounded container, and content clipped by a container reads as clipped, not as
+   damaged — which is how Material and Carbon treat their bounded scrollable tab
+   rows. Worse, the fade cannot be confined to the tabs there: the border, the
+   fill and the corner radius are all painted by the scrolling element, so a mask
+   dissolves the container itself. Measured at 200% zoom, the enclosed track lost
+   its rounded corner and read as a smudge; unmasked, the same row clips crisply
+   against its own border. So the enclosed track keeps its edge and the fade is
+   scoped away from it.
+
    Applied per direction, driven by measured scroll position, so a row scrolled
    fully to one end does not fade an edge that has nothing beyond it. That is
    also what keeps WCAG 2.4.11 intact: the first tab can only rest at the start
@@ -436,47 +447,50 @@
    fade is OFF, so a focused tab is never under one. `scroll-padding-inline`
    above matches the fade width for the same reason.
 
-   The `#000` stops below are MASK ALPHA, not colour. In a mask, black means
-   "keep this pixel" and transparent means "drop it" — nothing here paints. They
-   are deliberately not tokenised: a colour token would be the wrong vocabulary
-   for an alpha channel, and binding one would imply the fade re-themes. */
-.ds-tabs--overflow.is-scrollable-end {
-  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--sa-inline-l)), transparent);
-  mask-image: linear-gradient(to right, #000 calc(100% - var(--sa-inline-l)), transparent);
+   The opaque stops are `currentColor`, and that is not a cosmetic choice. A
+   mask consumes only the ALPHA channel — opaque means "keep this pixel",
+   transparent means "drop it", and the hue is never painted. Writing a literal
+   there (`#000`) is both meaningless and a raw colour, which the token-lint and
+   ds-linkage gates correctly reject; binding a colour TOKEN would be worse,
+   implying the fade re-themes when it cannot. `currentColor` says the true
+   thing: any opaque value will do, because only its alpha is read. */
+.ds-tabs--track-none.ds-tabs--overflow.is-scrollable-end {
+  -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-l)), transparent);
+  mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-l)), transparent);
 }
 
-.ds-tabs--overflow.is-scrollable-start {
-  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - var(--sa-inline-l)), transparent);
-  mask-image: linear-gradient(to left, #000 calc(100% - var(--sa-inline-l)), transparent);
+.ds-tabs--track-none.ds-tabs--overflow.is-scrollable-start {
+  -webkit-mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-l)), transparent);
+  mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-l)), transparent);
 }
 
 /* RTL flips which PHYSICAL edge is the start. `scroll-padding-inline` and
    `scroll-snap-align: start` are already logical and need no help, but a CSS
    gradient has no logical direction keyword, so the two single-edge masks swap.
    The both-edges mask below is symmetric and is correct in either direction. */
-[dir="rtl"] .ds-tabs--overflow.is-scrollable-end {
-  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - var(--sa-inline-l)), transparent);
-  mask-image: linear-gradient(to left, #000 calc(100% - var(--sa-inline-l)), transparent);
+[dir="rtl"] .ds-tabs--track-none.ds-tabs--overflow.is-scrollable-end {
+  -webkit-mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-l)), transparent);
+  mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-l)), transparent);
 }
 
-[dir="rtl"] .ds-tabs--overflow.is-scrollable-start {
-  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--sa-inline-l)), transparent);
-  mask-image: linear-gradient(to right, #000 calc(100% - var(--sa-inline-l)), transparent);
+[dir="rtl"] .ds-tabs--track-none.ds-tabs--overflow.is-scrollable-start {
+  -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-l)), transparent);
+  mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-l)), transparent);
 }
 
-.ds-tabs--overflow.is-scrollable-start.is-scrollable-end {
+.ds-tabs--track-none.ds-tabs--overflow.is-scrollable-start.is-scrollable-end {
   -webkit-mask-image: linear-gradient(
     to right,
     transparent,
-    #000 var(--sa-inline-l),
-    #000 calc(100% - var(--sa-inline-l)),
+    currentColor var(--sa-inline-l),
+    currentColor calc(100% - var(--sa-inline-l)),
     transparent
   );
   mask-image: linear-gradient(
     to right,
     transparent,
-    #000 var(--sa-inline-l),
-    #000 calc(100% - var(--sa-inline-l)),
+    currentColor var(--sa-inline-l),
+    currentColor calc(100% - var(--sa-inline-l)),
     transparent
   );
 }
