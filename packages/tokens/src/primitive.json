@@ -635,59 +635,63 @@
     }
   },
   "space": {
-    "$description": "T-shirt spacing scale — matches Figma Spacing collection 1:1. Every value except 72px (8xl) is a step on the UX4G 3.0 base ramp (--ux4g-space-1…16), so this scale IS the UX4G foundation under different names; the parity layer maps the two by value. 10xl/11xl were added for UX4G padding-3xl/4xl — NEEDS FIGMA SYNC.",
-    "$type": "dimension",
-    "none": {
+    "0": {
       "$value": "0px"
     },
-    "xxs": {
+    "2": {
       "$value": "2px"
     },
-    "xs": {
+    "4": {
       "$value": "4px"
     },
-    "sm": {
+    "6": {
+      "$value": "6px",
+      "$description": "UX4G 3.0 space-3. Added 2026-08-18."
+    },
+    "8": {
       "$value": "8px"
     },
-    "md": {
+    "12": {
       "$value": "12px"
     },
-    "lg": {
+    "16": {
       "$value": "16px"
     },
-    "xl": {
+    "20": {
       "$value": "20px"
     },
-    "2xl": {
+    "24": {
       "$value": "24px"
     },
-    "3xl": {
+    "32": {
       "$value": "32px"
     },
-    "4xl": {
+    "40": {
       "$value": "40px"
     },
-    "5xl": {
+    "48": {
       "$value": "48px"
     },
-    "6xl": {
+    "56": {
       "$value": "56px"
     },
-    "7xl": {
+    "64": {
       "$value": "64px"
     },
-    "8xl": {
+    "72": {
       "$value": "72px"
     },
-    "9xl": {
+    "80": {
       "$value": "80px"
     },
-    "10xl": {
+    "120": {
       "$value": "120px"
     },
-    "11xl": {
+    "360": {
       "$value": "360px"
-    }
+    },
+    "$description": "Spacing ladder, VALUE-NAMED: `space/16` is 16px. Renamed from T-shirt labels on 2026-08-18. Two reasons, both measured. (1) A T-shirt ramp has no slot between two adjacent rungs, so every insertion forces a rename of everything above it — that happened twice in one day (inline gained 24, padding needed 6). A numeric ladder absorbs any step for free. (2) The Tier-2 families each mapped the SAME label to a DIFFERENT value — `l` was 16 in inline, 24 in stack, 20 in padding and 56 in section — which is inherited verbatim from UX4G 3.0 and is the single most confusing thing about the old scale. UX4G's own primitive ramp is numeric (space-1..16), so numbering here is MORE consistent with UX4G, not less. UX4G parity is unaffected: the --ux4g-* layer is emitted independently and never reads these names. 6px is new — UX4G ships it as space-3 and 400 padding properties in the Figma library needed it.",
+    "$type": "dimension"
   },
   "radius": {
     "$description": "T-shirt radius scale — matches Figma Border Radius collection.",

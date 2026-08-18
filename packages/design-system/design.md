@@ -953,7 +953,7 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 >   the primitive and semantic namespaces and a Tier-2 `radius` group self-references the Tier-1
 >   scale it aliases. `shape` is also the word this section already used.
 > - **`--sa-font-latin` / `-display` / `-mono`** — alongside the existing `--sa-font-devanagari`.
-> - **`--sa-stack-2xl`** (40px) — the one spacing value with no purpose-scale home.
+> - **`--sa-stack-40`** (40px) — the one spacing value with no purpose-scale home.
 >
 > **What the retired names could never express**, and why retiring beat maintaining:
 > 1. **They stopped at rung 900.** Every canonical ramp runs to 950.

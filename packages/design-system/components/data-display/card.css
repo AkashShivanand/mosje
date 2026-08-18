@@ -50,23 +50,23 @@
 .ds-card__header {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-s);
-  padding: var(--sa-padding-m);
+  gap: var(--sa-stack-12);
+  padding: var(--sa-padding-16);
 }
 
 .ds-card__body {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-xs);
-  padding: var(--sa-padding-m);
+  gap: var(--sa-stack-8);
+  padding: var(--sa-padding-16);
   flex: 1 1 auto;
 }
 
 .ds-card__footer {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
-  padding: var(--sa-padding-m);
+  gap: var(--sa-stack-8);
+  padding: var(--sa-padding-16);
 }
 
 /* Collapse doubled padding when sections stack directly. */

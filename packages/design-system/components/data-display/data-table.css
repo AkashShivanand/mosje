@@ -9,7 +9,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: calc(-1 * var(--sa-padding-3xs));
+  margin: calc(-1 * var(--sa-padding-2));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -19,7 +19,7 @@
 .ds-table {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-s);
+  gap: var(--sa-stack-12);
   font-family: var(--sa-font-latin);
 }
 
@@ -40,7 +40,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: calc(-1 * var(--sa-padding-3xs));
+  margin: calc(-1 * var(--sa-padding-2));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -54,7 +54,7 @@
 }
 
 .ds-table__th {
-  padding: var(--sa-padding-m) var(--sa-padding-m);
+  padding: var(--sa-padding-16) var(--sa-padding-16);
   text-align: left;
   white-space: nowrap;
   font-weight: 600;
@@ -76,7 +76,7 @@
 }
 
 .ds-table__td {
-  padding: var(--sa-padding-m) var(--sa-padding-m);
+  padding: var(--sa-padding-16) var(--sa-padding-16);
   color: var(--sa-text-neutral-base);
   vertical-align: middle;
   /* Tabular figures: every digit takes the same width, so a column of amounts,
@@ -92,7 +92,7 @@
 }
 
 .ds-table__empty {
-  padding: var(--sa-section-m) var(--sa-padding-m);
+  padding: var(--sa-section-48) var(--sa-padding-16);
   text-align: center;
   color: var(--sa-text-neutral-subtle);
 }
@@ -103,13 +103,13 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-stack-s);
+  gap: var(--sa-stack-12);
 }
 
 .ds-table__pagesize {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   font-size: var(--sa-type-body-3-size);
   color: var(--sa-text-neutral-subtle);
 }
@@ -119,7 +119,7 @@
   border: 0;
   cursor: pointer;
   border-radius: var(--sa-shape-sm);
-  padding: var(--sa-padding-3xs) var(--sa-padding-xs);
+  padding: var(--sa-padding-2) var(--sa-padding-8);
   font: inherit;
   font-weight: 600;
   background: transparent;
@@ -139,7 +139,7 @@
 .ds-table__pager {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-2xs);
+  gap: var(--sa-stack-4);
 }
 
 .ds-table__page-nav,
@@ -180,7 +180,7 @@
 .ds-table__ellipsis {
   display: inline-flex;
   align-items: center;
-  padding: 0 var(--sa-padding-2xs);
+  padding: 0 var(--sa-padding-4);
   color: var(--sa-text-neutral-subtle);
 }
 

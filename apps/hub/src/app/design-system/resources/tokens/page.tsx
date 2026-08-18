@@ -71,7 +71,7 @@ export default function TokensPage(): React.JSX.Element {
       </Callout>
 
       {groups.map(({ group, leaves }) => (
-        <section key={group} className="docs-section" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+        <section key={group} className="docs-section" style={{ marginTop: "var(--sa-stack-40)" }}>
           <span className="docs-section__label">{leaves.length} tokens</span>
           <h2 id={group} className="docs-section__heading" style={{ textTransform: "capitalize" }}>
             {group}

@@ -153,7 +153,7 @@ const RELEASES: Release[] = [
       { kind: "Added", text: "Figma: one Icon component replaces the icon library. A text property takes any Material Symbols name, so all ~3,000 icons are reachable from a single component; 44 vector duplicates of icons Material already draws were deleted, and the 54 bespoke MoSJE marks Material has no equivalent for (Aadhaar, SHe-Box, Swachh Bharat, indian-flag, the navigation/* pairs) stay as vectors. New 10-section Icons documentation page. OPEN: 656 of 713 call sites still render at off-DBIM sizes" },
       { kind: "Removed", text: "THE LEGACY --ds-* VOCABULARY IS GONE. All 341 tokens, retired in one pass. Nothing emits them: zero occurrences in tokens.css, tokens.ts, tailwind-preset.cjs, ux4g.css or the Figma payload, and zero references in source. 3,561 call sites across 162 files were moved to the canonical --sa-* token each legacy name already resolved to, so the migration was value-preserving BY CONSTRUCTION rather than by inspection — 0 of 192 distinct mappings change a rendered value" },
       { kind: "Changed", text: "The proof is the re-baselined ux4g contract fixture: 4,433 removals, every single one a --ds-* name, 208 additions (the new Tier-2 tokens), and ZERO changed values across all 13 selector contexts — every brand, every axis block. Brand swap, brand-invariance of secondary and accent, and the six DBIM previews were re-verified in the browser after the migration and all still behave" },
-      { kind: "Added", text: "Three Tier-2 groups had to exist first, because 320 usages had no canonical home and were binding Tier-1 primitives by proxy: --sa-shape-* (corner radius, 12 steps), --sa-font-latin/display/mono alongside the existing devanagari, and --sa-stack-2xl (40px). It is called shape rather than radius because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 radius group self-references the Tier-1 scale it aliases — the build fails with 12 reference errors" },
+      { kind: "Added", text: "Three Tier-2 groups had to exist first, because 320 usages had no canonical home and were binding Tier-1 primitives by proxy: --sa-shape-* (corner radius, 12 steps), --sa-font-latin/display/mono alongside the existing devanagari, and --sa-stack-40 (40px). It is called shape rather than radius because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 radius group self-references the Tier-1 scale it aliases — the build fails with 12 reference errors" },
       { kind: "Fixed", text: "About 40 references that RENDERED NOTHING, found because the migration had to resolve every name. --ds-space-2 through -12, --ds-line, --ds-border-control, --ds-leading-label-2 and --ds-ink-hint were never declared anywhere, so the declarations carrying them were dropped as invalid CSS: the markdown docs pages had no vertical rhythm and two form controls had no border. Nobody had noticed, because a dropped declaration looks like a design decision" },
       { kind: "Fixed", text: "The Figma library was telling designers, in Dev Mode, to use tokens that no longer exist — 73 font/role variables published var(--ds-type-*) as their codeSyntax. Repointed, and 16 new variables pushed with their GENERATED descriptions. Six of eight collections now agree with the payload byte-for-byte; Palette and Type differ by exactly the documented orphan set (24 x 2 modes and 13 x 6 modes), now recorded with the arithmetic so anything that is not a whole orphan reads as real drift" },
       { kind: "Removed", text: "Two test files deleted rather than repaired: tier2-parity and type-alias-parity existed solely to prove the canonical and legacy layers agreed, and there is no longer a second layer. legacy-snapshot.json goes with them. A test whose subject no longer exists is not coverage" },
@@ -686,10 +686,10 @@ export default function ChangelogPage(): React.JSX.Element {
 
         <div
           style={{
-            marginTop: "var(--sa-stack-l)",
+            marginTop: "var(--sa-stack-24)",
             display: "flex",
             flexDirection: "column",
-            gap: "var(--sa-stack-xl)",
+            gap: "var(--sa-stack-32)",
           }}
         >
           {RELEASES.map((release) => (
@@ -703,11 +703,11 @@ export default function ChangelogPage(): React.JSX.Element {
                 style={{
                   display: "flex",
                   alignItems: "baseline",
-                  gap: "var(--sa-stack-s)",
+                  gap: "var(--sa-stack-12)",
                   flexWrap: "wrap",
-                  paddingBottom: "var(--sa-padding-s)",
+                  paddingBottom: "var(--sa-padding-12)",
                   borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-                  marginBottom: "var(--sa-stack-m)",
+                  marginBottom: "var(--sa-stack-16)",
                 }}
               >
                 <h2
@@ -734,7 +734,7 @@ export default function ChangelogPage(): React.JSX.Element {
                       fontWeight: 600,
                       color: "var(--sa-on-bg-brand-primary-bolder)",
                       background: "var(--sa-bg-brand-primary-bolder)",
-                      padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
+                      padding: "var(--sa-padding-2) var(--sa-padding-8)",
                       borderRadius: "var(--sa-shape-sm)",
                     }}
                   >
@@ -751,7 +751,7 @@ export default function ChangelogPage(): React.JSX.Element {
                   padding: 0,
                   display: "flex",
                   flexDirection: "column",
-                  gap: "var(--sa-stack-s)",
+                  gap: "var(--sa-stack-12)",
                 }}
               >
                 {release.changes.map((change, i) => (
@@ -759,7 +759,7 @@ export default function ChangelogPage(): React.JSX.Element {
                     key={i}
                     style={{
                       display: "flex",
-                      gap: "var(--sa-stack-s)",
+                      gap: "var(--sa-stack-12)",
                       alignItems: "flex-start",
                     }}
                   >
@@ -772,7 +772,7 @@ export default function ChangelogPage(): React.JSX.Element {
                         fontWeight: 700,
                         color: "var(--sa-on-bg-brand-primary-bolder)",
                         background: KIND_COLOR[change.kind],
-                        padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
+                        padding: "var(--sa-padding-2) var(--sa-padding-8)",
                         borderRadius: "var(--sa-shape-sm)",
                       }}
                     >

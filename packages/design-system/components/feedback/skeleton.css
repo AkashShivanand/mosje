@@ -66,10 +66,10 @@
 .ds-skeleton-text {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
 }
 
 .ds-skeleton-row > td {
-  padding: var(--sa-padding-s) var(--sa-padding-m);
+  padding: var(--sa-padding-12) var(--sa-padding-16);
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }

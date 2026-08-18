@@ -148,8 +148,8 @@ export default function RoadmapPage(): React.JSX.Element {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: "var(--sa-padding-l)",
-            marginTop: "var(--sa-stack-xs)",
+            gap: "var(--sa-padding-20)",
+            marginTop: "var(--sa-stack-8)",
           }}
         >
           {COLUMNS.map((col) => (
@@ -171,13 +171,13 @@ export default function RoadmapPage(): React.JSX.Element {
                 }}
                 aria-hidden="true"
               />
-              <div style={{ padding: "var(--sa-padding-l)" }}>
+              <div style={{ padding: "var(--sa-padding-20)" }}>
                 <div
                   style={{
                     display: "flex",
                     alignItems: "baseline",
-                    gap: "var(--sa-stack-xs)",
-                    marginBottom: "var(--sa-stack-xs)",
+                    gap: "var(--sa-stack-8)",
+                    marginBottom: "var(--sa-stack-8)",
                   }}
                 >
                   <h2
@@ -195,7 +195,7 @@ export default function RoadmapPage(): React.JSX.Element {
                       fontWeight: 600,
                       color: TONE[col.tone].ink,
                       background: TONE[col.tone].chip,
-                      padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
+                      padding: "var(--sa-padding-2) var(--sa-padding-8)",
                       borderRadius: "var(--sa-shape-sm)",
                     }}
                   >
@@ -206,7 +206,7 @@ export default function RoadmapPage(): React.JSX.Element {
                   style={{
                     fontSize: "var(--sa-type-body-2-size)",
                     color: "var(--sa-text-neutral-subtle)",
-                    marginBottom: "var(--sa-stack-m)",
+                    marginBottom: "var(--sa-stack-16)",
                     lineHeight: "var(--sa-type-body-2-lh)",
                   }}
                 >
@@ -216,7 +216,7 @@ export default function RoadmapPage(): React.JSX.Element {
                 {col.groups.map((group, gi) => (
                   <div
                     key={gi}
-                    style={{ marginBottom: "var(--sa-stack-m)" }}
+                    style={{ marginBottom: "var(--sa-stack-16)" }}
                   >
                     {group.heading ? (
                       <div
@@ -226,7 +226,7 @@ export default function RoadmapPage(): React.JSX.Element {
                           textTransform: "uppercase",
                           letterSpacing: "0.04em",
                           color: "var(--sa-text-neutral-subtle)",
-                          marginBottom: "var(--sa-stack-xs)",
+                          marginBottom: "var(--sa-stack-8)",
                         }}
                       >
                         {group.heading}
@@ -239,7 +239,7 @@ export default function RoadmapPage(): React.JSX.Element {
                         padding: 0,
                         display: "flex",
                         flexDirection: "column",
-                        gap: "var(--sa-stack-2xs)",
+                        gap: "var(--sa-stack-4)",
                       }}
                     >
                       {group.items.map((item) => (
@@ -247,7 +247,7 @@ export default function RoadmapPage(): React.JSX.Element {
                           key={item}
                           style={{
                             display: "flex",
-                            gap: "var(--sa-stack-xs)",
+                            gap: "var(--sa-stack-8)",
                             alignItems: "baseline",
                             fontSize: "var(--sa-type-body-2-size)",
                             color: "var(--sa-text-neutral-base)",

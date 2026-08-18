@@ -8,9 +8,9 @@
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
-  gap: var(--sa-section-m);
+  gap: var(--sa-section-48);
   align-items: center;
-  margin-bottom: var(--sa-section-l);
+  margin-bottom: var(--sa-section-56);
 }
 
 .hero-glow {
@@ -39,7 +39,7 @@
    fills — stretch the hero across it so the space isn't left blank. */
 @media (min-width: 1025px) {
   .hero {
-    width: calc(100% + 200px + var(--sa-inline-xl));
+    width: calc(100% + 200px + var(--sa-inline-32));
   }
 }
 
@@ -53,8 +53,8 @@
 .hero-lockup {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-m);
-  margin-bottom: var(--sa-padding-l);
+  gap: var(--sa-stack-16);
+  margin-bottom: var(--sa-padding-20);
 }
 
 .hero-emblem {
@@ -79,13 +79,13 @@
 .hero-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   font-size: var(--sa-type-label-3-size);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--sa-text-neutral-subtle);
-  margin-bottom: var(--sa-stack-s);
+  margin-bottom: var(--sa-stack-12);
 }
 .hero-eyebrow::before {
   content: "";
@@ -98,7 +98,7 @@
 .hero-title {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-2xs);
+  gap: var(--sa-stack-4);
 }
 
 .hero-wordmark {
@@ -147,7 +147,7 @@
   font-size: var(--sa-type-body-1-size);
   line-height: var(--sa-type-body-1-lh);
   color: var(--sa-text-neutral-subtle);
-  margin-top: var(--sa-stack-m);
+  margin-top: var(--sa-stack-16);
   max-width: 38ch;
 }
 
@@ -156,7 +156,7 @@
   position: relative;
   height: 392px;
   overflow: hidden;
-  padding: var(--sa-padding-l);
+  padding: var(--sa-padding-20);
   border: 1px solid color-mix(in oklab, var(--sa-border-brand-primary-base) 12%, var(--sa-border-neutral-subtle));
   border-radius: var(--sa-shape-xl);
   background: color-mix(in oklab, var(--sa-color-action-primary-default) 2%, color-mix(in oklab, var(--sa-bg-neutral-base) 45%, transparent));
@@ -170,13 +170,13 @@
 /* "Live" cue — crisp, sits above the faded wall. */
 .hero-panel__tag {
   position: absolute;
-  top: var(--sa-stack-m);
-  left: var(--sa-inline-l);
+  top: var(--sa-stack-16);
+  left: var(--sa-inline-16);
   z-index: 2;
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
-  padding: var(--sa-padding-2xs) var(--sa-padding-s) var(--sa-padding-2xs) var(--sa-padding-xs);
+  gap: var(--sa-stack-8);
+  padding: var(--sa-padding-4) var(--sa-padding-12) var(--sa-padding-4) var(--sa-padding-8);
   font-size: var(--sa-type-label-3-size);
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -197,7 +197,7 @@
 .hero-wall {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--sa-stack-m);
+  gap: var(--sa-stack-16);
   height: 100%;
   /* Fade the top & bottom so the components appear to stream endlessly. */
   /* ds-exempt-start(layout-literal): #000 in a mask-image is an ALPHA STENCIL, not a
@@ -226,7 +226,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  margin-bottom: var(--sa-stack-m);
+  margin-bottom: var(--sa-stack-16);
   width: 100%;
   min-width: 0;
 }
@@ -243,7 +243,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
 }
 .hero-muted {
   font-size: var(--sa-type-body-3-size);
@@ -296,8 +296,8 @@
 @media (max-width: 860px) {
   .hero {
     grid-template-columns: 1fr;
-    gap: var(--sa-stack-l);
-    margin-bottom: var(--sa-stack-2xl);
+    gap: var(--sa-stack-24);
+    margin-bottom: var(--sa-stack-40);
   }
   .hero-panel { height: 320px; }
 }

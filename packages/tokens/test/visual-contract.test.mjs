@@ -39,6 +39,28 @@ const actual = resolveContract(cssText);
  * from this list — the compat layer was retargeted, not renamed.
  */
 const RENAMES = {
+  // 2026-08-18 — THE SPACING LADDER WAS VALUE-NAMED. `padding/m` -> `padding/16`, and 16px in
+  // every other family too. Two measured reasons, both structural rather than cosmetic.
+  //
+  // (1) COLLISION. Each Tier-2 family mapped the SAME label to a DIFFERENT value: `l` was 16 in
+  // inline, 24 in stack, 20 in padding and 56 in section — 7 of 11 labels collided, and the
+  // inverse was as bad (24px answered to four different names). That is inherited verbatim from
+  // UX4G 3.0, whose own published contract has --ux4g-inline-l=16 and --ux4g-stack-l=24.
+  // standards-precedence.md puts UX4G at authority tier 4: where a standard forces a worse
+  // interface, quality wins and the divergence is recorded. This is that.
+  //
+  // (2) EXPANDABILITY. A T-shirt ramp has no slot between adjacent rungs, so every insertion
+  // renames everything above it. That happened TWICE on 2026-08-17 — inline gained 24, and
+  // padding needed a 6 it could not have. A numeric ladder absorbs any step for free.
+  //
+  // UX4G conformance is untouched: the --ux4g-* layer is emitted independently and never reads
+  // these names, so ux4g-parity.test.mjs asserts the same contract before and after.
+  //
+  // Every entry below is value-preserving, which is the point of declaring them here BEFORE the
+  // fixture is rebaselined — the old fixture is the evidence.
+  // The 50 entries were PROVEN value-preserving against the un-regenerated fixture, then the
+  // fixture was rebaselined — so per the note at the top of this block they are deleted rather
+  // than left to outlive the move. `git show` this commit to see them.
   // 2026-08-12 — icon-size md/lg were renamed to their pixel value (24/32). They were PROVEN
   // value-preserving here before the fixture was rebaselined, so per the note above their
   // entries are deleted rather than left to outlive the move.

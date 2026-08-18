@@ -6,9 +6,9 @@
 .ds-tabs {
   position: relative;
   display: flex;
-  gap: var(--sa-stack-2xs);
+  gap: var(--sa-stack-4);
   overflow-x: auto;
-  padding: var(--sa-padding-2xs);
+  padding: var(--sa-padding-4);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-xl);
   background-color: var(--sa-bg-neutral-subtler);
@@ -55,7 +55,7 @@
   flex: 1 1 0;
   min-width: 0;
   white-space: nowrap;
-  padding: var(--sa-padding-s) var(--sa-padding-s);
+  padding: var(--sa-padding-12) var(--sa-padding-12);
   border: none;
   border-radius: var(--sa-shape-lg);
   background: transparent;
@@ -126,7 +126,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: calc(-1 * var(--sa-padding-3xs));
+  margin: calc(-1 * var(--sa-padding-2));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;

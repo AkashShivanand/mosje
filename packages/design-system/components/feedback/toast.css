@@ -10,17 +10,17 @@
   z-index: 60;
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   font-family: var(--sa-font-latin);
 }
 
 .ds-toast {
   display: flex;
   align-items: flex-start;
-  gap: var(--sa-stack-s);
+  gap: var(--sa-stack-12);
   min-width: 280px;
   max-width: 24rem;
-  padding: var(--sa-padding-s) var(--sa-padding-m);
+  padding: var(--sa-padding-12) var(--sa-padding-16);
   border: 1px solid transparent;
   border-radius: var(--sa-shape-lg);
   box-shadow: var(--sa-elevation-modal);
@@ -28,7 +28,7 @@
 }
 
 .ds-toast__icon {
-  margin-top: var(--sa-padding-3xs);
+  margin-top: var(--sa-padding-2);
   flex-shrink: 0;
 }
 
@@ -45,7 +45,7 @@
   border: 0;
   cursor: pointer;
   flex-shrink: 0;
-  padding: var(--sa-padding-3xs);
+  padding: var(--sa-padding-2);
   border-radius: var(--sa-shape-xs);
   background: transparent;
   color: var(--sa-text-neutral-subtle);

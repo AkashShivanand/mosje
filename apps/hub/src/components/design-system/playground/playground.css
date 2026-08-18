@@ -5,15 +5,15 @@
   border: 1px solid var(--sa-border-neutral-base);
   border-radius: var(--sa-shape-md);
   overflow: hidden;
-  margin: var(--sa-padding-l) 0;
+  margin: var(--sa-padding-20) 0;
 }
 
 /* ── Toolbar ── */
 .playground-toolbar {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-s);
-  padding: var(--sa-padding-s) var(--sa-padding-m);
+  gap: var(--sa-stack-12);
+  padding: var(--sa-padding-12) var(--sa-padding-16);
   background: var(--sa-bg-neutral-subtler);
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
   flex-wrap: wrap;
@@ -36,7 +36,7 @@
 }
 
 .pg-toggle {
-  padding: var(--sa-padding-2xs) var(--sa-padding-s);
+  padding: var(--sa-padding-4) var(--sa-padding-12);
   background: transparent;
   border: none;
   font-size: var(--sa-type-body-3-size);
@@ -53,7 +53,7 @@
 
 /* ── Canvas ── */
 .playground-canvas {
-  padding: var(--sa-padding-l) var(--sa-stack-2xl);
+  padding: var(--sa-padding-20) var(--sa-stack-40);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,15 +63,15 @@
 
 /* ── Controls ── */
 .playground-controls {
-  padding: var(--sa-padding-m) var(--sa-padding-l);
+  padding: var(--sa-padding-16) var(--sa-padding-20);
   background: var(--sa-bg-neutral-subtler);
   border-top: 1px solid var(--sa-border-neutral-subtle);
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: var(--sa-stack-m);
+  gap: var(--sa-stack-16);
 }
 
-.pg-control { display: flex; flex-direction: column; gap: var(--sa-stack-2xs); }
+.pg-control { display: flex; flex-direction: column; gap: var(--sa-stack-4); }
 .pg-control__label { font-size: var(--sa-type-label-3-size); font-weight: 600; color: var(--sa-text-neutral-subtle); }
 .pg-control__input {
   height: 32px;
@@ -81,7 +81,7 @@
   color: var(--sa-text-neutral-base);
   font-family: var(--sa-font-latin);
   font-size: var(--sa-type-body-2-size);
-  padding: 0 var(--sa-padding-s);
+  padding: 0 var(--sa-padding-12);
 }
 .pg-control__input:focus-visible {
   outline: none;
@@ -99,7 +99,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--sa-padding-xs) var(--sa-padding-m);
+  padding: var(--sa-padding-8) var(--sa-padding-16);
   background: var(--sa-code-bg);
   font-size: var(--sa-type-body-3-size);
   color: var(--sa-code-comment);
@@ -112,7 +112,7 @@
   color: var(--sa-code-comment);
   font-family: var(--sa-font-latin);
   font-size: 11px;
-  padding: var(--sa-padding-3xs) var(--sa-padding-xs);
+  padding: var(--sa-padding-2) var(--sa-padding-8);
   cursor: pointer;
   transition: color 0.1s, border-color 0.1s;
 }
@@ -121,7 +121,7 @@
 /* react-live editor override */
 .playground-code .prism-code {
   background: var(--sa-code-bg) !important;
-  padding: var(--sa-padding-m) var(--sa-padding-l) !important;
+  padding: var(--sa-padding-16) var(--sa-padding-20) !important;
   font-size: 13px !important;
   line-height: 1.6 !important;
   min-height: 80px;

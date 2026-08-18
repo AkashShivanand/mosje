@@ -12,34 +12,34 @@ export const metadata: Metadata = {
     "Card is a surface for grouping related content — a styled container composed of header, body and footer sections, with outlined and elevated variants.",
 };
 
-const sectionStyle: React.CSSProperties = { marginBottom: "var(--sa-section-m)" };
+const sectionStyle: React.CSSProperties = { marginBottom: "var(--sa-section-48)" };
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
-  marginBottom: "var(--sa-stack-m)",
-  scrollMarginTop: "var(--sa-section-m)",
+  marginBottom: "var(--sa-stack-16)",
+  scrollMarginTop: "var(--sa-section-48)",
 };
 const leadStyle: React.CSSProperties = {
   fontSize: "var(--sa-type-body-1-size)",
   color: "var(--sa-text-neutral-subtle)",
   lineHeight: "var(--sa-type-body-1-lh)",
   maxWidth: "64ch",
-  marginBottom: "var(--sa-stack-m)",
+  marginBottom: "var(--sa-stack-16)",
 };
 
 export default function CardPage(): React.JSX.Element {
   return (
     <>
       {/* ── Header ── */}
-      <div style={{ marginBottom: "var(--sa-stack-xl)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-s)", marginBottom: "var(--sa-stack-s)" }}>
+      <div style={{ marginBottom: "var(--sa-stack-32)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", marginBottom: "var(--sa-stack-12)" }}>
           <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 500, lineHeight: 1.1 }}>Card</h1>
           <StatusBadge status="Stable" />
         </div>
         <p style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 400, color: "var(--sa-color-text-default)", maxWidth: "60ch", lineHeight: 1.5 }}>
           A surface for grouping related content into a single, scannable unit.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.card)} target="_blank" rel="noopener noreferrer">
             View in Figma <span aria-hidden="true">↗</span>
           </a>
@@ -122,10 +122,10 @@ export default function CardPage(): React.JSX.Element {
               type: "do",
               label: "Keep one primary action per card so the next step is unambiguous.",
               preview: (
-                <div style={{ border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-m)", background: "var(--sa-bg-neutral-base)", width: 220 }}>
+                <div style={{ border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-16)", background: "var(--sa-bg-neutral-base)", width: 220 }}>
                   <div style={{ fontWeight: 600, marginBottom: 4, color: "var(--sa-color-text-default)" }}>NSFDC Loan</div>
-                  <div style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)", marginBottom: "var(--sa-stack-m)" }}>Term loan for self-employment.</div>
-                  <span style={{ display: "inline-block", padding: "var(--sa-padding-xs) var(--sa-padding-m)", borderRadius: "var(--sa-shape-sm)", background: "var(--sa-bg-brand-primary-bolder)", color: "var(--sa-on-bg-brand-primary-bolder)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600 }}>Apply</span>
+                  <div style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)", marginBottom: "var(--sa-stack-16)" }}>Term loan for self-employment.</div>
+                  <span style={{ display: "inline-block", padding: "var(--sa-padding-8) var(--sa-padding-16)", borderRadius: "var(--sa-shape-sm)", background: "var(--sa-bg-brand-primary-bolder)", color: "var(--sa-on-bg-brand-primary-bolder)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600 }}>Apply</span>
                 </div>
               ),
             },
@@ -133,11 +133,11 @@ export default function CardPage(): React.JSX.Element {
               type: "dont",
               label: "Don't nest buttons (or other clickable controls) inside a card that is itself clickable — it creates nested interactive elements and ambiguous hit targets.",
               preview: (
-                <div style={{ border: "2px solid var(--sa-border-status-error-base)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-m)", background: "var(--sa-bg-neutral-base)", width: 220, cursor: "pointer" }}>
-                  <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-s)", color: "var(--sa-color-text-default)" }}>Clickable card</div>
+                <div style={{ border: "2px solid var(--sa-border-status-error-base)", borderRadius: "var(--sa-shape-md)", padding: "var(--sa-stack-16)", background: "var(--sa-bg-neutral-base)", width: 220, cursor: "pointer" }}>
+                  <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-12)", color: "var(--sa-color-text-default)" }}>Clickable card</div>
                   <div style={{ display: "flex", gap: 8 }}>
-                    <span style={{ padding: "var(--sa-padding-xs) var(--sa-padding-s)", borderRadius: "var(--sa-shape-sm)", background: "var(--sa-bg-brand-primary-bolder)", color: "var(--sa-on-bg-brand-primary-bolder)", fontSize: "var(--sa-type-body-3-size)" }}>Edit</span>
-                    <span style={{ padding: "var(--sa-padding-xs) var(--sa-padding-s)", borderRadius: "var(--sa-shape-sm)", border: "1px solid var(--sa-border-neutral-base)", color: "var(--sa-color-text-default)", fontSize: "var(--sa-type-body-3-size)" }}>Delete</span>
+                    <span style={{ padding: "var(--sa-padding-8) var(--sa-padding-12)", borderRadius: "var(--sa-shape-sm)", background: "var(--sa-bg-brand-primary-bolder)", color: "var(--sa-on-bg-brand-primary-bolder)", fontSize: "var(--sa-type-body-3-size)" }}>Edit</span>
+                    <span style={{ padding: "var(--sa-padding-8) var(--sa-padding-12)", borderRadius: "var(--sa-shape-sm)", border: "1px solid var(--sa-border-neutral-base)", color: "var(--sa-color-text-default)", fontSize: "var(--sa-type-body-3-size)" }}>Delete</span>
                   </div>
                 </div>
               ),
@@ -155,7 +155,7 @@ export default function CardPage(): React.JSX.Element {
           link. Do <strong>not</strong> attach <code>onClick</code> to a <code>&lt;div&gt;</code> — a
           div is not focusable, not announced as a link, and not keyboard-operable.
         </Callout>
-        <div style={{ marginTop: "var(--sa-padding-l)" }}>
+        <div style={{ marginTop: "var(--sa-padding-20)" }}>
           <A11yChecklist
             items={[
               { criterion: "Whole-card links use a real anchor", level: "A", description: "If the card is clickable, wrap it in <a href> (not just the title). The entire surface becomes one focusable, keyboard-operable link." },
@@ -171,7 +171,7 @@ export default function CardPage(): React.JSX.Element {
       {/* ── API ── */}
       <section style={sectionStyle}>
         <h2 id="api" style={h2Style}>API</h2>
-        <h3 style={{ fontSize: "var(--sa-type-body-1-size)", fontWeight: 600, margin: "var(--sa-stack-m) 0 var(--sa-stack-xs)" }}>Card</h3>
+        <h3 style={{ fontSize: "var(--sa-type-body-1-size)", fontWeight: 600, margin: "var(--sa-stack-16) 0 var(--sa-stack-8)" }}>Card</h3>
         <PropsTable
           props={[
             { name: "variant", type: '"outlined" | "elevated"', default: '"outlined"', description: "Surface style. Outlined draws a 1px border; elevated uses a shadow with no border." },
@@ -180,7 +180,7 @@ export default function CardPage(): React.JSX.Element {
             { name: "...rest", type: "HTMLAttributes<HTMLDivElement>", description: "All standard div props (style, id, data-*, etc.) are forwarded." },
           ]}
         />
-        <h3 style={{ fontSize: "var(--sa-type-body-1-size)", fontWeight: 600, margin: "var(--sa-stack-l) 0 var(--sa-stack-xs)" }}>
+        <h3 style={{ fontSize: "var(--sa-type-body-1-size)", fontWeight: 600, margin: "var(--sa-stack-24) 0 var(--sa-stack-8)" }}>
           CardHeader · CardBody · CardFooter · CardTitle · CardSubtitle
         </h3>
         <PropsTable

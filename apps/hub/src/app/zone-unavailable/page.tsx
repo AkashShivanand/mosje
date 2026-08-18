@@ -21,7 +21,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "var(--sa-padding-xl, 24px)",
+        padding: "var(--sa-padding-24, 24px)",
         background: "var(--sa-bg-neutral-subtler, #f8f9fa)",
       }}
     >
@@ -32,7 +32,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           background: "var(--sa-bg-neutral-base, #fff)",
           border: "1px solid var(--sa-border-neutral-subtle, #f1f3f5)",
           borderRadius: "var(--sa-shape-md, 8px)",
-          padding: "var(--sa-padding-2xl, 32px)",
+          padding: "var(--sa-padding-32, 32px)",
           boxShadow: "var(--sa-elevation-modal, 0 12px 16px -4px rgba(31, 36, 40, 0.08), 0 4px 6px -2px rgba(31, 36, 40, 0.03))",
         }}
       >
@@ -48,7 +48,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             alignItems: "center",
             justifyContent: "center",
             fontSize: 24,
-            marginBottom: "var(--sa-padding-l, 20px)",
+            marginBottom: "var(--sa-padding-20, 20px)",
           }}
         >
           ⚠
@@ -59,7 +59,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             fontSize: "var(--sa-type-headline-2-size, 22px)",
             fontWeight: 600,
             color: "var(--sa-text-neutral-base, #1f2428)",
-            marginBottom: "var(--sa-stack-xs, 8px)",
+            marginBottom: "var(--sa-stack-8, 8px)",
           }}
         >
           {zone}{" "}isn&apos;t running
@@ -70,7 +70,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             fontSize: "var(--sa-type-body-1-size, 16px)",
             color: "var(--sa-text-neutral-subtle, #343a40)",
             lineHeight: 1.6,
-            marginBottom: "var(--sa-padding-l, 20px)",
+            marginBottom: "var(--sa-padding-20, 20px)",
           }}
         >
           The hub couldn&apos;t reach this app{from ? <> at <code>{from}</code></> : null}. It&apos;s served by
@@ -82,8 +82,8 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             background: "var(--sa-bg-neutral-subtler, #f8f9fa)",
             border: "1px solid var(--sa-border-neutral-subtle, #f1f3f5)",
             borderRadius: "var(--sa-shape-sm, 6px)",
-            padding: "var(--sa-padding-m, 16px)",
-            marginBottom: "var(--sa-padding-l, 20px)",
+            padding: "var(--sa-padding-16, 16px)",
+            marginBottom: "var(--sa-padding-20, 20px)",
           }}
         >
           <div
@@ -93,7 +93,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               textTransform: "uppercase",
               letterSpacing: "0.06em",
               color: "var(--sa-text-neutral-subtle, #343a40)",
-              marginBottom: "var(--sa-stack-xs, 8px)",
+              marginBottom: "var(--sa-stack-8, 8px)",
             }}
           >
             Start everything (recommended)
@@ -104,7 +104,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               fontFamily: "var(--sa-font-mono, ui-monospace, monospace)",
               fontSize: "var(--sa-type-body-2-size, 14px)",
               color: "var(--sa-text-neutral-base, #1f2428)",
-              marginBottom: "var(--sa-stack-m, 16px)",
+              marginBottom: "var(--sa-stack-16, 16px)",
             }}
           >
             npm run dev
@@ -116,7 +116,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               textTransform: "uppercase",
               letterSpacing: "0.06em",
               color: "var(--sa-text-neutral-subtle, #343a40)",
-              marginBottom: "var(--sa-stack-xs, 8px)",
+              marginBottom: "var(--sa-stack-8, 8px)",
             }}
           >
             …or just this app
@@ -133,13 +133,13 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           </code>
         </div>
 
-        <div style={{ display: "flex", gap: "var(--sa-stack-s, 12px)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--sa-stack-12, 12px)", flexWrap: "wrap" }}>
           <a
             href={from ?? "/"}
             style={{
               display: "inline-flex",
               alignItems: "center",
-              padding: "10px var(--sa-padding-l, 20px)",
+              padding: "10px var(--sa-padding-20, 20px)",
               borderRadius: "var(--sa-shape-sm, 6px)",
               background: "var(--sa-color-action-primary-default, #0373df)",
               color: "var(--sa-on-bg-brand-primary-bolder, #fff)",
@@ -155,7 +155,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             style={{
               display: "inline-flex",
               alignItems: "center",
-              padding: "10px var(--sa-padding-l, 20px)",
+              padding: "10px var(--sa-padding-20, 20px)",
               borderRadius: "var(--sa-shape-sm, 6px)",
               border: "1px solid var(--sa-border-neutral-base, #e2e6ea)",
               color: "var(--sa-text-neutral-base, #1f2428)",

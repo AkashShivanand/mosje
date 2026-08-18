@@ -22,9 +22,9 @@
 .ds-appsw__fab {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   height: 44px;
-  padding: 0 var(--sa-padding-m) 0 var(--sa-padding-m);
+  padding: 0 var(--sa-padding-16) 0 var(--sa-padding-16);
   border: 1.5px solid var(--sa-border-neutral-base);
   border-radius: var(--sa-shape-full);
   background-color: var(--sa-bg-neutral-base);

@@ -19,17 +19,17 @@
   line-height: 1.25;
   scroll-margin-top: var(--docs-anchor-offset);
 }
-.markdown-body h1 { font-size: var(--sa-type-display-1-size); font-weight: 500; line-height: 1.15; margin: 0 0 var(--sa-stack-m); }
+.markdown-body h1 { font-size: var(--sa-type-display-1-size); font-weight: 500; line-height: 1.15; margin: 0 0 var(--sa-stack-16); }
 .markdown-body h2 {
   font-size: var(--sa-type-headline-2-size);
-  margin: var(--sa-section-m) 0 var(--sa-stack-m);
-  padding-bottom: var(--sa-padding-s);
+  margin: var(--sa-section-48) 0 var(--sa-stack-16);
+  padding-bottom: var(--sa-padding-12);
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }
-.markdown-body h3 { font-size: var(--sa-type-headline-1-size); margin: var(--sa-stack-xl) 0 var(--sa-stack-s); }
-.markdown-body h4 { font-size: var(--sa-type-body-1-size); margin: var(--sa-stack-l) 0 var(--sa-stack-xs); }
+.markdown-body h3 { font-size: var(--sa-type-headline-1-size); margin: var(--sa-stack-32) 0 var(--sa-stack-12); }
+.markdown-body h4 { font-size: var(--sa-type-body-1-size); margin: var(--sa-stack-24) 0 var(--sa-stack-8); }
 
-.markdown-body p { margin: 0 0 var(--sa-stack-m); max-width: 72ch; }
+.markdown-body p { margin: 0 0 var(--sa-stack-16); max-width: 72ch; }
 
 .markdown-body a { color: var(--sa-text-link-brand-default); text-decoration: none; }
 .markdown-body a:hover { text-decoration: underline; }
@@ -37,10 +37,10 @@
 .markdown-body strong { font-weight: 600; color: var(--sa-text-neutral-bolder); }
 
 .markdown-body ul,
-.markdown-body ol { margin: 0 0 var(--sa-stack-m); padding-left: var(--sa-padding-xl); max-width: 72ch; }
-.markdown-body li { margin-bottom: var(--sa-stack-xs); line-height: var(--sa-type-body-1-lh); }
+.markdown-body ol { margin: 0 0 var(--sa-stack-16); padding-left: var(--sa-padding-24); max-width: 72ch; }
+.markdown-body li { margin-bottom: var(--sa-stack-8); line-height: var(--sa-type-body-1-lh); }
 .markdown-body li > ul,
-.markdown-body li > ol { margin-top: var(--sa-stack-xs); }
+.markdown-body li > ol { margin-top: var(--sa-stack-8); }
 
 /* Inline code + fenced blocks */
 .markdown-body code {
@@ -49,16 +49,16 @@
   background: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-xs);
-  padding: var(--sa-padding-3xs) var(--sa-padding-2xs);
+  padding: var(--sa-padding-2) var(--sa-padding-4);
   overflow-wrap: anywhere;
 }
 .markdown-body pre {
   background: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-md);
-  padding: var(--sa-padding-m) var(--sa-padding-l);
+  padding: var(--sa-padding-16) var(--sa-padding-20);
   overflow-x: auto;
-  margin: 0 0 var(--sa-padding-l);
+  margin: 0 0 var(--sa-padding-20);
 }
 .markdown-body pre code {
   background: none;
@@ -72,12 +72,12 @@
 .markdown-body table {
   width: 100%;
   border-collapse: collapse;
-  margin: 0 0 var(--sa-padding-l);
+  margin: 0 0 var(--sa-padding-20);
   font-size: var(--sa-type-body-2-size);
 }
 .markdown-body th {
   text-align: left;
-  padding: var(--sa-padding-xs) var(--sa-padding-s);
+  padding: var(--sa-padding-8) var(--sa-padding-12);
   border-bottom: 2px solid var(--sa-border-neutral-base);
   font-size: var(--sa-type-label-3-size);
   font-weight: 700;
@@ -87,7 +87,7 @@
   white-space: nowrap;
 }
 .markdown-body td {
-  padding: var(--sa-padding-s);
+  padding: var(--sa-padding-12);
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
   vertical-align: top;
   color: var(--sa-text-neutral-base);
@@ -95,8 +95,8 @@
 .markdown-body td code { font-size: var(--sa-type-body-3-size); }
 
 .markdown-body blockquote {
-  margin: 0 0 var(--sa-stack-m);
-  padding: var(--sa-padding-s) var(--sa-padding-l);
+  margin: 0 0 var(--sa-stack-16);
+  padding: var(--sa-padding-12) var(--sa-padding-20);
   border-left: 4px solid var(--sa-border-brand-primary-base);
   background: var(--sa-bg-brand-primary-subtler);
   border-radius: var(--sa-shape-sm);
@@ -107,5 +107,5 @@
 .markdown-body hr {
   border: none;
   border-top: 1px solid var(--sa-border-neutral-subtle);
-  margin: var(--sa-stack-xl) 0;
+  margin: var(--sa-stack-32) 0;
 }

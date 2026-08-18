@@ -12,8 +12,8 @@
 
 /* The grey panel each Figma section drops its specimens into. */
 .icon-panel {
-  margin-top: var(--sa-stack-l);
-  padding: var(--sa-padding-xl);
+  margin-top: var(--sa-stack-24);
+  padding: var(--sa-padding-24);
   background: var(--sa-bg-neutral-subtler);
   border-radius: var(--sa-shape-lg);
 }
@@ -21,11 +21,11 @@
 .icon-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-  gap: var(--sa-stack-m);
+  gap: var(--sa-stack-16);
 }
 
 .icon-card {
-  padding: var(--sa-padding-l);
+  padding: var(--sa-padding-20);
   background: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-md);
@@ -40,14 +40,14 @@
 }
 
 .icon-card__body {
-  margin: var(--sa-stack-xs) 0 0;
+  margin: var(--sa-stack-8) 0 0;
   font-size: var(--sa-type-body-3-size);
   line-height: var(--sa-type-body-3-lh);
   color: var(--sa-color-text-muted);
 }
 
 .icon-card__step {
-  margin: 0 0 var(--sa-stack-xs);
+  margin: 0 0 var(--sa-stack-8);
   font-size: var(--sa-type-body-1-size);
   font-weight: 600;
   color: var(--sa-color-action-primary-default);
@@ -57,8 +57,8 @@
 .icon-card__demo {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
-  margin-top: var(--sa-stack-m);
+  gap: var(--sa-stack-8);
+  margin-top: var(--sa-stack-16);
   color: var(--sa-text-neutral-base);
 }
 
@@ -74,16 +74,16 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-stack-m);
-  margin-top: var(--sa-stack-l);
+  gap: var(--sa-stack-16);
+  margin-top: var(--sa-stack-24);
 }
 
 .icon-catalogue__search {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   flex: 1 1 20rem;
-  padding: var(--sa-padding-s) var(--sa-padding-m);
+  padding: var(--sa-padding-12) var(--sa-padding-16);
   background: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-md);
@@ -115,8 +115,8 @@
 }
 
 .icon-catalogue__empty {
-  margin-top: var(--sa-stack-l);
-  padding: var(--sa-padding-xl);
+  margin-top: var(--sa-stack-24);
+  padding: var(--sa-padding-24);
   background: var(--sa-bg-neutral-subtler);
   border-radius: var(--sa-shape-lg);
   font-size: var(--sa-type-body-2-size);
@@ -126,13 +126,13 @@
 
 .icon-catalogue__grid {
   list-style: none;
-  margin: var(--sa-stack-l) 0 0;
-  padding: var(--sa-padding-xl);
+  margin: var(--sa-stack-24) 0 0;
+  padding: var(--sa-padding-24);
   background: var(--sa-bg-neutral-subtler);
   border-radius: var(--sa-shape-lg);
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
-  gap: var(--sa-stack-s);
+  gap: var(--sa-stack-12);
 }
 
 .icon-catalogue__tile {
@@ -140,8 +140,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sa-stack-2xs);
-  padding: var(--sa-padding-m) var(--sa-padding-xs);
+  gap: var(--sa-stack-4);
+  padding: var(--sa-padding-16) var(--sa-padding-8);
   background: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-md);
@@ -180,7 +180,7 @@
 .icon-strip {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-  gap: var(--sa-stack-s);
+  gap: var(--sa-stack-12);
   align-items: end;
 }
 
@@ -188,8 +188,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sa-stack-2xs);
-  padding: var(--sa-padding-m) var(--sa-padding-s);
+  gap: var(--sa-stack-4);
+  padding: var(--sa-padding-16) var(--sa-padding-12);
   background: var(--sa-bg-neutral-base);
   border-radius: var(--sa-shape-md);
   color: var(--sa-icon-neutral-base);
@@ -200,7 +200,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--sa-stack-xs);
+  margin-bottom: var(--sa-stack-8);
 }
 
 .icon-specimen__label {
@@ -231,7 +231,7 @@
 /* ── 08 Handoff ───────────────────────────────────────────────────────────── */
 
 .icon-handoff__eyebrow {
-  margin: 0 0 var(--sa-stack-xs);
+  margin: 0 0 var(--sa-stack-8);
   font-size: var(--sa-type-label-3-size);
   line-height: var(--sa-type-label-3-lh);
   font-weight: 600;

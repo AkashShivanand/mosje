@@ -1628,35 +1628,35 @@
   },
   "$valueChecksums": {
     "note": "Per-collection checksum over `name|mode|value`, computed by build/figma-value-parity.mjs. The rest of this file records NAMES, and every check built on it compares names — which is why the library could hold 13 component tokens bound to the wrong palette rung, a reverted webfont, and 54 fluid-type variables carrying the old tablet curve, all under the correct names, with nothing noticing. `payload` is what the build produces; `figmaObserved` is a verified read of the library. They are expected to be EQUAL, and figma-value-parity.test.mjs fails when the payload moves without this record being refreshed.",
-    "recordedAt": "2026-08-17",
-    "$lastChange": "2026-08-17 — the login layout group and one ink rung. semantic.json gained layout/login/{hero.width 922, panel.width 518, panel.gutter 64, content.width 390}; generate-system-tokens.mjs gained text/neutral/subtler = {color.neutralScale.500}. All five were pushed to the library and read back live before this record moved: Space 97 payload / 104 library, Color 473 / 479, both gaps unchanged from 2026-08-14. text/neutral/subtler was first authored in Figma as text/neutral/placeholder and RENAMED IN PLACE (VariableID preserved) — the naming grammar has no placeholder slot, and adding one to STATE would have let bg/*/placeholder parse too, so the token is named for its rung and its use is in the description.",
+    "recordedAt": "2026-08-18",
+    "$lastChange": "2026-08-18 — the spacing ladder was VALUE-NAMED. 51 Space variables renamed (ref/space/lg -> ref/space/16, padding/m -> padding/16, and so on across all four families) and 27 created to close the coverage gaps, so every family now carries the same ladder and a label means one value everywhere. Static's checksum moved only because focus/offset's alias TARGET was renamed; its value is unchanged. VERIFICATION: the library was read back and compared against the built payload entry-by-entry — all 125 Space entries matched exactly, with zero value mismatches, and Static's one changed entry (focus/offset -> ref/space/2) was confirmed. Figma binds by variable id, so every existing binding on canvas survived the rename untouched.",
     "payload": {
-      "Space": "2cb9cc5:97",
+      "Space": "3ffe54dd:125",
       "Palette": "a518c86a:280",
       "Color": "136607e7:473",
       "Type": "316f0bd4:594",
       "Radius": "71dee6f9:25",
       "Motion": "48f2a0c:12",
       "Density": "b2baae79:16",
-      "Static": "dfc8d3fc:51"
+      "Static": "584ad09d:51"
     },
     "figmaObserved": {
-      "Space": "c95867f2:104",
+      "Space": "6d5a1c80:136",
       "Palette": "799fd856:326",
       "Type": "2e3f0fdb:672",
       "Radius": "71dee6f9:25",
       "Motion": "48f2a0c:12",
       "Density": "b2baae79:16",
       "Color": "a8870c7c:479",
-      "Static": "3d7884d:58"
+      "Static": "4699ff75:59"
     },
     "knownDifference": {
       "$note": "Re-verified 2026-08-14 against a LIVE read of the library, not against the previous record. Every difference below is stated with its exact arithmetic in BOTH directions. Note what changed in method: the 2026-08-12/13 record listed figmaObserved values for Space and Color that were EQUAL to the payload, asserting the library matched — a live read shows it does not, and never did at those numbers. An observed value must come from a read; where it merely mirrors the payload it is an assumption wearing the costume of evidence. The direction that matters is payload-only: a library-only variable is an orphan the code stopped defining, but a PAYLOAD-ONLY variable is code defining something the library has no name for. There are now NONE, in any collection — the one that existed (`focus/ring`) was closed the same day.",
-      "Space": "payload 97 entries vs library 104. The gap is exactly the SAME 7 library-only variables as 2026-08-14: the 4 ref/viewport/* design-frame sizes (412/1024/1440/1768 — canvas sizes a designer draws at, deliberately not projected, not to be confused with ref/breakpoint/*), ref/border-width/hairline, and the _deprecated/layout/container/{narrow,wide} pair. payload-only is EMPTY. Both sides grew by the same 4 layout/login/* tokens on 2026-08-17; two of them (hero/width, panel/width) had been library-only since 2026-08-16 and are now defined in code as well, which is why the payload grew by 4 and the gap did not move.",
+      "Space": "payload 125 entries vs library 136. The gap is exactly 11 library-only variables, itemised from a live read: the 4 ref/viewport/* design-frame sizes (412/1024/1440/1768 — canvas sizes a designer draws at, deliberately not projected, not to be confused with ref/breakpoint/*), ref/border-width/hairline, the _deprecated/layout/container/{narrow,wide} pair, and FOUR THAT ARE NEW AND SHOULD NOT STAY LIBRARY-ONLY: cmp/badge/dotSize, cmp/badge/dotSizeLg, layout/tab/indicator and layout/tab/track — component tokens authored in Figma that the code does not define. That is drift to close, recorded here rather than smoothed over. payload-only is EMPTY. Both sides grew on 2026-08-18 when the spacing ladder was value-named: payload 97 -> 125 and library 104 -> 136, because 27 coverage variables were created so every family carries the same ladder.",
       "Palette": "payload 280 entries (140 x 2 modes) vs library 326 (163 x 2). The gap is exactly 46 = 23 library-only variables x 2 modes: `ref/color/badge/beta`, the 4 `ref/color/*/source` anchors, 9 `ref/color/ink/*` and 7 `ref/color/stroke/*` and `ref/color/*` strokes. payload-only is EMPTY. IT WAS NOT EMPTY EARLIER TODAY: the code defined `focus/ring` and the library had only `ref/color/focus/ring`. That turned out NOT to be a legacy orphan at all — it carried the code's own description and the code's `var(--sa-focus-ring)` codeSyntax, and it was the single variable in the whole collection with EMPTY scopes, where all 139 code-defined Palette variables and all 23 real legacy orphans carry ALL_FILLS/STROKE_COLOR/EFFECT_COLOR. It was the code's token under a stale name, missed when the rest of the vocabulary migrated. Renamed IN PLACE on 2026-08-14 (VariableID:54716:695 preserved) and given the standard scopes; values were already identical in both modes and did not move.",
       "Type": "payload 594 entries (99 x 6 modes) vs library 672 (112 x 6). The gap is exactly 78 = 13 library-only variables x 6 modes: the 10 `deprecated/type/*`, plus `ref/font/family/body`, `ref/font/family/heading` and `ref/font/weight/displayMedium`. payload-only is EMPTY.",
       "Color": "payload 473 entries vs library 479. The gap is exactly the SAME 6 library-only variables as 2026-08-14: border/brand/primary/hover, border/brand/primary/subtle, border/neutral/inverse, border/neutral/inverse-subtle, overlay/on-brand/hover, overlay/on-brand/pressed. payload-only is EMPTY. Both sides grew by 1 on 2026-08-17 (text/neutral/subtler), so the gap is unchanged.",
-      "Static": "payload 51 entries vs library 58. The gap is exactly 7 library-only variables — the `ref/brand/samavesh/*` marks (black, blue, green, ink, orange, saffron, white), which are library-only by design: the SAMAVESH seal never re-themes, so it is authored in Figma and not projected. payload-only is EMPTY. This is a CLEANER gap than the 9 previously recorded, because `container/narrow` and `container/wide` are no longer deprecated duplicates — see $lastChange.",
+      "Static": "payload 51 entries vs library 59. The gap is exactly 8 library-only variables — the brand marks ref/brand/samavesh/{black,blue,green,ink,orange,saffron,white} and ref/brand/digilocker/purple. They are library-only by design: a partner or seal colour never re-themes, so it is authored in Figma and not projected. payload-only is EMPTY. Static's checksum moved on 2026-08-18 only because focus/offset's alias TARGET was renamed ref/space/xxs -> ref/space/2; its value is unchanged at 2px.",
       "$equal": "Radius (71dee6f9:25), Motion (48f2a0c:12) and Density (b2baae79:16) are byte-identical between payload and library, verified by the same live read. They carry no entry because they need no explanation."
     }
   }

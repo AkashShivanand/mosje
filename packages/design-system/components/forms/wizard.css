@@ -8,7 +8,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: calc(-1 * var(--sa-padding-3xs));
+  margin: calc(-1 * var(--sa-padding-2));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -18,7 +18,7 @@
 .ds-wizard {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-l);
+  gap: var(--sa-stack-24);
   font-family: var(--sa-font-latin);
 }
 
@@ -26,13 +26,13 @@
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-lg);
-  padding: var(--sa-padding-l);
+  padding: var(--sa-padding-20);
 }
 
 .ds-wizard__body {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-l);
+  gap: var(--sa-stack-24);
   outline: none;
 }
 
@@ -40,8 +40,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-stack-s);
-  padding-top: var(--sa-padding-l);
+  gap: var(--sa-stack-12);
+  padding-top: var(--sa-padding-20);
   border-top: 1px solid var(--sa-border-neutral-subtle);
 }
 
@@ -50,12 +50,12 @@
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-lg);
-  padding: var(--sa-padding-l);
+  padding: var(--sa-padding-20);
 }
 
 /* Review section label = Figma uppercase divider (matches form sub-dividers). */
 .ds-review-section__title {
-  margin: 0 0 var(--sa-padding-m);
+  margin: 0 0 var(--sa-padding-16);
   font-size: var(--sa-type-label-2-size);
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -65,7 +65,7 @@
 
 .ds-review-section__grid {
   display: grid;
-  gap: var(--sa-stack-s) var(--sa-padding-l);
+  gap: var(--sa-stack-12) var(--sa-padding-20);
   grid-template-columns: 1fr;
   margin: 0;
 }
@@ -81,7 +81,7 @@
 .ds-review-item {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-padding-3xs);
+  gap: var(--sa-padding-2);
 }
 
 /* Span the full grid row — for multi-attribute records (e.g. a drug entry). */

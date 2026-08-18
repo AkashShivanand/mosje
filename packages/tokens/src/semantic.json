@@ -1470,7 +1470,7 @@
       "$value": "{border.width.md}"
     },
     "offset": {
-      "$value": "{space.xxs}"
+      "$value": "{space.2}"
     }
   },
   "overlay": {
@@ -1496,111 +1496,196 @@
     }
   },
   "inline": {
-    "none": {
-      "$value": "{space.none}"
+    "0": {
+      "$value": "{space.0}"
     },
-    "2xs": {
-      "$value": "{space.xxs}"
+    "2": {
+      "$value": "{space.2}"
     },
-    "xs": {
-      "$value": "{space.xs}"
+    "4": {
+      "$value": "{space.4}"
     },
-    "s": {
-      "$value": "{space.sm}"
+    "6": {
+      "$value": "{space.6}"
     },
-    "m": {
-      "$value": "{space.md}"
+    "8": {
+      "$value": "{space.8}"
     },
-    "l": {
-      "$value": "{space.lg}"
+    "12": {
+      "$value": "{space.12}"
     },
-    "xl": {
-      "$value": "{space.3xl}"
-    }
+    "16": {
+      "$value": "{space.16}"
+    },
+    "20": {
+      "$value": "{space.20}"
+    },
+    "24": {
+      "$value": "{space.24}"
+    },
+    "32": {
+      "$value": "{space.32}"
+    },
+    "40": {
+      "$value": "{space.40}"
+    },
+    "48": {
+      "$value": "{space.48}"
+    },
+    "56": {
+      "$value": "{space.56}"
+    },
+    "64": {
+      "$value": "{space.64}"
+    },
+    "72": {
+      "$value": "{space.72}"
+    },
+    "80": {
+      "$value": "{space.80}"
+    },
+    "$description": "Horizontal gap between items on one line. VALUE-NAMED: `inline/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead."
   },
   "stack": {
-    "none": {
-      "$value": "{space.none}"
+    "0": {
+      "$value": "{space.0}"
     },
-    "2xs": {
-      "$value": "{space.xs}"
+    "2": {
+      "$value": "{space.2}"
     },
-    "xs": {
-      "$value": "{space.sm}"
+    "4": {
+      "$value": "{space.4}"
     },
-    "s": {
-      "$value": "{space.md}"
+    "6": {
+      "$value": "{space.6}"
     },
-    "m": {
-      "$value": "{space.lg}"
+    "8": {
+      "$value": "{space.8}"
     },
-    "l": {
-      "$value": "{space.2xl}"
+    "12": {
+      "$value": "{space.12}"
     },
-    "xl": {
-      "$value": "{space.3xl}"
+    "16": {
+      "$value": "{space.16}"
     },
-    "2xl": {
-      "$value": "{space.4xl}"
-    }
+    "20": {
+      "$value": "{space.20}"
+    },
+    "24": {
+      "$value": "{space.24}"
+    },
+    "32": {
+      "$value": "{space.32}"
+    },
+    "40": {
+      "$value": "{space.40}"
+    },
+    "48": {
+      "$value": "{space.48}"
+    },
+    "56": {
+      "$value": "{space.56}"
+    },
+    "64": {
+      "$value": "{space.64}"
+    },
+    "72": {
+      "$value": "{space.72}"
+    },
+    "80": {
+      "$value": "{space.80}"
+    },
+    "$description": "Vertical gap between stacked items, and vertical rhythm inside a block. VALUE-NAMED: `stack/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead."
   },
   "padding": {
-    "none": {
-      "$value": "{space.none}"
+    "0": {
+      "$value": "{space.0}"
     },
-    "3xs": {
-      "$value": "{space.xxs}"
+    "2": {
+      "$value": "{space.2}"
     },
-    "2xs": {
-      "$value": "{space.xs}"
+    "4": {
+      "$value": "{space.4}"
     },
-    "xs": {
-      "$value": "{space.sm}"
+    "6": {
+      "$value": "{space.6}"
     },
-    "s": {
-      "$value": "{space.md}"
+    "8": {
+      "$value": "{space.8}"
     },
-    "m": {
-      "$value": "{space.lg}"
+    "12": {
+      "$value": "{space.12}"
     },
-    "l": {
-      "$value": "{space.xl}"
+    "16": {
+      "$value": "{space.16}"
     },
-    "xl": {
-      "$value": "{space.2xl}"
+    "20": {
+      "$value": "{space.20}"
     },
-    "2xl": {
-      "$value": "{space.3xl}"
+    "24": {
+      "$value": "{space.24}"
     },
-    "3xl": {
-      "$value": "{space.10xl}"
+    "32": {
+      "$value": "{space.32}"
     },
-    "4xl": {
-      "$value": "{space.11xl}"
-    }
+    "40": {
+      "$value": "{space.40}"
+    },
+    "48": {
+      "$value": "{space.48}"
+    },
+    "56": {
+      "$value": "{space.56}"
+    },
+    "64": {
+      "$value": "{space.64}"
+    },
+    "72": {
+      "$value": "{space.72}"
+    },
+    "80": {
+      "$value": "{space.80}"
+    },
+    "120": {
+      "$value": "{space.120}"
+    },
+    "360": {
+      "$value": "{space.360}"
+    },
+    "$description": "Inset between a container's edge and its content. VALUE-NAMED: `padding/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead."
   },
   "section": {
-    "none": {
-      "$value": "{space.none}"
+    "0": {
+      "$value": "{space.0}"
     },
-    "xs": {
-      "$value": "{space.2xl}"
+    "24": {
+      "$value": "{space.24}"
     },
-    "s": {
-      "$value": "{space.3xl}"
+    "32": {
+      "$value": "{space.32}"
     },
-    "m": {
-      "$value": "{space.5xl}"
+    "40": {
+      "$value": "{space.40}"
     },
-    "l": {
-      "$value": "{space.6xl}"
+    "48": {
+      "$value": "{space.48}"
     },
-    "xl": {
-      "$value": "{space.7xl}"
+    "56": {
+      "$value": "{space.56}"
     },
-    "2xl": {
-      "$value": "{space.9xl}"
-    }
+    "64": {
+      "$value": "{space.64}"
+    },
+    "72": {
+      "$value": "{space.72}"
+    },
+    "80": {
+      "$value": "{space.80}"
+    },
+    "120": {
+      "$value": "{space.120}"
+    },
+    "$description": "Vertical rhythm between page-level sections. VALUE-NAMED: `section/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead."
   },
   "chart": {
     "$description": "Data-visualisation roles, and the one place in this system where a literal is sometimes the RIGHT answer — so each group states which it is and why, because the difference is not guessable from the values.\n\nREFERENCES the system ramps: div/* (signed data) and trend/* (KPI direction). Both encode MEANING the rest of the UI already has a colour for — negative is what error means — so they follow it, and follow it into a DBIM conformance mode too.\n\nLITERAL on purpose: cat/* (twelve categorical series) and seq/* (single-hue sequential ramp). Both are tuned as a SET for a job the UI ramps are not tuned for — mutual distinguishability and even perceptual steps respectively — and a reference would let one member drift out of that tuning on a brand swap. Their own descriptions carry the argument in full.\n\ngrid/axis/tooltip/region are structural. Theme-aware dark/hc overrides are retained on these tokens but NOT currently emitted: the appearance axis was retired on 2026-08-10 and the UX4G accessibility widget owns dark and high contrast (see build/formats/legacy-ds-css.mjs).",
@@ -2341,19 +2426,19 @@
       "$description": "Column count, 12 — UX4G/Bootstrap. Divisible by 2, 3, 4 and 6, which is the whole reason 12 is the near-universal choice. Carbon's 16 (dropping to 8 and 4 at smaller breakpoints) is more expressive but would break UX4G parity for no gain the estate can use."
     },
     "gutter": {
-      "$value": "{space.2xl}",
+      "$value": "{space.24}",
       "$description": "The gap BETWEEN columns — 24px, UX4G/Bootstrap's 1.5rem exactly. Bootstrap applies half either side of each column; bind this as the layout grid's gutter and let the implementation split it."
     },
     "margin": {
       "$description": "The page's own side margin — the gap between the grid and the viewport edge. Responsive, because a margin that reads generous on a phone reads cramped on a desktop.",
       "mobile": {
-        "$value": "{space.lg}"
+        "$value": "{space.16}"
       },
       "tablet": {
-        "$value": "{space.2xl}"
+        "$value": "{space.24}"
       },
       "desktop": {
-        "$value": "{space.3xl}"
+        "$value": "{space.32}"
       }
     }
   },

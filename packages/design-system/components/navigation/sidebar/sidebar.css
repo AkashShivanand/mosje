@@ -9,10 +9,10 @@
      --text/dark       → --sa-color-text-default          (default text)
      --radius-xl (16px)→ --sa-shape-xl
      --radius-md  (8px) → --sa-shape-md
-     --spacing-lg(16px)→ --sa-stack-m   (px / sidebar padding)
-     --spacing-md(12px)→ --sa-stack-s   (py / item gap)
-     --spacing-sm (8px)→ --sa-stack-xs   (subnav py / connector control)
-     --spacing-2xl(24px→ --sa-stack-l  (subnav px — Portal DS: paddingLeft/Right: 24)
+     --spacing-lg(16px)→ --sa-stack-16   (px / sidebar padding)
+     --spacing-md(12px)→ --sa-stack-12   (py / item gap)
+     --spacing-sm (8px)→ --sa-stack-8   (subnav py / connector control)
+     --spacing-2xl(24px→ --sa-stack-24  (subnav px — Portal DS: paddingLeft/Right: 24)
    ============================================================================= */
 
 /* ── Container ─────────────────────────────────────────────────────────────── */
@@ -21,7 +21,7 @@
   display: flex;
   flex-direction: column;
   background: var(--sa-bg-neutral-base);
-  padding: var(--sa-padding-m); /* 16px — Figma: --spacing-lg */
+  padding: var(--sa-padding-16); /* 16px — Figma: --spacing-lg */
   position: relative;
   overflow: hidden;
   transition: width var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
@@ -38,7 +38,7 @@
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-s); /* 12px — Figma: --spacing-md between items */
+  gap: var(--sa-stack-12); /* 12px — Figma: --spacing-md between items */
 }
 
 /* ── Group ──────────────────────────────────────────────────────────────────── */
@@ -50,7 +50,7 @@
 }
 
 .ds-sidebar__group + .ds-sidebar__group {
-  padding-top: var(--sa-padding-s);
+  padding-top: var(--sa-padding-12);
   border-top: 1px solid var(--sa-border-neutral-subtle);
 }
 
@@ -61,7 +61,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--sa-text-neutral-subtle);
-  padding: 0 var(--sa-padding-m) var(--sa-padding-xs);
+  padding: 0 var(--sa-padding-16) var(--sa-padding-8);
 }
 
 .ds-sidebar__group-items {
@@ -70,7 +70,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-s); /* 12px */
+  gap: var(--sa-stack-12); /* 12px */
 }
 
 /* ── Main item ──────────────────────────────────────────────────────────────── */
@@ -85,9 +85,9 @@
 .ds-sidebar__main-row {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   width: 100%;
-  padding: var(--sa-padding-s) var(--sa-padding-m); /* 12px 16px — Figma: py-md px-lg */
+  padding: var(--sa-padding-12) var(--sa-padding-16); /* 12px 16px — Figma: py-md px-lg */
   border-radius: var(--sa-shape-xl); /* 16px */
   border: none;
   background: transparent;
@@ -141,7 +141,7 @@
   justify-content: center;
   min-width: 20px;
   height: 20px;
-  padding: 0 var(--sa-padding-2xs);
+  padding: 0 var(--sa-padding-4);
   border-radius: var(--sa-shape-full);
   background: var(--sa-bg-status-info-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
@@ -166,7 +166,7 @@
 .ds-sidebar__subnav {
   list-style: none;
   margin: 0;
-  padding: var(--sa-padding-xs) var(--sa-padding-xl);
+  padding: var(--sa-padding-8) var(--sa-padding-24);
   /* 8px top/bottom, 24px left+right — Portal DS: Children paddingLeft:24 paddingRight:24 paddingTop:8 paddingBottom:8 */
 }
 
@@ -182,7 +182,7 @@
   display: flex;
   align-items: center;
   min-height: 40px; /* Figma: h-[40px] */
-  padding-left: var(--sa-padding-m); /* connector visual width */
+  padding-left: var(--sa-padding-16); /* connector visual width */
 }
 
 /* Vertical line — full height, continues to next sibling */
@@ -219,7 +219,7 @@
   flex: 1 1 0;
   display: flex;
   align-items: center;
-  padding: var(--sa-padding-xs) var(--sa-padding-s); /* 8px 12px — Figma: py-sm px-md */
+  padding: var(--sa-padding-8) var(--sa-padding-12); /* 8px 12px — Figma: py-sm px-md */
   border-radius: var(--sa-shape-md); /* 8px */
   font-family: var(--sa-font-latin);
   font-size: 14px;
@@ -254,7 +254,7 @@
 
 .ds-sidebar.is-collapsed .ds-sidebar__main-row {
   gap: 0;
-  padding: var(--sa-padding-s) var(--sa-padding-m);
+  padding: var(--sa-padding-12) var(--sa-padding-16);
   justify-content: center;
 }
 
@@ -271,7 +271,7 @@
 .ds-sidebar__footer {
   flex-shrink: 0;
   border-top: 1px solid var(--sa-border-neutral-subtle);
-  padding-top: var(--sa-padding-s);
+  padding-top: var(--sa-padding-12);
   margin-top: auto;
 }
 
@@ -293,7 +293,7 @@
   background: transparent;
   border: none;
   cursor: col-resize;
-  padding: var(--sa-padding-xs) 0;
+  padding: var(--sa-padding-8) 0;
   z-index: 1;
   opacity: 0;
   transition: opacity var(--sa-motion-exit-duration);

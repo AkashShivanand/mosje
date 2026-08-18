@@ -57,9 +57,9 @@
 }
 
 .sa-band--none { padding-block: 0; }
-.sa-band--s { padding-block: var(--sa-section-s); }
-.sa-band--m { padding-block: var(--sa-section-m); }
-.sa-band--l { padding-block: var(--sa-section-l); }
+.sa-band--s { padding-block: var(--sa-section-32); }
+.sa-band--m { padding-block: var(--sa-section-48); }
+.sa-band--l { padding-block: var(--sa-section-56); }
 
 /* ---- PageHeader -----------------------------------------------------------
    HUGS. Title, optional meta line, optional actions. Wraps rather than
@@ -69,9 +69,9 @@
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--sa-padding-m);
+  gap: var(--sa-padding-16);
 }
-.sa-page-header__text { display: flex; flex-direction: column; gap: var(--sa-stack-2xs); }
+.sa-page-header__text { display: flex; flex-direction: column; gap: var(--sa-stack-4); }
 .sa-page-header__title {
   margin: 0;
   font-size: var(--sa-type-headline-1-size);
@@ -85,7 +85,7 @@
   line-height: var(--sa-type-body-2-lh);
   color: var(--sa-text-neutral-subtle);
 }
-.sa-page-header__actions { display: flex; flex-wrap: wrap; gap: var(--sa-inline-s); }
+.sa-page-header__actions { display: flex; flex-wrap: wrap; gap: var(--sa-inline-8); }
 
 /* ---- AppShell -------------------------------------------------------------
    Chrome rows are `auto`; the body row is `1fr`. This is the whole reason no
@@ -125,25 +125,25 @@
   padding: var(--sa-grid-gutter);
   display: flex;
   flex-direction: column;
-  gap: var(--sa-padding-xl);
+  gap: var(--sa-padding-24);
 }
 
 /* ---- Pending --------------------------------------------------------------
    Replaces the "return null while hydrating" pattern each portal reinvented.
    A blank frame reads as a broken page; a skeleton reads as a loading one. */
-.sa-app-shell__pending { display: flex; flex-direction: column; gap: var(--sa-padding-xl); }
+.sa-app-shell__pending { display: flex; flex-direction: column; gap: var(--sa-padding-24); }
 /* The skeleton's two dimensions come from the padding scale rather than the
    size scale: `size/*` is Tier 1 and banned in component CSS, and padding/2xl
    and padding/3xl are exactly 32 and 120. Preferring an exact cross-family
    token to an inexact same-family one is the estate's rule. */
 .sa-app-shell__pending-bar {
-  height: var(--sa-padding-2xl);
+  height: var(--sa-padding-32);
   border-radius: var(--sa-shape-sm);
   background: var(--sa-bg-neutral-subtle);
 }
 .sa-app-shell__pending-block {
   flex: 1;
-  min-height: var(--sa-padding-3xl);
+  min-height: var(--sa-padding-120);
   border-radius: var(--sa-shape-md);
   background: var(--sa-bg-neutral-subtle);
 }

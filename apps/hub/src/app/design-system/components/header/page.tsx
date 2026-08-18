@@ -23,16 +23,16 @@ export const metadata: Metadata = {
  * ------------------------------------------------------------------ */
 
 const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-m)",
-  scrollMarginTop: "var(--sa-section-m)",
+  marginTop: "var(--sa-section-48)",
+  scrollMarginTop: "var(--sa-section-48)",
 };
 
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 700,
   color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-m)",
-  paddingBottom: "var(--sa-padding-xs)",
+  marginBottom: "var(--sa-stack-16)",
+  paddingBottom: "var(--sa-padding-8)",
   borderBottom: "1px solid var(--sa-border-neutral-subtle)",
 };
 
@@ -40,8 +40,8 @@ const h3Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
   color: "var(--sa-text-neutral-base)",
-  marginTop: "var(--sa-stack-l)",
-  marginBottom: "var(--sa-stack-xs)",
+  marginTop: "var(--sa-stack-24)",
+  marginBottom: "var(--sa-stack-8)",
 };
 
 const proseStyle: React.CSSProperties = {
@@ -52,16 +52,16 @@ const proseStyle: React.CSSProperties = {
 };
 
 const captionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-stack-xs)",
-  marginBottom: "var(--sa-stack-l)",
+  marginTop: "var(--sa-stack-8)",
+  marginBottom: "var(--sa-stack-24)",
   color: "var(--sa-text-neutral-subtle)",
   fontSize: "var(--sa-type-body-2-size)",
 };
 
 const listStyle: React.CSSProperties = {
   ...proseStyle,
-  marginTop: "var(--sa-stack-s)",
-  paddingLeft: "var(--sa-padding-l)",
+  marginTop: "var(--sa-stack-12)",
+  paddingLeft: "var(--sa-padding-20)",
   lineHeight: 1.9,
 };
 
@@ -72,12 +72,12 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
         background: "var(--sa-bg-neutral-subtler)",
         border: "1px solid var(--sa-border-neutral-subtle)",
         borderRadius: "var(--sa-shape-md)",
-        padding: "var(--sa-padding-m)",
+        padding: "var(--sa-padding-16)",
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",
         lineHeight: 1.6,
         color: "var(--sa-text-neutral-base)",
-        marginTop: "var(--sa-stack-xs)",
+        marginTop: "var(--sa-stack-8)",
       }}
     >
       <code style={{ fontFamily: "var(--sa-font-mono)" }}>
@@ -106,8 +106,8 @@ function AnatomyBand({
       style={{
         display: "flex",
         alignItems: "center",
-        gap: "var(--sa-stack-s)",
-        padding: "var(--sa-padding-s) var(--sa-padding-m)",
+        gap: "var(--sa-stack-12)",
+        padding: "var(--sa-padding-12) var(--sa-padding-16)",
         background: bg,
         color: fg,
       }}
@@ -144,16 +144,16 @@ export default function HeaderPage(): React.JSX.Element {
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
-        padding: "var(--sa-padding-2xl) var(--sa-padding-xl) var(--sa-section-l)",
+        padding: "var(--sa-padding-32) var(--sa-padding-24) var(--sa-section-56)",
       }}
     >
       {/* ---------------- Page header / Purpose ---------------- */}
-      <header style={{ marginBottom: "var(--sa-stack-xl)" }}>
+      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "var(--sa-stack-s)",
+            gap: "var(--sa-stack-12)",
             flexWrap: "wrap",
           }}
         >
@@ -169,7 +169,7 @@ export default function HeaderPage(): React.JSX.Element {
           </h1>
           <StatusBadge status="Beta" />
         </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-s)" }}>
+        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
           The masthead of every SAMAVESH property is one component —{" "}
           <strong>SiteHeader</strong>, the SAMAVESH Navbar — matching the two Figma
           &quot;Navbar&quot; components pixel-for-pixel. Three tiers (accessibility bar ·
@@ -189,7 +189,7 @@ export default function HeaderPage(): React.JSX.Element {
             opt-in scroll-collapse of the accessibility bar.
           </li>
         </ul>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <a
             className={buttonClasses("primary", "outlined", "md")}
             href={figmaUrl()}
@@ -212,7 +212,7 @@ export default function HeaderPage(): React.JSX.Element {
         </p>
         <div
           style={{
-            marginTop: "var(--sa-stack-m)",
+            marginTop: "var(--sa-stack-16)",
             border: "1px solid var(--sa-border-neutral-subtle)",
             borderRadius: "var(--sa-shape-md)",
             overflow: "hidden",
@@ -261,7 +261,7 @@ export default function HeaderPage(): React.JSX.Element {
           The <code>variant</code> prop also defaults <code>sticky</code> on for
           portals.
         </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-16)" }}>
           <table className="props-table">
             <thead>
               <tr>
@@ -324,7 +324,7 @@ export default function HeaderPage(): React.JSX.Element {
           <strong>&quot;Associated Organisations&quot;</strong> mega-menu. Open a
           dropdown, open the mega-menu, and resize below 1024px to see the drawer.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-l)" }}>
+        <div style={{ marginTop: "var(--sa-stack-24)" }}>
           <SiteHeaderPreview />
           <p style={captionStyle}>
             Website variant — <code>search</code> + <code>actions</code> (Login) +{" "}
@@ -332,7 +332,7 @@ export default function HeaderPage(): React.JSX.Element {
           </p>
         </div>
 
-        <h3 id="portal" style={{ ...h3Style, scrollMarginTop: "var(--sa-section-m)" }}>Portal variant</h3>
+        <h3 id="portal" style={{ ...h3Style, scrollMarginTop: "var(--sa-section-48)" }}>Portal variant</h3>
         <p style={proseStyle}>
           Matches the <strong>Navbar Portal / Appbar</strong> (Figma{" "}
           <code>4235-3170</code>): a collapse toggle (<code>onToggleNav</code>), a
@@ -340,7 +340,7 @@ export default function HeaderPage(): React.JSX.Element {
           marks, and an account block (<code>account</code>) in place of the search
           field + Login.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <SiteHeaderNavyPreview />
           <p style={captionStyle}>
             Portal variant — <code>onToggleNav</code> + <code>brandDivider</code> +{" "}
@@ -427,7 +427,7 @@ export default function HeaderPage(): React.JSX.Element {
           Every control is reachable and operable by keyboard, and announces its
           state.
         </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-16)" }}>
           <table className="props-table">
             <thead>
               <tr>
@@ -461,7 +461,7 @@ export default function HeaderPage(): React.JSX.Element {
           <strong>functional by default</strong> — the design system owns the
           behaviour so no property can ship a dead control.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <A11yChecklist
             items={[
               { criterion: "Text resize & contrast", level: "AA", description: "Font-size, spacing, and contrast are handled by the official UX4GAccessibilityWidget (one canonical mechanism, everywhere) — the header no longer duplicates them. (WCAG 1.4.4)" },
@@ -563,7 +563,7 @@ export default function HeaderPage(): React.JSX.Element {
         <h2 id="responsive" style={h2Style}>
           10. Responsive
         </h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-l)", lineHeight: 1.9 }}>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", lineHeight: 1.9 }}>
           <li>
             <strong style={{ color: "var(--sa-text-neutral-base)" }}>≥1024px</strong> — the
             horizontal nav row (with dropdowns / mega-menus) is shown.
@@ -594,7 +594,7 @@ export default function HeaderPage(): React.JSX.Element {
           One definition, imported everywhere — no per-app header forks. Each app
           supplies its own data and basePath-aware asset URLs.
         </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-16)" }}>
           <table className="props-table">
             <thead>
               <tr>
@@ -652,7 +652,7 @@ export default function HeaderPage(): React.JSX.Element {
         <h2 id="changelog" style={h2Style}>
           13. Changelog
         </h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-l)", lineHeight: 1.9 }}>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", lineHeight: 1.9 }}>
           <li>
             <strong style={{ color: "var(--sa-text-neutral-base)" }}>Accessibility consolidation</strong>{" "}
             — retired the header&apos;s own text-size (A−/A/A+) and contrast controls

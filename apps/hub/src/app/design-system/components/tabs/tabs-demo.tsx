@@ -26,8 +26,8 @@ export function TabsDemo(): React.JSX.Element {
       <TabPanel idBase={idBase} tabId={tab.id}>
         <div
           style={{
-            marginTop: "var(--sa-stack-m)",
-            padding: "var(--sa-padding-l)",
+            marginTop: "var(--sa-stack-16)",
+            padding: "var(--sa-padding-20)",
             border: "1px solid var(--sa-border-neutral-subtle)",
             borderRadius: "var(--sa-shape-lg)",
             background: "var(--sa-bg-neutral-base)",

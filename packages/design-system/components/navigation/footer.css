@@ -13,9 +13,9 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-stack-xs) var(--sa-padding-l);
+  gap: var(--sa-stack-8) var(--sa-padding-20);
   margin: 0 auto;
-  padding: var(--sa-padding-m) var(--sa-padding-xl);
+  padding: var(--sa-padding-16) var(--sa-padding-24);
   font-family: var(--sa-font-latin);
 }
 
@@ -35,7 +35,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--sa-padding-3xs) var(--sa-padding-m);
+  gap: var(--sa-padding-2) var(--sa-padding-16);
   margin: 0;
   padding: 0;
   list-style: none;

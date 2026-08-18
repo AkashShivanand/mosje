@@ -32,7 +32,7 @@
   --docs-header-h: 56px;
   --docs-sidebar-w: 280px;
   /* Where an anchored heading comes to rest: clear of the header, plus a breath. */
-  --docs-anchor-offset: calc(var(--docs-header-h) + var(--sa-stack-l));
+  --docs-anchor-offset: calc(var(--docs-header-h) + var(--sa-stack-24));
 }
 
 html {
@@ -86,9 +86,9 @@ a:focus-visible {
 }
 
 /* Prose content (used in page bodies) */
-.ds-prose p + p { margin-top: var(--sa-stack-m); }
-.ds-prose ul, .ds-prose ol { padding-left: var(--sa-padding-xl); margin-top: var(--sa-stack-s); }
-.ds-prose li + li { margin-top: var(--sa-stack-xs); }
+.ds-prose p + p { margin-top: var(--sa-stack-16); }
+.ds-prose ul, .ds-prose ol { padding-left: var(--sa-padding-24); margin-top: var(--sa-stack-12); }
+.ds-prose li + li { margin-top: var(--sa-stack-8); }
 
 /* Code */
 code:not([class]) {
@@ -103,7 +103,7 @@ code:not([class]) {
   background-color: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-xs);
-  padding: var(--sa-padding-3xs) var(--sa-padding-2xs);
+  padding: var(--sa-padding-2) var(--sa-padding-4);
   color: var(--sa-text-neutral-base);
 }
 
@@ -111,28 +111,28 @@ code:not([class]) {
 .skip-link {
   position: absolute;
   top: -100%;
-  left: var(--sa-inline-l);
+  left: var(--sa-inline-16);
   z-index: 9999;
-  padding: var(--sa-padding-xs) var(--sa-padding-m);
+  padding: var(--sa-padding-8) var(--sa-padding-16);
   background: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
   border-radius: var(--sa-shape-sm);
   font-weight: 600;
   transition: top 0.1s;
 }
-.skip-link:focus { top: var(--sa-stack-m); }
+.skip-link:focus { top: var(--sa-stack-16); }
 
 /* ── Section kicker — small editorial label above an h2 ── */
 .home-kicker {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   font-size: var(--sa-type-label-3-size);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--sa-text-brand-primary-base);
-  margin-bottom: var(--sa-stack-s);
+  margin-bottom: var(--sa-stack-12);
 }
 .home-kicker::before {
   content: "";
@@ -146,8 +146,8 @@ code:not([class]) {
 .docs-welcome-card {
   position: relative;
   display: block;
-  padding: var(--sa-padding-l);
-  padding-right: var(--sa-padding-2xl);
+  padding: var(--sa-padding-20);
+  padding-right: var(--sa-padding-32);
   border-radius: var(--sa-shape-lg);
   border: 1px solid var(--sa-border-neutral-subtle);
   background: var(--sa-bg-neutral-base);
@@ -167,8 +167,8 @@ code:not([class]) {
 .docs-welcome-card::after {
   content: "→";
   position: absolute;
-  top: var(--sa-padding-l);
-  right: var(--sa-padding-l);
+  top: var(--sa-padding-20);
+  right: var(--sa-padding-20);
   color: var(--sa-text-brand-primary-base);
   opacity: 0;
   transform: translateX(-4px);
@@ -188,7 +188,7 @@ code:not([class]) {
   border-radius: var(--sa-shape-lg);
   background: var(--sa-bg-neutral-base);
   overflow: hidden;
-  margin-bottom: var(--sa-section-l);
+  margin-bottom: var(--sa-section-56);
   box-shadow: var(--sa-elevation-raised);
   transition: box-shadow 0.3s ease;
 }
@@ -198,7 +198,7 @@ code:not([class]) {
 .home-stat {
   flex: 1 1 0;
   min-width: 132px;
-  padding: var(--sa-padding-l);
+  padding: var(--sa-padding-20);
   border-left: 1px solid var(--sa-border-neutral-subtle);
   transition: background-color 0.3s ease, transform 0.3s ease;
   cursor: default;
@@ -210,7 +210,7 @@ code:not([class]) {
 /* Align the stats band's right edge with the broken-out hero (reclaims the
    empty TOC rail) so the two full-width bands line up. */
 @media (min-width: 1025px) {
-  .home-stats { width: calc(100% + 200px + var(--sa-inline-xl)); }
+  .home-stats { width: calc(100% + 200px + var(--sa-inline-32)); }
 }
 .home-stat__value {
   font-size: var(--sa-type-headline-2-size);
@@ -230,14 +230,14 @@ code:not([class]) {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--sa-text-neutral-subtle);
-  margin-top: var(--sa-stack-xs);
+  margin-top: var(--sa-stack-8);
 }
 
 /* ── Card grids ── */
 .home-cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--sa-stack-m);
+  gap: var(--sa-stack-16);
 }
 @media (max-width: 900px) {
   .home-stat { min-width: 33%; }

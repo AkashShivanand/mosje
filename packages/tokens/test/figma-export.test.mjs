@@ -13,7 +13,9 @@ test("figma.tokens.json is valid JSON and resolves aliases to final values", () 
   // primitives + dimensions are present and resolved (px preserved, not rem).
   // `spacing` became `space` on 2026-08-10 — the grammar's own group dictionary (§5.4) says
   // `space`, and the legacy root was one of the four that skipped grammar parsing entirely.
-  assert.equal(json.space.lg, "16px");
+  // `space.lg` became `space.16` on 2026-08-18 when the ladder was value-named — the label IS
+  // the value now, so this assertion reads as a tautology and that is exactly the point.
+  assert.equal(json.space["16"], "16px");
   assert.equal(json.radius.md, "8px");
   assert.equal(json.radius.full, "999px");
 });

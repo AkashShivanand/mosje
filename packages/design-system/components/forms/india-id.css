@@ -23,7 +23,7 @@
 
 .ds-otp {
   display: flex;
-  gap: var(--sa-inline-s);
+  gap: var(--sa-inline-8);
   align-items: center;
 }
 
@@ -32,7 +32,7 @@
      so the digit is comfortable to read back. */
   width: clamp(2.75rem, 10vw, 3.25rem);
   min-height: 44px;
-  padding: var(--sa-padding-2xs);
+  padding: var(--sa-padding-4);
   font-family: var(--sa-font-latin);
   font-size: var(--sa-type-headline-2-size);
   line-height: var(--sa-type-headline-2-lh);
@@ -79,7 +79,7 @@
    page sideways — the target stays 44px tall, which is the axis that matters for tapping. */
 @media (max-width: 380px) {
   .ds-otp {
-    gap: var(--sa-inline-xs);
+    gap: var(--sa-inline-4);
   }
 
   .ds-otp__box {

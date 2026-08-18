@@ -32,8 +32,8 @@ export function IdentityInputsDemo(): React.JSX.Element {
     <div
       style={{
         display: "grid",
-        gap: "var(--sa-stack-l)",
-        padding: "var(--sa-padding-xl)",
+        gap: "var(--sa-stack-24)",
+        padding: "var(--sa-padding-24)",
         border: "1px solid var(--sa-border-neutral-subtle)",
         borderRadius: "var(--sa-shape-lg)",
         background: "var(--sa-bg-neutral-base)",
@@ -83,7 +83,7 @@ export function IdentityInputsDemo(): React.JSX.Element {
         <p
           id="otp-demo-label"
           style={{
-            margin: "0 0 var(--sa-stack-xs)",
+            margin: "0 0 var(--sa-stack-8)",
             fontSize: "var(--sa-type-label-1-size)",
             fontWeight: 600,
             color: "var(--sa-text-neutral-base)",
@@ -104,7 +104,7 @@ export function IdentityInputsDemo(): React.JSX.Element {
         <p
           id="otp-demo-hint"
           style={{
-            margin: "var(--sa-stack-xs) 0 0",
+            margin: "var(--sa-stack-8) 0 0",
             fontSize: "var(--sa-type-body-2-size)",
             color: "var(--sa-text-neutral-subtle)",
           }}

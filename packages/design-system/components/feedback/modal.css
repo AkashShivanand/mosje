@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--sa-padding-m);
+  padding: var(--sa-padding-16);
   background-color: var(--sa-overlay-neutral-boldest);
 }
 
@@ -32,8 +32,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-stack-s);
-  padding: var(--sa-padding-l) var(--sa-padding-xl) 0;
+  gap: var(--sa-stack-12);
+  padding: var(--sa-padding-20) var(--sa-padding-24) 0;
 }
 
 .ds-modal__title {
@@ -69,7 +69,7 @@
 }
 
 .ds-modal__body {
-  padding: var(--sa-padding-m) var(--sa-padding-xl) var(--sa-padding-xl);
+  padding: var(--sa-padding-16) var(--sa-padding-24) var(--sa-padding-24);
 }
 
 .ds-modal__footer {
@@ -77,6 +77,6 @@
   justify-content: flex-end;
   /* Wider than the default 8px control gap — confirm/destructive actions sit
      here, and a mis-tap between Cancel/Delete is costlier than elsewhere. */
-  gap: var(--sa-stack-s);
-  padding: 0 var(--sa-padding-xl) var(--sa-padding-xl);
+  gap: var(--sa-stack-12);
+  padding: 0 var(--sa-padding-24) var(--sa-padding-24);
 }

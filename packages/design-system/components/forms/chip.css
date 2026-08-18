@@ -11,10 +11,10 @@
 .ds-chip {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   min-height: 32px;
   box-sizing: border-box;
-  padding: var(--sa-padding-xs) var(--sa-padding-s);
+  padding: var(--sa-padding-8) var(--sa-padding-12);
   font-family: var(--sa-font-latin);
   font-size: var(--sa-type-body-2-size);
   line-height: var(--sa-type-body-2-lh);
@@ -100,7 +100,7 @@
   flex: 0 0 auto;
   width: 18px;
   height: 18px;
-  margin: 0 calc(-1 * var(--sa-padding-2xs)) 0 0;
+  margin: 0 calc(-1 * var(--sa-padding-4)) 0 0;
   padding: 0;
   color: inherit;
   background: transparent;
