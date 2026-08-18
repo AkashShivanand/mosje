@@ -224,10 +224,59 @@ code-side decision and remains an open design question.
 
 ## 4. `Tabs / More` — the overflow trigger
 
-Heights match the tabs exactly (36 / 44 / 48). **It is a menu button, not a tab:**
-`role="button"`, `aria-haspopup="menu"`, `aria-expanded` — never `role="tab"`, which would
-promise a panel that does not exist. It is never the selected item. `State=Open` means the menu
-is open. No coded counterpart exists yet; today the component degrades to `overflow-x: auto`.
+**Built 2026-08-18.** Rendered by `<Tabs>` when `overflow` is set and the row cannot show
+every tab. There is no `<TabsMore>` export and there must not be — the trigger needs the
+tablist beside it to have anything to talk about.
+
+```tsx
+<Tabs … overflow />
+```
+
+Heights match the tabs exactly (36 / 44 / 48). Glyph `more_horiz`, radius `shape/md`.
+Default `icon/neutral/subtle`; hover `bg/neutral/subtle` + `icon/neutral/base`; open carries
+**no fill**, only `icon/brand/primary/bolder` — the menu is what reads as open, so a filled
+trigger would double the signal.
+
+### The four decisions that are not visible in the geometry
+
+1. **It is a menu button, not a tab** — `role="button"`, `aria-haspopup="menu"`,
+   `aria-expanded`. Never `role="tab"`: that promises a panel that does not exist and tells a
+   screen-reader user there are more sections than there are.
+2. **It renders OUTSIDE the `role="tablist"`.** A tablist owns tabs, and a button among them
+   misdescribes the structure — and being outside is also what keeps it pinned while the tabs
+   scroll past it. This is why `overflow` wraps the tablist in a positioning element, and why
+   the prop is off by default: enabling it changes the DOM.
+3. **It does not remove tabs from the tablist.** Every tab stays rendered, focusable and
+   arrow-reachable; the menu is a *pointer shortcut* to the ones scrolled out of view. The
+   other common model — moving tabs into the menu — costs them their `role="tab"`, their
+   `aria-controls` and their place in the roving tabindex. That is a worse trade than the
+   scrolling it saves.
+4. **`overflow` implies content-width tabs, and it has to.** `flex: 1 1 0` makes every
+   enclosed tab share the track equally, so the row can *never* overflow — add tabs and they
+   just get narrower and truncate harder, the trigger never appears, and the labels get less
+   readable. Enabling `overflow` therefore stops the tabs shrinking. A pleasant consequence:
+   labels stay fully readable, so §3a's truncation tooltip has nothing to do here.
+
+### Behaviour
+
+The menu lists the tabs **not fully visible right now**, recomputed on scroll as well as on
+resize — the contents change as you scroll, because "what you cannot see" is what it means.
+Choosing one selects that tab **and scrolls it into view**; without that it would select
+something still off-screen and appear to do nothing.
+
+Keyboard: Enter / Space / Down opens and focuses the first enabled item; Up/Down and Home/End
+move and **skip disabled items**, matching the tablist; Escape closes and returns focus to the
+trigger; Tab leaves. A disabled tab appears as an `aria-disabled` menu item rather than being
+omitted — consistent with the tablist, where a disabled tab stays so the section is still
+announced.
+
+The menu is **portalled and `position: fixed`**, for the same reason the Tooltip is: the
+tablist sets `overflow-x: auto`, and any card above it may set `overflow: hidden`. An in-flow
+menu would be clipped by the very scroll container whose overflow it exists to resolve.
+
+**Consumer note:** a tablist inside a flex or grid item needs `min-width: 0` on that item.
+Without it the item refuses to shrink below its content, the row never overflows, and the
+trigger correctly never appears.
 
 ---
 

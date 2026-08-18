@@ -1374,7 +1374,7 @@ Docs: `/design-system/components/sla-progress`.
 
 #### Tabs / TabPanel
 **Purpose**: Accessible tabbed navigation for **non-linear** sections the user revisits in any order (vs `<Wizard>`, which is a linear stepper).  
-**Props**: `indicator` (`underline` | `rail` | `pill`, default `pill`) · `size` (`s` | `m` | `l` → 36 / 44 / 48, default `m`) · `track` (`none` | `enclosed`, default `enclosed`) · `orientation` (`horizontal` | `vertical`) · `divider`. `TabDef` carries `id`, `label`, `icon?`, `badge?`, `disabled?`.  
+**Props**: `indicator` (`underline` | `rail` | `pill`, default `pill`) · `size` (`s` | `m` | `l` → 36 / 44 / 48, default `m`) · `track` (`none` | `enclosed`, default `enclosed`) · `orientation` (`horizontal` | `vertical`) · `divider` · `overflow`. `TabDef` carries `id`, `label`, `icon?`, `badge?`, `disabled?`.  
 **Rules**:
 - Implements the WAI-ARIA Tabs pattern (`role=tablist/tab/tabpanel`, `aria-selected`, `aria-controls`, roving `tabindex`, Arrow/Home/End keys) with a polite live-region announce.
 - Pair each active tab with a `<TabPanel>` sharing the same `idBase`. Parent owns the active index and renders one panel at a time.
@@ -1384,7 +1384,7 @@ Docs: `/design-system/components/sla-progress`.
 - **Heights are hugs** (padding + line-height), never fixed. A pinned tab height stops the label growing when a citizen raises their browser font size.
 - **A disabled tab stays in the tablist**, marked `aria-disabled` and skipped by the arrow keys. Never use the native `disabled` attribute: it drops the button out of the accessibility tree, so a screen-reader user loses the fact that the section exists at all.
 - Selected ink is `text/brand/primary/bolder`, **not** `/base` — the brand key colour measures 4.07:1 on the track and fails WCAG 1.4.3 AA.
-- A horizontal list that outgrows its container **scrolls**. The Figma library's `Tabs / More` overflow trigger has no code counterpart yet, so there is no `overflow` prop.
+- A horizontal list that outgrows its container **scrolls**. Set **`overflow`** (off by default) to add the `Tabs / More` trigger, which appears only when tabs are actually hidden and lists the ones scrolled out of view. It is a **menu button, not a tab** (`role="button"`, `aria-haspopup="menu"`) and renders *outside* the tablist — which is what keeps it pinned while tabs scroll, and why enabling it wraps the tablist in a positioning element. It never removes tabs from the tablist: they stay focusable and arrow-reachable, and the menu is a pointer shortcut. Enabling it also stops tabs sharing the track equally, because equal-width tabs never overflow — they truncate harder instead.
 
 **Tab label rules** (these govern the CONTENT, and are the rules most often broken):
 1. **A tab label names a destination.** It is not a sentence. One or two words; aim for ≤ 20 characters in English.

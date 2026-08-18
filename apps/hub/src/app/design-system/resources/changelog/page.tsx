@@ -22,6 +22,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.24.0",
+    date: "2026-08-18",
+    current: true,
+    changes: [
+      { kind: "Added", text: "THE TABS / MORE OVERFLOW TRIGGER IS BUILT — the last master with no code counterpart. Set `overflow` on `<Tabs>` and it appears ONLY when tabs are actually hidden, never as permanent chrome, listing the ones currently scrolled out of view. There is no `<TabsMore>` export and there must not be: the trigger needs the tablist beside it to have anything to talk about" },
+      { kind: "Added", text: "IT IS A MENU BUTTON, NOT A TAB — `role=\"button\"`, `aria-haspopup=\"menu\"`, `aria-expanded`. `role=\"tab\"` would promise a panel that does not exist and tell a screen-reader user there are more sections than there are. It renders OUTSIDE the `role=\"tablist\"` for that reason, and being outside is also what keeps it pinned while the tabs scroll past. Keyboard: Enter/Space/Down opens and focuses the first enabled item, Up/Down and Home/End move and SKIP disabled items exactly as the tablist does, Escape closes and returns focus to the trigger, Tab leaves. The menu is portalled and fixed, because the tablist sets `overflow-x: auto` and an in-flow menu would be clipped by the very scroll container it exists to resolve" },
+      { kind: "Added", text: "IT DOES NOT REMOVE TABS FROM THE TABLIST. Every tab stays rendered, focusable and arrow-reachable; the menu is a POINTER shortcut to what is out of view, and its contents recompute on scroll because \u201cwhat you cannot see\u201d is what it means. The other common model — moving tabs into the menu — costs them their `role=\"tab\"`, their `aria-controls` and their place in the roving tabindex, which is a worse trade than the scrolling it saves. Choosing an item selects that tab AND scrolls it into view; without that it would select something still off-screen and appear to do nothing" },
+      { kind: "Changed", text: "`overflow` IMPLIES CONTENT-WIDTH TABS, AND IT HAS TO. `flex: 1 1 0` makes every enclosed tab share the track equally, so the row can NEVER overflow — add tabs and they simply get narrower and truncate harder, the trigger never appears, and the labels get less readable. This was caught in the browser, not in review: the first build rendered seven tabs squeezed into 460px with every label truncated to two characters and no trigger in sight. Enabling `overflow` now stops the tabs shrinking, so labels stay fully readable and the truncation tooltip has nothing to do there. `overflow` is off by default because switching it on wraps the tablist in a positioning element" },
+      { kind: "Fixed", text: "A CONSUMER TRAP WORTH KNOWING: a tablist inside a flex or grid item needs `min-width: 0` on that item. Without it the item refuses to shrink below its content, the row never overflows, and the trigger correctly never appears — which reads exactly like a broken feature. Documented on the props table and in the story that first hit it" },
+    ],
+  },
+  {
     version: "v0.23.0",
     date: "2026-08-17",
     current: true,

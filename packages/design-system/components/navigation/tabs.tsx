@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Icon } from "../icon/icon";
 import { Tooltip } from "../feedback/tooltip";
+import { TabsOverflow } from "./tabs-overflow";
 import "./tabs.css";
 
 /**
@@ -70,6 +71,22 @@ export interface TabsProps {
    * own border. @default true
    */
   divider?: boolean;
+  /**
+   * Offer the `Tabs / More` overflow menu when the row cannot show every tab.
+   *
+   * OFF by default, and opt-in for a reason: turning it on wraps the tablist in
+   * a positioning element, so the rendered DOM changes. Every consumer that
+   * does not ask for it renders exactly what it did before.
+   *
+   * Horizontal only — a vertical list wraps its labels instead of clipping
+   * them, so it has nothing to overflow. The button appears only when tabs are
+   * actually hidden, never as permanent chrome.
+   *
+   * It does NOT remove tabs from the tablist: every tab stays focusable and
+   * arrow-reachable, and the menu is a pointer shortcut to the ones scrolled
+   * out of view.
+   */
+  overflow?: boolean;
 }
 
 /** The first non-disabled index at or after `from`, walking `dir`, wrapping. */
@@ -115,12 +132,14 @@ export function Tabs({
   track = "enclosed",
   orientation = "horizontal",
   divider = true,
+  overflow = false,
 }: TabsProps) {
   const refs = React.useRef<Array<HTMLButtonElement | null>>([]);
   const labelRefs = React.useRef<Array<HTMLSpanElement | null>>([]);
   const listRef = React.useRef<HTMLDivElement>(null);
   const indicatorRef = React.useRef<HTMLSpanElement>(null);
   const [clipped, setClipped] = React.useState<boolean[]>([]);
+  const [hidden, setHidden] = React.useState<number[]>([]);
 
   const vertical = orientation === "vertical";
   const iconSize = size === "s" ? 16 : size === "l" ? 24 : 20;
@@ -183,12 +202,40 @@ export function Tabs({
     );
   }, []);
 
+  /**
+   * Which tabs are not fully inside the tablist's visible box.
+   *
+   * Measured, not derived from a count: a tab is "hidden" when either edge
+   * falls outside, which is what a user actually experiences. Recomputed on
+   * SCROLL as well as on resize, because scrolling is precisely what changes
+   * the answer — the menu lists what you cannot see right now.
+   */
+  const updateOverflow = React.useCallback(() => {
+    const list = listRef.current;
+    if (!overflow || vertical || !list) {
+      setHidden((prev) => (prev.length ? [] : prev));
+      return;
+    }
+    const box = list.getBoundingClientRect();
+    const next: number[] = [];
+    refs.current.forEach((el, i) => {
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      // 1px of tolerance: sub-pixel layout should not report a flush tab hidden.
+      if (r.left < box.left - 1 || r.right > box.right + 1) next.push(i);
+    });
+    setHidden((prev) =>
+      prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next,
+    );
+  }, [overflow, vertical]);
+
   // Runs before paint so the very first placement (and every tab-count
   // change) never renders one frame at the wrong spot.
   React.useLayoutEffect(() => {
     updateIndicator();
     updateTruncation();
-  }, [updateIndicator, updateTruncation, tabs, size, indicator, track, orientation]);
+    updateOverflow();
+  }, [updateIndicator, updateTruncation, updateOverflow, tabs, size, indicator, track, orientation]);
 
   /**
    * Re-measure whenever the BOX changes, not just the window.
@@ -211,11 +258,21 @@ export function Tabs({
     const ro = new ResizeObserver(() => {
       updateIndicator();
       updateTruncation();
+      updateOverflow();
     });
     if (listRef.current) ro.observe(listRef.current);
     for (const el of refs.current) if (el) ro.observe(el);
     return () => ro.disconnect();
-  }, [updateIndicator, updateTruncation, tabs.length]);
+  }, [updateIndicator, updateTruncation, updateOverflow, tabs.length]);
+
+  // Scrolling changes which tabs are visible without changing any box, so a
+  // ResizeObserver cannot see it.
+  React.useEffect(() => {
+    const list = listRef.current;
+    if (!list || !overflow || vertical) return;
+    list.addEventListener("scroll", updateOverflow, { passive: true });
+    return () => list.removeEventListener("scroll", updateOverflow);
+  }, [updateOverflow, overflow, vertical]);
 
   const move = (index: number | null) => {
     if (index === null) return;
@@ -251,20 +308,35 @@ export function Tabs({
     move(next);
   };
 
+  /**
+   * Chosen from the overflow menu. Selecting is not enough — the tab is by
+   * definition off-screen, so it is scrolled into view and focused, or the user
+   * picks something and nothing appears to happen.
+   */
+  const selectFromMenu = (index: number) => {
+    onChange(index);
+    requestAnimationFrame(() => {
+      refs.current[index]?.scrollIntoView({ block: "nearest", inline: "nearest" });
+      refs.current[index]?.focus();
+    });
+  };
+
+  const showMore = overflow && !vertical && hidden.length > 0;
+
   const listClass = [
     "ds-tabs",
     `ds-tabs--${orientation}`,
     `ds-tabs--${indicator}`,
     `ds-tabs--track-${track}`,
     `ds-tabs--${size}`,
+    overflow && !vertical ? "ds-tabs--overflow" : "",
     showDivider ? "ds-tabs--divider" : "",
   ]
     .filter(Boolean)
     .join(" ");
 
-  return (
-    <>
-      <div
+  const tablist = (
+    <div
         ref={listRef}
         role="tablist"
         aria-label={ariaLabel}
@@ -322,7 +394,33 @@ export function Tabs({
             <React.Fragment key={t.id}>{button}</React.Fragment>
           );
         })}
-      </div>
+    </div>
+  );
+
+  return (
+    <>
+      {overflow && !vertical ? (
+        // The wrapper exists ONLY when overflow is enabled, so no consumer that
+        // has not asked for it sees a DOM change. The trigger sits OUTSIDE the
+        // tablist — a tablist owns tabs, and a button among them misdescribes
+        // the structure — which is also what keeps it pinned while tabs scroll.
+        <div className="ds-tabs-bar">
+          {tablist}
+          {showMore ? (
+            <TabsOverflow
+              hidden={hidden}
+              tabs={tabs}
+              size={size}
+              onSelect={selectFromMenu}
+              // NOT lowercased: `ariaLabel` is a proper noun as often as not, and
+              // "More pm-ajay components" is what lowercasing it produced.
+              ariaLabel={`More ${ariaLabel}`}
+            />
+          ) : null}
+        </div>
+      ) : (
+        tablist
+      )}
       <div role="status" aria-live="polite" aria-atomic="true" className="ds-sr-only">
         {`Section ${active + 1} of ${tabs.length}: ${tabs[active]?.label ?? ""}`}
       </div>
