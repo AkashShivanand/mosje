@@ -10,17 +10,33 @@ export const metadata: Metadata = {
     "The SAMAVESH spacing scale — an 8px base grid that keeps layout rhythm consistent across every MoSJE site and portal.",
 };
 
-const SCALE: { token: string; px: number }[] = [
-  { token: "--sa-stack-4", px: 4 },
-  { token: "--sa-stack-8", px: 8 },
-  { token: "--sa-stack-12", px: 12 },
-  { token: "--sa-stack-16", px: 16 },
-  { token: "--sa-padding-20", px: 20 },
-  { token: "--sa-stack-24", px: 24 },
-  { token: "--sa-stack-32", px: 32 },
-  { token: "--sa-stack-40", px: 40 },
-  { token: "--sa-section-48", px: 48 },
-  { token: "--sa-section-56", px: 56 },
+// The ladder is VALUE-NAMED: the rung IS the pixel value, in every family. `padding/16`,
+// `inline/16`, `stack/16` and `section/16` are all 16px — which is the whole point of the
+// 2026-08-18 rename, since `l` previously meant 16, 24, 20 and 56 in the four families.
+const SCALE: { px: number }[] = [
+  { px: 0 },
+  { px: 2 },
+  { px: 4 },
+  { px: 6 },
+  { px: 8 },
+  { px: 12 },
+  { px: 16 },
+  { px: 20 },
+  { px: 24 },
+  { px: 32 },
+  { px: 40 },
+  { px: 48 },
+  { px: 56 },
+  { px: 64 },
+  { px: 72 },
+  { px: 80 },
+];
+
+const FAMILIES = [
+  { name: "inline", use: "Horizontal gaps between items on one line" },
+  { name: "stack", use: "Vertical gaps between stacked blocks, and vertical rhythm" },
+  { name: "padding", use: "Inner padding of components and containers" },
+  { name: "section", use: "Gaps between page-level sections" },
 ];
 
 export default function SpacingPage(): React.JSX.Element {
@@ -58,16 +74,16 @@ export default function SpacingPage(): React.JSX.Element {
           shown literally to scale.
         </p>
         <div style={{ marginTop: "var(--sa-stack-24)", display: "flex", flexDirection: "column", gap: "var(--sa-stack-12)" }}>
-          {SCALE.map(({ token, px }) => (
-            <div key={token} style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-16)" }}>
+          {SCALE.map(({ px }) => (
+            <div key={px} style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-16)" }}>
               <div style={{ width: "140px", flexShrink: 0 }}>
-                <code className="token-table__name">{token}</code>
+                <code className="token-table__name">{`padding/${px}`}</code>
               </div>
               <div
                 style={{
-                  height: `var(${token})`,
-                  width: `var(${token})`,
-                  minWidth: `var(${token})`,
+                  height: `var(--sa-padding-${px})`,
+                  width: `var(--sa-padding-${px})`,
+                  minWidth: `var(--sa-padding-${px})`,
                   background: "var(--sa-bg-brand-primary-bolder)",
                   borderRadius: "var(--sa-shape-xs)",
                 }}
@@ -75,7 +91,7 @@ export default function SpacingPage(): React.JSX.Element {
               />
               <div
                 style={{
-                  height: `var(${token})`,
+                  height: `var(--sa-padding-${px})`,
                   flex: 1,
                   background: "var(--sa-bg-brand-primary-subtler)",
                   borderRadius: "var(--sa-shape-xs)",
@@ -90,12 +106,37 @@ export default function SpacingPage(): React.JSX.Element {
         </div>
       </section>
 
+      <section aria-labelledby="families" style={{ marginTop: "var(--sa-stack-40)" }}>
+        <h2 id="families">Four families, one ladder</h2>
+        <p style={{ marginTop: "var(--sa-stack-16)" }}>
+          The family says what the space is <em>for</em>; the number says how big it is.
+          Every family carries the same rungs, so <code>inline/16</code>, <code>stack/16</code>,
+          <code>padding/16</code> and <code>section/16</code> are all 16px. Before 18 August 2026
+          these were t-shirt labels and <code>l</code> meant 16, 24, 20 and 56 in the four
+          families — a collision inherited from UX4G 3.0.
+        </p>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
+          <TokenTable
+            tokens={FAMILIES.map(({ name, use }) => ({
+              token: `--sa-${name}-<px>`,
+              value: name === "section" ? "24 … 120" : name === "padding" ? "0 … 80, 120, 360" : "0 … 80",
+              description: use,
+            }))}
+          />
+        </div>
+        <p style={{ marginTop: "var(--sa-stack-16)" }}>
+          Reach past the family only when no role describes the gap — and never to
+          <code> --sa-ref-space-*</code>, which is Tier 1, hidden from publishing, and refused by
+          the token contract tests in application code.
+        </p>
+      </section>
+
       <section aria-labelledby="tokens" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="tokens">Tokens</h2>
         <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <TokenTable
-            tokens={SCALE.map(({ token, px }) => ({
-              token,
+            tokens={SCALE.map(({ px }) => ({
+              token: `--sa-padding-${px}`,
               value: `${px}px`,
               description:
                 px <= 8

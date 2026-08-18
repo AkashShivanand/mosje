@@ -611,45 +611,55 @@ tiers: `--ds-type-{heading,title,body,label}-tracking`. Values differ by **surfa
 
 ### G. Spacing & Elevation
 
-Spacing is locked to a named t-shirt scale. All padding and margin must map to these tokens:
+**Spacing is VALUE-NAMED. The rung IS the pixel value: `padding/16` is 16px, and so are
+`inline/16`, `stack/16` and `section/16`.** There is no lookup table and no T-shirt label.
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--ds-spacing-none` | `0px` | Reset |
-| `--ds-spacing-xxs` | `2px` | Icon internal gaps |
-| `--ds-spacing-xs` | `4px` | Tight in-component gaps |
-| `--ds-spacing-sm` | `8px` | Icon-to-label gaps, list item gaps |
-| `--ds-spacing-md` | `12px` | Default internal component padding |
-| `--ds-spacing-lg` | `16px` | Standard element margin, grid gutter |
-| `--ds-spacing-xl` | `20px` | Card internal padding (compact) |
-| `--ds-spacing-2xl` | `24px` | Card internal padding (comfortable), grid gutter |
-| `--ds-spacing-3xl` | `32px` | Section sub-spacing |
-| `--ds-spacing-4xl` | `40px` | Section spacing |
-| `--ds-spacing-5xl` | `48px` | Major section breaks |
-| `--ds-spacing-6xl` | `64px` | Page-level hero spacing |
-| `--ds-spacing-10xl` | `120px` | UX4G `padding-3xl` parity |
-| `--ds-spacing-11xl` | `360px` | UX4G `padding-4xl` parity |
+```
+0  2  4  6  8  12  16  20  24  32  40  48  56  64  72  80        + padding 120 · 360
+```
 
-Every value on this scale except `72px` is a step on the **UX4G 3.0 base ramp**
-(`--ux4g-space-1…16`), so the SAMAVESH scale *is* the UX4G foundation under different names.
+Every family carries that ladder, so **no measurement is unexpressible**. `section` starts at
+24 (page rhythm has no use for 2px) and `padding` keeps 120/360 for UX4G parity.
 
-#### Semantic spacing roles — reach for these FIRST
-
-Adopted verbatim from UX4G 3.0 (values match `--ux4g-inline/stack/padding/section` 1:1).
-They state **intent**; the t-shirt scale above states only a number. Use the raw scale only
-for one-offs that no role describes.
-
-| Family | Tokens | Use for |
-|--------|--------|---------|
-| `--ds-inline-*` | `none · 2xs(2) · xs(4) · s(8) · m(12) · l(16) · xl(32)` | Horizontal gaps between items **on the same line** |
-| `--ds-stack-*` | `none · 2xs(4) · xs(8) · s(12) · m(16) · l(24) · xl(32)` | Vertical gaps between **stacked** blocks |
-| `--ds-padding-*` | `none · 3xs(2) · 2xs(4) · xs(8) · s(12) · m(16) · l(20) · xl(24) · 2xl(32) · 3xl(120) · 4xl(360)` | **Inner** padding of components and containers |
-| `--ds-section-*` | `none · xs(24) · s(32) · m(48) · l(56) · xl(64) · 2xl(80)` | Gaps between **page sections** |
+| Family | Use for |
+|--------|---------|
+| `--sa-inline-<px>` | Horizontal gaps between items **on the same line** |
+| `--sa-stack-<px>` | Vertical gaps between **stacked** blocks, and vertical rhythm |
+| `--sa-padding-<px>` | **Inner** padding of components and containers |
+| `--sa-section-<px>` | Gaps between **page sections** |
 
 ```css
-/* Prefer */  gap: var(--ds-stack-m);        /* "16px between stacked blocks" */
-/* Over   */  gap: var(--ds-spacing-lg);     /* "16px, for some reason" */
+/* Prefer */  gap: var(--sa-stack-16);      /* 16px between stacked blocks */
+/* Never  */  gap: var(--sa-ref-space-16);  /* Tier 1 — hidden, and banned by tier-discipline.test.mjs */
 ```
+
+#### Why it is numbered, and why that is not a downgrade
+
+Until 2026-08-18 the rungs were T-shirt labels, **and the same label carried a different value
+in each family** — `l` was 16 in `inline`, 24 in `stack`, 20 in `padding` and 56 in `section`.
+Seven of eleven labels collided; the inverse was as bad, with 24px answering to four names.
+That is inherited verbatim from **UX4G 3.0**, whose published contract has `--ux4g-inline-l`=16
+beside `--ux4g-stack-l`=24. `standards-precedence.md` puts UX4G at authority tier 4: where a
+standard forces a worse interface, quality wins and the divergence is recorded. This is that.
+
+Note UX4G's own *primitive* ramp is numeric (`space-1…16`) and only goes T-shirt at the semantic
+layer — which is exactly where it fails. Numbering here is **more** consistent with UX4G, not less.
+**UX4G conformance is untouched**: the `--ux4g-*` layer is emitted independently and never reads
+these names, so `ux4g-parity.test.mjs` asserts the same contract as before.
+
+The second reason is expandability. A T-shirt ramp has no slot between adjacent rungs, so every
+insertion renames everything above it — that happened **twice in one day** before the change
+(`inline` gained 24; `padding` needed a 6 it could not have). A numeric ladder absorbs any step
+for free, which is how 6px arrived with no rename at all.
+
+#### The one rule that keeps a value-name honest
+
+> **Mode-varying spacing belongs in `density/*`, never in the ladder.**
+
+A value-name lies the moment a mode changes the value. The Space collection has ONE mode and
+density variance already lives in `density/*` with its own two modes. If a spacing value must
+differ by mode, it is a density token, not a ladder rung. `space-linkage.test.mjs` asserts a
+rung's name equals its resolved value, so a violation fails the build rather than shipping.
 
 **Responsive Layout Grid — `<Grid>` / `<GridItem>`:**
 - **Twelve columns at every breakpoint**, `24px` gutter (`grid/columns`, `grid/gutter`).

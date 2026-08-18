@@ -347,6 +347,46 @@ returned the same node count both ways, so the shortfall is invisible to a
 node-count sanity check. A batched re-sweep under-reports and must not be committed;
 `space-linkage.test.mjs` refuses a census that does not declare the method.
 
+### The spacing ladder is VALUE-NAMED — and that is load-bearing
+
+**The rung IS the pixel value.** `padding/16` is 16px, and so are `inline/16`, `stack/16` and
+`section/16`. There is no T-shirt label anywhere in the space system, at either tier.
+
+```
+0  2  4  6  8  12  16  20  24  32  40  48  56  64  72  80      + padding 120 · 360
+```
+
+Every family carries that ladder, so no measurement is unexpressible. Two rules follow, and
+`space-linkage.test.mjs` enforces both:
+
+1. **A rung's name equals its resolved value.** A `padding/16` that resolves to 20px fails.
+2. **No label carries two values across families.** This is the defect the rename removed —
+   `l` used to be 16 in `inline`, 24 in `stack`, 20 in `padding` and 56 in `section`, a
+   collision inherited verbatim from UX4G 3.0 (`--ux4g-inline-l`=16 beside `--ux4g-stack-l`=24).
+
+**Do not "restore" T-shirt names.** They were removed for two measured reasons: the collision
+above, and the fact that a T-shirt ramp has no slot between adjacent rungs — every insertion
+renames everything above it, which happened twice in a single day before the change.
+
+**UX4G conformance is unaffected** and must stay that way: the `--ux4g-*` parity layer is emitted
+independently and never reads these names. Renaming on our side is invisible to
+`ux4g-parity.test.mjs`; if that ever stops being true, the parity layer has been wired wrong.
+
+#### The boundary rule that keeps a value-name honest
+
+> **Mode-varying spacing belongs in `density/*`, never in the ladder.**
+
+A value-name lies the moment a mode changes the value. Space has ONE mode; density variance
+already lives in `density/*` with its own two. If a spacing value must differ by mode it is a
+density token, not a ladder rung. This is the single real trade-off of value-naming, and it is
+mitigated by boundary, not by hope.
+
+#### Scopes
+
+The four families are scoped **`GAP` only** — Figma's `GAP` covers gap *and* padding, so
+`WIDTH_HEIGHT` merely dumped 60 spacing tokens into the size picker. A width comes from
+`ref/size/*`, `layout/*` or `container/*`, never from the spacing ladder.
+
 ### Per-page totals move on a library re-sync — expect one false regression
 
 Repeated reads *within* a session are byte-identical, so the census is reproducible.

@@ -410,7 +410,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "0px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/0`, `stack/0`, `padding/0` or `section/0` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-0)"
           },
@@ -431,7 +431,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "2px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/2`, `stack/2`, `padding/2` or `section/2` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-2)"
           },
@@ -452,7 +452,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "4px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/4`, `stack/4`, `padding/4` or `section/4` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-4)"
           },
@@ -473,7 +473,7 @@
               "unit": "px"
             }
           },
-          "description": "UX4G 3.0 space-3. Added 2026-08-18. Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "UX4G 3.0 space-3. Added 2026-08-18. 6px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/6`, `stack/6`, `padding/6` or `section/6` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-6)"
           },
@@ -494,7 +494,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "8px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/8`, `stack/8`, `padding/8` or `section/8` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-8)"
           },
@@ -515,7 +515,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "12px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/12`, `stack/12`, `padding/12` or `section/12` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-12)"
           },
@@ -536,7 +536,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "16px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/16`, `stack/16`, `padding/16` or `section/16` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-16)"
           },
@@ -557,7 +557,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "20px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/20`, `stack/20`, `padding/20` or `section/20` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-20)"
           },
@@ -578,7 +578,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "24px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/24`, `stack/24`, `padding/24` or `section/24` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-24)"
           },
@@ -599,7 +599,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "32px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/32`, `stack/32`, `padding/32` or `section/32` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-32)"
           },
@@ -620,7 +620,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "40px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/40`, `stack/40`, `padding/40` or `section/40` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-40)"
           },
@@ -641,7 +641,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "48px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/48`, `stack/48`, `padding/48` or `section/48` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-48)"
           },
@@ -662,7 +662,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "56px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/56`, `stack/56`, `padding/56` or `section/56` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-56)"
           },
@@ -683,7 +683,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "64px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/64`, `stack/64`, `padding/64` or `section/64` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-64)"
           },
@@ -704,7 +704,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "72px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/72`, `stack/72`, `padding/72` or `section/72` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-72)"
           },
@@ -725,7 +725,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "80px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/80`, `stack/80`, `padding/80` or `section/80` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-80)"
           },
@@ -746,7 +746,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "120px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/120`, `stack/120`, `padding/120` or `section/120` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-120)"
           },
@@ -767,7 +767,7 @@
               "unit": "px"
             }
           },
-          "description": "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.",
+          "description": "360px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind `inline/360`, `stack/360`, `padding/360` or `section/360` instead; all four resolve here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-space-360)"
           },
@@ -1250,7 +1250,7 @@
               "name": "ref/space/0"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 0 step.",
+          "description": "Horizontal gap between items on one line — 0px. The label IS the value: `inline/0`, `stack/0`, `padding/0` and `section/0` are all 0px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-0)"
           },
@@ -1271,7 +1271,7 @@
               "name": "ref/space/2"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 2 step.",
+          "description": "Horizontal gap between items on one line — 2px. The label IS the value: `inline/2`, `stack/2`, `padding/2` and `section/2` are all 2px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-2)"
           },
@@ -1292,7 +1292,7 @@
               "name": "ref/space/4"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 4 step.",
+          "description": "Horizontal gap between items on one line — 4px. The label IS the value: `inline/4`, `stack/4`, `padding/4` and `section/4` are all 4px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-4)"
           },
@@ -1313,7 +1313,7 @@
               "name": "ref/space/6"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 6 step.",
+          "description": "Horizontal gap between items on one line — 6px. The label IS the value: `inline/6`, `stack/6`, `padding/6` and `section/6` are all 6px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-6)"
           },
@@ -1334,7 +1334,7 @@
               "name": "ref/space/8"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 8 step.",
+          "description": "Horizontal gap between items on one line — 8px. The label IS the value: `inline/8`, `stack/8`, `padding/8` and `section/8` are all 8px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-8)"
           },
@@ -1355,7 +1355,7 @@
               "name": "ref/space/12"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 12 step.",
+          "description": "Horizontal gap between items on one line — 12px. The label IS the value: `inline/12`, `stack/12`, `padding/12` and `section/12` are all 12px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-12)"
           },
@@ -1376,7 +1376,7 @@
               "name": "ref/space/16"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 16 step.",
+          "description": "Horizontal gap between items on one line — 16px. The label IS the value: `inline/16`, `stack/16`, `padding/16` and `section/16` are all 16px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-16)"
           },
@@ -1397,7 +1397,7 @@
               "name": "ref/space/20"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 20 step.",
+          "description": "Horizontal gap between items on one line — 20px. The label IS the value: `inline/20`, `stack/20`, `padding/20` and `section/20` are all 20px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-20)"
           },
@@ -1418,7 +1418,7 @@
               "name": "ref/space/24"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 24 step.",
+          "description": "Horizontal gap between items on one line — 24px. The label IS the value: `inline/24`, `stack/24`, `padding/24` and `section/24` are all 24px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-24)"
           },
@@ -1439,7 +1439,7 @@
               "name": "ref/space/32"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 32 step.",
+          "description": "Horizontal gap between items on one line — 32px. The label IS the value: `inline/32`, `stack/32`, `padding/32` and `section/32` are all 32px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-32)"
           },
@@ -1460,7 +1460,7 @@
               "name": "ref/space/40"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 40 step.",
+          "description": "Horizontal gap between items on one line — 40px. The label IS the value: `inline/40`, `stack/40`, `padding/40` and `section/40` are all 40px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-40)"
           },
@@ -1481,7 +1481,7 @@
               "name": "ref/space/48"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 48 step.",
+          "description": "Horizontal gap between items on one line — 48px. The label IS the value: `inline/48`, `stack/48`, `padding/48` and `section/48` are all 48px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-48)"
           },
@@ -1502,7 +1502,7 @@
               "name": "ref/space/56"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 56 step.",
+          "description": "Horizontal gap between items on one line — 56px. The label IS the value: `inline/56`, `stack/56`, `padding/56` and `section/56` are all 56px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-56)"
           },
@@ -1523,7 +1523,7 @@
               "name": "ref/space/64"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 64 step.",
+          "description": "Horizontal gap between items on one line — 64px. The label IS the value: `inline/64`, `stack/64`, `padding/64` and `section/64` are all 64px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-64)"
           },
@@ -1544,7 +1544,7 @@
               "name": "ref/space/72"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 72 step.",
+          "description": "Horizontal gap between items on one line — 72px. The label IS the value: `inline/72`, `stack/72`, `padding/72` and `section/72` are all 72px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-72)"
           },
@@ -1565,7 +1565,7 @@
               "name": "ref/space/80"
             }
           },
-          "description": "Use for horizontal gaps between items on one line, at the 80 step.",
+          "description": "Horizontal gap between items on one line — 80px. The label IS the value: `inline/80`, `stack/80`, `padding/80` and `section/80` are all 80px.",
           "codeSyntax": {
             "WEB": "var(--sa-inline-80)"
           },
@@ -1586,7 +1586,7 @@
               "name": "ref/space/0"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 0 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 0px. The label IS the value: `inline/0`, `stack/0`, `padding/0` and `section/0` are all 0px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-0)"
           },
@@ -1607,7 +1607,7 @@
               "name": "ref/space/2"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 2 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 2px. The label IS the value: `inline/2`, `stack/2`, `padding/2` and `section/2` are all 2px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-2)"
           },
@@ -1628,7 +1628,7 @@
               "name": "ref/space/4"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 4 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 4px. The label IS the value: `inline/4`, `stack/4`, `padding/4` and `section/4` are all 4px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-4)"
           },
@@ -1649,7 +1649,7 @@
               "name": "ref/space/6"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 6 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 6px. The label IS the value: `inline/6`, `stack/6`, `padding/6` and `section/6` are all 6px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-6)"
           },
@@ -1670,7 +1670,7 @@
               "name": "ref/space/8"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 8 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 8px. The label IS the value: `inline/8`, `stack/8`, `padding/8` and `section/8` are all 8px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-8)"
           },
@@ -1691,7 +1691,7 @@
               "name": "ref/space/12"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 12 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 12px. The label IS the value: `inline/12`, `stack/12`, `padding/12` and `section/12` are all 12px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-12)"
           },
@@ -1712,7 +1712,7 @@
               "name": "ref/space/16"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 16 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 16px. The label IS the value: `inline/16`, `stack/16`, `padding/16` and `section/16` are all 16px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-16)"
           },
@@ -1733,7 +1733,7 @@
               "name": "ref/space/20"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 20 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 20px. The label IS the value: `inline/20`, `stack/20`, `padding/20` and `section/20` are all 20px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-20)"
           },
@@ -1754,7 +1754,7 @@
               "name": "ref/space/24"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 24 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 24px. The label IS the value: `inline/24`, `stack/24`, `padding/24` and `section/24` are all 24px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-24)"
           },
@@ -1775,7 +1775,7 @@
               "name": "ref/space/32"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 32 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 32px. The label IS the value: `inline/32`, `stack/32`, `padding/32` and `section/32` are all 32px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-32)"
           },
@@ -1796,7 +1796,7 @@
               "name": "ref/space/40"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 40 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 40px. The label IS the value: `inline/40`, `stack/40`, `padding/40` and `section/40` are all 40px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-40)"
           },
@@ -1817,7 +1817,7 @@
               "name": "ref/space/48"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 48 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 48px. The label IS the value: `inline/48`, `stack/48`, `padding/48` and `section/48` are all 48px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-48)"
           },
@@ -1838,7 +1838,7 @@
               "name": "ref/space/56"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 56 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 56px. The label IS the value: `inline/56`, `stack/56`, `padding/56` and `section/56` are all 56px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-56)"
           },
@@ -1859,7 +1859,7 @@
               "name": "ref/space/64"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 64 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 64px. The label IS the value: `inline/64`, `stack/64`, `padding/64` and `section/64` are all 64px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-64)"
           },
@@ -1880,7 +1880,7 @@
               "name": "ref/space/72"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 72 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 72px. The label IS the value: `inline/72`, `stack/72`, `padding/72` and `section/72` are all 72px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-72)"
           },
@@ -1901,7 +1901,7 @@
               "name": "ref/space/80"
             }
           },
-          "description": "Use for vertical gaps between stacked items, at the 80 step.",
+          "description": "Vertical gap between stacked items, and vertical rhythm inside a block — 80px. The label IS the value: `inline/80`, `stack/80`, `padding/80` and `section/80` are all 80px.",
           "codeSyntax": {
             "WEB": "var(--sa-stack-80)"
           },
@@ -1922,7 +1922,7 @@
               "name": "ref/space/0"
             }
           },
-          "description": "Use for padding inside a container, at the 0 step.",
+          "description": "Inset between a container’s edge and its content — 0px. The label IS the value: `inline/0`, `stack/0`, `padding/0` and `section/0` are all 0px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-0)"
           },
@@ -1943,7 +1943,7 @@
               "name": "ref/space/2"
             }
           },
-          "description": "Use for padding inside a container, at the 2 step.",
+          "description": "Inset between a container’s edge and its content — 2px. The label IS the value: `inline/2`, `stack/2`, `padding/2` and `section/2` are all 2px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-2)"
           },
@@ -1964,7 +1964,7 @@
               "name": "ref/space/4"
             }
           },
-          "description": "Use for padding inside a container, at the 4 step.",
+          "description": "Inset between a container’s edge and its content — 4px. The label IS the value: `inline/4`, `stack/4`, `padding/4` and `section/4` are all 4px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-4)"
           },
@@ -1985,7 +1985,7 @@
               "name": "ref/space/6"
             }
           },
-          "description": "Use for padding inside a container, at the 6 step.",
+          "description": "Inset between a container’s edge and its content — 6px. The label IS the value: `inline/6`, `stack/6`, `padding/6` and `section/6` are all 6px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-6)"
           },
@@ -2006,7 +2006,7 @@
               "name": "ref/space/8"
             }
           },
-          "description": "Use for padding inside a container, at the 8 step.",
+          "description": "Inset between a container’s edge and its content — 8px. The label IS the value: `inline/8`, `stack/8`, `padding/8` and `section/8` are all 8px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-8)"
           },
@@ -2027,7 +2027,7 @@
               "name": "ref/space/12"
             }
           },
-          "description": "Use for padding inside a container, at the 12 step.",
+          "description": "Inset between a container’s edge and its content — 12px. The label IS the value: `inline/12`, `stack/12`, `padding/12` and `section/12` are all 12px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-12)"
           },
@@ -2048,7 +2048,7 @@
               "name": "ref/space/16"
             }
           },
-          "description": "Use for padding inside a container, at the 16 step.",
+          "description": "Inset between a container’s edge and its content — 16px. The label IS the value: `inline/16`, `stack/16`, `padding/16` and `section/16` are all 16px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-16)"
           },
@@ -2069,7 +2069,7 @@
               "name": "ref/space/20"
             }
           },
-          "description": "Use for padding inside a container, at the 20 step.",
+          "description": "Inset between a container’s edge and its content — 20px. The label IS the value: `inline/20`, `stack/20`, `padding/20` and `section/20` are all 20px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-20)"
           },
@@ -2090,7 +2090,7 @@
               "name": "ref/space/24"
             }
           },
-          "description": "Use for padding inside a container, at the 24 step.",
+          "description": "Inset between a container’s edge and its content — 24px. The label IS the value: `inline/24`, `stack/24`, `padding/24` and `section/24` are all 24px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-24)"
           },
@@ -2111,7 +2111,7 @@
               "name": "ref/space/32"
             }
           },
-          "description": "Use for padding inside a container, at the 32 step.",
+          "description": "Inset between a container’s edge and its content — 32px. The label IS the value: `inline/32`, `stack/32`, `padding/32` and `section/32` are all 32px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-32)"
           },
@@ -2132,7 +2132,7 @@
               "name": "ref/space/40"
             }
           },
-          "description": "Use for padding inside a container, at the 40 step.",
+          "description": "Inset between a container’s edge and its content — 40px. The label IS the value: `inline/40`, `stack/40`, `padding/40` and `section/40` are all 40px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-40)"
           },
@@ -2153,7 +2153,7 @@
               "name": "ref/space/48"
             }
           },
-          "description": "Use for padding inside a container, at the 48 step.",
+          "description": "Inset between a container’s edge and its content — 48px. The label IS the value: `inline/48`, `stack/48`, `padding/48` and `section/48` are all 48px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-48)"
           },
@@ -2174,7 +2174,7 @@
               "name": "ref/space/56"
             }
           },
-          "description": "Use for padding inside a container, at the 56 step.",
+          "description": "Inset between a container’s edge and its content — 56px. The label IS the value: `inline/56`, `stack/56`, `padding/56` and `section/56` are all 56px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-56)"
           },
@@ -2195,7 +2195,7 @@
               "name": "ref/space/64"
             }
           },
-          "description": "Use for padding inside a container, at the 64 step.",
+          "description": "Inset between a container’s edge and its content — 64px. The label IS the value: `inline/64`, `stack/64`, `padding/64` and `section/64` are all 64px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-64)"
           },
@@ -2216,7 +2216,7 @@
               "name": "ref/space/72"
             }
           },
-          "description": "Use for padding inside a container, at the 72 step.",
+          "description": "Inset between a container’s edge and its content — 72px. The label IS the value: `inline/72`, `stack/72`, `padding/72` and `section/72` are all 72px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-72)"
           },
@@ -2237,7 +2237,7 @@
               "name": "ref/space/80"
             }
           },
-          "description": "Use for padding inside a container, at the 80 step.",
+          "description": "Inset between a container’s edge and its content — 80px. The label IS the value: `inline/80`, `stack/80`, `padding/80` and `section/80` are all 80px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-80)"
           },
@@ -2258,7 +2258,7 @@
               "name": "ref/space/120"
             }
           },
-          "description": "Use for padding inside a container, at the 120 step.",
+          "description": "Inset between a container’s edge and its content — 120px. The label IS the value: `inline/120`, `stack/120`, `padding/120` and `section/120` are all 120px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-120)"
           },
@@ -2279,7 +2279,7 @@
               "name": "ref/space/360"
             }
           },
-          "description": "Use for padding inside a container, at the 360 step.",
+          "description": "Inset between a container’s edge and its content — 360px. The label IS the value: `inline/360`, `stack/360`, `padding/360` and `section/360` are all 360px.",
           "codeSyntax": {
             "WEB": "var(--sa-padding-360)"
           },
@@ -2300,7 +2300,7 @@
               "name": "ref/space/0"
             }
           },
-          "description": "Use for the gap between major page sections, at the 0 step.",
+          "description": "Vertical rhythm between page-level sections — 0px. The label IS the value: `inline/0`, `stack/0`, `padding/0` and `section/0` are all 0px.",
           "codeSyntax": {
             "WEB": "var(--sa-section-0)"
           },
@@ -2321,7 +2321,7 @@
               "name": "ref/space/24"
             }
           },
-          "description": "Use for the gap between major page sections, at the 24 step.",
+          "description": "Vertical rhythm between page-level sections — 24px. The label IS the value: `inline/24`, `stack/24`, `padding/24` and `section/24` are all 24px.",
           "codeSyntax": {
             "WEB": "var(--sa-section-24)"
           },
@@ -2342,7 +2342,7 @@
               "name": "ref/space/32"
             }
           },
-          "description": "Use for the gap between major page sections, at the 32 step.",
+          "description": "Vertical rhythm between page-level sections — 32px. The label IS the value: `inline/32`, `stack/32`, `padding/32` and `section/32` are all 32px.",
           "codeSyntax": {
             "WEB": "var(--sa-section-32)"
           },
@@ -2363,7 +2363,7 @@
               "name": "ref/space/40"
             }
           },
-          "description": "Use for the gap between major page sections, at the 40 step.",
+          "description": "Vertical rhythm between page-level sections — 40px. The label IS the value: `inline/40`, `stack/40`, `padding/40` and `section/40` are all 40px.",
           "codeSyntax": {
             "WEB": "var(--sa-section-40)"
           },
@@ -2384,7 +2384,7 @@
               "name": "ref/space/48"
             }
           },
-          "description": "Use for the gap between major page sections, at the 48 step.",
+          "description": "Vertical rhythm between page-level sections — 48px. The label IS the value: `inline/48`, `stack/48`, `padding/48` and `section/48` are all 48px.",
           "codeSyntax": {
             "WEB": "var(--sa-section-48)"
           },
@@ -2405,7 +2405,7 @@
               "name": "ref/space/56"
             }
           },
-          "description": "Use for the gap between major page sections, at the 56 step.",
+          "description": "Vertical rhythm between page-level sections — 56px. The label IS the value: `inline/56`, `stack/56`, `padding/56` and `section/56` are all 56px.",
           "codeSyntax": {
             "WEB": "var(--sa-section-56)"
           },
@@ -2426,7 +2426,7 @@
               "name": "ref/space/64"
             }
           },
-          "description": "Use for the gap between major page sections, at the 64 step.",
+          "description": "Vertical rhythm between page-level sections — 64px. The label IS the value: `inline/64`, `stack/64`, `padding/64` and `section/64` are all 64px.",
           "codeSyntax": {
             "WEB": "var(--sa-section-64)"
           },
@@ -2447,7 +2447,7 @@
               "name": "ref/space/72"
             }
           },
-          "description": "Use for the gap between major page sections, at the 72 step.",
+          "description": "Vertical rhythm between page-level sections — 72px. The label IS the value: `inline/72`, `stack/72`, `padding/72` and `section/72` are all 72px.",
           "codeSyntax": {
             "WEB": "var(--sa-section-72)"
           },
@@ -2468,7 +2468,7 @@
               "name": "ref/space/80"
             }
           },
-          "description": "Use for the gap between major page sections, at the 80 step.",
+          "description": "Vertical rhythm between page-level sections — 80px. The label IS the value: `inline/80`, `stack/80`, `padding/80` and `section/80` are all 80px.",
           "codeSyntax": {
             "WEB": "var(--sa-section-80)"
           },
@@ -2489,7 +2489,7 @@
               "name": "ref/space/120"
             }
           },
-          "description": "Use for the gap between major page sections, at the 120 step.",
+          "description": "Vertical rhythm between page-level sections — 120px. The label IS the value: `inline/120`, `stack/120`, `padding/120` and `section/120` are all 120px.",
           "codeSyntax": {
             "WEB": "var(--sa-section-120)"
           },

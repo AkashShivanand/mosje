@@ -231,10 +231,20 @@ function groupGuidance(path) {
     return "Use in data visualisation.";
   }
   if (head === "density") return `Use for ${key.replace(/\//g, " ")} — it changes with the density axis, so bind it rather than hard-coding a value.`;
-  if (head === "inline") return `Use for horizontal gaps between items on one line, at the ${rest[0]} step.`;
-  if (head === "stack") return `Use for vertical gaps between stacked items, at the ${rest[0]} step.`;
-  if (head === "padding") return `Use for padding inside a container, at the ${rest[0]} step.`;
-  if (head === "section") return `Use for the gap between major page sections, at the ${rest[0]} step.`;
+  // Value-named since 2026-08-18: the rung IS the pixel value, so the description says so rather
+  // than naming a T-shirt "step" that no longer exists. The cross-family sentence is the point of
+  // the rename — `l` used to mean 16 in inline, 24 in stack, 20 in padding and 56 in section.
+  const SPACE_USE = {
+    inline: "Horizontal gap between items on one line",
+    stack: "Vertical gap between stacked items, and vertical rhythm inside a block",
+    padding: "Inset between a container’s edge and its content",
+    section: "Vertical rhythm between page-level sections",
+  };
+  if (SPACE_USE[head]) {
+    const px = rest[0];
+    return `${SPACE_USE[head]} — ${px}px. The label IS the value: \`inline/${px}\`, \`stack/${px}\`, ` +
+      `\`padding/${px}\` and \`section/${px}\` are all ${px}px.`;
+  }
   if (head === "blur") return `Use for a ${rest[0]} blur on backdrops and scrims.`;
   if (head === "type") return `Use for the ${rest[0]} type role — it responds to surface and viewport, so bind it rather than copying a px value.`;
   return null;
@@ -333,7 +343,7 @@ export function primitivePointer(path) {
   const [head] = path;
   if (head === "color") return "Palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee and follow the brand.";
   if (head === "size") return "Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.";
-  if (head === "space") return "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.";
+  if (head === "space") return `${path[1]}px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind \`inline/${path[1]}\`, \`stack/${path[1]}\`, \`padding/${path[1]}\` or \`section/${path[1]}\` instead; all four resolve here.`;
   if (head === "font") return fontPointer(path);
   if (head === "radius") return "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.";
   if (head === "motion" || head === "opacity" || head === "blur") return `Raw ${head} step.`;
