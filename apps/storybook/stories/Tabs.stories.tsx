@@ -498,10 +498,21 @@ export const LongLabelsEveryInput: Story = {
  * That is also why it renders *outside* the `role="tablist"` — and being
  * outside is what keeps it pinned while the tabs scroll past it.
  *
+ * **It lists every tab, not just the hidden ones**, and marks the current one with
+ * `role="menuitemradio"` + `aria-checked`. An earlier build listed only what was
+ * out of view, which meant opening the same menu at two scroll positions gave two
+ * different lists. It reads as a jump-to-section list now.
+ *
  * **It does not remove tabs from the tablist.** Every tab stays rendered,
  * focusable and arrow-reachable; this is a pointer shortcut, not a relocation.
  * The alternative model — moving tabs into the menu — costs them their
  * `role="tab"`, their `aria-controls` and their place in the roving tabindex.
+ *
+ * The row itself is polished for the scrolling case: the native scrollbar is
+ * hidden (only here, where the menu is an alternative affordance), tabs
+ * scroll-snap so none is ever sliced mid-word, and measured per-direction edge
+ * fades signal more content. `scroll-padding` matches the fade width so a
+ * keyboard-focused tab never rests underneath one (WCAG 2.4.11).
  *
  * Keyboard: Enter, Space or Down opens and focuses the first item; Up/Down and
  * Home/End move; Escape closes and returns focus to the trigger; Tab leaves.
