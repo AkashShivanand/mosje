@@ -3,6 +3,7 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../../utils/cn";
+import { mergeRefs } from "../../utils/merge-refs";
 import "./tooltip.css";
 
 export type TooltipSide = "top" | "bottom" | "left" | "right";
@@ -18,6 +19,17 @@ export interface TooltipProps {
   delay?: number;
   /** Disable the tooltip without unmounting the trigger. */
   disabled?: boolean;
+  /**
+   * Set when the bubble repeats the trigger's OWN accessible name — the
+   * truncated-label case, where the tooltip exists only because CSS clipped
+   * text a screen reader can already read in full.
+   *
+   * It drops `aria-describedby` and hides the bubble from assistive technology.
+   * Without it the label is announced TWICE ("Application details, tab,
+   * Application details"), which is worse than the visual problem the tooltip
+   * was added to solve. Leave it off for a tooltip that adds new information.
+   */
+  duplicatesTriggerName?: boolean;
   className?: string;
   /**
    * The trigger. Must be a single element that can hold a ref and receive
@@ -126,6 +138,7 @@ export function Tooltip({
   sideOffset = 6,
   delay = 200,
   disabled = false,
+  duplicatesTriggerName = false,
   className,
   children,
 }: TooltipProps): React.JSX.Element {
@@ -200,10 +213,17 @@ export function Tooltip({
   >;
 
   const trigger = React.cloneElement(child, {
-    ref: triggerRef,
+    // MERGE, never assign. Overwriting would silently kill whatever ref the
+    // consumer put on the trigger — and that ref is often load-bearing, as in
+    // Tabs, which uses its per-tab refs to move focus and place the indicator.
+    // React 19 only: `ref` is an ordinary prop, and reading `element.ref` is
+    // REMOVED — doing so logs "Accessing element.ref was removed in React 19"
+    // and throws during render, which silently costs you the whole tooltip.
+    ref: mergeRefs(triggerRef, child.props.ref),
     // Describedby (not labelledby): the tooltip supplements the trigger's own
-    // accessible name rather than replacing it.
-    "aria-describedby": open ? tooltipId : undefined,
+    // accessible name rather than replacing it. Omitted when the bubble merely
+    // repeats that name — see `duplicatesTriggerName`.
+    "aria-describedby": open && !duplicatesTriggerName ? tooltipId : undefined,
     onMouseEnter: (e: React.MouseEvent<HTMLElement>) => {
       child.props.onMouseEnter?.(e);
       show(false);
@@ -231,7 +251,10 @@ export function Tooltip({
           <div
             ref={bubbleRef}
             id={tooltipId}
-            role="tooltip"
+            // A bubble that echoes the trigger's own name is visual-only: the
+            // full string is already in the accessibility tree.
+            role={duplicatesTriggerName ? undefined : "tooltip"}
+            aria-hidden={duplicatesTriggerName || undefined}
             className={cn(
               "ds-tooltip",
               `ds-tooltip--${coords?.side ?? side}`,

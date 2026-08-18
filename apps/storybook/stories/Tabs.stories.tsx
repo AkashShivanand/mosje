@@ -58,12 +58,16 @@ import { TabPanel, Tabs } from "@mosje/design-system";
  *    shorten it → move to `track="none"` and let the row scroll → add the overflow menu
  *    → only then accept the ellipsis.
  * 5. **Truncation is CSS-only, never JavaScript.** Shortening the string in code
- *    rewrites the accessible name too. A truncated tab keeps its full name in the
- *    accessibility tree and gains a `title` so a sighted user can recover it.
+ *    rewrites the accessible name too. A clipped tab keeps its full name in the
+ *    accessibility tree and pairs with a `Tooltip` that opens on hover AND on
+ *    keyboard focus. Where no hover exists the label is not clipped at all —
+ *    see `LongLabelsEveryInput`.
  * 6. **Two tabs must never truncate to the same visible string.** "Application details"
  *    and "Application status" both become "Application…". Front-load the distinguishing
  *    word — "Details" / "Status" — rather than trusting truncation to stay readable.
- * 7. **Never wrap to two lines.** It breaks the height hug and the indicator alignment.
+ * 7. **Never wrap to two lines in a ROW.** It makes the row's height depend on the
+ *    longest label. A vertical list is the exception and wraps deliberately —
+ *    its items size independently and the rail is measured at runtime.
  *
  * `TabPanel`, the matching panel wrapper, is documented here rather than in a
  * story of its own.
@@ -427,4 +431,56 @@ export const LabelsThatCollide: Story = {
       </section>
     </div>
   ),
+};
+
+/**
+ * **The clipped label, solved for every input.** One problem, three different
+ * answers, because no single affordance reaches every user.
+ *
+ * - **Mouse** — hover a clipped tab: a `Tooltip` shows the full label.
+ * - **Keyboard** — Tab or Arrow onto one: the same tooltip opens *instantly*,
+ *   with the pointer nowhere near. `title` never did this, which is why it is
+ *   gone. Escape dismisses it without moving focus (WCAG 1.4.13).
+ * - **Screen reader** — nothing to rescue. The clipping is CSS, so the full
+ *   label is already the button's accessible name; the bubble is `aria-hidden`
+ *   and carries no `aria-describedby`, so it is never announced twice.
+ * - **Touch** — a tooltip is unreachable, so the label is **not clipped at
+ *   all**: under `@media (hover: none)` enclosed tabs stop sharing the width
+ *   equally, size to their content, and the row scrolls. Check this in a mobile
+ *   viewport, or on a real device.
+ * - **Vertical** — a column's items size independently and the rail is measured
+ *   at runtime, so the label **wraps** rather than truncating. Nothing is
+ *   hidden and no affordance is needed. Narrow the frame to see it.
+ *
+ * A clipped label is still a failure of the copy. This is the safety net for
+ * when a viewport, a translation or a font makes one unavoidable.
+ */
+export const LongLabelsEveryInput: Story = {
+  render: () => {
+    const long = [
+      { id: "details", label: "Application details" },
+      { id: "documents", label: "Supporting documents" },
+      { id: "history", label: "Approval history" },
+    ];
+    return (
+      <div style={{ display: "grid", gap: 40 }}>
+        <section>
+          <h3 style={{ margin: "0 0 12px", font: "var(--sa-type-title-2)" }}>
+            Horizontal, pointer — clipped, and recoverable on hover or focus
+          </h3>
+          <div style={{ width: 320 }}>
+            <Demo tabs={long} label="Clipped, with tooltip" />
+          </div>
+        </section>
+        <section>
+          <h3 style={{ margin: "0 0 12px", font: "var(--sa-type-title-2)" }}>
+            Vertical — wraps instead, so nothing is hidden on any input
+          </h3>
+          <div style={{ width: 170 }}>
+            <Demo tabs={long} orientation="vertical" track="none" indicator="rail" label="Wrapping" />
+          </div>
+        </section>
+      </div>
+    );
+  },
 };

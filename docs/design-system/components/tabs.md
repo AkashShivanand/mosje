@@ -180,19 +180,37 @@ In this order. Truncation is **last**, and reaching for it first is the actual m
 | 3 | **Reveal the overflow menu.** | Preserves both the labels *and* their discoverability. No React counterpart yet — see §4. |
 | 4 | **Accept the ellipsis.** | The fallback the component provides so a squeeze degrades instead of breaking. |
 
-### What the component does, mechanically
+### What the component does, mechanically — one problem, four answers
 
-- The label is `overflow: hidden; text-overflow: ellipsis` on `.ds-tabs__label`. **CSS only.**
-- **The accessible name is never truncated.** Because the clipping is CSS, the full string stays
-  in the DOM and in the accessibility tree — a screen-reader user loses nothing. **Never**
-  shorten the string in JavaScript: that rewrites the accessible name too and turns a visual
-  compromise into a real loss.
-- A clipped tab gains a **`title`** carrying the full label, set by `updateTruncation()` in the
-  same layout effect that positions the indicator, and only where `scrollWidth > clientWidth`.
-  Every other tab is spared a redundant tooltip.
-- `title` is a **weak affordance** — no keyboard, no touch. It is the escape hatch, not the
-  answer. If a truncated label must be recoverable on a phone, that needs a real Tooltip and is
-  not yet designed.
+No single affordance reaches every user, so the component does not try to find one.
+
+| Input | What happens | Why not the others |
+| --- | --- | --- |
+| **Mouse / pen** | The label clips with an ellipsis and a `Tooltip` shows the full text on hover. | — |
+| **Keyboard** | The same tooltip opens **instantly on focus**, pointer nowhere near. Escape dismisses it without moving focus (WCAG 1.4.13). | `title` never opened on focus at all. That was the biggest hole in the old behaviour, and it is why `title` is gone. |
+| **Screen reader** | Nothing to rescue. The clipping is CSS, so the full string is already the button's accessible name. The bubble is `aria-hidden` and carries **no** `aria-describedby`. | Without that suppression the name is announced **twice** — "Application details, tab, Application details" — a regression, not a rescue. |
+| **Touch** | The label is **not clipped at all**. Under `@media (hover: none)` enclosed tabs stop sharing the width equally, size to their content, and the row scrolls. | A tooltip is unreachable without hover. The only honest fix is to remove the truncation, not to annotate it. |
+
+The predicate is `hover: none`, **not** `pointer: coarse`, and deliberately so: what decides
+this is whether the *rescue* works, not how precise the finger is. A stylus reports
+`hover: none, pointer: fine` and needs identical treatment.
+
+**Vertical lists never truncate — they wrap.** A column's items size independently and the
+rail is measured from the button at runtime, so a wrapped label costs nothing structurally:
+no row baseline to break, no sibling height to drag along. Wrapping hides nothing and needs
+no affordance on any input. This is why "never wrap" is a rule about **rows**. The documented
+heights (36 / 44 / 48) describe a single-line tab; a wrapped one is taller and still a hug.
+
+**Measurement is driven by a `ResizeObserver`, not a `resize` listener.** Whether a label is
+clipped is a function of the width its container gave it, and a container can change without
+the window moving — a collapsing sidebar, a sibling growing, a panel opening, a webfont
+swapping in. Observed live before this was fixed: narrowing the container left the rail at
+44px against a tab that had wrapped to 64px, and only a window resize corrected it. Every tab
+is observed as well as the list, because a font swap resizes the labels without changing the
+list's own box.
+
+**Never shorten the string in JavaScript.** That rewrites the accessible name too, and turns
+a visual compromise into a real loss.
 
 ### Why this behaviour exists at all
 

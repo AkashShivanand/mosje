@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Icon } from "../icon/icon";
+import { Tooltip } from "../feedback/tooltip";
 import "./tabs.css";
 
 /**
@@ -119,6 +120,7 @@ export function Tabs({
   const labelRefs = React.useRef<Array<HTMLSpanElement | null>>([]);
   const listRef = React.useRef<HTMLDivElement>(null);
   const indicatorRef = React.useRef<HTMLSpanElement>(null);
+  const [clipped, setClipped] = React.useState<boolean[]>([]);
 
   const vertical = orientation === "vertical";
   const iconSize = size === "s" ? 16 : size === "l" ? 24 : 20;
@@ -164,22 +166,21 @@ export function Tabs({
   }, [active, vertical]);
 
   /**
-   * A truncated label must stay RECOVERABLE. The ellipsis is CSS-only, so the
-   * accessibility tree still holds the whole string and a screen-reader user
-   * loses nothing — it is the sighted user who is left with "Application deta…".
-   * `title` is the escape hatch, set only where the text actually overflows so
-   * every other tab is spared a redundant tooltip.
+   * A truncated label must stay RECOVERABLE — by every input, not just a mouse.
    *
-   * Never solve this by shortening the string in JS: that rewrites the
-   * accessible name too, and turns a visual compromise into a real loss.
+   * This tracks which labels are actually clipped, so only those get a tooltip
+   * and every other tab is spared a redundant one. It is STATE rather than an
+   * attribute set imperatively because the rescue is now a real `Tooltip`, which
+   * has to be rendered.
+   *
+   * Note there is no feedback loop: wrapping a tab in `Tooltip` renders the same
+   * button, so measuring cannot change what was measured.
    */
   const updateTruncation = React.useCallback(() => {
-    for (const label of labelRefs.current) {
-      if (!label) continue;
-      const clipped = label.scrollWidth > label.clientWidth + 1;
-      if (clipped) label.parentElement?.setAttribute("title", label.textContent ?? "");
-      else label.parentElement?.removeAttribute("title");
-    }
+    const next = labelRefs.current.map((el) => !!el && el.scrollWidth > el.clientWidth + 1);
+    setClipped((prev) =>
+      prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next,
+    );
   }, []);
 
   // Runs before paint so the very first placement (and every tab-count
@@ -189,14 +190,32 @@ export function Tabs({
     updateTruncation();
   }, [updateIndicator, updateTruncation, tabs, size, indicator, track, orientation]);
 
+  /**
+   * Re-measure whenever the BOX changes, not just the window.
+   *
+   * A `resize` listener only fires for the viewport, and both of the things
+   * measured here depend on the container instead: whether a label is clipped is
+   * a function of the width it was given, and the indicator is placed from the
+   * selected tab's rect. A collapsing sidebar, a sibling growing, a panel
+   * opening, or a webfont swapping in all change those without the window
+   * moving — and the symptom is silent, because a stale indicator still looks
+   * like an indicator. Observed live: narrowing the container left the rail at
+   * 44px against a tab that had wrapped to 64px, and only a window resize
+   * corrected it.
+   *
+   * Every TAB is observed as well as the list, because a font swap resizes the
+   * labels without changing the list's own box.
+   */
   React.useEffect(() => {
-    const onResize = () => {
+    if (typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => {
       updateIndicator();
       updateTruncation();
-    };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, [updateIndicator, updateTruncation]);
+    });
+    if (listRef.current) ro.observe(listRef.current);
+    for (const el of refs.current) if (el) ro.observe(el);
+    return () => ro.disconnect();
+  }, [updateIndicator, updateTruncation, tabs.length]);
 
   const move = (index: number | null) => {
     if (index === null) return;
@@ -255,9 +274,8 @@ export function Tabs({
         <span ref={indicatorRef} className="ds-tabs__indicator" aria-hidden="true" />
         {tabs.map((t, i) => {
           const selected = active === i;
-          return (
+          const button = (
             <button
-              key={t.id}
               ref={(el) => {
                 refs.current[i] = el;
               }}
@@ -290,6 +308,18 @@ export function Tabs({
               </span>
               {t.badge ? <span className="ds-tabs__badge" aria-hidden="true" /> : null}
             </button>
+          );
+
+          // Only a label that is ACTUALLY clipped gets a tooltip. It opens on
+          // hover and — the half `title` never did — instantly on keyboard focus.
+          // `duplicatesTriggerName` stops it being announced a second time: the
+          // clipping is CSS, so the full name is already in the accessibility tree.
+          return clipped[i] ? (
+            <Tooltip key={t.id} content={t.label} duplicatesTriggerName>
+              {button}
+            </Tooltip>
+          ) : (
+            <React.Fragment key={t.id}>{button}</React.Fragment>
           );
         })}
       </div>

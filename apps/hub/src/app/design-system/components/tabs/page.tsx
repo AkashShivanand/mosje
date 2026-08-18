@@ -351,6 +351,28 @@ function ClinicalRecord() {
           />
         </div>
 
+        <h3 style={h3Style}>When a label is clipped anyway — one problem, four answers</h3>
+        <p style={proseStyle}>
+          No single affordance reaches every user, so the component does not try to find one.
+        </p>
+        <PropsTable
+          props={[
+            { name: "Mouse / pen", type: "Tooltip on hover", description: "The label clips with an ellipsis and a Tooltip shows the full text." },
+            { name: "Keyboard", type: "Tooltip on focus", description: "The same tooltip opens instantly on focus, with the pointer nowhere near, and Escape dismisses it without moving focus (WCAG 1.4.13). The old title attribute never opened on focus at all — that was the biggest hole, and why it is gone." },
+            { name: "Screen reader", type: "nothing to rescue", description: "The clipping is CSS, so the full string is already the button's accessible name. The bubble is aria-hidden and carries no aria-describedby — without that the name is announced TWICE, which is a regression, not a rescue." },
+            { name: "Touch", type: "not clipped at all", description: "Under @media (hover: none) enclosed tabs stop sharing the width equally, size to their content, and the row scrolls. A tooltip is unreachable without hover, so the only honest fix is to remove the truncation rather than annotate it." },
+          ]}
+        />
+        <Callout type="info" title="Why the predicate is hover, not pointer">
+          The media query is <code>hover: none</code> and deliberately not{" "}
+          <code>pointer: coarse</code>: what decides this is whether the <em>rescue</em> works,
+          not how precise the finger is. A stylus reports <code>hover: none</code> with{" "}
+          <code>pointer: fine</code> and needs identical treatment. Measurement runs on a{" "}
+          <code>ResizeObserver</code> rather than a <code>resize</code> listener, because a
+          container can change size without the window moving — a collapsing sidebar, a panel
+          opening, a webfont swapping in.
+        </Callout>
+        <div style={{ marginTop: "var(--sa-stack-m)" }}>
         <Callout type="info" title="Overflow">
           A horizontal list that outgrows its container <strong>scrolls</strong>. The Figma library carries a{" "}
           <code>Tabs / More</code> menu trigger for this; it has no React counterpart yet, so there is no{" "}
@@ -358,6 +380,7 @@ function ClinicalRecord() {
           <code>aria-haspopup=&quot;menu&quot;</code>, <code>aria-expanded</code> — never <code>role=&quot;tab&quot;</code>,
           which would promise a panel that does not exist.
         </Callout>
+        </div>
       </section>
 
       {/* ============ 7. Props ============ */}

@@ -201,12 +201,46 @@
    long its label is, and `white-space: nowrap` means a label that does not fit
    PAINTS OVER ITS NEIGHBOUR — "Application details" ran through "Documents" in a
    720px track. Ellipsis is the fallback, not the intent: a tab label should be
-   short enough not to need it. The Figma masters define no truncation treatment,
-   so this is a code-side safety net and stays flagged as an open gap. */
+   short enough not to need it, and tabs.tsx pairs a clipped label with a Tooltip
+   so it stays recoverable on hover AND on keyboard focus. The two inputs a
+   tooltip cannot serve are handled below by not clipping at all. */
 .ds-tabs__label {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* TOUCH — there is no hover, so a tooltip cannot rescue anything. The predicate
+   is `hover: none` and not `pointer: coarse` deliberately: what decides this is
+   whether the RESCUE works, not how precise the finger is. A stylus reports
+   `hover: none, pointer: fine` and needs the same treatment.
+
+   So the label is never clipped here. Enclosed tabs stop sharing the width
+   equally and size to their content instead; `flex-grow: 1` keeps the track
+   full-width when everything fits, and `overflow-x: auto` on the list lets it
+   scroll when it does not. Equal width is the lesser value — a segmented control
+   whose segments are unreadable is not a segmented control. */
+@media (hover: none) {
+  .ds-tabs--horizontal.ds-tabs--track-enclosed .ds-tabs__tab {
+    flex: 1 0 auto;
+  }
+}
+
+/* VERTICAL — a column's items size independently and the rail is measured from
+   the button at runtime, so a wrapped label costs nothing structurally: no row
+   baseline to break, no sibling height to drag along. Wrapping therefore beats
+   truncating outright — it needs no affordance, works on every input including
+   touch, and hides nothing. This is why "never wrap" is a rule about ROWS.
+
+   The documented heights (36 / 44 / 48) describe a single-line tab; a wrapped
+   label makes a taller one, which is still a hug of padding plus line-height. */
+.ds-tabs--vertical .ds-tabs__tab {
+  white-space: normal;
+}
+
+.ds-tabs--vertical .ds-tabs__label {
+  overflow: visible;
+  text-overflow: clip;
 }
 
 /* The unread dot. It binds to `cmp/badge/dotSize` — the SAME token `.ds-badge__dot`
