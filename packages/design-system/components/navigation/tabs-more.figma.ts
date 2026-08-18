@@ -4,45 +4,40 @@
 //
 // Code Connect template for `Tabs / More` — the overflow trigger.
 //
-// THIS COMPONENT HAS NO REACT COUNTERPART, AND THE TEMPLATE SAYS SO RATHER THAN
-// PRETENDING OTHERWISE. It is mapped because an UNMAPPED master is worse than an
-// honestly-mapped one: in Dev Mode an unmapped node hands an agent nothing, and
-// "nothing" is indistinguishable from "not looked into" — so the agent invents a
-// component. What it emits instead is the truth plus the two prohibitions that
-// stop the invention.
+// IT IS NOT PLACED DIRECTLY. There is no `<TabsMore>` export and there must not
+// be: the trigger is rendered by `<Tabs>` when `overflow` is on and the row
+// cannot show every tab, and it needs the tablist beside it to have anything to
+// talk about. So this template emits the TABS call that produces it, not a
+// component of its own. An agent that writes `<TabsMore />` has invented an API.
 //
-// It deliberately does NOT emit JSX. There is no `<TabsMore>`, no `overflow`
-// prop, and no `<Tabs overflow>` — emitting any of them would be a mapping to an
-// API that does not exist, which §12a of component-authoring.md forbids in the
-// same breath as "never invent a code prop".
+// (Until 2026-08-18 this master had no counterpart at all and the template said
+// so, emitting only prose. It now has one.)
 //
 // PROPERTY COVERAGE — all 3 Figma properties are accounted for:
-//   Size    (variant)          -> the LIST's `size`, which the trigger matches so
-//                                 the row keeps one baseline (36 / 44 / 48). It is
+//   Size    (variant)          -> the LIST's `size`. The trigger always matches
+//                                 the tabs so the row keeps one baseline; it is
 //                                 not a prop OF the trigger.
 //   State   (variant)          -> Default / Hover are CSS. `Open` describes the
-//                                 MENU, not a selection: this control is never the
-//                                 selected item, and nothing in code models it yet.
+//                                 MENU, and the menu's open state is internal —
+//                                 there is no prop to force it, deliberately: a
+//                                 menu opened by anything other than the user is
+//                                 a menu that appears unbidden.
 //   Focused (Focused#55514:0)  -> `:focus-visible`, which the browser owns. Same
-//                                 reasoning as Tabs / Tab: it is a BOOLEAN rather
-//                                 than a State value because it COMPOSES with every
-//                                 state.
+//                                 reasoning as Tabs / Tab: it is a BOOLEAN
+//                                 rather than a State value because it COMPOSES
+//                                 with every state.
 import figma from "figma";
 
 const instance = figma.selectedInstance;
 
-/**
- * Figma `Size`. Exhaustive: all 3 options. Surfaced in the emitted note so a
- * reader knows which tab height this trigger was drawn against — the trigger
- * always matches the list, and a mismatched pair breaks the row's baseline.
- */
+/** Figma `Size`. Exhaustive: all 3 options. Emitted on `<Tabs>`, not here. */
 const size = instance.getEnum("Size", {
   S: "s",
   M: "m",
   L: "l",
 });
 
-/** Figma `State`. Exhaustive: all 3 options. `Open` is the MENU's state. */
+/** Figma `State`. Exhaustive: all 3. `Open` is the MENU's state, not a selection. */
 const state = instance.getEnum("State", {
   Default: "closed",
   Hover: "closed",
@@ -50,27 +45,37 @@ const state = instance.getEnum("State", {
 });
 
 export default {
-  example: figma.code`// Tabs / More has NO React counterpart. Do not hand-roll one from this node.
+  example: figma.code`// Tabs / More is rendered BY <Tabs>, never placed on its own.
+// Set \`overflow\` and the trigger appears only when tabs are actually hidden.
+<Tabs
+  tabs={tabs}
+  active={active}
+  onChange={setActive}
+  idBase={idBase}
+  ariaLabel="Application sections"
+  size="${size}"
+  overflow
+/>
+
+// Drawn against size="${size}"; the trigger always matches the list. The menu
+// state here is "${state}" — internal, and there is no prop to force it open.
 //
-// What ships today: a horizontal <Tabs> list that outgrows its container
-// SCROLLS (overflow-x: auto). There is no \`overflow\` prop to turn on, and
-// no <TabsMore> export. This master is the DESIGN for work that has not
-// been built.
-//
-// Drawn against size="${size}"; the trigger always matches the list's own
-// size so the row keeps one baseline. Menu state here is "${state}".
-//
-// IF YOU BUILD IT, TWO THINGS ARE NOT NEGOTIABLE:
+// TWO THINGS THAT ARE NOT NEGOTIABLE, and neither is visible in the geometry:
 //   1. It is a MENU BUTTON, not a tab: role="button", aria-haspopup="menu",
 //      aria-expanded. NEVER role="tab" — that promises a panel that does not
 //      exist, and a screen-reader user is told there are more sections than
-//      there are.
-//   2. It is never the selected item. State=Open means its MENU is open, not
-//      that it is the active section.
+//      there are. It renders OUTSIDE the role="tablist" for the same reason,
+//      which is also what keeps it pinned while the tabs scroll.
+//   2. It does NOT remove tabs from the tablist. Every tab stays rendered,
+//      focusable and arrow-reachable; the menu is a POINTER shortcut to the ones
+//      scrolled out of view. Moving tabs into it would cost them their
+//      role="tab", their aria-controls and their place in the roving tabindex.
 //
-// AND IT IS NOT THE FIRST ANSWER TO A CROWDED TAB ROW. The label-overflow
-// escalation is: shorten the label -> move to track="none" and let the row
-// scroll -> only then reach for this.`,
+// \`overflow\` also stops the tabs sharing the track equally, because equal-width
+// tabs never overflow — they just truncate harder, and the trigger would never
+// appear. It is still not the first answer to a crowded row: shorten the label,
+// then move to track="none", then reach for this.`,
+  imports: ['import { Tabs } from "@mosje/design-system"'],
   id: "tabs-more",
   metadata: { nestable: false },
 };

@@ -368,3 +368,139 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* OVERFLOW IMPLIES CONTENT WIDTH, and it has to.
+   `flex: 1 1 0` makes every enclosed tab share the track equally, which means
+   the row can NEVER overflow — add tabs and they simply get narrower and
+   truncate harder, so the More trigger would never appear and the labels would
+   get less readable, which is the opposite of the intent. Turning `overflow` on
+   therefore stops the tabs shrinking: each takes its content width, the row
+   genuinely overflows, and what does not fit goes in the menu. Labels stay
+   fully readable, so the truncation tooltip has nothing to do here either. */
+.ds-tabs--overflow.ds-tabs--track-enclosed .ds-tabs__tab {
+  flex: 0 0 auto;
+}
+
+/* ---- the overflow trigger and its menu ------------------------------------
+   Rendered only when `overflow` is on and tabs are actually hidden. The bar is
+   the positioning context: the trigger must sit OUTSIDE the tablist, both
+   because a tablist owns tabs and because anything inside it scrolls away with
+   the content — the opposite of what a pinned trigger is for. */
+
+.ds-tabs-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-2xs);
+  min-width: 0;
+}
+
+/* The tablist takes the room that is left; `min-width: 0` is what allows it to
+   shrink below its content and therefore to scroll at all. */
+.ds-tabs-bar > .ds-tabs {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Geometry from the master: S 44x36, M 44x44, L 48x48, radius shape/md. The
+   width is a hug of the icon plus padding, so it never needs pinning. */
+.ds-tabs__more {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ds-tabs-pad-y) var(--sa-padding-s);
+  border: none;
+  border-radius: var(--sa-shape-md);
+  background: transparent;
+  color: var(--sa-icon-neutral-subtle);
+  cursor: pointer;
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+}
+
+.ds-tabs__more:hover {
+  background-color: var(--sa-bg-neutral-subtle);
+  color: var(--sa-icon-neutral-base);
+}
+
+/* Open carries NO fill in the master — only the brand ink. The menu itself is
+   the thing that reads as open, so a filled trigger would double the signal. */
+.ds-tabs__more.is-open {
+  background: transparent;
+  color: var(--sa-icon-brand-primary-bolder);
+}
+
+/* Same two-layer ring as a tab, over the surface the trigger sits on. */
+.ds-tabs__more:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--sa-focus-offset) var(--ds-tabs-focus-gap),
+    0 0 0 calc(var(--sa-focus-offset) + var(--sa-focus-width)) var(--sa-focus-ring);
+}
+
+/* The bar sits outside `.ds-tabs`, so it does not inherit the track's own
+   focus-gap colour — it takes the page surface instead. */
+.ds-tabs-bar {
+  --ds-tabs-focus-gap: var(--sa-bg-neutral-base);
+}
+
+/* Portalled and fixed, so neither the tablist's own `overflow-x: auto` nor a
+   card's `overflow: hidden` can clip it. */
+.ds-tabs__menu {
+  position: fixed;
+  /* The estate has no z-index TOKEN — the ladder is literals in component CSS
+     (Modal 50, Toast 60, Lightbox 80, Tooltip 90). 70 sits above the surfaces a
+     tablist can realistically be inside and below Lightbox and Tooltip, so a
+     tooltip on a menu item still wins. Matching the existing practice rather
+     than minting the estate's first z token in a tabs change. */
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  /* HUGS its content — a menu of tab labels has no natural minimum, and §1
+     prefers a hug to a pinned width. The cap stops one long label making a
+     menu the width of the page. */
+  width: max-content;
+  max-width: var(--sa-container-narrow);
+  padding: var(--sa-padding-2xs);
+  border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-md);
+  background-color: var(--sa-bg-neutral-base);
+  box-shadow: var(--sa-elevation-dropdown);
+  font-family: var(--sa-font-latin);
+}
+
+.ds-tabs__menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-s);
+  padding: var(--sa-padding-xs) var(--sa-padding-s);
+  border: none;
+  border-radius: var(--sa-shape-xs);
+  background: transparent;
+  color: var(--sa-text-neutral-base);
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ds-tabs__menu-item:hover:not(.is-disabled) {
+  background-color: var(--sa-bg-neutral-subtle);
+}
+
+.ds-tabs__menu-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--sa-focus-width) var(--sa-focus-ring);
+}
+
+/* Consistent with a disabled TAB: dimmed and inert, but still announced, so a
+   user learns the section exists rather than that it is missing. */
+.ds-tabs__menu-item.is-disabled {
+  color: var(--sa-text-neutral-disabled);
+  cursor: not-allowed;
+}
+
+.ds-tabs__menu-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}

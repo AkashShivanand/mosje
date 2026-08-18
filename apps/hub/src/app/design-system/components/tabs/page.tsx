@@ -373,12 +373,18 @@ function ClinicalRecord() {
           opening, a webfont swapping in.
         </Callout>
         <div style={{ marginTop: "var(--sa-stack-m)" }}>
-        <Callout type="info" title="Overflow">
-          A horizontal list that outgrows its container <strong>scrolls</strong>. The Figma library carries a{" "}
-          <code>Tabs / More</code> menu trigger for this; it has no React counterpart yet, so there is no{" "}
-          <code>overflow</code> prop. When it is built it is a <em>menu button</em> — <code>role=&quot;button&quot;</code>,{" "}
-          <code>aria-haspopup=&quot;menu&quot;</code>, <code>aria-expanded</code> — never <code>role=&quot;tab&quot;</code>,
-          which would promise a panel that does not exist.
+        <Callout type="info" title="Overflow — the Tabs / More menu">
+          A horizontal list that outgrows its container <strong>scrolls</strong>. Set{" "}
+          <code>overflow</code> to add the <code>Tabs / More</code> trigger, which appears{" "}
+          <em>only when tabs are actually hidden</em> and lists the ones scrolled out of view.
+          It is a <strong>menu button, not a tab</strong> — <code>role=&quot;button&quot;</code>,{" "}
+          <code>aria-haspopup=&quot;menu&quot;</code>, <code>aria-expanded</code>; giving it{" "}
+          <code>role=&quot;tab&quot;</code> would promise a panel that does not exist. It renders{" "}
+          <em>outside</em> the tablist, which is what keeps it pinned while the tabs scroll, and
+          why enabling it wraps the tablist in a positioning element (so the prop is off by
+          default). It never removes tabs from the tablist: they stay focusable and
+          arrow-reachable. Enabling it also stops tabs sharing the track equally — equal-width
+          tabs never overflow, they truncate harder, so the trigger would never appear.
         </Callout>
         </div>
       </section>
@@ -402,6 +408,7 @@ function ClinicalRecord() {
             { name: "track", type: '"none" | "enclosed"', default: '"enclosed"', description: "Open list, or a filled and bordered track. Enclosed tabs share the width evenly; an open list is content-width and scrolls." },
             { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "Lays the tabs out in a row or a column, and sets aria-orientation to match." },
             { name: "divider", type: "boolean", default: "true", description: "Draws the rule the underline or rail sits in. Ignored when track=\"enclosed\"." },
+            { name: "overflow", type: "boolean", default: "false", description: "Offer the Tabs / More menu when the row cannot show every tab. Horizontal only. Off by default because enabling it wraps the tablist in a positioning element. It also stops tabs sharing the track equally — equal-width tabs never overflow, so the trigger could never appear. A tablist inside a flex or grid item needs min-width: 0 on that item, or it refuses to shrink and nothing ever overflows." },
           ]}
         />
 

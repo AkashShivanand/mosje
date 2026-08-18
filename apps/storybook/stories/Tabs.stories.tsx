@@ -100,6 +100,7 @@ const meta = {
     track: { control: "inline-radio", options: ["none", "enclosed"] },
     orientation: { control: "inline-radio", options: ["horizontal", "vertical"] },
     divider: { control: "boolean" },
+    overflow: { control: "boolean" },
     tabs: { control: false },
     onChange: { control: false },
   },
@@ -480,6 +481,55 @@ export const LongLabelsEveryInput: Story = {
             <Demo tabs={long} orientation="vertical" track="none" indicator="rail" label="Wrapping" />
           </div>
         </section>
+      </div>
+    );
+  },
+};
+
+/**
+ * **The overflow menu.** Set `overflow` when a row may hold more tabs than it
+ * can show. The `Tabs / More` trigger appears **only when tabs are actually
+ * hidden** — never as permanent chrome — and lists the ones currently scrolled
+ * out of view. Narrow the frame to make more of them disappear.
+ *
+ * It is a **menu button, not a tab**: `role="button"`, `aria-haspopup="menu"`,
+ * `aria-expanded`. Giving it `role="tab"` would promise a panel that does not
+ * exist and tell a screen-reader user there are more sections than there are.
+ * That is also why it renders *outside* the `role="tablist"` — and being
+ * outside is what keeps it pinned while the tabs scroll past it.
+ *
+ * **It does not remove tabs from the tablist.** Every tab stays rendered,
+ * focusable and arrow-reachable; this is a pointer shortcut, not a relocation.
+ * The alternative model — moving tabs into the menu — costs them their
+ * `role="tab"`, their `aria-controls` and their place in the roving tabindex.
+ *
+ * Keyboard: Enter, Space or Down opens and focuses the first item; Up/Down and
+ * Home/End move; Escape closes and returns focus to the trigger; Tab leaves.
+ * Choosing an item selects that tab and scrolls it into view — without that it
+ * would select something still off-screen and appear to do nothing.
+ *
+ * `overflow` is **off by default**, because switching it on wraps the tablist in
+ * a positioning element. Nobody who has not asked for it sees a DOM change.
+ */
+export const OverflowMenu: Story = {
+  render: () => {
+    const many = [
+      { id: "overview", label: "Overview" },
+      { id: "adarsh", label: "Adarsh Gram" },
+      { id: "gia", label: "Grants-in-Aid" },
+      { id: "hostels", label: "Hostels" },
+      { id: "skills", label: "Skill development" },
+      { id: "grievances", label: "Grievance redressal", badge: true },
+      { id: "audit", label: "Audit trail", disabled: true },
+    ];
+    return (
+      // A plain block box, not a grid/flex item. A grid or flex child defaults
+      // to `min-width: auto`, so it refuses to shrink below its content, the
+      // tablist never becomes narrower than its tabs, and nothing ever
+      // overflows — the trigger would correctly never appear. Consumers placing
+      // `overflow` tabs inside a flex or grid item need `min-width: 0` on it.
+      <div style={{ width: 460 }}>
+        <Demo tabs={many} overflow label="PM-AJAY components" />
       </div>
     );
   },
