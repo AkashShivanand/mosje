@@ -22,8 +22,16 @@ This package is the **single source of truth** for the visual language across al
   mappings validated", which was never true and made the gap invisible. The plan of
   record, including the per-component node map and the Icon mapping, is
   `docs/research/figma-code-connect-readiness.md`.
-  - **Correction, 2026-08-14:** the "zero `*.figma.ts(x)` files" half of this bullet is
-    no longer accurate. **Two** templates landed, from two branches, because
+  - **Correction, 2026-08-18:** there are now **FOUR** templates, not two —
+    `actions/button.figma.ts`, `navigation/accessibility-bar.figma.ts`,
+    `auth/portal-login-template.figma.ts` and `auth/auth-parts.figma.ts`. The count in
+    this bullet was stale, which is the same failure mode the bullet itself was written
+    to correct. **`@figma/code-connect` is still NOT in package.json**, so none of the
+    four can be published or validated — verify with
+    `node -e 'console.log(require("./package.json").devDependencies["@figma/code-connect"])'`
+    before believing any claim that Code Connect works.
+  - **Superseded note, 2026-08-14:** the "zero `*.figma.ts(x)` files" half of this bullet is
+    no longer accurate. Two templates landed, from two branches, because
     `component-authoring.md` §12a makes the template part of shipping a component:
     `components/actions/button.figma.ts` (foundation-documentation) and
     `components/navigation/accessibility-bar.figma.ts` (AccessibilityBar).
