@@ -411,3 +411,99 @@ instance). Instance descendants are derived from their main, so counting them bo
 double-counts *and* imports this instability — Navbar's authorable-only figures were
 byte-identical across independent invocations while its totals moved. That would
 change every headline number, so it is a deliberate migration, not a patch.
+
+## Radius linkage — a ratchet over the Figma library (enforced in CI)
+
+**Radius had no gate of any kind until 2026-08-18**, while colour had six contract tests,
+spacing had its own ratchet and icons had a per-file one. Spacing was censused three times;
+radius, zero. The first census shows what that cost:
+
+| | |
+|---|---|
+| Radius properties, 35 of 69 pages | **92,324** (51,844 authorable) |
+| Bound to a **correct Tier-2 token** | 1,488 — **2.87 %** of authorable |
+
+| class | authorable | what it is |
+|---|---|---|
+| `t1` | **4,902** | a **hidden** `ref/radius/*` primitive — does not publish, and tier-discipline forbids app code writing its code syntax |
+| `rn` | **5,599** | unbound, non-zero — the raw literal this gate exists to shrink |
+| `rm` | 548 | a radius variable imported from **another library** (`radius-full`, `radius-md`, `radius-none`, `radius-xl`, `radius-xs`, `button-corner` — a foreign vocabulary, chiefly Sidebar 360, Stepper 232, Navbar 72) |
+| `xf` | 132 | a **`Font Size/*` or `Line Heights/*` variable bound to a corner radius** |
+| `gh` | **0** | no ghosts — unlike spacing, which carried 4,771 |
+| `t2` | 1,488 | correct |
+
+`rawZero` (39,175) is **not** counted as a defect: 0 is the absence of a radius, not a wrong
+one — the same reasoning `ds-linkage` applies to `0px`.
+
+**The ratchet runs on AUTHORABLE properties only** (outside any instance). This is the fix the
+space rule identified and deferred: instance descendants are derived from their main, so counting
+them both double-counts and imports the cross-sync instability that made Navbar's totals move by
+hundreds with nobody editing. Radius was gated after that lesson, so it was built the right way
+from the start.
+
+- Run it with `npm run check:radius-linkage`; it also runs in **Design System Quality**.
+- `npm run check:radius-linkage:baseline` refreshes the frozen debt; `:report` prints the summary.
+- Debt is frozen **per page** in `packages/tokens/reference/radius-bindings-baseline.json`.
+  A page that regresses fails; a page that **improves** also fails, telling you to re-baseline in
+  the same change.
+- **Coverage is itself ratcheted.** 34 of 69 pages are not yet censused. The gate fails if that
+  number grows, and fails if censused + uncensused ≠ the library's page count — a page in neither
+  list is how a surface goes ungated.
+- All ten failure modes were exercised by deliberately breaking them.
+
+### The radius ladder KEEPS its T-shirt names — a deliberate divergence
+
+The spacing ladder is value-named and that is load-bearing. **Radius is not, and that is a
+decision, not an oversight.** Weighed on 2026-08-18:
+
+| Reason spacing was renamed | Applies to radius? |
+|---|---|
+| The same label meant different values in different families (`l` = 16/24/20/56) | **No.** One semantic family. `shape/md` is unambiguous. |
+| A T-shirt ramp cannot absorb a mid-step without renaming everything above | **Yes** — but no insertion is pending (see below) |
+
+So only half the argument carries, and radius has something spacing never had to lose: the
+**role mapping**. `shape/sm` is "inputs and text-entry controls", `shape/md` "buttons and
+standard controls", `shape/lg` "cards and panels". `shape/6` and `shape/8` say none of that.
+
+The one measured insertion pressure — **240 raw `10px` radii on the Colour page**, a value with
+no rung — was resolved by **snapping 10 → 12 (`shape/lg`)**, on the grounds that a page carrying
+1,632 raw radii chose none of them against a scale, and 10 and 12 differ by 2px and read as one
+curve. That removed the pressure rather than deferring it.
+
+Against renaming: it would be the **second** churn of this exact vocabulary in six days
+(`--sa-radius-*` → `--sa-shape-*` was 2026-08-12, across 248 usages), and it would rewrite 12
+codeSyntax and 12 description fields, for zero movement on the measured defect.
+
+**A third layer of role aliases (`shape/control`, `shape/card`) was considered and rejected**:
+three published names for 8px means every rebind picks between two valid answers and no audit
+can tell a wrong pick from a right one.
+
+> **Trigger to revisit:** the first time a radius value is genuinely needed that cannot be
+> snapped to an existing rung without a design regression. At that moment the insertion problem
+> is real rather than hypothetical, and value-naming becomes the better answer.
+
+### Tier discipline: ONLY `shape/*` may alias a Tier-1 radius
+
+Three **published** variables — `control/radius`, `cmp/button/radius`, `cmp/card/radius` — each
+aliased `{radius.md}` directly, reaching past Tier 2 into a **hidden** primitive designers cannot
+see. Figma mirrored the source faithfully, so the defect existed identically in both. Fixed
+2026-08-18, in code and in Figma, **value-preservingly**: all three still resolve to 8px, and
+`tokens.css` changed only two alias paths. `S5` in `radius-linkage.test.mjs` now fails the build
+if any semantic-or-component token outside `shape` aliases `radius.*`.
+
+**A re-point does not update `description` or `codeSyntax`** — the spacing rename lost 51 of them
+exactly that way. Both were rewritten by hand in the same change.
+
+### Open design question — `cmp/card/radius` contradicts its own role
+
+`--sa-cmp-card-radius` resolves to **8px** (`shape/md`), while `shape/lg`'s published description
+reads *"cards and panels"* and `design.md` §3.B asks for 12px on cards. The token is the outlier.
+The 2026-08-18 fix deliberately left the value alone: changing it moves every card in the estate,
+which is a design decision, not a refactor.
+
+### `shape/full` is a SENTINEL, not a measurement
+
+`999px` means "fully rounded". Any value exceeding half the shorter side renders the same, and
+999 is that for every surface in the estate. Code disagreed with itself — `999px`, `9999px` and
+`50%` all appeared — so **write `var(--sa-shape-full)` and nothing else**. Note `50%` is not a
+synonym: on a non-square box it gives an **ellipse** where `999px` gives a stadium.

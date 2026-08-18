@@ -137,3 +137,20 @@ jobs:
       # while another removed five and call it clean.
       - name: Icon scale — ratchet, no NEW off-scale icon sizing
         run: npm run check:icon-scale
+
+      # Radius had NO gate of any kind until 2026-08-18, while colour had six contract
+      # tests, spacing had this same ratchet and icons had the one above. The first
+      # census of the live library shows what that cost: of 51,844 AUTHORABLE radius
+      # properties across 35 pages, 2.87 % sit on a correct Tier-2 token. The Colour
+      # documentation page — the reference every other documentation page copies — was
+      # 100 % raw: 1,632 non-zero corner radii, none bound.
+      #
+      # Two halves. The SOURCE invariants need no Figma access and caught the defect
+      # that shipped this gate: control/radius, cmp/button/radius and cmp/card/radius
+      # each aliased a HIDDEN Tier-1 primitive, so three PUBLISHED variables pointed at
+      # one designers cannot see. The CENSUS invariants ratchet per-page debt, refuse a
+      # census that does not declare it was captured one page per invocation (batching
+      # returns partial, non-deterministic trees), and ratchet COVERAGE itself — 34 of
+      # 69 pages are not yet censused, and that number may only shrink.
+      - name: Radius linkage — tier discipline + a ratchet over the Figma library
+        run: npm run check:radius-linkage

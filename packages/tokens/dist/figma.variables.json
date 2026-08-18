@@ -16580,10 +16580,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/md"
+              "name": "control/radius"
             }
           },
-          "description": "Use for the button’s corner radius. Component-internal: it resolves to a semantic token, so bind that semantic token instead unless you are building the button itself.",
+          "description": "A button IS a control, so it follows control/radius rather than restating a rung. Value unchanged at 8px.",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-button-radius)"
           },
@@ -16643,10 +16643,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/md"
+              "name": "shape/md"
             }
           },
-          "description": "Use for the card’s corner radius. Component-internal: it resolves to a semantic token, so bind that semantic token instead unless you are building the card itself.",
+          "description": "Value unchanged at 8px. NOTE: shape/lg (12px) is the rung whose published description reads \"cards and panels\", and design.md asks for 12-16px on cards. That contradiction is a DESIGN decision, deliberately not resolved by this tier fix — see .claude/rules/design-system.md.",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-card-radius)"
           },
@@ -21465,10 +21465,10 @@
             "Mode 1": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "ref/radius/md"
+              "name": "shape/md"
             }
           },
-          "description": "Use for the corner radius of an interactive control — buttons, inputs, selects. One radius keeps controls a family.",
+          "description": "Aliases shape/md, the system default control shape. Value unchanged at 8px; this used to alias 8px — a HIDDEN Tier-1 primitive — which published a variable pointing at one designers cannot see.",
           "codeSyntax": {
             "WEB": "var(--sa-control-radius)"
           },

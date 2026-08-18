@@ -2578,7 +2578,8 @@
     "$description": "The shape of an interactive control. Density already moves a control's size; these are what it is shaped like, which was hardcoded per component.",
     "radius": {
       "$type": "dimension",
-      "$value": "{radius.md}"
+      "$value": "{shape.md}",
+      "$description": "Aliases shape/md, the system default control shape. Value unchanged at 8px; this used to alias {radius.md} — a HIDDEN Tier-1 primitive — which published a variable pointing at one designers cannot see."
     },
     "border": {
       "width": {

@@ -781,7 +781,7 @@ graph TD
 | Do | Don't |
 | :--- | :--- |
 | Use predefined semantic roles: `variant="primary | secondary | tonal | danger"`. | Do not create custom button classes or override backgrounds with hardcoded hex/rgba values. |
-| Use full-pill rounded shapes (`var(--ds-radius-full)`) for action buttons. | Banned: "Ghost" buttons using a `1px` border combined with a soft, wide drop shadow. |
+| Use full-pill rounded shapes (`var(--sa-shape-full)`) for action buttons. | Banned: "Ghost" buttons using a `1px` border combined with a soft, wide drop shadow. |
 | Ensure clear label text; use `aria-label` for icon-only buttons. | Do not use decorative text gradients (`background-clip: text`) on button labels. |
 | Limit to one `primary` button per visual section. | Do not place two `primary` buttons side by side — demote one to `secondary`. |
 
@@ -789,7 +789,7 @@ graph TD
 
 | Do | Don't |
 | :--- | :--- |
-| Group content into clean cards using `var(--ds-radius-md)` (`12px–16px`). | Banned: Sharp corners (`0px` radius) or excessively rounded (`> 20px`) for cards. |
+| Group content into clean cards using `var(--sa-shape-lg)` (12px). See the open question under Shape Tokens: `--sa-cmp-card-radius` is still 8px. | Banned: Sharp corners (`0px` radius) or excessively rounded (`> 20px`) for cards. |
 | Use solid semantic borders (`--ds-border`) or `--ds-surface-muted` background for separation. | Banned: Coloured accent side-stripes (`border-left: 4px solid`) on cards. These are a legacy gov-portal pattern that fragments visual hierarchy. |
 | Keep grids structured with equal-height cards via flex or CSS grid. | Do not nest cards within other cards — flat hierarchy only. |
 | Use `<CardHeader>`, `<CardBody>`, `<CardFooter>` sub-components. | Do not build bespoke card layouts with raw `div`s inside a `<Card>`. |
@@ -1074,13 +1074,35 @@ namespace, which is what these tokens exist to prevent.
 
 ### Shape Tokens
 
+> **Corrected 2026-08-18.** This table used to document a `--ds-radius-*` vocabulary that was
+> **retired on 2026-08-12** and has **zero occurrences** in the emitted CSS — and it got the
+> values wrong on top of that, claiming `sm` = 8px against a real 6px and `md` = 12px against a
+> real 8px. Two of the five names below therefore have no `--ds-*` ancestor at all. Verify with
+> `grep -c -- "--ds-radius-" packages/design-system/tokens.css`, which returns 0.
+
+**Tier 2 is what you write.** `--sa-shape-*` is the published vocabulary; `--sa-ref-radius-*` is
+Tier 1, hidden from Figma publishing, and banned in app code.
+
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--ds-radius-xxs` | `2px` | Micro elements (badge corner) |
-| `--ds-radius-xs` | `4px` | Focus rings, code snippets |
-| `--ds-radius-sm` | `8px` | Input fields, small buttons |
-| `--ds-radius-md` | `12px` | Cards, containers |
-| `--ds-radius-full` | `999px` | Action buttons, chips (pill shape) |
+| `--sa-shape-none` | `0px` | Square corners — tables, full-bleed media |
+| `--sa-shape-xxs` | `2px` | Smallest softening, on dense controls |
+| `--sa-shape-xs` | `4px` | Small chips, tags, inline badges |
+| `--sa-shape-sm` | `6px` | Inputs, selects, text-entry controls |
+| `--sa-shape-md` | `8px` | Buttons and standard controls — **the system default** |
+| `--sa-shape-lg` | `12px` | Cards and panels |
+| `--sa-shape-xl` | `16px` | Large containers and modal surfaces |
+| `--sa-shape-2xl` | `20px` | Hero and feature surfaces |
+| `--sa-shape-3xl` | `24px` | Largest editorial surfaces |
+| `--sa-shape-4xl` | `32px` | Oversized decorative surfaces — rare |
+| `--sa-shape-5xl` | `40px` | Largest decorative surface — rare |
+| `--sa-shape-full` | `999px` | Pills and circles. A **sentinel**, not a measurement: any value over half the shorter side renders fully rounded, and 999 is that for every surface in the estate. Write this, never `9999px` and never `50%` |
+
+**Open design question, deliberately not resolved by the 2026-08-18 tier fix:**
+`--sa-cmp-card-radius` resolves to **8px** (`shape/md`), while `shape/lg`'s own published
+description reads *"cards and panels"* and section 3.B below asks for 12–16px on cards. The
+token is the outlier. Changing it moves every card in the estate, so it is a design decision,
+not a refactor — see `.claude/rules/design-system.md`.
 
 ### Elevation (Shadow) Tokens
 

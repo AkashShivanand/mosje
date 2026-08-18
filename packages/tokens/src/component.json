@@ -15,7 +15,8 @@
     },
     "radius": {
       "$type": "dimension",
-      "$value": "{radius.md}"
+      "$value": "{control.radius}",
+      "$description": "A button IS a control, so it follows control/radius rather than restating a rung. Value unchanged at 8px."
     }
   },
   "card": {
@@ -28,7 +29,8 @@
     },
     "radius": {
       "$type": "dimension",
-      "$value": "{radius.md}"
+      "$value": "{shape.md}",
+      "$description": "Value unchanged at 8px. NOTE: shape/lg (12px) is the rung whose published description reads \"cards and panels\", and design.md asks for 12-16px on cards. That contradiction is a DESIGN decision, deliberately not resolved by this tier fix — see .claude/rules/design-system.md."
     }
   },
   "badge": {

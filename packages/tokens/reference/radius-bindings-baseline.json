@@ -1,0 +1,442 @@
+{
+  "note": [
+    "Frozen radius debt, per page, in AUTHORABLE properties (outside any instance).",
+    "A page that REGRESSES fails. A page that IMPROVES also fails, telling you to",
+    "re-baseline in the same change — that is what stops one page's cleanup being",
+    "silently spent on another page's regression. Never add entries to go green.",
+    "",
+    "`uncensusedPages` is not a skip list. Every entry must be censused or proven",
+    "empty before this gate can be called complete; the test names them on failure."
+  ],
+  "capturedAt": "2026-08-18",
+  "method": "one-page-per-invocation",
+  "totals": {
+    "t2": 1488,
+    "t1": 4902,
+    "xf": 132,
+    "gh": 0,
+    "rm": 548,
+    "r0": 39175,
+    "rn": 5599
+  },
+  "pages": {
+    "2140:295913": {
+      "name": "Color",
+      "t1": 0,
+      "xf": 0,
+      "rm": 0,
+      "gh": 0,
+      "rn": 1632
+    },
+    "2140:295912": {
+      "name": "Typography",
+      "t1": 516,
+      "xf": 0,
+      "rm": 0,
+      "gh": 0,
+      "rn": 4
+    },
+    "2140:295914": {
+      "name": "Effects",
+      "t1": 8,
+      "xf": 0,
+      "rm": 72,
+      "gh": 0,
+      "rn": 0
+    },
+    "2140:295915": {
+      "name": "Layout Grid",
+      "t1": 84,
+      "xf": 0,
+      "rm": 68,
+      "gh": 0,
+      "rn": 4
+    },
+    "55596:695": {
+      "name": "Spacing",
+      "t1": 0,
+      "xf": 0,
+      "rm": 0,
+      "gh": 0,
+      "rn": 0
+    },
+    "4162:695": {
+      "name": "Motion",
+      "t1": 4,
+      "xf": 0,
+      "rm": 16,
+      "gh": 0,
+      "rn": 48
+    },
+    "4170:695": {
+      "name": "Density",
+      "t1": 4,
+      "xf": 0,
+      "rm": 16,
+      "gh": 0,
+      "rn": 16
+    },
+    "2316:246": {
+      "name": "Iconography",
+      "t1": 1208,
+      "xf": 0,
+      "rm": 36,
+      "gh": 0,
+      "rn": 32
+    },
+    "2137:295634": {
+      "name": "Get Started",
+      "t1": 4,
+      "xf": 0,
+      "rm": 0,
+      "gh": 0,
+      "rn": 52
+    },
+    "4645:10701": {
+      "name": "New in 2.0",
+      "t1": 0,
+      "xf": 0,
+      "rm": 0,
+      "gh": 0,
+      "rn": 88
+    },
+    "4099:695": {
+      "name": "Changelog & Governance",
+      "t1": 0,
+      "xf": 0,
+      "rm": 0,
+      "gh": 0,
+      "rn": 0
+    },
+    "2141:296705": {
+      "name": "Buttons",
+      "t1": 24,
+      "xf": 12,
+      "rm": 0,
+      "gh": 0,
+      "rn": 2416
+    },
+    "2141:296718": {
+      "name": "Dropdown",
+      "t1": 644,
+      "xf": 4,
+      "rm": 0,
+      "gh": 0,
+      "rn": 8
+    },
+    "2141:296700": {
+      "name": "Accordion",
+      "t1": 120,
+      "xf": 8,
+      "rm": 0,
+      "gh": 0,
+      "rn": 24
+    },
+    "2141:296720": {
+      "name": "Inputs",
+      "t1": 136,
+      "xf": 8,
+      "rm": 0,
+      "gh": 0,
+      "rn": 44
+    },
+    "2141:323872": {
+      "name": "Pagination",
+      "t1": 292,
+      "xf": 4,
+      "rm": 0,
+      "gh": 0,
+      "rn": 8
+    },
+    "2106:2": {
+      "name": "Stepper",
+      "t1": 20,
+      "xf": 36,
+      "rm": 40,
+      "gh": 0,
+      "rn": 116
+    },
+    "2141:323867": {
+      "name": "List",
+      "t1": 8,
+      "xf": 0,
+      "rm": 0,
+      "gh": 0,
+      "rn": 244
+    },
+    "3836:3939": {
+      "name": "Tables",
+      "t1": 28,
+      "xf": 8,
+      "rm": 0,
+      "gh": 0,
+      "rn": 56
+    },
+    "2141:323870": {
+      "name": "Navbar",
+      "t1": 732,
+      "xf": 8,
+      "rm": 28,
+      "gh": 0,
+      "rn": 80
+    },
+    "2141:296707": {
+      "name": "Card",
+      "t1": 68,
+      "xf": 4,
+      "rm": 0,
+      "gh": 0,
+      "rn": 36
+    },
+    "2141:323869": {
+      "name": "Modal",
+      "t1": 72,
+      "xf": 8,
+      "rm": 0,
+      "gh": 0,
+      "rn": 44
+    },
+    "55384:695": {
+      "name": "Portal Login Template",
+      "t1": 152,
+      "xf": 0,
+      "rm": 0,
+      "gh": 0,
+      "rn": 68
+    },
+    "2141:296710": {
+      "name": "Checkbox",
+      "t1": 116,
+      "xf": 4,
+      "rm": 0,
+      "gh": 0,
+      "rn": 28
+    },
+    "2141:296709": {
+      "name": "Chips",
+      "t1": 148,
+      "xf": 4,
+      "rm": 0,
+      "gh": 0,
+      "rn": 120
+    },
+    "2141:296716": {
+      "name": "Date-Time Picker",
+      "t1": 60,
+      "xf": 4,
+      "rm": 0,
+      "gh": 0,
+      "rn": 32
+    },
+    "2141:323876": {
+      "name": "Radio Buttons",
+      "t1": 84,
+      "xf": 4,
+      "rm": 32,
+      "gh": 0,
+      "rn": 8
+    },
+    "2141:323883": {
+      "name": "Toggle",
+      "t1": 20,
+      "xf": 4,
+      "rm": 0,
+      "gh": 0,
+      "rn": 164
+    },
+    "4645:10196": {
+      "name": "Tabs",
+      "t1": 16,
+      "xf": 0,
+      "rm": 32,
+      "gh": 0,
+      "rn": 28
+    },
+    "2141:296701": {
+      "name": "Alerts/Toasts",
+      "t1": 44,
+      "xf": 8,
+      "rm": 0,
+      "gh": 0,
+      "rn": 16
+    },
+    "2141:296703": {
+      "name": "Badges",
+      "t1": 20,
+      "xf": 4,
+      "rm": 0,
+      "gh": 0,
+      "rn": 40
+    },
+    "4645:10200": {
+      "name": "Sidebar",
+      "t1": 0,
+      "xf": 0,
+      "rm": 208,
+      "gh": 0,
+      "rn": 21
+    },
+    "2500:295967": {
+      "name": "Footer",
+      "t1": 0,
+      "xf": 0,
+      "rm": 0,
+      "gh": 0,
+      "rn": 16
+    },
+    "2840:10801": {
+      "name": "Charts & Graphs",
+      "t1": 4,
+      "xf": 0,
+      "rm": 0,
+      "gh": 0,
+      "rn": 4
+    },
+    "2141:296708": {
+      "name": "Carousel",
+      "t1": 266,
+      "xf": 0,
+      "rm": 0,
+      "gh": 0,
+      "rn": 102
+    }
+  },
+  "uncensusedPages": [
+    {
+      "id": "214:68343",
+      "name": "Thumbnail"
+    },
+    {
+      "id": "2137:295636",
+      "name": "-------------------------------"
+    },
+    {
+      "id": "10:677",
+      "name": "FOUNDATION"
+    },
+    {
+      "id": "2137:295637",
+      "name": "-------------------------------"
+    },
+    {
+      "id": "0:1",
+      "name": "COMPONENTS"
+    },
+    {
+      "id": "4055:695",
+      "name": "Actions"
+    },
+    {
+      "id": "2141:296711",
+      "name": "Close Button"
+    },
+    {
+      "id": "4055:696",
+      "name": "Forms & Inputs"
+    },
+    {
+      "id": "2141:296713",
+      "name": "Color Picker"
+    },
+    {
+      "id": "2179:67252",
+      "name": "Range Slider"
+    },
+    {
+      "id": "2141:323878",
+      "name": "Search"
+    },
+    {
+      "id": "4055:697",
+      "name": "Navigation"
+    },
+    {
+      "id": "2141:296704",
+      "name": "Breadcrumbs"
+    },
+    {
+      "id": "4055:698",
+      "name": "Feedback & Status"
+    },
+    {
+      "id": "2141:296719",
+      "name": "Empty State"
+    },
+    {
+      "id": "3989:33663",
+      "name": "Feedback Widget"
+    },
+    {
+      "id": "2141:323879",
+      "name": "Loader"
+    },
+    {
+      "id": "2141:323875",
+      "name": "Progress Indicators"
+    },
+    {
+      "id": "4055:699",
+      "name": "Overlays"
+    },
+    {
+      "id": "55464:34835",
+      "name": "Side Sheet"
+    },
+    {
+      "id": "2141:323874",
+      "name": "Popover"
+    },
+    {
+      "id": "2141:323884",
+      "name": "Tooltip"
+    },
+    {
+      "id": "4055:700",
+      "name": "Data Display"
+    },
+    {
+      "id": "2141:296702",
+      "name": "Avatars"
+    },
+    {
+      "id": "2141:296714",
+      "name": "Comment"
+    },
+    {
+      "id": "6803:290942",
+      "name": "Map of India"
+    },
+    {
+      "id": "4055:701",
+      "name": "Utilities"
+    },
+    {
+      "id": "2382:295905",
+      "name": "Accessibility Bar"
+    },
+    {
+      "id": "2141:296715",
+      "name": "Cursor"
+    },
+    {
+      "id": "2141:296721",
+      "name": "-------------------------------"
+    },
+    {
+      "id": "2141:323888",
+      "name": "Section Templates"
+    },
+    {
+      "id": "4645:10194",
+      "name": "-------------------------------"
+    },
+    {
+      "id": "4645:10195",
+      "name": "Roadmap"
+    },
+    {
+      "id": "55061:695",
+      "name": "Divider"
+    }
+  ]
+}

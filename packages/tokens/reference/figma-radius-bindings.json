@@ -1,0 +1,1286 @@
+{
+  "$schema": "radius binding census over the SAMAVESH Figma library",
+  "fileKey": "3FF5l0SMNIwdpZrKkeyPTm",
+  "capturedAt": "2026-08-18",
+  "method": "one-page-per-invocation",
+  "methodNote": "Each page was read in its own use_figma call via setCurrentPageAsync. Batching several pages into one invocation returns partial, non-deterministic trees (see .claude/rules/design-system.md). A census produced any other way MUST NOT be committed; radius-linkage.test.mjs refuses one that does not declare this method.",
+  "classes": {
+    "tier2": "a published Tier-2 token: shape/*, control/radius, or cmp/*/radius. CORRECT.",
+    "tier1": "a HIDDEN ref/radius/* primitive. Does not publish; tier-discipline forbids app code writing its code syntax.",
+    "crossFamily": "a non-radius variable bound to a corner radius (e.g. Font Size/6, Line Heights/9).",
+    "remote": "a radius variable imported from ANOTHER library (the foreign radius-* vocabulary).",
+    "ghost": "a local variable id no collection owns.",
+    "rawZero": "unbound, value 0. Absence of a radius rather than a wrong one.",
+    "rawNonZero": "unbound, non-zero. The defect this gate exists to shrink."
+  },
+  "authorableNote": "`a` counts only nodes OUTSIDE any instance. Instance descendants are derived from their main, so counting them double-counts and imports cross-sync instability. The ratchet runs on `a`; `c` is reported for context.",
+  "coverage": {
+    "censused": 35,
+    "libraryPages": 69,
+    "uncensused": [
+      {
+        "id": "214:68343",
+        "name": "Thumbnail"
+      },
+      {
+        "id": "2137:295636",
+        "name": "-------------------------------"
+      },
+      {
+        "id": "10:677",
+        "name": "FOUNDATION"
+      },
+      {
+        "id": "2137:295637",
+        "name": "-------------------------------"
+      },
+      {
+        "id": "0:1",
+        "name": "COMPONENTS"
+      },
+      {
+        "id": "4055:695",
+        "name": "Actions"
+      },
+      {
+        "id": "2141:296711",
+        "name": "Close Button"
+      },
+      {
+        "id": "4055:696",
+        "name": "Forms & Inputs"
+      },
+      {
+        "id": "2141:296713",
+        "name": "Color Picker"
+      },
+      {
+        "id": "2179:67252",
+        "name": "Range Slider"
+      },
+      {
+        "id": "2141:323878",
+        "name": "Search"
+      },
+      {
+        "id": "4055:697",
+        "name": "Navigation"
+      },
+      {
+        "id": "2141:296704",
+        "name": "Breadcrumbs"
+      },
+      {
+        "id": "4055:698",
+        "name": "Feedback & Status"
+      },
+      {
+        "id": "2141:296719",
+        "name": "Empty State"
+      },
+      {
+        "id": "3989:33663",
+        "name": "Feedback Widget"
+      },
+      {
+        "id": "2141:323879",
+        "name": "Loader"
+      },
+      {
+        "id": "2141:323875",
+        "name": "Progress Indicators"
+      },
+      {
+        "id": "4055:699",
+        "name": "Overlays"
+      },
+      {
+        "id": "55464:34835",
+        "name": "Side Sheet"
+      },
+      {
+        "id": "2141:323874",
+        "name": "Popover"
+      },
+      {
+        "id": "2141:323884",
+        "name": "Tooltip"
+      },
+      {
+        "id": "4055:700",
+        "name": "Data Display"
+      },
+      {
+        "id": "2141:296702",
+        "name": "Avatars"
+      },
+      {
+        "id": "2141:296714",
+        "name": "Comment"
+      },
+      {
+        "id": "6803:290942",
+        "name": "Map of India"
+      },
+      {
+        "id": "4055:701",
+        "name": "Utilities"
+      },
+      {
+        "id": "2382:295905",
+        "name": "Accessibility Bar"
+      },
+      {
+        "id": "2141:296715",
+        "name": "Cursor"
+      },
+      {
+        "id": "2141:296721",
+        "name": "-------------------------------"
+      },
+      {
+        "id": "2141:323888",
+        "name": "Section Templates"
+      },
+      {
+        "id": "4645:10194",
+        "name": "-------------------------------"
+      },
+      {
+        "id": "4645:10195",
+        "name": "Roadmap"
+      },
+      {
+        "id": "55061:695",
+        "name": "Divider"
+      }
+    ]
+  },
+  "pages": [
+    {
+      "id": "2140:295913",
+      "name": "Color",
+      "nodes": 740,
+      "props": 2960,
+      "total": {
+        "t2": 0,
+        "t1": 0,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 1328,
+        "rn": 1632
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 0,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 1328,
+        "rn": 1632
+      },
+      "rawValues": {
+        "4": 344,
+        "6": 480,
+        "8": 100,
+        "10": 240,
+        "12": 460,
+        "16": 4,
+        "999": 4
+      },
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "2140:295912",
+      "name": "Typography",
+      "nodes": 340,
+      "props": 1360,
+      "total": {
+        "t2": 0,
+        "t1": 516,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 840,
+        "rn": 4
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 516,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 840,
+        "rn": 4
+      },
+      "rawValues": {
+        "12": 4
+      },
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "2140:295914",
+      "name": "Effects",
+      "nodes": 38,
+      "props": 144,
+      "total": {
+        "t2": 0,
+        "t1": 8,
+        "xf": 0,
+        "gh": 0,
+        "rm": 72,
+        "r0": 64,
+        "rn": 0
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 8,
+        "xf": 0,
+        "gh": 0,
+        "rm": 72,
+        "r0": 64,
+        "rn": 0
+      },
+      "rawValues": {},
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "2140:295915",
+      "name": "Layout Grid",
+      "nodes": 677,
+      "props": 2520,
+      "total": {
+        "t2": 0,
+        "t1": 84,
+        "xf": 0,
+        "gh": 0,
+        "rm": 68,
+        "r0": 2364,
+        "rn": 4
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 84,
+        "xf": 0,
+        "gh": 0,
+        "rm": 68,
+        "r0": 1364,
+        "rn": 4
+      },
+      "rawValues": {
+        "2": 4
+      },
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "55596:695",
+      "name": "Spacing",
+      "nodes": 95,
+      "props": 380,
+      "total": {
+        "t2": 152,
+        "t1": 0,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 228,
+        "rn": 0
+      },
+      "authorable": {
+        "t2": 152,
+        "t1": 0,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 228,
+        "rn": 0
+      },
+      "rawValues": {},
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "4162:695",
+      "name": "Motion",
+      "nodes": 22,
+      "props": 76,
+      "total": {
+        "t2": 0,
+        "t1": 4,
+        "xf": 0,
+        "gh": 0,
+        "rm": 16,
+        "r0": 8,
+        "rn": 48
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 4,
+        "xf": 0,
+        "gh": 0,
+        "rm": 16,
+        "r0": 8,
+        "rn": 48
+      },
+      "rawValues": {
+        "4": 12,
+        "10": 12,
+        "16": 24
+      },
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "4170:695",
+      "name": "Density",
+      "nodes": 11,
+      "props": 44,
+      "total": {
+        "t2": 0,
+        "t1": 4,
+        "xf": 0,
+        "gh": 0,
+        "rm": 16,
+        "r0": 8,
+        "rn": 16
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 4,
+        "xf": 0,
+        "gh": 0,
+        "rm": 16,
+        "r0": 8,
+        "rn": 16
+      },
+      "rawValues": {
+        "8": 8,
+        "16": 8
+      },
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "2316:246",
+      "name": "Iconography",
+      "nodes": 11961,
+      "props": 3460,
+      "total": {
+        "t2": 0,
+        "t1": 1208,
+        "xf": 0,
+        "gh": 0,
+        "rm": 36,
+        "r0": 2184,
+        "rn": 32
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 1208,
+        "xf": 0,
+        "gh": 0,
+        "rm": 36,
+        "r0": 2184,
+        "rn": 32
+      },
+      "rawValues": {
+        "2": 20,
+        "5": 12
+      },
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "2137:295634",
+      "name": "Get Started",
+      "nodes": 70,
+      "props": 256,
+      "total": {
+        "t2": 0,
+        "t1": 4,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 200,
+        "rn": 52
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 4,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 200,
+        "rn": 52
+      },
+      "rawValues": {
+        "6": 8,
+        "8": 16,
+        "12": 4,
+        "16": 20,
+        "40": 4
+      },
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "4645:10701",
+      "name": "New in 2.0",
+      "nodes": 385,
+      "props": 688,
+      "total": {
+        "t2": 0,
+        "t1": 0,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 552,
+        "rn": 136
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 0,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 240,
+        "rn": 88
+      },
+      "rawValues": {
+        "8": 4,
+        "12": 4,
+        "16": 40,
+        "40": 8,
+        "3.8998072147369385": 16,
+        "2.9248554706573486": 8,
+        "5.47216272354126": 4,
+        "3.648108720779419": 12,
+        "3.501451253890991": 8,
+        "79.14856719970703": 4,
+        "8.030000686645508": 4,
+        "2.4090001583099365": 20,
+        "80.30000305175781": 4
+      },
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "4099:695",
+      "name": "Changelog & Governance",
+      "nodes": 1,
+      "props": 4,
+      "total": {
+        "t2": 0,
+        "t1": 0,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 4,
+        "rn": 0
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 0,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 4,
+        "rn": 0
+      },
+      "rawValues": {},
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "2141:296705",
+      "name": "Buttons",
+      "nodes": 1891,
+      "props": 4204,
+      "total": {
+        "t2": 0,
+        "t1": 24,
+        "xf": 12,
+        "gh": 0,
+        "rm": 0,
+        "r0": 1752,
+        "rn": 2416
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 24,
+        "xf": 12,
+        "gh": 0,
+        "rm": 0,
+        "r0": 1752,
+        "rn": 2416
+      },
+      "rawValues": {
+        "5": 12,
+        "8": 2400,
+        "16": 4
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 12
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:296718",
+      "name": "Dropdown",
+      "nodes": 2995,
+      "props": 11116,
+      "total": {
+        "t2": 0,
+        "t1": 644,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 10460,
+        "rn": 8
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 644,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 3908,
+        "rn": 8
+      },
+      "rawValues": {
+        "5": 8
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 4
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:296700",
+      "name": "Accordion",
+      "nodes": 916,
+      "props": 2728,
+      "total": {
+        "t2": 0,
+        "t1": 552,
+        "xf": 8,
+        "gh": 0,
+        "rm": 0,
+        "r0": 2144,
+        "rn": 24
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 120,
+        "xf": 8,
+        "gh": 0,
+        "rm": 0,
+        "r0": 704,
+        "rn": 24
+      },
+      "rawValues": {
+        "5": 12,
+        "16": 12
+      },
+      "nonRadiusVars": {
+        "Line Heights/9": 8
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:296720",
+      "name": "Inputs",
+      "nodes": 615,
+      "props": 2204,
+      "total": {
+        "t2": 348,
+        "t1": 148,
+        "xf": 8,
+        "gh": 0,
+        "rm": 0,
+        "r0": 1656,
+        "rn": 44
+      },
+      "authorable": {
+        "t2": 348,
+        "t1": 136,
+        "xf": 8,
+        "gh": 0,
+        "rm": 0,
+        "r0": 1536,
+        "rn": 44
+      },
+      "rawValues": {
+        "5": 28,
+        "8": 12,
+        "16": 4
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 8
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:323872",
+      "name": "Pagination",
+      "nodes": 288,
+      "props": 832,
+      "total": {
+        "t2": 0,
+        "t1": 348,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 472,
+        "rn": 8
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 292,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 120,
+        "rn": 8
+      },
+      "rawValues": {
+        "5": 8
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 4
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2106:2",
+      "name": "Stepper",
+      "nodes": 655,
+      "props": 2460,
+      "total": {
+        "t2": 0,
+        "t1": 20,
+        "xf": 72,
+        "gh": 0,
+        "rm": 232,
+        "r0": 1956,
+        "rn": 180
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 20,
+        "xf": 36,
+        "gh": 0,
+        "rm": 40,
+        "r0": 948,
+        "rn": 116
+      },
+      "rawValues": {
+        "5": 20,
+        "57": 160
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 16,
+        "Font Size/9": 56,
+        "REMOTE:radius-full": 232
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:323867",
+      "name": "List",
+      "nodes": 3758,
+      "props": 12644,
+      "total": {
+        "t2": 0,
+        "t1": 632,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 10864,
+        "rn": 1148
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 8,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 9264,
+        "rn": 244
+      },
+      "rawValues": {
+        "16": 4,
+        "23": 288,
+        "100": 856
+      },
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "3836:3939",
+      "name": "Tables",
+      "nodes": 348,
+      "props": 1276,
+      "total": {
+        "t2": 0,
+        "t1": 44,
+        "xf": 8,
+        "gh": 0,
+        "rm": 0,
+        "r0": 1072,
+        "rn": 152
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 28,
+        "xf": 8,
+        "gh": 0,
+        "rm": 0,
+        "r0": 296,
+        "rn": 56
+      },
+      "rawValues": {
+        "3": 32,
+        "5": 8,
+        "8": 16,
+        "10": 28,
+        "16": 4,
+        "100": 64
+      },
+      "nonRadiusVars": {
+        "Font Size/4": 8
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:323870",
+      "name": "Navbar",
+      "nodes": 3259,
+      "props": 6980,
+      "total": {
+        "t2": 176,
+        "t1": 1372,
+        "xf": 8,
+        "gh": 0,
+        "rm": 72,
+        "r0": 5186,
+        "rn": 166
+      },
+      "authorable": {
+        "t2": 28,
+        "t1": 732,
+        "xf": 8,
+        "gh": 0,
+        "rm": 28,
+        "r0": 1888,
+        "rn": 80
+      },
+      "rawValues": {
+        "4": 18,
+        "8": 124,
+        "713.5714721679688": 20,
+        "1641.214111328125": 4
+      },
+      "nonRadiusVars": {
+        "REMOTE:radius-xxs": 8,
+        "REMOTE:radius-xs": 20,
+        "REMOTE:radius-md": 24,
+        "REMOTE:radius-3xl": 4,
+        "REMOTE:radius-lg": 4,
+        "REMOTE:radius-none": 10,
+        "REMOTE:radius-xl": 2,
+        "button-corner": 8
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:296707",
+      "name": "Card",
+      "nodes": 102,
+      "props": 392,
+      "total": {
+        "t2": 0,
+        "t1": 68,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 284,
+        "rn": 36
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 68,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 220,
+        "rn": 36
+      },
+      "rawValues": {
+        "5": 4,
+        "8": 32
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 4
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:323869",
+      "name": "Modal",
+      "nodes": 58,
+      "props": 216,
+      "total": {
+        "t2": 0,
+        "t1": 72,
+        "xf": 8,
+        "gh": 0,
+        "rm": 0,
+        "r0": 92,
+        "rn": 44
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 72,
+        "xf": 8,
+        "gh": 0,
+        "rm": 0,
+        "r0": 92,
+        "rn": 44
+      },
+      "rawValues": {
+        "5": 8,
+        "8": 32,
+        "16": 4
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 8
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "55384:695",
+      "name": "Portal Login Template",
+      "nodes": 1443,
+      "props": 5092,
+      "total": {
+        "t2": 828,
+        "t1": 464,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 3648,
+        "rn": 152
+      },
+      "authorable": {
+        "t2": 300,
+        "t1": 152,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 732,
+        "rn": 68
+      },
+      "rawValues": {
+        "2": 16,
+        "5": 4,
+        "8": 132
+      },
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "2141:296710",
+      "name": "Checkbox",
+      "nodes": 79,
+      "props": 276,
+      "total": {
+        "t2": 0,
+        "t1": 116,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 128,
+        "rn": 28
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 116,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 128,
+        "rn": 28
+      },
+      "rawValues": {
+        "5": 4,
+        "100": 24
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 4
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:296709",
+      "name": "Chips",
+      "nodes": 165,
+      "props": 420,
+      "total": {
+        "t2": 0,
+        "t1": 148,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 148,
+        "rn": 120
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 148,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 132,
+        "rn": 120
+      },
+      "rawValues": {
+        "5": 8,
+        "100": 112
+      },
+      "nonRadiusVars": {
+        "Line Heights/9": 4
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:296716",
+      "name": "Date-Time Picker",
+      "nodes": 727,
+      "props": 2752,
+      "total": {
+        "t2": 0,
+        "t1": 943,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 1764,
+        "rn": 41
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 60,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 708,
+        "rn": 32
+      },
+      "rawValues": {
+        "5": 20,
+        "7": 1,
+        "8": 8,
+        "3.200000047683716": 12
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 4
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:323876",
+      "name": "Radio Buttons",
+      "nodes": 98,
+      "props": 320,
+      "total": {
+        "t2": 0,
+        "t1": 84,
+        "xf": 4,
+        "gh": 0,
+        "rm": 48,
+        "r0": 176,
+        "rn": 8
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 84,
+        "xf": 4,
+        "gh": 0,
+        "rm": 32,
+        "r0": 136,
+        "rn": 8
+      },
+      "rawValues": {
+        "5": 8
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 4,
+        "REMOTE:radius-2xl": 16,
+        "REMOTE:radius-md": 16,
+        "REMOTE:radius-xs": 16
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:323883",
+      "name": "Toggle",
+      "nodes": 68,
+      "props": 272,
+      "total": {
+        "t2": 0,
+        "t1": 20,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 84,
+        "rn": 164
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 20,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 84,
+        "rn": 164
+      },
+      "rawValues": {
+        "5": 4,
+        "23": 80,
+        "100": 80
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 4
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "4645:10196",
+      "name": "Tabs",
+      "nodes": 529,
+      "props": 2104,
+      "total": {
+        "t2": 684,
+        "t1": 20,
+        "xf": 0,
+        "gh": 0,
+        "rm": 32,
+        "r0": 1316,
+        "rn": 52
+      },
+      "authorable": {
+        "t2": 660,
+        "t1": 16,
+        "xf": 0,
+        "gh": 0,
+        "rm": 32,
+        "r0": 1096,
+        "rn": 28
+      },
+      "rawValues": {
+        "2": 8,
+        "5": 16,
+        "4.803571701049805": 28
+      },
+      "nonRadiusVars": {
+        "REMOTE:radius-none": 12,
+        "REMOTE:radius-xs": 20
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:296701",
+      "name": "Alerts/Toasts",
+      "nodes": 83,
+      "props": 272,
+      "total": {
+        "t2": 0,
+        "t1": 68,
+        "xf": 8,
+        "gh": 0,
+        "rm": 0,
+        "r0": 180,
+        "rn": 16
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 44,
+        "xf": 8,
+        "gh": 0,
+        "rm": 0,
+        "r0": 164,
+        "rn": 16
+      },
+      "rawValues": {
+        "5": 12,
+        "100": 4
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 8
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2141:296703",
+      "name": "Badges",
+      "nodes": 23,
+      "props": 80,
+      "total": {
+        "t2": 0,
+        "t1": 20,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 16,
+        "rn": 40
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 20,
+        "xf": 4,
+        "gh": 0,
+        "rm": 0,
+        "r0": 16,
+        "rn": 40
+      },
+      "rawValues": {
+        "5": 4,
+        "100": 36
+      },
+      "nonRadiusVars": {
+        "Font Size/6": 4
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "4645:10200",
+      "name": "Sidebar",
+      "nodes": 339,
+      "props": 1204,
+      "total": {
+        "t2": 0,
+        "t1": 0,
+        "xf": 0,
+        "gh": 0,
+        "rm": 360,
+        "r0": 809,
+        "rn": 35
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 0,
+        "xf": 0,
+        "gh": 0,
+        "rm": 208,
+        "r0": 291,
+        "rn": 21
+      },
+      "rawValues": {
+        "5": 12,
+        "8": 23
+      },
+      "nonRadiusVars": {
+        "REMOTE:radius-none": 120,
+        "REMOTE:radius-xl": 116,
+        "REMOTE:radius-md": 116,
+        "REMOTE:radius-xs": 8
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2500:295967",
+      "name": "Footer",
+      "nodes": 1059,
+      "props": 972,
+      "total": {
+        "t2": 0,
+        "t1": 0,
+        "xf": 112,
+        "gh": 0,
+        "rm": 0,
+        "r0": 844,
+        "rn": 16
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 0,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 620,
+        "rn": 16
+      },
+      "rawValues": {
+        "5": 16
+      },
+      "nonRadiusVars": {
+        "Font Size/2": 112
+      },
+      "ghosts": {}
+    },
+    {
+      "id": "2840:10801",
+      "name": "Charts & Graphs",
+      "nodes": 9660,
+      "props": 19908,
+      "total": {
+        "t2": 0,
+        "t1": 4,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 19900,
+        "rn": 4
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 4,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 7012,
+        "rn": 4
+      },
+      "rawValues": {
+        "5": 4
+      },
+      "nonRadiusVars": {},
+      "ghosts": {}
+    },
+    {
+      "id": "2141:296708",
+      "name": "Carousel",
+      "nodes": 467,
+      "props": 1708,
+      "total": {
+        "t2": 0,
+        "t1": 272,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 1220,
+        "rn": 216
+      },
+      "authorable": {
+        "t2": 0,
+        "t1": 266,
+        "xf": 0,
+        "gh": 0,
+        "rm": 0,
+        "r0": 860,
+        "rn": 102
+      },
+      "rawValues": {
+        "5": 16,
+        "8": 200
+      },
+      "nonRadiusVars": {},
+      "ghosts": {}
+    }
+  ]
+}

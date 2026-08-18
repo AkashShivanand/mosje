@@ -901,10 +901,10 @@
   --sa-cmp-button-primary-bg: var(--sa-color-action-primary-default);
   --sa-cmp-button-primary-bgHover: var(--sa-color-action-primary-hover);
   --sa-cmp-button-primary-text: var(--sa-color-text-onPrimary);
-  --sa-cmp-button-radius: var(--sa-ref-radius-md);
+  --sa-cmp-button-radius: var(--sa-control-radius);
   --sa-cmp-card-bg: var(--sa-bg-neutral-base);
   --sa-cmp-card-border: var(--sa-border-neutral-subtle);
-  --sa-cmp-card-radius: var(--sa-ref-radius-md);
+  --sa-cmp-card-radius: var(--sa-shape-md);
   --sa-cmp-badge-beta-bg: var(--sa-color-brand-yellow);
   --sa-cmp-accessibilityBar-height: 46px;
   --sa-cmp-accessibilityBar-flagWidth: 33px;
