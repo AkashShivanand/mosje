@@ -568,3 +568,73 @@ accepted — a rebind that moves the count has done something other than rebind.
 999 is that for every surface in the estate. Code disagreed with itself — `999px`, `9999px` and
 `50%` all appeared — so **write `var(--sa-shape-full)` and nothing else**. Note `50%` is not a
 synonym: on a non-square box it gives an **ellipse** where `999px` gives a stadium.
+
+
+## The Figma exporter DROPS any component root it does not recognise (found 2026-08-18)
+
+`build/formats/figma-variables.mjs` routes every token to a Figma collection with
+`collectionFor(path, tier)`. Its last line is `return null`, and a `null` means **the token is
+silently omitted from the Figma export**. There is no warning, no count, no failure.
+
+Component tokens are routed by their **component name** against a hardcoded set:
+
+```
+COLOUR_ROOTS = bg, text, icon, border, outline, overlay, focus, action,
+               control, spinner, button, card, badge, chart, on, layer
+```
+
+So a component reaches Figma only if someone remembered to add its name to that list.
+
+| | |
+|---|---|
+| `cmp/*` roots the **code** defines | `accessibilityBar`, `action`, `badge`, `button`, `card` |
+| `cmp/*` roots that reach **Figma** | `action`, `badge`, `button`, `card` |
+
+**`accessibilityBar` is defined in code, emits `--sa-cmp-accessibilityBar-height` into
+`tokens.css`, and never reaches the library.** Fourteen component tokens in that state.
+
+### What that cost, and why the variables that appeared are NOT vandalism
+
+A designer hit the gap and did the reasonable thing: **hand-authored the variables in Figma**.
+Ten of them, IDs `55673:*` and `55677:*` — the newest in the file.
+
+They are identifiable with certainty because **every variable the pipeline creates carries a
+`codeSyntax`, and every hand-made one has `codeSyntax: null`.** That is the cleanest authorship
+signal the file has; 49 of 1,006 variables have no codeSyntax, and the other 39 are long-documented
+legacy (`ref/color/*` orphans, `deprecated/type/*`).
+
+Most of that work is **good**: names follow the grammar (`cmp/accessibilityBar/pillSize`, camelCase
+segment, matching `chart/tooltipBg`), scopes are correct and narrow (`WIDTH_HEIGHT`,
+`FRAME_FILL|SHAPE_FILL`), and all ten carry hand-written descriptions.
+
+What is wrong with them is a consequence of the gap, not of carelessness:
+
+1. **No `codeSyntax`** — a developer clicking one gets no CSS variable name, because the designer
+   had no way to know the generated name.
+2. **Six of ten bypass Tier 2**, aliasing a Tier-1 primitive directly — `flagHeight → ref/size/22`,
+   `pillSize → ref/size/32`, `stepSize → ref/size/24`, `iconButtonSize → ref/size/28`,
+   `launchIconSize → ref/size/12`, `cmp/divider/width → ref/border-width/hairline`. The same defect
+   class the radius work just eliminated.
+3. `hoverBg` and `pillBg` resolve through `overlay/on-brand/*`, which are **themselves** library-only,
+   so the chain never reaches code at all.
+
+### A second, older instance of the same failure
+
+Five published Colour variables carry a `codeSyntax` naming a CSS variable **that does not exist**:
+`var(--overlay-on-brand-hover)`, `var(--color-border-brand-primary-subtle)`,
+`var(--color-border-neutral-inverse)`, `var(--color-border-brand-primary-hover)`. Nothing in
+`tokens.css` breaks the `--sa-` prefix — these are hand-typed names that were never real. Two of
+them also have an empty description.
+
+### The rule
+
+**A token the code defines and the exporter cannot route is a BUG, not a filter.** `collectionFor`
+must not return `null` for a `cmp/*` path; it should fail the build naming the unrouted root, the
+same way a scope path that cannot be read is a hard error in `check:ds-linkage`. Until it does,
+every new component silently fails to reach designers, and the designer's only recourse is to
+hand-make variables that code can never consume.
+
+**Fixing it is a deliberate act, not a cleanup**: routing `accessibilityBar` would push ~14 new
+variables into the library that already hold hand-made counterparts, so the two sets have to be
+reconciled — ids preserved, descriptions kept, the Tier-1 aliases corrected — rather than
+duplicated.

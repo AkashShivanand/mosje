@@ -26,6 +26,7 @@ export const NAV: NavGroup[] = [
       { label: "Color", href: "/design-system/foundations/color", badge: "Stable" },
       { label: "Typography", href: "/design-system/foundations/typography", badge: "Stable" },
       { label: "Spacing", href: "/design-system/foundations/spacing", badge: "Stable" },
+      { label: "Shape", href: "/design-system/foundations/shape", badge: "Stable" },
       { label: "Elevation", href: "/design-system/foundations/elevation", badge: "Stable" },
       { label: "Motion", href: "/design-system/foundations/motion", badge: "Beta" },
       { label: "Density", href: "/design-system/foundations/density", badge: "Stable" },

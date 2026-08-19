@@ -17,6 +17,8 @@ export const FIGMA_NODES = {
   color: "2140:295913", // "Color Styles"
   typography: "2140:295912", // "Text Styles"
   spacing: "2140:295915", // "Layout Grid"
+  shape: "55623:696", // "Radius — Documentation" on the Radius page (55623:695), added
+  //                          2026-08-18 between Spacing and Motion in the FOUNDATION run
   elevation: "2140:295914", // "Effects"
   iconography: "2316:246", // "Iconography" — the Icon component, bespoke marks,
   //                              emblems, org logos and the documentation, all on one page
