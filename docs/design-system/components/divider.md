@@ -87,12 +87,16 @@ The Default grey (#dcdee1) reads on the brand fill too, so all six are legible a
 |---|---:|---|
 | Converted → `tone="default"` | 13 | Normalises `#e2e8f0` / `#e5e7eb` onto `#dcdee1` |
 | Converted → `tone="inverse-subtle"` | 1 | Exact match; nothing moved |
-| **Open** | 8 | White @ 20/25/30 % on brand surfaces — needs a decision |
+| Converted → `tone="inverse-subtle"` | 8 | **2026-08-19** — white @ 20/25/30 % standardised |
 | Not a divider | 1 | A 56px saffron accent under a login heading |
 
-The eight open sites are `portal-login-shell` (4), smile-admin auth layout (2), scw `gov-chrome`
-(1), nhapoa `citizen-shell` (1). Forcing them to 40 % would visibly change their prominence, so
-they need either a standardisation decision or additional tones — flagged rather than moved.
+**All 22 separator rules in the estate now render this component.** The last eight —
+`portal-login-shell` (4), smile-admin auth layout (2), scw `gov-chrome` (1), nhapoa
+`citizen-shell` (1) — were brand-surface rules at **three different opacities**, 20, 25 and
+30 %, none of them a decision. Standardising them on `inverse-subtle` is a **deliberate
+visual change**: those rules become slightly more present. It was held back for a human
+call rather than folded in with the rest, because unlike the greys it moves pixels people
+will notice.
 
 ## Adoption note that cost a near-miss
 

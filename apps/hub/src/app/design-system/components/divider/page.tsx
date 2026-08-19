@@ -38,7 +38,7 @@ const previewLabel: React.CSSProperties = {
 };
 const panel: React.CSSProperties = {
   background: "var(--sa-bg-neutral-subtler)",
-  borderRadius: "var(--sa-shape-md)",
+  borderRadius: "var(--sa-shape-8)",
   padding: "var(--sa-padding-l)",
   marginBottom: "var(--sa-stack-m)",
 };
@@ -284,14 +284,14 @@ export default function DividerPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="migration" style={h2Style}>Migration status</h2>
         <p style={leadStyle}>
-          13 of the estate&apos;s 23 hand-rolled rules were converted on 2026-08-18. The rest are
-          listed here rather than quietly converted, because each would have changed a pixel.
+          All 22 of the estate&apos;s hand-rolled separator rules now render this component — 14 on
+          2026-08-18, the last 8 on 2026-08-19. The 23rd is not a divider at all.
         </p>
         <TokenTable
           tokens={[
             { token: "Converted — 13 sites", value: "neutral greys → tone=\"default\"", description: "bg-line, bg-stroke-200, bg-gray-200, bg-border and one raw --sa-border-neutral-subtle. Normalises #e2e8f0 / #e5e7eb onto the #dcdee1 token — two near-identical pale greys, and the Tailwind defaults had no business in a government design system." },
             { token: "Converted — 1 site", value: "white @ 40% → tone=\"inverse-subtle\"", description: "SamaveshBanner. An exact match; nothing moved." },
-            { token: "Open — 8 sites", value: "white @ 20 / 25 / 30 %", description: "Brand-surface rules at three opacities Divider does not model. Forcing them to 40% would visibly change their prominence, so they need a decision: standardise on inverse-subtle, or add tones. portal-login-shell (4), smile-admin auth layout (2), scw gov-chrome (1), nhapoa citizen-shell (1)." },
+            { token: "Converted — 8 sites", value: "white @ 20 / 25 / 30 % → tone=\"inverse-subtle\"", description: "Standardised 2026-08-19 (design decision). These were brand-surface rules at three different opacities — 20, 25 and 30 % — none of them chosen. They now all render the one tone the system defines for a rule between controls on a brand surface. It is a deliberate visual change: those rules become slightly more present. portal-login-shell (4), smile-admin auth layout (2), scw gov-chrome (1), nhapoa citizen-shell (1)." },
             { token: "Not a divider — 1 site", value: "secondaryScale-400 accent", description: "portal-login-shell's 56px saffron flourish under the heading. A decorative accent, not a separator — deliberately left alone." },
           ]}
         />

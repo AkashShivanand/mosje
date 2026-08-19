@@ -22,7 +22,7 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.29.0",
+    version: "v0.30.0",
     date: "2026-08-19",
     current: true,
     changes: [
@@ -33,6 +33,21 @@ const RELEASES: Release[] = [
       { kind: "Added", text: "THE ICON ANIMATES NOTHING BY ITSELF. It ships its animations permanently PAUSED and exposes four custom properties \u2014 `--ds-flask-play`, `--ds-flask-bubbles`, `--ds-flask-cycle`, `--ds-flask-level` \u2014 for the consumer to drive, because only the consumer knows its own markup. That is what lets one file serve both the FAB and the panel\u2019s header badge, which sit in different subtrees and answer to different state. Pausing rather than switching the animation on also means \u201coff\u201d is genuinely invisible (0% is `fill-opacity: 0`) and \u201con\u201d resumes with the three bubbles already out of phase, instead of restarting them in lockstep \u2014 the tell that gives a loop away" },
       { kind: "Fixed", text: "TWO ANIMATION BUGS NO STATIC FRAME COULD SHOW, both found by rendering the icon at 180px rather than trusting it at 16. The bubbles rose 6.5 units and SURFACED INTO THE EMPTY NECK, reading as three dots hovering outside the liquid; travel is now bounded by the liquid, not by the flask. And the wave path spanned only three wavelengths \u2014 enough to cover the bulb at rest, so every paused frame looked right, but a fraction of a cycle in its right edge exposed bare glass down the side of the bulb. Four wavelengths now, verified by freezing the slosh at four points across its cycle" },
       { kind: "Changed", text: "COLOUR COMES FROM `currentColor` THROUGHOUT, the liquid and bubbles via `fill-opacity`. No token of its own, no prop to thread, and correct in all seven brand modes. Under `prefers-reduced-motion` nothing moves but STATE SURVIVES \u2014 a raised level stays raised and the bubbles hold a static frame, so \u201crunning\u201d still looks different from \u201cidle\u201d. Only the movement between them is traded away" },
+    ],
+  },
+  {
+    version: "v0.29.0",
+    date: "2026-08-19",
+    changes: [
+      { kind: "Fixed", text: "TWELVE RADIUS REFERENCES POINTED AT TOKENS THAT NO LONGER EXIST, and every one was silently rendering radius 0. The radius value-naming migration renamed the ladder (`shape/xs` \u2192 `shape/4`) but did not follow it into COMPONENT CSS \u2014 `accessibility-bar.css` (3), `tabs.css` (7), and two docs pages. This is not new drift from a merge: main carried the same dangling names. It surfaced as a visible defect \u2014 the bar's font-size buttons had square corners because `--sa-shape-xs` resolved to nothing. Worth noting the gap: the tokens contract test checks dangling `var()` in GENERATED css only, so component stylesheets have no such gate" },
+      { kind: "Fixed", text: "THE BAR'S THREE SEPARATORS SAT HIGH \u2014 y=7 in a 46px bar where every control around them was centred at 13. `align-self: stretch` is right for a rule with no length and ACTIVELY WRONG for one with a length: a flex item with a definite cross size treats stretch as flex-start. It fails silently, because the rule is the right size and the right colour, just in the wrong place \u2014 any check measuring the divider alone passes it. Divider now sets `align-self: center` whenever an explicit length is given" },
+      { kind: "Fixed", text: "HOVER WAS A SQUARE, A CIRCLE AND A PILL. Five controls in one row, sharing one set of states, carried THREE corner treatments \u2014 and the master had the same split: shape/4 on the steppers and reset, shape/full on the accessibility button and Language, shape/8 on the States specimen chip. Both sides are now shape/4; 42 nodes across the 9 Figma variants were rebound. The defect originated in Figma, not the code" },
+      { kind: "Fixed", text: "THE HOVER UNDERLINE RAN THROUGH THE LAUNCH GLYPH. `text-decoration` on an anchor is drawn across every inline descendant, and `text-decoration: none` on the child CANNOT remove a line the parent is drawing \u2014 the only fix is to decorate the label span instead of the anchor" },
+      { kind: "Fixed", text: "THE DOCUMENTATION SPECIMENS HAD NO FLAG. `flagSrc` is optional and not one of the three previews passed it, so the docs page demonstrated a bar the estate never actually ships \u2014 every real consumer passes the emblem chip. All three now reference the one national emblem asset rather than copying it" },
+      { kind: "Changed", text: "THE LAST 8 HAND-ROLLED RULES ARE STANDARDISED ON inverse-subtle (design decision). They were brand-surface rules at THREE different opacities \u2014 white at 20, 25 and 30% \u2014 none of them chosen, just whatever was nearest. All 22 separator rules in the estate now render <Divider>; the 23rd was never a divider, it is a saffron accent under a login heading. This one MOVES PIXELS \u2014 those rules become slightly more present \u2014 which is exactly why it was held for a human call instead of being folded in with the greys" },
+      { kind: "Fixed", text: "TWO GAPS IN THE BAR WERE WRONG BY 10PX AND 4PX, and only a measured side-by-side found them. The master nests the Government-of-India label with its launch glyph in a `Link` frame (gap 2) and the language glyph with its label in a `Label` frame (gap 4); the code used ONE uniform gap on the row, so the launch glyph sat 10px from the word it belongs to and the caret 4px too far. The code now mirrors the master's nesting. Gov block 206 \u2192 196, exactly Figma's; language 120 \u2192 116 against 117" },
+      { kind: "Fixed", text: "\u201cSELECTION LAYER\u201d NO LONGER SELECTS ANYTHING \u2014 renamed to `reset hit-area` across all 9 variants. The centre stopped carrying the lit state when it moved to the direction buttons; a layer name describing a highlight that no longer exists is the same class of stale artifact as a wrong comment" },
+      { kind: "Added", text: "FULL FIGMA\u2194CODE VERIFICATION OF THE BAR, measured rather than eyeballed: bar 1440\u00d746, fill #005EB9, flag 33\u00d722, font-size group 96 with 8/8 gaps, steppers 24\u00d724, icon buttons 28\u00d728, dividers 1\u00d720, all seven glyphs, type 14/20 at weights 400/400/500 \u2014 every one matching. States checked against \u00a704 and resolved live: Default transparent, Hover #ffffff14 = white 8%, Active #ffffff29 = white 16%, and Focus-visible confirmed with a REAL Tab press at 2px solid rgb(255,255,255) offset 2px" },
     ],
   },
   {
@@ -874,7 +889,7 @@ export default function ChangelogPage(): React.JSX.Element {
                       color: "var(--sa-on-bg-brand-primary-bolder)",
                       background: "var(--sa-bg-brand-primary-bolder)",
                       padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
-                      borderRadius: "var(--sa-shape-sm)",
+                      borderRadius: "var(--sa-shape-6)",
                     }}
                   >
                     Current
@@ -912,7 +927,7 @@ export default function ChangelogPage(): React.JSX.Element {
                         color: "var(--sa-on-bg-brand-primary-bolder)",
                         background: KIND_COLOR[change.kind],
                         padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
-                        borderRadius: "var(--sa-shape-sm)",
+                        borderRadius: "var(--sa-shape-6)",
                       }}
                     >
                       {change.kind}

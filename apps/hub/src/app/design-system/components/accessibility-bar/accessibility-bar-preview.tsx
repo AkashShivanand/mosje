@@ -3,6 +3,20 @@
 import * as React from "react";
 import { AccessibilityBar } from "@mosje/design-system";
 
+/**
+ * The specimens showed NO FLAG until 2026-08-19, because `flagSrc` is optional and none
+ * of them passed it — so the documentation demonstrated a bar the estate never ships.
+ * Every real consumer (the website masthead, pm-ajay) passes the emblem chip.
+ *
+ * The asset is referenced rather than copied: one national emblem, one file. The hub
+ * serves `public/` at the root, so this resolves from the /design-system routes too.
+ */
+const GOV_LINK = {
+  href: "#",
+  label: "Government of India",
+  flagSrc: "/website/images/Indian-Flag.svg",
+} as const;
+
 /** Bordered "viewport" so a full-width bar reads as a contained specimen. */
 function Frame({ children }: { children: React.ReactNode }): React.JSX.Element {
   return (
@@ -25,6 +39,7 @@ export function AccessibilityBarPreview(): React.JSX.Element {
     <Frame>
       <AccessibilityBar
         layout="fluid"
+        govLink={GOV_LINK}
         accessibilityHref="#"
         language={{ label: "English" }}
       />
@@ -39,6 +54,7 @@ export function AccessibilityBarNavyPreview(): React.JSX.Element {
       <div data-brand="navy">
         <AccessibilityBar
           layout="fluid"
+          govLink={GOV_LINK}
           accessibilityHref="#"
           language={{ label: "English" }}
         />
@@ -57,6 +73,7 @@ export function AccessibilityBarFontSizePreview(): React.JSX.Element {
     <Frame>
       <AccessibilityBar
         layout="fluid"
+        govLink={GOV_LINK}
         showSkip={false}
         accessibility={false}
         language={false}

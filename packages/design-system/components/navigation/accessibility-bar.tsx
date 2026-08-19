@@ -297,8 +297,13 @@ export function AccessibilityBar({
             // eslint-disable-next-line @next/next/no-img-element
             <img className="sa-abar__flag" src={govLink.flagSrc} alt="" />
           )}
-          <span>{govLink.label}</span>
-          <Icon name="launch" size={LAUNCH_ICON_SIZE} className="sa-abar__ext" aria-hidden />
+          {/* The label and its launch glyph are ONE unit, mirroring the master's `Link`
+              frame. Without the wrapper the row's 12px gap applied between them too,
+              pushing the glyph 10px away from the word it belongs to. */}
+          <span className="sa-abar__govlink">
+            <span className="sa-abar__govlabel">{govLink.label}</span>
+            <Icon name="launch" size={LAUNCH_ICON_SIZE} className="sa-abar__ext" aria-hidden />
+          </span>
         </a>
 
         <div className="sa-abar__end">
@@ -379,8 +384,12 @@ export function AccessibilityBar({
 
           {language && (
             <button type="button" className="sa-abar__icbtn has-text" aria-label="Select language" title="Select language" onClick={language.onClick}>
-              <Icon name="translate_indic" size={ICON_SIZE} aria-hidden />
-              {language.label && <span>{language.label}</span>}
+              {/* Glyph + label are the master's `Label` frame — 4px apart, not the 8px
+                  the row uses between that unit and the caret. */}
+              <span className="sa-abar__langlabel">
+                <Icon name="translate_indic" size={ICON_SIZE} aria-hidden />
+                {language.label && <span>{language.label}</span>}
+              </span>
               <Icon name="arrow_drop_down" size={ICON_SIZE} aria-hidden />
             </button>
           )}

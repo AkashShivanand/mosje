@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation";
-import { SidebarNav } from "@mosje/design-system";
+import { SidebarNav, Divider } from "@mosje/design-system";
 import { GovTopBar, GovMasthead } from "./gov-chrome";
 
 const CITIZEN_NAV = [
@@ -40,7 +40,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
           <span>© 2026 Ministry of Social Justice &amp; Empowerment, Government of India · SAMBAL</span>
           <div className="flex items-center gap-3">
             <a href="#" className="hover:underline">Terms &amp; Conditions</a>
-            <span className="h-3 w-px bg-white/25" />
+            <Divider orientation="vertical" tone="inverse-subtle" length={12} />
             <a href="#" className="hover:underline">Privacy Policy</a>
           </div>
         </div>
