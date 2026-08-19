@@ -756,34 +756,39 @@ no store, no router, no redirect.
 Composition is always **`Band` → `Container` → content**. A bare `Container` where a `Band`
 belongs produces a tint that stops short of the viewport edge.
 
-### Floating widgets — the right wall, not a corner
+### Floating widgets — the right wall, and it is not empty
 
-**There is one place a floating widget goes: the right wall, vertically centred.**
-`DemoDock` is the only one today, and it is a tab flush to that edge rather than a
-detached circle in a corner.
+**Floating widgets live on the right wall.** `DemoDock` is the only one today. Two rules
+govern it, and both exist because a fixed position was wrong twice:
 
-The corner is the wrong home and the estate has now proven it twice:
+**1. The rail dodges what is already on the wall.** The wall is not empty, and the estate's
+own measurements prove it — the walls are *inverted* between zones:
 
-- **Bottom-left** is `PortalLoginShell`'s "Signing Into" strip. A floating widget there
-  needs a per-route opt-in to dodge it — an opt-in a future portal can forget.
-- **Bottom-right** is the UX4G accessibility widget's, and this estate must not restyle
-  its geometry. Anything sharing that corner has to *measure* it — and it is
-  `display: none` on every page carrying an `AccessibilityBar`
-  (`.claude/rules/accessibility-entry-point.md`), so the measurement silently fails and
-  the widget floats above an empty corner.
+| Surface | Left wall | Right wall |
+| --- | --- | --- |
+| Website | free | **Important Links** (`fixed right-0 top-[42%]`, 37×175) |
+| Docs / portals | **sidebar nav**, full height | free |
 
-The middle of the right wall is empty on every surface in the estate, so there is
-nothing to measure, nothing to stack above, and no offset to keep in sync.
+No fixed choice works, so the position is measured. `useWallRailOffset` finds the largest
+free vertical band on the wall and centres the rail in the one nearest the middle of the
+screen. On the docs that is the whole viewport, so nothing changes; on the website the rail
+sits clear of Important Links.
 
-> **A placement that has to be computed is a placement that can be computed wrong.**
-> This one cannot, because there is nothing to compute.
+> **Any fixed widget on the right wall must mark itself `data-sa-wall-occupant`.** That is
+> the whole contract — one attribute, and every widget on the rail adapts. `ImportantLinks`
+> carries it. A widget taller than 60% of the viewport is treated as scenery rather than an
+> obstacle, because a full-height sidebar cannot be dodged.
 
-A `useCornerRailOffset` hook existed briefly for the second case, stacking widgets
-above whatever occupied the bottom-right corner. It was **retired** when `DemoDock`
-left that corner: nothing consumed it, and a shared primitive with no consumer reads
-as governance while governing nothing — the same rule this document applies to an
-orphaned Tier-3 token. If a chatbot ever does want that corner, it is one file in git
-history away; do not re-add it speculatively.
+**2. The panel opens on the side that covers less.** `usePanelSide` measures the form
+underneath and opens the panel away from it. On the NMBA login route the panel used to sit
+on top of both credential fields and the submit button — hit-testing the mobile input
+returned a demo-accounts row. **The rail never moves; only the panel adapts**, so muscle
+memory for the trigger holds.
+
+**Neither rule is the per-route flag that was rejected.** That was a hand-set boolean a new
+portal could forget, which relocated the widget for no reason a viewer could see. These
+measure, and when the widget moves it moves *around something you can see*. Legibility is
+the difference.
 
 ---
 

@@ -113,6 +113,7 @@ export function ImportantLinks() {
         aria-haspopup="dialog"
         aria-expanded={isOpen}
         onClick={() => setIsOpen(true)}
+        data-sa-wall-occupant
         className="fixed right-0 top-[42%] z-[1002] flex flex-col items-center gap-2 rounded-l-lg bg-primary px-2 py-4 text-white shadow-md transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
       >
         <Icon name="link" size={20} aria-hidden="true" />
