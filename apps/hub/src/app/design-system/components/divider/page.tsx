@@ -38,7 +38,7 @@ const previewLabel: React.CSSProperties = {
 };
 const panel: React.CSSProperties = {
   background: "var(--sa-bg-neutral-subtler)",
-  borderRadius: "var(--sa-shape-md)",
+  borderRadius: "var(--sa-shape-8)",
   padding: "var(--sa-padding-l)",
   marginBottom: "var(--sa-stack-m)",
 };

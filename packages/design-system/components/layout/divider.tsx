@@ -65,10 +65,18 @@ export function Divider({
   className,
 }: DividerProps): React.JSX.Element {
   // The rule's thickness is always the hairline; `length` is the other axis.
-  const style: React.CSSProperties | undefined = length
+  const len = typeof length === "number" ? `${length}px` : length;
+  // `align-self: stretch` is right for a rule with no length — it matches the tallest
+  // sibling. With an explicit length it is actively WRONG: a flex item with a definite
+  // cross size treats `stretch` as `flex-start`, so the rule pins to the TOP of the row
+  // instead of centring. That is how the bar's three separators ended up sitting at
+  // y=7 in a 46px bar (they should sit at 13) while every control around them was
+  // centred — visible as a misalignment, and invisible to any check that only measured
+  // the rule itself.
+  const style: React.CSSProperties | undefined = len
     ? orientation === "horizontal"
-      ? { width: typeof length === "number" ? `${length}px` : length }
-      : { height: typeof length === "number" ? `${length}px` : length }
+      ? { width: len }
+      : { height: len, alignSelf: "center" }
     : undefined;
 
   const classes = cn("sa-divider", `sa-divider--${orientation}`, `sa-divider--${tone}`, className);

@@ -79,7 +79,7 @@
   gap: var(--sa-inline-2);
   padding: var(--sa-layout-tab-track);
   border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-lg);
+  border-radius: var(--sa-shape-12);
   background-color: var(--sa-bg-neutral-subtler);
 }
 
@@ -127,7 +127,7 @@
 /* Pill — a filled shape inset from the track by `layout/tab/track` on the two
    cross-axis edges; the main axis is measured from the selected button. */
 .ds-tabs--pill .ds-tabs__indicator {
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   background-color: var(--sa-bg-brand-primary-bolder);
   box-shadow: var(--sa-elevation-card);
 }
@@ -176,7 +176,7 @@
    what keeps an underline the width of its own label rather than of a column. */
 .ds-tabs--track-enclosed .ds-tabs__tab {
   flex: 1 1 0;
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
 }
 
 .ds-tabs--track-none .ds-tabs__tab {
@@ -184,7 +184,7 @@
   /* Invisible on its own — these tabs have no resting fill. It exists so the
      focus ring, which is a spread shadow and therefore inherits this radius,
      resolves to shape/md (4 + 4) instead of a hard square corner. */
-  border-radius: var(--sa-shape-xs);
+  border-radius: var(--sa-shape-4);
 }
 
 .ds-tabs--horizontal .ds-tabs__tab {
@@ -527,7 +527,7 @@
   justify-content: center;
   padding: var(--ds-tabs-pad-y) var(--sa-padding-12);
   border: none;
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   background: transparent;
   color: var(--sa-icon-neutral-subtle);
   cursor: pointer;
@@ -579,7 +579,7 @@
   max-width: var(--sa-container-narrow);
   padding: var(--sa-padding-4);
   border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   background-color: var(--sa-bg-neutral-base);
   box-shadow: var(--sa-elevation-dropdown);
   font-family: var(--sa-font-latin);
@@ -591,7 +591,7 @@
   gap: var(--sa-inline-8);
   padding: var(--sa-padding-8) var(--sa-padding-12);
   border: none;
-  border-radius: var(--sa-shape-xs);
+  border-radius: var(--sa-shape-4);
   background: transparent;
   color: var(--sa-text-neutral-base);
   font-size: var(--sa-type-label-1-size);

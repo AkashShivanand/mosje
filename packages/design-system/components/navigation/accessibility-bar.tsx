@@ -301,7 +301,7 @@ export function AccessibilityBar({
               frame. Without the wrapper the row's 12px gap applied between them too,
               pushing the glyph 10px away from the word it belongs to. */}
           <span className="sa-abar__govlink">
-            <span>{govLink.label}</span>
+            <span className="sa-abar__govlabel">{govLink.label}</span>
             <Icon name="launch" size={LAUNCH_ICON_SIZE} className="sa-abar__ext" aria-hidden />
           </span>
         </a>

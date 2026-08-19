@@ -80,6 +80,39 @@ Two things worth keeping:
   already did — so the bar's two links now behave identically instead of one shouting and
   one whispering.
 
+## Five defects found by looking at it, 2026-08-19
+
+A measured comparison had already declared the bar a match. Looking at it side by side
+found five things measurement had not been pointed at. Recorded because the lesson is
+the useful part: **a passing measurement only covers what you thought to measure.**
+
+| # | Defect | Cause |
+|---|---|---|
+| 1 | Launch glyph ~1px closer to the label than in Figma | Figma's text node has a 3px trailing bearing, the browser's advance 1.1px. Box gap is 2 on both. **Not fixed** — see below. |
+| 2 | The three separators sat **high** in the bar | `align-self: stretch` on a rule with a *definite* height behaves as `flex-start`. They rendered at y=7 in a 46px bar instead of 13, while every control around them was centred. |
+| 3 | No flag in the documentation specimens | `flagSrc` is optional and no preview passed it, so the docs demonstrated a bar the estate never ships. |
+| 4 | Hover was a square, a circle **and** a pill | Three corner treatments across five controls in one row — and the master had the same split. |
+| 5 | The hover underline ran through the launch glyph | `text-decoration` on the anchor is drawn across every inline descendant; `text-decoration: none` on the child cannot remove it. |
+
+**Defect 2 is the one worth remembering.** `align-self: stretch` is correct for a rule
+with no length and actively wrong for one with a length — and it fails *silently*: the
+rule is the right size and the right colour, just in the wrong place. Any check that
+measures the divider alone passes it. Divider now sets `align-self: center` whenever an
+explicit `length` is given.
+
+**Defect 4 originated in Figma, not the code.** The master carried `shape/4` on the
+steppers and the reset, `shape/full` on the accessibility button and Language, and
+`shape/8` on the States specimen chip — three radii for one class of control. Both sides
+are now `shape/4` (the majority, and the rounded-square language the specimen already
+used); 42 nodes across the 9 variants were rebound.
+
+**Defect 1 is left alone, deliberately.** Measured by pixel: Figma's visual gap is **6px**,
+the code's **4.93px**. The *structural* value matches exactly — a 2px box gap, the master's
+`inline/2` — and the residual 1.07px is Figma and the browser disagreeing about the same
+font's trailing bearing (3px vs 1.13px). Closing it would mean a 3px gap, and the spacing
+ladder has no 3. A 1px font-metric difference is not worth an off-ladder literal; it is the
+same class as the 1px differences already recorded on the text widths.
+
 ## Interaction states (§ 04 of the Figma documentation page)
 
 Every **clickable control** on the bar resolves through four states. The Figma page
