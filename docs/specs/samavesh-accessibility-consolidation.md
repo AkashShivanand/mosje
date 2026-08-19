@@ -42,11 +42,18 @@ with a 0×0 rect, and the panel still opens (`right: -530px → 0px`).
 | Spacing, link highlight, dark mode | UX4G widget |
 | Entry point to all of the above | The bar's accessibility icon; the FAB is hidden where the bar exists, and returns where it does not |
 
-**Known overlap, flagged not resolved:** the widget's panel still carries its own
-"Bigger Text" control under Content Adjustment. Two text-size mechanisms can now
-both be reached, and they are not aware of each other. Whether to hide the widget's
-Bigger Text row, or to leave both, is a decision for the human — it needs a call on
-whether suppressing part of an official MeitY widget is acceptable.
+**The overlap, RESOLVED 2026-08-19: both stay.** The widget's panel carries its own
+"Bigger Text" control under Content Adjustment, so the estate now has two text-size
+mechanisms that are independent and unaware of each other. The decision is to keep
+both: **the bar's A−/A/A+ exists by default and works**, and the widget's panel does
+its job exactly as MeitY ships it. Nothing inside the panel is suppressed.
+
+The line this draws is worth stating, because the two acts look similar and are not:
+**the floating button is chrome; the panel is the product.** Hiding the redundant FAB
+is a decision about which door a page offers, and the door is ours. Reaching into an
+official government widget to remove a control a citizen is entitled to is a different
+act, and the estate does not make it. Recorded as rule 7 of
+`.claude/rules/accessibility-entry-point.md`.
 
 **Measured reach, recorded honestly:** on the live public homepage only **14%** of
 text elements actually resize, because that app's markup is authored in hardcoded
