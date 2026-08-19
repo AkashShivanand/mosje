@@ -13,7 +13,7 @@ by `docs/specs/samavesh-accessibility-consolidation.md`, and both apply at once.
 
 | Capability | Owner |
 |---|---|
-| Text size | **The bar's A−/A/A+ stepper** — root `font-size`, persisted in `localStorage` |
+| Text size | **The bar's A−/A/A+ stepper** — root `font-size`, persisted in `localStorage`, on by default. The widget's own "Bigger Text" also remains, untouched (rule 7) |
 | Contrast, saturation, invert | The UX4G widget |
 | Spacing, link highlight, dyslexia font, cursor, dark mode | The UX4G widget |
 | **Entry point to all of the above** | **The bar's accessibility icon** where a bar exists; the widget's floating button where one does not |
@@ -56,11 +56,17 @@ by `docs/specs/samavesh-accessibility-consolidation.md`, and both apply at once.
    a bug that presents exactly as "the button does nothing". Replay the click on the
    vendor's trigger element instead, which satisfies both listeners. Defer it to the next
    task (`setTimeout(…, 0)`); opening inline loses the race against the closer every time.
-7. **Do not suppress parts of the widget's panel without a decision.** The panel carries
-   its own "Bigger Text" row under Content Adjustment, which now overlaps the bar's
-   stepper — two text-size mechanisms that are not aware of each other. Whether to hide
-   that row is a **human call**, because it means suppressing part of an official MeitY
-   widget. Flagged, open, and not to be resolved unilaterally.
+7. **Never suppress any part of the widget's panel. DECIDED 2026-08-19.** The panel
+   carries its own "Bigger Text" row under Content Adjustment, which overlaps the bar's
+   stepper — two text-size mechanisms, independent and unaware of each other. **Both
+   stay.** The bar's A−/A/A+ is present by default and does its job; the widget's panel
+   does its job exactly as MeitY ships it. Hiding a row inside an official government
+   widget is not a change this estate makes.
+
+   Note what this rule does and does not touch: **the FAB is chrome, the panel is the
+   product.** Hiding the redundant floating *button* (rules 2–4) is a decision about
+   which door a page offers. Reaching inside the *panel* to remove a control the citizen
+   is entitled to is a different act entirely, and it is out of bounds.
 
 ## Why this rule exists
 
