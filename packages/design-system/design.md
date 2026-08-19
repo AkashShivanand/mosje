@@ -756,39 +756,34 @@ no store, no router, no redirect.
 Composition is always **`Band` → `Container` → content**. A bare `Container` where a `Band`
 belongs produces a tint that stops short of the viewport edge.
 
-### Floating widgets — the bottom-right corner rail
+### Floating widgets — the right wall, not a corner
 
-**There is one corner for floating widgets, and it stacks.** Anything fixed and floating —
-the UX4G accessibility trigger, `DemoDock`, a chatbot launcher when one exists — belongs
-bottom-right, on a rail whose offsets are **measured, never written down**:
+**There is one place a floating widget goes: the right wall, vertically centred.**
+`DemoDock` is the only one today, and it is a tab flush to that edge rather than a
+detached circle in a corner.
 
-- The rail rests **32px** from the bottom when the corner below is empty.
-- When something is already there, the next widget sits **16px above it**. Two occupants
-  stack the same way, from the topmost.
+The corner is the wrong home and the estate has now proven it twice:
 
-A widget joins the rail by calling **`useCornerRailOffset(ref)`**
-(`foundations/corner-rail.ts`), which keeps `--sa-corner-rail-bottom` correct on its
-element. A widget that merely *occupies* the corner without being positioned by the rail
-sets **`data-sa-corner-occupant`** on its own element and everything above it moves up —
-no change to any other file.
+- **Bottom-left** is `PortalLoginShell`'s "Signing Into" strip. A floating widget there
+  needs a per-route opt-in to dodge it — an opt-in a future portal can forget.
+- **Bottom-right** is the UX4G accessibility widget's, and this estate must not restyle
+  its geometry. Anything sharing that corner has to *measure* it — and it is
+  `display: none` on every page carrying an `AccessibilityBar`
+  (`.claude/rules/accessibility-entry-point.md`), so the measurement silently fails and
+  the widget floats above an empty corner.
 
-Two rules make this hold rather than merely look right today:
+The middle of the right wall is empty on every surface in the estate, so there is
+nothing to measure, nothing to stack above, and no offset to keep in sync.
 
-- **Never hardcode a stacking offset.** The rail's predecessor assumed the accessibility
-  widget was always present and always visible and hardcoded `108px`. That widget is
-  hidden on every page carrying an `AccessibilityBar`
-  (`.claude/rules/accessibility-entry-point.md`), so the FAB floated 108px above an empty
-  corner across most of the estate — a defect no page-level review caught, because the
-  number *looked* deliberate.
-- **A launcher moves the rail; an open panel does not.** Only occupants under 140px tall
-  count. When a chatbot's conversation panel opens in the same corner, shoving everything
-  to the top of the viewport is far worse than the overlap it would avoid.
->
-> **Changed 13 August 2026.** Four widths shipped simultaneously: UX4G specified 1200,
-> `container/content` said 1280 and nothing consumed it, 22 website section files hardcoded
-> that same 1280 beside it, `SiteHeader` defaulted to 1320, and `PortalLoginShell`'s chrome
-> used 1536. Above 1320px the masthead's column ran 20px wider each side than the page, so
-> the National Emblem did not line up with the content below it.
+> **A placement that has to be computed is a placement that can be computed wrong.**
+> This one cannot, because there is nothing to compute.
+
+A `useCornerRailOffset` hook existed briefly for the second case, stacking widgets
+above whatever occupied the bottom-right corner. It was **retired** when `DemoDock`
+left that corner: nothing consumed it, and a shared primitive with no consumer reads
+as governance while governing nothing — the same rule this document applies to an
+orphaned Tier-3 token. If a chatbot ever does want that corner, it is one file in git
+history away; do not re-add it speculatively.
 
 ---
 
@@ -1820,11 +1815,15 @@ building product UI and find yourself about to import from here, stop —
 these are not the components you want.
 
 #### DemoDock
-**Purpose**: The single floating demo console — one FAB on the bottom-right
-**corner rail** (see `useCornerRailOffset` under Foundations: it rests 32px
-from the bottom, and stacks 16px above the UX4G accessibility widget's
-trigger, or any future chatbot launcher, when one is actually there),
-opening a tabbed panel: **Sign in** (demo credentials for the current login
+**Purpose**: The single floating demo console — a **folding rail** flush to
+the right wall at mid-height (see "Floating widgets" under Foundations). At
+rest it is a tab: a 26px flask in a tinted cell, plus a vertical wordmark.
+Engaged, the wordmark collapses and it unfolds *downward* into three doors —
+flask, colour, apps — all opening the same tabbed panel, pre-selected. The
+flask never moves across the fold, which is what makes it read as unfolding
+rather than as a popup: the container is anchored by its `top`, and its width
+is constant (widening a right-anchored box slides its centred children left).
+The panel: **Sign in** (demo credentials for the current login
 route, `DemoAccountsPanel`, shown — and shown *first* — only when `pathname`
 is itself a login route; see `isLoginRoute`), **Apps** (cross-zone
 destination search, `AppSwitcherPanel`), **Colour** (a wrapping grid of
