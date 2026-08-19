@@ -27,11 +27,20 @@
   min-height: var(--sa-cmp-accessibilityBar-height);
   align-items: center;
   justify-content: space-between;
+  /* Spacing: main's value-named tokens (the migration landed while this branch was
+     open). Typography: this branch's body-2 correction. Both are wanted — neither
+     side is dropped. */
   gap: var(--sa-inline-16);
   padding: var(--sa-padding-2) var(--sa-padding-32);
-  /* UX4G Navbar spec: Noto Sans Medium, 12/16 in the bar. */
-  font-size: var(--sa-type-label-2-size);
-  line-height: var(--sa-type-label-2-lh);
+  /* Body/body-2 — 14/20. It was label-2 (12/16) until 2026-08-19, which was a real
+     divergence and not a rounding one: the master sets Body/body-2 on both links, so
+     every label in the bar rendered two pixels small against the design. It is also the
+     better end of the argument — 12px is well under the 16px body floor the guidelines
+     set, and this bar carries the skip link, which is a WCAG bypass mechanism rather
+     than decoration. The language label is Label/label-1, which is the same 14/20 and
+     differs only in weight (see .sa-abar__icbtn.has-text). */
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   /* Figma binds this to type/label/tracking, which is 0. It was a raw 0.1px here
      until 2026-08-18 — a literal that no token backed and that disagreed with the
      master by 0.1px per character. */
@@ -76,11 +85,18 @@
   align-items: center;
   gap: var(--sa-inline-12);
   color: inherit;
-  font-weight: 500;
-  text-decoration: underline;
+  /* Regular, not 500 — the master's Body/body-2 is Regular, and the bar was rendering
+     the one label that should be quietest as the heaviest thing in it. */
+  font-weight: 400;
+  /* NO RESTING UNDERLINE (removed 2026-08-19, design decision). The master has none.
+     The affordance is not lost: it underlines on hover and on focus, which is the same
+     treatment the skip link beside it already uses — so the two links in this bar now
+     behave identically instead of one shouting and one whispering. */
+  text-decoration: none;
   text-underline-offset: 2px;
 }
-.sa-abar__gov:hover { text-decoration-thickness: 2px; }
+.sa-abar__gov:hover,
+.sa-abar__gov:focus-visible { text-decoration: underline; }
 .sa-abar__flag {
   height: var(--sa-cmp-accessibilityBar-flagHeight);
   width: var(--sa-cmp-accessibilityBar-flagWidth);
@@ -95,6 +111,11 @@
   align-items: center;
   gap: var(--sa-inline-16);
 }
+/* Label/label-1 — same 14/20 as the links, but Medium. The one weight difference the
+   master actually specifies, and it is what stops the language selector reading as a
+   third link rather than a control. */
+.sa-abar__icbtn.has-text { font-weight: 500; }
+
 .sa-abar__skip { color: inherit; text-decoration: none; }
 .sa-abar__skip:hover { text-decoration: underline; }
 
@@ -164,18 +185,22 @@
    ACTIVE carries TWO senses, so both are written against the same token rather
    than two look-alike values:
      1. a control being PRESSED, and
-     2. the font-size pill while the reader is AWAY FROM the default size.
+     2. the STEP BUTTON matching the direction the reader has moved in — A− below the
+        default size, A+ above it, neither at it.
 
-   Sense 2 was inverted on 2026-08-18 ("Option B"). It previously lit at the
-   DEFAULT, which said nothing useful and actively failed the returning reader:
-   the scale persists, so 90 / 110 / 120 % all rendered identically to an
-   untouched bar. Lighting on deviation makes the highlight mean "this page is
-   not at the default size, and this is the control that undoes it". The Figma
-   States card was reworded to match.
+   Sense 2 has moved twice, and the history is the argument for where it landed. It
+   first lit the centre pill AT the default, which said nothing: the scale persists, so
+   a reader returning at 120 % saw a bar identical to an untouched one. It was then
+   inverted (2026-08-18) to light the centre when AWAY from the default — better, but
+   still wrong in two ways that only using it revealed. The highlight sat on a button
+   nobody had pressed, so it read as "the centre is selected"; and one indicator cannot
+   express DIRECTION, so 90 % and 120 % looked the same. Lighting the direction button
+   (2026-08-19) fixes both: press A+ and A+ lights, and a lit A− versus a lit A+ says
+   which way you went. The centre is now purely the reset.
 
    Every CLICKABLE control on the bar is covered: the three font-size steps and
    the two icon buttons. The Government-of-India and skip links are deliberately
-   NOT tinted — they are text links and carry the underline affordance instead;
+   NOT tinted — they are text links, and they underline on hover and focus instead;
    tinting a text link would invent a control affordance the master does not have.
 
    Ordering is load-bearing: :active is declared AFTER :hover at equal
@@ -188,8 +213,8 @@
 }
 .sa-abar__fsbtn:active:not(:disabled),
 .sa-abar__icbtn:active,
-/* `.is-active` on the pill = the reader is away from the default size. */
-.sa-abar__fsbtn.is-current.is-active {
+/* `.is-active` marks the DIRECTION moved in — never the centre. */
+.sa-abar__fsbtn.is-active {
   background-color: var(--sa-cmp-accessibilityBar-pillBg);
 }
 

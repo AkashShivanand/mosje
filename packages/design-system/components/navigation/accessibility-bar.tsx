@@ -312,12 +312,18 @@ export function AccessibilityBar({
           {fontSize && (
             <>
               <div className="sa-abar__fs" role="group" aria-label="Text size">
-                <button type="button" className="sa-abar__fsbtn" onClick={dec} disabled={scaleIx === 0} aria-label="Decrease text size">
+                <button type="button" className={cn("sa-abar__fsbtn", scaleIx < DEFAULT_SCALE_INDEX && "is-active")} onClick={dec} disabled={scaleIx === 0} aria-label="Decrease text size">
                   <Icon name="text_decrease" size={ICON_SIZE} aria-hidden />
                 </button>
                 {/*
-                  THE PILL LIGHTS WHEN THE READER HAS CHANGED THE SIZE — not when they
-                  are at the default. Inverted on 2026-08-18 (design decision "Option B").
+                  THE CENTRE NO LONGER LIGHTS AT ALL. It is purely the reset.
+
+                  It briefly carried the "you are away from default" highlight (2026-08-18),
+                  and that was wrong in a way only using it revealed: the highlight landed on
+                  a button the reader had not pressed, so it read as "the centre is selected",
+                  and it could not express DIRECTION — 90 % and 120 % looked identical. The
+                  lit state moved to A− / A+ on 2026-08-19: press A+ and A+ lights, which is
+                  what a person expects, and a lit A− vs a lit A+ says which way you went.
 
                   It read the other way until then, which left the returning reader with
                   no signal at all: the scale now PERSISTS, so someone who chose 120 % last
@@ -337,7 +343,7 @@ export function AccessibilityBar({
                 */}
                 <button
                   type="button"
-                  className={cn("sa-abar__fsbtn", "is-current", scaleIx !== DEFAULT_SCALE_INDEX && "is-active")}
+                  className={cn("sa-abar__fsbtn", "is-current")}
                   onClick={reset}
                   aria-label={
                     scaleIx === DEFAULT_SCALE_INDEX
@@ -347,7 +353,7 @@ export function AccessibilityBar({
                 >
                   <Icon name="font_download" size={ICON_SIZE} aria-hidden />
                 </button>
-                <button type="button" className="sa-abar__fsbtn" onClick={inc} disabled={scaleIx === FONT_SCALES.length - 1} aria-label="Increase text size">
+                <button type="button" className={cn("sa-abar__fsbtn", scaleIx > DEFAULT_SCALE_INDEX && "is-active")} onClick={inc} disabled={scaleIx === FONT_SCALES.length - 1} aria-label="Increase text size">
                   <Icon name="text_increase" size={ICON_SIZE} aria-hidden />
                 </button>
               </div>

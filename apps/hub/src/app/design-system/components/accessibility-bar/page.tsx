@@ -168,16 +168,18 @@ export default function AccessibilityBarPage(): React.JSX.Element {
             { token: "(none)", value: "Default", description: "Resting. No background; the glyph is icon/neutral/inverse." },
             { token: "--sa-cmp-accessibilityBar-hoverBg", value: "Hover · white 8%", description: "Figma overlay/on-brand/hover (#ffffff14). Carried an invented 12% until 2026-08-18.", isColor: true },
             { token: "--sa-text-neutral-inverse", value: "Focus-visible · 2px ring", description: "Never removed. Inverse ink, NOT focus/ring — see the warning below.", isColor: true },
-            { token: "--sa-cmp-accessibilityBar-pillBg", value: "Active · white 16%", description: "Figma overlay/on-brand/pressed (#ffffff29). Pressed — or the font-size pill while away from the default size.", isColor: true },
+            { token: "--sa-cmp-accessibilityBar-pillBg", value: "Active · white 16%", description: "Figma overlay/on-brand/pressed (#ffffff29). Pressed — or the step button matching the direction moved in (A− below default, A+ above). Never the centre.", isColor: true },
           ]}
         />
-        <Callout type="info" title="The pill lights when you have CHANGED the size, not at the default">
-          Inverted on 2026-08-18. It used to light at the default, which said nothing useful and
-          failed the returning reader: the scale <strong>persists</strong>, so someone who chose
-          120% last visit came back to a bar identical to an untouched one — 90 / 110 / 120% were
-          indistinguishable. Lighting on deviation makes it mean{" "}
-          <em>“this page is not at the default size, and this is the control that undoes it”</em>.
-          An unlit pill means 100%.
+        <Callout type="info" title="The direction button lights — never the centre">
+          <strong>A−</strong> lights below the default size, <strong>A+</strong> above it,
+          neither at it. Press <strong>A+</strong> and <strong>A+</strong> lights, which is what
+          a person expects — and a lit <strong>A−</strong> versus a lit <strong>A+</strong> says
+          which way you went. The centre is purely the reset.
+          <br /><br />
+          It lit the <em>centre</em> until 2026-08-19, and that was wrong twice over: the
+          highlight sat on a button nobody had pressed, so it read as “the centre is selected”,
+          and one indicator cannot express direction — 90% and 120% looked identical.
         </Callout>
         <Callout type="info" title="It carries no aria-pressed, deliberately">
           The middle <strong>A</strong> is a reset <em>action</em>, not a toggle — announcing it as
