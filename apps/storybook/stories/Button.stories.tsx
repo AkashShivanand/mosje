@@ -119,7 +119,7 @@ export const OnABrandSurface: Story = {
         display: "flex",
         gap: 12,
         padding: 24,
-        borderRadius: "var(--sa-shape-md)",
+        borderRadius: "var(--sa-shape-8)",
         background: "var(--sa-bg-brand-primary-bolder)",
       }}
     >

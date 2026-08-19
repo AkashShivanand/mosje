@@ -53,7 +53,7 @@ export function OnThisPage(): React.JSX.Element {
             <a
               href={`#${h.id}`}
               className={`docs-toc__item${activeId === h.id ? " is-active" : ""}`}
-              style={h.level === 3 ? { paddingLeft: "var(--sa-padding-xl)" } : undefined}
+              style={h.level === 3 ? { paddingLeft: "var(--sa-padding-24)" } : undefined}
             >
               {h.text}
             </a>

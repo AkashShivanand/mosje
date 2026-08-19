@@ -208,6 +208,14 @@ export const GROUP = new Set([
   // Added 2026-08-12, after an audit found the identical six hexes hand-rolled independently
   // in two docs pages — the drift this namespace exists to prevent.
   "code",
+  // `stroke` is the Tier-2 BORDER WIDTH, and it is not called `border` for exactly the reason
+  // `shape` is not called `radius`: Style Dictionary merges the primitive and semantic
+  // namespaces, so a Tier-2 `border/width/*` would self-reference the Tier-1 `border.width.*`
+  // it aliases. `stroke` is also Figma's own word for the property (STROKE_FLOAT), so the
+  // projection reads the same in both places. Added 2026-08-18 — before it existed, the only
+  // 1px width a designer could bind was a DEPRECATED hand-made `ref/border-width/hairline`,
+  // and 79 documentation-frame borders were sitting on it with nowhere to go.
+  "stroke",
 ]);
 
 /**

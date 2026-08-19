@@ -408,9 +408,13 @@ export function DemoDock({
       const trigger = document.getElementById(UX4G_TRIGGER_ID);
       if (trigger) {
         const rect = trigger.getBoundingClientRect();
-        const bottom = Math.round(window.innerHeight - rect.top + DOCK_GAP_PX);
-        root.style.setProperty("--cmp-demodock-bottom", `${bottom}px`);
-        return;
+        if (rect.top > 0 && rect.top < window.innerHeight && rect.height > 0) {
+          const calculatedBottom = Math.round(window.innerHeight - rect.top + DOCK_GAP_PX);
+          if (calculatedBottom >= 60 && calculatedBottom <= 400) {
+            root.style.setProperty("--cmp-demodock-bottom", `${calculatedBottom}px`);
+            return;
+          }
+        }
       }
       if (attempts++ < UX4G_TRIGGER_MAX_ATTEMPTS) {
         timer = window.setTimeout(measure, UX4G_TRIGGER_POLL_MS);

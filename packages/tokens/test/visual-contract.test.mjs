@@ -39,6 +39,51 @@ const actual = resolveContract(cssText);
  * from this list — the compat layer was retargeted, not renamed.
  */
 const RENAMES = {
+  // 2026-08-18 — THE RADIUS LADDER WAS VALUE-NAMED, matching the spacing ladder renamed the
+  // same day. `shape/md` -> `shape/8`, and the hidden Tier-1 `ref/radius/*` with it.
+  //
+  // The reasoning differs from spacing's and is worth stating, because the FIRST review of this
+  // rename reached the opposite conclusion and was wrong. Radius has no label COLLISION —
+  // there is one semantic family, so `shape/md` was never ambiguous. The argument for keeping
+  // T-shirt names was that they carry a ROLE (`sm` = input, `md` = button) that a number does
+  // not. That argument fails on inspection: the role layer ALREADY EXISTS at Tier 3, as
+  // `control/radius` and `cmp/*/radius`. A button binds `cmp/button/radius`, never `shape/md`.
+  // So role-naming was never Tier 2's job, and value-naming Tier 2 costs nothing while buying
+  // the same expandability spacing gained — plus one mental model across both ladders instead
+  // of two.
+  //
+  // `full` is deliberately NOT renamed. It is a sentinel meaning "fully rounded", not a
+  // measurement, so `shape/999` would assert a precision that does not exist. S7 in
+  // radius-linkage.test.mjs asserts it is the ONLY permitted non-numeric rung, so a second
+  // exception cannot be added quietly.
+  //
+  // The 22 entries were PROVEN value-preserving against the un-regenerated fixture — all nine
+  // assertions passed with the OLD fixture still in place — and only then was it rebaselined.
+  // Per the note at the top of this block they are deleted rather than left to outlive the
+  // move; `git show` this commit to see them.
+
+  // 2026-08-18 — THE SPACING LADDER WAS VALUE-NAMED. `padding/m` -> `padding/16`, and 16px in
+  // every other family too. Two measured reasons, both structural rather than cosmetic.
+  //
+  // (1) COLLISION. Each Tier-2 family mapped the SAME label to a DIFFERENT value: `l` was 16 in
+  // inline, 24 in stack, 20 in padding and 56 in section — 7 of 11 labels collided, and the
+  // inverse was as bad (24px answered to four different names). That is inherited verbatim from
+  // UX4G 3.0, whose own published contract has --ux4g-inline-l=16 and --ux4g-stack-l=24.
+  // standards-precedence.md puts UX4G at authority tier 4: where a standard forces a worse
+  // interface, quality wins and the divergence is recorded. This is that.
+  //
+  // (2) EXPANDABILITY. A T-shirt ramp has no slot between adjacent rungs, so every insertion
+  // renames everything above it. That happened TWICE on 2026-08-17 — inline gained 24, and
+  // padding needed a 6 it could not have. A numeric ladder absorbs any step for free.
+  //
+  // UX4G conformance is untouched: the --ux4g-* layer is emitted independently and never reads
+  // these names, so ux4g-parity.test.mjs asserts the same contract before and after.
+  //
+  // Every entry below is value-preserving, which is the point of declaring them here BEFORE the
+  // fixture is rebaselined — the old fixture is the evidence.
+  // The 50 entries were PROVEN value-preserving against the un-regenerated fixture, then the
+  // fixture was rebaselined — so per the note at the top of this block they are deleted rather
+  // than left to outlive the move. `git show` this commit to see them.
   // 2026-08-17 — `inline` gained a 24 step, the only spacing family that lacked one
   // (`stack/l` and `padding/xl` both have it), so every 24px horizontal gap had been
   // reaching past the semantic layer to `ref/space/2xl`. A t-shirt ramp has no slot between
@@ -102,6 +147,21 @@ const RENAMES = {
  * below stops the list outliving the tokens.
  *
  * The bar for an entry is EVIDENCE OF ZERO CONSUMERS, not "we think nobody uses it".
+ */
+/*
+ * VALUE RECONCILED ON MERGE — 2026-08-19.
+ *
+ * `cmp/accessibilityBar/hoverBg` moves 12% -> 8% white in every selector context, and the
+ * fixture is rebaselined to match. This is a MERGE RESOLUTION, not a new design decision.
+ *
+ * Two branches disagreed about the same wash. main's 33cbb4f corrected it from 12% to 8%,
+ * against the published Figma variable (`overlay/on-brand/hover`, #ffffff14) and the
+ * component's own States documentation. This branch, working from a base that predated that
+ * commit, re-created the wash at 12% while introducing the Tier-2 `overlay/brand/*` family
+ * and recorded "the component has always rendered 0.12" — true of its base, not of main.
+ *
+ * main's corrected value stands; this branch's Tier-2 family stands. `hoverBg` now aliases
+ * `overlay/brand/hover` at 8%, so the value lives in one place instead of two.
  */
 const REMOVED = {
   // 2026-08-18 — the AccessibilityBar adopted the shared `Divider` component, which was

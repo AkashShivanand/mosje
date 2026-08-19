@@ -23,25 +23,25 @@ export const metadata: Metadata = {
     "The government top utility bar (UX4G / GIGW) — Government of India link plus the accessibility controls (skip to content, font size, accessibility, language). The a11y surface itself, fully keyboard-operable and tokenised.",
 };
 
-const sectionStyle: React.CSSProperties = { marginBottom: "var(--sa-section-m)" };
+const sectionStyle: React.CSSProperties = { marginBottom: "var(--sa-section-48)" };
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
-  marginBottom: "var(--sa-stack-m)",
-  scrollMarginTop: "var(--sa-section-m)",
+  marginBottom: "var(--sa-stack-16)",
+  scrollMarginTop: "var(--sa-section-48)",
 };
 const leadStyle: React.CSSProperties = {
   fontSize: "var(--sa-type-body-1-size)",
   color: "var(--sa-text-neutral-subtle)",
   lineHeight: "var(--sa-type-body-1-lh)",
   maxWidth: "64ch",
-  marginBottom: "var(--sa-stack-m)",
+  marginBottom: "var(--sa-stack-16)",
 };
 const previewLabel: React.CSSProperties = {
   fontSize: "var(--sa-type-label-2-size)",
   fontWeight: 600,
   color: "var(--sa-text-neutral-subtle)",
-  marginBottom: "var(--sa-stack-xs)",
+  marginBottom: "var(--sa-stack-8)",
 };
 
 const USAGE = `import { AccessibilityBar } from "@mosje/design-system";
@@ -59,8 +59,8 @@ export default function AccessibilityBarPage(): React.JSX.Element {
   return (
     <>
       {/* ── Header ── */}
-      <div style={{ marginBottom: "var(--sa-stack-xl)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-s)", marginBottom: "var(--sa-stack-s)" }}>
+      <div style={{ marginBottom: "var(--sa-stack-32)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", marginBottom: "var(--sa-stack-12)" }}>
           <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 500, lineHeight: 1.1 }}>Accessibility Bar</h1>
           <StatusBadge status="Stable" />
         </div>
@@ -68,7 +68,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
           The government top utility bar — the &ldquo;Government of India&rdquo; link and the
           accessibility controls that open every page.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.accessibility)} target="_blank" rel="noopener noreferrer">
             View in Figma <span aria-hidden="true">↗</span>
           </a>
@@ -90,7 +90,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
           It <em>is</em> the accessibility surface, so every control is keyboard-operable and
           announced, and the skip link is the first interactive element on the page.
         </p>
-        <div style={{ marginTop: "var(--sa-padding-l)" }}>
+        <div style={{ marginTop: "var(--sa-padding-20)" }}>
           <div style={previewLabel}>Blue · full-bleed · all controls</div>
           <AccessibilityBarPreview />
         </div>
@@ -148,7 +148,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
           bar offers the same entry — one door, not two. Contrast, spacing and dark mode remain the
           widget&apos;s.
         </Callout>
-        <div style={{ marginTop: "var(--sa-padding-l)" }}>
+        <div style={{ marginTop: "var(--sa-padding-20)" }}>
           <AccessibilityBarFontSizePreview />
         </div>
       </section>
@@ -271,8 +271,8 @@ export default function AccessibilityBarPage(): React.JSX.Element {
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    padding: "var(--sa-stack-xs) var(--sa-stack-s)",
-                    borderRadius: "var(--sa-shape-xs)",
+                    padding: "var(--sa-stack-8) var(--sa-stack-12)",
+                    borderRadius: "var(--sa-shape-4)",
                     background: "var(--sa-color-action-primary-default)",
                     color: "var(--sa-on-bg-brand-primary-bolder)",
                     fontSize: "var(--sa-type-label-2-size)",
@@ -289,10 +289,10 @@ export default function AccessibilityBarPage(): React.JSX.Element {
               type: "dont",
               label: "Don't surface the same property in both the bar and the widget's floating button. One property, one visible door: text size is the bar's, contrast and spacing are the widget's, and the FAB is hidden (not unmounted) where the bar already offers the entry.",
               preview: (
-                <div style={{ display: "flex", gap: "var(--sa-stack-s)", alignItems: "center", color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-label-2-size)" }}>
-                  <span style={{ display: "inline-flex", gap: "var(--sa-stack-xs)", padding: "var(--sa-stack-xs) var(--sa-stack-s)", borderRadius: "var(--sa-shape-xs)", background: "var(--sa-bg-neutral-subtler)" }}>A− A A+</span>
+                <div style={{ display: "flex", gap: "var(--sa-stack-12)", alignItems: "center", color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-label-2-size)" }}>
+                  <span style={{ display: "inline-flex", gap: "var(--sa-stack-8)", padding: "var(--sa-stack-8) var(--sa-stack-12)", borderRadius: "var(--sa-shape-4)", background: "var(--sa-bg-neutral-subtler)" }}>A− A A+</span>
                   <span aria-hidden="true">+</span>
-                  <span style={{ padding: "var(--sa-stack-xs) var(--sa-stack-s)", borderRadius: "var(--sa-shape-xs)", background: "var(--sa-bg-neutral-subtler)" }}>Widget: text size</span>
+                  <span style={{ padding: "var(--sa-stack-8) var(--sa-stack-12)", borderRadius: "var(--sa-shape-4)", background: "var(--sa-bg-neutral-subtler)" }}>Widget: text size</span>
                 </div>
               ),
             },

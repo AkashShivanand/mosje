@@ -198,7 +198,7 @@ six divergences recorded below — five of which need a human decision because
 | Type | `label/2` 12/16 | `--sa-type-label-2-size|-lh` → 12px/16px | ✓ |
 | Bar height | `layout/bar/height` 46 | `min-height: 46px` | ✓ |
 | Edge padding | `padding/2xl` 32 ≥tablet · `padding/m` 16 mobile | same, via media query | ✓ |
-| Vertical padding | `ref/space/xxs` 2 | `--sa-ref-space-xxs` | ✓ |
+| Vertical padding | `ref/space/xxs` 2 | `--sa-ref-space-2` | ✓ |
 | Gaps | `inline/m` 12 · `inline/l` 16 · `inline/s` 8 · `inline/2xs` 2 | same `--sa-inline-*` | ✓ |
 | Separator | 1 × `ref/size/20`, white @40% | same | ✓ |
 | Font-size pill | `ref/size/32`, `shape/xs`, white @16% | same | ✓ |

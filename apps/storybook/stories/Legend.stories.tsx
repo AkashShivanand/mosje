@@ -181,7 +181,7 @@ export const TooltipInACustomChart: Story = {
                 height: 28,
                 border: 0,
                 padding: 0,
-                borderRadius: "var(--sa-shape-xs)",
+                borderRadius: "var(--sa-shape-4)",
                 background: categoricalColor(i),
                 cursor: "pointer",
               }}

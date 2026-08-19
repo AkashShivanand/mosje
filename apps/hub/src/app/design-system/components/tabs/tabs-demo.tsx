@@ -24,8 +24,8 @@ const PANEL_TEXT: Record<string, string> = {
 };
 
 const panelStyle: React.CSSProperties = {
-  marginTop: "var(--sa-stack-m)",
-  padding: "var(--sa-padding-l)",
+  marginTop: "var(--sa-stack-16)",
+  padding: "var(--sa-padding-20)",
   border: "1px solid var(--sa-border-neutral-subtle)",
   borderRadius: "var(--sa-shape-lg)",
   background: "var(--sa-bg-neutral-base)",
@@ -90,7 +90,7 @@ export function TabsSpecimen({
 /** The three sizes, stacked, so the 36 / 44 / 48 ladder is visible at once. */
 export function TabsSizeSpecimen(): React.JSX.Element {
   return (
-    <div style={{ display: "grid", gap: "var(--sa-stack-m)" }}>
+    <div style={{ display: "grid", gap: "var(--sa-stack-16)" }}>
       <TabsSpecimen size="s" label="Small tabs" />
       <TabsSpecimen size="m" label="Medium tabs" />
       <TabsSpecimen size="l" label="Large tabs" />

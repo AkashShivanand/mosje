@@ -12,10 +12,31 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-18 · System version: v0.24.0 (THE OVERFLOW ROW IS POLISHED, AND THE
-  EDGE FADE IS SCOPED TO `track="none"` — an enclosed track paints its own border, fill and
-  radius from the scrolling element, so a mask dissolved the container rather than the tabs.
-  v0.23.0: TABS MATCHES THE REBUILT FIGMA MASTERS.
+  Last reviewed: 2026-08-19 · System version: v0.27.0 (THE RADIUS LADDER IS VALUE-NAMED TOO —
+  `shape/md` is now `shape/8`, so both ladders read the same way and the rung IS the pixel value.
+  `shape/full` deliberately keeps its name: it is a sentinel meaning fully rounded, not a
+  measurement, and it is the only non-numeric rung the gate permits. NEVER type a `shape/*` rung
+  on a component that has a role token — `cmp/card/radius`, `cmp/button/radius` and
+  `control/radius` are the Tier-3 layer, and all three were found aliasing a HIDDEN Tier-1
+  primitive. CARDS ARE 12px, not 8. Radius is 97.90% bound with every defect class at zero, and
+  `check:radius-linkage` freezes it there — any new raw radius on any page fails the build. A new
+  `stroke/*` ladder finally gives border width a semantic name; do not reach for
+  `control/border/width` unless the border belongs to an interactive control. See §G.
+  Previously v0.26.0: THE SPACING LADDER IS VALUE-NAMED — the
+  rung IS the pixel value, `padding/16` is 16px and so is `inline/16`, `stack/16` and `section/16`.
+  The t-shirt labels collided across families — `l` meant 16, 24, 20 and 56 — a defect inherited
+  from UX4G 3.0. Every family now carries the same ladder, so no measurement is unexpressible, and
+  a new step can be inserted without renaming anything. 38,799 spacing properties that were bound
+  to a RADIUS variable are now zero; correct semantic spacing is 69.12%, up from 6.96%. See §G.
+  NOTE — this narrative skips v0.21.0, v0.22.0, v0.24.0 and v0.25.0 (PortalLoginTemplate, the auth
+  parts, the retirement of the invented `darpan` / `aadhaar` auth modes, the Tabs overflow menu and
+  the font sizer). All are in the changelog at /design-system/resources/changelog, which is the
+  complete record; this header carries only the releases whose rules an agent must hold in mind
+  while writing UI.
+  Previously v0.24.0: THE OVERFLOW ROW IS POLISHED, AND THE EDGE FADE IS SCOPED TO
+  `track="none"` — an enclosed track paints its own border, fill and radius from the scrolling
+  element, so a mask dissolved the container rather than the tabs.
+  Previously v0.23.0: TABS MATCHES THE REBUILT FIGMA MASTERS.
   `<Tabs>` gains `indicator` (underline | rail | pill), `size` (s | m | l -> 36 / 44 / 48),
   `track` (none | enclosed) and `orientation`; `TabDef` gains `icon`, `badge` and `disabled`.
   INDICATOR AND TRACK PAIR — enclosed takes pill, none takes underline (horizontal) or rail
@@ -25,10 +46,6 @@
   `text|icon/brand/primary/bolder` (the brand key colour fails AA on a tinted surface) and
   `layout/tab/{indicator,track}` — and `focus/ring` DROPS ITS 48% ALPHA in Blue and Navy, having
   composited to 1.16:1 on a selected pill.
-  NOTE — this narrative skips v0.21.0 and v0.22.0 (PortalLoginTemplate, the auth parts, and the
-  retirement of the invented `darpan` / `aadhaar` auth modes). Both are in the changelog at
-  /design-system/resources/changelog, which is the complete record; this header carries only the
-  releases whose rules an agent must hold in mind while writing UI.
   Previously v0.20.0 — ACCESSIBILITYBAR IS NOW A CODE COMPONENT AND
   SITEHEADER IS MIGRATED ONTO IT. `@mosje/design-system` exports `AccessibilityBar` — the UX4G/GIGW
   top utility bar with a working A−/A/A+ font-size stepper — mirroring the SAMAVESH Figma master,
@@ -629,45 +646,55 @@ tiers: `--ds-type-{heading,title,body,label}-tracking`. Values differ by **surfa
 
 ### G. Spacing & Elevation
 
-Spacing is locked to a named t-shirt scale. All padding and margin must map to these tokens:
+**Spacing is VALUE-NAMED. The rung IS the pixel value: `padding/16` is 16px, and so are
+`inline/16`, `stack/16` and `section/16`.** There is no lookup table and no T-shirt label.
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--ds-spacing-none` | `0px` | Reset |
-| `--ds-spacing-xxs` | `2px` | Icon internal gaps |
-| `--ds-spacing-xs` | `4px` | Tight in-component gaps |
-| `--ds-spacing-sm` | `8px` | Icon-to-label gaps, list item gaps |
-| `--ds-spacing-md` | `12px` | Default internal component padding |
-| `--ds-spacing-lg` | `16px` | Standard element margin, grid gutter |
-| `--ds-spacing-xl` | `20px` | Card internal padding (compact) |
-| `--ds-spacing-2xl` | `24px` | Card internal padding (comfortable), grid gutter |
-| `--ds-spacing-3xl` | `32px` | Section sub-spacing |
-| `--ds-spacing-4xl` | `40px` | Section spacing |
-| `--ds-spacing-5xl` | `48px` | Major section breaks |
-| `--ds-spacing-6xl` | `64px` | Page-level hero spacing |
-| `--ds-spacing-10xl` | `120px` | UX4G `padding-3xl` parity |
-| `--ds-spacing-11xl` | `360px` | UX4G `padding-4xl` parity |
+```
+0  2  4  6  8  12  16  20  24  32  40  48  56  64  72  80        + padding 120 · 360
+```
 
-Every value on this scale except `72px` is a step on the **UX4G 3.0 base ramp**
-(`--ux4g-space-1…16`), so the SAMAVESH scale *is* the UX4G foundation under different names.
+Every family carries that ladder, so **no measurement is unexpressible**. `section` starts at
+24 (page rhythm has no use for 2px) and `padding` keeps 120/360 for UX4G parity.
 
-#### Semantic spacing roles — reach for these FIRST
-
-Adopted verbatim from UX4G 3.0 (values match `--ux4g-inline/stack/padding/section` 1:1).
-They state **intent**; the t-shirt scale above states only a number. Use the raw scale only
-for one-offs that no role describes.
-
-| Family | Tokens | Use for |
-|--------|--------|---------|
-| `--ds-inline-*` | `none · 2xs(2) · xs(4) · s(8) · m(12) · l(16) · xl(32)` | Horizontal gaps between items **on the same line** |
-| `--ds-stack-*` | `none · 2xs(4) · xs(8) · s(12) · m(16) · l(24) · xl(32)` | Vertical gaps between **stacked** blocks |
-| `--ds-padding-*` | `none · 3xs(2) · 2xs(4) · xs(8) · s(12) · m(16) · l(20) · xl(24) · 2xl(32) · 3xl(120) · 4xl(360)` | **Inner** padding of components and containers |
-| `--ds-section-*` | `none · xs(24) · s(32) · m(48) · l(56) · xl(64) · 2xl(80)` | Gaps between **page sections** |
+| Family | Use for |
+|--------|---------|
+| `--sa-inline-<px>` | Horizontal gaps between items **on the same line** |
+| `--sa-stack-<px>` | Vertical gaps between **stacked** blocks, and vertical rhythm |
+| `--sa-padding-<px>` | **Inner** padding of components and containers |
+| `--sa-section-<px>` | Gaps between **page sections** |
 
 ```css
-/* Prefer */  gap: var(--ds-stack-m);        /* "16px between stacked blocks" */
-/* Over   */  gap: var(--ds-spacing-lg);     /* "16px, for some reason" */
+/* Prefer */  gap: var(--sa-stack-16);      /* 16px between stacked blocks */
+/* Never  */  gap: var(--sa-ref-space-16);  /* Tier 1 — hidden, and banned by tier-discipline.test.mjs */
 ```
+
+#### Why it is numbered, and why that is not a downgrade
+
+Until 2026-08-18 the rungs were T-shirt labels, **and the same label carried a different value
+in each family** — `l` was 16 in `inline`, 24 in `stack`, 20 in `padding` and 56 in `section`.
+Seven of eleven labels collided; the inverse was as bad, with 24px answering to four names.
+That is inherited verbatim from **UX4G 3.0**, whose published contract has `--ux4g-inline-l`=16
+beside `--ux4g-stack-l`=24. `standards-precedence.md` puts UX4G at authority tier 4: where a
+standard forces a worse interface, quality wins and the divergence is recorded. This is that.
+
+Note UX4G's own *primitive* ramp is numeric (`space-1…16`) and only goes T-shirt at the semantic
+layer — which is exactly where it fails. Numbering here is **more** consistent with UX4G, not less.
+**UX4G conformance is untouched**: the `--ux4g-*` layer is emitted independently and never reads
+these names, so `ux4g-parity.test.mjs` asserts the same contract as before.
+
+The second reason is expandability. A T-shirt ramp has no slot between adjacent rungs, so every
+insertion renames everything above it — that happened **twice in one day** before the change
+(`inline` gained 24; `padding` needed a 6 it could not have). A numeric ladder absorbs any step
+for free, which is how 6px arrived with no rename at all.
+
+#### The one rule that keeps a value-name honest
+
+> **Mode-varying spacing belongs in `density/*`, never in the ladder.**
+
+A value-name lies the moment a mode changes the value. The Space collection has ONE mode and
+density variance already lives in `density/*` with its own two modes. If a spacing value must
+differ by mode, it is a density token, not a ladder rung. `space-linkage.test.mjs` asserts a
+rung's name equals its resolved value, so a violation fails the build rather than shipping.
 
 **Responsive Layout Grid — `<Grid>` / `<GridItem>`:**
 - **Twelve columns at every breakpoint**, `24px` gutter (`grid/columns`, `grid/gutter`).
@@ -783,7 +810,7 @@ graph TD
 | Do | Don't |
 | :--- | :--- |
 | Use predefined semantic roles: `variant="primary | secondary | tonal | danger"`. | Do not create custom button classes or override backgrounds with hardcoded hex/rgba values. |
-| Use full-pill rounded shapes (`var(--ds-radius-full)`) for action buttons. | Banned: "Ghost" buttons using a `1px` border combined with a soft, wide drop shadow. |
+| Use full-pill rounded shapes (`var(--sa-shape-full)`) for action buttons. | Banned: "Ghost" buttons using a `1px` border combined with a soft, wide drop shadow. |
 | Ensure clear label text; use `aria-label` for icon-only buttons. | Do not use decorative text gradients (`background-clip: text`) on button labels. |
 | Limit to one `primary` button per visual section. | Do not place two `primary` buttons side by side — demote one to `secondary`. |
 
@@ -791,7 +818,7 @@ graph TD
 
 | Do | Don't |
 | :--- | :--- |
-| Group content into clean cards using `var(--ds-radius-md)` (`12px–16px`). | Banned: Sharp corners (`0px` radius) or excessively rounded (`> 20px`) for cards. |
+| Group content into clean cards using `var(--sa-cmp-card-radius)` (12px). | Banned: Sharp corners (`0px` radius) or excessively rounded (`> 20px`) for cards. |
 | Use solid semantic borders (`--ds-border`) or `--ds-surface-muted` background for separation. | Banned: Coloured accent side-stripes (`border-left: 4px solid`) on cards. These are a legacy gov-portal pattern that fragments visual hierarchy. |
 | Keep grids structured with equal-height cards via flex or CSS grid. | Do not nest cards within other cards — flat hierarchy only. |
 | Use `<CardHeader>`, `<CardBody>`, `<CardFooter>` sub-components. | Do not build bespoke card layouts with raw `div`s inside a `<Card>`. |
@@ -971,7 +998,7 @@ Custom properties are defined in `@mosje/tokens` and generated into `packages/de
 >   the primitive and semantic namespaces and a Tier-2 `radius` group self-references the Tier-1
 >   scale it aliases. `shape` is also the word this section already used.
 > - **`--sa-font-latin` / `-display` / `-mono`** — alongside the existing `--sa-font-devanagari`.
-> - **`--sa-stack-2xl`** (40px) — the one spacing value with no purpose-scale home.
+> - **`--sa-stack-40`** (40px) — the one spacing value with no purpose-scale home.
 >
 > **What the retired names could never express**, and why retiring beat maintaining:
 > 1. **They stopped at rung 900.** Every canonical ramp runs to 950.
@@ -1076,13 +1103,47 @@ namespace, which is what these tokens exist to prevent.
 
 ### Shape Tokens
 
+> **Corrected 2026-08-18.** This table used to document a `--ds-radius-*` vocabulary that was
+> **retired on 2026-08-12** and has **zero occurrences** in the emitted CSS — and it got the
+> values wrong on top of that, claiming `sm` = 8px against a real 6px and `md` = 12px against a
+> real 8px. Two of the five names below therefore have no `--ds-*` ancestor at all. Verify with
+> `grep -c -- "--ds-radius-" packages/design-system/tokens.css`, which returns 0.
+
+**The ladder is VALUE-NAMED** — the rung IS the pixel value, matching the spacing ladder, with
+`full` the single named exception (a sentinel, not a measurement).
+
+**Tier 2 is what you write.** `--sa-shape-*` is the published vocabulary; `--sa-ref-radius-*` is
+Tier 1, hidden from Figma publishing, and banned in app code.
+
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--ds-radius-xxs` | `2px` | Micro elements (badge corner) |
-| `--ds-radius-xs` | `4px` | Focus rings, code snippets |
-| `--ds-radius-sm` | `8px` | Input fields, small buttons |
-| `--ds-radius-md` | `12px` | Cards, containers |
-| `--ds-radius-full` | `999px` | Action buttons, chips (pill shape) |
+| `--sa-shape-0` | `0px` | Square corners — tables, full-bleed media |
+| `--sa-shape-2` | `2px` | Smallest softening, on dense controls |
+| `--sa-shape-4` | `4px` | Small chips, tags, inline badges |
+| `--sa-shape-6` | `6px` | Inputs, selects, text-entry controls |
+| `--sa-shape-8` | `8px` | Buttons and standard controls — **the system default** |
+| `--sa-shape-12` | `12px` | Cards and panels |
+| `--sa-shape-16` | `16px` | Large containers and modal surfaces |
+| `--sa-shape-20` | `20px` | Hero and feature surfaces |
+| `--sa-shape-24` | `24px` | Largest editorial surfaces |
+| `--sa-shape-32` | `32px` | Oversized decorative surfaces — rare |
+| `--sa-shape-40` | `40px` | Largest decorative surface — rare |
+| `--sa-shape-full` | `999px` | Pills and circles. A **sentinel**, not a measurement: any value over half the shorter side renders fully rounded. Write this, never `9999px`, `100px` or `50%` |
+
+**Figma:** the `Radius` documentation page (between `Spacing` and `Motion` in FOUNDATION) carries
+the full ladder, the tier model and the census. It is audited at 100 % bound with zero unaccounted
+nodes. **There is no web Shape page yet** — `apps/hub/src/app/design-system/foundations/` has
+`spacing`, `color`, `typography`, `density`, `elevation`, `iconography`, `motion` and
+`accessibility`, but no `shape`. That is an open gap, not an omission from this table.
+
+**Resolved 2026-08-18 — cards are 12px.** `--sa-cmp-card-radius` now resolves to `shape/12`,
+the rung published as "cards and panels". It had said 8px since it was created, contradicting its
+own role and section 3.B below.
+
+It had also been **orphaned**: `--sa-cmp-card-radius` appeared only in `tokens.css` and no
+component consumed it, so `Card` was drawn at a raw `--sa-shape-8` and `MetricCard` at a raw
+`--sa-shape-12` — already drifted apart. Both now bind the component token, so it is load-bearing
+rather than decorative. **Bind `var(--sa-cmp-card-radius)` on a card surface, not a shape rung.**
 
 ### Elevation (Shadow) Tokens
 

@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--sa-padding-m);
+  padding: var(--sa-padding-16);
   background-color: var(--sa-overlay-neutral-boldest);
 }
 
@@ -19,7 +19,7 @@
   max-height: calc(100vh - 32px);
   overflow-y: auto;
   background-color: var(--sa-bg-neutral-base);
-  border-radius: var(--sa-shape-lg);
+  border-radius: var(--sa-shape-12);
   box-shadow: var(--sa-elevation-toast);
   font-family: var(--sa-font-latin);
 }
@@ -32,8 +32,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-stack-s);
-  padding: var(--sa-padding-l) var(--sa-padding-xl) 0;
+  gap: var(--sa-stack-12);
+  padding: var(--sa-padding-20) var(--sa-padding-24) 0;
 }
 
 .ds-modal__title {
@@ -52,7 +52,7 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background: transparent;
   color: var(--sa-text-neutral-subtle);
   transition: background-color 0.12s ease, color 0.12s ease;
@@ -69,7 +69,7 @@
 }
 
 .ds-modal__body {
-  padding: var(--sa-padding-m) var(--sa-padding-xl) var(--sa-padding-xl);
+  padding: var(--sa-padding-16) var(--sa-padding-24) var(--sa-padding-24);
 }
 
 .ds-modal__footer {
@@ -77,6 +77,6 @@
   justify-content: flex-end;
   /* Wider than the default 8px control gap — confirm/destructive actions sit
      here, and a mis-tap between Cancel/Delete is costlier than elsewhere. */
-  gap: var(--sa-stack-s);
-  padding: 0 var(--sa-padding-xl) var(--sa-padding-xl);
+  gap: var(--sa-stack-12);
+  padding: 0 var(--sa-padding-24) var(--sa-padding-24);
 }

@@ -44,9 +44,27 @@ const NAV: NavItem[] = [
         heading: "Foundation / Autonomous Bodies",
         items: [
           { abbr: "DAF", name: "Dr. Ambedkar Foundation", href: "/website/organisation/dr-ambedkar-foundation", iconSrc: `${BP}/images/org-logos/daf.png` },
-          { abbr: "JRF", name: "Jagjivan Ram Foundation", href: "/website/organisation/jagjivan-ram-foundation", iconSrc: `${BP}/images/org-logos/jrf.png` },
+          { abbr: "BJRNF", name: "Babu Jagjivan Ram National Foundation", href: "/website/organisation/babu-jagjivan-ram-national-foundation-jrf", iconSrc: `${BP}/images/org-logos/jrf.png` },
           { abbr: "DAIC", name: "Dr Ambedkar International Centre", href: "/website/organisation/dr-ambedkar-international-centre", iconSrc: `${BP}/images/org-logos/daic.png` },
+        ],
+      },
+      {
+        heading: "Training & Capacity Building",
+        items: [
           { abbr: "NISD", name: "National Institute of Social Defence", href: "/website/organisation/national-institute-of-social-defence", iconSrc: `${BP}/images/org-logos/nisd.png` },
+        ],
+      },
+      {
+        heading: "Scheme Specific Thematic Portals",
+        items: [
+          { abbr: "DWBDNC", name: "Development and Welfare Board for De-notified, Nomadic, and Semi-Nomadic Communities", href: "/website/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic" },
+          { abbr: "SCW", name: "Senior Citizens Welfare", href: "/website/organisation/senior-citizens-welfarescw" },
+          { abbr: "PM-AJAY", name: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojna", href: "/website/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay" },
+          { abbr: "SMILE", name: "National Portal for Transgender Persons", href: "/website/organisation/national-portal-for-transgender-persons" },
+          { abbr: "SMILE", name: "Support for Marginalized Individuals for Livelihood and Enterprise", href: "/website/organisation/support-for-marginalized-individuals-for-livelihood-and-enterprise-smile" },
+          { abbr: "NOS", name: "National Overseas Scholarship", href: "/website/organisation/national-overseas-scholarship" },
+          { abbr: "NMBA", name: "Nasha Mukt Bharat Abhiyaan", href: "/website/organisation/nasha-mukt-bharat-abhiyaan" },
+          { abbr: "NHAA", name: "National Helpline Against Atrocities", href: "/website/organisation/national-helpline-against-atrorocities" },
         ],
       },
     ],

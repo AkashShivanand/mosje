@@ -21,20 +21,20 @@ export default function AccessibilityPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Accessibility</h1>
-      <p style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-s)" }}>
+      <p style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-12)" }}>
         These are government services. Every citizen must be able to use them,
         whatever their ability, device or connection — so accessibility is a
         release requirement here, not a later pass.
       </p>
-      <div style={{ marginTop: "var(--sa-stack-m)" }}>
+      <div style={{ marginTop: "var(--sa-stack-16)" }}>
         <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.accessibility)} target="_blank" rel="noopener noreferrer">
           View in Figma <span aria-hidden="true">↗</span>
         </a>
       </div>
 
-      <section aria-labelledby="standard" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="standard" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="standard">WCAG 2.1 AA + GIGW</h2>
-        <p style={{ marginTop: "var(--sa-stack-m)" }}>
+        <p style={{ marginTop: "var(--sa-stack-16)" }}>
           <strong>WCAG 2.1</strong> (Web Content Accessibility Guidelines) is the
           international standard for accessible digital content. Each guideline
           has three conformance levels — A, AA and AAA. SAMAVESH targets{" "}
@@ -43,7 +43,7 @@ export default function AccessibilityPage(): React.JSX.Element {
           size, for one — are adopted where they are already met; that is not a
           claim of full 2.2 conformance, which has not been audited.
         </p>
-        <p style={{ marginTop: "var(--sa-stack-m)" }}>
+        <p style={{ marginTop: "var(--sa-stack-16)" }}>
           <strong>GIGW</strong> (Guidelines for Indian Government Websites and
           Apps) builds on WCAG and is the national standard for government
           digital properties in India. Meeting WCAG 2.1 AA and GIGW is{" "}
@@ -53,12 +53,12 @@ export default function AccessibilityPage(): React.JSX.Element {
         </p>
       </section>
 
-      <section aria-labelledby="pour" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="pour" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="pour">The four POUR principles</h2>
-        <p style={{ marginTop: "var(--sa-stack-m)" }}>
+        <p style={{ marginTop: "var(--sa-stack-16)" }}>
           WCAG is built on four ideas. In plain English:
         </p>
-        <ul style={{ marginTop: "var(--sa-stack-m)" }}>
+        <ul style={{ marginTop: "var(--sa-stack-16)" }}>
           <li>
             <strong>Perceivable</strong> — people must be able to sense the
             content. Provide text alternatives for images, captions for media,
@@ -82,9 +82,9 @@ export default function AccessibilityPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="widget" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="widget" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="widget">The Accessibility Widget</h2>
-        <p style={{ marginTop: "var(--sa-stack-m)" }}>
+        <p style={{ marginTop: "var(--sa-stack-16)" }}>
           Accessibility settings across the SAMAVESH estate are delivered by the{" "}
           <strong>official Government of India (MeitY / UX4G) Accessibility
           Widget</strong> — a control fixed to the viewport that lets any citizen
@@ -95,10 +95,10 @@ export default function AccessibilityPage(): React.JSX.Element {
           <strong>WCAG, GIGW and IS 17802</strong>.
         </p>
 
-        <h3 id="widget-features" style={{ marginTop: "var(--sa-stack-l)" }}>
+        <h3 id="widget-features" style={{ marginTop: "var(--sa-stack-24)" }}>
           What it provides
         </h3>
-        <ul style={{ marginTop: "var(--sa-stack-m)" }}>
+        <ul style={{ marginTop: "var(--sa-stack-16)" }}>
           <li><strong>Contrast &amp; invert</strong> — high-contrast and inverted-colour modes.</li>
           <li><strong>Dark / light mode</strong> — switch the page between light and dark.</li>
           <li><strong>Bigger text</strong> — scale text up for readability.</li>
@@ -110,33 +110,33 @@ export default function AccessibilityPage(): React.JSX.Element {
           <li><strong>Bigger cursor</strong> — enlarge the pointer.</li>
           <li><strong>Screen reader</strong> — read page content aloud.</li>
         </ul>
-        <p style={{ marginTop: "var(--sa-stack-s)", color: "var(--sa-color-text-muted)" }}>
+        <p style={{ marginTop: "var(--sa-stack-12)", color: "var(--sa-color-text-muted)" }}>
           Preferences persist as the user navigates. The control is keyboard-operable and screen-reader labelled.
         </p>
 
-        <h3 id="widget-integration" style={{ marginTop: "var(--sa-stack-l)" }}>
+        <h3 id="widget-integration" style={{ marginTop: "var(--sa-stack-24)" }}>
           How to integrate
         </h3>
-        <p style={{ marginTop: "var(--sa-stack-m)" }}>
+        <p style={{ marginTop: "var(--sa-stack-16)" }}>
           In any app in this estate, render the shared wrapper once near the end of
           the root layout (alongside <code>AppSwitcher</code>). It injects the
           official widget script idempotently — never hand-embed the script.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <TerminalCode title="app/layout.tsx" codeText={WIDGET_IMPORT_SNIPPET}>
             {WIDGET_IMPORT_SNIPPET}
           </TerminalCode>
         </div>
-        <p style={{ marginTop: "var(--sa-stack-m)" }}>
+        <p style={{ marginTop: "var(--sa-stack-16)" }}>
           Outside this monorepo (plain HTML, PHP, WordPress, etc.), embed the
           official script directly before <code>&lt;/body&gt;</code>:
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <TerminalCode title="html" codeText={WIDGET_EMBED_SNIPPET}>
             {WIDGET_EMBED_SNIPPET}
           </TerminalCode>
         </div>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <PropsTable
             props={[
               {
@@ -150,10 +150,10 @@ export default function AccessibilityPage(): React.JSX.Element {
           />
         </div>
 
-        <h3 id="widget-theming" style={{ marginTop: "var(--sa-stack-l)" }}>
+        <h3 id="widget-theming" style={{ marginTop: "var(--sa-stack-24)" }}>
           Behaviour &amp; theming
         </h3>
-        <ul style={{ marginTop: "var(--sa-stack-m)" }}>
+        <ul style={{ marginTop: "var(--sa-stack-16)" }}>
           <li>
             The widget applies the class <code>.dark-mode</code> to{" "}
             <code>&lt;html&gt;</code> for its own dark theme. It is the{" "}
@@ -177,7 +177,7 @@ export default function AccessibilityPage(): React.JSX.Element {
           </li>
         </ul>
 
-        <div style={{ marginTop: "var(--sa-padding-l)" }}>
+        <div style={{ marginTop: "var(--sa-padding-20)" }}>
           <Callout type="warning" title="One mechanism only">
             The bespoke <code>AccessibilityWidget</code> reimplementation and every
             per-app font-size/contrast toggle have been removed — everything routes
@@ -187,9 +187,9 @@ export default function AccessibilityPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="designers" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="designers" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="designers">Checklist for designers</h2>
-        <ul style={{ marginTop: "var(--sa-stack-m)" }}>
+        <ul style={{ marginTop: "var(--sa-stack-16)" }}>
           <li>
             <strong>Contrast ratios:</strong> at least 4.5:1 for normal text and
             3:1 for large text and meaningful icons.
@@ -210,9 +210,9 @@ export default function AccessibilityPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="developers" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="developers" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="developers">Checklist for developers</h2>
-        <ul style={{ marginTop: "var(--sa-stack-m)" }}>
+        <ul style={{ marginTop: "var(--sa-stack-16)" }}>
           <li>
             <strong>Semantic HTML:</strong> use the right element — buttons,
             headings, lists, landmarks — before reaching for ARIA.
@@ -233,12 +233,12 @@ export default function AccessibilityPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="baseline" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="baseline" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="baseline">Baseline requirements</h2>
-        <p style={{ marginTop: "var(--sa-stack-m)" }}>
+        <p style={{ marginTop: "var(--sa-stack-16)" }}>
           Every SAMAVESH page must meet these as a minimum:
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <A11yChecklist
             items={[
               {
@@ -282,9 +282,9 @@ export default function AccessibilityPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="testing" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="testing" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="testing">How to test</h2>
-        <ul style={{ marginTop: "var(--sa-stack-m)" }}>
+        <ul style={{ marginTop: "var(--sa-stack-16)" }}>
           <li>
             <strong>axe DevTools</strong> — a free browser extension that flags
             common issues automatically. A great first pass, but it cannot catch
@@ -303,9 +303,9 @@ export default function AccessibilityPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="built-in" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="built-in" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="built-in">Built-in by default</h2>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <Callout type="info" title="Components ship accessible">
             SAMAVESH components ship with accessibility built in — semantic
             markup, focus management, accessible names and contrast are already

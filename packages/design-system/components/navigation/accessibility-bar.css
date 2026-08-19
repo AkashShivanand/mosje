@@ -27,8 +27,8 @@
   min-height: var(--sa-cmp-accessibilityBar-height);
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-inline-l);
-  padding: var(--sa-padding-3xs) var(--sa-padding-2xl);
+  gap: var(--sa-inline-16);
+  padding: var(--sa-padding-2) var(--sa-padding-32);
   /* UX4G Navbar spec: Noto Sans Medium, 12/16 in the bar. */
   font-size: var(--sa-type-label-2-size);
   line-height: var(--sa-type-label-2-lh);
@@ -41,9 +41,9 @@
 .sa-abar.layout-wide   .sa-abar__in { max-width: var(--sa-container-wide); }
 /* Fluid is full-bleed: edge padding only. Figma uses padding/2xl (32) from tablet
    up and padding/m (16) on mobile — matching its Device axis with a media query. */
-.sa-abar.layout-fluid .sa-abar__in { max-width: none; padding-inline: var(--sa-padding-m); }
+.sa-abar.layout-fluid .sa-abar__in { max-width: none; padding-inline: var(--sa-padding-16); }
 @media (min-width: 768px) {
-  .sa-abar.layout-fluid .sa-abar__in { padding-inline: var(--sa-padding-2xl); }
+  .sa-abar.layout-fluid .sa-abar__in { padding-inline: var(--sa-padding-32); }
 }
 
 /* ── Device axis (Figma: Mobile · Tablet · Desktop · Desktop XL) ──────────────
@@ -74,7 +74,7 @@
 .sa-abar__gov {
   display: flex;
   align-items: center;
-  gap: var(--sa-inline-m);
+  gap: var(--sa-inline-12);
   color: inherit;
   font-weight: 500;
   text-decoration: underline;
@@ -93,7 +93,7 @@
 .sa-abar__end {
   display: flex;
   align-items: center;
-  gap: var(--sa-inline-l);
+  gap: var(--sa-inline-16);
 }
 .sa-abar__skip { color: inherit; text-decoration: none; }
 .sa-abar__skip:hover { text-decoration: underline; }
@@ -111,14 +111,14 @@
    mobile, where the whole right-hand cluster is meant to disappear. */
 
 /* Font-size stepper: text_decrease · A · text_increase (Material Symbols) */
-.sa-abar__fs { display: inline-flex; align-items: center; gap: var(--sa-inline-s); }
+.sa-abar__fs { display: inline-flex; align-items: center; gap: var(--sa-inline-8); }
 .sa-abar__fsbtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: var(--sa-cmp-accessibilityBar-stepSize);
   height: var(--sa-cmp-accessibilityBar-stepSize);
-  padding: 0 var(--sa-padding-3xs);
+  padding: 0 var(--sa-padding-2);
   border: none;
   border-radius: var(--sa-shape-xs);
   background: transparent;
@@ -139,10 +139,10 @@
 .sa-abar__icbtn {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-inline-2xs);
+  gap: var(--sa-inline-2);
   height: var(--sa-cmp-accessibilityBar-iconButtonSize);
   min-width: var(--sa-cmp-accessibilityBar-iconButtonSize);
-  padding: 0 var(--sa-inline-2xs);
+  padding: 0 var(--sa-inline-2);
   border: none;
   border-radius: var(--sa-shape-full);
   background: transparent;
@@ -150,7 +150,7 @@
   text-decoration: none;
   cursor: pointer;
 }
-.sa-abar__icbtn.has-text { padding: 0 var(--sa-inline-s); gap: var(--sa-inline-s); }
+.sa-abar__icbtn.has-text { padding: 0 var(--sa-inline-8); gap: var(--sa-inline-8); }
 /* Figma binds the bar's glyphs to icon/size/20; <Icon size> sets it inline. */
 
 /* ── Interaction states — the four the documentation page defines ─────────────

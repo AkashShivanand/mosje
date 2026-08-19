@@ -39,8 +39,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--sa-stack-m);
-  padding: var(--sa-padding-m) var(--sa-padding-l);
+  gap: var(--sa-stack-16);
+  padding: var(--sa-padding-16) var(--sa-padding-20);
 }
 
 .ds-lightbox__counter {
@@ -53,7 +53,7 @@
 
 .ds-lightbox__counter-sep {
   color: color-mix(in oklab, var(--sa-bg-neutral-base) 45%, transparent);
-  margin: 0 var(--sa-padding-3xs);
+  margin: 0 var(--sa-padding-2);
 }
 
 .ds-lightbox__close {
@@ -85,7 +85,7 @@
   justify-content: center;
   width: 52px;
   height: 52px;
-  margin: 0 var(--sa-padding-s);
+  margin: 0 var(--sa-padding-12);
   border: 0;
   border-radius: var(--sa-shape-full);
   background: color-mix(in oklab, var(--sa-bg-neutral-base) 10%, transparent);
@@ -113,7 +113,7 @@
   justify-content: center;
   min-width: 0;
   min-height: 0;
-  padding: var(--sa-padding-2xs);
+  padding: var(--sa-padding-4);
   outline: none;
 }
 
@@ -121,7 +121,7 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   box-shadow: 0 24px 60px color-mix(in oklab, var(--sa-text-neutral-bolder) 50%, transparent);
   animation: ds-lightbox-pop 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
@@ -138,8 +138,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sa-stack-s);
-  padding: var(--sa-padding-s) var(--sa-padding-l) var(--sa-padding-l);
+  gap: var(--sa-stack-12);
+  padding: var(--sa-padding-12) var(--sa-padding-20) var(--sa-padding-20);
 }
 
 .ds-lightbox__caption {
@@ -153,9 +153,9 @@
 
 .ds-lightbox__thumbs {
   display: flex;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   max-width: 100%;
-  padding: var(--sa-padding-2xs);
+  padding: var(--sa-padding-4);
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--sa-color-transparent-white-32) transparent;
@@ -168,7 +168,7 @@
   height: 42px;
   padding: 0;
   border: 2px solid transparent;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   overflow: hidden;
   background: var(--sa-color-transparent-white-8);
   cursor: pointer;
@@ -204,7 +204,7 @@
 }
 
 @media (max-width: 640px) {
-  .ds-lightbox__nav { width: 40px; height: 40px; margin: 0 var(--sa-padding-2xs); }
+  .ds-lightbox__nav { width: 40px; height: 40px; margin: 0 var(--sa-padding-4); }
   .ds-lightbox__thumb { width: 48px; height: 36px; }
 }
 

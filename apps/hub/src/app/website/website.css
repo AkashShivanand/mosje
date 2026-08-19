@@ -101,7 +101,7 @@
        xl  stock 12px → 14px    (24 call sites)
        2xl stock 16px → 18px    (3 call sites)
      NOT re-bound: `md` (0.8 × 10px = 8px) and `sm` (0.6 × 10px = 6px) already
-     equal the hub's --sa-shape-md/--sa-shape-sm exactly, and 3xl/4xl are
+     equal the hub's --sa-shape-8/--sa-shape-6 exactly, and 3xl/4xl are
      unused. */
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);

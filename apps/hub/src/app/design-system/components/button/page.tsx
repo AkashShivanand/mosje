@@ -22,16 +22,16 @@ export const metadata: Metadata = {
  * ------------------------------------------------------------------ */
 
 const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-m)",
-  scrollMarginTop: "var(--sa-section-m)",
+  marginTop: "var(--sa-section-48)",
+  scrollMarginTop: "var(--sa-section-48)",
 };
 
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 700,
   color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-m)",
-  paddingBottom: "var(--sa-padding-xs)",
+  marginBottom: "var(--sa-stack-16)",
+  paddingBottom: "var(--sa-padding-8)",
   borderBottom: "1px solid var(--sa-border-neutral-subtle)",
 };
 
@@ -39,8 +39,8 @@ const h3Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
   color: "var(--sa-text-neutral-base)",
-  marginTop: "var(--sa-stack-l)",
-  marginBottom: "var(--sa-stack-xs)",
+  marginTop: "var(--sa-stack-24)",
+  marginBottom: "var(--sa-stack-8)",
 };
 
 const proseStyle: React.CSSProperties = {
@@ -69,9 +69,9 @@ function StateRow({
       style={{
         display: "grid",
         gridTemplateColumns: "120px 1fr 1.4fr",
-        gap: "var(--sa-stack-m)",
+        gap: "var(--sa-stack-16)",
         alignItems: "center",
-        padding: "var(--sa-padding-s) 0",
+        padding: "var(--sa-padding-12) 0",
         borderBottom: "1px solid var(--sa-border-neutral-subtle)",
       }}
     >
@@ -114,8 +114,8 @@ function KeyTable({
                     fontSize: "var(--sa-type-body-2-size)",
                     background: "var(--sa-bg-neutral-subtler)",
                     border: "1px solid var(--sa-border-neutral-subtle)",
-                    borderRadius: "var(--sa-shape-sm)",
-                    padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
+                    borderRadius: "var(--sa-shape-6)",
+                    padding: "var(--sa-padding-2) var(--sa-padding-8)",
                     color: "var(--sa-text-neutral-base)",
                   }}
                 >
@@ -141,16 +141,16 @@ export default function ButtonPage(): React.JSX.Element {
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
-        padding: "var(--sa-padding-2xl) var(--sa-padding-xl) var(--sa-section-l)",
+        padding: "var(--sa-padding-32) var(--sa-padding-24) var(--sa-section-56)",
       }}
     >
       {/* ---------------- Header ---------------- */}
-      <header style={{ marginBottom: "var(--sa-stack-xl)" }}>
+      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "var(--sa-stack-s)",
+            gap: "var(--sa-stack-12)",
             flexWrap: "wrap",
           }}
         >
@@ -166,13 +166,13 @@ export default function ButtonPage(): React.JSX.Element {
           </h1>
           <StatusBadge status="Stable" />
         </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-s)" }}>
+        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
           A Button triggers an action within the system — submitting a form,
           confirming a dialog, or running a command. It is the most-used
           interactive atom in SAMAVESH and the reference implementation for every
           other component page.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.buttons)} target="_blank" rel="noopener noreferrer">
             View in Figma <span aria-hidden="true">↗</span>
           </a>
@@ -190,7 +190,7 @@ export default function ButtonPage(): React.JSX.Element {
           draft, confirm a choice, or run a command. A button always performs an
           action on the current page or in the current flow.
         </p>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-s)" }}>
+        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
           If the control takes the user to a different page or resource, it is a{" "}
           <strong>link</strong>, not a button. Getting this distinction right is
           the single most important accessibility decision for an interactive
@@ -210,26 +210,26 @@ export default function ButtonPage(): React.JSX.Element {
         <div
           style={{
             display: "flex",
-            gap: "var(--sa-stack-xl)",
+            gap: "var(--sa-stack-32)",
             alignItems: "center",
             flexWrap: "wrap",
-            marginTop: "var(--sa-stack-l)",
-            padding: "var(--sa-padding-2xl)",
+            marginTop: "var(--sa-stack-24)",
+            padding: "var(--sa-padding-32)",
             background: "var(--sa-bg-neutral-subtler)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             border: "1px solid var(--sa-border-neutral-subtle)",
           }}
         >
           {/* Annotated specimen */}
-          <div style={{ position: "relative", padding: "var(--sa-stack-l)" }}>
+          <div style={{ position: "relative", padding: "var(--sa-stack-24)" }}>
             <span
               aria-hidden="true"
               style={{
                 position: "absolute",
-                inset: "calc(-1 * var(--sa-stack-2xs))",
+                inset: "calc(-1 * var(--sa-stack-4))",
                 outline: "3px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base))",
                 outlineOffset: "var(--sa-focus-offset)",
-                borderRadius: "var(--sa-shape-md)",
+                borderRadius: "var(--sa-shape-8)",
                 opacity: 0.55,
               }}
             />
@@ -244,7 +244,7 @@ export default function ButtonPage(): React.JSX.Element {
           <ol
             style={{
               margin: 0,
-              paddingLeft: "var(--sa-padding-l)",
+              paddingLeft: "var(--sa-padding-20)",
               color: "var(--sa-text-neutral-subtle)",
               fontSize: "var(--sa-type-body-2-size)",
               lineHeight: 1.9,
@@ -275,7 +275,7 @@ export default function ButtonPage(): React.JSX.Element {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "var(--sa-stack-m)",
+            gap: "var(--sa-stack-16)",
           }}
         >
           <UseCard tone="do" title="Use a Button when…">
@@ -315,8 +315,8 @@ export default function ButtonPage(): React.JSX.Element {
         <ul
           style={{
             ...proseStyle,
-            marginTop: "var(--sa-stack-s)",
-            paddingLeft: "var(--sa-padding-l)",
+            marginTop: "var(--sa-stack-12)",
+            paddingLeft: "var(--sa-padding-20)",
             lineHeight: 1.9,
           }}
         >
@@ -351,7 +351,7 @@ export default function ButtonPage(): React.JSX.Element {
           <code>appearance=&quot;inverseOutlined&quot;</code> (secondary) instead
           of overriding <code>className</code>.
         </Callout>
-        <div style={{ marginTop: "var(--sa-stack-l)" }}>
+        <div style={{ marginTop: "var(--sa-stack-24)" }}>
           <ButtonPlayground />
         </div>
       </section>
@@ -364,7 +364,7 @@ export default function ButtonPage(): React.JSX.Element {
         <p style={proseStyle}>
           Every interactive state is visually distinct and meets AA contrast.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <StateRow state="Default" note="Resting state — full colour, no overlay.">
             <Button variant="primary" appearance="filled">
               Submit application
@@ -385,7 +385,7 @@ export default function ButtonPage(): React.JSX.Element {
                 display: "inline-block",
                 outline: "3px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base))",
                 outlineOffset: "var(--sa-focus-offset)",
-                borderRadius: "var(--sa-shape-md)",
+                borderRadius: "var(--sa-shape-8)",
               }}
             >
               <Button variant="primary" appearance="filled">
@@ -429,7 +429,7 @@ export default function ButtonPage(): React.JSX.Element {
           Because <code>Button</code> renders a native <code>&lt;button&gt;</code>,
           all standard keyboard semantics work for free.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <KeyTable
             rows={[
               { key: "Enter", action: "Activates the button (fires onClick)." },
@@ -458,7 +458,7 @@ export default function ButtonPage(): React.JSX.Element {
           Buttons are government-grade controls — they must satisfy WCAG 2.1 AA and
           GIGW. The checklist below is verified for every release.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <A11yChecklist
             items={[
               {
@@ -519,7 +519,7 @@ export default function ButtonPage(): React.JSX.Element {
           &ldquo;हाँ&rdquo; नहीं), &ldquo;सहेजें&rdquo;, &ldquo;रद्द करें&rdquo;.
         </p>
 
-        <div style={{ marginTop: "var(--sa-stack-l)" }}>
+        <div style={{ marginTop: "var(--sa-stack-24)" }}>
           <DoDont
             cards={[
               {
@@ -630,7 +630,7 @@ export function ApplicationForm() {
   return (
     <form onSubmit={handleSubmit}>
       {/* …fields… */}
-      <div style={{ display: "flex", gap: "var(--sa-stack-s)" }}>
+      <div style={{ display: "flex", gap: "var(--sa-stack-12)" }}>
         {/* Primary CTA — one per view */}
         <Button variant="primary" appearance="filled" type="submit">
           Submit application
@@ -677,12 +677,12 @@ export function ApplicationForm() {
               isColor: true,
             },
             {
-              token: "--sa-shape-md",
+              token: "--sa-shape-8",
               value: "8px",
               description: "Corner radius of the button container.",
             },
             {
-              token: "--sa-stack-s",
+              token: "--sa-stack-12",
               value: "12px",
               description: "Horizontal padding inside the button.",
             },
@@ -698,7 +698,7 @@ export function ApplicationForm() {
         <ul
           style={{
             ...proseStyle,
-            paddingLeft: "var(--sa-padding-l)",
+            paddingLeft: "var(--sa-padding-20)",
             lineHeight: 1.9,
           }}
         >
@@ -730,7 +730,7 @@ export function ApplicationForm() {
         <ul
           style={{
             ...proseStyle,
-            paddingLeft: "var(--sa-padding-l)",
+            paddingLeft: "var(--sa-padding-20)",
             lineHeight: 1.9,
           }}
         >
@@ -760,8 +760,8 @@ export function ApplicationForm() {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "var(--sa-stack-m)",
-            marginTop: "var(--sa-stack-m)",
+            gap: "var(--sa-stack-16)",
+            marginTop: "var(--sa-stack-16)",
           }}
         >
           <RelatedCard
@@ -787,13 +787,13 @@ export function ApplicationForm() {
         <h2 id="changelog" style={h2Style}>
           13. Changelog
         </h2>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "100px 1fr",
-              gap: "var(--sa-stack-m)",
-              padding: "var(--sa-padding-s) 0",
+              gap: "var(--sa-stack-16)",
+              padding: "var(--sa-padding-12) 0",
               borderTop: "1px solid var(--sa-border-neutral-subtle)",
             }}
           >
@@ -809,14 +809,14 @@ export function ApplicationForm() {
             <div>
               <div style={{ color: "var(--sa-text-neutral-base)", fontWeight: 600 }}>
                 Initial release{" "}
-                <span style={{ marginLeft: "var(--sa-inline-s)" }}>
+                <span style={{ marginLeft: "var(--sa-inline-8)" }}>
                   <StatusBadge status="Stable" />
                 </span>
               </div>
               <p
                 style={{
                   ...proseStyle,
-                  marginTop: "var(--sa-stack-2xs)",
+                  marginTop: "var(--sa-stack-4)",
                   fontSize: "var(--sa-type-body-2-size)",
                 }}
               >
@@ -890,15 +890,15 @@ function UseCard({
       style={{
         border: "1px solid var(--sa-border-neutral-subtle)",
         borderTop: `3px solid ${accent}`,
-        borderRadius: "var(--sa-shape-md)",
-        padding: "var(--sa-padding-l)",
+        borderRadius: "var(--sa-shape-8)",
+        padding: "var(--sa-padding-20)",
         background: "var(--sa-bg-neutral-base)",
       }}
     >
       <h3
         style={{
           margin: 0,
-          marginBottom: "var(--sa-stack-s)",
+          marginBottom: "var(--sa-stack-12)",
           fontSize: "var(--sa-type-headline-2-size)",
           fontWeight: 600,
           color: "var(--sa-text-neutral-base)",
@@ -909,7 +909,7 @@ function UseCard({
       <ul
         style={{
           margin: 0,
-          paddingLeft: "var(--sa-padding-l)",
+          paddingLeft: "var(--sa-padding-20)",
           color: "var(--sa-text-neutral-subtle)",
           fontSize: "var(--sa-type-body-2-size)",
           lineHeight: 1.8,
@@ -937,8 +937,8 @@ function RelatedCard({
         display: "block",
         textDecoration: "none",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md)",
-        padding: "var(--sa-padding-m)",
+        borderRadius: "var(--sa-shape-8)",
+        padding: "var(--sa-padding-16)",
         background: "var(--sa-bg-neutral-base)",
       }}
     >
@@ -955,7 +955,7 @@ function RelatedCard({
       <span
         style={{
           display: "block",
-          marginTop: "var(--sa-stack-2xs)",
+          marginTop: "var(--sa-stack-4)",
           color: "var(--sa-text-neutral-subtle)",
           fontSize: "var(--sa-type-body-2-size)",
           lineHeight: 1.6,
@@ -973,13 +973,13 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
       style={{
         background: "var(--sa-bg-neutral-subtler)",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md)",
-        padding: "var(--sa-padding-m)",
+        borderRadius: "var(--sa-shape-8)",
+        padding: "var(--sa-padding-16)",
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",
         lineHeight: 1.6,
         color: "var(--sa-text-neutral-base)",
-        marginTop: "var(--sa-stack-xs)",
+        marginTop: "var(--sa-stack-8)",
       }}
     >
       <code style={{ fontFamily: "var(--sa-font-mono)" }}>

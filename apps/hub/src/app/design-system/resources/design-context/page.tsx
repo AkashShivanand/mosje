@@ -53,7 +53,7 @@ export default function DesignContextPage(): React.JSX.Element {
         lives at <a href="/design-system/resources/tokens">Design tokens</a>.
       </Callout>
 
-      <article style={{ marginTop: "var(--sa-stack-xl)" }}>
+      <article style={{ marginTop: "var(--sa-stack-32)" }}>
         <Markdown>{doc}</Markdown>
       </article>
     </>

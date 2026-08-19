@@ -8,7 +8,7 @@
 .ds-label {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-stack-2xs);
+  gap: var(--sa-stack-4);
   font-family: var(--sa-font-latin);
   font-size: var(--sa-type-label-1-size);
   line-height: var(--sa-type-label-1-lh);

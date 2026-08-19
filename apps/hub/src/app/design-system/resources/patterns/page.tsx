@@ -26,23 +26,23 @@ export const metadata: Metadata = {
 
 /* ── Shared layout helpers ── */
 const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-m)",
-  scrollMarginTop: "var(--sa-section-m)",
+  marginTop: "var(--sa-section-48)",
+  scrollMarginTop: "var(--sa-section-48)",
 };
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 700,
   color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-m)",
-  paddingBottom: "var(--sa-padding-xs)",
+  marginBottom: "var(--sa-stack-16)",
+  paddingBottom: "var(--sa-padding-8)",
   borderBottom: "1px solid var(--sa-border-neutral-subtle)",
 };
 const h3Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 600,
   color: "var(--sa-text-neutral-base)",
-  marginTop: "var(--sa-stack-l)",
-  marginBottom: "var(--sa-stack-xs)",
+  marginTop: "var(--sa-stack-24)",
+  marginBottom: "var(--sa-stack-8)",
 };
 const proseStyle: React.CSSProperties = {
   color: "var(--sa-text-neutral-subtle)",
@@ -53,8 +53,8 @@ const proseStyle: React.CSSProperties = {
 const preStyle: React.CSSProperties = {
   background: "var(--sa-bg-neutral-subtler)",
   border: "1px solid var(--sa-border-neutral-subtle)",
-  borderRadius: "var(--sa-shape-md)",
-  padding: "var(--sa-padding-l)",
+  borderRadius: "var(--sa-shape-8)",
+  padding: "var(--sa-padding-20)",
   fontSize: "var(--sa-type-body-3-size)",
   fontFamily: "var(--sa-font-mono)",
   overflowX: "auto",
@@ -90,7 +90,7 @@ export default function PatternsPage(): React.JSX.Element {
       ═══════════════════════════════════════════════ */}
       <section style={sectionStyle} id="dashboard">
         <h2 style={h2Style}>Dashboard Scaffold</h2>
-        <div style={{ display: "flex", gap: "var(--sa-stack-s)", marginBottom: "var(--sa-stack-m)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--sa-stack-12)", marginBottom: "var(--sa-stack-16)", flexWrap: "wrap" }}>
           <StatusBadge status="Stable" />
           <span style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)", alignSelf: "center" }}>
             Portal variant · Authenticated
@@ -106,9 +106,9 @@ export default function PatternsPage(): React.JSX.Element {
         {/* Live preview */}
         <div
           style={{
-            marginTop: "var(--sa-padding-l)",
+            marginTop: "var(--sa-padding-20)",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             overflow: "hidden",
             background: "var(--sa-bg-neutral-subtler)",
           }}
@@ -117,10 +117,10 @@ export default function PatternsPage(): React.JSX.Element {
           <div
             style={{
               background: "var(--sa-bg-brand-primary-bolder)",
-              padding: "var(--sa-padding-s) var(--sa-padding-l)",
+              padding: "var(--sa-padding-12) var(--sa-padding-20)",
               display: "flex",
               alignItems: "center",
-              gap: "var(--sa-stack-s)",
+              gap: "var(--sa-stack-12)",
             }}
           >
             <div style={{ width: 24, height: 24, borderRadius: "50%", background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 30%, transparent)" }} />
@@ -140,7 +140,7 @@ export default function PatternsPage(): React.JSX.Element {
                 minHeight: 320,
                 background: "var(--sa-bg-neutral-base)",
                 borderRight: "1px solid var(--sa-border-neutral-subtle)",
-                padding: "var(--sa-padding-m)",
+                padding: "var(--sa-padding-16)",
                 flexShrink: 0,
               }}
             >
@@ -148,13 +148,13 @@ export default function PatternsPage(): React.JSX.Element {
                 <div
                   key={item}
                   style={{
-                    padding: "var(--sa-padding-xs) var(--sa-padding-s)",
-                    borderRadius: "var(--sa-shape-sm)",
+                    padding: "var(--sa-padding-8) var(--sa-padding-12)",
+                    borderRadius: "var(--sa-shape-6)",
                     background: i === 0 ? "var(--sa-bg-brand-primary-subtler)" : "transparent",
                     color: i === 0 ? "var(--sa-text-brand-primary-base)" : "var(--sa-text-neutral-subtle)",
                     fontSize: "var(--sa-type-body-2-size)",
                     fontWeight: i === 0 ? 600 : 400,
-                    marginBottom: "var(--sa-stack-2xs)",
+                    marginBottom: "var(--sa-stack-4)",
                     cursor: "pointer",
                   }}
                 >
@@ -163,14 +163,14 @@ export default function PatternsPage(): React.JSX.Element {
               ))}
             </div>
             {/* Main content */}
-            <div style={{ flex: 1, padding: "var(--sa-padding-l)" }}>
+            <div style={{ flex: 1, padding: "var(--sa-padding-20)" }}>
               {/* Row 1: MetricCards */}
               <div
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-                  gap: "var(--sa-stack-m)",
-                  marginBottom: "var(--sa-padding-l)",
+                  gap: "var(--sa-stack-16)",
+                  marginBottom: "var(--sa-padding-20)",
                 }}
               >
                 {[
@@ -193,8 +193,8 @@ export default function PatternsPage(): React.JSX.Element {
                 style={{
                   display: "grid",
                   gridTemplateColumns: "2fr 1fr",
-                  gap: "var(--sa-stack-m)",
-                  marginBottom: "var(--sa-padding-l)",
+                  gap: "var(--sa-stack-16)",
+                  marginBottom: "var(--sa-padding-20)",
                 }}
               >
                 <Card>
@@ -207,7 +207,7 @@ export default function PatternsPage(): React.JSX.Element {
                       style={{
                         height: 80,
                         background: "var(--sa-bg-neutral-subtler)",
-                        borderRadius: "var(--sa-shape-sm)",
+                        borderRadius: "var(--sa-shape-6)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -228,7 +228,7 @@ export default function PatternsPage(): React.JSX.Element {
                       style={{
                         height: 80,
                         background: "var(--sa-bg-neutral-subtler)",
-                        borderRadius: "var(--sa-shape-sm)",
+                        borderRadius: "var(--sa-shape-6)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -257,7 +257,7 @@ export default function PatternsPage(): React.JSX.Element {
                               key={col}
                               style={{
                                 textAlign: "left",
-                                padding: "var(--sa-padding-xs) var(--sa-padding-s)",
+                                padding: "var(--sa-padding-8) var(--sa-padding-12)",
                                 color: "var(--sa-text-neutral-subtle)",
                                 fontWeight: 700,
                                 fontSize: "var(--sa-type-label-3-size)",
@@ -277,10 +277,10 @@ export default function PatternsPage(): React.JSX.Element {
                           ["Arjun Singh", "Scholarship", "Lucknow", "Under Review", "2026-06-18"],
                         ].map(([name, scheme, dist, status, date]) => (
                           <tr key={name} style={{ borderBottom: "1px solid var(--sa-border-neutral-subtle)" }}>
-                            <td style={{ padding: "var(--sa-padding-s)" }}>{name}</td>
-                            <td style={{ padding: "var(--sa-padding-s)" }}>{scheme}</td>
-                            <td style={{ padding: "var(--sa-padding-s)" }}>{dist}</td>
-                            <td style={{ padding: "var(--sa-padding-s)" }}>
+                            <td style={{ padding: "var(--sa-padding-12)" }}>{name}</td>
+                            <td style={{ padding: "var(--sa-padding-12)" }}>{scheme}</td>
+                            <td style={{ padding: "var(--sa-padding-12)" }}>{dist}</td>
+                            <td style={{ padding: "var(--sa-padding-12)" }}>
                               <Badge
                                 status={
                                   status === "Approved"
@@ -293,7 +293,7 @@ export default function PatternsPage(): React.JSX.Element {
                                 {status}
                               </Badge>
                             </td>
-                            <td style={{ padding: "var(--sa-padding-s)", color: "var(--sa-color-text-muted)" }}>{date}</td>
+                            <td style={{ padding: "var(--sa-padding-12)", color: "var(--sa-color-text-muted)" }}>{date}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -315,22 +315,22 @@ export default function PatternsPage(): React.JSX.Element {
 
 <div style={{ display: "flex" }}>
   <SidebarNav open={sidebarOpen} groups={NAV_GROUPS} />
-  <main id="main-content" style={{ flex: 1, padding: "var(--sa-stack-l)" }}>
+  <main id="main-content" style={{ flex: 1, padding: "var(--sa-stack-24)" }}>
 
     {/* Row 1: KPI MetricCards — 4 col desktop, 2 tablet, 1 mobile */}
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "var(--sa-stack-m)" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "var(--sa-stack-16)" }}>
       <MetricCard label="Applications" value="12,438" change={{ direction: "up", percent: 14 }} />
       {/* × 3 more */}
     </div>
 
     {/* Row 2: Charts — 2fr 1fr desktop, 1fr mobile */}
-    <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "var(--sa-stack-m)", marginTop: "var(--sa-padding-l)" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "var(--sa-stack-16)", marginTop: "var(--sa-padding-20)" }}>
       <Card><BarChart data={monthlyData} /></Card>
       <Card><PieChart data={categoryData} /></Card>
     </div>
 
     {/* Row 3: DataTable — full width */}
-    <Card style={{ marginTop: "var(--sa-padding-l)" }}>
+    <Card style={{ marginTop: "var(--sa-padding-20)" }}>
       <DataTable columns={columns} data={rows} pagination />
     </Card>
 
@@ -340,7 +340,7 @@ export default function PatternsPage(): React.JSX.Element {
 <Footer links={FOOTER_LINKS} />`}</pre>
 
         <h3 style={h3Style}>Rules</h3>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-xl)" }}>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-24)" }}>
           <li>MetricCard grid: <code>repeat(auto-fill, minmax(240px, 1fr))</code>. Maximum 4 per row.</li>
           <li>Charts row: <code>2fr 1fr</code> on desktop — never split charts equally (the bar chart needs more width).</li>
           <li><code>SiteHeader</code> must be <code>sticky</code> on portal variant. <code>collapseOnScroll</code> is opt-in.</li>
@@ -379,7 +379,7 @@ export default function PatternsPage(): React.JSX.Element {
       ═══════════════════════════════════════════════ */}
       <section style={sectionStyle} id="login">
         <h2 style={h2Style}>Portal Login Page</h2>
-        <div style={{ display: "flex", gap: "var(--sa-stack-s)", marginBottom: "var(--sa-stack-m)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--sa-stack-12)", marginBottom: "var(--sa-stack-16)", flexWrap: "wrap" }}>
           <StatusBadge status="Stable" />
           <span style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)", alignSelf: "center" }}>
             Portal variant · Public
@@ -395,9 +395,9 @@ export default function PatternsPage(): React.JSX.Element {
         {/* Live preview: login shell mock */}
         <div
           style={{
-            marginTop: "var(--sa-padding-l)",
+            marginTop: "var(--sa-padding-20)",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             overflow: "hidden",
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
@@ -408,14 +408,14 @@ export default function PatternsPage(): React.JSX.Element {
           <div
             style={{
               background: "var(--sa-bg-brand-primary-bolder)",
-              padding: "var(--sa-padding-2xl)",
+              padding: "var(--sa-padding-32)",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              gap: "var(--sa-stack-m)",
+              gap: "var(--sa-stack-16)",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-s)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)" }}>
               <div style={{ width: 48, height: 48, borderRadius: "50%", background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 20%, transparent)", flexShrink: 0 }} />
               <div>
                 <div style={{ color: "var(--sa-on-bg-brand-primary-bolder)", fontWeight: 700, fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)" }}>PM-AJAY</div>
@@ -432,23 +432,23 @@ export default function PatternsPage(): React.JSX.Element {
           <div
             style={{
               background: "var(--sa-bg-neutral-base)",
-              padding: "var(--sa-padding-2xl)",
+              padding: "var(--sa-padding-32)",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              gap: "var(--sa-stack-m)",
+              gap: "var(--sa-stack-16)",
             }}
           >
             <h2 style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", fontWeight: 700, color: "var(--sa-color-text-default)", margin: 0 }}>
               Sign in
             </h2>
             {/* Tab pills */}
-            <div style={{ display: "flex", gap: "var(--sa-stack-xs)" }}>
+            <div style={{ display: "flex", gap: "var(--sa-stack-8)" }}>
               {["OTP Login", "Password"].map((tab, i) => (
                 <div
                   key={tab}
                   style={{
-                    padding: "var(--sa-padding-xs) var(--sa-padding-m)",
+                    padding: "var(--sa-padding-8) var(--sa-padding-16)",
                     borderRadius: "var(--sa-shape-full)",
                     background: i === 0 ? "var(--sa-bg-brand-primary-bolder)" : "transparent",
                     color: i === 0 ? "white" : "var(--sa-text-neutral-subtle)",
@@ -463,12 +463,12 @@ export default function PatternsPage(): React.JSX.Element {
               ))}
             </div>
             {/* Form stub */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-s)" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-12)" }}>
               <div
                 style={{
                   border: "1px solid var(--sa-border-neutral-bolder-default)",
-                  borderRadius: "var(--sa-shape-sm)",
-                  padding: "var(--sa-padding-s) var(--sa-padding-s)",
+                  borderRadius: "var(--sa-shape-6)",
+                  padding: "var(--sa-padding-12) var(--sa-padding-12)",
                   color: "var(--sa-text-neutral-subtle)",
                   fontSize: "var(--sa-type-body-2-size)",
                 }}
@@ -508,7 +508,7 @@ export default function PatternsPage(): React.JSX.Element {
       ═══════════════════════════════════════════════ */}
       <section style={sectionStyle} id="wizard">
         <h2 style={h2Style}>Form Wizard (Multi-step Application)</h2>
-        <div style={{ display: "flex", gap: "var(--sa-stack-s)", marginBottom: "var(--sa-stack-m)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--sa-stack-12)", marginBottom: "var(--sa-stack-16)", flexWrap: "wrap" }}>
           <StatusBadge status="Beta" />
           <span style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)", alignSelf: "center" }}>
             Portal variant · Authenticated
@@ -525,14 +525,14 @@ export default function PatternsPage(): React.JSX.Element {
         {/* Live stepper preview */}
         <div
           style={{
-            marginTop: "var(--sa-padding-l)",
+            marginTop: "var(--sa-padding-20)",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             overflow: "hidden",
             background: "var(--sa-bg-neutral-base)",
           }}
         >
-          <div style={{ padding: "var(--sa-padding-l)", borderBottom: "1px solid var(--sa-border-neutral-subtle)" }}>
+          <div style={{ padding: "var(--sa-padding-20)", borderBottom: "1px solid var(--sa-border-neutral-subtle)" }}>
             <Stepper
               current={1}
               steps={[
@@ -543,21 +543,21 @@ export default function PatternsPage(): React.JSX.Element {
               ]}
             />
           </div>
-          <div style={{ padding: "var(--sa-padding-l)", display: "flex", flexDirection: "column", gap: "var(--sa-padding-m)" }}>
+          <div style={{ padding: "var(--sa-padding-20)", display: "flex", flexDirection: "column", gap: "var(--sa-padding-16)" }}>
             <h3 style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", fontWeight: 700, color: "var(--sa-color-text-default)", margin: 0 }}>
               Address Details
             </h3>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--sa-stack-m)" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--sa-stack-16)" }}>
               {["Street / Village", "District", "State", "PIN Code"].map((label) => (
                 <div key={label}>
-                  <label style={{ display: "block", fontSize: "var(--sa-type-label-1-size)", fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-2xs)" }}>
+                  <label style={{ display: "block", fontSize: "var(--sa-type-label-1-size)", fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-4)" }}>
                     {label}
                   </label>
                   <div
                     style={{
                       border: "1px solid var(--sa-border-neutral-bolder-default)",
-                      borderRadius: "var(--sa-shape-sm)",
-                      padding: "var(--sa-padding-s) var(--sa-padding-s)",
+                      borderRadius: "var(--sa-shape-6)",
+                      padding: "var(--sa-padding-12) var(--sa-padding-12)",
                       color: "var(--sa-text-neutral-subtle)",
                       fontSize: "var(--sa-type-body-2-size)",
                     }}
@@ -567,7 +567,7 @@ export default function PatternsPage(): React.JSX.Element {
                 </div>
               ))}
             </div>
-            <div style={{ display: "flex", gap: "var(--sa-stack-s)", marginTop: "var(--sa-stack-xs)" }}>
+            <div style={{ display: "flex", gap: "var(--sa-stack-12)", marginTop: "var(--sa-stack-8)" }}>
               <Button appearance="outlined">← Previous</Button>
               <Button variant="primary" appearance="filled">Save & Continue →</Button>
             </div>
@@ -610,7 +610,7 @@ export default function PatternsPage(): React.JSX.Element {
 </Wizard>`}</pre>
 
         <h3 style={h3Style}>Rules</h3>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-xl)" }}>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-24)" }}>
           <li>Each step: <strong>3–6 FormFields</strong>. Never exceed 8 visible fields per step.</li>
           <li>Final step is always <code>&lt;ReviewSection&gt;</code> — show all entered values before submit.</li>
           <li>Show <code>&lt;Stepper&gt;</code> at the top of the wizard to communicate progress visually.</li>
@@ -624,7 +624,7 @@ export default function PatternsPage(): React.JSX.Element {
       ═══════════════════════════════════════════════ */}
       <section style={sectionStyle} id="data-table">
         <h2 style={h2Style}>Data Table Pattern</h2>
-        <div style={{ display: "flex", gap: "var(--sa-stack-s)", marginBottom: "var(--sa-stack-m)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--sa-stack-12)", marginBottom: "var(--sa-stack-16)", flexWrap: "wrap" }}>
           <StatusBadge status="Beta" />
         </div>
         <p style={proseStyle}>
@@ -634,14 +634,14 @@ export default function PatternsPage(): React.JSX.Element {
           WCAG 2.1 AA out of the box.
         </p>
 
-        <Alert status="info" style={{ marginTop: "var(--sa-padding-l)" }}>
+        <Alert status="info" style={{ marginTop: "var(--sa-padding-20)" }}>
           Always use <code>&lt;DataTable&gt;</code> for lists with more than 5 rows.
           Raw HTML <code>&lt;table&gt;</code> is only acceptable for small
           static summary tables.
         </Alert>
 
         <h3 style={h3Style}>Key Rules</h3>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-xl)" }}>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-24)" }}>
           <li>Always provide a <code>caption</code> prop or <code>aria-label</code> on the table.</li>
           <li>Numeric columns must be <strong>right-aligned</strong> — header alignment must match column alignment.</li>
           <li>Zebra-stripe dense tables (&gt;15 rows) using <code>--sa-bg-neutral-subtler</code>.</li>
@@ -687,7 +687,7 @@ export default function PatternsPage(): React.JSX.Element {
       ═══════════════════════════════════════════════ */}
       <section style={sectionStyle} id="empty-state">
         <h2 style={h2Style}>Empty State Pattern</h2>
-        <div style={{ display: "flex", gap: "var(--sa-stack-s)", marginBottom: "var(--sa-stack-m)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--sa-stack-12)", marginBottom: "var(--sa-stack-16)", flexWrap: "wrap" }}>
           <StatusBadge status="Stable" />
         </div>
         <p style={proseStyle}>
@@ -700,10 +700,10 @@ export default function PatternsPage(): React.JSX.Element {
         {/* Live preview */}
         <div
           style={{
-            marginTop: "var(--sa-padding-l)",
+            marginTop: "var(--sa-padding-20)",
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-padding-l)",
+            gap: "var(--sa-padding-20)",
           }}
         >
           <Card>
@@ -733,7 +733,7 @@ export default function PatternsPage(): React.JSX.Element {
         </div>
 
         <h3 style={h3Style}>Rules</h3>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-xl)" }}>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-24)" }}>
           <li>Always include: icon + heading + 1-sentence description + primary CTA.</li>
           <li>Use <code>variant=&quot;no-results&quot;</code> for search/filter empty states with a clear-filters action.</li>
           <li>Use <code>variant=&quot;no-data&quot;</code> for completely empty data containers with a create/add action.</li>
@@ -747,12 +747,12 @@ export default function PatternsPage(): React.JSX.Element {
             {
               type: "do",
               preview: (
-                <div style={{ textAlign: "center", padding: "var(--sa-stack-m)" }}>
-                  <div style={{ marginBottom: "var(--sa-stack-xs)", color: "var(--sa-text-neutral-subtle)" }}>
+                <div style={{ textAlign: "center", padding: "var(--sa-stack-16)" }}>
+                  <div style={{ marginBottom: "var(--sa-stack-8)", color: "var(--sa-text-neutral-subtle)" }}>
                     <Icon name="assignment" size={32} aria-hidden="true" />
                   </div>
-                  <div style={{ fontWeight: 700, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-2xs)" }}>No applications yet</div>
-                  <div style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)", marginBottom: "var(--sa-stack-s)" }}>Add your first application to get started.</div>
+                  <div style={{ fontWeight: 700, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-4)" }}>No applications yet</div>
+                  <div style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)", marginBottom: "var(--sa-stack-12)" }}>Add your first application to get started.</div>
                   <Button variant="primary" appearance="filled" size="sm">Add application</Button>
                 </div>
               ),
@@ -761,7 +761,7 @@ export default function PatternsPage(): React.JSX.Element {
             {
               type: "dont",
               preview: (
-                <div style={{ textAlign: "center", padding: "var(--sa-stack-m)", color: "var(--sa-color-text-muted)", fontSize: "var(--sa-type-body-2-size)" }}>
+                <div style={{ textAlign: "center", padding: "var(--sa-stack-16)", color: "var(--sa-color-text-muted)", fontSize: "var(--sa-type-body-2-size)" }}>
                   No data found.
                 </div>
               ),
@@ -776,7 +776,7 @@ export default function PatternsPage(): React.JSX.Element {
       ═══════════════════════════════════════════════ */}
       <section style={sectionStyle} id="website-page">
         <h2 style={h2Style}>Informational Page (Website)</h2>
-        <div style={{ display: "flex", gap: "var(--sa-stack-s)", marginBottom: "var(--sa-stack-m)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--sa-stack-12)", marginBottom: "var(--sa-stack-16)", flexWrap: "wrap" }}>
           <StatusBadge status="Stable" />
           <span style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)", alignSelf: "center" }}>
             Website variant · Public
@@ -789,7 +789,7 @@ export default function PatternsPage(): React.JSX.Element {
         </p>
 
         <h3 style={h3Style}>Section Order</h3>
-        <ol style={{ ...proseStyle, paddingLeft: "var(--sa-padding-xl)" }}>
+        <ol style={{ ...proseStyle, paddingLeft: "var(--sa-padding-24)" }}>
           <li><strong>Hero</strong> — Scheme name, brief tagline, primary CTA (Apply / Know More).</li>
           <li><strong>Key Features / Overview</strong> — 3–4 feature cards or a brief prose section.</li>
           <li><strong>Eligibility / Beneficiaries</strong> — Who qualifies. Use a structured list or table.</li>
@@ -799,7 +799,7 @@ export default function PatternsPage(): React.JSX.Element {
         </ol>
 
         <h3 style={h3Style}>Rules</h3>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-xl)" }}>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-24)" }}>
           <li>Only <strong>one</strong> <code>&lt;h1&gt;</code> per page.</li>
           <li>All sections must have <code>id</code> attributes for deep-linking.</li>
           <li>Content max-width: <code>1280px</code>. Prose sections: <code>max-w-prose</code> (<code>65ch</code>).</li>

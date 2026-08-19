@@ -20,16 +20,16 @@ export const metadata: Metadata = {
  * ------------------------------------------------------------------ */
 
 const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-m)",
-  scrollMarginTop: "var(--sa-section-m)",
+  marginTop: "var(--sa-section-48)",
+  scrollMarginTop: "var(--sa-section-48)",
 };
 
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 700,
   color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-m)",
-  paddingBottom: "var(--sa-padding-xs)",
+  marginBottom: "var(--sa-stack-16)",
+  paddingBottom: "var(--sa-padding-8)",
   borderBottom: "1px solid var(--sa-border-neutral-subtle)",
 };
 
@@ -37,8 +37,8 @@ const h3Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
   color: "var(--sa-text-neutral-base)",
-  marginTop: "var(--sa-stack-l)",
-  marginBottom: "var(--sa-stack-xs)",
+  marginTop: "var(--sa-stack-24)",
+  marginBottom: "var(--sa-stack-8)",
 };
 
 const proseStyle: React.CSSProperties = {
@@ -54,13 +54,13 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
       style={{
         background: "var(--sa-bg-neutral-subtler)",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md)",
-        padding: "var(--sa-padding-m)",
+        borderRadius: "var(--sa-shape-8)",
+        padding: "var(--sa-padding-16)",
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",
         lineHeight: 1.6,
         color: "var(--sa-text-neutral-base)",
-        marginTop: "var(--sa-stack-xs)",
+        marginTop: "var(--sa-stack-8)",
       }}
     >
       <code style={{ fontFamily: "var(--sa-font-mono)" }}>{children}</code>
@@ -78,16 +78,16 @@ export default function TabsPage(): React.JSX.Element {
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
-        padding: "var(--sa-padding-2xl) var(--sa-padding-xl) var(--sa-section-l)",
+        padding: "var(--sa-padding-32) var(--sa-padding-24) var(--sa-section-56)",
       }}
     >
       {/* ── Title ── */}
-      <header style={{ marginBottom: "var(--sa-stack-xl)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-s)", flexWrap: "wrap" }}>
+      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
           <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-color-text-default)", margin: 0 }}>Tabs</h1>
           <StatusBadge status="Beta" />
         </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-s)" }}>
+        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
           Accessible tabbed navigation for <strong>non-linear</strong> sections a user revisits in any order — a clinical
           record, a settings panel, a multi-facet detail view. <code>Tabs</code> implements the WAI-ARIA Tabs pattern with
           a roving <code>tabindex</code>, Arrow / Home / End keys, and a polite live-region announce. Use it when the user
@@ -105,7 +105,7 @@ export default function TabsPage(): React.JSX.Element {
           Focus a tab and use <strong>Arrow</strong> keys to move between sections, or <strong>Home</strong> / <strong>End</strong>{" "}
           to jump to the first / last.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <TabsDemo />
         </div>
       </section>
@@ -496,7 +496,7 @@ function ClinicalRecord() {
           10. Guidelines
         </h2>
         <Callout type="info" title="✓ Do">
-          <ul style={{ margin: 0, paddingLeft: "1.2em", display: "flex", flexDirection: "column", gap: "var(--sa-stack-2xs)" }}>
+          <ul style={{ margin: 0, paddingLeft: "1.2em", display: "flex", flexDirection: "column", gap: "var(--sa-stack-4)" }}>
             <li>Use Tabs for non-linear sections a user revisits in any order (records, settings, detail facets).</li>
             <li>Run save / validation inside <code>onChange</code> so switching tabs never loses data.</li>
             <li>Give the tablist a meaningful <code>ariaLabel</code> describing what the sections are.</li>
@@ -504,9 +504,9 @@ function ClinicalRecord() {
             <li>Write labels short enough that nothing truncates — check the Hindi rendering, not only the English.</li>
           </ul>
         </Callout>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <Callout type="warning" title="✕ Don't">
-            <ul style={{ margin: 0, paddingLeft: "1.2em", display: "flex", flexDirection: "column", gap: "var(--sa-stack-2xs)" }}>
+            <ul style={{ margin: 0, paddingLeft: "1.2em", display: "flex", flexDirection: "column", gap: "var(--sa-stack-4)" }}>
               <li>
                 Don&apos;t use Tabs for an ordered, must-complete-in-sequence flow — use <code>&lt;Wizard&gt;</code> (a linear
                 stepper) instead.

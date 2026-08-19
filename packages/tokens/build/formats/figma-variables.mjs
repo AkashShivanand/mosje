@@ -153,7 +153,7 @@ const SPACING_ROOTS = new Set(["inline", "stack", "padding", "section"]);
  * defect RULE 1 exists to remove. The library has since been renamed to the canonical paths,
  * so the table is gone and `name` is now derived, not chosen.
  */
-function collectionFor(path, tier) {
+function collectionFor(path, tier, type) {
   const [head, ...rest] = path;
 
   // Colour PRIMITIVES stay private: Figma's mode-aware ramp is the Tier-2 `color.*Scale.*`,
@@ -175,6 +175,9 @@ function collectionFor(path, tier) {
   if (head === "radius" || head === "shape") return "Radius";
   if (head === "opacity" || head === "z") return "Static";
   if (head === "border" && rest[0] === "width") return "Static";
+  // Tier-2 border width. Sits with the Tier-1 `border/width/*` it aliases and with
+  // `control/border/width`, so every edge-weight token is findable in one collection.
+  if (head === "stroke") return "Static";
   if (head === "motion") return "Motion";
   if (head === "density") return "Density";
   if (head === "font" || head === "leading" || head === "type") return "Type";
@@ -236,7 +239,46 @@ function collectionFor(path, tier) {
     return ABAR_DIMENSIONS.has(String(rest[0] ?? "")) ? "Space" : "Color";
   }
 
+  // TIER 3 IS ROUTED BY TYPE, and this runs BEFORE the COLOUR_ROOTS check below because a
+  // component's ROOT does not tell you what kind of token it is: `badge` is in COLOUR_ROOTS,
+  // but `cmp/badge/dotSize` is a dimension and belongs with the other geometry in Space —
+  // which is where the library already has it. Routing by root would send it to Color, and
+  // Figma refuses to move a variable between collections, so the export would fork into a
+  // second variable rather than update the existing one.
+  //
+  // Until 2026-08-18 the fall-through below was `return null`, meaning "silently omit from the
+  // Figma export". cmp/accessibilityBar/* — eleven tokens defined in code and emitting
+  // --sa-cmp-accessibilityBar-* into tokens.css — never reached the library at all, and a
+  // designer hand-made ten variables to fill the gap because there was nothing to bind.
+  if (tier === "cmp") {
+    // LEGACY PLACEMENT, load-bearing: these two dimensions already live in the Color
+    // collection. Figma cannot move them, so they must keep routing there.
+    if (rest[0] === "radius" && (head === "button" || head === "card")) return "Color";
+    if (type === "color") return "Color";
+    if (type === "dimension" || type === "number") return "Space";
+    throw new Error(
+      `figma-variables: cannot route component token "cmp/${path.join("/")}" (type ${type ?? "unknown"}).\n` +
+        `  A Tier-3 token the exporter cannot place is a BUG, not a filter — it would be dropped\n` +
+        `  from the library silently, and the only recourse left to a designer is to hand-make a\n` +
+        `  variable that code can never consume. Give it a $type, or extend collectionFor.`,
+    );
+  }
+
   if (COLOUR_ROOTS.has(head)) return "Color";
+
+  // TIER 3 MUST NOT FALL THROUGH. Until 2026-08-18 it did, and the `return null` below meant
+  // "silently omit from the Figma export" — no warning, no count, no failure. Component tokens
+  // were routed by COMPONENT NAME against COLOUR_ROOTS, so a component reached designers only
+  // if someone had remembered to add its name to that set. `cmp/accessibilityBar/*` never was:
+  // eleven tokens defined in code, emitting --sa-cmp-accessibilityBar-* into tokens.css, absent
+  // from the library. A designer hand-made ten variables to fill the gap, correctly, and they
+  // could carry no codeSyntax because there was no way to know the generated name.
+  //
+  // Route by what the token IS rather than by a list someone has to maintain: a colour goes to
+  // Color, a dimension to Space (alongside `layout/*` and `size/*`, which is what a component's
+  // geometry aliases). The COLOUR_ROOTS branch above still runs first, so `cmp/button/radius`
+  // and `cmp/card/radius` stay in the Color collection they already live in — Figma refuses to
+  // move a variable between collections, so re-routing an existing one would orphan it.
   return null;
 }
 
@@ -248,8 +290,8 @@ function collectionFor(path, tier) {
  * the collection cannot carry the tier — the name tree does, and Figma's variable picker
  * navigates it exactly like a collection.
  */
-export function figmaNameFor(path, tier = "sys") {
-  const collection = collectionFor(path, tier);
+export function figmaNameFor(path, tier = "sys", type) {
+  const collection = collectionFor(path, tier, type);
   if (!collection) return null;
   return { collection, name: canonicalFigmaName(path, tier) };
 }
@@ -564,7 +606,7 @@ export function buildPayload(dictionary) {
 
   const nameByPath = new Map();
   for (const t of tokens) {
-    const target = figmaNameFor(t.path, tierOfFile(t.filePath));
+    const target = figmaNameFor(t.path, tierOfFile(t.filePath), t.$type ?? t.type);
     if (target) nameByPath.set(t.path.join("."), target);
   }
 
@@ -573,7 +615,7 @@ export function buildPayload(dictionary) {
   // a Theme token's chain reaches the latter, so that is what has to be searchable.
   const colorByUnderlying = new Map();
   for (const t of tokens) {
-    const target = figmaNameFor(t.path, tierOfFile(t.filePath));
+    const target = figmaNameFor(t.path, tierOfFile(t.filePath), t.$type ?? t.type);
     if (!target || target.collection !== "Palette") continue;
     const raw = t.original?.$value ?? t.original?.value;
     if (typeof raw === "string" && /^\{[^}]+\}$/.test(raw.trim())) {
@@ -600,7 +642,7 @@ export function buildPayload(dictionary) {
 
   for (const token of ordered) {
     const tier = tierOfFile(token.filePath);
-    const target = figmaNameFor(token.path, tier);
+    const target = figmaNameFor(token.path, tier, token.$type ?? token.type);
     if (!target) {
       unmapped.push(`${token.path.join("/")} (${exclusionReason(token.path, tier)})`);
       continue;

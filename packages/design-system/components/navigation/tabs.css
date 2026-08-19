@@ -19,15 +19,15 @@
 /* ---- size: padding + type. Everything else derives from these. ------------ */
 
 .ds-tabs--s {
-  --ds-tabs-pad-y: var(--sa-padding-xs);
-  --ds-tabs-pad-x: var(--sa-padding-s);
+  --ds-tabs-pad-y: var(--sa-padding-8);
+  --ds-tabs-pad-x: var(--sa-padding-12);
   --ds-tabs-type-size: var(--sa-type-label-1-size);
   --ds-tabs-type-lh: var(--sa-type-label-1-lh);
 }
 
 .ds-tabs--m {
-  --ds-tabs-pad-y: var(--sa-padding-s);
-  --ds-tabs-pad-x: var(--sa-padding-m);
+  --ds-tabs-pad-y: var(--sa-padding-12);
+  --ds-tabs-pad-x: var(--sa-padding-16);
   --ds-tabs-type-size: var(--sa-type-label-1-size);
   --ds-tabs-type-lh: var(--sa-type-label-1-lh);
 }
@@ -35,8 +35,8 @@
 /* L steps the type up to body-1 rather than the padding — a larger tab reads as
    larger because its label does, and padding alone would only make it emptier. */
 .ds-tabs--l {
-  --ds-tabs-pad-y: var(--sa-padding-s);
-  --ds-tabs-pad-x: var(--sa-padding-l);
+  --ds-tabs-pad-y: var(--sa-padding-12);
+  --ds-tabs-pad-x: var(--sa-padding-20);
   --ds-tabs-type-size: var(--sa-type-body-1-size);
   --ds-tabs-type-lh: var(--sa-type-body-1-lh);
 }
@@ -76,7 +76,7 @@
      209.33 in a 312 slot. `inline`, not `stack`: this is horizontal rhythm
      between siblings, and it stays 2 in the vertical track so the segments read
      as one control rather than as a stack of separate pills. */
-  gap: var(--sa-inline-2xs);
+  gap: var(--sa-inline-2);
   padding: var(--sa-layout-tab-track);
   border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-lg);
@@ -157,7 +157,7 @@
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: var(--sa-inline-s);
+  gap: var(--sa-inline-8);
   min-width: 0;
   white-space: nowrap;
   padding: var(--ds-tabs-pad-y) var(--ds-tabs-pad-x);
@@ -362,7 +362,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: calc(-1 * var(--sa-padding-3xs));
+  margin: calc(-1 * var(--sa-padding-2));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -504,9 +504,10 @@
 .ds-tabs-bar {
   display: flex;
   align-items: center;
-  /* `inline/s`, not `2xs`. At 2px the trigger crowded the track edge and read as
-     part of it; the gap has to say "this control is not one of the tabs". */
-  gap: var(--sa-inline-s);
+  /* `inline/8`, not `inline/2`. At 2px the trigger crowded the track edge and read as
+     part of it; the gap has to say "this control is not one of the tabs". (This was
+     `inline/s` before the spacing ladder was value-named — same 8px.) */
+  gap: var(--sa-inline-8);
   min-width: 0;
 }
 
@@ -524,7 +525,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--ds-tabs-pad-y) var(--sa-padding-s);
+  padding: var(--ds-tabs-pad-y) var(--sa-padding-12);
   border: none;
   border-radius: var(--sa-shape-md);
   background: transparent;
@@ -576,7 +577,7 @@
      menu the width of the page. */
   width: max-content;
   max-width: var(--sa-container-narrow);
-  padding: var(--sa-padding-2xs);
+  padding: var(--sa-padding-4);
   border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-md);
   background-color: var(--sa-bg-neutral-base);
@@ -587,8 +588,8 @@
 .ds-tabs__menu-item {
   display: flex;
   align-items: center;
-  gap: var(--sa-inline-s);
-  padding: var(--sa-padding-xs) var(--sa-padding-s);
+  gap: var(--sa-inline-8);
+  padding: var(--sa-padding-8) var(--sa-padding-12);
   border: none;
   border-radius: var(--sa-shape-xs);
   background: transparent;

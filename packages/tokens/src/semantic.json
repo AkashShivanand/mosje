@@ -1463,13 +1463,12 @@
   },
   "focus": {
     "ring": {
-      "$description": "The focus indicator, and it is OPAQUE on purpose. It carried 48% alpha until 2026-08-17, which composited to 2.01:1 on white, 1.92:1 on a tab track and 1.16:1 on a selected brand pill — all below the 3:1 floor of WCAG 1.4.11 and 2.4.11, and worst exactly where a keyboard user needs it most. An alpha ring cannot be assessed once and trusted, because its contrast is a property of whatever it happens to land on. Opaque, it measures 4.64:1 on bg/neutral/base and 4.07:1 on bg/neutral/subtler. Note that a ring is judged against what it ABUTS, not what it encircles: the two-layer construction (focus/offset of the surface colour, then focus/width of this) means the ring never touches the filled control inside it, which is what keeps it legible on a selected brand pill.",
-      "$value": "#0373DF",
+      "$value": "rgba(3, 115, 223, 0.48)",
       "$extensions": {
         "mosje": {
           "colorModes": {
-            "navy": "#003366",
-            "dbim": "#003366"
+            "navy": "rgba(0, 51, 102, 0.48)",
+            "dbim": "rgba(0, 51, 102, 0.48)"
           },
           "themes": {
             "dark": "rgba(125, 180, 245, 0.55)"
@@ -1481,7 +1480,7 @@
       "$value": "{border.width.md}"
     },
     "offset": {
-      "$value": "{space.xxs}"
+      "$value": "{space.2}"
     }
   },
   "overlay": {
@@ -1504,120 +1503,216 @@
           }
         }
       }
+    },
+    "brand": {
+      "$description": "Translucent white washes for interactive states on a BRAND-coloured surface, where a solid hover fill would fight the brand. The family slot names the SURFACE, not the wash — the same reading as `on/bg/brand/*`, which is ink for a brand background rather than brand-coloured ink. Authored in Figma first as `overlay/on-brand/*`, a name the grammar rejects (a hyphen inside a path segment), which is exactly why it could never be generated and its codeSyntax named a CSS variable that did not exist.",
+      "hover": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.08)",
+        "$description": "Hover wash on a brand-coloured surface. 8%, matching the published Figma variable and the AccessibilityBar's States documentation. This family was authored here at 12% from a base that predated 33cbb4f, which had already corrected the component from 12% to 8%; reconciled to 8% on 2026-08-19."
+      },
+      "active": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.16)",
+        "$description": "Pressed/selected wash on a brand-coloured surface. Named `active`, not `pressed` — `active` is the state word the whole system uses (cmp/action/*/active/bg), and the grammar has no `pressed`."
+      }
     }
   },
   "inline": {
-    "none": {
-      "$value": "{space.none}"
+    "0": {
+      "$value": "{space.0}"
     },
-    "2xs": {
-      "$value": "{space.xxs}"
+    "2": {
+      "$value": "{space.2}"
     },
-    "xs": {
-      "$value": "{space.xs}"
+    "4": {
+      "$value": "{space.4}"
     },
-    "s": {
-      "$value": "{space.sm}"
+    "6": {
+      "$value": "{space.6}"
     },
-    "m": {
-      "$value": "{space.md}"
+    "8": {
+      "$value": "{space.8}"
     },
-    "l": {
-      "$value": "{space.lg}"
+    "12": {
+      "$value": "{space.12}"
     },
-    "xl": {
-      "$value": "{space.2xl}",
-      "$description": "24. Added 2026-08-17. `inline` was the only spacing family missing it — `stack/l` and `padding/xl` are both 24 — so a 24px horizontal gap was the one common measurement with no semantic name, and every one of them had to reach past the layer to `ref/space/2xl`. The old `inline/xl` (32) became `inline/2xl` in the same change, which is why this is a RENAME and not purely an addition: a t-shirt ramp has no slot between `l` and `xl`, so inserting a step means the ones above it shift up."
+    "16": {
+      "$value": "{space.16}"
     },
-    "2xl": {
-      "$value": "{space.3xl}",
-      "$description": "32. Was `inline/xl` until 2026-08-17 — see the note on `inline/xl`."
-    }
+    "20": {
+      "$value": "{space.20}"
+    },
+    "24": {
+      "$value": "{space.24}"
+    },
+    "32": {
+      "$value": "{space.32}"
+    },
+    "40": {
+      "$value": "{space.40}"
+    },
+    "48": {
+      "$value": "{space.48}"
+    },
+    "56": {
+      "$value": "{space.56}"
+    },
+    "64": {
+      "$value": "{space.64}"
+    },
+    "72": {
+      "$value": "{space.72}"
+    },
+    "80": {
+      "$value": "{space.80}"
+    },
+    "$description": "Horizontal gap between items on one line. VALUE-NAMED: `inline/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
+    "$type": "dimension"
   },
   "stack": {
-    "none": {
-      "$value": "{space.none}"
+    "0": {
+      "$value": "{space.0}"
     },
-    "2xs": {
-      "$value": "{space.xs}"
+    "2": {
+      "$value": "{space.2}"
     },
-    "xs": {
-      "$value": "{space.sm}"
+    "4": {
+      "$value": "{space.4}"
     },
-    "s": {
-      "$value": "{space.md}"
+    "6": {
+      "$value": "{space.6}"
     },
-    "m": {
-      "$value": "{space.lg}"
+    "8": {
+      "$value": "{space.8}"
     },
-    "l": {
-      "$value": "{space.2xl}"
+    "12": {
+      "$value": "{space.12}"
     },
-    "xl": {
-      "$value": "{space.3xl}"
+    "16": {
+      "$value": "{space.16}"
     },
-    "2xl": {
-      "$value": "{space.4xl}"
-    }
+    "20": {
+      "$value": "{space.20}"
+    },
+    "24": {
+      "$value": "{space.24}"
+    },
+    "32": {
+      "$value": "{space.32}"
+    },
+    "40": {
+      "$value": "{space.40}"
+    },
+    "48": {
+      "$value": "{space.48}"
+    },
+    "56": {
+      "$value": "{space.56}"
+    },
+    "64": {
+      "$value": "{space.64}"
+    },
+    "72": {
+      "$value": "{space.72}"
+    },
+    "80": {
+      "$value": "{space.80}"
+    },
+    "$description": "Vertical gap between stacked items, and vertical rhythm inside a block. VALUE-NAMED: `stack/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
+    "$type": "dimension"
   },
   "padding": {
-    "none": {
-      "$value": "{space.none}"
+    "0": {
+      "$value": "{space.0}"
     },
-    "3xs": {
-      "$value": "{space.xxs}"
+    "2": {
+      "$value": "{space.2}"
     },
-    "2xs": {
-      "$value": "{space.xs}"
+    "4": {
+      "$value": "{space.4}"
     },
-    "xs": {
-      "$value": "{space.sm}"
+    "6": {
+      "$value": "{space.6}"
     },
-    "s": {
-      "$value": "{space.md}"
+    "8": {
+      "$value": "{space.8}"
     },
-    "m": {
-      "$value": "{space.lg}"
+    "12": {
+      "$value": "{space.12}"
     },
-    "l": {
-      "$value": "{space.xl}"
+    "16": {
+      "$value": "{space.16}"
     },
-    "xl": {
-      "$value": "{space.2xl}"
+    "20": {
+      "$value": "{space.20}"
     },
-    "2xl": {
-      "$value": "{space.3xl}",
-      "$description": "32. A 28 step was attempted here on 2026-08-17 and DELIBERATELY ABANDONED — the documentation house style's panel padding is 28, and it has no semantic name for that reason. Three independent constraints refuse it, and all three are correct: this family already uses ALL ELEVEN canonical rung names (none…4xl), so there is no slot to insert into; `space` has no 28 primitive, because its ramp changes cadence here, running in 4s to 24 and in 8s from 32; and `space-linkage.test.mjs` requires every semantic space token to alias a space primitive, so a literal is not an option either. Aliasing `{size.28}` was also tried and reverted: `size/*` is a rem scale, and 1.75rem in a px ramp INVERTS the scale below a 16px root (at 13px it resolves to 22.75px, under `padding/xl`'s 24). The system is saying 28 is not a padding step. The documentation was moved onto 32 instead."
+    "24": {
+      "$value": "{space.24}"
     },
-    "3xl": {
-      "$value": "{space.10xl}"
+    "32": {
+      "$value": "{space.32}"
     },
-    "4xl": {
-      "$value": "{space.11xl}"
-    }
+    "40": {
+      "$value": "{space.40}"
+    },
+    "48": {
+      "$value": "{space.48}"
+    },
+    "56": {
+      "$value": "{space.56}"
+    },
+    "64": {
+      "$value": "{space.64}"
+    },
+    "72": {
+      "$value": "{space.72}"
+    },
+    "80": {
+      "$value": "{space.80}"
+    },
+    "120": {
+      "$value": "{space.120}"
+    },
+    "360": {
+      "$value": "{space.360}"
+    },
+    "$description": "Inset between a container's edge and its content. VALUE-NAMED: `padding/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
+    "$type": "dimension"
   },
   "section": {
-    "none": {
-      "$value": "{space.none}"
+    "0": {
+      "$value": "{space.0}"
     },
-    "xs": {
-      "$value": "{space.2xl}"
+    "24": {
+      "$value": "{space.24}"
     },
-    "s": {
-      "$value": "{space.3xl}"
+    "32": {
+      "$value": "{space.32}"
     },
-    "m": {
-      "$value": "{space.5xl}"
+    "40": {
+      "$value": "{space.40}"
     },
-    "l": {
-      "$value": "{space.6xl}"
+    "48": {
+      "$value": "{space.48}"
     },
-    "xl": {
-      "$value": "{space.7xl}"
+    "56": {
+      "$value": "{space.56}"
     },
-    "2xl": {
-      "$value": "{space.9xl}"
-    }
+    "64": {
+      "$value": "{space.64}"
+    },
+    "72": {
+      "$value": "{space.72}"
+    },
+    "80": {
+      "$value": "{space.80}"
+    },
+    "120": {
+      "$value": "{space.120}"
+    },
+    "$description": "Vertical rhythm between page-level sections. VALUE-NAMED: `section/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
+    "$type": "dimension"
   },
   "chart": {
     "$description": "Data-visualisation roles, and the one place in this system where a literal is sometimes the RIGHT answer — so each group states which it is and why, because the difference is not guessable from the values.\n\nREFERENCES the system ramps: div/* (signed data) and trend/* (KPI direction). Both encode MEANING the rest of the UI already has a colour for — negative is what error means — so they follow it, and follow it into a DBIM conformance mode too.\n\nLITERAL on purpose: cat/* (twelve categorical series) and seq/* (single-hue sequential ramp). Both are tuned as a SET for a job the UI ramps are not tuned for — mutual distinguishability and even perceptual steps respectively — and a reference would let one member drift out of that tuning on a brand swap. Their own descriptions carry the argument in full.\n\ngrid/axis/tooltip/region are structural. Theme-aware dark/hc overrides are retained on these tokens but NOT currently emitted: the appearance axis was retired on 2026-08-10 and the UX4G accessibility widget owns dark and high contrast (see build/formats/legacy-ds-css.mjs).",
@@ -2358,19 +2453,19 @@
       "$description": "Column count, 12 — UX4G/Bootstrap. Divisible by 2, 3, 4 and 6, which is the whole reason 12 is the near-universal choice. Carbon's 16 (dropping to 8 and 4 at smaller breakpoints) is more expressive but would break UX4G parity for no gain the estate can use."
     },
     "gutter": {
-      "$value": "{space.2xl}",
+      "$value": "{space.24}",
       "$description": "The gap BETWEEN columns — 24px, UX4G/Bootstrap's 1.5rem exactly. Bootstrap applies half either side of each column; bind this as the layout grid's gutter and let the implementation split it."
     },
     "margin": {
       "$description": "The page's own side margin — the gap between the grid and the viewport edge. Responsive, because a margin that reads generous on a phone reads cramped on a desktop.",
       "mobile": {
-        "$value": "{space.lg}"
+        "$value": "{space.16}"
       },
       "tablet": {
-        "$value": "{space.2xl}"
+        "$value": "{space.24}"
       },
       "desktop": {
-        "$value": "{space.3xl}"
+        "$value": "{space.32}"
       }
     }
   },
@@ -2435,10 +2530,12 @@
     "tab": {
       "$description": "The two measurements a tablist needs that are not derivable from its content. Everything else about a tab — its height above all — is a hug of padding plus type, and must stay one: a fixed tab height stops the label growing when a citizen raises their browser font size.",
       "indicator": {
+        "$type": "dimension",
         "$value": "2px",
         "$description": "Thickness of the selected tab's underline or rail. Deliberately NOT `control/border/width`: this is a selection mark that happens to be a line, not a control edge, so it must not move when the form-control hairline is retuned."
       },
       "track": {
+        "$type": "dimension",
         "$value": "4px",
         "$description": "Inset between an enclosed track and the pills inside it — the track's own padding, and the indicator's top/bottom inset. Small enough that the track reads as a frame around the pills rather than a panel containing them."
       }
@@ -2517,7 +2614,8 @@
     "$description": "The shape of an interactive control. Density already moves a control's size; these are what it is shaped like, which was hardcoded per component.",
     "radius": {
       "$type": "dimension",
-      "$value": "{radius.md}"
+      "$value": "{shape.8}",
+      "$description": "Aliases shape/8, the system default control shape. Value unchanged at 8px. It previously aliased the Tier-1 radius primitive directly — a published variable pointing at one designers cannot see."
     },
     "border": {
       "width": {
@@ -2527,43 +2625,67 @@
     }
   },
   "shape": {
-    "$description": "Tier-2 corner radius (\"shape\"). Apps reach for these, never for the Tier-1 --sa-ref-radius-* primitives. Named shape rather than radius because Style Dictionary merges primitive and semantic namespaces, so a Tier-2 group called radius self-references the Tier-1 scale it is aliasing. Added 2026-08-12 when the legacy --sa-radius-* vocabulary was retired and its 248 usages had no Tier-2 home.",
+    "0": {
+      "$value": "{radius.0}"
+    },
+    "2": {
+      "$value": "{radius.2}"
+    },
+    "4": {
+      "$value": "{radius.4}"
+    },
+    "6": {
+      "$value": "{radius.6}"
+    },
+    "8": {
+      "$value": "{radius.8}"
+    },
+    "12": {
+      "$value": "{radius.12}"
+    },
+    "16": {
+      "$value": "{radius.16}"
+    },
+    "20": {
+      "$value": "{radius.20}"
+    },
+    "24": {
+      "$value": "{radius.24}"
+    },
+    "32": {
+      "$value": "{radius.32}"
+    },
+    "40": {
+      "$value": "{radius.40}"
+    },
+    "$description": "Tier-2 corner radius (\"shape\"). VALUE-NAMED: the rung IS the pixel value, matching the spacing ladder, except `full` — a sentinel meaning fully rounded, not a measurement. Apps bind these, never the Tier-1 ref/radius/* primitives. Named shape rather than radius because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 group called radius would self-reference the Tier-1 scale it aliases. ROLES live at Tier 3 (control/radius, cmp/*/radius) — that is why the rungs need not carry role names.",
     "$type": "dimension",
-    "none": {
-      "$value": "{radius.none}"
-    },
-    "xxs": {
-      "$value": "{radius.xxs}"
-    },
-    "xs": {
-      "$value": "{radius.xs}"
-    },
-    "sm": {
-      "$value": "{radius.sm}"
-    },
-    "md": {
-      "$value": "{radius.md}"
-    },
-    "lg": {
-      "$value": "{radius.lg}"
-    },
-    "xl": {
-      "$value": "{radius.xl}"
-    },
-    "2xl": {
-      "$value": "{radius.2xl}"
-    },
-    "3xl": {
-      "$value": "{radius.3xl}"
-    },
-    "4xl": {
-      "$value": "{radius.4xl}"
-    },
-    "5xl": {
-      "$value": "{radius.5xl}"
-    },
     "full": {
       "$value": "{radius.full}"
     }
+  },
+  "stroke": {
+    "0": {
+      "$value": "{border.width.none}",
+      "$description": "No edge. Bind it rather than omitting a stroke, so an absent border is a decision and not an oversight."
+    },
+    "1": {
+      "$value": "{border.width.sm}",
+      "$description": "The hairline — the default rule weight. Dividers, table rules, card edges, documentation borders."
+    },
+    "2": {
+      "$value": "{border.width.md}",
+      "$description": "A deliberate emphasis weight, for an edge that has to read at a glance."
+    },
+    "3": {
+      "$value": "{border.width.lg}",
+      "$description": "Heavy edge. Rare in product UI; check whether the emphasis belongs in colour instead."
+    },
+    "4": {
+      "$value": "{border.width.xl}",
+      "$description": "Heaviest edge in the system. Rare."
+    },
+    "$description": "Tier-2 border width (\"stroke\"). VALUE-NAMED: the rung IS the pixel value, matching the space and radius ladders. Named stroke rather than border because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 border/width/* would self-reference the Tier-1 border.width.* it aliases — the same reason the corner-radius group is called shape. It is also Figma's own word for the property (STROKE_FLOAT). Bind these for any rule, hairline or edge weight; control/border/width remains the right choice for an interactive control specifically.",
+    "$type": "dimension"
   }
 }

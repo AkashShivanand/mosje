@@ -41,7 +41,7 @@
 .ds-sla--linear {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-2xs);
+  gap: var(--sa-stack-4);
   inline-size: 100%;
 }
 
@@ -50,7 +50,7 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--sa-inline-s);
+  gap: var(--sa-inline-8);
 }
 
 .ds-sla__label {
@@ -102,7 +102,7 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sa-stack-2xs);
+  gap: var(--sa-stack-4);
   text-align: center;
 }
 
@@ -161,8 +161,8 @@
 .ds-sla--badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-inline-xs);
-  padding: var(--sa-padding-3xs) var(--sa-padding-xs);
+  gap: var(--sa-inline-4);
+  padding: var(--sa-padding-2) var(--sa-padding-8);
   border: 1px solid var(--sla-soft);
   border-radius: var(--sa-shape-full);
   background: var(--sa-bg-neutral-base);

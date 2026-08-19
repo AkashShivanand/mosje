@@ -102,7 +102,7 @@ export default function IconographyPage(): React.JSX.Element {
           fontSize: "var(--sa-type-headline-1-size)",
           lineHeight: "var(--sa-type-headline-1-lh)",
           color: "var(--sa-color-text-muted)",
-          marginTop: "var(--sa-stack-s)",
+          marginTop: "var(--sa-stack-12)",
         }}
       >
         Material Symbols Rounded, at weight 300. One component holds every glyph,
@@ -111,14 +111,14 @@ export default function IconographyPage(): React.JSX.Element {
 
       <div
         className="icon-panel"
-        style={{ display: "flex", flexWrap: "wrap", gap: "var(--sa-stack-xl)", justifyContent: "center" }}
+        style={{ display: "flex", flexWrap: "wrap", gap: "var(--sa-stack-32)", justifyContent: "center" }}
       >
         {HERO_ICONS.map((name) => (
           <Icon key={name} name={name} size={32} aria-hidden />
         ))}
       </div>
 
-      <div style={{ marginTop: "var(--sa-stack-m)" }}>
+      <div style={{ marginTop: "var(--sa-stack-16)" }}>
         <a
           className={buttonClasses("primary", "outlined", "md")}
           href={figmaUrl(FIGMA_NODES.iconography)}
@@ -130,9 +130,9 @@ export default function IconographyPage(): React.JSX.Element {
       </div>
 
       {/* ── 01 How it works ─────────────────────────────────────────────── */}
-      <section aria-labelledby="how-it-works" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="how-it-works" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="how-it-works">One component, any icon</h2>
-        <p style={{ marginTop: "var(--sa-stack-s)", color: "var(--sa-color-text-muted)" }}>
+        <p style={{ marginTop: "var(--sa-stack-12)", color: "var(--sa-color-text-muted)" }}>
           There is no icon library to maintain. The component holds a Material
           Symbols glyph and exposes the icon name as a text property, so an
           instance becomes any of the ~3,000 icons in the catalogue by typing its
@@ -175,9 +175,9 @@ export default function IconographyPage(): React.JSX.Element {
       </section>
 
       {/* ── 02 The catalogue ────────────────────────────────────────────── */}
-      <section aria-labelledby="catalogue" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="catalogue" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="catalogue">The {ICON_CATALOGUE.length} icons in the starter set</h2>
-        <p style={{ marginTop: "var(--sa-stack-s)", color: "var(--sa-color-text-muted)" }}>
+        <p style={{ marginTop: "var(--sa-stack-12)", color: "var(--sa-color-text-muted)" }}>
           Every icon the estate and the Portal DS between them call for, rendered
           live from the component — not redrawn. A text property cannot be browsed
           visually, so this is the browser: filter by name, then click a tile to
@@ -188,9 +188,9 @@ export default function IconographyPage(): React.JSX.Element {
       </section>
 
       {/* ── 03 Sizes ────────────────────────────────────────────────────── */}
-      <section aria-labelledby="sizes" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="sizes" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="sizes">Seven sizes — DBIM&rsquo;s four, plus what interface work needs</h2>
-        <p style={{ marginTop: "var(--sa-stack-s)", color: "var(--sa-color-text-muted)" }}>
+        <p style={{ marginTop: "var(--sa-stack-12)", color: "var(--sa-color-text-muted)" }}>
           DBIM 3.0 §3.4 (Figure 9) publishes four icon sizes and all four are here.
           The other three are kept deliberately: §3.4 governs the downloadable asset
           bank, it does not forbid a smaller inline glyph, and 16px is the right size
@@ -233,9 +233,9 @@ export default function IconographyPage(): React.JSX.Element {
       </section>
 
       {/* ── 04 Weight ───────────────────────────────────────────────────── */}
-      <section aria-labelledby="weight" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="weight" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="weight">Weight 300 is the style named Light</h2>
-        <p style={{ marginTop: "var(--sa-stack-s)", color: "var(--sa-color-text-muted)" }}>
+        <p style={{ marginTop: "var(--sa-stack-12)", color: "var(--sa-color-text-muted)" }}>
           Material Symbols is a variable font with a <code>wght</code> axis, but Figma
           exposes it as named styles rather than a live axis. The MoSJE standard of
           <code> wght 300</code> is therefore the style <strong>Light</strong> — the
@@ -267,9 +267,9 @@ export default function IconographyPage(): React.JSX.Element {
       </section>
 
       {/* ── 05 Colour ───────────────────────────────────────────────────── */}
-      <section aria-labelledby="colour" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="colour" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="colour">Icons take <code>icon/*</code> tokens, never a raw colour</h2>
-        <p style={{ marginTop: "var(--sa-stack-s)", color: "var(--sa-color-text-muted)" }}>
+        <p style={{ marginTop: "var(--sa-stack-12)", color: "var(--sa-color-text-muted)" }}>
           The glyph is text, so it takes a text fill — but it binds to an{" "}
           <code>icon/*</code> variable, not a <code>text/*</code> one. DBIM constrains
           this further: icons use the key colour or white, nothing else.
@@ -310,9 +310,9 @@ export default function IconographyPage(): React.JSX.Element {
       </section>
 
       {/* ── 06 Bespoke marks ────────────────────────────────────────────── */}
-      <section aria-labelledby="bespoke" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="bespoke" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="bespoke">Almost nothing needs to be a vector</h2>
-        <p style={{ marginTop: "var(--sa-stack-s)", color: "var(--sa-color-text-muted)" }}>
+        <p style={{ marginTop: "var(--sa-stack-12)", color: "var(--sa-color-text-muted)" }}>
           A mark only stays a drawn vector when Material Symbols genuinely has no
           equivalent. Each mark carries an <code>MI:</code> annotation naming its
           Material counterpart — where that name resolves to a real glyph, the vector
@@ -362,9 +362,9 @@ export default function IconographyPage(): React.JSX.Element {
       </section>
 
       {/* ── 07 Accessibility ────────────────────────────────────────────── */}
-      <section aria-labelledby="a11y" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="a11y" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="a11y">An icon is never the only signal</h2>
-        <p style={{ marginTop: "var(--sa-stack-s)", color: "var(--sa-color-text-muted)" }}>
+        <p style={{ marginTop: "var(--sa-stack-12)", color: "var(--sa-color-text-muted)" }}>
           Icons here render as text glyphs, which means a screen reader will try to
           read them. Every icon is therefore <strong>either hidden from assistive
           technology or given a label</strong> — there is no third option.
@@ -445,9 +445,9 @@ export default function IconographyPage(): React.JSX.Element {
       </section>
 
       {/* ── 08 Handoff ──────────────────────────────────────────────────── */}
-      <section aria-labelledby="handoff" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="handoff" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="handoff">The Figma property is the code prop</h2>
-        <p style={{ marginTop: "var(--sa-stack-s)", color: "var(--sa-color-text-muted)" }}>
+        <p style={{ marginTop: "var(--sa-stack-12)", color: "var(--sa-color-text-muted)" }}>
           The component&rsquo;s text property is named <code>icon</code>, and it takes
           exactly the string the code takes. There is nothing to translate at handoff.
         </p>

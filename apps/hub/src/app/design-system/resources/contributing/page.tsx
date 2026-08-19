@@ -120,14 +120,14 @@ export default function ContributingPage(): React.JSX.Element {
             <Syn.Builtin>npm</Syn.Builtin> run build -w
             @mosje/tokens
           </div>
-          <div style={{ marginTop: "var(--sa-stack-m)" }}>
+          <div style={{ marginTop: "var(--sa-stack-16)" }}>
             <Syn.Comment># Confirm the token contract still holds</Syn.Comment>
           </div>
           <div>
             <Syn.Builtin>npm</Syn.Builtin> test -w @mosje/tokens
           </div>
         </CodeBlock>
-        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--sa-stack-16)" }}>
           <ol start={3}>
             <li>
               <strong>Check the contract test passes.</strong> The 50-token
@@ -165,7 +165,7 @@ export default function ContributingPage(): React.JSX.Element {
             <Syn.Builtin>npm</Syn.Builtin> run dev
           </div>
         </CodeBlock>
-        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div className="docs-section__body ds-prose" style={{ marginTop: "var(--sa-stack-16)" }}>
           <p>
             There is no per-app dev server to reach for. Since the single-origin
             consolidation the portals are route groups inside the hub, so{" "}
@@ -198,11 +198,11 @@ export default function ContributingPage(): React.JSX.Element {
         <ul
           style={{
             listStyle: "none",
-            margin: "var(--sa-stack-m) 0 0",
+            margin: "var(--sa-stack-16) 0 0",
             padding: 0,
             display: "flex",
             flexDirection: "column",
-            gap: "var(--sa-stack-s)",
+            gap: "var(--sa-stack-12)",
           }}
         >
           {CHECKLIST.map((item) => (
@@ -210,11 +210,11 @@ export default function ContributingPage(): React.JSX.Element {
               key={item.label}
               style={{
                 display: "flex",
-                gap: "var(--sa-stack-s)",
+                gap: "var(--sa-stack-12)",
                 alignItems: "flex-start",
-                padding: "var(--sa-padding-m)",
+                padding: "var(--sa-padding-16)",
                 border: "1px solid var(--sa-border-neutral-subtle)",
-                borderRadius: "var(--sa-shape-md)",
+                borderRadius: "var(--sa-shape-8)",
                 background: "var(--sa-bg-neutral-base)",
               }}
             >
@@ -227,7 +227,7 @@ export default function ContributingPage(): React.JSX.Element {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius: "var(--sa-shape-sm)",
+                  borderRadius: "var(--sa-shape-6)",
                   background: "var(--sa-color-status-success)",
                   color: "var(--sa-on-bg-status-success-bolder)",
                   fontSize: 14,

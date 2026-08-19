@@ -10,18 +10,18 @@
 .ds-pwmeter {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-2xs);
+  gap: var(--sa-stack-4);
   font-family: var(--sa-font-latin);
 }
 
 .ds-pwmeter__track {
   display: flex;
-  gap: var(--sa-inline-2xs);
+  gap: var(--sa-inline-2);
 }
 
 .ds-pwmeter__seg {
   flex: 1 1 0;
-  height: var(--sa-padding-2xs);
+  height: var(--sa-padding-4);
   border-radius: var(--sa-shape-full);
   background-color: var(--sa-bg-neutral-subtle);
   transition: background-color 0.18s ease;
@@ -40,7 +40,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-inline-s);
+  gap: var(--sa-inline-8);
 }
 
 .ds-pwmeter__caption {
@@ -66,21 +66,21 @@
 .ds-captcha {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   font-family: var(--sa-font-latin);
 }
 
 .ds-captcha__row {
   display: flex;
   align-items: center;
-  gap: var(--sa-inline-s);
+  gap: var(--sa-inline-8);
 }
 
 .ds-captcha__challenge {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--sa-padding-s) var(--sa-padding-m);
+  padding: var(--sa-padding-12) var(--sa-padding-16);
   border-radius: var(--sa-control-radius);
   background-color: var(--sa-bg-neutral-subtle);
   color: var(--sa-text-neutral-base);

@@ -18,16 +18,16 @@ export const metadata: Metadata = {
  * ------------------------------------------------------------------ */
 
 const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-m)",
-  scrollMarginTop: "var(--sa-section-m)",
+  marginTop: "var(--sa-section-48)",
+  scrollMarginTop: "var(--sa-section-48)",
 };
 
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 700,
   color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-m)",
-  paddingBottom: "var(--sa-padding-xs)",
+  marginBottom: "var(--sa-stack-16)",
+  paddingBottom: "var(--sa-padding-8)",
   borderBottom: "1px solid var(--sa-border-neutral-subtle)",
 };
 
@@ -35,8 +35,8 @@ const h3Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
   color: "var(--sa-text-neutral-base)",
-  marginTop: "var(--sa-stack-l)",
-  marginBottom: "var(--sa-stack-xs)",
+  marginTop: "var(--sa-stack-24)",
+  marginBottom: "var(--sa-stack-8)",
 };
 
 const proseStyle: React.CSSProperties = {
@@ -52,13 +52,13 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
       style={{
         background: "var(--sa-bg-neutral-subtler)",
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md)",
-        padding: "var(--sa-padding-m)",
+        borderRadius: "var(--sa-shape-8)",
+        padding: "var(--sa-padding-16)",
         overflowX: "auto",
         fontSize: "var(--sa-type-body-2-size)",
         lineHeight: 1.6,
         color: "var(--sa-text-neutral-base)",
-        marginTop: "var(--sa-stack-xs)",
+        marginTop: "var(--sa-stack-8)",
       }}
     >
       <code style={{ fontFamily: "var(--sa-font-mono)" }}>
@@ -81,16 +81,16 @@ export default function SidebarPage(): React.JSX.Element {
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
-        padding: "var(--sa-padding-2xl) var(--sa-padding-xl) var(--sa-section-l)",
+        padding: "var(--sa-padding-32) var(--sa-padding-24) var(--sa-section-56)",
       }}
     >
       {/* ── Title ── */}
-      <header style={{ marginBottom: "var(--sa-stack-xl)" }}>
+      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "var(--sa-stack-s)",
+            gap: "var(--sa-stack-12)",
             flexWrap: "wrap",
           }}
         >
@@ -106,14 +106,14 @@ export default function SidebarPage(): React.JSX.Element {
           </h1>
           <StatusBadge status="Beta" />
         </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-s)" }}>
+        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
           The portal app-shell left navigation. Renders a two-level hierarchy —
           top-level items with optional expandable groups and children linked
           by a curved connector — in either an expanded (300 px) or icon-only
           collapsed (64 px) mode. Fully token-driven; active states auto-adapt
           to the portal&apos;s colour mode.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <a
             className={buttonClasses("primary", "outlined", "md")}
             href={PORTAL_DS_SIDEBAR_URL}
@@ -345,7 +345,7 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
           In the portal <code>blue-dark</code> colour mode these resolve to the
           navy ramp.
         </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-16)" }}>
           <table className="props-table">
             <thead>
               <tr>
@@ -362,8 +362,8 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
                 ["--sa-color-text-muted", "Group label, muted text", "--text/secondary"],
                 ["--sa-bg-neutral-subtler", "Hover background", "--neutral/100"],
                 ["--sa-border-neutral-subtle", "Group separator, resize handle line", "--neutral/200"],
-                ["--sa-shape-xl (16 px)", "Main item row border-radius", "--radius-xl"],
-                ["--sa-shape-md (8 px)", "Child item label border-radius", "--radius-md"],
+                ["--sa-shape-16 (16 px)", "Main item row border-radius", "--radius-xl"],
+                ["--sa-shape-8 (8 px)", "Child item label border-radius", "--radius-md"],
                 ["--sa-focus-ring", "Focus outline", "--focus/ring"],
                 ["--sa-motion-exit-duration", "Hover/active transition", "--duration/fast"],
               ].map(([token, use, figma]) => (
@@ -431,7 +431,7 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
           All MoSJE portals use <strong>SidebarNav</strong> — do not build
           custom sidebars in individual apps. The two key portals are:
         </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-16)" }}>
           <table className="props-table">
             <thead>
               <tr>

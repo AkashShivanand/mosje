@@ -170,12 +170,14 @@ export function Offerings() {
             return (
               <button
                 key={tab.key}
+                id={`tab-${tab.key}`}
                 type="button"
                 role="tab"
                 aria-selected={isActive}
+                aria-controls={`tabpanel-${tab.key}`}
                 onClick={() => setActiveTab(tab.key)}
                 className={cn(
-                  "rounded-full px-6 py-2.5 text-[15px] font-medium transition-colors",
+                  "rounded-full px-6 py-2.5 text-[15px] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                   isActive
                     ? "bg-primary text-white shadow-sm"
                     : "bg-surface-muted text-ink-muted hover:bg-primary/10 hover:text-primary-dark"
@@ -187,7 +189,12 @@ export function Offerings() {
           })}
         </div>
 
-        <div className="mt-10">
+        <div
+          id={`tabpanel-${activeTab}`}
+          role="tabpanel"
+          aria-labelledby={`tab-${activeTab}`}
+          className="mt-10"
+        >
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
             {activeTab === "schemes" && (
               <div className="hidden lg:col-span-4 lg:block">

@@ -57,7 +57,7 @@ export const OnABrandSurface: Story = {
       <div
         style={{
           padding: 24,
-          borderRadius: "var(--sa-shape-md)",
+          borderRadius: "var(--sa-shape-8)",
           background: "var(--sa-bg-neutral-subtler)",
         }}
       >
@@ -66,7 +66,7 @@ export const OnABrandSurface: Story = {
       <div
         style={{
           padding: 24,
-          borderRadius: "var(--sa-shape-md)",
+          borderRadius: "var(--sa-shape-8)",
           background: "var(--sa-bg-brand-primary-bolder)",
         }}
       >

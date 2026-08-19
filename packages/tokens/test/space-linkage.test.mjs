@@ -25,8 +25,12 @@ const semantic = JSON.parse(readFileSync(root + "src/semantic.json", "utf8"));
 
 const FAMILIES = ["inline", "stack", "padding", "section"];
 
-/** Canonical T-shirt order. A family uses a contiguous slice of it; it may not reorder it. */
-const RUNGS = ["none", "3xs", "2xs", "xs", "s", "m", "l", "xl", "2xl", "3xl", "4xl"];
+/**
+ * Rungs are VALUE-NAMED as of 2026-08-18: the label IS the pixel value. That single change is
+ * what makes the two tests below possible — under the old T-shirt labels neither could exist,
+ * because `l` legitimately meant 16, 24, 20 and 56 in the four families.
+ */
+const isRung = (k) => /^\d+$/.test(k);
 
 const px = (v) => Number(String(v).replace("px", ""));
 const refOf = (v) => (typeof v === "string" && v.startsWith("{") ? v.slice(1, -1) : null);
@@ -128,28 +132,42 @@ test("every semantic space token aliases a space primitive, never another family
   );
 });
 
-test("each family's rungs ascend by value in canonical T-shirt order", () => {
+test("a rung's NAME is its pixel value — in every family", () => {
+  // The invariant the value-naming exists to create. While it holds, `padding/16` and
+  // `inline/16` cannot drift apart, and no lookup table is needed to read a token.
+  const wrong = [];
   for (const family of FAMILIES) {
-    const steps = Object.keys(semantic[family] ?? {})
-      .filter((k) => !k.startsWith("$"))
-      .sort((a, b) => RUNGS.indexOf(a) - RUNGS.indexOf(b));
-    const unknown = steps.filter((s) => !RUNGS.includes(s));
-    assert.deepEqual(unknown, [], `${family} uses rung name(s) outside the canonical scale`);
-
-    const values = steps.map((s) => px(primitive.space[refOf(semantic[family][s].$value).split(".")[1]].$value));
-    for (let i = 1; i < values.length; i++) {
-      assert.ok(
-        values[i] > values[i - 1],
-        `${family} is not ascending: ${steps[i - 1]}=${values[i - 1]} then ${steps[i]}=${values[i]}`,
-      );
+    for (const [rung, token] of Object.entries(semantic[family] ?? {})) {
+      if (rung.startsWith("$")) continue;
+      assert.ok(isRung(rung), `${family}/${rung} is not value-named`);
+      const ref = refOf(token.$value);
+      const actual = px(primitive.space[ref.split(".")[1]].$value);
+      if (actual !== Number(rung)) wrong.push(`${family}/${rung} resolves to ${actual}px`);
     }
   }
+  assert.deepEqual(wrong, [], "a rung label disagrees with the value it resolves to");
+});
+
+test("no label means two different things across families", () => {
+  // The defect this replaced: 7 of 11 T-shirt labels collided, `l` meaning 16/24/20/56.
+  const byLabel = {};
+  for (const family of FAMILIES) {
+    for (const [rung, token] of Object.entries(semantic[family] ?? {})) {
+      if (rung.startsWith("$")) continue;
+      (byLabel[rung] ??= new Set()).add(px(primitive.space[refOf(token.$value).split(".")[1]].$value));
+    }
+  }
+  const collided = Object.entries(byLabel)
+    .filter(([, vals]) => vals.size > 1)
+    .map(([l, vals]) => `${l} → ${[...vals].join(", ")}`);
+  assert.deepEqual(collided, [], "a label carries more than one value across the families");
 });
 
 test("no space primitive is left without a semantic consumer", () => {
   // A Tier-1 rung nothing aliases is a rung designers can only reach by breaking tier discipline.
-  // `8xl` (72px) is the one currently in that state and is frozen here so it cannot be joined.
-  const KNOWN_ORPHANS = ["8xl"];
+  // The list is EMPTY as of 2026-08-18: giving every family the full ladder gave 72px its
+  // first consumer and closed the last gap. An addition here is a regression, not a fact.
+  const KNOWN_ORPHANS = [];  // was ["8xl"] (72px); every rung now has a consumer in all four families
 
   const consumed = new Set();
   for (const family of FAMILIES) {

@@ -60,6 +60,7 @@ Run inside the app folder (or via `npm --prefix <app>`):
 - **Accessibility is non-negotiable** — these are government sites. Target **WCAG 2.1 AA + GIGW**: semantic HTML, alt text, keyboard nav, visible focus, AA contrast. Use the `accessibility-auditor` agent before shipping a page.
 - **Real content, real assets** — no lorem/placeholder in production pages.
 - `next/image` for images; `lucide-react` for icons (note: this version dropped the brand social icons — use inline SVGs).
+- **MANDATORY VISUAL AUDIT RULE**: EVERY component, page, wizard, or portal modification MUST be visually captured via screenshot (`view_file` on generated `.png` artifact) and thoroughly audited against SAMAVESH design system standards BEFORE declaring completion. Editing code or passing lint/typecheck without visual verification is strictly forbidden.
 - Mobile-first responsive; content max-width **1280px**.
 
 ## Safety rules (learned the hard way)
