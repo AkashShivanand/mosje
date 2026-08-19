@@ -42,58 +42,191 @@ const YES_NO = ["Yes", "No"] as const;
 
 export const WIZARD_STEPS: readonly StepDef[] = [
   {
+    title: "Application Type",
+    sections: [
+      {
+        title: "Application Type",
+        lead: "Is this a fresh (new) project, or a renewal of one of your existing (ongoing) projects?",
+        fields: [
+          {
+            name: "caseType",
+            label: "Case Type",
+            kind: "radio",
+            required: true,
+            options: ["New project", "Ongoing / Renewal of an existing project"],
+            help: "Choose 'Ongoing / Renewal' to carry forward the details of one of your existing AVYAY projects.",
+          },
+          {
+            name: "existingProjectId",
+            label: "Select the existing project to renew",
+            kind: "select",
+            required: true,
+            options: ["IP/AR/DIB/40040 — Project · FY 2026-27"],
+            help: "The whole form is prefilled from the selected project (FR-ONG-03/04). You can edit any field — on submit a new application is created for the chosen financial year.",
+          },
+          {
+            name: "financialYear",
+            label: "Financial Year for which grant is sought",
+            kind: "select",
+            required: true,
+            options: ["2026-27", "2025-26"],
+            help: "A new application is always for the financial year now running. For a renewal, this is the year whose instalment you are claiming — changing it re-checks which instalments are still open for this project.",
+          },
+          {
+            name: "installment",
+            label: "Installment",
+            kind: "select",
+            required: true,
+            options: ["1st Installment", "2nd Installment"],
+            help: "Which installment of the selected financial year's recurring grant this application releases. The next un-submitted installment for that year is preselected; ones already submitted for the same year are marked and cannot be reselected.",
+          },
+        ],
+      },
+    ],
+  },
+  {
     title: "Organisation Details",
     sections: [
       {
         title: "Organisation Details",
-        lead: "Identity of the applicant NGO/VO. Pre-filled from NGO-Darpan where available.",
+        lead: "Identity of the applicant NGO/VO. Pre-filled from NITI Aayog NGO-Darpan where available (FR-NEW-02).",
         fields: [
-          { name: "ngoName", label: "Name of NGO / VO (as in NGO-Darpan)", kind: "text", required: true, readOnly: true, help: "Read-only — sourced from NGO-Darpan / your login." },
-          { name: "darpanId", label: "NGO-Darpan Unique ID", kind: "text", required: true, readOnly: true, help: "Read-only — sourced from NGO-Darpan / your login." },
+          { name: "ngoName", label: "Name of NGO / VO (as in NGO-Darpan)", kind: "text", required: true, readOnly: true, help: "Pre-filled from your login / NGO-Darpan." },
+          { name: "darpanId", label: "NGO-Darpan Unique ID", kind: "text", required: true, readOnly: true, help: "Pre-filled from your login. Key for identity read and for duplicate-project prevention (FR-ONG-01)." },
+          { name: "projectId", label: "Project ID", kind: "text", readOnly: true, help: "Generated automatically on submit as IP / State abbreviation / District abbreviation / a unique number. For an ongoing renewal, the existing project's ID is retained (FR-ONG-02)." },
           { name: "statute", label: "Statute / Act of Registration", kind: "text", required: true, help: "From NGO-Darpan where recorded; enter it yourself if the box is empty." },
           { name: "registrationNo", label: "Registration Number", kind: "text", required: true, help: "From NGO-Darpan / your login." },
           { name: "registeredOn", label: "Date of Registration", kind: "date", required: true, help: "From NGO-Darpan where recorded; enter it yourself if the box is empty." },
-          { name: "expiresOn", label: "Date of Expiry", kind: "date", required: true, help: "Not held by NGO-Darpan — please enter it. Must be later than the date of registration." },
           { name: "address", label: "Registered-Office Address", kind: "textarea", required: true },
-          { name: "city", label: "City", kind: "text", required: true },
-          { name: "district", label: "District", kind: "text", required: true },
-          { name: "state", label: "State", kind: "text", required: true },
-          { name: "mobile", label: "Mobile", kind: "tel", required: true },
-          { name: "email", label: "Email", kind: "email", required: true },
-          { name: "telephone", label: "Telephone", kind: "tel" },
-          { name: "fax", label: "Fax", kind: "text" },
         ],
       },
     ],
   },
   {
-    title: "Institution Details",
+    title: "Project Details",
     sections: [
       {
-        title: "Institution Details",
+        title: "Project Details",
+        lead: "The project for which grant-in-aid is sought.",
         fields: [
-          { name: "institutionId", label: "Institution ID", kind: "text", required: true },
-          { name: "financialYear", label: "Financial Year for which GIA is sought", kind: "select", required: true, options: ["2025-26", "2026-27", "2027-28"] },
           {
-            name: "nature", label: "Nature of Institution", kind: "select", required: true,
-            options: ["Primary Residential School", "Secondary Residential School", "Primary Non-Residential School", "Secondary Non-Residential School"],
+            name: "nature",
+            label: "Nature of Project",
+            kind: "select",
+            required: true,
+            options: [
+              "Senior Citizens' Home — 50 beneficiaries",
+              "Senior Citizens' Home — 25 beneficiaries",
+              "Continuous Care Home — 50 beneficiaries",
+              "Basera / Mobile Medicare Unit",
+              "Physiotherapy Clinic for Senior Citizens",
+            ],
+            help: "Physiotherapy Clinic and Mobile Medicare Unit are supported for renewal/ongoing cases only (FR-NEW-04).",
           },
-          { name: "type", label: "Type", kind: "select", required: true, options: ["Boys", "Girls", "Co-Ed"] },
-          { name: "level", label: "Level", kind: "select", required: true, options: ["Primary", "Secondary"] },
-          { name: "status", label: "Status of Institution", kind: "select", required: true, options: ["Ongoing"] },
-          { name: "ucPending", label: "UC Pending Status (SFR 212(1))", kind: "select", required: true, options: ["No UC Pending", "UC Pending"] },
-          { name: "commencedOn", label: "Date & Year of Commencement", kind: "date", required: true },
-          { name: "giaSince", label: "Year from which GIA received under SHRESHTA", kind: "text", required: true },
-          { name: "location", label: "Institution Location (address, district, landmark)", kind: "textarea", required: true },
-          { name: "pin", label: "Institution PIN Code", kind: "text", required: true },
-          { name: "building", label: "Building Owned / Rented", kind: "select", required: true, options: ["Owned", "Rented"] },
+          {
+            name: "agencyType",
+            label: "Type of Implementing Agency",
+            kind: "select",
+            required: true,
+            options: [
+              "State Government",
+              "Voluntary Organisation (NGO)",
+              "Urban Local Body (ULB)",
+              "Panchayati Raj Institution (PRI)",
+              "Regional Resource & Training Centre (RRTC)",
+            ],
+            help: "Central share is derived from this and the project State: State Govt / ULB / PRI / RRTC → 100%; NE & Himalayan States → 95%; elsewhere → 90%.",
+          },
+          {
+            name: "cityCategory",
+            label: "City Category (HRA — provisional)",
+            kind: "select",
+            required: true,
+            options: [
+              "Y — city of 5 to 50 lakh",
+              "X — metro (8 main cities)",
+              "Z — non-city / small town",
+            ],
+            help: "Classes are the 7th CPC HRA classification by city population. X in the eight metros — Ahmedabad, Bengaluru, Chennai, Delhi, Hyderabad, Kolkata, Mumbai and Pune. Choose Z if the project is not in a city. Provisional: the Ministry derives the final tier from the project district, and this entry is used only where that district is not yet classified.",
+          },
+          {
+            name: "projectState",
+            label: "Project State",
+            kind: "select",
+            required: true,
+            options: [
+              "Arunachal Pradesh",
+              "Assam",
+              "Delhi",
+              "Gujarat",
+              "Karnataka",
+              "Maharashtra",
+              "Tamil Nadu",
+              "Uttar Pradesh",
+            ],
+            help: "State where the project is located.",
+          },
+          {
+            name: "projectDistrict",
+            label: "Project District",
+            kind: "select",
+            required: true,
+            options: [
+              "Dibang Valley",
+              "Kamrup Metropolitan",
+              "New Delhi",
+              "Ahmedabad",
+              "Bengaluru Urban",
+              "Mumbai City",
+              "Chennai",
+              "Lucknow",
+            ],
+            help: "Choose the Project State first, then its District.",
+          },
         ],
       },
     ],
   },
   {
-    title: "Bank, Beneficiaries & Grant",
+    title: "Justification",
     sections: [
+      {
+        title: "Justification & Project Need",
+        lead: "Provide institutional and regional justification for seeking Grant-in-Aid under AVYAY.",
+        fields: [
+          {
+            name: "justificationNeed",
+            label: "Justification / Need for the Project in District / Location",
+            kind: "textarea",
+            required: true,
+            help: "Explain why this project is essential in the target district, gap analysis, and lack of similar facility in proximity.",
+          },
+          {
+            name: "targetBeneficiaryCoverage",
+            label: "Target Beneficiaries & Coverage Strategy",
+            kind: "textarea",
+            required: true,
+            help: "Describe how senior citizens / beneficiaries will be mobilized, housed, and cared for.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Infrastructure, Beneficiaries & Bank",
+    sections: [
+      {
+        title: "Project Location & Infrastructure",
+        fields: [
+          { name: "projectLocation", label: "Project Location (full address, PIN, landmark)", kind: "textarea", required: true },
+          { name: "projectInCharge", label: "Project In-charge (name & contact)", kind: "text", required: true },
+          { name: "functionalStatus", label: "Functional Status", kind: "select", required: true, options: ["Functional", "Non-Functional", "Under Setup"] },
+          { name: "commencedOn", label: "Date of Commencement", kind: "date", required: true },
+          { name: "building", label: "Building Owned / Rented", kind: "select", required: true, options: ["Owned", "Rented"] },
+          { name: "totalArea", label: "Total Area (sq.ft.)", kind: "number", required: true },
+          { name: "numberOfRooms", label: "Number of Rooms", kind: "number", required: true },
+        ],
+      },
       {
         title: "Bank Account Details",
         fields: [
@@ -103,59 +236,42 @@ export const WIZARD_STEPS: readonly StepDef[] = [
         ],
       },
       {
-        title: "GIA Released — Last 3 Years",
+        title: "Beneficiaries Breakdown",
         fields: [
-          { name: "resourceMobilisation", label: "Resource-mobilisation capability (sources / amount)", kind: "textarea" },
-          { name: "giaLast3Years", label: "GIA released in last 3 years (sanction no., date, amount)", kind: "textarea" },
-        ],
-      },
-      {
-        title: "Beneficiaries",
-        fields: [
-          { name: "scBeneficiaries", label: "SC Beneficiaries", kind: "number", required: true },
-          { name: "otherBeneficiaries", label: "Other-Category Beneficiaries", kind: "number" },
+          { name: "scBeneficiaries", label: "Senior Citizen / Target Beneficiaries", kind: "number", required: true },
+          { name: "otherBeneficiaries", label: "Other Beneficiaries", kind: "number" },
           { name: "totalBeneficiaries", label: "Total Number of Beneficiaries", kind: "number", required: true },
-          { name: "previousYearBeneficiaries", label: "Number of Beneficiaries (Previous Year)", kind: "number" },
-        ],
-      },
-      {
-        title: "Grant Sought",
-        fields: [
-          { name: "recurring", label: "Recurring Grant Sought (₹)", kind: "number", required: true },
-          { name: "nonRecurring", label: "Non-Recurring Grant Sought (₹)", kind: "number", required: true },
-          { name: "total", label: "Total Grant Sought (₹)", kind: "number", required: true, help: "Must equal recurring + non-recurring." },
         ],
       },
     ],
   },
   {
-    title: "Declarations",
+    title: "Grant Sought & Declaration",
     sections: [
       {
-        title: "Compliance Declarations",
+        title: "Grant Sought",
+        lead: "Recurring + Non-recurring = Total (S8). Non-recurring is released once every 5 years; recurring in two half-yearly installments after a positive inspection.",
         fields: [
-          { name: "dec_registration", label: "The organisation's registration is current and valid", kind: "radio", required: true, options: YES_NO },
-          { name: "dec_accounts", label: "Accounts for the previous year have been audited", kind: "radio", required: true, options: YES_NO },
-          { name: "dec_uc", label: "Utilisation Certificates for earlier grants have been filed", kind: "radio", required: true, options: YES_NO },
-          { name: "dec_cctv", label: "CCTV has been installed as required under the scheme", kind: "radio", required: true, options: YES_NO },
-          { name: "dec_eat", label: "The EAT module has been implemented", kind: "radio", required: true, options: YES_NO },
-          { name: "dec_blacklist", label: "The organisation is not blacklisted by any Ministry or State Government", kind: "radio", required: true, options: YES_NO },
+          { name: "recurring", label: "Recurring Grant Sought (₹)", kind: "number", required: true, help: "Attendance-based running cost." },
+          { name: "nonRecurring", label: "Non-Recurring Grant Sought (₹)", kind: "number", required: true, help: "One-time durables (CCTV, beds, utensils)." },
+          { name: "total", label: "Total Grant Sought (₹)", kind: "number", required: true, help: "Auto-calculated: recurring + non-recurring." },
         ],
       },
       {
-        title: "Authorised Person & Declaration",
+        title: "Verification & Authorised Person",
         fields: [
+          { name: "dec_no_fee", label: "No money is charged from the beneficiaries", kind: "radio", required: true, options: YES_NO },
+          { name: "dec_blacklist", label: "Organisation is not blacklisted", kind: "radio", required: true, options: YES_NO },
           { name: "authorisedName", label: "Name of Authorised Person", kind: "text", required: true },
           { name: "authorisedContact", label: "Contact of Authorised Person", kind: "tel", required: true },
           { name: "place", label: "Place", kind: "text", required: true },
           { name: "declaredOn", label: "Date", kind: "date", required: true },
-          { name: "declaredAt", label: "Time", kind: "text", required: true },
         ],
       },
     ],
   },
-  { title: "Upload Documents", sections: [] }, // rendered from the document checklist, not fields
-  { title: "Review & Submit", sections: [] }, // rendered as a read-back of everything above
+  { title: "Upload Documents", sections: [] }, // rendered from the 9-document AVYAY checklist
+  { title: "Review & Submit", sections: [] }, // rendered as read-back of all 7 preceding steps
 ];
 
 /** `recurring + non-recurring = total`, and at least one beneficiary. [BRD] */
@@ -167,3 +283,4 @@ export function validateGrant(values: Record<string, string>): string | null {
   if (Number(values.totalBeneficiaries ?? 0) <= 0) return "Total Number of Beneficiaries must be greater than zero.";
   return null;
 }
+
