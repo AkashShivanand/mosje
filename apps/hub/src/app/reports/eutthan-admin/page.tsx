@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState, useMemo } from "react";
 import auditRaw from "@/data/eutthan-admin-audit.json";
 import figureManifest from "@/data/eutthan-admin-figures.json";
-import { Icon } from "@mosje/design-system";
+import { Divider, Icon } from "@mosje/design-system";
 
 // Annotation boards that actually exist on disk (public/reports/eutthan-admin/
 // figures). The audit data generates more (slug-section) combinations than were
@@ -605,7 +605,7 @@ export default function EutthanAdminReport() {
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-ink-muted mb-0.5">Portal</p>
                 <p className="text-sm font-bold text-ink">{audit.portal}</p>
               </div>
-              <div className="h-8 w-px bg-border" />
+              <Divider orientation="vertical" length={32} />
               <div className="flex flex-wrap gap-5">
                 {[
                   { label: "Screens",  value: audit.screens.length,  color: "text-primary" },
@@ -656,7 +656,7 @@ export default function EutthanAdminReport() {
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-ink-muted mb-0.5">Portal</p>
                 <p className="text-sm font-bold text-ink">{audit.portal}</p>
               </div>
-              <div className="h-8 w-px bg-border" />
+              <Divider orientation="vertical" length={32} />
               <div className="flex flex-wrap gap-5">
                 {[
                   { label: "Total",    value: SUGGESTIONS.length,                                          color: "text-primary" },

@@ -40,12 +40,10 @@ export interface SiteHeaderProps {
    * Render the accessibility-statement control in the accessibility bar.
    * @default true
    *
-   * Font-size and contrast controls used to live here too (`onFontSize` /
-   * `onContrast`), but they duplicated the official UX4G Accessibility Widget
-   * (`UX4GAccessibilityWidget` from `@mosje/design-system`) — the single,
-   * canonical accessibility mechanism for the estate. Removed per
-   * docs/specs/samavesh-accessibility-consolidation.md; the widget now
-   * covers text size, spacing, contrast and dark mode everywhere.
+   * The bar's own font-size stepper is ON (2026-08-14). Text size is served by the
+   * bar where it exists, and the widget's floating button is hidden there so the two
+   * do not both advertise the same panel; contrast, spacing and dark mode remain the
+   * widget's. See docs/specs/samavesh-accessibility-consolidation.md, amended.
    */
   accessibilityToolbar?: boolean;
   /**
@@ -265,14 +263,21 @@ export function SiteHeader({
           govLink={govLink}
           skipTo={skipTo}
           showSkip
-          /* OFF, deliberately, and it must be passed explicitly because the prop
-             DEFAULTS to true. The UX4G widget is the estate's single mechanism for
-             text size and contrast (accessibility-consolidation spec §3), so surfacing
-             a second stepper on the live masthead would double up on it. This is what
-             navbar.md's Anatomy states, and what the library's 13 nested
-             AccessibilityBar instances were set to in v2.3.0 expressly to match this
-             file — it had "silently reverted to the component default" once already. */
-          fontSize={false}
+          /* ON since 2026-08-14, REVERSING the v2.3.0 decision that kept it off.
+             The old reasoning — "the widget is the single mechanism, a second stepper
+             doubles up" — rested on a premise that was never true in practice: the
+             stepper wrote `--sa-font-scale` and NOTHING READ IT, so it was not a
+             competing mechanism, it was an inert control. Now that the variable
+             actually drives the root font size, the bar is the direct, visible way to
+             resize text and the widget's floating button is hidden wherever the bar
+             offers the same entry (accessibility-bar.css). One door, not two.
+             AND THE FIGMA LIBRARY ALREADY AGREED. The claim this comment used to make
+             — that 13 nested instances were set OFF to match this file — was checked on
+             2026-08-14 and is false: all 39 nested AccessibilityBar instances across the
+             Navbar, Accessibility Bar and Portal Login Template pages have Font size ON.
+             The code was the outlier, so turning it on CLOSES a divergence rather than
+             creating one. Verify before re-asserting a claim like that. */
+          fontSize
           accessibility={accessibilityToolbar}
           accessibilityHref={accessibilityHref}
           onAccessibility={onAccessibility}

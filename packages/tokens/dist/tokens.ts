@@ -810,6 +810,10 @@ export const tokens = {
       "bolder": {
         "default": "#8e949c",
         "hover": "#6f757d"
+      },
+      "inverse": {
+        "default": "#ffffff",
+        "subtle": "rgba(255, 255, 255, 0.4)"
       }
     },
     "brand": {
@@ -1382,14 +1386,15 @@ export const tokens = {
     "height": "46px",
     "flagWidth": "33px",
     "flagHeight": "1.375rem",
-    "dividerWidth": "1px",
-    "dividerHeight": "1.25rem",
-    "dividerColor": "rgba(255, 255, 255, 0.4)",
     "pillSize": "2rem",
     "pillBg": "rgba(255, 255, 255, 0.16)",
-    "hoverBg": "rgba(255, 255, 255, 0.12)",
+    "hoverBg": "rgba(255, 255, 255, 0.08)",
     "stepSize": "1.5rem",
+    "iconButtonSize": "1.75rem",
     "launchIconSize": "0.75rem"
+  },
+  "divider": {
+    "width": "1px"
   },
   "action": {
     "brand": {

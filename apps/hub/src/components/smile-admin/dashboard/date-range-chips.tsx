@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/smile-admin/utils";
-import { Button, Icon } from "@mosje/design-system";
+import { Divider, Button, Icon } from "@mosje/design-system";
 
 const RANGES = [
   "Today",
@@ -39,7 +39,7 @@ export function DateRangeChips({ initial = "Current FY" }: { initial?: Range }) 
             {r}
           </button>
         ))}
-        <span aria-hidden className="mx-0.5 h-4 w-px bg-stroke-200" />
+        <Divider orientation="vertical" length={16} className="mx-0.5" />
         <button
           role="tab"
           aria-selected={active === "Custom"}

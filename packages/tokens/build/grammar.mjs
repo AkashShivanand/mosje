@@ -224,7 +224,7 @@ export const GROUP = new Set([
 // inverse state layers. They are Tier 3 rather than Tier 2 because they are not shared scale
 // steps: a 46px bar and a 33px flag chip exist only on this component, and a white-@40%
 // divider only means anything on this bar's brand fill.
-export const COMPONENT = new Set(["action", "control", "spinner", "button", "card", "badge", "accessibilityBar"]);
+export const COMPONENT = new Set(["action", "control", "spinner", "button", "card", "badge", "accessibilityBar", "divider"]);
 export const INTENT = new Set(["brand", "success", "destructive", "neutral", "light"]);
 export const ACTION_VARIANT = new Set(["primary", "secondary", "tertiary", "tonal"]);
 /**

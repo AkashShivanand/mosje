@@ -1,7 +1,8 @@
 {
   "codeConnect": {
-    "parser": "react",
-    "include": ["packages/design-system/components/**/*.figma.ts"],
+    "include": [
+      "packages/design-system/components/**/*.figma.ts"
+    ],
     "importPaths": {
       "packages/design-system/components/*": "@mosje/design-system"
     },

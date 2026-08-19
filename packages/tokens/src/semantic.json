@@ -1448,6 +1448,16 @@
             }
           }
         }
+      },
+      "inverse": {
+        "default": {
+          "$value": "#ffffff",
+          "$description": "Border/rule ink on a dark or brand surface — the inverse of border/neutral/base. Nested as inverse/default rather than a bare `inverse` leaf because it has a `subtle` sibling, which is the same shape border/neutral/bolder already uses (bolder/default, bolder/hover)."
+        },
+        "subtle": {
+          "$value": "rgba(255, 255, 255, 0.4)",
+          "$description": "The quieter inverse rule — white at 40%, pre-composited so consumers never hand-roll an opacity. Used by Divider Tone=Inverse subtle and the AccessibilityBar's separators. The Figma variable was `border/neutral/inverse-subtle` until 2026-08-18 — a hyphen inside a segment, which grammar RULE 1 forbids; renamed IN PLACE so bindings followed."
+        }
       }
     }
   },

@@ -1,0 +1,70 @@
+{
+  "$comment": "Snapshot of each mapped master's Figma component properties, captured from get_context_for_code_connect. A test cannot call Figma, so this is the recorded design side that tools/code-connect-parity/check.mjs compares templates against. Re-capture whenever a master's properties change; the gate reports any component that has no entry rather than passing it silently.",
+  "AccessibilityBar": {
+    "nodeId": "55065:33766",
+    "captured": "2026-08-18",
+    "properties": {
+      "Skip to content": {
+        "type": "BOOLEAN"
+      },
+      "Font size": {
+        "type": "BOOLEAN"
+      },
+      "Accessibility": {
+        "type": "BOOLEAN"
+      },
+      "Language": {
+        "type": "BOOLEAN"
+      },
+      "Government label": {
+        "type": "TEXT"
+      },
+      "Skip label": {
+        "type": "TEXT"
+      },
+      "Language label": {
+        "type": "TEXT"
+      },
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Desktop XL",
+          "Tablet",
+          "Mobile"
+        ]
+      },
+      "Layout": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Wide",
+          "Narrow",
+          "Fluid"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Divider": {
+    "nodeId": "55061:700",
+    "captured": "2026-08-18",
+    "properties": {
+      "Orientation": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Vertical",
+          "Horizontal"
+        ]
+      },
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Inverse",
+          "Inverse subtle"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  }
+}

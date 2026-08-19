@@ -109,6 +109,7 @@ export const ICON_CATALOGUE: readonly string[] = [
   "filter_list",
   "find_in_page",
   "folder_open",
+  "font_download",
   "fullscreen",
   "fullscreen_exit",
   "gavel",
