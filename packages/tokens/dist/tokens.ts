@@ -1390,7 +1390,7 @@ export const tokens = {
   "card": {
     "bg": "#ffffff",
     "border": "#dcdee1",
-    "radius": "8px"
+    "radius": "12px"
   },
   "badge": {
     "beta": {

@@ -904,7 +904,7 @@
   --sa-cmp-button-radius: var(--sa-control-radius);
   --sa-cmp-card-bg: var(--sa-bg-neutral-base);
   --sa-cmp-card-border: var(--sa-border-neutral-subtle);
-  --sa-cmp-card-radius: var(--sa-shape-8);
+  --sa-cmp-card-radius: var(--sa-shape-12);
   --sa-cmp-badge-beta-bg: var(--sa-color-brand-yellow);
   --sa-cmp-accessibilityBar-height: 46px;
   --sa-cmp-accessibilityBar-flagWidth: 33px;

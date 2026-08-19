@@ -789,7 +789,7 @@ graph TD
 
 | Do | Don't |
 | :--- | :--- |
-| Group content into clean cards using `var(--sa-shape-12)` (12px). See the open question under Shape Tokens: `--sa-cmp-card-radius` is still 8px. | Banned: Sharp corners (`0px` radius) or excessively rounded (`> 20px`) for cards. |
+| Group content into clean cards using `var(--sa-cmp-card-radius)` (12px). | Banned: Sharp corners (`0px` radius) or excessively rounded (`> 20px`) for cards. |
 | Use solid semantic borders (`--ds-border`) or `--ds-surface-muted` background for separation. | Banned: Coloured accent side-stripes (`border-left: 4px solid`) on cards. These are a legacy gov-portal pattern that fragments visual hierarchy. |
 | Keep grids structured with equal-height cards via flex or CSS grid. | Do not nest cards within other cards — flat hierarchy only. |
 | Use `<CardHeader>`, `<CardBody>`, `<CardFooter>` sub-components. | Do not build bespoke card layouts with raw `div`s inside a `<Card>`. |
@@ -1107,11 +1107,14 @@ nodes. **There is no web Shape page yet** — `apps/hub/src/app/design-system/fo
 `spacing`, `color`, `typography`, `density`, `elevation`, `iconography`, `motion` and
 `accessibility`, but no `shape`. That is an open gap, not an omission from this table.
 
-**Open design question, deliberately not resolved by the 2026-08-18 tier fix:**
-`--sa-cmp-card-radius` resolves to **8px** (`shape/8`), while `shape/12`'s own published
-description reads *"cards and panels"* and section 3.B below asks for 12–16px on cards. The
-token is the outlier. Changing it moves every card in the estate, so it is a design decision,
-not a refactor — see `.claude/rules/design-system.md`.
+**Resolved 2026-08-18 — cards are 12px.** `--sa-cmp-card-radius` now resolves to `shape/12`,
+the rung published as "cards and panels". It had said 8px since it was created, contradicting its
+own role and section 3.B below.
+
+It had also been **orphaned**: `--sa-cmp-card-radius` appeared only in `tokens.css` and no
+component consumed it, so `Card` was drawn at a raw `--sa-shape-8` and `MetricCard` at a raw
+`--sa-shape-12` — already drifted apart. Both now bind the component token, so it is load-bearing
+rather than decorative. **Bind `var(--sa-cmp-card-radius)` on a card surface, not a shape rung.**
 
 ### Elevation (Shadow) Tokens
 

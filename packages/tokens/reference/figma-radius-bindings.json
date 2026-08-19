@@ -244,18 +244,19 @@
         "ch": 0
       },
       "authorable": {
-        "t2": 0,
-        "t1": 8,
+        "t2": 144,
+        "t1": 0,
         "xf": 0,
         "gh": 0,
-        "rm": 72,
-        "r0": 64,
+        "rm": 0,
+        "r0": 0,
         "rn": 0,
         "ch": 0
       },
       "rawValues": {},
       "nonRadiusVars": {},
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2140:295915",
@@ -273,20 +274,21 @@
         "ch": 0
       },
       "authorable": {
-        "t2": 0,
-        "t1": 84,
+        "t2": 1520,
+        "t1": 0,
         "xf": 0,
         "gh": 0,
-        "rm": 68,
-        "r0": 1364,
-        "rn": 4,
+        "rm": 0,
+        "r0": 0,
+        "rn": 0,
         "ch": 0
       },
       "rawValues": {
         "2": 4
       },
       "nonRadiusVars": {},
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "55596:695",
@@ -333,13 +335,13 @@
         "ch": 0
       },
       "authorable": {
-        "t2": 0,
-        "t1": 4,
+        "t2": 76,
+        "t1": 0,
         "xf": 0,
         "gh": 0,
-        "rm": 16,
-        "r0": 8,
-        "rn": 48,
+        "rm": 0,
+        "r0": 0,
+        "rn": 0,
         "ch": 0
       },
       "rawValues": {
@@ -348,7 +350,8 @@
         "16": 24
       },
       "nonRadiusVars": {},
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "4170:695",
@@ -366,13 +369,13 @@
         "ch": 0
       },
       "authorable": {
-        "t2": 0,
-        "t1": 4,
+        "t2": 44,
+        "t1": 0,
         "xf": 0,
         "gh": 0,
-        "rm": 16,
-        "r0": 8,
-        "rn": 16,
+        "rm": 0,
+        "r0": 0,
+        "rn": 0,
         "ch": 0
       },
       "rawValues": {
@@ -380,7 +383,8 @@
         "16": 8
       },
       "nonRadiusVars": {},
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2316:246",
@@ -430,13 +434,13 @@
         "ch": 0
       },
       "authorable": {
-        "t2": 0,
-        "t1": 4,
+        "t2": 256,
+        "t1": 0,
         "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 200,
-        "rn": 52,
+        "r0": 0,
+        "rn": 0,
         "ch": 0
       },
       "rawValues": {
@@ -447,7 +451,8 @@
         "40": 4
       },
       "nonRadiusVars": {},
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "4645:10701",
@@ -465,13 +470,13 @@
         "ch": 0
       },
       "authorable": {
-        "t2": 0,
+        "t2": 296,
         "t1": 0,
         "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 240,
-        "rn": 88,
+        "r0": 0,
+        "rn": 32,
         "ch": 0
       },
       "rawValues": {
@@ -490,7 +495,8 @@
         "80.30000305175781": 4
       },
       "nonRadiusVars": {},
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "4099:695",
@@ -604,13 +610,13 @@
         "ch": 12
       },
       "authorable": {
-        "t2": 0,
-        "t1": 120,
-        "xf": 8,
+        "t2": 844,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 704,
-        "rn": 12,
+        "r0": 0,
+        "rn": 0,
         "ch": 12
       },
       "rawValues": {
@@ -619,7 +625,8 @@
       "nonRadiusVars": {
         "Line Heights/9": 8
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2141:296720",
@@ -637,13 +644,13 @@
         "ch": 28
       },
       "authorable": {
-        "t2": 348,
-        "t1": 136,
-        "xf": 8,
+        "t2": 2044,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 1536,
-        "rn": 16,
+        "r0": 0,
+        "rn": 0,
         "ch": 28
       },
       "rawValues": {
@@ -653,7 +660,8 @@
       "nonRadiusVars": {
         "Font Size/6": 8
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2141:323872",
@@ -671,12 +679,12 @@
         "ch": 8
       },
       "authorable": {
-        "t2": 0,
-        "t1": 292,
-        "xf": 4,
+        "t2": 416,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 120,
+        "r0": 0,
         "rn": 0,
         "ch": 8
       },
@@ -684,7 +692,8 @@
       "nonRadiusVars": {
         "Font Size/6": 4
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2106:2",
@@ -702,13 +711,13 @@
         "ch": 20
       },
       "authorable": {
-        "t2": 0,
-        "t1": 20,
-        "xf": 36,
+        "t2": 1140,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
-        "rm": 40,
-        "r0": 948,
-        "rn": 96,
+        "rm": 0,
+        "r0": 0,
+        "rn": 0,
         "ch": 20
       },
       "rawValues": {
@@ -719,7 +728,8 @@
         "Font Size/9": 56,
         "REMOTE:radius-full": 232
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2141:323867",
@@ -771,14 +781,14 @@
         "ch": 8
       },
       "authorable": {
-        "t2": 0,
-        "t1": 28,
-        "xf": 8,
+        "t2": 372,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 296,
-        "rn": 48,
-        "ch": 8
+        "r0": 0,
+        "rn": 4,
+        "ch": 12
       },
       "rawValues": {
         "3": 32,
@@ -790,7 +800,8 @@
       "nonRadiusVars": {
         "Font Size/4": 8
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2141:323870",
@@ -852,13 +863,13 @@
         "ch": 4
       },
       "authorable": {
-        "t2": 0,
-        "t1": 68,
-        "xf": 4,
+        "t2": 324,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 220,
-        "rn": 32,
+        "r0": 0,
+        "rn": 0,
         "ch": 4
       },
       "rawValues": {
@@ -867,7 +878,8 @@
       "nonRadiusVars": {
         "Font Size/6": 4
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2141:323869",
@@ -885,13 +897,13 @@
         "ch": 8
       },
       "authorable": {
-        "t2": 0,
-        "t1": 72,
-        "xf": 8,
+        "t2": 208,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 92,
-        "rn": 36,
+        "r0": 0,
+        "rn": 0,
         "ch": 8
       },
       "rawValues": {
@@ -901,7 +913,8 @@
       "nonRadiusVars": {
         "Font Size/6": 8
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "55384:695",
@@ -919,21 +932,22 @@
         "ch": 4
       },
       "authorable": {
-        "t2": 300,
-        "t1": 152,
+        "t2": 1212,
+        "t1": 0,
         "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 732,
-        "rn": 64,
-        "ch": 4
+        "r0": 0,
+        "rn": 0,
+        "ch": 40
       },
       "rawValues": {
         "2": 16,
         "8": 132
       },
       "nonRadiusVars": {},
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2141:296710",
@@ -951,13 +965,13 @@
         "ch": 4
       },
       "authorable": {
-        "t2": 0,
-        "t1": 116,
-        "xf": 4,
+        "t2": 272,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 128,
-        "rn": 24,
+        "r0": 0,
+        "rn": 0,
         "ch": 4
       },
       "rawValues": {
@@ -966,7 +980,8 @@
       "nonRadiusVars": {
         "Font Size/6": 4
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2141:296709",
@@ -984,13 +999,13 @@
         "ch": 8
       },
       "authorable": {
-        "t2": 0,
-        "t1": 148,
-        "xf": 4,
+        "t2": 396,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 132,
-        "rn": 112,
+        "r0": 0,
+        "rn": 0,
         "ch": 8
       },
       "rawValues": {
@@ -999,7 +1014,8 @@
       "nonRadiusVars": {
         "Line Heights/9": 4
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2141:296716",
@@ -1053,12 +1069,12 @@
         "ch": 8
       },
       "authorable": {
-        "t2": 0,
-        "t1": 84,
-        "xf": 4,
+        "t2": 256,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
-        "rm": 32,
-        "r0": 136,
+        "rm": 0,
+        "r0": 0,
         "rn": 0,
         "ch": 8
       },
@@ -1069,7 +1085,8 @@
         "REMOTE:radius-md": 16,
         "REMOTE:radius-xs": 16
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2141:323883",
@@ -1087,13 +1104,13 @@
         "ch": 4
       },
       "authorable": {
-        "t2": 0,
-        "t1": 20,
-        "xf": 4,
+        "t2": 268,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 84,
-        "rn": 160,
+        "r0": 0,
+        "rn": 0,
         "ch": 4
       },
       "rawValues": {
@@ -1103,7 +1120,8 @@
       "nonRadiusVars": {
         "Font Size/6": 4
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "4645:10196",
@@ -1121,13 +1139,13 @@
         "ch": 16
       },
       "authorable": {
-        "t2": 660,
-        "t1": 16,
+        "t2": 1812,
+        "t1": 0,
         "xf": 0,
         "gh": 0,
-        "rm": 32,
-        "r0": 1096,
-        "rn": 12,
+        "rm": 0,
+        "r0": 0,
+        "rn": 4,
         "ch": 16
       },
       "rawValues": {
@@ -1138,7 +1156,8 @@
         "REMOTE:radius-none": 12,
         "REMOTE:radius-xs": 20
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2141:296701",
@@ -1156,13 +1175,13 @@
         "ch": 12
       },
       "authorable": {
-        "t2": 0,
-        "t1": 44,
-        "xf": 8,
+        "t2": 220,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 164,
-        "rn": 4,
+        "r0": 0,
+        "rn": 0,
         "ch": 12
       },
       "rawValues": {
@@ -1171,7 +1190,8 @@
       "nonRadiusVars": {
         "Font Size/6": 8
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2141:296703",
@@ -1189,13 +1209,13 @@
         "ch": 4
       },
       "authorable": {
-        "t2": 0,
-        "t1": 20,
-        "xf": 4,
+        "t2": 76,
+        "t1": 0,
+        "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 16,
-        "rn": 36,
+        "r0": 0,
+        "rn": 0,
         "ch": 4
       },
       "rawValues": {
@@ -1204,7 +1224,8 @@
       "nonRadiusVars": {
         "Font Size/6": 4
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "4645:10200",
@@ -1222,13 +1243,13 @@
         "ch": 12
       },
       "authorable": {
-        "t2": 0,
+        "t2": 508,
         "t1": 0,
         "xf": 0,
         "gh": 0,
-        "rm": 208,
-        "r0": 291,
-        "rn": 9,
+        "rm": 0,
+        "r0": 0,
+        "rn": 0,
         "ch": 12
       },
       "rawValues": {
@@ -1240,7 +1261,8 @@
         "REMOTE:radius-md": 116,
         "REMOTE:radius-xs": 8
       },
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2500:295967",
@@ -1289,18 +1311,19 @@
         "ch": 4
       },
       "authorable": {
-        "t2": 0,
-        "t1": 4,
+        "t2": 7016,
+        "t1": 0,
         "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 7012,
+        "r0": 0,
         "rn": 0,
         "ch": 4
       },
       "rawValues": {},
       "nonRadiusVars": {},
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     },
     {
       "id": "2141:296708",
@@ -1318,20 +1341,21 @@
         "ch": 16
       },
       "authorable": {
-        "t2": 0,
-        "t1": 266,
+        "t2": 1212,
+        "t1": 0,
         "xf": 0,
         "gh": 0,
         "rm": 0,
-        "r0": 860,
-        "rn": 86,
+        "r0": 0,
+        "rn": 0,
         "ch": 16
       },
       "rawValues": {
         "8": 200
       },
       "nonRadiusVars": {},
-      "ghosts": {}
+      "ghosts": {},
+      "rebound": "2026-08-18"
     }
   ],
   "rebindNote": "Eight pages were rebound on 2026-08-18 (marked `rebound`). The rule was provable, never approximate: a value matching a rung exactly binds that rung; a value >= half the shorter side binds shape/full, since it ALREADY renders fully rounded; 10 snaps to 12 by explicit decision; anything else was left and reported. Each page's authorable property COUNT is asserted unchanged before its numbers are accepted — a rebind that moves the count has done something other than rebind.",

@@ -500,41 +500,40 @@ if any semantic-or-component token outside `shape` aliases `radius.*`.
 **A re-point does not update `description` or `codeSyntax`** — the spacing rename lost 51 of them
 exactly that way. Both were rewritten by hand in the same change.
 
-### Open design question — `cmp/card/radius` contradicts its own role
+### Cards are 12px, and the component token is now load-bearing
 
-`--sa-cmp-card-radius` resolves to **8px** (`shape/md`), while `shape/lg`'s published description
-reads *"cards and panels"* and `design.md` §3.B asks for 12px on cards. The token is the outlier.
-The 2026-08-18 fix deliberately left the value alone: changing it moves every card in the estate,
-which is a design decision, not a refactor.
+`cmp/card/radius` said **8px** while `shape/12` is the rung published as *"cards and panels"* and
+`design.md` asked for 12px. Resolved 2026-08-18: the token now resolves to `shape/12`.
 
-### The Figma documentation page
+The more interesting half is that the token was **orphaned**. `--sa-cmp-card-radius` appeared only
+in `tokens.css`; no component consumed it. `Card` drew a raw `--sa-shape-8` and `MetricCard` a raw
+`--sa-shape-12` — two card surfaces already 4px apart, with a component token sitting unused that
+existed precisely to stop that. Both now bind it.
 
-**`Radius` — page `55623:695`**, between `Spacing` and `Motion` in the FOUNDATION run. Two
-frames, matching the `Spacing` precedent exactly:
+**A Tier-3 token nothing binds is worse than no token**: it reads as governance while the thing it
+governs drifts underneath. When adding one, bind it in the same change, or do not add it.
 
-- **`Radius — Documentation`** (`55623:696`, 1680 wide) — hero + six sections: `01 Anatomy`,
-  `02 Tiers`, `03 Ladder`, `04 Divergence`, `05 Measured`, `06 Do and Don't`.
-- **`Radius — Component record`** (`55628:695`, 880 wide) — the sibling maintainer frame of
-  **open gaps only**, forward-looking, not a catalogue of what was fixed.
+### The rebind campaign — 2.87 % to 97.72 %
 
-**Audited at 100 % bound on every gated property** — 197 fills, 356 padding, 87 gaps, **404
-radii**, 149 text nodes, all on a variable or a published style, with **zero `UNACCOUNTED`** and
-zero declared specimens (nothing on the page needed one).
+32 of 35 censused pages rebound on 2026-08-18. **Zero Tier-1, zero cross-family, zero foreign, zero
+ghost bindings remain.** The 44 surviving defects are all `rn`, and all but one are **fractional**
+(3.89, 2.92, 4.80, 3.20 px) — scaled artwork on `New in 2.0`, `Tabs` and `Date-Time Picker`, not
+typed radii. `Tables` holds the one genuine leftover, a 3px.
 
-Two things worth knowing if you build the next one:
+The rule was provable at every step, never approximate:
 
-- **`figma.createAutoLayout()` gives every frame a default white fill.** 53 pure layout
-  containers (`row`, `header`, `stat`, `meta`, `eyebrow`, `stats`, and each `rung` cell) carried
-  an unbound white the audit counted as raw — 78.8 % on fills before it was found. The fix is
-  `fills = []`, not a bound fill: a layout container should have **no** fill, not a correct one.
-- **The hero's top padding is 80, not the 88 the house style states.** There is no `padding/88`
-  on the value-named ladder, so 88 is unbindable. `Spacing` already resolved this the same way;
-  `figma-documentation-style.md` records the intent, and the implemented precedent wins where a
-  literal reading would force an unbound value.
+| Case | Bound to | Why it is exact |
+|---|---|---|
+| value matches a rung | that rung | identical pixels |
+| value ≥ half the shorter side | `shape/full` | already renders fully rounded |
+| Tier-1 binding | the Tier-2 rung of equal value | same terminal value |
+| foreign / cross-family variable | resolved to its VALUE, then the rules above | same rendered pixels |
+| `10` | `shape/12` | explicit decision |
+| anything else | **left, and reported** | not the script's call |
 
-**Every swatch in `03 Ladder` has its corner radius bound to the rung it demonstrates** — none is
-drawn at a typed number, so the page moves when the ladder moves. That is the difference between
-documentation that is correct and documentation that merely looks correct.
+Only **authorable** nodes were touched, so instances follow their mains rather than gaining new
+overrides. **Every page's authorable property COUNT is asserted unchanged** before its numbers are
+accepted — a rebind that moves the count has done something other than rebind.
 
 ### `shape/full` is a SENTINEL, not a measurement
 

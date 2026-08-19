@@ -16643,10 +16643,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Radius",
-              "name": "shape/8"
+              "name": "shape/12"
             }
           },
-          "description": "Value unchanged at 8px. NOTE: shape/12 is the rung whose published description reads \"cards and panels\", and design.md asks for 12px on cards. That contradiction is a DESIGN decision, deliberately not resolved by the tier fix.",
+          "description": "Use for the card surface radius. shape/12 is the rung published as \"cards and panels\", which is what a card is. Raised from 8px on 2026-08-18: the token had contradicted its own role, and Card (8px) and MetricCard (12px) had already drifted apart because neither bound this token.",
           "codeSyntax": {
             "WEB": "var(--sa-cmp-card-radius)"
           },
