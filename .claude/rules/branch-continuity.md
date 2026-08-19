@@ -12,9 +12,27 @@ This rule sits under `CLAUDE.md` → *Branching & merging*, and adds nothing tha
 contradicts it: never commit to `main`, keep branches short-lived, sync from `main`,
 and never reuse a branch whose PR is already closed.
 
+## Step 0 — The inventory arrives on its own
+
+A `SessionStart` hook — `.claude/hooks/session-branch-inventory.sh`, wired in
+`.claude/settings.json` — prints the inventory into context at the start of every
+session: the current branch and its dirty count, every worktree, the fifteen most
+recent local branches with their last commit subject, and the state of the last
+twenty PRs. It **reports only**; it never switches, stashes, or creates anything.
+
+That exists because a rule with no gate has a half-life — the lesson this repo
+already learned in `documentation-ds-linkage.md`, and again in the incident below.
+Read what the hook prints; it is Step 1 already done for you.
+
+The hook degrades quietly and always exits 0: no `gh` drops the PR section, a
+non-git directory produces nothing, and every call is capped at five seconds. **A
+session that will not start is worse than a missing inventory.** So if it is
+silent, run Step 1 by hand rather than concluding there was nothing to find.
+
 ## Step 1 — Take the inventory before deciding anything
 
-Three commands, every session, before the first edit:
+Three commands, every session, before the first edit. The hook runs these for you,
+so this is the manual fallback and the way to refresh mid-session:
 
 ```bash
 git status --short && git branch --show-current   # what is here, and is it dirty
@@ -117,7 +135,7 @@ worktrees, and two sessions committing into the same tree at once. In that envir
 
 ## Checklist at the start of every session
 
-- [ ] `git status --short`, `git branch -vv`, `git worktree list` run **before** the first edit
+- [ ] The SessionStart inventory read — or, if it was silent, Step 1 run by hand — **before** the first edit
 - [ ] The instruction's subject matched against branch names, then commits, then PRs
 - [ ] Candidate branch's PR state checked — merged/closed means branch fresh, not reuse
 - [ ] Ambiguity between two branches resolved by **asking**, not guessing
