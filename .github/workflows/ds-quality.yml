@@ -186,6 +186,24 @@ jobs:
       - name: Dangling vars — every --sa-* reference resolves to a declared token
         run: npm run check:dangling-vars
 
+      # A nav link naming an id no page renders is invisible to every other check:
+      # it resolves, returns 200, and silently drops the reader at the top of a page
+      # about something else. Sixteen had accumulated in the sidebar — nearly half its
+      # anchor links — advertising docs that were never written, plus one component
+      # retired outright. The 15 that remain are DECLARED debt and may only shrink.
+      - name: Docs links — every internal pointer resolves, anchors included
+        run: npm run check:docs-links
+
+      # The Figma documentation pages state FACTS about the code — the type role and its
+      # px, the tokens the stylesheet references, the focus treatment, the WCAG level.
+      # Ten of the AccessibilityBar page's claims were wrong on 2026-08-19, including two
+      # that named tokens the value-naming migrations had deleted, and one section that
+      # contradicted another four sections above it. None of that is visible to a reader,
+      # which is the point: a documentation page is believed because it looks
+      # authoritative. This re-derives each claim from the code.
+      - name: Figma doc parity — the documentation still matches what it documents
+        run: npm run check:figma-docs
+
       # `.figma.ts` templates are EXCLUDED from the design-system tsconfig, so nothing
       # type-checked them: a template could name a React prop that had been renamed, or a
       # Figma property that had been deleted, and every gate here stayed green while Dev

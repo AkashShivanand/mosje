@@ -17,8 +17,8 @@ Write it in simple, non-technical language. Avoid jargon. Imagine you are explai
 
 Digital estate for the **Ministry / Department of Social Justice & Empowerment (DoSJE), Government of India**. It has **two parts**:
 
-1. **The Website** (`apps/dosje/`) — one **unified informational site** that consolidates **13 legacy websites** (the department + its commissions/bodies) into a single portal. This is built and live. Public-facing, content-driven, DBIM/GIGW-compliant.
-2. **The Portals** (`apps/portals/`) — **20 functional workflow portals** covering **33+ organisations & schemes** under MoSJE (SMILE, PM-AJAY, NOS, scholarships, NSFDC/NSKFDC/NBCFDC, NMBA, etc.). Authenticated, transactional apps.
+1. **The Website** (`apps/hub/src/app/website/`) — one **unified informational site** that consolidates **13 legacy websites** (the department + its commissions/bodies) into a single portal. This is built and live. Public-facing, content-driven, DBIM/GIGW-compliant.
+2. **The Portals** (`apps/hub/src/app/portals/<slug>/`) — **20 functional workflow portals** covering **33+ organisations & schemes** under MoSJE (SMILE, PM-AJAY, NOS, scholarships, NSFDC/NSKFDC/NBCFDC, NMBA, etc.). Authenticated, transactional apps.
 
 **North-star:** every site and portal renders from **one shared design system** (`packages/design-system/`) that stays **100% in sync with a Figma library**. We will build all 13 + 20 incrementally on this shared system.
 
@@ -35,9 +35,9 @@ Digital estate for the **Ministry / Department of Social Justice & Empowerment (
 ```
 mosje/                      # single git repo (was mosje-estate; apps now consolidated in)
 ├── apps/
-│   ├── dosje/              # THE unified website (Next 16, React 19, Tailwind v4, shadcn, Noto Sans)
-│   ├── portals/            # functional portals (smile-admin, pm-ajay, nos, … as built)
-│   └── docs/               # SAMAVESH Storybook / DS documentation portal (Plan 3)
+│   ├── hub/                # THE WHOLE ESTATE (Next 16, React 19, Tailwind v4, shadcn, Noto Sans)
+│   │   └── src/app/        #   website/ · design-system/ · portals/<slug> · reports/<slug>
+│   └── storybook/          # story authoring only; the hub compiles it to /storybook
 ├── packages/
 │   ├── tokens/             # @mosje/tokens — DTCG source → Style Dictionary (CSS/TS/Tailwind/Figma)
 │   ├── design-system/      # @mosje/design-system — shared UI (consumes generated tokens)
@@ -52,13 +52,12 @@ mosje/                      # single git repo (was mosje-estate; apps now consol
 
 This is now a **single git repo** (`mosje`). The former independent app repos (dosje had local-only history; smile-admin pushed to `smile-admin-portal`) are absorbed; their full histories are preserved in gitignored `_backups/` and the archived GitHub repo.
 
-Apps are **independent** (own git, own deps) — this is a "monorepo-ready" layout, not yet an npm workspace. See `MOSJE-ARCHITECTURE.md` for the full app registry.
+This **is** an npm workspace — `workspaces` is `["packages/*", "apps/*", "apps/portals/*"]`, which is why `npm run build -w @mosje/tokens` and `npm test -w @mosje/design-system` work from the root. (`apps/portals/*` is a leftover glob matching nothing since the portals became route groups in the hub.) See `MOSJE-ARCHITECTURE.md` for the full app registry.
 
 ## Per-app stack
 
 | App | Framework | Styling | Notes |
 |-----|-----------|---------|-------|
-| `apps/dosje/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Noto Sans, gov brand tokens in `src/app/globals.css`. **Next 16 has breaking changes — see `apps/dosje/AGENTS.md`.** |
 | `apps/hub/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Root zone at :3007; **hosts every portal natively** at `/portals/<slug>`, and owns the single Tailwind build for all of them. |
 
 **Tailwind after the single-origin consolidation:** the portals no longer have their own apps,
@@ -286,9 +285,9 @@ Two DBIM usage rules ship with the palette and apply wherever `dbim` is active:
 
 ## Active context
 
-- `apps/dosje/` homepage is **built and committed** (14 components, faithful clone of dosje.gov.in).
-- `packages/` design system is **live (Phase 2)**: `@mosje/tokens` (DTCG → Style Dictionary) generates the token contract; `@mosje/design-system` has 17 atoms + form layer, plus the **`data-color-mode` brand-axis theming** (ColorModeProvider/Switcher; modes: `blue-light` default, `blue-dark`, extensible). See `docs/superpowers/specs/` + `plans/`.
-- `apps/portals/smile-admin` is **recovered and consolidated** into this repo (was a separate `smile-admin-portal` repo, now archived). `apps/portals/pm-ajay` MIS dashboard is built. The guard hook blocks `rm -rf` so the original loss never recurs.
+- The **website** (14 components, a faithful clone of dosje.gov.in) is built and lives at `apps/hub/src/app/website/`, reached at `/website`.
+- `packages/` design system is **live (Phase 2)**: `@mosje/tokens` (DTCG → Style Dictionary) generates the token contract; `@mosje/design-system` exports **90 components** (the count `scripts/lib/ds-exports.mjs` enumerates and both Storybook-coverage gates ratchet), plus the **`data-brand` axis theming** (ColorModeProvider/Switcher; modes `blue` default and `navy` — `dbim` is code-only and deliberately kept out of `COLOR_MODES`). See `docs/superpowers/specs/` + `plans/`.
+- **smile-admin** is recovered and consolidated into this repo (it was a separate `smile-admin-portal` repo, now archived); the **pm-ajay** MIS dashboard is built. Both are route groups under `apps/hub/src/app/portals/`, not standalone apps. The guard hook blocks `rm -rf` so the original loss never recurs.
 - **Single-origin layout is live.** `apps/hub` is the root zone at **:3007**. All child apps mount via `basePath` — dosje at `/website`, portals at `/portals/<slug>`. Run `npm run dev` from the repo root to bring everything up. Add new portals by setting `basePath` + a hub rewrite + a `portals.ts` entry.
 - **The estate is deployed to Vercel** at `mosje-samavesh.vercel.app`, behind a **shared-password site gate** (Vercel's own password protection is a Pro feature; the team is on Hobby). The gate lives in `apps/hub/src/proxy.ts` + `src/lib/site-gate.ts`; the wall itself is `/gate`. It is an access wall for a prototype, **not authentication** — the portal logins inside are unaffected.
   - The expected token resolves **store → env → off**: `gate_token` in the `hub_settings` table of the `mosje-hub` Supabase project, else HMAC of `SITE_PASSWORD`, else the gate is disabled. The env var is the **floor**, so a paused or unreachable database degrades to a working gate rather than an open site. `SITE_PASSWORD` unset ⇒ gate off, which is why local dev is untouched.
