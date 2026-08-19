@@ -41,6 +41,22 @@ export {
   type ColorModeProviderProps,
 } from "./foundations/color-mode-provider";
 
+// ---- Foundations: corner rail (bottom-right floating-widget stacking) -------
+// One shared answer to where a floating widget sits, so two of them never
+// land on top of each other. A widget calls `useCornerRailOffset` to be
+// positioned by the rail; a widget that merely OCCUPIES the corner (a chatbot
+// launcher, say) just sets `data-sa-corner-occupant` on its own element and
+// everything already on the rail stacks above it. See the file's doc comment.
+export {
+  useCornerRailOffset,
+  railOffsetFromRects,
+  CORNER_OCCUPANT_ATTR,
+  CORNER_RAIL_REST_PX,
+  CORNER_RAIL_GAP_PX,
+  UX4G_TRIGGER_ID,
+  type CornerRailOptions,
+} from "./foundations/corner-rail";
+
 // ---- Components: Icon -------------------------------------------------------
 // Material Symbols Outlined — the official icon system for all MoSJE apps.
 // Load the font once in your app root: import "@mosje/design-system/icons.css"
@@ -404,6 +420,7 @@ export type { DemoAccount, DemoFabProps, DemoFillDetail } from "./demo";
 export {
   DemoAccountsPanel,
   DemoDock,
+  FlaskIcon,
   DEMO_ACCOUNTS,
   findDemoAccounts,
   isLoginRoute,
@@ -411,5 +428,6 @@ export {
 export type {
   DemoAccountsPanelProps,
   DemoDockProps,
+  FlaskIconProps,
   DemoAccountSet,
 } from "./demo";

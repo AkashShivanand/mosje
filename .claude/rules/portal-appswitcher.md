@@ -46,6 +46,43 @@ resolves to, `DemoAccountsPanel`, present only when the path has one).
    inside the hub alongside `DemoDock` — that reintroduces the duplicate-FAB
    problem this rule exists to prevent.
 
+## Placement — the bottom-right corner rail
+
+`DemoDock` does not choose its own position, and neither should the next
+floating widget. There is **one** corner for floating widgets and it
+**stacks**, via `useCornerRailOffset`
+(`packages/design-system/foundations/corner-rail.ts`):
+
+- **32px** from the bottom when the corner below is empty.
+- **16px above** whatever is already there — today the UX4G accessibility
+  widget's trigger, tomorrow a chatbot launcher. Measured live, from what is
+  actually on the page.
+
+Two rules, and the first is the one that has already been broken once:
+
+1. **Never hardcode a stacking offset.** The previous version assumed the
+   UX4G widget was always present and always visible and wrote `108px` into
+   the CSS. That widget is `display: none` on every page carrying an
+   `AccessibilityBar` (`.claude/rules/accessibility-entry-point.md`), so the
+   FAB floated 108px above an empty corner across most of the estate. The
+   number *looked* deliberate, which is exactly why it survived review.
+2. **A launcher moves the rail; an open panel does not.** Only occupants
+   under 140px tall count. A chatbot's conversation panel opening in the
+   same corner must not shove everything to the top of the viewport.
+
+### Adding a floating widget
+
+| Your widget | What to do |
+|---|---|
+| Should be **positioned by** the rail | call `useCornerRailOffset(ref)` and use `var(--sa-corner-rail-bottom, 32px)` for its `bottom` |
+| Merely **occupies** the corner (it pins itself) | put `data-sa-corner-occupant` on its own element — everything above it moves up, with no change to any other file |
+
+Do not add a per-route boolean to raise or lower a widget. That pattern was
+already tried (a flag on `DemoAccountSet`, to dodge `PortalLoginShell`'s
+bottom-left strip), and it was removed rather than replaced: an opt-in a
+future portal can forget is not a fix, and it made the FAB visibly relocate
+between routes.
+
 ## Pattern (how the hub wires it — nothing for a portal to copy)
 
 ```tsx
@@ -87,6 +124,8 @@ show.
       `.claude/rules/portal-login-demos.md`
 - [ ] No `DemoDock` or `DemoFab` mount added anywhere in the portal's own
       layout or pages — the hub's single mount already covers it
-- [ ] After `npm run dev`, the dock's FAB appears bottom-left on the new
+- [ ] After `npm run dev`, the dock's FAB appears bottom-right on the new
       portal's pages, its Apps tab lists the portal, and (if it has a login
       page) its Sign in tab shows the right accounts
+- [ ] No fixed bottom-right widget added without either joining the corner
+      rail or marking itself `data-sa-corner-occupant` — see Placement above

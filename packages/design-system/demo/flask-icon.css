@@ -1,0 +1,214 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — FlaskIcon
+   ─────────────────────────────────────────────────────────────────────────
+   DEMO-ONLY chrome. The motion layer for demo/flask-icon.tsx.
+
+   THE CONTRACT. This file animates nothing on its own. It declares the
+   animations in a permanently-paused state and exposes four custom
+   properties for a consumer to drive:
+
+     --ds-flask-play     paused | running   whether the bubbles rise
+     --ds-flask-cycle    <time>             how long one bubble takes
+     --ds-flask-bubbles  <number>           opacity of the bubble set
+     --ds-flask-level    <length>           how far the liquid is raised
+
+   The ROCK is the exception, and deliberately so: it has to RESTART on
+   every hover, and a custom property cannot restart an animation — the
+   name is already applied, so re-matching changes nothing. It is therefore
+   a plain `:hover`/`:focus-visible` descendant rule, which starts the
+   animation when the selector begins to match and removes it when it stops.
+   That is the whole reason the icon has two nested wrappers.
+
+   The consumer owns the selectors, because only the consumer knows its own
+   markup. `demo-dock.css` maps `:hover`, `:focus-visible` and
+   `[aria-expanded="true"]` onto these four; the icon stays structure-blind
+   and therefore works in the FAB and in the panel's header badge, which
+   live in different subtrees and answer to different state.
+
+   WHY PAUSE RATHER THAN SWITCH THE ANIMATION ON. A paused animation holds
+   its 0% keyframe, and 0% here is `fill-opacity: 0` — so "off" is genuinely
+   invisible, and "on" resumes with the three bubbles already out of phase
+   (see the negative delays) instead of restarting them in lockstep, which
+   is the tell that gives a loop away. The cost is that unpausing's inverse
+   freezes a bubble mid-rise, which is why the bubble SET carries its own
+   opacity transition: the frozen frame fades out over 220ms and reads as
+   the bubbles dissolving.
+
+   Only `transform`, `opacity` and `fill-opacity` are animated — composited,
+   no layout. `currentColor` at a fixed alpha means the icon re-tones with
+   its container in every brand mode with no token of its own.
+   ============================================================================ */
+
+.ds-flask {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+/* ── Rock ─────────────────────────────────────────────────────────────────
+   A damped pendulum swing, pivoting near the base of the bulb rather than
+   at the icon's centre — `50% 85%` is (12, 20.4) in viewBox units, which is
+   where a real flask meets the bench. Pivoting at the centre would read as
+   a spin; pivoting at the base reads as a nudge.
+
+   `transform-box: view-box` is stated rather than assumed. It is the spec
+   default for SVG elements, but it decides what `85%` is a percentage OF,
+   and getting it from the element's tight bounding box instead of the
+   viewBox would put the pivot in a different place on each wrapper.
+
+   The swing decays 11 → 7 → 4 → 2 degrees. Even decay would read as a
+   wobble; a decaying one reads as something settling.
+
+   `.ds-flask__body` runs it ONCE, on mount — the "appear" swing.
+   `.ds-flask__rock` runs it only while hovered or focused, and gets its
+   own element purely so the same keyframes can be re-triggered. ── */
+.ds-flask__body,
+.ds-flask__rock {
+  transform-box: view-box;
+  transform-origin: 50% 85%;
+}
+
+@keyframes ds-flask-rock {
+  0% {
+    transform: rotate(0deg);
+  }
+  16% {
+    transform: rotate(-11deg);
+  }
+  36% {
+    transform: rotate(7deg);
+  }
+  56% {
+    transform: rotate(-4deg);
+  }
+  76% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-flask__body {
+    animation: ds-flask-rock 900ms var(--sa-motion-emphasis-easing) 1;
+  }
+
+  /* Hover and keyboard focus both re-swing it. `@media (hover: hover)` gates
+     the pointer half, as everywhere else in this estate — a touch device
+     that fakes `:hover` on tap would otherwise leave the flask mid-swing
+     after the finger lifts. */
+  :focus-visible .ds-flask .ds-flask__rock {
+    animation: ds-flask-rock 900ms var(--sa-motion-emphasis-easing) 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+  :hover > .ds-flask .ds-flask__rock,
+  :hover > * > .ds-flask .ds-flask__rock {
+    animation: ds-flask-rock 900ms var(--sa-motion-emphasis-easing) 1;
+  }
+}
+
+/* ── Liquid ───────────────────────────────────────────────────────────────
+   Translated exactly one wavelength (12 units) so the loop has no seam. The
+   path is four wavelengths long specifically so it still covers the viewBox
+   at full travel — see the note beside it in flask-icon.tsx; shortening it
+   reintroduces a bug no static frame can show. `fill-opacity` rather than a
+   tinted fill keeps the outline as the icon's silhouette and the liquid as
+   a filling, instead of the two competing. ── */
+.ds-flask__liquid {
+  fill-opacity: 0.26;
+  animation: ds-flask-slosh calc(var(--ds-flask-cycle, 2200ms) * 1.7) linear infinite;
+  animation-play-state: var(--ds-flask-play, paused);
+}
+
+.ds-flask__liquid-group {
+  transform: translateY(var(--ds-flask-level, 0px));
+  transition: transform var(--sa-motion-emphasis-duration) var(--sa-motion-emphasis-easing);
+}
+
+/* ── Bubbles ──────────────────────────────────────────────────────────────
+   Each rises from where it is drawn to just under the surface, fading in on
+   the way up and out at the top so it reads as breaking rather than as
+   vanishing. ── */
+.ds-flask__bubbles {
+  opacity: var(--ds-flask-bubbles, 0);
+  transition: opacity 220ms var(--sa-motion-exit-easing);
+}
+
+.ds-flask__bubble {
+  animation: ds-flask-bubble var(--ds-flask-cycle, 2200ms) var(--sa-motion-emphasis-easing) infinite;
+  animation-play-state: var(--ds-flask-play, paused);
+}
+
+/* Negative delays, so the three are already out of phase on the first frame
+   the animation is ever unpaused — the first cycle looks like the tenth. */
+.ds-flask__bubble--1 {
+  animation-delay: -120ms;
+}
+
+.ds-flask__bubble--2 {
+  animation-delay: -880ms;
+}
+
+.ds-flask__bubble--3 {
+  animation-delay: -1560ms;
+}
+
+/* The travel is bounded by the LIQUID, not by the flask. The bubbles are
+   drawn at cy 17.8–19 and the surface sits at y 13, so a 4.2-unit rise
+   carries the highest of them to ~13.6 — still under the wave — and the
+   fade is finished by 82% so it is gone before it could cross. An earlier
+   version rose 6.5 units and the bubbles surfaced into the empty neck,
+   which read as three dots hovering outside the liquid rather than as
+   anything boiling. Verified at 180px, where 0.4 of a unit is 3px and the
+   error is obvious; at 16px it was invisible. */
+@keyframes ds-flask-bubble {
+  0% {
+    fill-opacity: 0;
+    transform: translateY(0.6px) scale(0.55);
+  }
+  20% {
+    fill-opacity: 0.8;
+  }
+  62% {
+    fill-opacity: 0.5;
+  }
+  82% {
+    fill-opacity: 0;
+  }
+  100% {
+    fill-opacity: 0;
+    transform: translateY(-4.2px) scale(1);
+  }
+}
+
+@keyframes ds-flask-slosh {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-12px);
+  }
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────
+   Nothing moves, but STATE SURVIVES. The raised liquid level and a held
+   frame of bubbles both stay, so the running state still looks different
+   from the idle one — only the movement between them is traded away. ── */
+@media (prefers-reduced-motion: reduce) {
+  .ds-flask__liquid,
+  .ds-flask__bubble,
+  .ds-flask__body,
+  .ds-flask__rock {
+    animation: none !important;
+  }
+
+  .ds-flask__liquid-group {
+    transition: none;
+  }
+
+  .ds-flask__bubble {
+    fill-opacity: 0.5;
+  }
+}

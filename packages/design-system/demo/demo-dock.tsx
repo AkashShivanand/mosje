@@ -5,8 +5,8 @@
  *
  * DEMO-ONLY component. The single floating widget that replaces the
  * AppSwitcher's colour swatches and every hand-rolled `DemoFab` — one FAB,
- * bottom-right (docked above the UX4G accessibility widget — see the
- * "Placement" note further down), that opens a tabbed panel:
+ * on the bottom-right corner rail (see the "Placement" note further down),
+ * that opens a tabbed panel:
  *
  * - **Apps** — the same searchable cross-zone list as `AppSwitcher`
  *   (`AppSwitcherPanel`), so a stakeholder never has to leave the dock to
@@ -50,10 +50,17 @@
  * starts on the first tab — Sign in when the current route is a login
  * route, Apps otherwise — never a remembered tab.
  *
- * **Placement — bottom-right, docked directly above the UX4G accessibility
- * widget.** This used to be bottom-left, mirroring the retired
- * `AppSwitcher`. It moved for two reasons (see
- * `docs/superpowers/specs/` / the placement report for the fuller writeup):
+ * **Placement — the bottom-right corner rail.** The dock rests 32px from
+ * the bottom of the viewport, flush to the same right edge as everything
+ * else in that corner. If something else is already there — today the UX4G
+ * accessibility widget's trigger, tomorrow a chatbot launcher — it stacks
+ * directly above it instead, with a 16px gap. That is measured live from
+ * whatever is actually on the page, by `useCornerRailOffset`; see
+ * `foundations/corner-rail.ts` for the model and for what does and does not
+ * count as an occupant.
+ *
+ * It used to be bottom-left, mirroring the retired `AppSwitcher`. It moved
+ * for two reasons:
  *
  * 1. Bottom-left is where `PortalLoginShell` pins its "Signing Into" strip
  *    (see that file). The two used to collide on NMBA's login routes, and
@@ -61,25 +68,25 @@
  *    that raised the FAB — an opt-in a future portal could easily forget,
  *    and one that made the FAB visibly relocate between routes
  *    ("cheap"-looking, per design review). Moving the FAB to the corner
- *    nothing else uses eliminates the collision at the source instead of
+ *    nothing else uses eliminated the collision at the source instead of
  *    reacting to it: there is nothing left bottom-left for anything to opt
  *    into, so that flag is gone rather than replaced.
  * 2. Bottom-right already has a fixed, 70px, official government control
- *    (`UX4GAccessibilityWidget`) that this estate must not resize, restyle
- *    the geometry of, or otherwise fight (see that file's own doc comment).
- *    Sitting a SECOND, unrelated FAB in the opposite corner at a different
- *    size and a different edge offset read as two accidental widgets, not
- *    one considered pair. Docking DemoDock directly above it — same right
- *    edge, a fixed gap, DemoDock's own established 44px size kept — reads
- *    as one coordinated utility rail instead, and gives every route the
- *    exact same FAB position: nothing here is ever obstructed by page
- *    furniture, because nothing else in this codebase renders bottom-right.
+ *    (`UX4GAccessibilityWidget`) that this estate must not resize or
+ *    restyle the geometry of (see that file's own doc comment). A SECOND,
+ *    unrelated FAB in the opposite corner at a different size and a
+ *    different edge offset read as two accidental widgets rather than one
+ *    considered pair. One rail reads as a rail.
  *
- * The gap above the widget is measured live (see the effect below) rather
- * than hardcoded, so a vendor change to the widget's own size doesn't
- * silently reintroduce an overlap — the same "derive it, don't remember it"
- * principle that dropping the old opt-in flag was about, just aimed at a
- * widget this estate doesn't control instead of a strip it does.
+ * What changed since is *how* the stacking is worked out. The first version
+ * measured `#uw-widget-custom-trigger` specifically and fell back to a
+ * hardcoded 108px, which was wrong on the majority of the estate: every
+ * page carrying an `AccessibilityBar` hides that trigger with `display:
+ * none` (`.claude/rules/accessibility-entry-point.md`), so the measurement
+ * never resolved and the FAB floated 108px up a page with nothing at all
+ * beneath it. The rail measures occupancy instead of assuming it, so an
+ * empty corner produces an offset of 32px and a future launcher is stacked
+ * above without touching this file.
  */
 
 import * as React from "react";
@@ -94,8 +101,10 @@ import { Tabs, TabPanel, TabDef } from "../components/navigation/tabs";
 import { LiveRegion, useLiveRegion } from "../components/a11y/live-region";
 import { useColorMode } from "../foundations/color-mode-provider";
 import { DBIM_COLOR_MODES, type ColorMode } from "../foundations/color-mode";
+import { useCornerRailOffset } from "../foundations/corner-rail";
 import { DemoAccountsPanel } from "./demo-accounts-panel";
 import { findDemoAccounts, isLoginRoute } from "./demo-accounts";
+import { FlaskIcon } from "./flask-icon";
 
 import "./demo-dock.css";
 
@@ -104,37 +113,6 @@ import "./demo-dock.css";
 // exit animation (CSS) and the DOM-removal delay (this constant) agree on
 // how long the closing panel stays mounted.
 const CLOSE_ANIMATION_MS = 150;
-
-// The UX4G accessibility widget's own trigger id — stable across its v1.15 →
-// v3.28 upgrade (see `ux4g-accessibility-widget.tsx`'s doc comment, which
-// relies on the same id surviving a full class-namespace rename). Used only
-// to MEASURE the widget, never to alter it.
-const UX4G_TRIGGER_ID = "uw-widget-custom-trigger";
-// Breathing room between DemoDock and the widget it docks above.
-const DOCK_GAP_PX = 14;
-// The widget script injects its markup asynchronously; retry for up to
-// ~4.5s (30 × 150ms) before settling on the CSS fallback in demo-dock.css.
-const UX4G_TRIGGER_POLL_MS = 150;
-const UX4G_TRIGGER_MAX_ATTEMPTS = 30;
-
-const IconFlask = () => (
-  <svg
-    className="ds-demodock__fab-icon"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M10 2v7.31" />
-    <path d="M14 9.3V1.99" />
-    <path d="M8.5 2h7" />
-    <path d="M14 9.3a6.5 6.5 0 1 1-4 0" />
-    <path d="M5.52 16h12.96" />
-  </svg>
-);
 
 const IconClose = () => (
   <svg
@@ -390,46 +368,10 @@ export function DemoDock({
   const panelId = React.useId();
   const idBase = React.useId();
 
-  // Dock the FAB directly above the UX4G accessibility widget's trigger,
-  // measured live rather than hardcoded — see the component doc comment.
-  // The widget's script injects its markup asynchronously (its own file
-  // documents the same "wait for late DOM" shape via `relabelMacShortcut`),
-  // so this polls briefly rather than assuming the element exists on mount.
-  // `--cmp-demodock-bottom` is read by `.ds-demodock` in demo-dock.css, which
-  // also carries a fallback for the (today, only theoretical) case where the
-  // widget never appears — a CDN block, a future zone without it — so the
-  // FAB still lands in a sensible spot rather than at `bottom: 0`.
-  React.useEffect(() => {
-    const root = rootRef.current;
-    if (!root || typeof window === "undefined") return;
-    let attempts = 0;
-    let timer: number | undefined;
-    const measure = () => {
-      const trigger = document.getElementById(UX4G_TRIGGER_ID);
-      if (trigger) {
-        const rect = trigger.getBoundingClientRect();
-        if (rect.top > 0 && rect.top < window.innerHeight && rect.height > 0) {
-          const calculatedBottom = Math.round(window.innerHeight - rect.top + DOCK_GAP_PX);
-          if (calculatedBottom >= 60 && calculatedBottom <= 400) {
-            root.style.setProperty("--cmp-demodock-bottom", `${calculatedBottom}px`);
-            return;
-          }
-        }
-      }
-      if (attempts++ < UX4G_TRIGGER_MAX_ATTEMPTS) {
-        timer = window.setTimeout(measure, UX4G_TRIGGER_POLL_MS);
-      }
-    };
-    measure();
-    // Defensive re-measure — the widget's own geometry is fixed-px and does
-    // not respond to viewport resize today, but re-checking costs nothing
-    // and means a future upstream change can't silently drift the two apart.
-    window.addEventListener("resize", measure);
-    return () => {
-      if (timer) window.clearTimeout(timer);
-      window.removeEventListener("resize", measure);
-    };
-  }, []);
+  // Bottom-right corner rail: rest 32px from the bottom, stack above
+  // whatever already occupies that corner. See the placement note in this
+  // file's doc comment, and `foundations/corner-rail.ts` for the model.
+  useCornerRailOffset(rootRef);
 
   const demoSet = React.useMemo(
     () => (pathname ? findDemoAccounts(pathname) : null),
@@ -596,7 +538,7 @@ export function DemoDock({
             <div className="ds-demodock__header-row">
               <div className="ds-demodock__title-group">
                 <span className="ds-demodock__badge" aria-hidden="true">
-                  <IconFlask />
+                  <FlaskIcon />
                 </span>
                 <span className="ds-demodock__title-text">
                   <span className="ds-demodock__title">{label}</span>
@@ -681,7 +623,7 @@ export function DemoDock({
         <span className="ds-demodock__fab-label" aria-hidden="true">
           {label}
         </span>
-        <IconFlask />
+        <FlaskIcon />
       </button>
     </div>
   );

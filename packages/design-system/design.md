@@ -755,6 +755,34 @@ no store, no router, no redirect.
 
 Composition is always **`Band` → `Container` → content**. A bare `Container` where a `Band`
 belongs produces a tint that stops short of the viewport edge.
+
+### Floating widgets — the bottom-right corner rail
+
+**There is one corner for floating widgets, and it stacks.** Anything fixed and floating —
+the UX4G accessibility trigger, `DemoDock`, a chatbot launcher when one exists — belongs
+bottom-right, on a rail whose offsets are **measured, never written down**:
+
+- The rail rests **32px** from the bottom when the corner below is empty.
+- When something is already there, the next widget sits **16px above it**. Two occupants
+  stack the same way, from the topmost.
+
+A widget joins the rail by calling **`useCornerRailOffset(ref)`**
+(`foundations/corner-rail.ts`), which keeps `--sa-corner-rail-bottom` correct on its
+element. A widget that merely *occupies* the corner without being positioned by the rail
+sets **`data-sa-corner-occupant`** on its own element and everything above it moves up —
+no change to any other file.
+
+Two rules make this hold rather than merely look right today:
+
+- **Never hardcode a stacking offset.** The rail's predecessor assumed the accessibility
+  widget was always present and always visible and hardcoded `108px`. That widget is
+  hidden on every page carrying an `AccessibilityBar`
+  (`.claude/rules/accessibility-entry-point.md`), so the FAB floated 108px above an empty
+  corner across most of the estate — a defect no page-level review caught, because the
+  number *looked* deliberate.
+- **A launcher moves the rail; an open panel does not.** Only occupants under 140px tall
+  count. When a chatbot's conversation panel opens in the same corner, shoving everything
+  to the top of the viewport is far worse than the overlap it would avoid.
 >
 > **Changed 13 August 2026.** Four widths shipped simultaneously: UX4G specified 1200,
 > `container/content` said 1280 and nothing consumed it, 22 website section files hardcoded
@@ -1792,11 +1820,11 @@ building product UI and find yourself about to import from here, stop —
 these are not the components you want.
 
 #### DemoDock
-**Purpose**: The single floating demo console — one FAB, bottom-right,
-docked directly above the UX4G accessibility widget's own trigger (a single
-coordinated utility rail, not two unrelated corners — the gap is measured
-live off the widget's real geometry, never hardcoded), opening a tabbed
-panel: **Sign in** (demo credentials for the current login
+**Purpose**: The single floating demo console — one FAB on the bottom-right
+**corner rail** (see `useCornerRailOffset` under Foundations: it rests 32px
+from the bottom, and stacks 16px above the UX4G accessibility widget's
+trigger, or any future chatbot launcher, when one is actually there),
+opening a tabbed panel: **Sign in** (demo credentials for the current login
 route, `DemoAccountsPanel`, shown — and shown *first* — only when `pathname`
 is itself a login route; see `isLoginRoute`), **Apps** (cross-zone
 destination search, `AppSwitcherPanel`), **Colour** (a wrapping grid of
@@ -1820,8 +1848,35 @@ estate-wide by `NEXT_PUBLIC_DEMO_TOOLS`: absent or anything but the exact
 string `"false"` means visible; `"false"` removes it entirely, which is the
 correct state for a genuinely public deployment. Open/close and swatch
 selection are animated in CSS only, using `--ds-duration-*`/`--ds-easing-*`
-tokens, and collapse to instant under `prefers-reduced-motion`. See
+tokens, and collapse to instant under `prefers-reduced-motion`. The FAB's
+`FlaskIcon` is driven from `demo-dock.css` by custom property, not by React
+state — hover/focus starts the bubbles, `aria-expanded="true"` speeds them
+up and raises the liquid, so the FAB reports whether the dock is open even
+while the panel covers the screen above it. See
 `.claude/rules/portal-appswitcher.md`.
+
+#### FlaskIcon
+**Purpose**: The animated round-bottom flask that marks `DemoDock` — the
+estate's "this is a demo tool, not the product" glyph.
+**Props**: `size` (default `16`), `className`.
+**Rule**: **Do not reach for this.** `<Icon>` (Material Symbols Rounded) is
+the SAMAVESH icon system and remains the answer for every icon in every
+portal and on every page. This one is hand-drawn because it has to move its
+own insides — a liquid level and three bubbles — to show idle vs hovered vs
+running, and a font glyph is a single indivisible shape that structurally
+cannot. Nothing else in the estate earns a bespoke icon on those grounds;
+adding a second would start an icon dialect, which is exactly what the
+Material Symbols rule prevents.
+It animates nothing by itself. Animations ship permanently paused and are
+switched on from outside via four custom properties — `--ds-flask-play`
+(`paused`/`running`), `--ds-flask-bubbles` (`0`/`1`), `--ds-flask-cycle`
+(a `<time>`), `--ds-flask-level` (a `<length>`) — so the consumer owns the
+selectors, because only the consumer knows its own markup. Colour is
+`currentColor` throughout (the liquid via `fill-opacity`), so it re-tones
+with its container in all seven brand modes with no token of its own.
+Decorative and `aria-hidden`; the accessible name belongs to the containing
+control. Under `prefers-reduced-motion` nothing moves but state survives —
+a raised level stays raised and the bubbles hold a static frame.
 
 #### AppSwitcherPanel
 **Purpose**: The searchable, grouped destination list — DemoDock's Apps tab.

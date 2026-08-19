@@ -17,3 +17,5 @@ export { DEMO_ACCOUNTS, findDemoAccounts, isLoginRoute } from "./demo-accounts";
 export type { DemoAccountSet } from "./demo-accounts";
 export { DemoDock } from "./demo-dock";
 export type { DemoDockProps } from "./demo-dock";
+export { FlaskIcon } from "./flask-icon";
+export type { FlaskIconProps } from "./flask-icon";

@@ -12,21 +12,34 @@
    ============================================================================ */
 
 /* ── Root container ──────────────────────────────────────────────────────
-   Bottom-right, docked directly above the UX4G accessibility widget's own
-   70px trigger — one utility rail instead of two FABs in opposite corners.
-   See the component doc comment (demo-dock.tsx) for why this moved off
-   bottom-left. `--cmp-demodock-bottom` is set by the effect in demo-dock.tsx
-   once it measures the widget's real position; the `108px` fallback here
-   (24px UX4G offset + 70px UX4G height + 14px gap) covers the brief window
-   before that measurement lands, and the rarer case where the widget never
-   appears at all — the FAB still ends up in a sensible spot, not off-corner
-   or overlapping nothing at `bottom: 0`. ── */
+   The bottom-right corner rail. `--sa-corner-rail-bottom` is written by
+   `useCornerRailOffset` (foundations/corner-rail.ts): 32px when the corner
+   below is empty, or "top of whatever is down there + 16px" when it is not.
+   The 32px here is the same resting value, so the very first paint — before
+   the hook has measured anything — already lands where the dock will stay
+   on the majority of pages, instead of jumping down from a stacked offset.
+
+   This replaced a hardcoded `108px` fallback that assumed the UX4G
+   accessibility widget was always present and always visible. It is hidden
+   on every page carrying an `AccessibilityBar`, so that assumption left the
+   FAB floating 108px above an empty corner across most of the estate. ── */
 .ds-demodock {
   position: fixed;
   right: 20px;
-  bottom: var(--cmp-demodock-bottom, 108px);
+  bottom: var(--sa-corner-rail-bottom, 32px);
   z-index: 2147483000;
   font-family: var(--sa-font-latin);
+  transition: bottom var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+}
+
+/* The rail's offset is measured, so it can change mid-session when a
+   launcher appears or the accessibility bar hides the UX4G trigger. Let
+   that settle rather than teleport — but never animate it for someone who
+   asked for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-demodock {
+    transition: none;
+  }
 }
 
 /* Legacy — kept for backward compatibility, not because DemoDock still needs
@@ -115,16 +128,47 @@
   box-shadow: 0 0 0 3px var(--sa-focus-ring);
 }
 
-.ds-demodock__fab-icon {
+/* ── Flask icon state ─────────────────────────────────────────────────────
+   `FlaskIcon` animates nothing by itself — it exposes four custom
+   properties and this is the file that drives them, because this is the
+   file that knows the markup. See demo/flask-icon.css for the contract.
+
+   Rest: still. Hover / keyboard focus: slow bubbles, "this is
+   interactive". Open: faster bubbles and a raised liquid level, "the tool
+   is running" — which is legible on the FAB even while the panel covers
+   the screen above it. ── */
+.ds-demodock__fab .ds-flask {
   width: 16px;
   height: 16px;
   color: var(--sa-text-brand-primary-base);
-  flex: 0 0 auto;
   transition: transform var(--sa-motion-enter-duration) var(--sa-motion-emphasis-easing);
 }
 
-.ds-demodock__fab[aria-expanded="true"] .ds-demodock__fab-icon {
-  transform: rotate(-8deg) scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .ds-demodock__fab:hover .ds-flask {
+    --ds-flask-play: running;
+    --ds-flask-bubbles: 1;
+  }
+}
+
+.ds-demodock__fab:focus-visible .ds-flask {
+  --ds-flask-play: running;
+  --ds-flask-bubbles: 1;
+}
+
+.ds-demodock__fab[aria-expanded="true"] .ds-flask,
+.ds-demodock__badge .ds-flask {
+  --ds-flask-play: running;
+  --ds-flask-bubbles: 1;
+  --ds-flask-cycle: 1450ms;
+  --ds-flask-level: -1.6px;
+}
+
+/* A small tip while open — the flask reads as being worked with rather
+   than sitting on a shelf. Kept to 6 degrees: past that, a 1.9-unit stroke
+   rotated off-axis lands between device pixels and the outline softens. */
+.ds-demodock__fab[aria-expanded="true"] .ds-flask {
+  transform: rotate(-6deg);
 }
 
 /* The label is always in the DOM (so `max-width` has something to reveal)
@@ -225,7 +269,7 @@
   color: var(--sa-text-brand-primary-base);
 }
 
-.ds-demodock__badge svg {
+.ds-demodock__badge .ds-flask {
   width: 17px;
   height: 17px;
 }
