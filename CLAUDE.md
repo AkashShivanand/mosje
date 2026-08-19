@@ -22,7 +22,7 @@ Digital estate for the **Ministry / Department of Social Justice & Empowerment (
 
 **North-star:** every site and portal renders from **one shared design system** (`packages/design-system/`) that stays **100% in sync with a Figma library**. We will build all 13 + 20 incrementally on this shared system.
 
-> **Code Connect IS in place (updated 2026-08-18).** The paragraph here previously said it was blocked on an Organization/Enterprise Developer seat, with zero mappings and no `@figma/code-connect` in the repo — all three are now false. The entitlement works, **7 parserless `*.figma.ts` templates** live beside their components, `@figma/code-connect` v2 is a devDependency of `packages/design-system`, and `figma.config.json` is at the repo root.
+> **Code Connect IS in place (updated 2026-08-18).** The paragraph here previously said it was blocked on an Organization/Enterprise Developer seat, with zero mappings and no `@figma/code-connect` in the repo — all three are now false. The entitlement works, **8 parserless `*.figma.ts` templates** live beside their components, `@figma/code-connect` v2 is a devDependency of `packages/design-system`, and `figma.config.json` is at the repo root.
 >
 > **Two halves, and only one is automatic.** Mappings are *connected* (Dev Mode resolves the component and its import). Publishing the **rich templated snippet** — props filled from the Figma instance — needs **`npm run figma:connect` FROM THE REPO ROOT**, which requires a **`FIGMA_ACCESS_TOKEN`**. That token is a secret; no agent session creates, reads or commits it. `npm run figma:connect:check` dry-runs and validates every template parses.
 >
