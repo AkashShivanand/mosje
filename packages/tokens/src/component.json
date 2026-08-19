@@ -54,13 +54,13 @@
     "$description": "AccessibilityBar (UX4G/GIGW top utility bar). Component-scoped dimensions and inverse state layers that mirror the Figma master 1:1. They live in Tier 3 because they are the bar's own geometry — a 46px bar height and a 33px flag chip are not shared scale steps, and the inverse overlays only make sense on this bar's brand fill.",
     "height": {
       "$type": "dimension",
-      "$description": "Bar height (Figma layout/bar/height).",
-      "$value": "46px"
+      "$description": "Bar height. ALIASES {layout.bar.height} rather than repeating 46px — until 2026-08-18 both carried the literal independently, so moving one silently left the other behind. layout/bar/height is the published Figma name the master binds to; this is the component-scoped handle the CSS uses.",
+      "$value": "{layout.bar.height}"
     },
     "flagWidth": {
       "$type": "dimension",
-      "$description": "Flag/emblem chip width (Figma layout/flag/width); height is {size.22}, a 3:2 chip.",
-      "$value": "33px"
+      "$description": "Flag/emblem chip width. ALIASES {layout.flag.width} rather than repeating 33px — same duplicate-literal defect as `height`, fixed 2026-08-18. Height is {size.22}, making a 3:2 chip.",
+      "$value": "{layout.flag.width}"
     },
     "flagHeight": {
       "$type": "dimension",

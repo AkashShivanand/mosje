@@ -1,4 +1,4 @@
-// url=https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH?node-id=55065-33766
+// url=<SAMAVESH>?node-id=55065-33766
 // source=packages/design-system/components/navigation/accessibility-bar.tsx
 // component=AccessibilityBar
 //

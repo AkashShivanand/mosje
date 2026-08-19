@@ -885,8 +885,8 @@
   --sa-cmp-badge-dotSize: 6px;
   --sa-cmp-badge-dotSizeLg: var(--sa-ref-size-8);
   --sa-cmp-badge-beta-bg: var(--sa-color-brand-yellow);
-  --sa-cmp-accessibilityBar-height: 46px;
-  --sa-cmp-accessibilityBar-flagWidth: 33px;
+  --sa-cmp-accessibilityBar-height: var(--sa-layout-bar-height);
+  --sa-cmp-accessibilityBar-flagWidth: var(--sa-layout-flag-width);
   --sa-cmp-accessibilityBar-flagHeight: var(--sa-ref-size-22);
   --sa-cmp-accessibilityBar-dividerWidth: var(--sa-ref-border-width-sm);
   --sa-cmp-accessibilityBar-dividerHeight: var(--sa-ref-size-20);
