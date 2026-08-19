@@ -9,10 +9,11 @@
 | | |
 |---|---|
 | Entitlement | **Works.** `get_code_connect_map` returns real mappings, not a permission error. |
-| Templates | **7** parserless `*.figma.ts`, colocated with their components |
+| Templates | **8** parserless `*.figma.ts`, colocated with their components — Button, AccessibilityBar, Divider, Tabs, Tabs/More, Tab, PortalLoginTemplate, auth parts |
 | Config | `figma.config.json` at the repo root |
 | Dependency | `@figma/code-connect` **v2.0.0**, devDependency of `packages/design-system` |
 | AccessibilityBar | **Connected on all 9 variants** (`55065:33766`) |
+| Publishing | **Automatic from `main`.** The `publish-code-connect` job uploaded **9 mappings** on 2026-08-19 (Button, Tabs x2, TabDef, AccessibilityBar, Divider, PortalLoginTemplate, SigningIntoBar) — 9 mappings from 8 files, because one template can carry more than one component. |
 | Drift gate | `npm run check:code-connect` — in `npm run check` and CI |
 
 **The one thing still not automatic.** Mappings are *connected* — Dev Mode resolves the
