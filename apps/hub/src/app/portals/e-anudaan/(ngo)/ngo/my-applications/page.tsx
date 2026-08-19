@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { Badge, Button, DataTable, type DataTableColumn } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { formatDate, formatGrant, ngoApplications, statusTone } from "@/lib/e-anudaan/selectors";
@@ -45,7 +46,12 @@ export default function MyApplicationsPage() {
             Submit
           </Button>
         ) : (
-          <span className="text-ink-hint">—</span>
+          <Link
+            href={`/portals/e-anudaan/ngo/my-applications/${encodeURIComponent(a.id)}`}
+            className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
+          >
+            View <span aria-hidden="true">→</span>
+          </Link>
         ),
     },
   ];

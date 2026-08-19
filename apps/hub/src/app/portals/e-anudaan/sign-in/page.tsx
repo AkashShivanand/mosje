@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Button, FormField, Icon, Input, PasswordInput, PortalLoginShell, useToast } from "@mosje/design-system";
+import { Button, FormField, Icon, Input, PasswordInput, PortalLoginShell, useToast, type DemoFillDetail } from "@mosje/design-system";
 import { ROLES } from "@/lib/e-anudaan/roles";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 
@@ -51,7 +51,7 @@ export default function EAnudaanNgoSignInPage() {
 
   React.useEffect(() => {
     const handler = (e: Event) => {
-      const { id, password: pw } = (e as CustomEvent<{ id: string; password: string }>).detail;
+      const { id, password: pw } = (e as CustomEvent<DemoFillDetail>).detail;
       setUsername(id);
       setPassword(pw);
       setCaptchaInput(captchaCode);
@@ -111,6 +111,9 @@ export default function EAnudaanNgoSignInPage() {
           setActiveTab(t.href === "#credentials" ? "credentials" : "darpan");
         }
       }))}
+      onFooterLinkClick={(link) => {
+        toast(`Viewing ${link} policy.`, "info");
+      }}
     >
       <div className="mb-4">
         <h2 className="text-xl font-bold text-ink">
