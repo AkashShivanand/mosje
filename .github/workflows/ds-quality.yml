@@ -35,9 +35,21 @@ on:
       - "tools/ds-linkage/**"
       - ".github/workflows/ds-quality.yml"
 
+# A pull request that is pushed again supersedes its own in-flight run. Without this
+# a hung run keeps reporting "pending" on the PR forever and cannot be displaced —
+# on 2026-08-19 a stuck Chromium download ignored cancel AND force-cancel, and the
+# only way to get a fresh runner was to push an empty commit. `main` is deliberately
+# NOT cancelled: every commit on the trunk gets its own complete result.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   quality:
     runs-on: ubuntu-latest
+    # A full green run takes ~5 minutes. Without this the default is SIX HOURS, which
+    # is how one stuck download held two pull requests all morning.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -98,8 +110,18 @@ jobs:
       - name: Typecheck Storybook stories
         run: npm run typecheck --prefix apps/storybook
 
+      # NOT `--with-deps`. That flag shells out to `sudo apt-get install`, and on
+      # 2026-08-19 it began hanging INDEFINITELY on the ubuntu-latest image — three
+      # separate runs sat here for 40+ minutes and ignored both cancel and
+      # force-cancel, blocking every PR in flight. The runner image already ships
+      # every shared library Chromium needs, so the dependency half was always a
+      # no-op here; only the browser download is real work.
+      #
+      # The step timeout is the backstop: if the download itself ever hangs, this
+      # fails in 5 minutes instead of burning the job's full allowance.
       - name: Install Chromium for the Storybook smoke test
-        run: npx playwright install --with-deps chromium
+        timeout-minutes: 5
+        run: npx playwright install chromium
 
       - name: Storybook smoke — every story must actually render
         run: node scripts/smoke-storybook.mjs
@@ -192,6 +214,7 @@ jobs:
   # creates or reads it.
   publish-code-connect:
     needs: quality
+    timeout-minutes: 10
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:

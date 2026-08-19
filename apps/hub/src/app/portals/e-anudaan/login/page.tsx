@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button, Input, PasswordInput, PortalLoginShell, useToast } from "@mosje/design-system";
+import { Button, FormField, Input, PasswordInput, PortalLoginShell, useToast, type DemoFillDetail } from "@mosje/design-system";
 import { roleByLoginId } from "@/lib/e-anudaan/roles";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 
@@ -77,7 +77,7 @@ export default function EAnudaanOfficerLoginPage() {
 
   React.useEffect(() => {
     const handler = (e: Event) => {
-      const { id, password: pw } = (e as CustomEvent<{ id: string; password: string }>).detail;
+      const { id, password: pw } = (e as CustomEvent<DemoFillDetail>).detail;
       setMobile(id);
       setPassword(pw);
     };
@@ -138,25 +138,27 @@ export default function EAnudaanOfficerLoginPage() {
       changeHref="/portals"
       tabs={[]}
       extraContent={portalGridContent}
+      onFooterLinkClick={(link) => {
+        toast(`Viewing ${link} policy.`, "info");
+      }}
     >
       <h2 className="mb-6 text-2xl font-bold text-ink">Log in to your account</h2>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-        <div>
-          <label htmlFor="mobile_number" className="mb-1.5 block text-sm font-semibold text-ink">
-            Mobile Number
-          </label>
-          <Input
-            id="mobile_number"
-            type="tel"
-            inputMode="numeric"
-            maxLength={10}
-            required
-            value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
-            placeholder="Enter your mobile number"
-          />
-        </div>
+        <FormField label="Mobile Number" id="mobile_number">
+          {(control) => (
+            <Input
+              {...control}
+              type="tel"
+              inputMode="numeric"
+              maxLength={10}
+              required
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
+              placeholder="Enter your mobile number"
+            />
+          )}
+        </FormField>
 
         <div>
           <div className="mb-1.5 flex items-center justify-between">

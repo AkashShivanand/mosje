@@ -130,7 +130,7 @@ so a shadow ring is invisible on Underline and Rail, which have no root fill.
 | `Orientation` = Horizontal · Vertical | `orientation` | Vertical ⇒ Up/Down arrows + `aria-orientation="vertical"`. |
 | `Track` = None · Enclosed | `track` | Enclosed is today's `.ds-tabs`: `bg/neutral/subtler`, 1px `border/neutral/subtle`, `shape/lg`, `layout/tab/track` inset. |
 | `Show divider` (boolean) | `divider` | Meaningless when `track="enclosed"`. |
-| `Show overflow` (boolean) | — | Reveals the More trigger. Horizontal only. NO code prop: there is no React counterpart, so a horizontal list simply scrolls. See §4. |
+| `Show overflow` (boolean) | `overflow` | Reveals the More trigger. Horizontal only, off by default because enabling it changes the DOM. See §4. |
 | Slot | `children` / `tabs` | Any number of tabs. |
 
 **Pairing rule:** `track="none"` takes Underline (horizontal) or Rail (vertical);
@@ -247,7 +247,8 @@ trigger would double the signal.
    scroll past it. This is why `overflow` wraps the tablist in a positioning element, and why
    the prop is off by default: enabling it changes the DOM.
 3. **It does not remove tabs from the tablist.** Every tab stays rendered, focusable and
-   arrow-reachable; the menu is a *pointer shortcut* to the ones scrolled out of view. The
+   arrow-reachable; the menu is a *pointer shortcut* to any of them, including the ones
+   scrolled out of view. The
    other common model — moving tabs into the menu — costs them their `role="tab"`, their
    `aria-controls` and their place in the roving tabindex. That is a worse trade than the
    scrolling it saves.
@@ -259,10 +260,21 @@ trigger would double the signal.
 
 ### Behaviour
 
-The menu lists the tabs **not fully visible right now**, recomputed on scroll as well as on
-resize — the contents change as you scroll, because "what you cannot see" is what it means.
-Choosing one selects that tab **and scrolls it into view**; without that it would select
-something still off-screen and appear to do nothing.
+The menu lists **every** tab and marks the current one with `role="menuitemradio"` +
+`aria-checked`. The first build listed only the tabs scrolled out of view, recomputed on
+scroll — which meant opening the same menu at two offsets gave two different lists. No shipped
+system does that, and it made the menu unusable as a table of contents. It reads as a
+jump-to-section list now, and only *whether* the row overflows is recomputed. Choosing an item
+selects that tab **and scrolls it into view**; without that it would select something still
+off-screen and appear to do nothing.
+
+**The edge fade is `track="none"` only.** An open row has nothing to explain a cut, so a
+measured per-direction `mask-image` says "more this way". An enclosed row is already a
+bordered, rounded container, and content clipped by a container reads as clipped — the call
+Material and Carbon also make. It equally cannot be faded cleanly: the border, fill and radius
+are painted by the *scrolling* element, so the mask dissolves the container instead of the
+tabs, and at 200% zoom the track lost its corner and read as a smudge. The mask's opaque stop
+is `currentColor`, because a mask reads alpha only and never paints its hue.
 
 Keyboard: Enter / Space / Down opens and focuses the first enabled item; Up/Down and Home/End
 move and **skip disabled items**, matching the tablist; Escape closes and returns focus to the
@@ -340,8 +352,9 @@ maintainers`). Still open:
 - The library `Badge` inherits a raw `#FFFFFF`.
 - **No truncation treatment is designed.** The ellipsis and `title` in §3a are a code-side
   fallback, not a design decision — and `title` does not work on touch.
-- `Tabs / More` has no React counterpart, so there is no `overflow` prop. Its Code Connect
-  template deliberately emits **no JSX**: an unmapped master hands an agent nothing in Dev Mode,
-  and nothing is indistinguishable from *not looked into*, so the agent invents a component.
+- `Tabs / More` is rendered by `<Tabs overflow />`, not by an export of its own, so its Code
+  Connect template emits the **parent** call rather than a `<TabsMore>` that does not exist.
+  Leaving the master unmapped was worse than a partial mapping: an agent reading Dev Mode gets
+  nothing, and nothing is indistinguishable from *not looked into*, so it invents a component.
 
 Closed by this work: label truncation (§3a), and the estate's duplicate status-dot definitions.

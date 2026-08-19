@@ -381,6 +381,120 @@
   flex: 0 0 auto;
 }
 
+/* THE NATIVE SCROLLBAR IS HIDDEN, and only here.
+   A scrollbar drawn THROUGH a filled segmented control is not chrome, it is
+   damage: it overlapped the tabs, cut the track's rounded corner and made a
+   finished control look broken. It is hidden ONLY under `overflow`, because
+   that is the one case where a better affordance exists — the trigger and its
+   menu reach every tab. With `overflow` off the scrollbar is the only pointer
+   affordance there is, so it stays. */
+.ds-tabs--overflow {
+  scrollbar-width: none;
+}
+
+.ds-tabs--overflow::-webkit-scrollbar {
+  display: none;
+}
+
+/* SNAP, so a tab is never sliced mid-word.
+   Free scrolling let the row rest anywhere, which is how "Overview" rendered as
+   "rview" and "Skill development" as "Skill d" — a half-cut word reads as a
+   rendering bug, not as scrollable content. Snapping to the tab edge means the
+   row always rests on a whole tab. `proximity`, not `mandatory`: mandatory
+   fights `scrollIntoView` when the menu jumps to a tab, and can strand the last
+   tab when it is narrower than the remaining track. */
+.ds-tabs--overflow {
+  scroll-snap-type: inline proximity;
+  /* MUST equal the fade width below, and that is a WCAG 2.4.11 requirement, not
+     a nicety. `scroll-padding` is the inset `scrollIntoView` respects, so it is
+     what decides where a keyboard-focused tab comes to rest. At 4px against a
+     16px fade a focused tab could park underneath it, leaving its focus ring
+     half transparent — "focus not obscured" failed by a decoration. Same value,
+     so a focused tab always lands clear of the fade. */
+  scroll-padding-inline: var(--sa-inline-l);
+}
+
+.ds-tabs--overflow .ds-tabs__tab {
+  scroll-snap-align: start;
+}
+
+/* EDGE FADES, so the trailing cut reads as "more this way" and not as damage.
+   Snapping can only align ONE edge: the leading tab lands flush, and whatever
+   sits at the trailing edge is still sliced mid-word ("Grievance redressal" ->
+   "Grievar"), which is exactly the thing that made the first build look broken.
+   A mask fades that tab out instead of guillotining it.
+
+   It is a MASK, not an overlay gradient: an overlay would need to know the
+   surface colour behind it, and this component sits on two different ones
+   (`bg/neutral/subtler` inside the enclosed track, the page behind an open
+   list). Masking is colour-agnostic and therefore correct in both.
+
+   OPEN TRACK ONLY (`track="none"`). The fade exists to explain a cut that
+   nothing else explains. An ENCLOSED track already explains it: it is a bordered,
+   rounded container, and content clipped by a container reads as clipped, not as
+   damaged — which is how Material and Carbon treat their bounded scrollable tab
+   rows. Worse, the fade cannot be confined to the tabs there: the border, the
+   fill and the corner radius are all painted by the scrolling element, so a mask
+   dissolves the container itself. Measured at 200% zoom, the enclosed track lost
+   its rounded corner and read as a smudge; unmasked, the same row clips crisply
+   against its own border. So the enclosed track keeps its edge and the fade is
+   scoped away from it.
+
+   Applied per direction, driven by measured scroll position, so a row scrolled
+   fully to one end does not fade an edge that has nothing beyond it. That is
+   also what keeps WCAG 2.4.11 intact: the first tab can only rest at the start
+   edge when the start fade is OFF, and the last at the end edge when the end
+   fade is OFF, so a focused tab is never under one. `scroll-padding-inline`
+   above matches the fade width for the same reason.
+
+   The opaque stops are `currentColor`, and that is not a cosmetic choice. A
+   mask consumes only the ALPHA channel — opaque means "keep this pixel",
+   transparent means "drop it", and the hue is never painted. Writing a literal
+   there (`#000`) is both meaningless and a raw colour, which the token-lint and
+   ds-linkage gates correctly reject; binding a colour TOKEN would be worse,
+   implying the fade re-themes when it cannot. `currentColor` says the true
+   thing: any opaque value will do, because only its alpha is read. */
+.ds-tabs--track-none.ds-tabs--overflow.is-scrollable-end {
+  -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-l)), transparent);
+  mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-l)), transparent);
+}
+
+.ds-tabs--track-none.ds-tabs--overflow.is-scrollable-start {
+  -webkit-mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-l)), transparent);
+  mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-l)), transparent);
+}
+
+/* RTL flips which PHYSICAL edge is the start. `scroll-padding-inline` and
+   `scroll-snap-align: start` are already logical and need no help, but a CSS
+   gradient has no logical direction keyword, so the two single-edge masks swap.
+   The both-edges mask below is symmetric and is correct in either direction. */
+[dir="rtl"] .ds-tabs--track-none.ds-tabs--overflow.is-scrollable-end {
+  -webkit-mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-l)), transparent);
+  mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-l)), transparent);
+}
+
+[dir="rtl"] .ds-tabs--track-none.ds-tabs--overflow.is-scrollable-start {
+  -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-l)), transparent);
+  mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-l)), transparent);
+}
+
+.ds-tabs--track-none.ds-tabs--overflow.is-scrollable-start.is-scrollable-end {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    currentColor var(--sa-inline-l),
+    currentColor calc(100% - var(--sa-inline-l)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    currentColor var(--sa-inline-l),
+    currentColor calc(100% - var(--sa-inline-l)),
+    transparent
+  );
+}
+
 /* ---- the overflow trigger and its menu ------------------------------------
    Rendered only when `overflow` is on and tabs are actually hidden. The bar is
    the positioning context: the trigger must sit OUTSIDE the tablist, both
@@ -390,7 +504,10 @@
 .ds-tabs-bar {
   display: flex;
   align-items: center;
-  gap: var(--sa-inline-2);
+  /* `inline/8`, not `inline/2`. At 2px the trigger crowded the track edge and read as
+     part of it; the gap has to say "this control is not one of the tabs". (This was
+     `inline/s` before the spacing ladder was value-named — same 8px.) */
+  gap: var(--sa-inline-8);
   min-width: 0;
 }
 
@@ -486,6 +603,14 @@
 
 .ds-tabs__menu-item:hover:not(.is-disabled) {
   background-color: var(--sa-bg-neutral-subtle);
+}
+
+/* The current section, marked rather than omitted, so the menu reads as a
+   complete picture of the set and doubles as a position indicator. Weight and
+   ink carry it — no fill, which would read as a hover or a selection the user
+   just made. */
+.ds-tabs__menu-item.is-current {
+  color: var(--sa-text-brand-primary-bolder);
 }
 
 .ds-tabs__menu-item:focus-visible {

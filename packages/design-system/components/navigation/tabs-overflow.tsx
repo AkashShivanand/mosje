@@ -22,15 +22,21 @@ import type { TabDef, TabSize } from "./tabs";
  *
  * WHAT IT DOES NOT DO: it does not remove tabs from the tablist. Every tab
  * stays rendered, focusable and arrow-reachable; this menu is a POINTER
- * shortcut to the ones currently scrolled out of view. Moving tabs into a menu
- * is the other common model and it costs their `role="tab"`, their
- * `aria-controls` and their place in the roving tabindex — a worse trade than
- * the scrolling it would save.
+ * shortcut. Moving tabs into a menu is the other common model — Polaris does
+ * it — and it costs their `role="tab"`, their `aria-controls` and their place
+ * in the roving tabindex, a worse trade than the scrolling it would save.
+ *
+ * IT LISTS EVERY TAB, NOT JUST THE HIDDEN ONES. The first build listed only
+ * what was currently out of view, which meant opening the same menu at two
+ * scroll positions gave two different lists — surprising, and something no
+ * shipped system does. A stable "jump to any section" list is predictable, and
+ * the current tab is marked rather than omitted so the menu always reads as a
+ * complete picture of the set.
  */
 export interface TabsOverflowProps {
-  /** Indices of tabs that are not fully visible, in document order. */
-  hidden: number[];
   tabs: TabDef[];
+  /** Index of the active tab, marked in the menu with `aria-checked`. */
+  active: number;
   size: TabSize;
   /** Select a tab and scroll it into view. */
   onSelect: (index: number) => void;
@@ -48,7 +54,7 @@ function nextEnabled(order: number[], tabs: TabDef[], from: number, dir: 1 | -1)
   return from;
 }
 
-export function TabsOverflow({ hidden, tabs, size, onSelect, ariaLabel }: TabsOverflowProps) {
+export function TabsOverflow({ tabs, active, size, onSelect, ariaLabel }: TabsOverflowProps) {
   const [open, setOpen] = React.useState(false);
   const [coords, setCoords] = React.useState<{ top: number; left: number } | null>(null);
   const [mounted, setMounted] = React.useState(false);
@@ -99,15 +105,17 @@ export function TabsOverflow({ hidden, tabs, size, onSelect, ariaLabel }: TabsOv
       window.removeEventListener("scroll", place, true);
       window.removeEventListener("resize", place);
     };
-  }, [open, hidden.length]);
+  }, [open, tabs.length]);
 
   // Focus the first enabled item on open — a menu that opens without moving
   // focus leaves a keyboard user stranded behind it.
   React.useEffect(() => {
     if (!open) return;
-    const first = hidden.findIndex((i) => !tabs[i]?.disabled);
-    requestAnimationFrame(() => itemRefs.current[first < 0 ? 0 : first]?.focus());
-  }, [open, hidden, tabs]);
+    // Open ON the current tab where possible — it is where the user's attention
+    // already is, and it makes the menu a position indicator as well as a jump.
+    const start = tabs[active]?.disabled ? tabs.findIndex((t) => !t.disabled) : active;
+    requestAnimationFrame(() => itemRefs.current[start < 0 ? 0 : start]?.focus());
+  }, [open, tabs, active]);
 
   // Escape closes and RETURNS FOCUS; an outside pointer closes and leaves it.
   React.useEffect(() => {
@@ -131,20 +139,22 @@ export function TabsOverflow({ hidden, tabs, size, onSelect, ariaLabel }: TabsOv
     };
   }, [open, close]);
 
+  const order = tabs.map((_, i) => i);
+
   const onItemKeyDown = (e: React.KeyboardEvent, pos: number) => {
     let next: number | null = null;
     switch (e.key) {
       case "ArrowDown":
-        next = nextEnabled(hidden, tabs, pos, 1);
+        next = nextEnabled(order, tabs, pos, 1);
         break;
       case "ArrowUp":
-        next = nextEnabled(hidden, tabs, pos, -1);
+        next = nextEnabled(order, tabs, pos, -1);
         break;
       case "Home":
-        next = nextEnabled(hidden, tabs, -1, 1);
+        next = nextEnabled(order, tabs, -1, 1);
         break;
       case "End":
-        next = nextEnabled(hidden, tabs, 0, -1);
+        next = nextEnabled(order, tabs, 0, -1);
         break;
       case "Tab":
         // A menu is not a dialog: Tab leaves it rather than cycling inside.
@@ -199,8 +209,8 @@ export function TabsOverflow({ hidden, tabs, size, onSelect, ariaLabel }: TabsOv
               visibility: coords ? "visible" : "hidden",
             }}
           >
-            {hidden.map((index, pos) => {
-              const t = tabs[index]!;
+            {tabs.map((t, index) => {
+              const pos = index;
               return (
                 <button
                   key={t.id}
@@ -208,10 +218,19 @@ export function TabsOverflow({ hidden, tabs, size, onSelect, ariaLabel }: TabsOv
                     itemRefs.current[pos] = el;
                   }}
                   type="button"
-                  role="menuitem"
+                  // `menuitemradio`, not `menuitem`: exactly one of these is the
+                  // current section, which is precisely what a radio menu item
+                  // means. `aria-current` was tried first and is weaker here —
+                  // it is a global attribute with patchy menu support, whereas
+                  // `aria-checked` on a radio item is the documented pattern and
+                  // is announced as "selected" by every screen reader.
+                  role="menuitemradio"
+                  aria-checked={index === active}
                   tabIndex={-1}
                   aria-disabled={t.disabled || undefined}
-                  className={`ds-tabs__menu-item${t.disabled ? " is-disabled" : ""}`}
+                  className={`ds-tabs__menu-item${t.disabled ? " is-disabled" : ""}${
+                    index === active ? " is-current" : ""
+                  }`}
                   onClick={() => {
                     if (t.disabled) return;
                     onSelect(index);
