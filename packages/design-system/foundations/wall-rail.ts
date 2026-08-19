@@ -102,10 +102,16 @@ export function railTopFromOccupants(
   viewportHeight: number,
 ): number {
   const centred = Math.round((viewportHeight - railHeight) / 2);
+  // Rounds as well as clamps. Occupant rects come from `getBoundingClientRect`
+  // and are fractional, so an un-rounded answer positions the rail on a half
+  // pixel — measured at 569.16 on the website — which puts its 1px border and
+  // its 16px wordmark between device pixels and softens both.
   const clamp = (v: number) =>
-    Math.min(
-      Math.max(v, WALL_RAIL_MARGIN_PX),
-      Math.max(WALL_RAIL_MARGIN_PX, viewportHeight - railHeight - WALL_RAIL_MARGIN_PX),
+    Math.round(
+      Math.min(
+        Math.max(v, WALL_RAIL_MARGIN_PX),
+        Math.max(WALL_RAIL_MARGIN_PX, viewportHeight - railHeight - WALL_RAIL_MARGIN_PX),
+      ),
     );
 
   // Expand each occupant by the gap, drop the ones too tall to dodge, and

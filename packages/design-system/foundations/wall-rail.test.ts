@@ -73,3 +73,11 @@ test("never places the rail outside the viewport margins", () => {
     assert.ok(top >= WALL_RAIL_MARGIN_PX, `top ${top} at vh ${vh}`);
   }
 });
+
+test("always returns a whole pixel, even from fractional occupant rects", () => {
+  // getBoundingClientRect is fractional; an un-rounded answer put the rail at
+  // 569.16 on the website, straddling a device pixel.
+  const top = railTopFromOccupants([{ top: 378.4, bottom: 553.16 }], RAIL, VH);
+  assert.equal(top, Math.round(top), `expected a whole pixel, got ${top}`);
+  assert.equal(top, 569);
+});

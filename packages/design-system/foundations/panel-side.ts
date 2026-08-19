@@ -179,7 +179,13 @@ export function usePanelLeft(
       const panel = panelRef.current;
       if (!panel) return;
 
-      const rect = panel.getBoundingClientRect();
+      // `offsetWidth`/`offsetHeight`, NOT `getBoundingClientRect()`. The rect
+      // is the TRANSFORMED box, and the panel enters on `scale(0.98)` — so
+      // mid-animation it measures 490 rather than 500, and the panel settles
+      // 10px too close to the form (a 14px gap where 24 was intended). A
+      // ResizeObserver does not help: transforms do not change layout size,
+      // so it never fires. Layout size is transform-independent and correct
+      // from the first frame.
       const obstacles: Rect[] = [];
       for (const el of document.querySelectorAll<HTMLElement>(obstacleSelector)) {
         // The panel's own search box is not an obstacle to the panel.
@@ -193,8 +199,8 @@ export function usePanelLeft(
       setLeft(
         panelLeftFor({
           obstacles,
-          panelWidth: rect.width || panel.offsetWidth,
-          panelHeight: rect.height || panel.offsetHeight,
+          panelWidth: panel.offsetWidth,
+          panelHeight: panel.offsetHeight,
           inset,
           viewport: { width: window.innerWidth, height: window.innerHeight },
         }),
@@ -203,7 +209,19 @@ export function usePanelLeft(
 
     resolve();
     window.addEventListener("resize", resolve);
-    return () => window.removeEventListener("resize", resolve);
+
+    // The panel's width is not final on the first layout pass — measured at
+    // 490 before content settled and 500 after, which shifted the gap from
+    // the intended 24px to 14px. Re-resolve when its own box changes rather
+    // than trusting a single early read.
+    const observer =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(() => resolve()) : null;
+    if (observer && panelRef.current) observer.observe(panelRef.current);
+
+    return () => {
+      window.removeEventListener("resize", resolve);
+      observer?.disconnect();
+    };
   }, [panelRef, active, inset, obstacleSelector]);
 
   return left;
