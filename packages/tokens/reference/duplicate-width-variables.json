@@ -1,0 +1,56 @@
+{
+  "$schema": "binding sweep for the two duplicate 1px width variables in the SAMAVESH Figma library",
+  "capturedAt": "2026-08-18",
+  "fileKey": "3FF5l0SMNIwdpZrKkeyPTm",
+  "method": "one-page-per-invocation",
+  "coverage": {
+    "pagesWalked": 65,
+    "pagesProvenEmpty": 4,
+    "libraryPages": 69,
+    "note": "The four separator pages report children: 0, so they can hold no bindings. Every other page was walked individually — batching returns partial trees, and a partial tree here is a FALSE NEGATIVE on a delete decision."
+  },
+  "canonical": {
+    "name": "ref/border/width/sm",
+    "id": "VariableID:54801:712",
+    "collection": "Static",
+    "codeSyntax": "var(--sa-ref-border-width-sm)",
+    "value": 1,
+    "note": "The real one. Code-defined, exported by the pipeline, correct grammar. Prefer `control/border/width`, which aliases it and says what the edge is for."
+  },
+  "duplicates": [
+    {
+      "name": "ref/border-width/hairline",
+      "id": "VariableID:55073:700",
+      "collection": "Space",
+      "codeSyntax": null,
+      "hidden": true,
+      "value": 1,
+      "bindings": 242,
+      "verdict": "DO NOT DELETE YET",
+      "why": "It is bound 242 times, and — critically — SIX of those are the Divider COMPONENT's own variants (Orientation x Tone). Every Divider instance in the library inherits from them, which is what produces the 233 instance bindings on other pages. Deleting it would strand the component itself, not just some instances.",
+      "boundOn": {
+        "Portal Login Template": 70,
+        "Navbar": 60,
+        "Layout Grid": 51,
+        "Accessibility Bar": 47,
+        "Divider": 9,
+        "Tabs": 3,
+        "Side Sheet": 2
+      },
+      "howToRetire": "Rebind the six Divider component variants to `control/border/width` (same value, 1px, so zero visual change). Every instance follows automatically, because an instance inherits its main unless it carries an explicit override. Re-sweep, confirm zero, then delete. Its own description already says it needs exactly this."
+    },
+    {
+      "name": "cmp/divider/width",
+      "id": "VariableID:55677:37371",
+      "collection": "Space",
+      "codeSyntax": null,
+      "hidden": false,
+      "value": 1,
+      "aliases": "ref/border-width/hairline",
+      "bindings": 0,
+      "verdict": "SAFE TO DELETE",
+      "why": "Nothing in the library binds it — zero hits across all 69 pages. It was created on 2026-08-18 (id 55677:*, among the newest in the file) and never wired up: the Divider component binds `ref/border-width/hairline` directly instead. It is PUBLISHED, so it does appear in designers' pickers as a plausible-looking choice that no code token backs.",
+      "alternativeToDeleting": "If a Divider component token is actually wanted, define `cmp/divider/width` in packages/tokens/src/component.json and let the exporter own it — the exporter now routes cmp/* by type, so it would land in Space and upsert onto this same id, preserving it."
+    }
+  ]
+}
