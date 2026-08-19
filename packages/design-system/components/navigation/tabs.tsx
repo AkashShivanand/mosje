@@ -117,9 +117,9 @@ function edge(tabs: TabDef[], dir: 1 | -1): number | null {
  * Pair each active tab with a {@link TabPanel} using the same `idBase`.
  * The parent owns the active index and renders one panel at a time.
  *
- * OVERFLOW: a horizontal list that outgrows its container scrolls
- * (`overflow-x: auto`). The Figma library carries a `Tabs / More` menu trigger for
- * this; it has no counterpart here yet, so there is no `overflow` prop to set.
+ * OVERFLOW: a horizontal list that outgrows its container scrolls. Set
+ * `overflow` to add the `Tabs / More` trigger, which appears only when the row
+ * genuinely cannot show every tab and opens a menu of ALL of them.
  */
 export function Tabs({
   tabs,
@@ -139,7 +139,9 @@ export function Tabs({
   const listRef = React.useRef<HTMLDivElement>(null);
   const indicatorRef = React.useRef<HTMLSpanElement>(null);
   const [clipped, setClipped] = React.useState<boolean[]>([]);
-  const [hidden, setHidden] = React.useState<number[]>([]);
+  const [hasOverflow, setHasOverflow] = React.useState(false);
+  // Which directions still have content. Drives the edge fades, and nothing else.
+  const [edges, setEdges] = React.useState({ start: false, end: false });
 
   const vertical = orientation === "vertical";
   const iconSize = size === "s" ? 16 : size === "l" ? 24 : 20;
@@ -203,30 +205,33 @@ export function Tabs({
   }, []);
 
   /**
-   * Which tabs are not fully inside the tablist's visible box.
+   * Is anything out of view? That is all the trigger needs to know.
    *
-   * Measured, not derived from a count: a tab is "hidden" when either edge
-   * falls outside, which is what a user actually experiences. Recomputed on
-   * SCROLL as well as on resize, because scrolling is precisely what changes
-   * the answer — the menu lists what you cannot see right now.
+   * The first build tracked WHICH tabs were hidden and listed exactly those.
+   * It worked, but it meant the menu's contents changed with scroll position —
+   * open it twice at different offsets, get two different lists. No shipped
+   * system does that. The menu now lists every tab, so this only has to answer
+   * whether the row overflows at all.
    */
   const updateOverflow = React.useCallback(() => {
     const list = listRef.current;
     if (!overflow || vertical || !list) {
-      setHidden((prev) => (prev.length ? [] : prev));
+      setHasOverflow((prev) => (prev ? false : prev));
       return;
     }
-    const box = list.getBoundingClientRect();
-    const next: number[] = [];
-    refs.current.forEach((el, i) => {
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      // 1px of tolerance: sub-pixel layout should not report a flush tab hidden.
-      if (r.left < box.left - 1 || r.right > box.right + 1) next.push(i);
-    });
-    setHidden((prev) =>
-      prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next,
-    );
+    // 1px of tolerance: sub-pixel layout should not claim a flush row overflows.
+    const next = list.scrollWidth > list.clientWidth + 1;
+    setHasOverflow((prev) => (prev === next ? prev : next));
+    // DIRECTION-AGNOSTIC. In RTL, Chromium and Firefox report `scrollLeft` as a
+    // NEGATIVE offset from the start edge (measured: -461 in an RTL run), so the
+    // naive `scrollLeft > 1` reported "at the start" while scrolled to the end
+    // and put the fades on the wrong sides. Distance-from-start is the quantity
+    // that actually matters, and it is |scrollLeft| in both directions.
+    const pos = Math.abs(list.scrollLeft);
+    const max = list.scrollWidth - list.clientWidth;
+    const start = pos > 1;
+    const end = pos < max - 1;
+    setEdges((prev) => (prev.start === start && prev.end === end ? prev : { start, end }));
   }, [overflow, vertical]);
 
   // Runs before paint so the very first placement (and every tab-count
@@ -255,18 +260,31 @@ export function Tabs({
    */
   React.useEffect(() => {
     if (typeof ResizeObserver === "undefined") return;
+    // COALESCED INTO ONE FRAME. There is one observer entry per tab plus the
+    // list, so a single font swap or container change fires N+1 callbacks, each
+    // of which reads layout — a forced reflow per tab, on the low-end Android
+    // these portals are actually used on. Batching into one rAF makes it one
+    // read per frame regardless of how many tabs there are.
+    let frame = 0;
     const ro = new ResizeObserver(() => {
-      updateIndicator();
-      updateTruncation();
-      updateOverflow();
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        updateIndicator();
+        updateTruncation();
+        updateOverflow();
+      });
     });
     if (listRef.current) ro.observe(listRef.current);
     for (const el of refs.current) if (el) ro.observe(el);
-    return () => ro.disconnect();
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      ro.disconnect();
+    };
   }, [updateIndicator, updateTruncation, updateOverflow, tabs.length]);
 
-  // Scrolling changes which tabs are visible without changing any box, so a
-  // ResizeObserver cannot see it.
+  // Scrolling changes which EDGES still have content without changing any box,
+  // so the ResizeObserver cannot see it. Passive: this only reads geometry.
   React.useEffect(() => {
     const list = listRef.current;
     if (!list || !overflow || vertical) return;
@@ -321,7 +339,7 @@ export function Tabs({
     });
   };
 
-  const showMore = overflow && !vertical && hidden.length > 0;
+  const showMore = overflow && !vertical && hasOverflow;
 
   const listClass = [
     "ds-tabs",
@@ -330,6 +348,8 @@ export function Tabs({
     `ds-tabs--track-${track}`,
     `ds-tabs--${size}`,
     overflow && !vertical ? "ds-tabs--overflow" : "",
+    edges.start ? "is-scrollable-start" : "",
+    edges.end ? "is-scrollable-end" : "",
     showDivider ? "ds-tabs--divider" : "",
   ]
     .filter(Boolean)
@@ -404,12 +424,17 @@ export function Tabs({
         // has not asked for it sees a DOM change. The trigger sits OUTSIDE the
         // tablist — a tablist owns tabs, and a button among them misdescribes
         // the structure — which is also what keeps it pinned while tabs scroll.
-        <div className="ds-tabs-bar">
+        // The SIZE class goes on the bar too. `--ds-tabs-pad-y` and friends are
+        // defined by `.ds-tabs--{size}`, and the trigger is a SIBLING of the
+        // tablist, not a descendant — so without this the trigger inherited no
+        // padding at all and rendered as a bare 20x20 glyph, failing WCAG 2.5.8
+        // (24x24 minimum, Level AA) against a master that specifies 44x44.
+        <div className={`ds-tabs-bar ds-tabs--${size}`}>
           {tablist}
           {showMore ? (
             <TabsOverflow
-              hidden={hidden}
               tabs={tabs}
+              active={active}
               size={size}
               onSelect={selectFromMenu}
               // NOT lowercased: `ariaLabel` is a proper noun as often as not, and

@@ -376,7 +376,10 @@ function ClinicalRecord() {
         <Callout type="info" title="Overflow — the Tabs / More menu">
           A horizontal list that outgrows its container <strong>scrolls</strong>. Set{" "}
           <code>overflow</code> to add the <code>Tabs / More</code> trigger, which appears{" "}
-          <em>only when tabs are actually hidden</em> and lists the ones scrolled out of view.
+          <em>only when the row actually overflows</em> and lists <strong>every</strong> tab,
+          marking the current one with <code>role=&quot;menuitemradio&quot;</code> +{" "}
+          <code>aria-checked</code>. An earlier build listed only the hidden ones, so the same
+          menu gave different contents at different scroll positions.
           It is a <strong>menu button, not a tab</strong> — <code>role=&quot;button&quot;</code>,{" "}
           <code>aria-haspopup=&quot;menu&quot;</code>, <code>aria-expanded</code>; giving it{" "}
           <code>role=&quot;tab&quot;</code> would promise a panel that does not exist. It renders{" "}
@@ -384,7 +387,12 @@ function ClinicalRecord() {
           why enabling it wraps the tablist in a positioning element (so the prop is off by
           default). It never removes tabs from the tablist: they stay focusable and
           arrow-reachable. Enabling it also stops tabs sharing the track equally — equal-width
-          tabs never overflow, they truncate harder, so the trigger would never appear.
+          tabs never overflow, they truncate harder, so the trigger would never appear. The
+          measured edge fade applies to <code>track=&quot;none&quot;</code> only: an open row has
+          nothing to explain a cut, while an enclosed row is a bordered, rounded container that
+          already does — and cannot be faded cleanly anyway, because its border, fill and radius
+          are painted by the scrolling element, so a mask dissolves the container instead of the
+          tabs.
         </Callout>
         </div>
       </section>
