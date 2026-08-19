@@ -177,6 +177,15 @@ jobs:
       - name: Radius linkage — tier discipline + a ratchet over the Figma library
         run: npm run check:radius-linkage
 
+      # CSS does not warn on a `var()` whose name does not exist — it drops the whole
+      # declaration and paints nothing, or silently falls through to a stale second copy
+      # of the value written as a fallback. That is invisible to typecheck, to lint, and
+      # to every gate above. It shipped twice: 12 radius refs left behind by the radius
+      # migration rendering `border-radius: 0`, and 47 spacing refs left behind by the
+      # value-naming migration. This gate is why a third one fails the PR instead.
+      - name: Dangling vars — every --sa-* reference resolves to a declared token
+        run: npm run check:dangling-vars
+
       # `.figma.ts` templates are EXCLUDED from the design-system tsconfig, so nothing
       # type-checked them: a template could name a React prop that had been renamed, or a
       # Figma property that had been deleted, and every gate here stayed green while Dev

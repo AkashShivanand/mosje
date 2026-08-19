@@ -22,9 +22,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.29.0",
+    version: "v0.30.0",
     date: "2026-08-19",
     current: true,
+    changes: [
+      { kind: "Added", text: "A DANGLING-VAR GATE, because CSS does not warn \u2014 it drops the declaration. `check:dangling-vars` walks every stylesheet and inline style object in the design system, config, hub and Storybook, and fails when a `var(--sa-*)` names a token nothing declares. It runs FIRST in `npm run check`, ahead of the gates it usually explains. Proven by breaking it deliberately: a bogus reference exits 1, a clean tree exits 0, and an unreadable scope or a scan that finds zero declarations exits 2 rather than reporting a false clean \u2014 the failure mode the first ds-linkage checker actually shipped with" },
+      { kind: "Fixed", text: "47 SPACING REFERENCES ACROSS 4 FILES POINTED AT NAMES THAT NO LONGER EXIST, left behind by the value-naming migration exactly as 12 radius references had been. `tabs.css` (13), the Divider docs page (15), the changelog page (11) and the Tabs docs page (8). The mapping was recovered from the pre-migration `tokens.css` in git history rather than guessed, which matters because THE FAMILIES ARE NOT ONE RAMP: `stack/s` was 12 where `inline/s` was 8, and `l` meant 16, 24, 20 and 56 in the four families. A single map would have silently moved values instead of preserving them" },
+      { kind: "Fixed", text: "THE TOAST WARNING ICON WAS PAINTED BY A FALLBACK, NOT A TOKEN. `status/warningStrong` is the one absent member of a four-token Strong family \u2014 its three siblings exist \u2014 so the reference beside it had never resolved, and the second half of the pair was doing the work. It cannot simply be authored: the naming grammar rejects the whole `color/status/*` shape, and the legacy allow-list that grandfathers the other eleven is CLOSED AND MAY ONLY SHRINK. Bound instead to `text/status/warning/base`, which is what the fallback already resolved to \u2014 identical pixels (#704b00, 7.00:1 on the warning surface), one fewer dangling name. A darker icon would need a token the grammar forbids, which is a design decision rather than a defect fix. The error icon's fallback went too: its token IS declared, so the fallback never fired and only disagreed with it" },
+      { kind: "Fixed", text: "THE GATE'S OWN FALSE POSITIVES, before it was wired in \u2014 95 findings over 34 names reduced to 47 real ones. Three classes were noise, all of them ways a name can be declared or mentioned without a stylesheet saying so: prose inside comments and changelog strings, names CONSTRUCTED at runtime (`var(\u0060--sa-${token}\u0060)`), properties set through `setProperty`, and React's computed-key form `[\"--hero-speed\" as string]:`, whose `as string]` between the quote and the colon is why a plain `\"--x\":` pattern misses it. A gate that cries wolf is a gate that gets silenced" },
+    ],
+  },
+  {
+    version: "v0.29.0",
+    date: "2026-08-19",
     changes: [
       { kind: "Fixed", text: "TWELVE RADIUS REFERENCES POINTED AT TOKENS THAT NO LONGER EXIST, and every one was silently rendering radius 0. The radius value-naming migration renamed the ladder (`shape/xs` \u2192 `shape/4`) but did not follow it into COMPONENT CSS \u2014 `accessibility-bar.css` (3), `tabs.css` (7), and two docs pages. This is not new drift from a merge: main carried the same dangling names. It surfaced as a visible defect \u2014 the bar's font-size buttons had square corners because `--sa-shape-xs` resolved to nothing. Worth noting the gap: the tokens contract test checks dangling `var()` in GENERATED css only, so component stylesheets have no such gate" },
       { kind: "Fixed", text: "THE BAR'S THREE SEPARATORS SAT HIGH \u2014 y=7 in a 46px bar where every control around them was centred at 13. `align-self: stretch` is right for a rule with no length and ACTIVELY WRONG for one with a length: a flex item with a definite cross size treats stretch as flex-start. It fails silently, because the rule is the right size and the right colour, just in the wrong place \u2014 any check measuring the divider alone passes it. Divider now sets `align-self: center` whenever an explicit length is given" },
@@ -827,10 +837,10 @@ export default function ChangelogPage(): React.JSX.Element {
 
         <div
           style={{
-            marginTop: "var(--sa-stack-l)",
+            marginTop: "var(--sa-stack-24)",
             display: "flex",
             flexDirection: "column",
-            gap: "var(--sa-stack-xl)",
+            gap: "var(--sa-stack-32)",
           }}
         >
           {RELEASES.map((release) => (
@@ -844,11 +854,11 @@ export default function ChangelogPage(): React.JSX.Element {
                 style={{
                   display: "flex",
                   alignItems: "baseline",
-                  gap: "var(--sa-stack-s)",
+                  gap: "var(--sa-stack-12)",
                   flexWrap: "wrap",
-                  paddingBottom: "var(--sa-padding-s)",
+                  paddingBottom: "var(--sa-padding-12)",
                   borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-                  marginBottom: "var(--sa-stack-m)",
+                  marginBottom: "var(--sa-stack-16)",
                 }}
               >
                 <h2
@@ -875,7 +885,7 @@ export default function ChangelogPage(): React.JSX.Element {
                       fontWeight: 600,
                       color: "var(--sa-on-bg-brand-primary-bolder)",
                       background: "var(--sa-bg-brand-primary-bolder)",
-                      padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
+                      padding: "var(--sa-padding-2) var(--sa-padding-8)",
                       borderRadius: "var(--sa-shape-6)",
                     }}
                   >
@@ -892,7 +902,7 @@ export default function ChangelogPage(): React.JSX.Element {
                   padding: 0,
                   display: "flex",
                   flexDirection: "column",
-                  gap: "var(--sa-stack-s)",
+                  gap: "var(--sa-stack-12)",
                 }}
               >
                 {release.changes.map((change, i) => (
@@ -900,7 +910,7 @@ export default function ChangelogPage(): React.JSX.Element {
                     key={i}
                     style={{
                       display: "flex",
-                      gap: "var(--sa-stack-s)",
+                      gap: "var(--sa-stack-12)",
                       alignItems: "flex-start",
                     }}
                   >
@@ -913,7 +923,7 @@ export default function ChangelogPage(): React.JSX.Element {
                         fontWeight: 700,
                         color: "var(--sa-on-bg-brand-primary-bolder)",
                         background: KIND_COLOR[change.kind],
-                        padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
+                        padding: "var(--sa-padding-2) var(--sa-padding-8)",
                         borderRadius: "var(--sa-shape-6)",
                       }}
                     >
