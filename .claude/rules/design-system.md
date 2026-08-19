@@ -513,12 +513,24 @@ existed precisely to stop that. Both now bind it.
 **A Tier-3 token nothing binds is worse than no token**: it reads as governance while the thing it
 governs drifts underneath. When adding one, bind it in the same change, or do not add it.
 
-### The rebind campaign — 2.87 % to 97.72 %
+### The rebind campaign — 2.87 % to 97.70 %, all 69 pages
 
-32 of 35 censused pages rebound on 2026-08-18. **Zero Tier-1, zero cross-family, zero foreign, zero
-ghost bindings remain.** The 44 surviving defects are all `rn`, and all but one are **fractional**
-(3.89, 2.92, 4.80, 3.20 px) — scaled artwork on `New in 2.0`, `Tabs` and `Date-Time Picker`, not
-typed radii. `Tables` holds the one genuine leftover, a 3px.
+**Coverage is complete: 69 of 69 pages censused, 0 uncensused.** 56,672 of 58,008 authorable
+properties sit on a correct Tier-2 token.
+
+**Zero Tier-1, zero cross-family, zero foreign-library and zero ghost bindings remain anywhere in
+the library.** All 120 surviving defects are `rn`, and **116 of them are fractional** — 10.121,
+4.803, 4.800, 3.899, 3.200 px and friends, on `Popover` (64), `New in 2.0` (32), `Thumbnail` (12),
+`Tabs` (4) and `Date-Time Picker` (4). A fractional radius is not a typed choice; it is what a
+tool leaves behind when artwork is scaled, and it should be fixed by resizing the artwork rather
+than by binding a rung to a number nobody picked.
+
+**`Tables` holds the only genuine leftover: 4 properties at a flat 3px.** That is a real
+off-ladder decision and needs a human call — 2 or 4, or a case for a rung.
+
+The final 34 pages were censused and rebound in the same pass; each carries a `censusBefore`
+block recording its state at first measurement, so the census stands on its own rather than
+being retro-fitted from the result.
 
 The rule was provable at every step, never approximate:
 
