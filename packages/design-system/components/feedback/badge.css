@@ -104,15 +104,15 @@
    -------------------------------------------------------------------------- */
 .ds-badge__dot {
   flex: 0 0 auto;
-  width: 6px;
-  height: 6px;
+  width: var(--sa-cmp-badge-dotSize);
+  height: var(--sa-cmp-badge-dotSize);
   border-radius: var(--sa-shape-full);
   background-color: currentColor;
 }
 
 .ds-badge--lg .ds-badge__dot {
-  width: 8px;
-  height: 8px;
+  width: var(--sa-cmp-badge-dotSizeLg);
+  height: var(--sa-cmp-badge-dotSizeLg);
 }
 
 .ds-badge__dot--pulse {

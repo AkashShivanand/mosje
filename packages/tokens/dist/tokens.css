@@ -876,6 +876,8 @@
   --sa-layout-login-panel-width: 518px;
   --sa-layout-login-panel-gutter: 64px;
   --sa-layout-login-content-width: 390px;
+  --sa-layout-tab-indicator: 2px;
+  --sa-layout-tab-track: 4px;
   --sa-target-min: 1.5rem;
   --sa-target-comfortable: 2.75rem;
   --sa-target-spacious: 3rem;
@@ -913,6 +915,8 @@
   --sa-cmp-card-border: var(--sa-border-neutral-subtle);
   --sa-cmp-card-radius: var(--sa-shape-12);
   --sa-cmp-badge-beta-bg: var(--sa-color-brand-yellow);
+  --sa-cmp-badge-dotSize: 6px;
+  --sa-cmp-badge-dotSizeLg: var(--sa-ref-size-8);
   --sa-cmp-accessibilityBar-height: var(--sa-layout-bar-height);
   --sa-cmp-accessibilityBar-flagWidth: var(--sa-layout-flag-width);
   --sa-cmp-accessibilityBar-flagHeight: var(--sa-ref-size-22);

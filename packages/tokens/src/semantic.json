@@ -2516,6 +2516,19 @@
           "$description": "The form content column itself. 518 - 2x64 = 390. Every auth field, button and divider is this wide."
         }
       }
+    },
+    "tab": {
+      "$description": "Tabs geometry. Both measurements were authored in Figma first and reconciled into code on 2026-08-18.",
+      "indicator": {
+        "$type": "dimension",
+        "$value": "2px",
+        "$description": "Thickness of the Tabs selection indicator — the underline bar on a horizontal tablist and the rail on a vertical one. 2px is the minimum that stays visible at 100% zoom and on low-DPI government hardware; it is NOT a border width, so it does not follow stroke/1 or control/border/width. NOTE: the shipped React Tabs renders a sliding PILL rather than an underline, so nothing consumes this yet — it describes the Figma master's underline variant, and is a real design/code divergence rather than a dead token."
+      },
+      "track": {
+        "$type": "dimension",
+        "$value": "4px",
+        "$description": "Inset between the enclosed Tabs track and the pills inside it. Matches the shipped .ds-tabs__indicator top/bottom so the Figma master and the coded component agree."
+      }
     }
   },
   "target": {

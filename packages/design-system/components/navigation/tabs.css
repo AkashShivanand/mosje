@@ -22,8 +22,8 @@
    (z-index 0) so their hover/focus states still render on top of it. */
 .ds-tabs__indicator {
   position: absolute;
-  top: 4px;
-  bottom: 4px;
+  top: var(--sa-layout-tab-track);
+  bottom: var(--sa-layout-tab-track);
   left: 0;
   width: 0;
   border-radius: var(--sa-shape-12);

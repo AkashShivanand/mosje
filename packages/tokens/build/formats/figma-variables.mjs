@@ -216,6 +216,31 @@ function collectionFor(path, tier, type) {
   if (head === "icon" && rest[0] === "size") return "Space";
   if (head === "control") return rest[0] === "radius" ? "Radius" : "Static";
 
+  // TIER 3 IS ROUTED BY TYPE, and this runs BEFORE the COLOUR_ROOTS check below because a
+  // component's ROOT does not tell you what kind of token it is: `badge` is in COLOUR_ROOTS,
+  // but `cmp/badge/dotSize` is a dimension and belongs with the other geometry in Space —
+  // which is where the library already has it. Routing by root would send it to Color, and
+  // Figma refuses to move a variable between collections, so the export would fork into a
+  // second variable rather than update the existing one.
+  //
+  // Until 2026-08-18 the fall-through below was `return null`, meaning "silently omit from the
+  // Figma export". cmp/accessibilityBar/* — eleven tokens defined in code and emitting
+  // --sa-cmp-accessibilityBar-* into tokens.css — never reached the library at all, and a
+  // designer hand-made ten variables to fill the gap because there was nothing to bind.
+  if (tier === "cmp") {
+    // LEGACY PLACEMENT, load-bearing: these two dimensions already live in the Color
+    // collection. Figma cannot move them, so they must keep routing there.
+    if (rest[0] === "radius" && (head === "button" || head === "card")) return "Color";
+    if (type === "color") return "Color";
+    if (type === "dimension" || type === "number") return "Space";
+    throw new Error(
+      `figma-variables: cannot route component token "cmp/${path.join("/")}" (type ${type ?? "unknown"}).\n` +
+        `  A Tier-3 token the exporter cannot place is a BUG, not a filter — it would be dropped\n` +
+        `  from the library silently, and the only recourse left to a designer is to hand-make a\n` +
+        `  variable that code can never consume. Give it a $type, or extend collectionFor.`,
+    );
+  }
+
   if (COLOUR_ROOTS.has(head)) return "Color";
 
   // TIER 3 MUST NOT FALL THROUGH. Until 2026-08-18 it did, and the `return null` below meant
@@ -231,17 +256,6 @@ function collectionFor(path, tier, type) {
   // geometry aliases). The COLOUR_ROOTS branch above still runs first, so `cmp/button/radius`
   // and `cmp/card/radius` stay in the Color collection they already live in — Figma refuses to
   // move a variable between collections, so re-routing an existing one would orphan it.
-  if (tier === "cmp") {
-    if (type === "color") return "Color";
-    if (type === "dimension" || type === "number") return "Space";
-    throw new Error(
-      `figma-variables: cannot route component token "cmp/${path.join("/")}" (type ${type ?? "unknown"}).\n` +
-        `  A Tier-3 token the exporter cannot place is a BUG, not a filter — it would be dropped\n` +
-        `  from the library silently, and the only recourse left to a designer is to hand-make a\n` +
-        `  variable that code can never consume. Give it a $type, or extend collectionFor.`,
-    );
-  }
-
   return null;
 }
 

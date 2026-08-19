@@ -1347,6 +1347,10 @@ export const tokens = {
       "content": {
         "width": "390px"
       }
+    },
+    "tab": {
+      "indicator": "2px",
+      "track": "4px"
     }
   },
   "target": {
@@ -1406,7 +1410,9 @@ export const tokens = {
   "badge": {
     "beta": {
       "bg": "#ffd323"
-    }
+    },
+    "dotSize": "6px",
+    "dotSizeLg": "0.5rem"
   },
   "accessibilityBar": {
     "height": "46px",
