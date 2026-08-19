@@ -252,10 +252,11 @@ export default function AccessibilityBarPage(): React.JSX.Element {
           tokens={[
             { token: "--sa-bg-brand-primary-bolder", value: "bar fill", description: "The ONLY fill. Re-resolves to the navy ramp (#003366) under data-brand=\"navy\" — no second token, no tone prop.", isColor: true },
             { token: "--sa-text-neutral-inverse", value: "text / icons", description: "White content on the brand fill (AA on both brands).", isColor: true },
-            { token: "--sa-border-neutral-inverse", value: "separators @ 40%", description: "The 1×20 dividers between control groups." },
-            { token: "--sa-type-label-2-size / -lh", value: "12 / 16", description: "Bar type — Noto Sans Medium (UX4G navbar spec)." },
-            { token: "--sa-shape-full", value: "pill radius", description: "Icon-button hit area (accessibility, language)." },
-            { token: "--sa-focus-ring", value: "focus outline", description: "2px outline on every control (WCAG 2.4.7)." },
+            { token: "--sa-border-neutral-inverse-subtle", value: "separators @ 40%", description: "Reached through the Divider component (Vertical / Inverse subtle), not referenced directly. The bar draws no rule of its own." },
+            { token: "--sa-type-body-2-size / -lh", value: "14 / 20", description: "Bar type — Noto Sans Regular. Raised from label-2 (12 / 16) when the master moved to 14." },
+            { token: "--sa-shape-2 / --sa-shape-4", value: "flag chip / control radius", description: "Unified 2026-08-19 — the steppers, the reset pill and both icon buttons share shape/4, so one row of controls reads as one shape." },
+            { token: "--sa-cmp-accessibilityBar-stepSize / -iconButtonSize", value: "24 / 28", description: "Hit areas. WCAG 2.2 · 2.5.8 Target Size (Minimum) is 24×24 at AA — 44×44 is 2.5.5 Enhanced (AAA) and is not claimed." },
+            { token: "--sa-text-neutral-inverse", value: "focus outline", description: "2px, offset 2 (WCAG 2.4.7). Deliberately NOT --sa-focus-ring: that is #0373DF and measures 1.37:1 on this bar's #005EB9 fill, failing 1.4.11. Inverse ink is 6.36:1." },
           ]}
         />
       </section>
@@ -279,7 +280,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
                     color: "var(--sa-on-bg-brand-primary-bolder)",
                     fontSize: "var(--sa-type-label-2-size)",
                     fontWeight: 600,
-                    outline: "2px solid var(--sa-focus-ring)",
+                    outline: "2px solid var(--sa-text-neutral-inverse)",
                     outlineOffset: "2px",
                   }}
                 >
@@ -310,7 +311,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
             { criterion: "Skip link is first in the tab order", level: "A", description: "WCAG 2.4.1 — the skip link is the page's first interactive element and must target an id that exists, or a keyboard user lands nowhere." },
             { criterion: "Text/UI contrast meets AA", level: "AA", description: "WCAG 1.4.3 — white on the brand fill is 6.36:1; the brand ink #0373DF (4.64:1) was rejected as a fill for this reason." },
             { criterion: "Every control keyboard-operable & labelled", level: "A", description: "WCAG 2.1.1 / 4.1.2 — the font-size buttons, accessibility entry and language selector are real buttons/links with aria-labels; the font-size group is a labelled group." },
-            { criterion: "Visible focus is never removed", level: "AA", description: "WCAG 2.4.7 — every control shows a 2px --sa-focus-ring outline on focus-visible." },
+            { criterion: "Visible focus is never removed", level: "AA", description: "WCAG 2.4.7 — every control shows a 2px inverse-ink outline on focus-visible, offset 2. Not --sa-focus-ring: that is #0373DF and measures 1.37:1 on this bar's #005EB9 fill, failing 1.4.11. Inverse ink is 6.36:1." },
           ]}
         />
       </section>
