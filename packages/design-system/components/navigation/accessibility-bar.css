@@ -185,18 +185,22 @@
    ACTIVE carries TWO senses, so both are written against the same token rather
    than two look-alike values:
      1. a control being PRESSED, and
-     2. the font-size pill while the reader is AWAY FROM the default size.
+     2. the STEP BUTTON matching the direction the reader has moved in — A− below the
+        default size, A+ above it, neither at it.
 
-   Sense 2 was inverted on 2026-08-18 ("Option B"). It previously lit at the
-   DEFAULT, which said nothing useful and actively failed the returning reader:
-   the scale persists, so 90 / 110 / 120 % all rendered identically to an
-   untouched bar. Lighting on deviation makes the highlight mean "this page is
-   not at the default size, and this is the control that undoes it". The Figma
-   States card was reworded to match.
+   Sense 2 has moved twice, and the history is the argument for where it landed. It
+   first lit the centre pill AT the default, which said nothing: the scale persists, so
+   a reader returning at 120 % saw a bar identical to an untouched one. It was then
+   inverted (2026-08-18) to light the centre when AWAY from the default — better, but
+   still wrong in two ways that only using it revealed. The highlight sat on a button
+   nobody had pressed, so it read as "the centre is selected"; and one indicator cannot
+   express DIRECTION, so 90 % and 120 % looked the same. Lighting the direction button
+   (2026-08-19) fixes both: press A+ and A+ lights, and a lit A− versus a lit A+ says
+   which way you went. The centre is now purely the reset.
 
    Every CLICKABLE control on the bar is covered: the three font-size steps and
    the two icon buttons. The Government-of-India and skip links are deliberately
-   NOT tinted — they are text links and carry the underline affordance instead;
+   NOT tinted — they are text links, and they underline on hover and focus instead;
    tinting a text link would invent a control affordance the master does not have.
 
    Ordering is load-bearing: :active is declared AFTER :hover at equal
@@ -209,8 +213,8 @@
 }
 .sa-abar__fsbtn:active:not(:disabled),
 .sa-abar__icbtn:active,
-/* `.is-active` on the pill = the reader is away from the default size. */
-.sa-abar__fsbtn.is-current.is-active {
+/* `.is-active` marks the DIRECTION moved in — never the centre. */
+.sa-abar__fsbtn.is-active {
   background-color: var(--sa-cmp-accessibilityBar-pillBg);
 }
 

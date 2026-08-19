@@ -97,27 +97,28 @@ token rather than two look-alike values:
 
 1. a control being **pressed** — including `A−` and `A+`, which had no pressed state at all
    before 2026-08-18; and
-2. the font-size pill while the reader is **away from the default size**.
+2. the **step button matching the direction the reader has moved in** — `A−` below the
+   default size, `A+` above it, neither at it.
 
-**Sense 2 was inverted on 2026-08-18 (design decision "Option B").** It previously lit at
-the *default*, which said nothing useful and actively failed the returning reader: the
-scale now **persists**, so someone who chose 120 % last visit came back to a bar that
-looked identical to an untouched one — 90 / 110 / 120 % were visually indistinguishable.
-Lighting on deviation makes the highlight mean *"this page is not at the default size,
-and this is the control that undoes it"*. An unlit pill now means 100 %.
+**Sense 2 moved twice, and the history is the argument for where it landed.**
+
+| | Lit | Why it was wrong |
+|---|---|---|
+| Originally | centre, **at** the default | Said nothing. The scale persists, so a reader returning at 120 % saw a bar identical to an untouched one. |
+| 2026-08-18 | centre, **away from** the default | Better, but the highlight sat on a button nobody pressed — it read as *"the centre is selected"* — and one indicator cannot express direction, so 90 % and 120 % looked the same. |
+| **2026-08-19** | **the direction button** | Press `A+` and `A+` lights. A lit `A−` versus a lit `A+` says which way you went. The centre is purely the reset. |
+
+Verified live across all four steps: 90 % → `A−` lit and disabled; 100 % → none lit;
+110 % → `A+` lit; 120 % → `A+` lit and disabled.
 
 Two consequences worth recording:
 
-- **`aria-pressed` was removed.** The middle A is a reset **action**, not a toggle, and
-  announcing it as pressed/unpressed described a control that does not exist. The state a
-  screen-reader user actually needs — the current size — is carried by the accessible
-  name instead: `Text size: 100% (default)` at rest, `Reset text size to default —
-  currently 110%` when deviated.
-- **It stays enabled at the default**, even though resetting is then a no-op. Disabling it
-  on reset would destroy focus at the exact moment the reader activated it.
-
-The Figma master's `Selection layer` frames were cleared to transparent in the same pass
-(9 of them), so the master's resting state is the default size, unlit — matching the code.
+- **No `aria-pressed` anywhere in the stepper.** The centre is a reset **action**, not a
+  toggle, and `A−`/`A+` are actions too. The state a screen-reader user needs — the current
+  size — is carried by the centre's accessible name: `Text size: 100% (default)` at rest,
+  `Reset text size to default — currently 110%` when deviated.
+- **The centre stays enabled at the default**, even though resetting is then a no-op.
+  Disabling it on reset would destroy focus at the exact moment the reader activated it.
 
 `:active` is declared **after** `:hover` at equal specificity. A pointer is almost
 always hovering the control it presses, so the reverse order makes the pressed state
