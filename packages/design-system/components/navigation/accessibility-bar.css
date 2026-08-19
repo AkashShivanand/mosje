@@ -32,7 +32,10 @@
   /* UX4G Navbar spec: Noto Sans Medium, 12/16 in the bar. */
   font-size: var(--sa-type-label-2-size);
   line-height: var(--sa-type-label-2-lh);
-  letter-spacing: 0.1px;
+  /* Figma binds this to type/label/tracking, which is 0. It was a raw 0.1px here
+     until 2026-08-18 — a literal that no token backed and that disagreed with the
+     master by 0.1px per character. */
+  letter-spacing: var(--sa-type-label-tracking);
 }
 .sa-abar.layout-narrow .sa-abar__in { max-width: var(--sa-container-narrow); }
 .sa-abar.layout-wide   .sa-abar__in { max-width: var(--sa-container-wide); }
@@ -128,8 +131,6 @@
   height: var(--sa-cmp-accessibilityBar-pillSize);
   font-weight: 600;
 }
-.sa-abar__fsbtn.is-current.is-active { background-color: var(--sa-cmp-accessibilityBar-pillBg); }
-.sa-abar__fsbtn:hover:not(:disabled) { background-color: var(--sa-cmp-accessibilityBar-hoverBg); }
 .sa-abar__fsbtn:disabled { opacity: 0.45; cursor: default; }
 
 /* Icon buttons (accessibility, language) */
@@ -137,8 +138,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--sa-inline-2xs);
-  height: 28px;
-  min-width: 28px;
+  height: var(--sa-cmp-accessibilityBar-iconButtonSize);
+  min-width: var(--sa-cmp-accessibilityBar-iconButtonSize);
   padding: 0 var(--sa-inline-2xs);
   border: none;
   border-radius: var(--sa-shape-full);
@@ -148,12 +149,59 @@
   cursor: pointer;
 }
 .sa-abar__icbtn.has-text { padding: 0 var(--sa-inline-s); gap: var(--sa-inline-s); }
-.sa-abar__icbtn:hover { background-color: var(--sa-cmp-accessibilityBar-hoverBg); }
 /* Figma binds the bar's glyphs to icon/size/20; <Icon size> sets it inline. */
 
-/* Focus (WCAG 2.4.7): the ring is never removed. The global --sa-focus-ring is
-   brand-blue, which would vanish on this blue/navy surface — so the outline is the
-   white inverse ink (text/onPrimary), matching every other control on the bar. */
+/* ── Interaction states — the four the documentation page defines ─────────────
+   Source: SAMAVESH library, "AccessibilityBar / Documentation" § 04 States.
+
+     DEFAULT        no background; icon/neutral/inverse
+     HOVER          white @ 8%   (overlay/on-brand/hover)
+     FOCUS-VISIBLE  2px ring, never removed
+     ACTIVE         white @ 16%  (overlay/on-brand/pressed)
+
+   ACTIVE carries TWO senses, so both are written against the same token rather
+   than two look-alike values:
+     1. a control being PRESSED, and
+     2. the font-size pill while the reader is AWAY FROM the default size.
+
+   Sense 2 was inverted on 2026-08-18 ("Option B"). It previously lit at the
+   DEFAULT, which said nothing useful and actively failed the returning reader:
+   the scale persists, so 90 / 110 / 120 % all rendered identically to an
+   untouched bar. Lighting on deviation makes the highlight mean "this page is
+   not at the default size, and this is the control that undoes it". The Figma
+   States card was reworded to match.
+
+   Every CLICKABLE control on the bar is covered: the three font-size steps and
+   the two icon buttons. The Government-of-India and skip links are deliberately
+   NOT tinted — they are text links and carry the underline affordance instead;
+   tinting a text link would invent a control affordance the master does not have.
+
+   Ordering is load-bearing: :active is declared AFTER :hover at equal
+   specificity, so a pressed control reads 16% and not 8%. A pointer is almost
+   always hovering the thing it presses, so the reverse order would make the
+   pressed state unreachable. */
+.sa-abar__fsbtn:hover:not(:disabled),
+.sa-abar__icbtn:hover {
+  background-color: var(--sa-cmp-accessibilityBar-hoverBg);
+}
+.sa-abar__fsbtn:active:not(:disabled),
+.sa-abar__icbtn:active,
+/* `.is-active` on the pill = the reader is away from the default size. */
+.sa-abar__fsbtn.is-current.is-active {
+  background-color: var(--sa-cmp-accessibilityBar-pillBg);
+}
+
+/* Focus (WCAG 2.4.7 / 2.4.11): the ring is never removed.
+   
+   DELIBERATE DEVIATION FROM THE DOCUMENTATION PAGE, and it is an accessibility
+   one. § 04 States specifies `focus/ring · 2px`. `focus/ring` is #0373DF, and on
+   this bar's #005EB9 fill that measures 1.37:1 — far below the 3:1 that WCAG
+   1.4.11 / 2.4.11 require of a focus indicator, i.e. the documented ring is close
+   to invisible exactly where a keyboard user needs it. The white inverse ink
+   measures 6.36:1 on the same fill, so the code uses that and the Figma page is
+   being corrected to match, per `.claude/rules/standards-precedence.md`:
+   accessibility is never traded against, and a standard that would produce a
+   worse interface loses to quality with the deviation written down. */
 .sa-abar__gov:focus-visible,
 .sa-abar__skip:focus-visible,
 .sa-abar__fsbtn:focus-visible,
@@ -161,4 +209,46 @@
   outline: 2px solid var(--sa-text-neutral-inverse);
   outline-offset: 2px;
   border-radius: var(--sa-shape-xs);
+}
+
+/* ── The font sizer, made real ────────────────────────────────────────────────
+   Until 2026-08-14 the A−/A/A+ control WROTE `--sa-font-scale` and nothing read
+   it, so the buttons moved a variable and not a single pixel of text. This is the
+   consumer.
+
+   Scaling the ROOT font size is the mechanism, not multiplying each type token:
+   the whole type scale is authored in `rem` (including the min/max of every fluid
+   `clamp()`), so one root change carries the entire ramp, plus every rem-based
+   spacing, control height and icon. The `vw` term inside a fluid clamp is the one
+   part that does NOT scale — it is viewport-derived by definition — so fluid roles
+   scale slightly less than 20% at the top step. That is a documented limit, not a
+   bug: the clamp's own ceiling is a rem value and it scales, so large text still
+   grows; it simply reaches its ceiling sooner.
+
+   The rule is ARMED BY THE ATTRIBUTE, not by the variable's fallback. A page with
+   no AccessibilityBar never gets `data-sa-font-scale`, so its root size is left
+   exactly as the browser (and the reader's own browser zoom / font preference) set
+   it. We never take that over uninvited. */
+:root[data-sa-font-scale] {
+  font-size: calc(100% * var(--sa-font-scale, 1));
+}
+
+/* ── The vendor's floating button, hidden rather than unmounted ───────────────
+   Where the bar offers the accessibility entry, the UX4G widget's own floating FAB
+   is redundant chrome — two doors to one panel, one of them covering page content.
+
+   IT IS HIDDEN, NEVER UNMOUNTED, AND THAT IS LOAD-BEARING. The bar's icon opens the
+   panel by dispatching a click on `#uw-widget-custom-trigger` — the FAB itself. Take
+   it out of the DOM and the bar's icon silently stops working, because the thing it
+   clicks no longer exists. `display: none` keeps the element (and the vendor's
+   listeners) alive; a dispatched click still reaches a hidden element, since that is
+   programmatic dispatch and not hit-testing.
+
+   `!important` because the vendor's own stylesheet sets display on this element and
+   loads after ours. Scoped to `[data-sa-abar-a11y]`, which the component sets only
+   while a bar with `accessibility` is mounted — so if the bar unmounts, or renders
+   with `accessibility={false}`, the floating button comes straight back and the
+   widget is never unreachable. */
+:root[data-sa-abar-a11y="1"] #uw-widget-custom-trigger {
+  display: none !important;
 }

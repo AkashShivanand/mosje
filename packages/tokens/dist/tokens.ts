@@ -1387,8 +1387,9 @@ export const tokens = {
     "dividerColor": "rgba(255, 255, 255, 0.4)",
     "pillSize": "2rem",
     "pillBg": "rgba(255, 255, 255, 0.16)",
-    "hoverBg": "rgba(255, 255, 255, 0.12)",
+    "hoverBg": "rgba(255, 255, 255, 0.08)",
     "stepSize": "1.5rem",
+    "iconButtonSize": "1.75rem",
     "launchIconSize": "0.75rem"
   },
   "action": {

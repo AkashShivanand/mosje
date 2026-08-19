@@ -1,7 +1,7 @@
 {
   "name": "@mosje/design-system",
   "version": "0.6.0",
-  "description": "Shared MoSJE UI components (atoms + form layer: Input/Textarea/Select/FormField/Label) plus the color-mode brand-axis (ColorModeProvider/Switcher), aligned to the UX4G Figma DS. Token-driven — consumes the generated --ds-/--sa- contract from @mosje/tokens (do not edit tokens.css here; edit packages/tokens/src/*.json).",
+  "description": "Shared MoSJE UI components (atoms + form layer: Input/Textarea/Select/FormField/Label) plus the color-mode brand-axis (ColorModeProvider/Switcher), aligned to the UX4G Figma DS. Token-driven \u2014 consumes the generated --ds-/--sa- contract from @mosje/tokens (do not edit tokens.css here; edit packages/tokens/src/*.json).",
   "private": true,
   "type": "module",
   "exports": {
@@ -32,13 +32,16 @@
     "typecheck": "tsc --noEmit",
     "test": "node --test \"utils/*.test.ts\" \"demo/*.test.ts\" \"components/**/*.test.ts\"",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "figma:connect": "figma connect publish --config ../../figma.config.json",
+    "figma:connect:check": "figma connect publish --dry-run --config ../../figma.config.json"
   },
   "peerDependencies": {
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"
   },
   "devDependencies": {
+    "@figma/code-connect": "^2.0.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitest/coverage-v8": "^4.1.8",

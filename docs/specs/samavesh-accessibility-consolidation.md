@@ -6,6 +6,54 @@
 >
 > **Why this doc exists:** an audit found **three parallel/bespoke High-Contrast implementations** plus dead a11y controls — and we were maintaining our own widget when an official one exists. This is the reconciliation plan.
 
+
+---
+
+## AMENDMENT — 2026-08-18: text size returns to the bar
+
+**What changed.** The decision above still holds for **contrast, spacing,
+link-highlight and dark mode** — those remain the widget's, exclusively. It no
+longer holds for **text size**, which is now served by the AccessibilityBar's own
+A−/A/A+ stepper on every surface that renders the bar.
+
+**Why the original reasoning does not survive contact with the code.** The stepper
+was removed from the masthead because it "duplicated the widget" — a second door to
+the same feature. It never was one. The control wrote a `--sa-font-scale` CSS
+variable that **nothing in the estate consumed**; only nmba mapped the callback to
+its own attribute. So the estate did not have two text-size mechanisms competing.
+It had one working mechanism (the widget) and one dead control that looked like a
+feature and did nothing — which is worse than either alternative, because a citizen
+who pressed A+ got silence.
+
+**What was done instead of deleting it.** The variable is now consumed by a single
+root rule, the choice persists in `localStorage`, and the widget's floating button
+is **hidden — never unmounted** — wherever the bar offers the accessibility entry.
+Hiding rather than unmounting is load-bearing: the bar opens the panel by dispatching
+a click on that very button, so removing it from the DOM silently breaks the bar's
+own icon. Verified in the browser on 2026-08-18: the FAB computes `display: none`
+with a 0×0 rect, and the panel still opens (`right: -530px → 0px`).
+
+**So the estate's a11y story is now:**
+
+| Capability | Owner |
+|---|---|
+| Text size | **AccessibilityBar stepper** (root font-size, persisted) |
+| Contrast, saturation, invert | UX4G widget |
+| Spacing, link highlight, dark mode | UX4G widget |
+| Entry point to all of the above | The bar's accessibility icon; the FAB is hidden where the bar exists, and returns where it does not |
+
+**Known overlap, flagged not resolved:** the widget's panel still carries its own
+"Bigger Text" control under Content Adjustment. Two text-size mechanisms can now
+both be reached, and they are not aware of each other. Whether to hide the widget's
+Bigger Text row, or to leave both, is a decision for the human — it needs a call on
+whether suppressing part of an official MeitY widget is acceptable.
+
+**Measured reach, recorded honestly:** on the live public homepage only **14%** of
+text elements actually resize, because that app's markup is authored in hardcoded
+px (`text-[15px]` and friends). Token-driven surfaces reach 80%. The mechanism is
+right; the website's typography authoring is the defect. Full numbers in
+`docs/design-system/components/accessibility-bar.md`.
+
 ---
 
 ## 1. The canonical mechanism (source of truth)

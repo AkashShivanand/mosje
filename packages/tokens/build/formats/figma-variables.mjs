@@ -218,6 +218,24 @@ function collectionFor(path, tier) {
   // only reason it did not become another silently mis-filed FLOAT.
   if (head === "badge" && String(rest[0] ?? "").startsWith("dotSize")) return "Space";
 
+  // `cmp/accessibilityBar/*` is the THIRD instance of this same trap, and the worst so far:
+  // `accessibilityBar` is in none of the root sets, so collectionFor returned null and all
+  // TWELVE of its tokens fell out of the Figma payload entirely — exactly the failure the
+  // `layout/*` comment above describes. That is why the library carries `layout/bar/height`
+  // and `layout/flag/width` by hand and has no `cmp/accessibilityBar/*` at all, and why the
+  // master and the code describe the same 46px bar under two different names.
+  //
+  // It is also MIXED, so a single root rule cannot route it: three tokens are inverse state
+  // layers (colours) and nine are measurements. Route by what each token IS, not by whose
+  // namespace it sits in.
+  if (head === "accessibilityBar") {
+    const ABAR_DIMENSIONS = new Set([
+      "height", "flagWidth", "flagHeight", "dividerWidth", "dividerHeight",
+      "pillSize", "stepSize", "launchIconSize", "iconButtonSize",
+    ]);
+    return ABAR_DIMENSIONS.has(String(rest[0] ?? "")) ? "Space" : "Color";
+  }
+
   if (COLOUR_ROOTS.has(head)) return "Color";
   return null;
 }

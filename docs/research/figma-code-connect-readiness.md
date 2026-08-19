@@ -1,5 +1,55 @@
 # Code Connect Readiness — SAMAVESH library ↔ @mosje/design-system
 
+> **SUPERSEDED 2026-08-18 — Code Connect is LIVE.** Everything below the line was
+> written while the feature appeared to be blocked on entitlement. It is kept because
+> the reasoning is still instructive, but **do not act on its status claims.**
+
+## Current state (2026-08-18, verified)
+
+| | |
+|---|---|
+| Entitlement | **Works.** `get_code_connect_map` returns real mappings, not a permission error. |
+| Templates | **7** parserless `*.figma.ts`, colocated with their components |
+| Config | `figma.config.json` at the repo root |
+| Dependency | `@figma/code-connect` **v2.0.0**, devDependency of `packages/design-system` |
+| AccessibilityBar | **Connected on all 9 variants** (`55065:33766`) |
+| Drift gate | `npm run check:code-connect` — in `npm run check` and CI |
+
+**The one thing still not automatic.** Mappings are *connected* — Dev Mode resolves the
+component, its source and its import. The **rich templated snippet**, where props are
+filled from the selected Figma instance, is only published by the CLI:
+
+```bash
+npm run figma:connect:check -w @mosje/design-system   # dry run, no token needed
+npm run figma:connect       -w @mosje/design-system   # needs FIGMA_ACCESS_TOKEN
+```
+
+The MCP `send_code_connect_mappings` tool creates **simple** mappings only — it accepts a
+`template` argument but the published record still comes back `hasTemplate: false`
+(verified twice on 2026-08-18, once against the component set and once against a single
+variant). So the CLI is the only path to a full template, and it needs the token.
+
+**`FIGMA_ACCESS_TOKEN` is a secret.** No agent session creates, reads or commits it — a
+human sets it locally or as a repository secret. Until it is set, the connection is real
+but the snippet stays generic.
+
+**Two config traps, both hit and fixed on 2026-08-18:**
+
+1. `figma.config.json` carried `"parser": "react"`. That is the **v1 parser-based**
+   setting; CLI v2 refuses to run with it (*"Framework-specific parsers are no longer
+   supported"*) even though every template here is parserless. Removed.
+2. `accessibility-bar.figma.ts` hardcoded its full Figma URL while the other six used the
+   `<SAMAVESH>` substitution from the config. Normalised.
+
+**`.figma.ts` is excluded from the design-system tsconfig** (`exclude: ["**/*.figma.ts"]`),
+so TypeScript never sees these files. That is why `check:code-connect` exists: without it,
+a renamed prop or a deleted Figma property leaves every gate green and Dev Mode serving a
+snippet that does not compile.
+
+---
+
+## Original 2026-06 assessment (superseded — status claims are wrong)
+
 **Status: BLOCKED ON PLAN, and nothing is mapped.** Code Connect requires a
 **Developer seat on an Organization/Enterprise plan**. Probed 2026-06
 (`get_code_connect_map` → *"You need a Developer seat… to access Code Connect"*) and
