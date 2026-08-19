@@ -93,11 +93,11 @@ export default function NgoApplicationDetailPage() {
                       <td className="py-2.5 pr-3">
                         {aiValid ? (
                           <span className="inline-flex items-center gap-1 rounded bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700 border border-emerald-200">
-                            <Icon name="check_circle" size={14} aria-hidden /> AI: verified
+                            <Icon name="check_circle" size={16} aria-hidden /> AI: verified
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1 rounded bg-rose-50 px-2 py-0.5 text-xs font-semibold text-rose-700 border border-rose-200">
-                            <Icon name="cancel" size={14} aria-hidden /> AI: not valid
+                            <Icon name="cancel" size={16} aria-hidden /> AI: not valid
                           </span>
                         )}
                       </td>

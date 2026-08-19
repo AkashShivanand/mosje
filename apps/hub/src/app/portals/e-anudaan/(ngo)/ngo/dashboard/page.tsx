@@ -84,12 +84,12 @@ export default function NgoDashboardPage() {
           </div>
           <p className="flex flex-wrap items-center gap-3 text-xs text-ink-muted">
             <span className="flex items-center gap-1 font-mono font-semibold text-ink">
-              <Icon name="verified_user" size={14} className="text-primary shrink-0" aria-hidden />
+              <Icon name="verified_user" size={16} className="text-primary shrink-0" aria-hidden />
               DARPAN ID: {ngo?.darpanId ?? "MH/2016/100000"}
             </span>
             <span className="text-line">•</span>
             <span className="flex items-center gap-1">
-              <Icon name="schedule" size={14} className="text-ink-muted shrink-0" aria-hidden />
+              <Icon name="schedule" size={16} className="text-ink-muted shrink-0" aria-hidden />
               Last sync: 18 August 2026 at 7:50 pm
             </span>
           </p>
@@ -119,7 +119,7 @@ export default function NgoDashboardPage() {
           </p>
           <Link href="/portals/e-anudaan/ngo/deficiencies">
             <Button appearance="filled" size="sm">
-              Respond Now <Icon name="arrow_forward" size={14} aria-hidden />
+              Respond Now <Icon name="arrow_forward" size={16} aria-hidden />
             </Button>
           </Link>
         </div>
@@ -291,7 +291,7 @@ export default function NgoDashboardPage() {
         >
           <div className="flex items-center justify-between border-b border-line pb-3">
             <div className="flex items-center gap-2">
-              <Icon name="domain" size={18} className="text-primary shrink-0" aria-hidden />
+              <Icon name="domain" size={20} className="text-primary shrink-0" aria-hidden />
               <h2 id="org-profile-title" className="text-base font-bold text-ink">
                 Organisation Profile
               </h2>
@@ -355,7 +355,7 @@ export default function NgoDashboardPage() {
         >
           <div className="flex items-center justify-between border-b border-line pb-3">
             <div className="flex items-center gap-2">
-              <Icon name="assignment" size={18} className="text-primary shrink-0" aria-hidden />
+              <Icon name="assignment" size={20} className="text-primary shrink-0" aria-hidden />
               <h2 id="apps-by-scheme-title" className="text-base font-bold text-ink">
                 Applications by Scheme
               </h2>
@@ -422,7 +422,7 @@ export default function NgoDashboardPage() {
             href="/portals/e-anudaan/ngo/my-applications"
             className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1"
           >
-            View All Applications <Icon name="arrow_forward" size={14} aria-hidden />
+            View All Applications <Icon name="arrow_forward" size={16} aria-hidden />
           </Link>
         </div>
 
@@ -513,7 +513,7 @@ export default function NgoDashboardPage() {
 
                 <Link href={`/portals/e-anudaan/ngo/my-applications/${appRow.id}`}>
                   <Button appearance="outlined" size="sm">
-                    Details <Icon name="chevron_right" size={14} aria-hidden />
+                    Details <Icon name="chevron_right" size={16} aria-hidden />
                   </Button>
                 </Link>
               </div>
