@@ -68,6 +68,19 @@ Code Connect: `divider.figma.ts`, mapped and live on all 6 variants.
 > RULE 1, and the library already nested `bolder/default` / `bolder/hover`. VariableIDs were
 > preserved, so every existing binding followed. The recorded Colour gap fell from 6 to 4.
 
+## Master board
+
+Organised to the same pattern as the Navbar and AccessibilityBar boards: a grey
+`1 · Divider` section → a white card at radius 12 → a `head` frame carrying the name in
+`Title/title-2` and a one-line purpose in `Label/label-3` → the component set. The
+standalone "Master header" frame was absorbed into `head` and removed.
+
+Variants are laid out as an ordered grid — **columns are Orientation, rows are Tone**
+(Default → Inverse → Inverse subtle). **The set carries a brand fill**, which is
+deliberate: four of the six variants are white, and on the default light board they were
+invisible. A component board that cannot show four of its six variants is not a board.
+The Default grey (#dcdee1) reads on the brand fill too, so all six are legible at once.
+
 ## Migration status (2026-08-18)
 
 | | Sites | |
