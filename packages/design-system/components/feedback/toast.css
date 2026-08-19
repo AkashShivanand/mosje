@@ -66,7 +66,13 @@
 .ds-toast--info .ds-toast__icon { color: var(--sa-text-brand-primary-base); }
 
 .ds-toast--warning { border-color: color-mix(in srgb, var(--sa-border-status-warning-base) 35%, transparent); background-color: var(--sa-bg-status-warning-base); }
-.ds-toast--warning .ds-toast__icon { color: var(--sa-color-status-warningStrong, var(--sa-text-status-warning-base)); }
+/* `status/warningStrong` DOES NOT EXIST — it is the one absent member of the four-token
+   Strong family, and the closed legacy allow-list in packages/tokens may only shrink, so
+   it cannot be added. The fallback is therefore what has always painted this icon. Bound
+   to it directly: identical pixels (#704b00, 7.00:1 on the warning surface), one fewer
+   dangling name. A darker icon would need a token the grammar forbids — a design
+   decision, not a defect fix. */
+.ds-toast--warning .ds-toast__icon { color: var(--sa-text-status-warning-base); }
 
 .ds-toast--error { border-color: color-mix(in srgb, var(--sa-border-status-error-base) 30%, transparent); background-color: var(--sa-bg-status-error-base); }
-.ds-toast--error .ds-toast__icon { color: var(--sa-color-status-dangerStrong, var(--sa-text-status-error-base)); }
+.ds-toast--error .ds-toast__icon { color: var(--sa-color-status-dangerStrong); }

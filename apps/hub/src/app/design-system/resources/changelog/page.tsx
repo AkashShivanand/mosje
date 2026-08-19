@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.30.0",
+    version: "v0.31.0",
     date: "2026-08-19",
     current: true,
+    changes: [
+      { kind: "Added", text: "A DANGLING-VAR GATE, because CSS does not warn \u2014 it drops the declaration. `check:dangling-vars` walks every stylesheet and inline style object in the design system, config, hub and Storybook, and fails when a `var(--sa-*)` names a token nothing declares. It runs FIRST in `npm run check`, ahead of the gates it usually explains. Proven by breaking it deliberately: a bogus reference exits 1, a clean tree exits 0, and an unreadable scope or a scan that finds zero declarations exits 2 rather than reporting a false clean \u2014 the failure mode the first ds-linkage checker actually shipped with" },
+      { kind: "Fixed", text: "47 SPACING REFERENCES ACROSS 4 FILES POINTED AT NAMES THAT NO LONGER EXIST, left behind by the value-naming migration exactly as 12 radius references had been. `tabs.css` (13), the Divider docs page (15), the changelog page (11) and the Tabs docs page (8). The mapping was recovered from the pre-migration `tokens.css` in git history rather than guessed, which matters because THE FAMILIES ARE NOT ONE RAMP: `stack/s` was 12 where `inline/s` was 8, and `l` meant 16, 24, 20 and 56 in the four families. A single map would have silently moved values instead of preserving them" },
+      { kind: "Fixed", text: "THE TOAST WARNING ICON WAS PAINTED BY A FALLBACK, NOT A TOKEN. `status/warningStrong` is the one absent member of a four-token Strong family \u2014 its three siblings exist \u2014 so the reference beside it had never resolved, and the second half of the pair was doing the work. It cannot simply be authored: the naming grammar rejects the whole `color/status/*` shape, and the legacy allow-list that grandfathers the other eleven is CLOSED AND MAY ONLY SHRINK. Bound instead to `text/status/warning/base`, which is what the fallback already resolved to \u2014 identical pixels (#704b00, 7.00:1 on the warning surface), one fewer dangling name. A darker icon would need a token the grammar forbids, which is a design decision rather than a defect fix. The error icon's fallback went too: its token IS declared, so the fallback never fired and only disagreed with it" },
+      { kind: "Fixed", text: "THE GATE GREETED ITS OWN MERGE BY FLAGGING THE CORNER RAIL, and it was the gate that was wrong. `useCornerRailOffset` declares its property name as a DESTRUCTURING DEFAULT and calls `setProperty` with the variable seventy lines later, so the literal is nowhere near the call a `setProperty(\u2026)` pattern watches. A custom-property name sitting in VALUE position \u2014 after `=` or `:` \u2014 is a name being plumbed somewhere, never a reference, because references live inside `var(\u2026)`. Recognising that also retired two more advisory entries. Re-verified after the loosening that a bogus reference still fails, in CSS and in TypeScript both: widening what counts as a declaration is exactly the change that can quietly turn a gate off" },
+      { kind: "Fixed", text: "THE GATE'S OWN FALSE POSITIVES, before it was wired in \u2014 95 findings over 34 names reduced to 47 real ones. Three classes were noise, all of them ways a name can be declared or mentioned without a stylesheet saying so: prose inside comments and changelog strings, names CONSTRUCTED at runtime (`var(\u0060--sa-${token}\u0060)`), properties set through `setProperty`, and React's computed-key form `[\"--hero-speed\" as string]:`, whose `as string]` between the quote and the colon is why a plain `\"--x\":` pattern misses it. A gate that cries wolf is a gate that gets silenced" },
+    ],
+  },
+  {
+    version: "v0.30.0",
+    date: "2026-08-19",
     changes: [
       { kind: "Fixed", text: "THE DEMO FAB FLOATED 108PX ABOVE AN EMPTY CORNER, on the majority of the estate. It hardcoded \u201c24px UX4G offset + 70px UX4G height + 14px gap\u201d as its CSS fallback and refined it by measuring `#uw-widget-custom-trigger`. But that trigger is `display: none` on every page carrying an AccessibilityBar \u2014 the website masthead, the whole design-system documentation surface, scw, tg, nhapoa, nmba and smile-admin \u2014 so the measure loop found the element, failed its height check thirty times, gave up, and left the fallback in place. The number LOOKED deliberate, which is why no page-level review ever caught it" },
       { kind: "Added", text: "THE BOTTOM-RIGHT CORNER RAIL \u2014 `useCornerRailOffset`, one shared answer to where a floating widget sits so two of them never land on top of each other. It rests 32px from the bottom when the corner is empty and stacks 16px above whatever is actually there, measured live. A widget joins by calling the hook; a widget that merely OCCUPIES the corner \u2014 a chatbot launcher, when one exists \u2014 sets `data-sa-corner-occupant` on its own element and everything above it moves up, with no change to any other file. Occupancy is re-measured on late injection, on the AccessibilityBar\u2019s root flag flipping, and on resize, all funnelled through one rAF-debounced read" },
@@ -840,10 +851,10 @@ export default function ChangelogPage(): React.JSX.Element {
 
         <div
           style={{
-            marginTop: "var(--sa-stack-l)",
+            marginTop: "var(--sa-stack-24)",
             display: "flex",
             flexDirection: "column",
-            gap: "var(--sa-stack-xl)",
+            gap: "var(--sa-stack-32)",
           }}
         >
           {RELEASES.map((release) => (
@@ -857,11 +868,11 @@ export default function ChangelogPage(): React.JSX.Element {
                 style={{
                   display: "flex",
                   alignItems: "baseline",
-                  gap: "var(--sa-stack-s)",
+                  gap: "var(--sa-stack-12)",
                   flexWrap: "wrap",
-                  paddingBottom: "var(--sa-padding-s)",
+                  paddingBottom: "var(--sa-padding-12)",
                   borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-                  marginBottom: "var(--sa-stack-m)",
+                  marginBottom: "var(--sa-stack-16)",
                 }}
               >
                 <h2
@@ -888,7 +899,7 @@ export default function ChangelogPage(): React.JSX.Element {
                       fontWeight: 600,
                       color: "var(--sa-on-bg-brand-primary-bolder)",
                       background: "var(--sa-bg-brand-primary-bolder)",
-                      padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
+                      padding: "var(--sa-padding-2) var(--sa-padding-8)",
                       borderRadius: "var(--sa-shape-6)",
                     }}
                   >
@@ -905,7 +916,7 @@ export default function ChangelogPage(): React.JSX.Element {
                   padding: 0,
                   display: "flex",
                   flexDirection: "column",
-                  gap: "var(--sa-stack-s)",
+                  gap: "var(--sa-stack-12)",
                 }}
               >
                 {release.changes.map((change, i) => (
@@ -913,7 +924,7 @@ export default function ChangelogPage(): React.JSX.Element {
                     key={i}
                     style={{
                       display: "flex",
-                      gap: "var(--sa-stack-s)",
+                      gap: "var(--sa-stack-12)",
                       alignItems: "flex-start",
                     }}
                   >
@@ -926,7 +937,7 @@ export default function ChangelogPage(): React.JSX.Element {
                         fontWeight: 700,
                         color: "var(--sa-on-bg-brand-primary-bolder)",
                         background: KIND_COLOR[change.kind],
-                        padding: "var(--sa-padding-3xs) var(--sa-padding-xs)",
+                        padding: "var(--sa-padding-2) var(--sa-padding-8)",
                         borderRadius: "var(--sa-shape-6)",
                       }}
                     >

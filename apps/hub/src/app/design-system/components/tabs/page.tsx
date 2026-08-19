@@ -177,7 +177,7 @@ function ClinicalRecord() {
           open list has nothing to sit in; an underline inside a filled track draws a second edge a few pixels inside
           the first. The remaining four combinations render — nothing stops you — and read as broken.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <DoDont
             cards={[
               {
@@ -211,7 +211,7 @@ function ClinicalRecord() {
           <code>rail</code> indicator is the vertical counterpart of <code>underline</code> — the same 2px mark, moved
           to the leading edge.
         </p>
-        <div style={{ display: "flex", gap: "var(--sa-stack-xl)", marginTop: "var(--sa-stack-m)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--sa-stack-32)", marginTop: "var(--sa-stack-16)", flexWrap: "wrap" }}>
           <TabsSpecimen orientation="vertical" track="none" indicator="rail" label="Vertical rail" width={220} />
           <TabsSpecimen orientation="vertical" track="enclosed" indicator="pill" label="Vertical pill" width={220} />
         </div>
@@ -238,7 +238,7 @@ function ClinicalRecord() {
           defect. It also drives the leading icon (16 / 20 / 24) and the unread dot (6, stepping to 8 at{" "}
           <code>l</code>, because a dot is sized against the type it annotates).
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <TabsSizeSpecimen />
         </div>
         <Callout type="info" title="Target size">
@@ -260,7 +260,7 @@ function ClinicalRecord() {
           <code>size</code>. A CSS class would set the box but not the axis, drawing the glyph for one size and
           displaying it at another.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <TabsContentSpecimen />
         </div>
         <Callout type="warning" title="A disabled tab stays in the tablist">
@@ -281,7 +281,7 @@ function ClinicalRecord() {
           These govern the <em>content</em>, and they are the rules most often broken. No amount of CSS fixes a badly
           written label.
         </p>
-        <ol style={{ ...proseStyle, paddingLeft: "1.3em", display: "flex", flexDirection: "column", gap: "var(--sa-stack-xs)" }}>
+        <ol style={{ ...proseStyle, paddingLeft: "1.3em", display: "flex", flexDirection: "column", gap: "var(--sa-stack-8)" }}>
           <li>
             <strong>A tab label names a destination.</strong> It is not a sentence. One or two words; aim for 20
             characters or fewer in English.
@@ -314,7 +314,7 @@ function ClinicalRecord() {
           </li>
         </ol>
 
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <DoDont
             cards={[
               {
@@ -372,7 +372,7 @@ function ClinicalRecord() {
           container can change size without the window moving — a collapsing sidebar, a panel
           opening, a webfont swapping in.
         </Callout>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
         <Callout type="info" title="Overflow — the Tabs / More menu">
           A horizontal list that outgrows its container <strong>scrolls</strong>. Set{" "}
           <code>overflow</code> to add the <code>Tabs / More</code> trigger, which appears{" "}

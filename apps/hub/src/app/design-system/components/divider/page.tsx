@@ -16,31 +16,31 @@ export const metadata: Metadata = {
     "The estate's thin rule — a 1px hairline between sections, or between controls in a row. Six variants: Orientation × Tone.",
 };
 
-const sectionStyle: React.CSSProperties = { marginBottom: "var(--sa-section-m)" };
+const sectionStyle: React.CSSProperties = { marginBottom: "var(--sa-section-48)" };
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
-  marginBottom: "var(--sa-stack-m)",
-  scrollMarginTop: "var(--sa-section-m)",
+  marginBottom: "var(--sa-stack-16)",
+  scrollMarginTop: "var(--sa-section-48)",
 };
 const leadStyle: React.CSSProperties = {
   fontSize: "var(--sa-type-body-1-size)",
   color: "var(--sa-text-neutral-subtle)",
   lineHeight: "var(--sa-type-body-1-lh)",
   maxWidth: "64ch",
-  marginBottom: "var(--sa-stack-m)",
+  marginBottom: "var(--sa-stack-16)",
 };
 const previewLabel: React.CSSProperties = {
   fontSize: "var(--sa-type-label-2-size)",
   fontWeight: 600,
   color: "var(--sa-text-neutral-subtle)",
-  marginBottom: "var(--sa-stack-xs)",
+  marginBottom: "var(--sa-stack-8)",
 };
 const panel: React.CSSProperties = {
   background: "var(--sa-bg-neutral-subtler)",
   borderRadius: "var(--sa-shape-8)",
-  padding: "var(--sa-padding-l)",
-  marginBottom: "var(--sa-stack-m)",
+  padding: "var(--sa-padding-20)",
+  marginBottom: "var(--sa-stack-16)",
 };
 const brandPanel: React.CSSProperties = {
   ...panel,
@@ -65,9 +65,9 @@ const USAGE = `import { Divider } from "@mosje/design-system";
 export default function DividerPage(): React.JSX.Element {
   return (
     <>
-      <header style={{ marginBottom: "var(--sa-section-m)" }}>
+      <header style={{ marginBottom: "var(--sa-section-48)" }}>
         <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 500, lineHeight: 1.1 }}>Divider</h1>
-        <p style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 400, color: "var(--sa-color-text-default)", maxWidth: "62ch", lineHeight: 1.5, marginTop: "var(--sa-stack-s)" }}>
+        <p style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 400, color: "var(--sa-color-text-default)", maxWidth: "62ch", lineHeight: 1.5, marginTop: "var(--sa-stack-12)" }}>
           The estate&apos;s thin rule — a 1px hairline between sections, or between controls in a
           row. Six variants: Orientation × Tone.
         </p>
@@ -103,8 +103,8 @@ export default function DividerPage(): React.JSX.Element {
         <div style={panel}>
           <p style={previewLabel}>horizontal — fills its container</p>
           <Divider />
-          <p style={{ ...previewLabel, marginTop: "var(--sa-stack-l)" }}>vertical — stretches to the tallest sibling</p>
-          <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-inline-m)", height: "40px" }}>
+          <p style={{ ...previewLabel, marginTop: "var(--sa-stack-24)" }}>vertical — stretches to the tallest sibling</p>
+          <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-inline-12)", height: "40px" }}>
             <span>Before</span>
             <Divider orientation="vertical" />
             <span>After</span>
@@ -131,7 +131,7 @@ export default function DividerPage(): React.JSX.Element {
         <div style={brandPanel}>
           <p style={{ ...previewLabel, color: "var(--sa-text-neutral-inverse)" }}>inverse — sections on a dark surface</p>
           <Divider tone="inverse" />
-          <p style={{ ...previewLabel, color: "var(--sa-text-neutral-inverse)", marginTop: "var(--sa-stack-l)" }}>inverse-subtle — between controls</p>
+          <p style={{ ...previewLabel, color: "var(--sa-text-neutral-inverse)", marginTop: "var(--sa-stack-24)" }}>inverse-subtle — between controls</p>
           <Divider tone="inverse-subtle" />
         </div>
         <Callout type="info" title="Why there are two inverse tones">
@@ -154,7 +154,7 @@ export default function DividerPage(): React.JSX.Element {
           <p style={{ ...previewLabel, color: "var(--sa-text-neutral-inverse)" }}>
             an explicit length — what the AccessibilityBar passes
           </p>
-          <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-inline-m)", height: "46px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-inline-12)", height: "46px" }}>
             <span style={{ fontSize: "var(--sa-type-label-2-size)" }}>Skip to Main Content</span>
             <Divider orientation="vertical" tone="inverse-subtle" length={20} />
             <span style={{ fontSize: "var(--sa-type-label-2-size)" }}>A− A A+</span>
@@ -218,7 +218,7 @@ export default function DividerPage(): React.JSX.Element {
                 <div style={{ width: "100%" }}>
                   <p style={{ fontSize: "var(--sa-type-body-3-size)" }}>Applicant details</p>
                   <Divider />
-                  <p style={{ fontSize: "var(--sa-type-body-3-size)", marginTop: "var(--sa-stack-s)" }}>Bank details</p>
+                  <p style={{ fontSize: "var(--sa-type-body-3-size)", marginTop: "var(--sa-stack-12)" }}>Bank details</p>
                 </div>
               ),
             },
@@ -231,7 +231,7 @@ export default function DividerPage(): React.JSX.Element {
                   <p style={{ fontSize: "var(--sa-type-body-3-size)" }}>Heading</p>
                   <Divider />
                   <Divider />
-                  <p style={{ fontSize: "var(--sa-type-body-3-size)", marginTop: "var(--sa-stack-s)" }}>Body</p>
+                  <p style={{ fontSize: "var(--sa-type-body-3-size)", marginTop: "var(--sa-stack-12)" }}>Body</p>
                 </div>
               ),
             },
