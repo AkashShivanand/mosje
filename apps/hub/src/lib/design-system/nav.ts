@@ -93,7 +93,6 @@ export const NAV: NavGroup[] = [
       { label: "Navbar · Mega-menu", href: "/design-system/components/header#menus", badge: "Stable" },
       { label: "Sidebar Nav", href: "/design-system/components/sidebar", badge: "Stable" },
       { label: "Tabs", href: "/design-system/components/tabs", badge: "Beta" },
-      { label: "App Switcher", href: "/design-system/components/badge#appswitcher", badge: "Beta" },
       { label: "Footer", href: "/design-system/components/header#footer", badge: "Stable" },
     ],
   },

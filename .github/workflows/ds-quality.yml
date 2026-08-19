@@ -186,6 +186,14 @@ jobs:
       - name: Dangling vars — every --sa-* reference resolves to a declared token
         run: npm run check:dangling-vars
 
+      # A nav link naming an id no page renders is invisible to every other check:
+      # it resolves, returns 200, and silently drops the reader at the top of a page
+      # about something else. Sixteen had accumulated in the sidebar — nearly half its
+      # anchor links — advertising docs that were never written, plus one component
+      # retired outright. The 15 that remain are DECLARED debt and may only shrink.
+      - name: Docs links — every internal pointer resolves, anchors included
+        run: npm run check:docs-links
+
       # The Figma documentation pages state FACTS about the code — the type role and its
       # px, the tokens the stylesheet references, the focus treatment, the WCAG level.
       # Ten of the AccessibilityBar page's claims were wrong on 2026-08-19, including two

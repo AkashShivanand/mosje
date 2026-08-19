@@ -22,7 +22,7 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.32.0",
+    version: "v0.33.0",
     date: "2026-08-19",
     current: true,
     changes: [
@@ -31,6 +31,18 @@ const RELEASES: Release[] = [
       { kind: "Fixed", text: "THE WEB PAGE CARRIED THE SAME ROT, in four of its seven token-table rows: `--sa-type-label-2-size` (the bar is body-2), `--sa-border-neutral-inverse` (the rule moved into the Divider component), `--sa-shape-full` (radii were unified on shape/4) and `--sa-focus-ring` (rejected at 1.37:1). Its \u201cdo\u201d specimen DEMONSTRATED the focus ring in the very colour the component refuses, and its accessibility checklist asserted the same wrong token. Every one of those names exists in tokens.css, so no dangling-var check could ever have seen them" },
       { kind: "Added", text: "A FIGMA\u2194CODE PARITY GATE. `check:figma-docs` pins each factual claim to the code that backs it: a NUMBER to the token it must equal (resolved through aliases, rem\u2192px, clamp caps read at their ceiling), a BEHAVIOURAL claim to the line that implements it. \u201cFocus is inverse ink, never focus/ring\u201d is pinned to the ABSENCE of --sa-focus-ring in the bar\u2019s stylesheet, so the claim cannot outlive the code. Proven by breaking it four ways \u2014 moving the type token caught the drift in three places at once, exactly the failure that occurred" },
       { kind: "Added", text: "A TOKEN-TABLE CHECK, because three of the four web defects were one kind: the page named a token the component does not reference. Each `token:` row on a component\u2019s documentation page must appear in that component\u2019s stylesheet, or be declared in `via` as reached through another component \u2014 as `--sa-border-neutral-inverse-subtle` is, through Divider. Verified by reintroducing all three original stale rows; each is now caught. The reverse direction (someone edits Figma, the snapshot rots) needs the API, so `check:figma-docs:live` re-fetches and diffs, and `:sync` adopts \u2014 both secret-guarded, degrading to a skip rather than a failure" },
+    ],
+  },
+  {
+    version: "v0.32.0",
+    date: "2026-08-19",
+    changes: [
+      { kind: "Fixed", text: "SIXTEEN SIDEBAR LINKS WENT NOWHERE \u2014 nearly half the nav\u2019s anchor links. Each named an id no page renders, which is invisible by construction: the link resolves, returns 200, and silently drops the reader at the TOP of a page about something else. The badge page documents Badge alone, yet the nav promised Alert, Modal, Toast, Loader, Stepper, Empty State and Avatar there; card promised Data Table, Metric Card and Charts; input promised Checkbox, Toggle, Search and Chip; header promised Footer" },
+      { kind: "Removed", text: "APP SWITCHER, WHICH HAS NOT EXISTED SINCE DEMODOCK REPLACED IT, was still advertised in three places \u2014 the sidebar, the component index on the design-system home page, and the Navbar page\u2019s Related list, the last pointing at a `components/app-switcher` route that never existed at all. Only `AppSwitcherPanel` survives, as content inside DemoDock, which is demo tooling rather than a product component and does not belong in the index. The Navbar\u2019s Related list now points at the Accessibility Bar, which is what actually sits directly above it" },
+      { kind: "Fixed", text: "THE COLOUR MODE LINK POINTED AT `#color-modes`, A SECTION THAT HAS NEVER EXISTED on the Colour page. The section is `#brands` \u2014 \u201cTwo brands, and exactly what a swap changes\u201d. Verified live: the anchor now lands at 80px, clear of the 56px sticky header" },
+      { kind: "Added", text: "A DOCS-LINK GATE \u2014 `check:dangling-vars` for pointers. `check:docs-links` resolves every internal `/design-system` link: the ROUTE against pages, `route.ts` handlers AND static files under `public` (an earlier pass that knew only about pages called `llms.txt`, `tokens.json` and two SVGs broken \u2014 a checker that cries wolf gets ignored), and the ANCHOR against the ids its page actually renders. Constructed paths are skipped. Proven by breaking it three ways: a new orphan anchor, a missing route, and a baseline entry that is no longer broken all exit 1" },
+      { kind: "Changed", text: "THE 15 REMAINING ORPHANS ARE DECLARED DEBT, NOT SILENCED. They live in `tools/docs-links/orphan-anchors.json`, which MAY ONLY SHRINK \u2014 the ratchet the storybook-coverage and icon-scale gates already use \u2014 and each records where its component IS documented today. Fourteen are in Storybook; Toast is documented NOWHERE, because `ToastProvider` sits in `NOT_RENDERABLE_IN_STORYBOOK` as a context provider, so the toast\u2019s visual appearance has no home. Deleting the nav entries would hide components people need to find, and writing 15 doc sections is not a bug fix, so the resolution is left to a human and the gate stops a sixteenth appearing quietly" },
+      { kind: "Fixed", text: "THE PROJECT BRAIN DESCRIBED A REPO THAT NO LONGER EXISTS. `CLAUDE.md` still routed readers to `apps/dosje/`, `apps/portals/` and `apps/docs/` \u2014 all gone in the single-origin consolidation, and contradicted by its own Commands section forty lines below. It also claimed \u201c17 atoms\u201d against 90 exported components, named the colour modes `blue-light` / `blue-dark` when the axis is `data-brand` with `blue` and `navy`, and said the repo was \u201cnot yet an npm workspace\u201d when every `-w` command in the same file depends on it being one" },
     ],
   },
   {

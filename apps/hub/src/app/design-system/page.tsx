@@ -147,8 +147,7 @@ export default function WelcomePage(): React.JSX.Element {
             { name: "Input / Textarea", status: "Stable" as const, href: "/design-system/components/input" },
             { name: "Select", status: "Beta" as const, href: "/design-system/components/input#select" },
             { name: "Form Field", status: "Stable" as const, href: "/design-system/components/input#form-field" },
-            { name: "App Switcher", status: "Beta" as const, href: "/design-system/components/badge#appswitcher" },
-            { name: "Color Mode", status: "Stable" as const, href: "/design-system/foundations/color#color-modes" },
+            { name: "Color Mode", status: "Stable" as const, href: "/design-system/foundations/color#brands" },
           ].map((item) => (
             <a
               key={item.name}
