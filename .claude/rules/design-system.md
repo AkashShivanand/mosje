@@ -513,20 +513,35 @@ existed precisely to stop that. Both now bind it.
 **A Tier-3 token nothing binds is worse than no token**: it reads as governance while the thing it
 governs drifts underneath. When adding one, bind it in the same change, or do not add it.
 
-### The rebind campaign — 2.87 % to 97.70 %, all 69 pages
+### The rebind campaign — 2.87 % to 97.90 %, all 69 pages, ZERO defects
 
 **Coverage is complete: 69 of 69 pages censused, 0 uncensused.** 56,672 of 58,008 authorable
 properties sit on a correct Tier-2 token.
 
-**Zero Tier-1, zero cross-family, zero foreign-library and zero ghost bindings remain anywhere in
-the library.** All 120 surviving defects are `rn`, and **116 of them are fractional** — 10.121,
-4.803, 4.800, 3.899, 3.200 px and friends, on `Popover` (64), `New in 2.0` (32), `Thumbnail` (12),
-`Tabs` (4) and `Date-Time Picker` (4). A fractional radius is not a typed choice; it is what a
-tool leaves behind when artwork is scaled, and it should be fixed by resizing the artwork rather
-than by binding a rung to a number nobody picked.
+**Every defect class is zero.** No Tier-1, no cross-family, no foreign-library, no ghost, no raw
+non-zero radius anywhere in the SAMAVESH library. The per-page ratchet is therefore frozen at
+zero, which is the strongest state it can be in: **any** new raw radius on **any** page now fails
+the build.
 
-**`Tables` holds the only genuine leftover: 4 properties at a flat 3px.** That is a real
-off-ladder decision and needs a human call — 2 or 4, or a case for a rung.
+What is left is 852 unbound **zeros** (Footer 620, Spacing 228, Changelog 4) and 364
+`COMPONENT_SET` **chrome** properties — both declared non-defects, for reasons stated above.
+
+**The 3px on Tables became `shape/4`**, on your call. One `setBoundVariable` fixed all four
+corners: binding a single corner of a node with a *uniform* radius binds all four, so a rebind's
+call count under-reports the properties it actually changes.
+
+**The 116 fractional radii were bound to their nearest rung** — every move under 1.1px, none
+visible. Two causes, established by inspection rather than assumed:
+
+- **Popover (64) and Tabs (4) were never scaled at all.** Their boxes are integral (278×54,
+  145×98); the radius was simply off-ladder at 4.8.
+- **New in 2.0 (32) and Thumbnail (12) genuinely were scaled**, and their boxes are fractional.
+
+An earlier version of this rule claimed binding these would "hide the scaling defect". That was
+half wrong, and the correction is worth keeping: **Figma's scale tool bakes the corner radius as
+an ABSOLUTE value**, so resizing the box does *not* restore the radius — it has to be set back
+either way. The fractional *box* is a separate, cosmetic issue; the seven nodes are listed in
+`fractionalBoxes` in the census so they are not rediscovered as a mystery.
 
 The final 34 pages were censused and rebound in the same pass; each carries a `censusBefore`
 block recording its state at first measurement, so the census stands on its own rather than
