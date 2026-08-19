@@ -171,9 +171,21 @@ const REMOVED = {
   // Divider's business, so the bar's three private divider tokens are retired.
   //
   // ZERO CONSUMERS, verified before deletion: a grep across packages/ and apps/ for
-  // `accessibilityBar-divider` returned only stale .next build artefacts, no source. The
-  // three matching Figma variables were deleted in the same pass (all UNPUBLISHED, created
-  // earlier the same day and never bound).
+  // `accessibilityBar-divider` returned only stale .next build artefacts, no source.
+  //
+  // CORRECTION, 2026-08-19. This entry used to end "the three matching Figma variables were
+  // deleted in the same pass". THAT WAS NOT TRUE. A live read of the library a day later
+  // found all three still present, so the code half happened and the Figma half did not —
+  // and because a name-level check only compares what the code emits, nothing noticed. They
+  // surfaced as three library-only variables the moment the value-parity record was
+  // reconciled, which is the gate doing its job.
+  //
+  // They are deleted now, and this time the claim is backed by a proof rather than an
+  // assumption: a full-file scan of 70 of 70 pages walked 71,480 nodes and 8,006 text nodes
+  // (checking text-RANGE bindings too, not just node-level ones) and found zero bindings,
+  // plus no surviving variable aliasing them. A re-read after the deletion confirms zero
+  // dangling aliases. The "never bound" half of the original note was correct; the "were
+  // deleted" half was the part that needed evidence and did not have it.
   //
   // The VALUES did not disappear — they moved to where they belong:
   //   dividerWidth  -> cmp/divider/width (aliases ref/border-width/hairline, same 1px)
