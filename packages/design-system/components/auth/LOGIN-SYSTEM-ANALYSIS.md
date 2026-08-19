@@ -739,7 +739,10 @@ component set was rebuilt on 17 Aug (by a parallel session) into
 `Orientation × Track` with a slot, and its own description says it plainly:
 *"The track lives HERE, never on a tab."*
 
-Both wrappers are now **deprecated**. `AuthFormCard` holds `Tabs` instances directly:
+Both wrappers are now **deleted**, not deprecated. Deprecation exists to protect downstream
+consumers; these had none — created in this workstream, never adopted anywhere, zero instances
+across all 64 pages. Keeping a labelled corpse in the library is just a second place for someone
+to find the wrong answer. `AuthFormCard` holds `Tabs` instances directly:
 
 | Switch | Component |
 |---|---|
@@ -766,6 +769,34 @@ fixed. Worth knowing for any future component built on slots.
    splits 390 evenly and truncates the longer label. **The reference does not split them**: its
    underline tabs hug their labels and left-align. Set to HUG, and the clipping is gone. The pill
    tabs *should* fill, and do.
+
+### Junk swept at the same time
+
+- **A stray paste of the original handoff screen** (1440×960) was sitting loose on the page,
+  outside every section — two stacked navbars, the broken Forgot Password card, placeholder
+  copy. Reference debris; removed.
+- The `Check slot` frame inside `OrganisationCard` reads as "empty" to a sweep and is
+  **deliberate**: it reserves the check's 24px so selecting a card does not reflow its tagline.
+
+**Final state of the page: zero overlaps, zero raw values, zero unstyled text, no stray nodes.**
+Four sections — `1 · Template`, `2 · Organisms`, `3 · Parts` (8 auth molecules), `4 · Portal hero
+photography` — plus the documentation frame.
+
+### The superseded OTP pair is gone too
+
+`_deprecated/OTP box` and `_deprecated/OTP field` predated this work, so they were left standing
+at first. On review they were removed as well, and the 18 instances turned out to be no obstacle:
+every one lived **inside the field component set**, which lived inside its own `OTP Verrification`
+demo frame. Deleting that frame took the title, both component sets and all 18 instances in one
+move, with **zero orphans** anywhere in the file.
+
+`Inputs` now carries **one** OTP implementation rather than two. `OTP Input` and
+`OTP Input / Box` are intact — 8 variants, verified rendering after the deletion.
+
+The wider point, which is why this needed asking rather than assuming: **deprecate-not-delete is
+a rule about protecting consumers, not about age.** A component nothing instances is not a
+lifecycle stage, it is clutter — and a `_deprecated/` label in a published library is a second
+answer for anyone searching, which is the exact failure the rule exists to prevent.
 
 ### Still outstanding
 
