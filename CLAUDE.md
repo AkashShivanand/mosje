@@ -164,6 +164,12 @@ git switch main && git pull                 # start from current main, always
 git switch -c <type>/<short-slug>            # feat/ fix/ ds/ docs/ chore/
 ```
 
+**A new session does not mean a new branch.** Before the first edit of any session,
+check whether the requested work already has a branch and continue in it — a context
+window ending is not the end of a task. The procedure, including the two ways switching
+goes wrong in this repo (a dirty tree that is someone else's, and a branch held by
+another worktree), is `.claude/rules/branch-continuity.md`.
+
 ### A branch is short-lived, and that is the part that actually prevents conflicts
 
 Isolating work on a branch does **not** by itself avoid merge conflicts — a branch that
