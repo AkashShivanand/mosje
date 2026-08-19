@@ -25,16 +25,16 @@
       "codeSyntax": null,
       "hidden": true,
       "value": 1,
-      "bindings": 79,
-      "verdict": "STILL UNDELETABLE — but for a different, precise reason",
-      "why": "Down from 242 to 79 after the Divider rebind. Every one of the 79 remaining is a documentation-frame BORDER, not a divider: strokeTopWeight / strokeBottomWeight / strokeLeftWeight / strokeRightWeight on Do and Don't cards, on doc `row` frames, and on one `close` frame. Layout Grid 51, Navbar 12, Portal Login 8, Accessibility Bar 8.",
+      "bindings": 0,
+      "verdict": "DELETED",
+      "why": "All 242 bindings cleared: 163 followed the Divider mains automatically, 9 were rebound directly on the Divider page, and the final 79 — every one a documentation-frame BORDER (strokeTop/Bottom/Left/RightWeight on Do/Don't cards, doc `row` frames and one `close` frame) — moved to the new Tier-2 stroke/1. Verified at 0 node bindings AND 0 variable-level aliasers before deletion; a post-delete ghost check on Layout Grid found none.",
       "boundOn": {
         "Layout Grid": 51,
         "Navbar": 12,
         "Portal Login Template": 8,
         "Accessibility Bar": 8
       },
-      "howToRetire": "These are generic 1px borders and there is NO published Tier-2 border-width token to move them to. control/border/width is scope-correct (STROKE_FLOAT) but says 'interactive control', which a documentation card is not — binding them there would be the by-convenience mistake this whole exercise exists to avoid. The clean fix is a semantic border/width/* Tier-2 token; until that exists, hairline stays. It is hidden from publishing, so it is not offered to designers in the meantime."
+      "howToRetire": "Done."
     },
     {
       "name": "cmp/divider/width",
@@ -55,6 +55,8 @@
     "cmp/divider/width": "DELETED (id 55677:37371, the hand-made orphan, 0 bindings) and RECREATED as a code-backed token (id 55703:695). It is now defined in packages/tokens/src/component.json, owned by the exporter, and carries var(--sa-cmp-divider-width) with WIDTH_HEIGHT|STROKE_FLOAT scope. `divider` was registered in grammar.mjs COMPONENT — which failed LOUDLY, unlike the exporter's old silent drop.",
     "Divider variants": "All six COMPONENT variants (Orientation x Tone) plus 3 page instances rebound from ref/border-width/hairline to cmp/divider/width. Same value, 1px, zero visual change.",
     "instancePropagation": "233 of the 242 hairline bindings were Divider INSTANCES. Rebinding the six mains carried 163 of them automatically — Tabs 3/3, Side Sheet 2/2, Accessibility Bar 39/47, Navbar 48/60, Portal Login 62/70. Instances follow their main unless they carry an explicit override, which is exactly why the mains are done first.",
-    "whyControlBorderWidthWasRejected": "The original recommendation was to rebind to control/border/width. On inspection that was wrong twice: it is scoped STROKE_FLOAT only, while the Divider binds its thickness to WIDTH/HEIGHT (it is a rectangle, not a stroke); and it means 'the border width of an interactive control', which a divider is not."
-  }
+    "whyControlBorderWidthWasRejected": "The original recommendation was to rebind to control/border/width. On inspection that was wrong twice: it is scoped STROKE_FLOAT only, while the Divider binds its thickness to WIDTH/HEIGHT (it is a rectangle, not a stroke); and it means 'the border width of an interactive control', which a divider is not.",
+    "borderWidthToken": "Added `stroke/{0,1,2,3,4}` — the Tier-2 border-width ladder that did not exist, which is why 79 borders were stranded on a deprecated hand-made variable. Value-named like space and radius, aliasing ref/border/width/*. Named `stroke` not `border` for the same reason corner radius is called `shape`: a Tier-2 `border/width/*` would self-reference the Tier-1 `border.width.*` it aliases. Scoped STROKE_FLOAT + WIDTH_HEIGHT, because a rule drawn as a rectangle sizes its thickness with width/height rather than a stroke."
+  },
+  "status": "CLOSED — both duplicates retired"
 }

@@ -38,8 +38,8 @@
       "existing": 8
     },
     "Static": {
-      "total": 51,
-      "new": 5,
+      "total": 56,
+      "new": 10,
       "existing": 46
     }
   },
@@ -23582,6 +23582,111 @@
             "WEB": "var(--sa-control-border-width)"
           },
           "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "stroke/0",
+          "path": "stroke/0",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/border/width/none"
+            }
+          },
+          "description": "No edge. Bind it rather than omitting a stroke, so an absent border is a decision and not an oversight.",
+          "codeSyntax": {
+            "WEB": "var(--sa-stroke-0)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "stroke/1",
+          "path": "stroke/1",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/border/width/sm"
+            }
+          },
+          "description": "The hairline — the default rule weight. Dividers, table rules, card edges, documentation borders.",
+          "codeSyntax": {
+            "WEB": "var(--sa-stroke-1)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "stroke/2",
+          "path": "stroke/2",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/border/width/md"
+            }
+          },
+          "description": "A deliberate emphasis weight, for an edge that has to read at a glance.",
+          "codeSyntax": {
+            "WEB": "var(--sa-stroke-2)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "stroke/3",
+          "path": "stroke/3",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/border/width/lg"
+            }
+          },
+          "description": "Heavy edge. Rare in product UI; check whether the emphasis belongs in colour instead.",
+          "codeSyntax": {
+            "WEB": "var(--sa-stroke-3)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "stroke/4",
+          "path": "stroke/4",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/border/width/xl"
+            }
+          },
+          "description": "Heaviest edge in the system. Rare.",
+          "codeSyntax": {
+            "WEB": "var(--sa-stroke-4)"
+          },
+          "status": "new",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"

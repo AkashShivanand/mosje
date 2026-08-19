@@ -175,6 +175,9 @@ function collectionFor(path, tier, type) {
   if (head === "radius" || head === "shape") return "Radius";
   if (head === "opacity" || head === "z") return "Static";
   if (head === "border" && rest[0] === "width") return "Static";
+  // Tier-2 border width. Sits with the Tier-1 `border/width/*` it aliases and with
+  // `control/border/width`, so every edge-weight token is findable in one collection.
+  if (head === "stroke") return "Static";
   if (head === "motion") return "Motion";
   if (head === "density") return "Density";
   if (head === "font" || head === "leading" || head === "type") return "Type";

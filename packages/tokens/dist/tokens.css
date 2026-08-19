@@ -900,6 +900,11 @@
   --sa-shape-32: 32px;
   --sa-shape-40: 40px;
   --sa-shape-full: 999px;
+  --sa-stroke-0: 0px;
+  --sa-stroke-1: 1px;
+  --sa-stroke-2: 2px;
+  --sa-stroke-3: 3px;
+  --sa-stroke-4: 4px;
   --sa-cmp-button-primary-bg: var(--sa-color-action-primary-default);
   --sa-cmp-button-primary-bgHover: var(--sa-color-action-primary-hover);
   --sa-cmp-button-primary-text: var(--sa-color-text-onPrimary);

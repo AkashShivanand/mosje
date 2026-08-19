@@ -2640,5 +2640,29 @@
     "full": {
       "$value": "{radius.full}"
     }
+  },
+  "stroke": {
+    "0": {
+      "$value": "{border.width.none}",
+      "$description": "No edge. Bind it rather than omitting a stroke, so an absent border is a decision and not an oversight."
+    },
+    "1": {
+      "$value": "{border.width.sm}",
+      "$description": "The hairline — the default rule weight. Dividers, table rules, card edges, documentation borders."
+    },
+    "2": {
+      "$value": "{border.width.md}",
+      "$description": "A deliberate emphasis weight, for an edge that has to read at a glance."
+    },
+    "3": {
+      "$value": "{border.width.lg}",
+      "$description": "Heavy edge. Rare in product UI; check whether the emphasis belongs in colour instead."
+    },
+    "4": {
+      "$value": "{border.width.xl}",
+      "$description": "Heaviest edge in the system. Rare."
+    },
+    "$description": "Tier-2 border width (\"stroke\"). VALUE-NAMED: the rung IS the pixel value, matching the space and radius ladders. Named stroke rather than border because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 border/width/* would self-reference the Tier-1 border.width.* it aliases — the same reason the corner-radius group is called shape. It is also Figma's own word for the property (STROKE_FLOAT). Bind these for any rule, hairline or edge weight; control/border/width remains the right choice for an interactive control specifically.",
+    "$type": "dimension"
   }
 }
