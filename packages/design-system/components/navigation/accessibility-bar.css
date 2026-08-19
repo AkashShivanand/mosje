@@ -103,6 +103,19 @@
   border-radius: var(--sa-shape-xxs);
   object-fit: cover;
 }
+/* The master nests these two sub-units with their OWN gaps; a single gap on the row
+   cannot express that, and the difference was visible — the launch glyph sat 10px from
+   its label and the language caret 4px too far from the word. */
+.sa-abar__govlink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-inline-2);
+}
+.sa-abar__langlabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-inline-4);
+}
 .sa-abar__ext { flex: 0 0 auto; }
 
 /* Right-side controls */

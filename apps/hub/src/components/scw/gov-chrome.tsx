@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { AccessibilityBar } from "@mosje/design-system";
+import { AccessibilityBar, Divider } from "@mosje/design-system";
 
 const BASE = "/portals/scw";
 
@@ -88,7 +88,7 @@ export function Ux4gFooter() {
         <span>© 2026 - Copyright UX4G. All rights reserved. Powered by NeGD | MeitY Government of India ® 2026 UX4G</span>
         <div className="flex items-center gap-3">
           <a href="#" className="hover:underline">Terms &amp; Conditions</a>
-          <span className="h-3 w-px bg-white/25" />
+          <Divider orientation="vertical" tone="inverse-subtle" length={12} />
           <a href="#" className="hover:underline">Privacy Policy</a>
         </div>
       </div>

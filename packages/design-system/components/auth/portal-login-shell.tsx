@@ -113,7 +113,7 @@ export function PortalLoginShell({
             >
               Skip to Main Content
             </a>
-            <span className="hidden h-3.5 w-px sm:block" style={{ background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 30%, transparent)" }} aria-hidden="true" />
+            <Divider orientation="vertical" tone="inverse-subtle" length={14} className="hidden sm:block" />
 
             {/* Text-size controls */}
             <div className="flex items-center" role="group" aria-label="Adjust text size">
@@ -146,11 +146,11 @@ export function PortalLoginShell({
               </button>
             </div>
 
-            <span className="h-3.5 w-px" style={{ background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 30%, transparent)" }} aria-hidden="true" />
+            <Divider orientation="vertical" tone="inverse-subtle" length={14} />
             <button type="button" className="hover:text-white" aria-label="Toggle high contrast" title="Toggle high contrast">◑</button>
-            <span className="h-3.5 w-px" style={{ background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 30%, transparent)" }} aria-hidden="true" />
+            <Divider orientation="vertical" tone="inverse-subtle" length={14} />
             <button type="button" className="hover:text-white" aria-label="Accessibility options" title="Accessibility options">♿</button>
-            <span className="h-3.5 w-px" style={{ background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 30%, transparent)" }} aria-hidden="true" />
+            <Divider orientation="vertical" tone="inverse-subtle" length={14} />
             <button
               type="button"
               className="flex items-center gap-1 hover:text-white"

@@ -22,9 +22,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.28.0",
+    version: "v0.29.0",
     date: "2026-08-19",
     current: true,
+    changes: [
+      { kind: "Changed", text: "THE LAST 8 HAND-ROLLED RULES ARE STANDARDISED ON inverse-subtle (design decision). They were brand-surface rules at THREE different opacities \u2014 white at 20, 25 and 30% \u2014 none of them chosen, just whatever was nearest. All 22 separator rules in the estate now render <Divider>; the 23rd was never a divider, it is a saffron accent under a login heading. This one MOVES PIXELS \u2014 those rules become slightly more present \u2014 which is exactly why it was held for a human call instead of being folded in with the greys" },
+      { kind: "Fixed", text: "TWO GAPS IN THE BAR WERE WRONG BY 10PX AND 4PX, and only a measured side-by-side found them. The master nests the Government-of-India label with its launch glyph in a `Link` frame (gap 2) and the language glyph with its label in a `Label` frame (gap 4); the code used ONE uniform gap on the row, so the launch glyph sat 10px from the word it belongs to and the caret 4px too far. The code now mirrors the master's nesting. Gov block 206 \u2192 196, exactly Figma's; language 120 \u2192 116 against 117" },
+      { kind: "Fixed", text: "\u201cSELECTION LAYER\u201d NO LONGER SELECTS ANYTHING \u2014 renamed to `reset hit-area` across all 9 variants. The centre stopped carrying the lit state when it moved to the direction buttons; a layer name describing a highlight that no longer exists is the same class of stale artifact as a wrong comment" },
+      { kind: "Added", text: "FULL FIGMA\u2194CODE VERIFICATION OF THE BAR, measured rather than eyeballed: bar 1440\u00d746, fill #005EB9, flag 33\u00d722, font-size group 96 with 8/8 gaps, steppers 24\u00d724, icon buttons 28\u00d728, dividers 1\u00d720, all seven glyphs, type 14/20 at weights 400/400/500 \u2014 every one matching. States checked against \u00a704 and resolved live: Default transparent, Hover #ffffff14 = white 8%, Active #ffffff29 = white 16%, and Focus-visible confirmed with a REAL Tab press at 2px solid rgb(255,255,255) offset 2px" },
+    ],
+  },
+  {
+    version: "v0.28.0",
+    date: "2026-08-19",
     changes: [
       { kind: "Fixed", text: "THE ACCESSIBILITY BAR RENDERED 12PX WHERE THE MASTER SAYS 14, and the parity table claimed a \u2713 on it. The 2026-08-12 audit checked one text node and generalised; the master actually mixes two roles \u2014 Body/body-2 14/20 Regular on both links, Label/label-1 14/20 Medium on the language label. Caught by a 2\u00d7 side-by-side against Device=Desktop, Layout=Fluid, then confirmed by reading the text styles rather than eyeballing widths. 14 is also the better end of the argument: 12px sits well under the 16px body floor the guidelines set, and this bar carries the SKIP LINK \u2014 a WCAG 2.4.1 bypass mechanism, not decoration" },
       { kind: "Fixed", text: "CLICKING A\u2212 OR A+ HIGHLIGHTED THE CENTRE, ALWAYS \u2014 reported from use, and it was right. The lit state now marks the DIRECTION: A\u2212 lights below the default size, A+ above it, neither at it. Press A+ and A+ lights. The centre is purely the reset and never lights. The old behaviour was wrong twice over: the highlight sat on a button nobody had pressed, so it read as \u201cthe centre is selected\u201d, and one indicator cannot express direction \u2014 90% and 120% were visually identical. Verified across all four steps; boundary disabling unchanged" },

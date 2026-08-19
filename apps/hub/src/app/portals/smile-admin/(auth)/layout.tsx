@@ -1,4 +1,5 @@
 import { AccessBar } from "@/components/smile-admin/shell/access-bar";
+import { Divider } from "@mosje/design-system";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -88,9 +89,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
           <div className="relative flex items-center gap-md px-3xl pb-lg text-label-3 text-white/70">
             <span className="inline-flex items-center gap-xs">256-bit TLS</span>
-            <span className="h-3 w-px bg-white/20" />
+            <Divider orientation="vertical" tone="inverse-subtle" length={12} />
             <span>GIGW 3.0 compliant</span>
-            <span className="h-3 w-px bg-white/20" />
+            <Divider orientation="vertical" tone="inverse-subtle" length={12} />
             <span>STQC audited</span>
           </div>
         </aside>
