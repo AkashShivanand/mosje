@@ -22,8 +22,16 @@ This package is the **single source of truth** for the visual language across al
   mappings validated", which was never true and made the gap invisible. The plan of
   record, including the per-component node map and the Icon mapping, is
   `docs/research/figma-code-connect-readiness.md`.
-  - **Correction, 2026-08-14:** the "zero `*.figma.ts(x)` files" half of this bullet is
-    no longer accurate. **Two** templates landed, from two branches, because
+  - **Correction, 2026-08-18:** there are now **FOUR** templates, not two —
+    `actions/button.figma.ts`, `navigation/accessibility-bar.figma.ts`,
+    `auth/portal-login-template.figma.ts` and `auth/auth-parts.figma.ts`. The count in
+    this bullet was stale, which is the same failure mode the bullet itself was written
+    to correct. **`@figma/code-connect` is still NOT in package.json**, so none of the
+    four can be published or validated — verify with
+    `node -e 'console.log(require("./package.json").devDependencies["@figma/code-connect"])'`
+    before believing any claim that Code Connect works.
+  - **Superseded note, 2026-08-14:** the "zero `*.figma.ts(x)` files" half of this bullet is
+    no longer accurate. Two templates landed, from two branches, because
     `component-authoring.md` §12a makes the template part of shipping a component:
     `components/actions/button.figma.ts` (foundation-documentation) and
     `components/navigation/accessibility-bar.figma.ts` (AccessibilityBar).
@@ -289,16 +297,36 @@ first full census of the live library shows what that cost:
 | "Bound" to *something* | 56,741 — **86.4 %** |
 | Bound to a **correct semantic space token** | 4,568 — **6.96 %** |
 
-The 86.4 % is the trap, and it is why nobody caught this by eye: in the inspector
-every one of those properties reads as bound. The breakdown:
+The 86.4 % was the trap, and it is why nobody caught this by eye: in the inspector
+every one of those properties reads as bound.
 
-| class | count | what it is |
-|---|---|---|
-| `crossFamily` | **38,799** | a **radius/type/colour** variable bound to padding or gap — `ref/radius/none` alone accounts for most of it |
-| `tier1` | 7,286 | a **hidden** `ref/space` · `ref/size` primitive, which does not publish and whose code syntax `tier-discipline.test.mjs` forbids app code to write |
-| `ghost` | 4,771 | a local variable id **no collection owns** — 19 distinct ids |
-| `remote` | 1,317 | a variable imported from **another library** |
-| `tier2` | 4,568 | correct |
+| class | before | after | what it is |
+|---|---|---|---|
+| `crossFamily` | **38,799** | 5,968 | a **radius/type/colour** variable bound to padding or gap |
+| `tier1` | 7,286 | 7,111 | a **hidden** `ref/space` · `ref/size` primitive, which does not publish and whose code syntax `tier-discipline.test.mjs` forbids app code to write |
+| `ghost` | 4,771 | 4,771 | a local variable id **no collection owns** — 19 distinct ids |
+| `remote` | 1,317 | 717 | a variable imported from **another library** |
+| `tier2` | 4,568 | **37,632** | correct |
+| | **6.96 %** | **57.51 %** | share of all spacing on a correct token |
+
+**The "after" column is the `ref/radius/none` rebind, same day.** Every
+`ref/radius/none` binding on a spacing property, across 38 pages, was moved to
+`padding/none` · `inline/none` · `stack/none` — chosen by property and layout axis
+(`padding*` → padding; `itemSpacing` → inline on a HORIZONTAL frame, stack on a
+VERTICAL one; `counterAxisSpacing` → the opposite axis). **Zero visual change**: all
+of them resolve to 0, and the script refused to touch any property whose value was
+not already 0.
+
+Two things that pass makes worth knowing next time:
+
+- **Mains first, then overrides.** Rebinding a main component fixes its instances —
+  unless an instance carries an *explicit override*, which does not follow its main.
+  Roughly 13,500 of the total were such overrides (Dropdown alone 7,098) and had to
+  be corrected directly, after the mains.
+- **What is left in `crossFamily` is the non-zero radius rungs** (`ref/radius/md` ·
+  `xs` · `sm` · `xxs`) bound to spacing — chiefly Dropdown 2,924, Pagination 503,
+  Stepper 468, List 438. Those carry real values, so each needs a space rung of
+  equal value chosen for it. That is a separate job, and it is not zero-risk.
 
 - Run it with `npm run check:space-linkage`; it also runs inside
   `npm test -w @mosje/tokens`, which **Design System Quality** already executes.
@@ -326,3 +354,319 @@ and non-deterministic** trees. Navbar measured 2,885 bound properties per-page, 
 returned the same node count both ways, so the shortfall is invisible to a
 node-count sanity check. A batched re-sweep under-reports and must not be committed;
 `space-linkage.test.mjs` refuses a census that does not declare the method.
+
+### The spacing ladder is VALUE-NAMED — and that is load-bearing
+
+**The rung IS the pixel value.** `padding/16` is 16px, and so are `inline/16`, `stack/16` and
+`section/16`. There is no T-shirt label anywhere in the space system, at either tier.
+
+```
+0  2  4  6  8  12  16  20  24  32  40  48  56  64  72  80      + padding 120 · 360
+```
+
+Every family carries that ladder, so no measurement is unexpressible. Two rules follow, and
+`space-linkage.test.mjs` enforces both:
+
+1. **A rung's name equals its resolved value.** A `padding/16` that resolves to 20px fails.
+2. **No label carries two values across families.** This is the defect the rename removed —
+   `l` used to be 16 in `inline`, 24 in `stack`, 20 in `padding` and 56 in `section`, a
+   collision inherited verbatim from UX4G 3.0 (`--ux4g-inline-l`=16 beside `--ux4g-stack-l`=24).
+
+**Do not "restore" T-shirt names.** They were removed for two measured reasons: the collision
+above, and the fact that a T-shirt ramp has no slot between adjacent rungs — every insertion
+renames everything above it, which happened twice in a single day before the change.
+
+**UX4G conformance is unaffected** and must stay that way: the `--ux4g-*` parity layer is emitted
+independently and never reads these names. Renaming on our side is invisible to
+`ux4g-parity.test.mjs`; if that ever stops being true, the parity layer has been wired wrong.
+
+#### The boundary rule that keeps a value-name honest
+
+> **Mode-varying spacing belongs in `density/*`, never in the ladder.**
+
+A value-name lies the moment a mode changes the value. Space has ONE mode; density variance
+already lives in `density/*` with its own two. If a spacing value must differ by mode it is a
+density token, not a ladder rung. This is the single real trade-off of value-naming, and it is
+mitigated by boundary, not by hope.
+
+#### Scopes
+
+The four families are scoped **`GAP` only** — Figma's `GAP` covers gap *and* padding, so
+`WIDTH_HEIGHT` merely dumped 60 spacing tokens into the size picker. A width comes from
+`ref/size/*`, `layout/*` or `container/*`, never from the spacing ladder.
+
+### Per-page totals move on a library re-sync — expect one false regression
+
+Repeated reads *within* a session are byte-identical, so the census is reproducible.
+Across a **library re-sync** it is not: between the two censuses of 2026-08-17,
+Navbar went 3,223 → 3,510 properties (gaining 219 `remote` bindings) and Inputs went
+1,526 → 1,155 (losing 339), with no edit touching either page. Figma had re-resolved
+remote instance subtrees.
+
+So the ratchet can report a regression nobody caused. When it does: confirm no real
+binding changed, then re-baseline — do not go hunting for an edit that does not exist.
+
+**The fix worth making** is to count only **authorable** nodes (those outside any
+instance). Instance descendants are derived from their main, so counting them both
+double-counts *and* imports this instability — Navbar's authorable-only figures were
+byte-identical across independent invocations while its totals moved. That would
+change every headline number, so it is a deliberate migration, not a patch.
+
+## Radius linkage — a ratchet over the Figma library (enforced in CI)
+
+**Radius had no gate of any kind until 2026-08-18**, while colour had six contract tests,
+spacing had its own ratchet and icons had a per-file one. Spacing was censused three times;
+radius, zero. The first census shows what that cost:
+
+| | |
+|---|---|
+| Radius properties, 35 of 69 pages | **92,324** (51,844 authorable) |
+| Bound to a **correct Tier-2 token** | 1,488 — **2.87 %** of authorable |
+
+| class | authorable | what it is |
+|---|---|---|
+| `t1` | **4,902** | a **hidden** `ref/radius/*` primitive — does not publish, and tier-discipline forbids app code writing its code syntax |
+| `rn` | **5,599** | unbound, non-zero — the raw literal this gate exists to shrink |
+| `rm` | 548 | a radius variable imported from **another library** (`radius-full`, `radius-md`, `radius-none`, `radius-xl`, `radius-xs`, `button-corner` — a foreign vocabulary, chiefly Sidebar 360, Stepper 232, Navbar 72) |
+| `xf` | 132 | a **`Font Size/*` or `Line Heights/*` variable bound to a corner radius** |
+| `gh` | **0** | no ghosts — unlike spacing, which carried 4,771 |
+| `t2` | 1,488 | correct |
+
+`rawZero` (39,175) is **not** counted as a defect: 0 is the absence of a radius, not a wrong
+one — the same reasoning `ds-linkage` applies to `0px`.
+
+**The ratchet runs on AUTHORABLE properties only** (outside any instance). This is the fix the
+space rule identified and deferred: instance descendants are derived from their main, so counting
+them both double-counts and imports the cross-sync instability that made Navbar's totals move by
+hundreds with nobody editing. Radius was gated after that lesson, so it was built the right way
+from the start.
+
+- Run it with `npm run check:radius-linkage`; it also runs in **Design System Quality**.
+- `npm run check:radius-linkage:baseline` refreshes the frozen debt; `:report` prints the summary.
+- Debt is frozen **per page** in `packages/tokens/reference/radius-bindings-baseline.json`.
+  A page that regresses fails; a page that **improves** also fails, telling you to re-baseline in
+  the same change.
+- **Coverage is itself ratcheted.** 34 of 69 pages are not yet censused. The gate fails if that
+  number grows, and fails if censused + uncensused ≠ the library's page count — a page in neither
+  list is how a surface goes ungated.
+- All ten failure modes were exercised by deliberately breaking them.
+
+### The radius ladder is VALUE-NAMED too — and the first call on this was wrong
+
+**Both ladders are value-named.** `shape/8` is 8px exactly as `padding/16` is 16px. `full` is the
+single named rung, a sentinel meaning *fully rounded*; **S7** asserts it is the only permitted
+non-numeric rung, so a second exception cannot appear quietly.
+
+**This reverses a decision made earlier the same day, and the reversal is the instructive part.**
+The first review kept T-shirt names on two arguments:
+
+| Argument for keeping T-shirt names | Why it does not hold |
+|---|---|
+| Radius has no label *collision*, so the defect that forced the spacing rename is absent | True, but that is an argument that renaming is not *urgent* — not that it is wrong |
+| A T-shirt name carries a ROLE (`sm` = input, `md` = button) that a number does not | **False.** The role layer already exists at **Tier 3** — `control/radius`, `cmp/button/radius`, `cmp/card/radius`. A button binds `cmp/button/radius`, never `shape/md`. Role-naming was never Tier 2's job |
+
+Once the second argument goes, nothing is left on that side: value-naming costs nothing, buys the
+same free insertion spacing gained, and leaves **one** mental model across both ladders instead of
+two. The rungs' roles are still published — in each variable's *description*, which is generated
+from `SHAPE_GUIDANCE` and reaches designers in the Figma picker.
+
+**How it was done safely**, and the two traps it confirms:
+
+- **22 variables renamed in Figma with `codeSyntax` AND `description` rewritten in the same pass.**
+  A rename updates neither; the spacing rename lost 51 codeSyntax entries exactly that way.
+  Figma binds by variable **id**, so every canvas binding followed automatically — no node touched.
+- **Value preservation was PROVEN before anything was rebaselined.** All 22 renames were declared
+  in `RENAMES` in `visual-contract.test.mjs` and all nine assertions passed against the
+  **un-regenerated** fixture — the old fixture is the evidence. Only then was it rebaselined and
+  the entries retired. The library was then read back and matched the built payload at
+  `77e146:25`.
+- **`$description` is reference-interpolated by Style Dictionary.** A note reading *"this used to
+  alias {radius.md}"* was parsed as a real token reference and failed the build with
+  `control.radius.$description tries to reference radius.md`. Do not put braces in prose.
+- **Two legacy alias maps keep their own key vocabulary**, values repointed only: Tailwind's
+  `borderRadius` scale (`rounded-md` is Tailwind's name, not ours) and the `tokens.ts` `RADIUS`
+  export (which already diverged — `pill`, not `full`). Renaming those keys would be a breaking
+  change to two separate public APIs.
+
+### Tier discipline: ONLY `shape/*` may alias a Tier-1 radius
+
+Three **published** variables — `control/radius`, `cmp/button/radius`, `cmp/card/radius` — each
+aliased `{radius.md}` directly, reaching past Tier 2 into a **hidden** primitive designers cannot
+see. Figma mirrored the source faithfully, so the defect existed identically in both. Fixed
+2026-08-18, in code and in Figma, **value-preservingly**: all three still resolve to 8px, and
+`tokens.css` changed only two alias paths. `S5` in `radius-linkage.test.mjs` now fails the build
+if any semantic-or-component token outside `shape` aliases `radius.*`.
+
+**A re-point does not update `description` or `codeSyntax`** — the spacing rename lost 51 of them
+exactly that way. Both were rewritten by hand in the same change.
+
+### Cards are 12px, and the component token is now load-bearing
+
+`cmp/card/radius` said **8px** while `shape/12` is the rung published as *"cards and panels"* and
+`design.md` asked for 12px. Resolved 2026-08-18: the token now resolves to `shape/12`.
+
+The more interesting half is that the token was **orphaned**. `--sa-cmp-card-radius` appeared only
+in `tokens.css`; no component consumed it. `Card` drew a raw `--sa-shape-8` and `MetricCard` a raw
+`--sa-shape-12` — two card surfaces already 4px apart, with a component token sitting unused that
+existed precisely to stop that. Both now bind it.
+
+**A Tier-3 token nothing binds is worse than no token**: it reads as governance while the thing it
+governs drifts underneath. When adding one, bind it in the same change, or do not add it.
+
+### The rebind campaign — 2.87 % to 97.90 %, all 69 pages, ZERO defects
+
+**Coverage is complete: 69 of 69 pages censused, 0 uncensused.** 56,672 of 58,008 authorable
+properties sit on a correct Tier-2 token.
+
+**Every defect class is zero.** No Tier-1, no cross-family, no foreign-library, no ghost, no raw
+non-zero radius anywhere in the SAMAVESH library. The per-page ratchet is therefore frozen at
+zero, which is the strongest state it can be in: **any** new raw radius on **any** page now fails
+the build.
+
+What is left is 852 unbound **zeros** (Footer 620, Spacing 228, Changelog 4) and 364
+`COMPONENT_SET` **chrome** properties — both declared non-defects, for reasons stated above.
+
+**The 3px on Tables became `shape/4`**, on your call. One `setBoundVariable` fixed all four
+corners: binding a single corner of a node with a *uniform* radius binds all four, so a rebind's
+call count under-reports the properties it actually changes.
+
+**The 116 fractional radii were bound to their nearest rung** — every move under 1.1px, none
+visible. Two causes, established by inspection rather than assumed:
+
+- **Popover (64) and Tabs (4) were never scaled at all.** Their boxes are integral (278×54,
+  145×98); the radius was simply off-ladder at 4.8.
+- **New in 2.0 (32) and Thumbnail (12) genuinely were scaled**, and their boxes are fractional.
+
+An earlier version of this rule claimed binding these would "hide the scaling defect". That was
+half wrong, and the correction is worth keeping: **Figma's scale tool bakes the corner radius as
+an ABSOLUTE value**, so resizing the box does *not* restore the radius — it has to be set back
+either way. The fractional *box* is a separate, cosmetic issue; the seven nodes are listed in
+`fractionalBoxes` in the census so they are not rediscovered as a mystery.
+
+The final 34 pages were censused and rebound in the same pass; each carries a `censusBefore`
+block recording its state at first measurement, so the census stands on its own rather than
+being retro-fitted from the result.
+
+The rule was provable at every step, never approximate:
+
+| Case | Bound to | Why it is exact |
+|---|---|---|
+| value matches a rung | that rung | identical pixels |
+| value ≥ half the shorter side | `shape/full` | already renders fully rounded |
+| Tier-1 binding | the Tier-2 rung of equal value | same terminal value |
+| foreign / cross-family variable | resolved to its VALUE, then the rules above | same rendered pixels |
+| `10` | `shape/12` | explicit decision |
+| anything else | **left, and reported** | not the script's call |
+
+Only **authorable** nodes were touched, so instances follow their mains rather than gaining new
+overrides. **Every page's authorable property COUNT is asserted unchanged** before its numbers are
+accepted — a rebind that moves the count has done something other than rebind.
+
+### `shape/full` is a SENTINEL, not a measurement
+
+`999px` means "fully rounded". Any value exceeding half the shorter side renders the same, and
+999 is that for every surface in the estate. Code disagreed with itself — `999px`, `9999px` and
+`50%` all appeared — so **write `var(--sa-shape-full)` and nothing else**. Note `50%` is not a
+synonym: on a non-square box it gives an **ellipse** where `999px` gives a stadium.
+
+
+## The Figma exporter DROPS any component root it does not recognise (found 2026-08-18)
+
+`build/formats/figma-variables.mjs` routes every token to a Figma collection with
+`collectionFor(path, tier)`. Its last line is `return null`, and a `null` means **the token is
+silently omitted from the Figma export**. There is no warning, no count, no failure.
+
+Component tokens are routed by their **component name** against a hardcoded set:
+
+```
+COLOUR_ROOTS = bg, text, icon, border, outline, overlay, focus, action,
+               control, spinner, button, card, badge, chart, on, layer
+```
+
+So a component reaches Figma only if someone remembered to add its name to that list.
+
+| | |
+|---|---|
+| `cmp/*` roots the **code** defines | `accessibilityBar`, `action`, `badge`, `button`, `card` |
+| `cmp/*` roots that reach **Figma** | `action`, `badge`, `button`, `card` |
+
+**`accessibilityBar` is defined in code, emits `--sa-cmp-accessibilityBar-height` into
+`tokens.css`, and never reaches the library.** Fourteen component tokens in that state.
+
+### What that cost, and why the variables that appeared are NOT vandalism
+
+A designer hit the gap and did the reasonable thing: **hand-authored the variables in Figma**.
+Ten of them, IDs `55673:*` and `55677:*` — the newest in the file.
+
+They are identifiable with certainty because **every variable the pipeline creates carries a
+`codeSyntax`, and every hand-made one has `codeSyntax: null`.** That is the cleanest authorship
+signal the file has; 49 of 1,006 variables have no codeSyntax, and the other 39 are long-documented
+legacy (`ref/color/*` orphans, `deprecated/type/*`).
+
+Most of that work is **good**: names follow the grammar (`cmp/accessibilityBar/pillSize`, camelCase
+segment, matching `chart/tooltipBg`), scopes are correct and narrow (`WIDTH_HEIGHT`,
+`FRAME_FILL|SHAPE_FILL`), and all ten carry hand-written descriptions.
+
+What is wrong with them is a consequence of the gap, not of carelessness:
+
+1. **No `codeSyntax`** — a developer clicking one gets no CSS variable name, because the designer
+   had no way to know the generated name.
+2. **Six of ten bypass Tier 2**, aliasing a Tier-1 primitive directly — `flagHeight → ref/size/22`,
+   `pillSize → ref/size/32`, `stepSize → ref/size/24`, `iconButtonSize → ref/size/28`,
+   `launchIconSize → ref/size/12`, `cmp/divider/width → ref/border-width/hairline`. The same defect
+   class the radius work just eliminated.
+3. `hoverBg` and `pillBg` resolve through `overlay/on-brand/*`, which are **themselves** library-only,
+   so the chain never reaches code at all.
+
+### A second, older instance of the same failure
+
+Five published Colour variables carry a `codeSyntax` naming a CSS variable **that does not exist**:
+`var(--overlay-on-brand-hover)`, `var(--color-border-brand-primary-subtle)`,
+`var(--color-border-neutral-inverse)`, `var(--color-border-brand-primary-hover)`. Nothing in
+`tokens.css` breaks the `--sa-` prefix — these are hand-typed names that were never real. Two of
+them also have an empty description.
+
+### Fixed 2026-08-18
+
+**`collectionFor` now routes Tier-3 by TYPE and THROWS on anything it cannot place**, naming the
+token. `COLOUR_ROOTS` still runs first, so `cmp/button/radius` and `cmp/card/radius` stay in the
+Color collection they already occupy — Figma refuses to move a variable between collections, so
+re-routing an existing one would orphan it. The failure was exercised by feeding the build an
+untyped `cmp/mysteryWidget/probe`; it fails with the token named.
+
+**The designer's variables were reconciled, not replaced.** Nine were upserted **by name**, so
+their ids, descriptions and every canvas binding survived, and each gained the `codeSyntax` it
+could never have had. Two were created from code (`dividerHeight`, `dividerColor`). One was
+**Figma-only and is now in code** — `iconButtonSize`, which the designer added because
+`.sa-abar__icbtn` was drawn at a hardcoded `28px`. They were ahead of the code, and that literal
+is now bound.
+
+**`overlay/on-brand/*` was renamed in place to `overlay/brand/{hover,active}`**, ids preserved.
+Three naming attempts were needed and each rejection taught something: `on-brand` has a hyphen
+inside a segment; `onBrand` is not a `FAMILY` (they are `neutral · brand · status · link`); and
+`pressed` is not a state word (the system uses `active`). The conformant name names the **surface**
+family, exactly as `on/bg/brand/*` means ink *for* a brand background rather than brand-coloured
+ink. Its hover value was **0.08 against a component that has always rendered 0.12** — code is now
+authoritative.
+
+**Thirteen published variables carried a `codeSyntax` naming a CSS variable that does not exist.**
+Two were stale and are fixed (`layout/bar/height`, `layout/flag/width`); eleven are genuinely
+library-only and had their `codeSyntax` **removed**, because a name that resolves to nothing is
+worse than no name — a developer copies it and gets a silent no-op. **Zero non-conformant
+`codeSyntax` remain in the file.**
+
+Library-only gaps closed: **Space 20 → 12, Color 11 → 6.**
+
+### The rule
+
+**A token the code defines and the exporter cannot route is a BUG, not a filter.** `collectionFor`
+must not return `null` for a `cmp/*` path; it should fail the build naming the unrouted root, the
+same way a scope path that cannot be read is a hard error in `check:ds-linkage`. Until it does,
+every new component silently fails to reach designers, and the designer's only recourse is to
+hand-make variables that code can never consume.
+
+**Reconcile, never duplicate.** When code and library both hold a token, upsert **by name** so the
+library's id survives — a new variable with the same name orphans every node bound to the old one.
+And check who is right before overwriting: here the designer's structure (aliasing `layout/bar/height`
+rather than restating `46px`) was better than the code's, and their `iconButtonSize` was a token the
+code was missing entirely.

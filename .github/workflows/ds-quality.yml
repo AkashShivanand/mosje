@@ -35,9 +35,21 @@ on:
       - "tools/ds-linkage/**"
       - ".github/workflows/ds-quality.yml"
 
+# A pull request that is pushed again supersedes its own in-flight run. Without this
+# a hung run keeps reporting "pending" on the PR forever and cannot be displaced —
+# on 2026-08-19 a stuck Chromium download ignored cancel AND force-cancel, and the
+# only way to get a fresh runner was to push an empty commit. `main` is deliberately
+# NOT cancelled: every commit on the trunk gets its own complete result.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   quality:
     runs-on: ubuntu-latest
+    # A full green run takes ~5 minutes. Without this the default is SIX HOURS, which
+    # is how one stuck download held two pull requests all morning.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -98,8 +110,18 @@ jobs:
       - name: Typecheck Storybook stories
         run: npm run typecheck --prefix apps/storybook
 
+      # NOT `--with-deps`. That flag shells out to `sudo apt-get install`, and on
+      # 2026-08-19 it began hanging INDEFINITELY on the ubuntu-latest image — three
+      # separate runs sat here for 40+ minutes and ignored both cancel and
+      # force-cancel, blocking every PR in flight. The runner image already ships
+      # every shared library Chromium needs, so the dependency half was always a
+      # no-op here; only the browser download is real work.
+      #
+      # The step timeout is the backstop: if the download itself ever hangs, this
+      # fails in 5 minutes instead of burning the job's full allowance.
       - name: Install Chromium for the Storybook smoke test
-        run: npx playwright install --with-deps chromium
+        timeout-minutes: 5
+        run: npx playwright install chromium
 
       - name: Storybook smoke — every story must actually render
         run: node scripts/smoke-storybook.mjs
@@ -138,6 +160,23 @@ jobs:
       - name: Icon scale — ratchet, no NEW off-scale icon sizing
         run: npm run check:icon-scale
 
+      # Radius had NO gate of any kind until 2026-08-18, while colour had six contract
+      # tests, spacing had this same ratchet and icons had the one above. The first
+      # census of the live library shows what that cost: of 51,844 AUTHORABLE radius
+      # properties across 35 pages, 2.87 % sit on a correct Tier-2 token. The Colour
+      # documentation page — the reference every other documentation page copies — was
+      # 100 % raw: 1,632 non-zero corner radii, none bound.
+      #
+      # Two halves. The SOURCE invariants need no Figma access and caught the defect
+      # that shipped this gate: control/radius, cmp/button/radius and cmp/card/radius
+      # each aliased a HIDDEN Tier-1 primitive, so three PUBLISHED variables pointed at
+      # one designers cannot see. The CENSUS invariants ratchet per-page debt, refuse a
+      # census that does not declare it was captured one page per invocation (batching
+      # returns partial, non-deterministic trees), and ratchet COVERAGE itself — 34 of
+      # 69 pages are not yet censused, and that number may only shrink.
+      - name: Radius linkage — tier discipline + a ratchet over the Figma library
+        run: npm run check:radius-linkage
+
       # `.figma.ts` templates are EXCLUDED from the design-system tsconfig, so nothing
       # type-checked them: a template could name a React prop that had been renamed, or a
       # Figma property that had been deleted, and every gate here stayed green while Dev
@@ -175,6 +214,7 @@ jobs:
   # creates or reads it.
   publish-code-connect:
     needs: quality
+    timeout-minutes: 10
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:

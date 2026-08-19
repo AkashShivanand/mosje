@@ -52,7 +52,7 @@ const Swatch = ({ label }: { label: string }) => (
 
 export const ContainerSizes: Story = {
   render: (args) => (
-    <div style={{ background: "var(--sa-bg-neutral-subtler)", paddingBlock: "var(--sa-section-s)" }}>
+    <div style={{ background: "var(--sa-bg-neutral-subtler)", paddingBlock: "var(--sa-section-32)" }}>
       <Container {...args}>
         <Card>
           <CardBody>
@@ -83,7 +83,7 @@ export const TwelveColumnGrid: Story = {
 export const ResponsiveSpans: Story = {
   render: () => (
     <Container>
-      <Grid rowGap="var(--sa-stack-l)">
+      <Grid rowGap="var(--sa-stack-24)">
         <GridItem span={{ base: 12, md: 6, lg: 4 }}>
           <Swatch label="Scholarships for Scheduled Castes" />
         </GridItem>
@@ -129,7 +129,7 @@ export const BandFullBleed: Story = {
         container=&quot;page&quot; — the column is capped and centred.
       </Band>
       <Band tone="brand" spacing="s" container={false}>
-        <div style={{ paddingInline: "var(--sa-padding-m)" }}>
+        <div style={{ paddingInline: "var(--sa-padding-16)" }}>
           container={"{false}"} — content runs to the viewport edge.
         </div>
       </Band>

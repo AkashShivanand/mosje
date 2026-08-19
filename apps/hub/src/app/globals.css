@@ -128,8 +128,8 @@
   /* ── Radius / shadow tokens ─────────────────────────────────────────── */
   /* xs/lg/xl and 2xl/3xl are stock Tailwind vars and already var()-based, so
      portals scope them directly — only the hub's own DS-bound entries need a slot. */
-  --radius-sm:  var(--portal-radius-sm, var(--sa-shape-sm));
-  --radius-md:  var(--portal-radius-md, var(--sa-shape-md));
+  --radius-sm:  var(--portal-radius-sm, var(--sa-shape-6));
+  --radius-md:  var(--portal-radius-md, var(--sa-shape-8));
   --shadow-xs:  var(--portal-shadow-xs, var(--sa-elevation-card));
   --shadow-lg:  var(--portal-shadow-lg, var(--sa-elevation-modal));
   --shadow-xl:  var(--portal-shadow-xl, var(--sa-elevation-toast));

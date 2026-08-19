@@ -49,12 +49,12 @@ export function CodeBlock({
       style={{
         background: "var(--sa-code-bg)",
         color: "var(--sa-code-text)",
-        borderRadius: "var(--sa-shape-md)",
-        padding: "var(--sa-padding-l)",
+        borderRadius: "var(--sa-shape-8)",
+        padding: "var(--sa-padding-20)",
         fontFamily: "var(--sa-font-mono)",
         fontSize: "var(--sa-type-body-3-size)",
         lineHeight: "var(--sa-type-body-2-lh)",
-        marginTop: "var(--sa-stack-m)",
+        marginTop: "var(--sa-stack-16)",
         overflowX: "auto",
         ...style,
       }}

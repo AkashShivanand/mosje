@@ -16,7 +16,7 @@
   max-width: 560px;
   background: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   box-shadow: var(--sa-elevation-toast);
   overflow: hidden;
   animation: cmd-slide-in 0.15s ease;
@@ -26,8 +26,8 @@
 .cmd-search-row {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-s);
-  padding: var(--sa-padding-m) var(--sa-padding-l);
+  gap: var(--sa-stack-12);
+  padding: var(--sa-padding-16) var(--sa-padding-20);
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }
 
@@ -45,14 +45,14 @@
 .cmd-results {
   max-height: 360px;
   overflow-y: auto;
-  padding: var(--sa-padding-xs) 0;
+  padding: var(--sa-padding-8) 0;
 }
 
 .cmd-result {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-s);
-  padding: var(--sa-padding-s) var(--sa-padding-l);
+  gap: var(--sa-stack-12);
+  padding: var(--sa-padding-12) var(--sa-padding-20);
   text-decoration: none;
   color: var(--sa-text-neutral-base);
   transition: background 0.08s;
@@ -63,7 +63,7 @@
 .cmd-result__icon {
   width: 28px;
   height: 28px;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background: var(--sa-bg-neutral-subtler);
   display: flex;
   align-items: center;
@@ -75,7 +75,7 @@
 .cmd-result__section { font-size: var(--sa-type-body-3-size); color: var(--sa-text-neutral-subtle); }
 
 .cmd-empty {
-  padding: var(--sa-padding-2xl) var(--sa-padding-l);
+  padding: var(--sa-padding-32) var(--sa-padding-20);
   text-align: center;
   color: var(--sa-text-neutral-subtle);
   font-size: var(--sa-type-body-2-size);
@@ -83,8 +83,8 @@
 
 .cmd-footer {
   display: flex;
-  gap: var(--sa-stack-m);
-  padding: var(--sa-padding-s) var(--sa-padding-l);
+  gap: var(--sa-stack-16);
+  padding: var(--sa-padding-12) var(--sa-padding-20);
   border-top: 1px solid var(--sa-border-neutral-subtle);
   font-size: var(--sa-type-body-3-size);
   color: var(--sa-text-neutral-subtle);
@@ -92,7 +92,7 @@
 .cmd-footer kbd {
   background: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-xxs);
-  padding: var(--sa-padding-3xs) var(--sa-padding-2xs);
+  border-radius: var(--sa-shape-2);
+  padding: var(--sa-padding-2) var(--sa-padding-4);
   font-size: var(--sa-type-label-3-size);
 }

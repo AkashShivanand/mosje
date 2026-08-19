@@ -286,14 +286,14 @@ export const IndicatorAndTrack: Story = {
   render: () => (
     <div style={{ display: "grid", gap: 40 }}>
       <section>
-        <h3 style={{ margin: "0 0 12px", font: "var(--sa-type-title-2)" }}>Correct</h3>
+        <h3 style={{ margin: "0 0 12px", fontSize: "var(--sa-type-title-2-size)", lineHeight: "var(--sa-type-title-2-lh)" }}>Correct</h3>
         <div style={{ display: "grid", gap: 28 }}>
           <Demo track="enclosed" indicator="pill" label="Enclosed pill" />
           <Demo track="none" indicator="underline" label="Open underline" />
         </div>
       </section>
       <section>
-        <h3 style={{ margin: "0 0 12px", font: "var(--sa-type-title-2)" }}>
+        <h3 style={{ margin: "0 0 12px", fontSize: "var(--sa-type-title-2-size)", lineHeight: "var(--sa-type-title-2-lh)" }}>
           Wrong — do not ship these
         </h3>
         <div style={{ display: "grid", gap: 28, opacity: 0.85 }}>
@@ -403,7 +403,7 @@ export const LabelsThatCollide: Story = {
     // width a tab row gets in a narrow panel or on a phone.
     <div style={{ display: "grid", gap: 40, width: 420 }}>
       <section>
-        <h3 style={{ margin: "0 0 12px", font: "var(--sa-type-title-2)" }}>
+        <h3 style={{ margin: "0 0 12px", fontSize: "var(--sa-type-title-2-size)", lineHeight: "var(--sa-type-title-2-lh)" }}>
           Don&rsquo;t — a shared prefix truncates to the same string
         </h3>
         <Demo
@@ -417,7 +417,7 @@ export const LabelsThatCollide: Story = {
         />
       </section>
       <section>
-        <h3 style={{ margin: "0 0 12px", font: "var(--sa-type-title-2)" }}>
+        <h3 style={{ margin: "0 0 12px", fontSize: "var(--sa-type-title-2-size)", lineHeight: "var(--sa-type-title-2-lh)" }}>
           Do — the distinguishing word comes first
         </h3>
         <Demo
@@ -466,7 +466,7 @@ export const LongLabelsEveryInput: Story = {
     return (
       <div style={{ display: "grid", gap: 40 }}>
         <section>
-          <h3 style={{ margin: "0 0 12px", font: "var(--sa-type-title-2)" }}>
+          <h3 style={{ margin: "0 0 12px", fontSize: "var(--sa-type-title-2-size)", lineHeight: "var(--sa-type-title-2-lh)" }}>
             Horizontal, pointer — clipped, and recoverable on hover or focus
           </h3>
           <div style={{ width: 320 }}>
@@ -474,7 +474,7 @@ export const LongLabelsEveryInput: Story = {
           </div>
         </section>
         <section>
-          <h3 style={{ margin: "0 0 12px", font: "var(--sa-type-title-2)" }}>
+          <h3 style={{ margin: "0 0 12px", fontSize: "var(--sa-type-title-2-size)", lineHeight: "var(--sa-type-title-2-lh)" }}>
             Vertical — wraps instead, so nothing is hidden on any input
           </h3>
           <div style={{ width: 170 }}>
@@ -488,9 +488,9 @@ export const LongLabelsEveryInput: Story = {
 
 /**
  * **The overflow menu.** Set `overflow` when a row may hold more tabs than it
- * can show. The `Tabs / More` trigger appears **only when tabs are actually
- * hidden** — never as permanent chrome — and lists the ones currently scrolled
- * out of view. Narrow the frame to make more of them disappear.
+ * can show. The `Tabs / More` trigger appears **only when the row actually
+ * overflows** — never as permanent chrome. Narrow the frame to make more tabs
+ * disappear.
  *
  * It is a **menu button, not a tab**: `role="button"`, `aria-haspopup="menu"`,
  * `aria-expanded`. Giving it `role="tab"` would promise a panel that does not
@@ -498,10 +498,29 @@ export const LongLabelsEveryInput: Story = {
  * That is also why it renders *outside* the `role="tablist"` — and being
  * outside is what keeps it pinned while the tabs scroll past it.
  *
+ * **It lists every tab, not just the hidden ones**, and marks the current one with
+ * `role="menuitemradio"` + `aria-checked`. An earlier build listed only what was
+ * out of view, which meant opening the same menu at two scroll positions gave two
+ * different lists. It reads as a jump-to-section list now.
+ *
  * **It does not remove tabs from the tablist.** Every tab stays rendered,
  * focusable and arrow-reachable; this is a pointer shortcut, not a relocation.
  * The alternative model — moving tabs into the menu — costs them their
  * `role="tab"`, their `aria-controls` and their place in the roving tabindex.
+ *
+ * The row itself is polished for the scrolling case: the native scrollbar is
+ * hidden (only here, where the menu is an alternative affordance), and tabs
+ * scroll-snap so none is ever sliced mid-word.
+ *
+ * **The edge fade belongs to `track="none"` only** — both rows below, so the
+ * difference is visible rather than described. An open row has nothing to
+ * explain a cut, so a measured per-direction fade says "more this way". An
+ * enclosed row already has a bordered, rounded container, and content clipped by
+ * a container reads as clipped — the same call Material and Carbon make. It also
+ * *cannot* be faded cleanly: the border, fill and radius are painted by the
+ * scrolling element, so a mask dissolves the container itself, which at 200%
+ * zoom cost the track its corner. `scroll-padding` keeps a keyboard-focused tab
+ * off both the fade and the clip edge (WCAG 2.4.11).
  *
  * Keyboard: Enter, Space or Down opens and focuses the first item; Up/Down and
  * Home/End move; Escape closes and returns focus to the trigger; Tab leaves.
@@ -528,8 +547,19 @@ export const OverflowMenu: Story = {
       // tablist never becomes narrower than its tabs, and nothing ever
       // overflows — the trigger would correctly never appear. Consumers placing
       // `overflow` tabs inside a flex or grid item need `min-width: 0` on it.
-      <div style={{ width: 460 }}>
-        <Demo tabs={many} overflow label="PM-AJAY components" />
+      <div style={{ display: "grid", gap: 32, width: 460 }}>
+        <div style={{ minWidth: 0 }}>
+          <p style={{ margin: "0 0 8px", fontSize: "var(--sa-type-label-2-size)", lineHeight: "var(--sa-type-label-2-lh)", color: "var(--sa-text-neutral-subtle)" }}>
+            track=&quot;enclosed&quot; — clips against its own border
+          </p>
+          <Demo tabs={many} overflow label="PM-AJAY components" />
+        </div>
+        <div style={{ minWidth: 0 }}>
+          <p style={{ margin: "0 0 8px", fontSize: "var(--sa-type-label-2-size)", lineHeight: "var(--sa-type-label-2-lh)", color: "var(--sa-text-neutral-subtle)" }}>
+            track=&quot;none&quot; — fades, because nothing else explains the cut
+          </p>
+          <Demo tabs={many} overflow track="none" indicator="underline" label="PM-AJAY components, open track" />
+        </div>
       </div>
     );
   },

@@ -112,7 +112,10 @@ export function AboutUs() {
           </div>
         </div>
 
-        <div className="mt-12 overflow-hidden rounded-xl bg-gradient-to-r from-primary-dark to-primary">
+        <Link
+          href="/website/dashboard"
+          className="group mt-12 block overflow-hidden rounded-xl bg-gradient-to-r from-primary-dark to-primary transition-opacity hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        >
           <dl className="grid grid-cols-1 divide-y divide-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {stats.map((stat) => (
               <div
@@ -122,13 +125,13 @@ export function AboutUs() {
                 <dd className="text-[40px] font-bold leading-none text-white">
                   {stat.value}
                 </dd>
-                <dt className="mt-3 text-[14px] font-medium uppercase tracking-wide text-white/80">
+                <dt className="mt-3 text-[14px] font-medium uppercase tracking-wide text-white/80 transition-colors group-hover:text-white">
                   {stat.label}
                 </dt>
               </div>
             ))}
           </dl>
-        </div>
+        </Link>
       </div>
     </section>
   );

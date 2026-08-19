@@ -13,6 +13,20 @@ export default function ProjectLocationChangePage() {
   const ngo = state.ngos[0];
   const projects = ngo ? ngoApplications(state, ngo.id) : [];
 
+  const projectOptions = projects.length > 0
+    ? projects.map((p) => ({ id: p.id, label: `${p.id} · ${p.projectLabel}` }))
+    : [
+        { id: "IP/AR/DIB/40040", label: "IP/AR/DIB/40040 · SRCH_50 Residential School" },
+        { id: "GIA/2026-27/AVYAY/0182", label: "GIA/2026-27/AVYAY/0182 · Senior Citizen Home Pune" },
+      ];
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!project || !detail.trim()) return;
+    toast(`Location change request for project ${project} submitted.`, "success");
+    setDetail("");
+  };
+
   return (
     <div className="mx-auto max-w-2xl space-y-5">
       <div>
@@ -23,29 +37,37 @@ export default function ProjectLocationChangePage() {
         </p>
       </div>
 
-      <section className="space-y-4 rounded-xl border border-line bg-surface p-5">
+      <form onSubmit={handleSubmit} className="space-y-5 rounded-xl border border-line bg-surface p-6 shadow-xs">
         <FormField label="Project" id="project">
           {(control) => (
             <Select {...control} value={project} onChange={(e) => setProject(e.target.value)}>
               <option value="">Select a project…</option>
-              {projects.map((p) => (
-                <option key={p.id} value={p.id}>{p.id} · {p.projectLabel}</option>
+              {projectOptions.map((p) => (
+                <option key={p.id} value={p.id}>{p.label}</option>
               ))}
             </Select>
           )}
         </FormField>
         <FormField label="New project location" id="new-location">
           {(control) => (
-            <Textarea {...control} rows={4} value={detail} onChange={(e) => setDetail(e.target.value)} />
+            <Textarea
+              {...control}
+              rows={4}
+              placeholder="Enter complete building, street, district, and pin code details..."
+              value={detail}
+              onChange={(e) => setDetail(e.target.value)}
+            />
           )}
         </FormField>
         <Button
+          type="submit"
+          appearance="filled"
           disabled={!project || !detail.trim()}
-          onClick={() => toast("Change request submitted (demo).", "success")}
         >
           Submit request
         </Button>
-      </section>
+      </form>
     </div>
   );
 }
+

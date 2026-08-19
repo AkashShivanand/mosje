@@ -76,7 +76,7 @@ const Masthead = () => (
     style={{
       background: "var(--sa-bg-neutral-base)",
       borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-      padding: "var(--sa-padding-m) var(--sa-padding-xl)",
+      padding: "var(--sa-padding-16) var(--sa-padding-24)",
       fontWeight: 600,
     }}
   >
@@ -86,7 +86,7 @@ const Masthead = () => (
 
 export const PageHeaderRow: Story = {
   render: (args) => (
-    <div style={{ padding: "var(--sa-padding-xl)" }}>
+    <div style={{ padding: "var(--sa-padding-24)" }}>
       <PageHeader {...args} actions={<Button>Submit Activity</Button>} />
     </div>
   ),

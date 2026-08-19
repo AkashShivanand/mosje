@@ -55,7 +55,7 @@ const meta = {
           maxHeight: 460,
           overflowY: "auto",
           border: "1px solid var(--sa-border-neutral-subtle)",
-          borderRadius: "var(--sa-shape-md)",
+          borderRadius: "var(--sa-shape-8)",
           background: "var(--sa-bg-neutral-base)",
         }}
       >
@@ -121,7 +121,7 @@ export const Search: Story = {
           style={{
             padding: "6px 10px",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-sm)",
+            borderRadius: "var(--sa-shape-6)",
             font: "inherit",
           }}
         />
@@ -131,7 +131,7 @@ export const Search: Story = {
             maxHeight: 380,
             overflowY: "auto",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             background: "var(--sa-bg-neutral-base)",
           }}
         >
@@ -157,7 +157,7 @@ export const OnNavigateCallback: Story = {
             maxHeight: 380,
             overflowY: "auto",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            borderRadius: "var(--sa-shape-md)",
+            borderRadius: "var(--sa-shape-8)",
             background: "var(--sa-bg-neutral-base)",
           }}
           onClickCapture={(e) => {

@@ -1929,7 +1929,7 @@ export const SLOT_COUNTS = {
   "icon": 10,
   "cmp": 298,
   "focus": 1,
-  "overlay": 1,
+  "overlay": 3,
   "chart": 38,
   "layer": 8,
   "on": 46

@@ -231,10 +231,20 @@ function groupGuidance(path) {
     return "Use in data visualisation.";
   }
   if (head === "density") return `Use for ${key.replace(/\//g, " ")} — it changes with the density axis, so bind it rather than hard-coding a value.`;
-  if (head === "inline") return `Use for horizontal gaps between items on one line, at the ${rest[0]} step.`;
-  if (head === "stack") return `Use for vertical gaps between stacked items, at the ${rest[0]} step.`;
-  if (head === "padding") return `Use for padding inside a container, at the ${rest[0]} step.`;
-  if (head === "section") return `Use for the gap between major page sections, at the ${rest[0]} step.`;
+  // Value-named since 2026-08-18: the rung IS the pixel value, so the description says so rather
+  // than naming a T-shirt "step" that no longer exists. The cross-family sentence is the point of
+  // the rename — `l` used to mean 16 in inline, 24 in stack, 20 in padding and 56 in section.
+  const SPACE_USE = {
+    inline: "Horizontal gap between items on one line",
+    stack: "Vertical gap between stacked items, and vertical rhythm inside a block",
+    padding: "Inset between a container’s edge and its content",
+    section: "Vertical rhythm between page-level sections",
+  };
+  if (SPACE_USE[head]) {
+    const px = rest[0];
+    return `${SPACE_USE[head]} — ${px}px. The label IS the value: \`inline/${px}\`, \`stack/${px}\`, ` +
+      `\`padding/${px}\` and \`section/${px}\` are all ${px}px.`;
+  }
   if (head === "blur") return `Use for a ${rest[0]} blur on backdrops and scrims.`;
   if (head === "type") return `Use for the ${rest[0]} type role — it responds to surface and viewport, so bind it rather than copying a px value.`;
   return null;
@@ -315,17 +325,17 @@ function fontPointer(path) {
 /** Tier-2 corner radius. Named `shape` because a Tier-2 group called `radius` would
  * self-reference the Tier-1 scale it aliases; see build/grammar.mjs. */
 const SHAPE_GUIDANCE = {
-  "none": "Use for a square corner \u2014 tables, full-bleed media, anything that should read as flush.",
-  "xxs": "Use for the smallest softening, on dense controls where a visible curve would read as noise.",
-  "xs": "Use for small chips, tags and inline badges.",
-  "sm": "Use for inputs, selects and other text-entry controls.",
-  "md": "Use for buttons and standard controls. This is the default shape of the system.",
-  "lg": "Use for cards and panels \u2014 a surface holding content rather than a control.",
-  "xl": "Use for large containers and modal surfaces.",
-  "2xl": "Use for hero and feature surfaces, where the curve is part of the composition.",
-  "3xl": "Use for the largest editorial surfaces.",
-  "4xl": "Use for oversized decorative surfaces. Rare; check a smaller step first.",
-  "5xl": "Use for the largest decorative surface in the system. Rare.",
+  "0": "Use for a square corner \u2014 tables, full-bleed media, anything that should read as flush.",
+  "2": "Use for the smallest softening, on dense controls where a visible curve would read as noise.",
+  "4": "Use for small chips, tags and inline badges.",
+  "6": "Use for inputs, selects and other text-entry controls.",
+  "8": "Use for buttons and standard controls. This is the default shape of the system.",
+  "12": "Use for cards and panels \u2014 a surface holding content rather than a control.",
+  "16": "Use for large containers and modal surfaces.",
+  "20": "Use for hero and feature surfaces, where the curve is part of the composition.",
+  "24": "Use for the largest editorial surfaces.",
+  "32": "Use for oversized decorative surfaces. Rare; check a smaller step first.",
+  "40": "Use for the largest decorative surface in the system. Rare.",
   "full": "Use for pills and circles \u2014 avatars, toggles, status dots. Fully rounded at any size."
 };
 
@@ -333,9 +343,9 @@ export function primitivePointer(path) {
   const [head] = path;
   if (head === "color") return "Palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee and follow the brand.";
   if (head === "size") return "Raw size step, value-named. Prefer `space/*`, `padding/*` or a text style unless you genuinely need an arbitrary dimension.";
-  if (head === "space") return "Raw spacing step. Prefer the semantic gap groups — `inline/*`, `stack/*`, `padding/*`, `section/*` — which say what the gap is for.";
+  if (head === "space") return `${path[1]}px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind \`inline/${path[1]}\`, \`stack/${path[1]}\`, \`padding/${path[1]}\` or \`section/${path[1]}\` instead; all four resolve here.`;
   if (head === "font") return fontPointer(path);
-  if (head === "radius") return "Raw radius step. Prefer the Tier-2 `shape/*` group, which is what a component should bind to.";
+  if (head === "radius") return `${path[1] === "full" ? "Fully-rounded sentinel" : path[1] + "px raw radius step, value-named"}. TIER 1 — hidden from publishing and banned in app code. Bind \`shape/${path[1]}\` instead, which resolves here.`;
   if (head === "motion" || head === "opacity" || head === "blur") return `Raw ${head} step.`;
   // `border` was the one primitive group with no pointer, so all five ref/border/width/*
   // shipped to Figma with an EMPTY description — the only variables in the library that had

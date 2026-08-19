@@ -6,6 +6,15 @@ on:
   pull_request:
     branches: [main]
 
+# A pull request that is pushed again supersedes its own in-flight run. Without this
+# a hung run keeps reporting "pending" on the PR forever and cannot be displaced —
+# on 2026-08-19 a stuck Chromium download ignored cancel AND force-cancel, and the
+# only way to get a fresh runner was to push an empty commit. `main` is deliberately
+# NOT cancelled: every commit on the trunk gets its own complete result.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 # The estate is single-origin: apps/hub is one npm workspace that serves the
 # website (/website), the SAMAVESH docs (/design-system) and every portal
 # (/portals/<slug>). There are no per-app lockfiles to `npm ci` against — the
@@ -14,6 +23,7 @@ jobs:
   hub:
     name: hub lint + typecheck + build
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

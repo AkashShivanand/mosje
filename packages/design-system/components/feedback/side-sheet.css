@@ -39,8 +39,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-stack-s);
-  padding: var(--sa-padding-l) var(--sa-padding-xl);
+  gap: var(--sa-stack-12);
+  padding: var(--sa-padding-20) var(--sa-padding-24);
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }
 
@@ -62,7 +62,7 @@
   width: 32px;
   height: 32px;
   flex-shrink: 0;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background: transparent;
   color: var(--sa-text-neutral-subtle);
   transition: background-color 0.12s ease, color 0.12s ease;
@@ -81,15 +81,15 @@
 .ds-sheet__body {
   flex: 1;
   overflow-y: auto;
-  padding: var(--sa-padding-xl);
+  padding: var(--sa-padding-24);
 }
 
 .ds-sheet__footer {
   flex-shrink: 0;
   display: flex;
   justify-content: flex-end;
-  gap: var(--sa-stack-xs);
-  padding: var(--sa-padding-m) var(--sa-padding-xl);
+  gap: var(--sa-stack-8);
+  padding: var(--sa-padding-16) var(--sa-padding-24);
   border-top: 1px solid var(--sa-border-neutral-subtle);
   background-color: var(--sa-bg-neutral-base);
 }

@@ -32,28 +32,28 @@ export default function ElevationPage(): React.JSX.Element {
   return (
     <article className="ds-prose">
       <h1>Elevation</h1>
-      <p style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-s)" }}>
+      <p style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-12)" }}>
         Elevation tells people what sits on top of what. SAMAVESH uses three
         shadow levels to express depth — the higher the surface, the softer and
         larger its shadow.
       </p>
-      <div style={{ marginTop: "var(--sa-stack-m)" }}>
+      <div style={{ marginTop: "var(--sa-stack-16)" }}>
         <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.elevation)} target="_blank" rel="noopener noreferrer">
           View in Figma <span aria-hidden="true">↗</span>
         </a>
       </div>
 
-      <section aria-labelledby="levels" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="levels" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="levels">The three levels</h2>
         <div
           style={{
-            marginTop: "var(--sa-stack-l)",
+            marginTop: "var(--sa-stack-24)",
             background: "var(--sa-bg-neutral-subtler)",
-            borderRadius: "var(--sa-shape-md)",
-            padding: "var(--sa-section-m) var(--sa-padding-2xl)",
+            borderRadius: "var(--sa-shape-8)",
+            padding: "var(--sa-section-48) var(--sa-padding-32)",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-            gap: "var(--sa-stack-xl)",
+            gap: "var(--sa-stack-32)",
           }}
         >
           {LEVELS.map(({ token, label }) => (
@@ -62,13 +62,13 @@ export default function ElevationPage(): React.JSX.Element {
               style={{
                 background: "var(--sa-bg-neutral-base)",
                 boxShadow: `var(${token})`,
-                borderRadius: "var(--sa-shape-md)",
-                padding: "var(--sa-padding-xl)",
+                borderRadius: "var(--sa-shape-8)",
+                padding: "var(--sa-padding-24)",
                 textAlign: "center",
               }}
             >
               <div style={{ fontWeight: 600, color: "var(--sa-color-text-default)" }}>{label}</div>
-              <code style={{ fontSize: "var(--sa-type-body-2-size)", display: "inline-block", marginTop: "var(--sa-stack-xs)" }}>
+              <code style={{ fontSize: "var(--sa-type-body-2-size)", display: "inline-block", marginTop: "var(--sa-stack-8)" }}>
                 {token}
               </code>
             </div>
@@ -76,9 +76,9 @@ export default function ElevationPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="when" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="when" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="when">When to use each</h2>
-        <ul style={{ marginTop: "var(--sa-stack-m)" }}>
+        <ul style={{ marginTop: "var(--sa-stack-16)" }}>
           {LEVELS.map(({ token, use }) => (
             <li key={token}>
               <code className="token-table__name">{token}</code> — {use}
@@ -87,9 +87,9 @@ export default function ElevationPage(): React.JSX.Element {
         </ul>
       </section>
 
-      <section aria-labelledby="tokens" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="tokens" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="tokens">Tokens</h2>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <TokenTable
             tokens={[
               {
@@ -112,9 +112,9 @@ export default function ElevationPage(): React.JSX.Element {
         </div>
       </section>
 
-      <section aria-labelledby="guidance" style={{ marginTop: "var(--sa-stack-2xl)" }}>
+      <section aria-labelledby="guidance" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="guidance">Guidance</h2>
-        <div style={{ marginTop: "var(--sa-stack-m)" }}>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <Callout type="warning" title="Shadows are for surfaces, not text">
             Don&apos;t apply a drop-shadow to text to fake emphasis — it hurts
             legibility and fails contrast checks. Use elevation only on

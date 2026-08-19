@@ -24,6 +24,41 @@ const organisations: Organisation[] = [
     href: "/website/organisation/national-commission-for-backward-classes-ncbc",
   },
   {
+    abbr: "DAF",
+    name: "Dr. Ambedkar Foundation",
+    href: "/website/organisation/dr-ambedkar-foundation",
+  },
+  {
+    abbr: "DAIC",
+    name: "Dr Ambedkar International Centre",
+    href: "/website/organisation/dr-ambedkar-international-centre",
+  },
+  {
+    abbr: "BJRNF",
+    name: "Babu Jagjivan Ram National Foundation",
+    href: "/website/organisation/babu-jagjivan-ram-national-foundation-jrf",
+  },
+  {
+    abbr: "NSFDC",
+    name: "National Scheduled Castes Finance and Development Corporation",
+    href: "/website/organisation/national-scheduled-castes-finance-and-development-corporation",
+  },
+  {
+    abbr: "NSKFDC",
+    name: "National Safai Karamcharis Finance and Development Corporation",
+    href: "/website/organisation/national-safai-karamcharis-finance-development-corporation",
+  },
+  {
+    abbr: "NBCFDC",
+    name: "National Backward Classes Finance and Development Corporation",
+    href: "/website/organisation/national-backward-classes-financeand-development-corporationnbcfdc",
+  },
+  {
+    abbr: "NISD",
+    name: "National Institute of Social Defence",
+    href: "/website/organisation/national-institute-of-social-defence",
+  },
+  {
     abbr: "DWBDNC",
     name: "Development and Welfare Board for De-notified, Nomadic, and Semi-Nomadic Communities",
     href: "/website/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic",
@@ -54,19 +89,9 @@ const organisations: Organisation[] = [
     href: "/website/organisation/nasha-mukt-bharat-abhiyaan",
   },
   {
-    abbr: "NSFDC",
-    name: "National Scheduled Castes Finance and Development Corporation",
-    href: "/website/organisation/national-scheduled-castes-finance-and-development-corporation",
-  },
-  {
-    abbr: "NSKFDC",
-    name: "National Safai Karamcharis Finance and Development Corporation",
-    href: "/website/organisation/national-safai-karamcharis-finance-development-corporation",
-  },
-  {
-    abbr: "NBCFDC",
-    name: "National Backward Classes Finance and Development Corporation",
-    href: "/website/organisation/national-backward-classes-financeand-development-corporationnbcfdc",
+    abbr: "NHAA",
+    name: "National Helpline Against Atrocities",
+    href: "/website/organisation/national-helpline-against-atrocities",
   },
 ];
 

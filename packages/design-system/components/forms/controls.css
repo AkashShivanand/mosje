@@ -26,7 +26,7 @@
 .ds-checkbox {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   font-family: var(--sa-font-latin);
 }
 
@@ -45,7 +45,7 @@
   width: 18px;
   height: 18px;
   border: 1.5px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-xs);
+  border-radius: var(--sa-shape-4);
   background-color: var(--sa-bg-neutral-base);
   color: var(--sa-on-bg-brand-primary-bolder);
   transition:
@@ -106,7 +106,7 @@
 .ds-radio {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   font-family: var(--sa-font-latin);
 }
 
@@ -183,7 +183,7 @@
 .ds-toggle {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   font-family: var(--sa-font-latin);
   /* Per-size local vars (default: 52×32 track, 24 knob) */
   --_track-w: 52px;
@@ -268,11 +268,11 @@
 .ds-radio-card {
   display: flex;
   align-items: flex-start;
-  gap: var(--sa-stack-s);
-  padding: var(--sa-padding-m);
+  gap: var(--sa-stack-12);
+  padding: var(--sa-padding-16);
   background: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-lg);
+  border-radius: var(--sa-shape-12);
   cursor: pointer;
   transition:
     border-color 0.15s ease,
@@ -299,7 +299,7 @@
 .ds-radio-card__body {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-padding-3xs);
+  gap: var(--sa-padding-2);
 }
 
 .ds-radio-card__title {

@@ -9,7 +9,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: calc(-1 * var(--sa-padding-3xs));
+  margin: calc(-1 * var(--sa-padding-2));
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -19,11 +19,11 @@
 .ds-metric-card {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-2xs);
-  padding: var(--sa-padding-l);
+  gap: var(--sa-stack-4);
+  padding: var(--sa-padding-20);
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-lg);
+  border-radius: var(--sa-cmp-card-radius);
   box-shadow: var(--sa-elevation-raised);
 }
 
@@ -31,7 +31,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--sa-stack-s);
+  gap: var(--sa-stack-12);
 }
 
 .ds-metric-card__body {
@@ -47,7 +47,7 @@
 }
 
 .ds-metric-card__value {
-  margin-top: var(--sa-padding-2xs);
+  margin-top: var(--sa-padding-4);
   font-family: var(--sa-font-latin);
   font-size: 24px;
   line-height: 32px;
@@ -63,7 +63,7 @@
   width: 40px;
   height: 40px;
   flex: 0 0 auto;
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   background-color: var(--sa-color-primaryScale-50);
   color: var(--sa-text-brand-primary-base);
 }
@@ -83,8 +83,8 @@
 .ds-metric-card__change {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-stack-2xs);
-  margin-top: var(--sa-padding-xs);
+  gap: var(--sa-stack-4);
+  margin-top: var(--sa-padding-8);
   font-family: var(--sa-font-latin);
   font-size: 12px;
   font-weight: 600;
@@ -99,8 +99,8 @@
 .ds-metric-card__pill {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-stack-2xs);
-  padding: var(--sa-padding-3xs) var(--sa-padding-xs);
+  gap: var(--sa-stack-4);
+  padding: var(--sa-padding-2) var(--sa-padding-8);
   border-radius: var(--sa-shape-full);
   font-size: 12px;
   font-weight: 600;
@@ -109,7 +109,7 @@
 .ds-metric-card__pill--up   { background-color: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
 .ds-metric-card__pill--down { background-color: var(--sa-bg-status-error-base);  color: var(--sa-text-status-error-base); }
 .ds-metric-card__suffix {
-  margin-left: var(--sa-padding-xs);
+  margin-left: var(--sa-padding-8);
   font-size: 12px;
   font-weight: 500;
   color: var(--sa-text-neutral-subtle);

@@ -24,17 +24,17 @@ module.exports = {
         "border-strong": "var(--sa-border-neutral-base)"
       },
       "borderRadius": {
-        "none": "var(--sa-shape-none)",
-        "xxs": "var(--sa-shape-xxs)",
-        "xs": "var(--sa-shape-xs)",
-        "sm": "var(--sa-shape-sm)",
-        "md": "var(--sa-shape-md)",
-        "lg": "var(--sa-shape-lg)",
-        "xl": "var(--sa-shape-xl)",
-        "2xl": "var(--sa-shape-2xl)",
-        "3xl": "var(--sa-shape-3xl)",
-        "4xl": "var(--sa-shape-4xl)",
-        "5xl": "var(--sa-shape-5xl)",
+        "none": "var(--sa-shape-0)",
+        "xxs": "var(--sa-shape-2)",
+        "xs": "var(--sa-shape-4)",
+        "sm": "var(--sa-shape-6)",
+        "md": "var(--sa-shape-8)",
+        "lg": "var(--sa-shape-12)",
+        "xl": "var(--sa-shape-16)",
+        "2xl": "var(--sa-shape-20)",
+        "3xl": "var(--sa-shape-24)",
+        "4xl": "var(--sa-shape-32)",
+        "5xl": "var(--sa-shape-40)",
         "full": "var(--sa-shape-full)"
       },
       "fontFamily": {

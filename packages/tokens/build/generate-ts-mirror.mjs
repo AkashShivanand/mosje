@@ -80,11 +80,15 @@ const COLORS = {
   yellow: "--sa-color-brand-yellow",
 };
 
+// The tokens.ts RADIUS surface keeps ITS OWN key vocabulary — note it already diverges from the
+// ladder (`pill`, not `full`), and renaming these keys would be a breaking change to a separate
+// public API. Only the targets moved when the ladder was value-named on 2026-08-18; every value
+// here is unchanged.
 const RADIUS = {
-  xxs: "--sa-shape-xxs",
-  xs: "--sa-shape-xs",
-  sm: "--sa-shape-sm",
-  md: "--sa-shape-md",
+  xxs: "--sa-shape-2",
+  xs: "--sa-shape-4",
+  sm: "--sa-shape-6",
+  md: "--sa-shape-8",
   pill: "--sa-shape-full",
 };
 

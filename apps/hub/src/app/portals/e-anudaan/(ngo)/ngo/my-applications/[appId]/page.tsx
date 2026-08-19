@@ -1,7 +1,8 @@
 "use client";
 
+import * as React from "react";
 import { useParams } from "next/navigation";
-import { Alert, Badge } from "@mosje/design-system";
+import { Alert, Badge, Icon } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES } from "@/lib/e-anudaan/roles";
 import { formatDate, formatGrant, statusTone } from "@/lib/e-anudaan/selectors";
@@ -74,20 +75,46 @@ export default function NgoApplicationDetailPage() {
             <thead>
               <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-muted">
                 <th className="pb-2 pr-3 font-medium">Document</th>
+                <th className="pb-2 pr-3 font-medium">AI Verification</th>
                 <th className="pb-2 pr-3 font-medium">Uploaded On</th>
                 <th className="pb-2 pr-3 font-medium">Status</th>
                 <th className="pb-2 font-medium">Remarks</th>
               </tr>
             </thead>
             <tbody>
-              {app.documents.map((d) => (
-                <tr key={d.id} className="border-b border-line">
-                  <td className="py-2 pr-3 text-ink">{d.slot}. {d.title}</td>
-                  <td className="py-2 pr-3 text-ink-muted">{d.uploadedAt ? formatDate(d.uploadedAt) : "—"}</td>
-                  <td className="py-2 pr-3"><Badge>{d.reviewStatus}</Badge></td>
-                  <td className="py-2 text-ink-muted">{d.officerRemarks ?? "—"}</td>
-                </tr>
-              ))}
+              {app.documents.map((d, i) => {
+                const aiValid = i !== 1; // Example: 2nd doc has AI invalid state for testing
+                return (
+                  <React.Fragment key={d.id}>
+                    <tr className="border-b border-line">
+                      <td className="py-2.5 pr-3 font-medium text-ink">
+                        {d.slot}. {d.title}
+                      </td>
+                      <td className="py-2.5 pr-3">
+                        {aiValid ? (
+                          <span className="inline-flex items-center gap-1 rounded bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700 border border-emerald-200">
+                            <Icon name="check_circle" size={16} aria-hidden /> AI: verified
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 rounded bg-rose-50 px-2 py-0.5 text-xs font-semibold text-rose-700 border border-rose-200">
+                            <Icon name="cancel" size={16} aria-hidden /> AI: not valid
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-2.5 pr-3 text-ink-muted">{d.uploadedAt ? formatDate(d.uploadedAt) : "—"}</td>
+                      <td className="py-2.5 pr-3"><Badge>{d.reviewStatus}</Badge></td>
+                      <td className="py-2.5 text-ink-muted">{d.officerRemarks ?? "—"}</td>
+                    </tr>
+                    {!aiValid && (
+                      <tr className="bg-rose-50/50">
+                        <td colSpan={5} className="px-3 py-2 text-xs text-rose-900 border-b border-rose-100">
+                          <strong>AI Audit Verdict:</strong> Document scanning detected formatting mismatch. Please ensure official Income Tax Department document with clear PAN details is uploaded.
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                );
+              })}
             </tbody>
           </table>
         </div>

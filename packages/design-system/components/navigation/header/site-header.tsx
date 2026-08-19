@@ -189,10 +189,10 @@ export function SiteHeader({
   const [openLabel, setOpenLabel] = React.useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
-  // Default to the estate container variable so the navbar's column is the same
-  // width as the page content beneath it. A numeric prop still wins.
+  // Default to 100% for portal app-shells so the brand row aligns with full-width topbar,
+  // or default to estate container variable for static website headers.
   const inner = {
-    maxWidth: maxWidth ?? "var(--sa-container-page)",
+    maxWidth: maxWidth ?? (isPortal ? "100%" : "var(--sa-container-page)"),
   } as React.CSSProperties;
   const hasNav = !!nav && nav.length > 0;
   const drawerId = React.useId();

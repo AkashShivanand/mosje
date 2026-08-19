@@ -168,7 +168,7 @@
   display: flex;
   flex-direction: column;
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   background-color: var(--sa-bg-neutral-base);
   box-shadow: var(--sa-elevation-toast);
   overflow: hidden;
@@ -220,7 +220,7 @@
   flex: 0 0 auto;
   width: 32px;
   height: 32px;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background-color: var(--sa-bg-brand-primary-subtler);
   color: var(--sa-text-brand-primary-base);
 }
@@ -270,7 +270,7 @@
   width: 28px;
   height: 28px;
   border: none;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background: transparent;
   color: var(--sa-text-neutral-subtle);
   cursor: pointer;
@@ -344,7 +344,7 @@
   min-height: 44px;
   padding: 8px 6px;
   border: 1px solid transparent;
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   background: transparent;
   cursor: pointer;
   text-align: center;
@@ -392,7 +392,7 @@
   width: 90px;
   height: 60px;
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -417,8 +417,8 @@
   gap: 4px;
   padding: 0 8px;
   background-color: var(--sa-bg-brand-primary-bolder);
-  border-top-left-radius: calc(var(--sa-shape-sm) - 1px);
-  border-top-right-radius: calc(var(--sa-shape-sm) - 1px);
+  border-top-left-radius: calc(var(--sa-shape-6) - 1px);
+  border-top-right-radius: calc(var(--sa-shape-6) - 1px);
 }
 
 .ds-demodock__motif-dot {
@@ -437,8 +437,8 @@
   gap: 6px;
   padding: 0 9px;
   background-color: var(--sa-bg-neutral-base);
-  border-bottom-left-radius: calc(var(--sa-shape-sm) - 1px);
-  border-bottom-right-radius: calc(var(--sa-shape-sm) - 1px);
+  border-bottom-left-radius: calc(var(--sa-shape-6) - 1px);
+  border-bottom-right-radius: calc(var(--sa-shape-6) - 1px);
 }
 
 .ds-demodock__motif-accent {
@@ -452,7 +452,7 @@
   align-self: flex-start;
   width: 35px;
   height: 11px;
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background-color: var(--sa-bg-brand-primary-bolder);
 }
 
@@ -507,7 +507,7 @@
 .ds-demodock__colour-note kbd {
   padding: 1px 5px;
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-sm);
+  border-radius: var(--sa-shape-6);
   background-color: var(--sa-bg-neutral-base);
   font-family: var(--sa-font-latin);
   font-size: 0.9em;

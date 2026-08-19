@@ -6,7 +6,7 @@
 .ds-gallery {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   font-family: var(--sa-font-latin);
 }
 
@@ -15,7 +15,7 @@
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: calc(-1 * var(--sa-padding-3xs));
+  margin: calc(-1 * var(--sa-padding-2));
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
@@ -28,14 +28,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   width: 100%;
   min-height: 132px;
-  padding: var(--sa-padding-xl) var(--sa-padding-m);
+  padding: var(--sa-padding-24) var(--sa-padding-16);
   text-align: center;
   background-color: var(--sa-bg-neutral-base);
   border: 2px dashed var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-lg);
+  border-radius: var(--sa-shape-12);
   cursor: pointer;
   transition:
     border-color 0.15s ease,
@@ -89,7 +89,7 @@
 .ds-gallery__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-  gap: var(--sa-stack-s);
+  gap: var(--sa-stack-12);
 }
 
 /* ---- Existing item ---- */
@@ -97,7 +97,7 @@
   position: relative;
   margin: 0;
   aspect-ratio: 4 / 3;
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   overflow: hidden;
   background-color: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-subtle);
@@ -163,7 +163,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  padding: var(--sa-padding-xs) var(--sa-padding-xs) var(--sa-padding-2xs);
+  padding: var(--sa-padding-8) var(--sa-padding-8) var(--sa-padding-4);
   font-size: 10px;
   line-height: 1.3;
   color: var(--sa-color-neutralScale-0);
@@ -179,12 +179,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   aspect-ratio: 4 / 3;
-  padding: var(--sa-padding-xs);
+  padding: var(--sa-padding-8);
   background-color: var(--sa-bg-neutral-base);
   border: 2px dashed var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   color: var(--sa-text-neutral-subtle);
   cursor: pointer;
   transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
@@ -222,7 +222,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
 }
 
 .ds-gallery__hint {
@@ -240,7 +240,7 @@
 .ds-gallery__error {
   display: flex;
   align-items: center;
-  gap: var(--sa-stack-2xs);
+  gap: var(--sa-stack-4);
   font-size: var(--sa-type-body-3-size);
   color: var(--sa-color-status-dangerStrong);
 }

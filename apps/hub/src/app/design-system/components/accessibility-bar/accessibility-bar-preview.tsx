@@ -9,7 +9,7 @@ function Frame({ children }: { children: React.ReactNode }): React.JSX.Element {
     <div
       style={{
         border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-md)",
+        borderRadius: "var(--sa-shape-8)",
         overflow: "hidden",
         background: "var(--sa-bg-neutral-base)",
       }}
@@ -65,7 +65,7 @@ export function AccessibilityBarFontSizePreview(): React.JSX.Element {
       <p
         style={{
           margin: 0,
-          padding: "var(--sa-padding-l)",
+          padding: "var(--sa-padding-20)",
           fontSize: `calc(var(--sa-type-body-1-size) * ${scale})`,
           lineHeight: "var(--sa-type-body-1-lh)",
           color: "var(--sa-text-neutral-base)",

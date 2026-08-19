@@ -566,36 +566,37 @@ export const tokens = {
     }
   },
   "space": {
-    "none": "0px",
-    "xxs": "2px",
-    "xs": "4px",
-    "sm": "8px",
-    "md": "12px",
-    "lg": "16px",
-    "xl": "20px",
-    "2xl": "24px",
-    "3xl": "32px",
-    "4xl": "40px",
-    "5xl": "48px",
-    "6xl": "56px",
-    "7xl": "64px",
-    "8xl": "72px",
-    "9xl": "80px",
-    "10xl": "120px",
-    "11xl": "360px"
+    "0": "0px",
+    "2": "2px",
+    "4": "4px",
+    "6": "6px",
+    "8": "8px",
+    "12": "12px",
+    "16": "16px",
+    "20": "20px",
+    "24": "24px",
+    "32": "32px",
+    "40": "40px",
+    "48": "48px",
+    "56": "56px",
+    "64": "64px",
+    "72": "72px",
+    "80": "80px",
+    "120": "120px",
+    "360": "360px"
   },
   "radius": {
-    "none": "0px",
-    "xxs": "2px",
-    "xs": "4px",
-    "sm": "6px",
-    "md": "8px",
-    "lg": "12px",
-    "xl": "16px",
-    "2xl": "20px",
-    "3xl": "24px",
-    "4xl": "32px",
-    "5xl": "40px",
+    "0": "0px",
+    "2": "2px",
+    "4": "4px",
+    "6": "6px",
+    "8": "8px",
+    "12": "12px",
+    "16": "16px",
+    "20": "20px",
+    "24": "24px",
+    "32": "32px",
+    "40": "40px",
     "full": "999px"
   },
   "font": {
@@ -1042,56 +1043,86 @@ export const tokens = {
     }
   },
   "focus": {
-    "ring": "#0373DF",
+    "ring": "rgba(3, 115, 223, 0.48)",
     "width": "2px",
     "offset": "2px"
   },
   "overlay": {
     "neutral": {
       "boldest": "rgba(30, 33, 36, 0.5)"
+    },
+    "brand": {
+      "hover": "rgba(255, 255, 255, 0.08)",
+      "active": "rgba(255, 255, 255, 0.16)"
     }
   },
   "inline": {
-    "none": "0px",
-    "2xs": "2px",
-    "xs": "4px",
-    "s": "8px",
-    "m": "12px",
-    "l": "16px",
-    "xl": "24px",
-    "2xl": "32px"
+    "0": "0px",
+    "2": "2px",
+    "4": "4px",
+    "6": "6px",
+    "8": "8px",
+    "12": "12px",
+    "16": "16px",
+    "20": "20px",
+    "24": "24px",
+    "32": "32px",
+    "40": "40px",
+    "48": "48px",
+    "56": "56px",
+    "64": "64px",
+    "72": "72px",
+    "80": "80px"
   },
   "stack": {
-    "none": "0px",
-    "2xs": "4px",
-    "xs": "8px",
-    "s": "12px",
-    "m": "16px",
-    "l": "24px",
-    "xl": "32px",
-    "2xl": "40px"
+    "0": "0px",
+    "2": "2px",
+    "4": "4px",
+    "6": "6px",
+    "8": "8px",
+    "12": "12px",
+    "16": "16px",
+    "20": "20px",
+    "24": "24px",
+    "32": "32px",
+    "40": "40px",
+    "48": "48px",
+    "56": "56px",
+    "64": "64px",
+    "72": "72px",
+    "80": "80px"
   },
   "padding": {
-    "none": "0px",
-    "3xs": "2px",
-    "2xs": "4px",
-    "xs": "8px",
-    "s": "12px",
-    "m": "16px",
-    "l": "20px",
-    "xl": "24px",
-    "2xl": "32px",
-    "3xl": "120px",
-    "4xl": "360px"
+    "0": "0px",
+    "2": "2px",
+    "4": "4px",
+    "6": "6px",
+    "8": "8px",
+    "12": "12px",
+    "16": "16px",
+    "20": "20px",
+    "24": "24px",
+    "32": "32px",
+    "40": "40px",
+    "48": "48px",
+    "56": "56px",
+    "64": "64px",
+    "72": "72px",
+    "80": "80px",
+    "120": "120px",
+    "360": "360px"
   },
   "section": {
-    "none": "0px",
-    "xs": "24px",
-    "s": "32px",
-    "m": "48px",
-    "l": "56px",
-    "xl": "64px",
-    "2xl": "80px"
+    "0": "0px",
+    "24": "24px",
+    "32": "32px",
+    "40": "40px",
+    "48": "48px",
+    "56": "56px",
+    "64": "64px",
+    "72": "72px",
+    "80": "80px",
+    "120": "120px"
   },
   "chart": {
     "cat": {
@@ -1349,18 +1380,25 @@ export const tokens = {
     }
   },
   "shape": {
-    "none": "0px",
-    "xxs": "2px",
-    "xs": "4px",
-    "sm": "6px",
-    "md": "8px",
-    "lg": "12px",
-    "xl": "16px",
-    "2xl": "20px",
-    "3xl": "24px",
-    "4xl": "32px",
-    "5xl": "40px",
+    "0": "0px",
+    "2": "2px",
+    "4": "4px",
+    "6": "6px",
+    "8": "8px",
+    "12": "12px",
+    "16": "16px",
+    "20": "20px",
+    "24": "24px",
+    "32": "32px",
+    "40": "40px",
     "full": "999px"
+  },
+  "stroke": {
+    "0": "0px",
+    "1": "1px",
+    "2": "2px",
+    "3": "3px",
+    "4": "4px"
   },
   "button": {
     "primary": {
@@ -1373,14 +1411,14 @@ export const tokens = {
   "card": {
     "bg": "#ffffff",
     "border": "#dcdee1",
-    "radius": "8px"
+    "radius": "12px"
   },
   "badge": {
-    "dotSize": "6px",
-    "dotSizeLg": "0.5rem",
     "beta": {
       "bg": "#ffd323"
-    }
+    },
+    "dotSize": "6px",
+    "dotSizeLg": "0.5rem"
   },
   "accessibilityBar": {
     "height": "46px",
@@ -1390,8 +1428,8 @@ export const tokens = {
     "pillBg": "rgba(255, 255, 255, 0.16)",
     "hoverBg": "rgba(255, 255, 255, 0.08)",
     "stepSize": "1.5rem",
-    "iconButtonSize": "1.75rem",
-    "launchIconSize": "0.75rem"
+    "launchIconSize": "0.75rem",
+    "iconButtonSize": "1.75rem"
   },
   "divider": {
     "width": "1px"

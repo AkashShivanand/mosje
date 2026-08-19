@@ -27,8 +27,11 @@
   min-height: var(--sa-cmp-accessibilityBar-height);
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-inline-l);
-  padding: var(--sa-padding-3xs) var(--sa-padding-2xl);
+  /* Spacing: main's value-named tokens (the migration landed while this branch was
+     open). Typography: this branch's body-2 correction. Both are wanted — neither
+     side is dropped. */
+  gap: var(--sa-inline-16);
+  padding: var(--sa-padding-2) var(--sa-padding-32);
   /* Body/body-2 — 14/20. It was label-2 (12/16) until 2026-08-19, which was a real
      divergence and not a rounding one: the master sets Body/body-2 on both links, so
      every label in the bar rendered two pixels small against the design. It is also the
@@ -47,9 +50,9 @@
 .sa-abar.layout-wide   .sa-abar__in { max-width: var(--sa-container-wide); }
 /* Fluid is full-bleed: edge padding only. Figma uses padding/2xl (32) from tablet
    up and padding/m (16) on mobile — matching its Device axis with a media query. */
-.sa-abar.layout-fluid .sa-abar__in { max-width: none; padding-inline: var(--sa-padding-m); }
+.sa-abar.layout-fluid .sa-abar__in { max-width: none; padding-inline: var(--sa-padding-16); }
 @media (min-width: 768px) {
-  .sa-abar.layout-fluid .sa-abar__in { padding-inline: var(--sa-padding-2xl); }
+  .sa-abar.layout-fluid .sa-abar__in { padding-inline: var(--sa-padding-32); }
 }
 
 /* ── Device axis (Figma: Mobile · Tablet · Desktop · Desktop XL) ──────────────
@@ -80,7 +83,7 @@
 .sa-abar__gov {
   display: flex;
   align-items: center;
-  gap: var(--sa-inline-m);
+  gap: var(--sa-inline-12);
   color: inherit;
   /* Regular, not 500 — the master's Body/body-2 is Regular, and the bar was rendering
      the one label that should be quietest as the heaviest thing in it. */
@@ -106,7 +109,7 @@
 .sa-abar__end {
   display: flex;
   align-items: center;
-  gap: var(--sa-inline-l);
+  gap: var(--sa-inline-16);
 }
 /* Label/label-1 — same 14/20 as the links, but Medium. The one weight difference the
    master actually specifies, and it is what stops the language selector reading as a
@@ -129,14 +132,14 @@
    mobile, where the whole right-hand cluster is meant to disappear. */
 
 /* Font-size stepper: text_decrease · A · text_increase (Material Symbols) */
-.sa-abar__fs { display: inline-flex; align-items: center; gap: var(--sa-inline-s); }
+.sa-abar__fs { display: inline-flex; align-items: center; gap: var(--sa-inline-8); }
 .sa-abar__fsbtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: var(--sa-cmp-accessibilityBar-stepSize);
   height: var(--sa-cmp-accessibilityBar-stepSize);
-  padding: 0 var(--sa-padding-3xs);
+  padding: 0 var(--sa-padding-2);
   border: none;
   border-radius: var(--sa-shape-xs);
   background: transparent;
@@ -157,10 +160,10 @@
 .sa-abar__icbtn {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-inline-2xs);
+  gap: var(--sa-inline-2);
   height: var(--sa-cmp-accessibilityBar-iconButtonSize);
   min-width: var(--sa-cmp-accessibilityBar-iconButtonSize);
-  padding: 0 var(--sa-inline-2xs);
+  padding: 0 var(--sa-inline-2);
   border: none;
   border-radius: var(--sa-shape-full);
   background: transparent;
@@ -168,7 +171,7 @@
   text-decoration: none;
   cursor: pointer;
 }
-.sa-abar__icbtn.has-text { padding: 0 var(--sa-inline-s); gap: var(--sa-inline-s); }
+.sa-abar__icbtn.has-text { padding: 0 var(--sa-inline-8); gap: var(--sa-inline-8); }
 /* Figma binds the bar's glyphs to icon/size/20; <Icon size> sets it inline. */
 
 /* ── Interaction states — the four the documentation page defines ─────────────

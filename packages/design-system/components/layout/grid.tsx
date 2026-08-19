@@ -19,7 +19,7 @@ export interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
   columns?: number;
   /**
    * Row gap, when it should differ from the column gutter. Pass a token
-   * reference such as `"var(--sa-stack-l)"`. Defaults to the gutter, which is
+   * reference such as `"var(--sa-stack-24)"`. Defaults to the gutter, which is
    * what keeps a wrapped card grid rhythmically square.
    */
   rowGap?: string;

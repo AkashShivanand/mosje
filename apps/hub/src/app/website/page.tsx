@@ -13,6 +13,7 @@ import { LogoStrip } from "@/components/website/LogoStrip";
 import { SiteFooter } from "@/components/website/SiteFooter";
 import { ImportantLinks } from "@/components/website/ImportantLinks";
 import { NmbaHomeCompact } from "@/components/website/nmba/NmbaHomeCompact";
+import { CookieConsent } from "@/components/website/CookieConsent";
 
 export default function Home() {
   return (
@@ -34,6 +35,7 @@ export default function Home() {
       </main>
       <SiteFooter />
       <ImportantLinks />
+      <CookieConsent />
     </>
   );
 }

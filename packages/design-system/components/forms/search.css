@@ -7,14 +7,14 @@
 .ds-search {
   display: inline-flex;
   align-items: center;
-  gap: var(--sa-stack-xs);
+  gap: var(--sa-stack-8);
   width: 100%;
   height: var(--_h, 44px);
-  padding: 0 var(--sa-padding-m);
+  padding: 0 var(--sa-padding-16);
   font-family: var(--sa-font-latin);
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-md);
+  border-radius: var(--sa-shape-8);
   transition:
     border-color 0.15s ease,
     box-shadow 0.15s ease;
@@ -22,7 +22,7 @@
 
 .ds-search--sm {
   --_h: 40px;
-  padding: 0 var(--sa-padding-s);
+  padding: 0 var(--sa-padding-12);
 }
 
 .ds-search--md {
@@ -31,7 +31,7 @@
 
 .ds-search--lg {
   --_h: 56px;
-  padding: 0 var(--sa-padding-m);
+  padding: 0 var(--sa-padding-16);
 }
 
 /* Focus ring lives on the wrapper, driven by the inner input's focus. */
