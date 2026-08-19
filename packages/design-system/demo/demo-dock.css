@@ -28,9 +28,20 @@
    page carrying an AccessibilityBar, which left the FAB floating above
    nothing across most of the estate. ── */
 .ds-demodock {
+  /* The height the wall rail must RESERVE when looking for a free slot. The
+     rail is top-anchored and grows downward on unfold, so a slot sized to the
+     folded 105px would let the open state run into whatever sits below it.
+     Declared on the ROOT because that is the element `useWallRailOffset` reads
+     it from and writes its answer to — the root is what is positioned, and a
+     custom property on the rail would never reach it. Keep in step with the
+     rail's own 105 -> 153 heights below. */
+  --sa-wall-rail-reserve: 153px;
   position: fixed;
   right: 0;
-  top: calc(50% - 56px);
+  /* Written by `useWallRailOffset`. The fallback is the centred position it
+     resolves to on an empty wall, so the first paint lands where the rail
+     will stay on most of the estate rather than jumping into place. */
+  top: var(--sa-wall-rail-top, calc(50% - 76px));
   z-index: 2147483000;
   font-family: var(--sa-font-latin);
 }
@@ -265,7 +276,11 @@
    (`rootRef.contains`) still treats the panel as inside. ── */
 .ds-demodock__panel {
   position: fixed;
-  right: 62px;
+  /* `--cmp-demodock-panel-inset` is mirrored by PANEL_INSET_PX in
+     demo-dock.tsx, which needs the number in JS to choose a side. */
+  --cmp-demodock-panel-inset: 62px;
+  right: var(--cmp-demodock-panel-inset);
+  left: auto;
   top: 50%;
   transform: translateY(-50%);
   width: 500px;
@@ -285,6 +300,17 @@
   box-shadow: var(--sa-elevation-toast);
   overflow: hidden;
   transform-origin: center right;
+}
+
+/* ── Which side the panel opens on ───────────────────────────────────────
+   Resolved by `usePanelSide`: whichever covers less of the form underneath.
+   On most routes there is nothing to avoid and it stays right. On a login
+   route it moves to the side the form is not on — the panel used to sit
+   directly on top of both credential fields and the submit button. ── */
+.ds-demodock__panel[data-side="left"] {
+  right: auto;
+  left: var(--cmp-demodock-panel-inset);
+  transform-origin: center left;
   /* Shared floor for the body/tab content (see `.ds-demodock__body` below).
      Derived from this panel's own `max-height` (72vh, capped 680px) minus
      the header's measured footprint (~126px, rounded up for safety) so it

@@ -94,6 +94,8 @@ import { Tabs, TabPanel, TabDef } from "../components/navigation/tabs";
 import { LiveRegion, useLiveRegion } from "../components/a11y/live-region";
 import { useColorMode } from "../foundations/color-mode-provider";
 import { DBIM_COLOR_MODES, type ColorMode } from "../foundations/color-mode";
+import { useWallRailOffset } from "../foundations/wall-rail";
+import { usePanelSide } from "../foundations/panel-side";
 import { DemoAccountsPanel } from "./demo-accounts-panel";
 import { findDemoAccounts, isLoginRoute } from "./demo-accounts";
 import { FlaskIcon } from "./flask-icon";
@@ -105,6 +107,11 @@ import "./demo-dock.css";
 // exit animation (CSS) and the DOM-removal delay (this constant) agree on
 // how long the closing panel stays mounted.
 const CLOSE_ANIMATION_MS = 150;
+
+// Distance the panel is pinned from whichever viewport edge it opens on.
+// Matches `--cmp-demodock-panel-inset` in demo-dock.css; the two are read
+// together by `usePanelSide`, which needs the number in JS to decide a side.
+const PANEL_INSET_PX = 62;
 
 const IconClose = () => (
   <svg
@@ -364,6 +371,22 @@ export function DemoDock({
   const closeTimeoutRef = React.useRef<number | null>(null);
   const panelId = React.useId();
   const idBase = React.useId();
+
+  // Where the rail sits on the right wall: centred where the wall is empty,
+  // clear of whatever is on it where it is not. See foundations/wall-rail.ts
+  // for the evidence — the dock was covering the website's Important Links.
+  //
+  // Applied to the ROOT, not the rail. The root is the positioned element, and
+  // a custom property set on a child does not reach its parent — CSS variables
+  // inherit downward only. Writing it on the rail left the root reading an
+  // undefined variable and silently falling back to centred, which looked
+  // exactly like the hook not running at all.
+  useWallRailOffset(rootRef);
+
+  // Which side the panel opens on: whichever covers less of the form beneath
+  // it. The rail never moves; only the panel adapts. See
+  // foundations/panel-side.ts.
+  const panelSide = usePanelSide(panelRef, open || closing, { inset: PANEL_INSET_PX });
 
   const demoSet = React.useMemo(
     () => (pathname ? findDemoAccounts(pathname) : null),
@@ -626,6 +649,7 @@ export function DemoDock({
         <div
           ref={panelRef}
           className={cn("ds-demodock__panel", closing && !open && "is-closing")}
+          data-side={panelSide}
           id={panelId}
           role="dialog"
           aria-label={label}

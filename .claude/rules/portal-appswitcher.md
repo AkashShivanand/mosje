@@ -61,6 +61,17 @@ has already cost this estate a defect:
 | bottom-left | `PortalLoginShell`'s "Signing Into" strip | a per-route opt-in boolean that a future portal could forget, and a FAB that visibly relocated between routes |
 | bottom-right | the UX4G accessibility widget (must not be restyled) | a hardcoded 108px stack above a widget that is `display: none` on every page with an `AccessibilityBar`, so the FAB floated above an empty corner across most of the estate |
 
+**The right wall is not empty either, and that was found the hard way.** The dock was moved
+there on the reasoning that it was; on the **website** it landed directly on top of
+`ImportantLinks` (`fixed right-0 top-[42%]`, z 1002) and the dock's z-index won, so demo
+scaffolding covered a citizen-facing nav control. The walls are inverted between zones —
+website: left free / right taken; docs and portals: left taken / right free — so no fixed
+choice works anywhere.
+
+**Any fixed widget on the right wall MUST carry `data-sa-wall-occupant`.** One attribute is
+the entire contract; `useWallRailOffset` then places the dock in the largest free band. Add
+it when you add the widget, not after someone reports an overlap.
+
 The rule those two share:
 
 > **A placement that has to be computed is a placement that can be computed
