@@ -1141,6 +1141,18 @@ All components are exported from `@mosje/design-system`. Import from the package
 - **Org/scheme logos** (NCSC, NMBA, SMILE, PM-AJAY, …) come from the shared **`org-logo`** component (Figma: `org-logo` set, instance-swap; code: `<OrgLogo org="…" />` when built) — a single source of truth. Never paste an org logo as a raster image; instance the component so a logo fix in one place updates every consumer.
 - **Hover-revealed icons (house pattern):** keep the glyph **always visible at low opacity (~0.4)** and raise it to `1` on hover/focus — *not* `opacity: 0`. Persistent-faint keeps the affordance discoverable, avoids a blank reserved gap, and causes **no layout shift**. Mark the glyph `aria-hidden`; respect `prefers-reduced-motion` on the fade.
 
+#### Divider
+**Purpose**: The estate's thin rule — a 1px hairline between sections or between controls in a row. Code counterpart of the SAMAVESH Figma master `Divider` (`55061:700`, Orientation × Tone = 6 variants).  
+**Why it exists**: the master existed from the day the AccessibilityBar was built and had **no code counterpart at all** until 2026-08-18, so every consumer hand-rolled its own rule — the bar with a styled `<span>`, others with a bordered `<div>`. That is how one 1px hairline ends up with several slightly different colours across one estate. **If you are about to write `border-top: 1px solid …`, use this instead.**  
+**Variants**: `orientation` = `horizontal` (default) | `vertical` · `tone` = `default` | `inverse` | `inverse-subtle`  
+**Key props**: `orientation`, `tone`, `length`, `decorative`, `className`  
+**When NOT to reach for it**: don't use a Divider to create space — that is `stack/*` or `inline/*`. A rule is a semantic separation, not padding. And don't use one between every item in a list; a list already reads as a list, and rules between rows add noise the eye has to filter.  
+**Rules**:
+- **Tone follows the surface, not the taste.** `default` on light. `inverse` (white) for a rule separating **sections** on a dark surface. `inverse-subtle` (white @ 40%) between **controls** inside a brand surface — at full strength the rule competes with the thing it separates, which is why the AccessibilityBar uses the subtle one.
+- **`length` is usually wrong to set.** Omit it and the rule stretches — horizontal fills its container, vertical stretches to its tallest sibling via `align-self: stretch` (not `height: 100%`, which resolves against a parent with no height and collapses to nothing). Pass a length only when the design draws a short rule; the bar passes `20` because Figma matches the glyph beside it, not the 46px row.
+- **`decorative` defaults to `true`, and that is deliberate.** A rule between toolbar controls is presentation — announcing "separator" between every pair of buttons is noise — so the default is `aria-hidden` with no role. A genuine thematic break passes `decorative={false}` and renders a real `<hr>`, which already carries `role="separator"`.
+- **Only the thickness is component-scoped** (`cmp/divider/width` → `ref/border-width/hairline`). The tones bind straight to `border/neutral/*` because a rule's colour is a shared semantic, not this component's private business.
+
 ---
 
 ### Forms

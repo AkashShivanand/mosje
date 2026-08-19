@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import { Divider, Icon, buttonClasses } from "@mosje/design-system";
 
 export function SamaveshBanner() {
   return (
@@ -18,7 +18,7 @@ export function SamaveshBanner() {
           <span className="text-[28px] font-semibold leading-none tracking-[0.5px]">
             SAMAVESH
           </span>
-          <span className="hidden h-9 w-px bg-white/40 sm:block" />
+          <Divider orientation="vertical" tone="inverse-subtle" length={36} className="hidden sm:block" />
           <span className="text-[15px] leading-snug">
             Single Access Mechanism for All Verticals of Empowerment &amp; Social
             Harmony

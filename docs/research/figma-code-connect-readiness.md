@@ -20,9 +20,20 @@ component, its source and its import. The **rich templated snippet**, where prop
 filled from the selected Figma instance, is only published by the CLI:
 
 ```bash
-npm run figma:connect:check -w @mosje/design-system   # dry run, no token needed
-npm run figma:connect       -w @mosje/design-system   # needs FIGMA_ACCESS_TOKEN
+# FROM THE REPO ROOT — see the warning below
+npm run figma:connect:check    # dry run, validates every template parses
+npm run figma:connect          # needs FIGMA_ACCESS_TOKEN
 ```
+
+> **Run it from the REPO ROOT, never from a workspace directory.** The include glob in
+> `figma.config.json` is repo-root relative, so running the CLI from `packages/design-system`
+> resolves it to `packages/design-system/packages/design-system/**` — which matches nothing. The
+> CLI then finds no templates and **exits without publishing and without an error**. This is not
+> hypothetical: the scripts were first written with `-w @mosje/design-system`, a publish was run
+> on 2026-08-19, and it appeared to succeed while every mapping stayed `hasTemplate: false`. The
+> tell is in Dev Mode — a simple mapping emits Figma's own variant strings
+> (`tone="Inverse subtle"`), a published template emits the mapped code values
+> (`tone="inverse-subtle"`).
 
 The MCP `send_code_connect_mappings` tool creates **simple** mappings only — it accepts a
 `template` argument but the published record still comes back `hasTemplate: false`

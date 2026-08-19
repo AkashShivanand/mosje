@@ -104,6 +104,27 @@ const RENAMES = {
  * The bar for an entry is EVIDENCE OF ZERO CONSUMERS, not "we think nobody uses it".
  */
 const REMOVED = {
+  // 2026-08-18 — the AccessibilityBar adopted the shared `Divider` component, which was
+  // built the same day. Figma had instanced a `Divider` master inside the bar from the
+  // start; the code hand-rolled a styled <span> because no Divider existed in the design
+  // system at all. With the real component in place, a rule's thickness and colour are
+  // Divider's business, so the bar's three private divider tokens are retired.
+  //
+  // ZERO CONSUMERS, verified before deletion: a grep across packages/ and apps/ for
+  // `accessibilityBar-divider` returned only stale .next build artefacts, no source. The
+  // three matching Figma variables were deleted in the same pass (all UNPUBLISHED, created
+  // earlier the same day and never bound).
+  //
+  // The VALUES did not disappear — they moved to where they belong:
+  //   dividerWidth  -> cmp/divider/width (aliases ref/border-width/hairline, same 1px)
+  //   dividerHeight -> the consumer's business; the bar passes length={20}, which is what
+  //                    Figma draws, and Divider stretches by default everywhere else
+  //   dividerColor  -> border/neutral/inverse/subtle, now a real Tier-2 token in code
+  //                    instead of a hand-rolled white rgba
+  "--sa-cmp-accessibilityBar-dividerWidth": "retired; the bar renders <Divider>, whose thickness is --sa-cmp-divider-width (same 1px hairline)",
+  "--sa-cmp-accessibilityBar-dividerHeight": "retired; length is the consumer's call — the bar passes length={20}, Divider stretches by default",
+  "--sa-cmp-accessibilityBar-dividerColor": "retired; the tone is --sa-border-neutral-inverse-subtle, the same white @ 40%, now a Tier-2 token",
+
   // 2026-08-12 — the icon scale was renamed from t-shirt letters to pixel values, so these
   // three NAMES are gone. Their VALUES are not: 16, 20 and 40 ship as --sa-icon-size-16/20/40.
   // An earlier pass deleted those values outright, reading DBIM 3.7.i as exclusive; that was
