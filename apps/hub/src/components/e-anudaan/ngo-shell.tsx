@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
-import { Icon, SidebarNav } from "@mosje/design-system";
+import { SidebarNav, SiteHeader } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES } from "@/lib/e-anudaan/roles";
 
@@ -25,38 +24,31 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen">
-      <header className="flex items-center justify-between border-b border-line bg-surface px-4 py-3 lg:px-6">
-        <Link href="/portals/e-anudaan" className="flex items-center gap-3">
-          <Icon name="account_balance" size={32} className="text-navy" aria-hidden />
-          <span>
-            <span className="flex items-center gap-2">
-              <span className="rounded bg-gov-yellow px-1.5 py-0.5 text-[0.625rem] font-bold uppercase text-ink">
-                Beta
-              </span>
-              <span className="text-xs text-ink-muted">Government of India</span>
-            </span>
-            <span className="block text-base font-bold text-ink">
-              Ministry of Social Justice &amp; Empowerment
-            </span>
-          </span>
-        </Link>
-        <div className="flex items-center gap-4">
-          <span className="hidden sm:block text-right">
-            <span className="block text-sm font-semibold text-ink">{role.personName}</span>
-            <span className="block text-xs text-ink-muted">(NGO)</span>
-          </span>
-          <button
-            type="button"
-            onClick={() => {
+      <SiteHeader
+        variant="portal"
+        emblemSrc="/images/emblem.svg"
+        brandLines={{
+          org: "Government of India",
+          department: "Ministry of Social Justice & Empowerment",
+        }}
+        beta
+        onToggleNav={() => setCollapsed(!collapsed)}
+        navExpanded={!collapsed}
+        account={{
+          name: role.personName,
+          role: "NGO Applicant",
+        }}
+        accountMenu={[
+          {
+            label: "Sign out",
+            danger: true,
+            onSelect: () => {
               logout();
               router.push("/portals/e-anudaan/sign-in");
-            }}
-            className="rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-ink hover:bg-surface-muted"
-          >
-            Sign out
-          </button>
-        </div>
-      </header>
+            },
+          },
+        ]}
+      />
 
       <div className="flex">
         <SidebarNav

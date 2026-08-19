@@ -202,8 +202,16 @@ export interface NgoProfile {
   name: string;
   darpanId: string;
   registrationNo: string;
+  registrationDate?: string;
+  registeredUnder?: string;
   state: string;
   district: string;
+  chairman?: string;
+  secretary?: string;
+  treasurer?: string;
+  authorisedUser?: string;
+  email?: string;
+  mobile?: string;
   institutions: Institution[];
   applicationCount: number;
   sanctionedCount: number;
