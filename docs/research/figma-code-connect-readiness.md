@@ -13,7 +13,7 @@
 | Config | `figma.config.json` at the repo root |
 | Dependency | `@figma/code-connect` **v2.0.0**, devDependency of `packages/design-system` |
 | AccessibilityBar | **Connected on all 9 variants** (`55065:33766`) |
-| Publishing | **Automatic from `main`.** The `publish-code-connect` job uploaded **9 mappings** on 2026-08-19 (Button, Tabs x2, TabDef, AccessibilityBar, Divider, PortalLoginTemplate, SigningIntoBar) — 9 mappings from 8 files, because one template can carry more than one component. |
+| Publishing | **Automatic from `main`.** The `publish-code-connect` job uploaded **8 mappings** on 2026-08-19 — one per template, a clean 1:1. Two of them display as `Tabs` because `tabs.figma.ts` (`55489-870`) and `tabs-more.figma.ts` (`55514-848`) bind two different masters that share a name; that is two files, not one file carrying two components. Verify with `npm run figma:connect:check`, which lists exactly what would publish. |
 | Drift gate | `npm run check:code-connect` — in `npm run check` and CI |
 
 **The one thing still not automatic.** Mappings are *connected* — Dev Mode resolves the
