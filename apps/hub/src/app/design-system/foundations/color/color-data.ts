@@ -1927,7 +1927,7 @@ export const SLOT_COUNTS = {
   "bg": 48,
   "text": 18,
   "icon": 10,
-  "cmp": 296,
+  "cmp": 299,
   "focus": 1,
   "overlay": 1,
   "chart": 38,
