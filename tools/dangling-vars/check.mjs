@@ -109,6 +109,15 @@ for (const file of files) {
   // `--sa-font-scale` exists only because AccessibilityBar calls setProperty on :root;
   // without this the gate would demand a stylesheet declaration that must not exist.
   for (const m of src.matchAll(/setProperty\(\s*["'`](--[A-Za-z0-9_-]+)["'`]/g)) declared.add(m[1]);
+  // ...and setProperty is often handed the name through a VARIABLE, so the literal is
+  // nowhere near the call. `useCornerRailOffset` declares it as a destructuring default
+  // — `const { property = "--sa-corner-rail-bottom" } = options` — and calls
+  // `setProperty(property, …)` seventy lines later. A custom-property name sitting in
+  // VALUE position (after `=` or `:`) is a name being plumbed somewhere, never a
+  // reference: references live inside `var(...)`. Without this the gate reports the
+  // corner rail's own token as dangling, which is how it greeted the merge that
+  // introduced it.
+  for (const m of src.matchAll(/[=:]\s*["'`](--[A-Za-z0-9_-]+)["'`]/g)) declared.add(m[1]);
 
   // Usages. The name must be FOLLOWED BY a terminator — `,` or `)`. Without that the
   // regex also matches the static prefix of a CONSTRUCTED name, `var(--sa-${token})`,
