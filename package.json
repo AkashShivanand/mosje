@@ -45,7 +45,9 @@
     "check:icon-scale": "node tools/icon-audit/check.mjs --gate",
     "check:icon-scale:report": "node tools/icon-audit/check.mjs",
     "check:icon-scale:baseline": "node tools/icon-audit/check.mjs --update-baseline",
-    "check:code-connect": "node tools/code-connect-parity/check.mjs"
+    "check:code-connect": "node tools/code-connect-parity/check.mjs",
+    "figma:connect": "figma connect publish",
+    "figma:connect:check": "figma connect publish --dry-run --exit-on-unreadable-files"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

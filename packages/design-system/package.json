@@ -32,9 +32,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --test \"utils/*.test.ts\" \"demo/*.test.ts\" \"components/**/*.test.ts\"",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "figma:connect": "figma connect publish --config ../../figma.config.json",
-    "figma:connect:check": "figma connect publish --dry-run --config ../../figma.config.json"
+    "test:coverage": "vitest run --coverage"
   },
   "peerDependencies": {
     "react": "^18 || ^19",

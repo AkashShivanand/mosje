@@ -162,7 +162,9 @@ jobs:
             echo "::warning::FIGMA_ACCESS_TOKEN unavailable (fork PR, or secret not set yet) — skipping the dry run. check:code-connect still ran."
             exit 0
           fi
-          npx figma connect publish --dry-run --exit-on-unreadable-files
+          # From the REPO ROOT — the config's include glob is root-relative and a
+          # workspace cwd silently matches zero templates.
+          npm run figma:connect:check
 
   # Publishing runs ONLY on main, and only if the secret exists. Code Connect does not
   # detect drift by itself — it publishes a snapshot that goes stale silently — so this
@@ -191,4 +193,4 @@ jobs:
             echo "::warning::FIGMA_ACCESS_TOKEN is not set — skipping publish. Add it under Settings → Secrets and variables → Actions."
             exit 0
           fi
-          npx figma connect publish
+          npm run figma:connect
