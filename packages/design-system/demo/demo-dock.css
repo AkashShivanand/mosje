@@ -28,6 +28,21 @@
    page carrying an AccessibilityBar, which left the FAB floating above
    nothing across most of the estate. ── */
 .ds-demodock {
+  /* ── Motion, per the audit against Emil Kowalski's framework ───────────
+     `--sa-motion-*` is Material's decelerate curve, deliberately mild. These
+     override it locally rather than estate-wide: changing the global easing
+     is a design-system decision, not a decision this widget gets to make on
+     everyone's behalf.
+
+     `--cmp-demodock-ease` is a stronger ease-out. Durations are chosen by
+     FREQUENCY, which is the part usually skipped: the fold fires on every
+     pass of the right edge — tens of times a session — so it is the fastest
+     thing here, while the panel is opened occasionally and can afford more. */
+  --cmp-demodock-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --cmp-demodock-fold: 170ms;
+  --cmp-demodock-panel-in: 190ms;
+  --cmp-demodock-panel-out: 120ms;
+
   /* The height the wall rail must RESERVE when looking for a free slot. The
      rail is top-anchored and grows downward on unfold, so a slot sized to the
      folded 105px would let the open state run into whatever sits below it.
@@ -87,7 +102,7 @@
   border-radius: var(--sa-shape-16) 0 0 var(--sa-shape-16);
   background-color: var(--sa-bg-neutral-base);
   box-shadow: var(--sa-elevation-modal);
-  transition: box-shadow var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  transition: box-shadow var(--cmp-demodock-fold) var(--cmp-demodock-ease);
 }
 
 .ds-demodock__rail.is-open {
@@ -106,6 +121,36 @@
   color: var(--sa-text-brand-primary-base);
   font-family: var(--sa-font-latin);
   cursor: pointer;
+}
+
+/* Both glyphs occupy the SAME grid cell, so they cross-fade in place rather
+   than one replacing the other. `display: grid` with both children at
+   `grid-area: 1 / 1` is what makes that free — no absolute positioning, and
+   the cell still sizes itself. */
+.ds-demodock__glyph {
+  grid-area: 1 / 1;
+  display: grid;
+  place-items: center;
+  transition: opacity var(--cmp-demodock-fold) var(--cmp-demodock-ease),
+    transform var(--cmp-demodock-fold) var(--cmp-demodock-ease);
+}
+
+.ds-demodock__glyph--close {
+  opacity: 0;
+  /* Rotated a quarter turn out, so the cross arrives by turning INTO place
+     rather than fading on top of the flask. A cross is symmetric under 90deg,
+     so it lands looking untouched. */
+  transform: rotate(-90deg) scale(0.7);
+}
+
+.ds-demodock__rail.is-panel-open .ds-demodock__glyph--flask {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.7);
+}
+
+.ds-demodock__rail.is-panel-open .ds-demodock__glyph--close {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
 }
 
 .ds-demodock__cell {
@@ -135,32 +180,42 @@
   box-shadow: 0 0 0 2px var(--sa-bg-neutral-base), 0 0 0 4px var(--sa-focus-ring);
 }
 
-/* Collapses on unfold. It sits BELOW the flask, so giving up its space costs
-   the anchor nothing — and it is what keeps net growth to 51px instead of 94.
-   `max-height` rather than `display` so the change is animatable; it is
-   `aria-hidden` in the markup, so nothing is removed from the accessibility
-   tree when it goes. */
-.ds-demodock__word {
-  writing-mode: vertical-rl;
-  max-height: 46px;
-  margin-top: var(--sa-stack-8);
-  overflow: hidden;
-  opacity: 1;
-  color: var(--sa-text-neutral-subtle);
+/* ── Tooltip ─────────────────────────────────────────────────────────────
+   Replaces the vertical wordmark, which solved a first-encounter problem
+   with a permanent one. Rides out to the LEFT — the rail is on the right
+   wall, so there is nowhere else for it to go — and never intercepts a
+   pointer, so it cannot steal a click meant for the control it describes.
+   `aria-hidden` in the markup: the accessible name is on the button. ── */
+.ds-demodock__tip {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  padding: 4px 9px;
+  border-radius: var(--sa-shape-6);
+  background-color: var(--sa-bg-neutral-inverse);
+  color: var(--sa-text-neutral-inverse);
   font-size: var(--sa-type-label-3-size);
   line-height: var(--sa-type-label-3-lh);
   font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  transition: max-height var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
-    margin-top var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
-    opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-50%) translateX(4px);
+  pointer-events: none;
+  transition: opacity var(--cmp-demodock-fold) var(--cmp-demodock-ease),
+    transform var(--cmp-demodock-fold) var(--cmp-demodock-ease);
 }
 
-.ds-demodock__rail.is-open .ds-demodock__word {
-  max-height: 0;
-  margin-top: 0;
-  opacity: 0;
+.ds-demodock__lead,
+.ds-demodock__door {
+  position: relative;
+}
+
+.ds-demodock__lead:hover .ds-demodock__tip,
+.ds-demodock__lead:focus-visible .ds-demodock__tip,
+.ds-demodock__door:hover .ds-demodock__tip,
+.ds-demodock__door:focus-visible .ds-demodock__tip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
 }
 
 /* ── Drawer: the two extra doors. ── */
@@ -172,13 +227,35 @@
   max-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: max-height var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
-    opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  transition: max-height var(--cmp-demodock-fold) var(--cmp-demodock-ease),
+    opacity var(--cmp-demodock-fold) var(--cmp-demodock-ease);
 }
 
 .ds-demodock__rail.is-open .ds-demodock__drawer {
   max-height: 140px;
   opacity: 1;
+}
+
+/* A 40ms stagger across TWO doors. Long enough to read as a cascade rather
+   than a pop, short enough that the second door is in place before a hand
+   could reach it. Stagger is decorative, so it never gates interaction —
+   the doors are clickable from the first frame. */
+.ds-demodock__door {
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity var(--cmp-demodock-fold) var(--cmp-demodock-ease),
+    transform var(--cmp-demodock-fold) var(--cmp-demodock-ease),
+    background-color var(--cmp-demodock-fold) var(--cmp-demodock-ease),
+    color var(--cmp-demodock-fold) var(--cmp-demodock-ease);
+}
+
+.ds-demodock__rail.is-open .ds-demodock__door {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ds-demodock__rail.is-open .ds-demodock__door:nth-of-type(2) {
+  transition-delay: 40ms;
 }
 
 .ds-demodock__rule {
@@ -201,8 +278,28 @@
   background: transparent;
   color: var(--sa-text-neutral-subtle);
   cursor: pointer;
-  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-    color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+}
+
+/* ── Active-tab indicator ────────────────────────────────────────────────
+   The rail says which tab is showing, which is what stops it and the tab
+   strip being two competing navigations for one set of destinations. A bar
+   on the INNER edge, pointing at the panel it belongs to — the rail is on
+   the right wall, so "inner" is the left side. ── */
+.ds-demodock__door.is-current {
+  background-color: var(--sa-bg-brand-primary-subtler);
+  color: var(--sa-text-brand-primary-base);
+}
+
+.ds-demodock__door.is-current::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  width: 3px;
+  height: 20px;
+  border-radius: var(--sa-shape-full);
+  background-color: var(--sa-bg-brand-primary-bolder);
+  transform: translateY(-50%);
 }
 
 .ds-demodock__door:hover {
@@ -250,7 +347,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ds-demodock__rail,
-  .ds-demodock__word,
   .ds-demodock__drawer,
   .ds-demodock__cell,
   .ds-demodock__door {
@@ -321,8 +417,15 @@
      scales with the viewport instead of a viewport-blind magic number, and
      a `420px` ceiling so it doesn't keep growing on tall screens. Defined
      once here and read by both the body and the Colour tab so they can't
-     drift apart. */
-  --cmp-demodock-content-floor: min(420px, calc(72vh - 128px));
+     drift apart.
+
+     REDUCED from a floor sized to the tallest tab. The panel was 648px on a
+     900px viewport — 72% of the screen — because every tab paid for the
+     Apps list's height, which left visible dead space under Colour and a
+     credentials table with room to spare. The floor now only stops the
+     panel collapsing to nothing; the height transition below is what keeps
+     switching tabs from feeling like a jump. */
+  --cmp-demodock-content-floor: min(180px, calc(72vh - 128px));
 }
 
 /* ── Header (badge + title + "Currently in" + close + tab strip — never
@@ -457,8 +560,24 @@
   box-shadow: 0 0 0 2px var(--sa-focus-ring);
 }
 
+/* ── Tab strip ───────────────────────────────────────────────────────────
+   Lighter than it was. Three tabs at 152x44 filled 456 of the panel's 500px
+   in a segmented control heavy enough to read as content — a lot of the
+   panel spent on getting around it, for three destinations the rail also
+   reaches. Now the tabs size to their labels instead of filling the width,
+   and the rail carries the active state alongside. ── */
 .ds-demodock__tabs {
   margin-top: 2px;
+}
+
+.ds-demodock__tabs [role="tablist"] {
+  justify-content: flex-start;
+}
+
+.ds-demodock__tabs [role="tab"] {
+  flex: 0 0 auto;
+  min-width: 0;
+  padding-inline: var(--sa-padding-16);
 }
 
 /* ── Body (the only scrolling region). `--cmp-demodock-content-floor` (set
@@ -471,6 +590,18 @@
   flex: 1 1 auto;
   min-height: var(--cmp-demodock-content-floor);
   overflow-y: auto;
+}
+
+/* The panel sizes to its content, and the CHANGE is animated. That is what
+   the old floor was really buying — not a size, but the absence of a jump
+   when a short tab replaced a tall one. A transition buys the same thing
+   without making every tab pay for the tallest. */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-demodock__panel {
+    transition: opacity var(--cmp-demodock-panel-in) var(--cmp-demodock-ease),
+      transform var(--cmp-demodock-panel-in) var(--cmp-demodock-ease),
+      height var(--cmp-demodock-fold) var(--cmp-demodock-ease);
+  }
 }
 
 /* ── Colour tab: a labelled, wrapping grid of motif tiles, so the tab earns
@@ -684,12 +815,62 @@
    Burgundy knows they are previewing DBIM conformance rather than choosing
    a MoSJE theme. Kept quiet rather than alarming — it is a legitimate tool,
    not a warning state, so no danger colours here. ── */
+/* `display: block`, and that is load-bearing rather than incidental. A
+   `<details>` with `display: flex` renders EVERY child regardless of its open
+   state — the collapsing is a property of the default `block` layout — so the
+   six DBIM swatches stayed on screen with the disclosure shut, which is the
+   whole thing the disclosure exists to prevent. The gap that flex was
+   providing moves onto the children. */
 .ds-demodock__colour-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: block;
   padding-top: 14px;
   border-top: 1px solid var(--sa-border-neutral-subtle);
+}
+
+.ds-demodock__colour-section .ds-demodock__swatch-list {
+  margin-top: var(--sa-stack-8);
+}
+
+/* ── DBIM disclosure ─────────────────────────────────────────────────────
+   Native <details>, closed by default. The marker is removed and replaced by
+   a chevron that rotates, because the default triangle is unstyleable across
+   browsers. ── */
+.ds-demodock__colour-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-inline-8);
+  padding: var(--sa-padding-4) 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.ds-demodock__colour-summary::-webkit-details-marker {
+  display: none;
+}
+
+.ds-demodock__colour-summary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--sa-focus-ring);
+  border-radius: var(--sa-shape-6);
+}
+
+.ds-demodock__colour-chevron {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid var(--sa-text-neutral-subtle);
+  border-bottom: 1.5px solid var(--sa-text-neutral-subtle);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform var(--cmp-demodock-fold) var(--cmp-demodock-ease);
+}
+
+.ds-demodock__colour-section[open] .ds-demodock__colour-chevron {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+
+.ds-demodock__colour-section[open] .ds-demodock__colour-subnote {
+  margin-top: var(--sa-stack-8);
 }
 
 .ds-demodock__colour-heading {
@@ -725,41 +906,47 @@
   color: var(--sa-text-neutral-subtle);
 }
 
-/* ── Entrance / exit animation ── */
+/* ── Entrance / exit ─────────────────────────────────────────────────────
+   TRANSITIONS, not keyframes. Keyframes restart from zero when interrupted;
+   the panel is toggled rapidly in a demo, and a close-then-reopen replayed
+   the entrance from scratch instead of retargeting from wherever it had got
+   to. Transitions retarget.
+
+   Both directions are ease-OUT. The exit previously used
+   `--sa-motion-exit-easing`, which is an ease-IN: it starts slow, at exactly
+   the moment the user is watching most closely, so a dismissal read as the
+   interface hesitating.
+
+   Asymmetric on purpose — 190ms in, 120ms out. Entering, the system is
+   presenting something; leaving, it is getting out of the way, and there is
+   nothing to look at. ── */
 @media (prefers-reduced-motion: no-preference) {
   .ds-demodock__panel {
-    animation: ds-demodock-in var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: opacity var(--cmp-demodock-panel-in) var(--cmp-demodock-ease),
+      transform var(--cmp-demodock-panel-in) var(--cmp-demodock-ease);
+
+    @starting-style {
+      opacity: 0;
+      transform: translateY(-50%) translateX(8px) scale(0.98);
+    }
   }
 
   .ds-demodock__panel.is-closing {
-    animation: ds-demodock-out var(--sa-motion-exit-duration) var(--sa-motion-exit-easing) forwards;
+    opacity: 0;
+    transform: translateY(-50%) translateX(8px) scale(0.98);
+    transition: opacity var(--cmp-demodock-panel-out) var(--cmp-demodock-ease),
+      transform var(--cmp-demodock-panel-out) var(--cmp-demodock-ease);
   }
 
-  /* Both keyframes carry `translateY(-50%)` because the panel's resting
-     transform IS that centring — an animation on `transform` replaces the
-     declared value outright, so omitting it drops the panel half its own
-     height down the screen for the duration of the animation. It comes from
-     the RIGHT now, out of the wall it is attached to, rather than from
-     below. */
-  @keyframes ds-demodock-in {
-    from {
+  /* Opening from the left mirrors the direction it travels. */
+  .ds-demodock__panel[data-placed] {
+    @starting-style {
       opacity: 0;
-      transform: translateY(-50%) translateX(8px) scale(0.98);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(-50%) translateX(0) scale(1);
+      transform: translateY(-50%) translateX(-8px) scale(0.98);
     }
   }
 
-  @keyframes ds-demodock-out {
-    from {
-      opacity: 1;
-      transform: translateY(-50%) translateX(0) scale(1);
-    }
-    to {
-      opacity: 0;
-      transform: translateY(-50%) translateX(8px) scale(0.98);
-    }
+  .ds-demodock__panel[data-placed].is-closing {
+    transform: translateY(-50%) translateX(-8px) scale(0.98);
   }
 }

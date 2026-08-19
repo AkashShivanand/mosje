@@ -58,11 +58,9 @@
    The swing decays 11 → 7 → 4 → 2 degrees. Even decay would read as a
    wobble; a decaying one reads as something settling.
 
-   `.ds-flask__body` runs it ONCE, on mount — the "appear" swing.
-   `.ds-flask__rock` runs it only while hovered or focused, and gets its
-   own element purely so the same keyframes can be re-triggered. ── */
-.ds-flask__body,
-.ds-flask__rock {
+   `.ds-flask__body` runs it ONCE, on mount — the "appear" swing, and the
+   only swing there is. ── */
+.ds-flask__body {
   transform-box: view-box;
   transform-origin: 50% 85%;
 }
@@ -88,24 +86,26 @@
   }
 }
 
+/* APPEAR ONLY, and shorter. Two findings from the motion audit:
+   - 900ms OUTLIVED ITS TRIGGER. The rail finishes unfolding in 170ms and the
+     flask was still swinging 700ms later, so the two read as unrelated
+     events rather than one gesture. 620ms lands close enough to the fold to
+     belong to it.
+   - The HOVER rock is gone. Hover happens tens of times a session — every
+     pass of the right edge — which is squarely in the "remove it" band of
+     Emil's frequency table. The bubbles already carry the interactive state,
+     and unlike the rock they loop rather than replay, so re-entering costs
+     nothing.
+   The entrance swing survives because it is seen once per page load, which
+   is exactly where a signature flourish belongs.
+
+   This also retires the second wrapper. `.ds-flask__rock` existed ONLY so
+   the same keyframes could be re-triggered on hover without a duplicate
+   `@keyframes`; with no hover rock there is nothing to re-trigger, so the
+   markup loses a node rather than keeping one that does nothing. ── */
 @media (prefers-reduced-motion: no-preference) {
   .ds-flask__body {
-    animation: ds-flask-rock 900ms var(--sa-motion-emphasis-easing) 1;
-  }
-
-  /* Hover and keyboard focus both re-swing it. `@media (hover: hover)` gates
-     the pointer half, as everywhere else in this estate — a touch device
-     that fakes `:hover` on tap would otherwise leave the flask mid-swing
-     after the finger lifts. */
-  :focus-visible .ds-flask .ds-flask__rock {
-    animation: ds-flask-rock 900ms var(--sa-motion-emphasis-easing) 1;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
-  :hover > .ds-flask .ds-flask__rock,
-  :hover > * > .ds-flask .ds-flask__rock {
-    animation: ds-flask-rock 900ms var(--sa-motion-emphasis-easing) 1;
+    animation: ds-flask-rock 620ms var(--sa-motion-emphasis-easing) 1;
   }
 }
 
@@ -199,8 +199,7 @@
 @media (prefers-reduced-motion: reduce) {
   .ds-flask__liquid,
   .ds-flask__bubble,
-  .ds-flask__body,
-  .ds-flask__rock {
+  .ds-flask__body {
     animation: none !important;
   }
 

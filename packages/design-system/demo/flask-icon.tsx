@@ -47,7 +47,7 @@
  * |---|---|---|
  * | Appear | one damped rock, then still | the tool is here |
  * | Rest | nothing | idle; a FAB that fidgets is noise |
- * | Hover / focus | rocks again, bubbles rise, liquid sloshes | this is interactive |
+ * | Hover / focus | bubbles rise, liquid sloshes | this is interactive |
  * | Press | (the FAB's own squash) | the click landed |
  * | Open | faster bubbles, liquid rises, flask tips | the tool is running |
  *
@@ -138,16 +138,13 @@ export function FlaskIcon({
         </clipPath>
       </defs>
 
-      {/* Two nested wrappers, each carrying one rock, so a single keyframe
-          block serves both. The outer runs once on mount (the "appear"
-          swing); the inner runs only while an ancestor is hovered or
-          focused. An animation cannot be RESTARTED by re-matching the same
-          name on the same element, so the alternative was a second,
-          identical `@keyframes` — two elements is the smaller lie. Nested
-          transforms multiply, so the two compose correctly if a pointer
-          arrives mid-entrance. */}
+      {/* One wrapper, carrying the entrance rock. There were two: the inner
+          one existed only so the same keyframes could be re-triggered on
+          hover, since an animation cannot be restarted by re-matching its
+          name on the same element. The hover rock was removed as too
+          frequent to be worth animating, so the node it required went with
+          it rather than staying as structure that does nothing. */}
       <g className="ds-flask__body">
-      <g className="ds-flask__rock">
       <g clipPath={`url(#${clipId})`}>
         {/* Liquid. Four wavelengths (48 units) spanning x = -12 to 36, so
             the wave still covers the whole 0–24 viewBox at the far end of
@@ -206,7 +203,6 @@ export function FlaskIcon({
       >
         <path d="M8.8 3.4 H15.2" />
         <path d="M10.3 3.4 V9.56 A5.6 5.6 0 1 0 13.7 9.56 V3.4" />
-      </g>
       </g>
       </g>
     </svg>

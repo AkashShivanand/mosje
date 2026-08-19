@@ -111,15 +111,46 @@ export function DemoAccountsPanel({
     onUse?.();
   };
 
+  // A column whose every cell holds the same value is not information — it
+  // is a constant occupying a third of the panel's width while the role
+  // names beside it are long enough to truncate. Where every account really
+  // does share one password (which is most portals, by design), state it
+  // once and give the width back.
+  const sharedPassword =
+    accounts.length > 1 && accounts.every((a) => a.password === accounts[0]!.password)
+      ? accounts[0]!.password
+      : null;
+
   return (
-    <div className={cn("ds-demo-accounts", className)}>
+    <div
+      className={cn("ds-demo-accounts", sharedPassword && "is-shared-password", className)}
+    >
+      {sharedPassword && (
+        <p className="ds-demo-accounts__shared">
+          <span className="ds-demo-accounts__shared-label">Password for every account</span>
+          <span className="ds-demo-accounts__pw">{sharedPassword}</span>
+          <button
+            className="ds-demo-accounts__copy"
+            onClick={() => copy(sharedPassword, "pw-shared")}
+            aria-label="Copy password"
+          >
+            {copied === "pw-shared" ? <IconCheck /> : <IconCopy />}
+          </button>
+        </p>
+      )}
       <div className="ds-demo-accounts__col-labels" aria-hidden="true">
         <span>{idLabel}</span>
-        <span>Password</span>
+        {!sharedPassword && <span>Password</span>}
       </div>
       <ul className="ds-demo-accounts__list">
         {accounts.map((account) => (
           <li className="ds-demo-accounts__row" key={account.id}>
+            <button
+              type="button"
+              className="ds-demo-accounts__hit"
+              onClick={() => use(account)}
+              aria-label={`Use ${account.role} credentials`}
+            />
             {/* The role name is the longest field in the row, so it gets its
                 own line — cramming it into a fourth table column is what
                 forced the id/password/actions to fight for space. */}
@@ -136,24 +167,28 @@ export function DemoAccountsPanel({
                   {copied === `id-${account.id}` ? <IconCheck /> : <IconCopy />}
                 </button>
               </span>
-              <span className="ds-demo-accounts__cell">
-                <span className="ds-sr-only">Password: </span>
-                <span className="ds-demo-accounts__pw">{account.password}</span>
-                <button
-                  className="ds-demo-accounts__copy"
-                  onClick={() => copy(account.password, `pw-${account.id}`)}
-                  aria-label="Copy password"
-                >
-                  {copied === `pw-${account.id}` ? <IconCheck /> : <IconCopy />}
-                </button>
-              </span>
-              <button
-                className="ds-demo-accounts__use"
-                onClick={() => use(account)}
-                aria-label={`Use ${account.role} credentials`}
-              >
+              {!sharedPassword && (
+                <span className="ds-demo-accounts__cell">
+                  <span className="ds-sr-only">Password: </span>
+                  <span className="ds-demo-accounts__pw">{account.password}</span>
+                  <button
+                    className="ds-demo-accounts__copy"
+                    onClick={() => copy(account.password, `pw-${account.id}`)}
+                    aria-label="Copy password"
+                  >
+                    {copied === `pw-${account.id}` ? <IconCheck /> : <IconCopy />}
+                  </button>
+                </span>
+              )}
+              {/* The whole ROW is the target. `Use` was the thing a presenter
+                  came to click and was rendered as the smallest, lightest,
+                  right-most element on the row — the hierarchy inverted. It
+                  stays as the visible affordance; the row carries the hit
+                  area, so an 11px copy icon is no longer competing with the
+                  primary action for the same 38x22 of screen. */}
+              <span className="ds-demo-accounts__use" aria-hidden="true">
                 Use
-              </button>
+              </span>
             </div>
           </li>
         ))}

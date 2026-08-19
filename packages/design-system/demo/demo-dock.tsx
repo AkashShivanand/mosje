@@ -102,11 +102,12 @@ import { FlaskIcon } from "./flask-icon";
 
 import "./demo-dock.css";
 
-// Matches --sa-motion-exit-duration (150ms, see tokens.css). Kept in sync by hand —
+// Matches `--cmp-demodock-panel-out` in demo-dock.css. Kept in sync by hand —
 // there is no runtime token reader in this dependency-free package — so the
-// exit animation (CSS) and the DOM-removal delay (this constant) agree on
-// how long the closing panel stays mounted.
-const CLOSE_ANIMATION_MS = 150;
+// exit transition and the DOM-removal delay agree on how long the closing
+// panel stays mounted. Too short and the panel is torn out mid-fade; too long
+// and it lingers invisible, still trapping focus.
+const CLOSE_ANIMATION_MS = 120;
 
 // Distance the panel is pinned from whichever viewport edge it opens on.
 // Matches `--cmp-demodock-panel-inset` in demo-dock.css; the two are read
@@ -312,11 +313,21 @@ function ColourTab() {
           exactly ONE primary group, MoSJE's selection is Blue, and the other five are here so
           the alternatives can be SEEN. Two of them collide with DBIM's own status palette —
           that is a finding these previews exist to surface, not a bug in this dock. */}
-      <div className="ds-demodock__colour-section">
-        <h3 className="ds-demodock__colour-heading">
-          DBIM conformance
-          <span className="ds-demodock__colour-tag">demo only</span>
-        </h3>
+      {/* DBIM conformance, now behind a disclosure and CLOSED by default.
+          It offers SIX previews you must not pick, under five lines of 12px
+          prose, above TWO options you actually can — the caveat outweighing
+          the choice by roughly three to one. Nobody reads five lines of 12px
+          text mid-demo, and the people who need this apparatus know to look
+          for it. Native <details> so it is keyboard- and screen-reader-
+          operable without a line of JavaScript. */}
+      <details className="ds-demodock__colour-section">
+        <summary className="ds-demodock__colour-summary">
+          <span className="ds-demodock__colour-heading">
+            DBIM conformance
+            <span className="ds-demodock__colour-tag">demo only</span>
+          </span>
+          <span className="ds-demodock__colour-chevron" aria-hidden="true" />
+        </summary>
         <p className="ds-demodock__colour-subnote">
           DBIM&rsquo;s six primary groups, transcribed from the DBIM ToolKit. Selecting one
           applies <strong>full</strong>{" "}
@@ -332,7 +343,7 @@ function ColourTab() {
           setMode={setMode}
           ariaLabel="DBIM conformance preview palette"
         />
-      </div>
+      </details>
     </div>
   );
 }
@@ -762,7 +773,11 @@ export function DemoDock({
           action in a demo — the ⌘⌥C shortcut exists to work around exactly
           that cost. */}
       <div
-        className={cn("ds-demodock__rail", railOpen && "is-open")}
+        className={cn(
+          "ds-demodock__rail",
+          railOpen && "is-open",
+          open && "is-panel-open",
+        )}
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
         onFocus={onRailFocus}
@@ -775,36 +790,66 @@ export function DemoDock({
           aria-haspopup="dialog"
           aria-expanded={open}
           aria-controls={open ? panelId : undefined}
-          aria-label={label}
+          aria-label={open ? `Close ${label}` : label}
           onClick={onLeadClick}
         >
+          {/* THE LEAD IS A TOGGLE, so it shows the affordance it currently
+              has. Open, that affordance is "close" — the same reasoning that
+              turns a hamburger into an X. This is not a second close button
+              competing with the panel's own: it is one control finally
+              saying what it does. Both glyphs stay mounted and cross-fade,
+              because a swap would flash. */}
           <span className="ds-demodock__cell">
-            <FlaskIcon size={26} />
+            <span className="ds-demodock__glyph ds-demodock__glyph--flask">
+              <FlaskIcon size={26} />
+            </span>
+            <span className="ds-demodock__glyph ds-demodock__glyph--close" aria-hidden="true">
+              <IconClose />
+            </span>
           </span>
-          {/* Decorative. The accessible name is the button's `aria-label`,
-              so this must never be the sole source of it — it collapses to
-              zero height on unfold, and an accessible name that disappears
-              on hover would be a defect. */}
-          <span className="ds-demodock__word" aria-hidden="true">
-            {label.split(" ")[0]}
+          {/* The wordmark is gone. It solved a FIRST-ENCOUNTER problem with a
+              permanent solution: the audience is presenters who see this
+              constantly, and a vertical "DEMO" on every screen of a
+              government portal draws attention to scaffolding. Its job moves
+              here — quiet at rest, self-describing on approach. Decorative,
+              because the accessible name is the button's own `aria-label`. */}
+          <span className="ds-demodock__tip" aria-hidden="true">
+            {open ? `Close ${label}` : label}
           </span>
         </button>
 
         <div className="ds-demodock__drawer">
           <span className="ds-demodock__rule" aria-hidden="true" />
+          {/* The doors indicate which tab is showing, which is what turns
+              the rail and the tab strip from two competing navigations into
+              ONE with shared state. `aria-current` rather than
+              `aria-selected`: these are not tabs in a tablist, they are
+              buttons that open a dialog on a given panel. Sign in has no
+              door and therefore lights nothing — correct, rather than a gap,
+              because a door that appeared only on login routes is the
+              relocating-widget defect this component keeps re-learning. */}
           <button
             type="button"
-            className="ds-demodock__door"
+            className={cn(
+              "ds-demodock__door",
+              open && activeTabId === "colour" && "is-current",
+            )}
             aria-haspopup="dialog"
+            aria-current={open && activeTabId === "colour" ? "true" : undefined}
             aria-label="Colour mode"
             onClick={() => openPanel("colour")}
           >
             <span className="ds-demodock__swatch" aria-hidden="true" />
+            <span className="ds-demodock__tip" aria-hidden="true">Colour mode</span>
           </button>
           <button
             type="button"
-            className="ds-demodock__door"
+            className={cn(
+              "ds-demodock__door",
+              open && activeTabId === "apps" && "is-current",
+            )}
             aria-haspopup="dialog"
+            aria-current={open && activeTabId === "apps" ? "true" : undefined}
             aria-label="Switch app"
             onClick={() => openPanel("apps")}
           >
@@ -814,6 +859,7 @@ export function DemoDock({
               <i />
               <i />
             </span>
+            <span className="ds-demodock__tip" aria-hidden="true">Switch app</span>
           </button>
         </div>
       </div>
