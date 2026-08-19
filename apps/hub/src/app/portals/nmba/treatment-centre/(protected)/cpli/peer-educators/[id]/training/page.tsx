@@ -8,7 +8,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Alert, Button, FormField, Icon, Input, Lightbox, Modal, Search, SideSheet, type LightboxItem } from "@mosje/design-system";
+import { Divider, Alert, Button, FormField, Icon, Input, Lightbox, Modal, Search, SideSheet, type LightboxItem } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { DataTable, type ColumnDef } from "@/components/nmba/data-table";
@@ -109,7 +109,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
           )}
           {copied ? "Copied!" : "Copy"}
         </button>
-        <div className="w-px self-stretch bg-line" aria-hidden />
+        <Divider orientation="vertical" />
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}

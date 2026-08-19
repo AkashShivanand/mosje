@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Button, Field, TextInput } from "@/components/scw/ui";
 import { cn } from "@/lib/scw/utils";
-import { Icon, type DemoFillDetail } from "@mosje/design-system";
+import { Divider, Icon, type DemoFillDetail } from "@mosje/design-system";
 
 type RoleTab = "citizen" | "officer";
 type CitizenType = "volunteer" | "sage";
@@ -185,9 +185,9 @@ export default function LoginPage() {
 
           {/* Divider */}
           <div className="my-6 flex items-center gap-3">
-            <span className="h-px flex-1 bg-line" />
+            <Divider className="flex-1" />
             <span className="text-xs text-ink-hint">or</span>
-            <span className="h-px flex-1 bg-line" />
+            <Divider className="flex-1" />
           </div>
 
           {/* Register CTAs */}
