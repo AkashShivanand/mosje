@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { readCensus, readBaseline, defectsByPage, totals, DEFECT_CLASSES } from "../build/figma-radius-audit.mjs";
+import { readCensus, readBaseline, defectsByPage, totals, DEFECT_CLASSES, NON_DEFECT_CLASSES } from "../build/figma-radius-audit.mjs";
 
 const ROOT = new URL("..", import.meta.url).pathname.replace(/\/$/, "");
 const primitive = JSON.parse(readFileSync(`${ROOT}/src/primitive.json`, "utf8"));
@@ -157,6 +157,26 @@ test("C3 · per-page radius debt does not grow, and an improvement is re-baselin
     [],
     `radius debt IMPROVED but the baseline was not refrozen. Run:\n    npm run check:radius-linkage:baseline\n  in the SAME change, so one page's cleanup cannot pay for another's regression.\n  ${shrank.join("\n  ")}`,
   );
+});
+
+test("C5 · editor chrome is accounted for, and never counted as a defect", () => {
+  // A COMPONENT_SET's own corner radius is the dashed wrapper Figma draws around a variant set.
+  // Its default is 5px, it renders in NO product, and it belongs to no ladder. Counting it as a
+  // raw defect made 5 the single most persistent off-ladder value in the census and planted a
+  // phantom defect on 23 pages at once — which is exactly the shape of a measurement error:
+  // the same number, everywhere, all at once. Verified on nine pages before being separated.
+  const census = readCensus();
+  assert.ok(census.classes.chrome, "the census must document what `chrome` is, or the exclusion is unexplained");
+  for (const cls of NON_DEFECT_CLASSES) {
+    assert.ok(!DEFECT_CLASSES.includes(cls), `${cls} is in both the defect and non-defect lists`);
+  }
+  for (const p of census.pages) {
+    assert.equal(typeof p.authorable.ch, "number", `page "${p.name}" does not account for chrome — every page must, even at zero`);
+    assert.ok(
+      !(p.rawValues && p.rawValues["5"]),
+      `page "${p.name}" still reports a raw 5px. Every 5 measured so far is a COMPONENT_SET wrapper; if this one is NOT, it is a real defect and needs its own entry rather than the chrome bucket.`,
+    );
+  }
 });
 
 test("C4 · the headline share is reported, not silently drifting", () => {

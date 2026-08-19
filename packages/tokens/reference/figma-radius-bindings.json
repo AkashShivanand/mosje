@@ -11,7 +11,8 @@
     "remote": "a radius variable imported from ANOTHER library (the foreign radius-* vocabulary).",
     "ghost": "a local variable id no collection owns.",
     "rawZero": "unbound, value 0. Absence of a radius rather than a wrong one.",
-    "rawNonZero": "unbound, non-zero. The defect this gate exists to shrink."
+    "rawNonZero": "unbound, non-zero. The defect this gate exists to shrink.",
+    "chrome": "a COMPONENT_SET's own corner radius. FIGMA EDITOR CHROME, not UI: the dashed wrapper drawn around a variant set, whose default radius is 5. It renders in no product, belongs to no ladder, and binding it would assert that a variant-set wrapper is a design-system surface. Accounted for, never a defect."
   },
   "authorableNote": "`a` counts only nodes OUTSIDE any instance. Instance descendants are derived from their main, so counting them double-counts and imports cross-sync instability. The ratchet runs on `a`; `c` is reported for context.",
   "coverage": {
@@ -169,7 +170,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 1328,
-        "rn": 1632
+        "rn": 1632,
+        "ch": 0
       },
       "authorable": {
         "t2": 2960,
@@ -178,7 +180,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 0,
-        "rn": 0
+        "rn": 0,
+        "ch": 0
       },
       "rawValues": {
         "4": 344,
@@ -205,7 +208,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 840,
-        "rn": 4
+        "rn": 4,
+        "ch": 0
       },
       "authorable": {
         "t2": 1360,
@@ -214,7 +218,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 0,
-        "rn": 0
+        "rn": 0,
+        "ch": 0
       },
       "rawValues": {
         "12": 4
@@ -235,7 +240,8 @@
         "gh": 0,
         "rm": 72,
         "r0": 64,
-        "rn": 0
+        "rn": 0,
+        "ch": 0
       },
       "authorable": {
         "t2": 0,
@@ -244,7 +250,8 @@
         "gh": 0,
         "rm": 72,
         "r0": 64,
-        "rn": 0
+        "rn": 0,
+        "ch": 0
       },
       "rawValues": {},
       "nonRadiusVars": {},
@@ -262,7 +269,8 @@
         "gh": 0,
         "rm": 68,
         "r0": 2364,
-        "rn": 4
+        "rn": 4,
+        "ch": 0
       },
       "authorable": {
         "t2": 0,
@@ -271,7 +279,8 @@
         "gh": 0,
         "rm": 68,
         "r0": 1364,
-        "rn": 4
+        "rn": 4,
+        "ch": 0
       },
       "rawValues": {
         "2": 4
@@ -291,7 +300,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 228,
-        "rn": 0
+        "rn": 0,
+        "ch": 0
       },
       "authorable": {
         "t2": 152,
@@ -300,7 +310,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 228,
-        "rn": 0
+        "rn": 0,
+        "ch": 0
       },
       "rawValues": {},
       "nonRadiusVars": {},
@@ -318,7 +329,8 @@
         "gh": 0,
         "rm": 16,
         "r0": 8,
-        "rn": 48
+        "rn": 48,
+        "ch": 0
       },
       "authorable": {
         "t2": 0,
@@ -327,7 +339,8 @@
         "gh": 0,
         "rm": 16,
         "r0": 8,
-        "rn": 48
+        "rn": 48,
+        "ch": 0
       },
       "rawValues": {
         "4": 12,
@@ -349,7 +362,8 @@
         "gh": 0,
         "rm": 16,
         "r0": 8,
-        "rn": 16
+        "rn": 16,
+        "ch": 0
       },
       "authorable": {
         "t2": 0,
@@ -358,7 +372,8 @@
         "gh": 0,
         "rm": 16,
         "r0": 8,
-        "rn": 16
+        "rn": 16,
+        "ch": 0
       },
       "rawValues": {
         "8": 8,
@@ -379,7 +394,8 @@
         "gh": 0,
         "rm": 36,
         "r0": 2184,
-        "rn": 32
+        "rn": 20,
+        "ch": 12
       },
       "authorable": {
         "t2": 3448,
@@ -388,11 +404,11 @@
         "gh": 0,
         "rm": 0,
         "r0": 0,
-        "rn": 12
+        "rn": 0,
+        "ch": 12
       },
       "rawValues": {
-        "2": 20,
-        "5": 12
+        "2": 20
       },
       "nonRadiusVars": {},
       "ghosts": {},
@@ -410,7 +426,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 200,
-        "rn": 52
+        "rn": 52,
+        "ch": 0
       },
       "authorable": {
         "t2": 0,
@@ -419,7 +436,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 200,
-        "rn": 52
+        "rn": 52,
+        "ch": 0
       },
       "rawValues": {
         "6": 8,
@@ -443,7 +461,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 552,
-        "rn": 136
+        "rn": 136,
+        "ch": 0
       },
       "authorable": {
         "t2": 0,
@@ -452,7 +471,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 240,
-        "rn": 88
+        "rn": 88,
+        "ch": 0
       },
       "rawValues": {
         "8": 4,
@@ -484,7 +504,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 4,
-        "rn": 0
+        "rn": 0,
+        "ch": 0
       },
       "authorable": {
         "t2": 0,
@@ -493,7 +514,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 4,
-        "rn": 0
+        "rn": 0,
+        "ch": 0
       },
       "rawValues": {},
       "nonRadiusVars": {},
@@ -511,7 +533,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 1752,
-        "rn": 2416
+        "rn": 2404,
+        "ch": 12
       },
       "authorable": {
         "t2": 4192,
@@ -520,10 +543,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 0,
-        "rn": 12
+        "rn": 0,
+        "ch": 12
       },
       "rawValues": {
-        "5": 12,
         "8": 2400,
         "16": 4
       },
@@ -545,7 +568,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 10460,
-        "rn": 8
+        "rn": 0,
+        "ch": 8
       },
       "authorable": {
         "t2": 4556,
@@ -554,11 +578,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 0,
-        "rn": 8
+        "rn": 0,
+        "ch": 8
       },
-      "rawValues": {
-        "5": 8
-      },
+      "rawValues": {},
       "nonRadiusVars": {
         "Font Size/6": 4
       },
@@ -577,7 +600,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 2144,
-        "rn": 24
+        "rn": 12,
+        "ch": 12
       },
       "authorable": {
         "t2": 0,
@@ -586,10 +610,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 704,
-        "rn": 24
+        "rn": 12,
+        "ch": 12
       },
       "rawValues": {
-        "5": 12,
         "16": 12
       },
       "nonRadiusVars": {
@@ -609,7 +633,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 1656,
-        "rn": 44
+        "rn": 16,
+        "ch": 28
       },
       "authorable": {
         "t2": 348,
@@ -618,10 +643,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 1536,
-        "rn": 44
+        "rn": 16,
+        "ch": 28
       },
       "rawValues": {
-        "5": 28,
         "8": 12,
         "16": 4
       },
@@ -642,7 +667,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 472,
-        "rn": 8
+        "rn": 0,
+        "ch": 8
       },
       "authorable": {
         "t2": 0,
@@ -651,11 +677,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 120,
-        "rn": 8
+        "rn": 0,
+        "ch": 8
       },
-      "rawValues": {
-        "5": 8
-      },
+      "rawValues": {},
       "nonRadiusVars": {
         "Font Size/6": 4
       },
@@ -673,7 +698,8 @@
         "gh": 0,
         "rm": 232,
         "r0": 1956,
-        "rn": 180
+        "rn": 160,
+        "ch": 20
       },
       "authorable": {
         "t2": 0,
@@ -682,10 +708,10 @@
         "gh": 0,
         "rm": 40,
         "r0": 948,
-        "rn": 116
+        "rn": 96,
+        "ch": 20
       },
       "rawValues": {
-        "5": 20,
         "57": 160
       },
       "nonRadiusVars": {
@@ -707,7 +733,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 10864,
-        "rn": 1148
+        "rn": 1148,
+        "ch": 0
       },
       "authorable": {
         "t2": 9516,
@@ -716,7 +743,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 0,
-        "rn": 0
+        "rn": 0,
+        "ch": 0
       },
       "rawValues": {
         "16": 4,
@@ -739,7 +767,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 1072,
-        "rn": 152
+        "rn": 144,
+        "ch": 8
       },
       "authorable": {
         "t2": 0,
@@ -748,11 +777,11 @@
         "gh": 0,
         "rm": 0,
         "r0": 296,
-        "rn": 56
+        "rn": 48,
+        "ch": 8
       },
       "rawValues": {
         "3": 32,
-        "5": 8,
         "8": 16,
         "10": 28,
         "16": 4,
@@ -775,7 +804,8 @@
         "gh": 0,
         "rm": 72,
         "r0": 5186,
-        "rn": 166
+        "rn": 166,
+        "ch": 0
       },
       "authorable": {
         "t2": 2764,
@@ -784,7 +814,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 0,
-        "rn": 0
+        "rn": 0,
+        "ch": 0
       },
       "rawValues": {
         "4": 18,
@@ -817,7 +848,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 284,
-        "rn": 36
+        "rn": 32,
+        "ch": 4
       },
       "authorable": {
         "t2": 0,
@@ -826,10 +858,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 220,
-        "rn": 36
+        "rn": 32,
+        "ch": 4
       },
       "rawValues": {
-        "5": 4,
         "8": 32
       },
       "nonRadiusVars": {
@@ -849,7 +881,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 92,
-        "rn": 44
+        "rn": 36,
+        "ch": 8
       },
       "authorable": {
         "t2": 0,
@@ -858,10 +891,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 92,
-        "rn": 44
+        "rn": 36,
+        "ch": 8
       },
       "rawValues": {
-        "5": 8,
         "8": 32,
         "16": 4
       },
@@ -882,7 +915,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 3648,
-        "rn": 152
+        "rn": 148,
+        "ch": 4
       },
       "authorable": {
         "t2": 300,
@@ -891,11 +925,11 @@
         "gh": 0,
         "rm": 0,
         "r0": 732,
-        "rn": 68
+        "rn": 64,
+        "ch": 4
       },
       "rawValues": {
         "2": 16,
-        "5": 4,
         "8": 132
       },
       "nonRadiusVars": {},
@@ -913,7 +947,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 128,
-        "rn": 28
+        "rn": 24,
+        "ch": 4
       },
       "authorable": {
         "t2": 0,
@@ -922,10 +957,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 128,
-        "rn": 28
+        "rn": 24,
+        "ch": 4
       },
       "rawValues": {
-        "5": 4,
         "100": 24
       },
       "nonRadiusVars": {
@@ -945,7 +980,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 148,
-        "rn": 120
+        "rn": 112,
+        "ch": 8
       },
       "authorable": {
         "t2": 0,
@@ -954,10 +990,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 132,
-        "rn": 120
+        "rn": 112,
+        "ch": 8
       },
       "rawValues": {
-        "5": 8,
         "100": 112
       },
       "nonRadiusVars": {
@@ -977,7 +1013,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 1764,
-        "rn": 41
+        "rn": 21,
+        "ch": 20
       },
       "authorable": {
         "t2": 780,
@@ -986,10 +1023,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 0,
-        "rn": 24
+        "rn": 4,
+        "ch": 20
       },
       "rawValues": {
-        "5": 20,
         "7": 1,
         "8": 8,
         "3.200000047683716": 12
@@ -1012,7 +1049,8 @@
         "gh": 0,
         "rm": 48,
         "r0": 176,
-        "rn": 8
+        "rn": 0,
+        "ch": 8
       },
       "authorable": {
         "t2": 0,
@@ -1021,11 +1059,10 @@
         "gh": 0,
         "rm": 32,
         "r0": 136,
-        "rn": 8
+        "rn": 0,
+        "ch": 8
       },
-      "rawValues": {
-        "5": 8
-      },
+      "rawValues": {},
       "nonRadiusVars": {
         "Font Size/6": 4,
         "REMOTE:radius-2xl": 16,
@@ -1046,7 +1083,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 84,
-        "rn": 164
+        "rn": 160,
+        "ch": 4
       },
       "authorable": {
         "t2": 0,
@@ -1055,10 +1093,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 84,
-        "rn": 164
+        "rn": 160,
+        "ch": 4
       },
       "rawValues": {
-        "5": 4,
         "23": 80,
         "100": 80
       },
@@ -1079,7 +1117,8 @@
         "gh": 0,
         "rm": 32,
         "r0": 1316,
-        "rn": 52
+        "rn": 36,
+        "ch": 16
       },
       "authorable": {
         "t2": 660,
@@ -1088,11 +1127,11 @@
         "gh": 0,
         "rm": 32,
         "r0": 1096,
-        "rn": 28
+        "rn": 12,
+        "ch": 16
       },
       "rawValues": {
         "2": 8,
-        "5": 16,
         "4.803571701049805": 28
       },
       "nonRadiusVars": {
@@ -1113,7 +1152,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 180,
-        "rn": 16
+        "rn": 4,
+        "ch": 12
       },
       "authorable": {
         "t2": 0,
@@ -1122,10 +1162,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 164,
-        "rn": 16
+        "rn": 4,
+        "ch": 12
       },
       "rawValues": {
-        "5": 12,
         "100": 4
       },
       "nonRadiusVars": {
@@ -1145,7 +1185,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 16,
-        "rn": 40
+        "rn": 36,
+        "ch": 4
       },
       "authorable": {
         "t2": 0,
@@ -1154,10 +1195,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 16,
-        "rn": 40
+        "rn": 36,
+        "ch": 4
       },
       "rawValues": {
-        "5": 4,
         "100": 36
       },
       "nonRadiusVars": {
@@ -1177,7 +1218,8 @@
         "gh": 0,
         "rm": 360,
         "r0": 809,
-        "rn": 35
+        "rn": 23,
+        "ch": 12
       },
       "authorable": {
         "t2": 0,
@@ -1186,10 +1228,10 @@
         "gh": 0,
         "rm": 208,
         "r0": 291,
-        "rn": 21
+        "rn": 9,
+        "ch": 12
       },
       "rawValues": {
-        "5": 12,
         "8": 23
       },
       "nonRadiusVars": {
@@ -1212,7 +1254,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 844,
-        "rn": 16
+        "rn": 0,
+        "ch": 16
       },
       "authorable": {
         "t2": 0,
@@ -1221,11 +1264,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 620,
-        "rn": 16
+        "rn": 0,
+        "ch": 16
       },
-      "rawValues": {
-        "5": 16
-      },
+      "rawValues": {},
       "nonRadiusVars": {
         "Font Size/2": 112
       },
@@ -1243,7 +1285,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 19900,
-        "rn": 4
+        "rn": 0,
+        "ch": 4
       },
       "authorable": {
         "t2": 0,
@@ -1252,11 +1295,10 @@
         "gh": 0,
         "rm": 0,
         "r0": 7012,
-        "rn": 4
+        "rn": 0,
+        "ch": 4
       },
-      "rawValues": {
-        "5": 4
-      },
+      "rawValues": {},
       "nonRadiusVars": {},
       "ghosts": {}
     },
@@ -1272,7 +1314,8 @@
         "gh": 0,
         "rm": 0,
         "r0": 1220,
-        "rn": 216
+        "rn": 200,
+        "ch": 16
       },
       "authorable": {
         "t2": 0,
@@ -1281,15 +1324,16 @@
         "gh": 0,
         "rm": 0,
         "r0": 860,
-        "rn": 102
+        "rn": 86,
+        "ch": 16
       },
       "rawValues": {
-        "5": 16,
         "8": 200
       },
       "nonRadiusVars": {},
       "ghosts": {}
     }
   ],
-  "rebindNote": "Eight pages were rebound on 2026-08-18 (marked `rebound`). The rule was provable, never approximate: a value matching a rung exactly binds that rung; a value >= half the shorter side binds shape/full, since it ALREADY renders fully rounded; 10 snaps to 12 by explicit decision; anything else was left and reported. Each page's authorable property COUNT is asserted unchanged before its numbers are accepted — a rebind that moves the count has done something other than rebind."
+  "rebindNote": "Eight pages were rebound on 2026-08-18 (marked `rebound`). The rule was provable, never approximate: a value matching a rung exactly binds that rung; a value >= half the shorter side binds shape/full, since it ALREADY renders fully rounded; 10 snaps to 12 by explicit decision; anything else was left and reported. Each page's authorable property COUNT is asserted unchanged before its numbers are accepted — a rebind that moves the count has done something other than rebind.",
+  "chromeNote": "COMPONENT_SET radii were separated out on 2026-08-18 as class `chrome`. Figma draws a dashed wrapper around every variant set and gives it a DEFAULT 5px corner radius; it is editor chrome that renders in no product. It had been counted as a raw non-zero defect on 23 pages — 248 properties — which is why 5 was the single most persistent off-ladder value in the census and why it appeared on almost every page at once. VERIFIED DIRECTLY on nine pages (Inputs, Buttons, Iconography, Dropdown, Date-Time Picker, Stepper, Tabs, Footer, Carousel — 148 of the 248): in every one, 100 % of radius-5 sat on a COMPONENT_SET, none anywhere else, and COMPONENT_SET carried no value other than 5. The remaining 14 pages are inferred from that and will be confirmed on the next sweep; the ratchet catches it if the inference is wrong."
 }
