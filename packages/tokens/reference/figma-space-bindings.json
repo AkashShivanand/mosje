@@ -1,0 +1,970 @@
+{
+  "$description": "Spacing-binding census of the LIVE SAMAVESH Figma library (fileKey 3FF5l0SMNIwdpZrKkeyPTm). For every auto-layout frame on every page, the six spacing properties (paddingLeft/Right/Top/Bottom, itemSpacing, counterAxisSpacing) are classified as: tier2 (a correct semantic space token), tier1 (a hidden ref/space|ref/size primitive), crossFamily (a radius/type/colour variable bound to a spacing property), ghost (a local variable id no collection owns), remote (a variable imported from another library) or raw (unbound, non-zero). Zero-valued unbound properties are not counted — an auto-layout frame defaults every padding to 0 and counting those would drown the signal.",
+  "$sweptAt": "2026-08-17",
+  "$method": "ONE PAGE PER use_figma INVOCATION, via setCurrentPageAsync. This is not a style preference — it is the only method that returns a complete tree. Walking several pages in a single invocation (whether by setCurrentPageAsync or by PageNode.loadAsync, and even after loading every page up front) returns PARTIAL and NON-DETERMINISTIC results: Navbar reported 2885 bound properties per-page, but 1685 and then 1669 on two batched runs of identical code. findAll(() => true) returned the same node count both ways, so the shortfall is invisible to a node-count sanity check. Any future re-sweep that batches pages will silently under-report and must not be used to refresh this file.",
+  "$totals": {
+    "pagesSwept": 68,
+    "pagesWithContent": 54,
+    "pagesEmpty": 14,
+    "properties": 65657,
+    "bound": 56741,
+    "raw": 8916,
+    "tier2": 4568,
+    "tier1": 7286,
+    "crossFamily": 38799,
+    "other": 0,
+    "ghost": 4771,
+    "remote": 1317,
+    "correctPct": 6.96,
+    "boundPct": 86.42
+  },
+  "$ghostTotals": {
+    "3791:9032": 865,
+    "3791:9033": 786,
+    "3791:9034": 781,
+    "3791:9037": 738,
+    "3791:9031": 504,
+    "3791:9027": 307,
+    "3791:9026": 284,
+    "3791:9036": 176,
+    "3791:9035": 165,
+    "3791:9042": 64,
+    "3791:9045": 27,
+    "3791:9039": 21,
+    "3791:9025": 16,
+    "3791:9040": 15,
+    "3791:9041": 12,
+    "3791:9020": 4,
+    "3791:9022": 3,
+    "3791:9021": 2,
+    "3791:9018": 1
+  },
+  "$emptyPages": [
+    {
+      "name": "-------------------------------",
+      "id": "2137:295636",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "FOUNDATION",
+      "id": "10:677",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "-------------------------------",
+      "id": "2137:295637",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "COMPONENTS",
+      "id": "0:1",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "Actions",
+      "id": "4055:695",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "Forms & Inputs",
+      "id": "4055:696",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "Navigation",
+      "id": "4055:697",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "Feedback & Status",
+      "id": "4055:698",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "Overlays",
+      "id": "4055:699",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "Data Display",
+      "id": "4055:700",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "Utilities",
+      "id": "4055:701",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "-------------------------------",
+      "id": "2141:296721",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "Section Templates",
+      "id": "2141:323888",
+      "note": "0 children — structural divider/section page"
+    },
+    {
+      "name": "-------------------------------",
+      "id": "4645:10194",
+      "note": "0 children — structural divider/section page"
+    }
+  ],
+  "pages": [
+    {
+      "name": "Accessibility Bar",
+      "id": "2382:295905",
+      "bound": 785,
+      "raw": 60,
+      "tier1": 390,
+      "tier2": 176,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 0,
+      "remote": 219,
+      "ghostIds": {}
+    },
+    {
+      "name": "Accordion",
+      "id": "2141:296700",
+      "bound": 2777,
+      "raw": 18,
+      "tier1": 16,
+      "tier2": 0,
+      "crossFamily": 2182,
+      "other": 0,
+      "ghost": 579,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9018": 1,
+        "3791:9020": 4,
+        "3791:9021": 2,
+        "3791:9022": 3,
+        "3791:9026": 284,
+        "3791:9027": 285
+      }
+    },
+    {
+      "name": "Alerts/Toasts",
+      "id": "2141:296701",
+      "bound": 169,
+      "raw": 26,
+      "tier1": 12,
+      "tier2": 0,
+      "crossFamily": 124,
+      "other": 0,
+      "ghost": 33,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 11,
+        "3791:9034": 9,
+        "3791:9039": 3,
+        "3791:9040": 3,
+        "3791:9041": 2,
+        "3791:9042": 4,
+        "3791:9045": 1
+      }
+    },
+    {
+      "name": "Avatars",
+      "id": "2141:296702",
+      "bound": 62,
+      "raw": 66,
+      "tier1": 25,
+      "tier2": 0,
+      "crossFamily": 37,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "Badges",
+      "id": "2141:296703",
+      "bound": 49,
+      "raw": 11,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 29,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "Breadcrumbs",
+      "id": "2141:296704",
+      "bound": 80,
+      "raw": 5,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 56,
+      "other": 0,
+      "ghost": 4,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9042": 3,
+        "3791:9045": 1
+      }
+    },
+    {
+      "name": "Buttons",
+      "id": "2141:296705",
+      "bound": 1464,
+      "raw": 1598,
+      "tier1": 12,
+      "tier2": 0,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 1452,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 480,
+        "3791:9034": 480,
+        "3791:9037": 480,
+        "3791:9042": 12
+      }
+    },
+    {
+      "name": "Card",
+      "id": "2141:296707",
+      "bound": 311,
+      "raw": 55,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 196,
+      "other": 0,
+      "ghost": 95,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 15,
+        "3791:9034": 64,
+        "3791:9037": 16
+      }
+    },
+    {
+      "name": "Carousel",
+      "id": "2141:296708",
+      "bound": 653,
+      "raw": 123,
+      "tier1": 107,
+      "tier2": 0,
+      "crossFamily": 306,
+      "other": 0,
+      "ghost": 240,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9031": 96,
+        "3791:9032": 52,
+        "3791:9034": 32,
+        "3791:9037": 60
+      }
+    },
+    {
+      "name": "Changelog & Governance",
+      "id": "4099:695",
+      "bound": 0,
+      "raw": 5,
+      "tier1": 0,
+      "tier2": 0,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "Charts & Graphs",
+      "id": "2840:10801",
+      "bound": 8215,
+      "raw": 1460,
+      "tier1": 0,
+      "tier2": 0,
+      "crossFamily": 7732,
+      "other": 0,
+      "ghost": 483,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9033": 470,
+        "3791:9039": 3,
+        "3791:9041": 2,
+        "3791:9045": 8
+      }
+    },
+    {
+      "name": "Checkbox",
+      "id": "2141:296710",
+      "bound": 180,
+      "raw": 5,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 96,
+      "other": 0,
+      "ghost": 64,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9031": 60,
+        "3791:9042": 3,
+        "3791:9045": 1
+      }
+    },
+    {
+      "name": "Chips",
+      "id": "2141:296709",
+      "bound": 219,
+      "raw": 6,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 174,
+      "other": 0,
+      "ghost": 25,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 25
+      }
+    },
+    {
+      "name": "Close Button",
+      "id": "2141:296711",
+      "bound": 250,
+      "raw": 5,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 230,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "Color",
+      "id": "2140:295913",
+      "bound": 0,
+      "raw": 1284,
+      "tier1": 0,
+      "tier2": 0,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "Color Picker",
+      "id": "2141:296713",
+      "bound": 555,
+      "raw": 35,
+      "tier1": 4,
+      "tier2": 0,
+      "crossFamily": 535,
+      "other": 0,
+      "ghost": 16,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 12,
+        "3791:9039": 4
+      }
+    },
+    {
+      "name": "Comment",
+      "id": "2141:296714",
+      "bound": 127,
+      "raw": 8,
+      "tier1": 4,
+      "tier2": 0,
+      "crossFamily": 110,
+      "other": 0,
+      "ghost": 13,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 2,
+        "3791:9034": 5,
+        "3791:9037": 2,
+        "3791:9042": 3,
+        "3791:9045": 1
+      }
+    },
+    {
+      "name": "Cursor",
+      "id": "2141:296715",
+      "bound": 9,
+      "raw": 1,
+      "tier1": 4,
+      "tier2": 0,
+      "crossFamily": 5,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "Date-Time Picker",
+      "id": "2141:296716",
+      "bound": 2040,
+      "raw": 1075,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 1621,
+      "other": 0,
+      "ghost": 399,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 62,
+        "3791:9033": 297,
+        "3791:9034": 2,
+        "3791:9035": 26,
+        "3791:9037": 8,
+        "3791:9042": 3,
+        "3791:9045": 1
+      }
+    },
+    {
+      "name": "Density",
+      "id": "4170:695",
+      "bound": 23,
+      "raw": 22,
+      "tier1": 16,
+      "tier2": 0,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 7,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9037": 5,
+        "3791:9042": 1,
+        "3791:9045": 1
+      }
+    },
+    {
+      "name": "Divider",
+      "id": "55061:695",
+      "bound": 1,
+      "raw": 0,
+      "tier1": 1,
+      "tier2": 0,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "Dropdown",
+      "id": "2141:296718",
+      "bound": 12591,
+      "raw": 89,
+      "tier1": 20,
+      "tier2": 1102,
+      "crossFamily": 11325,
+      "other": 0,
+      "ghost": 144,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9036": 144
+      }
+    },
+    {
+      "name": "Effects",
+      "id": "2140:295914",
+      "bound": 41,
+      "raw": 17,
+      "tier1": 16,
+      "tier2": 0,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 25,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9034": 1,
+        "3791:9037": 10,
+        "3791:9040": 3,
+        "3791:9041": 2,
+        "3791:9042": 6,
+        "3791:9045": 3
+      }
+    },
+    {
+      "name": "Empty State",
+      "id": "2141:296719",
+      "bound": 54,
+      "raw": 16,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 32,
+      "other": 0,
+      "ghost": 2,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9037": 2
+      }
+    },
+    {
+      "name": "Feedback Widget",
+      "id": "3989:33663",
+      "bound": 422,
+      "raw": 123,
+      "tier1": 40,
+      "tier2": 0,
+      "crossFamily": 286,
+      "other": 0,
+      "ghost": 96,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 30,
+        "3791:9034": 14,
+        "3791:9035": 12,
+        "3791:9037": 30,
+        "3791:9039": 6,
+        "3791:9042": 3,
+        "3791:9045": 1
+      }
+    },
+    {
+      "name": "Footer",
+      "id": "2500:295967",
+      "bound": 416,
+      "raw": 25,
+      "tier1": 175,
+      "tier2": 0,
+      "crossFamily": 205,
+      "other": 0,
+      "ghost": 36,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 16,
+        "3791:9034": 4,
+        "3791:9037": 16
+      }
+    },
+    {
+      "name": "Get Started",
+      "id": "2137:295634",
+      "bound": 6,
+      "raw": 28,
+      "tier1": 0,
+      "tier2": 0,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 4,
+      "remote": 2,
+      "ghostIds": {
+        "3791:9034": 2,
+        "3791:9039": 2
+      }
+    },
+    {
+      "name": "Iconography",
+      "id": "2316:246",
+      "bound": 1559,
+      "raw": 17,
+      "tier1": 1525,
+      "tier2": 0,
+      "crossFamily": 16,
+      "other": 0,
+      "ghost": 3,
+      "remote": 15,
+      "ghostIds": {
+        "3791:9034": 3
+      }
+    },
+    {
+      "name": "Inputs",
+      "id": "2141:296720",
+      "bound": 1301,
+      "raw": 225,
+      "tier1": 164,
+      "tier2": 152,
+      "crossFamily": 622,
+      "other": 0,
+      "ghost": 24,
+      "remote": 339,
+      "ghostIds": {
+        "3791:9032": 24
+      }
+    },
+    {
+      "name": "Layout Grid",
+      "id": "2140:295915",
+      "bound": 1400,
+      "raw": 95,
+      "tier1": 756,
+      "tier2": 0,
+      "crossFamily": 589,
+      "other": 0,
+      "ghost": 55,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 20,
+        "3791:9034": 3,
+        "3791:9040": 9,
+        "3791:9041": 6,
+        "3791:9042": 13,
+        "3791:9045": 4
+      }
+    },
+    {
+      "name": "List",
+      "id": "2141:323867",
+      "bound": 8966,
+      "raw": 899,
+      "tier1": 4,
+      "tier2": 1140,
+      "crossFamily": 7461,
+      "other": 0,
+      "ghost": 361,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9031": 328,
+        "3791:9034": 22,
+        "3791:9037": 11
+      }
+    },
+    {
+      "name": "Loader",
+      "id": "2141:323879",
+      "bound": 25,
+      "raw": 5,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 5,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "Map of India",
+      "id": "6803:290942",
+      "bound": 54,
+      "raw": 11,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 28,
+      "other": 0,
+      "ghost": 6,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9033": 2,
+        "3791:9042": 3,
+        "3791:9045": 1
+      }
+    },
+    {
+      "name": "Modal",
+      "id": "2141:323869",
+      "bound": 142,
+      "raw": 48,
+      "tier1": 24,
+      "tier2": 0,
+      "crossFamily": 46,
+      "other": 0,
+      "ghost": 72,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 8,
+        "3791:9034": 40,
+        "3791:9037": 16,
+        "3791:9042": 6,
+        "3791:9045": 2
+      }
+    },
+    {
+      "name": "Motion",
+      "id": "4162:695",
+      "bound": 23,
+      "raw": 38,
+      "tier1": 16,
+      "tier2": 0,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 7,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9037": 5,
+        "3791:9042": 1,
+        "3791:9045": 1
+      }
+    },
+    {
+      "name": "Navbar",
+      "id": "2141:323870",
+      "bound": 2885,
+      "raw": 338,
+      "tier1": 1692,
+      "tier2": 595,
+      "crossFamily": 598,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "New in 2.0",
+      "id": "4645:10701",
+      "bound": 229,
+      "raw": 78,
+      "tier1": 10,
+      "tier2": 0,
+      "crossFamily": 181,
+      "other": 0,
+      "ghost": 38,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 8,
+        "3791:9034": 4,
+        "3791:9035": 16,
+        "3791:9037": 7,
+        "3791:9039": 3
+      }
+    },
+    {
+      "name": "Pagination",
+      "id": "2141:323872",
+      "bound": 896,
+      "raw": 19,
+      "tier1": 20,
+      "tier2": 28,
+      "crossFamily": 844,
+      "other": 0,
+      "ghost": 4,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9037": 4
+      }
+    },
+    {
+      "name": "Popover",
+      "id": "2141:323874",
+      "bound": 577,
+      "raw": 13,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 437,
+      "other": 0,
+      "ghost": 120,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9034": 88,
+        "3791:9036": 32
+      }
+    },
+    {
+      "name": "Portal Login Template",
+      "id": "55384:695",
+      "bound": 2576,
+      "raw": 241,
+      "tier1": 807,
+      "tier2": 923,
+      "crossFamily": 430,
+      "other": 0,
+      "ghost": 107,
+      "remote": 309,
+      "ghostIds": {
+        "3791:9032": 41,
+        "3791:9037": 66
+      }
+    },
+    {
+      "name": "Progress Indicators",
+      "id": "2141:323875",
+      "bound": 200,
+      "raw": 6,
+      "tier1": 25,
+      "tier2": 0,
+      "crossFamily": 153,
+      "other": 0,
+      "ghost": 22,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 22
+      }
+    },
+    {
+      "name": "Radio Buttons",
+      "id": "2141:323876",
+      "bound": 30,
+      "raw": 55,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 6,
+      "other": 0,
+      "ghost": 4,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9042": 3,
+        "3791:9045": 1
+      }
+    },
+    {
+      "name": "Range Slider",
+      "id": "2179:67252",
+      "bound": 25,
+      "raw": 5,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 5,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "Roadmap",
+      "id": "4645:10195",
+      "bound": 0,
+      "raw": 5,
+      "tier1": 0,
+      "tier2": 0,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "Search",
+      "id": "2141:323878",
+      "bound": 310,
+      "raw": 165,
+      "tier1": 25,
+      "tier2": 0,
+      "crossFamily": 285,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "Side Sheet",
+      "id": "55464:34835",
+      "bound": 204,
+      "raw": 15,
+      "tier1": 8,
+      "tier2": 144,
+      "crossFamily": 34,
+      "other": 0,
+      "ghost": 18,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9032": 18
+      }
+    },
+    {
+      "name": "Sidebar",
+      "id": "4645:10200",
+      "bound": 364,
+      "raw": 109,
+      "tier1": 46,
+      "tier2": 0,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 0,
+      "remote": 318,
+      "ghostIds": {}
+    },
+    {
+      "name": "Stepper",
+      "id": "2106:2",
+      "bound": 785,
+      "raw": 102,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 689,
+      "other": 0,
+      "ghost": 0,
+      "remote": 76,
+      "ghostIds": {}
+    },
+    {
+      "name": "Tables",
+      "id": "3836:3939",
+      "bound": 745,
+      "raw": 155,
+      "tier1": 0,
+      "tier2": 0,
+      "crossFamily": 610,
+      "other": 0,
+      "ghost": 135,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9031": 16,
+        "3791:9034": 8,
+        "3791:9035": 111
+      }
+    },
+    {
+      "name": "Tabs",
+      "id": "4645:10196",
+      "bound": 366,
+      "raw": 22,
+      "tier1": 19,
+      "tier2": 308,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 0,
+      "remote": 39,
+      "ghostIds": {}
+    },
+    {
+      "name": "Thumbnail",
+      "id": "214:68343",
+      "bound": 371,
+      "raw": 70,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 289,
+      "other": 0,
+      "ghost": 62,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9025": 16,
+        "3791:9027": 22,
+        "3791:9031": 4,
+        "3791:9032": 19,
+        "3791:9033": 1
+      }
+    },
+    {
+      "name": "Toggle",
+      "id": "2141:323883",
+      "bound": 25,
+      "raw": 5,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 5,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    },
+    {
+      "name": "Tooltip",
+      "id": "2141:323884",
+      "bound": 221,
+      "raw": 9,
+      "tier1": 20,
+      "tier2": 0,
+      "crossFamily": 185,
+      "other": 0,
+      "ghost": 16,
+      "remote": 0,
+      "ghostIds": {
+        "3791:9033": 16
+      }
+    },
+    {
+      "name": "Typography",
+      "id": "2140:295912",
+      "bound": 963,
+      "raw": 0,
+      "tier1": 963,
+      "tier2": 0,
+      "crossFamily": 0,
+      "other": 0,
+      "ghost": 0,
+      "remote": 0,
+      "ghostIds": {}
+    }
+  ]
+}

@@ -210,7 +210,7 @@ code:not([class]) {
 /* Align the stats band's right edge with the broken-out hero (reclaims the
    empty TOC rail) so the two full-width bands line up. */
 @media (min-width: 1025px) {
-  .home-stats { width: calc(100% + 200px + var(--sa-inline-xl)); }
+  .home-stats { width: calc(100% + 200px + var(--sa-inline-2xl)); }
 }
 .home-stat__value {
   font-size: var(--sa-type-headline-2-size);

@@ -1,0 +1,37 @@
+/* Divider — mirrors the SAMAVESH Figma master `Divider` (55061:700) 1:1.
+   Every value binds to a Tier-2 (--sa-*) token. No Tier-1 refs, no raw values. */
+
+.sa-divider {
+  /* An <hr> arrives with a UA border, margin and colour of its own. Reset them here
+     rather than per-consumer, or the tone tokens end up fighting the user agent. */
+  display: block;
+  flex: 0 0 auto;
+  border: 0;
+  margin: 0;
+  background-color: var(--sa-border-neutral-subtle);
+}
+
+/* Thickness is the hairline on the cross axis; the other axis stretches unless the
+   consumer passes an explicit `length`. */
+.sa-divider--horizontal {
+  width: 100%;
+  height: var(--sa-cmp-divider-width);
+}
+.sa-divider--vertical {
+  width: var(--sa-cmp-divider-width);
+  height: 100%;
+  /* In an auto-layout row a vertical rule should match its tallest sibling, which is
+     what `align-self: stretch` does in flex — `height: 100%` alone resolves against a
+     parent with no explicit height and collapses to nothing. */
+  align-self: stretch;
+}
+
+/* ── Tone ─────────────────────────────────────────────────────────────────────
+   `inverse` is full-strength white, for a rule that separates SECTIONS on a dark
+   surface. `inverse-subtle` is white at 40% and is the one to reach for between
+   CONTROLS inside a brand surface — at full strength the rule competes with the
+   thing it is separating. The AccessibilityBar uses the subtle one for exactly
+   that reason. */
+.sa-divider--default { background-color: var(--sa-border-neutral-subtle); }
+.sa-divider--inverse { background-color: var(--sa-border-neutral-inverse-default); }
+.sa-divider--inverse-subtle { background-color: var(--sa-border-neutral-inverse-subtle); }

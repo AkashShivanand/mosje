@@ -33,6 +33,16 @@
   },
   "badge": {
     "$type": "color",
+    "dotSize": {
+      "$type": "dimension",
+      "$value": "6px",
+      "$description": "The status/unread DOT — one definition for the whole estate, not one per component. It is 6px and not the on-grid 8 on purpose: beside 14px label text an 8px dot reads as a bullet rather than a signal, and 6 is what the Figma masters render and what Material and Carbon both publish. It carries a literal rather than an alias because no `size/*` step is 6 and inventing one would put a scale step in the system for a single affordance — the same reasoning `accessibilityBar/height` (46) and `flagWidth` (33) already follow. Bound by `.ds-badge__dot` AND `.ds-tabs__badge`: when this moves, every dot moves."
+    },
+    "dotSizeLg": {
+      "$type": "dimension",
+      "$value": "{size.8}",
+      "$description": "The dot beside 16px body text — Badge `lg`, and Tabs at `size=\"l\"`. A dot is sized relative to the type it annotates, not to its container, which is why this steps with the type scale and not with the control height."
+    },
     "beta": {
       "bg": {
         "$value": "{color.brand.yellow}",
@@ -41,34 +51,20 @@
     }
   },
   "accessibilityBar": {
-    "$description": "AccessibilityBar (UX4G/GIGW top utility bar). Component-scoped dimensions and inverse state layers that mirror the Figma master 1:1. They live in Tier 3 because they are the bar's own geometry — a 46px bar height and a 33px flag chip are not shared scale steps, and the inverse overlays only make sense on this bar's brand fill.",
+    "$description": "AccessibilityBar (UX4G/GIGW top utility bar). Component-scoped dimensions and inverse state layers that mirror the Figma master 1:1. The three divider* tokens were removed on 2026-08-18 when the bar adopted the shared `Divider` component — a rule's width and colour are Divider's business, not this bar's. They live in Tier 3 because they are the bar's own geometry — a 46px bar height and a 33px flag chip are not shared scale steps, and the inverse overlays only make sense on this bar's brand fill.",
     "height": {
       "$type": "dimension",
-      "$description": "Bar height (Figma layout/bar/height).",
-      "$value": "46px"
+      "$description": "Bar height. ALIASES {layout.bar.height} rather than repeating 46px — until 2026-08-18 both carried the literal independently, so moving one silently left the other behind. layout/bar/height is the published Figma name the master binds to; this is the component-scoped handle the CSS uses.",
+      "$value": "{layout.bar.height}"
     },
     "flagWidth": {
       "$type": "dimension",
-      "$description": "Flag/emblem chip width (Figma layout/flag/width); height is {size.22}, a 3:2 chip.",
-      "$value": "33px"
+      "$description": "Flag/emblem chip width. ALIASES {layout.flag.width} rather than repeating 33px — same duplicate-literal defect as `height`, fixed 2026-08-18. Height is {size.22}, making a 3:2 chip.",
+      "$value": "{layout.flag.width}"
     },
     "flagHeight": {
       "$type": "dimension",
       "$value": "{size.22}"
-    },
-    "dividerWidth": {
-      "$type": "dimension",
-      "$description": "Hairline divider width (Figma ref/border-width/hairline).",
-      "$value": "{border.width.sm}"
-    },
-    "dividerHeight": {
-      "$type": "dimension",
-      "$value": "{size.20}"
-    },
-    "dividerColor": {
-      "$type": "color",
-      "$description": "Divider ink on the brand fill (Figma border/neutral/inverse-subtle, #ffffff66 = 40%). Pre-composited so consumers never hand-roll an opacity.",
-      "$value": "rgba(255, 255, 255, 0.4)"
     },
     "pillSize": {
       "$type": "dimension",
@@ -77,23 +73,36 @@
     },
     "pillBg": {
       "$type": "color",
-      "$description": "Selected font-size pill fill (Figma overlay/on-brand/pressed, #ffffff29 = 16%).",
+      "$description": "ACTIVE state layer — Figma `overlay/on-brand/pressed`, #ffffff29 = 16%. Per the component's States documentation, ACTIVE covers BOTH senses: a control being pressed, AND the current selection (the middle A at default size). One value, two meanings, deliberately — the name still says `pill` for historical reasons and is flagged for a rename.",
       "$value": "rgba(255, 255, 255, 0.16)"
     },
     "hoverBg": {
       "$type": "color",
-      "$description": "Hover state layer for the bar's controls on the brand fill.",
-      "$value": "rgba(255, 255, 255, 0.12)"
+      "$description": "HOVER state layer for the bar's controls on the brand fill — Figma `overlay/on-brand/hover`, #ffffff14 = 8%. It carried 0.12 until 2026-08-18, an invented value that disagreed with the published variable and with the component's own States documentation. `overlay/on-brand/*` has no Tier-2 name in code yet (the grammar has no `on-brand` family), which is why this mirrors it at Tier 3 rather than aliasing it.",
+      "$value": "rgba(255, 255, 255, 0.08)"
     },
     "stepSize": {
       "$type": "dimension",
-      "$description": "A- / A+ step button hit area.",
+      "$description": "A- / A+ step button hit area. 24 is the WCAG 2.2 AA Target Size (Minimum) floor exactly, so this token may never go below it.",
       "$value": "{size.24}"
+    },
+    "iconButtonSize": {
+      "$type": "dimension",
+      "$description": "Accessibility / language icon-button hit area. Was a raw 28px literal in the component CSS until 2026-08-18; 28 sits one step above the WCAG 2.2 AA 24px floor because these buttons carry a glyph plus, for language, a text label.",
+      "$value": "{size.28}"
     },
     "launchIconSize": {
       "$type": "dimension",
       "$description": "The GoI link's launch glyph (Figma: 12px).",
       "$value": "{size.12}"
+    }
+  },
+  "divider": {
+    "$description": "Divider (the estate's thin rule). Only its THICKNESS is component-scoped — the tones bind straight to border/neutral/*, because a rule's colour is a shared semantic and not this component's private business. It is Tier 3 solely because there is no Tier-2 border-width in the system and component CSS may not reference Tier-1.",
+    "width": {
+      "$type": "dimension",
+      "$description": "The hairline. Aliases {border.width.sm} (1px) — Figma calls the same primitive ref/border-width/hairline.",
+      "$value": "{border.width.sm}"
     }
   }
 }

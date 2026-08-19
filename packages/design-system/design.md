@@ -12,12 +12,27 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-14 · System version: v0.20.0 (ACCESSIBILITYBAR IS NOW A CODE COMPONENT AND
+  Last reviewed: 2026-08-17 · System version: v0.23.0 (TABS MATCHES THE REBUILT FIGMA MASTERS.
+  `<Tabs>` gains `indicator` (underline | rail | pill), `size` (s | m | l -> 36 / 44 / 48),
+  `track` (none | enclosed) and `orientation`; `TabDef` gains `icon`, `badge` and `disabled`.
+  INDICATOR AND TRACK PAIR — enclosed takes pill, none takes underline (horizontal) or rail
+  (vertical); the other four combinations read as broken. A DISABLED TAB STAYS IN THE TABLIST,
+  marked `aria-disabled` and skipped by the arrow keys — never the native `disabled` attribute,
+  which would drop it out of the accessibility tree. Four tokens land with it —
+  `text|icon/brand/primary/bolder` (the brand key colour fails AA on a tinted surface) and
+  `layout/tab/{indicator,track}` — and `focus/ring` DROPS ITS 48% ALPHA in Blue and Navy, having
+  composited to 1.16:1 on a selected pill.
+  NOTE — this narrative skips v0.21.0 and v0.22.0 (PortalLoginTemplate, the auth parts, and the
+  retirement of the invented `darpan` / `aadhaar` auth modes). Both are in the changelog at
+  /design-system/resources/changelog, which is the complete record; this header carries only the
+  releases whose rules an agent must hold in mind while writing UI.
+  Previously v0.20.0 — ACCESSIBILITYBAR IS NOW A CODE COMPONENT AND
   SITEHEADER IS MIGRATED ONTO IT. `@mosje/design-system` exports `AccessibilityBar` — the UX4G/GIGW
   top utility bar with a working A−/A/A+ font-size stepper — mirroring the SAMAVESH Figma master,
   fully `--sa-*` tokenised, AA-clear. SiteHeader's own hand-rolled Tier-1 bar is DELETED and the
-  shared component replaces it. PUBLIC-SITE BEHAVIOUR IS UNCHANGED: the masthead passes
-  `fontSize={false}` — explicitly, because the prop DEFAULTS TO TRUE — so the UX4G widget remains
+  shared component replaces it. SUPERSEDED BY v0.25.0 — the masthead now passes `fontSize`
+  (ON). What follows described the v0.20.0 state: the masthead passed
+  `fontSize={false}` — explicitly, because the prop DEFAULTS TO TRUE — so the UX4G widget remained
   the single mechanism for text size and contrast. `tone` is gone: colour is the brand MODE
   (`data-brand="navy"`), never a prop.
   Previously v0.19.0 — THE CONTENT CONTAINER IS UX4G'S TWO-STEP
@@ -1126,6 +1141,18 @@ All components are exported from `@mosje/design-system`. Import from the package
 - **Org/scheme logos** (NCSC, NMBA, SMILE, PM-AJAY, …) come from the shared **`org-logo`** component (Figma: `org-logo` set, instance-swap; code: `<OrgLogo org="…" />` when built) — a single source of truth. Never paste an org logo as a raster image; instance the component so a logo fix in one place updates every consumer.
 - **Hover-revealed icons (house pattern):** keep the glyph **always visible at low opacity (~0.4)** and raise it to `1` on hover/focus — *not* `opacity: 0`. Persistent-faint keeps the affordance discoverable, avoids a blank reserved gap, and causes **no layout shift**. Mark the glyph `aria-hidden`; respect `prefers-reduced-motion` on the fade.
 
+#### Divider
+**Purpose**: The estate's thin rule — a 1px hairline between sections or between controls in a row. Code counterpart of the SAMAVESH Figma master `Divider` (`55061:700`, Orientation × Tone = 6 variants).  
+**Why it exists**: the master existed from the day the AccessibilityBar was built and had **no code counterpart at all** until 2026-08-18, so every consumer hand-rolled its own rule — the bar with a styled `<span>`, others with a bordered `<div>`. That is how one 1px hairline ends up with several slightly different colours across one estate. **If you are about to write `border-top: 1px solid …`, use this instead.**  
+**Variants**: `orientation` = `horizontal` (default) | `vertical` · `tone` = `default` | `inverse` | `inverse-subtle`  
+**Key props**: `orientation`, `tone`, `length`, `decorative`, `className`  
+**When NOT to reach for it**: don't use a Divider to create space — that is `stack/*` or `inline/*`. A rule is a semantic separation, not padding. And don't use one between every item in a list; a list already reads as a list, and rules between rows add noise the eye has to filter.  
+**Rules**:
+- **Tone follows the surface, not the taste.** `default` on light. `inverse` (white) for a rule separating **sections** on a dark surface. `inverse-subtle` (white @ 40%) between **controls** inside a brand surface — at full strength the rule competes with the thing it separates, which is why the AccessibilityBar uses the subtle one.
+- **`length` is usually wrong to set.** Omit it and the rule stretches — horizontal fills its container, vertical stretches to its tallest sibling via `align-self: stretch` (not `height: 100%`, which resolves against a parent with no height and collapses to nothing). Pass a length only when the design draws a short rule; the bar passes `20` because Figma matches the glyph beside it, not the 46px row.
+- **`decorative` defaults to `true`, and that is deliberate.** A rule between toolbar controls is presentation — announcing "separator" between every pair of buttons is noise — so the default is `aria-hidden` with no role. A genuine thematic break passes `decorative={false}` and renders a real `<hr>`, which already carries `role="separator"`.
+- **Only the thickness is component-scoped** (`cmp/divider/width` → `ref/border-width/hairline`). The tones bind straight to `border/neutral/*` because a rule's colour is a shared semantic, not this component's private business.
+
 ---
 
 ### Forms
@@ -1360,10 +1387,26 @@ Docs: `/design-system/components/sla-progress`.
 
 #### Tabs / TabPanel
 **Purpose**: Accessible tabbed navigation for **non-linear** sections the user revisits in any order (vs `<Wizard>`, which is a linear stepper).  
+**Props**: `indicator` (`underline` | `rail` | `pill`, default `pill`) · `size` (`s` | `m` | `l` → 36 / 44 / 48, default `m`) · `track` (`none` | `enclosed`, default `enclosed`) · `orientation` (`horizontal` | `vertical`) · `divider` · `overflow`. `TabDef` carries `id`, `label`, `icon?`, `badge?`, `disabled?`.  
 **Rules**:
 - Implements the WAI-ARIA Tabs pattern (`role=tablist/tab/tabpanel`, `aria-selected`, `aria-controls`, roving `tabindex`, Arrow/Home/End keys) with a polite live-region announce.
 - Pair each active tab with a `<TabPanel>` sharing the same `idBase`. Parent owns the active index and renders one panel at a time.
 - Never hand-roll tab `<button>`s — reuse this so the keyboard/SR contract holds estate-wide.
+- **`indicator` and `track` pair; only two of the six combinations are correct.** `track="enclosed"` takes `pill`. `track="none"` takes `underline` when horizontal, `rail` when vertical. A pill on an open list has nothing to sit in; an underline in a filled track draws a second edge inside the first.
+- **`size` and `indicator` are LIST props, never per tab** — even though Figma carries them on each tab, because that is where they are drawn. A list whose tabs disagree about size is a defect.
+- **Heights are hugs** (padding + line-height), never fixed. A pinned tab height stops the label growing when a citizen raises their browser font size.
+- **A disabled tab stays in the tablist**, marked `aria-disabled` and skipped by the arrow keys. Never use the native `disabled` attribute: it drops the button out of the accessibility tree, so a screen-reader user loses the fact that the section exists at all.
+- Selected ink is `text/brand/primary/bolder`, **not** `/base` — the brand key colour measures 4.07:1 on the track and fails WCAG 1.4.3 AA.
+- A horizontal list that outgrows its container **scrolls**. Set **`overflow`** (off by default) to add the `Tabs / More` trigger, which appears only when tabs are actually hidden and lists the ones scrolled out of view. It is a **menu button, not a tab** (`role="button"`, `aria-haspopup="menu"`) and renders *outside* the tablist — which is what keeps it pinned while tabs scroll, and why enabling it wraps the tablist in a positioning element. It never removes tabs from the tablist: they stay focusable and arrow-reachable, and the menu is a pointer shortcut. Enabling it also stops tabs sharing the track equally, because equal-width tabs never overflow — they truncate harder instead.
+
+**Tab label rules** (these govern the CONTENT, and are the rules most often broken):
+1. **A tab label names a destination.** It is not a sentence. One or two words; aim for ≤ 20 characters in English.
+2. **Budget for the longest translation, not the English.** Devanagari renders the same phrase 10–30% longer. A label that fits in English and truncates in Hindi is a defect found in production, not in review.
+3. **In `track="enclosed"` every tab is the same width**, so the *longest* label sets what all of them can show. One long label degrades the whole set, not just its own tab.
+4. **When a label does not fit, escalate in this order — truncation is last:** (a) shorten the label, almost always the right answer; (b) move to `track="none"`, where tabs are content-width and the row scrolls, so every label keeps its full width; (c) add the overflow menu when the scrolled tabs would be undiscoverable; (d) only then accept the ellipsis.
+5. **Truncation is CSS-only, never JavaScript**, and it is solved per input rather than by one affordance. Shortening the string in code would rewrite the accessible name too. A clipped tab keeps its full name in the accessibility tree and pairs with a `Tooltip` that opens on hover **and instantly on keyboard focus**; the bubble is `aria-hidden` with no `aria-describedby`, so the name is never announced twice. On **touch** (`@media (hover: none)`) nothing is clipped at all — enclosed tabs size to content and the row scrolls, because a tooltip is unreachable there.
+6. **Two tabs must never truncate to the same visible string.** "Application details" and "Application status" both become "Application…". Where a set shares a prefix, front-load the distinguishing word — "Details" / "Status" — rather than trusting truncation to stay readable.
+7. **Never wrap to two lines in a ROW** — it makes the row's height depend on the longest label. **Vertical lists wrap deliberately**: their items size independently and the rail is measured at runtime, so wrapping hides nothing and needs no affordance. The documented heights describe a single-line tab.
 
 #### EmptyState
 **Purpose**: Fills empty data containers with context + a call-to-action.  
@@ -1464,11 +1507,19 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 #### AccessibilityBar
 **Purpose**: The government top utility bar (UX4G / GIGW) — the Government of India link plus the accessibility controls (skip to content, font size A−/A/A+, accessibility, language). The a11y surface itself; matches the SAMAVESH Figma *Accessibility Bar* component.  
 **Variants**: `layout` = `narrow` (720) | `wide` (1200, default) | `fluid` (full-bleed) · `device` = `auto` (default) | `mobile` | `tablet` | `desktop` | `desktop-xl`  
-**Key props**: `govLink`, `skipTo`, `showSkip`, `fontSize`, `accessibility`, `accessibilityHref`, `onAccessibility`, `language`, `layout`, `maxWidth`, `device`, `onFontScaleChange`  
+**Key props**: `govLink`, `skipTo`, `showSkip`, `skipLabel`, `fontSize`, `accessibility`, `accessibilityHref`, `onAccessibility`, `language`, `layout`, `maxWidth`, `device`, `onFontScaleChange`  
 **Rules**:
 - Every control is keyboard-operable and labelled; the skip link is the first interactive element and must target an id that exists.
-- The font-size stepper drives a `--sa-font-scale` variable (+ `data-sa-font-scale`) on the document root; content sized in `rem` reflows. Pass `onFontScaleChange` to persist the choice.
-- **This standalone bar keeps font-size because the Figma component does.** `SiteHeader` renders its OWN Tier-1 bar with font-size deliberately removed — the UX4G widget is the single canonical mechanism for font-size/contrast estate-wide (see the accessibility-consolidation spec). Do not enable font-size in both at once.
+- **The font-size stepper WORKS as of v0.25.0** (2026-08-18). It sets `--sa-font-scale` + `data-sa-font-scale` on the root, and `:root[data-sa-font-scale] { font-size: calc(100% * var(--sa-font-scale,1)) }` consumes it — scaling the ROOT, so the whole rem-authored ramp follows. Until then the variable was written and read by nothing. The choice persists in `localStorage`; `onFontScaleChange` is only for consumers that must mirror it elsewhere.
+- The rule is armed by the **attribute**, never the variable's fallback: a page with no bar keeps the browser's own root size. Never take over the reader's browser zoom uninvited.
+- **Hardcoded px in page markup defeats it.** Measured 1 → 1.2: docs 80.4%, a portal 29.3%, the public homepage **14.0%** (it uses `text-[15px]`-style arbitrary values). When you author a page, size type in `rem` or through the type roles — an arbitrary px class silently opts that text out of the estate's text-size control.
+- **`fontSize` is ON in `SiteHeader` since v0.25.0**, reversing the earlier `fontSize={false}`. The old rule said the widget was the single mechanism and a second stepper would double up; the stepper was inert at the time, so it was never a competing mechanism. Text size is now the bar's; contrast, spacing and dark mode remain the widget's, and the widget's floating button is HIDDEN (never unmounted) wherever the bar offers the entry.
+- **Never unmount `#uw-widget-custom-trigger`.** The bar opens the UX4G panel by dispatching a click on it, so removing it from the DOM silently breaks the bar's own accessibility icon. Hide it with CSS, scoped to `[data-sa-abar-a11y]`.
+- `skipLabel` exists because the estate is bilingual — the skip text was hardcoded English, which a Hindi surface cannot use.
+- **INTERACTION STATES (§04 of the Figma doc page).** Every clickable control resolves: Default (no bg) · Hover **white 8%** (`overlay/on-brand/hover`) · Focus-visible **2px inverse-ink ring, never removed** · Active **white 16%** (`overlay/on-brand/pressed`). ACTIVE means **pressed**, OR — for the font-size pill only — **the reader is away from the default size**. Declare `:active` AFTER `:hover`; a pointer is always hovering what it presses. Text links (GoI, skip) are not tinted — they carry the underline affordance.
+- **The font-size pill lights on DEVIATION, not at the default** (inverted 2026-08-18). An unlit pill means 100%. The old way said nothing useful and failed the returning reader, because the scale persists — 90/110/120% all looked like an untouched bar. It carries **no `aria-pressed`**: it is a reset ACTION, not a toggle, and the current size rides on the accessible name instead (`Text size: 100% (default)` / `Reset text size to default — currently 110%`). It stays ENABLED at the default — disabling on reset would destroy focus at the moment of activation.
+- **Every clickable control needs a ≥24×24 hit area.** The bar ships 24×24 steppers and 28×28 icon buttons; the Figma master gained matching `hit-area` frames on 2026-08-18 (it had bare 20×20 glyphs, which would have failed WCAG 2.5.8). Hit frames are transparent — they change the target, not the look.
+- **Do NOT use `focus/ring` on this bar.** It is `#0373DF` and measures **1.37:1** on the `#005EB9` fill — WCAG 1.4.11/2.4.11 need 3:1. Inverse ink is 6.36:1. The Figma page said `focus/ring` and was corrected on 2026-08-18. A ring's contrast is a property of what it lands on, not of its name.
 - **There is NO `tone` prop.** Blue vs Navy is the brand axis — `data-brand="navy"` on the bar
   or an ancestor re-resolves `bg/brand/primary/bolder` to the navy ramp (#003366), which is what
   the retired prop hardcoded. Figma models it the same way (Palette modes), so the master has no

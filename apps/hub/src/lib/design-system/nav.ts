@@ -40,6 +40,7 @@ export const NAV: NavGroup[] = [
       { label: "Card", href: "/design-system/components/card", badge: "Stable" },
       { label: "Badge", href: "/design-system/components/badge", badge: "Stable" },
       { label: "Alert", href: "/design-system/components/badge#alert", badge: "Stable" },
+      { label: "Divider", href: "/design-system/components/divider", badge: "New" },
       { label: "SLA Progress Indicator", href: "/design-system/components/sla-progress", badge: "New" },
     ],
   },

@@ -141,7 +141,14 @@ export type { SlaStatus, SlaThresholds, SlaInput } from "./utils/sla";
 export { Stepper } from "./components/feedback/stepper";
 export type { StepperProps, StepperStep } from "./components/feedback/stepper";
 export { Tabs, TabPanel } from "./components/navigation/tabs";
-export type { TabsProps, TabDef } from "./components/navigation/tabs";
+export type {
+  TabsProps,
+  TabDef,
+  TabIndicator,
+  TabOrientation,
+  TabSize,
+  TabTrack,
+} from "./components/navigation/tabs";
 export { Modal } from "./components/feedback/modal";
 export type { ModalProps, ModalSize } from "./components/feedback/modal";
 export { SideSheet } from "./components/feedback/side-sheet";
@@ -320,6 +327,8 @@ export type { SectionTitleProps } from "./components/layout/section";
 // Primitives compose the content column; templates compose the page. All are
 // presentational — no store, no router, no redirect. See the Layout page in the
 // Figma library for the fixed / hug / fill contract these implement.
+export { Divider } from "./components/layout/divider";
+export type { DividerProps, DividerOrientation, DividerTone } from "./components/layout/divider";
 export { Container } from "./components/layout/container";
 export type { ContainerProps, ContainerSize } from "./components/layout/container";
 export { Grid, GridItem } from "./components/layout/grid";

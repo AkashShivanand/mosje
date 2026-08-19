@@ -19,7 +19,7 @@
     "dev": "bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3007'",
     "dev:hub": "bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3007'",
     "dev:storybook": "bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006'",
-    "check": "npm run check:hub && npm run check:docs-data && npm run check:ds-linkage && npm run check:icon-scale",
+    "check": "npm run check:hub && npm run check:docs-data && npm run check:ds-linkage && npm run check:icon-scale && npm run check:space-linkage && npm run check:code-connect",
     "check:changelog": "node scripts/check-changelog-freshness.mjs",
     "check:design-context": "node scripts/check-design-context.mjs",
     "check:design-context:baseline": "node scripts/check-design-context.mjs --update-baseline",
@@ -40,9 +40,14 @@
     "check:docs-data": "node scripts/check-docs-data.mjs",
     "check:ds-linkage": "node tools/ds-linkage/check.mjs",
     "check:ds-linkage:all": "node tools/ds-linkage/check.mjs --all",
+    "check:space-linkage": "node --test packages/tokens/test/space-linkage.test.mjs",
+    "check:space-linkage:baseline": "node packages/tokens/build/figma-space-audit.mjs --update-baseline",
     "check:icon-scale": "node tools/icon-audit/check.mjs --gate",
     "check:icon-scale:report": "node tools/icon-audit/check.mjs",
-    "check:icon-scale:baseline": "node tools/icon-audit/check.mjs --update-baseline"
+    "check:icon-scale:baseline": "node tools/icon-audit/check.mjs --update-baseline",
+    "check:code-connect": "node tools/code-connect-parity/check.mjs",
+    "figma:connect": "figma connect publish",
+    "figma:connect:check": "figma connect publish --dry-run --exit-on-unreadable-files"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

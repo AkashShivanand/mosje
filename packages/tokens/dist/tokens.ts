@@ -810,6 +810,10 @@ export const tokens = {
       "bolder": {
         "default": "#8e949c",
         "hover": "#6f757d"
+      },
+      "inverse": {
+        "default": "#ffffff",
+        "subtle": "rgba(255, 255, 255, 0.4)"
       }
     },
     "brand": {
@@ -1018,7 +1022,8 @@ export const tokens = {
     },
     "brand": {
       "primary": {
-        "base": "#0373df"
+        "base": "#0373df",
+        "bolder": "#005eb9"
       }
     },
     "status": {
@@ -1037,7 +1042,7 @@ export const tokens = {
     }
   },
   "focus": {
-    "ring": "rgba(3, 115, 223, 0.48)",
+    "ring": "#0373DF",
     "width": "2px",
     "offset": "2px"
   },
@@ -1053,7 +1058,8 @@ export const tokens = {
     "s": "8px",
     "m": "12px",
     "l": "16px",
-    "xl": "32px"
+    "xl": "24px",
+    "2xl": "32px"
   },
   "stack": {
     "none": "0px",
@@ -1250,7 +1256,8 @@ export const tokens = {
     },
     "brand": {
       "primary": {
-        "base": "#0373df"
+        "base": "#0373df",
+        "bolder": "#005eb9"
       }
     },
     "status": {
@@ -1315,6 +1322,10 @@ export const tokens = {
       "content": {
         "width": "390px"
       }
+    },
+    "tab": {
+      "indicator": "2px",
+      "track": "4px"
     }
   },
   "target": {
@@ -1365,6 +1376,8 @@ export const tokens = {
     "radius": "8px"
   },
   "badge": {
+    "dotSize": "6px",
+    "dotSizeLg": "0.5rem",
     "beta": {
       "bg": "#ffd323"
     }
@@ -1373,14 +1386,15 @@ export const tokens = {
     "height": "46px",
     "flagWidth": "33px",
     "flagHeight": "1.375rem",
-    "dividerWidth": "1px",
-    "dividerHeight": "1.25rem",
-    "dividerColor": "rgba(255, 255, 255, 0.4)",
     "pillSize": "2rem",
     "pillBg": "rgba(255, 255, 255, 0.16)",
-    "hoverBg": "rgba(255, 255, 255, 0.12)",
+    "hoverBg": "rgba(255, 255, 255, 0.08)",
     "stepSize": "1.5rem",
+    "iconButtonSize": "1.75rem",
     "launchIconSize": "0.75rem"
+  },
+  "divider": {
+    "width": "1px"
   },
   "action": {
     "brand": {
