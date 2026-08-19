@@ -1,5 +1,5 @@
 import { PLEDGE_STATS } from "@/content/website/deaddiction-centres";
-import { Icon } from "@mosje/design-system";
+import { Divider, Icon } from "@mosje/design-system";
 
 // Two front-page pledge channels. Each links to the NMBA portal's e-Pledge with a
 // distinct channel so the (later) backend can route/segment the submissions.
@@ -56,7 +56,7 @@ export function DualPledge() {
                 </div>
               </div>
 
-              <div className="h-12 w-px shrink-0 bg-gray-200" aria-hidden />
+              <Divider orientation="vertical" length={48} />
 
               <div className="min-w-0 flex-1">
                 <div className="text-[17px] font-semibold text-ink">{p.label}</div>

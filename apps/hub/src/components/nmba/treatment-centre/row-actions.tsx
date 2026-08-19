@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon } from "@mosje/design-system";
+import { Divider, Icon } from "@mosje/design-system";
 
 /**
  * Shared row-action primitives for treatment-centre list tables.
@@ -55,5 +55,5 @@ export function RowActions({ children }: { children: React.ReactNode }) {
 
 /** Thin vertical separator to split action groups (e.g. views | edit · delete). */
 export function RowActionDivider() {
-  return <span className="mx-1 h-5 w-px bg-line" aria-hidden />;
+  return <Divider orientation="vertical" length={20} className="mx-1" />;
 }

@@ -20,6 +20,7 @@
  */
 
 import * as React from "react";
+import { Divider } from "../layout/divider";
 import { cn } from "../../utils/cn";
 // The chrome rows use the estate content container, so the emblem lines up with
 // the same column every other page uses. Previously max-w-screen-2xl (1536).
@@ -197,7 +198,7 @@ export function PortalLoginShell({
           {/* Right: Digital India + SAMAVESH */}
           <div className="hidden items-center gap-4 md:flex">
             <img src={digitalIndiaSrc} alt="Digital India" className="h-10 w-auto opacity-90" />
-            <span className="h-8 w-px" style={{ background: "var(--sa-border-neutral-subtle)" }} aria-hidden="true" />
+            <Divider orientation="vertical" tone="default" length={32} />
             <div className="flex items-center gap-2.5">
               <img src={samaveshLogoSrc} alt="SAMAVESH" className="h-10 w-10" />
               <div className="leading-snug">

@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+# SessionStart — print the branch / worktree inventory that
+# .claude/rules/branch-continuity.md requires before the first edit.
+#
+# The rule says a task keeps its branch across sessions. A rule alone has a
+# half-life; this makes the inventory arrive whether or not anyone remembers to
+# ask for it. It only REPORTS — it never switches, stashes, or creates anything.
+#
+# Contract: always exit 0 and never block a session. A broken inventory is a
+# nuisance; a session that will not start is a defect.
+
+set -uo pipefail
+
+root="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+cd "$root" 2>/dev/null || exit 0
+git rev-parse --git-dir >/dev/null 2>&1 || exit 0
+
+# Never let a slow or hung git/gh call delay session start.
+run() {
+  if command -v timeout >/dev/null 2>&1; then timeout 5 "$@" 2>/dev/null
+  elif command -v gtimeout >/dev/null 2>&1; then gtimeout 5 "$@" 2>/dev/null
+  else "$@" 2>/dev/null
+  fi
+}
+
+current=$(run git branch --show-current)
+[ -z "$current" ] && current="(detached HEAD)"
+dirty=$(run git status --porcelain | wc -l | tr -d ' ')
+
+out="## Branch inventory (SessionStart)
+
+Per \`.claude/rules/branch-continuity.md\`: before the first edit, work out whether
+this task already has a branch and continue there. State the branch and the
+evidence in your first response. Never work on \`main\`.
+
+**Here:** \`$current\` — $dirty uncommitted file(s)"
+
+if [ "$dirty" -gt 0 ]; then
+  out="$out
+> Dirty tree. Changes follow a \`git switch\` onto the wrong branch, and they may
+> belong to another session. Do not stash, commit, or switch them away — if you
+> need a different branch, take a worktree instead."
+fi
+
+wt=$(run git worktree list | sed 's/^/  /')
+if [ "$(printf '%s\n' "$wt" | wc -l | tr -d ' ')" -gt 1 ]; then
+  out="$out
+
+**Worktrees** — a branch checked out below CANNOT be checked out again; do not
+force it and do not delete it (it may hold uncommitted work):
+\`\`\`
+$wt
+\`\`\`"
+fi
+
+branches=$(run git for-each-ref --sort=-committerdate --count=15 \
+  --format='  %(refname:short) — %(contents:subject)' refs/heads/)
+[ -n "$branches" ] && out="$out
+
+**Local branches**, most recent first:
+\`\`\`
+$branches
+\`\`\`"
+
+if command -v gh >/dev/null 2>&1; then
+  prs=$(run gh pr list --state all --limit 20 \
+    --json number,state,headRefName \
+    --jq '.[] | "  #\(.number) \(.state) \(.headRefName)"')
+  [ -n "$prs" ] && out="$out
+
+**PR state** — a branch whose PR is MERGED or CLOSED is branched FROM, never
+continued:
+\`\`\`
+$prs
+\`\`\`"
+fi
+
+# JSON-encode. python3, else jq, else plain stdout — the inventory still reaches
+# the session in every case.
+if command -v python3 >/dev/null 2>&1; then
+  CTX="$out" python3 -c 'import json,os;print(json.dumps({"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":os.environ["CTX"]}}))'
+elif command -v jq >/dev/null 2>&1; then
+  printf '%s' "$out" | jq -Rs '{hookSpecificOutput:{hookEventName:"SessionStart",additionalContext:.}}'
+else
+  printf '%s\n' "$out"
+fi
+exit 0

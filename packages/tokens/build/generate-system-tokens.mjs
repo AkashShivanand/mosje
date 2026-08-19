@@ -72,6 +72,15 @@ put(["text", "neutral", "disabled"], "{color.text.disabled}", "Disabled label");
 put(["text", "neutral", "inverse"], "{color.text.onPrimary}", "Text on a solid brand or inverse surface");
 put(["text", "neutral", "subtler"], "{color.neutralScale.500}", "Quietest ink that is still AA on bg/neutral/base (4.72:1) — placeholders in an unfilled input or select. It must read as 'not yet entered'; text/neutral/subtle is dark enough to look like a real value. Named for its rung, not its use, per the grammar: 'placeholder' is neither a prominence nor a state and adding it to STATE would let bg/*/placeholder parse too.");
 put(["text", "brand", "primary", "base"], "{color.action.primary.default}", "Brand-coloured text");
+/**
+ * The ACCESSIBLE brand ink. `text/brand/primary/base` is the brand key colour, and a key
+ * colour is chosen to be recognisable, not to be readable: #0373DF measures 4.07:1 on
+ * `bg/neutral/subtler` and 4.19:1 on `bg/brand/primary/base` — both fail WCAG 1.4.3 AA on the
+ * tinted surfaces brand text most often sits on. The 600 rung measures 6.36 / 5.57 / 5.74.
+ * Reach for this whenever brand-coloured text lands on anything other than plain white; the
+ * selected tab's label is the first call site.
+ */
+put(["text", "brand", "primary", "bolder"], "{color.primaryScale.600}", "Brand-coloured text that must pass AA on a tinted surface");
 for (const [variant] of Object.entries(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
   put(["text", "status", variant, "base"], `{color.status.${src}}`, `${variant} message text`);
@@ -90,6 +99,8 @@ put(["icon", "neutral", "subtle"], "{color.text.muted}", "Quiet icon");
 put(["icon", "neutral", "disabled"], "{color.text.disabled}", "Disabled icon");
 put(["icon", "neutral", "inverse"], "{color.text.onPrimary}", "Icon on a solid brand surface");
 put(["icon", "brand", "primary", "base"], "{color.action.primary.default}", "Brand-coloured icon");
+/** Pairs with `text/brand/primary/bolder` so a label and its leading glyph never disagree. */
+put(["icon", "brand", "primary", "bolder"], "{color.primaryScale.600}", "Brand-coloured icon that must pass AA on a tinted surface");
 for (const variant of Object.keys(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
   put(["icon", "status", variant, "base"], `{color.status.${src}}`, `${variant} icon`);

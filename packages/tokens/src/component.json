@@ -56,31 +56,17 @@
     "$description": "AccessibilityBar (UX4G/GIGW top utility bar). Component-scoped dimensions and inverse state layers that mirror the Figma master 1:1. They live in Tier 3 because they are the bar's own geometry — a 46px bar height and a 33px flag chip are not shared scale steps, and the inverse overlays only make sense on this bar's brand fill.",
     "height": {
       "$type": "dimension",
-      "$description": "The bar's fixed height. Aliases layout/bar/height rather than restating 46px — the literal was a second copy of a semantic value that nothing kept in step.",
+      "$description": "Bar height. ALIASES {layout.bar.height} rather than repeating 46px — until 2026-08-18 both carried the literal independently, so moving one silently left the other behind. layout/bar/height is the published Figma name the master binds to; this is the component-scoped handle the CSS uses.",
       "$value": "{layout.bar.height}"
     },
     "flagWidth": {
       "$type": "dimension",
-      "$description": "The flag mark's fixed width. Aliases layout/flag/width rather than restating 33px, for the same reason as height.",
+      "$description": "Flag/emblem chip width. ALIASES {layout.flag.width} rather than repeating 33px — same duplicate-literal defect as `height`, fixed 2026-08-18. Height is {size.22}, making a 3:2 chip.",
       "$value": "{layout.flag.width}"
     },
     "flagHeight": {
       "$type": "dimension",
       "$value": "{size.22}"
-    },
-    "dividerWidth": {
-      "$type": "dimension",
-      "$description": "Hairline divider width (Figma ref/border-width/hairline).",
-      "$value": "{border.width.sm}"
-    },
-    "dividerHeight": {
-      "$type": "dimension",
-      "$value": "{size.20}"
-    },
-    "dividerColor": {
-      "$type": "color",
-      "$description": "Divider ink on the brand fill (Figma border/neutral/inverse-subtle, #ffffff66 = 40%). Pre-composited so consumers never hand-roll an opacity.",
-      "$value": "rgba(255, 255, 255, 0.4)"
     },
     "pillSize": {
       "$type": "dimension",
@@ -89,12 +75,12 @@
     },
     "pillBg": {
       "$type": "color",
-      "$description": "Selected-step pill on the bar. Aliases overlay/brand/active.",
+      "$description": "ACTIVE state layer on the bar — aliases overlay/brand/active (16% white). Per the component's States documentation ACTIVE covers BOTH senses: a control being pressed, AND the current selection (the middle A at default size). One value, two meanings, deliberately — the name still says `pill` for historical reasons and is flagged for a rename.",
       "$value": "{overlay.brand.active}"
     },
     "hoverBg": {
       "$type": "color",
-      "$description": "Hover wash on the bar. Aliases overlay/brand/hover rather than restating the rgba — the structure the designer used in Figma, now real and grammar-conformant in code.",
+      "$description": "HOVER state layer for the bar's controls on the brand fill — aliases overlay/brand/hover (8% white). RECONCILED 2026-08-19: this branch re-created the wash at 12% from a base that predated 33cbb4f, which had already corrected 12% to 8% against the published Figma variable and the component's States documentation. 8% stands; the alias replaces the literal so the value now lives in exactly one place.",
       "$value": "{overlay.brand.hover}"
     },
     "stepSize": {

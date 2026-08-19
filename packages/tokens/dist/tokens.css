@@ -531,6 +531,8 @@
   --sa-border-neutral-base: #c6c9cd;
   --sa-border-neutral-bolder-default: #8e949c;
   --sa-border-neutral-bolder-hover: var(--sa-color-border-controlHover);
+  --sa-border-neutral-inverse-default: #ffffff;
+  --sa-border-neutral-inverse-subtle: rgba(255, 255, 255, 0.4);
   --sa-border-brand-primary-base: var(--sa-color-action-primary-default);
   --sa-border-status-success-base: var(--sa-color-status-success);
   --sa-border-status-error-base: var(--sa-color-status-danger);
@@ -662,6 +664,7 @@
   --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-text-status-success-base: var(--sa-color-status-success);
   --sa-text-status-error-base: var(--sa-color-status-danger);
   --sa-text-status-warning-base: var(--sa-color-status-warning);
@@ -670,7 +673,7 @@
   --sa-focus-width: 2px;
   --sa-focus-offset: 2px;
   --sa-overlay-neutral-boldest: rgba(30, 33, 36, 0.5);
-  --sa-overlay-brand-hover: rgba(255, 255, 255, 0.12);
+  --sa-overlay-brand-hover: rgba(255, 255, 255, 0.08);
   --sa-overlay-brand-active: rgba(255, 255, 255, 0.16);
   --sa-inline-0: 0px;
   --sa-inline-2: 2px;
@@ -849,6 +852,7 @@
   --sa-icon-neutral-disabled: var(--sa-color-text-disabled);
   --sa-icon-neutral-inverse: var(--sa-color-text-onPrimary);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-status-success);
   --sa-icon-status-error-base: var(--sa-color-status-danger);
   --sa-icon-status-warning-base: var(--sa-color-status-warning);
@@ -920,9 +924,6 @@
   --sa-cmp-accessibilityBar-height: var(--sa-layout-bar-height);
   --sa-cmp-accessibilityBar-flagWidth: var(--sa-layout-flag-width);
   --sa-cmp-accessibilityBar-flagHeight: var(--sa-ref-size-22);
-  --sa-cmp-accessibilityBar-dividerWidth: var(--sa-ref-border-width-sm);
-  --sa-cmp-accessibilityBar-dividerHeight: var(--sa-ref-size-20);
-  --sa-cmp-accessibilityBar-dividerColor: rgba(255, 255, 255, 0.4);
   --sa-cmp-accessibilityBar-pillSize: var(--sa-ref-size-32);
   --sa-cmp-accessibilityBar-pillBg: var(--sa-overlay-brand-active);
   --sa-cmp-accessibilityBar-hoverBg: var(--sa-overlay-brand-hover);
@@ -1409,10 +1410,12 @@
   --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-icon-neutral-base: var(--sa-color-text-default);
   --sa-icon-neutral-subtle: var(--sa-color-text-muted);
   --sa-icon-neutral-disabled: var(--sa-color-text-disabled);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-cmp-button-primary-bg: var(--sa-color-action-primary-default);
   --sa-cmp-button-primary-bgHover: var(--sa-color-action-primary-hover);
   --sa-cmp-card-bg: var(--sa-bg-neutral-base);
@@ -1721,6 +1724,7 @@
   --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-text-status-success-base: var(--sa-color-status-success);
   --sa-text-status-error-base: var(--sa-color-status-danger);
   --sa-text-status-warning-base: var(--sa-color-status-warning);
@@ -1730,6 +1734,7 @@
   --sa-icon-neutral-disabled: var(--sa-color-text-disabled);
   --sa-icon-neutral-inverse: var(--sa-color-text-onPrimary);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-status-success);
   --sa-icon-status-error-base: var(--sa-color-status-danger);
   --sa-icon-status-warning-base: var(--sa-color-status-warning);
@@ -2103,6 +2108,7 @@
   --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-text-status-success-base: var(--sa-color-status-success);
   --sa-text-status-error-base: var(--sa-color-status-danger);
   --sa-text-status-warning-base: var(--sa-color-status-warning);
@@ -2112,6 +2118,7 @@
   --sa-icon-neutral-disabled: var(--sa-color-text-disabled);
   --sa-icon-neutral-inverse: var(--sa-color-text-onPrimary);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-status-success);
   --sa-icon-status-error-base: var(--sa-color-status-danger);
   --sa-icon-status-warning-base: var(--sa-color-status-warning);
@@ -2485,6 +2492,7 @@
   --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-text-status-success-base: var(--sa-color-status-success);
   --sa-text-status-error-base: var(--sa-color-status-danger);
   --sa-text-status-warning-base: var(--sa-color-status-warning);
@@ -2494,6 +2502,7 @@
   --sa-icon-neutral-disabled: var(--sa-color-text-disabled);
   --sa-icon-neutral-inverse: var(--sa-color-text-onPrimary);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-status-success);
   --sa-icon-status-error-base: var(--sa-color-status-danger);
   --sa-icon-status-warning-base: var(--sa-color-status-warning);
@@ -2867,6 +2876,7 @@
   --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-text-status-success-base: var(--sa-color-status-success);
   --sa-text-status-error-base: var(--sa-color-status-danger);
   --sa-text-status-warning-base: var(--sa-color-status-warning);
@@ -2876,6 +2886,7 @@
   --sa-icon-neutral-disabled: var(--sa-color-text-disabled);
   --sa-icon-neutral-inverse: var(--sa-color-text-onPrimary);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-status-success);
   --sa-icon-status-error-base: var(--sa-color-status-danger);
   --sa-icon-status-warning-base: var(--sa-color-status-warning);
@@ -3249,6 +3260,7 @@
   --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-text-status-success-base: var(--sa-color-status-success);
   --sa-text-status-error-base: var(--sa-color-status-danger);
   --sa-text-status-warning-base: var(--sa-color-status-warning);
@@ -3258,6 +3270,7 @@
   --sa-icon-neutral-disabled: var(--sa-color-text-disabled);
   --sa-icon-neutral-inverse: var(--sa-color-text-onPrimary);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-status-success);
   --sa-icon-status-error-base: var(--sa-color-status-danger);
   --sa-icon-status-warning-base: var(--sa-color-status-warning);
@@ -3631,6 +3644,7 @@
   --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-text-status-success-base: var(--sa-color-status-success);
   --sa-text-status-error-base: var(--sa-color-status-danger);
   --sa-text-status-warning-base: var(--sa-color-status-warning);
@@ -3640,6 +3654,7 @@
   --sa-icon-neutral-disabled: var(--sa-color-text-disabled);
   --sa-icon-neutral-inverse: var(--sa-color-text-onPrimary);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-status-success);
   --sa-icon-status-error-base: var(--sa-color-status-danger);
   --sa-icon-status-warning-base: var(--sa-color-status-warning);
@@ -4060,6 +4075,7 @@
   --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-text-status-success-base: var(--sa-color-status-success);
   --sa-text-status-error-base: var(--sa-color-status-danger);
   --sa-text-status-warning-base: var(--sa-color-status-warning);
@@ -4069,6 +4085,7 @@
   --sa-icon-neutral-disabled: var(--sa-color-text-disabled);
   --sa-icon-neutral-inverse: var(--sa-color-text-onPrimary);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
+  --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-status-success);
   --sa-icon-status-error-base: var(--sa-color-status-danger);
   --sa-icon-status-warning-base: var(--sa-color-status-warning);

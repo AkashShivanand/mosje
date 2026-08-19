@@ -1923,11 +1923,11 @@ export const LAYERS = [
 ] as const;
 
 export const SLOT_COUNTS = {
-  "border": 9,
+  "border": 11,
   "bg": 48,
-  "text": 17,
-  "icon": 9,
-  "cmp": 299,
+  "text": 18,
+  "icon": 10,
+  "cmp": 298,
   "focus": 1,
   "overlay": 3,
   "chart": 38,

@@ -8,7 +8,7 @@
 //   MediaStack (table thumbnail cell) → page-local (wired to this page's lightbox state)
 
 import * as React from "react";
-import { Alert, Button, FormField, Icon, Input, Lightbox, MediaGalleryInput, Modal, Select, SideSheet, type GalleryMediaItem, type LightboxItem } from "@mosje/design-system";
+import { Divider, Alert, Button, FormField, Icon, Input, Lightbox, MediaGalleryInput, Modal, Select, SideSheet, type GalleryMediaItem, type LightboxItem } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
@@ -139,7 +139,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-1 mt-3 flex items-center gap-3 first:mt-0">
       <span className="text-[11px] font-bold uppercase tracking-wider text-navy">{children}</span>
-      <span className="h-px flex-1 bg-line" />
+      <Divider className="flex-1" />
     </div>
   );
 }

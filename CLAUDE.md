@@ -22,7 +22,13 @@ Digital estate for the **Ministry / Department of Social Justice & Empowerment (
 
 **North-star:** every site and portal renders from **one shared design system** (`packages/design-system/`) that stays **100% in sync with a Figma library**. We will build all 13 + 20 incrementally on this shared system.
 
-> **Code Connect is the intended mechanism, but it is NOT in place** — it needs a Figma Developer seat on an Organization/Enterprise plan, and as of 2026-08-12 there are zero mappings in the file and no `@figma/code-connect` in the repo. Sync today runs on **generated artifacts** (`@mosje/tokens`, and the generated icon scale + catalogue) plus manual discipline everywhere else. Status and the wiring plan: `docs/research/figma-code-connect-readiness.md`.
+> **Code Connect IS in place (updated 2026-08-18).** The paragraph here previously said it was blocked on an Organization/Enterprise Developer seat, with zero mappings and no `@figma/code-connect` in the repo — all three are now false. The entitlement works, **7 parserless `*.figma.ts` templates** live beside their components, `@figma/code-connect` v2 is a devDependency of `packages/design-system`, and `figma.config.json` is at the repo root.
+>
+> **Two halves, and only one is automatic.** Mappings are *connected* (Dev Mode resolves the component and its import). Publishing the **rich templated snippet** — props filled from the Figma instance — needs **`npm run figma:connect` FROM THE REPO ROOT**, which requires a **`FIGMA_ACCESS_TOKEN`**. That token is a secret; no agent session creates, reads or commits it. `npm run figma:connect:check` dry-runs and validates every template parses.
+>
+> **Run it from the ROOT, never from a workspace.** `figma.config.json`'s include glob is repo-root relative, so the CLI run from `packages/design-system` resolves it to `packages/design-system/packages/design-system/**` — matches nothing, finds no templates, and **publishes silently with no error**. That is exactly how a publish appeared to succeed on 2026-08-19 while every mapping stayed `hasTemplate: false`. The scripts live in the ROOT `package.json` for this reason; do not add `-w @mosje/design-system`.
+>
+> **Drift is gated**, not hoped for: `npm run check:code-connect` (`tools/code-connect-parity/check.mjs`, in `npm run check`) fails the build when a template names a React prop that no longer exists, misses a Figma variant value, reads a property the master does not have, or silently drops one. Tokens and the icon catalogue still flow through their own generators. Status: `docs/research/figma-code-connect-readiness.md`.
 
 ## Structure
 
@@ -160,6 +166,12 @@ mean it, e.g. a hotfix you are about to push alone).
 git switch main && git pull                 # start from current main, always
 git switch -c <type>/<short-slug>            # feat/ fix/ ds/ docs/ chore/
 ```
+
+**A new session does not mean a new branch.** Before the first edit of any session,
+check whether the requested work already has a branch and continue in it — a context
+window ending is not the end of a task. The procedure, including the two ways switching
+goes wrong in this repo (a dirty tree that is someone else's, and a branch held by
+another worktree), is `.claude/rules/branch-continuity.md`.
 
 ### A branch is short-lived, and that is the part that actually prevents conflicts
 

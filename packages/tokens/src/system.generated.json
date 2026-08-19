@@ -234,6 +234,10 @@
         "base": {
           "$value": "{color.action.primary.default}",
           "$description": "Use for text in the primary brand colour — not for long-form reading."
+        },
+        "bolder": {
+          "$value": "{color.primaryScale.600}",
+          "$description": "Use for text in the primary brand colour — not for long-form reading."
         }
       }
     },
@@ -315,6 +319,10 @@
       "primary": {
         "base": {
           "$value": "{color.action.primary.default}",
+          "$description": "Use for icons in the primary brand colour — not for long-form reading."
+        },
+        "bolder": {
+          "$value": "{color.primaryScale.600}",
           "$description": "Use for icons in the primary brand colour — not for long-form reading."
         }
       }

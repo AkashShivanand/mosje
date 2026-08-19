@@ -84,6 +84,19 @@ const RENAMES = {
   // The 50 entries were PROVEN value-preserving against the un-regenerated fixture, then the
   // fixture was rebaselined — so per the note at the top of this block they are deleted rather
   // than left to outlive the move. `git show` this commit to see them.
+  // 2026-08-17 — `inline` gained a 24 step, the only spacing family that lacked one
+  // (`stack/l` and `padding/xl` both have it), so every 24px horizontal gap had been
+  // reaching past the semantic layer to `ref/space/2xl`. A t-shirt ramp has no slot between
+  // `l` and `xl`, so inserting a step pushes the ones above it up a name: the old
+  // `inline/xl` (32) became `inline/2xl`. It was PROVEN value-preserving here first — the
+  // old name's old value equalled the new name's new value in all 24 selector contexts —
+  // and only then baselined, so per the note above its entry is deleted rather than left to
+  // outlive the move. The proof is in this commit, not in a list that would only grow.
+  //
+  // The matching 28 step for `padding` was attempted the same day and ABANDONED — that
+  // family already uses all eleven canonical rungs and `space` has no 28. See the note on
+  // `padding/2xl` in semantic.json. It is not listed here because it did not happen.
+
   // 2026-08-12 — icon-size md/lg were renamed to their pixel value (24/32). They were PROVEN
   // value-preserving here before the fixture was rebaselined, so per the note above their
   // entries are deleted rather than left to outlive the move.
@@ -135,7 +148,43 @@ const RENAMES = {
  *
  * The bar for an entry is EVIDENCE OF ZERO CONSUMERS, not "we think nobody uses it".
  */
+/*
+ * VALUE RECONCILED ON MERGE — 2026-08-19.
+ *
+ * `cmp/accessibilityBar/hoverBg` moves 12% -> 8% white in every selector context, and the
+ * fixture is rebaselined to match. This is a MERGE RESOLUTION, not a new design decision.
+ *
+ * Two branches disagreed about the same wash. main's 33cbb4f corrected it from 12% to 8%,
+ * against the published Figma variable (`overlay/on-brand/hover`, #ffffff14) and the
+ * component's own States documentation. This branch, working from a base that predated that
+ * commit, re-created the wash at 12% while introducing the Tier-2 `overlay/brand/*` family
+ * and recorded "the component has always rendered 0.12" — true of its base, not of main.
+ *
+ * main's corrected value stands; this branch's Tier-2 family stands. `hoverBg` now aliases
+ * `overlay/brand/hover` at 8%, so the value lives in one place instead of two.
+ */
 const REMOVED = {
+  // 2026-08-18 — the AccessibilityBar adopted the shared `Divider` component, which was
+  // built the same day. Figma had instanced a `Divider` master inside the bar from the
+  // start; the code hand-rolled a styled <span> because no Divider existed in the design
+  // system at all. With the real component in place, a rule's thickness and colour are
+  // Divider's business, so the bar's three private divider tokens are retired.
+  //
+  // ZERO CONSUMERS, verified before deletion: a grep across packages/ and apps/ for
+  // `accessibilityBar-divider` returned only stale .next build artefacts, no source. The
+  // three matching Figma variables were deleted in the same pass (all UNPUBLISHED, created
+  // earlier the same day and never bound).
+  //
+  // The VALUES did not disappear — they moved to where they belong:
+  //   dividerWidth  -> cmp/divider/width (aliases ref/border-width/hairline, same 1px)
+  //   dividerHeight -> the consumer's business; the bar passes length={20}, which is what
+  //                    Figma draws, and Divider stretches by default everywhere else
+  //   dividerColor  -> border/neutral/inverse/subtle, now a real Tier-2 token in code
+  //                    instead of a hand-rolled white rgba
+  "--sa-cmp-accessibilityBar-dividerWidth": "retired; the bar renders <Divider>, whose thickness is --sa-cmp-divider-width (same 1px hairline)",
+  "--sa-cmp-accessibilityBar-dividerHeight": "retired; length is the consumer's call — the bar passes length={20}, Divider stretches by default",
+  "--sa-cmp-accessibilityBar-dividerColor": "retired; the tone is --sa-border-neutral-inverse-subtle, the same white @ 40%, now a Tier-2 token",
+
   // 2026-08-12 — the icon scale was renamed from t-shirt letters to pixel values, so these
   // three NAMES are gone. Their VALUES are not: 16, 20 and 40 ship as --sa-icon-size-16/20/40.
   // An earlier pass deleted those values outright, reading DBIM 3.7.i as exclusive; that was

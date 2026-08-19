@@ -59,7 +59,7 @@ export function LatestUpdates() {
             aria-label={isPlaying ? "Pause updates animation" : "Play updates animation"}
             className="grid h-8 w-8 place-items-center rounded-full hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
           >
-            <Icon name={isPlaying ? "pause" : "play_arrow"} size={18} />
+            <Icon name={isPlaying ? "pause" : "play_arrow"} size={20} />
           </button>
           <button onClick={() => go(index - 1)} aria-label="Previous update" className="grid h-8 w-8 place-items-center rounded-full hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white">
             <Icon name="keyboard_arrow_left" size={20} />

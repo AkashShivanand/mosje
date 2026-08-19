@@ -154,3 +154,60 @@ jobs:
       # 69 pages are not yet censused, and that number may only shrink.
       - name: Radius linkage — tier discipline + a ratchet over the Figma library
         run: npm run check:radius-linkage
+
+      # `.figma.ts` templates are EXCLUDED from the design-system tsconfig, so nothing
+      # type-checked them: a template could name a React prop that had been renamed, or a
+      # Figma property that had been deleted, and every gate here stayed green while Dev
+      # Mode served developers a snippet that does not compile. This is that gate.
+      - name: Code Connect parity — templates match the props and the masters
+        run: npm run check:code-connect
+
+      # Publishing is the other half. A mapping that PARSES is not a mapping that
+      # PUBLISHES, so PRs dry-run it: a template that would fail to publish fails the PR
+      # instead of main.
+      #
+      # It is guarded on the secret, and that guard is load-bearing: `--dry-run` still
+      # exits 1 without a token (verified 2026-08-18), so an unguarded step would fail
+      # every fork PR and every run before the secret is set — a gate that fails for the
+      # wrong reason is worse than no gate, because people learn to ignore it. The real
+      # drift detector above needs no token and always runs.
+      - name: Code Connect — publish dry run
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$FIGMA_ACCESS_TOKEN" ]; then
+            echo "::warning::FIGMA_ACCESS_TOKEN unavailable (fork PR, or secret not set yet) — skipping the dry run. check:code-connect still ran."
+            exit 0
+          fi
+          # From the REPO ROOT — the config's include glob is root-relative and a
+          # workspace cwd silently matches zero templates.
+          npm run figma:connect:check
+
+  # Publishing runs ONLY on main, and only if the secret exists. Code Connect does not
+  # detect drift by itself — it publishes a snapshot that goes stale silently — so this
+  # job is what makes "kept in sync" true rather than ceremonial.
+  #
+  # FIGMA_ACCESS_TOKEN is a repository secret. It needs File content: Read and
+  # Code Connect: Write. It is never committed, never printed, and no agent session
+  # creates or reads it.
+  publish-code-connect:
+    needs: quality
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install (workspace)
+        run: npm install
+      - name: Publish Code Connect
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$FIGMA_ACCESS_TOKEN" ]; then
+            echo "::warning::FIGMA_ACCESS_TOKEN is not set — skipping publish. Add it under Settings → Secrets and variables → Actions."
+            exit 0
+          fi
+          npm run figma:connect
