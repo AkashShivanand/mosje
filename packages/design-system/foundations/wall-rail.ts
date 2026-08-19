@@ -23,11 +23,19 @@
  * | Website | free | Important Links, 42–61% |
  * | Docs / portals | sidebar nav, full height | free |
  *
- * So the position is measured. The rail finds the largest free vertical band
- * on the wall and centres itself in the one nearest the middle of the screen.
- * On the docs that is the whole viewport, so it sits centred, exactly as
- * before. On the website it sits clear of Important Links, visibly, because
- * something is genuinely there.
+ * So the position is measured, and the rule is deliberately plain:
+ *
+ *   **Sit 16px below whatever is on the wall. If nothing is, sit centred.**
+ *
+ * On the docs and the portals nothing is on the wall, so the rail is centred
+ * exactly as before. On the website it sits directly beneath Important Links
+ * — which is also directly above the corner widget, because those two
+ * descriptions of the right answer happen to name the same slot.
+ *
+ * The one case the plain rule does not cover is an occupant already near the
+ * floor, where "below" is off-screen: the corner widget, when it is the only
+ * thing on the wall. There the same intent reads as "just above it", and that
+ * is the fallback.
  *
  * WHY THIS IS NOT THE PATTERN THAT WAS REJECTED. A previous version of this
  * widget used a hand-set per-route boolean to move itself, and that was
@@ -93,18 +101,7 @@ export function railTopFromOccupants(
   railHeight: number,
   viewportHeight: number,
 ): number {
-  // The rail's home is LOW on the wall, not centred. Two reasons, and the
-  // second is the one that settles it:
-  //
-  // 1. It is a utility, and utilities live near the bottom-right. Centred, it
-  //    lands beside the primary navigation on the website — measured at
-  //    y=117, right against the masthead, which reads as an accident.
-  // 2. The two things it must coexist with are naturally arranged that way.
-  //    Important Links sits around 42-61% of the viewport; the accessibility
-  //    widget (and any future chatbot) sits in the corner beneath it. "Just
-  //    below Important Links" and "just above the corner widget" describe the
-  //    SAME band, so anchoring low satisfies both at once.
-  const bottomRest = viewportHeight - railHeight - WALL_RAIL_MARGIN_PX;
+  const centred = Math.round((viewportHeight - railHeight) / 2);
   const clamp = (v: number) =>
     Math.min(
       Math.max(v, WALL_RAIL_MARGIN_PX),
@@ -128,32 +125,39 @@ export function railTopFromOccupants(
     else merged.push({ ...band });
   }
 
-  if (merged.length === 0) return clamp(bottomRest);
+  // Nothing on the wall: sit in the middle, where the eye expects it.
+  if (merged.length === 0) return clamp(centred);
 
-  // The gaps between obstacles, bounded by the viewport's own margins.
-  const free: Band[] = [];
-  let cursor = WALL_RAIL_MARGIN_PX;
+  const fitsAt = (top: number) =>
+    top >= WALL_RAIL_MARGIN_PX &&
+    top + railHeight <= viewportHeight - WALL_RAIL_MARGIN_PX &&
+    merged.every((b) => top + railHeight <= b.top || top >= b.bottom);
+
+  // THE RULE, and it is deliberately literal: sit just below the occupant.
+  // The bands are already expanded by `WALL_RAIL_GAP_PX`, so a candidate at a
+  // band's bottom edge IS 16px below the thing itself.
+  //
+  // Top-to-bottom, so with Important Links on the wall the first candidate is
+  // the slot directly beneath it — which is also, on the website, the slot
+  // directly above the corner widget. The two descriptions of the right
+  // answer coincide, so satisfying one satisfies both.
   for (const band of merged) {
-    if (band.top > cursor) free.push({ top: cursor, bottom: band.top });
-    cursor = Math.max(cursor, band.bottom);
+    if (fitsAt(band.bottom)) return clamp(band.bottom);
   }
-  const floor = viewportHeight - WALL_RAIL_MARGIN_PX;
-  if (cursor < floor) free.push({ top: cursor, bottom: floor });
 
-  const fits = free.filter((b) => b.bottom - b.top >= railHeight);
-  // Nothing fits: fall back to the resting position rather than wedge the
-  // rail off-screen. An overlap is recoverable; a widget outside the viewport
-  // is not.
-  if (fits.length === 0) return clamp(bottomRest);
+  // Nothing fits below anything — the occupant is itself near the floor, which
+  // is the corner widget's case when it is the only thing on the wall. Then
+  // "below" is off-screen and the sensible reading of the same intent is to
+  // sit just above it. Bottom-up, so the rail hugs the nearest obstacle rather
+  // than flying to the top of the page.
+  for (let i = merged.length - 1; i >= 0; i--) {
+    const candidate = merged[i]!.top - railHeight;
+    if (fitsAt(candidate)) return clamp(candidate);
+  }
 
-  // The LOWEST band that fits, and the rail sits at the bottom of it. That is
-  // what makes the two descriptions of the right answer coincide: on a page
-  // with a corner widget the rail lands just above it, and on a page with
-  // something higher up the wall it lands below that. An earlier version took
-  // the band nearest the viewport's centre, which put the rail at y=117 on
-  // the website — above Important Links and hard against the masthead.
-  const lowest = fits[fits.length - 1]!;
-  return clamp(lowest.bottom - railHeight);
+  // Neither side of anything works. Centred beats off-screen: an overlap is
+  // recoverable, a widget outside the viewport is not.
+  return clamp(centred);
 }
 
 function isVisible(el: Element): boolean {
