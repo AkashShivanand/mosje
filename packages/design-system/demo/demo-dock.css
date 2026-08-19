@@ -12,34 +12,27 @@
    ============================================================================ */
 
 /* ── Root container ──────────────────────────────────────────────────────
-   The bottom-right corner rail. `--sa-corner-rail-bottom` is written by
-   `useCornerRailOffset` (foundations/corner-rail.ts): 32px when the corner
-   below is empty, or "top of whatever is down there + 16px" when it is not.
-   The 32px here is the same resting value, so the very first paint — before
-   the hook has measured anything — already lands where the dock will stay
-   on the majority of pages, instead of jumping down from a stacked offset.
+   The right wall, vertically centred — not a corner. `top: calc(50% - 56px)`
+   rather than a centring transform is deliberate: the rail is anchored by its
+   TOP so that unfolding grows it downward and the flask never moves. Centre
+   the container and the flask slides up as the drawer opens, which reads as
+   the object jumping rather than opening.
 
-   This replaced a hardcoded `108px` fallback that assumed the UX4G
-   accessibility widget was always present and always visible. It is hidden
-   on every page carrying an `AccessibilityBar`, so that assumption left the
-   FAB floating 108px above an empty corner across most of the estate. ── */
+   56px is half the rail's RESTING height (103px), so the tab is optically
+   centred at rest and the drawer extends below the midline when open.
+
+   No measured offset, and nothing to keep in sync: the middle of the right
+   wall is empty on every surface in the estate. The previous version stacked
+   this above the UX4G accessibility widget in the bottom-right corner and
+   hardcoded 108px as its fallback — a corner the widget is hidden in on every
+   page carrying an AccessibilityBar, which left the FAB floating above
+   nothing across most of the estate. ── */
 .ds-demodock {
   position: fixed;
-  right: 20px;
-  bottom: var(--sa-corner-rail-bottom, 32px);
+  right: 0;
+  top: calc(50% - 56px);
   z-index: 2147483000;
   font-family: var(--sa-font-latin);
-  transition: bottom var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
-}
-
-/* The rail's offset is measured, so it can change mid-session when a
-   launcher appears or the accessibility bar hides the UX4G trigger. Let
-   that settle rather than teleport — but never animate it for someone who
-   asked for less motion. */
-@media (prefers-reduced-motion: reduce) {
-  .ds-demodock {
-    transition: none;
-  }
 }
 
 /* Legacy — kept for backward compatibility, not because DemoDock still needs
@@ -60,154 +53,229 @@
   padding-bottom: var(--cmp-appsw-safe-area);
 }
 
-/* ── FAB trigger ──────────────────────────────────────────────────────────
-   Icon-only circle at rest; reveals its text label on hover/focus. Ported
-   from the UX4G accessibility widget's own trigger it now docks above (see
-   `components/a11y/ux4g-accessibility-widget.css`) rather than inventing a
-   new interaction: a fixed-size circle (44px — this estate's touch-target
-   floor; UX4G's own equivalent is 70px, sized for its own icon) with
-   `overflow: hidden` and a `max-width` transition that grows the box to
-   reveal the label already sitting in flow beside the icon, so the reveal
-   reads as the pill sliding open rather than text fading in over the icon.
-   `padding: 0 14px` is what makes the collapsed box an exact circle: with no
-   border, 14 + 16 (icon) + 14 = 44, so the icon sits dead-centre.
+/* ── The folding rail ────────────────────────────────────────────────────
+   At rest: a 52x105 tab flush to the wall, holding the flask and a vertical
+   wordmark. Engaged: the wordmark collapses, the drawer expands, and the tab
+   becomes a 52x153 rail of three doors — measured, not derived.
 
-   `justify-content: flex-end` plus the label-before-icon DOM order (see
-   demo-dock.tsx) is what keeps the icon pinned to the button's fixed RIGHT
-   edge as `max-width` grows: the button's own right edge is anchored (its
-   left edge is the one that moves), so packing content toward the end makes
-   the reveal grow leftward, away from the corner, instead of the icon
-   drifting with it.
+   WIDTH IS CONSTANT, AND THAT IS A FIX. The prototype grew 48 -> 58 on
+   unfold; because this box is right-anchored and centres its children,
+   widening it by 10 slid the flask 5px LEFT — measured, not guessed. The
+   width change bought a faint "engaged" signal and cost the anchor the whole
+   design rests on, so the shadow carries that signal instead and the flask is
+   fixed on both axes.
 
-   `@media (hover: hover)` gates the mouse trigger — same as UX4G's own CSS —
-   so a touch device that has no real "hover" can't get stuck mid-expand
-   after a tap; `:focus-visible` is unconditional so keyboard users still get
-   the reveal (a control UX4G's own widget does not offer, since it never
-   claims a text label is keyboard-focusable at all). The accessible name
-   comes from `aria-label` on the button, not this label — see the component
-   doc comment — so both the icon and the label below are `aria-hidden`. ── */
-.ds-demodock__fab {
-  position: relative;
-  display: inline-flex;
+   Only the drawer and the wordmark animate; the container itself does not
+   transition its box at all, which is why the fold cannot drift. ── */
+.ds-demodock__rail {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  height: 44px;
-  width: auto;
-  max-width: 44px;
-  padding: 0 14px;
-  border: none;
-  border-radius: var(--sa-shape-full);
+  width: 52px;
+  padding: var(--sa-padding-8) 0 var(--sa-padding-8);
+  border-radius: var(--sa-shape-16) 0 0 var(--sa-shape-16);
   background-color: var(--sa-bg-neutral-base);
-  color: var(--sa-text-neutral-base);
-  font-family: var(--sa-font-latin);
-  font-size: var(--sa-type-body-2-size);
-  font-weight: 600;
-  cursor: pointer;
-  overflow: hidden;
   box-shadow: var(--sa-elevation-modal);
-  transition: max-width var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
-    box-shadow var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-    transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+  transition: box-shadow var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .ds-demodock__fab:hover {
-    max-width: 220px;
-  }
+.ds-demodock__rail.is-open {
+  box-shadow: var(--sa-elevation-toast);
 }
 
-/* Tactile press feedback — confirms the FAB heard the click before the
-   panel has even had time to animate in. */
-.ds-demodock__fab:active {
-  transform: scale(0.97);
-}
-
-.ds-demodock__fab:focus-visible {
-  max-width: 220px;
-  outline: none;
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-}
-
-/* ── Flask icon state ─────────────────────────────────────────────────────
-   `FlaskIcon` animates nothing by itself — it exposes four custom
-   properties and this is the file that drives them, because this is the
-   file that knows the markup. See demo/flask-icon.css for the contract.
-
-   Rest: still. Hover / keyboard focus: slow bubbles, "this is
-   interactive". Open: faster bubbles and a raised liquid level, "the tool
-   is running" — which is legible on the FAB even while the panel covers
-   the screen above it. ── */
-.ds-demodock__fab .ds-flask {
-  width: 16px;
-  height: 16px;
+/* ── Lead: the flask cell plus the wordmark. Always present. ── */
+.ds-demodock__lead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
   color: var(--sa-text-brand-primary-base);
-  transition: transform var(--sa-motion-enter-duration) var(--sa-motion-emphasis-easing);
+  font-family: var(--sa-font-latin);
+  cursor: pointer;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .ds-demodock__fab:hover .ds-flask {
-    --ds-flask-play: running;
-    --ds-flask-bubbles: 1;
-  }
+.ds-demodock__cell {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--sa-shape-12);
+  background-color: var(--sa-bg-brand-primary-subtler);
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
-.ds-demodock__fab:focus-visible .ds-flask {
-  --ds-flask-play: running;
-  --ds-flask-bubbles: 1;
+/* The tinted cell is what buys the size. A 26px flask on a bare white field
+   reads as an oversized glyph; contained, it reads as an instrument — and 26
+   is where the bubbles (0.55–0.78 units in a 24-unit viewBox) finally clear a
+   device pixel. At the previous 16px they could not, which is why the icon's
+   animation was invisible rather than absent. */
+.ds-demodock__lead:active .ds-demodock__cell {
+  transform: scale(0.94);
 }
 
-.ds-demodock__fab[aria-expanded="true"] .ds-flask,
-.ds-demodock__badge .ds-flask {
-  --ds-flask-play: running;
-  --ds-flask-bubbles: 1;
-  --ds-flask-cycle: 1450ms;
-  --ds-flask-level: -1.6px;
+.ds-demodock__lead:focus-visible {
+  outline: none;
 }
 
-/* A small tip while open — the flask reads as being worked with rather
-   than sitting on a shelf. Kept to 6 degrees: past that, a 1.9-unit stroke
-   rotated off-axis lands between device pixels and the outline softens. */
-.ds-demodock__fab[aria-expanded="true"] .ds-flask {
-  transform: rotate(-6deg);
+.ds-demodock__lead:focus-visible .ds-demodock__cell {
+  box-shadow: 0 0 0 2px var(--sa-bg-neutral-base), 0 0 0 4px var(--sa-focus-ring);
 }
 
-/* The label is always in the DOM (so `max-width` has something to reveal)
-   but invisible at rest — `opacity`, not `display`/`visibility`, so it never
-   affects the accessible-name calculation either way (moot here since it's
-   also `aria-hidden`, but keeps the two hiding mechanisms from fighting).
-   Precedes the icon in markup (see demo-dock.tsx), so the gap sits on its
-   trailing edge — `margin-right`, not `-left` — to separate it from the
-   icon that follows. */
-.ds-demodock__fab-label {
-  flex: 0 0 auto;
-  margin-right: 8px;
-  white-space: nowrap;
+/* Collapses on unfold. It sits BELOW the flask, so giving up its space costs
+   the anchor nothing — and it is what keeps net growth to 51px instead of 94.
+   `max-height` rather than `display` so the change is animatable; it is
+   `aria-hidden` in the markup, so nothing is removed from the accessibility
+   tree when it goes. */
+.ds-demodock__word {
+  writing-mode: vertical-rl;
+  max-height: 46px;
+  margin-top: var(--sa-stack-8);
+  overflow: hidden;
+  opacity: 1;
+  color: var(--sa-text-neutral-subtle);
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: max-height var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+    margin-top var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+    opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+}
+
+.ds-demodock__rail.is-open .ds-demodock__word {
+  max-height: 0;
+  margin-top: 0;
   opacity: 0;
-  transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
-.ds-demodock__fab:hover .ds-demodock__fab-label,
-.ds-demodock__fab:focus-visible .ds-demodock__fab-label {
+/* ── Drawer: the two extra doors. ── */
+.ds-demodock__drawer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sa-stack-2);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+    opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+}
+
+.ds-demodock__rail.is-open .ds-demodock__drawer {
+  max-height: 140px;
   opacity: 1;
 }
 
+.ds-demodock__rule {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 1px;
+  margin: var(--sa-stack-8) 0 var(--sa-stack-4);
+  background-color: var(--sa-border-neutral-subtle);
+}
+
+.ds-demodock__door {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: var(--sa-shape-12);
+  background: transparent;
+  color: var(--sa-text-neutral-subtle);
+  cursor: pointer;
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+    color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+}
+
+.ds-demodock__door:hover {
+  background-color: var(--sa-bg-brand-primary-subtler);
+  color: var(--sa-text-brand-primary-base);
+}
+
+.ds-demodock__door:active {
+  transform: scale(0.94);
+}
+
+.ds-demodock__door:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--sa-bg-neutral-base), 0 0 0 4px var(--sa-focus-ring);
+}
+
+/* A three-wedge disc, not a single swatch: the door leads to a PALETTE
+   picker, and one colour would claim the palette is one colour. Drawn from
+   brand tokens, so it re-tones with the mode it opens. */
+.ds-demodock__swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--sa-shape-full);
+  background: conic-gradient(
+    var(--sa-color-primaryScale-500) 0 33%,
+    var(--sa-color-secondaryScale-400) 0 66%,
+    var(--sa-color-primaryScale-800) 0
+  );
+  box-shadow: inset 0 0 0 1.6px var(--sa-bg-neutral-base);
+}
+
+.ds-demodock__apps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+}
+
+.ds-demodock__apps i {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--sa-shape-2);
+  background-color: currentColor;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .ds-demodock__fab {
-    transition: box-shadow var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+  .ds-demodock__rail,
+  .ds-demodock__word,
+  .ds-demodock__drawer,
+  .ds-demodock__cell,
+  .ds-demodock__door {
+    transition: none;
   }
 
-  .ds-demodock__fab-label {
-    transition: none;
+  /* Both states still exist; only the movement between them is traded away. */
+  .ds-demodock__lead:active .ds-demodock__cell,
+  .ds-demodock__door:active {
+    transform: none;
   }
 }
 
-/* ── Panel ── */
+/* ── Panel ──────────────────────────────────────────────────────────────
+   Opens LEFTWARD from the rail, and is centred on the VIEWPORT rather than
+   on the rail. `position: fixed` inside a fixed root is what makes that
+   simple: the panel's vertical centring is independent of where the rail
+   sits, so a 680px panel cannot be pushed off-screen by the rail's own
+   offset — which it would be if it were absolutely positioned against a
+   parent anchored 56px above the midline.
+
+   It remains a DOM descendant of the root, so the outside-click check
+   (`rootRef.contains`) still treats the panel as inside. ── */
 .ds-demodock__panel {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 10px);
+  position: fixed;
+  right: 62px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 500px;
-  max-width: calc(100vw - 40px);
+  /* 62px clears the rail (its own 52px plus 10px of gap) and 16px leaves a
+     margin on the far side. This was `100vw - 40px`, written when the panel
+     was anchored at `right: 0`; moving it out to `right: 62px` without
+     re-deriving the cap pushed its left edge 22px OFF-SCREEN below ~590px
+     wide. Measured, not spotted — the panel is only that wide on a narrow
+     viewport, and nothing about the rule looks wrong until you subtract. */
+  max-width: calc(100vw - 78px);
   max-height: min(72vh, 680px);
   display: flex;
   flex-direction: column;
@@ -216,7 +284,7 @@
   background-color: var(--sa-bg-neutral-base);
   box-shadow: var(--sa-elevation-toast);
   overflow: hidden;
-  transform-origin: bottom right;
+  transform-origin: center right;
   /* Shared floor for the body/tab content (see `.ds-demodock__body` below).
      Derived from this panel's own `max-height` (72vh, capped 680px) minus
      the header's measured footprint (~126px, rounded up for safety) so it
@@ -272,6 +340,28 @@
 .ds-demodock__badge .ds-flask {
   width: 17px;
   height: 17px;
+}
+
+/* ── Flask state ─────────────────────────────────────────────────────────
+   `FlaskIcon` animates nothing by itself — it exposes four custom properties
+   and this is the file that drives them, because this is the file that knows
+   the markup. See demo/flask-icon.css for the contract.
+
+   Unfolding and lighting the flask are ONE gesture: the same state that
+   opens the drawer starts the bubbles, so the icon's motion is feedback for
+   the fold rather than decoration running alongside it. Open goes further —
+   faster bubbles and a raised level — so the rail still reports that the
+   panel is open even when the panel is what you are looking at. ── */
+.ds-demodock__rail.is-open .ds-flask,
+.ds-demodock__badge .ds-flask {
+  --ds-flask-play: running;
+  --ds-flask-bubbles: 1;
+}
+
+.ds-demodock__lead[aria-expanded="true"] .ds-flask,
+.ds-demodock__badge .ds-flask {
+  --ds-flask-cycle: 1450ms;
+  --ds-flask-level: -1.6px;
 }
 
 .ds-demodock__title-text {
@@ -615,25 +705,31 @@
     animation: ds-demodock-out var(--sa-motion-exit-duration) var(--sa-motion-exit-easing) forwards;
   }
 
+  /* Both keyframes carry `translateY(-50%)` because the panel's resting
+     transform IS that centring — an animation on `transform` replaces the
+     declared value outright, so omitting it drops the panel half its own
+     height down the screen for the duration of the animation. It comes from
+     the RIGHT now, out of the wall it is attached to, rather than from
+     below. */
   @keyframes ds-demodock-in {
     from {
       opacity: 0;
-      transform: translateY(6px) scale(0.98);
+      transform: translateY(-50%) translateX(8px) scale(0.98);
     }
     to {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateY(-50%) translateX(0) scale(1);
     }
   }
 
   @keyframes ds-demodock-out {
     from {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateY(-50%) translateX(0) scale(1);
     }
     to {
       opacity: 0;
-      transform: translateY(6px) scale(0.98);
+      transform: translateY(-50%) translateX(8px) scale(0.98);
     }
   }
 }

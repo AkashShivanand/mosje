@@ -78,31 +78,58 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * Clicks the FAB (and, if given, a tab by index) once the story mounts, so
- * the reviewer sees the expanded state immediately instead of the collapsed
- * FAB. DemoDock keeps its open/tab state internal — there is no controlled
- * prop for it, by design, since the shell is meant to always open fresh on
- * its first tab — so driving it from outside means simulating the same
- * click a presenter would make.
+ * Opens the dock (and, if given, a tab by index) once the story mounts, so
+ * the reviewer sees the expanded state immediately rather than a folded rail.
+ * DemoDock keeps its open/tab state internal — there is no controlled prop
+ * for it, by design, since the shell is meant to always open fresh on its
+ * first tab — so driving it from outside means simulating the clicks a
+ * presenter would make.
+ *
+ * **It takes TWO clicks, and that is the component behaving correctly.** The
+ * lead's rule is: if the rail is not expanded, expand it; otherwise open the
+ * panel. A real pointer user never notices, because hovering the rail has
+ * already expanded it before they click. A synthetic `click()` dispatches no
+ * hover, so it lands in exactly the state a touch user is in — first click
+ * unfolds, second opens. Clicking once here would leave the panel shut and
+ * look like a broken story.
  */
 function ExpandOnMount({ tabIndex }: { tabIndex?: number }) {
   React.useEffect(() => {
-    const id = window.requestAnimationFrame(() => {
-      const fab = document.querySelector<HTMLButtonElement>(".ds-demodock__fab");
-      fab?.click();
-      if (tabIndex !== undefined) {
-        window.requestAnimationFrame(() => {
-          const tabs = document.querySelectorAll<HTMLButtonElement>('.ds-tabs [role="tab"]');
-          tabs[tabIndex]?.click();
-        });
-      }
-    });
-    return () => window.cancelAnimationFrame(id);
+    const frames: number[] = [];
+    const lead = () =>
+      document.querySelector<HTMLButtonElement>(".ds-demodock__lead");
+
+    frames.push(
+      window.requestAnimationFrame(() => {
+        lead()?.click(); // unfolds the rail
+        frames.push(
+          window.requestAnimationFrame(() => {
+            lead()?.click(); // opens the panel
+            if (tabIndex !== undefined) {
+              frames.push(
+                window.requestAnimationFrame(() => {
+                  const tabs = document.querySelectorAll<HTMLButtonElement>(
+                    '.ds-tabs [role="tab"]',
+                  );
+                  tabs[tabIndex]?.click();
+                }),
+              );
+            }
+          }),
+        );
+      }),
+    );
+
+    return () => frames.forEach((f) => window.cancelAnimationFrame(f));
   }, [tabIndex]);
   return null;
 }
 
-/** Collapsed — just the FAB, bottom-right. Click it to expand the panel. */
+/**
+ * Folded — the resting tab on the right wall: the flask and its wordmark.
+ * Hover it (or tab to it) to unfold the two extra doors; click the flask to
+ * open the panel.
+ */
 export const Playground: Story = {};
 
 /**

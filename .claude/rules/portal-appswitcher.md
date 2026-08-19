@@ -46,42 +46,73 @@ resolves to, `DemoAccountsPanel`, present only when the path has one).
    inside the hub alongside `DemoDock` — that reintroduces the duplicate-FAB
    problem this rule exists to prevent.
 
-## Placement — the bottom-right corner rail
+## Placement — the right wall, not a corner
 
-`DemoDock` does not choose its own position, and neither should the next
-floating widget. There is **one** corner for floating widgets and it
-**stacks**, via `useCornerRailOffset`
-(`packages/design-system/foundations/corner-rail.ts`):
+`DemoDock` sits **flush to the right edge of the viewport, vertically centred**,
+as a folding tab. It does not choose its own position and neither should the
+next floating widget: the right wall is empty on every surface in the estate,
+which is exactly why it is the home.
 
-- **32px** from the bottom when the corner below is empty.
-- **16px above** whatever is already there — today the UX4G accessibility
-  widget's trigger, tomorrow a chatbot launcher. Measured live, from what is
-  actually on the page.
+**Do not put a floating widget in a corner.** Both corners are taken, and each
+has already cost this estate a defect:
 
-Two rules, and the first is the one that has already been broken once:
+| Corner | Occupant | What it cost |
+|---|---|---|
+| bottom-left | `PortalLoginShell`'s "Signing Into" strip | a per-route opt-in boolean that a future portal could forget, and a FAB that visibly relocated between routes |
+| bottom-right | the UX4G accessibility widget (must not be restyled) | a hardcoded 108px stack above a widget that is `display: none` on every page with an `AccessibilityBar`, so the FAB floated above an empty corner across most of the estate |
 
-1. **Never hardcode a stacking offset.** The previous version assumed the
-   UX4G widget was always present and always visible and wrote `108px` into
-   the CSS. That widget is `display: none` on every page carrying an
-   `AccessibilityBar` (`.claude/rules/accessibility-entry-point.md`), so the
-   FAB floated 108px above an empty corner across most of the estate. The
-   number *looked* deliberate, which is exactly why it survived review.
-2. **A launcher moves the rail; an open panel does not.** Only occupants
-   under 140px tall count. A chatbot's conversation panel opening in the
-   same corner must not shove everything to the top of the viewport.
+The rule those two share:
 
-### Adding a floating widget
+> **A placement that has to be computed is a placement that can be computed
+> wrong.** The right wall needs no measurement, so it cannot be measured wrong.
 
-| Your widget | What to do |
-|---|---|
-| Should be **positioned by** the rail | call `useCornerRailOffset(ref)` and use `var(--sa-corner-rail-bottom, 32px)` for its `bottom` |
-| Merely **occupies** the corner (it pins itself) | put `data-sa-corner-occupant` on its own element — everything above it moves up, with no change to any other file |
+A `useCornerRailOffset` hook existed briefly to stack widgets in the
+bottom-right corner. It was **retired** when `DemoDock` left that corner —
+nothing consumed it, and a shared primitive with no consumer reads as
+governance while governing nothing. Do not re-add it speculatively; if a
+chatbot genuinely wants that corner, recover it from git history then.
 
-Do not add a per-route boolean to raise or lower a widget. That pattern was
-already tried (a flag on `DemoAccountSet`, to dodge `PortalLoginShell`'s
-bottom-left strip), and it was removed rather than replaced: an opt-in a
-future portal can forget is not a fix, and it made the FAB visibly relocate
-between routes.
+## The fold — and the two rules inside it
+
+At rest the rail is a **tab** — 52x105, a 26px flask in a tinted cell plus a
+vertical wordmark that says what it is without being touched. Engaged, the
+wordmark collapses and the rail unfolds **downward** into three doors, 52x153.
+
+1. **The flask is the anchor and must not move.** The container is anchored by
+   its `top` (not centred, which would slide the flask up as the drawer grows)
+   and its **width is constant**. A prototype grew 48 → 58px on unfold and slid
+   the flask 5px *left*, because a right-anchored box that widens pushes its
+   centred children inward. The shadow carries the "engaged" signal instead.
+2. **Hover and focus are TWO INDEPENDENT HOLDS**, each with its own latch;
+   the rail is open while either holds. A single flag breaks both ways round,
+   and both were shipped and caught by pressure-testing: focus a door then
+   move the mouse away, and `pointerleave` collapsed the rail out from under
+   a keyboard user; blur while still hovering, and it collapsed with no fresh
+   `pointerenter` coming to reopen it.
+3. **The lead's click rule is about STATE, not device:** if the rail is not
+   expanded, expand it; otherwise open the panel. A pointer user's hover has
+   already expanded it, so their click falls straight through — one click, as
+   before. A touch user's first tap expands, the second opens. Never branch on
+   `pointerType` for this; a touchscreen laptop is both devices at once.
+4. **Verify focus behaviour with TRUSTED events only.** A programmatic
+   `element.focus()` moves `document.activeElement` but fires **no focus
+   events at all** in a tab without OS focus — so an automated test reports
+   the keyboard path green while it is broken. The hover/focus defect above
+   passed every synthetic check and failed the first real click-then-move.
+   Drive the real pointer and the real Tab key, and assert
+   `document.hasFocus()` before believing a focus result.
+
+**Three doors, fixed.** They map to the panel's Apps and Colour tabs plus the
+flask (which opens the panel on its first tab). **Sign in does not get a
+door** — it exists only on login routes, so a fourth door would appear and
+vanish by route, which is the same "relocates between routes" defect the
+bottom-left opt-in was removed for. It already leads inside the panel on those
+routes, which is enough.
+
+All three doors open the *same* panel, pre-selected. That is the win over the
+old single FAB: Colour drops from two clicks to one, and re-toning the page
+live is the most-used action in a demo — the ⌘⌥C shortcut exists to work
+around exactly that cost.
 
 ## Pattern (how the hub wires it — nothing for a portal to copy)
 
@@ -124,8 +155,7 @@ show.
       `.claude/rules/portal-login-demos.md`
 - [ ] No `DemoDock` or `DemoFab` mount added anywhere in the portal's own
       layout or pages — the hub's single mount already covers it
-- [ ] After `npm run dev`, the dock's FAB appears bottom-right on the new
-      portal's pages, its Apps tab lists the portal, and (if it has a login
-      page) its Sign in tab shows the right accounts
-- [ ] No fixed bottom-right widget added without either joining the corner
-      rail or marking itself `data-sa-corner-occupant` — see Placement above
+- [ ] After `npm run dev`, the dock's rail appears on the right wall of the
+      new portal's pages, its Apps tab lists the portal, and (if it has a
+      login page) its Sign in tab shows the right accounts
+- [ ] No floating widget added in either bottom corner — see Placement above

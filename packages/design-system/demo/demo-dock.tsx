@@ -4,8 +4,8 @@
  * SAMAVESH Design System — DemoDock
  *
  * DEMO-ONLY component. The single floating widget that replaces the
- * AppSwitcher's colour swatches and every hand-rolled `DemoFab` — one FAB,
- * on the bottom-right corner rail (see the "Placement" note further down),
+ * AppSwitcher's colour swatches and every hand-rolled `DemoFab` — one
+ * folding rail on the right wall (see the "Placement" note further down),
  * that opens a tabbed panel:
  *
  * - **Apps** — the same searchable cross-zone list as `AppSwitcher`
@@ -50,43 +50,36 @@
  * starts on the first tab — Sign in when the current route is a login
  * route, Apps otherwise — never a remembered tab.
  *
- * **Placement — the bottom-right corner rail.** The dock rests 32px from
- * the bottom of the viewport, flush to the same right edge as everything
- * else in that corner. If something else is already there — today the UX4G
- * accessibility widget's trigger, tomorrow a chatbot launcher — it stacks
- * directly above it instead, with a 16px gap. That is measured live from
- * whatever is actually on the page, by `useCornerRailOffset`; see
- * `foundations/corner-rail.ts` for the model and for what does and does not
- * count as an occupant.
+ * **Placement — the right wall, vertically centred.** The dock is a tab
+ * flush to the right edge of the viewport, at mid-height. It is not in a
+ * corner at all, and that is the point: a corner is contested (the UX4G
+ * accessibility widget owns bottom-right and this estate must not restyle
+ * it), while the middle of the right wall is empty on every surface in the
+ * estate.
  *
- * It used to be bottom-left, mirroring the retired `AppSwitcher`. It moved
- * for two reasons:
+ * This is the third placement, and the history is worth keeping because
+ * each move fixed the previous one's actual defect rather than its
+ * symptom:
  *
- * 1. Bottom-left is where `PortalLoginShell` pins its "Signing Into" strip
- *    (see that file). The two used to collide on NMBA's login routes, and
- *    the fix was a manual per-registry-entry boolean on `DemoAccountSet`
- *    that raised the FAB — an opt-in a future portal could easily forget,
- *    and one that made the FAB visibly relocate between routes
- *    ("cheap"-looking, per design review). Moving the FAB to the corner
- *    nothing else uses eliminated the collision at the source instead of
- *    reacting to it: there is nothing left bottom-left for anything to opt
- *    into, so that flag is gone rather than replaced.
- * 2. Bottom-right already has a fixed, 70px, official government control
- *    (`UX4GAccessibilityWidget`) that this estate must not resize or
- *    restyle the geometry of (see that file's own doc comment). A SECOND,
- *    unrelated FAB in the opposite corner at a different size and a
- *    different edge offset read as two accidental widgets rather than one
- *    considered pair. One rail reads as a rail.
+ * 1. **Bottom-left** collided with `PortalLoginShell`'s "Signing Into"
+ *    strip on NMBA's login routes. The fix was a per-registry-entry boolean
+ *    that raised the FAB — an opt-in a future portal could forget, and one
+ *    that made the FAB visibly relocate between routes.
+ * 2. **Bottom-right, stacked above the UX4G widget.** That removed the
+ *    collision but inherited a worse problem: the widget is `display: none`
+ *    on every page carrying an `AccessibilityBar`
+ *    (`.claude/rules/accessibility-entry-point.md`), so the measured stack
+ *    never resolved and the FAB floated 108px above an empty corner across
+ *    most of the estate.
+ * 3. **The right wall.** Nothing else is there, on any route, so there is
+ *    nothing to measure, nothing to stack above, and no offset to keep in
+ *    sync. `useCornerRailOffset` — written for step 2 and merged the same
+ *    day — was retired with it, because a shared primitive with no consumer
+ *    reads as governance while governing nothing.
  *
- * What changed since is *how* the stacking is worked out. The first version
- * measured `#uw-widget-custom-trigger` specifically and fell back to a
- * hardcoded 108px, which was wrong on the majority of the estate: every
- * page carrying an `AccessibilityBar` hides that trigger with `display:
- * none` (`.claude/rules/accessibility-entry-point.md`), so the measurement
- * never resolved and the FAB floated 108px up a page with nothing at all
- * beneath it. The rail measures occupancy instead of assuming it, so an
- * empty corner produces an offset of 32px and a future launcher is stacked
- * above without touching this file.
+ * The lesson the three moves share: **a placement that has to be computed
+ * is a placement that can be computed wrong.** This one cannot, because
+ * there is nothing to compute.
  */
 
 import * as React from "react";
@@ -101,7 +94,6 @@ import { Tabs, TabPanel, TabDef } from "../components/navigation/tabs";
 import { LiveRegion, useLiveRegion } from "../components/a11y/live-region";
 import { useColorMode } from "../foundations/color-mode-provider";
 import { DBIM_COLOR_MODES, type ColorMode } from "../foundations/color-mode";
-import { useCornerRailOffset } from "../foundations/corner-rail";
 import { DemoAccountsPanel } from "./demo-accounts-panel";
 import { findDemoAccounts, isLoginRoute } from "./demo-accounts";
 import { FlaskIcon } from "./flask-icon";
@@ -361,17 +353,17 @@ export function DemoDock({
   const [open, setOpen] = React.useState(false);
   const [closing, setClosing] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState(0);
+  // Whether the rail is showing its two extra doors. Held in React rather
+  // than left to a `:hover` rule, because THE LEAD'S CLICK BEHAVIOUR DEPENDS
+  // ON IT (see `onLeadClick`), and a CSS-only hover state is not readable
+  // from an event handler.
+  const [railOpen, setRailOpen] = React.useState(false);
   const rootRef = React.useRef<HTMLDivElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const closeTimeoutRef = React.useRef<number | null>(null);
   const panelId = React.useId();
   const idBase = React.useId();
-
-  // Bottom-right corner rail: rest 32px from the bottom, stack above
-  // whatever already occupies that corner. See the placement note in this
-  // file's doc comment, and `foundations/corner-rail.ts` for the model.
-  useCornerRailOffset(rootRef);
 
   const demoSet = React.useMemo(
     () => (pathname ? findDemoAccounts(pathname) : null),
@@ -388,6 +380,14 @@ export function DemoDock({
     ];
     return showSignIn ? [{ id: "signin", label: "Sign in" }, ...base] : base;
   }, [showSignIn]);
+
+  // A mirror of `tabs` that `openPanel` can read without taking `tabs` as a
+  // dependency — the list is rebuilt per route, and rebuilding `openPanel`
+  // with it would re-arm every callback that holds it.
+  const tabsRef = React.useRef<TabDef[]>(tabs);
+  React.useEffect(() => {
+    tabsRef.current = tabs;
+  }, [tabs]);
 
   // If the tabs shrink (e.g. pathname changes to a surface with no demo
   // accounts) while "Sign in" is active, fall back to the first tab rather
@@ -461,12 +461,110 @@ export function DemoDock({
     }, CLOSE_ANIMATION_MS);
   }, []);
 
-  const openPanel = React.useCallback(() => {
+  // Targets a tab by ID, never by index, because the tab LIST changes shape:
+  // Sign in is prepended on login routes, so index 0 is "Sign in" there and
+  // "Apps" everywhere else. A door that wants Colour has to ask for Colour by
+  // name or it lands on whatever happens to occupy that slot on this route.
+  const openPanel = React.useCallback((tabId?: string) => {
     if (closeTimeoutRef.current) window.clearTimeout(closeTimeoutRef.current);
     setClosing(false);
-    setActiveTab(0);
+    setActiveTab(() => {
+      if (!tabId) return 0;
+      const index = tabsRef.current.findIndex((t) => t.id === tabId);
+      return index === -1 ? 0 : index;
+    });
     setOpen(true);
   }, []);
+
+  /**
+   * The lead's click rule, and it is about STATE rather than about the
+   * device: **if the rail is not expanded, expand it; otherwise open the
+   * panel.**
+   *
+   * That one sentence covers both input models without testing for either.
+   * A pointer user's hover has already expanded the rail, so their click
+   * falls straight through to the panel — one click, exactly as the old FAB
+   * behaved. A touch user has no hover, so their first tap expands (what a
+   * disclosure is expected to do) and the second reaches the panel.
+   *
+   * The alternative was branching on `pointerType`, which is the same
+   * behaviour expressed as a device test — and device tests are wrong on
+   * hybrids, where a touchscreen laptop is both at once.
+   */
+  const onLeadClick = React.useCallback(() => {
+    if (open) {
+      closePanel();
+      return;
+    }
+    if (!railOpen) {
+      setRailOpen(true);
+      return;
+    }
+    openPanel();
+  }, [open, railOpen, closePanel, openPanel]);
+
+  /**
+   * Hover and focus are TWO INDEPENDENT HOLDS on the rail, not one flag, and
+   * conflating them is a real defect rather than a tidiness question. The
+   * first version had each handler set `railOpen` directly, which broke both
+   * ways round:
+   *
+   * - Focus a door, then move the mouse away: `pointerleave` set the flag
+   *   false and **collapsed the rail out from under a keyboard user**, with
+   *   their focused control still inside it. Caught by driving real, trusted
+   *   events — a programmatic `.focus()` fires nothing at all in a tab
+   *   without OS focus, so the synthetic tests had reported this as passing.
+   * - The mirror: blur while the mouse is still over the rail collapsed it,
+   *   and hovering could not reopen it, because the pointer was already
+   *   inside and no fresh `pointerenter` was coming.
+   *
+   * So each input keeps its own latch and the rail is open while EITHER
+   * holds. Refs rather than state because only the derived value needs to
+   * render.
+   */
+  const hoverHeldRef = React.useRef(false);
+  const focusHeldRef = React.useRef(false);
+  const syncRail = React.useCallback(() => {
+    setRailOpen(hoverHeldRef.current || focusHeldRef.current);
+  }, []);
+
+  // Only for a pointer that genuinely hovers. A touch `pointerenter` fires on
+  // tap and would expand the rail underneath the very tap meant to expand it,
+  // collapsing the two-step in `onLeadClick` into one ambiguous step.
+  const onPointerEnter = React.useCallback(
+    (event: React.PointerEvent) => {
+      if (event.pointerType === "touch") return;
+      hoverHeldRef.current = true;
+      syncRail();
+    },
+    [syncRail],
+  );
+
+  const onPointerLeave = React.useCallback(
+    (event: React.PointerEvent) => {
+      if (event.pointerType === "touch") return;
+      hoverHeldRef.current = false;
+      syncRail();
+    },
+    [syncRail],
+  );
+
+  const onRailFocus = React.useCallback(() => {
+    focusHeldRef.current = true;
+    syncRail();
+  }, [syncRail]);
+
+  // `relatedTarget` is the element focus is moving TO, so a move between the
+  // lead and a door must not release the focus latch mid-traversal.
+  const onRailBlur = React.useCallback(
+    (event: React.FocusEvent<HTMLDivElement>) => {
+      const next = event.relatedTarget as Node | null;
+      if (next && event.currentTarget.contains(next)) return;
+      focusHeldRef.current = false;
+      syncRail();
+    },
+    [syncRail],
+  );
 
   const shouldRender = open || closing;
 
@@ -602,29 +700,93 @@ export function DemoDock({
         </div>
       )}
 
-      <button
-        ref={triggerRef}
-        type="button"
-        className="ds-demodock__fab"
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        aria-controls={open ? panelId : undefined}
-        aria-label={label}
-        onClick={() => (open ? closePanel() : openPanel())}
+      {/* ── The folding rail ──────────────────────────────────────────
+          At rest a tab: the flask, plus a vertical wordmark that says what
+          this is without being touched. Engaged, it unfolds downward into
+          three doors. One object in two states, not two widgets sharing an
+          edge.
+
+          THE FLASK IS THE ANCHOR and must not move across the fold. Two
+          things secure that, and both were settled by measuring a prototype
+          rather than by eye:
+
+          - The container is anchored by its `top`, not centred, so
+            everything the fold adds appears BELOW the flask. Centred, the
+            flask slides upward as the rail grows, and the object reads as
+            jumping rather than opening.
+          - The width is CONSTANT. The prototype grew 48 → 58 on unfold;
+            because the container is right-anchored and centres its
+            children, that slid the flask 5px LEFT. The width change bought
+            a faint "engaged" signal and cost the anchor, so the shadow
+            carries that signal instead.
+
+          The wordmark collapses as the drawer expands, so the rail grows
+          52x105 -> 52x153, a net 48px — the label pays for most of the
+          drawer, and it sits below the flask, so giving up its space costs
+          the anchor nothing. All three numbers are measured in the browser,
+          not derived on paper.
+
+          All three doors open the SAME panel, pre-selected. That is the
+          win over the old single FAB: Colour drops from two clicks to one,
+          which matters because re-toning the page live is the most-used
+          action in a demo — the ⌘⌥C shortcut exists to work around exactly
+          that cost. */}
+      <div
+        className={cn("ds-demodock__rail", railOpen && "is-open")}
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={onPointerLeave}
+        onFocus={onRailFocus}
+        onBlur={onRailBlur}
       >
-        {/* Label precedes the icon in the DOM (icon renders last/rightmost,
-            pinned to the button's fixed right edge via `justify-content:
-            flex-end` in the CSS) so the hover-reveal grows LEFTWARD, away
-            from the fixed right corner, instead of the icon itself
-            drifting. Visual only — the button's accessible name comes from
-            `aria-label` above, so the reveal-on-hover label is never the
-            sole source of the name (it stays hidden from assistive tech at
-            every width, not just when collapsed). */}
-        <span className="ds-demodock__fab-label" aria-hidden="true">
-          {label}
-        </span>
-        <FlaskIcon />
-      </button>
+        <button
+          ref={triggerRef}
+          type="button"
+          className="ds-demodock__lead"
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          aria-controls={open ? panelId : undefined}
+          aria-label={label}
+          onClick={onLeadClick}
+        >
+          <span className="ds-demodock__cell">
+            <FlaskIcon size={26} />
+          </span>
+          {/* Decorative. The accessible name is the button's `aria-label`,
+              so this must never be the sole source of it — it collapses to
+              zero height on unfold, and an accessible name that disappears
+              on hover would be a defect. */}
+          <span className="ds-demodock__word" aria-hidden="true">
+            {label.split(" ")[0]}
+          </span>
+        </button>
+
+        <div className="ds-demodock__drawer">
+          <span className="ds-demodock__rule" aria-hidden="true" />
+          <button
+            type="button"
+            className="ds-demodock__door"
+            aria-haspopup="dialog"
+            aria-label="Colour mode"
+            onClick={() => openPanel("colour")}
+          >
+            <span className="ds-demodock__swatch" aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            className="ds-demodock__door"
+            aria-haspopup="dialog"
+            aria-label="Switch app"
+            onClick={() => openPanel("apps")}
+          >
+            <span className="ds-demodock__apps" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

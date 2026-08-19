@@ -39,18 +39,8 @@ export const NOT_COMPONENTS = new Set([
   // nothing to render. The behaviour they govern is covered by
   // registry-overrides.test.ts.
   "REGISTRY_CONFIG_VERSION", "REGISTRY_CONFIG_MAX_BYTES",
-  // Geometry constants and the DOM hook of the bottom-right corner rail
-  // (packages/design-system/foundations/corner-rail.ts): the resting offset,
-  // the stacking gap, the attribute a floating widget sets to join the rail,
-  // and the third-party trigger id the rail knows by name. Numbers and
-  // strings — there is nothing to render. The behaviour they govern is
-  // covered by foundations/corner-rail.test.ts, and demonstrated by
-  // DemoDock.stories.tsx, which is the only thing on the rail today.
-  "CORNER_RAIL_REST_PX", "CORNER_RAIL_GAP_PX", "CORNER_OCCUPANT_ATTR",
-  "UX4G_TRIGGER_ID",
   // Types (exported via `export type`, but belt and braces)
   "ColorMode", "ColorModeId", "ColorModeProviderProps", "ColorModeSwitcherProps",
-  "CornerRailOptions",
 ]);
 
 /**
