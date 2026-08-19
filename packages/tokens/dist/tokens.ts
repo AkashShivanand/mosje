@@ -1415,6 +1415,9 @@ export const tokens = {
     "launchIconSize": "0.75rem",
     "iconButtonSize": "1.75rem"
   },
+  "divider": {
+    "width": "1px"
+  },
   "action": {
     "brand": {
       "primary": {

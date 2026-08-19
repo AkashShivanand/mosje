@@ -1631,7 +1631,7 @@
     "recordedAt": "2026-08-18",
     "$lastChange": "2026-08-18 — EXPORTER FIXED AND THE HAND-MADE VARIABLES RECONCILED. collectionFor() ended in `return null`, which meant 'silently omit from the Figma export'. Component tokens were routed by COMPONENT NAME against a hardcoded COLOUR_ROOTS set, so cmp/accessibilityBar/* — eleven tokens defined in code, emitting --sa-cmp-accessibilityBar-* into tokens.css — never reached the library at all. It now routes Tier-3 by TYPE (colour to Color, dimension to Space) and THROWS on anything it cannot place, naming the token. COLOUR_ROOTS still runs first so cmp/button/radius and cmp/card/radius stay in the Color collection they already occupy; Figma refuses to move a variable between collections, so re-routing an existing one would orphan it. RECONCILED, not duplicated: nine of the designer's variables were upserted BY NAME so their ids, descriptions and canvas bindings survived, and each gained the codeSyntax it could never have had. Two were created (dividerHeight, dividerColor). One was Figma-only and is now in code: iconButtonSize, which the designer added because .sa-abar__icbtn was drawn at a hardcoded 28px — they were ahead of the code, and that literal is now bound. overlay/on-brand/* was RENAMED IN PLACE to overlay/brand/{hover,active} (ids preserved) — `onBrand` was rejected too (`onBrand` is not a FAMILY; the families are neutral/brand/status/link) and so was `pressed` (the system's state word is `active`), so the conformant name names the SURFACE family exactly as `on/bg/brand/*` does: a hyphen inside a path segment is rejected by the grammar, which is exactly why it could never be generated and its codeSyntax named a CSS variable that did not exist. Its hover value was 0.08 against a component that has always rendered 0.12; code is now authoritative at 0.12. Finally, THIRTEEN published variables carried a codeSyntax naming a CSS variable that does not exist — two were stale and are fixed (layout/bar/height, layout/flag/width), eleven are genuinely library-only and had their codeSyntax REMOVED, because a name that resolves to nothing is worse than no name: a developer copies it and gets a silent no-op. Zero non-conformant codeSyntax now remain in the file.",
     "payload": {
-      "Space": "39bf02ca:134",
+      "Space": "7c811732:135",
       "Palette": "a518c86a:280",
       "Color": "4976676a:478",
       "Type": "316f0bd4:594",
@@ -1641,7 +1641,7 @@
       "Static": "584ad09d:51"
     },
     "figmaObserved": {
-      "Space": "4facf2f:146",
+      "Space": "f41f536f:146",
       "Palette": "641cf696:326",
       "Type": "2e3f0fdb:672",
       "Radius": "77e146:25",

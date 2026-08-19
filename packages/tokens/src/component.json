@@ -102,5 +102,13 @@
       "$value": "{size.28}",
       "$description": "The icon button's box. Authored in Figma first, on 2026-08-18, because the exporter was silently dropping this component and .sa-abar__icbtn was drawn at a hardcoded 28px. Reconciled into code the same day."
     }
+  },
+  "divider": {
+    "$description": "The Divider component. Only the THICKNESS is component-scoped; the tones bind straight to border/neutral/*, because a rule's colour is a shared semantic — that reasoning is the designer's, from the hand-made Figma variable this replaces.",
+    "width": {
+      "$type": "dimension",
+      "$value": "{border.width.sm}",
+      "$description": "Divider thickness — the hairline. Bound to the component's WIDTH or HEIGHT depending on orientation, not to a stroke, which is why it needs a WIDTH_HEIGHT scope that control/border/width does not carry."
+    }
   }
 }

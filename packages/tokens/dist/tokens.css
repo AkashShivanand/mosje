@@ -920,6 +920,7 @@
   --sa-cmp-accessibilityBar-stepSize: var(--sa-ref-size-24);
   --sa-cmp-accessibilityBar-launchIconSize: var(--sa-ref-size-12);
   --sa-cmp-accessibilityBar-iconButtonSize: var(--sa-ref-size-28);
+  --sa-cmp-divider-width: var(--sa-ref-border-width-sm);
   --sa-cmp-action-brand-primary-default-bg: var(--sa-color-primaryScale-600);
   --sa-cmp-action-brand-primary-default-text: var(--sa-color-neutralScale-0);
   --sa-cmp-action-brand-primary-default-border: var(--sa-color-primaryScale-600);
