@@ -12,7 +12,17 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-19 · System version: v0.26.0 (THE SPACING LADDER IS VALUE-NAMED — the
+  Last reviewed: 2026-08-19 · System version: v0.27.0 (THE RADIUS LADDER IS VALUE-NAMED TOO —
+  `shape/md` is now `shape/8`, so both ladders read the same way and the rung IS the pixel value.
+  `shape/full` deliberately keeps its name: it is a sentinel meaning fully rounded, not a
+  measurement, and it is the only non-numeric rung the gate permits. NEVER type a `shape/*` rung
+  on a component that has a role token — `cmp/card/radius`, `cmp/button/radius` and
+  `control/radius` are the Tier-3 layer, and all three were found aliasing a HIDDEN Tier-1
+  primitive. CARDS ARE 12px, not 8. Radius is 97.90% bound with every defect class at zero, and
+  `check:radius-linkage` freezes it there — any new raw radius on any page fails the build. A new
+  `stroke/*` ladder finally gives border width a semantic name; do not reach for
+  `control/border/width` unless the border belongs to an interactive control. See §G.
+  Previously v0.26.0: THE SPACING LADDER IS VALUE-NAMED — the
   rung IS the pixel value, `padding/16` is 16px and so is `inline/16`, `stack/16` and `section/16`.
   The t-shirt labels collided across families — `l` meant 16, 24, 20 and 56 — a defect inherited
   from UX4G 3.0. Every family now carries the same ladder, so no measurement is unexpressible, and
