@@ -57,6 +57,29 @@ ascending by viewport, Layout ascending by content width.
 > *"font"* rather than *"reset to the default size"*; the `aria-label` carries the
 > real meaning, so this is a visual-clarity question, not an accessibility one.
 
+## Typography — corrected 2026-08-19
+
+The bar rendered **12px** where the master specifies **14px**, and the parity table above
+claimed a ✓ on it. That row checked one text node and generalised; the master actually
+mixes two roles, and a side-by-side at 2× made the gap obvious before any measurement.
+
+| Label | Figma | Code before | Code now |
+|---|---|---|---|
+| Government of India | `body/2` 14/20 Regular, **no underline** | 12px, weight **500**, **underlined** | 14/20, 400, no underline |
+| Skip to Main Content | `body/2` 14/20 Regular | 12px | 14/20 |
+| English | `label/1` 14/20 **Medium** | 12px, weight 400 | 14/20, 500 |
+
+Two things worth keeping:
+
+- **14 is also the better end of the argument.** 12px sits well under the 16px body floor
+  `guidelines.md` sets, and this bar carries the **skip link** — a WCAG 2.4.1 bypass
+  mechanism, not decoration. Matching the master and improving legibility pointed the
+  same way, which is not always true.
+- **The resting underline is gone** (design decision). The affordance is not lost: the
+  link underlines on hover *and* on focus, which is exactly what the skip link beside it
+  already did — so the bar's two links now behave identically instead of one shouting and
+  one whispering.
+
 ## Interaction states (§ 04 of the Figma documentation page)
 
 Every **clickable control** on the bar resolves through four states. The Figma page
@@ -195,7 +218,7 @@ six divergences recorded below — five of which need a human decision because
 |---|---|---|---|
 | Bar fill | `bg/brand/primary/bolder` #005EB9 | `--sa-bg-brand-primary-bolder` | ✓ |
 | Text / icons | `text|icon/neutral/inverse` #fff | `--sa-text-neutral-inverse` | ✓ |
-| Type | `label/2` 12/16 | `--sa-type-label-2-size|-lh` → 12px/16px | ✓ |
+| Type | `body/2` 14/20 (links) · `label/1` 14/20 Medium (language) | `--sa-type-body-2-size|-lh` → 14px/20px | ✓ (corrected 2026-08-19) |
 | Bar height | `layout/bar/height` 46 | `min-height: 46px` | ✓ |
 | Edge padding | `padding/2xl` 32 ≥tablet · `padding/m` 16 mobile | same, via media query | ✓ |
 | Vertical padding | `ref/space/xxs` 2 | `--sa-ref-space-xxs` | ✓ |
@@ -256,7 +279,7 @@ AccessibilityBar (root, h=46, fill bg/brand/primary/bolder, px=padding edge, py=
    ├─ Government of India        (gap inline/m)
    │  ├─ Indian-Flag             (33×22, radius shape/xxs — reused library asset)
    │  └─ Container               (gap inline/2xs)
-   │     ├─ "Government of India" (Noto Sans Medium, label/2, underlined, text/neutral/inverse)
+   │     ├─ "Government of India" (Noto Sans Regular, body/2 14/20, NO underline, text/neutral/inverse)
    │     └─ launch               (Material Symbols "open_in_new", 12px, icon/neutral/inverse)
    └─ Accessibility Options       (gap inline/l, justify end)
       └─ Navigation               (h=42, gap padding/m, justify end)
@@ -304,7 +327,7 @@ collapses the right cluster.)
 | Spec | Token |
 |---|---|
 | Bar surface | `bg/brand/primary/bolder` (#005EB9) |
-| Text | `text/neutral/inverse` · size/lh `ref/font/role/label/2` (12/16) |
+| Text | `text/neutral/inverse` · `body/2` 14/20 Regular for both links · `label/1` 14/20 **Medium** for the language label |
 | Icons | `icon/neutral/inverse` · size `icon/size/20` (launch = 12) · Material Symbols Rounded / Light (wght 300) |
 | Flag radius | `shape/xxs` (2) · Font-size chip radius `shape/xs` (4) |
 | Edge padding | `padding/2xl` (32) desktop/XL/tablet · `padding/m` (16) mobile · vertical `ref/space/xxs` (2) |

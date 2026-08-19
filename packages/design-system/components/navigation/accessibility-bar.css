@@ -29,9 +29,15 @@
   justify-content: space-between;
   gap: var(--sa-inline-l);
   padding: var(--sa-padding-3xs) var(--sa-padding-2xl);
-  /* UX4G Navbar spec: Noto Sans Medium, 12/16 in the bar. */
-  font-size: var(--sa-type-label-2-size);
-  line-height: var(--sa-type-label-2-lh);
+  /* Body/body-2 — 14/20. It was label-2 (12/16) until 2026-08-19, which was a real
+     divergence and not a rounding one: the master sets Body/body-2 on both links, so
+     every label in the bar rendered two pixels small against the design. It is also the
+     better end of the argument — 12px is well under the 16px body floor the guidelines
+     set, and this bar carries the skip link, which is a WCAG bypass mechanism rather
+     than decoration. The language label is Label/label-1, which is the same 14/20 and
+     differs only in weight (see .sa-abar__icbtn.has-text). */
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   /* Figma binds this to type/label/tracking, which is 0. It was a raw 0.1px here
      until 2026-08-18 — a literal that no token backed and that disagreed with the
      master by 0.1px per character. */
@@ -76,11 +82,18 @@
   align-items: center;
   gap: var(--sa-inline-m);
   color: inherit;
-  font-weight: 500;
-  text-decoration: underline;
+  /* Regular, not 500 — the master's Body/body-2 is Regular, and the bar was rendering
+     the one label that should be quietest as the heaviest thing in it. */
+  font-weight: 400;
+  /* NO RESTING UNDERLINE (removed 2026-08-19, design decision). The master has none.
+     The affordance is not lost: it underlines on hover and on focus, which is the same
+     treatment the skip link beside it already uses — so the two links in this bar now
+     behave identically instead of one shouting and one whispering. */
+  text-decoration: none;
   text-underline-offset: 2px;
 }
-.sa-abar__gov:hover { text-decoration-thickness: 2px; }
+.sa-abar__gov:hover,
+.sa-abar__gov:focus-visible { text-decoration: underline; }
 .sa-abar__flag {
   height: var(--sa-cmp-accessibilityBar-flagHeight);
   width: var(--sa-cmp-accessibilityBar-flagWidth);
@@ -95,6 +108,11 @@
   align-items: center;
   gap: var(--sa-inline-l);
 }
+/* Label/label-1 — same 14/20 as the links, but Medium. The one weight difference the
+   master actually specifies, and it is what stops the language selector reading as a
+   third link rather than a control. */
+.sa-abar__icbtn.has-text { font-weight: 500; }
+
 .sa-abar__skip { color: inherit; text-decoration: none; }
 .sa-abar__skip:hover { text-decoration: underline; }
 

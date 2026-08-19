@@ -22,9 +22,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.26.0",
+    date: "2026-08-19",
+    current: true,
+    changes: [
+      { kind: "Fixed", text: "THE ACCESSIBILITY BAR RENDERED 12PX WHERE THE MASTER SAYS 14, and the parity table claimed a \u2713 on it. The 2026-08-12 audit checked one text node and generalised; the master actually mixes two roles \u2014 Body/body-2 14/20 Regular on both links, Label/label-1 14/20 Medium on the language label. Caught by a 2\u00d7 side-by-side against Device=Desktop, Layout=Fluid, then confirmed by reading the text styles rather than eyeballing widths. 14 is also the better end of the argument: 12px sits well under the 16px body floor the guidelines set, and this bar carries the SKIP LINK \u2014 a WCAG 2.4.1 bypass mechanism, not decoration" },
+      { kind: "Changed", text: "THE GOVERNMENT-OF-INDIA LINK LOSES ITS RESTING UNDERLINE (design decision) and drops from weight 500 to Regular, both matching the master. The affordance is not lost \u2014 it underlines on hover AND on focus, which is what the skip link beside it already did, so the bar's two links finally behave identically instead of one shouting and one whispering" },
+    ],
+  },
+  {
     version: "v0.25.0",
     date: "2026-08-18",
-    current: true,
     changes: [
       { kind: "Fixed", text: "THE FONT SIZER NOW ACTUALLY RESIZES TEXT. Until today the A\u2212/A/A+ control wrote `--sa-font-scale` to the document root and NOTHING READ IT — the buttons moved a variable and not one pixel of type. A single rule now consumes it: `:root[data-sa-font-scale] { font-size: calc(100% * var(--sa-font-scale, 1)) }`. Scaling the ROOT is the mechanism rather than multiplying each type token, because the whole scale is authored in `rem` — including the min and max of every fluid `clamp()` — so one change carries the entire ramp plus rem-based spacing, control heights and icons. The rule is armed by the ATTRIBUTE, never by the variable's fallback, so a page with no bar keeps the reader's own browser zoom untouched" },
       { kind: "Added", text: "THE CHOICE PERSISTS. The scale is written to `localStorage` and restored on mount, wrapped in try/catch so a blocked store (private mode, cookie policy) degrades to the default instead of throwing. A text-size control that forgets on every navigation is not an accessibility feature. Verified live: A+ twice \u2192 root 16px \u2192 19.2px, navigate to another page, still 19.2px" },
