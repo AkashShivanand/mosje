@@ -4,15 +4,66 @@
     "nodeId": "55065:33766",
     "captured": "2026-08-18",
     "properties": {
-      "Skip to content": { "type": "BOOLEAN" },
-      "Font size": { "type": "BOOLEAN" },
-      "Accessibility": { "type": "BOOLEAN" },
-      "Language": { "type": "BOOLEAN" },
-      "Government label": { "type": "TEXT" },
-      "Skip label": { "type": "TEXT" },
-      "Language label": { "type": "TEXT" },
-      "Device": { "type": "VARIANT", "variantOptions": ["Desktop", "Desktop XL", "Tablet", "Mobile"] },
-      "Layout": { "type": "VARIANT", "variantOptions": ["Wide", "Narrow", "Fluid"] }
+      "Skip to content": {
+        "type": "BOOLEAN"
+      },
+      "Font size": {
+        "type": "BOOLEAN"
+      },
+      "Accessibility": {
+        "type": "BOOLEAN"
+      },
+      "Language": {
+        "type": "BOOLEAN"
+      },
+      "Government label": {
+        "type": "TEXT"
+      },
+      "Skip label": {
+        "type": "TEXT"
+      },
+      "Language label": {
+        "type": "TEXT"
+      },
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Desktop XL",
+          "Tablet",
+          "Mobile"
+        ]
+      },
+      "Layout": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Wide",
+          "Narrow",
+          "Fluid"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Divider": {
+    "nodeId": "55061:700",
+    "captured": "2026-08-18",
+    "properties": {
+      "Orientation": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Vertical",
+          "Horizontal"
+        ]
+      },
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Inverse",
+          "Inverse subtle"
+        ]
+      }
     },
     "deliberatelyOmitted": []
   }

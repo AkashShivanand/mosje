@@ -98,15 +98,17 @@
 .sa-abar__skip { color: inherit; text-decoration: none; }
 .sa-abar__skip:hover { text-decoration: underline; }
 
-/* Divider between control groups — Figma instances the Divider component with
-   Orientation=Vertical, Tone=Inverse subtle. The colour is pre-composited, so no
-   opacity is hand-rolled here. */
-.sa-abar__sep {
-  width: var(--sa-cmp-accessibilityBar-dividerWidth);
-  height: var(--sa-cmp-accessibilityBar-dividerHeight);
-  background-color: var(--sa-cmp-accessibilityBar-dividerColor);
-  flex: 0 0 auto;
-}
+/* Divider between control groups.
+   The bar hand-rolled this as a styled <span> until 2026-08-18, even though Figma had
+   instanced the `Divider` master here all along — so the design said "component" and the
+   code said "one-off". It now renders the real <Divider orientation="vertical"
+   tone="inverse-subtle">, and the three cmp/accessibilityBar/divider* tokens it used to
+   need are gone: a rule's width and colour are Divider's business, not this bar's.
+
+   `.sa-abar__sep` survives as a HOOK, not a style. It carries no paint — it exists only
+   so the Device=Mobile collapse below can still select the separators. Removing the
+   class along with the styles would have silently left three white rules visible on
+   mobile, where the whole right-hand cluster is meant to disappear. */
 
 /* Font-size stepper: text_decrease · A · text_increase (Material Symbols) */
 .sa-abar__fs { display: inline-flex; align-items: center; gap: var(--sa-inline-s); }

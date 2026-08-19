@@ -16,6 +16,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Icon } from "../icon";
+import { Divider } from "../layout/divider";
 import "./accessibility-bar.css";
 
 export type AccessibilityBarLayout = "narrow" | "wide" | "fluid";
@@ -163,6 +164,12 @@ function openUx4gWidget(): boolean {
  * once in the app root (the hub already does).
  */
 const ICON_SIZE = 20;
+/**
+ * The separators' length. Figma draws them at 20 — the height of the glyph beside
+ * them, not a stretch — so the bar passes an explicit length rather than letting the
+ * rule fill the 46px row.
+ */
+const DIVIDER_LENGTH = 20;
 const LAUNCH_ICON_SIZE = 12;
 
 export function AccessibilityBar({
@@ -298,7 +305,7 @@ export function AccessibilityBar({
           {showSkip && (
             <>
               <a href={skipTo} className="sa-abar__skip">{skipLabel}</a>
-              <span className="sa-abar__sep" aria-hidden="true" />
+              <Divider orientation="vertical" tone="inverse-subtle" length={DIVIDER_LENGTH} className="sa-abar__sep" />
             </>
           )}
 
@@ -344,7 +351,7 @@ export function AccessibilityBar({
                   <Icon name="text_increase" size={ICON_SIZE} aria-hidden />
                 </button>
               </div>
-              <span className="sa-abar__sep" aria-hidden="true" />
+              <Divider orientation="vertical" tone="inverse-subtle" length={DIVIDER_LENGTH} className="sa-abar__sep" />
             </>
           )}
 
@@ -360,7 +367,7 @@ export function AccessibilityBar({
               >
                 <Icon name="accessibility_new" size={ICON_SIZE} aria-hidden />
               </button>
-              {language && <span className="sa-abar__sep" aria-hidden="true" />}
+              {language && <Divider orientation="vertical" tone="inverse-subtle" length={DIVIDER_LENGTH} className="sa-abar__sep" />}
             </>
           )}
 
