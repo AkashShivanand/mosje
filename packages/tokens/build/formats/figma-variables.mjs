@@ -153,7 +153,7 @@ const SPACING_ROOTS = new Set(["inline", "stack", "padding", "section"]);
  * defect RULE 1 exists to remove. The library has since been renamed to the canonical paths,
  * so the table is gone and `name` is now derived, not chosen.
  */
-function collectionFor(path, tier) {
+function collectionFor(path, tier, type) {
   const [head, ...rest] = path;
 
   // Colour PRIMITIVES stay private: Figma's mode-aware ramp is the Tier-2 `color.*Scale.*`,
@@ -214,6 +214,31 @@ function collectionFor(path, tier) {
   if (head === "control") return rest[0] === "radius" ? "Radius" : "Static";
 
   if (COLOUR_ROOTS.has(head)) return "Color";
+
+  // TIER 3 MUST NOT FALL THROUGH. Until 2026-08-18 it did, and the `return null` below meant
+  // "silently omit from the Figma export" — no warning, no count, no failure. Component tokens
+  // were routed by COMPONENT NAME against COLOUR_ROOTS, so a component reached designers only
+  // if someone had remembered to add its name to that set. `cmp/accessibilityBar/*` never was:
+  // eleven tokens defined in code, emitting --sa-cmp-accessibilityBar-* into tokens.css, absent
+  // from the library. A designer hand-made ten variables to fill the gap, correctly, and they
+  // could carry no codeSyntax because there was no way to know the generated name.
+  //
+  // Route by what the token IS rather than by a list someone has to maintain: a colour goes to
+  // Color, a dimension to Space (alongside `layout/*` and `size/*`, which is what a component's
+  // geometry aliases). The COLOUR_ROOTS branch above still runs first, so `cmp/button/radius`
+  // and `cmp/card/radius` stay in the Color collection they already live in — Figma refuses to
+  // move a variable between collections, so re-routing an existing one would orphan it.
+  if (tier === "cmp") {
+    if (type === "color") return "Color";
+    if (type === "dimension" || type === "number") return "Space";
+    throw new Error(
+      `figma-variables: cannot route component token "cmp/${path.join("/")}" (type ${type ?? "unknown"}).\n` +
+        `  A Tier-3 token the exporter cannot place is a BUG, not a filter — it would be dropped\n` +
+        `  from the library silently, and the only recourse left to a designer is to hand-make a\n` +
+        `  variable that code can never consume. Give it a $type, or extend collectionFor.`,
+    );
+  }
+
   return null;
 }
 
@@ -225,8 +250,8 @@ function collectionFor(path, tier) {
  * the collection cannot carry the tier — the name tree does, and Figma's variable picker
  * navigates it exactly like a collection.
  */
-export function figmaNameFor(path, tier = "sys") {
-  const collection = collectionFor(path, tier);
+export function figmaNameFor(path, tier = "sys", type) {
+  const collection = collectionFor(path, tier, type);
   if (!collection) return null;
   return { collection, name: canonicalFigmaName(path, tier) };
 }
@@ -541,7 +566,7 @@ export function buildPayload(dictionary) {
 
   const nameByPath = new Map();
   for (const t of tokens) {
-    const target = figmaNameFor(t.path, tierOfFile(t.filePath));
+    const target = figmaNameFor(t.path, tierOfFile(t.filePath), t.$type ?? t.type);
     if (target) nameByPath.set(t.path.join("."), target);
   }
 
@@ -550,7 +575,7 @@ export function buildPayload(dictionary) {
   // a Theme token's chain reaches the latter, so that is what has to be searchable.
   const colorByUnderlying = new Map();
   for (const t of tokens) {
-    const target = figmaNameFor(t.path, tierOfFile(t.filePath));
+    const target = figmaNameFor(t.path, tierOfFile(t.filePath), t.$type ?? t.type);
     if (!target || target.collection !== "Palette") continue;
     const raw = t.original?.$value ?? t.original?.value;
     if (typeof raw === "string" && /^\{[^}]+\}$/.test(raw.trim())) {
@@ -577,7 +602,7 @@ export function buildPayload(dictionary) {
 
   for (const token of ordered) {
     const tier = tierOfFile(token.filePath);
-    const target = figmaNameFor(token.path, tier);
+    const target = figmaNameFor(token.path, tier, token.$type ?? token.type);
     if (!target) {
       unmapped.push(`${token.path.join("/")} (${exclusionReason(token.path, tier)})`);
       continue;

@@ -1045,6 +1045,10 @@ export const tokens = {
   "overlay": {
     "neutral": {
       "boldest": "rgba(30, 33, 36, 0.5)"
+    },
+    "brand": {
+      "hover": "rgba(255, 255, 255, 0.12)",
+      "active": "rgba(255, 255, 255, 0.16)"
     }
   },
   "inline": {
@@ -1408,7 +1412,8 @@ export const tokens = {
     "pillBg": "rgba(255, 255, 255, 0.16)",
     "hoverBg": "rgba(255, 255, 255, 0.12)",
     "stepSize": "1.5rem",
-    "launchIconSize": "0.75rem"
+    "launchIconSize": "0.75rem",
+    "iconButtonSize": "1.75rem"
   },
   "action": {
     "brand": {

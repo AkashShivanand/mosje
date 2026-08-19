@@ -626,6 +626,37 @@ Five published Colour variables carry a `codeSyntax` naming a CSS variable **tha
 `tokens.css` breaks the `--sa-` prefix — these are hand-typed names that were never real. Two of
 them also have an empty description.
 
+### Fixed 2026-08-18
+
+**`collectionFor` now routes Tier-3 by TYPE and THROWS on anything it cannot place**, naming the
+token. `COLOUR_ROOTS` still runs first, so `cmp/button/radius` and `cmp/card/radius` stay in the
+Color collection they already occupy — Figma refuses to move a variable between collections, so
+re-routing an existing one would orphan it. The failure was exercised by feeding the build an
+untyped `cmp/mysteryWidget/probe`; it fails with the token named.
+
+**The designer's variables were reconciled, not replaced.** Nine were upserted **by name**, so
+their ids, descriptions and every canvas binding survived, and each gained the `codeSyntax` it
+could never have had. Two were created from code (`dividerHeight`, `dividerColor`). One was
+**Figma-only and is now in code** — `iconButtonSize`, which the designer added because
+`.sa-abar__icbtn` was drawn at a hardcoded `28px`. They were ahead of the code, and that literal
+is now bound.
+
+**`overlay/on-brand/*` was renamed in place to `overlay/brand/{hover,active}`**, ids preserved.
+Three naming attempts were needed and each rejection taught something: `on-brand` has a hyphen
+inside a segment; `onBrand` is not a `FAMILY` (they are `neutral · brand · status · link`); and
+`pressed` is not a state word (the system uses `active`). The conformant name names the **surface**
+family, exactly as `on/bg/brand/*` means ink *for* a brand background rather than brand-coloured
+ink. Its hover value was **0.08 against a component that has always rendered 0.12** — code is now
+authoritative.
+
+**Thirteen published variables carried a `codeSyntax` naming a CSS variable that does not exist.**
+Two were stale and are fixed (`layout/bar/height`, `layout/flag/width`); eleven are genuinely
+library-only and had their `codeSyntax` **removed**, because a name that resolves to nothing is
+worse than no name — a developer copies it and gets a silent no-op. **Zero non-conformant
+`codeSyntax` remain in the file.**
+
+Library-only gaps closed: **Space 20 → 12, Color 11 → 6.**
+
 ### The rule
 
 **A token the code defines and the exporter cannot route is a BUG, not a filter.** `collectionFor`
@@ -634,7 +665,8 @@ same way a scope path that cannot be read is a hard error in `check:ds-linkage`.
 every new component silently fails to reach designers, and the designer's only recourse is to
 hand-make variables that code can never consume.
 
-**Fixing it is a deliberate act, not a cleanup**: routing `accessibilityBar` would push ~14 new
-variables into the library that already hold hand-made counterparts, so the two sets have to be
-reconciled — ids preserved, descriptions kept, the Tier-1 aliases corrected — rather than
-duplicated.
+**Reconcile, never duplicate.** When code and library both hold a token, upsert **by name** so the
+library's id survives — a new variable with the same name orphans every node bound to the old one.
+And check who is right before overwriting: here the designer's structure (aliasing `layout/bar/height`
+rather than restating `46px`) was better than the code's, and their `iconButtonSize` was a token the
+code was missing entirely.

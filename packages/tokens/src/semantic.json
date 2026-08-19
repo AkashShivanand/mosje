@@ -1493,6 +1493,19 @@
           }
         }
       }
+    },
+    "brand": {
+      "$description": "Translucent white washes for interactive states on a BRAND-coloured surface, where a solid hover fill would fight the brand. The family slot names the SURFACE, not the wash — the same reading as `on/bg/brand/*`, which is ink for a brand background rather than brand-coloured ink. Authored in Figma first as `overlay/on-brand/*`, a name the grammar rejects (a hyphen inside a path segment), which is exactly why it could never be generated and its codeSyntax named a CSS variable that did not exist.",
+      "hover": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.12)",
+        "$description": "Hover wash on a brand-coloured surface. 0.12, not the 0.08 the hand-made Figma variable carried — the component has always rendered 0.12."
+      },
+      "active": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.16)",
+        "$description": "Pressed/selected wash on a brand-coloured surface. Named `active`, not `pressed` — `active` is the state word the whole system uses (cmp/action/*/active/bg), and the grammar has no `pressed`."
+      }
     }
   },
   "inline": {

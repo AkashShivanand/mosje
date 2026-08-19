@@ -46,13 +46,13 @@
     "$description": "AccessibilityBar (UX4G/GIGW top utility bar). Component-scoped dimensions and inverse state layers that mirror the Figma master 1:1. They live in Tier 3 because they are the bar's own geometry — a 46px bar height and a 33px flag chip are not shared scale steps, and the inverse overlays only make sense on this bar's brand fill.",
     "height": {
       "$type": "dimension",
-      "$description": "Bar height (Figma layout/bar/height).",
-      "$value": "46px"
+      "$description": "The bar's fixed height. Aliases layout/bar/height rather than restating 46px — the literal was a second copy of a semantic value that nothing kept in step.",
+      "$value": "{layout.bar.height}"
     },
     "flagWidth": {
       "$type": "dimension",
-      "$description": "Flag/emblem chip width (Figma layout/flag/width); height is {size.22}, a 3:2 chip.",
-      "$value": "33px"
+      "$description": "The flag mark's fixed width. Aliases layout/flag/width rather than restating 33px, for the same reason as height.",
+      "$value": "{layout.flag.width}"
     },
     "flagHeight": {
       "$type": "dimension",
@@ -79,13 +79,13 @@
     },
     "pillBg": {
       "$type": "color",
-      "$description": "Selected font-size pill fill (Figma overlay/on-brand/pressed, #ffffff29 = 16%).",
-      "$value": "rgba(255, 255, 255, 0.16)"
+      "$description": "Selected-step pill on the bar. Aliases overlay/brand/active.",
+      "$value": "{overlay.brand.active}"
     },
     "hoverBg": {
       "$type": "color",
-      "$description": "Hover state layer for the bar's controls on the brand fill.",
-      "$value": "rgba(255, 255, 255, 0.12)"
+      "$description": "Hover wash on the bar. Aliases overlay/brand/hover rather than restating the rgba — the structure the designer used in Figma, now real and grammar-conformant in code.",
+      "$value": "{overlay.brand.hover}"
     },
     "stepSize": {
       "$type": "dimension",
@@ -96,6 +96,11 @@
       "$type": "dimension",
       "$description": "The GoI link's launch glyph (Figma: 12px).",
       "$value": "{size.12}"
+    },
+    "iconButtonSize": {
+      "$type": "dimension",
+      "$value": "{size.28}",
+      "$description": "The icon button's box. Authored in Figma first, on 2026-08-18, because the exporter was silently dropping this component and .sa-abar__icbtn was drawn at a hardcoded 28px. Reconciled into code the same day."
     }
   }
 }
