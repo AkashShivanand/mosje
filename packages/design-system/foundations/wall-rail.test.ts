@@ -9,10 +9,29 @@ import {
 
 const VH = 900;
 const RAIL = 153;
-const CENTRED = Math.round((VH - RAIL) / 2);
+// The rail rests LOW on the wall, not centred: it is a utility, and the two
+// things it coexists with (Important Links above, the corner widget below)
+// leave exactly one sensible band between them.
+const REST = VH - RAIL - WALL_RAIL_MARGIN_PX;
 
-test("an empty wall centres the rail", () => {
-  assert.equal(railTopFromOccupants([], RAIL, VH), CENTRED);
+test("an empty wall rests the rail low, above the bottom margin", () => {
+  assert.equal(railTopFromOccupants([], RAIL, VH), REST);
+});
+
+test("stacks ABOVE a corner occupant, which is where a chatbot will sit", () => {
+  const corner = { top: 806, bottom: 876 };  // the UX4G trigger, measured
+  const top = railTopFromOccupants([corner], RAIL, VH);
+  assert.ok(top + RAIL <= corner.top - WALL_RAIL_GAP_PX,
+    `rail bottom ${top + RAIL} must clear ${corner.top - WALL_RAIL_GAP_PX}`);
+});
+
+test("sits BELOW Important Links and ABOVE the corner widget at once", () => {
+  // The website: both descriptions of the right answer are the same band.
+  const importantLinks = { top: 378, bottom: 553 };
+  const corner = { top: 806, bottom: 876 };
+  const top = railTopFromOccupants([importantLinks, corner], RAIL, VH);
+  assert.ok(top >= importantLinks.bottom + WALL_RAIL_GAP_PX, "must be below Important Links");
+  assert.ok(top + RAIL <= corner.top - WALL_RAIL_GAP_PX, "must be above the corner widget");
 });
 
 test("dodges the website's Important Links, using its measured rect", () => {
@@ -26,18 +45,19 @@ test("dodges the website's Important Links, using its measured rect", () => {
   assert.ok(clears, `rail ${top}-${bottom} still overlaps ${importantLinks.top}-${importantLinks.bottom}`);
 });
 
-test("picks the free band nearest the middle, not simply the first", () => {
-  // A short obstacle high up leaves a big band below it, whose centre is
-  // closer to the viewport middle than the sliver above.
-  const top = railTopFromOccupants([{ top: 40, bottom: 120 }], RAIL, VH);
-  assert.ok(top > 120, "should sit below the obstacle, in the larger band");
+test("prefers the LOWEST band that fits, not the nearest the centre", () => {
+  // An earlier rule took the band nearest the viewport middle, which on the
+  // website put the rail at y=117 - above Important Links, hard against the
+  // masthead.
+  const top = railTopFromOccupants([{ top: 378, bottom: 553 }], RAIL, VH);
+  assert.ok(top > 553, `expected the band below, got top ${top}`);
 });
 
 test("ignores an occupant too tall to dodge", () => {
   // A full-height sidebar or overlay cannot be avoided; trying gives a worse
   // answer than ignoring it.
   const fullHeight = { top: 0, bottom: VH };
-  assert.equal(railTopFromOccupants([fullHeight], RAIL, VH), CENTRED);
+  assert.equal(railTopFromOccupants([fullHeight], RAIL, VH), REST);
 });
 
 test("merges adjacent occupants into one obstacle", () => {
@@ -48,7 +68,7 @@ test("merges adjacent occupants into one obstacle", () => {
   assert.ok(bottom <= a.top - WALL_RAIL_GAP_PX || top >= b.bottom + WALL_RAIL_GAP_PX);
 });
 
-test("stays centred rather than going off-screen when nothing fits", () => {
+test("falls back to the resting position rather than going off-screen", () => {
   // Two obstacles leaving no gap big enough. An overlap is recoverable; a
   // widget outside the viewport is not.
   const top = railTopFromOccupants(

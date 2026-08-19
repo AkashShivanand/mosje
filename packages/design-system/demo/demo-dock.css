@@ -302,14 +302,18 @@
   transform-origin: center right;
 }
 
-/* ── Which side the panel opens on ───────────────────────────────────────
-   Resolved by `usePanelSide`: whichever covers less of the form underneath.
-   On most routes there is nothing to avoid and it stays right. On a login
-   route it moves to the side the form is not on — the panel used to sit
-   directly on top of both credential fields and the submit button. ── */
-.ds-demodock__panel[data-side="left"] {
+/* ── Where the panel opens ───────────────────────────────────────────────
+   Resolved by `usePanelLeft`: it stands BESIDE the form underneath rather
+   than on the far side of the screen. On most routes there is nothing to
+   avoid, the measured answer equals the default, and nothing moves. On a
+   login route it steps aside — the panel used to sit directly on top of both
+   credential fields and the submit button.
+
+   `data-placed` is only set once measured, so the first paint uses the CSS
+   default above instead of rendering somewhere and snapping. ── */
+.ds-demodock__panel[data-placed] {
   right: auto;
-  left: var(--cmp-demodock-panel-inset);
+  left: var(--cmp-demodock-panel-left);
   transform-origin: center left;
   /* Shared floor for the body/tab content (see `.ds-demodock__body` below).
      Derived from this panel's own `max-height` (72vh, capped 680px) minus

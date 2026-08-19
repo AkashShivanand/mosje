@@ -63,7 +63,17 @@ const WALL_ZONE_X_PX = 160;
  */
 const MAX_OCCUPANT_SHARE = 0.6;
 
-const BUILT_IN_SELECTORS = [`[${WALL_OCCUPANT_ATTR}]`];
+/**
+ * The UX4G accessibility widget's trigger. Third-party markup we cannot add
+ * an attribute to at author time, so the rail knows it by name — and it must,
+ * because it sits in the bottom-right corner the rail settles into. It is
+ * `display: none` on every page carrying an `AccessibilityBar`, and the
+ * visibility check below handles that: on those pages it is simply not an
+ * occupant, and the rail drops to the corner itself.
+ */
+export const UX4G_TRIGGER_ID = "uw-widget-custom-trigger";
+
+const BUILT_IN_SELECTORS = [`[${WALL_OCCUPANT_ATTR}]`, `#${UX4G_TRIGGER_ID}`];
 
 const DISCOVERY_POLL_MS = 150;
 const DISCOVERY_MAX_ATTEMPTS = 20;
@@ -83,7 +93,18 @@ export function railTopFromOccupants(
   railHeight: number,
   viewportHeight: number,
 ): number {
-  const centred = Math.round((viewportHeight - railHeight) / 2);
+  // The rail's home is LOW on the wall, not centred. Two reasons, and the
+  // second is the one that settles it:
+  //
+  // 1. It is a utility, and utilities live near the bottom-right. Centred, it
+  //    lands beside the primary navigation on the website — measured at
+  //    y=117, right against the masthead, which reads as an accident.
+  // 2. The two things it must coexist with are naturally arranged that way.
+  //    Important Links sits around 42-61% of the viewport; the accessibility
+  //    widget (and any future chatbot) sits in the corner beneath it. "Just
+  //    below Important Links" and "just above the corner widget" describe the
+  //    SAME band, so anchoring low satisfies both at once.
+  const bottomRest = viewportHeight - railHeight - WALL_RAIL_MARGIN_PX;
   const clamp = (v: number) =>
     Math.min(
       Math.max(v, WALL_RAIL_MARGIN_PX),
@@ -107,7 +128,7 @@ export function railTopFromOccupants(
     else merged.push({ ...band });
   }
 
-  if (merged.length === 0) return clamp(centred);
+  if (merged.length === 0) return clamp(bottomRest);
 
   // The gaps between obstacles, bounded by the viewport's own margins.
   const free: Band[] = [];
@@ -120,25 +141,19 @@ export function railTopFromOccupants(
   if (cursor < floor) free.push({ top: cursor, bottom: floor });
 
   const fits = free.filter((b) => b.bottom - b.top >= railHeight);
-  // Nothing fits: stay centred rather than wedge the rail off-screen. An
-  // overlap is recoverable; a widget outside the viewport is not.
-  if (fits.length === 0) return clamp(centred);
+  // Nothing fits: fall back to the resting position rather than wedge the
+  // rail off-screen. An overlap is recoverable; a widget outside the viewport
+  // is not.
+  if (fits.length === 0) return clamp(bottomRest);
 
-  // Of the bands that fit, take the one whose centre is nearest the middle of
-  // the screen — so the rail stays as close to where the eye expects it as
-  // the obstacles allow, rather than always jumping to the top.
-  const mid = viewportHeight / 2;
-  let best = fits[0]!;
-  let bestDistance = Infinity;
-  for (const band of fits) {
-    const distance = Math.abs((band.top + band.bottom) / 2 - mid);
-    if (distance < bestDistance) {
-      bestDistance = distance;
-      best = band;
-    }
-  }
-
-  return clamp(Math.round((best.top + best.bottom - railHeight) / 2));
+  // The LOWEST band that fits, and the rail sits at the bottom of it. That is
+  // what makes the two descriptions of the right answer coincide: on a page
+  // with a corner widget the rail lands just above it, and on a page with
+  // something higher up the wall it lands below that. An earlier version took
+  // the band nearest the viewport's centre, which put the rail at y=117 on
+  // the website — above Important Links and hard against the masthead.
+  const lowest = fits[fits.length - 1]!;
+  return clamp(lowest.bottom - railHeight);
 }
 
 function isVisible(el: Element): boolean {

@@ -95,7 +95,7 @@ import { LiveRegion, useLiveRegion } from "../components/a11y/live-region";
 import { useColorMode } from "../foundations/color-mode-provider";
 import { DBIM_COLOR_MODES, type ColorMode } from "../foundations/color-mode";
 import { useWallRailOffset } from "../foundations/wall-rail";
-import { usePanelSide } from "../foundations/panel-side";
+import { usePanelLeft } from "../foundations/panel-side";
 import { DemoAccountsPanel } from "./demo-accounts-panel";
 import { findDemoAccounts, isLoginRoute } from "./demo-accounts";
 import { FlaskIcon } from "./flask-icon";
@@ -383,10 +383,11 @@ export function DemoDock({
   // exactly like the hook not running at all.
   useWallRailOffset(rootRef);
 
-  // Which side the panel opens on: whichever covers less of the form beneath
-  // it. The rail never moves; only the panel adapts. See
+  // Where the panel opens: standing BESIDE the form beneath it rather than on
+  // the far side of the screen. The rail never moves; only the panel adapts.
+  // `null` until measured, so CSS holds the default for the first paint. See
   // foundations/panel-side.ts.
-  const panelSide = usePanelSide(panelRef, open || closing, { inset: PANEL_INSET_PX });
+  const panelLeft = usePanelLeft(panelRef, open || closing, { inset: PANEL_INSET_PX });
 
   const demoSet = React.useMemo(
     () => (pathname ? findDemoAccounts(pathname) : null),
@@ -649,7 +650,12 @@ export function DemoDock({
         <div
           ref={panelRef}
           className={cn("ds-demodock__panel", closing && !open && "is-closing")}
-          data-side={panelSide}
+          data-placed={panelLeft === null ? undefined : "true"}
+          style={
+            panelLeft === null
+              ? undefined
+              : ({ "--cmp-demodock-panel-left": `${panelLeft}px` } as React.CSSProperties)
+          }
           id={panelId}
           role="dialog"
           aria-label={label}

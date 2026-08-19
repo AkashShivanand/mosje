@@ -43,6 +43,9 @@ export interface Rect {
   bottom: number;
 }
 
+/** Breathing room between the panel and the form it is standing beside. */
+export const PANEL_ADJACENT_GAP_PX = 24;
+
 /** Area of the intersection of two rects; 0 when they do not overlap. */
 function overlapArea(a: Rect, b: Rect): number {
   const x = Math.min(a.right, b.right) - Math.max(a.left, b.left);
@@ -50,88 +53,127 @@ function overlapArea(a: Rect, b: Rect): number {
   return x > 0 && y > 0 ? x * y : 0;
 }
 
+/** The union of a set of rects — the form treated as one object. */
+export function unionOf(rects: readonly Rect[]): Rect | null {
+  if (rects.length === 0) return null;
+  let { left, top, right, bottom } = rects[0]!;
+  for (const r of rects) {
+    left = Math.min(left, r.left);
+    top = Math.min(top, r.top);
+    right = Math.max(right, r.right);
+    bottom = Math.max(bottom, r.bottom);
+  }
+  return { left, top, right, bottom };
+}
+
 /**
- * The side to open on. Pure, and therefore testable without a DOM.
+ * The panel's `left`, in px.
  *
- * Ties go to `preferred`, so a page with nothing to avoid never moves the
- * panel — a widget that relocates for no visible reason is the exact
- * complaint this component has already answered for twice.
+ * **It stands NEXT TO the form, not on the far side of the screen.** The first
+ * version only chose a side, which on a 1440px login screen put the panel hard
+ * against the left edge while the form sat against the right — technically
+ * clear of it, and visually two unrelated objects. A helper that has to be
+ * connected by a saccade is not helping.
+ *
+ * So: butt the panel up against the form's near edge with a gap, on whichever
+ * side has room. With no form to stand beside, it returns the default
+ * right-anchored position and nothing moves — which is most of the estate.
  */
-export function panelSideFor({
+export function panelLeftFor({
   obstacles,
   panelWidth,
   panelHeight,
   inset,
   viewport,
-  preferred = "right",
+  gap = PANEL_ADJACENT_GAP_PX,
 }: {
   obstacles: readonly Rect[];
   panelWidth: number;
   panelHeight: number;
   inset: number;
   viewport: { width: number; height: number };
-  preferred?: PanelSide;
-}): PanelSide {
+  gap?: number;
+}): number {
+  const defaultLeft = viewport.width - inset - panelWidth;
+  const form = unionOf(obstacles);
+  if (!form) return defaultLeft;
+
   const top = Math.max(0, (viewport.height - panelHeight) / 2);
   const bottom = top + panelHeight;
+  const band = (left: number): Rect => ({ left, right: left + panelWidth, top, bottom });
 
-  const asRight: Rect = {
-    left: viewport.width - inset - panelWidth,
-    right: viewport.width - inset,
-    top,
-    bottom,
-  };
-  const asLeft: Rect = {
-    left: inset,
-    right: inset + panelWidth,
-    top,
-    bottom,
-  };
+  // Does the default position already clear the form? Then do not move at all.
+  if (overlapArea(band(defaultLeft), form) === 0) return defaultLeft;
 
-  let right = 0;
-  let left = 0;
-  for (const o of obstacles) {
-    right += overlapArea(asRight, o);
-    left += overlapArea(asLeft, o);
+  const clampLeft = (v: number) =>
+    Math.min(Math.max(v, inset), Math.max(inset, viewport.width - inset - panelWidth));
+
+  // Stand immediately beside the form, preferring the side with more room so
+  // the panel is least likely to be clamped back over it.
+  //
+  // With a right-anchored default, the leftward placement is the one that
+  // actually fires: for the panel to need the form's RIGHT it would have to
+  // both overlap the default and leave room beside it, and those two cannot
+  // both hold. The right-hand candidate is kept because the rule should not
+  // depend on which edge the default happens to sit on — a test pins the
+  // arithmetic so nobody has to rediscover it.
+  const roomLeft = form.left - gap;
+  const roomRight = viewport.width - form.right - gap;
+
+  const candidates: number[] = [];
+  if (roomLeft >= roomRight) {
+    candidates.push(form.left - gap - panelWidth, form.right + gap);
+  } else {
+    candidates.push(form.right + gap, form.left - gap - panelWidth);
   }
 
-  if (right === left) return preferred;
-  return right < left ? "right" : "left";
+  for (const candidate of candidates) {
+    const clamped = clampLeft(candidate);
+    if (overlapArea(band(clamped), form) === 0) return clamped;
+  }
+
+  // Neither side can clear it — a narrow viewport. Take the placement that
+  // covers least, rather than pretending one of them worked.
+  const scored = candidates
+    .map(clampLeft)
+    .map((left) => ({ left, cost: overlapArea(band(left), form) }))
+    .sort((a, b) => a.cost - b.cost);
+  return scored[0]!.left;
 }
 
-/**
- * The controls a panel must not cover: the inputs and submit buttons of the
- * page underneath it. Deliberately narrow — every button on the page would
- * make almost any placement "bad" and the panel would thrash between sides.
- */
-export const OBSTACLE_SELECTOR =
-  'input:not([type="hidden"]), textarea, select, button[type="submit"]';
-
-export interface PanelSideOptions {
-  /** Distance from the viewport edge the panel is pinned at. */
+export interface PanelPlacementOptions {
+  /** Distance from the viewport edge the panel rests at by default. */
   inset: number;
-  /** Side to use when neither is better. @default "right" */
-  preferred?: PanelSide;
   /** Extra selector for things the panel must not cover. */
   obstacleSelector?: string;
 }
 
 /**
- * Resolves the side a panel should open on, recomputing on resize.
- *
- * Returns `null` until it has measured, so a caller can hold the panel's
- * first paint until the side is known rather than render it on one side and
- * snap it to the other.
+ * The controls a panel must not cover: the inputs and submit buttons of the
+ * page underneath it. Deliberately narrow — treating every button on the page
+ * as an obstacle would make almost any placement "bad" and the panel would
+ * thrash.
  */
-export function usePanelSide(
+export const OBSTACLE_SELECTOR =
+  'input:not([type="hidden"]), textarea, select, button[type="submit"]';
+
+/**
+ * Resolves the panel's `left`, recomputing on resize. Returns `null` until it
+ * has measured, so the caller can let CSS hold the default position for the
+ * first paint instead of rendering in one place and snapping to another.
+ */
+export function usePanelLeft(
   panelRef: React.RefObject<HTMLElement | null>,
   active: boolean,
-  { inset, preferred = "right", obstacleSelector = OBSTACLE_SELECTOR }: PanelSideOptions,
-): PanelSide {
-  const [side, setSide] = React.useState<PanelSide>(preferred);
+  { inset, obstacleSelector = OBSTACLE_SELECTOR }: PanelPlacementOptions,
+): number | null {
+  const [left, setLeft] = React.useState<number | null>(null);
 
   React.useLayoutEffect(() => {
-    if (!active || typeof window === "undefined") return;
+    if (!active || typeof window === "undefined") {
+      setLeft(null);
+      return;
+    }
 
     const resolve = () => {
       const panel = panelRef.current;
@@ -140,8 +182,7 @@ export function usePanelSide(
       const rect = panel.getBoundingClientRect();
       const obstacles: Rect[] = [];
       for (const el of document.querySelectorAll<HTMLElement>(obstacleSelector)) {
-        // Skip anything inside the panel itself — the panel's own search box
-        // is not an obstacle to the panel.
+        // The panel's own search box is not an obstacle to the panel.
         if (panel.contains(el)) continue;
         if (el.offsetParent === null && window.getComputedStyle(el).position !== "fixed") continue;
         const r = el.getBoundingClientRect();
@@ -149,14 +190,13 @@ export function usePanelSide(
         obstacles.push({ left: r.left, top: r.top, right: r.right, bottom: r.bottom });
       }
 
-      setSide(
-        panelSideFor({
+      setLeft(
+        panelLeftFor({
           obstacles,
           panelWidth: rect.width || panel.offsetWidth,
           panelHeight: rect.height || panel.offsetHeight,
           inset,
           viewport: { width: window.innerWidth, height: window.innerHeight },
-          preferred,
         }),
       );
     };
@@ -164,7 +204,7 @@ export function usePanelSide(
     resolve();
     window.addEventListener("resize", resolve);
     return () => window.removeEventListener("resize", resolve);
-  }, [panelRef, active, inset, preferred, obstacleSelector]);
+  }, [panelRef, active, inset, obstacleSelector]);
 
-  return side;
+  return left;
 }
