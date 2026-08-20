@@ -5,6 +5,7 @@ import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import { ConditionalChatbot } from "@/components/conditional-chatbot";
 import { ConditionalDemoDock } from "@/components/conditional-demo-dock";
 import { resolveChatbotPaths } from "@/lib/chatbot/resolve";
+import { resolveDemoToolsEnabled } from "@/lib/demo-tools/resolve";
 import { resolveRegistry } from "@/lib/registry/resolve";
 import "./globals.css";
 // Material Symbols Rounded — the SAMAVESH icon system. Loaded ONCE here because
@@ -73,6 +74,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   // every route in the estate, so an uncached read would make all of them
   // dynamic. Only the enabled paths travel to the client.
   const chatbotPaths = await resolveChatbotPaths(apps);
+  // Whether the demo dock renders at all. Cache-tagged like the two above, for
+  // the same reason: this layout is above every route in the estate.
+  const demoToolsEnabled = await resolveDemoToolsEnabled();
 
   return (
     <html
@@ -93,7 +97,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               bottom-right corner when it is visible, and the chatbot measures
               around it rather than the other way round. */}
           <ConditionalChatbot enabledPaths={chatbotPaths} />
-          <ConditionalDemoDock apps={apps} />
+          <ConditionalDemoDock apps={apps} enabled={demoToolsEnabled} />
         </ColorModeProvider>
       </body>
     </html>

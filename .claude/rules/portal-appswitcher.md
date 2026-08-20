@@ -35,21 +35,32 @@ resolves to, `DemoAccountsPanel`, present only when the path has one).
    No portal, page, or app adds its own `DemoDock` or `DemoFab` mount — the
    dock lives above every page in the hub's single-origin layout and reads
    `pathname` itself.
-2. **It is demo tooling, not product.** Nothing in it is meant to reach a
-   citizen or officer's real session with a live portal. The panel's footer
-   says so on every render.
-3. **Visibility is `NEXT_PUBLIC_DEMO_TOOLS`, defaulting ON.** Absent or any
-   value other than the exact string `"false"` means visible. Set
-   `NEXT_PUBLIC_DEMO_TOOLS=false` to remove it entirely on a genuinely public
-   deployment — `ConditionalDemoDock` reads the flag in the hub; the design
-   system itself stays environment-unaware. It is also hidden on the hub root
-   (`/`, the portals index itself), `/gate`, and everything under `/admin`,
-   where it offers nothing relevant.
-4. **A genuinely public portal ships with no dock at all.** That is the
-   correct, unremarkable state once `NEXT_PUBLIC_DEMO_TOOLS=false` — there is
-   no per-portal opt-out to configure, because there is no per-portal mount
-   to remove.
-5. `DemoFab` (the older, per-page panel `DemoDock` superseded) still exists
+2. **It is demo tooling, and on THIS estate the demo is the product.** Nothing in
+   it is meant to reach a citizen or officer's real session with a live portal,
+   and the panel's footer says so on every render. But this deployment exists in
+   order to be shown to people, so the dock is not scaffolding awaiting removal
+   — it is how the estate gets demonstrated. Superseded 2026-08-20: this bullet
+   previously implied the end state was a deployment without it.
+3. **Visibility is an ADMIN SETTING, not a deploy flag.** `/admin/portals`
+   carries the master switch, stored in the `demo_tools` row and resolved by
+   `apps/hub/src/lib/demo-tools/`. Default is ON: a prototype whose purpose is
+   being demonstrated must not need an admin visit before it can be
+   demonstrated. Turn it off for a ministry walkthrough, a screenshot or a
+   recording, and put it back — no redeploy.
+4. **`NEXT_PUBLIC_DEMO_TOOLS=false` survives above it as a build-time HARD off.**
+   Precedence is deliberate and one-way: a deployment built without demo tooling
+   must not be able to acquire it from a database row. Only the exact string
+   `"false"` counts. Everything else defers to the setting.
+
+   The failure direction is also deliberate: an unreadable or paused store
+   degrades to **visible**, not hidden. A database outage must not silently
+   strip the thing the prototype exists to show.
+5. **There is no per-surface variant, and that is a decision.** The dock is one
+   cross-zone navigator whose whole job is getting between zones; switching it
+   off on some of them makes it worse rather than more precise. It is still
+   hidden on the hub root (`/`, the portals index itself), `/gate`, and
+   everything under `/admin`, whatever the setting says.
+6. `DemoFab` (the older, per-page panel `DemoDock` superseded) still exists
    and is still exported, for the rare case of a standalone Storybook demo or
    a page genuinely outside the hub's layout tree. It is not to be mounted
    inside the hub alongside `DemoDock` — that reintroduces the duplicate-FAB

@@ -58,6 +58,14 @@ export interface RegistryFormProps {
   rows: RegistryRow[];
   /** The assistant's master switch — estate-wide, so it is not a per-row value. */
   assistantEnabled: boolean;
+  /**
+   * The demo dock's master switch. No per-surface variant: the dock is one
+   * cross-zone navigator, and its whole job is getting between zones, so
+   * switching it off on some of them makes it worse rather than more precise.
+   */
+  demoToolsEnabled: boolean;
+  /** The cookie consent banner's switch. Currently off pending a redesign. */
+  cookieBannerEnabled: boolean;
   saveAction: (formData: FormData) => Promise<void>;
   resetAction: () => Promise<void>;
   storeConfigured: boolean;
@@ -124,6 +132,8 @@ function ResetButton({ disabled }: { disabled: boolean }) {
 export function RegistryForm({
   rows: initialRows,
   assistantEnabled: initialAssistantEnabled,
+  demoToolsEnabled: initialDemoToolsEnabled,
+  cookieBannerEnabled: initialCookieBannerEnabled,
   saveAction,
   resetAction,
   storeConfigured,
@@ -133,6 +143,10 @@ export function RegistryForm({
 }: RegistryFormProps) {
   const [rows, setRows] = React.useState<RegistryRow[]>(initialRows);
   const [assistantEnabled, setAssistantEnabled] = React.useState(initialAssistantEnabled);
+  const [demoToolsEnabled, setDemoToolsEnabled] = React.useState(initialDemoToolsEnabled);
+  const [cookieBannerEnabled, setCookieBannerEnabled] = React.useState(
+    initialCookieBannerEnabled,
+  );
   const [expanded, setExpanded] = React.useState<string | null>(null);
   const [announcement, setAnnouncement] = React.useState("");
 
@@ -289,6 +303,44 @@ export function RegistryForm({
       <form action={saveAction} className="mt-4">
         <input type="hidden" name="rows" value={payload} />
         <input type="hidden" name="assistant" value={assistantPayload} />
+        <input type="hidden" name="demoTools" value={demoToolsEnabled ? "on" : "off"} />
+        <input
+          type="hidden"
+          name="cookieBanner"
+          value={cookieBannerEnabled ? "on" : "off"}
+        />
+
+        <section className="mb-4 rounded-xl border border-border bg-surface p-5 shadow-xs">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="max-w-xl">
+              <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-ink">
+                Demo dock
+              </h2>
+              <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+                The floating rail that switches between portals, re-tones the
+                brand palette and fills in demo sign-ins. Turn it off for a
+                walkthrough, a screenshot or a recording, and put it back
+                afterwards — no redeploy.
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-ink-hint">
+                It never appears on this admin surface, on the hub root or on
+                the gate, whatever this is set to.
+              </p>
+            </div>
+            <Toggle
+              checked={demoToolsEnabled}
+              onChange={(event) => {
+                setDemoToolsEnabled(event.target.checked);
+                setAnnouncement(
+                  event.target.checked
+                    ? "Demo dock shown across the estate."
+                    : "Demo dock hidden across the estate.",
+                );
+              }}
+              label={demoToolsEnabled ? "On" : "Off"}
+            />
+          </div>
+        </section>
 
         <section className="mb-6 rounded-xl border border-border bg-surface p-5 shadow-xs">
           <div className="flex flex-wrap items-start justify-between gap-4">
@@ -319,6 +371,38 @@ export function RegistryForm({
                 label={assistantEnabled ? "On" : "Off"}
               />
             </div>
+          </div>
+        </section>
+
+        <section className="mb-6 rounded-xl border border-border bg-surface p-5 shadow-xs">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="max-w-xl">
+              <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-ink">
+                Cookie banner
+              </h2>
+              <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+                The consent notice along the foot of the website. Off while it
+                is being redesigned.
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-ink-hint">
+                Its copy cites GIGW 3.0 and DBIM, so this is a compliance
+                control as well as a visual one. Defensible while the estate is
+                a gated prototype storing only a first-party consent flag; put
+                it back before real analytics or a public deployment.
+              </p>
+            </div>
+            <Toggle
+              checked={cookieBannerEnabled}
+              onChange={(event) => {
+                setCookieBannerEnabled(event.target.checked);
+                setAnnouncement(
+                  event.target.checked
+                    ? "Cookie banner shown on the website."
+                    : "Cookie banner hidden on the website.",
+                );
+              }}
+              label={cookieBannerEnabled ? "On" : "Off"}
+            />
           </div>
         </section>
 

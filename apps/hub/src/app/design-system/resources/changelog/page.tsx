@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.40.0",
+    version: "v0.41.0",
     date: "2026-08-20",
     current: true,
+    changes: [
+      { kind: "Added", text: "WIDGET VISIBILITY IS ADMIN CONFIGURATION, NOT A DEPLOY FLAG. `/admin/portals` now carries three master switches beside the registry \u2014 demo dock, assistant, cookie banner \u2014 each stored in its own settings row, cache-tagged, saved by the one Save button. The demo dock previously had only `NEXT_PUBLIC_DEMO_TOOLS`, on the assumption it was scaffolding to strip from a real deployment. That is backwards for this estate: the demo IS the product, and what is actually needed is hiding it for one audience \u2014 a ministry walkthrough, a screenshot, a recording \u2014 and putting it straight back without a redeploy" },
+      { kind: "Changed", text: "THE COOKIE BANNER IS OFF BY DEFAULT WHILE IT IS REDESIGNED, and the compliance reasoning is recorded next to the constant rather than left implicit. Its copy cites GIGW 3.0 and DBIM, so hiding it is a compliance decision, not only a visual one. Two conditions make it defensible \u2014 the estate is a gated prototype, and it stores only `mosje_cookie_consent`, a first-party functional flag, not tracking. If either stops being true the banner goes back up BEFORE that happens, redesigned or not" },
+      { kind: "Added", text: "A SHARED `settings/toggle` MODULE, written when the SECOND on/off setting arrived rather than speculatively for the first. It exists to stop two non-obvious rules being copy-pasted and then diverging: `enabled` must be a REAL boolean, because `Boolean(\"false\")` is `true` and that coercion is exactly what makes an admin toggle look like it does nothing; and an unknown `version` is refused outright rather than half-read. The assistant\u2019s config is deliberately NOT built on it \u2014 it carries a per-surface map as well as a master switch, so it is a different shape rather than a generic one bent to fit" },
+      { kind: "Changed", text: "THE TWO TOGGLES FAIL IN OPPOSITE DIRECTIONS, ON PURPOSE. An unreadable store degrades the demo dock to VISIBLE and the cookie banner to HIDDEN. Hiding the dock on a database blip would strip the thing this prototype exists to show; showing a banner the team deliberately took down would be the surprising outcome. Both directions are pinned by tests so neither can be \u201ctidied\u201d into the other" },
+      { kind: "Changed", text: "`NEXT_PUBLIC_DEMO_TOOLS=false` SURVIVES AS A BUILD-TIME HARD OFF above the setting, and the precedence is one-way: a deployment built without demo tooling must not be able to acquire it from a database row. Only the exact string `false` counts \u2014 `False`, `0`, `no` and a padded `  false  ` all defer to the setting, which is pinned by test because a loose check here would disable the dock on a typo" },
+    ],
+  },
+  {
+    version: "v0.40.0",
+    date: "2026-08-20",
     changes: [
       { kind: "Fixed", text: "EVERYTHING PAINTED OVER AN OPEN CONVERSATION. Measured on the live website, the assistant was the LOWEST of the four fixed layers: demo dock 2147483000, UX4G accessibility panel 999999, Important Links 1002, assistant 1000. A panel the citizen deliberately opened was being covered by two persistent rails and a piece of demo scaffolding" },
       { kind: "Changed", text: "THE LAYER IS IN TWO PARTS, NOT ONE BLANKET MAXIMUM. Closed, the launcher is an 84px control the wall and corner rails already keep clear of everything, so it needs only to beat product chrome and sits at 1010 \u2014 deliberately UNDER the accessibility panel, because that is a statutory control and a chat launcher has no business on top of it. Open, the panel is the surface the citizen summoned and nothing decorative may cover it, so it clears the highest layer by one" },

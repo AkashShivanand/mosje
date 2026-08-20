@@ -15,11 +15,18 @@ import { DEFAULT_APPS } from "@mosje/design-system/app-registry";
 import { requireAdmin } from "@/lib/admin/auth";
 import {
   SETTING_CHATBOT,
+  SETTING_COOKIE_BANNER,
+  SETTING_DEMO_TOOLS,
   SETTING_PORTAL_REGISTRY,
   writeSetting,
 } from "@/lib/settings/store";
 import { REGISTRY_TAG } from "@/lib/registry/resolve";
 import { CHATBOT_TAG } from "@/lib/chatbot/resolve";
+import { DEMO_TOOLS_TAG } from "@/lib/demo-tools/resolve";
+import { DEMO_TOOLS_DEFAULT_ENABLED } from "@/lib/demo-tools/config";
+import { COOKIE_BANNER_DEFAULT_ENABLED } from "@/lib/cookie-banner/config";
+import { COOKIE_BANNER_TAG } from "@/lib/cookie-banner/resolve";
+import { serializeToggle, toggleConfig } from "@/lib/settings/toggle";
 import {
   CHATBOT_CONFIG_MAX_BYTES,
   CHATBOT_CONFIG_VERSION,
@@ -133,6 +140,34 @@ async function persist(serialized: string): Promise<void> {
   updateTag(REGISTRY_TAG);
 }
 
+/**
+ * The demo dock's own row and tag.
+ *
+ * A THIRD settings row behind the same Save button. The UI is merged because
+ * an admin thinks in surfaces and switches, not in database rows; the storage
+ * stays split because `proxy.ts` reads the registry row on every request to
+ * enforce the hidden-entry block, and neither of the other two may be able to
+ * reach that path.
+ */
+async function persistDemoTools(serialized: string): Promise<void> {
+  try {
+    await writeSetting(SETTING_DEMO_TOOLS, serialized);
+  } catch {
+    redirect("/admin/portals?error=store");
+  }
+  updateTag(DEMO_TOOLS_TAG);
+}
+
+/** The cookie banner's own row and tag. */
+async function persistCookieBanner(serialized: string): Promise<void> {
+  try {
+    await writeSetting(SETTING_COOKIE_BANNER, serialized);
+  } catch {
+    redirect("/admin/portals?error=store");
+  }
+  updateTag(COOKIE_BANNER_TAG);
+}
+
 /** The assistant's own row and tag. Same failure handling as the registry's. */
 async function persistAssistant(serialized: string): Promise<void> {
   try {
@@ -170,8 +205,20 @@ export async function saveRegistry(formData: FormData): Promise<void> {
 
   // Registry first: it is the one the proxy enforces, so if only one of the two
   // lands it should be the one that governs reachability.
+  // A checkbox-shaped field: the form posts "on" or "off" and anything else is
+  // a malformed submission rather than something to guess at.
+  const demoRaw = String(formData.get("demoTools") ?? "");
+  if (demoRaw !== "on" && demoRaw !== "off") redirect("/admin/portals?error=payload");
+
+  const cookieRaw = String(formData.get("cookieBanner") ?? "");
+  if (cookieRaw !== "on" && cookieRaw !== "off") redirect("/admin/portals?error=payload");
+
+  // Registry first: it is the one the proxy enforces, so if only one of the
+  // three lands it should be the one that governs reachability.
   await persist(serialized);
   await persistAssistant(assistantSerialized);
+  await persistDemoTools(serializeToggle(toggleConfig(demoRaw === "on")));
+  await persistCookieBanner(serializeToggle(toggleConfig(cookieRaw === "on")));
   redirect("/admin/portals?saved=1");
 }
 
@@ -186,5 +233,7 @@ export async function resetRegistry(): Promise<void> {
   await requireAdmin();
   await persist(serializeRegistryConfig(emptyRegistryConfig()));
   await persistAssistant(serializeChatbotConfig(emptyChatbotConfig()));
+  await persistDemoTools(serializeToggle(toggleConfig(DEMO_TOOLS_DEFAULT_ENABLED)));
+  await persistCookieBanner(serializeToggle(toggleConfig(COOKIE_BANNER_DEFAULT_ENABLED)));
   redirect("/admin/portals?saved=reset");
 }

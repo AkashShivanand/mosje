@@ -22,6 +22,8 @@ import { requireAdmin } from "@/lib/admin/auth";
 import { settingsConfigured } from "@/lib/settings/store";
 import { readRegistryConfig } from "@/lib/registry/config";
 import { CHATBOT_DEFAULT_ON, readChatbotConfig } from "@/lib/chatbot/config";
+import { demoToolsEnabled, readDemoToolsConfig } from "@/lib/demo-tools/config";
+import { cookieBannerEnabled, readCookieBannerConfig } from "@/lib/cookie-banner/config";
 import { resetRegistry, saveRegistry } from "./actions";
 import { RegistryForm, type RegistryRow } from "./registry-form";
 
@@ -51,9 +53,11 @@ export default async function AdminPortalsPage({
 
   // Read uncached: this page must show what is stored, not what a cached
   // render decided a few minutes ago.
-  const [config, chatbot] = await Promise.all([
+  const [config, chatbot, demoTools, cookieBanner] = await Promise.all([
     readRegistryConfig(),
     readChatbotConfig(),
+    readDemoToolsConfig(),
+    readCookieBannerConfig(),
   ]);
   const byPath = new Map(DEFAULT_APPS.map((entry) => [entry.path, entry]));
 
@@ -146,15 +150,20 @@ export default async function AdminPortalsPage({
 
         <h1 className="text-2xl font-bold tracking-tight text-ink">Estate registry</h1>
         <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-ink-muted">
-          What the estate advertises and links to, and where the chat assistant
-          appears. Changes apply to the deployed prototype at once — there is no
-          separate publish step. Hiding an entry also stops its URL working for
-          everyone except you.
+          What the estate advertises and links to, where the chat assistant
+          appears, and whether the demo dock is shown. Changes apply to the
+          deployed prototype at once — there is no separate publish step. Hiding
+          an entry also stops its URL working for everyone except you.
         </p>
 
         <RegistryForm
           rows={rows}
           assistantEnabled={chatbot?.enabled ?? true}
+          demoToolsEnabled={demoToolsEnabled(
+            demoTools,
+            process.env.NEXT_PUBLIC_DEMO_TOOLS,
+          )}
+          cookieBannerEnabled={cookieBannerEnabled(cookieBanner)}
           saveAction={saveRegistry}
           resetAction={resetRegistry}
           storeConfigured={settingsConfigured()}
