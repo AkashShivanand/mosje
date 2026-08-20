@@ -652,7 +652,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
         aria-expanded={open}
         onClick={handleLauncher}
       >
-        <ChatbotMascot className="ds-chatbot__mark" size={84} ring />
+        <ChatbotMascot size={84} ring />
         <span className="ds-chatbot__close" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
                strokeLinecap="round" focusable="false">

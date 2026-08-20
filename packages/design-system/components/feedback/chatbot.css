@@ -235,53 +235,73 @@
   }
 }
 
-/* -- the mark, and the close glyph it trades places with -------------------
-   The two crossfade THROUGH BLUR rather than straight. Without it you see two
-   distinct objects overlapping for 240ms — a robot and an ×. Blur bridges them
-   so the eye reads one thing changing instead of two things swapping. Kept low;
-   large blur radii are expensive, Safari especially. */
+/* -- opening changes the CENTRE of the seal, not the whole mark -------------
 
-.ds-chatbot__mark,
+   The band around the disc is 12px wide because it CARRIES THE WORDMARK. At
+   rest that width is earned — there is bilingual type running around it. The
+   previous version faded the entire mark out and faded a plain navy disc in,
+   which left that same 12px band holding nothing: a thick empty white stroke
+   around a small blue circle, reading as a sticker outline rather than as a
+   ring. A band is only a ring if something is on it.
+
+   So the seal never leaves. The wordmark stays, the navy disc stays, the
+   silhouette and every measurement stay — and only the thing in the middle
+   changes, robot to close glyph. The badge is the brand; the centre is the
+   state. Nothing about the geometry moves, so there is nothing to look wrong.
+
+   The two centres crossfade THROUGH BLUR rather than straight: without it you
+   see two distinct objects overlapping for 240ms, and blur bridges them so the
+   eye reads one thing changing instead of two things swapping. Kept low; large
+   blur radii are expensive, Safari especially.
+
+   NOTE the figure is faded by opacity and filter ONLY. It carries the float
+   animation, which owns its `transform` — a static transform here would simply
+   be overridden by the running keyframe, and stopping the float to make room
+   for one would reintroduce exactly the snap this component has already been
+   fixed for twice. The close glyph has no competing animation, so it is free
+   to rotate in. */
+
+.ds-chatbot-mascot__figure,
 .ds-chatbot__close {
   transition:
     opacity var(--ds-chatbot-enter) var(--ds-chatbot-ease),
-    transform var(--ds-chatbot-enter) var(--ds-chatbot-ease),
-    filter var(--ds-chatbot-enter) var(--ds-chatbot-ease);
+    filter var(--ds-chatbot-enter) var(--ds-chatbot-ease),
+    transform var(--ds-chatbot-enter) var(--ds-chatbot-ease);
 }
 
 .ds-chatbot__close {
   position: absolute;
-  /* Inset by the ring's width, so the launcher's white band shows around the
-     close state exactly as it does around the mascot. 12px of 84px. */
+  /* Exactly the navy disc the mascot already draws: 12px of 84px. The glyph
+     lands on that disc rather than bringing a disc of its own. */
   inset: 14.3%;
   display: grid;
   place-items: center;
   border-radius: var(--sa-shape-full);
-  background: var(--sa-color-brand-navy);
+  /* No fill. The seal's own disc is underneath and stays there. */
+  background: transparent;
   color: var(--sa-color-text-onPrimary);
   opacity: 0;
-  transform: scale(0.9) rotate(-45deg);
-  filter: blur(3px);
+  transform: rotate(-90deg) scale(0.7);
+  filter: blur(2px);
 }
 
 .ds-chatbot__close svg {
-  /* 34% of the inner disc, not of the whole launcher — the disc shrank when
-     the ring was carved out of it, and the glyph has to follow or it reads as
-     a large cross in a small circle. */
-  width: 34%;
-  height: 34%;
+  /* 36% of the 60px disc. Sized against the disc it sits on, not the launcher
+     it sits in — measuring against the outer box is what makes a glyph look
+     lost inside a ring. */
+  width: 36%;
+  height: 36%;
 }
 
-.ds-chatbot__launcher[data-state="open"] .ds-chatbot__mark {
+/* The robot steps aside; the seal it was sitting in does not. */
+.ds-chatbot__launcher[data-state="open"] .ds-chatbot-mascot__figure {
   opacity: 0;
-  /* 0.9, never 0 — nothing in the world shrinks to nothing before it goes. */
-  transform: scale(0.9) rotate(45deg);
   filter: blur(3px);
 }
 
 .ds-chatbot__launcher[data-state="open"] .ds-chatbot__close {
   opacity: 1;
-  transform: scale(1) rotate(0deg);
+  transform: rotate(0deg) scale(1);
   filter: blur(0);
 }
 
@@ -926,9 +946,13 @@
     transform: none;
   }
 
-  .ds-chatbot__mark,
+  /* The centre swap becomes a plain fade. `__mark` is no longer part of it —
+     the seal stays put in both states now, so there is nothing to neutralise
+     on it. Naming a selector here that the component no longer animates would
+     be dead CSS pretending to be a reduced-motion accommodation. */
+  .ds-chatbot-mascot__figure,
   .ds-chatbot__close,
-  .ds-chatbot__launcher[data-state="open"] .ds-chatbot__mark,
+  .ds-chatbot__launcher[data-state="open"] .ds-chatbot-mascot__figure,
   .ds-chatbot__launcher[data-state="open"] .ds-chatbot__close {
     transform: none;
     filter: none;
