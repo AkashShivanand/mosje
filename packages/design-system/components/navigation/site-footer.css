@@ -265,6 +265,28 @@
   padding-block: var(--sa-padding-20);
 }
 
+/* The footer is the last thing on the page, so it is the footer that ends up
+   parked under the fixed corner launcher — and unlike a paragraph scrolling
+   past, that occlusion never clears. Measured on a 390px viewport, the
+   launcher covered the statutory lineage sentence by 52px.
+
+   Reserve the corner's height so the last band's content sits above it. The
+   rationale for reserving the scroll end rather than the column, and for not
+   shrinking the launcher, is in foundations/layout.css.
+
+   `:has()` rather than an unconditional rule, for two reasons: the assistant
+   is an admin toggle, so it can genuinely be absent; and the same footer is
+   built to serve any site in the estate, not all of which mount it. Reserving
+   room for a widget that is not there is just a hole in the page.
+
+   Above 1336px the centred container already clears the launcher's column, so
+   the reserve lifts and the footer ends normally. */
+@media (max-width: 1335px) {
+  body:has(.ds-chatbot--fixed) .ds-sitefooter__statutory .ds-sitefooter__in {
+    padding-block-end: var(--sa-corner-safe-bottom, 116px);
+  }
+}
+
 /* Lineage sentence + the two credit logos share one row on wide screens. */
 .ds-sitefooter__lineage-row {
   display: flex;
