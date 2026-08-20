@@ -51,6 +51,13 @@
      custom property on the rail would never reach it. Keep in step with the
      rail's own 105 -> 153 heights below. */
   --sa-wall-rail-reserve: 153px;
+  /* The RESTING height — what the rail shows almost all of the time, and the
+     height its position is centred on. Declared beside the reserve because
+     reading it from the live element made the rail's position depend on
+     whether it happened to be unfolded when something re-measured: tapping a
+     door mounts the panel, the observer fires, and the rail jumped 48px out
+     from under the pointer. Keep in step with the rail's own heights below. */
+  --sa-wall-rail-rest: 56px;
   position: fixed;
   right: 0;
   /* Written by `useWallRailOffset`. The fallback is the centred position it
@@ -121,6 +128,26 @@
   padding: var(--sa-padding-8) 0 var(--sa-padding-8);
   border-radius: var(--sa-shape-16) 0 0 var(--sa-shape-16);
   background-color: var(--sa-bg-neutral-base);
+  /* A HAIRLINE, and it is not decoration. The rail is a white card that
+     floats over whatever the page puts under it, and pages put white cards
+     there: on the design-system home it lands on the hero's component
+     showcase, white on white, where a soft shadow alone gives it no edge and
+     it reads as a rendering glitch rather than as chrome above the page.
+
+     Content-dodging is the wrong answer for a FIXED widget — content scrolls
+     underneath, so dodging it would mean the rail creeping about while you
+     scroll, which is worse than a static overlap. What it needs is to look
+     deliberate wherever it lands, so it gets a defined edge on all three
+     sides that meet the page. */
+  /* An OUTLINE, not a border. The rail's height is content-driven, so a
+     border adds to it — 56 became 58 — and two declared constants
+     (`--sa-wall-rail-rest`, `--sa-wall-rail-reserve`) are measured against
+     that height. Correcting them by hand would have re-created exactly the
+     drift those declarations exist to prevent. An outline draws the same
+     hairline with ZERO layout impact, so the numbers stay true.
+     `outline-offset: -1px` insets it, and it follows the border-radius. */
+  outline: 1px solid var(--sa-border-neutral-subtle);
+  outline-offset: -1px;
   box-shadow: var(--sa-elevation-modal);
   transition: box-shadow var(--cmp-demodock-fold) var(--cmp-demodock-ease);
 }
@@ -143,43 +170,22 @@
   cursor: pointer;
 }
 
-/* Both glyphs occupy the SAME grid cell, so they cross-fade in place rather
-   than one replacing the other. `display: grid` with both children at
-   `grid-area: 1 / 1` is what makes that free — no absolute positioning, and
-   the cell still sizes itself. */
-.ds-demodock__glyph {
-  grid-area: 1 / 1;
-  display: grid;
-  place-items: center;
-  transition: opacity var(--cmp-demodock-fold) var(--cmp-demodock-ease),
-    transform var(--cmp-demodock-fold) var(--cmp-demodock-ease);
-}
-
-.ds-demodock__glyph--close {
-  opacity: 0;
-  /* Rotated a quarter turn out, so the cross arrives by turning INTO place
-     rather than fading on top of the flask. A cross is symmetric under 90deg,
-     so it lands looking untouched. */
-  transform: rotate(-90deg) scale(0.7);
-}
-
-.ds-demodock__rail.is-panel-open .ds-demodock__glyph--flask {
-  opacity: 0;
-  transform: rotate(90deg) scale(0.7);
-}
-
-.ds-demodock__rail.is-panel-open .ds-demodock__glyph--close {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-}
-
 .ds-demodock__cell {
   display: grid;
   place-items: center;
   width: 40px;
   height: 40px;
   border-radius: var(--sa-shape-12);
-  background-color: var(--sa-bg-brand-primary-subtler);
+  /* The palest rung, NOT `subtler`. `subtler` (#c0dbff) is what an ACTIVE
+     entry wears, and the lead wore it permanently — so on any route where the
+     lead is not the active tab, the flask and the active door were the
+     identical colour and nothing said which was which. Measured: both
+     rgb(192, 219, 255).
+
+     The lead still reads as the mark; it just sits a rung below anything
+     claiming to be selected, which is what leaves room for a selected state
+     to exist at all. */
+  background-color: var(--sa-bg-brand-primary-base);
   transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
@@ -238,6 +244,20 @@
   transform: translateY(-50%) translateX(0);
 }
 
+/* SUPPRESSED WHILE THE PANEL IS OPEN. The tooltip opens leftward — the only
+   direction available on the right wall — and the panel is immediately to
+   its left, so it lands ON the panel's own content, covering the "Use"
+   column. Measured: tip at x 428 against a panel ending at 471.
+
+   Suppressing beats moving it. The tooltip exists to name a control when
+   nothing else does; with the panel open every destination is named in the
+   tab strip a few pixels away, so it has nothing left to say and can only
+   occlude. Raising the panel above it instead would just hide the tooltip
+   behind the panel, which is the same loss with extra paint. */
+.ds-demodock__rail.is-panel-open .ds-demodock__tip {
+  opacity: 0;
+}
+
 /* ── Drawer: the two extra doors. ── */
 .ds-demodock__drawer {
   display: flex;
@@ -258,19 +278,27 @@
 
 /* A 40ms stagger across TWO doors. Long enough to read as a cascade rather
    than a pop, short enough that the second door is in place before a hand
-   could reach it. Stagger is decorative, so it never gates interaction —
-   the doors are clickable from the first frame. */
+   could reach it.
+
+   THE STAGGER MOVES THEM; IT DOES NOT REVEAL THEM. The doors used to start
+   at `opacity: 0` and be brought back only by the open state, which made a
+   control's visibility depend on a transition completing — and a transition
+   that never runs leaves the door permanently invisible while still
+   occupying its space. That is not hypothetical: a backgrounded tab freezes
+   transitions, and the doors measured `opacity: 0` with the rail fully open
+   and laid out at its full 153px.
+
+   Hiding is the DRAWER's job — it already clips them with `max-height: 0`
+   and `overflow: hidden`, which is structural and cannot stall. So the doors
+   are opaque from the first frame and only their offset animates. */
 .ds-demodock__door {
-  opacity: 0;
   transform: translateY(-4px);
-  transition: opacity var(--cmp-demodock-fold) var(--cmp-demodock-ease),
-    transform var(--cmp-demodock-fold) var(--cmp-demodock-ease),
+  transition: transform var(--cmp-demodock-fold) var(--cmp-demodock-ease),
     background-color var(--cmp-demodock-fold) var(--cmp-demodock-ease),
     color var(--cmp-demodock-fold) var(--cmp-demodock-ease);
 }
 
 .ds-demodock__rail.is-open .ds-demodock__door {
-  opacity: 1;
   transform: translateY(0);
 }
 
@@ -313,11 +341,19 @@
    strip being two competing navigations for one set of destinations. A bar
    on the INNER edge, pointing at the panel it belongs to — the rail is on
    the right wall, so "inner" is the left side. ── */
-.ds-demodock__door.is-current {
+/* ONE active treatment for every entry, a full rung above the lead's rest. */
+.ds-demodock__door.is-current,
+.ds-demodock__lead.is-current .ds-demodock__cell {
   background-color: var(--sa-bg-brand-primary-subtler);
   color: var(--sa-text-brand-primary-base);
 }
 
+/* ONE rule for every entry's bar, lead included. It was written twice — once
+   for the doors with `top: 50%` and a centring transform, once for the lead
+   with a hardcoded `top: 20px` and none — so the lead's bar sat 10px below
+   the doors'. The numbers were copied; the centring was not. Two rules for
+   one mark is how that happens, so now there is one. */
+.ds-demodock__lead.is-current::before,
 .ds-demodock__door.is-current::before {
   content: "";
   position: absolute;

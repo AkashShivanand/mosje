@@ -532,16 +532,23 @@ export function DemoDock({
    * hybrids, where a touchscreen laptop is both at once.
    */
   const onLeadClick = React.useCallback(() => {
-    if (open) {
-      closePanel();
-      return;
-    }
     if (!railOpen) {
       setRailOpen(true);
       return;
     }
+    // Opens the panel if it is shut, and selects the first tab if it is not.
+    // `openPanel()` does both, because setting the tab and setting open are
+    // independent and the second is idempotent.
+    //
+    // IT NO LONGER CLOSES. The lead used to toggle, and showed a cross to say
+    // so — which stopped making sense once the doors began indicating the
+    // active tab. A close button sitting in a list of tabs is a category
+    // error, and the panel already carries a close in its header, roughly
+    // 10px from the rail on a narrow viewport, alongside Escape and
+    // outside-click. Three ways to dismiss is enough; a coherent rail is
+    // worth more than a fourth.
     openPanel();
-  }, [open, railOpen, closePanel, openPanel]);
+  }, [railOpen, openPanel]);
 
   /**
    * Hover and focus are TWO INDEPENDENT HOLDS on the rail, not one flag, and
@@ -655,6 +662,18 @@ export function DemoDock({
   };
 
   const activeTabId = tabs[activeTab]?.id ?? "apps";
+
+  // The lead stands for the tab that has NO DOOR OF ITS OWN — Sign in, and
+  // only where it exists. Without that qualification the lead and the Apps
+  // door would both light on every non-login route, since the panel opens on
+  // Apps there and two indicators for one tab is worse than none.
+  //
+  // This is what closes the gap the indicator opened: the rail reads as the
+  // complete set of destinations, so a member missing from it is a hole. The
+  // lead already opened the panel on its first tab, which IS Sign in on a
+  // login route — the behaviour existed and simply was not visible.
+  const leadTabId = showSignIn ? "signin" : null;
+  const leadLabel = leadTabId === "signin" ? "Sign in" : label;
 
   return (
     <div ref={rootRef} className={cn("ds-demodock", className)}>
@@ -798,35 +817,27 @@ export function DemoDock({
         <button
           ref={triggerRef}
           type="button"
-          className="ds-demodock__lead"
+          className={cn(
+            "ds-demodock__lead",
+            open && leadTabId && activeTabId === leadTabId && "is-current",
+          )}
           aria-haspopup="dialog"
           aria-expanded={open}
           aria-controls={open ? panelId : undefined}
-          aria-label={open ? `Close ${label}` : label}
+          aria-current={
+            open && leadTabId && activeTabId === leadTabId ? "true" : undefined
+          }
+          aria-label={leadLabel}
           onClick={onLeadClick}
         >
-          {/* THE LEAD IS A TOGGLE, so it shows the affordance it currently
-              has. Open, that affordance is "close" — the same reasoning that
-              turns a hamburger into an X. This is not a second close button
-              competing with the panel's own: it is one control finally
-              saying what it does. Both glyphs stay mounted and cross-fade,
-              because a swap would flash. */}
           <span className="ds-demodock__cell">
-            <span className="ds-demodock__glyph ds-demodock__glyph--flask">
-              <FlaskIcon size={26} />
-            </span>
-            <span className="ds-demodock__glyph ds-demodock__glyph--close" aria-hidden="true">
-              <IconClose />
-            </span>
+            <FlaskIcon size={26} />
           </span>
-          {/* The wordmark is gone. It solved a FIRST-ENCOUNTER problem with a
-              permanent solution: the audience is presenters who see this
-              constantly, and a vertical "DEMO" on every screen of a
-              government portal draws attention to scaffolding. Its job moves
-              here — quiet at rest, self-describing on approach. Decorative,
-              because the accessible name is the button's own `aria-label`. */}
+          {/* The label is a tooltip, not a wordmark: quiet at rest,
+              self-describing on approach. A permanent "DEMO" on every screen
+              of a government portal draws attention to scaffolding. */}
           <span className="ds-demodock__tip" aria-hidden="true">
-            {open ? `Close ${label}` : label}
+            {leadLabel}
           </span>
         </button>
 

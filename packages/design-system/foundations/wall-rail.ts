@@ -288,6 +288,22 @@ export interface WallRailOptions {
    * number from drifting away from them.
    */
   reserveProperty?: string;
+  /**
+   * Custom property for the widget's RESTING height — the one it shows almost
+   * all of the time.
+   *
+   * Declared, never measured, and that is the whole point. It was measured
+   * once, from `offsetHeight`, on the reasoning that a live read cannot drift
+   * from the CSS. But the widget's own height CHANGES when it unfolds (56 to
+   * 153 here), and the position is centred on this number — so every
+   * re-measure that happened to land while the rail was open moved the rail
+   * by 48px. Tapping a door did it every time: the panel mounts, the subtree
+   * observer fires, and the rail jumps out from under the pointer.
+   *
+   * The anchor must not depend on the widget's transient state. A declared
+   * value cannot.
+   */
+  restProperty?: string;
 }
 
 /**
@@ -302,6 +318,7 @@ export function useWallRailOffset(
     selectors,
     property = "--sa-wall-rail-top",
     reserveProperty = "--sa-wall-rail-reserve",
+    restProperty = "--sa-wall-rail-rest",
   } = options;
   const selectorKey = (selectors ?? []).join(",");
 
@@ -359,12 +376,19 @@ export function useWallRailOffset(
       const railHeight =
         Number.isFinite(reserve) && reserve > 0 ? reserve : element.offsetHeight;
 
-      // The height to CENTRE on: what the widget measures right now, which is
-      // its folded size in every normal case — the effect runs on mount, on
-      // resize and on occupancy change, none of which coincide with the rail
-      // being held open. Measured rather than declared so it cannot drift
-      // from the CSS the way a second hand-kept constant would.
-      const restHeight = element.offsetHeight || railHeight;
+      // The height to CENTRE on, DECLARED. Reading it from the live element
+      // was a bug: the widget is 56 folded and 153 unfolded, so any
+      // re-measure landing while it was open re-centred it 48px higher and
+      // the rail jumped. See `restProperty`.
+      const restRaw = window
+        .getComputedStyle(element)
+        .getPropertyValue(restProperty)
+        .trim();
+      const restDeclared = Number.parseFloat(restRaw);
+      const restHeight =
+        Number.isFinite(restDeclared) && restDeclared > 0
+          ? restDeclared
+          : element.offsetHeight || railHeight;
 
       // COMPACT FIRST, then place. The decision uses each occupant's declared
       // natural height, so applying it does not change its own input — see
@@ -453,5 +477,5 @@ export function useWallRailOffset(
       document.removeEventListener("visibilitychange", measure);
       bodyObserver.disconnect();
     };
-  }, [ref, selectorKey, property, reserveProperty]);
+  }, [ref, selectorKey, property, reserveProperty, restProperty]);
 }
