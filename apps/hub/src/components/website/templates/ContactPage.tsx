@@ -87,9 +87,10 @@ export function ContactPage({ office, mapSrc, officers = [], showForm = true, ..
               )}
             </div>
 
-            {/* Right: feedback form */}
+            {/* Right: feedback form — `#feedback` is the target of the footer's
+                DBIM-mandated "Feedback" link, so the id must stay stable. */}
             {showForm && (
-              <aside>
+              <aside id="feedback" className="scroll-mt-28">
                 <div className="rounded-xl border border-gray-200 bg-surface-muted p-6">
                   <h2 className="mb-4 text-[18px] font-semibold text-primary-dark">Send us a message</h2>
                   <FeedbackForm />
