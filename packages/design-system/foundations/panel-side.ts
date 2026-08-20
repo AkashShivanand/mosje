@@ -46,6 +46,23 @@ export interface Rect {
 /** Breathing room between the panel and the form it is standing beside. */
 export const PANEL_ADJACENT_GAP_PX = 24;
 
+/**
+ * Margin at the FAR viewport edge — the side the rail is not on.
+ *
+ * Distinct from `inset`, and conflating the two was a real bug. `inset` is
+ * the RAIL CLEARANCE: how much room the panel leaves on the right so it does
+ * not sit under the dock. It is not a left margin, and using it as one meant
+ * that on a narrow viewport the two clamp bounds crossed, the left bound won,
+ * and the panel's right edge ran 36px UNDER the rail — measured at every
+ * width below ~640px, and visible as the rail's glyphs sitting on top of the
+ * panel's "Use" links.
+ *
+ * 16 is not a free choice: `max-width: calc(100vw - 78px)` in demo-dock.css
+ * is exactly this plus the 62px clearance, so the two agree by construction
+ * and the panel spans the whole space between them at the narrowest width.
+ */
+export const PANEL_EDGE_MARGIN_PX = 16;
+
 /** Area of the intersection of two rects; 0 when they do not overlap. */
 function overlapArea(a: Rect, b: Rect): number {
   const x = Math.min(a.right, b.right) - Math.max(a.left, b.left);
@@ -105,8 +122,17 @@ export function panelLeftFor({
   // Does the default position already clear the form? Then do not move at all.
   if (overlapArea(band(defaultLeft), form) === 0) return defaultLeft;
 
+  // Left bound is the FAR-EDGE margin; right bound reserves the rail
+  // clearance. Rounded, because an adjacent placement is derived from a
+  // fractional `getBoundingClientRect` and a half-pixel panel softens its
+  // border.
   const clampLeft = (v: number) =>
-    Math.min(Math.max(v, inset), Math.max(inset, viewport.width - inset - panelWidth));
+    Math.round(
+      Math.min(
+        Math.max(v, PANEL_EDGE_MARGIN_PX),
+        Math.max(PANEL_EDGE_MARGIN_PX, viewport.width - inset - panelWidth),
+      ),
+    );
 
   // Stand immediately beside the form, preferring the side with more room so
   // the panel is least likely to be clamped back over it.

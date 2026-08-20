@@ -1,7 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { panelLeftFor, unionOf, PANEL_ADJACENT_GAP_PX, type Rect } from "./panel-side.ts";
+import {
+  panelLeftFor,
+  unionOf,
+  PANEL_ADJACENT_GAP_PX,
+  PANEL_EDGE_MARGIN_PX,
+  type Rect,
+} from "./panel-side.ts";
 
 const VIEWPORT = { width: 1440, height: 900 };
 const PANEL = { panelWidth: 500, panelHeight: 648, inset: 62 };
@@ -77,18 +83,67 @@ test("the form is treated as ONE object, not several", () => {
 });
 
 test("never places the panel outside the viewport", () => {
+  // Bounded by the FAR-EDGE margin on the left and the rail clearance on the
+  // right. This asserted `left >= 62` until the two were separated — which
+  // baked in the bug, because 62 is the rail's reservation on the OTHER side.
   for (const width of [700, 900, 1200, 1920]) {
     const obstacles = [at(width * 0.6, 400, 300, 50)];
     const left = panelLeftFor({ obstacles, ...PANEL, viewport: { width, height: 900 } });
-    assert.ok(left >= 62, `left ${left} at width ${width}`);
-    assert.ok(left + 500 <= Math.max(562, width - 62), `overflows at width ${width}`);
+    assert.ok(left >= PANEL_EDGE_MARGIN_PX, `left ${left} at width ${width}`);
+    assert.ok(left + 500 <= width - 62, `overflows the rail clearance at width ${width}`);
   }
 });
 
 test("a viewport too narrow for either side takes the lesser overlap", () => {
+  // Even when neither side can clear the form, the panel must stay inside the
+  // viewport AND clear of the rail — an overlap with the form is a compromise,
+  // an overlap with the rail is a defect.
   const narrow = { width: 900, height: 900 };
   const obstacles = [at(250, 300, 400, 300)];
   const left = panelLeftFor({ obstacles, ...PANEL, viewport: narrow });
   assert.ok(Number.isFinite(left));
-  assert.ok(left >= 62 && left + 500 <= narrow.width - 62 + 1);
+  assert.ok(left >= PANEL_EDGE_MARGIN_PX, `left ${left} is off-screen`);
+  assert.ok(left + 500 <= narrow.width - 62, `panel runs under the rail`);
+});
+
+test("the panel NEVER runs under the rail, at any viewport width", () => {
+  // The invariant, stated once and checked across the range rather than at a
+  // width someone happened to try. It failed below ~640px: the clamp's left
+  // bound was the RAIL CLEARANCE used as a far-edge margin, so on a narrow
+  // viewport the bounds crossed, the left bound won, and the panel's right
+  // edge ran 36px under the rail — the rail's glyphs sitting on the panel's
+  // "Use" links.
+  const RAIL_WIDTH = 52;
+  for (let width = 360; width <= 1920; width += 8) {
+    const panelWidth = Math.min(500, width - 78);
+    if (panelWidth <= 0) continue;
+    // A form on the right half, which is what forces the adjacent placement.
+    const obstacles = [
+      { left: width * 0.62, top: 400, right: width * 0.95, bottom: 620 },
+    ];
+    const left = panelLeftFor({
+      obstacles, panelWidth, panelHeight: 620, inset: 62,
+      viewport: { width, height: 900 },
+    });
+    assert.ok(
+      left + panelWidth <= width - RAIL_WIDTH,
+      `at ${width}px the panel (${left}..${left + panelWidth}) runs under the rail at ${width - RAIL_WIDTH}`,
+    );
+    assert.ok(left >= PANEL_EDGE_MARGIN_PX - 0.5, `at ${width}px the panel starts off-screen at ${left}`);
+  }
+});
+
+test("the far-edge margin and the CSS max-width agree by construction", () => {
+  // demo-dock.css caps the panel at `calc(100vw - 78px)`. That 78 must be the
+  // rail clearance plus this margin, or the panel cannot span the gap between
+  // them at the narrowest width and one of the two is silently wrong.
+  assert.equal(62 + PANEL_EDGE_MARGIN_PX, 78);
+});
+
+test("an adjacent placement returns a whole pixel", () => {
+  const left = panelLeftFor({
+    obstacles: [at(893.4, 400, 384, 200)],
+    ...PANEL, viewport: VIEWPORT,
+  });
+  assert.equal(left, Math.round(left), `expected a whole pixel, got ${left}`);
 });
