@@ -79,6 +79,26 @@
   padding-bottom: var(--cmp-appsw-safe-area);
 }
 
+/* ── The right-wall compact contract ─────────────────────────────────────
+   `useWallRailOffset` sets `data-sa-wall-compact` on <html> when the wall
+   cannot hold every widget at full size. Any occupant with something it can
+   give up marks that part `data-sa-wall-label`, and it goes.
+
+   LABELS ONLY — never an icon, never a hit target. Every widget stays
+   operable and stays at full touch size; losing a word is a degradation,
+   losing a target is a defect. The `aria-label` on the control is untouched,
+   so a screen reader is unaffected by a space problem it cannot perceive.
+
+   It lives HERE, in the dock's own stylesheet, and that is deliberate. The
+   obvious home was a foundation stylesheet — but the hub imports only
+   `icons.css` and the tokens from this package, never `components.css`, so
+   a rule aggregated there reaches nothing. It was written there first and
+   silently did not apply. demo-dock.css is loaded by the very component
+   that sets the flag, so the rule exists exactly when the flag can. ── */
+[data-sa-wall-compact] [data-sa-wall-label] {
+  display: none;
+}
+
 /* ── The folding rail ────────────────────────────────────────────────────
    At rest: a 52x105 tab flush to the wall, holding the flask and a vertical
    wordmark. Engaged: the wordmark collapses, the drawer expands, and the tab
