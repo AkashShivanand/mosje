@@ -422,6 +422,8 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
   };
 
   const showReplies = replies.length > 0 && (controlledTranscript ? true : repliesShown);
+  /** Who owns the transcript decides who may wipe it. See the footer below. */
+  const canEndChat = controlledTranscript ? Boolean(onEndChat) : true;
   const titleId = React.useId();
 
   return (
@@ -628,7 +630,19 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
 
             <p className="ds-chatbot__note">
               {note}
-              {!controlledTranscript && messages.length > 0 && (
+              {/*
+                Shown when there is a conversation to end AND something can end
+                it. Uncontrolled, that is always us. Controlled, the transcript
+                is not ours to clear — so the button appears only where the
+                consumer passed `onEndChat`, which is how it says it will.
+
+                This used to read `!controlledTranscript`, which silently took
+                the only way out of a conversation away from every controlled
+                consumer. A widget that drops an affordance because of HOW it is
+                driven, rather than whether the affordance can work, is making a
+                decision that is not its to make.
+              */}
+              {canEndChat && messages.length > 0 && (
                 <>
                   {" "}
                   <button type="button" className="ds-chatbot__end" onClick={handleEndChat}>

@@ -50,16 +50,14 @@ export function ConditionalChatbot({ enabledPaths }: { enabledPaths: readonly st
   const [typing, setTyping] = React.useState(false);
 
   const timers = React.useRef<number[]>([]);
+  const clearTimers = React.useCallback(() => {
+    timers.current.forEach(window.clearTimeout);
+    timers.current = [];
+  }, []);
   const after = React.useCallback((ms: number, fn: () => void) => {
     timers.current.push(window.setTimeout(fn, ms));
   }, []);
-  React.useEffect(
-    () => () => {
-      timers.current.forEach(window.clearTimeout);
-      timers.current = [];
-    },
-    [],
-  );
+  React.useEffect(() => clearTimers, [clearTimers]);
 
   /** The typing beat, then the answer. Matches the widget's own 900ms cadence. */
   const answer = React.useCallback(
@@ -111,6 +109,23 @@ export function ConditionalChatbot({ enabledPaths }: { enabledPaths: readonly st
     [session, answer],
   );
 
+  /**
+   * End chat: drop the session, and with it the whole frame stack.
+   *
+   * The timers go FIRST. A typing beat in flight would otherwise land a
+   * committed answer a moment after the transcript was cleared, and the
+   * conversation a citizen just ended would reappear on its own.
+   *
+   * Reopening replays the greeting with its opening beat, because the session
+   * being null is exactly what `handleOpenChange` starts from.
+   */
+  const handleEndChat = React.useCallback(() => {
+    clearTimers();
+    setTyping(false);
+    setPending(null);
+    setSession(null);
+  }, [clearTimers]);
+
   if (!chatbotEnabledAt(pathname, enabledPaths)) return null;
 
   const view = pending ?? (session ? finderCurrent(session) : null);
@@ -124,6 +139,7 @@ export function ConditionalChatbot({ enabledPaths }: { enabledPaths: readonly st
       quickReplies={view?.quickReplies ?? []}
       onQuickReply={handleQuickReply}
       onSubmit={handleSubmit}
+      onEndChat={handleEndChat}
       launcherLabel="Samajik Sahayak, chat assistant"
     />
   );
