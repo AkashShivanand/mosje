@@ -43,6 +43,37 @@
 
   --ds-footer-max: 1280px;
 
+  /* --- clearing the right-wall rail --------------------------------------
+     The estate parks a fixed widget on the right wall — `ImportantLinks` on
+     the website, marked `data-sa-wall-occupant`. It is `right: 0`, so it
+     overlays the last ~37px of the VIEWPORT at every scroll position, and the
+     centred container only reserves 24px of padding. Measured: content runs
+     13px under the rail at every width up to 1280, and the overlap reaches
+     zero at about 1306 where the gutter finally absorbs it.
+
+     Below that width the rail was landing on the two credit logos, which are
+     flush right and are the hyperlinked lineage marks DBIM 5.6 requires — so
+     ~13px of a mandated link was both covered and unclickable.
+
+     `container-type: inline-size` is what makes the arithmetic exact.
+     `100cqw` is the footer's own content width, which EXCLUDES the classic
+     scrollbar; `100vw` includes it, so a `vw`-based version under-reserves by
+     half a scrollbar on Windows and looks correct on macOS, where overlay
+     scrollbars hide the bug. Reserve the intrusion and nothing else: above
+     ~1306px this resolves back to the normal padding, so wide layouts are
+     untouched rather than permanently lopsided.
+
+     `--ds-wall-rail` is a WIDTH, which the ds-linkage rule classes as
+     geometry the token scales do not model. If the rail is ever resized,
+     this is the number to change with it. */
+  --ds-wall-rail: 40px;
+  --ds-wall-gutter: max(0px, calc((100cqw - var(--ds-footer-max)) / 2));
+  --ds-wall-clearance: max(
+    var(--sa-padding-24),
+    calc(var(--ds-wall-rail) + var(--sa-padding-8) - var(--ds-wall-gutter))
+  );
+
+  container-type: inline-size;
   background-color: var(--ds-footer-bg);
   color: var(--ds-footer-ink);
   font-family: var(--sa-font-latin);
@@ -51,7 +82,8 @@
 .ds-sitefooter__in {
   max-width: var(--ds-footer-max);
   margin-inline: auto;
-  padding-inline: var(--sa-padding-24);
+  padding-inline-start: var(--sa-padding-24);
+  padding-inline-end: var(--ds-wall-clearance);
 }
 
 /* ── Band 1 · the working footer ─────────────────────────────────────────── */
