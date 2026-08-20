@@ -16,6 +16,39 @@ test("an empty wall centres the rail", () => {
   assert.equal(railTopFromOccupants([], RAIL, VH), CENTRED);
 });
 
+test("centres on the height it HAS, not the height it reserves", () => {
+  // The rail reserves its open height (153) so the drawer has somewhere to
+  // go, but it is folded (56) almost always. Centring on the reserve put the
+  // visible tab 48px above the true centre — centred on nothing a viewer can
+  // see. The tab's own centre must land on the viewport's.
+  const FOLDED = 56;
+  const top = railTopFromOccupants([], RAIL, VH, FOLDED);
+  assert.equal(top + FOLDED / 2, VH / 2, `tab centre ${top + FOLDED / 2} != ${VH / 2}`);
+});
+
+test("the open state still fits after centring on the folded one", () => {
+  // Centring on the smaller number must not push the OPEN rail past the
+  // bottom margin — the reserve is still what every fit test uses.
+  const FOLDED = 56;
+  for (const vh of [560, 700, 900, 1200]) {
+    const top = railTopFromOccupants([], RAIL, vh, FOLDED);
+    assert.ok(top >= WALL_RAIL_MARGIN_PX, `top ${top} at vh ${vh}`);
+    assert.ok(top + RAIL <= vh - WALL_RAIL_MARGIN_PX, `open rail overflows at vh ${vh}`);
+  }
+});
+
+test("a folded rail still dodges an occupant using its OPEN height", () => {
+  // The danger of centring on the folded height: the fit test must still use
+  // the reserve, or the drawer would open straight into the occupant below.
+  const FOLDED = 56;
+  const occupant = { top: 500, bottom: 560 };
+  const top = railTopFromOccupants([occupant], RAIL, VH, FOLDED);
+  const clears =
+    top + RAIL <= occupant.top - WALL_RAIL_GAP_PX ||
+    top >= occupant.bottom + WALL_RAIL_GAP_PX;
+  assert.ok(clears, `open rail ${top}-${top + RAIL} hits ${occupant.top}-${occupant.bottom}`);
+});
+
 test("sits exactly 16px below Important Links, using its measured rect", () => {
   const importantLinks = { top: 378, bottom: 553 };
   const top = railTopFromOccupants([importantLinks], RAIL, VH);

@@ -103,8 +103,21 @@ export function railTopFromOccupants(
   occupants: readonly Band[],
   railHeight: number,
   viewportHeight: number,
+  restHeight: number = railHeight,
 ): number {
-  const centred = Math.round((viewportHeight - railHeight) / 2);
+  // CENTRED ON THE HEIGHT IT ACTUALLY HAS, not the height it reserves.
+  //
+  // These are two different numbers and conflating them is what made the rail
+  // look wrong: it reserves its OPEN height (153) so the drawer has somewhere
+  // to go, but it spends virtually all of its life FOLDED (56). Centring on
+  // the reserve put the visible tab 48px above the true centre of the screen
+  // — centred on nothing a viewer can see, which reads exactly as "hanging".
+  //
+  // So: centre on `restHeight`, and keep using `railHeight` for every FIT
+  // test below, because the open state still has to land inside the viewport
+  // and clear of the occupants. On a 900px viewport that puts the tab dead
+  // centre at 422 and the open rail at 422-575, well inside the 876 floor.
+  const centred = Math.round((viewportHeight - restHeight) / 2);
   const clamp = (v: number) =>
     Math.min(
       Math.max(v, WALL_RAIL_MARGIN_PX),
@@ -269,7 +282,19 @@ export function useWallRailOffset(
       const railHeight =
         Number.isFinite(reserve) && reserve > 0 ? reserve : element.offsetHeight;
 
-      const top = railTopFromOccupants(bands, railHeight, window.innerHeight);
+      // The height to CENTRE on: what the widget measures right now, which is
+      // its folded size in every normal case — the effect runs on mount, on
+      // resize and on occupancy change, none of which coincide with the rail
+      // being held open. Measured rather than declared so it cannot drift
+      // from the CSS the way a second hand-kept constant would.
+      const restHeight = element.offsetHeight || railHeight;
+
+      const top = railTopFromOccupants(
+        bands,
+        railHeight,
+        window.innerHeight,
+        restHeight,
+      );
       element.style.setProperty(property, `${top}px`);
 
       // Occupants are rendered by other zones and may mount after us.
