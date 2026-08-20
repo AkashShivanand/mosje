@@ -126,9 +126,10 @@ function ExpandOnMount({ tabIndex }: { tabIndex?: number }) {
 }
 
 /**
- * Folded — the resting tab on the right wall: the flask and its wordmark.
- * Hover it (or tab to it) to unfold the two extra doors; click the flask to
- * open the panel.
+ * Folded — the resting tab on the right wall: a 26px flask in a tinted cell,
+ * and nothing else. Hover it (or tab to it) to unfold the two extra doors and
+ * to see the flask wobble; click the flask to open the panel, at which point
+ * it becomes a cross. The label is a tooltip, not a wordmark.
  */
 export const Playground: Story = {};
 

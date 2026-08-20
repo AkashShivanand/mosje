@@ -491,6 +491,17 @@
   --ds-flask-bubbles: 1;
 }
 
+/* The wobble answers a hover of THE WIDGET, not of the flask. Hovering
+   anywhere on the rail — including the doors — swings it, because the rail is
+   one object and the flask is its face. Gated to a real pointer: a touch
+   device fires `:hover` on tap and would leave the flask mid-swing after the
+   finger lifts. */
+@media (hover: hover) and (pointer: fine) {
+  .ds-demodock__rail:hover .ds-flask {
+    --ds-flask-rock: ds-flask-rock 620ms var(--sa-motion-emphasis-easing) 1;
+  }
+}
+
 .ds-demodock__lead[aria-expanded="true"] .ds-flask,
 .ds-demodock__badge .ds-flask {
   --ds-flask-cycle: 1450ms;

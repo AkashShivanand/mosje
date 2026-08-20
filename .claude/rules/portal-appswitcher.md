@@ -85,9 +85,31 @@ chatbot genuinely wants that corner, recover it from git history then.
 
 ## The fold — and the two rules inside it
 
-At rest the rail is a **tab** — 52x105, a 26px flask in a tinted cell plus a
-vertical wordmark that says what it is without being touched. Engaged, the
-wordmark collapses and the rail unfolds **downward** into three doors, 52x153.
+At rest the rail is a **tab** — 52x56, a 26px flask in a tinted cell and
+nothing else. Engaged, it unfolds **downward** into three doors, 52x153.
+
+**There is no wordmark.** One existed and was removed: it solved a
+first-encounter problem with a permanent solution, and a vertical "DEMO" on
+every screen of a government portal draws attention to scaffolding. The label
+is a tooltip on hover and focus instead — quiet at rest, self-describing on
+approach.
+
+**While the panel is open the flask becomes a cross**, and that is not a
+second close button competing with the panel's own. The lead IS the
+open/close toggle, so while open its affordance genuinely is "close" and it
+should say so — the reasoning that turns a hamburger into an X. Both glyphs
+share one grid cell and cross-fade with a quarter turn.
+
+**The two doors indicate the active tab** — `aria-current`, not
+`aria-selected`, because they are buttons that open a dialog rather than tabs
+in a tablist. That is what stops the rail and the tab strip being two
+navigations competing for one set of destinations. Sign in has no door and
+lights nothing, correctly.
+
+**The liquid in the flask moves permanently**; the bubbles and the wobble are
+the state signals. A still flask reads as a picture of a flask rather than a
+thing that is running. The wobble answers a hover of the WHOLE RAIL, not of
+the flask alone, because the rail is one object and the flask is its face.
 
 1. **The flask is the anchor and must not move.** The container is anchored by
    its `top` (not centred, which would slide the flask up as the drawer grows)

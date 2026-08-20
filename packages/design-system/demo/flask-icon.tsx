@@ -46,8 +46,8 @@
  * | State | What moves | What it says |
  * |---|---|---|
  * | Appear | one damped rock, then still | the tool is here |
- * | Rest | nothing | idle; a FAB that fidgets is noise |
- * | Hover / focus | bubbles rise, liquid sloshes | this is interactive |
+ * | Rest | the liquid sloshes | the tool is running, not a picture of one |
+ * | Hover / focus | the flask rocks, bubbles rise | this is interactive |
  * | Press | (the FAB's own squash) | the click landed |
  * | Open | faster bubbles, liquid rises, flask tips | the tool is running |
  *
@@ -138,13 +138,15 @@ export function FlaskIcon({
         </clipPath>
       </defs>
 
-      {/* One wrapper, carrying the entrance rock. There were two: the inner
-          one existed only so the same keyframes could be re-triggered on
-          hover, since an animation cannot be restarted by re-matching its
-          name on the same element. The hover rock was removed as too
-          frequent to be worth animating, so the node it required went with
-          it rather than staying as structure that does nothing. */}
+      {/* Two wrappers, one rock each. An animation cannot be RESTARTED by
+          re-matching its name on the same element, so the entrance swing and
+          a repeatable hover swing cannot share a node. `__body` owns the
+          entrance; `__rock` owns the hover and is driven by the consumer's
+          own selector, because only the consumer knows what "hovering the
+          widget" means. Nested transforms multiply, so the two compose if a
+          pointer arrives mid-entrance. */}
       <g className="ds-flask__body">
+      <g className="ds-flask__rock">
       <g clipPath={`url(#${clipId})`}>
         {/* Liquid. Four wavelengths (48 units) spanning x = -12 to 36, so
             the wave still covers the whole 0–24 viewBox at the far end of
@@ -203,6 +205,7 @@ export function FlaskIcon({
       >
         <path d="M8.8 3.4 H15.2" />
         <path d="M10.3 3.4 V9.56 A5.6 5.6 0 1 0 13.7 9.56 V3.4" />
+      </g>
       </g>
       </g>
     </svg>
