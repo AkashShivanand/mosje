@@ -495,7 +495,26 @@
   width: var(--ds-chatbot-width);
   max-width: calc(100vw - (var(--ds-chatbot-gap) * 2));
   height: var(--ds-chatbot-height);
-  max-height: calc(100dvh - var(--ds-chatbot-launcher) - (var(--ds-chatbot-gap) * 3));
+  /*
+   * THE CAP HAS TO KNOW WHERE THE LAUNCHER ACTUALLY IS.
+   *
+   * This used to read `100dvh - launcher - gap*3`, which silently assumes the
+   * launcher is sitting at its resting offset. It is not: `--sa-corner-rail-bottom`
+   * lifts it clear of whatever occupies the corner, and on the live website the
+   * cookie bar pushes it to 261px. The panel is anchored to the launcher, so
+   * every pixel the rail lifts is a pixel the panel runs off the TOP of the
+   * screen — measured at y = -117 on production, which put the header, the
+   * assistant's name and BOTH the expand and close controls out of reach.
+   *
+   * The available room is the viewport minus where the launcher sits, minus the
+   * launcher, minus the gap the panel keeps above it, minus breathing room at
+   * the top. Derived from the same custom property the launcher is positioned
+   * by, so the two cannot disagree again.
+   */
+  max-height: calc(
+    100dvh - var(--sa-corner-rail-bottom, 32px) - var(--ds-chatbot-launcher) -
+      var(--sa-stack-8) - var(--ds-chatbot-gap)
+  );
   overflow: hidden;
   border-radius: var(--sa-shape-16);
   background: var(--sa-bg-neutral-base);
@@ -1080,9 +1099,14 @@
 
 .ds-chatbot__panel[data-expanded] {
   width: min(560px, calc(100vw - (var(--ds-chatbot-gap) * 2)));
+  /* Same correction as the cap above: expanding must not reintroduce the
+     overflow the cap exists to prevent. */
   height: min(
     820px,
-    calc(100dvh - var(--ds-chatbot-launcher) - (var(--ds-chatbot-gap) * 3))
+    calc(
+      100dvh - var(--sa-corner-rail-bottom, 32px) - var(--ds-chatbot-launcher) -
+        var(--sa-stack-8) - var(--ds-chatbot-gap)
+    )
   );
   transition:
     opacity var(--ds-chatbot-enter) var(--ds-chatbot-ease),
