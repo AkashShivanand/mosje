@@ -1,0 +1,328 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — SiteFooter (the public-website footer)
+
+   THE COLOUR CONTRACT — read this before changing any value below.
+
+   Every colour in this file resolves from ONE mode-aware family:
+   `--sa-color-primaryScale-*`, which each `[data-brand]` block in tokens.css
+   re-points at that brand's own ramp. Bind here and the footer repaints itself
+   for `blue`, `navy`, `dbim` and the five DBIM hues with no work at this layer.
+
+   That is the fix for the defect this file replaces: the old footer painted
+   `bg-navy`, a Tailwind utility pinned to a LITERAL (`#13366b`) in the
+   portal-only `@theme` block of the hub's globals.css. A literal cannot answer
+   to `data-brand`, so the footer was the one surface on the estate that could
+   not be re-toned — and it was two rungs off DBIM's key colour besides.
+
+   THE THREE BANDS ARE ROLES, NOT TINTS
+     · footer-bg       rung 800  — the key colour. DBIM 5.6's mandated ground.
+     · footer-bg-deep  rung 900  — the statutory bar: lineage, policy, credit.
+     · footer-rule     rung 600  — hairlines, same hue, never a white alpha.
+
+   INK IS SAME-HUE, NEVER WHITE-ALPHA
+   `rgba(255,255,255,.8)` on a coloured ground desaturates to a dirty grey and
+   reads as washed out. The ramp's own 100 and 200 rungs stay in the family and
+   measure BETTER: worst case across all modes is 6.18:1 (blue, rung 200),
+   against the 4.5:1 that AA asks for.
+   ============================================================================ */
+
+.ds-sitefooter {
+  /* --- the band roles ---------------------------------------------------- */
+  --ds-footer-bg: var(--sa-bg-brand-primary-boldest);
+  --ds-footer-bg-deep: var(--sa-color-primaryScale-900);
+  --ds-footer-rule: var(--sa-color-primaryScale-600);
+
+  /* --- the ink ladder: three levels, one hue ----------------------------- */
+  --ds-footer-ink: var(--sa-on-bg-brand-primary-boldest);
+  --ds-footer-ink-muted: var(--sa-color-primaryScale-100);
+  --ds-footer-ink-dim: var(--sa-color-primaryScale-200);
+
+  /* --- the one raised surface: the CTA ----------------------------------- */
+  --ds-footer-cta-bg: var(--sa-on-bg-brand-primary-boldest);
+  --ds-footer-cta-ink: var(--sa-bg-brand-primary-boldest);
+
+  --ds-footer-max: 1280px;
+
+  background-color: var(--ds-footer-bg);
+  color: var(--ds-footer-ink);
+  font-family: var(--sa-font-latin);
+}
+
+.ds-sitefooter__in {
+  max-width: var(--ds-footer-max);
+  margin-inline: auto;
+  padding-inline: var(--sa-padding-24);
+}
+
+/* ── Band 1 · the working footer ─────────────────────────────────────────── */
+
+.ds-sitefooter__body {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--sa-stack-32) var(--sa-padding-24);
+  padding-block: var(--sa-padding-40);
+}
+
+.ds-sitefooter__ident {
+  grid-column: span 12;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-20);
+}
+
+.ds-sitefooter__cols {
+  grid-column: span 12;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sa-stack-24) var(--sa-padding-20);
+}
+
+@media (min-width: 640px) {
+  .ds-sitefooter__cols { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .ds-sitefooter__body { gap: var(--sa-stack-32) var(--sa-padding-40); }
+  .ds-sitefooter__ident { grid-column: span 4; }
+  .ds-sitefooter__cols { grid-column: span 8; }
+}
+
+/* ── The identity lockup ─────────────────────────────────────────────────── */
+
+.ds-sitefooter__lockup {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sa-padding-12);
+}
+
+.ds-sitefooter__lockup-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-2);
+  line-height: 1.35;
+}
+
+.ds-sitefooter__org {
+  margin: 0;
+  font-size: var(--sa-type-body-2-size);
+  color: var(--ds-footer-ink-muted);
+}
+
+.ds-sitefooter__org--lead {
+  font-weight: 700;
+  color: var(--ds-footer-ink);
+}
+
+.ds-sitefooter__address {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sa-padding-8);
+  margin: 0;
+  font-style: normal;
+  font-size: var(--sa-type-body-2-size);
+  line-height: 1.5;
+  color: var(--ds-footer-ink-muted);
+}
+
+.ds-sitefooter__address .ds-icon { flex: none; opacity: 0.75; }
+
+/* ── The single call to action ───────────────────────────────────────────── */
+
+.ds-sitefooter__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sa-padding-8);
+  align-self: flex-start;
+  padding: var(--sa-padding-8) var(--sa-padding-16);
+  border-radius: var(--sa-shape-6);
+  background-color: var(--ds-footer-cta-bg);
+  color: var(--ds-footer-cta-ink);
+  font-size: var(--sa-type-body-2-size);
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+}
+
+.ds-sitefooter__cta:hover { opacity: 0.88; }
+
+/* ── Link columns ────────────────────────────────────────────────────────── */
+
+.ds-sitefooter__colhead {
+  margin: 0 0 var(--sa-stack-12);
+  font-size: var(--sa-type-body-2-size);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ds-footer-ink);
+}
+
+.ds-sitefooter__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-sitefooter__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-padding-4);
+  font-size: var(--sa-type-body-2-size);
+  line-height: 1.45;
+  color: var(--ds-footer-ink-muted);
+  text-decoration: none;
+  transition: color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+}
+
+.ds-sitefooter__link:hover {
+  color: var(--ds-footer-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ds-sitefooter__link .ds-icon { opacity: 0.7; }
+
+/* ── Social rail ─────────────────────────────────────────────────────────── */
+
+.ds-sitefooter__social {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sa-padding-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-sitefooter__social-link {
+  /* 40px control around a 24px glyph: DBIM 3.7 for the icon, WCAG 2.5.8 for
+     the target, and room for the focus ring to sit clear of the neighbour. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--sa-shape-full);
+  border: 1px solid var(--ds-footer-rule);
+  color: var(--ds-footer-ink);
+  transition:
+    background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+    border-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+}
+
+.ds-sitefooter__social-link:hover {
+  background-color: var(--ds-footer-rule);
+  border-color: var(--ds-footer-ink-dim);
+}
+
+.ds-sitefooter__social-link svg { width: 24px; height: 24px; fill: currentColor; }
+
+/* ── Band 2 · the statutory bar ──────────────────────────────────────────── */
+
+.ds-sitefooter__statutory {
+  background-color: var(--ds-footer-bg-deep);
+  border-top: 1px solid var(--ds-footer-rule);
+}
+
+.ds-sitefooter__statutory .ds-sitefooter__in {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-16);
+  padding-block: var(--sa-padding-20);
+}
+
+/* Lineage sentence + the two credit logos share one row on wide screens. */
+.ds-sitefooter__lineage-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-stack-12) var(--sa-padding-24);
+}
+
+.ds-sitefooter__lineage {
+  margin: 0;
+  max-width: 68ch;
+  font-size: var(--sa-type-body-2-size);
+  line-height: 1.5;
+  color: var(--ds-footer-ink-muted);
+}
+
+.ds-sitefooter__credits {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sa-padding-12);
+  font-size: var(--sa-type-body-3-size);
+  color: var(--ds-footer-ink-dim);
+}
+
+.ds-sitefooter__credit-link { display: inline-flex; align-items: center; }
+
+/* Normalise the credit marks to ONE optical height. Left to their intrinsic
+   aspect ratios the NeGD and Digital India SVGs rendered 31px and 44px tall on
+   the same row, which read as a misalignment rather than as two logos. */
+.ds-sitefooter__credit-link img {
+  height: 30px;
+  width: auto;
+}
+
+/* Policy + related links: two labelled inline navs on one rule-separated row. */
+.ds-sitefooter__inline-navs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-8);
+  padding-top: var(--sa-padding-12);
+  border-top: 1px solid var(--ds-footer-rule);
+}
+
+.ds-sitefooter__inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sa-stack-4) var(--sa-padding-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-sitefooter__inline-label {
+  flex: none;
+  font-size: var(--sa-type-label-3-size);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-footer-ink-dim);
+}
+
+/* Colophon: LEFT-ALIGNED as one group, deliberately not `space-between`.
+   Pushing "Last Updated" to the right edge parked a DBIM-mandated element
+   underneath the fixed Important Links rail at common desktop widths. Keeping
+   both statements together also reads as one provenance line rather than two
+   unrelated corners. */
+.ds-sitefooter__colophon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sa-stack-4) var(--sa-padding-16);
+  padding-top: var(--sa-padding-12);
+  border-top: 1px solid var(--ds-footer-rule);
+  font-size: var(--sa-type-body-3-size);
+  color: var(--ds-footer-ink-dim);
+}
+
+.ds-sitefooter__colophon p { margin: 0; }
+.ds-sitefooter__colophon time { font-variant-numeric: tabular-nums; }
+
+/* ── Focus — one ring, every control ─────────────────────────────────────── */
+
+.ds-sitefooter :is(a, button):focus-visible {
+  outline: 2px solid var(--ds-footer-ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-sitefooter * { transition-duration: 1ms !important; }
+}

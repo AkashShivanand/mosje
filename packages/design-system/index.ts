@@ -174,6 +174,10 @@ export { MetricCard } from "./components/data-display/metric-card";
 export type { MetricCardProps, MetricCardSize, MetricCardChange } from "./components/data-display/metric-card";
 export { DataTable } from "./components/data-display/data-table";
 export type { DataTableProps, DataTableColumn } from "./components/data-display/data-table";
+// VisitorCounter — the footer's "Total Visits" figure. MOCK DATA by design:
+// derived from a seeded baseline, not measured. See the component's own note.
+export { VisitorCounter } from "./components/data-display/visitor-counter";
+export type { VisitorCounterProps } from "./components/data-display/visitor-counter";
 export { ApprovalTimeline } from "./components/data-display/approval-timeline";
 export type {
   ApprovalTimelineProps,
@@ -284,6 +288,18 @@ export type {
 // Footer — slim dark-navy app-shell footer (UX4G / NeGD credit + policy links).
 export { Footer } from "./components/navigation/footer";
 export type { FooterProps, FooterLink } from "./components/navigation/footer";
+
+// SiteFooter — the PUBLIC-WEBSITE footer: two bands, statutory content, DBIM
+// 5.6 elements. Structural and slot-driven; content arrives as props. Distinct
+// from `Footer` above, which is portal app-shell chrome.
+export { SiteFooter } from "./components/navigation/site-footer";
+export type {
+  SiteFooterProps,
+  SiteFooterLink,
+  SiteFooterColumn,
+  SiteFooterSocial,
+  SiteFooterCredit,
+} from "./components/navigation/site-footer";
 
 // AppSwitcherPanel — the searchable cross-zone content, reused by DemoDock's
 // Apps tab. The interactive component lives in a "use client" module. (The

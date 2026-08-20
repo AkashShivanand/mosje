@@ -1,0 +1,36 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — VisitorCounter
+
+   Inherits its colours from whatever band it sits in (the footer sets
+   `--ds-footer-ink*`); falls back to the ambient text colour elsewhere, so the
+   component can be dropped on a light surface without carrying a dark-only
+   palette with it.
+   ============================================================================ */
+
+.ds-visits {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-padding-6);
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-body-2-size);
+  line-height: 1.4;
+  color: var(--ds-footer-ink-muted, currentColor);
+}
+
+.ds-visits__icon {
+  flex: none;
+  opacity: 0.75;
+}
+
+.ds-visits__label::after {
+  content: ":";
+}
+
+.ds-visits__value {
+  /* Tabular figures so the count does not shift the line as digits change. */
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--ds-footer-ink, currentColor);
+  /* Reserve the widest plausible figure so the first tick cannot reflow the row. */
+  min-width: 7ch;
+}

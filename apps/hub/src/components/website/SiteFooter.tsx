@@ -1,47 +1,40 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Icon } from "@mosje/design-system";
+import {
+  SiteFooter as DsSiteFooter,
+  VisitorCounter,
+  type SiteFooterColumn,
+  type SiteFooterCredit,
+  type SiteFooterLink,
+  type SiteFooterSocial,
+} from "@mosje/design-system";
 import { getContentSyncedDate } from "@/lib/website/content";
 
 /*
- * DS Audit — SiteFooter
- *   Icon                ✅ existing  · @mosje/design-system (Material Symbols Rounded 300)
- *   Link / Image        ✅ existing  · next/link, next/image
- *   Brand + social SVGs ✅ existing  · inline SVGs per CLAUDE.md (brand marks are not Icon glyphs)
- *   Footer (DS)         ⛔ not used  · the DS `Footer` is the slim single-band *app-shell* footer
- *                                      for portals. This is the content-bound public-website
- *                                      footer (MoSJE routes, address, lineage); it composes DS
- *                                      primitives rather than duplicating the shell component.
+ * DS Audit — website SiteFooter
+ *   SiteFooter      ➕ ADDED to the DS  · packages/design-system/components/navigation/site-footer
+ *   VisitorCounter  ➕ ADDED to the DS  · packages/design-system/components/data-display/visitor-counter
+ *   Icon            ✅ existing         · used inside the DS component
+ *   Link / Image    ✅ existing         · injected here so the DS stays framework-agnostic
  *
- * COMPLIANCE NOTES
- *   [DBIM 5.6]  Footer background is the darkest shade of the key colour group
- *               (`--sa-color-brand-navy` via `bg-navy`). The bottom bar deepens the same
- *               colour with `bg-black/15` instead of the previous *lighter* `bg-primary-dark`,
- *               which violated "darkest shade".
- *   [DBIM 5.6]  Required elements present: Website Policies, Sitemap, Related Links, Help,
- *               Feedback, Last Updated On, Social Media Links, hyperlinked lineage logos.
- *               "Archives" is listed by DBIM as optional and has no page on this estate yet.
- *   [DBIM 5.6]  Lineage statement uses the mandated Central-Government-Department wording.
- *   [DBIM 3.7]  Icons are inclusive white; social glyphs render at 24px (a DBIM icon size)
- *               inside 40px controls so the hit area also clears WCAG 2.2 §2.5.8.
- *   [WCAG AA]   Every muted tone is >= white/70 on navy (>= 6.9:1). white/50 (4.27:1) is gone.
- *   [WCAG 2.4.7 / 2.4.11]  Every interactive element carries a visible focus ring.
- *   [GIGW]      External links open in a new window and say so to screen readers.
+ * This file is now CONTENT ONLY. Every structural and visual decision lives in
+ * the DS component; what remains here is the MoSJE link graph, the addresses,
+ * the brand marks and the statutory sentences. That split is the point: a
+ * second site in the estate gets the same footer by passing its own content.
+ *
+ * COLOUR — nothing here sets one. The DS component binds to
+ * `--sa-color-primaryScale-*`, so the footer follows `data-brand` across blue,
+ * navy, dbim and the five DBIM hues. The previous version painted `bg-navy`,
+ * a literal that could not answer to the brand mode at all.
+ *
+ * DBIM 5.6 element coverage, all present below:
+ *   Website Policy · Sitemap · Related Links · Help · Feedback · Last Updated On
+ *   Social Media Links (optional) · hyperlinked lineage logos · lineage sentence
+ * "Archives" is DBIM-optional and has no page on this estate; recorded as a
+ * known gap in docs/guidelines rather than linked to something it is not.
  */
 
-interface FooterLink {
-  label: string;
-  href: string;
-}
-
-interface FooterColumn {
-  heading: string;
-  /** Stable id so the <nav> can be labelled BY the visible heading, not a duplicate string. */
-  id: string;
-  links: FooterLink[];
-}
-
-const columns: FooterColumn[] = [
+const columns: SiteFooterColumn[] = [
   {
     heading: "Department",
     id: "footer-department",
@@ -84,34 +77,27 @@ const columns: FooterColumn[] = [
   },
 ];
 
-/** [DBIM 5.6] "Related Links" — hyperlinks to other government platforms. All external. */
-const relatedLinks: FooterLink[] = [
-  { label: "National Portal of India", href: "https://www.india.gov.in/" },
-  { label: "MyGov", href: "https://www.mygov.in/" },
-  { label: "Open Government Data", href: "https://data.gov.in/" },
-  { label: "Digital India", href: "https://www.digitalindia.gov.in/" },
-  { label: "Grievance Redressal (CPGRAMS)", href: "https://pgportal.gov.in/" },
+/** [DBIM 5.6] Related Links. Also carries the GIGW-mandated india.gov.in link. */
+const relatedLinks: SiteFooterLink[] = [
+  { label: "National Portal of India", href: "https://www.india.gov.in/", external: true },
+  { label: "MyGov", href: "https://www.mygov.in/", external: true },
+  { label: "Open Government Data", href: "https://data.gov.in/", external: true },
+  { label: "Digital India", href: "https://www.digitalindia.gov.in/", external: true },
+  { label: "CPGRAMS", href: "https://pgportal.gov.in/", external: true },
 ];
 
-/** [DBIM 5.6] Website Policies + Help + Feedback + Sitemap. */
-const policyLinks: FooterLink[] = [
+/** [DBIM 5.6] Website Policy + Help + Feedback + Sitemap. */
+const policyLinks: SiteFooterLink[] = [
   { label: "Terms & Conditions", href: "/website/terms-conditions" },
   { label: "Privacy Policy", href: "/website/privacy-policy" },
-  { label: "Copyright Policy", href: "/website/copyright" },
-  { label: "Hyperlinking Policy", href: "/website/hyperlinking-policy" },
-  { label: "Accessibility Statement", href: "/website/accessibility" },
+  { label: "Copyright", href: "/website/copyright" },
+  { label: "Hyperlinking", href: "/website/hyperlinking-policy" },
+  { label: "Accessibility", href: "/website/accessibility" },
   { label: "Feedback", href: "/website/contact-us#feedback" },
-  { label: "Help & Support", href: "/website/contact-us" },
   { label: "Sitemap", href: "/website/sitemap" },
 ];
 
-interface SocialLink {
-  label: string;
-  href: string;
-  path: string;
-}
-
-const socialLinks: SocialLink[] = [
+const social: SiteFooterSocial[] = [
   {
     label: "Facebook",
     href: "https://www.facebook.com/goimsje",
@@ -139,258 +125,76 @@ const socialLinks: SocialLink[] = [
   },
 ];
 
-/**
- * Focus ring shared by every footer control. White at full strength on the navy
- * ground (11.9:1) so it clears WCAG 2.2 §1.4.11 non-text contrast on its own.
- *
- * NO radius utility here, deliberately. It carried `rounded-sm` briefly, and because
- * this string is appended last, that 6px beat the `rounded-full` on the social
- * buttons and turned all five circles into squircles. The outline follows each
- * element's own border-radius anyway, so the ring never needed one.
- */
-const focusRing =
-  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
+/** [DBIM 5.6] "Hyperlinked logos" — the maintainer and the platform. */
+const credits: SiteFooterCredit[] = [
+  {
+    src: "/website/images/NeGD-Logo.svg",
+    alt: "National e-Governance Division (NeGD)",
+    href: "https://negd.gov.in/",
+    width: 78,
+    height: 34,
+  },
+  {
+    prefix: "Powered by",
+    src: "/website/images/Digital-India-White.svg",
+    alt: "Digital India",
+    href: "https://www.digitalindia.gov.in/",
+    width: 78,
+    height: 34,
+  },
+];
 
-/** Marks an external destination for assistive tech without adding visual noise. */
-function NewWindowNote() {
-  return <span className="sr-only"> (opens in a new window)</span>;
-}
+/**
+ * [DBIM 5.6] The lineage sentence, in the mandated Central-Government-Department
+ * form. The live site's "Contents owned and managed by…" states ownership but is
+ * not this sentence, so both are carried: lineage here, ownership in the credits.
+ */
+const LINEAGE =
+  "This website belongs to the Department of Social Justice & Empowerment, " +
+  "Ministry of Social Justice & Empowerment, Government of India. Developed and " +
+  "maintained by Digital India Corporation, MeitY.";
 
 export interface SiteFooterProps {
   /**
-   * [DBIM 5.6] "Last Updated On" — "the latest date of content updation of the
-   * RESPECTIVE page", so `PageLayout` hands down the page's own stamp and the
-   * footer only falls back to the estate-wide content sync date. Without this the
-   * footer contradicted the page hero, which shows the per-page date already.
+   * [DBIM 5.6] "Last Updated On" must reflect the RESPECTIVE page, so
+   * `PageLayout` passes the page's own stamp down. Falls back to the
+   * estate-wide content sync date on pages that carry no hero.
    */
   lastUpdated?: string;
 }
 
 export function SiteFooter({ lastUpdated }: SiteFooterProps = {}) {
-  const updatedOn = lastUpdated ?? getContentSyncedDate();
-  const year = new Date().getFullYear();
-
   return (
-    <footer className="bg-navy text-white">
-      <h2 className="sr-only">Site footer</h2>
-
-      {/* SUPPORT BAND — mirrors the "Need Support?" strip on dosje.gov.in */}
-      <div className="border-b border-white/15">
-        <div className="sa-container flex flex-col gap-4 py-8 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h3 className="text-lg font-semibold text-white">Need Support?</h3>
-            <p className="mt-1 text-sm text-white/80">
-              Reach out to us and we will get back to you!
-            </p>
-          </div>
-          {/*
-            White fill, navy label. `bg-primary` on navy only reached 2.72:1 against the
-            footer ground and failed WCAG 1.4.11; white reaches 12.6:1 and is the
-            DBIM-sanctioned "inclusive white" treatment on the key colour. [DBIM 3.7]
-          */}
-          <Link
-            href="/website/contact-us"
-            className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-navy transition-colors hover:bg-white/90 ${focusRing}`}
-          >
-            Get in Touch
-            <Icon name="arrow_forward" size={20} />
-          </Link>
-        </div>
-      </div>
-
-      {/* MAIN BAND */}
-      <div className="sa-container py-12">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-12">
-          {/* Brand · address · social */}
-          <div className="lg:col-span-4">
-            <div className="flex items-start gap-3">
-              <Image
-                src="/website/images/National_Emblem_logo_white.svg"
-                alt="National Emblem of India"
-                width={42}
-                height={56}
-                className="h-14 w-auto shrink-0"
-              />
-              <div className="leading-tight">
-                <p className="text-sm text-white/80">Government of India</p>
-                <p className="text-sm text-white/80">
-                  Ministry of Social Justice &amp; Empowerment
-                </p>
-                <p className="text-sm font-bold text-white">
-                  Department of Social Justice &amp; Empowerment
-                </p>
-              </div>
-            </div>
-
-            <address className="mt-6 flex items-start gap-2 text-sm not-italic leading-relaxed text-white/80">
-              <Icon name="location_on" size={20} className="mt-px shrink-0" />
-              <span>8th Floor, GPOA-3, Netaji Nagar, New Delhi – 110023</span>
-            </address>
-
-            <nav aria-label="Social media" className="mt-6">
-              <ul className="flex flex-wrap items-center gap-3">
-                {socialLinks.map((social) => (
-                  <li key={social.label}>
-                    <a
-                      href={social.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/25 ${focusRing}`}
-                    >
-                      <svg
-                        className="h-6 w-6"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                        focusable="false"
-                      >
-                        <path d={social.path} />
-                      </svg>
-                      <span className="sr-only">
-                        {social.label}
-                        <NewWindowNote />
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-
-          {/* Link columns */}
-          {columns.map((column) => (
-            <nav key={column.id} aria-labelledby={column.id} className="lg:col-span-2">
-              <h3 id={column.id} className="font-semibold text-white">
-                {column.heading}
-              </h3>
-              <ul className="mt-4 space-y-2.5">
-                {column.links.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className={`text-sm text-white/80 transition-colors hover:text-white hover:underline ${focusRing}`}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
-        </div>
-
-        {/* RELATED LINKS — [DBIM 5.6] required element; also carries the GIGW-mandated
-            india.gov.in link on every page of the estate. */}
-        <nav
-          aria-labelledby="footer-related"
-          className="mt-10 border-t border-white/15 pt-8"
-        >
-          <h3 id="footer-related" className="font-semibold text-white">
-            Related Links
-          </h3>
-          <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2.5">
-            {relatedLinks.map((link) => (
-              <li key={link.label}>
-                <a
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`inline-flex items-center gap-1 text-sm text-white/80 transition-colors hover:text-white hover:underline ${focusRing}`}
-                >
-                  {link.label}
-                  <Icon name="open_in_new" size={16} />
-                  <NewWindowNote />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {/* ATTRIBUTION — hyperlinked lineage logos [DBIM 5.6] */}
-        <div className="mt-8 flex flex-col items-start gap-6 border-t border-white/15 pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-sm text-white/80">
-            <p>Developed &amp; Maintained by</p>
-            <p className="font-medium text-white">
-              Digital India Corporation, Ministry of Electronics &amp; IT (MeitY),
-              Government of India
-            </p>
-          </div>
-          <div className="flex shrink-0 flex-wrap items-center gap-6">
-            <a
-              href="https://negd.gov.in/"
-              target="_blank"
-              rel="noreferrer"
-              className={`inline-flex ${focusRing}`}
-            >
-              <Image
-                src="/website/images/NeGD-Logo.svg"
-                alt="National e-Governance Division (NeGD)"
-                width={90}
-                height={40}
-                className="h-10 w-auto"
-              />
-              <NewWindowNote />
-            </a>
-            <span className="flex items-center gap-3 text-sm text-white/80">
-              Powered by
-              <a
-                href="https://www.digitalindia.gov.in/"
-                target="_blank"
-                rel="noreferrer"
-                className={`inline-flex ${focusRing}`}
-              >
-                <Image
-                  src="/website/images/Digital-India-White.svg"
-                  alt="Digital India"
-                  width={90}
-                  height={40}
-                  className="h-10 w-auto"
-                />
-                <NewWindowNote />
-              </a>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* BOTTOM BAR — the same key colour, deepened. Never a lighter blue. [DBIM 5.6] */}
-      <div className="border-t border-white/15 bg-black/15">
-        <div className="sa-container py-6">
-          {/* [DBIM 5.6] Lineage statement, Central Government Department wording. */}
-          <p className="text-sm text-white/80">
-            This website belongs to the Department of Social Justice &amp; Empowerment,
-            Ministry of Social Justice &amp; Empowerment, Government of India.
-          </p>
-
-          <nav aria-label="Website policies" className="mt-4">
-            <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-              {policyLinks.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className={`text-white/80 transition-colors hover:text-white hover:underline ${focusRing}`}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="mt-5 flex flex-col gap-2 border-t border-white/10 pt-4 text-sm text-white/80 md:flex-row md:items-center md:justify-between">
-            {/* One interpolated string, not `© {year} Department…` — JSX dropped the
-                space between the expression and the following text node, which shipped
-                as "© 2026Department". */}
-            <p>{`© ${year} Department of Social Justice & Empowerment. All Rights Reserved.`}</p>
-            {/* [DBIM 5.6 · GIGW] "Last Updated On" is a mandatory footer element. */}
-            {updatedOn && (
-              <p>
-                Last Updated: <time>{updatedOn}</time>
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-    </footer>
+    <DsSiteFooter
+      linkAs={Link}
+      emblem={
+        <Image
+          src="/website/images/National_Emblem_logo_white.svg"
+          alt="National Emblem of India"
+          width={42}
+          height={56}
+          /* 56px so the emblem's optical height matches the three-line
+             organisation block beside it. [DBIM 5.1] — correct proportion,
+             never scaled disproportionately. */
+          className="h-14 w-auto shrink-0"
+        />
+      }
+      organisation={[
+        "Government of India",
+        "Ministry of Social Justice & Empowerment",
+        "Department of Social Justice & Empowerment",
+      ]}
+      address="8th Floor, GPOA-3, Netaji Nagar, New Delhi - 110023"
+      cta={{ label: "Get in Touch", href: "/website/contact-us" }}
+      social={social}
+      aside={<VisitorCounter />}
+      columns={columns}
+      lineage={LINEAGE}
+      credits={credits}
+      policyLinks={policyLinks}
+      relatedLinks={relatedLinks}
+      copyright={`© ${new Date().getFullYear()} Department of Social Justice & Empowerment. All Rights Reserved.`}
+      lastUpdated={lastUpdated ?? getContentSyncedDate()}
+    />
   );
 }
