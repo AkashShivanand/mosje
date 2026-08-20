@@ -63,14 +63,14 @@
      ~1306px this resolves back to the normal padding, so wide layouts are
      untouched rather than permanently lopsided.
 
-     `--ds-wall-rail` is a WIDTH, which the ds-linkage rule classes as
-     geometry the token scales do not model. If the rail is ever resized,
-     this is the number to change with it. */
-  --ds-wall-rail: 40px;
+     The rail's width comes from `--sa-wall-rail` in foundations/layout.css —
+     one number, read here rather than restated, so resizing the rail moves
+     the page container and this footer together. The fallback keeps the
+     component standalone in Storybook, where layout.css may not be loaded. */
   --ds-wall-gutter: max(0px, calc((100cqw - var(--ds-footer-max)) / 2));
   --ds-wall-clearance: max(
     var(--sa-padding-24),
-    calc(var(--ds-wall-rail) + var(--sa-padding-8) - var(--ds-wall-gutter))
+    calc(var(--sa-wall-rail, 40px) + var(--sa-padding-8) - var(--ds-wall-gutter))
   );
 
   container-type: inline-size;

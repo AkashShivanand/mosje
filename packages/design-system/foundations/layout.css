@@ -64,3 +64,54 @@
     padding-inline: var(--sa-grid-margin-desktop);
   }
 }
+
+/* ----------------------------------------------------------------------------
+   Clearing the right-wall rail.
+
+   The estate parks fixed widgets on the right wall — on the website that is
+   `ImportantLinks`, marked `data-sa-wall-occupant`. It is `position: fixed;
+   right: 0`, so it overlays the last ~37px of the VIEWPORT at every scroll
+   position, on top of whatever the page put there.
+
+   `.sa-container` reserves 16 / 24 / 32px by breakpoint, so measured against a
+   37px rail the content ran underneath it by:
+
+       < 768px    21px    (16px margin)
+       < 1280px   13px    (24px margin)
+       >= 1280px   0px    the 1200 cap plus 32px margin already clears it
+
+   So one override at the existing 1280 anchor covers the whole range exactly,
+   and no arithmetic on `100vw` is needed — which matters, because `100vw`
+   includes the classic scrollbar and a vw-based reservation would come up half
+   a scrollbar short on Windows while looking correct on macOS, where overlay
+   scrollbars hide the mistake.
+
+   SCOPED TO THE WEBSITE ON PURPOSE. The walls are inverted between zones — see
+   `foundations/wall-rail.ts`. Docs and portals keep a free right wall and a
+   full-height left sidebar, so reserving a right gutter there would indent
+   every page against nothing.
+
+   `--sa-wall-rail` is a WIDTH, which `.claude/rules/documentation-ds-linkage.md`
+   classes as geometry the token scales do not model. It is the one number to
+   change if the rail is ever resized; `ImportantLinks` and `site-footer.css`
+   both read it rather than restating it.
+   -------------------------------------------------------------------------- */
+
+:root {
+  --sa-wall-rail: 40px;
+  /* The rail plus a hair of breathing room, so content stops beside it rather
+     than against it. */
+  --sa-wall-clearance: calc(var(--sa-wall-rail) + var(--sa-padding-8));
+}
+
+[data-site="website"] .sa-container {
+  padding-inline-end: var(--sa-wall-clearance);
+}
+
+@media (min-width: 1280px) {
+  /* The gutter absorbs the rail from here up, so the container goes back to a
+     symmetric margin rather than staying permanently lopsided. */
+  [data-site="website"] .sa-container {
+    padding-inline-end: var(--sa-grid-margin-desktop);
+  }
+}
