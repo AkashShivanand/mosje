@@ -182,11 +182,11 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
     title = CHATBOT_NAME,
     subtitle = CHATBOT_NAME_HI,
     endChatLabel = "End chat",
-    note = "Samajik Sahayak points you to the right portal — it cannot decide or change an application.",
+    note = "Samajik Sahayak points you to the right portal. It cannot decide or change an application.",
     composer = true,
     composerPlaceholder = "Type something…",
     onSubmit,
-    launcherLabel = `${CHATBOT_NAME} — chat assistant`,
+    launcherLabel = `${CHATBOT_NAME}, chat assistant`,
     greeting = DEFAULT_GREETING,
     quickReplies,
     messages: messagesProp,
@@ -473,7 +473,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
             recoverable — see the note there.
           */}
           <header className="ds-chatbot__header">
-            <ChatbotMascot className="ds-chatbot__brand-mark" size={30} />
+            <ChatbotMascot className="ds-chatbot__brand-mark" size={40} />
             <span className="ds-chatbot__brand">
               <h2 className="ds-chatbot__title" id={titleId}>
                 {title}
@@ -647,7 +647,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
         className="ds-chatbot__launcher"
         data-state={open ? "open" : "closed"}
         aria-label={
-          unread > 0 ? `${launcherLabel} — ${unread} new message` : launcherLabel
+          unread > 0 ? `${launcherLabel}, ${unread} new message` : launcherLabel
         }
         aria-expanded={open}
         onClick={handleLauncher}

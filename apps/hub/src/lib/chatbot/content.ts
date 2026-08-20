@@ -46,7 +46,7 @@ const ANSWERS: Record<string, ChatbotReply> = {
   },
   student: {
     text:
-      "Scholarships are handled portal by portal — Pre-Matric, Post-Matric, Top Class Education and the National Overseas Scholarship each have their own. The Portals page lists all of them with what each one covers.",
+      "Scholarships are handled portal by portal. Pre-Matric, Post-Matric, Top Class Education and the National Overseas Scholarship each have their own, and the Portals page lists what each one covers.",
     quickReplies: [
       { id: "documents", label: "What documents do I need?" },
       { id: "status", label: "Check my application status" },
@@ -59,7 +59,7 @@ const ANSWERS: Record<string, ChatbotReply> = {
   },
   status: {
     text:
-      "Application status lives inside the portal you applied through — sign in there with the mobile number you registered with, and it will be on your dashboard.",
+      "Application status lives inside the portal you applied through. Sign in there with the mobile number you registered with, and it will be on your dashboard.",
     quickReplies: [
       { id: "otp", label: "I'm not receiving OTP." },
       { id: "contact", label: "Something else" },
@@ -75,17 +75,17 @@ const ANSWERS: Record<string, ChatbotReply> = {
   },
   documents: {
     text:
-      "Almost every scheme asks for proof of identity, proof of income and a caste or disability certificate where the scheme is targeted. The exact list is on each scheme's own page, because it differs — go by that, not by this summary.",
+      "Almost every scheme asks for proof of identity, proof of income and a caste or disability certificate where the scheme is targeted. The exact list is on each scheme's own page, because it differs. Go by that, not by this summary.",
     quickReplies: [{ id: "status", label: "Check my application status" }],
   },
   grievance: {
     text:
-      "Grievances go through the portal that handles your scheme, and each one has a grievance section once you are signed in. Keep your application number to hand — it is what lets an officer find the case.",
+      "Grievances go through the portal that handles your scheme, and each one has a grievance section once you are signed in. Keep your application number to hand, because it is what lets an officer find the case.",
     quickReplies: [{ id: "contact", label: "Something else" }],
   },
   contact: {
     text:
-      "I can only point you at the right place — I cannot decide a case or change an application. The Contact page on the Ministry website has the helpline and the departmental email for anything beyond that.",
+      "I can only point you at the right place. I cannot decide a case or change an application; the Contact page on the Ministry website has the helpline and the departmental email for anything beyond that.",
     quickReplies: [{ id: "schemes", label: "Which scheme applies to me?" }],
   },
 };

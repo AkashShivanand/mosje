@@ -136,7 +136,16 @@
   padding: var(--sa-padding-0);
   border: 0;
   border-radius: var(--sa-shape-full);
-  background: transparent;
+  /*
+   * THE WHITE RING LIVES HERE, NOT ON THE MASCOT, AND THAT IS A BUG FIX.
+   *
+   * It used to be the mascot's own background. The mascot fades to 0 when the
+   * panel opens, so the ring went with it and the open state was a bare navy
+   * disc — which vanishes against the website's blue masthead and against the
+   * navy portal chrome. Owning it at the launcher means it survives both
+   * states and the mark is always separated from whatever is behind it.
+   */
+  background: var(--sa-bg-neutral-base);
   cursor: pointer;
   /* The button's OWN border box is the circle — 84px at `shape/full` — so a
      box-shadow casts a circle here and there is no need for `drop-shadow()`
@@ -147,10 +156,30 @@
      anything on the ladder. The ladder wins. A near-miss literal is precisely
      what stops matching the day elevation moves, and `toast` is the top rung —
      correct for the most-elevated thing on the page. */
-  box-shadow: var(--sa-elevation-toast);
-  transition:
-    transform var(--ds-chatbot-hover) ease,
-    --ds-chatbot-lift var(--ds-chatbot-hover) ease;
+  /*
+   * A CONTACT SHADOW AND A HAIRLINE, BECAUSE AMBIENT ALONE IS NOT ENOUGH.
+   *
+   * `elevation/toast` is 18% alpha at 48px blur with -12px spread — a wide,
+   * soft ambient shadow built for a card on a calm page. Over the website's
+   * photographic hero and its orange SAMAVESH band it is simply not visible,
+   * which is what "very subtle, will it be noticed" was reporting. Figma drew
+   * `0 12px 6px rgba(31,41,55,.32)`: four times denser and eight times tighter.
+   *
+   * The answer is not to abandon the ladder for that literal. A floating
+   * control needs BOTH shadows a real object casts — a wide ambient one and a
+   * tight CONTACT one directly beneath it — and the ladder has rungs for both.
+   * Layering `toast` over `raised` gives the object weight without inventing a
+   * value.
+   *
+   * The hairline is what actually does the work on a WHITE page, where no
+   * shadow can separate white-on-white. One pixel of bound colour beats any
+   * amount of blur.
+   */
+  box-shadow:
+    var(--sa-elevation-toast),
+    var(--sa-elevation-raised),
+    0 0 0 1px var(--sa-border-neutral-subtle);
+  transition: transform var(--ds-chatbot-hover) ease;
 }
 
 /*
@@ -222,7 +251,9 @@
 
 .ds-chatbot__close {
   position: absolute;
-  inset: 0;
+  /* Inset by the ring's width, so the launcher's white band shows around the
+     close state exactly as it does around the mascot. 12px of 84px. */
+  inset: 14.3%;
   display: grid;
   place-items: center;
   border-radius: var(--sa-shape-full);
@@ -234,8 +265,11 @@
 }
 
 .ds-chatbot__close svg {
-  width: 30%;
-  height: 30%;
+  /* 34% of the inner disc, not of the whole launcher — the disc shrank when
+     the ring was carved out of it, and the glyph has to follow or it reads as
+     a large cross in a small circle. */
+  width: 34%;
+  height: 34%;
 }
 
 .ds-chatbot__launcher[data-state="open"] .ds-chatbot__mark {
@@ -381,52 +415,45 @@
   user-select: none;
 }
 
-/* -- the seal, and the float: two motions with ONE rule between them ---------
+/* -- the seal, and the float ------------------------------------------------
 
-   NEITHER MAY START OR STOP ABRUPTLY, and the first version of both did.
+   Two more passes, and both corrections point the same way: TAKE MOTION OUT OF
+   THE HOVER PATH.
 
-   The seal used to change DURATION on hover — 14s at rest, 8s hovered, 4s
-   thinking. Changing `animation-duration` on a running animation does not
-   ease: the browser recomputes progress against the new duration, so the
-   wordmark JUMPS to a different angle. Three durations meant two jumps on the
-   way in and two on the way out. It is one duration now, and only the
-   play-state moves. The lost nuance was never worth it — the signal a citizen
-   reads is MOVING versus STILL, not 8s versus 4s, and nobody has ever
-   consciously clocked a rotation rate.
+   THE SEAL NO LONGER RESPONDS TO HOVER AT ALL. It used to start turning on
+   pointer-enter and stop on leave, and an animation snapping from stopped to
+   full speed and back is inherently abrupt — there is no CSS way to ease into
+   a keyframe loop. That start/stop was a large part of what still read as
+   "off" after the earlier fixes. The seal now turns for exactly one reason:
+   the assistant is THINKING. Hover is carried entirely by the lift and the
+   shadow, which are transitions, and transitions interrupt and reverse
+   cleanly by construction.
 
-   6s is the one duration, chosen so a single second of hover turns the ring
-   60 degrees. The old 14s turned it 25, most of that after the eye had already
-   moved on — motion that was real and below the threshold of being seen.
+   10s, not 6s. Six was an overcorrection from an earlier pass — fast enough to
+   read as spinning, which is wrong for a government seal. At 10s a full turn
+   is stately and legible, and since it now only appears while the bot composes
+   a reply it is on screen for seconds at a time, not for the half-second a
+   hover lasts. That is what makes a slow rate affordable.
 
-   The float used to be ADDED on hover and REMOVED on leave. Removing a
-   running transform animation snaps the element back to its base position from
-   wherever in the cycle it happened to be — up to the full 3px, instantly.
-   That is the other half of what was reported as a jerk on mouse-leave.
+   THE FLOAT NEVER CHANGES AMPLITUDE. Transitioning it was smoother than adding
+   and removing it, but not smooth ENOUGH: the keyframe and the amplitude were
+   two clocks running independently, so how it looked depended on where in the
+   4.5s cycle the pointer happened to arrive — which is exactly the reported
+   "not smooth sometimes". A constant amplitude has no second clock and
+   therefore no phase to get unlucky with.
 
-   So the float now ALWAYS runs, and what changes is its AMPLITUDE. A
-   registered custom property is what makes that possible: `--ds-chatbot-lift`
-   has a declared `<length>` syntax, so it can be TRANSITIONED, and the
-   keyframe reads it. At rest the amplitude is 0 and the animation moves
-   nothing; engaged, it eases up to 3px. Both directions are continuous, and
-   there is no moment where a transform is switched on or off. */
-
-@property --ds-chatbot-lift {
-  syntax: "<length>";
-  inherits: true;
-  initial-value: 0px;
-}
+   That means it drifts continuously, which is a deliberate reversal of the
+   earlier "nothing moves at rest" position. It is defensible at this size:
+   2.5px on a 55px mascot is below the threshold of drawing the eye, it carries
+   no information, and it collapses entirely under `prefers-reduced-motion`,
+   which is the accommodation WCAG 2.2.2 exists to require. A legless robot
+   drawn mid-hover has to hover; a still one is uncanny. */
 
 @media (prefers-reduced-motion: no-preference) {
-  .ds-chatbot-mascot__ring {
-    animation: ds-chatbot-ring 6s linear infinite;
-    animation-play-state: paused;
-  }
-
-  .ds-chatbot__launcher:hover .ds-chatbot-mascot__ring,
-  .ds-chatbot__launcher:focus-visible .ds-chatbot-mascot__ring,
-  .ds-chatbot-mascot--spin .ds-chatbot-mascot__ring,
-  .ds-chatbot[data-thinking] .ds-chatbot-mascot__ring {
-    animation-play-state: running;
+  /* The seal: thinking only. Nothing else starts or stops it. */
+  .ds-chatbot[data-thinking] .ds-chatbot-mascot__ring,
+  .ds-chatbot-mascot--spin .ds-chatbot-mascot__ring {
+    animation: ds-chatbot-ring 10s linear infinite;
   }
 
   @keyframes ds-chatbot-ring {
@@ -435,27 +462,9 @@
     }
   }
 
-  /* -- the genie float -------------------------------------------------------
-
-     The mascot is a 3D render of a robot with no legs, drawn mid-hover. A
-     STILL picture of a floating thing is subtly wrong — the artwork promises
-     motion the interface refuses, and the eye notices without being able to
-     say why. 3px over 4.5s fixes it; more than that and it stops being a hover
-     and starts being a bob.
-
-     Always running, amplitude 0 at rest. See the note above for why that is
-     not the same as "always animating at the citizen". */
+  /* The float: constant, everywhere, one clock. */
   .ds-chatbot-mascot__figure {
-    animation: ds-chatbot-float 4500ms ease-in-out infinite;
-    transition: --ds-chatbot-lift var(--ds-chatbot-hover) ease;
-  }
-
-  .ds-chatbot__launcher:hover,
-  .ds-chatbot__launcher:focus-visible,
-  .ds-chatbot[data-thinking],
-  .ds-chatbot__avatar,
-  .ds-chatbot__brand-mark {
-    --ds-chatbot-lift: 3px;
+    animation: ds-chatbot-float 5s ease-in-out infinite;
   }
 
   @keyframes ds-chatbot-float {
@@ -463,7 +472,7 @@
       transform: translate(-50%, -50%);
     }
     50% {
-      transform: translate(-50%, calc(-50% - var(--ds-chatbot-lift)));
+      transform: translate(-50%, calc(-50% - 2.5px));
     }
   }
 }
@@ -485,7 +494,27 @@
   overflow: hidden;
   border-radius: var(--sa-shape-16);
   background: var(--sa-bg-neutral-base);
-  box-shadow: var(--sa-elevation-toast);
+  /*
+   * THE HAIRLINE IS NOT DECORATION, IT IS THE ONLY THING THAT WORKS ON WHITE.
+   *
+   * A white panel on a white page separated by a 18%-alpha, 48px-blur shadow
+   * has no visible top edge at all — the header simply dissolves into the
+   * page, which is what "the top of the panel can merge with the white
+   * background" was reporting. No amount of shadow fixes white-on-white; a
+   * bound one-pixel border does, instantly, and costs nothing over the
+   * photographic and coloured backgrounds where the shadow already worked.
+   *
+   * `raised` is layered under `toast` here for the same reason as the
+   * launcher: a wide ambient shadow alone reads as fog, not as an object
+   * sitting above the page.
+   */
+  border: 1px solid var(--sa-border-neutral-subtle);
+  /* The border would otherwise be ADDED to the 400x719 the design specifies,
+     making the panel 402x721 and pushing the expanded height 2px past the
+     viewport cap it is supposed to respect. The package sets no global reset,
+     so the component states its own box model. */
+  box-sizing: border-box;
+  box-shadow: var(--sa-elevation-toast), var(--sa-elevation-raised);
 
   /* ORIGIN-AWARE, and this is the whole reason the panel reads as "the
      launcher opened" rather than "a box appeared". It grows from the corner
@@ -531,8 +560,14 @@
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }
 
+/*
+ * 40px, matching the two-line block beside it: title (16/24) over subtitle
+ * (12/16) is 40px of text, so a 30px mark sat visibly short and made the
+ * header look top-heavy on the left. Sizing the mark to the type it labels is
+ * the whole rule — it is optical alignment, not a magic number.
+ */
 .ds-chatbot__brand-mark {
-  --ds-chatbot-mascot-size: 30px;
+  --ds-chatbot-mascot-size: 40px;
   flex: none;
 }
 
