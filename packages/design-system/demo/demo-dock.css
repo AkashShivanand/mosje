@@ -128,6 +128,26 @@
   padding: var(--sa-padding-8) 0 var(--sa-padding-8);
   border-radius: var(--sa-shape-16) 0 0 var(--sa-shape-16);
   background-color: var(--sa-bg-neutral-base);
+  /* A HAIRLINE, and it is not decoration. The rail is a white card that
+     floats over whatever the page puts under it, and pages put white cards
+     there: on the design-system home it lands on the hero's component
+     showcase, white on white, where a soft shadow alone gives it no edge and
+     it reads as a rendering glitch rather than as chrome above the page.
+
+     Content-dodging is the wrong answer for a FIXED widget — content scrolls
+     underneath, so dodging it would mean the rail creeping about while you
+     scroll, which is worse than a static overlap. What it needs is to look
+     deliberate wherever it lands, so it gets a defined edge on all three
+     sides that meet the page. */
+  /* An OUTLINE, not a border. The rail's height is content-driven, so a
+     border adds to it — 56 became 58 — and two declared constants
+     (`--sa-wall-rail-rest`, `--sa-wall-rail-reserve`) are measured against
+     that height. Correcting them by hand would have re-created exactly the
+     drift those declarations exist to prevent. An outline draws the same
+     hairline with ZERO layout impact, so the numbers stay true.
+     `outline-offset: -1px` insets it, and it follows the border-radius. */
+  outline: 1px solid var(--sa-border-neutral-subtle);
+  outline-offset: -1px;
   box-shadow: var(--sa-elevation-modal);
   transition: box-shadow var(--cmp-demodock-fold) var(--cmp-demodock-ease);
 }
