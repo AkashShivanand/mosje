@@ -46,8 +46,8 @@
  * | State | What moves | What it says |
  * |---|---|---|
  * | Appear | one damped rock, then still | the tool is here |
- * | Rest | nothing | idle; a FAB that fidgets is noise |
- * | Hover / focus | rocks again, bubbles rise, liquid sloshes | this is interactive |
+ * | Rest | the liquid sloshes | the tool is running, not a picture of one |
+ * | Hover / focus | the flask rocks, bubbles rise | this is interactive |
  * | Press | (the FAB's own squash) | the click landed |
  * | Open | faster bubbles, liquid rises, flask tips | the tool is running |
  *
@@ -138,14 +138,13 @@ export function FlaskIcon({
         </clipPath>
       </defs>
 
-      {/* Two nested wrappers, each carrying one rock, so a single keyframe
-          block serves both. The outer runs once on mount (the "appear"
-          swing); the inner runs only while an ancestor is hovered or
-          focused. An animation cannot be RESTARTED by re-matching the same
-          name on the same element, so the alternative was a second,
-          identical `@keyframes` — two elements is the smaller lie. Nested
-          transforms multiply, so the two compose correctly if a pointer
-          arrives mid-entrance. */}
+      {/* Two wrappers, one rock each. An animation cannot be RESTARTED by
+          re-matching its name on the same element, so the entrance swing and
+          a repeatable hover swing cannot share a node. `__body` owns the
+          entrance; `__rock` owns the hover and is driven by the consumer's
+          own selector, because only the consumer knows what "hovering the
+          widget" means. Nested transforms multiply, so the two compose if a
+          pointer arrives mid-entrance. */}
       <g className="ds-flask__body">
       <g className="ds-flask__rock">
       <g clipPath={`url(#${clipId})`}>

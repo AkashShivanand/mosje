@@ -3,27 +3,28 @@
    ─────────────────────────────────────────────────────────────────────────
    DEMO-ONLY chrome. The motion layer for demo/flask-icon.tsx.
 
-   THE CONTRACT. This file animates nothing on its own. It declares the
-   animations in a permanently-paused state and exposes four custom
-   properties for a consumer to drive:
+   THE CONTRACT. One animation runs unconditionally — the liquid, see below.
+   Everything else is declared paused and switched on by the consumer through
+   five custom properties:
 
      --ds-flask-play     paused | running   whether the bubbles rise
      --ds-flask-cycle    <time>             how long one bubble takes
      --ds-flask-bubbles  <number>           opacity of the bubble set
      --ds-flask-level    <length>           how far the liquid is raised
+     --ds-flask-rock     <animation>        the hover swing; `none` at rest
 
-   The ROCK is the exception, and deliberately so: it has to RESTART on
-   every hover, and a custom property cannot restart an animation — the
-   name is already applied, so re-matching changes nothing. It is therefore
-   a plain `:hover`/`:focus-visible` descendant rule, which starts the
-   animation when the selector begins to match and removes it when it stops.
-   That is the whole reason the icon has two nested wrappers.
+   The ROCK is passed as a whole `animation` shorthand rather than a flag,
+   and that is what lets it RESTART. A boolean cannot restart an animation:
+   the name is already applied, so re-matching changes nothing. Handing over
+   the shorthand means the consumer's `:hover` rule sets a name where there
+   was `none`, which is a genuine start — and it lets the consumer retime the
+   swing without this file knowing.
 
    The consumer owns the selectors, because only the consumer knows its own
-   markup. `demo-dock.css` maps `:hover`, `:focus-visible` and
-   `[aria-expanded="true"]` onto these four; the icon stays structure-blind
-   and therefore works in the FAB and in the panel's header badge, which
-   live in different subtrees and answer to different state.
+   markup. `demo-dock.css` maps `:hover` on the RAIL, `:focus-visible` and
+   `[aria-expanded="true"]` onto these properties; the icon stays
+   structure-blind and therefore works on the rail and in the panel's header
+   badge, which live in different subtrees and answer to different state.
 
    WHY PAUSE RATHER THAN SWITCH THE ANIMATION ON. A paused animation holds
    its 0% keyframe, and 0% here is `fill-opacity: 0` — so "off" is genuinely
@@ -58,9 +59,9 @@
    The swing decays 11 → 7 → 4 → 2 degrees. Even decay would read as a
    wobble; a decaying one reads as something settling.
 
-   `.ds-flask__body` runs it ONCE, on mount — the "appear" swing.
-   `.ds-flask__rock` runs it only while hovered or focused, and gets its
-   own element purely so the same keyframes can be re-triggered. ── */
+   `.ds-flask__body` runs it ONCE, on mount — the entrance swing.
+   `.ds-flask__rock` runs it again on every hover, which is why there are two
+   nested wrappers: one animation cannot be both. ── */
 .ds-flask__body,
 .ds-flask__rock {
   transform-box: view-box;
@@ -88,38 +89,60 @@
   }
 }
 
+/* Appear AND hover. The hover rock was removed on frequency grounds and is
+   restored by decision — it is the widget's signature, and it is what makes
+   hovering the thing feel answered.
+
+   That brings the second wrapper back, for the reason it first existed: an
+   animation cannot be RESTARTED by re-matching its name on the same element,
+   so the entrance swing and a repeatable hover swing cannot share one node.
+   `.ds-flask__body` owns the entrance; `.ds-flask__rock` owns the hover and
+   is driven by the CONSUMER's selector, because only the consumer knows what
+   "hovering the widget" means — for the dock it is the whole rail, not the
+   flask alone. Removing it was premature: it was dead structure only for as
+   long as the hover rock stayed gone.
+
+   The one audit finding that still holds is the DURATION. At 900ms the rock
+   outlived its trigger: the rail finishes unfolding in 170ms and the flask
+   was still swinging 700ms later, so the two read as unrelated events rather
+   than one gesture. 620ms lands close enough to the fold to belong to it,
+   and it is short enough that a repeated hover does not feel laboured. ── */
 @media (prefers-reduced-motion: no-preference) {
   .ds-flask__body {
-    animation: ds-flask-rock 900ms var(--sa-motion-emphasis-easing) 1;
+    animation: ds-flask-rock 620ms var(--sa-motion-emphasis-easing) 1;
   }
 
-  /* Hover and keyboard focus both re-swing it. `@media (hover: hover)` gates
-     the pointer half, as everywhere else in this estate — a touch device
-     that fakes `:hover` on tap would otherwise leave the flask mid-swing
-     after the finger lifts. */
-  :focus-visible .ds-flask .ds-flask__rock {
-    animation: ds-flask-rock 900ms var(--sa-motion-emphasis-easing) 1;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
-  :hover > .ds-flask .ds-flask__rock,
-  :hover > * > .ds-flask .ds-flask__rock {
-    animation: ds-flask-rock 900ms var(--sa-motion-emphasis-easing) 1;
+  /* The hover swing. `--ds-flask-rock` holds an `animation` shorthand rather
+     than a boolean, so a consumer can retime it without this file knowing.
+     `none` at rest keeps it inert. */
+  .ds-flask__rock {
+    animation: var(--ds-flask-rock, none);
   }
 }
 
-/* ── Liquid ───────────────────────────────────────────────────────────────
+/* ── Liquid: PERMANENT ────────────────────────────────────────────────────
+   It moves whether or not anyone is looking, which is the point — a flask
+   with still liquid reads as a picture of a flask; one with moving liquid
+   reads as a thing that is running.
+
+   Affordable where a permanent animation usually is not: a single
+   compositor-only `translateX` on one path inside a 26px box, no layout, no
+   paint, no JavaScript, and slow enough (3.7s a cycle) to sit below the
+   threshold of drawing the eye. The BUBBLES stay gated, so idle and engaged
+   remain legibly different.
+
+   `prefers-reduced-motion` stops it, and that block is not optional here:
+   permanent motion is precisely what the preference exists to switch off.
+
    Translated exactly one wavelength (12 units) so the loop has no seam. The
    path is four wavelengths long specifically so it still covers the viewBox
    at full travel — see the note beside it in flask-icon.tsx; shortening it
    reintroduces a bug no static frame can show. `fill-opacity` rather than a
-   tinted fill keeps the outline as the icon's silhouette and the liquid as
-   a filling, instead of the two competing. ── */
+   tinted fill keeps the outline as the icon's silhouette and the liquid as a
+   filling, instead of the two competing. ── */
 .ds-flask__liquid {
   fill-opacity: 0.26;
   animation: ds-flask-slosh calc(var(--ds-flask-cycle, 2200ms) * 1.7) linear infinite;
-  animation-play-state: var(--ds-flask-play, paused);
 }
 
 .ds-flask__liquid-group {
