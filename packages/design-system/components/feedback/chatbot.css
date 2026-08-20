@@ -736,9 +736,20 @@
   flex: 1;
   min-height: 0;
   flex-direction: column;
-  /* Bottom-anchored, as in the design: an empty chat sits at the floor and
-     grows upward, so the first message never appears stranded at the ceiling. */
-  justify-content: flex-end;
+  /*
+   * NOT `justify-content: flex-end`, and this is the whole reason the
+   * bottom-anchoring lives on the child below instead.
+   *
+   * End-aligning a scroll container overflows it in the block-START direction,
+   * and there is no such thing as a negative `scrollTop` — so the browser
+   * reports `scrollHeight === clientHeight`, renders no scrollbar, and the
+   * overflow is simply unreachable. Measured on a long transcript: a 5810px
+   * stream inside a 533px box, its top at -5291px, with `scrollHeight` still
+   * reporting 533. Every message but the last four was unrecoverable.
+   *
+   * It was latent while the scripted tree was two or three exchanges and never
+   * overflowed; the scheme finder's transcripts are the length that found it.
+   */
   gap: var(--sa-stack-8);
   padding: var(--sa-padding-16);
   overflow-y: auto;
@@ -749,6 +760,16 @@
 .ds-chatbot__stream {
   display: flex;
   flex-direction: column;
+  /*
+   * Bottom-anchored, as in the design: an empty chat sits at the floor and
+   * grows upward, so the first message never appears stranded at the ceiling.
+   *
+   * An auto margin does what end-alignment was there for, and does it without
+   * the overflow trap — it absorbs the free space when there IS any, and
+   * resolves to zero when the transcript is longer than the box, which leaves
+   * the overflow below the fold where a scrollbar can reach it.
+   */
+  margin-block-start: auto;
   gap: var(--sa-stack-8);
 }
 
