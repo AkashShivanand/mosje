@@ -29,7 +29,10 @@ export interface ChatbotReply {
   quickReplies?: readonly ChatbotQuickReply[];
 }
 
-export interface ChatbotProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect"> {
+// `onSubmit` is omitted alongside `onSelect` because both collide with a DOM
+// handler of the same name on the root div, and ours take different arguments.
+export interface ChatbotProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect" | "onSubmit"> {
   /** Controlled open state. Omit to let the widget own it. */
   open?: boolean;
   /** Initial open state when uncontrolled. @default false */
@@ -38,8 +41,33 @@ export interface ChatbotProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
 
   /** Panel header. @default "Chat with us" */
   title?: string;
-  /** Text of the dismiss action in the header. @default "End Chat" */
+  /** Devanagari name under the title. Pass "" to suppress it. */
+  subtitle?: string;
+  /** Label for the (footer, non-destructive-looking) end-chat action. @default "End chat" */
   endChatLabel?: string;
+  /**
+   * The honest statement of what this assistant is not. Shown under the
+   * composer, where the live panel puts its own disclaimer.
+   */
+  note?: string;
+  /**
+   * Show a free-text composer.
+   *
+   * The live assistant has one because it is a generative model. Ours runs a
+   * fixed script, so this defaults ON only to match the affordance a citizen
+   * arriving from dosje.gov.in already expects — and `onSubmit` decides what
+   * happens. With no handler, an unrecognised question gets an honest
+   * "I can't answer that, but here is what I can do" rather than silence.
+   * @default true
+   */
+  composer?: boolean;
+  /** @default "Type something…" */
+  composerPlaceholder?: string;
+  /**
+   * Handle a typed question. Return a `ChatbotReply` to answer it. Omit, and
+   * the widget falls back to re-offering the suggestions.
+   */
+  onSubmit?: (text: string) => ChatbotReply | Promise<ChatbotReply | void> | void;
   /** Accessible name of the launcher. @default "Chat with us" */
   launcherLabel?: string;
 
@@ -83,7 +111,26 @@ export interface ChatbotProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
    Constants
    ------------------------------------------------------------------------- */
 
-const DEFAULT_GREETING = "Hey, I am Noddy. How Can I help you?";
+/**
+ * The assistant's name, in both scripts.
+ *
+ * It is NOT a nickname, and the Figma mock's "Noddy" is gone. Three reasons,
+ * and the first alone settles it:
+ *
+ *  1. The mark this component renders has the name written ON it — the seal
+ *     reads "Samajik Sahayak ~ सामाजिक सहायक", twice around the ring. A widget
+ *     that introduces itself as something other than the badge it is wearing
+ *     is not a personality, it is a defect.
+ *  2. The live assistant on dosje.gov.in is called Samajik Sahayak. A citizen
+ *     who has used that one must not meet a differently-named bot here.
+ *  3. "Noddy" is a British children's character. It is somebody else's
+ *     property and it is the wrong register for a Government of India service.
+ */
+export const CHATBOT_NAME = "Samajik Sahayak";
+export const CHATBOT_NAME_HI = "सामाजिक सहायक";
+
+const DEFAULT_GREETING =
+  "This is an assistant for the Ministry of Social Justice. How can I help you?";
 
 /**
  * Panel exit duration. Must stay in step with `--ds-chatbot-exit` in
@@ -132,9 +179,14 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
     open: openProp,
     defaultOpen = false,
     onOpenChange,
-    title = "Chat with us",
-    endChatLabel = "End Chat",
-    launcherLabel = "Chat with us",
+    title = CHATBOT_NAME,
+    subtitle = CHATBOT_NAME_HI,
+    endChatLabel = "End chat",
+    note = "Samajik Sahayak points you to the right portal. It cannot decide or change an application.",
+    composer = true,
+    composerPlaceholder = "Type something…",
+    onSubmit,
+    launcherLabel = `${CHATBOT_NAME}, chat assistant`,
     greeting = DEFAULT_GREETING,
     quickReplies,
     messages: messagesProp,
@@ -164,6 +216,9 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
   const [repliesShown, setRepliesShown] = React.useState(false);
   /** Bot messages that landed while the panel was shut. Drives the launcher's nudge. */
   const [unread, setUnread] = React.useState(0);
+  const [expanded, setExpanded] = React.useState(false);
+  const [draft, setDraft] = React.useState("");
+  const draftId = React.useId();
 
   const launcherRef = React.useRef<HTMLButtonElement>(null);
   const rootRef = React.useRef<HTMLDivElement>(null);
@@ -310,28 +365,60 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
     launcherRef.current?.focus();
   };
 
+  /**
+   * A typed question.
+   *
+   * Shares one code path with a pressed suggestion, because to the transcript
+   * they are the same event: the citizen said something, the bot answers. The
+   * only difference is where the text came from.
+   */
+  const handleSubmitDraft = async () => {
+    const text = draft.trim();
+    if (!text) return;
+    setDraft("");
+    await say(text, () => onSubmit?.(text));
+  };
+
+  /**
+   * Append what the citizen said, then the answer — with the typing beat in
+   * between, so the bot is never seen to answer instantly. An instant reply to
+   * a typed question reads as a canned form response, which is exactly what it
+   * is, and the beat is what stops it feeling like one.
+   */
+  const say = async (
+    said: string,
+    resolve: () => ChatbotReply | Promise<ChatbotReply | void> | void,
+  ) => {
+    setOwnMessages((prev) => [...prev, { id: nextId(), from: "user", text: said }]);
+    setRepliesShown(false);
+
+    const answer = await resolve();
+    setOwnTyping(true);
+    after(typingDelayMs, () => {
+      setOwnTyping(false);
+      setOwnMessages((prev) => [
+        ...prev,
+        {
+          id: nextId(),
+          from: "bot",
+          // No handler, or a handler that declined: say so plainly rather than
+          // going quiet. A chat that swallows a question looks broken.
+          text:
+            answer?.text ??
+            "I can only help with a few things at the moment. Try one of these:",
+        },
+      ]);
+      if (answer?.quickReplies !== undefined) setOwnReplies(answer.quickReplies);
+      after(320, () => setRepliesShown(true));
+    });
+  };
+
   const handleQuickReply = async (reply: ChatbotQuickReply) => {
     if (controlledTranscript) {
       await onQuickReply?.(reply);
       return;
     }
-
-    setOwnMessages((prev) => [...prev, { id: nextId(), from: "user", text: reply.label }]);
-    setRepliesShown(false);
-
-    const answer = await onQuickReply?.(reply);
-    if (!answer) {
-      setOwnReplies([]);
-      return;
-    }
-
-    setOwnTyping(true);
-    after(typingDelayMs, () => {
-      setOwnTyping(false);
-      setOwnMessages((prev) => [...prev, { id: nextId(), from: "bot", text: answer.text }]);
-      if (answer.quickReplies !== undefined) setOwnReplies(answer.quickReplies);
-      after(320, () => setRepliesShown(true));
-    });
+    await say(reply.label, () => onQuickReply?.(reply));
   };
 
   const showReplies = replies.length > 0 && (controlledTranscript ? true : repliesShown);
@@ -355,6 +442,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
       // lets the NEXT corner widget stack above us instead of on top.
       data-sa-corner-occupant=""
       data-state={open ? "open" : "closed"}
+      data-thinking={typing || undefined}
       {...rest}
     >
       {mounted && (
@@ -362,6 +450,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
           ref={panelRef}
           className="ds-chatbot__panel"
           data-state={open ? "open" : "closed"}
+          data-expanded={expanded || undefined}
           role="dialog"
           // Non-modal on purpose: the page behind stays operable and focus is
           // never trapped. A help widget must not hold the keyboard hostage.
@@ -369,12 +458,62 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
           aria-labelledby={titleId}
           tabIndex={-1}
         >
+          {/*
+            IDENTITY STAYS PUT. The greeting scrolls away after two exchanges,
+            and with it the only statement of who is answering — so the name
+            lives in the header, where it cannot leave. This is also what the
+            live assistant on dosje.gov.in does, and the reason is the same.
+
+            The two controls are EXPAND and CLOSE, in that order, matching the
+            live panel. What is deliberately NOT here is "End chat": it wipes
+            the transcript, and the top-right of a panel is where every user on
+            earth expects a harmless dismiss. Putting a destructive action in
+            that slot means people will lose their conversation reaching for
+            the close button. It now sits in the footer, quietly, and is
+            recoverable — see the note there.
+          */}
           <header className="ds-chatbot__header">
-            <h2 className="ds-chatbot__title" id={titleId}>
-              {title}
-            </h2>
-            <button type="button" className="ds-chatbot__end" onClick={handleEndChat}>
-              {endChatLabel}
+            <ChatbotMascot className="ds-chatbot__brand-mark" size={40} />
+            <span className="ds-chatbot__brand">
+              <h2 className="ds-chatbot__title" id={titleId}>
+                {title}
+              </h2>
+              {subtitle && (
+                <span className="ds-chatbot__subtitle" lang="hi">
+                  {subtitle}
+                </span>
+              )}
+            </span>
+
+            <button
+              type="button"
+              className="ds-chatbot__icon-btn"
+              aria-label={expanded ? "Restore panel size" : "Expand panel"}
+              aria-pressed={expanded}
+              onClick={() => setExpanded((v) => !v)}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                   strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                {expanded ? (
+                  <path d="M9 4v5H4M15 20v-5h5" />
+                ) : (
+                  <path d="M14 4h6v6M10 20H4v-6" />
+                )}
+              </svg>
+            </button>
+            <button
+              type="button"
+              className="ds-chatbot__icon-btn"
+              aria-label="Minimise chat"
+              onClick={() => {
+                setOpen(false);
+                launcherRef.current?.focus();
+              }}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                   strokeLinecap="round" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
             </button>
           </header>
 
@@ -440,6 +579,65 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               </ul>
             )}
           </div>
+
+          {/*
+            The footer carries the two things the live panel carries and this
+            one was missing: a way to say something, and an honest statement of
+            what the assistant is not.
+
+            The note is NOT the live one's wording. Theirs says the assistant
+            "can make mistakes" because it is a generative model. Ours is a
+            fixed script, so claiming it might hallucinate would be false; what
+            a citizen actually needs to know is that it routes and does not
+            decide. Copying the sentence would have been cargo-culting the
+            shape of a disclaimer without its meaning.
+          */}
+          <footer className="ds-chatbot__footer">
+            {composer && (
+              <form
+                className="ds-chatbot__composer"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  void handleSubmitDraft();
+                }}
+              >
+                <label className="ds-chatbot__sr" htmlFor={draftId}>
+                  Type your question
+                </label>
+                <input
+                  id={draftId}
+                  className="ds-chatbot__input"
+                  value={draft}
+                  onChange={(event) => setDraft(event.target.value)}
+                  placeholder={composerPlaceholder}
+                  autoComplete="off"
+                />
+                <button
+                  type="submit"
+                  className="ds-chatbot__send"
+                  aria-label="Send"
+                  disabled={draft.trim().length === 0}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                       strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M4 12l16-8-6 16-2.5-6.5L4 12z" />
+                  </svg>
+                </button>
+              </form>
+            )}
+
+            <p className="ds-chatbot__note">
+              {note}
+              {!controlledTranscript && messages.length > 0 && (
+                <>
+                  {" "}
+                  <button type="button" className="ds-chatbot__end" onClick={handleEndChat}>
+                    {endChatLabel}
+                  </button>
+                </>
+              )}
+            </p>
+          </footer>
         </div>
       )}
 
@@ -449,7 +647,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
         className="ds-chatbot__launcher"
         data-state={open ? "open" : "closed"}
         aria-label={
-          unread > 0 ? `${launcherLabel} — ${unread} new message` : launcherLabel
+          unread > 0 ? `${launcherLabel}, ${unread} new message` : launcherLabel
         }
         aria-expanded={open}
         onClick={handleLauncher}

@@ -1,6 +1,6 @@
 /* eslint-disable */
 // =============================================================================
-// SAMAVESH — Chatbot brand assets ("Noddy")
+// SAMAVESH — Chatbot brand assets (Samajik Sahayak / सामाजिक सहायक)
 //
 // The design system ships as SOURCE (package.json `exports` maps "." straight
 // at index.ts) and has no static-asset pipeline, so every mark in this package
@@ -42,7 +42,7 @@ export const CHATBOT_RING_PATH =
 export const CHATBOT_RING_VIEWBOX = "0 0 74 77";
 
 /**
- * "Noddy", the SAMAVESH assistant mascot — a 3D render, so raster is the only
+ * The Samajik Sahayak mascot — a 3D render, so raster is the only
  * faithful form; there is no vector original to export.
  *
  * WebP at 224x224, which is ~4.3x the 52px the mascot occupies inside the 84px

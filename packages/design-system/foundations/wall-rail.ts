@@ -30,7 +30,7 @@
  *
  * The second sentence is the whole subtlety: something being ON the wall is
  * not the same as being IN THE WAY. A corner widget — the accessibility
- * trigger, or the Noddy launcher — sits around 806-876 on a 900px viewport
+ * trigger, or the assistant launcher — sits around 806-876 on a 900px viewport
  * while the centred rail spans 373-526, so it never conflicts and must not
  * move the rail. Only Important Links, which straddles the middle of the
  * wall, actually displaces it.
@@ -211,7 +211,7 @@ export function railTopFromOccupants(
 
   // CENTRED FIRST, whenever centred is actually free. Something being on the
   // wall does not mean it is in the way: a corner widget — the accessibility
-  // trigger, or the Noddy launcher — occupies roughly 806-876 on a 900px
+  // trigger, or the assistant launcher — occupies roughly 806-876 on a 900px
   // viewport, while the centred rail spans 373-526. They never touch, so
   // moving for it was pure superstition.
   //
