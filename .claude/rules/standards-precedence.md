@@ -1,3 +1,10 @@
+---
+paths:
+  - "apps/**"
+  - "packages/design-system/**"
+  - "packages/tokens/**"
+---
+
 # Standards precedence — quality first, then DBIM, GIGW, UX4G
 
 **The order of authority, highest first:**

@@ -1,3 +1,10 @@
+---
+paths:
+  - "apps/**"
+  - "packages/design-system/**"
+  - "docs/guidelines/**"
+---
+
 # Government standards — consult `docs/guidelines/` (MANDATORY)
 
 **`docs/guidelines/` is the standards library for this estate.** It holds the four Government

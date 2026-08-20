@@ -1,3 +1,11 @@
+---
+paths:
+  - "packages/design-system/components/**"
+  - "apps/hub/src/app/layout.tsx"
+  - "apps/hub/src/app/portals/**"
+  - "apps/hub/src/app/website/**"
+---
+
 # One accessibility entry point per page (MANDATORY)
 
 **A page offers exactly one door to the accessibility panel.** Where the estate's

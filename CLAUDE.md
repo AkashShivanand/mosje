@@ -1,297 +1,266 @@
 # MoSJE — Project Brain
 
-## Task Summary Rule (MANDATORY — applies to every task in every conversation)
+> Loaded every turn. Kept to operative directives only. Full narrative, incident
+> records and rationale: `docs/rules-rationale/CLAUDE-md-full-2026-08-20.md`.
+> Path-scoped rules live in `.claude/rules/` and load when you touch their paths.
+> Full structure map: `MOSJE-ARCHITECTURE.md`.
 
-After completing **any task** — no matter how small — always end your response with a short, plain-English summary using this format:
+## Task Summary Rule (MANDATORY — every task, every conversation)
 
-**What I did:** One or two sentences explaining what was changed or built.
-**What's working:** What the user can now do or see.
-**What's next / Recommendations:** Any follow-up steps, things still pending, or things the user should know.
+End every response with:
 
-Write it in simple, non-technical language. Avoid jargon. Imagine you are explaining to someone who didn't watch you work. This section always appears last in every response.
+**What I did:** one or two sentences on what changed.
+**What's working:** what the user can now do or see.
+**What's next / Recommendations:** follow-ups, pending items, things to know.
 
-> Loaded every session. The single source of truth for how we work in this workspace.
-> Scoped, path-specific rules live in `.claude/rules/`; the full structure map lives in `MOSJE-ARCHITECTURE.md`.
+Plain, non-technical language, as if to someone who didn't watch you work. Always last.
 
 ## What this is
 
-Digital estate for the **Ministry / Department of Social Justice & Empowerment (DoSJE), Government of India**. It has **two parts**:
+Digital estate for the **Ministry / Department of Social Justice & Empowerment
+(DoSJE), Government of India**. Two parts:
 
-1. **The Website** (`apps/hub/src/app/website/`) — one **unified informational site** that consolidates **13 legacy websites** (the department + its commissions/bodies) into a single portal. This is built and live. Public-facing, content-driven, DBIM/GIGW-compliant.
-2. **The Portals** (`apps/hub/src/app/portals/<slug>/`) — **20 functional workflow portals** covering **33+ organisations & schemes** under MoSJE (SMILE, PM-AJAY, NOS, scholarships, NSFDC/NSKFDC/NBCFDC, NMBA, etc.). Authenticated, transactional apps.
+1. **The Website** (`apps/hub/src/app/website/`) — one unified informational site
+   consolidating **13 legacy websites**. Built and live. Public, content-driven.
+2. **The Portals** (`apps/hub/src/app/portals/<slug>/`) — **20 workflow portals**
+   covering 33+ organisations & schemes (SMILE, PM-AJAY, NOS, NSFDC, NMBA, …).
+   Authenticated, transactional.
 
-**North-star:** every site and portal renders from **one shared design system** (`packages/design-system/`) that stays **100% in sync with a Figma library**. We will build all 13 + 20 incrementally on this shared system.
+**North-star:** everything renders from one shared design system
+(`packages/design-system/`) kept 100% in sync with a Figma library.
 
-> **Code Connect IS in place (updated 2026-08-18).** The paragraph here previously said it was blocked on an Organization/Enterprise Developer seat, with zero mappings and no `@figma/code-connect` in the repo — all three are now false. The entitlement works, **8 parserless `*.figma.ts` templates** live beside their components, `@figma/code-connect` v2 is a devDependency of `packages/design-system`, and `figma.config.json` is at the repo root.
->
-> **Two halves, and only one is automatic.** Mappings are *connected* (Dev Mode resolves the component and its import). Publishing the **rich templated snippet** — props filled from the Figma instance — needs **`npm run figma:connect` FROM THE REPO ROOT**, which requires a **`FIGMA_ACCESS_TOKEN`**. That token is a secret; no agent session creates, reads or commits it. `npm run figma:connect:check` dry-runs and validates every template parses.
->
-> **Run it from the ROOT, never from a workspace.** `figma.config.json`'s include glob is repo-root relative, so the CLI run from `packages/design-system` resolves it to `packages/design-system/packages/design-system/**` — matches nothing, finds no templates, and **publishes silently with no error**. That is exactly how a publish appeared to succeed on 2026-08-19 while every mapping stayed `hasTemplate: false`. The scripts live in the ROOT `package.json` for this reason; do not add `-w @mosje/design-system`.
->
-> **Drift is gated**, not hoped for: `npm run check:code-connect` (`tools/code-connect-parity/check.mjs`, in `npm run check`) fails the build when a template names a React prop that no longer exists, misses a Figma variant value, reads a property the master does not have, or silently drops one. Tokens and the icon catalogue still flow through their own generators. Status: `docs/research/figma-code-connect-readiness.md`.
+**Code Connect is in place.** 8 parserless `*.figma.ts` templates beside their
+components; `@figma/code-connect` v2 in `packages/design-system`; `figma.config.json`
+at the repo root. Mappings resolve in Dev Mode automatically, but publishing the rich
+templated snippet needs `npm run figma:connect` **from the REPO ROOT** with a
+`FIGMA_ACCESS_TOKEN` (a secret — no agent session creates, reads or commits it).
+Running it from a workspace silently publishes nothing, because the include glob is
+root-relative. Never add `-w @mosje/design-system`. `npm run figma:connect:check`
+dry-runs; `npm run check:code-connect` gates drift. Status:
+`docs/research/figma-code-connect-readiness.md`.
 
 ## Structure
 
 ```
-mosje/                      # single git repo (was mosje-estate; apps now consolidated in)
+mosje/                      # single git repo
 ├── apps/
 │   ├── hub/                # THE WHOLE ESTATE (Next 16, React 19, Tailwind v4, shadcn, Noto Sans)
 │   │   └── src/app/        #   website/ · design-system/ · portals/<slug> · reports/<slug>
 │   └── storybook/          # story authoring only; the hub compiles it to /storybook
 ├── packages/
-│   ├── tokens/             # @mosje/tokens — DTCG source → Style Dictionary (CSS/TS/Tailwind/Figma)
-│   ├── design-system/      # @mosje/design-system — shared UI (consumes generated tokens)
-│   └── config/             # @mosje/config — shared tailwind / eslint / tsconfig presets
-├── docs/                   # specs, plans, research, compliance, source-brd/ (BRDs/audits)
-├── Assets/                 # brand assets (SAMAVESH logo, emblems)
-├── Designs/                # large .fig handoff exports — gitignored
-├── Incoming/               # raw drops (zips, event photos) — large, gitignored
-├── _backups/               # git-history backups of absorbed sub-repos — gitignored
-└── .claude/                # this configuration (agents, commands, hooks, rules, skills)
+│   ├── tokens/             # @mosje/tokens — DTCG → Style Dictionary (CSS/TS/Tailwind/Figma)
+│   ├── design-system/      # @mosje/design-system — shared UI
+│   └── config/             # @mosje/config — tailwind / eslint / tsconfig presets
+├── docs/                   # specs, plans, research, compliance, source-brd/, rules-rationale/
+├── Assets/                 # brand assets · Designs/ .fig exports (gitignored)
+├── Incoming/               # raw drops — gitignored · _backups/ — gitignored
+└── .claude/                # agents, commands, hooks, rules, skills
 ```
 
-This is now a **single git repo** (`mosje`). The former independent app repos (dosje had local-only history; smile-admin pushed to `smile-admin-portal`) are absorbed; their full histories are preserved in gitignored `_backups/` and the archived GitHub repo.
+npm workspaces: `["packages/*", "apps/*", "apps/portals/*"]` (the last matches nothing
+since portals became route groups). Registry: `MOSJE-ARCHITECTURE.md`.
 
-This **is** an npm workspace — `workspaces` is `["packages/*", "apps/*", "apps/portals/*"]`, which is why `npm run build -w @mosje/tokens` and `npm test -w @mosje/design-system` work from the root. (`apps/portals/*` is a leftover glob matching nothing since the portals became route groups in the hub.) See `MOSJE-ARCHITECTURE.md` for the full app registry.
-
-## Per-app stack
-
-| App | Framework | Styling | Notes |
-|-----|-----------|---------|-------|
-| `apps/hub/` | Next.js 16 · React 19 · TS strict | Tailwind **v4** + shadcn | Root zone at :3007; **hosts every portal natively** at `/portals/<slug>`, and owns the single Tailwind build for all of them. |
-
-**Tailwind after the single-origin consolidation:** the portals no longer have their own apps,
-Tailwind installs, or `tailwind.config.ts` files — they are route groups inside `apps/hub`, so
-there is exactly **one** Tailwind **v4** build across the estate. Each portal's old `theme.extend`
-now lives in `apps/hub/src/app/globals.css` as **global utility names**, with the **per-portal
-values** re-bound in `apps/hub/src/app/portals/<slug>/<slug>.css` under `[data-portal="<slug>"]`
-(the portals' palettes genuinely conflict, so the values cannot be merged). Read the contract at
-the top of `apps/hub/src/app/globals.css` before touching a portal colour, radius or shadow.
-pm-ajay remains Tailwind-free by design — its MIS dashboard uses hand-rolled SVG charts and
-`--ds-*` custom properties directly.
+**Tailwind:** exactly **one** Tailwind v4 build across the estate, owned by `apps/hub`.
+Per-portal `theme.extend` values are re-bound in
+`apps/hub/src/app/portals/<slug>/<slug>.css` under `[data-portal="<slug>"]` (palettes
+genuinely conflict). Read the contract at the top of `apps/hub/src/app/globals.css`
+before touching a portal colour, radius or shadow. pm-ajay is Tailwind-free by design.
 
 ## Commands
 
-Run inside the app folder (or via `npm --prefix <app>`):
-- `npm run dev` · `npm run build` · `npm run lint` · `npm run typecheck`
-- `npm run dev` (repo root) — boots **one** process: the hub. That is the whole estate, Storybook
-  included. There is no per-portal dev server, and no `dev:website` / `dev:docs` / `dev:smile` /
-  `dev:pm-ajay` / `dev:eutthan` / `dev:scw` / `dev:nmba` / `dev:nhapoa` / `dev:tg` script.
+- `npm run dev` (repo root) boots **one** process — the hub, which is the whole estate,
+  Storybook included. There is no per-portal dev server.
+- Per app: `npm run dev` · `build` · `lint` · `typecheck`
+- Tokens: `npm run build -w @mosje/tokens` · `npm test -w @mosje/tokens`
 
 | Process | Port | Script | Reached at |
-|---------|------|--------|------------|
-| `apps/hub` — **the entire estate** | **3007** | `npm run dev` | `/`, `/website`, `/design-system`, `/portals/<slug>`, `/reports/<slug>`, `/storybook` |
-| `apps/storybook` — **authoring only** | 6006 | `npm run dev:storybook` | `localhost:6006` directly |
+|---|---|---|---|
+| `apps/hub` — the entire estate | **3007** | `npm run dev` | `/`, `/website`, `/design-system`, `/portals/<slug>`, `/reports/<slug>`, `/storybook` |
+| `apps/storybook` — authoring only | 6006 | `npm run dev:storybook` | `localhost:6006` |
 
-**Storybook is served by the hub, in dev exactly as in production.** The hub's build compiles it
-into `apps/hub/public/storybook`, and `/storybook` serves those static files behind the site gate —
-there is no proxy and no second Vercel project. A `predev` hook builds it once if it is missing, so
-a fresh clone works with no extra step; `npm run build:storybook --prefix apps/hub` refreshes it.
+Storybook is compiled into `apps/hub/public/storybook` and served at `/storybook` behind
+the site gate, in dev exactly as in production. Run `dev:storybook` **only to author
+stories**; the static build takes precedence at `/storybook` until you rebuild
+(`npm run build:storybook --prefix apps/hub`). Dev servers: `.claude/launch.json`.
 
-Run `npm run dev:storybook` **only to author stories** — it is Storybook's own dev server with hot
-reload, reached at `localhost:6006`. Note the static build takes precedence at `/storybook`, so
-edits do not appear there until you rebuild. Nobody who is only *reading* Storybook needs :6006.
-
-Dev servers are defined in `.claude/launch.json`. Everything else lives under `apps/hub/src/app/` —
-the website at `website/`, the docs at `design-system/`, and the portals at `portals/<slug>`
-(scw, nmba, nhapoa, tg, smile-admin, pm-ajay, eutthan-admin).
-`apps/dosje` and `apps/docs` no longer exist as apps.
-- Design tokens: `npm run build -w @mosje/tokens` (regenerate) · `npm test -w @mosje/tokens` (contract).
-
-## Conventions (apply everywhere unless a rule file overrides)
+## Conventions
 
 - **TypeScript strict, no `any`.** Named exports. PascalCase components, camelCase utils.
-- **Design tokens, never hardcoded values.** Use the brand tokens (`gov-blue #0373DF`, `saffron #F97316`, `gov-yellow #FFD323`, `ink`, `surface-muted`, …). When the design system lands, import from `@mosje/design-system`.
-- **Standards precedence — quality first.** The order of authority is: (1) current design-craft
-  standards, including WCAG 2.2 AA, then (2) DBIM, (3) GIGW 3.0, (4) UX4G — each adopted wherever
-  it fits **without hampering quality**. When a standard specifies a set of values, **ADD what is
-  missing; never DELETE what quality needs** — its list is a floor, not a ceiling. Where a standard
-  would force a worse interface, quality wins and the deviation is *documented*, not hidden.
-  Accessibility is the one thing never traded against, because accessibility **is** quality.
-  See `.claude/rules/standards-precedence.md`.
-- **Noto Sans** is the typeface across all gov properties (DBIM standard). Don't introduce other fonts.
-- **No Indian tricolour band/stripe motif** (the saffron-white-green flag bar) anywhere in UI chrome — headers, footers, hero bands, dividers — **unless the user explicitly asks for it.** A single brand-token accent is fine; the flag-stripe decoration is not. (Standing instruction, 2026-06-13.)
-- **Logo & favicon: use the National Emblem** (`National-Emblem-logo.svg` / `National_Emblem_logo_white.svg` for dark) — never an invented/abstract mark.
-- **Accessibility is non-negotiable** — these are government sites. Target **WCAG 2.2 AA + GIGW**: semantic HTML, alt text, keyboard nav, visible focus, AA contrast. Use the `accessibility-auditor` agent before shipping a page.
-- **Government standards live in `docs/guidelines/` — consult them before building or reviewing UI.** Four sources, each as PDF + faithful markdown: **GIGW 3.0** (mandatory), **DBIM 3.0** (mandatory, brand), **UX4G 3.0 Design System** (recommended), **GuDApps** (best practice). Start at `docs/guidelines/README.md` — it carries the routing table, the precedence ladder, and the register of deliberate divergences. **Follow what can be followed without regressing the shipping design system:** accessibility/legal requirements are adopted unconditionally, structural conventions are adopted in `--sa-*` token names, brand/aesthetic preferences (UX4G's violet primary, its icon variant default) are **not** — DBIM and SAMAVESH set our brand. Never weaken a requirement to make something pass; record the divergence instead. Full rule: `.claude/rules/guidelines.md`.
+- **Design tokens, never hardcoded values.** Brand tokens: `gov-blue #0373DF`,
+  `saffron #F97316`, `gov-yellow #FFD323`, `ink`, `surface-muted`. Import from
+  `@mosje/design-system`.
+- **Standards precedence — quality first.** Authority order: (1) current design-craft
+  standards incl. **WCAG 2.2 AA**, (2) DBIM, (3) GIGW 3.0, (4) UX4G. Adopt 2–4 wherever
+  they fit **without hampering quality**. When a standard specifies a set of values,
+  **ADD what is missing; never DELETE what quality needs** — its list is a floor, not a
+  ceiling. Where a standard would force a worse interface, quality wins and the deviation
+  is *documented*. Accessibility is never traded against.
+  → `.claude/rules/standards-precedence.md`
+- **Government standards live in `docs/guidelines/`** — GIGW 3.0 and DBIM 3.0 (mandatory),
+  UX4G 3.0 (recommended), GuDApps (best practice), each as PDF + markdown. Start at
+  `docs/guidelines/README.md`. Adopt accessibility/legal unconditionally, structural
+  conventions in `--sa-*` names, **not** brand/aesthetic preferences (UX4G's violet
+  primary, its icon default) — DBIM and SAMAVESH set our brand. Never weaken a
+  requirement to make something pass; record the divergence. → `.claude/rules/guidelines.md`
+- **Noto Sans** across all gov properties. Don't introduce other fonts.
+- **No Indian tricolour band/stripe motif** in UI chrome unless explicitly asked (2026-06-13).
+- **Logo & favicon: the National Emblem** (`National-Emblem-logo.svg`, `_white` for dark) —
+  never an invented mark.
+- **Accessibility is non-negotiable** — WCAG 2.2 AA + GIGW: semantic HTML, alt text,
+  keyboard nav, visible focus, AA contrast. Run the `accessibility-auditor` agent before
+  shipping a page.
 - **Real content, real assets** — no lorem/placeholder in production pages.
-- `next/image` for images; **`<Icon>`** from `@mosje/design-system` for icons — **use Material Symbols Rounded** (the official SAMAVESH icon system). Standard spec: weight 300, size 24, stroke variant. Load the font once per app: `import "@mosje/design-system/icons.css"` in the root layout. For brand/social logos (National Emblem, etc.) use inline SVGs.
-- **MANDATORY VISUAL AUDIT RULE**: EVERY component, page, wizard, or portal modification MUST be visually captured via screenshot (`view_file` on generated `.png` artifact) and thoroughly audited against SAMAVESH design system standards BEFORE declaring completion. Editing code or passing lint/typecheck without visual verification is strictly forbidden.
+- `next/image` for images; **`<Icon>`** from `@mosje/design-system` for icons — **Material
+  Symbols Rounded**, weight 300, size 24, stroke variant. Load once per app:
+  `import "@mosje/design-system/icons.css"`. Brand/social logos are inline SVGs.
+- **MANDATORY VISUAL AUDIT:** every component, page, wizard or portal change must be
+  screenshotted and audited against SAMAVESH standards **before** declaring completion.
+  Lint/typecheck passing without visual verification is forbidden.
 - Mobile-first responsive; content max-width **1280px**.
-- **AI design contract.** Before building or changing UI, read **`packages/design-system/design.md`** (token vocabulary, theming axes, component inventory, hard rules) — it's the authoritative AI-facing brief. Its companions `packages/design-system/AGENTS.md` and the portal's `/design-system/llms.txt` must stay in sync with tokens/components/Figma — see the rule in `.claude/rules/design-system.md`.
-- **Design-system-first (MANDATORY for every screen and component, no exceptions).** Before writing a single line of UI code for any screen, run a DS audit:
-  1. List every UI element the screen needs (button, input, tab switcher, layout shell, chart, etc.).
-  2. Check `packages/design-system/index.ts` + `design.md` — if it exists there, import it; never re-implement it per-app.
-  3. If a needed component is missing from the DS: **add it to `packages/design-system/` first**, export it from the barrel, then import it. Never build one-off UI that belongs in the shared DS.
-  4. Document the audit inline as a short comment block at the top of your plan: `DS Audit: Button ✅ existing · Input ✅ existing · PortalLoginShell ➕ adding to DS`.
-  5. Page-level layout templates (login shell, dashboard shell, list shell) belong in the DS and must be reused across all portals — only the slot content (logo, portal name, tabs, form fields) changes per portal.
-  6. **Authoring standard (MANDATORY, Figma + code):** every component created or updated must pass **`.claude/rules/component-authoring.md`** — discover first, **tokenise everything** (zero raw values), nested parts are library instances (icons = Material Symbols glyphs, separators = the `Divider` component), add-and-flag anything missing, variants for structure + properties for options, match the reference visually, pass WCAG AA, **flag questionable properties for the human to decide**, document in detail, and validate with a screenshot + a zero-unbound audit.
-- **Documentation is not exempt from the design system — it is the strictest case.** Every
-  element on a Figma library documentation page and on every `apps/hub/src/app/design-system/**`
-  page must be **bound** to the DS: text to published text styles, fills/strokes to Color
-  variables, padding/gap to Space, radius to Radius. A literal that merely *equals* a token is a
-  defect — when the token moves, the binding follows and the literal silently stops matching.
-  The only exemption is a **specimen** (a deliberate off-role value being demonstrated), and it
-  must be *named* as one so an audit can account for it. See `.claude/rules/documentation-ds-linkage.md`.
-- **Commit messages: no AI attribution.** Never add `Co-Authored-By: Claude` (or any AI/bot co-author) or a "Generated with Claude Code" trailer to commits. A `.husky/commit-msg` hook strips them as a backstop, but don't write them in the first place.
+- **AI design contract:** read `packages/design-system/design.md` before building or
+  changing UI. Its companions `AGENTS.md` and `/design-system/llms.txt` stay in sync →
+  `.claude/rules/design-system.md`.
+- **Design-system-first (MANDATORY, every screen, no exceptions).** Before writing UI code:
+  1. List every UI element the screen needs.
+  2. Check `packages/design-system/index.ts` + `design.md` — if it exists, import it.
+  3. If missing, **add it to the DS first**, export from the barrel, then import.
+  4. Document the audit inline: `DS Audit: Button ✅ existing · PortalLoginShell ➕ adding to DS`.
+  5. Page-level layout templates (login/dashboard/list shells) belong in the DS and are
+     reused across portals — only slot content changes.
+  6. **Authoring standard (Figma + code):** every component must pass
+     `.claude/rules/component-authoring.md` — discover first, tokenise everything (zero raw
+     values), nested parts are library instances, add-and-flag anything missing, variants
+     for structure + properties for options, match the reference, pass WCAG AA, flag
+     questionable properties for the human, document, validate with a screenshot and a
+     zero-unbound audit.
+- **Documentation is the strictest case of the design system.** Every element on a Figma
+  documentation page and on every `apps/hub/src/app/design-system/**` page must be **bound**
+  — text to published styles, fills/strokes to Color variables, padding/gap to Space, radius
+  to Radius. A literal that merely *equals* a token is a defect. The only exemption is a
+  **specimen**, and it must be named as one. → `.claude/rules/documentation-ds-linkage.md`
+- **Commit messages: no AI attribution.** Never add `Co-Authored-By: Claude` or a
+  "Generated with Claude Code" trailer. `.husky/commit-msg` strips them as a backstop.
 
 ## Skill routing
 
-When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
+When a request matches a skill, invoke it via the Skill tool. When in doubt, invoke it.
 
-Key routing rules:
-- Product ideas/brainstorming → invoke /office-hours
-- Strategy/scope → invoke /plan-ceo-review
-- Architecture → invoke /plan-eng-review
-- Design system/plan review → invoke /design-consultation or /plan-design-review
-- Full review pipeline → invoke /autoplan
-- Bugs/errors → invoke /investigate
-- QA/testing site behavior → invoke /qa or /qa-only
-- Code review/diff check → invoke /review
-- Visual polish → invoke /design-review
-- Ship/deploy/PR → invoke /ship or /land-and-deploy
-- Save progress → invoke /context-save
-- Resume context → invoke /context-restore
-- Author a backlog-ready spec/issue → invoke /spec
+| Request | Skill |
+|---|---|
+| Product ideas / brainstorming | `/office-hours` |
+| Strategy / scope | `/plan-ceo-review` |
+| Architecture | `/plan-eng-review` |
+| Design system / plan review | `/design-consultation`, `/plan-design-review` |
+| Full review pipeline | `/autoplan` |
+| Bugs / errors | `/investigate` |
+| QA / testing site behaviour | `/qa`, `/qa-only` |
+| Code review / diff check | `/review` |
+| Visual polish | `/design-review` |
+| Ship / deploy / PR | `/ship`, `/land-and-deploy` |
+| Save / resume progress | `/context-save`, `/context-restore` |
+| Backlog-ready spec | `/spec` |
 
-## Branching & merging (MANDATORY — every task, module, feature, fix)
+## Branching & merging (MANDATORY)
 
-**Never commit to `main`.** Every new task, module, feature, refactor or fix starts on its
-own branch and reaches `main` through a pull request. A `.husky/pre-commit` gate refuses
-commits made on `main` (bypass deliberately with `git commit --no-verify` when you truly
-mean it, e.g. a hotfix you are about to push alone).
+**Never commit to `main`.** Every task starts on its own branch and reaches `main` via a
+PR. A `.husky/pre-commit` gate refuses commits on `main`.
 
 ```bash
-git switch main && git pull                 # start from current main, always
-git switch -c <type>/<short-slug>            # feat/ fix/ ds/ docs/ chore/
+git switch main && git pull
+git switch -c <type>/<short-slug>          # feat/ fix/ ds/ docs/ chore/
 ```
 
-**A new session does not mean a new branch.** Before the first edit of any session,
-check whether the requested work already has a branch and continue in it — a context
-window ending is not the end of a task. The procedure, including the two ways switching
-goes wrong in this repo (a dirty tree that is someone else's, and a branch held by
-another worktree), is `.claude/rules/branch-continuity.md`.
+**A new session does not mean a new branch** — continue the task's existing branch.
+Procedure, worktree escape hatches and the two ways switching goes wrong here:
+`.claude/rules/branch-continuity.md`.
 
-### A branch is short-lived, and that is the part that actually prevents conflicts
+**A branch must be short-lived.** Branching alone does not avoid conflicts; a long branch
+*causes* them. So: **sync from `main` at the start of every session and again before the
+PR** (`git merge origin/main`), and **merge when the unit of work is done, not when the
+initiative is**. If a branch can't land within a few days, split it.
 
-Isolating work on a branch does **not** by itself avoid merge conflicts — a branch that
-lives a long time *causes* them, because `main` moves underneath it. The 14-conflict merge
-on 2026-08-11 happened on a branch that was **12 commits behind `main`**, not because the
-work was branched.
-
-So the discipline is two-sided, and the second half is the one people skip:
-
-1. **Sync from `main` at the start of every working session, and again before opening the
-   PR** — `git merge origin/main`. Cheap and boring while the branch is young; expensive and
-   error-prone once it is not.
-2. **Merge to `main` when the unit of work is done, not when the whole initiative is.** If a
-   branch cannot land within a few days, it is too big — split it. "Merge at the end" is only
-   safe when the end arrives quickly.
-
-**Merge, do not rebase, on this repo.** A rebase of a long branch here conflicted badly
+**Merge, do not rebase, on this repo.** Rebasing a long branch here conflicted badly
 enough to be abandoned (2026-08-11); `git merge origin/main` resolved the same divergence.
 Rebase is fine for a young branch you own alone.
 
-### Conflict magnets to expect, and how to resolve them
+**Conflict magnets:** hand-maintained version histories (the changelog page, the
+`design.md` header — keep **both** sets of entries, renumber the unmerged branch upward)
+and generated baselines (regenerate deliberately, then audit the diff against both
+parents). On `add/add`, diff both sides and take the later fix. Detail in the archived
+narrative doc.
 
-- **Hand-maintained version histories** — `apps/hub/src/app/design-system/resources/changelog/page.tsx`
-  and the `design.md` header. Two branches appending releases in parallel **will** collide on
-  the same version number. Resolution: `main`'s numbers are published and stand; the
-  unmerged branch renumbers upward. Keep **both** sets of entries — never drop one — and
-  check the result is strictly descending with exactly one `current: true`.
-- **Generated baselines** — `packages/tokens/test/visual-contract.fixture.json` and friends.
-  Git will happily auto-merge these into a union that matches **neither** build. Regenerate
-  deliberately (`node test/lib/write-visual-contract.mjs --visual`), then *audit the diff
-  against both parents* rather than trusting it: every changed key must be attributable to
-  one side's intended change.
-- **`add/add` on the same path** — happens when work reaches `main` via a different branch
-  than the one you hold it on. Do not assume "ours" is newer: diff both and take the one
-  carrying the later fix, then re-apply whatever your side uniquely contributed.
-
-### After the PR
-
-Delete the branch once merged, and **never reuse a branch whose PR was closed** — start a
-fresh one from current `main`. A stale local branch whose remote was deleted is how this
-repo ended up with `feat/hub-registry-admin` still holding commits after PR #40 was closed.
+Delete a branch once merged, and **never reuse a branch whose PR was closed**.
 
 ## Brand modes: `dbim` is CODE-ONLY (standing instruction, 2026-08-11)
 
-The estate carries **three** brand modes on the `data-brand` axis, and they are not equal in
-where they may travel:
-
 | mode | key colour | goes to Figma? |
-|------|-----------|----------------|
+|---|---|---|
 | `blue` (default) | `#0373DF` gov-blue | yes |
 | `navy` | `#003366` | yes |
-| `dbim` | `#162F6A` — DBIM's own key colour | **NO — never, unless explicitly asked** |
+| `dbim` | `#162F6A` | **NO — never, unless explicitly asked** |
 
-`dbim` exists so DBIM's published palette can be evaluated and demonstrated **in the running
-app**. It is DBIM's own Blue primary palette transcribed, not a ramp derived from one anchor:
-DBIM publishes five numbered shades (1 = darkest = key colour → 5 = lightest) and all five are
-reproduced verbatim, with the intervening rungs interpolated. Source: `docs/source-brd/MoSJE
-DBIM Audit.pdf` p.14 (DBIM section 2.1, Figure 1 'Primary palette'). Blue group:
+`dbim` exists so DBIM's published palette can be evaluated in the running app. It is
+DBIM's own Blue primary palette transcribed verbatim (5 numbered shades, intervening
+rungs interpolated), per `docs/source-brd/MoSJE DBIM Audit.pdf` p.14:
 `1 #162F6A · 2 #214AAB · 3 #5279D7 · 4 #A3BBF3 · 5 #D2DFFF`.
 
-**The Figma library's Palette collection stays `[Blue, Navy]`.** That is enforced by
-construction, not by discipline — `build/formats/figma-variables.mjs` declares those two modes
-as a hardcoded list and reads only `colorModes.navy`, so a third brand cannot reach Figma by
-accident. Do not "fix" that by adding a Dbim mode; adding one is a deliberate act that needs
-asking first.
+The Figma Palette collection stays `[Blue, Navy]`, enforced by construction in
+`build/formats/figma-variables.mjs`. Do not add a Dbim mode without asking.
 
-Two DBIM usage rules ship with the palette and apply wherever `dbim` is active:
-- **Text** uses shade 1 or 2 (DBIM §4.4).
-- **Icons and the footer** use the key colour, i.e. shade 1 (DBIM §3.7, §5.6) — the two
-  checkpoints the MoSJE DBIM audit currently fails.
+Two DBIM usage rules where `dbim` is active: **text** uses shade 1 or 2 (§4.4); **icons
+and the footer** use the key colour, shade 1 (§3.7, §5.6).
 
 ## Safety rules (learned the hard way)
 
-- **macOS is case-insensitive.** `Portals` and `portals` are the SAME directory. Never `mkdir` a case-variant of an existing dir, and never `rm -rf` a path you just `mv`'d into a case-colliding name. A `.claude/hooks/guard.sh` PreToolUse hook now **blocks `rm -rf` / `rm -r`, force-push, and other destructive commands** — run those manually and deliberately if truly needed.
-- **Moves are non-destructive; deletes are not.** Prefer `mv`/copy-verify-then-`rmdir` (which refuses non-empty dirs). Never `rm -rf` project content without explicit human confirmation.
-- **Never `git add -A` or `git commit -a`. Stage explicit paths.** Two sessions
-  frequently share this working tree — a second Claude window, a terminal, an
-  editor's own git integration — and a working tree has no idea which of them
-  authored a change. On 2026-08-12 a token-migration session ran `git add -A`
-  and swept **15 files of a parallel session's in-flight `docs/guidelines/`
-  work** into a commit whose message described only the typography generator.
-  Nothing was lost, but the history now claims one thing and contains another,
-  and untangling it would have meant rewriting the other session's commit.
-  - Stage what you touched: `git add packages/tokens apps/hub/src/app/...`.
-  - `git status` **before** staging, and read it. Files you do not recognise are
-    the signal — they are somebody else's work, not stray noise to hoover up.
-  - `git diff --cached --stat` **before** committing. If the file count is
-    larger than the change you just made, stop.
-  - This compounds the concurrency rule below: check `git status` and
-    `git branch --show-current` before and after anything consequential.
-- Don't touch `Incoming/` (21 GB of raw source material) or commit it.
+- **macOS is case-insensitive.** `Portals` and `portals` are the SAME directory. Never
+  `mkdir` a case-variant of an existing dir, and never recursively delete a path you just
+  `mv`'d into a case-colliding name. `.claude/hooks/guard.sh` blocks recursive deletes,
+  force-push and other destructive commands.
+- **Moves are non-destructive; deletes are not.** Prefer `mv`, or copy-verify-then-`rmdir`
+  (which refuses non-empty dirs). Never recursively delete project content without
+  explicit human confirmation.
+- **Never `git add -A` or `git commit -a`. Stage explicit paths.** Sessions share this
+  working tree, and a tree has no idea which of them authored a change — a `git add -A`
+  on 2026-08-12 swept 15 files of a parallel session's work into an unrelated commit.
+  `git status` before staging and **read it**; files you don't recognise are somebody
+  else's work. `git diff --cached --stat` before committing — if the file count exceeds
+  your change, stop.
+- Don't touch or commit `Incoming/` (21 GB of raw source).
 - Never read or commit `.env*` files or secrets.
-- **A `.husky/pre-push` hook typechecks the hub before anything reaches `main`.**
-  CI already builds the hub (`Apps CI`: lint → check → build) and it works — but
-  a commit pushed **straight to main** makes CI report *after the fact*, racing
-  the production deploy. That is exactly how a deleted module reached
-  production: `Apps CI` failed on it and the Vercel deploy failed on it, at the
-  same time, after it had landed. Required status checks would prevent that, but
-  branch protection needs GitHub Pro or a public repo — so the gate is local.
-  It runs only when pushing `main`, takes ~3s, and is bypassable with
-  `git push --no-verify` when you mean it. **Prefer a PR**: on a feature branch
-  the hook stands aside and the full CI runs on the pull request, which is the
-  path that catches everything rather than just unresolved imports.
+- **`.husky/pre-push` typechecks the hub before anything reaches `main`.** CI builds the
+  hub, but a commit pushed straight to `main` makes CI report *after* the deploy races it.
+  The gate runs only when pushing `main`, takes ~3s, and is bypassable with
+  `--no-verify`. **Prefer a PR** — on a feature branch the full CI runs on the PR.
 
-## Workflow tooling (this `.claude/`)
+## Workflow tooling (`.claude/`)
 
-- **Agents** (`.claude/agents/`): `code-reviewer`, `accessibility-auditor`, `design-system-guardian`, `debugger`.
-- **Commands** (`.claude/commands/`): `/new-site`, `/new-portal`, `/qa-clone`, `/a11y`, `/sync-figma`.
-- **Rules** (`.claude/rules/`): path-scoped specs for the website, portals, and design system.
-- **Skills**: the global `clone-website` skill is how new sites are reverse-engineered; see `.claude/skills/README.md`.
+- **Agents:** `code-reviewer`, `accessibility-auditor`, `design-system-guardian`, `debugger`.
+- **Commands:** `/new-site`, `/new-portal`, `/qa-clone`, `/a11y`, `/sync-figma`.
+- **Rules:** path-scoped; each loads when you touch its paths.
+- **Skills:** the global `clone-website` skill reverse-engineers new sites.
 
 ## Active context
 
-- The **website** (14 components, a faithful clone of dosje.gov.in) is built and lives at `apps/hub/src/app/website/`, reached at `/website`.
-- `packages/` design system is **live (Phase 2)**: `@mosje/tokens` (DTCG → Style Dictionary) generates the token contract; `@mosje/design-system` exports **90 components** (the count `scripts/lib/ds-exports.mjs` enumerates and both Storybook-coverage gates ratchet), plus the **`data-brand` axis theming** (ColorModeProvider/Switcher; modes `blue` default and `navy` — `dbim` is code-only and deliberately kept out of `COLOR_MODES`). See `docs/superpowers/specs/` + `plans/`.
-- **smile-admin** is recovered and consolidated into this repo (it was a separate `smile-admin-portal` repo, now archived); the **pm-ajay** MIS dashboard is built. Both are route groups under `apps/hub/src/app/portals/`, not standalone apps. The guard hook blocks `rm -rf` so the original loss never recurs.
-- **Single-origin layout is live.** `apps/hub` is the root zone at **:3007**. All child apps mount via `basePath` — dosje at `/website`, portals at `/portals/<slug>`. Run `npm run dev` from the repo root to bring everything up. Add new portals by setting `basePath` + a hub rewrite + a `portals.ts` entry.
-- **The estate is deployed to Vercel** at `mosje-samavesh.vercel.app`, behind a **shared-password site gate** (Vercel's own password protection is a Pro feature; the team is on Hobby). The gate lives in `apps/hub/src/proxy.ts` + `src/lib/site-gate.ts`; the wall itself is `/gate`. It is an access wall for a prototype, **not authentication** — the portal logins inside are unaffected.
-  - The expected token resolves **store → env → off**: `gate_token` in the `hub_settings` table of the `mosje-hub` Supabase project, else HMAC of `SITE_PASSWORD`, else the gate is disabled. The env var is the **floor**, so a paused or unreachable database degrades to a working gate rather than an open site. `SITE_PASSWORD` unset ⇒ gate off, which is why local dev is untouched.
-  - Only the **HMAC digest** is ever stored, never the plaintext password.
-  - Change the password at **`/admin`**, guarded by `ADMIN_PASSWORD` and deliberately **outside** the gate — it is the recovery path when the gate password is lost. Admin auth is one shared secret behind `requireAdmin()` in `src/lib/admin/auth.ts`; named accounts replace that function's internals and nothing else.
+- The **website** (14 components, a faithful dosje.gov.in clone) is live at `/website`.
+- **Design system is live (Phase 2):** `@mosje/tokens` generates the token contract;
+  `@mosje/design-system` exports **90 components** (`scripts/lib/ds-exports.mjs`
+  enumerates; both Storybook-coverage gates ratchet), plus `data-brand` theming
+  (ColorModeProvider/Switcher; `blue` default, `navy`; `dbim` deliberately outside
+  `COLOR_MODES`). Specs: `docs/superpowers/specs/` + `plans/`.
+- **smile-admin** and the **pm-ajay** MIS dashboard are route groups under
+  `apps/hub/src/app/portals/`, not standalone apps.
+- **Single-origin layout is live.** `apps/hub` is the root zone at :3007; children mount
+  via `basePath`. Add a portal with `basePath` + a hub rewrite + a `portals.ts` entry.
+- **Deployed to Vercel** at `mosje-samavesh.vercel.app` behind a **shared-password site
+  gate** (`apps/hub/src/proxy.ts` + `src/lib/site-gate.ts`; the wall is `/gate`). It is an
+  access wall for a prototype, **not authentication**; portal logins are unaffected.
+  - Token resolves **store → env → off**: `gate_token` in `hub_settings` (Supabase
+    `mosje-hub`), else HMAC of `SITE_PASSWORD`, else disabled. The env var is the floor,
+    so a paused database degrades to a working gate rather than an open site.
+    `SITE_PASSWORD` unset ⇒ gate off, so local dev is untouched.
+  - Only the **HMAC digest** is stored, never the plaintext.
+  - Change the password at **`/admin`**, guarded by `ADMIN_PASSWORD` and deliberately
+    **outside** the gate — it is the recovery path. Auth is one shared secret behind
+    `requireAdmin()` in `src/lib/admin/auth.ts`.
   - Crawling is off estate-wide via `src/app/robots.ts` unless `ALLOW_INDEXING=true`.
-  - Test it locally with the `hub-gated` launch config (serves a production build with both passwords set). See `docs/superpowers/specs/2026-08-06-hub-admin-settings-design.md`.
+  - Test locally with the `hub-gated` launch config.
