@@ -22,9 +22,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.39.0",
+    version: "v0.40.0",
     date: "2026-08-20",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "EVERYTHING PAINTED OVER AN OPEN CONVERSATION. Measured on the live website, the assistant was the LOWEST of the four fixed layers: demo dock 2147483000, UX4G accessibility panel 999999, Important Links 1002, assistant 1000. A panel the citizen deliberately opened was being covered by two persistent rails and a piece of demo scaffolding" },
+      { kind: "Changed", text: "THE LAYER IS IN TWO PARTS, NOT ONE BLANKET MAXIMUM. Closed, the launcher is an 84px control the wall and corner rails already keep clear of everything, so it needs only to beat product chrome and sits at 1010 \u2014 deliberately UNDER the accessibility panel, because that is a statutory control and a chat launcher has no business on top of it. Open, the panel is the surface the citizen summoned and nothing decorative may cover it, so it clears the highest layer by one" },
+      { kind: "Fixed", text: "THE OPEN VALUE IS GROTESQUE ON PURPOSE, AND THE REASON IS RECORDED. It is 2147483001 because the demo dock claimed (2^31-1)-647 for demo tooling. The honest fix is the dock coming down to a sane layer rather than product UI climbing past it; the dock is outside this component\u2019s scope, so the number is a reaction rather than a choice and says so in the source. The UX4G widget signals \u201copen\u201d only through `right: -530px -> 0px` with no class or attribute, so there is no CSS hook to yield to it \u2014 which is exactly why the closed state stays underneath instead" },
+    ],
+  },
+  {
+    version: "v0.39.0",
+    date: "2026-08-20",
     changes: [
       { kind: "Fixed", text: "ON PRODUCTION, THE ASSISTANT PANEL\u2019S HEADER WAS OFF THE TOP OF THE SCREEN \u2014 name, expand and close all unreachable. Measured on the live site at panel `y = -117`, header `bottom = -43`. The cap read `100dvh - launcher - gap*3`, which silently assumes the launcher is at its RESTING offset. It is not: the corner rail lifts it clear of whatever occupies the corner, and the website\u2019s cookie bar pushes it to 261px. The panel is anchored to the launcher, so every pixel the rail lifts was a pixel the panel ran off the top. The cap now derives from `--sa-corner-rail-bottom`, the same custom property the launcher is positioned by, so the two cannot disagree again. Verified at lifts of 32, 150, 261 and 400px: the panel shrinks to 719, 605, 494 and 355 and the header stays visible at every one" },
       { kind: "Fixed", text: "THE EXPANDED HEIGHT CARRIED THE SAME ASSUMPTION and would have reintroduced the overflow the cap exists to prevent. Corrected in the same expression" },

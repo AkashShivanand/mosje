@@ -79,7 +79,40 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  z-index: 1000;
+
+  /*
+   * NOTHING COMES OVER AN OPEN CONVERSATION.
+   *
+   * At z-index 1000 the assistant was the LOWEST of the four fixed layers on
+   * the website, and all three of the others painted over an open panel:
+   *
+   *     2147483000  demo dock          <- demo scaffolding
+   *        999999   UX4G a11y panel
+   *          1002   Important Links
+   *          1000   the assistant      <- covered by everything
+   *
+   * The layer is deliberately in TWO parts rather than one blanket maximum.
+   *
+   * CLOSED, the launcher is an 84px control that the wall and corner rails
+   * already position clear of everything, so it only needs to beat product
+   * chrome. It stays UNDER the accessibility panel, which matters: that panel
+   * is a statutory control and a chat launcher has no business sitting on it.
+   *
+   * OPEN, the panel is the surface the citizen deliberately summoned, and
+   * nothing decorative may cover it. That clears the highest layer by one.
+   *
+   * The open value is grotesque, and it is grotesque because the demo dock
+   * claimed (2^31 - 1) - 647 for demo tooling. The honest fix is the dock
+   * coming down to a sane layer, not product UI climbing past it — but the
+   * dock is outside this component's scope. Recorded so the next person knows
+   * it is a reaction, not a choice. There is no --sa-z-* scale in the DS yet;
+   * the house convention is a literal with a comment, as in tooltip.css.
+   */
+  z-index: 1010;
+}
+
+.ds-chatbot[data-state="open"] {
+  z-index: 2147483001;
 }
 
 .ds-chatbot--fixed {
