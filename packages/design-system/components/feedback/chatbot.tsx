@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { useCornerRailOffset } from "../../foundations/corner-rail";
 import { ChatbotMascot } from "./chatbot-mascot";
 import "./chatbot.css";
 
@@ -165,10 +166,29 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
   const [unread, setUnread] = React.useState(0);
 
   const launcherRef = React.useRef<HTMLButtonElement>(null);
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  /**
+   * A stable stand-in so the corner rail can be switched off without breaking
+   * the rules of hooks. `useCornerRailOffset` early-returns on a null
+   * `.current`, so handing it this ref is a no-op — no observers, no polling.
+   */
+  const inertRef = React.useRef<HTMLDivElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const logRef = React.useRef<HTMLDivElement>(null);
   const timers = React.useRef<number[]>([]);
   const greeted = React.useRef(false);
+
+  /**
+   * The bottom-right corner is shared, and the thing most likely to be sharing
+   * it is the UX4G accessibility widget's floating button. That button is
+   * `display: none` on every page carrying an `AccessibilityBar` and visible on
+   * every page that is not — so the corner's occupancy genuinely differs by
+   * route and cannot be written down. The rail measures it and lifts us clear;
+   * where the corner is empty we sit at its 32px rest offset.
+   *
+   * Inline placement is not in the corner at all, so it gets the inert ref.
+   */
+  useCornerRailOffset(placement === "fixed" ? rootRef : inertRef);
 
   const messages = controlledTranscript ? messagesProp : ownMessages;
   const typing = controlledTranscript ? Boolean(typingProp) : ownTyping;
@@ -319,13 +339,21 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
 
   return (
     <div
-      ref={ref}
+      ref={(node) => {
+        rootRef.current = node;
+        if (typeof ref === "function") ref(node);
+        else if (ref) ref.current = node;
+      }}
       className={cn("ds-chatbot", `ds-chatbot--${placement}`, className)}
       // The right wall is shared. One attribute is the whole contract: it tells
       // `useWallRailOffset` something is here, so the demo dock's rail places
       // itself clear of it instead of on top of it.
       // See .claude/rules/portal-appswitcher.md → Placement.
       data-sa-wall-occupant=""
+      // ...and the corner. Two attributes because they are two different
+      // contracts: the wall one keeps the demo dock's rail off us, this one
+      // lets the NEXT corner widget stack above us instead of on top.
+      data-sa-corner-occupant=""
       data-state={open ? "open" : "closed"}
       {...rest}
     >

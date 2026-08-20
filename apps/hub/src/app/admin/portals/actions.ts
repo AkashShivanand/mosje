@@ -13,8 +13,63 @@ import {
 } from "@mosje/design-system/registry";
 import { DEFAULT_APPS } from "@mosje/design-system/app-registry";
 import { requireAdmin } from "@/lib/admin/auth";
-import { SETTING_PORTAL_REGISTRY, writeSetting } from "@/lib/settings/store";
+import {
+  SETTING_CHATBOT,
+  SETTING_PORTAL_REGISTRY,
+  writeSetting,
+} from "@/lib/settings/store";
 import { REGISTRY_TAG } from "@/lib/registry/resolve";
+import { CHATBOT_TAG } from "@/lib/chatbot/resolve";
+import {
+  CHATBOT_CONFIG_MAX_BYTES,
+  CHATBOT_CONFIG_VERSION,
+  CHATBOT_DEFAULT_ON,
+  emptyChatbotConfig,
+  parseChatbotConfig,
+  serializeChatbotConfig,
+  type ChatbotConfig,
+} from "@/lib/chatbot/config";
+
+/**
+ * Read the assistant half of the submission.
+ *
+ * ONE form and one Save button, but TWO settings rows behind it. The UI is
+ * merged because an admin thinks in surfaces — the same 22 rows carrying both
+ * a status and an assistant switch. The STORAGE is not merged, deliberately:
+ * `proxy.ts` reads the registry row on every request to enforce the
+ * hidden-entry block, and a malformed assistant config must not be able to
+ * reach that path. Separate rows, separate blast radius.
+ */
+function parseAssistant(raw: string): ChatbotConfig | null {
+  let value: unknown;
+  try {
+    value = JSON.parse(raw);
+  } catch {
+    return null;
+  }
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return null;
+
+  const record = value as Record<string, unknown>;
+  if (typeof record.enabled !== "boolean") return null;
+  if (!Array.isArray(record.surfaces)) return null;
+
+  const surfaces: Record<string, boolean> = {};
+  for (const item of record.surfaces) {
+    if (typeof item !== "object" || item === null) return null;
+    const row = item as Record<string, unknown>;
+    if (typeof row.path !== "string" || !row.path.startsWith("/")) return null;
+    if (typeof row.enabled !== "boolean") return null;
+
+    // Store only what DIFFERS from the code default, so the stored value stays
+    // a sparse patch. A portal added to the registry next month then arrives
+    // with its own default rather than inheriting a blob written today.
+    if (row.enabled !== CHATBOT_DEFAULT_ON.includes(row.path)) {
+      surfaces[row.path] = row.enabled;
+    }
+  }
+
+  return { version: CHATBOT_CONFIG_VERSION, enabled: record.enabled, surfaces };
+}
 
 const STATUSES: readonly RegistryStatus[] = ["live", "planned", "hidden"];
 
@@ -78,11 +133,30 @@ async function persist(serialized: string): Promise<void> {
   updateTag(REGISTRY_TAG);
 }
 
+/** The assistant's own row and tag. Same failure handling as the registry's. */
+async function persistAssistant(serialized: string): Promise<void> {
+  try {
+    await writeSetting(SETTING_CHATBOT, serialized);
+  } catch {
+    redirect("/admin/portals?error=store");
+  }
+  updateTag(CHATBOT_TAG);
+}
+
 export async function saveRegistry(formData: FormData): Promise<void> {
   await requireAdmin();
 
   const rows = parseRows(String(formData.get("rows") ?? ""));
   if (!rows) redirect("/admin/portals?error=payload");
+
+  const assistant = parseAssistant(String(formData.get("assistant") ?? ""));
+  if (!assistant) redirect("/admin/portals?error=payload");
+
+  const assistantSerialized = serializeChatbotConfig(assistant);
+  if (new TextEncoder().encode(assistantSerialized).length > CHATBOT_CONFIG_MAX_BYTES) {
+    redirect("/admin/portals?error=size");
+  }
+  if (!parseChatbotConfig(assistantSerialized)) redirect("/admin/portals?error=invalid");
 
   const config = buildRegistryConfig(DEFAULT_APPS, rows);
   const serialized = serializeRegistryConfig(config);
@@ -94,7 +168,10 @@ export async function saveRegistry(formData: FormData): Promise<void> {
   // value that cannot be read back can never be written in the first place.
   if (!parseRegistryConfig(serialized)) redirect("/admin/portals?error=invalid");
 
+  // Registry first: it is the one the proxy enforces, so if only one of the two
+  // lands it should be the one that governs reachability.
   await persist(serialized);
+  await persistAssistant(assistantSerialized);
   redirect("/admin/portals?saved=1");
 }
 
@@ -108,5 +185,6 @@ export async function saveRegistry(formData: FormData): Promise<void> {
 export async function resetRegistry(): Promise<void> {
   await requireAdmin();
   await persist(serializeRegistryConfig(emptyRegistryConfig()));
+  await persistAssistant(serializeChatbotConfig(emptyChatbotConfig()));
   redirect("/admin/portals?saved=reset");
 }

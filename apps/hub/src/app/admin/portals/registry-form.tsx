@@ -15,7 +15,7 @@
 
 import * as React from "react";
 import { useFormStatus } from "react-dom";
-import { Alert, Badge, Button, Icon, Input, Select } from "@mosje/design-system";
+import { Alert, Badge, Button, Icon, Input, Select, Toggle } from "@mosje/design-system";
 import type { RegistryStatus } from "@mosje/design-system/registry";
 
 export interface RegistryRow {
@@ -37,10 +37,27 @@ export interface RegistryRow {
     abbr: string;
     category: string;
   };
+  /**
+   * The assistant's state for this surface.
+   *
+   * Lives on the registry row rather than on a page of its own because it is
+   * the SAME 22 surfaces: two tables listing the same estate, each with one
+   * control, is a worse answer than one table with two. `applicable` is false
+   * for Resources entries (the design system, Storybook), which are not places
+   * a citizen asks a question.
+   */
+  assistant: {
+    applicable: boolean;
+    enabled: boolean;
+    /** True when no stored override applies — i.e. this is the code default. */
+    isDefault: boolean;
+  };
 }
 
 export interface RegistryFormProps {
   rows: RegistryRow[];
+  /** The assistant's master switch — estate-wide, so it is not a per-row value. */
+  assistantEnabled: boolean;
   saveAction: (formData: FormData) => Promise<void>;
   resetAction: () => Promise<void>;
   storeConfigured: boolean;
@@ -106,6 +123,7 @@ function ResetButton({ disabled }: { disabled: boolean }) {
 
 export function RegistryForm({
   rows: initialRows,
+  assistantEnabled: initialAssistantEnabled,
   saveAction,
   resetAction,
   storeConfigured,
@@ -114,6 +132,7 @@ export function RegistryForm({
   errorMessage,
 }: RegistryFormProps) {
   const [rows, setRows] = React.useState<RegistryRow[]>(initialRows);
+  const [assistantEnabled, setAssistantEnabled] = React.useState(initialAssistantEnabled);
   const [expanded, setExpanded] = React.useState<string | null>(null);
   const [announcement, setAnnouncement] = React.useState("");
 
@@ -186,6 +205,26 @@ export function RegistryForm({
   );
 
   /**
+   * The assistant's intent, posted alongside the registry's.
+   *
+   * One form and one Save button, but TWO settings rows behind it — see
+   * `saveRegistry`. The UI is merged because an admin thinks in surfaces; the
+   * storage is not, because the proxy reads the registry row on every request
+   * and a malformed assistant config must not be able to reach that path.
+   */
+  const assistantPayload = JSON.stringify({
+    enabled: assistantEnabled,
+    surfaces: rows
+      .filter((row) => row.assistant.applicable)
+      .map((row) => ({ path: row.path, enabled: row.assistant.enabled })),
+  });
+
+  const assistantOn = rows.filter(
+    (row) => row.assistant.applicable && row.assistant.enabled,
+  ).length;
+  const assistantTotal = rows.filter((row) => row.assistant.applicable).length;
+
+  /**
    * Everything each row needs to render, derived once.
    *
    * Precomputed rather than tracked with a running variable inside the map:
@@ -249,6 +288,39 @@ export function RegistryForm({
 
       <form action={saveAction} className="mt-4">
         <input type="hidden" name="rows" value={payload} />
+        <input type="hidden" name="assistant" value={assistantPayload} />
+
+        <section className="mb-6 rounded-xl border border-border bg-surface p-5 shadow-xs">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="max-w-xl">
+              <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-ink">
+                Assistant
+              </h2>
+              <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+                Noddy, the chat assistant in the bottom-right corner. This is the
+                master switch; turn it on per surface in the list below. What it
+                says is set in code, not here.
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="text-xs text-ink-hint">
+                {assistantOn} of {assistantTotal} on
+              </span>
+              <Toggle
+                checked={assistantEnabled}
+                onChange={(event) => {
+                  setAssistantEnabled(event.target.checked);
+                  setAnnouncement(
+                    event.target.checked
+                      ? "Assistant enabled estate-wide."
+                      : "Assistant disabled estate-wide; per-surface settings kept.",
+                  );
+                }}
+                label={assistantEnabled ? "On" : "Off"}
+              />
+            </div>
+          </div>
+        </section>
 
         <ul className="space-y-2">
           {view.map(({ row, showHeading, isFirst, isLast }, index) => {
@@ -273,7 +345,15 @@ export function RegistryForm({
 
                 <li className="rounded-xl border border-border bg-surface shadow-xs">
                   <div className="flex flex-wrap items-center gap-3 p-4">
-                    <div className="min-w-0 flex-1">
+                    {/* `basis-56` is what makes the row WRAP rather than crush.
+                        With `flex-1` alone the name column shrinks toward zero
+                        to keep the controls on one line, and at narrow widths
+                        the portal name and its path were clipped to "Liv…" and
+                        "/…" — unreadable, and worse since the assistant toggle
+                        became a third control here. A basis gives the name a
+                        floor to defend, so the controls drop to the next line
+                        instead. */}
+                    <div className="min-w-0 flex-1 basis-56">
                       <div className="flex items-center gap-2">
                         <span className="truncate text-sm font-semibold text-ink">
                           {displayName}
@@ -284,6 +364,35 @@ export function RegistryForm({
                         {row.path}
                       </code>
                     </div>
+
+                    {row.assistant.applicable && (
+                      <span
+                        className={
+                          assistantEnabled
+                            ? "flex items-center gap-2"
+                            : "flex items-center gap-2 opacity-50"
+                        }
+                        title={
+                          assistantEnabled
+                            ? undefined
+                            : "The assistant's master switch is off"
+                        }
+                      >
+                        <Toggle
+                          checked={row.assistant.enabled}
+                          aria-label={`Show the assistant on ${displayName}`}
+                          onChange={(event) =>
+                            setRow(row.path, (r) => ({
+                              ...r,
+                              assistant: { ...r.assistant, enabled: event.target.checked },
+                            }))
+                          }
+                        />
+                        <span className="text-xs font-medium text-ink-muted">
+                          Assistant
+                        </span>
+                      </span>
+                    )}
 
                     <label className="flex items-center gap-2 text-xs font-medium text-ink-muted">
                       <span className="sr-only">{`Status for ${displayName}`}</span>

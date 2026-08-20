@@ -62,7 +62,26 @@ Add a `rewrites()` entry so the hub proxies the portal:
 
 Also add the portal to `apps/hub/package.json` dev scripts so `npm run dev` brings it up alongside the hub.
 
-## 4. Portals explorer page
+## 4. The assistant — nothing to do, and that is deliberate
+
+The assistant's switch lives ON THE REGISTRY ROW at `/admin/portals`, beside the entry's
+status — one row per surface, so everything about a portal is in one place. It therefore
+appears for a new portal on its own. Two consequences worth knowing:
+
+- **A new portal arrives with the assistant OFF.** `CHATBOT_DEFAULT_ON`
+  (`apps/hub/src/lib/chatbot/config.ts`) is `["/website"]` and nothing else. Turning it
+  on for a portal is a deliberate admin act, not something a portal inherits.
+- **The stored config is a SPARSE PATCH**, and only values that differ from the code
+  default are written. That is what stops a blob saved today from dictating the answer
+  for a path that did not exist when it was saved.
+
+Do not add the portal to a second list, and do not give the assistant a settings page of
+its own. It had one briefly and it was wrong: two tables listing the same 22 surfaces,
+each with one control. The UI is merged; the STORAGE is deliberately not — `proxy.ts`
+reads the registry row on every request to enforce the hidden-entry block, so a malformed
+assistant config must never be able to reach that path.
+
+## 5. Portals explorer page
 
 The portals explorer (`apps/hub/src/components/portals-explorer.tsx`) reads `DEFAULT_APPS` automatically — no manual edits needed there as long as `DEFAULT_APPS` is correct.
 
@@ -75,3 +94,4 @@ The portals explorer (`apps/hub/src/components/portals-explorer.tsx`) reads `DEF
 - [ ] `npm run dev` from repo root starts the new portal
 - [ ] Portal appears as a live (clickable "Open portal →") card in the portals explorer at `http://localhost:3007/portals`
 - [ ] Portal appears in the AppSwitcher FAB with a "live" badge
+- [ ] Portal's registry row at `/admin/portals` carries an assistant switch, **off** — no code change needed

@@ -21,6 +21,7 @@ import { Button } from "@mosje/design-system";
 import { requireAdmin } from "@/lib/admin/auth";
 import { settingsConfigured } from "@/lib/settings/store";
 import { readRegistryConfig } from "@/lib/registry/config";
+import { CHATBOT_DEFAULT_ON, readChatbotConfig } from "@/lib/chatbot/config";
 import { resetRegistry, saveRegistry } from "./actions";
 import { RegistryForm, type RegistryRow } from "./registry-form";
 
@@ -50,7 +51,10 @@ export default async function AdminPortalsPage({
 
   // Read uncached: this page must show what is stored, not what a cached
   // render decided a few minutes ago.
-  const config = await readRegistryConfig();
+  const [config, chatbot] = await Promise.all([
+    readRegistryConfig(),
+    readChatbotConfig(),
+  ]);
   const byPath = new Map(DEFAULT_APPS.map((entry) => [entry.path, entry]));
 
   // includeHidden, because the whole point of the page is to offer unhiding
@@ -62,6 +66,11 @@ export default async function AdminPortalsPage({
   const rows: RegistryRow[] = ordered.map((merged: AppEntry) => {
     const code = byPath.get(merged.path)!;
     const override = config?.entries[merged.path] ?? {};
+    // Resources (the design system, Storybook) are not places a citizen asks a
+    // question, so they carry no assistant switch at all rather than a switch
+    // that does nothing.
+    const applicable = code.group === "Website" || code.group === "Portals";
+    const assistantOverride = chatbot?.surfaces[merged.path];
     return {
       path: merged.path,
       group: code.group,
@@ -80,6 +89,13 @@ export default async function AdminPortalsPage({
         org: override.org ?? "",
         abbr: override.abbr ?? "",
         category: override.category ?? "",
+      },
+      assistant: {
+        applicable,
+        enabled: applicable
+          ? (assistantOverride ?? CHATBOT_DEFAULT_ON.includes(merged.path))
+          : false,
+        isDefault: assistantOverride === undefined,
       },
     };
   });
@@ -130,13 +146,15 @@ export default async function AdminPortalsPage({
 
         <h1 className="text-2xl font-bold tracking-tight text-ink">Estate registry</h1>
         <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-ink-muted">
-          What the estate advertises and links to. Changes apply to the deployed
-          prototype at once — there is no separate publish step. Hiding an entry
-          also stops its URL working for everyone except you.
+          What the estate advertises and links to, and where the chat assistant
+          appears. Changes apply to the deployed prototype at once — there is no
+          separate publish step. Hiding an entry also stops its URL working for
+          everyone except you.
         </p>
 
         <RegistryForm
           rows={rows}
+          assistantEnabled={chatbot?.enabled ?? true}
           saveAction={saveRegistry}
           resetAction={resetRegistry}
           storeConfigured={settingsConfigured()}

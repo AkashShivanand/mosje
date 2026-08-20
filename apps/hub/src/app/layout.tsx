@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Noto_Sans, Noto_Sans_Display } from "next/font/google";
 import { ColorModeProvider, UX4GAccessibilityWidget } from "@mosje/design-system";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
+import { ConditionalChatbot } from "@/components/conditional-chatbot";
 import { ConditionalDemoDock } from "@/components/conditional-demo-dock";
+import { resolveChatbotPaths } from "@/lib/chatbot/resolve";
 import { resolveRegistry } from "@/lib/registry/resolve";
 import "./globals.css";
 // Material Symbols Rounded — the SAMAVESH icon system. Loaded ONCE here because
@@ -66,6 +68,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   // server-only. The read is cache-tagged, so this does not make the layout —
   // and with it every route in the estate — render per request.
   const apps = await resolveRegistry();
+  // Which surfaces show the assistant. Resolved here, beside the registry it is
+  // keyed against, and cache-tagged for the same reason — this layout is above
+  // every route in the estate, so an uncached read would make all of them
+  // dynamic. Only the enabled paths travel to the client.
+  const chatbotPaths = await resolveChatbotPaths(apps);
 
   return (
     <html
@@ -82,6 +89,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ColorModeProvider>
           {children}
           <UX4GAccessibilityWidget />
+          {/* Ordered deliberately: the accessibility widget owns the
+              bottom-right corner when it is visible, and the chatbot measures
+              around it rather than the other way round. */}
+          <ConditionalChatbot enabledPaths={chatbotPaths} />
           <ConditionalDemoDock apps={apps} />
         </ColorModeProvider>
       </body>

@@ -4,6 +4,17 @@ const LINKS = [
   { label: "Design System", href: "/design-system" },
   { label: "Storybook", href: "/storybook/" },
   { label: "Reports", href: "/reports" },
+  // Administration is the estate's back of house, and this footer is the one
+  // piece of chrome every hub page already carries — so it is where the door
+  // belongs, rather than a new floating control or a URL people memorise.
+  //
+  // Exposing the link is not exposing the panel: `/admin` sits OUTSIDE the site
+  // gate by design (it is the recovery path when the gate password is lost) and
+  // is guarded on its own by `requireAdmin()`. An unauthenticated visitor
+  // following this link reaches a password form, which is the same thing they
+  // would reach by typing the path — the link only saves them from having to
+  // know it.
+  { label: "Administration", href: "/admin" },
 ] as const;
 
 /** Shared estate footer for the gate pages. */
