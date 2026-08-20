@@ -1,3 +1,9 @@
+---
+paths:
+  - "apps/hub/src/app/portals/**"
+  - "packages/design-system/demo/**"
+---
+
 # Portal login pages — demo credentials (MANDATORY)
 
 Every login page in every portal MUST be reachable by demo credentials so

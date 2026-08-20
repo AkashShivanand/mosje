@@ -1,3 +1,11 @@
+---
+paths:
+  - "packages/design-system/**"
+  - "tools/figma-doc-parity/**"
+  - "docs/design-system/**"
+  - "**/*.figma.ts"
+---
+
 # Figma and code stay in sync — and the sync is GATED (MANDATORY)
 
 **A change to a component is not finished when the code is right. It is finished when

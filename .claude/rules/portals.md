@@ -1,8 +1,6 @@
 ---
 paths:
-  - "portals/**/*.tsx"
-  - "portals/**/*.ts"
-  - "portals/**/*.css"
+  - "apps/hub/src/app/portals/**"
 ---
 
 # Portal rules (`portals/` — functional workflow apps)

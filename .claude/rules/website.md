@@ -1,8 +1,6 @@
 ---
 paths:
-  - "dosje/**/*.tsx"
-  - "dosje/**/*.ts"
-  - "dosje/**/*.css"
+  - "apps/hub/src/app/website/**"
 ---
 
 # Website rules (`dosje/` — the unified informational site)

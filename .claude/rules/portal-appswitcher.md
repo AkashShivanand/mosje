@@ -1,3 +1,12 @@
+---
+paths:
+  - "apps/hub/src/app/portals/**"
+  - "apps/hub/src/app/layout.tsx"
+  - "apps/hub/src/components/**"
+  - "packages/design-system/components/**"
+  - "packages/design-system/demo/**"
+---
+
 # Demo tooling — DemoDock (demo-only, mounted once)
 
 `AppSwitcher` no longer exists. It has been replaced by **`DemoDock`**, one

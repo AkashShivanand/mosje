@@ -1,3 +1,9 @@
+---
+paths:
+  - "tools/design-audit/**"
+  - "docs/qc/**"
+---
+
 # Design-vs-build QC — use the shared engine
 
 When asked to audit / QC / verify a build against its Figma design (fidelity, tokens, coverage,

@@ -1,3 +1,10 @@
+---
+paths:
+  - "packages/design-system/**"
+  - "tools/figma-doc-parity/**"
+  - "docs/design-system/**"
+---
+
 # Figma library documentation — the house style
 
 **Every documentation page in the SAMAVESH Figma library is built to the grammar

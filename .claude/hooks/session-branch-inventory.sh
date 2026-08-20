@@ -75,6 +75,24 @@ $prs
 \`\`\`"
 fi
 
+# Cost-heavy plugins that are meant to be OFF by default and switched on only
+# for a task (see ~/.claude/bin/claude-with). If `claude-with` is killed hard,
+# its cleanup never runs and the plugin silently stays on, costing tokens in
+# every later session. Report it; never toggle anything from a hook.
+if command -v claude >/dev/null 2>&1; then
+  left_on=$(timeout 5 claude plugin list 2>/dev/null | awk '
+    /^  ❯ (vercel|blog-suite|seo-suite|omni-suite|cli-suite)@/ { id=$2; inblock=1; next }
+    inblock && /^  ❯ / { inblock=0 }
+    inblock && /Status:/ { if (!/disabled/) print "  " id; inblock=0 }')
+  [ -n "$left_on" ] && out="$out
+
+**Left switched on** — these are meant to be off by default; a \`claude-with\`
+session probably exited abnormally. Switch off with \`claude plugin disable <id>\`:
+\`\`\`
+$left_on
+\`\`\`"
+fi
+
 # JSON-encode. python3, else jq, else plain stdout — the inventory still reaches
 # the session in every case.
 if command -v python3 >/dev/null 2>&1; then

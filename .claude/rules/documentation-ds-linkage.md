@@ -1,3 +1,11 @@
+---
+paths:
+  - "apps/hub/src/app/design-system/**"
+  - "apps/hub/src/components/design-system/**"
+  - "packages/design-system/**"
+  - "tools/ds-linkage/**"
+---
+
 # Documentation must be BUILT from the design system, not just look like it
 
 **Scope — every documentation surface in the estate:**
