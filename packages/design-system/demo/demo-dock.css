@@ -388,6 +388,18 @@
   top: 50%;
   transform: translateY(-50%);
   width: 500px;
+  /* FIXED, not content-derived. Sizing to content meant every tab switch
+     resized the panel — Sign in 635, Apps 648, Colour 386 — and the switch
+     read as a lurch. Worse, the `transition: height` that was supposed to
+     smooth it WAS DEAD CODE: a transition cannot interpolate to or from
+     `auto`, and the panel's height was auto, so it snapped on every switch
+     and always had. One constant height removes the problem instead of
+     animating it.
+
+     `min()` keeps it viewport-aware: 72vh on anything short, capped at 680
+     so it does not keep growing on a tall screen. The body scrolls inside
+     it, which is what it already did whenever a tab overflowed. */
+  height: min(72vh, 680px);
   /* 62px clears the rail (its own 52px plus 10px of gap) and 16px leaves a
      margin on the far side. This was `100vw - 40px`, written when the panel
      was anchored at `right: 0`; moving it out to `right: 62px` without
@@ -395,7 +407,6 @@
      wide. Measured, not spotted — the panel is only that wide on a narrow
      viewport, and nothing about the rule looks wrong until you subtract. */
   max-width: calc(100vw - 78px);
-  max-height: min(72vh, 680px);
   display: flex;
   flex-direction: column;
   border: 1px solid var(--sa-border-neutral-base);
@@ -427,12 +438,9 @@
      once here and read by both the body and the Colour tab so they can't
      drift apart.
 
-     REDUCED from a floor sized to the tallest tab. The panel was 648px on a
-     900px viewport — 72% of the screen — because every tab paid for the
-     Apps list's height, which left visible dead space under Colour and a
-     credentials table with room to spare. The floor now only stops the
-     panel collapsing to nothing; the height transition below is what keeps
-     switching tabs from feeling like a jump. */
+     Retained only for the Colour tab's own layout. It no longer sets the
+     panel's size — the panel is a fixed height now — so nothing here has to
+     guess at the tallest tab. */
   --cmp-demodock-content-floor: min(180px, calc(72vh - 128px));
 }
 
@@ -611,17 +619,10 @@
   overflow-y: auto;
 }
 
-/* The panel sizes to its content, and the CHANGE is animated. That is what
-   the old floor was really buying — not a size, but the absence of a jump
-   when a short tab replaced a tall one. A transition buys the same thing
-   without making every tab pay for the tallest. */
-@media (prefers-reduced-motion: no-preference) {
-  .ds-demodock__panel {
-    transition: opacity var(--cmp-demodock-panel-in) var(--cmp-demodock-ease),
-      transform var(--cmp-demodock-panel-in) var(--cmp-demodock-ease),
-      height var(--cmp-demodock-fold) var(--cmp-demodock-ease);
-  }
-}
+/* No height transition, because there is nothing to transition: the panel is
+   one fixed height and every tab lives inside it. The rule that used to be
+   here listed `height` and never fired — `auto` is not interpolable — so it
+   read as a solved problem while the panel snapped on every switch. */
 
 /* ── Colour tab: a labelled, wrapping grid of motif tiles, so the tab earns
    its floor height instead of padding it out with a live component block.

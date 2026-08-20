@@ -320,7 +320,12 @@ function ColourTab() {
           text mid-demo, and the people who need this apparatus know to look
           for it. Native <details> so it is keyboard- and screen-reader-
           operable without a line of JavaScript. */}
-      <details className="ds-demodock__colour-section">
+      {/* OPEN by default. It was closed to stop six previews you must not pick
+          sitting above two you can — a hierarchy point that still stands —
+          but with the panel at a fixed height, collapsing it no longer buys
+          any space back, and leaving it shut only hides the palette behind a
+          click. The disclosure stays so it can still be folded away. */}
+      <details className="ds-demodock__colour-section" open>
         <summary className="ds-demodock__colour-summary">
           <span className="ds-demodock__colour-heading">
             DBIM conformance

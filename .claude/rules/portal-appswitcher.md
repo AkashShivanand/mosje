@@ -112,6 +112,13 @@ order. That is what stops the rail and the tab strip being two
 navigations competing for one set of destinations. Sign in has no door and
 lights nothing, correctly.
 
+**The panel is a FIXED height** — `min(72vh, 680px)` — and every tab lives
+inside it. Sizing to content meant a tab switch resized the panel (Sign in
+635, Apps 648, Colour 386) and read as a lurch, and the `transition: height`
+meant to smooth it was dead code: a transition cannot interpolate to or from
+`auto`. Do not reintroduce content sizing to "save space"; the space was
+never the problem.
+
 **The liquid in the flask moves permanently**; the bubbles and the wobble are
 the state signals. A still flask reads as a picture of a flask rather than a
 thing that is running. The wobble answers a hover of the WHOLE RAIL, not of
