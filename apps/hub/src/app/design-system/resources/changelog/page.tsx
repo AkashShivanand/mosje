@@ -22,9 +22,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.38.0",
+    version: "v0.39.0",
     date: "2026-08-20",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "ON PRODUCTION, THE ASSISTANT PANEL\u2019S HEADER WAS OFF THE TOP OF THE SCREEN \u2014 name, expand and close all unreachable. Measured on the live site at panel `y = -117`, header `bottom = -43`. The cap read `100dvh - launcher - gap*3`, which silently assumes the launcher is at its RESTING offset. It is not: the corner rail lifts it clear of whatever occupies the corner, and the website\u2019s cookie bar pushes it to 261px. The panel is anchored to the launcher, so every pixel the rail lifts was a pixel the panel ran off the top. The cap now derives from `--sa-corner-rail-bottom`, the same custom property the launcher is positioned by, so the two cannot disagree again. Verified at lifts of 32, 150, 261 and 400px: the panel shrinks to 719, 605, 494 and 355 and the header stays visible at every one" },
+      { kind: "Fixed", text: "THE EXPANDED HEIGHT CARRIED THE SAME ASSUMPTION and would have reintroduced the overflow the cap exists to prevent. Corrected in the same expression" },
+    ],
+  },
+  {
+    version: "v0.38.0",
+    date: "2026-08-20",
     changes: [
       { kind: "Fixed", text: "THE ASSISTANT WAS WEARING SOMEBODY ELSE\u2019S NAME. It introduced itself as \u201cNoddy\u201d while the seal it renders reads \u201cSamajik Sahayak ~ \u0938\u093e\u092e\u093e\u091c\u093f\u0915 \u0938\u0939\u093e\u092f\u0915\u201d twice around the ring, its header said \u201cChat with us\u201d, and the live assistant on dosje.gov.in \u2014 which is a national myScheme/GovAI embed, not a DoSJE build \u2014 is called Samajik Sahayak. Three names, one widget. It is now Samajik Sahayak everywhere, in both scripts. \u201cNoddy\u201d was also a British children\u2019s character: somebody else\u2019s property, and the wrong register for a Government of India service" },
       { kind: "Fixed", text: "THE ONLY VISIBLE CONTROL IN THE PANEL WAS A DESTRUCTIVE ONE. \u201cEnd Chat\u201d sat alone in the header, in red, in the top-right \u2014 the exact position every user on earth reads as a harmless dismiss \u2014 and it wiped the transcript. There was no minimise at all; closing without losing the conversation meant knowing about Escape or the launcher. The header now carries EXPAND and MINIMISE, matching the live panel, and end-chat is a quiet text action in the footer where destructive things belong" },
