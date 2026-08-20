@@ -109,7 +109,7 @@ export default async function AdminPage({
             </h2>
             <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
               Which portals and destinations the estate shows, in what order,
-              under what name.
+              under what name — and where the chat assistant appears.
             </p>
             <p className="mt-3 text-xs leading-relaxed text-ink-hint">
               Hiding an entry also blocks its URL for everyone but you.
@@ -119,7 +119,9 @@ export default async function AdminPage({
           <div className="rounded-xl border border-border bg-surface p-6 shadow-xs">
             <p className="text-sm leading-relaxed text-ink-muted">
               Set each entry to live, planned or hidden, reorder it within its
-              category, and override the name or description the estate shows.
+              category, override the name or description the estate shows, and
+              switch the assistant on for that surface. One row per surface, so
+              everything about a portal is in one place.
             </p>
             <div className="mt-4">
               <Button href="/admin/portals" appearance="outlined">

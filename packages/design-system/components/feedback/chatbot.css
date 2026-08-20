@@ -68,7 +68,28 @@
 .ds-chatbot--fixed {
   position: fixed;
   right: var(--ds-chatbot-gap);
-  bottom: var(--ds-chatbot-gap);
+  /* The corner is SHARED, so this offset is measured rather than chosen —
+     `useCornerRailOffset` writes `--sa-corner-rail-bottom` on this element and
+     keeps it correct as the corner's occupancy changes.
+
+     The thing most likely to be down there is the UX4G accessibility widget's
+     floating button, which is `display: none` on every page carrying an
+     `AccessibilityBar` and visible on every page that is not. Its presence
+     genuinely differs by route, which is exactly why a constant here would be
+     wrong on half the estate — that is the defect the rail was built for.
+
+     The fallback is the rail's own rest offset, so the first paint (before the
+     hook has measured) lands where an empty corner would put us anyway. */
+  bottom: var(--sa-corner-rail-bottom, 32px);
+  transition: bottom var(--sa-motion-enter-duration) var(--ds-chatbot-ease);
+}
+
+/* The offset is re-measured, and a widget appearing or vanishing in the corner
+   would otherwise make us jump. Under reduced motion it simply jumps. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-chatbot--fixed {
+    transition: none;
+  }
 }
 
 .ds-chatbot--inline {

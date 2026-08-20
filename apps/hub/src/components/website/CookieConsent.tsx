@@ -26,6 +26,16 @@ export function CookieConsent() {
     <div
       role="region"
       aria-label="Cookie Privacy Consent"
+      // The bar spans the foot of the viewport, which includes the corner the
+      // assistant sits in — measured at z-1050 over its z-1000, covering the
+      // bottom 54px of the 84px launcher. One attribute is the whole fix: the
+      // corner rail reads it and lifts anything in that corner clear while the
+      // bar is up, then puts it back when consent is given.
+      //
+      // Deliberately this way round. The bar must stay ON TOP and must not be
+      // the thing that moves — consent comes before a chat widget on a
+      // government site — so the widget yields to it, not the reverse.
+      data-sa-corner-occupant=""
       className="fixed bottom-0 inset-x-0 z-[1050] border-t border-border bg-surface p-4 shadow-lg sm:p-5"
     >
       <div className="sa-container flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

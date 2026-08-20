@@ -28,6 +28,13 @@ export const SETTING_GATE_TOKEN = "gate_token";
  */
 export const SETTING_PORTAL_REGISTRY = "portal_registry";
 
+/**
+ * Where the assistant is switched on, as serialised `ChatbotConfig` JSON.
+ * Absent, unreadable or malformed all mean the same thing: use the code
+ * defaults in `lib/chatbot/config.ts`.
+ */
+export const SETTING_CHATBOT = "chatbot_config";
+
 const CACHE_TTL_MS = 60_000;
 const FETCH_TIMEOUT_MS = 1_500;
 
