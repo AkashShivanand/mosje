@@ -35,6 +35,26 @@ export const SETTING_PORTAL_REGISTRY = "portal_registry";
  */
 export const SETTING_CHATBOT = "chatbot_config";
 
+/**
+ * Whether the demo dock is shown, as serialised `DemoToolsConfig` JSON.
+ *
+ * This is a PRODUCT setting, not a kill switch. The demo tooling is the point
+ * of this prototype — it is how the estate is shown to anyone — so it is
+ * turned off from the admin panel for a particular audience, not removed from
+ * a deployment. `NEXT_PUBLIC_DEMO_TOOLS=false` still exists above it as a
+ * build-time hard off, for a deployment that genuinely must not carry it.
+ */
+export const SETTING_DEMO_TOOLS = "demo_tools";
+
+/**
+ * Whether the cookie consent banner is shown, as serialised toggle JSON.
+ *
+ * Currently DEFAULT OFF, which is a deliberate temporary state: the banner is
+ * being redesigned and is switched off until it is. See
+ * `lib/cookie-banner/config.ts` for the compliance note that goes with that.
+ */
+export const SETTING_COOKIE_BANNER = "cookie_banner";
+
 const CACHE_TTL_MS = 60_000;
 const FETCH_TIMEOUT_MS = 1_500;
 

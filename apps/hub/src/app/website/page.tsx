@@ -14,8 +14,13 @@ import { SiteFooter } from "@/components/website/SiteFooter";
 import { ImportantLinks } from "@/components/website/ImportantLinks";
 import { NmbaHomeCompact } from "@/components/website/nmba/NmbaHomeCompact";
 import { CookieConsent } from "@/components/website/CookieConsent";
+import { resolveCookieBannerEnabled } from "@/lib/cookie-banner/resolve";
 
-export default function Home() {
+export default async function Home() {
+  // Cache-tagged, so awaiting it here does not make the website home page
+  // render per request.
+  const cookieBanner = await resolveCookieBannerEnabled();
+
   return (
     <>
       <Header />
@@ -35,7 +40,8 @@ export default function Home() {
       </main>
       <SiteFooter />
       <ImportantLinks />
-      <CookieConsent />
+      {/* Switched off from /admin/portals while the banner is redesigned. */}
+      {cookieBanner && <CookieConsent />}
     </>
   );
 }
