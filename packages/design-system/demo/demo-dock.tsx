@@ -775,7 +775,14 @@ export function DemoDock({
       <div
         className={cn(
           "ds-demodock__rail",
-          railOpen && "is-open",
+          // Unfolded while the PANEL is open, not only while hovered. The
+          // doors carry the active-tab indicator, and an indicator that
+          // disappears the moment you move the pointer into the panel it
+          // describes is worse than none — you would watch it vanish exactly
+          // as you started using the thing it points at. It also keeps the
+          // one-click tab switch in reach for as long as there is a tab to
+          // switch.
+          (railOpen || open) && "is-open",
           open && "is-panel-open",
         )}
         onPointerEnter={onPointerEnter}
@@ -827,21 +834,17 @@ export function DemoDock({
               buttons that open a dialog on a given panel. Sign in has no
               door and therefore lights nothing — correct, rather than a gap,
               because a door that appeared only on login routes is the
-              relocating-widget defect this component keeps re-learning. */}
-          <button
-            type="button"
-            className={cn(
-              "ds-demodock__door",
-              open && activeTabId === "colour" && "is-current",
-            )}
-            aria-haspopup="dialog"
-            aria-current={open && activeTabId === "colour" ? "true" : undefined}
-            aria-label="Colour mode"
-            onClick={() => openPanel("colour")}
-          >
-            <span className="ds-demodock__swatch" aria-hidden="true" />
-            <span className="ds-demodock__tip" aria-hidden="true">Colour mode</span>
-          </button>
+              relocating-widget defect this component keeps re-learning.
+
+              ORDERED TO MATCH THE TAB STRIP — Apps, then Colour. They ran
+              the other way round, put there by frequency: colour is the
+              most-used action in a demo. That was defensible while the two
+              lists were independent, and stopped being so the moment the
+              doors started indicating the tabs. With the indicator in place
+              a mismatch is actively misleading — the SECOND door lighting
+              when the THIRD tab is active — and `component-authoring.md` §10
+              is explicit that two lists of the same things use the same
+              order. Consistency beats the one saved glance. */}
           <button
             type="button"
             className={cn(
@@ -860,6 +863,20 @@ export function DemoDock({
               <i />
             </span>
             <span className="ds-demodock__tip" aria-hidden="true">Switch app</span>
+          </button>
+          <button
+            type="button"
+            className={cn(
+              "ds-demodock__door",
+              open && activeTabId === "colour" && "is-current",
+            )}
+            aria-haspopup="dialog"
+            aria-current={open && activeTabId === "colour" ? "true" : undefined}
+            aria-label="Colour mode"
+            onClick={() => openPanel("colour")}
+          >
+            <span className="ds-demodock__swatch" aria-hidden="true" />
+            <span className="ds-demodock__tip" aria-hidden="true">Colour mode</span>
           </button>
         </div>
       </div>

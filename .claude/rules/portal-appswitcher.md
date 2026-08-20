@@ -102,7 +102,13 @@ share one grid cell and cross-fade with a quarter turn.
 
 **The two doors indicate the active tab** — `aria-current`, not
 `aria-selected`, because they are buttons that open a dialog rather than tabs
-in a tablist. That is what stops the rail and the tab strip being two
+in a tablist. **They are ordered to match the tab strip (Apps, then Colour),
+and the rail stays unfolded for as long as the panel is open.** Both follow
+from the indicator existing: an indicator that vanishes when the pointer
+enters the panel it describes is worse than none, and an order that disagrees
+with the tabs makes the second door light when the third tab is active.
+`component-authoring.md` §10 — two lists of the same things use the same
+order. That is what stops the rail and the tab strip being two
 navigations competing for one set of destinations. Sign in has no door and
 lights nothing, correctly.
 

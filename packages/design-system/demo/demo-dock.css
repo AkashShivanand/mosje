@@ -258,6 +258,14 @@
   transition-delay: 40ms;
 }
 
+/* No stagger when the PANEL opens the rail. The stagger is an entrance
+   flourish for a hover; replaying it every time the panel opens would put a
+   40ms delay between the user asking for a tab and the indicator confirming
+   it. */
+.ds-demodock__rail.is-panel-open .ds-demodock__door {
+  transition-delay: 0ms;
+}
+
 .ds-demodock__rule {
   flex: 0 0 auto;
   width: 26px;
