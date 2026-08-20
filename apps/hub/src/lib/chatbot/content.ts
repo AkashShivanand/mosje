@@ -15,6 +15,7 @@
  */
 
 import type { ChatbotQuickReply, ChatbotReply } from "@mosje/design-system";
+import { FINDER_ENTRY_ID, type FinderScript } from "./finder.ts";
 
 /**
   * Matches the live assistant's opening on dosje.gov.in almost word for word,
@@ -26,7 +27,7 @@ export const CHATBOT_GREETING =
   "This is an assistant for the Ministry of Social Justice. How can I help you?";
 
 export const CHATBOT_QUICK_REPLIES: ChatbotQuickReply[] = [
-  { id: "schemes", label: "Which scheme applies to me?" },
+  { id: FINDER_ENTRY_ID, label: "Which scheme applies to me?" },
   { id: "status", label: "Check my application status" },
   { id: "otp", label: "I'm not receiving OTP." },
   { id: "documents", label: "What documents do I need?" },
@@ -34,29 +35,17 @@ export const CHATBOT_QUICK_REPLIES: ChatbotQuickReply[] = [
   { id: "contact", label: "Others" },
 ];
 
+/*
+ * "Which scheme applies to me?" is NOT in this table.
+ *
+ * It used to be, and it dead-ended: three bubbles that named some divisions and
+ * then stopped, leaving the citizen exactly where they started. It now opens the
+ * finder in `finder.ts`, which narrows a real catalogue over five questions and
+ * ends at a page or a portal. The rule the old answer kept is the one the finder
+ * keeps too — it reports what the catalogue RECORDS about a target group, never
+ * what a person is entitled to.
+ */
 const ANSWERS: Record<string, ChatbotReply> = {
-  schemes: {
-    text:
-      "The Ministry runs schemes across scholarships, social defence and financial support. Tell me who the applicant is and I can point you at the right portal.",
-    quickReplies: [
-      { id: "student", label: "A student seeking a scholarship" },
-      { id: "senior", label: "A senior citizen" },
-      { id: "documents", label: "What documents do I need?" },
-    ],
-  },
-  student: {
-    text:
-      "Scholarships are handled portal by portal. Pre-Matric, Post-Matric, Top Class Education and the National Overseas Scholarship each have their own, and the Portals page lists what each one covers.",
-    quickReplies: [
-      { id: "documents", label: "What documents do I need?" },
-      { id: "status", label: "Check my application status" },
-    ],
-  },
-  senior: {
-    text:
-      "Senior Citizens Welfare covers pensions, care homes and the volunteer programme. SAMBAL handles atrocity-related relief. Both are on the Portals page.",
-    quickReplies: [{ id: "grievance", label: "Raise a grievance" }],
-  },
   status: {
     text:
       "Application status lives inside the portal you applied through. Sign in there with the mobile number you registered with, and it will be on your dashboard.",
@@ -86,7 +75,7 @@ const ANSWERS: Record<string, ChatbotReply> = {
   contact: {
     text:
       "I can only point you at the right place. I cannot decide a case or change an application; the Contact page on the Ministry website has the helpline and the departmental email for anything beyond that.",
-    quickReplies: [{ id: "schemes", label: "Which scheme applies to me?" }],
+    quickReplies: [{ id: FINDER_ENTRY_ID, label: "Which scheme applies to me?" }],
   },
 };
 
@@ -100,3 +89,16 @@ const ANSWERS: Record<string, ChatbotReply> = {
 export function chatbotAnswer(id: string): ChatbotReply {
   return ANSWERS[id] ?? ANSWERS.contact!;
 }
+
+/**
+ * The scripted half of the assistant, handed to the finder's session.
+ *
+ * Injected rather than imported by `finder.ts`, so the two modules stay a
+ * one-way dependency: content knows about the finder, the finder does not know
+ * about content.
+ */
+export const CHATBOT_SCRIPT: FinderScript = {
+  greeting: CHATBOT_GREETING,
+  quickReplies: CHATBOT_QUICK_REPLIES,
+  answer: chatbotAnswer,
+};
