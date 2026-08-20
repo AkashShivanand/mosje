@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Icon } from "../icon/icon";
 import "./visitor-counter.css";
 
 export interface VisitorCounterProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -86,7 +85,6 @@ export function VisitorCounter({
       aria-label={count === null ? label : `${label}: ${count.toLocaleString("en-IN")}`}
       {...rest}
     >
-      <Icon name="visibility" size={16} className="ds-visits__icon" />
       <span className="ds-visits__label" aria-hidden="true">
         {label}
       </span>

@@ -45,8 +45,14 @@ export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
   /** The footer's single call to action. */
   cta?: { label: string; href: string };
   social?: SiteFooterSocial[];
-  /** Slot under the social rail — the estate puts `<VisitorCounter />` here. */
-  aside?: React.ReactNode;
+  /**
+   * Slot in the colophon, beside the copyright and last-updated. The estate
+   * puts `<VisitorCounter />` here. It sat under the social rail until it was
+   * clear that a visit count is PAGE METADATA, not identity — grouped with the
+   * other two provenance statements it stops being a statistic competing with
+   * the emblem.
+   */
+  colophonSlot?: React.ReactNode;
   columns: SiteFooterColumn[];
   /** [DBIM 5.6] Required. The mandated lineage sentence for the org type. */
   lineage: string;
@@ -106,7 +112,7 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
     address,
     cta,
     social,
-    aside,
+    colophonSlot,
     columns,
     lineage,
     credits,
@@ -144,38 +150,43 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
       <div className="ds-sitefooter__in" style={inStyle}>
         <div className="ds-sitefooter__body">
           <div className="ds-sitefooter__ident">
-            <div className="ds-sitefooter__lockup">
+            <div className="ds-sitefooter__ident-group">
+              <div className="ds-sitefooter__lockup">
               {emblem}
-              <div className="ds-sitefooter__lockup-text">
-                {organisation.map((line, i) => (
-                  <p
-                    key={line}
-                    className={cn(
-                      "ds-sitefooter__org",
-                      i === organisation.length - 1 && "ds-sitefooter__org--lead",
-                    )}
-                  >
-                    {line}
-                  </p>
-                ))}
+                <div className="ds-sitefooter__lockup-text">
+                  {organisation.map((line, i) => (
+                    <p
+                      key={line}
+                      className={cn(
+                        "ds-sitefooter__org",
+                        i === organisation.length - 1 && "ds-sitefooter__org--lead",
+                      )}
+                    >
+                      {line}
+                    </p>
+                  ))}
+                </div>
               </div>
+
+              {address && (
+                <address className="ds-sitefooter__address">
+                  <Icon name="location_on" size={16} />
+                  <span>{address}</span>
+                </address>
+              )}
             </div>
 
-            {address && (
-              <address className="ds-sitefooter__address">
-                <Icon name="location_on" size={16} />
-                <span>{address}</span>
-              </address>
-            )}
+            {/* Second group: how to reach them. Separated from the identity
+                above by a doubled gap, so the column reads as two things. */}
+            <div className="ds-sitefooter__ident-group">
+              {cta && (
+                <Link href={cta.href} className="ds-sitefooter__cta">
+                  {cta.label}
+                  <Icon name="arrow_forward" size={16} />
+                </Link>
+              )}
 
-            {cta && (
-              <Link href={cta.href} className="ds-sitefooter__cta">
-                {cta.label}
-                <Icon name="arrow_forward" size={16} />
-              </Link>
-            )}
-
-            {social && social.length > 0 && (
+              {social && social.length > 0 && (
               <nav aria-label="Social media">
                 <ul className="ds-sitefooter__social">
                   {social.map((s) => (
@@ -198,9 +209,8 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
                   ))}
                 </ul>
               </nav>
-            )}
-
-            {aside}
+              )}
+            </div>
           </div>
 
           <div className="ds-sitefooter__cols">
@@ -223,54 +233,56 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
       {/* ── Band 2 · the statutory bar ────────────────────────────────── */}
       <div className="ds-sitefooter__statutory">
         <div className="ds-sitefooter__in" style={inStyle}>
-          <div className="ds-sitefooter__lineage-row">
+          {/* Statute and navigation share the left column: same register, and
+              the organisational marks opposite them are a different one. */}
+          <div className="ds-sitefooter__statute">
             <p className="ds-sitefooter__lineage">{lineage}</p>
-            {credits && credits.length > 0 && (
-              <div className="ds-sitefooter__credits">
-                {credits.map((c) => (
-                  <React.Fragment key={c.href}>
-                    {c.prefix && <span>{c.prefix}</span>}
-                    <a
-                      href={c.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="ds-sitefooter__credit-link"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={c.src} alt={c.alt} width={c.width} height={c.height} />
-                      <NewWindow />
-                    </a>
-                  </React.Fragment>
-                ))}
-              </div>
-            )}
-          </div>
 
-          <div className="ds-sitefooter__inline-navs">
-            <nav aria-label="Website policies">
-              <ul className="ds-sitefooter__inline">
-                <li className="ds-sitefooter__inline-label" aria-hidden="true">
-                  Policies
-                </li>
-                {policyLinks.map((link) => (
-                  <li key={link.label}>{renderLink(link, "ds-sitefooter__link")}</li>
-                ))}
-              </ul>
-            </nav>
-
-            {relatedLinks && relatedLinks.length > 0 && (
-              <nav aria-label="Related government links">
+            <div className="ds-sitefooter__inline-navs">
+              {/* No visible label on either nav. `aria-label` names them for
+                  assistive tech, which is where the label was doing real work;
+                  on screen they were two uppercase eyebrows inside one small
+                  band, which the links did not need and which is the single
+                  most templated thing a footer can do. */}
+              <nav aria-label="Website policies">
                 <ul className="ds-sitefooter__inline">
-                  <li className="ds-sitefooter__inline-label" aria-hidden="true">
-                    Related
-                  </li>
-                  {relatedLinks.map((link) => (
+                  {policyLinks.map((link) => (
                     <li key={link.label}>{renderLink(link, "ds-sitefooter__link")}</li>
                   ))}
                 </ul>
               </nav>
-            )}
+
+              {relatedLinks && relatedLinks.length > 0 && (
+                <nav aria-label="Related government links">
+                  <ul className="ds-sitefooter__inline">
+                    {relatedLinks.map((link) => (
+                      <li key={link.label}>{renderLink(link, "ds-sitefooter__link")}</li>
+                    ))}
+                  </ul>
+                </nav>
+              )}
+            </div>
           </div>
+
+          {credits && credits.length > 0 && (
+            <div className="ds-sitefooter__credits">
+              {credits.map((c) => (
+                <React.Fragment key={c.href}>
+                  {c.prefix && <span>{c.prefix}</span>}
+                  <a
+                    href={c.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="ds-sitefooter__credit-link"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={c.src} alt={c.alt} width={c.width} height={c.height} />
+                    <NewWindow />
+                  </a>
+                </React.Fragment>
+              ))}
+            </div>
+          )}
 
           <div className="ds-sitefooter__colophon">
             <p>{copyright}</p>
@@ -279,6 +291,7 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
                 Last Updated: <time>{lastUpdated}</time>
               </p>
             )}
+            {colophonSlot}
           </div>
         </div>
       </div>

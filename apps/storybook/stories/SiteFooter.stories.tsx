@@ -30,8 +30,10 @@ import { SiteFooter, VisitorCounter } from "@mosje/design-system";
  * External links always render as a plain anchor with `rel="noreferrer"` and an
  * "(opens in a new window)" note, so `external: true` is the only thing you set.
  *
- * `aside` is a free slot under the social rail. The estate puts `VisitorCounter`
- * there. Lifecycle: **Stable**.
+ * `colophonSlot` is a free slot in the colophon, beside the copyright and
+ * last-updated. The estate puts `VisitorCounter` there — a visit count is page
+ * metadata, not identity, and grouping it with the other two provenance lines
+ * stops it competing with the emblem. Lifecycle: **Stable**.
  */
 const meta = {
   title: "Navigation/SiteFooter",
@@ -106,7 +108,7 @@ const meta = {
   },
   argTypes: {
     emblem: { control: false },
-    aside: { control: false },
+    colophonSlot: { control: false },
     social: { control: false },
     credits: { control: false },
     columns: { control: false },
@@ -128,8 +130,8 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {};
 
 /**
- * The shape the website actually ships: social rail, visitor counter in `aside`,
- * and both credit logos hyperlinked — DBIM 5.6 calls those "hyperlinked logos"
+ * The shape the website actually ships: social rail, visitor counter in the
+ * colophon, and both credit logos hyperlinked — DBIM 5.6 calls those "hyperlinked logos"
  * and a flat `<img>` does not satisfy it.
  */
 export const Full: Story = {
@@ -151,7 +153,7 @@ export const Full: Story = {
         path: "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z",
       },
     ],
-    aside: <VisitorCounter />,
+    colophonSlot: <VisitorCounter />,
     credits: [
       {
         src: "https://placehold.co/78x30/ffffff/003975?text=NeGD",
@@ -182,7 +184,7 @@ export const Minimal: Story = {
     social: undefined,
     credits: undefined,
     relatedLinks: undefined,
-    aside: undefined,
+    colophonSlot: undefined,
     cta: undefined,
     address: undefined,
   },
