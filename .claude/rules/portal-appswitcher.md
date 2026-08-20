@@ -94,11 +94,19 @@ every screen of a government portal draws attention to scaffolding. The label
 is a tooltip on hover and focus instead — quiet at rest, self-describing on
 approach.
 
-**While the panel is open the flask becomes a cross**, and that is not a
-second close button competing with the panel's own. The lead IS the
-open/close toggle, so while open its affordance genuinely is "close" and it
-should say so — the reasoning that turns a hamburger into an X. Both glyphs
-share one grid cell and cross-fade with a quarter turn.
+**The lead is the entry for the tab that has no door** — Sign in, and only
+where it exists. It opens the panel on its first tab, which IS Sign in on a
+login route, and it lights when that tab is showing. Elsewhere it never
+lights, because the Apps door already stands for the tab the panel opens on
+and two indicators for one tab is worse than none.
+
+**The lead does NOT close the panel, and it is not a cross.** It was both,
+briefly, on the reasoning that a toggle should show its current affordance —
+which stopped holding the moment the doors began indicating tabs. A close
+button sitting in a list of tabs is a category error, and it left the rail
+claiming to be a complete set of destinations with a member missing. Closing
+is the panel's own header button, Escape, and outside-click; three ways to
+dismiss is enough, and a coherent rail is worth more than a fourth.
 
 **The two doors indicate the active tab** — `aria-current`, not
 `aria-selected`, because they are buttons that open a dialog rather than tabs

@@ -143,34 +143,23 @@
   cursor: pointer;
 }
 
-/* Both glyphs occupy the SAME grid cell, so they cross-fade in place rather
-   than one replacing the other. `display: grid` with both children at
-   `grid-area: 1 / 1` is what makes that free — no absolute positioning, and
-   the cell still sizes itself. */
-.ds-demodock__glyph {
-  grid-area: 1 / 1;
-  display: grid;
-  place-items: center;
-  transition: opacity var(--cmp-demodock-fold) var(--cmp-demodock-ease),
-    transform var(--cmp-demodock-fold) var(--cmp-demodock-ease);
+/* The lead is a tab entry now, so it takes the same current-state treatment
+   as a door: the tinted cell deepens and the inner-edge bar appears. It sits
+   on the CELL rather than the button because the button is 40px wide and the
+   bar hangs outside it. */
+.ds-demodock__lead.is-current .ds-demodock__cell {
+  background-color: var(--sa-bg-brand-primary-subtle);
 }
 
-.ds-demodock__glyph--close {
-  opacity: 0;
-  /* Rotated a quarter turn out, so the cross arrives by turning INTO place
-     rather than fading on top of the flask. A cross is symmetric under 90deg,
-     so it lands looking untouched. */
-  transform: rotate(-90deg) scale(0.7);
-}
-
-.ds-demodock__rail.is-panel-open .ds-demodock__glyph--flask {
-  opacity: 0;
-  transform: rotate(90deg) scale(0.7);
-}
-
-.ds-demodock__rail.is-panel-open .ds-demodock__glyph--close {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
+.ds-demodock__lead.is-current::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 20px;
+  width: 3px;
+  height: 20px;
+  border-radius: var(--sa-shape-full);
+  background-color: var(--sa-bg-brand-primary-bolder);
 }
 
 .ds-demodock__cell {
