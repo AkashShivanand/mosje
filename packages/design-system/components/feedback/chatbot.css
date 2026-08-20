@@ -49,6 +49,23 @@
   /* Must match EXIT_MS in chatbot.tsx — the panel is unmounted from JS. */
   --ds-chatbot-exit: 160ms;
   --ds-chatbot-press: 140ms;
+  /*
+   * Hover is its OWN duration and its OWN curve, and both differ from the rest
+   * of this file on purpose.
+   *
+   * `--ds-chatbot-ease` is a strong ease-out — it covers most of the distance
+   * immediately and then crawls. That is right for something ARRIVING, which
+   * happens once and is watched. It is wrong for hover, which is REVERSIBLE:
+   * played backwards on mouse-leave, a hard ease-out leaves the element
+   * loitering near the hovered position and then dropping, which is exactly
+   * the "jerk on leave" this was reported as. A symmetric `ease` travels out
+   * and back the same way, so the pointer leaving feels like the pointer
+   * arriving, in reverse.
+   *
+   * 200ms rather than the 140ms press: a press is a confirmation and wants to
+   * be instant; a hover is an invitation and 140ms reads as twitchy.
+   */
+  --ds-chatbot-hover: 200ms;
 
   /* -- geometry (from Figma 2175:79161) ---------------------------------- */
   --ds-chatbot-width: 400px;
@@ -132,8 +149,34 @@
      correct for the most-elevated thing on the page. */
   box-shadow: var(--sa-elevation-toast);
   transition:
-    transform var(--ds-chatbot-press) var(--ds-chatbot-ease),
-    box-shadow var(--ds-chatbot-press) var(--ds-chatbot-ease);
+    transform var(--ds-chatbot-hover) ease,
+    --ds-chatbot-lift var(--ds-chatbot-hover) ease;
+}
+
+/*
+ * THE DEEPER HOVER SHADOW LIVES HERE, AS A FADE, AND THAT IS THE WHOLE FIX.
+ *
+ * It used to be `box-shadow: toast` at rest and `toast, raised` on hover.
+ * `toast` is one layer and `raised` is two, so the browser was being asked to
+ * interpolate a ONE-layer stack into a THREE-layer stack. CSS cannot do that:
+ * mismatched shadow lists do not interpolate, they SNAP. That snap, firing on
+ * both enter and leave, was the single loudest part of the reported jerk — and
+ * it is invisible in the source, because both sides are correctly token-bound
+ * and look like a normal hover rule.
+ *
+ * Fading a second, identically-shaped layer sidesteps the whole problem:
+ * opacity always interpolates, it is cheap, and both stacks stay bound to
+ * their elevation tokens.
+ */
+.ds-chatbot__launcher::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--sa-shape-full);
+  box-shadow: var(--sa-elevation-raised);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ds-chatbot-hover) ease;
 }
 
 .ds-chatbot__launcher:focus-visible {
@@ -152,9 +195,10 @@
 @media (hover: hover) and (pointer: fine) {
   .ds-chatbot__launcher:hover {
     transform: translateY(-2px);
-    /* Lifting needs a deeper shadow than the top rung already gives, so the
-       two rungs are LAYERED rather than a heavier one invented. Still bound. */
-    box-shadow: var(--sa-elevation-toast), var(--sa-elevation-raised);
+  }
+
+  .ds-chatbot__launcher:hover::after {
+    opacity: 1;
   }
 
   .ds-chatbot__launcher:hover:active {
@@ -337,45 +381,51 @@
   user-select: none;
 }
 
-/* -- the seal turns to MEAN something, not to decorate -----------------------
+/* -- the seal, and the float: two motions with ONE rule between them ---------
 
-   This is the change the craft audit forced. The seal used to turn on hover
-   and nowhere else, at 14s a revolution — which sounds stately and is in fact
-   INVISIBLE: a hover lasts a second or two, and 14s/rev moves the wordmark
-   about 25 degrees in that time, most of it after the eye has moved on. It was
-   the flask defect again — real motion, below the threshold of being seen.
+   NEITHER MAY START OR STOP ABRUPTLY, and the first version of both did.
 
-   So rotation now encodes STATE rather than pointer presence:
+   The seal used to change DURATION on hover — 14s at rest, 8s hovered, 4s
+   thinking. Changing `animation-duration` on a running animation does not
+   ease: the browser recomputes progress against the new duration, so the
+   wordmark JUMPS to a different angle. Three durations meant two jumps on the
+   way in and two on the way out. It is one duration now, and only the
+   play-state moves. The lost nuance was never worth it — the signal a citizen
+   reads is MOVING versus STILL, not 8s versus 4s, and nobody has ever
+   consciously clocked a rotation rate.
 
-     · at rest            still. It is on every page of the estate all day; a
-                          perpetual spin would be the most-seen animation we
-                          ship and the least informative, and it would pull
-                          WCAG 2.2.2 in for nothing.
-     · hover / focus      8s — fast enough that a one-second hover reads as
-                          "this thing is alive" rather than as a rendering bug.
-     · THINKING           4s. The bot is composing, and the seal says so even
-                          when the panel covering the page has scrolled the
-                          typing dots out of view. This is the one that earns
-                          its keep: motion that reports work in progress.
+   6s is the one duration, chosen so a single second of hover turns the ring
+   60 degrees. The old 14s turned it 25, most of that after the eye had already
+   moved on — motion that was real and below the threshold of being seen.
 
-   Linear throughout, because constant rotation is the single case linear is
-   right for — any eased curve makes a continuous spin visibly lurch once per
-   revolution. */
+   The float used to be ADDED on hover and REMOVED on leave. Removing a
+   running transform animation snaps the element back to its base position from
+   wherever in the cycle it happened to be — up to the full 3px, instantly.
+   That is the other half of what was reported as a jerk on mouse-leave.
+
+   So the float now ALWAYS runs, and what changes is its AMPLITUDE. A
+   registered custom property is what makes that possible: `--ds-chatbot-lift`
+   has a declared `<length>` syntax, so it can be TRANSITIONED, and the
+   keyframe reads it. At rest the amplitude is 0 and the animation moves
+   nothing; engaged, it eases up to 3px. Both directions are continuous, and
+   there is no moment where a transform is switched on or off. */
+
+@property --ds-chatbot-lift {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .ds-chatbot-mascot__ring {
-    animation: ds-chatbot-ring var(--ds-chatbot-ring-speed, 14s) linear infinite;
+    animation: ds-chatbot-ring 6s linear infinite;
     animation-play-state: paused;
   }
 
   .ds-chatbot__launcher:hover .ds-chatbot-mascot__ring,
   .ds-chatbot__launcher:focus-visible .ds-chatbot-mascot__ring,
-  .ds-chatbot-mascot--spin .ds-chatbot-mascot__ring {
-    --ds-chatbot-ring-speed: 8s;
-    animation-play-state: running;
-  }
-
+  .ds-chatbot-mascot--spin .ds-chatbot-mascot__ring,
   .ds-chatbot[data-thinking] .ds-chatbot-mascot__ring {
-    --ds-chatbot-ring-speed: 4s;
     animation-play-state: running;
   }
 
@@ -390,19 +440,22 @@
      The mascot is a 3D render of a robot with no legs, drawn mid-hover. A
      STILL picture of a floating thing is subtly wrong — the artwork promises
      motion the interface refuses, and the eye notices without being able to
-     say why. 3px over 4.5s fixes it; more than that and it stops being a
-     hover and starts being a bob.
+     say why. 3px over 4.5s fixes it; more than that and it stops being a hover
+     and starts being a bob.
 
-     It is deliberately NOT running at rest on the launcher, for the same
-     reason the seal is not. It wakes when the widget is engaged — hovered,
-     focused, thinking — and it runs unconditionally on the avatar INSIDE the
-     panel, which is a bounded surface the citizen chose to open. */
-  .ds-chatbot__launcher:hover .ds-chatbot-mascot__figure,
-  .ds-chatbot__launcher:focus-visible .ds-chatbot-mascot__figure,
-  .ds-chatbot[data-thinking] .ds-chatbot-mascot__figure,
-  .ds-chatbot__avatar .ds-chatbot-mascot__figure,
-  .ds-chatbot__brand-mark .ds-chatbot-mascot__figure {
+     Always running, amplitude 0 at rest. See the note above for why that is
+     not the same as "always animating at the citizen". */
+  .ds-chatbot-mascot__figure {
     animation: ds-chatbot-float 4500ms ease-in-out infinite;
+    transition: --ds-chatbot-lift var(--ds-chatbot-hover) ease;
+  }
+
+  .ds-chatbot__launcher:hover,
+  .ds-chatbot__launcher:focus-visible,
+  .ds-chatbot[data-thinking],
+  .ds-chatbot__avatar,
+  .ds-chatbot__brand-mark {
+    --ds-chatbot-lift: 3px;
   }
 
   @keyframes ds-chatbot-float {
@@ -410,7 +463,7 @@
       transform: translate(-50%, -50%);
     }
     50% {
-      transform: translate(-50%, calc(-50% - 3px));
+      transform: translate(-50%, calc(-50% - var(--ds-chatbot-lift)));
     }
   }
 }
