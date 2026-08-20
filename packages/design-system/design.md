@@ -12,7 +12,12 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-19 · System version: v0.27.0 (THE RADIUS LADDER IS VALUE-NAMED TOO —
+  Last reviewed: 2026-08-20 · System version: v0.28.0 (CHATBOT — "Noddy", the assistant
+  surface, is in the system. Two rules travel with it and are easy to get wrong: its panel is
+  NON-MODAL and must never trap focus, which is the opposite of `Modal`; and `placement="fixed"`
+  marks itself `data-sa-wall-occupant` so the demo dock's rail measures around it. It carries
+  two recorded divergences from its Figma mock — the mock's `#ff0004` fails AA at 4.00:1, and
+  its `#EFE8FF` is not a SAMAVESH colour. Previously v0.27.0: THE RADIUS LADDER IS VALUE-NAMED TOO —
   `shape/md` is now `shape/8`, so both ladders read the same way and the rung IS the pixel value.
   `shape/full` deliberately keeps its name: it is a sentinel meaning fully rounded, not a
   measurement, and it is the only non-numeric rung the gate permits. NEVER type a `shape/*` rung
@@ -1429,6 +1434,26 @@ Docs: `/design-system/components/sla-progress`.
 #### Badge
 **Purpose**: Compact status or count indicator.  
 **Rule**: Text inside a Badge must always have a machine-readable label (via `aria-label` or visually-hidden text) when the badge is contextually meaningful.
+
+#### Chatbot / ChatbotMascot
+**Purpose**: "Noddy", the SAMAVESH assistant — a launcher that folds open into a quick-reply conversation panel, for the help a citizen reaches for when the page has not answered their question.
+**Props**: `open` · `defaultOpen` · `onOpenChange` · `title` · `endChatLabel` · `launcherLabel` · `greeting` · `quickReplies` · `messages` · `typing` · `onQuickReply` · `onEndChat` · `typingDelayMs` · `placement` (`fixed` | `inline`)
+
+**Two modes, and they must not be mixed.** Pass `greeting` + `quickReplies` and the widget runs the whole scripted opening itself — panel, typing, greeting, then the suggestions cascading in — and `onQuickReply` may return a `ChatbotReply` so the bot answers with no backend. Pass `messages` (and `typing`) and it renders exactly that, running no sequence of its own. Two things writing one transcript is how a chat surface starts double-posting, so the controlled path disables the scripted one outright.
+
+**Rules**:
+- **There is no text composer, and that is the design.** The bot has a fixed script; a free-text box would promise an answer to any question. `messages` accepts `from: "user"` turns so a consumer with a real NLU service can render them — the widget itself never asks for prose.
+- **Non-modal.** It never traps focus and never blocks the page behind it. `Escape` closes it and returns focus to the launcher. A help widget that hostages the keyboard is worse than no help widget — this is the opposite of `Modal`'s contract, deliberately.
+- **`placement="fixed"` marks itself `data-sa-wall-occupant`.** That one attribute is the whole contract that keeps the demo dock's rail from landing on top of it (`.claude/rules/portal-appswitcher.md`). Do not strip it, and do not hand-roll a second floating chat widget beside it.
+- **Do not reach for it to paper over an unclear page.** It occupies 84px of every viewport, on every page, for every visitor. That cost is only worth paying where a scripted set of answers genuinely helps.
+- **`ChatbotMascot`** is the mark on its own — `size` sets the diameter, `ring` adds the white band carrying the circular bilingual wordmark ("Samajik Sahayak · सामाजिक सहायक"), `spin` turns its rotation on. Use `ring` at 84px and not at 37px, where the wordmark is unreadable.
+
+**Motion** is authored, not imported — the Figma node carries no keyframes. The panel is **origin-aware**, growing from `bottom right` so it visibly comes out of the launcher (note this is the opposite of `Modal`, which stays centred because it is anchored to nothing). Enter 240ms, exit 160ms, both on a strong ease-out; nothing uses `ease-in`. **The wordmark is static at rest** and turns only on hover/focus: a mark on every page that spins all day would be the estate's most-seen animation and its least useful, and it would pull WCAG 2.2.2 in for nothing. The unread nudge pulses three times, then stops, for the same reason. Only `transform`, `opacity` and `filter` animate.
+
+**Two deliberate divergences from the Figma mock**, both recorded rather than hidden:
+- **"End Chat" is `text/status/error/base`, not the mock's `#ff0004`** — which measures **4.00:1** on white and fails AA for text. The token is the same signal at **9.10:1**. Accessibility is not traded against fidelity.
+- **Quick replies use `bg/brand/primary/base`, not the mock's `#EFE8FF`.** Nothing in the ramp resolves near that lavender; the pale brand tint is the same *role*. Per `.claude/rules/documentation-ds-linkage.md`, a value that is not a design-system colour means the design moves — not that the system grows a one-off variable.
+- **The transcript sits on a 16px bottom gutter, not the mock's 57px.** The mock floats the message stack 56.68px above the panel floor — space that holds nothing in any of its four frames. An unexplained gap at the foot of a chat panel reads as a composer that failed to render; matching the panel's other gutters reads as intentional. Every other measurement is reproduced exactly (panel 400×719, radius 16, mark 84 / disc 60 / wordmark 73.7×76.7 / figure 55.4, bubble capped at 67%).
 
 #### Modal
 **Purpose**: Blocking overlay for confirmations, destructive prompts, and detail views.  

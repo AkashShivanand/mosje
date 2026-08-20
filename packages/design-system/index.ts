@@ -155,6 +155,15 @@ export { SideSheet } from "./components/feedback/side-sheet";
 export type { SideSheetProps, SideSheetSize } from "./components/feedback/side-sheet";
 export { Lightbox } from "./components/feedback/lightbox";
 export type { LightboxProps, LightboxItem, LightboxMediaType } from "./components/feedback/lightbox";
+export { Chatbot } from "./components/feedback/chatbot";
+export type {
+  ChatbotProps,
+  ChatbotMessage,
+  ChatbotQuickReply,
+  ChatbotReply,
+} from "./components/feedback/chatbot";
+export { ChatbotMascot } from "./components/feedback/chatbot-mascot";
+export type { ChatbotMascotProps } from "./components/feedback/chatbot-mascot";
 export { ToastProvider, useToast } from "./components/feedback/toast";
 export type { ToastVariant } from "./components/feedback/toast";
 
