@@ -10,7 +10,7 @@ import {
 /**
  * @covers Chatbot, ChatbotMascot
  *
- * **Chatbot** — "Noddy", the SAMAVESH assistant surface. A launcher that folds
+ * **Chatbot** — Samajik Sahayak (सामाजिक सहायक), the SAMAVESH assistant surface. A launcher that folds
  * open into a conversation panel, for the help-of-last-resort a citizen reaches
  * for when a scheme page has not answered their question.
  *
@@ -32,13 +32,36 @@ import {
  *   a real service owns the conversation; two things writing one transcript is
  *   how a chat surface starts double-posting.
  *
- * ### What it deliberately does not have
+ * ### The composer, and why it is honest
  *
- * **No text composer.** The Figma design is quick-reply-only, and that is the
- * right call for a government surface: a free-text box promises an answer to
- * any question, and this bot has a fixed script. `messages` accepts `from:
- * "user"` turns so a consumer that *does* have a real NLU backend can render
- * them, but the widget itself never asks for prose.
+ * `composer` (default on) shows a free-text field, because the live assistant
+ * on dosje.gov.in has one and a citizen arriving from there expects it.
+ * `composerPlaceholder` sets its placeholder. What it does NOT do is pretend to
+ * be a language model: `onSubmit` handles a typed question, and with no handler
+ * the bot says plainly that it can only help with a few things and re-offers
+ * the suggestions. Silence, or a fake answer, would both be worse. Set
+ * `composer={false}` for a strictly scripted surface.
+ *
+ * ### Identity stays on screen
+ *
+ * `title` and `subtitle` are the assistant's name in both scripts — Samajik
+ * Sahayak / सामाजिक सहायक — and they live in the header rather than only in the
+ * greeting, because the greeting scrolls away. `note` is the honest statement
+ * of what the assistant is not; it sits under the composer where the live panel
+ * puts its disclaimer, and it deliberately does not copy live's "can make
+ * mistakes" wording, which describes a generative model this is not.
+ *
+ * ### The header controls are EXPAND and MINIMISE, never "end chat"
+ *
+ * `launcherLabel` is the launcher's accessible name — it carries the assistant's
+ * name, because "open chat" tells a screen-reader user nothing about which
+ * assistant they are opening on a page that may also have a demo dock and an
+ * accessibility widget in the same corner.
+ *
+ * `endChatLabel` names the end-chat action, which lives quietly in the footer.
+ * It wipes the transcript, and the top-right of a panel is where every user
+ * expects a harmless dismiss — putting it there means people lose their
+ * conversation reaching for close.
  *
  * ### Accessibility
  *
@@ -62,10 +85,8 @@ const meta = {
   args: {
     placement: "inline",
     defaultOpen: true,
-    title: "Chat with us",
-    endChatLabel: "End Chat",
-    launcherLabel: "Chat with us",
-    greeting: "Hey, I am Noddy. How Can I help you?",
+    greeting:
+      "This is an assistant for the Ministry of Social Justice. How can I help you?",
   },
   argTypes: {
     placement: { control: "inline-radio", options: ["fixed", "inline"] },
@@ -77,10 +98,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const SCHEME_REPLIES: ChatbotQuickReply[] = [
+  { id: "schemes", label: "Which scheme applies to me?" },
+  { id: "status", label: "Check my application status" },
   { id: "otp", label: "I'm not receiving OTP." },
-  { id: "docs", label: "Didn't find API documentation" },
-  { id: "register", label: "How to register as a developer." },
-  { id: "navigate", label: "Portal navigation help" },
+  { id: "documents", label: "What documents do I need?" },
+  { id: "grievance", label: "Raise a grievance" },
   { id: "other", label: "Others" },
 ];
 
@@ -150,7 +172,7 @@ export const WithAnswers: Story = {
 export const ControlledTranscript: Story = {
   render: (args) => {
     const messages: ChatbotMessage[] = [
-      { id: "1", from: "bot", text: "Hey, I am Noddy. How Can I help you?" },
+      { id: "1", from: "bot", text: "This is an assistant for the Ministry of Social Justice. How can I help you?" },
       { id: "2", from: "user", text: "I'm not receiving OTP." },
       {
         id: "3",
@@ -192,7 +214,7 @@ export const LongConversation: Story = {
     <Chatbot
       {...args}
       messages={[
-        { id: "1", from: "bot", text: "Hey, I am Noddy. How Can I help you?" },
+        { id: "1", from: "bot", text: "This is an assistant for the Ministry of Social Justice. How can I help you?" },
         { id: "2", from: "user", text: "How to register as a developer." },
         { id: "3", from: "bot", text: "Registration runs through the MoSJE API gateway." },
         { id: "4", from: "bot", text: "You'll need your organisation's PAN to begin." },
@@ -257,7 +279,7 @@ export const ControlledOpenState: Story = {
 export const Mascot: StoryObj = {
   render: () => (
     <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
-      <ChatbotMascot size={84} ring aria-label="Noddy, the SAMAVESH assistant" />
+      <ChatbotMascot size={84} ring aria-label="Samajik Sahayak, the SAMAVESH assistant" />
       <ChatbotMascot size={84} ring spin />
       <ChatbotMascot size={56} />
       <ChatbotMascot size={37} />

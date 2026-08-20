@@ -297,7 +297,7 @@ export function RegistryForm({
                 Assistant
               </h2>
               <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
-                Noddy, the chat assistant in the bottom-right corner. This is the
+                Samajik Sahayak, the chat assistant in the bottom-right corner. This is the
                 master switch; turn it on per surface in the list below. What it
                 says is set in code, not here.
               </p>

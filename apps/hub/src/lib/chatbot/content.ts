@@ -16,7 +16,14 @@
 
 import type { ChatbotQuickReply, ChatbotReply } from "@mosje/design-system";
 
-export const CHATBOT_GREETING = "Hey, I am Noddy. How Can I help you?";
+/**
+  * Matches the live assistant's opening on dosje.gov.in almost word for word,
+  * because a citizen who has met Samajik Sahayak there should meet the same
+  * assistant here. The Figma mock's "Hey, I am Noddy" is gone — see
+  * `CHATBOT_NAME` in the component for why that name could not ship.
+  */
+export const CHATBOT_GREETING =
+  "This is an assistant for the Ministry of Social Justice. How can I help you?";
 
 export const CHATBOT_QUICK_REPLIES: ChatbotQuickReply[] = [
   { id: "schemes", label: "Which scheme applies to me?" },

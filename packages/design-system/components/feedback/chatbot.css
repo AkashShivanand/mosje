@@ -207,6 +207,44 @@
   filter: blur(0);
 }
 
+/* -- arrival ----------------------------------------------------------------
+
+   Should a chatbot have an entry animation? Yes — ONE, once, and short.
+
+   The launcher is the last thing to mount on a page that has already painted,
+   so with no transition it simply pops into a finished layout, which reads as
+   a late-loading advert. A 320ms rise-and-settle says "this belongs here" and
+   then never runs again.
+
+   What it deliberately is NOT: a bounce, an attention-seeking wobble, or a
+   repeat on every route change. It is a CSS animation on mount, so it fires
+   once per page load and the SPA navigations that keep the root layout mounted
+   do not re-trigger it.
+
+   And NO SOUND. Not here, not as an option that defaults on. Unsolicited audio
+   on a government service is hostile in the places these pages are actually
+   used — shared terminals, common service centres, a phone on a bus — and
+   browsers block it before the first interaction anyway, so it would fire
+   inconsistently even if it were wanted. If a chime is ever added it is
+   opt-in, off by default, and never on arrival. */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-chatbot__launcher {
+    animation: ds-chatbot-arrive 320ms var(--ds-chatbot-ease) both;
+  }
+
+  @keyframes ds-chatbot-arrive {
+    from {
+      opacity: 0;
+      /* 0.9 and 8px — a settle, not an entrance. */
+      transform: scale(0.9) translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+}
+
 /* -- unread nudge ----------------------------------------------------------
    Three pulses, then still. A badge that pulses forever stops being a signal
    and starts being wallpaper — and it would put a perpetual animation on every
@@ -299,24 +337,80 @@
   user-select: none;
 }
 
-/* The ring turns only while the launcher is actually being addressed —
-   hover, focus, or open. Linear, because constant rotation is the one place
-   linear belongs; any eased curve makes a continuous spin visibly lurch. */
+/* -- the seal turns to MEAN something, not to decorate -----------------------
+
+   This is the change the craft audit forced. The seal used to turn on hover
+   and nowhere else, at 14s a revolution — which sounds stately and is in fact
+   INVISIBLE: a hover lasts a second or two, and 14s/rev moves the wordmark
+   about 25 degrees in that time, most of it after the eye has moved on. It was
+   the flask defect again — real motion, below the threshold of being seen.
+
+   So rotation now encodes STATE rather than pointer presence:
+
+     · at rest            still. It is on every page of the estate all day; a
+                          perpetual spin would be the most-seen animation we
+                          ship and the least informative, and it would pull
+                          WCAG 2.2.2 in for nothing.
+     · hover / focus      8s — fast enough that a one-second hover reads as
+                          "this thing is alive" rather than as a rendering bug.
+     · THINKING           4s. The bot is composing, and the seal says so even
+                          when the panel covering the page has scrolled the
+                          typing dots out of view. This is the one that earns
+                          its keep: motion that reports work in progress.
+
+   Linear throughout, because constant rotation is the single case linear is
+   right for — any eased curve makes a continuous spin visibly lurch once per
+   revolution. */
 @media (prefers-reduced-motion: no-preference) {
   .ds-chatbot-mascot__ring {
-    animation: ds-chatbot-ring 14s linear infinite;
+    animation: ds-chatbot-ring var(--ds-chatbot-ring-speed, 14s) linear infinite;
     animation-play-state: paused;
   }
 
   .ds-chatbot__launcher:hover .ds-chatbot-mascot__ring,
   .ds-chatbot__launcher:focus-visible .ds-chatbot-mascot__ring,
   .ds-chatbot-mascot--spin .ds-chatbot-mascot__ring {
+    --ds-chatbot-ring-speed: 8s;
+    animation-play-state: running;
+  }
+
+  .ds-chatbot[data-thinking] .ds-chatbot-mascot__ring {
+    --ds-chatbot-ring-speed: 4s;
     animation-play-state: running;
   }
 
   @keyframes ds-chatbot-ring {
     to {
       transform: rotate(360deg);
+    }
+  }
+
+  /* -- the genie float -------------------------------------------------------
+
+     The mascot is a 3D render of a robot with no legs, drawn mid-hover. A
+     STILL picture of a floating thing is subtly wrong — the artwork promises
+     motion the interface refuses, and the eye notices without being able to
+     say why. 3px over 4.5s fixes it; more than that and it stops being a
+     hover and starts being a bob.
+
+     It is deliberately NOT running at rest on the launcher, for the same
+     reason the seal is not. It wakes when the widget is engaged — hovered,
+     focused, thinking — and it runs unconditionally on the avatar INSIDE the
+     panel, which is a bounded surface the citizen chose to open. */
+  .ds-chatbot__launcher:hover .ds-chatbot-mascot__figure,
+  .ds-chatbot__launcher:focus-visible .ds-chatbot-mascot__figure,
+  .ds-chatbot[data-thinking] .ds-chatbot-mascot__figure,
+  .ds-chatbot__avatar .ds-chatbot-mascot__figure,
+  .ds-chatbot__brand-mark .ds-chatbot-mascot__figure {
+    animation: ds-chatbot-float 4500ms ease-in-out infinite;
+  }
+
+  @keyframes ds-chatbot-float {
+    0%, 100% {
+      transform: translate(-50%, -50%);
+    }
+    50% {
+      transform: translate(-50%, calc(-50% - 3px));
     }
   }
 }
@@ -384,6 +478,66 @@
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }
 
+.ds-chatbot__brand-mark {
+  --ds-chatbot-mascot-size: 30px;
+  flex: none;
+}
+
+.ds-chatbot__brand {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.ds-chatbot__subtitle {
+  font-family: var(--sa-font-devanagari);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-color-text-muted);
+}
+
+/* 32px, so the two header controls clear the 24x24 WCAG 2.2 (2.5.8) minimum
+   with room to spare. They sit where every user already looks for a dismiss. */
+.ds-chatbot__icon-btn {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: var(--sa-padding-0);
+  border: 0;
+  border-radius: var(--sa-shape-8);
+  background: transparent;
+  color: var(--sa-color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--ds-chatbot-press) var(--ds-chatbot-ease),
+    color var(--ds-chatbot-press) var(--ds-chatbot-ease),
+    transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
+}
+
+.ds-chatbot__icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ds-chatbot__icon-btn:hover {
+    background: var(--sa-bg-neutral-subtler);
+    color: var(--sa-color-text-default);
+  }
+}
+
+.ds-chatbot__icon-btn:active {
+  transform: scale(0.94);
+}
+
+.ds-chatbot__icon-btn:focus-visible {
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
+}
+
 .ds-chatbot__title {
   margin: 0;
   font-family: var(--sa-font-latin);
@@ -431,7 +585,11 @@
 
 .ds-chatbot__log {
   display: flex;
+  /* `min-height: 0` is what lets this scroll INSIDE a flex column. Without it
+     a flex item refuses to shrink below its content, so a long transcript
+     pushes the footer — composer and all — off the bottom of the panel. */
   flex: 1;
+  min-height: 0;
   flex-direction: column;
   /* Bottom-anchored, as in the design: an empty chat sits at the floor and
      grows upward, so the first message never appears stranded at the ceiling. */
@@ -692,4 +850,149 @@
   .ds-chatbot__log {
     scroll-behavior: auto;
   }
+
+  /* The float, the seal and the arrival are all gated on `no-preference`, so
+     they never start. What needs saying here is the two that would otherwise
+     animate a SIZE change — expanding, and the measured corner offset. */
+  .ds-chatbot__panel[data-expanded] {
+    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+  }
+
+  .ds-chatbot__icon-btn,
+  .ds-chatbot__icon-btn:active,
+  .ds-chatbot__send,
+  .ds-chatbot__send:not(:disabled):active {
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Footer — the composer and the honest note
+   ------------------------------------------------------------------------- */
+
+.ds-chatbot__footer {
+  flex: none;
+  padding: var(--sa-padding-12) var(--sa-padding-16) var(--sa-padding-16);
+  border-top: 1px solid var(--sa-border-neutral-subtle);
+  background: var(--sa-bg-neutral-base);
+}
+
+.ds-chatbot__composer {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-8);
+  padding: var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-12);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-full);
+  background: var(--sa-bg-neutral-base);
+  transition: border-color var(--ds-chatbot-press) var(--ds-chatbot-ease);
+}
+
+/* The ring goes on the CONTAINER, not the input — the input's own outline
+   would sit inside a pill and read as a second, smaller field. */
+.ds-chatbot__composer:focus-within {
+  border-color: var(--sa-border-brand-primary-base);
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: 1px;
+}
+
+.ds-chatbot__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  color: var(--sa-color-text-default);
+}
+
+.ds-chatbot__input:focus {
+  outline: none;
+}
+
+.ds-chatbot__send {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: var(--sa-padding-0);
+  border: 0;
+  border-radius: var(--sa-shape-full);
+  background: var(--sa-color-brand-navy);
+  color: var(--sa-color-text-onPrimary);
+  cursor: pointer;
+  transition:
+    opacity var(--ds-chatbot-press) var(--ds-chatbot-ease),
+    transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
+}
+
+.ds-chatbot__send svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Dimmed, never hidden. A send button that vanishes when the field is empty
+   removes the affordance that tells you the field is a message box at all. */
+.ds-chatbot__send:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.ds-chatbot__send:not(:disabled):active {
+  transform: scale(0.94);
+}
+
+.ds-chatbot__send:focus-visible {
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
+}
+
+.ds-chatbot__note {
+  margin: var(--sa-stack-8) 0 0;
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-color-text-muted);
+}
+
+/* Quiet, and in the footer rather than the close slot. Destructive actions do
+   not belong where people reach to dismiss something. */
+.ds-chatbot__end {
+  padding: var(--sa-padding-0);
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--sa-text-status-error-base);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.ds-chatbot__end:focus-visible {
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
+}
+
+/* ---------------------------------------------------------------------------
+   Expanded — the live panel offers this and a 400px column earns it
+   ---------------------------------------------------------------------------
+   A scheme answer with eligibility and a document list is a wall of text in a
+   400x719 column. Expanding is the cheapest possible fix and the live
+   assistant already trains the gesture. Capped by the viewport so it can never
+   grow past what is on screen.
+   ------------------------------------------------------------------------- */
+
+.ds-chatbot__panel[data-expanded] {
+  width: min(560px, calc(100vw - (var(--ds-chatbot-gap) * 2)));
+  height: min(
+    820px,
+    calc(100dvh - var(--ds-chatbot-launcher) - (var(--ds-chatbot-gap) * 3))
+  );
+  transition:
+    opacity var(--ds-chatbot-enter) var(--ds-chatbot-ease),
+    transform var(--ds-chatbot-enter) var(--ds-chatbot-ease),
+    width var(--ds-chatbot-enter) var(--ds-chatbot-ease),
+    height var(--ds-chatbot-enter) var(--ds-chatbot-ease);
 }

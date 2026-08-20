@@ -34,7 +34,7 @@ export interface ChatbotMascotProps
 }
 
 /**
- * **ChatbotMascot** — "Noddy", the SAMAVESH assistant mark.
+ * **ChatbotMascot** — the Samajik Sahayak (सामाजिक सहायक) assistant mark.
  *
  * Two parts that are deliberately separate nodes rather than one flattened
  * export: a navy disc carrying the mascot, and (optionally) a white ring

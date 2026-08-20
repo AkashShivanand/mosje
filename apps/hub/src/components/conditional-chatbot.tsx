@@ -32,7 +32,7 @@ export function ConditionalChatbot({ enabledPaths }: { enabledPaths: readonly st
       greeting={CHATBOT_GREETING}
       quickReplies={CHATBOT_QUICK_REPLIES}
       onQuickReply={(reply) => chatbotAnswer(reply.id)}
-      launcherLabel="Chat with Noddy, the SAMAVESH assistant"
+      launcherLabel="Samajik Sahayak — chat assistant"
     />
   );
 }

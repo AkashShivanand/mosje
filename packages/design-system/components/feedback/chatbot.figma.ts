@@ -42,7 +42,7 @@ export default {
   example: figma.code`
     <Chatbot
       ${defaultOpen ? "defaultOpen" : ""}
-      greeting="Hey, I am Noddy. How Can I help you?"
+      greeting="This is an assistant for the Ministry of Social Justice. How can I help you?"
       quickReplies={[
         { id: "otp", label: "I'm not receiving OTP." },
         { id: "docs", label: "Didn't find API documentation" },
