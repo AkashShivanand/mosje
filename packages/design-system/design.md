@@ -1848,13 +1848,18 @@ these are not the components you want.
 
 #### DemoDock
 **Purpose**: The single floating demo console — a **folding rail** flush to
-the right wall at mid-height (see "Floating widgets" under Foundations). At
-rest it is a tab: a 26px flask in a tinted cell, plus a vertical wordmark.
-Engaged, the wordmark collapses and it unfolds *downward* into three doors —
-flask, colour, apps — all opening the same tabbed panel, pre-selected. The
-flask never moves across the fold, which is what makes it read as unfolding
-rather than as a popup: the container is anchored by its `top`, and its width
-is constant (widening a right-anchored box slides its centred children left).
+the right wall (see "Floating widgets" under Foundations). At rest it is a
+52×56 tab: a 26px flask in a tinted cell, and nothing else. Engaged, it
+unfolds *downward* into three doors — flask, colour, apps — all opening the
+same tabbed panel, pre-selected, and the two doors show which tab is active
+via `aria-current`. While the panel is open the flask **becomes a cross**:
+the lead is the open/close toggle, so its affordance genuinely is "close" and
+it says so. The flask never moves across the fold, which is what makes it
+read as unfolding rather than as a popup: the container is anchored by its
+`top`, and its width is constant (widening a right-anchored box slides its
+centred children left). There is no wordmark — the label is a tooltip on
+hover/focus, because a permanent "DEMO" on every government screen draws
+attention to scaffolding.
 The panel: **Sign in** (demo credentials for the current login
 route, `DemoAccountsPanel`, shown — and shown *first* — only when `pathname`
 is itself a login route; see `isLoginRoute`), **Apps** (cross-zone

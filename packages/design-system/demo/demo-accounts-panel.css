@@ -119,3 +119,90 @@
   color: var(--sa-text-neutral-subtle);
   line-height: 1.4;
 }
+
+/* ── Shared password ─────────────────────────────────────────────────────
+   Stated once above the list instead of repeated down a column where every
+   cell held the same value. That column was a third of the panel's width
+   carrying no information, while the role names beside it truncated. ── */
+.ds-demo-accounts__shared {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-8);
+  margin: 0 0 var(--sa-stack-12);
+  padding: var(--sa-padding-8) var(--sa-padding-12);
+  border-radius: var(--sa-shape-8);
+  background-color: var(--sa-bg-neutral-subtler);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+}
+
+.ds-demo-accounts__shared-label {
+  color: var(--sa-text-neutral-subtle);
+}
+
+.ds-demo-accounts__shared .ds-demo-accounts__pw {
+  font-weight: 600;
+  color: var(--sa-text-neutral-base);
+}
+
+/* With no password column the row is two tracks, not three, and the id gets
+   the width the constant was using. */
+.ds-demo-accounts.is-shared-password .ds-demo-accounts__col-labels,
+.ds-demo-accounts.is-shared-password .ds-demo-accounts__data {
+  grid-template-columns: 1fr auto;
+}
+
+/* ── The row is the target ───────────────────────────────────────────────
+   A transparent button stretched over the row. The visible `Use` stays as
+   the affordance, but the hit area is the whole row rather than 38x22 in
+   its corner. It sits UNDER the copy buttons in z-order so those still work
+   — the row is the primary action, not the only one. ── */
+.ds-demo-accounts__row {
+  position: relative;
+}
+
+.ds-demo-accounts__hit {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: var(--sa-shape-8);
+  background: transparent;
+  cursor: pointer;
+}
+
+.ds-demo-accounts__hit:hover {
+  background-color: var(--sa-bg-neutral-subtler);
+}
+
+.ds-demo-accounts__hit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--sa-focus-ring);
+}
+
+/* Everything visible sits above the hit area so the copy buttons stay
+   clickable and the text stays selectable. */
+.ds-demo-accounts__role,
+.ds-demo-accounts__data {
+  position: relative;
+  z-index: 1;
+}
+
+/* The copy buttons are the one thing that must NOT fall through to the row:
+   copying an id and using an account are different intents. */
+.ds-demo-accounts__copy {
+  position: relative;
+  z-index: 2;
+}
+
+.ds-demo-accounts__use {
+  pointer-events: none;
+}
+
+.ds-demo-accounts__hit:hover ~ .ds-demo-accounts__data .ds-demo-accounts__use,
+.ds-demo-accounts__hit:focus-visible ~ .ds-demo-accounts__data .ds-demo-accounts__use {
+  color: var(--sa-text-brand-primary-base);
+  text-decoration: underline;
+}
