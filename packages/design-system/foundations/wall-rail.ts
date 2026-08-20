@@ -58,6 +58,31 @@ import * as React from "react";
 /** Any fixed widget on the right wall marks itself with this to be dodged. */
 export const WALL_OCCUPANT_ATTR = "data-sa-wall-occupant";
 
+/**
+ * Set on `<html>` when the wall cannot hold every widget at full size.
+ * Occupants respond by shedding whatever they can — see `WALL_LABEL_ATTR`.
+ */
+export const WALL_COMPACT_ATTR = "data-sa-wall-compact";
+
+/**
+ * Marks the part of an occupant that may be dropped when the wall runs out
+ * of room — a label, never an icon or a hit target. `wall-rail.css` hides
+ * anything carrying it while the wall is compact.
+ */
+export const WALL_LABEL_ATTR = "data-sa-wall-label";
+
+/**
+ * An occupant's height WITH its label, declared rather than measured.
+ *
+ * This is what stops the mechanism oscillating. If the decision to go
+ * compact were based on measured heights, then going compact would shrink
+ * the occupants, which would make the wall fit, which would clear the flag,
+ * which would restore the labels, which would overflow again — a loop with
+ * a frame's period. Declared naturals do not change when the flag is
+ * applied, so the input to the decision is stable and the state settles.
+ */
+export const WALL_NATURAL_ATTR = "data-sa-wall-natural";
+
 /** Clearance kept between the rail and whatever it is avoiding. */
 export const WALL_RAIL_GAP_PX = 16;
 
@@ -95,6 +120,27 @@ export interface Band {
 }
 
 /**
+ * Whether the wall can hold everything at full size.
+ *
+ * Deliberately a sum rather than a layout: the widgets are pinned at
+ * different points and cannot be packed, so this asks the simpler question
+ * "is there conceivably room", and the placement search below decides where
+ * things actually go. Erring toward compact costs a label; erring the other
+ * way costs an overlap.
+ */
+export function wallNeedsCompact(
+  occupantNaturals: readonly number[],
+  railReserve: number,
+  viewportHeight: number,
+): boolean {
+  if (occupantNaturals.length === 0) return false;
+  const items = [...occupantNaturals, railReserve];
+  const gaps = WALL_RAIL_GAP_PX * (items.length - 1);
+  const margins = WALL_RAIL_MARGIN_PX * 2;
+  return items.reduce((a, b) => a + b, 0) + gaps + margins > viewportHeight;
+}
+
+/**
  * The rail's `top`, given what is on the wall. Pure, so the placement rule is
  * testable without a DOM — which matters, because every previous bug in this
  * widget's placement was a geometry bug.
@@ -118,10 +164,24 @@ export function railTopFromOccupants(
   // and clear of the occupants. On a 900px viewport that puts the tab dead
   // centre at 422 and the open rail at 422-575, well inside the 876 floor.
   const centred = Math.round((viewportHeight - restHeight) / 2);
-  const clamp = (v: number) =>
-    Math.min(
-      Math.max(v, WALL_RAIL_MARGIN_PX),
-      Math.max(WALL_RAIL_MARGIN_PX, viewportHeight - railHeight - WALL_RAIL_MARGIN_PX),
+  // TAKES THE HEIGHT IT IS CLAMPING FOR, and rounds.
+  //
+  // It used to close over `railHeight` unconditionally, which silently undid
+  // the resting-height fallback further down: that fallback picks a slot
+  // sized to the FOLDED rail, and the clamp then pulled the answer back up to
+  // leave room for the OPEN one — landing the tab squarely on the occupant it
+  // had just been placed to avoid. Measured at 360px tall with Important
+  // Links compacted: the fallback chose 219, the clamp returned 183, and the
+  // rail overlapped by 20px.
+  //
+  // Rounding is here because occupant rects are fractional; an un-rounded
+  // answer puts the rail on a half pixel and softens its 1px border.
+  const clampFor = (v: number, height: number) =>
+    Math.round(
+      Math.min(
+        Math.max(v, WALL_RAIL_MARGIN_PX),
+        Math.max(WALL_RAIL_MARGIN_PX, viewportHeight - height - WALL_RAIL_MARGIN_PX),
+      ),
     );
 
   // Expand each occupant by the gap, drop the ones too tall to dodge, and
@@ -142,7 +202,7 @@ export function railTopFromOccupants(
   }
 
   // Nothing on the wall: sit in the middle, where the eye expects it.
-  if (merged.length === 0) return clamp(centred);
+  if (merged.length === 0) return clampFor(centred, railHeight);
 
   const fitsAt = (top: number) =>
     top >= WALL_RAIL_MARGIN_PX &&
@@ -160,7 +220,7 @@ export function railTopFromOccupants(
   // and parked the rail at 637 — off-centre on every portal, to avoid
   // something 280px away. Only an occupant that genuinely overlaps the
   // centred slot moves it now, which on this estate means Important Links.
-  if (fitsAt(centred)) return clamp(centred);
+  if (fitsAt(centred)) return clampFor(centred, railHeight);
 
   // Otherwise: sit just below the occupant that is in the way.
   // The bands are already expanded by `WALL_RAIL_GAP_PX`, so a candidate at a
@@ -171,7 +231,7 @@ export function railTopFromOccupants(
   // directly above the corner widget. The two descriptions of the right
   // answer coincide, so satisfying one satisfies both.
   for (const band of merged) {
-    if (fitsAt(band.bottom)) return clamp(band.bottom);
+    if (fitsAt(band.bottom)) return clampFor(band.bottom, railHeight);
   }
 
   // Nothing fits below anything. Rare now that centred is tried first — it
@@ -180,12 +240,33 @@ export function railTopFromOccupants(
   // up, so the rail hugs the nearest obstacle rather than flying to the top.
   for (let i = merged.length - 1; i >= 0; i--) {
     const candidate = merged[i]!.top - railHeight;
-    if (fitsAt(candidate)) return clamp(candidate);
+    if (fitsAt(candidate)) return clampFor(candidate, railHeight);
   }
 
-  // Neither side of anything works. Centred beats off-screen: an overlap is
-  // recoverable, a widget outside the viewport is not.
-  return clamp(centred);
+  // The reserve does not fit anywhere. Before giving up, retry the whole
+  // search against the height the rail ACTUALLY OCCUPIES at rest. That keeps
+  // the visible tab clear of everything even on a wall too short for the
+  // open drawer — the drawer may then overlap while it is open, which is a
+  // transient the user asked for, rather than a permanent overlap they did
+  // not.
+  if (restHeight < railHeight) {
+    const restFits = (top: number) =>
+      top >= WALL_RAIL_MARGIN_PX &&
+      top + restHeight <= viewportHeight - WALL_RAIL_MARGIN_PX &&
+      merged.every((b) => top + restHeight <= b.top || top >= b.bottom);
+
+    for (const band of merged) if (restFits(band.bottom)) return clampFor(band.bottom, restHeight);
+    for (let i = merged.length - 1; i >= 0; i--) {
+      const candidate = merged[i]!.top - restHeight;
+      if (restFits(candidate)) return clampFor(candidate, restHeight);
+    }
+  }
+
+  // Nothing clears at any size. Centred beats off-screen: an overlap is
+  // recoverable, a widget outside the viewport is not. Clamped for the
+  // RESTING height — keeping the visible tab on screen matters more than
+  // reserving room for a drawer that has nowhere to go anyway.
+  return clampFor(centred, restHeight);
 }
 
 function isVisible(el: Element): boolean {
@@ -268,11 +349,7 @@ export function useWallRailOffset(
         }
       }
 
-      const bands = found
-        .filter(isVisible)
-        .map((el) => el.getBoundingClientRect())
-        .filter((r) => r.height > 0 && r.right >= window.innerWidth - WALL_ZONE_X_PX)
-        .map((r) => ({ top: r.top, bottom: r.bottom }));
+      const visible = found.filter(isVisible);
 
       const reserveRaw = window
         .getComputedStyle(element)
@@ -288,6 +365,32 @@ export function useWallRailOffset(
       // being held open. Measured rather than declared so it cannot drift
       // from the CSS the way a second hand-kept constant would.
       const restHeight = element.offsetHeight || railHeight;
+
+      // COMPACT FIRST, then place. The decision uses each occupant's declared
+      // natural height, so applying it does not change its own input — see
+      // WALL_NATURAL_ATTR for why that matters. Occupants with nothing to
+      // shed declare nothing and contribute their measured height, which is
+      // stable for the same reason.
+      const naturals = visible
+        .map((el) => {
+          const r = el.getBoundingClientRect();
+          if (r.right < window.innerWidth - WALL_ZONE_X_PX) return null;
+          const declared = Number.parseFloat(el.getAttribute(WALL_NATURAL_ATTR) ?? "");
+          return Number.isFinite(declared) && declared > 0 ? declared : r.height;
+        })
+        .filter((h): h is number => h !== null && h > 0);
+
+      const compact = wallNeedsCompact(naturals, railHeight, window.innerHeight);
+      const root = document.documentElement;
+      if (compact) root.setAttribute(WALL_COMPACT_ATTR, "1");
+      else root.removeAttribute(WALL_COMPACT_ATTR);
+
+      // Re-read AFTER the flag, because a shed label changes the rect the
+      // placement search has to dodge.
+      const bands = visible
+        .map((el) => el.getBoundingClientRect())
+        .filter((r) => r.height > 0 && r.right >= window.innerWidth - WALL_ZONE_X_PX)
+        .map((r) => ({ top: r.top, bottom: r.bottom }));
 
       const top = railTopFromOccupants(
         bands,
@@ -341,6 +444,7 @@ export function useWallRailOffset(
 
     return () => {
       disposed = true;
+      document.documentElement.removeAttribute(WALL_COMPACT_ATTR);
       if (frame !== undefined) window.cancelAnimationFrame(frame);
       if (scheduleTimer !== undefined) window.clearTimeout(scheduleTimer);
       if (pollTimer) window.clearTimeout(pollTimer);

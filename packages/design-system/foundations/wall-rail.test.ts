@@ -5,6 +5,7 @@ import {
   railTopFromOccupants,
   WALL_RAIL_GAP_PX,
   WALL_RAIL_MARGIN_PX,
+  wallNeedsCompact,
 } from "./wall-rail.ts";
 
 const VH = 900;
@@ -126,4 +127,59 @@ test("never places the rail outside the viewport margins", () => {
     const top = railTopFromOccupants([{ top: 0, bottom: 200 }], RAIL, vh);
     assert.ok(top >= WALL_RAIL_MARGIN_PX, `top ${top} at vh ${vh}`);
   }
+});
+
+// ── Compact mode ─────────────────────────────────────────────────────────
+
+test("a tall viewport holds everything at full size", () => {
+  // Important Links 175 + chatbot 84 + rail 153 + 2 gaps + 2 margins = 460.
+  assert.equal(wallNeedsCompact([175, 84], RAIL, 900), false);
+});
+
+test("a short viewport asks the occupants to shed their labels", () => {
+  assert.equal(wallNeedsCompact([175, 84], RAIL, 440), true);
+});
+
+test("an empty wall is never compact", () => {
+  // Nothing to shed and nothing to collide with; compacting would strip a
+  // label to solve a problem that does not exist.
+  assert.equal(wallNeedsCompact([], RAIL, 200), false);
+});
+
+test("the decision does NOT change when the labels come off", () => {
+  // The oscillation guard, stated as a test. Naturals are declared, so the
+  // second evaluation sees the same input as the first and the state settles
+  // instead of flapping every frame.
+  const naturals = [175, 84];
+  const first = wallNeedsCompact(naturals, RAIL, 440);
+  const second = wallNeedsCompact(naturals, RAIL, 440);
+  assert.equal(first, second);
+  assert.equal(first, true);
+});
+
+test("the RESTING tab clears occupants even when the open rail cannot", () => {
+  // A wall with no band big enough for the 153 reserve, but room for the 56
+  // tab. The visible widget must not overlap; the drawer may, while open.
+  const FOLDED = 56;
+  const occupants = [{ top: 120, bottom: 200 }, { top: 320, bottom: 400 }];
+  const top = railTopFromOccupants(occupants, RAIL, 520, FOLDED);
+  const clearsFolded = occupants.every(
+    (o) => top + FOLDED <= o.top - WALL_RAIL_GAP_PX || top >= o.bottom + WALL_RAIL_GAP_PX,
+  );
+  assert.ok(clearsFolded, `folded tab ${top}-${top + FOLDED} overlaps an occupant`);
+});
+
+test("the clamp respects the height the FALLBACK chose, not the reserve", () => {
+  // The measured regression, at 360px tall with Important Links compacted to
+  // 52px at top 151. The resting-height fallback picks 219; a clamp bounded
+  // by the 153 reserve drags it to 183 — straight back onto the occupant it
+  // was placed to avoid. Each clamp must use the height it is clamping for.
+  const FOLDED = 105;
+  const occupant = { top: 151, bottom: 203 };
+  const top = railTopFromOccupants([occupant], RAIL, 360, FOLDED);
+  const clears =
+    top + FOLDED <= occupant.top - WALL_RAIL_GAP_PX ||
+    top >= occupant.bottom + WALL_RAIL_GAP_PX;
+  assert.ok(clears, `folded rail ${top}-${top + FOLDED} overlaps ${occupant.top}-${occupant.bottom}`);
+  assert.ok(top + FOLDED <= 360 - WALL_RAIL_MARGIN_PX, "and stays on screen");
 });

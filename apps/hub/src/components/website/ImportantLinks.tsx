@@ -114,10 +114,19 @@ export function ImportantLinks() {
         aria-expanded={isOpen}
         onClick={() => setIsOpen(true)}
         data-sa-wall-occupant
+        // 175px with the label, ~52 without. Declared rather than measured so
+        // that going compact cannot change the input to the decision that
+        // made it compact — see WALL_NATURAL_ATTR in foundations/wall-rail.ts.
+        data-sa-wall-natural="175"
         className="fixed right-0 top-[42%] z-[1002] flex flex-col items-center gap-2 rounded-l-lg bg-primary px-2 py-4 text-white shadow-md transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
       >
         <Icon name="link" size={20} aria-hidden="true" />
+        {/* Dropped when the right wall runs out of room, leaving the icon
+            and the full hit area. The button keeps its `aria-label`, so the
+            accessible name survives the label going — a screen reader is
+            unaffected by a space problem it cannot see. */}
         <span
+          data-sa-wall-label
           className="text-[14px] font-semibold tracking-wide"
           style={{ writingMode: "vertical-rl" }}
         >
