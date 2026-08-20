@@ -32,12 +32,33 @@ test("that same slot also clears the corner widget, both present", () => {
   assert.ok(top + RAIL <= corner.top - WALL_RAIL_GAP_PX, "must clear the corner widget");
 });
 
-test("an occupant near the floor is sat ABOVE, since below is off-screen", () => {
-  // The corner widget alone — a chatbot launcher's case. "Below" would put
-  // the rail outside the viewport, so the same intent reads as "just above".
+test("a CORNER widget does not move the rail — centred is already clear", () => {
+  // The portals. The accessibility trigger (and the Noddy launcher) sit at
+  // roughly 806-876 while the centred rail spans 373-526; they never touch.
+  // Treating "on the wall" as "in the way" parked the rail at 637 on every
+  // portal, off-centre to avoid something 280px away.
   const corner = { top: 806, bottom: 876 };
   const top = railTopFromOccupants([corner], RAIL, VH);
-  assert.equal(corner.top - (top + RAIL), WALL_RAIL_GAP_PX);
+  assert.equal(top, CENTRED);
+  assert.ok(top + RAIL < corner.top, "and it genuinely clears it");
+});
+
+test("only an occupant overlapping the CENTRE displaces the rail", () => {
+  // Important Links straddles the middle of the wall, so it does.
+  const straddling = { top: 378, bottom: 553 };
+  assert.notEqual(railTopFromOccupants([straddling], RAIL, VH), CENTRED);
+  // Anything clear of the centred slot does not, wherever it sits.
+  for (const clearOfCentre of [{ top: 40, bottom: 120 }, { top: 700, bottom: 800 }]) {
+    assert.equal(railTopFromOccupants([clearOfCentre], RAIL, VH), CENTRED);
+  }
+});
+
+test("an occupant overlapping the centre with no room below is sat ABOVE", () => {
+  // The remaining fallback: it must straddle the centre AND leave nothing
+  // beneath it, which is rare now that centred is tried first.
+  const tall = { top: 420, bottom: 800 };
+  const top = railTopFromOccupants([tall], RAIL, VH);
+  assert.ok(top + RAIL <= tall.top - WALL_RAIL_GAP_PX, `expected above, got ${top}`);
 });
 
 test("ignores an occupant too tall to dodge", () => {

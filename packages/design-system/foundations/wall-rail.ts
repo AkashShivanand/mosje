@@ -25,17 +25,20 @@
  *
  * So the position is measured, and the rule is deliberately plain:
  *
- *   **Sit 16px below whatever is on the wall. If nothing is, sit centred.**
+ *   **Sit centred. If something is genuinely in the way there, sit 16px
+ *   below it instead.**
  *
- * On the docs and the portals nothing is on the wall, so the rail is centred
- * exactly as before. On the website it sits directly beneath Important Links
- * — which is also directly above the corner widget, because those two
- * descriptions of the right answer happen to name the same slot.
+ * The second sentence is the whole subtlety: something being ON the wall is
+ * not the same as being IN THE WAY. A corner widget — the accessibility
+ * trigger, or the Noddy launcher — sits around 806-876 on a 900px viewport
+ * while the centred rail spans 373-526, so it never conflicts and must not
+ * move the rail. Only Important Links, which straddles the middle of the
+ * wall, actually displaces it.
  *
- * The one case the plain rule does not cover is an occupant already near the
- * floor, where "below" is off-screen: the corner widget, when it is the only
- * thing on the wall. There the same intent reads as "just above it", and that
- * is the fallback.
+ * So on the portals and the docs the rail is centred, corner widget or not.
+ * On the website it sits directly beneath Important Links — which is also
+ * directly above the corner widget, because on that page those two
+ * descriptions of the right answer name the same slot.
  *
  * WHY THIS IS NOT THE PATTERN THAT WAS REJECTED. A previous version of this
  * widget used a hand-set per-route boolean to move itself, and that was
@@ -133,7 +136,20 @@ export function railTopFromOccupants(
     top + railHeight <= viewportHeight - WALL_RAIL_MARGIN_PX &&
     merged.every((b) => top + railHeight <= b.top || top >= b.bottom);
 
-  // THE RULE, and it is deliberately literal: sit just below the occupant.
+  // CENTRED FIRST, whenever centred is actually free. Something being on the
+  // wall does not mean it is in the way: a corner widget — the accessibility
+  // trigger, or the Noddy launcher — occupies roughly 806-876 on a 900px
+  // viewport, while the centred rail spans 373-526. They never touch, so
+  // moving for it was pure superstition.
+  //
+  // Without this check the rule reached straight for "sit below an occupant",
+  // failed (below the corner is off-screen), fell through to "sit above it",
+  // and parked the rail at 637 — off-centre on every portal, to avoid
+  // something 280px away. Only an occupant that genuinely overlaps the
+  // centred slot moves it now, which on this estate means Important Links.
+  if (fitsAt(centred)) return clamp(centred);
+
+  // Otherwise: sit just below the occupant that is in the way.
   // The bands are already expanded by `WALL_RAIL_GAP_PX`, so a candidate at a
   // band's bottom edge IS 16px below the thing itself.
   //
@@ -145,11 +161,10 @@ export function railTopFromOccupants(
     if (fitsAt(band.bottom)) return clamp(band.bottom);
   }
 
-  // Nothing fits below anything — the occupant is itself near the floor, which
-  // is the corner widget's case when it is the only thing on the wall. Then
-  // "below" is off-screen and the sensible reading of the same intent is to
-  // sit just above it. Bottom-up, so the rail hugs the nearest obstacle rather
-  // than flying to the top of the page.
+  // Nothing fits below anything. Rare now that centred is tried first — it
+  // needs an occupant that overlaps the centre AND leaves no room beneath —
+  // so the remaining reading of the same intent is to sit just above. Bottom-
+  // up, so the rail hugs the nearest obstacle rather than flying to the top.
   for (let i = merged.length - 1; i >= 0; i--) {
     const candidate = merged[i]!.top - railHeight;
     if (fitsAt(candidate)) return clamp(candidate);
@@ -206,12 +221,25 @@ export function useWallRailOffset(
     ];
 
     let frame: number | undefined;
+    let scheduleTimer: number | undefined;
     let pollTimer: number | undefined;
     let attempts = 0;
     let disposed = false;
 
     const measure = () => {
       if (disposed) return;
+
+      // A viewport of zero is not a viewport. A hidden or not-yet-laid-out
+      // tab reports `innerHeight === 0`, and measuring against it produces a
+      // placement clamped to the top margin that then STICKS — because the
+      // recovery path is a rAF, and rAF does not fire in a background tab, so
+      // nothing ever re-measures. Observed: the rail pinned at 24px on a
+      // 900px page. Wait for a real viewport instead of committing a wrong
+      // answer, and keep polling until there is one.
+      if (window.innerHeight === 0 || window.innerWidth === 0) {
+        pollTimer = window.setTimeout(measure, DISCOVERY_POLL_MS);
+        return;
+      }
 
       const found: Element[] = [];
       for (const selector of allSelectors) {
@@ -250,8 +278,25 @@ export function useWallRailOffset(
       }
     };
 
+    // rAF coalesces bursts of mutations into one layout read, which is what
+    // it is for — but IT NEVER FIRES WHILE THE TAB IS HIDDEN. Every re-measure
+    // routed through it is therefore dropped in a background tab, including
+    // the one that matters most: the occupant mounting late. Observed on the
+    // website, where Important Links appears after the dock and the rail
+    // stayed centred on top of it because the notification never arrived.
+    //
+    // So: rAF when it will actually run, a timer when it will not. The timer
+    // is the same coalescing idea at a coarser grain, and both are guarded by
+    // the single `frame`/`timer` slot so a burst still costs one read.
     function schedule() {
-      if (disposed || frame !== undefined) return;
+      if (disposed || frame !== undefined || scheduleTimer !== undefined) return;
+      if (document.hidden) {
+        scheduleTimer = window.setTimeout(() => {
+          scheduleTimer = undefined;
+          measure();
+        }, 0);
+        return;
+      }
       frame = window.requestAnimationFrame(() => {
         frame = undefined;
         measure();
@@ -261,6 +306,7 @@ export function useWallRailOffset(
     measure();
     window.addEventListener("resize", schedule);
     window.addEventListener("scroll", schedule, { passive: true });
+    document.addEventListener("visibilitychange", measure);
 
     // Occupants mount, unmount and move between routes; a shallow childList
     // watch on <body> plus an attribute watch on the root covers both without
@@ -271,9 +317,11 @@ export function useWallRailOffset(
     return () => {
       disposed = true;
       if (frame !== undefined) window.cancelAnimationFrame(frame);
+      if (scheduleTimer !== undefined) window.clearTimeout(scheduleTimer);
       if (pollTimer) window.clearTimeout(pollTimer);
       window.removeEventListener("resize", schedule);
       window.removeEventListener("scroll", schedule);
+      document.removeEventListener("visibilitychange", measure);
       bodyObserver.disconnect();
     };
   }, [ref, selectorKey, property, reserveProperty]);
