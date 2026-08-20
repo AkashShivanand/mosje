@@ -51,6 +51,13 @@
      custom property on the rail would never reach it. Keep in step with the
      rail's own 105 -> 153 heights below. */
   --sa-wall-rail-reserve: 153px;
+  /* The RESTING height — what the rail shows almost all of the time, and the
+     height its position is centred on. Declared beside the reserve because
+     reading it from the live element made the rail's position depend on
+     whether it happened to be unfolded when something re-measured: tapping a
+     door mounts the panel, the observer fires, and the rail jumped 48px out
+     from under the pointer. Keep in step with the rail's own heights below. */
+  --sa-wall-rail-rest: 56px;
   position: fixed;
   right: 0;
   /* Written by `useWallRailOffset`. The fallback is the centred position it
@@ -149,7 +156,16 @@
   width: 40px;
   height: 40px;
   border-radius: var(--sa-shape-12);
-  background-color: var(--sa-bg-brand-primary-subtler);
+  /* The palest rung, NOT `subtler`. `subtler` (#c0dbff) is what an ACTIVE
+     entry wears, and the lead wore it permanently — so on any route where the
+     lead is not the active tab, the flask and the active door were the
+     identical colour and nothing said which was which. Measured: both
+     rgb(192, 219, 255).
+
+     The lead still reads as the mark; it just sits a rung below anything
+     claiming to be selected, which is what leaves room for a selected state
+     to exist at all. */
+  background-color: var(--sa-bg-brand-primary-base);
   transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
@@ -242,19 +258,27 @@
 
 /* A 40ms stagger across TWO doors. Long enough to read as a cascade rather
    than a pop, short enough that the second door is in place before a hand
-   could reach it. Stagger is decorative, so it never gates interaction —
-   the doors are clickable from the first frame. */
+   could reach it.
+
+   THE STAGGER MOVES THEM; IT DOES NOT REVEAL THEM. The doors used to start
+   at `opacity: 0` and be brought back only by the open state, which made a
+   control's visibility depend on a transition completing — and a transition
+   that never runs leaves the door permanently invisible while still
+   occupying its space. That is not hypothetical: a backgrounded tab freezes
+   transitions, and the doors measured `opacity: 0` with the rail fully open
+   and laid out at its full 153px.
+
+   Hiding is the DRAWER's job — it already clips them with `max-height: 0`
+   and `overflow: hidden`, which is structural and cannot stall. So the doors
+   are opaque from the first frame and only their offset animates. */
 .ds-demodock__door {
-  opacity: 0;
   transform: translateY(-4px);
-  transition: opacity var(--cmp-demodock-fold) var(--cmp-demodock-ease),
-    transform var(--cmp-demodock-fold) var(--cmp-demodock-ease),
+  transition: transform var(--cmp-demodock-fold) var(--cmp-demodock-ease),
     background-color var(--cmp-demodock-fold) var(--cmp-demodock-ease),
     color var(--cmp-demodock-fold) var(--cmp-demodock-ease);
 }
 
 .ds-demodock__rail.is-open .ds-demodock__door {
-  opacity: 1;
   transform: translateY(0);
 }
 
@@ -297,13 +321,11 @@
    strip being two competing navigations for one set of destinations. A bar
    on the INNER edge, pointing at the panel it belongs to — the rail is on
    the right wall, so "inner" is the left side. ── */
-.ds-demodock__door.is-current {
+/* ONE active treatment for every entry, a full rung above the lead's rest. */
+.ds-demodock__door.is-current,
+.ds-demodock__lead.is-current .ds-demodock__cell {
   background-color: var(--sa-bg-brand-primary-subtler);
   color: var(--sa-text-brand-primary-base);
-}
-
-.ds-demodock__lead.is-current .ds-demodock__cell {
-  background-color: var(--sa-bg-brand-primary-subtle);
 }
 
 /* ONE rule for every entry's bar, lead included. It was written twice — once

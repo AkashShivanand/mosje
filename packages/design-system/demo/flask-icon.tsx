@@ -34,11 +34,14 @@
  *   It was 0.36 first; rendered at 120px the silhouette read as a lightbulb
  *   rather than as glassware, which no amount of looking at it at 16px
  *   would have revealed.
- * - Stroke width 1.9, which renders at 1.27px once scaled to the FAB's
- *   16px — matched by measurement to the weight of the icon this replaced
- *   (2 at 24, i.e. 1.33px), so the FAB's optical weight is unchanged. No
- *   `non-scaling-stroke`: that would pin the stroke to 1.9 *device* px and
- *   make the icon visibly heavier at 16px than at 24px.
+ * - Stroke width 1.5, which is Material Symbols' 300 weight — the estate's
+ *   icon standard. It was 1.9, chosen to match the optical weight of the
+ *   lucide-shaped icon this replaced (2 at 24). That was the wrong reference:
+ *   matching the thing being removed preserved its heaviness instead of
+ *   joining the system around it, and at the 26px the rail draws it, 1.9
+ *   renders 2.06px against Material's ~1.6. No `non-scaling-stroke`: that
+ *   would pin the stroke to 1.5 *device* px and make the icon heavier at
+ *   16px than at 24px.
  *
  * MOTION. Every animation is state, never decoration — the flask is inert
  * until something is true of it:
@@ -199,7 +202,7 @@ export function FlaskIcon({
       <g
         className="ds-flask__glass"
         stroke="currentColor"
-        strokeWidth="1.9"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
