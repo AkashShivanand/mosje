@@ -67,7 +67,7 @@ test("that same slot also clears the corner widget, both present", () => {
 });
 
 test("a CORNER widget does not move the rail — centred is already clear", () => {
-  // The portals. The accessibility trigger (and the Noddy launcher) sit at
+  // The portals. The accessibility trigger (and the assistant launcher) sit at
   // roughly 806-876 while the centred rail spans 373-526; they never touch.
   // Treating "on the wall" as "in the way" parked the rail at 637 on every
   // portal, off-centre to avoid something 280px away.

@@ -49,6 +49,23 @@
   /* Must match EXIT_MS in chatbot.tsx — the panel is unmounted from JS. */
   --ds-chatbot-exit: 160ms;
   --ds-chatbot-press: 140ms;
+  /*
+   * Hover is its OWN duration and its OWN curve, and both differ from the rest
+   * of this file on purpose.
+   *
+   * `--ds-chatbot-ease` is a strong ease-out — it covers most of the distance
+   * immediately and then crawls. That is right for something ARRIVING, which
+   * happens once and is watched. It is wrong for hover, which is REVERSIBLE:
+   * played backwards on mouse-leave, a hard ease-out leaves the element
+   * loitering near the hovered position and then dropping, which is exactly
+   * the "jerk on leave" this was reported as. A symmetric `ease` travels out
+   * and back the same way, so the pointer leaving feels like the pointer
+   * arriving, in reverse.
+   *
+   * 200ms rather than the 140ms press: a press is a confirmation and wants to
+   * be instant; a hover is an invitation and 140ms reads as twitchy.
+   */
+  --ds-chatbot-hover: 200ms;
 
   /* -- geometry (from Figma 2175:79161) ---------------------------------- */
   --ds-chatbot-width: 400px;
@@ -119,7 +136,16 @@
   padding: var(--sa-padding-0);
   border: 0;
   border-radius: var(--sa-shape-full);
-  background: transparent;
+  /*
+   * THE WHITE RING LIVES HERE, NOT ON THE MASCOT, AND THAT IS A BUG FIX.
+   *
+   * It used to be the mascot's own background. The mascot fades to 0 when the
+   * panel opens, so the ring went with it and the open state was a bare navy
+   * disc — which vanishes against the website's blue masthead and against the
+   * navy portal chrome. Owning it at the launcher means it survives both
+   * states and the mark is always separated from whatever is behind it.
+   */
+  background: var(--sa-bg-neutral-base);
   cursor: pointer;
   /* The button's OWN border box is the circle — 84px at `shape/full` — so a
      box-shadow casts a circle here and there is no need for `drop-shadow()`
@@ -130,10 +156,56 @@
      anything on the ladder. The ladder wins. A near-miss literal is precisely
      what stops matching the day elevation moves, and `toast` is the top rung —
      correct for the most-elevated thing on the page. */
-  box-shadow: var(--sa-elevation-toast);
-  transition:
-    transform var(--ds-chatbot-press) var(--ds-chatbot-ease),
-    box-shadow var(--ds-chatbot-press) var(--ds-chatbot-ease);
+  /*
+   * A CONTACT SHADOW AND A HAIRLINE, BECAUSE AMBIENT ALONE IS NOT ENOUGH.
+   *
+   * `elevation/toast` is 18% alpha at 48px blur with -12px spread — a wide,
+   * soft ambient shadow built for a card on a calm page. Over the website's
+   * photographic hero and its orange SAMAVESH band it is simply not visible,
+   * which is what "very subtle, will it be noticed" was reporting. Figma drew
+   * `0 12px 6px rgba(31,41,55,.32)`: four times denser and eight times tighter.
+   *
+   * The answer is not to abandon the ladder for that literal. A floating
+   * control needs BOTH shadows a real object casts — a wide ambient one and a
+   * tight CONTACT one directly beneath it — and the ladder has rungs for both.
+   * Layering `toast` over `raised` gives the object weight without inventing a
+   * value.
+   *
+   * The hairline is what actually does the work on a WHITE page, where no
+   * shadow can separate white-on-white. One pixel of bound colour beats any
+   * amount of blur.
+   */
+  box-shadow:
+    var(--sa-elevation-toast),
+    var(--sa-elevation-raised),
+    0 0 0 1px var(--sa-border-neutral-subtle);
+  transition: transform var(--ds-chatbot-hover) ease;
+}
+
+/*
+ * THE DEEPER HOVER SHADOW LIVES HERE, AS A FADE, AND THAT IS THE WHOLE FIX.
+ *
+ * It used to be `box-shadow: toast` at rest and `toast, raised` on hover.
+ * `toast` is one layer and `raised` is two, so the browser was being asked to
+ * interpolate a ONE-layer stack into a THREE-layer stack. CSS cannot do that:
+ * mismatched shadow lists do not interpolate, they SNAP. That snap, firing on
+ * both enter and leave, was the single loudest part of the reported jerk — and
+ * it is invisible in the source, because both sides are correctly token-bound
+ * and look like a normal hover rule.
+ *
+ * Fading a second, identically-shaped layer sidesteps the whole problem:
+ * opacity always interpolates, it is cheap, and both stacks stay bound to
+ * their elevation tokens.
+ */
+.ds-chatbot__launcher::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--sa-shape-full);
+  box-shadow: var(--sa-elevation-raised);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ds-chatbot-hover) ease;
 }
 
 .ds-chatbot__launcher:focus-visible {
@@ -152,9 +224,10 @@
 @media (hover: hover) and (pointer: fine) {
   .ds-chatbot__launcher:hover {
     transform: translateY(-2px);
-    /* Lifting needs a deeper shadow than the top rung already gives, so the
-       two rungs are LAYERED rather than a heavier one invented. Still bound. */
-    box-shadow: var(--sa-elevation-toast), var(--sa-elevation-raised);
+  }
+
+  .ds-chatbot__launcher:hover::after {
+    opacity: 1;
   }
 
   .ds-chatbot__launcher:hover:active {
@@ -162,49 +235,112 @@
   }
 }
 
-/* -- the mark, and the close glyph it trades places with -------------------
-   The two crossfade THROUGH BLUR rather than straight. Without it you see two
-   distinct objects overlapping for 240ms — a robot and an ×. Blur bridges them
-   so the eye reads one thing changing instead of two things swapping. Kept low;
-   large blur radii are expensive, Safari especially. */
+/* -- opening changes the CENTRE of the seal, not the whole mark -------------
 
-.ds-chatbot__mark,
+   The band around the disc is 12px wide because it CARRIES THE WORDMARK. At
+   rest that width is earned — there is bilingual type running around it. The
+   previous version faded the entire mark out and faded a plain navy disc in,
+   which left that same 12px band holding nothing: a thick empty white stroke
+   around a small blue circle, reading as a sticker outline rather than as a
+   ring. A band is only a ring if something is on it.
+
+   So the seal never leaves. The wordmark stays, the navy disc stays, the
+   silhouette and every measurement stay — and only the thing in the middle
+   changes, robot to close glyph. The badge is the brand; the centre is the
+   state. Nothing about the geometry moves, so there is nothing to look wrong.
+
+   The two centres crossfade THROUGH BLUR rather than straight: without it you
+   see two distinct objects overlapping for 240ms, and blur bridges them so the
+   eye reads one thing changing instead of two things swapping. Kept low; large
+   blur radii are expensive, Safari especially.
+
+   NOTE the figure is faded by opacity and filter ONLY. It carries the float
+   animation, which owns its `transform` — a static transform here would simply
+   be overridden by the running keyframe, and stopping the float to make room
+   for one would reintroduce exactly the snap this component has already been
+   fixed for twice. The close glyph has no competing animation, so it is free
+   to rotate in. */
+
+.ds-chatbot-mascot__figure,
 .ds-chatbot__close {
   transition:
     opacity var(--ds-chatbot-enter) var(--ds-chatbot-ease),
-    transform var(--ds-chatbot-enter) var(--ds-chatbot-ease),
-    filter var(--ds-chatbot-enter) var(--ds-chatbot-ease);
+    filter var(--ds-chatbot-enter) var(--ds-chatbot-ease),
+    transform var(--ds-chatbot-enter) var(--ds-chatbot-ease);
 }
 
 .ds-chatbot__close {
   position: absolute;
-  inset: 0;
+  /* Exactly the navy disc the mascot already draws: 12px of 84px. The glyph
+     lands on that disc rather than bringing a disc of its own. */
+  inset: 14.3%;
   display: grid;
   place-items: center;
   border-radius: var(--sa-shape-full);
-  background: var(--sa-color-brand-navy);
+  /* No fill. The seal's own disc is underneath and stays there. */
+  background: transparent;
   color: var(--sa-color-text-onPrimary);
   opacity: 0;
-  transform: scale(0.9) rotate(-45deg);
-  filter: blur(3px);
+  transform: rotate(-90deg) scale(0.7);
+  filter: blur(2px);
 }
 
 .ds-chatbot__close svg {
-  width: 30%;
-  height: 30%;
+  /* 36% of the 60px disc. Sized against the disc it sits on, not the launcher
+     it sits in — measuring against the outer box is what makes a glyph look
+     lost inside a ring. */
+  width: 36%;
+  height: 36%;
 }
 
-.ds-chatbot__launcher[data-state="open"] .ds-chatbot__mark {
+/* The robot steps aside; the seal it was sitting in does not. */
+.ds-chatbot__launcher[data-state="open"] .ds-chatbot-mascot__figure {
   opacity: 0;
-  /* 0.9, never 0 — nothing in the world shrinks to nothing before it goes. */
-  transform: scale(0.9) rotate(45deg);
   filter: blur(3px);
 }
 
 .ds-chatbot__launcher[data-state="open"] .ds-chatbot__close {
   opacity: 1;
-  transform: scale(1) rotate(0deg);
+  transform: rotate(0deg) scale(1);
   filter: blur(0);
+}
+
+/* -- arrival ----------------------------------------------------------------
+
+   Should a chatbot have an entry animation? Yes — ONE, once, and short.
+
+   The launcher is the last thing to mount on a page that has already painted,
+   so with no transition it simply pops into a finished layout, which reads as
+   a late-loading advert. A 320ms rise-and-settle says "this belongs here" and
+   then never runs again.
+
+   What it deliberately is NOT: a bounce, an attention-seeking wobble, or a
+   repeat on every route change. It is a CSS animation on mount, so it fires
+   once per page load and the SPA navigations that keep the root layout mounted
+   do not re-trigger it.
+
+   And NO SOUND. Not here, not as an option that defaults on. Unsolicited audio
+   on a government service is hostile in the places these pages are actually
+   used — shared terminals, common service centres, a phone on a bus — and
+   browsers block it before the first interaction anyway, so it would fire
+   inconsistently even if it were wanted. If a chime is ever added it is
+   opt-in, off by default, and never on arrival. */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-chatbot__launcher {
+    animation: ds-chatbot-arrive 320ms var(--ds-chatbot-ease) both;
+  }
+
+  @keyframes ds-chatbot-arrive {
+    from {
+      opacity: 0;
+      /* 0.9 and 8px — a settle, not an entrance. */
+      transform: scale(0.9) translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
 }
 
 /* -- unread nudge ----------------------------------------------------------
@@ -299,24 +435,64 @@
   user-select: none;
 }
 
-/* The ring turns only while the launcher is actually being addressed —
-   hover, focus, or open. Linear, because constant rotation is the one place
-   linear belongs; any eased curve makes a continuous spin visibly lurch. */
-@media (prefers-reduced-motion: no-preference) {
-  .ds-chatbot-mascot__ring {
-    animation: ds-chatbot-ring 14s linear infinite;
-    animation-play-state: paused;
-  }
+/* -- the seal, and the float ------------------------------------------------
 
-  .ds-chatbot__launcher:hover .ds-chatbot-mascot__ring,
-  .ds-chatbot__launcher:focus-visible .ds-chatbot-mascot__ring,
+   Two more passes, and both corrections point the same way: TAKE MOTION OUT OF
+   THE HOVER PATH.
+
+   THE SEAL NO LONGER RESPONDS TO HOVER AT ALL. It used to start turning on
+   pointer-enter and stop on leave, and an animation snapping from stopped to
+   full speed and back is inherently abrupt — there is no CSS way to ease into
+   a keyframe loop. That start/stop was a large part of what still read as
+   "off" after the earlier fixes. The seal now turns for exactly one reason:
+   the assistant is THINKING. Hover is carried entirely by the lift and the
+   shadow, which are transitions, and transitions interrupt and reverse
+   cleanly by construction.
+
+   10s, not 6s. Six was an overcorrection from an earlier pass — fast enough to
+   read as spinning, which is wrong for a government seal. At 10s a full turn
+   is stately and legible, and since it now only appears while the bot composes
+   a reply it is on screen for seconds at a time, not for the half-second a
+   hover lasts. That is what makes a slow rate affordable.
+
+   THE FLOAT NEVER CHANGES AMPLITUDE. Transitioning it was smoother than adding
+   and removing it, but not smooth ENOUGH: the keyframe and the amplitude were
+   two clocks running independently, so how it looked depended on where in the
+   4.5s cycle the pointer happened to arrive — which is exactly the reported
+   "not smooth sometimes". A constant amplitude has no second clock and
+   therefore no phase to get unlucky with.
+
+   That means it drifts continuously, which is a deliberate reversal of the
+   earlier "nothing moves at rest" position. It is defensible at this size:
+   2.5px on a 55px mascot is below the threshold of drawing the eye, it carries
+   no information, and it collapses entirely under `prefers-reduced-motion`,
+   which is the accommodation WCAG 2.2.2 exists to require. A legless robot
+   drawn mid-hover has to hover; a still one is uncanny. */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The seal: thinking only. Nothing else starts or stops it. */
+  .ds-chatbot[data-thinking] .ds-chatbot-mascot__ring,
   .ds-chatbot-mascot--spin .ds-chatbot-mascot__ring {
-    animation-play-state: running;
+    animation: ds-chatbot-ring 10s linear infinite;
   }
 
   @keyframes ds-chatbot-ring {
     to {
       transform: rotate(360deg);
+    }
+  }
+
+  /* The float: constant, everywhere, one clock. */
+  .ds-chatbot-mascot__figure {
+    animation: ds-chatbot-float 5s ease-in-out infinite;
+  }
+
+  @keyframes ds-chatbot-float {
+    0%, 100% {
+      transform: translate(-50%, -50%);
+    }
+    50% {
+      transform: translate(-50%, calc(-50% - 2.5px));
     }
   }
 }
@@ -338,7 +514,27 @@
   overflow: hidden;
   border-radius: var(--sa-shape-16);
   background: var(--sa-bg-neutral-base);
-  box-shadow: var(--sa-elevation-toast);
+  /*
+   * THE HAIRLINE IS NOT DECORATION, IT IS THE ONLY THING THAT WORKS ON WHITE.
+   *
+   * A white panel on a white page separated by a 18%-alpha, 48px-blur shadow
+   * has no visible top edge at all — the header simply dissolves into the
+   * page, which is what "the top of the panel can merge with the white
+   * background" was reporting. No amount of shadow fixes white-on-white; a
+   * bound one-pixel border does, instantly, and costs nothing over the
+   * photographic and coloured backgrounds where the shadow already worked.
+   *
+   * `raised` is layered under `toast` here for the same reason as the
+   * launcher: a wide ambient shadow alone reads as fog, not as an object
+   * sitting above the page.
+   */
+  border: 1px solid var(--sa-border-neutral-subtle);
+  /* The border would otherwise be ADDED to the 400x719 the design specifies,
+     making the panel 402x721 and pushing the expanded height 2px past the
+     viewport cap it is supposed to respect. The package sets no global reset,
+     so the component states its own box model. */
+  box-sizing: border-box;
+  box-shadow: var(--sa-elevation-toast), var(--sa-elevation-raised);
 
   /* ORIGIN-AWARE, and this is the whole reason the panel reads as "the
      launcher opened" rather than "a box appeared". It grows from the corner
@@ -382,6 +578,72 @@
   gap: var(--sa-inline-12);
   padding: var(--sa-padding-16);
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+/*
+ * 40px, matching the two-line block beside it: title (16/24) over subtitle
+ * (12/16) is 40px of text, so a 30px mark sat visibly short and made the
+ * header look top-heavy on the left. Sizing the mark to the type it labels is
+ * the whole rule — it is optical alignment, not a magic number.
+ */
+.ds-chatbot__brand-mark {
+  --ds-chatbot-mascot-size: 40px;
+  flex: none;
+}
+
+.ds-chatbot__brand {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.ds-chatbot__subtitle {
+  font-family: var(--sa-font-devanagari);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-color-text-muted);
+}
+
+/* 32px, so the two header controls clear the 24x24 WCAG 2.2 (2.5.8) minimum
+   with room to spare. They sit where every user already looks for a dismiss. */
+.ds-chatbot__icon-btn {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: var(--sa-padding-0);
+  border: 0;
+  border-radius: var(--sa-shape-8);
+  background: transparent;
+  color: var(--sa-color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--ds-chatbot-press) var(--ds-chatbot-ease),
+    color var(--ds-chatbot-press) var(--ds-chatbot-ease),
+    transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
+}
+
+.ds-chatbot__icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ds-chatbot__icon-btn:hover {
+    background: var(--sa-bg-neutral-subtler);
+    color: var(--sa-color-text-default);
+  }
+}
+
+.ds-chatbot__icon-btn:active {
+  transform: scale(0.94);
+}
+
+.ds-chatbot__icon-btn:focus-visible {
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
 }
 
 .ds-chatbot__title {
@@ -431,7 +693,11 @@
 
 .ds-chatbot__log {
   display: flex;
+  /* `min-height: 0` is what lets this scroll INSIDE a flex column. Without it
+     a flex item refuses to shrink below its content, so a long transcript
+     pushes the footer — composer and all — off the bottom of the panel. */
   flex: 1;
+  min-height: 0;
   flex-direction: column;
   /* Bottom-anchored, as in the design: an empty chat sits at the floor and
      grows upward, so the first message never appears stranded at the ceiling. */
@@ -680,9 +946,13 @@
     transform: none;
   }
 
-  .ds-chatbot__mark,
+  /* The centre swap becomes a plain fade. `__mark` is no longer part of it —
+     the seal stays put in both states now, so there is nothing to neutralise
+     on it. Naming a selector here that the component no longer animates would
+     be dead CSS pretending to be a reduced-motion accommodation. */
+  .ds-chatbot-mascot__figure,
   .ds-chatbot__close,
-  .ds-chatbot__launcher[data-state="open"] .ds-chatbot__mark,
+  .ds-chatbot__launcher[data-state="open"] .ds-chatbot-mascot__figure,
   .ds-chatbot__launcher[data-state="open"] .ds-chatbot__close {
     transform: none;
     filter: none;
@@ -692,4 +962,149 @@
   .ds-chatbot__log {
     scroll-behavior: auto;
   }
+
+  /* The float, the seal and the arrival are all gated on `no-preference`, so
+     they never start. What needs saying here is the two that would otherwise
+     animate a SIZE change — expanding, and the measured corner offset. */
+  .ds-chatbot__panel[data-expanded] {
+    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+  }
+
+  .ds-chatbot__icon-btn,
+  .ds-chatbot__icon-btn:active,
+  .ds-chatbot__send,
+  .ds-chatbot__send:not(:disabled):active {
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Footer — the composer and the honest note
+   ------------------------------------------------------------------------- */
+
+.ds-chatbot__footer {
+  flex: none;
+  padding: var(--sa-padding-12) var(--sa-padding-16) var(--sa-padding-16);
+  border-top: 1px solid var(--sa-border-neutral-subtle);
+  background: var(--sa-bg-neutral-base);
+}
+
+.ds-chatbot__composer {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-8);
+  padding: var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-12);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-full);
+  background: var(--sa-bg-neutral-base);
+  transition: border-color var(--ds-chatbot-press) var(--ds-chatbot-ease);
+}
+
+/* The ring goes on the CONTAINER, not the input — the input's own outline
+   would sit inside a pill and read as a second, smaller field. */
+.ds-chatbot__composer:focus-within {
+  border-color: var(--sa-border-brand-primary-base);
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: 1px;
+}
+
+.ds-chatbot__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  color: var(--sa-color-text-default);
+}
+
+.ds-chatbot__input:focus {
+  outline: none;
+}
+
+.ds-chatbot__send {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: var(--sa-padding-0);
+  border: 0;
+  border-radius: var(--sa-shape-full);
+  background: var(--sa-color-brand-navy);
+  color: var(--sa-color-text-onPrimary);
+  cursor: pointer;
+  transition:
+    opacity var(--ds-chatbot-press) var(--ds-chatbot-ease),
+    transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
+}
+
+.ds-chatbot__send svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Dimmed, never hidden. A send button that vanishes when the field is empty
+   removes the affordance that tells you the field is a message box at all. */
+.ds-chatbot__send:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.ds-chatbot__send:not(:disabled):active {
+  transform: scale(0.94);
+}
+
+.ds-chatbot__send:focus-visible {
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
+}
+
+.ds-chatbot__note {
+  margin: var(--sa-stack-8) 0 0;
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-color-text-muted);
+}
+
+/* Quiet, and in the footer rather than the close slot. Destructive actions do
+   not belong where people reach to dismiss something. */
+.ds-chatbot__end {
+  padding: var(--sa-padding-0);
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--sa-text-status-error-base);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.ds-chatbot__end:focus-visible {
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
+}
+
+/* ---------------------------------------------------------------------------
+   Expanded — the live panel offers this and a 400px column earns it
+   ---------------------------------------------------------------------------
+   A scheme answer with eligibility and a document list is a wall of text in a
+   400x719 column. Expanding is the cheapest possible fix and the live
+   assistant already trains the gesture. Capped by the viewport so it can never
+   grow past what is on screen.
+   ------------------------------------------------------------------------- */
+
+.ds-chatbot__panel[data-expanded] {
+  width: min(560px, calc(100vw - (var(--ds-chatbot-gap) * 2)));
+  height: min(
+    820px,
+    calc(100dvh - var(--ds-chatbot-launcher) - (var(--ds-chatbot-gap) * 3))
+  );
+  transition:
+    opacity var(--ds-chatbot-enter) var(--ds-chatbot-ease),
+    transform var(--ds-chatbot-enter) var(--ds-chatbot-ease),
+    width var(--ds-chatbot-enter) var(--ds-chatbot-ease),
+    height var(--ds-chatbot-enter) var(--ds-chatbot-ease);
 }
