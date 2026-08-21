@@ -145,8 +145,23 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
 
 When a request matches a skill, invoke it via the Skill tool. When in doubt, invoke it.
 
+**Design work starts by naming the layer.** The `layers-*` pack (Layers of Product Design,
+7 layers over 3 zones) is installed project-wide. `/layers-intro` loads the framework;
+`/layers-orient` audits all seven layers and names the bottleneck. Run orient **before**
+`/autoplan` or `/spec` on a design brief — this estate's recurring failure mode is solving a
+Layer 2 (vocabulary) or Layer 5 (object model) problem at Layer 7. Index and MoSJE-specific
+guidance: `.claude/skills/README.md`.
+
 | Request | Skill |
 |---|---|
+| **Which layer is this problem actually at?** | **`/layers-orient`** — pre-flight |
+| Framework context for any `/layers-*` work | `/layers-intro` — load first |
+| Scheme/org terminology, citizen vs. administrative language | `/layers-domain` |
+| Objects, states, relationships shared across portals | `/layers-conceptual-model` |
+| User needs, job stories, persona claims | `/layers-user-needs` |
+| Flows, edge cases, empty / loading / error states | `/layers-interaction-flow` |
+| Which needs to serve, which bets to place | `/layers-product-strategy` |
+| Research planning & synthesis | `/layers-observed-behaviour` |
 | Product ideas / brainstorming | `/office-hours` |
 | Strategy / scope | `/plan-ceo-review` |
 | Architecture | `/plan-eng-review` |
@@ -159,6 +174,12 @@ When a request matches a skill, invoke it via the Skill tool. When in doubt, inv
 | Ship / deploy / PR | `/ship`, `/land-and-deploy` |
 | Save / resume progress | `/context-save`, `/context-restore` |
 | Backlog-ready spec | `/spec` |
+
+**Surface stays ours.** `/layers-surface` exists but is standards-blind. Visual and
+interaction surface work routes to `/design-review` + `/gov-compliance` +
+`accessibility-auditor` — those know WCAG 2.2 AA, DBIM, GIGW 3.0 and the token contract.
+Use `/layers-surface` only as an extra lens for tracing a surface defect down to the layer
+that caused it.
 
 ## Branching & merging (MANDATORY)
 
