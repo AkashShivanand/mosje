@@ -1568,6 +1568,16 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Purpose**: Circular user or entity representation.  
 **Rule**: Always provide `alt` text. For decorative-only avatars, `alt=""`.
 
+#### VisitorCounter
+**Purpose**: The "Total Visits" figure a government footer carries (DBIM's illustrative footer shows one). Rendered inside `SiteFooter`'s `colophonSlot`, beside the copyright and last-updated.
+**Props**: `label`, `baseline`, `since`, `perDay`, `tickSeconds`
+**Rules**:
+- **THE DATA IS MOCK, BY DESIGN, AND MUST STAY OBVIOUSLY SO.** There is no analytics backend on this estate. The figure is DERIVED — `baseline` counted at `since`, extrapolated at `perDay` — so it moves like a real counter and is reproducible from its inputs. It is **not** a measurement. Swap the props for a real feed before the site carries a number anyone might quote, and never reuse this component anywhere the number has consequences (a dashboard, a report, an RTI response).
+- Printing an invented constant was the alternative and was rejected: a fixed number on a government footer is a fabricated record, and a derived one at least declares its own arithmetic.
+- **The first paint is blank on purpose.** The value depends on the clock, so server and client would disagree and React would report a hydration mismatch. It renders a placeholder until mounted.
+- **It is deliberately NOT a live region.** A figure re-announcing every twelve seconds talks over the page. `aria-label` names it once; digits are `tabular-nums` so they do not jitter; ticking stops under `prefers-reduced-motion`. `tickSeconds={0}` freezes it.
+- Colour is inherited (`--ds-footer-ink*` inside the footer, `currentColor` elsewhere) — it carries no palette of its own.
+
 #### MetricCard
 **Purpose**: KPI tile for portal dashboards.  
 **Props**: `label`, `value`, `icon`, `changeLabel`, `changeValue`, `changeDirection`, `size`  
@@ -1676,6 +1686,25 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
   hover, step, launch icon). The CSS references no Tier-1 token and no raw colour.
 - `device="mobile"` collapses the right cluster as Figma does, but **keeps the skip link** —
   WCAG 2.4.1 outranks a structural preference. Recorded in the component spec.
+
+#### SiteFooter
+**Purpose**: The statutory footer of a PUBLIC INFORMATION SITE — two bands: the working footer (identity, address, CTA, social, four link columns) and the statutory bar (lineage, policies, related links, credits, copyright, last-updated).
+**Key props**: `emblem`, `organisation`, `address`, `cta`, `social`, `colophonSlot`, `columns`, `lineage`, `credits`, `policyLinks`, `relatedLinks`, `copyright`, `lastUpdated`, `linkAs`, `maxWidth`
+**Rules**:
+- **This is NOT `Footer`.** `Footer` is the slim single-band app-shell strip under an authenticated portal workflow; this is the statutory footer of a public site. They answer to different clauses and must not be merged.
+- **It is structural, not content-bound.** Every label, href, logo and sentence arrives as a prop, so a second site gets the same footer by passing its own content. Never fork it to change wording.
+- **NEVER pass a background through `className`.** Colour binds to the mode-aware `--sa-color-primaryScale-*` family — ground = rung 800 (`bg/brand/primary/boldest`), statutory bar = rung 900, hairlines = rung 600 — so the footer repaints for `blue`, `navy`, `dbim` and the five DBIM hues with no work at the call site. In `dbim` the ground resolves to **#162F6A**, which is DBIM's own published Blue shade 1, satisfying **[DBIM 5.6]** ("footer background = the key colour, darkest shade") by construction rather than by coincidence.
+- **Ink is same-hue, never white-alpha.** The three levels are rungs 100 and 200 plus `on/bg/brand/primary/boldest`. `rgba(255,255,255,.8)` on a coloured ground desaturates to a dirty grey; the ramp's own rungs stay in the family and measure better — worst case across all seven modes is **5.88:1**, against the 4.5:1 AA asks for. This replaced a `bg-navy` literal that could not answer to `data-brand` at all.
+- **`lineage` and `lastUpdated` are DBIM 5.6 elements, not decoration.** `lineage` must be the mandated wording for the organisation type. `lastUpdated` must be the CURRENT PAGE's date — pass it down from the page layout, never the site-wide build date, or the footer will contradict the page hero.
+- **`policyLinks` must carry the GIGW mandatory pages** — terms, privacy, copyright, hyperlinking, accessibility, feedback, sitemap. `relatedLinks` is a DBIM 5.6 required element and is also where the GIGW-mandated india.gov.in link lives on every page.
+- `linkAs` takes the router's link component for internal hrefs. External links always render as a plain anchor with `rel="noreferrer"` plus a visually-hidden "(opens in a new window)" — set `external: true` and nothing else.
+- Social entries take a **human** `label` ("X (formerly Twitter)"), never a CSS class name. The glyph is `aria-hidden`; the accessible name sits on the link.
+- Every `<nav>` is `aria-labelledby` its own visible heading, and the whole footer is named by a visually-hidden `<h2>`. One focus ring is defined once for the subtree — do not add per-control rings.
+- **The CTA is an OUTLINE, and reverting it to a fill is a hierarchy regression.** A white fill made a tertiary call to action the single brightest object in the footer, out-shouting the National Emblem and the department name above it. The outline is not a compliance compromise: the border measures 6.18:1 against the ground (1.4.11 wants 3:1) and the label 11.4:1 (1.4.3 wants 4.5:1).
+- **Social marks carry no ring at rest.** The 40px target is unchanged and WCAG 2.5.8 is satisfied by the box, which does not have to be visible to be clickable. Five outlined circles put five hard shapes in the quietest part of the footer at the weight of the button above them; the circle returns on hover, where it means something.
+- **No visible eyebrows on the policy and related navs.** They are named by `aria-label`, which is where the label was doing real work. Two uppercase micro-labels inside one small band is the most templated thing a footer can do.
+- **One rule in the statutory band, at its boundary.** It carried three inside ~100px of height and read as ruled paper. Spacing separates the rows now, and separates them by meaning.
+- **The statutory band is a declared two-column grid**, statute and navigation left, organisational marks right. `space-between` pinned the marks to the far edge and left a ~340px void; stacking everything left-aligned instead just moved the void to the right side.
 
 #### SiteHeader
 **Purpose**: The SAMAVESH Navbar — canonical three-tier masthead (accessibility bar + brand row + nav row).  

@@ -64,3 +64,90 @@
     padding-inline: var(--sa-grid-margin-desktop);
   }
 }
+
+/* ----------------------------------------------------------------------------
+   Clearing the right-wall rail.
+
+   The estate parks fixed widgets on the right wall — on the website that is
+   `ImportantLinks`, marked `data-sa-wall-occupant`. It is `position: fixed;
+   right: 0`, so it overlays the last ~37px of the VIEWPORT at every scroll
+   position, on top of whatever the page put there.
+
+   `.sa-container` reserves 16 / 24 / 32px by breakpoint, so measured against a
+   37px rail the content ran underneath it by:
+
+       < 768px    21px    (16px margin)
+       < 1280px   13px    (24px margin)
+       >= 1280px   0px    the 1200 cap plus 32px margin already clears it
+
+   So one override at the existing 1280 anchor covers the whole range exactly,
+   and no arithmetic on `100vw` is needed — which matters, because `100vw`
+   includes the classic scrollbar and a vw-based reservation would come up half
+   a scrollbar short on Windows while looking correct on macOS, where overlay
+   scrollbars hide the mistake.
+
+   SCOPED TO THE WEBSITE ON PURPOSE. The walls are inverted between zones — see
+   `foundations/wall-rail.ts`. Docs and portals keep a free right wall and a
+   full-height left sidebar, so reserving a right gutter there would indent
+   every page against nothing.
+
+   `--sa-wall-rail` is a WIDTH, which `.claude/rules/documentation-ds-linkage.md`
+   classes as geometry the token scales do not model. It is the one number to
+   change if the rail is ever resized; `ImportantLinks` and `site-footer.css`
+   both read it rather than restating it.
+   -------------------------------------------------------------------------- */
+
+:root {
+  --sa-wall-rail: 40px;
+  /* The rail plus a hair of breathing room, so content stops beside it rather
+     than against it. */
+  --sa-wall-clearance: calc(var(--sa-wall-rail) + var(--sa-padding-8));
+}
+
+[data-site="website"] .sa-container {
+  padding-inline-end: var(--sa-wall-clearance);
+}
+
+@media (min-width: 1280px) {
+  /* The gutter absorbs the rail from here up, so the container goes back to a
+     symmetric margin rather than staying permanently lopsided. */
+  [data-site="website"] .sa-container {
+    padding-inline-end: var(--sa-grid-margin-desktop);
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Clearing the bottom-right CORNER widget.
+
+   The assistant launcher (`Chatbot`, `placement="fixed"`) is 84px tall at a
+   32px bottom offset, so it owns the bottom 116px of the viewport and a 100px
+   column at the right edge. Measured against the reserved wall gutter it
+   intrudes 52px into the content column, and it does so at every viewport
+   below 1336px — where `(vw + 1200)/2 - 32` finally falls left of `vw - 100`.
+
+   IT IS NOT SHRUNK TO FIT, and that is deliberate. `design.md` records why:
+   the launcher's white ring carries the circular bilingual wordmark
+   ("Samajik Sahayak · सामाजिक सहायक"), which is unreadable below 84px. The
+   size is a legibility decision, not a default.
+
+   NOR IS THE COLUMN RESERVED. Unlike the wall rail, which spans a 175px band
+   at 42% of the viewport, the launcher only ever occupies the bottom corner.
+   Reserving a full-height 100px gutter for it would narrow the measure on
+   every line of every page to clear something that is only ever beside the
+   last few.
+
+   So what is reserved is the SCROLL END. Content passing under a floating
+   launcher mid-scroll is transient and is what a floating launcher is; content
+   parked under it at the bottom of the page is permanently unreachable, and on
+   the website that was the footer's own statutory text. Reserving the corner's
+   height at the end of the document fixes the second without paying for the
+   first — the same safe-area pattern every product with a corner launcher uses.
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* 84px launcher + its 32px bottom offset. Sourced from --ds-chatbot-launcher
+     and --ds-chatbot bottom in components/feedback/chatbot.css; restated here
+     because those are scoped to the component and cannot be read from outside
+     it. If the launcher is resized, this moves with it. */
+  --sa-corner-safe-bottom: 116px;
+}

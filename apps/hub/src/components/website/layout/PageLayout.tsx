@@ -24,7 +24,8 @@ export function PageLayout({
         <PageHero {...hero} />
         {children}
       </main>
-      <SiteFooter />
+      {/* [DBIM 5.6] The footer's "Last Updated On" must be the respective page's date. */}
+      <SiteFooter lastUpdated={hero.lastUpdated} />
       <ImportantLinks />
     </>
   );

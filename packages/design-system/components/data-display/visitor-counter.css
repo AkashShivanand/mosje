@@ -1,0 +1,42 @@
+/* ============================================================================
+   MoSJE / SAMAVESH — VisitorCounter
+
+   Inherits its colours from whatever band it sits in (the footer sets
+   `--ds-footer-ink*`); falls back to the ambient text colour elsewhere, so the
+   component can be dropped on a light surface without carrying a dark-only
+   palette with it.
+   ============================================================================ */
+
+.ds-visits {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-padding-6);
+  font-family: var(--sa-font-latin);
+  /* INHERITS its size. It is a metadata line and belongs at whatever size the
+     row it sits in runs at — pinned to body-2 it rendered 14px inside a 12px
+     colophon and stood out for no reason. */
+  font-size: inherit;
+  line-height: 1.4;
+  color: var(--ds-footer-ink-muted, currentColor);
+}
+
+/* There is no icon, deliberately. An eye glyph in front of a number turns a
+   metadata line into a statistic, and this is the least consequential figure
+   in the footer — it sat beside the copyright out-weighing it. It was briefly
+   hidden with `display: none` instead, which did nothing: `Icon` writes its
+   layout inline, and an inline style beats a class. Removed at the source. */
+
+.ds-visits__label::after {
+  content: ":";
+}
+
+.ds-visits__value {
+  /* Tabular figures so the count does not shift the line as digits change.
+     Weight 500, not 600: it sits in a row with the copyright and the
+     last-updated date and has no business being heavier than either. */
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  color: var(--ds-footer-ink-muted, currentColor);
+  /* Reserve the widest plausible figure so the first tick cannot reflow the row. */
+  min-width: 7ch;
+}

@@ -95,7 +95,22 @@
   --color-primary-700:    var(--sa-color-primaryScale-700);
   --color-primary-800:    var(--sa-color-primaryScale-800);
   --color-primary-900:    var(--sa-color-primaryScale-900);
-  --color-navy:           var(--sa-color-brand-navy);
+  /* `--color-navy` is DELIBERATELY NOT DECLARED HERE. It used to be, bound to
+     `var(--sa-color-brand-navy)` (#003366) — and it never once applied, because
+     the portal-only `@theme` block further down re-declares the same name as a
+     LITERAL (#13366b) and later wins. So this line was a lie the whole estate
+     read as truth: `bg-navy` looked token-bound and mode-reactive, and was
+     neither. Removed rather than "fixed" by flipping the literal, because 113
+     of the 130 bare-navy call sites are portal surfaces that genuinely want the
+     ramp's 700 rung. See the portal block for the surviving declaration.
+
+     Anything that wants the BRAND navy reads `--sa-color-brand-navy` directly,
+     and anything that wants a mode-reactive dark brand ground uses
+     `--sa-bg-brand-primary-boldest` — which is what the website footer now
+     does. No replacement utility is declared here on purpose: an unused colour
+     in `@theme` is one more name for the next person to bind the wrong thing
+     to. Deleting this line changes nothing visually; the portal declaration
+     already governed every `bg-navy` on the estate. */
   --color-yellow:         var(--sa-color-brand-yellow);
   /* saffron: scw/nmba/nhapoa/tg pin #ec6a1f; hub keeps the DS saffron #ff671f (the
      SAMAVESH logo's India Saffron, since the 2026-08-11 palette rebuild). */
@@ -155,6 +170,15 @@
   --color-navy-800: #0f2c59;
   --color-navy-900: #0a2452;
   --color-navy-950: #071a3d;
+  /* THE ONLY declaration of the bare name, and it is a literal on purpose.
+     `bg-navy` is a PORTAL surface colour — 113 of its 130 call sites are under
+     app/portals — and portals want this exact rung (700), not the brand token.
+     A second declaration used to sit in the `@theme inline` block above bound
+     to `--sa-color-brand-navy`; it silently lost the cascade to this line, so
+     the estate believed `bg-navy` was mode-reactive when it never was.
+     KEEP IT SINGLE. Public-website surfaces must not use `bg-navy` at all —
+     they bind to `--sa-bg-brand-primary-boldest`, which does answer to
+     `data-brand`. See packages/design-system/components/navigation/site-footer.css. */
   --color-navy:     #13366b;
 
   /* Sidebar active pill / soft brand wash — identical across the four. */
