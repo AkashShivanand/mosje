@@ -1,0 +1,653 @@
+<title>How Citizens Find Schemes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+Mono:wght@400;500&family=Noto+Serif:wght@400;600;700&display=swap">
+
+<style>
+:root{
+  --p50:#e8f2fd; --p100:#c6dcf9; --p200:#9cbfe3; --p500:#0373df; --p600:#025fb8; --p700:#014b92;
+  --s50:#ffedd5; --s100:#fed9b7; --s500:#f97316; --sink:#7c3503;
+  --paper:#ffffff; --ground:#f8f9fa; --sunk:#f1f3f5;
+  --ink:#212121; --hint:#343a40; --muted:#6c757d; --faint:#9aa3af;
+  --rule:#e2e6ea; --rule-2:#f1f3f5;
+  --ok:#2e7d32; --ok50:#e8f5e9; --okink:#27682a;
+  --warn:#bb772b; --warn50:#fdf6ec;
+  --bad:#ec5042; --bad50:#fdecea; --badink:#a3312a;
+  --sh-xs:0 2px 3px 1px #2121211f;
+  --sh-s:0 1px 3px 1px #2121211a, 0 4px 4px 0 #2121211f;
+  --sh-md:0 2px 8px -2px #2121210a, 0 6px 8px -2px #21212133;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --p50:#12283f; --p100:#1b3a5c; --p200:#2b5482; --p500:#58a9f2; --p600:#7cbdf7; --p700:#a8d3fb;
+    --s50:#2b2016; --s100:#3d2c1c; --s500:#f0913f; --sink:#e6a869;
+    --paper:#111a2d; --ground:#0a1020; --sunk:#18233a;
+    --ink:#e8ecf6; --hint:#c4cde0; --muted:#96a2be; --faint:#74809c;
+    --rule:#243050; --rule-2:#1c2740;
+    --ok:#7fc69a; --ok50:#152719; --okink:#8fd0a8;
+    --warn:#e29958; --warn50:#2b2016;
+    --bad:#e97a7e; --bad50:#2e1a1c; --badink:#f09a9d;
+    --sh-xs:0 1px 2px rgba(0,0,0,.4);
+    --sh-s:0 2px 6px rgba(0,0,0,.5);
+    --sh-md:0 10px 30px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --p50:#12283f; --p100:#1b3a5c; --p200:#2b5482; --p500:#58a9f2; --p600:#7cbdf7; --p700:#a8d3fb;
+  --s50:#2b2016; --s100:#3d2c1c; --s500:#f0913f; --sink:#e6a869;
+  --paper:#111a2d; --ground:#0a1020; --sunk:#18233a;
+  --ink:#e8ecf6; --hint:#c4cde0; --muted:#96a2be; --faint:#74809c;
+  --rule:#243050; --rule-2:#1c2740;
+  --ok:#7fc69a; --ok50:#152719; --okink:#8fd0a8;
+  --warn:#e29958; --warn50:#2b2016;
+  --bad:#e97a7e; --bad50:#2e1a1c; --badink:#f09a9d;
+  --sh-xs:0 1px 2px rgba(0,0,0,.4);
+  --sh-s:0 2px 6px rgba(0,0,0,.5);
+  --sh-md:0 10px 30px -18px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--hint);
+  font-family:"Noto Sans","Helvetica Neue",Arial,sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+a{color:var(--p500); text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--p500) 35%, transparent)}
+a:hover{border-bottom-color:var(--p500)}
+a:focus-visible{outline:2px solid var(--p500); outline-offset:3px; border-radius:2px}
+
+.sheet{max-width:1180px; margin:0 auto; padding:0 24px 96px}
+.cols{display:grid; grid-template-columns:1fr; gap:0}
+@media(min-width:1060px){ .cols{grid-template-columns:212px minmax(0,1fr); gap:56px; align-items:start} }
+.rail{display:none}
+@media(min-width:1060px){ .rail{display:block; position:sticky; top:28px; padding-top:6px} }
+.rail ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px}
+.rail a{display:grid; grid-template-columns:20px 1fr; gap:8px; align-items:baseline; padding:6px 8px; border:0; border-radius:5px; color:var(--muted); font-size:12.5px; line-height:1.35}
+.rail a:hover{background:var(--sunk); color:var(--ink)}
+.rail .n{font-family:"Noto Sans Mono",monospace; font-size:10.5px; color:var(--faint); font-variant-numeric:tabular-nums}
+.rail h6{margin:0 0 10px; padding-left:8px; font-family:"Noto Sans Mono",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); font-weight:500}
+
+.mast{padding:52px 0 30px; border-bottom:2px solid var(--ink)}
+.kicker{font-family:"Noto Sans Mono",monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--p700); font-weight:500; margin:0 0 18px}
+h1{font-family:"Noto Serif",Georgia,serif; font-weight:700; color:var(--ink); font-size:clamp(2.2rem,5.4vw,3.4rem); line-height:1.08; letter-spacing:-.02em; margin:0 0 16px; text-wrap:balance; max-width:17ch}
+.stand{font-family:"Noto Serif",Georgia,serif; font-size:clamp(1.02rem,2vw,1.22rem); line-height:1.55; color:var(--hint); max-width:60ch; margin:0 0 26px}
+.meta{display:flex; flex-wrap:wrap; gap:8px 28px; font-family:"Noto Sans Mono",monospace; font-size:11.5px; color:var(--muted)}
+.meta b{color:var(--ink); font-weight:500}
+
+section{padding-top:56px; scroll-margin-top:18px}
+h2{font-family:"Noto Serif",Georgia,serif; font-weight:700; color:var(--ink); font-size:clamp(1.45rem,3vw,1.95rem); line-height:1.2; letter-spacing:-.015em; margin:0 0 6px; text-wrap:balance}
+.h2n{display:block; font-family:"Noto Sans Mono",monospace; font-size:11px; letter-spacing:.16em; color:var(--p700); text-transform:uppercase; margin-bottom:9px; font-weight:500}
+.deck{max-width:64ch; color:var(--muted); margin:0 0 28px; font-size:15.5px}
+h3{font-family:"Noto Sans",sans-serif; font-weight:600; color:var(--ink); font-size:1.05rem; line-height:1.35; margin:30px 0 10px}
+h4{font-family:"Noto Sans",sans-serif; font-weight:600; color:var(--ink); font-size:.83rem; letter-spacing:.06em; text-transform:uppercase; margin:18px 0 8px}
+p{max-width:70ch; margin:0 0 15px}
+ul,ol{max-width:70ch; padding-left:20px; margin:0 0 15px}
+li{margin-bottom:6px}
+strong{color:var(--ink); font-weight:600}
+code,.mono{font-family:"Noto Sans Mono",monospace; font-size:.86em; background:var(--sunk); padding:1px 5px; border-radius:3px; color:var(--ink)}
+
+.scroller{overflow-x:auto; margin:0 0 22px; border:1px solid var(--rule); border-radius:10px; background:var(--paper); box-shadow:var(--sh-xs)}
+table{border-collapse:collapse; width:100%; min-width:560px; font-size:14px}
+th,td{text-align:left; padding:11px 16px; border-bottom:1px solid var(--rule-2); vertical-align:top}
+thead th{background:var(--sunk); color:var(--ink); font-weight:600; font-size:11px; letter-spacing:.06em; text-transform:uppercase; white-space:nowrap; border-bottom:1px solid var(--rule)}
+tbody tr:last-child td{border-bottom:0}
+td.num{text-align:right; font-family:"Noto Sans Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+
+.opt{background:var(--paper); border:1px solid var(--rule); border-radius:12px; padding:0; margin:0 0 18px; overflow:hidden; box-shadow:var(--sh-xs); break-inside:avoid}
+.opt__head{padding:20px 24px; border-bottom:1px solid var(--rule); display:flex; align-items:flex-start; gap:16px}
+.opt__tag{flex:0 0 auto; font-family:"Noto Sans Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.08em; color:#fff; background:var(--p600); padding:5px 10px; border-radius:6px}
+.opt--b .opt__tag{background:var(--sink)}
+.opt__title{font-size:1.22rem; font-weight:600; color:var(--ink); margin:0 0 4px; line-height:1.3}
+.opt__sub{font-size:14.5px; color:var(--muted); margin:0; max-width:72ch}
+.opt__body{padding:22px 24px}
+.grid2{display:grid; gap:22px}
+@media(min-width:720px){ .grid2{grid-template-columns:1fr 1fr; gap:32px} }
+.grid2 ul{margin:0; padding-left:18px; max-width:none}
+.grid2 li{font-size:14.5px; line-height:1.55}
+.pro h4{color:var(--okink)}
+.con h4{color:var(--badink)}
+.fit{margin-top:20px; padding:14px 18px; border-radius:8px; background:var(--s50); border:1px solid var(--s100); font-size:14.5px; line-height:1.55; color:var(--ink)}
+.fit b{color:var(--sink)}
+.facts{display:flex; flex-wrap:wrap; gap:8px; margin-top:18px}
+.chip{display:inline-flex; align-items:center; gap:6px; font-family:"Noto Sans Mono",monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; font-weight:700; padding:4px 9px; border-radius:6px}
+.c-lo{color:var(--okink); background:var(--ok50)} .c-md{color:var(--warn); background:var(--warn50)} .c-hi{color:var(--badink); background:var(--bad50)} .c-nv{color:var(--p700); background:var(--p50)}
+
+.note{border-radius:12px; padding:20px 24px; margin:22px 0; border:1px solid; break-inside:avoid}
+.note--info{background:var(--p50); border-color:var(--p100)}
+.note--warn{background:var(--warn50); border-color:var(--s100)}
+.note--rec{background:var(--ok50); border-color:color-mix(in srgb, var(--ok) 40%, transparent)}
+.note p:last-child{margin-bottom:0}
+.note__k{display:block; font-family:"Noto Sans Mono",monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; margin-bottom:8px}
+.note--info .note__k{color:var(--p700)} .note--warn .note__k{color:var(--warn)} .note--rec .note__k{color:var(--okink)}
+
+.dec{display:flex; gap:16px; align-items:flex-start; padding:18px 20px; border:1px solid var(--rule); border-radius:10px; background:var(--paper); margin-bottom:12px}
+.dec__id{flex:0 0 auto; width:40px; height:40px; border-radius:8px; background:var(--p700); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-family:"Noto Sans Mono",monospace; font-weight:700; font-size:14px}
+.ask{display:block; font-size:12px; letter-spacing:.05em; text-transform:uppercase; font-weight:600; color:var(--muted); margin-bottom:3px}
+
+footer{margin-top:72px; padding-top:24px; border-top:1px solid var(--rule); color:var(--muted); font-size:13.5px}
+@media print{ body{background:#fff} .rail{display:none} .sheet{max-width:none} .opt,.note,.dec{box-shadow:none} }
+</style>
+
+<div class="sheet">
+<div class="cols">
+
+<nav class="rail" aria-label="Contents">
+  <h6>Contents</h6>
+  <ol>
+    <li><a href="#ask"><span class="n">01</span><span>What we are asking</span></a></li>
+    <li><a href="#why"><span class="n">02</span><span>Why now</span></a></li>
+    <li><a href="#home"><span class="n">03</span><span>Homepage options</span></a></li>
+    <li><a href="#schemes"><span class="n">04</span><span>Schemes page options</span></a></li>
+    <li><a href="#bot"><span class="n">05</span><span>The assistant</span></a></li>
+    <li><a href="#combine"><span class="n">06</span><span>How they combine</span></a></li>
+    <li><a href="#depends"><span class="n">07</span><span>What all of them need</span></a></li>
+    <li><a href="#safe"><span class="n">08</span><span>Safeguards</span></a></li>
+    <li><a href="#need"><span class="n">09</span><span>What we need from you</span></a></li>
+    <li><a href="#time"><span class="n">10</span><span>Indicative timeline</span></a></li>
+    <li><a href="#fix"><span class="n">11</span><span>Two corrections</span></a></li>
+    <li><a href="#gloss"><span class="n">12</span><span>Glossary</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<header class="mast">
+  <p class="kicker">Decision note &middot; Department of Social Justice &amp; Empowerment</p>
+  <h1>How Citizens Find Schemes</h1>
+  <p class="stand">The Department publishes 141 schemes. A citizen who does not already know a scheme by name has no reliable way to reach the ones meant for them. This note sets out the options designed to fix that, and asks for three decisions.</p>
+  <div class="meta">
+    <span><b>Prepared for</b> Ministry review</span>
+    <span><b>Site</b> dosje.gov.in (SAMAVESH)</span>
+    <span><b>Date</b> August 2026</span>
+    <span><b>Status</b> For decision</span>
+  </div>
+</header>
+
+<!-- 01 -->
+<section id="ask">
+  <span class="h2n">Section 01</span>
+  <h2>What we are asking for</h2>
+  <p class="deck">Three decisions, independent of one another. Each can be taken on its own; none blocks the others.</p>
+
+  <div class="dec">
+    <span class="dec__id">D1</span>
+    <div>
+      <span class="ask">Decision one &middot; the homepage</span>
+      <p style="margin:0 0 6px;"><strong>Which entry point does the homepage carry?</strong> Option A keeps and repairs the persona panel that is already there. Option B adds a short guided section that asks a few questions and returns a shortlist.</p>
+      <p style="margin:0; font-size:14.5px; color:var(--muted);">Our recommendation: <strong style="color:var(--okink)">adopt Option B, and repair Option A rather than remove it.</strong> The two serve different visitors.</p>
+    </div>
+  </div>
+
+  <div class="dec">
+    <span class="dec__id">D2</span>
+    <div>
+      <span class="ask">Decision two &middot; the schemes page</span>
+      <p style="margin:0 0 6px;"><strong>How is the scheme list filtered and presented?</strong> Option A places a row of persona pictures above a grid of scheme cards. Option B places a target-group panel down the left and lists schemes as a table.</p>
+      <p style="margin:0; font-size:14.5px; color:var(--muted);">Our recommendation: <strong style="color:var(--okink)">Option B</strong>, because this is the page on which people compare schemes, and a table can carry who runs it and whether it is central or state.</p>
+    </div>
+  </div>
+
+  <div class="dec">
+    <span class="dec__id">D3</span>
+    <div>
+      <span class="ask">Decision three &middot; the assistant</span>
+      <p style="margin:0 0 6px;"><strong>Does Samajik Sahayak, the assistant already on the site, also carry the questions?</strong> It would ask the same questions one at a time inside the chat panel.</p>
+      <p style="margin:0; font-size:14.5px; color:var(--muted);">Our recommendation: <strong style="color:var(--okink)">yes, but after the website work</strong> &mdash; it draws on the same scheme records, and building it first would mean building those records twice.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="why">
+  <span class="h2n">Section 02</span>
+  <h2>Why this is being proposed</h2>
+  <p class="deck">The site already has a filter for schemes. It works. The information behind it does not.</p>
+
+  <p>Every scheme published on dosje.gov.in can be tagged with the group it serves, and the schemes page offers that tag as a filter. When we examined the Department&rsquo;s own published records, the tagging was found to be largely absent:</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Group the Department serves</th><th class="num">Schemes that address them</th><th class="num">Schemes tagged so the filter finds them</th></tr></thead>
+      <tbody>
+        <tr><td>Scheduled Castes</td><td class="num">32</td><td class="num" style="color:var(--bad); font-weight:600;">5</td></tr>
+        <tr><td>Other Backward Classes and EBC</td><td class="num">24</td><td class="num" style="color:var(--bad); font-weight:600;">6</td></tr>
+        <tr><td>De-notified, nomadic and semi-nomadic communities</td><td class="num">43</td><td class="num" style="color:var(--bad); font-weight:600;">14</td></tr>
+        <tr><td>Women and girls</td><td class="num">23</td><td class="num" style="color:var(--bad); font-weight:600;">0</td></tr>
+        <tr><td>Voluntary organisations</td><td class="num">12</td><td class="num" style="color:var(--bad); font-weight:600;">0</td></tr>
+        <tr><td>Victims of caste atrocities</td><td class="num">3</td><td class="num" style="color:var(--bad); font-weight:600;">0</td></tr>
+        <tr><td>Persons affected by drugs or alcohol</td><td class="num">3</td><td class="num" style="color:var(--bad); font-weight:600;">0</td></tr>
+        <tr><td>Transgender persons</td><td class="num">2</td><td class="num" style="color:var(--bad); font-weight:600;">0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Two further facts about the same records. <strong>Twenty-seven of the 141 schemes carry no group tag at all</strong>, and can therefore be reached only by someone who already knows the web address. And <strong>only two of the 141 are tagged for more than one group</strong> &mdash; so a Scheduled Caste student must choose between filtering by community, which returns five schemes and not one scholarship among them, or by student, which returns fifty-one with no community narrowing. The two cannot be combined into a truthful answer.</p>
+
+  <div class="note note--info">
+    <span class="note__k">In plain terms</span>
+    <p>A young woman from a Scheduled Caste family, in class 11, looking for help with fees, is served by several schemes of this Department. On the site as it stands today, there is no sequence of clicks that reliably brings her to them.</p>
+  </div>
+
+  <p>This is also a compliance matter. GIGW 3.0, the Government of India&rsquo;s guidelines for government websites, states that its key thrust is <em>&ldquo;the implementation of user-centric information architecture to ease the user journey and provide content as per the user profile&rdquo;</em>. Its checkpoint 21 additionally requires integration with the national scheme-discovery platform, myScheme. Neither is met today.</p>
+</section>
+
+<!-- 03 -->
+<section id="home">
+  <span class="h2n">Section 03 &middot; Mode 1, the website</span>
+  <h2>The homepage</h2>
+  <p class="deck">Decision D1. What the visitor meets first, before they have read anything.</p>
+
+  <div class="opt">
+    <div class="opt__head">
+      <span class="opt__tag">Option A</span>
+      <div>
+        <p class="opt__title">The persona panel that already exists</p>
+        <p class="opt__sub">The blue &ldquo;Explore User Personas&rdquo; panel now on the homepage, beside Recent Documents. It shows one illustrated role at a time &mdash; Student, Government Official &mdash; with arrows to move between them, under the line &ldquo;Choose your role to discover services made for you.&rdquo;</p>
+      </div>
+    </div>
+    <div class="opt__body">
+      <h4>What changes</h4>
+      <p style="font-size:14.5px;">Nothing visually. What changes is what the panel <em>does</em>: choosing a role would take the visitor to the schemes page already filtered to that group. Today it does not do this, and the promise in its own subtitle goes unmet.</p>
+      <div class="grid2">
+        <div class="pro">
+          <h4>Strengths</h4>
+          <ul>
+            <li>Already designed, already built, already on the page &mdash; the cheapest of every option here.</li>
+            <li>The illustrations carry warmth and help visitors who read slowly or read little English.</li>
+            <li>Recognising yourself is easier than describing yourself. Some visitors will never answer a question but will point at a picture.</li>
+            <li>Adds no height to a homepage that already runs to roughly 7,280 pixels.</li>
+          </ul>
+        </div>
+        <div class="con">
+          <h4>Limitations</h4>
+          <ul>
+            <li>Shows one role at a time behind arrows, so the visitor cannot see whether they are represented without clicking through.</li>
+            <li>Only two roles exist today, and one of them is &ldquo;Beneficiary&rdquo; &mdash; the Department&rsquo;s word for everybody, not a group anyone recognises themselves as.</li>
+            <li>It narrows by group and nothing else. It cannot account for stage of life, the kind of help needed, or the State the person lives in.</li>
+            <li>Someone who belongs to two groups has to pick one door and lose the other.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="fit"><b>Best suited to</b> visitors who return, who identify strongly with one group, and who already have some idea of what the Department offers.</div>
+      <div class="facts">
+        <span class="chip c-lo">Build effort &middot; low</span>
+        <span class="chip c-nv">Added page height &middot; none</span>
+        <span class="chip c-md">Needs group tagging on every scheme</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="opt opt--b">
+    <div class="opt__head">
+      <span class="opt__tag">Option B</span>
+      <div>
+        <p class="opt__title">A short guided section that returns a shortlist</p>
+        <p class="opt__sub">A new section headed &ldquo;Find support for you&rdquo;, asking up to five short questions &mdash; who the help is for, which group describes you, stage of life, the kind of help needed, and the State &mdash; then showing the schemes that match, each with what you get, who runs it, and what you will need.</p>
+      </div>
+    </div>
+    <div class="opt__body">
+      <h4>What the visitor sees</h4>
+      <p style="font-size:14.5px;">One question on screen at a time, with a running count of how many schemes still match &mdash; the design shows &ldquo;45&rdquo; falling as answers are given. Every question can be skipped, and skipping widens the answer rather than stopping it. The result is a list headed &ldquo;What you can apply for&rdquo;, each entry ending in a real place to apply.</p>
+      <div class="grid2">
+        <div class="pro">
+          <h4>Strengths</h4>
+          <ul>
+            <li>Accounts for more than group: stage of life, kind of help, and State together, which is how entitlement actually works.</li>
+            <li>Nobody is asked to sign in, and no personal information is collected or stored.</li>
+            <li>The falling count is honest feedback &mdash; the visitor can see the answer narrowing rather than trusting a black box.</li>
+            <li>Names the boundary of the Department: choosing &ldquo;Person with Disability&rdquo; routes immediately and plainly to the Department of Empowerment of Persons with Disabilities, instead of returning nothing.</li>
+            <li>Answers a question no other option answers: <em>what am I actually entitled to look at?</em></li>
+          </ul>
+        </div>
+        <div class="con">
+          <h4>Limitations</h4>
+          <ul>
+            <li>Adds roughly 150 pixels of height to the homepage, before results are shown.</li>
+            <li>Asks about caste on the second question. The wording, and the reason given for asking, need the Department&rsquo;s explicit approval.</li>
+            <li>Requires every scheme to be tagged on four axes before it works at all &mdash; the largest single piece of preparatory work in this note.</li>
+            <li>A visitor who abandons the questions halfway has been given nothing, unless the design keeps a visible way out at every step. It does, but this must be preserved in build.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="fit"><b>Best suited to</b> first-time visitors, and anyone who does not know a scheme by name &mdash; which, on the evidence of the site&rsquo;s own search records, is most people.</div>
+      <div class="facts">
+        <span class="chip c-md">Build effort &middot; medium</span>
+        <span class="chip c-md">Added page height &middot; ~150px</span>
+        <span class="chip c-hi">Needs full four-axis tagging</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note note--rec">
+    <span class="note__k">Recommendation on D1</span>
+    <p><strong>Adopt Option B, and repair Option A rather than remove it.</strong> They are not competitors. Option A serves the visitor who recognises themselves in a picture; Option B serves the one who cannot, and does not know where to start. Option A costs almost nothing to repair, and the repair is required in any case, because a panel that promises to &ldquo;discover services made for you&rdquo; and then does not is worse than no panel at all.</p>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="schemes">
+  <span class="h2n">Section 04 &middot; Mode 1, the website</span>
+  <h2>The schemes page</h2>
+  <p class="deck">Decision D2. Both options filter by target group. They differ in how the results are shown, and that difference matters more than it looks.</p>
+
+  <div class="opt">
+    <div class="opt__head">
+      <span class="opt__tag">Option A</span>
+      <div>
+        <p class="opt__title">Persona strip above a grid of scheme cards</p>
+        <p class="opt__sub">A row of nine illustrated groups across the top &mdash; Marginalised Individuals, Scheduled Caste, DNT and Nomadic Tribes, Safai Karamchari, Senior Citizen, Transgender Person, Drug Rehabilitation, Student, NGO or Organisation. Below it, &ldquo;Active Schemes&rdquo; as three-across picture cards.</p>
+      </div>
+    </div>
+    <div class="opt__body">
+      <div class="grid2">
+        <div class="pro">
+          <h4>Strengths</h4>
+          <ul>
+            <li>All nine groups are visible at once. No arrows, no scrolling to find yourself.</li>
+            <li>The illustrations do real work for visitors with limited literacy, and in a country of many languages a picture travels further than a label.</li>
+            <li>Scheme cards carry an image, which makes the page feel welcoming rather than administrative.</li>
+            <li>Consistent with how the homepage already presents personas, so the visitor meets the same idea twice.</li>
+          </ul>
+        </div>
+        <div class="con">
+          <h4>Limitations</h4>
+          <ul>
+            <li>A card grid fits far fewer schemes per screen. With 141 schemes this means heavy scrolling or heavy pagination.</li>
+            <li>There is little room on a card for the facts that decide whether a person can apply &mdash; who runs it, whether it is central or from a particular State.</li>
+            <li>Comparing two schemes means holding both in memory, because they cannot be seen side by side in a common format.</li>
+            <li>Nine illustrations must be drawn, approved and maintained, and every new group needs another.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="fit"><b>Best suited to</b> browsing &mdash; a visitor who wants to see what exists for their group, without a specific scheme in mind.</div>
+      <div class="facts">
+        <span class="chip c-md">Build effort &middot; medium</span>
+        <span class="chip c-md">Nine illustrations to produce</span>
+        <span class="chip c-md">Fewer schemes visible per screen</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="opt opt--b">
+    <div class="opt__head">
+      <span class="opt__tag">Option B</span>
+      <div>
+        <p class="opt__title">Target-group panel with a scheme table</p>
+        <p class="opt__sub">The same nine groups as a &ldquo;Target Group&rdquo; panel down the left, alongside stage of life and kind of help. Results appear as a table: the scheme, what you get, who runs it, and whether it is central, State or through a corporation.</p>
+      </div>
+    </div>
+    <div class="opt__body">
+      <div class="grid2">
+        <div class="pro">
+          <h4>Strengths</h4>
+          <ul>
+            <li>Filters combine. A Scheduled Caste applicant of working age looking for credit can express all three at once, which Option A cannot do.</li>
+            <li>Carries jurisdiction on every row. Today, State schemes sit in the same list as central ones with nothing to distinguish them, and a citizen cannot tell whether they may apply.</li>
+            <li>Far more schemes visible per screen, and directly comparable because every row is in the same format.</li>
+            <li>A filtered view can be given its own web address, so an officer or a helpline can send a citizen a link that opens already narrowed.</li>
+            <li>Shows a count against each filter, so a combination that would return nothing is visible before it is chosen.</li>
+          </ul>
+        </div>
+        <div class="con">
+          <h4>Limitations</h4>
+          <ul>
+            <li>A table is plainer. It reads as an official record rather than an invitation.</li>
+            <li>Asks the citizen to express their situation in the site&rsquo;s vocabulary, which is a harder demand than pointing at a picture.</li>
+            <li>Needs more care to work well on a small screen, where a left panel has to become something else.</li>
+            <li>Loses the illustrations unless they are retained in the group panel.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="fit"><b>Best suited to</b> deciding &mdash; and to officers, voluntary organisations, helpline staff and journalists, for whom this page is a working tool.</div>
+      <div class="facts">
+        <span class="chip c-md">Build effort &middot; medium</span>
+        <span class="chip c-lo">No new illustrations required</span>
+        <span class="chip c-nv">Shareable filtered links</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note note--rec">
+    <span class="note__k">Recommendation on D2</span>
+    <p><strong>Option B.</strong> The schemes page is where a citizen decides, and deciding needs facts that a picture card has no room for &mdash; above all whether a scheme is central or belongs to another State. If the Department wishes to keep the illustrations, the group panel in Option B can carry the same nine images at the top as a quick-choice row, and still keep the table beneath. That is a small addition, not a separate option.</p>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="bot">
+  <span class="h2n">Section 05 &middot; Mode 2</span>
+  <h2>The assistant</h2>
+  <p class="deck">Decision D3. Samajik Sahayak is already on the site and already offers &ldquo;Which scheme applies to me?&rdquo; &mdash; and then answers in general terms that narrow nothing.</p>
+
+  <div class="opt opt--b">
+    <div class="opt__head">
+      <span class="opt__tag">Mode 2</span>
+      <div>
+        <p class="opt__title">The same questions, asked one at a time in conversation</p>
+        <p class="opt__sub">The assistant asks the five questions as chat messages with tappable answers, reports the count after each one (&ldquo;That leaves 8&rdquo;), and ends by naming the schemes that list the person as their target group, with a way to open each.</p>
+      </div>
+    </div>
+    <div class="opt__body">
+      <h4>The rule it works under</h4>
+      <p style="font-size:14.5px;">The assistant does not rule on entitlement. In the design it says: <em>&ldquo;8 schemes list your organisation as their target group. Whether an application succeeds is the sanctioning authority&rsquo;s decision, not mine.&rdquo;</em> This is deliberate and must not be softened in build. The assistant routes; it does not decide.</p>
+      <div class="grid2">
+        <div class="pro">
+          <h4>Strengths</h4>
+          <ul>
+            <li>Reachable from every page, including a page that was not found and a search that returned nothing &mdash; the only option here that can rescue a dead end.</li>
+            <li>One question per screen suits a mobile telephone, which is how most citizens will arrive.</li>
+            <li>Can hold the same conversation in Hindi and other languages without a second page design.</li>
+            <li>Already built and already approved for the estate; only the scheme branch is new work.</li>
+          </ul>
+        </div>
+        <div class="con">
+          <h4>Limitations</h4>
+          <ul>
+            <li>It cannot be discovered. A small button in the corner is found by people already looking for help; it does nothing for a visitor scrolling past.</li>
+            <li>On a small screen the panel covers the page beneath it.</li>
+            <li>A conversation is harder for screen-reader users to review than a page, so the same content must exist on the website regardless.</li>
+            <li>If it is built with its own private copy of the scheme records, the Department ends up maintaining two catalogues that will drift apart.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="fit"><b>Best suited to</b> mobile visitors, people who have hit a dead end, and anyone more comfortable being asked than filling in a form. It is a further way in to the same records &mdash; not a substitute for the website work.</div>
+      <div class="facts">
+        <span class="chip c-lo">Build effort &middot; low, once the records exist</span>
+        <span class="chip c-nv">Component already in service</span>
+        <span class="chip c-hi">Must not be built first</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note note--rec">
+    <span class="note__k">Recommendation on D3</span>
+    <p><strong>Yes, and after the website work.</strong> The assistant draws on exactly the same scheme records as the homepage section and the schemes page. Built afterwards it is a small addition. Built first it forces those records to be created twice, in two places, with no guarantee they agree.</p>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="combine">
+  <span class="h2n">Section 06</span>
+  <h2>How the options combine</h2>
+  <p class="deck">The three decisions are independent. This is the full set of choices, not a single either-or.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Course of action</th><th>Homepage</th><th>Schemes page</th><th>Assistant</th><th>Effect on the citizen</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Minimum credible</strong></td>
+          <td>Repair Option A</td>
+          <td>Option B</td>
+          <td>Later</td>
+          <td>The persona panel finally delivers what it promises, and the schemes page becomes usable. Cheapest route to a real improvement.</td>
+        </tr>
+        <tr style="background:var(--ok50)">
+          <td><strong>Recommended</strong></td>
+          <td>Option B, Option A repaired</td>
+          <td>Option B</td>
+          <td>Phase two</td>
+          <td>Two ways in from the homepage for two kinds of visitor, one page that can actually be filtered, and a conversational route added once the records exist.</td>
+        </tr>
+        <tr>
+          <td><strong>Fullest</strong></td>
+          <td>Option B, Option A repaired</td>
+          <td>Option B with the illustrations retained above the panel</td>
+          <td>Phase two</td>
+          <td>As above, and the schemes page keeps the warmth of the pictures without losing the facts of the table.</td>
+        </tr>
+        <tr>
+          <td><strong>Not advised</strong></td>
+          <td>Option B only</td>
+          <td>Option A only</td>
+          <td>Immediately</td>
+          <td>Three separate pieces of work building three separate copies of the same scheme information, with nothing to keep them in step.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="depends">
+  <span class="h2n">Section 07</span>
+  <h2>The one thing every option depends on</h2>
+  <p class="deck">Whatever is decided, the same preparatory work is required first, and it is not a design task.</p>
+
+  <p>Each of the 141 schemes must carry structured information about who it is for. Not a paragraph of prose &mdash; a set of recorded values, and more than one where more than one applies:</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Recorded against every scheme</th><th>Values</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Community or situation</strong></td><td>Scheduled Caste &middot; OBC or EBC &middot; DNT, nomadic or semi-nomadic &middot; sanitation and waste workers &middot; women and girls &middot; senior citizens &middot; transgender persons &middot; persons in destitution &middot; persons affected by drugs &middot; victims of atrocities &middot; voluntary organisations</td></tr>
+        <tr><td><strong>Stage of life</strong></td><td>In school &middot; in college or beyond &middot; working age &middot; senior citizen &middot; any</td></tr>
+        <tr><td><strong>Kind of help</strong></td><td>Education and fees &middot; money to work with &middot; a home &middot; health and care &middot; safety and legal help &middot; skills and a job</td></tr>
+        <tr><td><strong>Jurisdiction</strong></td><td>Central &middot; a named State &middot; through a corporation</td></tr>
+        <tr><td><strong>How to apply</strong></td><td>The portal, or the office, and the documents required</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note note--warn">
+    <span class="note__k">The point that decides everything else</span>
+    <p>A scheme must be findable under <em>every</em> value that applies to it, at once. A scholarship for Scheduled Caste girls in class 11 has to appear under Scheduled Caste, under women and girls, under school students and under education &mdash; simultaneously. Today only two schemes out of 141 carry more than one tag, which is precisely why the existing filter cannot give a truthful answer. <strong>Every option in this note is a way of looking at this information. None of them can work before it exists.</strong></p>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="safe">
+  <span class="h2n">Section 08</span>
+  <h2>Safeguards built into all of the options</h2>
+  <p class="deck">Five commitments that hold whichever decisions are taken.</p>
+
+  <h3>Nothing here decides a case</h3>
+  <p>No screen and no message states that a person is eligible. The wording throughout is that a scheme <em>lists</em> the person as its target group, and that the sanctioning authority decides. This distinction is not cosmetic: a citizen who acts on a wrong assurance from a government website bears a real cost, and the Department would bear the complaint.</p>
+
+  <h3>The boundary of the Department is stated, not hidden</h3>
+  <p>Persons with disabilities are served by the Department of Empowerment of Persons with Disabilities, a separate department of this Ministry. Anyone who indicates a disability is told so plainly and directed to depwd.gov.in, rather than being shown an empty result. A confident redirection reads as competence; a blank page reads as a broken website.</p>
+
+  <h3>No personal information is collected</h3>
+  <p>No sign-in, no Aadhaar, no telephone number, no name, no income figure. Community and stage of life are chosen from fixed options and are never typed or stored. The questions exist to narrow a public list, nothing more.</p>
+
+  <h3>Leaving the site is always announced</h3>
+  <p>Many schemes are applied for elsewhere &mdash; the National Scholarship Portal, e-Anudaan, a State corporation. No button hands a citizen to another site silently. One screen first names where they are going, what will be asked for there, and offers a way back. Where a scheme has no online route at all, that is said plainly, with the office and the papers to carry.</p>
+
+  <h3>Accessibility and standards</h3>
+  <p>All screens are to meet WCAG 2.2 AA and the Government of India&rsquo;s GIGW 3.0 guidelines, including keyboard operation, visible focus and screen-reader order. Because a conversation is harder to review with a screen reader than a page, every answer the assistant can give also exists on the website itself.</p>
+</section>
+
+<!-- 09 -->
+<section id="need">
+  <span class="h2n">Section 09</span>
+  <h2>What we need from the Department to proceed</h2>
+  <p class="deck">Design and build cannot supply any of the following.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th style="width:34%">What is needed</th><th>Why</th><th style="width:20%">From whom</th></tr></thead>
+      <tbody>
+        <tr><td><strong>The three decisions</strong> D1, D2, D3</td><td>Everything downstream follows from them.</td><td>Ministry leadership</td></tr>
+        <tr><td><strong>Confirmation of the group tags on each scheme</strong></td><td>The tagging is the whole foundation, and only the division that administers a scheme can confirm who it is for.</td><td>Each scheme-owning division</td></tr>
+        <tr><td><strong>Approval of the wording of the community question</strong></td><td>It asks a citizen to state their caste category. The wording, and the reason shown for asking, should carry the Department&rsquo;s approval, not a designer&rsquo;s.</td><td>Ministry leadership</td></tr>
+        <tr><td><strong>A ruling on scope: DoSJE only, or both departments</strong></td><td>The schemes page design currently shows DEPwD schemes in the list, while the guided questions route persons with disabilities away to DEPwD. One of the two must change. See Section 11.</td><td>Ministry leadership</td></tr>
+        <tr><td><strong>Verified helpline numbers and office contacts</strong></td><td>Only Elderline 14567 is treated as confirmed in the prototypes. No other number should be published from a design file.</td><td>Each division</td></tr>
+        <tr><td><strong>A nodal officer for the scheme records</strong></td><td>Tagging is not a one-time task. Without a named owner and a review cycle, the records will decay exactly as they have.</td><td>Department</td></tr>
+        <tr><td><strong>Consent to publish the scheme data as an open interface</strong></td><td>GIGW 3.0 checkpoint 21 requires integration with myScheme, the national scheme-discovery platform.</td><td>Department</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="time">
+  <span class="h2n">Section 10</span>
+  <h2>Indicative timeline</h2>
+  <p class="deck">Working durations, subject to the Department&rsquo;s decisions and to how quickly scheme tagging can be confirmed by the divisions.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th style="width:22%">Stage</th><th>What happens</th><th style="width:16%">Indicative</th><th style="width:16%">Depends on</th></tr></thead>
+      <tbody>
+        <tr><td><strong>0 &middot; Repairs</strong></td><td>Correct the defects already visible to citizens: empty scheme pages, a leftover control in the page footer, two spelling errors, pages that report success when they were not found, and the missing accessibility statement.</td><td>2&ndash;3 weeks</td><td>Nothing</td></tr>
+        <tr style="background:var(--warn50)"><td><strong>1 &middot; Scheme records</strong></td><td>Agree the recorded values, then tag all 141 schemes and have each division confirm its own. This is the critical path.</td><td>4&ndash;8 weeks</td><td>D1&ndash;D3, division sign-off</td></tr>
+        <tr><td><strong>2 &middot; Schemes page</strong></td><td>Build the chosen schemes-page option, with jurisdiction on every scheme and shareable filtered links.</td><td>4&ndash;6 weeks</td><td>Stage 1</td></tr>
+        <tr><td><strong>3 &middot; Homepage</strong></td><td>Build the chosen homepage option and repair the persona panel so that choosing a group actually filters.</td><td>3&ndash;4 weeks</td><td>Stage 1</td></tr>
+        <tr><td><strong>4 &middot; Assistant</strong></td><td>Extend Samajik Sahayak to ask the same questions, drawing on the same records.</td><td>3&ndash;4 weeks</td><td>Stages 1&ndash;3</td></tr>
+        <tr><td><strong>5 &middot; Testing and standards</strong></td><td>Accessibility audit, and testing with citizens drawn from the groups the Department serves, in Hindi and at least one other language, before public release.</td><td>2&ndash;3 weeks</td><td>Stages 2&ndash;4</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="font-size:14.5px; color:var(--muted);">Stages 2 and 3 can run alongside each other. Stage 1 cannot be shortened by adding people to design or build, because the work is confirmation by the divisions that own the schemes.</p>
+</section>
+
+<!-- 11 -->
+<section id="fix">
+  <span class="h2n">Section 11</span>
+  <h2>Two corrections needed before this is circulated</h2>
+  <p class="deck">Both were found in the design file itself. Neither is a design fault, but both would mislead a reader.</p>
+
+  <div class="note note--warn">
+    <span class="note__k">Correction one &middot; the notes beside the designs are from another exercise</span>
+    <p>Every &ldquo;Strengths and Limitations&rdquo; block in the Service Discovery frame has been carried over from an earlier design exercise about a <em>login screen</em>. They refer to portals, to Citizen and Admin roles, to labels reading &ldquo;Benefits &amp; helpline&rdquo; and &ldquo;Approvals &amp; MIS&rdquo;, and to a split-screen sign-in layout. One states that &ldquo;Option B is the recommended direction&rdquo; for reasons that have nothing to do with finding a scheme.</p>
+    <p style="margin-top:10px;">None of it describes what is drawn above it. Sections 03 to 05 of this note replace those blocks. <strong>The design file should be updated to match before it is shown to anyone outside the project team</strong>, or the notes removed from the frame.</p>
+  </div>
+
+  <div class="note note--warn">
+    <span class="note__k">Correction two &middot; the designs disagree about DEPwD</span>
+    <p>On the schemes page, the scheme cards include entries for persons with disabilities, marked as run by DEPwD. In the homepage questions, choosing &ldquo;Person with Disability&rdquo; is described as &ldquo;Handled by a different department&rdquo; and routes the citizen away.</p>
+    <p style="margin-top:10px;">Both are defensible; they cannot both be built. Either this is a catalogue of the whole Ministry, in which case the routing message is wrong and DEPwD must be a partner in the tagging, or it is a catalogue of this Department, in which case the DEPwD cards should not appear. <strong>This is a decision for the Ministry, and it is listed in Section 09.</strong></p>
+  </div>
+</section>
+
+<!-- 12 -->
+<section id="gloss">
+  <span class="h2n">Section 12</span>
+  <h2>Glossary</h2>
+  <div class="scroller">
+    <table>
+      <thead><tr><th style="width:26%">Term</th><th>Meaning as used in this note</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Persona</strong></td><td>A group of citizens the Department serves, described as they would describe themselves &mdash; not an administrative category.</td></tr>
+        <tr><td><strong>Target group tag</strong></td><td>A recorded value on a scheme saying which group or groups it is meant for. What the schemes filter reads.</td></tr>
+        <tr><td><strong>Jurisdiction</strong></td><td>Whether a scheme is central, belongs to a particular State, or is delivered through a corporation such as NSFDC, NBCFDC or NSKFDC.</td></tr>
+        <tr><td><strong>Filtered link</strong></td><td>A web address that opens the schemes page already narrowed, so an officer or helpline can send it to a citizen directly.</td></tr>
+        <tr><td><strong>Samajik Sahayak</strong></td><td>The assistant already present on dosje.gov.in, shown as a small button in the lower corner of every page it is switched on for.</td></tr>
+        <tr><td><strong>DEPwD</strong></td><td>Department of Empowerment of Persons with Disabilities &mdash; the other department of this Ministry, at depwd.gov.in.</td></tr>
+        <tr><td><strong>GIGW 3.0</strong></td><td>Guidelines for Indian Government Websites and Apps, issued by MeitY with STQC and CERT-In. Compliance is expected of all government websites.</td></tr>
+        <tr><td><strong>WCAG 2.2 AA</strong></td><td>The international accessibility standard GIGW is built on, covering use without a mouse, without sight, and with limited vision.</td></tr>
+        <tr><td><strong>myScheme</strong></td><td>The Government of India&rsquo;s national scheme-discovery platform. GIGW 3.0 checkpoint 21 requires integration with it.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Sources.</strong> Designs: the &ldquo;Service Discovery&rdquo; frame in the MoSJE Handoff library. Scheme counts and tagging figures: the Department&rsquo;s own published content, examined August 2026. Standards: GIGW 3.0. Live-site behaviour verified 20 August 2026.</p>
+  <p>Figures describing scheme tagging are drawn from an automated examination of published records and should be read as close estimates, not a hand-audited census. They understate rather than overstate the gap.</p>
+</footer>
+
+</main>
+</div>
+</div>

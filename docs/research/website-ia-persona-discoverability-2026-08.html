@@ -1,0 +1,704 @@
+<title>Finding What You're Entitled To</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+Mono:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+
+<style>
+:root{
+  --ground:#F5F7FB; --surface:#FFFFFF; --surface-2:#EEF1F7;
+  --ink:#111A2E; --body:#2C3651; --muted:#5D6884; --faint:#8B95AE;
+  --rule:#DCE1EC; --rule-strong:#C3CBDB;
+  --navy:#162F6A; --navy-soft:#E5EAF6;
+  --accent:#0373DF; --accent-soft:#E1EFFC;
+  --crit:#9E2A2B; --crit-soft:#F7E7E7;
+  --warn:#B4530C; --warn-soft:#FBEDE1;
+  --good:#166534; --good-soft:#E3F0E7;
+  --shadow:0 1px 2px rgba(17,26,46,.05), 0 8px 24px -14px rgba(17,26,46,.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A1020; --surface:#111A2D; --surface-2:#18233A;
+    --ink:#E8ECF6; --body:#C4CDE0; --muted:#96A2BE; --faint:#74809C;
+    --rule:#243050; --rule-strong:#33415F;
+    --navy:#8CA8EC; --navy-soft:#1A2745;
+    --accent:#58A9F2; --accent-soft:#122840;
+    --crit:#E97A7E; --crit-soft:#2E1A1C;
+    --warn:#E29958; --warn-soft:#2B2016;
+    --good:#7FC69A; --good-soft:#152719;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A1020; --surface:#111A2D; --surface-2:#18233A;
+  --ink:#E8ECF6; --body:#C4CDE0; --muted:#96A2BE; --faint:#74809C;
+  --rule:#243050; --rule-strong:#33415F;
+  --navy:#8CA8EC; --navy-soft:#1A2745;
+  --accent:#58A9F2; --accent-soft:#122840;
+  --crit:#E97A7E; --crit-soft:#2E1A1C;
+  --warn:#E29958; --warn-soft:#2B2016;
+  --good:#7FC69A; --good-soft:#152719;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--body);
+  font-family:"Noto Sans","Helvetica Neue",Arial,sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent); text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--accent) 35%, transparent)}
+a:hover{border-bottom-color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+
+/* ---------- shell ---------- */
+.shell{max-width:1220px; margin:0 auto; padding:0 24px 96px}
+.layout{display:grid; grid-template-columns:1fr; gap:0}
+@media(min-width:1040px){
+  .layout{grid-template-columns:216px minmax(0,1fr); gap:56px; align-items:start}
+}
+.rail{display:none}
+@media(min-width:1040px){
+  .rail{display:block; position:sticky; top:32px; padding-top:8px}
+}
+.rail ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px}
+.rail a{
+  display:grid; grid-template-columns:22px 1fr; gap:8px; align-items:baseline;
+  padding:6px 8px; border:0; border-radius:5px; color:var(--muted);
+  font-size:13px; line-height:1.35;
+}
+.rail a:hover{background:var(--surface-2); color:var(--ink)}
+.rail .n{font-family:"Noto Sans Mono",monospace; font-size:11px; color:var(--faint); font-variant-numeric:tabular-nums}
+.rail h6{
+  margin:0 0 10px; padding-left:8px; font-family:"Noto Sans Mono",monospace;
+  font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); font-weight:500;
+}
+
+/* ---------- masthead ---------- */
+.mast{padding:56px 0 34px; border-bottom:2px solid var(--ink)}
+.eyebrow{
+  font-family:"Noto Sans Mono",monospace; font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--navy); font-weight:500; margin:0 0 20px;
+}
+h1{
+  font-family:"Noto Serif",Georgia,serif; font-weight:700; color:var(--ink);
+  font-size:clamp(2.3rem,6vw,3.7rem); line-height:1.06; letter-spacing:-.02em;
+  margin:0 0 18px; text-wrap:balance; max-width:16ch;
+}
+.standfirst{
+  font-family:"Noto Serif",Georgia,serif; font-size:clamp(1.05rem,2.2vw,1.28rem);
+  line-height:1.5; color:var(--body); max-width:56ch; margin:0 0 28px;
+}
+.meta{
+  display:flex; flex-wrap:wrap; gap:8px 28px; font-family:"Noto Sans Mono",monospace;
+  font-size:11.5px; color:var(--muted); letter-spacing:.02em;
+}
+.meta b{color:var(--ink); font-weight:500}
+
+/* ---------- sections ---------- */
+section{padding-top:60px; scroll-margin-top:20px}
+h2{
+  font-family:"Noto Serif",Georgia,serif; font-weight:700; color:var(--ink);
+  font-size:clamp(1.5rem,3.2vw,2rem); line-height:1.18; letter-spacing:-.015em;
+  margin:0 0 6px; text-wrap:balance;
+}
+.h2num{
+  display:block; font-family:"Noto Sans Mono",monospace; font-size:11px;
+  letter-spacing:.16em; color:var(--navy); text-transform:uppercase; margin-bottom:10px; font-weight:500;
+}
+.deck{max-width:64ch; color:var(--muted); margin:0 0 30px; font-size:15.5px}
+h3{
+  font-family:"Noto Sans",sans-serif; font-weight:600; color:var(--ink);
+  font-size:1.06rem; line-height:1.35; margin:34px 0 10px; letter-spacing:-.005em;
+}
+p{max-width:68ch; margin:0 0 16px}
+ul,ol{max-width:68ch; padding-left:20px; margin:0 0 16px}
+li{margin-bottom:7px}
+strong{color:var(--ink); font-weight:600}
+em{color:var(--body)}
+code,.mono{font-family:"Noto Sans Mono",monospace; font-size:.86em; background:var(--surface-2); padding:1px 5px; border-radius:3px; color:var(--ink)}
+
+/* ---------- tables ---------- */
+.scroller{overflow-x:auto; margin:0 0 24px; border:1px solid var(--rule); border-radius:8px; background:var(--surface); box-shadow:var(--shadow)}
+table{border-collapse:collapse; width:100%; min-width:520px; font-size:14px}
+th,td{text-align:left; padding:11px 16px; border-bottom:1px solid var(--rule); vertical-align:top}
+thead th{
+  background:var(--surface-2); color:var(--ink); font-weight:600; font-size:11.5px;
+  letter-spacing:.07em; text-transform:uppercase; white-space:nowrap;
+  border-bottom:1px solid var(--rule-strong); position:sticky; top:0;
+}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right; font-family:"Noto Sans Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+tr.flag td{background:var(--crit-soft)}
+tr.flag td:first-child{box-shadow:inset 3px 0 0 var(--crit)}
+.gapneg{color:var(--crit); font-weight:600}
+.gapok{color:var(--muted)}
+
+/* coverage bar */
+.bar{display:block; height:7px; border-radius:4px; background:var(--rule); overflow:hidden; min-width:104px; margin-top:5px}
+.bar span{display:block; height:100%; background:var(--accent); border-radius:4px}
+.barwrap{min-width:150px}
+.barlab{font-family:"Noto Sans Mono",monospace; font-size:10.5px; color:var(--muted); letter-spacing:.03em}
+
+/* ---------- finding blocks ---------- */
+.finding{
+  background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--crit);
+  border-radius:0 8px 8px 0; padding:20px 24px; margin:0 0 16px; box-shadow:var(--shadow);
+}
+.finding.moderate{border-left-color:var(--warn)}
+.finding h3{margin:0 0 8px; display:flex; gap:11px; align-items:baseline; flex-wrap:wrap}
+.tag{
+  font-family:"Noto Sans Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.06em;
+  color:var(--crit); background:var(--crit-soft); padding:2px 7px; border-radius:4px; flex:0 0 auto;
+}
+.finding.moderate .tag{color:var(--warn); background:var(--warn-soft)}
+.finding p:last-child,.finding ul:last-child{margin-bottom:0}
+.ev{
+  border-left:2px solid var(--rule-strong); padding-left:14px; margin:14px 0;
+  font-size:14.5px; color:var(--muted);
+}
+.ev b{color:var(--ink)}
+
+/* ---------- recommendation blocks ---------- */
+.rec{
+  background:var(--surface); border:1px solid var(--rule); border-radius:8px;
+  padding:22px 24px; margin:0 0 16px; box-shadow:var(--shadow);
+}
+.rec h3{margin:0 0 4px; font-size:1.08rem}
+.rec .rid{
+  font-family:"Noto Sans Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.06em;
+  color:var(--navy); background:var(--navy-soft); padding:2px 7px; border-radius:4px;
+}
+.closes{
+  font-family:"Noto Sans Mono",monospace; font-size:11px; color:var(--muted);
+  letter-spacing:.04em; margin:0 0 14px;
+}
+.closes b{color:var(--crit); font-weight:700}
+.rec p:last-child,.rec ul:last-child,.rec .scroller:last-child{margin-bottom:0}
+
+/* ---------- journeys ---------- */
+.journey{background:var(--surface); border:1px solid var(--rule); border-radius:8px; padding:22px 24px; margin:0 0 16px; box-shadow:var(--shadow)}
+.journey h3{margin:0 0 14px}
+.ba{display:grid; gap:18px}
+@media(min-width:760px){.ba{grid-template-columns:1fr 1fr; gap:28px}}
+.ba > div{min-width:0}
+.balab{
+  font-family:"Noto Sans Mono",monospace; font-size:10.5px; letter-spacing:.14em;
+  text-transform:uppercase; font-weight:700; margin:0 0 8px; display:block;
+}
+.before .balab{color:var(--crit)}
+.after .balab{color:var(--good)}
+.ba p{font-size:14.5px; margin-bottom:10px; max-width:none}
+.score{font-family:"Noto Sans Mono",monospace; font-size:12px; color:var(--ink); letter-spacing:.02em}
+
+/* ---------- chips ---------- */
+.chip{
+  display:inline-block; font-family:"Noto Sans Mono",monospace; font-size:10.5px;
+  letter-spacing:.06em; text-transform:uppercase; font-weight:700;
+  padding:2px 7px; border-radius:4px; white-space:nowrap;
+}
+.c-hi{color:var(--crit); background:var(--crit-soft)}
+.c-md{color:var(--warn); background:var(--warn-soft)}
+.c-lo{color:var(--good); background:var(--good-soft)}
+.c-nv{color:var(--navy); background:var(--navy-soft)}
+
+/* ---------- callout ---------- */
+.callout{
+  background:var(--navy-soft); border:1px solid color-mix(in srgb, var(--navy) 22%, transparent);
+  border-radius:8px; padding:20px 24px; margin:24px 0;
+}
+.callout p{margin-bottom:0; max-width:62ch}
+.callout .balab{color:var(--navy)}
+
+/* ---------- footer ---------- */
+footer{margin-top:76px; padding-top:26px; border-top:1px solid var(--rule); color:var(--muted); font-size:13.5px}
+footer ul{padding-left:18px}
+</style>
+
+<div class="shell">
+<div class="layout">
+
+<nav class="rail" aria-label="Contents">
+  <h6>Contents</h6>
+  <ol>
+    <li><a href="#scope"><span class="n">00</span><span>Scope &amp; method</span></a></li>
+    <li><a href="#personas"><span class="n">01</span><span>Personas &amp; offerings</span></a></li>
+    <li><a href="#benchmarks"><span class="n">02</span><span>Benchmarks</span></a></li>
+    <li><a href="#diagnosis"><span class="n">03</span><span>Diagnosis</span></a></li>
+    <li><a href="#recs"><span class="n">04</span><span>Recommendations</span></a></li>
+    <li><a href="#journeys"><span class="n">05</span><span>Journeys</span></a></li>
+    <li><a href="#roadmap"><span class="n">06</span><span>Roadmap</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<header class="mast">
+  <p class="eyebrow">Information architecture review &#183; MoSJE</p>
+  <h1>Finding What You're Entitled To</h1>
+  <p class="standfirst">The Department of Social Justice &amp; Empowerment publishes 141 schemes. Its scheme filter can find five of the thirty-two that serve Scheduled Castes, and none of the twenty-three that serve women and girls. The filter is not broken. The data behind it was never populated.</p>
+  <div class="meta">
+    <span><b>Sites</b> dosje.gov.in &#183; socialjustice.gov.in</span>
+    <span><b>Analysed</b> 20 August 2026</span>
+    <span><b>Status</b> Draft for review</span>
+  </div>
+</header>
+
+<!-- 00 -->
+<section id="scope">
+  <span class="h2num">Section 00</span>
+  <h2>Scope, method and limits</h2>
+  <p class="deck">Two ministry websites are live at once, with different navigation, partly different content, and no canonical relationship between them.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Site</th><th>What it is</th><th>State on 20 Aug 2026</th></tr></thead>
+      <tbody>
+        <tr><td><code>www.dosje.gov.in</code></td><td>&#8220;SAMAVESH&#8221; &#8212; the unified ministry site. WordPress. Tagline: <em>&#8220;Single Access Mechanism for All Verticals of Empowerment &amp; Social Harmony&#8221;</em></td><td>Live, marked <strong>BETA</strong> in the masthead. Last modified 2026-08-20</td></tr>
+        <tr><td><code>socialjustice.gov.in</code></td><td>The legacy DoSJE site, built and hosted by NIC</td><td>Live in parallel, different navigation skeleton, partly different content</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <span class="balab">A structural fact that shapes everything below</span>
+    <p>MoSJE is a ministry with <strong>two</strong> departments: DoSJE (this site) and the <strong>Department of Empowerment of Persons with Disabilities</strong> at <code>depwd.gov.in</code>. Persons with disabilities are served by the sibling department. Neither site tells them so.</p>
+  </div>
+
+  <h3>Method</h3>
+  <ol>
+    <li>Live fetch and parse of both homepages, the schemes catalogue, a persona page, and two site searches (<code>?s=SURAJ</code>, <code>?s=disability</code>).</li>
+    <li>Quantitative analysis of the ministry's own content export held in this repository &#8212; <strong>141 scheme records, 175 organisation pages, 1,624 documents, 305 tenders, 137 vacancies</strong> (manifest generated 2026-06-13).</li>
+    <li>Benchmark analysis of three comparable Government of India properties, plus one international reference.</li>
+    <li>Cross-reference against GIGW 3.0, DBIM 3.0 and WCAG 2.2 AA.</li>
+  </ol>
+
+  <h3>Limits, stated plainly</h3>
+  <ul>
+    <li>The content export is dated 2026-06-13. Every claim about navigation, facets, persona pages and search behaviour was <strong>re-verified live on 2026-08-20</strong>; claims about the 141 records come from the export.</li>
+    <li>Persona coverage in Section 01 comes from keyword classification over each record's title and body. It is an order-of-magnitude measure, and it will slightly <em>over</em>-count &#8212; which means the gaps it reveals are, if anything, understated.</li>
+    <li><strong>No user research was conducted.</strong> Personas are derived from the constituencies the department actually serves, not from interviews. Recommendations should be validated with those constituencies before the finder ships.</li>
+  </ul>
+</section>
+
+<!-- 01 -->
+<section id="personas">
+  <span class="h2num">Section 01</span>
+  <h2>Personas and offerings</h2>
+  <p class="deck">Fifteen groups arrive at this site. The site recognises two of them, and calls one of those two &#8220;Beneficiary&#8221;.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th style="width:52px">#</th><th>Persona</th><th>What they come for</th></tr></thead>
+      <tbody>
+        <tr><td class="num">P1</td><td><strong>Scheduled Caste households and students</strong></td><td>Scholarships, hostels, loans, land and livelihood under PM-AJAY, protection under the PoA Act</td></tr>
+        <tr><td class="num">P2</td><td><strong>OBC / EBC households and students</strong></td><td>PM-YASASVI, hostels, NF-OBC fellowship, credit through NBCFDC</td></tr>
+        <tr><td class="num">P3</td><td><strong>DNT / VJNT / NT-SNT communities</strong></td><td>SEED &#8212; education, health, housing, livelihood; DWBDNC</td></tr>
+        <tr><td class="num">P4</td><td><strong>Safai karamcharis, sanitation and waste workers</strong></td><td>NAMASTE, SRMS, NSKFDC credit, Swachhta Udyami Yojana, scholarships for dependants</td></tr>
+        <tr><td class="num">P5</td><td><strong>Senior citizens and their family carers</strong></td><td>AVYAY, Rashtriya Vayoshri Yojana, IPSrC, Elderline 14567</td></tr>
+        <tr><td class="num">P6</td><td><strong>Transgender persons</strong></td><td>Identity certificate, shelter, skilling, National Portal for Transgender Persons</td></tr>
+        <tr><td class="num">P7</td><td><strong>Persons in destitution or begging</strong></td><td>Shelter, rehabilitation and skilling under SMILE</td></tr>
+        <tr><td class="num">P8</td><td><strong>Persons affected by substance use, and families</strong></td><td>De-addiction centres, NMBA, helpline</td></tr>
+        <tr><td class="num">P9</td><td><strong>Victims of caste atrocities</strong></td><td>Relief, legal aid, NHAA helpline</td></tr>
+        <tr><td class="num">P10</td><td><strong>Women and girls within all the above</strong></td><td>Mahila Samridhi Yojana, Mahila Adhikarita Yojana, girls' scholarships</td></tr>
+        <tr class="flag"><td class="num">P11</td><td><strong>Persons with disabilities</strong><br><span class="barlab">Served by DEPwD &#8212; but they arrive here</span></td><td>Signposting they currently do not get</td></tr>
+        <tr><td class="num">P12</td><td><strong>NGOs and voluntary organisations</strong></td><td>Grant-in-aid, e-Anudaan, screening and blacklist rules</td></tr>
+        <tr><td class="num">P13</td><td><strong>State officials and channelising agencies</strong></td><td>Circulars, guidelines, portals, fund releases</td></tr>
+        <tr><td class="num">P14</td><td><strong>Researchers, journalists, Parliament</strong></td><td>Annual reports, studies, statistics, RTI</td></tr>
+        <tr><td class="num">P15</td><td><strong>Job seekers and vendors</strong></td><td>Vacancies, tenders</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>The coverage matrix</h3>
+  <p>For each persona: how many of the 141 scheme records actually address them, against how many are <strong>tagged</strong> so the site's own <em>Target Group</em> filter can return them.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Persona</th><th class="num">Addressed</th><th class="num">Findable</th><th class="barwrap">Findable share</th><th class="num">Gap</th></tr></thead>
+      <tbody>
+        <tr><td>Students / learners</td><td class="num">64</td><td class="num">51</td><td class="barwrap"><span class="bar"><span style="width:80%"></span></span><span class="barlab">80%</span></td><td class="num gapneg">&#8722;13</td></tr>
+        <tr><td>DNT / VJNT / NT-SNT</td><td class="num">43</td><td class="num">14</td><td class="barwrap"><span class="bar"><span style="width:33%"></span></span><span class="barlab">33%</span></td><td class="num gapneg">&#8722;29</td></tr>
+        <tr class="flag"><td><strong>Scheduled Castes</strong></td><td class="num">32</td><td class="num">5</td><td class="barwrap"><span class="bar"><span style="width:16%"></span></span><span class="barlab">16%</span></td><td class="num gapneg">&#8722;27</td></tr>
+        <tr><td>OBC / EBC</td><td class="num">24</td><td class="num">6</td><td class="barwrap"><span class="bar"><span style="width:25%"></span></span><span class="barlab">25%</span></td><td class="num gapneg">&#8722;18</td></tr>
+        <tr class="flag"><td><strong>Women and girls</strong></td><td class="num">23</td><td class="num">0</td><td class="barwrap"><span class="bar"><span style="width:0%"></span></span><span class="barlab">0%</span></td><td class="num gapneg">&#8722;23</td></tr>
+        <tr><td>Entrepreneurs / self-employed</td><td class="num">23</td><td class="num">5</td><td class="barwrap"><span class="bar"><span style="width:22%"></span></span><span class="barlab">22%</span></td><td class="num gapneg">&#8722;18</td></tr>
+        <tr><td>Safai karamcharis / sanitation workers</td><td class="num">19</td><td class="num">18</td><td class="barwrap"><span class="bar"><span style="width:95%"></span></span><span class="barlab">95%</span></td><td class="num gapok">&#8722;1</td></tr>
+        <tr class="flag"><td><strong>NGOs / voluntary organisations</strong></td><td class="num">12</td><td class="num">0</td><td class="barwrap"><span class="bar"><span style="width:0%"></span></span><span class="barlab">0%</span></td><td class="num gapneg">&#8722;12</td></tr>
+        <tr><td>Senior citizens</td><td class="num">11</td><td class="num">9</td><td class="barwrap"><span class="bar"><span style="width:82%"></span></span><span class="barlab">82%</span></td><td class="num gapok">&#8722;2</td></tr>
+        <tr class="flag"><td><strong>Persons with disabilities</strong></td><td class="num">10</td><td class="num">0</td><td class="barwrap"><span class="bar"><span style="width:0%"></span></span><span class="barlab">0%</span></td><td class="num gapneg">&#8722;10</td></tr>
+        <tr class="flag"><td><strong>Victims of atrocities</strong></td><td class="num">3</td><td class="num">0</td><td class="barwrap"><span class="bar"><span style="width:0%"></span></span><span class="barlab">0%</span></td><td class="num gapneg">&#8722;3</td></tr>
+        <tr class="flag"><td><strong>Persons affected by substance use</strong></td><td class="num">3</td><td class="num">0</td><td class="barwrap"><span class="bar"><span style="width:0%"></span></span><span class="barlab">0%</span></td><td class="num gapneg">&#8722;3</td></tr>
+        <tr class="flag"><td><strong>Transgender persons</strong></td><td class="num">2</td><td class="num">0</td><td class="barwrap"><span class="bar"><span style="width:0%"></span></span><span class="barlab">0%</span></td><td class="num gapneg">&#8722;2</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Three further facts about the same data:</p>
+  <ul>
+    <li><strong>27 of 141</strong> records carry no target group at all. <strong>13</strong> carry neither a target group nor a category &#8212; invisible to both filters, reachable only by knowing the URL.</li>
+    <li><strong>Only 2 of 141</strong> records carry more than one target group. The taxonomy is single-valued where the world is multi-dimensional.</li>
+    <li>The complete target-group vocabulary is: Students (51), Sanitation Workers (18), DNT (14), Senior Citizens (9), OBC (6), Business (5), Small business (5), Scheduled Castes (5), Medium business (1), BPL (1), <strong>Homeowners (1)</strong>. The last two are not constituencies of this department.</li>
+  </ul>
+
+  <div class="callout">
+    <span class="balab">What this means at the keyboard</span>
+    <p>An SC student &#8212; the largest group this department exists to serve &#8212; must choose between filtering <em>Scheduled Castes</em> (5 results, not one a scholarship) and <em>Students</em> (51 results, no caste narrowing). The two cannot be combined into a truthful answer, because the underlying data is single-valued.</p>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="benchmarks">
+  <span class="h2num">Section 02</span>
+  <h2>How comparable sites solve this</h2>
+  <p class="deck">Three Government of India properties, chosen because each has already answered one part of the question DoSJE has not.</p>
+
+  <div class="rec">
+    <h3><span class="rid">B1</span> myScheme &#8212; the national scheme-discovery platform</h3>
+    <ul>
+      <li><strong>Eligibility is a first-class data model.</strong> Personalised search collects gender, age, marital status, state, urban or rural residence, social category, disability status, minority status and employment status, then returns matched schemes.</li>
+      <li><strong>Categories are named by the benefit, not the administering division</strong> &#8212; fifteen of them, including Education &amp; Learning, Health &amp; Wellness, Housing &amp; Shelter, Skills &amp; Employment, Social Welfare &amp; Empowerment, Women &amp; Child, Utility &amp; Sanitation.</li>
+      <li><strong>Every scheme page uses one fixed spine:</strong> Details &#183; Benefits &#183; Eligibility &#183; Application Process &#183; Documents Required &#183; FAQ. A citizen learns the shape once and reuses it everywhere.</li>
+    </ul>
+    <div class="ev"><b>Not optional.</b> GIGW 3.0 mandatory checkpoint 21 requires &#8220;API integration with key government platforms (India Portal, DigiLocker, Aadhaar, Single-Sign-On, MyGov, Data Platform, MyScheme) &#8230; for seamless exchange of Information and data.&#8221;</div>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">B2</span> DEPwD &#8212; the sibling department</h3>
+    <p>The homepage carries a <strong>&#8220;Most Used Services&#8221;</strong> block written entirely in verbs, and aware of the whole lifecycle: <em>&#8220;Apply for Disability Certificate &amp; UDID Card&#8221;</em>, <em>&#8220;Track Your UDID Card Application&#8221;</em>, <em>&#8220;Disability Certificate &amp; UDID Card Renewal&#8221;</em>, <em>&#8220;Apply for Lost UDID Card&#8221;</em>, <em>&#8220;Register for Skill development of PwDs&#8221;</em>, <em>&#8220;Register for Employment of PwDs&#8221;</em>. Assistive access is built in &#8212; Divya Voicebot, Divya Chatbot, Video Relay Service.</p>
+    <p><strong>Borrow the task pattern, not the IA.</strong> DEPwD's own navigation is still division-shaped and it has no finder. Its lesson is narrow and valuable: name the highest-traffic citizen intents on the homepage, as things a person does.</p>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">B3</span> National Scholarship Portal</h3>
+    <p>Two of the four primary navigation items are <strong>stateful</strong>: <em>&#8220;Scholarship Eligibility&#8221;</em> and <em>&#8220;Application Status&#8221;</em>, alongside <em>&#8220;Apply For Scholarship&#8221;</em> and <em>&#8220;Schemes on NSP&#8221;</em>. For a department where 64 of 141 offerings are education-related, &#8220;Am I eligible?&#8221; and &#8220;Where is my application?&#8221; are not secondary questions.</p>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">B4</span> Reference standard &#8212; GOV.UK</h3>
+    <p>Task-based information architecture, with a single guided <em>&#8220;Check what benefits you can get&#8221;</em> flow standing in front of the benefits catalogue. Cited as a design standard, not as an institutional peer.</p>
+  </div>
+
+  <h3>Practices extracted</h3>
+  <ol>
+    <li>Model eligibility as structured, multi-valued data &#8212; everything else is a view over it.</li>
+    <li>Name categories by the benefit received, never by the division that administers it.</li>
+    <li>One fixed page template per offering, so the shape is learned once.</li>
+    <li>Put the top citizen tasks on the homepage, as verbs.</li>
+    <li>Make eligibility and application status top-level, not buried.</li>
+    <li>Never dead-end: an empty result must route somewhere.</li>
+  </ol>
+</section>
+
+<!-- 03 -->
+<section id="diagnosis">
+  <span class="h2num">Section 03</span>
+  <h2>Why people cannot find what they are entitled to</h2>
+  <p class="deck">Nine findings, each with the evidence that produced it. Referenced by number throughout Section 04.</p>
+
+  <div class="finding">
+    <h3><span class="tag">D1</span> Two live ministry websites, with divergent taxonomies and non-overlapping content</h3>
+    <p><code>socialjustice.gov.in</code> lists <strong>PM-SURAJ, TAPAS, DAMS, PM-AGY, Development Action Plan for Scheduled Castes, Ageing with Dignity</strong> and <strong>e-ANUDAAN</strong> among its &#8220;Major Schemes&#8221;.</p>
+    <div class="ev">A site search on <code>dosje.gov.in</code> for <b>SURAJ</b> returns 10 results, <b>none of which is PM-SURAJ</b>. The top hits are an NSFDC FAQ and a tender for the &#8220;Suraj Kund International Crafts Mela&#8221;. A citizen who heard of PM-SURAJ on the radio and went to the ministry's flagship site cannot find it there.</div>
+    <p>The two sites do not share a navigation skeleton. dosje: <em>Department / Associated Organisations / Offerings / Documents / Events &amp; Gallery / Connect</em>. socialjustice: <em>About Us / Schemes / Associated Organisations / Publication / Media / Offerings / Events / Connect / Social Audit</em>.</p>
+  </div>
+
+  <div class="finding">
+    <h3><span class="tag">D2</span> The persona layer exists, but it is decorative</h3>
+    <p>The dosje homepage carries a section headed <strong>&#8220;Explore User Personas&#8221;</strong> &#8212; containing exactly two: <em>Government Official</em> and <em>Beneficiary</em>. &#8220;Beneficiary&#8221; is not a persona; it is the government's word for everyone.</p>
+    <div class="ev">The page at <code>/home-page/for-beneficiary/</code> offers six cards &#8212; Schemes and Services, Acts and Policies, Reports, Publications, Citizen Engagement, Get in Touch. <b>Every one links to a destination already reachable from the main navigation, and not one narrows by who the reader is.</b> One card, &#8220;Publications&#8221;, carries the call-to-action label <b>&#8220;Explore Schemes&#8221;</b> &#8212; a copy-paste error live in production.</div>
+    <p>The URL leaks the CMS: personas are parented under an internal page called <code>home-page</code>. The Next.js rebuild in this repository extends this to four personas and reproduces the defect &#8212; <code>for-student/page.tsx</code> sends both <em>&#8220;Scholarships&#8221;</em> and <em>&#8220;How to Apply&#8221;</em> to the unfiltered schemes list.</p>
+  </div>
+
+  <div class="finding">
+    <h3><span class="tag">D3</span> The filters are real; the data behind them is not</h3>
+    <p>The catalogue has three working facets &#8212; <em>All Category</em>, <em>All Target Group</em>, <em>All Organisations</em> &#8212; plus Active/Archived and Reset Filters. The quantitative failure is the matrix in Section 01.</p>
+    <div class="ev">The category vocabulary is equally unmaintained: 13 values including <b>&#8220;MICRO FINANCE&#8221;</b> and <b>&#8220;TERM LOAN&#8221;</b> in capitals (leaked verbatim out of two scheme titles), <em>Loan</em> and <em>Non Loan</em> as siblings, <em>Healthcare</em> and <em>Medical</em> as separate values, and <em>Social Remedies</em> with a single member. 61 of 141 records fall into one bucket, &#8220;Education&#8221;.</div>
+    <p>In the Next.js rebuild, the <em>Target Group</em> column renders <code>&#8212;</code> for every row: the page reads <code>s.targetGroup</code> from records where 27 have none, with no fallback.</p>
+  </div>
+
+  <div class="finding">
+    <h3><span class="tag">D4</span> Everything is named the way the file is named inside the ministry</h3>
+    <p>The <strong>Associated Organisations</strong> menu presents 18 items whose visible labels are acronyms &#8212; NCSC, NCSK, NCBC, DAF, DAIC, BJRNF, NSFDC, NSKFDC, NBCFDC, NISD, DWBDNC, SCW, PM-AJAY, NOS, NMBA, NHAA &#8212; grouped under headings that are themselves administrative: <em>COMMISSIONS</em>, <em>FOUNDATION / AUTONOMOUS BODIES</em>, <em>CORPORATIONS</em>, <em>TRAINING &amp; CAPACITY BUILDING</em>, <em>SCHEME SPECIFIC THEMATIC PORTALS</em>.</p>
+    <div class="ev">The footer's <b>Important Links</b> is organised by internal division: <em>Scheduled Caste Welfare &#183; Welfare Of The Other Backward Classes &#183; Social Defence &#183; Official Language &#183; Grants-In-Aid To NGOs &#183; Public Grievance &#183; Parliamentary Matters &#183; Plan Division &#183; Statistics Division &#183; Budget And Account</em>. A senior citizen looking for a pension does not know she is a &#8220;Social Defence&#8221; matter.</div>
+    <p>Scheme titles are the administrative titles verbatim. The longest runs to 168 characters: <em>&#8220;Centrally Sponsored Scheme for implementation of the Protection of Civil Rights Act, 1955 and the Scheduled Castes and the Scheduled Tribes (Prevention of Atrocities) Act, 1989.&#8221;</em> That is what a victim of an atrocity is expected to recognise.</p>
+  </div>
+
+  <div class="finding">
+    <h3><span class="tag">D5</span> The same programme is filed under two content types, so it is invisible under one</h3>
+    <p>NMBA, SMILE (Beggary), the National Portal for Transgender Persons, PM-AJAY, NOS, SCW and DWBDNC all appear in the navigation under <em>Associated Organisations &#8594; <strong>Scheme Specific Thematic Portals</strong></em> &#8212; the heading itself admits they are schemes. But the catalogue's Organisation facet lists them as <strong>organisations</strong>.</p>
+    <div class="ev"><b>NMBA, SMILE-Beggary and the transgender portal do not appear among the 141 scheme records at all.</b> A person searching the Schemes page for help with drug dependence, for destitution, or as a transgender person finds nothing there.</div>
+  </div>
+
+  <div class="finding">
+    <h3><span class="tag">D6</span> There is an entry point for every artefact, and none for any need</h3>
+    <p>Six of the seven top-level menu items name things the ministry <em>has</em>. None names a thing a citizen wants to <em>do</em>. Nothing on the site answers <em>am I eligible</em>, <em>how do I apply</em>, <em>where is my application</em>, or <em>how do I complain</em>. Grievance redress is a footer link out to <code>pgportal.gov.in</code>, and there is no application tracking anywhere.</p>
+  </div>
+
+  <div class="finding">
+    <h3><span class="tag">D7</span> Search retrieves by tag substring, and the tags are noise</h3>
+    <p>A search for <strong>&#8220;disability&#8221;</strong> returns 19 results. Exactly one is a scheme &#8212; <em>Rashtriya Vayoshri Yojana</em>, which is an elderly-persons scheme, tagged &#8220;Disability Aid&#8221;.</p>
+    <div class="ev">The remainder are documents matched on tags such as <b>&#8220;disability arising from untouchability&#8221;</b>, <b>&#8220;learning disability week&#8221;</b>, <b>&#8220;district disability welfare office&#8221;</b> and <b>&#8220;disability inclusion act&#8221;</b> &#8212; among them an Annual Report from 2015 and two NMBA newsletters. Nothing on that page tells the searcher that persons with disabilities are served by a different department of the same ministry.</div>
+    <p><em>Credit where it is due:</em> the search results page is the best-organised surface on the site. It groups by content type with counts &#8212; <em>Scheme and Service (1) &#183; Document (5) &#183; Associated Organisation (12) &#183; Tender (1)</em> &#8212; and shows Category &#183; Organisation per hit. That grouping should be promoted into browse, not confined to search.</p>
+  </div>
+
+  <div class="finding moderate">
+    <h3><span class="tag">D8</span> The catalogue is not maintained, and the defects are visible to citizens</h3>
+    <p>All of the following are live:</p>
+    <ul>
+      <li>The schemes table renders client-side and ships the literal string <strong>&#8220;Loading&#8230;&#8221;</strong> in the HTML source &#8212; invisible to search engines and to slow connections.</li>
+      <li>Every page's footer carries a leftover Bootstrap demo control with the options <strong>&#8220;Open this select menu / One / Two / Three&#8221;</strong>.</li>
+      <li>Two records have numeric slugs &#8212; <code>/schemes-and-services/10663/</code> and <code>/2998/</code>. Record 10663 renders as an empty table.</li>
+      <li><strong>24 of 141</strong> scheme pages have no content at all.</li>
+      <li>The SRMS record carries the title <em>&#8220;Schemes Implemented By National Safai Karamcharis Finance &amp; Development Corporation&#8221;</em> &#8212; a title/URL mismatch.</li>
+      <li><strong>State schemes sit in the same list as central schemes with no jurisdiction label</strong> &#8212; Maharashtra's Savitribai Phule Scholarship, Haryana's Mukhyamantri Vimukt Ghumantu Swarozgar Yojana, Rajasthan's Gadia Lohar Scheme. A citizen cannot tell whether they may apply.</li>
+      <li>Several records are status pages frozen in time: <em>&#8220;&#8230; as on 30 April, 2018&#8221;</em>, <em>&#8220;&#8230; last five years upto 31.03.2018&#8221;</em>.</li>
+      <li>The events feed links to an item slugged <code>test-2-state-rajasthan</code>.</li>
+      <li>The footer misspells <em>&#8220;Misutilization of <strong>Grands</strong>&#8221;</em> and <em>&#8220;Online Portal <strong>tor</strong> Grant in Aid Schemes&#8221;</em>.</li>
+      <li>Both sites return <strong>HTTP 200 for pages that do not exist</strong>. <code>dosje.gov.in/accessibility/</code> returns a genuine 404.</li>
+      <li><code>socialjustice.gov.in</code>'s footer still advertises support for <em>&#8220;Internet Explorer 8.0+&#8221;</em> and <em>&#8220;minimum 1024x768px resolution&#8221;</em>.</li>
+    </ul>
+  </div>
+
+  <div class="finding">
+    <h3><span class="tag">D9</span> Compliance exposure</h3>
+    <p>GIGW 3.0's stated key thrust is <em>&#8220;the implementation of user-centric information architecture (IA) to ease the user journey and provide content as per the user profile.&#8221;</em> A division-shaped IA sitting on an unpopulated eligibility model does not meet it. Mandatory checkpoint 21 requires myScheme API integration; there is no evidence of it. <code>/accessibility/</code> &#8212; a GIGW-required page &#8212; returns 404.</p>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="recs">
+  <span class="h2num">Section 04</span>
+  <h2>Recommended enhancements</h2>
+  <p class="deck">The model first, then the surfaces, then the operations that keep the model true. Each closes a numbered diagnosis.</p>
+
+  <div class="rec">
+    <h3><span class="rid">R1</span> Make eligibility a data model, not prose</h3>
+    <p class="closes">Closes <b>D3</b> &#183; <b>D5</b> &#8212; and everything else depends on it</p>
+    <p>Every scheme record gets a structured, <strong>multi-valued</strong> eligibility object.</p>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Axis</th><th>Values</th></tr></thead>
+        <tbody>
+          <tr><td><code>community</code></td><td>SC &#183; OBC &#183; EBC &#183; DNT/VJNT/NT-SNT &#183; general</td></tr>
+          <tr><td><code>occupationGroup</code></td><td>safai karamchari / sanitation worker &#183; waste picker &#183; manual scavenger and dependants &#183; artisan &#183; none</td></tr>
+          <tr><td><code>lifeStage</code></td><td>child &#183; school student &#183; higher-education student &#183; working age &#183; senior citizen</td></tr>
+          <tr><td><code>gender</code></td><td>woman &#183; man &#183; transgender person &#183; any</td></tr>
+          <tr><td><code>situation</code></td><td>victim of atrocity &#183; affected by substance use &#183; in destitution or begging &#183; person with disability &#183; PM CARES child &#183; BPL</td></tr>
+          <tr><td><code>jurisdiction</code></td><td>Central &#183; State <em>(named)</em> &#183; Corporation / channelising agency</td></tr>
+          <tr><td><code>benefitType</code></td><td>scholarship &#183; fellowship &#183; loan or credit &#183; subsidy &#183; grant-in-aid &#183; hostel or residential &#183; training and skilling &#183; assistive aid &#183; award &#183; legal aid &#183; infrastructure</td></tr>
+          <tr><td><code>applyVia</code></td><td>portal URL <strong>and</strong> offline route</td></tr>
+          <tr><td><code>status</code></td><td>open &#183; closed &#183; rolling, with dates</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Multi-valued is the point. An SC girl in class 11 must appear under <em>Scheduled Castes</em>, <em>women and girls</em>, <em>school students</em> and <em>scholarships</em> &#8212; simultaneously.</p>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">R2</span> Replace seven administrative menus with a task-and-audience split</h3>
+    <p class="closes">Closes <b>D4</b> &#183; <b>D6</b></p>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>New primary navigation</th><th>Contains</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Find support</strong></td><td>The finder, plus browse by community, life stage, situation, benefit</td></tr>
+          <tr><td><strong>Apply &amp; track</strong></td><td>Application routes, application status, documents you will need, grievances</td></tr>
+          <tr><td><strong>Our organisations</strong></td><td>The 18, each with its plain-language name as the primary label</td></tr>
+          <tr><td><strong>Rules &amp; reports</strong></td><td>Acts, policies, circulars, annual reports, RTI, publications</td></tr>
+          <tr><td><strong>Tenders &amp; careers</strong></td><td>&#8212;</td></tr>
+          <tr><td><strong>About the Department</strong></td><td>Who's who, divisions, directory, contact</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The 18 acronyms already carry their expansions in the site's own markup &#8212; &#8220;NCSK &#8212; National Commission for Safai Karamcharis&#8221;. Promote the expansion to the primary label and demote the acronym.</p>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">R3</span> Build &#8220;Find support for you&#8221; &#8212; a five-question finder, as the homepage's primary action</h3>
+    <p class="closes">Closes <b>D2</b> &#183; <b>D6</b> &#183; <b>D7</b></p>
+    <p>All questions skippable. No login, no Aadhaar.</p>
+    <ol>
+      <li><strong>Who is this for?</strong> &#8212; myself &#183; someone in my family &#183; an organisation I run</li>
+      <li><strong>Which community do you belong to?</strong> &#8212; SC &#183; OBC &#183; EBC &#183; DNT/VJNT &#183; not sure <em>(with a &#8220;why we ask&#8221; link to the list of Scheduled Castes)</em></li>
+      <li><strong>What stage of life?</strong> &#8212; in school &#183; in college or beyond &#183; working &#183; a senior citizen</li>
+      <li><strong>What kind of help do you need?</strong> &#8212; education and fees &#183; money to start or run work &#183; a home &#183; health and care &#183; safety and legal help &#183; skills and a job</li>
+      <li><strong>Which state do you live in?</strong> &#8212; separates central from state schemes, routes to the right channelising agency</li>
+    </ol>
+    <p>Each result card states, in plain language, <strong>what you get &#183; who can apply &#183; what you'll need</strong>, and carries one primary button: either <em>&#8220;Apply on &lt;portal&gt;&#8221;</em> or <em>&#8220;Where to apply near you&#8221;</em>.</p>
+    <div class="ev">Skipping a question <b>widens</b> the result set rather than blocking it. The finder must always return something &#8212; and when nothing matches, it routes explicitly: <em>&#8220;Support for persons with disabilities is handled by the Department of Empowerment of Persons with Disabilities &#8212; depwd.gov.in.&#8221;</em></div>
+    <p>Modelled on myScheme's personalised search, but deliberately shorter: myScheme's profile form asks more than a first-time visitor will complete.</p>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">R4</span> Replace &#8220;Explore User Personas&#8221; with real, filtered audience landings</h3>
+    <p class="closes">Closes <b>D2</b> &#183; <b>D7</b></p>
+    <p>Nine landings, each a <strong>pre-filtered view of the same scheme data</strong>, not a card deck of links:</p>
+    <p>Scheduled Caste families &#183; OBC &amp; EBC families &#183; DNT, nomadic &amp; semi-nomadic communities &#183; Safai karamcharis &amp; sanitation workers &#183; Senior citizens &amp; carers &#183; Transgender persons &#183; Persons affected by substance use &#183; Victims of caste atrocities &#183; NGOs &amp; voluntary organisations</p>
+    <p>Each opens with the three most-used schemes for that group, the one thing most people come to do (apply / track / complain), that group's helpline, and then the full filtered list.</p>
+    <p>Retire <strong>&#8220;Beneficiary&#8221;</strong> as a label &#8212; it names the government's relationship to the reader, not the reader. Add a tenth item that is a signpost rather than a landing: <strong>&#8220;Looking for disability support?&#8221;</strong> &#8594; DEPwD.</p>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">R5</span> Rebuild the catalogue as a faceted, server-rendered index</h3>
+    <p class="closes">Closes <b>D3</b> &#183; <b>D8</b></p>
+    <ul>
+      <li><strong>Server-render the list.</strong> Removes the &#8220;Loading&#8230;&#8221; defect and makes schemes indexable.</li>
+      <li><strong>Facets as URL parameters</strong>, so a filtered view is linkable and shareable: <code>/schemes?community=sc&amp;lifeStage=student</code>.</li>
+      <li><strong>Facets:</strong> Community &#183; Life stage &#183; Situation &#183; What you get &#183; Who runs it &#183; Central or State &#183; Open now. They combine &#8212; AND across axes, OR within &#8212; with a live result count on every value, so empty combinations are visible before they are chosen.</li>
+      <li><strong>One fixed scheme template:</strong> What you get &#183; Who can apply &#183; What you'll need &#183; How to apply &#183; Where to apply &#183; Deadlines &#183; Questions. A plain-language <code>h1</code>, with the administrative title retained beneath as &#8220;Official name&#8221;.</li>
+      <li><strong>Label every record with jurisdiction</strong> and move state schemes behind a state filter.</li>
+    </ul>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">R6</span> Put the four citizen tasks on the homepage, in verbs</h3>
+    <p class="closes">Closes <b>D6</b></p>
+    <p><strong>Check what you can get</strong> &#183; <strong>Apply for a scholarship</strong> &#183; <strong>Track an application</strong> &#183; <strong>Raise a grievance</strong>. Taken directly from DEPwD's &#8220;Most Used Services&#8221; and NSP's top-level &#8220;Scholarship Eligibility / Application Status&#8221;.</p>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">R7</span> Fix search: index the model, not the tags</h3>
+    <p class="closes">Closes <b>D7</b> &#183; <b>D9</b></p>
+    <ul>
+      <li>Search the structured eligibility fields, titles, aliases and body &#8212; not the free-text tag list that produced &#8220;disability arising from untouchability&#8221;.</li>
+      <li>Add a <strong>synonym layer</strong> so colloquial and vernacular terms resolve: <em>pension</em> &#8594; senior-citizen schemes; <em>scholarship for SC</em> &#8594; Post-Matric; <em>safai</em>, <em>sewer</em> &#8594; NAMASTE, SRMS, NSKFDC; <em>nasha</em>, <em>de-addiction</em> &#8594; NMBA; <em>PM-SURAJ</em>, <em>TAPAS</em>, <em>e-Anudaan</em> &#8594; their pages.</li>
+      <li>Keep the existing grouping by content type with counts &#8212; it already works &#8212; and promote it into browse.</li>
+      <li><strong>Zero-result routing:</strong> never return an empty page without naming where else to look.</li>
+      <li><strong>Publish the scheme data as an open API and register it with myScheme</strong>, satisfying GIGW 3.0 checkpoint 21.</li>
+    </ul>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">R8</span> Consolidate the two websites and retire the legacy one</h3>
+    <p class="closes">Closes <b>D1</b></p>
+    <p>Publish a canonical inventory reconciling dosje's 141 records against socialjustice's &#8220;Major Schemes&#8221;. The seven currently missing from dosje &#8212; <strong>PM-SURAJ, TAPAS, DAMS, PM-AGY, Development Action Plan for Scheduled Castes, Ageing with Dignity, e-ANUDAAN</strong> &#8212; are the immediate backlog. Then redirect <code>socialjustice.gov.in</code> URL-for-URL with 301s and keep one site. Two live ministry sites is the root cause of D1 and a permanent tax on every content update.</p>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">R9</span> Content operations &#8212; make the model stay true</h3>
+    <p class="closes">Closes <b>D8</b> &#183; <b>D9</b></p>
+    <ul>
+      <li>A <strong>publishing template that will not save</strong> a scheme record without community, life stage, benefit type, jurisdiction, apply route and a review date. This is what stops D3 recurring.</li>
+      <li>A <strong>quarterly stale-content sweep</strong>: flag any record whose review date has passed or whose title contains a frozen date. Immediate targets &#8212; the 24 empty pages, the 2018 status pages, the two numeric slugs, the SRMS mismatch, <code>test-2-state-rajasthan</code>.</li>
+      <li>Remove the Bootstrap placeholder select from the global footer; fix &#8220;Grands&#8221; and &#8220;tor&#8221;; return real 404 status codes.</li>
+      <li>Restore <code>/accessibility/</code>, and run a WCAG 2.2 AA audit of the finder before launch.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="journeys">
+  <span class="h2num">Section 05</span>
+  <h2>Three journeys, before and after</h2>
+  <p class="deck">Each walks a real constituency through the site as it stands, then through the site as recommended.</p>
+
+  <div class="journey">
+    <h3>Meena, 17 &#8212; Scheduled Caste, class 12, small town</h3>
+    <div class="ba">
+      <div class="before">
+        <span class="balab">Today</span>
+        <p>Home &#8594; Offerings &#8594; Schemes &amp; Services &#8594; waits for <em>&#8220;Loading&#8230;&#8221;</em> &#8594; filters Target Group = <em>Scheduled Castes</em> &#8594; 5 results, none a scholarship &#8594; back &#8594; filters <em>Students</em> &#8594; 51 results, unsorted, central and state mixed &#8594; opens <em>Post Matric Scholarship</em> &#8594; administrative prose, no apply button. Abandons; asks the cyber-caf&#233; operator.</p>
+        <p class="score">8 steps &#183; 2 dead ends &#183; outcome: intermediary</p>
+      </div>
+      <div class="after">
+        <span class="balab">Recommended</span>
+        <p>Homepage &#8594; <em>Check what you can get</em> &#8594; five questions (myself &#183; SC &#183; in school &#183; education and fees &#183; Bihar) &#8594; four matched schemes, Post-Matric first &#8594; <em>What you get / Who can apply / What you'll need</em> &#8594; <strong>Apply on National Scholarship Portal</strong>.</p>
+        <p class="score">4 steps &#183; 0 dead ends &#183; outcome: application started</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="journey">
+    <h3>Ramesh, 42 &#8212; sewer worker seeking rehabilitation finance</h3>
+    <div class="ba">
+      <div class="before">
+        <span class="balab">Today</span>
+        <p>No facet describes him. <em>Sanitation Workers</em> is closest: 18 results, including <em>&#8220;Status of Self Employment Scheme &#8230; as on 30 April, 2018&#8221;</em> and three duplicate NAMASTE guideline records. The NSKFDC loan route is described inside an <em>Associated Organisation &#8594; How to Apply</em> page reachable only from the organisations menu.</p>
+      </div>
+      <div class="after">
+        <span class="balab">Recommended</span>
+        <p><em>Safai karamcharis &amp; sanitation workers</em> landing &#8594; top three: NAMASTE, SRMS via NSKFDC, Swachhta Udyami Yojana &#8594; <strong>Where to apply near you</strong> &#8594; his State Channelising Agency, with a telephone number.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="journey">
+    <h3>Lata, 34 &#8212; caring for her mother, aged 71</h3>
+    <div class="ba">
+      <div class="before">
+        <span class="balab">Today</span>
+        <p>The word <em>senior</em> appears nowhere in the primary navigation. Her mother's schemes sit under <em>Social Defence</em> in the footer and under the acronym <em>SCW</em> in the organisations menu. Elderline is a scheme record, not a phone number on any page she will reach.</p>
+      </div>
+      <div class="after">
+        <span class="balab">Recommended</span>
+        <p><em>Senior citizens &amp; carers</em> landing &#8594; <strong>Elderline 14567</strong> in the page header &#8594; AVYAY, Rashtriya Vayoshri Yojana, IPSrC, geriatric caregiver training &#8594; the finder's <em>&#8220;someone in my family&#8221;</em> path preserved throughout.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="roadmap">
+  <span class="h2num">Section 06</span>
+  <h2>Implementation roadmap</h2>
+  <p class="deck">Five phases. One of them is the constraint on all the others.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th style="width:118px">Phase</th><th>Work</th><th style="width:96px">Effort</th><th style="width:112px">Impact</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>0 &#183; Stop the bleeding</strong><br><span class="barlab">2&#8211;3 weeks</span></td>
+          <td>Remove the Bootstrap placeholder select; fix the two typos; return real 404 status codes; restore <code>/accessibility/</code>. De-list the 24 empty pages and the frozen 2018 status pages; fix the SRMS mismatch and the two numeric slugs; remove the test event. Fix the &#8220;Publications &#8594; Explore Schemes&#8221; CTA and move persona URLs off <code>/home-page/</code>. In the rebuild, give the Target Group column a real value or remove it.</td>
+          <td><span class="chip c-lo">Low</span></td>
+          <td><span class="chip c-md">Medium</span></td>
+        </tr>
+        <tr class="flag">
+          <td><strong>1 &#183; Populate the model</strong><br><span class="barlab">4&#8211;8 weeks &#183; critical path</span></td>
+          <td>Define the eligibility schema (R1) and backfill all 141 records. Reconcile the seven flagship schemes missing from dosje. Resolve the scheme/organisation collision &#8212; NMBA, SMILE, the transgender portal, PM-AJAY, NOS, SCW, DWBDNC become schemes carrying an organisation attribute. Rewrite the category vocabulary (13 values &#8594; 8 benefit types) and the target-group vocabulary (11 values &#8594; the axes in R1).</td>
+          <td><span class="chip c-hi">High</span></td>
+          <td><span class="chip c-hi">Very high</span></td>
+        </tr>
+        <tr>
+          <td><strong>2 &#183; Surfaces</strong><br><span class="barlab">6&#8211;10 weeks</span></td>
+          <td>Server-rendered faceted catalogue with URL-addressable filters and the fixed scheme template (R5). Nine audience landings plus the DEPwD signpost (R4). Four verb CTAs on the homepage (R6). Navigation restructure (R2). Parallelisable once Phase 1 lands.</td>
+          <td><span class="chip c-md">Med&#8211;high</span></td>
+          <td><span class="chip c-hi">Very high</span></td>
+        </tr>
+        <tr>
+          <td><strong>3 &#183; Finder &amp; search</strong><br><span class="barlab">6&#8211;8 weeks</span></td>
+          <td>&#8220;Find support for you&#8221; (R3), WCAG 2.2 AA audited, tested unmoderated with at least eight people drawn from the actual constituencies, in Hindi and one other language. Search rebuilt on the structured model with the synonym layer and zero-result routing (R7).</td>
+          <td><span class="chip c-md">Medium</span></td>
+          <td><span class="chip c-hi">Very high</span></td>
+        </tr>
+        <tr>
+          <td><strong>4 &#183; Consolidation &amp; compliance</strong><br><span class="barlab">ongoing</span></td>
+          <td>Publish the scheme API and register with myScheme (GIGW 3.0 checkpoint 21). 301 <code>socialjustice.gov.in</code> &#8594; <code>dosje.gov.in</code> and retire the legacy site (R8). Publishing template with mandatory fields, plus the quarterly sweep (R9). <strong>Drop the BETA flag only after Phases 0&#8211;3 are complete.</strong></td>
+          <td><span class="chip c-md">Medium</span></td>
+          <td><span class="chip c-md">High</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <span class="balab">Sequencing</span>
+    <p><strong>Phase 1 is the constraint.</strong> The finder, the landings, the facets and the search are all views over one eligibility model. Building any surface before that model is populated reproduces precisely the current failure &#8212; a filter that works perfectly, over data that does not.</p>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Sources.</strong> All live-site claims verified 20 August 2026.</p>
+  <ul>
+    <li><a href="https://www.dosje.gov.in/">Ministry of Social Justice and Empowerment (SAMAVESH)</a></li>
+    <li><a href="https://socialjustice.gov.in/">Department of Social Justice and Empowerment (legacy)</a></li>
+    <li><a href="https://www.myscheme.gov.in/">myScheme &#8212; national scheme discovery platform</a></li>
+    <li><a href="https://depwd.gov.in/en/">Department of Empowerment of Persons with Disabilities</a></li>
+    <li><a href="https://scholarships.gov.in/">National Scholarship Portal</a></li>
+    <li>GIGW 3.0 &#8212; <code>docs/guidelines/GIGW-3.0/GIGW_3.0.md</code></li>
+  </ul>
+</footer>
+
+</main>
+</div>
+</div>

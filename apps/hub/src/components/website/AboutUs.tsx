@@ -57,13 +57,43 @@ export function AboutUs() {
               and economic development, ensuring their inclusion despite
               challenges like the lack of updated demographic data.
             </p>
-            <Link
-              href="/website/about-us/"
-              className={buttonClasses("primary", "outlined", "sm", "mt-6")}
-            >
-              Read More
-              <span className="ds-btn__icon" aria-hidden="true"><Icon name="arrow_forward" size={16} /></span>
-            </Link>
+            <blockquote className="mt-6 border-l-4 border-saffron bg-saffron/10 p-4 rounded-r-lg italic text-[15px] leading-relaxed text-ink">
+              “The Ministry of Social Justice &amp; Empowerment works to uplift India&apos;s most vulnerable communities through targeted initiatives, inclusive growth, and compassionate governance.”
+            </blockquote>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/website/about-us"
+                className={buttonClasses("primary", "outlined", "sm")}
+              >
+                Read More
+                <span className="ds-btn__icon" aria-hidden="true"><Icon name="arrow_forward" size={16} /></span>
+              </Link>
+            </div>
+
+            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <Link
+                href="/website/whos-who"
+                className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-sm font-semibold text-ink transition hover:border-primary hover:text-primary"
+              >
+                <span>Our Team</span>
+                <Icon name="chevron_right" size={16} />
+              </Link>
+              <Link
+                href="/website/about-us"
+                className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-sm font-semibold text-ink transition hover:border-primary hover:text-primary"
+              >
+                <span>Our Ministry</span>
+                <Icon name="chevron_right" size={16} />
+              </Link>
+              <Link
+                href="/website/annual-reports"
+                className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-sm font-semibold text-ink transition hover:border-primary hover:text-primary"
+              >
+                <span>Our Reports</span>
+                <Icon name="chevron_right" size={16} />
+              </Link>
+            </div>
           </div>
 
           <div className="flex flex-col gap-6">
