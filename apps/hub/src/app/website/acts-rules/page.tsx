@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { documentListColumns } from "@/data/website/columns";
+import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
 import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
 
 export const metadata: Metadata = {
@@ -9,23 +8,24 @@ export const metadata: Metadata = {
     "Acts, rules and statutory regulations administered by the Department of Social Justice & Empowerment.",
 };
 
-const rows = getDocumentsByType("Acts & Rules").map((d) => ({
-  title: d.title,
-  date: d.date ?? "—",
-  href: d.fileUrl ?? d.sourceUrl,
-}));
+export default function ActsRulesPage() {
+  const docs = getDocumentsByType("Acts & Rules").map((d) => ({
+    slug: d.slug,
+    title: d.title,
+    date: d.date,
+    category: "Statutory Acts & Rules",
+    sourceUrl: d.fileUrl ?? d.sourceUrl,
+    fileSize: "PDF (Official Gazette)",
+  }));
 
-export default function Page() {
   return (
-    <ListingPage
+    <DocumentCatalog
       title="Acts & Rules"
-      breadcrumb={[{ label: "Documents" }, { label: "Acts & Rules" }]}
+      description="Official Acts, Rules, and statutory regulations administered by the Department of Social Justice & Empowerment."
+      breadcrumb={[{ label: "Documents", href: "/website/acts-rules" }, { label: "Acts & Rules" }]}
       lastUpdated={getContentSyncedDate()}
-      description="Acts, rules and statutory regulations administered by the Department."
-      columns={documentListColumns}
-      rows={rows}
-      searchKeys={["title"]}
-      searchPlaceholder="Search acts & rules…"
+      documents={docs}
+      categories={["Statutory Acts & Rules"]}
     />
   );
 }

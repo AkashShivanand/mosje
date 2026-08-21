@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { documentListColumns } from "@/data/website/columns";
+import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
 import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
 
 export const metadata: Metadata = {
@@ -9,23 +8,24 @@ export const metadata: Metadata = {
     "Annual reports of the Department of Social Justice & Empowerment and the National Commission for Safai Karamcharis.",
 };
 
-const rows = getDocumentsByType("Annual Reports").map((d) => ({
-  title: d.title,
-  date: d.date ?? "—",
-  href: d.fileUrl ?? d.sourceUrl,
-}));
+export default function AnnualReportsPage() {
+  const docs = getDocumentsByType("Annual Reports").map((d) => ({
+    slug: d.slug,
+    title: d.title,
+    date: d.date,
+    category: "Annual Report",
+    sourceUrl: d.fileUrl ?? d.sourceUrl,
+    fileSize: "PDF (Approx. 5-15 MB)",
+  }));
 
-export default function Page() {
   return (
-    <ListingPage
+    <DocumentCatalog
       title="Annual Reports"
-      breadcrumb={[{ label: "Documents" }, { label: "Annual Reports" }]}
+      description="Access official Annual Reports of the Department of Social Justice & Empowerment and associated national statutory commissions."
+      breadcrumb={[{ label: "Documents", href: "/website/annual-reports" }, { label: "Annual Reports" }]}
       lastUpdated={getContentSyncedDate()}
-      description="Annual reports published by the Department of Social Justice & Empowerment and the National Commission for Safai Karamcharis."
-      columns={documentListColumns}
-      rows={rows}
-      searchKeys={["title"]}
-      searchPlaceholder="Search annual reports…"
+      documents={docs}
+      categories={["Annual Report"]}
     />
   );
 }

@@ -1,31 +1,31 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { documentListColumns } from "@/data/website/columns";
+import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
 import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
 
 export const metadata: Metadata = {
   title: "Publications | DoSJE",
   description:
-    "Reports, studies, brochures and other publications released by the Department of Social Justice & Empowerment.",
+    "Official books, statistical handbooks, research reports, and newsletters published by the Department of Social Justice & Empowerment.",
 };
 
-const rows = getDocumentsByType("Publications").map((d) => ({
-  title: d.title,
-  date: d.date ?? "—",
-  href: d.fileUrl ?? d.sourceUrl,
-}));
+export default function PublicationsPage() {
+  const docs = getDocumentsByType("Publications").map((d) => ({
+    slug: d.slug,
+    title: d.title,
+    date: d.date,
+    category: "Publication / Research Report",
+    sourceUrl: d.fileUrl ?? d.sourceUrl,
+    fileSize: "PDF Document",
+  }));
 
-export default function Page() {
   return (
-    <ListingPage
-      title="Publications"
-      breadcrumb={[{ label: "Documents" }, { label: "Publications" }]}
+    <DocumentCatalog
+      title="Publications &amp; Reports"
+      description="Books, research monographs, statistical handbooks, and journals published by the Department."
+      breadcrumb={[{ label: "Documents", href: "/website/publications" }, { label: "Publications" }]}
       lastUpdated={getContentSyncedDate()}
-      description="Reports, studies, compendiums and brochures released by the Department."
-      columns={documentListColumns}
-      rows={rows}
-      searchKeys={["title"]}
-      searchPlaceholder="Search publications…"
+      documents={docs}
+      categories={["Publication / Research Report"]}
     />
   );
 }

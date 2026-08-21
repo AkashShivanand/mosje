@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ContentPage } from "@/components/website/templates/ContentPage";
+import { Icon, buttonClasses } from "@mosje/design-system";
+import { PageLayout } from "@/components/website/layout/PageLayout";
 import { getSchemes, getScheme, withAssetBasePath, getContentSyncedDate } from "@/lib/website/content";
 
 export function generateStaticParams() {
@@ -29,64 +30,143 @@ export default async function SchemeDetailPage({
   if (!scheme) notFound();
 
   return (
-    <ContentPage
+    <PageLayout
       title={scheme.title}
-      breadcrumb={[{ label: "Offerings" }, { label: "Schemes & Services" }, { label: scheme.title }]}
+      badge={scheme.category ?? "National Welfare Scheme"}
+      breadcrumb={[
+        { label: "Offerings", href: "/website/schemes-services" },
+        { label: "Schemes & Services", href: "/website/schemes-services" },
+        { label: scheme.title },
+      ]}
       lastUpdated={getContentSyncedDate()}
-      sidebar={
-        <div className="rounded-xl border border-border bg-surface-muted p-5 text-sm">
-          <h2 className="mb-3 text-base font-semibold text-ink">Key Information</h2>
-          <dl className="space-y-3">
-            {scheme.category && (
-              <div>
-                <dt className="font-semibold text-ink">Category</dt>
-                <dd className="text-ink-muted">{scheme.category}</dd>
-              </div>
-            )}
-            {scheme.targetGroup && scheme.targetGroup.length > 0 && (
-              <div>
-                <dt className="font-semibold text-ink">Target Group</dt>
-                <dd className="text-ink-muted">{scheme.targetGroup.join(", ")}</dd>
-              </div>
-            )}
-            {scheme.website && (
-              <div>
-                <dt className="font-semibold text-ink">Official link</dt>
-                <dd>
-                  <a href={scheme.website} target="_blank" rel="noreferrer" className="text-primary hover:underline">
-                    {scheme.website.replace(/^https?:\/\//, "")}
-                  </a>
-                </dd>
-              </div>
-            )}
-            <div>
-              <dt className="font-semibold text-ink">Source</dt>
-              <dd>
-                <a href={scheme.sourceUrl} target="_blank" rel="noreferrer" className="text-primary hover:underline">
-                  View on dosje.gov.in
-                </a>
-              </dd>
-            </div>
-          </dl>
+      actions={
+        <div className="flex items-center gap-2">
+          {scheme.website && (
+            <a
+              href={scheme.website}
+              target="_blank"
+              rel="noreferrer"
+              className={buttonClasses("primary", "filled", "sm", "text-xs px-4 py-2 flex items-center gap-1.5")}
+            >
+              Apply Online <Icon name="open_in_new" size={14} />
+            </a>
+          )}
+          {scheme.sourceUrl && (
+            <a
+              href={scheme.sourceUrl}
+              target="_blank"
+              rel="noreferrer"
+              className={buttonClasses("primary", "outlined", "sm", "text-xs px-3.5 py-2 flex items-center gap-1")}
+            >
+              Portal <Icon name="arrow_outward" size={14} />
+            </a>
+          )}
         </div>
       }
     >
-      {scheme.sections.length === 0 ? (
-        <p className="text-ink-muted">
-          Full details for this scheme are available on the official website.{" "}
-          <a href={scheme.sourceUrl} target="_blank" rel="noreferrer" className="text-primary underline">
-            View on dosje.gov.in
-          </a>
-        </p>
-      ) : (
-        scheme.sections.map((s, i) => (
-          <section key={s.heading ?? i}>
-            {s.heading && <h2>{s.heading}</h2>}
-            {/* content is allowlist-sanitized at ingest time, so this is safe */}
-            <div dangerouslySetInnerHTML={{ __html: withAssetBasePath(s.html) }} />
-          </section>
-        ))
-      )}
-    </ContentPage>
+      <section className="py-10 md:py-14 bg-white">
+        <div className="sa-container grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px]">
+          {/* Main Content Sections */}
+          <article className="gov-prose min-w-0">
+            {scheme.sections.length === 0 ? (
+              <div className="rounded-xl border border-gray-200 p-8 bg-surface-muted">
+                <p className="text-ink-muted">
+                  Full details and application procedures for this scheme are available on the official Ministry portal.
+                </p>
+                <a
+                  href={scheme.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary underline"
+                >
+                  View on dosje.gov.in <Icon name="open_in_new" size={14} />
+                </a>
+              </div>
+            ) : (
+              scheme.sections.map((s, i) => (
+                <section key={s.heading ?? i} className="mb-8">
+                  {s.heading && (
+                    <h2 className="text-[22px] font-bold text-primary-dark border-b border-gray-200 pb-2 mb-4">
+                      {s.heading}
+                    </h2>
+                  )}
+                  {/* Sanitized HTML content */}
+                  <div
+                    dangerouslySetInnerHTML={{ __html: withAssetBasePath(s.html) }}
+                    className="leading-relaxed text-ink"
+                  />
+                </section>
+              ))
+            )}
+          </article>
+
+          {/* Sidebar Info Card */}
+          <aside className="space-y-6">
+            <div className="rounded-2xl border border-gray-200 bg-surface-muted p-6 shadow-xs">
+              <h2 className="text-[17px] font-bold text-primary-dark border-b border-gray-200/80 pb-3">
+                Key Details
+              </h2>
+              <dl className="mt-4 space-y-4 text-xs sm:text-sm">
+                {scheme.category && (
+                  <div>
+                    <dt className="font-bold text-ink">Category</dt>
+                    <dd className="mt-0.5 text-ink-muted">{scheme.category}</dd>
+                  </div>
+                )}
+                {scheme.targetGroup && scheme.targetGroup.length > 0 && (
+                  <div>
+                    <dt className="font-bold text-ink">Target Beneficiaries</dt>
+                    <dd className="mt-0.5 text-ink-muted">
+                      {scheme.targetGroup.join(", ")}
+                    </dd>
+                  </div>
+                )}
+                {scheme.website && (
+                  <div>
+                    <dt className="font-bold text-ink">Application Portal</dt>
+                    <dd className="mt-0.5">
+                      <a
+                        href={scheme.website}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary font-semibold hover:underline flex items-center gap-1"
+                      >
+                        {scheme.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                        <Icon name="open_in_new" size={13} />
+                      </a>
+                    </dd>
+                  </div>
+                )}
+                <div>
+                  <dt className="font-bold text-ink">Official Source</dt>
+                  <dd className="mt-0.5">
+                    <a
+                      href={scheme.sourceUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-primary hover:underline flex items-center gap-1"
+                    >
+                      dosje.gov.in <Icon name="open_in_new" size={13} />
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+
+            {/* Helpline / Quick Assistance Box */}
+            <div className="rounded-2xl bg-gradient-to-br from-primary-dark to-primary p-6 text-white shadow-xs">
+              <h3 className="text-[16px] font-bold text-white">Need Assistance?</h3>
+              <p className="mt-1.5 text-xs text-white/90 leading-relaxed">
+                Reach out to the scheme helpline for queries related to application status and eligibility.
+              </p>
+              <div className="mt-4 pt-3 border-t border-white/20 flex items-center justify-between text-xs font-semibold">
+                <span>National Helpline</span>
+                <span className="text-white font-bold">14446 / 14566</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </PageLayout>
   );
 }

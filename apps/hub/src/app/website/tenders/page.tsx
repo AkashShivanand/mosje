@@ -1,39 +1,31 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import type { DataTableColumn } from "@/components/website/ui/data-table";
+import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
 import { getTenders, getContentSyncedDate } from "@/lib/website/content";
 
 export const metadata: Metadata = {
-  title: "Tenders | DoSJE",
+  title: "Tenders & RFPs | DoSJE",
   description:
-    "Active tenders, e-procurement notices and requests for proposals issued by the Department of Social Justice & Empowerment.",
+    "Active tenders, e-procurement notices, and requests for proposals (RFPs) issued by the Department of Social Justice & Empowerment.",
 };
 
-const columns: DataTableColumn[] = [
-  { key: "title", label: "Title", sortable: true, align: "left", className: "min-w-[340px] font-medium text-ink" },
-  { key: "category", label: "Category", sortable: true, align: "left", className: "min-w-[160px]" },
-  { key: "date", label: "Published", sortable: true, align: "center" },
-  { key: "action", label: "Action", align: "center", type: "link", hrefKey: "href", linkLabel: "View" },
-];
+export default function TendersPage() {
+  const tenders = getTenders().map((t) => ({
+    slug: t.slug,
+    title: t.title,
+    date: t.date,
+    category: t.category ?? "Tender Notice",
+    sourceUrl: t.fileUrl ?? t.sourceUrl,
+    fileSize: "PDF (Tender Document)",
+  }));
 
-const rows = getTenders().map((t) => ({
-  title: t.title,
-  category: t.category ?? "—",
-  date: t.date ?? "—",
-  href: t.fileUrl ?? t.sourceUrl,
-}));
-
-export default function Page() {
   return (
-    <ListingPage
-      title="Tenders"
-      breadcrumb={[{ label: "Offerings" }, { label: "Tenders" }]}
+    <DocumentCatalog
+      title="Tenders &amp; Procurements"
+      description="Active tenders, expressions of interest (EOI), and requests for proposals (RFP) issued by the Department of Social Justice & Empowerment."
+      breadcrumb={[{ label: "Offerings", href: "/website/tenders" }, { label: "Tenders" }]}
       lastUpdated={getContentSyncedDate()}
-      description="Active tenders, procurement notices and requests for proposals issued by the Department."
-      columns={columns}
-      rows={rows}
-      searchKeys={["title", "category"]}
-      searchPlaceholder="Search tenders…"
+      documents={tenders}
+      categories={["Tender Notice", "RFP", "EOI", "Corrigendum"]}
     />
   );
 }

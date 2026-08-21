@@ -1,31 +1,31 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { documentListColumns } from "@/data/website/columns";
+import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
 import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
 
 export const metadata: Metadata = {
-  title: "Advices | DoSJE",
+  title: "Statutory Advices | DoSJE",
   description:
-    "Advisories and advices issued by the Department of Social Justice & Empowerment to States and implementing agencies.",
+    "Statutory advices tendered by the National Commission for Backward Classes (NCBC) and advisory bodies.",
 };
 
-const rows = getDocumentsByType("Advices").map((d) => ({
-  title: d.title,
-  date: d.date ?? "—",
-  href: d.fileUrl ?? d.sourceUrl,
-}));
+export default function AdvicesPage() {
+  const docs = getDocumentsByType("Advices").map((d) => ({
+    slug: d.slug,
+    title: d.title,
+    date: d.date,
+    category: "Statutory Advice",
+    sourceUrl: d.fileUrl ?? d.sourceUrl,
+    fileSize: "PDF Document",
+  }));
 
-export default function Page() {
   return (
-    <ListingPage
-      title="Advices"
-      breadcrumb={[{ label: "Documents" }, { label: "Advices" }]}
+    <DocumentCatalog
+      title="Statutory Advices"
+      description="Statutory advices and recommendations tendered by advisory commissions and expert appraisal committees."
+      breadcrumb={[{ label: "Documents", href: "/website/advices" }, { label: "Advices" }]}
       lastUpdated={getContentSyncedDate()}
-      description="Advisories issued by the Department to States, UTs and implementing agencies."
-      columns={documentListColumns}
-      rows={rows}
-      searchKeys={["title"]}
-      searchPlaceholder="Search advices…"
+      documents={docs}
+      categories={["Statutory Advice"]}
     />
   );
 }
