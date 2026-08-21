@@ -9,6 +9,7 @@ import { PortalBanner } from "@/components/website/PortalBanner";
 import { RecentDocuments } from "@/components/website/RecentDocuments";
 import { ActivityCorner } from "@/components/website/ActivityCorner";
 import { SocialMedia } from "@/components/website/SocialMedia";
+import { SupportSection } from "@/components/website/SupportSection";
 import { LogoStrip } from "@/components/website/LogoStrip";
 import { SiteFooter } from "@/components/website/SiteFooter";
 import { ImportantLinks } from "@/components/website/ImportantLinks";
@@ -36,6 +37,7 @@ export default async function Home() {
         <RecentDocuments />
         <ActivityCorner />
         <SocialMedia />
+        <SupportSection />
         <LogoStrip />
       </main>
       <SiteFooter />
