@@ -142,26 +142,34 @@ export function AboutUs() {
           </div>
         </div>
 
-        <Link
-          href="/website/dashboard"
-          className="group mt-12 block overflow-hidden rounded-xl bg-gradient-to-r from-primary-dark to-primary transition-opacity hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        >
-          <dl className="grid grid-cols-1 divide-y divide-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="px-6 py-8 text-center sm:py-10"
-              >
-                <dd className="text-[40px] font-bold leading-none text-white">
-                  {stat.value}
-                </dd>
-                <dt className="mt-3 text-[14px] font-medium uppercase tracking-wide text-white/80 transition-colors group-hover:text-white">
-                  {stat.label}
-                </dt>
-              </div>
-            ))}
-          </dl>
-        </Link>
+        <div className="mt-12 overflow-hidden rounded-xl bg-gradient-to-r from-primary-dark to-primary p-6 sm:p-8">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <dl className="grid flex-1 grid-cols-1 divide-y divide-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="px-4 py-4 text-center sm:px-6 sm:py-2"
+                >
+                  <dd className="text-[32px] sm:text-[38px] font-bold leading-none text-white">
+                    {stat.value}
+                  </dd>
+                  <dt className="mt-2 text-[12px] sm:text-[13px] font-medium uppercase tracking-wide text-white/80">
+                    {stat.label}
+                  </dt>
+                </div>
+              ))}
+            </dl>
+            <Link
+              href="/website/dashboard"
+              className={buttonClasses("primary", "filled", "md", "bg-white text-primary hover:bg-white/90 whitespace-nowrap self-center shrink-0")}
+            >
+              View Dashboard
+              <span className="ds-btn__icon" aria-hidden="true">
+                <Icon name="arrow_forward" size={16} />
+              </span>
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );

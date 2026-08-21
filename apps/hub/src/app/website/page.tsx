@@ -5,15 +5,16 @@ import { LatestUpdates } from "@/components/website/LatestUpdates";
 import { AboutUs } from "@/components/website/AboutUs";
 import { Offerings } from "@/components/website/Offerings";
 import { Organisations } from "@/components/website/Organisations";
-import { PortalBanner } from "@/components/website/PortalBanner";
+import { NmbaHomeCompact } from "@/components/website/nmba/NmbaHomeCompact";
+import { SamaveshJusticeBanner } from "@/components/website/SamaveshJusticeBanner";
 import { RecentDocuments } from "@/components/website/RecentDocuments";
+import { DeaddictionMapSection } from "@/components/website/DeaddictionMapSection";
 import { ActivityCorner } from "@/components/website/ActivityCorner";
 import { SocialMedia } from "@/components/website/SocialMedia";
 import { SupportSection } from "@/components/website/SupportSection";
 import { LogoStrip } from "@/components/website/LogoStrip";
 import { SiteFooter } from "@/components/website/SiteFooter";
 import { ImportantLinks } from "@/components/website/ImportantLinks";
-import { NmbaHomeCompact } from "@/components/website/nmba/NmbaHomeCompact";
 import { CookieConsent } from "@/components/website/CookieConsent";
 import { resolveCookieBannerEnabled } from "@/lib/cookie-banner/resolve";
 
@@ -29,12 +30,13 @@ export default async function Home() {
         <SamaveshBanner />
         <HeroCarousel />
         <LatestUpdates />
-        <NmbaHomeCompact />
         <AboutUs />
         <Offerings />
         <Organisations />
-        <PortalBanner />
+        <NmbaHomeCompact />
+        <SamaveshJusticeBanner />
         <RecentDocuments />
+        <DeaddictionMapSection />
         <ActivityCorner />
         <SocialMedia />
         <SupportSection />

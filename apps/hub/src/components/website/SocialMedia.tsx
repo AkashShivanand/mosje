@@ -1,5 +1,12 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
 import type { SVGProps } from "react";
 import { Icon } from "@mosje/design-system";
+import { cn } from "@/lib/website/utils";
+
+type SocialTab = "facebook" | "x" | "youtube";
 
 type BrandIcon = (props: SVGProps<SVGSVGElement>) => React.JSX.Element;
 
@@ -19,119 +26,245 @@ function XIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-function InstagramIcon(props: SVGProps<SVGSVGElement>) {
+function YoutubeIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
     </svg>
   );
 }
 
-interface SocialPlatform {
-  name: string;
-  href: string;
-  ctaLabel: string;
-  icon: BrandIcon;
-  /** Tailwind class for the brand icon color. */
-  iconClassName: string;
-  /** Tailwind class for the header icon container background. */
-  iconWrapClassName: string;
+interface SocialPost {
+  id: string;
+  image: string;
+  caption: string;
+  date: string;
+  stats: string;
 }
 
-const platforms: SocialPlatform[] = [
+interface SocialTabConfig {
+  key: SocialTab;
+  name: string;
+  handle: string;
+  ctaLabel: string;
+  profileUrl: string;
+  icon: BrandIcon;
+  iconClassName: string;
+  iconWrapClassName: string;
+  posts: SocialPost[];
+}
+
+const SOCIAL_TABS: SocialTabConfig[] = [
   {
+    key: "facebook",
     name: "Facebook",
-    href: "https://www.facebook.com/MSJEGOI",
+    handle: "@DoSJE_GoI",
     ctaLabel: "Follow",
+    profileUrl: "https://www.facebook.com/MSJEGOI",
     icon: FacebookIcon,
     iconClassName: "text-[#1877F2]",
     iconWrapClassName: "bg-[#1877F2]/10",
+    posts: [
+      {
+        id: "fb-1",
+        image: "/website/images/Banner-7.png",
+        caption: "Hon'ble Minister Dr. Virendra Kumar inaugurated the National Awareness Drive on Senior Citizens' Welfare and active aging initiatives.",
+        date: "18 Aug 2026",
+        stats: "1.2K Likes · 142 Shares",
+      },
+      {
+        id: "fb-2",
+        image: "/website/images/Banner-8.png",
+        caption: "National Workshop on Skill Training and Entrepreneurship for Safai Karamcharis organized by NSKFDC at Dr. Ambedkar International Centre.",
+        date: "17 Aug 2026",
+        stats: "890 Likes · 94 Shares",
+      },
+      {
+        id: "fb-3",
+        image: "/website/images/Banner-9.png",
+        caption: "Nasha Mukt Bharat Abhiyaan outreach program in educational institutions across 272 districts with student pledges.",
+        date: "16 Aug 2026",
+        stats: "2.1K Likes · 318 Shares",
+      },
+    ],
   },
   {
+    key: "x",
     name: "X (Twitter)",
-    href: "https://twitter.com/MSJEGOI",
+    handle: "@MSJEGOI",
     ctaLabel: "Follow",
+    profileUrl: "https://twitter.com/MSJEGOI",
     icon: XIcon,
     iconClassName: "text-black",
     iconWrapClassName: "bg-black/5",
+    posts: [
+      {
+        id: "x-1",
+        image: "/website/images/Banner-8.png",
+        caption: "Applications open for Top Class Education Scheme for SC & OBC Students for AY 2026-27. Apply now on National Scholarship Portal.",
+        date: "17 Aug 2026",
+        stats: "892 Retweets · 3.4K Likes",
+      },
+      {
+        id: "x-2",
+        image: "/website/images/Banner-9.png",
+        caption: "PM-AJAY vertical grants approved for infrastructure enhancement in 1,200 scheduled caste majority villages nationwide.",
+        date: "16 Aug 2026",
+        stats: "640 Retweets · 2.1K Likes",
+      },
+      {
+        id: "x-3",
+        image: "/website/images/Banner-10.png",
+        caption: "MoSJE rolls out simplified transgender identity card verification mechanism integrated with national health databases.",
+        date: "15 Aug 2026",
+        stats: "1.1K Retweets · 4.8K Likes",
+      },
+    ],
   },
   {
-    name: "Instagram",
-    href: "https://www.instagram.com/socialjustice_goi",
-    ctaLabel: "Visit",
-    icon: InstagramIcon,
-    iconClassName: "text-[#E1306C]",
-    iconWrapClassName: "bg-[#E1306C]/10",
+    key: "youtube",
+    name: "YouTube",
+    handle: "@DoSJE_GoI",
+    ctaLabel: "Subscribe",
+    profileUrl: "https://www.youtube.com/@DoSJE_GoI",
+    icon: YoutubeIcon,
+    iconClassName: "text-[#FF0000]",
+    iconWrapClassName: "bg-[#FF0000]/10",
+    posts: [
+      {
+        id: "yt-1",
+        image: "/website/images/Banner-9.png",
+        caption: "Watch Live: Chintan Shivir 2026 — Keynote address on empowering marginalized communities through technology and citizen-first delivery.",
+        date: "15 Aug 2026",
+        stats: "15.8K Views · 2.1K Likes",
+      },
+      {
+        id: "yt-2",
+        image: "/website/images/Banner-6.png",
+        caption: "Documentary: Stories of Transformation — Beneficiaries of the SMILE project share their journey of dignity and employment.",
+        date: "12 Aug 2026",
+        stats: "32.4K Views · 4.5K Likes",
+      },
+      {
+        id: "yt-3",
+        image: "/website/images/Banner-7.png",
+        caption: "Highlights of the National De-addiction Helpline 14446 campaign and counseling resources across India.",
+        date: "10 Aug 2026",
+        stats: "19.2K Views · 1.8K Likes",
+      },
+    ],
   },
 ];
 
 export function SocialMedia() {
+  const [activeTab, setActiveTab] = useState<SocialTab>("facebook");
+  const currentTab = SOCIAL_TABS.find((tab) => tab.key === activeTab) ?? SOCIAL_TABS[0]!;
+  const BrandGlyph = currentTab.icon;
+
   return (
-    <section className="bg-white">
-      <div className="sa-container py-12 md:py-16">
+    <section className="bg-white py-12 md:py-16">
+      <div className="sa-container">
         <div className="text-center">
-          <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
+          <h2 className="text-[28px] sm:text-[32px] font-semibold leading-tight text-primary-dark">
             Explore our Social Media Platforms
           </h2>
-          <p className="mt-3 text-[16px] text-ink-muted">
-            Stay connected with the Department of Social Justice &amp;
-            Empowerment across our official channels.
+          <p className="mt-2 text-[15px] sm:text-[16px] text-ink-muted">
+            Stay connected with the Department of Social Justice &amp; Empowerment across our official channels.
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {platforms.map((platform) => {
-            // Named BrandGlyph, not Icon: the social logos stay inline SVGs
-            // (brand marks are not in the Material Symbols set), and a local
-            // `Icon` would shadow the DS Icon used for the CTA arrow below.
-            const BrandGlyph = platform.icon;
-            return (
-              <div
-                key={platform.name}
-                className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md"
-              >
-                <div className="flex items-center justify-between gap-3 border-b border-gray-100 px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`flex h-10 w-10 items-center justify-center rounded-full ${platform.iconWrapClassName}`}
-                    >
-                      <BrandGlyph
-                        className={`h-5 w-5 ${platform.iconClassName}`}
-                        aria-hidden="true"
-                      />
-                    </span>
-                    <span className="text-[16px] font-semibold text-ink">
-                      {platform.name}
-                    </span>
-                  </div>
-                  <a
-                    href={platform.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1 rounded-lg border border-primary px-3.5 py-1.5 text-[14px] font-medium text-primary transition-colors hover:bg-primary hover:text-white"
-                  >
-                    {platform.ctaLabel}
-                    <Icon name="arrow_outward" size={16} />
-                  </a>
-                </div>
+        {/* Tab Selector matching Figma node 8137:48670 */}
+        <div className="mt-8 flex justify-center">
+          <div className="flex items-center rounded-xl bg-gray-100 p-1.5 border border-gray-200">
+            {SOCIAL_TABS.map((tab) => {
+              const isActive = tab.key === activeTab;
+              const TabIcon = tab.icon;
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => setActiveTab(tab.key)}
+                  className={cn(
+                    "rounded-lg px-6 py-2 text-xs sm:text-sm font-semibold transition flex items-center gap-2",
+                    isActive
+                      ? "bg-primary text-white shadow-xs"
+                      : "text-ink-muted hover:text-ink"
+                  )}
+                >
+                  <TabIcon className="h-4 w-4" />
+                  {tab.name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-                <div className="p-4">
-                  <div className="flex h-[360px] flex-col items-center justify-center gap-3 rounded-lg bg-surface-muted">
+        {/* Active Tab Posts Grid (3 Posts from current active platform) */}
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {currentTab.posts.map((post) => (
+            <div
+              key={post.id}
+              className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xs transition hover:shadow-md hover:border-primary/30"
+            >
+              {/* Header Bar */}
+              <div className="flex items-center justify-between gap-3 border-b border-gray-100 px-5 py-4">
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`flex h-9 w-9 items-center justify-center rounded-full ${currentTab.iconWrapClassName}`}
+                  >
                     <BrandGlyph
-                      className={`h-12 w-12 ${platform.iconClassName} opacity-60`}
+                      className={`h-4 w-4 ${currentTab.iconClassName}`}
                       aria-hidden="true"
                     />
-                    <span className="text-[14px] font-medium text-ink-muted">
-                      Live feed
+                  </span>
+                  <div>
+                    <span className="block text-[15px] font-semibold leading-tight text-ink">
+                      {currentTab.name}
                     </span>
-                    <span className="px-6 text-center text-[13px] text-ink-muted/70">
-                      Latest posts from {platform.name}
-                    </span>
+                    <span className="block text-[11px] text-ink-muted">{currentTab.handle}</span>
                   </div>
                 </div>
+                <a
+                  href={currentTab.profileUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 rounded-lg border border-primary px-3 py-1 text-xs font-semibold text-primary transition-colors hover:bg-primary hover:text-white"
+                >
+                  {currentTab.ctaLabel}
+                  <Icon name="arrow_outward" size={16} />
+                </a>
               </div>
-            );
-          })}
+
+              {/* Body */}
+              <div className="p-4 flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-gray-150">
+                    <Image
+                      src={post.image}
+                      alt={`${currentTab.name} post visual`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <p className="mt-3 text-xs sm:text-sm font-normal text-ink line-clamp-3 leading-snug">
+                    {post.caption}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-gray-150 flex items-center justify-between text-[11px] text-ink-muted">
+                  <span>{post.date}</span>
+                  <span>{post.stats}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Carousel / Page Dots Indicator */}
+        <div className="mt-8 flex justify-center items-center gap-2">
+          <span className="h-2 w-6 rounded-full bg-primary" />
+          <span className="h-2 w-2 rounded-full bg-gray-300" />
+          <span className="h-2 w-2 rounded-full bg-gray-300" />
         </div>
       </div>
     </section>
