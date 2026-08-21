@@ -103,17 +103,17 @@ export function DeaddictionMapSection() {
               <div className="relative">
                 {/* Pin 1 */}
                 <div className="absolute -top-12 -left-16 flex items-center gap-1 rounded-lg bg-white px-3 py-1.5 shadow-md border border-primary/20 animate-bounce">
-                  <Icon name="location_on" size={18} className="text-primary" />
+                  <Icon name="location_on" size={20} className="text-primary" />
                   <span className="text-xs font-bold text-ink">Mukti Kendra</span>
                 </div>
                 {/* Pin 2 */}
                 <div className="absolute top-16 left-24 flex items-center gap-1 rounded-lg bg-white px-3 py-1.5 shadow-md border border-primary/20">
-                  <Icon name="location_on" size={18} className="text-secondary" />
+                  <Icon name="location_on" size={20} className="text-secondary" />
                   <span className="text-xs font-bold text-ink">Navjeevan Centre</span>
                 </div>
                 {/* Pin 3 */}
                 <div className="absolute top-28 -left-32 flex items-center gap-1 rounded-lg bg-white px-3 py-1.5 shadow-md border border-primary/20">
-                  <Icon name="location_on" size={18} className="text-secondary" />
+                  <Icon name="location_on" size={20} className="text-secondary" />
                   <span className="text-xs font-bold text-ink">Sanjeevani IRCA</span>
                 </div>
               </div>
@@ -154,7 +154,7 @@ export function DeaddictionMapSection() {
 
             <div className="mt-6 pt-4 border-t border-gray-150 flex items-center justify-between">
               <div className="inline-flex items-center gap-1 rounded bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-800 border border-amber-200">
-                <Icon name="headset_mic" size={14} />
+                <Icon name="headset_mic" size={16} />
                 24x7 Helpline: 14446
               </div>
               <Link

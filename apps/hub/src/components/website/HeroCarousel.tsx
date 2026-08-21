@@ -41,7 +41,7 @@ export function HeroCarousel() {
 
               <div className="mt-6 flex flex-wrap items-center gap-4">
                 <div className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-xs sm:text-sm font-bold text-gray-700">
-                  <Icon name="schedule" size={18} className="text-gray-500" />
+                  <Icon name="schedule" size={20} className="text-gray-500" />
                   TIME : 11 AM
                 </div>
 
@@ -51,7 +51,7 @@ export function HeroCarousel() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-lg bg-[#dc2626] px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-[#b91c1c]"
                 >
-                  <Icon name="play_arrow" size={18} />
+                  <Icon name="play_arrow" size={20} />
                   WATCH LIVE
                 </a>
               </div>

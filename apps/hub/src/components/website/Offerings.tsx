@@ -214,7 +214,7 @@ export function Offerings() {
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-primary/5 text-primary">
-                      <Icon name="school" size={36} />
+                      <Icon name="school" size={32} />
                     </div>
                   )}
                   {item.tag && (
@@ -233,7 +233,7 @@ export function Offerings() {
                   <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
                     <span className="text-xs font-semibold text-primary flex items-center gap-1 group-hover:underline">
                       {current.cardLink}
-                      <Icon name="arrow_forward" size={14} className="transition-transform group-hover:translate-x-1" />
+                      <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-1" />
                     </span>
                   </div>
                 </div>
