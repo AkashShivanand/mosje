@@ -231,7 +231,7 @@ export function SocialMedia() {
                   className="inline-flex items-center gap-1 rounded-lg border border-primary px-3 py-1 text-xs font-semibold text-primary transition-colors hover:bg-primary hover:text-white"
                 >
                   {currentTab.ctaLabel}
-                  <Icon name="arrow_outward" size={14} />
+                  <Icon name="arrow_outward" size={16} />
                 </a>
               </div>
 

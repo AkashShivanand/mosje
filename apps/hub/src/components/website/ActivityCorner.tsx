@@ -109,7 +109,7 @@ export function ActivityCorner() {
               href="/website/events"
               className="text-xs font-semibold text-primary hover:underline flex items-center gap-1 hidden sm:flex"
             >
-              View all events <Icon name="arrow_forward" size={14} />
+              View all events <Icon name="arrow_forward" size={16} />
             </Link>
           </div>
         </div>
@@ -142,7 +142,7 @@ export function ActivityCorner() {
                   href={FEATURED_EVENT.href}
                   className="text-xs sm:text-sm font-semibold text-primary hover:underline flex items-center gap-1"
                 >
-                  Read More <Icon name="arrow_forward" size={14} />
+                  Read More <Icon name="arrow_forward" size={16} />
                 </Link>
 
                 {/* Pagination Controls */}
@@ -157,14 +157,14 @@ export function ActivityCorner() {
                     aria-label="Previous event"
                     className="p-1 rounded-full hover:bg-gray-100 text-ink-muted transition"
                   >
-                    <Icon name="chevron_left" size={18} />
+                    <Icon name="chevron_left" size={20} />
                   </button>
                   <button
                     type="button"
                     aria-label="Next event"
                     className="p-1 rounded-full hover:bg-gray-100 text-ink-muted transition"
                   >
-                    <Icon name="chevron_right" size={18} />
+                    <Icon name="chevron_right" size={20} />
                   </button>
                 </div>
               </div>
@@ -197,7 +197,7 @@ export function ActivityCorner() {
                     href={event.href}
                     className="mt-3 text-xs font-semibold text-primary hover:underline flex items-center gap-1 self-start"
                   >
-                    Read More <Icon name="arrow_forward" size={12} />
+                    Read More <Icon name="arrow_forward" size={16} />
                   </Link>
                 </div>
               </Card>
