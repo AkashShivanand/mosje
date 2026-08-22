@@ -121,6 +121,9 @@ export interface WizardDef {
 }
 
 const YES_NO = ["Yes", "No"] as const;
+/** SMILE's two case_type answers, referenced by the fields that fork on them. */
+const SMILE_CASE_NEW = "No — new project (Project ID auto-generated)";
+const SMILE_CASE_EXISTING = "Yes — existing project (select the Project ID)";
 const FINANCIAL_YEARS = ["2027-28", "2026-27", "2025-26"] as const;
 
 /** The declaration that closes every scheme's review step, verbatim from the live portal. */
@@ -714,10 +717,46 @@ const SMILE_STEPS: readonly StepDef[] = [
             kind: "radio",
             required: true,
             wide: true,
-            options: ["No — new project (Project ID auto-generated)", "Yes — existing project (select the Project ID)"],
+            options: [SMILE_CASE_NEW, SMILE_CASE_EXISTING],
             help: "A new applicant's Project ID is generated automatically on submit.",
           },
-          { name: "fld_project_id_auto", label: "Project Id", kind: "text", readOnly: true, help: "Generated automatically on submit for a new project." },
+          /*
+           * SMILE's step 1 forks on case_type, walked on live 2026-08-23. A new project gets only
+           * the generated id; an existing one is asked to pick the project, confirm its id and
+           * name the installment — and does NOT get the generated id at all.
+           */
+          {
+            name: "fld_project_id_auto",
+            label: "Project Id",
+            kind: "text",
+            readOnly: true,
+            help: "Generated automatically on submit for a new project.",
+            showWhen: { field: "case_type", equals: [SMILE_CASE_NEW] },
+          },
+          {
+            name: "fld_smile_project_select",
+            label: "Existing Project",
+            kind: "select",
+            required: true,
+            wide: true,
+            options: ["SM/MH/PUN/09003 — SMILE project (FY 2026-27)"],
+            showWhen: { field: "case_type", equals: [SMILE_CASE_EXISTING] },
+          },
+          {
+            name: "fld_project_id",
+            label: "Project ID",
+            kind: "text",
+            required: true,
+            showWhen: { field: "case_type", equals: [SMILE_CASE_EXISTING] },
+          },
+          {
+            name: "fld_installment_no",
+            label: "Installment",
+            kind: "select",
+            required: true,
+            options: ["1st Installment", "2nd Installment"],
+            showWhen: { field: "case_type", equals: [SMILE_CASE_EXISTING] },
+          },
           { name: "website_available", label: "Do you have a website?", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "fld_website_url", label: "Website URL", kind: "text", required: true, showWhen: { field: "website_available", equals: ["Yes"] } },
           { name: "camera_live_feed", label: "Do you have a camera and live feed?", kind: "radio", required: true, options: YES_NO, wide: true, help: "A Yes makes the CCTV/live-feed registration proof (document 20) mandatory." },

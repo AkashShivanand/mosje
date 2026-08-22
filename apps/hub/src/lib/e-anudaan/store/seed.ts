@@ -176,13 +176,16 @@ function buildNgos(): NgoProfile[] {
       name,
       darpanId: `${place.code.split("/")[0]}/2016/${(100000 + i * 137).toString()}`,
       registrationNo: `${between(10, 99)}-${between(10, 99)}`,
-      registrationDate: "06 Aug 1934",
+      registrationDate: "12 Mar 1978",
       registeredUnder: "Registrar of Societies",
       state: place.state,
       district: place.district,
-      chairman: "Shankar kumar sanyal",
-      secretary: "Rajneesh Kumar",
-      treasurer: "Phool chand sharma",
+      // Invented office bearers. The live demo account belongs to a real registered NGO, and its
+      // real chairman, secretary and treasurer are named on its dashboard — none of that belongs
+      // in this repo.
+      chairman: "Devendra Rao Kulkarni",
+      secretary: "Meenakshi Iyer",
+      treasurer: "Harpreet Singh Bedi",
       authorisedUser: name,
       email: `${name.toLowerCase().replace(/[^a-z0-9]/g, "")}@gmail.com`,
       mobile: `9441747${(200 + i).toString()}`,

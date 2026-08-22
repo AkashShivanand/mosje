@@ -368,7 +368,7 @@ export default function NgoDashboardPage() {
                 ["State", ngo?.state ?? "Maharashtra"],
                 ["District", ngo?.district ?? "Pune"],
                 ["Registration No.", ngo?.registrationNo ?? "51-54"],
-                ["Registration Date", ngo?.registrationDate ?? "06 Aug 1934"],
+                ["Registration Date", ngo?.registrationDate ?? "12 Mar 1978"],
                 ["Registered Under", ngo?.registeredUnder ?? "Registrar of Societies"],
                 ["Chairman", ngo?.chairman ?? "—"],
                 ["Secretary", ngo?.secretary ?? "—"],
