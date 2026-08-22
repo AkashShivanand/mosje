@@ -184,11 +184,24 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
   const isWebsite = variant === "website";
   const inStyle = { maxWidth } as React.CSSProperties;
 
-  const renderLink = (link: SiteFooterLink) =>
+  /**
+   * AN ICON MARKS A DISTINCTION. Where every link in a group is external, the
+   * group already says so and five repeated arrows are noise — so `markExternal`
+   * is false for a wholly-external list and true for a mixed one, decided from
+   * the data rather than by the caller.
+   *
+   * It is also load-bearing for layout: the arrow costs 20px, and in a 164px
+   * column that is the difference between "National Portal of India" (153px)
+   * sitting on one line and wrapping onto two.
+   *
+   * The accessible name is unaffected either way — every external link keeps
+   * its "(opens in a new window)" note and its `rel`.
+   */
+  const renderLink = (link: SiteFooterLink, markExternal = true) =>
     link.external ? (
       <a href={link.href} target="_blank" rel="noreferrer" className="ds-sitefooter__link">
         {link.label}
-        <Icon name="open_in_new" size={16} />
+        {markExternal && <Icon name="open_in_new" size={16} />}
         <NewWindow />
       </a>
     ) : (
@@ -196,6 +209,10 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
         {link.label}
       </Link>
     );
+
+  /** True when a group mixes internal and external, so the arrow tells them apart. */
+  const isMixed = (links: SiteFooterLink[]) =>
+    links.some((l) => l.external) && links.some((l) => !l.external);
 
   return (
     <footer
@@ -278,9 +295,9 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
               )}
             </div>
 
-            {columns && columns.length > 0 && (
+            {Boolean(columns?.length || relatedLinks?.length) && (
               <div className="ds-sitefooter__cols">
-                {columns.map((col) => (
+                {columns?.map((col) => (
                   <nav key={col.id} aria-labelledby={col.id}>
                     <h3 id={col.id} className="ds-sitefooter__colhead">
                       {col.heading}
@@ -292,6 +309,25 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
                     </ul>
                   </nav>
                 ))}
+
+                {/* [DBIM 5.6] Related Links, as a COLUMN. The clause requires
+                    the element in the footer, not in the legal band — and as a
+                    row down there it was 680px of links that could never share
+                    a line with the 607px policy row, so the bottom stacked into
+                    a wall of eleven undifferentiated greys. Up here it is what
+                    it actually is: a fifth destination list. */}
+                {relatedLinks && relatedLinks.length > 0 && (
+                  <nav aria-labelledby="ds-footer-related">
+                    <h3 id="ds-footer-related" className="ds-sitefooter__colhead">
+                      Related Links
+                    </h3>
+                    <ul className="ds-sitefooter__list">
+                      {relatedLinks.map((link) => (
+                        <li key={link.label}>{renderLink(link, isMixed(relatedLinks))}</li>
+                      ))}
+                    </ul>
+                  </nav>
+                )}
               </div>
             )}
           </div>
@@ -337,11 +373,15 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
               </ul>
             </nav>
 
-            {relatedLinks && relatedLinks.length > 0 && (
+            {/* On the WEBSITE these render as a column up in the working band.
+                The portal variant has no working band, so they render here —
+                DBIM 5.6 requires the element on both variants, and moving it
+                for layout reasons must not quietly drop it from one of them. */}
+            {!isWebsite && relatedLinks && relatedLinks.length > 0 && (
               <nav aria-label="Related government links">
                 <ul className="ds-sitefooter__inline">
                   {relatedLinks.map((link) => (
-                    <li key={link.label}>{renderLink(link)}</li>
+                    <li key={link.label}>{renderLink(link, isMixed(relatedLinks))}</li>
                   ))}
                 </ul>
               </nav>

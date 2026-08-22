@@ -133,9 +133,13 @@
 }
 
 @media (min-width: 1024px) {
-  .ds-sitefooter__body { gap: var(--sa-stack-40) var(--sa-padding-40); }
-  .ds-sitefooter__ident { grid-column: span 4; }
-  .ds-sitefooter__cols { grid-column: span 8; }
+  .ds-sitefooter__body { gap: var(--sa-stack-40) var(--sa-padding-32); }
+  /* Identity gives up a column so the link grid can carry five. Related Links
+     moved up here from the statutory bar — they are wayfinding, not statute,
+     and down there they were 680px of links that could never share a line
+     with the 607px policy row, so the bottom always stacked into a wall. */
+  .ds-sitefooter__ident { grid-column: span 3; }
+  .ds-sitefooter__cols { grid-column: span 9; grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }
 
 /* ── The identity lockup ─────────────────────────────────────────────────── */
@@ -177,7 +181,20 @@
   color: var(--ds-footer-ink-muted);
 }
 
-.ds-sitefooter__address .ds-icon { flex: none; opacity: 0.75; }
+/* THE ICON DOES NOT CARRY A `.ds-icon` CLASS. It emits
+   `material-symbols-rounded` and writes its layout inline, so the rules that
+   used to sit here targeting `.ds-icon` matched nothing and had never done
+   anything — the same silent no-op that once hid an eye glyph in the visitor
+   counter. Removed rather than repaired: `Icon` already sets
+   `flex-shrink: 0` inline, and dimming an 8.54:1 muted glyph to 70% would
+   push it toward the 4.5:1 line for no gain.
+
+   The identity column narrowed to 3/12 when the link grid took a fifth
+   column, and the address began breaking "New / Delhi", which reads as a typo
+   rather than a wrap. `balance` evens the lines and moves the break to a
+   comma. Addressed BY POSITION — the Icon's class name is its own business,
+   not something this stylesheet should depend on. */
+.ds-sitefooter__address > span:last-child { text-wrap: balance; }
 
 /* ── The call to action ──────────────────────────────────────────────────
    Outline, never fill. A white fill made a tertiary action the single
@@ -250,8 +267,6 @@
   text-underline-offset: 3px;
 }
 
-.ds-sitefooter__link .ds-icon { opacity: 0.7; }
-
 /* ── Social rail ─────────────────────────────────────────────────────────
    The target is 40px and the mark is 24px, and at rest there is no ring around
    either. Five outlined circles put five hard shapes in the quietest part of
@@ -307,7 +322,11 @@
 .ds-sitefooter__statutory .ds-sitefooter__in {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--sa-stack-20) var(--sa-padding-40);
+  /* 16, not 20. Measured at 1440 the statutory band ran 238px against the
+     working band's 285px — boilerplate nearly as tall as the navigation it
+     sits under, at an identical rhythm between three different registers.
+     Provenance, links out, and metadata are three things, not one list. */
+  gap: var(--sa-stack-16) var(--sa-padding-40);
   padding-block: var(--sa-padding-24);
 }
 
@@ -329,7 +348,10 @@
    links. */
 .ds-sitefooter__lineage {
   margin: 0;
-  max-width: 66ch;
+  /* Measured: at 78ch the sentence still broke to three lines, because it is
+     ~200 characters. 96ch sets it in two at desktop and the credits column
+     caps it long before the measure could run away on a wide screen. */
+  max-width: 96ch;
   font-size: var(--sa-type-body-3-size);
   line-height: 1.6;
   color: var(--ds-footer-ink-dim);
