@@ -100,6 +100,13 @@
     display: flex;
     flex-direction: column;
     gap: var(--sa-padding-2);
+    /*
+     * The item is a centred flex column, so this box would otherwise size to its own content and
+     * spill past the item on both sides — which is how, at eight steps, "Infrastructure,"
+     * overlapped "Justification". Constrain it to the column and let the label wrap instead.
+     */
+    max-width: 100%;
+    min-width: 0;
   }
 
   .ds-stepper__label {
@@ -107,6 +114,20 @@
     font-weight: 600;
     color: var(--sa-text-neutral-subtle);
     line-height: 1.3;
+    /*
+     * A gutter, so two long labels in adjacent columns cannot touch and read as one word. An
+     * eight-step wizard at ~800px gives each column roughly 100px, and "Justification" ran
+     * straight into "Infrastructure," with nothing between them. The ≤640px rule below hides
+     * non-current labels outright; this covers the range above it, where they all still show.
+     */
+    padding-inline: var(--sa-padding-2);
+    /*
+     * Hold the label inside its own column. Without the max-width the label box grows wider than
+     * the column, and because the column is centre-aligned it spills equally both ways: at eight
+     * steps "Infrastructure," overlapped "Justification" by 8px and the two read as one word.
+     * Constrained, the long label wraps instead — which is what the multi-line labels already do.
+     */
+    max-width: 100%;
   }
 
   .ds-stepper__item.is-current .ds-stepper__label {
@@ -133,6 +154,44 @@
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+  }
+
+  /*
+   * An eight-step wizard is crowded long before the 640px break below. At ~800px each column is
+   * about 76px, which is narrower than "Infrastructure," — the label then either overlaps its
+   * neighbour or breaks mid-word ("Organisatio n Details"). Neither is acceptable, so above 640px
+   * the same treatment the narrow rule uses applies once a stepper carries eight or more steps:
+   * show the current label, keep the rest in the DOM for assistive technology.
+   *
+   * `:first-child:nth-last-child(n + 8)` matches the first item only when eight or more exist;
+   * the sibling combinator carries that to the others.
+   */
+  @media (min-width: 641px) and (max-width: 900px) {
+    .ds-stepper__item:first-child:nth-last-child(n + 8) .ds-stepper__label,
+    .ds-stepper__item:first-child:nth-last-child(n + 8) ~ .ds-stepper__item .ds-stepper__label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .ds-stepper__item:first-child:nth-last-child(n + 8).is-current .ds-stepper__label,
+    .ds-stepper__item:first-child:nth-last-child(n + 8)
+      ~ .ds-stepper__item.is-current
+      .ds-stepper__label {
+      position: static;
+      width: auto;
+      height: auto;
+      padding-inline: var(--sa-padding-2);
+      overflow: visible;
+      clip: auto;
+      white-space: normal;
+      font-weight: 700;
+    }
   }
 
   /* On narrow screens, hide step descriptions and shrink labels. */

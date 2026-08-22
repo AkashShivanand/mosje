@@ -18,7 +18,7 @@
  * internal and the stepper indicators are display-only.
  */
 
-import { CITY_CATEGORIES, INDIAN_STATES } from "./geography";
+import { CITY_CATEGORIES, INDIAN_STATES, cityCategoryFor } from "./geography.ts";
 
 export type SchemeCode = "SHRESHTA_M2" | "AVYAY" | "SMILE" | "NAPDDR";
 
@@ -38,7 +38,13 @@ export type FieldKind =
 export type AutoRule =
   | { kind: "sum"; from: readonly string[] }
   /** City category is filled in from the chosen district (live helper text says exactly this). */
-  | { kind: "cityCategory"; from: string };
+  | { kind: "cityCategory"; from: string }
+  /**
+   * AVYAY's account number, IFSC and bank/branch, which live fills in from the Bank Account
+   * chosen above rather than asking for them. The option reads
+   * "<bank> · <masked account> · <IFSC>", so each part is one segment of it.
+   */
+  | { kind: "bankAccountPart"; from: string; part: "account" | "ifsc" | "bankAndBranch" };
 
 export interface FieldDef {
   name: string;
@@ -530,9 +536,9 @@ const AVYAY_STEPS: readonly StepDef[] = [
             options: ["State Bank of India · ••••••••••4417 · SBIN0001234"],
             help: "Carried forward from this project — it cannot be changed on a renewal. To change it, raise a request from My Bank Accounts; it takes effect once the Ministry approves it. Manage all your accounts from the 'My Bank Accounts' menu.",
           },
-          { name: "fld_bank_account_number", label: "Account Number", kind: "text", required: true, readOnly: true, help: "Filled in automatically from the Bank Account you select above." },
-          { name: "fld_bank_ifsc", label: "IFSC Code", kind: "text", required: true, readOnly: true, help: "Filled in automatically from the Bank Account you select above." },
-          { name: "fld_bank_name_branch", label: "Bank & Branch", kind: "text", required: true, readOnly: true, help: "Filled in automatically from the Bank Account you select above." },
+          { name: "fld_bank_account_number", label: "Account Number", kind: "text", required: true, readOnly: true, auto: { kind: "bankAccountPart", from: "fld_bank_account_id", part: "account" }, help: "Filled in automatically from the Bank Account you select above." },
+          { name: "fld_bank_ifsc", label: "IFSC Code", kind: "text", required: true, readOnly: true, auto: { kind: "bankAccountPart", from: "fld_bank_account_id", part: "ifsc" }, help: "Filled in automatically from the Bank Account you select above." },
+          { name: "fld_bank_name_branch", label: "Bank & Branch", kind: "text", required: true, readOnly: true, auto: { kind: "bankAccountPart", from: "fld_bank_account_id", part: "bankAndBranch" }, help: "Filled in automatically from the Bank Account you select above." },
         ],
       },
     ],
@@ -575,34 +581,34 @@ const AVYAY_STEPS: readonly StepDef[] = [
  */
 const AVYAY_DOCS: readonly DocDef[] = [
   { n: 1, title: "Registration Certificate" },
-  { n: 2, title: "PAN Card of the Organisation", showWhen: { field: "case_type", equals: ["NEW"] } },
+  { n: 2, title: "PAN Card of the Organisation", showWhen: { field: "case_type", equals: ["New project"] } },
   { n: 3, title: "Annual Report of NGO — previous FY" },
   {
     n: 4,
     title: "Annual Report of NGO — previous-to-previous FY",
-    showWhen: { field: "case_type", equals: ["NEW"] },
+    showWhen: { field: "case_type", equals: ["New project"] },
   },
   {
     n: 5,
     title: "Audited Accounts of NGO — previous FY",
-    showWhen: { field: "case_type", equals: ["NEW"] },
+    showWhen: { field: "case_type", equals: ["New project"] },
   },
   {
     n: 6,
     title: "Audited Accounts of NGO — previous-to-previous FY",
-    showWhen: { field: "case_type", equals: ["NEW"] },
+    showWhen: { field: "case_type", equals: ["New project"] },
   },
   { n: 7, title: "Bank Details of the Project" },
   { n: 8, title: "Beneficiary List" },
   { n: 9, title: "Staff List" },
   { n: 10, title: "Rent Agreement" },
-  { n: 11, title: "Fire Safety Audit Report", showWhen: { field: "case_type", equals: ["NEW"] } },
-  { n: 12, title: "Budget Estimate", showWhen: { field: "case_type", equals: ["ONGOING"] } },
-  { n: 13, title: "Audited Accounts of Project", showWhen: { field: "case_type", equals: ["ONGOING"] } },
+  { n: 11, title: "Fire Safety Audit Report", showWhen: { field: "case_type", equals: ["New project"] } },
+  { n: 12, title: "Budget Estimate", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+  { n: 13, title: "Audited Accounts of Project", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
   {
     n: 14,
     title: "Utilisation Certificate (GFR-12A)",
-    showWhen: { field: "case_type", equals: ["ONGOING"] },
+    showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] },
   },
 ];
 
@@ -1162,6 +1168,28 @@ export function applyAutoFields(step: StepDef, values: Record<string, string>): 
     if (f.auto.kind === "sum") {
       const sum = f.auto.from.reduce((acc, k) => acc + Number(next[k] || 0), 0);
       const value = f.auto.from.some((k) => (next[k] ?? "").trim() !== "") ? String(sum) : "";
+      if (next[f.name] !== value) next = { ...next, [f.name]: value };
+    }
+    if (f.auto.kind === "cityCategory") {
+      const district = next[f.auto.from] ?? "";
+      // Only fill it in once a district is chosen; live leaves the applicant free to pick a
+      // category by hand where the district has not been classified.
+      if (district.trim() !== "") {
+        const value = cityCategoryFor(district);
+        if (value && next[f.name] !== value) next = { ...next, [f.name]: value };
+      }
+    }
+    if (f.auto.kind === "bankAccountPart") {
+      const parts = (next[f.auto.from] ?? "").split("·").map((x) => x.trim());
+      // "<bank> · <masked account> · <IFSC>" — anything else and we leave the field alone.
+      const value =
+        parts.length === 3
+          ? f.auto.part === "account"
+            ? (parts[1] ?? "")
+            : f.auto.part === "ifsc"
+              ? (parts[2] ?? "")
+              : (parts[0] ?? "")
+          : "";
       if (next[f.name] !== value) next = { ...next, [f.name]: value };
     }
   }
