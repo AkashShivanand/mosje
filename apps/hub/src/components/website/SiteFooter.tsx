@@ -7,6 +7,9 @@ import {
   type SiteFooterCredit,
   type SiteFooterLink,
   type SiteFooterSocial,
+  ActionBanner,
+  buttonClasses,
+  Band,
 } from "@mosje/design-system";
 import { getContentSyncedDate } from "@/lib/website/content";
 
@@ -165,7 +168,22 @@ export interface SiteFooterProps {
 
 export function SiteFooter({ lastUpdated }: SiteFooterProps = {}) {
   return (
-    <DsSiteFooter
+    <>
+      <Band spacing="l" className="bg-white">
+        <ActionBanner
+          title="Need Support?"
+          description="Reach out to our 24x7 citizen helpline or connect directly with our key officers."
+          action={
+            <Link
+              href="/website/contact-us"
+              className={`${buttonClasses("primary", "filled", "md")} whitespace-nowrap px-6 py-3`}
+            >
+              Get in Touch
+            </Link>
+          }
+        />
+      </Band>
+      <DsSiteFooter
       linkAs={Link}
       emblem={
         <Image
@@ -196,5 +214,6 @@ export function SiteFooter({ lastUpdated }: SiteFooterProps = {}) {
       copyright={`© ${new Date().getFullYear()} Department of Social Justice & Empowerment. All Rights Reserved.`}
       lastUpdated={lastUpdated ?? getContentSyncedDate()}
     />
+    </>
   );
 }

@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { buttonClasses, Accordion, AccordionItem, VerticalTimeline, VerticalTimelineItem, ProfileCard, ActionBanner } from "@mosje/design-system";
+import { buttonClasses, Accordion, AccordionItem, VerticalTimeline, VerticalTimelineItem, ProfileCard,   } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 
 const TARGET_GROUPS = [
@@ -272,19 +272,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Section 5: Need Support Banner */}
-        <ActionBanner
-            title="Need Support?"
-            description="Reach out to our 24x7 citizen helpline or connect directly with our key officers."
-            action={
-              <Link
-                href="/website/contact-us"
-                className={`${buttonClasses("primary", "filled", "md")} whitespace-nowrap`}
-              >
-                Get in Touch
-              </Link>
-            }
-          />
       </div>
     </PageLayout>
   );
