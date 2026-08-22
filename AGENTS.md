@@ -83,6 +83,17 @@ Enforced automatically, regardless of tool:
 Husky installs via `prepare` on `npm install`. **If you cloned and did not install,
 the hooks are not active** — run `npm install` before committing.
 
+**A red PR may not be your fault.** Nothing blocks a red `main` here: `pre-push`
+only typechecks *local* pushes and PR merges land server-side, while CI reports but
+cannot block (branch protection needs GitHub Pro on a private repo). So `main` can
+go red and stay red — it did for three days in August 2026, twenty consecutive
+runs, unnoticed. `npm run branches` now says so outright. Before debugging a failing
+PR, check whether `main` was already failing:
+
+```bash
+gh run list --branch main --workflow "Apps CI" --limit 5
+```
+
 ## What this is
 
 Digital estate for the **Ministry / Department of Social Justice & Empowerment

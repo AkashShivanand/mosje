@@ -92,6 +92,38 @@ $prs
 \`\`\`"
 fi
 
+# Is main's CI green? A gate that is red and unwatched is not a gate — it is
+# noise everyone has learned to ignore. Found on 2026-08-22: Apps CI had failed on
+# EVERY run for three days (20 consecutive) and nothing surfaced it, because
+# .husky/pre-push only typechecks LOCAL pushes to main and PR merges happen
+# server-side, while CI can report but not block (branch protection needs GitHub
+# Pro on a private repo). So main can rot silently. This is the cheap fix: say so,
+# every session, to every tool.
+if command -v gh >/dev/null 2>&1; then
+  ci=$(run gh run list --branch main --workflow "Apps CI" --limit 10 \
+    --json conclusion --jq '[.[].conclusion]|@tsv')
+  if [ -n "$ci" ]; then
+    latest=$(printf '%s' "$ci" | cut -f1)
+    streak=0
+    for c in $ci; do
+      [ "$c" = "failure" ] || break
+      streak=$((streak + 1))
+    done
+    if [ "$latest" = "failure" ]; then
+      # Only 10 runs are sampled, so a full streak is a floor, not a total.
+      [ "$streak" -ge 10 ] && streak="10+"
+      out="$out
+
+**main CI is FAILING** — $streak consecutive run(s). Nothing blocks a red \`main\`
+here (pre-push only guards LOCAL pushes; PR merges land server-side), so it stays
+red until someone acts. Check before assuming a red PR is your fault:
+\`\`\`
+gh run list --branch main --workflow \"Apps CI\" --limit 5
+\`\`\`"
+    fi
+  fi
+fi
+
 # Cost-heavy plugins that are meant to be OFF by default and switched on only
 # for a task (see ~/.claude/bin/claude-with). If `claude-with` is killed hard,
 # its cleanup never runs and the plugin silently stays on, costing tokens in
