@@ -17,7 +17,7 @@ import {
   type AppEntry,
 } from "@mosje/design-system/registry";
 import { DEFAULT_APPS } from "@mosje/design-system/app-registry";
-import { Button } from "@mosje/design-system";
+import { BrandLockup, Button } from "@mosje/design-system";
 import { requireAdmin } from "@/lib/admin/auth";
 import { settingsConfigured } from "@/lib/settings/store";
 import { readRegistryConfig } from "@/lib/registry/config";
@@ -111,21 +111,15 @@ export default async function AdminPortalsPage({
       <header className="border-b border-border bg-surface">
         <div className="mx-auto flex h-16 max-w-5xl items-center gap-4 px-6">
           <div className="flex flex-1 items-center gap-3.5">
-            {/* eslint-disable-next-line @next/next/no-img-element -- /admin sits
-                outside the gate, and next/image's endpoint is not in its allowlist. */}
-            <img
-              src="/images/National-Emblem-logo.svg"
-              alt=""
-              width={22}
-              height={36}
-              className="estate-emblem h-8 w-auto"
+            {/* Identity from the DS lockup. /admin is the recovery path and sits
+                outside the gate, but that is a reason for the emblem to be the
+                real one, not a licence to retype it. */}
+            <BrandLockup
+              emblemSrc="/images/National-Emblem-logo.svg"
+              lines={{ ministry: "MoSJE", department: "Portal administration" }}
+              href="/admin"
+              compact
             />
-            <span className="flex flex-col border-l border-border pl-3.5 leading-none">
-              <span className="text-[15px] font-bold tracking-tight text-ink">MoSJE</span>
-              <span className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
-                Hub administration
-              </span>
-            </span>
           </div>
           <Button href="/admin" appearance="outlined" size="sm">
             Settings

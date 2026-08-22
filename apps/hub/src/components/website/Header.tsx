@@ -126,6 +126,7 @@ export function Header() {
 
   return (
     <SiteHeader
+      homeHref="/website"
       variant="website"
       emblemSrc={`${BP}/images/National-Emblem-logo.svg`}
       brandLines={{
@@ -143,7 +144,14 @@ export function Header() {
       language={{ label: "English" }}
       search={{
         placeholder: "Search Schemes, Services, Documents",
-        onSearch: () => router.push("/website/search"),
+        // The masthead field is a real input now, so the query travels with the
+        // navigation instead of dumping the reader on an empty results page.
+        onSearch: (query) =>
+          router.push(
+            query.trim()
+              ? `/website/search?q=${encodeURIComponent(query.trim())}`
+              : "/website/search",
+          ),
       }}
       cobranding={[
         { src: `${BP}/images/digital-india-logo.svg`, alt: "Digital India — Power To Empower", height: 40 },

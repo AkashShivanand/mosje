@@ -27,6 +27,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen">
       <SiteHeader
+        homeHref="/portals/e-anudaan/dashboard"
         variant="portal"
         emblemSrc="/images/emblem.svg"
         brandLines={{

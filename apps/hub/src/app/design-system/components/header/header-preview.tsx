@@ -134,6 +134,9 @@ export function SiteHeaderPreview(): React.JSX.Element {
 
 /** Live SiteHeader — Portal variant: collapse toggle · emblem divider · account block · nav. */
 export function SiteHeaderNavyPreview(): React.JSX.Element {
+  // Live state, not a no-op handler: the toggle IS a stateful control, and a
+  // preview that never changes cannot show what the two states look like.
+  const [navExpanded, setNavExpanded] = React.useState(true);
   return (
     <Frame>
       <SiteHeader
@@ -143,7 +146,8 @@ export function SiteHeaderNavyPreview(): React.JSX.Element {
         brandLines={BRAND_LINES}
         beta
         brandDivider
-        onToggleNav={() => {}}
+        onToggleNav={() => setNavExpanded((v) => !v)}
+        navExpanded={navExpanded}
         language={{ label: "English" }}
         account={{ name: "Officer Name", email: "officer@gov.in", role: "State Nodal Officer" }}
         accountMenu={[
@@ -151,6 +155,31 @@ export function SiteHeaderNavyPreview(): React.JSX.Element {
           { label: "Sign out", danger: true, onSelect: () => {} },
         ]}
         nav={PORTAL_NAV}
+      />
+    </Frame>
+  );
+}
+
+/** Live SiteHeader — Compact variant: one 64px tier for hub index surfaces. */
+export function SiteHeaderCompactPreview(): React.JSX.Element {
+  return (
+    <Frame>
+      <SiteHeader
+        variant="compact"
+        sticky={false}
+        homeHref="#"
+        emblemSrc={EMBLEM}
+        brandLines={{
+          ministry: "Ministry of Social Justice & Empowerment",
+          department: "Digital Estate",
+        }}
+        nav={[
+          { label: "Website", href: "#", active: true },
+          { label: "Portals", href: "#" },
+          { label: "Design System", href: "#" },
+          { label: "Reports", href: "#" },
+          { label: "Storybook", href: "#", external: true },
+        ]}
       />
     </Frame>
   );

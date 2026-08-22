@@ -7,6 +7,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AccessibilityBar, BrandLockup } from "@mosje/design-system";
 import type { DemoFillDetail } from "@mosje/design-system";
 import Image from "next/image";
 import Link from "next/link";
@@ -82,33 +83,36 @@ export default function LoginPage() {
 
   return (
     <div className="login-page">
-      {/* ── GoI utility bar ── */}
-      <div className="pm-nav-utility">
-        <a href="#login-main" className="sr-only focus:not-sr-only">Skip to Main Content</a>
-        <div className="gov-bar-inner">
-          <span className="gov-bar-flag">
-            <Image src={`${IMG_BASE}/images/Indian-Flag.svg`} alt="" width={33} height={22} aria-hidden />
-            Government of India
-          </span>
-        </div>
-      </div>
+      {/* ── GoI utility bar — the shared DS AccessibilityBar ──
+          It was a lone skip link plus a flag and a wordmark: no text-size control,
+          no accessibility entry, no language selector. The one row on the page
+          whose job is those affordances offered none of them. */}
+      <AccessibilityBar
+        layout="fluid"
+        govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
+        skipTo="#login-main"
+        showSkip
+        fontSize
+        accessibility
+        language={{ label: "English" }}
+      />
 
       {/* ── Brand strip ── */}
       <header className="login-brand">
         <div className="login-brand-inner">
           <div className="login-brand-left">
-            <Image
-              src={`${IMG_BASE}/images/National_Emblem_logo_white.svg`}
-              alt="National Emblem of India"
-              width={40}
-              height={66}
-              className="login-emblem"
+            {/* Identity from the DS lockup — inverse, because this strip is dark. */}
+            <BrandLockup
+              emblemSrc={`${IMG_BASE}/images/National_Emblem_logo_white.svg`}
+              lines={{
+                org: "Government of India",
+                ministry: "Ministry of Social Justice & Empowerment",
+                department: "Department of Social Justice & Empowerment",
+              }}
+              href={IMG_BASE}
+              compact
+              inverse
             />
-            <div className="login-brand-text">
-              <span className="login-brand-gov">Government of India</span>
-              <span className="login-brand-min">Ministry of Social Justice &amp; Empowerment</span>
-              <span className="login-brand-dept">Department of Social Justice &amp; Empowerment</span>
-            </div>
           </div>
           <div className="login-brand-logos">
             <Image src={`${IMG_BASE}/images/digital-india-logo.svg`} alt="Digital India" width={100} height={39} />

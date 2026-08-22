@@ -21,6 +21,8 @@
 
 import * as React from "react";
 import { Divider } from "../layout/divider";
+import { AccessibilityBar } from "../navigation/accessibility-bar";
+import { BrandLockup } from "../navigation/header/brand-lockup";
 import { cn } from "../../utils/cn";
 // The chrome rows use the estate content container, so the emblem lines up with
 // the same column every other page uses. Previously max-w-screen-2xl (1536).
@@ -80,120 +82,45 @@ export function PortalLoginShell({
   extraContent,
   onFooterLinkClick,
 }: PortalLoginShellProps) {
-  const [scale, setScale] = React.useState(100);
-
+  // No local text-size state. It used to scale THIS SHELL ONLY via an inline
+  // font-size, which is why resizing text here did nothing on the page you landed
+  // on afterwards. AccessibilityBar drives `--sa-font-scale` on :root, so the
+  // reader's choice now applies estate-wide and survives navigation.
   return (
-    <div className="flex min-h-screen flex-col" style={{ fontSize: `${scale}%` }}>
-      {/* Skip link */}
-      <a
-        href="#login-form"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow-md"
-        style={{ color: "var(--sa-color-primaryScale-800)" }}
-      >
-        Skip to Main Content
-      </a>
-
-      {/* ── Utility bar ─────────────────────────────────────────────────────── */}
-      <div style={{ background: "var(--sa-bg-brand-primary-boldest)", color: "var(--sa-on-bg-brand-primary-boldest)" }}>
-        <div
-          className="sa-container flex items-center justify-between py-1.5"
-        >
-          {/* No flag emoji: 🇮🇳 falls back to the letters "IN" on Windows and
-              several Android builds, so it renders inconsistently on a
-              government property. The wordmark carries the attribution. */}
-          <span className="flex items-center gap-1.5 text-xs">
-            <span className="font-medium">Government of India</span>
-          </span>
-
-          <div className="flex items-center gap-2 text-xs" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 75%, transparent)" }}>
-            <a
-              href="#login-form"
-              className="hidden hover:text-white sm:inline"
-              style={{ color: "inherit" }}
-            >
-              Skip to Main Content
-            </a>
-            <Divider orientation="vertical" tone="inverse-subtle" length={14} className="hidden sm:block" />
-
-            {/* Text-size controls */}
-            <div className="flex items-center" role="group" aria-label="Adjust text size">
-              <button
-                type="button"
-                onClick={() => setScale(90)}
-                aria-pressed={scale === 90}
-                className="rounded px-1.5 py-0.5 hover:text-white"
-                style={{ fontWeight: scale === 90 ? "700" : undefined, color: scale === 90 ? "var(--sa-on-bg-brand-primary-boldest)" : undefined }}
-              >
-                A-
-              </button>
-              <button
-                type="button"
-                onClick={() => setScale(100)}
-                aria-pressed={scale === 100}
-                className="rounded px-1.5 py-0.5 hover:text-white"
-                style={{ fontWeight: scale === 100 ? "700" : undefined, color: scale === 100 ? "var(--sa-on-bg-brand-primary-boldest)" : undefined }}
-              >
-                A
-              </button>
-              <button
-                type="button"
-                onClick={() => setScale(115)}
-                aria-pressed={scale === 115}
-                className="rounded px-1.5 py-0.5 text-sm hover:text-white"
-                style={{ fontWeight: scale === 115 ? "700" : undefined, color: scale === 115 ? "var(--sa-on-bg-brand-primary-boldest)" : undefined }}
-              >
-                A+
-              </button>
-            </div>
-
-            <Divider orientation="vertical" tone="inverse-subtle" length={14} />
-            <button type="button" className="hover:text-white" aria-label="Toggle high contrast" title="Toggle high contrast">◑</button>
-            <Divider orientation="vertical" tone="inverse-subtle" length={14} />
-            <button type="button" className="hover:text-white" aria-label="Accessibility options" title="Accessibility options">♿</button>
-            <Divider orientation="vertical" tone="inverse-subtle" length={14} />
-            <button
-              type="button"
-              className="flex items-center gap-1 hover:text-white"
-              aria-label="Select language: English"
-            >
-              <span aria-hidden="true">🌐</span>
-              <span>English</span>
-              <span aria-hidden="true">▾</span>
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="flex min-h-screen flex-col">
+      {/* ── Utility bar ──────────────────────────────────────────────────────
+         The shared DS AccessibilityBar. This shell used to carry its OWN: two
+         skip links to the same target, a bespoke A-/A/A+ stepper wired to local
+         state that nothing else read, and ◑ ♿ 🌐 ▾ as literal emoji rather than
+         Material Symbols. It was a second accessibility bar living inside the
+         design system, free to drift from the real one — and it had. The bar also
+         renders the skip link, so the duplicate pair is gone with it. */}
+      <AccessibilityBar
+        layout="wide"
+        govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
+        skipTo="#login-form"
+        showSkip
+        fontSize
+        accessibility
+        language={{ label: "English" }}
+      />
 
       {/* ── Brand header ────────────────────────────────────────────────────── */}
       <div style={{ background: "var(--sa-bg-neutral-base)", borderBottom: "1px solid var(--sa-border-neutral-subtle)" }}>
         <div className="sa-container flex items-center justify-between py-3">
-          {/* Left: National Emblem + ministry hierarchy */}
-          <div className="flex items-center gap-3">
-            <img src={emblemSrc} alt="National Emblem of India" className="h-14 w-auto" />
-            <div className="leading-snug">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-medium" style={{ color: "var(--sa-text-neutral-subtle)" }}>
-                  Government of India
-                </span>
-                <span
-                  className="rounded px-1.5 py-0.5 font-bold uppercase tracking-wider"
-                  style={{
-                    fontSize: "var(--sa-type-label-3-size)",
-                    background: "var(--sa-bg-brand-secondary-base)",
-                    color: "var(--sa-on-bg-brand-secondary-base)",
-                  }}
-                >
-                  Beta
-                </span>
-              </div>
-              <p className="text-xs" style={{ color: "var(--sa-text-neutral-subtle)" }}>
-                Ministry of Social Justice &amp; Empowerment
-              </p>
-              <p className="text-sm font-bold" style={{ color: "var(--sa-color-primaryScale-800)" }}>
-                Department of Social Justice &amp; Empowerment
-              </p>
-            </div>
-          </div>
+          {/* Identity from the DS lockup — the emblem, the line order and the
+              BETA badge are estate policy, not this shell's to retype. */}
+          <BrandLockup
+            emblemSrc={emblemSrc}
+            lines={{
+              org: "Government of India",
+              ministry: "Ministry of Social Justice & Empowerment",
+              department: "Department of Social Justice & Empowerment",
+            }}
+            href="/"
+            beta
+            compact
+          />
 
           {/* Right: Digital India + SAMAVESH */}
           <div className="hidden items-center gap-4 md:flex">

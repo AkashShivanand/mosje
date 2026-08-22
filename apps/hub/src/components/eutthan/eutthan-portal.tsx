@@ -128,7 +128,8 @@ export default function EutthanPortal() {
 
   return (
     <div className="app-shell">
-      <a href="#eu-main-content" className="eu-skip-link">Skip to main content</a>
+      {/* The skip link comes from <AccessibilityBar> inside <TopBar>. Two links
+          to the same target announce the bypass twice. */}
       <TopBar onLogout={handleLogout} />
       <Masthead name={userName} roleLabel={roleLabel} />
       <div className="workspace">

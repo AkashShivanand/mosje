@@ -3,8 +3,12 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { AccessibilityBar } from "../accessibility-bar";
+import { Icon } from "../../icon";
 import { BrandLockup } from "./brand-lockup";
 import { AccountMenu } from "./account-menu";
+import { MenuToggle, NavItemLink, SheetToggle } from "./nav-parts";
+import { NavSheet } from "./nav-sheet";
+import { Search } from "../../forms/search";
 import type {
   AccountMenuItem,
   BrandLines,
@@ -64,6 +68,16 @@ export interface SiteHeaderProps {
   brandLines: BrandLines;
   /** Show the BETA badge. @default false */
   beta?: boolean;
+  /**
+   * Where the brand lockup links. **Always pass this.**
+   *
+   * It defaults to `/`, which is the hub root — so a website page that omits it
+   * sends "click the emblem to go home" to the estate index instead of the site
+   * the reader is on. Pass the zone root: `/website` for the public site, the
+   * portal's own landing for a portal, `/` only for the hub itself.
+   * @default "/"
+   */
+  homeHref?: string;
   /** Portal: collapse/menu toggle rendered on the far left of the brand row. */
   onToggleNav?: () => void;
   /** Portal: whether the app-shell nav/sidebar controlled by the toggle is open (drives `aria-expanded`). */
@@ -72,8 +86,15 @@ export interface SiteHeaderProps {
   navControlsId?: string;
   /** Portal: blue gradient divider between the emblem and the text. @default false */
   brandDivider?: boolean;
-  /** Search field affordance. Renders a button styled as a search box. */
-  search?: { placeholder?: string; onSearch?: () => void };
+  /**
+   * Masthead search. Renders the shared DS `<Search>` — the same atom every
+   * other screen uses, and the same component the Figma masthead embeds. It
+   * used to be a `<button>` dressed as a search box, which is why the two
+   * drifted.
+   *
+   * `onSearch` receives the typed query (Enter, or the leading icon).
+   */
+  search?: { placeholder?: string; onSearch?: (query: string) => void };
   /** Cobranding marks in the trailing zone (Digital India, SAMAVESH …). */
   cobranding?: BrandMark[];
   /** Portal account block (name / email + avatar). */
@@ -114,30 +135,21 @@ export interface SiteHeaderProps {
   className?: string;
 }
 
-/* ── Inline icons (no runtime icon dependency) ─────────────────────────────── */
-/* The accessibility bar's icons (external, accessibility, globe) now live in the
-   shared <AccessibilityBar> component; only the icons the brand/nav rows use
-   remain here. */
-const IcCaret = () => (
-  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="ds-hdr-ic">
-    <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-const IcSearch = () => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
-    <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-  </svg>
-);
-const IcMenu = () => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
+/* ── Glyphs ────────────────────────────────────────────────────────────────
+   The nav row's glyphs (caret, mega chevron, new-tab hint) and the two triggers
+   moved to nav-parts.tsx, where the components that own them live. Nothing is
+   left inline here: every glyph in this file is the shared <Icon>. */
 
 /**
- * SiteHeader — the SAMAVESH Navbar, matching the UX4G "Navbar Website" and Portal
- * DS "Navbar Portal" Figma components pixel-for-pixel. Three tiers:
+ * SiteHeader — the SAMAVESH Navbar. ONE component serves all three estate
+ * placements, matching the Figma library (Navbar/Website, Navbar/Portal,
+ * Navbar/MenuToggle) pixel-for-pixel:
+ *
+ *   variant="website"  public site  — three tiers, static
+ *   variant="portal"   app shell    — three tiers, sticky, sidebar toggle + account
+ *   variant="compact"  hub index    — ONE 64px tier, nav inline, no accessibility bar
+ *
+ * The website and portal variants render three tiers:
  *
  *   1. Accessibility bar — GoI link · font-size A−/A/A+ · contrast · accessibility · language
  *   2. Brand row         — [collapse] · emblem + lockup · {search + CTA | cobranding + account}
@@ -164,6 +176,7 @@ export function SiteHeader({
   emblemAlt,
   brandLines,
   beta = false,
+  homeHref = "/",
   onToggleNav,
   navExpanded,
   navControlsId,
@@ -180,14 +193,16 @@ export function SiteHeader({
   className,
 }: SiteHeaderProps): React.JSX.Element {
   const isPortal = variant === "portal";
+  const isCompact = variant === "compact";
   // variant supplies behavioural defaults; explicit props always win.
   // `sticky` defaults on for portals; scroll-collapse stays opt-in (it changes
   // the chrome height, which app-shell sidebar offsets are measured against).
-  const isSticky = sticky ?? isPortal;
+  const isSticky = sticky ?? (isPortal || isCompact);
   const wantsScrollCollapse = (collapseOnScroll ?? false) && isSticky;
 
   const [openLabel, setOpenLabel] = React.useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [query, setQuery] = React.useState("");
   const [scrolled, setScrolled] = React.useState(false);
   // Default to 100% for portal app-shells so the brand row aligns with full-width topbar,
   // or default to estate container variable for static website headers.
@@ -230,17 +245,25 @@ export function SiteHeader({
     };
   }, [openLabel]);
 
-  // Mobile drawer: close on Escape, and move focus to the first link on open.
-  const drawerRef = React.useRef<HTMLElement>(null);
-  React.useEffect(() => {
-    if (!drawerOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setDrawerOpen(false);
-    };
-    document.addEventListener("keydown", onKey);
-    drawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
-    return () => document.removeEventListener("keydown", onKey);
-  }, [drawerOpen]);
+  // Escape-to-close and initial focus now belong to <NavSheet>, with the markup.
+
+  /* The primary nav renders in one of two places: its own bordered tier below
+     the brand row (website / portal), or inline in the brand row (compact).
+     Same markup, same refs, same dropdown behaviour — only the slot moves. */
+  const navRow = hasNav ? (
+    <nav className={cn("ds-hdr-nav", isCompact && "is-inline")} aria-label="Primary" ref={navRef}>
+      <ul className="ds-hdr-nav__list" style={inner}>
+        {nav!.map((item) => (
+          <NavItemLink
+            key={item.label}
+            item={item}
+            open={openLabel === item.label}
+            onOpenChange={(next) => setOpenLabel(next ? item.label : null)}
+          />
+        ))}
+      </ul>
+    </nav>
+  ) : null;
 
   return (
     <header
@@ -258,6 +281,7 @@ export function SiteHeader({
           re-resolves bg/brand/primary/bolder to the navy ramp (#003366), the same
           value the retired tone="navy" hardcoded. Scoped to the bar so the brand
           row and nav row below keep their own surfaces. */}
+      {!isCompact && (
       <div data-brand={tone === "navy" ? "navy" : undefined}>
         <AccessibilityBar
           govLink={govLink}
@@ -286,21 +310,17 @@ export function SiteHeader({
           maxWidth={maxWidth}
         />
       </div>
+      )}
 
       {/* ── Tier 2: Brand row ── */}
       <div className="ds-hdr-brand">
         <div className="ds-hdr-brand__in" style={inner}>
           {onToggleNav && (
-            <button
-              type="button"
-              className="ds-hdr-brand__toggle"
-              aria-label={navExpanded ? "Close navigation" : "Open navigation"}
-              aria-expanded={navExpanded}
-              aria-controls={navControlsId}
-              onClick={onToggleNav}
-            >
-              <IcMenu />
-            </button>
+            <MenuToggle
+              expanded={navExpanded}
+              onToggle={onToggleNav}
+              controlsId={navControlsId}
+            />
           )}
 
           <BrandLockup
@@ -308,18 +328,24 @@ export function SiteHeader({
             emblemSrc={emblemSrc}
             emblemAlt={emblemAlt}
             lines={brandLines}
+            href={homeHref}
             beta={beta}
             divider={brandDivider}
+            compact={isCompact}
           />
 
           <div className="ds-hdr-brand__trailing">
             {search && (
-              <button type="button" className="ds-hdr-searchfield" onClick={search.onSearch}>
-                <span className="ds-hdr-searchfield__icon" aria-hidden="true"><IcSearch /></span>
-                <span className="ds-hdr-searchfield__placeholder">
-                  {search.placeholder ?? "Search"}
-                </span>
-              </button>
+              <Search
+                className="ds-hdr-searchfield"
+                size="lg"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onClear={() => setQuery("")}
+                onSubmit={(v) => search.onSearch?.(v)}
+                placeholder={search.placeholder ?? "Search"}
+                aria-label={search.placeholder ?? "Search"}
+              />
             )}
 
             {cobranding?.map((m) => (
@@ -327,167 +353,39 @@ export function SiteHeader({
               <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
             ))}
 
+            {isCompact && navRow}
+
             {account && <AccountMenu account={account} items={accountMenu} />}
 
-            {actions}
+            <span className="ds-hdr-brand__actions">{actions}</span>
 
             {hasNav && (
-              <button
-                type="button"
-                className="ds-hdr-burger"
-                aria-label={drawerOpen ? "Close menu" : "Open menu"}
-                aria-expanded={drawerOpen}
-                aria-controls={drawerId}
-                onClick={() => setDrawerOpen((v) => !v)}
-              >
-                <IcMenu />
-              </button>
+              <SheetToggle
+                open={drawerOpen}
+                onOpen={() => setDrawerOpen(true)}
+                controlsId={drawerId}
+              />
             )}
           </div>
         </div>
       </div>
 
-      {/* ── Tier 3: Navigation row ── */}
+      {/* ── Tier 3: Navigation row (website / portal) ── */}
+      {!isCompact && navRow}
+
+      {/* ── Mobile navigation (Figma Navbar/NavSheet) ── */}
       {hasNav && (
-        <nav className="ds-hdr-nav" aria-label="Primary" ref={navRef}>
-          <ul className="ds-hdr-nav__list" style={inner}>
-            {nav!.map((item) => {
-              const hasMega = !!item.columns?.length;
-              const hasChildren = !hasMega && !!item.children?.length;
-              const hasMenu = hasMega || hasChildren;
-              const isOpen = openLabel === item.label;
-              const dropId = `ds-hdr-drop-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
-              return (
-                <li
-                  key={item.label}
-                  className="ds-hdr-nav__item"
-                  onMouseEnter={() => hasMenu && setOpenLabel(item.label)}
-                  onMouseLeave={() => setOpenLabel(null)}
-                >
-                  <a
-                    href={item.href}
-                    className={cn("ds-hdr-nav__link", item.active && "is-active")}
-                    aria-expanded={hasMenu ? isOpen : undefined}
-                    aria-haspopup={hasMenu ? true : undefined}
-                    aria-controls={hasMenu && isOpen ? dropId : undefined}
-                    onClick={(e) => {
-                      if (hasMenu) {
-                        e.preventDefault();
-                        setOpenLabel(isOpen ? null : item.label);
-                      }
-                    }}
-                  >
-                    {item.label}
-                    {hasMenu && <IcCaret />}
-                  </a>
-
-                  {hasChildren && isOpen && (
-                    <div className="ds-hdr-nav__drop-wrap">
-                      <ul id={dropId} className="ds-hdr-nav__drop">
-                        {item.children!.map((c) => (
-                          <li key={c.label}>
-                            <a href={c.href} className="ds-hdr-nav__drop-link" onClick={() => setOpenLabel(null)}>
-                              {c.label}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {hasMega && isOpen && (
-                    <div className="ds-hdr-nav__drop-wrap is-mega">
-                      <div id={dropId} className="ds-hdr-nav__mega" role="group" aria-label={item.label}>
-                        {item.columns!.map((col, ci) => (
-                          <div key={col.heading ?? ci} className="ds-hdr-nav__mega-col">
-                            {col.heading && <p className="ds-hdr-nav__mega-head">{col.heading}</p>}
-                            {col.items?.length ? (
-                              <ul className="ds-hdr-nav__mega-list is-rich">
-                                {col.items.map((it) => (
-                                  <li key={it.abbr}>
-                                    <a
-                                      href={it.href}
-                                      className={cn("ds-hdr-mega-item", it.active && "is-active")}
-                                      target={it.external ? "_blank" : undefined}
-                                      rel={it.external ? "noreferrer" : undefined}
-                                      onClick={() => setOpenLabel(null)}
-                                    >
-                                      <span className="ds-hdr-mega-item__logo">
-                                        {it.iconSrc ? (
-                                          // eslint-disable-next-line @next/next/no-img-element
-                                          <img src={it.iconSrc} alt="" loading="lazy" />
-                                        ) : null}
-                                      </span>
-                                      <span className="ds-hdr-mega-item__copy">
-                                        <span className="ds-hdr-mega-item__abbr">{it.abbr}</span>
-                                        <span className="ds-hdr-mega-item__name">{it.name}</span>
-                                      </span>
-                                      <IcCaret />
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
-                            ) : (
-                              <ul className="ds-hdr-nav__mega-list">
-                                {col.links?.map((c) => (
-                                  <li key={c.label}>
-                                    <a
-                                      href={c.href}
-                                      className="ds-hdr-nav__drop-link"
-                                      target={c.external ? "_blank" : undefined}
-                                      rel={c.external ? "noreferrer" : undefined}
-                                      onClick={() => setOpenLabel(null)}
-                                    >
-                                      {c.label}
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-      )}
-
-      {/* ── Mobile drawer (disclosure region, not a modal) ── */}
-      {hasNav && drawerOpen && (
-        <nav id={drawerId} className="ds-hdr-drawer" aria-label="Navigation menu" ref={drawerRef}>
-          <ul className="ds-hdr-drawer__list">
-            {nav!.map((item) => {
-              // Flatten a mega-menu's columns (rich items or links) into the drawer.
-              const subLinks: { label: string; href: string }[] | undefined = item.columns?.length
-                ? item.columns.flatMap((col) =>
-                    col.items?.length
-                      ? col.items.map((it) => ({ label: it.abbr, href: it.href }))
-                      : (col.links ?? []).map((l) => ({ label: l.label, href: l.href })),
-                  )
-                : item.children;
-              return (
-                <li key={item.label} className="ds-hdr-drawer__group">
-                  <a href={item.href} className={cn("ds-hdr-drawer__link", item.active && "is-active")} onClick={() => setDrawerOpen(false)}>
-                    {item.label}
-                  </a>
-                  {subLinks?.length ? (
-                    <ul className="ds-hdr-drawer__sub">
-                      {subLinks.map((c) => (
-                        <li key={c.label}>
-                          <a href={c.href} className="ds-hdr-drawer__sublink" onClick={() => setDrawerOpen(false)}>{c.label}</a>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+        <NavSheet
+          id={drawerId}
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          nav={nav!}
+          emblemSrc={emblemSrc}
+          emblemAlt={emblemAlt}
+          brandLines={brandLines}
+          homeHref={homeHref}
+          actions={actions}
+        />
       )}
     </header>
   );

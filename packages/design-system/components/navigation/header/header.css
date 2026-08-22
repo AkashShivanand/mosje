@@ -15,16 +15,37 @@
 .ds-hdr-lockup {
   display: flex;
   align-items: flex-end;
-  gap: var(--sa-stack-12);
+  /* Figma Navbar/BrandLockup: Device=Mobile gap 8, Tablet/Desktop gap 12. */
+  gap: var(--sa-stack-8);
   min-width: 0;
   text-decoration: none;
   color: inherit;
 }
 
+@media (min-width: 768px) {
+  .ds-hdr-lockup {
+    gap: var(--sa-stack-12);
+  }
+}
+
+/* Emblem height is the one dimension that IS per-device in Figma:
+   Mobile 45 · Tablet 52 · Desktop 58. It was pinned at the tablet value. */
 .ds-hdr-lockup__emblem {
-  height: 52px;
+  height: 45px;
   width: auto;
   flex: 0 0 auto;
+}
+
+@media (min-width: 768px) {
+  .ds-hdr-lockup__emblem {
+    height: 52px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ds-hdr-lockup__emblem {
+    height: 58px;
+  }
 }
 
 .ds-hdr-lockup.is-compact {
@@ -33,6 +54,14 @@
 
 .ds-hdr-lockup.is-compact .ds-hdr-lockup__emblem {
   height: 44px;
+}
+
+/* Inverse ground (navy mastheads). One token swap, so a dark masthead is a
+   property of the lockup rather than a reason to rebuild it in white. */
+.ds-hdr-lockup.is-inverse .ds-hdr-lockup__org,
+.ds-hdr-lockup.is-inverse .ds-hdr-lockup__ministry,
+.ds-hdr-lockup.is-inverse .ds-hdr-lockup__dept {
+  color: var(--sa-text-neutral-inverse);
 }
 
 /* Blue radial-gradient divider between emblem and text (portal navbar) */
@@ -70,7 +99,7 @@
 
 .ds-hdr-lockup__ministry {
   font-size: 14px;
-  line-height: 16px;
+  line-height: 20px;
   letter-spacing: 0.4px;
   font-weight: 500;
   color: var(--sa-text-neutral-base);
@@ -78,8 +107,9 @@
 
 .ds-hdr-lockup__dept {
   font-size: 20px;
-  line-height: 20px;
-  font-weight: 700;
+  line-height: 24px;
+  /* Figma: Noto Sans SemiBold. 700 (Bold) was a half-step heavier than the library. */
+  font-weight: 600;
   color: var(--sa-text-neutral-base);
 }
 
@@ -178,27 +208,33 @@
   padding: var(--sa-padding-12) var(--sa-padding-24);
 }
 
-/* Portal collapse / menu toggle (far left) */
+/* Portal collapse / menu toggle (far left).
+   Figma: Navbar/MenuToggle = IconButton Size=Large, Type=Outlined — 48x48,
+   radius 8, 1px neutral border, 32px glyph. Identical to the mobile SheetToggle,
+   deliberately: one hamburger look across the estate.
+
+   It was a bare 40x40 with a 24px glyph — the only control in the brand row with
+   no container, beside a 58px emblem and a 48px avatar. It read as decoration,
+   and it announced itself as a control only on hover, which is the wrong trade on
+   a government service. (Before that, 32x32 with a 28px glyph: a size on neither
+   the IconButton scale nor the icon scale.) */
 .ds-hdr-brand__toggle {
   display: inline-grid;
   place-items: center;
-  height: 32px;
-  width: 32px;
+  height: 48px;
+  width: 48px;
   flex: 0 0 auto;
-  border: none;
+  padding: var(--sa-padding-8);
+  border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-8);
   background: transparent;
-  color: var(--sa-text-neutral-base);
+  color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
   cursor: pointer;
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
 }
 
 .ds-hdr-brand__toggle:hover {
   background-color: var(--sa-bg-neutral-subtler);
-}
-
-.ds-hdr-brand__toggle svg {
-  width: 28px;
-  height: 28px;
 }
 
 .ds-hdr-brand__lockup {
@@ -214,48 +250,17 @@
   flex: 0 0 auto;
 }
 
-/* Search field (button styled as a search box) — 56px, r8, stroke border */
+/* Masthead search.
+   This is now the shared DS <Search> (.ds-search), not a button dressed as one —
+   the same atom every other screen uses, and the same component Figma's masthead
+   embeds. Only PLACEMENT belongs here: width, and the breakpoint below which the
+   field is not worth its space. Height, border, radius and the icons come from
+   .ds-search, so the masthead can no longer drift from the field it copied. */
 .ds-hdr-searchfield {
   display: none;
-  align-items: center;
-  gap: var(--sa-stack-4);
-  height: 56px;
   width: 417px;
   max-width: 40vw;
-  padding: 0 var(--sa-padding-8) 0 var(--sa-padding-4);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-8);
-  background-color: var(--sa-bg-neutral-base);
-  cursor: text;
-}
-
-.ds-hdr-searchfield:hover {
-  border-color: var(--sa-border-neutral-base, var(--sa-border-neutral-subtle));
-}
-
-.ds-hdr-searchfield__icon {
-  display: inline-grid;
-  place-items: center;
-  padding: var(--sa-padding-8);
-  color: var(--sa-text-neutral-base);
-}
-
-.ds-hdr-searchfield__icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.ds-hdr-searchfield__placeholder {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.5px;
-  text-align: left;
-  color: var(--sa-text-neutral-subtle);
+  flex: 0 0 auto;
 }
 
 @media (min-width: 900px) {
@@ -302,9 +307,9 @@
   box-shadow: 0 0 0 3px var(--sa-focus-ring);
 }
 
+/* Font glyph: it sizes from the `size` prop, so no width/height here — those
+   would not resize it and could only clip it. */
 .ds-hdr-account__caret {
-  width: 16px;
-  height: 16px;
   flex: 0 0 auto;
   color: var(--sa-text-neutral-subtle);
 }
@@ -352,26 +357,26 @@
   overflow: hidden;
 }
 
-/* Mobile drawer toggle */
+/* Mobile drawer toggle.
+   Figma: Navbar/* mobile CTA = IconButton Size=Large, Type=Outlined — 48x48,
+   radius 8, 1px neutral border, 32px glyph. */
 .ds-hdr-burger {
   display: inline-grid;
   place-items: center;
-  height: 40px;
-  width: 40px;
-  border: none;
+  height: 48px;
+  width: 48px;
+  flex: 0 0 auto;
+  padding: var(--sa-padding-8);
+  border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-8);
   background: transparent;
-  color: var(--sa-text-neutral-base);
+  color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
   cursor: pointer;
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
 }
 
 .ds-hdr-burger:hover {
   background-color: var(--sa-bg-neutral-subtler);
-}
-
-.ds-hdr-burger svg {
-  width: 24px;
-  height: 24px;
 }
 
 @media (min-width: 1024px) {
@@ -450,9 +455,10 @@
   font-weight: 600;
 }
 
+/* Font-icon glyphs size themselves from the `size` prop (font-size + opsz axis),
+   so this class carries tone only — never width/height, which would not resize
+   a glyph and would only clip it. */
 .ds-hdr-ic {
-  width: 16px;
-  height: 16px;
   opacity: 0.7;
 }
 
@@ -595,9 +601,6 @@
 
 .ds-hdr-mega-item .ds-hdr-ic {
   flex: 0 0 auto;
-  width: 20px;
-  height: 20px;
-  transform: rotate(-90deg);
   opacity: 0;
   color: var(--sa-text-neutral-subtle);
   transition: opacity var(--sa-motion-exit-duration) ease;
@@ -760,4 +763,265 @@
 .ds-hdr-acct__menu-icon svg {
   width: 16px;
   height: 16px;
+}
+
+
+/* ── Compact variant ────────────────────────────────────────────────────────
+   A single-tier 64px bar for internal index / gate surfaces that are NOT public
+   government pages: the hub landing, /portals, /reports. No accessibility bar
+   (there is no government masthead to qualify), compact lockup, and the primary
+   nav rendered inline in the brand row rather than in its own bordered tier.
+   Everything else — dropdowns, the mobile drawer, focus treatment — is shared
+   with the website and portal variants, because it is the same component. */
+.ds-hdr[data-variant="compact"] {
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+.ds-hdr[data-variant="compact"] .ds-hdr-brand__in {
+  min-height: 64px;
+  padding-block: var(--sa-padding-8);
+  gap: var(--sa-stack-16);
+}
+
+.ds-hdr[data-variant="compact"] .ds-hdr-brand__lockup {
+  flex: 0 0 auto;
+}
+
+.ds-hdr[data-variant="compact"] .ds-hdr-brand__trailing {
+  margin-inline-start: auto;
+}
+
+/* Inline nav — same list, no tier chrome, no full-bleed container. */
+.ds-hdr-nav.is-inline {
+  display: none;
+  border: 0;
+  background: transparent;
+}
+
+@media (min-width: 768px) {
+  .ds-hdr-nav.is-inline {
+    display: block;
+  }
+}
+
+.ds-hdr-nav.is-inline .ds-hdr-nav__list {
+  max-width: none !important;
+  padding: 0;
+  gap: var(--sa-stack-2);
+  justify-content: flex-end;
+}
+
+/* The compact bar's drawer trigger appears below the inline nav's breakpoint. */
+.ds-hdr[data-variant="compact"] .ds-hdr-burger {
+  height: 40px;
+  width: 40px;
+  border: none;
+}
+
+@media (min-width: 768px) {
+  .ds-hdr[data-variant="compact"] .ds-hdr-burger {
+    display: none;
+  }
+}
+
+/* Visually-hidden text for the new-tab announcement. */
+.ds-hdr-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Trailing CTA (Login / Admin Login). Figma's mobile masthead carries only the
+   search and drawer buttons — the text CTA belongs in the drawer, where it has
+   room. Rendering it in a 375px brand row is what crowded the lockup: the row
+   overflowed, and `min-width: 0` (which the lockup needs, to shrink at all) let
+   the text spill past its own box and sit under the button. */
+.ds-hdr-brand__actions {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .ds-hdr-brand__actions {
+    display: contents;
+  }
+}
+
+.ds-hdr-drawer__actions {
+  display: flex;
+  padding: var(--sa-padding-16) var(--sa-padding-24);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+@media (min-width: 1024px) {
+  .ds-hdr-drawer__actions {
+    display: none;
+  }
+}
+
+/* ── NavSheet ───────────────────────────────────────────────────────────────
+   Figma Navbar/NavSheet: a 344px overlay with its own header (brand lockup +
+   close), divider-separated 56px rows, expand_more on any row with children.
+   It replaced an inline disclosure that pushed the page down and had no close
+   control — the design has always been a sheet. */
+.ds-navsheet__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  /* The estate's one scrim token — same as Modal and SideSheet. */
+  background-color: var(--sa-overlay-neutral-boldest);
+}
+
+.ds-navsheet {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-end: 0;
+  z-index: 61;
+  width: min(344px, 100vw);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background-color: var(--sa-bg-neutral-base);
+  box-shadow: var(--sa-elevation-card);
+}
+
+@media (min-width: 1024px) {
+  .ds-navsheet,
+  .ds-navsheet__scrim {
+    display: none;
+  }
+}
+
+.ds-navsheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-stack-12);
+  padding: var(--sa-padding-16) var(--sa-padding-24);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+/* Lockup inside the sheet.
+   Figma allots the sheet header 96px; the masthead's 20px department line wraps
+   to two in a 344px column and takes 129. The header's job here is orientation,
+   not proclamation — the reader arrived from the masthead that already said it —
+   so the stack steps down one rung. This is placement styling, the same call the
+   compact variant makes, not a second lockup component. */
+.ds-navsheet__header .ds-hdr-lockup__emblem {
+  height: 40px;
+}
+
+.ds-navsheet__header .ds-hdr-lockup__org {
+  font-size: 11px;
+  line-height: 14px;
+}
+
+.ds-navsheet__header .ds-hdr-lockup__ministry {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.ds-navsheet__header .ds-hdr-lockup__dept {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.ds-navsheet__close {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  /* 44px target — the sheet's only dismissal, so it gets the comfortable size. */
+  height: 44px;
+  width: 44px;
+  padding: var(--sa-padding-8);
+  border: none;
+  border-radius: var(--sa-shape-8);
+  background: transparent;
+  color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
+  cursor: pointer;
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+}
+
+.ds-navsheet__close:hover {
+  background-color: var(--sa-bg-neutral-subtler);
+}
+
+.ds-navsheet__actions {
+  display: flex;
+  padding: var(--sa-padding-16) var(--sa-padding-24);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+.ds-navsheet__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-navsheet__row {
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+.ds-navsheet__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-stack-12);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--sa-padding-16) var(--sa-padding-24);
+  border: none;
+  background: transparent;
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  color: var(--sa-text-neutral-base);
+  cursor: pointer;
+}
+
+.ds-navsheet__link:hover {
+  background-color: var(--sa-bg-neutral-subtler);
+}
+
+.ds-navsheet__link.is-active {
+  color: var(--sa-text-brand-primary-base);
+  font-weight: 600;
+}
+
+.ds-navsheet__caret {
+  flex: 0 0 auto;
+  color: var(--sa-icon-neutral-subtle, var(--sa-text-neutral-subtle));
+}
+
+.ds-navsheet__sub {
+  margin: 0;
+  padding: 0 0 var(--sa-padding-8) 0;
+  list-style: none;
+  background-color: var(--sa-bg-neutral-subtler);
+}
+
+.ds-navsheet__sublink {
+  display: block;
+  padding: var(--sa-padding-12) var(--sa-padding-24) var(--sa-padding-12) var(--sa-padding-40);
+  text-decoration: none;
+  color: var(--sa-text-neutral-subtle);
+}
+
+.ds-navsheet__sublink:hover {
+  color: var(--sa-text-neutral-base);
+  background-color: var(--sa-bg-neutral-subtle);
+}
+
+.ds-navsheet__close:focus-visible,
+.ds-navsheet__link:focus-visible,
+.ds-navsheet__sublink:focus-visible {
+  outline: 2px solid var(--sa-border-brand-primary-base);
+  outline-offset: -2px;
+  border-radius: var(--sa-shape-4);
 }
