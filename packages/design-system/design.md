@@ -1699,7 +1699,7 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 - **It is structural, not content-bound.** Every label, href, logo and sentence arrives as a prop. Never fork it to change wording.
 - **NEVER pass a background through `className`.** Colour binds to the mode-aware `--sa-color-primaryScale-*` family — ground = rung 800, hairlines = rung 600, the support strip = rung 900 — so the footer repaints for `blue`, `navy`, `dbim` and the five DBIM hues with no work at the call site. In `dbim` the ground resolves to **#162F6A**, DBIM's own published Blue shade 1, satisfying **[DBIM 5.6]** by construction.
 - **ONE ground, ONE hairline.** The two bands ran rungs 800 and 900 for a while; a 1.28:1 step is not a distinction, it is a smudge. The support strip is the deliberate exception, because it is the one element that is a different kind of thing and the one a site can switch off.
-- **Ink is same-hue, never white-alpha.** Three levels: rungs 100 and 200 plus `on/bg/brand/primary/boldest`. Worst case across all seven modes is 5.88:1 against the 4.5:1 AA asks for.
+- **Ink is same-hue, never white-alpha.** Three levels: rungs 100 and 200 plus `on/bg/brand/primary/boldest`. Worst case across all **eight** brand modes the tokens define is 5.37:1 (dbim-green, dim ink) against the 4.5:1 AA asks for.
 - **The CTA is an OUTLINE, and reverting it to a fill is a hierarchy regression.** A white fill made a tertiary action the brightest object in the footer, out-shouting the National Emblem. Border 6.18:1 (1.4.11 wants 3:1), label 11.4:1 (1.4.3 wants 4.5:1).
 - **Social marks carry no ring at rest.** The 40px target is unchanged; WCAG 2.5.8 is satisfied by the box, which does not have to be visible to be clickable.
 - **No visible eyebrows on the policy and related navs**, which share one wrapped row. Both keep their `aria-label`. Two uppercase micro-labels inside one small band is the most templated thing a footer can do.
@@ -1964,7 +1964,7 @@ switched on from outside via four custom properties — `--ds-flask-play`
 (a `<time>`), `--ds-flask-level` (a `<length>`) — so the consumer owns the
 selectors, because only the consumer knows its own markup. Colour is
 `currentColor` throughout (the liquid via `fill-opacity`), so it re-tones
-with its container in all seven brand modes with no token of its own.
+with its container in all eight brand modes with no token of its own.
 Decorative and `aria-hidden`; the accessible name belongs to the containing
 control. Under `prefers-reduced-motion` nothing moves but state survives —
 a raised level stays raised and the bubbles hold a static frame.

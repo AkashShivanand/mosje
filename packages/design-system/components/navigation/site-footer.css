@@ -24,7 +24,8 @@
    ── INK IS SAME-HUE ───────────────────────────────────────────────────────
    `rgba(255,255,255,.8)` on a coloured ground desaturates to a dirty grey. The
    ramp's own 100 and 200 rungs stay in the family and measure better — worst
-   case across all seven modes is 5.88:1 against the 4.5:1 AA asks for.
+   case across all EIGHT brand modes the tokens define is 5.37:1 (dbim-green,
+   dim ink) against the 4.5:1 AA asks for. Measured, not estimated.
    ============================================================================ */
 
 .ds-sitefooter {
