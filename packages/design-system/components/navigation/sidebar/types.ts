@@ -31,6 +31,12 @@ export interface SidebarNavGroup {
 }
 
 export interface SidebarNavProps {
+  /**
+   * DOM id for the <aside>. Pass it when a header toggle points at this
+   * sidebar with `aria-controls` — an aria-controls that names nothing is
+   * worse than none at all.
+   */
+  id?: string;
   groups: SidebarNavGroup[];
   /** Current route path — used to derive active states */
   pathname: string;

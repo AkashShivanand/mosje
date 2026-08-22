@@ -193,6 +193,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
     >
       {/* Masthead — shared @mosje/design-system SiteHeader (renders the page's first skip link). */}
       <SiteHeader
+        homeHref={`${BASE}/treatment-centre`}
         variant="portal"
         sticky
         beta

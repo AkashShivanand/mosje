@@ -25,3 +25,9 @@
 @import "./components/navigation/zone-switcher.css";
 @import "./components/navigation/app-switcher-panel.css";
 @import "./components/feedback/chatbot.css";
+
+/* New components added from public website patterns */
+@import "./components/data-display/accordion.css";
+@import "./components/data-display/vertical-timeline.css";
+@import "./components/data-display/profile-card.css";
+@import "./components/feedback/action-banner.css";

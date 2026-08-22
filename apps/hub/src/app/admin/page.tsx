@@ -10,7 +10,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Button } from "@mosje/design-system";
+import { BrandLockup, Button } from "@mosje/design-system";
 import { requireAdmin } from "@/lib/admin/auth";
 import { changeGatePassword, signOut } from "./actions";
 import { GatePasswordForm } from "./settings-form";
@@ -36,21 +36,15 @@ export default async function AdminPage({
       <header className="border-b border-border bg-surface">
         <div className="mx-auto flex h-16 max-w-3xl items-center gap-4 px-6">
           <div className="flex flex-1 items-center gap-3.5">
-            {/* eslint-disable-next-line @next/next/no-img-element -- /admin sits
-                outside the gate, and next/image's endpoint is not in its allowlist. */}
-            <img
-              src="/images/National-Emblem-logo.svg"
-              alt=""
-              width={22}
-              height={36}
-              className="estate-emblem h-8 w-auto"
+            {/* Identity from the DS lockup. /admin is the recovery path and sits
+                outside the gate, but that is a reason for the emblem to be the
+                real one, not a licence to retype it. */}
+            <BrandLockup
+              emblemSrc="/images/National-Emblem-logo.svg"
+              lines={{ ministry: "MoSJE", department: "Hub administration" }}
+              href="/admin"
+              compact
             />
-            <span className="flex flex-col border-l border-border pl-3.5 leading-none">
-              <span className="text-[15px] font-bold tracking-tight text-ink">MoSJE</span>
-              <span className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
-                Hub administration
-              </span>
-            </span>
           </div>
 
           <form action={signOut}>

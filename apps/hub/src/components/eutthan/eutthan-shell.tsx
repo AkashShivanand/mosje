@@ -2,23 +2,27 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Icon } from "@mosje/design-system";
+import { AccessibilityBar, BrandLockup, Icon } from "@mosje/design-system";
 import { type NavItem } from "@/lib/eutthan/portal-data";
 import { portalLink } from "./eutthan-shared";
 
 export function TopBar({ onLogout }: { onLogout: () => void }) {
   return (
     <div className="top-bar">
-      <div className="top-left">
-        <div className="flag" aria-hidden="true">
-          <span />
-        </div>
-        <span className="goi-link">Government of India</span>
-        <span className="divider" aria-hidden="true" />
-        <span className="goi-link">
-          Ministry of Social Justice &amp; Empowerment
-        </span>
-      </div>
+      {/* The government utility strip is the shared DS AccessibilityBar. This
+          portal drew its own — a CSS `.flag` block and two plain spans — which
+          carried no skip link, no text-size control and no accessibility entry,
+          so the one row on the page that exists to serve those needs served none
+          of them. */}
+      <AccessibilityBar
+        layout="fluid"
+        govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
+        skipTo="#eu-main-content"
+        showSkip
+        fontSize
+        accessibility
+        language={{ label: "English" }}
+      />
       <div className="top-actions">
         <button type="button" aria-label="Notifications">
           <Icon name="notifications" size={15} />
@@ -40,30 +44,22 @@ export function TopBar({ onLogout }: { onLogout: () => void }) {
 export function Masthead({ name, roleLabel }: { name: string; roleLabel: string }) {
   return (
     <div className="masthead">
+      {/* This block used to draw an invented mark — a circle and a triangle in
+          inline SVG — where the National Emblem belongs. That is an estate rule,
+          not a preference (CLAUDE.md): the mark is the National Emblem, never an
+          abstract or invented one. The DS lockup is the only place it comes from. */}
       <div className="brand-block">
-        <svg
-          width="60"
-          height="60"
-          viewBox="0 0 60 60"
-          fill="none"
-          aria-hidden="true"
-          style={{ flexShrink: 0 }}
-        >
-          <circle cx="30" cy="30" r="28" fill="var(--sa-color-neutralScale-100)" stroke="var(--sa-border-neutral-base)" />
-          <circle cx="30" cy="18" r="5" fill="var(--primary)" />
-          <path
-            d="M30 23L18 45H42L30 23Z"
-            fill="var(--primary)"
-            opacity="0.65"
-          />
-        </svg>
-        <div>
-          <div className="brand-meta">
-            <span>eUtthan Portal</span>
-            <span className="beta">BETA</span>
-          </div>
-          <h1>DAPSC Allocation &amp; Progress Tracker</h1>
-        </div>
+        <BrandLockup
+          emblemSrc="/images/National-Emblem-logo.svg"
+          lines={{
+            org: "Government of India",
+            ministry: "Ministry of Social Justice & Empowerment",
+            department: "DAPSC Allocation & Progress Tracker",
+          }}
+          href={portalLink("/")}
+          beta
+          compact
+        />
       </div>
       <div className="profile">
         <div>

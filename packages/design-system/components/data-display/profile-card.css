@@ -1,0 +1,25 @@
+.sa-profile-card {
+  @apply bg-white rounded-2xl border border-neutral-200 shadow-md hover:shadow-lg transition-shadow flex flex-col overflow-hidden group;
+}
+.sa-profile-card__image-wrapper {
+  @apply relative w-full h-80 sm:h-96 bg-neutral-100 overflow-hidden;
+}
+/* Expecting the child image to fill the wrapper. If it's a native img: */
+.sa-profile-card__image-wrapper > img {
+  @apply w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500;
+}
+.sa-profile-card__tag {
+  @apply absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#003366]/80 backdrop-blur-sm py-1.5 px-4 rounded-full text-white shadow-sm flex items-center justify-center;
+}
+.sa-profile-card__tag-text {
+  @apply text-xs font-semibold tracking-wider whitespace-nowrap;
+}
+.sa-profile-card__content {
+  @apply w-full p-6 text-left space-y-1 bg-white relative z-10 border-t border-neutral-100;
+}
+.sa-profile-card__title {
+  @apply text-lg font-bold text-neutral-900;
+}
+.sa-profile-card__subtitle {
+  @apply text-sm font-medium text-neutral-600;
+}

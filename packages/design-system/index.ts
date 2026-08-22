@@ -266,6 +266,26 @@ export {
   BrandLockup,
   AccountMenu,
 } from "./components/navigation/header";
+export {
+  MenuToggle,
+  SheetToggle,
+  NavItemLink,
+  NavDropdown,
+  DropdownItem,
+  MegaMenu,
+  MegaMenuItem,
+  NavSheet,
+} from "./components/navigation/header";
+export type {
+  MenuToggleProps,
+  SheetToggleProps,
+  NavItemLinkProps,
+  NavDropdownProps,
+  DropdownItemProps,
+  MegaMenuProps,
+  MegaMenuItemProps,
+  NavSheetProps,
+} from "./components/navigation/header";
 
 // Sidebar — portal app-shell left navigation (Figma: sidebar/type-1).
 export { SidebarNav } from "./components/navigation/sidebar";
@@ -447,3 +467,16 @@ export type {
   FlaskIconProps,
   DemoAccountSet,
 } from "./demo";
+
+// New components added from public website patterns
+export { Accordion, AccordionItem } from "./components/data-display/accordion";
+export type { AccordionItemProps } from "./components/data-display/accordion";
+
+export { VerticalTimeline, VerticalTimelineItem } from "./components/data-display/vertical-timeline";
+export type { VerticalTimelineItemProps } from "./components/data-display/vertical-timeline";
+
+export { ProfileCard } from "./components/data-display/profile-card";
+export type { ProfileCardProps } from "./components/data-display/profile-card";
+
+export { ActionBanner } from "./components/feedback/action-banner";
+export type { ActionBannerProps } from "./components/feedback/action-banner";

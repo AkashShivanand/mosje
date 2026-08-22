@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { AccessibilityBar, Divider } from "@mosje/design-system";
+import { AccessibilityBar, BrandLockup, Divider } from "@mosje/design-system";
 
 const BASE = "/portals/scw";
 
@@ -32,24 +32,16 @@ export function GovMasthead({ right }: { right?: React.ReactNode }) {
   return (
     <header className="border-b border-line bg-white">
       <div className="flex items-center justify-between gap-4 px-4 py-3">
-        <div className="flex items-center gap-3">
-          <Image
-            src={`${BASE}/brand/national-emblem.svg`}
-            alt="National Emblem of India"
-            width={44}
-            height={62}
-            className="h-14 w-auto"
-          />
-          <div className="leading-tight">
-            <span className="inline-block rounded bg-amber-300/80 px-1.5 py-0.5 text-[10px] font-bold text-amber-900">
-              BETA
-            </span>
-            <div className="mt-0.5 text-[11px] text-ink-muted">Government of India</div>
-            <div className="text-lg font-bold text-ink">
-              Ministry of Social Justice &amp; Empowerment
-            </div>
-          </div>
-        </div>
+        {/* Identity comes from the DS lockup — never retyped. The emblem, the
+            line order and the BETA badge are estate policy, and a hand-rolled
+            copy is a place for them to drift. */}
+        <BrandLockup
+          emblemSrc={`${BASE}/brand/national-emblem.svg`}
+          lines={{ org: "Government of India", department: "Ministry of Social Justice & Empowerment" }}
+          href={BASE}
+          beta
+          compact
+        />
         <div className="flex items-center gap-5">
           <Image
             src={`${BASE}/brand/digital-india.svg`}
