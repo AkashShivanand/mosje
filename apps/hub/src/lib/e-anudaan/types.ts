@@ -192,7 +192,7 @@ export interface SanctionOrder {
 }
 
 export interface Institution {
-  id: string; // e.g. "SC/DL/NWD/02478"
+  id: string; // e.g. "SC/DL/NWD/09001"
   name: string;
   district: string;
   state: string;
