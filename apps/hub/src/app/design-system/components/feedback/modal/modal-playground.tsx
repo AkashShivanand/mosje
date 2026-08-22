@@ -28,7 +28,7 @@ export function ModalPlayground() {
         size="sm"
         footer={
           <div style={{ display: "flex", gap: "var(--sa-inline-12)", justifyContent: "flex-end" }}>
-            <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="primary" onClick={() => setOpen(false)}>Cancel</Button>
             <Button variant="primary" onClick={() => setOpen(false)}>Confirm</Button>
           </div>
         }
