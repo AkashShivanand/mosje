@@ -33,7 +33,7 @@ export function ToastPlayground() {
           <strong>Variant:</strong>
           <select 
             value={variant} 
-            onChange={(e) => setVariant(e.target.value as any)}
+            onChange={(e) => setVariant(e.target.value as typeof variant)}
             style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)" }}
           >
             <option value="success">Success</option>

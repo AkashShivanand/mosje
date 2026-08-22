@@ -24,7 +24,7 @@ export function TooltipPlayground() {
           <strong>Side:</strong>
           <select 
             value={side} 
-            onChange={(e) => setSide(e.target.value as any)}
+            onChange={(e) => setSide(e.target.value as typeof side)}
             style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)" }}
           >
             <option value="top">Top</option>

@@ -57,7 +57,7 @@ export default function CaptchaFieldPage(): React.JSX.Element {
         </p>
       </header>
 
-      <Callout title="Discouraged" type="warning" style={{ marginBottom: "var(--sa-stack-32)" }}>
+      <Callout title="Discouraged" type="warning">
         Visual CAPTCHAs are an aggressive accessibility barrier and violate GIGW 3.0 requirements if no audio alternative is provided. Prefer rate limiting or server-side signals over a visual CAPTCHA wherever possible.
       </Callout>
 
@@ -126,7 +126,7 @@ export default function CaptchaFieldPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Refresh Button:</strong> The refresh button has an explicit <code>aria-label</code> ("Get a new security check. This clears anything you have typed.") so screen reader users know exactly what the action does.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Refresh Button:</strong> The refresh button has an explicit <code>aria-label</code> (&quot;Get a new security check. This clears anything you have typed.&quot;) so screen reader users know exactly what the action does.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Errors:</strong> Like <code>FormField</code>, any error message is linked to the input via <code>aria-describedby</code>. A red border alone is never sufficient to indicate an error.</li>
         </ul>
       </section>

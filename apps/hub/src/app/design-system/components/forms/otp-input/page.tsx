@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { OtpInputPlayground } from "./otp-input-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "OtpInput - SAMAVESH Design System",
@@ -135,9 +135,9 @@ export default function OtpInputPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Mode & Autofill:</strong> Sets <code>inputMode="numeric"</code> to trigger the number pad on mobile devices. The first box sets <code>autoComplete="one-time-code"</code> so the OS prompts the user when an SMS arrives.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Mode & Autofill:</strong> Sets <code>inputMode=&quot;numeric&quot;</code> to trigger the number pad on mobile devices. The first box sets <code>autoComplete=&quot;one-time-code&quot;</code> so the OS prompts the user when an SMS arrives.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Navigation:</strong> Fully supports navigating back and forth with Left/Right arrow keys and deleting characters seamlessly with Backspace.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Aria Labels:</strong> Each individual box is labelled dynamically (e.g. "Digit 1 of 6") so screen reader users know exactly where they are.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Aria Labels:</strong> Each individual box is labelled dynamically (e.g. &quot;Digit 1 of 6&quot;) so screen reader users know exactly where they are.</li>
         </ul>
       </section>
 

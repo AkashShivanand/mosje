@@ -22,7 +22,7 @@ export function AlertPlayground() {
           <strong>Status:</strong>
           <select 
             value={status} 
-            onChange={(e) => setStatus(e.target.value as any)}
+            onChange={(e) => setStatus(e.target.value as typeof status)}
             style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)" }}
           >
             <option value="info">Info</option>

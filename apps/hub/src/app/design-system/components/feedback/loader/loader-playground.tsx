@@ -23,7 +23,7 @@ export function LoaderPlayground() {
           <strong>Size:</strong>
           <select 
             value={size} 
-            onChange={(e) => setSize(e.target.value as any)}
+            onChange={(e) => setSize(e.target.value as typeof size)}
             style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)" }}
           >
             <option value="sm">Small (sm)</option>
@@ -36,7 +36,7 @@ export function LoaderPlayground() {
           <strong>Variant:</strong>
           <select 
             value={variant} 
-            onChange={(e) => setVariant(e.target.value as any)}
+            onChange={(e) => setVariant(e.target.value as typeof variant)}
             style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)" }}
           >
             <option value="primary">Primary</option>

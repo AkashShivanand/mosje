@@ -68,7 +68,7 @@ export function AadhaarInputPlayground() {
       </div>
       
       <div style={{ marginTop: "16px", padding: "16px", background: "var(--sa-bg-neutral-subtler)", borderRadius: "8px", fontSize: "14px", fontFamily: "monospace" }}>
-        <strong>Internal State (Raw Digits):</strong> "{aadhaar}"
+        <strong>Internal State (Raw Digits):</strong> &quot;{aadhaar}&quot;
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { LabelPlayground } from "./label-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "Label - SAMAVESH Design System",
@@ -72,7 +72,7 @@ export default function LabelPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
-          You should almost always use <code>FormField</code> instead of this component. Use the standalone Label only when building complex layouts where the FormField's internal DOM structure (label above input) isn't appropriate—like custom filter toolbars or inline form rows.
+          You should almost always use <code>FormField</code> instead of this component. Use the standalone Label only when building complex layouts where the FormField&apos;s internal DOM structure (label above input) isn&apos;t appropriate—like custom filter toolbars or inline form rows.
         </p>
         <div
           style={{
@@ -116,7 +116,7 @@ export default function LabelPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Required Marker:</strong> The red asterisk rendered by the <code>required</code> prop has <code>aria-hidden="true"</code>, so screen readers don't read out "star".</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Required Marker:</strong> The red asterisk rendered by the <code>required</code> prop has <code>aria-hidden=&quot;true&quot;</code>, so screen readers don&apos;t read out &quot;star&quot;.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>htmlFor:</strong> Because this is just a thin wrapper around a native label, you are entirely responsible for correctly wiring the <code>htmlFor</code> attribute to the control.</li>
         </ul>
       </section>

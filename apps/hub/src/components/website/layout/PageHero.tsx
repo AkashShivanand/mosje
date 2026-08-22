@@ -54,6 +54,14 @@ export function PageHero({
                   </p>
                 )}
                 {actions && <div className="mt-6">{actions}</div>}
+                {/* GIGW 3.0 requires every content page to state when it was last reviewed.
+                    The prop was already declared and documented; the blue-hero refactor
+                    stopped rendering it. */}
+                {lastUpdated && (
+                  <p className="mt-4 text-[13px] text-white/80">
+                    Last Updated: <time dateTime={lastUpdated}>{lastUpdated}</time>
+                  </p>
+                )}
               </div>
             </div>
 

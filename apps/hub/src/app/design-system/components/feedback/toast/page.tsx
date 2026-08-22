@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { ToastPlayground } from "./toast-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist, Callout } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "Toast - SAMAVESH Design System",
@@ -72,7 +72,7 @@ export default function ToastPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
-          Use toasts to inform users about the result of an action (e.g. "Record saved") without blocking their workflow. Toasts are global to the application and appear in a fixed viewport corner.
+          Use toasts to inform users about the result of an action (e.g. &quot;Record saved&quot;) without blocking their workflow. Toasts are global to the application and appear in a fixed viewport corner.
         </p>
         <div
           style={{
@@ -128,7 +128,7 @@ export function SaveProfile() {
           Toasts rely on ARIA live regions to announce changes to screen readers without moving focus.
         </p>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Polite vs Assertive:</strong> Non-error toasts use <code>role="status"</code> (polite), meaning screen readers will wait until the user is idle. Error toasts use <code>role="alert"</code> (assertive), which interrupts the screen reader immediately.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Polite vs Assertive:</strong> Non-error toasts use <code>role=&quot;status&quot;</code> (polite), meaning screen readers will wait until the user is idle. Error toasts use <code>role=&quot;alert&quot;</code> (assertive), which interrupts the screen reader immediately.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Auto-dismiss:</strong> WCAG allows auto-dismissing notifications if they do not contain essential interactive controls. Do not place forms or mandatory actions inside a toast.</li>
         </ul>
       </section>

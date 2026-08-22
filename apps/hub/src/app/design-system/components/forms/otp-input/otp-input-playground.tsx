@@ -58,15 +58,15 @@ export function OtpInputPlayground() {
         <p style={{ margin: "0 0 8px 0", fontSize: "14px", fontWeight: 600 }}>Enter OTP</p>
         <OtpInput 
           value={value}
-          onChange={setValue}
+          onValueChange={setValue}
           length={length}
           invalid={invalid}
           disabled={disabled}
           label="One-time password"
-          onComplete={(code) => alert(\`Completed! Code: \${code}\`)}
+          onComplete={(code) => alert(`Completed! Code: ${code}`)}
         />
         <p style={{ margin: "8px 0 0 0", fontSize: "13px", color: "var(--sa-text-neutral-subtle)" }}>
-          Try pasting a number like "123456" or using the arrow keys to navigate.
+          Try pasting a number like &quot;123456&quot; or using the arrow keys to navigate.
         </p>
       </div>
     </div>

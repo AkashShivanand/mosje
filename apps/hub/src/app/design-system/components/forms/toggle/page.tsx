@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { TogglePlayground } from "./toggle-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "Toggle - SAMAVESH Design System",
@@ -53,7 +53,7 @@ export default function TogglePage(): React.JSX.Element {
           Toggle
         </h1>
         <p className="ds-lead" style={leadStyle}>
-          A switch control that allows users to toggle a single setting on or off. Under the hood, it's a fully accessible checkbox with <code>role="switch"</code>.
+          A switch control that allows users to toggle a single setting on or off. Under the hood, it&apos;s a fully accessible checkbox with <code>role=&quot;switch&quot;</code>.
         </p>
       </header>
 
@@ -133,8 +133,8 @@ export default function TogglePage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>4. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Role:</strong> The visually hidden input uses <code>type="checkbox"</code> and <code>role="switch"</code> so screen readers announce it as a toggle switch.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Associated Label:</strong> When the <code>label</code> prop is provided, the component automatically generates an <code>id</code> and correctly wires up the <code>&lt;label htmlFor="..."&gt;</code>.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Role:</strong> The visually hidden input uses <code>type=&quot;checkbox&quot;</code> and <code>role=&quot;switch&quot;</code> so screen readers announce it as a toggle switch.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Associated Label:</strong> When the <code>label</code> prop is provided, the component automatically generates an <code>id</code> and correctly wires up the <code>&lt;label htmlFor=&quot;...&quot;&gt;</code>.</li>
         </ul>
       </section>
 
