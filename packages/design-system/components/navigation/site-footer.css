@@ -1,72 +1,50 @@
 /* ============================================================================
-   MoSJE / SAMAVESH — SiteFooter (the public-website footer)
+   MoSJE / SAMAVESH — SiteFooter
 
-   THE COLOUR CONTRACT — read this before changing any value below.
+   ── THE COLOUR CONTRACT ───────────────────────────────────────────────────
+   Every colour resolves from ONE mode-aware family, `--sa-color-primaryScale-*`,
+   which each `[data-brand]` block in tokens.css re-points at that brand's own
+   ramp. Bind here and the footer repaints itself for blue, navy, dbim and the
+   five DBIM hues with no work at the call site.
 
-   Every colour in this file resolves from ONE mode-aware family:
-   `--sa-color-primaryScale-*`, which each `[data-brand]` block in tokens.css
-   re-points at that brand's own ramp. Bind here and the footer repaints itself
-   for `blue`, `navy`, `dbim` and the five DBIM hues with no work at this layer.
+   [DBIM 5.6] "The footer must be in the key colour (darkest shade) of the
+   selected colour group." Rung 800 IS that key colour — in `dbim` it resolves
+   to #162F6A, DBIM's own published Blue shade 1.
 
-   That is the fix for the defect this file replaces: the old footer painted
-   `bg-navy`, a Tailwind utility pinned to a LITERAL (`#13366b`) in the
-   portal-only `@theme` block of the hub's globals.css. A literal cannot answer
-   to `data-brand`, so the footer was the one surface on the estate that could
-   not be re-toned — and it was two rungs off DBIM's key colour besides.
+   ── ONE GROUND, ONE HAIRLINE ──────────────────────────────────────────────
+   The footer used to run two near-identical navies (800 and 900) for its two
+   bands. At a 1.28:1 step that is not a distinction, it is a smudge — it read
+   as a printing error rather than as structure. There is now ONE ground, and a
+   single hairline where the register changes from navigation to statute.
 
-   THE THREE BANDS ARE ROLES, NOT TINTS
-     · footer-bg       rung 800  — the key colour. DBIM 5.6's mandated ground.
-     · footer-bg-deep  rung 900  — the statutory bar: lineage, policy, credit.
-     · footer-rule     rung 600  — hairlines, same hue, never a white alpha.
+   The optional support strip is the deliberate exception: rung 900, because it
+   is the one element that is genuinely a different kind of thing (an
+   invitation, not information) and the one element a site can switch off.
 
-   INK IS SAME-HUE, NEVER WHITE-ALPHA
-   `rgba(255,255,255,.8)` on a coloured ground desaturates to a dirty grey and
-   reads as washed out. The ramp's own 100 and 200 rungs stay in the family and
-   measure BETTER: worst case across all modes is 6.18:1 (blue, rung 200),
-   against the 4.5:1 that AA asks for.
+   ── INK IS SAME-HUE ───────────────────────────────────────────────────────
+   `rgba(255,255,255,.8)` on a coloured ground desaturates to a dirty grey. The
+   ramp's own 100 and 200 rungs stay in the family and measure better — worst
+   case across all seven modes is 5.88:1 against the 4.5:1 AA asks for.
    ============================================================================ */
 
 .ds-sitefooter {
-  /* --- the band roles ---------------------------------------------------- */
   --ds-footer-bg: var(--sa-bg-brand-primary-boldest);
   --ds-footer-bg-deep: var(--sa-color-primaryScale-900);
   --ds-footer-rule: var(--sa-color-primaryScale-600);
 
-  /* --- the ink ladder: three levels, one hue ----------------------------- */
   --ds-footer-ink: var(--sa-on-bg-brand-primary-boldest);
   --ds-footer-ink-muted: var(--sa-color-primaryScale-100);
   --ds-footer-ink-dim: var(--sa-color-primaryScale-200);
 
-  /* --- the one raised surface: the CTA ----------------------------------- */
-  --ds-footer-cta-bg: var(--sa-on-bg-brand-primary-boldest);
-  --ds-footer-cta-ink: var(--sa-bg-brand-primary-boldest);
-
   --ds-footer-max: 1280px;
 
-  /* --- clearing the right-wall rail --------------------------------------
-     The estate parks a fixed widget on the right wall — `ImportantLinks` on
-     the website, marked `data-sa-wall-occupant`. It is `right: 0`, so it
-     overlays the last ~37px of the VIEWPORT at every scroll position, and the
-     centred container only reserves 24px of padding. Measured: content runs
-     13px under the rail at every width up to 1280, and the overlap reaches
-     zero at about 1306 where the gutter finally absorbs it.
-
-     Below that width the rail was landing on the two credit logos, which are
-     flush right and are the hyperlinked lineage marks DBIM 5.6 requires — so
-     ~13px of a mandated link was both covered and unclickable.
-
-     `container-type: inline-size` is what makes the arithmetic exact.
-     `100cqw` is the footer's own content width, which EXCLUDES the classic
-     scrollbar; `100vw` includes it, so a `vw`-based version under-reserves by
-     half a scrollbar on Windows and looks correct on macOS, where overlay
-     scrollbars hide the bug. Reserve the intrusion and nothing else: above
-     ~1306px this resolves back to the normal padding, so wide layouts are
-     untouched rather than permanently lopsided.
-
-     The rail's width comes from `--sa-wall-rail` in foundations/layout.css —
-     one number, read here rather than restated, so resizing the rail moves
-     the page container and this footer together. The fallback keeps the
-     component standalone in Storybook, where layout.css may not be loaded. */
+  /* Clearing the right-wall rail. `ImportantLinks` is `position: fixed;
+     right: 0`, so it overlays the last ~37px of the viewport at every scroll
+     position while the centred container reserves only 24px. `100cqw` is the
+     footer's own content width, which EXCLUDES the classic scrollbar; a
+     `100vw` version under-reserves by half a scrollbar on Windows and looks
+     correct on macOS, where overlay scrollbars hide the bug. Reserve the
+     intrusion and nothing else, so wide layouts stay symmetric. */
   --ds-wall-gutter: max(0px, calc((100cqw - var(--ds-footer-max)) / 2));
   --ds-wall-clearance: max(
     var(--sa-padding-24),
@@ -86,30 +64,59 @@
   padding-inline-end: var(--ds-wall-clearance);
 }
 
+/* ── The optional support strip ──────────────────────────────────────────
+   Opt-in via the `supportStrip` prop, and absent from the DOM when not passed.
+   It was previously folded into the identity column, where the button ended up
+   orphaned — a naked CTA between an address and a row of social marks, with
+   the sentence that explained it deleted. Given back its own band, it says
+   what it is again, and a site that does not want it simply omits the prop. */
+
+.ds-sitefooter__support {
+  background-color: var(--ds-footer-bg-deep);
+}
+
+.ds-sitefooter__support .ds-sitefooter__in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-stack-16) var(--sa-padding-32);
+  padding-block: var(--sa-padding-24);
+}
+
+.ds-sitefooter__support-title {
+  margin: 0 0 var(--sa-stack-4);
+  font-size: var(--sa-type-title-1-size);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ds-footer-ink);
+}
+
+.ds-sitefooter__support-body {
+  margin: 0;
+  max-width: 56ch;
+  font-size: var(--sa-type-body-2-size);
+  line-height: 1.5;
+  color: var(--ds-footer-ink-muted);
+}
+
 /* ── Band 1 · the working footer ─────────────────────────────────────────── */
 
 .ds-sitefooter__body {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: var(--sa-stack-32) var(--sa-padding-24);
-  padding-block: var(--sa-padding-40);
+  gap: var(--sa-stack-40) var(--sa-padding-24);
+  padding-block: var(--sa-padding-48);
 }
 
-/* Two GROUPS, not five stacked objects: who this is (lockup + address), then
-   how to reach them (link + social). The gap between the groups is double the
-   gap inside them, which is what makes them read as two things rather than a
-   list of five. Before this the column was a junk drawer at even spacing. */
+/* THREE items, not four. The call to action left for the support strip, which
+   is where it can be explained. What remains is one coherent block: who this
+   is, where they are, where else they publish. */
 .ds-sitefooter__ident {
   grid-column: span 12;
   display: flex;
   flex-direction: column;
-  gap: var(--sa-stack-32);
-}
-
-.ds-sitefooter__ident-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-12);
+  gap: var(--sa-stack-20);
   align-items: flex-start;
 }
 
@@ -117,7 +124,7 @@
   grid-column: span 12;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--sa-stack-24) var(--sa-padding-20);
+  gap: var(--sa-stack-32) var(--sa-padding-24);
 }
 
 @media (min-width: 640px) {
@@ -125,7 +132,7 @@
 }
 
 @media (min-width: 1024px) {
-  .ds-sitefooter__body { gap: var(--sa-stack-32) var(--sa-padding-40); }
+  .ds-sitefooter__body { gap: var(--sa-stack-40) var(--sa-padding-40); }
   .ds-sitefooter__ident { grid-column: span 4; }
   .ds-sitefooter__cols { grid-column: span 8; }
 }
@@ -161,6 +168,8 @@
   align-items: flex-start;
   gap: var(--sa-padding-8);
   margin: 0;
+  /* No max-width. A 34ch cap broke "New Delhi" across two lines, which reads
+     as a typo rather than as a wrap. The column already constrains it. */
   font-style: normal;
   font-size: var(--sa-type-body-2-size);
   line-height: 1.5;
@@ -169,25 +178,21 @@
 
 .ds-sitefooter__address .ds-icon { flex: none; opacity: 0.75; }
 
-/* ── The single call to action ───────────────────────────────────────────── */
+/* ── The call to action ──────────────────────────────────────────────────
+   Outline, never fill. A white fill made a tertiary action the single
+   brightest object in the footer, out-shouting the National Emblem above it.
+   The outline is not a compliance compromise: the border measures 6.18:1
+   against the ground (1.4.11 wants 3:1) and the label 11.4:1 (1.4.3 wants
+   4.5:1). The fill was never the only compliant option, only the loudest. */
 
 .ds-sitefooter__cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--sa-padding-8);
-  align-self: flex-start;
-  padding: var(--sa-padding-8) var(--sa-padding-16);
+  flex: none;
+  padding: var(--sa-padding-8) var(--sa-padding-20);
   border-radius: var(--sa-shape-6);
-  /* OUTLINE, NOT FILL — and this is a hierarchy fix, not a taste one. A white
-     fill was the single brightest object in the footer, so a tertiary CTA
-     out-shouted the National Emblem and the department name sitting above it.
-     The outline keeps the affordance and gives the identity its rank back.
-
-     It also still clears both criteria the fill was chosen for: the border
-     measures 6.18:1 against the ground (WCAG 1.4.11 wants 3:1) and the label
-     11.4:1 (1.4.3 wants 4.5:1). The fill was never the only compliant option,
-     only the loudest. */
   border: 1px solid var(--ds-footer-ink-dim);
   background-color: transparent;
   color: var(--ds-footer-ink);
@@ -204,13 +209,11 @@
   border-color: var(--ds-footer-ink-muted);
 }
 
-/* ── Link columns ────────────────────────────────────────────────────────── */
+/* ── Link columns ────────────────────────────────────────────────────────
+   A heading the same SIZE as its list is not a heading, it is a bold line.
+   Size does the separating, and the space beneath a title is larger than the
+   space between the items it titles — or the title joins the list. */
 
-/* A heading that is the same SIZE as its list is not a heading, it is a bold
-   line. Weight and colour alone were doing the work, so at a glance the four
-   columns read as four undifferentiated lists. Size does the separating now,
-   and the space beneath it is doubled — the gap under a title should be larger
-   than the gap between the items it titles, or the title joins the list. */
 .ds-sitefooter__colhead {
   margin: 0 0 var(--sa-stack-16);
   font-size: var(--sa-type-title-2-size);
@@ -248,27 +251,25 @@
 
 .ds-sitefooter__link .ds-icon { opacity: 0.7; }
 
-/* ── Social rail ─────────────────────────────────────────────────────────── */
+/* ── Social rail ─────────────────────────────────────────────────────────
+   The target is 40px and the mark is 24px, and at rest there is no ring around
+   either. Five outlined circles put five hard shapes in the quietest part of
+   the footer for its most tertiary links. WCAG 2.5.8 is satisfied by the box,
+   which does not have to be visible to be clickable. */
 
 .ds-sitefooter__social {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  /* Negative inline start so the first glyph's OPTICAL edge lines up with the
-     text above it rather than its 40px box doing. */
   gap: var(--sa-padding-4);
+  /* Negative inline start so the first glyph's OPTICAL edge aligns with the
+     text above it, rather than its 40px box doing. */
   margin: 0 0 0 calc(var(--sa-padding-8) * -1);
   padding: 0;
   list-style: none;
 }
 
 .ds-sitefooter__social-link {
-  /* THE TARGET IS 40px AND THE MARK IS 24px, and at rest there is no ring
-     around either. Five outlined circles put five hard shapes in the quietest
-     part of the footer, at the same weight as the button above them, for the
-     most tertiary links on the page. The hit area is unchanged — WCAG 2.5.8 is
-     satisfied by the box, which does not have to be visible to be clickable.
-     The circle returns on hover, where it means something. */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -288,78 +289,46 @@
 
 .ds-sitefooter__social-link svg { width: 24px; height: 24px; fill: currentColor; }
 
-/* ── Band 2 · the statutory bar ──────────────────────────────────────────── */
+/* ── Band 2 · the statutory bar ──────────────────────────────────────────
+   THREE rows, and it was four. Policies and related links now share one
+   wrapped row: they are both "links out of here", they were stacked as two
+   rows of undifferentiated grey, and the external ones already carry an arrow
+   that says which is which.
+
+   A hairline, not a colour change. The register shift from navigation to
+   statute is real and deserves a mark; a second navy one rung down was not a
+   distinction at 1.28:1, it was a smudge. */
 
 .ds-sitefooter__statutory {
-  background-color: var(--ds-footer-bg-deep);
   border-top: 1px solid var(--ds-footer-rule);
 }
 
-/* ONE rule in this band, at its boundary. It carried three — under the
-   lineage row, under the inline navs, and above the colophon — inside about
-   100px of height, which reads as ruled paper rather than as structure.
-   Spacing separates the rows now, and it separates them by MEANING.
-
-   TWO COLUMNS, and this took two attempts to get right. `space-between` pinned
-   the credits to the far edge and left a ~340px void across the middle;
-   stacking everything left-aligned instead just moved the void to the right.
-   A declared grid gives the marks a column of their own — statute and
-   navigation on the left, the organisational marks on the right — so the band
-   is used rather than divided. */
 .ds-sitefooter__statutory .ds-sitefooter__in {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--sa-stack-24) var(--sa-padding-40);
-  padding-block: var(--sa-padding-32);
+  gap: var(--sa-stack-20) var(--sa-padding-40);
+  padding-block: var(--sa-padding-24);
 }
 
+/* Lineage and the organisational marks are one row: the sentence ends
+   "...maintained by Digital India Corporation, MeitY" and the logos ARE that,
+   so they belong on the same line rather than in separate rows. */
 @media (min-width: 900px) {
   .ds-sitefooter__statutory .ds-sitefooter__in {
     grid-template-columns: minmax(0, 1fr) auto;
   }
-  .ds-sitefooter__statute { grid-column: 1; grid-row: 1; }
-  .ds-sitefooter__credits { grid-column: 2; grid-row: 1; justify-self: end; }
+  .ds-sitefooter__lineage { grid-column: 1; grid-row: 1; }
+  .ds-sitefooter__credits { grid-column: 2; grid-row: 1; justify-self: end; align-self: start; }
+  .ds-sitefooter__inline-navs,
   .ds-sitefooter__colophon { grid-column: 1 / -1; }
 }
 
-/* Statute + navigation: one block, because they are the same register. */
-.ds-sitefooter__statute {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-20);
-}
-
-/* The footer is the last thing on the page, so it is the footer that ends up
-   parked under the fixed corner launcher — and unlike a paragraph scrolling
-   past, that occlusion never clears. Measured on a 390px viewport, the
-   launcher covered the statutory lineage sentence by 52px.
-
-   Reserve the corner's height so the last band's content sits above it. The
-   rationale for reserving the scroll end rather than the column, and for not
-   shrinking the launcher, is in foundations/layout.css.
-
-   `:has()` rather than an unconditional rule, for two reasons: the assistant
-   is an admin toggle, so it can genuinely be absent; and the same footer is
-   built to serve any site in the estate, not all of which mount it. Reserving
-   room for a widget that is not there is just a hole in the page.
-
-   Above 1336px the centred container already clears the launcher's column, so
-   the reserve lifts and the footer ends normally. */
-@media (max-width: 1335px) {
-  body:has(.ds-chatbot--fixed) .ds-sitefooter__statutory .ds-sitefooter__in {
-    padding-block-end: var(--sa-corner-safe-bottom, 116px);
-  }
-}
-
-
-
 /* Boilerplate, set as boilerplate. It ran four lines at the same size and
    weight as the navigation above it, so a legal statement competed with the
-   links. Held to a 62ch measure in the dim ink, it reads as what it is and
-   stops fighting. */
+   links. */
 .ds-sitefooter__lineage {
   margin: 0;
-  max-width: 62ch;
+  max-width: 66ch;
   font-size: var(--sa-type-body-3-size);
   line-height: 1.6;
   color: var(--ds-footer-ink-dim);
@@ -376,49 +345,37 @@
 
 .ds-sitefooter__credit-link { display: inline-flex; align-items: center; }
 
-/* Normalise the credit marks to ONE optical height. Left to their intrinsic
-   aspect ratios the NeGD and Digital India SVGs rendered 31px and 44px tall on
-   the same row, which read as a misalignment rather than as two logos. */
-.ds-sitefooter__credit-link img {
-  height: 30px;
-  width: auto;
-}
+/* Normalise the marks to ONE optical height. Left to their intrinsic aspect
+   ratios the NeGD and Digital India SVGs rendered 31px and 44px on the same
+   row, which reads as a misalignment rather than as two logos. */
+.ds-sitefooter__credit-link img { height: 28px; width: auto; }
 
-/* Policy and related links: two navs, no visible labels and no rule between
-   them. The `POLICIES` and `RELATED` eyebrows are gone — two uppercase
-   micro-labels inside one small band is the templated look, and neither
-   earned its place: the policy links name themselves, and the external ones
-   already carry an arrow. Both navs keep their `aria-label`, so nothing is
-   lost to a screen reader, which is where the label was actually doing work. */
+/* Policies and related links, one wrapped row. No visible labels: both navs
+   keep their `aria-label`, which is where the label was doing real work; on
+   screen they were two uppercase eyebrows inside one small band, which is the
+   single most templated thing a footer can do. */
 .ds-sitefooter__inline-navs {
   display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-8);
+  flex-wrap: wrap;
+  gap: var(--sa-stack-8) var(--sa-padding-20);
+  padding-top: var(--sa-padding-16);
+  border-top: 1px solid color-mix(in srgb, var(--ds-footer-rule) 55%, transparent);
 }
 
 .ds-sitefooter__inline {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: var(--sa-stack-4) var(--sa-padding-16);
+  gap: var(--sa-stack-4) var(--sa-padding-20);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.ds-sitefooter__inline-label {
-  flex: none;
-  font-size: var(--sa-type-label-3-size);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ds-footer-ink-dim);
-}
-
-/* Colophon: LEFT-ALIGNED as one group, deliberately not `space-between`.
-   Pushing "Last Updated" to the right edge parked a DBIM-mandated element
-   underneath the fixed Important Links rail at common desktop widths. Keeping
-   both statements together also reads as one provenance line rather than two
+/* Left-aligned as one group, deliberately not `space-between`. Pushing the
+   last-updated stamp to the right edge parked a DBIM-mandated element under
+   the fixed Important Links rail at common desktop widths, and keeping the
+   three statements together reads as one provenance line rather than three
    unrelated corners. */
 .ds-sitefooter__colophon {
   display: flex;
@@ -431,6 +388,42 @@
 
 .ds-sitefooter__colophon p { margin: 0; }
 .ds-sitefooter__colophon time { font-variant-numeric: tabular-nums; }
+
+/* ── Variant · portal ────────────────────────────────────────────────────
+   A portal footer is chrome under an authenticated workflow, not the front
+   door of a public information site. It carries the statutory minimum and
+   gets out of the way: no navigation columns, no social rail, no address, no
+   support strip. What it must still carry is exactly what DBIM 5.6 and GIGW
+   require of any government footer — lineage, policies, last-updated, credits
+   — which is the whole reason it is a VARIANT of this component rather than a
+   separate one that would drift out of compliance on its own. */
+
+.ds-sitefooter--portal .ds-sitefooter__statutory {
+  border-top: 0;
+}
+
+.ds-sitefooter--portal .ds-sitefooter__statutory .ds-sitefooter__in {
+  padding-block: var(--sa-padding-20);
+  gap: var(--sa-stack-16) var(--sa-padding-32);
+}
+
+.ds-sitefooter--portal .ds-sitefooter__inline-navs {
+  padding-top: var(--sa-padding-12);
+}
+
+/* ── The scroll-end safe area ────────────────────────────────────────────
+   The footer is the last thing on the page, so it is the footer that ends up
+   parked under the fixed corner launcher — and unlike a paragraph scrolling
+   past, that occlusion never clears. Measured at 390px, the launcher covered
+   the copyright line. Reserve the corner's height so the last band clears it.
+   `:has()` because the assistant is an admin toggle and can genuinely be
+   absent; reserving room for a widget that is not there is a hole in the page.
+   Above 1336px the container already clears the launcher's column. */
+@media (max-width: 1335px) {
+  body:has(.ds-chatbot--fixed) .ds-sitefooter__statutory .ds-sitefooter__in {
+    padding-block-end: var(--sa-corner-safe-bottom, 116px);
+  }
+}
 
 /* ── Focus — one ring, every control ─────────────────────────────────────── */
 

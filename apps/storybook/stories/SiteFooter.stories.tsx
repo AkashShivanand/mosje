@@ -3,14 +3,24 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { SiteFooter, VisitorCounter } from "@mosje/design-system";
 
 /**
- * **SiteFooter** — the statutory footer of a PUBLIC INFORMATION SITE. Two bands:
- * the working footer (identity, contact, navigation) and the statutory bar
- * (lineage, policies, credits, copyright, last-updated).
+ * **SiteFooter** — the statutory footer for the estate, in two variants.
  *
- * **Not the same thing as `Footer`.** `Footer` is the slim single-band app-shell
- * strip that sits under an authenticated portal workflow. Reach for that one
- * inside `/portals/*`; reach for this one on `/website/*`. They answer to
- * different clauses and merging them would break both.
+ * `variant="website"` (default) renders three zones: an OPTIONAL support strip,
+ * the working footer (identity, address, social, four link columns), and the
+ * statutory bar. `variant="portal"` renders the statutory bar alone — a portal
+ * has its own navigation, and a citizen mid-application does not need a sitemap.
+ *
+ * **Why a variant and not a second component.** The statutory bar is the half
+ * that must stay DBIM-compliant, and it is now impossible for a portal footer
+ * to drift from the website's on that half. The DS also still ships `Footer`, a
+ * slim strip written for portals that no portal ever adopted — prefer
+ * `variant="portal"` for new work.
+ *
+ * **`supportStrip` is opt-in and absent from the DOM when omitted.** It carries
+ * a heading, one sentence and one CTA. It is a band rather than an item in the
+ * identity column because a call to action needs the sentence that explains it;
+ * folded into the column it became a naked button between an address and a row
+ * of social marks. Ignored on the portal variant.
  *
  * **It is structural, not content-bound.** Every label, href, logo and sentence
  * arrives as a prop, so a second site in the estate gets the same footer by
@@ -46,7 +56,6 @@ const meta = {
       "Department of Social Justice & Empowerment",
     ],
     address: "8th Floor, GPOA-3, Netaji Nagar, New Delhi - 110023",
-    cta: { label: "Get in Touch", href: "/website/contact-us" },
     columns: [
       {
         heading: "Department",
@@ -107,6 +116,8 @@ const meta = {
     maxWidth: 1280,
   },
   argTypes: {
+    variant: { control: "inline-radio", options: ["website", "portal"] },
+    supportStrip: { control: false },
     emblem: { control: false },
     colophonSlot: { control: false },
     social: { control: false },
@@ -115,7 +126,6 @@ const meta = {
     policyLinks: { control: false },
     relatedLinks: { control: false },
     linkAs: { control: false },
-    cta: { control: false },
     lineage: { control: "text" },
     copyright: { control: "text" },
     lastUpdated: { control: "text" },
@@ -185,7 +195,47 @@ export const Minimal: Story = {
     credits: undefined,
     relatedLinks: undefined,
     colophonSlot: undefined,
-    cta: undefined,
+    supportStrip: undefined,
     address: undefined,
+  },
+};
+
+/**
+ * The support strip, switched on. Omit the `supportStrip` prop entirely and this
+ * band does not render — there is no empty state and no placeholder.
+ */
+export const WithSupportStrip: Story = {
+  args: {
+    supportStrip: {
+      heading: "Need help with a scheme or an application?",
+      body: "Write to the department and an officer will respond. For urgent grievances, use CPGRAMS.",
+      cta: { label: "Get in Touch", href: "/website/contact-us" },
+    },
+  },
+};
+
+/**
+ * `variant="portal"` — the statutory bar alone. No navigation columns, no social
+ * rail, no address, no support strip: a portal has its own navigation and the
+ * footer's job there is to carry what DBIM 5.6 and GIGW require and get out of
+ * the way. `columns`, `social`, `address` and `supportStrip` are ignored rather
+ * than erroring, so the same content object can drive both variants.
+ */
+export const PortalVariant: Story = {
+  args: {
+    variant: "portal",
+    supportStrip: {
+      heading: "This is ignored on the portal variant",
+      cta: { label: "Nothing renders", href: "#" },
+    },
+    credits: [
+      {
+        src: "https://placehold.co/78x28/ffffff/003975?text=NeGD",
+        alt: "National e-Governance Division (NeGD)",
+        href: "https://negd.gov.in/",
+        width: 78,
+        height: 28,
+      },
+    ],
   },
 };

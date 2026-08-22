@@ -39,8 +39,11 @@ const columns: SiteFooterColumn[] = [
     heading: "Department",
     id: "footer-department",
     links: [
+      // "Vision & Mission" was here pointing at /website/about-us — the SAME
+      // page as "About Ministry" above it. Two labels, one destination, is a
+      // link that promises somewhere new and delivers the reader back where
+      // they were. Removed rather than re-pointed: there is no vision page.
       { label: "About Ministry", href: "/website/about-us" },
-      { label: "Vision & Mission", href: "/website/about-us" },
       { label: "Organisational Chart", href: "/website/whos-who" },
       { label: "Ministers & Officials", href: "/website/mosje-directory" },
     ],
@@ -58,8 +61,13 @@ const columns: SiteFooterColumn[] = [
     heading: "Support",
     id: "footer-support",
     links: [
+      // "Help & Support" and "Contact Us" both pointed at /website/contact-us.
+      // ONE link now, and it keeps the "Help" wording deliberately: DBIM 5.6
+      // names Help as a required element, and satisfying it by inference from a
+      // column heading is the kind of thing an auditor is right to reject.
+      // Contact is still reachable — the support strip's CTA and the address
+      // above it both lead to the same page.
       { label: "Help & Support", href: "/website/contact-us" },
-      { label: "Contact Us", href: "/website/contact-us" },
       { label: "RTI", href: "/website/rti" },
       { label: "Sitemap", href: "/website/sitemap" },
     ],
@@ -94,7 +102,8 @@ const policyLinks: SiteFooterLink[] = [
   { label: "Hyperlinking", href: "/website/hyperlinking-policy" },
   { label: "Accessibility", href: "/website/accessibility" },
   { label: "Feedback", href: "/website/contact-us#feedback" },
-  { label: "Sitemap", href: "/website/sitemap" },
+  // "Sitemap" is NOT repeated here — it is in the Support column, and DBIM 5.6
+  // asks for the element to be present in the footer, not present twice.
 ];
 
 const social: SiteFooterSocial[] = [
@@ -185,7 +194,14 @@ export function SiteFooter({ lastUpdated }: SiteFooterProps = {}) {
         "Department of Social Justice & Empowerment",
       ]}
       address="8th Floor, GPOA-3, Netaji Nagar, New Delhi - 110023"
-      cta={{ label: "Get in Touch", href: "/website/contact-us" }}
+      /* The support strip is OPT-IN. Passing it renders the band; omitting the
+         prop removes it entirely. It carries the sentence that makes the button
+         mean something — as a bare button in the identity column it did not. */
+      supportStrip={{
+        heading: "Need help with a scheme or an application?",
+        body: "Write to the department and an officer will respond. For urgent grievances, use CPGRAMS.",
+        cta: { label: "Get in Touch", href: "/website/contact-us" },
+      }}
       social={social}
       colophonSlot={<VisitorCounter />}
       columns={columns}
