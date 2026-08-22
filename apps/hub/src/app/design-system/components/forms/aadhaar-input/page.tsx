@@ -1,10 +1,13 @@
 import * as React from "react";
 import type { Metadata } from "next";
-import { AadhaarPlayground } from "./aadhaar-playground";
+import { AadhaarInputPlayground } from "./aadhaar-input-playground";
+import { Playground } from "@/components/design-system/playground";
+import { PropsTable, DoDont, Callout } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
-  title: "Aadhaar Input - SAMAVESH Design System",
-  description: "A specialized input for collecting Aadhaar numbers, featuring auto-formatting, DPDP Act masking, and Verhoeff validation.",
+  title: "AadhaarInput - SAMAVESH Design System",
+  description:
+    "An input specifically designed for collecting and securely masking Indian Aadhaar numbers.",
 };
 
 export default function AadhaarInputPage(): React.JSX.Element {
@@ -24,104 +27,126 @@ export default function AadhaarInputPage(): React.JSX.Element {
     fontSize: "var(--sa-type-body-1-size)",
     lineHeight: 1.6,
   };
+  const leadStyle: React.CSSProperties = {
+    ...proseStyle,
+    fontSize: "var(--sa-type-headline-3-size)",
+    color: "var(--sa-text-neutral-subtle)",
+    marginBottom: "var(--sa-stack-24)",
+  };
 
   return (
-    <main className="ds-prose" style={{ maxWidth: "800px", padding: "var(--sa-padding-40) var(--sa-padding-24)" }}>
+    <main
+      className="ds-prose"
+      style={{
+        maxWidth: "800px",
+        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+      }}
+    >
       {/* ============ HEADER ============ */}
       <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1 style={{ fontSize: "var(--sa-type-headline-1-size)", margin: "0 0 var(--sa-stack-16) 0" }}>
-          Aadhaar Input
+        <h1
+          style={{
+            fontSize: "var(--sa-type-headline-1-size)",
+            margin: "0 0 var(--sa-stack-16) 0",
+          }}
+        >
+          AadhaarInput
         </h1>
-        <p className="ds-lead" style={{ fontSize: "var(--sa-type-headline-3-size)", color: "var(--sa-text-neutral-subtle)" }}>
-          A specialized 12-digit input for collecting Aadhaar numbers, featuring auto-formatting, DPDP Act masking, and inline Verhoeff validation (UX4G 3.0 Standard).
+        <p className="ds-lead" style={leadStyle}>
+          An input tailored for 12-digit Aadhaar numbers. It formats the number into groups of four as the user types, validates it via Verhoeff checksum, and automatically masks the first 8 digits on blur for data privacy.
         </p>
       </header>
 
+      <Callout title="Privacy & DPDP Act 2023" type="warning" style={{ marginBottom: "var(--sa-stack-32)" }}>
+        Aadhaar numbers are sensitive personal data. UIDAI guidelines require masking the first 8 digits when displaying an Aadhaar number on screen. The `AadhaarInput` handles this automatically. Do not disable the `mask` prop without explicit authorization.
+      </Callout>
+
       {/* ============ PLAYGROUND ============ */}
-      <AadhaarPlayground />
+      <section style={sectionStyle}>
+        <h2 id="playground" style={h2Style}>Playground</h2>
+        <p style={proseStyle}>
+          Type exactly 12 digits. Notice how spaces are inserted automatically. When you click outside the field (blur), the first 8 digits are masked. The internal state always holds the raw 12 digits.
+        </p>
+        <div style={{ marginTop: "var(--sa-stack-24)" }}>
+          <AadhaarInputPlayground />
+        </div>
+      </section>
 
       {/* ============ 1. USAGE ============ */}
       <section style={sectionStyle}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
-          The Aadhaar number is a unique 12-digit identity number issued by UIDAI. Collecting it requires specific care regarding formatting, validation, and privacy.
+          Use this component whenever you need a user to provide their Aadhaar number. It prevents invalid characters, fixes the caret jumping issue common in formatted inputs, and ensures you always receive a clean 12-digit string to send to your backend.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--sa-inline-24)", marginTop: "var(--sa-stack-24)" }}>
-          <UseCard tone="do" title="When to use">
-            <li>When you strictly need to collect a resident's Aadhaar number.</li>
-            <li>In authentication workflows requiring Aadhaar verification.</li>
-          </UseCard>
-          <UseCard tone="dont" title="When NOT to use">
-            <li>Do not use for Virtual ID (VID) which is 16 digits.</li>
-            <li>Do not use a standard text input or number input for Aadhaar.</li>
-          </UseCard>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "var(--sa-inline-24)",
+            marginTop: "var(--sa-stack-24)",
+          }}
+        >
+          <DoDont
+            cards={[
+              {
+                type: "do",
+                label: "Store the raw 12 digits in your application state. The component handles formatting and masking visually.",
+                preview: null,
+              },
+              {
+                type: "dont",
+                label: "Don't use a standard number input for Aadhaar. Number inputs strip leading zeros and allow mouse-wheel scrolling to change the value.",
+                preview: null,
+              },
+            ]}
+          />
         </div>
       </section>
 
-      {/* ============ 2. FEATURES ============ */}
+      {/* ============ 2. CODE EXAMPLE ============ */}
       <section style={sectionStyle}>
-        <h2 id="features" style={h2Style}>2. Features & Compliance</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-bolder)" }}>DPDP Act Masking:</strong>
-            By default, when the user finishes typing 12 digits and blurring the field, the input masks the first 8 digits (<code>XXXX XXXX 1234</code>). This complies with UIDAI and DPDP Act guidelines to minimize PII exposure on screen. The underlying state value remains the full 12 digits.
-          </li>
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Auto-Formatting:</strong>
-            As the user types, the input automatically injects a space every 4 digits (<code>XXXX XXXX XXXX</code>) to match the physical Aadhaar card layout, improving readability and reducing typos.
-          </li>
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Verhoeff Validation:</strong>
-            The last digit of an Aadhaar number is a Verhoeff checksum. The component automatically validates this checksum when 12 digits are reached and sets <code>aria-invalid</code> if it fails, catching mistyped digits before API submission.
-          </li>
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Mode:</strong>
-            Uses <code>inputMode="numeric"</code> and <code>type="text"</code> to show the numpad on mobile, but prevents the browser from treating it as a mathematical number (which would strip leading zeros and allow mouse-wheel scrolling).
-          </li>
-        </ul>
-      </section>
-
-      {/* ============ 3. CODE ============ */}
-      <section style={sectionStyle}>
-        <h2 id="code" style={h2Style}>3. Code Example</h2>
-        <CodeBlock>{`import { AadhaarInput, FormField } from "@mosje/design-system";
-
-export function AadhaarForm() {
-  const [aadhaar, setAadhaar] = useState("");
+        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
+        <Playground
+          code={`function IdentityForm() {
+  const [aadhaar, setAadhaar] = React.useState("");
 
   return (
-    <FormField label="Aadhaar number" required>
-      {(fieldProps) => (
-        <AadhaarInput
-          {...fieldProps}
-          value={aadhaar}
-          onValueChange={setAadhaar}
-          mask={true} // Enabled by default
+    <FormField label="Aadhaar Number" required>
+      {(props) => (
+        <AadhaarInput 
+          {...props} 
+          value={aadhaar} 
+          onValueChange={setAadhaar} 
         />
       )}
     </FormField>
   );
-}`}</CodeBlock>
+}`}
+        />
+      </section>
+
+      {/* ============ 3. ACCESSIBILITY ============ */}
+      <section style={sectionStyle}>
+        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Mode:</strong> Sets <code>inputMode="numeric"</code> so mobile users are presented with a numeric keypad, while remaining a <code>type="text"</code> input to avoid native number input quirks.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Internal Validation:</strong> When exactly 12 digits are entered, it runs the Verhoeff algorithm. If the checksum fails, it automatically sets <code>aria-invalid="true"</code>.</li>
+        </ul>
+      </section>
+
+      {/* ============ 4. API ============ */}
+      <section style={sectionStyle}>
+        <h2 id="api" style={h2Style}>4. API Reference</h2>
+        <PropsTable
+          props={[
+            { name: "value", type: "string", required: true, description: "The raw 12 digits, no separators." },
+            { name: "onValueChange", type: "(digits: string) => void", required: true, description: "Called with raw digits only (never the formatted string)." },
+            { name: "invalid", type: "boolean", default: "false", description: "Render the error state." },
+            { name: "mask", type: "boolean", default: "true", description: "Mask to the last four digits when the field is complete and not focused." },
+            { name: "...rest", type: "InputHTMLAttributes", description: "All standard input attributes are supported." },
+          ]}
+        />
       </section>
     </main>
-  );
-}
-
-/* Local Helpers */
-function UseCard({ tone, title, children }: { tone: "do" | "dont"; title: string; children: React.ReactNode }) {
-  const accent = tone === "do" ? "var(--sa-color-status-success)" : "var(--sa-color-status-danger)";
-  return (
-    <div style={{ border: "1px solid var(--sa-border-neutral-subtle)", borderTop: `3px solid ${accent}`, borderRadius: "var(--sa-shape-8)", padding: "var(--sa-padding-20)", background: "var(--sa-bg-neutral-base)" }}>
-      <h3 style={{ margin: 0, marginBottom: "var(--sa-stack-12)", fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, color: "var(--sa-text-neutral-base)" }}>{title}</h3>
-      <ul style={{ margin: 0, paddingLeft: "var(--sa-padding-20)", color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-body-2-size)", lineHeight: 1.8 }}>{children}</ul>
-    </div>
-  );
-}
-
-function CodeBlock({ children }: { children: string }) {
-  return (
-    <pre style={{ background: "var(--sa-bg-neutral-subtler)", border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)", padding: "var(--sa-padding-16)", overflowX: "auto", fontSize: "var(--sa-type-body-2-size)", lineHeight: 1.6, color: "var(--sa-text-neutral-base)", marginTop: "var(--sa-stack-16)" }}>
-      <code style={{ fontFamily: "var(--sa-font-mono)" }}>{children}</code>
-    </pre>
   );
 }

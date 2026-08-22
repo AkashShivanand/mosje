@@ -3,22 +3,52 @@ import * as React from "react";
 import { Toggle } from "@mosje/design-system";
 
 export function TogglePlayground() {
-  const [v1, setV1] = React.useState(true);
-  const [v2, setV2] = React.useState(false);
+  const [checked, setChecked] = React.useState(false);
+  const [size, setSize] = React.useState<"default" | "small">("default");
+  const [disabled, setDisabled] = React.useState(false);
 
   return (
-    <div style={{ padding: "var(--sa-padding-40)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-8)", display: "flex", flexDirection: "column", gap: "var(--sa-stack-24)", maxWidth: "400px", margin: "0 auto" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontSize: "var(--sa-type-body-1-size)", color: "var(--sa-text-neutral-base)" }}>Enable two-factor authentication</span>
-        <Toggle checked={v1} onChange={(e) => setV1(e.target.checked)} />
+    <div
+      style={{
+        padding: "var(--sa-padding-40)",
+        background: "var(--sa-bg-neutral-subtle)",
+        borderRadius: "var(--sa-shape-8)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "var(--sa-stack-48)",
+      }}
+    >
+      <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", alignSelf: "flex-start" }}>
+        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+          <strong>Size:</strong>
+          <select 
+            value={size} 
+            onChange={(e) => setSize(e.target.value as "default" | "small")}
+            style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)" }}
+          >
+            <option value="default">Default</option>
+            <option value="small">Small</option>
+          </select>
+        </label>
+        
+        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+          <input 
+            type="checkbox" 
+            checked={disabled} 
+            onChange={(e) => setDisabled(e.target.checked)} 
+          />
+          <strong>Disabled</strong>
+        </label>
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontSize: "var(--sa-type-body-1-size)", color: "var(--sa-text-neutral-base)" }}>Allow push notifications</span>
-        <Toggle checked={v2} onChange={(e) => setV2(e.target.checked)} />
-      </div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", opacity: 0.5 }}>
-        <span style={{ fontSize: "var(--sa-type-body-1-size)", color: "var(--sa-text-neutral-base)" }}>Enterprise features (Disabled)</span>
-        <Toggle checked={true} disabled onChange={() => {}} />
+
+      <div style={{ width: "100%", maxWidth: "320px" }}>
+        <Toggle 
+          checked={checked}
+          onChange={(e) => setChecked(e.target.checked)}
+          label="Enable email notifications"
+          size={size}
+          disabled={disabled}
+        />
       </div>
     </div>
   );
