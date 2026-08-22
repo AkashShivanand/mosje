@@ -45,7 +45,7 @@ export default function DataTablePage(): React.JSX.Element {
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Pagination:</strong> Built-in controls for page sizes (10, 50, 100) and an intelligent ellipsis pager that prevents UI overflow on large datasets.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Header Treatment:</strong> Headers are intentionally sentence-cased and neutral. Avoid shouty ALL-CAPS headers.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Alignment:</strong> Align textual data to the left, and numeric data (currency, counts, dates) to the right. This allows users to quickly scan and compare magnitudes.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Accessibility:</strong> Pass a descriptive <code>caption</code> to the table (it renders visually hidden, but screen readers read it to provide context). Table headers use <code>scope="col"</code> automatically.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Accessibility:</strong> Pass a descriptive <code>caption</code> to the table (it renders visually hidden, but screen readers read it to provide context). Table headers use <code>scope=“col”</code> automatically.</li>
         </ul>
       </section>
       

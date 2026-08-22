@@ -1,3 +1,10 @@
+/* `@reference` gives this file Tailwind's theme context. Without it `@apply`
+   cannot resolve a utility here — the file is imported by the component, not
+   through the app's CSS entry, so it is compiled outside that context and the
+   production build fails on the first utility it meets. Inherited with these
+   components; see ActionBanner for the token-based pattern they should move to. */
+@reference "tailwindcss";
+
 .sa-accordion {
   @apply flex flex-col gap-3;
 }

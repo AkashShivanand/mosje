@@ -4,6 +4,9 @@ import { DataTable } from "@mosje/design-system";
 import type { DataTableColumn } from "@mosje/design-system";
 
 interface Scheme {
+  /** `DataTable` reads rows as `Record<string, unknown>`, so the row type
+      needs an index signature to be assignable to it. */
+  [key: string]: unknown;
   id: string;
   name: string;
   applicants: number;
@@ -11,7 +14,7 @@ interface Scheme {
 }
 
 const mockData: Scheme[] = Array.from({ length: 45 }).map((_, i) => ({
-  id: \`MOSJE-\${202400 + i}\`,
+  id: `MOSJE-${202400 + i}`,
   name: i % 3 === 0 ? "PM-AJAY Scholarship" : i % 3 === 1 ? "SMILE Support" : "SHREYAS Fellowship",
   applicants: Math.floor(Math.random() * 5000) + 100,
   status: i % 7 === 0 ? "Closed" : "Active",

@@ -13,7 +13,9 @@ export interface ProfileCardProps extends Omit<React.HTMLAttributes<HTMLDivEleme
 export const ProfileCard = React.forwardRef<HTMLDivElement, ProfileCardProps>(
   ({ title, subtitle, image, tag, className, ...props }, ref) => {
     return (
-      <div ref={ref} className={cn("sa-profile-card", className)} {...props}>
+      <div ref={ref} /* `group` is a Tailwind marker class and cannot be @apply-ed in CSS —
+         it has to sit on the element for `group-hover:` inside to resolve. */
+        className={cn("sa-profile-card", "group", className)} {...props}>
         <div className="sa-profile-card__image-wrapper">
           {image}
           {tag && (

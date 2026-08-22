@@ -2,8 +2,13 @@
 
 
 import Image from "next/image";
-import Link from "next/link";
-import { buttonClasses, Accordion, AccordionItem, VerticalTimeline, VerticalTimelineItem, ProfileCard,   } from "@mosje/design-system";
+import {
+  Accordion,
+  AccordionItem,
+  ProfileCard,
+  VerticalTimeline,
+  VerticalTimelineItem,
+} from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 
 const TARGET_GROUPS = [

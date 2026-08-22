@@ -23,6 +23,13 @@ module.exports = {
           "config",
           "theme",
           "plugin",
+          // Tailwind v4. `@reference` pulls the theme into a CSS file that is
+          // compiled outside the app's entry — required by any DS stylesheet
+          // that uses `@apply`, and unknown to stylelint-config-standard.
+          "reference",
+          "source",
+          "utility",
+          "custom-variant",
         ],
       },
     ],

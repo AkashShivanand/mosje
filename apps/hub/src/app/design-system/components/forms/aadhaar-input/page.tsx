@@ -48,7 +48,7 @@ export default function AadhaarInputPage(): React.JSX.Element {
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--sa-inline-24)", marginTop: "var(--sa-stack-24)" }}>
           <UseCard tone="do" title="When to use">
-            <li>When you strictly need to collect a resident's Aadhaar number.</li>
+            <li>When you strictly need to collect a resident’s Aadhaar number.</li>
             <li>In authentication workflows requiring Aadhaar verification.</li>
           </UseCard>
           <UseCard tone="dont" title="When NOT to use">
@@ -76,7 +76,7 @@ export default function AadhaarInputPage(): React.JSX.Element {
           </li>
           <li>
             <strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Mode:</strong>
-            Uses <code>inputMode="numeric"</code> and <code>type="text"</code> to show the numpad on mobile, but prevents the browser from treating it as a mathematical number (which would strip leading zeros and allow mouse-wheel scrolling).
+            Uses <code>inputMode=“numeric”</code> and <code>type=“text”</code> to show the numpad on mobile, but prevents the browser from treating it as a mathematical number (which would strip leading zeros and allow mouse-wheel scrolling).
           </li>
         </ul>
       </section>
