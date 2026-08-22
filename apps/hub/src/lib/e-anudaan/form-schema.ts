@@ -30,7 +30,8 @@ export type FieldKind =
   | "number"
   | "textarea"
   | "select"
-  | "radio";
+  | "radio"
+  | "checkbox";
 
 /** How a field's value is produced when the user does not type it. */
 export type AutoRule =
@@ -688,28 +689,88 @@ const SMILE_STEPS: readonly StepDef[] = [
     title: "Bank, Beneficiaries & Grant",
     sections: [
       {
-        title: "Bank Account Details",
+        title: "Bank Details",
+        lead: "Structured bank fields (converted from document #16 of the legacy checklist).",
         fields: [
-          { name: "bank_ngo_name_declared", label: "Account is in the name of the NGO/CBO", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "fld_bank_name", label: "Bank Name", kind: "text", required: true },
+          { name: "fld_bank_branch_address", label: "Branch Address", kind: "textarea", required: true, wide: true },
           { name: "fld_bank_account_number", label: "Account Number", kind: "text", required: true },
           { name: "fld_bank_ifsc", label: "IFSC Code", kind: "text", required: true, rule: "ifsc" },
-          { name: "fld_bank_name_branch", label: "Bank & Branch", kind: "text", required: true },
+          { name: "fld_bank_rtgs_micr", label: "RTGS / MICR Code", kind: "text" },
+          { name: "fld_bank_joint_operators", label: "Name & Address of joint-account operators", kind: "textarea", required: true, wide: true },
         ],
       },
       {
-        title: "Beneficiaries",
+        title: "Beneficiaries / Residents",
         fields: [
-          { name: "fld_beneficiaries_tg", label: "No. of transgender residents proposed", kind: "number", required: true, help: "A Garima Greh is sanctioned for 25 residents." },
-          { name: "fld_beneficiaries_previous_year", label: "No. of residents in the previous year", kind: "number" },
+          { name: "fld_residents_list", label: "List of Residents/Beneficiaries (name, Transgender ID certificate no., age)", kind: "textarea", required: true, wide: true },
+          { name: "fld_sanctioned_capacity", label: "Sanctioned resident capacity", kind: "number", required: true, help: "A Garima Greh unit is sanctioned for up to 25 residents." },
+          {
+            name: "fld_tg_beneficiaries_details",
+            label: "Transgender beneficiaries — Name, Aadhaar, Mobile, Date of Admission",
+            kind: "textarea",
+            wide: true,
+            help: "One resident per line, in the format: Name | Aadhaar (12 digits) | Mobile (10 digits) | Date of Admission.",
+          },
+          { name: "fld_total_beneficiaries", label: "Total Number of Residents/Beneficiaries", kind: "number", required: true, help: "Visible to all reviewers." },
         ],
       },
       {
-        title: "Grant Sought",
-        lead: "Recurring + Non-recurring = Total.",
+        title: "Grant Sought / Budget Estimate",
+        lead: "Item-wise break-up (BRD Annexure C). Recurring + Non-recurring = Total.",
         fields: [
-          { name: "fld_grant_recurring", label: "Recurring Grant Sought (₹)", kind: "number", required: true },
-          { name: "fld_grant_non_recurring", label: "Non-Recurring Grant Sought (₹)", kind: "number", required: true },
-          { name: "fld_grant_total", label: "Total Grant Sought (₹)", kind: "number", required: true, auto: { kind: "sum", from: ["fld_grant_recurring", "fld_grant_non_recurring"] }, help: "Auto-calculated: recurring + non-recurring." },
+          { name: "fld_grant_non_recurring_furniture", label: "Non-Recurring — Furniture (₹)", kind: "number" },
+          { name: "fld_grant_non_recurring_it", label: "Non-Recurring — IT Peripherals (₹)", kind: "number" },
+          { name: "fld_grant_non_recurring_equipment", label: "Non-Recurring — Equipment incl. CCTV (₹)", kind: "number" },
+          { name: "fld_grant_non_recurring_kitchen", label: "Non-Recurring — Kitchen items (₹)", kind: "number" },
+          { name: "fld_grant_non_recurring_safety", label: "Non-Recurring — Safety equipment (₹)", kind: "number" },
+          { name: "fld_grant_non_recurring_skill_dev", label: "Non-Recurring — Skill-dev equipment (₹)", kind: "number" },
+          {
+            name: "fld_grant_non_recurring",
+            label: "Non-Recurring Total (₹)",
+            kind: "number",
+            required: true,
+            help: "Auto-calculated from the Non-Recurring break-up.",
+            auto: {
+              kind: "sum",
+              from: [
+                "fld_grant_non_recurring_furniture",
+                "fld_grant_non_recurring_it",
+                "fld_grant_non_recurring_equipment",
+                "fld_grant_non_recurring_kitchen",
+                "fld_grant_non_recurring_safety",
+                "fld_grant_non_recurring_skill_dev",
+              ],
+            },
+          },
+          { name: "fld_grant_recurring_rent", label: "Recurring — Rent (₹)", kind: "number" },
+          { name: "fld_grant_recurring_food", label: "Recurring — Food (₹)", kind: "number" },
+          { name: "fld_grant_recurring_salaries", label: "Recurring — Salaries by post (₹)", kind: "number" },
+          { name: "fld_grant_recurring_admin", label: "Recurring — Admin expenses (₹)", kind: "number" },
+          {
+            name: "fld_grant_recurring",
+            label: "Recurring Total (₹)",
+            kind: "number",
+            required: true,
+            help: "Auto-calculated from the Recurring break-up.",
+            auto: {
+              kind: "sum",
+              from: [
+                "fld_grant_recurring_rent",
+                "fld_grant_recurring_food",
+                "fld_grant_recurring_salaries",
+                "fld_grant_recurring_admin",
+              ],
+            },
+          },
+          {
+            name: "fld_grant_total",
+            label: "Total Grant Requested (₹)",
+            kind: "number",
+            required: true,
+            help: "Auto-calculated: recurring + non-recurring. Feeds the amount_requested hub column.",
+            auto: { kind: "sum", from: ["fld_grant_recurring", "fld_grant_non_recurring"] },
+          },
         ],
       },
     ],
@@ -720,22 +781,28 @@ const SMILE_STEPS: readonly StepDef[] = [
     sections: [
       {
         title: "Compliance Declarations",
-        lead: "Confirm each declaration; provide value / source where applicable.",
+        lead: "Certification of accuracy + the scheme rules undertaking (a)–(j). Tick each declaration.",
         fields: [
-          { name: "decl_not_for_profit", label: "Organisation is not run for profit", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "decl_other_grant", label: "Receiving grant from another Govt source for the same purpose", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "decl_fee_charged", label: "No money is charged from the residents", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "decl_not_blacklisted", label: "Organisation is not blacklisted", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "decl_all_docs_signed", label: "All documents signed by the authorised signatory", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "decl_records_accurate", label: "I certify that the records and accounts furnished are accurate.", kind: "checkbox", required: true, wide: true },
+          { name: "decl_no_encumbrance", label: "The premises/property are free from any encumbrance.", kind: "checkbox", required: true, wide: true },
+          { name: "decl_audit_access", label: "Accounts and records will remain open to audit access.", kind: "checkbox", required: true, wide: true },
+          { name: "decl_economy", label: "Economy in spending will be observed.", kind: "checkbox", required: true, wide: true },
+          { name: "decl_progress_reports", label: "Progress reports will be submitted as required.", kind: "checkbox", required: true, wide: true },
+          { name: "decl_own_contribution", label: "The organisation will contribute 10% / balance expenditure.", kind: "checkbox", required: true, wide: true },
+          { name: "decl_reservation", label: "Reservation for SC/ST/Disabled persons will be observed.", kind: "checkbox", required: true, wide: true },
+          { name: "decl_no_duplicate_grant", label: "No duplicate grant from another source for the same purpose is being claimed.", kind: "checkbox", required: true, wide: true },
+          { name: "decl_separate_account", label: "A separate bank account for the scheme funds will be maintained.", kind: "checkbox", required: true, wide: true },
+          { name: "decl_pfms_eat", label: "PFMS / EAT module compliance will be followed.", kind: "checkbox", required: true, wide: true },
         ],
       },
       {
         title: "Authorised Person & Declaration",
         fields: [
           { name: "fld_auth_person_name", label: "Name of Authorised Person", kind: "text", required: true },
-          { name: "fld_auth_person_contact", label: "Contact of Authorised Person", kind: "tel", required: true },
+          { name: "fld_auth_person_contact", label: "Contact Number", kind: "tel", required: true },
           { name: "fld_auth_place", label: "Place", kind: "text", required: true },
           { name: "fld_auth_date", label: "Date", kind: "date", required: true },
+          { name: "fld_auth_time", label: "Time", kind: "time", required: true },
         ],
       },
     ],
@@ -745,34 +812,47 @@ const SMILE_STEPS: readonly StepDef[] = [
 ];
 
 const SMILE_DOCS: readonly DocDef[] = [
-  { n: 1, title: "Registration Certificate of the NGO / CBO" },
-  { n: 2, title: "Memorandum of Association / Trust Deed" },
-  { n: 3, title: "PAN of the Organisation" },
-  { n: 4, title: "NITI Aayog NGO-Darpan Registration Certificate" },
-  { n: 5, title: "80G Registration Certificate", note: "Required when 80G / FCRA registration is declared." },
-  { n: 6, title: "FCRA Registration Certificate", note: "Required when 80G / FCRA registration is declared.", optional: true },
-  { n: 7, title: "Annual Report — Previous Financial Year" },
-  { n: 8, title: "Audited Accounts (Balance Sheet, Income & Expenditure, Receipt & Payment)" },
-  { n: 9, title: "List of Managing Committee / Governing Body Members" },
-  { n: 10, title: "Budget Estimate — Current Year (recurring & non-recurring)" },
-  { n: 11, title: "Bank Details of the Project (name, A/C no., IFSC / MICR)" },
-  { n: 12, title: "Rent Agreement / Ownership Proof of the Garima Greh premises" },
-  { n: 13, title: "Building Layout Plan & Photographs of the premises" },
-  { n: 14, title: "Staff List — 12 Sanctioned Positions with qualifications" },
-  { n: 15, title: "PMC Composition — 5-member Project Management Committee" },
-  { n: 16, title: "Track Record — experience with the transgender community" },
-  { n: 17, title: "List of Beneficiaries / Residents — Previous Year" },
-  { n: 18, title: "Utilisation Certificate (GFR 12-A) — Previous Year, CA-signed", note: "Required when the organisation has received a previous SMILE grant." },
-  { n: 19, title: "Agreement Bond / PSR on Non-Judicial Stamp Paper" },
-  { n: 20, title: "CCTV / Live-feed Registration Proof", note: "Required when a camera and live feed is declared." },
+  { n: 1, title: "Registration Certificate (Societies Act / Trust Act etc.)" },
+  {
+    n: 2,
+    title: "Annual Report — previous FY",
+    note: "New applicants: previous two (2) financial years. 2nd instalment claims: previous financial year.",
+  },
+  {
+    n: 3,
+    title: "Audit Report (Balance Sheet, Income & Expenditure, Receipts & Payments)",
+    note: "New applicants: previous two (2) financial years. 2nd instalment claims: previous financial year.",
+  },
+  { n: 4, title: "Any other document as requested", note: "Conditional — sought only where applicable.", optional: true },
+  { n: 5, title: "Memorandum of Association + rules/aims/objectives" },
+  { n: 6, title: "List of Management/Managing Committee Members" },
+  {
+    n: 7,
+    title: "Rent Agreement for Garima Greh premises (notarised; rural certificate if applicable)",
+    note: "Required when the Garima Greh premises are rented.",
+  },
+  { n: 8, title: "Infrastructure details (rooms, kitchen, toilet, etc.)" },
+  {
+    n: 9,
+    title: "Budget Estimate (item-wise recurring & non-recurring)",
+    note: "New applicants: non-recurring items only. 1st instalment claims: recurring + non-recurring items.",
+  },
+  { n: 10, title: "Bank account details document" },
+  { n: 11, title: "Agreement Bond/PSR on non-judicial stamp paper (₹20)" },
+  {
+    n: 12,
+    title: "CCTV/live-feed registration proof",
+    note: "Required when a camera and live feed are declared (BR FR-INS-001).",
+  },
 ];
+
 
 export const SMILE_WIZARD: WizardDef = {
   code: "SMILE",
   title: "Support for Marginalised Individuals for Livelihood & Enterprise (SMILE) — Garima Greh",
   steps: SMILE_STEPS,
   documents: SMILE_DOCS,
-  documentsNote: "PDF · Max 5 MB per file · All mandatory.",
+  documentsNote: "PDF · Max 3 MB per file · All mandatory.",
 };
 
 /* ══════════════════════════════════════════════════════════════════════════════

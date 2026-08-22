@@ -18,6 +18,7 @@ import {
   Alert,
   Badge,
   Button,
+  Checkbox,
   DeclarationCheckbox,
   FormField,
   Icon,
@@ -343,6 +344,25 @@ function Field({
   const isAuto = Boolean(field.auto);
   const readOnly = field.readOnly || isAuto;
 
+  // SMILE's undertakings (a)–(j) are individual tick-boxes, not Yes/No pairs.
+  if (field.kind === "checkbox") {
+    return (
+      <div className={wide ? "sm:col-span-2" : undefined}>
+        <Checkbox
+          checked={value === "true"}
+          onChange={(e) => onChange(e.target.checked ? "true" : "")}
+          label={field.label}
+        />
+        {field.help && <p className="mt-1 text-xs text-ink-muted">{field.help}</p>}
+        {error && (
+          <p role="alert" className="mt-1 text-xs text-status-error">
+            {error}
+          </p>
+        )}
+      </div>
+    );
+  }
+
   if (field.kind === "radio") {
     return (
       <fieldset className={wide ? "sm:col-span-2" : undefined}>
@@ -470,8 +490,10 @@ function ReviewStep({
                   <ReviewItem
                     key={f.name}
                     label={f.label.toUpperCase()}
-                    value={values[f.name]}
-                    wide={f.wide || f.kind === "textarea"}
+                    // A ticked undertaking reads "Yes", not the raw "true" the live
+                    // read-back prints (recorded as a live rough edge, not cloned).
+                    value={f.kind === "checkbox" ? (values[f.name] === "true" ? "Yes" : "") : values[f.name]}
+                    wide={f.wide || f.kind === "textarea" || f.kind === "checkbox"}
                   />
                 ))}
             </ReviewSection>
