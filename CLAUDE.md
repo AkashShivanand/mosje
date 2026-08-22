@@ -1,5 +1,11 @@
 # MoSJE — Project Brain
 
+> **Cross-tool note.** [`AGENTS.md`](./AGENTS.md) is the shared entry point every
+> tool reads — Codex, Cursor, Antigravity, Gemini, Copilot. This file is the
+> Claude-flavoured superset. A guardrail that must bind everyone belongs in
+> `AGENTS.md`, in `.claude/rules/*.md` (plain markdown any agent can open), or —
+> best — in `.husky/*` and CI, which bind whoever runs git regardless of tool.
+
 > Loaded every turn. Kept to operative directives only. Full narrative, incident
 > records and rationale: `docs/rules-rationale/CLAUDE-md-full-2026-08-20.md`.
 > Path-scoped rules live in `.claude/rules/` and load when you touch their paths.
