@@ -39,6 +39,12 @@ export const NOT_COMPONENTS = new Set([
   // nothing to render. The behaviour they govern is covered by
   // registry-overrides.test.ts.
   "REGISTRY_CONFIG_VERSION", "REGISTRY_CONFIG_MAX_BYTES",
+  // BRAND_GLYPHS is the list of mark names BrandGlyph can draw (packages/
+  // design-system/components/icon/brand-glyph.tsx) — a string array, so there
+  // is nothing to render. It is exercised by BrandGlyph.stories.tsx, whose
+  // TheSet and OpticalSizing stories iterate it, and documented in the
+  // BrandGlyph section of design.md.
+  "BRAND_GLYPHS",
   // Types (exported via `export type`, but belt and braces)
   "ColorMode", "ColorModeId", "ColorModeProviderProps", "ColorModeSwitcherProps",
 ]);

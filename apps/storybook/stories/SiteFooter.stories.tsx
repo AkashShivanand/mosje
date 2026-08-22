@@ -147,20 +147,18 @@ export const Playground: Story = {};
 export const Full: Story = {
   args: {
     social: [
-      {
-        label: "Facebook",
-        href: "https://www.facebook.com/goimsje",
-        path: "M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.026 4.388 11.02 10.125 11.927v-8.437H7.078v-3.49h3.047V9.43c0-3.022 1.792-4.69 4.533-4.69 1.312 0 2.686.235 2.686.235v2.969h-1.514c-1.491 0-1.956.93-1.956 1.886v2.243h3.328l-.532 3.49h-2.796V24C19.612 23.093 24 18.099 24 12.073z",
-      },
-      {
-        label: "X (formerly Twitter)",
-        href: "https://x.com/msjegoi",
-        path: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z",
-      },
+      { label: "Facebook", href: "https://www.facebook.com/goimsje", icon: "facebook" },
+      { label: "X (formerly Twitter)", href: "https://x.com/msjegoi", icon: "x" },
+      { label: "Instagram", href: "https://www.instagram.com/msjegoi", icon: "instagram" },
       {
         label: "YouTube",
         href: "https://www.youtube.com/@ministryofsocialjustice511",
-        path: "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z",
+        icon: "youtube",
+      },
+      {
+        label: "WhatsApp Channel",
+        href: "https://whatsapp.com/channel/0029Vb7GfwH6mYPMHOvTd51W",
+        icon: "whatsapp",
       },
     ],
     colophonSlot: <VisitorCounter />,

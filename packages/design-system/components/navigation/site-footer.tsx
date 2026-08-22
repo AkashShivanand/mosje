@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Icon } from "../icon/icon";
+import { BrandGlyph, type BrandGlyphName } from "../icon/brand-glyph";
 import "./site-footer.css";
 
 /**
@@ -37,8 +38,12 @@ export interface SiteFooterSocial {
   /** Human name, e.g. "X (formerly Twitter)" — never a CSS class name. */
   label: string;
   href: string;
-  /** Single `d` attribute for a 24×24 viewBox brand mark. */
-  path: string;
+  /**
+   * Which brand mark to draw. A NAME, not path data: the marks live in the DS
+   * so every rail in the estate draws the same optically-normalised set, and
+   * so a footer's content file never carries a kilobyte of vendor artwork.
+   */
+  icon: BrandGlyphName;
 }
 
 export interface SiteFooterCredit {
@@ -280,9 +285,7 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
                           rel="noreferrer"
                           className="ds-sitefooter__social-link"
                         >
-                          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                            <path d={s.path} />
-                          </svg>
+                          <BrandGlyph name={s.icon} size={24} />
                           <span className="sr-only">
                             {s.label}
                             <NewWindow />

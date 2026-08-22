@@ -2,37 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import type { SVGProps } from "react";
-import { Icon } from "@mosje/design-system";
+import { BrandGlyph, Icon, type BrandGlyphName } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
 
 type SocialTab = "facebook" | "x" | "youtube";
-
-type BrandIcon = (props: SVGProps<SVGSVGElement>) => React.JSX.Element;
-
-function FacebookIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.026 4.388 11.02 10.125 11.927v-8.437H7.078v-3.49h3.047V9.43c0-3.022 1.792-4.69 4.533-4.69 1.312 0 2.686.235 2.686.235v2.969h-1.514c-1.491 0-1.956.93-1.956 1.886v2.243h3.328l-.532 3.49h-2.796V24C19.612 23.093 24 18.099 24 12.073z" />
-    </svg>
-  );
-}
-
-function XIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
-
-function YoutubeIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-    </svg>
-  );
-}
 
 interface SocialPost {
   id: string;
@@ -48,7 +21,7 @@ interface SocialTabConfig {
   handle: string;
   ctaLabel: string;
   profileUrl: string;
-  icon: BrandIcon;
+  icon: BrandGlyphName;
   iconClassName: string;
   iconWrapClassName: string;
   posts: SocialPost[];
@@ -61,7 +34,7 @@ const SOCIAL_TABS: SocialTabConfig[] = [
     handle: "@DoSJE_GoI",
     ctaLabel: "Follow",
     profileUrl: "https://www.facebook.com/MSJEGOI",
-    icon: FacebookIcon,
+    icon: "facebook",
     iconClassName: "text-[#1877F2]",
     iconWrapClassName: "bg-[#1877F2]/10",
     posts: [
@@ -94,7 +67,7 @@ const SOCIAL_TABS: SocialTabConfig[] = [
     handle: "@MSJEGOI",
     ctaLabel: "Follow",
     profileUrl: "https://twitter.com/MSJEGOI",
-    icon: XIcon,
+    icon: "x",
     iconClassName: "text-black",
     iconWrapClassName: "bg-black/5",
     posts: [
@@ -127,7 +100,7 @@ const SOCIAL_TABS: SocialTabConfig[] = [
     handle: "@DoSJE_GoI",
     ctaLabel: "Subscribe",
     profileUrl: "https://www.youtube.com/@DoSJE_GoI",
-    icon: YoutubeIcon,
+    icon: "youtube",
     iconClassName: "text-[#FF0000]",
     iconWrapClassName: "bg-[#FF0000]/10",
     posts: [
@@ -159,7 +132,6 @@ const SOCIAL_TABS: SocialTabConfig[] = [
 export function SocialMedia() {
   const [activeTab, setActiveTab] = useState<SocialTab>("facebook");
   const currentTab = SOCIAL_TABS.find((tab) => tab.key === activeTab) ?? SOCIAL_TABS[0]!;
-  const BrandGlyph = currentTab.icon;
 
   return (
     <section className="bg-white py-12 md:py-16">
@@ -178,7 +150,6 @@ export function SocialMedia() {
           <div className="flex items-center rounded-xl bg-gray-100 p-1.5 border border-gray-200">
             {SOCIAL_TABS.map((tab) => {
               const isActive = tab.key === activeTab;
-              const TabIcon = tab.icon;
               return (
                 <button
                   key={tab.key}
@@ -191,7 +162,7 @@ export function SocialMedia() {
                       : "text-ink-muted hover:text-ink"
                   )}
                 >
-                  <TabIcon className="h-4 w-4" />
+                  <BrandGlyph name={tab.icon} size={16} />
                   {tab.name}
                 </button>
               );
@@ -213,8 +184,9 @@ export function SocialMedia() {
                     className={`flex h-9 w-9 items-center justify-center rounded-full ${currentTab.iconWrapClassName}`}
                   >
                     <BrandGlyph
-                      className={`h-4 w-4 ${currentTab.iconClassName}`}
-                      aria-hidden="true"
+                      name={currentTab.icon}
+                      size={16}
+                      className={currentTab.iconClassName}
                     />
                   </span>
                   <div>
