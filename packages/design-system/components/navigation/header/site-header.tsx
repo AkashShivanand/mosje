@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { AccessibilityBar } from "../accessibility-bar";
+import { Icon } from "../../icon";
 import { BrandLockup } from "./brand-lockup";
 import { AccountMenu } from "./account-menu";
 import type {
@@ -64,6 +65,16 @@ export interface SiteHeaderProps {
   brandLines: BrandLines;
   /** Show the BETA badge. @default false */
   beta?: boolean;
+  /**
+   * Where the brand lockup links. **Always pass this.**
+   *
+   * It defaults to `/`, which is the hub root — so a website page that omits it
+   * sends "click the emblem to go home" to the estate index instead of the site
+   * the reader is on. Pass the zone root: `/website` for the public site, the
+   * portal's own landing for a portal, `/` only for the hub itself.
+   * @default "/"
+   */
+  homeHref?: string;
   /** Portal: collapse/menu toggle rendered on the far left of the brand row. */
   onToggleNav?: () => void;
   /** Portal: whether the app-shell nav/sidebar controlled by the toggle is open (drives `aria-expanded`). */
@@ -114,30 +125,43 @@ export interface SiteHeaderProps {
   className?: string;
 }
 
-/* ── Inline icons (no runtime icon dependency) ─────────────────────────────── */
-/* The accessibility bar's icons (external, accessibility, globe) now live in the
-   shared <AccessibilityBar> component; only the icons the brand/nav rows use
-   remain here. */
-const IcCaret = () => (
-  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="ds-hdr-ic">
-    <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
+/* ── Glyphs ────────────────────────────────────────────────────────────────── */
+/* The accessibility bar's icons (external, accessibility, globe) live in the
+   shared <AccessibilityBar>; only the brand/nav row glyphs remain here.
+   Every glyph below is the shared <Icon> — Material Symbols Rounded, wght 300 —
+   the same component the Figma library's Icon set renders. The hand-rolled SVGs
+   that used to live here drifted from the library (the sidebar toggle never
+   swapped to menu_open, and the caret was a bespoke chevron); a font icon cannot
+   drift, because the name IS the contract. */
+const IcCaret = () => <Icon name="keyboard_arrow_down" size={16} className="ds-hdr-ic" />;
+/** Mega-menu row affordance. Its own glyph, not a rotated caret — a font icon
+    has chevron_right, so there is nothing to fake with a transform. */
+const IcMegaChevron = () => <Icon name="chevron_right" size={20} className="ds-hdr-ic" />;
+const IcSearch = () => <Icon name="search" size={24} />;
+/** Sidebar toggle glyph — mirrors Navbar/MenuToggle's `Sidebar` variant. */
+const IcMenuToggle = ({ expanded }: { expanded?: boolean }) => (
+  <Icon name={expanded ? "menu_open" : "menu"} size={24} />
 );
-const IcSearch = () => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
-    <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-  </svg>
-);
-const IcMenu = () => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-  </svg>
+/** Mobile drawer trigger — Figma Navbar/Website mobile, IconButton Large + `menu`. */
+const IcBurger = () => <Icon name="menu" size={32} />;
+/** WCAG 3.2.5 — a link that leaves the tab has to say so, visibly and to AT. */
+const NewTabHint = () => (
+  <>
+    <Icon name="open_in_new" size={16} className="ds-hdr-ic" />
+    <span className="ds-hdr-sr">(opens in a new tab)</span>
+  </>
 );
 
 /**
- * SiteHeader — the SAMAVESH Navbar, matching the UX4G "Navbar Website" and Portal
- * DS "Navbar Portal" Figma components pixel-for-pixel. Three tiers:
+ * SiteHeader — the SAMAVESH Navbar. ONE component serves all three estate
+ * placements, matching the Figma library (Navbar/Website, Navbar/Portal,
+ * Navbar/MenuToggle) pixel-for-pixel:
+ *
+ *   variant="website"  public site  — three tiers, static
+ *   variant="portal"   app shell    — three tiers, sticky, sidebar toggle + account
+ *   variant="compact"  hub index    — ONE 64px tier, nav inline, no accessibility bar
+ *
+ * The website and portal variants render three tiers:
  *
  *   1. Accessibility bar — GoI link · font-size A−/A/A+ · contrast · accessibility · language
  *   2. Brand row         — [collapse] · emblem + lockup · {search + CTA | cobranding + account}
@@ -164,6 +188,7 @@ export function SiteHeader({
   emblemAlt,
   brandLines,
   beta = false,
+  homeHref = "/",
   onToggleNav,
   navExpanded,
   navControlsId,
@@ -180,10 +205,11 @@ export function SiteHeader({
   className,
 }: SiteHeaderProps): React.JSX.Element {
   const isPortal = variant === "portal";
+  const isCompact = variant === "compact";
   // variant supplies behavioural defaults; explicit props always win.
   // `sticky` defaults on for portals; scroll-collapse stays opt-in (it changes
   // the chrome height, which app-shell sidebar offsets are measured against).
-  const isSticky = sticky ?? isPortal;
+  const isSticky = sticky ?? (isPortal || isCompact);
   const wantsScrollCollapse = (collapseOnScroll ?? false) && isSticky;
 
   const [openLabel, setOpenLabel] = React.useState<string | null>(null);
@@ -242,114 +268,11 @@ export function SiteHeader({
     return () => document.removeEventListener("keydown", onKey);
   }, [drawerOpen]);
 
-  return (
-    <header
-      className={cn("ds-hdr", isSticky && "is-sticky", scrolled && "is-scrolled", className)}
-      data-variant={variant}
-    >
-      {/* ── Tier 1: Accessibility bar (the shared DS component) ──
-         Figma is the source of truth, so all four actions render: skip · font
-         size · accessibility · language. The bar's skip is VISIBLE (as in Figma
-         and on UX4G government sites), which is why the header no longer emits a
-         second, visually-hidden `.ds-hdr-skip` — two links to the same target
-         announce the bypass twice. WCAG 2.4.1 is satisfied by the visible one.
-         The accessibility control opens the UX4G widget. */}
-      {/* `tone` is the BRAND AXIS, not a component prop — `data-brand="navy"`
-          re-resolves bg/brand/primary/bolder to the navy ramp (#003366), the same
-          value the retired tone="navy" hardcoded. Scoped to the bar so the brand
-          row and nav row below keep their own surfaces. */}
-      <div data-brand={tone === "navy" ? "navy" : undefined}>
-        <AccessibilityBar
-          govLink={govLink}
-          skipTo={skipTo}
-          showSkip
-          /* ON since 2026-08-14, REVERSING the v2.3.0 decision that kept it off.
-             The old reasoning — "the widget is the single mechanism, a second stepper
-             doubles up" — rested on a premise that was never true in practice: the
-             stepper wrote `--sa-font-scale` and NOTHING READ IT, so it was not a
-             competing mechanism, it was an inert control. Now that the variable
-             actually drives the root font size, the bar is the direct, visible way to
-             resize text and the widget's floating button is hidden wherever the bar
-             offers the same entry (accessibility-bar.css). One door, not two.
-             AND THE FIGMA LIBRARY ALREADY AGREED. The claim this comment used to make
-             — that 13 nested instances were set OFF to match this file — was checked on
-             2026-08-14 and is false: all 39 nested AccessibilityBar instances across the
-             Navbar, Accessibility Bar and Portal Login Template pages have Font size ON.
-             The code was the outlier, so turning it on CLOSES a divergence rather than
-             creating one. Verify before re-asserting a claim like that. */
-          fontSize
-          accessibility={accessibilityToolbar}
-          accessibilityHref={accessibilityHref}
-          onAccessibility={onAccessibility}
-          language={language}
-          layout="fluid"
-          maxWidth={maxWidth}
-        />
-      </div>
-
-      {/* ── Tier 2: Brand row ── */}
-      <div className="ds-hdr-brand">
-        <div className="ds-hdr-brand__in" style={inner}>
-          {onToggleNav && (
-            <button
-              type="button"
-              className="ds-hdr-brand__toggle"
-              aria-label={navExpanded ? "Close navigation" : "Open navigation"}
-              aria-expanded={navExpanded}
-              aria-controls={navControlsId}
-              onClick={onToggleNav}
-            >
-              <IcMenu />
-            </button>
-          )}
-
-          <BrandLockup
-            className="ds-hdr-brand__lockup"
-            emblemSrc={emblemSrc}
-            emblemAlt={emblemAlt}
-            lines={brandLines}
-            beta={beta}
-            divider={brandDivider}
-          />
-
-          <div className="ds-hdr-brand__trailing">
-            {search && (
-              <button type="button" className="ds-hdr-searchfield" onClick={search.onSearch}>
-                <span className="ds-hdr-searchfield__icon" aria-hidden="true"><IcSearch /></span>
-                <span className="ds-hdr-searchfield__placeholder">
-                  {search.placeholder ?? "Search"}
-                </span>
-              </button>
-            )}
-
-            {cobranding?.map((m) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
-            ))}
-
-            {account && <AccountMenu account={account} items={accountMenu} />}
-
-            {actions}
-
-            {hasNav && (
-              <button
-                type="button"
-                className="ds-hdr-burger"
-                aria-label={drawerOpen ? "Close menu" : "Open menu"}
-                aria-expanded={drawerOpen}
-                aria-controls={drawerId}
-                onClick={() => setDrawerOpen((v) => !v)}
-              >
-                <IcMenu />
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Tier 3: Navigation row ── */}
-      {hasNav && (
-        <nav className="ds-hdr-nav" aria-label="Primary" ref={navRef}>
+  /* The primary nav renders in one of two places: its own bordered tier below
+     the brand row (website / portal), or inline in the brand row (compact).
+     Same markup, same refs, same dropdown behaviour — only the slot moves. */
+  const navRow = hasNav ? (
+        <nav className={cn("ds-hdr-nav", isCompact && "is-inline")} aria-label="Primary" ref={navRef}>
           <ul className="ds-hdr-nav__list" style={inner}>
             {nav!.map((item) => {
               const hasMega = !!item.columns?.length;
@@ -367,6 +290,8 @@ export function SiteHeader({
                   <a
                     href={item.href}
                     className={cn("ds-hdr-nav__link", item.active && "is-active")}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noreferrer" : undefined}
                     aria-expanded={hasMenu ? isOpen : undefined}
                     aria-haspopup={hasMenu ? true : undefined}
                     aria-controls={hasMenu && isOpen ? dropId : undefined}
@@ -379,6 +304,7 @@ export function SiteHeader({
                   >
                     {item.label}
                     {hasMenu && <IcCaret />}
+                    {item.external && <NewTabHint />}
                   </a>
 
                   {hasChildren && isOpen && (
@@ -422,7 +348,7 @@ export function SiteHeader({
                                         <span className="ds-hdr-mega-item__abbr">{it.abbr}</span>
                                         <span className="ds-hdr-mega-item__name">{it.name}</span>
                                       </span>
-                                      <IcCaret />
+                                      <IcMegaChevron />
                                     </a>
                                   </li>
                                 ))}
@@ -454,11 +380,126 @@ export function SiteHeader({
             })}
           </ul>
         </nav>
+  ) : null;
+
+  return (
+    <header
+      className={cn("ds-hdr", isSticky && "is-sticky", scrolled && "is-scrolled", className)}
+      data-variant={variant}
+    >
+      {/* ── Tier 1: Accessibility bar (the shared DS component) ──
+         Figma is the source of truth, so all four actions render: skip · font
+         size · accessibility · language. The bar's skip is VISIBLE (as in Figma
+         and on UX4G government sites), which is why the header no longer emits a
+         second, visually-hidden `.ds-hdr-skip` — two links to the same target
+         announce the bypass twice. WCAG 2.4.1 is satisfied by the visible one.
+         The accessibility control opens the UX4G widget. */}
+      {/* `tone` is the BRAND AXIS, not a component prop — `data-brand="navy"`
+          re-resolves bg/brand/primary/bolder to the navy ramp (#003366), the same
+          value the retired tone="navy" hardcoded. Scoped to the bar so the brand
+          row and nav row below keep their own surfaces. */}
+      {!isCompact && (
+      <div data-brand={tone === "navy" ? "navy" : undefined}>
+        <AccessibilityBar
+          govLink={govLink}
+          skipTo={skipTo}
+          showSkip
+          /* ON since 2026-08-14, REVERSING the v2.3.0 decision that kept it off.
+             The old reasoning — "the widget is the single mechanism, a second stepper
+             doubles up" — rested on a premise that was never true in practice: the
+             stepper wrote `--sa-font-scale` and NOTHING READ IT, so it was not a
+             competing mechanism, it was an inert control. Now that the variable
+             actually drives the root font size, the bar is the direct, visible way to
+             resize text and the widget's floating button is hidden wherever the bar
+             offers the same entry (accessibility-bar.css). One door, not two.
+             AND THE FIGMA LIBRARY ALREADY AGREED. The claim this comment used to make
+             — that 13 nested instances were set OFF to match this file — was checked on
+             2026-08-14 and is false: all 39 nested AccessibilityBar instances across the
+             Navbar, Accessibility Bar and Portal Login Template pages have Font size ON.
+             The code was the outlier, so turning it on CLOSES a divergence rather than
+             creating one. Verify before re-asserting a claim like that. */
+          fontSize
+          accessibility={accessibilityToolbar}
+          accessibilityHref={accessibilityHref}
+          onAccessibility={onAccessibility}
+          language={language}
+          layout="fluid"
+          maxWidth={maxWidth}
+        />
+      </div>
       )}
+
+      {/* ── Tier 2: Brand row ── */}
+      <div className="ds-hdr-brand">
+        <div className="ds-hdr-brand__in" style={inner}>
+          {onToggleNav && (
+            <button
+              type="button"
+              className="ds-hdr-brand__toggle"
+              aria-label={navExpanded ? "Close navigation" : "Open navigation"}
+              aria-expanded={navExpanded}
+              aria-controls={navControlsId}
+              onClick={onToggleNav}
+            >
+              <IcMenuToggle expanded={navExpanded} />
+            </button>
+          )}
+
+          <BrandLockup
+            className="ds-hdr-brand__lockup"
+            emblemSrc={emblemSrc}
+            emblemAlt={emblemAlt}
+            lines={brandLines}
+            href={homeHref}
+            beta={beta}
+            divider={brandDivider}
+            compact={isCompact}
+          />
+
+          <div className="ds-hdr-brand__trailing">
+            {search && (
+              <button type="button" className="ds-hdr-searchfield" onClick={search.onSearch}>
+                <span className="ds-hdr-searchfield__icon" aria-hidden="true"><IcSearch /></span>
+                <span className="ds-hdr-searchfield__placeholder">
+                  {search.placeholder ?? "Search"}
+                </span>
+              </button>
+            )}
+
+            {cobranding?.map((m) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
+            ))}
+
+            {isCompact && navRow}
+
+            {account && <AccountMenu account={account} items={accountMenu} />}
+
+            <span className="ds-hdr-brand__actions">{actions}</span>
+
+            {hasNav && (
+              <button
+                type="button"
+                className="ds-hdr-burger"
+                aria-label={drawerOpen ? "Close menu" : "Open menu"}
+                aria-expanded={drawerOpen}
+                aria-controls={drawerId}
+                onClick={() => setDrawerOpen((v) => !v)}
+              >
+                <IcBurger />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Tier 3: Navigation row (website / portal) ── */}
+      {!isCompact && navRow}
 
       {/* ── Mobile drawer (disclosure region, not a modal) ── */}
       {hasNav && drawerOpen && (
         <nav id={drawerId} className="ds-hdr-drawer" aria-label="Navigation menu" ref={drawerRef}>
+          {actions && <div className="ds-hdr-drawer__actions">{actions}</div>}
           <ul className="ds-hdr-drawer__list">
             {nav!.map((item) => {
               // Flatten a mega-menu's columns (rich items or links) into the drawer.
@@ -471,8 +512,15 @@ export function SiteHeader({
                 : item.children;
               return (
                 <li key={item.label} className="ds-hdr-drawer__group">
-                  <a href={item.href} className={cn("ds-hdr-drawer__link", item.active && "is-active")} onClick={() => setDrawerOpen(false)}>
+                  <a
+                    href={item.href}
+                    className={cn("ds-hdr-drawer__link", item.active && "is-active")}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noreferrer" : undefined}
+                    onClick={() => setDrawerOpen(false)}
+                  >
                     {item.label}
+                    {item.external && <NewTabHint />}
                   </a>
                   {subLinks?.length ? (
                     <ul className="ds-hdr-drawer__sub">

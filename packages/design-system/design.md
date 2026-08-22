@@ -12,7 +12,12 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-20 · System version: v0.29.0 (THE ASSISTANT IS CALLED SAMAJIK
+  Last reviewed: 2026-08-22 · System version: v0.30.0 (THE NAVBAR IS ONE COMPONENT FOR ALL
+  THREE PLACEMENTS — website, portal and the new `compact` (hub index) variant; the hub's
+  bespoke gate chrome is deleted. ALWAYS PASS `homeHref`: it defaulted to the hub root, so
+  the emblem on every website page navigated out of the website. Every header glyph is now
+  `<Icon>` (Material Symbols Rounded, wght 300) — the hand-rolled SVGs had drifted, and the
+  sidebar toggle now swaps `menu_open`/`menu` off `navExpanded`. Previously v0.29.0: THE ASSISTANT IS CALLED SAMAJIK
   SAHAYAK — सामाजिक सहायक — which is the name written on the seal it wears and the name
   of the live assistant on dosje.gov.in. The Figma mock's "Noddy" shipped briefly and was
   wrong three ways: it contradicted the badge, it contradicted the live service, and it is
@@ -1708,18 +1713,40 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 - **The statutory band is a declared two-column grid**, statute and navigation left, organisational marks right. `space-between` pinned the marks to the far edge and left a ~340px void; stacking everything left-aligned instead just moved the void to the right side.
 
 #### SiteHeader
-**Purpose**: The SAMAVESH Navbar — canonical three-tier masthead (accessibility bar + brand row + nav row).  
-**Variants**: `website` (static masthead) | `portal` (sticky, scroll-collapse opt-in)  
-**Key props**: `emblemSrc`, `brandLines`, `nav`, `variant`, `search`, `account`, `actions`  
+**Purpose**: The SAMAVESH Navbar. **One component serves every placement in the estate** — there is no second masthead to reach for and none to write.  
+**Variants**: `website` (static three-tier masthead) | `portal` (sticky, sidebar toggle, account) | `compact` (one 64px tier for hub index surfaces)  
+**Key props**: `emblemSrc`, `brandLines`, `homeHref`, `nav`, `variant`, `search`, `account`, `actions`, `onToggleNav`, `navExpanded`  
 **Rules**:
-- Website: always pass `search` and `actions` (Login button).
-- Portal: pass `onToggleNav`, `brandDivider`, `cobranding`, `account`, `accountMenu`.
+- **Choose the variant by PLACEMENT, not by taste.** `website` for public pages, `portal`
+  for signed-in app shells, `compact` for internal index / wayfinding surfaces (the hub
+  landing, `/portals`, `/reports`) that carry no government masthead. `compact` drops the
+  accessibility bar and moves the nav inline — so **the page must supply its own skip
+  link**, which the accessibility bar would otherwise have provided.
+- **ALWAYS pass `homeHref`.** It defaults to `/`, the hub root. Until v0.30.0 nothing
+  passed it, so clicking the emblem on any website page left the website and landed on the
+  estate index. Pass the zone root: `/website`, `/portals/<slug>`, `/` only for the hub.
+- Website: always pass `search` and `actions` (Login button). Below 1024px `actions` moves
+  into the drawer — Figma's mobile masthead carries only the search and drawer buttons, and
+  a text CTA in a 375px brand row crowds the lockup out of its own box.
+- Portal: pass `onToggleNav`, **`navExpanded`**, `navControlsId`, `brandDivider`,
+  `cobranding`, `account`, `accountMenu`. `navExpanded` is not optional decoration — it
+  drives both `aria-expanded` and the glyph (`menu_open` when the sidebar is expanded,
+  `menu` when collapsed), mirroring Figma's `Navbar/MenuToggle` `Sidebar` variant. Pass
+  `navControlsId` **only** when a real element carries that id (`SidebarNav` takes `id`);
+  an `aria-controls` that names nothing is worse than none.
 - `collapseOnScroll` is opt-in on Portal variant — when on, ensure sidebar offsets account for the shorter scrolled height.
+- **Every glyph is `<Icon>`, never a hand-rolled SVG.** The header carried its own inline
+  `IcMenu`/`IcSearch`/`IcCaret` until v0.30.0 and all three had drifted from the library —
+  the toggle never swapped to `menu_open`, and the mega-menu chevron was a caret rotated
+  −90°. A font icon cannot drift, because the name *is* the contract.
 
 #### BrandLockup
 **Purpose**: The National Emblem plus the government text stack — BETA badge on its
-own row, then `org` (12px) · `ministry` (14px) · `department` (20px bold) — matching
-the UX4G Portal Navbar in Figma.  
+own row, then `org` (12/16) · `ministry` (14/20) · `department` (20/24 **SemiBold**) —
+matching Figma `Navbar/BrandLockup` exactly. The emblem is the one dimension that varies
+by device: **45 mobile · 52 tablet · 58 desktop** (it was pinned at the tablet value until
+v0.30.0, and `department` was Bold 20/20, a half-step heavier and a line tighter than the
+library).  
 **Key props**: `emblemSrc`, `lines`, `href`, `beta`, `compact`, `divider`, `textHiddenOnMobile`  
 **Rules**:
 - **Always the National Emblem, never an invented or abstract mark.** This is an

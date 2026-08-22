@@ -59,8 +59,16 @@ export interface NavItem extends NavLink {
   columns?: NavColumn[];
 }
 
-/** Which estate surface the header serves. Drives sensible behavioural defaults. */
-export type HeaderVariant = "website" | "portal";
+/**
+ * Which estate surface the header serves. Drives sensible behavioural defaults.
+ *
+ *  - `"website"` — the full public masthead: accessibility bar + brand row + nav row.
+ *  - `"portal"`  — signed-in app chrome: sticky, sidebar toggle, account block.
+ *  - `"compact"` — a single-tier 64px bar for internal index / gate surfaces that
+ *    are not public government pages (the hub landing, /portals, /reports). No
+ *    accessibility bar, compact lockup, nav inline in the brand row.
+ */
+export type HeaderVariant = "website" | "portal" | "compact";
 
 /** The three-line government text stack rendered beside the National Emblem. */
 export interface BrandLines {

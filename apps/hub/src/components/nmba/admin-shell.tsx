@@ -242,6 +242,7 @@ export function AdminShell({ children }: AdminShellProps) {
   return (
     <div className="min-h-screen bg-surface-muted">
       <SiteHeader
+        homeHref={BASE}
         variant="portal"
         sticky
         beta

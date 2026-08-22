@@ -10,6 +10,7 @@ import { figmaUrl } from "@/lib/design-system/figma";
 import {
   SiteHeaderPreview,
   SiteHeaderNavyPreview,
+  SiteHeaderCompactPreview,
 } from "./header-preview";
 
 export const metadata: Metadata = {
@@ -343,8 +344,29 @@ export default function HeaderPage(): React.JSX.Element {
         <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <SiteHeaderNavyPreview />
           <p style={captionStyle}>
-            Portal variant — <code>onToggleNav</code> + <code>brandDivider</code> +{" "}
-            <code>account</code> + <code>nav</code>.
+            Portal variant — <code>onToggleNav</code> + <code>navExpanded</code> +{" "}
+            <code>brandDivider</code> + <code>account</code> + <code>nav</code>. The
+            toggle above is live: click it and the glyph swaps between{" "}
+            <code>menu_open</code> and <code>menu</code>, mirroring the sidebar it
+            drives (Figma <strong>Navbar/MenuToggle</strong>, variant{" "}
+            <code>Sidebar</code>).
+          </p>
+        </div>
+
+        <h3 id="compact" style={{ ...h3Style, scrollMarginTop: "var(--sa-section-48)" }}>Compact variant</h3>
+        <p style={proseStyle}>
+          For internal index / wayfinding surfaces that are <em>not</em> public
+          government pages — the hub landing, <code>/portals</code>,{" "}
+          <code>/reports</code>. One 64px tier: compact lockup, primary nav inline
+          in the brand row, and <strong>no accessibility bar</strong>, because there
+          is no government masthead to qualify. Everything else — dropdowns, the
+          mobile drawer, focus treatment — is the same component.
+        </p>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
+          <SiteHeaderCompactPreview />
+          <p style={captionStyle}>
+            Compact variant — <code>nav</code> inline, <code>homeHref</code>, no
+            accessibility bar. The page must supply its own skip link.
           </p>
         </div>
       </section>
@@ -356,7 +378,10 @@ export default function HeaderPage(): React.JSX.Element {
         </h2>
         <PropsTable
           props={[
-            { name: "variant", type: '"website" | "portal"', description: "Estate surface. Sets defaults (portal ⇒ sticky on) and documents intent. Explicit props always win." },
+            { name: "variant", type: '"website" | "portal" | "compact"', description: "Estate surface. Sets defaults (portal/compact ⇒ sticky on; compact drops the accessibility bar and moves nav inline) and documents intent. Explicit props always win." },
+            { name: "homeHref", type: "string", description: 'Where the brand lockup links. ALWAYS pass it — the default "/" is the hub root, so a website page that omits it sends the emblem to the estate index instead of the site the reader is on.' },
+            { name: "navExpanded", type: "boolean", description: "Portal: state of the sidebar the toggle drives. true ⇒ menu_open glyph, false ⇒ menu. Also drives aria-expanded." },
+            { name: "navControlsId", type: "string", description: "Portal: id of the sidebar the toggle controls (aria-controls). Pass the same id to SidebarNav." },
             { name: "emblemSrc", type: "string", required: true, description: "National Emblem URL (basePath-aware; the DS renders a plain <img>)." },
             { name: "brandLines", type: "{ org?, ministry?, department }", required: true, description: "Government text lockup — GoI, Ministry, Department (+ optional BETA badge)." },
             { name: "nav", type: "NavItem[]", description: "Navigation row. Each item: children (simple dropdown) OR columns (mega-menu). Drawer below 1024px." },
@@ -530,6 +555,7 @@ export default function HeaderPage(): React.JSX.Element {
 // Website — search field + Login + mega-menu nav
 <SiteHeader
   variant="website"
+  homeHref="/website"            // ← the zone root, NOT the hub root
   emblemSrc={\`\${basePath}/images/National-Emblem-logo.svg\`}
   brandLines={{ org: "Government of India", ministry: "…", department: "…" }}
   beta
@@ -542,10 +568,13 @@ export default function HeaderPage(): React.JSX.Element {
 // Portal — collapse toggle + divider + cobranding + account (sticky by default)
 <SiteHeader
   variant="portal"
+  homeHref="/portals/<slug>"
   emblemSrc={emblem}
   brandLines={{ org: "Government of India", ministry: "…", department: "…" }}
   brandDivider
   onToggleNav={toggleSidebar}
+  navExpanded={!sidebarCollapsed}   // menu_open when expanded, menu when collapsed
+  navControlsId="portal-sidebar"
   cobranding={[
     { src: digitalIndia, alt: "Digital India", height: 40 },
     { src: samavesh, alt: "SAMAVESH", height: 44 },
@@ -555,6 +584,15 @@ export default function HeaderPage(): React.JSX.Element {
     { label: "Profile", onSelect: openProfile },
     { label: "Sign out", danger: true, onSelect: signOut },
   ]}
+/>;
+
+// Compact — hub index surfaces. One tier, nav inline, no accessibility bar.
+<SiteHeader
+  variant="compact"
+  homeHref="/"
+  emblemSrc="/images/National-Emblem-logo.svg"
+  brandLines={{ ministry: "Ministry of Social Justice & Empowerment", department: "Digital Estate" }}
+  nav={[{ label: "Website", href: "/website" }, { label: "Portals", href: "/portals" }]}
 />;`}</CodeBlock>
       </section>
 

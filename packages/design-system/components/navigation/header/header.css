@@ -15,16 +15,37 @@
 .ds-hdr-lockup {
   display: flex;
   align-items: flex-end;
-  gap: var(--sa-stack-12);
+  /* Figma Navbar/BrandLockup: Device=Mobile gap 8, Tablet/Desktop gap 12. */
+  gap: var(--sa-stack-8);
   min-width: 0;
   text-decoration: none;
   color: inherit;
 }
 
+@media (min-width: 768px) {
+  .ds-hdr-lockup {
+    gap: var(--sa-stack-12);
+  }
+}
+
+/* Emblem height is the one dimension that IS per-device in Figma:
+   Mobile 45 · Tablet 52 · Desktop 58. It was pinned at the tablet value. */
 .ds-hdr-lockup__emblem {
-  height: 52px;
+  height: 45px;
   width: auto;
   flex: 0 0 auto;
+}
+
+@media (min-width: 768px) {
+  .ds-hdr-lockup__emblem {
+    height: 52px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ds-hdr-lockup__emblem {
+    height: 58px;
+  }
 }
 
 .ds-hdr-lockup.is-compact {
@@ -70,7 +91,7 @@
 
 .ds-hdr-lockup__ministry {
   font-size: 14px;
-  line-height: 16px;
+  line-height: 20px;
   letter-spacing: 0.4px;
   font-weight: 500;
   color: var(--sa-text-neutral-base);
@@ -78,8 +99,9 @@
 
 .ds-hdr-lockup__dept {
   font-size: 20px;
-  line-height: 20px;
-  font-weight: 700;
+  line-height: 24px;
+  /* Figma: Noto Sans SemiBold. 700 (Bold) was a half-step heavier than the library. */
+  font-weight: 600;
   color: var(--sa-text-neutral-base);
 }
 
@@ -178,27 +200,27 @@
   padding: var(--sa-padding-12) var(--sa-padding-24);
 }
 
-/* Portal collapse / menu toggle (far left) */
+/* Portal collapse / menu toggle (far left).
+   Figma: Navbar/MenuToggle = IconButton Size=Default — 40x40, radius 8,
+   transparent, 24px glyph. It was 32x32 with a 28px glyph, a size that is on
+   neither the IconButton scale (32/40/48) nor the icon scale (16/20/24/32/…). */
 .ds-hdr-brand__toggle {
   display: inline-grid;
   place-items: center;
-  height: 32px;
-  width: 32px;
+  height: 40px;
+  width: 40px;
   flex: 0 0 auto;
+  padding: var(--sa-padding-8);
   border: none;
   border-radius: var(--sa-shape-8);
   background: transparent;
-  color: var(--sa-text-neutral-base);
+  color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
   cursor: pointer;
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
 }
 
 .ds-hdr-brand__toggle:hover {
   background-color: var(--sa-bg-neutral-subtler);
-}
-
-.ds-hdr-brand__toggle svg {
-  width: 28px;
-  height: 28px;
 }
 
 .ds-hdr-brand__lockup {
@@ -238,11 +260,6 @@
   place-items: center;
   padding: var(--sa-padding-8);
   color: var(--sa-text-neutral-base);
-}
-
-.ds-hdr-searchfield__icon svg {
-  width: 24px;
-  height: 24px;
 }
 
 .ds-hdr-searchfield__placeholder {
@@ -352,26 +369,26 @@
   overflow: hidden;
 }
 
-/* Mobile drawer toggle */
+/* Mobile drawer toggle.
+   Figma: Navbar/* mobile CTA = IconButton Size=Large, Type=Outlined — 48x48,
+   radius 8, 1px neutral border, 32px glyph. */
 .ds-hdr-burger {
   display: inline-grid;
   place-items: center;
-  height: 40px;
-  width: 40px;
-  border: none;
+  height: 48px;
+  width: 48px;
+  flex: 0 0 auto;
+  padding: var(--sa-padding-8);
+  border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-8);
   background: transparent;
-  color: var(--sa-text-neutral-base);
+  color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
   cursor: pointer;
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
 }
 
 .ds-hdr-burger:hover {
   background-color: var(--sa-bg-neutral-subtler);
-}
-
-.ds-hdr-burger svg {
-  width: 24px;
-  height: 24px;
 }
 
 @media (min-width: 1024px) {
@@ -450,9 +467,10 @@
   font-weight: 600;
 }
 
+/* Font-icon glyphs size themselves from the `size` prop (font-size + opsz axis),
+   so this class carries tone only — never width/height, which would not resize
+   a glyph and would only clip it. */
 .ds-hdr-ic {
-  width: 16px;
-  height: 16px;
   opacity: 0.7;
 }
 
@@ -595,9 +613,6 @@
 
 .ds-hdr-mega-item .ds-hdr-ic {
   flex: 0 0 auto;
-  width: 20px;
-  height: 20px;
-  transform: rotate(-90deg);
   opacity: 0;
   color: var(--sa-text-neutral-subtle);
   transition: opacity var(--sa-motion-exit-duration) ease;
@@ -760,4 +775,103 @@
 .ds-hdr-acct__menu-icon svg {
   width: 16px;
   height: 16px;
+}
+
+
+/* ── Compact variant ────────────────────────────────────────────────────────
+   A single-tier 64px bar for internal index / gate surfaces that are NOT public
+   government pages: the hub landing, /portals, /reports. No accessibility bar
+   (there is no government masthead to qualify), compact lockup, and the primary
+   nav rendered inline in the brand row rather than in its own bordered tier.
+   Everything else — dropdowns, the mobile drawer, focus treatment — is shared
+   with the website and portal variants, because it is the same component. */
+.ds-hdr[data-variant="compact"] {
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+.ds-hdr[data-variant="compact"] .ds-hdr-brand__in {
+  min-height: 64px;
+  padding-block: var(--sa-padding-8);
+  gap: var(--sa-stack-16);
+}
+
+.ds-hdr[data-variant="compact"] .ds-hdr-brand__lockup {
+  flex: 0 0 auto;
+}
+
+.ds-hdr[data-variant="compact"] .ds-hdr-brand__trailing {
+  margin-inline-start: auto;
+}
+
+/* Inline nav — same list, no tier chrome, no full-bleed container. */
+.ds-hdr-nav.is-inline {
+  display: none;
+  border: 0;
+  background: transparent;
+}
+
+@media (min-width: 768px) {
+  .ds-hdr-nav.is-inline {
+    display: block;
+  }
+}
+
+.ds-hdr-nav.is-inline .ds-hdr-nav__list {
+  max-width: none !important;
+  padding: 0;
+  gap: var(--sa-stack-2);
+  justify-content: flex-end;
+}
+
+/* The compact bar's drawer trigger appears below the inline nav's breakpoint. */
+.ds-hdr[data-variant="compact"] .ds-hdr-burger {
+  height: 40px;
+  width: 40px;
+  border: none;
+}
+
+@media (min-width: 768px) {
+  .ds-hdr[data-variant="compact"] .ds-hdr-burger {
+    display: none;
+  }
+}
+
+/* Visually-hidden text for the new-tab announcement. */
+.ds-hdr-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Trailing CTA (Login / Admin Login). Figma's mobile masthead carries only the
+   search and drawer buttons — the text CTA belongs in the drawer, where it has
+   room. Rendering it in a 375px brand row is what crowded the lockup: the row
+   overflowed, and `min-width: 0` (which the lockup needs, to shrink at all) let
+   the text spill past its own box and sit under the button. */
+.ds-hdr-brand__actions {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .ds-hdr-brand__actions {
+    display: contents;
+  }
+}
+
+.ds-hdr-drawer__actions {
+  display: flex;
+  padding: var(--sa-padding-16) var(--sa-padding-24);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+@media (min-width: 1024px) {
+  .ds-hdr-drawer__actions {
+    display: none;
+  }
 }

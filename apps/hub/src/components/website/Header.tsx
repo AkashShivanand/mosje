@@ -126,6 +126,7 @@ export function Header() {
 
   return (
     <SiteHeader
+      homeHref="/website"
       variant="website"
       emblemSrc={`${BP}/images/National-Emblem-logo.svg`}
       brandLines={{

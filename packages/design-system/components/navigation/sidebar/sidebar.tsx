@@ -232,9 +232,11 @@ export function SidebarNav({
   showCollapseControl = false,
   footer,
   className,
+  id,
 }: SidebarNavProps): React.JSX.Element {
   return (
     <aside
+      id={id}
       className={cn(
         "ds-sidebar",
         collapsed ? "is-collapsed" : "is-expanded",
