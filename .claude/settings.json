@@ -68,7 +68,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-branch-inventory.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/branch-inventory.sh\"",
             "timeout": 15,
             "statusMessage": "Taking the branch inventory..."
           }

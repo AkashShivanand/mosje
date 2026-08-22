@@ -1,15 +1,32 @@
 #!/usr/bin/env bash
-# SessionStart — print the branch / worktree inventory that
-# .claude/rules/branch-continuity.md requires before the first edit.
+# Print the branch / worktree inventory that the branch-continuity rule requires
+# before the first edit of any session. TOOL-AGNOSTIC BY DESIGN.
 #
-# The rule says a task keeps its branch across sessions. A rule alone has a
-# half-life; this makes the inventory arrive whether or not anyone remembers to
-# ask for it. It only REPORTS — it never switches, stashes, or creates anything.
+#   npm run branches                 # any agent, any tool, any human
+#   bash scripts/branch-inventory.sh --text
+#   bash scripts/branch-inventory.sh          # JSON, for Claude Code's SessionStart hook
 #
-# Contract: always exit 0 and never block a session. A broken inventory is a
-# nuisance; a session that will not start is a defect.
+# It lives in scripts/ rather than .claude/ on purpose: the rule binds every tool,
+# so the tooling that serves it must not be branded for one of them. Claude Code
+# calls it automatically via .claude/settings.json; Codex, Antigravity, Cursor and
+# humans run `npm run branches`. One script, one behaviour, no second copy to drift.
+#
+# It only REPORTS — it never switches, stashes, creates, or deletes anything.
+# The decision belongs to whoever is working; the hazards this surfaces are exactly
+# the ones an automatic switch would trigger.
+#
+# Contract: always exit 0 and never block. A missing inventory is a nuisance; a
+# session or commit that cannot start is a defect.
 
 set -uo pipefail
+
+# --text prints markdown for a human or a non-Claude agent; default emits the JSON
+# envelope Claude Code's SessionStart hook consumes.
+FORMAT=json
+case "${1:-}" in
+  --text|-t) FORMAT=text ;;
+  --json)    FORMAT=json ;;
+esac
 
 root="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 cd "$root" 2>/dev/null || exit 0
@@ -27,9 +44,9 @@ current=$(run git branch --show-current)
 [ -z "$current" ] && current="(detached HEAD)"
 dirty=$(run git status --porcelain | wc -l | tr -d ' ')
 
-out="## Branch inventory (SessionStart)
+out="## Branch inventory
 
-Per \`.claude/rules/branch-continuity.md\`: before the first edit, work out whether
+Per \`AGENTS.md\` and \`.claude/rules/branch-continuity.md\`: before the first edit, work out whether
 this task already has a branch and continue there. State the branch and the
 evidence in your first response. Never work on \`main\`.
 
@@ -91,6 +108,11 @@ session probably exited abnormally. Switch off with \`claude plugin disable <id>
 \`\`\`
 $left_on
 \`\`\`"
+fi
+
+if [ "$FORMAT" = "text" ]; then
+  printf '%s\n' "$out"
+  exit 0
 fi
 
 # JSON-encode. python3, else jq, else plain stdout — the inventory still reaches

@@ -8,15 +8,35 @@ Rationale and the incidents behind each clause: `docs/rules-rationale/branch-con
 
 ## 1. Read the inventory — it arrives on its own
 
-`.claude/hooks/session-branch-inventory.sh` (SessionStart) prints the current
-branch, worktrees, recent branches and PR states into context. It reports only;
-it never switches or stashes. If it was silent, run this by hand:
+`scripts/branch-inventory.sh` prints the current branch, worktrees, recent
+branches and PR states. Claude Code runs it automatically at SessionStart; every
+other tool and every human runs the same script the same way:
+
+```bash
+npm run branches
+```
+
+It reports only; it never switches or stashes. If it was silent, by hand:
 
 ```bash
 git status --short && git branch --show-current
 git branch -vv && git worktree list
 gh pr list --state all --limit 20 --json number,title,state,headRefName
 ```
+
+## 1a. This rule is not Claude's — it binds every tool
+
+The text lives under `.claude/rules/` because Claude Code auto-loads that
+directory, but the rule is not Claude's. `AGENTS.md` states the same procedure for
+Codex, Cursor, Antigravity and Aider; thin pointers (`GEMINI.md`,
+`.github/copilot-instructions.md`, `.cursor/rules/mosje.mdc`) route the rest there.
+The inventory script sits in `scripts/`, deliberately not under `.claude/`.
+
+And the half that does not depend on reading anything: `.husky/pre-commit` refuses
+commits on `main` and warns when the branch's pushed work has already landed in
+`origin/main`. Git hooks bind whoever runs `git commit`. **Instructions are
+advisory for every agent; hooks are not** — so push a guardrail as far down as it
+will go.
 
 ## 2. Match the instruction to a branch
 
