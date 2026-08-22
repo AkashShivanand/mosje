@@ -413,7 +413,7 @@ export default function NgoDashboardPage() {
                     <span className="text-[11px] text-ink-muted block">{s.subtitle}</span>
                   </div>
                   <span className="text-xs font-bold text-ink shrink-0 bg-surface px-2 py-1 rounded border border-line">
-                    {s.count} apps
+                    {s.count} {s.count === 1 ? "app" : "apps"}
                   </span>
                 </div>
 
