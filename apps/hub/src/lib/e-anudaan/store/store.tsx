@@ -94,12 +94,37 @@ export interface SubmitApplicationInput {
 /**
  * The reference number the live portal mints on submit:
  *   GIA / <FY> / <SCHEME> / <LOCATION> / <serial>
- * The location segment is the institution's ADDRESS — not its district — uppercased with every
- * run of non-alphanumerics collapsed to an underscore, and cut to 30 characters. Verified by
- * submitting on the live portal 2026-08-22, which produced
- * `GIA/2026-27/SHRESHTA_M2/0531_TENEMENT_PARIKSHITLAL_HOS/83515` from an address beginning
- * "0531, Tenement, Parikshitlal Hostel, HSS, …".
+ *
+ * The LOCATION segment is uppercased, with every run of non-alphanumerics collapsed to an
+ * underscore and cut to 30 characters — but **what feeds it differs by scheme**. Both were
+ * verified by submitting on the live portal on 2026-08-22:
+ *
+ *   SHRESHTA_M2  the institution's ADDRESS
+ *                "0531, Tenement, Parikshitlal Hostel, HSS, …"
+ *                → GIA/2026-27/SHRESHTA_M2/0531_TENEMENT_PARIKSHITLAL_HOS/83515
+ *   SMILE        the site's DISTRICT and STATE
+ *                Pune / Maharashtra
+ *                → GIA/2026-27/SMILE/PUNE_MAHARASHTRA/83516
  */
+/** What each scheme's reference draws its location segment from. */
+function locationSegmentFor(
+  schemeCode: string,
+  values: Record<string, string>,
+  fallback: string,
+): string {
+  switch (schemeCode.toUpperCase()) {
+    case "SMILE": {
+      const parts = [values.fld_site_district, values.fld_site_state].filter(Boolean);
+      return parts.length ? parts.join(" ") : fallback;
+    }
+    case "AVYAY":
+      return values.fld_project_location || fallback;
+    case "SHRESHTA_M2":
+    default:
+      return values.fld_institution_location || fallback;
+  }
+}
+
 export function buildReference(
   schemeCode: string,
   financialYear: string,
@@ -191,11 +216,7 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
       submitApplication: ({ schemeCode, financialYear, values }) => {
         const clock = liveClock();
         const ngo = state.ngos[0]!;
-        const location =
-          values.fld_institution_location ??
-          values.fld_project_location ??
-          values.fld_site_address ??
-          ngo.district;
+        const location = locationSegmentFor(schemeCode, values, ngo.district);
         const serial = 83500 + state.applications.length;
         const id = buildReference(schemeCode, financialYear, location, serial);
 
