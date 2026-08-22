@@ -1,35 +1,97 @@
+/* ============================================================================
+   MoSJE / UX4G — VerticalTimeline
+   Semantic CSS classes only; all colours reference design tokens (--sa-*).
+   Plain CSS on purpose: imported from vertical-timeline.tsx, so Tailwind
+   processes it as its own root and `@apply` cannot see the estate's theme.
+   ============================================================================ */
+
 .sa-vertical-timeline {
-  @apply relative border-l-2 border-[#0373DF]/20 ml-3 sm:ml-4 space-y-12 pb-4;
+  position: relative;
+  border-left: 2px solid var(--sa-bg-brand-primary-subtle);
+  margin-left: var(--sa-ref-size-12);
+  padding-bottom: var(--sa-ref-size-16);
+}
+
+.sa-vertical-timeline > * + * {
+  margin-top: var(--sa-ref-size-48);
 }
 
 .sa-vertical-timeline-item {
-  @apply relative pl-8 sm:pl-12 group;
+  position: relative;
+  padding-left: var(--sa-ref-size-32);
 }
 
 .sa-vertical-timeline-item__marker-container {
-  @apply absolute -left-[29px] mt-1.5 h-14 w-14 rounded-full bg-white flex items-center justify-center;
+  position: absolute;
+  left: -29px;
+  margin-top: 6px;
+  height: var(--sa-ref-size-56);
+  width: var(--sa-ref-size-56);
+  border-radius: var(--sa-ref-radius-full);
+  background-color: var(--sa-bg-neutral-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sa-vertical-timeline-item__marker {
-  @apply h-2.5 w-2.5 rounded-full bg-[#0373DF] ring-4 ring-white shadow-sm;
+  height: 10px;
+  width: 10px;
+  border-radius: var(--sa-ref-radius-full);
+  background-color: var(--sa-color-action-primary-default);
+  box-shadow: 0 0 0 4px var(--sa-bg-neutral-base), var(--sa-elevation-card);
 }
 
 .sa-vertical-timeline-item__content {
-  @apply bg-white rounded-2xl p-6 sm:p-8 border border-neutral-200 shadow-sm hover:shadow-md transition-shadow relative;
+  position: relative;
+  background-color: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-ref-radius-16);
+  padding: var(--sa-ref-size-24);
+  box-shadow: var(--sa-elevation-card);
+  transition: box-shadow 150ms ease;
+}
+
+.sa-vertical-timeline-item__content:hover {
+  box-shadow: var(--sa-elevation-raised);
 }
 
 .sa-vertical-timeline-item__header {
-  @apply flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-4;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--sa-ref-size-10);
+  margin-bottom: var(--sa-ref-size-16);
 }
 
 .sa-vertical-timeline-item__title {
-  @apply text-lg sm:text-xl font-bold text-neutral-900 pr-4;
+  font-size: var(--sa-ref-font-size-16);
+  font-weight: var(--sa-ref-font-weight-bold);
+  color: var(--sa-text-neutral-bolder);
+  padding-right: var(--sa-ref-size-16);
 }
 
 .sa-vertical-timeline-item__date {
-  @apply text-sm font-bold text-[#0373DF] whitespace-nowrap bg-blue-50 px-3 py-1 rounded-full;
+  font-size: var(--sa-ref-font-size-14);
+  font-weight: var(--sa-ref-font-weight-bold);
+  color: var(--sa-text-brand-primary-base);
+  background-color: var(--sa-bg-brand-primary-subtler);
+  padding: 4px var(--sa-ref-size-12);
+  border-radius: var(--sa-ref-radius-full);
+  white-space: nowrap;
 }
 
 .sa-vertical-timeline-item__body {
-  @apply text-neutral-600 leading-relaxed text-sm sm:text-base;
+  color: var(--sa-text-neutral-base);
+  font-size: var(--sa-ref-font-size-14);
+  line-height: 1.625;
+}
+
+@media (min-width: 640px) {
+  .sa-vertical-timeline { margin-left: var(--sa-ref-size-16); }
+  .sa-vertical-timeline-item { padding-left: var(--sa-ref-size-48); }
+  .sa-vertical-timeline-item__content { padding: var(--sa-ref-size-32); }
+  .sa-vertical-timeline-item__header { flex-direction: row; align-items: flex-start; }
+  .sa-vertical-timeline-item__title { font-size: var(--sa-ref-font-size-20); }
+  .sa-vertical-timeline-item__body { font-size: var(--sa-ref-font-size-16); }
 }

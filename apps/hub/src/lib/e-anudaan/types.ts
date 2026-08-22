@@ -160,6 +160,12 @@ export interface MockDoc {
   officerRemarks?: string;
   /** A permanent document re-uploaded this year needs re-verification. */
   reUploadedThisYear?: boolean;
+  /**
+   * The portal's own automated check on the uploaded file, shown to the APPLICANT beside the
+   * document. Distinct from `reviewStatus`, which is the officer's verdict: a file can read
+   * "AI: not valid" while the officer's own review is still Pending.
+   */
+  aiVerdict?: import("./doc-verification").DocVerdict;
 }
 
 /**
@@ -244,6 +250,11 @@ export interface GrantApplication {
   nonRecurring: number;
   total: number;
   documents: MockDoc[];
+  /**
+   * The answers as submitted, keyed by the scheme form's field name. Drives the applicant's
+   * "Application Data — as submitted" read-back and its "n of m answered" counts.
+   */
+  formValues?: Record<string, string>;
   deficiencies: Deficiency[];
   queries: Query[];
   showCauseNotices: ShowCauseNotice[];

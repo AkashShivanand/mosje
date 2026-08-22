@@ -1,23 +1,80 @@
+/* ============================================================================
+   MoSJE / UX4G — Accordion
+   Semantic CSS classes only; all colours reference design tokens (--sa-*).
+   Plain CSS on purpose: this file is imported from accordion.tsx, so Tailwind
+   processes it as its own root and `@apply` cannot see the estate's theme.
+   Sub-parts: .sa-accordion-item / __trigger / __title / __icon / __content
+   ============================================================================ */
+
 .sa-accordion {
-  @apply flex flex-col gap-3;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-ref-size-12);
 }
 
 .sa-accordion-item {
-  @apply bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow;
+  background-color: var(--sa-bg-neutral-base);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-ref-radius-12);
+  overflow: hidden;
+  box-shadow: var(--sa-elevation-card);
+  transition: box-shadow 150ms ease;
+}
+
+.sa-accordion-item:hover {
+  box-shadow: var(--sa-elevation-raised);
 }
 
 .sa-accordion-item__trigger {
-  @apply w-full px-5 py-4 flex items-center justify-between bg-neutral-50/50 hover:bg-blue-50/30 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0373DF];
+  width: 100%;
+  padding: var(--sa-ref-size-16) var(--sa-ref-size-20);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-ref-size-12);
+  background-color: var(--sa-bg-neutral-subtle);
+  color: var(--sa-text-neutral-bolder);
+  font-family: var(--sa-font-latin);
+  text-align: left;
+  cursor: pointer;
+  border: 0;
+  transition: background-color 150ms ease;
+}
+
+.sa-accordion-item__trigger:hover {
+  background-color: var(--sa-bg-brand-primary-subtler);
+}
+
+.sa-accordion-item__trigger:focus {
+  outline: none;
+}
+
+.sa-accordion-item__trigger:focus-visible {
+  outline: 2px solid var(--sa-color-action-primary-default);
+  outline-offset: -2px;
 }
 
 .sa-accordion-item__title {
-  @apply text-sm sm:text-base font-bold text-neutral-900;
+  font-size: var(--sa-ref-font-size-14);
+  font-weight: var(--sa-ref-font-weight-bold);
+  color: var(--sa-text-neutral-bolder);
 }
 
 .sa-accordion-item__icon {
-  @apply text-neutral-500 shrink-0 transition-transform duration-200;
+  color: var(--sa-text-neutral-subtle);
+  flex-shrink: 0;
+  transition: transform 200ms ease;
 }
 
 .sa-accordion-item__content {
-  @apply px-5 py-4 bg-white border-t border-neutral-100;
+  padding: var(--sa-ref-size-16) var(--sa-ref-size-20);
+  background-color: var(--sa-bg-neutral-base);
+  border-top: 1px solid var(--sa-border-neutral-subtle);
+  color: var(--sa-text-neutral-base);
+}
+
+@media (min-width: 640px) {
+  .sa-accordion-item__title {
+    font-size: var(--sa-ref-font-size-16);
+  }
 }

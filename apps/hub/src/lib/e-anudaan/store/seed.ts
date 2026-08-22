@@ -15,6 +15,7 @@
  */
 
 import { applyAction, type Clock, type WorkflowAction } from "../workflow.ts";
+import { DEMO_VERDICTS } from "../doc-verification.ts";
 import {
   GRADES,
   type Division,
@@ -146,10 +147,30 @@ const NATURES = [
   "Secondary Non-Residential School",
 ] as const;
 
+/**
+ * Districts the signed-in applicant runs institutions in. The live account shows eleven
+ * projects spread over Delhi, Gujarat, Tamil Nadu and Uttar Pradesh; this mirrors that spread
+ * so the project selects, the bank-accounts table and the attendance screens are not
+ * single-option lists.
+ */
+const APPLICANT_SITES: readonly { code: string; district: string; state: string; name: string }[] = [
+  { code: "DL/NWD", district: "North West Delhi", state: "Delhi", name: "Hostel" },
+  { code: "DL/STS", district: "South East Delhi", state: "Delhi", name: "Hostel" },
+  { code: "GJ/AHM", district: "Ahmedabad", state: "Gujarat", name: "Residential School" },
+  { code: "GJ/AHM", district: "Ahmedabad", state: "Gujarat", name: "Hostel" },
+  { code: "TN/KLI", district: "Kallakurichi", state: "Tamil Nadu", name: "Residential School" },
+  { code: "TN/MDR", district: "Madurai", state: "Tamil Nadu", name: "Residential School" },
+  { code: "UP/BRB", district: "Barabanki", state: "Uttar Pradesh", name: "Residential School" },
+  { code: "UP/HAR", district: "Hardoi", state: "Uttar Pradesh", name: "Residential School" },
+  { code: "MH/PUN", district: "Pune", state: "Maharashtra", name: "Hostel" },
+  { code: "MH/PUN", district: "Pune", state: "Maharashtra", name: "Residential School" },
+  { code: "MH/THN", district: "Thane", state: "Maharashtra", name: "Hostel" },
+];
+
 function buildNgos(): NgoProfile[] {
   return NGO_NAMES.map((name, i) => {
     const place = PLACES[i % PLACES.length]!;
-    const instCount = between(1, 3);
+    const instCount = i === 0 ? APPLICANT_SITES.length : between(1, 3);
     return {
       id: `ngo-${(i + 1).toString().padStart(3, "0")}`,
       name,
@@ -170,10 +191,13 @@ function buildNgos(): NgoProfile[] {
       totalGrant: 0,
       lastInspection: i % 3 === 0 ? iso(between(30, 400)) : undefined,
       institutions: Array.from({ length: instCount }, (_, k) => ({
-        id: `SC/${place.code}/${(2000 + i * 7 + k).toString().padStart(5, "0")}`,
-        name: k === 0 ? "Hostel" : "Residential School",
-        district: place.district,
-        state: place.state,
+        id:
+          i === 0
+            ? `SC/${APPLICANT_SITES[k]!.code}/${(2400 + k * 13).toString().padStart(5, "0")}`
+            : `SC/${place.code}/${(2000 + i * 7 + k).toString().padStart(5, "0")}`,
+        name: i === 0 ? APPLICANT_SITES[k]!.name : k === 0 ? "Hostel" : "Residential School",
+        district: i === 0 ? APPLICANT_SITES[k]!.district : place.district,
+        state: i === 0 ? APPLICANT_SITES[k]!.state : place.state,
         nature: pick(NATURES),
         type: pick(["Boys", "Girls", "Co-Ed"] as const),
         level: pick(["Primary", "Secondary"] as const),
@@ -259,6 +283,15 @@ function docsFor(complete: boolean): MockDoc[] {
             fileName: `annexure-${i + 1}.pdf`,
             sizeKb: between(60, 1400),
             uploadedAt: iso(between(20, 200)),
+            // Cycle the four verdicts so the applicant screen shows every branch.
+            aiVerdict:
+              i % 7 === 0
+                ? DEMO_VERDICTS.invalid
+                : i % 5 === 0
+                  ? DEMO_VERDICTS.review
+                  : i % 3 === 0
+                    ? DEMO_VERDICTS.verified
+                    : DEMO_VERDICTS.pending,
           }
         : {}),
     };
@@ -275,7 +308,8 @@ function draft(
   ageDays: number,
 ): GrantApplication {
   const ngo = ngoPool[ngoIdx % ngoPool.length]!;
-  const inst = ngo.institutions[0]!;
+  // Rotate through the NGO's institutions so its register is not one project repeated.
+  const inst = ngo.institutions[counter % ngo.institutions.length]!;
   const sc = between(40, 260);
   const other = between(0, 40);
   const recurring = between(18, 70) * 100000;
@@ -301,6 +335,70 @@ function draft(
     nonRecurring,
     total: recurring + nonRecurring,
     documents: docsFor(true),
+    // The answers as submitted, keyed by the scheme form's field names. Two fields are left
+    // blank on purpose so the applicant's read-back reads "n of m answered" rather than a
+    // uniform 100%, exactly as the live screen does.
+    formValues: {
+      fld_ngo_name: ngo.name,
+      fld_darpan_id: ngo.darpanId,
+      fld_statute_act: ngo.registeredUnder ?? "Registrar of Societies",
+      fld_registration_number: ngo.registrationNo,
+      fld_registration_date: "1934-08-06",
+      fld_registration_expiry: "2028-09-04",
+      fld_reg_office_address: `${inst.name}, ${inst.district}, ${ngo.state}`,
+      fld_reg_office_city: inst.district,
+      fld_reg_office_district: ngo.district,
+      fld_reg_office_state: ngo.state,
+      fld_contact_mobile: ngo.mobile ?? "",
+      fld_contact_email: ngo.email ?? "",
+      fld_project_id: inst.id,
+      fld_institution_id: inst.id,
+      fld_financial_year: fy,
+      fld_nature_of_institution: "Secondary Residential School",
+      fld_institution_gender_type: "Co-Ed",
+      fld_institution_level: "Secondary",
+      fld_institution_status: "Ongoing",
+      assistance_3yrs: "Yes",
+      fld_uc_pending_status: "No UC Pending",
+      fld_commencement_date: "1983-05-01",
+      fld_gia_since_year: "1983",
+      fld_institution_location: `${inst.name}, ${inst.district}`,
+      fld_institution_pin: "411045",
+      govt_institution_within_2km: "No",
+      fld_building_ownership: "Owned",
+      bank_ngo_name_declared: "Yes",
+      bank_joint_operation: "Yes",
+      bank_hq_at_institution: "Yes",
+      bank_joint_secretary_head: "No",
+      bank_separate_institution_accounts: "Yes",
+      fld_bank_account_number: "123456789012",
+      fld_bank_ifsc: "SBIN0001234",
+      fld_bank_name_branch: `State Bank of India, ${inst.district}`,
+      fld_bank_resource_mobilisation: "Community donations and CSR grants",
+      fld_gia_released_last_3yrs: "Sanction 12/2024 dated 14 Aug 2024",
+      fld_beneficiaries_sc: String(sc),
+      fld_beneficiaries_other: String(other),
+      fld_total_beneficiaries: String(sc + other),
+      fld_beneficiaries_previous_year: String(Math.max(sc + other - 8, 0)),
+      fld_grant_recurring: String(recurring),
+      fld_grant_non_recurring: String(nonRecurring),
+      fld_grant_total: String(recurring + nonRecurring),
+      decl_uc_uploaded: "Yes",
+      decl_audited_accounts_submitted: "Yes",
+      decl_name_changed_after_grant: "No",
+      decl_not_for_profit: "Yes",
+      decl_other_grant: "No",
+      decl_fee_charged: "No",
+      decl_not_blacklisted: "Yes",
+      decl_annual_report_uploaded: "Yes",
+      decl_all_docs_signed: "Yes",
+      fld_auth_person_name: ngo.authorisedUser ?? ngo.name,
+      fld_auth_person_contact: ngo.mobile ?? "",
+      fld_auth_place: ngo.district,
+      fld_auth_date: "2026-08-07",
+      fld_auth_time: "18:25",
+      // fld_contact_telephone and fld_contact_fax deliberately left unanswered.
+    },
     deficiencies: [],
     queries: [],
     showCauseNotices: [],
@@ -309,6 +407,20 @@ function draft(
     ageingDays: ageDays,
   };
 }
+
+/**
+ * Default remark per action, so the applicant's Processing History reads like a real file note
+ * rather than exposing the seeding machinery.
+ */
+const SEED_REMARKS: Partial<Record<WorkflowAction, string>> = {
+  submit: "Application submitted.",
+  certify: "Documents verified and the file certified.",
+  forward: "Forwarded to the next authority.",
+  concur: "Financial concurrence recorded.",
+  sanction: "Sanctioned as recommended.",
+  reject: "Application rejected.",
+  return: "Returned to the applicant for correction.",
+};
 
 /** Drive a draft through a scripted sequence of actions, failing loudly if a rule rejects one. */
 function replay(
@@ -327,7 +439,7 @@ function replay(
       s.role,
       s.action,
       {
-        remarks: s.remarks ?? `${s.action} — recorded during demo seeding.`,
+        remarks: s.remarks ?? SEED_REMARKS[s.action] ?? "Recorded on the file.",
         certified: true,
       },
       clockAt(s.daysAgo),
@@ -590,6 +702,78 @@ export function buildSeed(): {
       driveToChain(draft(n++, code, "2026-27", age + 6), "pd", "aso", age + 4),
     );
   }
+
+  // 9. The signed-in applicant's own back-catalogue.
+  //
+  // Blocks 1–8 spread their files across the whole NGO pool, which left the applicant screens
+  // with a handful of rows while the live portal shows this organisation 71 applications across
+  // two schemes and six financial years. Everything below is raised for ngoPool[0] — the NGO the
+  // demo signs in as — so My Applications paginates, the status chips all have members, and the
+  // dashboard's donut and Applications-by-Scheme cards carry live-like proportions.
+  const MINE = 0;
+  const BACKLOG_FYS = ["2021-22", "2022-23", "2023-24", "2024-25", "2025-26", "2026-27"] as const;
+
+  const mineCount = () => apps.filter((a) => a.ngoId === ngoPool[MINE]!.id).length;
+
+  // Sanctioned history — the bulk of an established NGO's record.
+  while (mineCount() < 36) {
+    const fy = BACKLOG_FYS[mineCount() % BACKLOG_FYS.length]!;
+    const age = between(60, 900);
+    let a = driveToChain(draft(MINE, "SHRESHTA_M2", fy, age + 40), "finance", "js", age + 36);
+    a = replay(a, [
+      { role: "finance-js", action: "concur", daysAgo: age + 6, remarks: "Concurrence recorded." },
+      { role: "programme-director", action: "sanction", daysAgo: age, remarks: "Sanctioned as recommended." },
+    ]);
+    apps.push(a);
+  }
+
+  // In review — spread across both chains so every seat has one of this NGO's files.
+  const REVIEW_SEATS = [
+    { division: "pd", grade: "aso" },
+    { division: "pd", grade: "so" },
+    { division: "pd", grade: "us" },
+    { division: "pd", grade: "ds" },
+    { division: "pd", grade: "js" },
+    { division: "finance", grade: "aso" },
+    { division: "finance", grade: "so" },
+    { division: "finance", grade: "us" },
+    { division: "finance", grade: "ds" },
+  ] as const;
+  while (mineCount() < 53) {
+    const seat = REVIEW_SEATS[mineCount() % REVIEW_SEATS.length]!;
+    const fy = BACKLOG_FYS[mineCount() % BACKLOG_FYS.length]!;
+    const age = between(4, 40);
+    apps.push(driveToChain(draft(MINE, "SHRESHTA_M2", fy, age + 12), seat.division, seat.grade, age + 8));
+  }
+
+  // Drafts the applicant has not sent yet.
+  while (mineCount() < 66) {
+    apps.push(draft(MINE, "SHRESHTA_M2", "2026-27", between(1, 45)));
+  }
+
+  // Submitted, still to be picked up.
+  while (mineCount() < 70) {
+    const age = between(1, 9);
+    apps.push(driveToChain(draft(MINE, "SHRESHTA_M2", "2026-27", age + 3), "pd", "aso", age));
+  }
+
+  // One AVYAY file, so the applicant spans two schemes exactly as the live account does.
+  {
+    const age = between(3, 12);
+    apps.push(driveToChain(draft(MINE, "AVYAY", "2026-27", age + 6), "pd", "aso", age + 4));
+  }
+
+  // Flag a couple of documents on files an officer has already certified, so the applicant's
+  // "N Documents Require Attention" callout — and the "You will be able to upload a corrected
+  // file once the application is returned to you." note under each flagged row — are reachable.
+  apps.forEach((app, i) => {
+    if (i % 5 !== 0) return;
+    if (!app.audit.some((e) => e.action === "certify")) return;
+    for (const slot of [3, 4]) {
+      const doc = app.documents.find((d) => d.slot === slot);
+      if (doc) doc.reviewStatus = "Deficient";
+    }
+  });
 
   // Ageing must be recomputed AFTER the replay. `applyAction` resets ageingDays to 0 on every
   // transition — correct at runtime, since a file that just moved has been with its new holder

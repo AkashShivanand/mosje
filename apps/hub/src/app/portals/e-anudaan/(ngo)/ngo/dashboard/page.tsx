@@ -299,53 +299,33 @@ export default function NgoDashboardPage() {
             <Badge status="neutral">DARPAN Synced</Badge>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 text-xs">
-            <div className="space-y-3">
-              <div>
-                <span className="text-ink-muted block text-[11px]">Organisation Name</span>
-                <span className="font-bold text-ink block mt-0.5">{ngoName}</span>
+          {/* Thirteen separate rows, exactly as the live DARPAN read-back lists them — State and
+              District, Registration No. and Date, and Secretary and Treasurer are each their own
+              row on the live portal rather than being paired up. */}
+          <dl className="grid grid-cols-1 gap-x-6 gap-y-3 text-xs sm:grid-cols-2">
+            {(
+              [
+                ["Organisation", ngoName],
+                ["DARPAN ID", ngo?.darpanId ?? "MH/2016/100000"],
+                ["State", ngo?.state ?? "Maharashtra"],
+                ["District", ngo?.district ?? "Pune"],
+                ["Registration No.", ngo?.registrationNo ?? "51-54"],
+                ["Registration Date", ngo?.registrationDate ?? "06 Aug 1934"],
+                ["Registered Under", ngo?.registeredUnder ?? "Registrar of Societies"],
+                ["Chairman", ngo?.chairman ?? "—"],
+                ["Secretary", ngo?.secretary ?? "—"],
+                ["Treasurer", ngo?.treasurer ?? "—"],
+                ["Authorised User", ngo?.authorisedUser ?? ngoName],
+                ["Email", ngo?.email ?? "—"],
+                ["Mobile", ngo?.mobile ?? "—"],
+              ] as const
+            ).map(([label, value]) => (
+              <div key={label} className="border-b border-line/40 pb-1.5">
+                <dt className="block text-[11px] text-ink-muted">{label}</dt>
+                <dd className="mt-0.5 block font-bold text-ink break-words">{value}</dd>
               </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">DARPAN ID</span>
-                <span className="font-mono font-bold text-ink block mt-0.5">{ngo?.darpanId ?? "MH/2016/100000"}</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">State &amp; District</span>
-                <span className="font-bold text-ink block mt-0.5">{ngo?.state ?? "Maharashtra"} · {ngo?.district ?? "Pune"}</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">Email Address</span>
-                <span className="font-bold text-ink block mt-0.5 break-all">{ngo?.email ?? "sankalpsevasansthan@gmail.com"}</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">Mobile Number</span>
-                <span className="font-mono font-bold text-ink block mt-0.5">{ngo?.mobile ?? "9441747200"}</span>
-              </div>
-            </div>
-
-            <div className="space-y-3 border-l border-line/60 pl-4">
-              <div>
-                <span className="text-ink-muted block text-[11px]">Registration No. &amp; Date</span>
-                <span className="font-bold text-ink block mt-0.5">{ngo?.registrationNo ?? "51-54"} ({ngo?.registrationDate ?? "06 Aug 1934"})</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">Registered Under</span>
-                <span className="font-bold text-ink block mt-0.5">{ngo?.registeredUnder ?? "Registrar of Societies"}</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">Chairman</span>
-                <span className="font-bold text-ink block mt-0.5">{ngo?.chairman ?? "Shankar Kumar Sanyal"}</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">Secretary &amp; Treasurer</span>
-                <span className="font-bold text-ink block mt-0.5">{ngo?.secretary ?? "Rajneesh Kumar"} / {ngo?.treasurer ?? "Phool Chand Sharma"}</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">Authorised User</span>
-                <span className="font-bold text-ink block mt-0.5">{ngo?.authorisedUser ?? ngoName}</span>
-              </div>
-            </div>
-          </div>
+            ))}
+          </dl>
         </section>
 
         {/* Applications by Scheme Box */}

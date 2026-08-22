@@ -27,11 +27,11 @@ export default function TogglePage(): React.JSX.Element {
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--sa-inline-24)", marginTop: "var(--sa-stack-24)" }}>
           <UseCard tone="do" title="When to use">
-            <li>For settings that take effect immediately without requiring a "Save" button.</li>
+            <li>For settings that take effect immediately without requiring a &quot;Save&quot; button.</li>
             <li>For boolean settings in a list or table (e.g. enabling a user account).</li>
           </UseCard>
           <UseCard tone="dont" title="When NOT to use">
-            <li>Inside a long form that requires a final "Submit" button (use Checkboxes instead).</li>
+            <li>Inside a long form that requires a final &quot;Submit&quot; button (use Checkboxes instead).</li>
             <li>When the user is agreeing to terms and conditions.</li>
           </UseCard>
         </div>
@@ -40,7 +40,7 @@ export default function TogglePage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="features" style={h2Style}>2. Features & Accessibility</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Role Switch:</strong> Under the hood, this uses an <code>&lt;input type="checkbox" role="switch"&gt;</code>. This explicitly tells screen readers that the element operates as an instant toggle rather than a queued form input.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Role Switch:</strong> Under the hood, this uses an <code>&lt;input type=&quot;checkbox&quot; role=&quot;switch&quot;&gt;</code>. This explicitly tells screen readers that the element operates as an instant toggle rather than a queued form input.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Sizes:</strong> Supports <code>default</code> and <code>small</code> sizes. Use <code>small</code> only when placing toggles inside dense data tables or lists.</li>
         </ul>
       </section>
