@@ -76,7 +76,7 @@ const draftKey = (code: string) => `e-anudaan.draft.${code}`;
 
 export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string; phase?: WizardPhase }) {
   const router = useRouter();
-  const { state } = useEAnudaan();
+  const { state, submitApplication } = useEAnudaan();
   const { toast } = useToast();
 
   const def = wizardFor(schemeCode);
@@ -196,8 +196,16 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
       toast("Accept the declaration above to submit.", "error");
       return;
     }
+    // Create the application for real, so the whole post-submit chain fires exactly as it does
+    // live: the register gains a row, the bell gains an unread notice, the dashboard counts
+    // move, and the success screen has a reference number to show.
+    const app = submitApplication({
+      schemeCode: def.code,
+      financialYear: values.fld_financial_year ?? "2026-27",
+      values,
+    });
     window.sessionStorage.removeItem(draftKey(def.code));
-    toast("Application submitted. It is now with the Ministry for review.", "success");
+    toast(`Application ${app.id} submitted.`, "success");
     router.push(`${base}/success`);
   };
 
