@@ -4,8 +4,11 @@ import assert from "node:assert/strict";
 import {
   panelLeftFor,
   unionOf,
+  formsOf,
+  visibleRect,
   PANEL_ADJACENT_GAP_PX,
   PANEL_EDGE_MARGIN_PX,
+  FALLBACK_IMPROVEMENT_RATIO,
   type Rect,
 } from "./panel-side.ts";
 
@@ -146,4 +149,75 @@ test("an adjacent placement returns a whole pixel", () => {
     ...PANEL, viewport: VIEWPORT,
   });
   assert.equal(left, Math.round(left), `expected a whole pixel, got ${left}`);
+});
+
+/* ── The `/website/schemes-services` regression ─────────────────────────────
+   Measured at 1500x900 with the panel open: the drawer opened at `left: 16`,
+   hard against the wall OPPOSITE the rail that opens it, on a page whose only
+   real control it was never covering. Three defects stacked, and each of the
+   three below fails on its own if its fix is reverted. ── */
+
+const SCHEMES_VIEWPORT = { width: 1500, height: 900 };
+const SCHEMES_DEFAULT_LEFT = 1500 - 62 - 500; // 938
+/** The page's scheme search box — comfortably clear of a right-anchored panel. */
+const SCHEMES_SEARCH = at(203, 597, 448, 42);
+/** The UX4G accessibility drawer's input, parked off-canvas while closed. */
+const UX4G_OFFSCREEN = at(1566, 425, 134, 111);
+
+test("an obstacle parked off-canvas is not an obstacle", () => {
+  // It is laid out, painted and non-zero — `offsetParent` and a size check
+  // both pass it. Only the viewport test rejects it.
+  assert.equal(visibleRect(UX4G_OFFSCREEN, SCHEMES_VIEWPORT), null);
+  // A control that is genuinely on screen survives, clipped to what shows.
+  assert.deepEqual(visibleRect(at(1400, 400, 300, 50), SCHEMES_VIEWPORT), {
+    left: 1400, top: 400, right: 1500, bottom: 450,
+  });
+});
+
+test("two unrelated controls are not fused into one page-wide form", () => {
+  // Unioned, these two spanned 203..1700 — 1497px of a 1500px viewport, an
+  // obstacle no placement could clear. Clustered, they are two objects, the
+  // default clears both, and nothing moves.
+  const forms = formsOf([SCHEMES_SEARCH, UX4G_OFFSCREEN]);
+  assert.equal(forms.length, 2, "a search box and a far-away widget are not one form");
+
+  const left = panelLeftFor({
+    obstacles: [SCHEMES_SEARCH, UX4G_OFFSCREEN],
+    ...PANEL, viewport: SCHEMES_VIEWPORT,
+  });
+  assert.equal(left, SCHEMES_DEFAULT_LEFT, "the panel had nothing to dodge");
+});
+
+test("a login form's stacked fields still cluster into ONE object", () => {
+  // The other half of the clustering rule, and the case it must not break:
+  // measured 42px and 37px between the NMBA fields, which is what sets the
+  // 48px threshold.
+  const fields = [at(946, 441, 384, 50), at(946, 533, 384, 50), at(946, 620, 384, 48)];
+  assert.equal(formsOf(fields).length, 1);
+  assert.deepEqual(formsOf(fields)[0], unionOf(fields));
+  // Order-independent: the same rects shuffled give the same one form.
+  assert.deepEqual(formsOf([fields[2]!, fields[0]!, fields[1]!]), formsOf(fields));
+});
+
+test("the panel does not cross the screen for a marginal gain", () => {
+  // The fallback with no floor is what actually moved the panel: given a form
+  // it could not clear, `left: 16` covered 66,982px² against the default's
+  // 107,000px², so a 37% improvement bought a full-viewport relocation.
+  const spanning = [at(203, 425, 1497, 214)];
+  const left = panelLeftFor({ obstacles: spanning, ...PANEL, viewport: SCHEMES_VIEWPORT });
+  assert.equal(left, SCHEMES_DEFAULT_LEFT, "37% is not worth crossing the viewport");
+});
+
+test("but it DOES move when moving genuinely helps", () => {
+  // The floor must not turn into "never move". A form the panel can almost
+  // escape still relocates it.
+  const obstacles = [at(1100, 300, 380, 300)];
+  const left = panelLeftFor({ obstacles, ...PANEL, viewport: SCHEMES_VIEWPORT });
+  assert.ok(left < SCHEMES_DEFAULT_LEFT, `expected a leftward step, got ${left}`);
+  assert.ok(left >= PANEL_EDGE_MARGIN_PX);
+});
+
+test("the improvement floor is a ratio of the default's own cost", () => {
+  // Stated so the constant cannot drift into meaninglessness unnoticed.
+  assert.ok(FALLBACK_IMPROVEMENT_RATIO > 0 && FALLBACK_IMPROVEMENT_RATIO < 1);
 });

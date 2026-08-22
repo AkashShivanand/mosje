@@ -1,31 +1,31 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { documentListColumns } from "@/data/website/columns";
+import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
 import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
 
 export const metadata: Metadata = {
-  title: "Notices | DoSJE",
+  title: "Public Notices | DoSJE",
   description:
-    "Public notices and announcements issued by the Department of Social Justice & Empowerment.",
+    "Public notices, press advisories, and administrative announcements from the Department of Social Justice & Empowerment.",
 };
 
-const rows = getDocumentsByType("Notice").map((d) => ({
-  title: d.title,
-  date: d.date ?? "—",
-  href: d.fileUrl ?? d.sourceUrl,
-}));
+export default function NoticesPage() {
+  const docs = getDocumentsByType("Notices").map((d) => ({
+    slug: d.slug,
+    title: d.title,
+    date: d.date,
+    category: "Public Notice",
+    sourceUrl: d.fileUrl ?? d.sourceUrl,
+    fileSize: "PDF",
+  }));
 
-export default function Page() {
   return (
-    <ListingPage
-      title="Notices"
-      breadcrumb={[{ label: "Documents" }, { label: "Notices" }]}
+    <DocumentCatalog
+      title="Public Notices"
+      description="Important public advisories, announcements, and notices released by the Department of Social Justice & Empowerment."
+      breadcrumb={[{ label: "Documents", href: "/website/notices" }, { label: "Notices" }]}
       lastUpdated={getContentSyncedDate()}
-      description="Public notices and announcements issued by the Department."
-      columns={documentListColumns}
-      rows={rows}
-      searchKeys={["title"]}
-      searchPlaceholder="Search notices…"
+      documents={docs}
+      categories={["Public Notice"]}
     />
   );
 }

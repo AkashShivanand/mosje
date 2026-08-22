@@ -1,31 +1,31 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { documentListColumns } from "@/data/website/columns";
+import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
 import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
 
 export const metadata: Metadata = {
   title: "Circulars & Notifications | DoSJE",
   description:
-    "Official circulars and notifications issued by the Department of Social Justice & Empowerment.",
+    "Official circulars, notifications, and gazette orders published by the Department of Social Justice & Empowerment.",
 };
 
-const rows = getDocumentsByType("Circulars & Notifications").map((d) => ({
-  title: d.title,
-  date: d.date ?? "—",
-  href: d.fileUrl ?? d.sourceUrl,
-}));
+export default function CircularsNotificationsPage() {
+  const docs = getDocumentsByType("Circulars & Notifications").map((d) => ({
+    slug: d.slug,
+    title: d.title,
+    date: d.date,
+    category: "Notification",
+    sourceUrl: d.fileUrl ?? d.sourceUrl,
+    fileSize: "PDF",
+  }));
 
-export default function Page() {
   return (
-    <ListingPage
+    <DocumentCatalog
       title="Circulars & Notifications"
-      breadcrumb={[{ label: "Documents" }, { label: "Circulars & Notifications" }]}
+      description="Official administrative circulars, gazette notifications, and policy directives issued by the Department."
+      breadcrumb={[{ label: "Documents", href: "/website/circulars-notifications" }, { label: "Circulars & Notifications" }]}
       lastUpdated={getContentSyncedDate()}
-      description="Official circulars, office memoranda and notifications issued by the Department."
-      columns={documentListColumns}
-      rows={rows}
-      searchKeys={["title"]}
-      searchPlaceholder="Search circulars…"
+      documents={docs}
+      categories={["Notification"]}
     />
   );
 }

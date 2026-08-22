@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import type { DataTableColumn } from "@/components/website/ui/data-table";
+import { SchemesCatalog, type SchemeItem } from "@/components/website/templates/SchemesCatalog";
 import { getSchemes, getContentSyncedDate } from "@/lib/website/content";
 
 export const metadata: Metadata = {
@@ -9,29 +8,33 @@ export const metadata: Metadata = {
     "Flagship welfare schemes and scholarships offered by the Department of Social Justice & Empowerment for SC, OBC, EBC and DNT communities.",
 };
 
-const columns: DataTableColumn[] = [
-  { key: "scheme", label: "Scheme", sortable: true, align: "left", className: "min-w-[340px] font-medium text-ink" },
-  { key: "target", label: "Target Group", sortable: true, align: "left", className: "min-w-[200px]" },
-  { key: "action", label: "Action", align: "center", type: "link", hrefKey: "href", linkLabel: "View" },
-];
+export default function SchemesPage() {
+  const rawSchemes = getSchemes();
 
-const rows = getSchemes().map((s) => ({
-  scheme: s.title,
-  target: s.targetGroup && s.targetGroup.length ? s.targetGroup.join(", ") : "—",
-  href: `/website/schemes-services/${s.slug}`,
-}));
+  const schemes: SchemeItem[] = rawSchemes.map((s) => {
+    // Extract first paragraph for description snippet
+    const descSection = s.sections.find((sec) => sec.html);
+    const cleanText = descSection
+      ? descSection.html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160)
+      : undefined;
 
-export default function Page() {
+    return {
+      slug: s.slug,
+      title: s.title,
+      category: s.category,
+      targetGroup: s.targetGroup,
+      description: cleanText ? `${cleanText}…` : undefined,
+      sourceUrl: s.sourceUrl,
+    };
+  });
+
   return (
-    <ListingPage
+    <SchemesCatalog
       title="Schemes & Services"
+      description="Explore welfare schemes, scholarships, and financial assistance programs delivered by the Department of Social Justice & Empowerment."
       breadcrumb={[{ label: "Offerings" }, { label: "Schemes & Services" }]}
       lastUpdated={getContentSyncedDate()}
-      description="Flagship welfare schemes and scholarships delivered by the Department for SC, OBC, EBC and DNT communities."
-      columns={columns}
-      rows={rows}
-      searchKeys={["scheme", "target"]}
-      searchPlaceholder="Search schemes…"
+      schemes={schemes}
     />
   );
 }

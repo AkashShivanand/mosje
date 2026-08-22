@@ -1,31 +1,31 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { documentListColumns } from "@/data/website/columns";
+import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
 import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
 
 export const metadata: Metadata = {
   title: "Forms & Templates | DoSJE",
   description:
-    "Downloadable application forms and templates for schemes and services of the Department of Social Justice & Empowerment.",
+    "Official application forms, proformas, and reporting templates published by the Department of Social Justice & Empowerment.",
 };
 
-const rows = getDocumentsByType("Forms & Templates").map((d) => ({
-  title: d.title,
-  date: d.date ?? "—",
-  href: d.fileUrl ?? d.sourceUrl,
-}));
+export default function FormsTemplatesPage() {
+  const docs = getDocumentsByType("Forms & Templates").map((d) => ({
+    slug: d.slug,
+    title: d.title,
+    date: d.date,
+    category: "Proforma / Application Form",
+    sourceUrl: d.fileUrl ?? d.sourceUrl,
+    fileSize: "PDF / Word Format",
+  }));
 
-export default function Page() {
   return (
-    <ListingPage
+    <DocumentCatalog
       title="Forms & Templates"
-      breadcrumb={[{ label: "Documents" }, { label: "Forms & Templates" }]}
+      description="Download application forms, verification proformas, and reporting templates for schemes and grant-in-aid assistance."
+      breadcrumb={[{ label: "Documents", href: "/website/forms-templates" }, { label: "Forms & Templates" }]}
       lastUpdated={getContentSyncedDate()}
-      description="Downloadable application forms and standard templates for the Department's schemes and services."
-      columns={documentListColumns}
-      rows={rows}
-      searchKeys={["title"]}
-      searchPlaceholder="Search forms & templates…"
+      documents={docs}
+      categories={["Proforma / Application Form"]}
     />
   );
 }

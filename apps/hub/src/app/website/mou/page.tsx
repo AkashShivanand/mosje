@@ -1,31 +1,31 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { documentListColumns } from "@/data/website/columns";
+import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
 import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
 
 export const metadata: Metadata = {
-  title: "Memoranda of Understanding | DoSJE",
+  title: "Memorandums of Understanding (MOU) | DoSJE",
   description:
-    "Memoranda of Understanding signed by the Department of Social Justice & Empowerment with partner institutions.",
+    "MOUs and bilateral agreements signed between the Department of Social Justice & Empowerment and partner organizations.",
 };
 
-const rows = getDocumentsByType("MOU").map((d) => ({
-  title: d.title,
-  date: d.date ?? "—",
-  href: d.fileUrl ?? d.sourceUrl,
-}));
+export default function MouPage() {
+  const docs = getDocumentsByType("MOU").map((d) => ({
+    slug: d.slug,
+    title: d.title,
+    date: d.date,
+    category: "MOU / Agreement",
+    sourceUrl: d.fileUrl ?? d.sourceUrl,
+    fileSize: "PDF Document",
+  }));
 
-export default function Page() {
   return (
-    <ListingPage
-      title="Memoranda of Understanding"
-      breadcrumb={[{ label: "Documents" }, { label: "MoU" }]}
+    <DocumentCatalog
+      title="Memorandums of Understanding (MoU)"
+      description="Official MoUs, bilateral agreements, and institutional partnerships signed by the Department."
+      breadcrumb={[{ label: "Documents", href: "/website/mou" }, { label: "MOU" }]}
       lastUpdated={getContentSyncedDate()}
-      description="Memoranda of Understanding signed by the Department with partner institutions and agencies."
-      columns={documentListColumns}
-      rows={rows}
-      searchKeys={["title"]}
-      searchPlaceholder="Search MoUs…"
+      documents={docs}
+      categories={["MOU / Agreement"]}
     />
   );
 }

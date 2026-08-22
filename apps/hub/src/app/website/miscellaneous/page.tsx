@@ -1,35 +1,31 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { noticeColumns } from "@/data/website/columns";
+import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
+import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
 
 export const metadata: Metadata = {
-  title: "Miscellaneous | DoSJE",
+  title: "Miscellaneous Documents | DoSJE",
   description:
-    "Miscellaneous documents and downloads from the Department of Social Justice & Empowerment.",
+    "General notices, administrative orders, and miscellaneous archival documents from the Department of Social Justice & Empowerment.",
 };
 
-const rows = [
-  { title: "Citizen's Charter of the Department of Social Justice & Empowerment", date: "20 May 2026", href: "#" },
-  { title: "Telephone Directory of Officers — Shastri Bhawan, New Delhi", date: "06 May 2026", href: "#" },
-  { title: "Organisational Chart of the Department", date: "22 Apr 2026", href: "#" },
-  { title: "List of Autonomous Bodies and PSUs under the Department", date: "08 Apr 2026", href: "#" },
-  { title: "Frequently Asked Questions on Scholarship Schemes", date: "24 Mar 2026", href: "#" },
-  { title: "Photo Gallery — National Conference on Social Empowerment 2025", date: "10 Mar 2026", href: "#" },
-  { title: "Allocation of Business Rules relevant to the Department", date: "26 Feb 2026", href: "#" },
-  { title: "List of Designated Public Information Officers", date: "12 Feb 2026", href: "#" },
-];
+export default function MiscellaneousPage() {
+  const docs = getDocumentsByType("Miscellaneous").map((d) => ({
+    slug: d.slug,
+    title: d.title,
+    date: d.date,
+    category: "General Document",
+    sourceUrl: d.fileUrl ?? d.sourceUrl,
+    fileSize: "PDF",
+  }));
 
-export default function Page() {
   return (
-    <ListingPage
-      title="Miscellaneous"
-      breadcrumb={[{ label: "Documents" }, { label: "Miscellaneous" }]}
-      lastUpdated="06 Jun 2026"
-      description="Miscellaneous documents, directories and downloads published by the Department."
-      columns={noticeColumns}
-      rows={rows}
-      searchKeys={["title"]}
-      searchPlaceholder="Search documents…"
+    <DocumentCatalog
+      title="Miscellaneous Documents"
+      description="General administrative archives, public notices, and institutional documentation."
+      breadcrumb={[{ label: "Documents", href: "/website/miscellaneous" }, { label: "Miscellaneous" }]}
+      lastUpdated={getContentSyncedDate()}
+      documents={docs}
+      categories={["General Document"]}
     />
   );
 }

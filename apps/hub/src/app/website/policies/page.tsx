@@ -1,31 +1,31 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { documentListColumns } from "@/data/website/columns";
+import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
 import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
 
 export const metadata: Metadata = {
   title: "Policies | DoSJE",
   description:
-    "Policy documents and frameworks of the Department of Social Justice & Empowerment.",
+    "National policies, draft policy frameworks, and guidelines formulated by the Department of Social Justice & Empowerment.",
 };
 
-const rows = getDocumentsByType("POLICY").map((d) => ({
-  title: d.title,
-  date: d.date ?? "—",
-  href: d.fileUrl ?? d.sourceUrl,
-}));
+export default function PoliciesPage() {
+  const docs = getDocumentsByType("Policies").map((d) => ({
+    slug: d.slug,
+    title: d.title,
+    date: d.date,
+    category: "National Policy",
+    sourceUrl: d.fileUrl ?? d.sourceUrl,
+    fileSize: "PDF Document",
+  }));
 
-export default function Page() {
   return (
-    <ListingPage
-      title="Policies"
-      breadcrumb={[{ label: "Documents" }, { label: "Policies" }]}
+    <DocumentCatalog
+      title="National Policies & Frameworks"
+      description="National policies, draft guidelines, and action plans formulated for the empowerment of targeted citizen groups."
+      breadcrumb={[{ label: "Documents", href: "/website/policies" }, { label: "Policies" }]}
       lastUpdated={getContentSyncedDate()}
-      description="Policy documents and frameworks governing the Department's programmes and operations."
-      columns={documentListColumns}
-      rows={rows}
-      searchKeys={["title"]}
-      searchPlaceholder="Search policies…"
+      documents={docs}
+      categories={["National Policy"]}
     />
   );
 }
