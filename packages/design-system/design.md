@@ -1515,6 +1515,21 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **Quick replies use `bg/brand/primary/base`, not the mock's `#EFE8FF`.** Nothing in the ramp resolves near that lavender; the pale brand tint is the same *role*. Per `.claude/rules/documentation-ds-linkage.md`, a value that is not a design-system colour means the design moves — not that the system grows a one-off variable.
 - **The transcript sits on a 16px bottom gutter, not the mock's 57px.** The mock floats the message stack 56.68px above the panel floor — space that holds nothing in any of its four frames. An unexplained gap at the foot of a chat panel reads as a composer that failed to render; matching the panel's other gutters reads as intentional. Every other measurement is reproduced exactly (panel 400×719, radius 16, mark 84 / disc 60 / wordmark 73.7×76.7 / figure 55.4, bubble capped at 67%).
 
+#### ActionBanner
+**Purpose**: A call to action — a title, an optional sentence, **one** control. The website uses it for the "need help?" invitation that sits above the footer.
+**Variants**: `variant` = `banner` (default) | `card`
+- **`banner`** — full width, text left, action right. The strip that closes a page section. Stacks below 640px with the action full width, because a button floating alone on a narrow screen reads as orphaned.
+- **`card`** — the same content in a column, for a grid of two or three parallel offers. **It stretches to its grid cell and pins the action to the bottom**, so a row of cards is one height and the buttons land on one line whatever length the descriptions run to. That single rule is most of what makes a card grid look composed rather than assembled.
+**Why variants and not two components**: the content model is identical and only the axis changes. A second component is a second thing to keep in step, and the first symptom of that is two CTAs on one estate with different padding — which is exactly what happened when the footer grew its own support strip alongside this. There is now one way to render a CTA.
+**Key props**: `title` · `description` · `action` · `variant` · `as` (heading level, default `h3`)
+**Colour**: resolves through `--sa-color-primaryScale-*`, so the panel follows `data-brand` across all eight modes. It previously painted `bg-gradient-to-r from-blue-50 to-indigo-50` with a `blue-100` border and `neutral-900/600` text. That was wrong three ways: **`indigo` is not a SAMAVESH colour** and appears nowhere else in the estate; a **literal palette cannot answer to the brand mode**, so the panel stayed blue in navy, burgundy and green — the same defect the footer had when it painted `bg-navy`; and **grey text on a coloured ground** reads as washed out, where the secondary line should be a deeper shade of the same tint. The gradient went too: two near-identical tints a fraction apart is not a gradient anyone perceives, it is a second colour to keep in sync for no visible return.
+**When NOT to reach for it**: not for a statutory or compliance notice — that is `Alert`. Not as a page hero. And not inside `SiteFooter`: a CTA is page content and the footer is statutory chrome, so the website puts this on a **light band above** the footer, where the change of ground says the two are different registers.
+**Rules**:
+- **One action.** `action` is a slot and will hold whatever it is given, but a banner with two equal buttons has no call to action — it has a decision. If a secondary path is genuinely needed, make it a text link beside the button, not a second button.
+- **The action never shrinks.** A long sentence wraps instead; the button is the point of the component and is the last thing that should give way.
+- **The title is a real heading** so the CTA appears in the document outline. Pass `as` so the page's outline does not skip a level. The panel is **not** a landmark and must not be given a `region` role — it is a paragraph and a button, and naming it adds a stop to the landmark list that leads nowhere.
+- **Keep the sentence short.** Past ~60ch it is a paragraph, and a paragraph beside a button reads as an article with a button stuck on it.
+
 #### Modal
 **Purpose**: Blocking overlay for confirmations, destructive prompts, and detail views.  
 **Props**: `open`, `onClose`, `title`, `size` (`sm` | `md` | `lg`)  

@@ -22,9 +22,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.44.0",
+    version: "v0.45.0",
     date: "2026-08-22",
     current: true,
+    changes: [
+      { kind: "Added", text: "`ActionBanner` GAINS A `card` VARIANT beside its full-width `banner`. Same content model, one axis changed \u2014 and the card STRETCHES to its grid cell and pins the action to the bottom, so a row of cards is one height and every button lands on one line however long the descriptions run. That single rule is most of what makes a card grid look composed rather than assembled. Variants rather than two components because a second component is a second thing to keep in step" },
+      { kind: "Fixed", text: "THE FOOTER WAS SHIPPING TWO SUPPORT CTAs. An `ActionBanner` above the footer and a `supportStrip` band inside it, both saying roughly the same thing and both linking to Contact Us \u2014 two sessions solving the same problem and meeting at a merge. `supportStrip` is gone from `SiteFooter` entirely: a call to action is page content, the footer is statutory chrome, and the estate already has one component for the job. The light band above the footer also answers the open question about tone \u2014 the two registers now read as different at a glance" },
+      { kind: "Changed", text: "`ActionBanner` NOW ANSWERS TO `data-brand`. It painted `bg-gradient-to-r from-blue-50 to-indigo-50` with a `blue-100` border and `neutral-900/600` text. Indigo is not a SAMAVESH colour and appears nowhere else in the estate; a literal palette cannot follow the brand mode, so the panel stayed blue in navy, burgundy and green \u2014 the same defect the footer had when it painted `bg-navy`; and grey text on a coloured ground reads as washed out, where the secondary line should be a deeper shade of the same tint. The gradient went too: two near-identical tints a fraction apart is not a gradient anyone perceives, it is a second colour to keep in sync for no visible return" },
+      { kind: "Changed", text: "THE BANNER\u2019S TITLE IS A REAL HEADING (`as`, default `h3`), so a CTA appears in the document outline instead of being a styled paragraph. The action never shrinks either \u2014 a long sentence wraps instead, because the button is the point of the component and is the last thing that should give way" },
+    ],
+  },
+  {
+    version: "v0.44.0",
+    date: "2026-08-22",
     changes: [
       { kind: "Added", text: "`BrandGlyph` \u2014 THIRD-PARTY BRAND MARKS, OPTICALLY NORMALISED. Five companies draw their logos to five containment rules, and dropping them into one row at 24px does not make them a set. Measured on the artwork the estate was shipping: optical heights ran 16.9 \u2192 24 and ink coverage 31.5% \u2192 62.4% \u2014 a 2\u00d7 spread in visual weight in a monochrome rail with nothing else to tell the marks apart. The component adds the one thing no vendor supplies: a shared optical size. Ink spread is now 1.52\u00d7, every mark still the vendor\u2019s own artwork" },
       { kind: "Fixed", text: "FACEBOOK WAS THE WRONG ASSET, NOT THE WRONG SIZE. It was supplied as the app BADGE \u2014 the \u201cf\u201d already inside a filled disc \u2014 while the other four marks were bare. A solid blob beside four open marks is a different KIND of object and no amount of scaling fixes it. On the homepage social feed the same badge was being drawn inside a pale tinted chip: a disc inside a disc. Now the bare \u201cf\u201d in both places" },

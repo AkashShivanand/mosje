@@ -203,14 +203,24 @@ export interface SiteFooterProps {
 export function SiteFooter({ lastUpdated }: SiteFooterProps = {}) {
   return (
     <>
+      {/* The support CTA is an ActionBanner on a light band ABOVE the footer,
+          not a strip inside it. Two reasons. It is page content — an invitation
+          to act — and the footer below it is statutory chrome; they are
+          different registers and the light ground says so at a glance. And
+          `ActionBanner` is the estate's component for exactly this, so the
+          footer does not need a second way to render a call to action.
+
+          The copy names the situation the reader is in. "Need Support?" is a
+          category; "Need help with a scheme or an application?" tells someone
+          in thirty seconds whether this is for them. */}
       <Band spacing="l" className="bg-white">
         <ActionBanner
-          title="Need Support?"
-          description="Reach out to our 24x7 citizen helpline or connect directly with our key officers."
+          title="Need help with a scheme or an application?"
+          description="Write to the department and an officer will respond."
           action={
             <Link
               href="/website/contact-us"
-              className={`${buttonClasses("primary", "filled", "md")} whitespace-nowrap px-6 py-3`}
+              className={`${buttonClasses("primary", "filled", "md")} whitespace-nowrap`}
             >
               Get in Touch
             </Link>
@@ -237,14 +247,6 @@ export function SiteFooter({ lastUpdated }: SiteFooterProps = {}) {
         "Department of Social Justice & Empowerment",
       ]}
       address="8th Floor, GPOA-3, Netaji Nagar, New Delhi - 110023"
-      /* The support strip is OPT-IN. Passing it renders the band; omitting the
-         prop removes it entirely. It carries the sentence that makes the button
-         mean something — as a bare button in the identity column it did not. */
-      supportStrip={{
-        heading: "Need help with a scheme or an application?",
-        body: "Write to the department and an officer will respond.",
-        cta: { label: "Get in Touch", href: "/website/contact-us" },
-      }}
       social={social}
       colophonSlot={<VisitorCounter />}
       columns={columns}

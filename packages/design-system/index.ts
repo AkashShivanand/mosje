@@ -479,4 +479,4 @@ export { ProfileCard } from "./components/data-display/profile-card";
 export type { ProfileCardProps } from "./components/data-display/profile-card";
 
 export { ActionBanner } from "./components/feedback/action-banner";
-export type { ActionBannerProps } from "./components/feedback/action-banner";
+export type { ActionBannerProps, ActionBannerVariant } from "./components/feedback/action-banner";

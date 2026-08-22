@@ -56,30 +56,9 @@ export interface SiteFooterCredit {
   prefix?: string;
 }
 
-export interface SiteFooterSupport {
-  heading: string;
-  /** One sentence. The strip exists to explain the button; without it, don't use it. */
-  body?: string;
-  cta: { label: string; href: string };
-}
-
 export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
   /** @default "website" */
   variant?: SiteFooterVariant;
-  /**
-   * The optional support strip — a heading, a sentence and one call to action,
-   * in a band of its own above the footer. OMIT IT AND IT DOES NOT RENDER;
-   * there is no empty state and no placeholder.
-   *
-   * It is a separate band rather than an item in the identity column because a
-   * call to action needs the sentence that explains it. Folded into the column
-   * it became a naked button between an address and a row of social marks, and
-   * a button with no context is worse than no button.
-   *
-   * Ignored when `variant="portal"` — an authenticated workflow has its own
-   * help affordances and does not need a marketing invitation under it.
-   */
-  supportStrip?: SiteFooterSupport;
   /** Emblem or logo for the identity lockup. Pass a rendered `next/image`. */
   emblem?: React.ReactNode;
   /** Organisation lines, coarsest first. The last is emphasised. */
@@ -166,7 +145,6 @@ function NewWindow() {
 export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(function SiteFooter(
   {
     variant = "website",
-    supportStrip,
     emblem,
     organisation,
     address,
@@ -226,24 +204,6 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
       {...rest}
     >
       <h2 className="sr-only">Site footer</h2>
-
-      {/* ── Zone 0 · the optional support strip ───────────────────────── */}
-      {isWebsite && supportStrip && (
-        <div className="ds-sitefooter__support">
-          <div className="ds-sitefooter__in" style={inStyle}>
-            <div>
-              <p className="ds-sitefooter__support-title">{supportStrip.heading}</p>
-              {supportStrip.body && (
-                <p className="ds-sitefooter__support-body">{supportStrip.body}</p>
-              )}
-            </div>
-            <Link href={supportStrip.cta.href} className="ds-sitefooter__cta">
-              {supportStrip.cta.label}
-              <Icon name="arrow_forward" size={16} />
-            </Link>
-          </div>
-        </div>
-      )}
 
       {/* ── Zone 1 · the working footer ───────────────────────────────── */}
       {isWebsite && (

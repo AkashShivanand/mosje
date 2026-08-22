@@ -16,11 +16,12 @@ import { SiteFooter, VisitorCounter } from "@mosje/design-system";
  * slim strip written for portals that no portal ever adopted — prefer
  * `variant="portal"` for new work.
  *
- * **`supportStrip` is opt-in and absent from the DOM when omitted.** It carries
- * a heading, one sentence and one CTA. It is a band rather than an item in the
- * identity column because a call to action needs the sentence that explains it;
- * folded into the column it became a naked button between an address and a row
- * of social marks. Ignored on the portal variant.
+ * **There is no support strip here, deliberately.** A "need help?" call to
+ * action is page content, not statutory footer chrome, and the estate already
+ * has a component for it — `ActionBanner`. The website places one on a light
+ * band ABOVE this footer, which also says at a glance that the two are
+ * different registers. A second CTA mechanism inside the footer was a second
+ * thing to keep in step, and it briefly meant the site shipped two.
  *
  * **It is structural, not content-bound.** Every label, href, logo and sentence
  * arrives as a prop, so a second site in the estate gets the same footer by
@@ -117,7 +118,6 @@ const meta = {
   },
   argTypes: {
     variant: { control: "inline-radio", options: ["website", "portal"] },
-    supportStrip: { control: false },
     emblem: { control: false },
     colophonSlot: { control: false },
     social: { control: false },
@@ -193,39 +193,20 @@ export const Minimal: Story = {
     credits: undefined,
     relatedLinks: undefined,
     colophonSlot: undefined,
-    supportStrip: undefined,
     address: undefined,
   },
 };
 
 /**
- * The support strip, switched on. Omit the `supportStrip` prop entirely and this
- * band does not render — there is no empty state and no placeholder.
- */
-export const WithSupportStrip: Story = {
-  args: {
-    supportStrip: {
-      heading: "Need help with a scheme or an application?",
-      body: "Write to the department and an officer will respond. For urgent grievances, use CPGRAMS.",
-      cta: { label: "Get in Touch", href: "/website/contact-us" },
-    },
-  },
-};
-
-/**
  * `variant="portal"` — the statutory bar alone. No navigation columns, no social
- * rail, no address, no support strip: a portal has its own navigation and the
- * footer's job there is to carry what DBIM 5.6 and GIGW require and get out of
- * the way. `columns`, `social`, `address` and `supportStrip` are ignored rather
- * than erroring, so the same content object can drive both variants.
+ * rail, no address: a portal has its own navigation and the footer's job there
+ * is to carry what DBIM 5.6 and GIGW require and get out of the way.
+ * `columns`, `social` and `address` are ignored rather than erroring, so the
+ * same content object can drive both variants.
  */
 export const PortalVariant: Story = {
   args: {
     variant: "portal",
-    supportStrip: {
-      heading: "This is ignored on the portal variant",
-      cta: { label: "Nothing renders", href: "#" },
-    },
     credits: [
       {
         src: "https://placehold.co/78x28/ffffff/003975?text=NeGD",
