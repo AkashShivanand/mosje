@@ -52,20 +52,14 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
       />
 
       <div className="flex">
-        {/* Wrapped rather than given `hidden md:flex` directly: the DS sets `display: flex`
-            on `.ds-sidebar`, which out-specifies Tailwind's `.hidden`, so the utility lost and
-            the sidebar stayed open on mobile — pushing the page off-screen. The live portal
-            collapses it behind the masthead hamburger below 768px. */}
-        <div className="hidden md:block">
-          <SidebarNav
-            groups={[{ items: role.nav }]}
-            pathname={pathname}
-            collapsed={collapsed}
-            onCollapsedChange={setCollapsed}
-            showCollapseControl
-            className="sticky top-0 h-screen shrink-0 md:flex md:flex-col"
-          />
-        </div>
+        <SidebarNav
+          groups={[{ items: role.nav }]}
+          pathname={pathname}
+          collapsed={collapsed}
+          onCollapsedChange={setCollapsed}
+          showCollapseControl
+          className="sticky top-0 hidden h-screen shrink-0 md:flex md:flex-col"
+        />
         <main id="main" className="min-w-0 flex-1 bg-surface-muted px-4 py-6 lg:px-8">
           {children}
         </main>

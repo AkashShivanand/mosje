@@ -17,7 +17,16 @@
 
 /* ── Container ─────────────────────────────────────────────────────────────── */
 
-.ds-sidebar {
+/*
+ * `:not(.hidden)` so a consumer can still hide the rail with Tailwind's `hidden` utility.
+ *
+ * None of the design system's CSS is wrapped in `@layer`, so every one of its component rules
+ * out-specifies Tailwind's utilities. That made the near-universal `hidden md:flex` pattern a
+ * no-op here: seven portal shells asked for a rail that collapses on mobile and all seven kept
+ * it open, pushing the page off-screen. Excluding `.hidden` from this rule lets the utility win
+ * at narrow widths while `md:flex` still restores the rail from 768px up.
+ */
+.ds-sidebar:not(.hidden) {
   display: flex;
   flex-direction: column;
   background: var(--sa-bg-neutral-base);
@@ -34,8 +43,7 @@
 
 .ds-sidebar__nav {
   flex: 1 1 auto;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto; /* x hidden, y scrolls */
   display: flex;
   flex-direction: column;
   gap: var(--sa-stack-12); /* 12px — Figma: --spacing-md between items */
@@ -103,14 +111,15 @@
     color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
 }
 
-.ds-sidebar__main-row:hover:not(.is-active) {
-  background: var(--sa-bg-neutral-subtler);
-}
-
 .ds-sidebar__main-row:focus-visible {
   outline: 2px solid var(--sa-focus-ring);
   outline-offset: var(--sa-focus-offset);
 }
+
+.ds-sidebar__main-row:hover:not(.is-active) {
+  background: var(--sa-bg-neutral-subtler);
+}
+
 
 .ds-sidebar__main-row.is-active {
   background: var(--sa-color-primaryScale-50);
@@ -233,16 +242,17 @@
     opacity var(--sa-motion-exit-duration);
 }
 
-.ds-sidebar__child-label:hover:not(.is-active) {
-  background: var(--sa-bg-neutral-subtler);
-  opacity: 1;
-}
-
 .ds-sidebar__child-label:focus-visible {
   outline: 2px solid var(--sa-focus-ring);
   outline-offset: var(--sa-focus-offset);
   opacity: 1;
 }
+
+.ds-sidebar__child-label:hover:not(.is-active) {
+  background: var(--sa-bg-neutral-subtler);
+  opacity: 1;
+}
+
 
 .ds-sidebar__child-label.is-active {
   background: var(--sa-color-primaryScale-50);
@@ -299,14 +309,14 @@
   transition: opacity var(--sa-motion-exit-duration);
 }
 
-.ds-sidebar:hover .ds-sidebar__control,
 .ds-sidebar__control:focus-visible {
   opacity: 1;
-}
-
-.ds-sidebar__control:focus-visible {
   outline: 2px solid var(--sa-focus-ring);
   outline-offset: var(--sa-focus-offset);
+}
+
+.ds-sidebar:hover .ds-sidebar__control {
+  opacity: 1;
 }
 
 .ds-sidebar__control-line {
