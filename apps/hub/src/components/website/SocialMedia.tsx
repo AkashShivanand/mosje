@@ -162,7 +162,7 @@ export function SocialMedia() {
                       : "text-ink-muted hover:text-ink"
                   )}
                 >
-                  <BrandGlyph name={tab.icon} size={16} />
+                  <BrandGlyph name={tab.icon} size={20} />
                   {tab.name}
                 </button>
               );
@@ -185,7 +185,7 @@ export function SocialMedia() {
                   >
                     <BrandGlyph
                       name={currentTab.icon}
-                      size={16}
+                      size={20}
                       className={currentTab.iconClassName}
                     />
                   </span>

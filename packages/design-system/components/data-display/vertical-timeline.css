@@ -5,8 +5,14 @@
    components; see ActionBanner for the token-based pattern they should move to. */
 @reference "tailwindcss";
 
+/* Brand colour comes from the token, not a literal: `#0373DF` is gov-blue in
+   BLUE mode only, so a hardcoded copy freezes the component to one brand and
+   ignores the other seven. `--sa-color-primaryScale-500` is the same value in
+   blue and follows `data-brand` everywhere else. */
+
 .sa-vertical-timeline {
-  @apply relative border-l-2 border-[#0373DF]/20 ml-3 sm:ml-4 space-y-12 pb-4;
+  @apply relative border-l-2 ml-3 sm:ml-4 space-y-12 pb-4;
+  border-inline-start-color: color-mix(in srgb, var(--sa-color-primaryScale-500) 20%, transparent);
 }
 
 .sa-vertical-timeline-item {
@@ -18,7 +24,8 @@
 }
 
 .sa-vertical-timeline-item__marker {
-  @apply h-2.5 w-2.5 rounded-full bg-[#0373DF] ring-4 ring-white shadow-sm;
+  @apply h-2.5 w-2.5 rounded-full ring-4 ring-white shadow-sm;
+  background-color: var(--sa-color-primaryScale-500);
 }
 
 .sa-vertical-timeline-item__content {
@@ -34,7 +41,8 @@
 }
 
 .sa-vertical-timeline-item__date {
-  @apply text-sm font-bold text-[#0373DF] whitespace-nowrap bg-blue-50 px-3 py-1 rounded-full;
+  @apply text-sm font-bold whitespace-nowrap bg-blue-50 px-3 py-1 rounded-full;
+  color: var(--sa-color-primaryScale-500);
 }
 
 .sa-vertical-timeline-item__body {

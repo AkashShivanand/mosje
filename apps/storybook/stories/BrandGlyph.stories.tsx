@@ -14,16 +14,25 @@ import { BRAND_GLYPHS, BrandGlyph, brandGlyphTitle } from "@mosje/design-system"
  * size.** Five companies draw their marks to five containment rules, and
  * dropping them in a row at 24px does not make them a set. Measured on the
  * artwork this estate was shipping: optical heights ran 16.9 → 24, and ink
- * coverage 31.5% → 62.4% — a 2× spread in visual weight with nothing else in a
- * monochrome rail to distinguish them. Facebook was the worst case, supplied as
- * its app *badge* (the "f" already inside a filled disc) while the other four
- * were bare marks: a solid blob beside four open marks is a different kind of
- * object, and no amount of scaling fixes it.
+ * coverage 31.5% → 62.4% — a 2× spread in visual weight. Facebook was the worst
+ * case, supplied as its app *badge* (the "f" already inside a filled disc)
+ * while the other four were bare: a solid blob beside four open marks is a
+ * different kind of object, and no amount of scaling fixes it.
  *
- * Each mark's longest side is normalised to a shared optical square, then given
- * a hand-tuned correction toward equal ink. That brings the spread to 1.51×.
- * The full derivation, and the recipe for adding a sixth mark, is in the header
- * of `packages/design-system/components/icon/brand-glyph.tsx`.
+ * **Sizing alone was not enough, and that is the interesting part.** Normalising
+ * brought the ink spread to 1.52× and the rail still looked unbalanced, because
+ * the objection was never to the measurement — a letterform, a bare X, a hollow
+ * camera, a filled slab and a bubble are five different *silhouettes*. Give them
+ * one repeating circle and the circle becomes the unit the eye reads. Both rails
+ * in the estate do this, which is why `InAChip` below is the story that matters.
+ *
+ * **The tuning belongs to the containment.** Before the chip, the corrections
+ * pulled hard toward equal ink (YouTube to 0.86); inside a chip the frame is
+ * constant, so the eye reads extent instead and that correction left YouTube
+ * looking undersized. The shipped values are light — YouTube 0.94, Instagram
+ * 0.98, the rest 1.0 — and marks fill 47–50% of the chip. The full derivation
+ * is in the header of
+ * `packages/design-system/components/icon/brand-glyph.tsx`.
  *
  * **Colour is always `currentColor`** — set it on the parent. Brand colours
  * belong to the brands, so they are not tokens and a coloured treatment names
@@ -56,9 +65,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 /**
- * The whole set at the size the footer rail uses. This is the story that
- * matters: a single mark always looks fine, and the defect these corrections
- * exist to fix is only visible in a row.
+ * The whole set, bare, at the size the footer rail uses — the shape the marks
+ * take before a container is put round them. Compare with `InAChip`.
  */
 export const TheSet: Story = {
   render: () => (
@@ -82,16 +90,57 @@ export const TheSet: Story = {
 };
 
 /**
- * The same set at 4×, which is how the optical tuning was judged. Every mark
- * should feel like it occupies the same amount of space — not measure the same,
- * *feel* the same. YouTube is the residual: it is intrinsically a filled slab
- * and stays the heaviest mark in the row.
+ * **How the estate actually draws these marks, and the story to judge tuning by.**
+ * One repeating chip, the mark at ~50% of it. Sizing got the set most of the way;
+ * the chip is what makes five different silhouettes read as one row.
+ */
+export const InAChip: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: 4, alignItems: "center", background: "#003975", padding: 24 }}>
+      {BRAND_GLYPHS.map((name) => (
+        <span
+          key={name}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 40,
+            height: 40,
+            borderRadius: 999,
+            background: "color-mix(in srgb, #C0DBFF 12%, #003975)",
+            color: "#C0DBFF",
+          }}
+        >
+          <BrandGlyph name={name} />
+        </span>
+      ))}
+    </div>
+  ),
+};
+
+/**
+ * The set at 4×, chipped, which is how the tuning was judged. Every mark should
+ * *feel* like it occupies the same amount of space, not measure the same.
  */
 export const OpticalSizing: Story = {
   render: () => (
-    <div style={{ display: "flex", gap: 24, alignItems: "center", background: "#12294B", padding: 24 }}>
+    <div style={{ display: "flex", gap: 12, alignItems: "center", background: "#003975", padding: 24 }}>
       {BRAND_GLYPHS.map((name) => (
-        <BrandGlyph key={name} name={name} size={64} style={{ color: "#DBE9F7" }} />
+        <span
+          key={name}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 160,
+            height: 160,
+            borderRadius: 999,
+            background: "color-mix(in srgb, #C0DBFF 12%, #003975)",
+            color: "#C0DBFF",
+          }}
+        >
+          <BrandGlyph name={name} size={96} />
+        </span>
       ))}
     </div>
   ),

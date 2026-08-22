@@ -22,9 +22,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.45.0",
+    version: "v0.46.0",
     date: "2026-08-22",
     current: true,
+    changes: [
+      { kind: "Changed", text: "THE SOCIAL MARKS SIT IN A CHIP NOW, WHICH IS THE PART SIZING COULD NOT DO. v0.44.0 normalised them and got the ink spread from 2.37\u00d7 to 1.52\u00d7, and the rail still looked unbalanced \u2014 because the objection was never to the measurement. A letterform, a bare X, a hollow camera, a filled slab and a bubble are five different SILHOUETTES, and no amount of scaling makes them siblings. One repeating circle makes the circle the unit the eye reads and the marks its contents, and the variance stops mattering. This reverses an earlier note in the stylesheet, which argued against five hard shapes in the quietest part of the footer \u2014 correctly, but about OUTLINED circles, which is what it was arguing against. A filled tint is ground, not line" },
+      { kind: "Changed", text: "THE TUNING BELONGS TO THE CONTAINMENT, NOT THE MARK. Bare, the corrections pulled hard toward equal ink \u2014 YouTube down to 0.86 \u2014 because with nothing to compare against the eye judges a mark by how dark it is. Inside a chip the frame is constant, the eye reads EXTENT instead, and that correction left YouTube visibly undersized in its circle. Retuned light: YouTube 0.94, Instagram 0.98, the rest 1.0. Marks fill 47\u201350% of the 40px chip; at 55% the chip stops being a frame and becomes a tight collar" },
+      { kind: "Fixed", text: "THE CHIP IS A PROPORTION OF THE GROUND, NOT A RAMP RUNG. Rung 700 on the 800 ground looked right in blue, but the lift it gives depends on how each brand spaces its ramp \u2014 measured across the eight modes it ran from 1.13:1 in navy, where the chip is simply invisible, to 1.39:1. `color-mix` of 12% ink into the ground gives 1.30\u20131.36 everywhere. The rung stays as a fallback OUTSIDE an @supports block, because a custom property is substituted lazily: an unsupported color-mix does not fall back to an earlier declaration, it makes the using property invalid and the chip disappears" },
+      { kind: "Fixed", text: "THE RAIL\u2019S NEGATIVE MARGIN, which existed to pull the first GLYPH\u2019s optical edge out to the text above it while its 40px box was invisible. With a visible chip the same offset pushed the row 8px PAST the address it should line up with. Removed \u2014 rail and address now both start at 104px" },
+    ],
+  },
+  {
+    version: "v0.45.0",
+    date: "2026-08-22",
     changes: [
       { kind: "Added", text: "`ActionBanner` GAINS A `card` VARIANT beside its full-width `banner`. Same content model, one axis changed \u2014 and the card STRETCHES to its grid cell and pins the action to the bottom, so a row of cards is one height and every button lands on one line however long the descriptions run. That single rule is most of what makes a card grid look composed rather than assembled. Variants rather than two components because a second component is a second thing to keep in step" },
       { kind: "Fixed", text: "THE FOOTER WAS SHIPPING TWO SUPPORT CTAs. An `ActionBanner` above the footer and a `supportStrip` band inside it, both saying roughly the same thing and both linking to Contact Us \u2014 two sessions solving the same problem and meeting at a merge. `supportStrip` is gone from `SiteFooter` entirely: a call to action is page content, the footer is statutory chrome, and the estate already has one component for the job. The light band above the footer also answers the open question about tone \u2014 the two registers now read as different at a glance" },

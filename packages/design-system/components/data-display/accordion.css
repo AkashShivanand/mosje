@@ -5,6 +5,11 @@
    components; see ActionBanner for the token-based pattern they should move to. */
 @reference "tailwindcss";
 
+/* Brand colour comes from the token, not a literal: `#0373DF` is gov-blue in
+   BLUE mode only, so a hardcoded copy freezes the component to one brand and
+   ignores the other seven. `--sa-color-primaryScale-500` is the same value in
+   blue and follows `data-brand` everywhere else. */
+
 .sa-accordion {
   @apply flex flex-col gap-3;
 }
@@ -14,7 +19,8 @@
 }
 
 .sa-accordion-item__trigger {
-  @apply w-full px-5 py-4 flex items-center justify-between bg-neutral-50/50 hover:bg-blue-50/30 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0373DF];
+  --tw-ring-color: var(--sa-color-primaryScale-500);
+  @apply w-full px-5 py-4 flex items-center justify-between bg-neutral-50/50 hover:bg-blue-50/30 transition-colors text-left focus:outline-none focus-visible:ring-2;
 }
 
 .sa-accordion-item__title {

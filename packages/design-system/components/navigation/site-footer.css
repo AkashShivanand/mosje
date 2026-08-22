@@ -40,6 +40,22 @@
   --ds-footer-bg: var(--sa-bg-brand-primary-boldest);
   --ds-footer-bg-deep: var(--sa-color-primaryScale-900);
   --ds-footer-rule: var(--sa-color-primaryScale-600);
+  /* THE CHIP IS A PROPORTION OF THE GROUND, NOT A RAMP RUNG. Rung 700 on the
+     800 ground looked right in blue, but the lift it produces depends on how
+     each brand spaces its ramp: measured across the eight modes it ranged
+     1.13:1 (navy — invisible) to 1.39:1. Mixing a fixed 12% of the ink into
+     the ground instead gives 1.30–1.36 everywhere, so the rail looks the same
+     in every brand. Blue lands on 1.33 either way, which is the value that was
+     judged by eye. The rung stays as a fallback for engines without
+     color-mix; they get a chip that is merely inconsistent, not absent.
+
+     The override lives in an @supports block below rather than as a second
+     declaration here. A custom property is substituted lazily, so an
+     unsupported color-mix does not fall back to an earlier declaration — it
+     makes the USING property invalid at computed-value time and the chip
+     disappears entirely. @supports is the only pattern that actually degrades. */
+  --ds-footer-chip: var(--sa-color-primaryScale-700);
+  --ds-footer-chip-hover: var(--sa-color-primaryScale-600);
   --ds-footer-ink: var(--sa-on-bg-brand-primary-boldest);
   --ds-footer-ink-muted: var(--sa-color-primaryScale-100);
   --ds-footer-ink-dim: var(--sa-color-primaryScale-200);
@@ -239,19 +255,38 @@
 }
 
 /* ── Social rail ─────────────────────────────────────────────────────────
-   The target is 40px and the mark is 24px, and at rest there is no ring around
-   either. Five outlined circles put five hard shapes in the quietest part of
-   the footer for its most tertiary links. WCAG 2.5.8 is satisfied by the box,
-   which does not have to be visible to be clickable. */
+   A FILLED CHIP AT REST, which reverses an earlier decision here. That note
+   said five circles put "five hard shapes in the quietest part of the footer"
+   — and it was right about OUTLINED circles, which is what it was arguing
+   against. A filled tint one rung up is not a line, it is ground, and it does
+   the one job scaling cannot.
+
+   Five brand marks will not read as a set however carefully they are sized.
+   The variance is in the SHAPE: a letterform, a bare X, a hollow camera, a
+   filled slab, a bubble. Normalising their size got the ink spread from 2.37×
+   to 1.52× and they still looked unbalanced, because that measurement was
+   never the thing the eye was objecting to. One repeating circle makes the
+   CIRCLE the unit the eye reads and the marks its contents, and the variance
+   stops mattering.
+
+   Rung 700 on the 800 ground: mode-aware, and quiet enough that the rail stays
+   tertiary — the link columns above it matter more and must stay louder. The
+   mark is 24px in a 40px chip, ~50% fill; at 55% the chip stops reading as a
+   frame and becomes a tight collar. WCAG 2.5.8 was already satisfied by the
+   40px box; the chip makes the target visible, which is a bonus, not the
+   reason. */
 
 .ds-sitefooter__social {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--sa-padding-4);
-  /* Negative inline start so the first glyph's OPTICAL edge aligns with the
-     text above it, rather than its 40px box doing. */
-  margin: 0 0 0 calc(var(--sa-padding-8) * -1);
+  /* No negative inline start any more. That existed to pull the first GLYPH's
+     optical edge out to the text above it, because the 40px box around it was
+     invisible and left the row looking indented. The chip is visible, so the
+     chip's edge IS the visual edge — the same offset now pushes the row 8px
+     PAST the text it should line up with. */
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -263,6 +298,7 @@
   width: 40px;
   height: 40px;
   border-radius: var(--sa-shape-full);
+  background-color: var(--ds-footer-chip);
   color: var(--ds-footer-ink-muted);
   transition:
     background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
@@ -270,8 +306,23 @@
 }
 
 .ds-sitefooter__social-link:hover {
-  background-color: var(--ds-footer-rule);
+  background-color: var(--ds-footer-chip-hover);
   color: var(--ds-footer-ink);
+}
+
+@supports (background-color: color-mix(in srgb, red 50%, blue)) {
+  .ds-sitefooter {
+    --ds-footer-chip: color-mix(
+      in srgb,
+      var(--sa-color-primaryScale-100) 12%,
+      var(--sa-color-primaryScale-800)
+    );
+    --ds-footer-chip-hover: color-mix(
+      in srgb,
+      var(--sa-color-primaryScale-100) 24%,
+      var(--sa-color-primaryScale-800)
+    );
+  }
 }
 
 

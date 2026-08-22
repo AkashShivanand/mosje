@@ -5,6 +5,10 @@
    components; see ActionBanner for the token-based pattern they should move to. */
 @reference "tailwindcss";
 
+/* Brand colour comes from the token, not a literal: `#003366` froze this tag
+   to navy regardless of `data-brand`. `--sa-color-primaryScale-800` is the
+   darkest brand ground and follows the mode. */
+
 .sa-profile-card {
   @apply bg-white rounded-2xl border border-neutral-200 shadow-md hover:shadow-lg transition-shadow flex flex-col overflow-hidden;
 }
@@ -16,7 +20,8 @@
   @apply w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500;
 }
 .sa-profile-card__tag {
-  @apply absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#003366]/80 backdrop-blur-sm py-1.5 px-4 rounded-full text-white shadow-sm flex items-center justify-center;
+  @apply absolute bottom-4 left-1/2 -translate-x-1/2 backdrop-blur-sm py-1.5 px-4 rounded-full text-white shadow-sm flex items-center justify-center;
+  background-color: color-mix(in srgb, var(--sa-color-primaryScale-800) 80%, transparent);
 }
 .sa-profile-card__tag-text {
   @apply text-xs font-semibold tracking-wider whitespace-nowrap;
