@@ -11,15 +11,23 @@
    selected colour group." Rung 800 IS that key colour — in `dbim` it resolves
    to #162F6A, DBIM's own published Blue shade 1.
 
-   ── ONE GROUND, ONE HAIRLINE ──────────────────────────────────────────────
-   The footer used to run two near-identical navies (800 and 900) for its two
-   bands. At a 1.28:1 step that is not a distinction, it is a smudge — it read
-   as a printing error rather than as structure. There is now ONE ground, and a
-   single hairline where the register changes from navigation to statute.
+   ── ONE GROUND. HAIRLINES DO THE STRUCTURE. ───────────────────────────────
+   Rung 800 for the WHOLE footer, top to bottom, with a hairline at each zone
+   boundary. Two reversals are recorded here because both were wrong:
 
-   The optional support strip is the deliberate exception: rung 900, because it
-   is the one element that is genuinely a different kind of thing (an
-   invitation, not information) and the one element a site can switch off.
+   The bands first ran 800 and 900. At a 1.28:1 step that is not a distinction,
+   it is a smudge, and it read as a printing error rather than as structure.
+
+   The support strip was then kept at 900 as "the one element that is a
+   different kind of thing". That was tone encoding CATEGORY, and tone does not
+   mean category — it means depth. Two consequences followed. Visual weight
+   should increase downward, so the darkest value sitting at the TOP made the
+   footer read as floating on a foreign shelf. And the strip is the most
+   inviting element in the footer; recessing it says "further away", which is
+   the opposite of its job.
+
+   What the strip needs is a boundary and room, not a different colour. It has
+   both, plus the only heading and the only button in the component.
 
    ── INK IS SAME-HUE ───────────────────────────────────────────────────────
    `rgba(255,255,255,.8)` on a coloured ground desaturates to a dirty grey. The
@@ -73,7 +81,7 @@
    what it is again, and a site that does not want it simply omits the prop. */
 
 .ds-sitefooter__support {
-  background-color: var(--ds-footer-bg-deep);
+  border-bottom: 1px solid var(--ds-footer-rule);
 }
 
 .ds-sitefooter__support .ds-sitefooter__in {
@@ -133,13 +141,42 @@
 }
 
 @media (min-width: 1024px) {
-  .ds-sitefooter__body { gap: var(--sa-stack-40) var(--sa-padding-32); }
-  /* Identity gives up a column so the link grid can carry five. Related Links
-     moved up here from the statutory bar — they are wayfinding, not statute,
-     and down there they were 680px of links that could never share a line
-     with the 607px policy row, so the bottom always stacked into a wall. */
-  .ds-sitefooter__ident { grid-column: span 3; }
-  .ds-sitefooter__cols { grid-column: span 9; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .ds-sitefooter__body { gap: var(--sa-stack-32) var(--sa-padding-40); }
+  /* FOUR link columns, not five. Related Links briefly became a fifth, which
+     put six columns across the band — one more vertical rhythm than the eye
+     wants to parse in a footer. It is a wide row underneath instead: still in
+     the working band where wayfinding belongs, still one line, and the grid
+     stays at the five columns that read comfortably. */
+  .ds-sitefooter__ident { grid-column: span 4; }
+  .ds-sitefooter__cols { grid-column: span 8; }
+}
+
+/* Related Links: a group laid out wide rather than tall, with its heading
+   INLINE. Stacked above the row it cost two lines and left most of the band
+   empty; beside the row it is one line and the label does the work a column
+   heading does — this group is a destination list like Resources, not
+   statutory boilerplate like the policy row, which is why it is labelled and
+   that one is not.
+
+   No rule above it. The grid gap already separates it, and the lower half of
+   the footer was collecting more boundaries than it has divisions. */
+.ds-sitefooter__wide {
+  grid-column: span 12;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sa-stack-8) var(--sa-padding-24);
+}
+
+.ds-sitefooter__wide .ds-sitefooter__colhead {
+  margin: 0;
+  flex: none;
+}
+
+.ds-sitefooter__wide .ds-sitefooter__list {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--sa-stack-8) var(--sa-padding-24);
 }
 
 /* ── The identity lockup ─────────────────────────────────────────────────── */

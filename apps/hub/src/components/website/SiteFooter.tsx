@@ -153,6 +153,10 @@ const social: SiteFooterSocial[] = [
 /** [DBIM 5.6] "Hyperlinked logos" — the maintainer and the platform. */
 const credits: SiteFooterCredit[] = [
   {
+    // Labelled, where it previously carried nothing. One mark with a prefix and
+    // one without read as "Powered by [A] [B]" — the label appeared to govern
+    // both, and the attribution the prose used to carry was left unsaid.
+    prefix: "Developed & maintained by",
     src: "/website/images/NeGD-Logo.svg",
     alt: "National e-Governance Division (NeGD)",
     href: "https://negd.gov.in/",
@@ -170,14 +174,25 @@ const credits: SiteFooterCredit[] = [
 ];
 
 /**
- * [DBIM 5.6] The lineage sentence, in the mandated Central-Government-Department
- * form. The live site's "Contents owned and managed by…" states ownership but is
- * not this sentence, so both are carried: lineage here, ownership in the credits.
+ * [DBIM 5.6] The lineage sentence, and NOTHING ELSE.
+ *
+ * It used to run on: "…Government of India. Developed and maintained by Digital
+ * India Corporation, MeitY." Two things were wrong with that tail. It said in
+ * prose what the credit logos beside it already say in marks, so the same fact
+ * was on screen twice. And it named only ONE of the two organisations the
+ * footer credits — the sentence sat immediately before a Digital India logo
+ * while crediting Digital India Corporation and omitting NeGD, which reads as
+ * an inconsistency rather than a statement.
+ *
+ * DBIM 5.6 prescribes the lineage wording for a Central Government Department
+ * and the prescribed sentence stops at "Government of India". Attribution is a
+ * separate element, and the clause has one for it: hyperlinked logos. So the
+ * sentence is now exactly the mandated one — shorter, non-duplicative, and
+ * closer to the clause than the longer version was.
  */
 const LINEAGE =
   "This website belongs to the Department of Social Justice & Empowerment, " +
-  "Ministry of Social Justice & Empowerment, Government of India. Developed and " +
-  "maintained by Digital India Corporation, MeitY.";
+  "Ministry of Social Justice & Empowerment, Government of India.";
 
 export interface SiteFooterProps {
   /**

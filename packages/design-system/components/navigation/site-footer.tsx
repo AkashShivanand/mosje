@@ -295,9 +295,9 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
               )}
             </div>
 
-            {Boolean(columns?.length || relatedLinks?.length) && (
+            {Boolean(columns?.length) && (
               <div className="ds-sitefooter__cols">
-                {columns?.map((col) => (
+                {columns!.map((col) => (
                   <nav key={col.id} aria-labelledby={col.id}>
                     <h3 id={col.id} className="ds-sitefooter__colhead">
                       {col.heading}
@@ -310,25 +310,25 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
                   </nav>
                 ))}
 
-                {/* [DBIM 5.6] Related Links, as a COLUMN. The clause requires
-                    the element in the footer, not in the legal band — and as a
-                    row down there it was 680px of links that could never share
-                    a line with the 607px policy row, so the bottom stacked into
-                    a wall of eleven undifferentiated greys. Up here it is what
-                    it actually is: a fifth destination list. */}
-                {relatedLinks && relatedLinks.length > 0 && (
-                  <nav aria-labelledby="ds-footer-related">
-                    <h3 id="ds-footer-related" className="ds-sitefooter__colhead">
-                      Related Links
-                    </h3>
-                    <ul className="ds-sitefooter__list">
-                      {relatedLinks.map((link) => (
-                        <li key={link.label}>{renderLink(link, isMixed(relatedLinks))}</li>
-                      ))}
-                    </ul>
-                  </nav>
-                )}
               </div>
+            )}
+
+            {/* [DBIM 5.6] Related Links — wayfinding, so it lives in the
+                working band, but laid out WIDE rather than as a sixth column.
+                Six columns is one vertical rhythm more than the eye wants to
+                parse in a footer, and this group is short enough to spend the
+                width the four columns leave over. */}
+            {relatedLinks && relatedLinks.length > 0 && (
+              <nav className="ds-sitefooter__wide" aria-labelledby="ds-footer-related">
+                <h3 id="ds-footer-related" className="ds-sitefooter__colhead">
+                  Related Links
+                </h3>
+                <ul className="ds-sitefooter__list">
+                  {relatedLinks.map((link) => (
+                    <li key={link.label}>{renderLink(link, isMixed(relatedLinks))}</li>
+                  ))}
+                </ul>
+              </nav>
             )}
           </div>
         </div>
