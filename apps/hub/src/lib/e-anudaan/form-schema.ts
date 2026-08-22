@@ -9,7 +9,7 @@
  *
  *   SHRESHTA_M2  6 steps   20 documents   (PDF / JPG / PNG)
  *   AVYAY        7 steps    9 documents   (PDF)          + a cost-norms panel on the grant step
- *   SMILE        6 steps   20 documents   (PDF)
+ *   SMILE        6 steps   12 documents   (PDF)
  *   NAPDDR       3 steps   17 documents   (PDF)          — the generic short form
  *
  * Routing note, also from the walkthrough: the early steps sit under `.../step-1`, the upload
