@@ -8,7 +8,8 @@
  * Each scheme has its own step count, its own sections and its own document checklist:
  *
  *   SHRESHTA_M2  6 steps   20 documents   (PDF / JPG / PNG)
- *   AVYAY        7 steps    9 documents   (PDF)          + a cost-norms panel on the grant step
+ *   AVYAY      8/7 steps  11/9 documents  (PDF)          + a cost-norms panel on the grant step
+ *                  NEW branch has 8 steps and 11 documents; renewal 7 and 9.
  *   SMILE        6 steps   12 documents   (PDF)
  *   NAPDDR       3 steps   17 documents   (PDF)          — the generic short form
  *
@@ -92,6 +93,13 @@ export interface DocDef {
   /** NAPDDR renders a one-line description under each slot instead of a conditional note. */
   description?: string;
   optional?: boolean;
+  /**
+   * Some checklists depend on an answer given earlier. AVYAY is the case that forced this: a new
+   * project is asked for the NGO's own PAN, two years of annual reports, two years of audited
+   * accounts and a fire safety audit, while a renewal is asked instead for a budget estimate, the
+   * project's audited accounts and a GFR-12A utilisation certificate.
+   */
+  showWhen?: { field: string; equals: readonly string[] };
 }
 
 export interface WizardDef {
@@ -446,6 +454,42 @@ const AVYAY_STEPS: readonly StepDef[] = [
     ],
   },
   {
+    title: "Justification",
+    sections: [
+      {
+        title: "Justification",
+        lead: "Why the district needs this project. Walked on live 2026-08-23 — a step of its own between Project Details and the infrastructure step.",
+        fields: [
+          {
+            name: "fld_services_available_in_district",
+            label: "Services already available in the district",
+            kind: "textarea",
+            required: true,
+            wide: true,
+            maxLength: 1400,
+            help: "Approximately 200 words.",
+          },
+          {
+            name: "fld_distance_to_nearest_similar",
+            label: "Distance to the nearest similar service (km)",
+            // Live ships a text input and then rejects it with "must be a number"; a number input
+            // enforces the same constraint without the round trip.
+            kind: "number",
+            required: true,
+          },
+          {
+            name: "fld_other_justification",
+            label: "Other justification (max 200 words)",
+            kind: "textarea",
+            wide: true,
+            maxLength: 1400,
+            help: "Approximately 200 words.",
+          },
+        ],
+      },
+    ],
+  },
+  {
     title: "Infrastructure, Beneficiaries & Bank",
     sections: [
       {
@@ -509,7 +553,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
       {
         title: "Verification & Authorised Person",
         fields: [
-          { name: "decl_fee_charged", label: "No money is charged from the beneficiaries", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "decl_no_money_from_beneficiaries", label: "No money is charged from the beneficiaries", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_not_blacklisted", label: "Organisation is not blacklisted", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "fld_auth_person_name", label: "Name of Authorised Person", kind: "text", required: true },
           { name: "fld_auth_person_contact", label: "Contact of Authorised Person", kind: "tel", required: true },
@@ -523,16 +567,43 @@ const AVYAY_STEPS: readonly StepDef[] = [
   { title: "Review & Submit", kind: "review", sections: [] },
 ];
 
+/**
+ * AVYAY's checklist is branch-dependent. Walked on live 2026-08-23: the NEW branch renders these
+ * eleven in this order; the renewal branch renders the six shared entries plus Budget Estimate,
+ * Audited Accounts of Project and the GFR-12A. Ordered so that filtering by `case_type` reproduces
+ * each branch's sequence exactly.
+ */
 const AVYAY_DOCS: readonly DocDef[] = [
   { n: 1, title: "Registration Certificate" },
-  { n: 2, title: "Annual Report of NGO — previous FY" },
-  { n: 3, title: "Bank Details of the Project" },
-  { n: 4, title: "Beneficiary List" },
-  { n: 5, title: "Staff List" },
-  { n: 6, title: "Rent Agreement" },
-  { n: 7, title: "Budget Estimate" },
-  { n: 8, title: "Audited Accounts of Project" },
-  { n: 9, title: "Utilisation Certificate (GFR-12A)" },
+  { n: 2, title: "PAN Card of the Organisation", showWhen: { field: "case_type", equals: ["NEW"] } },
+  { n: 3, title: "Annual Report of NGO — previous FY" },
+  {
+    n: 4,
+    title: "Annual Report of NGO — previous-to-previous FY",
+    showWhen: { field: "case_type", equals: ["NEW"] },
+  },
+  {
+    n: 5,
+    title: "Audited Accounts of NGO — previous FY",
+    showWhen: { field: "case_type", equals: ["NEW"] },
+  },
+  {
+    n: 6,
+    title: "Audited Accounts of NGO — previous-to-previous FY",
+    showWhen: { field: "case_type", equals: ["NEW"] },
+  },
+  { n: 7, title: "Bank Details of the Project" },
+  { n: 8, title: "Beneficiary List" },
+  { n: 9, title: "Staff List" },
+  { n: 10, title: "Rent Agreement" },
+  { n: 11, title: "Fire Safety Audit Report", showWhen: { field: "case_type", equals: ["NEW"] } },
+  { n: 12, title: "Budget Estimate", showWhen: { field: "case_type", equals: ["ONGOING"] } },
+  { n: 13, title: "Audited Accounts of Project", showWhen: { field: "case_type", equals: ["ONGOING"] } },
+  {
+    n: 14,
+    title: "Utilisation Certificate (GFR-12A)",
+    showWhen: { field: "case_type", equals: ["ONGOING"] },
+  },
 ];
 
 export const AVYAY_WIZARD: WizardDef = {
@@ -549,26 +620,71 @@ export const AVYAY_WIZARD: WizardDef = {
  * verbatim in the live "Show the 18 heads behind these figures" disclosure. Amounts are the
  * norm for a 50-beneficiary Senior Citizens' Home in a Z-category city.
  */
-export const AVYAY_COST_HEADS: readonly { head: string; norm: number; attendanceLinked?: boolean; nonRecurring?: boolean }[] = [
-  { head: "Superintendent", norm: 154553 },
-  { head: "Social Worker/ Counsellor", norm: 98914 },
-  { head: "Yoga Therapist", norm: 61821 },
-  { head: "Nurse", norm: 80367 },
-  { head: "Cook", norm: 197827 },
-  { head: "Multi-Tasking Staff (MTS)", norm: 395654 },
-  { head: "Accountant /Clerk", norm: 72000 },
-  { head: "Food/Nutrition (attendance-linked)", norm: 1410292, attendanceLinked: true },
-  { head: "Doctor", norm: 408019 },
-  { head: "Hygiene (attendance-linked)", norm: 100000, attendanceLinked: true },
-  { head: "Medicine/ Tests (attendance-linked)", norm: 206070, attendanceLinked: true },
-  { head: "Clothing /Oil, soap etc (attendance-linked)", norm: 206070, attendanceLinked: true },
-  { head: "Recreation and production related Charges", norm: 123642 },
-  { head: "Water, electricity charges", norm: 200000 },
-  { head: "Miscellaneous & Unforeseen", norm: 40000 },
-  { head: "Toiletries (attendance-linked)", norm: 60000, attendanceLinked: true },
-  { head: "Owned Building on Z Category City (10% of Rent)", norm: 29700 },
-  { head: "Non-Recurring Items including the cost of CCTV cameras and website developing charges", norm: 412140, nonRecurring: true },
+/**
+ * AVYAY's 18 cost heads, with the norm for each sanctioned capacity.
+ *
+ * Live does not publish one table — it recomputes the figures from the project type, so a
+ * 25-beneficiary home and a 50-beneficiary home draw different amounts on the same head, and
+ * not by a single ratio: a Superintendent is one post either way, food scales with residents,
+ * and the MTS count goes 3 → 4. The 25 column was read off the live panel on 2026-08-23 for a
+ * Senior Citizens' Home — 25 beneficiaries, NGO, city category Z; the 50 column is the table
+ * this file already carried.
+ *
+ * Row order follows live, including Toiletries before Miscellaneous.
+ */
+export const AVYAY_COST_HEADS_BY_CAPACITY: readonly {
+  head: string;
+  norm25: number;
+  norm50: number;
+  attendanceLinked?: boolean;
+  nonRecurring?: boolean;
+}[] = [
+  { head: "Superintendent", norm25: 154553, norm50: 154553 },
+  { head: "Social Worker/ Counsellor", norm25: 98914, norm50: 98914 },
+  { head: "Yoga Therapist", norm25: 61821, norm50: 61821 },
+  { head: "Nurse", norm25: 80367, norm50: 80367 },
+  { head: "Cook", norm25: 98914, norm50: 197827 },
+  { head: "Multi-Tasking Staff (MTS)", norm25: 296741, norm50: 395654 },
+  { head: "Accountant /Clerk", norm25: 72000, norm50: 72000 },
+  { head: "Food/Nutrition (attendance-linked)", norm25: 705146, norm50: 1410292, attendanceLinked: true },
+  { head: "Doctor", norm25: 204009, norm50: 408019 },
+  { head: "Hygiene (attendance-linked)", norm25: 50000, norm50: 100000, attendanceLinked: true },
+  { head: "Medicine/ Tests (attendance-linked)", norm25: 103035, norm50: 206070, attendanceLinked: true },
+  { head: "Clothing /Oil, soap etc (attendance-linked)", norm25: 103035, norm50: 206070, attendanceLinked: true },
+  { head: "Recreation and production related Charges", norm25: 61821, norm50: 123642 },
+  { head: "Water, electricity charges", norm25: 100000, norm50: 200000 },
+  { head: "Toiletries (attendance-linked)", norm25: 30000, norm50: 60000, attendanceLinked: true },
+  { head: "Miscellaneous & Unforeseen", norm25: 20000, norm50: 40000 },
+  { head: "Owned Building on Z Category City (10% of Rent)", norm25: 19800, norm50: 29700 },
+  {
+    head: "Non-Recurring Items including the cost of CCTV cameras and website developing charges",
+    norm25: 309105,
+    norm50: 412140,
+    nonRecurring: true,
+  },
 ];
+
+export type AvyayCostHead = {
+  head: string;
+  norm: number;
+  attendanceLinked?: boolean;
+  nonRecurring?: boolean;
+};
+
+/**
+ * The 18 heads resolved for one project type. Anything that is not an explicit 25-beneficiary
+ * home draws the 50 column, which is what live does for the 50-beneficiary, women-only and
+ * Continuous Care variants.
+ */
+export function avyayCostHeads(natureOfProject?: string): readonly AvyayCostHead[] {
+  const is25 = (natureOfProject ?? "").includes("25");
+  return AVYAY_COST_HEADS_BY_CAPACITY.map((h) => ({
+    head: h.head,
+    norm: is25 ? h.norm25 : h.norm50,
+    ...(h.attendanceLinked ? { attendanceLinked: true as const } : {}),
+    ...(h.nonRecurring ? { nonRecurring: true as const } : {}),
+  }));
+}
 
 /* ══════════════════════════════════════════════════════════════════════════════
    SMILE — Garima Greh — 6 steps
@@ -947,6 +1063,19 @@ export function stepFields(step: StepDef): readonly FieldDef[] {
 export function fieldVisible(field: FieldDef, values: Record<string, string>): boolean {
   if (!field.showWhen) return true;
   return field.showWhen.equals.includes(values[field.showWhen.field] ?? "");
+}
+
+/**
+ * The checklist for the answers given so far, renumbered 1..n the way live numbers whichever
+ * documents it is actually showing.
+ */
+export function visibleDocuments(
+  wizard: WizardDef,
+  values: Record<string, string>,
+): readonly DocDef[] {
+  return wizard.documents
+    .filter((d) => !d.showWhen || d.showWhen.equals.includes(values[d.showWhen.field] ?? ""))
+    .map((d, i) => ({ ...d, n: i + 1 }));
 }
 
 const IFSC_RE = /^[A-Z]{4}0[A-Z0-9]{6}$/;

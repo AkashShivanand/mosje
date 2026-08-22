@@ -42,6 +42,7 @@ import {
   fieldVisible,
   stepFields,
   validateStep,
+  visibleDocuments,
   wizardFor,
   type FieldDef,
   type StepDef,
@@ -265,7 +266,7 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
         {isDocs ? (
           <>
             <DocumentsChecklist
-              documents={def.documents}
+              documents={visibleDocuments(def, values)}
               note={def.documentsNote}
               uploaded={docs}
               onChange={setDocs}
@@ -523,7 +524,7 @@ function ReviewStep({
           </Button>
         </div>
         <ul className="mt-3 space-y-1.5">
-          {def.documents.map((d) => {
+          {visibleDocuments(def, values).map((d) => {
             const up = docs[d.n];
             return (
               <li key={d.n} className="flex items-center justify-between gap-3 text-sm">

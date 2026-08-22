@@ -13,7 +13,7 @@
 
 import * as React from "react";
 import { Badge, Button, Icon } from "@mosje/design-system";
-import { AVYAY_COST_HEADS } from "@/lib/e-anudaan/form-schema";
+import { avyayCostHeads } from "@/lib/e-anudaan/form-schema";
 import { NE_HIMALAYAN_STATES } from "@/lib/e-anudaan/geography";
 
 const FULL_SHARE_AGENCIES = [
@@ -50,22 +50,31 @@ export function CostNormsPanel({
 }) {
   const [open, setOpen] = React.useState(false);
 
+  // Live recomputes every head from the project type, so a 25-beneficiary home draws different
+  // figures from a 50. Resolve the table before any of the arithmetic below reads it.
+  const heads = avyayCostHeads(natureOfProject);
+
   const share = centralSharePercent(agencyType, projectState);
   const tier = (cityCategory ?? "").charAt(0) || "Z";
 
   // The 18 heads already carry the OWNED figure (10% of rent), so their sum IS the allowed
   // recurring. The live panel presents it the other way round — full rent as the norm, less the
   // 90% an owned building does not draw — so derive that presentation back out of the heads.
-  const ownedLine = AVYAY_COST_HEADS.find((h) => h.head.startsWith("Owned Building"))?.norm ?? 0;
+  const ownedLine = heads.find((h) => h.head.startsWith("Owned Building"))?.norm ?? 0;
   const fullRent = ownedLine * 10;
   const ownedDeduction = buildingOwnership === "Owned" ? fullRent - ownedLine : 0;
 
-  const recurringAllowed = AVYAY_COST_HEADS.filter((h) => !h.nonRecurring).reduce((a, h) => a + h.norm, 0);
+  const recurringAllowed = heads.filter((h) => !h.nonRecurring).reduce((a, h) => a + h.norm, 0);
   const recurringNorm = recurringAllowed + ownedDeduction;
-  const nonRecurringNorm = AVYAY_COST_HEADS.filter((h) => h.nonRecurring).reduce((a, h) => a + h.norm, 0);
-  const attendanceLinked = AVYAY_COST_HEADS.filter((h) => h.attendanceLinked).reduce((a, h) => a + h.norm, 0);
+  const nonRecurringNorm = heads.filter((h) => h.nonRecurring).reduce((a, h) => a + h.norm, 0);
+  const attendanceLinked = heads.filter((h) => h.attendanceLinked).reduce((a, h) => a + h.norm, 0);
 
-  const totalAllowed = recurringAllowed + nonRecurringNorm;
+  // Live's right-hand column is the CENTRAL SHARE, not the norm — its Total is the two shares
+  // added, not the two norms. Verified 2026-08-23 against a 25-beneficiary NGO home in a Z city:
+  // recurring 22,60,156 -> 20,34,140, non-recurring 3,09,105 -> 2,78,195, total 23,12,335.
+  const recurringCentral = Math.round((recurringAllowed * share) / 100);
+  const nonRecurringCentral = Math.round((nonRecurringNorm * share) / 100);
+  const totalAllowed = recurringCentral + nonRecurringCentral;
 
   const overNorm =
     Number(recurringSought || 0) > recurringAllowed || Number(nonRecurringSought || 0) > nonRecurringNorm;
@@ -90,14 +99,14 @@ export function CostNormsPanel({
               </span>
             )}
           </dt>
-          <dd className="font-mono font-semibold text-ink">{rupees(recurringAllowed)}</dd>
+          <dd className="font-mono font-semibold text-ink">{rupees(recurringCentral)}</dd>
         </div>
         <div className="flex items-baseline justify-between gap-4">
           <dt className="text-ink-muted">
             Non-recurring
             <span className="block text-xs">Norm {rupees(nonRecurringNorm)}</span>
           </dt>
-          <dd className="font-mono font-semibold text-ink">{rupees(nonRecurringNorm)}</dd>
+          <dd className="font-mono font-semibold text-ink">{rupees(nonRecurringCentral)}</dd>
         </div>
         <div className="flex items-baseline justify-between gap-4 border-t border-line pt-1.5">
           <dt className="font-semibold text-ink">Total</dt>
@@ -107,7 +116,7 @@ export function CostNormsPanel({
 
       <Button appearance="text" size="sm" onClick={() => setOpen(!open)} aria-expanded={open}>
         <Icon name={open ? "expand_less" : "expand_more"} size={16} aria-hidden />
-        {open ? "Hide the 18 heads behind these figures" : `Show the ${AVYAY_COST_HEADS.length} heads behind these figures`}
+        {open ? "Hide the 18 heads behind these figures" : `Show the ${heads.length} heads behind these figures`}
       </Button>
 
       {open && (
@@ -122,7 +131,7 @@ export function CostNormsPanel({
               </tr>
             </thead>
             <tbody>
-              {AVYAY_COST_HEADS.map((h) => (
+              {heads.map((h) => (
                 <tr key={h.head} className="border-b border-line/60">
                   <td className="py-1.5 pr-3 text-ink">{h.head}</td>
                   <td className="py-1.5 pr-3 text-right font-mono text-ink">{h.norm.toLocaleString("en-IN")}</td>
