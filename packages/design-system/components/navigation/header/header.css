@@ -1,1027 +1,1051 @@
-/* The navbar's content column must match the page beneath it, so it takes its
-   cap from the same place every other container does. See foundations/layout.css. */
 @import "../../../foundations/layout.css";
 
-/* ============================================================================
-   MoSJE / SAMAVESH — Navbar / Header (header.css)
-   The SAMAVESH Navbar + shared parts. Token-only — no raw hex.
-   - SiteHeader  (.ds-hdr*)     : 3-tier Navbar (Website + Portal variants)
-   - BrandLockup (.ds-hdr-lockup), AccountMenu (.ds-hdr-account / .ds-hdr-acct)
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-/* ── Brand lockup (shared) — UX4G / Portal Navbar spec ─────────────────────
-   Emblem 52×32 · optional blue gradient divider · BETA badge on its own row,
-   then GoI 12px · Ministry 14px · Department 20px bold. */
-.ds-hdr-lockup {
-  display: flex;
-  align-items: flex-end;
-  /* Figma Navbar/BrandLockup: Device=Mobile gap 8, Tablet/Desktop gap 12. */
-  gap: var(--sa-stack-8);
-  min-width: 0;
-  text-decoration: none;
-  color: inherit;
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* The navbar's content column must match the page beneath it, so it takes its
+     cap from the same place every other container does. See foundations/layout.css. */
 
-@media (min-width: 768px) {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Navbar / Header (header.css)
+     The SAMAVESH Navbar + shared parts. Token-only — no raw hex.
+     - SiteHeader  (.ds-hdr*)     : 3-tier Navbar (Website + Portal variants)
+     - BrandLockup (.ds-hdr-lockup), AccountMenu (.ds-hdr-account / .ds-hdr-acct)
+     ============================================================================ */
+
+  /* ── Brand lockup (shared) — UX4G / Portal Navbar spec ─────────────────────
+     Emblem 52×32 · optional blue gradient divider · BETA badge on its own row,
+     then GoI 12px · Ministry 14px · Department 20px bold. */
   .ds-hdr-lockup {
-    gap: var(--sa-stack-12);
+    display: flex;
+    align-items: flex-end;
+    /* Figma Navbar/BrandLockup: Device=Mobile gap 8, Tablet/Desktop gap 12. */
+    gap: var(--sa-stack-8);
+    min-width: 0;
+    text-decoration: none;
+    color: inherit;
   }
-}
 
-/* Emblem height is the one dimension that IS per-device in Figma:
-   Mobile 45 · Tablet 52 · Desktop 58. It was pinned at the tablet value. */
-.ds-hdr-lockup__emblem {
-  height: 45px;
-  width: auto;
-  flex: 0 0 auto;
-}
+  @media (min-width: 768px) {
+    .ds-hdr-lockup {
+      gap: var(--sa-stack-12);
+    }
+  }
 
-@media (min-width: 768px) {
+  /* Emblem height is the one dimension that IS per-device in Figma:
+     Mobile 45 · Tablet 52 · Desktop 58. It was pinned at the tablet value. */
   .ds-hdr-lockup__emblem {
-    height: 52px;
+    height: 45px;
+    width: auto;
+    flex: 0 0 auto;
   }
-}
 
-@media (min-width: 1024px) {
-  .ds-hdr-lockup__emblem {
-    height: 58px;
+  @media (min-width: 768px) {
+    .ds-hdr-lockup__emblem {
+      height: 52px;
+    }
   }
-}
 
-.ds-hdr-lockup.is-compact {
-  align-items: center;
-}
+  @media (min-width: 1024px) {
+    .ds-hdr-lockup__emblem {
+      height: 58px;
+    }
+  }
 
-.ds-hdr-lockup.is-compact .ds-hdr-lockup__emblem {
-  height: 44px;
-}
+  .ds-hdr-lockup.is-compact {
+    align-items: center;
+  }
 
-/* Inverse ground (navy mastheads). One token swap, so a dark masthead is a
-   property of the lockup rather than a reason to rebuild it in white. */
-.ds-hdr-lockup.is-inverse .ds-hdr-lockup__org,
-.ds-hdr-lockup.is-inverse .ds-hdr-lockup__ministry,
-.ds-hdr-lockup.is-inverse .ds-hdr-lockup__dept {
-  color: var(--sa-text-neutral-inverse);
-}
+  .ds-hdr-lockup.is-compact .ds-hdr-lockup__emblem {
+    height: 44px;
+  }
 
-/* Blue radial-gradient divider between emblem and text (portal navbar) */
-.ds-hdr-lockup__divider {
-  align-self: stretch;
-  width: 1px;
-  flex: 0 0 auto;
-  background-image: radial-gradient(
-    closest-side at 50% 50%,
-    var(--sa-color-action-primary-default) 0%,
-    color-mix(in srgb, var(--sa-color-action-primary-default) 50%, transparent) 50%,
-    transparent 100%
-  );
-}
+  /* Inverse ground (navy mastheads). One token swap, so a dark masthead is a
+     property of the lockup rather than a reason to rebuild it in white. */
+  .ds-hdr-lockup.is-inverse .ds-hdr-lockup__org,
+  .ds-hdr-lockup.is-inverse .ds-hdr-lockup__ministry,
+  .ds-hdr-lockup.is-inverse .ds-hdr-lockup__dept {
+    color: var(--sa-text-neutral-inverse);
+  }
 
-.ds-hdr-lockup__lines {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-padding-2);
-  justify-content: center;
-  min-width: 0;
-}
+  /* Blue radial-gradient divider between emblem and text (portal navbar) */
+  .ds-hdr-lockup__divider {
+    align-self: stretch;
+    width: 1px;
+    flex: 0 0 auto;
+    background-image: radial-gradient(
+      closest-side at 50% 50%,
+      var(--sa-color-action-primary-default) 0%,
+      color-mix(in srgb, var(--sa-color-action-primary-default) 50%, transparent) 50%,
+      transparent 100%
+    );
+  }
 
-.ds-hdr-lockup__lines.is-hidden-mobile {
-  display: none;
-}
+  .ds-hdr-lockup__lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-2);
+    justify-content: center;
+    min-width: 0;
+  }
 
-.ds-hdr-lockup__org {
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0.4px;
-  font-weight: 500;
-  color: var(--sa-text-neutral-base);
-}
-
-.ds-hdr-lockup__ministry {
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.4px;
-  font-weight: 500;
-  color: var(--sa-text-neutral-base);
-}
-
-.ds-hdr-lockup__dept {
-  font-size: 20px;
-  line-height: 24px;
-  /* Figma: Noto Sans SemiBold. 700 (Bold) was a half-step heavier than the library. */
-  font-weight: 600;
-  color: var(--sa-text-neutral-base);
-}
-
-.ds-hdr-lockup.is-compact .ds-hdr-lockup__org,
-.ds-hdr-lockup.is-compact .ds-hdr-lockup__ministry {
-  font-size: 11px;
-}
-
-.ds-hdr-lockup.is-compact .ds-hdr-lockup__dept {
-  font-size: 15px;
-  line-height: 18px;
-}
-
-/* BETA badge — dedicated badge/beta component token, its own row above the text stack */
-.ds-hdr-badge {
-  align-self: flex-start;
-  font-size: 10px;
-  line-height: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--sa-color-neutralScale-1000);
-  background-color: var(--sa-cmp-badge-beta-bg);
-  border-radius: var(--sa-shape-2);
-  padding: var(--sa-padding-2) var(--sa-padding-4);
-}
-
-@media (min-width: 640px) {
   .ds-hdr-lockup__lines.is-hidden-mobile {
-    display: flex;
+    display: none;
   }
-}
 
-/* ── SiteHeader root ───────────────────────────────────────────────────── */
-.ds-hdr {
-  position: relative;
-  z-index: 50;
-  width: 100%;
-  background-color: var(--sa-bg-neutral-base);
-  font-family: var(--sa-font-latin);
-}
+  .ds-hdr-lockup__org {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.4px;
+    font-weight: 500;
+    color: var(--sa-text-neutral-base);
+  }
 
-/* App-shell portals: keep the navbar pinned while content scrolls */
-.ds-hdr.is-sticky {
-  position: sticky;
-  top: 0;
-}
+  .ds-hdr-lockup__ministry {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.4px;
+    font-weight: 500;
+    color: var(--sa-text-neutral-base);
+  }
 
-/* Scroll-shrink (Figma "Appbar / on Scroll"): once the page scrolls, the
-   accessibility bar tucks away so the pinned chrome reclaims vertical space.
-   Only the .is-scrolled flag (set when collapseOnScroll is on) triggers it, so
-   static website headers are unaffected. */
-.ds-hdr.is-sticky .sa-abar {
-  overflow: hidden;
-  max-height: 40px;
-  transition: max-height var(--sa-motion-enter-duration) ease;
-}
+  .ds-hdr-lockup__dept {
+    font-size: 20px;
+    line-height: 24px;
+    /* Figma: Noto Sans SemiBold. 700 (Bold) was a half-step heavier than the library. */
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+  }
 
-.ds-hdr.is-sticky.is-scrolled .sa-abar {
-  max-height: 0;
-}
+  .ds-hdr-lockup.is-compact .ds-hdr-lockup__org,
+  .ds-hdr-lockup.is-compact .ds-hdr-lockup__ministry {
+    font-size: 11px;
+  }
 
-@media (prefers-reduced-motion: reduce) {
+  .ds-hdr-lockup.is-compact .ds-hdr-lockup__dept {
+    font-size: 15px;
+    line-height: 18px;
+  }
+
+  /* BETA badge — dedicated badge/beta component token, its own row above the text stack */
+  .ds-hdr-badge {
+    align-self: flex-start;
+    font-size: 10px;
+    line-height: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--sa-color-neutralScale-1000);
+    background-color: var(--sa-cmp-badge-beta-bg);
+    border-radius: var(--sa-shape-2);
+    padding: var(--sa-padding-2) var(--sa-padding-4);
+  }
+
+  @media (min-width: 640px) {
+    .ds-hdr-lockup__lines.is-hidden-mobile {
+      display: flex;
+    }
+  }
+
+  /* ── SiteHeader root ───────────────────────────────────────────────────── */
+  .ds-hdr {
+    position: relative;
+    z-index: 50;
+    width: 100%;
+    background-color: var(--sa-bg-neutral-base);
+    font-family: var(--sa-font-latin);
+  }
+
+  /* App-shell portals: keep the navbar pinned while content scrolls */
+  .ds-hdr.is-sticky {
+    position: sticky;
+    top: 0;
+  }
+
+  /* Scroll-shrink (Figma "Appbar / on Scroll"): once the page scrolls, the
+     accessibility bar tucks away so the pinned chrome reclaims vertical space.
+     Only the .is-scrolled flag (set when collapseOnScroll is on) triggers it, so
+     static website headers are unaffected. */
   .ds-hdr.is-sticky .sa-abar {
-    transition: none;
+    overflow: hidden;
+    max-height: 40px;
+    transition: max-height var(--sa-motion-enter-duration) ease;
   }
-}
 
-/* The Tier-1 accessibility bar is now the shared <AccessibilityBar> component
-   (styles in accessibility-bar.css). Its scroll-collapse is driven above, via
-   .ds-hdr.is-sticky .sa-abar. Only the page skip link remains header-owned. */
+  .ds-hdr.is-sticky.is-scrolled .sa-abar {
+    max-height: 0;
+  }
 
-/* Skip link — visible only on focus */
-.ds-hdr-skip {
-  position: absolute;
-  left: -9999px;
-  color: inherit;
-}
+  @media (prefers-reduced-motion: reduce) {
+    .ds-hdr.is-sticky .sa-abar {
+      transition: none;
+    }
+  }
 
-.ds-hdr-skip:focus {
-  position: static;
-  left: auto;
-  text-decoration: underline;
-}
+  /* The Tier-1 accessibility bar is now the shared <AccessibilityBar> component
+     (styles in accessibility-bar.css). Its scroll-collapse is driven above, via
+     .ds-hdr.is-sticky .sa-abar. Only the page skip link remains header-owned. */
 
-/* ── Tier 2: Brand row (UX4G / Portal: white, 12px py, 24px px, gap 24) ── */
-.ds-hdr-brand {
-  background-color: var(--sa-bg-neutral-base);
-}
+  /* Skip link — visible only on focus */
+  .ds-hdr-skip {
+    position: absolute;
+    left: -9999px;
+    color: inherit;
+  }
 
-.ds-hdr-brand__in {
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-24);
-  padding: var(--sa-padding-12) var(--sa-padding-24);
-}
+  .ds-hdr-skip:focus {
+    position: static;
+    left: auto;
+    text-decoration: underline;
+  }
 
-/* Portal collapse / menu toggle (far left).
-   Figma: Navbar/MenuToggle = IconButton Size=Large, Type=Outlined — 48x48,
-   radius 8, 1px neutral border, 32px glyph. Identical to the mobile SheetToggle,
-   deliberately: one hamburger look across the estate.
+  /* ── Tier 2: Brand row (UX4G / Portal: white, 12px py, 24px px, gap 24) ── */
+  .ds-hdr-brand {
+    background-color: var(--sa-bg-neutral-base);
+  }
 
-   It was a bare 40x40 with a 24px glyph — the only control in the brand row with
-   no container, beside a 58px emblem and a 48px avatar. It read as decoration,
-   and it announced itself as a control only on hover, which is the wrong trade on
-   a government service. (Before that, 32x32 with a 28px glyph: a size on neither
-   the IconButton scale nor the icon scale.) */
-.ds-hdr-brand__toggle {
-  display: inline-grid;
-  place-items: center;
-  height: 48px;
-  width: 48px;
-  flex: 0 0 auto;
-  padding: var(--sa-padding-8);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-8);
-  background: transparent;
-  color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
-  cursor: pointer;
-  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
-}
+  .ds-hdr-brand__in {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-24);
+    padding: var(--sa-padding-12) var(--sa-padding-24);
+  }
 
-.ds-hdr-brand__toggle:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-}
+  /* Portal collapse / menu toggle (far left).
+     Figma: Navbar/MenuToggle = IconButton Size=Large, Type=Outlined — 48x48,
+     radius 8, 1px neutral border, 32px glyph. Identical to the mobile SheetToggle,
+     deliberately: one hamburger look across the estate.
 
-.ds-hdr-brand__lockup {
-  flex: 1 1 auto;
-  min-width: 0;
-}
+     It was a bare 40x40 with a 24px glyph — the only control in the brand row with
+     no container, beside a 58px emblem and a 48px avatar. It read as decoration,
+     and it announced itself as a control only on hover, which is the wrong trade on
+     a government service. (Before that, 32x32 with a 28px glyph: a size on neither
+     the IconButton scale nor the icon scale.) */
+  .ds-hdr-brand__toggle {
+    display: inline-grid;
+    place-items: center;
+    height: 48px;
+    width: 48px;
+    flex: 0 0 auto;
+    padding: var(--sa-padding-8);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: transparent;
+    color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
+    cursor: pointer;
+    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
 
-/* Trailing zone */
-.ds-hdr-brand__trailing {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-24);
-  flex: 0 0 auto;
-}
+  .ds-hdr-brand__toggle:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
 
-/* Masthead search.
-   This is now the shared DS <Search> (.ds-search), not a button dressed as one —
-   the same atom every other screen uses, and the same component Figma's masthead
-   embeds. Only PLACEMENT belongs here: width, and the breakpoint below which the
-   field is not worth its space. Height, border, radius and the icons come from
-   .ds-search, so the masthead can no longer drift from the field it copied. */
-.ds-hdr-searchfield {
-  display: none;
-  width: 417px;
-  max-width: 40vw;
-  flex: 0 0 auto;
-}
+  .ds-hdr-brand__lockup {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
 
-@media (min-width: 900px) {
+  /* Trailing zone */
+  .ds-hdr-brand__trailing {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-24);
+    flex: 0 0 auto;
+  }
+
+  /* Masthead search.
+     This is now the shared DS <Search> (.ds-search), not a button dressed as one —
+     the same atom every other screen uses, and the same component Figma's masthead
+     embeds. Only PLACEMENT belongs here: width, and the breakpoint below which the
+     field is not worth its space. Height, border, radius and the icons come from
+     .ds-search, so the masthead can no longer drift from the field it copied. */
   .ds-hdr-searchfield {
-    display: flex;
+    display: none;
+    width: 417px;
+    max-width: 40vw;
+    flex: 0 0 auto;
   }
-}
 
-/* Cobranding marks (Digital India, SAMAVESH) */
-.ds-hdr-cobrand {
-  width: auto;
-  flex: 0 0 auto;
-}
+  @media (min-width: 900px) {
+    .ds-hdr-searchfield {
+      display: flex;
+    }
+  }
 
-@media (max-width: 767px) {
+  /* Cobranding marks (Digital India, SAMAVESH) */
   .ds-hdr-cobrand {
-    display: none;
+    width: auto;
+    flex: 0 0 auto;
   }
-}
 
-/* Account block (portal) — details + 48px avatar; static, or a dropdown trigger */
-.ds-hdr-account {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  flex: 0 0 auto;
-}
+  @media (max-width: 767px) {
+    .ds-hdr-cobrand {
+      display: none;
+    }
+  }
 
-/* Interactive variant: the block becomes the dropdown trigger button */
-.ds-hdr-account.is-button {
-  border: none;
-  background: transparent;
-  padding: var(--sa-padding-2);
-  border-radius: var(--sa-shape-8);
-  cursor: pointer;
-}
-
-.ds-hdr-account.is-button:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-}
-
-.ds-hdr-account.is-button:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-}
-
-/* Font glyph: it sizes from the `size` prop, so no width/height here — those
-   would not resize it and could only clip it. */
-.ds-hdr-account__caret {
-  flex: 0 0 auto;
-  color: var(--sa-text-neutral-subtle);
-}
-
-.ds-hdr-account__details {
-  display: none;
-  flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
-  line-height: 1.2;
-}
-
-@media (min-width: 768px) {
-  .ds-hdr-account__details {
+  /* Account block (portal) — details + 48px avatar; static, or a dropdown trigger */
+  .ds-hdr-account {
     display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    flex: 0 0 auto;
   }
-}
 
-.ds-hdr-account__name {
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 600;
-  color: var(--sa-text-neutral-base);
-}
+  /* Interactive variant: the block becomes the dropdown trigger button */
+  .ds-hdr-account.is-button {
+    border: none;
+    background: transparent;
+    padding: var(--sa-padding-2);
+    border-radius: var(--sa-shape-8);
+    cursor: pointer;
+  }
 
-.ds-hdr-account__email {
-  font-size: 13px;
-  line-height: 20px;
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-hdr-account.is-button:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
 
-.ds-hdr-account__avatar {
-  display: grid;
-  place-items: center;
-  height: 48px;
-  width: 48px;
-  flex: 0 0 auto;
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-8);
-  background-color: var(--sa-color-primaryScale-100);
-  color: var(--sa-color-primaryScale-800);
-  font-size: 18px;
-  font-weight: 500;
-  object-fit: cover;
-  overflow: hidden;
-}
+  .ds-hdr-account.is-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+  }
 
-/* Mobile drawer toggle.
-   Figma: Navbar/* mobile CTA = IconButton Size=Large, Type=Outlined — 48x48,
-   radius 8, 1px neutral border, 32px glyph. */
-.ds-hdr-burger {
-  display: inline-grid;
-  place-items: center;
-  height: 48px;
-  width: 48px;
-  flex: 0 0 auto;
-  padding: var(--sa-padding-8);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-8);
-  background: transparent;
-  color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
-  cursor: pointer;
-  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
-}
+  /* Font glyph: it sizes from the `size` prop, so no width/height here — those
+     would not resize it and could only clip it. */
+  .ds-hdr-account__caret {
+    flex: 0 0 auto;
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-hdr-burger:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-}
+  .ds-hdr-account__details {
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    line-height: 1.2;
+  }
 
-@media (min-width: 1024px) {
+  @media (min-width: 768px) {
+    .ds-hdr-account__details {
+      display: flex;
+    }
+  }
+
+  .ds-hdr-account__name {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-hdr-account__email {
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-hdr-account__avatar {
+    display: grid;
+    place-items: center;
+    height: 48px;
+    width: 48px;
+    flex: 0 0 auto;
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-color-primaryScale-100);
+    color: var(--sa-color-primaryScale-800);
+    font-size: 18px;
+    font-weight: 500;
+    object-fit: cover;
+    overflow: hidden;
+  }
+
+  /* Mobile drawer toggle.
+     Figma: Navbar/* mobile CTA = IconButton Size=Large, Type=Outlined — 48x48,
+     radius 8, 1px neutral border, 32px glyph. */
   .ds-hdr-burger {
-    display: none;
+    display: inline-grid;
+    place-items: center;
+    height: 48px;
+    width: 48px;
+    flex: 0 0 auto;
+    padding: var(--sa-padding-8);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: transparent;
+    color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
+    cursor: pointer;
+    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
   }
-}
 
-/* ── Tier 3: Navigation row (UX4G / Portal: bordered, items justify-between) ── */
-.ds-hdr-nav {
-  display: none;
-  border-top: 1px solid var(--sa-border-neutral-subtle);
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
-  background-color: var(--sa-bg-neutral-base);
-}
+  .ds-hdr-burger:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
 
-@media (min-width: 1024px) {
+  @media (min-width: 1024px) {
+    .ds-hdr-burger {
+      display: none;
+    }
+  }
+
+  /* ── Tier 3: Navigation row (UX4G / Portal: bordered, items justify-between) ── */
   .ds-hdr-nav {
-    display: block;
+    display: none;
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    background-color: var(--sa-bg-neutral-base);
   }
-}
 
-.ds-hdr-nav__list {
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0;
-  padding: 0 var(--sa-padding-12);
-  list-style: none;
-}
+  @media (min-width: 1024px) {
+    .ds-hdr-nav {
+      display: block;
+    }
+  }
 
-.ds-hdr-nav__item {
-  position: relative;
-}
+  .ds-hdr-nav__list {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+    padding: 0 var(--sa-padding-12);
+    list-style: none;
+  }
 
-.ds-hdr-nav__link {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-padding-2);
-  /* UX4G/Portal spec: py 16px px 12px, Noto Sans Medium 14px / 20px, #343a40, 0.1px */
-  padding: var(--sa-padding-16) var(--sa-padding-12);
-  border-radius: var(--sa-shape-4);
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.1px;
-  font-weight: 500;
-  color: var(--sa-text-neutral-base);
-  text-decoration: none;
-  cursor: pointer;
-  transition: color var(--sa-motion-exit-duration) ease, background-color var(--sa-motion-exit-duration) ease;
-}
+  .ds-hdr-nav__item {
+    position: relative;
+  }
 
-.ds-hdr-nav__link:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-text-brand-primary-base);
-}
+  .ds-hdr-nav__link {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-padding-2);
+    /* UX4G/Portal spec: py 16px px 12px, Noto Sans Medium 14px / 20px, #343a40, 0.1px */
+    padding: var(--sa-padding-16) var(--sa-padding-12);
+    border-radius: var(--sa-shape-4);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    font-weight: 500;
+    color: var(--sa-text-neutral-base);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color var(--sa-motion-exit-duration) ease, background-color var(--sa-motion-exit-duration) ease;
+  }
 
-/* Visible keyboard focus — WCAG 2.4.7. Applies to every interactive control in
-   the white rows that didn't already have a focus ring. */
-.ds-hdr-nav__link:focus-visible,
-.ds-hdr-nav__drop-link:focus-visible,
-.ds-hdr-searchfield:focus-visible,
-.ds-hdr-brand__toggle:focus-visible,
-.ds-hdr-burger:focus-visible,
-.ds-hdr-iconbtn:focus-visible,
-.ds-hdr-drawer__link:focus-visible,
-.ds-hdr-drawer__sublink:focus-visible {
-  outline: 2px solid var(--sa-border-brand-primary-base);
-  outline-offset: -2px;
-  border-radius: var(--sa-shape-4);
-}
+  .ds-hdr-nav__link:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-brand-primary-base);
+  }
 
-.ds-hdr-nav__link.is-active {
-  color: var(--sa-text-brand-primary-base);
-  font-weight: 600;
-}
+  /* Visible keyboard focus — WCAG 2.4.7. Applies to every interactive control in
+     the white rows that didn't already have a focus ring. */
+  .ds-hdr-nav__link:focus-visible,
+  .ds-hdr-nav__drop-link:focus-visible,
+  .ds-hdr-searchfield:focus-visible,
+  .ds-hdr-brand__toggle:focus-visible,
+  .ds-hdr-burger:focus-visible,
+  .ds-hdr-iconbtn:focus-visible,
+  .ds-hdr-drawer__link:focus-visible,
+  .ds-hdr-drawer__sublink:focus-visible {
+    outline: 2px solid var(--sa-border-brand-primary-base);
+    outline-offset: -2px;
+    border-radius: var(--sa-shape-4);
+  }
 
-/* Font-icon glyphs size themselves from the `size` prop (font-size + opsz axis),
-   so this class carries tone only — never width/height, which would not resize
-   a glyph and would only clip it. */
-.ds-hdr-ic {
-  opacity: 0.7;
-}
+  .ds-hdr-nav__link.is-active {
+    color: var(--sa-text-brand-primary-base);
+    font-weight: 600;
+  }
 
-.ds-hdr-nav__drop-wrap {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 50;
-  min-width: 280px;
-}
+  /* Font-icon glyphs size themselves from the `size` prop (font-size + opsz axis),
+     so this class carries tone only — never width/height, which would not resize
+     a glyph and would only clip it. */
+  .ds-hdr-ic {
+    opacity: 0.7;
+  }
 
-.ds-hdr-nav__drop {
-  margin-top: var(--sa-padding-2);
-  padding: var(--sa-padding-8) 0;
-  list-style: none;
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: 0 0 var(--sa-shape-12) var(--sa-shape-12);
-  background-color: var(--sa-bg-neutral-base);
-  box-shadow: var(--sa-elevation-modal);
-}
+  .ds-hdr-nav__drop-wrap {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 50;
+    min-width: 280px;
+  }
 
-.ds-hdr-nav__drop-link {
-  display: block;
-  padding: var(--sa-padding-8) var(--sa-padding-16);
-  font-size: var(--sa-type-body-3-size);
-  color: var(--sa-text-neutral-subtle);
-  text-decoration: none;
-}
+  .ds-hdr-nav__drop {
+    margin-top: var(--sa-padding-2);
+    padding: var(--sa-padding-8) 0;
+    list-style: none;
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: 0 0 var(--sa-shape-12) var(--sa-shape-12);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-modal);
+  }
 
-.ds-hdr-nav__drop-link:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-text-brand-primary-base);
-}
+  .ds-hdr-nav__drop-link {
+    display: block;
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+    text-decoration: none;
+  }
 
-/* Mega-menu — multi-column dropdown for org-heavy nav items
-   (e.g. "Associated Organisations": Commissions / Corporations / Councils). */
-.ds-hdr-nav__drop-wrap.is-mega {
-  left: 0;
-  min-width: 0;
-}
+  .ds-hdr-nav__drop-link:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-brand-primary-base);
+  }
 
-/* Anchor to the right edge for nav items in the trailing half of the row so a
-   wide panel doesn't overflow the viewport. Apps can opt a specific item in by
-   leaving it on the right; the row is justify-between. */
-.ds-hdr-nav__item:nth-last-child(-n + 2) .ds-hdr-nav__drop-wrap.is-mega {
-  left: auto;
-  right: 0;
-}
+  /* Mega-menu — multi-column dropdown for org-heavy nav items
+     (e.g. "Associated Organisations": Commissions / Corporations / Councils). */
+  .ds-hdr-nav__drop-wrap.is-mega {
+    left: 0;
+    min-width: 0;
+  }
 
-.ds-hdr-nav__mega {
-  display: flex;
-  gap: var(--sa-stack-32);
-  margin-top: var(--sa-padding-2);
-  padding: var(--sa-padding-20) var(--sa-padding-24);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: 0 0 var(--sa-shape-12) var(--sa-shape-12);
-  background-color: var(--sa-bg-neutral-base);
-  box-shadow: var(--sa-elevation-modal);
-}
+  /* Anchor to the right edge for nav items in the trailing half of the row so a
+     wide panel doesn't overflow the viewport. Apps can opt a specific item in by
+     leaving it on the right; the row is justify-between. */
+  .ds-hdr-nav__item:nth-last-child(-n + 2) .ds-hdr-nav__drop-wrap.is-mega {
+    left: auto;
+    right: 0;
+  }
 
-.ds-hdr-nav__mega-col {
-  min-width: 200px;
-}
+  .ds-hdr-nav__mega {
+    display: flex;
+    gap: var(--sa-stack-32);
+    margin-top: var(--sa-padding-2);
+    padding: var(--sa-padding-20) var(--sa-padding-24);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: 0 0 var(--sa-shape-12) var(--sa-shape-12);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-modal);
+  }
 
-.ds-hdr-nav__mega-head {
-  margin: 0 0 var(--sa-padding-8);
-  padding: 0 var(--sa-padding-16);
-  font-size: var(--sa-type-label-3-size);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--sa-text-neutral-subtle, var(--sa-text-neutral-subtle));
-}
+  .ds-hdr-nav__mega-col {
+    min-width: 200px;
+  }
 
-.ds-hdr-nav__mega-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+  .ds-hdr-nav__mega-head {
+    margin: 0 0 var(--sa-padding-8);
+    padding: 0 var(--sa-padding-16);
+    font-size: var(--sa-type-label-3-size);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--sa-text-neutral-subtle, var(--sa-text-neutral-subtle));
+  }
 
-/* Rich mega-menu items (org emblem + abbr + name) — Figma "mega-menu-item" */
-.ds-hdr-nav__mega-list.is-rich {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-padding-2);
-}
+  .ds-hdr-nav__mega-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 
-.ds-hdr-nav__mega-col:has(.is-rich) {
-  min-width: 320px;
-}
+  /* Rich mega-menu items (org emblem + abbr + name) — Figma "mega-menu-item" */
+  .ds-hdr-nav__mega-list.is-rich {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-2);
+  }
 
-.ds-hdr-mega-item {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-12);
-  padding: var(--sa-padding-12) var(--sa-padding-20) var(--sa-padding-12) var(--sa-padding-12);
-  border: 1px solid transparent;
-  border-radius: var(--sa-shape-12);
-  text-decoration: none;
-  transition: background-color var(--sa-motion-exit-duration) ease, border-color var(--sa-motion-exit-duration) ease;
-}
+  .ds-hdr-nav__mega-col:has(.is-rich) {
+    min-width: 320px;
+  }
 
-.ds-hdr-mega-item__logo {
-  display: grid;
-  place-items: center;
-  width: 56px;
-  height: 56px;
-  flex: 0 0 auto;
-  padding: var(--sa-padding-2);
-  border-radius: var(--sa-shape-6);
-  background-color: var(--sa-bg-neutral-subtler);
-  overflow: hidden;
-}
+  .ds-hdr-mega-item {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-12) var(--sa-padding-20) var(--sa-padding-12) var(--sa-padding-12);
+    border: 1px solid transparent;
+    border-radius: var(--sa-shape-12);
+    text-decoration: none;
+    transition: background-color var(--sa-motion-exit-duration) ease, border-color var(--sa-motion-exit-duration) ease;
+  }
 
-.ds-hdr-mega-item__logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
+  .ds-hdr-mega-item__logo {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    flex: 0 0 auto;
+    padding: var(--sa-padding-2);
+    border-radius: var(--sa-shape-6);
+    background-color: var(--sa-bg-neutral-subtler);
+    overflow: hidden;
+  }
 
-.ds-hdr-mega-item__copy {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  flex: 1 1 auto;
-}
+  .ds-hdr-mega-item__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 
-.ds-hdr-mega-item__abbr {
-  font-size: var(--sa-type-body-2-size);
-  line-height: 1.5;
-  font-weight: 600;
-  color: var(--sa-text-neutral-base);
-}
+  .ds-hdr-mega-item__copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
 
-.ds-hdr-mega-item__name {
-  font-size: var(--sa-type-body-3-size);
-  line-height: 1.4;
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-hdr-mega-item__abbr {
+    font-size: var(--sa-type-body-2-size);
+    line-height: 1.5;
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+  }
 
-.ds-hdr-mega-item .ds-hdr-ic {
-  flex: 0 0 auto;
-  opacity: 0;
-  color: var(--sa-text-neutral-subtle);
-  transition: opacity var(--sa-motion-exit-duration) ease;
-}
+  .ds-hdr-mega-item__name {
+    font-size: var(--sa-type-body-3-size);
+    line-height: 1.4;
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-hdr-mega-item:hover,
-.ds-hdr-mega-item:focus-visible {
-  outline: none;
-  background-color: var(--sa-bg-neutral-base);
-  border-color: var(--sa-border-neutral-subtle);
-  box-shadow: var(--sa-elevation-card);
-}
+  .ds-hdr-mega-item .ds-hdr-ic {
+    flex: 0 0 auto;
+    opacity: 0;
+    color: var(--sa-text-neutral-subtle);
+    transition: opacity var(--sa-motion-exit-duration) ease;
+  }
 
-.ds-hdr-mega-item:hover .ds-hdr-ic,
-.ds-hdr-mega-item:focus-visible .ds-hdr-ic {
-  opacity: 1;
-}
+  .ds-hdr-mega-item:hover,
+  .ds-hdr-mega-item:focus-visible {
+    outline: none;
+    background-color: var(--sa-bg-neutral-base);
+    border-color: var(--sa-border-neutral-subtle);
+    box-shadow: var(--sa-elevation-card);
+  }
 
-.ds-hdr-mega-item.is-active {
-  border-color: var(--sa-border-neutral-subtle);
-  background-color: var(--sa-bg-neutral-base);
-}
+  .ds-hdr-mega-item:hover .ds-hdr-ic,
+  .ds-hdr-mega-item:focus-visible .ds-hdr-ic {
+    opacity: 1;
+  }
 
-.ds-hdr-mega-item:focus-visible {
-  border-color: var(--sa-border-brand-primary-base);
-  box-shadow: 0 0 0 1px var(--sa-color-action-primary-default);
-}
+  .ds-hdr-mega-item.is-active {
+    border-color: var(--sa-border-neutral-subtle);
+    background-color: var(--sa-bg-neutral-base);
+  }
 
-/* Mobile drawer */
-.ds-hdr-drawer {
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
-  background-color: var(--sa-bg-neutral-base);
-}
+  .ds-hdr-mega-item:focus-visible {
+    border-color: var(--sa-border-brand-primary-base);
+    box-shadow: 0 0 0 1px var(--sa-color-action-primary-default);
+  }
 
-@media (min-width: 1024px) {
+  /* Mobile drawer */
   .ds-hdr-drawer {
-    display: none;
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    background-color: var(--sa-bg-neutral-base);
   }
-}
 
-.ds-hdr-drawer__list {
-  margin: 0;
-  padding: var(--sa-padding-8) 0;
-  list-style: none;
-  max-height: 70vh;
-  overflow-y: auto;
-}
+  @media (min-width: 1024px) {
+    .ds-hdr-drawer {
+      display: none;
+    }
+  }
 
-.ds-hdr-drawer__link {
-  display: block;
-  padding: var(--sa-padding-12) var(--sa-padding-16);
-  font-size: var(--sa-type-body-2-size);
-  font-weight: 600;
-  color: var(--sa-text-neutral-base);
-  text-decoration: none;
-}
+  .ds-hdr-drawer__list {
+    margin: 0;
+    padding: var(--sa-padding-8) 0;
+    list-style: none;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
 
-.ds-hdr-drawer__link.is-active {
-  color: var(--sa-text-brand-primary-base);
-}
-
-.ds-hdr-drawer__sub {
-  margin: 0 0 var(--sa-padding-4);
-  padding: 0;
-  list-style: none;
-}
-
-.ds-hdr-drawer__sublink {
-  display: block;
-  padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-8) var(--sa-padding-24);
-  font-size: var(--sa-type-body-3-size);
-  color: var(--sa-text-neutral-subtle);
-  text-decoration: none;
-}
-
-.ds-hdr-drawer__sublink:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-text-brand-primary-base);
-}
-
-/* ── Account dropdown popover (SiteHeader portal account) ──────────────── */
-/* AccountMenu wrapper — the trigger reuses .ds-hdr-account (.is-button); this
-   only provides positioning for the dropdown popover below. */
-.ds-hdr-acct {
-  position: relative;
-}
-
-.ds-hdr-acct__menu {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  z-index: 50;
-  min-width: 240px;
-  padding: var(--sa-padding-4);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-8);
-  background-color: var(--sa-bg-neutral-base);
-  box-shadow: var(--sa-elevation-toast);
-}
-
-.ds-hdr-acct__menu-head {
-  padding: var(--sa-padding-8) var(--sa-padding-12);
-}
-
-.ds-hdr-acct__menu-name {
-  font-size: var(--sa-type-body-2-size);
-  font-weight: 600;
-  color: var(--sa-text-neutral-base);
-}
-
-.ds-hdr-acct__menu-role {
-  font-size: var(--sa-type-label-3-size);
-  color: var(--sa-text-neutral-subtle);
-}
-
-.ds-hdr-acct__menu-sep {
-  height: 1px;
-  margin: var(--sa-padding-4) 0;
-  background-color: var(--sa-border-neutral-subtle);
-}
-
-.ds-hdr-acct__menu-item {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  width: 100%;
-  padding: var(--sa-padding-8) var(--sa-padding-12);
-  border: none;
-  border-radius: var(--sa-shape-6);
-  background: transparent;
-  font-size: var(--sa-type-body-3-size);
-  color: var(--sa-text-neutral-base);
-  text-align: left;
-  cursor: pointer;
-}
-
-.ds-hdr-acct__menu-item:hover,
-.ds-hdr-acct__menu-item:focus-visible {
-  outline: none;
-  background-color: var(--sa-bg-brand-primary-subtler);
-  color: var(--sa-text-brand-primary-base);
-}
-
-.ds-hdr-acct__menu-item.is-danger {
-  color: var(--sa-text-status-error-base);
-}
-
-.ds-hdr-acct__menu-item.is-danger:hover,
-.ds-hdr-acct__menu-item.is-danger:focus-visible {
-  background-color: var(--sa-bg-status-error-base);
-  color: var(--sa-text-status-error-base);
-}
-
-.ds-hdr-acct__menu-icon {
-  display: inline-flex;
-  width: 16px;
-  height: 16px;
-}
-
-.ds-hdr-acct__menu-icon svg {
-  width: 16px;
-  height: 16px;
-}
-
-
-/* ── Compact variant ────────────────────────────────────────────────────────
-   A single-tier 64px bar for internal index / gate surfaces that are NOT public
-   government pages: the hub landing, /portals, /reports. No accessibility bar
-   (there is no government masthead to qualify), compact lockup, and the primary
-   nav rendered inline in the brand row rather than in its own bordered tier.
-   Everything else — dropdowns, the mobile drawer, focus treatment — is shared
-   with the website and portal variants, because it is the same component. */
-.ds-hdr[data-variant="compact"] {
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
-}
-
-.ds-hdr[data-variant="compact"] .ds-hdr-brand__in {
-  min-height: 64px;
-  padding-block: var(--sa-padding-8);
-  gap: var(--sa-stack-16);
-}
-
-.ds-hdr[data-variant="compact"] .ds-hdr-brand__lockup {
-  flex: 0 0 auto;
-}
-
-.ds-hdr[data-variant="compact"] .ds-hdr-brand__trailing {
-  margin-inline-start: auto;
-}
-
-/* Inline nav — same list, no tier chrome, no full-bleed container. */
-.ds-hdr-nav.is-inline {
-  display: none;
-  border: 0;
-  background: transparent;
-}
-
-@media (min-width: 768px) {
-  .ds-hdr-nav.is-inline {
+  .ds-hdr-drawer__link {
     display: block;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+    text-decoration: none;
   }
-}
 
-.ds-hdr-nav.is-inline .ds-hdr-nav__list {
-  max-width: none !important;
-  padding: 0;
-  gap: var(--sa-stack-2);
-  justify-content: flex-end;
-}
+  .ds-hdr-drawer__link.is-active {
+    color: var(--sa-text-brand-primary-base);
+  }
 
-/* The compact bar's drawer trigger appears below the inline nav's breakpoint. */
-.ds-hdr[data-variant="compact"] .ds-hdr-burger {
-  height: 40px;
-  width: 40px;
-  border: none;
-}
+  .ds-hdr-drawer__sub {
+    margin: 0 0 var(--sa-padding-4);
+    padding: 0;
+    list-style: none;
+  }
 
-@media (min-width: 768px) {
+  .ds-hdr-drawer__sublink {
+    display: block;
+    padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-8) var(--sa-padding-24);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+    text-decoration: none;
+  }
+
+  .ds-hdr-drawer__sublink:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  /* ── Account dropdown popover (SiteHeader portal account) ──────────────── */
+  /* AccountMenu wrapper — the trigger reuses .ds-hdr-account (.is-button); this
+     only provides positioning for the dropdown popover below. */
+  .ds-hdr-acct {
+    position: relative;
+  }
+
+  .ds-hdr-acct__menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    z-index: 50;
+    min-width: 240px;
+    padding: var(--sa-padding-4);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-toast);
+  }
+
+  .ds-hdr-acct__menu-head {
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+  }
+
+  .ds-hdr-acct__menu-name {
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-hdr-acct__menu-role {
+    font-size: var(--sa-type-label-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-hdr-acct__menu-sep {
+    height: 1px;
+    margin: var(--sa-padding-4) 0;
+    background-color: var(--sa-border-neutral-subtle);
+  }
+
+  .ds-hdr-acct__menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    width: 100%;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border: none;
+    border-radius: var(--sa-shape-6);
+    background: transparent;
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-base);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ds-hdr-acct__menu-item:hover,
+  .ds-hdr-acct__menu-item:focus-visible {
+    outline: none;
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  .ds-hdr-acct__menu-item.is-danger {
+    color: var(--sa-text-status-error-base);
+  }
+
+  .ds-hdr-acct__menu-item.is-danger:hover,
+  .ds-hdr-acct__menu-item.is-danger:focus-visible {
+    background-color: var(--sa-bg-status-error-base);
+    color: var(--sa-text-status-error-base);
+  }
+
+  .ds-hdr-acct__menu-icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+  }
+
+  .ds-hdr-acct__menu-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+
+  /* ── Compact variant ────────────────────────────────────────────────────────
+     A single-tier 64px bar for internal index / gate surfaces that are NOT public
+     government pages: the hub landing, /portals, /reports. No accessibility bar
+     (there is no government masthead to qualify), compact lockup, and the primary
+     nav rendered inline in the brand row rather than in its own bordered tier.
+     Everything else — dropdowns, the mobile drawer, focus treatment — is shared
+     with the website and portal variants, because it is the same component. */
+  .ds-hdr[data-variant="compact"] {
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-hdr[data-variant="compact"] .ds-hdr-brand__in {
+    min-height: 64px;
+    padding-block: var(--sa-padding-8);
+    gap: var(--sa-stack-16);
+  }
+
+  .ds-hdr[data-variant="compact"] .ds-hdr-brand__lockup {
+    flex: 0 0 auto;
+  }
+
+  .ds-hdr[data-variant="compact"] .ds-hdr-brand__trailing {
+    margin-inline-start: auto;
+  }
+
+  /* Inline nav — same list, no tier chrome, no full-bleed container. */
+  .ds-hdr-nav.is-inline {
+    display: none;
+    border: 0;
+    background: transparent;
+  }
+
+  @media (min-width: 768px) {
+    .ds-hdr-nav.is-inline {
+      display: block;
+    }
+  }
+
+  .ds-hdr-nav.is-inline .ds-hdr-nav__list {
+    max-width: none !important;
+    padding: 0;
+    gap: var(--sa-stack-2);
+    justify-content: flex-end;
+  }
+
+  /* The compact bar's drawer trigger appears below the inline nav's breakpoint. */
   .ds-hdr[data-variant="compact"] .ds-hdr-burger {
-    display: none;
+    height: 40px;
+    width: 40px;
+    border: none;
   }
-}
 
-/* Visually-hidden text for the new-tab announcement. */
-.ds-hdr-sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+  @media (min-width: 768px) {
+    .ds-hdr[data-variant="compact"] .ds-hdr-burger {
+      display: none;
+    }
+  }
 
-/* Trailing CTA (Login / Admin Login). Figma's mobile masthead carries only the
-   search and drawer buttons — the text CTA belongs in the drawer, where it has
-   room. Rendering it in a 375px brand row is what crowded the lockup: the row
-   overflowed, and `min-width: 0` (which the lockup needs, to shrink at all) let
-   the text spill past its own box and sit under the button. */
-.ds-hdr-brand__actions {
-  display: none;
-}
+  /* Visually-hidden text for the new-tab announcement. */
+  .ds-hdr-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
-@media (min-width: 1024px) {
+  /* Trailing CTA (Login / Admin Login). Figma's mobile masthead carries only the
+     search and drawer buttons — the text CTA belongs in the drawer, where it has
+     room. Rendering it in a 375px brand row is what crowded the lockup: the row
+     overflowed, and `min-width: 0` (which the lockup needs, to shrink at all) let
+     the text spill past its own box and sit under the button. */
   .ds-hdr-brand__actions {
-    display: contents;
+    display: none;
   }
-}
 
-.ds-hdr-drawer__actions {
-  display: flex;
-  padding: var(--sa-padding-16) var(--sa-padding-24);
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
-}
+  @media (min-width: 1024px) {
+    .ds-hdr-brand__actions {
+      display: contents;
+    }
+  }
 
-@media (min-width: 1024px) {
   .ds-hdr-drawer__actions {
-    display: none;
+    display: flex;
+    padding: var(--sa-padding-16) var(--sa-padding-24);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
   }
-}
 
-/* ── NavSheet ───────────────────────────────────────────────────────────────
-   Figma Navbar/NavSheet: a 344px overlay with its own header (brand lockup +
-   close), divider-separated 56px rows, expand_more on any row with children.
-   It replaced an inline disclosure that pushed the page down and had no close
-   control — the design has always been a sheet. */
-.ds-navsheet__scrim {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  /* The estate's one scrim token — same as Modal and SideSheet. */
-  background-color: var(--sa-overlay-neutral-boldest);
-}
+  @media (min-width: 1024px) {
+    .ds-hdr-drawer__actions {
+      display: none;
+    }
+  }
 
-.ds-navsheet {
-  position: fixed;
-  inset-block: 0;
-  inset-inline-end: 0;
-  z-index: 61;
-  width: min(344px, 100vw);
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  background-color: var(--sa-bg-neutral-base);
-  box-shadow: var(--sa-elevation-card);
-}
-
-@media (min-width: 1024px) {
-  .ds-navsheet,
+  /* ── NavSheet ───────────────────────────────────────────────────────────────
+     Figma Navbar/NavSheet: a 344px overlay with its own header (brand lockup +
+     close), divider-separated 56px rows, expand_more on any row with children.
+     It replaced an inline disclosure that pushed the page down and had no close
+     control — the design has always been a sheet. */
   .ds-navsheet__scrim {
-    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    /* The estate's one scrim token — same as Modal and SideSheet. */
+    background-color: var(--sa-overlay-neutral-boldest);
   }
-}
 
-.ds-navsheet__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sa-stack-12);
-  padding: var(--sa-padding-16) var(--sa-padding-24);
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
-}
+  .ds-navsheet {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: 61;
+    width: min(344px, 100vw);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-card);
+  }
 
-/* Lockup inside the sheet.
-   Figma allots the sheet header 96px; the masthead's 20px department line wraps
-   to two in a 344px column and takes 129. The header's job here is orientation,
-   not proclamation — the reader arrived from the masthead that already said it —
-   so the stack steps down one rung. This is placement styling, the same call the
-   compact variant makes, not a second lockup component. */
-.ds-navsheet__header .ds-hdr-lockup__emblem {
-  height: 40px;
-}
+  @media (min-width: 1024px) {
+    .ds-navsheet,
+    .ds-navsheet__scrim {
+      display: none;
+    }
+  }
 
-.ds-navsheet__header .ds-hdr-lockup__org {
-  font-size: 11px;
-  line-height: 14px;
-}
+  .ds-navsheet__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-16) var(--sa-padding-24);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
 
-.ds-navsheet__header .ds-hdr-lockup__ministry {
-  font-size: 12px;
-  line-height: 16px;
-}
+  /* Lockup inside the sheet.
+     Figma allots the sheet header 96px; the masthead's 20px department line wraps
+     to two in a 344px column and takes 129. The header's job here is orientation,
+     not proclamation — the reader arrived from the masthead that already said it —
+     so the stack steps down one rung. This is placement styling, the same call the
+     compact variant makes, not a second lockup component. */
+  .ds-navsheet__header .ds-hdr-lockup__emblem {
+    height: 40px;
+  }
 
-.ds-navsheet__header .ds-hdr-lockup__dept {
-  font-size: 16px;
-  line-height: 20px;
-}
+  .ds-navsheet__header .ds-hdr-lockup__org {
+    font-size: 11px;
+    line-height: 14px;
+  }
 
-.ds-navsheet__close {
-  display: inline-grid;
-  place-items: center;
-  flex: 0 0 auto;
-  /* 44px target — the sheet's only dismissal, so it gets the comfortable size. */
-  height: 44px;
-  width: 44px;
-  padding: var(--sa-padding-8);
-  border: none;
-  border-radius: var(--sa-shape-8);
-  background: transparent;
-  color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
-  cursor: pointer;
-  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
-}
+  .ds-navsheet__header .ds-hdr-lockup__ministry {
+    font-size: 12px;
+    line-height: 16px;
+  }
 
-.ds-navsheet__close:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-}
+  .ds-navsheet__header .ds-hdr-lockup__dept {
+    font-size: 16px;
+    line-height: 20px;
+  }
 
-.ds-navsheet__actions {
-  display: flex;
-  padding: var(--sa-padding-16) var(--sa-padding-24);
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
-}
+  .ds-navsheet__close {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    /* 44px target — the sheet's only dismissal, so it gets the comfortable size. */
+    height: 44px;
+    width: 44px;
+    padding: var(--sa-padding-8);
+    border: none;
+    border-radius: var(--sa-shape-8);
+    background: transparent;
+    color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
+    cursor: pointer;
+    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
 
-.ds-navsheet__list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+  .ds-navsheet__close:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
 
-.ds-navsheet__row {
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
-}
+  .ds-navsheet__actions {
+    display: flex;
+    padding: var(--sa-padding-16) var(--sa-padding-24);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
 
-.ds-navsheet__link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sa-stack-12);
-  width: 100%;
-  min-height: 56px;
-  padding: var(--sa-padding-16) var(--sa-padding-24);
-  border: none;
-  background: transparent;
-  font: inherit;
-  text-align: start;
-  text-decoration: none;
-  color: var(--sa-text-neutral-base);
-  cursor: pointer;
-}
+  .ds-navsheet__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 
-.ds-navsheet__link:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-}
+  .ds-navsheet__row {
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
 
-.ds-navsheet__link.is-active {
-  color: var(--sa-text-brand-primary-base);
-  font-weight: 600;
-}
+  .ds-navsheet__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+    width: 100%;
+    min-height: 56px;
+    padding: var(--sa-padding-16) var(--sa-padding-24);
+    border: none;
+    background: transparent;
+    font: inherit;
+    text-align: start;
+    text-decoration: none;
+    color: var(--sa-text-neutral-base);
+    cursor: pointer;
+  }
 
-.ds-navsheet__caret {
-  flex: 0 0 auto;
-  color: var(--sa-icon-neutral-subtle, var(--sa-text-neutral-subtle));
-}
+  .ds-navsheet__link:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
 
-.ds-navsheet__sub {
-  margin: 0;
-  padding: 0 0 var(--sa-padding-8) 0;
-  list-style: none;
-  background-color: var(--sa-bg-neutral-subtler);
-}
+  .ds-navsheet__link.is-active {
+    color: var(--sa-text-brand-primary-base);
+    font-weight: 600;
+  }
 
-.ds-navsheet__sublink {
-  display: block;
-  padding: var(--sa-padding-12) var(--sa-padding-24) var(--sa-padding-12) var(--sa-padding-40);
-  text-decoration: none;
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-navsheet__caret {
+    flex: 0 0 auto;
+    color: var(--sa-icon-neutral-subtle, var(--sa-text-neutral-subtle));
+  }
 
-.ds-navsheet__sublink:hover {
-  color: var(--sa-text-neutral-base);
-  background-color: var(--sa-bg-neutral-subtle);
-}
+  .ds-navsheet__sub {
+    margin: 0;
+    padding: 0 0 var(--sa-padding-8) 0;
+    list-style: none;
+    background-color: var(--sa-bg-neutral-subtler);
+  }
 
-.ds-navsheet__close:focus-visible,
-.ds-navsheet__link:focus-visible,
-.ds-navsheet__sublink:focus-visible {
-  outline: 2px solid var(--sa-border-brand-primary-base);
-  outline-offset: -2px;
-  border-radius: var(--sa-shape-4);
+  .ds-navsheet__sublink {
+    display: block;
+    padding: var(--sa-padding-12) var(--sa-padding-24) var(--sa-padding-12) var(--sa-padding-40);
+    text-decoration: none;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-navsheet__sublink:hover {
+    color: var(--sa-text-neutral-base);
+    background-color: var(--sa-bg-neutral-subtle);
+  }
+
+  .ds-navsheet__close:focus-visible,
+  .ds-navsheet__link:focus-visible,
+  .ds-navsheet__sublink:focus-visible {
+    outline: 2px solid var(--sa-border-brand-primary-base);
+    outline-offset: -2px;
+    border-radius: var(--sa-shape-4);
+  }
 }

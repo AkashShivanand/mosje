@@ -688,7 +688,7 @@ export default function HeaderPage(): React.JSX.Element {
             — the portal app-shell left navigation that pairs with the Portal variant.
           </li>
           <li>
-            <a href="/design-system/components/navigation/accessibility-bar" style={{ color: "var(--sa-text-brand-primary-base)" }}>Accessibility Bar</a>{" "}
+            <a href="/design-system/components/utilities/accessibility-bar" style={{ color: "var(--sa-text-brand-primary-base)" }}>Accessibility Bar</a>{" "}
             — the government utility strip that sits directly above the Website variant.
           </li>
           <li>

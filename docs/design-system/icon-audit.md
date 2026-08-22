@@ -42,7 +42,7 @@ but as an unenforced convention it was missed at **533 of 718 call sites**, whic
 what a convention depending on 533 separate acts of memory converges to.
 
 Editing 533 call sites would have fixed today's instances and none of tomorrow's. The
-fix went into the component instead (`packages/design-system/components/icon/icon.tsx`):
+fix went into the component instead (`packages/design-system/components/utilities/icon.tsx`):
 
 - `aria-label` given → the icon is meaningful. Exposed as `role="img"`, announced.
 - otherwise → decorative. `aria-hidden="true"`.

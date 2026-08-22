@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Icon } from "../icon/icon";
+import { Icon } from "../utilities/icon";
 import "./site-footer.css";
 
 export interface SiteFooterLink {

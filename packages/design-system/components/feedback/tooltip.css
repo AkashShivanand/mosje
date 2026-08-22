@@ -1,57 +1,80 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — Tooltip
-   Portalled hint bubble. Positioned with `position: fixed` from JS-measured
-   coordinates, so no ancestor overflow can clip it.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-tooltip {
-  position: fixed;
-  /* Above every overlay in the DS so a tooltip inside a Modal (50) or a
-     Lightbox (80) is not painted behind it. There is no --sa-z-* scale yet;
-     the DS convention is a literal, so keep this in step with those files. */
-  z-index: 90;
-  max-width: 16rem;
-  padding: var(--sa-padding-8) var(--sa-padding-12);
-  border-radius: var(--sa-shape-6);
-  background-color: var(--sa-color-action-primary-hover);
-  color: var(--sa-on-bg-brand-primary-bolder);
-  font-family: var(--sa-font-latin);
-  font-size: var(--sa-type-label-3-size);
-  line-height: var(--sa-type-label-3-lh);
-  font-weight: 500;
-  text-align: left;
-  box-shadow: var(--sa-elevation-dropdown);
-  /* The bubble must never swallow a click meant for the UI beneath it; the
-     hoverable requirement is satisfied by the mouseenter handler on the box,
-     which still fires with pointer-events auto. Keep auto — `none` would break
-     WCAG 1.4.13 "hoverable". */
-  pointer-events: auto;
-  animation: ds-tooltip-in 120ms ease-out;
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Tooltip
+     Portalled hint bubble. Positioned with `position: fixed` from JS-measured
+     coordinates, so no ancestor overflow can clip it.
+     ============================================================================ */
 
-@keyframes ds-tooltip-in {
-  from {
-    opacity: 0;
-    transform: translateY(2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
   .ds-tooltip {
-    animation: none;
+    position: fixed;
+    /* Above every overlay in the DS so a tooltip inside a Modal (50) or a
+       Lightbox (80) is not painted behind it. There is no --sa-z-* scale yet;
+       the DS convention is a literal, so keep this in step with those files. */
+    z-index: 90;
+    max-width: 16rem;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-6);
+    background-color: var(--sa-color-action-primary-hover);
+    color: var(--sa-on-bg-brand-primary-bolder);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 500;
+    text-align: left;
+    box-shadow: var(--sa-elevation-dropdown);
+    /* The bubble must never swallow a click meant for the UI beneath it; the
+       hoverable requirement is satisfied by the mouseenter handler on the box,
+       which still fires with pointer-events auto. Keep auto — `none` would break
+       WCAG 1.4.13 "hoverable". */
+    pointer-events: auto;
+    animation: ds-tooltip-in 120ms ease-out;
   }
-}
 
-/* Side modifiers are emitted for consumers that want to target a specific
-   placement (and to tag the resolved side in the DOM for tests). The offset
-   itself is applied in JS so the flip logic and the paint agree. */
-.ds-tooltip--top,
-.ds-tooltip--bottom,
-.ds-tooltip--left,
-.ds-tooltip--right {
-  /* placement handled by inline top/left */
+  @keyframes ds-tooltip-in {
+    from {
+      opacity: 0;
+      transform: translateY(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-tooltip {
+      animation: none;
+    }
+  }
+
+  /* Side modifiers are emitted for consumers that want to target a specific
+     placement (and to tag the resolved side in the DOM for tests). The offset
+     itself is applied in JS so the flip logic and the paint agree. */
+  .ds-tooltip--top,
+  .ds-tooltip--bottom,
+  .ds-tooltip--left,
+  .ds-tooltip--right {
+    /* placement handled by inline top/left */
+  }
 }

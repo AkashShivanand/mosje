@@ -1,116 +1,139 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — MetricCard
-   Stat display tile: label + large value + optional icon badge.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-/* Visually-hidden text exposed to assistive tech (shared a11y helper). */
-.ds-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: calc(-1 * var(--sa-padding-2));
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — MetricCard
+     Stat display tile: label + large value + optional icon badge.
+     ============================================================================ */
 
-.ds-metric-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-4);
-  padding: var(--sa-padding-20);
-  background-color: var(--sa-bg-neutral-base);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-cmp-card-radius);
-  box-shadow: var(--sa-elevation-raised);
-}
+  /* Visually-hidden text exposed to assistive tech (shared a11y helper). */
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: calc(-1 * var(--sa-padding-2));
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
-.ds-metric-card__inner {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--sa-stack-12);
-}
+  .ds-metric-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    padding: var(--sa-padding-20);
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    box-shadow: var(--sa-elevation-raised);
+  }
 
-.ds-metric-card__body {
-  min-width: 0;
-}
+  .ds-metric-card__inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+  }
 
-.ds-metric-card__label {
-  font-family: var(--sa-font-latin);
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-  font-weight: 500;
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-metric-card__body {
+    min-width: 0;
+  }
 
-.ds-metric-card__value {
-  margin-top: var(--sa-padding-4);
-  font-family: var(--sa-font-latin);
-  font-size: 24px;
-  line-height: 32px;
-  font-weight: 700;
-  color: var(--sa-text-neutral-bolder);
-  letter-spacing: -0.01em;
-}
+  .ds-metric-card__label {
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 500;
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-metric-card__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  flex: 0 0 auto;
-  border-radius: var(--sa-shape-8);
-  background-color: var(--sa-color-primaryScale-50);
-  color: var(--sa-text-brand-primary-base);
-}
+  .ds-metric-card__value {
+    margin-top: var(--sa-padding-4);
+    font-family: var(--sa-font-latin);
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 700;
+    color: var(--sa-text-neutral-bolder);
+    letter-spacing: -0.01em;
+  }
 
-/* ── Size variants ── */
-.ds-metric-card--sm .ds-metric-card__value {
-  font-size: 20px;
-  line-height: 28px;
-}
+  .ds-metric-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-color-primaryScale-50);
+    color: var(--sa-text-brand-primary-base);
+  }
 
-.ds-metric-card--sm .ds-metric-card__icon {
-  width: 32px;
-  height: 32px;
-}
+  /* ── Size variants ── */
+  .ds-metric-card--sm .ds-metric-card__value {
+    font-size: 20px;
+    line-height: 28px;
+  }
 
-/* ── Change indicator ── */
-.ds-metric-card__change {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sa-stack-4);
-  margin-top: var(--sa-padding-8);
-  font-family: var(--sa-font-latin);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1;
-}
+  .ds-metric-card--sm .ds-metric-card__icon {
+    width: 32px;
+    height: 32px;
+  }
 
-.ds-metric-card__change--up   { color: var(--sa-text-status-success-base); }
-.ds-metric-card__change--down { color: var(--sa-text-status-error-base); }
-.ds-metric-card__change--flat { color: var(--sa-text-neutral-subtle); }
+  /* ── Change indicator ── */
+  .ds-metric-card__change {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-stack-4);
+    margin-top: var(--sa-padding-8);
+    font-family: var(--sa-font-latin);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+  }
 
-/* ── Tinted delta pill + muted suffix (SAMAVESH KPI card) ── */
-.ds-metric-card__pill {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sa-stack-4);
-  padding: var(--sa-padding-2) var(--sa-padding-8);
-  border-radius: var(--sa-shape-full);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 16px;
-}
-.ds-metric-card__pill--up   { background-color: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
-.ds-metric-card__pill--down { background-color: var(--sa-bg-status-error-base);  color: var(--sa-text-status-error-base); }
-.ds-metric-card__suffix {
-  margin-left: var(--sa-padding-8);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--sa-text-neutral-subtle);
+  .ds-metric-card__change--up   { color: var(--sa-text-status-success-base); }
+  .ds-metric-card__change--down { color: var(--sa-text-status-error-base); }
+  .ds-metric-card__change--flat { color: var(--sa-text-neutral-subtle); }
+
+  /* ── Tinted delta pill + muted suffix (SAMAVESH KPI card) ── */
+  .ds-metric-card__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-stack-4);
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+  }
+  .ds-metric-card__pill--up   { background-color: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
+  .ds-metric-card__pill--down { background-color: var(--sa-bg-status-error-base);  color: var(--sa-text-status-error-base); }
+  .ds-metric-card__suffix {
+    margin-left: var(--sa-padding-8);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--sa-text-neutral-subtle);
+  }
 }

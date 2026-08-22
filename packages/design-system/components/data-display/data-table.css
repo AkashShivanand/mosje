@@ -1,213 +1,236 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — DataTable
-   Paginated table matching the Figma table treatment: plain white header,
-   brandwash row-hover, outlined current-page chip.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: calc(-1 * var(--sa-padding-2));
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — DataTable
+     Paginated table matching the Figma table treatment: plain white header,
+     brandwash row-hover, outlined current-page chip.
+     ============================================================================ */
 
-.ds-table {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-12);
-  font-family: var(--sa-font-latin);
-}
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: calc(-1 * var(--sa-padding-2));
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
-.ds-table__scroll {
-  overflow-x: auto;
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-12);
-}
+  .ds-table {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    font-family: var(--sa-font-latin);
+  }
 
-.ds-table__table {
-  min-width: 100%;
-  border-collapse: collapse;
-  font-size: var(--sa-type-body-3-size);
-}
+  .ds-table__scroll {
+    overflow-x: auto;
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+  }
 
-.ds-table__caption {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: calc(-1 * var(--sa-padding-2));
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+  .ds-table__table {
+    min-width: 100%;
+    border-collapse: collapse;
+    font-size: var(--sa-type-body-3-size);
+  }
 
-/* Header — white, sentence-case, medium weight (matches Figma, not shouty). */
-.ds-table__head {
-  background-color: var(--sa-bg-neutral-base);
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
-}
+  .ds-table__caption {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: calc(-1 * var(--sa-padding-2));
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
-.ds-table__th {
-  padding: var(--sa-padding-16) var(--sa-padding-16);
-  text-align: left;
-  white-space: nowrap;
-  font-weight: 600;
-  color: var(--sa-text-neutral-subtle);
-}
+  /* Header — white, sentence-case, medium weight (matches Figma, not shouty). */
+  .ds-table__head {
+    background-color: var(--sa-bg-neutral-base);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
 
-.ds-table__row {
-  border-top: 1px solid var(--sa-border-neutral-subtle);
-  transition: background-color 0.12s ease;
-}
+  .ds-table__th {
+    padding: var(--sa-padding-16) var(--sa-padding-16);
+    text-align: left;
+    white-space: nowrap;
+    font-weight: 600;
+    color: var(--sa-text-neutral-subtle);
+  }
 
-/* Brandwash row-hover (light-blue) with navy text — the Figma selected/hover state. */
-.ds-table__row:hover {
-  background-color: var(--sa-color-primaryScale-50);
-}
+  .ds-table__row {
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+    transition: background-color 0.12s ease;
+  }
 
-.ds-table__row:hover .ds-table__td {
-  color: var(--sa-text-brand-primary-base);
-}
+  /* Brandwash row-hover (light-blue) with navy text — the Figma selected/hover state. */
+  .ds-table__row:hover {
+    background-color: var(--sa-color-primaryScale-50);
+  }
 
-.ds-table__td {
-  padding: var(--sa-padding-16) var(--sa-padding-16);
-  color: var(--sa-text-neutral-base);
-  vertical-align: middle;
-  /* Tabular figures: every digit takes the same width, so a column of amounts,
-     beneficiary counts or reference numbers lines up on the decimal and can be
-     scanned down rather than read row by row. Noto Sans ships them, so this costs
-     nothing and — unlike switching the column to a monospace face — keeps the
-     digits in the same typeface as the text beside them.
+  .ds-table__row:hover .ds-table__td {
+    color: var(--sa-text-brand-primary-base);
+  }
 
-     `tabular-nums` affects digits only; text cells are unchanged. The estate
-     already relies on this in the Aadhaar/PAN field, the charts and the SLA
-     indicator; the shared table was the one place handling numbers that missed it. */
-  font-variant-numeric: tabular-nums;
-}
+  .ds-table__td {
+    padding: var(--sa-padding-16) var(--sa-padding-16);
+    color: var(--sa-text-neutral-base);
+    vertical-align: middle;
+    /* Tabular figures: every digit takes the same width, so a column of amounts,
+       beneficiary counts or reference numbers lines up on the decimal and can be
+       scanned down rather than read row by row. Noto Sans ships them, so this costs
+       nothing and — unlike switching the column to a monospace face — keeps the
+       digits in the same typeface as the text beside them.
 
-.ds-table__empty {
-  padding: var(--sa-section-48) var(--sa-padding-16);
-  text-align: center;
-  color: var(--sa-text-neutral-subtle);
-}
+       `tabular-nums` affects digits only; text cells are unchanged. The estate
+       already relies on this in the Aadhaar/PAN field, the charts and the SLA
+       indicator; the shared table was the one place handling numbers that missed it. */
+    font-variant-numeric: tabular-nums;
+  }
 
-/* Footer / pagination. */
-.ds-table__footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sa-stack-12);
-}
+  .ds-table__empty {
+    padding: var(--sa-section-48) var(--sa-padding-16);
+    text-align: center;
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-table__pagesize {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  font-size: var(--sa-type-body-3-size);
-  color: var(--sa-text-neutral-subtle);
-}
+  /* Footer / pagination. */
+  .ds-table__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+  }
 
-.ds-table__pagesize-btn {
-  appearance: none;
-  border: 0;
-  cursor: pointer;
-  border-radius: var(--sa-shape-6);
-  padding: var(--sa-padding-2) var(--sa-padding-8);
-  font: inherit;
-  font-weight: 600;
-  background: transparent;
-  color: var(--sa-text-neutral-subtle);
-  transition: background-color 0.12s ease, color 0.12s ease;
-}
+  .ds-table__pagesize {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-table__pagesize-btn:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-}
+  .ds-table__pagesize-btn {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    border-radius: var(--sa-shape-6);
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    font: inherit;
+    font-weight: 600;
+    background: transparent;
+    color: var(--sa-text-neutral-subtle);
+    transition: background-color 0.12s ease, color 0.12s ease;
+  }
 
-.ds-table__pagesize-btn.is-active {
-  background-color: var(--sa-bg-brand-primary-bolder);
-  color: var(--sa-on-bg-brand-primary-bolder);
-}
+  .ds-table__pagesize-btn:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
 
-.ds-table__pager {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-4);
-}
+  .ds-table__pagesize-btn.is-active {
+    background-color: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
+  }
 
-.ds-table__page-nav,
-.ds-table__page {
-  appearance: none;
-  cursor: pointer;
-  font: inherit;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 36px;
-  min-width: 36px;
-  border-radius: var(--sa-shape-6);
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--sa-text-neutral-subtle);
-  font-weight: 600;
-  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
-}
+  .ds-table__pager {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-4);
+  }
 
-.ds-table__page-nav:hover:not(:disabled),
-.ds-table__page:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-}
+  .ds-table__page-nav,
+  .ds-table__page {
+    appearance: none;
+    cursor: pointer;
+    font: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    min-width: 36px;
+    border-radius: var(--sa-shape-6);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--sa-text-neutral-subtle);
+    font-weight: 600;
+    transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+  }
 
-.ds-table__page-nav:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
+  .ds-table__page-nav:hover:not(:disabled),
+  .ds-table__page:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
 
-/* Outlined current page (Figma), not a filled block. */
-.ds-table__page.is-current {
-  border-color: var(--sa-border-brand-primary-base);
-  color: var(--sa-text-brand-primary-base);
-  background: var(--sa-bg-neutral-base);
-}
+  .ds-table__page-nav:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
 
-.ds-table__ellipsis {
-  display: inline-flex;
-  align-items: center;
-  padding: 0 var(--sa-padding-4);
-  color: var(--sa-text-neutral-subtle);
-}
+  /* Outlined current page (Figma), not a filled block. */
+  .ds-table__page.is-current {
+    border-color: var(--sa-border-brand-primary-base);
+    color: var(--sa-text-brand-primary-base);
+    background: var(--sa-bg-neutral-base);
+  }
 
-/* ── Sticky right column (e.g. Action) ─────────────────────────────────────── */
-.ds-table__th.is-sticky-right,
-.ds-table__td.is-sticky-right {
-  position: sticky;
-  right: 0;
-  z-index: 1;
-  background-color: var(--sa-bg-neutral-base);
-  /* Soft left shadow signals the column is pinned */
-  box-shadow: -3px 0 8px -3px color-mix(in oklab, var(--sa-text-neutral-bolder) 10%, transparent);
-}
+  .ds-table__ellipsis {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--sa-padding-4);
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-table__head .ds-table__th.is-sticky-right {
-  background-color: var(--sa-bg-neutral-base);
-  z-index: 2;
-}
+  /* ── Sticky right column (e.g. Action) ─────────────────────────────────────── */
+  .ds-table__th.is-sticky-right,
+  .ds-table__td.is-sticky-right {
+    position: sticky;
+    right: 0;
+    z-index: 1;
+    background-color: var(--sa-bg-neutral-base);
+    /* Soft left shadow signals the column is pinned */
+    box-shadow: -3px 0 8px -3px color-mix(in oklab, var(--sa-text-neutral-bolder) 10%, transparent);
+  }
 
-/* Keep the brandwash hover on sticky cells */
-.ds-table__row:hover .ds-table__td.is-sticky-right {
-  background-color: var(--sa-color-primaryScale-50);
-}
+  .ds-table__head .ds-table__th.is-sticky-right {
+    background-color: var(--sa-bg-neutral-base);
+    z-index: 2;
+  }
 
-.ds-table__page-nav:focus-visible,
-.ds-table__page:focus-visible,
-.ds-table__pagesize-btn:focus-visible {
-  outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
-  outline-offset: var(--sa-focus-offset);
+  /* Keep the brandwash hover on sticky cells */
+  .ds-table__row:hover .ds-table__td.is-sticky-right {
+    background-color: var(--sa-color-primaryScale-50);
+  }
+
+  .ds-table__page-nav:focus-visible,
+  .ds-table__page:focus-visible,
+  .ds-table__pagesize-btn:focus-visible {
+    outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
+    outline-offset: var(--sa-focus-offset);
+  }
 }

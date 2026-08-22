@@ -16,7 +16,7 @@ Not a token family — an **obligation**, and the machinery that discharges it.
 |---|---|
 | `focus.*` tokens | `semantic.json` — `ring` · `width` · `offset` (3) |
 | The UX4G accessibility widget | Loaded from `ux4g.gov.in` CDN; dark + high-contrast modes |
-| `AccessibilityWidget` component | `packages/design-system/components/a11y/` · Figma `2382:295905` |
+| `AccessibilityWidget` component | `packages/design-system/components/utilities/` · Figma `2382:295905` |
 | `packages/design-system/ux4g.css` | The `ux4g` / `ux4gdeep` opt-in modes |
 | `accessibility-auditor` agent · `gov-compliance` skill · `/a11y` command | The enforcement tooling |
 | `docs/ux4g/` · `tools/ux4g-conformance/measure.mjs` | The conformance position and its measurement |

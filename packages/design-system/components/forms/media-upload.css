@@ -1,182 +1,205 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — MediaUpload (file/image upload with preview)
-   Semantic ds-* classes; every value references a design token (--sa-).
-   Dark-mode safe (tokens auto-adapt). Drop-zone min target ≥ 44px (WCAG 2.2).
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-media-upload {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-8);
-  font-family: var(--sa-font-latin);
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — MediaUpload (file/image upload with preview)
+     Semantic ds-* classes; every value references a design token (--sa-).
+     Dark-mode safe (tokens auto-adapt). Drop-zone min target ≥ 44px (WCAG 2.2).
+     ============================================================================ */
 
-/* Visually-hidden native input — triggered programmatically; kept out of tab
-   order (the dropzone/Replace button is the operable, labelable control). */
-.ds-media-upload__input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: calc(-1 * var(--sa-padding-2));
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
-}
+  .ds-media-upload {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    font-family: var(--sa-font-latin);
+  }
 
-/* ---- Empty state: drop zone ---- */
-.ds-media-upload__dropzone {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sa-stack-8);
-  width: 100%;
-  min-height: 132px;
-  padding: var(--sa-padding-24) var(--sa-padding-16);
-  text-align: center;
-  background-color: var(--sa-bg-neutral-base);
-  border: 2px dashed var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-12);
-  cursor: pointer;
-  transition:
-    border-color 0.15s ease,
-    background-color 0.15s ease,
-    box-shadow 0.15s ease;
-}
+  /* Visually-hidden native input — triggered programmatically; kept out of tab
+     order (the dropzone/Replace button is the operable, labelable control). */
+  .ds-media-upload__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: calc(-1 * var(--sa-padding-2));
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
-.ds-media-upload__dropzone:hover:not(:disabled) {
-  border-color: var(--sa-border-brand-primary-base);
-}
+  /* ---- Empty state: drop zone ---- */
+  .ds-media-upload__dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-stack-8);
+    width: 100%;
+    min-height: 132px;
+    padding: var(--sa-padding-24) var(--sa-padding-16);
+    text-align: center;
+    background-color: var(--sa-bg-neutral-base);
+    border: 2px dashed var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-12);
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
 
-.ds-media-upload__dropzone:focus-visible {
-  outline: none;
-  border-color: var(--sa-border-brand-primary-base);
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-}
+  .ds-media-upload__dropzone:hover:not(:disabled) {
+    border-color: var(--sa-border-brand-primary-base);
+  }
 
-.ds-media-upload__dropzone.is-dragover {
-  border-color: var(--sa-border-brand-primary-base);
-  background-color: var(--sa-bg-brand-primary-subtler);
-}
+  .ds-media-upload__dropzone:focus-visible {
+    outline: none;
+    border-color: var(--sa-border-brand-primary-base);
+    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+  }
 
-.ds-media-upload__dropzone[aria-invalid="true"] {
-  border-color: var(--sa-border-status-error-base);
-}
+  .ds-media-upload__dropzone.is-dragover {
+    border-color: var(--sa-border-brand-primary-base);
+    background-color: var(--sa-bg-brand-primary-subtler);
+  }
 
-.ds-media-upload__dropzone:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
+  .ds-media-upload__dropzone[aria-invalid="true"] {
+    border-color: var(--sa-border-status-error-base);
+  }
 
-.ds-media-upload__icon {
-  display: inline-flex;
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-media-upload__dropzone:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 
-.ds-media-upload__prompt {
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-  font-weight: 500;
-  color: var(--sa-text-neutral-base);
-}
+  .ds-media-upload__icon {
+    display: inline-flex;
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-media-upload__hint {
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-media-upload__prompt {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 500;
+    color: var(--sa-text-neutral-base);
+  }
 
-/* ---- Filled state: preview ---- */
-.ds-media-upload__preview {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-16);
-  padding: var(--sa-padding-12);
-  background-color: var(--sa-bg-neutral-base);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-12);
-}
+  .ds-media-upload__hint {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-media-upload__thumb {
-  width: 80px;
-  height: 80px;
-  flex: none;
-  object-fit: cover;
-  background-color: var(--sa-bg-neutral-subtler);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-8);
-}
+  /* ---- Filled state: preview ---- */
+  .ds-media-upload__preview {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-12);
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+  }
 
-.ds-media-upload__thumb--file {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-media-upload__thumb {
+    width: 80px;
+    height: 80px;
+    flex: none;
+    object-fit: cover;
+    background-color: var(--sa-bg-neutral-subtler);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+  }
 
-.ds-media-upload__meta {
-  min-width: 0;
-  flex: 1 1 auto;
-}
+  .ds-media-upload__thumb--file {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-media-upload__name {
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-  font-weight: 500;
-  color: var(--sa-text-neutral-base);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+  .ds-media-upload__meta {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
 
-.ds-media-upload__sub {
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-media-upload__name {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 500;
+    color: var(--sa-text-neutral-base);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-.ds-media-upload__actions {
-  display: flex;
-  gap: var(--sa-stack-12);
-  margin-top: var(--sa-padding-8);
-}
+  .ds-media-upload__sub {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-media-upload__action {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sa-stack-4);
-  min-height: 32px;
-  padding: var(--sa-padding-4) var(--sa-padding-8);
-  background: none;
-  border: 0;
-  border-radius: var(--sa-shape-8);
-  font-family: inherit;
-  font-size: var(--sa-type-body-3-size);
-  font-weight: 600;
-  color: var(--sa-text-link-brand-hover);
-  cursor: pointer;
-}
+  .ds-media-upload__actions {
+    display: flex;
+    gap: var(--sa-stack-12);
+    margin-top: var(--sa-padding-8);
+  }
 
-.ds-media-upload__action:hover {
-  text-decoration: underline;
-}
+  .ds-media-upload__action {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-stack-4);
+    min-height: 32px;
+    padding: var(--sa-padding-4) var(--sa-padding-8);
+    background: none;
+    border: 0;
+    border-radius: var(--sa-shape-8);
+    font-family: inherit;
+    font-size: var(--sa-type-body-3-size);
+    font-weight: 600;
+    color: var(--sa-text-link-brand-hover);
+    cursor: pointer;
+  }
 
-.ds-media-upload__action:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-}
+  .ds-media-upload__action:hover {
+    text-decoration: underline;
+  }
 
-.ds-media-upload__action--danger {
-  color: var(--sa-color-status-dangerStrong);
-}
+  .ds-media-upload__action:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+  }
 
-.ds-media-upload__error {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-4);
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-color-status-dangerStrong);
+  .ds-media-upload__action--danger {
+    color: var(--sa-color-status-dangerStrong);
+  }
+
+  .ds-media-upload__error {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-4);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-color-status-dangerStrong);
+  }
 }

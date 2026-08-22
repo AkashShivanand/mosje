@@ -91,7 +91,7 @@ import {
 } from "../components/navigation/app-switcher-utils";
 import { AppSwitcherPanel } from "../components/navigation/app-switcher-panel";
 import { Tabs, TabPanel, TabDef } from "../components/navigation/tabs";
-import { LiveRegion, useLiveRegion } from "../components/a11y/live-region";
+import { LiveRegion, useLiveRegion } from "../components/utilities/live-region";
 import { useColorMode } from "../foundations/color-mode-provider";
 import { DBIM_COLOR_MODES, type ColorMode } from "../foundations/color-mode";
 import { useWallRailOffset } from "../foundations/wall-rail";

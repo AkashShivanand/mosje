@@ -1,96 +1,119 @@
-/* SAMAVESH — Indian identity inputs (Aadhaar / PAN / OTP).
-   UX4G 3.0 parity: "Input - Aadhaar", "Input - Pan Card", "Input - OTP".
-   Tokens only — no raw values. Base input styling comes from forms.css; this file adds
-   only what a fixed-shape identity number needs on top. */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-/* ---- Aadhaar & PAN: fixed-width character shapes ---------------------------------- */
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* SAMAVESH — Indian identity inputs (Aadhaar / PAN / OTP).
+     UX4G 3.0 parity: "Input - Aadhaar", "Input - Pan Card", "Input - OTP".
+     Tokens only — no raw values. Base input styling comes from forms.css; this file adds
+     only what a fixed-shape identity number needs on top. */
 
-/* Tabular figures stop the grouped number from reflowing as digits are typed, and the
-   extra tracking makes a 12-digit string checkable against a physical card at a glance. */
-.ds-input--aadhaar,
-.ds-input--pan {
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.08em;
-}
+  /* ---- Aadhaar & PAN: fixed-width character shapes ---------------------------------- */
 
-.ds-input--pan {
-  /* A PAN is never lower case; enforce it visually as well as in state so the field never
-     contradicts what the user will see on submission. */
-  text-transform: uppercase;
-}
+  /* Tabular figures stop the grouped number from reflowing as digits are typed, and the
+     extra tracking makes a 12-digit string checkable against a physical card at a glance. */
+  .ds-input--aadhaar,
+  .ds-input--pan {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+  }
 
-/* ---- OTP: one box per digit ------------------------------------------------------- */
+  .ds-input--pan {
+    /* A PAN is never lower case; enforce it visually as well as in state so the field never
+       contradicts what the user will see on submission. */
+    text-transform: uppercase;
+  }
 
-.ds-otp {
-  display: flex;
-  gap: var(--sa-inline-8);
-  align-items: center;
-}
+  /* ---- OTP: one box per digit ------------------------------------------------------- */
 
-.ds-otp__box {
-  /* 44px min target on both axes (WCAG 2.2 target size); grows a little on wider screens
-     so the digit is comfortable to read back. */
-  width: clamp(2.75rem, 10vw, 3.25rem);
-  min-height: 44px;
-  padding: var(--sa-padding-4);
-  font-family: var(--sa-font-latin);
-  font-size: var(--sa-type-headline-2-size);
-  line-height: var(--sa-type-headline-2-lh);
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  text-align: center;
-  color: var(--sa-text-neutral-base);
-  background-color: var(--sa-bg-neutral-base);
-  border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-8);
-  transition:
-    border-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-    box-shadow var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.ds-otp__box:hover:not(:disabled) {
-  border-color: var(--sa-border-brand-primary-base);
-}
-
-.ds-otp__box:focus-visible {
-  border-color: var(--sa-border-brand-primary-base);
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-  outline: none;
-}
-
-.ds-otp__box:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-  background-color: var(--sa-bg-neutral-subtler);
-}
-
-.ds-otp--invalid .ds-otp__box,
-.ds-otp__box[aria-invalid="true"] {
-  border-color: var(--sa-border-status-error-base);
-}
-
-.ds-otp--invalid .ds-otp__box:focus-visible {
-  box-shadow: 0 0 0 3px var(--sa-color-status-danger);
-}
-
-/* Six 44px boxes plus gaps overflow a 320px viewport. Let them shrink rather than push the
-   page sideways — the target stays 44px tall, which is the axis that matters for tapping. */
-@media (max-width: 380px) {
   .ds-otp {
-    gap: var(--sa-inline-4);
+    display: flex;
+    gap: var(--sa-inline-8);
+    align-items: center;
   }
 
   .ds-otp__box {
-    width: 100%;
-    min-width: 0;
-    font-size: var(--sa-type-body-1-size);
+    /* 44px min target on both axes (WCAG 2.2 target size); grows a little on wider screens
+       so the digit is comfortable to read back. */
+    width: clamp(2.75rem, 10vw, 3.25rem);
+    min-height: 44px;
+    padding: var(--sa-padding-4);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    text-align: center;
+    color: var(--sa-text-neutral-base);
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-8);
+    transition:
+      border-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+      box-shadow var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    -webkit-appearance: none;
+    appearance: none;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .ds-otp__box {
-    transition: none;
+  .ds-otp__box:hover:not(:disabled) {
+    border-color: var(--sa-border-brand-primary-base);
+  }
+
+  .ds-otp__box:focus-visible {
+    border-color: var(--sa-border-brand-primary-base);
+    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: none;
+  }
+
+  .ds-otp__box:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-otp--invalid .ds-otp__box,
+  .ds-otp__box[aria-invalid="true"] {
+    border-color: var(--sa-border-status-error-base);
+  }
+
+  .ds-otp--invalid .ds-otp__box:focus-visible {
+    box-shadow: 0 0 0 3px var(--sa-color-status-danger);
+  }
+
+  /* Six 44px boxes plus gaps overflow a 320px viewport. Let them shrink rather than push the
+     page sideways — the target stays 44px tall, which is the axis that matters for tapping. */
+  @media (max-width: 380px) {
+    .ds-otp {
+      gap: var(--sa-inline-4);
+    }
+
+    .ds-otp__box {
+      width: 100%;
+      min-width: 0;
+      font-size: var(--sa-type-body-1-size);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-otp__box {
+      transition: none;
+    }
   }
 }

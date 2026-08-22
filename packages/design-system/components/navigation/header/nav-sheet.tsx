@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { Icon } from "../../icon";
+import { Icon } from "../../utilities/icon";
 import { BrandLockup } from "./brand-lockup";
 import type { BrandLines, NavItem, NavLink } from "./types";
 import "./header.css";

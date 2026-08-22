@@ -1,282 +1,305 @@
-/* ============================================================================
-   MoSJE / UX4G — Button atom
-   Semantic CSS classes only; all colours reference design tokens (--sa-*).
-   Combine: .ds-btn  +  .ds-btn--<variant>  +  .ds-btn--<appearance>  +  .ds-btn--<size>
-   Variants: primary | success | danger
-   Appearances: filled | outlined | text | tonal
-   Sizes: sm | md | lg
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sa-stack-8);
-  font-family: var(--sa-font-latin);
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.1px;
-  border: 1px solid transparent;
-  border-radius: var(--sa-shape-8);
-  cursor: pointer;
-  white-space: nowrap;
-  text-decoration: none;
-  user-select: none;
-  -webkit-appearance: none;
-  appearance: none;
-  transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease,
-    color 0.15s ease,
-    box-shadow 0.15s ease,
-    filter 0.15s ease,
-    transform 0.16s cubic-bezier(0.23, 1, 0.32, 1);
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / UX4G — Button atom
+     Semantic CSS classes only; all colours reference design tokens (--sa-*).
+     Combine: .ds-btn  +  .ds-btn--<variant>  +  .ds-btn--<appearance>  +  .ds-btn--<size>
+     Variants: primary | success | danger
+     Appearances: filled | outlined | text | tonal
+     Sizes: sm | md | lg
+     ============================================================================ */
 
-/* Press feedback. Colour alone tells you the button noticed; a slight give
-   tells you it is listening. Subtle on purpose — 0.97 reads as a press, 0.9
-   reads as a toy. Applies to every button in the estate, which is the point:
-   this is the kind of detail that should never be re-derived per portal. */
-.ds-btn:active:not(:disabled):not([aria-disabled="true"]) {
-  transform: scale(0.97);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ds-btn:active:not(:disabled):not([aria-disabled="true"]) {
-    transform: none;
+  .ds-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-stack-8);
+    font-family: var(--sa-font-latin);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.1px;
+    border: 1px solid transparent;
+    border-radius: var(--sa-shape-8);
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    user-select: none;
+    -webkit-appearance: none;
+    appearance: none;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      box-shadow 0.15s ease,
+      filter 0.15s ease,
+      transform 0.16s cubic-bezier(0.23, 1, 0.32, 1);
   }
-}
 
-.ds-btn__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-}
+  /* Press feedback. Colour alone tells you the button noticed; a slight give
+     tells you it is listening. Subtle on purpose — 0.97 reads as a press, 0.9
+     reads as a toy. Applies to every button in the estate, which is the point:
+     this is the kind of detail that should never be re-derived per portal. */
+  .ds-btn:active:not(:disabled):not([aria-disabled="true"]) {
+    transform: scale(0.97);
+  }
 
-/* Visible, accessible focus ring (keyboard) */
-.ds-btn:focus-visible {
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-  outline: none;
-}
+  @media (prefers-reduced-motion: reduce) {
+    .ds-btn:active:not(:disabled):not([aria-disabled="true"]) {
+      transform: none;
+    }
+  }
 
-/* --------------------------------------------------------------------------
-   Per-variant token mapping (drives every appearance via local custom props)
-   -------------------------------------------------------------------------- */
-/* A variant contributes THREE colours. `--_fill` is the solid background — the bg
-   ladder deliberately sits a rung deeper than the ink of the same family, so white text on it
-   clears AA with headroom (6.36:1) rather than by 0.14. `--_color` is the ink the outlined and
-   text appearances paint with, measured against the page instead. Splitting them was what let
-   the primary fill move to `bolder` on 2026-08-12 without dragging outlined text with it.
-   `--_on` is the ink MEASURED for that fill — it was hardcoded to primary's until 2026-08-12,
-   so success and danger painted their labels with a foreground chosen for a different colour.
-   They share #ffffff today, which is why nothing looked wrong; the pairing is now declared per
-   family so it cannot silently diverge.
-   The full Tier-3 matrix (`--sa-cmp-action-brand-primary-*`) models every state and is the
-   eventual home for this; restructuring the Button onto it is a separate change. */
-.ds-btn--primary {
-  --_fill: var(--sa-bg-brand-primary-bolder);
-  --_on: var(--sa-on-bg-brand-primary-bolder);
-  --_color: var(--sa-text-brand-primary-base);
-  --_tonal-bg: var(--sa-color-action-primary-tonal);
-  --_tonal-fg: var(--sa-color-action-primary-hover);
-  --_dark: var(--sa-color-action-primary-hover);
-  --_ring: var(--sa-focus-ring);
-}
+  .ds-btn__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
 
-.ds-btn--success {
-  --_fill: var(--sa-bg-status-success-bolder);
-  --_on: var(--sa-on-bg-status-success-bolder);
-  --_color: var(--sa-text-status-success-base);
-  --_tonal-bg: var(--sa-color-status-successTonal);
-  --_tonal-fg: var(--sa-color-status-successStrong); /* darkened success for tonal label contrast */
-  --_dark: var(--sa-color-status-successStrong);
-  --_ring: color-mix(in oklab, var(--sa-color-status-success) 40%, transparent);
-}
+  /* Visible, accessible focus ring (keyboard) */
+  .ds-btn:focus-visible {
+    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: none;
+  }
 
-.ds-btn--danger {
-  --_fill: var(--sa-bg-status-error-bolder);
-  --_on: var(--sa-on-bg-status-error-bolder);
-  --_color: var(--sa-text-status-error-base);
-  --_tonal-bg: var(--sa-color-status-dangerTonal);
-  --_tonal-fg: var(--sa-color-status-dangerStrong);
-  --_dark: var(--sa-color-status-dangerStrong);
-  --_ring: color-mix(in oklab, var(--sa-color-status-danger) 40%, transparent);
-}
+  /* --------------------------------------------------------------------------
+     Per-variant token mapping (drives every appearance via local custom props)
+     -------------------------------------------------------------------------- */
+  /* A variant contributes THREE colours. `--_fill` is the solid background — the bg
+     ladder deliberately sits a rung deeper than the ink of the same family, so white text on it
+     clears AA with headroom (6.36:1) rather than by 0.14. `--_color` is the ink the outlined and
+     text appearances paint with, measured against the page instead. Splitting them was what let
+     the primary fill move to `bolder` on 2026-08-12 without dragging outlined text with it.
+     `--_on` is the ink MEASURED for that fill — it was hardcoded to primary's until 2026-08-12,
+     so success and danger painted their labels with a foreground chosen for a different colour.
+     They share #ffffff today, which is why nothing looked wrong; the pairing is now declared per
+     family so it cannot silently diverge.
+     The full Tier-3 matrix (`--sa-cmp-action-brand-primary-*`) models every state and is the
+     eventual home for this; restructuring the Button onto it is a separate change. */
+  .ds-btn--primary {
+    --_fill: var(--sa-bg-brand-primary-bolder);
+    --_on: var(--sa-on-bg-brand-primary-bolder);
+    --_color: var(--sa-text-brand-primary-base);
+    --_tonal-bg: var(--sa-color-action-primary-tonal);
+    --_tonal-fg: var(--sa-color-action-primary-hover);
+    --_dark: var(--sa-color-action-primary-hover);
+    --_ring: var(--sa-focus-ring);
+  }
 
-/* Route the focus ring to the active variant's colour */
-.ds-btn--success:focus-visible,
-.ds-btn--danger:focus-visible {
-  box-shadow: 0 0 0 3px var(--_ring);
-}
+  .ds-btn--success {
+    --_fill: var(--sa-bg-status-success-bolder);
+    --_on: var(--sa-on-bg-status-success-bolder);
+    --_color: var(--sa-text-status-success-base);
+    --_tonal-bg: var(--sa-color-status-successTonal);
+    --_tonal-fg: var(--sa-color-status-successStrong); /* darkened success for tonal label contrast */
+    --_dark: var(--sa-color-status-successStrong);
+    --_ring: color-mix(in oklab, var(--sa-color-status-success) 40%, transparent);
+  }
 
-/* --------------------------------------------------------------------------
-   Sizes
-   -------------------------------------------------------------------------- */
-.ds-btn--sm {
-  height: 32px;
-  padding: 0 var(--sa-padding-16);
-  font-size: 14px;
-}
+  .ds-btn--danger {
+    --_fill: var(--sa-bg-status-error-bolder);
+    --_on: var(--sa-on-bg-status-error-bolder);
+    --_color: var(--sa-text-status-error-base);
+    --_tonal-bg: var(--sa-color-status-dangerTonal);
+    --_tonal-fg: var(--sa-color-status-dangerStrong);
+    --_dark: var(--sa-color-status-dangerStrong);
+    --_ring: color-mix(in oklab, var(--sa-color-status-danger) 40%, transparent);
+  }
 
-.ds-btn--md {
-  height: 40px;
-  padding: 0 var(--sa-padding-24);
-  font-size: 16px;
-}
+  /* Route the focus ring to the active variant's colour */
+  .ds-btn--success:focus-visible,
+  .ds-btn--danger:focus-visible {
+    box-shadow: 0 0 0 3px var(--_ring);
+  }
 
-.ds-btn--lg {
-  height: 48px;
-  padding: 0 var(--sa-padding-24);
-  font-size: 16px;
-}
+  /* --------------------------------------------------------------------------
+     Sizes
+     -------------------------------------------------------------------------- */
+  .ds-btn--sm {
+    height: 32px;
+    padding: 0 var(--sa-padding-16);
+    font-size: 14px;
+  }
 
-/* --------------------------------------------------------------------------
-   Appearance: filled
-   -------------------------------------------------------------------------- */
-.ds-btn--filled {
-  background-color: var(--_fill);
-  color: var(--_on);
-  border-color: var(--_fill);
-}
+  .ds-btn--md {
+    height: 40px;
+    padding: 0 var(--sa-padding-24);
+    font-size: 16px;
+  }
 
-.ds-btn--filled:hover {
-  filter: brightness(0.95);
-}
+  .ds-btn--lg {
+    height: 48px;
+    padding: 0 var(--sa-padding-24);
+    font-size: 16px;
+  }
 
-.ds-btn--filled:active {
-  filter: brightness(0.9);
-}
+  /* --------------------------------------------------------------------------
+     Appearance: filled
+     -------------------------------------------------------------------------- */
+  .ds-btn--filled {
+    background-color: var(--_fill);
+    color: var(--_on);
+    border-color: var(--_fill);
+  }
 
-/* --------------------------------------------------------------------------
-   Appearance: outlined
-   -------------------------------------------------------------------------- */
-.ds-btn--outlined {
-  background-color: transparent;
-  color: var(--_color);
-  border-color: var(--_color);
-}
+  .ds-btn--filled:hover {
+    filter: brightness(0.95);
+  }
 
-.ds-btn--outlined:hover {
-  background-color: color-mix(in srgb, var(--_color) 8%, transparent);
-}
+  .ds-btn--filled:active {
+    filter: brightness(0.9);
+  }
 
-.ds-btn--outlined:active {
-  background-color: color-mix(in srgb, var(--_color) 14%, transparent);
-}
+  /* --------------------------------------------------------------------------
+     Appearance: outlined
+     -------------------------------------------------------------------------- */
+  .ds-btn--outlined {
+    background-color: transparent;
+    color: var(--_color);
+    border-color: var(--_color);
+  }
 
-/* --------------------------------------------------------------------------
-   Appearance: text
-   -------------------------------------------------------------------------- */
-.ds-btn--text {
-  background-color: transparent;
-  color: var(--_color);
-  border-color: transparent;
-}
+  .ds-btn--outlined:hover {
+    background-color: color-mix(in srgb, var(--_color) 8%, transparent);
+  }
 
-.ds-btn--text:hover {
-  background-color: color-mix(in srgb, var(--_color) 8%, transparent);
-}
+  .ds-btn--outlined:active {
+    background-color: color-mix(in srgb, var(--_color) 14%, transparent);
+  }
 
-.ds-btn--text:active {
-  background-color: color-mix(in srgb, var(--_color) 14%, transparent);
-}
+  /* --------------------------------------------------------------------------
+     Appearance: text
+     -------------------------------------------------------------------------- */
+  .ds-btn--text {
+    background-color: transparent;
+    color: var(--_color);
+    border-color: transparent;
+  }
 
-/* --------------------------------------------------------------------------
-   Appearance: tonal
-   -------------------------------------------------------------------------- */
-.ds-btn--tonal {
-  background-color: var(--_tonal-bg);
-  color: var(--_tonal-fg);
-  border-color: var(--_tonal-bg);
-}
+  .ds-btn--text:hover {
+    background-color: color-mix(in srgb, var(--_color) 8%, transparent);
+  }
 
-.ds-btn--tonal:hover {
-  filter: brightness(0.96);
-}
+  .ds-btn--text:active {
+    background-color: color-mix(in srgb, var(--_color) 14%, transparent);
+  }
 
-.ds-btn--tonal:active {
-  filter: brightness(0.92);
-}
+  /* --------------------------------------------------------------------------
+     Appearance: tonal
+     -------------------------------------------------------------------------- */
+  .ds-btn--tonal {
+    background-color: var(--_tonal-bg);
+    color: var(--_tonal-fg);
+    border-color: var(--_tonal-bg);
+  }
 
-/* --------------------------------------------------------------------------
-   Appearance: inverse / inverseOutlined
-   For a button placed directly on a solid brand-colour surface (e.g. a navy
-   page header) — replaces the className overrides every portal was hand-rolling.
-   -------------------------------------------------------------------------- */
-.ds-btn--inverse {
-  background-color: var(--sa-color-neutralScale-0);
-  color: var(--_color);
-  border-color: var(--sa-color-neutralScale-0);
-}
+  .ds-btn--tonal:hover {
+    filter: brightness(0.96);
+  }
 
-.ds-btn--inverse:hover {
-  background-color: color-mix(in srgb, var(--_color) 8%, white);
-  border-color: color-mix(in srgb, var(--_color) 8%, white);
-}
+  .ds-btn--tonal:active {
+    filter: brightness(0.92);
+  }
 
-.ds-btn--inverse:active {
-  background-color: color-mix(in srgb, var(--_color) 14%, white);
-  border-color: color-mix(in srgb, var(--_color) 14%, white);
-}
+  /* --------------------------------------------------------------------------
+     Appearance: inverse / inverseOutlined
+     For a button placed directly on a solid brand-colour surface (e.g. a navy
+     page header) — replaces the className overrides every portal was hand-rolling.
+     -------------------------------------------------------------------------- */
+  .ds-btn--inverse {
+    background-color: var(--sa-color-neutralScale-0);
+    color: var(--_color);
+    border-color: var(--sa-color-neutralScale-0);
+  }
 
-.ds-btn--inverseOutlined {
-  background-color: transparent;
-  color: var(--sa-on-bg-brand-primary-bolder);
-  border-color: var(--sa-color-transparent-white-40);
-}
+  .ds-btn--inverse:hover {
+    background-color: color-mix(in srgb, var(--_color) 8%, white);
+    border-color: color-mix(in srgb, var(--_color) 8%, white);
+  }
 
-.ds-btn--inverseOutlined:hover {
-  background-color: color-mix(in oklab, var(--sa-bg-neutral-base) 10%, transparent);
-  border-color: color-mix(in oklab, var(--sa-bg-neutral-base) 60%, transparent);
-}
+  .ds-btn--inverse:active {
+    background-color: color-mix(in srgb, var(--_color) 14%, white);
+    border-color: color-mix(in srgb, var(--_color) 14%, white);
+  }
 
-.ds-btn--inverseOutlined:active {
-  background-color: var(--sa-color-transparent-white-16);
-}
+  .ds-btn--inverseOutlined {
+    background-color: transparent;
+    color: var(--sa-on-bg-brand-primary-bolder);
+    border-color: var(--sa-color-transparent-white-40);
+  }
 
-.ds-btn--inverse:focus-visible,
-.ds-btn--inverseOutlined:focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--sa-bg-neutral-base) 55%, transparent);
-}
+  .ds-btn--inverseOutlined:hover {
+    background-color: color-mix(in oklab, var(--sa-bg-neutral-base) 10%, transparent);
+    border-color: color-mix(in oklab, var(--sa-bg-neutral-base) 60%, transparent);
+  }
 
-.ds-btn--inverseOutlined:disabled:hover,
-.ds-btn--inverseOutlined[aria-disabled="true"]:hover,
-.ds-btn--inverseOutlined:disabled:active,
-.ds-btn--inverseOutlined[aria-disabled="true"]:active {
-  background-color: transparent;
-}
+  .ds-btn--inverseOutlined:active {
+    background-color: var(--sa-color-transparent-white-16);
+  }
 
-/* --------------------------------------------------------------------------
-   Disabled (overrides every appearance; no hover/active effects)
-   -------------------------------------------------------------------------- */
-.ds-btn:disabled,
-.ds-btn[aria-disabled="true"] {
-  opacity: 0.5;
-  cursor: not-allowed;
-  filter: none;
-  box-shadow: none;
-}
+  .ds-btn--inverse:focus-visible,
+  .ds-btn--inverseOutlined:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--sa-bg-neutral-base) 55%, transparent);
+  }
 
-/* Neutralise interactive feedback while disabled */
-.ds-btn--filled:disabled:hover,
-.ds-btn--filled[aria-disabled="true"]:hover,
-.ds-btn--filled:disabled:active,
-.ds-btn--filled[aria-disabled="true"]:active,
-.ds-btn--tonal:disabled:hover,
-.ds-btn--tonal[aria-disabled="true"]:hover,
-.ds-btn--tonal:disabled:active,
-.ds-btn--tonal[aria-disabled="true"]:active {
-  filter: none;
-}
+  .ds-btn--inverseOutlined:disabled:hover,
+  .ds-btn--inverseOutlined[aria-disabled="true"]:hover,
+  .ds-btn--inverseOutlined:disabled:active,
+  .ds-btn--inverseOutlined[aria-disabled="true"]:active {
+    background-color: transparent;
+  }
 
-.ds-btn--outlined:disabled:hover,
-.ds-btn--outlined[aria-disabled="true"]:hover,
-.ds-btn--outlined:disabled:active,
-.ds-btn--outlined[aria-disabled="true"]:active,
-.ds-btn--text:disabled:hover,
-.ds-btn--text[aria-disabled="true"]:hover,
-.ds-btn--text:disabled:active,
-.ds-btn--text[aria-disabled="true"]:active {
-  background-color: transparent;
+  /* --------------------------------------------------------------------------
+     Disabled (overrides every appearance; no hover/active effects)
+     -------------------------------------------------------------------------- */
+  .ds-btn:disabled,
+  .ds-btn[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: none;
+    box-shadow: none;
+  }
+
+  /* Neutralise interactive feedback while disabled */
+  .ds-btn--filled:disabled:hover,
+  .ds-btn--filled[aria-disabled="true"]:hover,
+  .ds-btn--filled:disabled:active,
+  .ds-btn--filled[aria-disabled="true"]:active,
+  .ds-btn--tonal:disabled:hover,
+  .ds-btn--tonal[aria-disabled="true"]:hover,
+  .ds-btn--tonal:disabled:active,
+  .ds-btn--tonal[aria-disabled="true"]:active {
+    filter: none;
+  }
+
+  .ds-btn--outlined:disabled:hover,
+  .ds-btn--outlined[aria-disabled="true"]:hover,
+  .ds-btn--outlined:disabled:active,
+  .ds-btn--outlined[aria-disabled="true"]:active,
+  .ds-btn--text:disabled:hover,
+  .ds-btn--text[aria-disabled="true"]:hover,
+  .ds-btn--text:disabled:active,
+  .ds-btn--text[aria-disabled="true"]:active {
+    background-color: transparent;
+  }
 }

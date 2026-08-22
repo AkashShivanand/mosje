@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon } from "../icon";
+import { Icon } from "../utilities/icon";
 import { cn } from "../../utils/cn";
 import "./search.css";
 
