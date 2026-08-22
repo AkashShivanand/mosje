@@ -2,14 +2,34 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "hub-wt",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/private/tmp/claude-502/-Users-akashk-Documents-Projects-MoSJE/cbef035f-ed22-4958-9216-771f2cd48ce3/scratchpad/wt-eanudaan/apps/hub",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3017"
+      ],
+      "port": 3017,
+      "autoPort": false
+    },
+    {
       "name": "hub",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/hub", "run", "dev"],
+      "runtimeArgs": [
+        "--prefix",
+        "apps/hub",
+        "run",
+        "dev"
+      ],
       "port": 3007,
       "autoPort": false
     },
     {
-      "_comment": "Attaches to an already-running hub on :3007 instead of starting a second one. Next 16 holds a per-directory dev lock, so only one `next dev` can own apps/hub — use this when another session already started it.",
+      "_comment": "Attaches to an already-running hub on :3007 instead of starting a second one. Next 16 holds a per-directory dev lock, so only one `next dev` can own apps/hub \u2014 use this when another session already started it.",
       "name": "hub-attach",
       "url": "http://localhost:3007",
       "port": 3007
@@ -27,7 +47,12 @@
     {
       "name": "storybook",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "apps/storybook", "run", "dev"],
+      "runtimeArgs": [
+        "--prefix",
+        "apps/storybook",
+        "run",
+        "dev"
+      ],
       "port": 6006,
       "autoPort": false
     }

@@ -3,8 +3,7 @@ import * as React from "react";
 import { DataTable } from "@mosje/design-system";
 import type { DataTableColumn } from "@mosje/design-system";
 
-interface Scheme {
-  [key: string]: unknown;
+interface Scheme extends Record<string, unknown> {
   id: string;
   name: string;
   applicants: number;
@@ -29,11 +28,11 @@ const columns: DataTableColumn<Scheme>[] = [
       <span style={{
         display: "inline-flex",
         padding: "var(--sa-padding-4) var(--sa-padding-8)",
-        borderRadius: "var(--sa-radius-full)",
+        borderRadius: "9999px",
         fontSize: "var(--sa-type-body-3-size)",
         fontWeight: 600,
-        backgroundColor: row.status === "Active" ? "var(--sa-bg-status-success-subtlest)" : "var(--sa-bg-neutral-subtler)",
-        color: row.status === "Active" ? "var(--sa-text-status-success-bolder)" : "var(--sa-text-neutral-subtle)",
+        backgroundColor: row.status === "Active" ? "#d1fae5" : "var(--sa-bg-neutral-subtler)",
+        color: row.status === "Active" ? "#065f46" : "var(--sa-text-neutral-subtle)",
       }}>
         {row.status}
       </span>
