@@ -29,6 +29,7 @@ export function Sidebar() {
 
   return (
     <SidebarNav
+      id="smile-admin-sidebar"
       groups={groups}
       pathname={pathname}
       collapsed={sidebarCollapsed}

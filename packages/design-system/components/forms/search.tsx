@@ -1,13 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { Icon } from "../icon";
 import { cn } from "../../utils/cn";
 import "./search.css";
 
 export type SearchSize = "sm" | "md" | "lg";
 
 export interface SearchProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size" | "onChange"> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size" | "onChange" | "onSubmit"> {
   /** Controlled value. */
   value: string;
   /** Change handler — receives the native input event. */
@@ -19,6 +20,14 @@ export interface SearchProps
    * Invoked when the user clicks it.
    */
   onClear?: () => void;
+  /**
+   * Submit handler — Enter in the field, or a click on the leading icon.
+   *
+   * This is what lets the masthead reuse THIS component instead of shipping a
+   * second, header-only search. A masthead search does not filter in place; it
+   * hands the query to a results page. That is a submit, not a different atom.
+   */
+  onSubmit?: (value: string) => void;
 }
 
 /**
@@ -34,6 +43,7 @@ export const Search = React.forwardRef<HTMLInputElement, SearchProps>(
       onChange,
       size = "md",
       onClear,
+      onSubmit,
       disabled = false,
       placeholder,
       className,
@@ -43,6 +53,7 @@ export const Search = React.forwardRef<HTMLInputElement, SearchProps>(
     ref,
   ) {
     const showClear = onClear != null && value.length > 0 && !disabled;
+    const canSubmit = onSubmit != null && !disabled;
 
     return (
       <div
@@ -53,33 +64,33 @@ export const Search = React.forwardRef<HTMLInputElement, SearchProps>(
           className,
         )}
       >
-        <span className="ds-search__icon" aria-hidden="true">
-          <svg
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        {canSubmit ? (
+          <button
+            type="button"
+            className="ds-search__icon ds-search__icon--action"
+            onClick={() => onSubmit!(value)}
+            aria-label="Search"
           >
-            <circle
-              cx="9"
-              cy="9"
-              r="6"
-              stroke="currentColor"
-              strokeWidth="1.8"
-            />
-            <path
-              d="m17 17-3.5-3.5"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-            />
-          </svg>
-        </span>
+            <Icon name="search" size={20} />
+          </button>
+        ) : (
+          <span className="ds-search__icon" aria-hidden="true">
+            <Icon name="search" size={20} />
+          </span>
+        )}
         <input
           ref={ref}
           type="search"
           className="ds-search__input"
           value={value}
           onChange={onChange}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && canSubmit) {
+              e.preventDefault();
+              onSubmit!(value);
+            }
+            rest.onKeyDown?.(e);
+          }}
           disabled={disabled}
           placeholder={placeholder}
           aria-label={ariaLabel ?? placeholder ?? "Search"}
@@ -92,19 +103,7 @@ export const Search = React.forwardRef<HTMLInputElement, SearchProps>(
             onClick={onClear}
             aria-label="Clear search"
           >
-            <svg
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                d="M4 4l8 8M12 4l-8 8"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-              />
-            </svg>
+            <Icon name="close" size={16} />
           </button>
         )}
       </div>

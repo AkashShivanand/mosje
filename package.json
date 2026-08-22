@@ -19,7 +19,7 @@
     "dev": "bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3007'",
     "dev:hub": "bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3007'",
     "dev:storybook": "bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006'",
-    "check": "npm run check:hub && npm run check:dangling-vars && npm run check:docs-links && npm run check:figma-docs && npm run check:docs-data && npm run check:ds-linkage && npm run check:icon-scale && npm run check:space-linkage && npm run check:radius-linkage && npm run check:code-connect",
+    "check": "npm run check:hub && npm run check:dangling-vars && npm run check:docs-links && npm run check:figma-docs && npm run check:docs-data && npm run check:ds-linkage && npm run check:icon-scale && npm run check:space-linkage && npm run check:radius-linkage && npm run check:code-connect && npm run check:chrome",
     "check:changelog": "node scripts/check-changelog-freshness.mjs",
     "check:design-context": "node scripts/check-design-context.mjs",
     "check:design-context:baseline": "node scripts/check-design-context.mjs --update-baseline",
@@ -35,7 +35,7 @@
     "check:storybook:types": "npm --prefix apps/storybook run typecheck",
     "check:storybook:smoke": "node scripts/smoke-storybook.mjs",
     "check:storybook:baseline": "node scripts/check-storybook-coverage.mjs --update-baseline",
-    "ensure:storybook": "node -e \"require('fs').existsSync('apps/hub/public/storybook/index.html')||(console.log('• building Storybook once into apps/hub/public/storybook…'),process.exit(1))\" || npm run build:storybook --prefix apps/hub",
+    "ensure:storybook": "node -e \"require('fs').existsSync('apps/hub/public/storybook/index.html')||(console.log('\u2022 building Storybook once into apps/hub/public/storybook\u2026'),process.exit(1))\" || npm run build:storybook --prefix apps/hub",
     "predev:hub": "npm run ensure:storybook",
     "check:docs-data": "node scripts/check-docs-data.mjs",
     "check:ds-linkage": "node tools/ds-linkage/check.mjs",
@@ -56,7 +56,8 @@
     "check:figma-docs:sync": "node tools/figma-doc-parity/check.mjs --verify-figma --sync",
     "figma:connect": "figma connect publish",
     "figma:connect:check": "figma connect publish --dry-run --exit-on-unreadable-files",
-    "lint:css": "stylelint '**/*.css'"
+    "lint:css": "stylelint '**/*.css'",
+    "check:chrome": "node tools/chrome-single-source/check.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

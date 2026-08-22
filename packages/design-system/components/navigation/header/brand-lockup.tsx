@@ -19,6 +19,15 @@ export interface BrandLockupProps {
   divider?: boolean;
   /** Hide the text stack below a breakpoint (emblem-only on mobile). @default false */
   textHiddenOnMobile?: boolean;
+  /**
+   * Render for a dark ground — the text stack resolves to the inverse token.
+   *
+   * Portals whose masthead is navy used to hand-roll white text to get this, which
+   * is how they ended up hand-rolling the whole lockup. Pass the white emblem
+   * asset alongside it (`National_Emblem_logo_white.svg`).
+   * @default false
+   */
+  inverse?: boolean;
   className?: string;
 }
 
@@ -40,12 +49,13 @@ export function BrandLockup({
   compact = false,
   divider = false,
   textHiddenOnMobile = false,
+  inverse = false,
   className,
 }: BrandLockupProps): React.JSX.Element {
   return (
     <a
       href={href}
-      className={cn("ds-hdr-lockup", compact && "is-compact", className)}
+      className={cn("ds-hdr-lockup", compact && "is-compact", inverse && "is-inverse", className)}
       aria-label={`${lines.department} — Home`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}

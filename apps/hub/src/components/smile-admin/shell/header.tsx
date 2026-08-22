@@ -48,6 +48,7 @@ export function Header() {
 
   return (
     <SiteHeader
+      homeHref={BP}
       variant="portal"
       sticky
       emblemSrc={`${BP}/brand/national-emblem.svg`}
@@ -59,6 +60,10 @@ export function Header() {
       beta
       brandDivider
       onToggleNav={onToggleNav}
+      /* Drives both the glyph (menu_open vs menu) and aria-expanded. The
+         toggle is the sidebar's control, so it reads out the sidebar's state. */
+      navExpanded={!sidebarCollapsed}
+      navControlsId="smile-admin-sidebar"
       account={
         account
           ? {

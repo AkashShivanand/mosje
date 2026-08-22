@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { AccessibilityBar, BrandLockup } from "@mosje/design-system";
 
 // Next.js adds the basePath automatically to <Link> and the router, so nav
 // paths stay basePath-RELATIVE (BASE = "") — prepending it doubles the path.
@@ -12,25 +12,32 @@ const IMG_BASE = "/portals/pm-ajay";
 export default function ForgotPasswordPage() {
   return (
     <div className="login-page">
-      {/* GoI utility bar */}
-      <div className="pm-nav-utility">
-        <a href="#fp-main" className="sr-only focus:not-sr-only">Skip to Main Content</a>
-        <div className="gov-bar-inner">
-          <span className="gov-bar-flag">
-            <Image src={`${IMG_BASE}/images/Indian-Flag.svg`} alt="" width={33} height={22} aria-hidden />
-            Government of India
-          </span>
-        </div>
-      </div>
+      {/* ── GoI utility bar — the shared DS AccessibilityBar ── */}
+      <AccessibilityBar
+        layout="fluid"
+        govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
+        skipTo="#fp-main"
+        showSkip
+        fontSize
+        accessibility
+        language={{ label: "English" }}
+      />
 
       <header className="login-brand">
         <div className="login-brand-inner">
           <div className="login-brand-left">
-            <Image src={`${IMG_BASE}/images/National_Emblem_logo_white.svg`} alt="National Emblem" width={40} height={66} className="login-emblem" />
-            <div className="login-brand-text">
-              <span className="login-brand-gov">Government of India</span>
-              <span className="login-brand-min">Ministry of Social Justice &amp; Empowerment</span>
-            </div>
+            {/* Identity from the DS lockup — inverse, because this strip is dark. */}
+            <BrandLockup
+              emblemSrc={`${IMG_BASE}/images/National_Emblem_logo_white.svg`}
+              lines={{
+                org: "Government of India",
+                ministry: "Ministry of Social Justice & Empowerment",
+                department: "Department of Social Justice & Empowerment",
+              }}
+              href={IMG_BASE}
+              compact
+              inverse
+            />
           </div>
         </div>
       </header>

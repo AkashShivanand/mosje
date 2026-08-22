@@ -15,7 +15,7 @@
     "page, re-run --update-baseline in the same change."
   ],
   "totals": {
-    "offScale": 205,
+    "offScale": 204,
     "classSized": 4
   },
   "files": {
@@ -248,10 +248,6 @@
       "classSized": 0
     },
     "apps/hub/src/components/eutthan/eutthan-table.tsx": {
-      "offScale": 1,
-      "classSized": 0
-    },
-    "apps/hub/src/components/mobile-nav.tsx": {
       "offScale": 1,
       "classSized": 0
     },

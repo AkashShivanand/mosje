@@ -259,6 +259,26 @@ export {
   BrandLockup,
   AccountMenu,
 } from "./components/navigation/header";
+export {
+  MenuToggle,
+  SheetToggle,
+  NavItemLink,
+  NavDropdown,
+  DropdownItem,
+  MegaMenu,
+  MegaMenuItem,
+  NavSheet,
+} from "./components/navigation/header";
+export type {
+  MenuToggleProps,
+  SheetToggleProps,
+  NavItemLinkProps,
+  NavDropdownProps,
+  DropdownItemProps,
+  MegaMenuProps,
+  MegaMenuItemProps,
+  NavSheetProps,
+} from "./components/navigation/header";
 
 // Sidebar — portal app-shell left navigation (Figma: sidebar/type-1).
 export { SidebarNav } from "./components/navigation/sidebar";

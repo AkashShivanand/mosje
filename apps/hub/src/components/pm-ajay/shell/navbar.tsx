@@ -14,6 +14,7 @@ const IMG_BASE = "/portals/pm-ajay";
 export function Navbar() {
   return (
     <SiteHeader
+      homeHref={IMG_BASE}
       variant="portal"
       tone="navy"
       emblemSrc={`${IMG_BASE}/images/National-Emblem-logo.svg`}
