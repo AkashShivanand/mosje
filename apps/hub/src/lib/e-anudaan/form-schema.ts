@@ -338,7 +338,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
             help: "Choose 'Ongoing / Renewal' to carry forward the details of one of your existing AVYAY projects.",
           },
           {
-            name: "fld_existing_project",
+            name: "fld_ongoing_source_application",
             label: "Select the existing project to renew",
             kind: "select",
             required: true,
@@ -356,7 +356,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
             help: "A new application is always for the financial year now running. For a renewal, this is the year whose instalment you are claiming — changing it re-checks which instalments are still open for this project.",
           },
           {
-            name: "fld_installment",
+            name: "fld_installment_no",
             label: "Installment",
             kind: "select",
             required: true,
@@ -376,7 +376,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
         fields: [
           { name: "fld_ngo_name", label: "Name of NGO / VO (as in NGO-Darpan)", kind: "text", required: true, readOnly: true, help: "Pre-filled from your login / NGO-Darpan." },
           { name: "fld_darpan_id", label: "NGO-Darpan Unique ID", kind: "text", required: true, readOnly: true, help: "Pre-filled from your login. Key for identity read and for duplicate-project prevention (FR-ONG-01)." },
-          { name: "fld_project_id_auto", label: "Project ID", kind: "text", readOnly: true, wide: true, help: "Generated automatically on submit as IP / State abbreviation / District abbreviation / a unique number. For an ongoing renewal, the existing project's ID is retained (FR-ONG-02)." },
+          { name: "fld_project_id", label: "Project ID", kind: "text", readOnly: true, wide: true, help: "Generated automatically on submit as IP / State abbreviation / District abbreviation / a unique number. For an ongoing renewal, the existing project's ID is retained (FR-ONG-02)." },
           { name: "fld_statute_act", label: "Statute / Act of Registration", kind: "text", required: true },
           { name: "fld_registration_number", label: "Registration Number", kind: "text", required: true, help: "As printed on your registration certificate under the Act named above." },
           { name: "fld_registration_date", label: "Date of Registration", kind: "date", required: true },
@@ -386,7 +386,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
           { name: "fld_contact_mobile", label: "Mobile", kind: "tel", required: true, help: "Pre-filled from your login. Used for notifications." },
           { name: "fld_contact_email", label: "Email", kind: "email", required: true, help: "Pre-filled from your login. Used for notifications." },
           { name: "fld_contact_telephone", label: "Telephone", kind: "tel" },
-          { name: "moa_senior_citizens", label: "MOA includes welfare of senior citizens as an aim/objective", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "moa_includes_senior_citizens", label: "MOA includes welfare of senior citizens as an aim/objective", kind: "radio", required: true, options: YES_NO, wide: true },
         ],
       },
     ],
@@ -478,7 +478,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
         fields: [
           { name: "bank_ngo_name_declared", label: "Account is in the name of the NGO/VO", kind: "radio", required: true, options: YES_NO, wide: true },
           {
-            name: "fld_bank_account_ref",
+            name: "fld_bank_account_id",
             label: "Bank Account",
             kind: "select",
             required: true,
