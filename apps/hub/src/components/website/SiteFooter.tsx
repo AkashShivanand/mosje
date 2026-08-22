@@ -34,6 +34,23 @@ import { getContentSyncedDate } from "@/lib/website/content";
  * known gap in docs/guidelines rather than linked to something it is not.
  */
 
+/**
+ * Where "Help & Support" points.
+ *
+ * A citizen support portal is being built — the place to raise an issue WITH
+ * the website or a portal, as distinct from contacting the department about a
+ * scheme. Until it ships this aliases the contact page, which is the only real
+ * destination that exists today.
+ *
+ * IT IS A CONSTANT SO THE SWITCH IS ONE LINE. When the portal lands, change
+ * this and nothing else: the footer already models Help and Contact as two
+ * separate entries precisely because they are about to become two separate
+ * things. Linking both to the same page in the meantime is a transitional
+ * alias with a stated end, not the duplication that was removed earlier —
+ * that one had no end.
+ */
+const SUPPORT_PORTAL_HREF = "/website/contact-us";
+
 const columns: SiteFooterColumn[] = [
   {
     heading: "Department",
@@ -61,13 +78,12 @@ const columns: SiteFooterColumn[] = [
     heading: "Support",
     id: "footer-support",
     links: [
-      // "Help & Support" and "Contact Us" both pointed at /website/contact-us.
-      // ONE link now, and it keeps the "Help" wording deliberately: DBIM 5.6
-      // names Help as a required element, and satisfying it by inference from a
-      // column heading is the kind of thing an auditor is right to reject.
-      // Contact is still reachable — the support strip's CTA and the address
-      // above it both lead to the same page.
-      { label: "Help & Support", href: "/website/contact-us" },
+      // TWO entries, and they are about to be two destinations. "Help &
+      // Support" is where you report a problem WITH the site; "Contact Us" is
+      // where you reach the department about a scheme. DBIM 5.6 names Help as
+      // a required element in its own right, so it keeps its own row.
+      { label: "Help & Support", href: SUPPORT_PORTAL_HREF },
+      { label: "Contact Us", href: "/website/contact-us" },
       { label: "RTI", href: "/website/rti" },
       { label: "Sitemap", href: "/website/sitemap" },
     ],
@@ -199,7 +215,7 @@ export function SiteFooter({ lastUpdated }: SiteFooterProps = {}) {
          mean something — as a bare button in the identity column it did not. */
       supportStrip={{
         heading: "Need help with a scheme or an application?",
-        body: "Write to the department and an officer will respond. For urgent grievances, use CPGRAMS.",
+        body: "Write to the department and an officer will respond.",
         cta: { label: "Get in Touch", href: "/website/contact-us" },
       }}
       social={social}
