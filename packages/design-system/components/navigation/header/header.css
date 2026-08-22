@@ -201,17 +201,23 @@
 }
 
 /* Portal collapse / menu toggle (far left).
-   Figma: Navbar/MenuToggle = IconButton Size=Default — 40x40, radius 8,
-   transparent, 24px glyph. It was 32x32 with a 28px glyph, a size that is on
-   neither the IconButton scale (32/40/48) nor the icon scale (16/20/24/32/…). */
+   Figma: Navbar/MenuToggle = IconButton Size=Large, Type=Outlined — 48x48,
+   radius 8, 1px neutral border, 32px glyph. Identical to the mobile SheetToggle,
+   deliberately: one hamburger look across the estate.
+
+   It was a bare 40x40 with a 24px glyph — the only control in the brand row with
+   no container, beside a 58px emblem and a 48px avatar. It read as decoration,
+   and it announced itself as a control only on hover, which is the wrong trade on
+   a government service. (Before that, 32x32 with a 28px glyph: a size on neither
+   the IconButton scale nor the icon scale.) */
 .ds-hdr-brand__toggle {
   display: inline-grid;
   place-items: center;
-  height: 40px;
-  width: 40px;
+  height: 48px;
+  width: 48px;
   flex: 0 0 auto;
   padding: var(--sa-padding-8);
-  border: none;
+  border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-8);
   background: transparent;
   color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
@@ -236,43 +242,17 @@
   flex: 0 0 auto;
 }
 
-/* Search field (button styled as a search box) — 56px, r8, stroke border */
+/* Masthead search.
+   This is now the shared DS <Search> (.ds-search), not a button dressed as one —
+   the same atom every other screen uses, and the same component Figma's masthead
+   embeds. Only PLACEMENT belongs here: width, and the breakpoint below which the
+   field is not worth its space. Height, border, radius and the icons come from
+   .ds-search, so the masthead can no longer drift from the field it copied. */
 .ds-hdr-searchfield {
   display: none;
-  align-items: center;
-  gap: var(--sa-stack-4);
-  height: 56px;
   width: 417px;
   max-width: 40vw;
-  padding: 0 var(--sa-padding-8) 0 var(--sa-padding-4);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-8);
-  background-color: var(--sa-bg-neutral-base);
-  cursor: text;
-}
-
-.ds-hdr-searchfield:hover {
-  border-color: var(--sa-border-neutral-base, var(--sa-border-neutral-subtle));
-}
-
-.ds-hdr-searchfield__icon {
-  display: inline-grid;
-  place-items: center;
-  padding: var(--sa-padding-8);
-  color: var(--sa-text-neutral-base);
-}
-
-.ds-hdr-searchfield__placeholder {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.5px;
-  text-align: left;
-  color: var(--sa-text-neutral-subtle);
+  flex: 0 0 auto;
 }
 
 @media (min-width: 900px) {
@@ -319,9 +299,9 @@
   box-shadow: 0 0 0 3px var(--sa-focus-ring);
 }
 
+/* Font glyph: it sizes from the `size` prop, so no width/height here — those
+   would not resize it and could only clip it. */
 .ds-hdr-account__caret {
-  width: 16px;
-  height: 16px;
   flex: 0 0 auto;
   color: var(--sa-text-neutral-subtle);
 }
@@ -874,4 +854,166 @@
   .ds-hdr-drawer__actions {
     display: none;
   }
+}
+
+/* ── NavSheet ───────────────────────────────────────────────────────────────
+   Figma Navbar/NavSheet: a 344px overlay with its own header (brand lockup +
+   close), divider-separated 56px rows, expand_more on any row with children.
+   It replaced an inline disclosure that pushed the page down and had no close
+   control — the design has always been a sheet. */
+.ds-navsheet__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  /* The estate's one scrim token — same as Modal and SideSheet. */
+  background-color: var(--sa-overlay-neutral-boldest);
+}
+
+.ds-navsheet {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-end: 0;
+  z-index: 61;
+  width: min(344px, 100vw);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background-color: var(--sa-bg-neutral-base);
+  box-shadow: var(--sa-elevation-card);
+}
+
+@media (min-width: 1024px) {
+  .ds-navsheet,
+  .ds-navsheet__scrim {
+    display: none;
+  }
+}
+
+.ds-navsheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-stack-12);
+  padding: var(--sa-padding-16) var(--sa-padding-24);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+/* Lockup inside the sheet.
+   Figma allots the sheet header 96px; the masthead's 20px department line wraps
+   to two in a 344px column and takes 129. The header's job here is orientation,
+   not proclamation — the reader arrived from the masthead that already said it —
+   so the stack steps down one rung. This is placement styling, the same call the
+   compact variant makes, not a second lockup component. */
+.ds-navsheet__header .ds-hdr-lockup__emblem {
+  height: 40px;
+}
+
+.ds-navsheet__header .ds-hdr-lockup__org {
+  font-size: 11px;
+  line-height: 14px;
+}
+
+.ds-navsheet__header .ds-hdr-lockup__ministry {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.ds-navsheet__header .ds-hdr-lockup__dept {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.ds-navsheet__close {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  /* 44px target — the sheet's only dismissal, so it gets the comfortable size. */
+  height: 44px;
+  width: 44px;
+  padding: var(--sa-padding-8);
+  border: none;
+  border-radius: var(--sa-shape-8);
+  background: transparent;
+  color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
+  cursor: pointer;
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+}
+
+.ds-navsheet__close:hover {
+  background-color: var(--sa-bg-neutral-subtler);
+}
+
+.ds-navsheet__actions {
+  display: flex;
+  padding: var(--sa-padding-16) var(--sa-padding-24);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+.ds-navsheet__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-navsheet__row {
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+.ds-navsheet__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-stack-12);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--sa-padding-16) var(--sa-padding-24);
+  border: none;
+  background: transparent;
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  color: var(--sa-text-neutral-base);
+  cursor: pointer;
+}
+
+.ds-navsheet__link:hover {
+  background-color: var(--sa-bg-neutral-subtler);
+}
+
+.ds-navsheet__link.is-active {
+  color: var(--sa-text-brand-primary-base);
+  font-weight: 600;
+}
+
+.ds-navsheet__caret {
+  flex: 0 0 auto;
+  color: var(--sa-icon-neutral-subtle, var(--sa-text-neutral-subtle));
+}
+
+.ds-navsheet__sub {
+  margin: 0;
+  padding: 0 0 var(--sa-padding-8) 0;
+  list-style: none;
+  background-color: var(--sa-bg-neutral-subtler);
+}
+
+.ds-navsheet__sublink {
+  display: block;
+  padding: var(--sa-padding-12) var(--sa-padding-24) var(--sa-padding-12) var(--sa-padding-40);
+  text-decoration: none;
+  color: var(--sa-text-neutral-subtle);
+}
+
+.ds-navsheet__sublink:hover {
+  color: var(--sa-text-neutral-base);
+  background-color: var(--sa-bg-neutral-subtle);
+}
+
+.ds-navsheet__close:focus-visible,
+.ds-navsheet__link:focus-visible,
+.ds-navsheet__sublink:focus-visible {
+  outline: 2px solid var(--sa-border-brand-primary-base);
+  outline-offset: -2px;
+  border-radius: var(--sa-shape-4);
 }

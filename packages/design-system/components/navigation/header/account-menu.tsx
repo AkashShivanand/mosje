@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Icon } from "../../icon";
 import { cn } from "../../../utils/cn";
 import type { AccountMenuItem, HeaderAccount } from "./types";
 import "./header.css";
@@ -78,9 +79,7 @@ export function AccountMenu({
         </span>
       )}
       {interactive && (
-        <svg className="ds-hdr-account__caret" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <Icon name="keyboard_arrow_down" size={16} className="ds-hdr-account__caret" />
       )}
     </>
   );

@@ -12,12 +12,19 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-22 · System version: v0.30.0 (THE NAVBAR IS ONE COMPONENT FOR ALL
+  Last reviewed: 2026-08-22 · System version: v0.31.0 (EVERY NAVBAR PART IS AN EXPORT —
+  MenuToggle, SheetToggle, NavItemLink, NavDropdown, DropdownItem, MegaMenu, MegaMenuItem
+  and the new NavSheet, which had no code counterpart at all. TWO TRIGGERS, DELIBERATELY:
+  MenuToggle drives a persistent sidebar and mirrors its state; SheetToggle opens an
+  overlay and has ONE glyph, because the sheet closes itself. Both are IconButton 48
+  Outlined — a bare 40px glyph was the only control in the brand row with no container.
+  The masthead search is the shared <Search>, not a button dressed as one. Previously
+  v0.30.0: (THE NAVBAR IS ONE COMPONENT FOR ALL
   THREE PLACEMENTS — website, portal and the new `compact` (hub index) variant; the hub's
   bespoke gate chrome is deleted. ALWAYS PASS `homeHref`: it defaulted to the hub root, so
   the emblem on every website page navigated out of the website. Every header glyph is now
   `<Icon>` (Material Symbols Rounded, wght 300) — the hand-rolled SVGs had drifted, and the
-  sidebar toggle now swaps `menu_open`/`menu` off `navExpanded`. Previously v0.29.0: THE ASSISTANT IS CALLED SAMAJIK
+  sidebar toggle now swaps `menu_open`/`menu` off `navExpanded`.) Previously v0.29.0: THE ASSISTANT IS CALLED SAMAJIK
   SAHAYAK — सामाजिक सहायक — which is the name written on the seal it wears and the name
   of the live assistant on dosje.gov.in. The Figma mock's "Noddy" shipped briefly and was
   wrong three ways: it contradicted the badge, it contradicted the live service, and it is
@@ -1739,6 +1746,18 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
   `IcMenu`/`IcSearch`/`IcCaret` until v0.30.0 and all three had drifted from the library —
   the toggle never swapped to `menu_open`, and the mega-menu chevron was a caret rotated
   −90°. A font icon cannot drift, because the name *is* the contract.
+- **`search` renders the shared `<Search>`, not a lookalike.** It was a `<button>` styled as
+  a search box, which is precisely how it drifted from the field it copied. Figma has always
+  embedded the shared component here. `onSearch` receives the typed query, so the masthead
+  hands it to the results page instead of discarding it.
+- **Two triggers, and they are not interchangeable.** `MenuToggle` drives a **persistent
+  sidebar**: the sidebar is on screen either way, so the control shows which way it will go
+  and takes `navExpanded`. `SheetToggle` opens `NavSheet`, an **overlay** dismissed by its
+  own close button — one glyph, no state. Putting a sidebar-shaped property on the overlay
+  trigger describes something that does not exist.
+- **The parts are importable.** `MenuToggle`, `SheetToggle`, `NavItemLink`, `NavDropdown`,
+  `DropdownItem`, `MegaMenu`, `MegaMenuItem` and `NavSheet` are exported. Reach for one when
+  a surface needs that piece **without** the masthead; do not re-implement it beside one.
 
 #### BrandLockup
 **Purpose**: The National Emblem plus the government text stack — BETA badge on its

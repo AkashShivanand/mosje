@@ -128,3 +128,30 @@
 .ds-search--disabled .ds-search__input {
   cursor: not-allowed;
 }
+
+/* Leading icon as a submit control — present only when `onSubmit` is passed
+   (the masthead case). Without it the icon stays a decorative <span>, so a
+   plain filter field gains no phantom button. */
+.ds-search__icon--action {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  height: 32px;
+  width: 32px;
+  padding: 0;
+  border: none;
+  border-radius: var(--sa-shape-8);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+}
+
+.ds-search__icon--action:hover {
+  background-color: var(--sa-bg-neutral-subtler);
+}
+
+.ds-search__icon--action:focus-visible {
+  outline: 2px solid var(--sa-border-brand-primary-base);
+  outline-offset: -2px;
+}

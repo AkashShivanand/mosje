@@ -353,6 +353,25 @@ export default function HeaderPage(): React.JSX.Element {
           </p>
         </div>
 
+        <h3 id="parts" style={{ ...h3Style, scrollMarginTop: "var(--sa-section-48)" }}>The parts, on their own</h3>
+        <p style={proseStyle}>
+          Every piece the Figma Navbar page names is an export:{" "}
+          <code>MenuToggle</code>, <code>SheetToggle</code>, <code>NavItemLink</code>,{" "}
+          <code>NavDropdown</code>, <code>DropdownItem</code>, <code>MegaMenu</code>,{" "}
+          <code>MegaMenuItem</code>, <code>NavSheet</code>. Import one when a surface
+          needs that piece <em>without</em> the masthead — until v0.31.0 they were
+          inline markup, so the only way to reuse a mega-menu was to rebuild it.
+        </p>
+        <p style={proseStyle}>
+          <strong>The two triggers are not interchangeable.</strong>{" "}
+          <code>MenuToggle</code> drives a <em>persistent sidebar</em>: the sidebar is
+          on screen either way, so the control shows which way it will go and takes{" "}
+          <code>navExpanded</code>. <code>SheetToggle</code> opens <code>NavSheet</code>,
+          an <em>overlay</em> dismissed by its own close button — one glyph, no state.
+          A sidebar-shaped property on the overlay trigger describes something that
+          does not exist.
+        </p>
+
         <h3 id="compact" style={{ ...h3Style, scrollMarginTop: "var(--sa-section-48)" }}>Compact variant</h3>
         <p style={proseStyle}>
           For internal index / wayfinding surfaces that are <em>not</em> public
@@ -380,7 +399,7 @@ export default function HeaderPage(): React.JSX.Element {
           props={[
             { name: "variant", type: '"website" | "portal" | "compact"', description: "Estate surface. Sets defaults (portal/compact ⇒ sticky on; compact drops the accessibility bar and moves nav inline) and documents intent. Explicit props always win." },
             { name: "homeHref", type: "string", description: 'Where the brand lockup links. ALWAYS pass it — the default "/" is the hub root, so a website page that omits it sends the emblem to the estate index instead of the site the reader is on.' },
-            { name: "navExpanded", type: "boolean", description: "Portal: state of the sidebar the toggle drives. true ⇒ menu_open glyph, false ⇒ menu. Also drives aria-expanded." },
+            { name: "navExpanded", type: "boolean", description: "Portal: state of the sidebar the toggle drives. true ⇒ menu_open glyph, false ⇒ menu. Also drives aria-expanded. Only meaningful for MenuToggle — SheetToggle opens an overlay and has no second state." },
             { name: "navControlsId", type: "string", description: "Portal: id of the sidebar the toggle controls (aria-controls). Pass the same id to SidebarNav." },
             { name: "emblemSrc", type: "string", required: true, description: "National Emblem URL (basePath-aware; the DS renders a plain <img>)." },
             { name: "brandLines", type: "{ org?, ministry?, department }", required: true, description: "Government text lockup — GoI, Ministry, Department (+ optional BETA badge)." },
