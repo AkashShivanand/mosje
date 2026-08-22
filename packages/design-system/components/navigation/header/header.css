@@ -56,6 +56,14 @@
   height: 44px;
 }
 
+/* Inverse ground (navy mastheads). One token swap, so a dark masthead is a
+   property of the lockup rather than a reason to rebuild it in white. */
+.ds-hdr-lockup.is-inverse .ds-hdr-lockup__org,
+.ds-hdr-lockup.is-inverse .ds-hdr-lockup__ministry,
+.ds-hdr-lockup.is-inverse .ds-hdr-lockup__dept {
+  color: var(--sa-text-neutral-inverse);
+}
+
 /* Blue radial-gradient divider between emblem and text (portal navbar) */
 .ds-hdr-lockup__divider {
   align-self: stretch;

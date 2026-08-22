@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BrandLockup } from "@mosje/design-system";
 
 /**
  * TG portal landing — two entry points mirroring the two live subdomains:
@@ -12,20 +13,19 @@ export default function TgLandingPage() {
     <main className="min-h-screen bg-surface-muted">
       <header className="border-b border-line bg-navy text-white">
         <div className="container flex items-center gap-4 py-4">
-          <Image
-            src="/portals/tg/brand/national-emblem-white.svg"
-            alt="National Emblem of India"
-            width={44}
-            height={62}
-            className="h-11 w-auto"
+          {/* Identity from the DS lockup. `inverse` is what the hand-rolled
+              white text was reaching for — now one prop, not a retyped stack. */}
+          <BrandLockup
+            emblemSrc="/portals/tg/brand/national-emblem-white.svg"
+            lines={{
+              org: "Government of India",
+              ministry: "Ministry of Social Justice & Empowerment",
+              department: "Department of Social Justice & Empowerment",
+            }}
+            href="/portals/tg"
+            compact
+            inverse
           />
-          <div className="leading-tight">
-            <p className="text-xs text-white/80">Government of India</p>
-            <p className="text-sm font-semibold">Ministry of Social Justice &amp; Empowerment</p>
-            <p className="text-xs font-semibold text-white/90">
-              Department of Social Justice &amp; Empowerment
-            </p>
-          </div>
           <div className="ml-auto flex items-center gap-3">
             <Image
               src="/portals/tg/brand/digital-india-white.svg"

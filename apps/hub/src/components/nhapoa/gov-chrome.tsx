@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { AccessibilityBar } from "@mosje/design-system";
+import { AccessibilityBar, BrandLockup } from "@mosje/design-system";
 
 const BASE = "/portals/nhapoa";
 
@@ -29,25 +29,16 @@ export function GovMasthead({ right }: { right?: React.ReactNode }) {
   return (
     <header className="border-b border-line bg-white">
       <div className="flex items-center justify-between gap-4 px-4 py-3">
-        <div className="flex items-center gap-3">
-          <Image
-            src={`${BASE}/brand/national-emblem.svg`}
-            alt="National Emblem of India"
-            width={44}
-            height={62}
-            className="h-14 w-auto"
-          />
-          <div className="leading-tight">
-            <span className="inline-block rounded bg-amber-300/80 px-1.5 py-0.5 text-[10px] font-bold text-amber-900">
-              BETA
-            </span>
-            <div className="mt-0.5 text-[11px] text-ink-muted">Government of India</div>
-            <div className="text-lg font-bold text-ink">
-              SAMBAL <span className="font-semibold text-ink-muted">संबल</span>
-            </div>
-            <div className="text-[11px] text-ink-muted">National Helpline Against Atrocities</div>
-          </div>
-        </div>
+        {/* Identity comes from the DS lockup — never retyped. The emblem, the
+            line order and the BETA badge are estate policy, and a hand-rolled
+            copy is a place for them to drift. */}
+        <BrandLockup
+          emblemSrc={`${BASE}/brand/national-emblem.svg`}
+          lines={{ org: "Government of India", ministry: "National Helpline Against Atrocities", department: "SAMBAL \u0938\u0902\u092c\u0932" }}
+          href={BASE}
+          beta
+          compact
+        />
         <div className="flex items-center gap-5">
           <Image
             src={`${BASE}/brand/digital-india.svg`}

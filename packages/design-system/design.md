@@ -12,13 +12,18 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-22 · System version: v0.31.0 (EVERY NAVBAR PART IS AN EXPORT —
+  Last reviewed: 2026-08-22 · System version: v0.32.0 (NO HAND-ROLLED MASTHEAD OR
+  ACCESSIBILITY BAR EXISTS ANYWHERE — `npm run check:chrome` fails the build on one.
+  Twelve sites were converted, including a second accessibility bar INSIDE the design
+  system and an invented abstract mark where the National Emblem belongs. Code Connect
+  now covers the whole navbar family (10 templates, 12 recorded fixtures). Previously
+  v0.31.0: (EVERY NAVBAR PART IS AN EXPORT —
   MenuToggle, SheetToggle, NavItemLink, NavDropdown, DropdownItem, MegaMenu, MegaMenuItem
   and the new NavSheet, which had no code counterpart at all. TWO TRIGGERS, DELIBERATELY:
   MenuToggle drives a persistent sidebar and mirrors its state; SheetToggle opens an
   overlay and has ONE glyph, because the sheet closes itself. Both are IconButton 48
   Outlined — a bare 40px glyph was the only control in the brand row with no container.
-  The masthead search is the shared <Search>, not a button dressed as one. Previously
+  The masthead search is the shared <Search>, not a button dressed as one.) Previously
   v0.30.0: (THE NAVBAR IS ONE COMPONENT FOR ALL
   THREE PLACEMENTS — website, portal and the new `compact` (hub index) variant; the hub's
   bespoke gate chrome is deleted. ALWAYS PASS `homeHref`: it defaulted to the hub root, so
@@ -1755,6 +1760,19 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
   and takes `navExpanded`. `SheetToggle` opens `NavSheet`, an **overlay** dismissed by its
   own close button — one glyph, no state. Putting a sidebar-shaped property on the overlay
   trigger describes something that does not exist.
+- **NO HAND-ROLLED MASTHEAD OR ACCESSIBILITY BAR EXISTS, ANYWHERE, EVER.** Both are
+  trivial to retype — an emblem, a government line, a skip link, an A−/A/A+ stepper —
+  and every retyped copy is a place where GIGW compliance, the emblem rule, the
+  font-size mechanism and the brand tokens drift independently. They had.
+  `npm run check:chrome` (`tools/chrome-single-source/check.mjs`) fails the build on
+  any `<header>` or masthead-named component that renders the government identity
+  without `<SiteHeader>`/`<BrandLockup>`, or any skip link / text-size stepper
+  outside `<AccessibilityBar>`. Exemptions live in that script, in code, with a
+  reason — never inline. Footers and body copy are content, not chrome, and are out
+  of its scope. Twelve sites were converted when the gate went in, including a
+  SECOND ACCESSIBILITY BAR INSIDE THE DESIGN SYSTEM (`portal-login-shell`, with two
+  skip links to one target and ◑ ♿ 🌐 as literal emoji) and an INVENTED ABSTRACT
+  MARK where the National Emblem belongs (`eutthan-shell`).
 - **The parts are importable.** `MenuToggle`, `SheetToggle`, `NavItemLink`, `NavDropdown`,
   `DropdownItem`, `MegaMenu`, `MegaMenuItem` and `NavSheet` are exported. Reach for one when
   a surface needs that piece **without** the masthead; do not re-implement it beside one.

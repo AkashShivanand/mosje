@@ -66,5 +66,226 @@
       }
     },
     "deliberatelyOmitted": []
+  },
+  "SiteHeader": {
+    "nodeId": "4235:3169",
+    "captured": "2026-08-22",
+    "properties": {
+      "Login Signup#2198:4": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Search#2210:0": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Show Menu#55783:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "On Scroll"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Device",
+      "State"
+    ]
+  },
+  "MenuToggle": {
+    "nodeId": "55783:4565",
+    "captured": "2026-08-22",
+    "properties": {
+      "Sidebar": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Expanded",
+          "Collapsed"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "SheetToggle": {
+    "nodeId": "55798:4566",
+    "captured": "2026-08-22",
+    "properties": {},
+    "deliberatelyOmitted": []
+  },
+  "NavItemLink": {
+    "nodeId": "2065:292757",
+    "captured": "2026-08-22",
+    "properties": {
+      "Label#2065:0": {
+        "type": "TEXT",
+        "defaultValue": "Label"
+      },
+      "Type": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Dropdown"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Focused",
+          "Hover",
+          "Disabled"
+        ]
+      },
+      "Active": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "False",
+          "True"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Type",
+      "State"
+    ]
+  },
+  "NavDropdown": {
+    "nodeId": "4300:1950",
+    "captured": "2026-08-22",
+    "properties": {
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Device"
+    ]
+  },
+  "DropdownItem": {
+    "nodeId": "4299:1940",
+    "captured": "2026-08-22",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused",
+          "Disabled"
+        ]
+      },
+      "Active": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "False",
+          "True"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "State"
+    ]
+  },
+  "MegaMenu": {
+    "nodeId": "4268:914",
+    "captured": "2026-08-22",
+    "properties": {
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Mobile",
+          "Tablet"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Device"
+    ]
+  },
+  "MegaMenuItem": {
+    "nodeId": "4258:33604",
+    "captured": "2026-08-22",
+    "properties": {
+      "Org logo#4359:0": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "4273:696"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused",
+          "Disabled"
+        ]
+      },
+      "Active": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "False",
+          "True"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Org logo#4359:0",
+      "State"
+    ]
+  },
+  "NavSheet": {
+    "nodeId": "55327:3503",
+    "captured": "2026-08-22",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Expanded",
+          "Default",
+          "Mega"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "State"
+    ]
+  },
+  "BrandLockup": {
+    "nodeId": "4235:3652",
+    "captured": "2026-08-22",
+    "properties": {
+      "Show beta#4512:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Device"
+    ]
   }
 }

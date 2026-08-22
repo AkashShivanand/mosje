@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AccessibilityBar, Icon, buttonClasses } from "@mosje/design-system";
+import { AccessibilityBar, BrandLockup, Icon, buttonClasses } from "@mosje/design-system";
 import { cn } from "@/lib/nmba/utils";
 
 const BASE = "/portals/nmba";
@@ -55,20 +54,17 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       {/* Masthead */}
       <header className="border-b border-line bg-white">
         <div className="flex items-center justify-between gap-4 px-4 py-3">
-          <div className="flex items-center gap-3">
-            <Image
-              src={`${BASE}/brand/national-emblem.svg`}
-              alt="National Emblem of India"
-              width={44}
-              height={62}
-              className="h-14 w-auto"
-            />
-            <div className="leading-tight">
-              <div className="text-[10px] text-ink-muted">Government of India</div>
-              <div className="text-[11px] text-ink-muted">Ministry of Social Justice &amp; Empowerment</div>
-              <div className="text-sm font-bold text-ink">Department of Social Justice &amp; Empowerment</div>
-            </div>
-          </div>
+          {/* Identity from the DS lockup — never retyped. */}
+          <BrandLockup
+            emblemSrc={`${BASE}/brand/national-emblem.svg`}
+            lines={{
+              org: "Government of India",
+              ministry: "Ministry of Social Justice & Empowerment",
+              department: "Department of Social Justice & Empowerment",
+            }}
+            href={BASE}
+            compact
+          />
           <div className="flex items-center gap-3">
             {/* Language switcher */}
             <div className="relative">
