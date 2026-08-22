@@ -1,25 +1,117 @@
+/* ── ProfileCard ──────────────────────────────────────────────────────────
+   Plain CSS on `--sa-*` tokens. See the note at the top of accordion.css for
+   why `@apply` had to go: only the hub runs Tailwind, so in Storybook these
+   rules reached the browser as literal text and the card rendered unstyled,
+   while in the hub the same lines broke the production build.
+
+   The tag ground is a token, not `#003366`. That literal froze the pill to
+   navy regardless of `data-brand`; `primaryScale-800` is the darkest brand
+   ground and follows the mode.
+
+   The hover zoom moved off Tailwind's `group-hover:` here. `group` is a marker
+   class and cannot be `@apply`-ed at all — it only works when written on the
+   element — so this is a plain descendant hover, which needs no marker and
+   works in every consumer. */
+
 .sa-profile-card {
-  @apply bg-white rounded-2xl border border-neutral-200 shadow-md hover:shadow-lg transition-shadow flex flex-col overflow-hidden group;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-16);
+  background-color: var(--sa-bg-neutral-base);
+  box-shadow: var(--sa-elevation-card);
+  transition: box-shadow var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
 }
+
+.sa-profile-card:hover {
+  box-shadow: var(--sa-elevation-raised);
+}
+
 .sa-profile-card__image-wrapper {
-  @apply relative w-full h-80 sm:h-96 bg-neutral-100 overflow-hidden;
+  position: relative;
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  background-color: var(--sa-bg-neutral-subtler);
 }
-/* Expecting the child image to fill the wrapper. If it's a native img: */
+
+@media (min-width: 640px) {
+  .sa-profile-card__image-wrapper {
+    height: 384px;
+  }
+}
+
+/* Styles the image the caller passes in, so a plain `<img>` needs no classes.
+   `object-position: top` because a portrait cropped from the centre cuts off
+   foreheads. */
 .sa-profile-card__image-wrapper > img {
-  @apply w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform var(--sa-motion-emphasis-duration) var(--sa-motion-emphasis-easing);
 }
+
+.sa-profile-card:hover .sa-profile-card__image-wrapper > img {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-profile-card:hover .sa-profile-card__image-wrapper > img {
+    transform: none;
+  }
+}
+
+/* Text over an uncontrolled photograph. The translucent dark ground plus the
+   blur is what keeps it legible; check it against real portraits, not a box. */
 .sa-profile-card__tag {
-  @apply absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#003366]/80 backdrop-blur-sm py-1.5 px-4 rounded-full text-white shadow-sm flex items-center justify-center;
+  position: absolute;
+  inset-block-end: var(--sa-padding-16);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sa-padding-4) var(--sa-padding-16);
+  border-radius: var(--sa-shape-full);
+  background-color: color-mix(in srgb, var(--sa-color-primaryScale-800) 80%, transparent);
+  backdrop-filter: blur(4px);
+  box-shadow: var(--sa-elevation-card);
+  color: var(--sa-text-neutral-inverse);
 }
+
 .sa-profile-card__tag-text {
-  @apply text-xs font-semibold tracking-wider whitespace-nowrap;
+  font-size: var(--sa-type-body-3-size);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
+
 .sa-profile-card__content {
-  @apply w-full p-6 text-left space-y-1 bg-white relative z-10 border-t border-neutral-100;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-4);
+  width: 100%;
+  padding: var(--sa-padding-24);
+  border-top: 1px solid var(--sa-border-neutral-subtle);
+  background-color: var(--sa-bg-neutral-base);
+  text-align: start;
 }
+
 .sa-profile-card__title {
-  @apply text-lg font-bold text-neutral-900;
+  margin: 0;
+  font-size: var(--sa-type-title-2-size);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--sa-text-neutral-bolder);
 }
+
 .sa-profile-card__subtitle {
-  @apply text-sm font-medium text-neutral-600;
+  margin: 0;
+  font-size: var(--sa-type-body-2-size);
+  font-weight: 500;
+  color: var(--sa-text-neutral-subtle);
 }

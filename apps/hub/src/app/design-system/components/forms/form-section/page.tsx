@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { FormSectionPlayground } from "./form-section-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "FormSection - SAMAVESH Design System",
@@ -72,7 +72,7 @@ export default function FormSectionPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
-          Use <code>FormSection</code> to group related form fields logically (e.g., "Personal Details", "Address", "Banking Information"). This is the standard way to build forms across the SAMAVESH estate, ensuring a consistent rhythm and responsive behaviour.
+          Use <code>FormSection</code> to group related form fields logically (e.g., “Personal Details”, “Address”, “Banking Information”). This is the standard way to build forms across the SAMAVESH estate, ensuring a consistent rhythm and responsive behaviour.
         </p>
         <div
           style={{

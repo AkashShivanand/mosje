@@ -1,8 +1,19 @@
 "use client";
 import * as React from "react";
-import { useToast, Button } from "@mosje/design-system";
+import { ToastProvider, useToast, Button } from "@mosje/design-system";
 
+/* `useToast` throws outside a provider, so the playground has to supply one.
+   Without it the page compiled but died at prerender with "useToast must be
+   used inside <ToastProvider>", taking the whole build with it. */
 export function ToastPlayground() {
+  return (
+    <ToastProvider>
+      <ToastPlaygroundBody />
+    </ToastProvider>
+  );
+}
+
+function ToastPlaygroundBody() {
   const { toast } = useToast();
   const [variant, setVariant] = React.useState<"success" | "info" | "warning" | "error">("success");
   const [message, setMessage] = React.useState("Application saved successfully.");
@@ -33,7 +44,7 @@ export function ToastPlayground() {
           <strong>Variant:</strong>
           <select 
             value={variant} 
-            onChange={(e) => setVariant(e.target.value as any)}
+            onChange={(e) => setVariant(e.target.value as "success" | "info" | "warning" | "error")}
             style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)" }}
           >
             <option value="success">Success</option>

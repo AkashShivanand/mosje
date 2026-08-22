@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { PanInputPlayground } from "./pan-input-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "PanInput - SAMAVESH Design System",
@@ -72,7 +72,7 @@ export default function PanInputPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
-          PAN collection is extremely common across MoSJE portals for verification and direct benefit transfers. This component handles all the UX edge cases—like autocorrect fighting the user, or users getting yelled at for typing lowercase letters—so you don't have to.
+          PAN collection is extremely common across MoSJE portals for verification and direct benefit transfers. This component handles all the UX edge cases—like autocorrect fighting the user, or users getting yelled at for typing lowercase letters—so you don’t have to.
         </p>
         <div
           style={{
@@ -125,8 +125,8 @@ export default function PanInputPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Auto-Correction:</strong> Disables <code>spellCheck</code>, <code>autoCorrect</code>, and <code>autoComplete</code> by default. A PAN is not a word, and the browser trying to 'fix' it is a major frustration for users on mobile devices.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Internal Validation:</strong> The input sets <code>aria-invalid="true"</code> automatically if the user types a full 10-character string that fails the PAN structural validation.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Auto-Correction:</strong> Disables <code>spellCheck</code>, <code>autoCorrect</code>, and <code>autoComplete</code> by default. A PAN is not a word, and the browser trying to ’fix’ it is a major frustration for users on mobile devices.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Internal Validation:</strong> The input sets <code>aria-invalid=“true”</code> automatically if the user types a full 10-character string that fails the PAN structural validation.</li>
         </ul>
       </section>
 

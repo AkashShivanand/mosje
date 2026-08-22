@@ -37,6 +37,11 @@ import {
 const meta = {
   title: "Components/Navigation/Navbar parts",
   component: MenuToggle,
+  /* Every story below supplies its own markup via `render`, but the meta's
+     component has a REQUIRED `onToggle`, so without a default here each story
+     is type-checked as missing it. Defaults on the meta, not `args: {}` on
+     eight stories. */
+  args: { expanded: false, onToggle: () => {} },
   parameters: { layout: "padded" },
 } satisfies Meta<typeof MenuToggle>;
 

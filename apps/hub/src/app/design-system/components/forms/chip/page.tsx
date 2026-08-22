@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { ChipPlayground } from "./chip-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "Chip - SAMAVESH Design System",
@@ -103,7 +103,7 @@ export default function ChipPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <p style={proseStyle}>
-          Here's how to create a dismissible filter tag.
+          Here’s how to create a dismissible filter tag.
         </p>
         <Playground
           code={`const [filters, setFilters] = React.useState(["Active", "Pending"]);
@@ -128,8 +128,8 @@ return (
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Operable:</strong> If <code>onSelectedChange</code> is provided, the chip receives a <code>tabIndex</code> and can be toggled via Space or Enter.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Roles:</strong> Interactive chips receive <code>role="button"</code> and <code>aria-pressed</code> to announce their toggle state to screen readers.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Dismiss Button:</strong> The trailing dismiss cross is a real <code>&lt;button&gt;</code> with an explicit <code>aria-label</code> (defaults to "Remove").</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Roles:</strong> Interactive chips receive <code>role=“button”</code> and <code>aria-pressed</code> to announce their toggle state to screen readers.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Dismiss Button:</strong> The trailing dismiss cross is a real <code>&lt;button&gt;</code> with an explicit <code>aria-label</code> (defaults to “Remove”).</li>
         </ul>
       </section>
 

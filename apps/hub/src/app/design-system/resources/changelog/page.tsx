@@ -22,9 +22,21 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.43.0",
+    date: "2026-08-22",
+    current: true,
+    changes: [
+      { kind: "Added", text: "STORIES AND DOCS FOR `Accordion`/`AccordionItem`, `VerticalTimeline`/`VerticalTimelineItem` AND `ProfileCard`, which shipped with neither and had both coverage gates red since. Each entry says what the component is for and \u2014 the part that was missing \u2014 when NOT to reach for it. Most usefully: THE ESTATE NOW HAS TWO TIMELINES. `VerticalTimeline` is editorial, a dated chronology on a public page; `ApprovalTimeline` is a record, the audit trail of one application moving Block \u2192 District \u2192 State. If the thing has a status, an actor and consequences it is the second one" },
+      { kind: "Fixed", text: "THOSE THREE COMPONENTS RENDERED WITH NO STYLES AT ALL IN STORYBOOK, and it was the same root cause that broke the hub\u2019s production build. Their CSS used Tailwind `@apply`, but the design system is consumed by two builds \u2014 Next/Turbopack for the hub, Vite for Storybook \u2014 and only the hub runs Tailwind. Storybook has no Tailwind at all: no config, no dependency, no plugin. So the `@apply` lines survived into the bundle as literal text, which a browser discards as an unknown at-rule. Converted to plain CSS on `--sa-*` tokens, which is the house pattern and here it is load-bearing rather than a preference" },
+      { kind: "Fixed", text: "AND THE SAME FOR `ActionBanner`, the fourth component from that commit and the last `@apply` in the package. Its literals had to be retoned rather than carried over: keeping `from-blue-50 to-indigo-50` would have traded a build failure for a `check:ds-linkage` failure. Indigo is not a SAMAVESH colour anyway, and a literal palette cannot follow `data-brand`" },
+      { kind: "Fixed", text: "THREE MORE FILES CARRIED SHELL ESCAPING INTO SOURCE \u2014 `\\`` and `\\${` written literally in otp-input, search and password-strength-meter playgrounds. Each one is an unterminated template literal that swallows the rest of the file, and between them they were masking five type errors behind the parse failure: a Button variant that does not exist, a Callout given a prop it does not take (twice), and OtpInput\u2019s `onChange` where the API is `onValueChange`" },
+      { kind: "Removed", text: "`lucide-react` IS BACK OUT. Two playgrounds re-imported it \u2014 and it is declared as a dependency nowhere in the repo, so the hub build failed with \u201cModule not found\u201d on any clean install. v0.31.0 records the estate going off lucide entirely; the icons are now `<Icon>` with Material Symbols names, as CLAUDE.md and design.md have always specified" },
+      { kind: "Changed", text: "The `ProfileCard` image slot needs no classes of its own now \u2014 the stylesheet owns object-fit, top cropping and the hover zoom for a direct `> img` child. The About Us call site\u2019s `group-hover:scale-105` was inert regardless: `group` is a marker class and only ever existed inside an `@apply`, which never compiled" },
+    ],
+  },
+  {
     version: "v0.42.0",
     date: "2026-08-20",
-    current: true,
     changes: [
       { kind: "Added", text: "`SiteFooter` \u2014 THE PUBLIC-WEBSITE FOOTER, NOW A DESIGN-SYSTEM COMPONENT. Two bands: the working footer (identity, address, one CTA, social, four link columns) and the statutory bar (lineage, policies, related links, credits, copyright, last-updated). It is structural, not content-bound \u2014 every label, href and sentence arrives as a prop \u2014 so a second site in the estate gets the same footer by passing its own content. Distinct from `Footer`, which is the slim app-shell strip under an authenticated portal workflow; the two answer to different clauses and must not be merged" },
       { kind: "Fixed", text: "THE FOOTER COULD NOT ANSWER TO `data-brand`, AND NOTHING SAID SO. It painted `bg-navy`, a Tailwind utility whose bare name is declared TWICE in the hub\u2019s globals.css \u2014 once in `@theme inline` bound to `--sa-color-brand-navy`, and again in the later portal-only `@theme` as the LITERAL `#13366b`. The literal won every time, so the first declaration was a lie the estate read as truth: `bg-navy` looked token-bound and mode-reactive and was neither. The dead declaration is removed and the surviving one is documented as portal-owned; 113 of the 130 bare-navy call sites are portal surfaces that genuinely want that rung, so flipping it would have been the wrong fix" },

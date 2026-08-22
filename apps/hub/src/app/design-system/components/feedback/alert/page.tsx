@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { AlertPlayground } from "./alert-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist, Callout, StatusBadge } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont, A11yChecklist, Callout } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "Alert - SAMAVESH Design System",
@@ -53,7 +53,7 @@ export default function AlertPage(): React.JSX.Element {
           Alert
         </h1>
         <p className="ds-lead" style={leadStyle}>
-          Alerts display important, prominently placed messages that require the user's attention. They communicate status, warnings, errors, or info without interrupting the user's flow.
+          Alerts display important, prominently placed messages that require the user’s attention. They communicate status, warnings, errors, or info without interrupting the user’s flow.
         </p>
       </header>
 

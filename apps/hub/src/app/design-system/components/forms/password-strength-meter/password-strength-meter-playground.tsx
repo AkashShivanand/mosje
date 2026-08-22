@@ -5,7 +5,7 @@ import { PasswordStrengthMeter, FormField, PasswordInput } from "@mosje/design-s
 export function PasswordStrengthMeterPlayground() {
   const [password, setPassword] = React.useState("");
   const reactId = React.useId();
-  const meterId = \`\${reactId}-meter\`;
+  const meterId = `${reactId}-meter`;
 
   // A very crude simulation of zxcvbn for playground purposes only.
   const getScore = (pw: string): 0 | 1 | 2 | 3 | 4 | null => {

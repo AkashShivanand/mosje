@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { MediaUploadPlayground } from "./media-upload-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "MediaUpload - SAMAVESH Design System",
@@ -135,7 +135,7 @@ export default function MediaUploadPage(): React.JSX.Element {
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Operable:</strong> The entire dropzone area is a <code>&lt;button&gt;</code>, making it fully operable via the keyboard (Space/Enter). The hidden native file input is bypassed via a ref click.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Error Feedback:</strong> Built-in size and type validation errors are rendered in a <code>role="alert"</code> container, immediately notifying screen reader users if their file was rejected.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Error Feedback:</strong> Built-in size and type validation errors are rendered in a <code>role=“alert”</code> container, immediately notifying screen reader users if their file was rejected.</li>
         </ul>
       </section>
 

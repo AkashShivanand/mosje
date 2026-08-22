@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { MediaGalleryInputPlayground } from "./media-gallery-input-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "MediaGalleryInput - SAMAVESH Design System",
@@ -61,7 +61,7 @@ export default function MediaGalleryInputPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
-          Upload multiple images or videos. Notice how the initial dropzone transforms into a thumbnail grid with a trailing "Add more" button once files are present.
+          Upload multiple images or videos. Notice how the initial dropzone transforms into a thumbnail grid with a trailing “Add more” button once files are present.
         </p>
         <div style={{ marginTop: "var(--sa-stack-24)" }}>
           <MediaGalleryInputPlayground />
@@ -127,9 +127,9 @@ export default function MediaGalleryInputPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Dropzone:</strong> Both the empty full-width dropzone and the "Add more" tile are native buttons, fully operable via keyboard.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Clear Removal:</strong> Each item in the gallery grid has a dedicated remove button with a descriptive <code>aria-label</code> (e.g., "Remove document.pdf").</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Error Feedback:</strong> Validation errors (wrong file type, exceeded capacity) are rendered in a <code>role="alert"</code> container to immediately notify screen reader users.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Dropzone:</strong> Both the empty full-width dropzone and the “Add more” tile are native buttons, fully operable via keyboard.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Clear Removal:</strong> Each item in the gallery grid has a dedicated remove button with a descriptive <code>aria-label</code> (e.g., “Remove document.pdf”).</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Error Feedback:</strong> Validation errors (wrong file type, exceeded capacity) are rendered in a <code>role=“alert”</code> container to immediately notify screen reader users.</li>
         </ul>
       </section>
 

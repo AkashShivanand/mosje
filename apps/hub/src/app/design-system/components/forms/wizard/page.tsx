@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { WizardPlayground } from "./wizard-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "Wizard - SAMAVESH Design System",
@@ -130,8 +130,8 @@ export default function WizardPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Focus Management:</strong> When moving between steps, the Wizard automatically moves keyboard focus to the main step body container. This ensures screen readers announce the new step content instead of getting stuck on the 'Continue' button.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Regions:</strong> Uses <code>aria-live="polite"</code> to announce step changes (e.g., "Step 2 of 3: Documents") to screen readers as they occur.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Focus Management:</strong> When moving between steps, the Wizard automatically moves keyboard focus to the main step body container. This ensures screen readers announce the new step content instead of getting stuck on the ’Continue’ button.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Regions:</strong> Uses <code>aria-live=“polite”</code> to announce step changes (e.g., “Step 2 of 3: Documents”) to screen readers as they occur.</li>
         </ul>
       </section>
 

@@ -25,7 +25,7 @@ export function SearchPlayground() {
           <strong>Size:</strong>
           <select 
             value={size} 
-            onChange={(e) => setSize(e.target.value as any)}
+            onChange={(e) => setSize(e.target.value as "sm" | "md" | "lg")}
             style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)" }}
           >
             <option value="sm">Small (sm)</option>
@@ -70,7 +70,7 @@ export function SearchPlayground() {
           disabled={disabled}
           placeholder="Search for schemes, guidelines..."
           onClear={withClear ? () => setValue("") : undefined}
-          onSubmit={withSubmit ? (val) => alert(\`Submitted search for: \${val}\`) : undefined}
+          onSubmit={withSubmit ? (val) => alert(`Submitted search for: ${val}`) : undefined}
         />
       </div>
     </div>

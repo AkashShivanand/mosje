@@ -1,12 +1,76 @@
+/* ── ActionBanner ─────────────────────────────────────────────────────────
+   Plain CSS on `--sa-*` tokens. See the note at the top of accordion.css:
+   only the hub runs Tailwind, so `@apply` in a design-system stylesheet
+   renders the component unstyled in Storybook and breaks the hub's production
+   build. This was the last file in the package still using it.
+
+   Retoning was forced by the conversion rather than chosen. The original
+   painted `bg-gradient-to-r from-blue-50 to-indigo-50` with a `blue-100`
+   border and `neutral-900/600` text; keeping those as literals would trade a
+   build failure for a `check:ds-linkage` failure, since the rule blocks
+   hardcoded colour. Binding them to the brand ramp also fixes what the
+   literals were doing wrong anyway: `indigo` is not a SAMAVESH colour and
+   appears nowhere else in the estate, a literal palette cannot answer to
+   `data-brand` so the panel stayed blue in navy, burgundy and green, and grey
+   text on a tinted ground reads as washed out where the secondary line should
+   be a deeper shade of the same tint.
+
+   The gradient went with them: two near-identical tints a fraction apart is
+   not a gradient anyone perceives, only a second colour to keep in sync.
+
+   NOTE FOR MERGES: ds/footer-redesign-variants rewrites this file more fully,
+   adding `banner`/`card` variants on the same reasoning. On conflict, take
+   that version — it supersedes this one. */
+
 .sa-action-banner {
-  @apply bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-inline-24);
+  padding: var(--sa-padding-32);
+  border: 1px solid var(--sa-color-primaryScale-200);
+  border-radius: var(--sa-shape-16);
+  background-color: var(--sa-bg-brand-primary-base);
+  box-shadow: var(--sa-elevation-card);
+  color: var(--sa-on-bg-brand-primary-base);
+  text-align: center;
 }
+
+@media (min-width: 640px) {
+  .sa-action-banner {
+    flex-direction: row;
+    text-align: start;
+  }
+}
+
 .sa-action-banner__content {
-  @apply space-y-1 text-center sm:text-left;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-4);
+  min-width: 0;
 }
+
 .sa-action-banner__title {
-  @apply text-xl sm:text-2xl font-bold text-neutral-900;
+  margin: 0;
+  font-size: var(--sa-type-title-1-size);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--sa-on-bg-brand-primary-base);
+  text-wrap: balance;
 }
+
+/* Same hue, deeper — never a neutral grey on a tinted ground. */
 .sa-action-banner__description {
-  @apply text-sm sm:text-base text-neutral-600;
+  margin: 0;
+  font-size: var(--sa-type-body-2-size);
+  line-height: 1.5;
+  color: var(--sa-color-primaryScale-800);
+}
+
+.sa-action-banner__action {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--sa-inline-12);
 }

@@ -2,8 +2,13 @@
 
 
 import Image from "next/image";
-import Link from "next/link";
-import { buttonClasses, Accordion, AccordionItem, VerticalTimeline, VerticalTimelineItem, ProfileCard,   } from "@mosje/design-system";
+import {
+  Accordion,
+  AccordionItem,
+  ProfileCard,
+  VerticalTimeline,
+  VerticalTimelineItem,
+} from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 
 const TARGET_GROUPS = [
@@ -242,7 +247,6 @@ export default function AboutPage() {
                     src={m.image}
                     alt={m.name}
                     fill
-                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, 400px"
                     priority
                   />

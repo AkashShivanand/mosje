@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { SelectPlayground } from "./select-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "Select - SAMAVESH Design System",
@@ -125,7 +125,7 @@ export default function SelectPage(): React.JSX.Element {
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Native HTML Element:</strong> Because this uses a native <code>&lt;select&gt;</code>, it benefits from built-in mobile OS UI and robust screen reader support.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>aria-invalid:</strong> When the <code>invalid</code> prop is true, it sets <code>aria-invalid="true"</code>, alerting screen readers to the validation error.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>aria-invalid:</strong> When the <code>invalid</code> prop is true, it sets <code>aria-invalid=“true”</code>, alerting screen readers to the validation error.</li>
         </ul>
       </section>
 

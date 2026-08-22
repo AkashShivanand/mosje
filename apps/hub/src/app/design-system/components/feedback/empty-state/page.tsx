@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { EmptyStatePlayground } from "./empty-state-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "Empty State - SAMAVESH Design System",
@@ -117,7 +117,7 @@ export default function EmptyStatePage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Decorative Icons:</strong> The icon container automatically sets <code>aria-hidden="true"</code>, ensuring screen readers skip over the visual illustration and go straight to the title and description.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Decorative Icons:</strong> The icon container automatically sets <code>aria-hidden=“true”</code>, ensuring screen readers skip over the visual illustration and go straight to the title and description.</li>
         </ul>
       </section>
 
