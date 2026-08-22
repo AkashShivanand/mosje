@@ -16,6 +16,7 @@ import { Badge, Button, Icon, type BadgeStatus } from "@mosje/design-system";
 import type { DocDef } from "@/lib/e-anudaan/form-schema";
 import {
   DEMO_VERDICTS,
+  demoVerdictFor,
   VERDICT_GLYPH,
   verdictHeadline,
   verdictPill,
@@ -71,7 +72,7 @@ export function DocumentsChecklist({
     if (!existing) return;
     const order: VerdictState[] = ["pending", "verified", "review", "invalid"];
     const nextState = order[(order.indexOf(existing.verdict.state) + 1) % order.length]!;
-    onChange({ ...uploaded, [d.n]: { ...existing, verdict: DEMO_VERDICTS[nextState] } });
+    onChange({ ...uploaded, [d.n]: { ...existing, verdict: demoVerdictFor(nextState, d.title) } });
   };
 
   return (

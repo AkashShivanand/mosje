@@ -45,7 +45,7 @@ import {
   type StepDef,
   type WizardDef,
 } from "@/lib/e-anudaan/form-schema";
-import { DEMO_VERDICTS, invalidDocsWarning, type UploadedDoc } from "@/lib/e-anudaan/doc-verification";
+import { demoVerdictFor, invalidDocsWarning, type UploadedDoc } from "@/lib/e-anudaan/doc-verification";
 import { CostNormsPanel } from "./cost-norms-panel";
 import { DocumentsChecklist } from "./documents-checklist";
 
@@ -58,7 +58,7 @@ function seedDocuments(w: WizardDef): Record<number, UploadedDoc> {
       fileName: `${d.title.replace(/[^A-Za-z0-9]+/g, "_").slice(0, 40)}.pdf`,
       sizeKb: 320 + i * 217,
       uploadedOn: "22 Aug 2026",
-      verdict: DEMO_VERDICTS[states[i]!],
+      verdict: demoVerdictFor(states[i]!, d.title),
     };
   });
   return seeded;

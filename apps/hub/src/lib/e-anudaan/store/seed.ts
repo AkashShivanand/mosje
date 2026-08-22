@@ -15,7 +15,7 @@
  */
 
 import { applyAction, type Clock, type WorkflowAction } from "../workflow.ts";
-import { DEMO_VERDICTS } from "../doc-verification.ts";
+import { demoVerdictFor } from "../doc-verification.ts";
 import {
   GRADES,
   type Division,
@@ -284,14 +284,10 @@ function docsFor(complete: boolean): MockDoc[] {
             sizeKb: between(60, 1400),
             uploadedAt: iso(between(20, 200)),
             // Cycle the four verdicts so the applicant screen shows every branch.
-            aiVerdict:
-              i % 7 === 0
-                ? DEMO_VERDICTS.invalid
-                : i % 5 === 0
-                  ? DEMO_VERDICTS.review
-                  : i % 3 === 0
-                    ? DEMO_VERDICTS.verified
-                    : DEMO_VERDICTS.pending,
+            aiVerdict: demoVerdictFor(
+              i % 7 === 0 ? "invalid" : i % 5 === 0 ? "review" : i % 3 === 0 ? "verified" : "pending",
+              d.title,
+            ),
           }
         : {}),
     };

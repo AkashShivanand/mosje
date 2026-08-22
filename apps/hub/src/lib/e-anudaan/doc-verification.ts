@@ -112,6 +112,43 @@ export const DEMO_VERDICTS: Record<VerdictState, DocVerdict> = {
   },
 };
 
+/**
+ * A demo verdict written against the slot it sits in, so the model's reasoning names the
+ * document that was actually expected rather than a fixed example.
+ */
+export function demoVerdictFor(state: VerdictState, expected: string): DocVerdict {
+  const base = DEMO_VERDICTS[state];
+  if (state === "pending") return base;
+  if (state === "verified") {
+    return {
+      ...base,
+      detectedType: expected,
+      summary: `Valid ${expected} for FY 2025-26 from Sankalp Seva Sansthan with all required information present.`,
+    };
+  }
+  if (state === "review") {
+    return {
+      ...base,
+      detectedType: expected,
+      summary: `Appears to be the required ${expected}, but some mandatory particulars could not be read with confidence.`,
+      reasons: [
+        "Key fields are present but partially illegible, so they could not be confirmed automatically.",
+        "Automatic verification confidence is 82% (needs 90%). A reviewer will confirm this document.",
+      ],
+    };
+  }
+  return {
+    ...base,
+    detectedType: "Financial statement (Form-VII) showing income and expenditure details",
+    summary: `Wrong document: this is a financial statement (Form-VII), not the ${expected} this slot asks for.`,
+    reasons: [
+      `This is a financial statement (Form-VII) showing income and expenditure, not the ${expected}.`,
+      "The particulars the slot requires are not present in this document.",
+      `Please upload the ${expected}, not a financial statement.`,
+    ],
+  };
+}
+
 /** The live foot warning when invalid documents remain but the demo lets you continue. */
 export function invalidDocsWarning(count: number): string | null {
   if (count === 0) return null;
