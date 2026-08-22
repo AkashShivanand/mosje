@@ -1008,6 +1008,24 @@ export function validateStep(step: StepDef, values: Record<string, string>): Rec
 }
 
 /** Recompute every auto-calculated field from its inputs. */
+/**
+ * Recompute every auto-calculated field across the WHOLE form.
+ *
+ * `applyAutoFields` only sees one step, which is right while the user is typing. It is wrong at
+ * hydration: a draft restored from storage carries the inputs but not the derived totals, and
+ * those totals are required AND read-only — so the applicant hit "2 fields need attention:
+ * Total Number of Beneficiaries, Total Grant Sought" on a field they could not type into. The
+ * live portal fills them in on load, so the clone does too.
+ */
+export function applyAllAutoFields(
+  wizard: WizardDef,
+  values: Record<string, string>,
+): Record<string, string> {
+  let next = values;
+  for (const step of wizard.steps) next = applyAutoFields(step, next);
+  return next;
+}
+
 export function applyAutoFields(step: StepDef, values: Record<string, string>): Record<string, string> {
   let next = values;
   for (const f of stepFields(step)) {
