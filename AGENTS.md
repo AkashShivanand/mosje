@@ -74,7 +74,7 @@ Run inside the app folder (or via `npm --prefix <app>`):
 
 - **Agents** (`.Codex/agents/`): `code-reviewer`, `accessibility-auditor`, `design-system-guardian`, `debugger`.
 - **Commands** (`.Codex/commands/`): `/new-site`, `/new-portal`, `/qa-clone`, `/a11y`, `/sync-figma`.
-- **Rules** (`.Codex/rules/`): path-scoped specs for the website, portals, and design system.
+- **Rules** (`.Codex/rules/`): path-scoped specs. specifically see `.Codex/rules/design-system-architecture.md` for UI composition and token guidelines.
 - **Skills**: the global `clone-website` skill is how new sites are reverse-engineered; see `.Codex/skills/README.md`.
 
 ## Active context

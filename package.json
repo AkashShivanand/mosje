@@ -55,14 +55,17 @@
     "check:figma-docs:live": "node tools/figma-doc-parity/check.mjs --verify-figma",
     "check:figma-docs:sync": "node tools/figma-doc-parity/check.mjs --verify-figma --sync",
     "figma:connect": "figma connect publish",
-    "figma:connect:check": "figma connect publish --dry-run --exit-on-unreadable-files"
+    "figma:connect:check": "figma connect publish --dry-run --exit-on-unreadable-files",
+    "lint:css": "stylelint '**/*.css'"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",
     "concurrently": "^9.2.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
-    "stylelint": "^16.26.1"
+    "stylelint": "^16.26.1",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-declaration-strict-value": "^1.11.1"
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",
