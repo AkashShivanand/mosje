@@ -48,7 +48,7 @@ export default async function SchemeDetailPage({
               rel="noreferrer"
               className={buttonClasses("primary", "filled", "sm", "text-xs px-4 py-2 flex items-center gap-1.5")}
             >
-              Apply Online <Icon name="open_in_new" size={14} />
+              Apply Online <Icon name="open_in_new" size={16} />
             </a>
           )}
           {scheme.sourceUrl && (
@@ -58,7 +58,7 @@ export default async function SchemeDetailPage({
               rel="noreferrer"
               className={buttonClasses("primary", "outlined", "sm", "text-xs px-3.5 py-2 flex items-center gap-1")}
             >
-              Portal <Icon name="arrow_outward" size={14} />
+              Portal <Icon name="arrow_outward" size={16} />
             </a>
           )}
         </div>
@@ -79,7 +79,7 @@ export default async function SchemeDetailPage({
                   rel="noreferrer"
                   className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary underline"
                 >
-                  View on dosje.gov.in <Icon name="open_in_new" size={14} />
+                  View on dosje.gov.in <Icon name="open_in_new" size={16} />
                 </a>
               </div>
             ) : (
@@ -132,7 +132,7 @@ export default async function SchemeDetailPage({
                         className="text-primary font-semibold hover:underline flex items-center gap-1"
                       >
                         {scheme.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-                        <Icon name="open_in_new" size={13} />
+                        <Icon name="open_in_new" size={16} />
                       </a>
                     </dd>
                   </div>
@@ -146,7 +146,7 @@ export default async function SchemeDetailPage({
                       rel="noreferrer"
                       className="text-primary hover:underline flex items-center gap-1"
                     >
-                      dosje.gov.in <Icon name="open_in_new" size={13} />
+                      dosje.gov.in <Icon name="open_in_new" size={16} />
                     </a>
                   </dd>
                 </div>

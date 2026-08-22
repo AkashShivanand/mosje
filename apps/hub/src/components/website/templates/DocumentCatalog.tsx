@@ -76,7 +76,7 @@ export function DocumentCatalog({
             <div className="relative flex-1">
               <Icon
                 name="search"
-                size={18}
+                size={20}
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
               />
               <input
@@ -161,7 +161,7 @@ export function DocumentCatalog({
                 >
                   <div className="flex items-start gap-4 min-w-0 flex-1">
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary border border-primary/20 mt-0.5">
-                      <Icon name="picture_as_pdf" size={22} />
+                      <Icon name="picture_as_pdf" size={20} />
                     </span>
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
@@ -182,13 +182,13 @@ export function DocumentCatalog({
                       <div className="mt-1.5 flex flex-wrap items-center gap-3 text-xs text-ink-muted">
                         {doc.date && (
                           <span className="flex items-center gap-1">
-                            <Icon name="event" size={13} className="text-gray-400" />
+                            <Icon name="event" size={16} className="text-gray-400" />
                             {doc.date}
                           </span>
                         )}
                         {doc.fileSize && (
                           <span className="flex items-center gap-1">
-                            <Icon name="attachment" size={13} className="text-gray-400" />
+                            <Icon name="attachment" size={16} className="text-gray-400" />
                             {doc.fileSize}
                           </span>
                         )}

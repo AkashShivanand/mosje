@@ -56,7 +56,7 @@ export default async function OrganisationDetailPage({
             rel="noreferrer"
             className={buttonClasses("primary", "filled", "sm", "text-xs px-4 py-2 flex items-center gap-1.5")}
           >
-            Visit Official Portal <Icon name="open_in_new" size={14} />
+            Visit Official Portal <Icon name="open_in_new" size={16} />
           </a>
         )
       }
@@ -76,7 +76,7 @@ export default async function OrganisationDetailPage({
                   rel="noreferrer"
                   className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary underline"
                 >
-                  View on dosje.gov.in <Icon name="open_in_new" size={14} />
+                  View on dosje.gov.in <Icon name="open_in_new" size={16} />
                 </a>
               </div>
             ) : (
@@ -128,7 +128,7 @@ export default async function OrganisationDetailPage({
                         className="text-primary font-semibold hover:underline flex items-center gap-1"
                       >
                         {org.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-                        <Icon name="open_in_new" size={13} />
+                        <Icon name="open_in_new" size={16} />
                       </a>
                     </dd>
                   </div>
@@ -148,7 +148,7 @@ export default async function OrganisationDetailPage({
                       rel="noreferrer"
                       className="text-primary hover:underline flex items-center gap-1"
                     >
-                      dosje.gov.in <Icon name="open_in_new" size={13} />
+                      dosje.gov.in <Icon name="open_in_new" size={16} />
                     </a>
                   </dd>
                 </div>
@@ -164,7 +164,7 @@ export default async function OrganisationDetailPage({
                 href="/website"
                 className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
               >
-                All Associated Organisations <Icon name="arrow_forward" size={14} />
+                All Associated Organisations <Icon name="arrow_forward" size={16} />
               </Link>
             </div>
           </aside>

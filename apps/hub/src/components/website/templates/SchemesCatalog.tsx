@@ -84,7 +84,7 @@ export function SchemesCatalog({
               <div className="relative w-full sm:max-w-md">
                 <Icon
                   name="search"
-                  size={18}
+                  size={20}
                   className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
                 />
                 <input
@@ -109,7 +109,7 @@ export function SchemesCatalog({
                       : "text-ink-muted hover:text-ink"
                   )}
                 >
-                  <Icon name="grid_view" size={18} />
+                  <Icon name="grid_view" size={20} />
                 </button>
                 <button
                   type="button"
@@ -122,7 +122,7 @@ export function SchemesCatalog({
                       : "text-ink-muted hover:text-ink"
                   )}
                 >
-                  <Icon name="table_rows" size={18} />
+                  <Icon name="table_rows" size={20} />
                 </button>
               </div>
             </div>
@@ -197,7 +197,7 @@ export function SchemesCatalog({
                       className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
                     >
                       Scheme Details
-                      <Icon name="arrow_forward" size={14} className="transition-transform group-hover:translate-x-1" />
+                      <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-1" />
                     </Link>
                     {scheme.sourceUrl && (
                       <a
@@ -206,7 +206,7 @@ export function SchemesCatalog({
                         rel="noreferrer"
                         className="text-[11px] font-semibold text-gray-500 hover:text-primary flex items-center gap-0.5"
                       >
-                        Portal <Icon name="open_in_new" size={12} />
+                        Portal <Icon name="open_in_new" size={16} />
                       </a>
                     )}
                   </div>
