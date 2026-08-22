@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { FormCardPlayground } from "./form-card-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "FormCard - SAMAVESH Design System",
@@ -61,7 +61,7 @@ export default function FormCardPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
-          Configure the FormCard's header layout, including descriptions and right-aligned actions.
+          Configure the FormCard&apos;s header layout, including descriptions and right-aligned actions.
         </p>
         <div style={{ marginTop: "var(--sa-stack-24)" }}>
           <FormCardPlayground />
@@ -72,7 +72,7 @@ export default function FormCardPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
-          Use <code>FormCard</code> for sections of a form or dashboard where the layout isn't a simple 1-, 2-, or 3-column grid of inputs. This includes data tables, repeating field groups, or mixed content sections. By using this component, every section header across the application stays visually identical.
+          Use <code>FormCard</code> for sections of a form or dashboard where the layout isn&apos;t a simple 1-, 2-, or 3-column grid of inputs. This includes data tables, repeating field groups, or mixed content sections. By using this component, every section header across the application stays visually identical.
         </p>
         <div
           style={{

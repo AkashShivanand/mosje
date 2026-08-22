@@ -1,7 +1,6 @@
 "use client";
 import * as React from "react";
-import { Chip } from "@mosje/design-system";
-import { User, Filter } from "lucide-react";
+import { Chip, Icon } from "@mosje/design-system";
 
 export function ChipPlayground() {
   const [selected, setSelected] = React.useState(false);
@@ -23,7 +22,7 @@ export function ChipPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={interactive} 
@@ -32,7 +31,7 @@ export function ChipPlayground() {
           <strong>Interactive (Toggleable)</strong>
         </label>
         
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={disabled} 
@@ -41,7 +40,7 @@ export function ChipPlayground() {
           <strong>Disabled</strong>
         </label>
 
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={hasLeadingIcon} 
@@ -50,7 +49,7 @@ export function ChipPlayground() {
           <strong>Leading Icon</strong>
         </label>
 
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={hasDismiss} 
@@ -59,7 +58,7 @@ export function ChipPlayground() {
           <strong>Dismissible</strong>
         </label>
         
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={hasTrailingDropdown} 
@@ -74,7 +73,7 @@ export function ChipPlayground() {
           selected={interactive ? selected : false}
           onSelectedChange={interactive ? setSelected : undefined}
           disabled={disabled}
-          leadingIcon={hasLeadingIcon ? <User size={16} strokeWidth={2} /> : undefined}
+          leadingIcon={hasLeadingIcon ? <Icon name="person" size={16} /> : undefined}
           onDismiss={hasDismiss ? () => alert("Dismissed!") : undefined}
           trailingDropdown={hasTrailingDropdown}
         >
@@ -85,7 +84,7 @@ export function ChipPlayground() {
           selected={interactive ? !selected : false}
           onSelectedChange={interactive ? (val) => setSelected(!val) : undefined}
           disabled={disabled}
-          leadingIcon={hasLeadingIcon ? <Filter size={16} strokeWidth={2} /> : undefined}
+          leadingIcon={hasLeadingIcon ? <Icon name="filter_alt" size={16} /> : undefined}
           onDismiss={hasDismiss ? () => alert("Dismissed!") : undefined}
           trailingDropdown={hasTrailingDropdown}
         >

@@ -1,8 +1,12 @@
 "use client";
 import * as React from "react";
-import { useToast, Button } from "@mosje/design-system";
+import { ToastProvider, useToast, Button } from "@mosje/design-system";
 
-export function ToastPlayground() {
+/**
+ * The demo body. It must be rendered inside <ToastProvider>, so ToastPlayground below wraps
+ * it; calling useToast outside a provider throws, and that failed the prerender of this page.
+ */
+function ToastDemo() {
   const { toast } = useToast();
   const [variant, setVariant] = React.useState<"success" | "info" | "warning" | "error">("success");
   const [message, setMessage] = React.useState("Application saved successfully.");
@@ -19,22 +23,22 @@ export function ToastPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap" }}>
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px", flex: 1 }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px", flex: 1 }}>
           <strong>Message:</strong>
           <input 
             type="text" 
             value={message} 
             onChange={(e) => setMessage(e.target.value)}
-            style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)", flex: 1, minWidth: "200px" }}
+            style={{ padding: "var(--sa-padding-4) var(--sa-padding-8)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)", flex: 1, minWidth: "200px" }}
           />
         </label>
         
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <strong>Variant:</strong>
           <select 
             value={variant} 
-            onChange={(e) => setVariant(e.target.value as any)}
-            style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)" }}
+            onChange={(e) => setVariant(e.target.value as typeof variant)}
+            style={{ padding: "var(--sa-padding-4) var(--sa-padding-8)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}
           >
             <option value="success">Success</option>
             <option value="info">Info</option>
@@ -55,5 +59,13 @@ export function ToastPlayground() {
         </Button>
       </div>
     </div>
+  );
+}
+
+export function ToastPlayground() {
+  return (
+    <ToastProvider>
+      <ToastDemo />
+    </ToastProvider>
   );
 }

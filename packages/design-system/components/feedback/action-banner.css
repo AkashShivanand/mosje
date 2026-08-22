@@ -1,12 +1,49 @@
+/* ============================================================================
+   MoSJE / UX4G — ActionBanner
+   Semantic CSS classes only; all colours reference design tokens (--sa-*).
+   Plain CSS on purpose: imported from action-banner.tsx, so Tailwind processes
+   it as its own root and `@apply` cannot see the estate's theme.
+   ============================================================================ */
+
 .sa-action-banner {
-  @apply bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm;
+  background-image: linear-gradient(
+    to right,
+    var(--sa-bg-brand-primary-subtler),
+    var(--sa-bg-brand-accent-subtler)
+  );
+  border: 1px solid var(--sa-border-brand-primary-base);
+  border-radius: var(--sa-shape-16);
+  padding: var(--sa-padding-32);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sa-stack-24);
+  box-shadow: var(--sa-elevation-card);
 }
+
 .sa-action-banner__content {
-  @apply space-y-1 text-center sm:text-left;
+  text-align: center;
 }
+
+.sa-action-banner__content > * + * {
+  margin-top: var(--sa-stack-4);
+}
+
 .sa-action-banner__title {
-  @apply text-xl sm:text-2xl font-bold text-neutral-900;
+  font-size: var(--sa-type-title-1-size);
+  font-weight: 700;
+  color: var(--sa-text-neutral-bolder);
 }
+
 .sa-action-banner__description {
-  @apply text-sm sm:text-base text-neutral-600;
+  font-size: var(--sa-type-body-2-size);
+  color: var(--sa-text-neutral-base);
+}
+
+@media (min-width: 640px) {
+  .sa-action-banner { flex-direction: row; }
+  .sa-action-banner__content { text-align: left; }
+  .sa-action-banner__title { font-size: var(--sa-type-headline-3-size); }
+  .sa-action-banner__description { font-size: var(--sa-type-body-1-size); }
 }

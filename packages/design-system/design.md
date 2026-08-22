@@ -1615,6 +1615,26 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Props**: `events: ApprovalTimelineEvent[]` (oldest-first), `pendingLabel`.
 **Rules**: Use for any workflow that moves through tiers of sign-off (Block → District → State). Show the **whole** history, not just the current status: a returned-then-resubmitted record must display both. Remarks are mandatory on a `RETURNED` event.
 
+#### Accordion
+**Purpose**: A stack of disclosures. Each `AccordionItem` hides its body until the reader asks for it.
+**Props**: `AccordionItem` takes `title`, `defaultOpen`. `AccordionItem` is a sub-part of `Accordion` and is not used alone.
+**Rules**: Use where a page carries several sections a reader wants *one* of — an FAQ, a scheme's eligibility rules, a form's optional detail. Never hide something every reader needs: a step nobody opens is a step nobody completes. Open the first item with `defaultOpen` only when it shows the shape of what is in the rest.
+
+#### ActionBanner
+**Purpose**: A full-width band naming one thing the reader can do next, with the control to do it.
+**Props**: `title`, `description`, `action`.
+**Rules**: One per page, at the foot of a section. Two banners cancel each other out — if everything is the call to action, nothing is. It is not a status message: a warning or an error is `Alert`, which carries a semantic colour and a role screen readers announce. Drop `description` when the title already says everything.
+
+#### ProfileCard
+**Purpose**: A portrait, a name and a role — the ministers, secretaries and officers pages.
+**Props**: `title`, `subtitle`, `image` (a slot, not a src), `tag`.
+**Rules**: Use when a person's face is what the reader is scanning for. When they are scanning *names* — a directory, a contact list, a committee roster — a table or plain list finds the answer faster and reads far better on a phone. Keep `tag` to one short phrase; it overlays the portrait.
+
+#### VerticalTimeline
+**Purpose**: Dated entries down a single rule. `VerticalTimelineItem` carries one entry.
+**Props**: `VerticalTimelineItem` takes `title`, `date`. `VerticalTimelineItem` is a sub-part of `VerticalTimeline`.
+**Rules**: Use where the *order* of events is the content — a ministry's milestones, a scheme's history. Do not use it for a list that merely has dates on it; a table sorts, filters and scans, and a timeline does none of those. For an application moving through an approval chain use `ApprovalTimeline`, which knows about actors and outcomes. `date` is optional, so an entry whose date is unknown still gets its marker.
+
 ---
 
 ### Data Visualization

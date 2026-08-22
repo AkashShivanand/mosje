@@ -110,3 +110,35 @@ export function roleForSchemeKey(key: string): RoleDef | undefined {
   }
   return ROLES[`pd-${key}` as RoleId];
 }
+
+/**
+ * The status wording the NGO sees. The officer-facing `statusLabel` in workflow.ts appends the
+ * holder ("Submitted / ASO"); the live applicant screens never show the chain — they show one of
+ * six plain states, matching the filter chips above the table.
+ */
+export function ngoStatusLabel(app: GrantApplication): string {
+  if (app.status === "Draft") return "Draft";
+  if (app.sanction || app.status === "Sanctioned" || app.status === "Released") return "Approved";
+  if (app.status === "Rejected") return "Closed / Rejected";
+  if (app.status === "QueryRaised" || app.status === "Returned" || app.status === "DeficiencyRaised") {
+    return "Query / Returned";
+  }
+  if (app.status === "Submitted") return "Submitted";
+  return "In Review";
+}
+
+/** The live filter chips over My Applications, in order. */
+export const NGO_STATUS_FILTERS = [
+  "All",
+  "Submitted",
+  "In Review",
+  "Approved",
+  "Query / Returned",
+  "Closed / Rejected",
+] as const;
+
+export type NgoStatusFilter = (typeof NGO_STATUS_FILTERS)[number];
+
+export function matchesNgoFilter(app: GrantApplication, filter: NgoStatusFilter): boolean {
+  return filter === "All" || ngoStatusLabel(app) === filter;
+}

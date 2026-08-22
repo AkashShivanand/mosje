@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { DeclarationCheckboxPlayground } from "./declaration-checkbox-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "DeclarationCheckbox - SAMAVESH Design System",
@@ -109,7 +109,7 @@ export default function DeclarationCheckboxPage(): React.JSX.Element {
   title="Final Declaration"
   lead="By checking this box, I certify that:"
 >
-  <ul style={{ margin: 0, paddingLeft: "1.5rem" }}>
+  <ul style={{ margin: 0, paddingLeft: "var(--sa-padding-24)" }}>
     <li>I am a citizen of India.</li>
     <li>I have not availed this scheme's benefits in the past.</li>
   </ul>
@@ -122,7 +122,7 @@ export default function DeclarationCheckboxPage(): React.JSX.Element {
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Bound Statement:</strong> The entire declaration text block is bound to the checkbox via <code>aria-describedby</code>, ensuring screen readers announce the legal text the user is agreeing to when they focus the control.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Landmark:</strong> The component is wrapped in a <code>&lt;section&gt;</code> and labelled by its title (e.g. "Declaration"), making it easy to navigate to.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Landmark:</strong> The component is wrapped in a <code>&lt;section&gt;</code> and labelled by its title (e.g. &quot;Declaration&quot;), making it easy to navigate to.</li>
         </ul>
       </section>
 

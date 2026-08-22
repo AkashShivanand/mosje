@@ -19,7 +19,7 @@ export function FormCardPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={hasDescription} 
@@ -28,7 +28,7 @@ export function FormCardPlayground() {
           <strong>Include description</strong>
         </label>
         
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={isRequired} 
@@ -37,7 +37,7 @@ export function FormCardPlayground() {
           <strong>Required Marker</strong>
         </label>
 
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={hasActions} 
@@ -52,7 +52,7 @@ export function FormCardPlayground() {
           title="Applicant Details"
           description={hasDescription ? "Please provide your primary contact and personal information." : undefined}
           required={isRequired}
-          actions={hasActions ? <Button variant="secondary" size="sm">Edit Details</Button> : undefined}
+          actions={hasActions ? <Button appearance="outlined" size="sm">Edit Details</Button> : undefined}
         >
           <div style={{ padding: "var(--sa-padding-24)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px dashed var(--sa-border-neutral-base)", textAlign: "center", color: "var(--sa-text-neutral-subtle)" }}>
             Arbitrary content goes here (e.g., custom grid, table, or repeating rows).

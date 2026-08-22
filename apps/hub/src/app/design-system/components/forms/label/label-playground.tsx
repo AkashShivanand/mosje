@@ -18,7 +18,7 @@ export function LabelPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", alignSelf: "flex-start" }}>
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={required} 
@@ -27,7 +27,7 @@ export function LabelPlayground() {
           <strong>Required Marker</strong>
         </label>
         
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={hasHint} 
@@ -37,7 +37,7 @@ export function LabelPlayground() {
         </label>
       </div>
 
-      <div style={{ maxWidth: "400px", width: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
+      <div style={{ maxWidth: "400px", width: "100%", display: "flex", flexDirection: "column", gap: "var(--sa-stack-8)" }}>
         <Label 
           htmlFor="example-input-id" 
           required={required} 

@@ -121,4 +121,25 @@
   .ds-stepper__label {
     font-size: 11px;
   }
+
+  /*
+   * Show only the CURRENT step's label. A seven-step wizard on a 375px screen gives each
+   * column about 48px, and multi-word labels then overlap into an unreadable run
+   * ("ApplicatiOnganisatioProjeErtfrastructure…"). The other labels stay in the DOM, merely
+   * clipped, so screen readers and the Stepper's own live region still announce every step.
+   */
+  .ds-stepper__item:not(.is-current) .ds-stepper__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .ds-stepper__item.is-current .ds-stepper__label {
+    font-weight: 700;
+  }
 }

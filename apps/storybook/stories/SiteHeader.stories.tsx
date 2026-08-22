@@ -45,6 +45,11 @@ import { Button, SiteHeader } from "@mosje/design-system";
  * assembled header.
  *
  * Lifecycle: **Stable**.
+ *
+ * `homeHref` is the ZONE root, not the hub root: `/website` for the public site,
+ * `/portals/<slug>` inside a portal. Pointing it at `/` sends a portal user out
+ * of the app they are working in, which is why it has no story — there is only
+ * one correct value per surface and it is not a choice to browse.
  */
 
 /**
