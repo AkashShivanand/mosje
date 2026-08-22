@@ -61,7 +61,7 @@ export default function ApplySuccessPage() {
     <div className="mx-auto max-w-2xl space-y-5">
       <section className="space-y-5 rounded-xl border border-line bg-surface p-8 text-center shadow-xs">
         <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-status-success/10">
-          <Icon name="check" size={44} className="text-status-success" aria-hidden />
+          <Icon name="check" size={48} className="text-status-success" aria-hidden />
         </div>
 
         <div className="space-y-2">
@@ -111,7 +111,7 @@ export default function ApplySuccessPage() {
           {NEXT_STEPS.map((s) => (
             <li key={s.title} className="flex gap-3">
               <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-surface-muted">
-                <Icon name={s.icon} size={18} className="text-primary" aria-hidden />
+                <Icon name={s.icon} size={20} className="text-primary" aria-hidden />
               </span>
               <div>
                 <p className="text-sm font-semibold text-ink">{s.title}</p>

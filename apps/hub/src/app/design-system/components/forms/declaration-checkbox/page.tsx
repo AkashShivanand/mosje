@@ -109,7 +109,7 @@ export default function DeclarationCheckboxPage(): React.JSX.Element {
   title="Final Declaration"
   lead="By checking this box, I certify that:"
 >
-  <ul style={{ margin: 0, paddingLeft: "1.5rem" }}>
+  <ul style={{ margin: 0, paddingLeft: "var(--sa-padding-24)" }}>
     <li>I am a citizen of India.</li>
     <li>I have not availed this scheme's benefits in the past.</li>
   </ul>

@@ -684,15 +684,15 @@ export default function HeaderPage(): React.JSX.Element {
         </h2>
         <ul style={listStyle}>
           <li>
-            <a href="/design-system/components/sidebar" style={{ color: "var(--sa-text-brand-primary-base)" }}>Sidebar Nav</a>{" "}
+            <a href="/design-system/components/section-templates/sidebar" style={{ color: "var(--sa-text-brand-primary-base)" }}>Sidebar Nav</a>{" "}
             — the portal app-shell left navigation that pairs with the Portal variant.
           </li>
           <li>
-            <a href="/design-system/components/accessibility-bar" style={{ color: "var(--sa-text-brand-primary-base)" }}>Accessibility Bar</a>{" "}
+            <a href="/design-system/components/navigation/accessibility-bar" style={{ color: "var(--sa-text-brand-primary-base)" }}>Accessibility Bar</a>{" "}
             — the government utility strip that sits directly above the Website variant.
           </li>
           <li>
-            <a href="/design-system/components/button" style={{ color: "var(--sa-text-brand-primary-base)" }}>Button</a>{" "}
+            <a href="/design-system/components/actions/button" style={{ color: "var(--sa-text-brand-primary-base)" }}>Button</a>{" "}
             — used for the brand-row CTA (<code>actions</code>).
           </li>
           <li>

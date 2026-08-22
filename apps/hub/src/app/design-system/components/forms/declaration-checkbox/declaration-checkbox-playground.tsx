@@ -18,7 +18,7 @@ export function DeclarationCheckboxPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={invalid} 
@@ -37,7 +37,7 @@ export function DeclarationCheckboxPlayground() {
           }}
           error={invalid && !checked ? "You must agree to the declaration to submit the form." : undefined}
         >
-          <ul style={{ margin: 0, paddingLeft: "1.5rem" }}>
+          <ul style={{ margin: 0, paddingLeft: "var(--sa-padding-24)" }}>
             <li>All information provided in this application is true and correct to the best of my knowledge.</li>
             <li>I understand that submitting false information may result in the rejection of my application.</li>
           </ul>

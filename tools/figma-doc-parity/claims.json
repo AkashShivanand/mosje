@@ -206,7 +206,7 @@
   "tokenTables": [
     {
       "_comment": "Every --sa-* a component's WEB documentation page names in its token table must be referenced by that component's stylesheet — or declared in `via` as reached through another component.",
-      "page": "apps/hub/src/app/design-system/components/accessibility-bar/page.tsx",
+      "page": "apps/hub/src/app/design-system/components/utilities/accessibility-bar/page.tsx",
       "css": "packages/design-system/components/navigation/accessibility-bar.css",
       "via": {
         "--sa-border-neutral-inverse-subtle": "packages/design-system/components/layout/divider.css"

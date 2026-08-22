@@ -19,12 +19,12 @@ export function LoaderPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", alignSelf: "flex-start" }}>
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <strong>Size:</strong>
           <select 
             value={size} 
             onChange={(e) => setSize(e.target.value as typeof size)}
-            style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)" }}
+            style={{ padding: "var(--sa-padding-4) var(--sa-padding-8)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}
           >
             <option value="sm">Small (sm)</option>
             <option value="md">Medium (md)</option>
@@ -32,12 +32,12 @@ export function LoaderPlayground() {
           </select>
         </label>
         
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <strong>Variant:</strong>
           <select 
             value={variant} 
             onChange={(e) => setVariant(e.target.value as typeof variant)}
-            style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)" }}
+            style={{ padding: "var(--sa-padding-4) var(--sa-padding-8)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}
           >
             <option value="primary">Primary</option>
             <option value="secondary">Secondary</option>

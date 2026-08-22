@@ -140,6 +140,6 @@
   }
 
   .ds-stepper__item.is-current .ds-stepper__label {
-    font-weight: var(--sa-ref-font-weight-bold);
+    font-weight: 700;
   }
 }

@@ -242,7 +242,7 @@ export default function NgoApplicationDetailPage() {
                       <Badge status={s.filled === s.fields.length ? "success" : "warning"}>
                         {s.filled}/{s.fields.length} filled
                       </Badge>
-                      <Icon name={open ? "expand_less" : "expand_more"} size={18} aria-hidden />
+                      <Icon name={open ? "expand_less" : "expand_more"} size={20} aria-hidden />
                     </span>
                   </button>
                   {open && (
@@ -316,7 +316,7 @@ function DocumentRow({ doc, schemeCode }: { doc: MockDoc; schemeCode: string }) 
           <span className="mt-0.5 block text-xs text-ink-hint">{schemeCode}</span>
           {verdict && (
             <span className="mt-1 flex items-center gap-1 text-xs text-ink-muted">
-              <Icon name={VERDICT_GLYPH[verdict.state]} size={14} aria-hidden />
+              <Icon name={VERDICT_GLYPH[verdict.state]} size={16} aria-hidden />
               AI: {verdict.state === "pending" ? "pending" : verdict.state === "verified" ? "verified" : verdict.state === "review" ? "needs review" : "not valid"}
               {pill && <span className="text-ink-hint">· {pill}</span>}
             </span>

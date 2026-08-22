@@ -103,7 +103,7 @@ export default function LoaderPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <Playground
-          code={`<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+          code={`<div style={{ display: "flex", gap: "var(--sa-stack-16)", alignItems: "center" }}>
   <Loader size="sm" />
   <Loader size="md" />
   <Loader size="lg" variant="secondary" />

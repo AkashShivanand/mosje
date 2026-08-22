@@ -22,7 +22,7 @@ export function ChipPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={interactive} 
@@ -31,7 +31,7 @@ export function ChipPlayground() {
           <strong>Interactive (Toggleable)</strong>
         </label>
         
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={disabled} 
@@ -40,7 +40,7 @@ export function ChipPlayground() {
           <strong>Disabled</strong>
         </label>
 
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={hasLeadingIcon} 
@@ -49,7 +49,7 @@ export function ChipPlayground() {
           <strong>Leading Icon</strong>
         </label>
 
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={hasDismiss} 
@@ -58,7 +58,7 @@ export function ChipPlayground() {
           <strong>Dismissible</strong>
         </label>
         
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={hasTrailingDropdown} 

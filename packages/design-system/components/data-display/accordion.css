@@ -9,13 +9,13 @@
 .sa-accordion {
   display: flex;
   flex-direction: column;
-  gap: var(--sa-ref-size-12);
+  gap: var(--sa-stack-12);
 }
 
 .sa-accordion-item {
   background-color: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-ref-radius-12);
+  border-radius: var(--sa-shape-12);
   overflow: hidden;
   box-shadow: var(--sa-elevation-card);
   transition: box-shadow 150ms ease;
@@ -27,11 +27,11 @@
 
 .sa-accordion-item__trigger {
   width: 100%;
-  padding: var(--sa-ref-size-16) var(--sa-ref-size-20);
+  padding: var(--sa-padding-16) var(--sa-padding-20);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sa-ref-size-12);
+  gap: var(--sa-stack-12);
   background-color: var(--sa-bg-neutral-subtle);
   color: var(--sa-text-neutral-bolder);
   font-family: var(--sa-font-latin);
@@ -55,8 +55,8 @@
 }
 
 .sa-accordion-item__title {
-  font-size: var(--sa-ref-font-size-14);
-  font-weight: var(--sa-ref-font-weight-bold);
+  font-size: var(--sa-type-body-2-size);
+  font-weight: 700;
   color: var(--sa-text-neutral-bolder);
 }
 
@@ -67,7 +67,7 @@
 }
 
 .sa-accordion-item__content {
-  padding: var(--sa-ref-size-16) var(--sa-ref-size-20);
+  padding: var(--sa-padding-16) var(--sa-padding-20);
   background-color: var(--sa-bg-neutral-base);
   border-top: 1px solid var(--sa-border-neutral-subtle);
   color: var(--sa-text-neutral-base);
@@ -75,6 +75,6 @@
 
 @media (min-width: 640px) {
   .sa-accordion-item__title {
-    font-size: var(--sa-ref-font-size-16);
+    font-size: var(--sa-type-body-1-size);
   }
 }

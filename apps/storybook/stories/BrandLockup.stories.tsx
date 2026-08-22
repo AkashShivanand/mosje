@@ -24,6 +24,11 @@ import { BrandLockup } from "@mosje/design-system";
  * name there and drops the ministry line.
  *
  * Lifecycle: **Stable**.
+ *
+ * `inverse` flips the wordmark to its white-on-dark cut. Use it only on a dark
+ * ground — the accessibility bar, a footer band, a print header on colour.
+ * On a light surface it fails contrast, so there is deliberately no story
+ * showing it there.
  */
 const EMBLEM = `data:image/svg+xml;utf8,${encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="64" viewBox="0 0 48 64">` +

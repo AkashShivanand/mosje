@@ -103,7 +103,7 @@ export default function LabelPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <Playground
-          code={`<div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+          code={`<div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-16)" }}>
   <Label htmlFor="custom-search" required hint="(Min 3 chars)">
     Search Query
   </Label>
