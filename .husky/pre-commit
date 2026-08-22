@@ -49,4 +49,45 @@ if [ "$branch" = "main" ] && [ ! -f "$(git rev-parse --git-dir)/MERGE_HEAD" ]; t
   exit 1
 fi
 
+# Warn when this branch has ALREADY LANDED — the "never continue a merged branch"
+# half of .claude/rules/branch-continuity.md, enforced where every tool hits it
+# rather than only where Claude reads it. A branch whose PR merged is branched
+# FROM, never continued: further commits on it strand work behind a closed PR.
+#
+# Offline and cheap — no gh, no network. Two conditions must BOTH hold:
+#   1. the branch has an upstream, i.e. it was pushed at some point, and
+#   2. that UPSTREAM TIP is already contained in origin/main
+# Condition 1 is what stops this firing on every freshly-created branch, whose
+# HEAD is trivially an ancestor of main because it has no commits of its own yet.
+#
+# Condition 2 tests the UPSTREAM, not HEAD, and that distinction is the whole
+# point. Testing HEAD only catches a branch sitting exactly where it landed; it
+# goes quiet the moment someone adds a commit on top — which is precisely the
+# case worth catching. Found for real on 2026-08-22: PR #135 merged at 14:44 and
+# feat/website-internal-pages-redesign collected three more commits at 15:00,
+# 15:44 and 16:08, none of them pushed. Testing the upstream tip catches that;
+# testing HEAD does not.
+#
+# It WARNS rather than blocks, deliberately. The signal is a heuristic — a
+# deliberate follow-up commit before deleting a branch is legitimate — and a gate
+# that blocks legitimate work gets bypassed reflexively, which costs more than it
+# saves. The commit proceeds; you have been told.
+if git rev-parse --verify --quiet refs/remotes/origin/main >/dev/null 2>&1 &&
+   git rev-parse --abbrev-ref "@{upstream}" >/dev/null 2>&1 &&
+   [ -n "$branch" ] &&
+   git merge-base --is-ancestor "@{upstream}" refs/remotes/origin/main 2>/dev/null; then
+  echo ""
+  echo "⚠ pre-commit: what '$branch' pushed has already landed in origin/main."
+  echo ""
+  echo "  A branch whose PR has merged is branched FROM, never continued —"
+  echo "  see AGENTS.md → Branch procedure. Committing here can strand the work"
+  echo "  behind a closed PR."
+  echo ""
+  echo "  If this task is new, start clean:   git switch -c <type>/<slug> main"
+  echo "  Check what is going on:             npm run branches"
+  echo ""
+  echo "  (Warning only — this commit will proceed.)"
+  echo ""
+fi
+
 npx lint-staged

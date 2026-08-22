@@ -17,6 +17,7 @@
     "kill-ports": "bash scripts/kill-dev-ports.sh",
     "predev": "npm run kill-ports && npm run ensure:storybook",
     "dev": "bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3007'",
+    "branches": "bash scripts/branch-inventory.sh --text",
     "dev:hub": "bash -c 'cd apps/hub && exec ./node_modules/.bin/next dev --turbopack -p 3007'",
     "dev:storybook": "bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006'",
     "check": "npm run check:hub && npm run check:dangling-vars && npm run check:docs-links && npm run check:figma-docs && npm run check:docs-data && npm run check:ds-linkage && npm run check:icon-scale && npm run check:space-linkage && npm run check:radius-linkage && npm run check:code-connect && npm run check:chrome",
