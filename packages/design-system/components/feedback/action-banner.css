@@ -1,0 +1,12 @@
+.sa-action-banner {
+  @apply bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm;
+}
+.sa-action-banner__content {
+  @apply space-y-1 text-center sm:text-left;
+}
+.sa-action-banner__title {
+  @apply text-xl sm:text-2xl font-bold text-neutral-900;
+}
+.sa-action-banner__description {
+  @apply text-sm sm:text-base text-neutral-600;
+}

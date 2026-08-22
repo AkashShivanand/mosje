@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import { buttonClasses, Accordion, AccordionItem, VerticalTimeline, VerticalTimelineItem, ProfileCard, ActionBanner } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 
 const TARGET_GROUPS = [
@@ -137,11 +137,8 @@ const BUREAUS = [
 ];
 
 export default function AboutPage() {
-  const [openAccordion, setOpenAccordion] = useState<number | null>(0);
+  
 
-  const toggleAccordion = (idx: number) => {
-    setOpenAccordion(openAccordion === idx ? null : idx);
-  };
 
   return (
     <PageLayout
@@ -211,80 +208,13 @@ export default function AboutPage() {
             <div className="mt-2 h-1 w-16 bg-[#0373DF] rounded-full" />
           </div>
 
-          <div className="relative pl-6 sm:pl-8 border-l-2 border-[#0373DF]/30 space-y-8">
-            {HISTORY_TIMELINE.map((item) => (
-              <div key={item.title} className="relative group">
-                {/* Timeline Dot */}
-                <div className="absolute -left-[31px] sm:-left-[39px] top-1.5 h-4 w-4 rounded-full border-2 border-white bg-[#0373DF] shadow-md group-hover:scale-125 transition-transform" />
-
-                <div className="bg-white rounded-xl p-5 border border-neutral-200 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                    <h3 className="text-base font-semibold text-neutral-900">
-                      {item.title}
-                    </h3>
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-[#0373DF] border border-blue-200">
-                      {item.date}
-                    </span>
-                  </div>
-                  <p className="text-sm text-neutral-600 leading-relaxed">
-                    {item.body}
-                  </p>
-                </div>
-              </div>
+          <VerticalTimeline>
+            {HISTORY_TIMELINE.map((item, index) => (
+              <VerticalTimelineItem key={index} title={item.title} date={item.date}>
+                {item.body}
+              </VerticalTimelineItem>
             ))}
-          </div>
-        </section>
-
-        {/* Section 3: Subjects Allocated */}
-        <section className="bg-neutral-50 rounded-2xl p-6 sm:p-8 border border-neutral-200 space-y-6">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
-              Subjects Allocated
-            </h2>
-            <p className="mt-1 text-xs text-neutral-500 uppercase tracking-wider font-semibold">
-              Allocation of Business Rules, 1961 (Samajik Nyaya Aur Adhikarita Vibhag)
-            </p>
-            <div className="mt-2 h-1 w-16 bg-[#0373DF] rounded-full" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-neutral-700">
-            <div className="space-y-3">
-              <p className="flex items-start gap-2">
-                <span className="font-bold text-[#0373DF]">1.</span>
-                <span>Social Welfare: Overall policy, planning, and development for Scheduled Castes and Backward Classes.</span>
-              </p>
-              <p className="flex items-start gap-2">
-                <span className="font-bold text-[#0373DF]">2.</span>
-                <span>Implementation of the Protection of Civil Rights Act, 1955 and the SC/ST (Prevention of Atrocities) Act, 1989.</span>
-              </p>
-              <p className="flex items-start gap-2">
-                <span className="font-bold text-[#0373DF]">3.</span>
-                <span>Schemes for educational and economic upliftment of Scheduled Castes, OBCs, and EWS beneficiaries.</span>
-              </p>
-              <p className="flex items-start gap-2">
-                <span className="font-bold text-[#0373DF]">4.</span>
-                <span>Welfare of Senior Citizens and administration of Maintenance and Welfare of Parents and Senior Citizens Act, 2007.</span>
-              </p>
-            </div>
-            <div className="space-y-3">
-              <p className="flex items-start gap-2">
-                <span className="font-bold text-[#0373DF]">5.</span>
-                <span>National Action Plan for Drug Demand Reduction (NAPDDR) and prevention of alcoholism and substance abuse.</span>
-              </p>
-              <p className="flex items-start gap-2">
-                <span className="font-bold text-[#0373DF]">6.</span>
-                <span>Rehabilitation of Beggars and comprehensive measures for transgender welfare under SMILE scheme.</span>
-              </p>
-              <p className="flex items-start gap-2">
-                <span className="font-bold text-[#0373DF]">7.</span>
-                <span>Statutory administration of National Commissions (NCSC, NCBC, NCSK) and apex finance corporations (NSFDC, NSKFDC, NBCFDC).</span>
-              </p>
-              <p className="flex items-start gap-2">
-                <span className="font-bold text-[#0373DF]">8.</span>
-                <span>Promotion of Babasaheb Dr. B.R. Ambedkar’s ideals via Dr. Ambedkar Foundation and Dr. Ambedkar International Centre.</span>
-              </p>
-            </div>
-          </div>
+          </VerticalTimeline>
         </section>
 
         {/* Section 4: Organisational Set-Up */}
@@ -302,26 +232,22 @@ export default function AboutPage() {
           {/* Political Leadership Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {MINISTERS.map((m) => (
-              <div
+              <ProfileCard
                 key={m.name}
-                className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm text-center flex flex-col items-center space-y-4 hover:shadow-md transition-shadow"
-              >
-                <div className="relative h-32 w-32 rounded-full overflow-hidden border-4 border-[#0373DF]/20 shadow-inner bg-neutral-100">
+                title={m.name}
+                subtitle={m.role}
+                tag="MoSJE GOI"
+                image={
                   <Image
                     src={m.image}
                     alt={m.name}
                     fill
-                    className="object-cover"
-                    sizes="128px"
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, 400px"
+                    priority
                   />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-neutral-900">{m.name}</h3>
-                  <p className="mt-1 text-xs font-medium text-[#0373DF] leading-tight">
-                    {m.role}
-                  </p>
-                </div>
-              </div>
+                }
+              />
             ))}
           </div>
 
@@ -330,58 +256,35 @@ export default function AboutPage() {
             <h3 className="text-lg font-bold text-neutral-900">
               Senior Administration &amp; Bureaus
             </h3>
-            {BUREAUS.map((bureau, idx) => {
-              const isOpen = openAccordion === idx;
-              return (
-                <div
-                  key={bureau.title}
-                  className="rounded-xl border border-neutral-200 bg-white overflow-hidden shadow-sm"
-                >
-                  <button
-                    onClick={() => toggleAccordion(idx)}
-                    className="w-full flex items-center justify-between p-4 sm:p-5 text-left font-semibold text-neutral-900 hover:bg-neutral-50 transition-colors"
-                    aria-expanded={isOpen}
-                  >
-                    <span className="text-sm sm:text-base">{bureau.title}</span>
-                    <Icon
-                      name={isOpen ? "expand_less" : "expand_more"}
-                      size={20}
-                      className="text-neutral-500 shrink-0"
-                    />
-                  </button>
-
-                  {isOpen && (
-                    <div className="px-5 pb-5 pt-1 text-sm text-neutral-600 border-t border-neutral-100 bg-neutral-50/50">
-                      <ul className="space-y-2 list-disc list-inside">
-                        {bureau.items.map((item, i) => (
-                          <li key={i} className="leading-relaxed">
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            <Accordion>
+              {BUREAUS.map((bureau) => (
+                <AccordionItem key={bureau.title} title={bureau.title}>
+                  <ul className="space-y-3 pl-4 list-disc text-sm text-neutral-700 marker:text-[#0373DF]">
+                    {bureau.items.map((item, i) => (
+                      <li key={i} className="pl-2 leading-relaxed">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
         </section>
 
         {/* Section 5: Need Support Banner */}
-        <section className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
-          <div className="space-y-1 text-center sm:text-left">
-            <h3 className="text-xl font-bold text-neutral-900">Need Support?</h3>
-            <p className="text-sm text-neutral-600">
-              Reach out to our 24x7 citizen helpline or connect directly with our key officers.
-            </p>
-          </div>
-          <Link
-            href="/website/contact-us"
-            className={`${buttonClasses("primary", "filled", "md")} whitespace-nowrap`}
-          >
-            Get in Touch
-          </Link>
-        </section>
+        <ActionBanner
+            title="Need Support?"
+            description="Reach out to our 24x7 citizen helpline or connect directly with our key officers."
+            action={
+              <Link
+                href="/website/contact-us"
+                className={`${buttonClasses("primary", "filled", "md")} whitespace-nowrap`}
+              >
+                Get in Touch
+              </Link>
+            }
+          />
       </div>
     </PageLayout>
   );

@@ -1,0 +1,23 @@
+.sa-accordion {
+  @apply flex flex-col gap-3;
+}
+
+.sa-accordion-item {
+  @apply bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow;
+}
+
+.sa-accordion-item__trigger {
+  @apply w-full px-5 py-4 flex items-center justify-between bg-neutral-50/50 hover:bg-blue-50/30 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0373DF];
+}
+
+.sa-accordion-item__title {
+  @apply text-sm sm:text-base font-bold text-neutral-900;
+}
+
+.sa-accordion-item__icon {
+  @apply text-neutral-500 shrink-0 transition-transform duration-200;
+}
+
+.sa-accordion-item__content {
+  @apply px-5 py-4 bg-white border-t border-neutral-100;
+}
