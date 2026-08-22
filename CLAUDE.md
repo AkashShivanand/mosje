@@ -257,7 +257,7 @@ and the footer** use the key colour, shade 1 (§3.7, §5.6).
 
 - **Agents:** `code-reviewer`, `accessibility-auditor`, `design-system-guardian`, `debugger`.
 - **Commands:** `/new-site`, `/new-portal`, `/qa-clone`, `/a11y`, `/sync-figma`.
-- **Rules:** path-scoped; each loads when you touch its paths.
+- **Rules:** path-scoped; see `.claude/rules/design-system-architecture.md` for UI architecture rules.
 - **Skills:** the global `clone-website` skill reverse-engineers new sites.
 
 ## Active context
