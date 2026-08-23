@@ -141,6 +141,35 @@ const BUREAUS = [
   },
 ];
 
+const SUBJECTS_ALLOCATED_LIST = [
+  "The following subject which fall within List III - Concurrent List of the Seventh Schedule to the Constitution: Nomadic and Migratory Tribes.",
+  "To act as the nodal Department for matters pertaining to the following groups, namely: (i) Scheduled Castes; (ii) Socially and Educationally Backward Classes; (iii) Denotified Tribes; (iv) Economically Backward Classes; and (v) Senior Citizens.",
+  "Special schemes aimed at social, educational and economic empowerment of the groups mentioned at (i) to (iv) under entry 2 above, e.g. scholarships, hostels, residential schools, skill training, concession loans and subsidy for self-employment, etc.",
+  "Monitoring of Schedule caste sub plan.",
+  "Rehabilitation of Manual Scavengers in alternative occupations.",
+  "Programmes of care and support to senior citizens.",
+  "Prohibition.",
+  "Rehabilitation of victims of alcoholism and substance abuse, and their families.",
+  "Beggary.",
+  "International Conventions and Agreements on matters dealt within the Department.",
+  "Awareness generation, research, evaluation and training in regard to subjects allocated to the Department.",
+  "Charitable and Religious Endowments and promotion and development of Voluntary Effort pertaining to subjects allocated to the Department.",
+  "The Protection of Civil Rights Act, 1955 (22 of 1955).",
+  "The Scheduled Castes and the Scheduled Tribes (Prevention of Atrocities) Act, 1989 (33 of 1989), (in so far as it relates to the Scheduled Castes, excluding administration of criminal justice in regard to offences under the Act).",
+  "National Commission for Backward Classes Act, 1993 (27 of 1993).",
+  "The Maintenance and Welfare of Parents and Senior Citizens Act, 2007 (56 of 2007).",
+  "National Commission for Scheduled Castes.",
+  "National Commission for Safai Karmacharis.",
+  "National Commission for Backward Classes.",
+  "National Scheduled Castes Finance and Development Corporation.",
+  "National Safai Karamcharis Finance and Development Corporation.",
+  "National Backward Classes Finance and Development Corporation.",
+  "National Institute of Social Defence.",
+  "Dr. Ambedkar Foundation.",
+  "Babu Jagjivan Ram National Foundation.",
+  "National Commission for Denotified and Semi-Nomadic Tribes.",
+];
+
 export default function AboutPage() {
   
 
@@ -220,6 +249,47 @@ export default function AboutPage() {
               </VerticalTimelineItem>
             ))}
           </VerticalTimeline>
+        </section>
+
+        {/* Section 3: Subjects Allocated — the Department's statutory remit under the
+            Allocation of Business Rules. Recovered from the pre-redesign page, which
+            numbered its sections 1, 2, 4: this one was dropped in the rewrite. */}
+        <section className="space-y-8">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
+              Subjects Allocated
+            </h2>
+            <p className="mt-1 text-sm text-neutral-500">
+              The subjects allocated to the Department under the Government of India
+              (Allocation of Business) Rules.
+            </p>
+            <div className="mt-2 h-1 w-16 bg-primary rounded-full" />
+          </div>
+
+          <div className="rounded-r-xl border-l-4 border-primary bg-primary/5 p-5 text-sm leading-relaxed text-ink">
+            <span className="font-bold text-ink">Note: </span>
+            The Department of Social Justice and Empowerment shall be the nodal Department for
+            the overall policy, planning and coordination of programmes for the development of
+            the groups mentioned at (i) to (iv) below, and the welfare of the group at (v).
+            Overall management and monitoring of the sectoral programmes in respect of these
+            groups remains the responsibility of the concerned Central Ministries, State
+            Governments and Union Territory Administrations; each discharges nodal
+            responsibility concerning its own sector.
+          </div>
+
+          <ol className="space-y-3">
+            {SUBJECTS_ALLOCATED_LIST.map((subject, index) => (
+              <li key={index} className="flex items-start gap-3 text-sm sm:text-base leading-relaxed text-ink-muted">
+                <span
+                  aria-hidden="true"
+                  className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary-700"
+                >
+                  {index + 1}
+                </span>
+                <span>{subject}</span>
+              </li>
+            ))}
+          </ol>
         </section>
 
         {/* Section 4: Organisational Set-Up */}
