@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { Icon } from "@mosje/design-system";
+import { CarouselIndicators } from "./CarouselIndicators";
 
 export function HeroCarousel() {
   const [index, setIndex] = useState(0);
@@ -136,16 +137,17 @@ export function HeroCarousel() {
           <Icon name={isPlaying ? "pause" : "play_arrow"} size={16} />
         </button>
 
-        <div className="flex items-center gap-2">
-          {Array.from({ length: count }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => go(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              className={`h-2.5 rounded-full transition-all ${i === index ? "w-6 bg-white" : "w-2.5 bg-white/60 hover:bg-white/80"}`}
-            />
-          ))}
-        </div>
+        {/* Was a hand-written copy of the same dots the persona card had, at a
+            different size and opacity. Both now come from one component, whose
+            controls carry the 24x24 hit area WCAG 2.2 AA asks for — these were
+            10px targets 10px apart, which the spacing exception does not cover. */}
+        <CarouselIndicators
+          count={count}
+          activeIndex={index}
+          onSelect={go}
+          size="sm"
+          label="Hero slides"
+        />
       </div>
     </section>
   );

@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import { Divider, Icon, buttonClasses } from "@mosje/design-system";
+import { CarouselIndicators } from "./CarouselIndicators";
 
 interface DocumentItem {
   title: string;
@@ -40,11 +41,39 @@ const documents: DocumentItem[] = [
   },
 ];
 
+/**
+ * The four audiences the Department publishes a page for.
+ *
+ * Ordered broadest-public first and internal last: a citizen seeking help, then
+ * students, then researchers, then officials.
+ *
+ * The Figma design (MoSJE WIP, node 2143-9874) names a fifth, "Divyangjan", in place
+ * of Beneficiary. It is not built, deliberately. Disability is DEPwD's remit, not this
+ * Department's — About Us records the Ministry's split into DoSJE and DEPwD, no scheme
+ * in the estate's 141 mentions disability, and dosje.gov.in returns 404 for
+ * /for-divyangjan. A persona card leading a disabled citizen into a department that
+ * cannot serve them is worse than not offering the card.
+ *
+ * Researcher and Student artwork is the design's own export. Beneficiary and
+ * Government Official keep the illustrations already in the repo: they are the same
+ * transparent line-art family and read correctly on the navy panel, so re-exporting
+ * them would be churn.
+ */
 const personas: Persona[] = [
   {
     img: "/website/images/Beneficiary.png",
     label: "Beneficiary",
     href: "/website/for-beneficiary",
+  },
+  {
+    img: "/website/images/Student.png",
+    label: "Student",
+    href: "/website/for-student",
+  },
+  {
+    img: "/website/images/Researcher.png",
+    label: "Researcher",
+    href: "/website/for-researcher",
   },
   {
     img: "/website/images/Government-Official.png",
@@ -125,20 +154,34 @@ export function RecentDocuments() {
                   Choose your role to discover services made for you.
                 </p>
 
-                <div className="mt-6 flex justify-center">
-                  <div className="relative h-44 w-44 overflow-hidden rounded-full border-2 border-white/20 bg-white/10 p-2 shadow-inner">
+                {/* Image container — square, navy, per the design. The illustrations
+                    are transparent line art, so the panel behind them is what gives
+                    them their colour. */}
+                <div className="mt-6 overflow-hidden rounded-xl bg-navy">
+                  <div className="relative aspect-square w-full">
                     <Image
                       src={currentPersona.img}
-                      alt={currentPersona.label}
+                      alt=""
                       fill
-                      className="object-cover rounded-full"
+                      sizes="(min-width: 1024px) 300px, 100vw"
+                      className="object-cover object-bottom"
+                      priority={false}
                     />
                   </div>
                 </div>
+
+                <Link
+                  href={currentPersona.href}
+                  className="mt-2 flex items-center justify-center gap-1.5 rounded-lg py-1 text-[22px] font-medium text-white hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                >
+                  {currentPersona.label}
+                  <Icon name="arrow_forward" size={20} aria-hidden="true" />
+                </Link>
               </div>
 
-              <div className="mt-6">
-                <div className="flex items-center justify-between rounded-xl bg-white/15 px-4 py-2.5 backdrop-blur-xs">
+              <div className="mt-3">
+                <Divider className="opacity-40" />
+                <div className="mt-3 flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() =>
@@ -147,26 +190,28 @@ export function RecentDocuments() {
                       )
                     }
                     aria-label="Previous persona"
-                    className="p-1 hover:bg-white/20 rounded-full transition text-white"
+                    className="flex size-10 items-center justify-center rounded-lg text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                   >
-                    <Icon name="chevron_left" size={20} />
+                    <Icon name="arrow_back" size={24} aria-hidden="true" />
                   </button>
-                  <Link
-                    href={currentPersona.href}
-                    className="text-[15px] font-bold text-white hover:underline flex items-center gap-1.5"
-                  >
-                    {currentPersona.label}
-                    <Icon name="arrow_forward" size={16} />
-                  </Link>
+
+                  <CarouselIndicators
+                    count={personas.length}
+                    activeIndex={personaIndex}
+                    onSelect={setPersonaIndex}
+                    label="Persona"
+                    itemNoun="persona"
+                  />
+
                   <button
                     type="button"
                     onClick={() =>
                       setPersonaIndex((i) => (i + 1) % personas.length)
                     }
                     aria-label="Next persona"
-                    className="p-1 hover:bg-white/20 rounded-full transition text-white"
+                    className="flex size-10 items-center justify-center rounded-lg text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                   >
-                    <Icon name="chevron_right" size={20} />
+                    <Icon name="arrow_forward" size={24} aria-hidden="true" />
                   </button>
                 </div>
               </div>
