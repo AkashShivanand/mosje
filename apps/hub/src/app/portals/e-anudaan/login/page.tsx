@@ -35,7 +35,11 @@ const PORTALS_GRID = [
     code: "NOS",
     title: "NOS",
     subtitle: "National Overseas Scholarship",
-    href: "/portals/nos",
+    // NOS has no portal in this estate. Every other tile here resolves, and the grid
+    // renders each one as a live Link regardless of `active`, so this was a 404. It points
+    // at the Department's real NOS portal, which is what samavesh-citizen-portals already
+    // links to — the one place in the estate that had it right.
+    href: "https://nosmsje.gov.in",
     active: false,
   },
   {
@@ -106,6 +110,8 @@ export default function EAnudaanOfficerLoginPage() {
           <Link
             key={p.code}
             href={p.href}
+            target={p.href.startsWith("http") ? "_blank" : undefined}
+            rel={p.href.startsWith("http") ? "noreferrer" : undefined}
             className={`flex flex-col justify-between rounded-lg border p-3 text-left transition-all ${
               p.active
                 ? "border-primary bg-primary-tonal text-primary font-semibold shadow-xs"
