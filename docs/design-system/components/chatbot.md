@@ -174,6 +174,39 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
 | 13 | **The Figma mascot was drawn far too small.** `chatbot.css` sizes the figure at 71.5% of the mark without the ring and 66% with it; Figma had 54.8% and 39.3%. | **Fixed 2026-08-23** — both derived from the CSS percentages and the image's own crop aspect |
 | 14 | **The bottom half of the seal reads inverted.** That is inherent to a single circular path and the shipped component does the same, so Figma matches it. A seal that reads upright top AND bottom needs two arcs with the lower one reversed. | Recorded — a design decision, not a defect |
 
+## Figma ↔ code parity — measured 2026-08-23
+
+Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Aligned unless noted.
+
+| Part | Figma | Code | |
+|---|---|---|---|
+| Panel | 400×719, `bg/neutral/base`, `shape/16`, `elevation/toast`, 1px `border/neutral/subtle` | identical | ✅ |
+| Header | pad `padding/16`, gap `inline/12`, 1px bottom border | identical | ✅ |
+| Header mark | 40 | `--ds-chatbot-mascot-size: 40px` | ✅ |
+| Title | `Title/title-2` 16 Medium, `text/neutral/base` | `title-2`, weight 500, `text-default` | ✅ |
+| Subtitle | `Body/body-3` 12, `text/neutral/subtle` | `body-3`, `text-muted` | ✅ |
+| Icon buttons | 32, `shape/8`, glyph 20, `icon/neutral/subtle` | `icon-size-32`, `shape/8`, `icon-size-20`, `text-muted` | ✅ |
+| Log | pad `padding/16`, gap `stack/8`, bottom-anchored | identical | ✅ |
+| Turn | **row**, gap `inline/8`, top-aligned | was a **column** with a 37px avatar above the bubble | **fixed in code** |
+| Avatar | 40 | was **37** — on no scale, and 40 sits beside it in the header | **fixed in code** |
+| Bot bubble | `bg/neutral/subtler`, pad `padding/12`, radius `0·16·16·16`, `Body/body-1` **Regular** | was `font-weight: 500` | **fixed in code** |
+| User bubble | `bg/brand/primary/bolder` + `on/…` | identical | ✅ |
+| Bubble cap | 246 of 368 = 67% | `max-width: 67%` | ✅ |
+| Quick reply | `bg/brand/primary/base`, pad `padding/8`×`padding/12`, `shape/8`, `Body/body-2`, `text/neutral/subtle` | identical | ✅ |
+| Replies | gap `stack/8`, wrap | identical | ✅ |
+| Footer | pad `12/16/16/16`, gap `stack/8`, 1px top border | identical | ✅ |
+| Composer | pad `4/4/4/12`, gap `inline/8`, `shape/full`, 1px border | identical | ✅ |
+| Composer text | `Body/body-2` 14 | `body-2` | ✅ |
+| Send | 32, `bg/brand/primary/bolder`, `shape/full`, glyph **16** | `icon-size-32`, glyph `icon-size-16` | **fixed in Figma** (was 20) |
+| Note | `Body/body-3` 12, `text/neutral/subtle` | `body-3`, `text-muted` | ✅ |
+| End chat | `Label/label-1` 14, underlined, `text/status/error/base` | identical | **fixed in Figma** (was `body-3` 12) |
+| End chat target | 20px tall — a Figma TEXT node cannot carry padding | 28px (`padding/4`×`padding/8`) | **open, cosmetic** — needs a HUG wrapper to show the real hit area |
+| Launcher | 84, `bg/neutral/base`, `shape/full`, `elevation/toast` | identical | ✅ |
+| Close disc | full-bleed, `bg/brand/primary/bolder`, glyph 24 | full-bleed, glyph 30% of 84 = 25.2 | ✅ within a pixel |
+| Mascot disc | `bg/brand/primary/bolder` | identical | ✅ |
+| Mascot figure | 60 (Ring=Off) · 56 (Ring=On) of 84 | 71.5% = 60.06 · 66% = 55.44 | ✅ rounded to whole pixels |
+| Seal | live text on a path, `·` separator, doubled | flattened outline, `~` separator, doubled | **open** — see finding 5 |
+
 ## The strategic question, unchanged
 
 The assistant on live `dosje.gov.in` is a **national myScheme/GovAI iframe embed**, not a DoSJE

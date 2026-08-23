@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.50.0",
+    version: "v0.51.0",
     date: "2026-08-23",
     current: true,
+    changes: [
+      { kind: "Changed", text: "THE AVATAR SITS BESIDE THE BUBBLE NOW, NOT ABOVE IT. `.ds-chatbot__turn` was a COLUMN, so every bot turn stacked a robot on top of its message and spent a whole avatar\u2019s height of vertical room doing it. The master has always drawn it as a row \u2014 and the rule two blocks below in the same stylesheet, \u201cbot bubbles point up-left AT THEIR AVATAR\u201d, only means anything if the avatar is to the left. A user turn has no avatar, so it moves to `justify-content: flex-end`; `align-items: flex-end` in a row would have bottom-aligned it" },
+      { kind: "Changed", text: "THE AVATAR IS 40, NOT 37. 37 is on no scale in this system, and the mark it sits under in the header is 40. The CSS rule that set it was also DEAD: the size arrives through the `size` prop, which writes an inline custom property, so a class rule could never win. Both said 37, the prop was the one doing the work, and the rule is deleted rather than left as a decorative duplicate" },
+      { kind: "Changed", text: "MESSAGE TEXT IS REGULAR, NOT 500. `Body/body-1` is a Regular style and the master uses it as one; the extra weight made every message read a shade heavier than the system\u2019s own body text, which is the opposite of what a transcript wants" },
+      { kind: "Fixed", text: "TWO FIGMA-SIDE GAPS, WHERE THE CODE WAS RIGHT. End chat was `Body/body-3` at 12px against the code\u2019s `Label/label-1` at 14 \u2014 and at 12px with no padding its target box was 16px, under the WCAG 2.2 minimum the code had already been corrected to clear. The send glyph was 20px against the code\u2019s 16; 16 in a 32px disc is the standard ratio and is already on the icon scale" },
+      { kind: "Removed", text: "A DUPLICATE \u201c06 \u00b7 Motion specimen\u201d frame floating above the page with a single test instance in it, and the Component record frame\u2019s overlap with the documentation \u2014 it sat at y=4800 inside a frame spanning 0\u20135412. The prototype stage\u2019s three skeleton blocks were also 100px wide inside a 1200px row, the same resize-then-FILL ordering bug that had already been fixed once in the motion specimen" },
+    ],
+  },
+  {
+    version: "v0.50.0",
+    date: "2026-08-23",
     changes: [
       { kind: "Changed", text: "THE LAST THREE NAVY LITERALS ARE GONE, so the assistant now re-tones with the portal it sits on \u2014 launcher disc, close disc, send button, user bubble and the unread ring all bind `bg/brand/primary/bolder`. The disc was the interesting one: it was deliberately fixed on the argument that a mascot is ARTWORK and artwork does not re-tone, the same reasoning that keeps the National Emblem un-recoloured. That argument does not survive contact with the object \u2014 the artwork is the ROBOT, and the disc is the surface it is mounted on, which is ordinary brand chrome. Navy mode resolves the token to #003366, so it renders byte-identical there; only blue changes, and only because blue was wrong" },
       { kind: "Fixed", text: "THE FIGMA SEAL WAS 6.6px OFF-CENTRE, WHICH IS WHY THE DOTS WERE HALF DOTS. Its path circle was centred on (35.4, 35.4) while the disc is centred on (42, 42), so the glyphs at the top overran the 84px frame and the `\u00b7` separators were cut in half at the boundary \u2014 the semicircle that was reported. Centred, and tracked to 2.59px so the wordmark closes the circle exactly instead of covering ~60% of it and leaving a gap down the left" },

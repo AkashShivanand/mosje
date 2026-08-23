@@ -790,19 +790,24 @@
     gap: var(--sa-stack-8);
   }
 
+  /* THE AVATAR SITS BESIDE THE BUBBLE, NOT ABOVE IT.
+     This was a column, which stacked a 37px robot on top of every bot turn and
+     cost a whole avatar's height of vertical space per message. The master has
+     always drawn it as a row, and the rule two blocks down — "bot bubbles point
+     up-left AT THEIR AVATAR" — only means anything if the avatar is to the left.
+     `align-items: flex-start` keeps the avatar level with the first line rather
+     than centred against a three-line bubble. */
   .ds-chatbot__turn {
     display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-8);
+    flex-direction: row;
+    gap: var(--sa-inline-8);
     align-items: flex-start;
   }
 
+  /* A user turn has no avatar, so the bubble is pushed to the far edge. In a row
+     that is `justify-content`; `align-items: flex-end` would bottom-align it. */
   .ds-chatbot__turn--user {
-    align-items: flex-end;
-  }
-
-  .ds-chatbot__avatar {
-    --ds-chatbot-mascot-size: 37px;
+    justify-content: flex-end;
   }
 
   .ds-chatbot__bubble {
@@ -816,7 +821,10 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: 500;
+    /* Regular. `Body/body-1` is a Regular style and the master uses it as one;
+       500 was making every message read a shade heavier than the system's own
+       body text, which is the opposite of what a transcript wants. */
+    font-weight: 400;
     overflow-wrap: anywhere;
   }
 

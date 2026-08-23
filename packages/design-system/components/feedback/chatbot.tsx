@@ -547,7 +547,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
                     className={cn("ds-chatbot__turn", `ds-chatbot__turn--${m.from}`)}
                   >
                     {leads && (
-                      <ChatbotMascot className="ds-chatbot__avatar" size={37} />
+                      <ChatbotMascot className="ds-chatbot__avatar" size={40} />
                     )}
                     <p className={cn("ds-chatbot__bubble", `ds-chatbot__bubble--${m.from}`)}>
                       {m.text}
@@ -559,7 +559,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               {typing && (
                 <div className="ds-chatbot__turn ds-chatbot__turn--bot">
                   {messages[messages.length - 1]?.from !== "bot" && (
-                    <ChatbotMascot className="ds-chatbot__avatar" size={37} />
+                    <ChatbotMascot className="ds-chatbot__avatar" size={40} />
                   )}
                   <span className="ds-chatbot__typing" aria-hidden="true">
                     <i /><i /><i /><i />
