@@ -73,8 +73,8 @@ export default function ChatbotMascotPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="sizes" style={h2Style}>2. Sizes and the ring</h2>
         <ul style={listStyle}>
-          <li><strong>84px with the ring</strong> — the launcher. The wordmark takes the outer 12px, so the figure gets 66% of the diameter.</li>
-          <li><strong>37–40px without it</strong> — beside a message or in the panel header. At that size the wordmark is unreadable and only muddies the mark, so the figure grows to 71.5%.</li>
+          <li><strong>84px with the ring</strong> — the launcher. The white ring takes the outer 12px, so the figure gets 66.67% of the diameter. The wordmark itself is live text on a path in Figma, flattened to outlines for the web — re-export it from the master whenever that text changes, and recompute the ring insets with it.</li>
+          <li><strong>40px without it</strong> — beside a message or in the panel header. At that size the wordmark is unreadable and only muddies the mark, so the figure grows to 71.43%.</li>
         </ul>
         <Callout type="warning" title="Don't shrink the ringed variant">
           Below roughly 48px, pass <code>ring={"{false}"}</code> rather than scaling the seal
@@ -83,12 +83,13 @@ export default function ChatbotMascotPage(): React.JSX.Element {
       </section>
 
       <section style={sectionStyle}>
-        <h2 id="colour" style={h2Style}>3. The disc does not follow the brand</h2>
+        <h2 id="colour" style={h2Style}>3. The disc follows the brand</h2>
         <p style={proseStyle}>
-          The disc is bound to <code>ref/brand/samavesh/navy</code> (<code>#003366</code>) and
-          stays navy in <code>blue</code>, <code>navy</code> and <code>dbim</code> alike. It is
-          artwork, not a themable surface — the same reason the National Emblem is not
-          recoloured per portal.
+          The disc follows the brand: it binds <code>bg/brand/primary/bolder</code>, so it is
+          <code>#005EB9</code> in <code>blue</code> and <code>#003366</code> in <code>navy</code>.
+          The artwork is the <em>robot</em>; the disc is the surface it is mounted on, which is
+          ordinary brand chrome. Leaving it fixed made the launcher the one control on the page
+          that ignored <code>data-brand</code>.
         </p>
       </section>
 

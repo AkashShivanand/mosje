@@ -22,9 +22,21 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.51.0",
+    version: "v0.52.0",
     date: "2026-08-23",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "THE SUGGESTION ROW WAS CROOKED, AND IT WAS NOT FLEXBOX. `.ds-prose li + li { margin-top: 8px }` \u2014 a docs rule for VERTICAL prose lists \u2014 landed on the chatbot\u2019s horizontal reply row, pushing every pill after the first down 8px and stretching the first one to the taller line. The list reset its own margin and padding; the ITEM never did. A row of controls is not a prose list, so it opts out rather than hoping no consumer has list styling" },
+      { kind: "Changed", text: "SUGGESTIONS PACK RIGHT NOW, ON THE USER\u2019S SIDE. Every one of them is a sentence the CITIZEN is about to say, and pressing one puts those exact words into a user bubble, which lands hard right. Packed left, the suggestion and the message it became sat on opposite sides of the column and the transcript read as if the assistant had proposed and then answered itself. Still wrapping rather than one-per-row, so two short suggestions share a line" },
+      { kind: "Changed", text: "END CHAT IS A SIBLING OF THE NOTE, NOT A WORD INSIDE IT. It lived in the paragraph, separated by a space, which cost two things: the 28px control stretched the note\u2019s last line box from 16px to 28px and broke the footer\u2019s rhythm, and the only way out of the conversation moved horizontally with the text wrap, so its position depended on how long the disclaimer happened to be. A control people reach for should be somewhere they can learn" },
+      { kind: "Fixed", text: "FOUR HAND-DRAWN <svg> PATHS REPLACED BY THE ICONS THE MASTER ACTUALLY USES. Expand, minimise, the launcher\u2019s close and send were bespoke geometry, which `component-authoring.md` \u00a72 forbids outright, and they had drifted from Figma\u2019s Material Symbols Rounded Light glyphs \u2014 `open_in_full` / `close_fullscreen`, `close`, `send`. Passing `size` rather than sizing the box in CSS is the point: `size` drives the `opsz` optical-size axis, so the glyph is DRAWN for the size it is displayed at, where a width/height rule sets the box and leaves the drawing wrong" },
+      { kind: "Changed", text: "THE SEAL WORDMARK IS RE-EXPORTED FROM THE SAMAVESH MASTER, not from the WIP file it had been frozen against. The old cut read `Samajik Sahayak ~ \u0938\u093e\u092e\u093e\u091c\u093f\u0915 \u0938\u0939\u093e\u092f\u0915` with a TILDE where the master sets a middle dot. viewBox moves from `0 0 74 77` to the flattened node\u2019s true ink bounds `0 0 76.56 75.43`, and the ring insets are recomputed from the same measurement \u2014 the two are one number written twice, so they move together or not at all" },
+      { kind: "Fixed", text: "TWO STALE `@default` CLAIMS IN THE PUBLIC API. `title` and `launcherLabel` both documented `\u201cChat with us\u201d` while the implementation had moved to the assistant\u2019s own name; the props table on this site repeated it, and so did the Figma master and the Identity section of its documentation page. All five now agree: the seal has the name written round the ring, so a widget that introduces itself as something else is a defect, not a personality" },
+    ],
+  },
+  {
+    version: "v0.51.0",
+    date: "2026-08-23",
     changes: [
       { kind: "Changed", text: "THE AVATAR SITS BESIDE THE BUBBLE NOW, NOT ABOVE IT. `.ds-chatbot__turn` was a COLUMN, so every bot turn stacked a robot on top of its message and spent a whole avatar\u2019s height of vertical room doing it. The master has always drawn it as a row \u2014 and the rule two blocks below in the same stylesheet, \u201cbot bubbles point up-left AT THEIR AVATAR\u201d, only means anything if the avatar is to the left. A user turn has no avatar, so it moves to `justify-content: flex-end`; `align-items: flex-end` in a row would have bottom-aligned it" },
       { kind: "Changed", text: "THE AVATAR IS 40, NOT 37. 37 is on no scale in this system, and the mark it sits under in the header is 40. The CSS rule that set it was also DEAD: the size arrives through the `size` prop, which writes an inline custom property, so a class rule could never win. Both said 37, the prop was the one doing the work, and the rule is deleted rather than left as a decorative duplicate" },

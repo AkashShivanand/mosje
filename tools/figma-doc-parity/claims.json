@@ -201,6 +201,84 @@
           "value": "2.5.8"
         }
       ]
+    },
+    {
+      "node": "55828:742",
+      "where": "Chatbot — Documentation › 01 Identity › THE HEADER",
+      "figma": "Samajik Sahayak",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "Samajik Sahayak"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.tsx",
+          "pattern": "export const CHATBOT_NAME = \"Samajik Sahayak\"",
+          "hint": "The seal has the name written round the ring, so the header says the same thing."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.tsx",
+          "pattern": "title = CHATBOT_NAME",
+          "hint": "The panel title defaults to the name, not to an invitation."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.tsx",
+          "pattern": "@default \"Chat with us\"",
+          "absent": true,
+          "hint": "This exact string sat in two JSDoc @default tags, in the props table on the web docs, in the Figma master and in this Identity panel long after the implementation moved on. Four surfaces agreed with each other and disagreed with the code."
+        }
+      ]
+    },
+    {
+      "node": "55828:762",
+      "where": "Chatbot — Documentation › 02 Anatomy › LOG",
+      "figma": "Bot turns carry an avatar; user turns do not. Bubbles cap at 67% so the column never reads as a wall of text. Suggestions wrap and pack RIGHT, on the user’s side — each is a sentence they are about to say.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "pack RIGHT"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "\\.ds-chatbot__replies \\{[^}]*justify-content: flex-end",
+          "flags": "s",
+          "hint": "Suggestions sit on the user's side because pressing one becomes a user bubble, which lands hard right."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "\\.ds-chatbot__reply-item \\{[^}]*margin: 0",
+          "flags": "s",
+          "hint": "Without this the docs page's own `.ds-prose li + li` margin offsets every pill after the first by 8px."
+        }
+      ]
+    },
+    {
+      "node": "55828:766",
+      "where": "Chatbot — Documentation › 02 Anatomy › FOOTER",
+      "figma": "A pill composer, the honest note, and End chat as a text link in error ink on its own line beneath it — never trailing the sentence, and never a button beside the close control.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "own line"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.tsx",
+          "pattern": "<p className=\"ds-chatbot__note\">\\{note\\}</p>",
+          "hint": "End chat is a SIBLING of the note. Inside it, the 28px control stretched the note's last line box and its position moved with the text wrap."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "\\.ds-chatbot__end \\{[^}]*display: block",
+          "flags": "s"
+        }
+      ]
     }
   ],
   "tokenTables": [

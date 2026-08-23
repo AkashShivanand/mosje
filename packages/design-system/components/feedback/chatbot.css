@@ -330,10 +330,7 @@
     filter: blur(3px);
   }
 
-  .ds-chatbot__close svg {
-    width: 30%;
-    height: 30%;
-  }
+
 
   .ds-chatbot__launcher[data-state="open"] .ds-chatbot__mark {
     opacity: 0;
@@ -431,15 +428,15 @@
        measured off the Figma nodes rather than eyeballed: the ringed mark gives
        the figure less room because the wordmark takes the outer 12px, and the
        x-centre is nudged because the figure's speech bubble leans right. */
-    --ds-chatbot-figure-size: 71.5%;
-    --ds-chatbot-figure-x: 49.3%;
-    --ds-chatbot-figure-y: 49%;
+    --ds-chatbot-figure-size: 71.43%;
+    --ds-chatbot-figure-x: 48.81%;
+    --ds-chatbot-figure-y: 48.81%;
   }
 
   .ds-chatbot-mascot--ring {
-    --ds-chatbot-figure-size: 66%;
-    --ds-chatbot-figure-x: 48.1%;
-    --ds-chatbot-figure-y: 51.7%;
+    --ds-chatbot-figure-size: 66.67%;
+    --ds-chatbot-figure-x: 47.62%;
+    --ds-chatbot-figure-y: 51.19%;
     background: var(--sa-bg-neutral-base);
   }
 
@@ -466,11 +463,15 @@
     inset: 14.3%; /* 12px of 84px — the white ring the wordmark rides on. */
   }
 
-  /* The wordmark. Its own bounds are 74x77 inside an 84px mark, which is where
-     these insets come from (Figma 3516:98940). */
+  /* The wordmark, placed by its INK bounds — 77.19 x 76.07 inside an 84px mark,
+     giving 3.967 top / 3.409 right / 3.967 bottom / 3.408 left. Those come from the
+     flattened master (Figma 55825:701), not from the 68x68 circle the glyphs ride
+     on: the type sits outside that circle, so the ink box is the larger of the two
+     and is what has to be positioned. Recompute these whenever CHATBOT_RING_PATH
+     is re-exported — the two are one measurement expressed twice. */
   .ds-chatbot-mascot__ring {
     position: absolute;
-    inset: 4.18% 6.15% 4.19% 6.09%;
+    inset: 4.723% 4.058% 4.723% 4.057%;
     width: auto;
     height: auto;
     color: var(--sa-text-neutral-subtle);
@@ -690,6 +691,16 @@
 
   /* 32px, so the two header controls clear the 24x24 WCAG 2.2 (2.5.8) minimum
      with room to spare. They sit where every user already looks for a dismiss. */
+  /* ICON SIZES LIVE ON THE GLYPH, NOT IN CSS. These four marks — expand
+     (open_in_full / close_fullscreen), minimise and the launcher's close
+     (close), and send — were hand-drawn <svg> paths, which
+     `.claude/rules/component-authoring.md` §2 forbids outright and which had
+     silently diverged from the Figma master's Material Symbols glyphs. They are
+     now <Icon> instances at 20 / 24 / 16, straight off the icon scale.
+     Passing `size` rather than sizing the box in CSS is the point: `size` also
+     drives the `opsz` optical-size axis, so the glyph is DRAWN for the size it
+     is displayed at. A width/height rule sets the box and leaves the drawing
+     wrong. */
   .ds-chatbot__icon-btn {
     display: grid;
     flex: none;
@@ -708,12 +719,6 @@
       transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
   }
 
-  /* 20, not 18. The icon scale runs 16 · 20 · 24 · 32 · 40 · 48 · 64 and 18 is
-     not on it — it was a number, not a size. */
-  .ds-chatbot__icon-btn svg {
-    width: var(--sa-icon-size-20);
-    height: var(--sa-icon-size-20);
-  }
 
   @media (hover: hover) and (pointer: fine) {
     .ds-chatbot__icon-btn:hover {
@@ -931,17 +936,36 @@
      45ms apart — long enough to be a cascade, short enough that the last one is
      in place before anyone could have reached for it. */
 
+  /* SUGGESTIONS SIT ON THE USER'S SIDE. Every one of these is a sentence the
+     CITIZEN is about to say, and pressing one puts those exact words into a
+     user bubble — which lands hard right. Packed left, the suggestion and the
+     message it becomes appeared on opposite sides of the column, so the
+     transcript read as if the assistant had proposed and then answered itself.
+
+     Still wrapping, not one-per-row: two short suggestions share a line rather
+     than each claiming 366px, and `flex-end` keeps the right edge clean either
+     way. Row gap is stack, column gap is inline — the same 8px, but the axes
+     are named for what they actually do. */
   .ds-chatbot__replies {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--sa-stack-8);
+    justify-content: flex-end;
+    gap: var(--sa-stack-8) var(--sa-inline-8);
     margin: 0;
     padding: var(--sa-padding-0);
     list-style: none;
   }
 
+  /* The list resets its own margin and padding; the ITEM needs the same, and not
+     resetting it is what made the row look crooked. Any prose context this
+     widget is embedded in — the docs page wraps it in `.ds-prose`, which carries
+     `li + li { margin-top: 8px }` for vertical lists — pushes every suggestion
+     after the first down by that margin, and the first one then stretches to the
+     taller line. A horizontal row of controls is not a prose list, so it opts
+     out rather than hoping no consumer has list styling. */
   .ds-chatbot__reply-item {
     display: block;
+    margin: 0;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -1138,10 +1162,6 @@
       transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
   }
 
-  .ds-chatbot__send svg {
-    width: var(--sa-icon-size-16);
-    height: var(--sa-icon-size-16);
-  }
 
   /* Dimmed, never hidden. A send button that vanishes when the field is empty
      removes the affordance that tells you the field is a message box at all. */
@@ -1181,11 +1201,17 @@
 
      Do not re-split it: `no-duplicate-selectors` is on for exactly this reason. */
   .ds-chatbot__end {
+    /* Its own line under the note, not trailing the sentence. */
+    display: block;
+    width: fit-content;
+    margin-block-start: var(--sa-stack-4);
     padding: var(--sa-padding-4) var(--sa-padding-8);
-    /* -8px of the padding above, so the label still sits flush with the panel's
-       16px gutter while the tappable box clears 24px (WCAG 2.2 · 2.5.8):
-       label-1's 20px line-height + 4 + 4 = 28. */
-    margin-inline-end: calc(var(--sa-padding-8) * -1);
+    /* -8px of the padding above, so the LABEL sits flush with the footer's 16px
+       gutter while the tappable box clears 24px (WCAG 2.2 · 2.5.8):
+       label-1's 20px line-height + 4 + 4 = 28. This was `margin-inline-end`
+       while the button trailed the note inline, where it pulled the wrong edge
+       and aligned nothing. */
+    margin-inline-start: calc(var(--sa-padding-8) * -1);
     border: 0;
     border-radius: var(--sa-shape-4);
     background: transparent;
