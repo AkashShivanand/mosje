@@ -65,6 +65,14 @@ export default function ChatbotPage(): React.JSX.Element {
           <a href={figmaUrl(FIGMA_NODES.chatbot)} target="_blank" rel="noreferrer">
             Chatbot — Documentation
           </a>
+          {" · "}
+          <a href={figmaUrl(FIGMA_NODES.chatbotPrototype)} target="_blank" rel="noreferrer">
+            Interactive prototype
+          </a>
+          {" · "}
+          <a href={figmaUrl(FIGMA_NODES.chatbotMotion)} target="_blank" rel="noreferrer">
+            Motion specimen
+          </a>
         </p>
       </header>
 
@@ -139,15 +147,22 @@ export default function ChatbotPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="states" style={h2Style}>3. States</h2>
         <p style={proseStyle}>
-          Figma draws four states because a static file cannot show motion. Only the first is a
-          prop.
+          Figma draws four states because a static file cannot show motion. They are listed in the
+          order the component actually runs them. Only the first is a prop.
         </p>
         <ul style={listStyle}>
           <li><strong>Closed</strong> (<code>defaultOpen={"{false}"}</code>) — the launcher alone, on the shared corner rail.</li>
-          <li><strong>Greeting</strong> — the opening line types out, then suggestions cascade in behind it.</li>
-          <li><strong>Typing</strong> — the indicator the bot is composing, replaced by the message it was composing.</li>
+          <li><strong>Typing</strong> — a beat after opening, the bot starts composing. Nothing has been said yet.</li>
+          <li><strong>Greeting</strong> — the opening line lands, and the suggestions cascade in 320ms behind it.</li>
           <li><strong>Transcript</strong> — turns accumulate. Pass <code>messages</code> to own the conversation yourself.</li>
         </ul>
+        <Callout type="warning" title="Typing comes before Greeting, not after it">
+          This page and the Figma set both had it the other way round until the opening effect was
+          read line by line. <code>Chatbot</code> turns typing on a beat after opening and only
+          then, <code>typingDelayMs</code> later, replaces it with the greeting — so the dots are
+          what the greeting arrives <em>out of</em>. The Figma frame draws Typing with an empty log
+          for exactly that reason.
+        </Callout>
         <Callout type="warning" title="Typing and Transcript are not props">
           They are states <code>Chatbot</code> walks through on its own. Adding props to pin the
           widget into one would invent an API for something the component deliberately owns, and
@@ -188,12 +203,48 @@ export default function ChatbotPage(): React.JSX.Element {
           <li><strong>Exit, 160ms</strong> — shorter, because the user has already decided.</li>
           <li><strong>Hover, 200ms</strong> — its own symmetric curve. The strong ease-out used for arrivals reads as a jerk on mouse-leave.</li>
           <li><strong>Seal, 10s</strong> — rotates only while the assistant is thinking, never at rest.</li>
+          <li><strong>Float, 5s</strong> — the mascot drifts 2.5px, constantly and everywhere. A legless robot drawn mid-hover has to hover.</li>
         </ul>
+        <p style={proseStyle}>
+          Two mechanisms, and which one a thing gets is not a style choice. State changes are
+          <strong> transitions</strong>, because they have to interrupt and retarget when someone
+          double-clicks the launcher. Only the genuinely endless parts — the typing wave, the float,
+          the seal — are <strong>keyframes</strong>, because there is nothing to retarget and they
+          have to be able to run forever.
+        </p>
+        <Callout type="warning" title="The seal turns where nobody can see it">
+          It rotates on <code>[data-thinking]</code>, but the widget is only ever thinking while it
+          is open — and when it is open the launcher has already crossfaded the mark to a close ×.
+          So the estate&apos;s most carefully specified loop is, in practice, behind the thing that
+          replaced it. The signal that actually reads is the typing indicator. Worth deciding
+          whether the seal moves to the avatar or stops being specified as a thinking cue.
+        </Callout>
       </section>
 
-      {/* ============ 6. ACCESSIBILITY ============ */}
+      {/* ============ 6. PROTOTYPE ============ */}
       <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>6. Accessibility (A11y)</h2>
+        <h2 id="prototype" style={h2Style}>6. Prototype</h2>
+        <p style={proseStyle}>
+          The Figma file carries a working flow, wired on instances of the master rather than on a
+          redraw of it — so a fix to the component shows up in the prototype without anyone
+          re-linking anything.
+        </p>
+        <ul style={listStyle}>
+          <li><strong>Five frames</strong> — Closed → Thinking → Greeting → Asked → Answered, with both the minimise control and the close disc returning to the launcher from anywhere.</li>
+          <li><strong>Anchored bottom-right</strong>, so Smart Animate grows the panel out of the launcher and shrinks it back into the same place.</li>
+          <li><strong>Real timings</strong> — 240ms enter, 160ms exit, and the 900ms <code>typingDelayMs</code> beat, all read from <code>chatbot.css</code> rather than chosen in Figma.</li>
+        </ul>
+        <Callout type="info" title="Why the loops live on a separate frame">
+          Figma refuses keyframes on instance sublayers. The typing wave, the float and the seal are
+          therefore keyframed on detached specimens in <em>06 · Motion specimen</em>, beside the
+          flow rather than inside it. Hover and press are not prototyped at all: representing them
+          would mean duplicating every frame, and they are already fully specified above.
+        </Callout>
+      </section>
+
+      {/* ============ 7. ACCESSIBILITY ============ */}
+      <section style={sectionStyle}>
+        <h2 id="accessibility" style={h2Style}>7. Accessibility (A11y)</h2>
         <Callout type="info" title="A dialog, but deliberately not a modal one">
           The page behind the panel stays operable and focus is never trapped. A help widget that
           seizes the page is worse than no help widget.
@@ -211,9 +262,9 @@ export default function ChatbotPage(): React.JSX.Element {
         </div>
       </section>
 
-      {/* ============ 7. API ============ */}
+      {/* ============ 8. API ============ */}
       <section style={sectionStyle}>
-        <h2 id="api" style={h2Style}>7. API Reference</h2>
+        <h2 id="api" style={h2Style}>8. API Reference</h2>
         <PropsTable
           props={[
             { name: "open", type: "boolean", description: "Controlled open state. Omit to let the widget own it." },

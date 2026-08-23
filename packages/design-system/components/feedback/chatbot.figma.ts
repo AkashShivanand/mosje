@@ -26,34 +26,48 @@ const instance = figma.selectedInstance;
  *
  * The four values are NOT four configurations — they are four moments of the
  * widget's own lifecycle, drawn as separate frames because a static file cannot
- * show motion:
+ * show motion. The order is the one `chatbot.tsx` actually runs:
  *
  *   Closed     → launcher only, panel shut
- *   Greeting   → panel open, opening line landed, suggestions cascaded in
- *   Typing     → the bot is composing; nothing offered yet
+ *   Typing     → the bot is composing; nothing said yet
+ *   Greeting   → the opening line has landed, suggestions cascade in 320ms later
  *   Transcript → turns have accumulated
  *
- * Only the first distinction is a prop. Typing and Transcript are transient
- * internals that `Chatbot` walks through on its own — roughly 260ms, 1160ms and
- * 1480ms after opening. Emitting them as props would invent an API for something
- * the component deliberately owns, and would let a consumer freeze the widget in
- * a state it is supposed to pass through.
+ * TYPING COMES BEFORE GREETING, which is the opposite of how this was first
+ * documented. The opening effect is `after(OPENING_BEAT_MS, typing on)` and then
+ * `after(OPENING_BEAT_MS + typingDelayMs, typing off + greeting)` — so the dots
+ * are what the greeting arrives *out of*, not something that follows it.
  *
- * The old WIP set called this axis `Property 1` with values `Open | 1 | 2 | 3`,
- * where `Open` confusingly meant CLOSED. Renaming it was the point of the
- * promotion, not a side effect.
+ * Only the first distinction is a prop. Typing and Transcript are transient
+ * internals `Chatbot` walks through on its own. Emitting them as props would
+ * invent an API for something the component deliberately owns, and would let a
+ * consumer freeze the widget in a state it is supposed to pass through.
  */
 const defaultOpen = instance.getEnum("State", {
   Closed: false,
-  Greeting: true,
   Typing: true,
+  Greeting: true,
   Transcript: true,
 });
+
+const title = instance.getString("Title");
+const note = instance.getString("Note");
+const placeholder = instance.getString("Placeholder");
+const composer = instance.getBoolean("Show composer");
+
+// The code has no `showSubtitle` flag — passing an empty string is how you
+// suppress it. The Figma boolean is that same decision, made switchable.
+const subtitle = instance.getBoolean("Show subtitle") ? instance.getString("Subtitle") : "";
 
 export default {
   example: figma.code`
     <Chatbot
       ${defaultOpen ? "defaultOpen" : ""}
+      title="${title}"
+      subtitle="${subtitle}"
+      note="${note}"
+      composerPlaceholder="${placeholder}"
+      composer={${composer}}
       greeting="This is an assistant for the Ministry of Social Justice. How can I help you?"
       quickReplies={[
         { id: "scheme", label: "Find a scheme" },

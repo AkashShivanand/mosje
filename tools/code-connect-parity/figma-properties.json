@@ -291,15 +291,40 @@
   "Chatbot": {
     "nodeId": "55826:37003",
     "captured": "2026-08-23",
+    "note": "variantOptions is recorded exactly as Figma reports it. That is a stored registration order, not the canvas order and not the lifecycle order — the canvas reads Closed, Typing, Greeting, Transcript, and two attempts to rewrite the option list (child reorder, temp-rename cycle) both no-op'd. Order is cosmetic here; the gate only checks that every value is mapped.",
     "properties": {
       "State": {
         "type": "VARIANT",
         "variantOptions": [
-          "Closed",
           "Greeting",
+          "Closed",
           "Typing",
           "Transcript"
         ]
+      },
+      "Title": {
+        "type": "TEXT",
+        "defaultValue": "Chat with us"
+      },
+      "Subtitle": {
+        "type": "TEXT",
+        "defaultValue": "सामाजिक सहायक"
+      },
+      "Note": {
+        "type": "TEXT",
+        "defaultValue": "Samajik Sahayak follows a fixed script. It cannot see your application or your personal data."
+      },
+      "Placeholder": {
+        "type": "TEXT",
+        "defaultValue": "Type something…"
+      },
+      "Show subtitle": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show composer": {
+        "type": "BOOLEAN",
+        "defaultValue": true
       }
     }
   }
