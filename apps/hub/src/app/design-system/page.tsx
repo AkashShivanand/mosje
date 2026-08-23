@@ -144,7 +144,7 @@ export default function WelcomePage(): React.JSX.Element {
         </p>
         <div className="home-cards">
           {[
-            { title: "AGENTS.md & Rules", desc: "Canonical system prompts and rulesets located centrally.", href: "/design-system/resources/machine-interface" },
+            { title: "AGENTS.md & Rules", desc: "Canonical system prompts and rulesets located centrally.", href: "#" },
             { title: "llms.txt", desc: "A compiled navigation map for agents to traverse the docs.", href: "/design-system/llms.txt" },
           ].map((card) => (
             <a key={card.title} href={card.href} className="docs-welcome-card">
@@ -165,8 +165,8 @@ export default function WelcomePage(): React.JSX.Element {
         </p>
         <div className="home-cards">
           {[
-            { title: "Brand packs", desc: "Learn how to author a brand pack for a new department.", href: "/design-system/foundations/brand-and-white-labelling" },
-            { title: "Contrast-gating", desc: "CI checks ensure new brand ramps clear WCAG AA automatically.", href: "/design-system/foundations/accessibility-and-compliance#contrast" },
+            { title: "Brand packs", desc: "Learn how to author a brand pack for a new department.", href: "#" },
+            { title: "Contrast-gating", desc: "CI checks ensure new brand ramps clear WCAG AA automatically.", href: "#" },
           ].map((card) => (
             <a key={card.title} href={card.href} className="docs-welcome-card">
               <div style={{ fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-8)" }}>{card.title}</div>
