@@ -134,6 +134,48 @@ export default function WelcomePage(): React.JSX.Element {
         </div>
       </section>
 
+      <section style={{ marginTop: "var(--sa-section-56)" }} id="for-ai-agents">
+        <span className="home-kicker">Automate</span>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-16)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
+          For AI Agents
+        </h2>
+        <p style={{ color: "var(--sa-text-neutral-subtle)", marginBottom: "var(--sa-padding-20)", lineHeight: "var(--sa-type-body-1-lh)" }}>
+          SAMAVESH provides a machine-readable contract. Agents can consume our registry, <code>llms.txt</code>, and Code Connect to confidently assemble compliant UI without guessing structural tokens.
+        </p>
+        <div className="home-cards">
+          {[
+            { title: "AGENTS.md & Rules", desc: "Canonical system prompts and rulesets located centrally.", href: "/design-system/resources/machine-interface" },
+            { title: "llms.txt", desc: "A compiled navigation map for agents to traverse the docs.", href: "/design-system/llms.txt" },
+          ].map((card) => (
+            <a key={card.title} href={card.href} className="docs-welcome-card">
+              <div style={{ fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-8)" }}>{card.title}</div>
+              <div style={{ fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)" }}>{card.desc}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section style={{ marginTop: "var(--sa-section-56)" }} id="white-label">
+        <span className="home-kicker">Extend</span>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-16)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
+          White-label your portal
+        </h2>
+        <p style={{ color: "var(--sa-text-neutral-subtle)", marginBottom: "var(--sa-padding-20)", lineHeight: "var(--sa-type-body-1-lh)" }}>
+          The SAMAVESH universal core is brand-blind. Stand up a new government portal by supplying one brand pack (colours, emblem, typography) and inherit every accessible component for free.
+        </p>
+        <div className="home-cards">
+          {[
+            { title: "Brand packs", desc: "Learn how to author a brand pack for a new department.", href: "/design-system/foundations/brand-and-white-labelling" },
+            { title: "Contrast-gating", desc: "CI checks ensure new brand ramps clear WCAG AA automatically.", href: "/design-system/foundations/accessibility-and-compliance#contrast" },
+          ].map((card) => (
+            <a key={card.title} href={card.href} className="docs-welcome-card">
+              <div style={{ fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-8)" }}>{card.title}</div>
+              <div style={{ fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)" }}>{card.desc}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+
       <section style={{ marginTop: "var(--sa-section-56)" }}>
         <span className="home-kicker">Library</span>
         <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-padding-20)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
@@ -147,6 +189,7 @@ export default function WelcomePage(): React.JSX.Element {
             { name: "Input / Textarea", status: "Stable" as const, href: "/design-system/components/forms/input" },
             { name: "Select", status: "Beta" as const, href: "/design-system/components/forms/select" },
             { name: "Form Field", status: "Stable" as const, href: "/design-system/components/forms/form-field" },
+            { name: "Accessibility Widget", status: "Stable" as const, href: "/design-system/components/utilities/ux4g-accessibility-widget" },
             { name: "Color Mode", status: "Stable" as const, href: "/design-system/foundations/color#brands" },
           ].map((item) => (
             <a

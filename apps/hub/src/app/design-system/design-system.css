@@ -5,6 +5,7 @@
    pages that render a PropsTable). */
 @import "../../components/design-system/docs-kit/docs-kit.css";
 
+@layer base {
 /* Base reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -106,7 +107,9 @@ code:not([class]) {
   padding: var(--sa-padding-2) var(--sa-padding-4);
   color: var(--sa-text-neutral-base);
 }
+}
 
+@layer components {
 /* Skip to content */
 .skip-link {
   position: absolute;
@@ -245,4 +248,5 @@ code:not([class]) {
 @media (max-width: 560px) {
   .home-cards { grid-template-columns: 1fr; }
   .home-stat { min-width: 50%; }
+}
 }
