@@ -59,12 +59,12 @@
      tells you it is listening. Subtle on purpose — 0.97 reads as a press, 0.9
      reads as a toy. Applies to every button in the estate, which is the point:
      this is the kind of detail that should never be re-derived per portal. */
-  .ds-btn:active:not(:disabled):not([aria-disabled="true"]) {
+  .ds-btn:active:not(:disabled, [aria-disabled="true"]) {
     transform: scale(0.97);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ds-btn:active:not(:disabled):not([aria-disabled="true"]) {
+    .ds-btn:active:not(:disabled, [aria-disabled="true"]) {
       transform: none;
     }
   }
