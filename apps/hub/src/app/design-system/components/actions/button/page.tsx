@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import {
-  PropsTable,
+  DocsTabs, PropsTable,
   DoDont,
   Callout,
   TokenTable,
@@ -180,29 +180,10 @@ export default function ButtonPage(): React.JSX.Element {
       </header>
 
       {/* ============ 1. PURPOSE ============ */}
-      <section style={sectionStyle}>
-        <h2 id="purpose" style={h2Style}>
-          1. Purpose
-        </h2>
-        <p style={proseStyle}>
-          A Button triggers an action within the system. Reach for it whenever a
-          user needs to <em>do</em> something — submit an application, save a
-          draft, confirm a choice, or run a command. A button always performs an
-          action on the current page or in the current flow.
-        </p>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          If the control takes the user to a different page or resource, it is a{" "}
-          <strong>link</strong>, not a button. Getting this distinction right is
-          the single most important accessibility decision for an interactive
-          element.
-        </p>
-      </section>
-
-      {/* ============ 2. ANATOMY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="anatomy" style={h2Style}>
-          2. Anatomy
-        </h2>
+      
+      <DocsTabs tabs={[
+        { id: "design", label: "Design", content: (<><section style={sectionStyle}>
+        <h2 id="anatomy" style={h2Style}>Anatomy</h2>
         <p style={proseStyle}>
           A button is intentionally simple: a labelled, focusable container with a
           clearly visible focus state.
@@ -265,49 +246,8 @@ export default function ButtonPage(): React.JSX.Element {
           </ol>
         </div>
       </section>
-
-      {/* ============ 3. WHEN TO USE / NOT ============ */}
-      <section style={sectionStyle}>
-        <h2 id="when-to-use" style={h2Style}>
-          3. When to use / not
-        </h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "var(--sa-stack-16)",
-          }}
-        >
-          <UseCard tone="do" title="Use a Button when…">
-            <li>Submitting or saving a form.</li>
-            <li>Triggering an action (export, print, calculate).</li>
-            <li>Confirming or cancelling in a dialog.</li>
-            <li>Opening a menu, modal, or drawer.</li>
-          </UseCard>
-          <UseCard tone="dont" title="Don't use a Button when…">
-            <li>
-              Navigating to another page — use a link (<code>&lt;a&gt;</code>).
-            </li>
-            <li>
-              Displaying a status or count — use a <strong>Badge</strong>.
-            </li>
-            <li>Toggling a single setting — use a switch or checkbox.</li>
-          </UseCard>
-        </div>
-        <Callout type="warning" title="Buttons are not links">
-          A button performs an action; a link changes location. If a screen reader
-          user activates your &ldquo;button&rdquo; and the page navigates away, the
-          control was wrong. When you need a link styled like a button, use{" "}
-          <code>buttonClasses()</code> on an <code>&lt;a&gt;</code> or{" "}
-          <code>next/link</code>.
-        </Callout>
-      </section>
-
-      {/* ============ 4. VARIANTS ============ */}
-      <section style={sectionStyle}>
-        <h2 id="variants" style={h2Style}>
-          4. Variants
-        </h2>
+<section style={sectionStyle}>
+        <h2 id="variants" style={h2Style}>Variants</h2>
         <p style={proseStyle}>
           Variants encode intent and visual weight. Use weight to guide the eye to
           the single most important action on a view.
@@ -355,76 +295,36 @@ export default function ButtonPage(): React.JSX.Element {
           <ButtonPlayground />
         </div>
       </section>
-
-      {/* ============ 5. STATES ============ */}
-      <section style={sectionStyle}>
-        <h2 id="states" style={h2Style}>
-          5. States
-        </h2>
-        <p style={proseStyle}>
-          Every interactive state is visually distinct and meets AA contrast.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)" }}>
-          <StateRow state="Default" note="Resting state — full colour, no overlay.">
-            <Button variant="primary" appearance="filled">
-              Submit application
-            </Button>
-          </StateRow>
-          <StateRow state="Hover" note="Subtle darkening; cursor becomes a pointer.">
-            <Button
-              variant="primary"
-              appearance="filled"
-              className="ds-btn--state-hover"
-            >
-              Submit application
-            </Button>
-          </StateRow>
-          <StateRow state="Focus" note="3px --sa-focus-ring, visible for keyboard users.">
-            <span
-              style={{
-                display: "inline-block",
-                outline: "3px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base))",
-                outlineOffset: "var(--sa-focus-offset)",
-                borderRadius: "var(--sa-shape-8)",
-              }}
-            >
-              <Button variant="primary" appearance="filled">
-                Submit application
-              </Button>
-            </span>
-          </StateRow>
-          <StateRow state="Active" note="Pressed — momentary deeper tone.">
-            <Button
-              variant="primary"
-              appearance="filled"
-              className="ds-btn--state-active"
-            >
-              Submit application
-            </Button>
-          </StateRow>
-          <StateRow state="Disabled" note="Reduced opacity; not focusable; aria-disabled.">
-            <Button variant="primary" appearance="filled" disabled>
-              Submit application
-            </Button>
-          </StateRow>
-          <StateRow state="Loading" note="aria-busy=true; label swaps to a progress message.">
-            <Button variant="primary" appearance="filled" disabled aria-busy="true">
-              Submitting…
-            </Button>
-          </StateRow>
-        </div>
-        <Callout type="tip" title="Loading is a busy disabled state">
-          A loading button should set <code>aria-busy=&quot;true&quot;</code> and
-          prevent re-submission. Keep the label meaningful
-          (&ldquo;Submitting…&rdquo;) rather than removing it.
-        </Callout>
-      </section>
-
-      {/* ============ 6. BEHAVIOR & KEYBOARD ============ */}
-      <section style={sectionStyle}>
-        <h2 id="behavior" style={h2Style}>
-          6. Behavior &amp; Keyboard
-        </h2>
+<section style={sectionStyle}>
+        <h2 id="responsive" style={h2Style}>Responsive</h2>
+        <ul
+          style={{
+            ...proseStyle,
+            paddingLeft: "var(--sa-padding-20)",
+            lineHeight: 1.9,
+          }}
+        >
+          <li>
+            Touch targets are always <strong>≥44px</strong>, enforced in CSS, on
+            every breakpoint.
+          </li>
+          <li>
+            For full-width mobile buttons, wrap with{" "}
+            <code>style={`{{ width: "100%" }}`}</code> or place inside a
+            full-width container.
+          </li>
+          <li>
+            Size <code>sm</code> shrinks padding and type, but still meets the 44px
+            height requirement.
+          </li>
+        </ul>
+        <CodeBlock>{`{/* Full-width on mobile, auto on larger screens */}
+<Button variant="primary" appearance="filled" style={{ width: "100%" }}>
+  Submit application
+</Button>`}</CodeBlock>
+      </section></>) },
+        { id: "develop", label: "Develop", content: (<><section style={sectionStyle}>
+        <h2 id="behavior" style={h2Style}>Behavior &amp; Keyboard</h2>
         <p style={proseStyle}>
           Because <code>Button</code> renders a native <code>&lt;button&gt;</code>,
           all standard keyboard semantics work for free.
@@ -448,110 +348,8 @@ export default function ButtonPage(): React.JSX.Element {
           guard against duplicate submissions.
         </Callout>
       </section>
-
-      {/* ============ 7. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>
-          7. Accessibility
-        </h2>
-        <p style={proseStyle}>
-          Buttons are government-grade controls — they must satisfy WCAG 2.1 AA and
-          GIGW. The checklist below is verified for every release.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)" }}>
-          <A11yChecklist
-            items={[
-              {
-                criterion: "Descriptive label text",
-                level: "AA",
-                description:
-                  "The label communicates the action, not just “Click here” or a bare “Submit”. (WCAG 2.4.6)",
-              },
-              {
-                criterion: "44×44px minimum touch target",
-                level: "AA",
-                description:
-                  "Every variant — including size sm — meets the minimum target size. (WCAG 2.5.8)",
-              },
-              {
-                criterion: "Visible focus indicator",
-                level: "AA",
-                description:
-                  "A 3px focus ring with AA-contrast against the background. (WCAG 2.4.11)",
-              },
-              {
-                criterion: "Communicates disabled state",
-                level: "AA",
-                description:
-                  "Disabled buttons expose aria-disabled and are not in the tab order. (WCAG 4.1.2)",
-              },
-              {
-                criterion: "Loading state announced",
-                level: "AA",
-                description:
-                  "aria-busy=\"true\" is set during loading so the change is announced. (WCAG 4.1.3)",
-              },
-            ]}
-          />
-        </div>
-      </section>
-
-      {/* ============ 8. CONTENT & VOICE ============ */}
-      <section style={sectionStyle}>
-        <h2 id="content" style={h2Style}>
-          8. Content &amp; Voice
-        </h2>
-        <p style={proseStyle}>
-          Labels are written as imperative verbs that name the action. This is true
-          in every supported language.
-        </p>
-
-        <h3 style={h3Style}>English</h3>
-        <p style={proseStyle}>
-          Use imperative verbs — &ldquo;Submit&rdquo;, &ldquo;Save&rdquo;,
-          &ldquo;Cancel&rdquo;. Avoid vague labels like &ldquo;Click here&rdquo;,
-          &ldquo;OK&rdquo;, or a lone &ldquo;Yes&rdquo;.
-        </p>
-
-        <h3 style={h3Style}>हिन्दी</h3>
-        <p style={proseStyle}>
-          वही नियम — क्रिया से शुरू करें: &ldquo;जमा करें&rdquo; (केवल
-          &ldquo;हाँ&rdquo; नहीं), &ldquo;सहेजें&rdquo;, &ldquo;रद्द करें&rdquo;.
-        </p>
-
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label:
-                  "Name the action with a verb. The user knows exactly what happens.",
-                preview: (
-                  <Button variant="primary" appearance="filled">
-                    Submit application
-                  </Button>
-                ),
-              },
-              {
-                type: "dont",
-                label:
-                  "“Click here” describes the gesture, not the outcome — and fails screen-reader users who navigate by label.",
-                preview: (
-                  <Button variant="primary" appearance="filled">
-                    Click here
-                  </Button>
-                ),
-              },
-            ]}
-          />
-        </div>
-      </section>
-
-      {/* ============ 9. CODE ============ */}
-      <section style={sectionStyle}>
-        <h2 id="code" style={h2Style}>
-          9. Code
-        </h2>
+<section style={sectionStyle}>
+        <h2 id="code" style={h2Style}>Code</h2>
 
         <h3 style={h3Style}>Installation</h3>
         <CodeBlock>{`npm install @mosje/design-system
@@ -688,45 +486,52 @@ export function ApplicationForm() {
             },
           ]}
         />
+      </section></>) },
+        { id: "accessibility", label: "Accessibility", content: (<><section style={sectionStyle}>
+        <h2 id="accessibility" style={h2Style}>Accessibility</h2>
+        <p style={proseStyle}>
+          Buttons are government-grade controls — they must satisfy WCAG 2.1 AA and
+          GIGW. The checklist below is verified for every release.
+        </p>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
+          <A11yChecklist
+            items={[
+              {
+                criterion: "Descriptive label text",
+                level: "AA",
+                description:
+                  "The label communicates the action, not just “Click here” or a bare “Submit”. (WCAG 2.4.6)",
+              },
+              {
+                criterion: "44×44px minimum touch target",
+                level: "AA",
+                description:
+                  "Every variant — including size sm — meets the minimum target size. (WCAG 2.5.8)",
+              },
+              {
+                criterion: "Visible focus indicator",
+                level: "AA",
+                description:
+                  "A 3px focus ring with AA-contrast against the background. (WCAG 2.4.11)",
+              },
+              {
+                criterion: "Communicates disabled state",
+                level: "AA",
+                description:
+                  "Disabled buttons expose aria-disabled and are not in the tab order. (WCAG 4.1.2)",
+              },
+              {
+                criterion: "Loading state announced",
+                level: "AA",
+                description:
+                  "aria-busy=\"true\" is set during loading so the change is announced. (WCAG 4.1.3)",
+              },
+            ]}
+          />
+        </div>
       </section>
-
-      {/* ============ 10. RESPONSIVE ============ */}
-      <section style={sectionStyle}>
-        <h2 id="responsive" style={h2Style}>
-          10. Responsive
-        </h2>
-        <ul
-          style={{
-            ...proseStyle,
-            paddingLeft: "var(--sa-padding-20)",
-            lineHeight: 1.9,
-          }}
-        >
-          <li>
-            Touch targets are always <strong>≥44px</strong>, enforced in CSS, on
-            every breakpoint.
-          </li>
-          <li>
-            For full-width mobile buttons, wrap with{" "}
-            <code>style={`{{ width: "100%" }}`}</code> or place inside a
-            full-width container.
-          </li>
-          <li>
-            Size <code>sm</code> shrinks padding and type, but still meets the 44px
-            height requirement.
-          </li>
-        </ul>
-        <CodeBlock>{`{/* Full-width on mobile, auto on larger screens */}
-<Button variant="primary" appearance="filled" style={{ width: "100%" }}>
-  Submit application
-</Button>`}</CodeBlock>
-      </section>
-
-      {/* ============ 11. EVIDENCE ============ */}
-      <section style={sectionStyle}>
-        <h2 id="evidence" style={h2Style}>
-          11. Evidence
-        </h2>
+<section style={sectionStyle}>
+        <h2 id="evidence" style={h2Style}>Evidence</h2>
         <ul
           style={{
             ...proseStyle,
@@ -749,13 +554,164 @@ export function ApplicationForm() {
             interactive elements must be fully keyboard operable.
           </li>
         </ul>
+      </section></>) },
+        { id: "meta", label: "Meta", content: (<><section style={sectionStyle}>
+        <h2 id="purpose" style={h2Style}>Purpose</h2>
+        <p style={proseStyle}>
+          A Button triggers an action within the system. Reach for it whenever a
+          user needs to <em>do</em> something — submit an application, save a
+          draft, confirm a choice, or run a command. A button always performs an
+          action on the current page or in the current flow.
+        </p>
+        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
+          If the control takes the user to a different page or resource, it is a{" "}
+          <strong>link</strong>, not a button. Getting this distinction right is
+          the single most important accessibility decision for an interactive
+          element.
+        </p>
       </section>
+<section style={sectionStyle}>
+        <h2 id="when-to-use" style={h2Style}>When to use / not</h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: "var(--sa-stack-16)",
+          }}
+        >
+          <UseCard tone="do" title="Use a Button when…">
+            <li>Submitting or saving a form.</li>
+            <li>Triggering an action (export, print, calculate).</li>
+            <li>Confirming or cancelling in a dialog.</li>
+            <li>Opening a menu, modal, or drawer.</li>
+          </UseCard>
+          <UseCard tone="dont" title="Don't use a Button when…">
+            <li>
+              Navigating to another page — use a link (<code>&lt;a&gt;</code>).
+            </li>
+            <li>
+              Displaying a status or count — use a <strong>Badge</strong>.
+            </li>
+            <li>Toggling a single setting — use a switch or checkbox.</li>
+          </UseCard>
+        </div>
+        <Callout type="warning" title="Buttons are not links">
+          A button performs an action; a link changes location. If a screen reader
+          user activates your &ldquo;button&rdquo; and the page navigates away, the
+          control was wrong. When you need a link styled like a button, use{" "}
+          <code>buttonClasses()</code> on an <code>&lt;a&gt;</code> or{" "}
+          <code>next/link</code>.
+        </Callout>
+      </section>
+<section style={sectionStyle}>
+        <h2 id="states" style={h2Style}>States</h2>
+        <p style={proseStyle}>
+          Every interactive state is visually distinct and meets AA contrast.
+        </p>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
+          <StateRow state="Default" note="Resting state — full colour, no overlay.">
+            <Button variant="primary" appearance="filled">
+              Submit application
+            </Button>
+          </StateRow>
+          <StateRow state="Hover" note="Subtle darkening; cursor becomes a pointer.">
+            <Button
+              variant="primary"
+              appearance="filled"
+              className="ds-btn--state-hover"
+            >
+              Submit application
+            </Button>
+          </StateRow>
+          <StateRow state="Focus" note="3px --sa-focus-ring, visible for keyboard users.">
+            <span
+              style={{
+                display: "inline-block",
+                outline: "3px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base))",
+                outlineOffset: "var(--sa-focus-offset)",
+                borderRadius: "var(--sa-shape-8)",
+              }}
+            >
+              <Button variant="primary" appearance="filled">
+                Submit application
+              </Button>
+            </span>
+          </StateRow>
+          <StateRow state="Active" note="Pressed — momentary deeper tone.">
+            <Button
+              variant="primary"
+              appearance="filled"
+              className="ds-btn--state-active"
+            >
+              Submit application
+            </Button>
+          </StateRow>
+          <StateRow state="Disabled" note="Reduced opacity; not focusable; aria-disabled.">
+            <Button variant="primary" appearance="filled" disabled>
+              Submit application
+            </Button>
+          </StateRow>
+          <StateRow state="Loading" note="aria-busy=true; label swaps to a progress message.">
+            <Button variant="primary" appearance="filled" disabled aria-busy="true">
+              Submitting…
+            </Button>
+          </StateRow>
+        </div>
+        <Callout type="tip" title="Loading is a busy disabled state">
+          A loading button should set <code>aria-busy=&quot;true&quot;</code> and
+          prevent re-submission. Keep the label meaningful
+          (&ldquo;Submitting…&rdquo;) rather than removing it.
+        </Callout>
+      </section>
+<section style={sectionStyle}>
+        <h2 id="content" style={h2Style}>Content &amp; Voice</h2>
+        <p style={proseStyle}>
+          Labels are written as imperative verbs that name the action. This is true
+          in every supported language.
+        </p>
 
-      {/* ============ 12. RELATED ============ */}
-      <section style={sectionStyle}>
-        <h2 id="related" style={h2Style}>
-          12. Related
-        </h2>
+        <h3 style={h3Style}>English</h3>
+        <p style={proseStyle}>
+          Use imperative verbs — &ldquo;Submit&rdquo;, &ldquo;Save&rdquo;,
+          &ldquo;Cancel&rdquo;. Avoid vague labels like &ldquo;Click here&rdquo;,
+          &ldquo;OK&rdquo;, or a lone &ldquo;Yes&rdquo;.
+        </p>
+
+        <h3 style={h3Style}>हिन्दी</h3>
+        <p style={proseStyle}>
+          वही नियम — क्रिया से शुरू करें: &ldquo;जमा करें&rdquo; (केवल
+          &ldquo;हाँ&rdquo; नहीं), &ldquo;सहेजें&rdquo;, &ldquo;रद्द करें&rdquo;.
+        </p>
+
+        <div style={{ marginTop: "var(--sa-stack-24)" }}>
+          <DoDont
+            cards={[
+              {
+                type: "do",
+                label:
+                  "Name the action with a verb. The user knows exactly what happens.",
+                preview: (
+                  <Button variant="primary" appearance="filled">
+                    Submit application
+                  </Button>
+                ),
+              },
+              {
+                type: "dont",
+                label:
+                  "“Click here” describes the gesture, not the outcome — and fails screen-reader users who navigate by label.",
+                preview: (
+                  <Button variant="primary" appearance="filled">
+                    Click here
+                  </Button>
+                ),
+              },
+            ]}
+          />
+        </div>
+      </section>
+<section style={sectionStyle}>
+        <h2 id="related" style={h2Style}>Related</h2>
         <div
           style={{
             display: "grid",
@@ -781,12 +737,8 @@ export function ApplicationForm() {
           />
         </div>
       </section>
-
-      {/* ============ 13. CHANGELOG ============ */}
-      <section style={sectionStyle}>
-        <h2 id="changelog" style={h2Style}>
-          13. Changelog
-        </h2>
+<section style={sectionStyle}>
+        <h2 id="changelog" style={h2Style}>Changelog</h2>
         <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <div
             style={{
@@ -826,8 +778,9 @@ export function ApplicationForm() {
             </div>
           </div>
         </div>
-      </section>
-    </main>
+      </section></>) }
+      ]} />
+</main>
   );
 }
 

@@ -5,6 +5,7 @@
    pages that render a PropsTable). */
 @import "../../components/design-system/docs-kit/docs-kit.css";
 
+@layer base {
 /* Base reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -86,6 +87,8 @@ a:focus-visible {
 }
 
 /* Prose content (used in page bodies) */
+.ds-prose { max-width: 72ch; }
+.ds-prose p, .ds-prose ul, .ds-prose ol { max-width: 72ch; line-height: 1.6; color: var(--sa-text-neutral-subtle); }
 .ds-prose p + p { margin-top: var(--sa-stack-16); }
 .ds-prose ul, .ds-prose ol { padding-left: var(--sa-padding-24); margin-top: var(--sa-stack-12); }
 .ds-prose li + li { margin-top: var(--sa-stack-8); }
@@ -106,7 +109,9 @@ code:not([class]) {
   padding: var(--sa-padding-2) var(--sa-padding-4);
   color: var(--sa-text-neutral-base);
 }
+}
 
+@layer components {
 /* Skip to content */
 .skip-link {
   position: absolute;
@@ -245,4 +250,5 @@ code:not([class]) {
 @media (max-width: 560px) {
   .home-cards { grid-template-columns: 1fr; }
   .home-stat { min-width: 50%; }
+}
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import {
-  PropsTable,
+  DocsTabs, PropsTable,
   Callout,
   A11yChecklist,
   StatusBadge,
@@ -203,10 +203,10 @@ export default function HeaderPage(): React.JSX.Element {
       </header>
 
       {/* ============ 1. ANATOMY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="anatomy" style={h2Style}>
-          1. Anatomy
-        </h2>
+      
+      <DocsTabs tabs={[
+        { id: "design", label: "Design", content: (<><section style={sectionStyle}>
+        <h2 id="anatomy" style={h2Style}>Anatomy</h2>
         <p style={proseStyle}>
           Every SiteHeader stacks three tiers in the same order. The brand row is
           always present; the accessibility bar and nav row are configurable.
@@ -246,12 +246,8 @@ export default function HeaderPage(): React.JSX.Element {
           <code>nav</code>); Tier 2 is the constant masthead.
         </p>
       </section>
-
-      {/* ============ 2. WHEN TO USE — CHOOSING A VARIANT ============ */}
-      <section style={sectionStyle}>
-        <h2 id="variants" style={h2Style}>
-          2. When to use — choosing a variant
-        </h2>
+<section style={sectionStyle}>
+        <h2 id="variants" style={h2Style}>When to use — choosing a variant</h2>
         <p style={proseStyle}>
           Set <code>variant</code> at the call site so intent is explicit and the
           right behavioural defaults apply. Public, content-led pages use{" "}
@@ -311,12 +307,197 @@ export default function HeaderPage(): React.JSX.Element {
           it doesn&apos;t read as &quot;this service is unfinished.&quot;
         </Callout>
       </section>
+<section style={sectionStyle}>
+        <h2 id="responsive" style={h2Style}>Responsive</h2>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", lineHeight: 1.9 }}>
+          <li>
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>≥1024px</strong> — the
+            horizontal nav row (with dropdowns / mega-menus) is shown.
+          </li>
+          <li>
+            <strong style={{ color: "var(--sa-text-neutral-base)" }}>&lt;1024px</strong> — the nav
+            row collapses; a hamburger in the brand row opens the drawer, where
+            mega-menu columns flatten into a single sub-list.
+          </li>
+          <li>
+            The search field hides below <code>900px</code>; cobranding marks hide
+            below <code>768px</code>; the account name/email hides below{" "}
+            <code>768px</code>, leaving the avatar.
+          </li>
+          <li>
+            Content is centred to <code>maxWidth</code> (default 1320px); app-shell
+            portals pass a larger value to run full-bleed above a sidebar.
+          </li>
+        </ul>
+      </section></>) },
+        { id: "develop", label: "Develop", content: (<><section style={sectionStyle}>
+        <h2 id="props" style={h2Style}>Props</h2>
+        <PropsTable
+          props={[
+            { name: "variant", type: '"website" | "portal" | "compact"', description: "Estate surface. Sets defaults (portal/compact ⇒ sticky on; compact drops the accessibility bar and moves nav inline) and documents intent. Explicit props always win." },
+            { name: "homeHref", type: "string", description: 'Where the brand lockup links. ALWAYS pass it — the default "/" is the hub root, so a website page that omits it sends the emblem to the estate index instead of the site the reader is on.' },
+            { name: "navExpanded", type: "boolean", description: "Portal: state of the sidebar the toggle drives. true ⇒ menu_open glyph, false ⇒ menu. Also drives aria-expanded. Only meaningful for MenuToggle — SheetToggle opens an overlay and has no second state." },
+            { name: "navControlsId", type: "string", description: "Portal: id of the sidebar the toggle controls (aria-controls). Pass the same id to SidebarNav." },
+            { name: "emblemSrc", type: "string", required: true, description: "National Emblem URL (basePath-aware; the DS renders a plain <img>)." },
+            { name: "brandLines", type: "{ org?, ministry?, department }", required: true, description: "Government text lockup — GoI, Ministry, Department (+ optional BETA badge)." },
+            { name: "nav", type: "NavItem[]", description: "Navigation row. Each item: children (simple dropdown) OR columns (mega-menu). Drawer below 1024px." },
+            { name: "search", type: "{ placeholder?, onSearch? }", description: "Website: renders a search field (button) that calls onSearch." },
+            { name: "actions", type: "React.ReactNode", description: "Trailing CTA in the brand row (e.g. a Login / Apply Online button)." },
+            { name: "onToggleNav", type: "() => void", description: "Portal: renders a collapse/menu toggle on the far left of the brand row." },
+            { name: "brandDivider", type: "boolean", default: "false", description: "Portal: blue gradient divider between the emblem and the text." },
+            { name: "cobranding", type: "BrandMark[]", description: "Cobranding marks in the trailing zone (Digital India, SAMAVESH …)." },
+            { name: "account / accountMenu", type: "HeaderAccount / AccountMenuItem[]", description: "Portal account block; pass accountMenu to make it a dropdown trigger." },
+            { name: "sticky", type: "boolean", default: "false (true when variant=portal)", description: "Pin the whole navbar to the top of the viewport." },
+            { name: "collapseOnScroll", type: "boolean", default: "false", description: "Opt-in: collapse the accessibility bar on scroll (Figma 'Appbar / on Scroll'). Mind sidebar offsets." },
+            { name: "tone", type: '"blue" | "navy"', default: '"blue"', description: "Accessibility-bar background. Blue = website, navy = portal chrome." },
+            { name: "beta", type: "boolean", default: "false", description: "Show the BETA badge above the text stack." },
+            { name: "accessibilityToolbar", type: "boolean", default: "true", description: "Render the accessibility-statement control. Font-size / contrast controls live in the official UX4GAccessibilityWidget instead — see the Accessibility foundation page." },
+            { name: "onAccessibility / accessibilityHref", type: "() => void / string", default: '"/accessibility-statement"', description: "Accessibility control: a handler, else a link to the statement page." },
+            { name: "language", type: "{ label?, onClick? }", default: '{ label: "English" }', description: "Language selector in the accessibility bar." },
+            { name: "govLink", type: "{ href, label, flagSrc? }", description: "Top-left Government-of-India link. Defaults to india.gov.in." },
+            { name: "maxWidth / skipTo", type: "number / string", default: '1320 / "#main-content"', description: "Content max-width and the skip-to-content target id." },
+          ]}
+        />
+      </section>
+<section style={sectionStyle}>
+        <h2 id="behavior" style={h2Style}>Behavior &amp; Keyboard</h2>
+        <p style={proseStyle}>
+          Every control is reachable and operable by keyboard, and announces its
+          state.
+        </p>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-16)" }}>
+          <table className="props-table">
+            <thead>
+              <tr>
+                <th scope="col">Key</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>Tab</code> / <code>Shift+Tab</code></td><td>Move through the accessibility bar, brand-row controls, and nav items in DOM order.</td></tr>
+              <tr><td><code>Enter</code> / <code>Space</code></td><td>Activate a control; on a nav parent, open its dropdown or mega-menu.</td></tr>
+              <tr><td><code>Escape</code></td><td>Close an open nav menu, the account menu, or the mobile drawer.</td></tr>
+              <tr><td>Click outside / blur</td><td>Closes any open menu — focus leaving the nav dismisses it.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <Callout type="info" title="Persistence">
+          Text-size, contrast, and every other accessibility preference are owned by
+          the official <code>UX4GAccessibilityWidget</code> (not the header) and
+          persist across navigation for every SAMAVESH property.
+        </Callout>
+      </section>
+<section style={sectionStyle}>
+        <h2 id="code" style={h2Style}>Code</h2>
+        <CodeBlock>{`import { SiteHeader } from "@mosje/design-system";
 
-      {/* ============ 3. VARIANTS (LIVE) ============ */}
-      <section style={sectionStyle}>
-        <h2 id="site-header" style={h2Style}>
-          3. Variants
-        </h2>
+// Website — search field + Login + mega-menu nav
+<SiteHeader
+  variant="website"
+  homeHref="/website"            // ← the zone root, NOT the hub root
+  emblemSrc={\`\${basePath}/images/National-Emblem-logo.svg\`}
+  brandLines={{ org: "Government of India", ministry: "…", department: "…" }}
+  beta
+  search={{ placeholder: "Search Schemes…", onSearch: () => router.push("/search") }}
+  cobranding={[{ src: digitalIndia, alt: "Digital India", height: 40 }]}
+  nav={NAV}
+  actions={<a href="/admin">Login</a>}
+/>;
+
+// Portal — collapse toggle + divider + cobranding + account (sticky by default)
+<SiteHeader
+  variant="portal"
+  homeHref="/portals/<slug>"
+  emblemSrc={emblem}
+  brandLines={{ org: "Government of India", ministry: "…", department: "…" }}
+  brandDivider
+  onToggleNav={toggleSidebar}
+  navExpanded={!sidebarCollapsed}   // menu_open when expanded, menu when collapsed
+  navControlsId="portal-sidebar"
+  cobranding={[
+    { src: digitalIndia, alt: "Digital India", height: 40 },
+    { src: samavesh, alt: "SAMAVESH", height: 44 },
+  ]}
+  account={{ name: "Sachin Malhotra", email: "sachin.malhotra@email.com" }}
+  accountMenu={[
+    { label: "Profile", onSelect: openProfile },
+    { label: "Sign out", danger: true, onSelect: signOut },
+  ]}
+/>;
+
+// Compact — hub index surfaces. One tier, nav inline, no accessibility bar.
+<SiteHeader
+  variant="compact"
+  homeHref="/"
+  emblemSrc="/images/National-Emblem-logo.svg"
+  brandLines={{ ministry: "Ministry of Social Justice & Empowerment", department: "Digital Estate" }}
+  nav={[{ label: "Website", href: "/website" }, { label: "Portals", href: "/portals" }]}
+/>;`}</CodeBlock>
+      </section>
+<section style={sectionStyle}>
+        <h2 id="reuse" style={h2Style}>Reuse across the estate</h2>
+        <p style={proseStyle}>
+          One definition, imported everywhere — no per-app header forks. Each app
+          supplies its own data and basePath-aware asset URLs.
+        </p>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-16)" }}>
+          <table className="props-table">
+            <thead>
+              <tr>
+                <th scope="col">Surface</th>
+                <th scope="col">variant</th>
+                <th scope="col">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>dosje website</td><td>website</td><td>Search field, Digital India, Admin Login, mega-menu nav</td></tr>
+              <tr><td>PM-AJAY</td><td>portal</td><td>Brand chrome — divider + Digital India / SAMAVESH</td></tr>
+              <tr><td>SMILE Admin</td><td>portal</td><td>Sticky · sidebar toggle + account dropdown</td></tr>
+              <tr><td>NMBA — Patient Data Monitoring</td><td>portal</td><td>Sticky · sidebar toggle + account dropdown + Last-login</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <Callout type="info" title="Shared parts">
+          Need only a piece? <strong>BrandLockup</strong> (emblem + government
+          stack, with a <code>compact</code> mode) and <strong>AccountMenu</strong>{" "}
+          (avatar + dropdown) are exported directly, so a surface never
+          re-implements them. The lockup always renders the National Emblem —
+          never an invented mark.
+        </Callout>
+      </section></>) },
+        { id: "accessibility", label: "Accessibility", content: (<><section style={sectionStyle}>
+        <h2 id="accessibility" style={h2Style}>Accessibility</h2>
+        <p style={proseStyle}>
+          The masthead is the first landmark on every page, so it must satisfy WCAG
+          2.1 AA and GIGW. The accessibility toolbar is{" "}
+          <strong>functional by default</strong> — the design system owns the
+          behaviour so no property can ship a dead control.
+        </p>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
+          <A11yChecklist
+            items={[
+              { criterion: "Text resize & contrast", level: "AA", description: "Font-size, spacing, and contrast are handled by the official UX4GAccessibilityWidget (one canonical mechanism, everywhere) — the header no longer duplicates them. (WCAG 1.4.4)" },
+              { criterion: "Icon controls are labelled", level: "A", description: "Accessibility-statement and language icon buttons carry aria-label + a title tooltip so their purpose is never a guessing game. (WCAG 1.1.1)" },
+              { criterion: "Visible keyboard focus", level: "AA", description: "Every interactive element — nav links, dropdown / mega-menu links, search, toggles — shows a 2px focus ring. (WCAG 2.4.7)" },
+              { criterion: "Keyboard-operable menus", level: "AA", description: "Nav dropdowns and mega-menus open on Enter and close on Escape, outside-click, or focus leaving the nav. (WCAG 2.1.1)" },
+              { criterion: "Disclosure, not fake dialog", level: "AA", description: "The mobile menu is a labelled <nav> region controlled by an aria-expanded / aria-controls button; Escape closes it and focus moves to the first item. (WCAG 4.1.2)" },
+              { criterion: "Reduced motion", level: "AA", description: "The scroll-collapse transition is disabled under prefers-reduced-motion. (WCAG 2.3.3)" },
+              { criterion: "Skip to content", level: "A", description: "A skip link becomes visible on focus and targets the main content. (WCAG 2.4.1)" },
+              { criterion: "Accessibility statement", level: "AA", description: "The accessibility control links to a /accessibility-statement page (GIGW-mandated) unless an app overrides it. (GIGW)" },
+            ]}
+          />
+        </div>
+        <Callout type="tip" title="One accessibility mechanism, everywhere">
+          Text-size, spacing, contrast and dark mode live in the official{" "}
+          <code>UX4GAccessibilityWidget</code> (from <code>@mosje/design-system</code>),
+          rendered once in the root layout — not in the header. The header used to carry
+          its own font-size / contrast controls; they were retired because they duplicated
+          the widget. See the{" "}
+          <a href="/design-system/foundations/accessibility">Accessibility foundation page</a>.
+        </Callout>
+      </section></>) },
+        { id: "meta", label: "Meta", content: (<><section style={sectionStyle}>
+        <h2 id="site-header" style={h2Style}>Variants</h2>
         <p style={proseStyle}>
           Matches the UX4G <strong>Navbar Website</strong> (Figma{" "}
           <code>2210-11837</code>) — three tiers: (1) the Government-of-India
@@ -389,45 +570,8 @@ export default function HeaderPage(): React.JSX.Element {
           </p>
         </div>
       </section>
-
-      {/* ============ 4. PROPS (API) ============ */}
-      <section style={sectionStyle}>
-        <h2 id="props" style={h2Style}>
-          4. Props
-        </h2>
-        <PropsTable
-          props={[
-            { name: "variant", type: '"website" | "portal" | "compact"', description: "Estate surface. Sets defaults (portal/compact ⇒ sticky on; compact drops the accessibility bar and moves nav inline) and documents intent. Explicit props always win." },
-            { name: "homeHref", type: "string", description: 'Where the brand lockup links. ALWAYS pass it — the default "/" is the hub root, so a website page that omits it sends the emblem to the estate index instead of the site the reader is on.' },
-            { name: "navExpanded", type: "boolean", description: "Portal: state of the sidebar the toggle drives. true ⇒ menu_open glyph, false ⇒ menu. Also drives aria-expanded. Only meaningful for MenuToggle — SheetToggle opens an overlay and has no second state." },
-            { name: "navControlsId", type: "string", description: "Portal: id of the sidebar the toggle controls (aria-controls). Pass the same id to SidebarNav." },
-            { name: "emblemSrc", type: "string", required: true, description: "National Emblem URL (basePath-aware; the DS renders a plain <img>)." },
-            { name: "brandLines", type: "{ org?, ministry?, department }", required: true, description: "Government text lockup — GoI, Ministry, Department (+ optional BETA badge)." },
-            { name: "nav", type: "NavItem[]", description: "Navigation row. Each item: children (simple dropdown) OR columns (mega-menu). Drawer below 1024px." },
-            { name: "search", type: "{ placeholder?, onSearch? }", description: "Website: renders a search field (button) that calls onSearch." },
-            { name: "actions", type: "React.ReactNode", description: "Trailing CTA in the brand row (e.g. a Login / Apply Online button)." },
-            { name: "onToggleNav", type: "() => void", description: "Portal: renders a collapse/menu toggle on the far left of the brand row." },
-            { name: "brandDivider", type: "boolean", default: "false", description: "Portal: blue gradient divider between the emblem and the text." },
-            { name: "cobranding", type: "BrandMark[]", description: "Cobranding marks in the trailing zone (Digital India, SAMAVESH …)." },
-            { name: "account / accountMenu", type: "HeaderAccount / AccountMenuItem[]", description: "Portal account block; pass accountMenu to make it a dropdown trigger." },
-            { name: "sticky", type: "boolean", default: "false (true when variant=portal)", description: "Pin the whole navbar to the top of the viewport." },
-            { name: "collapseOnScroll", type: "boolean", default: "false", description: "Opt-in: collapse the accessibility bar on scroll (Figma 'Appbar / on Scroll'). Mind sidebar offsets." },
-            { name: "tone", type: '"blue" | "navy"', default: '"blue"', description: "Accessibility-bar background. Blue = website, navy = portal chrome." },
-            { name: "beta", type: "boolean", default: "false", description: "Show the BETA badge above the text stack." },
-            { name: "accessibilityToolbar", type: "boolean", default: "true", description: "Render the accessibility-statement control. Font-size / contrast controls live in the official UX4GAccessibilityWidget instead — see the Accessibility foundation page." },
-            { name: "onAccessibility / accessibilityHref", type: "() => void / string", default: '"/accessibility-statement"', description: "Accessibility control: a handler, else a link to the statement page." },
-            { name: "language", type: "{ label?, onClick? }", default: '{ label: "English" }', description: "Language selector in the accessibility bar." },
-            { name: "govLink", type: "{ href, label, flagSrc? }", description: "Top-left Government-of-India link. Defaults to india.gov.in." },
-            { name: "maxWidth / skipTo", type: "number / string", default: '1320 / "#main-content"', description: "Content max-width and the skip-to-content target id." },
-          ]}
-        />
-      </section>
-
-      {/* ============ 5. MENUS — DROPDOWNS & MEGA-MENUS ============ */}
-      <section style={sectionStyle}>
-        <h2 id="menus" style={h2Style}>
-          5. Menus — dropdowns &amp; mega-menus
-        </h2>
+<section style={sectionStyle}>
+        <h2 id="menus" style={h2Style}>Menus — dropdowns &amp; mega-menus</h2>
         <p style={proseStyle}>
           A nav item opens a menu when it carries either <code>children</code>{" "}
           (a single column) or <code>columns</code> (a titled multi-column
@@ -461,79 +605,8 @@ export default function HeaderPage(): React.JSX.Element {
           <code>prefers-reduced-motion</code>.
         </p>
       </section>
-
-      {/* ============ 6. BEHAVIOR & KEYBOARD ============ */}
-      <section style={sectionStyle}>
-        <h2 id="behavior" style={h2Style}>
-          6. Behavior &amp; Keyboard
-        </h2>
-        <p style={proseStyle}>
-          Every control is reachable and operable by keyboard, and announces its
-          state.
-        </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-16)" }}>
-          <table className="props-table">
-            <thead>
-              <tr>
-                <th scope="col">Key</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td><code>Tab</code> / <code>Shift+Tab</code></td><td>Move through the accessibility bar, brand-row controls, and nav items in DOM order.</td></tr>
-              <tr><td><code>Enter</code> / <code>Space</code></td><td>Activate a control; on a nav parent, open its dropdown or mega-menu.</td></tr>
-              <tr><td><code>Escape</code></td><td>Close an open nav menu, the account menu, or the mobile drawer.</td></tr>
-              <tr><td>Click outside / blur</td><td>Closes any open menu — focus leaving the nav dismisses it.</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <Callout type="info" title="Persistence">
-          Text-size, contrast, and every other accessibility preference are owned by
-          the official <code>UX4GAccessibilityWidget</code> (not the header) and
-          persist across navigation for every SAMAVESH property.
-        </Callout>
-      </section>
-
-      {/* ============ 7. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>
-          7. Accessibility
-        </h2>
-        <p style={proseStyle}>
-          The masthead is the first landmark on every page, so it must satisfy WCAG
-          2.1 AA and GIGW. The accessibility toolbar is{" "}
-          <strong>functional by default</strong> — the design system owns the
-          behaviour so no property can ship a dead control.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)" }}>
-          <A11yChecklist
-            items={[
-              { criterion: "Text resize & contrast", level: "AA", description: "Font-size, spacing, and contrast are handled by the official UX4GAccessibilityWidget (one canonical mechanism, everywhere) — the header no longer duplicates them. (WCAG 1.4.4)" },
-              { criterion: "Icon controls are labelled", level: "A", description: "Accessibility-statement and language icon buttons carry aria-label + a title tooltip so their purpose is never a guessing game. (WCAG 1.1.1)" },
-              { criterion: "Visible keyboard focus", level: "AA", description: "Every interactive element — nav links, dropdown / mega-menu links, search, toggles — shows a 2px focus ring. (WCAG 2.4.7)" },
-              { criterion: "Keyboard-operable menus", level: "AA", description: "Nav dropdowns and mega-menus open on Enter and close on Escape, outside-click, or focus leaving the nav. (WCAG 2.1.1)" },
-              { criterion: "Disclosure, not fake dialog", level: "AA", description: "The mobile menu is a labelled <nav> region controlled by an aria-expanded / aria-controls button; Escape closes it and focus moves to the first item. (WCAG 4.1.2)" },
-              { criterion: "Reduced motion", level: "AA", description: "The scroll-collapse transition is disabled under prefers-reduced-motion. (WCAG 2.3.3)" },
-              { criterion: "Skip to content", level: "A", description: "A skip link becomes visible on focus and targets the main content. (WCAG 2.4.1)" },
-              { criterion: "Accessibility statement", level: "AA", description: "The accessibility control links to a /accessibility-statement page (GIGW-mandated) unless an app overrides it. (GIGW)" },
-            ]}
-          />
-        </div>
-        <Callout type="tip" title="One accessibility mechanism, everywhere">
-          Text-size, spacing, contrast and dark mode live in the official{" "}
-          <code>UX4GAccessibilityWidget</code> (from <code>@mosje/design-system</code>),
-          rendered once in the root layout — not in the header. The header used to carry
-          its own font-size / contrast controls; they were retired because they duplicated
-          the widget. See the{" "}
-          <a href="/design-system/foundations/accessibility">Accessibility foundation page</a>.
-        </Callout>
-      </section>
-
-      {/* ============ 8. CONTENT & VOICE ============ */}
-      <section style={sectionStyle}>
-        <h2 id="content" style={h2Style}>
-          8. Content &amp; Voice
-        </h2>
+<section style={sectionStyle}>
+        <h2 id="content" style={h2Style}>Content &amp; Voice</h2>
         <ul style={listStyle}>
           <li>
             <strong style={{ color: "var(--sa-text-neutral-base)" }}>Department line</strong> —
@@ -563,125 +636,8 @@ export default function HeaderPage(): React.JSX.Element {
           </li>
         </ul>
       </section>
-
-      {/* ============ 9. CODE ============ */}
-      <section style={sectionStyle}>
-        <h2 id="code" style={h2Style}>
-          9. Code
-        </h2>
-        <CodeBlock>{`import { SiteHeader } from "@mosje/design-system";
-
-// Website — search field + Login + mega-menu nav
-<SiteHeader
-  variant="website"
-  homeHref="/website"            // ← the zone root, NOT the hub root
-  emblemSrc={\`\${basePath}/images/National-Emblem-logo.svg\`}
-  brandLines={{ org: "Government of India", ministry: "…", department: "…" }}
-  beta
-  search={{ placeholder: "Search Schemes…", onSearch: () => router.push("/search") }}
-  cobranding={[{ src: digitalIndia, alt: "Digital India", height: 40 }]}
-  nav={NAV}
-  actions={<a href="/admin">Login</a>}
-/>;
-
-// Portal — collapse toggle + divider + cobranding + account (sticky by default)
-<SiteHeader
-  variant="portal"
-  homeHref="/portals/<slug>"
-  emblemSrc={emblem}
-  brandLines={{ org: "Government of India", ministry: "…", department: "…" }}
-  brandDivider
-  onToggleNav={toggleSidebar}
-  navExpanded={!sidebarCollapsed}   // menu_open when expanded, menu when collapsed
-  navControlsId="portal-sidebar"
-  cobranding={[
-    { src: digitalIndia, alt: "Digital India", height: 40 },
-    { src: samavesh, alt: "SAMAVESH", height: 44 },
-  ]}
-  account={{ name: "Sachin Malhotra", email: "sachin.malhotra@email.com" }}
-  accountMenu={[
-    { label: "Profile", onSelect: openProfile },
-    { label: "Sign out", danger: true, onSelect: signOut },
-  ]}
-/>;
-
-// Compact — hub index surfaces. One tier, nav inline, no accessibility bar.
-<SiteHeader
-  variant="compact"
-  homeHref="/"
-  emblemSrc="/images/National-Emblem-logo.svg"
-  brandLines={{ ministry: "Ministry of Social Justice & Empowerment", department: "Digital Estate" }}
-  nav={[{ label: "Website", href: "/website" }, { label: "Portals", href: "/portals" }]}
-/>;`}</CodeBlock>
-      </section>
-
-      {/* ============ 10. RESPONSIVE ============ */}
-      <section style={sectionStyle}>
-        <h2 id="responsive" style={h2Style}>
-          10. Responsive
-        </h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", lineHeight: 1.9 }}>
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-base)" }}>≥1024px</strong> — the
-            horizontal nav row (with dropdowns / mega-menus) is shown.
-          </li>
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-base)" }}>&lt;1024px</strong> — the nav
-            row collapses; a hamburger in the brand row opens the drawer, where
-            mega-menu columns flatten into a single sub-list.
-          </li>
-          <li>
-            The search field hides below <code>900px</code>; cobranding marks hide
-            below <code>768px</code>; the account name/email hides below{" "}
-            <code>768px</code>, leaving the avatar.
-          </li>
-          <li>
-            Content is centred to <code>maxWidth</code> (default 1320px); app-shell
-            portals pass a larger value to run full-bleed above a sidebar.
-          </li>
-        </ul>
-      </section>
-
-      {/* ============ 11. REUSE / EVIDENCE ============ */}
-      <section style={sectionStyle}>
-        <h2 id="reuse" style={h2Style}>
-          11. Reuse across the estate
-        </h2>
-        <p style={proseStyle}>
-          One definition, imported everywhere — no per-app header forks. Each app
-          supplies its own data and basePath-aware asset URLs.
-        </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-16)" }}>
-          <table className="props-table">
-            <thead>
-              <tr>
-                <th scope="col">Surface</th>
-                <th scope="col">variant</th>
-                <th scope="col">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>dosje website</td><td>website</td><td>Search field, Digital India, Admin Login, mega-menu nav</td></tr>
-              <tr><td>PM-AJAY</td><td>portal</td><td>Brand chrome — divider + Digital India / SAMAVESH</td></tr>
-              <tr><td>SMILE Admin</td><td>portal</td><td>Sticky · sidebar toggle + account dropdown</td></tr>
-              <tr><td>NMBA — Patient Data Monitoring</td><td>portal</td><td>Sticky · sidebar toggle + account dropdown + Last-login</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <Callout type="info" title="Shared parts">
-          Need only a piece? <strong>BrandLockup</strong> (emblem + government
-          stack, with a <code>compact</code> mode) and <strong>AccountMenu</strong>{" "}
-          (avatar + dropdown) are exported directly, so a surface never
-          re-implements them. The lockup always renders the National Emblem —
-          never an invented mark.
-        </Callout>
-      </section>
-
-      {/* ============ 12. RELATED ============ */}
-      <section style={sectionStyle}>
-        <h2 id="related" style={h2Style}>
-          12. Related
-        </h2>
+<section style={sectionStyle}>
+        <h2 id="related" style={h2Style}>Related</h2>
         <ul style={listStyle}>
           <li>
             <a href="/design-system/components/section-templates/sidebar" style={{ color: "var(--sa-text-brand-primary-base)" }}>Sidebar Nav</a>{" "}
@@ -703,12 +659,8 @@ export default function HeaderPage(): React.JSX.Element {
           </li>
         </ul>
       </section>
-
-      {/* ============ 13. CHANGELOG ============ */}
-      <section style={sectionStyle}>
-        <h2 id="changelog" style={h2Style}>
-          13. Changelog
-        </h2>
+<section style={sectionStyle}>
+        <h2 id="changelog" style={h2Style}>Changelog</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", lineHeight: 1.9 }}>
           <li>
             <strong style={{ color: "var(--sa-text-neutral-base)" }}>Accessibility consolidation</strong>{" "}
@@ -743,7 +695,8 @@ export default function HeaderPage(): React.JSX.Element {
             (<code>4235-3170</code>) components.
           </li>
         </ul>
-      </section>
-    </main>
+      </section></>) }
+      ]} />
+</main>
   );
 }
